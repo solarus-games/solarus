@@ -8467,10 +8467,10 @@ chest{
   x = 1808,
   y = 333,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b811",
+  sprite = "entities/chest",
 }
 
 switch{
@@ -8534,7 +8534,6 @@ enemy{
   name = "door_b_enemy_1",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8546,7 +8545,6 @@ enemy{
   name = "door_b_enemy_2",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8632,7 +8630,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9196,8 +9193,8 @@ chest{
   x = 2112,
   y = 397,
   name = "compass_chest_1",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -9205,8 +9202,8 @@ chest{
   x = 2040,
   y = 397,
   name = "compass_chest_2",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -9214,8 +9211,8 @@ chest{
   x = 1992,
   y = 397,
   name = "compass_chest_3",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -9223,8 +9220,8 @@ chest{
   x = 2136,
   y = 397,
   name = "compass_chest_4",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -9232,8 +9229,8 @@ chest{
   x = 2088,
   y = 397,
   name = "compass_chest_5",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -9241,8 +9238,8 @@ chest{
   x = 2016,
   y = 397,
   name = "compass_chest_6",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -9250,8 +9247,8 @@ chest{
   x = 2064,
   y = 397,
   name = "compass_chest_7",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 wall{
@@ -9339,7 +9336,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9351,7 +9347,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9363,7 +9358,6 @@ enemy{
   name = "door_c_enemy_2",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9375,7 +9369,6 @@ enemy{
   name = "door_c_enemy_1",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9414,11 +9407,11 @@ door{
   name = "door_3",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b815",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b815",
 }
 
 door{
@@ -9428,11 +9421,11 @@ door{
   name = "door_4",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b815",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b815",
 }
 
 door{
@@ -9505,7 +9498,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9517,7 +9509,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9793,7 +9784,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9805,7 +9795,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9817,7 +9806,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9829,11 +9817,11 @@ door{
   name = "door_5",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b817",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b817",
 }
 
 door{
@@ -9843,11 +9831,11 @@ door{
   name = "door_6",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b817",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b817",
 }
 
 door{
@@ -9957,7 +9945,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -9968,7 +9955,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -9979,7 +9965,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -9990,7 +9975,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 dynamic_tile{
@@ -10428,7 +10412,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10440,7 +10423,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10936,11 +10918,11 @@ door{
   name = "door",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b813",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b813",
 }
 
 door{
@@ -10950,11 +10932,11 @@ door{
   name = "door_2",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b813",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b813",
 }
 
 tile{

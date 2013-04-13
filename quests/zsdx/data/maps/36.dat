@@ -437,10 +437,10 @@ chest{
   x = 160,
   y = 165,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "bomb_bag",
   treasure_variant = 1,
   treasure_savegame_variable = "b102",
+  sprite = "entities/chest",
 }
 
 tile{

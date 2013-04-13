@@ -772,7 +772,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child4",
-  behavior = "map",
 }
 
 destination{
@@ -812,7 +811,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/agahnim",
-  behavior = "map",
 }
 
 tile{

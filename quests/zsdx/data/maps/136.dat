@@ -1108,10 +1108,10 @@ chest{
   x = 232,
   y = 573,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 3,
   treasure_savegame_variable = "b944",
+  sprite = "entities/chest",
 }
 
 enemy{
@@ -1121,7 +1121,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1133,7 +1132,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1145,7 +1143,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1157,7 +1154,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1169,7 +1165,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1181,7 +1176,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

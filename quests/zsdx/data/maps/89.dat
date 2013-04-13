@@ -3369,7 +3369,6 @@ npc{
   direction = 2,
   subtype = "1",
   sprite = "npc/castle_guard",
-  behavior = "map",
 }
 
 door{
@@ -3458,7 +3457,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/tom",
-  behavior = "map",
 }
 
 destination{

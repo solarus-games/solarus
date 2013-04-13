@@ -1009,7 +1009,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child3",
-  behavior = "map",
 }
 
 tile{

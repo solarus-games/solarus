@@ -5117,10 +5117,10 @@ chest{
   x = 280,
   y = 637,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "fire_stone",
   treasure_variant = 1,
   treasure_savegame_variable = "b106",
+  sprite = "entities/chest",
 }
 
 destination{

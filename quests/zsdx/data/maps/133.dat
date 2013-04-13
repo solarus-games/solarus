@@ -859,10 +859,10 @@ chest{
   x = 160,
   y = 77,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "bottle_4",
   treasure_variant = 1,
   treasure_savegame_variable = "b913",
+  sprite = "entities/chest",
 }
 
 destination{

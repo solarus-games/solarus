@@ -3645,10 +3645,10 @@ chest{
   x = 472,
   y = 349,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 4,
   treasure_savegame_variable = "b70",
+  sprite = "entities/chest",
 }
 
 destination{
@@ -3967,10 +3967,10 @@ chest{
   x = 696,
   y = 77,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "rock_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b68",
+  sprite = "entities/chest",
 }
 
 teletransporter{
@@ -4428,8 +4428,8 @@ door{
   name = "weak_block",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b946",
+  opening_method = "explosion",
 }
 
 dynamic_tile{
@@ -5825,10 +5825,10 @@ chest{
   x = 80,
   y = 629,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
   treasure_savegame_variable = "b936",
+  sprite = "entities/chest",
 }
 
 destructible{

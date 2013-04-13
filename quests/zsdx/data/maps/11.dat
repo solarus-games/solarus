@@ -666,7 +666,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/newlink8",
-  behavior = "map",
 }
 
 destructible{
@@ -1016,10 +1015,10 @@ chest{
   x = 208,
   y = 53,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 2,
   treasure_savegame_variable = "b25",
+  sprite = "entities/chest",
 }
 
 destructible{

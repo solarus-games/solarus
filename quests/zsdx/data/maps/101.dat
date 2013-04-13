@@ -810,7 +810,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "green_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7077,7 +7076,6 @@ enemy{
   name = "enemy_17",
   direction = 3,
   breed = "blue_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7089,7 +7087,6 @@ enemy{
   name = "enemy_18",
   direction = 3,
   breed = "green_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7112,10 +7109,10 @@ chest{
   x = 200,
   y = 77,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b600",
+  sprite = "entities/chest",
 }
 
 pickable{
@@ -7824,10 +7821,10 @@ chest{
   x = 696,
   y = 69,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
   treasure_savegame_variable = "b602",
+  sprite = "entities/chest",
 }
 
 npc{
@@ -7864,10 +7861,10 @@ chest{
   x = 112,
   y = 693,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b603",
+  sprite = "entities/chest",
 }
 
 block{
@@ -8176,11 +8173,11 @@ door{
   name = "door",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b605",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_7_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b605",
 }
 
 wall{
@@ -8490,7 +8487,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
-  behavior = "map",
 }
 
 destructible{
@@ -8554,10 +8550,10 @@ door{
   name = "door_2",
   direction = 1,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_7_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b606",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_7_big_key",
+  cannot_open_dialog = "_big_key_required",
 }
 
 npc{
@@ -8567,7 +8563,6 @@ npc{
   name = "sign_2",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8577,7 +8572,6 @@ npc{
   name = "sign_3",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8587,7 +8581,6 @@ npc{
   name = "sign_4",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8597,7 +8590,6 @@ npc{
   name = "sign_5",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8607,7 +8599,6 @@ npc{
   name = "sign_6",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8617,7 +8608,6 @@ npc{
   name = "sign_7",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8627,7 +8617,6 @@ npc{
   name = "sign_8",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8637,7 +8626,6 @@ npc{
   name = "sign_9",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8647,7 +8635,6 @@ npc{
   name = "sign_10",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8657,7 +8644,6 @@ npc{
   name = "sign_11",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8667,7 +8653,6 @@ npc{
   name = "sign_12",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8677,7 +8662,6 @@ npc{
   name = "sign_13",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8687,7 +8671,6 @@ npc{
   name = "sign_14",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8697,7 +8680,6 @@ npc{
   name = "sign_15",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8707,7 +8689,6 @@ npc{
   name = "sign_16",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8717,7 +8698,6 @@ npc{
   name = "sign_17",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8727,7 +8707,6 @@ npc{
   name = "sign_18",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8737,7 +8716,6 @@ npc{
   name = "sign_19",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8747,7 +8725,6 @@ npc{
   name = "sign_20",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8757,7 +8734,6 @@ npc{
   name = "sign_21",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8767,7 +8743,6 @@ npc{
   name = "sign_22",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8777,7 +8752,6 @@ npc{
   name = "sign_23",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8787,7 +8761,6 @@ npc{
   name = "sign_24",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8797,7 +8770,6 @@ npc{
   name = "sign_25",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8807,7 +8779,6 @@ npc{
   name = "sign_26",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8817,7 +8788,6 @@ npc{
   name = "sign_27",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -8827,7 +8797,6 @@ npc{
   name = "sign_28",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 door{
@@ -8853,10 +8822,10 @@ chest{
   x = 744,
   y = 845,
   name = "chest_4",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b607",
+  sprite = "entities/chest",
 }
 
 switch{
@@ -8970,10 +8939,10 @@ door{
   name = "door_3",
   direction = 3,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_7_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b606",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_7_big_key",
+  cannot_open_dialog = "_big_key_required",
 }
 
 block{
@@ -9096,7 +9065,6 @@ enemy{
   name = "enemy",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9108,7 +9076,6 @@ enemy{
   name = "enemy_2",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9120,7 +9087,6 @@ enemy{
   name = "enemy_3",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9132,7 +9098,6 @@ enemy{
   name = "enemy_4",
   direction = 1,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9144,7 +9109,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9207,7 +9171,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9219,7 +9182,6 @@ enemy{
   name = "enemy_8",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9373,7 +9335,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "green_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9645,7 +9606,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "red_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9657,7 +9617,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "blue_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9669,7 +9628,6 @@ enemy{
   name = "enemy_13",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9681,7 +9639,6 @@ enemy{
   name = "enemy_14",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9693,7 +9650,6 @@ enemy{
   name = "enemy_15",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9716,7 +9672,6 @@ enemy{
   name = "enemy_16",
   direction = 3,
   breed = "blue_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9944,7 +9899,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

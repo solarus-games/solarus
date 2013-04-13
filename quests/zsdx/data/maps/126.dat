@@ -1336,10 +1336,10 @@ chest{
   x = 80,
   y = 197,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "bomb",
   treasure_variant = 2,
   treasure_savegame_variable = "b932",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -1347,10 +1347,10 @@ chest{
   x = 264,
   y = 549,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 3,
   treasure_savegame_variable = "b933",
+  sprite = "entities/chest",
 }
 
 enemy{
@@ -1360,7 +1360,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1372,7 +1371,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1384,7 +1382,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1396,7 +1393,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1441,7 +1437,6 @@ npc{
   direction = 2,
   subtype = "0",
   sprite = "entities/bone_key_door",
-  behavior = "map",
 }
 
 teletransporter{

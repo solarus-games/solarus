@@ -1931,9 +1931,9 @@ chest{
   x = 1176,
   y = 365,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 npc{
@@ -6082,8 +6082,6 @@ door{
   name = "door_2",
   direction = 0,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -6093,8 +6091,6 @@ door{
   name = "door_3",
   direction = 0,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -6104,8 +6100,6 @@ door{
   name = "door_4",
   direction = 2,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -6115,8 +6109,6 @@ door{
   name = "door_5",
   direction = 2,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -6129,7 +6121,6 @@ door{
   savegame_variable = "locked_door_B",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_3_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -6143,7 +6134,6 @@ door{
   savegame_variable = "locked_door_B",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_3_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -6154,8 +6144,6 @@ door{
   name = "door_8",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -6165,8 +6153,6 @@ door{
   name = "door_9",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 destination{
@@ -6248,8 +6234,6 @@ door{
   name = "torch_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 wall{

@@ -4607,10 +4607,10 @@ chest{
   x = 968,
   y = 701,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 5,
   treasure_savegame_variable = "b910",
+  sprite = "entities/chest",
 }
 
 destructible{
@@ -4703,8 +4703,8 @@ door{
   name = "weak_wall_a",
   direction = 3,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b947",
+  opening_method = "explosion",
 }
 
 dynamic_tile{
@@ -4725,8 +4725,8 @@ door{
   name = "weak_wall_a_2",
   direction = 1,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b947",
+  opening_method = "explosion",
 }
 
 door{
@@ -4736,8 +4736,8 @@ door{
   name = "weak_wall_b",
   direction = 0,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b948",
+  opening_method = "explosion",
 }
 
 door{
@@ -4747,8 +4747,8 @@ door{
   name = "weak_wall_b_2",
   direction = 2,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b948",
+  opening_method = "explosion",
 }
 
 tile{

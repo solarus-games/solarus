@@ -1717,8 +1717,6 @@ door{
   name = "ne_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 enemy{
@@ -1728,7 +1726,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "ropa",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -3931,7 +3928,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_6_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -4035,7 +4031,6 @@ door{
   savegame_variable = "b311",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_6_boss_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_boss_key_required",
 }
 
@@ -4049,7 +4044,6 @@ door{
   savegame_variable = "b311",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_6_boss_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_boss_key_required",
 }
 
@@ -4115,7 +4109,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4127,7 +4120,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4157,7 +4149,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4169,7 +4160,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4181,7 +4171,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4215,8 +4204,6 @@ door{
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -4226,8 +4213,6 @@ door{
   name = "boss_door_2",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 destination{
@@ -4255,7 +4240,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/tom",
-  behavior = "map",
 }
 
 destructible{

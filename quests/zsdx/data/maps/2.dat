@@ -1455,8 +1455,8 @@ chest{
   x = 56,
   y = 93,
   name = "chest_1",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -1464,8 +1464,8 @@ chest{
   x = 104,
   y = 93,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -1473,8 +1473,8 @@ chest{
   x = 152,
   y = 93,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 npc{
@@ -1485,7 +1485,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/static_villager11",
-  behavior = "map",
 }
 
 block{
@@ -1637,7 +1636,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/static_villager8",
-  behavior = "map",
 }
 
 dynamic_tile{
@@ -1787,7 +1785,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/static_villager2",
-  behavior = "map",
 }
 
 npc{
@@ -1798,7 +1795,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/slot_machine",
-  behavior = "map",
 }
 
 npc{
@@ -1809,7 +1805,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/slot_machine",
-  behavior = "map",
 }
 
 npc{
@@ -1820,7 +1815,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/slot_machine",
-  behavior = "map",
 }
 
 sensor{

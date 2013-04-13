@@ -799,7 +799,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child1",
-  behavior = "map",
 }
 
 teletransporter{

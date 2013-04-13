@@ -1715,9 +1715,9 @@ chest{
   x = 96,
   y = 293,
   name = "chest",
-  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b29",
+  sprite = "entities/chest",
 }
 
 npc{
@@ -1728,7 +1728,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/static_villager4",
-  behavior = "map",
 }
 
 crystal_block{

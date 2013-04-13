@@ -518,10 +518,10 @@ chest{
   x = 400,
   y = 565,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
   treasure_savegame_variable = "b509",
+  sprite = "entities/chest",
 }
 
 destructible{
@@ -4771,8 +4771,8 @@ door{
   name = "weak_wall_b_2",
   direction = 0,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b948",
+  opening_method = "explosion",
 }
 
 wall{
@@ -5093,7 +5093,6 @@ npc{
   direction = 2,
   subtype = "1",
   sprite = "npc/black_knight_soldier",
-  behavior = "map",
 }
 
 sensor{
@@ -5113,7 +5112,6 @@ npc{
   direction = 2,
   subtype = "1",
   sprite = "npc/black_knight_soldier",
-  behavior = "map",
 }
 
 destination{
@@ -5132,7 +5130,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/castle_lock",
-  behavior = "map",
 }
 
 npc{
@@ -5143,7 +5140,6 @@ npc{
   direction = 1,
   subtype = "0",
   sprite = "entities/castle_lock",
-  behavior = "map",
 }
 
 npc{
@@ -5154,7 +5150,6 @@ npc{
   direction = 2,
   subtype = "1",
   sprite = "npc/black_knight_soldier",
-  behavior = "map",
 }
 
 sensor{
@@ -5183,7 +5178,6 @@ npc{
   direction = 2,
   subtype = "1",
   sprite = "npc/black_knight_soldier",
-  behavior = "map",
 }
 
 sensor{
@@ -5221,7 +5215,6 @@ npc{
   direction = 1,
   subtype = "1",
   sprite = "npc/black_knight_soldier",
-  behavior = "map",
 }
 
 sensor{
@@ -5241,7 +5234,6 @@ npc{
   direction = 2,
   subtype = "1",
   sprite = "npc/black_knight_soldier",
-  behavior = "map",
 }
 
 sensor{
@@ -5269,7 +5261,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5372,7 +5363,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5384,7 +5374,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "red_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5396,7 +5385,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b502",
@@ -5409,7 +5397,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5421,7 +5408,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5433,7 +5419,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5461,10 +5446,10 @@ chest{
   x = 968,
   y = 701,
   name = "boss_key_chest",
-  sprite = "entities/chest",
   treasure_name = "boss_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b518",
+  sprite = "entities/chest",
 }
 
 dynamic_tile{
@@ -5485,8 +5470,8 @@ door{
   name = "weak_wall_b",
   direction = 2,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b948",
+  opening_method = "explosion",
 }
 
 wall{
@@ -5531,8 +5516,8 @@ door{
   name = "weak_wall_a",
   direction = 1,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b947",
+  opening_method = "explosion",
 }
 
 door{
@@ -5542,8 +5527,8 @@ door{
   name = "weak_wall_a_2",
   direction = 3,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b947",
+  opening_method = "explosion",
 }
 
 wall{

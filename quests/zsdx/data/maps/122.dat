@@ -1176,7 +1176,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1188,7 +1187,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1200,7 +1198,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

@@ -3377,10 +3377,10 @@ chest{
   x = 88,
   y = 197,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
   treasure_savegame_variable = "b39",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -3388,10 +3388,10 @@ chest{
   x = 376,
   y = 181,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 3,
   treasure_savegame_variable = "b40",
+  sprite = "entities/chest",
 }
 
 destructible{
@@ -3735,7 +3735,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -3746,7 +3745,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -3757,7 +3755,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -3768,7 +3765,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 

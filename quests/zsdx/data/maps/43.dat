@@ -5045,10 +5045,10 @@ door{
   name = "door",
   direction = 1,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_3_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b906",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_boss_key",
+  cannot_open_dialog = "_boss_key_required",
 }
 
 door{
@@ -5058,10 +5058,10 @@ door{
   name = "door_2",
   direction = 3,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_3_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b906",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_boss_key",
+  cannot_open_dialog = "_boss_key_required",
 }
 
 destination{
@@ -5402,7 +5402,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5414,7 +5413,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5480,7 +5478,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5492,7 +5489,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5504,7 +5500,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5516,7 +5511,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5600,10 +5594,10 @@ door{
   name = "door_4",
   direction = 3,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_3_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b925",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_big_key",
+  cannot_open_dialog = "_big_key_required",
 }
 
 door{
@@ -5613,10 +5607,10 @@ door{
   name = "door_3",
   direction = 1,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_3_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b925",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_big_key",
+  cannot_open_dialog = "_big_key_required",
 }
 
 destination{

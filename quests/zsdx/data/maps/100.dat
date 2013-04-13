@@ -606,7 +606,6 @@ enemy{
   name = "enemy_2",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -637,7 +636,6 @@ enemy{
   name = "enemy_3",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -673,7 +671,6 @@ enemy{
   name = "pike_1",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -685,7 +682,6 @@ enemy{
   name = "pike_2",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

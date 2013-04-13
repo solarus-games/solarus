@@ -348,7 +348,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/ganon",
-  behavior = "map",
 }
 
 wall{
@@ -414,7 +413,6 @@ npc{
   direction = 1,
   subtype = "1",
   sprite = "npc/agahnim",
-  behavior = "map",
 }
 
 sensor{

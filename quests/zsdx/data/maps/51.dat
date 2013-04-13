@@ -1224,11 +1224,11 @@ door{
   name = "KD05",
   direction = 1,
   sprite = "entities/door_small_key",
+  savegame_variable = "b717",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_8_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b717",
 }
 
 door{
@@ -1286,7 +1286,6 @@ enemy{
   name = "pike",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1298,7 +1297,6 @@ enemy{
   name = "pike_2",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1310,7 +1308,6 @@ enemy{
   name = "pike_4",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1322,7 +1319,6 @@ enemy{
   name = "pike_3",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1334,7 +1330,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1419,11 +1414,11 @@ door{
   name = "KD05_2",
   direction = 3,
   sprite = "entities/door_small_key",
+  savegame_variable = "b717",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_8_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b717",
 }
 
 crystal_block{

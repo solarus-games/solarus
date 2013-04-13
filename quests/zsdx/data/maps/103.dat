@@ -1180,7 +1180,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/sahasrahla",
-  behavior = "map",
 }
 
 stairs{
@@ -9001,10 +9000,10 @@ chest{
   x = 752,
   y = 61,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 6,
   treasure_savegame_variable = "b629",
+  sprite = "entities/chest",
 }
 
 wall{
@@ -9203,7 +9202,6 @@ enemy{
   name = "enemy",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9267,7 +9265,6 @@ enemy{
   name = "enemy_2",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9277,10 +9274,10 @@ chest{
   x = 464,
   y = 85,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "boss_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b622",
+  sprite = "entities/chest",
 }
 
 block{
@@ -9472,7 +9469,6 @@ enemy{
   name = "pike_1",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9484,7 +9480,6 @@ enemy{
   name = "pike_4",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9496,7 +9491,6 @@ enemy{
   name = "pike_2",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9508,7 +9502,6 @@ enemy{
   name = "pike_3",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9520,7 +9513,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9532,7 +9524,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9602,7 +9593,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "red_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9614,7 +9604,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "red_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9989,7 +9978,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10001,7 +9989,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10013,7 +10000,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10025,7 +10011,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10037,7 +10022,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10061,7 +10045,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10073,7 +10056,6 @@ enemy{
   name = "enemy_13",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10193,7 +10175,6 @@ enemy{
   name = "enemy_14",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10205,7 +10186,6 @@ enemy{
   name = "enemy_15",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10217,7 +10197,6 @@ enemy{
   name = "enemy_16",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10229,7 +10208,6 @@ enemy{
   name = "enemy_17",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10241,7 +10219,6 @@ enemy{
   name = "enemy_18",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10253,7 +10230,6 @@ enemy{
   name = "enemy_19",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

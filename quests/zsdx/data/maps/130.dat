@@ -930,7 +930,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child1",
-  behavior = "map",
 }
 
 npc{
@@ -941,7 +940,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child2",
-  behavior = "map",
 }
 
 npc{
@@ -952,7 +950,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child3",
-  behavior = "map",
 }
 
 npc{
@@ -963,7 +960,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child4",
-  behavior = "map",
 }
 
 npc{
@@ -974,7 +970,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child2",
-  behavior = "map",
 }
 
 npc{
@@ -985,7 +980,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child3",
-  behavior = "map",
 }
 
 npc{
@@ -996,7 +990,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/zelda",
-  behavior = "map",
 }
 
 enemy{
@@ -1027,7 +1020,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -1038,7 +1030,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -1049,7 +1040,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -1060,7 +1050,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 dynamic_tile{
@@ -2633,7 +2622,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child4",
-  behavior = "map",
 }
 
 npc{
@@ -2644,7 +2632,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child1",
-  behavior = "map",
 }
 
 dynamic_tile{

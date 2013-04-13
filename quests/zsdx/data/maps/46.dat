@@ -263,7 +263,6 @@ enemy{
   name = "enemy",
   direction = 0,
   breed = "red_dogman",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

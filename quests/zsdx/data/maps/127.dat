@@ -184,9 +184,9 @@ chest{
   x = 72,
   y = 381,
   name = "sword_chest",
-  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b931",
+  sprite = "entities/chest",
 }
 
 teletransporter{

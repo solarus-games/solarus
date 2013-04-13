@@ -9363,10 +9363,10 @@ chest{
   x = 712,
   y = 413,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b305",
+  sprite = "entities/chest",
 }
 
 destructible{
@@ -9532,10 +9532,10 @@ door{
   name = "door",
   direction = 0,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_6_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b306",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_6_big_key",
+  cannot_open_dialog = "_big_key_required",
 }
 
 door{
@@ -9545,10 +9545,10 @@ door{
   name = "door_2",
   direction = 2,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_6_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b306",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_6_big_key",
+  cannot_open_dialog = "_big_key_required",
 }
 
 jumper{
@@ -9777,11 +9777,11 @@ door{
   name = "door_5",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b307",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_6_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b307",
 }
 
 crystal_block{
@@ -10475,10 +10475,10 @@ chest{
   x = 528,
   y = 413,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "big_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b315",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -10486,10 +10486,10 @@ chest{
   x = 248,
   y = 317,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b316",
+  sprite = "entities/chest",
 }
 
 door{
@@ -10499,11 +10499,11 @@ door{
   name = "door_6",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b318",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_6_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b318",
 }
 
 door{
@@ -10533,7 +10533,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10545,7 +10544,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10557,7 +10555,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "ropa",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10569,7 +10566,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "ropa",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10581,7 +10577,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "ropa",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10647,7 +10642,6 @@ enemy{
   name = "miniboss_enemy_1",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10659,7 +10653,6 @@ enemy{
   name = "miniboss_enemy_2",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10671,7 +10664,6 @@ enemy{
   name = "miniboss_enemy_3",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10683,7 +10675,6 @@ enemy{
   name = "miniboss_enemy_4",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10695,7 +10686,6 @@ enemy{
   name = "miniboss_enemy_5",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10707,7 +10697,6 @@ enemy{
   name = "miniboss_enemy_6",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10719,7 +10708,6 @@ enemy{
   name = "miniboss_enemy_7",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }

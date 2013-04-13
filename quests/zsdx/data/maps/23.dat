@@ -1871,8 +1871,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b54",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 switch{
@@ -1938,8 +1936,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b55",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 enemy{
@@ -1949,7 +1945,6 @@ enemy{
   name = "compass_room_battle",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1961,7 +1956,6 @@ enemy{
   name = "compass_room_battle_3",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1973,7 +1967,6 @@ enemy{
   name = "compass_room_battle_4",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1985,7 +1978,6 @@ enemy{
   name = "compass_room_battle_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2025,8 +2017,6 @@ door{
   name = "sw_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -2036,8 +2026,6 @@ door{
   name = "sw_door_2",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 sensor{
@@ -4446,7 +4434,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_1_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -4520,7 +4507,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b59",
@@ -4533,7 +4519,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4545,7 +4530,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4557,7 +4541,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4569,7 +4552,6 @@ enemy{
   name = "enemy_13",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4581,7 +4563,6 @@ enemy{
   name = "enemy_14",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4619,7 +4600,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4691,7 +4671,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4763,7 +4742,6 @@ door{
   sprite = "entities/door_very_weak_wall",
   savegame_variable = "b923",
   opening_method = "explosion",
-  opening_condition_consumed = false,
 }
 
 pickable{

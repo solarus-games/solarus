@@ -17229,8 +17229,6 @@ door{
   name = "c_door_s_2",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -17240,8 +17238,6 @@ door{
   name = "c_door_s",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -17254,7 +17250,6 @@ door{
   savegame_variable = "b804",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -17268,7 +17263,6 @@ door{
   savegame_variable = "b804",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -17304,7 +17298,6 @@ door{
   savegame_variable = "b809",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -17315,8 +17308,6 @@ door{
   name = "w_room_door_2",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -17326,8 +17317,6 @@ door{
   name = "s_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 crystal_block{
@@ -18364,7 +18353,6 @@ enemy{
   name = "hidden_enemy_1",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -18376,7 +18364,6 @@ enemy{
   name = "hidden_enemy_2",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -18399,8 +18386,6 @@ chest{
   treasure_variant = 6,
   treasure_savegame_variable = "b800",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 wall{
@@ -18425,8 +18410,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b801",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 switch{
@@ -18668,8 +18651,6 @@ door{
   name = "puzzle_b_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -18679,8 +18660,6 @@ door{
   name = "puzzle_b_door_2",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -18690,8 +18669,6 @@ door{
   name = "puzzle_b_door_3",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -18701,8 +18678,6 @@ door{
   name = "puzzle_b_door_4",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 switch{
@@ -19174,7 +19149,6 @@ enemy{
   name = "s_door_enemy_1",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -19186,7 +19160,6 @@ enemy{
   name = "s_door_enemy_2",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -19198,8 +19171,6 @@ door{
   name = "s_door_2",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 npc{
@@ -19210,7 +19181,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19221,7 +19191,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19232,7 +19201,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19243,7 +19211,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19254,7 +19221,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19265,7 +19231,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19276,7 +19241,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19287,7 +19251,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19298,7 +19261,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19309,7 +19271,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19320,7 +19281,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19331,7 +19291,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 npc{
@@ -19342,7 +19301,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
-  behavior = "map",
 }
 
 dynamic_tile{
@@ -20098,8 +20056,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b805",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 enemy{
@@ -20109,7 +20065,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20121,7 +20076,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20133,7 +20087,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20145,7 +20098,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20157,7 +20109,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20169,7 +20120,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20183,8 +20133,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b806",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -20194,8 +20142,6 @@ door{
   name = "w_room_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 block{
@@ -20233,7 +20179,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -20430,7 +20375,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20442,7 +20386,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20454,7 +20397,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20484,8 +20426,6 @@ door{
   name = "c_door_e",
   direction = 0,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -20495,8 +20435,6 @@ door{
   name = "c_door_e_2",
   direction = 2,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 destructible{
@@ -20589,7 +20527,6 @@ enemy{
   name = "e_room_enemy_1",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20601,7 +20538,6 @@ enemy{
   name = "e_room_enemy_3",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20613,7 +20549,6 @@ enemy{
   name = "e_room_enemy_2",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -20640,8 +20575,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b808",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 destructible{
@@ -20683,7 +20616,6 @@ door{
   savegame_variable = "b809",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -20783,8 +20715,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b810",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 switch{

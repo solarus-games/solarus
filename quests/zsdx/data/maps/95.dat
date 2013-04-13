@@ -1017,7 +1017,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/witch",
-  behavior = "map",
 }
 
 shop_item{

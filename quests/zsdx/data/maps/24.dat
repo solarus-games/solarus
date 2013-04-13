@@ -4308,7 +4308,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -4319,7 +4318,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -4354,7 +4352,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -4365,7 +4362,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -4444,7 +4440,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -4503,7 +4498,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -4514,10 +4508,10 @@ door{
   name = "door",
   direction = 0,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_1_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b60",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_big_key",
+  cannot_open_dialog = "_big_key_required",
 }
 
 door{
@@ -4527,10 +4521,10 @@ door{
   name = "door_2",
   direction = 2,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_1_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b60",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_big_key",
+  cannot_open_dialog = "_big_key_required",
 }
 
 door{
@@ -4793,10 +4787,10 @@ chest{
   x = 656,
   y = 453,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "big_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b56",
+  sprite = "entities/chest",
 }
 
 enemy{
@@ -4806,7 +4800,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -4817,7 +4810,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -4847,10 +4839,10 @@ chest{
   x = 816,
   y = 453,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "croissant",
   treasure_variant = 1,
   treasure_savegame_variable = "b954",
+  sprite = "entities/chest",
 }
 
 enemy{
@@ -4860,7 +4852,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -4871,7 +4862,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 

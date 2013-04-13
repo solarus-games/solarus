@@ -2459,7 +2459,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9258,7 +9257,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9270,7 +9268,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9282,7 +9279,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9375,7 +9371,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "red_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9387,7 +9382,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "red_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9435,7 +9429,6 @@ enemy{
   name = "evil_tile_enemy_2",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9446,7 +9439,6 @@ enemy{
   name = "evil_tile_enemy_3",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9457,7 +9449,6 @@ enemy{
   name = "evil_tile_enemy_4",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9497,7 +9488,6 @@ enemy{
   name = "evil_tile_enemy_1",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9519,7 +9509,6 @@ enemy{
   name = "evil_tile_enemy_5",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9541,7 +9530,6 @@ enemy{
   name = "evil_tile_enemy_6",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9563,7 +9551,6 @@ enemy{
   name = "evil_tile_enemy_7",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9585,7 +9572,6 @@ enemy{
   name = "evil_tile_enemy_8",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9607,7 +9593,6 @@ enemy{
   name = "evil_tile_enemy_9",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9629,7 +9614,6 @@ enemy{
   name = "evil_tile_enemy_10",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9651,7 +9635,6 @@ enemy{
   name = "evil_tile_enemy_11",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9673,7 +9656,6 @@ enemy{
   name = "evil_tile_enemy_12",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9695,7 +9677,6 @@ enemy{
   name = "evil_tile_enemy_13",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9717,7 +9698,6 @@ enemy{
   name = "evil_tile_enemy_14",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9739,7 +9719,6 @@ enemy{
   name = "evil_tile_enemy_15",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9761,7 +9740,6 @@ enemy{
   name = "evil_tile_enemy_16",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9783,7 +9761,6 @@ enemy{
   name = "evil_tile_enemy_17",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9805,7 +9782,6 @@ enemy{
   name = "evil_tile_enemy_18",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9827,7 +9803,6 @@ enemy{
   name = "evil_tile_enemy_19",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9849,7 +9824,6 @@ enemy{
   name = "evil_tile_enemy_20",
   direction = 3,
   breed = "evil_tile",
-  rank = 0,
   treasure_variant = 1,
 }
 
@@ -9860,7 +9834,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9872,7 +9845,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9884,7 +9856,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9896,7 +9867,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9908,7 +9878,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

@@ -2286,10 +2286,10 @@ chest{
   x = 448,
   y = 285,
   name = "torches_chest",
-  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
   treasure_savegame_variable = "b312",
+  sprite = "entities/chest",
 }
 
 npc{
@@ -2413,7 +2413,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2425,7 +2424,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2437,7 +2435,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2449,7 +2446,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2461,7 +2457,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "ropa",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7020,7 +7015,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7032,7 +7026,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "ropa",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7044,7 +7037,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7056,7 +7048,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "ropa",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

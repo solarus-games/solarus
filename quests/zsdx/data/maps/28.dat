@@ -1008,10 +1008,10 @@ chest{
   x = 208,
   y = 149,
   name = "Chest1",
-  sprite = "entities/chest",
   treasure_name = "shield",
   treasure_variant = 1,
   treasure_savegame_variable = "b10",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -1019,10 +1019,10 @@ chest{
   x = 312,
   y = 173,
   name = "Chest2",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 4,
   treasure_savegame_variable = "b11",
+  sprite = "entities/chest",
 }
 
 destructible{
@@ -1048,8 +1048,8 @@ door{
   name = "weak_wall",
   direction = 0,
   sprite = "entities/door_very_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b65",
+  opening_method = "explosion",
 }
 
 destination{
@@ -1068,7 +1068,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/bed",
-  behavior = "map",
 }
 
 destination{
@@ -1218,6 +1217,5 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/snores",
-  behavior = "map",
 }
 

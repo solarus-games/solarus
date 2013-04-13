@@ -3235,10 +3235,10 @@ chest{
   x = 104,
   y = 357,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "boss_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b301",
+  sprite = "entities/chest",
 }
 
 destructible{
@@ -3270,10 +3270,10 @@ chest{
   x = 976,
   y = 477,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b302",
+  sprite = "entities/chest",
 }
 
 teletransporter{
@@ -3295,10 +3295,10 @@ chest{
   x = 616,
   y = 173,
   name = "chest_4",
-  sprite = "entities/chest",
   treasure_name = "compass",
   treasure_variant = 1,
   treasure_savegame_variable = "b303",
+  sprite = "entities/chest",
 }
 
 destination{
@@ -3758,7 +3758,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -3770,7 +3769,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7589,10 +7587,10 @@ chest{
   x = 776,
   y = 149,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 5,
   treasure_savegame_variable = "b300",
+  sprite = "entities/chest",
 }
 
 door{
@@ -7602,11 +7600,11 @@ door{
   name = "door",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b304",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_6_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b304",
 }
 
 door{
@@ -7616,11 +7614,11 @@ door{
   name = "door_2",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b304",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_6_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b304",
 }
 
 destination{
@@ -8350,7 +8348,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "ropa",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8362,7 +8359,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

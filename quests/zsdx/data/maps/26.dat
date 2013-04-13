@@ -783,7 +783,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/great_fairy",
-  behavior = "map",
 }
 
 tile{

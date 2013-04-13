@@ -456,10 +456,10 @@ chest{
   x = 96,
   y = 53,
   name = "Chest",
-  sprite = "entities/chest",
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
   treasure_savegame_variable = "b12",
+  sprite = "entities/chest",
 }
 
 tile{

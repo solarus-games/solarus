@@ -867,8 +867,8 @@ door{
   name = "door",
   direction = 1,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b158",
+  opening_method = "explosion",
 }
 
 npc{

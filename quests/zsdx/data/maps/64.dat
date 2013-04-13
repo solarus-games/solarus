@@ -3640,10 +3640,10 @@ chest{
   x = 608,
   y = 829,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 5,
   treasure_savegame_variable = "b500",
+  sprite = "entities/chest",
 }
 
 crystal{
@@ -3820,10 +3820,10 @@ chest{
   x = 1080,
   y = 349,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "big_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b503",
+  sprite = "entities/chest",
 }
 
 crystal_block{
@@ -3875,10 +3875,10 @@ door{
   name = "door",
   direction = 1,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_5_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b507",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_5_boss_key",
+  cannot_open_dialog = "_boss_key_required",
 }
 
 door{
@@ -3888,10 +3888,10 @@ door{
   name = "door_2",
   direction = 3,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_5_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b507",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_5_boss_key",
+  cannot_open_dialog = "_boss_key_required",
 }
 
 door{
@@ -3901,10 +3901,10 @@ door{
   name = "door_3",
   direction = 1,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_5_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b508",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_5_big_key",
+  cannot_open_dialog = "_big_key_required",
 }
 
 door{
@@ -3914,10 +3914,10 @@ door{
   name = "door_4",
   direction = 3,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_5_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b508",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_5_big_key",
+  cannot_open_dialog = "_big_key_required",
 }
 
 teletransporter{
@@ -3946,10 +3946,10 @@ chest{
   x = 1048,
   y = 909,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "compass",
   treasure_variant = 1,
   treasure_savegame_variable = "b501",
+  sprite = "entities/chest",
 }
 
 enemy{
@@ -3959,7 +3959,6 @@ enemy{
   name = "s_room_enemy_1",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -3971,7 +3970,6 @@ enemy{
   name = "s_room_enemy_2",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -3983,7 +3981,6 @@ enemy{
   name = "se_room_enemy",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4022,7 +4019,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4034,7 +4030,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4046,11 +4041,11 @@ door{
   name = "door_5",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b513",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_5_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b513",
 }
 
 door{
@@ -4060,11 +4055,11 @@ door{
   name = "door_6",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b513",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_5_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b513",
 }
 
 npc{
@@ -4248,7 +4243,6 @@ npc{
   direction = 0,
   subtype = "1",
   sprite = "npc/black_knight_soldier",
-  behavior = "map",
 }
 
 crystal_block{
@@ -4458,7 +4452,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "red_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4470,7 +4463,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "red_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4482,7 +4474,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

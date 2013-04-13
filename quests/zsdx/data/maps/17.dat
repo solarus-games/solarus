@@ -2709,11 +2709,11 @@ door{
   name = "door",
   direction = 1,
   sprite = "entities/door_small_key",
+  savegame_variable = "b209",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_10_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b209",
 }
 
 door{
@@ -2723,11 +2723,11 @@ door{
   name = "door_2",
   direction = 3,
   sprite = "entities/door_small_key",
+  savegame_variable = "b209",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_10_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b209",
 }
 
 conveyor_belt{
@@ -2787,7 +2787,6 @@ enemy{
   name = "seroom_enemy_2",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2799,7 +2798,6 @@ enemy{
   name = "seroom_enemy_1",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2811,7 +2809,6 @@ enemy{
   name = "seroom_enemy_3",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "bomb",
   treasure_variant = 1,
 }
@@ -2850,7 +2847,6 @@ enemy{
   name = "seroom_enemy_4",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2862,7 +2858,6 @@ enemy{
   name = "seroom_enemy_5",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2874,7 +2869,6 @@ enemy{
   name = "seroom_enemy_6",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2941,7 +2935,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2953,8 +2946,8 @@ door{
   name = "bloc_weak6_1",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b215",
+  opening_method = "explosion",
 }
 
 door{
@@ -2964,8 +2957,8 @@ door{
   name = "bloc_weak5_1",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b214",
+  opening_method = "explosion",
 }
 
 door{
@@ -2975,8 +2968,8 @@ door{
   name = "bloc_weak4_1",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b213",
+  opening_method = "explosion",
 }
 
 door{
@@ -2986,8 +2979,8 @@ door{
   name = "bloc_weak3_1",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b212",
+  opening_method = "explosion",
 }
 
 door{
@@ -2997,8 +2990,8 @@ door{
   name = "bloc_weak2_1",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b211",
+  opening_method = "explosion",
 }
 
 door{
@@ -3008,8 +3001,8 @@ door{
   name = "bloc_weak1_1",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b210",
+  opening_method = "explosion",
 }
 
 destination{
@@ -6769,9 +6762,9 @@ chest{
   x = 792,
   y = 525,
   name = "chest",
-  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b224",
+  sprite = "entities/chest",
 }
 
 enemy{
@@ -6781,7 +6774,6 @@ enemy{
   name = "enemy_group1_1",
   direction = 2,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6793,7 +6785,6 @@ enemy{
   name = "enemy_group1_3",
   direction = 2,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6805,7 +6796,6 @@ enemy{
   name = "enemy_group1_2",
   direction = 2,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "bomb",
   treasure_variant = 1,
 }
@@ -6841,7 +6831,6 @@ enemy{
   name = "neroom_enemy_1",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6853,7 +6842,6 @@ enemy{
   name = "neroom_enemy_2",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6865,7 +6853,6 @@ enemy{
   name = "neroom_enemy_3",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6877,7 +6864,6 @@ enemy{
   name = "neroom_enemy_4",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6889,7 +6875,6 @@ enemy{
   name = "neroom_enemy_5",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6901,7 +6886,6 @@ enemy{
   name = "neroom_enemy_6",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6913,7 +6897,6 @@ enemy{
   name = "neroom_enemy_7",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6925,7 +6908,6 @@ enemy{
   name = "neroom_enemy_8",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6937,7 +6919,6 @@ enemy{
   name = "neroom_enemy_9",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6949,7 +6930,6 @@ enemy{
   name = "neroom_enemy_10",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6961,7 +6941,6 @@ enemy{
   name = "neroom_enemy_11",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6973,7 +6952,6 @@ enemy{
   name = "neroom_enemy_12",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6985,7 +6963,6 @@ enemy{
   name = "neroom_enemy_13",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6997,7 +6974,6 @@ enemy{
   name = "neroom_enemy_14",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7009,7 +6985,6 @@ enemy{
   name = "neroom_enemy_22",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7021,7 +6996,6 @@ enemy{
   name = "neroom_enemy_15",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7033,7 +7007,6 @@ enemy{
   name = "neroom_enemy_16",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7045,7 +7018,6 @@ enemy{
   name = "neroom_enemy_17",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7057,7 +7029,6 @@ enemy{
   name = "neroom_enemy_18",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7069,7 +7040,6 @@ enemy{
   name = "neroom_enemy_19",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7081,7 +7051,6 @@ enemy{
   name = "neroom_enemy_20",
   direction = 2,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7111,7 +7080,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7123,7 +7091,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7135,8 +7102,8 @@ door{
   name = "weak_door",
   direction = 1,
   sprite = "entities/door_very_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b208",
+  opening_method = "explosion",
 }
 
 dynamic_tile{
@@ -7345,7 +7312,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7357,7 +7323,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7369,7 +7334,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7381,7 +7345,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7393,7 +7356,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7412,10 +7374,10 @@ chest{
   x = 296,
   y = 61,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b222",
+  sprite = "entities/chest",
 }
 
 crystal{
@@ -7707,11 +7669,11 @@ door{
   name = "door_3",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b223",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_10_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b223",
 }
 
 door{
@@ -7721,11 +7683,11 @@ door{
   name = "door_4",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b223",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_10_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b223",
 }
 
 block{
@@ -7812,10 +7774,10 @@ chest{
   x = 56,
   y = 61,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
   treasure_savegame_variable = "b225",
+  sprite = "entities/chest",
 }
 
 block{

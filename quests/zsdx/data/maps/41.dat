@@ -484,10 +484,10 @@ chest{
   x = 952,
   y = 893,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b119",
+  sprite = "entities/chest",
 }
 
 stairs{
@@ -7822,10 +7822,10 @@ chest{
   x = 720,
   y = 61,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "big_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b129",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -7833,10 +7833,10 @@ chest{
   x = 120,
   y = 189,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "compass",
   treasure_variant = 1,
   treasure_savegame_variable = "b126",
+  sprite = "entities/chest",
 }
 
 destination{
@@ -8117,8 +8117,8 @@ door{
   name = "door_2",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b120",
+  opening_method = "explosion",
 }
 
 block{
@@ -8224,7 +8224,6 @@ enemy{
   name = "e_room_enemy_1",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8236,7 +8235,6 @@ enemy{
   name = "e_room_enemy_2",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8248,7 +8246,6 @@ enemy{
   name = "e_room_enemy_4",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8260,7 +8257,6 @@ enemy{
   name = "e_room_enemy_5",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8272,7 +8268,6 @@ enemy{
   name = "e_room_enemy_6",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8284,7 +8279,6 @@ enemy{
   name = "e_room_enemy_3",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8724,7 +8718,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8736,7 +8729,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8748,7 +8740,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8760,7 +8751,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8772,7 +8762,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -8784,7 +8773,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8796,7 +8784,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8808,7 +8795,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8965,10 +8951,10 @@ chest{
   x = 280,
   y = 61,
   name = "n_chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 6,
   treasure_savegame_variable = "b949",
+  sprite = "entities/chest",
 }
 
 switch{

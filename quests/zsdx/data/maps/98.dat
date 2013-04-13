@@ -507,7 +507,6 @@ enemy{
   name = "enemy1_1",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1821,8 +1820,6 @@ door{
   name = "door_a",
   direction = 2,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -1832,8 +1829,6 @@ door{
   name = "door_a_2",
   direction = 0,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 switch{
@@ -2027,7 +2022,6 @@ enemy{
   name = "pike_1",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2238,7 +2232,6 @@ enemy{
   name = "pike_2",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2304,7 +2297,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_10_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -2324,7 +2316,6 @@ enemy{
   name = "enemy2_2",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2336,7 +2327,6 @@ enemy{
   name = "enemy2_1",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2348,7 +2338,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2360,7 +2349,6 @@ enemy{
   name = "enemy2_3",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2372,7 +2360,6 @@ enemy{
   name = "enemy2_4",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

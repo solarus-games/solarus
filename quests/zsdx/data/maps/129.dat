@@ -2074,9 +2074,9 @@ chest{
   x = 296,
   y = 61,
   name = "chest",
-  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b10",
+  sprite = "entities/chest",
 }
 
 crystal_block{

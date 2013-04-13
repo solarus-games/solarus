@@ -4216,8 +4216,8 @@ chest{
   x = 136,
   y = 189,
   name = "chest_1",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -4225,8 +4225,8 @@ chest{
   x = 440,
   y = 269,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -4234,8 +4234,8 @@ chest{
   x = 472,
   y = 269,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -4243,8 +4243,8 @@ chest{
   x = 280,
   y = 301,
   name = "chest_4",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -4252,8 +4252,8 @@ chest{
   x = 408,
   y = 381,
   name = "chest_5",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -4261,8 +4261,8 @@ chest{
   x = 72,
   y = 445,
   name = "chest_6",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -4270,8 +4270,8 @@ chest{
   x = 264,
   y = 461,
   name = "chest_7",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 tile{

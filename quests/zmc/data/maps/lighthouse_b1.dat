@@ -1573,9 +1573,9 @@ chest{
   x = 264,
   y = 221,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 4,
+  sprite = "entities/chest",
 }
 
 dynamic_tile{
@@ -1660,9 +1660,9 @@ chest{
   x = 480,
   y = 133,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 destructible{

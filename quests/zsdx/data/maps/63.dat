@@ -1338,7 +1338,6 @@ enemy{
   name = "pike_10",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1358,7 +1357,6 @@ enemy{
   name = "pike_9",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1396,7 +1394,6 @@ enemy{
   name = "pike_8",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1408,7 +1405,6 @@ enemy{
   name = "pike_7",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1446,7 +1442,6 @@ enemy{
   name = "pike_6",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1471,7 +1466,6 @@ enemy{
   name = "pike_1",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1483,7 +1477,6 @@ enemy{
   name = "pike_2",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1521,7 +1514,6 @@ enemy{
   name = "pike_3",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1533,7 +1525,6 @@ enemy{
   name = "pike_4",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1571,7 +1562,6 @@ enemy{
   name = "pike_5",
   direction = 2,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1622,7 +1612,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1634,7 +1623,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10406,7 +10394,6 @@ npc{
   direction = 2,
   subtype = "1",
   sprite = "npc/black_knight_soldier",
-  behavior = "map",
 }
 
 destination{
@@ -10447,7 +10434,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_5_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -10528,8 +10514,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b505",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 block{
@@ -11584,8 +11568,6 @@ door{
   name = "statue_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -11595,8 +11577,6 @@ door{
   name = "statue_door_2",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 npc{
@@ -11676,8 +11656,6 @@ door{
   name = "torches_door_2",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -11687,8 +11665,6 @@ door{
   name = "torches_door",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 conveyor_belt{
@@ -11838,7 +11814,6 @@ npc{
   direction = 0,
   subtype = "1",
   sprite = "npc/black_knight_soldier",
-  behavior = "map",
 }
 
 sensor{
@@ -11946,7 +11921,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/black_knight_soldier",
-  behavior = "map",
 }
 
 enemy{
@@ -11956,7 +11930,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "red_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -12124,7 +12097,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -12136,7 +12108,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -12148,7 +12119,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "red_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

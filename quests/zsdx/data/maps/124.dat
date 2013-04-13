@@ -4146,7 +4146,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4158,7 +4157,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4170,7 +4168,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4182,7 +4179,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4194,7 +4190,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4206,7 +4201,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4218,7 +4212,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4230,7 +4223,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4242,7 +4234,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4326,7 +4317,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4338,7 +4328,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4350,7 +4339,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4362,7 +4350,6 @@ enemy{
   name = "enemy_13",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4374,7 +4361,6 @@ enemy{
   name = "enemy_14",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4386,7 +4372,6 @@ enemy{
   name = "enemy_15",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4398,7 +4383,6 @@ enemy{
   name = "enemy_16",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4437,7 +4421,6 @@ enemy{
   name = "enemy_17",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4449,7 +4432,6 @@ enemy{
   name = "enemy_18",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4497,7 +4479,6 @@ enemy{
   name = "enemy_19",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4509,7 +4490,6 @@ enemy{
   name = "enemy_20",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4521,7 +4501,6 @@ enemy{
   name = "enemy_21",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4533,7 +4512,6 @@ enemy{
   name = "enemy_22",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4545,7 +4523,6 @@ enemy{
   name = "enemy_23",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4557,7 +4534,6 @@ enemy{
   name = "enemy_24",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4569,7 +4545,6 @@ enemy{
   name = "enemy_25",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4581,7 +4556,6 @@ enemy{
   name = "enemy_26",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4593,7 +4567,6 @@ enemy{
   name = "enemy_27",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4605,7 +4578,6 @@ enemy{
   name = "enemy_28",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4617,7 +4589,6 @@ enemy{
   name = "enemy_29",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

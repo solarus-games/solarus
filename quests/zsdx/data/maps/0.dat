@@ -41,7 +41,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/fresco",
-  behavior = "map",
 }
 
 dynamic_tile{

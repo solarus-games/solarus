@@ -5747,7 +5747,6 @@ enemy{
   name = "door_a_enemy_1",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5759,7 +5758,6 @@ enemy{
   name = "door_a_enemy_2",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5771,7 +5769,6 @@ enemy{
   name = "door_a_enemy_3",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5783,7 +5780,6 @@ enemy{
   name = "door_a_enemy_4",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5975,7 +5971,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
-  behavior = "map",
 }
 
 npc{
@@ -5986,7 +5981,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
-  behavior = "map",
 }
 
 npc{
@@ -5997,7 +5991,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
-  behavior = "map",
 }
 
 npc{
@@ -6008,7 +6001,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
-  behavior = "map",
 }
 
 npc{
@@ -6019,7 +6011,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
-  behavior = "map",
 }
 
 npc{
@@ -6030,7 +6021,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
-  behavior = "map",
 }
 
 npc{
@@ -6041,7 +6031,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
-  behavior = "map",
 }
 
 npc{
@@ -6052,7 +6041,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
-  behavior = "map",
 }
 
 door{
@@ -6080,10 +6068,10 @@ chest{
   x = 2200,
   y = 1341,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 4,
   treasure_savegame_variable = "b865",
+  sprite = "entities/chest",
 }
 
 conveyor_belt{
@@ -6305,7 +6293,6 @@ enemy{
   name = "miniboss_enemy_1",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6317,7 +6304,6 @@ enemy{
   name = "miniboss_enemy_2",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6329,7 +6315,6 @@ enemy{
   name = "miniboss_enemy_3",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6341,7 +6326,6 @@ enemy{
   name = "miniboss_enemy_4",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6366,7 +6350,6 @@ enemy{
   name = "miniboss_enemy_5",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6378,7 +6361,6 @@ enemy{
   name = "miniboss_enemy_6",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6390,7 +6372,6 @@ enemy{
   name = "miniboss_enemy_7",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6402,7 +6383,6 @@ enemy{
   name = "miniboss_enemy_8",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6414,7 +6394,6 @@ enemy{
   name = "miniboss_enemy_9",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6426,7 +6405,6 @@ enemy{
   name = "miniboss_enemy_10",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6438,7 +6416,6 @@ enemy{
   name = "miniboss_enemy_11",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6450,7 +6427,6 @@ enemy{
   name = "miniboss_enemy_12",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6462,7 +6438,6 @@ enemy{
   name = "miniboss_enemy_13",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6474,7 +6449,6 @@ enemy{
   name = "miniboss_enemy_14",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6486,7 +6460,6 @@ enemy{
   name = "miniboss_enemy_15",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6498,7 +6471,6 @@ enemy{
   name = "miniboss_enemy_16",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

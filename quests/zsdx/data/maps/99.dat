@@ -1258,7 +1258,6 @@ enemy{
   name = "pike_5",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2087,7 +2086,6 @@ enemy{
   name = "enemy",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2099,7 +2097,6 @@ enemy{
   name = "enemy_2",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2109,10 +2106,10 @@ chest{
   x = 168,
   y = 645,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
   treasure_savegame_variable = "b241",
+  sprite = "entities/chest",
 }
 
 block{
@@ -2134,7 +2131,6 @@ enemy{
   name = "pike_7",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2146,7 +2142,6 @@ enemy{
   name = "pike_3",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2158,7 +2153,6 @@ enemy{
   name = "pike_1",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2170,7 +2164,6 @@ enemy{
   name = "pike_6",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2182,7 +2175,6 @@ enemy{
   name = "pike_8",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2194,7 +2186,6 @@ enemy{
   name = "pike_4",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2206,7 +2197,6 @@ enemy{
   name = "pike_2",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2296,7 +2286,6 @@ enemy{
   name = "enemy_4",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2308,7 +2297,6 @@ enemy{
   name = "enemy_5",
   direction = 0,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2320,7 +2308,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

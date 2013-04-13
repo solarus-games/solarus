@@ -943,7 +943,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -954,7 +953,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -978,7 +976,6 @@ enemy{
   name = "boss_key_battle",
   direction = 3,
   breed = "minillosaur_egg_fixed",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -989,7 +986,6 @@ enemy{
   name = "boss_key_battle_4",
   direction = 3,
   breed = "minillosaur_egg_fixed",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -1000,7 +996,6 @@ enemy{
   name = "boss_key_battle_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -1011,7 +1006,6 @@ enemy{
   name = "boss_key_battle_3",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -1022,7 +1016,6 @@ enemy{
   name = "boss_key_battle_6",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -1033,7 +1026,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -1111,7 +1103,6 @@ enemy{
   name = "boss_key_battle_7",
   direction = 3,
   breed = "minillosaur_egg_fixed",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -1169,10 +1160,10 @@ chest{
   x = 104,
   y = 77,
   name = "boss_key_chest",
-  sprite = "entities/chest",
   treasure_name = "boss_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b57",
+  sprite = "entities/chest",
 }
 
 tile{
@@ -3778,10 +3769,10 @@ door{
   name = "boss_door",
   direction = 0,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_1_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b61",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_boss_key",
+  cannot_open_dialog = "_boss_key_required",
 }
 
 door{
@@ -3791,10 +3782,10 @@ door{
   name = "boss_door_2",
   direction = 2,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_1_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b61",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_boss_key",
+  cannot_open_dialog = "_boss_key_required",
 }
 
 door{
@@ -3843,7 +3834,6 @@ enemy{
   name = "boss_key_battle_5",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 

@@ -604,7 +604,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_3_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -3984,7 +3983,6 @@ door{
   savegame_variable = "locked_door_E",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_3_boss_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_boss_key_required",
 }
 
@@ -4156,8 +4154,6 @@ chest{
   treasure_name = "map",
   treasure_variant = 1,
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -4197,7 +4193,6 @@ door{
   sprite = "entities/door_weak_wall",
   savegame_variable = "weak_wall_A",
   opening_method = "explosion",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -4207,8 +4202,6 @@ door{
   name = "door_3",
   direction = 2,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -4218,8 +4211,6 @@ door{
   name = "door_4",
   direction = 0,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -4231,7 +4222,6 @@ door{
   sprite = "entities/door_weak_wall",
   savegame_variable = "weak_wall_A",
   opening_method = "explosion",
-  opening_condition_consumed = false,
 }
 
 destination{

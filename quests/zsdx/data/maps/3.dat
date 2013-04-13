@@ -17845,10 +17845,10 @@ chest{
   x = 936,
   y = 325,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 4,
   treasure_savegame_variable = "b13",
+  sprite = "entities/chest",
 }
 
 destructible{
@@ -18049,7 +18049,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/newlink4",
-  behavior = "map",
 }
 
 npc{
@@ -18099,7 +18098,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -18110,7 +18108,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -18122,7 +18119,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/monkey",
-  behavior = "map",
 }
 
 wall{
@@ -18166,7 +18162,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/villager1",
-  behavior = "map",
 }
 
 teletransporter{
@@ -18272,7 +18267,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -18364,7 +18358,6 @@ npc{
   name = "dungeon_2_door",
   direction = 3,
   subtype = "0",
-  behavior = "map",
 }
 
 dynamic_tile{
@@ -18534,8 +18527,8 @@ door{
   name = "dungeon_3_entrance_weak_block_2",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b110",
+  opening_method = "explosion",
 }
 
 door{
@@ -18545,8 +18538,8 @@ door{
   name = "dungeon_3_entrance_weak_block_3",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b112",
+  opening_method = "explosion",
 }
 
 door{
@@ -18556,8 +18549,8 @@ door{
   name = "dungeon_3_entrance_weak_block",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b111",
+  opening_method = "explosion",
 }
 
 destructible{
@@ -18597,7 +18590,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -18608,7 +18600,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -18619,7 +18610,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -18630,7 +18620,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "red_knight_soldier",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -18657,10 +18646,10 @@ chest{
   x = 688,
   y = 229,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 5,
   treasure_savegame_variable = "b912",
+  sprite = "entities/chest",
 }
 
 destructible{

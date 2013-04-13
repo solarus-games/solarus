@@ -581,10 +581,10 @@ chest{
   x = 208,
   y = 149,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 5,
   treasure_savegame_variable = "b104",
+  sprite = "entities/chest",
 }
 
 npc{
@@ -595,7 +595,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/billy",
-  behavior = "map",
 }
 
 destructible{

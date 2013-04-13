@@ -2617,9 +2617,9 @@ chest{
   x = 216,
   y = 173,
   name = "chest",
-  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b955",
+  sprite = "entities/chest",
 }
 
 crystal_block{
@@ -2792,7 +2792,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/tom",
-  behavior = "map",
 }
 
 sensor{
@@ -2811,7 +2810,6 @@ enemy{
   name = "battle_1_enemy_5",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2844,7 +2842,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2855,7 +2852,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2866,7 +2862,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2877,7 +2872,6 @@ enemy{
   name = "battle_1_enemy_3",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2888,7 +2882,6 @@ enemy{
   name = "battle_1_enemy_4",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2899,7 +2892,6 @@ enemy{
   name = "battle_1_enemy_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2910,7 +2902,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2921,7 +2912,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2932,7 +2922,6 @@ enemy{
   name = "battle_2_enemy_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2943,7 +2932,6 @@ enemy{
   name = "battle_2_enemy_3",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2954,7 +2942,6 @@ enemy{
   name = "battle_2_enemy_4",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -2965,7 +2952,6 @@ enemy{
   name = "battle_2_enemy_5",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 
@@ -3012,7 +2998,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
 }
 

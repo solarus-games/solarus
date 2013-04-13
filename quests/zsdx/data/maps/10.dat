@@ -6130,7 +6130,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "blue_dogman",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6142,7 +6141,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "red_dogman",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6154,7 +6152,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "red_dogman",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6166,7 +6163,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "blue_dogman",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6187,7 +6183,6 @@ npc{
   name = "vine_start",
   direction = -1,
   subtype = "0",
-  behavior = "map",
 }
 
 npc{
@@ -6198,7 +6193,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/vine",
-  behavior = "map",
 }
 
 wall{

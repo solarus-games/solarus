@@ -24,7 +24,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/the_end",
-  behavior = "map",
 }
 
 destination{

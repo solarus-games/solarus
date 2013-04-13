@@ -970,7 +970,6 @@ enemy{
   name = "w_room_enemy_4",
   direction = 3,
   breed = "blue_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -982,7 +981,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "red_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -994,7 +992,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "red_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1006,7 +1003,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "blue_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8147,7 +8143,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_7_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -8198,8 +8193,6 @@ door{
   name = "miniboss_door",
   direction = 0,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8209,8 +8202,6 @@ door{
   name = "miniboss_door_2",
   direction = 2,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8220,8 +8211,6 @@ door{
   name = "door_f_2",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8231,8 +8220,6 @@ door{
   name = "door_f",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8243,8 +8230,6 @@ door{
   direction = 1,
   sprite = "entities/door_normal",
   savegame_variable = "b615",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8255,8 +8240,6 @@ door{
   direction = 3,
   sprite = "entities/door_normal",
   savegame_variable = "b615",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8267,8 +8250,6 @@ door{
   direction = 1,
   sprite = "entities/door_normal",
   savegame_variable = "b630",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8279,8 +8260,6 @@ door{
   direction = 3,
   sprite = "entities/door_normal",
   savegame_variable = "b630",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8290,8 +8269,6 @@ door{
   name = "door_c_2",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8302,8 +8279,6 @@ door{
   direction = 3,
   sprite = "entities/door_normal",
   savegame_variable = "b617",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8351,8 +8326,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b609",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8378,8 +8351,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b611",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 teletransporter{
@@ -9812,7 +9783,6 @@ door{
   savegame_variable = "b612",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_7_boss_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_boss_key_required",
 }
 
@@ -9981,8 +9951,6 @@ chest{
   treasure_variant = 5,
   treasure_savegame_variable = "b613",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 destination{
@@ -10117,8 +10085,6 @@ chest{
   treasure_variant = 2,
   treasure_savegame_variable = "b614",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 npc{
@@ -10157,7 +10123,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10178,7 +10143,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10226,7 +10190,6 @@ enemy{
   name = "enemy_3",
   direction = 1,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10346,7 +10309,6 @@ enemy{
   name = "enemy_4",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10394,7 +10356,6 @@ enemy{
   name = "enemy_6",
   direction = 2,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10542,7 +10503,6 @@ enemy{
   name = "w_room_enemy_3",
   direction = 3,
   breed = "blue_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10554,7 +10514,6 @@ enemy{
   name = "w_room_enemy_1",
   direction = 3,
   breed = "blue_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10566,7 +10525,6 @@ enemy{
   name = "w_room_enemy_2",
   direction = 3,
   breed = "blue_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10578,7 +10536,6 @@ enemy{
   name = "miniboss_1",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10590,7 +10547,6 @@ enemy{
   name = "miniboss_2",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10602,7 +10558,6 @@ enemy{
   name = "miniboss_3",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10614,7 +10569,6 @@ enemy{
   name = "miniboss_4",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10626,7 +10580,6 @@ enemy{
   name = "miniboss_5",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10638,7 +10591,6 @@ enemy{
   name = "miniboss_6",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -10650,8 +10602,6 @@ door{
   name = "miniboss_door_3",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 sensor{
@@ -10678,7 +10628,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "blue_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10690,7 +10639,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10702,7 +10650,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "lizalfos",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10714,7 +10661,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "red_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10726,7 +10672,6 @@ enemy{
   name = "enemy_13",
   direction = 3,
   breed = "green_duck_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

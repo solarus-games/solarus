@@ -2652,8 +2652,6 @@ chest{
   treasure_variant = 4,
   treasure_savegame_variable = "b414",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 chest{
@@ -2665,8 +2663,6 @@ chest{
   treasure_variant = 5,
   treasure_savegame_variable = "b418",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 enemy{
@@ -2676,7 +2672,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2688,7 +2683,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "red_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -7814,7 +7808,6 @@ door{
   sprite = "entities/door_very_weak_wall",
   savegame_variable = "b403",
   opening_method = "explosion",
-  opening_condition_consumed = false,
 }
 
 wall{
@@ -7885,7 +7878,6 @@ door{
   savegame_variable = "b401",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_4_boss_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_boss_key_required",
 }
 
@@ -7899,7 +7891,6 @@ door{
   savegame_variable = "b401",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_4_boss_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_boss_key_required",
 }
 
@@ -8047,7 +8038,6 @@ door{
   sprite = "entities/door_very_weak_wall",
   savegame_variable = "b403",
   opening_method = "explosion",
-  opening_condition_consumed = false,
 }
 
 destination{
@@ -8203,7 +8193,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_4_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -8216,8 +8205,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b405",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8230,7 +8217,6 @@ door{
   savegame_variable = "b406",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_4_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -8244,7 +8230,6 @@ door{
   savegame_variable = "b406",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_4_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -8257,8 +8242,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b407",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 dynamic_tile{
@@ -8281,8 +8264,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b409",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -8294,7 +8275,6 @@ door{
   sprite = "entities/door_weak_block",
   savegame_variable = "b410",
   opening_method = "explosion",
-  opening_condition_consumed = false,
 }
 
 chest{
@@ -8306,8 +8286,6 @@ chest{
   treasure_variant = 2,
   treasure_savegame_variable = "b408",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 teletransporter{
@@ -8897,7 +8875,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "red_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8909,7 +8886,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "bomb",
   treasure_variant = 2,
 }
@@ -8947,7 +8923,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8959,7 +8934,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9025,8 +8999,6 @@ door{
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -9036,8 +9008,6 @@ door{
   name = "boss_door_2",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 destructible{
@@ -9119,8 +9089,6 @@ door{
   name = "final_room_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 destination{
@@ -9167,7 +9135,6 @@ enemy{
   name = "enemy_7",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9205,7 +9172,6 @@ enemy{
   name = "enemy_8",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9217,7 +9183,6 @@ enemy{
   name = "enemy_9",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9229,7 +9194,6 @@ enemy{
   name = "enemy_10",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9241,7 +9205,6 @@ enemy{
   name = "enemy_11",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9253,7 +9216,6 @@ enemy{
   name = "enemy_12",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9265,7 +9227,6 @@ enemy{
   name = "enemy_13",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9277,7 +9238,6 @@ enemy{
   name = "enemy_14",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9289,7 +9249,6 @@ enemy{
   name = "enemy_15",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9301,7 +9260,6 @@ enemy{
   name = "enemy_16",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9313,7 +9271,6 @@ enemy{
   name = "enemy_17",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9325,7 +9282,6 @@ enemy{
   name = "enemy_18",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9337,7 +9293,6 @@ enemy{
   name = "enemy_19",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9349,7 +9304,6 @@ enemy{
   name = "enemy_20",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9361,7 +9315,6 @@ enemy{
   name = "enemy_21",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9373,7 +9326,6 @@ enemy{
   name = "enemy_22",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9385,7 +9337,6 @@ enemy{
   name = "enemy_23",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9397,7 +9348,6 @@ enemy{
   name = "enemy_24",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9409,7 +9359,6 @@ enemy{
   name = "enemy_25",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9421,7 +9370,6 @@ enemy{
   name = "enemy_26",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9433,7 +9381,6 @@ enemy{
   name = "enemy_27",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9445,7 +9392,6 @@ enemy{
   name = "enemy_29",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9457,7 +9403,6 @@ enemy{
   name = "enemy_30",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9469,7 +9414,6 @@ enemy{
   name = "enemy_31",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9481,7 +9425,6 @@ enemy{
   name = "enemy_32",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9493,7 +9436,6 @@ enemy{
   name = "enemy_33",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9505,7 +9447,6 @@ enemy{
   name = "enemy_34",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9517,7 +9458,6 @@ enemy{
   name = "enemy_35",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9529,7 +9469,6 @@ enemy{
   name = "enemy_36",
   direction = 0,
   breed = "pike_fixed",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9541,7 +9480,6 @@ enemy{
   name = "enemy_37",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9553,7 +9491,6 @@ enemy{
   name = "enemy_38",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

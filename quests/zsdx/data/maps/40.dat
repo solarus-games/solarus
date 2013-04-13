@@ -856,10 +856,10 @@ chest{
   x = 944,
   y = 445,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
   treasure_savegame_variable = "b118",
+  sprite = "entities/chest",
 }
 
 stairs{
@@ -966,7 +966,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -8734,11 +8733,11 @@ door{
   name = "door",
   direction = 0,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b109",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_3_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b109",
 }
 
 door{
@@ -10088,7 +10087,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10211,7 +10209,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10288,7 +10285,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10300,7 +10296,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10312,7 +10307,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10324,7 +10318,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10336,7 +10329,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10348,7 +10340,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10387,7 +10378,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10399,7 +10389,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

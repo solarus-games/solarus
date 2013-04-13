@@ -612,7 +612,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/static_villager10",
-  behavior = "map",
 }
 
 npc{
@@ -622,7 +621,6 @@ npc{
   name = "seller_talking_place",
   direction = 3,
   subtype = "0",
-  behavior = "map",
 }
 
 shop_item{

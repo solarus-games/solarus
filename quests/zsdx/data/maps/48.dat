@@ -2485,10 +2485,10 @@ chest{
   x = 1192,
   y = 1397,
   name = "KC04",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b707",
+  sprite = "entities/chest",
 }
 
 block{
@@ -2546,7 +2546,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2558,7 +2557,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2570,7 +2568,6 @@ enemy{
   name = "enemy_13",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2582,7 +2579,6 @@ enemy{
   name = "enemy_14",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2605,10 +2601,10 @@ chest{
   x = 1488,
   y = 1157,
   name = "KC03",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b706",
+  sprite = "entities/chest",
 }
 
 switch{
@@ -2628,7 +2624,6 @@ enemy{
   name = "enemy_27",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2640,7 +2635,6 @@ enemy{
   name = "enemy_28",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2652,7 +2646,6 @@ enemy{
   name = "enemy_29",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9935,11 +9928,11 @@ door{
   name = "KD03",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b710",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_8_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b710",
 }
 
 door{
@@ -9949,11 +9942,11 @@ door{
   name = "KD03_2",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b710",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_8_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b710",
 }
 
 door{
@@ -9994,8 +9987,8 @@ door{
   name = "WW02",
   direction = 1,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b732",
+  opening_method = "explosion",
 }
 
 wall{
@@ -10048,7 +10041,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10060,7 +10052,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10070,10 +10061,10 @@ chest{
   x = 2176,
   y = 965,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "croissant",
   treasure_variant = 1,
   treasure_savegame_variable = "b718",
+  sprite = "entities/chest",
 }
 
 door{
@@ -11016,7 +11007,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "laser",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11028,7 +11018,6 @@ enemy{
   name = "LD7_enemy_3",
   direction = 3,
   breed = "globul",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11040,7 +11029,6 @@ enemy{
   name = "LD7_enemy_4",
   direction = 3,
   breed = "globul",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11052,7 +11040,6 @@ enemy{
   name = "LD7_enemy_2",
   direction = 3,
   breed = "globul",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11064,7 +11051,6 @@ enemy{
   name = "LD7_enemy_1",
   direction = 3,
   breed = "globul",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11180,7 +11166,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11192,7 +11177,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11204,7 +11188,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11247,7 +11230,6 @@ enemy{
   name = "enemy_15",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11259,7 +11241,6 @@ enemy{
   name = "enemy_16",
   direction = 0,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11271,7 +11252,6 @@ enemy{
   name = "enemy_17",
   direction = 2,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11283,7 +11263,6 @@ enemy{
   name = "enemy_18",
   direction = 2,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11776,10 +11755,10 @@ chest{
   x = 616,
   y = 1101,
   name = "CC02",
-  sprite = "entities/chest",
   treasure_name = "croissant",
   treasure_variant = 1,
   treasure_savegame_variable = "b722",
+  sprite = "entities/chest",
 }
 
 enemy{
@@ -11789,7 +11768,6 @@ enemy{
   name = "LD9_enemy_1",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11801,7 +11779,6 @@ enemy{
   name = "LD9_enemy_2",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11813,7 +11790,6 @@ enemy{
   name = "LD9_enemy_3",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11825,7 +11801,6 @@ enemy{
   name = "enemy_22",
   direction = 3,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11837,7 +11812,6 @@ enemy{
   name = "enemy_23",
   direction = 3,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11849,7 +11823,6 @@ enemy{
   name = "enemy_24",
   direction = 3,
   breed = "pike_auto",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11932,7 +11905,6 @@ enemy{
   name = "enemy_25",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11944,7 +11916,6 @@ enemy{
   name = "enemy_26",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11956,7 +11927,6 @@ enemy{
   name = "enemy_30",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11968,7 +11938,6 @@ enemy{
   name = "enemy_31",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11980,7 +11949,6 @@ enemy{
   name = "enemy_32",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11992,7 +11960,6 @@ enemy{
   name = "enemy_33",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -12230,7 +12197,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -12242,7 +12208,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

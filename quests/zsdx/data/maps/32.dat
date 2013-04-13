@@ -258,7 +258,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
-  behavior = "map",
 }
 
 teletransporter{

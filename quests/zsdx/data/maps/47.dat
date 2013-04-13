@@ -8818,10 +8818,10 @@ door{
   name = "boss_key_door",
   direction = 1,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_8_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b730",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_boss_key",
+  cannot_open_dialog = "_boss_key_required",
 }
 
 door{
@@ -8891,8 +8891,8 @@ door{
   name = "WW01",
   direction = 2,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b731",
+  opening_method = "explosion",
 }
 
 destination{
@@ -8910,11 +8910,11 @@ door{
   name = "KD01",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b701",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_8_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b701",
 }
 
 block{
@@ -9087,10 +9087,10 @@ chest{
   x = 1880,
   y = 1341,
   name = "KC01",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b702",
+  sprite = "entities/chest",
 }
 
 destructible{
@@ -9154,7 +9154,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9166,7 +9165,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9178,7 +9176,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "mandible",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9356,7 +9353,6 @@ enemy{
   name = "room_LD1_enemy_1",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9368,7 +9364,6 @@ enemy{
   name = "room_LD1_enemy_5",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9380,7 +9375,6 @@ enemy{
   name = "room_LD1_enemy_3",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9392,7 +9386,6 @@ enemy{
   name = "room_LD1_enemy_4",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9404,7 +9397,6 @@ enemy{
   name = "room_LD1_enemy_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9416,7 +9408,6 @@ enemy{
   name = "map_enemy_1",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9428,7 +9419,6 @@ enemy{
   name = "map_enemy_3",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9440,7 +9430,6 @@ enemy{
   name = "map_enemy_4",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9452,7 +9441,6 @@ enemy{
   name = "map_enemy_2",
   direction = 3,
   breed = "bee_guard",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9505,7 +9493,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9554,10 +9541,10 @@ chest{
   x = 808,
   y = 397,
   name = "BK01",
-  sprite = "entities/chest",
   treasure_name = "big_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b705",
+  sprite = "entities/chest",
 }
 
 destructible{
@@ -9774,7 +9761,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9786,7 +9772,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9881,10 +9866,10 @@ chest{
   x = 168,
   y = 1677,
   name = "MAP",
-  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
   treasure_savegame_variable = "b700",
+  sprite = "entities/chest",
 }
 
 npc{
@@ -9945,7 +9930,6 @@ enemy{
   name = "room_LD5_enemy_1",
   direction = 3,
   breed = "globul",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9957,7 +9941,6 @@ enemy{
   name = "room_LD5_enemy_5",
   direction = 3,
   breed = "globul",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9969,7 +9952,6 @@ enemy{
   name = "room_LD5_enemy_3",
   direction = 3,
   breed = "globul",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9981,7 +9963,6 @@ enemy{
   name = "room_LD5_enemy_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9993,7 +9974,6 @@ enemy{
   name = "room_LD5_enemy_4",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10005,7 +9985,6 @@ enemy{
   name = "room_LD5_enemy_6",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10081,7 +10060,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10093,7 +10071,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10105,7 +10082,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10117,7 +10093,6 @@ enemy{
   name = "enemy_17",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10129,7 +10104,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10141,7 +10115,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10153,7 +10126,6 @@ enemy{
   name = "enemy_16",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10165,7 +10137,6 @@ enemy{
   name = "enemy_18",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10177,7 +10148,6 @@ enemy{
   name = "enemy_19",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10241,7 +10211,6 @@ enemy{
   name = "enemy_20",
   direction = 3,
   breed = "red_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10253,7 +10222,6 @@ enemy{
   name = "enemy_21",
   direction = 3,
   breed = "red_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10317,7 +10285,6 @@ enemy{
   name = "laser",
   direction = 3,
   breed = "laser",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10342,11 +10309,11 @@ door{
   name = "KD02",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b703",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_8_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b703",
 }
 
 enemy{
@@ -10356,7 +10323,6 @@ enemy{
   name = "boss_key_door_laser",
   direction = 3,
   breed = "laser",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10593,7 +10559,6 @@ enemy{
   name = "room_big_enemy_1",
   direction = 3,
   breed = "red_bullblin",
-  rank = 0,
   treasure_name = "fairy",
   treasure_variant = 1,
 }
@@ -10605,7 +10570,6 @@ enemy{
   name = "room_big_enemy_2",
   direction = 3,
   breed = "red_bullblin",
-  rank = 0,
   treasure_name = "magic_flask",
   treasure_variant = 2,
 }
@@ -10617,11 +10581,11 @@ door{
   name = "KD01_2",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b701",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_8_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b701",
 }
 
 door{
@@ -10631,11 +10595,11 @@ door{
   name = "KD02_2",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b703",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_8_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b703",
 }
 
 wall{
@@ -10714,7 +10678,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/billy",
-  behavior = "map",
 }
 
 dynamic_tile{
@@ -12083,10 +12046,10 @@ door{
   name = "boss_key_door_2",
   direction = 3,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_8_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b730",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_boss_key",
+  cannot_open_dialog = "_boss_key_required",
 }
 
 dynamic_tile{

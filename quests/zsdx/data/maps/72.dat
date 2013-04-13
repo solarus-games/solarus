@@ -1694,9 +1694,9 @@ chest{
   x = 96,
   y = 293,
   name = "chest",
-  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b29",
+  sprite = "entities/chest",
 }
 
 crystal_block{
@@ -1741,7 +1741,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1753,7 +1752,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1765,7 +1763,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1907,7 +1904,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1919,7 +1915,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1931,7 +1926,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1943,7 +1937,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1955,7 +1948,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1967,7 +1959,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1979,7 +1970,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1991,7 +1981,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2003,7 +1992,6 @@ enemy{
   name = "enemy_13",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2015,7 +2003,6 @@ enemy{
   name = "enemy_14",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2027,7 +2014,6 @@ enemy{
   name = "enemy_15",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2039,7 +2025,6 @@ enemy{
   name = "enemy_16",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2051,7 +2036,6 @@ enemy{
   name = "enemy_17",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2063,7 +2047,6 @@ enemy{
   name = "enemy_18",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2075,7 +2058,6 @@ enemy{
   name = "enemy_19",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2087,7 +2069,6 @@ enemy{
   name = "enemy_20",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2099,7 +2080,6 @@ enemy{
   name = "enemy_22",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2111,7 +2091,6 @@ enemy{
   name = "enemy_23",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2123,7 +2102,6 @@ enemy{
   name = "enemy_24",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2135,7 +2113,6 @@ enemy{
   name = "enemy_25",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2147,7 +2124,6 @@ enemy{
   name = "enemy_26",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2159,7 +2135,6 @@ enemy{
   name = "enemy_27",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2171,7 +2146,6 @@ enemy{
   name = "enemy_28",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -2201,7 +2175,6 @@ enemy{
   name = "enemy_31",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -3449,7 +3422,6 @@ enemy{
   name = "enemy_29",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -3461,7 +3433,6 @@ enemy{
   name = "enemy_30",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -3473,7 +3444,6 @@ enemy{
   name = "enemy_32",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -3485,7 +3455,6 @@ enemy{
   name = "enemy_33",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -3497,7 +3466,6 @@ enemy{
   name = "enemy_34",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -3509,7 +3477,6 @@ enemy{
   name = "enemy_35",
   direction = 3,
   breed = "blue_bullblin",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

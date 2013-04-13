@@ -12572,7 +12572,6 @@ npc{
   direction = -1,
   subtype = "0",
   sprite = "entities/cannon",
-  behavior = "map",
 }
 
 sensor{
@@ -12701,7 +12700,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -12713,7 +12711,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -12725,7 +12722,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "red_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

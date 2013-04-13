@@ -1405,8 +1405,6 @@ chest{
   treasure_variant = 2,
   treasure_savegame_variable = "b72",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 npc{
@@ -1490,7 +1488,6 @@ door{
   savegame_variable = "b82",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_2_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -1504,7 +1501,6 @@ door{
   savegame_variable = "b82",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_2_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -1557,8 +1553,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b85",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 crystal{
@@ -1664,7 +1658,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_2_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -1721,7 +1714,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1733,7 +1725,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1745,7 +1736,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1809,7 +1799,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1821,7 +1810,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1833,7 +1821,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1876,8 +1863,6 @@ door{
   name = "final_room_door",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 teletransporter{
@@ -5113,8 +5098,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b81",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 jumper{
@@ -5149,7 +5132,6 @@ door{
   savegame_variable = "b83",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_2_boss_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_boss_key_required",
 }
 
@@ -5163,7 +5145,6 @@ door{
   savegame_variable = "b83",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_2_boss_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_boss_key_required",
 }
 
@@ -5216,8 +5197,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b77",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 destructible{
@@ -5419,8 +5398,6 @@ door{
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -5430,8 +5407,6 @@ door{
   name = "boss_door_2",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 enemy{
@@ -5441,7 +5416,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

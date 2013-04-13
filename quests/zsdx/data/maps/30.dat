@@ -4480,8 +4480,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b76",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -4641,7 +4639,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_2_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -4857,8 +4854,6 @@ door{
   name = "miniboss_door",
   direction = 0,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -4868,8 +4863,6 @@ door{
   name = "miniboss_door_2",
   direction = 2,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -4879,8 +4872,6 @@ door{
   name = "miniboss_door_3",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 sensor{
@@ -4966,7 +4957,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4978,7 +4968,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "globul",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -4990,7 +4979,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5002,7 +4990,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5014,7 +5001,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5026,7 +5012,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5038,7 +5023,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5050,7 +5034,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5062,7 +5045,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5074,7 +5056,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5086,7 +5067,6 @@ enemy{
   name = "enemy_13",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5098,7 +5078,6 @@ enemy{
   name = "enemy_14",
   direction = 3,
   breed = "globul",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5219,7 +5198,6 @@ enemy{
   name = "enemy_15",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5231,7 +5209,6 @@ enemy{
   name = "enemy_16",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5243,7 +5220,6 @@ enemy{
   name = "enemy_17",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5255,7 +5231,6 @@ enemy{
   name = "enemy_18",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5267,7 +5242,6 @@ enemy{
   name = "enemy_19",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5279,7 +5253,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "globul",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -5377,8 +5350,6 @@ chest{
   treasure_variant = 3,
   treasure_savegame_variable = "b951",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 tile{
@@ -7798,7 +7769,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b74",
@@ -7813,8 +7783,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b84",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 chest{
@@ -7826,8 +7794,6 @@ chest{
   treasure_variant = 2,
   treasure_savegame_variable = "b87",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 dynamic_tile{

@@ -1048,10 +1048,10 @@ chest{
   x = 96,
   y = 61,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "bone_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b926",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -1059,10 +1059,10 @@ chest{
   x = 224,
   y = 61,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 6,
   treasure_savegame_variable = "b927",
+  sprite = "entities/chest",
 }
 
 destination{
@@ -1114,7 +1114,6 @@ enemy{
   name = "laser",
   direction = 3,
   breed = "laser",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

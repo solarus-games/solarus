@@ -14271,7 +14271,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -14283,7 +14282,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -14295,7 +14293,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -14307,7 +14304,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "simple_green_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -14321,8 +14317,6 @@ chest{
   treasure_variant = 3,
   treasure_savegame_variable = "b23",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 npc{
@@ -14406,7 +14400,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/tom",
-  behavior = "map",
 }
 
 sensor{
@@ -14908,7 +14901,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "green_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -14920,7 +14912,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -15069,8 +15060,6 @@ chest{
   treasure_variant = 4,
   treasure_savegame_variable = "b22",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 destination{

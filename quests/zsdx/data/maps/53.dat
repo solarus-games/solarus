@@ -483,7 +483,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -495,7 +494,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -507,7 +505,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -519,7 +516,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -531,7 +527,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -543,7 +538,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -555,7 +549,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -567,7 +560,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -579,7 +571,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "snap_dragon",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -591,7 +582,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "snap_dragon",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -603,7 +593,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "snap_dragon",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -615,7 +604,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "snap_dragon",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -627,7 +615,6 @@ enemy{
   name = "enemy_13",
   direction = 3,
   breed = "snap_dragon",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -639,7 +626,6 @@ enemy{
   name = "enemy_14",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -651,7 +637,6 @@ enemy{
   name = "enemy_15",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

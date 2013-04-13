@@ -11323,7 +11323,6 @@ npc{
   name = "iron_lock",
   direction = 3,
   subtype = "0",
-  behavior = "map",
 }
 
 dynamic_tile{
@@ -11374,7 +11373,6 @@ npc{
   name = "wooden_lock",
   direction = 3,
   subtype = "0",
-  behavior = "map",
 }
 
 teletransporter{
@@ -11428,7 +11426,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/inferno",
-  behavior = "map",
 }
 
 wall{
@@ -11505,7 +11502,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11517,7 +11513,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "red_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -11529,7 +11524,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "blue_knight_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }

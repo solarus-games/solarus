@@ -1908,7 +1908,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/static_villager11",
-  behavior = "map",
 }
 
 block{
@@ -2051,7 +2050,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/static_villager8",
-  behavior = "map",
 }
 
 dynamic_tile{
@@ -2154,7 +2152,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/static_villager2",
-  behavior = "map",
 }
 
 dynamic_tile{

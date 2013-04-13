@@ -894,10 +894,10 @@ chest{
   x = 160,
   y = 53,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "boss_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b411",
+  sprite = "entities/chest",
 }
 
 block{

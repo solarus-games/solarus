@@ -229,8 +229,8 @@ chest{
   x = 112,
   y = 93,
   name = "chest_1",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -238,8 +238,8 @@ chest{
   x = 144,
   y = 93,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -247,8 +247,8 @@ chest{
   x = 176,
   y = 93,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -256,8 +256,8 @@ chest{
   x = 208,
   y = 93,
   name = "chest_4",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -265,8 +265,8 @@ chest{
   x = 112,
   y = 125,
   name = "chest_5",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -274,8 +274,8 @@ chest{
   x = 144,
   y = 125,
   name = "chest_6",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -283,8 +283,8 @@ chest{
   x = 176,
   y = 125,
   name = "chest_7",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -292,8 +292,8 @@ chest{
   x = 208,
   y = 125,
   name = "chest_8",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -301,8 +301,8 @@ chest{
   x = 112,
   y = 157,
   name = "chest_9",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -310,8 +310,8 @@ chest{
   x = 144,
   y = 157,
   name = "chest_10",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -319,8 +319,8 @@ chest{
   x = 176,
   y = 157,
   name = "chest_11",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 chest{
@@ -328,8 +328,8 @@ chest{
   x = 208,
   y = 157,
   name = "chest_12",
-  sprite = "entities/chest",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 npc{
@@ -340,7 +340,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/static_villager7",
-  behavior = "map",
 }
 
 destination{

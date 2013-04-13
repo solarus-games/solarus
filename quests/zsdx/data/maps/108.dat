@@ -1573,7 +1573,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1585,7 +1584,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1597,7 +1595,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1609,7 +1606,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1621,7 +1617,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1633,7 +1628,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "red_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1645,7 +1639,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1657,7 +1650,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "bubble",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1669,7 +1661,6 @@ enemy{
   name = "pike_1",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1681,7 +1672,6 @@ enemy{
   name = "pike_2",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1693,7 +1683,6 @@ enemy{
   name = "pike_3",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1705,7 +1694,6 @@ enemy{
   name = "pike_4",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1717,7 +1705,6 @@ enemy{
   name = "pike_5",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1729,7 +1716,6 @@ enemy{
   name = "pike_6",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1741,7 +1727,6 @@ enemy{
   name = "pike_7",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -1753,7 +1738,6 @@ enemy{
   name = "pike_8",
   direction = 3,
   breed = "pike_detect",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -9791,8 +9775,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b873",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 jumper{
@@ -9834,7 +9816,6 @@ door{
   sprite = "entities/door_weak_wall",
   savegame_variable = "b867",
   opening_method = "explosion",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -9846,7 +9827,6 @@ door{
   sprite = "entities/door_weak_wall",
   savegame_variable = "b867",
   opening_method = "explosion",
-  opening_condition_consumed = false,
 }
 
 dynamic_tile{
@@ -9880,7 +9860,6 @@ door{
   sprite = "entities/door_weak_wall",
   savegame_variable = "b868",
   opening_method = "explosion",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -9892,7 +9871,6 @@ door{
   sprite = "entities/door_weak_wall",
   savegame_variable = "b868",
   opening_method = "explosion",
-  opening_condition_consumed = false,
 }
 
 dynamic_tile{
@@ -9972,8 +9950,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b872",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 switch{
@@ -10085,7 +10061,6 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_big_key",
-  opening_condition_consumed = false,
   cannot_open_dialog = "_big_key_required",
 }
 
@@ -10096,7 +10071,6 @@ enemy{
   name = "enemy_9",
   direction = 3,
   breed = "blue_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10108,7 +10082,6 @@ enemy{
   name = "enemy_10",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10120,7 +10093,6 @@ enemy{
   name = "enemy_11",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10132,7 +10104,6 @@ enemy{
   name = "enemy_12",
   direction = 3,
   breed = "tentacle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10144,7 +10115,6 @@ enemy{
   name = "chest_c_enemy_1",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10156,7 +10126,6 @@ enemy{
   name = "chest_c_enemy_2",
   direction = 3,
   breed = "red_pig_soldier",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10222,8 +10191,6 @@ chest{
   treasure_variant = 1,
   treasure_savegame_variable = "b876",
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 enemy{
@@ -10233,7 +10200,6 @@ enemy{
   name = "enemy_15",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10245,7 +10211,6 @@ enemy{
   name = "enemy_16",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -10286,8 +10251,6 @@ door{
   direction = 0,
   sprite = "entities/door_normal",
   savegame_variable = "b870",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -10298,8 +10261,6 @@ door{
   direction = 2,
   sprite = "entities/door_normal",
   savegame_variable = "b870",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -10310,8 +10271,6 @@ door{
   direction = 0,
   sprite = "entities/door_normal",
   savegame_variable = "b871",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -10322,8 +10281,6 @@ door{
   direction = 2,
   sprite = "entities/door_normal",
   savegame_variable = "b871",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 crystal_block{

@@ -3058,7 +3058,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3069,7 +3068,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3080,7 +3078,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3091,7 +3088,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3102,7 +3098,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3113,7 +3108,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3124,7 +3118,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3135,7 +3128,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3146,7 +3138,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3157,7 +3148,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3168,7 +3158,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3179,7 +3168,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3190,7 +3178,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3201,7 +3188,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3212,7 +3198,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3223,7 +3208,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3234,7 +3218,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3245,7 +3228,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3256,7 +3238,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3267,7 +3248,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3278,7 +3258,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3289,7 +3268,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3300,7 +3278,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3311,7 +3288,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3322,7 +3298,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3333,7 +3308,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3344,7 +3318,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3355,7 +3328,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3366,7 +3338,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3377,7 +3348,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3388,7 +3358,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 npc{
@@ -3399,7 +3368,6 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/sign",
-  behavior = "map",
 }
 
 destructible{
@@ -4568,10 +4536,10 @@ chest{
   x = 344,
   y = 29,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "level_4_way",
   treasure_variant = 2,
   treasure_savegame_variable = "b138",
+  sprite = "entities/chest",
 }
 
 destination{

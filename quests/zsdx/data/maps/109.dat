@@ -6045,11 +6045,11 @@ door{
   name = "door_4",
   direction = 3,
   sprite = "entities/door_small_key",
+  savegame_variable = "b885",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b885",
 }
 
 door{
@@ -6150,10 +6150,10 @@ chest{
   x = 464,
   y = 133,
   name = "chest_a",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b877",
+  sprite = "entities/chest",
 }
 
 block{
@@ -6215,7 +6215,6 @@ enemy{
   name = "enemy",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6283,7 +6282,6 @@ enemy{
   name = "door_b_enemy_1",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6295,7 +6293,6 @@ enemy{
   name = "door_b_enemy_2",
   direction = 3,
   breed = "gibdo",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6350,10 +6347,10 @@ chest{
   x = 1072,
   y = 693,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b878",
+  sprite = "entities/chest",
 }
 
 wall{
@@ -6376,7 +6373,6 @@ enemy{
   name = "enemy_2",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6388,7 +6384,6 @@ enemy{
   name = "enemy_3",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6400,7 +6395,6 @@ enemy{
   name = "enemy_4",
   direction = 3,
   breed = "red_helmasaur",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6466,7 +6460,6 @@ enemy{
   name = "door_c_enemy_1",
   direction = 3,
   breed = "blue_dogman",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6478,7 +6471,6 @@ enemy{
   name = "door_c_enemy_2",
   direction = 3,
   breed = "red_dogman",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6555,7 +6547,6 @@ enemy{
   name = "enemy_5",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6593,7 +6584,6 @@ enemy{
   name = "enemy_6",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6605,7 +6595,6 @@ enemy{
   name = "enemy_7",
   direction = 3,
   breed = "skeletor",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6617,11 +6606,11 @@ door{
   name = "door",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b879",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b879",
 }
 
 door{
@@ -6631,11 +6620,11 @@ door{
   name = "door_2",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b879",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b879",
 }
 
 enemy{
@@ -6645,7 +6634,6 @@ enemy{
   name = "enemy_8",
   direction = 3,
   breed = "blue_hardhat_beetle",
-  rank = 0,
   treasure_name = "random",
   treasure_variant = 1,
 }
@@ -6745,11 +6733,11 @@ door{
   name = "door_3",
   direction = 1,
   sprite = "entities/door_small_key",
+  savegame_variable = "b885",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b885",
 }
 
 npc{
@@ -6760,7 +6748,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child1",
-  behavior = "map",
 }
 
 npc{
@@ -6771,7 +6758,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child2",
-  behavior = "map",
 }
 
 npc{
@@ -6782,7 +6768,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child3",
-  behavior = "map",
 }
 
 npc{
@@ -6793,7 +6778,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child4",
-  behavior = "map",
 }
 
 npc{
@@ -6804,7 +6788,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child2",
-  behavior = "map",
 }
 
 npc{
@@ -6815,7 +6798,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child3",
-  behavior = "map",
 }
 
 npc{
@@ -6826,7 +6808,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child4",
-  behavior = "map",
 }
 
 npc{
@@ -6837,7 +6818,6 @@ npc{
   direction = 3,
   subtype = "1",
   sprite = "npc/solarus_child1",
-  behavior = "map",
 }
 
 wall{

@@ -490,10 +490,10 @@ chest{
   x = 72,
   y = 77,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "fire_stone",
   treasure_variant = 1,
   treasure_savegame_variable = "b140",
+  sprite = "entities/chest",
 }
 
 door{
@@ -503,11 +503,11 @@ door{
   name = "door",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b147",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b147",
 }
 
 door{
@@ -517,11 +517,11 @@ door{
   name = "door_2",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b148",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b148",
 }
 
 door{
@@ -531,11 +531,11 @@ door{
   name = "door_3",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b149",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b149",
 }
 
 door{
@@ -545,11 +545,11 @@ door{
   name = "door_4",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b150",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b150",
 }
 
 chest{
@@ -557,10 +557,10 @@ chest{
   x = 216,
   y = 77,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b141",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -568,10 +568,10 @@ chest{
   x = 504,
   y = 77,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b142",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -579,10 +579,10 @@ chest{
   x = 72,
   y = 125,
   name = "chest_4",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b143",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -590,10 +590,10 @@ chest{
   x = 88,
   y = 173,
   name = "chest_5",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b144",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -601,10 +601,10 @@ chest{
   x = 104,
   y = 221,
   name = "chest_6",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b145",
+  sprite = "entities/chest",
 }
 
 chest{
@@ -612,10 +612,10 @@ chest{
   x = 472,
   y = 213,
   name = "chest_7",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b146",
+  sprite = "entities/chest",
 }
 
 conveyor_belt{
@@ -3502,11 +3502,11 @@ door{
   name = "door_5",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b151",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b151",
 }
 
 door{
@@ -3516,11 +3516,11 @@ door{
   name = "door_6",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b152",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b152",
 }
 
 teletransporter{

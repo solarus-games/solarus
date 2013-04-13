@@ -6083,8 +6083,6 @@ door{
   name = "door",
   direction = 2,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -6094,8 +6092,6 @@ door{
   name = "door_2",
   direction = 0,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -6150,8 +6146,6 @@ door{
   name = "door_5",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -6161,8 +6155,6 @@ door{
   name = "door_6",
   direction = 3,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -6172,8 +6164,6 @@ door{
   name = "door_7",
   direction = 1,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 door{
@@ -6183,8 +6173,6 @@ door{
   name = "door_8",
   direction = 2,
   sprite = "entities/door_normal",
-  opening_method = "none",
-  opening_condition_consumed = false,
 }
 
 switch{
@@ -6229,9 +6217,9 @@ chest{
   x = 1208,
   y = 557,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "big_key",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 sensor{
@@ -6275,9 +6263,9 @@ chest{
   x = 480,
   y = 845,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "compass",
   treasure_variant = 1,
+  sprite = "entities/chest",
 }
 
 switch{

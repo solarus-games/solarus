@@ -2462,8 +2462,6 @@ chest{
   x = 344,
   y = 1869,
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 stairs{
@@ -2480,7 +2478,6 @@ enemy{
   y = 2016,
   direction = 3,
   breed = "bubble",
-  rank = 0,
 }
 
 destructible{
@@ -2510,7 +2507,6 @@ npc{
   y = 1373,
   direction = 3,
   subtype = "0",
-  behavior = "map",
 }
 
 chest{
@@ -2518,8 +2514,6 @@ chest{
   x = 760,
   y = 1245,
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 destructible{
@@ -2585,7 +2579,6 @@ enemy{
   y = 1869,
   direction = 3,
   breed = "skeletor",
-  rank = 0,
 }
 
 enemy{
@@ -2594,7 +2587,6 @@ enemy{
   y = 1853,
   direction = 3,
   breed = "ropa",
-  rank = 0,
 }
 
 enemy{
@@ -2603,7 +2595,6 @@ enemy{
   y = 1789,
   direction = 3,
   breed = "ropa",
-  rank = 0,
 }
 
 enemy{
@@ -2612,7 +2603,6 @@ enemy{
   y = 1965,
   direction = 3,
   breed = "skeletor",
-  rank = 0,
 }
 
 enemy{
@@ -2621,7 +2611,6 @@ enemy{
   y = 2069,
   direction = 3,
   breed = "skeletor",
-  rank = 0,
 }
 
 enemy{
@@ -2630,7 +2619,6 @@ enemy{
   y = 2085,
   direction = 3,
   breed = "skeletor",
-  rank = 0,
 }
 
 enemy{
@@ -2639,7 +2627,6 @@ enemy{
   y = 2088,
   direction = 3,
   breed = "bubble",
-  rank = 0,
 }
 
 destructible{
@@ -2662,7 +2649,6 @@ enemy{
   y = 2149,
   direction = 3,
   breed = "ropa",
-  rank = 0,
 }
 
 tile{
@@ -10629,8 +10615,6 @@ chest{
   x = 840,
   y = 2549,
   sprite = "entities/chest",
-  opening_method = "interaction",
-  opening_condition_consumed = false,
 }
 
 enemy{
@@ -10639,7 +10623,6 @@ enemy{
   y = 2685,
   direction = 3,
   breed = "ropa",
-  rank = 0,
 }
 
 enemy{
@@ -10648,7 +10631,6 @@ enemy{
   y = 2477,
   direction = 3,
   breed = "ropa",
-  rank = 0,
 }
 
 tile{

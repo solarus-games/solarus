@@ -110,13 +110,13 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 
         Teletransporter teletransporter = (Teletransporter) entity;
 
-        String sprite = teletransporter.getProperty("sprite");
+        String sprite = teletransporter.getStringProperty("sprite");
         boolean hasSprite = sprite != null;
         withSpriteField.setSelected(hasSprite);
         spriteField.setSelectedId(hasSprite ? sprite : "");
         spriteField.setEnabled(hasSprite);
 
-        String sound = teletransporter.getProperty("sound");
+        String sound = teletransporter.getStringProperty("sound");
         boolean hasSound = sound != null;
         withSoundField.setSelected(hasSound);
         soundField.setSelectedId(hasSound ? sound : "");
@@ -124,13 +124,13 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 
         transitionField.setValue(Transition.get(teletransporter.getIntegerProperty("transition")));
         try {
-            mapField.setSelectedId(teletransporter.getProperty("destination_map"));
+            mapField.setSelectedId(teletransporter.getStringProperty("destination_map"));
         }
         catch (NoSuchElementException ex) {
             mapField.setSelectedId("");
         }
 
-        String destinationName = teletransporter.getProperty("destination");
+        String destinationName = teletransporter.getStringProperty("destination");
         if (destinationName.equals("_same")) {
             destinationName = samePointText;
         }

@@ -148,12 +148,13 @@ public class Destructible extends MapEntity {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        setProperty("treasure_name", null);
-        setIntegerProperty("treasure_variant", null);
-        setProperty("treasure_savegame_variable", null);
+    public void createProperties() throws MapException {
+        createStringProperty("treasure_name", true, null);
+        createIntegerProperty("treasure_variant", true, null);
+        createStringProperty("treasure_savegame_variable", true, null);
     }
 
     /**
@@ -166,7 +167,7 @@ public class Destructible extends MapEntity {
             throw new MapException("The skull subtype is obsolete, please use pot instead");
         }
 
-        String treasureName = getProperty("treasure_name");
+        String treasureName = getStringProperty("treasure_name");
         Integer variant = getIntegerProperty("treasure_variant");
         if (treasureName != null && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
@@ -176,7 +177,7 @@ public class Destructible extends MapEntity {
             throw new MapException("Invalid treasure variant: " + variant);
         }
 
-        String savegameVariable = getProperty("treasure_savegame_variable");
+        String savegameVariable = getStringProperty("treasure_savegame_variable");
         if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid treasure savegame variable");
         }

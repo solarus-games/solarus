@@ -62,11 +62,12 @@ public class DynamicTile extends Tile {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        super.setPropertiesDefaultValues();
-        setBooleanProperty("enabled_at_start", true);
+    public void createProperties() throws MapException {
+        super.createProperties();
+        createBooleanProperty("enabled_at_start", true, true);
     }
 
     /**

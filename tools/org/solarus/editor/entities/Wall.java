@@ -62,13 +62,14 @@ public class Wall extends MapEntity {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        setBooleanProperty("stops_hero", true);
-        setBooleanProperty("stops_enemies", true);
-        setBooleanProperty("stops_npcs", true);
-        setBooleanProperty("stops_blocks", true);
+    public void createProperties() throws MapException {
+        createBooleanProperty("stops_hero", false, true);
+        createBooleanProperty("stops_enemies", false, true);
+        createBooleanProperty("stops_npcs", false, true);
+        createBooleanProperty("stops_blocks", false, true);
     }
 
     /**

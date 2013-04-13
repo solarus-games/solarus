@@ -115,23 +115,23 @@ public class Block extends MapEntity {
   }
 
   /**
-   * Sets the default values of all properties specific to the current entity type.
+   * Declares all properties specific to the current entity type and sets
+   * their initial values.
    */
-  public void setPropertiesDefaultValues() throws MapException {
-    setProperty("sprite", "entities/block");
-    setBooleanProperty("pushable", true);
-    setBooleanProperty("pullable", false);
-    setIntegerProperty("maximum_moves", MaximumMoves.ONE.getId());
+  public void createProperties() throws MapException {
+    createStringProperty("sprite", true, "entities/block");
+    createBooleanProperty("pushable", true, true);
+    createBooleanProperty("pullable", true, false);
+    createIntegerProperty("maximum_moves", true, MaximumMoves.ONE.getId());
   }
 
   /**
-   * Sets a property specific to this kind of entity.
-   * @param name name of the property
-   * @param value value of the property
+   * Notifies this entity that a property specific to its type has just changed.
+   * Does nothing by default.
+   * @param name Name of the property that has changed.
+   * @param value The new value.
    */
-  public void setProperty(String name, String value) throws MapException {
-
-    super.setProperty(name, value);
+  protected void notifyPropertyChanged(String name, String value) throws MapException {
 
     if (name.equals("sprite")) {
 
@@ -150,8 +150,8 @@ public class Block extends MapEntity {
    */
   public void checkProperties() throws MapException {
 
-    if (!isValidSpriteName(getProperty("sprite"))) {
-      throw new MapException("Invalid sprite name: '" + getProperty("sprite") + "'");
+    if (!isValidSpriteName(getStringProperty("sprite"))) {
+      throw new MapException("Invalid sprite name: '" + getStringProperty("sprite") + "'");
     }
   }
 

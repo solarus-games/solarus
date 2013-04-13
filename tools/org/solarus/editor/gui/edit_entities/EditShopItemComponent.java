@@ -68,11 +68,11 @@ public class EditShopItemComponent extends EditEntityComponent {
         ShopItem shopItem = (ShopItem) entity;
 
         treasureField.setTreasure(
-                shopItem.getProperty("treasure_name"),
+                shopItem.getStringProperty("treasure_name"),
                 shopItem.getIntegerProperty("treasure_variant"),
-                shopItem.getProperty("treasure_savegame_variable"));
+                shopItem.getStringProperty("treasure_savegame_variable"));
         priceField.setNumber(shopItem.getIntegerProperty("price"));
-        dialogIdField.setText(shopItem.getProperty("dialog"));
+        dialogIdField.setText(shopItem.getStringProperty("dialog"));
     }
 
     /**

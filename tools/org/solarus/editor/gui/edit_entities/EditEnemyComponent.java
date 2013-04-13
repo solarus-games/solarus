@@ -86,10 +86,10 @@ public class EditEnemyComponent extends EditEntityComponent {
 
         Enemy enemy = (Enemy) entity;
 
-        breedField.setSelectedId(enemy.getProperty("breed"));
+        breedField.setSelectedId(enemy.getStringProperty("breed"));
         rankField.setValue(Rank.get(enemy.getIntegerProperty("rank")));
 
-        String savegameVariable = enemy.getProperty("savegame_variable");
+        String savegameVariable = enemy.getStringProperty("savegame_variable");
         if (savegameVariable != null) {
           savegameVariableField.setText(savegameVariable);
           savegameVariableField.setEnabled(true);
@@ -101,9 +101,9 @@ public class EditEnemyComponent extends EditEntityComponent {
         }
 
         treasureField.setTreasure(
-                enemy.getProperty("treasure_name"),
+                enemy.getStringProperty("treasure_name"),
                 enemy.getIntegerProperty("treasure_variant"),
-                enemy.getProperty("treasure_savegame_variable"));
+                enemy.getStringProperty("treasure_savegame_variable"));
     }
 
     /**

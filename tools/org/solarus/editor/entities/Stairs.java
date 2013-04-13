@@ -127,9 +127,10 @@ public class Stairs extends MapEntity {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
+    public void createProperties() throws MapException {
         setDirection(1);
     }
 

@@ -57,9 +57,9 @@ public class EditPickableComponent extends EditEntityComponent {
         Pickable pickable = (Pickable) entity;
 
         treasureField.setTreasure(
-                pickable.getProperty("treasure_name"),
+                pickable.getStringProperty("treasure_name"),
                 pickable.getIntegerProperty("treasure_variant"),
-                pickable.getProperty("treasure_savegame_variable"));
+                pickable.getStringProperty("treasure_savegame_variable"));
     }
 
     /**

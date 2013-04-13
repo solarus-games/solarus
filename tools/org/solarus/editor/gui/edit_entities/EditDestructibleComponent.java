@@ -58,9 +58,9 @@ public class EditDestructibleComponent extends EditEntityComponent {
         Destructible destructible = (Destructible) entity;
 
         treasureField.setTreasure(
-                destructible.getProperty("treasure_name"),
+                destructible.getStringProperty("treasure_name"),
                 destructible.getIntegerProperty("treasure_variant"),
-                destructible.getProperty("treasure_savegame_variable"));
+                destructible.getStringProperty("treasure_savegame_variable"));
     }
 
     /**

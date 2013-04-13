@@ -64,13 +64,12 @@ public class Tile extends MapEntity {
     }
 
     /**
-     * Sets a property specific to a tile.
-     * @param name name of the property
-     * @param value value of the property
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
      */
-    public void setProperty(String name, String value) throws MapException {
-
-        super.setProperty(name, value);
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
 
         if (name.equals("pattern")) {
             if (tileset == null) {
@@ -249,8 +248,8 @@ public class Tile extends MapEntity {
     /**
      * Sets the default values of all properties specific to the current entity type.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        setIntegerProperty("pattern", null);
+    public void createProperties() throws MapException {
+        createIntegerProperty("pattern", true, null);
     }
 
     /**

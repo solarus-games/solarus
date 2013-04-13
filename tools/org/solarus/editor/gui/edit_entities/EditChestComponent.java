@@ -153,14 +153,14 @@ public class EditChestComponent extends EditEntityComponent {
         Chest chest = (Chest) entity;
 
         treasureField.setTreasure(
-                chest.getProperty("treasure_name"),
+                chest.getStringProperty("treasure_name"),
                 chest.getIntegerProperty("treasure_variant"),
-                chest.getProperty("treasure_savegame_variable"));
-        String sprite = chest.getProperty("sprite");
-        Chest.OpeningMethod openingMethod = Chest.OpeningMethod.get(chest.getProperty("opening_method"));
-        String openingCondition = chest.getProperty("opening_condition");
+                chest.getStringProperty("treasure_savegame_variable"));
+        String sprite = chest.getStringProperty("sprite");
+        Chest.OpeningMethod openingMethod = Chest.OpeningMethod.get(chest.getStringProperty("opening_method"));
+        String openingCondition = chest.getStringProperty("opening_condition");
         boolean openingConditionConsumed = chest.getBooleanProperty("opening_condition_consumed");
-        String cannotOpenDialog = chest.getProperty("cannot_open_dialog");
+        String cannotOpenDialog = chest.getStringProperty("cannot_open_dialog");
 
         try {
           spriteField.setSelectedId(sprite);

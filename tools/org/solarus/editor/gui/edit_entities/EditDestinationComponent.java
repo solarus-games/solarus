@@ -70,7 +70,7 @@ public class EditDestinationComponent extends EditEntityComponent {
         super.update(); // update the common fields
 
         Destination destination = (Destination) entity;
-        String sprite = destination.getProperty("sprite");
+        String sprite = destination.getStringProperty("sprite");
 
         boolean hasSprite = sprite != null;
 

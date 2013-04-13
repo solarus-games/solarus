@@ -100,7 +100,7 @@ public class Switch extends MapEntity {
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
 
-        if (subtype != this.subtype) {
+        if (subtype != this.subtype && hasProperty("needs_block")) {
             if (subtype == Subtype.WALKABLE_INVISIBLE) {
                 setBooleanProperty("needs_block", false);
             }
@@ -108,16 +108,17 @@ public class Switch extends MapEntity {
                 setBooleanProperty("needs_block", false);
                 setBooleanProperty("inactivate_when_leaving", false);
             }
-            super.setSubtype(subtype);
         }
+        super.setSubtype(subtype);
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        setBooleanProperty("needs_block", false);
-        setBooleanProperty("inactivate_when_leaving", false);
+    public void createProperties() throws MapException {
+        createBooleanProperty("needs_block", false, false);
+        createBooleanProperty("inactivate_when_leaving", false, false);
         setSubtype(Subtype.WALKABLE_INVISIBLE);
     }
 

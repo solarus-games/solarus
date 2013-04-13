@@ -91,17 +91,18 @@ public class Chest extends MapEntity {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        setProperty("treasure_name", null);
-        setIntegerProperty("treasure_variant", null);
-        setProperty("treasure_savegame_variable", null);
-        setProperty("sprite", "entities/chest");
-        setProperty("opening_method", OpeningMethod.BY_INTERACTION.getId());
-        setProperty("opening_condition", null);
-        setBooleanProperty("opening_condition_consumed", false);
-        setProperty("cannot_open_dialog", null);
+    public void createProperties() throws MapException {
+        createStringProperty("treasure_name", true, null);
+        createIntegerProperty("treasure_variant", true, null);
+        createStringProperty("treasure_savegame_variable", true, null);
+        createStringProperty("sprite", false, "entities/chest");
+        createStringProperty("opening_method", true, OpeningMethod.BY_INTERACTION.getId());
+        createStringProperty("opening_condition", true, null);
+        createBooleanProperty("opening_condition_consumed", true, false);
+        createStringProperty("cannot_open_dialog", true, null);
     }
 
     /**
@@ -110,13 +111,13 @@ public class Chest extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        String spriteName = getProperty("sprite");
+        String spriteName = getStringProperty("sprite");
         if (!isValidSpriteName(spriteName)) {
             throw new MapException("Invalid sprite name: '" + spriteName + "'");
         }
 
-        OpeningMethod openingMethod = OpeningMethod.get(getProperty("opening_method"));
-        String openingCondition = getProperty("opening_condition");
+        OpeningMethod openingMethod = OpeningMethod.get(getStringProperty("opening_method"));
+        String openingCondition = getStringProperty("opening_condition");
         if (openingMethod == OpeningMethod.BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
             if (!isValidSavegameVariable(openingCondition)) {
                 throw new MapException("You must define a valid required savegame variable with this opening method");
@@ -128,7 +129,7 @@ public class Chest extends MapEntity {
             }
         }
 
-        String treasureName = getProperty("treasure_name");
+        String treasureName = getStringProperty("treasure_name");
         Integer variant = getIntegerProperty("treasure_variant");
         if (treasureName != null && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
@@ -138,7 +139,7 @@ public class Chest extends MapEntity {
             throw new MapException("Invalid treasure variant: " + variant);
         }
 
-        String savegameVariable = getProperty("treasure_savegame_variable");
+        String savegameVariable = getStringProperty("treasure_savegame_variable");
         if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid treasure savegame variable");
         }
@@ -153,13 +154,12 @@ public class Chest extends MapEntity {
     }
 
     /**
-     * Sets a property specific to this kind of entity.
-     * @param name name of the property
-     * @param value value of the property
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
      */
-    public void setProperty(String name, String value) throws MapException {
-
-        super.setProperty(name, value);
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
 
         if (name.equals("sprite")) {
             if (isValidSpriteName(value)) {

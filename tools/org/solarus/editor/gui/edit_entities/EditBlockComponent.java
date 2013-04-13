@@ -72,7 +72,7 @@ public class EditBlockComponent extends EditEntityComponent {
         super.update(); // update the common fields
 
         Block block = (Block) entity;
-        String sprite = block.getProperty("sprite");
+        String sprite = block.getStringProperty("sprite");
         boolean canBePushed = block.getBooleanProperty("pushable");
         boolean canBePulled = block.getBooleanProperty("pullable");
         MaximumMoves maximumMoves = MaximumMoves.get(block.getIntegerProperty("maximum_moves"));

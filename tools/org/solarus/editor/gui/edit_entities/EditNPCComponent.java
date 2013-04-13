@@ -101,8 +101,8 @@ public class EditNPCComponent extends EditEntityComponent {
         super.update(); // update the common fields
 
         NPC npc = (NPC) entity;
-        String sprite = npc.getProperty("sprite");
-        String behavior = npc.getProperty("behavior");
+        String sprite = npc.getStringProperty("sprite");
+        String behavior = npc.getStringProperty("behavior");
 
         boolean hasSprite = sprite != null;
 

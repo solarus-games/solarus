@@ -112,26 +112,26 @@ public class Door extends MapEntity {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
+    public void createProperties() throws MapException {
         setDirection(1);
-        setProperty("sprite", "");
-        setProperty("savegame_variable", null);
-        setProperty("opening_method", OpeningMethod.BY_SCRIPT_ONLY.getId());
-        setProperty("opening_condition", null);
-        setBooleanProperty("opening_condition_consumed", false);
-        setProperty("cannot_open_dialog", null);
+        createStringProperty("sprite", false, "");
+        createStringProperty("savegame_variable", true, null);
+        createStringProperty("opening_method", true, OpeningMethod.BY_SCRIPT_ONLY.getId());
+        createStringProperty("opening_condition", true, null);
+        createBooleanProperty("opening_condition_consumed", true, false);
+        createStringProperty("cannot_open_dialog", true, null);
     }
 
     /**
-     * Sets a property specific to this kind of entity.
-     * @param name name of the property
-     * @param value value of the property
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
      */
-    public void setProperty(String name, String value) throws MapException {
-
-        super.setProperty(name, value);
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
 
         if (name.equals("sprite")) {
 
@@ -150,18 +150,18 @@ public class Door extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        String spriteName = getProperty("sprite");
+        String spriteName = getStringProperty("sprite");
         if (!isValidSpriteName(spriteName)) {
             throw new MapException("Invalid sprite name: '" + spriteName + "'");
         }
 
-        String savegameVariable = getProperty("savegame_variable");
+        String savegameVariable = getStringProperty("savegame_variable");
         if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid door savegame variable");
         }
 
-        OpeningMethod openingMethod = Door.OpeningMethod.get(getProperty("opening_method"));
-        String openingCondition = getProperty("opening_condition");
+        OpeningMethod openingMethod = Door.OpeningMethod.get(getStringProperty("opening_method"));
+        String openingCondition = getStringProperty("opening_condition");
         if (openingMethod == OpeningMethod.BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
             if (!isValidSavegameVariable(openingCondition)) {
                 throw new MapException("You must define a valid required savegame variable with this opening method");

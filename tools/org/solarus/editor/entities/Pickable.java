@@ -61,12 +61,13 @@ public class Pickable extends MapEntity {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        setProperty("treasure_name", null);
-        setIntegerProperty("treasure_variant", null);
-        setProperty("treasure_savegame_variable", null);
+    public void createProperties() throws MapException {
+        createStringProperty("treasure_name", true, null);
+        createIntegerProperty("treasure_variant", true, null);
+        createStringProperty("treasure_savegame_variable", true, null);
     }
 
     /**
@@ -75,7 +76,7 @@ public class Pickable extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        String treasureName = getProperty("treasure_name");
+        String treasureName = getStringProperty("treasure_name");
 
         if (treasureName == null) {
             throw new MapException("The treasure of a pickable item cannot be empty");
@@ -90,7 +91,7 @@ public class Pickable extends MapEntity {
             throw new MapException("Invalid treasure variant: " + variant);
         }
 
-        String savegameVariable = getProperty("treasure_savegame_variable");
+        String savegameVariable = getStringProperty("treasure_savegame_variable");
         if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid savegame variable");
         }
@@ -106,7 +107,7 @@ public class Pickable extends MapEntity {
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
         // Display the sprite of the treasure.
-        String animation = getProperty("treasure_name");
+        String animation = getStringProperty("treasure_name");
         int direction = getIntegerProperty("treasure_variant") - 1;
 
         if (sprite.hasAnimation(animation) &&

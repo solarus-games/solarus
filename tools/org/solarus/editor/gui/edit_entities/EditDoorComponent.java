@@ -148,12 +148,12 @@ public class EditDoorComponent extends EditEntityComponent {
         super.update(); // update the common fields
 
         Door door = (Door) entity;
-        String sprite = door.getProperty("sprite");
-        String savegameVariable = door.getProperty("savegame_variable");
-        Door.OpeningMethod openingMethod = Door.OpeningMethod.get(door.getProperty("opening_method"));
-        String openingCondition = door.getProperty("opening_condition");
+        String sprite = door.getStringProperty("sprite");
+        String savegameVariable = door.getStringProperty("savegame_variable");
+        Door.OpeningMethod openingMethod = Door.OpeningMethod.get(door.getStringProperty("opening_method"));
+        String openingCondition = door.getStringProperty("opening_condition");
         boolean openingConditionConsumed = door.getBooleanProperty("opening_condition_consumed");
-        String cannotOpenDialog = door.getProperty("cannot_open_dialog");
+        String cannotOpenDialog = door.getStringProperty("cannot_open_dialog");
 
         try {
           spriteField.setSelectedId(sprite);

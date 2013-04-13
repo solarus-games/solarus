@@ -114,6 +114,12 @@ public abstract class MapEntity extends Observable {
     private LinkedHashMap<String, String> specificProperties;
 
     /**
+     * Properties that are optional in specificProperties
+     * and their default values.
+     */
+    private LinkedHashMap<String, String> optionalPropertiesDefaultValues;
+
+    /**
      * Type of each existing property for this entity
      * (may be String, Integer or Boolean).
      * This structure is only used to remember what variant
@@ -158,6 +164,7 @@ public abstract class MapEntity extends Observable {
         this.layer = Layer.LOW;
         this.positionInMap = new Rectangle(0, 0, width, height);
         this.specificProperties = new LinkedHashMap<String, String>();
+        this.optionalPropertiesDefaultValues = new LinkedHashMap<String, String>();
         this.propertyTypes = new HashMap<String, Class<?>>();
 
         if (hasSubtype()) {
@@ -165,10 +172,10 @@ public abstract class MapEntity extends Observable {
         }
 
         try {
-            setPropertiesDefaultValues();
+            createProperties();
         }
         catch (MapException ex) {
-            System.err.println("Unexpected error: could not set the default values for entity '" + getType() + "': " + ex.getMessage());
+            System.err.println("Unexpected error: could not set the initial values for entity '" + getType() + "': " + ex.getMessage());
         }
 
         initializeImageDescription();
@@ -312,7 +319,7 @@ public abstract class MapEntity extends Observable {
             try {
                 LuaValue value = table.get(key);
                 if (value.isint() || value.isstring()) {
-                    setProperty(key, value.tojstring());
+                    setStringProperty(key, value.tojstring());
                 }
                 else if (value.isboolean()) {
                     setBooleanProperty(key, value.toboolean());
@@ -369,11 +376,11 @@ public abstract class MapEntity extends Observable {
         // Properties specific to this type of entity.
         for (String key: specificProperties.keySet()) {
 
-            if (getProperty(key) != null) {
+            if (getStringProperty(key) != null) {
                 Class<?> propertyType = propertyTypes.get(key);
                 String value = null;
                 if (propertyType == String.class) {
-                    value = '"' + getProperty(key) + '"';
+                    value = '"' + getStringProperty(key) + '"';
                 }
                 else if (propertyType == Integer.class) {
                     value = getIntegerProperty(key).toString();
@@ -1317,7 +1324,7 @@ public abstract class MapEntity extends Observable {
      * @return true if this property exists.
      */
     public final boolean hasProperty(String name) {
-        return specificProperties.containsKey(name);
+        return propertyTypes.containsKey(name);
     }
 
     /**
@@ -1325,7 +1332,7 @@ public abstract class MapEntity extends Observable {
      * @param name Name of the property to get.
      * @param value Value of the property, possibly null.
      */
-    public final String getProperty(String name) {
+    public final String getStringProperty(String name) {
 
         if (!hasProperty(name)) {
             throw new IllegalArgumentException("There is no property with name '" + name +
@@ -1342,7 +1349,7 @@ public abstract class MapEntity extends Observable {
      */
     public final Integer getIntegerProperty(String name) {
 
-        String value = getProperty(name);
+        String value = getStringProperty(name);
         return value == null ? null : Integer.parseInt(value);
     }
 
@@ -1353,7 +1360,7 @@ public abstract class MapEntity extends Observable {
      */
     public final Boolean getBooleanProperty(String name) {
 
-        String value = getProperty(name);
+        String value = getStringProperty(name);
         return value == null ? null : Integer.parseInt(value) != 0;
     }
 
@@ -1362,14 +1369,16 @@ public abstract class MapEntity extends Observable {
      * @param name Name of the property.
      * @param value Value of the property, possibly null.
      */
-    public void setProperty(String name, String value) throws MapException {
+    public void setStringProperty(String name, String value) throws MapException {
 
-        if (!propertyTypes.containsKey(name)) {
-            // Creating the property: let's remember it's a string.
-            propertyTypes.put(name, String.class);
+        if (!hasProperty(name)) {
+            throw new IllegalArgumentException(
+                    "There is no property with name '" + name +
+                    "' for entity " + getType().getHumanName());
         }
 
         specificProperties.put(name, value);
+        notifyPropertyChanged(name, value);
     }
 
     /**
@@ -1379,11 +1388,18 @@ public abstract class MapEntity extends Observable {
      */
     public final void setIntegerProperty(String name, Integer value) throws MapException {
 
-        if (!propertyTypes.containsKey(name)) {
-            // Creating the property: let's remember it's an integer.
-            propertyTypes.put(name, Integer.class);
+        if (!hasProperty(name)) {
+            throw new IllegalArgumentException(
+                    "There is no property with name '" + name +
+                    "' for entity " + getType().getHumanName());
         }
-        setProperty(name, value == null ? null : Integer.toString(value));
+
+        String stringValue = null;
+        if (value != null) {
+            stringValue = Integer.toString(value);
+        }
+        specificProperties.put(name, stringValue);
+        notifyPropertyChanged(name, stringValue);
     }
 
     /**
@@ -1393,17 +1409,103 @@ public abstract class MapEntity extends Observable {
      */
     public final void setBooleanProperty(String name, Boolean value) throws MapException {
 
-        if (!propertyTypes.containsKey(name)) {
-            // Creating the property: let's remember it's a boolean.
-            propertyTypes.put(name, Boolean.class);
+        if (!hasProperty(name)) {
+            throw new IllegalArgumentException(
+                    "There is no property with name '" + name +
+                    "' for entity " + getType().getHumanName());
         }
 
-        if (value == null) {
-            setProperty(name, null);
+        String stringValue = null;
+        if (value != null) {
+            stringValue = value ? "1" : "0";
         }
-        else {
-            setProperty(name, value ? "1" : "0");
+        specificProperties.put(name, stringValue);
+        notifyPropertyChanged(name, stringValue);
+    }
+
+    /**
+     * Defines a new property of type String.
+     * @param name Name of the property to create.
+     * @param optional Indicates that the property is optional.
+     * @param initialValue Initial value of the property (will also be stored
+     * as default if optional is true).
+     */
+    protected void createStringProperty(String name, 
+            boolean optional, String initialValue) throws MapException {
+
+        if (hasProperty(name)) {
+            throw new IllegalArgumentException(
+                    "A property with name '" + name +
+                    "' already exists for entity " + getType().getHumanName());
         }
+
+        propertyTypes.put(name, String.class);
+
+        if (optional) {
+            optionalPropertiesDefaultValues.put(name, initialValue);
+        }
+
+        setStringProperty(name, initialValue);
+    }
+
+    /**
+     * Defines a new property of type Integer.
+     * @param name Name of the property to create.
+     * @param optional Indicates that the property is optional.
+     * @param initialValue Initial value of the property (will also be stored
+     * as default if optional is true).
+     */
+    protected void createIntegerProperty(String name, 
+            boolean optional, Integer initialValue) throws MapException {
+
+        if (hasProperty(name)) {
+            throw new IllegalArgumentException(
+                    "A property with name '" + name +
+                    "' already exists for entity " + getType().getHumanName());
+        }
+
+        propertyTypes.put(name, Integer.class);
+
+        String stringValue = null;
+        if (initialValue != null) {
+            stringValue = Integer.toString(initialValue);
+        }
+
+        if (optional) {
+            optionalPropertiesDefaultValues.put(name, stringValue);
+        }
+
+        setStringProperty(name, stringValue);
+    }
+
+    /**
+     * Defines a new property of type Boolean.
+     * @param name Name of the property to create.
+     * @param optional Indicates that the property is optional.
+     * @param initialValue Initial value of the property (will also be stored
+     * as default if optional is true).
+     */
+    protected void createBooleanProperty(String name, 
+            boolean optional, Boolean initialValue) throws MapException {
+
+        if (hasProperty(name)) {
+            throw new IllegalArgumentException(
+                    "A property with name '" + name +
+                    "' already exists for entity " + getType().getHumanName());
+        }
+
+        propertyTypes.put(name, Boolean.class);
+
+        String stringValue = null;
+        if (initialValue != null) {
+            stringValue = initialValue ? "1" : "0";
+        }
+
+        if (optional) {
+            optionalPropertiesDefaultValues.put(name, stringValue);
+        }
+
+        setStringProperty(name, stringValue);
     }
 
     /**
@@ -1421,16 +1523,25 @@ public abstract class MapEntity extends Observable {
     public final void setProperties(LinkedHashMap<String, String> properties) throws MapException {
 
         for (java.util.Map.Entry<String, String> entry: properties.entrySet()) {
-            setProperty(entry.getKey(), entry.getValue());
+            setStringProperty(entry.getKey(), entry.getValue());
         }
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      * Redefine this method to define the default value of your properties.
      */
-    public void setPropertiesDefaultValues() throws MapException {
+    public void createProperties() throws MapException {
+    }
 
+    /**
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
+     */
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
     }
 
     /**

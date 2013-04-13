@@ -96,20 +96,20 @@ public class Destination extends MapEntity {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        setProperty("sprite", null);
+    public void createProperties() throws MapException {
+        createStringProperty("sprite", true, null);
     }
 
     /**
-     * Sets a property specific to this kind of entity.
-     * @param name name of the property
-     * @param value value of the property
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
      */
-    public void setProperty(String name, String value) throws MapException {
-
-        super.setProperty(name, value);
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
 
         if (name.equals("sprite")) {
 
@@ -128,7 +128,7 @@ public class Destination extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        String spriteName = getProperty("sprite");
+        String spriteName = getStringProperty("sprite");
         if (spriteName != null && !isValidSpriteName(spriteName)) {
             throw new MapException("Invalid sprite name: '" + spriteName + "'");
         }

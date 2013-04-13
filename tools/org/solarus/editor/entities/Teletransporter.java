@@ -83,24 +83,24 @@ public class Teletransporter extends MapEntity {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        setProperty("sprite", null);
-        setProperty("sound", null);
-        setIntegerProperty("transition", Transition.FADE.getId());
-        setProperty("destination_map", getMap().getId());
-        setProperty("destination", "");
+    public void createProperties() throws MapException {
+        createStringProperty("sprite", true, null);
+        createStringProperty("sound", true, null);
+        createIntegerProperty("transition", false, Transition.FADE.getId());
+        createStringProperty("destination_map", false, getMap().getId());
+        createStringProperty("destination", false, "");
     }
 
     /**
-     * Sets a property specific to this kind of entity.
-     * @param name name of the property
-     * @param value value of the property
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
      */
-    public void setProperty(String name, String value) throws MapException {
-
-        super.setProperty(name, value);
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
 
         if (name.equals("sprite")) {
 
@@ -119,10 +119,10 @@ public class Teletransporter extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        String spriteName = getProperty("sprite");
-        String soundId = getProperty("sound");
-        String destinationMapId = getProperty("destination_map");
-        String destinationName = getProperty("destination");
+        String spriteName = getStringProperty("sprite");
+        String soundId = getStringProperty("sound");
+        String destinationMapId = getStringProperty("destination_map");
+        String destinationName = getStringProperty("destination");
 
         if (!isSpriteOrSoundNameValid(spriteName)) {
             throw new MapException("Invalid sprite name: '" + spriteName + "'");

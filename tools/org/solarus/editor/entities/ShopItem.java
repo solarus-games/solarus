@@ -38,14 +38,15 @@ public class ShopItem extends MapEntity {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        setProperty("treasure_name", null);
-        setIntegerProperty("treasure_variant", null);
-        setProperty("treasure_savegame_variable", null);
-        setIntegerProperty("price", 0);
-        setProperty("dialog", null);
+    public void createProperties() throws MapException {
+        createStringProperty("treasure_name", false, null);
+        createIntegerProperty("treasure_variant", true, null);
+        createStringProperty("treasure_savegame_variable", true, null);
+        createIntegerProperty("price", false, 0);
+        createStringProperty("dialog", false, null);
     }
 
     /**
@@ -54,7 +55,7 @@ public class ShopItem extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        String treasureName = getProperty("treasure_name");
+        String treasureName = getStringProperty("treasure_name");
         if (treasureName == null) {
             throw new MapException("The treasure of a shop item cannot be empty or random");
         }
@@ -68,7 +69,7 @@ public class ShopItem extends MapEntity {
             throw new MapException("Invalid treasure variant: " + variant);
         }
 
-        String savegameVariable = getProperty("treasure_savegame_variable");
+        String savegameVariable = getStringProperty("treasure_savegame_variable");
         if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid savegame variable");
         }
@@ -78,7 +79,7 @@ public class ShopItem extends MapEntity {
             throw new MapException("The price must be positive");
         }
 
-        String dialogId = getProperty("dialog");
+        String dialogId = getStringProperty("dialog");
         if (dialogId == null || dialogId.length() == 0) {
             throw new MapException("No description dialog defined");
         }

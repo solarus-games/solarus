@@ -140,10 +140,11 @@ public class Jumper extends MapEntity {
     }
 
     /**
-     * Sets the default values of all properties specific to the current entity type.
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-        setIntegerProperty("jump_length", 40);
+    public void createProperties() throws MapException {
+        createIntegerProperty("jump_length", false, 40);
     }
 
     /**

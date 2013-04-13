@@ -2443,7 +2443,6 @@ teletransporter{
   y = 88,
   width = 16,
   height = 16,
-  name = "entrance_E_2",
   transition = 1,
   destination_map = "17",
   destination = "entrance_E_1",

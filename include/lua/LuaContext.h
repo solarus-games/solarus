@@ -611,8 +611,8 @@ class LuaContext {
       map_api_set_dialog_position,
       map_api_draw_dialog_box,
       map_api_set_pause_enabled,  // TODO move to game api?
-      map_api_get_light,
-      map_api_set_light,
+      map_api_get_light,  // TODO remove (this should be scripted)
+      map_api_set_light,  // TODO remove (this should be scripted)
       map_api_move_camera,  // TODO get_camera_position
       map_api_draw_sprite,  // TODO allow to also draw a surface or a text surface
       map_api_get_crystal_state,

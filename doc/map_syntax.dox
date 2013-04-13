@@ -267,8 +267,6 @@ state of the item. Most items have only one variant and for them, this value is 
 that stores the state of this chest.
 A value of -1 means that the chest is not saved.
 
-TODO: replace is_big_chest by sprite_name + item_needed
-
 \section jumper Jumper (6)
 
 A jumper is an invisible sensor that makes the hero jump a number of pixels into a direction,
@@ -534,7 +532,6 @@ If the door is called \c doorname, hen the door is closed, all dynamic tiles wit
 are disabled.
 When the door is open, this is the opposite.
 
-TODO
 18	layer	x	y	entity_name	direction	sprite_name	savegame_variable_required     can_explode	savegame_variable	on_interaction	on_opening	on_opened
 
 \c savegame_variable indicates the index of the boolean value that stores this door's state

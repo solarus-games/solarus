@@ -1028,7 +1028,7 @@ on the map.
     with the NPC.
     - \c "dialog#XXXX": Starts the dialog with id \c XXXX when the player
       talks to this NPC.
-    - \c "map": Forwards events to the map script
+    - \c "map" (default): Forwards events to the map script
       (for example, calls the \ref lua_api_npc_on_interaction
       "on_interaction()" event of the NPC).
     - \c "item#XXXX": Forwards events to an \ref lua_api_item

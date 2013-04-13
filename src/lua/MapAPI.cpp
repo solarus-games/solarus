@@ -1257,7 +1257,7 @@ int LuaContext::map_api_create_npc(lua_State* l) {
   int direction = check_int_field(l, 1, "direction");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
   const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
-  const std::string& behavior = opt_string_field(l, 1, "behavior", "");
+  const std::string& behavior = opt_string_field(l, 1, "behavior", "map");
 
   int subtype;
   std::istringstream iss(subtype_name);

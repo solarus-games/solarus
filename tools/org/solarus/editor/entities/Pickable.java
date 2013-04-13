@@ -76,17 +76,7 @@ public class Pickable extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        String treasureName = getStringProperty("treasure_name");
-
-        if (treasureName == null) {
-            throw new MapException("The treasure of a pickable item cannot be empty");
-        }
-
         Integer variant = getIntegerProperty("treasure_variant");
-        if (treasureName != null && (variant == null || variant < 1)) {
-            throw new MapException("A variant must be defined with this treasure");
-        }
-
         if (variant != null && variant < 1) {
             throw new MapException("Invalid treasure variant: " + variant);
         }

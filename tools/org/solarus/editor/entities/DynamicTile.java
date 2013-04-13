@@ -67,7 +67,7 @@ public class DynamicTile extends Tile {
      */
     public void createProperties() throws MapException {
         super.createProperties();
-        createBooleanProperty("enabled_at_start", true, true);
+        createBooleanProperty("enabled_at_start", false, true);
     }
 
     /**

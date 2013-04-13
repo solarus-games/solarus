@@ -167,12 +167,7 @@ public class Destructible extends MapEntity {
             throw new MapException("The skull subtype is obsolete, please use pot instead");
         }
 
-        String treasureName = getStringProperty("treasure_name");
         Integer variant = getIntegerProperty("treasure_variant");
-        if (treasureName != null && (variant == null || variant < 1)) {
-            throw new MapException("A variant must be defined with this treasure");
-        }
-
         if (variant != null && variant < 1) {
             throw new MapException("Invalid treasure variant: " + variant);
         }

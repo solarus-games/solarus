@@ -136,12 +136,7 @@ public class Enemy extends MapEntity {
             throw new MapException("Invalid enemy savegame variable");
         }
 
-        String treasureName = getStringProperty("treasure_name");
         Integer variant = getIntegerProperty("treasure_variant");
-        if (treasureName != null && (variant == null || variant < 1)) {
-            throw new MapException("A variant must be defined with this treasure");
-        }
-
         if (variant != null && variant < 1) {
             throw new MapException("Invalid treasure variant: " + variant);
         }

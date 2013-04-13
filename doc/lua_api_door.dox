@@ -20,7 +20,7 @@ The sprite of a door must define animations \c "open" and \c "closed".
 Animations \c "opening" and \c "closing" are optional: if they don't exist,
 the door won't use states opening and closing.
 If they exist, be aware that after you call a function like
-\ref lua_api_map_door_open "map:door_open()", your door will first be in state
+\ref lua_api_map_open_doors "map:open_doors()", your door will first be in state
 opening (for the duration of its sprite \c "opening" animation),
 and only after that, will get in state open.
 In other words, \ref lua_api_door_is_open "door:is_open()" does not return

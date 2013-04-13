@@ -376,23 +376,37 @@ public abstract class MapEntity extends Observable {
         // Properties specific to this type of entity.
         for (String key: specificProperties.keySet()) {
 
-            if (getStringProperty(key) != null) {
-                Class<?> propertyType = propertyTypes.get(key);
-                String value = null;
-                if (propertyType == String.class) {
-                    value = '"' + getStringProperty(key) + '"';
-                }
-                else if (propertyType == Integer.class) {
-                    value = getIntegerProperty(key).toString();
-                }
-                else if (propertyType == Boolean.class) {
-                    value = getBooleanProperty(key) ? "true" : "false";
-                }
-                else {
-                    throw new IllegalStateException("Unknown property type for key '" + key + "'");
-                }
-                out.println("  " + key + " = " + value + ",");
+            String stringValue = getStringProperty(key);
+            if (stringValue == null) {
+                // Property not set.
+                continue;
             }
+
+            if (optionalPropertiesDefaultValues.containsKey(key)) {
+                // This property is optional: see if it differs from the
+                // default value.
+                String defaultStringValue = optionalPropertiesDefaultValues.get(key);
+                if (defaultStringValue != null && stringValue.equals(defaultStringValue)) {
+                    // No need to write the value.
+                    continue;
+                }
+            }
+
+            Class<?> propertyType = propertyTypes.get(key);
+            String value = null;
+            if (propertyType == String.class) {
+                value = '"' + stringValue + '"';
+            }
+            else if (propertyType == Integer.class) {
+                value = stringValue;
+            }
+            else if (propertyType == Boolean.class) {
+                value = (stringValue == "1") ? "true" : "false";
+            }
+            else {
+                throw new IllegalStateException("Unknown property type for key '" + key + "'");
+            }
+            out.println("  " + key + " = " + value + ",");
         }
 
         out.println("}");

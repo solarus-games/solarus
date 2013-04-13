@@ -119,10 +119,10 @@ public class Block extends MapEntity {
    * their initial values.
    */
   public void createProperties() throws MapException {
-    createStringProperty("sprite", true, "entities/block");
-    createBooleanProperty("pushable", true, true);
-    createBooleanProperty("pullable", true, false);
-    createIntegerProperty("maximum_moves", true, MaximumMoves.ONE.getId());
+    createStringProperty("sprite", false, "entities/block");
+    createBooleanProperty("pushable", false, true);
+    createBooleanProperty("pullable", false, false);
+    createIntegerProperty("maximum_moves", false, MaximumMoves.ONE.getId());
   }
 
   /**

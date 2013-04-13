@@ -18,7 +18,6 @@ package org.solarus.editor.entities;
 
 import java.util.*;
 
-
 /**
  * Represents all entities placed on the same layer of the map.
  */

@@ -249,7 +249,7 @@ public class Tile extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void createProperties() throws MapException {
-        createIntegerProperty("pattern", true, null);
+        createIntegerProperty("pattern", false, null);
     }
 
     /**

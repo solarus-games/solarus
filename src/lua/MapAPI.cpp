@@ -1204,7 +1204,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   int direction = check_int_field(l, 1, "direction");
   const std::string& breed = check_string_field(l, 1, "breed");
-  Enemy::Rank rank = Enemy::Rank(check_int_field(l, 1, "rank"));
+  Enemy::Rank rank = Enemy::Rank(opt_int_field(l, 1, "rank", 0));
   const std::string& savegame_variable = opt_string_field(l, 1, "savegame_variable", "");
   const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);

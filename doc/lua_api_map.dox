@@ -962,8 +962,8 @@ on the map.
   - \c direction (number): Initial direction of the enemy, between
     \c 0 (East) and \c 3 (South).
   - \c breed (string): Model of enemy to create.
-  - \c rank (number): \c 0 for a normal enemy, \c 1 for a miniboss,
-    \c 2 for a boss.
+  - \c rank (number, optional): \c 0 for a normal enemy (default),
+    \c 1 for a miniboss, \c 2 for a boss.
   - \c savegame_variable (string, optional): Name of the boolean value that
     stores in the \ref lua_api_game "savegame" whether this enemy is dead.
     No value means that the enemy is not saved.

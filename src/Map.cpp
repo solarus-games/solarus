@@ -242,7 +242,10 @@ void Map::unload() {
   if (is_loaded()) {
     delete tileset;
     tileset = NULL;
-    delete visible_surface;
+    visible_surface->decrement_refcount();
+    if (visible_surface->get_refcount() == 0) {
+      delete visible_surface;
+    }
     visible_surface = NULL;
     delete entities;
     entities = NULL;
@@ -267,6 +270,7 @@ void Map::unload() {
 void Map::load(Game &game) {
 
   this->visible_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
+  this->visible_surface->increment_refcount();
   entities = new MapEntities(game, *this);
 
   // read the map file

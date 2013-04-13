@@ -125,7 +125,7 @@ void Game::start() {
  */
 void Game::stop() {
 
-  if (current_map->is_started()) {
+  if (current_map != NULL && current_map->is_started()) {
     current_map->leave();
   }
   get_lua_context().game_on_finished(*this);
@@ -302,8 +302,8 @@ void Game::update() {
   // update the transitions between maps
   update_transitions();
 
-  if (restarting) {
-    return; // the game is restarting
+  if (restarting || !started) {
+    return;
   }
 
   // update the map
@@ -533,8 +533,10 @@ Map& Game::get_current_map() {
 void Game::set_current_map(const std::string& map_id, const std::string &destination_name,
     Transition::Style transition_style) {
 
-  // stop the hero's movement
-  hero->reset_movement();
+  if (current_map != NULL) {
+    // stop the hero's movement
+    hero->reset_movement();
+  }
 
   // prepare the next map
   if (current_map == NULL || map_id != current_map->get_id()) {

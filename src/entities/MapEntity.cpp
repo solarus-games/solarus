@@ -280,6 +280,7 @@ Map& MapEntity::get_map() {
  * @return the game
  */
 Game& MapEntity::get_game() const {
+  Debug::check_assertion(map != NULL, "No map was set");
   return map->get_game();
 }
 
@@ -288,6 +289,7 @@ Game& MapEntity::get_game() const {
  * @return the entities
  */
 MapEntities& MapEntity::get_entities() const {
+  Debug::check_assertion(map != NULL, "No map was set");
   return map->get_entities();
 }
 

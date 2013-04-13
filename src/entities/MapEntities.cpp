@@ -712,6 +712,8 @@ void MapEntities::set_suspended(bool suspended) {
  */
 void MapEntities::update() {
 
+  Debug::check_assertion(map.is_started(), "The map is not started");
+
   // first update the hero
   hero.update();
 

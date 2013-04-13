@@ -420,7 +420,7 @@ bool Hero::is_shadow_visible() {
  *
  * @param map the map
  */
-void Hero::set_map(Map &map) {
+void Hero::set_map(Map& map) {
 
   MapEntity::set_map(map);
 
@@ -468,7 +468,7 @@ void Hero::set_map(Map &map, int initial_direction) {
  */
 void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location) {
 
-  const std::string &destination_name = map.get_destination_name();
+  const std::string& destination_name = map.get_destination_name();
 
   if (destination_name == "_same") {
 

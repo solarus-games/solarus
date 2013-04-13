@@ -12,7 +12,7 @@ end
 -- door A
 function door_a_block:on_moved()
 
-  if not door_a:is_open() then
+  if door_a:is_closed() then
     sol.audio.play_sound("secret")
     map:open_doors("door_a")
   end

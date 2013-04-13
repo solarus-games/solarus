@@ -703,6 +703,9 @@ class LuaContext {
       switch_api_set_activated,
       switch_api_set_locked,
       door_api_is_open,
+      door_api_is_opening,
+      door_api_is_closed,
+      door_api_is_closing,
       pickable_api_get_followed_entity,
       pickable_api_get_falling_height,
       pickable_api_get_treasure,  // TODO return the item, not the item name

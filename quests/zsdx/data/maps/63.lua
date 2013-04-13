@@ -117,7 +117,7 @@ end
 
 function map:on_update()
 
-  if not torches_door:is_open()
+  if torches_door:is_closed()
       and are_all_torches_on() then
 
     sol.audio.play_sound("secret")

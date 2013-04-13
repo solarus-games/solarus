@@ -686,7 +686,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door* door = static_cast<Door*>(*it);
-    if (!door->is_open() || door->is_changing()) {
+    if (!door->is_open() || door->is_closing()) {
       door->open();
       done = true;
     }
@@ -717,7 +717,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door* door = static_cast<Door*>(*it);
-    if (door->is_open() || door->is_changing()) {
+    if (door->is_open() || door->is_opening()) {
       door->close();
       done = true;
     }

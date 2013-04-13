@@ -209,7 +209,7 @@ local function close_door_g()
   end
 end
 
-for _, sensor in ipairs(map:get_entities("close_door_g_sensor") do
+for _, sensor in ipairs(map:get_entities("close_door_g_sensor")) do
   sensor.on_activated = close_door_g
 end
 
@@ -222,34 +222,34 @@ local function close_door_e()
   end
 end
 
-for _, sensor in ipairs(map:get_entities("close_door_e_sensor") do
+for _, sensor in ipairs(map:get_entities("close_door_e_sensor")) do
   sensor.on_activated = close_door_e
 end
 
 -- west enemies room
-function close_door_b_sensor:on_activated()
+function close_door_b_sensor_1:on_activated()
 
   if map:has_entities("door_b_enemy")
       and door_b:is_open() then
     map:close_doors("door_b")
-    close_door_b_sensor:set_enabled(false)
+    close_door_b_sensor_1:set_enabled(false)
     close_door_b_sensor_2:set_enabled(false)
   end
 end
-close_door_b_sensor_2.on_activated = close_door_b_sensor_.on_activated 
+close_door_b_sensor_2.on_activated = close_door_b_sensor_1.on_activated 
 
 
 -- north enemies room
-function close_door_c_sensor:on_activated()
+function close_door_c_sensor_1:on_activated()
 
   if map:has_entities("door_c_enemy")
       and door_c:is_open() then
     map:close_doors("door_c")
-    close_door_c_sensor:set_enabled(false)
+    close_door_c_sensor_1:set_enabled(false)
     close_door_c_sensor_2:set_enabled(false)
   end
 end
-close_door_c_sensor_2.on_activated = close_door_c_sensor_.on_activated 
+close_door_c_sensor_2.on_activated = close_door_c_sensor_1.on_activated 
 --
 -- save solid ground location
 for _, sensor in ipairs(map:get_entities("save_solid_ground_sensor")) do
@@ -354,7 +354,7 @@ end
 
 function door_f_block:on_moved()
 
-  if not door_f:is_open() then
+  if door_f:is_closed() then
     sol.audio.play_sound("secret")
     map:open_doors("door_f")
   end

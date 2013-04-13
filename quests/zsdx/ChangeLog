@@ -1,3 +1,8 @@
+zsdx-1.6 (under development)
+
+* Use solarus 1.0.0.
+* Fix a door bug that could get the hero stuck in empty rooms (#114).
+
 zsdx-1.5.2 (under development)
 
 * Use solarus 0.9.3.

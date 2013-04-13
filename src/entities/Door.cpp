@@ -78,8 +78,7 @@ Door::Door(Game& game,
   opening_condition(),
   opening_condition_consumed(false),
   cannot_open_dialog_id(),
-  door_open(true),
-  changing(false),
+  state(OPEN),
   initialized(false),
   next_hint_sound_date(0) {
 
@@ -116,25 +115,59 @@ EntityType Door::get_type() {
  * @param other another entity
  * @return true
  */
-bool Door::is_obstacle_for(MapEntity &other) {
-  return !is_open() || changing;
+bool Door::is_obstacle_for(MapEntity& other) {
+  return !is_open();
 }
 
 /**
- * @brief Returns whether this door is open.
- * @return true if this door is open
+ * @brief Returns whether this door is completely open.
+ * @return true if this door is open, false if it is closed, closing or
+ * opening.
  */
 bool Door::is_open() const {
-  return door_open;
+  return state == OPEN;
 }
 
 /**
- * @brief Makes the door opened or closed.
- * @param door_open true to make it opened, false to make it closed
+ * @brief Returns whether this door is being opened.
+ * @return true if this door is being opened.
+ */
+bool Door::is_opening() const {
+  return state == OPENING;
+}
+
+/**
+ * @brief Returns whether this door is completely closed.
+ * @return true if this door is closed, false if it is open, opening or
+ * closing.
+ */
+bool Door::is_closed() const {
+  return state == CLOSED;
+}
+
+/**
+ * @brief Returns whether this door is being closed.
+ * @return true if this door is being closed.
+ */
+bool Door::is_closing() const {
+  return state == CLOSING;
+}
+
+/**
+ * @brief Returns true if the door is currently being open or being closed.
+ * @return true if the door is currently being open or being closed.
+ */
+bool Door::is_changing() const {
+  return state == OPENING || state == CLOSING;
+}
+
+/**
+ * @brief Makes the door immediately open or closed.
+ * @param door_open true to make it opened, false to make it closed.
  */
 void Door::set_open(bool door_open) {
   
-  this->door_open = door_open;
+  state = door_open ? OPEN : CLOSED;
 
   if (door_open) {
     set_collision_modes(COLLISION_NONE); // to avoid being the hero's facing entity
@@ -176,14 +209,14 @@ void Door::update_dynamic_tiles() {
   std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_closed");
   std::list<MapEntity*>::iterator it;
   for (it = tiles.begin(); it != tiles.end(); it++) {
-    DynamicTile *tile = (DynamicTile*) *it;
-    tile->set_enabled(!door_open);
+    DynamicTile* tile = static_cast<DynamicTile*>(*it);
+    tile->set_enabled(is_closed() || is_opening());
   }
 
   tiles = get_entities().get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_open");
   for (it = tiles.begin(); it != tiles.end(); it++) {
-    DynamicTile *tile = (DynamicTile*) *it;
-    tile->set_enabled(door_open);
+    DynamicTile* tile = static_cast<DynamicTile*>(*it);
+    tile->set_enabled(is_open() || is_closing());
   }
 }
 
@@ -197,9 +230,7 @@ void Door::update_dynamic_tiles() {
  */
 void Door::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
-  if (!is_open()
-      && entity_overlapping.is_hero()
-      && !is_changing()) {
+  if (is_closed() && entity_overlapping.is_hero()) {
 
     Hero& hero = static_cast<Hero&>(entity_overlapping);
 
@@ -244,8 +275,7 @@ void Door::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprit
 void Door::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) {
 
   if (get_opening_method() == OPENING_BY_EXPLOSION
-      && !is_open()
-      && !changing) {
+      && is_closed()) {
     set_opening();
   }
 }
@@ -489,7 +519,7 @@ void Door::update() {
     initialized = true;
   }
 
-  if (!is_open()
+  if (is_closed()
       && get_opening_method() == OPENING_BY_EXPLOSION
       && get_equipment().has_ability("detect_weak_walls")
       && Geometry::get_distance(get_center_point(), get_hero().get_center_point()) < 40
@@ -499,17 +529,17 @@ void Door::update() {
     next_hint_sound_date = System::now() + 500;
   }
 
-  if (changing && get_sprite().is_animation_finished()) {
-    changing = false;
-    set_open(!is_open());
+  if (is_changing() && get_sprite().is_animation_finished()) {
+    // Toggle door_open when the changing animation finishes.
+    set_open(is_opening());
   }
 
-  if (is_saved()) {
+  if (is_saved() && !is_changing()) {
     bool open_in_savegame = get_savegame().get_boolean(savegame_variable);
-    if (open_in_savegame && !is_open() && !changing) {
+    if (open_in_savegame && is_closed()) {
       set_opening();
     }
-    else if (!open_in_savegame && is_open() && !changing) {
+    else if (!open_in_savegame && is_open()) {
       set_closing();
     }
   }
@@ -520,7 +550,7 @@ void Door::update() {
  */
 void Door::draw_on_map() {
 
-  if (has_sprite() && (!is_open() || changing)) {
+  if (has_sprite() && !is_open()) {
     Detector::draw_on_map();
   }
 }
@@ -536,8 +566,7 @@ void Door::draw_on_map() {
  */
 void Door::notify_action_command_pressed() {
 
-  if (get_hero().is_free()
-      && !is_changing()) {
+  if (get_hero().is_free() && is_closed()) {
 
     if (can_open()) {
       Sound::play("door_unlocked");
@@ -630,18 +659,9 @@ std::string Door::get_sword_tapping_sound() {
  */
 void Door::open() {
 
-  Debug::check_assertion(!is_open() || changing,
-      StringConcat() << "Door '" << get_name() << "' is already open");
-
-  if (changing) {
-    if (is_open()) {
-      // the door is being closed: mark it as closed so that we can open it
-      door_open = false;
-    }
-    else {
-      // the door is already being open: nothing to do
-      return;
-    }
+  if (is_open() || is_opening()) {
+    // The door is already open or being open: nothing to do.
+    return;
   }
 
   set_opening();
@@ -657,8 +677,8 @@ void Door::open() {
 void Door::set_opening() {
 
   if (get_sprite().has_animation("opening")) {
+    state = OPENING;
     get_sprite().set_current_animation("opening");
-    changing = true;
   }
   else {
     set_open(true);
@@ -668,23 +688,13 @@ void Door::set_opening() {
 /**
  * @brief Starts closing the door and plays the corresponding animations.
  *
- * This function can be called only for a door with subtype CLOSED.
  * Nothing is done if the door is already in the process of being closed.
  */
 void Door::close() {
 
-  Debug::check_assertion(is_open() || changing,
-      StringConcat() << "Door '" << get_name() << "' is already closed");
-
-  if (changing) {
-    if (!is_open()) {
-      // the door is being open: mark it as open so that we can close it
-      door_open = true;
-    }
-    else {
-      // the door is already being closed: nothing to do
-      return;
-    }
+  if (is_closed() || is_closing()) {
+    // The door is already closed or being closed: nothing to do.
+    return;
   }
 
   set_closing();
@@ -700,17 +710,12 @@ void Door::close() {
 void Door::set_closing() {
 
   if (get_sprite().has_animation("closing")) {
+    state = CLOSING;
     get_sprite().set_current_animation("closing");
   }
-  changing = true;
-}
-
-/**
- * @brief Returns true if the door is currently being open or closed.
- * @return true if the door is currently being open or closed
- */
-bool Door::is_changing() const {
-  return changing;
+  else {
+    set_open(false);
+  }
 }
 
 /**

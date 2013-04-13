@@ -98,7 +98,7 @@ end
 function close_door_c_sensor:on_activated()
 
   if map:has_entities("w_room_enemy")
-      and door_c:is_open() then
+      and not door_c:is_closed() then
     map:close_doors("door_c")
   end
 end
@@ -209,7 +209,7 @@ local function code_switch_activated(switch)
     if code_nb_activated == 8 then
       -- the 8 switches are activated
       if code_next_index == 9 then
-	if not door_a:is_open() then
+	if door_a:is_closed() then
 	  map:move_camera(72, 552, 250, function()
 	    sol.audio.play_sound("secret")
 	    map:open_doors("door_a")

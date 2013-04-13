@@ -603,7 +603,7 @@ but does not play any sound or any sprite animation.
 
 This function is intended to be called when you don't want the player
 to notice the change, typically when your map starts
-(i.e. from the \ref lua_api_map_on_started map:on_started() event).
+(i.e. from the \ref lua_api_map_on_started "map:on_started()" event).
 - \c prefix (string): Prefix of the name of doors to set.
 - \c open (boolean, optional): \c true to open the doors, \c false
   to close them (no value means \c true).

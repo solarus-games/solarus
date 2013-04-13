@@ -14273,6 +14273,7 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -14284,6 +14285,7 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -14295,6 +14297,7 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -14306,6 +14309,7 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 chest{
@@ -14313,10 +14317,12 @@ chest{
   x = 736,
   y = 37,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 3,
   treasure_savegame_variable = "b23",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 npc{
@@ -14904,6 +14910,7 @@ enemy{
   breed = "green_knight_soldier",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -14915,6 +14922,7 @@ enemy{
   breed = "blue_knight_soldier",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 destructible{
@@ -15057,10 +15065,12 @@ chest{
   x = 288,
   y = 621,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 4,
   treasure_savegame_variable = "b22",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 destination{
@@ -15260,6 +15270,18 @@ teletransporter{
   transition = 0,
   destination_map = "8",
   destination = "from_ending",
+}
+
+teletransporter{
+  layer = 0,
+  x = 744,
+  y = 664,
+  width = 16,
+  height = 16,
+  name = "teletransporter_8",
+  transition = 0,
+  destination_map = "106",
+  destination = "from_1f",
 }
 
 tile{

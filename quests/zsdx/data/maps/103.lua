@@ -144,7 +144,7 @@ local function timed_door_close_sensor_activated(sensor)
   local door = map:get_entity(door_name)
 
   if door ~= nil then
-    if door_timers[door] == nil and door:is_open() then
+    if door_timers[door] == nil and not door:is_closed() then
       map:close_doors(door_name)
       map:get_entity(door_name .. "_switch"):set_activated(false)
     end

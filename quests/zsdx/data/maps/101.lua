@@ -118,7 +118,7 @@ end
 
 local function sign_interaction(sign)
 
-  if not sw_door:is_open() then
+  if sw_door:is_closed() then
     if sign:get_name() == "sign_" .. next_sign then
 
       if next_sign <= #directions then
@@ -144,7 +144,7 @@ end
 -- door A
 function door_a_switch:on_activated()
 
-  if not door_a:is_open() then
+  if door_a:is_closed() then
     -- open the door and close it in a few seconds
     sol.audio.play_sound("secret")
     map:open_doors("door_a")
@@ -162,7 +162,7 @@ end
 -- door B
 function door_b_switch:on_activated()
 
-  if not door_b:is_open() then
+  if door_b:is_closed() then
     -- open the door and close it in a few seconds
     sol.audio.play_sound("secret")
     map:open_doors("door_b")

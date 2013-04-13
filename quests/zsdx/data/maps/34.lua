@@ -29,8 +29,8 @@ end
 
 function map:on_update()
 
-  local door_open = door:is_open()
-  if not door_open and are_all_torches_on() then
+  local door_closed = door:is_closed()
+  if door_closed and are_all_torches_on() then
 
     lock_torches()
     sol.audio.play_sound("secret")

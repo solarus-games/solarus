@@ -31,6 +31,8 @@
  * - or only explicitly by a Lua script.
  *
  * The state of a door can be saved.
+ * However, transitional states (opening and closing) are not saved:
+ * opening is saved as open and closing is saved as closed.
  *
  * TODO For opening method OPENING_BY_INTERACTION_IF_ITEM, allow to interact
  * with the item command.
@@ -88,16 +90,29 @@ class Door: public Detector {
     // State.
     bool can_open() const;
     bool is_open() const;
+    bool is_opening() const;
+    bool is_closed() const;
+    bool is_closing() const;
+    bool is_changing() const;
     void open();
     void close();
     void set_open(bool open);
-    bool is_changing() const;
 
     virtual const std::string& get_lua_type_name() const;
 
     static const std::string opening_method_names[];
 
   private:
+
+    /**
+     * Possible states of a door.
+     */
+    enum State {
+      OPEN,
+      OPENING,
+      CLOSED,
+      CLOSING
+    };
 
     void set_opening();
     void set_closing();
@@ -120,8 +135,7 @@ class Door: public Detector {
                                                    * or an empty string. */
 
     // State.
-    bool door_open;                               /**< Indicates that this door is open. */
-    bool changing;                                /**< Indicates that the door is being opened or closed. */
+    State state;                                  /**< State of the door: open, opening, closed or closing. */
     bool initialized;                             /**< \c true if update() was called at least once. */
     uint32_t next_hint_sound_date;                /**< If the player has the ability to detect weak walls,
                                                    * indicates when a hint sound is played next time. */

@@ -182,6 +182,9 @@ void LuaContext::register_entity_module() {
   // Door.
   static const luaL_Reg door_methods[] = {
       { "is_open", door_api_is_open },
+      { "is_opening", door_api_is_opening },
+      { "is_closed", door_api_is_closed },
+      { "is_closing", door_api_is_closing },
       { NULL, NULL }
   };
   register_functions(entity_door_module_name, common_methods);
@@ -1325,6 +1328,45 @@ int LuaContext::door_api_is_open(lua_State* l) {
   Door& door = check_door(l, 1);
 
   lua_pushboolean(l, door.is_open());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_door_is_opening.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::door_api_is_opening(lua_State* l) {
+
+  Door& door = check_door(l, 1);
+
+  lua_pushboolean(l, door.is_opening());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_door_is_closed.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::door_api_is_closed(lua_State* l) {
+
+  Door& door = check_door(l, 1);
+
+  lua_pushboolean(l, door.is_closed());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_door_is_closing.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::door_api_is_closing(lua_State* l) {
+
+  Door& door = check_door(l, 1);
+
+  lua_pushboolean(l, door.is_closing());
   return 1;
 }
 

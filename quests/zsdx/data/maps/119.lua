@@ -7,7 +7,7 @@ local arrows_timer
 function map:on_started(destination)
 
   local new_music = nil
-  if destination:get_name() == "from_ending" then
+  if destination ~= nil and destination:get_name() == "from_ending" then
     -- game ending sequence
     hero:freeze()
     hero:set_visible(false)
@@ -25,7 +25,7 @@ function map:on_started(destination)
     end
 
     -- boss fight
-    if destination:get_name() == "from_dungeon_10_5f" then
+    if destination ~= nill and destination:get_name() == "from_dungeon_10_5f" then
 
       if not map:get_game():get_value("b299") then
 	-- boss not killed yet
@@ -57,7 +57,7 @@ end
 
 function map:on_opening_transition_finished(destination)
 
-  if destination:get_name() == "from_ending" then
+  if destination ~= nil and destination:get_name() == "from_ending" then
     map:start_dialog("credits_6", function()
       sol.timer.start(2000, function()
         hero:teleport(131, "from_ending")

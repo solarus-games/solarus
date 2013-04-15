@@ -522,9 +522,12 @@ Called when this enemy should start or restart its
 \ref lua_api_movement "movement" because
 something happended
 (for example the enemy has just been created,
-or it was just hurt).
-If your enemy should move, this is the right place
-to create its movement.
+or it was just hurt or immobilized).
+If your enemy should move, this is the right place to create its movement.
+
+Also note that \ref lua_api_timer "timers" associated to an enemy are
+automatically destroyed when the enemy is hurt or immobilized.
+Thus, you can recreate them from \c on_restarted().
 
 \subsection lua_api_enemy_on_pre_draw enemy:on_pre_draw()
 

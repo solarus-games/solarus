@@ -2394,6 +2394,7 @@ void LuaContext::enemy_on_custom_attack_received(Enemy& enemy,
 void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) {
 
   push_enemy(l, enemy);
+  remove_timers(-1);  // Stop timers associated to this enemy.
   on_hurt(attack, life_lost);
   lua_pop(l, 1);
 }
@@ -2405,6 +2406,7 @@ void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) 
 void LuaContext::enemy_on_dying(Enemy& enemy) {
 
   push_enemy(l, enemy);
+  remove_timers(-1);  // Stop timers associated to this enemy.
   on_dying();
   lua_pop(l, 1);
 }
@@ -2427,6 +2429,7 @@ void LuaContext::enemy_on_dead(Enemy& enemy) {
 void LuaContext::enemy_on_immobilized(Enemy& enemy) {
 
   push_enemy(l, enemy);
+  remove_timers(-1);  // Stop timers associated to this enemy.
   on_immobilized();
   lua_pop(l, 1);
 }

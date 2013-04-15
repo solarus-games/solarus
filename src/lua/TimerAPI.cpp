@@ -32,7 +32,7 @@ void LuaContext::register_timer_module() {
   // Functions of sol.timer.
   static const luaL_Reg functions[] = {
       { "start", timer_api_start },
-      { "stop", timer_api_stop_all },
+      { "stop_all", timer_api_stop_all },
       { NULL, NULL }
   };
   register_functions(timer_module_name, functions);

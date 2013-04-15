@@ -6,7 +6,6 @@ local body = nil               -- Gelidrak's body.
 local vulnerable = false       -- Becomes vulnerable when the tail is hurt.
 local vulnerable_delay = 5000  -- Delay while the head remains vulnerable.
 local nb_flames_created = 0
-local timers = {}
 
 function enemy:on_created()
 
@@ -32,8 +31,7 @@ end
 function enemy:on_restarted()
 
   if not vulnerable then
-    for _, t in ipairs(timers) do t:stop() end
-    timers[#timers + 1] = sol.timer.start(self, math.random(2000, 5000), function()
+    sol.timer.start(self, math.random(2000, 5000), function()
       self:throw_flames()
     end)
     self:go_back()
@@ -66,7 +64,7 @@ function enemy:on_movement_finished(movement)
   m:set_max_distance(16)
   m:set_ignore_obstacles(true)
   m:start(self)
-  timers[#timers + 1] = sol.timer.start(self, 5000, function() self:go_back() end)
+  sol.timer.start(self, 5000, function() self:go_back() end)
 end
 
 -- This function is called by the body.
@@ -80,8 +78,8 @@ function enemy:set_vulnerable()
     self:set_attack_consequence("sword", 1)
     local sprite = self:get_sprite()
     sprite:set_animation("walking")
-    for _, t in ipairs(timers) do t:stop() end
-    timers[#timers + 1] = sol.timer.start(self, vulnerable_delay, function()
+    sol.timer.stop_all(self)
+    sol.timer.start(self, vulnerable_delay, function()
       vulnerable = false
       self:on_restarted()
       self:set_can_attack(true)
@@ -94,7 +92,6 @@ end
 function enemy:on_hurt(attack, life_lost)
 
   if self:get_life() <= 0 then
-    for _, t in ipairs(timers) do t:stop() end
     body:head_dying()
   end
 end
@@ -113,7 +110,7 @@ function enemy:throw_flames()
     local sprite = self:get_sprite()
     sprite:set_animation("preparing_flame")
     sol.audio.play_sound("lamp")
-    timers[#timers + 1] = sol.timer.start(self, 500, function() self:repeat_flame() end)
+    sol.timer.start(self, 500, function() self:repeat_flame() end)
   end
 end
 
@@ -127,9 +124,9 @@ function enemy:repeat_flame()
     local son = self:create_enemy(son_name, "blue_flame", 0, 16)
     son:go(angle)
     sol.audio.play_sound("lamp")
-    timers[#timers + 1] = sol.timer.start(self, 150, function() self:repeat_flame() end)
+    sol.timer.start(self, 150, function() self:repeat_flame() end)
   else
-    timers[#timers + 1] = sol.timer.start(self, 500, function() self:restart() end)
+    sol.timer.start(self, 500, function() self:restart() end)
   end
 end
 

@@ -4,7 +4,6 @@ local enemy = ...
 
 local nb_sons_to_create = 0
 local nb_sons_created = 0
-local timers = {}
 
 function enemy:on_created()
 
@@ -20,7 +19,7 @@ end
 
 function enemy:on_restarted()
 
-  timers[#timers + 1] = sol.timer.start(self, 500, function()
+  sol.timer.start(self, 500, function()
     self:jump_or_son_phase()
   end)
   self:go()
@@ -46,7 +45,6 @@ end
 
 function enemy:on_hurt(attack, life_lost)
 
-  for _, t in ipairs(timers) do t:stop() end
   if self:get_life() <= 0 then
     -- I am dying: remove the sons.
     local sons_prefix = self:get_name() .. "_son"
@@ -65,7 +63,7 @@ end
 function enemy:son_phase_soon()
 
   self:stop_movement()
-  timers[#timers + 1] = sol.timer.start(self, 500, function()
+  sol.timer.start(self, 500, function()
     self:son_phase()
   end)
 end
@@ -75,7 +73,7 @@ function enemy:son_phase()
   local sprite = self:get_sprite()
   sprite:set_animation("preparing_son")
   sol.audio.play_sound("stone")
-  timers[#timers + 1] = sol.timer.start(self, 1500, function() self:throw_son() end)
+  sol.timer.start(self, 1500, function() self:throw_son() end)
 
   if self:get_life() < 3 then
     nb_sons_to_create = 3
@@ -97,14 +95,14 @@ function enemy:throw_son()
   nb_sons_to_create = nb_sons_to_create - 1
   if nb_sons_to_create > 0 then
     -- Throw another son in 0.5 second.
-    timers[#timers + 1] = sol.timer.start(self, 500, function() self:throw_son() end)
+    sol.timer.start(self, 500, function() self:throw_son() end)
   else
     -- Finish the son phase.
     local sprite = self:get_sprite()
     sprite:set_animation("walking")
     local delay = 3500 + (math.random(3) * 1000)
-    timers[#timers + 1] = sol.timer.start(self, delay, function() self:jump_or_son_phase() end)
-    timers[#timers + 1] = sol.timer.start(self, 500, function() self:go() end)
+    sol.timer.start(self, delay, function() self:jump_or_son_phase() end)
+    sol.timer.start(self, 500, function() self:go() end)
   end
 end
 

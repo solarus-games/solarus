@@ -7,7 +7,6 @@ local nb_eggs_created = 0
 local boss_starting_life = 6
 local boss_movement_starting_speed = 50  -- Starting speed in pixels per second, it will gain 5 per life point lost.
 local boss_movement_speed = boss_movement_starting_speed
-local timers = {}
 
 function enemy:on_created()
 
@@ -24,14 +23,12 @@ end
 
 function enemy:on_restarted()
 
-  for _, t in ipairs(timers) do t:stop() end
-  timers[#timers + 1] = sol.timer.start(self, 2000, function() self:egg_phase_soon() end)
+  sol.timer.start(self, 2000, function() self:egg_phase_soon() end)
   self:go()
 end
 
 function enemy:on_hurt(attack, life_lost)
 
-  for _, t in ipairs(timers) do t:stop() end
   local life = self:get_life()
   if life <= 0 then
     -- I am dying: remove the minillosaur eggs.
@@ -62,10 +59,10 @@ function enemy:egg_phase_soon()
   local nb_sons = self:get_map():get_entities_count(sons_prefix)
   if nb_sons >= 5 then
     -- Delay the egg phase if there are already too much sons.
-    timers[#timers + 1] = sol.timer.start(self, 5000, function() self:egg_phase_soon() end)
+    sol.timer.start(self, 5000, function() self:egg_phase_soon() end)
   else
     self:stop_movement()
-    timers[#timers + 1] = sol.timer.start(self, 500, function() self:egg_phase() end)
+    sol.timer.start(self, 500, function() self:egg_phase() end)
   end
 end
 
@@ -74,7 +71,7 @@ function enemy:egg_phase()
   local sprite = self:get_sprite()
   sprite:set_animation("preparing_egg")
   sol.audio.play_sound("boss_charge")
-  timers[#timers + 1] = sol.timer.start(self, 1500, function() self:throw_egg() end)
+  sol.timer.start(self, 1500, function() self:throw_egg() end)
 
   -- The more the boss is hurt, the more it will throw eggs...
   nb_eggs_to_create = boss_starting_life - self:get_life() + 1
@@ -93,7 +90,7 @@ function enemy:throw_egg()
   nb_eggs_to_create = nb_eggs_to_create - 1
   if nb_eggs_to_create > 0 then
     -- Throw another egg in 0.5 second.
-    timers[#timers + 1] = sol.timer.start(self, 500, function() self:throw_egg() end)
+    sol.timer.start(self, 500, function() self:throw_egg() end)
   else
     -- Finish the egg phase.
     local sprite = self:get_sprite()
@@ -102,7 +99,7 @@ function enemy:throw_egg()
     if self:get_life() > 1 then
       -- Schedule the next one in a few seconds.
       local delay = 3500 + (math.random(3) * 1000)
-      timers[#timers + 1] = sol.timer.start(self, duration, function() self:egg_phase_soon() end)
+      sol.timer.start(self, duration, function() self:egg_phase_soon() end)
     end
     self:go()
   end

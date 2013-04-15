@@ -6,7 +6,6 @@ local main_sprite = nil
 local claw_sprite = nil
 local nb_sons_created = 0
 local initial_life = 7
-local timers = {}
 
 function enemy:on_created()
 
@@ -36,8 +35,7 @@ function enemy:on_restarted()
   local m = sol.movement.create("random")
   m:set_speed(64)
   m:start(self)
-  for _, t in ipairs(timers) do t:stop() end
-  timers[#timers + 1] = sol.timer.start(self, math.random(2000, 6000), function()
+  sol.timer.start(self, math.random(2000, 6000), function()
     self:prepare_flames()
   end)
 end
@@ -55,19 +53,18 @@ function enemy:prepare_flames()
     self:create_enemy(son_name, "red_flame", 0, -16, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      timers[#timers + 1] = sol.timer.start(self, 200, repeat_throw_flame)
+      sol.timer.start(self, 200, repeat_throw_flame)
     end
   end
   repeat_throw_flame()
 
-  timers[#timers + 1] = sol.timer.start(self, math.random(4000, 6000), function()
+  sol.timer.start(self, math.random(4000, 6000), function()
     self:prepare_flames()
   end)
 end
 
 function enemy:on_hurt(attack, life_lost)
 
-  for _, t in ipairs(timers) do t:stop() end
   if self:get_life() <= 0 then
     self:get_map():remove_entities(self:get_name() .. "_")
   end

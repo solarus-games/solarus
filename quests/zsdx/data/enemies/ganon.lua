@@ -30,7 +30,6 @@ local nb_flames_created = 0
 local nb_bats_created = 0
 local attack_scheduled = false
 local cancel_next_attack = false
-local timers = {}
 
 function enemy:on_created()
 
@@ -212,7 +211,7 @@ function enemy:throw_flames()
     self:create_enemy(son_name, "red_flame", 0, -24, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      timers[#timers + 1] = sol.timer.start(self, 150, repeat_throw_flame)
+      sol.timer.start(self, 150, repeat_throw_flame)
     else
       attacking = false
       attack_scheduled = false
@@ -250,11 +249,11 @@ function enemy:throw_bats()
     end
     son:go_circle(self)
     local go_hero_delay = 2000 + (nb_to_create * 150)
-    timers[#timers + 1] = sol.timer.start(self, go_hero_delay, function() son:go_hero() end)
+    sol.timer.start(self, go_hero_delay, function() son:go_hero() end)
 
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      timers[#timers + 1] = sol.timer.start(self, 233, repeat_throw_bat)
+      sol.timer.start(self, 233, repeat_throw_bat)
     else
       attacking = false
       attack_scheduled = false
@@ -271,16 +270,9 @@ end
 
 function enemy:schedule_attack()
 
-  timers[#timers + 1] = sol.timer.start(self, math.random(3000, 6000), function()
+  sol.timer.start(self, math.random(3000, 6000), function()
     self:attack()
   end)
   attack_scheduled = true
-end
-
-function enemy:on_hurt(attack, life_lost)
-
-  if self:get_life() <= 0 then
-    for _, t in ipairs(timers) do t:stop() end
-  end
 end
 

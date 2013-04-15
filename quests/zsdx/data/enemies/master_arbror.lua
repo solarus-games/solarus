@@ -6,7 +6,6 @@ local sons = {}
 local nb_sons_immobilized_needed = 3  -- Number of sons immobilized needed to get him vulnerable.
 local vulnerable = false
 local initial_life = 8
-local timers = {}
 
 enemy:set_life(initial_life)
 enemy:set_damage(4)
@@ -38,8 +37,7 @@ function enemy:go()
   m:set_speed(16)
   m:set_max_distance(16)
   m:start(self)
-  for _, t in ipairs(timers) do t:stop() end
-  timers[#timers + 1] = sol.timer.start(self, math.random(2000, 3000), function()
+  sol.timer.start(self, math.random(2000, 3000), function()
     self:prepare_son()
   end)
 end
@@ -50,7 +48,6 @@ function enemy:on_hurt(attack, life_lost)
   if life <= 0 then
     sprite:set_ignore_suspend(true)
     self:get_map():start_dialog("dungeon_3.arbror_killed")
-    for _, t in ipairs(timers) do t:stop() end
     self:remove_sons()
   else
     if life > 9 then
@@ -71,12 +68,12 @@ function enemy:prepare_son()
     if #sons < nb_sons_immobilized_needed then
       sprite:set_animation("preparing_son")
       sol.audio.play_sound("hero_pushes")
-      timers[#timers + 1] = sol.timer.start(self, 1000, function() self:create_son() end)
+      sol.timer.start(self, 1000, function() self:create_son() end)
       self:stop_movement()
     end
   end
 
-  timers[#timers + 1] = sol.timer.start(self, math.random(2000, 5000), function() self:prepare_son() end)
+  sol.timer.start(self, math.random(2000, 5000), function() self:prepare_son() end)
 end
 
 function enemy:create_son()
@@ -119,8 +116,8 @@ function sprite:on_animation_finished(animation)
       enemy:stop_movement()
       self:set_animation("vulnerable")
       sol.audio.play_sound("boss_hurt")
-      for _, t in ipairs(timers) do t:stop() end
-      timers[#timers + 1] = sol.timer.start(enemy, 4000, function() enemy:stop_vulnerable() end)
+      sol.timer.stop_all(enemy)
+      sol.timer.start(enemy, 4000, function() enemy:stop_vulnerable() end)
       enemy:remove_sons()
     else
       self:set_animation("walking")

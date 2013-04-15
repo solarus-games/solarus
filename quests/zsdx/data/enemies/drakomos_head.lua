@@ -6,7 +6,6 @@ local max_fire_created = 10   -- Maximum for a step.
 local nb_fire_created = 0     -- In the current step.
 local total_fire_created = 0  -- Total on all steps.
 local initial_xy = {}
-local timers = {}
 
 function enemy:on_created()
 
@@ -35,23 +34,15 @@ function enemy:on_restarted()
   m:set_speed(48)
   m:set_target(initial_xy.x, initial_xy.y)
   m:start(self)
-  for _, t in ipairs(timers) do t:stop() end
 
   nb_fire_created = 0
-  timers[#timers + 1] = sol.timer.start(self, 2000 + math.random(8000), function()
+  sol.timer.start(self, 2000 + math.random(8000), function()
     self:stop_movement()
     local sprite = self:get_sprite()
     sprite:set_animation("preparing_fire")
     sol.audio.play_sound("lamp")
-    timers[#timers + 1] = sol.timer.start(self, 500, function() self:repeat_fire() end)
+    sol.timer.start(self, 500, function() self:repeat_fire() end)
   end)
-end
-
-function enemy:on_hurt(attack, life_lost)
-
-  if life_lost > 0 then
-    for _, t in ipairs(timers) do t:stop() end
-  end
 end
 
 function enemy:on_movement_finished(movement)
@@ -74,9 +65,9 @@ function enemy:repeat_fire()
     local son = self:create_enemy(son_name, "fireball_simple", 0, 16)
     son:go(angle)
     sol.audio.play_sound("lamp")
-    timers[#timers + 1] = sol.timer.start(self, 150, function() self:repeat_fire() end)
+    sol.timer.start(self, 150, function() self:repeat_fire() end)
   else
-    timers[#timers + 1] = sol.timer.start(self, 500, function() self:restart() end)
+    sol.timer.start(self, 500, function() self:restart() end)
   end
 end
 

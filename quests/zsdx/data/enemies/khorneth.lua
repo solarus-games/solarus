@@ -3,7 +3,6 @@ local enemy = ...
 -- The boss Khorneth from @PyroNet.
 -- Khorneth has two blades that must be destroyed first.
 
-
 -- State.
 local left_blade_life = 4
 local right_blade_life = 4

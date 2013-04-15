@@ -10,7 +10,6 @@ local arms_sprite = nil
 local initial_xy = {}
 local nb_sons_created = 0
 local speed = 24
-local timers = {}
 
 function enemy:on_created()
 
@@ -56,7 +55,6 @@ function enemy:on_restarted()
   m:set_speed(speed)
   m:set_target(initial_xy.x, initial_xy.y)
   m:start(self)
-  for _, t in ipairs(timers) do t:stop() end
 
   self:repeat_create_son()
 end
@@ -87,7 +85,7 @@ function enemy:on_custom_attack_received(attack, sprite)
       self:hurt(0)
       sol.audio.play_sound("enemy_hurt")
       petals[i].sprite:set_animation("petal_hurt_" .. i)
-      timers[#timers + 1] = sol.timer.start(self, 300, function()
+      sol.timer.start(self, 300, function()
 
 	if petals[i].life > 0 then
 	  -- Restore the petal animation.
@@ -125,7 +123,6 @@ function enemy:on_hurt(attack, life_lost)
   if self:get_life() <= 0 then
     -- Stop the movement of the body.
     body:stop_movement()
-    for _, t in ipairs(timers) do t:stop() end
 
     -- Remove the sons.
     local son_prefix = self:get_name() .. "_son_"
@@ -152,7 +149,7 @@ function enemy:repeat_create_son()
     end
   end
 
-  timers[#timers + 1] = sol.timer.start(self, 1000 + math.random(1000), function()
+  sol.timer.start(self, 1000 + math.random(1000), function()
     self:repeat_create_son()
   end)
 end

@@ -28,7 +28,6 @@ local enemy = ...
 
 local properties = {}
 local going_hero = false
-local timer
 
 function enemy:set_properties(prop)
 
@@ -95,13 +94,6 @@ function enemy:on_restarted()
   self:check_hero()
 end
 
-function enemy:on_hurt()
-  if timer ~= nil then
-    timer:stop()
-    timer = nil
-  end
-end
-
 function enemy:check_hero()
 
   local hero = self:get_map():get_entity("hero")
@@ -115,7 +107,8 @@ function enemy:check_hero()
   elseif not near_hero and going_hero then
     self:go_random()
   end
-  timer = sol.timer.start(self, 1000, function() self:check_hero() end)
+
+  sol.timer.start(self, 100, function() self:check_hero() end)
 end
 
 function enemy:go_random()

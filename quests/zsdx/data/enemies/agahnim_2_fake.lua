@@ -23,7 +23,6 @@ local blue_fireball_proba = 33  -- Percent.
 local next_fireball_sound
 local next_fireball_breed
 local disappearing = false
-local timers = {}
 
 function enemy:on_created()
 
@@ -50,10 +49,9 @@ end
 function enemy:on_restarted()
 
   if not disappearing then
-    for _, t in ipairs(timers) do t:stop() end
     local sprite = self:get_sprite()
     sprite:fade_out()
-    timers[#timers + 1] = sol.timer.start(self, 500, function()
+    sol.timer.start(self, 500, function()
       self:hide()
     end)
   end
@@ -76,7 +74,7 @@ end
 function enemy:hide()
 
   self:set_position(-100, -100)
-  timers[#timers + 1] = sol.timer.start(self, 500, function()
+  sol.timer.start(self, 500, function()
     self:unhide()
   end)
 end
@@ -88,7 +86,7 @@ function enemy:unhide()
   local sprite = self:get_sprite()
   sprite:set_direction(get_direction4_to_hero())
   sprite:fade_in()
-  timers[#timers + 1] = sol.timer.start(self, 1000, function()
+  sol.timer.start(self, 1000, function()
     self:fire_step_1()
   end)
 end
@@ -97,7 +95,7 @@ function enemy:fire_step_1()
 
   local sprite = self:get_sprite()
   sprite:set_animation("arms_up")
-  timers[#timers + 1] = sol.timer.start(self, 1000, function()
+  sol.timer.start(self, 1000, function()
     self:fire_step_2()
   end)
   self:set_can_attack(true)
@@ -124,7 +122,7 @@ function enemy:fire_step_2()
     next_fireball_breed = "red_fireball_triple"
   end
   sol.audio.play_sound("boss_charge")
-  timers[#timers + 1] = sol.timer.start(self, 1500, function()
+  sol.timer.start(self, 1500, function()
     self:fire_step_3()
   end)
 end
@@ -134,7 +132,7 @@ function enemy:fire_step_3()
   local sprite = self:get_sprite()
   sprite:set_animation("stopped")
   sol.audio.play_sound(next_fireball_sound)
-  timers[#timers + 1] = sol.timer.start(self, 700, function()
+  sol.timer.start(self, 700, function()
     self:restart()
   end)
 
@@ -161,8 +159,8 @@ function enemy:disappear()
   disappearing = true
   self:set_can_attack(false)
   sprite:fade_out()
-  for _, t in ipairs(timers) do t:stop() end
-  timers[#timers + 1] = sol.timer.start(self, 500, function()
+  sol.timer.stop_all(self)
+  sol.timer.start(self, 500, function()
     self:remove()
   end)
 end
@@ -174,7 +172,7 @@ function enemy:on_collision_enemy(other_enemy, other_sprite, my_sprite)
     local x = self:get_position()
     if x > 0 then
       -- Collision with another Agahnim.
-      for _, t in ipairs(timers) do t:stop() end
+      sol.timer.stop_all(self)
       self:hide()  -- Go somewhere else.
     end
   end

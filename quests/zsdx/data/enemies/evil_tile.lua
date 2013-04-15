@@ -3,7 +3,6 @@ local enemy = ...
 local shadow_sprite = nil
 local initial_y = nil
 local state = nil  -- "raising", "attacking" or "destroying".
-local timer
 
 function enemy:on_created()
 
@@ -35,7 +34,7 @@ function enemy:on_restarted()
   m:set_path{2,2}
   m:set_speed(16)
   m:start(self)
-  timer = sol.timer.start(self, 2000, function() self:go_hero() end)
+  sol.timer.start(self, 2000, function() self:go_hero() end)
   state = "raising"
 end
 
@@ -71,9 +70,7 @@ function enemy:disappear()
     self:stop_movement()
     sprite:set_animation("destroy")
     sol.audio.play_sound("stone")
-    if timer ~= nil then
-      timer:stop()
-    end
+    sol.timer.stop_all(self)
   end
 end
 

@@ -3,7 +3,6 @@ local enemy = ...
 -- A root of Master Arbror
 
 enemy.disappearing = false
-enemy.timer = nil
 enemy.immobilized = false
 enemy.speed = 32
 enemy.master_arbror = nil
@@ -40,14 +39,11 @@ function enemy:on_restarted()
     self:set_can_attack(false)
   elseif self.immobilized then
     sprite:set_animation("hurt_long")
-    if self.timer ~= nil then
-      self.timer:stop()
-    end
-    self.timer = sol.timer.start(self, 10000, function() self:disappear() end)
+    sol.timer.start(self, 10000, function() self:disappear() end)
     self:stop_movement()
     self:set_can_attack(false)
   else
-    self.timer = sol.timer.start(self, 1000, function() self:go() end)
+    sol.timer.start(self, 1000, function() self:go() end)
     self:set_can_attack(true)
   end
 end
@@ -68,9 +64,6 @@ function enemy:on_hurt(attack, life_points)
     if self.master_arbror ~= nil then
       self.master_arbror:son_started_immobilized()
     end
-    if self.timer ~= nil then
-      self.timer:stop()
-    end
   end
 end
 
@@ -88,10 +81,7 @@ function enemy:disappear()
     sprite:set_animation("disappearing")
     self:set_invincible()
     self:set_can_attack(false)
-
-    if self.timer ~= nil then
-      self.timer:stop()
-    end
+    sol.timer.stop_all(self)
     self.disappearing = true
   end
 end

@@ -2,8 +2,6 @@ local enemy = ...
 
 -- Snap Dragon.
 
-local timer
-
 enemy:set_life(3)
 enemy:set_damage(4)
 enemy:set_hurt_style("normal")
@@ -26,14 +24,6 @@ function enemy:on_obstacle_reached(movement)
   self:go_random()
 end
 
-function enemy:on_hurt(attack, life_lost)
-
-  if timer ~= nil then
-    timer:stop()
-    timer = nil
-  end
-end
-
 function enemy:go_random()
 
   -- Random diagonal direction.
@@ -48,10 +38,8 @@ function enemy:go_random()
 
   sprite:set_direction(rand4 - 1)
 
-  if timer ~= nil then
-    timer:stop()
-  end
-  timer = sol.timer.start(self, 300 + math.random(1500), function()
+  sol.timer.stop_all(self)
+  sol.timer.start(self, 300 + math.random(1500), function()
     sprite:set_animation("bite")
   end)
 end

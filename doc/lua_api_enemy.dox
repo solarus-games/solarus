@@ -65,16 +65,16 @@ like what kind of attacks can hurt the enemy.
 You can also make complex enemies composed of several sprites, and set
 different behavior to each sprite. This is very useful to program a boss.
 
-\ref lua_api_timers "Timers" are handy to script some repeated behavior on
+\ref lua_api_timer "Timers" are handy to script some repeated behavior on
 enemies, like performing a particular attack every 5 seconds.
 Create your timers from the \ref lua_api_enemy_on_restarted
 "enemy:on_restarted()" event. Timers of an enemy are automatically destroyed
 when the enemy is hurt or immobilized, so that they don't get triggered
 during these special states. They are also destroyed when you call
 \ref lua_api_enemy_restart "enemy:restart()".
-If all those cases, \ref lua_api_enemy_on_restarted "enemy:on_restarted()" is
-then called, so if you define your timers there, everything will work as
-expected.
+When \ref lua_api_enemy_on_restarted "enemy:on_restarted()" is
+called, you are guaranteed that no timers exist on your enemy.
+Thus, it is safe to create them there.
 
 Basic enemies often have the same behavior.
 To avoid duplication of code,

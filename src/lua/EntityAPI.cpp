@@ -2280,6 +2280,7 @@ void LuaContext::enemy_on_disabled(Enemy& enemy) {
 void LuaContext::enemy_on_restarted(Enemy& enemy) {
 
   push_enemy(l, enemy);
+  remove_timers(-1);  // Stop timers associated to this enemy.
   on_restarted();
   lua_pop(l, 1);
 }

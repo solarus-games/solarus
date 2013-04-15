@@ -65,6 +65,17 @@ like what kind of attacks can hurt the enemy.
 You can also make complex enemies composed of several sprites, and set
 different behavior to each sprite. This is very useful to program a boss.
 
+\ref lua_api_timers "Timers" are handy to script some repeated behavior on
+enemies, like performing a particular attack every 5 seconds.
+Create your timers from the \ref lua_api_enemy_on_restarted
+"enemy:on_restarted()" event. Timers of an enemy are automatically destroyed
+when the enemy is hurt or immobilized, so that they don't get triggered
+during these special states. They are also destroyed when you call
+\ref lua_api_enemy_restart "enemy:restart()".
+If all those cases, \ref lua_api_enemy_on_restarted "enemy:on_restarted()" is
+then called, so if you define your timers there, everything will work as
+expected.
+
 Basic enemies often have the same behavior.
 To avoid duplication of code,
 you can factorize some code into a generic file
@@ -409,8 +420,8 @@ about the origin point.
 
 Restarts this enemy.
 
-This plays animation \c "walking" on its
-\ref lua_api_sprite "sprites"
+This plays animation \c "walking" on its \ref lua_api_sprite "sprites",
+destroys any timer of the enemy
 and calls the event \ref lua_api_enemy_on_restarted "enemy:on_restarted()".
 
 \subsection lua_api_enemy_hurt enemy:hurt(life_points)
@@ -519,15 +530,17 @@ called when this enemy has just been
 \subsection lua_api_enemy_on_restarted enemy:on_restarted()
 
 Called when this enemy should start or restart its
-\ref lua_api_movement "movement" because
-something happended
-(for example the enemy has just been created,
-or it was just hurt or immobilized).
+\ref lua_api_movement "movement" and
+\ref lua_api_timer "timers" because
+something happened.
+For example, the enemy has just been created,
+or it was just hurt or immobilized, or you called
+\ref lua_api_enemy_restart "enemy:restart()".
 If your enemy should move, this is the right place to create its movement.
 
-Also note that \ref lua_api_timer "timers" associated to an enemy are
-automatically destroyed when the enemy is hurt or immobilized.
-Thus, you can recreate them from \c on_restarted().
+\ref lua_api_timer "Timers" associated to the enemy were
+automatically destroyed.
+Thus, you should also recreate them from this event.
 
 \subsection lua_api_enemy_on_pre_draw enemy:on_pre_draw()
 

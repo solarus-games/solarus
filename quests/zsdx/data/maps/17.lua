@@ -38,7 +38,7 @@ function map:on_started(destination)
 
   local enemy_group1 = map:get_entities("enemy_group1_")
   for _, enemy in ipairs(enemy_group1) do
-    enemy:on_dead = function()
+    enemy.on_dead = function()
       if not map:has_entities("enemy_group1")
         and not map:get_game():get_value("b200") then
         map:move_camera(616, 552, 250, function()

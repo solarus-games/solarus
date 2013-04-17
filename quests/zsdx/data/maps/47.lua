@@ -168,9 +168,10 @@ for _, enemy in ipairs(map:get_entities("room_LD5_enemy")) do
   function enemy:on_dead()
 
     if not map:has_entities("room_LD5_enemy") and not LD5:is_open() then
-    -- LD5 room: kill all enemies will open the door LD5
-    map:open_doors("LD5")
-    sol.audio.play_sound("secret")
+      -- LD5 room: kill all enemies will open the door LD5
+      map:open_doors("LD5")
+      sol.audio.play_sound("secret")
+    end
   end
 end
 

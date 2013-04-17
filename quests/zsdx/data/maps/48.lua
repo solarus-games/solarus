@@ -31,12 +31,12 @@ function map:on_started(destination)
     KC04:set_enabled(false)
   end
 
-  if destination:get_name() == "from_1F_A" then
+  if destination ~= nil and destination:get_name() == "from_1F_A" then
     map:set_doors_open("LD8", true)
     DB08:set_activated(true)
   end
 
-  if destination:get_name() ~= "from_B2_C" then
+  if destination ~= nil and destination:get_name() ~= "from_B2_C" then
     map:set_doors_open("LD12", true)
   end
 end

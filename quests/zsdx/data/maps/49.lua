@@ -15,10 +15,12 @@ local map = ...
 local timer
 
 function map:on_started(destination)
+
   if not map:get_game():get_value("b711") then
     RC100:set_enabled(false)
   end
-  if destination:get_name() == "from_B3_C" then
+
+  if destination ~= nil and destination:get_name() == "from_B3_C" then
     map:set_doors_open("LD15", true)
     for i = 1, 9 do
       map:get_entity("BRoom" .. i):set_activated(true)

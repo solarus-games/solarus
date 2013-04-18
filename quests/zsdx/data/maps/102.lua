@@ -259,7 +259,7 @@ local function w_room_enemy_dead(enemy)
     end
   end
 end
-for _, enemy in ipairs(map:get_entitites("w_room_enemy")) do
+for _, enemy in ipairs(map:get_entities("w_room_enemy")) do
   enemy.on_dead = w_room_enemy_dead
 end
 
@@ -274,7 +274,7 @@ local function miniboss_enemy_dead(enemy)
     map:get_game():set_value("b620", true)
   end
 end
-for _, enemy in ipairs(map:get_entitites("miniboss_enemy")) do
+for _, enemy in ipairs(map:get_entities("miniboss_enemy")) do
   enemy.on_dead = miniboss_enemy_dead
 end
 

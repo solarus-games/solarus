@@ -14,7 +14,7 @@
 # There is a default icon and info.plist template provided, but no quest, so if you 
 # don't specify a quest path, you'll have to add one manually to your generic bundle.
 #
-# If ${SOLARUS_IOS_BUILD} is defined, an IPone Bundle will be created.
+# If ${SOLARUS_IOS_BUILD} is defined, an IPhone Bundle will be created.
 #
 # Exportable to XCode.
 ####
@@ -35,12 +35,12 @@ set(COMPANY_IDENTIFIER                "${EXECUTABLE_MAIN_NAME}-team")
 if(SOLARUS_IOS_BUILD)
   set(SOLARUS_OS_SOFTWARE             "iOS")
   set(SOLARUS_OS_HARDWARE             "IPhone")
-  set(SOLARUS_INSTALL_DESTINATION      "usr/share")
+  set(SOLARUS_INSTALL_DESTINATION     "usr/share")
   set(SOLARUS_BUNDLE_COPIED_LIBRARIES "")
 else()
   set(SOLARUS_OS_SOFTWARE             "OSX")
   set(SOLARUS_OS_HARDWARE             "MacOSX")
-  set(SOLARUS_INSTALL_DESTINATION      "/Applications")
+  set(SOLARUS_INSTALL_DESTINATION     "/Applications")
 
   # Remove the hardcoded additional link on SDL path
   string(REPLACE "-framework Cocoa" "" SDL_FRAMEWORK "${SDL_LIBRARY}") 

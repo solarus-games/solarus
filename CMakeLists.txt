@@ -51,8 +51,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     src/lowlevel/apple/AppleInterface.mm
     include/lowlevel/apple/AppleInterface.h
   )
-  # SDL 1.3 avoid to link with SDLMain
-  if(NOT SOLARUS_IOS_BUILD)
+  # SDL 1.3 avoid to link SDLMain
+  if(SDL_VERSION VERSION_LESS "1.3")
     set(source_files
       ${source_files}
       src/lowlevel/apple/SDLMain.m

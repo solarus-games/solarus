@@ -5,7 +5,7 @@
 # 
 # SOLARUS_ARCH represent the build (multi-)architecture.
 # SOLARUS_SYSROOT represent the path to the OSX SDK.
-# SOLARUS_DEPLOYMENT represent the older OSX version supported.
+# SOLARUS_DEPLOYMENT represent the oldest OSX version supported.
 #
 # Exportable to XCode.
 ####
@@ -56,9 +56,10 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Oldest OS 
 
 # Compatibility options
 if(NOT XCODE)
-  if(SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
+  if(SOLARUS_CURRENT_OSX_VERSION_SHORT VERSION_EQUAL "10.6" AND SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
+
 # TODO try to build on 10.6+ with following flags and run on 10.5
 # set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-syslibroot,${CMAKE_OSX_SYSROOT}" CACHE STRING "Link with SDK")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector" CACHE STRING "Emit extra code to check for buffer overflows on function with vulnerable objects")

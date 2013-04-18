@@ -1,4 +1,6 @@
 ####
+# Copied from http://code.google.com/p/ios-cmake/ .
+#
 # This file is based off of the Platform/Darwin.cmake and Platform/UnixPaths.cmake
 # files which are included with CMake 2.8.4
 # It has been altered for iOS development

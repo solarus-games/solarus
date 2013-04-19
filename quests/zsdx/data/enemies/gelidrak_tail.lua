@@ -15,7 +15,7 @@ function enemy:on_created()
   self:set_origin(8, 8)
   self:set_hurt_style("boss")
   self:set_obstacle_behavior("flying")
-  self:set_no_treasure()
+  self:set_treasure(nil)
   self:set_layer_independent_collisions(true)
   self:set_push_hero_on_sword(true)
 

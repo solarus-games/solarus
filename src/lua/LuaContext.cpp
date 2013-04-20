@@ -156,7 +156,7 @@ void LuaContext::exit() {
 
     // Destroy unfinished menus and timers.
     remove_menus();
-    remove_timers();
+    destroy_timers();
 
     // Finalize Lua.
     lua_close(l);

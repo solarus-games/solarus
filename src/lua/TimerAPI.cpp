@@ -124,25 +124,26 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
 
 /**
  * @brief Unregisters a timer associated to a context.
+ *
+ * This function can be called safely even while iterating on the timer list.
+ *
  * @param timer A timer.
  */
 void LuaContext::remove_timer(Timer* timer) {
-
-  if (timers.count(timer) > 0) {
-
+  if (timers.find(timer) != timers.end()) {
     if (!timer->is_finished()) {
       cancel_callback(timers[timer].callback_ref);
     }
-    timers.erase(timer);
-    timer->decrement_refcount();
-    if (timer->get_refcount() == 0) {
-      delete timer;
-    }
+    timers[timer].callback_ref = LUA_REFNIL;
+    timers_to_remove.push_back(timer);
   }
 }
 
 /**
  * @brief Unregisters all timers associated to a context.
+ *
+ * This function can be called safely even while iterating on the timer list.
+ *
  * @param context_index Index of a table or userdata containing timers.
  */
 void LuaContext::remove_timers(int context_index) {
@@ -165,24 +166,16 @@ void LuaContext::remove_timers(int context_index) {
       if (!timer->is_finished()) {
         destroy_ref(it->second.callback_ref);
       }
+      it->second.callback_ref = LUA_REFNIL;
       timers_to_remove.push_back(timer);
-      timer->decrement_refcount();
-      if (timer->get_refcount() == 0) {
-        delete timer;
-      }
     }
-  }
-
-  std::list<Timer*>::iterator it2;
-  for (it2 = timers_to_remove.begin(); it2 != timers_to_remove.end(); ++it2) {
-    timers.erase(*it2);
   }
 }
 
 /**
- * @brief Unregisters all existing timers.
+ * @brief Destroys immediately all existing timers.
  */
-void LuaContext::remove_timers() {
+void LuaContext::destroy_timers() {
 
   std::map<Timer*, LuaTimerData>::iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
@@ -204,8 +197,7 @@ void LuaContext::remove_timers() {
  */
 void LuaContext::update_timers() {
 
-  std::list<Timer*> timers_to_remove;
-
+  // Update all timers.
   std::map<Timer*, LuaTimerData>::iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
 
@@ -218,10 +210,23 @@ void LuaContext::update_timers() {
     }
   }
 
+  // Destroy the ones that should be removed.
   std::list<Timer*>::iterator it2;
   for (it2 = timers_to_remove.begin(); it2 != timers_to_remove.end(); ++it2) {
-    remove_timer(*it2);
+
+    Timer* timer = *it2;
+    if (timers.find(timer) != timers.end()) {
+      if (!timer->is_finished()) {
+        cancel_callback(timers[timer].callback_ref);
+      }
+      timers.erase(timer);
+      timer->decrement_refcount();
+      if (timer->get_refcount() == 0) {
+        delete timer;
+      }
+    }
   }
+  timers_to_remove.clear();
 }
 
 /**

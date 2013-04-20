@@ -172,7 +172,7 @@ class LuaContext {
     void add_timer(Timer* timer, int context_index, int callback_index);
     void remove_timer(Timer* timer);
     void remove_timers(int context_index);
-    void remove_timers();
+    void destroy_timers();
     void update_timers();
     void notify_timers_map_suspended(bool suspended);
 
@@ -981,6 +981,8 @@ class LuaContext {
     std::map<Timer*, LuaTimerData>
         timers;                     /**< The timers currently running, with
                                      * their context and callback. */
+    std::list<Timer*>
+        timers_to_remove;           /**< Timers to be removed at the next cycle. */
 
     std::set<Drawable*> drawables;  /**< All drawable objects created by
                                      * this script. */

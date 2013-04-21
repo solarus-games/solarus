@@ -256,7 +256,9 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
 
   std::string full_file_name;
   if (language_specific) {
-    full_file_name = (std::string) "languages/" + language_code + "/" + file_name;
+    Debug::check_assertion(!language_code.empty(), StringConcat() <<
+        "Cannot open language-specific file '" << file_name << "': no language was set");
+    full_file_name = std::string("languages/") + language_code + "/" + file_name;
   }
   else {
     full_file_name = file_name;

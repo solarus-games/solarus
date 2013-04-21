@@ -123,7 +123,9 @@ bool Settings::save(const std::string& file_name) {
   oss << "video_mode = \"" << VideoManager::video_mode_names[video_mode] << "\"\n";
   oss << "sound_volume = " << Sound::get_volume() << "\n";
   oss << "music_volume = " << Music::get_volume() << "\n";
-  oss << "language = \"" << FileTools::get_language() << "\"\n";
+  if (!FileTools::get_language().empty()) {
+    oss << "language = \"" << FileTools::get_language() << "\"\n";
+  }
   oss << "enable_joystick = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
 
   const std::string& text = oss.str();

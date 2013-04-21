@@ -45,13 +45,15 @@ function language_menu:on_started()
       index = index + 1
     end
 
-    if #self.languages == 1 then
+    if #self.languages <= 1 then
       -- No choice: skip this screen.
-      sol.language.set_language(self.languages[1].id)
+      if #self.languages == 1 then
+        sol.language.set_language(self.languages[1].id)
+      end
       self:start_title_screen()
+    else
+      self:set_cursor_position(cursor_position)
     end
-
-    self:set_cursor_position(cursor_position)
   end
 end
 

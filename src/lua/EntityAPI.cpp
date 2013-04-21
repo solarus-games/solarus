@@ -2013,13 +2013,15 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
   Game& game = enemy.get_game();
   MapEntities& entities = enemy.get_map().get_entities();
   Treasure treasure(game, "", 1, "");
-  Enemy* other_enemy = (Enemy*) Enemy::create(game, breed, Enemy::RANK_NORMAL,
-      "", name, Layer(layer), x, y, 0, treasure);
+  Enemy* other_enemy = static_cast<Enemy*>(Enemy::create(
+      game, breed, Enemy::RANK_NORMAL,
+      "", name, Layer(layer), x, y, 0, treasure));
   other_enemy->set_optimization_distance(enemy.get_optimization_distance());
   entities.add_entity(other_enemy);
   other_enemy->restart();
 
-  return 0;
+  push_entity(l, *other_enemy);
+  return 1;
 }
 
 /**

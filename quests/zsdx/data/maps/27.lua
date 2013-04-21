@@ -25,7 +25,7 @@ function solarus_child:on_interaction()
           map:set_pause_enabled(true)
         end)
       end)
-    end)
+    end, 1000, 86400000)
   end
 end
 

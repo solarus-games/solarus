@@ -3,24 +3,24 @@ local map = ...
 
 function map:on_started(destination)
 
-  if destination:get_name() == "from_1F_hole" then
-    -- we are in the boss room
+  if destination ~= nil then
+    if destination:get_name() == "from_1F_hole" then
+      -- we are in the boss room
 
-    if map:get_game():get_value("b63") then
-      -- the boss is already dead
-
-      if map:get_game():get_value("b64") then
-        -- the heart container was also picked: open the final room door
-        map:set_doors_open("final_room_door", true)
+      if not map:get_game():get_value("b63") then
+        -- the boss is not dead yet
+        boss:set_enabled(true)
+        sol.audio.play_music("boss")
       end
-    else
-      -- normal case
-      boss:set_enabled(true)
-      sol.audio.play_music("boss")
+    elseif destination:get_name() == "from_1F_east" then
+      map:set_doors_open("se_door", true)
+      se_switch:set_activated(true)
     end
-  elseif destination:get_name() == "from_1F_east" then
-    map:set_doors_open("se_door", true)
-    se_switch:set_activated(true)
+  end
+
+  if map:get_game():get_value("b64") then
+    -- the heart container was picked: open the final room door
+    map:set_doors_open("final_room_door", true)
   end
 end
 

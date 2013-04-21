@@ -1301,6 +1301,20 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   lua_pop(l, 1);
                                   // udata
 
+  // Also remove the userdata from the list of userdata tables.
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
+                                  // udata all_udata
+  lua_pushlightuserdata(l, &userdata);
+                                  // udata all_udata lightudata
+  lua_pushnil(l);
+                                  // udata all_udata lightudata nil
+  lua_settable(l, -3);
+                                  // udata all_udata
+  lua_pop(l, 1);
+                                  // udata
+
+  // There are no more Lua light pointers to this userdata at this point.
+
   userdata->decrement_refcount();
   if (userdata->get_refcount() == 0) {
     delete userdata;

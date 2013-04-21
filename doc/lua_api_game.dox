@@ -78,6 +78,10 @@ your pause menu).
 \subsection lua_api_game_exists sol.game.exists(file_name)
 
 Returns whether the specified savegame file exists.
+
+A valid quest write directory must be set (in you \c quest.dat file or by
+calling \ref lua_api_main_set_quest_write_dir "sol.main.set_quest_write_dir"),
+otherwise savegames cannot be used and this function generates a Lua error.
 - \c file_name (string): Name of the file to test, relative
   to the \ref lua_api_main_get_quest_write_dir "quest write directory".
 - Return value (boolean): \c true if this savegame file exists.
@@ -85,6 +89,10 @@ Returns whether the specified savegame file exists.
 \subsection lua_api_game_delete sol.game.delete(file_name)
 
 Deletes a savegame file.
+
+A valid quest write directory must be set (in you \c quest.dat file or by
+calling \ref lua_api_main_set_quest_write_dir "sol.main.set_quest_write_dir"),
+otherwise savegames cannot be used and this function generates a Lua error.
 - \c file_name (string): Name of the file to delete, relative
   to the \ref lua_api_main_get_quest_write_dir "quest write directory".
 
@@ -92,6 +100,10 @@ Deletes a savegame file.
 
 Loads an existing savegame, or initializes a new one if it does not exist
 (but does not save it).
+
+A valid quest write directory must be set (in you \c quest.dat file or by
+calling \ref lua_api_main_set_quest_write_dir "sol.main.set_quest_write_dir"),
+otherwise savegames cannot be used and this function generates a Lua error.
 - \c file_name (string): Name of a savegame file, relative to the
   to the \ref lua_api_main_get_quest_write_dir "quest write directory".
 - Return value (game): The loaded (or created) game.

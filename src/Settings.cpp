@@ -20,6 +20,7 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/InputEvent.h"
+#include "lowlevel/Debug.h"
 #include <lua.hpp>
 #include <sstream>
 
@@ -30,7 +31,11 @@
  */
 bool Settings::load(const std::string& file_name) {
 
-  const std::string& prefixed_file_name = FileTools::get_quest_write_dir() + "/" + file_name;
+  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  Debug::check_assertion(!quest_write_dir.empty(),
+      "Cannot load settings: no quest write directory was specified in quest.dat");
+
+  const std::string& prefixed_file_name = quest_write_dir + "/" + file_name;
   if (!FileTools::data_file_exists(prefixed_file_name)) {
     return false;
   }
@@ -107,7 +112,11 @@ bool Settings::load(const std::string& file_name) {
  */
 bool Settings::save(const std::string& file_name) {
 
-  const std::string& prefixed_file_name = FileTools::get_quest_write_dir() + "/" + file_name;
+  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  Debug::check_assertion(!quest_write_dir.empty(),
+      "Cannot save settings: no quest write directory was specified in quest.dat");
+
+  const std::string& prefixed_file_name = quest_write_dir + "/" + file_name;
 
   std::ostringstream oss;
   VideoManager::VideoMode video_mode = VideoManager::get_instance()->get_video_mode();

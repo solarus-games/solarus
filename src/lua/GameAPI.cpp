@@ -131,6 +131,10 @@ int LuaContext::game_api_exists(lua_State* l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
+  if (FileTools::get_quest_write_dir().empty()) {
+    luaL_error(l, "Cannot check savegame: no write directory was specified in quest.dat");
+  }
+
   bool exists = FileTools::data_file_exists(
       FileTools::get_quest_write_dir() + "/" + file_name);
 
@@ -147,6 +151,10 @@ int LuaContext::game_api_delete(lua_State* l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
+  if (FileTools::get_quest_write_dir().empty()) {
+    luaL_error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
+  }
+
   FileTools::data_file_delete(
       FileTools::get_quest_write_dir() + "/" + file_name);
 
@@ -161,6 +169,10 @@ int LuaContext::game_api_delete(lua_State* l) {
 int LuaContext::game_api_load(lua_State* l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
+
+  if (FileTools::get_quest_write_dir().empty()) {
+    luaL_error(l, "Cannot load savegame: no write directory was specified in quest.dat");
+  }
 
   Savegame* savegame = new Savegame(get_lua_context(l).get_main_loop(), file_name);
 

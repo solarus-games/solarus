@@ -442,8 +442,10 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
 
   FileTools::quest_write_dir = quest_write_dir;
 
-  // Create this subdirectory in the Solarus write directory.
-  PHYSFS_mkdir(quest_write_dir.c_str());
+  if (!quest_write_dir.empty()) {
+    // Create this subdirectory in the Solarus write directory.
+    PHYSFS_mkdir(quest_write_dir.c_str());
+  }
 }
 
 /**

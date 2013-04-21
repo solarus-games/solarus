@@ -85,25 +85,29 @@ be changed dynamically with
 \ref lua_api_main_get_quest_write_dir "sol.main.set_quest_write_dir()".
 
 - Return value (string): The quest write directory, relative to the Solarus
-  write directory.
+  write directory, or \c nil if it was not set.
 
 \subsection lua_api_main_set_quest_write_dir sol.main.set_quest_write_dir(quest_write_dir)
 
 Changes the subdirectory where files specific to the quest are saved,
 like savegames and settings.
-Note that the quest write directory is already specified in your \c quest.dat
+Note that the quest write directory can already be specified in your \c quest.dat
 file.
 You usually don't have to call this function, unless you need to change it
 dynamically for some reason.
 
 - \c quest_write_dir (string): The quest write directory, relative to the Solarus
-  write directory.
+  write directory, or \c nil to unset it.
 
 \subsection lua_api_main_load_settings sol.main.load_settings([file_name])
 
 Loads and applies the built-in settings from a file previously saved with
 \ref lua_api_main_save_settings "sol.main.save_settings()".
 The settings include the language, the video mode and the audio volume.
+
+A valid quest write directory must be set (in you \c quest.dat file or by
+calling \ref lua_api_main_set_quest_write_dir "sol.main.set_quest_write_dir"),
+otherwise this function generates a Lua error.
 - \c file_name (string, optional): %Settings file to read, relative to the
   quest write directory. The default file name is \c settings.dat.
 - Return value (boolean): \c true if settings were successfully loaded and
@@ -120,6 +124,10 @@ This file can be reloaded later with \ref lua_api_main_load_settings
 "sol.main.load_settings()" to
 restore the saved settings.
 The settings include the language, the video mode and the audio volume.
+
+A valid quest write directory must be set (in you \c quest.dat file or by
+calling \ref lua_api_main_set_quest_write_dir "sol.main.set_quest_write_dir"),
+otherwise this function generates a Lua error.
 - \c file_name (string, optional): %Settings file to read, relative to the
   quest write directory. The default file name is \c settings.dat.
 - Return value (boolean): \c true if settings were successfully saved.

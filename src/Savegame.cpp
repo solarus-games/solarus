@@ -82,7 +82,8 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   game(NULL) {
 
   const std::string& quest_write_dir = FileTools::get_quest_write_dir();
-  Debug::check_assertion(!quest_write_dir.empty(), "The quest write directory was not set");
+  Debug::check_assertion(!quest_write_dir.empty(),
+      "The quest write directory for savegames was not set in quest.dat");
   prefixed_file_name = quest_write_dir + "/" + file_name;
 
   if (!FileTools::data_file_exists(prefixed_file_name)) {

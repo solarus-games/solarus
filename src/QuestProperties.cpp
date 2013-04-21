@@ -55,7 +55,7 @@ void QuestProperties::load() {
 
   lua_register(l, "quest", l_quest);
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(StringConcat() << "Error: failed to load quest.lua: "
+    Debug::die(StringConcat() << "Error: failed to load quest.dat: "
         << lua_tostring(l, -1));
     lua_pop(l, 1);
   }
@@ -67,8 +67,8 @@ int QuestProperties::l_quest(lua_State* l) {
 
   // Retrieve the quest properties from the table parameter.
   luaL_checktype(l, 1, LUA_TTABLE);
-  const std::string& quest_write_dir = LuaContext::check_string_field(l, 1, "write_dir");
-  const std::string& title_bar = LuaContext::check_string_field(l, 1, "title_bar");
+  const std::string& quest_write_dir = LuaContext::opt_string_field(l, 1, "write_dir", "");
+  const std::string& title_bar = LuaContext::opt_string_field(l, 1, "title_bar", "Solarus");
 
   FileTools::set_quest_write_dir(quest_write_dir);
   VideoManager::get_instance()->set_window_title(title_bar);

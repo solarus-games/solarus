@@ -44,7 +44,7 @@ function inventory_submenu:on_started()
   self.counters = {}
   self.captions = {}
 
-  for k = 1, 28 do
+  for k = 1, #item_names do
     -- Get the item, its possession state and amount.
     local item = self.game:get_item(item_names[k])
     local variant = item:get_variant()
@@ -203,12 +203,14 @@ function inventory_submenu:on_draw(dst_surface)
 
     for j = 0, 6 do
       k = k + 1
-      local item = self.game:get_item(item_names[k])
-      if item:get_variant() > 0 then
-        -- The player has this item: draw it.
-        self.sprites[k]:draw(dst_surface, x, y)
-        if self.counters[k] ~= nil then
-          self.counters[k]:draw(dst_surface, x + 8, y)
+      if item_names[k] ~= nil then
+        local item = self.game:get_item(item_names[k])
+        if item:get_variant() > 0 then
+          -- The player has this item: draw it.
+          self.sprites[k]:draw(dst_surface, x, y)
+          if self.counters[k] ~= nil then
+            self.counters[k]:draw(dst_surface, x + 8, y)
+          end
         end
       end
       x = x + 32

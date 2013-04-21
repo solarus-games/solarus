@@ -639,8 +639,15 @@ void Map::start() {
   this->started = true;
   this->visible_surface->set_opacity(255);
   this->entities->notify_map_started();
+
+  const std::string& previous_music_id = Music::get_current_music_id();
   get_lua_context().run_map(*this, get_destination());
-  Music::play(music_id);
+  const std::string& new_music_id = Music::get_current_music_id();
+
+  if( new_music_id == previous_music_id ) {
+    // Play the music of the map unless the script changed it on map:on_started().
+    Music::play(music_id);
+  }
 }
 
 /**

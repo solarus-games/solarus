@@ -31,6 +31,7 @@ easier to use, less error-prone.
 * Add support of scripted menus. They are no longer hardcoded into the engine.
 * Data files are also in Lua now (no more ini files or custom text files).
 * Add conversion scripts to upgrade existing data files (but not scripts).
+* Fix infinite explosions of bomb flowers.
 
 solarus-0.9.3 (under development)
 

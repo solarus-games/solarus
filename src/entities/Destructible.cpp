@@ -215,6 +215,7 @@ void Destructible::notify_collision_with_hero(Hero &hero, CollisionMode collisio
   if (features[subtype].can_be_lifted
       && !is_being_cut
       && !is_disabled()
+      && !is_regenerating
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
       && hero.is_free()) {
 
@@ -242,15 +243,17 @@ void Destructible::notify_collision_with_hero(Hero &hero, CollisionMode collisio
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Destructible::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+void Destructible::notify_collision(MapEntity& other_entity,
+    Sprite& other_sprite, Sprite& this_sprite) {
 
   if (features[subtype].can_be_cut
       && !is_being_cut
       && !is_disabled()
+      && !is_regenerating
       && other_entity.is_hero()
       && other_sprite.contains("sword")) {
 
-    Hero &hero = (Hero&) other_entity;
+    Hero& hero = static_cast<Hero&>(other_entity);
     if (hero.is_striking_with_sword(*this)) {
 
       play_destroy_animation();
@@ -267,7 +270,8 @@ void Destructible::notify_collision(MapEntity &other_entity, Sprite &other_sprit
   if (other_entity.get_type() == EXPLOSION
       && can_explode()
       && !is_being_cut
-      && !is_disabled()) {
+      && !is_disabled()
+      && !is_regenerating) {
 
     play_destroy_animation();
     create_pickable();
@@ -290,7 +294,8 @@ void Destructible::notify_action_command_pressed() {
   if ((effect == KeysEffect::ACTION_KEY_LIFT || effect == KeysEffect::ACTION_KEY_LOOK)
       && features[subtype].can_be_lifted
       && !is_being_cut
-      && !is_disabled()) {
+      && !is_disabled()
+      && !is_regenerating) {
 
     int weight = features[subtype].weight;
 

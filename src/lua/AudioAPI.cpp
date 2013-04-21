@@ -45,9 +45,15 @@ void LuaContext::register_audio_module() {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::audio_api_play_sound(lua_State *l) {
+int LuaContext::audio_api_play_sound(lua_State* l) {
 
   const std::string& sound_id = luaL_checkstring(l, 1);
+
+  if (!Sound::exists(sound_id)) {
+    luaL_error(l, (StringConcat() <<
+        "Cannot find sound '" << sound_id << "'").c_str());
+  }
+
   Sound::play(sound_id);
   return 0;
 }
@@ -57,7 +63,7 @@ int LuaContext::audio_api_play_sound(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::audio_api_preload_sounds(lua_State *l) {
+int LuaContext::audio_api_preload_sounds(lua_State* l) {
 
   Sound::load_all();
   return 0;
@@ -69,9 +75,14 @@ int LuaContext::audio_api_preload_sounds(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::audio_api_play_music(lua_State *l) {
+int LuaContext::audio_api_play_music(lua_State* l) {
 
   const std::string& music_id = luaL_checkstring(l, 1);
+
+  if (!Music::exists(music_id)) {
+    luaL_error(l, (StringConcat() <<
+        "Cannot find music '" << music_id << "'").c_str());
+  }
 
   Music::play(music_id);
 

@@ -11,6 +11,8 @@ You can play musics and sound effects through \c sol.audio.
 
 Plays a sound effect.
 
+Generates a Lua error if the sound does not exist.
+
 Several sounds can be played in parallel.
 In the current version, a sound cannot be interrupted after you start
 playing it.
@@ -41,6 +43,8 @@ This function does nothing if you already called it before.
 \subsection lua_api_audio_play_music sol.audio.play_music(music_id)
 
 Plays a music.
+
+Generates a Lua error if the music does not exist.
 
 If the same music is already playing, this function has no effect.
 If a different music was already playing, it is stopped and replaced by

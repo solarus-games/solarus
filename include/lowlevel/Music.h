@@ -32,7 +32,7 @@
  */
 class Music { // TODO make a subclass for each format, or at least make a better separation between them
 
-  private:
+  public:
 
     /**
      * The music file formats recognized.
@@ -42,6 +42,38 @@ class Music { // TODO make a subclass for each format, or at least make a better
       IT,       /**< Impulse Tracker module */
       OGG       /**< Ogg Vorbis */
     };
+
+    static const std::string none;               /**< special id indicating that there is no music */
+    static const std::string unchanged;          /**< special id indicating that the music is the same as before */
+
+    Music(const std::string& music_id = none);
+    ~Music();
+
+    static void initialize();
+    static void quit();
+    static bool is_initialized();
+    static void update();
+
+    static int get_volume();
+    static void set_volume(int volume);
+
+    static void find_music_file(const std::string& music_id,
+        std::string& file_name, Format& format);
+    static bool exists(const std::string& music_id);
+    static void play(const std::string& music_id);
+    static Music* get_current_music();
+    static const std::string& get_current_music_id();
+
+    bool start();
+    void stop();
+    bool is_paused();
+    void set_paused(bool pause);
+
+    void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
+    void decode_it(ALuint destination_buffer, ALsizei nb_samples);
+    void decode_ogg(ALuint destination_buffer, ALsizei nb_samples);
+
+  private:
 
     std::string id;                              /**< id of this music */
     std::string file_name;                       /**< name of the file to play */
@@ -63,35 +95,6 @@ class Music { // TODO make a subclass for each format, or at least make a better
     static std::map<std::string, Music> all_musics;   /**< all musics created before */
 
     void update_playing();
-
-  public:
-
-    static const std::string none;               /**< special id indicating that there is no music */
-    static const std::string unchanged;          /**< special id indicating that the music is the same as before */
-
-    Music(const std::string& music_id = none);
-    ~Music();
-
-    static void initialize();
-    static void quit();
-    static bool is_initialized();
-    static void update();
-
-    static int get_volume();
-    static void set_volume(int volume);
-
-    static void play(const std::string& music_id);
-    static Music* get_current_music();
-    static const std::string& get_current_music_id();
-
-    bool start();
-    void stop();
-    bool is_paused();
-    void set_paused(bool pause);
-
-    void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
-    void decode_it(ALuint destination_buffer, ALsizei nb_samples);
-    void decode_ogg(ALuint destination_buffer, ALsizei nb_samples);
 };
 
 #endif

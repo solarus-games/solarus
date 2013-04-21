@@ -42,21 +42,9 @@ Music::Music(const std::string& music_id):
     return;
   }
 
-  // find the file
-  std::string file_name_start = (std::string) "musics/" + music_id;
-  if (FileTools::data_file_exists(file_name_start + ".ogg")) {
-    format = OGG;
-    file_name = file_name_start + ".ogg";
-  }
-  else if (FileTools::data_file_exists(file_name_start + ".it")) {
-    format = IT;
-    file_name = file_name_start + ".it";
-  }
-  else if (FileTools::data_file_exists(file_name_start + ".spc")) {
-    format = SPC;
-    file_name = file_name_start + ".spc";
-  }
-  else {
+  find_music_file(music_id, file_name, format);
+
+  if (music_id.empty()) {
     Debug::die(StringConcat() << "Cannot find music file 'musics/" << music_id
         << "' (tried extensions .ogg, .it and .spc)");
   }
@@ -149,6 +137,50 @@ Music* Music::get_current_music() {
  */
 const std::string& Music::get_current_music_id() {
   return current_music != NULL ? current_music->id : none;
+}
+
+/**
+ * @brief Tries to find a music file from a music id.
+ * @param music_id Id of the music to find (file name without
+ * directory or extension). Cannot be Music::none or Music::unchanged.
+ * @param file_name Resulting file name with its extension
+ * (empty string if not found).
+ * @param format Resulting music format.
+ */
+void Music::find_music_file(const std::string& music_id,
+    std::string& file_name, Format& format) {
+
+  file_name = "";
+  format = OGG;
+
+  std::string file_name_start = std::string("musics/" + music_id);
+  if (FileTools::data_file_exists(file_name_start + ".ogg")) {
+    format = OGG;
+    file_name = file_name_start + ".ogg";
+  }
+  else if (FileTools::data_file_exists(file_name_start + ".it")) {
+    format = IT;
+    file_name = file_name_start + ".it";
+  }
+  else if (FileTools::data_file_exists(file_name_start + ".spc")) {
+    format = SPC;
+    file_name = file_name_start + ".spc";
+  }
+}
+
+/**
+ * @brief Returns whether a music exists.
+ * @param music_id Id of the music to test. Music::none and Music::unchanged
+ * are also considered valid.
+ * @return true If this music exists.
+ */
+bool Music::exists(const std::string& music_id) {
+
+  std::string file_name;
+  Format format;
+  find_music_file(music_id, file_name, format);
+
+  return !file_name.empty();
 }
 
 /**

@@ -75,6 +75,10 @@ void FileTools::initialize(int argc, char** argv) {
 
   // Load the list of languages.
   initialize_languages();
+
+  if (!default_language_code.empty()) {
+    set_language(default_language_code);
+  }
 }
 
 /**
@@ -129,10 +133,10 @@ int FileTools::l_language(lua_State* l) {
   std::string name = LuaContext::check_string_field(l, 1, "name");
   bool is_default = LuaContext::opt_boolean_field(l, 1, "default", false);
 
-  languages[code] = name;
-  if (is_default) {
+  if (is_default || languages.empty()) {
     default_language_code = code;
   }
+  languages[code] = name;
 
   return 0;
 }

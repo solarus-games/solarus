@@ -14,18 +14,17 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/InventoryItemState.h"
+#include "hero/UsingItemState.h"
 #include "hero/FreeState.h"
 #include "lowlevel/System.h"
 #include "entities/Detector.h"
-#include "InventoryItem.h"
 
 /**
  * @brief Constructor.
  * @param hero The hero controlled by this state.
  * @param item The equipment item to use.
  */
-Hero::InventoryItemState::InventoryItemState(Hero& hero,
+Hero::UsingItemState::UsingItemState(Hero& hero,
     EquipmentItem& item):
   State(hero),
   item_usage(hero.get_game(), item) {
@@ -35,14 +34,14 @@ Hero::InventoryItemState::InventoryItemState(Hero& hero,
 /**
  * @brief Destructor.
  */
-Hero::InventoryItemState::~InventoryItemState() {
+Hero::UsingItemState::~UsingItemState() {
 }
 
 /**
  * @brief Starts this state.
  * @param previous_state The previous state.
  */
-void Hero::InventoryItemState::start(State* previous_state) {
+void Hero::UsingItemState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -63,7 +62,7 @@ void Hero::InventoryItemState::start(State* previous_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::InventoryItemState::update() {
+void Hero::UsingItemState::update() {
 
   State::update();
 

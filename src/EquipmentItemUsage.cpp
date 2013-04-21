@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "InventoryItem.h"
+#include "EquipmentItemUsage.h"
 #include "Game.h"
 #include "Equipment.h"
 #include "EquipmentItem.h"
@@ -26,8 +26,7 @@
  * @param game The game.
  * @param item The item to use.
  */
-InventoryItem::InventoryItem(Game& game, EquipmentItem& item):
-
+EquipmentItemUsage::EquipmentItemUsage(Game& game, EquipmentItem& item):
   game(game),
   item(item),
   variant(item.get_variant()),
@@ -38,24 +37,25 @@ InventoryItem::InventoryItem(Game& game, EquipmentItem& item):
 /**
  * @brief Destructor.
  */
-InventoryItem::~InventoryItem() {
+EquipmentItemUsage::~EquipmentItemUsage() {
 
 }
 
 /**
  * @brief Returns the equipment item being used.
  */
-EquipmentItem& InventoryItem::get_item() {
+EquipmentItem& EquipmentItemUsage::get_item() {
   return item;
 }
 
 /**
  * @brief Starts using this item.
  */
-void InventoryItem::start() {
+void EquipmentItemUsage::start() {
 
   Debug::check_assertion(variant > 0, StringConcat()
-      << "Trying to use equipment item '" << item.get_name() << "' without having it");
+      << "Trying to use equipment item '" << item.get_name()
+      << "' without having it");
 
   this->finished = false;
   item.notify_using();
@@ -64,21 +64,21 @@ void InventoryItem::start() {
 /**
  * @brief Updates this item when it is being used.
  */
-void InventoryItem::update() {
+void EquipmentItemUsage::update() {
 }
 
 /**
  * @brief Returns whether this item has finished to be used.
  * @return true if this item has finished to be used
  */
-bool InventoryItem::is_finished() {
+bool EquipmentItemUsage::is_finished() {
   return finished;
 }
 
 /**
  * @brief Indicates that the player has finished using this item.
  */
-void InventoryItem::set_finished() {
+void EquipmentItemUsage::set_finished() {
   this->finished = true;
 }
 

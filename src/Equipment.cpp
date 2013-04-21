@@ -18,7 +18,6 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "DialogBox.h"
-#include "InventoryItem.h"
 #include "EquipmentItem.h"
 #include "Map.h"
 #include "entities/Hero.h"

@@ -18,24 +18,24 @@
 #define SOLARUS_HERO_INVENTORY_ITEM_STATE_H
 
 #include "hero/State.h"
-#include "InventoryItem.h"
+#include "EquipmentItemUsage.h"
 
 /**
  * @brief The state "using equipment item" of the hero.
  */
-class Hero::InventoryItemState: public Hero::State {
+class Hero::UsingItemState: public Hero::State {
 
   public:
 
-    InventoryItemState(Hero& hero, EquipmentItem& item);
-    ~InventoryItemState();
+    UsingItemState(Hero& hero, EquipmentItem& item);
+    ~UsingItemState();
 
-    void start(State *previous_state);
+    void start(State* previous_state);
     void update();
 
   private:
 
-    InventoryItem item_usage;     /**< Info about using this equipment item. */
+    EquipmentItemUsage item_usage;     /**< Info about using this equipment item. */
 };
 
 #endif

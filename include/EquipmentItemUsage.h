@@ -25,13 +25,13 @@
  *
  * This class handles the behavior of the item when the player uses it.
  */
-class InventoryItem {
+class EquipmentItemUsage {
 
   public:
 
     // creation and destruction
-    InventoryItem(Game& game, EquipmentItem& item);
-    ~InventoryItem();
+    EquipmentItemUsage(Game& game, EquipmentItem& item);
+    ~EquipmentItemUsage();
 
     // item information
     EquipmentItem& get_item();

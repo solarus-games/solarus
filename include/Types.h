@@ -66,7 +66,7 @@ class GameCommands;
 class Savegame;
 class Equipment;
 class EquipmentItem;
-class InventoryItem;
+class EquipmentItemUsage;
 class DebugKeys;
 class Dungeon;
 class Treasure;

@@ -19,11 +19,11 @@
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "movements/Movement.h"
-#include "EquipmentItem.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
+#include "EquipmentItemUsage.h"
 #include "Game.h"
 #include "Map.h"
-#include "InventoryItem.h"
 #include "Sprite.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -683,8 +683,8 @@ int LuaContext::item_api_set_finished(lua_State* l) {
   Hero& hero = item.get_game()->get_hero();
   if (hero.is_using_item()) {  // Do nothing if the script has already changed the hero's state.
 
-    InventoryItem& item = hero.get_item_being_used();
-    item.set_finished();
+    EquipmentItemUsage& item_usage = hero.get_item_being_used();
+    item_usage.set_finished();
   }
 
   return 0;

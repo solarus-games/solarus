@@ -16,7 +16,6 @@
  */
 #include "hero/State.h"
 #include "hero/SwordSwingingState.h"
-#include "hero/InventoryItemState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Hero.h"
 #include "lowlevel/System.h"
@@ -25,7 +24,6 @@
 #include "Map.h"
 #include "Equipment.h"
 #include "EquipmentItem.h"
-#include "InventoryItem.h"
 #include "Sprite.h"
 #include "KeysEffect.h"
 
@@ -847,7 +845,7 @@ bool Hero::State::is_using_item() {
  * @brief When the hero is using an equipment item, returns that item.
  * @return The current equipment item.
  */
-InventoryItem& Hero::State::get_item_being_used() {
+EquipmentItemUsage& Hero::State::get_item_being_used() {
 
   Debug::die("No item is being used in this state");
   throw;

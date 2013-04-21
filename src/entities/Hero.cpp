@@ -46,7 +46,7 @@
 #include "hero/SwimmingState.h"
 #include "hero/TreasureState.h"
 #include "hero/VictoryState.h"
-#include "hero/InventoryItemState.h"
+#include "hero/UsingItemState.h"
 #include "hero/BoomerangState.h"
 #include "hero/HookshotState.h"
 #include "hero/BowState.h"
@@ -2022,7 +2022,7 @@ bool Hero::is_using_item() {
  * @brief When the hero is using an equipment item, returns that item.
  * @return The current equipment item.
  */
-InventoryItem& Hero::get_item_being_used() {
+EquipmentItemUsage& Hero::get_item_being_used() {
 
   return state->get_item_being_used();
 }
@@ -2188,7 +2188,7 @@ bool Hero::can_start_item(EquipmentItem& item) {
 void Hero::start_item(EquipmentItem& item) {
   Debug::check_assertion(can_start_item(item), StringConcat() <<
       "The hero cannot start using item '" << item.get_name() << "' now.");
-  set_state(new InventoryItemState(*this, item));
+  set_state(new UsingItemState(*this, item));
 }
 
 /**

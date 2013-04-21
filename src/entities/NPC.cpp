@@ -28,7 +28,7 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "Equipment.h"
-#include "InventoryItem.h"
+#include "EquipmentItemUsage.h"
 
 /**
  * @brief Creates an NPC.

@@ -134,7 +134,7 @@ class Hero::State {
     // state specific
     virtual bool is_free();
     virtual bool is_using_item();
-    virtual InventoryItem& get_item_being_used();
+    virtual EquipmentItemUsage& get_item_being_used();
     virtual bool is_grabbing_or_pulling();
     virtual bool is_moving_grabbed_entity();
     virtual void notify_grabbed_entity_collision();

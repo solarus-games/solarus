@@ -60,7 +60,7 @@ class Hero: public MapEntity {
                                      * in deep water or falled into a hole) */
     class StairsState;              /**< the hero is being moved by stairs */
     class VictoryState;             /**< the hero is make a victory sequence with his sword */
-    class InventoryItemState;       /**< the hero is currently using an equipment item */
+    class UsingItemState;           /**< the hero is currently using an equipment item */
     class BoomerangState;           /**< the hero is shooting a boomerang */
     class HookshotState;            /**< the hero is throwing his hookshot */
     class BowState;                 /**< the hero is shooting an arrow with a bow */
@@ -288,7 +288,7 @@ class Hero: public MapEntity {
      */
     bool is_free();
     bool is_using_item();
-    InventoryItem& get_item_being_used();
+    EquipmentItemUsage& get_item_being_used();
     bool is_grabbing_or_pulling();
     bool is_moving_grabbed_entity();
     void notify_grabbed_entity_collision();

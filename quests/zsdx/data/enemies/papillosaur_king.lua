@@ -98,7 +98,7 @@ function enemy:throw_egg()
     -- Don't throw eggs when desperate!
     if self:get_life() > 1 then
       -- Schedule the next one in a few seconds.
-      local delay = 3500 + (math.random(3) * 1000)
+      local duration = 3500 + (math.random(3) * 1000)
       sol.timer.start(self, duration, function() self:egg_phase_soon() end)
     end
     self:go()

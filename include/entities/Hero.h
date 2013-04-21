@@ -60,18 +60,18 @@ class Hero: public MapEntity {
                                      * in deep water or falled into a hole) */
     class StairsState;              /**< the hero is being moved by stairs */
     class VictoryState;             /**< the hero is make a victory sequence with his sword */
-    class InventoryItemState;       /**< the hero is currently using an item from the inventory */
+    class InventoryItemState;       /**< the hero is currently using an equipment item */
     class BoomerangState;           /**< the hero is shooting a boomerang */
     class HookshotState;            /**< the hero is throwing his hookshot */
     class BowState;                 /**< the hero is shooting an arrow with a bow */
     class FreezedState;             /**< the hero cannot move for various possible reasons,
                                      * including an instruction from the script */
 
-    State *state;                   /**< the current internal state */
+    State* state;                   /**< the current internal state */
     std::list<State*> old_states;   /**< previous state objects to delete as soon as possible */
 
     // sprites
-    HeroSprites *sprites;           /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
+    HeroSprites* sprites;           /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // position
     static const int normal_walking_speed;   /**< default speed when walking */
@@ -284,12 +284,11 @@ class Hero: public MapEntity {
      *
      * These functions provide information about the hero's internal state
      * and allow to start actions which may modify this state.
-     * Actions can be triggered by inventory items, entities or scripts.
+     * Actions can be triggered by equipment items, entities or scripts.
      */
     bool is_free();
-    bool is_using_inventory_item();
-    bool can_start_item(EquipmentItem& item);
-    InventoryItem& get_current_inventory_item();
+    bool is_using_item();
+    InventoryItem& get_item_being_used();
     bool is_grabbing_or_pulling();
     bool is_moving_grabbed_entity();
     void notify_grabbed_entity_collision();
@@ -313,6 +312,7 @@ class Hero: public MapEntity {
     void start_lifting(CarriedItem* item_to_lift);
     void start_running();
     void start_grabbing();
+    bool can_start_item(EquipmentItem& item);
     void start_item(EquipmentItem& item);
     void start_boomerang(int max_distance, int speed,
         const std::string& tunic_preparing_animation,

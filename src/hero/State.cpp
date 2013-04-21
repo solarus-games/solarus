@@ -230,7 +230,7 @@ void Hero::State::notify_command_pressed(GameCommands::Command command) {
     notify_direction_command_pressed(3);
     break;
 
-    // use an inventory item
+    // use an equipment item
   case GameCommands::ITEM_1:
     notify_item_command_pressed(1);
     break;
@@ -833,23 +833,23 @@ bool Hero::State::is_free() {
 }
 
 /**
- * @brief Returns whether the hero is using an inventory item in this state.
+ * @brief Returns whether the hero is using an equipment item in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero is using an inventory item
+ * @return true if the hero is using an equipment item.
  */
-bool Hero::State::is_using_inventory_item() {
+bool Hero::State::is_using_item() {
   return false;
 }
 
 /**
- * @brief When the hero is using an inventory item, returns the inventory item.
- * @return the current inventory item
+ * @brief When the hero is using an equipment item, returns that item.
+ * @return The current equipment item.
  */
-InventoryItem& Hero::State::get_current_inventory_item() {
+InventoryItem& Hero::State::get_item_being_used() {
 
-  Debug::die("No inventory item in this state");
+  Debug::die("No item is being used in this state");
   throw;
 }
 
@@ -917,13 +917,14 @@ bool Hero::State::can_start_sword() {
 }
 
 /**
- * @brief Returns whether the hero can use an inventory item in this state.
+ * @brief Returns whether the hero can use an equipment item in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero can use an inventory item in this state
+ * @param item The equipment item to check.
+ * @return true if the hero can use an equipment item in this state.
  */
-bool Hero::State::can_start_inventory_item() {
+bool Hero::State::can_start_item(EquipmentItem& item) {
   return false;
 }
 

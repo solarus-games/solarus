@@ -28,7 +28,7 @@
 Hero::InventoryItemState::InventoryItemState(Hero& hero,
     EquipmentItem& item):
   State(hero),
-  item(hero.get_game(), item) {
+  item_usage(hero.get_game(), item) {
 
 }
 
@@ -40,22 +40,23 @@ Hero::InventoryItemState::~InventoryItemState() {
 
 /**
  * @brief Starts this state.
- * @param previous_state the previous state
+ * @param previous_state The previous state.
  */
-void Hero::InventoryItemState::start(State *previous_state) {
+void Hero::InventoryItemState::start(State* previous_state) {
 
   State::start(previous_state);
 
   bool interaction = false;
-  Detector *facing_entity = hero.get_facing_entity();
+  Detector* facing_entity = hero.get_facing_entity();
   if (facing_entity != NULL && !facing_entity->is_being_removed()) {
-    // maybe the facing entity (e.g. an NPC) accepts an interaction with this particular item
-    interaction = facing_entity->interaction_with_inventory_item(item.get_item());
+    // Maybe the facing entity (e.g. an NPC) accepts an interaction with this
+    // particular item.
+    interaction = facing_entity->interaction_with_item(item_usage.get_item());
   }
 
   if (!interaction) {
     // no interaction occurred with the facing entity: use the item normally
-    item.start();
+    item_usage.start();
   }
 }
 
@@ -66,28 +67,10 @@ void Hero::InventoryItemState::update() {
 
   State::update();
 
-  item.update();
-  if (item.is_finished() && is_current_state()) {
+  item_usage.update();
+  if (item_usage.is_finished() && is_current_state()) {
     // if the state was not modified by the item, return to the normal state
     hero.set_state(new FreeState(hero));
   }
-}
-
-/**
- * @brief Returns whether the hero is using an inventory item in this state.
- * @return true if the hero is using an inventory item
- */
-bool Hero::InventoryItemState::is_using_inventory_item() {
-
-  return true;
-}
-
-/**
- * @brief When the hero is using an inventory item, returns the inventory item.
- * @return the current inventory item
- */
-InventoryItem& Hero::InventoryItemState::get_current_inventory_item() {
-
-  return item;
 }
 

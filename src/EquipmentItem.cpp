@@ -349,10 +349,9 @@ void EquipmentItem::notify_amount_changed(int amount) {
 }
 
 /**
- * @brief Notifies the script that the hero is using this item from his inventory.
- * @param inventory_item The inventory item.
+ * @brief Notifies the script that the hero is using this equipment item.
  */
-void EquipmentItem::notify_inventory_item_used(InventoryItem& inventory_item) {
+void EquipmentItem::notify_using() {
 
   get_lua_context().item_on_using(*this);
 }

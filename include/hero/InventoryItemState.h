@@ -21,7 +21,7 @@
 #include "InventoryItem.h"
 
 /**
- * @brief The state "inventory item" of the hero.
+ * @brief The state "using equipment item" of the hero.
  */
 class Hero::InventoryItemState: public Hero::State {
 
@@ -32,12 +32,10 @@ class Hero::InventoryItemState: public Hero::State {
 
     void start(State *previous_state);
     void update();
-    bool is_using_inventory_item();
-    InventoryItem& get_current_inventory_item();
 
   private:
 
-    InventoryItem item;         /**< the inventory item that the hero is currently using */
+    InventoryItem item_usage;     /**< Info about using this equipment item. */
 };
 
 #endif

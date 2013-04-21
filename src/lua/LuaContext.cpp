@@ -2230,7 +2230,7 @@ void LuaContext::on_pickable_movement_changed(Pickable& pickable, Movement& move
 
 /**
  * @brief Calls the on_variant_changed() method of the object on top of the stack.
- * @param enemy Variant of an inventory item.
+ * @param variant Variant of an equipment item.
  */
 void LuaContext::on_variant_changed(int variant) {
 

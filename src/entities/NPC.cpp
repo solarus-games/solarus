@@ -287,15 +287,16 @@ void NPC::call_script_hero_interaction() {
 }
 
 /**
- * @brief Notifies this detector that the player is interacting by using an inventory item.
+ * @brief Notifies this detector that the player is interacting by using an
+ * equipment item.
  *
- * This function is called when the player uses an inventory item
+ * This function is called when the player uses an equipment item
  * while the hero is facing this NPC.
  *
  * @param item_used The equipment item used.
  * @return true if an interaction occured.
  */
-bool NPC::interaction_with_inventory_item(EquipmentItem& item_used) {
+bool NPC::interaction_with_item(EquipmentItem& item_used) {
 
   bool interaction_occured;
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {

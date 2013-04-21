@@ -2010,21 +2010,21 @@ bool Hero::is_free() {
 }
 
 /**
- * @brief Returns whether the hero is currently using an inventory item.
- * @return true if the hero is using an inventory item
+ * @brief Returns whether the hero is currently using an equipment item.
+ * @return true if the hero is using an equipment item.
  */
-bool Hero::is_using_inventory_item() {
+bool Hero::is_using_item() {
 
-  return state->is_using_inventory_item();
+  return state->is_using_item();
 }
 
 /**
- * @brief When the hero is using an inventory item, returns the inventory item.
- * @return the current inventory item
+ * @brief When the hero is using an equipment item, returns that item.
+ * @return The current equipment item.
  */
-InventoryItem& Hero::get_current_inventory_item() {
+InventoryItem& Hero::get_item_being_used() {
 
-  return state->get_current_inventory_item();
+  return state->get_item_being_used();
 }
 
 /**
@@ -2149,7 +2149,7 @@ void Hero::start_lifting(CarriedItem *item_to_lift) {
  */
 void Hero::start_running() {
 
-  // The running state may be triggered by the action command or an inventory
+  // The running state may be triggered by the action command or an
   // item command.
   GameCommands::Command command;
   if (is_free()) {
@@ -2178,7 +2178,7 @@ bool Hero::can_start_item(EquipmentItem& item) {
 
   return item.is_assignable()
       && item.get_variant() > 0
-      && state->can_start_inventory_item();
+      && state->can_start_item(item);
 }
 
 /**

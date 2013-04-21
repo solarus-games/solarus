@@ -24,7 +24,7 @@
  * @brief Associate to each game key its current effect on the game.
  *
  * This class associates to each game key (the action key,
- * the sword key, the pause key, and the two inventory item keys)
+ * the sword key, the pause key, and the two equipment item keys)
  * the current effect of pressing that key.
  *
  * When the user presses one of those keys, the engine calls

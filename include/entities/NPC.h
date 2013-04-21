@@ -93,7 +93,7 @@ class NPC: public Detector {
 
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_action_command_pressed();
-    bool interaction_with_inventory_item(EquipmentItem& item);
+    bool interaction_with_item(EquipmentItem& item);
     void notify_position_changed();
     bool can_be_lifted();
 

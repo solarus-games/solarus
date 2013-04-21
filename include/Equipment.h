@@ -29,7 +29,7 @@ struct lua_State;
  * This class gives access to the equipment data saved and the properties of items
  * as defined in items.dat.
  * You should call this class to get information about the current equipment
- * (sword, money, inventory...) and to modify it.
+ * (sword, money, items...) and to modify it.
  */
 class Equipment {
 

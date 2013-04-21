@@ -72,7 +72,7 @@ class EquipmentItem: public ExportableToLua {
     void notify_map_changed(Map& map);
     void notify_amount_changed(int amount);
     void notify_variant_changed(int variant);
-    void notify_inventory_item_used(InventoryItem& inventory_item);
+    void notify_using();
     void notify_ability_used(const std::string& ability_name);
     void notify_pickable_appeared(Pickable& pickable);
     void notify_movement_changed(Pickable& pickable);

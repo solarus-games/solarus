@@ -679,12 +679,12 @@ int LuaContext::item_api_set_finished(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
-  // retrieve the inventory item from the hero
+  // Retrieve the equipment item from the hero
   Hero& hero = item.get_game()->get_hero();
-  if (hero.is_using_inventory_item()) {  // Do nothing if the script has already changed the hero's state.
+  if (hero.is_using_item()) {  // Do nothing if the script has already changed the hero's state.
 
-    InventoryItem& inventory_item = hero.get_current_inventory_item();
-    inventory_item.set_finished();
+    InventoryItem& item = hero.get_item_being_used();
+    item.set_finished();
   }
 
   return 0;

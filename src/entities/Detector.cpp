@@ -352,21 +352,20 @@ void Detector::notify_action_command_pressed() {
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by using an inventory item.
- * 
- * This function is called when the player uses an inventory item
+ * @brief Notifies this detector that the player is interacting with it by
+ * using an equipment item.
+ *
+ * This function is called when the player uses an equipment item
  * while the hero is facing this detector.
- * The exact conditions where this function is called depend on the type of inventory item.
- * For some items, the function is called as soon as the player uses the item.
- * For others, it is called after the player confirms the action in a dialog box.
  *
  * By default, nothing happens.
- * Redefine your function in the subclasses to make this entity react to an inventory item.
+ * Redefine your function in the subclasses to make your entity react to an
+ * equipment item.
  *
  * @param item The equipment item used.
  * @return true if an interaction occured.
  */
-bool Detector::interaction_with_inventory_item(EquipmentItem& item) {
+bool Detector::interaction_with_item(EquipmentItem& item) {
   return false;
 }
 

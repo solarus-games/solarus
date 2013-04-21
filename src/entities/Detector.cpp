@@ -363,10 +363,10 @@ void Detector::notify_action_command_pressed() {
  * By default, nothing happens.
  * Redefine your function in the subclasses to make this entity react to an inventory item.
  *
- * @param item the inventory item used
- * @return true if an interaction occured
+ * @param item The equipment item used.
+ * @return true if an interaction occured.
  */
-bool Detector::interaction_with_inventory_item(InventoryItem &item) {
+bool Detector::interaction_with_inventory_item(EquipmentItem& item) {
   return false;
 }
 

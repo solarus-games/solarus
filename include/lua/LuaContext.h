@@ -691,6 +691,7 @@ class LuaContext {
       hero_api_start_jumping,
       hero_api_start_treasure,  // TODO don't die if the savegame variable is invalid
       hero_api_start_victory,
+      hero_api_start_item,
       hero_api_start_boomerang,
       hero_api_start_bow,
       hero_api_start_hookshot,

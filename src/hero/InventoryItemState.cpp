@@ -22,11 +22,13 @@
 
 /**
  * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param item_name name of the inventory item to use
+ * @param hero The hero controlled by this state.
+ * @param item The equipment item to use.
  */
-Hero::InventoryItemState::InventoryItemState(Hero &hero, const std::string &item_name):
-  State(hero), item(hero.get_game(), item_name) {
+Hero::InventoryItemState::InventoryItemState(Hero& hero,
+    EquipmentItem& item):
+  State(hero),
+  item(hero.get_game(), item) {
 
 }
 
@@ -48,7 +50,7 @@ void Hero::InventoryItemState::start(State *previous_state) {
   Detector *facing_entity = hero.get_facing_entity();
   if (facing_entity != NULL && !facing_entity->is_being_removed()) {
     // maybe the facing entity (e.g. an NPC) accepts an interaction with this particular item
-    interaction = facing_entity->interaction_with_inventory_item(item);
+    interaction = facing_entity->interaction_with_inventory_item(item.get_item());
   }
 
   if (!interaction) {

@@ -165,6 +165,20 @@ Makes the hero brandish his sword for a victory.
   somewhere else. To restore the control to the player, call
   \ref lua_api_hero_unfreeze "hero:unfreeze()".
 
+\subsection lua_api_hero_start_item hero:start_item(item)
+
+Makes the hero use an \ref lua_api_item "equipment item".
+
+The \ref lua_api_item_on_using "item:on_using()" event will be called and
+the player won't be able to control the hero until you call
+\ref lua_api_item_set_finished "item:set_finished()". See the documentation
+of \ref lua_api_item "equipment items" for more information.
+
+If the player is not allowed to use the item now
+(because he does not have it, because the item cannot be used explicitly,
+or because the hero is currently busy in another state), then nothing happens.
+- \c item (\ref lua_api_item "item"): The equipment item to start using.
+
 \subsection lua_api_hero_start_boomerang hero:start_boomerang(max_distance, speed, tunic_preparing_animation, sprite_name)
 
 Makes the hero shoot a \ref lua_api_boomerang "boomerang".

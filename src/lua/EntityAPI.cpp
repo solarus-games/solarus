@@ -129,6 +129,7 @@ void LuaContext::register_entity_module() {
       { "start_jumping", hero_api_start_jumping },
       { "start_treasure", hero_api_start_treasure },
       { "start_victory", hero_api_start_victory},
+      { "start_item", hero_api_start_item },
       { "start_boomerang", hero_api_start_boomerang },
       { "start_bow", hero_api_start_bow },
       { "start_hookshot", hero_api_start_hookshot },
@@ -990,6 +991,23 @@ int LuaContext::hero_api_start_victory(lua_State* l) {
   }
 
   hero.start_victory(callback_ref);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_start_item.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_item(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  EquipmentItem& item = check_item(l, 2);
+
+  if (hero.can_start_item(item)) {
+    hero.start_item(item);
+  }
 
   return 0;
 }

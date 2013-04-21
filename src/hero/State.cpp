@@ -343,12 +343,8 @@ void Hero::State::notify_item_command_pressed(int slot) {
 
   EquipmentItem* item = get_equipment().get_item_assigned(slot);
 
-  if (item != NULL
-      && item->is_assignable()
-      && item->get_variant() > 0
-      && can_start_inventory_item()) {
-
-    hero.set_state(new InventoryItemState(hero, item->get_name()));
+  if (item != NULL && hero.can_start_item(*item)) {
+    hero.start_item(*item);
   }
 }
 

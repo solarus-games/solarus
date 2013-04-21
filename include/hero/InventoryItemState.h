@@ -25,19 +25,19 @@
  */
 class Hero::InventoryItemState: public Hero::State {
 
-  private:
-
-    InventoryItem item;			/**< the inventory item that the hero is currently using */
-
   public:
 
-    InventoryItemState(Hero &hero, const std::string &item_name);
+    InventoryItemState(Hero& hero, EquipmentItem& item);
     ~InventoryItemState();
 
     void start(State *previous_state);
     void update();
     bool is_using_inventory_item();
     InventoryItem& get_current_inventory_item();
+
+  private:
+
+    InventoryItem item;         /**< the inventory item that the hero is currently using */
 };
 
 #endif

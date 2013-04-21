@@ -292,21 +292,20 @@ void NPC::call_script_hero_interaction() {
  * This function is called when the player uses an inventory item
  * while the hero is facing this NPC.
  *
- * @param inventory_item the inventory item used
- * @return true if an interaction occured
+ * @param item_used The equipment item used.
+ * @return true if an interaction occured.
  */
-bool NPC::interaction_with_inventory_item(InventoryItem& inventory_item) {
+bool NPC::interaction_with_inventory_item(EquipmentItem& item_used) {
 
   bool interaction_occured;
-  EquipmentItem& equipment_item_used = get_equipment().get_item(inventory_item.get_name());
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {
-    EquipmentItem& equipment_item_to_notify = get_equipment().get_item(item_name);
+    EquipmentItem& item_to_notify = get_equipment().get_item(item_name);
     interaction_occured = get_lua_context().item_on_npc_interaction_item(
-        equipment_item_to_notify, *this, equipment_item_used);
+        item_to_notify, *this, item_used);
   }
   else {
     interaction_occured = get_lua_context().npc_on_interaction_item(
-        *this, equipment_item_used);
+        *this, item_used);
   }
 
   return interaction_occured;

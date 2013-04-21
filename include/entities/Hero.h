@@ -288,6 +288,7 @@ class Hero: public MapEntity {
      */
     bool is_free();
     bool is_using_inventory_item();
+    bool can_start_item(EquipmentItem& item);
     InventoryItem& get_current_inventory_item();
     bool is_grabbing_or_pulling();
     bool is_moving_grabbed_entity();
@@ -312,6 +313,7 @@ class Hero: public MapEntity {
     void start_lifting(CarriedItem* item_to_lift);
     void start_running();
     void start_grabbing();
+    void start_item(EquipmentItem& item);
     void start_boomerang(int max_distance, int speed,
         const std::string& tunic_preparing_animation,
         const std::string& sprite_name);

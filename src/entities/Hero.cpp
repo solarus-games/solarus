@@ -46,6 +46,7 @@
 #include "hero/SwimmingState.h"
 #include "hero/TreasureState.h"
 #include "hero/VictoryState.h"
+#include "hero/InventoryItemState.h"
 #include "hero/BoomerangState.h"
 #include "hero/HookshotState.h"
 #include "hero/BowState.h"
@@ -58,6 +59,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
 
@@ -2165,6 +2167,28 @@ void Hero::start_running() {
  */
 void Hero::start_grabbing() {
   set_state(new GrabbingState(*this));
+}
+
+/**
+ * @brief Returns whether the hero can starts using an equipment item.
+ * @param item The equipment item to use.
+ * @return true if this equipment item can currently be used.
+ */
+bool Hero::can_start_item(EquipmentItem& item) {
+
+  return item.is_assignable()
+      && item.get_variant() > 0
+      && state->can_start_inventory_item();
+}
+
+/**
+ * @brief Starts using an equipment item.
+ * @param item The equipment item to use.
+ */
+void Hero::start_item(EquipmentItem& item) {
+  Debug::check_assertion(can_start_item(item), StringConcat() <<
+      "The hero cannot start using item '" << item.get_name() << "' now.");
+  set_state(new InventoryItemState(*this, item));
 }
 
 /**

@@ -21,39 +21,35 @@
 #include "Savegame.h"
 
 /**
- * @brief Represents an item from the inventory that the player can use.
+ * @brief Represents an equipment item being used by the hero.
  *
  * This class handles the behavior of the item when the player uses it.
- * It only includes the items displayed on the inventory submenu
- * (accessible when the game is paused) and that can be assigned to an item key.
  */
 class InventoryItem {
-
-  private:
-
-    Game &game;			/**< the game this item is used in */
-    std::string item_name;	/**< name of the item being used */
-    int variant;		/**< the possession state of this item when it is used */
-
-    // state
-    bool finished;		/**< true if we have finished using this item or not using it */
 
   public:
 
     // creation and destruction
-    InventoryItem(Game &game, const std::string &item_name);
+    InventoryItem(Game& game, EquipmentItem& item);
     ~InventoryItem();
 
     // item information
-    const std::string& get_name();
-    int get_variant();
+    EquipmentItem& get_item();
 
     // state
     void start();
     void update();
-    void set_map(Map &map);
     bool is_finished();
     void set_finished();
+
+  private:
+
+    Game& game;         /**< the game this item is used in */
+    EquipmentItem& item;    /**< name of the item being used */
+    int variant;        /**< the possession state of this item when it is used */
+
+    // state
+    bool finished;      /**< true if we have finished using this item or not using it */
 };
 
 #endif

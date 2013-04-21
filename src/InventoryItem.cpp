@@ -22,15 +22,15 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Creates a new inventory item.
+ * @brief Creates a new item to be used.
  * @param game The game.
- * @param item_name Id of the item to create.
+ * @param item The item to use.
  */
-InventoryItem::InventoryItem(Game& game, const std::string& item_name):
+InventoryItem::InventoryItem(Game& game, EquipmentItem& item):
 
   game(game),
-  item_name(item_name),
-  variant(game.get_equipment().get_item(item_name).get_variant()),
+  item(item),
+  variant(item.get_variant()),
   finished(true) {
 
 }
@@ -43,19 +43,10 @@ InventoryItem::~InventoryItem() {
 }
 
 /**
- * @brief Returns the name of this inventory item.
- * @return the name of this inventory item
+ * @brief Returns the equipment item being used.
  */
-const std::string& InventoryItem::get_name() {
-  return item_name;
-}
-
-/**
- * @brief Returns the variant of this inventory item that the player has.
- * @return the variant
- */
-int InventoryItem::get_variant() {
-  return variant;
+EquipmentItem& InventoryItem::get_item() {
+  return item;
 }
 
 /**
@@ -64,10 +55,10 @@ int InventoryItem::get_variant() {
 void InventoryItem::start() {
 
   Debug::check_assertion(variant > 0, StringConcat()
-      << "Trying to use inventory item '" << item_name << "' without having it");
+      << "Trying to use inventory item '" << item.get_name() << "' without having it");
 
   this->finished = false;
-  game.get_equipment().get_item(item_name).notify_inventory_item_used(*this);
+  item.notify_inventory_item_used(*this);
 }
 
 /**
@@ -89,16 +80,5 @@ bool InventoryItem::is_finished() {
  */
 void InventoryItem::set_finished() {
   this->finished = true;
-}
-
-/**
- * @brief Sets the current map.
- *
- * This function is called when the map is changed while the player is still using this item.
- *
- * @param map the map
- */
-void InventoryItem::set_map(Map &map) {
-  
 }
 

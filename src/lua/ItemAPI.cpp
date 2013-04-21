@@ -684,9 +684,6 @@ int LuaContext::item_api_set_finished(lua_State* l) {
   if (hero.is_using_inventory_item()) {  // Do nothing if the script has already changed the hero's state.
 
     InventoryItem& inventory_item = hero.get_current_inventory_item();
-    Debug::check_assertion(inventory_item.get_name() == item.get_name(),
-        StringConcat() << "Trying to finish inventory item '" << item.get_name()
-        << "' but the current inventory item is '" << inventory_item.get_name() << "'");
     inventory_item.set_finished();
   }
 

@@ -637,8 +637,15 @@ public abstract class MapEntity extends Observable {
      */
     public void setAlignedToGrid() {
         int x = positionInMap.x + 4;
+        if (x < 0) {
+            x -= 8;
+        }
         positionInMap.x = x - x % 8;
+
         int y = positionInMap.y + 4;
+        if (y < 0) {
+            y -= 8;
+        }
         positionInMap.y = y - y % 8;
 
         setChanged();

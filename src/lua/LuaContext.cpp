@@ -1289,6 +1289,18 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   ExportableToLua* userdata =
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
 
+  // Remove the userdata from the list of userdata.
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.all_userdata");
+                                  // udata all_udata
+  lua_pushlightuserdata(l, &userdata);
+                                  // udata all_udata lightudata
+  lua_pushnil(l);
+                                  // udata all_udata lightudata nil
+  lua_settable(l, -3);
+                                  // udata all_udata
+  lua_pop(l, 1);
+                                  // udata
+
   userdata->decrement_refcount();
   if (userdata->get_refcount() == 0) {
     delete userdata;

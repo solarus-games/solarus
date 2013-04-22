@@ -6103,7 +6103,7 @@ buddy Billy the
 Reckless, greatest
 hero of all times?!
 The princess and the
-eight childs are not
+eight children are not
 here anymore.
 They did find shelter
 in my palace, but I

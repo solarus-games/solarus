@@ -28,8 +28,9 @@ Changes:
 
 * Rewrite the Lua scripting API from scratch. Cleaner, real datatypes, much
 easier to use, less error-prone.
-* Add support of scripted menus. They are no longer hardcoded into the engine.
-* Data files are also in Lua now (no more ini files or custom text files).
+* Add support of scripted menus. Menus like the title screen, the savegames
+menu, the pause menu and the HUD are no longer hardcoded into the engine.
+* Some data files are also in Lua now (no more ini files).
 * Add conversion scripts to upgrade existing data files (but not scripts).
 * Fix infinite explosions of bomb flowers.
 

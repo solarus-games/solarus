@@ -2,6 +2,8 @@ zsdx-1.6 (under development)
 
 * Use solarus 1.0.0.
 * Fix a door bug that could get the hero stuck in empty rooms (#114).
+* Dungeon 1: keep the final door open when coming back in the boss room.
+* Savegames menu: the joypad was not working to delete a savegame.
 
 zsdx-1.5.2 (under development)
 

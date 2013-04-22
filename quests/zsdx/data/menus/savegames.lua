@@ -529,7 +529,7 @@ end
 
 function savegame_menu:joypad_button_pressed_phase_confirm_erase(button)
 
-  -- To erase a savegame file, we don't allow joypad buttons.
+  return self:key_pressed_phase_confirm_erase("space")
 end
 
 function savegame_menu:direction_pressed_phase_confirm_erase(direction8)

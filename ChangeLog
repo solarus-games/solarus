@@ -3,8 +3,7 @@ solarus-1.0.0 (under development)
 The "I love Lua" release.
 
 This is a major release. The version number switches from 0.x to 1.x
-because the scripting API is now complete and will remain more stable in the
-future.
+because there is a brand new Lua scripting API.
 I now consider that Solarus can be used to create your own Zelda-like
 games in decent conditions.
 By "in decent conditions", I essentially mean: with a clean and stable
@@ -12,7 +11,7 @@ scripting API. Clean because there are nice datatypes now and the API is much
 easier to use, less error-prone and more with the Lua spirit.
 Stable because future versions of the scripting API will now try to keep
 compatibility with existing scripts. Any API change that breaks compatibility
-will now be clearly documented and conversion scripts will be provided.
+will now be clearly documented.
 
 Data files and scripts written for solarus 0.x are not compatible with
 solarus 1.x.
@@ -27,10 +26,15 @@ unstable, has totally changed).
 Changes:
 
 * Rewrite the Lua scripting API from scratch. Cleaner, real datatypes, much
-easier to use, less error-prone.
+easier to use, less error-prone, much more features, fully documentated.
+* All scripts now live in a single Lua world.
 * Add support of scripted menus. Menus like the title screen, the savegames
 menu, the pause menu and the HUD are no longer hardcoded into the engine.
-* Some data files are also in Lua now (no more ini files).
+* Doors, chests, teletransporters and destinations are now much more flexible
+and customizable.
+* Except tiles, all map entities can now have a name. The name is now optional.
+* Change the format of some data files, including maps and tilesets.
+* No more ini data files (removed the dependency to SimpleIni).
 * Add conversion scripts to upgrade existing data files (but not scripts).
 * Fix infinite explosions of bomb flowers.
 

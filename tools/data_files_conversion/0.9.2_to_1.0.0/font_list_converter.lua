@@ -1,8 +1,7 @@
 -- This module reads a font list file with the format of solarus 0.9.2
--- (text/fonts.dat) and converts it into the format of solarus 1.0.0
--- (text/fonts.dat).
+-- (text/fonts.dat) and converts it into the format of solarus 1.0.0.
 
--- The old format (solarus 0.9.0) is an ini file and the new one is a Lua file.
+-- The old format (solarus 0.9.2) is an ini file and the new one is a Lua file.
 
 local ini_parser = require("ini_parser")
 local font_list_converter = {}

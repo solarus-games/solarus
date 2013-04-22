@@ -52,7 +52,7 @@ local function convert_sensor_subtype(subtype, entity)
     end
   end
 
-  io.stderr:write("Warning: Map " .. metadata.map_id .. ", line " .. line_number .. " (entity '" .. name
+  io.stderr:write("Info: Map " .. metadata.map_id .. ", line " .. line_number .. " (entity '" .. name
       .. ")': sensors no longer have built-in subtypes. You will have to script its behavior.\n") 
   return nil
 end
@@ -64,11 +64,14 @@ local function convert_chest_is_big(is_big_chest, entity)
   -- First determine x, y because coordinates need to be fixed
   -- (the origin point has changed).
   local index_x, index_y
+  local name = ""
   for i, v in ipairs(entity) do
     if v.key == "x" then
       index_x = i
     elseif v.key == "y" then
       index_y = i
+    elseif v.key == "name" then
+      name = v.value
     end
   end
 
@@ -92,10 +95,10 @@ local function convert_chest_is_big(is_big_chest, entity)
       error("Line " .. line_number .. ": Big chest are only allowed in dungeons")
     end
 
-    io.stderr:write("Warning: Map " .. metadata.map_id .. ", line "
-        .. line_number .. " (entity '" .. name .. ")': Big chests have now "
-        .. "the same collision box as normal ones (16x16). Use tiles to make "
-        .. "sure your chest is not travserable.\n")
+    io.stderr:write("Info: Map " .. metadata.map_id .. ", line "
+        .. line_number .. " (entity '" .. name
+        .. "'): Big chests have now the same collision box as normal ones "
+        .. "(16x16). Use tiles to make sure your chest is not travserable.\n")
 
     return {
       sprite = "entities/big_chest",

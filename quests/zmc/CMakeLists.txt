@@ -6,11 +6,11 @@ set(quest_name "zmc")
 # data files list
 file(GLOB_RECURSE data_files
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/data
-  *.spc *.ogg *.it *.png *.dat *.lua *.ttf *.fon)
+  *.spc *.ogg *.it *.png *.dat *.lua *.ttf *.ttc *.fon)
 
 file(GLOB_RECURSE data_files_prefixed
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  *.spc *.ogg *.it *.png *.dat *.lua *.ttf *.fon)
+  *.spc *.ogg *.it *.png *.dat *.lua *.ttf *.ttc *.fon)
 
 # add other data to zip archive
 add_custom_command(

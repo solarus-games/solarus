@@ -28,6 +28,7 @@ function converter.convert(quest_path)
   local group = all_groups.info
   if group ~= nil then
     output_file:write("quest{\n")
+    output_file:write("  solarus_version = \"1.0\",\n")
     if group.write_dir ~= nil then
       output_file:write("  write_dir = \"" .. group.write_dir .. "\",\n")
     end

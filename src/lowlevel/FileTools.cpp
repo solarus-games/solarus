@@ -50,6 +50,8 @@ void FileTools::initialize(int argc, char** argv) {
     quest_path = argv[argc - 1];
   }
 
+  std::cout << "Opening quest '" << quest_path << "'" << std::endl;
+
   // Now, quest_path may be the path defined as command-line argument,
   // the path defined during the build process, or the current directory
   // if nothing was specified.

@@ -22,6 +22,48 @@
 #include "lua/LuaContext.h"
 #include <lua.hpp>
 
+namespace {
+
+std::string solarus_required_version;
+
+/**
+ * @brief Checks that the quest is compatible with the current version of Solarus.
+ * @param solarus_required_version Version of the quest
+ */
+void check_version_compatibility(std::string solarus_required_version) {
+
+  if (solarus_required_version.empty()) {
+    Debug::die("No Solarus version is specified in your quest.dat file!");
+  }
+
+  int dot_index_1 = solarus_required_version.find('.');
+  std::istringstream iss(solarus_required_version.substr(0, dot_index_1));
+  int required_major_version = 0;
+  iss >> required_major_version;
+
+  int dot_index_2 = solarus_required_version.find('.', dot_index_1 + 1);
+  std::istringstream iss2(solarus_required_version.substr(dot_index_1 + 1, dot_index_2));
+  int required_minor_version = 0;
+  iss2 >> required_minor_version;
+
+  // The third digit of the version (patch) is ignored because compatibility
+  // is not broken by patches.
+
+  // For now, we assume that any mismatch of major or minor version (first
+  // and second digits) breaks compatibility and we just die.
+  // This may change in the future, because all minor versions won't
+  // necessarily break compatibility.
+  if (required_major_version != SOLARUS_MAJOR_VERSION ||
+      required_minor_version != SOLARUS_MINOR_VERSION) {
+    Debug::die(StringConcat() <<
+        "This quest is made for Solarus " << required_major_version << "."
+        << required_minor_version << ".x but you are running Solarus "
+        << SOLARUS_VERSION);
+  }
+}
+
+}
+
 /**
  * @brief Creates the quest properties loader.
  * @param main_loop The quest main loop.
@@ -60,6 +102,8 @@ void QuestProperties::load() {
     lua_pop(l, 1);
   }
 
+  check_version_compatibility(solarus_required_version);
+
   lua_close(l);
 }
 
@@ -67,11 +111,16 @@ int QuestProperties::l_quest(lua_State* l) {
 
   // Retrieve the quest properties from the table parameter.
   luaL_checktype(l, 1, LUA_TTABLE);
-  const std::string& quest_write_dir = LuaContext::opt_string_field(l, 1, "write_dir", "");
-  const std::string& title_bar = LuaContext::opt_string_field(l, 1, "title_bar", "Solarus");
+  solarus_required_version = LuaContext::opt_string_field(l, 1, "solarus_version", "");
+  const std::string& quest_write_dir =
+      LuaContext::opt_string_field(l, 1, "write_dir", "");
+  const std::string& title_bar =
+      LuaContext::opt_string_field(l, 1, "title_bar", "");
 
   FileTools::set_quest_write_dir(quest_write_dir);
-  VideoManager::get_instance()->set_window_title(title_bar);
+  if (!title_bar.empty()) {
+    VideoManager::get_instance()->set_window_title(title_bar);
+  }
 
   return 0;
 }

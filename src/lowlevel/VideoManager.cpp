@@ -106,7 +106,8 @@ VideoManager::VideoManager(bool disable_window):
   screen_surface(NULL) {
 
   // initialize the window
-  set_window_title("Solarus");
+  const std::string window_title = std::string("Solarus ") + SOLARUS_VERSION;
+  set_window_title(window_title);
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 

@@ -45,6 +45,8 @@ static void print_help(int argc, char** argv);
  */
 int main(int argc, char **argv) {
 
+  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
+
   // check the -help option
   bool help = false;
   for (int i = 1; i < argc && !help; ++i) {

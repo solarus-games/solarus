@@ -23,6 +23,14 @@
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
 
+// Solarus version.
+#define SOLARUS_MAJOR_VERSION 1
+#define SOLARUS_MINOR_VERSION 0
+#define SOLARUS_PATCH_VERSION 0
+#define SOLARUS_STRINGIFY1(x) #x
+#define SOLARUS_STRINGIFY(x) SOLARUS_STRINGIFY1(x)
+#define SOLARUS_VERSION (SOLARUS_STRINGIFY(SOLARUS_MAJOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_MINOR_VERSION) "." SOLARUS_STRINGIFY(SOLARUS_PATCH_VERSION))
+
 // Define the current platform constants on Apple Systems.
 #if defined(__APPLE__)
 #  include "TargetConditionals.h"

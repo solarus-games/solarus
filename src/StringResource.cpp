@@ -44,7 +44,7 @@ StringResource::~StringResource() {
 void StringResource::initialize() {
 
   strings.clear();
-  std::istream &file = FileTools::data_file_open("text/strings.dat", true);
+  std::istream& file = FileTools::data_file_open("text/strings.dat", true);
   std::string line;
 
   // read each line
@@ -54,7 +54,7 @@ void StringResource::initialize() {
     i++;
 
     // ignore empty lines or lines starting with '#'
-    if (line.size() == 0 || line[0] == '#') {
+    if (line.size() == 0 || line[0] == '\r' || line[0] == '#') {
       continue;
     }
  

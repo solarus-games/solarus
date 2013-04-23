@@ -46,7 +46,7 @@ SpriteAnimationSet::SpriteAnimationSet(const std::string& id) {
   // read each animation
   while (std::getline(sprite_file, line)) {
 
-    if (line.size() == 0) {
+    if (line.size() == 0 || line[0] == '\r') {
       continue;
     }
 

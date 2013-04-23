@@ -388,7 +388,7 @@ void Equipment::load_items() {
 
   while (std::getline(database_file, line)) {
 
-    if (line.size() == 0) {
+    if (line.size() == 0 || line[0] == '\r') {
       continue;
     }
 

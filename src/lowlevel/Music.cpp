@@ -354,7 +354,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
     bytes_read = ov_read(&ogg_file, ((char*) raw_data) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
     if (bytes_read < 0) {
       if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
-        std::cout << "Error while decoding ogg chunk: " << bytes_read << std::endl;
+        std::cerr << "Error while decoding ogg chunk: " << bytes_read << std::endl;
       }
     }
     else {
@@ -437,7 +437,7 @@ bool Music::start() {
 
       int error = ov_open_callbacks(&ogg_mem, &ogg_file, NULL, 0, Sound::ogg_callbacks);
       if (error) {
-        std::cout << "Cannot load music file from memory: error " << error << std::endl;
+        std::cerr << "Cannot load music file from memory: error " << error << std::endl;
       }
       else {
         for (int i = 0; i < nb_buffers; i++) {

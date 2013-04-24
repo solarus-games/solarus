@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <iostream> // std::cout
+#include <iostream> // std::cerr
 #include <cstring>  // memcpy
 #include <cmath>
 #include <sstream>
@@ -96,19 +96,19 @@ void Sound::initialize(int argc, char** argv) {
 
   device = alcOpenDevice(NULL);
   if (!device) {
-    std::cout << "Cannot open audio device" << std::endl;
+    std::cerr << "Cannot open audio device" << std::endl;
     return;
   }
 
   ALCint attr[] = { ALC_FREQUENCY, 32000, 0 }; // 32 KHz is the SPC output sampling rate
   context = alcCreateContext(device, attr);
   if (!context) {
-    std::cout << "Cannot create audio context" << std::endl;
+    std::cerr << "Cannot create audio context" << std::endl;
     alcCloseDevice(device);
     return;
   }
   if (!alcMakeContextCurrent(context)) {
-    std::cout << "Cannot activate audio context" << std::endl;
+    std::cerr << "Cannot activate audio context" << std::endl;
     alcDestroyContext(context);
     alcCloseDevice(device);
     return;
@@ -371,7 +371,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
   int error = ov_open_callbacks(&mem, &file, NULL, 0, ogg_callbacks);
 
   if (error) {
-    std::cout << "Cannot load sound file from memory: error " << error << std::endl;
+    std::cerr << "Cannot load sound file from memory: error " << error << std::endl;
   }
   else {
 
@@ -388,7 +388,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
     }
 
     if (format == AL_NONE) {
-      std::cout << "Invalid audio format" << std::endl;
+      std::cerr << "Invalid audio format" << std::endl;
     }
     else {
 
@@ -401,7 +401,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
       do {
         bytes_read = ov_read(&file, samples_buffer, 4096, 0, 2, 1, &bitstream);
         if (bytes_read < 0) {
-          std::cout << "Error while decoding ogg chunk: " << bytes_read << std::endl;
+          std::cerr << "Error while decoding ogg chunk: " << bytes_read << std::endl;
         }
         else {
           total_bytes_read += bytes_read;
@@ -426,7 +426,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
       alGenBuffers(1, &buffer);
       alBufferData(buffer, AL_FORMAT_STEREO16, (ALshort*) &samples[0], ALsizei(total_bytes_read), sample_rate);
       if (alGetError() != AL_NO_ERROR) {
-        std::cout << "Cannot copy the sound samples into buffer " << buffer << "\n";
+        std::cerr << "Cannot copy the sound samples into buffer " << buffer << "\n";
         buffer = AL_NONE;
       }
     }

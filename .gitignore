@@ -1,6 +1,5 @@
 *~
 *.swp
-*.luac
 *.class
 *.pyc
 .DS_Store
@@ -26,11 +25,4 @@ cmake_install.cmake
 libsolarus_static.a
 /solarus
 error.txt
-quests/*/CMakeFiles/
-quests/*/Makefile
-quests/*/cmake_install.cmake
-quests/*/data.solarus
-quests/zsdx/zsdx
-quests/zsxd/zsxd
-quests/zmc/zmc
 

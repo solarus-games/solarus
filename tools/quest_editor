@@ -1,3 +1,18 @@
 #!/bin/bash
-java -cp .:luaj-jse-2.0.2.jar org.solarus.editor.Editor
+
+# Usage: ./quest_editor [quest_path]
+
+# Determine the path to this script itself.
+tools_path=$(cd $(dirname "$0"); pwd)
+
+if [ $# -ne 0 ] ; then
+  # A quest path is specified.
+  quest_path=$1
+else
+  # No quest path is specified: look at the default one from cmake if any.
+  solarus_path=${tools_path}"/.."
+  quest_path=$(grep 'DEFAULT_QUEST:STRING=' ${solarus_path}/CMakeCache.txt | sed -e 's/.*=//')
+fi
+
+java -cp ${tools_path}:${tools_path}/luaj-jse-2.0.2.jar org.solarus.editor.Editor $quest_path
 

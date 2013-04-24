@@ -70,18 +70,20 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private JMenuItem menuItemCopy;
     private JMenuItem menuItemPaste;
     // menus or menu items memorized to enable it later
+
     /**
-     * The quest to load in the editor, for use in the sub-editors
+     * Path to the quest to load in the editor, for use in the sub-editors.
      */
-    private String quest;
+    private String questPath;
 
     /**
      * Creates a new window.
-     * @param quest name of a quest to load, or null to show a dialog to select the quest
+     * @param questPath Path of a quest to load,
+     * or null to show a dialog to select the quest.
      */
-    public EditorWindow(String quest) {
+    public EditorWindow(String questPath) {
         super("Solarus Editor");
-        this.quest = quest;
+        this.questPath = questPath;
 
         Project.addProjectObserver(this);
         // set a nice look and feel
@@ -90,7 +92,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         desktop = new EditorDesktop();
         desktop.addChangeListener(this);
 
-        qdt = new QuestDataTree(quest, this);
+        qdt = new QuestDataTree(questPath, this);
         qdt.setVisible(true);
         final JScrollPane jsp = new JScrollPane(qdt);
         jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -141,11 +143,11 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         // create the menu bar
         createMenuBar();
         update(null, null);
-        if (quest == null) {
+        if (questPath == null) {
             new ActionListenerLoadProject().actionPerformed(null);
         } else {
             try {
-                Project.createExisting("../quests/" + quest);
+                Project.createExisting(questPath);
                 qdt.setRoot(Project.getDataPath());
             } catch (QuestEditorException ex) {
                 new ActionListenerLoadProject().actionPerformed(null);
@@ -220,9 +222,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
             public void actionPerformed(ActionEvent ev) {
                 if (checkCurrentFilesSaved()) {
-                    //if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
                     System.exit(0);
-                    //}
                 }
             }
         });
@@ -465,7 +465,8 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private class ActionListenerNewMap implements ActionListener {
 
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = new MapEditorWindow(EditorWindow.this.quest, EditorWindow.this);
+            MapEditorWindow mapEditor = new MapEditorWindow(
+                    EditorWindow.this.questPath, EditorWindow.this);
             mapEditor.newMap();
             EditorWindow.this.desktop.addEditor(mapEditor);
             mapEditor.getMap().addObserver(EditorWindow.this);
@@ -482,7 +483,8 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private class ActionListenerOpenMap implements ActionListener {
 
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = new MapEditorWindow(EditorWindow.this.quest, EditorWindow.this);
+            MapEditorWindow mapEditor = new MapEditorWindow(
+                    EditorWindow.this.questPath, EditorWindow.this);
             mapEditor.openMap();
             if (mapEditor.getMap() != null) {
                 EditorWindow.this.desktop.addEditor(mapEditor);
@@ -567,7 +569,8 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private class ActionNewTileset implements ActionListener {
 
         public void actionPerformed(ActionEvent ev) {
-            TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(EditorWindow.this.quest, EditorWindow.this);
+            TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(
+                    EditorWindow.this.questPath, EditorWindow.this);
             tilesetEditor.newTileset();
             EditorWindow.this.desktop.addEditor(tilesetEditor);
             qdt.addTileset( tilesetEditor.getTileset());
@@ -581,10 +584,11 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private class ActionOpenTileset implements ActionListener {
 
         public void actionPerformed(ActionEvent ev) {
-            TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(EditorWindow.this.quest, EditorWindow.this);
+            TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(
+                    EditorWindow.this.questPath, EditorWindow.this);
             tilesetEditor.openTileset();
             if (tilesetEditor.getTileset() == null) {
-                return;//user cancellation
+                return;  // User canceled.
             }
             EditorWindow.this.desktop.addEditor(tilesetEditor);
         }
@@ -597,10 +601,11 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private class ActionOpenIniFile implements ActionListener {
 
         public void actionPerformed(ActionEvent ev) {
-            DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(EditorWindow.this.quest, EditorWindow.this);
+            DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(
+                    EditorWindow.this.questPath, EditorWindow.this);
             dialogsEditor.openDialogs();
             if (dialogsEditor.getDialogs() == null) {
-                return;//user cancellation
+                return;  // User canceled.
             }
             EditorWindow.this.desktop.addEditor(dialogsEditor);
 
@@ -609,12 +614,13 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
     /**
      * Action performed when the user clicks on File > Load.
-     * Opens an existing file
+     * Opens an existing file.
      */
     private class ActionOpenFile implements ActionListener {
 
         public void actionPerformed(ActionEvent ev) {
-            FileEditorWindow fileEditor = new FileEditorWindow(EditorWindow.this.quest, EditorWindow.this);
+            FileEditorWindow fileEditor = new FileEditorWindow(
+                    EditorWindow.this.questPath, EditorWindow.this);
             JFileChooser jfc = new JFileChooser(Project.getRootPath() + File.separator + "data");
             jfc.showOpenDialog(EditorWindow.this);
             File selectedFile = jfc.getSelectedFile();

@@ -25,13 +25,14 @@ public class Editor {
 
     /**
      * Entry point.
+     * Usage: java org.solarus.editor.Editor [quest_path]  
      */
     public static void main(String[] args) {
 
-        String quest = (args.length != 0) ? args[0] : null;
+        String questPath = (args.length != 0) ? args[0] : null;
 
         // create the main window
-        EditorWindow window = new EditorWindow(quest);
+        EditorWindow window = new EditorWindow(questPath);
         window.pack();
         window.setExtendedState(EditorWindow.MAXIMIZED_BOTH);
         window.setVisible(true);

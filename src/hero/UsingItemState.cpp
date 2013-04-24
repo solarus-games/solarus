@@ -73,3 +73,18 @@ void Hero::UsingItemState::update() {
   }
 }
 
+/**
+ * @brief Returns whether the hero is using an equipment item in this state.
+ * @return true if the hero is using an equipment item.
+ */
+bool Hero::UsingItemState::is_using_item() {
+  return true;
+}
+
+/**
+ * @brief When the hero is using an equipment item, returns that item.
+ * @return The current equipment item.
+ */
+EquipmentItemUsage& Hero::UsingItemState::get_item_being_used() {
+  return item_usage;
+}

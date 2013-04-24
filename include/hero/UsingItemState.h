@@ -33,6 +33,9 @@ class Hero::UsingItemState: public Hero::State {
     void start(State* previous_state);
     void update();
 
+    virtual bool is_using_item();
+    virtual EquipmentItemUsage& get_item_being_used();
+
   private:
 
     EquipmentItemUsage item_usage;     /**< Info about using this equipment item. */

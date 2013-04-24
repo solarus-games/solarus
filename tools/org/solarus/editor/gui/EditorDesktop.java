@@ -24,7 +24,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- *
+ * The main tabbed pane with all editors currently open. 
  */
 public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeListener {
 
@@ -37,14 +37,14 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
     }
 
     /**
-     * Add an editor in the tabbedpane
+     * Add an editor in the tabbedpane.
      * @param editor the editor to add
      */
-    public void addEditor(AbstractEditorWindow editor) {
+    public void addEditor(AbstractEditorPanel editor) {
         String title = editor.getResourceName();
-        AbstractEditorWindow[] editors = getEditors();
+        AbstractEditorPanel[] editors = getEditors();
         if (editors != null) {
-            for (AbstractEditorWindow e : editors) {
+            for (AbstractEditorPanel e : editors) {
                 if (e.getResourceName().equals(title)) {
                     setSelectedComponent(e);
                     return;
@@ -60,7 +60,7 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
      * Remove an editor of the tabbedpane
      * @param editor the editor to remove
      */
-    public void removeEditor(AbstractEditorWindow editor) {
+    public void removeEditor(AbstractEditorPanel editor) {
         if (editor.checkCurrentFileSaved()) {
             remove(editor);
         }
@@ -72,7 +72,7 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
      */
     public void removeCurrentEditor() {
         if (getSelectedComponent() != null) {
-            removeEditor((AbstractEditorWindow) getSelectedComponent());
+            removeEditor((AbstractEditorPanel) getSelectedComponent());
         }
     }
 
@@ -81,7 +81,7 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
      */
     public void saveCurrentEditor() {
         if (getSelectedComponent() != null) {
-            ((AbstractEditorWindow) getSelectedComponent()).save();
+            ((AbstractEditorPanel) getSelectedComponent()).save();
         }
     }
 
@@ -89,12 +89,12 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
      * Returns the editors currently opened
      * @return A table containing the editors currently opened
      */
-    public AbstractEditorWindow[] getEditors() {
+    public AbstractEditorPanel[] getEditors() {
         int nb = getTabCount();
         if (nb > 0) {
-            AbstractEditorWindow[] editors = new AbstractEditorWindow[nb];
+            AbstractEditorPanel[] editors = new AbstractEditorPanel[nb];
             for (int i = 0; i < nb; i++) {
-                editors[i] = (AbstractEditorWindow) getComponentAt(i);
+                editors[i] = (AbstractEditorPanel) getComponentAt(i);
             }
             return editors;
         }
@@ -117,7 +117,7 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
         if (e.getButton() == MouseEvent.BUTTON2 && countEditors() > 0) {
             Point clic = e.getPoint();
             int idx = indexAtLocation(clic.x, clic.y);
-            AbstractEditorWindow editor = (AbstractEditorWindow) getComponentAt(idx);
+            AbstractEditorPanel editor = (AbstractEditorPanel) getComponentAt(idx);
             removeEditor(editor);
         }
     }
@@ -126,7 +126,7 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
     public void repaint() {
         super.repaint();
         for (int i = 0; i < getTabCount(); i++) {
-            setTitleAt(i, ((AbstractEditorWindow) getComponentAt(i)).getResourceName());
+            setTitleAt(i, ((AbstractEditorPanel) getComponentAt(i)).getResourceName());
         }
     }
 
@@ -145,10 +145,9 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
     public void stateChanged(ChangeEvent e) {
         try {
             if (countEditors() > 0) {
-                ((MapEditorWindow) getSelectedComponent()).getMapView().requestFocus();
+                ((MapEditorPanel) getSelectedComponent()).getMapView().requestFocus();
             }
         } catch (ClassCastException cce) {
-            //System.out.println("Dans le cul le cast !");
         }
     }
 }

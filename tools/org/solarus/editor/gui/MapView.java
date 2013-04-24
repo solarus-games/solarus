@@ -33,7 +33,11 @@ import org.solarus.editor.map_editor_actions.*;
  */
 public class MapView extends JComponent implements Observer, Scrollable {
 
-    private MapEditorWindow mapEditorWindow;
+    /**
+     * The parent panel.
+     */
+    private MapEditorPanel mapEditor;
+
     /**
      * The current map.
      */
@@ -50,11 +54,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
         RESIZING_ENTITY, // the user is resizing the selected entity
         ADDING_ENTITY,   // an entity is being added on the map and is displayed under the cursor
     }
+
     // information about the current state
+
     /**
      * State of the map view.
      */
     private State state;
+
     /**
      * Location of the point defined by the mouse.
      * - in state NORMAL: unused
@@ -64,6 +71,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * - in state ADDING_ENTITY: coordinates of the entity displayed under the cursor
      */
     private Point cursorLocation;
+
     /**
      * Location of the fixed area of the rectangle the user is drawing.
      * - in state SELECTING_AREA: coordinates of the initial point (width and height are not used)
@@ -79,20 +87,26 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private EntitySubtype entitySubtypeBeingAdded; // in state ADDING_ENTITY: subtype of the entity that is about to be added
     private MapEntity entityBeingAdded;            // in state ADDING_ENTITY: the entity that is about to be added (except for a tile)s
     private static List<MapEntity> copiedEntities; // entities cut or copied, ready to be pasted (or null)
+
     // headers of the map view
+
     /**
      * The display options (what layers are displayed, etc.).
      */
     private MapViewRenderingOptions renderingOptions;
+
     /**
      * The toolbar to add entities on the map.
      */
     private AddEntitiesToolbar addEntitiesToolbar;
+
     /**
      * The key listener of the map view.
      */
     private KeyListener keyListener;
+
     // other map view stuff
+
     /**
      * Width (or height) of the area displayed around the map.
      */
@@ -101,10 +115,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
     /**
      * Constructor.
      */
-    public MapView(MapEditorWindow mapEditorWindow) {
+    public MapView(MapEditorPanel mapEditor) {
         super();
 
-        this.mapEditorWindow = mapEditorWindow;
+        this.mapEditor = mapEditor;
 
         this.cursorLocation = new Point();
         this.fixedLocation = new Rectangle();
@@ -438,7 +452,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             ex.printStackTrace();
         }
 
-        mapEditorWindow.update(null, null);
+        mapEditor.update(null, null);
     }
 
     /**

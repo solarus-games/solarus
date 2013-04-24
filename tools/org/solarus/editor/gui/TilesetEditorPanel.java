@@ -24,39 +24,33 @@ import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 
 /**
- * Main window of the tileset editor.
+ * Component to edit a tileset.
  */
-public class TilesetEditorWindow extends AbstractEditorWindow implements ProjectObserver {
+public class TilesetEditorPanel extends AbstractEditorPanel implements ProjectObserver {
 
     /**
      * The current tileset.
      */
     private Tileset tileset;
+
     /**
      * The list of tile patterns.
      */
     private TilePatternsView tilePatternsView;
+
     /**
      * The tileset image.
      */
     private TilesetImageView tilesetImageView;
-    // menus or menu items memorized to enable it later
-//    private JMenu menuTileset;
-//    private JMenuItem menuItemClose;
-//    private JMenuItem menuItemSave;
 
     /**
-     * Creates a new window.
+     * Creates a tileset editor without tileset.
      */
-    public TilesetEditorWindow(String quest, EditorWindow parentEditor) {
+    public TilesetEditorPanel(EditorWindow parentEditor) {
+
         setLayout(new BorderLayout());
         Project.addProjectObserver(this);
         this.parentEditor = parentEditor;
-        // set a nice look and feel
-        GuiTools.setLookAndFeel();
-
-        // create the menu bar
-//        createMenuBar();
 
         // tile patterns list and tileset image
 
@@ -77,24 +71,14 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         // we must put our main panel in another panel
         // otherwise the background color of the window is bad
         add(tilesetPanel);
-        //add(rootPanel);
-
-//        // add a window listener to confirm when the user closes the window
-//        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-//        addWindowListener(new WindowAdapter() {
-//                public void windowClosing(WindowEvent e) {
-//                    if (checkCurrentFileSaved()) {
-//                        dispose();
-//                    }
-//                }
-//            });
-//
-//        loadProject();
     }
 
-    public TilesetEditorWindow(String quest, EditorWindow editorWindow, Tileset t) {
-        this(quest, editorWindow);
-        setTileset(t);
+    /**
+     * Create a tileset editor for an existing tileset.
+     */
+    public TilesetEditorPanel(EditorWindow editorWindow, Tileset tileset) {
+        this(editorWindow);
+        setTileset(tileset);
     }
 
     /**
@@ -102,10 +86,9 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
      * The tileset menu is enabled.
      */
     public void currentProjectChanged() {
-        //menuTileset.setEnabled(true);
 
         if (tileset != null) {
-            closeTileset(); // close the tileset that was open with the previous project
+            closeTileset();  // Close the tileset that was open with the previous project.
         }
     }
 
@@ -115,7 +98,8 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
      * @param tileset the new tileset, or null if no tileset is loaded
      */
     private void setTileset(Tileset tileset) {
-        // if there was already a tileset, remove its observers
+
+        // If there was already a tileset, remove its observers.
         if (this.tileset != null) {
             this.tileset.deleteObservers();
         }
@@ -123,11 +107,8 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         this.tileset = tileset;
 
         tileset.addObserver(parentEditor);
-        // enable or disable the menu items
-//        menuItemClose.setEnabled(tileset != null);
-//        menuItemSave.setEnabled(tileset != null);
 
-        // notify the views
+        // Notify the views.
         tilePatternsView.setTileset(tileset);
         tilesetImageView.setTileset(tileset);
     }
@@ -178,7 +159,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
      * @return the name of the map
      */
     public String getResourceName() {
-        return "Tileset " + getTileset().getName();
+        return tileset == null ? "" : "Tileset " + tileset.getName();
     }
 
     /**
@@ -218,7 +199,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         }
 
         ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.TILESET);
-        dialog.setLocationRelativeTo(TilesetEditorWindow.this);
+        dialog.setLocationRelativeTo(TilesetEditorPanel.this);
         dialog.pack();
         dialog.setVisible(true);
         String tilesetId = dialog.getSelectedId();
@@ -251,6 +232,9 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         setTileset(null);
     }
 
+    /**
+     * Saves the current resource.
+     */
     public void save() {
         saveTileset();
     }

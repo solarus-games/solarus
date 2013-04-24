@@ -14,73 +14,62 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.solarus.editor.gui.tree;
+package org.solarus.editor.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JTree;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import java.io.*;
+import java.util.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import org.solarus.editor.*;
 import org.solarus.editor.Map;
-import org.solarus.editor.Project;
-import org.solarus.editor.Resource;
-import org.solarus.editor.ResourceType;
-import org.solarus.editor.QuestEditorException;
-import org.solarus.editor.entities.Tileset;
-import org.solarus.editor.gui.EditorWindow;
-import org.solarus.editor.gui.FileEditorWindow;
-import org.solarus.editor.gui.MapEditorWindow;
-import org.solarus.editor.gui.TilesetEditorWindow;
-import org.solarus.editor.gui.GuiTools;
+import org.solarus.editor.entities.*;
 
 /**
- * A tree that shows the whole resource database of the game:
+ * A tree that shows the whole resource list of the game:
  * maps, tilesets, sprites, enemies, etc.
  */
-public class QuestDataTree extends JTree implements TreeSelectionListener, Observer {
-    private String projectPath;
-    private String quest;
+public class QuestDataTree extends JTree
+        implements TreeSelectionListener, Observer, ProjectObserver {
+
     private EditorWindow editorWindow;
     private QuestDataTreeTilesetPopupMenu tilesetPopupMenu;
     private QuestDataTreeMapPopupMenu mapPopupMenu;
     private QuestDataTreePopupMenu popupMenu;
-    public QuestDataTree(String quest, EditorWindow parent) {
-        this.quest = quest;
+
+    public QuestDataTree(EditorWindow parent) {
+        setModel(null);  // Because Java makes a stupid example tree by default.
         this.editorWindow = parent;
+
         addTreeSelectionListener(this);
         addMouseListener(new QuestDataTreeMouseAdapter());
         
         mapPopupMenu = new QuestDataTreeMapPopupMenu();
         popupMenu = new QuestDataTreePopupMenu();
         tilesetPopupMenu = new QuestDataTreeTilesetPopupMenu();
-    }
-    /**
-     * Reload the tree, rebuilding the model from
-     * the resources.
-     */
-    public void reloadTree() {
-        setModel(new EditorTreeModel(projectPath));
-        repaint();        
-    }
-    
-    public void setRoot(String projectPath) {
-        this.projectPath = projectPath;
-        reloadTree();
+
+        Project.addProjectObserver(this);
     }
 
+    /**
+     * Called when another project becomes active.
+     */
+    @Override
+    public void currentProjectChanged() {
+        rebuildTree();
+    }
+    
+    /**
+     * Reloads the tree, rebuilding the model from the resources.
+     */
+    public void rebuildTree() {
+        setModel(new EditorTreeModel(Project.getDataPath()));
+        repaint();        
+    }
+
+    @Override
     public void valueChanged(TreeSelectionEvent e) {
-        //System.out.println(e.getNewLeadSelectionPath());
     }
 
     public void addMap(Map map) {
@@ -117,7 +106,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
 
         @Override
         public boolean isLeaf(Object e) {
-            return ((DefaultMutableTreeNode) e).getChildCount() == 0 || !(((DefaultMutableTreeNode) e).getUserObject() instanceof String);
+            return ((DefaultMutableTreeNode) e).getChildCount() == 0 && !(((DefaultMutableTreeNode) e).getUserObject() instanceof String);
         }
 
         protected final void addChildren(DefaultMutableTreeNode parentNode, ResourceType resourceType) {
@@ -141,9 +130,13 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
         public void mousePressed(MouseEvent e) {
             DefaultMutableTreeNode clickedNode = null;
             try {
+                TreePath selectionPath = QuestDataTree.this.getSelectionPath();
                 if (e.getButton() == MouseEvent.BUTTON3) {
-                    clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
-                    if (clickedNode.isLeaf()) {
+                    if (selectionPath == null) {
+                        return;
+                    }
+                    clickedNode = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
+                    if (clickedNode.getUserObject() instanceof ResourceElement) {
                         // right click: show a popup menu if the element is a map
                         int row = QuestDataTree.this.getRowForLocation(e.getX(), e.getY());
                         if (row == -1) {
@@ -173,25 +166,28 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                 } else if (e.getClickCount() == 2) {
                     // double-click: open the clicked file
 
-                    clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
-                    if (clickedNode.isLeaf()) {
+                    if (selectionPath == null) {
+                        return;
+                    }
+                    clickedNode = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
+                    if (clickedNode.getUserObject() instanceof ResourceElement) {
                         ResourceElement element = (ResourceElement) clickedNode.getUserObject();
 
                         switch (element.type) {
 
                             case MAP:
                             {
-                                Map m = new Map(element.id);
-                                MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, m);
+                                Map map = new Map(element.id);
+                                MapEditorPanel mapEditor = new MapEditorPanel(editorWindow, map);
                                 editorWindow.addEditor(mapEditor);
-                                m.addObserver(editorWindow);
+                                map.addObserver(editorWindow);
                                 break;
                             }
 
                             case TILESET:
                             {
-                                Tileset t = new Tileset(element.id);
-                                TilesetEditorWindow tileEditor = new TilesetEditorWindow(quest, editorWindow, t);
+                                Tileset tileset = new Tileset(element.id);
+                                TilesetEditorPanel tileEditor = new TilesetEditorPanel(editorWindow, tileset);
                                 editorWindow.addEditor(tileEditor);
                                 break;
                             }
@@ -199,12 +195,12 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                             case LANGUAGE:
                             {
                                 /* TODO uncomment this when the dialog editor works
-                                Dialogs d = new Dialogs(element.id);
-                                DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(quest, editorWindow, d);
+                                Dialogs dialogs = new Dialogs(element.id);
+                                DialogsEditorPanel dialogsEditor = new DialogsEditorPanel(quest, editorWindow, dialogs);
                                 editorWindow.addEditor(dialogsEditor);
                                 */
-                                File f = Project.getDialogsFile(element.id);
-                                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+                                File file = Project.getDialogsFile(element.id);
+                                TextEditorPanel fileEditor = new TextEditorPanel(editorWindow, file);
 
                                 editorWindow.addEditor(fileEditor);
                                 break;
@@ -213,7 +209,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                             case ENEMY:
                             {
                                 File f = new File(Project.getEnemyScriptFile(element.id));
-                                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+                                TextEditorPanel fileEditor = new TextEditorPanel(editorWindow, f);
                                 editorWindow.addEditor(fileEditor);
                                 break;
                             }
@@ -221,7 +217,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                             case ITEM:
                             {
                                 File f = new File(Project.getItemScriptFile(element.id));
-                                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+                                TextEditorPanel fileEditor = new TextEditorPanel(editorWindow, f);
                                 editorWindow.addEditor(fileEditor);
                                 break;
                             }
@@ -229,7 +225,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                             case SPRITE:
                             {
                                 File f = new File(Project.getSpriteFile(element.id).getAbsolutePath());
-                                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+                                TextEditorPanel fileEditor = new TextEditorPanel(editorWindow, f);
                                 editorWindow.addEditor(fileEditor);
                                 break;
                             }
@@ -242,50 +238,52 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
             }
         }
     }
+
     /**
-     * Popup menu associated to the right click on the map sub-tree
+     * Popup menu associated to the right click on the map sub-tree.
      */
     class QuestDataTreeMapPopupMenu extends JPopupMenu implements ActionListener {    
+
         private JMenuItem newMapMenu;
-        public QuestDataTreeMapPopupMenu()
-        {
+        
+        public QuestDataTreeMapPopupMenu() {
             newMapMenu = new JMenuItem("New Map");
             newMapMenu.addActionListener(this);
             add(newMapMenu);            
         }
+
         @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow);
+        public void actionPerformed(ActionEvent e) {
+            MapEditorPanel mapEditor = new MapEditorPanel(editorWindow);
             mapEditor.newMap();
             editorWindow.addEditor(mapEditor);
             mapEditor.getMap().addObserver(editorWindow);
         }
-        
     }
+
     /**
-     * Popup menu associated to the right click on the tileset sub-tree
+     * Popup menu associated to the right click on the tileset sub-tree.
      */
     class QuestDataTreeTilesetPopupMenu extends JPopupMenu implements ActionListener {    
+
         private JMenuItem newTilesetMenu;
-        public QuestDataTreeTilesetPopupMenu()
-        {
+        
+        public QuestDataTreeTilesetPopupMenu() {
             newTilesetMenu = new JMenuItem("New Tileset");
             newTilesetMenu.addActionListener(this);
             add(newTilesetMenu);            
         }
+
         @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(quest, editorWindow);
+        public void actionPerformed(ActionEvent e) {
+            TilesetEditorPanel tilesetEditor = new TilesetEditorPanel(editorWindow);
             tilesetEditor.newTileset();
             editorWindow.addEditor(tilesetEditor);            
         }
-        
     }
 
     /**
-     * Popup menu associated to maps in the tree.
+     * General popup menu of the tree.
      */
     class QuestDataTreePopupMenu extends JPopupMenu implements ActionListener {
 
@@ -307,10 +305,10 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource() == mapMenu) {
-                // open the map
+                // Open the map.
                 try {
                     Map map = new Map(mapId);
-                    MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, map);
+                    MapEditorPanel mapEditor = new MapEditorPanel(editorWindow, map);
                     editorWindow.addEditor(mapEditor);
                     map.addObserver(editorWindow);
                 }
@@ -318,11 +316,12 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                     GuiTools.errorDialog("Could not load the map: " + ex.getMessage());
                 }
             }
-            //delete the map
+
             else if (e.getSource() == deleteMenu) {
+                // Delete the map.
                 try {
                     int answer = JOptionPane.showConfirmDialog(this,
-                            "Are you sure you want to delete the map " + mapId + " ?",
+                            "Are you sure you want to delete map '" + mapId + "' ?",
                             "Are you sure ?",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.WARNING_MESSAGE);
@@ -330,11 +329,11 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                         Map.delete(mapId);
                         Project.getResource(ResourceType.MAP).removeElement(mapId);
      
-                        //TODO: Do it in a cleaner way
-                        //Here we reload the whole tree, which is not 
-                        //the most optimized way of removing the child
-                        //from the tree.
-                        reloadTree();
+                        // TODO: Do it in a cleaner way
+                        // Here we reload the whole tree, which is not 
+                        // the most optimized way of removing the child
+                        // from the tree.
+                        rebuildTree();
                         
                         repaint();
                     }
@@ -345,7 +344,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
             } else {
                 // open the script
                 File mapScritFile = Project.getMapScriptFile(mapId);
-                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, mapScritFile);
+                TextEditorPanel fileEditor = new TextEditorPanel(editorWindow, mapScritFile);
                 editorWindow.addEditor(fileEditor);
             }
         }
@@ -362,7 +361,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
     class ResourceElement {
 
         public final ResourceType type;
-         public final String id;
+        public final String id;
         public final String name;
 
         public ResourceElement(ResourceType type, String id, String name) {

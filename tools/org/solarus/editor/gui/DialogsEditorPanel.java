@@ -51,7 +51,7 @@ import org.solarus.editor.QuestEditorException;
 /**
  * Main window of the dialogs editor
  */
-public class DialogsEditorWindow extends AbstractEditorWindow implements ListSelectionListener {
+public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelectionListener {
 
     /**
      * The current Dialogs.
@@ -98,9 +98,9 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements ListSel
     private final JScrollPane listScrollPane;
 
     /**
-     * Creates a new window.
+     * Creates a new dialogs editor.
      */
-	public DialogsEditorWindow(String quest, EditorWindow parentEditor) {
+	public DialogsEditorPanel(EditorWindow parentEditor) {
         setLayout(new BorderLayout());
 
         Project.addProjectObserver(this);
@@ -134,7 +134,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements ListSel
 
             @Override
 			public void actionPerformed(ActionEvent e) {
-                DialogsEditorWindow.this.model.addSection();
+                DialogsEditorPanel.this.model.addSection();
             }
         });
         removeSection = new JButton("Delete selected section");
@@ -142,7 +142,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements ListSel
 
             @Override
 			public void actionPerformed(ActionEvent e) {
-                DialogsEditorWindow.this.model.removeSection(currentSection);
+                DialogsEditorPanel.this.model.removeSection(currentSection);
             }
         });
         buttonsPanel.add(moveSectionUp);
@@ -214,8 +214,8 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements ListSel
 
     }
 
-    public DialogsEditorWindow(String quest, EditorWindow editorWindow, Dialogs d) {
-        this(quest, editorWindow);
+    public DialogsEditorPanel(EditorWindow editorWindow, Dialogs d) {
+        this(editorWindow);
         setDialogs(d);
     }
 
@@ -228,7 +228,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements ListSel
         //menudialogs.setEnabled(true);
 
         if (dialogs != null) {
-            closeDialogs(); // close the dialogs that was open with the previous project
+            closeDialogs();  // Close the dialogs that were open with the previous project.
         }
     }
 
@@ -238,7 +238,8 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements ListSel
      * @param dialogs the new dialogs, or null if no dialogs is loaded
      */
     private void setDialogs(Dialogs dialogs) {
-        // if there was already a dialogs, remove its observers
+
+        // If there was already dialogs, remove their observers.
         if (this.dialogs != null) {
             this.dialogs.deleteObservers();
         }
@@ -246,7 +247,6 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements ListSel
         this.dialogs = dialogs;
 
         dialogs.addObserver(parentEditor);
-
 
         model.setItems(dialogs.getSections());
         model.filterList("");
@@ -327,7 +327,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements ListSel
     }
 
     /**
-     * Loads a dialogs of the project ans sets it as the current dialogs.
+     * Loads a dialog file of the project and sets it as the current dialogs.
      */
     protected void openDialogs() {
 
@@ -336,7 +336,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements ListSel
         }
 
         ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.LANGUAGE);
-        dialog.setLocationRelativeTo(DialogsEditorWindow.this);
+        dialog.setLocationRelativeTo(DialogsEditorPanel.this);
         dialog.pack();
         dialog.setVisible(true);
         String dialogsId = dialog.getSelectedId();
@@ -474,7 +474,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements ListSel
         }
 
         public void removeSection(DialogSection section) {
-            int idx = filteredElements.indexOf(section);
+//            int idx = filteredElements.indexOf(section);
             sectionsList.setSelectedValue(getElementAt(0), true);
             elements.remove(section);
             filteredElements.remove(section);

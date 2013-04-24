@@ -112,7 +112,7 @@ public class Project {
     }
 
     /**
-     * Sets the specified project as the current ZSDX project.
+     * Sets the specified project as the current project.
      * The project observers are notified.
      * @param project the current project
      */
@@ -410,20 +410,31 @@ public class Project {
     }
 
     /**
-     * Returns the path of the languages files, determined with the current project root path.
-     * @return the path of the languages files
+     * Returns the path of the languages files,
+     * determined with the current project root path.
+     * @param languageId Id of a language.
+     * @return The path of the languages files.
      */
-    public static String getDialogsPath() {
-        return getDataPath() + "/languages";
+    public static String getLanguagePath(String languageId) {
+        return getDataPath() + "/languages/" + languageId;
     }
 
     /**
-     * Returns a dialogs file knowing its id for the current project.
-     * @param dialogsId id of a dialog file
-     * @return the dialogs file corresponding to this id
+     * Returns a dialogs file for the current project.
+     * @param languageId Id of a language.
+     * @return The dialogs file in this language.
      */
-    public static File getDialogsFile(String dialogsId) {
-        return new File(getDialogsPath() + File.separator + dialogsId);
+    public static File getDialogsFile(String languageId) {
+        return new File(getLanguagePath(languageId) + "/text/dialogs.dat");
+    }
+
+    /**
+     * Returns a strings file for the current project.
+     * @param languageId Id of a language.
+     * @return The dialogs file in this language.
+     */
+    public static File getStringsFile(String languageId) {
+        return new File(getLanguagePath(languageId) + "/text/strings.dat");
     }
 
     /**

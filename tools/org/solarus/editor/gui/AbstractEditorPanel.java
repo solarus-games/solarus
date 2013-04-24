@@ -22,30 +22,29 @@ import javax.swing.JPanel;
 import org.solarus.editor.ProjectObserver;
 
 /**
- * Main window of an editor. Every editor (map, langages, tileset ...) will extends this class
+ * Main component of an editor. Every editor (map, tileset...)
+ * extends this class.
  */
-public abstract class AbstractEditorWindow extends JPanel implements Observer, ProjectObserver {
+public abstract class AbstractEditorPanel extends JPanel implements Observer, ProjectObserver {
 
     /**
-     * The editor window
+     * The editor window.
      */
     protected EditorWindow parentEditor;
 
     /**
-     * Verifies if the current resource is saved
-     * @return true if the current resource is saved
+     * Verifies if the current resource is saved.
+     * @return true if the current resource is saved.
      */
     public abstract boolean checkCurrentFileSaved();
 
     /**
-     * Gives the name of the resource used for the tab label in the editor desktop
-     * @return
+     * Gives the name of the resource used for the tab label in the editor desktop.
      */
     public abstract String getResourceName();
 
     /**
-     * Saves the current resource
+     * Saves the current resource.
      */
     public abstract void save();
-
 }

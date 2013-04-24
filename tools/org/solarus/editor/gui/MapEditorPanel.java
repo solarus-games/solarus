@@ -24,51 +24,35 @@ import org.solarus.editor.Map;
 import org.solarus.editor.entities.*;
 
 /**
- * Main window of the map editor.
+ * Components that allows to edit a map.
  */
-public class MapEditorWindow extends AbstractEditorWindow implements Observer, ProjectObserver {
+public class MapEditorPanel extends AbstractEditorPanel {
 
     /**
      * The current map.
      */
     private Map map;
+
     // components
     private MapPropertiesView mapPropertiesView;
     private TilePicker tilePicker;
     private MapView mapView;
-    // menu items memorized to enable them later
-//    private JMenu menuMap;
-//    private JMenu menuEdit;
-//    private JMenu menuCreate;
-//    private JMenuItem menuItemClose;
-//    private JMenuItem menuItemSave;
-//    private JMenuItem menuItemUndo;
-//    private JMenuItem menuItemRedo;
-//    private JMenuItem menuItemCut;
-//    private JMenuItem menuItemCopy;
-//    private JMenuItem menuItemPaste;
 
     /**
-     * Creates a new window.
-     * @param quest name of a quest to load, or null to show a dialog to select the quest
+     * Creates a new map editor without map.
      */
-    public MapEditorWindow(String quest, EditorWindow parentEditor) {
+    public MapEditorPanel(EditorWindow parentEditor) {
         setLayout(new BorderLayout());
-        //setTitle("Solarus - Map Editor");
         Project.addProjectObserver(this);
         this.parentEditor = parentEditor;
-        // set a nice look and feel
-        GuiTools.setLookAndFeel();
 
         // left panel : the map properties and the tile picker
-
         mapPropertiesView = new MapPropertiesView();
-//        mapPropertiesView.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
         tilePicker = new TilePicker();
 
         //mapPropertiesView.setMinimumSize(new Dimension(0, 0));
-        JSplitPane leftPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mapPropertiesView, tilePicker);
+        JSplitPane leftPanel = new JSplitPane(
+                JSplitPane.VERTICAL_SPLIT, mapPropertiesView, tilePicker);
         leftPanel.setContinuousLayout(true);
         leftPanel.resetToPreferredSizes();
 
@@ -94,16 +78,13 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
 
         add(rootPanel);
         setMap(null);
-
-
     }
 
     /**
-     * Creates a new window.
-     * @param quest name of a quest to load, or null to show a dialog to select the quest
+     * Creates a new map editor with an existing map.
      */
-    public MapEditorWindow(String quest, EditorWindow parentEditor, Map map) {
-        this(quest, parentEditor);
+    public MapEditorPanel(EditorWindow parentEditor, Map map) {
+        this(parentEditor);
         setMap(map);
     }
 
@@ -111,23 +92,22 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
      * This method is called just after a project is loaded.
      */
     public void currentProjectChanged() {
-        //menuMap.setEnabled(true);
         if (getMap() != null) {
-            closeMap(); // close the map that was open with the previous project
+            closeMap();  // Close the map that was open with the previous project.
         }
     }
 
     /**
-     * Give the name of the resource opened in the editor
-     * @return the name of the map
+     * Returns the human-readable name of the resource open in the editor.
+     * @return The name of the map.
      */
     public String getResourceName() {
-        return "Map "+getMap().getName();
+        return map == null ? "" : "Map: " + getMap().getName();
     }
 
     /**
-     * Give the id of the resource opened in the editor
-     * @return the id of the map
+     * Returns the id of the resource open in the editor.
+     * @return The id of the map.
      */
     public String getResourceId() {
         return getMap().getId();
@@ -136,24 +116,25 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
     /**
      * Sets the current map. This method is called when the user opens a map,
      * closes the map, or creates a new one.
-     * @param map the new map, or null if there is no map loaded
+     * @param map The new map, or null if there is no map loaded.
      */
     private void setMap(Map map) {
+
         // if there was already a map, remove its observers
         if (this.getMap() != null) {
             this.getMap().deleteObservers();
             this.getMap().getEntitySelection().deleteObservers();
         }
+
         this.map = map;
 
-
-        // notify the views
+        // Notify the children views.
         mapPropertiesView.setMap(map);
         tilePicker.setMap(map);
         getMapView().setMap(map);
 
         if (map != null) {
-            // observe the history and the selection to enable or disable the items
+            // Observe the history and the selection to enable or disable the items.
             map.getHistory().addObserver(parentEditor);
             map.getEntitySelection().addObserver(parentEditor);
             this.parentEditor.update(null, null);
@@ -184,7 +165,7 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.WARNING_MESSAGE);
             if (answer == JOptionPane.YES_OPTION) {
-                saveMap();//new ActionListenerSave().actionPerformed(null);
+                saveMap();
             } else if (answer == JOptionPane.CANCEL_OPTION) {
                 result = false;
             }
@@ -194,12 +175,14 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
     }
 
     /**
-     * Creates a new map in the project and sets it as the current map.
+     * Creates a new map in the project and loads it in this editor.
      */
     public void newMap() {
-        if (!checkCurrentFileSaved()) {
-            return;
+
+        if (getMap() != null) {
+            throw new IllegalStateException("A map is already open in this editor");
         }
+
         try {
             String mapId = JOptionPane.showInputDialog(null, "Please enter the ID of your new map",
                     "Map ID", JOptionPane.QUESTION_MESSAGE);
@@ -219,16 +202,16 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
     }
 
     /**
-     * Loads a map of the project and sets it as the current map.
+     * Lets the user choose a map to open and loads it in this editor.
      */
     protected void openMap() {
 
-        if (!checkCurrentFileSaved()) {
-            return;
+        if (getMap() != null) {
+            throw new IllegalStateException("A map is already open in this editor");
         }
 
         ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.MAP);
-        dialog.setLocationRelativeTo(MapEditorWindow.this);
+        dialog.setLocationRelativeTo(MapEditorPanel.this);
         dialog.pack();
         dialog.setVisible(true);
         String mapId = dialog.getSelectedId();
@@ -263,6 +246,9 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
         setMap(null);
     }
 
+    /**
+     * Saves the resource managed in this editor.
+     */
     public void save() {
         saveMap();
     }
@@ -273,7 +259,8 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
     protected void saveMap() {
         try {
             getMap().save();
-        } catch (InvalidEntityException ex) {
+        }
+        catch (InvalidEntityException ex) {
             // the map contains an invalid entity
             String name = ex.getEntity().getName();
             GuiTools.warningDialog(
@@ -285,24 +272,22 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
             EditEntityDialog dialog = new EditEntityDialog( getMap(), ex.getEntity());
             dialog.display();
         } catch (QuestEditorException ex) {
-            // another problem occured
+            // another problem occurred
             GuiTools.errorDialog("Could not save the map: " + ex.getMessage());
         }
     }
 
     /**
-     * @return the map
+     * @return The map.
      */
     public Map getMap() {
         return map;
     }
 
     /**
-     * @return the mapView
+     * @return The map view.
      */
     protected MapView getMapView() {
         return mapView;
     }
-
-
 }

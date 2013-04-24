@@ -16,43 +16,24 @@
  */
 package org.solarus.editor.gui;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import org.jdesktop.swinghelper.transformer.JXTransformer;
-import org.solarus.editor.MapEditorHistory;
-import org.solarus.editor.Project;
-import org.solarus.editor.ProjectObserver;
-import org.solarus.editor.QuestEditorException;
-import org.solarus.editor.gui.tree.QuestDataTree;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import org.jdesktop.swinghelper.transformer.*;
+import org.solarus.editor.*;
 
 /**
  * Main window of the editor.
  */
 public class EditorWindow extends JFrame implements Observer, ProjectObserver, ChangeListener {
 
-    private static final String mapEditorClass = "org.solarus.editor.gui.MapEditorWindow";
     private EditorDesktop desktop;
     private QuestDataTree qdt;
+
+    // Menus and menu items memorized to enable or disable them later.
     private JMenu menuFile;
     private JMenu menuNew;
     private JMenuItem menuNewMap;
@@ -69,12 +50,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private JMenuItem menuItemCut;
     private JMenuItem menuItemCopy;
     private JMenuItem menuItemPaste;
-    // menus or menu items memorized to enable it later
-
-    /**
-     * Path to the quest to load in the editor, for use in the sub-editors.
-     */
-    private String questPath;
 
     /**
      * Creates a new window.
@@ -83,7 +58,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     public EditorWindow(String questPath) {
         super("Solarus Editor");
-        this.questPath = questPath;
 
         Project.addProjectObserver(this);
         // set a nice look and feel
@@ -92,7 +66,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         desktop = new EditorDesktop();
         desktop.addChangeListener(this);
 
-        qdt = new QuestDataTree(questPath, this);
+        qdt = new QuestDataTree(this);
         qdt.setVisible(true);
         final JScrollPane jsp = new JScrollPane(qdt);
         jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -131,14 +105,10 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             @Override
             public void windowClosing(WindowEvent e) {
                 if (checkCurrentFilesSaved()) {
-                    //if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
                     System.exit(0);
-                    //}
                 }
             }
         });
-
-        //        getToolkit().addAWTEventListener(new ActionOnCurrentEditor(), AWTEvent.KEY_EVENT_MASK);
 
         // create the menu bar
         createMenuBar();
@@ -148,7 +118,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         } else {
             try {
                 Project.createExisting(questPath);
-                qdt.setRoot(Project.getDataPath());
             } catch (QuestEditorException ex) {
                 new ActionListenerLoadProject().actionPerformed(null);
             }
@@ -165,12 +134,16 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuFile.setEnabled(Project.isLoaded());
 
         if (desktop.getSelectedComponent() != null) {
-            String editorClass = desktop.getSelectedComponent().getClass().getName();
-            boolean isMapEditor = mapEditorClass.equals(editorClass);
 
-            if (isMapEditor) {
+            menuItemUndo.setEnabled(false);
+            menuItemRedo.setEnabled(false);
+            menuItemCut.setEnabled(false);
+            menuItemCopy.setEnabled(false);
+            menuItemPaste.setEnabled(false);
 
-                MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            if (desktop.getSelectedComponent() instanceof MapEditorPanel) {
+
+                MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
                 MapEditorHistory history = mapEditor.getMap().getHistory();
                 menuItemUndo.setEnabled(history.canUndo());
                 menuItemRedo.setEnabled(history.canRedo());
@@ -179,14 +152,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
                 menuItemCut.setEnabled(!emptySelection);
                 menuItemCopy.setEnabled(!emptySelection);
                 menuItemPaste.setEnabled(mapEditor.getMapView().canPaste());
-            } else {
-                // No resource opened interface the editor : only new/open actions are enabled
-
-                menuItemUndo.setEnabled(false);
-                menuItemRedo.setEnabled(false);
-                menuItemCut.setEnabled(false);
-                menuItemCopy.setEnabled(false);
-                menuItemPaste.setEnabled(false);
             }
         }
     }
@@ -276,14 +241,14 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuOpenIniFile.setMnemonic(KeyEvent.VK_D);
         menuOpenIniFile.getAccessibleContext().setAccessibleDescription("Open an existing dialogs file");
         //menuOpenIniFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
-        menuOpenIniFile.addActionListener(new ActionOpenIniFile());
+        //menuOpenIniFile.addActionListener(new ActionOpenIniFile());
         menuOpen.add(menuOpenIniFile);
 
         menuOpenTextFile = new JMenuItem("Text File");
         menuOpenTextFile.setMnemonic(KeyEvent.VK_F);
         menuOpenTextFile.getAccessibleContext().setAccessibleDescription("Open an existing file");
         //menuOpenTextFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
-        menuOpenTextFile.addActionListener(new ActionOpenFile());
+        menuOpenTextFile.addActionListener(new ActionOpenTextFile());
         menuOpen.add(menuOpenTextFile);
 
         menuFile.add(menuOpen);
@@ -362,7 +327,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     public boolean checkCurrentFilesSaved() {
         boolean result = true;
         if (desktop.countEditors() > 0) {
-            for (AbstractEditorWindow editor : desktop.getEditors()) {
+            for (AbstractEditorPanel editor : desktop.getEditors()) {
                 result = result && editor.checkCurrentFileSaved();
             }
         }
@@ -391,7 +356,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         if (projectPath != null) {
             try {
                 Project.createNew(projectPath);
-                qdt.setRoot(projectPath);
                 setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
                 GuiTools.informationDialog("Quest successfully created!\n" +
                 		"The next step is to edit some important files\n" +
@@ -410,7 +374,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private void loadProject() {
         if (desktop.countEditors() > 0) {
-            for (AbstractEditorWindow editor : desktop.getEditors()) {
+            for (AbstractEditorPanel editor : desktop.getEditors()) {
                 if (editor.checkCurrentFileSaved()) {
                     return;
                 }
@@ -423,7 +387,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         if (projectPath != null) {
             try {
                 Project.createExisting(projectPath);
-                qdt.setRoot(projectPath);
                 setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
             }
             catch (QuestEditorException ex) {
@@ -432,7 +395,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         }
     }
 
-    public void addEditor(AbstractEditorWindow editor) {
+    public void addEditor(AbstractEditorPanel editor) {
         desktop.addEditor(editor);
     }
 
@@ -442,6 +405,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerNewProject implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
             newProject();
         }
@@ -453,6 +417,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerLoadProject implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
             loadProject();
         }
@@ -464,15 +429,14 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerNewMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = new MapEditorWindow(
-                    EditorWindow.this.questPath, EditorWindow.this);
+            MapEditorPanel mapEditor = new MapEditorPanel(EditorWindow.this);
             mapEditor.newMap();
             EditorWindow.this.desktop.addEditor(mapEditor);
             mapEditor.getMap().addObserver(EditorWindow.this);
-            qdt.addMap( mapEditor.getMap());
+            qdt.addMap(mapEditor.getMap());
             qdt.repaint();
-            //   mapEditor.getMap().addObserver(EditorWindow.this.desktop);
         }
     }
 
@@ -482,9 +446,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerOpenMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = new MapEditorWindow(
-                    EditorWindow.this.questPath, EditorWindow.this);
+            MapEditorPanel mapEditor = new MapEditorPanel(EditorWindow.this);
             mapEditor.openMap();
             if (mapEditor.getMap() != null) {
                 EditorWindow.this.desktop.addEditor(mapEditor);
@@ -495,12 +459,13 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
     /**
      * Action performed when user the user clicks on Edit > Undo or presses Ctrl + Z.
-     * The last action (if any) on the map is cancelled.
+     * The last action (if any) on the map is canceled.
      */
     private class ActionListenerUndoMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
             try {
                 mapEditor.getMap().getHistory().undo();
             } catch (QuestEditorException ex) {
@@ -511,12 +476,13 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
     /**
      * Action performed when user the user clicks on Edit > Redo or presses Ctrl + Y.
-     * The last action cancelled (if any) is done again.
+     * The last action canceled (if any) is done again.
      */
     private class ActionListenerRedoMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
             try {
                 mapEditor.getMap().getHistory().redo();
             } catch (QuestEditorException ex) {
@@ -531,8 +497,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerCutMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
             mapEditor.getMapView().cutSelectedEntities();
         }
     }
@@ -543,8 +510,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerCopyMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
             mapEditor.getMapView().copySelectedEntities();
         }
     }
@@ -555,12 +523,14 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerPasteMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
             mapEditor.getMapView().paste();
         }
     }
-    // Specific listeners for tileset editor
+
+    // Specific listeners for tileset editor.
 
     /**
      * Action performed when the user clicks on Tileset > New.
@@ -568,12 +538,12 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionNewTileset implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(
-                    EditorWindow.this.questPath, EditorWindow.this);
+            TilesetEditorPanel tilesetEditor = new TilesetEditorPanel(EditorWindow.this);
             tilesetEditor.newTileset();
             EditorWindow.this.desktop.addEditor(tilesetEditor);
-            qdt.addTileset( tilesetEditor.getTileset());
+            qdt.addTileset(tilesetEditor.getTileset());
         }
     }
 
@@ -583,9 +553,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionOpenTileset implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(
-                    EditorWindow.this.questPath, EditorWindow.this);
+            TilesetEditorPanel tilesetEditor = new TilesetEditorPanel(EditorWindow.this);
             tilesetEditor.openTileset();
             if (tilesetEditor.getTileset() == null) {
                 return;  // User canceled.
@@ -596,39 +566,20 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
     /**
      * Action performed when the user clicks on File > Load.
-     * Opens an existing file
-     */
-    private class ActionOpenIniFile implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(
-                    EditorWindow.this.questPath, EditorWindow.this);
-            dialogsEditor.openDialogs();
-            if (dialogsEditor.getDialogs() == null) {
-                return;  // User canceled.
-            }
-            EditorWindow.this.desktop.addEditor(dialogsEditor);
-
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on File > Load.
      * Opens an existing file.
      */
-    private class ActionOpenFile implements ActionListener {
+    private class ActionOpenTextFile implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            FileEditorWindow fileEditor = new FileEditorWindow(
-                    EditorWindow.this.questPath, EditorWindow.this);
+            TextEditorPanel textEditor = new TextEditorPanel(EditorWindow.this);
             JFileChooser jfc = new JFileChooser(Project.getRootPath() + File.separator + "data");
             jfc.showOpenDialog(EditorWindow.this);
             File selectedFile = jfc.getSelectedFile();
             if (selectedFile != null) {
-                fileEditor.setFile(selectedFile);
-                EditorWindow.this.desktop.addEditor(fileEditor);
+                textEditor.setFile(selectedFile);
+                EditorWindow.this.desktop.addEditor(textEditor);
             }
-
         }
     }
 
@@ -638,44 +589,25 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionCloseCurrentEditor implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
             desktop.removeCurrentEditor();
         }
     }
 
     /**
-     * Action performed when the user clicks on Tileset > Save.
-     * Saves the tileset into its file.
+     * Action performed when the user clicks on File > Save.
+     * Saves the resource in this editor.
      */
     private class ActionSaveCurrentEditor implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
             desktop.saveCurrentEditor();
         }
     }
 
-//    /**
-//     * Action performed when the user uses the Ctrl-W or Ctrl-S keys
-//     * Close or save the current editor
-//     */
-//    private class ActionOnCurrentEditor implements AWTEventListener {
-//
-//        public void eventDispatched(AWTEvent ev) {
-//            if (ev instanceof KeyEvent) {
-//                KeyEvent kev = (KeyEvent) ev;
-//                System.out.println("Touche appuyÃ©e depuis " + this.getClass().getName());
-//                int code = kev.getKeyCode();
-//                if (kev.isControlDown()) {
-//                    if (code == KeyEvent.VK_W) {
-//                        desktop.removeCurrentEditor();
-//                    } else if (code == KeyEvent.VK_S) {
-//                        desktop.saveCurrentEditor();
-//                    }
-//                }
-//            }
-//        }
-//    }
-
+    @Override
     public void stateChanged(ChangeEvent e) {
         update(null, null);
     }

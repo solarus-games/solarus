@@ -36,32 +36,32 @@ import org.solarus.editor.Project;
 import org.solarus.editor.ProjectObserver;
 
 /**
- * A simple editor using for editing all quest resources as text files
+ * A simple editor using for editing any resources as a text file.
  */
-public class FileEditorWindow extends AbstractEditorWindow implements ProjectObserver, DocumentListener {
+public class TextEditorPanel extends AbstractEditorPanel implements ProjectObserver, DocumentListener {
 
     /**
-     * The file opened in the editor
+     * The file open in the editor.
      */
     private File file;
+
     /**
-     * The TextArea use for the edition
+     * The text area use for the edition.
      */
     private JTextArea textArea;
+
     /**
-     * A boolean used for checking modifications in thhe content of the TextArea
+     * A boolean used for checking modifications in the content of the text area.
      */
     private boolean textChanged;
 
     /**
-     * Creates a new window.
+     * Creates a new text editor without file.
      */
-    public FileEditorWindow(String quest, EditorWindow parentEditor) {
+    public TextEditorPanel(EditorWindow parentEditor) {
         setLayout(new BorderLayout());
         Project.addProjectObserver(this);
         this.parentEditor = parentEditor;
-        // set a nice look and feel
-        GuiTools.setLookAndFeel();
 
         textArea = new JTextArea();
         textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
@@ -70,28 +70,31 @@ public class FileEditorWindow extends AbstractEditorWindow implements ProjectObs
         add(jsp, BorderLayout.CENTER);
     }
 
-    public FileEditorWindow(String quest, EditorWindow parentEditor, File f) {
-        this(quest, parentEditor);
-        setFile(f);
+    public TextEditorPanel(EditorWindow parentEditor, File file) {
+        this(parentEditor);
+        setFile(file);
     }
 
-
     /**
-     * Sets the file edited as text in the ediotr
-     * @param f the file wich will be edited in the textarea
+     * Sets the file to edit in this editor.
+     * @param file The file to edit in this editor.
      */
-    public void setFile(File f) {
-        this.file = f;
+    public void setFile(File file) {
+        this.file = file;
+
+        if (file == null) {
+            return;
+        }
 
         String text = "";
         try {
             BufferedReader br = new BufferedReader(
                new InputStreamReader(
-                     new FileInputStream(file),"UTF-8"));
+                     new FileInputStream(file), "UTF-8"));
             String line = br.readLine();
 
             while (line != null) {
-                text += line + "\n";
+                text += line + System.lineSeparator();
                 line = br.readLine();
             }
             br.close();
@@ -101,12 +104,16 @@ public class FileEditorWindow extends AbstractEditorWindow implements ProjectObs
         }
     }
 
+    /**
+     * Saves the current resource of this editor.
+     */
+    @Override
     public void save() {
         saveFile();
     }
 
     /**
-     * Saves the content of the text area into the file
+     * Saves the content of the text area into the file.
      */
     public void saveFile() {
         try {
@@ -115,15 +122,18 @@ public class FileEditorWindow extends AbstractEditorWindow implements ProjectObs
             out.write(textArea.getText());
             out.close();
             textChanged = false;
-        } catch (IOException er) {
-            er.printStackTrace();
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
+    @Override
     public String getResourceName() {
-        return file.getName();
+        return file == null ? "" : file.getName();
     }
 
+    @Override
     public boolean checkCurrentFileSaved() {
         boolean result = true;
 
@@ -144,19 +154,23 @@ public class FileEditorWindow extends AbstractEditorWindow implements ProjectObs
     }
 
     /**
-     * This function is called when the tileset changes.
+     * This function is called when the resource changes.
      * @param o the history
      * @param obj additional parameter
      */
+    @Override
     public void update(Observable o, Object obj) {
         this.parentEditor.update(o, obj);
     }
 
     /**
      * This method is called when a project has just been loaded.
-     * The tileset menu is enabled.
      */
+    @Override
     public void currentProjectChanged() {
+        if (file != null) {
+            setFile(null);  // Close the file that was open with the previous project.
+        }
     }
 
     //

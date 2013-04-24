@@ -19,7 +19,7 @@ package org.solarus.editor;
 import org.solarus.editor.gui.*;
 
 /**
- * Main class of the map editor.
+ * Main class of the quest editor.
  */
 public class Editor {
 
@@ -46,3 +46,4 @@ public class Editor {
         window.setVisible(true);
     }
 }
+

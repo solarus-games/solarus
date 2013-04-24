@@ -50,17 +50,12 @@ class Debug {
 
 /**
  * @brief Prints a message if the program is in debug mode.
- *
- * This function does nothing if NDEBUG is defined.
- *
  * @param message the message to print.
  * @param os the output stream to write (default is std::cout)
  */
 inline void Debug::print(const std::string& message, std::ostream& os) {
 
-#ifndef NDEBUG
   os << message << std::endl;
-#endif
 }
 
 /**

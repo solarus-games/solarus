@@ -401,7 +401,7 @@ public abstract class MapEntity extends Observable {
                 value = stringValue;
             }
             else if (propertyType == Boolean.class) {
-                value = (stringValue == "1") ? "true" : "false";
+                value = stringValue.equals("1") ? "true" : "false";
             }
             else {
                 throw new IllegalStateException("Unknown property type for key '" + key + "'");

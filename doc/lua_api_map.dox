@@ -1049,10 +1049,10 @@ on the map.
     \c 2: high).
   - \c x (number): X coordinate on the map.
   - \c y (number): Y coordinate on the map.
-  - \c direction (number): The only direction where the block can be moved,
-    between \c 0 (East) and \c 3 (South).
-    \c -1 means no restriction and allows the block to be moved in any of the
-    four directions.
+  - \c direction (number, optional): The only direction where the block can be
+    moved, between \c 0 (East) and \c 3 (South).
+    No value means no restriction and allows the block to be moved in any of the
+    four main directions.
   - \c sprite (string): Name of the animation set of a
     \ref lua_api_sprite "sprite" to create for the block.
   - \c pushable (boolean): \c true to allow the block to be pushed.

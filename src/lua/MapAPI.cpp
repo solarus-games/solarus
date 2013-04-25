@@ -1288,7 +1288,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
   Layer layer = Layer(check_int_field(l, 1, "layer"));
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
-  int direction = check_int_field(l, 1, "direction");
+  int direction = opt_int_field(l, 1, "direction", -1);
   const std::string& sprite_name = check_string_field(l, 1, "sprite");
   bool pushable = check_boolean_field(l, 1, "pushable");
   bool pullable = check_boolean_field(l, 1, "pullable");

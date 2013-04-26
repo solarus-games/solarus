@@ -1231,7 +1231,7 @@ CircleMovement& LuaContext::check_circle_movement(lua_State* l, int index) {
 int LuaContext::circle_movement_api_set_center(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
-  if (lua_isnumber(l, 3)) {
+  if (lua_isnumber(l, 2)) {
     // the center is a fixed point
     int x = luaL_checkint(l, 2);
     int y = luaL_checkint(l, 3);

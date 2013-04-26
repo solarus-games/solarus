@@ -59,6 +59,7 @@ void ExportableToLua::increment_refcount() {
  */
 void ExportableToLua::decrement_refcount() {
 
+  Debug::check_assertion(refcount > 0, "The refcount is already 0");
   refcount--;
 }
 

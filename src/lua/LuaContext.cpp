@@ -783,13 +783,11 @@ bool LuaContext::find_method(const std::string& function_name) {
 bool LuaContext::find_method(int index, const std::string& function_name) {
 
   index = get_positive_index(l, index);
-
                                   // ... object ...
   lua_getfield(l, index, function_name.c_str());
                                   // ... object ... method/?
 
   bool exists = lua_isfunction(l, -1);
-
   if (exists) {
                                   // ... object ... method
     lua_pushvalue(l, index);
@@ -991,6 +989,19 @@ void LuaContext::print_stack(lua_State* l) {
         std::cout << lua_tonumber(l, i);
         break;
 
+      case LUA_TLIGHTUSERDATA:
+        std::cout << "lightuserdata:" << lua_touserdata(l, i);
+        break;
+
+      case LUA_TUSERDATA:
+      {
+        ExportableToLua* userdata = *(static_cast<ExportableToLua**>(
+            lua_touserdata(l, i)));
+        const std::string& lua_type_name = userdata->get_lua_type_name();
+        std::cout << lua_type_name.substr(lua_type_name.find_last_of('.') + 1);
+        break;
+      }
+
       default:
         std::cout << lua_typename(l, type);
         break;
@@ -1158,7 +1169,16 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata lightudata udata mt
     Debug::check_assertion(!lua_isnil(l, -1), StringConcat() <<
         "Userdata of type '" << userdata.get_lua_type_name()
-        << "' has no metatable, this is a memory leak");  // TODO also check __gc
+        << "' has no metatable, this is a memory leak");
+
+    lua_getfield(l, -1, "__gc");
+                                  // ... all_udata lightudata udata mt gc
+    Debug::check_assertion(lua_isfunction(l, -1), StringConcat() <<
+        "Userdata of type '" << userdata.get_lua_type_name()
+        << "' must have the __gc function LuaContext::userdata_meta_gc");
+                                  // ... all_udata lightudata udata mt gc
+    lua_pop(l, 1);
+                                  // ... all_udata lightudata udata mt
     lua_setmetatable(l, -2);
                                   // ... all_udata lightudata udata
     // Keep track of our new userdata.
@@ -1206,11 +1226,11 @@ bool LuaContext::is_userdata(lua_State* l, int index,
                                   // ... udata ...
   void *udata = lua_touserdata(l, index);
   if (udata == NULL) {
-    // it's not a userdata
+    // This is not a userdata.
     return false;
   }
   if (!lua_getmetatable(l, index)) {
-    // the userdata has no metatable
+    // The userdata has no metatable.
     return false;
   }
                                   // ... udata ... mt_found
@@ -1291,42 +1311,32 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   ExportableToLua* userdata =
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
 
-  lua_pushnil(l);
-  lua_setmetatable(l, 1);
+  // Note that the userdata disappears from Lua but it may come back later!
+  // So we need to keep its table if the refcount is not zero.
+  // The full userdata is destroyed, but if the refcount is zero, the light
+  // userdata and its table persists.
 
-
-  // Remove the userdata from the list of userdata.
-                                  // udata
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.all_userdata");
-                                  // udata all_udata
-  lua_pushlightuserdata(l, userdata);
-                                  // udata all_udata lightudata
-  lua_pushnil(l);
-                                  // udata all_udata lightudata nil
-  lua_settable(l, -3);
-                                  // udata all_udata
-  lua_pop(l, 1);
-                                  // udata
-
-  // Also remove the userdata from the list of userdata tables.
-  // Otherwise, if the same pointer gets reallocated, the userdata will get
-  // its table from this deleted one!
-                                  // udata
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
-                                  // udata all_udata
-  lua_pushlightuserdata(l, userdata);
-                                  // udata all_udata lightudata
-  lua_pushnil(l);
-                                  // udata all_udata lightudata nil
-  lua_settable(l, -3);
-                                  // udata all_udata
-  lua_pop(l, 1);
-                                  // udata
-
-  // There are no more Lua light pointers to this userdata at this point.
+  // We don't need to remove the entry from sol.all_userdata
+  // because it is already done: that table is weak on its values and the
+  // value was the full userdata.
 
   userdata->decrement_refcount();
   if (userdata->get_refcount() == 0) {
+
+    // Remove the userdata from the list of userdata tables.
+    // Otherwise, if the same pointer gets reallocated, the userdata will get
+    // its table from this deleted one!
+                                    // udata
+    lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
+                                    // udata all_udata
+    lua_pushlightuserdata(l, userdata);
+                                    // udata all_udata lightudata
+    lua_pushnil(l);
+                                    // udata all_udata lightudata nil
+    lua_settable(l, -3);
+                                    // udata all_udata
+    lua_pop(l, 1);
+                                    // udata
     delete userdata;
   }
 

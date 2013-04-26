@@ -117,8 +117,11 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
         if (e.getButton() == MouseEvent.BUTTON2 && countEditors() > 0) {
             Point clic = e.getPoint();
             int idx = indexAtLocation(clic.x, clic.y);
-            AbstractEditorPanel editor = (AbstractEditorPanel) getComponentAt(idx);
-            removeEditor(editor);
+            if (idx != -1) {
+                // A tab was clicked.
+                AbstractEditorPanel editor = (AbstractEditorPanel) getComponentAt(idx);
+                removeEditor(editor);
+            }
         }
     }
 

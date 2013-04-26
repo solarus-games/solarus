@@ -617,11 +617,11 @@ void Map::draw_sprite(Sprite &sprite, const Rectangle &xy) {
  * @param x x coordinate of the sprite's origin point in the map
  * @param y y coordinate of the sprite's origin point in the map
  */
-void Map::draw_sprite(Sprite &sprite, int x, int y) {
+void Map::draw_sprite(Sprite& sprite, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
-  const Rectangle &camera_position = get_camera_position();
+  const Rectangle& camera_position = get_camera_position();
   sprite.draw(*visible_surface,
       x - camera_position.get_x(),
       y - camera_position.get_y()
@@ -638,16 +638,10 @@ void Map::start() {
 
   this->started = true;
   this->visible_surface->set_opacity(255);
+
+  Music::play(music_id);
   this->entities->notify_map_started();
-
-  const std::string& previous_music_id = Music::get_current_music_id();
   get_lua_context().run_map(*this, get_destination());
-  const std::string& new_music_id = Music::get_current_music_id();
-
-  if( new_music_id == previous_music_id ) {
-    // Play the music of the map unless the script changed it on map:on_started().
-    Music::play(music_id);
-  }
 }
 
 /**

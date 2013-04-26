@@ -1,5 +1,5 @@
 /**
-\page lua_api_fire Explosion
+\page lua_api_fire Fire
 
 \tableofcontents
 
@@ -29,7 +29,7 @@ that interacts with fire.
 
 \section lua_api_fire_inherited_methods Methods inherited from map entity
 
-Bombs are particular \ref lua_api_entity "map entities".
+Fire entities are particular \ref lua_api_entity "map entities".
 Therefore, they inherit all methods from the type map entity.
 
 See \ref lua_api_entity_methods to know these methods.
@@ -43,7 +43,7 @@ None.
 Events are callback methods automatically called by the engine if you define
 them.
 
-Bombs are particular \ref lua_api_entity "map entities".
+Fire entities are particular \ref lua_api_entity "map entities".
 Therefore, they inherit all events from the type map entity.
 
 See \ref lua_api_entity_events to know these events.

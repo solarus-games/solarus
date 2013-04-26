@@ -38,6 +38,7 @@ class DialogResource {
     static void initialize();
     static void quit();
 
+    static bool exists(const std::string& dialog_id);
     static const Dialog& get_dialog(const std::string& dialog_id);
 
   private:

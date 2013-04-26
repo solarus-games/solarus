@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "DialogBox.h"
+#include "DialogResource.h"
 #include "Treasure.h"
 #include "EquipmentItem.h"
 #include "entities/MapEntities.h"
@@ -459,7 +460,20 @@ int LuaContext::map_api_start_dialog(lua_State* l) {
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
 
-  map.get_game().get_dialog_box().start_dialog(dialog_id, callback_ref);
+  if (!DialogResource::exists(dialog_id)) {
+    luaL_argerror(l, 2, (StringConcat()
+          << "No such dialog: '" << dialog_id << "'").c_str());
+  }
+
+  DialogBox& dialog_box = map.get_game().get_dialog_box();
+  if (dialog_box.is_enabled()) {
+    luaL_argerror(l, 2, (StringConcat()
+          << "Cannot start dialog '" << dialog_id << "': another dialog '"
+          << dialog_box.get_dialog_id() << "' is already active").c_str());
+
+  }
+
+  dialog_box.start_dialog(dialog_id, callback_ref);
 
   return 0;
 }

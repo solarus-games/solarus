@@ -231,7 +231,7 @@ void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref) {
 
   bool first = !is_enabled();
   if (first) {
-    // save the action and sword keys
+    // save the action and sword commands
     KeysEffect& keys_effect = game.get_keys_effect();
     action_key_effect_saved = keys_effect.get_action_key_effect();
     sword_key_effect_saved = keys_effect.get_sword_key_effect();

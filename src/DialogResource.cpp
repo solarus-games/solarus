@@ -40,7 +40,7 @@ DialogResource::~DialogResource() {
 /**
  * @brief Loads all dialogs of the game.
  *
- * The dialogs are loaded from the language-specific file "text/dialogs.lua"
+ * The dialogs are loaded from the language-specific file "text/dialogs.dat"
  * and stored into memory for future access by get_dialog().
  */
 void DialogResource::initialize() {
@@ -74,14 +74,24 @@ void DialogResource::quit() {
 }
 
 /**
+ * @brief Returns whether the specified dialog exists.
+ * @param dialog_id Id of the dialog to test.
+ * @return true if such a dialog exists.
+ */
+bool DialogResource::exists(const std::string& dialog_id) {
+
+  return dialogs.find(dialog_id) != dialogs.end();
+}
+
+/**
  * @brief Returns a dialog stored in the language-specific file
- * "text/dialogs.lua".
+ * "text/dialogs.dat".
  * @param dialog_id id of the dialog to retrieve
  * @return the corresponding localized dialog
  */
 const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
 
-  Debug::check_assertion(dialogs.count(dialog_id) > 0, StringConcat()
+  Debug::check_assertion(exists(dialog_id), StringConcat()
       << "Cannot find dialog with id '" << dialog_id << "'");
   return dialogs[dialog_id];
 }

@@ -320,8 +320,13 @@ void Hero::check_gameover() {
  */
 void Hero::draw_on_map() {
 
-  if (is_visible()) {
-    // the state may call get_sprites()->draw_on_map() or make its own drawings
+  if (!is_drawn()) {
+    return;
+  }
+
+  if (state->is_hero_visible()
+      && !get_game().is_showing_gameover()) {
+    // The state may call get_sprites()->draw_on_map() or make its own drawings.
     state->draw_on_map();
   }
 }
@@ -392,17 +397,6 @@ bool Hero::is_animation_finished() {
 void Hero::rebuild_equipment() {
 
   sprites->rebuild_equipment();
-}
-
-/**
- * @brief Returns whether this entity is currently visible.
- * @return true if this entity is currently visible
- */
-bool Hero::is_visible() {
-
-  return MapEntity::is_visible()
-    && state->is_hero_visible()
-    && !get_game().is_showing_gameover();
 }
 
 /**

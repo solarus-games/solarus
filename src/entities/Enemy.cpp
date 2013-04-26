@@ -735,15 +735,13 @@ void Enemy::set_suspended(bool suspended) {
  */
 void Enemy::draw_on_map() {
 
-  if (is_visible()) {
-    get_lua_context().enemy_on_pre_draw(*this);
+  if (!is_drawn()) {
+    return;
   }
 
+  get_lua_context().enemy_on_pre_draw(*this);
   Detector::draw_on_map();
-
-  if (is_visible()) {
-    get_lua_context().enemy_on_post_draw(*this);
-  }
+  get_lua_context().enemy_on_post_draw(*this);
 }
 
 /**

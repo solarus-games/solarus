@@ -375,6 +375,10 @@ void CarriedItem::update() {
  */
 void CarriedItem::draw_on_map() {
 
+  if (!is_drawn()) {
+    return;
+  }
+
   if (!is_throwing) {
     // draw the sprite normally
     MapEntity::draw_on_map();

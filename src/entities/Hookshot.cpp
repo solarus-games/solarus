@@ -278,23 +278,24 @@ void Hookshot::draw_on_map() {
     Rectangle(0, 7)
   };
 
+  if (!is_drawn()) {
+    return;
+  }
+
   MapEntity::draw_on_map();
 
-  if (is_visible()) {
+  // also draw the links
+  int direction = get_sprite().get_current_direction();
+  int x1 = get_hero().get_x() + dxy[direction].get_x();
+  int y1 = get_hero().get_y() + dxy[direction].get_y();
+  int x2 = get_x();
+  int y2 = get_y() - 5;
 
-    // also draw the links
-    int direction = get_sprite().get_current_direction();
-    int x1 = get_hero().get_x() + dxy[direction].get_x();
-    int y1 = get_hero().get_y() + dxy[direction].get_y();
-    int x2 = get_x();
-    int y2 = get_y() - 5;
-
-    Rectangle link_xy;
-    for (int i = 0; i < nb_links; i++) {
-      link_xy.set_x(x1 + (x2 - x1) * i / nb_links);
-      link_xy.set_y(y1 + (y2 - y1) * i / nb_links);
-      get_map().draw_sprite(link_sprite, link_xy);
-    }
+  Rectangle link_xy;
+  for (int i = 0; i < nb_links; i++) {
+    link_xy.set_x(x1 + (x2 - x1) * i / nb_links);
+    link_xy.set_y(y1 + (y2 - y1) * i / nb_links);
+    get_map().draw_sprite(link_sprite, link_xy);
   }
 }
 

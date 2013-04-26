@@ -1901,17 +1901,19 @@ bool MapEntity::is_drawn() {
  *
  * By default, this function draws the entity's sprites (if any) and if
  * at least one of them is in the visible part of the map.
+ * This function should do nothing if is_drawn() is false.
  */
 void MapEntity::draw_on_map() {
 
-  if (is_drawn()) {
-    // draw the sprites
-    std::list<Sprite*>::iterator it;
-    for (it = sprites.begin(); it != sprites.end(); it++) {
+  if (!is_drawn()) {
+    return;
+  }
 
-      Sprite& sprite = *(*it);
-      get_map().draw_sprite(sprite, get_displayed_xy());
-    }
+  // Draw the sprites.
+  std::list<Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); ++it) {
+    Sprite& sprite = *(*it);
+    get_map().draw_sprite(sprite, get_displayed_xy());
   }
 }
 

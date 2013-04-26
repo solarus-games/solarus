@@ -113,6 +113,10 @@ bool DynamicTile::is_obstacle_for(MapEntity &other) {
  */
 void DynamicTile::draw_on_map() {
 
+  if (!is_drawn()) {
+    return;
+  }
+
   const Rectangle& camera_position = get_map().get_camera_position();
   Rectangle dst(0, 0);
 

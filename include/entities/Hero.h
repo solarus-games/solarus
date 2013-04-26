@@ -152,7 +152,6 @@ class Hero: public MapEntity {
     void set_animation_direction(int direction);
     bool is_animation_finished();
     void rebuild_equipment();
-    bool is_visible();
     bool is_shadow_visible();
 
     /**

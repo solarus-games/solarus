@@ -218,6 +218,10 @@ void ShopItem::update() {
  */
 void ShopItem::draw_on_map() {
 
+  if (!is_drawn()) {
+    return;
+  }
+
   Surface& map_surface = get_map().get_visible_surface();
   int x = get_x();
   int y = get_y();

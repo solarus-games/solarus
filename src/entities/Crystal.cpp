@@ -192,6 +192,10 @@ void Crystal::update() {
  */
 void Crystal::draw_on_map() {
 
+  if (!is_drawn()) {
+    return;
+  }
+
   // draw the crystal
   MapEntity::draw_on_map();
 

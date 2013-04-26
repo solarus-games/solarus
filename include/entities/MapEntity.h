@@ -214,8 +214,8 @@ class MapEntity: public ExportableToLua {
     void clear_sprites();
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
-    virtual bool is_visible();
-    virtual void set_visible(bool visible);
+    bool is_visible();
+    void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
 
     // movement

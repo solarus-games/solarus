@@ -550,6 +550,10 @@ void Door::update() {
  */
 void Door::draw_on_map() {
 
+  if (!is_drawn()) {
+    return;
+  }
+
   if (has_sprite() && !is_open()) {
     Detector::draw_on_map();
   }

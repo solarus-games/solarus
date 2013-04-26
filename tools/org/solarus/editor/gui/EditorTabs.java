@@ -26,11 +26,11 @@ import javax.swing.event.ChangeListener;
 /**
  * The main tabbed pane with all editors currently open. 
  */
-public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeListener {
+public class EditorTabs extends JTabbedPane implements MouseListener, ChangeListener {
 
     public static final long serialVersionUID = 1L;
 
-    public EditorDesktop() {
+    public EditorTabs() {
         setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
         addMouseListener(this);
         addChangeListener(this);

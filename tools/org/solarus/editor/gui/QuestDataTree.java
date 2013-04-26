@@ -33,10 +33,11 @@ import org.solarus.editor.entities.*;
 public class QuestDataTree extends JTree
         implements TreeSelectionListener, Observer, ProjectObserver {
 
-    private EditorWindow editorWindow;
-    private QuestDataTreeTilesetPopupMenu tilesetPopupMenu;
-    private QuestDataTreeMapPopupMenu mapPopupMenu;
-    private QuestDataTreePopupMenu popupMenu;
+    private EditorWindow editorWindow;  // The main window.
+
+    private QuestDataTreeTilesetPopupMenu tilesetPopupMenu;  // Popup menu for tilesets.
+    private QuestDataTreeMapPopupMenu mapPopupMenu;  // Popup menu for maps.
+    private QuestDataTreePopupMenu popupMenu;   // Popup menu for other resources.
 
     public QuestDataTree(EditorWindow parent) {
         setModel(null);  // Because Java makes a stupid example tree by default.
@@ -44,10 +45,10 @@ public class QuestDataTree extends JTree
 
         addTreeSelectionListener(this);
         addMouseListener(new QuestDataTreeMouseAdapter());
-        
+
         mapPopupMenu = new QuestDataTreeMapPopupMenu();
-        popupMenu = new QuestDataTreePopupMenu();
         tilesetPopupMenu = new QuestDataTreeTilesetPopupMenu();
+        popupMenu = new QuestDataTreePopupMenu();
 
         Project.addProjectObserver(this);
     }

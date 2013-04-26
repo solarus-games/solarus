@@ -30,8 +30,8 @@ import org.solarus.editor.*;
  */
 public class EditorWindow extends JFrame implements Observer, ProjectObserver, ChangeListener {
 
-    private EditorDesktop desktop;
-    private QuestDataTree qdt;
+    private EditorTabs tabs;
+    private QuestDataTree quest_tree;
 
     // Menus and menu items memorized to enable or disable them later.
     private JMenu menuFile;
@@ -61,15 +61,15 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         // set a nice look and feel
         GuiTools.setLookAndFeel();
 
-        desktop = new EditorDesktop();
-        desktop.addChangeListener(this);
+        tabs = new EditorTabs();
+        tabs.addChangeListener(this);
 
-        qdt = new QuestDataTree(this);
-        qdt.setVisible(true);
-        final JScrollPane jsp = new JScrollPane(qdt);
+        quest_tree = new QuestDataTree(this);
+        quest_tree.setVisible(true);
+        final JScrollPane jsp = new JScrollPane(quest_tree);
         jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, jsp, desktop);
+        final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, jsp, tabs);
         splitPane.setDividerLocation(0);
         jsp.setVisible(false);
         JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
@@ -131,7 +131,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         menuFile.setEnabled(Project.isLoaded());
 
-        if (desktop.getSelectedComponent() != null) {
+        if (tabs.getSelectedComponent() != null) {
 
             menuItemUndo.setEnabled(false);
             menuItemRedo.setEnabled(false);
@@ -139,9 +139,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             menuItemCopy.setEnabled(false);
             menuItemPaste.setEnabled(false);
 
-            if (desktop.getSelectedComponent() instanceof MapEditorPanel) {
+            if (tabs.getSelectedComponent() instanceof MapEditorPanel) {
 
-                MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
+                MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
                 MapEditorHistory history = mapEditor.getMap().getHistory();
                 menuItemUndo.setEnabled(history.canUndo());
                 menuItemRedo.setEnabled(history.canRedo());
@@ -305,8 +305,8 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     public boolean checkCurrentFilesSaved() {
         boolean result = true;
-        if (desktop.countEditors() > 0) {
-            for (AbstractEditorPanel editor : desktop.getEditors()) {
+        if (tabs.countEditors() > 0) {
+            for (AbstractEditorPanel editor : tabs.getEditors()) {
                 result = result && editor.checkCurrentFileSaved();
             }
         }
@@ -352,8 +352,8 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      * located in that directory.
      */
     private void loadProject() {
-        if (desktop.countEditors() > 0) {
-            for (AbstractEditorPanel editor : desktop.getEditors()) {
+        if (tabs.countEditors() > 0) {
+            for (AbstractEditorPanel editor : tabs.getEditors()) {
                 if (editor.checkCurrentFileSaved()) {
                     return;
                 }
@@ -375,7 +375,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     }
 
     public void addEditor(AbstractEditorPanel editor) {
-        desktop.addEditor(editor);
+        tabs.addEditor(editor);
     }
 
     /**
@@ -412,10 +412,10 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         public void actionPerformed(ActionEvent ev) {
             MapEditorPanel mapEditor = new MapEditorPanel(EditorWindow.this);
             mapEditor.newMap();
-            EditorWindow.this.desktop.addEditor(mapEditor);
+            EditorWindow.this.tabs.addEditor(mapEditor);
             mapEditor.getMap().addObserver(EditorWindow.this);
-            qdt.addMap(mapEditor.getMap());
-            qdt.repaint();
+            quest_tree.addMap(mapEditor.getMap());
+            quest_tree.repaint();
         }
     }
 
@@ -430,7 +430,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             MapEditorPanel mapEditor = new MapEditorPanel(EditorWindow.this);
             mapEditor.openMap();
             if (mapEditor.getMap() != null) {
-                EditorWindow.this.desktop.addEditor(mapEditor);
+                EditorWindow.this.tabs.addEditor(mapEditor);
                 mapEditor.getMap().addObserver(EditorWindow.this);
             }
         }
@@ -444,7 +444,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
             try {
                 mapEditor.getMap().getHistory().undo();
             } catch (QuestEditorException ex) {
@@ -461,7 +461,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
             try {
                 mapEditor.getMap().getHistory().redo();
             } catch (QuestEditorException ex) {
@@ -478,7 +478,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
             mapEditor.getMapView().cutSelectedEntities();
         }
     }
@@ -491,7 +491,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
             mapEditor.getMapView().copySelectedEntities();
         }
     }
@@ -504,7 +504,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorPanel mapEditor = (MapEditorPanel) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
             mapEditor.getMapView().paste();
         }
     }
@@ -521,8 +521,8 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         public void actionPerformed(ActionEvent ev) {
             TilesetEditorPanel tilesetEditor = new TilesetEditorPanel(EditorWindow.this);
             tilesetEditor.newTileset();
-            EditorWindow.this.desktop.addEditor(tilesetEditor);
-            qdt.addTileset(tilesetEditor.getTileset());
+            EditorWindow.this.tabs.addEditor(tilesetEditor);
+            quest_tree.addTileset(tilesetEditor.getTileset());
         }
     }
 
@@ -539,7 +539,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             if (tilesetEditor.getTileset() == null) {
                 return;  // User canceled.
             }
-            EditorWindow.this.desktop.addEditor(tilesetEditor);
+            EditorWindow.this.tabs.addEditor(tilesetEditor);
         }
     }
 
@@ -551,7 +551,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-            desktop.removeCurrentEditor();
+            tabs.removeCurrentEditor();
         }
     }
 
@@ -563,7 +563,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-            desktop.saveCurrentEditor();
+            tabs.saveCurrentEditor();
         }
     }
 

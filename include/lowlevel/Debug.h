@@ -18,7 +18,7 @@
 #define SOLARUS_DEBUG_H
 
 #include "Common.h"
-#include <stdexcept>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -61,13 +61,15 @@ inline void Debug::print(const std::string& message, std::ostream& os) {
 /**
  * @brief Throws an exception if the specified assertion fails.
  *
- * If the assertion fails, an std::logic_error with the specified error message is thrown.
+ * If the assertion fails, shows an error message and aborts.
  * The error message is saved in error.txt.
  * This function should be used to detect fatal errors only, that is,
- * errors in your code or in the quest (the data files) that require to stop the program.
+ * errors in your code or in the quest (the data files) that require to stop
+ * the program.
  *
- * @param assertion the boolean condition to check
- * @param error_message the error message to attach to the exception when the assertion fails
+ * @param assertion The boolean condition to check.
+ * @param error_message The error message to attach to print when the
+ * assertion fails.
  */
 inline void Debug::check_assertion(bool assertion, const std::string& error_message) {
 
@@ -77,18 +79,19 @@ inline void Debug::check_assertion(bool assertion, const std::string& error_mess
 }
 
 /**
- * @brief Throws an exception to stop the program.
+ * @brief Aborts the program.
  *
  * This function is equivalent to assert(false, error_message).
- * The error message is saved in error.txt.
+ * The error message is printed on stdout and also saved in error.txt.
  *
- * @param error_message the error message to attach to the exception
+ * @param error_message The error message to show.
  */
 inline void Debug::die(const std::string& error_message) {
 
+  std::cerr << "Fatal: " << error_message << std::endl;
   std::ofstream out("error.txt");
   out << error_message << std::endl << std::flush;
-  throw std::logic_error(error_message);
+  std::abort();
 }
 
 #endif

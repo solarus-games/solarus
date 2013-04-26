@@ -50,15 +50,6 @@ Teletransports the hero to a different place.
   loop. Therefore, your map is not unloaded immediately and your map script
   continues to work.
 
-\subsection lua_api_hero_set_visible hero:set_visible([visible])
-
-Hides or shows the hero.
-
-The player continues to control the hero even when he is invisible.
-He can fight enemies do everything as usual.
-- \c visible (boolean, optional): \c true to show the hero, \c false to hide
-  him. No value means \c true.
-
 \subsection lua_api_hero_get_direction hero:get_direction()
 
 Returns the direction of the hero's \ref lua_api_sprite "sprites".

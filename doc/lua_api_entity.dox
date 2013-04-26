@@ -305,6 +305,23 @@ if this map entity was translated.
 - Return value (boolean): \c true if there would be a collision in this
 position.
 
+\subsection lua_api_entity_is_visible entity:is_visible([visible])
+
+Returns whether this entity is visible.
+
+When the entity is hidden, its sprites (if any) are not displayed, but
+everything else continues normally, including collisions.
+- Return value (boolean): \c true if the entity is visible.
+
+\subsection lua_api_entity_set_visible entity:set_visible([visible])
+
+Hides or shows the entity.
+
+When the entity is hidden, its sprites (if any) are not displayed, but
+everything else continues normally, including collisions.
+- \c visible (boolean, optional): \c true to show the entity, \c false to hide
+  it. No value means \c true.
+
 \subsection lua_api_entity_get_movement entity:get_movement()
 
 Returns the current movement of this map entity.

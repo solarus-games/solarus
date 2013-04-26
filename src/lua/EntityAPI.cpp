@@ -101,6 +101,8 @@ void LuaContext::register_entity_module() {
       { "get_optimization_distance", entity_api_get_optimization_distance },
       { "set_optimization_distance", entity_api_set_optimization_distance },
       { "test_obstacles", entity_api_test_obstacles },
+      { "is_visible", entity_api_is_visible },
+      { "set_visible", entity_api_set_visible },
       { "get_movement", entity_api_get_movement },
       { "stop_movement", entity_api_stop_movement },
       { NULL, NULL }
@@ -118,7 +120,6 @@ void LuaContext::register_entity_module() {
   // Hero.
   static const luaL_Reg hero_methods[] = {
       { "teleport", hero_api_teleport },
-      { "set_visible", hero_api_set_visible },
       { "get_direction", hero_api_get_direction },
       { "set_direction", hero_api_set_direction },
       { "save_solid_ground", hero_api_save_solid_ground },
@@ -382,7 +383,7 @@ int LuaContext::entity_api_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_is_enabled.
+ * @brief Implementation of \ref lua_api_entity_set_enabled.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -620,6 +621,37 @@ int LuaContext::entity_api_remove_sprite(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_entity_is_visible.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_is_visible(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  lua_pushboolean(l, entity.is_visible());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_set_visible.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_set_visible(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  bool visible = true;
+  if (lua_isboolean(l, 2)) {
+    visible = lua_toboolean(l, 2);
+  }
+
+  entity.set_visible(visible);
+
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_entity_get_movement.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -793,24 +825,6 @@ int LuaContext::hero_api_teleport(lua_State* l) {
   // TODO don't allow side destinations and scrolling?
 
   hero.get_game().set_current_map(map_id, destination_name, transition_style);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_hero_set_visible.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::hero_api_set_visible(lua_State* l) {
-
-  Hero& hero = check_hero(l, 1);
-  bool visible = true;
-  if (lua_isboolean(l, 2)) {
-    visible = lua_toboolean(l, 2);
-  }
-
-  hero.set_visible(visible);
 
   return 0;
 }

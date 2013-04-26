@@ -138,13 +138,12 @@ public class QuestDataTree extends JTree
                     clickedNode = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
                     if (clickedNode.getUserObject() instanceof ResourceElement) {
                         // right click: show a popup menu if the element is a map
+                        ResourceElement element = (ResourceElement) clickedNode.getUserObject();
                         int row = QuestDataTree.this.getRowForLocation(e.getX(), e.getY());
                         if (row == -1) {
                             return;
                         }
                         QuestDataTree.this.setSelectionRow(row);
-                        clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
-                        ResourceElement element = (ResourceElement) clickedNode.getUserObject();
                         if (element.type == ResourceType.MAP) {
                             popupMenu.setMap(element.id);
                             popupMenu.show((JComponent) e.getSource(),

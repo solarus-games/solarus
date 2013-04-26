@@ -48,9 +48,10 @@ public class MapEditorPanel extends AbstractEditorPanel {
 
         // left panel : the map properties and the tile picker
         mapPropertiesView = new MapPropertiesView();
+        mapPropertiesView.setMinimumSize(new Dimension(
+                0, mapPropertiesView.getPreferredSize().height));
         tilePicker = new TilePicker();
 
-        //mapPropertiesView.setMinimumSize(new Dimension(0, 0));
         JSplitPane leftPanel = new JSplitPane(
                 JSplitPane.VERTICAL_SPLIT, mapPropertiesView, tilePicker);
         leftPanel.setContinuousLayout(true);

@@ -41,8 +41,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private JMenu menuOpen;
     private JMenuItem menuOpenMap;
     private JMenuItem menuOpenTileset;
-    private JMenuItem menuOpenIniFile;
-    private JMenuItem menuOpenTextFile;
     private JMenuItem menuItemSave;
     private JMenuItem menuItemClose;
     private JMenuItem menuItemUndo;
@@ -195,31 +193,29 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         menuBar.add(menu);
 
-        //MenuFile
+        // Menu File
         menuFile = new JMenu("File");
         menuFile.setEnabled(false);
         menuFile.setMnemonic(KeyEvent.VK_F);
-        //New
+        // Menu File > New
         menuNew = new JMenu("New");
         menuNew.setMnemonic(KeyEvent.VK_N);
-        // menu Map
+        // Item File > New > Map
         menuNewMap = new JMenuItem("Map");
         menuNewMap.setMnemonic(KeyEvent.VK_M);
         menuNewMap.getAccessibleContext().setAccessibleDescription("Create a new map");
         menuNewMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         menuNewMap.addActionListener(new ActionListenerNewMap());
         menuNew.add(menuNewMap);
-        // menu Tileset
+        // Item File > New > Tileset
         menuNewTileset = new JMenuItem("Tileset");
         menuNewTileset.setMnemonic(KeyEvent.VK_T);
         menuNewTileset.getAccessibleContext().setAccessibleDescription("Create a new tileset");
         menuNewTileset.addActionListener(new ActionNewTileset());
         menuNew.add(menuNewTileset);
-        // menu TextFile
-        // incoming
         menuFile.add(menuNew);
 
-        // menu open
+        // Menu File > Open
         menuOpen = new JMenu("Open");
         menuOpen.setMnemonic(KeyEvent.VK_O);
         menuOpen.addActionListener(new ActionListenerOpenMap());
@@ -236,20 +232,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuOpenTileset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
         menuOpenTileset.addActionListener(new ActionOpenTileset());
         menuOpen.add(menuOpenTileset);
-
-        menuOpenIniFile = new JMenuItem("Dialogs");
-        menuOpenIniFile.setMnemonic(KeyEvent.VK_D);
-        menuOpenIniFile.getAccessibleContext().setAccessibleDescription("Open an existing dialogs file");
-        //menuOpenIniFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
-        //menuOpenIniFile.addActionListener(new ActionOpenIniFile());
-        menuOpen.add(menuOpenIniFile);
-
-        menuOpenTextFile = new JMenuItem("Text File");
-        menuOpenTextFile.setMnemonic(KeyEvent.VK_F);
-        menuOpenTextFile.getAccessibleContext().setAccessibleDescription("Open an existing file");
-        //menuOpenTextFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
-        menuOpenTextFile.addActionListener(new ActionOpenTextFile());
-        menuOpen.add(menuOpenTextFile);
 
         menuFile.add(menuOpen);
 
@@ -285,8 +267,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuItemRedo.setEnabled(false);
         menuFile.add(menuItemRedo);
 
-        //menuBar.add(menuEdit);
-
         menuFile.addSeparator();
 
         menuItemCut = new JMenuItem("Cut");
@@ -316,12 +296,11 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuBar.add(menuFile);
 
         setJMenuBar(menuBar);
-
     }
 
     /**
      * This function is called when the user wants to quit the editor
-     * If any resource opened is not saved, we propose to save it.
+     * If any resource open is not saved, we propose to save it.
      * @return false if the user cancelled
      */
     public boolean checkCurrentFilesSaved() {
@@ -561,25 +540,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
                 return;  // User canceled.
             }
             EditorWindow.this.desktop.addEditor(tilesetEditor);
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on File > Load.
-     * Opens an existing file.
-     */
-    private class ActionOpenTextFile implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent ev) {
-            TextEditorPanel textEditor = new TextEditorPanel(EditorWindow.this);
-            JFileChooser jfc = new JFileChooser(Project.getRootPath() + File.separator + "data");
-            jfc.showOpenDialog(EditorWindow.this);
-            File selectedFile = jfc.getSelectedFile();
-            if (selectedFile != null) {
-                textEditor.setFile(selectedFile);
-                EditorWindow.this.desktop.addEditor(textEditor);
-            }
         }
     }
 

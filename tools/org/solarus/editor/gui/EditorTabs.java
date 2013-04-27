@@ -16,20 +16,19 @@
  */
 package org.solarus.editor.gui;
 
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 /**
- * The main tabbed pane with all editors currently open. 
+ * The main tab pane with all editors currently open. 
  */
 public class EditorTabs extends JTabbedPane implements MouseListener, ChangeListener {
 
-    public static final long serialVersionUID = 1L;
-
+    /**
+     * Creates an empty tab pane of editor.
+     */
     public EditorTabs() {
         setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
         addMouseListener(this);
@@ -37,26 +36,51 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
     }
 
     /**
-     * Add an editor, unless it already exists:
-     * in that case, the existing editor is made active instead.
-     * @param key Key that identifies this editor. Used to determined whether
-     * the same editor already exists.
+     * Adds an editor.
+     * No other editor with the same id must exist.
      * @param editor The editor to add.
      */
-    public void addEditor(String key, AbstractEditorPanel editor) {
-        String title = editor.getResourceName();
+    public void addEditor(AbstractEditorPanel editor) {
+
+        if (getEditor(editor.getId()) != null) {
+            throw new IllegalArgumentException(
+                    "There is already an editor with id '" + editor.getId());
+        }
+
+        // FIXME a new editor is created even if it is useless.
+        AbstractEditorPanel existingEditor = getEditor(editor.getId());
+
+        if (existingEditor != null) {
+            // There is an editor already open for that this element. 
+            setSelectedComponent(existingEditor);
+        }
+        else {
+            // Create an editor.
+            add(editor.getTitle(), editor);
+            setSelectedIndex(getTabCount() - 1);
+            repaint();
+        }
+    }
+
+    /**
+     * Returns an existing editor with the specified id if any.
+     * @param id Id of the editor to search.
+     * @return The existing editor with this id, or null if there is no editor
+     * with this id.
+     */
+    public AbstractEditorPanel getEditor(String id) {
+
+        // TODO store editors in a map.
         AbstractEditorPanel[] editors = getEditors();
+
         if (editors != null) {
-            for (AbstractEditorPanel e: editors) {
-                if (e.getResourceName().equals(title)) {
-                    setSelectedComponent(e);
-                    return;
+            for (AbstractEditorPanel editor: editors) {
+                if (editor.getId().equals(id)) {
+                    return editor;
                 }
             }
         }
-        add(title, editor);
-        setSelectedIndex(getTabCount() - 1);
-        repaint();
+        return null;
     }
 
     /**
@@ -90,9 +114,10 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
 
     /**
      * Returns all editors currently open.
-     * @return A table containing the editors currently opened
+     * @return An array containing the editors currently open.
      */
     public AbstractEditorPanel[] getEditors() {
+        // TODO store this.
         int nb = getTabCount();
         if (nb > 0) {
             AbstractEditorPanel[] editors = new AbstractEditorPanel[nb];
@@ -133,7 +158,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
         // TODO Don't do this in repaint().
         super.repaint();
         for (int i = 0; i < getTabCount(); i++) {
-            setTitleAt(i, ((AbstractEditorPanel) getComponentAt(i)).getResourceName());
+            setTitleAt(i, ((AbstractEditorPanel) getComponentAt(i)).getTitle());
         }
     }
 
@@ -150,11 +175,11 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
     }
 
     public void stateChanged(ChangeEvent e) {
-        try {
-            if (countEditors() > 0) {
-                ((MapEditorPanel) getSelectedComponent()).getMapView().requestFocus();
+        if (countEditors() > 0) {
+            Component editor = getSelectedComponent();
+            if (editor instanceof MapEditorPanel) {
+                ((MapEditorPanel) editor).getMapView().requestFocus();
             }
-        } catch (ClassCastException cce) {
         }
     }
 }

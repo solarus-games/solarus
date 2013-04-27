@@ -59,7 +59,7 @@ public class ResourceChooserDialog extends OkCancelDialog {
 
     /**
      * Returns the id of the element that the user has just selected.
-     * @return the id of the element, or -1 if he cancelled
+     * @return The id of the element, or an empty string if he canceled.
      */
     public String getSelectedId() {
 

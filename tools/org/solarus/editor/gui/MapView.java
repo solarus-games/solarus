@@ -615,6 +615,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 // we show a dialog box to let the user edit the entity
 
                 dialog = new EditEntityDialog(map, entityBeingAdded);
+                dialog.setLocationRelativeTo(MapView.this);
                 if (dialog.display()) { // if the user filled the dialog box
                     valid = true;
                 } else { // the user cancelled the dialog box
@@ -1108,6 +1109,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                     if (entityClicked != null) {
                         EditEntityDialog dialog = new EditEntityDialog(map, entityClicked);
+                        dialog.setLocationRelativeTo(MapView.this);
                         dialog.display();
                     }
                 }
@@ -1374,6 +1376,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     if (selectedEntities.getNbEntitiesSelected() == 1) {
                         MapEntity entitySelected = selectedEntities.getEntity(0);
                         EditEntityDialog dialog = new EditEntityDialog(map, entitySelected);
+                        dialog.setLocationRelativeTo(MapView.this);
                         dialog.display();
                     }
                     break;

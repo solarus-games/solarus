@@ -32,6 +32,7 @@ import java.util.Observable;
  *   (This makes all dialog of the quest become uninterruptible).
  * - Existing comments do not always stay at their original place in the file.
  * - There is no way to see if a line reaches the limit of characters.
+ * - The format of dialogs has changed.
  */
 
 /**
@@ -41,25 +42,30 @@ import java.util.Observable;
 public class Dialogs extends Observable {
 
     /**
-     * Id of the dialogs.
+     * Language of these dialogs.
      */
-    private String dialogsId;
+    private String languageId;
+
     /**
      * Name of the dialogs.
      */
     private String name;
+
     /**
      * Description of the dialogs
      */
     private String description;
+
     /**
      * Sections of the dialogs
      */
     private ArrayList<DialogSection> sections;
+
     /**
      * Sections of the dialogs
      */
     private ArrayList<DialogSection> filteredSections;
+
     /**
      *
      */
@@ -67,7 +73,8 @@ public class Dialogs extends Observable {
 
     /**
      * Creates a new dialogs file.
-     * @throws QuestEditorException if the resource list could not be updated after the dialogs file creation
+     * @throws QuestEditorException if the resource list could not be updated
+     * after the dialogs file creation
      */
     public Dialogs() throws QuestEditorException {
         super();
@@ -90,11 +97,11 @@ public class Dialogs extends Observable {
 
     /**
      * Loads an existing dialogs file.
-     * @param dialogsId id of the dialogs file to load
+     * @param languageId Languages of the dialogs to load.
      * @throws QuestEditorException if the dialogs file could not be loaded
      */
-    public Dialogs(String dialogsId) throws QuestEditorException {
-        this.dialogsId = dialogsId;
+    public Dialogs(String languageId) throws QuestEditorException {
+        this.languageId = languageId;
         this.sections = new ArrayList<DialogSection>();
         this.filteredSections = new ArrayList<DialogSection>();
         this.description = "";
@@ -111,15 +118,10 @@ public class Dialogs extends Observable {
     public void load() throws QuestEditorException {
         String line =  "";
         try {
-            // get the dialogs file name in the game resource database
-            Resource mapResource = Project.getResource(ResourceType.LANGUAGE);
-            setName(mapResource.getElementName(dialogsId));
-
-            File dialogsFile = Project.getDialogsFile(dialogsId);
+            File dialogsFile = Project.getDialogsFile(languageId);
             BufferedReader in = new BufferedReader(new FileReader(dialogsFile));
 
-
-             line = in.readLine();
+            line = in.readLine();
 
             if (line == null) {
                 throw new QuestEditorException("The dialogs file is empty");
@@ -189,7 +191,7 @@ public class Dialogs extends Observable {
     public void save() throws QuestEditorException {
 
         try {
-            File dialogsFile = Project.getDialogsFile(dialogsId);
+            File dialogsFile = Project.getDialogsFile(languageId);
             OutputStreamWriter ost = new OutputStreamWriter(new FileOutputStream(dialogsFile), "UTF-8");
             BufferedWriter out = new BufferedWriter(ost);
             out.write(description);
@@ -214,19 +216,22 @@ public class Dialogs extends Observable {
     }
 
     /**
-     * Sets the name
-     * @param name the new name
+     * Returns the human-readable name of the language.
+     * @return The name of the language.
      */
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getLanguageName() {
 
-    /**
-     * Returns the name of the dialogs file
-     * @return the name of the dialogs file
-     */
-    public String getName() {
-        return name;
+        String languageName = "";
+        try {
+            Resource languages = Project.getResource(ResourceType.LANGUAGE);
+            languageName = languages.getElementName(languageId);
+        }
+        catch (QuestEditorException ex) {
+            // Should not happen.
+            ex.printStackTrace();
+        }
+        
+        return languageName;
     }
 
     /**
@@ -250,6 +255,10 @@ public class Dialogs extends Observable {
         return name;
     }
 
+    public String getLanguageId() {
+        return languageId;
+    }
+
     /**
      * @return the description
      */
@@ -265,7 +274,6 @@ public class Dialogs extends Observable {
     }
 
     public void filterList(String filter) {
-        //System.out.println("On filtre sur " + filter);
         filteredSections.clear();
         if (filter.length() == 0) {
             filteredSections.addAll(sections);
@@ -279,6 +287,4 @@ public class Dialogs extends Observable {
          setChanged();
          notifyObservers();
     }
-
-
 }

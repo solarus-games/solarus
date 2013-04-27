@@ -16,22 +16,11 @@
  */
 package org.solarus.editor.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Observable;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 /**
  * A simple editor using for editing any resources as a text file.
@@ -54,9 +43,12 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
     private boolean textChanged;
 
     /**
-     * Creates a new text editor without file.
+     * Creates a text editor.
+     * @param parentEditor The main editor window.
+     * @param file The file to edit.
      */
-    public TextEditorPanel(EditorWindow parentEditor) {
+    public TextEditorPanel(EditorWindow parentEditor, File file) {
+        super(getEditorId(file));
         setLayout(new BorderLayout());
         this.parentEditor = parentEditor;
 
@@ -65,11 +57,17 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
         textArea.getDocument().addDocumentListener(this);
         JScrollPane jsp = new JScrollPane(textArea);
         add(jsp, BorderLayout.CENTER);
+
+        setFile(file);
     }
 
-    public TextEditorPanel(EditorWindow parentEditor, File file) {
-        this(parentEditor);
-        setFile(file);
+    /**
+     * Returns the id of any map editor that edits the specified text file.
+     * @param file A text file.
+     * @return Id of an editor that edits this text file.
+     */
+    public static String getEditorId(File file) {
+        return file.getAbsolutePath();
     }
 
     /**
@@ -120,7 +118,7 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
     }
 
     @Override
-    public String getResourceName() {
+    public String getTitle() {
         return file == null ? "" : file.getName();
     }
 

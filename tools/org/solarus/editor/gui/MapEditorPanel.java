@@ -39,13 +39,19 @@ public class MapEditorPanel extends AbstractEditorPanel {
     private MapView mapView;
 
     /**
-     * Creates a new map editor without map.
+     * Creates a map editor with the specified map.
+     * @param mapId Id of the map to open.
+     * @throws QuestEditorException If the map could not be loaded.
      */
-    public MapEditorPanel(EditorWindow parentEditor) {
+    public MapEditorPanel(EditorWindow parentEditor, String mapId)
+        throws QuestEditorException {
+
+        super(getEditorId(mapId));
+
         setLayout(new BorderLayout());
         this.parentEditor = parentEditor;
 
-        // left panel : the map properties and the tile picker
+        // Left panel : the map properties and the tile picker.
         mapPropertiesView = new MapPropertiesView();
         mapPropertiesView.setMinimumSize(new Dimension(
                 0, mapPropertiesView.getPreferredSize().height));
@@ -69,30 +75,34 @@ public class MapEditorPanel extends AbstractEditorPanel {
         rightPanel.add(mapViewScroller, BorderLayout.CENTER);
         rightPanel.add(mapViewMouseCoordinates, BorderLayout.SOUTH);
 
-        //leftPanel.setMinimumSize(new Dimension(0, 0));
-        //rightPanel.setMinimumSize(new Dimension(0, 0));
         JSplitPane rootPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
         rootPanel.setContinuousLayout(true);
         rootPanel.setDividerLocation(350);
         rootPanel.resetToPreferredSizes();
 
         add(rootPanel);
-        setMap(null);
+
+        Map map = new Map(mapId);
+        if (map.badTiles()) {
+            GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in the tileset.");
+        }
+        setMap(map);
     }
 
     /**
-     * Creates a new map editor with an existing map.
+     * Returns the id of any map editor that edits the specified map.
+     * @param mapId Id of a map.
+     * @return Id of an editor that edits this map.
      */
-    public MapEditorPanel(EditorWindow parentEditor, Map map) {
-        this(parentEditor);
-        setMap(map);
+    public static String getEditorId(String mapId) {
+        return Project.getMapFile(mapId).getAbsolutePath();
     }
 
     /**
      * Returns the human-readable name of the resource open in the editor.
      * @return The name of the map.
      */
-    public String getResourceName() {
+    public String getTitle() {
         return map == null ? "" : "Map: " + getMap().getName();
     }
 
@@ -144,7 +154,7 @@ public class MapEditorPanel extends AbstractEditorPanel {
     /**
      * This function is called when the user wants to close the current map.
      * If the map is not saved, we propose to save it.
-     * @return false if the user cancelled
+     * @return false if the user canceled.
      */
     public boolean checkCurrentFileSaved() {
         boolean result = true;
@@ -166,37 +176,11 @@ public class MapEditorPanel extends AbstractEditorPanel {
     }
 
     /**
-     * Creates a new map in the project and loads it in this editor.
-     */
-    public void newMap() {
-
-        if (getMap() != null) {
-            throw new IllegalStateException("A map is already open in this editor");
-        }
-
-        try {
-            String mapId = JOptionPane.showInputDialog(null, "Please enter the ID of your new map",
-                    "Map ID", JOptionPane.QUESTION_MESSAGE);
-
-            if (mapId != null) {
-                if (Project.getResource(ResourceType.MAP).exists(mapId)) {
-                    throw new MapException("A map already exists with the ID '" + mapId + "'");
-                }
-
-                Map map = new Map(mapId);
-                map.addObserver(parentEditor);
-                setMap(map);
-            }
-        } catch (QuestEditorException ex) {
-            GuiTools.errorDialog("Cannot create the map: " + ex.getMessage());
-        }
-    }
-
-    /**
      * Lets the user choose a map to open and loads it in this editor.
      */
     protected void openMap() {
 
+        // FIXME move this
         if (getMap() != null) {
             throw new IllegalStateException("A map is already open in this editor");
         }
@@ -244,7 +228,8 @@ public class MapEditorPanel extends AbstractEditorPanel {
                     (name == null ? "" : ("\n  Name: '" + ex.getEntity().getName() + "'")) +
                     "\n  " + ex.getMessage() +
                     "\nClick OK to fix the entity now.");
-            EditEntityDialog dialog = new EditEntityDialog( getMap(), ex.getEntity());
+            EditEntityDialog dialog = new EditEntityDialog(getMap(), ex.getEntity());
+            dialog.setLocationRelativeTo(getMapView());
             dialog.display();
         } catch (QuestEditorException ex) {
             // Another problem occurred.

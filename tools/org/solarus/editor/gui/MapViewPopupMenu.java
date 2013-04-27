@@ -393,7 +393,7 @@ public class MapViewPopupMenu extends JPopupMenu {
             MapEntity entity = map.getEntitySelection().getEntity(0);
 
             EditEntityDialog dialog = new EditEntityDialog(map, entity);
-            dialog.setLocationRelativeTo(null);
+            dialog.setLocationRelativeTo(MapViewPopupMenu.this);
             dialog.pack();
             dialog.setVisible(true);
         }

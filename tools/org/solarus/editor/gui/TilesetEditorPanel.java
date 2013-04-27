@@ -44,9 +44,12 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
     private TilesetImageView tilesetImageView;
 
     /**
-     * Creates a tileset editor without tileset.
+     * Creates a tileset editor.
+     * @param parentEditor The main editor window.
+     * @param tileset Id of the tileset to open.
      */
-    public TilesetEditorPanel(EditorWindow parentEditor) {
+    public TilesetEditorPanel(EditorWindow parentEditor, String tilesetId) {
+        super(getEditorId(tilesetId));
 
         setLayout(new BorderLayout());
         this.parentEditor = parentEditor;
@@ -70,14 +73,17 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
         // we must put our main panel in another panel
         // otherwise the background color of the window is bad
         add(tilesetPanel);
+
+        setTileset(tileset);
     }
 
     /**
-     * Create a tileset editor for an existing tileset.
+     * Returns the id of any tileset editor that edits the specified tileset.
+     * @param tilesetId Id of a tileset.
+     * @return Id of an editor that edits this tileset.
      */
-    public TilesetEditorPanel(EditorWindow editorWindow, Tileset tileset) {
-        this(editorWindow);
-        setTileset(tileset);
+    public static String getEditorId(String tilesetId) {
+        return Project.getTilesetFile(tilesetId).getAbsolutePath();
     }
 
     /**
@@ -146,7 +152,7 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
      * Give the name of the resource opened in the editor
      * @return the name of the map
      */
-    public String getResourceName() {
+    public String getTitle() {
         return tileset == null ? "" : "Tileset " + tileset.getName();
     }
 

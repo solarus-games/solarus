@@ -195,4 +195,18 @@ public class ResourceChooser extends JComboBox<KeyValue> implements ProjectObser
             reloadList();
         }
     }
+
+    /**
+     * Called when a resource element has just been renamed.
+     * @param resourceType Type of resource.
+     * @param id Id of the element.
+     * @param name New human-readable name of the element.
+     */
+    @Override
+    public void resourceElementRenamed(ResourceType resourceType, String id,
+            String name) {
+        if (resourceType == this.resourceType) {
+            reloadList();
+        }
+    }
 }

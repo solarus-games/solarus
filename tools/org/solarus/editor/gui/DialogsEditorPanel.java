@@ -44,6 +44,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.solarus.editor.DialogSection;
 import org.solarus.editor.Dialogs;
+import org.solarus.editor.Project;
 import org.solarus.editor.ResourceType;
 import org.solarus.editor.QuestEditorException;
 
@@ -96,13 +97,14 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
 
     /**
      * Creates a new dialogs editor.
+     * @param parentEditor The main editor window.
+     * @param languageId Language of the dialogs to edit. 
      */
-	public DialogsEditorPanel(EditorWindow parentEditor) {
+	public DialogsEditorPanel(EditorWindow parentEditor, String languageId) {
+	    super(Project.getDialogsFile(languageId).getAbsolutePath());
         setLayout(new BorderLayout());
 
         this.parentEditor = parentEditor;
-        // set a nice look and feel
-        GuiTools.setLookAndFeel();
 
         JPanel leftPanel = new JPanel(new BorderLayout());
         sectionsList = new JList<>();
@@ -207,13 +209,8 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
 
         add(centerPanel);
 
-
-    }
-
-    public DialogsEditorPanel(EditorWindow editorWindow, Dialogs d) {
-        this(editorWindow);
-        setDialogs(d);
-    }
+        setDialogs(dialogs);
+	}
 
     /**
      * Sets the current dialogs. This method is called when the user opens a dialogs,
@@ -285,12 +282,12 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
     }
 
     /**
-     * Give the name of the resource opened in the editor
-     * @return the name of the map
+     * Returns a name describing what is opened in the editor.
+     * @return A name describing the file opened in the editor.
      */
     @Override
-	public String getResourceName() {
-        return getDialogs().getName();
+	public String getTitle() {
+        return "Dialogs: " + getDialogs().getLanguageId();
     }
 
     /**

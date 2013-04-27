@@ -66,7 +66,7 @@ public class Pickable extends MapEntity {
      */
     public void createProperties() throws MapException {
         createStringProperty("treasure_name", true, null);
-        createIntegerProperty("treasure_variant", true, null);
+        createIntegerProperty("treasure_variant", true, 1);
         createStringProperty("treasure_savegame_variable", true, null);
     }
 
@@ -76,13 +76,13 @@ public class Pickable extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        Integer variant = getIntegerProperty("treasure_variant");
-        if (variant != null && variant < 1) {
-            throw new MapException("Invalid treasure variant: " + variant);
+        Integer treasureVariant = getIntegerProperty("treasure_variant");
+        if (treasureVariant != null && treasureVariant < 1) {
+            throw new MapException("Invalid treasure variant: " + treasureVariant);
         }
 
-        String savegameVariable = getStringProperty("treasure_savegame_variable");
-        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
+        String treasureSavegameVariable = getStringProperty("treasure_savegame_variable");
+        if (treasureSavegameVariable != null && !isValidSavegameVariable(treasureSavegameVariable)) {
             throw new MapException("Invalid savegame variable");
         }
     }
@@ -100,9 +100,9 @@ public class Pickable extends MapEntity {
         String animation = getStringProperty("treasure_name");
         int direction = getIntegerProperty("treasure_variant") - 1;
 
-        if (sprite.hasAnimation(animation) &&
+        if (animation != null &&
+                sprite.hasAnimation(animation) &&
                 direction <= sprite.getAnimation(animation).getNbDirections()) {
-    
             sprite.paint(g, zoom, showTransparency,
                     getX(), getY(), animation, direction, 0);
         }

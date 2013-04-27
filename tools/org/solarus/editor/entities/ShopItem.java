@@ -43,7 +43,7 @@ public class ShopItem extends MapEntity {
      */
     public void createProperties() throws MapException {
         createStringProperty("treasure_name", false, null);
-        createIntegerProperty("treasure_variant", true, null);
+        createIntegerProperty("treasure_variant", true, 1);
         createStringProperty("treasure_savegame_variable", true, null);
         createIntegerProperty("price", false, 0);
         createStringProperty("dialog", false, null);

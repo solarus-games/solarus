@@ -96,7 +96,7 @@ public class Chest extends MapEntity {
      */
     public void createProperties() throws MapException {
         createStringProperty("treasure_name", true, null);
-        createIntegerProperty("treasure_variant", true, null);
+        createIntegerProperty("treasure_variant", true, 1);
         createStringProperty("treasure_savegame_variable", true, null);
         createStringProperty("sprite", false, "entities/chest");
         createStringProperty("opening_method", true, OpeningMethod.BY_INTERACTION.getId());

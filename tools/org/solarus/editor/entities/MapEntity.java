@@ -1360,6 +1360,11 @@ public abstract class MapEntity extends Observable {
                     "' for entity " + getType().getHumanName());
         }
         String value = specificProperties.get(name);
+
+        if (value == null) {
+            value = optionalPropertiesDefaultValues.get(name);
+        }
+
         return value;
     }
 

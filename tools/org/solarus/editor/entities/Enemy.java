@@ -94,7 +94,7 @@ public class Enemy extends MapEntity {
         createIntegerProperty("rank", true, Rank.NORMAL.ordinal());
         createStringProperty("savegame_variable", true, null);
         createStringProperty("treasure_name", true, null);
-        createIntegerProperty("treasure_variant", true, null);
+        createIntegerProperty("treasure_variant", true, 1);
         createStringProperty("treasure_savegame_variable", true, null);
     }
 

@@ -157,4 +157,42 @@ public class ResourceChooser extends JComboBox<KeyValue> implements ProjectObser
     public void currentProjectChanged() {
         reloadList();
     }
+
+    /**
+     * Called when a new resource element has just been created.
+     * @param resourceType Type of resource.
+     * @param Id Id of the new element.
+     */
+    @Override
+    public void resourceElementAdded(ResourceType resourceType, String id) {
+        if (resourceType == this.resourceType) {
+            reloadList();
+        }
+    }
+
+    /**
+     * Called when a new resource element has just been deleted.
+     * @param resourceType Type of resource.
+     * @param Id Id of the deleted element.
+     */
+    @Override
+    public void resourceElementRemoved(ResourceType resourceType, String id) {
+        if (resourceType == this.resourceType) {
+            reloadList();
+        }
+    }
+
+    /**
+     * Called when a new resource element has just been moved.
+     * @param resourceType Type of resource.
+     * @param oldId Old if of the element.
+     * @param newId New id of the element.
+     */
+    @Override
+    public void resourceElementMoved(ResourceType resourceType, String oldId,
+            String newId) {
+        if (resourceType == this.resourceType) {
+            reloadList();
+        }
+    }
 }

@@ -19,13 +19,12 @@ package org.solarus.editor.gui;
 
 import java.util.Observer;
 import javax.swing.JPanel;
-import org.solarus.editor.ProjectObserver;
 
 /**
  * Main component of an editor. Every editor (map, tileset...)
  * extends this class.
  */
-public abstract class AbstractEditorPanel extends JPanel implements Observer, ProjectObserver {
+public abstract class AbstractEditorPanel extends JPanel implements Observer {
 
     /**
      * The editor window.
@@ -47,4 +46,10 @@ public abstract class AbstractEditorPanel extends JPanel implements Observer, Pr
      * Saves the current resource.
      */
     public abstract void save();
+
+    /**
+     * Closes this editor without confirmation.
+     * You should clean everything in this method.
+     */
+    public abstract void close();
 }

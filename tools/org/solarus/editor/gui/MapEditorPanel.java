@@ -43,7 +43,6 @@ public class MapEditorPanel extends AbstractEditorPanel {
      */
     public MapEditorPanel(EditorWindow parentEditor) {
         setLayout(new BorderLayout());
-        Project.addProjectObserver(this);
         this.parentEditor = parentEditor;
 
         // left panel : the map properties and the tile picker
@@ -87,15 +86,6 @@ public class MapEditorPanel extends AbstractEditorPanel {
     public MapEditorPanel(EditorWindow parentEditor, Map map) {
         this(parentEditor);
         setMap(map);
-    }
-
-    /**
-     * This method is called just after a project is loaded.
-     */
-    public void currentProjectChanged() {
-        if (getMap() != null) {
-            closeMap();  // Close the map that was open with the previous project.
-        }
     }
 
     /**
@@ -166,7 +156,7 @@ public class MapEditorPanel extends AbstractEditorPanel {
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.WARNING_MESSAGE);
             if (answer == JOptionPane.YES_OPTION) {
-                saveMap();
+                save();
             } else if (answer == JOptionPane.CANCEL_OPTION) {
                 result = false;
             }
@@ -238,31 +228,15 @@ public class MapEditorPanel extends AbstractEditorPanel {
     }
 
     /**
-     * Closes the current map.
-     */
-    private void closeMap() {
-        if (!checkCurrentFileSaved()) {
-            return;
-        }
-        setMap(null);
-    }
-
-    /**
      * Saves the resource managed in this editor.
      */
     public void save() {
-        saveMap();
-    }
 
-    /**
-     * Saves the current map.
-     */
-    protected void saveMap() {
         try {
             getMap().save();
         }
         catch (InvalidEntityException ex) {
-            // the map contains an invalid entity
+            // The map contains an invalid entity.
             String name = ex.getEntity().getName();
             GuiTools.warningDialog(
                     "Cannot not save the map for now: there is an invalid entity." +
@@ -273,9 +247,17 @@ public class MapEditorPanel extends AbstractEditorPanel {
             EditEntityDialog dialog = new EditEntityDialog( getMap(), ex.getEntity());
             dialog.display();
         } catch (QuestEditorException ex) {
-            // another problem occurred
+            // Another problem occurred.
             GuiTools.errorDialog("Could not save the map: " + ex.getMessage());
         }
+    }
+
+    /**
+     * Closes this editor without confirmation. 
+     */
+    @Override
+    public void close() {
+        setMap(null);
     }
 
     /**

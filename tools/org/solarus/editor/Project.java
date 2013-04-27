@@ -393,8 +393,8 @@ public class Project {
 
     /**
      * Returns a sprite animation set description file knowing its id for the current project.
-     * @param animationSetId id of a spite animation set
-     * @return the file corresponding to this id
+     * @param animationSetId Id of a spite animation set.
+     * @return The file corresponding to this id.
      */
     public static File getSpriteFile(String animationSetId) {
 
@@ -438,6 +438,24 @@ public class Project {
     }
 
     /**
+     * Returns an enemy script file for the current project.
+     * @param enemyId Id of an enemy.
+     * @return The enemy script file.
+     */
+    public static File getEnemyScriptFile(String enemyId) {
+        return new File(getDataPath() + "/enemies/" + enemyId + ".lua");
+    }
+
+    /**
+     * Returns an equipment item script file for the current project.
+     * @param itemId Id of an equipment item.
+     * @return The item script file.
+     */
+    public static File getItemScriptFile(String itemId) {
+        return new File(getDataPath() + "/items/" + itemId + ".lua");
+    }
+
+    /**
      * Adds an object to notify when a project is created or loaded.
      * @param observer the object to notify
      */
@@ -451,14 +469,6 @@ public class Project {
      */
     public static void removeProjectObserver(ProjectObserver observer) {
         observers.remove(observer);
-    }
-
-    public static String getEnemyScriptFile(String name) {
-        return getDataPath() + "/enemies/" + name + ".lua";
-    }
-
-    public static String getItemScriptFile(String name) {
-        return getDataPath() + "/items/" + name + ".lua";
     }
 
     /**
@@ -495,6 +505,72 @@ public class Project {
         catch (IOException ex) {
             ex.printStackTrace();
             throw new QuestEditorException(ex.getMessage());
+        }
+    }
+
+    /**
+     * Creates a new resource element.
+     * @param resourceType Type of element to create.
+     * @param id Id of the element to create.
+     * @throws QuestEditorException If the element could not be created.
+     */
+    public static void newElement(ResourceType resourceType, String id)
+            throws QuestEditorException {
+
+        // TODO create file(s)
+
+        for (ProjectObserver o: observers) {
+            o.resourceElementAdded(resourceType, id);
+        }
+    }
+
+    /**
+     * Deletes a new resource element.
+     * @param resourceType Type of element to delete.
+     * @param id Id of the element to delete.
+     * @throws QuestEditorException If the element could not be found
+     * or could not be deleted.
+     */
+    public static void deleteElement(ResourceType resourceType, String id)
+            throws QuestEditorException {
+        // TODO delete file(s)
+
+        for (ProjectObserver o: observers) {
+            o.resourceElementRemoved(resourceType, id);
+        }
+    }
+
+    /**
+     * Changes the id of a resource element.
+     * @param resourceType Type of element to move.
+     * @param oldId Old id of the element.
+     * @param newId New id of the element.
+     * @throws QuestEditorException If the element could not be found
+     * or its id could not be changed.
+     */
+    public static void moveElement(ResourceType resourceType, String oldId, String newId)
+            throws QuestEditorException {
+        // TODO rename file(s)
+
+        for (ProjectObserver o: observers) {
+            o.resourceElementMoved(resourceType, oldId, newId);
+        }
+    }
+
+    /**
+     * Changes the human-readable name of a resource element.
+     * @param resourceType Type of element to rename.
+     * @param id Id of the element.
+     * @param name New human-readable name of the element.
+     * @throws QuestEditorException If the element could not be found.
+     */
+    public static void renameElement(ResourceType resourceType,
+            String id, String name) throws QuestEditorException {
+
+        getResource(resourceType).setElementName(id, name);
+
+        for (ProjectObserver o: observers) {
+            o.resourceElementRenamed(resourceType, id, name);
         }
     }
 }

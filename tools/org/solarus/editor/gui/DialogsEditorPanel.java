@@ -44,7 +44,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.solarus.editor.DialogSection;
 import org.solarus.editor.Dialogs;
-import org.solarus.editor.Project;
 import org.solarus.editor.ResourceType;
 import org.solarus.editor.QuestEditorException;
 
@@ -69,9 +68,7 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
      * Table for section edition
      */
     protected DialogSection currentSection;
-    /**
-     * S
-     */
+
     protected SectionListModel model;
     //private DialogSectionTableModel tableModel;
     private JTextField name;
@@ -103,7 +100,6 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
 	public DialogsEditorPanel(EditorWindow parentEditor) {
         setLayout(new BorderLayout());
 
-        Project.addProjectObserver(this);
         this.parentEditor = parentEditor;
         // set a nice look and feel
         GuiTools.setLookAndFeel();
@@ -220,19 +216,6 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
     }
 
     /**
-     * This method is called when a project has just been loaded.
-     * The dialogs menu is enabled.
-     */
-    @Override
-	public void currentProjectChanged() {
-        //menudialogs.setEnabled(true);
-
-        if (dialogs != null) {
-            closeDialogs();  // Close the dialogs that were open with the previous project.
-        }
-    }
-
-    /**
      * Sets the current dialogs. This method is called when the user opens a dialogs,
      * closes the dialogs, or creates a new one.
      * @param dialogs the new dialogs, or null if no dialogs is loaded
@@ -271,7 +254,7 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
     /**
      * This function is called when the user wants to close the current dialogs.
      * If the dialogs is not saved, we propose to save it.
-     * @return false if the user cancelled
+     * @return false if the user canceled.
      */
     @Override
 	public boolean checkCurrentFileSaved() {
@@ -354,17 +337,6 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
     }
 
     /**
-     * Closes the current dialogs.
-     */
-    protected void closeDialogs() {
-
-        if (!checkCurrentFileSaved()) {
-            return;
-        }
-        setDialogs(null);
-    }
-
-    /**
      * Saves the current dialogs.
      */
     @Override
@@ -374,8 +346,16 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
             repaint();
             dialogs.save();
         } catch (QuestEditorException ex) {
-            GuiTools.errorDialog("Could not save the tileset: " + ex.getMessage());
+            GuiTools.errorDialog("Could not save dialogs: " + ex.getMessage());
         }
+    }
+
+    /**
+     * Closes this editor without confirmation. 
+     */
+    @Override
+    public void close() {
+        setDialogs(null);
     }
 
     private void setSection(DialogSection newSection) {

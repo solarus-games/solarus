@@ -26,4 +26,35 @@ public interface ProjectObserver {
      */
     public void currentProjectChanged();
 
+    /**
+     * Called when a new resource element has just been created.
+     * @param resourceType Type of resource.
+     * @param id Id of the new element.
+     */
+    public void resourceElementAdded(ResourceType resourceType, String id);
+
+    /**
+     * Called when a new resource element has just been deleted.
+     * @param resourceType Type of resource.
+     * @param id Id of the deleted element.
+     */
+    public void resourceElementRemoved(ResourceType resourceType, String id);
+
+    /**
+     * Called when a new resource element has just been moved.
+     * @param resourceType Type of resource.
+     * @param oldId Old id of the element.
+     * @param newId New id of the element.
+     */
+    public void resourceElementMoved(ResourceType resourceType,
+            String oldId, String newId);
+
+    /**
+     * Called when a resource element has just been renamed.
+     * @param resourceType Type of resource.
+     * @param id Id of the element.
+     * @param name New human-readable name of the element.
+     */
+    public void resourceElementRenamed(ResourceType resourceType,
+            String id, String name);
 }

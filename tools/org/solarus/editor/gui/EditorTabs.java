@@ -37,14 +37,17 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
     }
 
     /**
-     * Add an editor in the tabbedpane.
-     * @param editor the editor to add
+     * Add an editor, unless it already exists:
+     * in that case, the existing editor is made active instead.
+     * @param key Key that identifies this editor. Used to determined whether
+     * the same editor already exists.
+     * @param editor The editor to add.
      */
-    public void addEditor(AbstractEditorPanel editor) {
+    public void addEditor(String key, AbstractEditorPanel editor) {
         String title = editor.getResourceName();
         AbstractEditorPanel[] editors = getEditors();
         if (editors != null) {
-            for (AbstractEditorPanel e : editors) {
+            for (AbstractEditorPanel e: editors) {
                 if (e.getResourceName().equals(title)) {
                     setSelectedComponent(e);
                     return;
@@ -57,18 +60,18 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
     }
 
     /**
-     * Remove an editor of the tabbedpane
-     * @param editor the editor to remove
+     * Remove an editor unless the user is not okay with that.
+     * @param editor The editor to remove.
      */
     public void removeEditor(AbstractEditorPanel editor) {
         if (editor.checkCurrentFileSaved()) {
             remove(editor);
+            repaint();
         }
-        repaint();
     }
 
     /**
-     * Remove the current editor
+     * Removes the current editor if any, unless the user is not okay with that.
      */
     public void removeCurrentEditor() {
         if (getSelectedComponent() != null) {
@@ -77,7 +80,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
     }
 
     /**
-     * Save the resource of the current editor
+     * Saves the resource element of the current editor if any.
      */
     public void saveCurrentEditor() {
         if (getSelectedComponent() != null) {
@@ -86,7 +89,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
     }
 
     /**
-     * Returns the editors currently opened
+     * Returns all editors currently open.
      * @return A table containing the editors currently opened
      */
     public AbstractEditorPanel[] getEditors() {
@@ -103,22 +106,22 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
 
     /**
      * Count the editors currently opened
-     * @return the number of editos currently opened
+     * @return The number of editors currently opened.
      */
     public int countEditors() {
         return getTabCount();
     }
 
     /**
-     * Allow to close the editor with a click on his tab
-     * @param e
+     * Allow to close the editor with a middle click on his tab.
+     * @param e The event.
      */
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON2 && countEditors() > 0) {
             Point clic = e.getPoint();
             int idx = indexAtLocation(clic.x, clic.y);
             if (idx != -1) {
-                // A tab was clicked.
+                // Middle click on a tab was clicked: close it.
                 AbstractEditorPanel editor = (AbstractEditorPanel) getComponentAt(idx);
                 removeEditor(editor);
             }
@@ -127,6 +130,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
 
     @Override
     public void repaint() {
+        // TODO Don't do this in repaint().
         super.repaint();
         for (int i = 0; i < getTabCount(); i++) {
             setTitleAt(i, ((AbstractEditorPanel) getComponentAt(i)).getResourceName());

@@ -26,7 +26,7 @@ import org.solarus.editor.entities.*;
 /**
  * Component to edit a tileset.
  */
-public class TilesetEditorPanel extends AbstractEditorPanel implements ProjectObserver {
+public class TilesetEditorPanel extends AbstractEditorPanel {
 
     /**
      * The current tileset.
@@ -49,7 +49,6 @@ public class TilesetEditorPanel extends AbstractEditorPanel implements ProjectOb
     public TilesetEditorPanel(EditorWindow parentEditor) {
 
         setLayout(new BorderLayout());
-        Project.addProjectObserver(this);
         this.parentEditor = parentEditor;
 
         // tile patterns list and tileset image
@@ -82,19 +81,8 @@ public class TilesetEditorPanel extends AbstractEditorPanel implements ProjectOb
     }
 
     /**
-     * This method is called when a project has just been loaded.
-     * The tileset menu is enabled.
-     */
-    public void currentProjectChanged() {
-
-        if (tileset != null) {
-            closeTileset();  // Close the tileset that was open with the previous project.
-        }
-    }
-
-    /**
      * Sets the current tileset. This method is called when the user opens a tileset,
-     * closes the tileset, or creates a new one.
+     * closes the tileset or creates a new one.
      * @param tileset the new tileset, or null if no tileset is loaded
      */
     private void setTileset(Tileset tileset) {
@@ -137,7 +125,7 @@ public class TilesetEditorPanel extends AbstractEditorPanel implements ProjectOb
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.WARNING_MESSAGE);
             if (answer == JOptionPane.YES_OPTION) {
-                saveTileset();
+                save();
             } else if (answer == JOptionPane.CANCEL_OPTION) {
                 result = false;
             }
@@ -221,33 +209,22 @@ public class TilesetEditorPanel extends AbstractEditorPanel implements ProjectOb
     }
 
     /**
-     * Closes the current tileset.
-     */
-    protected void closeTileset() {
-
-        if (!checkCurrentFileSaved()) {
-            return;
-        }
-
-        setTileset(null);
-    }
-
-    /**
      * Saves the current resource.
      */
     public void save() {
-        saveTileset();
-    }
-
-    /**
-     * Saves the current tileset.
-     */
-    protected void saveTileset() {
 
         try {
             tileset.save();
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Could not save the tileset: " + ex.getMessage());
         }
+    }
+
+    /**
+     * Closes this editor without confirmation. 
+     */
+    @Override
+    public void close() {
+        setTileset(null);
     }
 }

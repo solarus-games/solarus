@@ -32,13 +32,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.solarus.editor.Project;
-import org.solarus.editor.ProjectObserver;
 
 /**
  * A simple editor using for editing any resources as a text file.
  */
-public class TextEditorPanel extends AbstractEditorPanel implements ProjectObserver, DocumentListener {
+public class TextEditorPanel extends AbstractEditorPanel implements DocumentListener {
 
     /**
      * The file open in the editor.
@@ -60,7 +58,6 @@ public class TextEditorPanel extends AbstractEditorPanel implements ProjectObser
      */
     public TextEditorPanel(EditorWindow parentEditor) {
         setLayout(new BorderLayout());
-        Project.addProjectObserver(this);
         this.parentEditor = parentEditor;
 
         textArea = new JTextArea();
@@ -109,13 +106,7 @@ public class TextEditorPanel extends AbstractEditorPanel implements ProjectObser
      */
     @Override
     public void save() {
-        saveFile();
-    }
 
-    /**
-     * Saves the content of the text area into the file.
-     */
-    public void saveFile() {
         try {
             OutputStreamWriter ost = new OutputStreamWriter(new FileOutputStream(file) , "UTF-8");
             BufferedWriter out = new BufferedWriter(ost);
@@ -144,13 +135,21 @@ public class TextEditorPanel extends AbstractEditorPanel implements ProjectObser
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.WARNING_MESSAGE);
             if (answer == JOptionPane.YES_OPTION) {
-                saveFile();
+                save();
             } else if (answer == JOptionPane.CANCEL_OPTION) {
                 result = false;
             }
         }
 
         return result;
+    }
+
+    /**
+     * Closes this editor without confirmation. 
+     */
+    @Override
+    public void close() {
+        setFile(null);
     }
 
     /**
@@ -163,19 +162,8 @@ public class TextEditorPanel extends AbstractEditorPanel implements ProjectObser
         this.parentEditor.update(o, obj);
     }
 
-    /**
-     * This method is called when a project has just been loaded.
-     */
-    @Override
-    public void currentProjectChanged() {
-        if (file != null) {
-            setFile(null);  // Close the file that was open with the previous project.
-        }
-    }
+    // Methods for checking modifications interface the text area.
 
-    //
-    //Methods for checking modifications interface the text area
-    //
     /**
      * Gives notification that there was an insert into the document.
      * The range given by the DocumentEvent bounds the freshly inserted region.

@@ -29,14 +29,15 @@ import org.solarus.editor.map_editor_actions.*;
 /**
  * This component shows the properties of a map and allows to edit them.
  */
-public class MapPropertiesView extends JPanel implements Observer {
+public class MapPropertiesView extends JPanel
+    implements Observer, ProjectObserver {
 
     /**
      * The map observed.
      */
     private Map map;
 
-    // subcomponents
+    // Subcomponents.
     private JLabel idField;
     private NameField nameField;
     private SizeField sizeField;
@@ -157,11 +158,9 @@ public class MapPropertiesView extends JPanel implements Observer {
 
         this.map = map;
 
-        if (map != null) {
-            map.addObserver(this);
+        if (this.map != null) {
+            this.map.addObserver(this);
         }
-
-        update(map, null);
     }
 
     /**
@@ -204,6 +203,7 @@ public class MapPropertiesView extends JPanel implements Observer {
          */
         public NameField() {
             super(10);
+            setEditable(false);  // TODO change to a simple label, or fix
 
             getDocument().addDocumentListener(new DocumentListener() {
 
@@ -718,6 +718,32 @@ public class MapPropertiesView extends JPanel implements Observer {
                     GuiTools.errorDialog("Cannot change the background music: " + ex.getMessage());
                 }
             }
+        }
+    }
+
+    @Override
+    public void currentProjectChanged() {
+    }
+
+    @Override
+    public void resourceElementAdded(ResourceType resourceType, String id) {
+    }
+
+    @Override
+    public void resourceElementRemoved(ResourceType resourceType, String id) {
+    }
+
+    @Override
+    public void resourceElementMoved(ResourceType resourceType, String oldId,
+            String newId) {
+    }
+
+    @Override
+    public void resourceElementRenamed(ResourceType resourceType, String id,
+            String name) {
+        // This map has just been renamed.
+        if (resourceType == ResourceType.MAP && id.equals(map.getId())) {
+            update(null, null);
         }
     }
 }

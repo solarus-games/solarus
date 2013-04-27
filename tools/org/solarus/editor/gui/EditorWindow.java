@@ -22,7 +22,6 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import org.jdesktop.swinghelper.transformer.*;
 import org.solarus.editor.*;
 
 /**
@@ -67,34 +66,14 @@ public class EditorWindow extends JFrame
 
         questTree = new QuestTree(this);
         questTree.setVisible(true);
-        final JScrollPane jsp = new JScrollPane(questTree);
-        jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, jsp, tabs);
-        splitPane.setDividerLocation(0);
-        jsp.setVisible(false);
-        JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
-        toolBar.setFloatable(false);
-        JToggleButton treeButton = new JToggleButton("Quest Data");
-        treeButton.addActionListener(new ActionListener() {
+        final JScrollPane questTreeScroller = new JScrollPane(questTree);
+        questTreeScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        questTreeScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        final JSplitPane mainSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, questTreeScroller, tabs);
+        mainSplitter.setOneTouchExpandable(true);
+        mainSplitter.setDividerLocation(300);
 
-            public void actionPerformed(ActionEvent e) {
-                jsp.setVisible(!jsp.isVisible());
-                if (jsp.isVisible()) {
-                    splitPane.setDividerLocation(300);
-                } else {
-                    splitPane.setDividerLocation(0);
-                }
-            }
-        });
-
-        JXTransformer t = new JXTransformer(treeButton);
-        t.rotate(-Math.PI / 2);
-        toolBar.add(t);
-        JPanel pToolBar = new JPanel(new BorderLayout());
-        pToolBar.add(toolBar, BorderLayout.NORTH);
-        getContentPane().add(pToolBar, BorderLayout.WEST);
-        getContentPane().add(splitPane, BorderLayout.CENTER);
+        getContentPane().add(mainSplitter, BorderLayout.CENTER);
 
         // add a window listener to confirm when the user closes the window
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -577,7 +556,7 @@ public class EditorWindow extends JFrame
                         "User-friendly name",
                         JOptionPane.QUESTION_MESSAGE);
 
-                Project.newElement(resourceType, id, name);
+                Project.newResourceElement(resourceType, id, name);
             }
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create " + resourceName + ": " + ex.getMessage());
@@ -804,19 +783,16 @@ public class EditorWindow extends JFrame
      */
     public void renameResourceElement(ResourceType resourceType, String id) {
 
-        // First, close the element if it is open.
-        closeResourceElement(resourceType, id, true);
-
         // Ask the new name.
         Resource resource = Project.getResource(resourceType);
         String resourceName = resourceType.getName();
         String resourceNameLower = resourceName.toLowerCase();
         try {
+            String oldName = resource.getElementName(id);
             String newName = JOptionPane.showInputDialog(
                     null,
-                    "Please enter a new name for " + resourceNameLower + " '" + id + "'\n" +
-                    "Current name is: '" + resource.getElementName(id),
-                    "Rename " + resourceNameLower + " '" + id + "'",
+                    "Please enter a new name for '" + oldName + "'",
+                    "Rename " + resourceNameLower + " '" + oldName + "'",
                     JOptionPane.QUESTION_MESSAGE);
 
             if (newName != null) {
@@ -846,7 +822,7 @@ public class EditorWindow extends JFrame
                 closeResourceElement(resourceType, resourceId, true);
                 
                 // Delete it.
-                Project.deleteElement(resourceType, resourceId);
+                Project.deleteResourceElement(resourceType, resourceId);
             }
         }
         catch (QuestEditorException ex) {
@@ -897,8 +873,8 @@ public class EditorWindow extends JFrame
         AbstractEditorPanel editor = tabs.getEditor(oldId); 
         if (editor != null) {
             tabs.removeEditor(editor, false);
-            new IllegalStateException(resourceType.getName() + " '" + oldId
-                    + "' was renamed from '" + oldId + "' to '" + newId
+            new IllegalStateException(resourceType.getName() + " Id '" + oldId
+                    + "' was changed from '" + oldId + "' to '" + newId
                     + "' but its editor was still open").printStackTrace();
         }
         closeResourceElement(resourceType, oldId, false);

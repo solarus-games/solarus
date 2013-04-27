@@ -17,6 +17,7 @@
 package org.solarus.editor;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * This class lists all elements of a certain resource.
@@ -109,12 +110,12 @@ public class Resource extends Observable {
             notifyObservers();
         }
     }
+
     /**
      * Add an element to the resource. 
      * If the element already exists in the database, throws an exception
      */
-    public void addElement(String id, String name) throws QuestEditorException 
-    {
+    public void addElement(String id, String name) throws QuestEditorException {
         if (elements.get(id) == null) {
             elements.put(id,name);
             setChanged();
@@ -124,20 +125,55 @@ public class Resource extends Observable {
             throw new QuestEditorException("The element " + id + " already exists");
         }
     }
+
     /**
      * Removes an element from the resource.
      * Throws an exception if the element doesn't exist
      * in the database
      */
-    public void removeElement(String id) throws QuestEditorException
-    {
+    public void removeElement(String id) throws QuestEditorException {
         if (elements.get(id) == null) {
-            throw new QuestEditorException("The element " + id + " doesn't exist in the resource.");
+            throw new QuestEditorException(
+                    "Element '" + id + "' doesn't exist in the resource.");
         }
         elements.remove(id);
         setChanged();
         notifyObservers();
     }
+
+    /**
+     * Changes the id of an existing element in this resource.
+     * @param oldId Id of an element 
+     * @param newId
+     */
+    public void moveElement(String oldId, String newId)
+            throws QuestEditorException {
+
+        boolean found = false;
+
+        // We need to recreate the data structure.
+        LinkedHashMap<String, String> newElements = new
+                LinkedHashMap<String, String>();
+        for (Entry<String, String> entry: elements.entrySet()) {
+            if (entry.getKey().equals(oldId)) {
+                // Change the id for this element.
+                newElements.put(newId, entry.getValue());
+                found = true;
+            }
+            else {
+                // Keep the element unchanged.
+                newElements.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        if (!found) {
+            throw new QuestEditorException(
+                    "Element '" + oldId + "' doesn't exist in the resource.");
+        }
+
+        elements = newElements;
+    }
+
     /**
      * Removes all elements from the resource.
      */

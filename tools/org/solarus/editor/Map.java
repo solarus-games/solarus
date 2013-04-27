@@ -1016,11 +1016,6 @@ public class Map extends Observable {
 
             history.setSaved();
 
-            // also update the map name in the global resource list
-            Resource mapResource = Project.getResource(ResourceType.MAP);
-            mapResource.setElementName(mapId, name);
-            Project.getResourceDatabase().save();
-
             // create a script for the map if necessary
             File scriptFile = Project.getMapScriptFile(mapId);
             if (!scriptFile.exists()) {

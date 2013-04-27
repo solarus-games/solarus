@@ -517,13 +517,13 @@ public class Project {
      * @param name A human-readable name for this element. 
      * @throws QuestEditorException If the element could not be created.
      */
-    public static void newElement(ResourceType resourceType,
+    public static void newResourceElement(ResourceType resourceType,
             String id, String name)
             throws QuestEditorException {
 
         try {
             // Create the files.
-            createFilesForNewResourceElement(resourceType, id);
+            createResourceElementFiles(resourceType, id);
 
             // Add the resource to the resource list.
             getResource(resourceType).addElement(id, name);
@@ -543,39 +543,39 @@ public class Project {
      * unless they already exist.
      *
      * @param resourceType Type of element to create.
-     * @param id Id of the element to create.
+     * @param id Id of the element being created.
      * @throws IOException If a file could not be created.
      */
-    private static void createFilesForNewResourceElement(
+    private static void createResourceElementFiles(
             ResourceType resourceType, String id)
             throws IOException {
 
         switch (resourceType) {
 
         case MAP:
-            createFileIfNotExists(getMapFile(id));
-            createFileIfNotExists(getMapScriptFile(id));
+            getMapFile(id).createNewFile();
+            getMapScriptFile(id).createNewFile();
             break;
 
         case TILESET:
-            createFileIfNotExists(getTilesetFile(id));
+            getTilesetFile(id).createNewFile();
             break;
 
         case LANGUAGE:
-            createFileIfNotExists(getDialogsFile(id));
-            createFileIfNotExists(getStringsFile(id));
+            getDialogsFile(id).createNewFile();
+            getStringsFile(id).createNewFile();
             break;
 
         case ENEMY:
-            createFileIfNotExists(getEnemyScriptFile(id));
+            getEnemyScriptFile(id).createNewFile();
             break;
 
         case ITEM:
-            createFileIfNotExists(getItemScriptFile(id));
+            getItemScriptFile(id).createNewFile();
             break;
 
         case SPRITE:
-            createFileIfNotExists(getSpriteFile(id));
+            getSpriteFile(id).createNewFile();
             break;
         }
     }
@@ -587,12 +587,67 @@ public class Project {
      * @throws QuestEditorException If the element could not be found
      * or could not be deleted.
      */
-    public static void deleteElement(ResourceType resourceType, String id)
+    public static void deleteResourceElement(ResourceType resourceType, String id)
             throws QuestEditorException {
-        // TODO delete file(s)
 
-        for (ProjectObserver o: observers) {
-            o.resourceElementRemoved(resourceType, id);
+        try {
+            // Delete the files.
+            deleteResourceElementFiles(resourceType, id);
+
+            // Remove the resource to the resource list.
+            getResource(resourceType).removeElement(id);
+
+            // Notify the GUI.
+            for (ProjectObserver o: observers) {
+                o.resourceElementRemoved(resourceType, id);
+            }
+        }
+        catch (IOException ex) {
+            throw new QuestEditorException(ex.getMessage());
+        }
+    }
+
+    /**
+     * Deletes the files of new resource element,
+     * unless they don't exist.
+     *
+     * @param resourceType Type of element to create.
+     * @param id Id of the element being deleted.
+     * @throws IOException If a file could not be deleted.
+     */
+    private static void deleteResourceElementFiles(
+            ResourceType resourceType, String id)
+            throws IOException {
+
+        switch (resourceType) {
+
+        case MAP:
+            getMapFile(id).delete();
+            getMapScriptFile(id).delete();
+            break;
+
+        case TILESET:
+            getTilesetFile(id).delete();
+            getTilesetImageFile(id).delete();
+            getTilesetEntitiesImageFile(id).delete();
+            break;
+
+        case LANGUAGE:
+            getDialogsFile(id).delete();
+            getStringsFile(id).delete();
+            break;
+
+        case ENEMY:
+            getEnemyScriptFile(id).delete();
+            break;
+
+        case ITEM:
+            getItemScriptFile(id).delete();
+            break;
+
+        case SPRITE:
+            getSpriteFile(id).delete();
+            break;
         }
     }
 
@@ -606,39 +661,121 @@ public class Project {
      */
     public static void moveElement(ResourceType resourceType, String oldId, String newId)
             throws QuestEditorException {
-        // TODO rename file(s)
 
-        for (ProjectObserver o: observers) {
-            o.resourceElementMoved(resourceType, oldId, newId);
+        try {
+            // Rename the files.
+            moveResourceElementFiles(resourceType, oldId, newId);
+    
+            // Move the resource in the resource list.
+            getResource(resourceType).moveElement(oldId, newId);
+    
+            // Notify the GUI.
+            for (ProjectObserver o: observers) {
+                o.resourceElementMoved(resourceType, oldId, newId);
+            }
+        }
+        catch (IOException ex) {
+            throw new QuestEditorException(ex.getMessage());
+        }
+    }
+
+    /**
+     * Moves the files of a resource element.
+     *
+     * @param resourceType Type of element.
+     * @param oldId Id of the element to move.
+     * @param newId Id new id of the element.
+     * @throws IOException If a file could not be moved.
+     */
+    private static void moveResourceElementFiles(
+            ResourceType resourceType, String oldId, String newId)
+            throws IOException {
+
+        switch (resourceType) {
+
+        case MAP:
+            renameFile(getMapFile(oldId), getMapFile(newId));
+            renameFile(getMapScriptFile(oldId), getMapScriptFile(newId));
+            break;
+
+        case TILESET:
+            renameFile(getTilesetFile(oldId), getTilesetFile(newId));
+            renameFile(getTilesetImageFile(oldId), getTilesetImageFile(newId));
+            renameFile(getTilesetEntitiesImageFile(oldId), getTilesetEntitiesImageFile(newId));
+            break;
+
+        case LANGUAGE:
+            renameFile(getDialogsFile(oldId), getDialogsFile(newId));
+            renameFile(getStringsFile(oldId), getStringsFile(newId));
+            break;
+
+        case ENEMY:
+            renameFile(getEnemyScriptFile(oldId), getEnemyScriptFile(newId));
+            break;
+
+        case ITEM:
+            renameFile(getItemScriptFile(oldId), getItemScriptFile(newId));
+            break;
+
+        case SPRITE:
+            renameFile(getSpriteFile(oldId), getSpriteFile(newId));
+            break;
         }
     }
 
     /**
      * Changes the human-readable name of a resource element.
-     * @param resourceType Type of element to rename.
-     * @param id Id of the element.
-     * @param name New human-readable name of the element.
-     * @throws QuestEditorException If the element could not be found.
+     * @param resourceType Type of element.
+     * @param id Id of the element to rename.
+     * @param name New name of the element.
+     * @throws QuestEditorException If the element could not be found
+     * or it could not be renamed.
      */
     public static void renameElement(ResourceType resourceType,
-            String id, String name) throws QuestEditorException {
+            String id, String name)
+            throws QuestEditorException {
 
+        // Move the resource in the resource list.
         getResource(resourceType).setElementName(id, name);
 
+        // Notify the GUI.
         for (ProjectObserver o: observers) {
             o.resourceElementRenamed(resourceType, id, name);
         }
     }
 
     /**
-     * Creates the specified if unless it already exists.
-     * @param file The file to create.
-     * @throws IOException If the file could not be created.
+     * Renames a file into another.
+     * If the source file exists, the destination file must not exist.
+     * If the source file does not exist, the source file must exist
+     * (then we consider that the operation was already done and this is not
+     * an error).
+     * Other configurations are errors and throw an exception.
+     * @param sourceFile The source file.
+     * @param destinationFile The destination file.
+     * @throws IOException
      */
-    private static void createFileIfNotExists(File file) throws IOException {
+    private static void renameFile(File sourceFile, File destinationFile)
+            throws IOException {
 
-        if (!file.exists()) {
-            file.createNewFile();
+        if (sourceFile.exists()) {
+            // Usual case: the source file exists and the destination is not
+            // expected to exist.
+            if (destinationFile.exists()) {
+                throw new IOException("Cannot rename file '" + sourceFile +
+                        "' to '" + destinationFile + ": destination file already exists");
+            }
         }
+        else {
+            // Second allowed case: the source file does not exist and the
+            // destination file exist. Let's assume it is not a mistake: the
+            // user already renamed the file manually.
+            if (!destinationFile.exists()) {
+                throw new IOException("Cannot rename file '" + sourceFile +
+                        "' to '" + destinationFile + ": source file does not exist");
+            }
+        }
+
+        sourceFile.renameTo(destinationFile);
     }
 }

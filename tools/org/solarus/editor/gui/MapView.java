@@ -203,6 +203,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * @return the size of the map, or a default size
      * if no map is loaded.
      */
+    @Override
     public Dimension getPreferredSize() {
         int width, height;
 
@@ -222,7 +223,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     // interface Scrollable
     public Dimension getPreferredScrollableViewportSize() {
-        return new Dimension(400, 300);
+        return new Dimension(0, 0);
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
@@ -273,7 +274,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
             // redraw the image
             repaint();
-            setSize(getPreferredSize());
         } else if (o instanceof MapEntitySelection) {
             // the entity selection has changed
 

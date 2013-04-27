@@ -20,13 +20,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
+import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 
 /**
  * This components shows information about a tileset : the name
  * and the background color.
  */
-public class TilesetPropertiesView extends JPanel implements Observer {
+public class TilesetPropertiesView extends JPanel
+        implements Observer, ProjectObserver {
 
     /**
      * The tileset observed.
@@ -142,6 +144,7 @@ public class TilesetPropertiesView extends JPanel implements Observer {
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
             textFieldName = new JTextField(10);
+            textFieldName.setEditable(false);  // TODO change to a simple label, or fix
 
             Dimension size = new Dimension(120, 25);
             textFieldName.setMinimumSize(size);
@@ -238,6 +241,32 @@ public class TilesetPropertiesView extends JPanel implements Observer {
                 g.setColor(tileset.getBackgroundColor());
                 g.fillRect(1, 1, 18, 18);
             }
+        }
+    }
+
+    @Override
+    public void currentProjectChanged() {
+    }
+
+    @Override
+    public void resourceElementAdded(ResourceType resourceType, String id) {
+    }
+
+    @Override
+    public void resourceElementRemoved(ResourceType resourceType, String id) {
+    }
+
+    @Override
+    public void resourceElementMoved(ResourceType resourceType, String oldId,
+            String newId) {
+    }
+
+    @Override
+    public void resourceElementRenamed(ResourceType resourceType, String id,
+            String name) {
+        // This tileset has just been renamed.
+        if (resourceType == ResourceType.TILESET && id.equals(tileset.getId())) {
+            update(null, null);
         }
     }
 }

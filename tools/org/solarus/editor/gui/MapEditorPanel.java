@@ -60,7 +60,6 @@ public class MapEditorPanel extends AbstractEditorPanel {
         JSplitPane leftPanel = new JSplitPane(
                 JSplitPane.VERTICAL_SPLIT, mapPropertiesView, tilePicker);
         leftPanel.setContinuousLayout(true);
-        leftPanel.resetToPreferredSizes();
 
         mapView = new MapView(this);
         JScrollPane mapViewScroller = new JScrollPane(getMapView());
@@ -74,19 +73,29 @@ public class MapEditorPanel extends AbstractEditorPanel {
         rightPanel.add(mapViewHeader, BorderLayout.NORTH);
         rightPanel.add(mapViewScroller, BorderLayout.CENTER);
         rightPanel.add(mapViewMouseCoordinates, BorderLayout.SOUTH);
+        rightPanel.setMinimumSize(new Dimension(0, 0));
 
         JSplitPane rootPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
         rootPanel.setContinuousLayout(true);
         rootPanel.setDividerLocation(350);
-        rootPanel.resetToPreferredSizes();
 
         add(rootPanel);
 
-        Map map = new Map(mapId);
+        map = new Map(mapId);
         if (map.badTiles()) {
             GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in the tileset.");
         }
-        setMap(map);
+
+        // Notify the children views.
+        mapPropertiesView.setMap(map);
+        tilePicker.setMap(map);
+        getMapView().setMap(map);
+
+        // Observe the history and the selection to enable or disable menu items.
+        map.getHistory().addObserver(parentEditor);
+        map.getEntitySelection().addObserver(parentEditor);
+
+        mapPropertiesView.update(null, null);
     }
 
     /**
@@ -112,34 +121,6 @@ public class MapEditorPanel extends AbstractEditorPanel {
      */
     public String getResourceId() {
         return getMap().getId();
-    }
-
-    /**
-     * Sets the current map. This method is called when the user opens a map,
-     * closes the map, or creates a new one.
-     * @param map The new map, or null if there is no map loaded.
-     */
-    private void setMap(Map map) {
-
-        // if there was already a map, remove its observers
-        if (this.getMap() != null) {
-            this.getMap().deleteObservers();
-            this.getMap().getEntitySelection().deleteObservers();
-        }
-
-        this.map = map;
-
-        // Notify the children views.
-        mapPropertiesView.setMap(map);
-        tilePicker.setMap(map);
-        getMapView().setMap(map);
-
-        if (map != null) {
-            // Observe the history and the selection to enable or disable the items.
-            map.getHistory().addObserver(parentEditor);
-            map.getEntitySelection().addObserver(parentEditor);
-            this.parentEditor.update(null, null);
-        }
     }
 
     /**
@@ -176,42 +157,6 @@ public class MapEditorPanel extends AbstractEditorPanel {
     }
 
     /**
-     * Lets the user choose a map to open and loads it in this editor.
-     */
-    protected void openMap() {
-
-        // FIXME move this
-        if (getMap() != null) {
-            throw new IllegalStateException("A map is already open in this editor");
-        }
-
-        ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.MAP);
-        dialog.setLocationRelativeTo(MapEditorPanel.this);
-        dialog.pack();
-        dialog.setVisible(true);
-        String mapId = dialog.getSelectedId();
-
-        if (mapId.length() == 0) {
-            return;
-        }
-
-        try {
-            if (!Project.getResource(ResourceType.MAP).exists(mapId)) {
-                throw new MapException("Map with ID '" + mapId + "' does not exist");
-            }
-
-            Map map = new Map(mapId);
-            map.addObserver(parentEditor);
-            if (map.badTiles()) {
-                GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in the tileset.");
-            }
-            setMap(map);
-        } catch (QuestEditorException ex) {
-            GuiTools.errorDialog("Could not load the map: " + ex.getMessage());
-        }
-    }
-
-    /**
      * Saves the resource managed in this editor.
      */
     public void save() {
@@ -242,7 +187,8 @@ public class MapEditorPanel extends AbstractEditorPanel {
      */
     @Override
     public void close() {
-        setMap(null);
+        map.deleteObservers();
+        map.getEntitySelection().deleteObservers();
     }
 
     /**

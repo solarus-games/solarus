@@ -47,8 +47,10 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
      * Creates a tileset editor.
      * @param parentEditor The main editor window.
      * @param tileset Id of the tileset to open.
+     * @throws QuestEditorException If the tileset could not be loaded.
      */
-    public TilesetEditorPanel(EditorWindow parentEditor, String tilesetId) {
+    public TilesetEditorPanel(EditorWindow parentEditor, String tilesetId)
+            throws QuestEditorException {
         super(getEditorId(tilesetId));
 
         setLayout(new BorderLayout());
@@ -59,22 +61,25 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
         // tile patterns list
         tilePatternsView = new TilePatternsView();
         tilePatternsView.setAlignmentY(Component.TOP_ALIGNMENT);
-        tilePatternsView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        tilePatternsView.setPreferredSize(new Dimension(200, Integer.MAX_VALUE));
+        tilePatternsView.setMinimumSize(new Dimension(0, 0));
 
         // tileset image
         tilesetImageView = new TilesetImageView(true);
         JScrollPane tilesetImageScroller = new JScrollPane(tilesetImageView);
         tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
-        tilesetImageScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
         JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tilePatternsView, tilesetImageScroller);
         tilesetPanel.setContinuousLayout(true);
-        tilesetPanel.resetToPreferredSizes();
         // we must put our main panel in another panel
         // otherwise the background color of the window is bad
         add(tilesetPanel);
 
-        setTileset(tileset);
+        tileset = new Tileset(tilesetId);
+
+        // Notify the children views.
+        tilePatternsView.setTileset(tileset);
+        tilesetImageView.setTileset(tileset);
     }
 
     /**
@@ -84,27 +89,6 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
      */
     public static String getEditorId(String tilesetId) {
         return Project.getTilesetFile(tilesetId).getAbsolutePath();
-    }
-
-    /**
-     * Sets the current tileset. This method is called when the user opens a tileset,
-     * closes the tileset or creates a new one.
-     * @param tileset the new tileset, or null if no tileset is loaded
-     */
-    private void setTileset(Tileset tileset) {
-
-        // If there was already a tileset, remove its observers.
-        if (this.tileset != null) {
-            this.tileset.deleteObservers();
-        }
-
-        this.tileset = tileset;
-
-        tileset.addObserver(parentEditor);
-
-        // Notify the views.
-        tilePatternsView.setTileset(tileset);
-        tilesetImageView.setTileset(tileset);
     }
 
     /**
@@ -157,64 +141,6 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
     }
 
     /**
-     * Creates a new tileset in the project and sets it as the current tileset.
-     */
-    public void newTileset() {
-
-        if (!checkCurrentFileSaved()) {
-            return;
-        }
-
-        try {
-            String tilesetId = JOptionPane.showInputDialog(null, "Please enter the ID of your new tileset",
-                    "tileset ID", JOptionPane.QUESTION_MESSAGE);
-
-            if (tilesetId != null) {
-                if (Project.getResource(ResourceType.TILESET).exists(tilesetId)) {
-                    throw new MapException("A tileset already exists with the ID '" + tilesetId + "'");
-                }
-
-                Tileset tileset = new Tileset(tilesetId);
-                setTileset(tileset);
-            }
-        }
-        catch (QuestEditorException ex) {
-            GuiTools.errorDialog("Cannot create the tileset: " + ex.getMessage());
-        }
-    }
-
-    /**
-     * Loads a tileset of the project and sets it as the current tileset.
-     */
-    protected void openTileset() {
-
-        if (!checkCurrentFileSaved()) {
-            return;
-        }
-
-        ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.TILESET);
-        dialog.setLocationRelativeTo(TilesetEditorPanel.this);
-        dialog.pack();
-        dialog.setVisible(true);
-        String tilesetId = dialog.getSelectedId();
-
-        if (tilesetId.length() == 0) {
-            return;
-        }
-
-        try {
-            if (!Project.getResource(ResourceType.TILESET).exists(tilesetId)) {
-                throw new MapException("Tileset with ID '" + tilesetId + "' does not exist");
-            }
-
-            Tileset tileset = new Tileset(tilesetId);
-            setTileset(tileset);
-        } catch (QuestEditorException ex) {
-            GuiTools.errorDialog("Could not load the tileset: " + ex.getMessage());
-        }
-    }
-
-    /**
      * Saves the current resource.
      */
     public void save() {
@@ -231,6 +157,6 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
      */
     @Override
     public void close() {
-        setTileset(null);
+        tileset.deleteObservers();
     }
 }

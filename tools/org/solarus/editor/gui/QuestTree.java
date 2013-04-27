@@ -16,7 +16,6 @@
  */
 package org.solarus.editor.gui;
 
-import java.util.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -26,15 +25,34 @@ import org.solarus.editor.*;
 /**
  * A tree that shows the whole resource list of the game:
  * maps, tilesets, sprites, enemies, etc.
+ * Under the root node, there is a node for each resource type.
+ * These nodes have a ResourceType user object.
+ *
+ * Under each resource type, there are the nodes of all corresponding
+ * resource elements. These nodes have a ResourceElement user object.
+ * 
+ * - Root
+ *   - ResourceType
+ *     - ResourceElement
+ *     - ResourceElement
+ *     - ResourceElement
+ *     - ...
+ *   - ResourceType
+ *     - ResourceElement
+ *     - ResourceElement
+ *     - ResourceElement
+ *     - ...
+ *   - ResourceType
+ *     - ResourceElement
+ *     - ResourceElement
+ *     - ResourceElement
+ *     - ...
+ *   - ...
  */
 public class QuestTree extends JTree
         implements TreeSelectionListener, ProjectObserver {
 
     private EditorWindow editorWindow;  // The main window.
-
-    private TilesetParentPopupMenu tilesetParentPopupMenu;  // Popup menu for the tileset parent node.
-    private MapParentPopupMenu mapParentPopupMenu;  // Popup menu for the map parent node.
-    private MapPopupMenu mapPopupMenu;   // Popup menu for individual maps.
 
     /**
      * Creates a quest tree.
@@ -46,10 +64,6 @@ public class QuestTree extends JTree
 
         addTreeSelectionListener(this);
         addMouseListener(new QuestTreeMouseAdapter());
-
-        mapParentPopupMenu = new MapParentPopupMenu();
-        tilesetParentPopupMenu = new TilesetParentPopupMenu();
-        mapPopupMenu = new MapPopupMenu();
 
         Project.addProjectObserver(this);
     }
@@ -71,10 +85,10 @@ public class QuestTree extends JTree
     public void resourceElementAdded(ResourceType resourceType, String id) {
         // Insert the new element in the tree.
         try {
-            String humanName = Project.getResource(resourceType).getElementName(id);
-            addElementToTree(new ResourceElement(resourceType, id, humanName));
+            addResourceElementToTree(new ResourceElement(resourceType, id));
         }
         catch (QuestEditorException ex) {
+            // Cannot happen: the id is valid here.
             ex.printStackTrace();
         }
     }
@@ -86,8 +100,7 @@ public class QuestTree extends JTree
      */
     @Override
     public void resourceElementRemoved(ResourceType resourceType, String id) {
-        // TODO Remove the element from the tree instead of rebuilding the whole tree.
-        rebuildTree();
+        rebuildTree();  // TODO Rebuilding the whole tree is slow.
     }
 
     /**
@@ -99,8 +112,7 @@ public class QuestTree extends JTree
     @Override
     public void resourceElementMoved(ResourceType resourceType, String oldId,
             String newId) {
-        // TODO update the id in the tree instead of rebuilding the whole tree.
-        rebuildTree();
+        rebuildTree();  // TODO Rebuilding the whole tree is slow.
     }
 
     /**
@@ -112,8 +124,7 @@ public class QuestTree extends JTree
     @Override
     public void resourceElementRenamed(ResourceType resourceType,
             String id, String name) {
-        // TODO update the name in the tree instead of rebuilding the whole tree.
-        rebuildTree();
+        rebuildTree();  // TODO Rebuilding the whole tree is slow.
     }
 
     @Override
@@ -124,32 +135,38 @@ public class QuestTree extends JTree
      * Rebuilds the whole tree from the resources.
      */
     public void rebuildTree() {
-        setModel(new EditorTreeModel(Project.getDataPath()));
-        repaint();        
+        setModel(new QuestTreeModel());
+        repaint();
     }
 
     /**
      * Adds a resource element to the tree.
      * @param element The resource element to add.
      */
-    private void addElementToTree(ResourceElement element) {
+    private void addResourceElementToTree(ResourceElement element) {
         DefaultMutableTreeNode resourceNode = (DefaultMutableTreeNode)
                 treeModel.getChild(treeModel.getRoot(), element.type.ordinal());
-        ((EditorTreeModel) treeModel).insertNodeInto(
+        ((QuestTreeModel) treeModel).insertNodeInto(
                 new DefaultMutableTreeNode(element), resourceNode, resourceNode.getChildCount());
         repaint();
     }
 
-    public void update(Observable o, Object arg) {
-        repaint();
-    }
+    /**
+     * Model used for the quest tree.
+     */
+    private class QuestTreeModel extends DefaultTreeModel {
 
-    private class EditorTreeModel extends DefaultTreeModel {
-
-        public EditorTreeModel(String path) {
+        /**
+         * Creates a quest tree.
+         */
+        public QuestTreeModel() {
             super((new DefaultMutableTreeNode("Quest")));
+
+            // Create a parent node for each type of resource:
+            // map, tileset, sound, etc.
             for (ResourceType resourceType : ResourceType.values()) {
-                DefaultMutableTreeNode resourceNode = new DefaultMutableTreeNode(resourceType.getName());
+                DefaultMutableTreeNode resourceNode =
+                        new DefaultMutableTreeNode(resourceType);
                 ((DefaultMutableTreeNode) getRoot()).add(resourceNode);
                 if (Project.isLoaded()) {
                     addChildren(resourceNode, resourceType);
@@ -157,18 +174,32 @@ public class QuestTree extends JTree
             }
         }
 
+        /**
+         * Returns whether a node is a leaf.
+         * @param node A node of the tree.
+         * @return true if this node should be considered as a leaf.
+         */
         @Override
-        public boolean isLeaf(Object e) {
-            return ((DefaultMutableTreeNode) e).getChildCount() == 0 && !(((DefaultMutableTreeNode) e).getUserObject() instanceof String);
+        public boolean isLeaf(Object node) {
+            return super.isLeaf(node) &&
+                    ((DefaultMutableTreeNode) node).getUserObject() instanceof ResourceElement;
         }
 
-        protected final void addChildren(DefaultMutableTreeNode parentNode, ResourceType resourceType) {
+        /**
+         * Builds the subtree of a resource type.
+         * @param parentNode The parent node of the subtree to create.
+         * @param resourceType A type of resource.
+         */
+        protected final void addChildren(DefaultMutableTreeNode parentNode,
+                ResourceType resourceType) {
+
             Resource resource = Project.getResource(resourceType);
             String[] ids = resource.getIds();
 
             try {
                 for (int i = 0; i < ids.length; i++) {
-                    parentNode.add(new DefaultMutableTreeNode(new ResourceElement(resourceType, ids[i], resource.getElementName(ids[i]))));
+                    parentNode.add(new DefaultMutableTreeNode(
+                            new ResourceElement(resourceType, ids[i])));
                 }
             }
             catch (QuestEditorException ex) {
@@ -177,52 +208,57 @@ public class QuestTree extends JTree
         }
     }
 
+    /**
+     * Handles the mouse events received by the quest tree.
+     */
     private class QuestTreeMouseAdapter extends MouseAdapter {
 
+        /**
+         * Called when a mouse button is pressed on the tree component.
+         */
         @Override
-        public void mousePressed(MouseEvent e) {
-            DefaultMutableTreeNode clickedNode = null;
-            TreePath selectionPath = QuestTree.this.getSelectionPath();
-            if (e.getButton() == MouseEvent.BUTTON3) {
-                if (selectionPath == null) {
-                    return;
-                }
-                clickedNode = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
-                if (clickedNode.getUserObject() instanceof ResourceElement) {
-                    // right click: show a popup menu if the element is a map
-                    ResourceElement element = (ResourceElement) clickedNode.getUserObject();
-                    int row = QuestTree.this.getRowForLocation(e.getX(), e.getY());
-                    if (row == -1) {
-                        return;
-                    }
-                    QuestTree.this.setSelectionRow(row);
-                    if (element.type == ResourceType.MAP) {
-                        mapPopupMenu.setMap(element.id);
-                        mapPopupMenu.show((JComponent) e.getSource(),
-                                e.getX(), e.getY());
-                    }
-                }
-                else {
-                    //Show the popup menu when right-click on map
-                    if (clickedNode.getUserObject().equals(ResourceType.MAP.getName())) {
-                        mapParentPopupMenu.show((JComponent) e.getSource(),
-                                e.getX(), e.getY());
-                    }
-                    //Popup menu when right-click on tileset
-                    else if (clickedNode.getUserObject().equals(ResourceType.TILESET.getName())) {
-                        tilesetParentPopupMenu.show((JComponent) e.getSource(),
-                                e.getX(), e.getY());                                                      
-                    }
-                }
-            } else if (e.getClickCount() == 2) {
-                // double-click: open the clicked file
+        public void mousePressed(MouseEvent ev) {
 
-                if (selectionPath == null) {
-                    return;
+            int row = QuestTree.this.getRowForLocation(ev.getX(), ev.getY());
+            if (row != -1) {
+                QuestTree.this.setSelectionRow(row);
+            }
+
+            TreePath selectionPath = QuestTree.this.getSelectionPath();
+            if (selectionPath == null) {
+                return;
+            }
+
+            // Retrieve the node clicked.
+            DefaultMutableTreeNode clickedNode = (DefaultMutableTreeNode)
+                    selectionPath.getLastPathComponent();
+            Object clickedObject = clickedNode.getUserObject();
+
+            if (ev.getButton() == MouseEvent.BUTTON3) {
+                // Right click.
+
+                JPopupMenu popupMenu = null;
+
+                if (clickedObject instanceof ResourceElement) {
+                    // Right click on a resource element.
+                    ResourceElement element = (ResourceElement) clickedObject;
+                    popupMenu = new ResourceElementPopupMenu(element);
                 }
-                clickedNode = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
-                if (clickedNode.getUserObject() instanceof ResourceElement) {
-                    ResourceElement element = (ResourceElement) clickedNode.getUserObject();
+                else if (clickedObject instanceof ResourceType) {
+                    // Right click on a resource type (parent node).
+                    ResourceType resourceType = (ResourceType) clickedObject;
+                    popupMenu = new ResourceParentPopupMenu(resourceType);
+                }
+                
+                if (popupMenu != null) {
+                    popupMenu.show((JComponent) ev.getSource(),
+                            ev.getX(), ev.getY());
+                }
+            }
+            else if (ev.getClickCount() == 2) {
+                // Double-click: open the clicked element.
+                if (clickedObject instanceof ResourceElement) {
+                    ResourceElement element = (ResourceElement) clickedObject;
                     editorWindow.openResourceElement(element.type, element.id);
                 }
             }
@@ -230,90 +266,97 @@ public class QuestTree extends JTree
     }
 
     /**
-     * Popup menu of the map parent node.
+     * Popup menu of any resource parent node.
      */
-    private class MapParentPopupMenu extends JPopupMenu {    
+    private class ResourceParentPopupMenu extends JPopupMenu {    
 
-        private JMenuItem newMapMenu;
+        /**
+         * Creates the popup menu of a resource type.
+         * @param resourceType A resource type.
+         */
+        public ResourceParentPopupMenu(final ResourceType resourceType) {
 
-        public MapParentPopupMenu() {
-            newMapMenu = new JMenuItem("New Map");
-            newMapMenu.addActionListener(new ActionListener() {
+            JMenuItem newElementItem = new JMenuItem(
+                    "New " + resourceType.getName().toLowerCase());
+            newElementItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent ev) {
-                    editorWindow.createResourceElement(ResourceType.MAP);
+                    editorWindow.createResourceElement(resourceType);
                 }
             });
-            add(newMapMenu);            
+            add(newElementItem);
         }
     }
 
     /**
-     * Popup menu of the tileset parent node.
+     * Popup menu of a resource element.
      */
-    private class TilesetParentPopupMenu extends JPopupMenu {    
+    private class ResourceElementPopupMenu extends JPopupMenu {
 
-        private JMenuItem newTilesetMenu;
-        
-        public TilesetParentPopupMenu() {
-            newTilesetMenu = new JMenuItem("New Tileset");
-            newTilesetMenu.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-                    editorWindow.createResourceElement(ResourceType.TILESET);            
-                }
-            });
-            add(newTilesetMenu);            
-        }
-    }
+        /**
+         * Creates a popup menu for the given resource element.
+         * @param element A resource element.
+         */
+        public ResourceElementPopupMenu(final ResourceElement element) {
 
-    /**
-     * Popup menu of map leaves.
-     */
-    private class MapPopupMenu extends JPopupMenu {
-
-        private String mapId;
-        private JMenuItem mapMenu;
-        private JMenuItem scriptMenu;
-        private JMenuItem deleteMenu;
-
-        public MapPopupMenu() {
-
-            mapMenu = new JMenuItem("Open Map");
-            add(mapMenu);
-            mapMenu.addActionListener(new ActionListener() {
+            // Open.
+            String resourceTypeName = element.type.getName().toLowerCase();
+            JMenuItem menuItem = new JMenuItem("Open " + resourceTypeName);
+            add(menuItem);
+            menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    editorWindow.openResourceElement(ResourceType.MAP, mapId);
+                    editorWindow.openResourceElement(element.type, element.id);
                 }
             });
 
-            scriptMenu = new JMenuItem("Open Map Script");
-            add(scriptMenu);
-            scriptMenu.addActionListener(new ActionListener() {
+            // Open map script (specific to maps).
+            if (element.type == ResourceType.MAP) {
+                menuItem = new JMenuItem("Open map script");
+                add(menuItem);
+                menuItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        editorWindow.openTextEditor(Project.getMapScriptFile(element.id));
+                    }
+                });
+            }
+
+            // Move.
+            menuItem = new JMenuItem("Change id");
+            add(menuItem);
+            menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    editorWindow.openTextEditor(Project.getMapScriptFile(mapId));
+                    editorWindow.moveResourceElement(element.type, element.id);
                 }
             });
 
-            deleteMenu = new JMenuItem("Delete Map");
-            add(deleteMenu);
-            deleteMenu.addActionListener(new ActionListener() {
+            // Rename.
+            menuItem = new JMenuItem("Rename");
+            add(menuItem);
+            menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    editorWindow.deleteResourceElement(ResourceType.MAP, mapId);
+                    editorWindow.renameResourceElement(element.type, element.id);
                 }
             });
-        }
 
-        public void setMap(String mapId) {
-            this.mapId = mapId;
+            // Delete.
+            menuItem = new JMenuItem("Delete " + resourceTypeName);
+            add(menuItem);
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    editorWindow.deleteResourceElement(element.type, element.id);
+                }
+            });
         }
     }
 
     /**
      * Stores the id of an element from a resource, its name and its
      * resource type.
+     * This class is used as the user object for nodes of the quest tree.
      */
     private class ResourceElement {
 
@@ -321,10 +364,11 @@ public class QuestTree extends JTree
         public final String id;
         public final String name;
 
-        public ResourceElement(ResourceType type, String id, String name) {
+        public ResourceElement(ResourceType type, String id)
+                throws QuestEditorException {
             this.type = type;
             this.id = id;
-            this.name = name;
+            this.name = Project.getResource(type).getElementName(id);
         }
 
         public String toString() {

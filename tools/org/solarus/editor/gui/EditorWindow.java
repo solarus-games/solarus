@@ -89,7 +89,7 @@ public class EditorWindow extends JFrame
         });
 
         JXTransformer t = new JXTransformer(treeButton);
-        t.rotate(- Math.PI / 2);
+        t.rotate(-Math.PI / 2);
         toolBar.add(t);
         JPanel pToolBar = new JPanel(new BorderLayout());
         pToolBar.add(toolBar, BorderLayout.NORTH);
@@ -450,7 +450,7 @@ public class EditorWindow extends JFrame
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-            tabs.removeCurrentEditor();
+            tabs.removeCurrentEditor(true);
         }
     }
 
@@ -556,9 +556,11 @@ public class EditorWindow extends JFrame
         String resourceName = resourceType.getName();
         String resourceNameLower = resourceName.toLowerCase();
         try {
+            // TODO ask both the id and the name in the same dialog.
             String id = JOptionPane.showInputDialog(
                     null,
-                    "Please enter the id of your new " + resourceNameLower,
+                    "Please enter the id of your new " + resourceNameLower + "\n" +
+                    "Its file name will depend on it.",
                     resourceName + " id",
                     JOptionPane.QUESTION_MESSAGE);
 
@@ -567,7 +569,15 @@ public class EditorWindow extends JFrame
                     throw new QuestEditorException(
                             resourceName + " '" + id + "' already exists");
                 }
-                Project.newElement(resourceType, id);
+
+                String name = JOptionPane.showInputDialog(
+                        null,
+                        "Choose a friendly name for your " + resourceNameLower + "\n" +
+                        "It may contain spaces.",
+                        "User-friendly name",
+                        JOptionPane.QUESTION_MESSAGE);
+
+                Project.newElement(resourceType, id, name);
             }
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create " + resourceName + ": " + ex.getMessage());
@@ -694,12 +704,15 @@ public class EditorWindow extends JFrame
     }
 
     /**
-     * Closes the editor of an element if it is open.
-     * Lets the use save the element if he wants.
+     * Closes the editors of a resource element if some are open.
+     * Lets the use save the editors if he wants.
      * @param resourceType Type of resource element to close.
-     * @param resourceId Id of the resource element to close.
+     * @param elementId Id of the resource element to close.
+     * @param promptSave true to let the user save the element if necessary,
+     * false to close it without confirmation.
      */
-    public void closeResourceElement(ResourceType resourceType, String resourceId) {
+    public void closeResourceElement(ResourceType resourceType,
+            String elementId, boolean promptSave) {
 
         // Determine ids of editors to remove.
         ArrayList<String> editorIds = new ArrayList<String>();
@@ -708,56 +721,132 @@ public class EditorWindow extends JFrame
 
         case MAP:
         {
-            editorIds.add(MapEditorPanel.getEditorId(resourceId);
-            editorIds.add(TextEditorPanel.getEditorId(Project.getMapScriptFile(resourceId));
+            editorIds.add(MapEditorPanel.getEditorId(elementId));
+            editorIds.add(TextEditorPanel.getEditorId(Project.getMapScriptFile(elementId)));
             break;
         }
 
         case TILESET:
         {
-            editorIds.add(TilesetEditorPanel.getEditorId(resourceId));
+            editorIds.add(TilesetEditorPanel.getEditorId(elementId));
             break;
         }
 
         case LANGUAGE:
         {
-            editorIds.add(TextEditorPanel.getEditorId(Project.getDialogsFile(resourceId));
+            editorIds.add(TextEditorPanel.getEditorId(Project.getDialogsFile(elementId)));
+            editorIds.add(TextEditorPanel.getEditorId(Project.getStringsFile(elementId)));
             break;
         }
 
         case ENEMY:
         {
-            editorIds.add(TextEditorPanel.getEditorId(Project.getEnemyScript(resourceId));
+            editorIds.add(TextEditorPanel.getEditorId(Project.getEnemyScriptFile(elementId)));
             break;
         }
 
         case ITEM:
         {
+            editorIds.add(TextEditorPanel.getEditorId(Project.getItemScriptFile(elementId)));
             break;
         }
 
         case SPRITE:
         {
+            editorIds.add(TextEditorPanel.getEditorId(Project.getSpriteFile(elementId)));
             break;
         }
+        }
+
+        for (String editorId: editorIds) {
+            tabs.removeEditor(editorId, promptSave);
+        }
+    }
+
+    /**
+     * Changes the id of a resource element, asking the new id to the user.
+     * @param resourceType Type of resource element to change.
+     * @param oldId The id to change.
+     */
+    public void moveResourceElement(ResourceType resourceType, String oldId) {
+
+        // First, close the element if it is open.
+        closeResourceElement(resourceType, oldId, true);
+
+        // Ask the new id.
+        String resourceName = resourceType.getName();
+        String resourceNameLower = resourceName.toLowerCase();
+        try {
+            String newId = JOptionPane.showInputDialog(
+                    null,
+                    "Please enter a new id for " + resourceNameLower + " '" + oldId + "'",
+                    "Change id of " + resourceNameLower + " '" + oldId + "'",
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (newId != null) {
+                if (Project.getResource(resourceType).exists(newId)) {
+                    throw new QuestEditorException(
+                            resourceName + " '" + newId + "' already exists");
+                }
+                Project.moveElement(resourceType, oldId, newId);
+            }
+        } catch (QuestEditorException ex) {
+            GuiTools.errorDialog("Cannot change id of " + resourceName + " '"
+                    + oldId + "': " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Changes the human-readable name of a resource element, asking the new
+     * name to the user.
+     * @param resourceType Type of resource element to change.
+     * @param id Id of the element to change.
+     */
+    public void renameResourceElement(ResourceType resourceType, String id) {
+
+        // First, close the element if it is open.
+        closeResourceElement(resourceType, id, true);
+
+        // Ask the new name.
+        Resource resource = Project.getResource(resourceType);
+        String resourceName = resourceType.getName();
+        String resourceNameLower = resourceName.toLowerCase();
+        try {
+            String newName = JOptionPane.showInputDialog(
+                    null,
+                    "Please enter a new name for " + resourceNameLower + " '" + id + "'\n" +
+                    "Current name is: '" + resource.getElementName(id),
+                    "Rename " + resourceNameLower + " '" + id + "'",
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (newName != null) {
+                Project.renameElement(resourceType, id, newName);
+            }
+        } catch (QuestEditorException ex) {
+            GuiTools.errorDialog("Cannot rename " + resourceName + " '"
+                    + id + "': " + ex.getMessage());
         }
     }
 
     /**
      * Deletes a resource element after confirmation from the user.
      * @param resourceType Type of resource.
-     * @param id Id of the element to delete.
+     * @param resourceId Id of the element to delete.
      */
-    public void deleteResourceElement(ResourceType resourceType, String id) {
+    public void deleteResourceElement(ResourceType resourceType, String resourceId) {
         try {
             int answer = JOptionPane.showConfirmDialog(this,
                     "Are you sure you want to delete "
-                            + resourceType.getName() + " '" + id + "'?",
+                            + resourceType.getName() + " '" + resourceId + "'?",
                     "Are you sure?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE);
             if (answer == JOptionPane.YES_OPTION) {
-                Project.deleteElement(resourceType, id);
+                // Close the element if it is open.
+                closeResourceElement(resourceType, resourceId, true);
+                
+                // Delete it.
+                Project.deleteElement(resourceType, resourceId);
             }
         }
         catch (QuestEditorException ex) {
@@ -783,8 +872,15 @@ public class EditorWindow extends JFrame
      */
     @Override
     public void resourceElementRemoved(ResourceType resourceType, String id) {
-        // Close the editor if any.
-        closeResourceElement(resourceType, id);
+
+        // Close the editor if any (but it is a bug).
+        AbstractEditorPanel editor = tabs.getEditor(id); 
+        if (editor != null) {
+            tabs.removeEditor(editor, false);
+            new IllegalStateException(resourceType.getName() + " '" + id
+                    + "' was destroyed but its editor was still open"
+                    ).printStackTrace();
+        }
     }
 
     /**
@@ -796,8 +892,16 @@ public class EditorWindow extends JFrame
     @Override
     public void resourceElementMoved(ResourceType resourceType, String oldId,
             String newId) {
-        // TODO Auto-generated method stub
-        closeResourceElement(resourceType, oldId);
+
+        // Close the old editor if any (but it is a bug).
+        AbstractEditorPanel editor = tabs.getEditor(oldId); 
+        if (editor != null) {
+            tabs.removeEditor(editor, false);
+            new IllegalStateException(resourceType.getName() + " '" + oldId
+                    + "' was renamed from '" + oldId + "' to '" + newId
+                    + "' but its editor was still open").printStackTrace();
+        }
+        closeResourceElement(resourceType, oldId, false);
     }
 
     /**

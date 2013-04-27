@@ -509,23 +509,79 @@ public class Project {
     }
 
     /**
-     * Creates a new resource element.
+     * Creates a new resource element: create the files,
+     * registers it in the list of resources and notifies project observers.
+     *
      * @param resourceType Type of element to create.
      * @param id Id of the element to create.
+     * @param name A human-readable name for this element. 
      * @throws QuestEditorException If the element could not be created.
      */
-    public static void newElement(ResourceType resourceType, String id)
+    public static void newElement(ResourceType resourceType,
+            String id, String name)
             throws QuestEditorException {
 
-        // TODO create file(s)
+        try {
+            // Create the files.
+            createFilesForNewResourceElement(resourceType, id);
 
-        for (ProjectObserver o: observers) {
-            o.resourceElementAdded(resourceType, id);
+            // Add the resource to the resource list.
+            getResource(resourceType).addElement(id, name);
+
+            // Notify the GUI.
+            for (ProjectObserver o: observers) {
+                o.resourceElementAdded(resourceType, id);
+            }
+        }
+        catch (IOException ex) {
+            throw new QuestEditorException(ex.getMessage());
         }
     }
 
     /**
-     * Deletes a new resource element.
+     * Creates the appropriate files for a new resource element,
+     * unless they already exist.
+     *
+     * @param resourceType Type of element to create.
+     * @param id Id of the element to create.
+     * @throws IOException If a file could not be created.
+     */
+    private static void createFilesForNewResourceElement(
+            ResourceType resourceType, String id)
+            throws IOException {
+
+        switch (resourceType) {
+
+        case MAP:
+            createFileIfNotExists(getMapFile(id));
+            createFileIfNotExists(getMapScriptFile(id));
+            break;
+
+        case TILESET:
+            createFileIfNotExists(getTilesetFile(id));
+            break;
+
+        case LANGUAGE:
+            createFileIfNotExists(getDialogsFile(id));
+            createFileIfNotExists(getStringsFile(id));
+            break;
+
+        case ENEMY:
+            createFileIfNotExists(getEnemyScriptFile(id));
+            break;
+
+        case ITEM:
+            createFileIfNotExists(getItemScriptFile(id));
+            break;
+
+        case SPRITE:
+            createFileIfNotExists(getSpriteFile(id));
+            break;
+        }
+    }
+
+    /**
+     * Deletes a resource element.
      * @param resourceType Type of element to delete.
      * @param id Id of the element to delete.
      * @throws QuestEditorException If the element could not be found
@@ -571,6 +627,18 @@ public class Project {
 
         for (ProjectObserver o: observers) {
             o.resourceElementRenamed(resourceType, id, name);
+        }
+    }
+
+    /**
+     * Creates the specified if unless it already exists.
+     * @param file The file to create.
+     * @throws IOException If the file could not be created.
+     */
+    private static void createFileIfNotExists(File file) throws IOException {
+
+        if (!file.exists()) {
+            file.createNewFile();
         }
     }
 }

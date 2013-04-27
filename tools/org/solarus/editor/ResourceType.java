@@ -53,10 +53,18 @@ public enum ResourceType {
 
     /**
      * Returns the human-readable name of the resource type
-     * This name will be used in the GUI in the ResourceChooser.
-     * @return the name of the resource type
+     * This name will be used everywhere in the GUI.
+     * @return The name of the resource type.
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Returns a string representation of this resource type.
+     * @return The name of the resource type.
+     */
+    public String toString() {
+        return getName();
     }
 }

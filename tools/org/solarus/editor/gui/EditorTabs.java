@@ -47,19 +47,9 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
                     "There is already an editor with id '" + editor.getId());
         }
 
-        // FIXME a new editor is created even if it is useless.
-        AbstractEditorPanel existingEditor = getEditor(editor.getId());
-
-        if (existingEditor != null) {
-            // There is an editor already open for that this element. 
-            setSelectedComponent(existingEditor);
-        }
-        else {
-            // Create an editor.
-            add(editor.getTitle(), editor);
-            setSelectedIndex(getTabCount() - 1);
-            repaint();
-        }
+        add(editor.getTitle(), editor);
+        setSelectedIndex(getTabCount() - 1);
+        repaint();
     }
 
     /**
@@ -84,22 +74,40 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
     }
 
     /**
-     * Remove an editor unless the user is not okay with that.
+     * Removes an editor.
+     * @param promptSave true to let the user save the element if necessary,
+     * false to close it without confirmation.
      * @param editor The editor to remove.
      */
-    public void removeEditor(AbstractEditorPanel editor) {
-        if (editor.checkCurrentFileSaved()) {
+    public void removeEditor(AbstractEditorPanel editor, boolean promptSave) {
+        if (!promptSave || editor.checkCurrentFileSaved()) {
             remove(editor);
             repaint();
         }
     }
 
     /**
-     * Removes the current editor if any, unless the user is not okay with that.
+     * Removes an editor if it exists.
+     * @param promptSave true to let the user save the element if necessary,
+     * false to close it without confirmation.
+     * @param id Id of editor to remove. Nothing happens if there is no editor
+     * with this id.
      */
-    public void removeCurrentEditor() {
+    public void removeEditor(String editorId, boolean promptSave) {
+        AbstractEditorPanel editor = getEditor(editorId);
+        if (editor != null) {
+            removeEditor(editor, promptSave);
+        }
+    }
+
+    /**
+     * Removes the current editor if any, unless the user is not okay with that.
+     * @param promptSave true to let the user save the element if necessary,
+     * false to close it without confirmation.
+     */
+    public void removeCurrentEditor(boolean promptSave) {
         if (getSelectedComponent() != null) {
-            removeEditor((AbstractEditorPanel) getSelectedComponent());
+            removeEditor((AbstractEditorPanel) getSelectedComponent(), promptSave);
         }
     }
 
@@ -148,7 +156,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
             if (idx != -1) {
                 // Middle click on a tab was clicked: close it.
                 AbstractEditorPanel editor = (AbstractEditorPanel) getComponentAt(idx);
-                removeEditor(editor);
+                removeEditor(editor, true);
             }
         }
     }

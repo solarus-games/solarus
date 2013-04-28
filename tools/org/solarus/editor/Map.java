@@ -40,11 +40,6 @@ public class Map extends Observable {
     private String mapId;
 
     /**
-     * Name of the map.
-     */
-    private String name;
-
-    /**
      * Size of the map, in pixels (the width and the height
      * must be multiples of 8).
      */
@@ -142,7 +137,6 @@ public class Map extends Observable {
             load();
         }
         else {
-            this.name = "New map";
             setChanged();
             notifyObservers();
         }
@@ -204,6 +198,10 @@ public class Map extends Observable {
         return true;
     }
 
+    /**
+     * Returns a string representation of this tileset.
+     * @return The name of the tileset.
+     */
     @Override
     public String toString() {
         return getName();
@@ -211,22 +209,30 @@ public class Map extends Observable {
 
     /**
      * Returns the map name.
-     * @return the human name of the map
+     * @return The human name of the map.
      */
     public String getName() {
+        Resource mapResource = Project.getResource(ResourceType.MAP);
+        String name = mapId;
+        
+        try {
+            name = mapResource.getElementName(mapId);
+        }
+        catch (QuestEditorException ex) {
+            // Cannot happen: the map id must be valid.
+            ex.printStackTrace();
+        }
         return name;
     }
 
     /**
-     * Changes the name of the map
-     * @param name new name of the map
+     * Changes the name of the map.
+     * @param name New human-readable name of the map.
      */
-    public void setName(String name) {
+    public void setName(String name) throws QuestEditorException {
 
-        if (!name.equals(this.name)) {
-            this.name = name;
-            setChanged();
-            notifyObservers();
+        if (!name.equals(getName())) {
+            Project.renameResourceElement(ResourceType.MAP, mapId, name);
         }
     }
 
@@ -942,10 +948,6 @@ public class Map extends Observable {
      */
     public void load() throws QuestEditorException {
         try {
-            // Get the map name in the quest resource database.
-            Resource mapResource = Project.getResource(ResourceType.MAP);
-            setName(mapResource.getElementName(mapId));
-
             File mapFile = Project.getMapFile(mapId);
             LuaC.install();
             LuaTable environment = LuaValue.tableOf();
@@ -1015,12 +1017,6 @@ public class Map extends Observable {
             out.close();
 
             history.setSaved();
-
-            // create a script for the map if necessary
-            File scriptFile = Project.getMapScriptFile(mapId);
-            if (!scriptFile.exists()) {
-                scriptFile.createNewFile();
-            }
         }
         catch (IOException ex) {
             throw new MapException(ex.getMessage());

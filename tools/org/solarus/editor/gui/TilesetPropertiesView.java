@@ -146,7 +146,6 @@ public class TilesetPropertiesView extends JPanel
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
             textFieldName = new JTextField(10);
-            textFieldName.setEditable(false);  // TODO change to a simple label, or fix
 
             Dimension size = new Dimension(120, 25);
             textFieldName.setMinimumSize(size);
@@ -159,10 +158,13 @@ public class TilesetPropertiesView extends JPanel
             ActionListener listener = new ActionListener() {
                     public void actionPerformed(ActionEvent ev) {
 
-                        String name = textFieldName.getText();
-                        tileset.setName(name);
-
-                        update(tileset);
+                        try {
+                            String name = textFieldName.getText();
+                            tileset.setName(name);
+                        }
+                        catch (QuestEditorException ex) {
+                            GuiTools.errorDialog("Cannot change the tileset name: " + ex.getMessage());
+                        }
                     }
                 };
 

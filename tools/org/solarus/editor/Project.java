@@ -118,7 +118,7 @@ public class Project {
      */
     private static void setCurrentProject(Project project) {
         currentProject = project;
-        for (ProjectObserver o: observers) {
+        for (ProjectObserver o: new ArrayList<ProjectObserver>(observers)) {
             o.currentProjectChanged();
         }
     }
@@ -530,7 +530,7 @@ public class Project {
             getResourceDatabase().save();
 
             // Notify the GUI.
-            for (ProjectObserver o: observers) {
+            for (ProjectObserver o: new ArrayList<ProjectObserver>(observers)) {
                 o.resourceElementAdded(resourceType, id);
             }
         }
@@ -600,7 +600,7 @@ public class Project {
             getResourceDatabase().save();
 
             // Notify the GUI.
-            for (ProjectObserver o: observers) {
+            for (ProjectObserver o: new ArrayList<ProjectObserver>(observers)) {
                 o.resourceElementRemoved(resourceType, id);
             }
         }
@@ -673,7 +673,7 @@ public class Project {
             getResourceDatabase().save();
     
             // Notify the GUI.
-            for (ProjectObserver o: observers) {
+            for (ProjectObserver o: new ArrayList<ProjectObserver>(observers)) {
                 o.resourceElementMoved(resourceType, oldId, newId);
             }
         }
@@ -744,7 +744,7 @@ public class Project {
             getResourceDatabase().save();
 
             // Notify the GUI.
-            for (ProjectObserver o: observers) {
+            for (ProjectObserver o: new ArrayList<ProjectObserver>(observers)) {
                 o.resourceElementRenamed(resourceType, id, name);
             }
         }

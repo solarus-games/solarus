@@ -205,7 +205,6 @@ public class MapPropertiesView extends JPanel
          */
         public NameField() {
             super(10);
-            setEditable(false);  // TODO change to a simple label, or fix
 
             getDocument().addDocumentListener(new DocumentListener() {
 
@@ -214,12 +213,11 @@ public class MapPropertiesView extends JPanel
                     if (!updating) {
                         try {
                             String name = getText();
-                            map.getHistory().doAction(new ActionRenameMap(map, name));
+                            map.setName(name);
                         }
                         catch (QuestEditorException ex) {
                             GuiTools.errorDialog("Cannot change the map name: " + ex.getMessage());
                         }
-                        update(map);
                     }
                 }
 
@@ -238,8 +236,6 @@ public class MapPropertiesView extends JPanel
                     textChanged();
                 }
             });
-
-            update((Map) null);
         }
 
         /**
@@ -250,13 +246,11 @@ public class MapPropertiesView extends JPanel
 
             updating = true;
             if (map != null) {
-                setEnabled(true);
                 if (!getText().equals(map.getName())) {
                     setText(map.getName());
                 }
             }
             else {
-                setEnabled(false);
                 setText("");
             }
             updating = false;
@@ -743,8 +737,8 @@ public class MapPropertiesView extends JPanel
     @Override
     public void resourceElementRenamed(ResourceType resourceType, String id,
             String name) {
-        // This map has just been renamed.
         if (resourceType == ResourceType.MAP && id.equals(map.getId())) {
+            // This map has just been renamed.
             update(null, null);
         }
     }

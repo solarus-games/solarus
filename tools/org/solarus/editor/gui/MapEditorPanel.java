@@ -112,7 +112,7 @@ public class MapEditorPanel extends AbstractEditorPanel {
      * @return The name of the map.
      */
     public String getTitle() {
-        return map == null ? "" : "Map: " + getMap().getName();
+        return map == null ? "" : "Map: " + map.getName();
     }
 
     /**

@@ -44,11 +44,6 @@ public class Tileset extends Observable {
     private String tilesetId;
 
     /**
-     * Name of the tileset.
-     */
-    private String name;
-
-    /**
      * Background color (default is black).
      */
     private Color backgroundColor;
@@ -148,7 +143,6 @@ public class Tileset extends Observable {
             load();
         }
         else {
-            this.name = "New tileset";
             reloadImage();
             setSaved(true);
             setChanged();
@@ -186,28 +180,40 @@ public class Tileset extends Observable {
     }
 
     /**
-     * Returns the name of the tileset.
-     * @return the name of the tileset, for example "Light World"
+     * Returns a string representation of this tileset.
+     * @return The name of the tileset.
      */
-    public String getName() {
-        return name;
+    @Override
+    public String toString() {
+        return getName();
     }
 
-    public String toString() {
+    /**
+     * Returns the tileset name.
+     * @return The human name of the tileset.
+     */
+    public String getName() {
+        Resource mapResource = Project.getResource(ResourceType.TILESET);
+        String name = tilesetId;
+        
+        try {
+            name = mapResource.getElementName(tilesetId);
+        }
+        catch (QuestEditorException ex) {
+            // Cannot happen: the tileset id must be valid.
+            ex.printStackTrace();
+        }
         return name;
     }
 
     /**
      * Changes the name of the tileset.
-     * @param name the name of the tileset, for example "Light World"
+     * @param name New human-readable name of the tileset.
      */
-    public void setName(String name) {
+    public void setName(String name) throws QuestEditorException {
 
-        if (!name.equals(this.name)) {
-            this.name = name;
-            setSaved(false);
-            setChanged();
-            notifyObservers();
+        if (!name.equals(getName())) {
+            Project.renameResourceElement(ResourceType.TILESET, tilesetId, name);
         }
     }
 
@@ -615,10 +621,6 @@ public class Tileset extends Observable {
     public void load() throws QuestEditorException {
 
         try {
-            // get the tileset name in the game resource database
-            Resource tilesetResource = Project.getResource(ResourceType.TILESET);
-            setName(tilesetResource.getElementName(tilesetId));
-
             File tilesetFile = Project.getTilesetFile(tilesetId);
             LuaC.install();
             LuaTable environment = LuaValue.tableOf();
@@ -733,11 +735,6 @@ public class Tileset extends Observable {
             out.close();
 
             setSaved(true);
-
-            // Also update the tileset name in the global resource list.
-            Resource tilesetResource = Project.getResource(ResourceType.TILESET);
-            tilesetResource.setElementName(tilesetId, name);
-            Project.getResourceDatabase().save();
         }
         catch (Exception ex) {
             String message = "";

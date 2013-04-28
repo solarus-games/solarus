@@ -1441,7 +1441,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 map.getHistory().doAction(new ActionMoveEntities(map, selectedEntities.getEntities(), dx, dy));
                 }
-                catch (ZSDXException e) {
+                catch (QuestEditorException e) {
                 GuiTools.errorDialog("Cannot move the entities: " + e.getMessage());
                 }
                 }

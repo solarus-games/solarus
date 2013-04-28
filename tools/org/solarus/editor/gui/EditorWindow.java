@@ -148,13 +148,13 @@ public class EditorWindow extends JFrame
 
         item = new JMenuItem("New quest...");
         item.setMnemonic(KeyEvent.VK_N);
-        item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX quest");
+        item.getAccessibleContext().setAccessibleDescription("Create a new Solarus quest");
         item.addActionListener(new ActionListenerNewProject());
         menu.add(item);
 
         item = new JMenuItem("Load quest...");
         item.setMnemonic(KeyEvent.VK_O);
-        item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX quest");
+        item.getAccessibleContext().setAccessibleDescription("Open an existing Solarus quest");
         item.addActionListener(new ActionListenerLoadProject());
         menu.add(item);
 
@@ -162,7 +162,7 @@ public class EditorWindow extends JFrame
 
         item = new JMenuItem("Quit");
         item.setMnemonic(KeyEvent.VK_Q);
-        item.getAccessibleContext().setAccessibleDescription("Teletransporter the tileset editor");
+        item.getAccessibleContext().setAccessibleDescription("Exit Solarus Quest Editor");
         item.addActionListener(new ActionListenerQuit());
         menu.add(item);
 
@@ -796,7 +796,7 @@ public class EditorWindow extends JFrame
                     JOptionPane.QUESTION_MESSAGE);
 
             if (newName != null) {
-                Project.renameElement(resourceType, id, newName);
+                Project.renameResourceElement(resourceType, id, newName);
             }
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot rename " + resourceName + " '"
@@ -819,8 +819,8 @@ public class EditorWindow extends JFrame
                     JOptionPane.WARNING_MESSAGE);
             if (answer == JOptionPane.YES_OPTION) {
                 // Close the element if it is open.
-                closeResourceElement(resourceType, resourceId, true);
-                
+                closeResourceElement(resourceType, resourceId, false);
+
                 // Delete it.
                 Project.deleteResourceElement(resourceType, resourceId);
             }

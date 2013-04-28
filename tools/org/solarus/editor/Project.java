@@ -56,8 +56,8 @@ public class Project {
     private static Project currentProject;
 
     /**
-     * Constructs a ZSDX project with the specified path.
-     * @param path root path of the project
+     * Creates a new or existing project with the specified path.
+     * @param path Root path of the project.
      */
     private Project(String path) {
         this.projectPath = path;
@@ -527,6 +527,7 @@ public class Project {
 
             // Add the resource to the resource list.
             getResource(resourceType).addElement(id, name);
+            getResourceDatabase().save();
 
             // Notify the GUI.
             for (ProjectObserver o: observers) {
@@ -596,6 +597,7 @@ public class Project {
 
             // Remove the resource to the resource list.
             getResource(resourceType).removeElement(id);
+            getResourceDatabase().save();
 
             // Notify the GUI.
             for (ProjectObserver o: observers) {
@@ -668,6 +670,7 @@ public class Project {
     
             // Move the resource in the resource list.
             getResource(resourceType).moveElement(oldId, newId);
+            getResourceDatabase().save();
     
             // Notify the GUI.
             for (ProjectObserver o: observers) {
@@ -731,16 +734,22 @@ public class Project {
      * @throws QuestEditorException If the element could not be found
      * or it could not be renamed.
      */
-    public static void renameElement(ResourceType resourceType,
+    public static void renameResourceElement(ResourceType resourceType,
             String id, String name)
             throws QuestEditorException {
 
-        // Move the resource in the resource list.
-        getResource(resourceType).setElementName(id, name);
+        try {
+            // Move the resource in the resource list.
+            getResource(resourceType).setElementName(id, name);
+            getResourceDatabase().save();
 
-        // Notify the GUI.
-        for (ProjectObserver o: observers) {
-            o.resourceElementRenamed(resourceType, id, name);
+            // Notify the GUI.
+            for (ProjectObserver o: observers) {
+                o.resourceElementRenamed(resourceType, id, name);
+            }
+        }
+        catch (IOException ex) {
+            throw new QuestEditorException(ex.getMessage());
         }
     }
 

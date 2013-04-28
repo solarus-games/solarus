@@ -122,25 +122,26 @@ public class TilePatternsView extends JPanel {
      */
     public void setTileset(Tileset tileset) {
 
-        if (tileset != this.tileset) {
+        if (tileset == this.tileset) {
+            return;
+        }
 
-            if (this.tileset != null) {
-                this.tileset.deleteObserver(tilePatternsListModel);
-            }
+        if (this.tileset != null) {
+            this.tileset.deleteObserver(tilePatternsListModel);
+        }
 
-            this.tileset = tileset;
-            tilesetPropertiesView.setTileset(tileset);
-            tilePatternView.setTileset(tileset);
+        this.tileset = tileset;
+        tilesetPropertiesView.setTileset(tileset);
+        tilePatternView.setTileset(tileset);
 
-            if (tileset != null) {
-                tileset.addObserver(tilePatternsListModel);
+        if (tileset != null) {
+            tileset.addObserver(tilePatternsListModel);
 
-                loadIcons();
-                tilePatternsListModel.update(tileset, null);
-            }
-            else {
-                repaint();
-            }
+            loadIcons();
+            tilePatternsListModel.update(tileset, null);
+        }
+        else {
+            repaint();
         }
     }
 

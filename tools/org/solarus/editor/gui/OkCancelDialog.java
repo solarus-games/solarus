@@ -150,7 +150,7 @@ public abstract class OkCancelDialog extends JDialog {
      * This method is called when the user clicks on OK (or presses the Enter key),
      * just before the dialog box is closed, or when he clicks on Apply.
      * The subclasses must implement this method and do whatever they have to do
-     * to apply the user choices. They can throw a ZSDXException which will show
+     * to apply the user choices. They can throw an exception that will show
      * an error message.
      * @throws QuestEditorException if the user has made incorrect modifications
      */

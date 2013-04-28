@@ -158,5 +158,9 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
     @Override
     public void close() {
         tileset.deleteObservers();
+
+        // Notify the children views.
+        tilePatternsView.setTileset(null);
+        tilesetImageView.setTileset(null);
     }
 }

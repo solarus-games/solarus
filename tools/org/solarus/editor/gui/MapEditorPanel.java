@@ -189,6 +189,11 @@ public class MapEditorPanel extends AbstractEditorPanel {
     public void close() {
         map.deleteObservers();
         map.getEntitySelection().deleteObservers();
+        map.getHistory().deleteObservers();
+
+        mapPropertiesView.setMap(null);
+        tilePicker.setMap(null);
+        mapView.setMap(null);
     }
 
     /**

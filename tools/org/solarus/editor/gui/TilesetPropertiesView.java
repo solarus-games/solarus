@@ -95,12 +95,14 @@ public class TilesetPropertiesView extends JPanel
     public void setTileset(Tileset tileset) {
         if (this.tileset != null) {
             this.tileset.deleteObserver(this);
+            Project.removeProjectObserver(this);
         }
 
         this.tileset = tileset;
 
         if (tileset != null) {
             tileset.addObserver(this);
+            Project.addProjectObserver(this);
         }
         update(tileset, null);
     }

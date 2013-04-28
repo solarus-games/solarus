@@ -154,12 +154,14 @@ public class MapPropertiesView extends JPanel
     public void setMap(Map map) {
         if (this.map != null) {
             this.map.deleteObserver(this);
+            Project.removeProjectObserver(this);
         }
 
         this.map = map;
 
         if (this.map != null) {
             this.map.addObserver(this);
+            Project.addProjectObserver(this);
         }
     }
 

@@ -132,14 +132,7 @@ public class Map extends Observable {
         this.mapId = mapId;
         initialize();
 
-        Resource mapResource = Project.getResource(ResourceType.MAP);
-        if (mapResource.exists(mapId)) {
-            load();
-        }
-        else {
-            setChanged();
-            notifyObservers();
-        }
+        load();
     }
 
     /**

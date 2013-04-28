@@ -55,8 +55,8 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
         textArea = new JTextArea();
         textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
         textArea.getDocument().addDocumentListener(this);
-        JScrollPane jsp = new JScrollPane(textArea);
-        add(jsp, BorderLayout.CENTER);
+        JScrollPane scroller = new JScrollPane(textArea);
+        add(scroller, BorderLayout.CENTER);
 
         setFile(file);
     }
@@ -97,6 +97,7 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
         } catch (Exception err) {
             err.printStackTrace();
         }
+        textChanged = false;
     }
 
     /**
@@ -169,7 +170,6 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
      */
     public void insertUpdate(DocumentEvent e) {
         textChanged = true;
-
     }
 
     /**
@@ -179,7 +179,6 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
      */
     public void removeUpdate(DocumentEvent e) {
         textChanged = true;
-
     }
 
     /**
@@ -188,6 +187,5 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
      */
     public void changedUpdate(DocumentEvent e) {
         textChanged = true;
-
     }
 }

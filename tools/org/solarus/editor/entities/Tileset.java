@@ -138,16 +138,8 @@ public class Tileset extends Observable {
         this.tilePatterns = new TreeMap<Integer,TilePattern>();
         this.tilesetId = tilesetId;
 
-        Resource tilesetResource = Project.getResource(ResourceType.TILESET);
-        if (tilesetResource.exists(tilesetId)) {
-            load();
-        }
-        else {
-            reloadImage();
-            setSaved(true);
-            setChanged();
-            notifyObservers();
-        }
+        load();
+        setSaved(true);
     }
 
     /**
@@ -608,7 +600,7 @@ public class Tileset extends Observable {
 
     /**
      * Sets whether the tileset has changed since the last save.
-     * @param isSaved true if there has been no modifications, false otherwise
+     * @param isSaved true if there has been no modifications.
      */
     public void setSaved(boolean isSaved) {
         this.isSaved = isSaved;
@@ -616,7 +608,7 @@ public class Tileset extends Observable {
 
     /**
      * Loads the tileset from its file.
-     * @throws QuestEditorException if the file could not be read
+     * @throws QuestEditorException if the file could not be read.
      */
     public void load() throws QuestEditorException {
 

@@ -141,7 +141,7 @@ void LuaContext::initialize() {
                                   // --
 
   // Execute the main file.
-  do_file(l, "main");
+  do_file_if_exists(l, "main");
   main_on_started();
 }
 

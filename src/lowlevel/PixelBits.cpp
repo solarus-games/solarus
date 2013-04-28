@@ -33,6 +33,11 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
 
   int bits_per_pixel = format->BitsPerPixel;
 
+  Debug::check_assertion(bits_per_pixel == 8
+      || bits_per_pixel == 16
+      || bits_per_pixel == 32,
+      "This surface should have an 8/16/32-bit pixel format");
+    
   // Create a list of boolean values representing the transparency of each pixel.
   // This list is implemented as bit fields.
 
@@ -65,19 +70,17 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
       }
 
       bool transparent = false;
+    
+      // In order from the most used to the most exotic
       if (bits_per_pixel == 8) {
         transparent = ((uint8_t*) pixels)[pixel_index] == colorkey;
       }
       else if (bits_per_pixel == 16) {
         transparent = ((uint16_t*) pixels)[pixel_index] == colorkey;
       }
-      else if (bits_per_pixel == 32) {
-        transparent = ((uint32_t*) pixels)[pixel_index] == colorkey;
-      }
-      else { // Manual cast of the pixel into uint32_t
-        transparent = (*(uint32_t*)((uint8_t*)pixels + pixel_index * format->BytesPerPixel)
-                       & (0xffffffff << 32 - bits_per_pixel)) == colorkey;
-      }
+      else { // 32 bits. 
+          transparent = ((uint32_t*) pixels)[pixel_index] == colorkey;
+      } 
 
       if (!transparent) {
         // The pixel is opaque.

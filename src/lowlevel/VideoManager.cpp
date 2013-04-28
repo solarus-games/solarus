@@ -46,6 +46,9 @@ Rectangle VideoManager::default_mode_sizes[] = {
   Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_SCALE2X_WIDE
 };
 
+// Properties of SDL surfaces.
+const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+
 /**
  * @brief Switch from windowed to fullscreen or from fullscreen to windowed,
  * keeping an equivalent video mode.
@@ -104,30 +107,6 @@ void VideoManager::quit() {
  */
 VideoManager* VideoManager::get_instance() {
   return instance;
-}
-
-/**
- * @brief Returns the appropriate SDL_Surface flag depending on the requested display mode and what OS is running.
- * @param the display mode which you wanted to know the SDL_Surface flag to use with.
- * @return the better SDL_Surface flag to use
- */
-Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
-    Uint32 flag;
-  
-    // Use software surface if there will be pixel access to blit with the mode in parameter
-    if(mode_sizes[mode].get_width() != SOLARUS_SCREEN_WIDTH || mode_sizes[mode].get_height() != SOLARUS_SCREEN_HEIGHT)
-        flag = SDL_SWSURFACE;
-    else 
-        flag = SDL_HWSURFACE;
-    
-// If the running OS support double buffering
-#if !defined(SOLARUS_OSX)
-    
-    // SDL_DOUBLEBUF is buggy on OSX, but it will surely works when SDL 1.3 will be release
-    flag |= SDL_DOUBLEBUF;
-#endif
-    
-    return flag;
 }
 
 /**

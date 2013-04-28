@@ -44,7 +44,7 @@ file(
   include/snes_spc/*.h
 )
 
-# additional source files for Mac OS
+# additional source files for Apple systems
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(source_files
     ${source_files}
@@ -77,14 +77,8 @@ else()
   )
 endif()
 
-# Workaround : -isystem flag isn't correctly set on OSX when using SYSTEM option.
-# TODO : Remove this when http://public.kitware.com/Bug/view.php?id=10837 will be accepted.
-if(APPLE)
-  set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem ")
-endif()
-
-# generate -isystem flags, or -I flags if not supported
-include_directories(SYSTEM
+# generate -I flags
+include_directories(
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/snes_spc
   ${SDL_INCLUDE_DIR}
@@ -118,8 +112,13 @@ if(NOT CMAKE_BUILD_TYPE)
       "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
 endif()
-set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  # Force to be the less pedantic possible with the Release build
+  set(CMAKE_CXX_FLAGS "-Wno-unknown-warning -Wno-error -Wno-all -Wno-fatal-errors -Wno-pedantic -Wno-extra -Wno-unknown-pragmas")
+else()
+  set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
+endif()
 
 # Configuration for OSX and iOS build and deployment
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

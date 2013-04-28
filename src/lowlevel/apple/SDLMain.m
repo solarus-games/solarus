@@ -6,7 +6,7 @@
 */
 
 #include "SDL.h"
-#include "SDLMain.h"
+#include "lowlevel/apple/SDLMain.h"
 #include <sys/param.h> /* for MAXPATHLEN */
 #include <unistd.h>
 
@@ -316,7 +316,7 @@ static void CustomApplicationMain (int argc, char **argv)
     NSRange localRange;
     NSString *result;
 
-    bufferSize = selfLen + aStringLen - int(aRange.length);
+    bufferSize = selfLen + aStringLen - (int)aRange.length;
     buffer = (unichar *)NSAllocateMemoryPages(bufferSize*sizeof(unichar));
     
     /* Get first part into buffer */

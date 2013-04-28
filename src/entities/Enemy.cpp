@@ -722,7 +722,9 @@ void Enemy::set_suspended(bool suspended) {
     uint32_t diff = System::now() - when_suspended;
     stop_hurt_date += diff;
     vulnerable_again_date += diff;
-    can_attack_again_date += diff;
+    if (can_attack_again_date != 0) {
+      can_attack_again_date += diff;
+    }
     start_shaking_date += diff;
     end_shaking_date += diff;
     next_explosion_date += diff;

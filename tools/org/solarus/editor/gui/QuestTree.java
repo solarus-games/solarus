@@ -74,6 +74,9 @@ public class QuestTree extends JTree
     @Override
     public void currentProjectChanged() {
         rebuildTree();
+        
+        // Initially expand maps.
+        expandRow(1);
     }
 
     /**
@@ -101,6 +104,7 @@ public class QuestTree extends JTree
     @Override
     public void resourceElementRemoved(ResourceType resourceType, String id) {
         rebuildTree();  // TODO Rebuilding the whole tree is slow.
+        expandRow(resourceType.ordinal() + 1);
     }
 
     /**
@@ -113,6 +117,7 @@ public class QuestTree extends JTree
     public void resourceElementMoved(ResourceType resourceType, String oldId,
             String newId) {
         rebuildTree();  // TODO Rebuilding the whole tree is slow.
+        expandRow(resourceType.ordinal() + 1);
     }
 
     /**
@@ -125,6 +130,7 @@ public class QuestTree extends JTree
     public void resourceElementRenamed(ResourceType resourceType,
             String id, String name) {
         rebuildTree();  // TODO Rebuilding the whole tree is slow.
+        expandRow(resourceType.ordinal() + 1);
     }
 
     @Override

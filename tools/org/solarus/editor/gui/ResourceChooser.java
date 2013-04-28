@@ -152,10 +152,9 @@ public class ResourceChooser extends JComboBox<KeyValue> implements ProjectObser
 
     /**
      * This method is called when a project has just been loaded.
-     * The resource list is then loaded.
      */
     public void currentProjectChanged() {
-        reloadList();
+        // This resource chooser should not be used anymore.
     }
 
     /**

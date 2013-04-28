@@ -1088,6 +1088,7 @@ public class Map extends Observable {
             }
             catch (QuestEditorException ex) {
                 // Error in the input file.
+                ex.printStackTrace();
                 throw new LuaError(ex);
             }
             catch (Exception ex) {

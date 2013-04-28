@@ -91,12 +91,12 @@ public class EditorWindow extends JFrame
         createMenuBar();
         update(null, null);
         if (questPath == null) {
-            new ActionListenerLoadProject().actionPerformed(null);
+            loadProject();
         } else {
             try {
                 Project.createExisting(questPath);
             } catch (QuestEditorException ex) {
-                new ActionListenerLoadProject().actionPerformed(null);
+                loadProject();
             }
         }
     }
@@ -297,6 +297,7 @@ public class EditorWindow extends JFrame
      */
     public void currentProjectChanged() {
         menuFile.setEnabled(true);
+        tabs.removeAll();
     }
 
     /**
@@ -341,6 +342,7 @@ public class EditorWindow extends JFrame
 
         if (projectPath != null) {
             try {
+                tabs.removeAll();
                 Project.createExisting(projectPath);
                 setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
             }

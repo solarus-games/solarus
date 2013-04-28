@@ -101,12 +101,12 @@ public class TilePatternsView extends JPanel {
             });
 
         JScrollPane listScroller = new JScrollPane(tilePatternsList);
-         listScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        listScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // tile view
         tilePatternView = new TilePatternView();
-         tilePatternView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
+        tilePatternView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
         tilePatternView.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         add(tilesetPropertiesView);

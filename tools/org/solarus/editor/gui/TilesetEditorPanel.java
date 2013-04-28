@@ -71,6 +71,7 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
 
         JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tilePatternsView, tilesetImageScroller);
         tilesetPanel.setContinuousLayout(true);
+        tilesetPanel.setDividerLocation(400);
         // we must put our main panel in another panel
         // otherwise the background color of the window is bad
         add(tilesetPanel);

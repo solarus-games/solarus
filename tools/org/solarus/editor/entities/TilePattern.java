@@ -42,12 +42,12 @@ public class TilePattern extends Observable {
 
         public static final String[] humanNames = {
             "None",
-            "3 frames (1-2-3-1)",
-            "3 frames (1-2-3-2-1)",
+            "Frames 1-2-3-1",
+            "Frames 1-2-3-2-1",
             "Scrolling on itself",
             "Parallax scrolling",
-            "3 frames (1-2-3-1) + parallax",
-            "3 frames (1-2-3-2-1) + parallax",
+            "Frames 1-2-3-1, parallax",
+            "Frames 1-2-3-2-1, parallax",
         };
 
         public static Animation get(int id) {

@@ -56,10 +56,9 @@
 /**
  * @brief Solarus patch version.
  *
- * Patch versions are mostly bug fixes.
+ * Patch versions are only bug fixes.
  * Data files compatibility is always preserved between changes of the patch
- * version. Patch versions may also introduce limited new functions in the
- * Lua API, but do not break existing ones.
+ * version.
  */
 #define SOLARUS_PATCH_VERSION 0
 

@@ -128,7 +128,7 @@ VideoManager::VideoManager(bool disable_window):
   for (int i = 0; i < NB_MODES; i++) {
     mode_sizes[i] = default_mode_sizes[i];
   }
-  int flags = get_surface_flag(FULLSCREEN_WIDE) | SDL_FULLSCREEN;
+  int flags = surface_flags | SDL_FULLSCREEN;
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
     mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
@@ -175,7 +175,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
     return false;
   }
 
-  int flags = get_surface_flag(mode);
+  int flags = surface_flags;
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;
   }
@@ -253,7 +253,7 @@ void VideoManager::set_default_video_mode() {
  */
 void VideoManager::set_video_mode(VideoMode mode) {
 
-  int flags = get_surface_flag(mode);
+  int flags = surface_flags;
   int show_cursor;
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;

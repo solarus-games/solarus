@@ -110,7 +110,7 @@ public class Enemy extends MapEntity {
 
             if (value.length() > 0) {
                 sprite = new Sprite("enemies/" + value, getMap());
-                setSizeImpl(sprite.getSize(null, 0));
+                setSizeUnchecked(sprite.getSize(null, 0));
             }
             else {
                 sprite = null;

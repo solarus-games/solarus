@@ -294,8 +294,7 @@ public abstract class MapEntity extends Observable {
             setName(name);
         }
         setLayer(layer);
-        positionInMap.x = x; // for now the origin is (0,0)
-        positionInMap.y = y;
+        setPositionInMapUnchecked(x, y); // For now the origin is (0,0).
 
         int width = 0;
         int height = 0;
@@ -331,12 +330,13 @@ public abstract class MapEntity extends Observable {
         }
 
         if (isSizeVariable()) {
-            setSize(width, height); // some entities need to know their properties before they can be resized
+            // Some entities need to know their properties before they can be resized.
+            setSizeUnchecked(width, height);
         }
 
         updateImageDescription();
 
-        // now the origin is valid
+        // Now the origin is valid.
         setPositionInMapUnchecked(positionInMap.x, positionInMap.y);
     }
 
@@ -743,7 +743,7 @@ public abstract class MapEntity extends Observable {
         }
 
         checkSize(width, height);
-        setSizeImpl(width, height);
+        setSizeUnchecked(width, height);
 
         // notify
         setChanged();
@@ -768,7 +768,7 @@ public abstract class MapEntity extends Observable {
      * @param width width of the entity in pixels
      * @param height height of the entity in pixels
      */
-    protected void setSizeImpl(int width, int height) {
+    protected void setSizeUnchecked(int width, int height) {
         positionInMap.width = width;
         positionInMap.height = height;
     }
@@ -778,9 +778,9 @@ public abstract class MapEntity extends Observable {
      * @param width width of the entity in pixels
      * @param height height of the entity in pixels
      */
-    protected void setSizeImpl(Dimension size) {
+    protected void setSizeUnchecked(Dimension size) {
 
-        setSizeImpl(size.width, size.height);
+        setSizeUnchecked(size.width, size.height);
     }
 
     /**

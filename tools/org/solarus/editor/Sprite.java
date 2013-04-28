@@ -20,8 +20,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
-
-import org.solarus.editor.Map;
+import org.solarus.editor.entities.*;
 
 /**
  * Represents a sprite.
@@ -47,6 +46,11 @@ public class Sprite {
      * The map where this sprite is supposed to be displayed.
      */
     private Map map;
+
+    /**
+     * Default image for empty sprites.
+     */
+    private static Image emptySpriteImage = Project.getEditorImage("npc.png");
 
     /**
      * Analyzes the description file of the animation set used by this sprite
@@ -147,7 +151,8 @@ public class Sprite {
 
     /**
      * Returns the name of the default animation of this sprite.
-     * @return return default animation name, i.e. the first one in the description file
+     * @return The default animation name, i.e. the first one in the
+     * description file, or null if the sprite is empty.
      */
     public String getDefaultAnimationName() {
         return defaultAnimationName;
@@ -176,9 +181,13 @@ public class Sprite {
      * @param animationName name of animation to use (null to pick the default one)
      * @param direction direction of animation
      * @param frame index of the frame to get
-     * @return the frame
+     * @return the frame, or null if the sprite is empty.
      */
     public Image getFrame(String animationName, int direction, int frame) {
+
+        if (animations.isEmpty()) {
+            return null;
+        }
 
         if (animationName == null) {
             animationName = getDefaultAnimationName();
@@ -194,6 +203,10 @@ public class Sprite {
      */
     public Point getOrigin(String animationName, int direction) {
 
+        if (animations.isEmpty()) {
+            return new Point(0, 0);
+        }
+
         if (animationName == null) {
             animationName = getDefaultAnimationName();
         }
@@ -208,9 +221,15 @@ public class Sprite {
      */
     public Dimension getSize(String animationName, int direction) {
 
-        if (animationName == null) {
+        if (animations.isEmpty()) {
+            // Empty sprite.
+            return new Dimension(16, 16);
+        }
+
+        if (animationName == null || !animations.containsKey(animationName)) {
             animationName = getDefaultAnimationName();
         }
+
         return animations.get(animationName).getSize(direction);
     }
 
@@ -228,11 +247,23 @@ public class Sprite {
     public void paint(Graphics g, double zoom, boolean showTransparency,
             int x, int y, String animationName, int direction, int frame) {
 
-        if (animationName == null) {
-            animationName = getDefaultAnimationName();
+        if (animations.isEmpty()) {
+            // Empty sprite.
+
+            if (showTransparency) {
+                g.drawImage(emptySpriteImage, x, y, 16, 16, null);
+            }
+            else {
+                g.drawImage(emptySpriteImage, x, y, 16, 16, MapEntity.bgColor, null);
+            }
         }
-        animations.get(animationName).paint(g, zoom, showTransparency,
-                x, y, direction, frame);
+        else {
+            if (animationName == null) {
+                animationName = getDefaultAnimationName();
+            }
+            animations.get(animationName).paint(g, zoom, showTransparency,
+                    x, y, direction, frame);
+        }
     }
 }
 

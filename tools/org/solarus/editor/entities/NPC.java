@@ -158,7 +158,7 @@ public class NPC extends MapEntity {
         super.setSubtype(subtype);
 
         Dimension size = sizes[getSubtype().ordinal()];
-        setSizeImpl(size.width, size.height);
+        setSizeUnchecked(size.width, size.height);
 
         setChanged();
         notifyObservers();

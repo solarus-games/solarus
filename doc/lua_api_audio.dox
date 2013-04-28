@@ -36,7 +36,7 @@ It is recommended to call this function at the beginning of the program
 (typically from \ref lua_api_main_on_started).
 
 The list of sound files to load is read from the
-\ref project_db "project database" file.
+\ref quest_resource_file "project database" file.
 
 This function does nothing if you already called it before.
 

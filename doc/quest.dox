@@ -1,139 +1,157 @@
 /**
-\page quest Quests data files specification
+\page quest Solarus 1.0 - Quest data files specification
 
 We explain here how a quest is built.
-A quest is a data package that may be run by the C++ engine (the executable file).
 
-When it is installed, the project is divided in two parts:
-- Solarus (the engine), which is an executable file written in C++ under GPL and called \c solarus.
-- One or several quests, each quest corresponding to a zip archive called \c data.solarus and containing all the data.
+A quest is a data package that may be run by the Solarus C++ engine
+(the Solarus executable file).
 
-When you run the \c solarus binary, it needs the path of the quest to launch.
-This can be done at runtime by specifying the path as an command-line argument:
-\c solarus path/to/your/quest
-flag of the executable. If the quest path is not specified, the current directory is considered by default.
-The release versions require the quest files to be in a zip archive called \c data.solarus and located in this quest path.
-The debug versions first look in a subdirectory of the quest path called \c data (if existing) and directly pick
-the data files in this subdirectory.
-Thus, when developping your quest, you should use the development version (see
-the documentation to <a href="http://www.solarus-games.org/source-code">get the source</a>
-and <a href="http://www.solarus-games.org/source-code/compilation-instructions">compile it</a>).
-You will then be able to edit your quest and see the changes immediately in the game without having
-to rebuild the zip archive. In fact, when you modify a map, you don't even need to restart the game.
+When you run the \c solarus executable file, it needs the path of the quest
+to launch.
+This can be done at runtime by specifying the path as a command-line argument:
+<tt>solarus path/to/your/quest</tt>.
+If the quest path is not specified, the current directory is considered by
+default, unless you compiled Solarus with another default quest path.
 
-In other words, the simplest way of editing a quest is the following.
-Put the debug version of the executable file (the engine) in a directory,
-and put the \c data subdirectory (the quest) in the same directory.
-When running the program, the quest located in \c data is run.
+The quest in this path may have one of the following two forms:
+- A zip archive called \c data.solarus and containing all data of your quest.
+  This archive form is useful when your quest is finished and you distribute it
+  to people.
+- A directory called \c data and containing all data of your quest.
+  This form is handy when you are developing your quest. It is also the only
+  possible form to edit your quest with Solarus Quest Editor.
+  In fact, when you modify a map in the editor, you don't even need to restart
+  the game.
 
-For now, only one quest is available (zsdx), and this quest is not under GPL since it uses elements from Nintendo.
-If you are interested in creating a quest, I recommend to copy zsdx and modify it
-instead of starting from nothing.
-
-The data files represent all resources used by both the engine and the quest, such as sounds,
-music, images, sprites, dialogs, maps and scripts.
+The data files represent all resources used by both the engine and the quest,
+such as sounds, music, images, sprites, dialogs, maps and Lua scripts.
 We specify here the details for all those categories.
 
-\section root Root directory
+\section quest_root Root directory
 
-Two files are directly placed inside the \c data directory: \c info.dat and
-\c project_db.dat.
+Three files are directly placed inside the \c data directory:
+- the quest properties files \ref quest_properties_file "quest.dat",
+- the list of resources \ref quest_resource_file "project_db.dat",
+- the main Lua script \ref quest_main_script "main.lua".
 
-\subsection info General quest information file
+\subsection quest_properties_file Quest properties file
 
-The \c quest file is an ini-like file that contains some general data regarding the quest.
-This includes a group named \c info which contains (for now) the following values:
-- \c title_bar: the text to display in the title bar of the game window.
-- \c write_dir: name of the directory where the data of this quest will be saved
-(this will be a subdirectory of \c $HOME/.solarus). This is usually a short name for your quest.
-This allows games of different quests to be saved in different directories.
-- \c outside_world_width and \c outside_world_height: size of the whole outside world in pixels (used to manage the minimap).
+Some general information regarding your quest are stored in the quest
+properties file \c quest.dat.
 
-Another group named \c initial indicates some initialization parameters of the quest:
-- \c starting_map and \c starting_point: initial location of the hero (id of the initial map
-and name of the initial destination point) when starting a new game.
-- \c max_life: maximum level of life when starting a new game.
+\c quest.dat is mandatory: if this file don't exist, the engine considers that
+there is no quest in the directory.
+It is a Lua data file (i.e. without the Lua API)
+that contains a single call to a \c quest(properties) function.
+\c properties is a table that describes the properties of your quest.
+Its key-value pairs must be:
+- \c solarus_version (string): Version of the engine your data files are
+  compatible with. This string should be a major and minor version, for
+  example "1.0". You can indicate a full version string, including
+  the patch number (like "1.0.0") but the patch number will be ignored.
+  Patch versions are ignored since they don't break compatibility.
+  The latest version is \c "1.0".
+- \c write_dir (string, optional): Directory where your quest will write its
+  savegames and setting files. It will be a subdirectory of
+  <tt>'$HOME/.solarus/'</tt>, automatically created by the engine.
+  Its name should identify your quest, to avoid confusion with
+  other Solarus quests that might also be installed on the user's machine.
+  You must define it before you can use savegames or setting files.
+- \c title_bar (string, optional): Title of the window. You should probably
+  put the title of your game here.
 
-Example:
+Example of \c quest.dat file:
 
 \verbatim
-[info]
-# General information about this quest
-title_bar = Zelda: Mystery of Solarus DX
-write_dir = zsdx
-outside_world_width = 2080
-outside_world_height = 3584
-
-# Somes initial values when creating a new savegame
-[initial]
-starting_map = 0
-starting_point = start_position
-max_life = 12
-
-
+quest{
+  solarus_version = "1.0",
+  write_dir = "my_quest",
+  title_bar = "My incredible quest",
+}
 \endverbatim
 
-\subsection project_db Project database
+\subsection quest_resource_file Resource list
 
-The \c project_db.dat file is used by the quest editor.
-The quest editor is still in development and
-there is no stable release.
-This file contains a list of all resources (maps, musics, sprites, items, enemies, etc.)
-of the quest and their human-readable names.
-Each resource is usually represented by a data file.
-The quest editor needs it only to provide graphical components that let the user choose a resource
-in a list of human-readable names.
+The \c project_db.dat file is used by Solarus quest editor.
+This file contains a list of all resources (maps, musics, sprites, items,
+enemies, etc.) of the quest and their user-friendly names.
+The quest editor needs this file to provide graphical components that let the
+user choose a resource in a list of user-friendly names.
+Each resource usually corresponds to a data file.
 
-For instance, when the user creates a teletransporter on the map, a graphical list
-lets him choose the destination map of the teletransporter.
-This list contains the human name of each map.
-The engine does not need this, it only needs an internal id that identifies the map.
+For instance, when the user creates a teletransporter on the map, a graphical
+list lets him choose the destination map of the teletransporter.
+This list contains the user-friendly name of each map.
+
+Note that user-friendly names are only useful in the quest editor.
+The engine does not use them.
 
 We give here the syntax of \c project_db.dat.
-This is a text file where each line represents a single resource.
+This is a text file where each line represents a single resource element.
 Each line has the following syntax:
 
 \verbatim
-resource_type	id	human readable name
+resource_type        id        user-friendly name
 \endverbatim
 
-\c resource_type is an integer identifying the type of resource (a map, a music, a sprite, etc.).
-\c id is a value that identifies the resource. The id allows to find the resource file.
-Depending on the type of resource, this may be an integer or a string (without spaces).
-\c human readable name is a name that describes the resource. The map editor will display this name to the user
-but will use the id internally.
+\c resource_type, \c id and <tt>user-friendly name</tt> can be separated
+by an arbitrary number of spaces or tab characters.
+\c resource_type is an integer identifying the type of resource (a map,
+a music, a sprite, etc.).
+\c id is a value that identifies the element. The id allows to find the
+resource file(s). It may not contain spaces.
+<tt>user-friendly name</tt> is a name that describes the resource for the
+quest developers and may contain spaces.
+The quest editor will display this name to the user, but will use the id
+internally.
 
 The current types of resources are:
-- 0: a map (the id is an integer),
-- 1: a tileset (the id is an integer),
-- 2: a music (the id is the music file name with its extension),
+- 0: a map (the id is the map file name without its extension),
+- 1: a tileset (the id is the tileset file name without its extension),
+- 2: a music (the id is the music file name without extension),
 - 3: a sprite (the id is the sprite file name without extension),
-- 4: a sound (the id is the music file name with its extension),
+- 4: a sound (the id is the music file name without extension),
 - 5: an item (the id is the name of the item's Lua script without its extension),
 - 6: an enemy (the id is the name of the enemy's Lua script without its extension),
-- 7: a language (the id is the language code),
+- 7: a language (the id is the language code).
 
-\section sounds Sounds
+In the quest editor, you can add, remove, rename and change the id of resources
+from the quest tree. Therefore, you probably don't need to edit this file by hand.
 
-The \c sounds directory contains all small sound effects used by both the engine and the quest.
+\subsection quest_main_script Main Lua script
+
+This is the main Lua script of your quest.
+Everything starts from here at runtime.
+You will probably make a title screen and then start a game.
+See the \ref lua_api "Lua API" for more information about Lua scripting
+in Solarus.
+
+\section quest_sound Sounds
+
+The \c sounds directory contains all small sound effects used by both the
+engine and the quest.
 A sound file must have the extension \c .ogg (Ogg Vorbis).
-Note that in previous versions of the engine such as the demo version released on December 18th, 2009,
-the sounds were in WAV format.
-The files are lighter with the Ogg compression.
 
-\section musics Musics
+\section quest_music Musics
 
-The \c musics directory contains all musics used by both the engine and the quest.
+The \c musics directory contains all musics used by both the engine and the
+quest.
 For now, the following formats are recognized:
-- SPC: a Super NES original music file,
+- OGG: Ogg Vorbis audio file,
 - IT: Impulse Tracker Module,
-- OGG: Ogg Vorbis audio file.
+- SPC: a Super NES original music file (not recommended).
+
+The SPC format is supported but not recommended.
+It is recommended to convert SPC musics to IT musics, because decoding
+the IT format is much less CPU-consuming than SPC.
+
 Future releases may support more music formats. You can ask me.
 
-\section fonts Fonts
+\section quest_font Fonts
 
 The \c text directory contains the font files used by the engine.
-The formats recognized are the ones supported by the SDL_ttf library, including .ttf or .fon.
+The formats recognized are the ones supported by the SDL_ttf library,
+including .ttf and .fon.
 It also contains a \c fonts.dat file with the syntax of an ini file.
 An example is self-speaking:
 

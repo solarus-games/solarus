@@ -55,7 +55,7 @@ public class EditorWindow extends JFrame
      * or null to show a dialog to select the quest.
      */
     public EditorWindow(String questPath) {
-        super("Solarus Quest Editor");
+        super("Solarus Quest Editor " + Project.SolarusFormat);
 
         Project.addProjectObserver(this);
         // set a nice look and feel
@@ -278,6 +278,14 @@ public class EditorWindow extends JFrame
     }
 
     /**
+     * Sets the title of the window.
+     */
+    private void updateWindowTitle() {
+        setTitle(Project.getPathBaseName() + " - Solarus Quest Editor "
+                + Project.SolarusFormat);
+    }
+
+    /**
      * This function is called when the user wants to quit the editor
      * If any resource open is not saved, we propose to save it.
      * @return false if the user canceled.
@@ -298,6 +306,7 @@ public class EditorWindow extends JFrame
     public void currentProjectChanged() {
         menuFile.setEnabled(true);
         tabs.removeAll();
+        updateWindowTitle();
     }
 
     /**
@@ -315,7 +324,6 @@ public class EditorWindow extends JFrame
         if (projectPath != null) {
             try {
                 Project.createNew(projectPath);
-                setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
                 GuiTools.informationDialog("Quest successfully created!\n" +
                 		"The next step is to edit some important files\n" +
                         "(sorry, their edition is not fully supported by this editor yet):\n" +
@@ -344,7 +352,6 @@ public class EditorWindow extends JFrame
             try {
                 tabs.removeAll();
                 Project.createExisting(projectPath);
-                setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
             }
             catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());

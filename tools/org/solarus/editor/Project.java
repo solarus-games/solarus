@@ -30,9 +30,19 @@ import javax.imageio.*;
 public class Project {
 
     /**
+     * Current format of data files supported by the editor.
+     */
+    public static final String SolarusFormat = "1.0";
+
+    /**
      * Root path of the project.
      */
     private String projectPath;
+
+    /**
+     * Last part of the project path.
+     */
+    private String pathBaseName;
 
     /**
      * The resources associated to this project.
@@ -61,6 +71,14 @@ public class Project {
      */
     private Project(String path) {
         this.projectPath = path;
+        int lastSeparatorIndex = path.lastIndexOf(File.separator);
+        if (lastSeparatorIndex != -1) {
+            this.pathBaseName = path.substring(lastSeparatorIndex + 1);
+        }
+        else {
+            this.pathBaseName = path;
+        }
+
         resourceDatabase = new ResourceDatabase(this);
         editorImagesLoaded = new TreeMap<String, BufferedImage>();
         projectImagesLoaded = new TreeMap<String, BufferedImage>();
@@ -159,8 +177,16 @@ public class Project {
     }
 
     /**
+     * Returns the last part of the current project's path.
+     * @return The quest directory name.
+     */
+    public static String getPathBaseName() {
+        return currentProject.pathBaseName;
+    }
+
+    /**
      * Returns the root path of the current project.
-     * @return the root path
+     * @return The root path.
      */
     public static String getRootPath() {
         return currentProject.projectPath;
@@ -267,6 +293,14 @@ public class Project {
      */
     public static File getQuestPropertiesFile() {
         return new File(getDataPath() + "/quest.dat");
+    }
+
+    /**
+     * Returns the main Lua script file.
+     * @return the main Lua script file.
+     */
+    public static File getMainScriptFile() {
+        return new File(getDataPath() + "/main.lua");
     }
 
     /**
@@ -496,7 +530,8 @@ public class Project {
             }
 
             // Create the various needed files if not existing.
-            getQuestPropertiesFile().createNewFile();
+            createInitialQuestPropertiesFile();
+            createMainScriptFile();
             getLanguageDir().mkdir();
             getLanguageListFile().createNewFile();
             getTextDir().mkdir();
@@ -506,6 +541,66 @@ public class Project {
             ex.printStackTrace();
             throw new QuestEditorException(ex.getMessage());
         }
+    }
+
+    /**
+     * Creates the initial quest.dat file for a new project.
+     * @throw IOException If something went wrong while creating the file.
+     */
+    private void createInitialQuestPropertiesFile() throws IOException{
+
+        File file = getQuestPropertiesFile();
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+
+        out.println("quest{");
+        out.println("  -- Format of your quest data files. You should not change this unless you");
+        out.println("  -- know what you are doing.");
+        out.println("  solarus_version = \"" + SolarusFormat + "\",");
+        out.println();
+        out.println("  -- Directory where your quest will write its savegames and setting files.");
+        out.println("  -- It will be a subdirectory of '$HOME/.solarus/', automatically created by");
+        out.println("  -- the engine. Its name should identify your quest, to avoid confusion with");
+        out.println("  -- other Solarus quests that might also be installed on the user's machine.");
+        out.println("  -- You must define it before you can use savegames or setting files.");
+        out.println("  -- Uncomment the line below and set its value to the name of that directory:");
+        out.println("  -- write_dir = \"\",");
+        out.println();
+        out.println("  -- Title of the window. You should probably put the title of your game here.");
+        out.println("  title_bar = \"A game made with Solarus. Edit quest.dat to change this title!\",");
+        out.println("}");
+        out.println();
+
+        out.close();
+    }
+
+    /**
+     * Creates the initial main.lua script for a new project.
+     * @throw IOException If something went wrong while creating the file.
+     */
+    private void createMainScriptFile() throws IOException{
+
+        File file = getMainScriptFile();
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+
+        out.println("-- This is the main Lua script of your project.");
+        out.println("-- You will probably make a title screen and then start a game.");
+        out.println("-- See the Lua API! http://www.solarus-games.org/solarus/documentation/");
+        out.println();
+        out.println("-- Below is just an example of quest that does almost nothing.");
+        out.println("-- Feel free to change this!");
+        out.println("function sol.main.on_started()");
+        out.println("  -- This function is called when Solarus starts.");
+        out.println("  print(\"Welcome to my quest.\")");
+        out.println("end");
+        out.println("");
+        out.println("function sol.main.on_finished()");
+        out.println("  -- This function is called when Solarus stops or is reset.");
+        out.println("  print(\"See you!\")");
+        out.println("end");
+        out.println("");
+        out.println("");
+
+        out.close();
     }
 
     /**

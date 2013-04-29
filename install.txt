@@ -180,7 +180,7 @@ It is necessary to additionally link with libz.
 
 * Compile on OSX
 You can compile solarus just by doing the default setting with cmake, or generate the XCode project. 
-Note that if you use XCode, you probably want to pass the SOLARUS_BUNDLE flag too.
+Note that you probably want to pass the SOLARUS_BUNDLE flag too, which build the entire executable instead of just the binary.
 
 By default, you will build a binary with the maximum of compatibility that your OSX version can provide. 
 You may want to produce an optimized (or exotic) binary instead of a standard one.

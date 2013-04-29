@@ -24,16 +24,16 @@
 #define SOLARUS_COMMON_H
 
 /**
- * @def SOLARUS_OS_MACOSX OR SOLARUS_OS_IPHONE
+ * @def SOLARUS_OSX OR SOLARUS_IOS
  * @brief Define the current platform constants on Apple Systems
  */
 #if defined(__APPLE__)
 #  include "TargetConditionals.h"
 #  if TARGET_OS_IPHONE == 1
-#    define SOLARUS_OS_IPHONE
+#    define SOLARUS_IOS
 // TARGET_OS_MAC is set to 1 on both IPhone, IPhone simulator and Mac OS.
 #  elif TARGET_OS_MAC == 1
-#    define SOLARUS_OS_MACOSX
+#    define SOLARUS_OSX
 #  endif
 #endif
 
@@ -52,7 +52,7 @@
  * @brief Where savegames are stored, relative to the user base write directory.
  */
 #ifndef SOLARUS_WRITE_DIR
-#  if defined(SOLARUS_OS_MACOSX)
+#  if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 #    define SOLARUS_WRITE_DIR "Solarus"
 #  else
 #    define SOLARUS_WRITE_DIR ".solarus"

@@ -6,6 +6,7 @@ if(COMMAND cmake_policy)
 endif()
 
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
+set(SOLARUS_INSTALL_DESTINATION "bin")
 
 # find the headers and the libraries of dependencies
 find_package(SDL REQUIRED)
@@ -42,18 +43,21 @@ file(
   include/snes_spc/*.h
 )
 
-# additional source files for Mac OS
+# additional source files for Apple systems
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  include_directories(
-    ${SOLARUS_ENGINE_SOURCE_DIR}/include/lowlevel/osx
-  )
   set(source_files
     ${source_files}
-    src/lowlevel/osx/SDLMain.m
-    src/lowlevel/osx/OSXInterface.mm
-    include/lowlevel/osx/SDLMain.h
-    include/lowlevel/osx/OSXInterface.h
+    src/lowlevel/apple/AppleInterface.mm
+    include/lowlevel/apple/AppleInterface.h
   )
+  # SDL 1.3 avoid to link SDLMain
+  if(SDL_VERSION VERSION_LESS "1.3")
+    set(source_files
+      ${source_files}
+      src/lowlevel/apple/SDLMain.m
+      include/lowlevel/apple/SDLMain.h
+    )
+  endif()
 endif()
 
 # build the executable
@@ -62,9 +66,15 @@ add_library(solarus_static
   STATIC
   ${source_files}
 )
-add_executable(solarus
-  ${main_source_file}
-)
+
+#Add executable target, into CFBundle form if requested or iOS build
+if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
+  include(addCFBundleTarget)
+else()
+  add_executable(solarus
+    ${main_source_file}
+  )
+endif()
 
 # generate -I flags
 include_directories(
@@ -101,32 +111,20 @@ if(NOT CMAKE_BUILD_TYPE)
       "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
 endif()
-set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  # Force to be the less pedantic possible with the Release build
+  set(CMAKE_CXX_FLAGS "-Wno-unknown-warning -Wno-error -Wno-all -Wno-fatal-errors -Wno-pedantic -Wno-extra -Wno-unknown-pragmas")
+else()
+  set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
+endif()
 
-# Compilation flags for Mac OS X deployment
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
-  # Build architectures
-  if(SOLARUS_ARCH)
-    set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Chosen build architecture" FORCE)
+# Configuration for OSX and iOS build and deployment
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  if(NOT SOLARUS_IOS_BUILD)
+    include(OSX)
   else()
-    set(CMAKE_OSX_ARCHITECTURES "i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
-  endif()
-
-  # SDK version
-  if(SOLARUS_SYSROOT)
-    set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_SYSROOT}.sdk" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
-    if(SOLARUS_SYSROOT VERSION_LESS 10.6)
-      add_definitions(-DSOLARUS_DONT_USE_OSX_SANDBOX) 
-    endif()
-  endif()
-
-  # Deployment version
-  if(SOLARUS_DEPLOYMENT)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Chosen oldest OS version supported" FORCE)
-    if(SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
-    endif()
+    include(iOS)
   endif()
 endif()
 
@@ -189,11 +187,6 @@ endif()
 
 # files to install with make install
 install(TARGETS	solarus
-  RUNTIME DESTINATION bin
-) 
-
-# Also install into CFBundle form
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND SOLARUS_OSX_BUNDLE)
-  include(AddOSXBundleTarget)
-endif()
+  RUNTIME DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+)
 

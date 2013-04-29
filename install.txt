@@ -180,34 +180,31 @@ It is necessary to additionally link with libz.
 
 * Compile on OSX
 You can compile solarus just by doing the default setting with cmake, or generate the XCode project. 
-Note that if you use XCode, you probably want to pass the SOLARUS_OSX_BUNDLE flag too.
+Note that if you use XCode, you probably want to pass the SOLARUS_BUNDLE flag too.
 
-If you got some error on the cmake part, you can edit the CMakeCache.txt to
-manually write the include and library directories that cmake did not find.
-
-According to Apple recent choice, I consider default settings should 
-support "out of the box" 10.6 version and earlier. 
-Pass SOLARUS_SYSROOT, SOLARUS_DEPLOYMENT or/and SOLARUS_ARCH constants to
+By default, you will build a binary with the maximum of compatibility that your OSX version can provide. 
+You may want to produce an optimized (or exotic) binary instead of a standard one.
+To do so, pass SOLARUS_SYSROOT, SOLARUS_DEPLOYMENT or/and SOLARUS_ARCH constants to
 cmake to overload default settings, just like the following example :
 
-$ cmake -DSOLARUS_OSX_BUNDLE="SolarusDX" -DSOLARUS_SYSROOT="10.5" -DSOLARUS_ARCH="ppc;i386;x86_64" -DSOLARUS_DEPLOYMENT=10.5 .
+$ cmake -DSOLARUS_SYSROOT="/Developer/SDKs/MacOSX10.5.sdk" -DSOLARUS_ARCH="ppc;i386;x86_64" -DSOLARUS_DEPLOYMENT=10.5 .
 
 
 * Deploy on OSX
 You will only build the executable with the default command.
 To build the entire bundle, pass the following flag to cmake
 
-$ cmake -DSOLARUS_OSX_BUNDLE="SolarusDX" .
+$ cmake -DSOLARUS_BUNDLE="SolarusDX" .
 
 Which will install the application into a bundle named "SolarusDX"
-The bundle is a .app suffixed folder, which typcially contains 
+A bundle is a .app suffixed folder, which typcially contains 
 the executable and all resources it needs.
-Pass SOLARUS_OSX_BUNDLE_QUEST , SOLARUS_OSX_BUNDLE_INFOPLIST , 
-SOLARUS_OSX_BUNDLE_ICON and SOLARUS_OSX_BUNDLE_VERSION flags 
-in addition to SOLARUS_OSX_BUNDLE to specify your own configuration.
-See ./cmake/osx/bundle/CMakeLists.txt for more details.
+Pass SOLARUS_BUNDLE_QUEST , SOLARUS_BUNDLE_INFOPLIST , 
+SOLARUS_BUNDLE_ICON and SOLARUS_BUNDLE_VERSION flags 
+in addition to SOLARUS_BUNDLE to specify your own configuration.
+See ./cmake/modules/installCFBundle.cmake for more details.
 
-All non-Mac-native frameworks are placed in ${SOLARUS_OSX_BUNDLE}.app/Contents/Frameworks/
+All non-Mac-native frameworks are placed in ${SOLARUS_BUNDLE}.app/Contents/Frameworks/
 You have to do a little verification on them : check if dependencies search
 path are correctly integrated, just by doing
 
@@ -222,7 +219,7 @@ $ install_name_tool -change old_path new_path /dylib/or/binary/I/want/to/modify
 
 The new_path string usually looks like @rpath/The_dylib.dylib or 
 @rpath/The_framework.framework/Version/A/The_binary on Mac 10.5+.
-Replace @rpath/ by @executable_path/../Frameworks/ on earlier OSX versions.
+Replace @rpath/ by @executable_path/../Frameworks/ on older OSX versions.
 
 Instead of using this command on embed libraries, you should directly do it on system libraries,
 which they are copied from, and then just do this step once.

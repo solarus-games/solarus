@@ -578,7 +578,7 @@ in front of an
 Only possible when the \ref lua_api_game "game" is running.
 - \c npc (\ref lua_api_npc "NPC"): A non-playing character.
 
-\subsection lua_api_item_on_npc_interaction_item on_npc_interaction_item(npc, item_used)
+\subsection lua_api_item_on_npc_interaction_item item:on_npc_interaction_item(npc, item_used)
 
 Called when the \ref lua_api_hero "hero" uses any item
 (the player pressed an \ref lua_api_game_intro_commands "item command") with an

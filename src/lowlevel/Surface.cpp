@@ -304,6 +304,8 @@ SDL_Surface* Surface::get_internal_surface() {
 /**
  * @brief Returns the 32bits pixel, color-mapped from internal SDL_PixelFormat to dst_format.
  *
+ * The source pixel depth format can be any size between 8 and 32bits.
+ * If the destination pixel depth format is less than 32-bpp then the unused upper bits of the return value can safely be ignored.
  * This method should be used only by low-level classes, and after lock source internal_surface.
  *
  * It's the SDL_ConvertSurface() function equivalent for a pixel by pixel uses.
@@ -315,7 +317,26 @@ SDL_Surface* Surface::get_internal_surface() {
 uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
 
   uint8_t r, g, b, a;
-  SDL_GetRGBA(((uint32_t*) internal_surface->pixels)[idx_pixel], internal_surface->format, &r, &g, &b, &a);
+  uint32_t pixel;
+    
+  // In order from the most used to the most exotic
+  switch (internal_surface->format->BitsPerPixel) {
+    case 32:
+      pixel = ((uint32_t*)internal_surface->pixels)[idx_pixel];
+      break;
+    case 16:
+      pixel = (uint32_t)(((uint16_t*)internal_surface->pixels)[idx_pixel]);
+      break;
+    case 8:
+      pixel = (uint32_t)(((uint8_t*)internal_surface->pixels)[idx_pixel]);
+      break;
+    default:
+      // Manual cast of the pixel into uint32_t
+      pixel = *(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * internal_surface->format->BytesPerPixel)
+              & (0xffffffff << 32 - internal_surface->format->BitsPerPixel);         
+  }
+    
+  SDL_GetRGBA(pixel, internal_surface->format, &r, &g, &b, &a);
   return SDL_MapRGBA(dst_format, r, g, b, a);
 }
 

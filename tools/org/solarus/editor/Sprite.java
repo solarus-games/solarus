@@ -55,11 +55,12 @@ public class Sprite {
     /**
      * Analyzes the description file of the animation set used by this sprite
      * and builds its animation set.
-     * @throws QuestEditorException if there is an error when analyzing the file
+     * @throws MapException if there is an error when analyzing the file
      */
     public void parse() throws MapException {
 
         int lineNumber = 0;
+        String animationName = null;
         try {
 
             this.animations = new TreeMap<String, SpriteAnimation>();
@@ -76,7 +77,7 @@ public class Sprite {
 
                 // first line: animation info
                 StringTokenizer tokenizer = new StringTokenizer(line);
-                String animationName = tokenizer.nextToken();
+                animationName = tokenizer.nextToken();
                 String imageFileName = tokenizer.nextToken();
                 int nbDirections = Integer.parseInt(tokenizer.nextToken());
                 int frameDelay = Integer.parseInt(tokenizer.nextToken());
@@ -130,10 +131,13 @@ public class Sprite {
             throw new MapException(ex.getMessage());
         }
         catch (NumberFormatException ex) {
-            throw new MapException("Line " + lineNumber + ": Integer expected");
+            throw new MapException("Sprite '" + animationSetId + "': Syntax error line " + lineNumber + ": Integer expected");
         }
         catch (NoSuchElementException ex) {
-            throw new MapException("Line " + lineNumber + ": Value expected");
+            throw new MapException("Sprite '" + animationSetId + "': Syntax error line " + lineNumber + ": Value expected");
+        }
+        catch (QuestEditorException ex) {
+            throw new MapException("Sprite '" + animationSetId + "': Line " + lineNumber + ", animation '" + animationName + "':\n" + ex.getMessage());
         }
     }
 
@@ -141,6 +145,7 @@ public class Sprite {
      * Creates a sprite from the specified animation set id
      * @param animationSetId id of the animation set to use
      * @param map the map where this sprite will be displayed (if any)
+     * @throws QuestEditorException If the sprite could not be loaded.
      */
     public Sprite(String animationSetId, Map map) throws MapException {
 

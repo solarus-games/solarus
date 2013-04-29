@@ -958,7 +958,7 @@ public class Map extends Observable {
             throw new QuestEditorException(ex.getMessage());
         }
         catch (LuaError ex) {
-            throw new QuestEditorException("Error when loading the map file: " + ex.getCause().getMessage());
+            throw new QuestEditorException(ex.getCause().getMessage());
         }
 
         history.setSaved();
@@ -1088,7 +1088,6 @@ public class Map extends Observable {
             }
             catch (QuestEditorException ex) {
                 // Error in the input file.
-                ex.printStackTrace();
                 throw new LuaError(ex);
             }
             catch (Exception ex) {

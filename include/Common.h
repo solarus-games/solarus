@@ -144,7 +144,7 @@
 
 /**
  * @def SOLARUS_COLOR_DEPTH
- * @brief Half of the screen height in pixels.
+ * @brief Number of bits per pixel for surfaces.
  */
 #ifndef SOLARUS_COLOR_DEPTH
 #  if defined(CAANOO) || defined(PANDORA)

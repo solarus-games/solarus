@@ -294,7 +294,8 @@ public abstract class MapEntity extends Observable {
             setName(name);
         }
         setLayer(layer);
-        setPositionInMapUnchecked(x, y); // For now the origin is (0,0).
+        positionInMap.x = x;
+        positionInMap.y = y; // For now the origin is (0,0).
 
         int width = 0;
         int height = 0;

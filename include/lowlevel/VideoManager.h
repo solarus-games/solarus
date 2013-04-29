@@ -73,6 +73,8 @@ class VideoManager {
 
   Uint32 get_surface_flag(const VideoMode mode);
     
+  Uint32 get_surface_flag(const VideoMode mode);
+    
  public:
 
   static void initialize(int argc, char** argv);

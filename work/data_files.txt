@@ -1,7 +1,6 @@
 List of mandatory data files whose name is currently hardcoded in the engine
 ----------------------------------------------------------------------------
 
-items.dat
 project_db.dat
 quest.dat
 enemies/
@@ -9,24 +8,16 @@ items/
 maps/
 tilesets/
 musics/
-hud/
-  inventory.dat
 languages/
   languages.dat
   XX/
     text/
       strings.dat
-      dialogs.lua
+      dialogs.dat
     images/
-      action_icon.png
-      floors.png
       gameover_menu.png
-      pause_icon.png
-      pause_submenus.png
-      sword_icon.png
 text/
   fonts.dat
-
 sounds/
   arrow_hit.ogg
   boomerang.ogg
@@ -53,18 +44,12 @@ sounds/
   hookshot.ogg
   jump.ogg
   lift.ogg
-  magic_bar.ogg
   message_end.ogg
   message_letter.ogg
   monster_hurt.ogg
   ok.ogg
-  pause_closed.ogg
-  pause_open.ogg
   picked_item.ogg
-  piece_of_heart.ogg
   running.ogg
-  rupee_counter.ogg
-  rupee_counter_end.ogg
   shield.ogg
   splash.ogg
   stairs_up_start.ogg
@@ -88,14 +73,12 @@ sounds/
   walk_on_water.ogg
   warp.ogg
   wrong.ogg
-
 sprites/
   entities/
     items.dat
     shadow.dat
     star.dat
     hookshot.dat
-    rupee_icon.dat
     dark0.png
     dark1.png
     dark2.png
@@ -103,18 +86,6 @@ sprites/
   hud/
     dialog_box_message_end.dat
     gameover_fade.dat
-    action_icon_flip.dat
-    pause_icon_flip.dat
-    sword_icon_flip.dat
-    empty_heart.dat
-    magic_bar.dat
-    hearts.png
-    item_x_icon.png
-    item_v_icon.png
-    magic_bar.png
-    rupee_icon.png
-    small_key_icon.png
-    digits.png
     dialog_box.png
     dialog_icons.png
   hero/
@@ -126,27 +97,5 @@ sprites/
     ground2.dat
     trail.dat
   menus/
-    arrow.dat
-    selection_menu_cursor.dat
-    pause_cursor.dat
-    pause_save_dialog.dat
-    options_cursor.dat
-    hero_head.dat
-    hero_point.dat
-    outside_world_map.png
-    outside_wolrd_clouds.png
-    dungeon_map_background.png
-    dungeon_map_icons.png
     dialog_icons.png
-    quest_status_pieces_of_heart.png
-    quest_status_dungeons.png
-    selection_menu_cloud.png
-    selection_menu_background.png
-    selection_menu_save_container.png
-    selection_menu_option_container.png
-    selection_menu_save1.png
-    selection_menu_save2.png
-    selection_menu_save3.png
-    selection_menu_mode.png
-    selection_menu_letters.png
 

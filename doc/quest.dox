@@ -24,8 +24,58 @@ The quest in this path may have one of the following two forms:
   the game.
 
 The data files represent all resources used by both the engine and the quest,
-such as sounds, music, images, sprites, dialogs, maps and Lua scripts.
-We specify here the details for all those categories.
+such as sounds, musics, images, sprites, dialogs, maps and Lua scripts.
+We specify here the details for all those files.
+
+Here is the full structure of the \c data directory / \c data.solarus
+archive of a quest and the syntax of each file.
+
+- \subpage quest_properties_file "quest.dat": global properties of your quest.
+- \subpage quest_resource_file "project_db.dat": list of all resources
+  (maps, sprites, enemies...) with their id and human-readable name.
+- \subpage quest_main_script "main.lua": main Lua script of your quest.
+- \c *.lua: other Lua scripts, possibly organized in subdirectories.
+- \subpage quest_sounds "sounds/": contains all sound effects.
+  - \c sounds/*.ogg: your sound files.
+- \subpage quest_musics "musics/": contains all musics.
+  - \c musics/*.{ogg, it, spc}: your music files.
+- \c text/: contains the fonts used to draw text in your quest.
+  - \subpage quest_font_list_file "text/fonts.dat": the list of fonts and
+    their properties.
+  - \c text/*.{ttf, fon, png, ...}: your font files.
+- \c languages/: contains the language-specific files.
+  - \subpage quest_language_list_file "languages/languages.dat": list of
+    supported languages.
+  - \subpage quest_language_strings "languages/xx/text/strings.dat": strings of
+    language \c "xx".
+  - \subpage quest_language_dialogs "languages/xx/text/dialogs.txt": dialogs of
+    language \c "xx".
+  - \subpage quest_language_images "languages/xx/images/": contains all images
+    that have text in them in language \c "xx".
+    - \c languages/xx/images/*.png: your language-specific images.
+- \c sprites/: contains all animated sprites, possibly organized in
+  subdirectories.
+  - \subpage quest_sprite_data_file "sprites/xx.dat": definition of sprite
+    \c "xx".
+  - \c sprites/*.png: images used by your sprites (except the
+    tileset-dependent ones).
+- \c maps/: contains all maps of your quest.
+  - \subpage quest_map_data_file "maps/xx.dat": definition of map \c "xx" and all
+    its entities.
+  - \subpage quest_map_script_file "maps/xx.lua": Lua script of map \c "xx".
+- \c tilesets/: contains all tilesets available to maps.
+  - \subpage quest_tileset_data_file "tilesets/xx.dat": definition of tileset
+    \c "xx" and all its tile patterns.
+  - \subpage quest_tileset_tiles_image "tilesets/xx.tiles.png": image with all
+    tile patterns of tileset \c "xx".
+  - \subpage quest_tileset_entities_image "tilesets/xx.entities.png": image
+    with all tileset-dependent sprite animations for tileset \c "xx".
+- \c items/: contains all equipment item Lua scripts.
+  - \subpage quest_item_script "items/xx.lua": Lua script that defines the
+    properties and the behavior of equipment item \c "xx".
+- \c enemies/: contains all enemy Lua scripts.
+  - \subpage quest_enemy_script "enemies/xx.lua": Lua script that defines the
+    properties and the behavior of the enemy model \c "xx".
 
 \section quest_root Root directory
 

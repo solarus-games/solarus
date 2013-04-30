@@ -110,9 +110,7 @@ Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
         flag = SDL_HWSURFACE;
     
     // If the running OS support double buffering
-#if !defined(SOLARUS_OSX)
-    
-    // SDL_DOUBLEBUF is buggy on OSX, but it will surely works when SDL 1.3 will be release
+#if !defined(SOLARUS_SCREEN_DOUBLEBUF)
     flag |= SDL_DOUBLEBUF;
 #endif
     

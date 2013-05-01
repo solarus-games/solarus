@@ -1,0 +1,39 @@
+/**
+\page quest_properties_file Quest properties file
+
+Some general information regarding your quest are stored in the quest
+properties file \c quest.dat.
+
+\c quest.dat is mandatory: if this file does not exist, the engine considers
+that there is no quest in the directory.
+It is a Lua data file (i.e. without the Lua API)
+that contains a single call to a \c quest(properties) function.
+\c properties is a table that describes the properties of your quest.
+Its key-value pairs must be:
+- \c solarus_version (string): Version of the engine your data files are
+  compatible with. This string should be a major and minor version, for
+  example "1.0". You can indicate a full version string, including
+  the patch number (like "1.0.0") but the patch number will be ignored.
+  Patch versions are ignored since they don't break compatibility.
+  The latest version is \c "1.0".
+- \c write_dir (string, optional): Directory where your quest will write its
+  savegames and setting files. It will be a subdirectory of
+  <tt>'$HOME/.solarus/'</tt>, automatically created by the engine.
+  Its name should identify your quest, to avoid confusion with
+  other Solarus quests that might also be installed on the user's machine.
+  You must define it before you can use savegames or setting files.
+- \c title_bar (string, optional): Title of the window. You should probably
+  put the title of your game here.
+
+Example of \c quest.dat file:
+
+\verbatim
+quest{
+  solarus_version = "1.0",
+  write_dir = "my_quest",
+  title_bar = "My incredible quest",
+}
+\endverbatim
+
+*/
+

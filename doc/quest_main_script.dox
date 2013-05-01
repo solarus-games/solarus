@@ -1,0 +1,30 @@
+/**
+\page quest_main_script Main Lua script
+
+This is the main Lua script of your quest.
+Everything starts from here at runtime.
+Of course, you can make other script files, possibly organized in
+subdirectories, and call them from \c main.lua.
+You will probably make a title screen and then start a game.
+See the \ref lua_api "Lua API" for more information about Lua scripting
+in Solarus.
+
+-- Here is an example of main script that does almost nothing:
+\verbatim
+function sol.main.on_started()
+  -- This function is called when Solarus starts.
+  print("Welcome to my quest.")
+end
+
+function sol.main.on_finished()
+  -- This function is called when Solarus stops or is reset.
+  print("See you!")
+end
+\endverbatim
+
+In a real game, you will probably need several Lua scripts to implement your
+title screen, your pause menus, etc.
+\c main.lua is the entry point 
+
+*/
+

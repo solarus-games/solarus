@@ -307,25 +307,25 @@ SDL_Surface* Surface::get_internal_surface() {
  * @return The casted 32bits pixel.
  */
 uint32_t Surface::get_pixel32(int idx_pixel) {
-{
+
     uint32_t pixel32 = 0;
     SDL_PixelFormat* format = internal_surface->format;
         
     // In order from the most used to the most exotic
     switch (format->BitsPerPixel) {
         case 8:
-            pixel32 = (uint8_t*) format->pixels[idx_pixel];
+            pixel32 = ((uint8_t*) internal_surface->pixels)[idx_pixel];
             break;
         case 32:
-            pixel32 = (uint32_t*) format->pixels[idx_pixel];
+            pixel32 = ((uint32_t*) internal_surface->pixels)[idx_pixel];
             break;
         case 16:
-            pixel32 = (uint16_t*) format->pixels[idx_pixel];
+            pixel32 = ((uint16_t*) internal_surface->pixels)[idx_pixel];
             break;
         default : 
             // Manual cast of the pixel into uint32_t
-            pixel32 = (*(uint32_t*)((uint8_t*)pixel + idx_pixel * format->BytesPerPixel)
-                       & (0xffffffff << 32 - bits_per_pixel));
+            pixel32 = (*(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * format->BytesPerPixel)
+                       & (0xffffffff << 32 - format->BitsPerPixel));
             
     return pixel32;
 }

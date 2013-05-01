@@ -114,7 +114,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   # Force to be the less pedantic possible with the Release build
-  set(CMAKE_CXX_FLAGS "-Wno-unknown-warning -Wno-error -Wno-all -Wno-fatal-errors -Wno-pedantic -Wno-extra -Wno-unknown-pragmas")
+  set(CMAKE_CXX_FLAGS "-Wno-error -Wno-all -Wno-fatal-errors -Wno-extra -Wno-unknown-pragmas")
 else()
   set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
@@ -198,6 +198,6 @@ endif()
 
 # files to install with make install
 install(TARGETS	solarus
-  RUNTIME DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+  RUNTIME BUNDLE DESTINATION ${SOLARUS_INSTALL_DESTINATION}
 )
 

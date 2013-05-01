@@ -57,9 +57,6 @@ else()
 endif()
 
 # Default files if not specified
-if(NOT SOLARUS_BUNDLE_INFOPLIST)
-  set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/${SOLARUS_OS_SOFTWARE}-Info.plist")
-endif()
 if(NOT SOLARUS_BUNDLE_ICON)
   set(SOLARUS_BUNDLE_ICON           "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/icons/Solarus.icns")
 endif()
@@ -71,12 +68,11 @@ endif()
 add_executable(${EXECUTABLE_MAIN_NAME} MACOSX_BUNDLE
   ${main_source_file}
   ${SOLARUS_BUNDLE_QUEST}
-  ${SOLARUS_BUNDLE_INFOPLIST}
   ${SOLARUS_BUNDLE_ICON} 
   ${SOLARUS_BUNDLE_COPIED_LIBRARIES}
 )
 set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
-  OUTPUT_NAME   ${SOLARUS_BUNDLE}
+  OUTPUT_NAME   "${SOLARUS_BUNDLE}"
 )
 
 # Set right properties on copied files
@@ -88,21 +84,22 @@ set_property(SOURCE
 
 # Workaround : copy libraries with add_custom_command() for Makefile Generator.
 # TODO : Remove when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
-macro(copy_into_bundle target library_path destination_directory)
-  if(NOT EXISTS ${PROJECT_BINARY_DIR}/${target}.app/Contents/${destination_directory}/)
+macro(copy_into_bundle library_path destination_directory)
+get_filename_component(library_name ${library_path} NAME)
+  if(NOT EXISTS ${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${library_name})
     if(IS_DIRECTORY ${library_path})
       add_custom_command(
-        TARGET ${target}
+        TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -R -L -n ${library_path} "${PROJECT_BINARY_DIR}/${target}.app/Contents/${destination_directory}/"
+        ARGS -R -L -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
       )
     else()
       add_custom_command(
-        TARGET ${target}
+        TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -n ${library_path} "${PROJECT_BINARY_DIR}/${target}.app/Contents/${destination_directory}/"
+        ARGS -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
       )	
     endif()
   endif()
@@ -112,7 +109,7 @@ if(NOT XCODE)
     add_custom_command(TARGET ${EXECUTABLE_MAIN_NAME} POST_BUILD COMMAND mkdir ARGS -p "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Frameworks")
   endif()
   foreach(LIB ${SOLARUS_BUNDLE_COPIED_LIBRARIES})
-    copy_into_bundle(${SOLARUS_BUNDLE} ${LIB} Frameworks)
+    copy_into_bundle(${LIB} Frameworks)
   endforeach()
   
 # Proper way, buggy with Makefile Generator for now.
@@ -122,21 +119,25 @@ else()
   endforeach()
 endif()
 
-# Info.plist template and additional lines
+# Info.plist template or additional lines
 get_filename_component(SOLARUS_BUNDLE_ICON_NAME "${SOLARUS_BUNDLE_ICON}" NAME)
-set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
-		MACOSX_BUNDLE_INFO_PLIST             "${SOLARUS_BUNDLE_INFOPLIST}"
-
-		MACOSX_BUNDLE_BUNDLE_NAME            ${SOLARUS_BUNDLE}
-		MACOSX_BUNDLE_ICON_FILE              ${SOLARUS_BUNDLE_ICON_NAME}
-		MACOSX_BUNDLE_BUNDLE_VERSION         ${SOLARUS_BUNDLE_VERSION}
+if(SOLARUS_BUNDLE_INFOPLIST)
+  set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
+		MACOSX_BUNDLE_INFO_PLIST             "SOLARUS_BUNDLE_INFOPLIST"
+  )
+else()
+  set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
+		MACOSX_BUNDLE_BUNDLE_NAME            "${SOLARUS_BUNDLE}"
+		MACOSX_BUNDLE_ICON_FILE              "${SOLARUS_BUNDLE_ICON_NAME}"
+		MACOSX_BUNDLE_BUNDLE_VERSION         "${SOLARUS_BUNDLE_VERSION}"
 
 		MACOSX_BUNDLE_GUI_IDENTIFIER         "${COMPANY_IDENTIFIER}.${MACOSX_BUNDLE_BUNDLE_NAME}"
 		MACOSX_BUNDLE_SHORT_VERSION_STRING   "${MACOSX_BUNDLE_BUNDLE_VERSION}"
 		MACOSX_BUNDLE_LONG_VERSION_STRING    "${MACOSX_BUNDLE_BUNDLE_NAME} Version ${MACOSX_BUNDLE_SHORT_VERSION_STRING}"
 		MACOSX_BUNDLE_COPYRIGHT              "Copyright 2013, ${COMPANY_IDENTIFIER}."
 		MACOSX_BUNDLE_INFO_STRING            "${MACOSX_BUNDLE_LONG_VERSION_STRING}, ${MACOSX_BUNDLE_COPYRIGHT}"
-)
+  )
+endif()
 
 # Embed library search path
 if(NOT SOLARUS_IOS_BUILD)

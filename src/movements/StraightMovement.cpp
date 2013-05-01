@@ -582,8 +582,6 @@ void StraightMovement::update_y() {
  */
 void StraightMovement::update() {
 
-  Movement::update();
-
   if (!is_suspended()) {
     uint32_t now = System::now();
 
@@ -638,7 +636,7 @@ void StraightMovement::update() {
 
       now = System::now();
 
-      if (max_distance != 0 && Geometry::get_distance(initial_xy.get_x(),
+      if (!finished && max_distance != 0 && Geometry::get_distance(initial_xy.get_x(),
           initial_xy.get_y(), get_x(), get_y()) >= max_distance) {
         set_finished();
       }
@@ -648,6 +646,9 @@ void StraightMovement::update() {
       }
     }
   }
+
+  // Do this at last so that Movement::update() knows whether we are finished.
+  Movement::update();
 }
 
 /**

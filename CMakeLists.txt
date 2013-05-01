@@ -156,7 +156,7 @@ else()
 endif()
 set(SCREEN_DOUBLEBUF ${DEFAULT_BUFFERING} CACHE STRING "Define if the current platform support double buffering.")
 if(SCREEN_DOUBLEBUF)
-  add_definitions(-DSOLARUS_SCREEN_DOUBLEBUF =\"${SCREEN_DOUBLEBUF}\")
+  add_definitions(-DSOLARUS_SCREEN_DOUBLEBUF=\"${SCREEN_DOUBLEBUF}\")
 endif()
 
 if(PANDORA)
@@ -196,6 +196,7 @@ if(SCREEN_FORCE_MODE)
 endif()
 
 # files to install with make install
+# install the bundle if requested, or only the binary else
 if(SOLARUS_BUNDLE)
   install(TARGETS	solarus
     BUNDLE DESTINATION ${SOLARUS_INSTALL_DESTINATION}

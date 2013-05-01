@@ -97,7 +97,7 @@ public class Resource extends Observable {
      */
     public void setElementName(String id, String name) throws QuestEditorException {
 
-        if (id.length() == 0) {
+        if (id == null || id.length() == 0) {
             throw new QuestEditorException("Empty id for element '" + name  + "'");
         }
 
@@ -114,10 +114,21 @@ public class Resource extends Observable {
     /**
      * Add an element to the resource. 
      * If the element already exists in the database, throws an exception
+     * @param id Id of the element to add.
+     * @param name Human-readable name of this element. Cannot be null.
      */
     public void addElement(String id, String name) throws QuestEditorException {
+
+        if (id == null || id.isEmpty()) {
+            throw new QuestEditorException("Empty id");
+        }
+
+        if (name == null || name.isEmpty()) {
+            throw new QuestEditorException("Empty name");
+        }
+
         if (elements.get(id) == null) {
-            elements.put(id,name);
+            elements.put(id, name);
             setChanged();
             notifyObservers();
         }

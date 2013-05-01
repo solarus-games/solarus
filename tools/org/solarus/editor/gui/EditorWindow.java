@@ -565,7 +565,9 @@ public class EditorWindow extends JFrame
                         "User-friendly name",
                         JOptionPane.QUESTION_MESSAGE);
 
-                Project.newResourceElement(resourceType, id, name);
+                if (name != null) {
+                    Project.newResourceElement(resourceType, id, name);
+                }
             }
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create " + resourceName + ": " + ex.getMessage());

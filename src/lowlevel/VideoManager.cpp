@@ -120,7 +120,6 @@ Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
     else 
         flag = SDL_HWSURFACE;
     
-    // If the running OS support double buffering
 #if !defined(SOLARUS_SCREEN_DOUBLEBUF)
     flag |= SDL_DOUBLEBUF;
 #endif

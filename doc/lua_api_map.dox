@@ -39,8 +39,8 @@ automatically, and you can also do that from your Lua script.
 
 \subsection lua_api_map_overview_tileset Tileset
 
-The graphic skin of a map is called a \ref tileset_syntax "tileset". The
-tileset defines the small patterns used to draw \ref lua_api_tile "tiles"
+The graphic skin of a map is called a \ref quest_tileset_data_file "tileset".
+The tileset defines the small patterns used to draw \ref lua_api_tile "tiles"
 and also some other \ref lua_api_entity "entities" that may depend on the
 skin.
 For example, you can have a forest tileset, a castle tileset, etc.
@@ -52,22 +52,27 @@ A map can contain many types of \ref lua_api_entity "entities".
 %Map entities can be either declared in the
 map data file or created dynamically.
 Thus, a map with id \c XXXX is managed by two distinct files:
-- In the data file <tt>maps/XXXX.dat</tt> are declared all entities that
+- In the data file
+  \ref quest_map_data_file "maps/XXXX.dat"
+  are declared all entities that
   initially compose your map (most importantly: the
   \ref lua_api_tile "tiles").
   You normally don't need to edit this file by hand:
   you can use the quest editor
-  (but if you want to, \ref map_syntax "here is the syntax").
-- In the script file <tt>maps/XXXX.lua</tt> (which is optional),
+  (but if you want to,
+  \ref quest_map_data_file "here is the syntax").
+- In the script file
+  \ref quest_map_script "maps/XXXX.lua"
+  (which is optional),
   you define the dynamic behavior
   of your map, using the features of the map Lua type described on this page
   (and the rest of the Solarus API will also be very useful).
 
 When the player enters a map, the engine first creates the \ref lua_api_entity
-"entities"
-declared in the map data file
-<tt>maps/XXXX.dat</tt>, and then it runs your script
-<tt>maps/XXXX.lua</tt>.
+"entities" declared in the map data file
+\ref quest_map_data_file "maps/XXXX.dat",
+and then it runs your script
+\ref quest_map_script "maps/XXXX.lua".
 The Lua map object is passed as parameter of your script
 (remember that any Lua script is implicitly a function and can have parameters).
 Use the Lua notation \c "..." to get this parameter and store
@@ -118,7 +123,8 @@ Only the active map has its entities living in it.
 Other maps are not loaded. If the player leaves the map and comes back later,
 your Lua map object will be a new one the second time.
 Your entities will be reloaded as specified in the
-\ref map_syntax "map data file" and your map script will be executed again.
+\ref quest_map_data_file "map data file" and your map script will be executed
+again.
 
 If you want some data or behavior to persist when the player comes back,
 like the position of an \ref lua_api_npc "NPC" or whether a puzzle was solved,
@@ -366,8 +372,10 @@ Shows a dialog box.
 
 The dialog box must not be already active.
 - \c dialog_id (string): Id of the dialog to show.
-  The corresponding dialog must exist in the \c dialogs.dat
-  file of the current \ref lua_api_language "language".
+  The corresponding dialog must exist in the
+  \ref quest_language_dialogs "dialogs.dat"
+  file of the current
+  \ref quest_language_list_file "language".
 - \c callback (function, optional): A function to be called when the dialog
   finishes. An \c answer parameter is passed to your function:
   - \c 1 if the player has validated the dialog (and with the first

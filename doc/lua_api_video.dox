@@ -63,7 +63,8 @@ Returns the text of the title bar of the window.
 
 Sets the text of the title bar of the window.
 
-Note that the window title is already specified in your \c quest.dat file.
+Note that the window title is already specified in your
+\ref quest_properties_file "quest.dat" file.
 You usually don't have to call this function, unless you need to change it
 dynamically for some reason.
 - \c window_title (string): The window title to set.

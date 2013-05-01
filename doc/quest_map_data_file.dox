@@ -1,5 +1,25 @@
 /**
-\page map_syntax Map syntax specification
+\page quest_map_data_file Map definition file
+
+The \c maps directory contains the full description and the script of each map.
+
+A map with id \c xx is defined with two files:
+- \c xx.dat: Definition of all entities of this map (tiles, enemies,
+  non-playing characters, chests, teletransporters, etc.).
+  We describe the syntax of this file below.
+- \c xx.lua: Lua script of the map. It defines the dynamic events that happen
+  on your map at runtime, such as opening a door, making enemies appear,
+  moving a non-playing character, etc.
+  See the \ref quest_map_script "Map script file" page for more details
+  about map scripts.
+
+Solarus Quest Editor fully supports the edition of maps.
+You should not have to edit map data files by hand unless you know what you
+are doing.
+
+Warning: The syntax below is obsolete! I need to update this
+documentation page with the map data file format of Solarus 1.0.
+The new syntax is more readable, more extensible and easier to parse.
 
 A map is composed of the following information:
 - a size in pixels,
@@ -11,14 +31,6 @@ A map is composed of the following information:
 - the savegame variable that stores the number of small keys for this map
 (small keys of different dungeons are not compatible),
 - all entities of the map (tiles, enemies, chests, pots, switches, etc.).
-
-All of this is stored in a file \c maps/mapXXXX.dat where
-XXXX is the id of the map (an integer on four digits).
-This page describes the syntax of this file.
-Another file \c maps/mapXXXX.lua contains the script of the map,
-i.e. the dynamic events that occur on the map.
-See the \ref lua_api_map to know how a map script can
-interact with the game.
 
 Most of the information listed above is given in the first line of
 \c maps/mapXXXX.dat.

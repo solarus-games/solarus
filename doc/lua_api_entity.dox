@@ -7,7 +7,7 @@ Objects placed on the \ref lua_api_map "map"
 are called map entities (or just entities).
 
 There exists many types of entities. They can be either declared in the
-\ref map_syntax "map data file", or created dynamically by using
+\ref quest_map_data_file "map data file", or created dynamically by using
 the <tt>map:create_*</tt> methods of the \ref lua_api_map
 "map API".
 

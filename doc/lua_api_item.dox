@@ -48,7 +48,8 @@ of a particular savegame. As shown in the example above,
 you can retrieve that savegame with
 \ref lua_api_item_get_game "item:get_game()".
 
-\remark A \ref sprite_syntax "sprite" animation named \c XXXX must also exist in
+\remark A \ref quest_sprite_data_file "sprite" animation named
+\c XXXX must also exist in
 the sprite <tt>entities/items</tt>: it is used by the engine whenever it needs
 to draw your item on the \ref lua_api_map "map"
 (for example, when a \ref lua_api_pickable "pickable treasure"

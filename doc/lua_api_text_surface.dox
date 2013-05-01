@@ -21,9 +21,10 @@ Creates a text surface with the specified properties.
   - \c vertical_alignement (string, default \c "middle"): \c "top",
     \c "middle" or \c "bottom". When you draw the text surface at some
     coordinates on a destination surface, it is anchored at this position.
-  - \c font (string, default specified in \c text/fonts.dat):
-    Id of the font to use. It must be a valid font
-    defined in \c text/fonts.dat.
+  - \c font (string, default specified in
+    \ref quest_font_list_file "text/fonts.dat"):
+    Id of the font to use. It must be a valid font defined it
+    \ref quest_font_list_file "text/fonts.dat".
   - \c rendering_mode (string, default \c "solid"): \c "solid" (faster)
     or \c "antialiasing" (smooth effect on letters).
   - \c color (table, default white): color of the text to draw
@@ -31,8 +32,10 @@ Creates a text surface with the specified properties.
   - \c text (string, default \c ""): The text to show
     (must be valid UTF-8).
   - \c text_key (string, default \c nil): Key of the localized text
-    to show. The string must exist in the file \c text/strings.dat of the
-    current language.
+    to show. The string must exist in the file
+    \ref quest_language_strings "text/strings.dat" of the
+    current
+    \ref quest_language_list_file "language".
   - Return value (text surface): The text surface created.
 
 \section lua_api_text_surface_inherited_methods Methods inherited from drawable
@@ -87,7 +90,8 @@ Returns the font used to draw this text surface.
 
 Sets the font used to draw this text surface.
 - \c font_id (string): Id of the font to apply to this text surface.
-  It must be a valid font defined in \c text/fonts.dat.
+  It must be a valid font defined in
+  \ref quest_font_list_file "text/fonts.dat".
 
 \subsection lua_api_text_surface_get_rendering_mode text_surface:get_rendering_mode()
 

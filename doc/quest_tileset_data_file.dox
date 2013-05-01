@@ -1,21 +1,47 @@
 /**
-\page tileset_syntax Tileset syntax specification
+\page quest_tileset_data_file Tileset definition file
 
-TODO: update this specification to the new Lua syntax.
+Maps are composed of small bricks called "tiles".
+Tiles are static entities: they cannot be moved or removed dynamically during
+the game.
+They are opposed to all dynamic entities such as enemies, doors, bushes,
+switches, etc.
+Each tile is a graphical element whose width and height are multiple of 8
+pixels.
+Tiles can overlap each other and have different sizes.
+A tileset is a list of tiles that a map can use.
+You can call it the skin of the map.
+For example, there may exist a tileset for the outside world,
+another one for houses,
+another one for dungeons, etc.
 
-A tileset is the skin of a map.
-It is composed of a set of tile patterns that a map can use.
-The \c tilesets directory contains the tilesets and their images.
-For a tileset whose id is XXXX,
-the file \c tilesets/XXXX.dat describes all its tile patterns.
-We give here the detailed specification of the format of this file.
+The \c tilesets directory contains all tilesets and their images.
+For a tileset with id \c xx,
+there are three files:
+- \c xx.tiles.png: The PNG image containing all tiles of this tileset.
+- \c xx.dat: The definition of each tile in \c xx.tiles.png and their
+  properties. We detail the syntax of this file below.
+- \c xx.entities.png: some dynamic entities (i.e. other that tiles)
+  such as doors and blocks sometimes also have a skin that depends
+  on the tileset.
+  A door inside a dungeon has different graphics and colors from a door
+  inside a cave.
+  This is the purpose of this file:
+  \ref quest_sprite_data_file sprites that depend on the tileset pick their
+  frames in this image.
 
-The images of the tile patterns are picked in the file \c tilesets/XXXX.tiles.png.
-A tile pattern is a rectangle image inside this PNG file, with any size multiple of 8*8 pixels,
-and some obstacle and animation properties.
+We now specify the syntax of a tileset data file.
 
-The obstacle property of a tile pattern can have the following values (these values 
-are from the enumration Obstacle): 
+Solarus Quest Editor fully supports the edition of tilesets.
+You should not have to edit tileset data files by hand unless you know what you
+are doing.
+
+Warning: The syntax below is obsolete! I need to update this
+documentation page with the tileset data file format of Solarus 1.0.
+The new syntax is more readable, more extensible and easier to parse.
+
+The obstacle property of a tile pattern can have the following values
+(these values are from the enumration Obstacle): 
 - 0 (no obstacle): the tile is normal ground without obstacle
 - 1 (obstacle): the tile cannot be traversed
 - 2 (top-right): the upper-right half of the tile is an obstacle
@@ -131,6 +157,9 @@ id   animation_type   obstacle   default_layer   animation_sequence   width   he
 1 means 0-1-2-0, and 2 means 0-1-2-1-0.
 \c width, \c height, \c x1, \c y1, \c x2, \c y2, \c x3 and \c y3
 define the location of the three rectangles in the PNG image (the size is the same for all rectangles).
+
+*/
+
 
 */
 

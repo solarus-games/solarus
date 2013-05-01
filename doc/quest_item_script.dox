@@ -1,0 +1,15 @@
+/**
+\page quest_item_script Equipment item script
+
+TODO
+
+The properties of each equipment item is defined by a Lua script
+(e.g. what happens when the item appears, what happens when the player
+receives the items, etc.).
+These Lua scripts are located in the \c items directory of your quest.
+
+See the section \ref lua_api to know the Lua API provided by Solarus
+to item scripts.
+
+*/
+

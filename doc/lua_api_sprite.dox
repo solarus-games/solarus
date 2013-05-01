@@ -18,7 +18,8 @@ store all the frames, and a data file that describes how frames are
 organized in the PNG images. The data file also indicates the delay to make
 between frames when animating them and other properties like whether the
 animation should loop.
-See \ref sprite_syntax for more information about the format of sprites.
+See the \ref quest_sprite_data_file "sprites syntax"
+for more information about the format of sprites.
 
 We describe here the Lua API that you can use to show sprites during your
 game or your menus.

@@ -1,0 +1,22 @@
+/**
+\page quest_musics Musics
+
+The \c musics directory contains all musics files used by both the quest.
+For now, the following formats are recognized:
+- OGG: Ogg Vorbis audio file,
+- IT: Impulse Tracker Module,
+- SPC: a Super NES original music file (not recommended).
+
+The SPC format is supported but not recommended because it is slow to decode.
+Therefore, it is recommended to convert SPC musics to IT musics.
+
+Don't forget to add all musics files to the
+quest tree in the editor (or by editing
+\ref quest_resource_file "project_db.dat" by hand).
+Otherwise, you won't be able to select musics in the editor's interface,
+for example to choose the music of a map.
+
+Future releases may support more music formats. You can ask me.
+
+*/
+

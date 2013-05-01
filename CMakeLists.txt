@@ -197,7 +197,13 @@ if(SCREEN_FORCE_MODE)
 endif()
 
 # files to install with make install
-install(TARGETS	solarus
-  RUNTIME BUNDLE DESTINATION ${SOLARUS_INSTALL_DESTINATION}
-)
+if(SOLARUS_BUNDLE)
+  install(TARGETS	solarus
+    BUNDLE DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+  )
+else()
+  install(TARGETS	solarus
+    RUNTIME DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+  )
+endif()
 

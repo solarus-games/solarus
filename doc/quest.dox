@@ -62,7 +62,7 @@ archive of a quest and the syntax of each file.
 - \c maps/: contains all maps of your quest.
   - \subpage quest_map_data_file "maps/xx.dat": definition of map \c "xx" and all
     its entities.
-  - \subpage quest_map_script "maps/xx.lua": Lua script of map \c "xx".
+  - \subpage lua_api_map "maps/xx.lua": Lua script of map \c "xx".
 - \c tilesets/: contains all tilesets available to maps.
   - \subpage quest_tileset_data_file "tilesets/xx.dat": definition of tileset
     \c "xx" and all its tile patterns.
@@ -71,10 +71,10 @@ archive of a quest and the syntax of each file.
   - tilesets/xx.entities.png: image
     with all tileset-dependent sprite animations for tileset \c "xx".
 - \c items/: contains all equipment item Lua scripts.
-  - \subpage quest_item_script "items/xx.lua": Lua script that defines the
+  - \subpage lua_api_item "items/xx.lua": Lua script that defines the
     properties and the behavior of equipment item \c "xx".
 - \c enemies/: contains all enemy Lua scripts.
-  - \subpage quest_enemy_script "enemies/xx.lua": Lua script that defines the
+  - \subpage lua_api_enemy "enemies/xx.lua": Lua script that defines the
     properties and the behavior of the enemy model \c "xx".
 
 */

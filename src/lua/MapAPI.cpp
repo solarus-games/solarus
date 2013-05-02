@@ -79,6 +79,7 @@ void LuaContext::register_map_module() {
       { "set_pause_enabled", map_api_set_pause_enabled },
       { "get_light", map_api_get_light },
       { "set_light", map_api_set_light },
+      { "get_camera_position", map_api_get_camera_position },
       { "move_camera", map_api_move_camera },
       { "draw_sprite", map_api_draw_sprite },
       { "get_crystal_state", map_api_get_crystal_state },
@@ -587,6 +588,22 @@ int LuaContext::map_api_set_light(lua_State* l) {
   map.set_light(light);
 
   return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_get_camera_position.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_camera_position(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  const Rectangle& camera_position = map.get_camera_position();
+
+  lua_pushinteger(l, camera_position.get_x());
+  lua_pushinteger(l, camera_position.get_y());
+  return 2;
 }
 
 /**

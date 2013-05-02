@@ -459,6 +459,13 @@ Sets the light level of the map.
 - \c light (number): The light level to set (\c 0: no light except near the
   \ref lua_api_hero "hero", \c 1: full light).
 
+\subsection lua_api_map_get_camera_position map:get_camera_position()
+
+Returns the coordinates of the top-left corner of the currently visible area
+of the map on the screen.
+- Return value 1 (number): X coordinate of the camera.
+- Return value 2 (number): Y coordinate of the camera.
+
 \subsection lua_api_map_move_camera map:move_camera(x, y, speed, callback, [delay_before], [delay_after])
 
 Initiates a camera moving sequence.

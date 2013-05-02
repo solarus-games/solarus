@@ -91,7 +91,7 @@ void LuaContext::push_surface(lua_State* l, Surface& surface) {
  */
 int LuaContext::surface_api_create(lua_State* l) {
 
-  Surface* surface;
+  Surface* surface = NULL;
   if (lua_gettop(l) == 0) {
     // create an empty surface with the screen size
     surface = new Surface();

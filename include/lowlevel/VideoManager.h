@@ -48,7 +48,6 @@ class VideoManager {
  private:
 
   static const VideoMode forced_mode;               /**< only video mode available (NO_MODE means no restriction) */
-  static const int surface_flags;                   /**< SDL flags for surfaces */
 
   static VideoManager* instance;                    /**< the only instance */
   static Rectangle default_mode_sizes[NB_MODES];    /**< default size of the surface for each video mode */
@@ -72,6 +71,8 @@ class VideoManager {
   void blit_stretched(Surface* src_surface, Surface* dst_surface);
   void blit_scale2x(Surface* src_surface, Surface* dst_surface);
 
+  Uint32 get_surface_flag(const VideoMode mode);
+    
  public:
 
   static void initialize(int argc, char** argv);

@@ -120,7 +120,7 @@ Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
     else 
         flag = SDL_HWSURFACE;
     
-#if !defined(SOLARUS_SCREEN_DOUBLEBUF)
+#if SOLARUS_SCREEN_DOUBLEBUF != 0
     flag |= SDL_DOUBLEBUF;
 #endif
     

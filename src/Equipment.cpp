@@ -379,7 +379,7 @@ void Equipment::restore_all_magic() {
  */
 void Equipment::load_items() {
 
-  // TODO implement a separate class that provide the info of project_db.dat.
+  // TODO implement a separate class that provides the info of project_db.dat.
 
   // Load the list of equipment item names.
   static const std::string file_name = "project_db.dat";

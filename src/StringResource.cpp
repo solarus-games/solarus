@@ -69,12 +69,20 @@ void StringResource::initialize() {
     do {
       index++;
     } while (index < line.size()
-	&& (line[index] == ' ' || line[index] == '\t'));
+	&& (line[index] == ' ' || line[index] == '\t' || line[index] == '\r'));
 
     Debug::check_assertion(index < line.size(),
       StringConcat() << "strings.dat, line " << i
       << ": the value of key '" << key << "' is missing");
-    strings[key] = line.substr(index);
+
+    std::string value = line.substr(index);
+
+    if (value[value.size() - 1] == '\r') {
+      // If the file has DOS line endings, remove the trailing '\r'.
+      value = value.substr(0, value.size() - 1);
+    }
+
+    strings[key] = value;
   }
 
   FileTools::data_file_close(file);

@@ -28,7 +28,7 @@ Changes:
 * Rewrite the Lua scripting API from scratch. Cleaner, real datatypes, much
 easier to use, less error-prone, much more features, fully documentated.
 * All scripts now live in a single Lua world.
-* Add support of scripted graphics
+* Add support of scripted graphics.
 * Add support of scripted menus. Menus like the title screen, the savegames
 menu, the pause menu and the HUD are no longer hardcoded into the engine.
 * Doors, chests, teletransporters and destinations are now much more flexible
@@ -50,6 +50,14 @@ yet:
 * Fix pixel-precise collisions not always correct (#53).
 * Fix the end of target movement on slow machines (#34).
 * Fix the hero being freezed when using the hookshot on bomb flowers (#119).
+
+Changes in Solarus Quest Editor:
+
+* First release of a working editor.
+* Implement creating a new quest.
+* Implement edition of project_db.dat through the quest tree view.
+* Allow to show a grid on the map editor.
+* Fix a lot of bugs.
 
 solarus-0.9.3 (under development)
 

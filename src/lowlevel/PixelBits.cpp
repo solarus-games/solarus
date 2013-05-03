@@ -64,24 +64,7 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
         bits[i][k] = 0x00000000;  // Initialize the sequence to transparent.
       }
 
-      bool transparent = false;
-    
-      // In order from the most used to the most exotic
-      if (bits_per_pixel == 8) {
-        transparent = ((uint8_t*) pixels)[pixel_index] == colorkey;
-      }
-      else if (bits_per_pixel == 32) {
-        transparent = ((uint32_t*) pixels)[pixel_index] == colorkey;
-      }
-      else if (bits_per_pixel == 16) {
-        transparent = ((uint16_t*) pixels)[pixel_index] == colorkey;
-      }
-      else { // Manual cast of the pixel into uint32_t
-        transparent = (*(uint32_t*)((uint8_t*)pixels + pixel_index * format->BytesPerPixel)
-                       & (0xffffffff << 32 - bits_per_pixel)) == colorkey;
-      }
-
-      if (!transparent) {
+      if (!surface.get_internal_surface()->get_pixel32(pixels[pixel_index]) == colorkey) {
         // The pixel is opaque.
         bits[i][k] |= mask;
       }

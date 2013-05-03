@@ -52,6 +52,7 @@ class Surface {
     bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
 
     SDL_Surface* get_internal_surface();
+    uint32_t get_pixel32(int idx_pixel);
     uint32_t get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format);
 
   public:

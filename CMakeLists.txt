@@ -114,7 +114,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   # Force to be the less pedantic possible with the Release build
-  set(CMAKE_CXX_FLAGS "-Wno-unknown-warning -Wno-error -Wno-all -Wno-fatal-errors -Wno-pedantic -Wno-extra -Wno-unknown-pragmas")
+  set(CMAKE_CXX_FLAGS "-Wno-error -Wno-all -Wno-fatal-errors -Wno-extra -Wno-unknown-pragmas")
 else()
   set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
@@ -148,6 +148,16 @@ endif()
 set(WRITE_DIR ${DEFAULT_WRITE_DIR} CACHE STRING "Directory where Solarus savegames are stored, relative to the user's base write directory.")
 if(WRITE_DIR)
   add_definitions(-DSOLARUS_WRITE_DIR=\"${WRITE_DIR}\")
+endif()
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(DEFAULT_BUFFERING 0)
+else()
+  set(DEFAULT_BUFFERING 1)
+endif()
+set(SCREEN_DOUBLEBUF ${DEFAULT_BUFFERING} CACHE STRING "Define if the current platform support double buffering.")
+if(SCREEN_DOUBLEBUF)
+  add_definitions(-DSOLARUS_SCREEN_DOUBLEBUF=\"${SCREEN_DOUBLEBUF}\")
 endif()
 
 if(PANDORA)
@@ -187,7 +197,14 @@ if(SCREEN_FORCE_MODE)
 endif()
 
 # files to install with make install
-install(TARGETS	solarus
-  RUNTIME DESTINATION ${SOLARUS_INSTALL_DESTINATION}
-)
+# install the bundle if requested, or only the binary else
+if(SOLARUS_BUNDLE)
+  install(TARGETS	solarus
+    BUNDLE DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+  )
+else()
+  install(TARGETS	solarus
+    RUNTIME DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+  )
+endif()
 

@@ -42,7 +42,7 @@
  * @brief Define if the current platform support double buffering.
  */
 #ifndef SOLARUS_SCREEN_DOUBLEBUF
-#  if defined(SOLARUS_OSX) 
+#  if defined(SOLARUS_OSX)
 #    define SOLARUS_SCREEN_DOUBLEBUF 0
 #  else
 #    define SOLARUS_SCREEN_DOUBLEBUF 1

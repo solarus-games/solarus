@@ -37,7 +37,6 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
   // This list is implemented as bit fields.
 
   uint32_t colorkey = format->colorkey;
-  void* pixels = surface.get_internal_surface()->pixels;
 
   width = image_position.get_width();
   height = image_position.get_height();

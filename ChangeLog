@@ -71,6 +71,7 @@ of existing games.
 * The game screen size can now be set at compilation time.
 * Change the savegames directory on Mac OS X.
 * Improve the support of Mac OS X, Pandora, Caanoo and other platforms.
+* Images other than 8-bit can now be used for pixel-precise collisions.
 * Fix the compilation with Visual C++.
 * Fix the compilation of SimpleIni with gcc 4.7.2.
 * Fix blocks making sometimes only a half move (#33).

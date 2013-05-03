@@ -47,6 +47,8 @@ class Surface: public Drawable {
       DIR_LANGUAGE     /**< the language-specific image directory of the data package, for the current language */
     };
 
+  public:
+
     Surface(int width = SOLARUS_SCREEN_WIDTH, int height = SOLARUS_SCREEN_HEIGHT);
     Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
@@ -83,6 +85,7 @@ class Surface: public Drawable {
     SDL_Surface* internal_surface;               /**< the SDL_Surface encapsulated */
     bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
 
+    uint32_t get_pixel32(int idx_pixel);
     SDL_Surface* get_internal_surface();
     uint32_t get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format);
 };

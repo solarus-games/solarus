@@ -300,3 +300,4 @@ uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
   SDL_GetRGBA(get_pixel32(idx_pixel), internal_surface->format, &r, &g, &b, &a);
   return SDL_MapRGBA(dst_format, r, g, b, a);
 }
+

@@ -31,8 +31,6 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
 
   SDL_PixelFormat* format = surface.get_internal_surface()->format;
 
-  int bits_per_pixel = format->BitsPerPixel;
-    
   // Create a list of boolean values representing the transparency of each pixel.
   // This list is implemented as bit fields.
 

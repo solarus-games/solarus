@@ -1,4 +1,4 @@
-solarus-1.0.0 (under development)
+solarus-1.0.0 (2013-05-03)
 
 The "I love Lua" release.
 
@@ -19,8 +19,8 @@ Which is not a problem since until now, I never said you could create a quest
 in decent conditions :)
 More seriously, I guess I'm the only one to have a lot of data files and
 scripts created for solarus 0.x.
-Anyway, conversion scripts are provided to upgrade existing data files,
-but not for scripts (the scripting API, which was working but ugly and
+Anyway, conversion scripts are provided to upgrade your existing data files,
+but not your scripts (the scripting API, which was working but ugly and
 unstable, has totally changed).
 
 Changes:
@@ -28,6 +28,7 @@ Changes:
 * Rewrite the Lua scripting API from scratch. Cleaner, real datatypes, much
 easier to use, less error-prone, much more features, fully documentated.
 * All scripts now live in a single Lua world.
+* Add support of scripted graphics
 * Add support of scripted menus. Menus like the title screen, the savegames
 menu, the pause menu and the HUD are no longer hardcoded into the engine.
 * Doors, chests, teletransporters and destinations are now much more flexible
@@ -38,7 +39,26 @@ and customizable.
 * Add conversion scripts to upgrade existing data files (but not scripts).
 * Fix infinite explosions of bomb flowers.
 
+This version also include changes from 0.9.3, though 0.9.3 is not released
+yet:
+
+* The game screen size can now be set at compilation time.
+* Change the savegames directory on Mac OS X.
+* Improve the support of Mac OS X, Pandora, Caanoo and other platforms.
+* Fix the compilation with Visual C++.
+* Fix blocks making sometimes only a half move (#33).
+* Fix pixel-precise collisions not always correct (#53).
+* Fix the end of target movement on slow machines (#34).
+* Fix the hero being freezed when using the hookshot on bomb flowers (#119).
+
 solarus-0.9.3 (under development)
+
+This should be the last release of the 0.9 branch.
+Existing games must now upgrade to Solarus 1.0.
+
+However, upgrading to Solarus 1.0 represents a lot of work and testing: in the
+meantime, this release introduces important fixes that improve the situation
+of existing games.
 
 * The game screen size can now be set at compilation time.
 * Change the savegames directory on Mac OS X.

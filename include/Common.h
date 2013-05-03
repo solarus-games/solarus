@@ -74,7 +74,7 @@
 
 /**
  * @def SOLARUS_OSX OR SOLARUS_IOS
- * @brief Define the current platform constants on Apple Systems
+ * @brief Define the current platform constants on Apple Systems.
  */
 #if defined(__APPLE__)
 #  include "TargetConditionals.h"
@@ -83,6 +83,18 @@
 // TARGET_OS_MAC is set to 1 on both IPhone, IPhone simulator and Mac OS.
 #  elif TARGET_OS_MAC == 1
 #    define SOLARUS_OSX
+#  endif
+#endif
+
+/**
+ * @def SOLARUS_SCREEN_DOUBLEBUF
+ * @brief Define if the current platform support double buffering.
+ */
+#ifndef SOLARUS_SCREEN_DOUBLEBUF
+#  if defined(SOLARUS_OSX) 
+#    define SOLARUS_SCREEN_DOUBLEBUF 0
+#  else
+#    define SOLARUS_SCREEN_DOUBLEBUF 1
 #  endif
 #endif
 

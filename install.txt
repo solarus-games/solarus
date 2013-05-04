@@ -174,6 +174,26 @@ which overwrites the DEFAULT_QUEST constant.
 I have managed to compile Solarus with Code::Blocks, without using CMake.
 It is necessary to additionally link with libz.
 
+If you compile with Visual C++, it should also work. You may need to add the
+\Za flag to make Visual C++ respect the C++ standards: otherwise, you may
+have a linker error with Music.h.
+
+Here is my procedure with Code::Blocks:
+- Create a C++ project.
+- Add recursively the files from include and src to your project.
+- In Build options > Compiler settings > defines, for the Release mode,
+  add NDEBUG (very important for performance).
+- Also in Build options, link to the following libraries in this order:
+  mingw32, SDLmain, SDL, SDL_image, SDL_ttf, lua5.1, physfs, OpenAL32,
+  modplug, vorbis, vorbisfile. Some of them may be specified as relative
+  file names of their DLL (in particular the ones I provide in the git
+  repository). You are supposed to have installed the other ones in the
+  compiler’s environment.
+- Build the game with Code::Blocks. I recommend to compile in Release mode
+  for performance (because NDEBUG is set) and for executable size, unless
+  you are a developer. The build error messages will tell you which headers
+  and libraries are missing (it’s hard to get them right in one try!).
+
 
 3.5  Mac OS X developers
 ---------------------

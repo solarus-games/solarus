@@ -126,7 +126,7 @@ bool Settings::save(const std::string& file_name) {
   if (!FileTools::get_language().empty()) {
     oss << "language = \"" << FileTools::get_language() << "\"\n";
   }
-  oss << "enable_joystick = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
+  oss << "joypad_enabled = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
 
   const std::string& text = oss.str();
   FileTools::data_file_save_buffer(prefixed_file_name, text.c_str(), text.size());

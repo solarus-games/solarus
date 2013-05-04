@@ -62,7 +62,7 @@ Thus, a map with id \c XXXX is managed by two distinct files:
   (but if you want to,
   \ref quest_map_data_file "here is the syntax").
 - In the script file
-  \ref quest_map_script "maps/XXXX.lua"
+  \c "maps/XXXX.lua"
   (which is optional),
   you define the dynamic behavior
   of your map, using the features of the map Lua type described on this page
@@ -72,7 +72,7 @@ When the player enters a map, the engine first creates the \ref lua_api_entity
 "entities" declared in the map data file
 \ref quest_map_data_file "maps/XXXX.dat",
 and then it runs your script
-\ref quest_map_script "maps/XXXX.lua".
+\c "maps/XXXX.lua".
 The Lua map object is passed as parameter of your script
 (remember that any Lua script is implicitly a function and can have parameters).
 Use the Lua notation \c "..." to get this parameter and store

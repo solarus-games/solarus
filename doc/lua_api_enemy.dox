@@ -616,9 +616,20 @@ Called when this enemy was just hurt.
 \subsection lua_api_enemy_on_dying enemy:on_dying()
 
 Called when the enemy's life comes to \c 0.
-At this point, the dying animation of the enemy starts and a sound
+
+When the life comes to \c 0, the movement of the enemy is stopped,
+its timers are stopped too, the dying animation starts and a sound
 is played.
-The enemy will be removed from the map when the dying animation ends.
+The details of the dying animation and the sound played depend on the
+\ref lua_api_enemy_set_hurt_style "hurt style" property.
+If the hurt style is \c "enemy" or \c "monster", any sprite you created
+on the enemy is automatically removed and replaced by sprite
+\c "enemies/enemy_killed".
+If the hurt style is \c "boss", your sprites continue to exist and to play
+animation "hurt", while explosions appear on the enemy.
+
+In both cases, the enemy will be removed from the map when the dying animation
+ends.
 
 \subsection lua_api_enemy_on_dead enemy:on_dead()
 

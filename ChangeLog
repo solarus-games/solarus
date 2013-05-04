@@ -4,6 +4,7 @@ Bug fixes for the 1.0 release.
 
 * Fix a possible compilation warning in Surface.cpp.
 * Pixel-precise collisions can now also be performed on 32-bit images.
+* Editor: show an appropriate error message if the LuaJ jar is missing (#173).
 
 solarus-1.0.0 (2013-05-03)
 

@@ -593,16 +593,11 @@ public class EditorWindow extends JFrame
             return;
         }
 
-        try {
-            if (!Project.getResource(resourceType).exists(id)) {
-                throw new MapException(
-                        "No such " + resourceNameLower + ": '" + id + "'");
-            }
-            openResourceElement(resourceType, id);
-        } catch (QuestEditorException ex) {
+        if (!Project.getResource(resourceType).exists(id)) {
             GuiTools.errorDialog(
-                    "Could not load the " + resourceNameLower + ": " + ex.getMessage());
+                    "No such " + resourceNameLower + ": '" + id + "'");
         }
+        openResourceElement(resourceType, id);
     }
 
     /**
@@ -671,8 +666,33 @@ public class EditorWindow extends JFrame
         }
         catch (QuestEditorException ex) {
             GuiTools.errorDialog(
-                    "Could not open " + resourceType.getName().toLowerCase()
+                    "Cannot open " + resourceType.getName().toLowerCase()
                     + ": " + ex.getMessage());
+        }
+        catch (NoClassDefFoundError ex) {
+            ex.printStackTrace();
+            if (ex.getMessage().contains("lua")) {
+                // The LuaJ jar is probably missing in the classpath.
+                GuiTools.errorDialog(
+                        "Cannot open " + resourceType.getName().toLowerCase()
+                        + ": The LuaJ jar dependency is missing.\n"
+                        + "Please make sure that luaj-jse-2.0.2.jar exists and "
+                        + "it is placed in the current directory, and then "
+                        + "restart the editor.");
+            }
+            else {
+                // Unknown problem.
+                GuiTools.errorDialog(
+                        "Cannot open " + resourceType.getName().toLowerCase()
+                        + ": " + ex.toString());
+            }
+        }
+        catch (Throwable ex) {
+            // Unknown problem.
+            ex.printStackTrace();
+            GuiTools.errorDialog(
+                    "Cannot open " + resourceType.getName().toLowerCase()
+                    + ": " + ex.toString());
         }
     }
 

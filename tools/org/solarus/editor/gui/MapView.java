@@ -223,7 +223,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     // interface Scrollable
     public Dimension getPreferredScrollableViewportSize() {
-        return new Dimension(0, 0);
+        return getPreferredSize();
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {

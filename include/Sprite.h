@@ -65,7 +65,9 @@ class Sprite: public Drawable {
     void set_current_animation(const std::string& animation_name);
     bool has_animation(const std::string& animation_name);
     int get_current_direction() const;
+    int get_nb_directions() const;
     void set_current_direction(int current_direction);
+    int get_nb_frames() const;
     int get_current_frame() const;
     void set_current_frame(int current_frame);
     const Rectangle& get_current_frame_rectangle() const;

@@ -31,12 +31,6 @@
  */
 class SpriteAnimationSet {
 
-  private:
-
-    std::map<std::string, SpriteAnimation*> animations;  /**< the animations */
-    std::string default_animation_name;                  /**< name of the default animation */
-    Rectangle max_size;                                  /**< size of this biggest frame */
-
   public:
 
     SpriteAnimationSet(const std::string& id);
@@ -52,6 +46,15 @@ class SpriteAnimationSet {
     void enable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
     const Rectangle& get_max_size() const;
+
+  private:
+
+    std::string id;                          /**< Id of this animation set. */
+    std::map<std::string, SpriteAnimation*>
+            animations;                      /**< The animations */
+    std::string default_animation_name;      /**< Name of the default animation. */
+    Rectangle max_size;                      /**< Size of this biggest frame. */
+
 };
 
 #endif

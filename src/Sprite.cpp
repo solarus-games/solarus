@@ -34,7 +34,6 @@ std::map<std::string, SpriteAnimationSet*> Sprite::all_animation_sets;
  * @brief Initializes the sprites system.
  */
 void Sprite::initialize() {
-
 }
 
 /**
@@ -61,7 +60,7 @@ void Sprite::quit() {
  */
 SpriteAnimationSet& Sprite::get_animation_set(const std::string &id) {
 
-  if (all_animation_sets.count(id) == 0) {
+  if (all_animation_sets.find(id) == all_animation_sets.end()) {
     all_animation_sets[id] = new SpriteAnimationSet(id);
   }
 
@@ -77,6 +76,7 @@ Sprite::Sprite(const std::string &id):
   lua_context(NULL),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
+  current_animation(NULL),
   current_direction(0),
   current_frame(-1),
   suspended(false),
@@ -163,8 +163,7 @@ bool Sprite::are_pixel_collisions_enabled() const {
  */
 Rectangle Sprite::get_size() const {
 
-  const SpriteAnimation* animation = animation_set.get_animation(current_animation_name);
-  return animation->get_direction(current_direction)->get_size();
+  return current_animation->get_direction(current_direction)->get_size();
 }
 
 /**
@@ -176,13 +175,13 @@ const Rectangle& Sprite::get_max_size() const {
 }
 
 /**
- * @brief Returns the origin point of a frame for the current animation and the current direction.
+ * @brief Returns the origin point of a frame for the current animation and
+ * the current direction.
  * @return the origin point of a frame
  */
 const Rectangle& Sprite::get_origin() const {
 
-  const SpriteAnimation* animation = animation_set.get_animation(current_animation_name);
-  return animation->get_direction(current_direction)->get_origin();
+  return current_animation->get_direction(current_direction)->get_origin();
 }
 
 /**
@@ -192,7 +191,8 @@ const Rectangle& Sprite::get_origin() const {
  * animation must continue to be drawn: in this case,
  * is_animation_finished() returns always false.
  *
- * @return the delay between two frames for the current animation (in miliseconds)
+ * @return The delay between two frames for the current animation
+ * in miliseconds.
  */
 uint32_t Sprite::get_frame_delay() const {
   return frame_delay;  
@@ -204,7 +204,8 @@ uint32_t Sprite::get_frame_delay() const {
  * A value of 0 (only for 1-frame animations) means that the
  * animation will continue to be drawn.
  *
- * @param frame_delay the delay between two frames for the current animation (in miliseconds)
+ * @param frame_delay The delay between two frames for the current animation
+ * in miliseconds.
  */
 void Sprite::set_frame_delay(uint32_t frame_delay) {
   this->frame_delay = frame_delay;  
@@ -212,10 +213,11 @@ void Sprite::set_frame_delay(uint32_t frame_delay) {
 
 /**
  * @brief Returns the next frame of the current frame.
- * @return the next frame of the current frame (or -1 if the animation is finished)
+ * @return The next frame of the current frame, or -1 if the animation is
+ * finished.
  */
 int Sprite::get_next_frame() const {
-  return current_animation->get_next_frame(current_direction, current_frame);    
+  return current_animation->get_next_frame(current_direction, current_frame);
 }
 
 /**
@@ -238,11 +240,9 @@ void Sprite::set_current_animation(const std::string& animation_name) {
 
   if (animation_name != this->current_animation_name || !is_animation_started()) {
 
-    SpriteAnimation* animation = animation_set.get_animation(animation_name);
-
     this->current_animation_name = animation_name;
-    this->current_animation = animation;
-    set_frame_delay(animation->get_frame_delay());
+    this->current_animation = animation_set.get_animation(animation_name);;
+    set_frame_delay(current_animation->get_frame_delay());
     set_current_frame(0);
   }
 }
@@ -254,6 +254,15 @@ void Sprite::set_current_animation(const std::string& animation_name) {
  */
 bool Sprite::has_animation(const std::string& animation_name) {
   return animation_set.has_animation(animation_name);
+}
+
+/**
+ * @brief Returns the number of directions in the current animation of this
+ * sprite.
+ * @return The number of directions.
+ */
+int Sprite::get_nb_directions() const {
+  return current_animation->get_nb_directions();
 }
 
 /**
@@ -276,14 +285,23 @@ void Sprite::set_current_direction(int current_direction) {
   if (current_direction != this->current_direction) {
 
     Debug::check_assertion(current_direction >= 0
-        && current_direction < current_animation->get_nb_directions(),
-        StringConcat() << "Invalid direction of sprite '" << get_animation_set_id()
-        << "' in animation '" << current_animation_name
-        << "': " << current_direction);
+        && current_direction < get_nb_directions(),
+        StringConcat() << "Invalid direction " << current_direction
+        << " for sprite '" << get_animation_set_id()
+        << "' in animation '" << current_animation_name << "'");
 
     this->current_direction = current_direction;
     set_current_frame(0);
   }
+}
+
+/**
+ * @brief Returns the number of frames in the current direction of the current
+ * animation of this sprite.
+ * @return The number of frames.
+ */
+int Sprite::get_nb_frames() const {
+  return current_animation->get_direction(current_direction)->get_nb_frames();
 }
 
 /**
@@ -319,8 +337,7 @@ void Sprite::set_current_frame(int current_frame) {
  */
 const Rectangle& Sprite::get_current_frame_rectangle() const {
 
-  const SpriteAnimation* animation = animation_set.get_animation(current_animation_name);
-  return animation->get_direction(current_direction)->get_frame(current_frame);
+  return current_animation->get_direction(current_direction)->get_frame(current_frame);
 }
 
 /**
@@ -489,8 +506,7 @@ bool Sprite::is_animation_finished() const {
  */
 bool Sprite::is_last_frame_reached() const {
 
-  const SpriteAnimationDirection* direction = current_animation->get_direction(current_direction);
-  return get_current_frame() == direction->get_nb_frames() - 1;
+  return get_current_frame() == get_nb_frames() - 1;
 }
 
 /**

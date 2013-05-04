@@ -24,17 +24,23 @@
 /**
  * @brief Constructor.
  * @param image_file_name the image from which the frames are extracted
- * @param nb_directions number of directions in this animation
  * @param directions the image sequence of each direction
  * @param frame_delay delay in millisecond between two frames for this sprite animation
  * (or 0 to make no animation, for example when you have only one frame)
  * @param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
  */
-SpriteAnimation::SpriteAnimation(const std::string &image_file_name, 
-    int nb_directions, SpriteAnimationDirection **directions, uint32_t frame_delay, int loop_on_frame):
+SpriteAnimation::SpriteAnimation(
+    const std::string& image_file_name,
+    const std::vector<SpriteAnimationDirection*>& directions,
+    uint32_t frame_delay,
+    int loop_on_frame):
 
-  src_image(NULL), src_image_loaded(false), nb_directions(nb_directions), directions(directions),
-  frame_delay(frame_delay), loop_on_frame(loop_on_frame), should_enable_pixel_collisions(false) {
+  src_image(NULL),
+  src_image_loaded(false),
+  directions(directions),
+  frame_delay(frame_delay),
+  loop_on_frame(loop_on_frame),
+  should_enable_pixel_collisions(false) {
 
   if (image_file_name != "tileset") {
     src_image = new Surface(image_file_name);
@@ -47,11 +53,10 @@ SpriteAnimation::SpriteAnimation(const std::string &image_file_name,
  */
 SpriteAnimation::~SpriteAnimation() {
 
-  for (int i = 0; i < nb_directions; i++) {
-    delete directions[i];
+  std::vector<SpriteAnimationDirection*>::iterator it;
+  for (it = directions.begin(); it != directions.end(); ++it) {
+    delete *it;
   }
-
-  delete[] directions;
 
   if (src_image_loaded) {
     delete src_image;
@@ -78,10 +83,10 @@ void SpriteAnimation::set_tileset(Tileset& tileset) {
 
 /**
  * @brief Returns the number of directions of this animation.
- * @return the number of directions
+ * @return The number of directions.
  */
 int SpriteAnimation::get_nb_directions() const {
-  return nb_directions;
+  return directions.size();
 }
 
 /**
@@ -116,11 +121,14 @@ bool SpriteAnimation::is_looping() const {
  * @return the next frame of the current frame in this direction
  * (or -1 if the animation is over)
  */
-int SpriteAnimation::get_next_frame(int current_direction, int current_frame) const {
+int SpriteAnimation::get_next_frame(
+    int current_direction, int current_frame) const {
 
-  Debug::check_assertion(current_direction >= 0 && current_direction < nb_directions,
+  Debug::check_assertion(current_direction >= 0 &&
+      current_direction < get_nb_directions(),
     StringConcat() << "Invalid sprite direction '" << current_direction
-    << "': this sprite animation has only " << nb_directions << " direction(s)");
+        << "': this sprite animation has only " << get_nb_directions()
+        << " direction(s)");
 
   int next_frame = current_frame + 1;
 
@@ -170,8 +178,9 @@ void SpriteAnimation::enable_pixel_collisions() {
  */
 void SpriteAnimation::do_enable_pixel_collisions() {
 
-  for (int i = 0; i < nb_directions; i++) {
-    directions[i]->enable_pixel_collisions(src_image);
+  std::vector<SpriteAnimationDirection*>::iterator it;
+  for (it = directions.begin(); it != directions.end(); ++it) {
+    (*it)->enable_pixel_collisions(src_image);
   }
 }
 
@@ -180,8 +189,9 @@ void SpriteAnimation::do_enable_pixel_collisions() {
  */
 void SpriteAnimation::disable_pixel_collisions() {
 
-  for (int i = 0; i < nb_directions; i++) {
-    directions[i]->disable_pixel_collisions();
+  std::vector<SpriteAnimationDirection*>::iterator it;
+  for (it = directions.begin(); it != directions.end(); ++it) {
+    (*it)->disable_pixel_collisions();
   }
 }
 

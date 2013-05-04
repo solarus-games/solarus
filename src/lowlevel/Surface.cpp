@@ -275,7 +275,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
         default : 
             // Manual cast of the pixel into uint32_t
             pixel32 = (*(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * format->BytesPerPixel)
-                       & (0xffffffff << 32 - format->BitsPerPixel));
+                       & (0xffffffff << (32 - format->BitsPerPixel)));
     }
             
     return pixel32;

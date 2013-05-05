@@ -43,6 +43,11 @@ CrystalBlock::CrystalBlock(Game& game, const std::string& name,
 
   create_sprite("entities/crystal_block");
 
+  // Don't pause the sprite animation when the crystal block is far from the
+  // camera. Otherwise it looks weird if the players comes back using a
+  // teletransporter.
+  get_sprite().set_ignore_suspend(true);
+
   this->orange_raised = game.get_crystal_state();
 
   if (subtype == ORANGE) {

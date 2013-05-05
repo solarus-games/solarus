@@ -1825,7 +1825,7 @@ void MapEntity::update() {
 
   // enable if necessary
   if (waiting_enabled) {
-    Hero &hero = get_hero();
+    Hero& hero = get_hero();
     if (!is_obstacle_for(hero) || !overlaps(hero)) {
       this->enabled = true;
       this->waiting_enabled = false;

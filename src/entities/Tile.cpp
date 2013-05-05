@@ -66,6 +66,14 @@ void Tile::set_map(Map& map) {
 }
 
 /**
+ * @brief Returns whether this entity is drawn at its position on the map.
+ * @return true if this entity is drawn where it is located.
+ */
+bool Tile::is_drawn_at_its_position() {
+  return tile_pattern->is_drawn_at_its_position();
+}
+
+/**
  * @brief Draws the tile on the map.
  */
 void Tile::draw_on_map() {

@@ -141,6 +141,8 @@ class MapEntity: public ExportableToLua {
     virtual bool can_be_obstacle();
     virtual bool can_be_drawn();
     virtual bool is_drawn_in_y_order();
+    virtual bool is_drawn_at_its_position();
+    bool is_drawn();
 
     // adding to a map
     bool is_on_map();
@@ -302,7 +304,6 @@ class MapEntity: public ExportableToLua {
     bool is_suspended();
     virtual void set_suspended(bool suspended);
     virtual void update();
-    bool is_drawn();
     virtual void draw_on_map();
 
     virtual const std::string& get_lua_type_name() const;

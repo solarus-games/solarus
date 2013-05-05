@@ -1893,7 +1893,23 @@ void MapEntity::update() {
  */
 bool MapEntity::is_drawn() {
 
-  return is_visible() && overlaps_camera();
+  return is_visible() && (overlaps_camera() || !is_drawn_at_its_position());
+}
+
+/**
+ * @brief Returns whether this entity is drawn at its position on the map.
+ *
+ * Usually, this function returns true, and when it is the case, draw_on_map()
+ * is called only for entities located in the camera's rectangle.
+ *
+ * However, some entities may want to be drawn in the camera even when their
+ * position is outside, typically to make an illusion of movement like parallax
+ * scrolling.
+ *
+ * @return true if this entity is drawn where it is located.
+ */
+bool MapEntity::is_drawn_at_its_position() {
+  return true;
 }
 
 /**

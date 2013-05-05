@@ -53,6 +53,7 @@ class Tile: public MapEntity {
     void draw(Surface& dst_surface, const Rectangle& viewport);
     TilePattern& get_tile_pattern();
     bool is_animated();
+    virtual bool is_drawn_at_its_position();
 };
 
 #endif

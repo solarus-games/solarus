@@ -71,6 +71,10 @@ public class Project {
      */
     private Project(String path) {
         this.projectPath = path;
+        if (!path.isEmpty() && path.charAt(path.length() - 1) == File.separatorChar) {
+            // Remove the trailing separator.
+            path = path.substring(0, path.length() - 1);
+        }
         int lastSeparatorIndex = path.lastIndexOf(File.separator);
         if (lastSeparatorIndex != -1) {
             this.pathBaseName = path.substring(lastSeparatorIndex + 1);

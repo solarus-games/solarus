@@ -6,6 +6,7 @@ Bug fixes for the 1.0 release.
 * Pixel-precise collisions can now also be performed on 32-bit images.
 * Editor: fix the map view not always updated when zooming in or out (#174).
 * Editor: show an appropriate error message if the LuaJ jar is missing (#173).
+* Editor: fix the title bar string (#176).
 * Fix the setting joypad_enabled that had no effect (#163).
 * Don't die if a script makes an error with a sprite (#151).
 

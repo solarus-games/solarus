@@ -124,7 +124,7 @@ void Drawable::start_transition(Transition& transition,
 /**
  * @brief Stops the transition effect applied to this object, if any.
  *
- * The transition is deleted.
+ * The transition is deleted and the Lua callback (if any) is canceled.
  */
 void Drawable::stop_transition() {
 
@@ -149,12 +149,16 @@ void Drawable::update() {
     transition->update();
     if (transition->is_finished()) {
 
-      if (lua_context != NULL) {
+        delete transition;
+        transition = NULL;
+
         int ref = transition_callback_ref;
         transition_callback_ref = LUA_REFNIL;
-        lua_context->do_callback(ref);
-      }
-      stop_transition();
+
+        if (lua_context != NULL) {
+          // Note that this callback may create a new transition right now.
+          lua_context->do_callback(ref);
+        }
     }
   }
 

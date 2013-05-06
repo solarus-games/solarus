@@ -5,6 +5,7 @@ Bug fixes for the 1.0 release.
 * Fix parallax scrolling tiles not always displayed (#167).
 * Fix the setting joypad_enabled that had no effect (#163).
 * Fix a possible compilation warning in Surface.cpp.
+* Fix creating a transition from the callback of a previous one.
 * Don't die if a script makes an error with a sprite (#151).
 * Pixel-precise collisions can now also be performed on 32-bit images.
 * Fix crystal blocks animated late when coming from a teletransporter (#61).

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include "entities/Stairs.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Destructible.h"
 #include "entities/NPC.h"
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
@@ -46,6 +46,7 @@ Arrow::Arrow(Hero &hero):
   get_sprite().set_current_direction(direction);
   set_bounding_box_from_sprite();
   set_xy(hero.get_center_point());
+  set_optimization_distance(0); // Make the arrow continue outside the screen until disappear_date.
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
@@ -85,44 +86,10 @@ bool Arrow::can_be_obstacle() {
 }
 
 /**
- * @brief Returns whether entities of this type have detection capabilities.
- *
- * This function returns whether entities of this type can detect the presence 
- * of the hero or other entities (this is possible only for
- * suclasses of Detector). If yes, the function 
- * notify_collision() will be called when a collision is detected.
- *
- * @return true if this type of entity can detect other entities
+ * @brief Returns whether this entity has to be drawn in y order.
+ * @return true if this type of entity is drawn at the same level as the hero
  */
-bool Arrow::can_detect_entities() {
-  return false;
-}
-
-/**
- * @brief Returns whether entities of this type can be displayed.
- *
- * If yes, the sprites added by the add_sprite() calls will be 
- * displayed (if any).
- *
- * @return true if this type of entity can be displayed
- */
-bool Arrow::can_be_displayed() {
-  return true; 
-}
-
-/**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether an entity of this type should be displayed above
- * the hero and other entities having this property when it is in front of them.
- * This means that the displaying order of entities having this
- * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file), 
- * and before the entities with the feature.
- *
- * @return true if this type of entity is displayed at the same level as the hero
- */
-bool Arrow::is_displayed_in_y_order() {
+bool Arrow::is_drawn_in_y_order() {
   return true;
 }
 
@@ -309,7 +276,7 @@ void Arrow::update() {
       // the arrow is stopped because the entity that was reached just disappeared
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == DESTRUCTIBLE_ITEM && !entity_reached->is_obstacle_for(*this)) {
+    else if (entity_reached->get_type() == DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
       disappear_date = now;
     }
     else if (entity_reached->get_type() == ENEMY && ((Enemy*) entity_reached)->is_dying()) {
@@ -439,19 +406,19 @@ void Arrow::notify_collision_with_crystal(Crystal &crystal, CollisionMode collis
 
 /**
  * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
- * @param destructible_item the destructible item
+ * @param destructible the destructible item
  * @param collision_mode the collision mode that detected the event
  */
-void Arrow::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
+void Arrow::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
 
-  if (destructible_item.is_obstacle_for(*this) && is_flying()) {
+  if (destructible.is_obstacle_for(*this) && is_flying()) {
 
-    if (destructible_item.can_explode()) {
-      destructible_item.explode();
+    if (destructible.can_explode()) {
+      destructible.explode();
       remove_from_map();
     }
     else {
-      attach_to(destructible_item);
+      attach_to(destructible);
     }
   }
 }

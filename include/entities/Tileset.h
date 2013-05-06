@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,9 @@
 #include "Common.h"
 #include "lowlevel/Color.h"
 #include <map>
+#include <string>
+
+struct lua_State;
 
 /**
  * @brief An image containing all tile patterns.
@@ -32,7 +35,7 @@ class Tileset {
 
   private:
 
-    TilesetId id;                                     /**< id of the tileset */
+    const std::string id;                             /**< id of the tileset */
     std::map<int, TilePattern*> tile_patterns;        /**< tile patterns in this tileset */
     int max_tile_id;                                  /**< current maximum id of a tile pattern in this tileset */
     Color background_color;                           /**< background color of the tileset */
@@ -41,19 +44,22 @@ class Tileset {
 
     void add_tile_pattern(int id, TilePattern* tile_pattern);
 
+    static int l_background_color(lua_State* l);
+    static int l_tile_pattern(lua_State* l);
+
   public:
 
-    Tileset(TilesetId id);
+    Tileset(const std::string& id);
     ~Tileset();
 
     void load();
     void unload();
 
-    TilesetId get_id();
+    const std::string& get_id();
     Color& get_background_color();
     bool is_loaded();
-    Surface* get_tiles_image();
-    Surface* get_entities_image();
+    Surface& get_tiles_image();
+    Surface& get_entities_image();
     TilePattern& get_tile_pattern(int id);
     void set_images(Tileset& other);
 };

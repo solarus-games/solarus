@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #define SOLARUS_SURFACE_H
 
 #include "Common.h"
+#include "Drawable.h"
 #include "lowlevel/Rectangle.h"
 #include <SDL.h>
 
@@ -28,7 +29,7 @@
  * A surface can be drawn or blitted on another surface.
  * This class basically encapsulates a library-dependent surface object.
  */
-class Surface {
+class Surface: public Drawable {
 
   // low-level classes allowed to manipulate directly the internal SDL surface encapsulated
   friend class TextSurface;
@@ -46,34 +47,47 @@ class Surface {
       DIR_LANGUAGE     /**< the language-specific image directory of the data package, for the current language */
     };
 
-  private:
-
-    SDL_Surface* internal_surface;               /**< the SDL_Surface encapsulated */
-    bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
-
-    SDL_Surface* get_internal_surface();
-
   public:
 
     Surface(int width = SOLARUS_SCREEN_WIDTH, int height = SOLARUS_SCREEN_HEIGHT);
+    Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
     Surface(SDL_Surface* internal_surface);
     Surface(const Surface& other);
     ~Surface();
 
-    int get_width();
-    int get_height();
-    const Rectangle get_size();
+    int get_width() const;
+    int get_height() const;
+    const Rectangle get_size() const;
 
-    void set_transparency_color(Color& color);
+    Color get_transparency_color();
+    void set_transparency_color(const Color& color);
     void set_opacity(int opacity);
     void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
-    void blit(Surface* destination);
-    void blit(Surface* destination, const Rectangle& dst_position);
-    void blit(const Rectangle& src_position, Surface* destination);
-    void blit(const Rectangle& src_position, Surface* destination, const Rectangle& dst_position);
+
+    void draw_region(const Rectangle& src_position, Surface& dst_surface);
+    void draw_region(const Rectangle& src_position, Surface& dst_surface, const Rectangle& dst_position);
+
+    const std::string& get_lua_type_name() const;
+
+  protected:
+
+    // implementation from Drawable
+    void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
+    void raw_draw_region(const Rectangle& region,
+        Surface& dst_surface, const Rectangle& dst_position);
+    void draw_transition(Transition& transition);
+
+  private:
+
+    SDL_Surface* internal_surface;               /**< the SDL_Surface encapsulated */
+    bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
+
+    uint32_t get_pixel32(int idx_pixel);
+    SDL_Surface* get_internal_surface();
+    uint32_t get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format);
 };
 
 #endif

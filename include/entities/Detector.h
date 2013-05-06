@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,8 +39,9 @@ class Detector: public MapEntity {
   protected:
 
     // construction
-    Detector(int collision_mode, const std::string &name, Layer layer,
-	int x, int y, int width, int height);
+    Detector(int collision_mode, const std::string& name, Layer layer,
+        int x, int y, int width, int height);
+    bool is_detector();
 
     // properties of the detector
     void set_collision_modes(int collision_modes);
@@ -75,11 +76,11 @@ class Detector: public MapEntity {
     void check_collision(MapEntity &entity);
     void check_collision(MapEntity &entity, Sprite &sprite);
 
-    virtual void action_key_pressed();
-    virtual bool interaction_with_inventory_item(InventoryItem &item);
+    virtual void notify_action_command_pressed();
+    virtual bool interaction_with_item(EquipmentItem& item);
     virtual bool start_movement_by_hero();
     virtual void stop_movement_by_hero();
-    virtual SoundId get_sword_tapping_sound();
+    virtual std::string get_sword_tapping_sound();
 };
 
 #endif

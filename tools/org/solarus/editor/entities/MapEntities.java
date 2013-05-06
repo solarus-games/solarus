@@ -1,23 +1,22 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.solarus.editor.entities;
 
 import java.util.*;
-
 
 /**
  * Represents all entities placed on the same layer of the map.
@@ -32,16 +31,16 @@ public class MapEntities implements Iterable<MapEntity> {
      * Constructor.
      */
     public MapEntities() {
-	tiles = new LinkedList<Tile>();
-	dynamicEntities = new LinkedList<MapEntity>();
+        tiles = new LinkedList<Tile>();
+        dynamicEntities = new LinkedList<MapEntity>();
     }
 
     /**
      * Copy constructor.
      */
     public MapEntities(MapEntities other) {
-	tiles = new LinkedList<Tile>(other.tiles);
-	dynamicEntities = new LinkedList<MapEntity>(other.dynamicEntities);
+        tiles = new LinkedList<Tile>(other.tiles);
+        dynamicEntities = new LinkedList<MapEntity>(other.dynamicEntities);
     }
 
     /**
@@ -49,7 +48,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * @return the tiles
      */
     public List<Tile> getTiles() {
-	return tiles;
+        return tiles;
     }
 
     /**
@@ -57,7 +56,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * @return the number of tiles
      */
     public int getNbTiles() {
-	return tiles.size();
+        return tiles.size();
     }
 
     /**
@@ -65,7 +64,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * @return the dynamic entities
      */
     public List<MapEntity> getDynamicEntities() {
-	return dynamicEntities;
+        return dynamicEntities;
     }
 
     /**
@@ -73,7 +72,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * @return the number of dynamic entities
      */
     public int getNbDynamicEntities() {
-	return dynamicEntities.size();
+        return dynamicEntities.size();
     }
 
     /**
@@ -84,49 +83,44 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public List<MapEntity> getEntitiesOfType(EntityType entityType) {
 
-	Class<? extends MapEntity> cl = entityType.getEntityClass();
-	List<MapEntity> list = new LinkedList<MapEntity>();
+        Class<? extends MapEntity> cl = entityType.getEntityClass();
+        List<MapEntity> list = new LinkedList<MapEntity>();
 
-	if (MapEntity.class.isAssignableFrom(cl)) {
-	    for (MapEntity e: dynamicEntities) {
-		
-		if (cl.isInstance(e)) {
-		    list.add(e);
-		}
-	    }
-	}
+        if (MapEntity.class.isAssignableFrom(cl)) {
+            for (MapEntity e: dynamicEntities) {
 
-	return list;
+                if (cl.isInstance(e)) {
+                    list.add(e);
+                }
+            }
+        }
+
+        return list;
     }
 
     /**
-     * Returns an entity, specifying its type and its name.
-     * @param type the type of entity
-     * @param name the name of the entity
-     * @return the entity, or null if there is no entity with this name
+     * Returns an entity, specifying its name.
+     * @param name The name of the entity to get (cannot be null).
+     * @return The entity, or null if there is no entity with this name.
      */
-    public MapEntity getEntityWithName(EntityType type, String name) {
+    public MapEntity getEntityWithName(String name) {
 
-	Class<? extends MapEntity> cl = type.getEntityClass();
+        for (MapEntity e: dynamicEntities) {
 
-	if (MapEntity.class.isAssignableFrom(cl)) {
-	    for (MapEntity e: dynamicEntities) {
+            if (e.hasName() && e.getName().equals(name)) {
+                return e;
+            }
+        }
 
-		if (cl.isInstance(e) && e.hasName() && e.getName().equals(name)) {
-		    return e;
-		}
-	    }
-	}
-
-	return null;
+        return null;
     }
-    
+
     /**
      * Returns the number of entities.
      * @return the number of entities
      */
     public int size() {
-	return tiles.size() + dynamicEntities.size();
+        return tiles.size() + dynamicEntities.size();
     }
 
     /**
@@ -134,7 +128,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * @return an iterator over the entities
      */
     public Iterator<MapEntity> iterator() {
-	return listIterator(0);
+        return listIterator(0);
     }
 
     /**
@@ -142,7 +136,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * @return a list iterator over the entities
      */
     public ListIterator<MapEntity> listIterator(int index) {
-	return new MapEntitiesIterator(index);
+        return new MapEntitiesIterator(index);
     }
 
     /**
@@ -150,7 +144,7 @@ public class MapEntities implements Iterable<MapEntity> {
      * @param entity the entity to add
      */
     public void add(MapEntity entity) {
-	addLast(entity);
+        addLast(entity);
     }
 
     /**
@@ -159,12 +153,12 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public void addFirst(MapEntity entity) {
 
-	if (entity.getType() == EntityType.TILE) {
-	    tiles.add(0, (Tile) entity);
-	}
-	else {
-	    dynamicEntities.add(0, entity);
-	}
+        if (entity.getType() == EntityType.TILE) {
+            tiles.add(0, (Tile) entity);
+        }
+        else {
+            dynamicEntities.add(0, entity);
+        }
     }
 
     /**
@@ -173,12 +167,12 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public void addLast(MapEntity entity) {
 
-	if (entity.getType() == EntityType.TILE) {
-	    tiles.add((Tile) entity);
-	}
-	else {
-	    dynamicEntities.add(entity);
-	}
+        if (entity.getType() == EntityType.TILE) {
+            tiles.add((Tile) entity);
+        }
+        else {
+            dynamicEntities.add(entity);
+        }
     }
 
     /**
@@ -188,12 +182,12 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     public boolean remove(MapEntity entity) {
 
-	if (entity.getType() == EntityType.TILE) {
-	    return tiles.remove(entity);
-	}
-	else {
-	    return dynamicEntities.remove(entity);
-	}
+        if (entity.getType() == EntityType.TILE) {
+            return tiles.remove(entity);
+        }
+        else {
+            return dynamicEntities.remove(entity);
+        }
     }
 
     /**
@@ -201,102 +195,102 @@ public class MapEntities implements Iterable<MapEntity> {
      */
     private class MapEntitiesIterator implements ListIterator<MapEntity> {
 
-	private int index; // index of the next element to return
+        private int index; // index of the next element to return
 
-	private int nbTiles;
-	private int nbDynamic;
+        private int nbTiles;
+        private int nbDynamic;
 
-	private ListIterator<Tile> tileIterator;
-	private ListIterator<MapEntity> dynamicIterator;
+        private ListIterator<Tile> tileIterator;
+        private ListIterator<MapEntity> dynamicIterator;
 
-	/**
-	 * Constructor.
-	 * @param index index of the first element to get
-	 */
-	public MapEntitiesIterator(int index) {
-	    this.index = index;
+        /**
+         * Constructor.
+         * @param index index of the first element to get
+         */
+        public MapEntitiesIterator(int index) {
+            this.index = index;
 
-	    this.nbTiles = tiles.size();
-	    this.nbDynamic = dynamicEntities.size();
+            this.nbTiles = tiles.size();
+            this.nbDynamic = dynamicEntities.size();
 
-	    if (index == 0) {
-		this.tileIterator = tiles.listIterator(0);
-		this.dynamicIterator = dynamicEntities.listIterator(0);
-	    }
-	    else if (index == size()) {
-		this.tileIterator = tiles.listIterator(nbTiles);
-		this.dynamicIterator = dynamicEntities.listIterator(nbDynamic);
-	    }
-	    else {
-		throw new IllegalArgumentException();
-	    }
-	}
+            if (index == 0) {
+                this.tileIterator = tiles.listIterator(0);
+                this.dynamicIterator = dynamicEntities.listIterator(0);
+            }
+            else if (index == size()) {
+                this.tileIterator = tiles.listIterator(nbTiles);
+                this.dynamicIterator = dynamicEntities.listIterator(nbDynamic);
+            }
+            else {
+                throw new IllegalArgumentException();
+            }
+        }
 
-	public void add(MapEntity e) throws UnsupportedOperationException {
-	    throw new UnsupportedOperationException();
-	}
+        public void add(MapEntity e) throws UnsupportedOperationException {
+            throw new UnsupportedOperationException();
+        }
 
-	public void set(MapEntity e) throws UnsupportedOperationException {
-	    throw new UnsupportedOperationException();
-	}
+        public void set(MapEntity e) throws UnsupportedOperationException {
+            throw new UnsupportedOperationException();
+        }
 
-	public void remove() throws UnsupportedOperationException {
-	    throw new UnsupportedOperationException();
-	}
+        public void remove() throws UnsupportedOperationException {
+            throw new UnsupportedOperationException();
+        }
 
-	public boolean hasNext() {
-	    return index < size();
-	}
+        public boolean hasNext() {
+            return index < size();
+        }
 
-	public int nextIndex() {
-	    return index;
-	}
+        public int nextIndex() {
+            return index;
+        }
 
-	public MapEntity next() throws NoSuchElementException {
+        public MapEntity next() throws NoSuchElementException {
 
-	    int i = this.index;
-	    this.index++;
+            int i = this.index;
+            this.index++;
 
-	    if (i < nbTiles) {
-		return tileIterator.next();
-	    }
-	    else {
-		i = i - nbTiles;
-		if (i < nbDynamic) {
-		    return dynamicIterator.next();
-		}
-		else {
-		    throw new NoSuchElementException();
-		}
-	    }
-	}
+            if (i < nbTiles) {
+                return tileIterator.next();
+            }
+            else {
+                i = i - nbTiles;
+                if (i < nbDynamic) {
+                    return dynamicIterator.next();
+                }
+                else {
+                    throw new NoSuchElementException();
+                }
+            }
+        }
 
-	public boolean hasPrevious() {
-	    return index > 0;
-	}
+        public boolean hasPrevious() {
+            return index > 0;
+        }
 
-	public int previousIndex() {
-	    return index - 1;
-	}
+        public int previousIndex() {
+            return index - 1;
+        }
 
-	public MapEntity previous() throws NoSuchElementException {
+        public MapEntity previous() throws NoSuchElementException {
 
-	    this.index--;
-	    int i = this.index;
+            this.index--;
+            int i = this.index;
 
-	    if (i < nbTiles) {
-		return tileIterator.previous();
-	    }
-	    else {
-		i = i - nbTiles;
-		if (i < nbDynamic) {
-		    return dynamicIterator.previous();
-		}
-		else {
-		    throw new NoSuchElementException();
-		}
-	    }
-	}
+            if (i < nbTiles) {
+                return tileIterator.previous();
+            }
+            else {
+                i = i - nbTiles;
+                if (i < nbDynamic) {
+                    return dynamicIterator.previous();
+                }
+                else {
+                    throw new NoSuchElementException();
+                }
+            }
+        }
 
     }
 }

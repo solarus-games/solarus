@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
  */
 #include "movements/PixelMovement.h"
 #include "entities/MapEntity.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -45,26 +46,10 @@ PixelMovement::~PixelMovement() {
 
 /**
  * @brief Returns the trajectory of this movement.
- * @return a string describing the succession of translations that compose this movement
+ * @return the succession of translations that compose this movement
  */
-const std::string& PixelMovement::get_trajectory() {
-
-  // compute the trajectory string on demand
-  if (trajectory.size() > 0 && trajectory_string.size() == 0) {
-
-    // the trajectory does not exist as string yet
-
-    std::list<Rectangle>::iterator it;
-    std::ostringstream oss;
-    for (it = trajectory.begin(); it != trajectory.end(); it++) {
-
-      const Rectangle &step = *it;
-      oss << step.get_x() << " " << step.get_y() << "  ";
-    }
-    trajectory_string = oss.str();
-  }
-
-  return trajectory_string;
+const std::list<Rectangle>& PixelMovement::get_trajectory() {
+  return trajectory;
 }
 
 /**
@@ -86,7 +71,7 @@ void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
 }
 
 /**
- * @brief Sets the trajectory of this movement.
+ * @brief Sets the trajectory of this movement from a string.
  *
  * This function can be called even if the object was moving with a previous trajectory.
  * The old trajectory is replaced and the movement starts the from beginning of the
@@ -170,9 +155,7 @@ void PixelMovement::restart() {
     trajectory_iterator = trajectory.begin();
     next_move_date = System::now() + delay;
 
-    if (get_entity() != NULL) {
-      get_entity()->notify_movement_changed();
-    }
+    notify_movement_changed();
   }
 }
 
@@ -261,7 +244,7 @@ void PixelMovement::notify_step_done(int step_index, bool success) {
  * @return the total number of moves in this trajectory
  */
 int PixelMovement::get_length() {
-  return trajectory.size();
+  return int(trajectory.size());
 }
 
 /**
@@ -282,78 +265,10 @@ bool PixelMovement::is_finished() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - trajectory
- * - delay
- * - loop
- * - ignore_obstacles
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string PixelMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "trajectory") {
-    oss << get_trajectory();
-  }
-  else if (key == "delay") {
-    oss << get_delay();
-  }
-  else if (key == "loop") {
-    oss << get_loop();
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of PixelMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - trajectory
- * - delay
- * - loop
- * - ignore_obstacles
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void PixelMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "trajectory") {
-    std::string trajectory_string;
-    iss >> trajectory_string;
-    set_trajectory(trajectory_string);
-  }
-  else if (key == "delay") {
-    uint32_t delay;
-    iss >> delay;
-    set_delay(delay);
-  }
-  else if (key == "loop") {
-    bool loop;
-    iss >> loop;
-    set_loop(loop);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of PixelMovement: '" << key << "'");
-  }
+const std::string& PixelMovement::get_lua_type_name() const {
+  return LuaContext::movement_pixel_module_name;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ void Hero::BackToSolidGroundState::start(State* previous_state) {
 
   State::start(previous_state);
 
-  hero.set_movement(new TargetMovement(target_xy.get_x(), target_xy.get_y(), 144));
+  hero.set_movement(new TargetMovement(target_xy.get_x(), target_xy.get_y(), 144, true));
   get_entities().set_entity_layer(hero, target_layer);
   get_entities().remove_boomerang();
 }

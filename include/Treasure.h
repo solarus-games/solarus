@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #define SOLARUS_TREASURE_H
 
 #include "Common.h"
+#include <string>
 
 /**
  * @brief Represents an item that the hero brandishes when he receives it.
@@ -26,41 +27,46 @@
  * pick on the ground or get from scripts (e.g. when talking to an NPC).
  *
  * A treasure is represented as the following values:
- * - the item name: a string identitying the nature of the treasure, according to the file items.dat
- * - the variant: indicates the variant of this item
- * - a savegame variable: index of the boolean variable that indicates whether
- *   the player has found this treasure (-1 if the treasure is not saved).
+ * - the item name: a string identifying the nature of the treasure,
+ * - the variant: an integer indicating the variant of this item (some items
+ * may have several variants),
+ * - a savegame variable: name of the saved boolean variable that indicates
+ * whether the player has found this treasure (or an empty string if the treasure
+ * is not saved).
  */
 class Treasure {
 
-  private:
-
-    Game* game;				/**< the current game */
-    std::string item_name;		/**< content of the treasure (can be "_none") */
-    int variant;			/**< variant of this content */
-    int savegame_variable;		/**< index of the savegame boolean variable corresponding to this treasure,
-					 * or -1 if the treasure state is not saved */
-    Sprite *sprite;			/**< the sprite of the treasure */
-
   public:
 
-    Treasure(Game &game, const std::string& item_name, int variant, int savegame_variable);
-    Treasure(const Treasure &other);
+    Treasure(Game& game, const std::string& item_name, int variant,
+        const std::string& savegame_variable);
+    Treasure(const Treasure& other);
     ~Treasure();
     Treasure& operator=(const Treasure& other);
 
-    ItemProperties& get_item_properties() const;
+    EquipmentItem& get_item() const;
     const std::string& get_item_name() const;
     int get_variant() const;
-    int get_savegame_variable() const;
+    const std::string& get_savegame_variable() const;
     bool is_saved() const;
     bool is_empty() const;
 
-    void decide_content();
+    void ensure_obtainable();
     void give_to_player() const;
     bool is_found() const;
 
-    void display(Surface *destination, int x, int y);
+    void draw(Surface& dst_surface, int x, int y);
+
+  private:
+
+    Game* game;                     /**< the current game */
+    std::string item_name;          /**< content of the treasure (or an empty string) */
+    int variant;                    /**< variant of this content */
+    std::string savegame_variable;  /**< name of the savegame boolean variable corresponding to this treasure,
+                                     * or an empty string if the treasure state is not saved */
+    Sprite* sprite;                 /**< the sprite of the treasure (loaded on demand, NULL until required) */
+
+    void check_obtainable() const;
 };
 
 #endif

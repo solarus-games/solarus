@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,49 +20,33 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "Configuration.h"
 
 const int Music::nb_buffers;
 SpcDecoder* Music::spc_decoder = NULL;
 ItDecoder* Music::it_decoder = NULL;
 float Music::volume = 1.0;
 Music* Music::current_music = NULL;
-std::map<MusicId,Music> Music::all_musics;
+std::map<std::string, Music> Music::all_musics;
 
-const MusicId Music::none = "none";
-const MusicId Music::unchanged = "same";
+const std::string Music::none = "none";
+const std::string Music::unchanged = "same";
 
 /**
  * @brief Creates a new music.
- * @param music_id id of the music (a file name)
+ * @param music_id id of the music (file name without extension)
  */
-Music::Music(const MusicId& music_id):
+Music::Music(const std::string& music_id):
   id(music_id) {
 
   if (!is_initialized() || music_id == none) {
     return;
   }
 
-  // compute the file name
-  file_name = (std::string) "musics/" + music_id;
+  find_music_file(music_id, file_name, format);
 
-  // get the format
-  size_t index = music_id.find_last_of(".");
-  Debug::check_assertion(index != std::string::npos && index != music_id.size(),
-    StringConcat() << "Invalid music file name: " << music_id);
-  std::string extension = music_id.substr(index + 1);
-
-  if (extension == "spc" || extension == "SPC" || extension == "Spc") {
-    format = SPC;
-  }
-  else if (extension == "it" || extension == "IT" || extension == "It") {
-    format = IT;
-  }
-  else if (extension == "ogg" || extension == "OGG" || extension == "Ogg") {
-    format = OGG;
-  }
-  else {
-    Debug::die(StringConcat() << "Unrecognized music file format: " << music_id);
+  if (music_id.empty()) {
+    Debug::die(StringConcat() << "Cannot find music file 'musics/" << music_id
+        << "' (tried extensions .ogg, .it and .spc)");
   }
 
   for (int i = 0; i < nb_buffers; i++) {
@@ -94,8 +78,7 @@ void Music::initialize() {
   spc_decoder = new SpcDecoder();
   it_decoder = new ItDecoder();
 
-  // get the music volume from the configuration file
-  set_volume(Configuration::get_value("music_volume", 100));
+  set_volume(100);
 }
 
 /**
@@ -132,10 +115,7 @@ int Music::get_volume() {
  */
 void Music::set_volume(int volume) {
 
-  Debug::check_assertion(volume >= 0 && volume <= 100,
-      StringConcat() << "Illegal volume for music:" << volume);
-
-  Configuration::set_value("music_volume", volume);
+  volume = std::min(100, std::max(0, volume));
   Music::volume = volume / 100.0;
 
   if (current_music != NULL) {
@@ -155,8 +135,52 @@ Music* Music::get_current_music() {
  * @brief Returns the id of the music currently playing.
  * @return the id of the current music, or "none" if no music is being played
  */
-const MusicId& Music::get_current_music_id() {
+const std::string& Music::get_current_music_id() {
   return current_music != NULL ? current_music->id : none;
+}
+
+/**
+ * @brief Tries to find a music file from a music id.
+ * @param music_id Id of the music to find (file name without
+ * directory or extension). Cannot be Music::none or Music::unchanged.
+ * @param file_name Resulting file name with its extension
+ * (empty string if not found).
+ * @param format Resulting music format.
+ */
+void Music::find_music_file(const std::string& music_id,
+    std::string& file_name, Format& format) {
+
+  file_name = "";
+  format = OGG;
+
+  std::string file_name_start = std::string("musics/" + music_id);
+  if (FileTools::data_file_exists(file_name_start + ".ogg")) {
+    format = OGG;
+    file_name = file_name_start + ".ogg";
+  }
+  else if (FileTools::data_file_exists(file_name_start + ".it")) {
+    format = IT;
+    file_name = file_name_start + ".it";
+  }
+  else if (FileTools::data_file_exists(file_name_start + ".spc")) {
+    format = SPC;
+    file_name = file_name_start + ".spc";
+  }
+}
+
+/**
+ * @brief Returns whether a music exists.
+ * @param music_id Id of the music to test. Music::none and Music::unchanged
+ * are also considered valid.
+ * @return true If this music exists.
+ */
+bool Music::exists(const std::string& music_id) {
+
+  std::string file_name;
+  Format format;
+  find_music_file(music_id, file_name, format);
+
+  return !file_name.empty();
 }
 
 /**
@@ -167,9 +191,9 @@ const MusicId& Music::get_current_music_id() {
  * The music specified can also be Music::none_id (then the current music is just stopped)
  * or even Music::unchanged_id (nothing is done in this case).
  *
- * @param music_id id of the music to play
+ * @param music_id id of the music to play (file name without extension)
  */
-void Music::play(const MusicId& music_id) {
+void Music::play(const std::string& music_id) {
 
   if (music_id != unchanged && music_id != get_current_music_id()) {
     // the music is changed
@@ -310,7 +334,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
 
   // read the encoded music properties
   vorbis_info* info = ov_info(&ogg_file, -1);
-  ALsizei sample_rate = info->rate;
+  ALsizei sample_rate = ALsizei(info->rate);
 
   ALenum al_format = AL_NONE;
   if (info->channels == 1) {
@@ -327,10 +351,10 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   long total_bytes_read = 0;
   long remaining_bytes = nb_samples * info->channels * sizeof(ALshort);
   do {
-    bytes_read = ov_read(&ogg_file, ((char*) raw_data) + total_bytes_read, remaining_bytes, 0, 2, 1, &bitstream);
+    bytes_read = ov_read(&ogg_file, ((char*) raw_data) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
     if (bytes_read < 0) {
       if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
-        std::cout << "Error while decoding ogg chunk: " << bytes_read << std::endl;
+        std::cerr << "Error while decoding ogg chunk: " << bytes_read << std::endl;
       }
     }
     else {
@@ -341,7 +365,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   while (remaining_bytes > 0 && bytes_read > 0);
 
   // put this decoded data into the buffer
-  alBufferData(destination_buffer, al_format, raw_data, total_bytes_read, sample_rate);
+  alBufferData(destination_buffer, al_format, raw_data, ALsizei(total_bytes_read), sample_rate);
 
   delete[] raw_data;
 
@@ -413,7 +437,7 @@ bool Music::start() {
 
       int error = ov_open_callbacks(&ogg_mem, &ogg_file, NULL, 0, Sound::ogg_callbacks);
       if (error) {
-        std::cout << "Cannot load music file from memory: error " << error << std::endl;
+        std::cerr << "Cannot load music file from memory: error " << error << std::endl;
       }
       else {
         for (int i = 0; i < nb_buffers; i++) {

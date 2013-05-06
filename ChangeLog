@@ -1,11 +1,101 @@
-solarus-0.9.3 (under development)
+solarus-1.0.1 (under development)
+
+Bug fixes for the 1.0 release.
+
+* Fix parallax scrolling tiles not always displayed (#167).
+* Fix the setting joypad_enabled that had no effect (#163).
+* Fix a possible compilation warning in Surface.cpp.
+* Fix creating a transition from the callback of a previous one.
+* Don't die if a script makes an error with a sprite (#151).
+* Pixel-precise collisions can now also be performed on 32-bit images.
+* Fix crystal blocks animated late when coming from a teletransporter (#61).
+* Fix arrows that got stopped when outside the screen (#73).
+* Editor: fix the map view not always updated when zooming in or out (#174).
+* Editor: show an appropriate error message if the LuaJ jar is missing (#173).
+* Editor: fix the title bar string (#176).
+* Split the C++ documentation and the quest data files documentation (#181).
+* Add a search feature to the documentation pages.
+
+solarus-1.0.0 (2013-05-03)
+
+The "I love Lua" release.
+
+This is a major release. The version number switches from 0.x to 1.x
+because there is a brand new Lua scripting API.
+I now consider that Solarus can be used to create your own Zelda-like
+games in decent conditions.
+By "in decent conditions", I essentially mean: with a clean and stable
+scripting API. Clean because there are nice datatypes now and the API is much
+easier to use, less error-prone and more with the Lua spirit.
+Stable because future versions of the scripting API will now try to keep
+compatibility with existing scripts. Any API change that breaks compatibility
+will now be clearly documented.
+
+Data files and scripts written for solarus 0.x are not compatible with
+solarus 1.x.
+Which is not a problem since until now, I never said you could create a quest
+in decent conditions :)
+More seriously, I guess I'm the only one to have a lot of data files and
+scripts created for solarus 0.x.
+Anyway, conversion scripts are provided to upgrade your existing data files,
+but not your scripts (the scripting API, which was working but ugly and
+unstable, has totally changed).
+
+Changes:
+
+* Rewrite the Lua scripting API from scratch. Cleaner, real datatypes, much
+easier to use, less error-prone, much more features, fully documentated.
+* All scripts now live in a single Lua world.
+* Add support of scripted graphics.
+* Add support of scripted menus. Menus like the title screen, the savegames
+menu, the pause menu and the HUD are no longer hardcoded into the engine.
+* Doors, chests, teletransporters and destinations are now much more flexible
+and customizable.
+* Except tiles, all map entities can now have a name. The name is now optional.
+* Change the format of some data files, including maps and tilesets.
+* No more ini data files (removed the dependency to SimpleIni).
+* Add conversion scripts to upgrade existing data files (but not scripts).
+* Fix infinite explosions of bomb flowers.
+
+This version also include changes from 0.9.3, though 0.9.3 is not released
+yet:
 
 * The game screen size can now be set at compilation time.
 * Change the savegames directory on Mac OS X.
 * Improve the support of Mac OS X, Pandora, Caanoo and other platforms.
+* Fix the compilation with Visual C++.
 * Fix blocks making sometimes only a half move (#33).
 * Fix pixel-precise collisions not always correct (#53).
 * Fix the end of target movement on slow machines (#34).
+* Fix the hero being freezed when using the hookshot on bomb flowers (#119).
+
+Changes in Solarus Quest Editor:
+
+* First release of a working editor.
+* Implement creating a new quest.
+* Implement edition of project_db.dat through the quest tree view.
+* Allow to show a grid on the map editor.
+* Fix a lot of bugs.
+
+solarus-0.9.3 (under development)
+
+This should be the last release of the 0.9 branch.
+Existing games must now upgrade to Solarus 1.0.
+
+However, upgrading to Solarus 1.0 represents a lot of work and testing: in the
+meantime, this release introduces important fixes that improve the situation
+of existing games.
+
+* The game screen size can now be set at compilation time.
+* Change the savegames directory on Mac OS X.
+* Improve the support of Mac OS X, Pandora, Caanoo and other platforms.
+* Images other than 8-bit can now be used for pixel-precise collisions.
+* Fix the compilation with Visual C++.
+* Fix the compilation of SimpleIni with gcc 4.7.2.
+* Fix blocks making sometimes only a half move (#33).
+* Fix pixel-precise collisions not always correct (#53).
+* Fix the end of target movement on slow machines (#34).
+* Fix the hero being freezed when using the hookshot on bomb flowers (#119).
 
 solarus-0.9.2 (2012-04-03)
 

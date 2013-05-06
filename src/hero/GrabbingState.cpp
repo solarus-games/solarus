@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include "hero/PullingState.h"
 #include "hero/HeroSprites.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief Constructor.
@@ -56,11 +56,11 @@ void Hero::GrabbingState::update() {
 
   // the hero is grabbing an obstacle: check the direction pressed
 
-  int wanted_direction8 = get_controls().get_wanted_direction8();
+  int wanted_direction8 = get_commands().get_wanted_direction8();
   int sprite_direction8 = get_sprites().get_animation_direction8();
 
   // release the obstacle
-  if (!get_controls().is_key_pressed(GameControls::ACTION)) {
+  if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
     hero.set_state(new FreeState(hero));
   }
 

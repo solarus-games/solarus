@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,12 +32,13 @@
  *
  * Creates a bomb.
  *
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
  */
-Bomb::Bomb(Layer layer, int x, int y):
-  Detector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
+Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
+  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   explosion_date(System::now() + 6000) {
 
   create_sprite("entities/bomb");
@@ -75,44 +76,10 @@ bool Bomb::can_be_obstacle() {
 }
 
 /**
- * @brief Returns whether entities of this type have detection capabilities.
- *
- * This function returns whether entities of this type can detect the presence 
- * of the hero or other entities (this is possible only for
- * suclasses of Detector). If yes, the function 
- * notify_collision() will be called when a collision is detected.
- *
- * @return true if this type of entity can detect other entities
+ * @brief Returns whether this entity has to be drawn in y order.
+ * @return true if this type of entity is drawn at the same level as the hero
  */
-bool Bomb::can_detect_entities() {
-  return true;
-}
-
-/**
- * @brief Returns whether entities of this type can be displayed.
- *
- * If yes, the sprites added by the add_sprite() calls will be 
- * displayed (if any).
- *
- * @return true if this type of entity can be displayed
- */
-bool Bomb::can_be_displayed() {
-  return true; 
-}
-
-/**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether an entity of this type should be displayed above
- * the hero and other entities having this property when it is in front of them.
- * This means that the displaying order of entities having this
- * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file), 
- * and before the entities with the feature.
- *
- * @return true if this type of entity is displayed at the same level as the hero
- */
-bool Bomb::is_displayed_in_y_order() {
+bool Bomb::is_drawn_in_y_order() {
   return true;
 }
 
@@ -237,13 +204,15 @@ void Bomb::notify_position_changed() {
 }
 
 /**
- * @brief Notifies this entity that the player is interacting with it.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  * The hero lifts the bomb if possible.
  */
-void Bomb::action_key_pressed() {
+void Bomb::notify_action_command_pressed() {
 
   KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
 
@@ -308,7 +277,7 @@ void Bomb::update() {
  */
 void Bomb::explode() {
 
-  get_entities().add_entity(new Explosion(get_layer(), get_center_point(), true));
+  get_entities().add_entity(new Explosion("", get_layer(), get_center_point(), true));
   Sound::play("explosion");
   remove_from_map();
 }

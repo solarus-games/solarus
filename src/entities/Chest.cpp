@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,65 +23,60 @@
 #include "Sprite.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "Map.h"
-#include "lua/MapScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
+#include "lua/LuaContext.h"
+#include <sstream>
+
+/**
+ * @brief Lua name of each value of the OpeningMethod enum.
+ */
+const std::string Chest::opening_method_names[] = {
+  "interaction",
+  "interaction_if_savegame_variable",
+  "interaction_if_item",
+  ""  // Sentinel.
+};
 
 /**
  * @brief Creates a new chest with the specified treasure.
- * @param name name identifying this chest
- * @param layer layer of the chest to create on the map
- * @param x x coordinate of the chest to create
- * @param y y coordinate of the chest to create
- * @param big_chest true to make a big chest, false to make a normal chest
- * @param treasure the treasure in the chest (will be deleted automatically)
+ * @param name Name identifying this chest.
+ * @param layer Layer of the chest to create on the map.
+ * @param x X coordinate of the chest to create.
+ * @param y Y coordinate of the chest to create.
+ * @param sprite_name Name of the animation set of the
+ * sprite to create for the chest. It must have animations "open" and "closed".
+ * @param treasure The treasure in the chest.
  */
-Chest::Chest(const std::string &name, Layer layer, int x, int y,
-	     bool big_chest, const Treasure &treasure):
+Chest::Chest(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    const std::string& sprite_name,
+    const Treasure& treasure):
 
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   treasure(treasure),
-  big_chest(big_chest),
   open(treasure.is_found()),
   treasure_given(open),
   treasure_date(0) {
 
-  initialize_sprite();
+  // Create the sprite.
+  Sprite& sprite = create_sprite(sprite_name);
+  std::string animation = is_open() ? "open" : "closed";
+  sprite.set_current_animation(animation);
+
+  set_origin(get_width() / 2, get_height() - 3);
 }
 
 /**
  * @brief Destructor.
  */
 Chest::~Chest() {
-}
-
-/**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Chest::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-
-  std::string name, treasure_name;
-  int big_chest, treasure_variant, treasure_savegame_variable;
-
-  FileTools::read(is, name);
-  FileTools::read(is, big_chest);
-  FileTools::read(is, treasure_name);
-  FileTools::read(is, treasure_variant);
-  FileTools::read(is, treasure_savegame_variable);
-
-  return new Chest(name, Layer(layer), x, y, (big_chest != 0),
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
@@ -93,64 +88,23 @@ EntityType Chest::get_type() {
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether an entity of this type should be displayed above
- * the hero and other entities when it is in front of them.
- *
- * @return true if this entity is displayed at the same level as the hero
+ * @brief Returns whether this entity has to be drawn in y order.
+ * @return \c true if this type of entity should be drawn at the same level
+ * as the hero.
  */
-bool Chest::is_displayed_in_y_order() {
-  return big_chest;
+bool Chest::is_drawn_in_y_order() {
+  return get_sprite().get_max_size().get_height() > get_height();
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
+ * @brief Notifies this entity that it was just enabled or disabled.
+ * @param enabled \c true if the entity is now enabled.
  */
-bool Chest::is_obstacle_for(MapEntity &other) {
-  return is_visible();
-}
+void Chest::notify_enabled(bool enabled) {
 
-/**
- * @brief Creates the chest sprite depending on its size and the savegame.
- */
-void Chest::initialize_sprite() {
-
-  // create the sprite
-  create_sprite("entities/chest");
-  Sprite &sprite = get_sprite();
-
-  // set its animation
-  std::string animation = big_chest ? "big_" : "small_";
-  animation += is_open() ? "open" : "closed";
-  sprite.set_current_animation(animation);
-
-  // set the entity size
-  if (big_chest) {
-    set_origin(0, -8);
-    set_size(32, 16);
-  }
-  else {
-    set_size(16, 16);
-  }
-}
-
-/**
- * @brief Sets whether this entity is visible.
- * @param visible true to make it visible
- */
-void Chest::set_visible(bool visible) {
-
-  if (!is_open()) { // an open chest is always visible
-
-    MapEntity::set_visible(visible);
-
-    // make sure the chest does not appear on the hero
-    if (visible && overlaps(get_hero())) {
-      get_hero().avoid_collision(*this, 3);
-    }
+  // Make sure the chest does not appear on the hero.
+  if (enabled && overlaps(get_hero())) {
+    get_hero().avoid_collision(*this, 3);
   }
 }
 
@@ -168,7 +122,8 @@ bool Chest::is_open() {
  * If you don't change the chest state, this function has no effect.
  * If you make the chest opened, its sprite is updated but this function does not give any treasure
  * to the player.
- * If you close the chest, its sprite is updated and the chest will then be empty.
+ * If you close the chest, its sprite is updated and the chest will contain
+ * its initial treasure again.
  *
  * @param open true to open the chest, false to close it
  */
@@ -180,33 +135,218 @@ void Chest::set_open(bool open) {
 
     if (open) {
       // open the chest
-      get_sprite().set_current_animation(big_chest ? "big_open" : "small_open");
+      get_sprite().set_current_animation("open");
     }
     else {
       // close the chest
-      get_sprite().set_current_animation(big_chest ? "big_closed" : "small_closed");
+      get_sprite().set_current_animation("closed");
       treasure_given = false;
     }
   }
 }
 
 /**
+ * @brief Returns whether the player is able to open this chest now.
+ * @return true if this is a small chest or if the player has the big key.
+ */
+bool Chest::can_open() {
+
+  switch (get_opening_method()) {
+
+    case OPENING_BY_INTERACTION:
+      // No condition: the hero can always open the chest.
+      return true;
+
+    case OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE:
+    {
+      // The hero can open the chest if a savegame variable is set.
+      const std::string& required_savegame_variable = get_opening_condition();
+      if (required_savegame_variable.empty()) {
+        return false;
+      }
+
+      Savegame& savegame = get_savegame();
+      if (savegame.is_boolean(required_savegame_variable)) {
+        return savegame.get_boolean(required_savegame_variable);
+      }
+
+      if (savegame.is_integer(required_savegame_variable)) {
+        return savegame.get_integer(required_savegame_variable) > 0;
+      }
+
+      if (savegame.is_string(required_savegame_variable)) {
+        return !savegame.get_string(required_savegame_variable).empty();
+      }
+
+      return false;
+    }
+
+    case OPENING_BY_INTERACTION_IF_ITEM:
+    {
+      // The hero can open the chest if he has an item.
+      const std::string& required_item_name = get_opening_condition();
+      if (required_item_name.empty()) {
+        return false;
+      }
+      const EquipmentItem& item = get_equipment().get_item(required_item_name);
+      return item.is_saved()
+        && item.get_variant() > 0
+        && (!item.has_amount() || item.get_amount() > 0);
+    }
+
+    default:
+      return false;
+  }
+}
+
+/**
+ * @brief Returns the opening method of this chest.
+ * @return How this chest can be opened.
+ */
+Chest::OpeningMethod Chest::get_opening_method() const {
+  return opening_method;
+}
+
+/**
+ * @brief Sets the opening method of this chest.
+ * @param opening_method How this chest should be opened.
+ */
+void Chest::set_opening_method(OpeningMethod opening_method) {
+  this->opening_method = opening_method;
+}
+
+/**
+ * @brief Returns the savegame variable or the equipment item name required to
+ * open this chest.
+ *
+ * A savegame variable is returned if the opening mode is
+ * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE.
+ * The hero is allowed to open the chest if this saved value is either
+ * \c true, an integer greater than zero or a non-empty string.
+ *
+ * An equipment item's name is returned if the opening mode is
+ * OPENING_BY_INTERACTION_IF_ITEM.
+ * The hero is allowed to open the chest if he has that item and,
+ * for items with an amount, if the amount is greater than zero.
+ *
+ * For the other opening methods, this setting has no effect.
+ *
+ * @return The savegame variable or the equipment item name required.
+ */
+const std::string& Chest::get_opening_condition() const {
+  return opening_condition;
+}
+
+/**
+ * @brief Sets the savegame variable or the equipment item name required to
+ * open this chest.
+ *
+ * You must set a savegame variable if the opening mode is
+ * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE.
+ * The hero will be allowed to open the chest if this saved value is either
+ * \c true, an integer greater than zero or a non-empty string.
+ *
+ * You must set an equipment item's name if the opening mode is
+ * OPENING_BY_INTERACTION_IF_ITEM.
+ * The hero will be allowed to open the chest if he has that item and,
+ * for items with an amount, if the amount is greater than zero.
+ *
+ * For the other opening methods, this setting has no effect.
+ *
+ * @param opening_condition The savegame variable or the equipment item name
+ * required.
+ */
+void Chest::set_opening_condition(const std::string& opening_condition) {
+  this->opening_condition = opening_condition;
+}
+
+/**
+ * @brief Returns whether opening this chest consumes the condition that
+ * was required.
+ *
+ * If this setting is \c true, here is the behavior when the hero opens
+ * the chest:
+ * - If the opening method is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+ *   then the required savegame variable is either:
+ *   - set to \c false if it is a boolean,
+ *   - decremented if it is an integer,
+ *   - set to an empty string if it is a string.
+ * - If the opening method is OPENING_BY_INTERACTION_IF_ITEM, then:
+ *   - if the required item has an amount, the amount is decremented.
+ *   - if the required item has no amount, its possession state is set to zero.
+ * - With other opening methods, this setting has no effect.
+ *
+ * @return \c true if opening this chest consumes the condition that was
+ * required.
+ */
+bool Chest::is_opening_condition_consumed() const {
+  return opening_condition_consumed;
+}
+
+/**
+ * @brief Sets whether opening this chest should consume the condition that
+ * was required.
+ *
+ * If this setting is \c true, here is the behavior when the hero opens
+ * the chest:
+ * - If the opening method is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+ *   then the required savegame variable is either:
+ *   - set to \c false if it is a boolean,
+ *   - decremented if it is an integer,
+ *   - set to an empty string if it is a string.
+ * - If the opening method is OPENING_BY_INTERACTION_IF_ITEM, then:
+ *   - if the required item has an amount, the amount is decremented.
+ *   - if the required item has no amount, its possession state is set to zero.
+ * - With other opening methods, this setting has no effect.
+ *
+ * @param opening_condition_consumed \c true if opening this chest should
+ * consume the condition that was required.
+ */
+void Chest::set_opening_condition_consumed(bool opening_condition_consumed) {
+   this->opening_condition_consumed = opening_condition_consumed;
+}
+
+/**
+ * @brief Returns the id of the dialog to show when the player presses the action
+ * command on the chest but cannot open it (i.e. if can_open() is false).
+ *
+ * @return The id of the "cannot open" dialog for this chest
+ * (an empty string means no dialog).
+ */
+const std::string& Chest::get_cannot_open_dialog_id() const {
+  return cannot_open_dialog_id;
+}
+
+/**
+ * @brief Sets the id of the dialog to show when the player presses the action
+ * command on the chest but cannot open it (i.e. if can_open() is false).
+ * @param cannot_open_dialog_id The id of the "cannot open" dialog for this chest
+ * (an empty string means no dialog).
+ */
+void Chest::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) {
+  this->cannot_open_dialog_id = cannot_open_dialog_id;
+}
+
+/**
+ * @brief Returns whether this entity is an obstacle for another one when
+ * it is enabled.
+ * @param other Another entity.
+ * @return \c true if this entity is an obstacle for the other one.
+ */
+bool Chest::is_obstacle_for(MapEntity& other) {
+  return true;
+}
+
+/**
  * @brief This function is called by the engine when an entity overlaps the chest.
- *
- * This is a redefinition of Detector::notify_collision().
- * If the entity is the hero, and if he is facing north, we allow him to
- * open (or try to open) the chest.
- *
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Chest::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Chest::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
-  if (is_suspended() || !is_visible()) {
-    return;
+  if (!is_suspended()) {
+    entity_overlapping.notify_collision_with_chest(*this);
   }
-
-  entity_overlapping.notify_collision_with_chest(*this);
 }
 
 /**
@@ -224,23 +364,23 @@ void Chest::update() {
 
       treasure_date = 0;
 
-      if (treasure.get_item_name() != "_none") {
+      if (!treasure.is_empty()) {
         // give a treasure to the player
 
-        get_hero().start_treasure(treasure);
+        get_hero().start_treasure(treasure, LUA_REFNIL);
         treasure_given = true;
       }
       else { // the chest is empty
 
         // mark the treasure as found in the savegame
-        int savegame_variable = treasure.get_savegame_variable();
-        if (savegame_variable != -1) {
-          get_savegame().set_boolean(savegame_variable, true);
+        if (treasure.is_saved()) {
+          get_savegame().set_boolean(treasure.get_savegame_variable(), true);
         }
 
         treasure_given = true;
 
-        if (!get_map_script().event_chest_empty(get_name())) {
+        bool done = get_lua_context().chest_on_empty(*this);
+        if (!done) {
 
           // the script does not define any behavior:
           // by default, we tell the player the chest is empty
@@ -256,17 +396,19 @@ void Chest::update() {
 }
 
 /**
- * @brief This function is called when the player interacts with this chest.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  * The hero opens the chest if possible.
  */
-void Chest::action_key_pressed() {
+void Chest::notify_action_command_pressed() {
 
-  if (is_visible() && get_hero().is_free()) {
+  if (is_enabled() && get_hero().is_free()) {
 
-    if (!big_chest || get_equipment().has_ability("open_dungeon_big_locks")) {
+    if (can_open()) {
       Sound::play("chest_open");
       set_open(true);
       treasure_date = System::now() + 300;
@@ -274,9 +416,9 @@ void Chest::action_key_pressed() {
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
       get_hero().start_freezed();
     }
-    else {
+    else if (!get_cannot_open_dialog_id().empty()) {
       Sound::play("wrong");
-      get_dialog_box().start_dialog("_big_key_required");
+      get_dialog_box().start_dialog(get_cannot_open_dialog_id());
     }
   }
 }
@@ -297,5 +439,13 @@ void Chest::set_suspended(bool suspended) {
     // restore the timer
     treasure_date = System::now() + (treasure_date - when_suspended);
   }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Chest::get_lua_type_name() const {
+  return LuaContext::entity_chest_module_name;
 }
 

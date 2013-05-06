@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 #include "movements/PathMovement.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief Constructor.
@@ -72,11 +72,11 @@ void Hero::PullingState::update() {
 
   if (!is_moving_grabbed_entity()) {
 
-    int wanted_direction8 = get_controls().get_wanted_direction8();
+    int wanted_direction8 = get_commands().get_wanted_direction8();
     int opposite_direction8 = (get_sprites().get_animation_direction8() + 4) % 8;
 
     // stop pulling if the action key is released or if there is no more obstacle
-    if (!get_controls().is_key_pressed(GameControls::ACTION)
+    if (!get_commands().is_command_pressed(GameCommands::ACTION)
         || !hero.is_facing_obstacle()) {
       hero.set_state(new FreeState(hero));
     }
@@ -171,7 +171,7 @@ void Hero::PullingState::notify_position_changed() {
     PathMovement *movement = (PathMovement*) hero.get_movement();
 
     bool horizontal = get_sprites().get_animation_direction() % 2 == 0;
-    bool has_reached_grid = movement->get_total_distance_covered() > 8
+    bool has_reached_grid = movement->get_total_distance_covered() >= 16
       && ((horizontal && pulled_entity->is_aligned_to_grid_x())
           || (!horizontal && pulled_entity->is_aligned_to_grid_y()));
 

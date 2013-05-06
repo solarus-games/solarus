@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,37 +26,44 @@
 
 /**
  * @brief Constructor.
- * @param name name of the teletransporter
- * @param layer layer of the teletransporter
- * @param x x position of the teletransporter's rectangle
- * @param y y position of the teletransporter's rectangle
- * @param width width of the teletransporter's rectangle
- * @param height height of the teletransporter's rectangle
- * @param subtype the subtype of teletransporter
- * @param transition_style style of transition between the two maps
- * @param destination_map_id id of the destination map
- * @param destination_point_name location on the destination map, or "_same" to keep the hero's coordinates,
- * or "_side" to place the hero on the appropriate side of the map
+ * @param name Name of the teletransporter.
+ * @param layer Layer of the teletransporter.
+ * @param x X position of the teletransporter's rectangle.
+ * @param y Y position of the teletransporter's rectangle.
+ * @param width Width of the teletransporter's rectangle.
+ * @param height Height of the teletransporter's rectangle.
+ * @param sprite_name Sprite animation set id to use, or an empty string.
+ * @param sound_id Sound to play when using the teletransporter,
+ * or an empty string.
+ * @param transition_style Style of transition between the two maps.
+ * @param destination_map_id Id of the destination map.
+ * @param destination_name Location on the destination map,
+ * or "_same" to keep the hero's coordinates,
+ * or "_side" to place the hero on the appropriate side of the map.
  */
-Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, int y, int width, int height,
-				 Subtype subtype, Transition::Style transition_style,
-				 MapId destination_map_id, std::string destination_point_name):
+Teletransporter::Teletransporter(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    int width,
+    int height,
+    const std::string& sprite_name,
+    const std::string& sound_id,
+    Transition::Style transition_style,
+    const std::string& destination_map_id,
+    const std::string& destination_name):
+
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
-  subtype(subtype),
+  sound_id(sound_id),
   transition_style(transition_style),
-  sound_id(""),
   destination_map_id(destination_map_id),
-  destination_point_name(destination_point_name),
+  destination_name(destination_name),
   destination_side(-1),
   transporting_hero(false) {
   
-  if (subtype == YELLOW) {
-    create_sprite("entities/teletransporter");
-    get_sprite().set_current_animation("yellow");
-    sound_id = "warp";
-  }
-  else {
-    // TODO
+  if (!sprite_name.empty()) {
+    create_sprite(sprite_name);
   }
 }
 
@@ -64,38 +71,6 @@ Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, in
  * @brief Destructor.
  */
 Teletransporter::~Teletransporter() {
-
-}
-
-/**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Teletransporter::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-	
-  int width, height, subtype, transition_style;
-  MapId destination_map_id;
-  std::string name, destination_point_name;
-
-  FileTools::read(is, width);
-  FileTools::read(is, height);
-  FileTools::read(is, name);
-  FileTools::read(is, subtype);
-  FileTools::read(is, transition_style);
-  FileTools::read(is, destination_map_id);
-  FileTools::read(is, destination_point_name);
-
-  return new Teletransporter(name, Layer(layer), x, y, width, height,
-      Subtype(subtype), Transition::Style(transition_style),
-      destination_map_id, destination_point_name);
 }
 
 /**
@@ -106,11 +81,11 @@ MapEntity* Teletransporter::parse(Game &game, std::istream &is, Layer layer, int
  *
  * @param map the map
  */
-void Teletransporter::set_map(Map &map) {
+void Teletransporter::set_map(Map& map) {
 
   MapEntity::set_map(map);
 
-  if (destination_point_name == "_side") {
+  if (destination_name == "_side") {
 
     int x = get_x();
     int y = get_y();
@@ -148,7 +123,7 @@ EntityType Teletransporter::get_type() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool Teletransporter::is_obstacle_for(MapEntity &other) {
+bool Teletransporter::is_obstacle_for(MapEntity& other) {
 
   return other.is_teletransporter_obstacle(*this);
 }
@@ -207,7 +182,7 @@ bool Teletransporter::test_collision_custom(MapEntity& entity) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Teletransporter::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Teletransporter::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_teletransporter(*this, collision_mode);
 }
@@ -216,7 +191,7 @@ void Teletransporter::notify_collision(MapEntity &entity_overlapping, CollisionM
  * @brief Makes the teletransporter move the hero to the destination.
  * @param hero the hero
  */
-void Teletransporter::transport_hero(Hero &hero) {
+void Teletransporter::transport_hero(Hero& hero) {
 
   if (transporting_hero) {
     // already done
@@ -224,11 +199,11 @@ void Teletransporter::transport_hero(Hero &hero) {
   }
   transporting_hero = true;
 
-  if (sound_id.size() != 0) {
+  if (!sound_id.empty()) {
     Sound::play(sound_id);
   }
 
-  std::string name = destination_point_name;
+  std::string name = destination_name;
   int hero_x = hero.get_x();
   int hero_y = hero.get_y();
 

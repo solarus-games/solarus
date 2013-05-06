@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #include "entities/Boomerang.h"
 #include "lowlevel/Geometry.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 #include "Map.h"
 
 /**
@@ -35,7 +35,7 @@
  */
 Hero::BoomerangState::BoomerangState(Hero& hero, int max_distance, int speed,
     const std::string& tunic_preparing_animation,
-    const SpriteAnimationSetId& sprite_name):
+    const std::string& sprite_name):
   State(hero),
   max_distance(max_distance),
   speed(speed),
@@ -63,7 +63,7 @@ void Hero::BoomerangState::start(State* previous_state) {
   }
   else {
     get_sprites().set_animation(tunic_preparing_animation, "boomerang");
-    this->direction_pressed8 = get_controls().get_wanted_direction8();
+    this->direction_pressed8 = get_commands().get_wanted_direction8();
   }
 }
 
@@ -78,7 +78,7 @@ void Hero::BoomerangState::update() {
 
     if (direction_pressed8 == -1) {
       // the player can press the diagonal arrows before or after the boomerang key
-      direction_pressed8 = get_controls().get_wanted_direction8();
+      direction_pressed8 = get_commands().get_wanted_direction8();
     }
 
     int boomerang_direction8;

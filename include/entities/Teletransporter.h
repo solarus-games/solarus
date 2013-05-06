@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,57 +22,55 @@
 #include "Transition.h"
 
 /**
- * @brief A detector that sends the hero to a destination point.
+ * @brief A detector that sends the hero to a destination.
  *
  * A teletransporter is a detector placed on a map.
- * When the hero walks on this detector, he is placed on a destination point
+ * When the hero walks on this detector, he is placed on a destination
  * on the same map or another one.
  */
 class Teletransporter: public Detector {
 
-  public:
-
-    /**
-     * @brief Subtypes of teletransporters.
-     */
-    enum Subtype {
-      INVISIBLE = 0, /**< an invisible detector, usually to move the hero to another map */
-      YELLOW    = 1, /**< a classical teletransporter */
-      BLUE      = 2  /**< a teletransporter with a different color and an immediate transition */
-    };
-
   private:
 
-    Subtype subtype;                      /**< subtype of teletransporter */
-    Transition::Style transition_style;   /**< style of transition between the two maps */
-    SoundId sound_id;                     /**< the sound played when this teletransporter is taken (an empty string means no sound) */
-    MapId destination_map_id;             /**< id of the destination map */
-    std::string destination_point_name;   /**< destination point on that map, or "_same" to keep the hero's coordinates,
-                                           * or "_side" to place the hero on the appropriate side of the map */
-    int destination_side;                 /**< when the destination point is "_side", indicates which side
-                                           * of the destination map this teletransporters leads to
-                                           * (this depends on the teletransporter position on the map);
-                                           * -1 means a teletransporter other than "_side" */
-    int transition_direction;             /**< when the destination point is "_side", indicates the direction 
+    std::string sound_id;                 /**< Sound played when this teletransporter is used
+                                           * (an empty string means no sound). */
+    Transition::Style transition_style;   /**< Style of transition between the two maps. */
+    std::string destination_map_id;       /**< Id of the destination map. */
+    std::string destination_name;         /**< Destination on that map, or "_same" to keep the hero's coordinates,
+                                           * or "_side" to place the hero on the appropriate side of the map. */
+    int destination_side;                 /**< When the destination is "_side", indicates which side
+                                           * of the destination map this teletransporters leads to.
+                                           * This depends on the teletransporter position on the original map.
+                                           * -1 means a teletransporter other than "_side". */
+    int transition_direction;             /**< When the destination is "_side", indicates the direction 
                                            * of the transition between the two maps (this is the opposite
-                                           * direction of destination_side) */
-    bool transporting_hero;               /**< true if the hero is currently being transported by this teletransporter */
+                                           * direction of destination_side). */
+    bool transporting_hero;               /**< indicates that the hero is currently being transported
+                                           * by this teletransporter */
 
   public:
 
-    Teletransporter(const std::string &name, Layer layer, int x, int y, int width, int height,
-	Subtype subtype, Transition::Style transition_style,
-	MapId destination_map_id, std::string destination_point_name);
+    Teletransporter(
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        int width,
+        int height,
+        const std::string& sprite_name,
+        const std::string& sound_id,
+	Transition::Style transition_style,
+	const std::string& destination_map_id,
+        const std::string& destination_name);
     ~Teletransporter();
-    static CreationFunction parse;
 
     EntityType get_type();
-    void set_map(Map &map);
+    void set_map(Map& map);
 
-    bool is_obstacle_for(MapEntity &other);
+    bool is_obstacle_for(MapEntity& other);
     bool test_collision_custom(MapEntity& entity);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    void transport_hero(Hero &hero);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void transport_hero(Hero& hero);
     bool is_on_map_side();
 };
 

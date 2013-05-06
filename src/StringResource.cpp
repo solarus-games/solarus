@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ StringResource::~StringResource() {
 void StringResource::initialize() {
 
   strings.clear();
-  std::istream &file = FileTools::data_file_open("text/strings.dat", true);
+  std::istream& file = FileTools::data_file_open("text/strings.dat", true);
   std::string line;
 
   // read each line
@@ -54,7 +54,7 @@ void StringResource::initialize() {
     i++;
 
     // ignore empty lines or lines starting with '#'
-    if (line.size() == 0 || line[0] == '#') {
+    if (line.size() == 0 || line[0] == '\r' || line[0] == '#') {
       continue;
     }
  
@@ -69,12 +69,20 @@ void StringResource::initialize() {
     do {
       index++;
     } while (index < line.size()
-	&& (line[index] == ' ' || line[index] == '\t'));
+	&& (line[index] == ' ' || line[index] == '\t' || line[index] == '\r'));
 
     Debug::check_assertion(index < line.size(),
       StringConcat() << "strings.dat, line " << i
       << ": the value of key '" << key << "' is missing");
-    strings[key] = line.substr(index);
+
+    std::string value = line.substr(index);
+
+    if (value[value.size() - 1] == '\r') {
+      // If the file has DOS line endings, remove the trailing '\r'.
+      value = value.substr(0, value.size() - 1);
+    }
+
+    strings[key] = value;
   }
 
   FileTools::data_file_close(file);

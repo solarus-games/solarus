@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #define SOLARUS_MOVEMENT_H
 
 #include "Common.h"
+#include "lua/ExportableToLua.h"
 #include "lowlevel/Rectangle.h"
 
 /**
@@ -25,54 +26,58 @@
  *
  * This is the parent class of all kinds of movement.
  * An instance of Movement can be applied to a map entity during the game,
- * or to any arbitrary coordinates.
+ * to a drawable object or to some arbitrary coordinates.
+ *
+ * TODO: generalize this and allow to apply a movement to any Lua object that
+ * has a set_xy method()?
  */
-class Movement {
+class Movement: public ExportableToLua {
 
   private:
 
-    static int next_unique_id;				/**< next unique id to attribute to a movement instance */
-    int unique_id;					/**< a number identifying this instance */
+    // Object to move (can be an entity, a drawable or a point).
+    MapEntity* entity;                           /**< The entity controlled by this movement. */
+    Drawable* drawable;                          /**< The drawable controlled by this movement. */
+    Rectangle xy;                                /**< Coordinates of the point controlled by this movement. */
 
-    // object to move
-    MapEntity *entity;					/**< the entity controlled by this movement (if NULL, the movement
-							 * is applied to the xy field below instead) */
-
-    Rectangle xy;					/**< coordinates of the object controlled by this movement when it is not an entity */
-    uint32_t last_move_date;				/**< date of the last x or y move */
-    bool finished;                                      /**< true if is_finished() returns true */
+    uint32_t last_move_date;                     /**< Date of the last x or y move. */
+    bool finished;                               /**< true if is_finished() returns true. */
 
     // suspended
-    bool suspended;					/**< indicates whether the movement is suspended */
-    uint32_t when_suspended;				/**< indicates when the movement was suspended */
+    bool suspended;                              /**< Indicates whether the movement is suspended. */
+    uint32_t when_suspended;                     /**< Indicates when the movement was suspended. */
 
     // obstacles (only when the movement is applied to an entity)
-    Rectangle last_collision_box_on_obstacle;		/**< copy of the entity's collision box of the last call
-							 * to test_collision_with_map() returning true */ 
+    Rectangle last_collision_box_on_obstacle;    /**< Copy of the entity's bounding box of the last call
+                                                  * to test_collision_with_map() returning true. */ 
 
-    bool default_ignore_obstacles;			/**< indicates that this movement normally ignores obstacles */
-    bool current_ignore_obstacles;			/**< indicates that this movement currently ignores obstacles */
+    bool default_ignore_obstacles;               /**< Indicates that this movement normally ignores obstacles. */
+    bool current_ignore_obstacles;               /**< Indicates that this movement currently ignores obstacles. */
+
+    LuaContext* lua_context;                     /**< The Solarus Lua API (NULL means no callbacks for this movement).
+                                                  * TODO move this to ExportableToLua */
+    int finished_callback_ref;                   /**< Lua ref to a function to call when this movement finishes. */
 
   protected:
 
     Movement(bool ignore_obstacles = false);
 
-    // entity
-    MapEntity* get_entity();
-
     // suspended
     uint32_t get_when_suspended();
 
-    // obstacles
+    // obstacles (only when the movement is applied to an entity)
     void set_default_ignore_obstacles(bool ignore_obstacles);
 
   public:
 
     virtual ~Movement();
-    int get_unique_id();
 
-    // entity
-    virtual void set_entity(MapEntity *entity);
+    // object controlled
+    MapEntity* get_entity() const;
+    void set_entity(MapEntity* entity);
+    Drawable* get_drawable() const;
+    void set_drawable(Drawable* drawable);
+    virtual void notify_object_controlled();
 
     // update
     virtual void update(); // called repeatedly
@@ -90,9 +95,11 @@ class Movement {
     void translate_x(int dx);
     void translate_y(int dy);
     void translate_xy(int dx, int dy);
-    void translate_xy(const Rectangle &dxy);
+    void translate_xy(const Rectangle& dxy);
     virtual void notify_position_changed(); // called whenever x or y is changed
     virtual void notify_obstacle_reached();
+    virtual void notify_movement_changed();
+    virtual void notify_movement_finished();
 
     // movement
     bool is_stopped();
@@ -102,7 +109,7 @@ class Movement {
 
     // obstacles
     bool test_collision_with_obstacles(int dx, int dy);
-    bool test_collision_with_obstacles(const Rectangle &dxy);
+    bool test_collision_with_obstacles(const Rectangle& dxy);
     const Rectangle& get_last_collision_box_on_obstacle();
     bool are_obstacles_ignored();
     void set_ignore_obstacles(bool ignore_obstacles);
@@ -112,9 +119,11 @@ class Movement {
     virtual int get_displayed_direction4();
     virtual const Rectangle get_displayed_xy();
 
-    // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
+    // Lua
+    LuaContext* get_lua_context() const;
+    void set_lua_context(LuaContext* lua_context);
+    int get_finished_callback() const;
+    void set_finished_callback(int finished_callback_ref);
 };
 
 #endif

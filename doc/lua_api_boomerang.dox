@@ -1,0 +1,30 @@
+/**
+\page lua_api_boomerang Boomerang
+
+\tableofcontents
+
+A boomerang \ref lua_api_entity "map entity"
+is used to implement the
+\ref lua_api_hero "hero"'s boomerang state.
+
+This type of entity is entirely created and managed by the engine.
+You cannot create or access a boomerang from Lua.
+
+\section lua_api_boomerang_overview Overview
+
+A boomerang entity is created when you call
+\ref lua_api_hero_start_boomerang "hero:start_boomerang()".
+
+It can immobilize or hurt
+\ref lua_api_enemy "enemies" and activate mechanisms.
+
+Note that
+there is no predefined boomerang \ref lua_api_item "equipment item".
+It is your responsability to make one if you want.
+If you decide to make one, you will typically call
+\ref lua_api_hero "hero:start_boomerang()" from
+the \ref lua_api_item "item:on_using()" callback of
+your boomerang equipment item.
+
+*/
+

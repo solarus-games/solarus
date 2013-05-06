@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,16 +27,12 @@
  * The entity tries to find a path and to avoid the obstacles on the way.
  * To this end, the PathFinding class (i.e. an implementation of the A* algorithm) is used.
  * If the target entity is too far or not reachable, the movement is a random walk.
- *
- * Properties:
- * - speed
- * - displayed_direction (read-only)
  */
 class PathFindingMovement: public PathMovement {
 
   private:
 
-    MapEntity *target;              /**< the entity targeted by this movement (usually the hero) */
+    MapEntity* target;              /**< the entity targeted by this movement (usually the hero) */
     uint32_t next_recomputation_date;
 
   protected:
@@ -46,14 +42,13 @@ class PathFindingMovement: public PathMovement {
 
   public:
 
-    PathFindingMovement(MapEntity *target, int speed);
+    PathFindingMovement(int speed);
     ~PathFindingMovement();
 
+    void set_target(MapEntity& target);
     bool is_finished();
 
-    // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

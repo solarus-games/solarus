@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #define SOLARUS_HERO_RUNNING_STATE_H
 
 #include "hero/State.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief The state "Running" of the hero.
@@ -30,13 +30,13 @@ class Hero::RunningState: public Hero::State {
     int phase;                      /**< current phase of the run */
     uint32_t next_phase_date;       /**< date of the next phase */
     uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
-    GameControls::GameKey key;      /**< the key pressed to make the hero run */
+    GameCommands::Command command;      /**< the command pressed to make the hero run */
 
     bool is_bouncing();
 
   public:
 
-    RunningState(Hero& hero, GameControls::GameKey key);
+    RunningState(Hero& hero, GameCommands::Command command);
     ~RunningState();
 
     void start(State *previous_state);
@@ -44,7 +44,7 @@ class Hero::RunningState: public Hero::State {
     void update();
     void set_suspended(bool suspended);
     bool is_pressing_running_key();
-    void directional_key_pressed(int direction4);
+    void notify_direction_command_pressed(int direction4);
     void notify_obstacle_reached();
     int get_wanted_movement_direction8();
 

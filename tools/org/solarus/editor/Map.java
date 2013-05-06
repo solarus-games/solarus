@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,6 +21,9 @@ import java.io.*;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import org.luaj.vm2.*;
+import org.luaj.vm2.lib.*;
+import org.luaj.vm2.compiler.*;
 import org.solarus.editor.entities.*;
 
 /**
@@ -35,11 +38,6 @@ public class Map extends Observable {
      * Id of the map.
      */
     private String mapId;
-
-    /**
-     * Name of the map.
-     */
-    private String name;
 
     /**
      * Size of the map, in pixels (the width and the height
@@ -59,48 +57,25 @@ public class Map extends Observable {
 
     /**
      * Tileset of the map.
-     * The tileset is the set of small images (tiles) used to build the map. 
+     * The tileset is the set of small images (tiles) used to build the map.
      */
     private Tileset tileset;
 
     /**
-     * Index of the world where this map is:
-     * - 0 if the map is outside
-     * - -1 if the map is inside (by default)
-     * - 1 to 20 if the map is in a dungeon
+     * A name identifying the world where this map is.
+     * This can be used to link maps together.
      */
-    private int world;
+    private String world;
 
     /**
-     * The dungeon where this map is, if any.
+     * Floor of this map, or null if there is no floor.
      */
-    private Dungeon dungeon;
+    private Integer floor;
 
     /**
-     * Floor of this map:
-     * - a floor number between -16 and 15
-     * - -99: special value to indicate an unknown floor, displayed with '?'
-     * - -100: no floor (by default)
-     */
-    private int floor;
-
-    /**
-     * Location of this map in its floor or in its world. It is used to show
-     * Link's position on the map menu.
-     * - For a map in the outside world: coordinates of the top-left corner
-     *   of the map in the whole world.
-     * - For a map in the inside world: location of the map on the outside world.
-     * - For a map in a dungeon: coordinates of the top-left corner of the map
-     * in its floor.
+     * Location of this map in its floor or in its world.
      */
     private Point location;
-
-    /**
-     * Index of the variable of the savegame which stores the number of small keys
-     * of this map.
-     * A value of -1 indicates that this map has no small key counter.
-     */
-    private int smallKeysVariable;
 
     // content of the map
 
@@ -135,66 +110,91 @@ public class Map extends Observable {
      * Minimum height of a map in pixels.
      */
     public static final int MINIMUM_HEIGHT = 240;
-    
-    /**
-     * Creates a new map.
-     * @throws ZSDXException if the resource list could not be updated after the map creation
-     */
-    public Map() throws ZSDXException {
-	super();
-
-	this.size = new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT);
-	this.location = new Point(0, 0);
-	this.tileset = null;
-	this.tilesetId = "";
-	this.musicId = Music.unchangedId;
-	this.world = -1;
-	this.floor = -100;
-	this.smallKeysVariable = -1;
-
-	initialize();
-
-	// compute an id and a name for this map
-	this.name = "New map";
-	Resource mapResource = Project.getResource(ResourceType.MAP);
-	this.mapId = mapResource.computeNewId();
-
-	setChanged();
-	notifyObservers();
-    }
 
     /**
-     * Loads an existing map.
-     * @param mapId id of the map to load
-     * @throws ZSDXException if the map could not be loaded
+     * Creates or loads a map.
+     * @param mapId Id of the map to create (may be a new map or an existing one).
+     * @throws QuestEditorException if the map could not be loaded
      */
-    public Map(String mapId) throws ZSDXException {
-	this.mapId = mapId;
-	initialize();
-	load();
+    public Map(String mapId) throws QuestEditorException {
+
+        if (!isValidId(mapId)) {
+            throw new MapException("Invalid map ID: '" + mapId + "'");
+        }
+
+        this.size = new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT);
+        this.location = new Point(0, 0);
+        this.tileset = null;
+        this.tilesetId = "";
+        this.musicId = Music.unchangedId;
+        this.world = "";
+        this.floor = null;
+        this.mapId = mapId;
+        initialize();
+
+        load();
     }
 
     /**
      * Initializes the object.
      */
     private void initialize() {
-	this.allEntities = new MapEntities[3];
-	for (Layer layer: Layer.values()) {
-	    this.allEntities[layer.getId()] = new MapEntities();
-	}
+        this.allEntities = new MapEntities[3];
+        for (Layer layer: Layer.values()) {
+            this.allEntities[layer.getId()] = new MapEntities();
+        }
 
-	this.entitySelection = new MapEntitySelection(this);
-	this.history = new MapEditorHistory();
+        this.entitySelection = new MapEntitySelection(this);
+        this.history = new MapEditorHistory();
     }
-
+    /**
+     * Delete the files associated to a map
+     * @param id
+     */
+    public static void delete(String id) throws QuestEditorException {
+        File mapFile = Project.getMapFile(id);
+        if (!mapFile.delete()) {
+            throw new QuestEditorException("Can't remove the file " + mapFile.getAbsolutePath());
+        }
+        File mapScriptFile = Project.getMapScriptFile(id);
+        if (!mapScriptFile.delete()) {
+            throw new QuestEditorException("Can't remove the file " + mapScriptFile.getAbsolutePath());            
+        }
+    }
+    
     /**
      * Returns the id of the map.
      * @return the id of the map
      */
     public String getId() {
-	return mapId;
+        return mapId;
     }
 
+    /**
+     * @brief Returns whether a string is a valid map id.
+     * @param mapId The id to check.
+     * @return true if this is legal.
+     */
+    public static boolean isValidId(String mapId) {
+
+        if (mapId.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < mapId.length(); i++) {
+            char c = mapId.charAt(i);
+            if (!Character.isLetterOrDigit(c) && c != '_') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns a string representation of this tileset.
+     * @return The name of the tileset.
+     */
     @Override
     public String toString() {
         return getName();
@@ -202,23 +202,31 @@ public class Map extends Observable {
 
     /**
      * Returns the map name.
-     * @return the human name of the map
+     * @return The human name of the map.
      */
     public String getName() {
-	return name;
+        Resource mapResource = Project.getResource(ResourceType.MAP);
+        String name = mapId;
+        
+        try {
+            name = mapResource.getElementName(mapId);
+        }
+        catch (QuestEditorException ex) {
+            // Cannot happen: the map id must be valid.
+            ex.printStackTrace();
+        }
+        return name;
     }
 
     /**
-     * Changes the name of the map
-     * @param name new name of the map
+     * Changes the name of the map.
+     * @param name New human-readable name of the map.
      */
-    public void setName(String name) {
+    public void setName(String name) throws QuestEditorException {
 
-	if (!name.equals(this.name)) {
-	    this.name = name;
-	    setChanged();
-	    notifyObservers();
-	}
+        if (!name.equals(getName())) {
+            Project.renameResourceElement(ResourceType.MAP, mapId, name);
+        }
     }
 
     /**
@@ -226,7 +234,7 @@ public class Map extends Observable {
      * @return the map history
      */
     public MapEditorHistory getHistory() {
-	return history;
+        return history;
     }
 
     /**
@@ -234,7 +242,7 @@ public class Map extends Observable {
      * @return the map size (in pixels)
      */
     public Dimension getSize() {
-	return size;
+        return size;
     }
 
     /**
@@ -242,7 +250,7 @@ public class Map extends Observable {
      * @return the map width (in pixels)
      */
     public int getWidth() {
-	return size.width;
+        return size.width;
     }
 
     /**
@@ -250,7 +258,7 @@ public class Map extends Observable {
      * @return the map height (in pixels)
      */
     public int getHeight() {
-	return size.height;
+        return size.height;
     }
 
     /**
@@ -262,33 +270,33 @@ public class Map extends Observable {
      * @throws MapException if the width or the height is incorrect
      */
     public void setSize(Dimension size) throws MapException {
-	if (size.width < MINIMUM_WIDTH || size.height < MINIMUM_HEIGHT) {
-	    throw new RuntimeException("The minimum size of a map is " +
-		    MINIMUM_WIDTH + '*' + MINIMUM_HEIGHT + '.');
-	}
+        if (size.width < MINIMUM_WIDTH || size.height < MINIMUM_HEIGHT) {
+            throw new RuntimeException("The minimum size of a map is " +
+                    MINIMUM_WIDTH + '*' + MINIMUM_HEIGHT + '.');
+        }
 
-	if (size.width < MINIMUM_WIDTH || size.height < MINIMUM_HEIGHT) {
-	    throw new MapException("The minimum size of a map is " +
-		    MINIMUM_WIDTH + '*' + MINIMUM_HEIGHT + '.');
-	}
+        if (size.width < MINIMUM_WIDTH || size.height < MINIMUM_HEIGHT) {
+            throw new MapException("The minimum size of a map is " +
+                    MINIMUM_WIDTH + '*' + MINIMUM_HEIGHT + '.');
+        }
 
-	if (size.width % 8 != 0 || size.height % 8 != 0) {
-	    throw new MapException("The width and the height of the map must be multiples of 8.");
-	}
+        if (size.width % 8 != 0 || size.height % 8 != 0) {
+            throw new MapException("The width and the height of the map must be multiples of 8.");
+        }
 
-	this.size = size;
+        this.size = size;
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
      * Returns the tileset associated to this map.
-     * The tileset is the set of small images (tiles) used to build the map. 
+     * The tileset is the set of small images (tiles) used to build the map.
      * @return the tileset (null if no tileset is set)
      */
     public Tileset getTileset() {
-	return tileset;
+        return tileset;
     }
 
     /**
@@ -296,7 +304,7 @@ public class Map extends Observable {
      * @return the tileset id (or an empty string if no tileset is set)
      */
     public String getTilesetId() {
-	return tilesetId;
+        return tilesetId;
     }
 
     /**
@@ -306,196 +314,103 @@ public class Map extends Observable {
      * not be loaded in this tileset
      * @throws MapException if this tileset could be applied
      */
-    public boolean setTileset(String tilesetId) throws ZSDXException {
+    public boolean setTileset(String tilesetId) throws QuestEditorException {
 
-	this.badTiles = false;
+        this.badTiles = false;
 
-	// if the tileset is removed
-	if (tilesetId.length() == 0 && this.tilesetId.length() != 0) {
+        // if the tileset is removed
+        if (tilesetId.length() == 0 && this.tilesetId.length() != 0) {
 
-	    this.tilesetId = tilesetId;
-	    this.tileset = null;
+            this.tilesetId = tilesetId;
+            this.tileset = null;
 
-	    setChanged();
-	    notifyObservers();
-	}
+            setChanged();
+            notifyObservers();
+        }
 
-	// if the tileset is changed
-	else if (!tilesetId.equals(this.tilesetId)) {
+        // if the tileset is changed
+        else if (!tilesetId.equals(this.tilesetId)) {
 
-	    this.tileset = new Tileset(tilesetId);
+            this.tileset = new Tileset(tilesetId);
 
-	    for (Layer layer: Layer.values()) {
+            for (Layer layer: Layer.values()) {
 
-		LinkedList<MapEntity> entitiesToRemove = new LinkedList<MapEntity>(); 
-		for (MapEntity entity: allEntities[layer.getId()]) {
+                LinkedList<MapEntity> entitiesToRemove = new LinkedList<MapEntity>();
+                for (MapEntity entity: allEntities[layer.getId()]) {
 
-		    try {
-			entity.setTileset(tileset);
-		    }
-		    catch (NoSuchTilePatternException ex) {
-			// the entity is not valid anymore, we should remove it from the map
-			entitiesToRemove.add(entity);
-			badTiles = true;
-		    }
-		}
+                    try {
+                        entity.setTileset(tileset);
+                    }
+                    catch (NoSuchTilePatternException ex) {
+                        // the entity is not valid anymore, we should remove it from the map
+                        entitiesToRemove.add(entity);
+                        badTiles = true;
+                    }
+                }
 
-		for (MapEntity entity: entitiesToRemove) {
-		    allEntities[layer.getId()].remove(entity);
-		}
-	    }
+                for (MapEntity entity: entitiesToRemove) {
+                    allEntities[layer.getId()].remove(entity);
+                }
+            }
 
-	    this.tilesetId = tilesetId;
+            this.tilesetId = tilesetId;
 
-	    setChanged();
-	    notifyObservers(tileset);
-	}
+            setChanged();
+            notifyObservers(tileset);
+        }
 
-	return !badTiles;
+        return !badTiles;
     }
 
     /**
-     * Returns the index of the world where this map is.
-     * @return the world index: 0 if the map is outside, -1 if it is inside,
-     * 1 to 20 if it is in a dungeon
+     * Returns the world where this map is.
+     * @return the world of this map
      */
-    public int getWorld() {
-	return world;
-    }
-    
-    /**
-     * Returns whether this map belongs to a dungeon.
-     * @return true if this map is in a dungeon
-     */
-    public boolean isInDungeon() {
-	return world > 0;
+    public String getWorld() {
+        return world;
     }
 
-    /**
-     * Returns whether this map belongs to the outside world.
-     * @return true if this map is in the outside world
-     */
-    public boolean isInOutsideWorld() {
-	return world == 0;
-    }
-    
     /**
      * Sets the world where this map is.
-     * @param world the world index: 0 if the map is outside, -1 if it is inside,
-     * 1 to 20 if it is in a dungeon
-     * @throws MapException if the specified world is incorrect
+     * @param world name of the world (cannot be null)
      */
-    public void setWorld(int world) throws MapException {
+    public void setWorld(String world) {
 
-	if (world != this.world) {
-
-	    if (world > 20 || world < -1) {
-		throw new MapException("Invalid world: " + world);
-	    }
-
-	    this.world = world;
-
-	    if (!isInDungeon()) { // no dungeon : no floor by default
-		setFloor(-100);
-	    }
-	    else { // dungeon: first floor by default
-		dungeon = new Dungeon(world);
-		setFloor(dungeon.getDefaultFloor());
-		setSmallKeysVariable(205 + 10 * (world - 1));
-	    }
-
-	    setChanged();
-	    notifyObservers();
-	}
+        if (world == null) {
+            throw new NullPointerException();
+        }
+        if (!world.equals(this.world)) {
+            this.world = world;
+            setChanged();
+            notifyObservers();
+        }
     }
-    
-    /**
-     * Returns the dungeon where this map is.
-     * @return the dungeon of this map, or null if the map is not in a dungeon
-     */
-    public Dungeon getDungeon() {
-	return dungeon;
-    }
-    
+
     /**
      * Returns the floor of this map.
-     * @return the floor
+     * @return the floor or null.
      */
-    public int getFloor() {
+    public Integer getFloor() {
         return floor;
     }
 
     /**
+     * Returns whether this map belongs to a floor.
+     * @return true if there is a floor.
+     */
+    public boolean hasFloor() {
+        return floor != null;
+    }
+
+    /**
      * Sets the floor of this map.
-     * @param floor the floor: -100 for no floor, -99 for the unknown floor,
-     * -16 to 15 for a normal floor
-     * @throws MapException if you specify a floor on the oustide world
-     * or if you specify an invalid floor
+     * @param floor the floor (null for no floor)
      */
-    public void setFloor(int floor) throws MapException {
+    public void setFloor(Integer floor) throws MapException {
 
-	if (floor != this.floor) {
-
-	    if (floor != -100 && floor != -99 && (floor < -16 || floor > 15)) {
-		throw new MapException("Invalid floor: " + floor);
-	    }
-
-	    if (isInOutsideWorld() && floor != -100) {
-		throw new MapException("Cannot specify a floor in the outside world");
-	    }
-
-	    else if (isInDungeon() && floor != -99 && !getDungeon().hasFloor(floor)) {
-		throw new MapException("This floor does not exists in this dungeon");
-	    }
-
-	    this.floor = floor;
-	    setChanged();
-	    notifyObservers();
-	}
-    }
-
-    /**
-     * Returns the index of the savegame variable that stores
-     * the counter of small keys for this map.
-     * @return the variable of the small key counter, or -1 if the small
-     * keys are not enabled for this map
-     */
-    public int getSmallKeysVariable() {
-        return smallKeysVariable;
-    }
-    
-    /**
-     * Returns whether the small keys are enabled in this map, i.e. whether
-     * getSmallKeysVariable() does not return -1. 
-     * @return true if the small keys are enabled in this map
-     */
-    public boolean hasSmallKeys() {
-	return getSmallKeysVariable() != -1;
-    }
-
-    /**
-     * Sets the index of the savegame variable that stores
-     * the counter of small keys for this map.
-     * -1 means that the small keys are not enabled on this map.
-     * @param keysSavegameVariable the variable of the small key counter
-     * @throws MapException if the specified value is not valid
-     */
-    public void setSmallKeysVariable(int smallKeysVariable) throws MapException {
-
-	if (smallKeysVariable != this.smallKeysVariable) {
-
-	    if (smallKeysVariable < -1 || smallKeysVariable > 2048) {
-		throw new MapException("Incorrect variable to save the small keys: " + smallKeysVariable);
-	    }
-
-	    if (isInDungeon() && smallKeysVariable != 205 + 10 * (getWorld() - 1)) {
-		throw new MapException("Cannot change the variable to save the small keys because this map is in a dungeon");
-	    }
-
-	    this.smallKeysVariable = smallKeysVariable;
-	    setChanged();
-	    notifyObservers();
-	}
+        this.floor = floor;
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -512,8 +427,8 @@ public class Map extends Observable {
      */
     public void setLocation(Point location) {
         this.location = location;
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -522,14 +437,14 @@ public class Map extends Observable {
      */
     public int getNbEntities() {
 
-	int nbEntities = 0;
+        int nbEntities = 0;
 
-	// count the entities of each layer
-	for (Layer layer: Layer.values()) {
-	    nbEntities += allEntities[layer.getId()].size();
-	}
+        // count the entities of each layer
+        for (Layer layer: Layer.values()) {
+            nbEntities += allEntities[layer.getId()].size();
+        }
 
-	return nbEntities;
+        return nbEntities;
     }
 
     /**
@@ -538,14 +453,14 @@ public class Map extends Observable {
      */
     public int getNbTiles() {
 
-	int nbTiles = 0;
+        int nbTiles = 0;
 
-	// count the tiles of each layer
-	for (Layer layer: Layer.values()) {
-	    nbTiles += allEntities[layer.getId()].getNbTiles();
-	}
+        // count the tiles of each layer
+        for (Layer layer: Layer.values()) {
+            nbTiles += allEntities[layer.getId()].getNbTiles();
+        }
 
-	return nbTiles;
+        return nbTiles;
     }
 
     /**
@@ -554,14 +469,14 @@ public class Map extends Observable {
      */
     public int getNbDynamicEntities() {
 
-	int nbDynamicEntities = 0;
+        int nbDynamicEntities = 0;
 
-	// count the dynamic entities of each layer
-	for (Layer layer: Layer.values()) {
-	    nbDynamicEntities += allEntities[layer.getId()].getNbDynamicEntities();
-	}
+        // count the dynamic entities of each layer
+        for (Layer layer: Layer.values()) {
+            nbDynamicEntities += allEntities[layer.getId()].getNbDynamicEntities();
+        }
 
-	return nbDynamicEntities;
+        return nbDynamicEntities;
     }
 
     /**
@@ -569,7 +484,7 @@ public class Map extends Observable {
      * @return an array of 3 MapEntity sets: a set for each layer
      */
     public MapEntities[] getAllEntities() {
-	return allEntities;
+        return allEntities;
     }
 
     /**
@@ -578,12 +493,12 @@ public class Map extends Observable {
      */
     public void setAllEntities(MapEntities[] allEntities) {
 
-	for (Layer layer: Layer.values()) {
-	    this.allEntities[layer.getId()] = new MapEntities(allEntities[layer.getId()]);
-	}
+        for (Layer layer: Layer.values()) {
+            this.allEntities[layer.getId()] = new MapEntities(allEntities[layer.getId()]);
+        }
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -592,7 +507,7 @@ public class Map extends Observable {
      * @return the entities placed on that layer
      */
     public MapEntities getEntities(Layer layer) {
-	return allEntities[layer.getId()];
+        return allEntities[layer.getId()];
     }
 
     /**
@@ -602,11 +517,11 @@ public class Map extends Observable {
      */
     public List<MapEntity> getEntitiesOfType(EntityType entityType) {
 
-	List<MapEntity> list = new LinkedList<MapEntity>();
-	for (Layer layer: Layer.values()) {
-	    list.addAll(allEntities[layer.getId()].getEntitiesOfType(entityType));
-	}
-	return list;
+        List<MapEntity> list = new LinkedList<MapEntity>();
+        for (Layer layer: Layer.values()) {
+            list.addAll(allEntities[layer.getId()].getEntitiesOfType(entityType));
+        }
+        return list;
     }
 
     /**
@@ -617,18 +532,18 @@ public class Map extends Observable {
      * @return the entity found, or null if there is no entity here
      */
     public MapEntity getEntityAt(Layer layer, int x, int y) {
-		
-	MapEntities entities = allEntities[layer.getId()];
-	ListIterator<MapEntity> iterator = entities.listIterator(entities.size());
-	while (iterator.hasPrevious()) {
 
-	    MapEntity entity = iterator.previous();
-	    if (entity.containsPoint(x, y)) {
-		return entity;
-	    }
-	}
+        MapEntities entities = allEntities[layer.getId()];
+        ListIterator<MapEntity> iterator = entities.listIterator(entities.size());
+        while (iterator.hasPrevious()) {
 
-	return null;
+            MapEntity entity = iterator.previous();
+            if (entity.containsPoint(x, y)) {
+                return entity;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -641,14 +556,14 @@ public class Map extends Observable {
     public Layer getLayerInRectangle(Rectangle rectangle) {
 
         Layer[] layers = { Layer.HIGH, Layer.INTERMEDIATE, Layer.LOW };
-	for (Layer layer: layers) {
-	    for (MapEntity entity: allEntities[layer.getId()]) {
-		if (rectangle.intersects(entity.getPositionInMap())) {
-		    return layer;
-		}
-	    }
-	}
-	return Layer.LOW;
+        for (Layer layer: layers) {
+            for (MapEntity entity: allEntities[layer.getId()]) {
+                if (rectangle.intersects(entity.getPositionInMap())) {
+                    return layer;
+                }
+            }
+        }
+        return Layer.LOW;
     }
 
     /**
@@ -660,44 +575,43 @@ public class Map extends Observable {
      */
     public List<MapEntity> getEntitiesInRectangle(int x1, int y1, int x2, int y2) {
 
-	List<MapEntity> entitiesInRectangle = new LinkedList<MapEntity>();
+        List<MapEntity> entitiesInRectangle = new LinkedList<MapEntity>();
 
-	int x = Math.min(x1, x2);
-	int width = Math.abs(x2 - x1);
+        int x = Math.min(x1, x2);
+        int width = Math.abs(x2 - x1);
 
-	int y = Math.min(y1, y2);
-	int height = Math.abs(y2 - y1);
+        int y = Math.min(y1, y2);
+        int height = Math.abs(y2 - y1);
 
-	Rectangle rectangle = new Rectangle(x, y, width, height);
+        Rectangle rectangle = new Rectangle(x, y, width, height);
 
-	for (Layer layer: Layer.values()) {
+        for (Layer layer: Layer.values()) {
 
-	    for (MapEntity entity: allEntities[layer.getId()]) {
-		if (rectangle.contains(entity.getPositionInMap())) {
-		    entitiesInRectangle.add(entity);
-		}
-	    }
-	}
+            for (MapEntity entity: allEntities[layer.getId()]) {
+                if (rectangle.contains(entity.getPositionInMap())) {
+                    entitiesInRectangle.add(entity);
+                }
+            }
+        }
 
-	return entitiesInRectangle;
+        return entitiesInRectangle;
     }
-    
-    /**
-     * Returns an entity, specifying its type and its name.
-     * @param type the type of entity
-     * @param name the name of the entity
-     * @return the entity, or null if there is no entity with this name
-     */
-    public MapEntity getEntityWithName(EntityType type, String name) {
 
-	for (Layer layer: Layer.values()) {
-	    MapEntity entity = allEntities[layer.getId()].getEntityWithName(type, name);
-	    if (entity != null) {
-		return entity;
-	    }
-	}
-	
-	return null;
+    /**
+     * Returns an entity, specifying its name.
+     * @param name The name of the entity to get (cannot be null)
+     * @return The entity, or null if there is no entity with this name
+     */
+    public MapEntity getEntityWithName(String name) {
+
+        for (Layer layer: Layer.values()) {
+            MapEntity entity = allEntities[layer.getId()].getEntityWithName(name);
+            if (entity != null) {
+                return entity;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -706,10 +620,10 @@ public class Map extends Observable {
      */
     public void addEntity(MapEntity entity) {
 
-	allEntities[entity.getLayer().getId()].add(entity);
+        allEntities[entity.getLayer().getId()].add(entity);
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -718,10 +632,10 @@ public class Map extends Observable {
      */
     public void removeEntity(MapEntity entity) {
 
-	allEntities[entity.getLayer().getId()].remove(entity);
+        allEntities[entity.getLayer().getId()].remove(entity);
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -733,11 +647,27 @@ public class Map extends Observable {
      * @throws MapException if the coordinates are not multiple of 8
      */
     public void setEntityPosition(MapEntity entity, int x, int y) throws MapException {
-	entity.setPositionInMap(x, y);
-	entity.updateImageDescription();
+        entity.setPositionInMap(x, y);
+        entity.updateImageDescription();
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Changes the position of an entity on the map, by specifying the coordinates
+     * of its origin point.
+     * @param entity an entity
+     * @param x x coordinate of the origin point
+     * @param y y coordinate of the origin point
+     * @throws MapException if the coordinates are not multiple of 8
+     */
+    public void setEntityPositionUnchecked(MapEntity entity, int x, int y) {
+        entity.setPositionInMapUnchecked(x, y);
+        entity.updateImageDescription();
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -753,10 +683,10 @@ public class Map extends Observable {
      * or its height is zero or the coordinates or the coordinates are not multiple of 8
      */
     public void setEntityPosition(MapEntity entity, int x1, int y1, int x2, int y2) throws MapException {
-	entity.setPositionInMap(x1, y1, x2, y2);
+        entity.setPositionInMap(x1, y1, x2, y2);
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -768,10 +698,10 @@ public class Map extends Observable {
      * or its height is zero
      */
     public void setEntityPosition(MapEntity entity, Rectangle position) throws MapException {
-	entity.setPositionInMap(position);
+        entity.setPositionInMap(position);
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -784,10 +714,10 @@ public class Map extends Observable {
      * or the size specified is not divisible by 8
      */
     public void setEntitySize(MapEntity entity, int width, int height) throws MapException {
-	entity.setSize(width, height);
+        entity.setSize(width, height);
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -798,13 +728,14 @@ public class Map extends Observable {
      * @throws MapException if the coordinates of an entity are not multiple of 8
      */
     public void moveEntities(List<MapEntity> entities, int dx, int dy) throws MapException {
-			  
-	for (MapEntity entity: entities) {
-	    entity.move(dx, dy);
-	}
 
-	setChanged();
-	notifyObservers();
+        for (MapEntity entity: entities) {
+            entity.setAlignedToGrid();
+            entity.move(dx, dy);
+        }
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -815,16 +746,16 @@ public class Map extends Observable {
      */
     public void setEntityDirection(MapEntity entity, int direction) throws MapException {
 
-	int oldDirection = entity.getDirection();
+        int oldDirection = entity.getDirection();
 
-	if (direction != oldDirection) {
-	    
-	    entity.setDirection(direction);
-	    entity.updateImageDescription();
-	    
-	    setChanged();
-	    notifyObservers();
-	}
+        if (direction != oldDirection) {
+
+            entity.setDirection(direction);
+            entity.updateImageDescription();
+
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -838,18 +769,18 @@ public class Map extends Observable {
      */
     public void setEntityLayer(MapEntity entity, Layer layer) {
 
-	Layer oldLayer = entity.getLayer();
+        Layer oldLayer = entity.getLayer();
 
-	if (layer != oldLayer) {
-	    entity.setLayer(layer);
+        if (layer != oldLayer) {
+            entity.setLayer(layer);
 
-	    if (allEntities[oldLayer.getId()].remove(entity)) {
-		allEntities[layer.getId()].add(entity);
-	    }
+            if (allEntities[oldLayer.getId()].remove(entity)) {
+                allEntities[layer.getId()].add(entity);
+            }
 
-	    setChanged();
-	    notifyObservers();
-	}
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -860,22 +791,22 @@ public class Map extends Observable {
      */
     public List<MapEntity> getSortedEntities(List<MapEntity> entities) {
 
-	List<MapEntity> sortedEntities = new LinkedList<MapEntity>();
+        List<MapEntity> sortedEntities = new LinkedList<MapEntity>();
 
-	// sort the entities so that they have the same order as in the map
-	for (Layer layer: Layer.values()) {
+        // sort the entities so that they have the same order as in the map
+        for (Layer layer: Layer.values()) {
 
-	    for (MapEntity entity: allEntities[layer.getId()]) {
+            for (MapEntity entity: allEntities[layer.getId()]) {
 
-		if (entities.contains(entity)) {
-		    sortedEntities.add(entity);
-		}
-	    }
-	}
+                if (entities.contains(entity)) {
+                    sortedEntities.add(entity);
+                }
+            }
+        }
 
-	// now sortedEntities contains all entities of the list,
-	// sorted in the same order as in the map
-	return sortedEntities;
+        // now sortedEntities contains all entities of the list,
+        // sorted in the same order as in the map
+        return sortedEntities;
     }
 
     /**
@@ -885,20 +816,20 @@ public class Map extends Observable {
      */
     public void bringToBack(List<MapEntity> entities) {
 
-	List<MapEntity> sortedEntities = getSortedEntities(entities);
+        List<MapEntity> sortedEntities = getSortedEntities(entities);
 
-	// bring to back each entity from sortedEntities
-	ListIterator<MapEntity> iterator = sortedEntities.listIterator(sortedEntities.size());
-	while (iterator.hasPrevious()) {
+        // bring to back each entity from sortedEntities
+        ListIterator<MapEntity> iterator = sortedEntities.listIterator(sortedEntities.size());
+        while (iterator.hasPrevious()) {
 
-	    MapEntity entity = iterator.previous();
-	    Layer layer = entity.getLayer();
-	    allEntities[layer.getId()].remove(entity);
-	    allEntities[layer.getId()].addFirst(entity);
-	}
+            MapEntity entity = iterator.previous();
+            Layer layer = entity.getLayer();
+            allEntities[layer.getId()].remove(entity);
+            allEntities[layer.getId()].addFirst(entity);
+        }
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -908,20 +839,28 @@ public class Map extends Observable {
      */
     public void bringToFront(List<MapEntity> entities) {
 
-	List<MapEntity> sortedEntities = getSortedEntities(entities);
+        List<MapEntity> sortedEntities = getSortedEntities(entities);
 
-	// bring to front each entity from sortedEntities
-	ListIterator<MapEntity> iterator = sortedEntities.listIterator(0);
-	while (iterator.hasNext()) {
+        // bring to front each entity from sortedEntities
+        ListIterator<MapEntity> iterator = sortedEntities.listIterator(0);
+        while (iterator.hasNext()) {
 
-	    MapEntity entity = iterator.next();
-	    Layer layer = entity.getLayer();
-	    allEntities[layer.getId()].remove(entity);
-	    allEntities[layer.getId()].addLast(entity);
-	}
+            MapEntity entity = iterator.next();
+            Layer layer = entity.getLayer();
+            allEntities[layer.getId()].remove(entity);
+            allEntities[layer.getId()].addLast(entity);
+        }
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Returns whether this map has a background music.
+     * @return true if the music of this map is different from Music.noneId.
+     */
+    public boolean hasMusic() {
+        return !musicId.equals(Music.noneId);
     }
 
     /**
@@ -930,7 +869,7 @@ public class Map extends Observable {
      * or Music.noneId or Music.unchangedId
      */
     public String getMusic() {
-	return musicId;
+        return musicId;
     }
 
     /**
@@ -940,13 +879,13 @@ public class Map extends Observable {
      */
     public void setMusic(String musicId) {
 
-	if (!musicId.equals(this.musicId)) {
+        if (!musicId.equals(this.musicId)) {
 
-	    this.musicId = musicId;
+            this.musicId = musicId;
 
-	    setChanged();
-	    notifyObservers();
-	}
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -954,7 +893,7 @@ public class Map extends Observable {
      * @return the entities selected by the user
      */
     public MapEntitySelection getEntitySelection() {
-	return entitySelection;
+        return entitySelection;
     }
 
     /**
@@ -964,178 +903,200 @@ public class Map extends Observable {
      * were loaded successfuly.
      */
     public boolean badTiles() {
-	return badTiles;
+        return badTiles;
     }
 
     /**
      * Checks that the map is valid, i.e. that it can be played without risk.
      * @throws MapException if the map is not valid (e.g. no tileset is selected,
-     * or some entities are not in a valid state). 
+     * or some entities are not in a valid state).
      */
     public void checkValidity() throws MapException {
 
-	// check that a tileset is selected
-	if (tilesetId.length() == 0) {
-	    throw new MapException("No tileset is selected");
-	}
+        // check that a tileset is selected
+        if (tilesetId.isEmpty()) {
+            throw new MapException("No tileset is selected");
+        }
 
-	// check that all entities are valid
-	for (MapEntities entities: allEntities) {
-	    for (MapEntity entity: entities) {
-		if (!entity.isValid()) {
-		    throw new InvalidEntityException("The map contains an invalid entity.", entity);
-		}
-	    }
-	}
+        if (world.isEmpty()) {
+            throw new MapException("No world is set");
+        }
+
+        // check that all entities are valid
+        for (MapEntities entities: allEntities) {
+            for (MapEntity entity: entities) {
+                try {
+                    entity.checkValidity();
+                }
+                catch (MapException ex) {
+                    throw new InvalidEntityException(ex.getMessage(), entity);
+                }
+            }
+        }
     }
-    
+
     /**
      * Loads the map from its file.
-     * @throws ZSDXException if the file could not be read
+     * @throws QuestEditorException if the file could not be read
      */
-    public void load() throws ZSDXException {
-	
-	int lineNumber = 0;
-	try {
+    public void load() throws QuestEditorException {
+        try {
+            File mapFile = Project.getMapFile(mapId);
+            LuaC.install();
+            LuaTable environment = LuaValue.tableOf();
 
-	    // get the map name in the game resource database
-	    Resource mapResource = Project.getResource(ResourceType.MAP);
-	    setName(mapResource.getElementName(mapId));
-	    
-	    File mapFile = Project.getMapFile(mapId);
-	    BufferedReader in = new BufferedReader(new FileReader(mapFile));
+            environment.set("properties", new PropertiesFunction());
+            for (EntityType entityType: EntityType.values()) {
+              environment.set(entityType.getLuaName(), new MapEntityCreationFunction(entityType));
+            }
 
-	    // read the map general info
-	    // syntax: width height world floor x y small_keys_variable tileset_id music_id
-	    String line = in.readLine();
+            LuaFunction code = LoadState.load(new FileInputStream(mapFile),
+                "map", environment);
+            code.call();
+        }
+        catch (IOException ex) {
+            throw new QuestEditorException(ex.getMessage());
+        }
+        catch (LuaError ex) {
+            throw new QuestEditorException(ex.getCause().getMessage());
+        }
 
-	    if (line == null) {
-		throw new ZSDXException("The map file is empty");
-	    }
-
-	    lineNumber++;
-	    StringTokenizer tokenizer = new StringTokenizer(line);
-
-	    int width = Integer.parseInt(tokenizer.nextToken());
-	    int height = Integer.parseInt(tokenizer.nextToken());
-	    setSize(new Dimension(width, height));
-
-	    setWorld(Integer.parseInt(tokenizer.nextToken()));	    
-	    setFloor(Integer.parseInt(tokenizer.nextToken()));
-	    
-	    int x = Integer.parseInt(tokenizer.nextToken());
-	    int y = Integer.parseInt(tokenizer.nextToken());
-	    setLocation(new Point(x, y));
-
-	    setSmallKeysVariable(Integer.parseInt(tokenizer.nextToken()));
-	    setTileset(tokenizer.nextToken());
-	    setMusic(tokenizer.nextToken());
-
-	    // read the map entities
-	    line = in.readLine();
-	    while (line != null) {
-		lineNumber++;
-
-		try {
-		    MapEntity entity = MapEntity.createFromString(this, line);
-		    addEntity(entity);
-		}
-		catch (NoSuchTilePatternException ex) {
-		    badTiles = true;
-		}
-		line = in.readLine();
-	    }
-
-	    in.close();
-
-	    history.setSaved();
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Line " + lineNumber + ": Integer expected");
-	}
-	catch (IndexOutOfBoundsException ex) {
-	    throw new ZSDXException("Line " + lineNumber + ": Value expected");
-	}
-	catch (ZSDXException ex) {
-	    throw new ZSDXException("Line " + lineNumber + ": " + ex.getMessage());
-	}
-	catch (IOException ex) {
-	    throw new ZSDXException(ex.getMessage());
-	}
-
-	setChanged();
-	notifyObservers();
+        history.setSaved();
+        setChanged();
+        notifyObservers();
     }
 
     /**
      * Saves the map into its file.
-     * @throws ZSDXException if the file could not be written for various reasons
+     * @throws QuestEditorException if the file could not be written for various reasons
      */
-    public void save() throws ZSDXException {
+    public void save() throws QuestEditorException {
 
-	// check that the map is valid
-	checkValidity();
+        // check that the map is valid
+        checkValidity();
+        
+        try {
+            // Open the map file in writing.
+            File mapFile = Project.getMapFile(mapId);
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));
 
-	try {
+            // Print the map general info.
+            out.println("properties{");
+            out.println("  x = " + getLocation().x + ",");
+            out.println("  y = " + getLocation().y + ",");
+            out.println("  width = " + getWidth() + ",");
+            out.println("  height = " + getHeight() + ",");
+            out.println("  world = \"" + getWorld() + "\",");
+            if (hasFloor()) {
+                out.println("  floor = " + getFloor() + ",");
+            }
+            out.println("  tileset = \"" + getTilesetId() + "\",");
+            if (hasMusic()) {
+                out.println("  music = \"" + getMusic() + "\",");
+            }
+            out.println("}");
+            out.println();
 
-	    // open the map file
-	    File mapFile = Project.getMapFile(mapId);
-	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));
+            for (Layer layer: Layer.values()) {
 
-	    // print the map general info
-	    // syntax: width height world floor x y small_keys_variable tileset_id music_id
-	    out.print(size.width);
-	    out.print('\t');
-	    out.print(size.height);
-	    out.print('\t');
-	    out.print(world);
-	    out.print('\t');
-	    out.print(floor);
-	    out.print('\t');
-	    out.print(location.x);
-	    out.print('\t');
-	    out.print(location.y);
-	    out.print('\t');
-	    out.print(smallKeysVariable);
-	    out.print('\t');
-	    out.print(tilesetId);
-	    out.print('\t');
-	    out.print(musicId);
-	    out.println();
+                MapEntities entities = allEntities[layer.getId()];
 
-	    for (Layer layer: Layer.values()) {
+                // Print the entities.
+                for (MapEntity entity: entities) {
+                    entity.saveAsLua(out);
+                }
+            }
 
-		MapEntities entities = allEntities[layer.getId()];
+            out.close();
 
-		// print the entities
-		for (MapEntity entity: entities) {
-		    out.print(entity.toString());
-		    out.println();
-		}
-	    }
+            history.setSaved();
+        }
+        catch (IOException ex) {
+            throw new MapException(ex.getMessage());
+        }
+    }
+    
+    /**
+     * @brief Lua function properties() called by the map data file.
+     */
+    private class PropertiesFunction extends OneArgFunction {
 
-	    out.close();
+        public LuaValue call(LuaValue arg) {
 
-	    history.setSaved();
+            try {
+                LuaTable table = arg.checktable();
+    
+                int x = table.get("x").checkint();
+                int y = table.get("y").checkint();
+                int width = table.get("width").checkint();
+                int height = table.get("height").checkint();
+                String world = table.get("world").checkjstring();
+                Integer floor = null;
+                if (!table.get("floor").isnil()) {
+                  floor = table.get("floor").checkint();
+                }
+                String tilesetId = table.get("tileset").checkjstring();
+                String musicId = table.get("music").optjstring(Music.noneId);
 
-	    // also update the map name in the global resource list
-	    Resource mapResource = Project.getResource(ResourceType.MAP);
-	    mapResource.setElementName(mapId, name);
-	    Project.getResourceDatabase().save();
-	    
-	    // upate the dungeon elements of this map
-	    if (isInDungeon()) {
-		Dungeon.saveMapInfo(this);
-	    }
+                setSize(new Dimension(width, height));
+                setWorld(world);
+                setFloor(floor);
+                setLocation(new Point(x, y));
+                setTileset(tilesetId);
+                setMusic(musicId);
+    
+                return LuaValue.NIL;
+            }
+            catch (QuestEditorException ex) {
+                // Error in the input file.
+                throw new LuaError(ex);
+            }
+            catch (Exception ex) {
+                // Error in the editor.
+                ex.printStackTrace();
+                throw new LuaError(ex);
+            }
+        }
+    }
 
-	    // create a script for the map if necessary
-	    File scriptFile = Project.getMapScriptFile(mapId);
-	    if (!scriptFile.exists()) {
-		scriptFile.createNewFile();
-	    }
-	}
-	catch (IOException ex) {
-	    throw new MapException(ex.getMessage());
-	}
+    /**
+     * @brief Lua function called by the map data file to define a map entity.
+     */
+    private class MapEntityCreationFunction extends OneArgFunction {
+
+        private EntityType type;
+
+        /**
+         * @brief Constructor for a specified type of entity.
+         * @param type The type of entity to create.
+         */
+        public MapEntityCreationFunction(EntityType type) {
+            super();
+            this.type = type;
+        }
+
+        public LuaValue call(LuaValue arg) {
+
+            try {
+                LuaTable table = arg.checktable();
+                MapEntity entity = MapEntity.create(Map.this, type, type.getDefaultSubtype());
+                entity.loadFromLua(table);
+                addEntity(entity);
+            }
+            catch (NoSuchTilePatternException ex) {
+                badTiles = true;
+            }
+            catch (QuestEditorException ex) {
+                // Error in the input file.
+                throw new LuaError(ex);
+            }
+            catch (Exception ex) {
+                // Error in the editor.
+                ex.printStackTrace();
+                throw new LuaError(ex);
+            }
+            return LuaValue.NIL;
+        }
     }
 }
+

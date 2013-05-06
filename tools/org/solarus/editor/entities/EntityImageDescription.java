@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,15 +38,15 @@ public class EntityImageDescription {
      * Constructor.
      * @param imageFileName name of the file containing the source image
      * @param x x coordinate of the top-left corner of the rectangle to extract
-     * @param y y coordinate of the top-left corner of the rectangle to extract 
+     * @param y y coordinate of the top-left corner of the rectangle to extract
      * @param width width of the rectangle
      * @param height height of the rectangle
      */
     public EntityImageDescription(String imageFileName, int x, int y, int width, int height) {
-	this.rectangle = new Rectangle(x, y, width, height);
-	this.image = null;
-	this.imageFileName = imageFileName;
-	this.relativeToEditor = true;
+        this.rectangle = new Rectangle(x, y, width, height);
+        this.image = null;
+        this.imageFileName = imageFileName;
+        this.relativeToEditor = true;
     }
 
     /**
@@ -54,9 +54,9 @@ public class EntityImageDescription {
      * @param other another entity image description
      */
     public EntityImageDescription(EntityImageDescription other) {
-	this.rectangle = new Rectangle();
-	this.image = null;
-	set(other);
+        this.rectangle = new Rectangle();
+        this.image = null;
+        set(other);
     }
 
     /**
@@ -64,8 +64,8 @@ public class EntityImageDescription {
      * @param other another image description
      */
     public void set(EntityImageDescription other) {
-	setImageFileName(other.getImageFileName(), other.isRelativeToEditor());
-	setRectangle(other.getRectangle());
+        setImageFileName(other.getImageFileName(), other.isRelativeToEditor());
+        setRectangle(other.getRectangle());
     }
 
     /**
@@ -73,7 +73,7 @@ public class EntityImageDescription {
      * @return the name of the image file
      */
     public String getImageFileName() {
-	return imageFileName;
+        return imageFileName;
     }
 
     /**
@@ -85,15 +85,15 @@ public class EntityImageDescription {
     public boolean isRelativeToEditor() {
         return relativeToEditor;
     }
-    
+
     /**
      * Sets the name of the image file.
      * @param imageFileName name of the image file, relative to the editor images path
      */
     public void setImageFileName(String imageFileName) {
-	setImageFileName(imageFileName, true);
+        setImageFileName(imageFileName, true);
     }
-    
+
     /**
      * Sets the name of the image file.
      * @param imageFileName name of the image file
@@ -101,8 +101,8 @@ public class EntityImageDescription {
      * to the editor images directory, false to make it relative to the project data directory
      */
     public void setImageFileName(String imageFileName, boolean relativeToEditor) {
-	this.imageFileName = imageFileName;
-	this.relativeToEditor = relativeToEditor;
+        this.imageFileName = imageFileName;
+        this.relativeToEditor = relativeToEditor;
     }
 
     /**
@@ -110,9 +110,9 @@ public class EntityImageDescription {
      * @return the entity's rectangle in the image
      */
     public Rectangle getRectangle() {
-	return rectangle;
+        return rectangle;
     }
-    
+
     /**
      * Sets the rectangle representing the entity in the image.
      * @param rectangle the rectangle to set
@@ -120,24 +120,24 @@ public class EntityImageDescription {
     public void setRectangle(Rectangle rectangle) {
       setRectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
-    
+
     /**
      * Sets the rectangle representing the entity in the image.
      * @param x x coordinate of the top-left corner of the rectangle to extract
-     * @param y y coordinate of the top-left corner of the rectangle to extract 
+     * @param y y coordinate of the top-left corner of the rectangle to extract
      * @param width width of the rectangle
      * @param height height of the rectangle
      */
     public void setRectangle(int x, int y, int width, int height) {
-	rectangle.setRect(x, y, width, height);
+        rectangle.setRect(x, y, width, height);
     }
-    
+
     /**
      * Sets the x coordinate of the rectangle representing the entity in the image.
      * @param x x coordinate of the top-left corner of the rectangle
      */
     public void setX(int x) {
-	rectangle.x = x;
+        rectangle.x = x;
     }
 
     /**
@@ -145,7 +145,7 @@ public class EntityImageDescription {
      * @param y y coordinate of the top-left corner of the rectangle
      */
     public void setY(int y) {
-	rectangle.y = y;
+        rectangle.y = y;
     }
 
     /**
@@ -177,39 +177,39 @@ public class EntityImageDescription {
      * @param positionInDestinationImage position of the entity on the destination image
      */
     public void paint(Graphics g, double zoom, boolean showTransparency,
-		      Rectangle positionInDestinationImage) {
+                      Rectangle positionInDestinationImage) {
 
-	// get the image
-	if (image == null) {
+        // get the image
+        if (image == null) {
 
-	  if (relativeToEditor) {
-	    image = Project.getEditorImage(imageFileName);
-	  }
-	  else {
-	    image = Project.getProjectImage(imageFileName);
-	  }
-	}
+          if (relativeToEditor) {
+            image = Project.getEditorImage(imageFileName);
+          }
+          else {
+            image = Project.getProjectImage(imageFileName);
+          }
+        }
 
-	// calculate the coordinates
-	int dx1 = (int) (positionInDestinationImage.x * zoom);
-	int dy1 = (int) (positionInDestinationImage.y * zoom);
+        // calculate the coordinates
+        int dx1 = (int) (positionInDestinationImage.x * zoom);
+        int dy1 = (int) (positionInDestinationImage.y * zoom);
 
-	int dx2 = (int) (dx1 + positionInDestinationImage.width * zoom);
-	int dy2 = (int) (dy1 + positionInDestinationImage.height * zoom);
-	
-	int sx1 = rectangle.x;
-	int sx2 = sx1 + rectangle.width;
+        int dx2 = (int) (dx1 + positionInDestinationImage.width * zoom);
+        int dy2 = (int) (dy1 + positionInDestinationImage.height * zoom);
 
-	int sy1 = rectangle.y;
-	int sy2 = sy1 + rectangle.height;
+        int sx1 = rectangle.x;
+        int sx2 = sx1 + rectangle.width;
 
-	// display the entity
-	if (showTransparency) {
-	    g.drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
-	}
-	else {
-	    g.drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, MapEntity.bgColor, null);
-	}
+        int sy1 = rectangle.y;
+        int sy2 = sy1 + rectangle.height;
+
+        // display the entity
+        if (showTransparency) {
+            g.drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
+        }
+        else {
+            g.drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, MapEntity.bgColor, null);
+        }
     }
 
     /**
@@ -217,6 +217,6 @@ public class EntityImageDescription {
      * @return true
      */
     public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-	return true;
+        return true;
     }
 }

@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,11 +38,11 @@ public class ActionMoveEntities extends MapEditorAction {
      * @param dy number of pixels to move on y
      */
     public ActionMoveEntities(Map map, MapEntity entityToMove, int dx, int dy) {
-	super(map);
-	this.entitiesToMove = new LinkedList<MapEntity>();
-	this.entitiesToMove.add(entityToMove);
-	this.dx = dx;
-	this.dy = dy;
+        super(map);
+        this.entitiesToMove = new LinkedList<MapEntity>();
+        this.entitiesToMove.add(entityToMove);
+        this.dx = dx;
+        this.dy = dy;
     }
 
     /**
@@ -53,10 +53,10 @@ public class ActionMoveEntities extends MapEditorAction {
      * @param dy number of pixels to move on y
      */
     public ActionMoveEntities(Map map, List<MapEntity> entitiesToMove, int dx, int dy) {
-	super(map);
-	this.entitiesToMove = new LinkedList<MapEntity>(entitiesToMove);
-	this.dx = dx;
-	this.dy = dy;
+        super(map);
+        this.entitiesToMove = new LinkedList<MapEntity>(entitiesToMove);
+        this.dx = dx;
+        this.dy = dy;
     }
 
     /**
@@ -64,7 +64,7 @@ public class ActionMoveEntities extends MapEditorAction {
      */
     public void execute() throws MapException {
 
-	map.moveEntities(entitiesToMove, dx, dy);
+        map.moveEntities(entitiesToMove, dx, dy);
     }
 
     /**
@@ -72,7 +72,7 @@ public class ActionMoveEntities extends MapEditorAction {
      */
     public void undo() throws MapException {
 
-	map.moveEntities(entitiesToMove, -dx, -dy);
+        map.moveEntities(entitiesToMove, -dx, -dy);
     }
 
 }

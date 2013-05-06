@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,77 +23,122 @@
 /**
  * @brief A door that may be open or closed.
  *
- * Depending on the type of door, it can be open with a key,
- * with an explosion or by the script of the map.
+ * It can be opened by one of the following methods depending on your choice:
+ * - by pressing the action key,
+ * - by pressing the action key when a specific savegame variable is set,
+ * - by pressing the action key when the player has a specific equipment item,
+ * - with an explosion,
+ * - or only explicitly by a Lua script.
+ *
+ * The state of a door can be saved.
+ * However, transitional states (opening and closing) are not saved:
+ * opening is saved as open and closing is saved as closed.
+ *
+ * TODO For opening method OPENING_BY_INTERACTION_IF_ITEM, allow to interact
+ * with the item command.
  */
 class Door: public Detector {
 
   public:
 
     /**
-     * @brief The different kinds of doors.
+     * @brief The different possible ways of opening a door.
+     *
+     * Note that any kind door can always be opened manually from Lua.
      */
-    enum Subtype {
-      CLOSED             = 0,         /**< usual closed door */
-      SMALL_KEY          = 1,         /**< a small key is required to open the door */
-      SMALL_KEY_BLOCK    = 2,         /**< a block to open with a small key (this does not look like a door) */
-      BIG_KEY            = 3,         /**< the big key is required to open the door (only in a dungeon) */
-      BOSS_KEY           = 4,         /**< the boss key is required to open the door (only in a dungeon) */
-      WEAK               = 5,         /**< a weak wall to blast with an explosion */
-      VERY_WEAK          = 6,         /**< same as WEAK but more visible */
-      // 7 is obsolete
-      WEAK_BLOCK         = 8          /**< a block to blast with an explosion */
+    enum OpeningMethod {
+      OPENING_NONE,                                 /**< Can only be opened from Lua. */
+      OPENING_BY_INTERACTION,                       /**< Can be opened by pressing the action command. */
+      OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,  /**< Can be opened by pressing the action command, provided that a savegame variable has the correct value. */
+      OPENING_BY_INTERACTION_IF_ITEM,               /**< Can be opened by pressing the action command, provided that the player has a specific equipment item. */
+      OPENING_BY_EXPLOSION                          /**< Can be opened by an explosion. */
     };
 
-  private:
-
-    static const std::string animations[];              /**< sprite animation name of each subtype */
-    static const std::string key_required_dialog_ids[]; /**< id of the dialog shown for each subtype */
-
-    // properties
-    Subtype subtype;                  /**< subtype of door */
-    int savegame_variable;            /**< variable where the door state is saved */
-
-    // state
-    bool door_open;                   /**< indicates that this door is open */
-    bool changing;                    /**< indicates that the door is being open or closed */
-    bool initialized;                 /**< true if update() was called at least once */
-    uint32_t next_hint_sound_date;    /**< if the player has the ability to detect weak walls,
-                                       * indicates when a hint sound is played next time */
-
-    void set_opening();
-    void set_closing();
-
-    bool requires_key();
-    bool requires_small_key();
-    bool requires_explosion();
-    bool can_open();
-    void update_dynamic_tiles();
-
-  public:
-
-    Door(const std::string &name, Layer layer, int x, int y,
-	int direction, Subtype subtype, int savegame_variable);
+    Door(Game& game,
+        const std::string& name,
+        Layer layer, int x, int y,
+        int direction,
+        const std::string& sprite_name,
+        const std::string& savegame_variable);
     ~Door();
-    static CreationFunction parse;
 
     EntityType get_type();
 
-    bool is_obstacle_for(MapEntity &other);
+    bool is_obstacle_for(MapEntity& other);
     void set_suspended(bool suspended);
     void update();
-    void display_on_map();
-    SoundId get_sword_tapping_sound();
-    void action_key_pressed();
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity &entity, Sprite &this_sprite, Sprite &other_sprite);
-    void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
+    void draw_on_map();
+    std::string get_sword_tapping_sound();
+    void notify_action_command_pressed();
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity& entity, Sprite& this_sprite, Sprite& other_sprite);
+    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
 
-    bool is_open();
+    // Properties.
+    bool is_saved() const;
+    const std::string& get_savegame_variable() const;
+    OpeningMethod get_opening_method() const;
+    void set_opening_method(OpeningMethod opening_method);
+    bool is_interaction_required() const;
+    const std::string& get_opening_condition() const;
+    void set_opening_condition(const std::string& opening_condition);
+    bool is_opening_condition_consumed() const;
+    void set_opening_condition_consumed(bool opening_condition_consumed);
+    const std::string& get_cannot_open_dialog_id() const;
+    void set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id);
+
+    // State.
+    bool can_open() const;
+    bool is_open() const;
+    bool is_opening() const;
+    bool is_closed() const;
+    bool is_closing() const;
+    bool is_changing() const;
     void open();
     void close();
     void set_open(bool open);
-    bool is_changing();
+
+    virtual const std::string& get_lua_type_name() const;
+
+    static const std::string opening_method_names[];
+
+  private:
+
+    /**
+     * Possible states of a door.
+     */
+    enum State {
+      OPEN,
+      OPENING,
+      CLOSED,
+      CLOSING
+    };
+
+    void set_opening();
+    void set_closing();
+    void update_dynamic_tiles();
+    void consume_opening_condition();
+
+    // Properties.
+    const std::string savegame_variable;          /**< Boolean variable that saves the door state. */
+    OpeningMethod opening_method;                 /**< How this door can be opened. */
+    std::string opening_condition;                /**< Condition required to open the door: a savegame variable if
+                                                   * the opening mode is \c OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+                                                   * or an equipment item name if the opening mode is
+                                                   * \c OPENING_BY_INTERACTION_IF_ITEM. */
+    bool opening_condition_consumed;              /**< Indicates that the required savegame variable
+                                                   * (in the case of \c OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE)
+                                                   * or the required item
+                                                   * (in the case of \c OPENING_BY_INTERACTION_IF_ITEM)
+                                                   * should be consumed when opening the door. */
+    std::string cannot_open_dialog_id;            /**< Dialog to show if the door cannot be opened,
+                                                   * or an empty string. */
+
+    // State.
+    State state;                                  /**< State of the door: open, opening, closed or closing. */
+    bool initialized;                             /**< \c true if update() was called at least once. */
+    uint32_t next_hint_sound_date;                /**< If the player has the ability to detect weak walls,
+                                                   * indicates when a hint sound is played next time. */
 };
 
 #endif

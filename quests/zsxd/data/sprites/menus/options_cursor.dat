@@ -1,8 +1,0 @@
-big menus/options_cursor.png 1 0 -1
-0	0	168	15	0	0	1	1
-
-small menus/options_cursor.png 1 0 -1
-62	15	62	15	0	0	1	1
-
-small_blink menus/options_cursor.png 1 300 0
-0	15	62	15	0	0	2	2

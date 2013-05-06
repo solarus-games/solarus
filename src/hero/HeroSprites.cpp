@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ const int HeroSprites::animation_directions[][2] = {
 /**
  * @brief String constants corresponding to the sprites of the tunics.
  */
-const SpriteAnimationSetId HeroSprites::tunic_sprite_ids[] = {
+const std::string HeroSprites::tunic_sprite_ids[] = {
   "hero/tunic1", // green tunic
   "hero/tunic2", // blue tunic
   "hero/tunic3", // red tunic
@@ -62,7 +62,7 @@ const SpriteAnimationSetId HeroSprites::tunic_sprite_ids[] = {
 /**
  * @brief String constants corresponding to the sprites of the swords.
  */
-const SpriteAnimationSetId HeroSprites::sword_sprite_ids[] = {
+const std::string HeroSprites::sword_sprite_ids[] = {
   "hero/sword1",
   "hero/sword2",
   "hero/sword3",
@@ -72,7 +72,7 @@ const SpriteAnimationSetId HeroSprites::sword_sprite_ids[] = {
 /**
  * @brief String constants corresponding to the sprites of the stars of the swords.
  */
-const SpriteAnimationSetId HeroSprites::sword_stars_sprite_ids[] = {
+const std::string HeroSprites::sword_stars_sprite_ids[] = {
   "hero/sword_stars1",
   "hero/sword_stars1",
   "hero/sword_stars2",
@@ -82,7 +82,7 @@ const SpriteAnimationSetId HeroSprites::sword_stars_sprite_ids[] = {
 /**
  * @brief String constants corresponding to the sprites of the shields.
  */
-const SpriteAnimationSetId HeroSprites::shield_sprite_ids[] = {
+const std::string HeroSprites::shield_sprite_ids[] = {
   "hero/shield1",
   "hero/shield2",
   "hero/shield3",
@@ -91,7 +91,7 @@ const SpriteAnimationSetId HeroSprites::shield_sprite_ids[] = {
 /**
  * @brief String constants corresponding to the sprites of the ground displayed under the hero.
  */
-const SpriteAnimationSetId HeroSprites::ground_sprite_ids[] = {
+const std::string HeroSprites::ground_sprite_ids[] = {
   "hero/ground1",
   "hero/ground2",
 };
@@ -99,7 +99,7 @@ const SpriteAnimationSetId HeroSprites::ground_sprite_ids[] = {
 /**
  * @brief String constants corresponding to the sounds of the swords.
  */
-const SoundId HeroSprites::sword_sound_ids[] = {
+const std::string HeroSprites::sword_sound_ids[] = {
   "sword1",
   "sword2",
   "sword3",
@@ -109,7 +109,7 @@ const SoundId HeroSprites::sword_sound_ids[] = {
 /**
  * @brief String constants corresponding to the sounds of the ground under the hero.
  */
-const SoundId HeroSprites::ground_sound_ids[] = {
+const std::string HeroSprites::ground_sound_ids[] = {
   "walk_on_grass",
   "walk_on_water",
 };
@@ -148,12 +148,16 @@ HeroSprites::~HeroSprites() {
  */
 void HeroSprites::rebuild_equipment() {
 
+  std::string tunic_animation;
+  std::string sword_animation;
+  std::string shield_animation;
   int animation_direction = -1;
 
   // the hero
   if (tunic_sprite != NULL) {
     // save the animation direction
     animation_direction = tunic_sprite->get_current_direction();
+    tunic_animation = tunic_sprite->get_current_animation();
     delete tunic_sprite;
   }
 
@@ -163,6 +167,9 @@ void HeroSprites::rebuild_equipment() {
 
   tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number - 1]);
   tunic_sprite->enable_pixel_collisions();
+  if (!tunic_animation.empty()) {
+    tunic_sprite->set_current_animation(tunic_animation);
+  }
 
   // the hero's shadow
   if (shadow_sprite == NULL) {
@@ -172,6 +179,9 @@ void HeroSprites::rebuild_equipment() {
 
   // the hero's sword
   if (sword_sprite != NULL) {
+    if (sword_sprite->is_animation_started()) {
+      sword_animation = sword_sprite->get_current_animation();
+    }
     delete sword_sprite;
     delete sword_stars_sprite;
     sword_sprite = NULL;
@@ -183,8 +193,13 @@ void HeroSprites::rebuild_equipment() {
   if (sword_number > 0) {
     // the hero has a sword: get the sprite and the sound
     sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
-    sword_sprite->stop_animation();
     sword_sprite->enable_pixel_collisions();
+    if (sword_animation.empty()) {
+      sword_sprite->stop_animation();
+    }
+    else {
+      sword_sprite->set_current_animation(sword_animation);
+    }
 
     sword_sound_id = sword_sound_ids[sword_number - 1];
 
@@ -194,6 +209,9 @@ void HeroSprites::rebuild_equipment() {
 
   // the hero's shield
   if (shield_sprite != NULL) {
+    if (shield_sprite->is_animation_started()) {
+      shield_animation = shield_sprite->get_current_animation();
+    }
     delete shield_sprite;
     shield_sprite = NULL;
   }
@@ -203,6 +221,12 @@ void HeroSprites::rebuild_equipment() {
   if (shield_number > 0) {
     // the hero has a shield
     shield_sprite = new Sprite(shield_sprite_ids[shield_number - 1]);
+    if (shield_animation.empty()) {
+      shield_sprite->stop_animation();
+    }
+    else {
+      shield_sprite->set_current_animation(shield_animation);
+    }
   }
 
   // the trail
@@ -337,11 +361,11 @@ bool HeroSprites::is_blinking() {
 }
 
 /**
- * @brief Sets a rectangle of the map where the display of the hero's sprite will be restricted to.
+ * @brief Sets a rectangle of the map where the drawing of the hero's sprite will be restricted to.
  *
  * A (0,0,0,0) rectangle means that the sprite is not restricted to a subarea of the map.
  *
- * @param clipping_rectangle a subarea of the map to restrict the display to
+ * @param clipping_rectangle a subarea of the map to restrict the drawing to
  */
 void HeroSprites::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
   this->clipping_rectangle = clipping_rectangle;
@@ -547,7 +571,7 @@ void HeroSprites::update() {
 /**
  * @brief Draws the hero's sprites on the map.
  */
-void HeroSprites::display_on_map() {
+void HeroSprites::draw_on_map() {
 
   int x = hero.get_x();
   int y = hero.get_y();
@@ -555,46 +579,46 @@ void HeroSprites::display_on_map() {
   Map &map = hero.get_map();
 
   if (clipping_rectangle.get_width() > 0) {
-    // restrict the map displaying to the clipping rectangle specified (just for the hero's sprites)
+    // restrict the map drawing to the clipping rectangle specified (just for the hero's sprites)
     map.set_clipping_rectangle(clipping_rectangle);
   }
 
   if (hero.is_shadow_visible()) {
-    map.display_sprite(*shadow_sprite, x, y);
+    map.draw_sprite(*shadow_sprite, x, y);
   }
 
-  const Rectangle &displayed_xy = hero.get_displayed_xy();
+  const Rectangle&displayed_xy = hero.get_displayed_xy();
   x = displayed_xy.get_x();
   y = displayed_xy.get_y();
 
-  map.display_sprite(*tunic_sprite, x, y);
+  map.draw_sprite(*tunic_sprite, x, y);
 
   if (is_trail_visible()) {
-    map.display_sprite(*trail_sprite, x, y);
+    map.draw_sprite(*trail_sprite, x, y);
   }
 
   if (is_ground_visible()) {
-    map.display_sprite(*ground_sprite, x, y);
+    map.draw_sprite(*ground_sprite, x, y);
   }
 
   if (is_sword_visible()) {
-    map.display_sprite(*sword_sprite, x, y);
+    map.draw_sprite(*sword_sprite, x, y);
   }
 
   if (is_sword_stars_visible()) {
-    map.display_sprite(*sword_stars_sprite, x, y);
+    map.draw_sprite(*sword_stars_sprite, x, y);
   }
 
   if (is_shield_visible()) {
-    map.display_sprite(*shield_sprite, x, y);
+    map.draw_sprite(*shield_sprite, x, y);
   }
 
   if (lifted_item != NULL) {
-    lifted_item->display_on_map();
+    lifted_item->draw_on_map();
   }
   
   if (clipping_rectangle.get_width() > 0) {
-    // restore the normal map displaying
+    // restore the normal map drawing
     map.set_clipping_rectangle();
   }
 }
@@ -646,7 +670,7 @@ void HeroSprites::notify_map_started() {
   }
 
   if (is_ground_visible()) {
-    ground_sprite->set_map(hero.get_map());
+    ground_sprite->set_tileset(hero.get_map().get_tileset());
   }
 }
 
@@ -1160,7 +1184,7 @@ void HeroSprites::create_ground(Ground ground) {
 
   delete ground_sprite;
   ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
-  ground_sprite->set_map(hero.get_map());
+  ground_sprite->set_tileset(hero.get_map().get_tileset());
   if (hero.get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation(walking ? "walking" : "stopped");
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,9 +37,9 @@ class Jumper: public Detector {
     Jumper(const std::string &name, Layer layer, int x, int y, int width, int height,
 	int direction, int jump_length);
     ~Jumper();
-    static CreationFunction parse;
 
     EntityType get_type();
+    bool can_be_drawn();
 
     bool is_obstacle_for(MapEntity &other);
     bool is_point_in_diagonal(const Rectangle &point);

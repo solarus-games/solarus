@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,9 +80,9 @@ class Stairs: public Detector {
     Stairs(const std::string &name, Layer layer, int x, int y,
 	   int direction, Subtype subtype);
     ~Stairs();
-    static CreationFunction parse;
 
     EntityType get_type();
+    bool can_be_drawn();
 
     void notify_map_started();
     bool is_inside_floor();

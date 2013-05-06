@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,12 +46,6 @@ public class MapViewRenderingOptions {
     private boolean[] showLayers;
 
     /**
-     * Tells whether or not the non obstacle entities are shown,
-     * and the same thing for the obstacle entities.
-     */
-    private boolean[] showObstacles;
-
-    /**
      * True to render the transparency, false to replace the transparent pixels
      * by a background color.
      * The transparency seems to make the program much slower with my Linux.
@@ -59,14 +53,25 @@ public class MapViewRenderingOptions {
     private boolean showTransparency;
 
     /**
+     * Tells whether or not the grid is shown.
+     */
+    private boolean showGrid;
+
+    /**
+     * Size of a square of the grid (16 pixels by default).
+     */
+    private int gridSize;
+
+    /**
      * Constructor.
      */
     public MapViewRenderingOptions(MapView mapView) {
-	this.mapView = mapView;
-	this.zoom = 2.0;
-	this.showLayers = new boolean[] {true, true, true};
-	this.showObstacles = new boolean[] {true, true};
-	this.showTransparency = true;
+        this.mapView = mapView;
+        this.zoom = 2.0;
+        this.showLayers = new boolean[] {true, true, true};
+        this.showTransparency = true;
+        this.showGrid = false;
+        this.gridSize = 16;
     }
 
     /**
@@ -74,7 +79,7 @@ public class MapViewRenderingOptions {
      * @return the map
      */
     public Map getMap() {
-	return mapView.getMap();
+        return mapView.getMap();
     }
 
     /**
@@ -82,7 +87,7 @@ public class MapViewRenderingOptions {
      * @return the zoom
      */
     public double getZoom() {
-	return zoom;
+        return zoom;
     }
 
     /**
@@ -90,8 +95,8 @@ public class MapViewRenderingOptions {
      * @param zoom the zoom
      */
     public void setZoom(double zoom) {
-	this.zoom = zoom;
-	mapView.update(getMap(), null);
+        this.zoom = zoom;
+        mapView.update(getMap(), null);
     }
 
     /**
@@ -99,7 +104,7 @@ public class MapViewRenderingOptions {
      * @return for each layer, true if it is shown and false otherwise
      */
     public boolean[] getShowLayers() {
-	return showLayers;
+        return showLayers;
     }
 
     /**
@@ -108,7 +113,7 @@ public class MapViewRenderingOptions {
      * @return true if the entities of this layer are shown, false otherwise
      */
     public boolean getShowLayer(Layer layer) {
-	return showLayers[layer.getId()];
+        return showLayers[layer.getId()];
     }
 
     /**
@@ -118,10 +123,10 @@ public class MapViewRenderingOptions {
      * @param showHighLayer true to show the entities of the high layer
      */
     public void setShowLayers(boolean showLowLayer, boolean showIntermediateLayer, boolean showHighLayer) {
-	showLayers[Layer.LOW.getId()] = showLowLayer;
-	showLayers[Layer.INTERMEDIATE.getId()] = showIntermediateLayer;
-	showLayers[Layer.HIGH.getId()] = showHighLayer;
-	mapView.repaint();
+        showLayers[Layer.LOW.getId()] = showLowLayer;
+        showLayers[Layer.INTERMEDIATE.getId()] = showIntermediateLayer;
+        showLayers[Layer.HIGH.getId()] = showHighLayer;
+        mapView.repaint();
     }
 
     /**
@@ -130,47 +135,8 @@ public class MapViewRenderingOptions {
      * @param show true to make the layer visible, false otherwise
      */
     public void setShowLayer(Layer layer, boolean show) {
-	showLayers[layer.getId()] = show;
-	mapView.repaint();
-    }
-
-    /**
-     * Returns whether or not the entities without and with obstacles are shown.
-     * @return an array of two elements, the first one is true if the entities without
-     * obstacle are shown, the second one represents the same thing for the obstacle entities.
-     */
-    public boolean[] getShowObstacles() {
-	return showObstacles;
-    }
-
-    /**
-     * Returns whether or not the entities with or without obstacles are shown.
-     * @param obstacle the type of obstacle to consider (Obstacle.NONE or Obstacle.OBSTACLE)
-     * @return true if the corresponding entities are show, false otherwise
-     */
-    public boolean getShowObstacle(Obstacle obstacle) {
-	return showObstacles[obstacle.getId()];
-    }
-
-    /**
-     * Sets whether or not the entities with or without obstacle are shown.
-     * @param showNonObstacleEntities true to show the entities without obstacles
-     * @param showObstacleEntities true to show the entities with obstacles
-     */
-    public void setShowObstacles(boolean showNonObstacleEntities, boolean showObstacleEntities) {
-	showObstacles[Obstacle.NONE.getId()] = showNonObstacleEntities;
-	showObstacles[Obstacle.OBSTACLE.getId()] = showObstacleEntities;
-	mapView.repaint();
-    }
-
-    /**
-     * Sets whether or not the entities with or without obstacles are shown.
-     * @param obstacle the obstacle property to consider
-     * @param show true to make these entities visible, false otherwise
-     */
-    public void setShowObstacle(Obstacle obstacle, boolean show) {
-	showObstacles[obstacle.getId()] = show;
-	mapView.repaint();
+        showLayers[layer.getId()] = show;
+        mapView.repaint();
     }
 
     /**
@@ -180,7 +146,7 @@ public class MapViewRenderingOptions {
      * are replaced by a background color.
      */
     public boolean getShowTransparency() {
-	return showTransparency;
+        return showTransparency;
     }
 
     /**
@@ -190,8 +156,41 @@ public class MapViewRenderingOptions {
      *
      */
     public void setShowTransparency(boolean showTransparency) {
-	this.showTransparency = showTransparency;
-	mapView.repaint();
+        this.showTransparency = showTransparency;
+        mapView.repaint();
+    }
+
+    /**
+     * Returns whether or not the grid is rendered.
+     * @return true if the grid is shown.
+     */
+    public boolean getShowGrid() {
+        return showGrid;
+    }
+
+    /**
+     * Sets whether or not the gird is rendered.
+     * @param showGrid true to show the grid.
+     */
+    public void setShowGrid(boolean showGrid) {
+        this.showGrid = showGrid;
+        mapView.repaint();
+    }
+    /**
+     * Returns the current grid size in the map view
+     * @return The size of a square of the grid in pixels.
+     */
+    public int getGridSize() {
+        return gridSize;
+    }
+
+    /**
+     * Sets the grid size in the map view.
+     * @param gridSize The size of a square of the grid in pixels.
+     */
+    public void setGridSize(int gridSize) {
+        this.gridSize = gridSize;
+        mapView.repaint();
     }
 
     /**
@@ -201,9 +200,8 @@ public class MapViewRenderingOptions {
      * @return true if this entity is shown with the current options
      */
     public boolean isEntityShown(MapEntity entity) {
-	Layer layer = entity.getLayer();
-	boolean obstacle = entity.getObstacle().isWall();
-
-	return showLayers[layer.getId()] && showObstacles[obstacle ? 1 : 0];
+        Layer layer = entity.getLayer();
+        return showLayers[layer.getId()];
     }
 }
+

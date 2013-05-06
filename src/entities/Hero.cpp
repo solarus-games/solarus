@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,10 @@
  */
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
-#include "entities/DestinationPoint.h"
+#include "entities/Destination.h"
 #include "entities/Teletransporter.h"
 #include "entities/Stairs.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Destructible.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
@@ -46,10 +46,12 @@
 #include "hero/SwimmingState.h"
 #include "hero/TreasureState.h"
 #include "hero/VictoryState.h"
+#include "hero/UsingItemState.h"
 #include "hero/BoomerangState.h"
 #include "hero/HookshotState.h"
 #include "hero/BowState.h"
 #include "movements/StraightMovement.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -57,6 +59,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
 
@@ -66,8 +69,8 @@ const int Hero::normal_walking_speed = 88; // pixels per second
  * @brief Creates a hero.
  * @param equipment the equipment (needed to build the sprites even outside a game)
  */
-Hero::Hero(Equipment &equipment):
-
+Hero::Hero(Equipment& equipment):
+  MapEntity("hero", 0, LAYER_LOW, 0, 0, 16, 16),
   state(NULL),
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
@@ -76,7 +79,6 @@ Hero::Hero(Equipment &equipment):
   next_ground_date(0) {
 
   // position
-  set_size(16, 16);
   set_origin(8, 13);
   last_solid_ground_coords.set_xy(-1, -1);
   last_solid_ground_layer = LAYER_LOW;
@@ -112,55 +114,17 @@ EntityType Hero::get_type() {
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
+ * @brief Returns whether this entity has to be drawn in y order.
  *
- * If yes, the function is_obstacle_for() will be called
- * to determine whether this particular entity is an obstacle or not.
- *
- * @return true if this type of entity can be obstacle for other entities
- */
-bool Hero::can_be_obstacle() {
-  return true; 
-}
-
-/**
- * @brief Returns whether entities of this type have detection capabilities.
- *
- * This function returns whether entities of this type can detect the presence 
- * of the hero or other entities (this is possible only for
- * suclasses of Detector). If yes, the function 
- * notify_collision() will be called when a collision is detected.
- *
- * @return true if this type of entity can detect other entities
- */
-bool Hero::can_detect_entities() {
-  return false;
-}
-
-/**
- * @brief Returns whether entities of this type can be displayed.
- *
- * If yes, the sprites added by the add_sprite() calls will be 
- * displayed (if any).
- *
- * @return true if this type of entity can be displayed
- */
-bool Hero::can_be_displayed() {
-  return true; 
-}
-
-/**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether an entity of this type should be displayed above
+ * This function returns whether an entity of this type should be drawn above
  * the hero and other entities having this property when it is in front of them.
  * This means that the displaying order of entities having this
  * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file), 
+ * are drawn in the normal order (i.e. as specified by the map file),
  * and before the entities with the feature.
- * @return true if this type of entity is displayed at the same level as the hero
+ * @return true if this type of entity is drawn at the same level as the hero
  */
-bool Hero::is_displayed_in_y_order() {
+bool Hero::is_drawn_in_y_order() {
   return true;
 }
 
@@ -349,35 +313,40 @@ void Hero::check_gameover() {
 }
 
 /**
- * @brief Displays this entity on the map.
+ * @brief Draws this entity on the map.
  *
  * This function should draw the entity only if is_visible() returns true.
- * The hero is displayed with its current animation and at its current position.
+ * The hero is drawn with its current animation and at its current position.
  */
-void Hero::display_on_map() {
+void Hero::draw_on_map() {
 
-  if (is_visible()) {
-    // the state may call get_sprites()->display_on_map() or make its own display
-    state->display_on_map();
+  if (!is_drawn()) {
+    return;
+  }
+
+  if (state->is_hero_visible()
+      && !get_game().is_showing_gameover()) {
+    // The state may call get_sprites()->draw_on_map() or make its own drawings.
+    state->draw_on_map();
   }
 }
 
 /**
- * @brief This function is called when a game key is pressed
+ * @brief This function is called when a game command is pressed
  * and the game is not suspended.
- * @param key the key pressed
+ * @param command The command pressed.
  */
-void Hero::key_pressed(GameControls::GameKey key) {
-  state->key_pressed(key);
+void Hero::notify_command_pressed(GameCommands::Command command) {
+  state->notify_command_pressed(command);
 }
 
 /**
- * @brief This function is called when a key is released
+ * @brief This function is called when a game command is released
  * if the game is not suspended.
- * @param key the key released
+ * @param command The command released.
  */
-void Hero::key_released(GameControls::GameKey key) {
-  state->key_released(key);
+void Hero::notify_command_released(GameCommands::Command command) {
+  state->notify_command_released(command);
 }
 
 /**
@@ -431,17 +400,6 @@ void Hero::rebuild_equipment() {
 }
 
 /**
- * @brief Returns whether this entity is currently visible.
- * @return true if this entity is currently visible
- */
-bool Hero::is_visible() {
-
-  return MapEntity::is_visible()
-    && state->is_hero_visible()
-    && !get_game().is_showing_gameover();
-}
-
-/**
  * @brief Returns whether the shadow should be currently displayed, separate from the tunic sprite.
  * @return true if the shadow should be currently displayed.
  */
@@ -458,7 +416,7 @@ bool Hero::is_shadow_visible() {
  *
  * @param map the map
  */
-void Hero::set_map(Map &map) {
+void Hero::set_map(Map& map) {
 
   MapEntity::set_map(map);
 
@@ -504,11 +462,11 @@ void Hero::set_map(Map &map, int initial_direction) {
  * @param previous_map_location position of the previous map in its world
  * (may be needed for scrolling transitions, but the previous map is already destroyed)
  */
-void Hero::place_on_destination_point(Map& map, const Rectangle& previous_map_location) {
+void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location) {
 
-  const std::string &destination_point_name = map.get_destination_point_name();
+  const std::string& destination_name = map.get_destination_name();
 
-  if (destination_point_name == "_same") {
+  if (destination_name == "_same") {
 
     // the hero's coordinates are the same as on the previous map
     // but we may have to change the layer
@@ -563,13 +521,12 @@ void Hero::place_on_destination_point(Map& map, const Rectangle& previous_map_lo
 
       // normal case: the location is specified by a destination point object
 
-      DestinationPoint *destination_point = (DestinationPoint*)
-	    map.get_entities().get_entity(DESTINATION_POINT, destination_point_name);
+      MapEntity* destination = map.get_entities().get_entity(destination_name);
 
-      set_map(map, destination_point->get_direction());
-      set_xy(destination_point->get_x(), destination_point->get_y());
+      set_map(map, destination->get_direction());
+      set_xy(destination->get_x(), destination->get_y());
       last_solid_ground_coords = get_xy();
-      map.get_entities().set_entity_layer(*this, destination_point->get_layer());
+      map.get_entities().set_entity_layer(*this, destination->get_layer());
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
 
@@ -1392,11 +1349,11 @@ bool Hero::is_jumper_obstacle(Jumper& jumper) {
 
 /**
  * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
- * @param destructible_item the destructible item
+ * @param destructible the destructible item
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
-  destructible_item.notify_collision_with_hero(*this, collision_mode);
+void Hero::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
+  destructible.notify_collision_with_hero(*this, collision_mode);
 }
 
 /**
@@ -1662,7 +1619,7 @@ void Hero::notify_collision_with_chest(Chest& chest) {
       && is_facing_direction4(1)
       && !chest.is_open()) {
 
-    // we show the 'open' icon, even if this is a big chest and the player does not have the big key
+    // We show the 'open' icon even if the chest cannot be opened yet.
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_OPEN);
   }
 }
@@ -1886,7 +1843,7 @@ void Hero::hurt(const Rectangle& source_xy, int life_points, int magic_points) {
 }
 
 /**
- * @brief Displays a grass sprite below the hero and makes him walk slower.
+ * @brief Draws a grass sprite below the hero and makes him walk slower.
  */
 void Hero::start_grass() {
 
@@ -1900,7 +1857,7 @@ void Hero::start_grass() {
 }
 
 /**
- * @brief Displays a shallow water sprite below the hero and makes him walk
+ * @brief Draws a shallow water sprite below the hero and makes him walk
  * slower.
  */
 void Hero::start_shallow_water() {
@@ -2047,21 +2004,21 @@ bool Hero::is_free() {
 }
 
 /**
- * @brief Returns whether the hero is currently using an inventory item.
- * @return true if the hero is using an inventory item
+ * @brief Returns whether the hero is currently using an equipment item.
+ * @return true if the hero is using an equipment item.
  */
-bool Hero::is_using_inventory_item() {
+bool Hero::is_using_item() {
 
-  return state->is_using_inventory_item();
+  return state->is_using_item();
 }
 
 /**
- * @brief When the hero is using an inventory item, returns the inventory item.
- * @return the current inventory item
+ * @brief When the hero is using an equipment item, returns that item.
+ * @return The current equipment item.
  */
-InventoryItem& Hero::get_current_inventory_item() {
+EquipmentItemUsage& Hero::get_item_being_used() {
 
-  return state->get_current_inventory_item();
+  return state->get_item_being_used();
 }
 
 /**
@@ -2111,10 +2068,12 @@ void Hero::start_free_or_carrying() {
 
 /**
  * @brief Makes the hero brandish a treasure.
- * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
+ * @param treasure The treasure to give him.
+ * @param callback_ref Lua ref to a function to call when the
+ * treasure's dialog finishes (possibly LUA_REFNIL).
  */
-void Hero::start_treasure(const Treasure &treasure) {
-  set_state(new TreasureState(*this, treasure));
+void Hero::start_treasure(const Treasure& treasure, int callback_ref) {
+  set_state(new TreasureState(*this, treasure, callback_ref));
 }
 
 /**
@@ -2139,23 +2098,25 @@ void Hero::start_forced_walking(const std::string &path, bool loop, bool ignore_
  * While he is jumping, the player does not control him anymore.
  *
  * @param direction8 direction of the jump (0 to 7)
- * @param length length of the jump in pixels
+ * @param distance distance of the jump in pixels
  * @param ignore_obstacles true make the movement ignore obstacles
  * @param with_sound true to play the "jump" sound
  * @param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  */
-void Hero::start_jumping(int direction8, int length, bool ignore_obstacles,
+void Hero::start_jumping(int direction8, int distance, bool ignore_obstacles,
     bool with_sound, uint32_t movement_delay) {
 
-  JumpingState *state = new JumpingState(*this, direction8, length, ignore_obstacles, with_sound, movement_delay);
+  JumpingState* state = new JumpingState(*this, direction8, distance, ignore_obstacles, with_sound, movement_delay);
   set_state(state);
 }
 
 /**
  * @brief Makes the hero brandish his sword meaning a victory.
+ * @param callback_ref Lua ref to a function to call when the
+ * victory sequence finishes (possibly LUA_REFNIL).
  */
-void Hero::start_victory() {
-  set_state(new VictoryState(*this));
+void Hero::start_victory(int callback_ref) {
+  set_state(new VictoryState(*this, callback_ref));
 }
 
 /**
@@ -2182,16 +2143,17 @@ void Hero::start_lifting(CarriedItem *item_to_lift) {
  */
 void Hero::start_running() {
 
-  // the running state may be triggered by the action key or an inventory item key
-  GameControls::GameKey key;
+  // The running state may be triggered by the action command or an
+  // item command.
+  GameCommands::Command command;
   if (is_free()) {
-    key = GameControls::ACTION;
+    command = GameCommands::ACTION;
   }
   else {
-    key = get_controls().is_key_pressed(GameControls::ITEM_1) ?
-        GameControls::ITEM_1 : GameControls::ITEM_2;
+    command = get_commands().is_command_pressed(GameCommands::ITEM_1) ?
+        GameCommands::ITEM_1 : GameCommands::ITEM_2;
   }
-  set_state(new RunningState(*this, key));
+  set_state(new RunningState(*this, command));
 }
 
 /**
@@ -2199,6 +2161,28 @@ void Hero::start_running() {
  */
 void Hero::start_grabbing() {
   set_state(new GrabbingState(*this));
+}
+
+/**
+ * @brief Returns whether the hero can starts using an equipment item.
+ * @param item The equipment item to use.
+ * @return true if this equipment item can currently be used.
+ */
+bool Hero::can_start_item(EquipmentItem& item) {
+
+  return item.is_assignable()
+      && item.get_variant() > 0
+      && state->can_start_item(item);
+}
+
+/**
+ * @brief Starts using an equipment item.
+ * @param item The equipment item to use.
+ */
+void Hero::start_item(EquipmentItem& item) {
+  Debug::check_assertion(can_start_item(item), StringConcat() <<
+      "The hero cannot start using item '" << item.get_name() << "' now.");
+  set_state(new UsingItemState(*this, item));
 }
 
 /**
@@ -2211,7 +2195,7 @@ void Hero::start_grabbing() {
  */
 void Hero::start_boomerang(int max_distance, int speed,
     const std::string& tunic_preparing_animation,
-    const SpriteAnimationSetId& sprite_name) {
+    const std::string& sprite_name) {
 
   set_state(new BoomerangState(*this, max_distance, speed,
       tunic_preparing_animation, sprite_name));
@@ -2296,5 +2280,13 @@ void Hero::start_state_from_ground() {
     start_free_or_carrying();
     break;
   }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Hero::get_lua_type_name() const {
+  return LuaContext::entity_hero_module_name;
 }
 

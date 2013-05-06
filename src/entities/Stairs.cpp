@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,35 +57,19 @@ Stairs::~Stairs() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Stairs::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-
-  std::string name;
-  int direction, subtype;
-
-  FileTools::read(is, name);
-  FileTools::read(is, direction);
-  FileTools::read(is, subtype);
-
-  return new Stairs(name, Layer(layer), x, y, direction, Subtype(subtype));
-}
-
-/**
  * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType Stairs::get_type() {
   return STAIRS;
+}
+
+/**
+ * @brief Returns whether entities of this type can be drawn.
+ * @return true if this type of entity can be drawn
+ */
+bool Stairs::can_be_drawn() {
+  return false;
 }
 
 /**
@@ -200,7 +184,7 @@ int Stairs::get_animation_direction(Way way) {
  */
 void Stairs::play_sound(Way way) {
 
-  SoundId sound_id;
+  std::string sound_id;
   if (is_inside_floor()) {
     // choose the sound depending on whether we are going upstairs or downstairs
     sound_id = (way == NORMAL_WAY) ? "stairs_up_end" : "stairs_down_end";

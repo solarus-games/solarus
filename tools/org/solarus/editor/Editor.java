@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -19,34 +19,23 @@ package org.solarus.editor;
 import org.solarus.editor.gui.*;
 
 /**
- * Main class of the map editor.
+ * Main class of the quest editor.
  */
 public class Editor {
 
-	// initialization
-	/* Java 1.6 Update 10 introduces by default a Direct3D handling for the Java2D operations,
-	 * but under Windows drawing an image without transparency becomes extremely slow
-	 * so we disable Direct3D until the bug is fixed.
-	 */
-	static {
-		System.setProperty("sun.java2d.d3d", "false");
-	}
-
     /**
      * Entry point.
+     * Usage: java org.solarus.editor.Editor [quest_path]  
      */
     public static void main(String[] args) {
 
-        
+        String questPath = (args.length != 0) ? args[0] : null;
 
-        String quest = (args.length != 0) ? args[0] : null;
-
-	// create the main window
-	EditorWindow window = new EditorWindow(quest);
-	window.pack();
-	window.setExtendedState(EditorWindow.MAXIMIZED_BOTH);
-	window.setVisible(true);
-
+        // create the main window
+        EditorWindow window = new EditorWindow(questPath);
+        window.pack();
+        window.setExtendedState(EditorWindow.MAXIMIZED_BOTH);
+        window.setVisible(true);
     }
-
 }
+

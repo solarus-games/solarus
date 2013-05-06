@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,7 @@
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
 #include "movements/Movement.h"
-#include "lua/MapScript.h"
-#include "lua/ItemScript.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -29,8 +28,7 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "Equipment.h"
-#include "InventoryItem.h"
-#include "ItemProperties.h"
+#include "EquipmentItemUsage.h"
 
 /**
  * @brief Creates an NPC.
@@ -40,7 +38,7 @@
  * @param x x coordinate of the entity to create
  * @param subtype the subtype of interaction
  * @param y y coordinate of the entity to create
- * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
+ * @param sprite_name sprite animation set of the entity, or an empty string to create no sprite
  * @param direction for a generalized NPC: direction for which the interactions are allowed
  * (0 to 4, or -1 for any direction), for a usual NPC: initial direction of the NPC's sprite
  * @param behavior_string indicates what happens when the hero interacts with this NPC:
@@ -49,12 +47,12 @@
  * of item XXX  (with an event_hero_interaction() call)
  */
 NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
-    Subtype subtype, SpriteAnimationSetId sprite_name,
+    Subtype subtype, const std::string& sprite_name,
     int direction, const std::string& behavior_string):
   Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, name, layer, x, y, 0, 0),
   subtype(subtype),
   dialog_to_show(""),
-  script_to_call(NULL) {
+  item_name("") {
 
   initialize_sprite(sprite_name, direction);
   set_size(16, 16);
@@ -64,20 +62,18 @@ NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
   // behavior
   if (behavior_string == "map") {
     behavior = BEHAVIOR_MAP_SCRIPT;
-    script_to_call = NULL; // the map script may be not available yet
   }
   else if (behavior_string.substr(0, 5) == "item#") {
     behavior = BEHAVIOR_ITEM_SCRIPT;
-    const std::string &item_name = behavior_string.substr(5);
-    script_to_call = &game.get_equipment().get_item_script(item_name);
+    item_name = behavior_string.substr(5);
   }
   else if (behavior_string.substr(0, 7) == "dialog#") {
     behavior = BEHAVIOR_DIALOG;
     dialog_to_show = behavior_string.substr(7);
   }
   else {
-    Debug::die(StringConcat() << "Invalid behavior string for interactive entity '" << name
-	<< "': '" << behavior_string << "'");
+    Debug::die(StringConcat() << "Invalid behavior string for NPC '" << name
+        << "': '" << behavior_string << "'");
   }
 }
 
@@ -89,35 +85,6 @@ NPC::~NPC() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* NPC::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-
-  int direction, subtype;
-  std::string name;
-  SpriteAnimationSetId sprite_name;
-  std::string behavior;
-
-  FileTools::read(is, name);
-  FileTools::read(is, direction);
-  FileTools::read(is, subtype);
-  FileTools::read(is, sprite_name);
-  FileTools::read(is, behavior);
-
-  return new NPC(game, name, Layer(layer), x, y, Subtype(subtype),
-      sprite_name, direction, behavior);
-}
-
-/**
  * @brief Returns the type of entity.
  * @return the type of entity
  */
@@ -126,14 +93,11 @@ EntityType NPC::get_type() {
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether an entity of this type should be displayed above
- * the hero and other entities when it is in front of them.
- *
- * @return true if this entity is displayed at the same level as the hero
+ * @brief Returns whether this entity has to be drawn in y order.
+ * @return \c true if this type of entity should be drawn at the same level
+ * as the hero.
  */
-bool NPC::is_displayed_in_y_order() {
+bool NPC::is_drawn_in_y_order() {
   // usual NPCs are displayed like the hero whereas generalized NPCs are
   // not necessarily people
   return subtype == USUAL_NPC;
@@ -141,13 +105,13 @@ bool NPC::is_displayed_in_y_order() {
 
 /**
  * @brief Creates the sprite specified.
- * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
+ * @param sprite_name sprite animation set of the entity, or an empty string to create no sprite
  * @param initial_direction direction of the entity's sprite (ignored if there is no sprite
  * of if the direction specified is -1)
  */
-void NPC::initialize_sprite(SpriteAnimationSetId& sprite_name, int initial_direction) {
+void NPC::initialize_sprite(const std::string& sprite_name, int initial_direction) {
 
-  if (sprite_name != "_none") {
+  if (!sprite_name.empty()) {
     create_sprite(sprite_name);
     if (initial_direction != -1) {
       get_sprite().set_current_direction(initial_direction);
@@ -254,18 +218,25 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
   }
   else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == FIRE) {
 
-    Script* script = behavior == BEHAVIOR_ITEM_SCRIPT ? script_to_call : &get_map_script();
-    script->event_npc_collision_fire(get_name());
+    if (behavior == BEHAVIOR_ITEM_SCRIPT) {
+      EquipmentItem& item = get_equipment().get_item(item_name);
+      get_lua_context().item_on_npc_collision_fire(item, *this);
+    }
+    else {
+      get_lua_context().npc_on_collision_fire(*this);
+    }
   }
 }
 
 /**
- * @brief Notifies this detector that the player is interacting by pressing the action key.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  */
-void NPC::action_key_pressed() {
+void NPC::notify_action_command_pressed() {
 
   Hero& hero = get_hero();
   if (hero.is_free()) {
@@ -306,32 +277,38 @@ void NPC::action_key_pressed() {
  */
 void NPC::call_script_hero_interaction() {
 
-  if (behavior == BEHAVIOR_MAP_SCRIPT && script_to_call == NULL) { // first time
-    script_to_call = &get_map_script();
+  if (behavior == BEHAVIOR_MAP_SCRIPT) {
+    get_lua_context().npc_on_interaction(*this);
   }
-
-  script_to_call->event_npc_interaction(get_name());
-  get_map_script().event_npc_interaction_finished(get_name()); // always notify the map script when finished
+  else {
+    EquipmentItem& item = get_equipment().get_item(item_name);
+    get_lua_context().item_on_npc_interaction(item, *this);
+  }
 }
 
 /**
- * @brief Notifies this detector that the player is interacting by using an inventory item.
+ * @brief Notifies this detector that the player is interacting by using an
+ * equipment item.
  *
- * This function is called when the player uses an inventory item
+ * This function is called when the player uses an equipment item
  * while the hero is facing this NPC.
  *
- * @param item the inventory item used
- * @return true if an interaction occured
+ * @param item_used The equipment item used.
+ * @return true if an interaction occured.
  */
-bool NPC::interaction_with_inventory_item(InventoryItem& item) {
+bool NPC::interaction_with_item(EquipmentItem& item_used) {
 
-  Script* script = behavior == BEHAVIOR_ITEM_SCRIPT ? script_to_call : &get_map_script();
-  bool interaction_occured = script->event_npc_interaction_item(get_name(), item.get_name(), item.get_variant());
-
-  if (interaction_occured) {
-    // always notify the map script when finished
-    get_map_script().event_npc_interaction_item_finished(get_name(), item.get_name(), item.get_variant());
+  bool interaction_occured;
+  if (behavior == BEHAVIOR_ITEM_SCRIPT) {
+    EquipmentItem& item_to_notify = get_equipment().get_item(item_name);
+    interaction_occured = get_lua_context().item_on_npc_interaction_item(
+        item_to_notify, *this, item_used);
   }
+  else {
+    interaction_occured = get_lua_context().npc_on_interaction_item(
+        *this, item_used);
+  }
+
   return interaction_occured;
 }
 
@@ -347,7 +324,7 @@ void NPC::update() {
     if (get_movement()->is_finished()) {
       get_sprite().set_current_animation("stopped");
       clear_movement();
-      get_map_script().event_npc_movement_finished(get_name());
+      get_lua_context().npc_on_movement_finished(*this);
     }
   }
 }
@@ -382,7 +359,15 @@ bool NPC::can_be_lifted() {
 
   // there is currently no way to specify from the data file of the map
   // that an interactive entity can be lifted (nor its weight, damage, sound, etc) so this is hardcoded
-  // TODO: specify the possibility to lift and the weight from the map script?
+  // TODO: specify the possibility to lift and the weight from Lua
   return has_sprite() && get_sprite().get_animation_set_id() == "entities/sign";
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& NPC::get_lua_type_name() const {
+  return LuaContext::entity_npc_module_name;
 }
 

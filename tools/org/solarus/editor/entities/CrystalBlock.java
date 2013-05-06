@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -18,6 +18,7 @@ package org.solarus.editor.entities;
 
 import org.solarus.editor.*;
 import java.awt.*;
+import java.util.NoSuchElementException;
 
 /**
  * An orange or blue block that can be raised or lowered with the help of a crystal.
@@ -28,28 +29,42 @@ public class CrystalBlock extends MapEntity {
      * Subtypes of raised blocks.
      */
     public enum Subtype implements EntitySubtype {
-	ORANGE,
-	BLUE;
+        // We use integers ids for historical reasons.
+        ORANGE("0"),
+        BLUE("1");
 
-	public static final String[] humanNames = {
-	  "Orange (initially lowered)", "Blue (initially raised)"  
-	};
+        public static final String[] humanNames = {
+            "Orange (initially lowered)",
+            "Blue (initially raised)"
+        };
 
-	public int getId() {
-	    return ordinal();
-	}
+        private String id;
 
-	public static Subtype get(int id) {
-	    return values()[id];
-	}
+        private Subtype(String id) {
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public static Subtype get(String id) {
+            for (Subtype subtype: values()) {
+                if (subtype.getId().equals(id)) {
+                    return subtype;
+                }
+            }
+            throw new NoSuchElementException(
+                    "No crystal block subtype with id '" + id + "'");
+        }
     }
 
     /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("miscellaneous_entities.png", 32, 48, 16, 16), // orange
-	new EntityImageDescription("miscellaneous_entities.png", 48, 48, 16, 16)  // blue
+        new EntityImageDescription("miscellaneous_entities.png", 32, 48, 16, 16), // orange
+        new EntityImageDescription("miscellaneous_entities.png", 48, 48, 16, 16)  // blue
     };
 
     /**
@@ -62,8 +77,8 @@ public class CrystalBlock extends MapEntity {
      * @param map the map
      */
     public CrystalBlock(Map map) throws MapException {
-	super(map, 16, 16);
-	subtype = Subtype.ORANGE;
+        super(map, 16, 16);
+        subtype = Subtype.ORANGE;
     }
 
     /**
@@ -71,7 +86,7 @@ public class CrystalBlock extends MapEntity {
      * @return true if this entity is an obstacle
      */
     public Obstacle getObstacle() {
-	return (subtype == Subtype.BLUE) ? Obstacle.OBSTACLE : Obstacle.NONE;
+        return (subtype == Subtype.BLUE) ? Obstacle.OBSTACLE : Obstacle.NONE;
     }
 
     /**
@@ -79,7 +94,7 @@ public class CrystalBlock extends MapEntity {
      * @return true
      */
     public boolean isResizable() {
-	return true;
+        return true;
     }
 
     /**
@@ -88,14 +103,15 @@ public class CrystalBlock extends MapEntity {
      * @return the minimum size of the entity
      */
     public Dimension getUnitarySize() {
-	return unitarySize;
+        return unitarySize;
     }
 
     /**
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	currentImageDescription.setX(32 + subtype.getId() * 16);
+        int x = (subtype == Subtype.ORANGE) ? 32 : 48;
+        currentImageDescription.setX(x);
     }
 
     /**
@@ -107,16 +123,17 @@ public class CrystalBlock extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-	Rectangle rectangle = new Rectangle(positionInMap.x, positionInMap.y,
-		unitarySize.width, unitarySize.height);
+        Rectangle positionInMap = getPositionInMap();
+        Rectangle rectangle = new Rectangle(positionInMap.x, positionInMap.y,
+                unitarySize.width, unitarySize.height);
 
-	for (int i = 0; i < getHeight(); i += unitarySize.height) {
-	    rectangle.x = positionInMap.x;
-	    for (int j = 0; j < getWidth(); j += unitarySize.width) {
-		currentImageDescription.paint(g, zoom, showTransparency, rectangle);
-		rectangle.x += unitarySize.width;
-	    }
-	    rectangle.y += unitarySize.height;
-	}
+        for (int i = 0; i < getHeight(); i += unitarySize.height) {
+            rectangle.x = positionInMap.x;
+            for (int j = 0; j < getWidth(); j += unitarySize.width) {
+                currentImageDescription.paint(g, zoom, showTransparency, rectangle);
+                rectangle.x += unitarySize.width;
+            }
+            rectangle.y += unitarySize.height;
+        }
     }
 }

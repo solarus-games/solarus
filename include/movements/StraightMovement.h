@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +23,6 @@
 /**
  * @brief A straight movement represented as a speed vector
  * whose properties (speed and angle) can be changed.
- *
- * Properties:
- * - speed
- * - angle
- * - max_distance
- * - ignore_obstacles
- * - smooth
- * - displayed_direction (read-only)
  */
 class StraightMovement: public Movement {
 
@@ -85,7 +77,7 @@ class StraightMovement: public Movement {
     StraightMovement(bool ignore_obstacles, bool smooth);
     virtual ~StraightMovement();
 
-    virtual void set_entity(MapEntity* entity);
+    virtual void notify_object_controlled();
     virtual void update();
     virtual void set_suspended(bool suspended);
     bool has_to_move_now();
@@ -111,9 +103,7 @@ class StraightMovement: public Movement {
     void set_finished();
     void stop();
 
-    // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

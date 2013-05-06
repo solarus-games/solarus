@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #define SOLARUS_SPRITE_ANIMATION_SET_H
 
 #include "Common.h"
+#include "lowlevel/Rectangle.h"
 #include <map>
 
 /**
@@ -30,26 +31,30 @@
  */
 class SpriteAnimationSet {
 
-  private:
-
-    std::map<std::string, SpriteAnimation*> animations;			/**< the animations */
-    std::string default_animation_name;					/**< name of the default animation */
-
   public:
 
-    SpriteAnimationSet();
-    SpriteAnimationSet(const SpriteAnimationSetId &id);
+    SpriteAnimationSet(const std::string& id);
     ~SpriteAnimationSet();
 
-    void set_map(Map &map);
+    void set_tileset(Tileset& tileset);
 
     bool has_animation(const std::string& animation_name) const;
-    const SpriteAnimation *get_animation(const std::string &animation_name) const;
-    SpriteAnimation *get_animation(const std::string &animation_name);
+    const SpriteAnimation* get_animation(const std::string& animation_name) const;
+    SpriteAnimation* get_animation(const std::string& animation_name);
     const std::string& get_default_animation() const;
 
     void enable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
+    const Rectangle& get_max_size() const;
+
+  private:
+
+    std::string id;                          /**< Id of this animation set. */
+    std::map<std::string, SpriteAnimation*>
+            animations;                      /**< The animations */
+    std::string default_animation_name;      /**< Name of the default animation. */
+    Rectangle max_size;                      /**< Size of this biggest frame. */
+
 };
 
 #endif

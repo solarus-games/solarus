@@ -1,0 +1,56 @@
+/**
+\page lua_api_path_finding_movement Path finding movement
+
+\tableofcontents
+
+A path finding movement is a particular
+\ref lua_api_path_movement "path movement" where
+the path is calculated to reach a target.
+The target is a \ref lua_api_entity "map entity"
+(by default the \ref lua_api_hero "hero"). The movement calculates
+repeatedly the shortest path towards the target entity, taking into account
+obstacles of the \ref lua_api_map "map".
+With this type of movement, an entity is capable of finding its way in a maze.
+
+\remark This type of movement computes a precise path on the map grid and
+avoids complex obstacles by using a sophisticated A.I. algorithm
+(<a href="http://en.wikipedia.org/wiki/A*">A*</a>).
+If you just need to go straight towards a target,
+which may be more natural for basic enemies,
+see the \ref lua_api_target_movement "target movement" type.
+
+\section lua_api_path_finding_movement_inherited_methods Methods inherited from movement
+
+Path finding movements are particular \ref lua_api_movement "movement" objects.
+Therefore, they inherit all methods from the type movement.
+
+See \ref lua_api_movement_methods to know these methods.
+
+\section lua_api_path_finding_movement_methods Methods of the type path finding movement
+
+The following methods are specific to path finding movements.
+
+\subsection lua_api_path_finding_movement_set_target path_finding_movement:set_target(entity)
+
+Sets the target entity of this movement.
+- \c entity (\ref lua_api_entity "entity"): The entity to target.
+
+\subsection lua_api_path_finding_movement_get_speed path_finding_movement:get_speed()
+
+Returns the speed of this movement.
+- Return value (number): The speed in pixels per second.
+
+\subsection lua_api_path_finding_movement_set_speed path_finding_movement:set_speed(speed)
+
+Sets the speed of this movement.
+- \c speed (number): The new speed in pixels per second.
+
+\section lua_api_path_finding_movement_inherited_events Events inherited from movement
+
+Path finding movements are particular \ref lua_api_movement "movement" objects.
+Therefore, they inherit all events from the type movement.
+
+See \ref lua_api_movement_events to know these events.
+
+*/
+

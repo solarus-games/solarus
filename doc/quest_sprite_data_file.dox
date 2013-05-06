@@ -1,0 +1,128 @@
+/**
+\page quest_sprite_data_file Sprite data file
+
+A sprite is an animated image that can be displayed on a surface or attached
+to an entity of the map.
+More precisely, a sprite displays images from an animation set with a current
+animation, a current direction and a current frame.
+Several sprites displayed at the same time can share the same animation set
+and have different states (i.e. different animations, directions and frames).
+
+An animation set has at least two data files:
+- One or more PNG images that contain the images of the animation set.
+- A sprite definition file like \c sprites/xx.dat, where \c xx is the id of
+  the sprite animation set. This file contains the definition of each
+  animation, direction and frame of the animation set.
+
+The sprite animation sets are represented as in Multimedia Fusion:
+- A sprite animation set is composed of one or several animations.
+  For instance, the animation set of a basic enemy may have four animations:
+  \c "stopped", \c "walking", \c "hurt" and \c "shaking".
+- Each animation is composed of one or several directions, numbered from 0.
+  Non-playing characters and usual enemies have four directions.
+- Each direction is a sequence of frames, where a frame is a static image.
+  Frames are numbered from 0. Once the animation is finished, the sequence may
+  loop, that is, come back to a specific frame (often but not necessarily
+  the first one).
+
+The definition file \c sprites/xx.dat contains those information.
+We now specify its syntax.
+
+A sprite definition file is a text file that defines each animation.
+For each animation, we first have a line that gives general information about
+this animation:
+
+\verbatim
+animation_name image_file nb_directions frame_delay frame_to_loop_on
+\endverbatim
+- \c animation_name: A name that identifies this animation (no quotes).
+  It cannot contain spaces.
+- \c image_file: Name of a PNG image that contains all frames of all
+  directions of this animation. It cannot contain spaces.
+  Its path is relative to the directory \c sprites.
+  Alternatively, \c image_file may also be the keyword \c tileset:
+  in this case, it means that the sprite is tileset-dependent.
+  Indeed, you may want to make sprites that change with the skin of the current
+  map (like animated doors). The PNG file is then
+  \c tilesets/yy.entities.png where \c yy is the id of the current tileset.
+- \c nb_directions: Number of directions of this animation.
+- \c frame_delay: Delay in milliseconds between two frames of the
+  animation, or 0 if there is only one frame and you want it to stay displayed.
+- \c frame_to_loop_on: Index of the frame where you want the animation to
+  come back when the last frame finishes. A value of -1 means no loop (the
+  animation stops after the last frame). If the value is -1, the sprite will
+  stop being displayed after the last frame, unless \c frame_delay is 0
+  (meaning that the only frame stays displayed).
+
+After this first line, there is a line for each direction of the animation.
+For each direction, this line determines the location of individual frames
+of this direction.
+In the PNG image, all frames of a direction are rectangles of the same size,
+placed in adjacent locations from left to right and possibly from top to
+bottom (in other words, organized in several columns and several rows).
+Therefore, instead of defining the frames one by one, we just specify the
+location of the first frame, the number of frames and the number of columns
+by row. This is enough to determine the exact position of each frame.
+A direction line has the following syntax:
+
+\verbatim
+x y frame_width frame_height origin_x origin_y nb_frames nb_columns
+\endverbatim
+- \c x and \c y: Coordinates of the top-left corner of area containg the
+  frames.
+- \c frame_width and \c frame_height: Size of each frame.
+  Thus, the first frame is the rectangle of coordinates (\c x,\c y)
+  and size (\c frame_width,\c frame_height).
+- \c origin_x and \c origin_y: Coordinates of the origin point of the sprite,
+  relative to the top-left rectangle of a frame.
+  When a sprite is drawn at some coordinates, the origin point determine what
+  exact point of the sprite's rectangle is at those coordinates.
+  It is not necessarily the top-left corner of the rectangle.
+  The origin point is usually be the central point of contact between the
+  sprite and the ground. For example, the origin point of the hero,
+  of enemies, NPCs and most entities is usually the center of their shadow.
+  Thus, for entities of size (<tt>16,16</tt>), the origin point is
+  often (<tt>8,13</tt>).
+  The origin point is the point of synchronization of an entity with its
+  sprites, because an entity that has a given size may have sprite with
+  a different size.
+- \c nb_frames: Number of frames of this direction. Most of the time,
+  this number is the same for all directions.
+- \c nb_columns: Number of columns of the grid containing the frames of this
+  direction in the PNG image. The number of rows is then deduced from
+  \c nb_frames and \c nb_columns. Note that the last row of the grid may be
+  incomplete.
+
+Example of a sprite animation set definition file:
+
+\verbatim
+stopped hero/stopped.tunic.png 4 0 -1
+0	0	24	24	12	21	1	1
+24	0	24	24	12	21	1	1
+72	0	24	24	12	21	1	1
+96	0	24	24	12	21	1	1
+
+walking hero/walking.tunic.png 4 100 0
+0	0	24	32	12	29	8	8
+0	32	24	32	12	29	8	8
+0	96	24	32	12	29	8	8
+0	128	24	32	12	29	8	8
+
+sword hero/sword.tunic0.png 4 30 -1
+0	0	32	32	16	29	12	12
+0	32	32	32	16	29	12	12
+0	64	32	32	16	29	12	12
+0	96	32	32	16	29	12	12
+\endverbatim
+The current version of the editor does not support edition of sprites yet.
+You have to edit it them by hand. However, graphical edition of sprites is the
+next important feature planned in the development of the editor.
+
+Don't forget to add all sprite animation sets to the
+quest tree in the editor (or by editing
+\ref quest_resource_file "project_db.dat" by hand).
+Otherwise, they won't show up when you configure entities with sprites (like
+non-playing characters) in the editor.
+
+*/
+

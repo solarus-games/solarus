@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,8 +38,7 @@ class Switch: public Detector {
      * Subtypes of switches.
      */
     enum Subtype {
-      WALKABLE_INVISIBLE = 0, /**< an invisible switch, typically used to detect the hero position
-                               * (deprecated: you should probably use a sensor instead) */
+      WALKABLE_INVISIBLE = 0, /**< an invisible switch, typically used to detect the hero position */
       WALKABLE_VISIBLE   = 1, /**< a classical visible switch the hero can walk on */
       ARROW_TARGET       = 2, /**< an invisible switch that can be triggered by shooting an arrow on it */
       SOLID              = 3  /**< a crystal-like switch that can be triggered with the sword */
@@ -52,8 +51,8 @@ class Switch: public Detector {
     bool locked;                               /**< indicates that this switch cannot be enabled or disabled by other entities for now */
 
     // the following fields are used only for walkable switches
-    bool needs_block;                          /**< indicates that a block or a statue is required to enable this walkable switch */
-    bool inactivate_when_leaving;              /**< indicates that this walkable switch becomes disabled when the hero or the block leaves it */
+    bool needs_block;                          /**< indicates that a block or a statue is required to activate this walkable switch */
+    bool inactivate_when_leaving;              /**< indicates that this walkable switch becomes inactivated when the hero or the block leaves it */
     MapEntity* entity_overlapping;             /**< the entity currently on this walkable switch (as arrows may be destroyed at any moment) */
     bool entity_overlapping_still_present;     /**< to detect when the entity overlapping leaves the switch */
 
@@ -62,7 +61,6 @@ class Switch: public Detector {
     Switch(const std::string& name, Layer layer, int x, int y,
 	Subtype subtype, bool needs_block, bool inactivate_when_leaving);
     ~Switch();
-    static CreationFunction parse;
 
     EntityType get_type();
     bool is_obstacle_for(MapEntity& other);
@@ -84,6 +82,8 @@ class Switch: public Detector {
     bool test_collision_custom(MapEntity& entity);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

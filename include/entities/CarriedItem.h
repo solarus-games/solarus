@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,21 +33,21 @@ class CarriedItem: public MapEntity {
   private:
 
     // game data
-    Hero &hero;				/**< the hero, who is carrying or throwing this item */
+    Hero& hero;				/**< the hero, who is carrying or throwing this item */
 
     // state
     bool is_lifting;			/**< indicates that the hero is lifting this item */
     bool is_throwing;			/**< indicates that the item is being thrown */
     bool is_breaking;			/**< indicates that the item is breaking */
     bool break_on_intermediate_layer;	/**<  indicates that the item has to get broken now and on the intermediate layer instead of the lower one */
-    SoundId destruction_sound_id;	/**< the sound played when the item breaks */
+    std::string destruction_sound_id;	/**< the sound played when the item breaks */
     int damage_on_enemies;		/**< damage for an enemy that receives the item */
 
     // throwing the item
-    Sprite *shadow_sprite;		/**< sprite of the shadow when the item is being thrown */
+    Sprite* shadow_sprite;		/**< sprite of the shadow when the item is being thrown */
     int throwing_direction;		/**< direction where the item is thrown (0 to 3) */
     uint32_t next_down_date;		/**< when the item is thrown, date when it move one pixel downwards next time */
-    int item_height;			/**< current height where the item is displayed above its shadow */
+    int item_height;			/**< current height where the item is drawn above its shadow */
     int y_increment;			/**< next y change for item_height */
 
     // explosion of the item
@@ -57,8 +57,8 @@ class CarriedItem: public MapEntity {
 
     void initialize(const Rectangle& xy, const Rectangle& size,
 	const Rectangle& origin,
-        const SpriteAnimationSetId& animation_set_id,
-        const SoundId& destruction_sound_id,
+        const std::string& animation_set_id,
+        const std::string& destruction_sound_id,
         int damage_on_enemies, uint32_t explosion_date);
 
     bool will_explode_soon();
@@ -74,19 +74,16 @@ class CarriedItem: public MapEntity {
       BEHAVIOR_KEEP            /**< let the hero continue to carry the item */
     };
 
-    CarriedItem(Hero &hero, MapEntity &original_entity,
-	const SpriteAnimationSetId& animation_set_id,
-        const SoundId& destruction_sound_id,
+    CarriedItem(Hero& hero, MapEntity& original_entity,
+        const std::string& animation_set_id,
+        const std::string& destruction_sound_id,
         int damage_on_enemies,
         uint32_t explosion_date);
     ~CarriedItem();
 
     EntityType get_type();
-
     bool can_be_obstacle();
-    bool can_detect_entities();
-    bool can_be_displayed();
-    bool is_displayed_in_y_order();
+    bool is_drawn_in_y_order();
 
     int get_damage_on_enemies();
 
@@ -101,7 +98,7 @@ class CarriedItem: public MapEntity {
 
     void set_suspended(bool suspended);
     void update();
-    void display_on_map();
+    void draw_on_map();
 
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);

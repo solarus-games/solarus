@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ class Hero::JumpingState: public Hero::State {
 
   public:
 
-    JumpingState(Hero &hero, int direction8, int length, bool ignore_obstacles, bool with_sound,
+    JumpingState(Hero &hero, int direction8, int distance, bool ignore_obstacles, bool with_sound,
 	uint32_t movement_delay = 0);
     ~JumpingState();
 

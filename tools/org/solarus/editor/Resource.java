@@ -1,22 +1,23 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.solarus.editor;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * This class lists all elements of a certain resource.
@@ -25,30 +26,16 @@ import java.util.*;
 public class Resource extends Observable {
 
     /**
-     * Id and name of each element.
+     * Id and human-readable name of each element.
      */
     private LinkedHashMap<String, String> elements;
 
     /**
-     * True if the id is an auto-incremented integer, false if it is a custom string.
-     */
-    private boolean idAutoIncremented;
-
-    /**
-     * Maximum id already assigned to an element (used only if autoIncrementId is true).
-     */
-    private int maxId;
-
-    /**
      * Creates the resource.
-     * @param idAutoIncremented true if you want the id to be an auto-incremented integer,
-     * false if you prefer a custom string.
      */
-    public Resource(boolean idAutoIncremented) {
+    public Resource() {
 
-	this.idAutoIncremented = idAutoIncremented;
-	this.maxId = -1;
-	this.elements = new LinkedHashMap<String, String>();
+        this.elements = new LinkedHashMap<String, String>();
     }
 
     /**
@@ -56,7 +43,7 @@ public class Resource extends Observable {
      * @return an iterator over the ids
      */
     public Iterator<String> iterator() {
-	return elements.keySet().iterator();
+        return elements.keySet().iterator();
     }
 
     /**
@@ -64,15 +51,15 @@ public class Resource extends Observable {
      * @return an array with the id of all elements.
      */
     public String[] getIds() {
-	
-	String[] ids = new String[elements.size()];
-	int i = 0;
 
-	for (String id: elements.keySet()) {
-	    ids[i++] = id;
-	}
+        String[] ids = new String[elements.size()];
+        int i = 0;
 
-	return ids;
+        for (String id: elements.keySet()) {
+            ids[i++] = id;
+        }
+
+        return ids;
     }
 
     /**
@@ -81,24 +68,24 @@ public class Resource extends Observable {
      * @return true if it exists in the resource, false otherwise
      */
     public boolean exists(String id) {
-	return elements.containsKey(id);
+        return elements.containsKey(id);
     }
 
     /**
      * Returns the name of an element from its id.
      * @param id id of an element
      * @return the name of this element
-     * @throws ZSDXException if this element doesn't exist
+     * @throws QuestEditorException if this element doesn't exist
      */
-    public String getElementName(String id) throws ZSDXException {
+    public String getElementName(String id) throws QuestEditorException {
 
-	String name = elements.get(id);
+        String name = elements.get(id);
 
-	if (name == null) {
-	    throw new ZSDXException("There is no element with id " + id);
-	}
+        if (name == null) {
+            throw new QuestEditorException("There is no element with id '" + id + "'");
+        }
 
-	return name;
+        return name;
     }
 
     /**
@@ -106,58 +93,102 @@ public class Resource extends Observable {
      * database, it is added.
      * @param id id of an element
      * @param name the name of the element
-     * @throws ZSDXException if the id is not valid
+     * @throws QuestEditorException if the id is not valid
      */
-    public void setElementName(String id, String name) throws ZSDXException {
+    public void setElementName(String id, String name) throws QuestEditorException {
 
-	if (id.length() == 0) {
-	    throw new ZSDXException("Empty id for element '" + name);
-	}
+        if (id == null || id.length() == 0) {
+            throw new QuestEditorException("Empty id for element '" + name  + "'");
+        }
 
-	if (idAutoIncremented) {
-	    
-	    try {
-		int intId = Integer.parseInt(id);
-		
-		if (intId > maxId) {
-		    maxId = intId;
-		}
-	    }
-	    catch (NumberFormatException ex) {
-		throw new ZSDXException("Invalid id '" + id + "' for element '" + name +
-					"': the value should be an integer number");
-	    }
-	}
+        String oldName = elements.get(id);
+        if (oldName == null || !name.equals(oldName)) {
 
-	String oldName = elements.get(id);
+            // the element doesn't exist yet, or its name has just been changed
+            elements.put(id, name);
+            setChanged();
+            notifyObservers();
+        }
+    }
 
-	if (oldName == null || !name.equals(oldName)) {
+    /**
+     * Add an element to the resource. 
+     * If the element already exists in the database, throws an exception
+     * @param id Id of the element to add.
+     * @param name Human-readable name of this element. Cannot be null.
+     */
+    public void addElement(String id, String name) throws QuestEditorException {
 
-	    // the element doesn't exist yet, or its name has just been changed
-	    elements.put(id, name);
-	    setChanged();
-	    notifyObservers();
-	}
+        if (id == null || id.isEmpty()) {
+            throw new QuestEditorException("Empty id");
+        }
+
+        if (name == null || name.isEmpty()) {
+            throw new QuestEditorException("Empty name");
+        }
+
+        if (elements.get(id) == null) {
+            elements.put(id, name);
+            setChanged();
+            notifyObservers();
+        }
+        else {
+            throw new QuestEditorException("The element " + id + " already exists");
+        }
+    }
+
+    /**
+     * Removes an element from the resource.
+     * Throws an exception if the element doesn't exist
+     * in the database
+     */
+    public void removeElement(String id) throws QuestEditorException {
+        if (elements.get(id) == null) {
+            throw new QuestEditorException(
+                    "Element '" + id + "' doesn't exist in the resource.");
+        }
+        elements.remove(id);
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Changes the id of an existing element in this resource.
+     * @param oldId Id of an element 
+     * @param newId
+     */
+    public void moveElement(String oldId, String newId)
+            throws QuestEditorException {
+
+        boolean found = false;
+
+        // We need to recreate the data structure.
+        LinkedHashMap<String, String> newElements = new
+                LinkedHashMap<String, String>();
+        for (Entry<String, String> entry: elements.entrySet()) {
+            if (entry.getKey().equals(oldId)) {
+                // Change the id for this element.
+                newElements.put(newId, entry.getValue());
+                found = true;
+            }
+            else {
+                // Keep the element unchanged.
+                newElements.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        if (!found) {
+            throw new QuestEditorException(
+                    "Element '" + oldId + "' doesn't exist in the resource.");
+        }
+
+        elements = newElements;
     }
 
     /**
      * Removes all elements from the resource.
      */
     public void clear() {
-	elements.clear();
-    }
-
-    /**
-     * Computes an id for a new element. This makes sure the id is not used yet.
-     * @return an available id you can assign to a new element
-     */
-    public String computeNewId() {
-
-	maxId++;
-
-	setChanged();
-	notifyObservers();
-
-	return Integer.toString(maxId);
+        elements.clear();
     }
 }

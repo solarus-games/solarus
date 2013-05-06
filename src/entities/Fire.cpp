@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,12 @@
 
 /**
  * @brief Creates some fire.
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the fire entity to create
  * @param xy coordinates of the fire
  */
-Fire::Fire(Layer layer, const Rectangle& xy):
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, "", layer, xy.get_x(), xy.get_y(), 16, 16) {
+Fire::Fire(const std::string& name, Layer layer, const Rectangle& xy):
+  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, name, layer, xy.get_x(), xy.get_y(), 16, 16) {
 
   // initialize the entity
   create_sprite("entities/fire");
@@ -58,48 +59,6 @@ EntityType Fire::get_type() {
  */
 bool Fire::can_be_obstacle() {
   return false; 
-}
-
-/**
- * @brief Returns whether entities of this type have detection capabilities.
- *
- * This function returns whether entities of this type can detect the presence 
- * of the hero or other entities (this is possible only for
- * suclasses of Detector). If yes, the function 
- * notify_collision() will be called when a collision is detected.
- *
- * @return true if this type of entity can detect other entities
- */
-bool Fire::can_detect_entities() {
-  return true;
-}
-
-/**
- * @brief Returns whether entities of this type can be displayed.
- *
- * If yes, the sprites added by the add_sprite() calls will be 
- * displayed (if any).
- *
- * @return true if this type of entity can be displayed
- */
-bool Fire::can_be_displayed() {
-  return true; 
-}
-
-/**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether an entity of this type should be displayed above
- * the hero and other entities having this property when it is in front of them.
- * This means that the displaying order of entities having this
- * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file), 
- * and before the entities with the feature.
- *
- * @return true if this type of entity is displayed at the same level as the hero
- */
-bool Fire::is_displayed_in_y_order() {
-  return false;
 }
 
 /**

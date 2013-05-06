@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 #ifndef SOLARUS_NOMAIN
 
-#include "Solarus.h"
+#include "MainLoop.h"
 #include <iostream>
 #include <SDL.h>  // Necessary on some systems for SDLMain.
 
@@ -28,19 +28,24 @@ static void print_help(int argc, char** argv);
  * Usage: solarus [options] [quest_path]
  *
  * The quest path is the name of a directory that contains either the data
- * directory or the data archive (data.solarus).
- * If the quest path is not set, the current directory is used.
+ * directory ("data") or the data archive ("data.solarus").
+ * If the quest path is not specified, it is set to the preprocessor constant
+ * DEFAULT_QUEST, which is the current directory "." by default.
+ * In all cases, this quest path is relative to the working directory,
+ * or to the solarus executable directory if no quest is found in the working
+ * directory.
  *
  * The following options are supported:
  *   -help               shows a help message
  *   -no-audio           disables sounds and musics
  *   -no-video           disables displaying (used for unitary tests)
- *   -language=l         sets the language l (overrides the one saved in the options file)
  *
  * @param argc number of command-line arguments
  * @param argv command-line arguments
  */
 int main(int argc, char **argv) {
+
+  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
 
   // check the -help option
   bool help = false;
@@ -55,7 +60,7 @@ int main(int argc, char **argv) {
   }
   else {
     // run the window
-    Solarus(argc, argv).main_loop();
+    MainLoop(argc, argv).run();
   }
 
   return 0;
@@ -85,10 +90,7 @@ static void print_help(int argc, char **argv) {
     << std::endl
     << "  -no-audio           disables sounds and musics"
     << std::endl
-    << "  -no-video           disables displaying (may be used for tests)"
-    << std::endl
-    << "  -language=l         sets the language l (replaces the one saved in "
-    "the options file)"
+    << "  -no-video           disables displaying (may be useful for tests)"
     << std::endl;
 }
 

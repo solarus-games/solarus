@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,14 +91,14 @@ void Hero::FreeState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies this state that the action key was just pressed.
+ * @brief Notifies this state that the action command was just pressed.
  */
-void Hero::FreeState::action_key_pressed() {
+void Hero::FreeState::notify_action_command_pressed() {
 
   if (get_keys_effect().is_action_key_acting_on_facing_entity()) {
 
     // action on the facing entity
-    hero.get_facing_entity()->action_key_pressed();
+    hero.get_facing_entity()->notify_action_command_pressed();
   }
   else if (hero.is_facing_point_on_obstacle()) {
 
@@ -151,10 +151,11 @@ bool Hero::FreeState::can_start_sword() {
 }
 
 /**
- * @brief Returns whether the hero can use an inventory item in this state.
- * @return true if the hero can use an inventory item in this state
+ * @brief Returns whether the hero can use an equipment item in this state.
+ * @param item The equipment item to check.
+ * @return true if the hero can use this equipment item in this state.
  */
-bool Hero::FreeState::can_start_inventory_item() {
+bool Hero::FreeState::can_start_item(EquipmentItem& item) {
   return hero.get_ground() != GROUND_HOLE;
 }
 

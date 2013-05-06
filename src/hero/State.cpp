@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
  */
 #include "hero/State.h"
 #include "hero/SwordSwingingState.h"
-#include "hero/InventoryItemState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Hero.h"
 #include "lowlevel/System.h"
@@ -24,8 +23,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
-#include "ItemProperties.h"
-#include "InventoryItem.h"
+#include "EquipmentItem.h"
 #include "Sprite.h"
 #include "KeysEffect.h"
 
@@ -86,11 +84,11 @@ MapEntities& Hero::State::get_entities() {
 }
 
 /**
- * @brief Returns the script of the current map.
- * @return the current script
+ * @brief Returns the shared Lua context.
+ * @return The Lua context where all scripts are run.
  */
-MapScript& Hero::State::get_map_script() {
-  return map->get_script();
+LuaContext& Hero::State::get_lua_context() {
+  return map->get_game().get_lua_context();
 }
 
 /**
@@ -118,11 +116,11 @@ KeysEffect& Hero::State::get_keys_effect() {
 }
 
 /**
- * @brief Returns the game controls.
- * @return the controls
+ * @brief Returns the game commands.
+ * @return The commands.
  */
-GameControls& Hero::State::get_controls() {
-  return get_game().get_controls();
+GameCommands& Hero::State::get_commands() {
+  return get_game().get_commands();
 }
 
 /**
@@ -167,14 +165,14 @@ void Hero::State::update() {
 }
 
 /**
- * @brief Displays this state.
+ * @brief Draws this state.
  *
- * This function displays the hero's sprites in its current state.
- * If your state needs to display additional elements, you can redefine this function.
+ * This function draws the hero's sprites in its current state.
+ * If your state needs to draw additional elements, you can redefine this function.
  */
-void Hero::State::display_on_map() {
+void Hero::State::draw_on_map() {
 
-  get_sprites().display_on_map();
+  get_sprites().draw_on_map();
 }
 
 /**
@@ -195,92 +193,48 @@ void Hero::State::set_suspended(bool suspended) {
 }
 
 /**
- * @brief This function is called when a game key is pressed and the game is not suspended.
- * @param key the key pressed
+ * @brief This function is called when a game command is pressed and the game
+ * is not suspended.
+ * @param command The command pressed.
  */
-void Hero::State::key_pressed(GameControls::GameKey key) {
+void Hero::State::notify_command_pressed(GameCommands::Command command) {
 
-  switch (key) {
+  switch (command) {
 
     // action key
-  case GameControls::ACTION:
-    action_key_pressed();
+  case GameCommands::ACTION:
+    notify_action_command_pressed();
     break;
 
     // sword key
-  case GameControls::SWORD:
-    sword_key_pressed();
+  case GameCommands::ATTACK:
+    notify_attack_command_pressed();
     break;
 
     // move the hero
-  case GameControls::RIGHT:
-    directional_key_pressed(0);
+  case GameCommands::RIGHT:
+    notify_direction_command_pressed(0);
     break;
 
-  case GameControls::UP:
-    directional_key_pressed(1);
+  case GameCommands::UP:
+    notify_direction_command_pressed(1);
     break;
 
-  case GameControls::LEFT:
-    directional_key_pressed(2);
+  case GameCommands::LEFT:
+    notify_direction_command_pressed(2);
     break;
 
-  case GameControls::DOWN:
-    directional_key_pressed(3);
+  case GameCommands::DOWN:
+    notify_direction_command_pressed(3);
     break;
 
-    // use an inventory item
-  case GameControls::ITEM_1:
-    item_key_pressed(0);
+    // use an equipment item
+  case GameCommands::ITEM_1:
+    notify_item_command_pressed(1);
     break;
 
-  case GameControls::ITEM_2:
-    item_key_pressed(1);
-    break;
-
-  default:
-    break;
-  }
-}
-
-/**
- * @brief This function is called when a key is released if the game is not suspended.
- * @param key the key released
- */
-void Hero::State::key_released(GameControls::GameKey key) {
-
-  switch (key) {
-
-  case GameControls::ACTION:
-    action_key_released();
-    break;
-
-  case GameControls::SWORD:
-    sword_key_released();
-    break;
-
-  case GameControls::RIGHT:
-    directional_key_released(0);
-    break;
-
-  case GameControls::UP:
-    directional_key_released(1);
-    break;
-
-  case GameControls::LEFT:
-    directional_key_released(2);
-    break;
-
-  case GameControls::DOWN:
-    directional_key_released(3);
-    break;
-
-  case GameControls::ITEM_1:
-    item_key_released(0);
-    break;
-
-  case GameControls::ITEM_2:
-    item_key_released(1);
+  case GameCommands::ITEM_2:
+    notify_item_command_pressed(2);
     break;
 
   default:
@@ -289,21 +243,67 @@ void Hero::State::key_released(GameControls::GameKey key) {
 }
 
 /**
- * @brief Notifies this state that the action key was just pressed.
+ * @brief This function is called when a command is released if the game is
+ * not suspended.
+ * @param command The command released.
  */
-void Hero::State::action_key_pressed() {
+void Hero::State::notify_command_released(GameCommands::Command command) {
+
+  switch (command) {
+
+  case GameCommands::ACTION:
+    notify_action_command_released();
+    break;
+
+  case GameCommands::ATTACK:
+    notify_attack_command_released();
+    break;
+
+  case GameCommands::RIGHT:
+    notify_direction_command_released(0);
+    break;
+
+  case GameCommands::UP:
+    notify_direction_command_released(1);
+    break;
+
+  case GameCommands::LEFT:
+    notify_direction_command_released(2);
+    break;
+
+  case GameCommands::DOWN:
+    notify_direction_command_released(3);
+    break;
+
+  case GameCommands::ITEM_1:
+    notify_item_command_released(0);
+    break;
+
+  case GameCommands::ITEM_2:
+    notify_item_command_released(1);
+    break;
+
+  default:
+    break;
+  }
 }
 
 /**
- * @brief Notifies this state that the action key was just released.
+ * @brief Notifies this state that the action command was just pressed.
  */
-void Hero::State::action_key_released() {
+void Hero::State::notify_action_command_pressed() {
 }
 
 /**
- * @brief Notifies this state that the sword key was just pressed.
+ * @brief Notifies this state that the action command was just released.
  */
-void Hero::State::sword_key_pressed() {
+void Hero::State::notify_action_command_released() {
+}
+
+/**
+ * @brief Notifies this state that the attack command was just pressed.
+ */
+void Hero::State::notify_attack_command_pressed() {
 
   if (!hero.is_suspended()
       && get_keys_effect().get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
@@ -314,47 +314,43 @@ void Hero::State::sword_key_pressed() {
 }
 
 /**
- * @brief Notifies this state that the sword key was just released.
+ * @brief Notifies this state that the attack command was just released.
  */
-void Hero::State::sword_key_released() {
+void Hero::State::notify_attack_command_released() {
 }
 
 /**
- * @brief Notifies this state that a directional key was just pressed.
+ * @brief Notifies this state that a directional command was just pressed.
  * @param direction4 direction of the key (0 to 3)
  */
-void Hero::State::directional_key_pressed(int direction4) {
+void Hero::State::notify_direction_command_pressed(int direction4) {
 }
 
 /**
- * @brief Notifies this state that a directional key was just released.
+ * @brief Notifies this state that a directional command was just released.
  * @param direction4 direction of the key (0 to 3)
  */
-void Hero::State::directional_key_released(int direction4) {
+void Hero::State::notify_direction_command_released(int direction4) {
 }
 
 /**
- * @brief Notifies this state that an item key was just pressed.
- * @param slot the slot activated (0 or 1)
+ * @brief Notifies this state that an item command was just pressed.
+ * @param slot The slot activated (1 or 2).
  */
-void Hero::State::item_key_pressed(int slot) {
+void Hero::State::notify_item_command_pressed(int slot) {
 
-  const std::string item_name = get_equipment().get_item_assigned(slot);
+  EquipmentItem* item = get_equipment().get_item_assigned(slot);
 
-  if (item_name.size() > 0
-      && get_equipment().get_item_properties(item_name).can_be_assigned()
-      && get_equipment().has_item(item_name)
-      && can_start_inventory_item()) {
-
-    hero.set_state(new InventoryItemState(hero, item_name));
+  if (item != NULL && hero.can_start_item(*item)) {
+    hero.start_item(*item);
   }
 }
 
 /**
- * @brief Notifies this state that an item key was just released.
- * @param slot the slot (0 or 1)
+ * @brief Notifies this state that an item command was just released.
+ * @param slot the slot (1 or 2)
  */
-void Hero::State::item_key_released(int slot) {
+void Hero::State::notify_item_command_released(int slot) {
 }
 
 /**
@@ -835,23 +831,23 @@ bool Hero::State::is_free() {
 }
 
 /**
- * @brief Returns whether the hero is using an inventory item in this state.
+ * @brief Returns whether the hero is using an equipment item in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero is using an inventory item
+ * @return true if the hero is using an equipment item.
  */
-bool Hero::State::is_using_inventory_item() {
+bool Hero::State::is_using_item() {
   return false;
 }
 
 /**
- * @brief When the hero is using an inventory item, returns the inventory item.
- * @return the current inventory item
+ * @brief When the hero is using an equipment item, returns that item.
+ * @return The current equipment item.
  */
-InventoryItem& Hero::State::get_current_inventory_item() {
+EquipmentItemUsage& Hero::State::get_item_being_used() {
 
-  Debug::die("No inventory item in this state");
+  Debug::die("No item is being used in this state");
   throw;
 }
 
@@ -919,13 +915,14 @@ bool Hero::State::can_start_sword() {
 }
 
 /**
- * @brief Returns whether the hero can use an inventory item in this state.
+ * @brief Returns whether the hero can use an equipment item in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero can use an inventory item in this state
+ * @param item The equipment item to check.
+ * @return true if the hero can use an equipment item in this state.
  */
-bool Hero::State::can_start_inventory_item() {
+bool Hero::State::can_start_item(EquipmentItem& item) {
   return false;
 }
 

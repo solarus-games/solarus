@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,38 +31,22 @@ class Sensor: public Detector {
 
   public:
 
-    /**
-     * Subtypes of sensors.
-     */
-    enum Subtype {
-      CUSTOM                 = 0, /**< the map script is called when the hero walks on this sensor */
-      CHANGE_LAYER           = 1, /**< the hero's layer is changed when he comes on this sensor
-				   * (the hero's layer becomes the sensor's layer) */
-      RETURN_FROM_BAD_GROUND = 2  /**< when he falls in a hole or in other bad grounds, the hero
-				   * will come back at the location of this sensor */
-    };
-
-  private:
-
-    Subtype subtype;             /**< subtype of sensor */
-    bool activated_by_hero;      /**< true if the sensor is activated by the hero */
-    bool notifying_script;       /**< true if the map script is currently being notified */
-
-  public:
-
-    Sensor(const std::string &name, Layer layer, int x, int y, int width, int height, Subtype subtype);
+    Sensor(const std::string& name, Layer layer, int x, int y, int width, int height);
     ~Sensor();
-    static CreationFunction parse;
 
     EntityType get_type();
+    bool can_be_drawn();
 
-    Subtype get_subtype();
-    bool has_layer_independent_collisions();
-    bool is_obstacle_for(MapEntity &other);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    bool is_obstacle_for(MapEntity& other);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode);
     void activate(Hero& hero);
     void update();
+
+  private:
+
+    bool activated_by_hero;      /**< true if the sensor is activated by the hero */
+    bool notifying_script;       /**< true if the map script is currently being notified */
 };
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,8 @@ void Hero::ConveyorBeltState::start(State *previous_state) {
 
   // first, snap the hero to the center of the conveyor belt
   snapping = true;
-  hero.set_movement(new TargetMovement(&conveyor_belt, hero.get_walking_speed() * 2 / 3));
+  hero.set_movement(new TargetMovement(
+      &conveyor_belt, hero.get_walking_speed() * 2 / 3, true));
 }
 
 /**
@@ -95,7 +96,7 @@ void Hero::ConveyorBeltState::update() {
     }
     else {
       // update the sprites direction
-      int keys_direction8 = get_controls().get_wanted_direction8();
+      int keys_direction8 = get_commands().get_wanted_direction8();
       int movement_direction8 = conveyor_belt.get_direction();
 
       int animation_direction = get_sprites().get_animation_direction(keys_direction8, movement_direction8);

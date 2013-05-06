@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,192 +14,623 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
+#include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"
 #include "DialogBox.h"
+#include "DialogResource.h"
 #include "Treasure.h"
+#include "EquipmentItem.h"
 #include "entities/MapEntities.h"
-#include "entities/Door.h"
-#include "entities/NPC.h"
-#include "entities/Sensor.h"
-#include "entities/Chest.h"
-#include "entities/DynamicTile.h"
-#include "entities/Stairs.h"
-#include "entities/CustomObstacle.h"
-#include "entities/Block.h"
-#include "entities/Switch.h"
-#include "entities/Crystal.h"
+#include "entities/Tile.h"
+#include "entities/Destination.h"
 #include "entities/Teletransporter.h"
-#include "entities/Hero.h"
-#include "entities/PickableItem.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Pickable.h"
+#include "entities/Destructible.h"
+#include "entities/Chest.h"
+#include "entities/Jumper.h"
+#include "entities/Enemy.h"
+#include "entities/NPC.h"
+#include "entities/Block.h"
+#include "entities/DynamicTile.h"
+#include "entities/Switch.h"
+#include "entities/Wall.h"
+#include "entities/Sensor.h"
+#include "entities/Crystal.h"
+#include "entities/CrystalBlock.h"
+#include "entities/ShopItem.h"
+#include "entities/ConveyorBelt.h"
+#include "entities/Door.h"
+#include "entities/Stairs.h"
 #include "entities/Bomb.h"
+#include "entities/Explosion.h"
 #include "entities/Fire.h"
+#include "entities/Hero.h"
+#include "movements/Movement.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <lua.hpp>
+#include <sstream>
+
+const std::string LuaContext::map_module_name = "sol.map";
 
 /**
- * @brief Shows the dialog box and starts displaying a dialog.
- *
- * If the dialog contains a variable,
- * then you have to call sol.map.dialog_set_variable() to specify its value.
- *
- * - Argument 1 (string): id of the dialog to display
- *
- * @param l the Lua context that is calling this function
+ * @brief Initializes the map features provided to Lua.
  */
-int Script::map_api_dialog_start(lua_State* l) {
+void LuaContext::register_map_module() {
 
-  Script& script = get_script(l, 1);
-  const std::string& dialog_id = luaL_checkstring(l, 1);
-
-  script.get_game().get_dialog_box().start_dialog(dialog_id, &script);
-
-  return 0;
+  static const luaL_Reg methods[] = {
+      { "get_id", map_api_get_id },
+      { "get_game", map_api_get_game },
+      { "get_world", map_api_get_world },
+      { "get_size", map_api_get_size },
+      { "get_location", map_api_get_location },
+      { "get_floor", map_api_get_floor },
+      { "get_tileset", map_api_get_tileset },
+      { "set_tileset", map_api_set_tileset },
+      { "is_dialog_enabled", map_api_is_dialog_enabled },
+      { "start_dialog", map_api_start_dialog },
+      { "set_dialog_variable", map_api_set_dialog_variable },
+      { "set_dialog_style", map_api_set_dialog_style },
+      { "set_dialog_position", map_api_set_dialog_position },
+      { "draw_dialog_box", map_api_draw_dialog_box },
+      { "set_pause_enabled", map_api_set_pause_enabled },
+      { "get_light", map_api_get_light },
+      { "set_light", map_api_set_light },
+      { "get_camera_position", map_api_get_camera_position },
+      { "move_camera", map_api_move_camera },
+      { "draw_sprite", map_api_draw_sprite },
+      { "get_crystal_state", map_api_get_crystal_state },
+      { "set_crystal_state", map_api_set_crystal_state },
+      { "change_crystal_state", map_api_change_crystal_state },
+      { "open_doors", map_api_open_doors },
+      { "close_doors", map_api_close_doors },
+      { "set_doors_open", map_api_set_doors_open },
+      { "get_entity", map_api_get_entity },
+      { "has_entity", map_api_has_entity },
+      { "get_entities", map_api_get_entities },
+      { "get_entities_count", map_api_get_entities_count },
+      { "has_entities", map_api_has_entities },
+      { "set_entities_enabled", map_api_set_entities_enabled },
+      { "remove_entities", map_api_remove_entities },
+      { "create_destination", map_api_create_destination },
+      { "create_teletransporter", map_api_create_teletransporter },
+      { "create_pickable", map_api_create_pickable },
+      { "create_destructible", map_api_create_destructible },
+      { "create_chest", map_api_create_chest },
+      { "create_jumper", map_api_create_jumper },
+      { "create_enemy", map_api_create_enemy },
+      { "create_npc", map_api_create_npc },
+      { "create_block", map_api_create_block },
+      { "create_dynamic_tile", map_api_create_dynamic_tile },
+      { "create_switch", map_api_create_switch },
+      { "create_wall", map_api_create_wall },
+      { "create_sensor", map_api_create_sensor },
+      { "create_crystal", map_api_create_crystal },
+      { "create_crystal_block", map_api_create_crystal_block },
+      { "create_shop_item", map_api_create_shop_item },
+      { "create_conveyor_belt", map_api_create_conveyor_belt },
+      { "create_door", map_api_create_door },
+      { "create_stairs", map_api_create_stairs },
+      { "create_bomb", map_api_create_bomb },
+      { "create_explosion", map_api_create_explosion },
+      { "create_fire", map_api_create_fire },
+      { NULL, NULL }
+  };
+  static const luaL_Reg metamethods[] = {
+      { "__gc", userdata_meta_gc },
+      { "__newindex", userdata_meta_newindex_as_table },
+      { "__index", userdata_meta_index_as_table },
+      { NULL, NULL }
+  };
+  register_type(map_module_name, methods, metamethods);
 }
 
 /**
- * @brief Sets the value of the variable in a dialog.
- *
- * - Argument 1 (string): id of the dialog containing the variable
- * - Argument 2 (string): value of the variable
- *
- * @param l the Lua context that is calling this function
+ * @brief Returns whether a value is a userdata of type map.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a map.
  */
-int Script::map_api_dialog_set_variable(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-  const std::string& dialog_id = luaL_checkstring(l, 1);
-  const std::string& value = luaL_checkstring(l, 2);
-
-  script.get_game().get_dialog_box().set_variable(dialog_id, value);
-
-  return 0;
+bool LuaContext::is_map(lua_State* l, int index) {
+  return is_userdata(l, index, map_module_name);
 }
 
 /**
- * @brief Changes the style of the future dialog boxes.
- *
- * TODO: use a string instead
- *
- * - Argument 1 (integer): the style to set (see the DialogBox::Style enum)
- *
- * @param l the Lua context that is calling this function
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * map and returns it.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return The map.
  */
-int Script::map_api_dialog_set_style(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-  int style = luaL_checkinteger(l, 1);
-
-  script.get_game().get_dialog_box().set_style(DialogBox::Style(style));
-
-  return 0;
+Map& LuaContext::check_map(lua_State* l, int index) {
+  return static_cast<Map&>(check_userdata(l, index, map_module_name));
 }
 
 /**
- * @brief Enables or disables the head up display.
- *
- * - Argument 1 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Pushes a map userdata onto the stack.
+ * @param l A Lua context.
+ * @param game A game.
  */
-int Script::map_api_hud_set_enabled(lua_State *l) {
+void LuaContext::push_map(lua_State* l, Map& map) {
 
-  Script& script = get_script(l, 1);
-  bool enabled = lua_toboolean(l, 1) != 0;
-
-  script.get_game().set_hud_enabled(enabled);
-  return 0;
+  push_userdata(l, map);
 }
 
 /**
- * @brief Sets whether the player can pause the game.
+ * @brief Returns the map to be used when creating an entity.
  *
- * - Argument 1 (boolean): true to enable the pause key
+ * This function is meant to be called from entity creation functions.
+ * If the first Lua parameter is a map, returns that map and removes it
+ * from the Lua stack.
+ * Otherwise, an implicit map must have been previously set (by calling
+ * set_entity_implicit_creation_map()) and that map is returned.
+ * Therefore, after calling this function; you will have the same Lua stack
+ * in both cases, without worrying about how the map was passed.
  *
- * @param l the Lua context that is calling this function
+ * @param l A Lua context.
+ * @return The map where an entity will be created.
  */
-int Script::map_api_hud_set_pause_enabled(lua_State *l) {
+Map& LuaContext::get_entity_creation_map(lua_State* l) {
 
-  Script& script = get_script(l, 1);
-  bool pause_key_available = lua_toboolean(l, 1) != 0;
+  Map* map = NULL;
 
-  script.get_game().set_pause_key_available(pause_key_available);
+  if (is_map(l, 1)) {
+    // The map is passed as a parameter (typically, by the map script).
+    map = &check_map(l, 1);
+    lua_remove(l, 1);
+  }
+  else {
+    // The map was is implicit (typically, we are loading its data file).
+    map = get_entity_implicit_creation_map(l);
+    Debug::check_assertion(map != NULL,
+        "No implicit creation was been set in this Lua state");
+  }
 
-  return 0;
+  return *map;
 }
 
 /**
- * @brief Returns the current level of light of the map.
- *
- * - Return value (integer): 0 for no light, a positive value if there is some light
- *
- * @param l the Lua context that is calling this function
+ * @brief Returns the map previously stored by
+ * set_entity_implicit_creation_map().
+ * @param l A Lua context.
+ * @return The map stored in this Lua context or NULL.
  */
-int Script::map_api_light_get(lua_State *l) {
+Map* LuaContext::get_entity_implicit_creation_map(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  lua_getfield(l, LUA_REGISTRYINDEX, "map");
+  if (lua_isnil(l, -1)) {
+    return NULL;
+  }
 
-  int light = script.get_map().get_light();
+  Map* map = static_cast<Map*>(lua_touserdata(l, -1));
+  lua_pop(l, 1);
 
-  lua_pushinteger(l, light);
+  return map;
+}
 
+/**
+ * @brief Stores into the Lua state the map that will be used to create entities.
+ *
+ * There are two ways to create a entity on the map:
+ * - Declare the entity in the map data file.
+ * - Create the entity dynamically from a Lua script.
+ *
+ * As the map data file is in Lua, both approaches actually call the same
+ * function: map_api_create_enemy or map_api_create_npc, map_api_create_block,
+ * etc. depending on your type of entity.
+ *
+ * In the second case, the map is always passed explicitly as the first
+ * parameter of the entity creation function. For instance:
+ * \verbatim
+ * map:create_enemy{ x = 160, y = 117, name = "my_enemy", breed = "soldier" }
+ * \endverbatim
+ *
+ * In the first case, the map is never passed:
+ * \verbatim
+ * enemy{ x = 160, y = 117, name = "my_enemy", breed = "soldier" }
+ * \endverbatim
+ * To make Lua know the map anyway, call this function before your create
+ * your first entity.
+ * Then, all entity creation functions will accept to be called without the
+ * map as first parameter.
+ *
+ * @param l A Lua context.
+ * @param map The map where future entities should be created.
+ * NULL forces the map to be explicitly passed (this is the default
+ * behavior).
+ */
+void LuaContext::set_entity_implicit_creation_map(lua_State* l, Map* map) {
+
+  if (map == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+    lua_pushlightuserdata(l, map);
+  }
+  lua_setfield(l, LUA_REGISTRYINDEX, "map");
+}
+
+/**
+ * @brief __index function of the environment of the map's code.
+ *
+ * This special __index function allows the map's Lua code to get a map
+ * entity like a global value.
+ * If an entity exists with the specified name, this entity is returned.
+ * Otherwise, we fall back to the usual behavior of global values:
+ * a global value with this name (or \c nil) is returned.
+ *
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::l_get_map_entity_or_global(lua_State* l) {
+
+  lua_pushvalue(l, lua_upvalueindex(1));  // Because check_map does not like pseudo-indexes.
+  Map& map = check_map(l, -1);
+  const std::string& name = luaL_checkstring(l, 2);
+
+  MapEntity* entity = NULL;
+  if (map.is_started()) {
+    entity = map.get_entities().find_entity(name);
+  }
+
+  if (entity != NULL && !entity->is_being_removed()) {
+    push_entity(l, *entity);
+  }
+  else {
+    lua_getglobal(l, name.c_str());
+  }
   return 1;
 }
 
 /**
- * @brief Sets the level of light of the map.
- *
- * - Argument 1 (integer): the level of light
- * (0: no light, a positive value: full light)
- *
- * @param l the Lua context that is calling this function
+ * @brief Executes the callback function of a camera movement.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_light_set(lua_State *l) {
+int LuaContext::l_camera_do_callback(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  // Execute the function.
+  lua_settop(l, 0);
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
+  call_function(l, 0, 0, "camera callback");
 
-  int light = luaL_checkinteger(l, 1);
-
-  script.get_map().set_light(light);
+  // Set a second timer to restore the camera.
+  Map& map = get_lua_context(l).get_main_loop().get_game()->get_current_map();
+  push_map(l, map);
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
+  lua_pushcfunction(l, l_camera_restore);
+  timer_api_start(l);
 
   return 0;
 }
 
 /**
- * @brief Moves the camera towards a target point, calls a function and restores the camera.
- *
- * This function returns immediately but the game is suspended during the whole sequence.
- *
- * - Argument 1 (integer): x coordinate of the target point
- * - Argument 2 (integer): y coordinate of the target point
- * - Argument 3 (integer): speed of the camera movement in pixels per second (250 is a usual speed)
- * - Argument 4 (function): a Lua function to call when the camera reaches its target
- * - Optional argument 5 (integer): delay in milliseconds before calling the function (default 1000)
- * - Optional argument 6 (integer): delay in milliseconds after calling the function (default 1000)
- *
- * @param l the Lua context that is calling this function
+ * @brief Moves the camera back to the hero.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_camera_move(lua_State* l) {
+int LuaContext::l_camera_restore(lua_State* l) {
 
-  Script& script = get_script(l, 4, 6);
-  int x = luaL_checkinteger(l, 1);
-  int y = luaL_checkinteger(l, 2);
-  int speed = luaL_checkinteger(l, 3);
-  luaL_checktype(l, 4, LUA_TFUNCTION);
+  LuaContext& lua_context = get_lua_context(l);
+
+  lua_context.get_main_loop().get_game()->get_current_map().restore_camera();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:get_game().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_game(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  push_game(l, map.get_game().get_savegame());
+  return 1;
+}
+
+/**
+ * @brief Implementation of map:get_id().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_id(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  push_string(l, map.get_id());
+  return 1;
+}
+
+/**
+ * @brief Implementation of map:get_world().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_world(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  push_string(l, map.get_world());
+  return 1;
+}
+
+/**
+ * @brief Implementation of map:get_floor().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_floor(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  if (!map.has_floor()) {
+    lua_pushnil(l);
+  }
+  else {
+    lua_pushinteger(l, map.get_floor());
+  }
+  return 1;
+}
+
+/**
+ * @brief Implementation of map:get_size().
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::map_api_get_size(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  lua_pushinteger(l, map.get_width());
+  lua_pushinteger(l, map.get_height());
+
+  return 2;
+}
+
+/**
+ * @brief Implementation of map:get_location().
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::map_api_get_location(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  lua_pushinteger(l, map.get_location().get_x());
+  lua_pushinteger(l, map.get_location().get_y());
+
+  return 2;
+}
+
+/**
+ * @brief Implementation of map:get_tileset().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_tileset(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  push_string(l, map.get_tileset_id());
+  return 1;
+}
+
+/**
+ * @brief Implementation of map:set_tileset().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_tileset(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& tileset_id = luaL_checkstring(l, 2);
+
+  map.set_tileset(tileset_id);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:is_dialog_enabled().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_is_dialog_enabled(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  lua_pushboolean(l, map.get_game().is_dialog_enabled());
+  return 1;
+}
+
+/**
+ * @brief Implementation of map:start_dialog().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_start_dialog(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& dialog_id = luaL_checkstring(l, 2);
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 3) {
+    luaL_checktype(l, 3, LUA_TFUNCTION);
+    lua_settop(l, 3);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
+
+  if (!DialogResource::exists(dialog_id)) {
+    luaL_argerror(l, 2, (StringConcat()
+          << "No such dialog: '" << dialog_id << "'").c_str());
+  }
+
+  DialogBox& dialog_box = map.get_game().get_dialog_box();
+  if (dialog_box.is_enabled()) {
+    luaL_argerror(l, 2, (StringConcat()
+          << "Cannot start dialog '" << dialog_id << "': another dialog '"
+          << dialog_box.get_dialog_id() << "' is already active").c_str());
+
+  }
+
+  dialog_box.start_dialog(dialog_id, callback_ref);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:set_dialog_variable().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_dialog_variable(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& dialog_id = luaL_checkstring(l, 2);
+  const std::string& value = luaL_checkstring(l, 3);
+
+  map.get_game().get_dialog_box().set_variable(dialog_id, value);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:set_dialog_style().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_dialog_style(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  int style = luaL_checkint(l, 2);
+
+  map.get_game().get_dialog_box().set_style(DialogBox::Style(style));
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:set_dialog_position().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_dialog_position(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  int position = luaL_checkint(l, 2);
+
+  map.get_game().get_dialog_box().set_vertical_position(DialogBox::VerticalPosition(position));
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:draw_dialog_box().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_draw_dialog_box(lua_State* l) {
+
+  // TODO remove the built-in dialog box, draw the dialog box from the script
+  Map& map = check_map(l, 1);
+  Surface& dst_surface = check_surface(l, 2);
+
+  map.get_game().get_dialog_box().draw(dst_surface);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:set_pause_enabled().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_pause_enabled(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  bool pause_key_available = lua_toboolean(l, 2) != 0;
+
+  map.get_game().set_pause_key_available(pause_key_available);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:get_light().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_light(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  int light = map.get_light();
+
+  lua_pushinteger(l, light);
+  return 1;
+}
+
+/**
+ * @brief Implementation of map:set_light().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_light(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  int light = luaL_checkint(l, 2);
+
+  map.set_light(light);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:get_camera_position().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_camera_position(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  const Rectangle& camera_position = map.get_camera_position();
+
+  lua_pushinteger(l, camera_position.get_x());
+  lua_pushinteger(l, camera_position.get_y());
+  return 2;
+}
+
+/**
+ * @brief Implementation of map:move_camera().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_move_camera(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  int x = luaL_checkint(l, 2);
+  int y = luaL_checkint(l, 3);
+  int speed = luaL_checkint(l, 4);
+  luaL_checktype(l, 5, LUA_TFUNCTION);
 
   uint32_t delay_before = 1000;
   uint32_t delay_after = 1000;
-  if (lua_gettop(l) >= 5) {
-    delay_before = luaL_checkinteger(l, 5);
-    if (lua_gettop(l) >= 6) {
-      delay_after = luaL_checkinteger(l, 6);
+  if (lua_gettop(l) >= 6) {
+    delay_before = luaL_checkint(l, 6);
+    if (lua_gettop(l) >= 7) {
+      delay_after = luaL_checkint(l, 7);
     }
   }
-  lua_settop(l, 4); // let the function on top of the stack
+  lua_settop(l, 5); // let the function on top of the stack
 
   // store the function and the delays
+  // TODO store this in the map's table instead of globally
   lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
   lua_pushinteger(l, delay_before);
   lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
@@ -207,1279 +638,52 @@ int Script::map_api_camera_move(lua_State* l) {
   lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
 
   // start the camera
-  script.get_game().get_current_map().move_camera(x, y, speed);
+  map.move_camera(x, y, speed);
 
   return 0;
 }
 
 /**
- * @brief Gives a treasure to the hero.
- *
- * If the treasure comes from a chest, you don't have to call this function:
- * the treasure will be given to the player automatically when he opens the chest.
- * You can use this function to make a non-playing character
- * give a treasure to the player.
- *
- * - Argument 1 (integer): name of the item to give (according to the item list of items.dat)
- * - Argument 2 (integer): variant of this item (1 if the item has only one variant)
- * - Argument 3 (integer): index of the savegame boolean variable that stores
- * the possession state of the treasure (or -1 if you don't want to save this treasure)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:draw_sprite().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_treasure_give(lua_State *l) {
+int LuaContext::map_api_draw_sprite(lua_State* l) {
 
-  Script& script = get_script(l, 3);
-  const std::string &item_name = luaL_checkstring(l, 1);
-  int variant = luaL_checkinteger(l, 2);
-  int savegame_variable = luaL_checkinteger(l, 3);
+  Map& map = check_map(l, 1);
+  Sprite& sprite = check_sprite(l, 2);
+  int x = luaL_checkint(l, 3);
+  int y = luaL_checkint(l, 4);
 
-  script.get_game().get_hero().start_treasure(
-      Treasure(script.get_game(), item_name, variant, savegame_variable));
+  map.draw_sprite(sprite, x, y);
 
   return 0;
 }
 
 /**
- * @brief Displays a sprite on the map surface.
- *
- * - Argument 1 (sprite): the sprite to display
- * - Argument 2 (integer): x coordinate on the map
- * - Argument 3 (integer): y coordinate on the map
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:get_crystal_state().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_sprite_display(lua_State *l) {
+int LuaContext::map_api_get_crystal_state(lua_State* l) {
 
-  Script& script = get_script(l, 3);
-  int sprite_handle = luaL_checkinteger(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
+  Map& map = check_map(l, 1);
 
-  Sprite& sprite = script.get_sprite(sprite_handle);
-  script.get_map().display_sprite(sprite, x, y);
-
-  return 0;
-}
-
-/**
- * @brief Returns the id of the tileset used to draw the map.
- *
- * - Return value (integer): id of the tileset
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_tileset_get(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  TilesetId id = script.get_map().get_tileset_id();
-
-  lua_pushinteger(l, id);
-
+  lua_pushboolean(l, map.get_game().get_crystal_state());
   return 1;
 }
 
 /**
- * @brief Changes the tileset used to draw this map.
- *
- * Every tile of this old tileset must exist in the new one.
- *
- * - Argument 1 (integer): id of the new tileset
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:set_crystal_state().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_tileset_set(lua_State *l) {
+int LuaContext::map_api_set_crystal_state(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Map& map = check_map(l, 1);
+  bool state = lua_toboolean(l, 2);
 
-  TilesetId id = luaL_checkinteger(l, 1);
-
-  script.get_map().set_tileset(id);
-
-  return 0;
-}
-
-/**
- * @brief Prevents the player from moving until hero_unfreeze() is called.
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_freeze(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  script.get_game().get_hero().start_freezed();
-
-  return 0;
-}
-
-/**
- * @brief Allows the player to move again after a call to hero_freeze().
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_unfreeze(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  script.get_game().get_hero().start_free();
-
-  return 0;
-}
-
-/**
- * @brief Sends the hero to a map.
- *
- * - Argument 1 (int): id of the destination map (can be the same one)
- * - Argument 2 (string): name of the destination point on that map
- * - Argument 3 (int): type of transition to play (must match Transition::Style)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_set_map(lua_State *l) {
-
-  Script& script = get_script(l, 3);
-
-  MapId map_id = luaL_checkinteger(l, 1);
-  const std::string &destination_point_name = luaL_checkstring(l, 2);
-  Transition::Style transition_style = Transition::Style(luaL_checkinteger(l, 3));
-
-  script.get_game().set_current_map(map_id, destination_point_name, transition_style);
-
-  return 0;
-}
-
-/**
- * @brief Hides or shows the hero.
- *
- * Hiding the hero does not disable its movements, so when using this function
- * you will usually also need to freeze the hero.
- * - Argument 1 (boolean): true to make the hero visible
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_set_visible(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  bool visible = lua_toboolean(l, 1) != 0;
-
-  script.get_game().get_hero().set_visible(visible);
-
-  return 0;
-}
-
-/**
- * @brief Returns the current direction of the hero's sprite.
- *
- * - Return value (integer): the direction between 0 and 3
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_get_direction(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  int direction = script.get_game().get_hero().get_animation_direction();
-  lua_pushinteger(l, direction);
-
-  return 1;
-}
-
-/**
- * @brief Sets the direction of the hero's sprite.
- *
- * - Argument 1 (integer): the direction between 0 and 3
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_set_direction(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  int direction = luaL_checkinteger(l, 1);
-
-  script.get_game().get_hero().set_animation_direction(direction);
-
-  return 0;
-}
-
-/**
- * @brief Returns the position of the hero.
- *
- * - Return value 1 (integer): x coordinate
- * - Return value 2 (integer): y coordinate
- * - Return value 3 (integer): layer (0 to 2)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_get_position(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  Hero &hero = script.get_game().get_hero();
-
-  lua_pushinteger(l, hero.get_x());
-  lua_pushinteger(l, hero.get_y());
-  lua_pushinteger(l, hero.get_layer());
-
-  return 3;
-}
-
-/**
- * @brief Sets the position of the hero.
- *
- * - Argument 1 (integer): x coordinate
- * - Argument 2 (integer): y coordinate
- * - Optional argument 3 (integer): layer (if unspecified,
- * the layer will be unchanged)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_set_position(lua_State* l) {
-
-  Script& script = get_script(l, 2, 3);
-
-  int x = luaL_checkinteger(l, 1);
-  int y = luaL_checkinteger(l, 2);
-  int layer = -1;
-  if (lua_gettop(l) >= 3) {
-    layer = luaL_checkinteger(l, 3);
-  }
-
-  Hero& hero = script.get_game().get_hero();
-  hero.set_xy(x, y);
-
-  if (layer != -1) {
-    script.get_map().get_entities().set_entity_layer(hero, Layer(layer));
-  }
-  hero.check_position();
-
-  return 0;
-}
-
-/**
- * @brief Places the hero on the exact position of a sensor's name.
- *
- * - Argument 1 (string): name of the sensor
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_align_on_sensor(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script.get_map().get_entities();
-  Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
-  script.get_game().get_hero().set_xy(sensor->get_xy());
-
-  return 0;
-}
-
-/**
- * @brief Memorizes a position to go back to if the hero falls into a hole or
- * other bad ground.
- *
- * The parameters are optional: by default, they correspond to the current
- * position of the hero.
- *
- * - Optional argument 1 (integer): x coordinate
- * - Optional argument 2 (integer): y coordinate
- * - Optional argument 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_save_solid_ground(lua_State* l) {
-
-  Script& script = get_script(l, 0, 3);
-  Hero& hero = script.get_game().get_hero();
-
-  int x, y, layer;
-  if (lua_gettop(l) >= 3) {
-    x = luaL_checkinteger(l, 1);
-    y = luaL_checkinteger(l, 2);
-    layer = luaL_checkinteger(l, 3);
-  }
-  else {
-    x = hero.get_x();
-    y = hero.get_y();
-    layer = hero.get_layer();
-  }
-
-  hero.set_target_solid_ground_coords(Rectangle(x, y), Layer(layer));
-
-  return 0;
-}
-
-/**
- * @brief Forgets the memorized position to go back to if the hero falls into
- * a hole or other bad ground.
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_reset_solid_ground(lua_State* l) {
-
-  Script& script = get_script(l, 0);
-  Hero& hero = script.get_game().get_hero();
-
-  hero.reset_target_solid_ground_coords();
-
-  return 0;
-}
-
-/**
- * @brief Makes the hero walk with respect to a path.
- *
- * - Argument 1 (string): the path (each character is a direction between '0' and '7')
- * - Argument 2 (boolean): true to make the movement loop
- * - Argument 3 (boolean): true to make the movement sensible to obstacles
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_walk(lua_State *l) {
-
-  Script& script = get_script(l, 3);
-
-  const std::string &path = luaL_checkstring(l, 1);
-  bool loop = lua_toboolean(l, 2) != 0;
-  bool ignore_obstacles = lua_toboolean(l, 3) != 0;
-
-  script.get_game().get_hero().start_forced_walking(path, loop, ignore_obstacles);
-
-  return 0;
-}
-
-/**
- * @brief Makes the hero jump into a direction.
- *
- * - Argument 1 (integer): the jump direction, between 0 and 7
- * - Argument 2 (integer): the jump length in pixels
- * - Argument 3 (boolean): true to enable the collisions
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_start_jumping(lua_State *l) {
-
-  Script& script = get_script(l, 3);
-
-  int direction = luaL_checkinteger(l, 1);
-  int length = luaL_checkinteger(l, 2);
-  bool ignore_obstacles = lua_toboolean(l, 3) != 0;
-
-  script.get_game().get_hero().start_jumping(direction, length, ignore_obstacles, false);
-
-  return 0;
-}
-
-/**
- * @brief Makes the hero brandish his sword meaning a victory
- * and plays the corresponding sound.
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_start_victory_sequence(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  script.get_game().get_hero().start_victory();
-
-  return 0;
-}
-
-/**
- * @brief Makes the hero shoot a boomerang.
- *
- * - Argument 1 (integer): maximum distance of the movement in pixels
- * - Argument 2 (integer): speed of the movement in pixels per second
- * - Argument 3 (string): animation name of the hero's tunic sprite
- * when preparing the boomerang
- * - Argument 3 (string): animation set id that represents the boomerang
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_start_boomerang(lua_State* l) {
-
-  Script& script = get_script(l, 4);
-
-  int max_distance = luaL_checkinteger(l, 1);
-  int speed = luaL_checkinteger(l, 2);
-  const std::string& tunic_preparing_animation = luaL_checkstring(l, 3);
-  const SpriteAnimationSetId& sprite_name = luaL_checkstring(l, 4);
-
-  script.get_game().get_hero().start_boomerang(max_distance, speed,
-      tunic_preparing_animation, sprite_name);
-
-  return 0;
-}
-
-/**
- * @brief Makes the hero shoot an arrow with a bow.
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_start_bow(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  script.get_game().get_hero().start_bow();
-
-  return 0;
-}
-
-/**
- * @brief Makes the hero thow his hookshot.
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_start_hookshot(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  script.get_game().get_hero().start_hookshot();
-
-  return 0;
-}
-
-/**
- * @brief Makes the hero run.
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_start_running(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  script.get_game().get_hero().start_running();
-
-  return 0;
-}
-
-/**
- * @brief Makes the hero be hurt.
- *
- * - Argument 1 (integer): x coordinate of whatever is hurting the hero
- * - Argument 2 (integer): y coordinate of whatever is hurting the hero
- * - Argument 3 (integer): number of life points to remove (possibly zero,
- * and may be reduced by the tunic)
- * - Argument 4 (integer): number of magic points to remove (possibly zero)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_hero_start_hurt(lua_State *l) {
-
-  Script& script = get_script(l, 4);
-
-  int source_x = luaL_checkinteger(l, 1);
-  int source_y = luaL_checkinteger(l, 2);
-  int life_points = luaL_checkinteger(l, 3);
-  int magic_points = luaL_checkinteger(l, 4);
-
-  script.get_game().get_hero().hurt(Rectangle(source_x, source_y),
-      life_points, magic_points);
-
-  return 0;
-}
-
-/**
- * @brief Returns whether an NPC is enabled.
- *
- * - Argument 1 (string): name of the NPC
- * - Return value (boolean): true if this NPC is enabled
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_npc_is_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* npc = entities.get_entity(NON_PLAYING_CHARACTER, name);
-  lua_pushboolean(l, npc->is_enabled());
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables an NPC.
- *
- * - Argument 1 (string): name of the NPC
- * - Argument 2 (boolean): true to enable the NPC, false to disable it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_npc_set_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  bool enabled = lua_toboolean(l, 2);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* npc = entities.get_entity(NON_PLAYING_CHARACTER, name);
-  npc->set_enabled(enabled);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of NPCs.
- *
- * - Argument 1 (string): prefix of the name of the NPCs
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_npc_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2);
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(NON_PLAYING_CHARACTER, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns the position of an NPC.
- *
- * - Argument 1 (string): name of the NPC
- * - Return value 1 (integer): x position
- * - Return value 2 (integer): y position
- * - Return value 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_npc_get_position(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script.get_map().get_entities();
-  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
-
-  lua_pushinteger(l, npc->get_x());
-  lua_pushinteger(l, npc->get_y());
-  lua_pushinteger(l, npc->get_layer());
-
-  return 3;
-}
-
-/**
- * @brief Sets the position of an NPC.
- *
- * - Argument 1 (string): name of the NPC
- * - Argument 2 (integer): x position to set
- * - Argument 3 (integer): y position to set
- * - Optional argument 4 (integer): layer to set (if unspecified,
- * it will be unchanged)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_npc_set_position(lua_State* l) {
-
-  Script& script = get_script(l, 3, 4);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
-  }
-
-  MapEntities& entities = script.get_map().get_entities();
-  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
-  npc->set_xy(x, y);
-
-  if (layer != -1) {
-    MapEntities& entities = script.get_map().get_entities();
-    entities.set_entity_layer(*npc, Layer(layer));
-  }
-
-  return 0;
-}
-
-/**
- * @brief Makes an NPC move.
- *
- * - Argument 1 (string): name of the NPC to make move
- * - Argument 2 (movement): the movement to set
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_npc_start_movement(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  int movement_handle = luaL_checkinteger(l, 2);
-
-  MapEntities& entities = script.get_map().get_entities();
-  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
-  Movement& movement = script.start_movement(movement_handle);
-
-  npc->clear_movement();
-  npc->set_movement(&movement);
-
-  return 0;
-}
-
-/**
- * @brief Stops the movement of an NPC.
- *
- * - Argument 1 (string): name of the NPC to stop
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_npc_stop_movement(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
-
-  npc->clear_movement();
-
-  return 0;
-}
-
-/**
- * @brief Makes the sprite of an NPC accessible from the script.
- *
- * - Argument 1 (string): name of the NPC
- * - Return value (sprite): the sprite of this NPC (your script can then pass it as a parameter
- * to all sol.main.sprite_* functions)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_npc_get_sprite(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& entity_name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, entity_name);
-
-  int handle = script.create_sprite_handle(npc->get_sprite());
-  lua_pushinteger(l, handle);
-
-  return 1;
-}
-
-/**
- * @brief Removes an NPC from the map.
- *
- * - Argument 1 (string): name of the NPC
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_npc_remove(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  entities.remove_entity(NON_PLAYING_CHARACTER, name);
-
-  return 0;
-}
-
-/**
- * @brief Returns whether an NPC exists on the map.
- *
- * - Argument 1 (string): name of the NPC to check
- * - Return value (boolean): true if an NPC with this name exists on the map
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_npc_exists(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  NPC* npc = (NPC*) entities.find_entity(NON_PLAYING_CHARACTER, name);
-
-  lua_pushboolean(l, npc != NULL);
-
-  return 1;
-}
-
-/**
- * @brief Returns whether a chest is open.
- *
- * This function returns true as soon as the hero starts opening the chest,
- * even if the treasure has not yet been brandished (there is a small delay).
- *
- * - Argument 1 (string): name of the chest
- * - Return value (boolean): true if this chest is open
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_chest_is_open(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  Chest* chest = (Chest*) entities.get_entity(CHEST, name);
-  lua_pushboolean(l, chest->is_open());
-
-  return 1;
-}
-
-/**
- * @brief Sets a chest open or closed.
- *
- * Only the chest sprite is affected (use give_treasure to give a treasure to the player).
- * This function is useful for chests whose content is managed by the script.
- * - Argument 1 (string): name of the chest
- * - Argument 2 (boolean): true to make the chest open, false to make it closed
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_chest_set_open(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string &name = luaL_checkstring(l, 1);
-  bool open = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script.get_map().get_entities();
-  Chest *chest = (Chest*) entities.get_entity(CHEST, name);
-  chest->set_open(open);
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a chest is enabled.
- *
- * - Argument 1 (string): name of the chest
- * - Return value (boolean): true if this chest is enabled
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_chest_is_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* chest = entities.get_entity(CHEST, name);
-  lua_pushboolean(l, chest->is_visible() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables a chest.
- *
- * If the chest is already open, disabling it has not effect.
- * - Argument 1 (string): name of the chest
- * - Argument 2 (boolean): true to make the chest appear, false to make it disappear
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_chest_set_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  bool enabled = lua_toboolean(l, 2) != 0;
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* chest = entities.get_entity(CHEST, name);
-  chest->set_visible(enabled);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of chests.
- *
- * - Argument 1 (string): prefix of the name of the chests
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_chest_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(CHEST, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a dynamic tile is enabled.
- *
- * - Argument 1 (string): name of the dynamic tile
- * - Return value (boolean): true if this tile is enabled
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_tile_is_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* dynamic_tile = entities.get_entity(DYNAMIC_TILE, name);
-  lua_pushboolean(l, dynamic_tile->is_enabled() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables a dynamic tile.
- *
- * - Argument 1 (string): name of the dynamic tile
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_tile_set_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* dynamic_tile = entities.get_entity(DYNAMIC_TILE, name);
-  dynamic_tile->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of dynamic tiles.
- *
- * - Argument 1 (string): prefix of the name of the dynamic tiles
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_tile_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(DYNAMIC_TILE, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns whether some stairs are enabled.
- *
- * - Argument 1 (string): name of the stairs
- * - Return value (boolean): true if these stairs are enabled
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_stairs_is_enabled(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script.get_map().get_entities();
-  Stairs *stairs = (Stairs*) entities.get_entity(STAIRS, name);
-  lua_pushboolean(l, stairs->is_enabled() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables some stairs.
- *
- * All dynamic tiles whose prefix is "<stairsname>_enabled"
- * and "<stairsame>_disabled" will be updated depending on the stairs state
- * (where <stairsname> is the name of the stairs).
- * - Argument 1 (string): name of the stairs
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_stairs_set_enabled(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string &name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script.get_map().get_entities();
-  Stairs *stairs = (Stairs*) entities.get_entity(STAIRS, name);
-  stairs->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of stairs.
- *
- * - Argument 1 (string): prefix of the name of the stairs
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_stairs_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(STAIRS, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a custom obstacle is enabled.
- *
- * - Argument 1 (string): name of the custom obstacle
- * - Return value (boolean): true if this custom obstacle is enabled
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_obstacle_is_enabled(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script.get_map().get_entities();
-  CustomObstacle *obstacle = (CustomObstacle*) entities.get_entity(CUSTOM_OBSTACLE, name);
-  lua_pushboolean(l, obstacle->is_enabled() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables a custom obstacle.
- *
- * - Argument 1 (string): name of the custom obstacle
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_obstacle_set_enabled(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string &name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script.get_map().get_entities();
-  CustomObstacle *obstacle = (CustomObstacle*) entities.get_entity(CUSTOM_OBSTACLE, name);
-  obstacle->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of custom obstacles.
- *
- * - Argument 1 (string): prefix of the name of the custom obstacles
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_obstacle_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(CUSTOM_OBSTACLE, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a sensor is enabled.
- *
- * - Argument 1 (string): name of the sensor
- * - Return value (boolean): true if this sensor is enabled
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_sensor_is_enabled(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script.get_map().get_entities();
-  Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
-  lua_pushboolean(l, sensor->is_enabled() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables a sensor.
- *
- * - Argument 1 (string): name of the sensor
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_sensor_set_enabled(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string &name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script.get_map().get_entities();
-  Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
-  sensor->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of sensors.
- *
- * - Argument 1 (string): prefix of the name of the sensors
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_sensor_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(SENSOR, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a jumper is enabled.
- *
- * - Argument 1 (string): name of the jumper
- * - Return value (boolean): true if this jumper is enabled
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_jumper_is_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* jumper = entities.get_entity(JUMPER, name);
-  lua_pushboolean(l, jumper->is_enabled() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables a jumper.
- *
- * - Argument 1 (string): name of the jumper
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_jumper_set_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* jumper = entities.get_entity(JUMPER, name);
-  jumper->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of jumpers.
- *
- * - Argument 1 (string): prefix of the name of the jumpers
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_jumper_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(JUMPER, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a crystal is enabled.
- *
- * - Argument 1 (string): name of the crystal
- * - Return value (boolean): true if this crystal are enabled
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_crystal_is_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* crystal = entities.get_entity(CRYSTAL, name);
-  lua_pushboolean(l, crystal->is_enabled() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables a crystal.
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_crystal_set_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* crystal = entities.get_entity(CRYSTAL, name);
-  crystal->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of crystals.
- *
- * - Argument 1 (string): prefix of the name of the crystals
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_crystal_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(CRYSTAL, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns the current state of crystals in the map.
- *
- * - Return value (boolean): true if the state of crystals is modified,
- * false if it is the normal (initial) state
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_crystal_get_state(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  Game& game = script.get_game();
-  lua_pushboolean(l, game.get_crystal_state());
-
-  return 1;
-}
-
-/**
- * @brief Sets the current state of crystals in the map.
- *
- * - Parameter 1 (boolean): true to make the state modified,
- * false to make it normal (initial)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_crystal_set_state(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-  bool state = lua_toboolean(l, 1);
-
-  Game& game = script.get_game();
+  Game& game = map.get_game();
   if (game.get_crystal_state() != state) {
     game.change_crystal_state();
   }
@@ -1488,461 +692,36 @@ int Script::map_api_crystal_set_state(lua_State *l) {
 }
 
 /**
- * @brief Inverts the current state of crystals in the map.
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:change_crystal_state().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_crystal_change_state(lua_State *l) {
+int LuaContext::map_api_change_crystal_state(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  Map& map = check_map(l, 1);
 
-  Game& game = script.get_game();
-  game.change_crystal_state();
+  map.get_game().change_crystal_state();
 
   return 0;
 }
 
 /**
- * @brief Returns whether a teletransporter is enabled.
- *
- * - Argument 1 (string): name of the teletransporter
- * - Return value (boolean): true if this teletransporter is enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:open_doors().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_teletransporter_is_enabled(lua_State* l) {
+int LuaContext::map_api_open_doors(lua_State* l) {
 
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* teletransporter = entities.get_entity(TELETRANSPORTER, name);
-  lua_pushboolean(l, teletransporter->is_enabled() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables a teletransporter.
- *
- * - Argument 1 (string): name of the teletransporter
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_teletransporter_set_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* teletransporter = entities.get_entity(TELETRANSPORTER, name);
-  teletransporter->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of teletransporters.
- *
- * - Argument 1 (string): prefix of the name of the teletransporters
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_teletransporter_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(TELETRANSPORTER, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a block is enabled.
- *
- * - Argument 1 (string): name of the block
- * - Return value (boolean): true if this block is enabled
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_block_is_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* block = entities.get_entity(BLOCK, name);
-  lua_pushboolean(l, block->is_enabled() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables a block.
- *
- * - Argument 1 (string): name of the block
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_block_set_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* block = entities.get_entity(BLOCK, name);
-  block->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of blocks.
- *
- * - Argument 1 (string): prefix of the name of the blocks
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_block_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(BLOCK, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Replaces a block at its initial position.
- *
- * - Argument 1 (string): name of the block to reset
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_block_reset(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  Block* block = (Block*) entities.get_entity(BLOCK, name);
-  block->reset();
-
-  return 0;
-}
-
-/**
- * @brief Replaces all blocks of the map at their initial position.
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_block_reset_all(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  MapEntities &entities = script.get_map().get_entities();
-  std::list<MapEntity*> blocks = entities.get_entities(BLOCK);
-
-  std::list<MapEntity*>::iterator i;
-  for (i = blocks.begin(); i != blocks.end(); i++) {
-    ((Block*) (*i))->reset();
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns the position of a block.
- *
- * - Argument 1 (string): name of the block
- * - Return value 1 (integer): x position
- * - Return value 2 (integer): y position
- * - Return value 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_block_get_position(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  Block* block = (Block*) entities.get_entity(BLOCK, name);
-
-  lua_pushinteger(l, block->get_x());
-  lua_pushinteger(l, block->get_y());
-  lua_pushinteger(l, block->get_layer());
-
-  return 3;
-}
-
-/**
- * @brief Sets the position of a block.
- *
- * - Argument 1 (string): name of the block
- * - Argument 2 (integer): x position
- * - Argument 3 (integer): y position
- * - Optional argument 4 (integer): layer to set (if unspecified,
- * it will be unchanged)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_block_set_position(lua_State* l) {
-
-  Script& script = get_script(l, 3, 4);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
-  }
-
-  MapEntities& entities = script.get_map().get_entities();
-  Block* block = (Block*) entities.get_entity(BLOCK, name);
-  block->set_xy(x, y);
-
-  if (layer != -1) {
-    MapEntities& entities = script.get_map().get_entities();
-    entities.set_entity_layer(*block, Layer(layer));
-  }
-  block->check_collision_with_detectors(false);
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a shop item exists.
- *
- * A shop item does not exist anymore if it was bought or if the script called
- * sol.map.shop_item_remove() on it.
- *
- * - Argument 1 (string): name of the shop item
- * - Return value (boolean): true if a shop item with this name exists
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_shop_item_exists(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  bool exists = script.get_map().get_entities().find_entity(SHOP_ITEM, name) != NULL;
-  lua_pushboolean(l, exists);
-
-  return 1;
-}
-
-/**
- * @brief Removes a shop item from the map if it exists.
- *
- * - Argument 1 (string): name of the shop item
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_shop_item_remove(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* shop_item = entities.find_entity(SHOP_ITEM, name);
-  if (shop_item != NULL) {
-    entities.remove_entity(shop_item);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a switch is currently activated.
- *
- * - Argument 1 (string): name of the switch
- * - Return value (boolean): true if the switch is activated
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_switch_is_activated(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script.get_map().get_entities();
-  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
-
-  lua_pushboolean(l, sw->is_activated());
-
-  return 1;
-}
-
-/**
- * @brief Activates or inactivates a switch.
- *
- * - Argument 1 (string): name of the switch
- * - Argument 2 (boolean): true to activate the switch, false to inactivate it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_switch_set_activated(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string &name = luaL_checkstring(l, 1);
-  bool activate = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script.get_map().get_entities();
-  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
-  sw->set_activated(activate);
-
-  return 0;
-}
-
-/**
- * @brief Locks a switch in its current state or unlocks it.
- *
- * - Argument 1 (string): name of the switch
- * - Argument 2 (boolean): true to lock the switch, false to unlock it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_switch_set_locked(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string &name = luaL_checkstring(l, 1);
-  bool lock = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script.get_map().get_entities();
-  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
-  sw->set_locked(lock);
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a switch is enabled (i.e. visible).
- *
- * - Argument 1 (string): name of the switch
- * - Return value (boolean): true if this switch is enabled (i.e. visible)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_switch_is_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* sw = entities.get_entity(SWITCH, name);
-  lua_pushboolean(l, sw->is_enabled() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Enables or disables a switch.
- *
- * - Argument 1 (string): name of the switch
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_switch_set_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* sw = entities.get_entity(SWITCH, name);
-  sw->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables a set of switches.
- *
- * - Argument 1 (string): prefix of the name of the switches
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_switch_set_group_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
-
-  std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(SWITCH, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Opens one or several doors having a common prefix.
- *
- * The doors must be controlled by the script (not doors for keys or
- * explosions).
- * If some doors with this prefix are already open, nothing happens for them.
- * - Argument 1 (string): prefix of the name of the doors to open
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_door_open(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
 
   bool done = false;
-  MapEntities &entities = script.get_map().get_entities();
+  MapEntities& entities = map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
-    Door* door = (Door*) (*it);
-    if (!door->is_open() || door->is_changing()) {
+    Door* door = static_cast<Door*>(*it);
+    if (!door->is_open() || door->is_closing()) {
       door->open();
       done = true;
     }
@@ -1958,34 +737,29 @@ int Script::map_api_door_open(lua_State *l) {
 }
 
 /**
- * @brief Closes one or several doors having a common prefix.
- *
- * The doors must be controlled by the script (not doors for keys or
- * explosions).
- * If some doors with this prefix are already closed, nothing happens for them.
- * - Argument 1 (string): prefix of the name of the doors to close
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:close_doors().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_door_close(lua_State *l) {
+int LuaContext::map_api_close_doors(lua_State* l) {
 
-  Script& script = get_script(l, 1);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
 
   bool done = false;
-  MapEntities& entities = script.get_map().get_entities();
+  MapEntities& entities = map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
-    Door* door = (Door*) (*it);
-    if (door->is_open() || door->is_changing()) {
+    Door* door = static_cast<Door*>(*it);
+    if (door->is_open() || door->is_opening()) {
       door->close();
       done = true;
     }
   }
 
-  // make sure the sound is played only once even if the script calls this function repeatedly while the door is still changing
+  // make sure the sound is played only once even if the script calls
+  // this function repeatedly while the door is still changing
   if (done) {
     Sound::play("door_closed");
   }
@@ -1994,45 +768,24 @@ int Script::map_api_door_close(lua_State *l) {
 }
 
 /**
- * @brief Returns whether a door is open.
- *
- * - Argument 1 (string): name of the door
- * - Return value (boolean): true if this door is open
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:set_doors_open().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_door_is_open(lua_State *l) {
+int LuaContext::map_api_set_doors_open(lua_State* l) {
 
-  Script& script = get_script(l, 1);
-  const std::string &name = luaL_checkstring(l, 1);
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
+  bool open = true;
+  if (lua_isboolean(l, 3)) {
+    open = lua_toboolean(l, 3);
+  }
 
-  MapEntities &entities = script.get_map().get_entities();
-  Door *door = (Door*) entities.get_entity(DOOR, name);
-  lua_pushboolean(l, door->is_open() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Makes one or several doors open or closed.
- *
- * - Argument 1 (string): prefix of the name of the doors to close
- * - Argument 2 (boolean): true to make them open, false to make them closed
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_door_set_open(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string &prefix = luaL_checkstring(l, 1);
-  bool open = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script.get_map().get_entities();
+  MapEntities& entities = map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
-    Door *door = (Door*) (*it);
+    Door* door = static_cast<Door*>(*it);
     door->set_open(open);
   }
 
@@ -2040,618 +793,1092 @@ int Script::map_api_door_set_open(lua_State *l) {
 }
 
 /**
- * @brief Places a new pickable item on the map.
- *
- * - Argument 1 (string): name of the item to create (according to items.dat)
- * - Argument 2 (integer): variant of the item
- * - Argument 3 (integer): savegame variable (-1: not saved)
- * - Argument 4 (integer): x
- * - Argument 5 (integer): y
- * - Argument 6 (integer): layer
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:get_entity().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_pickable_item_create(lua_State *l) {
+int LuaContext::map_api_get_entity(lua_State* l) {
 
-  Script& script = get_script(l, 6);
+  Map& map = check_map(l, 1);
+  const std::string& name = luaL_checkstring(l, 2);
 
-  const std::string &item_name = luaL_checkstring(l, 1);
-  int variant = luaL_checkinteger(l, 2);
-  int savegame_variable = luaL_checkinteger(l, 3);
-  int x = luaL_checkinteger(l, 4);
-  int y = luaL_checkinteger(l, 5);
-  Layer layer = Layer(luaL_checkinteger(l, 6));
+  MapEntity* entity = map.get_entities().find_entity(name);
 
-  Game &game = script.get_game();
-  MapEntities &entities = script.get_map().get_entities();
-  entities.add_entity(PickableItem::create(
-      game, layer, x, y,
-      Treasure(game, item_name, variant, savegame_variable),
-      FALLING_MEDIUM, false
-      ));
-
-  return 0;
-}
-
-/**
- * @brief Places a new destructible item on the map.
- *
- * - Argument 1 (integer): subtype of destructible item ("pot", "bush",
- * "white_stone", "black_stone", "grass" or "bomb_flower")
- * - Argument 2 (integer): x
- * - Argument 3 (integer): y
- * - Argument 4 (integer): layer
- * - Optional argument 5 (table): properties (possible keys are
- * treasure_item, treasure_variant, treasure_savegame_variable,
- * destruction_callback)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_destructible_item_create(lua_State* l) {
-
-  Script& script = get_script(l, 4, 5);
-
-  const std::string& subtype_name = luaL_checkstring(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  Layer layer = Layer(luaL_checkinteger(l, 4));
-
-  // default properties
-  std::string treasure_item = "_random";
-  int treasure_variant = 1;
-  int treasure_savegame_variable = -1;
-  int destruction_callback_ref = LUA_REFNIL;
-
-  if (lua_gettop(l) >= 5) {
-    luaL_checktype(l, 5, LUA_TTABLE);
-
-    // traverse the table, looking for properties
-    lua_pushnil(l); // first key
-    while (lua_next(l, 5) != 0) {
-
-      const std::string& key = luaL_checkstring(l, -2);
-      if (key == "treasure_item") {
-        treasure_item = luaL_checkstring(l, -1);
-      }
-      else if (key == "treasure_variant") {
-        treasure_variant = luaL_checkinteger(l, -1);
-      }
-      else if (key == "treasure_savegame_variable") {
-        treasure_savegame_variable = luaL_checkinteger(l, -1);
-      }
-      else if (key == "destruction_callback") {
-        // store the callback into the registry
-        luaL_argcheck(l, lua_isfunction(l, -1), 5,
-            "destruction_callback should be a function");
-        destruction_callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-        lua_pushnil(l);
-      }
-      lua_pop(l, 1); // pop the value, let the key for the iteration
-    }
+  if (entity != NULL && !entity->is_being_removed()) {
+    push_entity(l, *entity);
   }
-
-  DestructibleItem::Subtype subtype =
-      DestructibleItem::get_subtype_by_name(subtype_name);
-  MapEntities& entities = script.get_map().get_entities();
-  DestructibleItem* destructible_item =
-      new DestructibleItem(layer, x, y, subtype, Treasure(script.get_game(),
-          treasure_item, treasure_variant, treasure_savegame_variable));
-  destructible_item->set_destruction_callback(destruction_callback_ref);
-  entities.add_entity(destructible_item);
-
-  return 0;
-}
-
-/**
- * @brief Places a new block on the map.
- *
- * - Argument 1 (integer): x
- * - Argument 2 (integer): y
- * - Argument 3 (integer): layer
- * - Argument 4 (integer): name
- * - Optional argument 5 (table): properties (possible keys are direction,
- * sprite_name, can_be_pushed, can_be_pulled, maximum_moves)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_block_create(lua_State* l) {
-
-  Script& script = get_script(l, 4, 5);
-
-  int x = luaL_checkinteger(l, 1);
-  int y = luaL_checkinteger(l, 2);
-  Layer layer = Layer(luaL_checkinteger(l, 3));
-  const std::string& name = luaL_checkstring(l, 4);
-
-  // default properties
-  int direction = -1;
-  SpriteAnimationSetId sprite_name = "entities/block";
-  bool can_be_pushed = true;
-  bool can_be_pulled = false;
-  int maximum_moves = 1;
-
-  if (lua_gettop(l) >= 5) {
-    luaL_checktype(l, 5, LUA_TTABLE);
-
-    // traverse the table, looking for properties
-    lua_pushnil(l); // first key
-    while (lua_next(l, 5) != 0) {
-
-      const std::string& key = luaL_checkstring(l, -2);
-      if (key == "direction") {
-        direction = luaL_checkinteger(l, -1);
-      }
-      else if (key == "sprite_name") {
-        sprite_name = luaL_checkstring(l, -1);
-      }
-      else if (key == "can_be_pushed") {
-        can_be_pushed = lua_toboolean(l, -1) != 0;
-      }
-      else if (key == "can_be_pulled") {
-        can_be_pulled = lua_toboolean(l, -1) != 0;
-      }
-      else if (key == "maximum_moves") {
-        maximum_moves = luaL_checkinteger(l, -1);
-      }
-      lua_pop(l, 1); // pop the value, let the key for the iteration
-    }
+  else {
+    lua_pushnil(l);
   }
-
-  MapEntities& entities = script.get_map().get_entities();
-  Block* block = new Block(name, layer, x, y, direction, sprite_name,
-      can_be_pushed, can_be_pulled, maximum_moves);
-  entities.add_entity(block);
-  block->check_collision_with_detectors(false);
-
-  return 0;
-}
-
-/**
- * @brief Places a bomb on the map.
- *
- * - Argument 1 (integer): x
- * - Argument 2 (integer): y
- * - Argument 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_bomb_create(lua_State *l) {
-
-  Script& script = get_script(l, 3);
-
-  int x = luaL_checkinteger(l, 1);
-  int y = luaL_checkinteger(l, 2);
-  Layer layer = Layer(luaL_checkinteger(l, 3));
-
-  MapEntities &entities = script.get_map().get_entities();
-  entities.add_entity(new Bomb(layer, x, y));
-
-  return 0;
-}
-
-/**
- * @brief Creates an explosion on the map.
- *
- * - Argument 1 (integer): x
- * - Argument 2 (integer): y
- * - Argument 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_explosion_create(lua_State *l) {
-
-  Script& script = get_script(l, 3);
-
-  int x = luaL_checkinteger(l, 1);
-  int y = luaL_checkinteger(l, 2);
-  Layer layer = Layer(luaL_checkinteger(l, 3));
-
-  MapEntities &entities = script.get_map().get_entities();
-  entities.add_entity(new Explosion(layer, Rectangle(x, y), true));
-
-  return 0;
-}
-
-/**
- * @brief Creates some fire on the map.
- *
- * - Argument 1 (integer): x
- * - Argument 2 (integer): y
- * - Argument 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_fire_create(lua_State *l) {
-
-  Script& script = get_script(l, 3);
-
-  int x = luaL_checkinteger(l, 1);
-  int y = luaL_checkinteger(l, 2);
-  Layer layer = Layer(luaL_checkinteger(l, 3));
-
-  MapEntities &entities = script.get_map().get_entities();
-  entities.add_entity(new Fire(layer, Rectangle(x, y)));
-
-  return 0;
-}
-
-/**
- * @brief Removes any arrow currently thrown from the map.
- *
- * This function can be used if you want to destroy an arrow sooner than usual.
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_arrow_remove(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  MapEntities &entities = script.get_map().get_entities();
-  entities.remove_arrows();
-
-  return 0;
-}
-
-/**
- * @brief Creates an enemy on the map.
- *
- * - Argument 1 (string): name of the enemy to create
- * - Argument 2 (string): breed of the enemy to create
- * - Argument 3 (integer): layer on the map
- * - Argument 4 (int): x x coordinate on the map
- * - Argument 5 (int): y y coordinate on the map
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_enemy_create(lua_State *l) {
-
-  Script& script = get_script(l, 5);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  const std::string& breed = luaL_checkstring(l, 2);
-  int layer = luaL_checkinteger(l, 3);
-  int x = luaL_checkinteger(l, 4);
-  int y = luaL_checkinteger(l, 5);
-
-  MapEntities& entities = script.get_map().get_entities();
-  Treasure treasure = Treasure(script.get_game(), "_random", 1, -1);
-  Enemy* enemy = (Enemy*) Enemy::create(script.get_game(), breed, Enemy::RANK_NORMAL, -1,
-      name, Layer(layer), x, y, 0, treasure);
-  entities.add_entity(enemy);
-  enemy->restart();
-
-  return 0;
-}
-
-/**
- * @brief Removes an enemy from the map.
- *
- * - Argument 1 (string): name of the enemy to remove
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_enemy_remove(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  entities.remove_entity(ENEMY, name);
-
-  return 0;
-}
-
-/**
- * @brief Removes a set of enemies from the map.
- *
- * - Argument 1 (string): prefix of the name of the enemies to remove
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_enemy_remove_group(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& prefix = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  entities.remove_entities_with_prefix(ENEMY, prefix);
-
-  return 0;
-}
-
-/**
- * @brief Returns whether an enemy is enabled.
- *
- * - Argument 1 (string): name of the enemy
- * - Return value (boolean): true if this enemy is enabled
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_enemy_is_enabled(lua_State* l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* enemy = entities.get_entity(ENEMY, name);
-  lua_pushboolean(l, enemy->is_enabled());
-
   return 1;
 }
 
 /**
- * @brief Enables or disables an enemy.
- *
- * A normal enemy is enabled by default. A boss or a miniboss is disabled by default.
- * - Argument 1 (string): name of the enemy
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:has_entity().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_enabled(lua_State* l) {
+int LuaContext::map_api_has_entity(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Map& map = check_map(l, 1);
+  const std::string& name = luaL_checkstring(l, 2);
 
-  const std::string& name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2);
+  MapEntity* entity = map.get_entities().find_entity(name);
 
-  MapEntities& entities = script.get_map().get_entities();
-  MapEntity* enemy = entities.get_entity(ENEMY, name);
-  enemy->set_enabled(enable);
-
-  return 0;
+  lua_pushboolean(l, entity != NULL);
+  return 1;
 }
 
 /**
- * @brief Enables or disables a set of enemies.
- *
- * - Argument 1 (string): prefix of the name of the enemies
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:get_entities().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_get_entities(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
 
-  const std::string& prefix = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
+  const std::list<MapEntity*> entities =
+    map.get_entities().get_entities_with_prefix(prefix);
+
+  lua_newtable(l);
+  int i = 0;
+  std::list<MapEntity*>::const_iterator it;
+  for (it = entities.begin(); it != entities.end(); it++) {
+    MapEntity* entity = *it;
+    push_entity(l, *entity);
+    lua_rawseti(l, -2, ++i);
+  }
+  return 1;
+}
+
+/**
+ * @brief Implementation of map:get_entities_count().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_entities_count(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
+
+  const std::list<MapEntity*> entities =
+    map.get_entities().get_entities_with_prefix(prefix);
+
+  lua_pushinteger(l, entities.size());
+  return 1;
+}
+
+/**
+ * @brief Implementation of map:has_entities().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_has_entities(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
+
+  lua_pushboolean(l, map.get_entities().has_entity_with_prefix(prefix));
+  return 1;
+}
+
+/**
+ * @brief Implementation of map:set_entities_enabled().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_entities_enabled(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
+  bool enabled = true;
+  if (lua_isboolean(l, 3)) {
+    enabled = lua_toboolean(l, 3);
+  }
 
   std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(ENEMY, prefix);
-
+      map.get_entities().get_entities_with_prefix(prefix);
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
+    (*it)->set_enabled(enabled);
   }
 
   return 0;
 }
 
 /**
- * @brief Returns whether an enemy is dead.
- *
- * An enemy is considered as dead if it is not present on the map.
- * - Argument 1 (string): name of the enemy
- * - Return value (boolean): true if the enemy is not on the map, false if it is alive
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:remove_entities().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_is_dead(lua_State *l) {
+int LuaContext::map_api_remove_entities(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
 
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script.get_map().get_entities();
-  Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name);
-
-  lua_pushboolean(l, (enemy == NULL));
-
-  return 1;
+  map.get_entities().remove_entities_with_prefix(prefix);
+  return 0;
 }
 
 /**
- * @brief Returns whether a set of enemies are dead.
+ * @brief Implementation of the tile creation function.
  *
- * An enemy is considered as dead if it is not present on the map.
- * - Argument 1 (string): prefix of the name of the enemies to check
- * - Return value (boolean): true if there is no enemy left with this prefix on the map,
- * false if at least one of them is alive
+ * Tiles cannot be created dynamically:
+ * they can only be declared in the map data file.
  *
- * @param l the Lua context that is calling this function
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_is_group_dead(lua_State *l) {
+int LuaContext::map_api_create_tile(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Map& map = get_entity_creation_map(l);
 
-  const std::string &prefix = luaL_checkstring(l, 1);
+  // Should not happen: create_tile is not in the map metatable.
+  Debug::check_assertion(!map.is_started(),
+      "Cannot create a tile when the map is already started");
 
-  MapEntities &entities = script.get_map().get_entities();
-  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(ENEMY, prefix);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  int tile_pattern_id = check_int_field(l, 1, "pattern");
 
-  lua_pushboolean(l, enemies.empty());
+  MapEntity* entity = new Tile(layer, x, y, width, height, tile_pattern_id);
+  map.get_entities().add_entity(entity);
 
-  return 1;
+  return 0;
 }
 
 /**
- * @brief Returns the number of living enemies whose name starts with the specified prefix.
- *
- * - Argument 1 (string): prefix of the name of the enemies to count
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:create_destination().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_get_group_count(lua_State *l) {
+int LuaContext::map_api_create_destination(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int direction = check_int_field(l, 1, "direction");
+  const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
 
-  const std::string& prefix = luaL_checkstring(l, 1);
+  MapEntity* entity = new Destination(name, layer, x, y, direction, sprite_name);
+  map.get_entities().add_entity(entity);
 
-  MapEntities& entities = script.get_map().get_entities();
-  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(ENEMY, prefix);
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+ }
 
-  lua_pushinteger(l, enemies.size());
+/**
+ * @brief Implementation of map:create_teletransporter().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_teletransporter(lua_State* l) {
 
-  return 1;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
+  const std::string& sound_id = opt_string_field(l, 1, "sound", "");
+  Transition::Style transition_style = Transition::Style(check_int_field(l, 1, "transition"));
+  const std::string& destination_map_id = check_string_field(l, 1, "destination_map");
+  const std::string& destination_name = check_string_field(l, 1, "destination");
+
+  MapEntity* entity = new Teletransporter(
+      name,
+      layer, x, y, width, height,
+      sprite_name,
+      sound_id,
+      transition_style,
+      destination_map_id,
+      destination_name);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
- * @brief Returns the position of an enemy.
- *
- * - Argument 1 (string): name of the enemy
- * - Return value 1 (integer): x position
- * - Return value 2 (integer): y position
- * - Return value 3 (integer): layer (0 to 2)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:create_pickable().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_get_position(lua_State* l) {
+int LuaContext::map_api_create_pickable(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
+  int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
+  const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  const std::string& name = luaL_checkstring(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, name);
-  const Rectangle& coordinates = enemy->get_xy();
-
-  lua_pushinteger(l, coordinates.get_x());
-  lua_pushinteger(l, coordinates.get_y());
-  lua_pushinteger(l, enemy->get_layer());
-
-  return 3;
-}
-
-/**
- * @brief Sets the position of an enemy.
- *
- * - Argument 1 (string): name of the enemy
- * - Argument 2 (integer): x position to set
- * - Argument 3 (integer): y position to set
- * - Optional argument 4 (integer): layer to set (if unspecified,
- * it will be unchanged)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_enemy_set_position(lua_State* l) {
-
-  Script& script = get_script(l, 3, 4);
-
-  const std::string& name = luaL_checkstring(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
   }
 
-  MapEntities& entities = script.get_map().get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, name);
-  enemy->set_xy(x, y);
-
-  if (layer != -1) {
-    MapEntities& entities = script.get_map().get_entities();
-    entities.set_entity_layer(*enemy, Layer(layer));
+  bool force_persistent = false;
+  FallingHeight falling_height = FALLING_MEDIUM;
+  if (!map.is_loaded()) {
+    // Different behavior when the pickable is already placed on the map.
+    falling_height = FALLING_NONE;
+    force_persistent = true;
   }
 
+  Game& game = map.get_game();
+  MapEntity* entity = Pickable::create(
+      game, name, layer, x, y,
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
+      falling_height, force_persistent
+  );
+
+  if (entity == NULL) {
+    lua_pushnil(l);
+    return 1;
+  }
+
+  map.get_entities().add_entity(entity);
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
   return 0;
 }
 
 /**
- * @brief Sets the treasure dropped by an enemy.
- *
- * - Argument 1 (string): name of the enemy
- * - Argument 2 (string): name of the item (possibly "_random" or "_none")
- * - Argument 3 (integer): variant of the item
- * - Argument 4 (integer): savegame variable of the treasure
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:create_destructible().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_treasure(lua_State *l) {
+int LuaContext::map_api_create_destructible(lua_State* l) {
 
-  Script& script = get_script(l, 4);
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
+  int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
+  const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  const std::string& enemy_name = luaL_checkstring(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
-  int variant = luaL_checkinteger(l, 3);
-  int savegame_variable = luaL_checkinteger(l, 4);
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
+  }
 
-  MapEntities& entities = script.get_map().get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
-  Treasure treasure(enemy->get_game(), item_name, variant, savegame_variable);
-  enemy->set_treasure(treasure);
+  // TODO Like enemies, implement this callback at runtime with function destructible:on_destroyed()
+  int destruction_callback_ref = LUA_REFNIL;
+  if (map.is_loaded()) {
+    // We are at map runtime, i.e. running a Lua script.
+    // In this case, we can do more than from the map data file.
+    destruction_callback_ref = opt_function_field(l, 1, "on_destroyed");
+  }
+  else {
+    // We are at map loading time, i.e. parsing a map data file
+    // (that happens to be written in Lua but it could be XML or anything...).
+    // This current Lua state l is only used to parse the map data file.
+    // It knows nothing from the Solarus API (it just reuses these
+    // map_api_create_XXX functions for to avoid to reimplement all of them).
+    // But we don't allow to pass the on_destroyed callback as a function
+    // since it's not the same Lua state.
+    // We also want the map data file, including the on_destroyed field, to be
+    // editable in clear text by a quest editor, so it has to be a string.
 
+    // TODO Allow to pass the on_destroyed callback as a string in this case.
+  }
+
+  Destructible* destructible = new Destructible(
+      name, layer, x, y,
+      Destructible::get_subtype_by_name(subtype_name),
+      Treasure(map.get_game(), treasure_name, treasure_variant, treasure_savegame_variable));
+  destructible->set_destruction_callback(destruction_callback_ref);
+  map.get_entities().add_entity(destructible);
+
+  if (map.is_started()) {
+    push_entity(l, *destructible);
+    return 1;
+  }
   return 0;
 }
 
 /**
- * @brief Sets the treasure dropped by an enemy as empty.
- *
- * - Argument 1 (string): name of the enemy
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:create_chest().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_no_treasure(lua_State *l) {
+int LuaContext::map_api_create_chest(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
+  int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
+  const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
+  const std::string& sprite_name = check_string_field(l, 1, "sprite");
+  Chest::OpeningMethod opening_method = opt_enum_field<Chest::OpeningMethod>(l, 1, "opening_method",
+      Chest::opening_method_names, Chest::OPENING_BY_INTERACTION);
+  const std::string& opening_condition = opt_string_field(l, 1, "opening_condition", "");
+  bool opening_condition_consumed = opt_boolean_field(l, 1, "opening_condition_consumed", false);
+  const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog", "");
 
-  const std::string& enemy_name = luaL_checkstring(l, 1);
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
+  }
 
-  MapEntities& entities = script.get_map().get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
-  Treasure treasure(enemy->get_game(), "_none", 1, -1);
-  enemy->set_treasure(treasure);
+  Game& game = map.get_game();
 
+  if (opening_method == Chest::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
+    if (!is_valid_lua_identifier(opening_condition)) {
+      luaL_argerror(l, 1, (StringConcat() <<
+          "Bad field 'opening_condition' (expected a valid savegame variable identifier, got '" <<
+          opening_condition << "'").c_str());
+    }
+  }
+
+  else if (opening_method == Chest::OPENING_BY_INTERACTION_IF_ITEM) {
+    if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
+      luaL_argerror(l, 1, (StringConcat() <<
+          "Bad field 'opening_condition' (there is no equipment item with name '" <<
+          opening_condition << "'").c_str());
+    }
+    EquipmentItem& item = game.get_equipment().get_item(opening_condition);
+    if (!item.is_saved()) {
+      luaL_argerror(l, 1, (StringConcat() <<
+          "Bad field 'opening_condition' (the possession state of equipment item '" <<
+          opening_condition << "' is not saved").c_str());
+    }
+  }
+
+  Chest* chest = new Chest(name, layer, x, y, sprite_name,
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+  chest->set_opening_method(opening_method);
+  chest->set_opening_condition(opening_condition);
+  chest->set_opening_condition_consumed(opening_condition_consumed);
+  chest->set_cannot_open_dialog_id(cannot_open_dialog_id);
+  map.get_entities().add_entity(chest);
+
+  if (map.is_started()) {
+    push_entity(l, *chest);
+    return 1;
+  }
   return 0;
 }
 
 /**
- * @brief Sets the treasure dropped by an enemy as random.
- *
- * - Argument 1 (string): name of the enemy
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:create_jumper().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_random_treasure(lua_State *l) {
+int LuaContext::map_api_create_jumper(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  int direction = check_int_field(l, 1, "direction");
+  int jump_length = check_int_field(l, 1, "jump_length");
 
-  const std::string& enemy_name = luaL_checkstring(l, 1);
+  MapEntity* entity = new Jumper(name, layer, x, y, width, height,
+      direction, jump_length);
+  map.get_entities().add_entity(entity);
 
-  MapEntities& entities = script.get_map().get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
-  Treasure treasure(enemy->get_game(), "_random", 1, -1);
-  enemy->set_treasure(treasure);
-
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
   return 0;
 }
 
 /**
- * @brief Returns the first sprite of an enemy.
- *
- * If the enemy has several sprites, the first one created is returned.
- *
- * - Argument 1 (string): name of the enemy
- * - Return value (sprite): the sprite of this enemy
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of map:create_enemy().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_get_sprite(lua_State *l) {
+int LuaContext::map_api_create_enemy(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int direction = check_int_field(l, 1, "direction");
+  const std::string& breed = check_string_field(l, 1, "breed");
+  Enemy::Rank rank = Enemy::Rank(opt_int_field(l, 1, "rank", 0));
+  const std::string& savegame_variable = opt_string_field(l, 1, "savegame_variable", "");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
+  int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
+  const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  const std::string& enemy_name = luaL_checkstring(l, 1);
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'savegame_variable' (invalid savegame variable identifier '" <<
+        savegame_variable << "'").c_str());
+  }
 
-  MapEntities& entities = script.get_map().get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
+  }
 
-  int handle = script.create_sprite_handle(enemy->get_sprite());
-  lua_pushinteger(l, handle);
+  Game& game = map.get_game();
+  MapEntity* entity = Enemy::create(
+      game, breed, rank, savegame_variable,
+      name, layer, x, y, direction,
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 
-  return 1;
+  if (entity == NULL) {
+    lua_pushnil(l);
+    return 1;
+  }
+
+  map.get_entities().add_entity(entity);
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_npc().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_npc(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int direction = check_int_field(l, 1, "direction");
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
+  const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
+  const std::string& behavior = opt_string_field(l, 1, "behavior", "map");
+
+  int subtype;
+  std::istringstream iss(subtype_name);
+  iss >> subtype;
+
+  Game& game = map.get_game();
+  MapEntity* entity = new NPC(game, name, layer, x, y, NPC::Subtype(subtype),
+      sprite_name, direction, behavior);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_block().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_block(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int direction = opt_int_field(l, 1, "direction", -1);
+  const std::string& sprite_name = check_string_field(l, 1, "sprite");
+  bool pushable = check_boolean_field(l, 1, "pushable");
+  bool pullable = check_boolean_field(l, 1, "pullable");
+  int maximum_moves = check_int_field(l, 1, "maximum_moves");
+
+  Block* entity = new Block(name, layer, x, y, direction,
+      sprite_name, pushable, pullable, maximum_moves);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_dynamic_tile().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  int tile_pattern_id = check_int_field(l, 1, "pattern");
+  bool enabled_at_start = check_boolean_field(l, 1, "enabled_at_start");
+
+  MapEntity* entity = new DynamicTile(name, layer, x, y, width, height,
+      tile_pattern_id, enabled_at_start);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_switch().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_switch(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
+  bool needs_block = check_boolean_field(l, 1, "needs_block");
+  bool inactivate_when_leaving = check_boolean_field(l, 1, "inactivate_when_leaving");
+
+  int subtype;
+  std::istringstream iss(subtype_name);
+  iss >> subtype;
+
+  MapEntity* entity = new Switch(name, layer, x, y,
+      Switch::Subtype(subtype), needs_block, inactivate_when_leaving);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_wall().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_wall(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  bool stops_hero = check_boolean_field(l, 1, "stops_hero");
+  bool stops_enemies = check_boolean_field(l, 1, "stops_enemies");
+  bool stops_npcs = check_boolean_field(l, 1, "stops_npcs");
+  bool stops_blocks = check_boolean_field(l, 1, "stops_blocks");
+
+  MapEntity* entity = new Wall(name, layer, x, y, width, height,
+      stops_hero, stops_enemies, stops_npcs, stops_blocks);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_sensor().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_sensor(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+
+  MapEntity* entity = new Sensor(name, layer, x, y, width, height);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_crystal().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_crystal(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+
+  MapEntity* entity = new Crystal(name, layer, x, y);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_crystal_block().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_crystal_block(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
+
+  int subtype;
+  std::istringstream iss(subtype_name);
+  iss >> subtype;
+
+  Game& game = map.get_game();
+  MapEntity* entity = new CrystalBlock(game, name, layer, x, y, width, height,
+      CrystalBlock::Subtype(subtype));
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_shop_treasure().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_shop_item(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
+  int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
+  const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
+  int price = check_int_field(l, 1, "price");
+  const std::string& dialog_id = check_string_field(l, 1, "dialog");
+
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
+  }
+
+  Game& game = map.get_game();
+  MapEntity* entity = ShopItem::create(game, name, layer, x, y,
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
+      price, dialog_id);
+
+  if (entity == NULL) {
+    lua_pushnil(l);
+    return 1;
+  }
+
+  map.get_entities().add_entity(entity);
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_conveyor_belt().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_conveyor_belt(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int direction = check_int_field(l, 1, "direction");
+
+  MapEntity* entity = new ConveyorBelt(name, layer, x, y, direction);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_door().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_door(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int direction = check_int_field(l, 1, "direction");
+  const std::string& sprite_name = check_string_field(l, 1, "sprite");
+  const std::string& savegame_variable = opt_string_field(l, 1, "savegame_variable", "");
+  Door::OpeningMethod opening_method = opt_enum_field<Door::OpeningMethod>(l, 1, "opening_method",
+      Door::opening_method_names, Door::OPENING_NONE);
+  const std::string& opening_condition = opt_string_field(l, 1, "opening_condition", "");
+  bool opening_condition_consumed = opt_boolean_field(l, 1, "opening_condition_consumed", false);
+  const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog", "");
+
+  Game& game = map.get_game();
+
+  if (opening_method == Door::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
+    if (!is_valid_lua_identifier(opening_condition)) {
+      luaL_argerror(l, 1, (StringConcat() <<
+          "Bad field 'opening_condition' (expected a valid savegame variable identifier, got '" <<
+          opening_condition << "'").c_str());
+    }
+  }
+
+  else if (opening_method == Door::OPENING_BY_INTERACTION_IF_ITEM) {
+    if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
+      luaL_argerror(l, 1, (StringConcat() <<
+          "Bad field 'opening_condition' (there is no equipment item with name '" <<
+          opening_condition << "'").c_str());
+    }
+    EquipmentItem& item = game.get_equipment().get_item(opening_condition);
+    if (!item.is_saved()) {
+      luaL_argerror(l, 1, (StringConcat() <<
+          "Bad field 'opening_condition' (the possession state of equipment item '" <<
+          opening_condition << "' is not saved").c_str());
+    }
+  }
+
+  Door* door = new Door(
+      game,
+      name, layer, x, y,
+      direction,
+      sprite_name,
+      savegame_variable);
+  door->set_opening_method(opening_method);
+  door->set_opening_condition(opening_condition);
+  door->set_opening_condition_consumed(opening_condition_consumed);
+  door->set_cannot_open_dialog_id(cannot_open_dialog_id);
+  map.get_entities().add_entity(door);
+
+  if (map.is_started()) {
+    push_entity(l, *door);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_stairs().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_stairs(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int direction = check_int_field(l, 1, "direction");
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
+
+  int subtype;
+  std::istringstream iss(subtype_name);
+  iss >> subtype;
+
+  MapEntity* entity = new Stairs(name, layer, x, y, direction,
+      Stairs::Subtype(subtype));
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_bomb().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_bomb(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+
+  MapEntity* entity = new Bomb(name, layer, x, y);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_explosion().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_explosion(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+
+  MapEntity* entity = new Explosion(name, layer, Rectangle(x, y), true);
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_fire().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_fire(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+
+  MapEntity* entity = new Fire(name, layer, Rectangle(x, y));
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Calls the on_started() method of a Lua map.
+ * @param map A map.
+ * @param destination The destination point used (NULL if it's a special one).
+ */
+void LuaContext::map_on_started(Map& map, Destination* destination) {
+
+  push_map(l, map);
+  on_started(destination);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_finished() method of a Lua map.
+ * @param map A map.
+ */
+void LuaContext::map_on_finished(Map& map) {
+
+  push_map(l, map);
+  on_finished();
+  remove_timers(-1);  // Stop timers and menus associated to this map.
+  remove_menus(-1);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_update() method of a Lua map.
+ * @param map A map.
+ */
+void LuaContext::map_on_update(Map& map) {
+
+  push_map(l, map);
+  on_update();
+  menus_on_update(-1);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_draw() method of a Lua map.
+ * @param map A map.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
+
+  push_map(l, map);
+  menus_on_draw(-1, dst_surface);
+  on_draw(dst_surface);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Notifies a Lua map that an input event has just occurred.
+ *
+ * The appropriate callback in the map is triggered if it exists.
+ *
+ * @param event The input event to handle.
+ * @param map A map.
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::map_on_input(Map& map, InputEvent& event) {
+
+  bool handled = false;
+  push_map(l, map);
+  handled = on_input(event);
+  if (!handled) {
+    handled = menus_on_input(-1, event);
+  }
+  lua_pop(l, 1);
+  return handled;
+}
+
+/**
+ * @brief Calls the on_suspended() method of a Lua map.
+ * @param map A map.
+ * @param suspended true if the map is suspended.
+ */
+void LuaContext::map_on_suspended(Map& map, bool suspended) {
+
+  push_map(l, map);
+  on_suspended(suspended);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_opening_transition_finished() method of a Lua map.
+ * @param map A map.
+ * @param destination The destination point used (NULL if it's a special one).
+ */
+void LuaContext::map_on_opening_transition_finished(Map& map,
+    Destination* destination) {
+
+  push_map(l, map);
+  on_opening_transition_finished(destination);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_camera_back() method of a Lua map.
+ * @param map A map.
+ */
+void LuaContext::map_on_camera_back(Map& map) {
+
+  push_map(l, map);
+  on_camera_back();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_obtaining_treasure() method of a Lua map.
+ * @param map A map.
+ * @param treasure A treasure the hero is about to obtain on that map.
+ */
+void LuaContext::map_on_obtaining_treasure(Map& map, const Treasure& treasure) {
+
+  push_map(l, map);
+  on_obtaining_treasure(treasure);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_obtained_treasure() method of a Lua map.
+ * @param map A map.
+ * @param treasure The treasure just obtained.
+ */
+void LuaContext::map_on_obtained_treasure(Map& map, const Treasure& treasure) {
+
+  push_map(l, map);
+  on_obtained_treasure(treasure);
+  lua_pop(l, 1);
 }
 

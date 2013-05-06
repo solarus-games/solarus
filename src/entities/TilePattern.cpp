@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include "entities/TimeScrollingTilePattern.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Surface.h"
 
 /**
  * @brief Constructor.
@@ -89,12 +90,12 @@ void TilePattern::update() {
 }
 
 /**
- * @brief Returns whether this tile pattern is animated, i.e. not always displayed
+ * @brief Returns whether this tile pattern is animated, i.e. not always drawn
  * the same way.
  *
  * Non-animated tiles may be rendered faster by using intermediate surfaces
  * that are drawn only once.
- * This function should return false if the tile pattern is always displayed the same way.
+ * This function should return false if the tile pattern is always drawn the same way.
  * Returns true by default.
  *
  * @return true if this tile pattern is animated
@@ -104,19 +105,57 @@ bool TilePattern::is_animated() {
 }
 
 /**
- * @brief Returns whether tiles having this tile pattern are displayed at their
+ * @brief Returns whether tiles having this tile pattern are drawn at their
  * position.
  *
- * Usually, this function returns true, and when it is the case, display() is
+ * Usually, this function returns true, and when it is the case, draw() is
  * called only for tiles that are located in the current viewport.
  *
- * However, some tile patterns may want to be displayed even when they are not
+ * However, some tile patterns may want to be drawn even when they are not
  * in the viewport, typically to make an illusion of movement like parallax
  * scrolling.
  *
- * @return true if tiles having this pattern are displayed where they are placed
+ * @return true if tiles having this pattern are drawn where they are placed
  */
-bool TilePattern::is_displayed_at_its_position() {
+bool TilePattern::is_drawn_at_its_position() {
   return true;
+}
+
+/**
+ * @brief Fills a rectangle by repeating this tile pattern.
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates of the rectangle to fill in \c dst_surface.
+ * @param tileset The tileset to use.
+ * @param viewport Coordinates of the top-left corner of \c dst_surface
+ * relative to the map (may be used for scrolling tiles).
+ */
+void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_position,
+    Tileset& tileset, const Rectangle& viewport) {
+
+  Rectangle dst(0, 0);
+
+  int limit_x = dst_position.get_x() + dst_position.get_width();
+  int limit_y = dst_position.get_y() + dst_position.get_height();
+
+  for (int y = dst_position.get_y();
+      y < limit_y;
+      y += get_height()) {
+
+    if ((y <= dst_surface.get_height() && y + get_height() > 0)
+        || !is_drawn_at_its_position()) {
+      dst.set_y(y);
+
+      for (int x = dst_position.get_x();
+          x < limit_x;
+          x += get_width()) {
+
+        if ((x <= dst_surface.get_width() && x + get_width() > 0)
+            || !is_drawn_at_its_position()) {
+          dst.set_x(x);
+          draw(dst_surface, dst, tileset, viewport);
+        }
+      }
+    }
+  }
 }
 

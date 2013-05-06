@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -78,16 +78,7 @@ public class Block extends MapEntity {
    * @return the coordinates of the origin point of the entity
    */
   protected Point getOrigin() {
-
     return origin;
-  }
-
-  /**
-   * Returns whether the entity has an identifier.
-   * @return true
-   */
-  public boolean hasName() {
-    return true;
   }
 
   /**
@@ -124,31 +115,31 @@ public class Block extends MapEntity {
   }
 
   /**
-   * Sets the default values of all properties specific to the current entity type.
+   * Declares all properties specific to the current entity type and sets
+   * their initial values.
    */
-  public void setPropertiesDefaultValues() throws MapException {
-    setProperty("sprite", "entities/block");
-    setProperty("canBePushed", true);
-    setProperty("canBePulled", false);
-    setProperty("maximumMoves", MaximumMoves.ONE.getId());
+  public void createProperties() throws MapException {
+    createStringProperty("sprite", false, "entities/block");
+    createBooleanProperty("pushable", false, true);
+    createBooleanProperty("pullable", false, false);
+    createIntegerProperty("maximum_moves", false, MaximumMoves.ONE.getId());
   }
 
   /**
-   * Sets a property specific to this kind of entity.
-   * @param name name of the property
-   * @param value value of the property
+   * Notifies this entity that a property specific to its type has just changed.
+   * Does nothing by default.
+   * @param name Name of the property that has changed.
+   * @param value The new value.
    */
-  public void setProperty(String name, String value) throws MapException {
-
-    super.setProperty(name, value);
+  protected void notifyPropertyChanged(String name, String value) throws MapException {
 
     if (name.equals("sprite")) {
 
-      if (value.length() > 0) {
-	sprite = new Sprite(value, map);
+      if (value != null) {
+        sprite = new Sprite(value, getMap());
       }
       else {
-	sprite = null;
+        sprite = null;
       }
     }
   }
@@ -159,20 +150,9 @@ public class Block extends MapEntity {
    */
   public void checkProperties() throws MapException {
 
-    if (!isSpriteNameValid(getProperty("sprite"))) {
-      throw new MapException("Invalid sprite name: '" + getProperty("sprite") + "'");
+    if (!isValidSpriteName(getStringProperty("sprite"))) {
+      throw new MapException("Invalid sprite name: '" + getStringProperty("sprite") + "'");
     }
-  }
-
-  /**
-   * Returns whether the specified sprite name id is valid
-   * @param sprite_name a sprite name
-   * @return true if it is valid
-   */
-  private boolean isSpriteNameValid(String sprite_name) {
-    return sprite_name != null
-      && sprite_name.length() != 0
-      && (sprite_name.charAt(0) != '_' || sprite_name.equals("_none"));
   }
 
   /**
@@ -191,7 +171,8 @@ public class Block extends MapEntity {
     else {
       // display the appropriate sprite
       sprite.paint(g, zoom, showTransparency,
-	  getX(), getY(), null, 0, 0);
+          getX(), getY(), null, 0, 0);
     }
   }
 }
+

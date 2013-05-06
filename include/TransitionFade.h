@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ class TransitionFade: public Transition {
 
   private:
 
+    bool finished;
     int alpha_start;
     int alpha_limit;
     int alpha_increment;
@@ -46,8 +47,7 @@ class TransitionFade: public Transition {
     bool is_started();
     bool is_finished();
     void update();
-    void display(Surface *surface);
-
+    void draw(Surface& surface);
 };
 
 #endif

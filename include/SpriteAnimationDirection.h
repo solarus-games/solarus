@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,31 +31,32 @@ class SpriteAnimationDirection {
   private:
 
     const int nb_frames;    /**< number of frames in this sequence */
-    Rectangle *frames;      /**< position of each frame of the sequence on the image */
-    Rectangle origin;       /**< coordinate of the sprite's origin from the
+    Rectangle* frames;      /**< position of each frame of the sequence on the image */
+    Rectangle origin;       /**< coordinates of the sprite's origin from the
                              * upper-left corner of its image. */
 
-    PixelBits **pixel_bits; /**< bit masks representing the non-transparent pixels of each frame,
+    PixelBits** pixel_bits; /**< bit masks representing the non-transparent pixels of each frame,
                              * computed only if enable_pixel_collisions() is called */
 
   public:
 
     // creation and destruction
-    SpriteAnimationDirection(int nb_frames, Rectangle *frames,
-	int x_origin, int y_origin);
-    virtual ~SpriteAnimationDirection();
+    SpriteAnimationDirection(int nb_frames, Rectangle* frames,
+        int x_origin, int y_origin);
+    ~SpriteAnimationDirection();
 
     // size and origin point
-    const Rectangle & get_size() const;
-    const Rectangle & get_origin() const;
+    Rectangle get_size() const;
+    const Rectangle& get_origin() const;
 
     // frames
     int get_nb_frames() const;
-    const Rectangle & get_frame(int frame) const;
-    void display(Surface *destination, int x, int y, int current_frame, Surface *src_image);
+    const Rectangle& get_frame(int frame) const;
+    void draw(Surface& dst_surface, const Rectangle& dst_position,
+        int current_frame, Surface& src_image);
 
     // pixel collisions
-    void enable_pixel_collisions(Surface *src_image);
+    void enable_pixel_collisions(Surface* src_image);
     void disable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
     PixelBits& get_pixel_bits(int frame) const;

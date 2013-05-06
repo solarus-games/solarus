@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #define SOLARUS_SOUND_H
 
 #include "Common.h"
+#include <string>
 #include <list>
 #include <map>
 #include <al.h>
@@ -40,13 +41,14 @@ class Sound {
     static ALCdevice* device;
     static ALCcontext* context;
 
-    SoundId id;                                  /**< id of this sound */
+    std::string id;                              /**< id of this sound */
     ALuint buffer;                               /**< the OpenAL buffer containing the PCM decoded data of this sound */
     std::list<ALuint> sources;                   /**< the sources currently playing this sound */
     static std::list<Sound*> current_sounds;     /**< the sounds currently playing */
-    static std::map<SoundId,Sound> all_sounds;   /**< all sounds created before */
+    static std::map<std::string, Sound> all_sounds;   /**< all sounds created before */
 
     static bool initialized;                     /**< indicates that the audio system is initialized */
+    static bool sounds_preloaded;                /**< true if load_all() was called */
     static float volume;                         /**< the volume of sound effects (0.0 to 1.0) */
 
     ALuint decode_file(const std::string &file_name);
@@ -70,19 +72,14 @@ class Sound {
     static ov_callbacks ogg_callbacks;           /**< vorbisfile object used to load the encoded sound from memory */
     static size_t cb_read(void* ptr, size_t size, size_t nmemb, void* datasource);
 
-    /*
-    static int cb_seek(void* datasource, ogg_int64_t offset, int whence);
-    static long cb_tell(void* datasource);
-*/
-
-    Sound(const SoundId& sound_id = "");
+    Sound(const std::string& sound_id = "");
     ~Sound();
     void load();
     bool start();
 
     static void load_all();
-    static bool exists(const SoundId& sound_id);
-    static void play(const SoundId& sound_id);
+    static bool exists(const std::string& sound_id);
+    static void play(const std::string& sound_id);
 
     static void initialize(int argc, char** argv);
     static void quit();

@@ -1,0 +1,64 @@
+/**
+\page quest_language_strings Translated strings
+
+Strings displayed during the game, for example in your menus,
+need to be localized in the current language.
+To this end, a \c strings.dat file is placed inside each
+\c languages/xx/text directory, where \c xx is a language code
+defined in
+\ref quest_language_list_file "languages.dat"
+(e.g. \c "en" or \c "fr").
+
+When translating the game, you have to translate this \c strings.dat
+file as well as the
+\ref quest_language_dialogs "dialogs file" (\c dialogs.dat).
+Have a look at the \ref translation page if you are interested in translating
+the game (and you should also contact us).
+
+\c string.dat is a text file encoded in UTF-8,
+where each line has the following form:
+\verbatim
+key	some translation for this key
+\endverbatim
+Empty lines and lines beginning with \c '#' (comments) are ignored.
+
+\c key is an ID of your choice that the user does not see.
+Then there must be one or several tabulation characters (no space character
+allowed here), and finally the translated string, possibly containing spaces.
+Don't change the key when you are translating a quest, since the key
+identifies the string.
+
+I recommend to add comments (lines beginning by '#') to explain where each
+string is used and how many characters it should not exceed.
+Future translators will thank you.
+
+An an example, here is a part of a possible \c languages/fr/text/strings.dat
+file:
+\verbatim
+# Savegame selection menu.
+# Strings beginning with "selection_menu.phase" should not exceed 45 characters.
+selection_menu.phase.select_file	Veuillez choisir un fichier
+selection_menu.phase.choose_mode	Choisissez un mode de jeu
+selection_menu.phase.choose_name	Quel est votre nom ?
+selection_menu.phase.confirm_erase	Etes-vous sûr ?
+selection_menu.phase.erase_file		Quel fichier voulez-vous effacer ?
+selection_menu.phase.options		Appuyez sur Espace pour modifier
+selection_menu.phase.options.changing	<  > : choisir, Espace : valider
+selection_menu.erase			Effacer
+selection_menu.cancel			Annuler
+selection_menu.big_yes			OUI
+selection_menu.big_no			NON
+selection_menu.empty			Vide
+selection_menu.options			Options
+selection_menu.back			Retour
+selection_menu.options.language		Langue
+selection_menu.options.video_mode	Mode
+selection_menu.options.music_volume	Volume de la musique
+selection_menu.options.sound_volume	Volume des sons
+\endverbatim
+
+The current version of the editor does not support edition of this
+file \c string.dat yet. You have to edit it by hand.
+
+*/
+

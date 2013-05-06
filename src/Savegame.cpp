@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,63 +15,87 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Savegame.h"
+#include "SavegameConverterV1.h"
+#include "MainLoop.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
-#include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lua/LuaContext.h"
+#include <lua.hpp>
+
+const int Savegame::SAVEGAME_VERSION = 2;
+
+const std::string Savegame::KEY_SAVEGAME_VERSION = "_version";         /**< Format of this savegame file. */
+const std::string Savegame::KEY_STARTING_MAP = "_starting_map";        /**< Map id where to start the savegame. */
+const std::string Savegame::KEY_STARTING_POINT = "_starting_point";    /**< Destination name on the starting map. */
+const std::string Savegame::KEY_KEYBOARD_ACTION = "_keyboard_action";  /**< Keyboard key mapped to the action command. */
+const std::string Savegame::KEY_KEYBOARD_ATTACK = "_keyboard_attack";  /**< Keyboard key mapped to the attack command. */
+const std::string Savegame::KEY_KEYBOARD_ITEM_1 = "_keyboard_item_1";  /**< Keyboard key mapped to the item 1 command. */
+const std::string Savegame::KEY_KEYBOARD_ITEM_2 = "_keyboard_item_2";  /**< Keyboard key mapped to the item 2 command. */
+const std::string Savegame::KEY_KEYBOARD_PAUSE = "_keyboard_pause";    /**< Keyboard key mapped to the pause command. */
+const std::string Savegame::KEY_KEYBOARD_RIGHT = "_keyboard_right";    /**< Keyboard key mapped to the right command. */
+const std::string Savegame::KEY_KEYBOARD_UP = "_keyboard_up";          /**< Keyboard key mapped to the up command. */
+const std::string Savegame::KEY_KEYBOARD_LEFT = "_keyboard_left";      /**< Keyboard key mapped to the left command. */
+const std::string Savegame::KEY_KEYBOARD_DOWN = "_keyboard_down";      /**< Keyboard key mapped to the down command. */
+const std::string Savegame::KEY_JOYPAD_ACTION = "_joypad_action";      /**< Joypad string mapped to the action command. */
+const std::string Savegame::KEY_JOYPAD_ATTACK = "_joypad_attack";      /**< Joypad string mapped to the attack command. */
+const std::string Savegame::KEY_JOYPAD_ITEM_1 = "_joypad_item_1";      /**< Joypad string mapped to the item 1 command. */
+const std::string Savegame::KEY_JOYPAD_ITEM_2 = "_joypad_item_2";      /**< Joypad string mapped to the item 2 command. */
+const std::string Savegame::KEY_JOYPAD_PAUSE = "_joypad_pause";        /**< Joypad string mapped to the pause command. */
+const std::string Savegame::KEY_JOYPAD_RIGHT = "_joypad_right";        /**< Joypad string mapped to the right command. */
+const std::string Savegame::KEY_JOYPAD_UP = "_joypad_up_key";          /**< Joypad string mapped to the up command. */
+const std::string Savegame::KEY_JOYPAD_LEFT = "_joypad_left_key";      /**< Joypad string mapped to the left command. */
+const std::string Savegame::KEY_JOYPAD_DOWN = "_joypad_down_key";      /**< Joypad string mapped to the down command. */
+const std::string Savegame::KEY_CURRENT_LIFE = "_current_life";        /**< Number of life points. */
+const std::string Savegame::KEY_CURRENT_MONEY = "_current_money";      /**< Amount of money. */
+const std::string Savegame::KEY_CURRENT_MAGIC = "_current_magic";      /**< Number of magic points. */
+const std::string Savegame::KEY_MAX_LIFE = "_max_life";                /**< Maximum allowed life points. */
+const std::string Savegame::KEY_MAX_MONEY = "_max_money";              /**< Maximum allowed money. */
+const std::string Savegame::KEY_MAX_MAGIC = "_max_magic";              /**< Maximum allowed magic points. */
+const std::string Savegame::KEY_ITEM_SLOT_1 = "_item_slot_1";          /**< Name of the equipment item in slot 1. */
+const std::string Savegame::KEY_ITEM_SLOT_2 = "_item_slot_2";          /**< Name of the equipment item in slot 2. */
+const std::string Savegame::KEY_ABILITY_TUNIC = "_ability_tunic";      /**< Resistance level. */
+const std::string Savegame::KEY_ABILITY_SWORD = "_ability_sword";      /**< Attack level. */
+const std::string Savegame::KEY_ABILITY_SWORD_KNOWLEDGE =
+    "_ability_sword_knowledge";                                        /**< Super spin attack ability level. */
+const std::string Savegame::KEY_ABILITY_SHIELD = "_ability_shield";    /**< Protection level. */
+const std::string Savegame::KEY_ABILITY_LIFT = "_ability_lift";        /**< Lift level. */
+const std::string Savegame::KEY_ABILITY_SWIM = "_ability_swim";        /**< Swim level. */
+const std::string Savegame::KEY_ABILITY_RUN = "_ability_run";          /**< Run level. */
+const std::string Savegame::KEY_ABILITY_DETECT_WEAK_WALLS =
+    "_ability_detect_weak_walls";                                      /**< Weak walls detection level. */
+const std::string Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH =
+    "_ability_get_back_from_death";                                    /**< Resurrection ability level. */
 
 /**
  * @brief Creates a savegame with a specified file name, existing or not.
- * @param file_name name of the savegame file (can be a new file), relative to the savegames directory
+ * @param main_loop The Solarus root object.
+ * @param file_name Name of the savegame file (can be a new file),
+ * relative to the quest write directory, with its extension.
  */
-Savegame::Savegame(const std::string &file_name):
-  file_name(file_name), equipment(*this) {
+Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
+  ExportableToLua(),
+  file_name(file_name),
+  main_loop(main_loop),
+  equipment(*this),
+  game(NULL) {
 
-  if (!FileTools::data_file_exists(file_name)) {
-    // this save slot is free
+  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  Debug::check_assertion(!quest_write_dir.empty(),
+      "The quest write directory for savegames was not set in quest.dat");
+  prefixed_file_name = quest_write_dir + "/" + file_name;
+
+  if (!FileTools::data_file_exists(prefixed_file_name)) {
+    // This save does not exist yet.
     empty = true;
     set_initial_values();
   }
   else {
-    // a save already exists, let's load it
+    // A save already exists, let's load it.
     empty = false;
-
-    size_t size;
-    char *buffer;
-
-    FileTools::data_file_open_buffer(file_name, &buffer, &size);
-    Debug::check_assertion(size == sizeof(SavedData), StringConcat() << "Cannot read savegame file '" << file_name << "': invalid file size");
-    memcpy(&saved_data, buffer, sizeof(SavedData));
-    FileTools::data_file_close_buffer(buffer);
-
-    // check that the savegame is compatible with the current savegame system
-    if (get_integer(SAVEGAME_COMPATIBILITY_FORMAT) != CURRENT_COMPATIBILITY_FORMAT) {
-
-      // obsolete savegame file: create a new savegame instead
-      empty = true;
-      set_initial_values();
-    }
-    else {
-
-      // the savegame file is okay
-      check_game_controls();
-    }
+    load();
   }
-}
-
-/**
- * @brief Creates a savegame by copying an existing one, even if
- * it is not saved in its current state.
- * @param other the savegame to copy
- */
-Savegame::Savegame(const Savegame &other):
-
-  empty(other.empty),
-  file_name(other.file_name),
-  saved_data(other.saved_data),
-  equipment(*this) {
-
 }
 
 /**
@@ -93,33 +117,14 @@ bool Savegame::is_empty() {
  */
 void Savegame::set_initial_values() {
 
-  // 0 is the initial value of most variables
-  memset(&saved_data, 0x0000, sizeof(SavedData));
+  // Set the savegame format version.
+  set_integer(KEY_SAVEGAME_VERSION, SAVEGAME_VERSION);
 
-  // set the compatibility version
-  set_integer(SAVEGAME_COMPATIBILITY_FORMAT, CURRENT_COMPATIBILITY_FORMAT);
-
-  // set the initial controls
+  // Set the initial controls.
   set_default_keyboard_controls();
   set_default_joypad_controls();
-
-  // set some other values from the quest file
-  IniFile ini("quest.dat", IniFile::READ);
-  ini.set_group("initial");
-  int starting_map_id = ini.get_integer_value("starting_map", -1);
-  const std::string &starting_destination_point_name = ini.get_string_value("starting_point", "");
-  int max_life = ini.get_integer_value("max_life", 1);
-
-  Debug::check_assertion(starting_map_id != -1,
-      "No starting map defined in quest.dat. Please set the value starting_map to the id of the initial map of your quest.");
-  Debug::check_assertion(starting_destination_point_name.size() != 0,
-      "No starting point defined in quest.dat. Please set the value starting_point to the name of the "
-      "destination point where the hero should be placed on the initial map.");
-
-  set_integer(STARTING_MAP, starting_map_id);
-  set_string(STARTING_POINT, starting_destination_point_name);
-  set_integer(MAX_LIFE, max_life);
-  set_integer(CURRENT_LIFE, max_life);
+  set_integer(KEY_MAX_LIFE, 1);
+  set_integer(KEY_CURRENT_LIFE, 1);
 }
 
 /**
@@ -127,28 +132,23 @@ void Savegame::set_initial_values() {
  */
 void Savegame::set_default_keyboard_controls() {
 
-  set_integer(KEYBOARD_ENUM_VERSION, InputEvent::KEYBOARD_ENUM_VERSION);
 #ifndef PANDORA
-  set_integer(KEYBOARD_ACTION_KEY, InputEvent::KEY_SPACE);
-  set_integer(KEYBOARD_SWORD_KEY, InputEvent::KEY_c);
-  set_integer(KEYBOARD_ITEM_1_KEY, InputEvent::KEY_x);
-  set_integer(KEYBOARD_ITEM_2_KEY, InputEvent::KEY_v);
-  set_integer(KEYBOARD_PAUSE_KEY, InputEvent::KEY_d);
-  set_integer(KEYBOARD_RIGHT_KEY, InputEvent::KEY_RIGHT);
-  set_integer(KEYBOARD_UP_KEY, InputEvent::KEY_UP);
-  set_integer(KEYBOARD_LEFT_KEY, InputEvent::KEY_LEFT);
-  set_integer(KEYBOARD_DOWN_KEY, InputEvent::KEY_DOWN);
+  set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_SPACE));
+  set_string(KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(InputEvent::KEY_c));
+  set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_x));
+  set_string(KEY_KEYBOARD_ITEM_2, InputEvent::get_keyboard_key_name(InputEvent::KEY_v));
+  set_string(KEY_KEYBOARD_PAUSE, InputEvent::get_keyboard_key_name(InputEvent::KEY_d));
 #else
-  set_integer(KEYBOARD_ACTION_KEY, SDLK_PAGEDOWN);
-  set_integer(KEYBOARD_SWORD_KEY, SDLK_HOME);
-  set_integer(KEYBOARD_ITEM_1_KEY, SDLK_PAGEUP);
-  set_integer(KEYBOARD_ITEM_2_KEY, SDLK_END);
-  set_integer(KEYBOARD_PAUSE_KEY, SDLK_LALT);
-  set_integer(KEYBOARD_RIGHT_KEY, InputEvent::KEY_RIGHT);
-  set_integer(KEYBOARD_UP_KEY, InputEvent::KEY_UP);
-  set_integer(KEYBOARD_LEFT_KEY, InputEvent::KEY_LEFT);
-  set_integer(KEYBOARD_DOWN_KEY, InputEvent::KEY_DOWN);
+  set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_DOWN));
+  set_string(KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(InputEvent::KEY_HOME));
+  set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_UP));
+  set_string(KEY_KEYBOARD_ITEM_2, InputEvent::get_keyboard_key_name(InputEvent::KEY_END));
+  set_string(KEY_KEYBOARD_PAUSE, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT_ALT));
 #endif
+  set_string(KEY_KEYBOARD_RIGHT, InputEvent::get_keyboard_key_name(InputEvent::KEY_RIGHT));
+  set_string(KEY_KEYBOARD_UP, InputEvent::get_keyboard_key_name(InputEvent::KEY_UP));
+  set_string(KEY_KEYBOARD_LEFT, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT));
+  set_string(KEY_KEYBOARD_DOWN, InputEvent::get_keyboard_key_name(InputEvent::KEY_DOWN));
 }
 
 /**
@@ -156,32 +156,104 @@ void Savegame::set_default_keyboard_controls() {
  */
 void Savegame::set_default_joypad_controls() {
 
-  set_string(JOYPAD_ACTION_KEY, "button 0");
-  set_string(JOYPAD_SWORD_KEY, "button 1");
-  set_string(JOYPAD_ITEM_1_KEY, "button 2");
-  set_string(JOYPAD_ITEM_2_KEY, "button 3");
-  set_string(JOYPAD_PAUSE_KEY, "button 4");
-  set_string(JOYPAD_RIGHT_KEY, "axis 0 +");
-  set_string(JOYPAD_UP_KEY, "axis 1 -");
-  set_string(JOYPAD_LEFT_KEY, "axis 0 -");
-  set_string(JOYPAD_DOWN_KEY, "axis 1 +");
+  set_string(KEY_JOYPAD_ACTION, "button 0");
+  set_string(KEY_JOYPAD_ATTACK, "button 1");
+  set_string(KEY_JOYPAD_ITEM_1, "button 2");
+  set_string(KEY_JOYPAD_ITEM_2, "button 3");
+  set_string(KEY_JOYPAD_PAUSE, "button 4");
+  set_string(KEY_JOYPAD_RIGHT, "axis 0 +");
+  set_string(KEY_JOYPAD_UP, "axis 1 -");
+  set_string(KEY_JOYPAD_LEFT, "axis 0 -");
+  set_string(KEY_JOYPAD_DOWN, "axis 1 +");
 }
 
 /**
- * @brief Ensures the keyboard mapping saved is valid with respect to the current version of
- * the enumeration InputEvent::KeyboardKey.
- *
- * If the bindings saved corresponds to an old version of this enumeration, it is obsolete and
- * we reset it to the default values.
+ * @brief Reads the data from the savegame file.
  */
-void Savegame::check_game_controls() {
+void Savegame::load() {
 
-  if (get_integer(KEYBOARD_ENUM_VERSION) != (uint16_t) InputEvent::KEYBOARD_ENUM_VERSION) {
-    /* The enumeration has changed, probably because this savegame was created with an old version of the game.
-     * Thus, the keys saved are not valid anymore and we reset them to the default values.
-     */
-    set_default_keyboard_controls();
+  // Try to parse as Lua first.
+  lua_State* l = luaL_newstate();
+  size_t size;
+  char* buffer;
+  FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size);
+  int result = luaL_loadbuffer(l, buffer, size, prefixed_file_name.c_str());
+  FileTools::data_file_close_buffer(buffer);
+
+  // Call Lua.
+  if (result == 0) {
+    // The buffer was successfully loaded.
+
+    // Make the Lua world aware of this savegame object.
+    lua_pushlightuserdata(l, this);
+    lua_setfield(l, LUA_REGISTRYINDEX, "savegame");
+
+    // Set a special environment to catch every variable declaration.
+    lua_newtable(l);
+                                    // fun env
+    lua_newtable(l);
+                                    // fun env env_mt
+    lua_pushcfunction(l, l_newindex);
+                                    // fun env env_mt __newindex
+    lua_setfield(l, -2, "__newindex");
+                                    // fun env env_mt
+    lua_setmetatable(l, -2);
+                                    // fun env
+    lua_setfenv(l, -2);
+                                    // fun
+
+    if (lua_pcall(l, 0, 0, 0) != 0) {
+      Debug::die(StringConcat() << "Failed to load savegame file '"
+          << prefixed_file_name << "': " << lua_tostring(l, -1));
+      lua_pop(l, 1);
+    }
   }
+  else if (result == LUA_ERRSYNTAX) {
+     // Apparently it was not a Lua file. Let's try the obsolete format.
+     SavegameConverterV1 converter(prefixed_file_name);
+     converter.convert_to_v2(*this);
+   }
+
+  lua_close(l);
+}
+
+/**
+ * @brief __newindex function of the environment of the savegame file.
+ *
+ * This special __newindex function catches declaration of global variables
+ * to store them into the savegame.
+ *
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Savegame::l_newindex(lua_State* l) {
+
+  lua_getfield(l, LUA_REGISTRYINDEX, "savegame");
+  Savegame* savegame = static_cast<Savegame*>(lua_touserdata(l, -1));
+  lua_pop(l, 1);
+
+  const std::string& key = luaL_checkstring(l, 2);
+
+  switch (lua_type(l, 3)) {
+
+    case LUA_TBOOLEAN:
+      savegame->set_boolean(key, lua_toboolean(l, 3));
+      break;
+
+    case LUA_TNUMBER:
+      savegame->set_integer(key, int(lua_tointeger(l, 3)));
+      break;
+
+    case LUA_TSTRING:
+      savegame->set_string(key, lua_tostring(l, 3));
+      break;
+
+   default:
+      luaL_argerror(l, 3, (StringConcat() <<
+          "Expected string, number or boolean, got " << luaL_typename(l, 3)).c_str());
+  }
+
+  return 0;
 }
 
 /**
@@ -189,7 +261,26 @@ void Savegame::check_game_controls() {
  */
 void Savegame::save() {
 
-  FileTools::data_file_save_buffer(file_name, (char*) &saved_data, sizeof(SavedData));
+  std::ostringstream oss;
+  std::map<std::string, SavedValue>::iterator it;
+  for (it = saved_values.begin(); it != saved_values.end(); it++) {
+    const std::string& key = it->first;
+    oss << key << " = ";
+    const SavedValue& value = it->second;
+    if (value.type == SavedValue::VALUE_BOOLEAN) {
+      oss << (value.int_data ? "true" : "false");
+    }
+    else if (value.type == SavedValue::VALUE_INTEGER) {
+      oss << value.int_data;
+    }
+    else {  // String.
+      oss << "\"" << value.string_data << "\"";
+    }
+    oss << "\n";
+  }
+
+  const std::string& text = oss.str();
+  FileTools::data_file_save_buffer(prefixed_file_name, text.c_str(), text.size());
   empty = false;
 }
 
@@ -202,6 +293,22 @@ const std::string& Savegame::get_file_name() {
 }
 
 /**
+ * @brief Returns the Solarus main loop.
+ * @return The main loop.
+ */
+MainLoop& Savegame::get_main_loop() {
+  return main_loop;
+}
+
+/**
+ * @brief Returns the Lua context where this savegame lives.
+ * @return The Lua context.
+ */
+LuaContext& Savegame::get_lua_context() {
+  return main_loop.get_lua_context();
+}
+
+/**
  * @brief Returns the player's equipment corresponding to this savegame.
  * @return the equipment
  */
@@ -210,74 +317,211 @@ Equipment& Savegame::get_equipment() {
 }
 
 /**
- * @brief Returns a string value saved.
- * @param index index of the value to get, between 0 and 63
- * (see enum StringIndex for their definition)
- * @return the string value saved at this index
+ * @brief If this savegame is currently running in a game, return that game.
+ * @return A game or NULL.
  */
-const std::string Savegame::get_string(int index) {
-  return saved_data.strings[index];
+Game* Savegame::get_game() {
+  return game;
+}
+
+/**
+ * @brief Sets the game that is running this savegame.
+ * @param game A game or NULL.
+ */
+void Savegame::set_game(Game* game) {
+  this->game = game;
+}
+
+/**
+ * @brief Notifies this savegame that its game starts.
+ */
+void Savegame::notify_game_started() {
+
+  equipment.notify_game_started();
+}
+
+/**
+ * @brief Notifies this savegame that its game is finished.
+ */
+void Savegame::notify_game_finished() {
+
+  equipment.notify_game_finished();
+}
+
+/**
+ * @brief Returns whether a saved value is a string.
+ * @param key Name of the value to get.
+ * @return true if this value exists and is a string.
+ */
+bool Savegame::is_string(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
+  bool result = false;
+  if (saved_values.count(key) > 0) {
+    const SavedValue& value = saved_values[key];
+    result = (value.type == SavedValue::VALUE_STRING);
+  }
+  return result;
+}
+
+/**
+ * @brief Returns a string value saved.
+ * @param key Name of the value to get.
+ * @return The string value associated with this key or an empty string.
+ */
+const std::string& Savegame::get_string(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
+  if (saved_values.count(key) > 0) {
+    const SavedValue& value = saved_values[key];
+    Debug::check_assertion(value.type == SavedValue::VALUE_STRING, StringConcat() <<
+        "Value '" << key << "' is not a string");
+    return value.string_data;
+  }
+
+  static const std::string empty_string = "";
+  return empty_string;
 }
 
 /**
  * @brief Sets a string value saved.
- * @param index index of the value to set, between 0 and 63
- * (see enum StringIndex for their definition)
- * @param value the string value to store at this index
+ * @param key Name of the value to set.
+ * @param value The string value to associate with this key.
  */
-void Savegame::set_string(int index, const std::string &value) {
-  strncpy(saved_data.strings[index], value.c_str(), 63);
+void Savegame::set_string(const std::string& key, const std::string& value) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
+  saved_values[key].type = SavedValue::VALUE_STRING;
+  saved_values[key].string_data = value;
+}
+
+/**
+ * @brief Returns whether a saved value is an integer.
+ * @param key Name of the value to get.
+ * @return true if this value exists and is an integer.
+ */
+bool Savegame::is_integer(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
+  bool result = false;
+  if (saved_values.count(key) > 0) {
+    const SavedValue& value = saved_values[key];
+    result = (value.type == SavedValue::VALUE_INTEGER);
+  }
+  return result;
 }
 
 /**
  * @brief Returns a integer value saved.
- *
- * Values between 0 and 1023 are used by the engine (the C++ code)
- * and values between 1024 and 2047 are available to the map scripts.
- * @param index index of the value to get, between 0 and 2047
- * (see enum IntegerIndex for their definition)
- * @return the integer value saved at this index
+ * @param key Name of the value to get.
+ * @return The integer value associated with this key or 0.
  */
-uint32_t Savegame::get_integer(int index) {
-  return saved_data.integers[index];
+int Savegame::get_integer(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
+  int result = 0;
+  if (saved_values.count(key) > 0) {
+    const SavedValue& value = saved_values[key];
+    Debug::check_assertion(value.type == SavedValue::VALUE_INTEGER, StringConcat() <<
+        "Value '" << key << "' is not an integer");
+    result = value.int_data;
+  }
+  return result;
 }
 
 /**
  * @brief Sets an integer value saved.
- *
- * Values between 0 and 1023 are used by the engine (the C++ code)
- * and values between 1024 and 2047 are available to the map scripts.
- * @param index index of the value to set, between 0 and 2047
- * (see enum IntegerIndex for their definition)
- * @param value the integer value to store at this index
+ * @param key Name of the value to set.
+ * @param value The integer value to associate with this key.
  */
-void Savegame::set_integer(int index, uint32_t value) {
-  saved_data.integers[index] = value;
+void Savegame::set_integer(const std::string& key, int value) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
+  saved_values[key].type = SavedValue::VALUE_INTEGER;
+  saved_values[key].int_data = value;
+}
+
+/**
+ * @brief Returns whether a saved value is a boolean.
+ * @param key Name of the value to get.
+ * @return true if this value exists and is a boolean.
+ */
+bool Savegame::is_boolean(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
+  bool result = false;
+  if (saved_values.count(key) > 0) {
+    const SavedValue& value = saved_values[key];
+    result = (value.type == SavedValue::VALUE_BOOLEAN);
+  }
+  return result;
 }
 
 /**
  * @brief Returns a boolean value saved.
- * @param index index of the value to get, between 0 and 32767
- * @return the boolean value saved at this index
+ * @param key Name of the value to get.
+ * @return The boolean value associated with this key or false.
  */
-bool Savegame::get_boolean(int index) {
+bool Savegame::get_boolean(const std::string& key) {
 
-  uint32_t word = saved_data.booleans[index / 32];
-  return ((word >> (index % 32)) & 0x0001) != 0x0000;
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
+  bool result = false;
+  if (saved_values.count(key) > 0) {
+    const SavedValue& value = saved_values[key];
+    Debug::check_assertion(value.type == SavedValue::VALUE_BOOLEAN, StringConcat() <<
+        "Value '" << key << "' is not a boolean");
+    result = value.int_data != 0;
+  }
+  return result;
 }
 
 /**
- * @brief Sets a boolean value in the savegame.
- * @param index index of the value to set, between 0 and 32767
- * @param value the boolean value to store at this index
+ * @brief Sets a boolean value saved.
+ * @param key Name of the value to set.
+ * @param value The boolean value to associate with this key.
  */
-void Savegame::set_boolean(int index, bool value) {
+void Savegame::set_boolean(const std::string& key, bool value) {
 
-  uint32_t mask = 0x0001 << (index % 32);
-  saved_data.booleans[index / 32] &= ~mask;
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
 
-  if (value) {
-    saved_data.booleans[index / 32] |= mask;
-  }
+  saved_values[key].type = SavedValue::VALUE_BOOLEAN;
+  saved_values[key].int_data = value;
+}
+
+/**
+ * @brief Unsets a value saved.
+ * @param key Name of the value to unset.
+ */
+void Savegame::unset(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
+  saved_values.erase(key);
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Savegame::get_lua_type_name() const {
+  return LuaContext::game_module_name;
 }
 

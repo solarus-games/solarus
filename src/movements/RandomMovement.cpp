@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
  */
 #include "movements/RandomMovement.h"
 #include "entities/MapEntity.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Geometry.h"
@@ -31,7 +32,8 @@
 RandomMovement::RandomMovement(int speed, int max_distance):
   StraightMovement(false, false),
   normal_speed(speed),
-  max_distance(max_distance) {
+  max_distance(max_distance),
+  next_direction_change_date(0) {
 
   set_next_direction();
 }
@@ -44,13 +46,11 @@ RandomMovement::~RandomMovement() {
 }
 
 /**
- * @brief Sets the entity to be controlled by this movement object.
- * @param entity the entity to control
+ * @brief Notifies this movement that the object it controls has changed.
  */
-void RandomMovement::set_entity(MapEntity *entity) {
+void RandomMovement::notify_object_controlled() {
 
-  Movement::set_entity(entity);
-
+  StraightMovement::notify_object_controlled();
   set_max_distance(max_distance);
 }
 
@@ -91,11 +91,9 @@ void RandomMovement::set_next_direction() {
   }
   set_angle(angle);
 
-  next_direction_change_date = System::now() + 500 + Random::get_number(3) * 500; // change again in 0.5 to 2 seconds
+  next_direction_change_date = System::now() + 500 + Random::get_number(1500); // change again in 0.5 to 2 seconds
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -112,6 +110,7 @@ void RandomMovement::update() {
   if (!is_suspended()) {
 
     uint32_t now = System::now();
+
     if (now >= next_direction_change_date) {
       set_next_direction();
     }
@@ -137,86 +136,15 @@ void RandomMovement::set_suspended(bool suspended) {
  */
 void RandomMovement::notify_obstacle_reached() {
 
+  StraightMovement::notify_obstacle_reached();
   set_next_direction();
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - max_distance
- * - ignore_obstacles
- * - angle
- * - displayed_direction
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string RandomMovement::get_property(const std::string& key) {
-
-  std::ostringstream oss;
-
-  if (key == "speed") {
-    oss << get_speed();
-  }
-  else if (key == "max_distance") {
-    oss << max_distance;
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else if (key == "angle") {
-    oss << Geometry::radians_to_degrees(get_angle());
-  }
-  else if (key == "displayed_direction") {
-    oss << get_displayed_direction4();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of RandomMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - max_distance
- * - ignore_obstacles
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void RandomMovement::set_property(const std::string& key, const std::string& value) {
-
-  std::istringstream iss(value);
-
-  if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "max_distance") {
-    int max_distance;
-    iss >> max_distance;
-    set_max_distance(max_distance);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else if (key == "angle") {
-    Debug::die("The property 'angle' of RandomMovement is read-only");
-  }
-  else if (key == "displayed_direction") {
-    Debug::die("The property 'displayed_direction' of RandomMovement is read-only");
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of RandomMovement: '" << key << "'");
-  }
+const std::string& RandomMovement::get_lua_type_name() const {
+  return LuaContext::movement_random_module_name;
 }
 

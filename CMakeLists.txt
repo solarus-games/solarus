@@ -6,6 +6,7 @@ if(COMMAND cmake_policy)
 endif()
 
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
+set(SOLARUS_INSTALL_DESTINATION "bin")
 
 # find the headers and the libraries of dependencies
 find_package(SDL REQUIRED)
@@ -39,20 +40,24 @@ file(
   include/lua/*.h
   include/menus/*.h
   include/movements/*.h
-  include/simpleini/*.h
   include/snes_spc/*.h
 )
 
-# additional source files for Mac OS
+# additional source files for Apple systems
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  include_directories(
-    ${SOLARUS_ENGINE_SOURCE_DIR}/include/lowlevel/osx
-  )
   set(source_files
     ${source_files}
-    src/lowlevel/osx/SDLMain.m
-    include/lowlevel/osx/SDLMain.h
+    src/lowlevel/apple/AppleInterface.mm
+    include/lowlevel/apple/AppleInterface.h
   )
+  # SDL 1.3 avoid to link SDLMain
+  if(SDL_VERSION VERSION_LESS "1.3")
+    set(source_files
+      ${source_files}
+      src/lowlevel/apple/SDLMain.m
+      include/lowlevel/apple/SDLMain.h
+    )
+  endif()
 endif()
 
 # build the executable
@@ -61,9 +66,15 @@ add_library(solarus_static
   STATIC
   ${source_files}
 )
-add_executable(solarus
-  ${main_source_file}
-)
+
+#Add executable target, into CFBundle form if requested or iOS build
+if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
+  include(addCFBundleTarget)
+else()
+  add_executable(solarus
+    ${main_source_file}
+  )
+endif()
 
 # generate -I flags
 include_directories(
@@ -100,39 +111,20 @@ if(NOT CMAKE_BUILD_TYPE)
       "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
 endif()
-set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  # Force to be the less pedantic possible with the Release build
+  set(CMAKE_CXX_FLAGS "-Wno-error -Wno-all -Wno-fatal-errors -Wno-extra -Wno-unknown-pragmas")
+else()
+  set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
+endif()
 
-# Compilation flags for Mac OS X deployment
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
-  if(SOLARUS_ARCH)
-    set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Chosen build architecture" FORCE)
+# Configuration for OSX and iOS build and deployment
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  if(NOT SOLARUS_IOS_BUILD)
+    include(OSX)
   else()
-    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
-      set(CMAKE_OSX_ARCHITECTURES "ppc;" CACHE STRING "PPC build architecture" FORCE)
-    endif()
-    set(CMAKE_OSX_ARCHITECTURES "${CMAKE_OSX_ARCHITECTURES}i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
-  endif()
-
-  if(SOLARUS_SYSROOT)
-    set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
-  else()
-    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
-      set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "Default OS version whose headers you'll use" FORCE)
-    endif()
-  endif()
-
-  if(SOLARUS_DEPLOYMENT)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Chosen oldest OS version supported" FORCE)
-  else()
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.5" CACHE STRING "Default oldest OS version supported" FORCE)
-  endif()
-  
-  if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
-  endif()
-  if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
+    include(iOS)
   endif()
 endif()
 
@@ -148,13 +140,23 @@ if(DEFAULT_QUEST)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(DEFAULT_WRITE_DIR "Library/Application Support/Solarus")
+  set(DEFAULT_WRITE_DIR "Solarus")
 else()
   set(DEFAULT_WRITE_DIR ".solarus")
 endif()
-set(WRITE_DIR ${DEFAULT_WRITE_DIR} CACHE STRING "Directory where Solarus savegames are stored, relative to the user's home directory.")
+set(WRITE_DIR ${DEFAULT_WRITE_DIR} CACHE STRING "Directory where Solarus savegames are stored, relative to the user's base write directory.")
 if(WRITE_DIR)
   add_definitions(-DSOLARUS_WRITE_DIR=\"${WRITE_DIR}\")
+endif()
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(DEFAULT_BUFFERING OFF)
+else()
+  set(DEFAULT_BUFFERING ON)
+endif()
+option(SCREEN_DOUBLEBUF "Define if your plaform support double buffering." ${DEFAULT_BUFFERING})
+if(SCREEN_DOUBLEBUF)
+  add_definitions(-DSOLARUS_SCREEN_DOUBLEBUF)
 endif()
 
 if(PANDORA)
@@ -193,17 +195,15 @@ if(SCREEN_FORCE_MODE)
   add_definitions(-DSOLARUS_SCREEN_FORCE_MODE=${SCREEN_FORCE_MODE})
 endif()
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  option(SCREEN_SOFTWARE_SURFACE "Use a software surface for the screen." ON)
-else()
-  option(SCREEN_SOFTWARE_SURFACE "Use a software surface for the screen." OFF)
-endif()
-if(SCREEN_SOFTWARE_SURFACE)
-  add_definitions(-DSOLARUS_SCREEN_SOFTWARE_SURFACE=\"${SCREEN_SOFTWARE_SURFACE}\")
-endif()
-
 # files to install with make install
-install(TARGETS	solarus
-  RUNTIME DESTINATION bin
-)
+# install the bundle if requested, or only the binary else
+if(SOLARUS_BUNDLE)
+  install(TARGETS	solarus
+    BUNDLE DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+  )
+else()
+  install(TARGETS	solarus
+    RUNTIME DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+  )
+endif()
 

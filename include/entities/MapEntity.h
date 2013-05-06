@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #define SOLARUS_MAP_ENTITY_H
 
 #include "Common.h"
+#include "lua/ExportableToLua.h"
 #include "entities/EntityType.h"
 #include "entities/Layer.h"
 #include "entities/CollisionMode.h"
@@ -25,6 +26,8 @@
 #include "entities/EnemyReaction.h"
 #include "lowlevel/Rectangle.h"
 #include <list>
+
+struct lua_State;
 
 /**
  * @brief Abstract class for all objects placed on a map.
@@ -37,44 +40,15 @@
  * - an origin point, relative to the rectangle's top-left corner
  * Some entities can also have a name, a movement and some sprites.
  */
-class MapEntity {
+class MapEntity: public ExportableToLua {
 
   public:
 
-    typedef MapEntity* (CreationFunction)(Game &game, std::istream &is,
-        Layer layer, int x, int y); /**< a function to parse a certain type of entity */
-    static CreationFunction* creation_functions[];     /**< the creation functions of all types of entities */
     static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
-
-    /**
-     * @brief Describes the features of each type of entity.
-     *
-     * Describes the features of each dynamic entity type:
-     * is it an obstacle, can it detect collisions, etc.
-     */
-    struct EntityTypeFeatures {
-      bool can_be_obstacle;                     /**< Allows entities of this type to be obstacles for other entities.
-                                                 * If enabled, the function is_obstacle_for() will be called
-                                                 * to determine whether this is an obstacle or not. */
-      bool can_detect_entities;                 /**< Allows entities of this type to detect the presence
-                                                 * of the hero or other entities (this is possible only for
-                                                 * suclasses of Detector). If enabled, the function
-                                                 * collision() will be called when a collision is detected. */
-      bool can_be_displayed;                    /**< Allows entities of this type to be displayed.
-                                                 * If enabled, the sprites added by the add_sprite() calls will be
-                                                 * displayed (if any). */
-      bool is_displayed_in_y_order;             /**< Allows an entity of this type to be displayed above
-                                                 * the hero and other entities having this property when it is in front of them.
-                                                 * This means that the displaying order of entities having this
-                                                 * feature depends on their y position. The entities without this feature
-                                                 * are displayed in the normal order (i.e. as specified by the map file),
-                                                 * and before the entities with the feature. */
-    };
 
   private:
 
-    static const EntityTypeFeatures entity_types_features[];   /**< The features of each entity type stored in map files. */
-
+    MainLoop* main_loop;                        /**< The Solarus main loop. */
     Map* map;                                   /**< The map where this entity is, or NULL
                                                  * (automatically set by class MapEntities after adding the entity to the map) */
 
@@ -99,9 +73,8 @@ class MapEntity {
 
     // other data, used for some kinds of entities only
 
-    std::string name;                           /**< name of the entity, not used for all kinds of entities;
-                                                 * the name identifies the entity in the game (an empty string
-                                                 * indicates that the entity has no name) */
+    std::string name;                           /**< Name of the entity or an empty string.
+                                                 * The name uniquely identifies the entity in the map. */
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
@@ -125,8 +98,6 @@ class MapEntity {
     static const int
         default_optimization_distance = 400;    /**< default value */
 
-    void set_sprites_map(Map& map);
-
   protected:
 
     bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
@@ -135,37 +106,22 @@ class MapEntity {
     // creation
     MapEntity();
     MapEntity(Layer layer, int x, int y, int width, int height);
-    MapEntity(const std::string &name, int direction, Layer layer, int x, int y, int width, int height);
+    MapEntity(const std::string& name, int direction, Layer layer, int x, int y, int width, int height);
 
-    // methods called by the subclasses to set their properties
-    void set_direction(int direction);
-    void set_size(int width, int height);
-    void set_size(const Rectangle &size);
-    void set_origin(int x, int y);
-    void set_origin(const Rectangle &origin);
-    void set_bounding_box_from_sprite();
-    void set_bounding_box(const Rectangle &bounding_box);
-    int get_optimization_distance();
-    void set_optimization_distance(int distance);
-
-    // sprites
-    Sprite& create_sprite(const SpriteAnimationSetId& id, bool enable_pixel_collisions = false);
-    void remove_sprite(Sprite* sprite);
-    void clear_sprites();
+    void clear_old_movements();
     void clear_old_sprites();
 
-    // movement
-    void clear_old_movements();
+    void set_direction(int direction);
 
     // easy access to various game objects
-    MapEntities& get_entities();
-    MapScript& get_map_script();
-    Equipment& get_equipment();
-    KeysEffect& get_keys_effect();
-    GameControls& get_controls();
-    DialogBox& get_dialog_box();
-    Savegame& get_savegame();
-    Hero& get_hero();
+    LuaContext& get_lua_context() const;
+    MapEntities& get_entities() const;
+    Equipment& get_equipment() const;
+    KeysEffect& get_keys_effect() const;
+    GameCommands& get_commands() const;
+    DialogBox& get_dialog_box() const;
+    Savegame& get_savegame() const;
+    Hero& get_hero() const;
 
   public:
 
@@ -175,18 +131,18 @@ class MapEntity {
     virtual void notify_being_removed();
     bool is_being_removed();
 
-    // entity type features
- 
     /**
      * @brief Returns the type of entity.
      * @return the type of entity
      */
-    virtual EntityType get_type() = 0;
+    virtual EntityType get_type() = 0;  // TODO make const
     bool is_hero();
+    virtual bool is_detector();
     virtual bool can_be_obstacle();
-    virtual bool can_detect_entities();
-    virtual bool can_be_displayed();
-    virtual bool is_displayed_in_y_order();
+    virtual bool can_be_drawn();
+    virtual bool is_drawn_in_y_order();
+    virtual bool is_drawn_at_its_position();
+    bool is_drawn();
 
     // adding to a map
     bool is_on_map();
@@ -194,7 +150,8 @@ class MapEntity {
     Map& get_map();
     virtual void notify_map_started();
     virtual void notify_map_opening_transition_finished();
-    Game& get_game();
+    virtual void notify_tileset_changed();
+    Game& get_game() const;
 
     // position in the map
     Layer get_layer();
@@ -212,8 +169,14 @@ class MapEntity {
     int get_width();
     int get_height();
     const Rectangle& get_size();
+    void set_size(int width, int height);
+    void set_size(const Rectangle &size);
     const Rectangle& get_bounding_box();
+    void set_bounding_box_from_sprite();
+    void set_bounding_box(const Rectangle &bounding_box);
     const Rectangle& get_origin();
+    void set_origin(int x, int y);
+    void set_origin(const Rectangle &origin);
     int get_top_left_x();
     int get_top_left_y();
     void set_top_left_x(int x);
@@ -231,6 +194,9 @@ class MapEntity {
     void set_aligned_to_grid_x();
     void set_aligned_to_grid_y();
 
+    int get_optimization_distance();
+    void set_optimization_distance(int distance);
+
     bool is_enabled();
     void set_enabled(bool enable);
     virtual void notify_enabled(bool enabled);
@@ -244,12 +210,15 @@ class MapEntity {
     bool has_sprite();
     Sprite& get_sprite();
     std::list<Sprite*>& get_sprites();
+    Sprite& create_sprite(const std::string& animation_set_id,
+        bool enable_pixel_collisions = false);
+    void remove_sprite(Sprite& sprite);
+    void clear_sprites();
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
-    virtual bool is_visible();
-    virtual void set_visible(bool visible);
+    bool is_visible();
+    void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
-    void start_fading(int direction);
 
     // movement
     Movement* get_movement();
@@ -276,10 +245,10 @@ class MapEntity {
     bool is_facing_point_in(const Rectangle &rectangle, int direction);
     bool is_center_in(const Rectangle &rectangle);
 
-    double get_vector_angle(MapEntity &other);
+    double get_angle(int x, int y);
+    double get_angle(MapEntity &other);
     int get_distance(int x, int y);
-    int get_distance(const Rectangle& xy);
-    int get_distance(MapEntity &other);
+    int get_distance(MapEntity& other);
     int get_distance_to_camera();
 
     // collisions
@@ -289,7 +258,7 @@ class MapEntity {
     void check_collision_with_detectors(Sprite& sprite);
 
     virtual void notify_collision_with_enemy(Enemy &enemy);
-    virtual void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
+    virtual void notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy);
     virtual void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
@@ -328,15 +297,16 @@ class MapEntity {
     virtual bool is_npc_obstacle(NPC& npc);
     virtual bool is_enemy_obstacle(Enemy& enemy);
     virtual bool is_jumper_obstacle(Jumper& jumper);
-    virtual bool is_destructible_item_obstacle(DestructibleItem& destructible_item);
+    virtual bool is_destructible_obstacle(Destructible& destructible);
     virtual bool is_sword_ignored();
 
     // game loop
     bool is_suspended();
     virtual void set_suspended(bool suspended);
     virtual void update();
-    bool is_displayed();
-    virtual void display_on_map();
+    virtual void draw_on_map();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

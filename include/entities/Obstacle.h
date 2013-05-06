@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,6 @@
  */
 enum Obstacle {
 
-  OBSTACLE_LAVA          = -6, /**< the entity is some lava */
-  OBSTACLE_PRICKLE       = -5, /**< the entity is some prickles */
-  OBSTACLE_LADDER        = -4, /**< the entity is a ladder and the hero walks slower on it */
-  OBSTACLE_HOLE          = -3, /**< the entity is a hole */ 
-  OBSTACLE_SHALLOW_WATER = -2, /**< the entity is some shallow water */
-  OBSTACLE_DEEP_WATER    = -1, /**< the entity is some deep water */
   OBSTACLE_NONE          =  0, /**< the entity is normal ground without obstacle */
   OBSTACLE,                    /**< the entity is entirely an obstacle */
   OBSTACLE_TOP_RIGHT,          /**< the upper-right half of the entity is an obstacle */
@@ -41,8 +35,14 @@ enum Obstacle {
                                 * and the rest is deep water */
   OBSTACLE_BOTTOM_LEFT_WATER,  /**< the lower-left half of the entity is an obstacle
                                 * and the rest is deep water */
-  OBSTACLE_BOTTOM_RIGHT_WATER  /**< the lower-right half of the entity is an obstacle
+  OBSTACLE_BOTTOM_RIGHT_WATER, /**< the lower-right half of the entity is an obstacle
                                 * and the rest is deep water */
+  OBSTACLE_DEEP_WATER,         /**< the entity is some deep water */
+  OBSTACLE_SHALLOW_WATER,      /**< the entity is some shallow water */
+  OBSTACLE_HOLE,               /**< the entity is a hole */
+  OBSTACLE_LADDER,             /**< the entity is a ladder and the hero walks slower on it */
+  OBSTACLE_PRICKLE,            /**< the entity is some prickles */
+  OBSTACLE_LAVA,               /**< the entity is some lava */
 };
 
 #endif

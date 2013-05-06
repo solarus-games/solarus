@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
  */
 #include "movements/PathFindingMovement.h"
 #include "movements/PathFinding.h"
+#include "lua/LuaContext.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/System.h"
@@ -25,12 +26,11 @@
 
 /**
  * @brief Creates a chase movement.
- * @param target the entity to target
  * @param speed speed of the movement in pixels per second
  */
-PathFindingMovement::PathFindingMovement(MapEntity *target, int speed):
+PathFindingMovement::PathFindingMovement(int speed):
   PathMovement("", speed, false, false, true),
-  target(target), next_recomputation_date(System::now() + 100) {
+  target(NULL) {
 
 }
 
@@ -39,6 +39,22 @@ PathFindingMovement::PathFindingMovement(MapEntity *target, int speed):
  */
 PathFindingMovement::~PathFindingMovement() {
 
+  if (target != NULL) {
+    target->decrement_refcount();
+    if (target->get_refcount() == 0) {
+      delete target;
+    }
+  }
+}
+
+/**
+ * @brief Sets the entity to target with this movement.
+ */
+void PathFindingMovement::set_target(MapEntity& target) {
+
+  this->target = &target;
+  target.increment_refcount();
+  next_recomputation_date = System::now() + 100;
 }
 
 /**
@@ -48,6 +64,15 @@ void PathFindingMovement::update() {
 
   PathMovement::update();
 
+  if (target != NULL && target->is_being_removed()) {
+    target->decrement_refcount();
+    if (target->get_refcount() == 0) {
+      delete target;
+    }
+    target = NULL;
+  }
+
+
   if (is_suspended()) {
     return;
   }
@@ -55,7 +80,9 @@ void PathFindingMovement::update() {
   if (PathMovement::is_finished()) {
 
     // there was a collision or the path was made
-    if (System::now() >= next_recomputation_date && get_entity()->is_aligned_to_grid()) {
+    if (target != NULL
+        && System::now() >= next_recomputation_date
+        && get_entity()->is_aligned_to_grid()) {
       recompute_movement();
     }
     else {
@@ -70,27 +97,29 @@ void PathFindingMovement::update() {
  */
 void PathFindingMovement::recompute_movement() { 
 
-  PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);
-  std::string path = path_finding.compute_path();
+  if (target != NULL) {
+    PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);
+    std::string path = path_finding.compute_path();
 
-  uint32_t min_delay;
-  if (path.size() == 0) {
-    // the target is too far or there is no path
-    path = create_random_path();
+    uint32_t min_delay;
+    if (path.size() == 0) {
+      // the target is too far or there is no path
+      path = create_random_path();
 
-    // no path was found: no need to try again very soon
-    // (note that the A* algorithm is very costly when it explores all nodes without finding a solution)
-    min_delay = 3000;
+      // no path was found: no need to try again very soon
+      // (note that the A* algorithm is very costly when it explores all nodes without finding a solution)
+      min_delay = 3000;
+    }
+    else {
+      // a path was found: we need to update it frequently (and the A* algorithm is much faster in general when there is a solution)
+      min_delay = 300;
+    }
+    // compute a new path every random delay to avoid
+    // having all path-finding entities of the map compute a path at the same time
+    next_recomputation_date = System::now() + min_delay + Random::get_number(200);
+
+    set_path(path);
   }
-  else {
-    // a path was found: we need to update it frequently (and the A* algorithm is much faster in general when there is a solution)
-    min_delay = 300;
-  }
-  // compute a new path every random delay to avoid
-  // having all path-finding entities of the map compute a path at the same time
-  next_recomputation_date = System::now() + min_delay + Random::get_number(200);
-
-  set_path(path);
 }
 
 /**
@@ -103,56 +132,10 @@ bool PathFindingMovement::is_finished() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - displayed_direction
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string PathFindingMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "speed") {
-    oss << get_speed();
-  }
-  else if (key == "displayed_direction") {
-    oss << get_displayed_direction4();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of PathFindingMovement: '" << key << "'");
-  }
-
-  return oss.str();
+const std::string& PathFindingMovement::get_lua_type_name() const {
+  return LuaContext::movement_path_finding_module_name;
 }
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void PathFindingMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "displayed_direction") {
-    Debug::die("The property 'displayed_direction' of PathFindingMovement is read-only");
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of PathFindingMovement: '" << key << "'");
-  }
-}
-
 

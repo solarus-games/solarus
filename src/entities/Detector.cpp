@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,7 @@
 /**
  * @brief Constructor.
  * @param collision_modes the detector's collision mode(s)
- * @param name a name identifying the detector (or an empty string if you
- * don't need to identify the detector)
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the detector
  * @param x x position of the detector's rectangle
  * @param y y position of the detector's rectangle
@@ -46,6 +45,19 @@ Detector::Detector(int collision_modes,
  */
 Detector::~Detector() {
 
+}
+
+/**
+ * @brief Returns whether entities of this type have detection capabilities.
+ *
+ * This function returns whether entities of this type can detect the presence
+ * of the hero or other entities. If yes, the function
+ * notify_collision() will be called when a collision is detected.
+ *
+ * @return \c true if this type of entity can detect other entities.
+ */
+bool Detector::is_detector() {
+  return true;
 }
 
 /**
@@ -325,33 +337,35 @@ void Detector::notify_collision(MapEntity &other_entity, Sprite &other_sprite, S
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by pressing the action key.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * while the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  * By default, nothing happens.
- * Redefine your function in the subclasses to allow the hero to interact with this entity.
+ * Redefine your function in the subclasses to allow the hero to interact with
+ * this entity.
  */
-void Detector::action_key_pressed() {
+void Detector::notify_action_command_pressed() {
 
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by using an inventory item.
- * 
- * This function is called when the player uses an inventory item
+ * @brief Notifies this detector that the player is interacting with it by
+ * using an equipment item.
+ *
+ * This function is called when the player uses an equipment item
  * while the hero is facing this detector.
- * The exact conditions where this function is called depend on the type of inventory item.
- * For some items, the function is called as soon as the player uses the item.
- * For others, it is called after the player confirms the action in a dialog box.
  *
  * By default, nothing happens.
- * Redefine your function in the subclasses to make this entity react to an inventory item.
+ * Redefine your function in the subclasses to make your entity react to an
+ * equipment item.
  *
- * @param item the inventory item used
- * @return true if an interaction occured
+ * @param item The equipment item used.
+ * @return true if an interaction occured.
  */
-bool Detector::interaction_with_inventory_item(InventoryItem &item) {
+bool Detector::interaction_with_item(EquipmentItem& item) {
   return false;
 }
 
@@ -384,7 +398,7 @@ void Detector::stop_movement_by_hero() {
  * @brief This function is called when the player is tapping his sword against this detector.
  * @return the sound to play when tapping this detector with the sword
  */
-SoundId Detector::get_sword_tapping_sound() {
+std::string Detector::get_sword_tapping_sound() {
   return "sword_tapping";
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <iostream> // std::cout
+#include <iostream> // std::cerr
 #include <cstring>  // memcpy
 #include <cmath>
 #include <sstream>
@@ -24,14 +24,14 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "Configuration.h"
 
 ALCdevice* Sound::device = NULL;
 ALCcontext* Sound::context = NULL;
 bool Sound::initialized = false;
+bool Sound::sounds_preloaded = false;
 float Sound::volume = 1.0;
 std::list<Sound*> Sound::current_sounds;
-std::map<SoundId,Sound> Sound::all_sounds;
+std::map<std::string, Sound> Sound::all_sounds;
 ov_callbacks Sound::ogg_callbacks = {
     cb_read,
     NULL,
@@ -44,7 +44,7 @@ ov_callbacks Sound::ogg_callbacks = {
  * @param sound_id id of the sound: name of a .ogg file in the sounds subdirectory,
  * without the extension (.ogg is added automatically)
  */
-Sound::Sound(const SoundId& sound_id):
+Sound::Sound(const std::string& sound_id):
   id(sound_id),
   buffer(AL_NONE) {
 
@@ -94,41 +94,30 @@ void Sound::initialize(int argc, char** argv) {
 
   // initialize OpenAL
 
-/*
-  const ALCchar* devices = alcGetString(NULL, ALC_DEVICE_SPECIFIER);
-  while (devices[0] != '\0') {
-    std::cout << "Audio device: " << devices << std::endl;
-    devices += strlen(devices) + 1;
-  }
-  */
-
   device = alcOpenDevice(NULL);
-//  device = alcOpenDevice("ALSA Software on ATI IXP");
   if (!device) {
-    std::cout << "Cannot open audio device" << std::endl;
+    std::cerr << "Cannot open audio device" << std::endl;
     return;
   }
 
   ALCint attr[] = { ALC_FREQUENCY, 32000, 0 }; // 32 KHz is the SPC output sampling rate
   context = alcCreateContext(device, attr);
   if (!context) {
-    std::cout << "Cannot create audio context" << std::endl;
+    std::cerr << "Cannot create audio context" << std::endl;
     alcCloseDevice(device);
     return;
   }
   if (!alcMakeContextCurrent(context)) {
-    std::cout << "Cannot activate audio context" << std::endl;
+    std::cerr << "Cannot activate audio context" << std::endl;
     alcDestroyContext(context);
     alcCloseDevice(device);
     return;
   }
 
-  alGenBuffers(0, NULL);  // Necessary on some systems to avoid errors with the first sound loaded.
+  alGenBuffers(0, AL_NONE);  // Necessary on some systems to avoid errors with the first sound loaded.
 
   initialized = true;
-
-  // get the sound effects volume from the configuration file
-  set_volume(Configuration::get_value("sound_volume", 100));
+  set_volume(100);
 
   // initialize the music system
   Music::initialize();
@@ -143,16 +132,6 @@ void Sound::quit() {
 
   if (is_initialized()) {
 
-/*
-    // stop the sound sources
-    ALuint source;
-    std::list<ALuint>::iterator it;
-    for (it = all_sources.begin(); it != all_sources.end(); it++) {
-      source = (*it);
-      alSourcei(source, AL_BUFFER, 0);
-      alDeleteSources(1, &source);
-    }
-*/
     // uninitialize the music subsystem
     Music::quit();
 
@@ -184,17 +163,16 @@ bool Sound::is_initialized() {
  */
 void Sound::load_all() {
 
-  if (is_initialized()) {
+  if (is_initialized() && !sounds_preloaded) {
 
     // open the resource database file
-    const std::string file_name = "project_db.dat";
+    static const std::string file_name = "project_db.dat";
     std::istream& database_file = FileTools::data_file_open(file_name);
     std::string line;
 
-    // read each animation
     while (std::getline(database_file, line)) {
 
-      if (line.size() == 0) {
+      if (line.size() == 0 || line[0] == '\r') {
         continue;
       }
 
@@ -214,6 +192,8 @@ void Sound::load_all() {
       }
     }
     FileTools::data_file_close(database_file);
+ 
+    sounds_preloaded = true;
   }
 }
 
@@ -222,7 +202,7 @@ void Sound::load_all() {
  * @param sound_id id of the sound to test
  * @return true if the sound exists
  */
-bool Sound::exists(const SoundId& sound_id) {
+bool Sound::exists(const std::string& sound_id) {
 
   std::ostringstream oss;
   oss << "sounds/" << sound_id << ".ogg";
@@ -233,7 +213,7 @@ bool Sound::exists(const SoundId& sound_id) {
  * @brief Starts playing the specified sound.
  * @param sound_id id of the sound to play
  */
-void Sound::play(const SoundId& sound_id) {
+void Sound::play(const std::string& sound_id) {
 
   if (all_sounds.count(sound_id) == 0) {
     all_sounds[sound_id] = Sound(sound_id);
@@ -257,10 +237,7 @@ int Sound::get_volume() {
  */
 void Sound::set_volume(int volume) {
 
-  Debug::check_assertion(volume >= 0 && volume <= 100,
-      StringConcat() << "Illegal volume for sound effects:" << volume);
-
-  Configuration::set_value("sound_volume", volume);
+  volume = std::min(100, std::max(0, volume));
   Sound::volume = volume / 100.0;
 }
 
@@ -394,13 +371,13 @@ ALuint Sound::decode_file(const std::string& file_name) {
   int error = ov_open_callbacks(&mem, &file, NULL, 0, ogg_callbacks);
 
   if (error) {
-    std::cout << "Cannot load sound file from memory: error " << error << std::endl;
+    std::cerr << "Cannot load sound file from memory: error " << error << std::endl;
   }
   else {
 
     // read the encoded sound properties
     vorbis_info* info = ov_info(&file, -1);
-    ALsizei sample_rate = info->rate;
+    ALsizei sample_rate = ALsizei(info->rate);
 
     ALenum format = AL_NONE;
     if (info->channels == 1) {
@@ -411,7 +388,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
     }
 
     if (format == AL_NONE) {
-      std::cout << "Invalid audio format" << std::endl;
+      std::cerr << "Invalid audio format" << std::endl;
     }
     else {
 
@@ -424,7 +401,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
       do {
         bytes_read = ov_read(&file, samples_buffer, 4096, 0, 2, 1, &bitstream);
         if (bytes_read < 0) {
-          std::cout << "Error while decoding ogg chunk: " << bytes_read << std::endl;
+          std::cerr << "Error while decoding ogg chunk: " << bytes_read << std::endl;
         }
         else {
           total_bytes_read += bytes_read;
@@ -447,9 +424,9 @@ ALuint Sound::decode_file(const std::string& file_name) {
 
       // copy the samples into an OpenAL buffer
       alGenBuffers(1, &buffer);
-      alBufferData(buffer, AL_FORMAT_STEREO16, (ALshort*) &samples[0], total_bytes_read, sample_rate);
+      alBufferData(buffer, AL_FORMAT_STEREO16, (ALshort*) &samples[0], ALsizei(total_bytes_read), sample_rate);
       if (alGetError() != AL_NO_ERROR) {
-        std::cout << "Cannot copy the sound samples into buffer " << buffer << "\n";
+        std::cerr << "Cannot copy the sound samples into buffer " << buffer << "\n";
         buffer = AL_NONE;
       }
     }

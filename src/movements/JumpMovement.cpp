@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/JumpMovement.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <sstream>
@@ -36,14 +37,14 @@ const std::string JumpMovement::basic_trajectories[8] = {
 /**
  * @brief Creates a jump movement.
  * @param direction8 of the movement (0 to 7)
- * @param length length of the jump in pixels
+ * @param distance distance of the jump in pixels
  * @param speed speed of the movement in pixels per second (0: default, based on the jump length)
  * @param ignore_obstacles true to make the movement ignore obstacles
  */
-JumpMovement::JumpMovement(int direction8, int length, int speed, bool ignore_obstacles):
+JumpMovement::JumpMovement(int direction8, int distance, int speed, bool ignore_obstacles):
   PixelMovement("", 10, false, ignore_obstacles),
   direction8(direction8),
-  length(length),
+  distance(distance),
   speed(0),
   jump_height(0) {
 
@@ -65,11 +66,19 @@ void JumpMovement::restart() {
 
   std::ostringstream oss;
 
-  for (int i = 0; i < length; i++) {
+  for (int i = 0; i < distance; i++) {
     oss << basic_trajectories[direction8] << "  ";
   }
 
   set_trajectory(oss.str());
+}
+
+/**
+ * @brief Returns the direction of this movement.
+ * @return the direction (0 to 7)
+ */
+int JumpMovement::get_direction8() {
+  return direction8;
 }
 
 /**
@@ -86,16 +95,32 @@ void JumpMovement::set_direction8(int direction8) {
 }
 
 /**
- * @brief Changes the length of this movement.
+ * @brief Returns the distance of the jump.
+ * @return the distance in pixels
+ */
+int JumpMovement::get_distance() {
+  return distance;
+}
+
+/**
+ * @brief Changes the distance of the jump.
  *
  * The movement is restarted.
  *
- * @param length the new length in pixels
+ * @param distance the new distance in pixels
  */
-void JumpMovement::set_length(int length) {
+void JumpMovement::set_distance(int distance) {
 
-  this->length = length;
+  this->distance = distance;
   restart();
+}
+
+/**
+ * @brief Returns the speed of the movement.
+ * @return the speed in pixels per second
+ */
+int JumpMovement::get_speed() {
+  return speed;
 }
 
 /**
@@ -105,11 +130,12 @@ void JumpMovement::set_length(int length) {
 void JumpMovement::set_speed(int speed) {
 
   if (speed == 0) {
-    set_delay(std::max(4, 14 - length / 10));
+    set_delay(std::max(4, 14 - distance / 10));
   }
   else {
     set_delay(1000 / speed);
   }
+  this->speed = speed;
   restart();
 }
 
@@ -161,78 +187,10 @@ void JumpMovement::notify_step_done(int step_index, bool success) {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - direction8
- * - length
- * - speed
- * - ignore_obstacles
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string JumpMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "direction8") {
-    oss << direction8;
-  }
-  else if (key == "length") {
-    oss << length;
-  }
-  else if (key == "speed") {
-    oss << speed;
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of JumpMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - direction8
- * - length
- * - speed
- * - ignore_obstacles
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void JumpMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "direction8") {
-    int direction8;
-    iss >> direction8;
-    set_direction8(direction8);
-  }
-  else if (key == "length") {
-    int length;
-    iss >> length;
-    set_length(length);
-  }
-  else if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of JumpMovement: '" << key << "'");
-  }
+const std::string& JumpMovement::get_lua_type_name() const {
+  return LuaContext::movement_jump_module_name;
 }
 

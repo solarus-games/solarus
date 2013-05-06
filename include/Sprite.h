@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #define SOLARUS_SPRITE_H
 
 #include "Common.h"
+#include "Drawable.h"
 #include <map>
 
 /**
@@ -30,56 +31,10 @@
  * Several sprites can have the same animation set (i.e. they share
  * the same SpriteAnimationSet object).
  *
- * A sprite can be displayed directly on a surface, or it can
- * be attached to a map entity, allowing it to have a position on the map.
+ * A sprite can be drawn directly on a surface, or it can
+ * be attached to a map entity.
  */
-class Sprite {
-
-  private:
-
-    // unique id
-    static int next_unique_id;                          /**< next unique id to attribute to a sprite instance */
-    int unique_id;                                      /**< a number identifying this instance */
-
-    // animation set
-    static std::map<SpriteAnimationSetId, SpriteAnimationSet*> all_animation_sets;
-    const SpriteAnimationSetId animation_set_id;	/**< id of this sprite's animation set */
-    SpriteAnimationSet &animation_set;			/**< animation set of this sprite */
-
-    // current state of the sprite
-
-    std::string current_animation_name;			/**< name of the current animation */
-    SpriteAnimation *current_animation;			/**< the current animation */
-    int current_direction;				/**< current direction of the animation (the first one is number 0);
-							 * it can be different from the movement direction
-							 * of the entity, because sometimes a sprite can
-							 * go backwards. */
-    int current_frame;					/**< current frame of the animation (the first one is number 0) */
-    bool frame_changed;					/**< indicates that the frame has just changed */
-
-    uint32_t frame_delay;				/**< delay between two frames in milliseconds */
-    uint32_t next_frame_date;				/**< date of the next frame */
-
-    bool suspended;					/**< true if the game is suspended */
-    bool ignore_suspend;				/**< true to continue playing the animation even when the game is suspended */
-    bool paused;					/**< true if the animation is paused */
-    bool finished;					/**< true if the animation has been stopped because the last frame is finished */
-    Sprite* synchronize_to;				/**< another sprite to synchronize the frame to
-							 * when they have the same animation name (or NULL) */
-
-    // effects
-
-    uint32_t blink_delay;				/**< blink delay of the sprite, or zero if the sprite is not blinking */
-    bool blink_is_sprite_visible;			/**< when blinking, true if the sprite is visible or false if it is invisible */
-    uint32_t blink_next_change_date;			/**< date of the next change when blinking: visible or not */
-
-    int alpha;						/**< alpha effect applied on the sprite (0: transparent, 255: opaque) */
-    uint32_t alpha_next_change_date;			/**< date of the next alpha change when applying a fade-in or fade-out effect */
-    int alpha_increment;				/**< increment of the alpha value while fading */
-    static Surface *alpha_surface;			/**< an intermediary surface used when blitting with transparency */
-
-    static SpriteAnimationSet& get_animation_set(const SpriteAnimationSetId &id);
-    int get_next_frame() const;
+class Sprite: public Drawable {
 
   public:
 
@@ -88,21 +43,21 @@ class Sprite {
     static void quit();
 
     // creation and destruction
-    Sprite(const SpriteAnimationSetId &id);
+    Sprite(const std::string& id);
     ~Sprite();
-    int get_unique_id() const;
 
-    void set_map(Map &map);
+    void set_tileset(Tileset& tileset);
 
     // animation set
-    const SpriteAnimationSetId& get_animation_set_id() const;
-    bool contains(const std::string &s) const;
+    const std::string& get_animation_set_id() const;
+    bool contains(const std::string& s) const;
     SpriteAnimationSet& get_animation_set();
     void enable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
 
     // size and origin point
-    const Rectangle& get_size() const;
+    Rectangle get_size() const;
+    const Rectangle& get_max_size() const;
     const Rectangle& get_origin() const;
 
     // animation state
@@ -110,9 +65,12 @@ class Sprite {
     void set_current_animation(const std::string& animation_name);
     bool has_animation(const std::string& animation_name);
     int get_current_direction() const;
+    int get_nb_directions() const;
     void set_current_direction(int current_direction);
+    int get_nb_frames() const;
     int get_current_frame() const;
     void set_current_frame(int current_frame);
+    const Rectangle& get_current_frame_rectangle() const;
     uint32_t get_frame_delay() const;
     void set_frame_delay(uint32_t frame_delay);
     void set_synchronized_to(Sprite* other);
@@ -135,17 +93,61 @@ class Sprite {
     // effects
     bool is_blinking() const;
     void set_blinking(uint32_t blink_delay);
-    int get_alpha() const;
-    void set_alpha(int alpha);
-    bool is_fading() const;
-    void start_fading(int direction);
 
     // collisions
-    bool test_collision(Sprite &other, int x1, int y1, int x2, int y2) const;
+    bool test_collision(Sprite& other, int x1, int y1, int x2, int y2) const;
 
-    // udpate and display
+    // udpate and draw
     void update();
-    void display(Surface *destination, int x, int y);
+    void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
+    void raw_draw_region(const Rectangle& region,
+        Surface& dst_surface, const Rectangle& dst_position);
+    void draw_transition(Transition& transition);
+
+    LuaContext* get_lua_context() const;
+    void set_lua_context(LuaContext* lua_context);
+    const std::string& get_lua_type_name() const;
+
+  private:
+
+    LuaContext* lua_context;           /**< The Solarus Lua API (NULL means no callbacks for this sprite). TODO move this to ExportableToLua */
+
+    // animation set
+    static std::map<std::string, SpriteAnimationSet*> all_animation_sets;
+    const std::string animation_set_id;  /**< id of this sprite's animation set */
+    SpriteAnimationSet& animation_set;   /**< animation set of this sprite */
+
+    // current state of the sprite
+
+    std::string current_animation_name;  /**< name of the current animation */
+    SpriteAnimation* current_animation;  /**< the current animation */
+    int current_direction;             /**< current direction of the animation (the first one is number 0);
+                                        * it can be different from the movement direction
+                                        * of the entity, because sometimes a sprite can
+                                        * go backwards. */
+    int current_frame;                 /**< current frame of the animation (the first one is number 0) */
+    bool frame_changed;                /**< indicates that the frame has just changed */
+
+    uint32_t frame_delay;              /**< delay between two frames in milliseconds */
+    uint32_t next_frame_date;          /**< date of the next frame */
+
+    bool suspended;                    /**< true if the game is suspended */
+    bool ignore_suspend;               /**< true to continue playing the animation even when the game is suspended */
+    bool paused;                       /**< true if the animation is paused */
+    bool finished;                     /**< true if the animation has been stopped because the last frame is finished */
+    Sprite* synchronize_to;            /**< another sprite to synchronize the frame to
+                                        * when they have the same animation name (or NULL) */
+
+    // effects
+    Surface* intermediate_surface;     /**< an intermediate surface used to show transitions and other effects */
+    uint32_t blink_delay;              /**< blink delay of the sprite, or zero if the sprite is not blinking */
+    bool blink_is_sprite_visible;      /**< when blinking, true if the sprite is visible or false if it is invisible */
+    uint32_t blink_next_change_date;   /**< date of the next change when blinking: visible or not */
+
+    static SpriteAnimationSet& get_animation_set(const std::string& id);
+    int get_next_frame() const;
+    Surface& get_intermediate_surface();
+    void set_frame_changed(bool frame_changed);
 };
 
 #endif

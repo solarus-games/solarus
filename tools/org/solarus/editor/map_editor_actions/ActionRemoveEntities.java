@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,9 +34,9 @@ public class ActionRemoveEntities extends MapEditorAction {
      * @param entityToRemove the entity to remove (this object will be copied)
      */
     public ActionRemoveEntities(Map map, MapEntity entityToRemove) {
-	super(map);
-	this.entitiesToRemove = new LinkedList<MapEntity>();
-	this.entitiesToRemove.add(entityToRemove);
+        super(map);
+        this.entitiesToRemove = new LinkedList<MapEntity>();
+        this.entitiesToRemove.add(entityToRemove);
     }
 
     /**
@@ -45,8 +45,8 @@ public class ActionRemoveEntities extends MapEditorAction {
      * @param entitiesToRemove the entities to remove
      */
     public ActionRemoveEntities(Map map, List<MapEntity> entitiesToRemove) {
-	super(map);
-	this.entitiesToRemove = map.getSortedEntities(entitiesToRemove);
+        super(map);
+        this.entitiesToRemove = map.getSortedEntities(entitiesToRemove);
     }
 
     /**
@@ -54,9 +54,9 @@ public class ActionRemoveEntities extends MapEditorAction {
      */
     public void execute() throws MapException {
 
-	for (MapEntity entity: entitiesToRemove) {
-	    map.removeEntity(entity);
-	}
+        for (MapEntity entity: entitiesToRemove) {
+            map.removeEntity(entity);
+        }
     }
 
     /**
@@ -64,10 +64,10 @@ public class ActionRemoveEntities extends MapEditorAction {
      */
     public void undo() throws MapException {
 
-	for (MapEntity entity: entitiesToRemove) {
-	    map.addEntity(entity);
-	}
-	map.getEntitySelection().unselectAll();
-	map.getEntitySelection().select(entitiesToRemove);
+        for (MapEntity entity: entitiesToRemove) {
+            map.addEntity(entity);
+        }
+        map.getEntitySelection().unselectAll();
+        map.getEntitySelection().select(entitiesToRemove);
     }
 }

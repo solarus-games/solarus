@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,10 +63,10 @@ void TransitionImmediate::update() {
 }
 
 /**
- * @brief Displays the transition effect on a surface.
- * @param surface the surface to draw
+ * @brief Draws the transition effect on a surface.
+ * @param dst_surface the surface to draw
  */
-void TransitionImmediate::display(Surface *surface) {
+void TransitionImmediate::draw(Surface& dst_surface) {
 
 }
 

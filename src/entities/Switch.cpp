@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
 #include "entities/Arrow.h"
 #include "entities/Block.h"
 #include "entities/Hero.h"
+#include "lua/LuaContext.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "Map.h"
-#include "lua/MapScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -63,7 +63,7 @@ Switch::Switch(const std::string& name, Layer layer, int x, int y,
     create_sprite("entities/solid_switch");
     get_sprite().set_current_animation("inactivated");
     set_collision_modes(COLLISION_SPRITE | COLLISION_RECTANGLE);
-    set_optimization_distance(2000); // because of placing a bomb on a switch
+    set_optimization_distance(2000);  // Because of bombs and arrows on the switch.
   }
 }
 
@@ -72,31 +72,6 @@ Switch::Switch(const std::string& name, Layer layer, int x, int y,
  */
 Switch::~Switch() {
 
-}
-
-/**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Switch::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
-
-  std::string name;
-  int subtype, needs_block, inactivate_when_leaving;
-
-  FileTools::read(is, name);
-  FileTools::read(is, subtype);
-  FileTools::read(is, needs_block);
-  FileTools::read(is, inactivate_when_leaving);
-
-  return new Switch(name, Layer(layer), x, y, Subtype(subtype), needs_block != 0, inactivate_when_leaving != 0);
 }
 
 /**
@@ -165,7 +140,7 @@ void Switch::activate() {
       Sound::play("switch");
     }
 
-    get_map_script().event_switch_activated(get_name());
+    get_lua_context().switch_on_activated(*this);
   }
 }
 
@@ -224,9 +199,9 @@ void Switch::update() {
       entity_overlapping = NULL;
       if (is_activated() && inactivate_when_leaving && !locked) {
         set_activated(false);
-        get_map_script().event_switch_inactivated(get_name());
+        get_lua_context().switch_on_inactivated(*this);
       }
-      get_map_script().event_switch_left(get_name());
+      get_lua_context().switch_on_left(*this);
     }
   }
 }
@@ -345,5 +320,13 @@ void Switch::try_activate() {
   if (subtype == SOLID && !is_activated()) {
     activate();
   }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Switch::get_lua_type_name() const {
+  return LuaContext::entity_switch_module_name;
 }
 

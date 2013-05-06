@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0+" codebase="http://www.solarus-engine.org/editor" href="editor.jnlp">
+<jnlp spec="1.0+" codebase="http://www.solarus-games.org/editor" href="editor.jnlp">
   <information>
     <title>Solarus Quest Editor</title>
     <vendor>Christopho</vendor>
-    <homepage href="http://www.solarus-engine.org" />
+    <homepage href="http://www.solarus-games.org" />
     <description>Quest editor for Solarus</description>
     <offline-allowed />
     <icon href="icon.gif" />
@@ -12,9 +12,9 @@
     <all-permissions />
   </security>
   <resources>
-    <j2se version="1.6" />
+    <j2se version="1.6+" />
     <jar href="solarus-editor.jar" />
-    <jar href="ini4j.jar" />
+    <jar href="luaj-jse-2.0.2.jar" />
   </resources>
   <application-desc main-class="org.solarus.editor.Editor" />
 </jnlp>

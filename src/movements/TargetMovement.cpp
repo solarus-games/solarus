@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/TargetMovement.h"
+#include "lua/LuaContext.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
@@ -29,17 +30,19 @@ const uint32_t TargetMovement::recomputation_delay = 150;
  * @brief Creates a new target movement towards a fixed point.
  * @param target_x x coordinate of the target point
  * @param target_y y coordinate of the target point
- * @param speed speed of the movement
+ * @param moving_speed speed of the movement when not stoppedstopped
+ * @param ignore_obstacles true to ignore obstacles (if on a map)
  */
-TargetMovement::TargetMovement(int target_x, int target_y, int speed):
+TargetMovement::TargetMovement(int target_x, int target_y, int moving_speed,
+    bool ignore_obstacles):
 
-  StraightMovement(true, true),
+  StraightMovement(ignore_obstacles, true),
   target_x(target_x),
   target_y(target_y),
   target_entity(NULL),
   sign_x(0),
   sign_y(0),
-  speed(speed),
+  moving_speed(moving_speed),
   next_recomputation_date(System::now()),
   finished(false) {
 
@@ -51,20 +54,25 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
  * The movement will update its trajectory if the entity's position is changed.
  *
  * @param target_entity the target entity
- * @param speed speed of the movement
+ * @param moving_speed speed of the movement when not stopped
+ * @param ignore_obstacles true to ignore obstacles (if on a map)
  */
-TargetMovement::TargetMovement(MapEntity* target_entity, int speed):
+TargetMovement::TargetMovement(MapEntity* target_entity, int moving_speed,
+    bool ignore_obstacles):
 
-  StraightMovement(true, true),
+  StraightMovement(ignore_obstacles, true),
   target_x(target_entity->get_x()),
   target_y(target_entity->get_y()),
   target_entity(target_entity),
   sign_x(0),
   sign_y(0),
-  speed(speed),
+  moving_speed(moving_speed),
   next_recomputation_date(System::now()),
   finished(false) {
 
+  if (this->target_entity != NULL) {
+    this->target_entity->increment_refcount();
+  }
 }
 
 /**
@@ -72,6 +80,23 @@ TargetMovement::TargetMovement(MapEntity* target_entity, int speed):
  */
 TargetMovement::~TargetMovement() {
 
+  if (this->target_entity != NULL) {
+    this->target_entity->decrement_refcount();
+    if (this->target_entity->get_refcount() == 0) {
+      delete this->target_entity;
+    }
+  }
+}
+
+/**
+ * @brief Notifies this movement that the object it controls has changed.
+ */
+void TargetMovement::notify_object_controlled() {
+
+  StraightMovement::notify_object_controlled();
+
+  // Coordinates have changed: compute a new trajectory.
+  recompute_movement();
 }
 
 /**
@@ -81,8 +106,16 @@ TargetMovement::~TargetMovement() {
  */
 void TargetMovement::set_target(int target_x, int target_y) {
 
+  if (this->target_entity != NULL) {
+    this->target_entity->decrement_refcount();
+    if (this->target_entity->get_refcount() == 0) {
+      delete this->target_entity;
+    }
+  }
+
   this->target_x = target_x;
   this->target_y = target_y;
+  this->target_entity = NULL;
   recompute_movement();
   next_recomputation_date = System::now() + recomputation_delay;
 }
@@ -93,11 +126,38 @@ void TargetMovement::set_target(int target_x, int target_y) {
  */
 void TargetMovement::set_target(MapEntity* target_entity) {
 
+  if (this->target_entity != NULL) {
+    this->target_entity->decrement_refcount();
+    if (this->target_entity->get_refcount() == 0) {
+      delete this->target_entity;
+    }
+  }
+
   this->target_entity = target_entity;
-  this->target_x = target_x;
-  this->target_y = target_y;
+
+  if (this->target_entity != NULL) {
+    this->target_entity->increment_refcount();
+  }
+
   recompute_movement();
   next_recomputation_date = System::now() + recomputation_delay;
+}
+
+/**
+ * @brief Returns the speed of this movement when it is not stopped.
+ * @return the speed when moving, in pixels per second
+ */
+int TargetMovement::get_moving_speed() {
+  return moving_speed;
+}
+
+/**
+ * @brief Sets the speed of this movement when it is not stopped.
+ * @param moving_speed the speed when moving, in pixels per second
+ */
+void TargetMovement::set_moving_speed(int moving_speed) {
+  this->moving_speed = moving_speed;
+  recompute_movement();
 }
 
 /**
@@ -105,8 +165,9 @@ void TargetMovement::set_target(MapEntity* target_entity) {
  */
 void TargetMovement::update() {
 
-  int dx = target_x - get_x();
-  int dy = target_y - get_y();
+  if (target_entity != NULL && target_entity->is_being_removed()) {
+    set_target(NULL);
+  }
 
   if (System::now() >= next_recomputation_date) {
     recompute_movement();
@@ -114,10 +175,14 @@ void TargetMovement::update() {
   }
 
   // see if the target is reached
+  int dx = target_x - get_x();
+  int dy = target_y - get_y();
   if (dx * sign_x <= 0 && dy * sign_y <= 0) {
-    set_xy(target_x, target_y); // because the target movement may have not been very precise
-    stop();
-    finished = true;
+    if (!test_collision_with_obstacles(dx, dy)) {
+      set_xy(target_x, target_y); // because the target movement may have not been very precise
+      stop();
+      finished = true;
+    }
   }
 
   StraightMovement::update();
@@ -147,7 +212,8 @@ void TargetMovement::recompute_movement() {
     sign_y = (dy >= 0) ? 1 : -1;
 
     if (std::fabs(angle - get_angle()) > 1E-6 || get_speed() < 1E-6) {
-      set_speed(speed);
+      // The angle has changed or the movement was stopped.
+      set_speed(moving_speed);
       set_angle(angle);
       set_max_distance((int) Geometry::get_distance(
             get_x(), get_y(), target_x, target_y));
@@ -165,75 +231,10 @@ bool TargetMovement::is_finished() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - ignore_obstacles
- * - smooth
- * - displayed_direction
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string TargetMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "speed") {
-    oss << get_speed();
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else if (key == "smooth") {
-    oss << is_smooth();
-  }
-  else if (key == "displayed_direction") {
-    oss << get_displayed_direction4();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of TargetMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - ignore_obstacles
- * - smooth
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void TargetMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else if (key == "smooth") {
-    bool smooth;
-    iss >> smooth;
-    set_smooth(smooth);
-  }
-  else if (key == "displayed_direction") {
-    Debug::die("The property 'displayed_direction' of TargetMovement is read-only");
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of TargetMovement: '" << key << "'");
-  }
+const std::string& TargetMovement::get_lua_type_name() const {
+  return LuaContext::movement_target_module_name;
 }
 

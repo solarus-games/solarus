@@ -1,0 +1,50 @@
+/**
+\page lua_api_tile Tile
+
+\tableofcontents
+
+Tiles are the small fixed bricks that compose the \ref lua_api_map "map".
+
+\section lua_api_tile_overview Overview
+
+Each tile has a pattern coming from the tileset of the map.
+A tile has an adjustable size: you can repeat that pattern several times instead
+of placing many times the same tile on the map.
+Tiles can also overlap each other.
+
+For some reasons explained below, tiles are not accessible from Lua.
+When you need to access a tile from Lua (typically, to make it
+appear or disappear),
+use a \ref lua_api_dynamic_tile "dynamic tile" instead.
+
+\subsection lua_api_tile_overview_performance Tiles are designed for performance
+
+Tiles are fixed: they are only declared in the map data file.
+Actually, most of them don't even exist at runtime.
+You cannot create them dynamically: unlike other types of
+map entities, there is no method <tt>map:create_tile()</tt>.
+You cannot access them dynamically either.
+
+Most tiles don't exist individually at runtime,
+because the engine makes a special performance treatment to them.
+When the map is loaded, the engine builds once for all, for each layer,
+a big image of all tiles
+(except animated tiles that have to be displayed separately).
+It also builds once for all
+the obstacle property of every 8*8 square that compose
+each layer.
+Then, drawing the tiles or detecting whether an entity collides with
+obstacle tiles is very fast.
+You can declare a huge number of tiles on your map without degrading
+performances at runtime.
+
+\note There exists situations where you want to create, remove,
+enable or disable a tile from your script.
+\ref lua_api_dynamic_tile "Dynamic tiles" are made for that.
+Dynamic tiles are like normal tiles, except that they are not optimized
+as explained above: they do exist at runtime.
+You can access them from your script and call methods such as
+\ref lua_api_entity_set_enabled "dynamic_tile:set_enabled()".
+
+*/
+

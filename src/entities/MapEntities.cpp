@@ -1,6 +1,5 @@
 /*
- * bool has_entity(MapEntity *entity);
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +36,7 @@ using std::list;
  * @param game the game
  * @param map the map (not loaded yet)
  */
-MapEntities::MapEntities(Game &game, Map &map):
+MapEntities::MapEntities(Game& game, Map& map):
   game(game),
   map(map),
   hero(game.get_hero()),
@@ -45,8 +44,9 @@ MapEntities::MapEntities(Game &game, Map &map):
 
   Layer layer = hero.get_layer();
   this->obstacle_entities[layer].push_back(&hero);
-  this->entities_displayed_y_order[layer].push_back(&hero);
+  this->entities_drawn_y_order[layer].push_back(&hero);
   // TODO update that when the layer changes, same thing for enemies
+  this->named_entities[hero.get_name()] = &hero;
 
   // surfaces to pre-render static tiles
   for (int layer = 0; layer < LAYER_NB; layer++) {
@@ -69,11 +69,11 @@ MapEntities::~MapEntities() {
  */
 void MapEntities::destroy_all_entities() {
 
-  // delete the entities sorted by layer
+  // delete tiles and clear lists sorted by layer
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      delete tiles[layer][i];
+      destroy_entity(tiles[layer][i]);
     }
 
     tiles[layer].clear();
@@ -81,8 +81,8 @@ void MapEntities::destroy_all_entities() {
     delete[] animated_tiles[layer];
     delete non_animated_tiles_surfaces[layer];
 
-    entities_displayed_first[layer].clear();
-    entities_displayed_y_order[layer].clear();
+    entities_drawn_first[layer].clear();
+    entities_drawn_y_order[layer].clear();
     obstacle_entities[layer].clear();
     stairs[layer].clear();
   }
@@ -91,12 +91,32 @@ void MapEntities::destroy_all_entities() {
 
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
-    delete *i;
+    destroy_entity(*i);
   }
   all_entities.clear();
+  named_entities.clear();
 
   detectors.clear();
   entities_to_remove.clear();
+}
+
+/**
+ * @brief Destroys an entity.
+ *
+ * The object is freed if it is not used anywhere else.
+ *
+ * @param entity The entity to destroy.
+ */
+void MapEntities::destroy_entity(MapEntity* entity) {
+
+  if (!entity->is_being_removed()) {
+    entity->notify_being_removed();
+  }
+
+  entity->decrement_refcount();
+  if (entity->get_refcount() == 0) {
+    delete entity;
+  }
 }
 
 /**
@@ -158,57 +178,58 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
 }
 
 /**
- * @brief Returns the entity with the specified type and name.
+ * @brief Returns the entity with the specified name.
  *
  * The program stops if there is no such entity.
  *
- * @param type type of entity
- * @param name name of the entity to get
- * @return the entity requested
+ * @param name Name of the entity to get.
+ * @return The entity requested.
  */
-MapEntity* MapEntities::get_entity(EntityType type, const std::string &name) {
+MapEntity* MapEntities::get_entity(const std::string& name) {
 
-  MapEntity *entity = find_entity(type, name);
+  MapEntity* entity = find_entity(name);
 
-  Debug::check_assertion(entity != NULL, StringConcat() << "Cannot find entity with type '" << type << "' and name '" << name << "'");
+  Debug::check_assertion(entity != NULL, StringConcat()
+      << "Map '" << map.get_id()
+      << "': Cannot find entity with name '" << name << "'");
 
   return entity;
 }
 
 /**
- * @brief Returns the entity with the specified type and name, or NULL if it doesn't exist.
- * @param type type of entity
- * @param name name of the entity to get
- * @return the entity requested, or NULL if there is no entity with the specified type and name
+ * @brief Returns the entity with the specified name, or NULL if it doesn't exist.
+ * @param name Name of the entity to find.
+ * @return The entity requested, or NULL if there is no entity with the specified name.
  */
-MapEntity* MapEntities::find_entity(EntityType type, const std::string &name) {
+MapEntity* MapEntities::find_entity(const std::string& name) {
 
-  list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-
-    MapEntity *entity = *i;
-    if (entity->get_type() == type && entity->get_name() == name && !entity->is_being_removed()) {
-      return entity;
-    }
+  if (named_entities.find(name) == named_entities.end()) {
+    return NULL;
   }
 
-  return NULL;
+  MapEntity* entity = named_entities[name];
+
+  if (entity->is_being_removed()) {
+    return NULL;
+  }
+
+  return entity;
 }
 
 /**
- * @brief Returns all entities of the map with the specified type.
- * @param type type of entity
- * @return the entities of this type
+ * @brief Returns the entities of the map having the specified name prefix.
+ * @param prefix Prefix of the name.
+ * @return The entities of this type and having this prefix in their name.
  */
-list<MapEntity*> MapEntities::get_entities(EntityType type) {
+list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix) {
 
   list<MapEntity*> entities;
 
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
-    MapEntity *entity = *i;
-    if (entity->get_type() == type && !entity->is_being_removed()) {
+    MapEntity* entity = *i;
+    if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
       entities.push_back(entity);
     }
   }
@@ -217,19 +238,21 @@ list<MapEntity*> MapEntities::get_entities(EntityType type) {
 }
 
 /**
- * @brief Returns the entities of the map with the specified type and having the specified name prefix.
- * @param type type of entity
- * @param prefix prefix of the name
- * @return the entities of this type and having this prefix in their name
+ * @brief Returns the entities of the map with the specified type and having
+ * the specified name prefix.
+ * @param type Type of entity.
+ * @param prefix Prefix of the name.
+ * @return The entities of this type and having this prefix in their name.
  */
-list<MapEntity*> MapEntities::get_entities_with_prefix(EntityType type, const std::string &prefix) {
+list<MapEntity*> MapEntities::get_entities_with_prefix(
+    EntityType type, const std::string& prefix) {
 
   list<MapEntity*> entities;
 
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
-    MapEntity *entity = *i;
+    MapEntity* entity = *i;
     if (entity->get_type() == type && entity->has_prefix(prefix) && !entity->is_being_removed()) {
       entities.push_back(entity);
     }
@@ -239,20 +262,40 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(EntityType type, const st
 }
 
 /**
+ * @brief Returns whether there exists at least one entity with the specified
+ * name prefix on the map.
+ * @param prefix Prefix of the name.
+ * @return \c true if there exists an entity with this prefix.
+ */
+bool MapEntities::has_entity_with_prefix(const std::string& prefix) {
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+
+    MapEntity* entity = *i;
+    if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * @brief Brings to front an entity that is displayed as a sprite in the normal order.
  * @param entity the entity to bring to front
  */
 void MapEntities::bring_to_front(MapEntity *entity) {
 
-  Debug::check_assertion(entity->can_be_displayed(),
-      StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is not displayed");
+  Debug::check_assertion(entity->can_be_drawn(),
+      StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is not drawn");
 
-  Debug::check_assertion(!entity->is_displayed_in_y_order(),
-    StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is displayed in the y order");
+  Debug::check_assertion(!entity->is_drawn_in_y_order(),
+    StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is drawn in the y order");
 
   Layer layer = entity->get_layer();
-  entities_displayed_first[layer].remove(entity);
-  entities_displayed_first[layer].push_back(entity);
+  entities_drawn_first[layer].remove(entity);
+  entities_drawn_first[layer].push_back(entity);
 }
 
 /**
@@ -264,8 +307,10 @@ void MapEntities::notify_map_started() {
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity *entity = *i;
     entity->notify_map_started();
+    entity->notify_tileset_changed();
   }
   hero.notify_map_started();
+  hero.notify_tileset_changed();
 
   // pre-render non-animated tiles
   build_non_animated_tiles();
@@ -281,6 +326,23 @@ void MapEntities::notify_map_opening_transition_finished() {
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity* entity = *i;
     entity->notify_map_opening_transition_finished();
+  }
+  hero.notify_map_opening_transition_finished();
+}
+
+/**
+ * @brief Notifies this entity manager that the tileset of the map has
+ * changed.
+ */
+void MapEntities::notify_tileset_changed() {
+
+  // Redraw optimized tiles (i.e. non animated ones).
+  redraw_non_animated_tiles();
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+    MapEntity* entity = *i;
+    entity->notify_tileset_changed();
   }
   hero.notify_map_opening_transition_finished();
 }
@@ -447,20 +509,21 @@ void MapEntities::add_tile(Tile *tile) {
  *
  * @param entity the entity to add (can be NULL)
  */
-void MapEntities::add_entity(MapEntity *entity) {
+void MapEntities::add_entity(MapEntity* entity) {
 
   if (entity == NULL) {
     return;
   }
 
   if (entity->get_type() == TILE) {
+    // Tiles are optimized specifically for obstacle checks and rendering.
     add_tile((Tile*) entity);
   }
   else {
     Layer layer = entity->get_layer();
 
     // update the detectors list
-    if (entity->can_detect_entities()) {
+    if (entity->is_detector()) {
       detectors.push_back((Detector*) entity);
     }
 
@@ -480,11 +543,11 @@ void MapEntities::add_entity(MapEntity *entity) {
     }
 
     // update the sprites list
-    if (entity->is_displayed_in_y_order()) {
-      entities_displayed_y_order[layer].push_back(entity);
+    if (entity->is_drawn_in_y_order()) {
+      entities_drawn_y_order[layer].push_back(entity);
     }
-    else if (entity->can_be_displayed()) {
-      entities_displayed_first[layer].push_back(entity);
+    else if (entity->can_be_drawn()) {
+      entities_drawn_first[layer].push_back(entity);
     }
 
     // update the specific entities lists
@@ -510,6 +573,15 @@ void MapEntities::add_entity(MapEntity *entity) {
     all_entities.push_back(entity);
   }
 
+  const std::string& name = entity->get_name();
+  if (!name.empty()) {
+    Debug::check_assertion(named_entities.find(name) == named_entities.end(),
+        StringConcat()
+        << "Error: an entity with name '" << name << "' already exists.");
+    named_entities[name] = entity;
+  }
+  entity->increment_refcount();
+
   // notify the entity
   entity->set_map(map);
 }
@@ -518,26 +590,25 @@ void MapEntities::add_entity(MapEntity *entity) {
  * @brief Removes an entity from the map and schedules it to be destroyed.
  * @param entity the entity to remove
  */
-void MapEntities::remove_entity(MapEntity *entity) {
+void MapEntities::remove_entity(MapEntity* entity) {
 
   if (!entity->is_being_removed()) {
     entities_to_remove.push_back(entity);
     entity->notify_being_removed();
 
-    if (entity == (MapEntity*) this->boomerang) {
+    if (entity == this->boomerang) {
       this->boomerang = NULL;
     }
   }
 }
 
 /**
- * @brief Removes an entity from the map and schedules it to be destroyed.
- * @param type type of the entity to remove
- * @param name name of the entity
+ * @brief Removes an entity from the map.
+ * @param name Name of the entity.
  */
-void MapEntities::remove_entity(EntityType type, const std::string &name) {
+void MapEntities::remove_entity(const std::string& name) {
 
-  MapEntity* entity = find_entity(type, name);
+  MapEntity* entity = find_entity(name);
   if (entity != NULL) {
     remove_entity(entity);
   }
@@ -545,12 +616,11 @@ void MapEntities::remove_entity(EntityType type, const std::string &name) {
 
 /**
  * @brief Removes all entities of a type whose name starts with the specified prefix.
- * @param type a type of entities
- * @param prefix prefix of the name of the entities to remove
+ * @param prefix Prefix of the name of the entities to remove.
  */
-void MapEntities::remove_entities_with_prefix(EntityType type, const std::string& prefix) {
+void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 
-  std::list<MapEntity*> entities = get_entities_with_prefix(type, prefix);
+  std::list<MapEntity*> entities = get_entities_with_prefix(prefix);
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
     remove_entity(*it);
@@ -576,9 +646,9 @@ void MapEntities::remove_marked_entities() {
     if (entity->can_be_obstacle()) {
 
       if (entity->has_layer_independent_collisions()) {
-	for (int i = 0; i < LAYER_NB; i++) {
-	  obstacle_entities[i].remove(entity);
-	}
+        for (int i = 0; i < LAYER_NB; i++) {
+          obstacle_entities[i].remove(entity);
+        }
       }
       else {
         obstacle_entities[layer].remove(entity);
@@ -586,23 +656,27 @@ void MapEntities::remove_marked_entities() {
     }
 
     // remove it from the detectors list if present
-    if (entity->can_detect_entities()) {
+    if (entity->is_detector()) {
       detectors.remove((Detector*) entity);
     }
 
     // remove it from the sprite entities list if present
-    if (entity->is_displayed_in_y_order()) {
-      entities_displayed_y_order[layer].remove(entity);
+    if (entity->is_drawn_in_y_order()) {
+      entities_drawn_y_order[layer].remove(entity);
     }
-    else if (entity->can_be_displayed()) {
-      entities_displayed_first[layer].remove(entity);
+    else if (entity->can_be_drawn()) {
+      entities_drawn_first[layer].remove(entity);
     }
 
     // remove it from the whole list
     all_entities.remove(entity);
+    const std::string& name = entity->get_name();
+    if (!name.empty()) {
+      named_entities.erase(name);
+    }
 
     // destroy it
-    delete entity;
+    destroy_entity(entity);
   }
   entities_to_remove.clear();
 }
@@ -630,13 +704,15 @@ void MapEntities::set_suspended(bool suspended) {
     (*i)->set_suspended(suspended);
   }
 
-  // note that we don't suspend the animated tiles
+  // note that we don't suspend the tiles
 }
 
 /**
  * @brief Updates the position, movement and animation each entity.
  */
 void MapEntities::update() {
+
+  Debug::check_assertion(map.is_started(), "The map is not started");
 
   // first update the hero
   hero.update();
@@ -649,8 +725,8 @@ void MapEntities::update() {
       tiles[layer][i]->update();
     }
 
-    // sort the entities displayed in y order
-    entities_displayed_y_order[layer].sort(compare_y);
+    // sort the entities drawn in y order
+    entities_drawn_y_order[layer].sort(compare_y);
   }
 
   for (it = all_entities.begin();
@@ -667,9 +743,8 @@ void MapEntities::update() {
 }
 
 /**
- * @brief Draws all non-animated tiles on intermediate surfaces.
- *
- * They are drawn only once and then these surfaces are displayed on the screen.
+ * @brief Determines which rectangles are animated and draws all non-animated
+ * rectangles of tiles on intermediate surfaces.
  */
 void MapEntities::build_non_animated_tiles() {
 
@@ -685,7 +760,7 @@ void MapEntities::build_non_animated_tiles() {
       Tile& tile = *tiles[layer][i];
       if (!tile.is_animated()) {
         // non-animated tile: optimize its displaying
-        tile.display(non_animated_tiles_surfaces[layer], map_size);
+        tile.draw(*non_animated_tiles_surfaces[layer], map_size);
       }
       else {
         // animated tile: mark its region as non-optimizable
@@ -734,6 +809,44 @@ void MapEntities::build_non_animated_tiles() {
 }
 
 /**
+ * @brief Draws all non-animated rectangles of tiles on intermediate surfaces.
+ *
+ * This function is similar to build_non_animated_tiles() except that it
+ * assumes that animated and non-animated rectangles were already determined.
+ *
+ * This function is called when the tileset changes.
+ */
+void MapEntities::redraw_non_animated_tiles() {
+
+  const Rectangle map_size(0, 0, map.get_width(), map.get_height());
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+
+    non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta());
+
+    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
+      Tile& tile = *tiles[layer][i];
+      if (!tile.is_animated()) {
+        // Non-animated tile: optimize its displaying.
+        tile.draw(*non_animated_tiles_surfaces[layer], map_size);
+      }
+    }
+
+    // Erase rectangles that contain animated tiles.
+    int index = 0;
+    for (int y = 0; y < map.get_height(); y += 8) {
+      for (int x = 0; x < map.get_width(); x += 8) {
+
+        if (animated_tiles[layer][index]) {
+          Rectangle animated_square(x, y, 8, 8);
+          non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta(), animated_square);
+        }
+        index++;
+      }
+    }
+  }
+}
+
+/**
  * @brief Returns whether a tile is overlapping an animated other tile.
  * @param tile the tile to check
  * @return true if this tile is overlapping an animated tile
@@ -765,45 +878,46 @@ bool MapEntities::overlaps_animated_tile(Tile& tile) {
 }
 
 /**
- * @brief Displays the entities on the map surface.
+ * @brief Draws the entities on the map surface.
  */
-void MapEntities::display() {
+void MapEntities::draw() {
 
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     // draw the animated tiles and the tiles that overlap them:
     // in other words, draw all regions containing animated tiles
     // (and maybe more, but we don't care because non-animated tiles
-    // will be displayed later)
+    // will be drawn later)
     for (unsigned int i = 0; i < tiles_in_animated_regions[layer].size(); i++) {
-      tiles_in_animated_regions[layer][i]->display_on_map();
+      tiles_in_animated_regions[layer][i]->draw_on_map();
     }
 
     // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
     // since they are already drawn)
-    non_animated_tiles_surfaces[layer]->blit(map.get_camera_position(), map.get_visible_surface());
+    non_animated_tiles_surfaces[layer]->draw_region(
+        map.get_camera_position(), map.get_visible_surface());
 
     // draw the first sprites
     list<MapEntity*>::iterator i;
-    for (i = entities_displayed_first[layer].begin();
-	 i != entities_displayed_first[layer].end();
+    for (i = entities_drawn_first[layer].begin();
+	 i != entities_drawn_first[layer].end();
 	 i++) {
 
       MapEntity *entity = *i;
       if (entity->is_enabled()) {
-        entity->display_on_map();
+        entity->draw_on_map();
       }
     }
 
-    // draw the sprites displayed at the hero's level, in the order
+    // draw the sprites at the hero's level, in the order
     // defined by their y position (including the hero)
-    for (i = entities_displayed_y_order[layer].begin();
-	  i != entities_displayed_y_order[layer].end();
+    for (i = entities_drawn_y_order[layer].begin();
+	  i != entities_drawn_y_order[layer].end();
 	  i++) {
 
       MapEntity *entity = *i;
       if (entity->is_enabled()) {
-        entity->display_on_map();
+        entity->draw_on_map();
       }
     }
   }
@@ -843,13 +957,13 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
     }
 
     // update the sprites list
-    if (entity.is_displayed_in_y_order()) {
-      entities_displayed_y_order[old_layer].remove(&entity);
-      entities_displayed_y_order[layer].push_back(&entity);
+    if (entity.is_drawn_in_y_order()) {
+      entities_drawn_y_order[old_layer].remove(&entity);
+      entities_drawn_y_order[layer].push_back(&entity);
     }
-    else if (entity.can_be_displayed()) {
-      entities_displayed_first[old_layer].remove(&entity);
-      entities_displayed_first[layer].push_back(&entity);
+    else if (entity.can_be_drawn()) {
+      entities_drawn_first[old_layer].remove(&entity);
+      entities_drawn_first[layer].push_back(&entity);
     }
 
     // update the entity after the lists because this function might be called again

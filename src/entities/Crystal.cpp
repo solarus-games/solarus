@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
   next_possible_hit_date(System::now()) {
 
   set_origin(8, 13);
-  set_optimization_distance(2000); // because of placing a bomb on a switch
+  set_optimization_distance(2000);  // Because of bombs and arrows on the crystal.
   create_sprite("entities/crystal", true);
   star_sprite = new Sprite("entities/star");
   twinkle();
@@ -52,26 +52,6 @@ Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
  */
 Crystal::~Crystal() {
   delete star_sprite;
-}
-
-/**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Crystal::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
-
-  std::string name;
-  FileTools::read(is, name);
-
-  return new Crystal(name, layer, x, y);
 }
 
 /**
@@ -130,12 +110,14 @@ void Crystal::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sp
 }
 
 /**
- * @brief This function is called when the player interacts with this entity.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * while the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  */
-void Crystal::action_key_pressed() {
+void Crystal::notify_action_command_pressed() {
 
   if (get_hero().is_free()) {
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
@@ -203,19 +185,23 @@ void Crystal::update() {
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Draws the entity on the map.
  *
- * This is a redefinition of MapEntity::display_on_map() to also display the twinkling star
+ * This is a redefinition of MapEntity::draw_on_map() to also draw the twinkling star
  * which has a special position.
  */
-void Crystal::display_on_map() {
+void Crystal::draw_on_map() {
 
-  // display the crystal
-  MapEntity::display_on_map();
+  if (!is_drawn()) {
+    return;
+  }
 
-  // display the star
-  if (is_displayed()) {
-    get_map().display_sprite(*star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
+  // draw the crystal
+  MapEntity::draw_on_map();
+
+  // draw the star
+  if (is_drawn()) {
+    get_map().draw_sprite(*star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
   }
 }
 

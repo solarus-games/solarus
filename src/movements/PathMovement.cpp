@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
  */
 #include "movements/PathMovement.h"
 #include "entities/MapEntity.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
@@ -44,7 +45,7 @@ const std::string PathMovement::elementary_moves[] = {
  * @param ignore_obstacles true to make the movement ignore obstacles
  * @param must_be_aligned true to snap the entity to the map grid before moving it
  */
-PathMovement::PathMovement(const std::string &path, int speed,
+PathMovement::PathMovement(const std::string& path, int speed,
     bool loop, bool ignore_obstacles, bool must_be_aligned):
 
   PixelMovement("", 0, false, ignore_obstacles),
@@ -68,12 +69,21 @@ PathMovement::~PathMovement() {
 }
 
 /**
+ * @brief Returns the path of this movement.
+ * @return the path
+ */
+const std::string& PathMovement::get_path() {
+
+  return initial_path;
+}
+
+/**
  * @brief Sets the path of this movement.
  * @param path the succession of basic moves
  * composing this movement (each character represents
  * a direction between '0' and '7')
  */
-void PathMovement::set_path(const std::string &path) {
+void PathMovement::set_path(const std::string& path) {
 
   this->initial_path = path;
   restart();
@@ -121,6 +131,16 @@ void PathMovement::set_loop(bool loop) {
 }
 
 /**
+ * @brief Returns whether the entity is snapped to the map grid before the
+ * path starts.
+ * @return true if the entity is made aligned to the grid
+ */
+bool PathMovement::get_snap_to_grid() {
+
+  return snap_to_grid;
+}
+
+/**
  * @brief Sets whether the entity is snapped to the map grid before the path starts.
  * @param snap_to_grid true to make the entity aligned to the grid
  */
@@ -130,12 +150,11 @@ void PathMovement::set_snap_to_grid(bool snap_to_grid) {
 }
 
 /**
- * @brief Sets the entity to be controlled by this movement object.
- * @param entity the entity to control
+ * @brief Notifies this movement that the object it controls has changed.
  */
-void PathMovement::set_entity(MapEntity *entity) {
+void PathMovement::notify_object_controlled() {
 
-  Movement::set_entity(entity);
+  PixelMovement::notify_object_controlled();
   restart();
 }
 
@@ -430,88 +449,10 @@ const std::string PathMovement::create_random_path() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - path
- * - speed
- * - loop
- * - ignore_obstacles
- * - snap_to_grid
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string PathMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "path") {
-    oss << initial_path;
-  }
-  else if (key == "speed") {
-    oss << speed;
-  }
-  else if (key == "loop") {
-    oss << loop;
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else if (key == "snap_to_grid") {
-    oss << snap_to_grid;
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of PathMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - path
- * - speed
- * - loop
- * - ignore_obstacles
- * - snap_to_grid
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void PathMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "path") {
-    std::string path;
-    iss >> path;
-    set_path(path);
-  }
-  else if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "loop") {
-    bool loop;
-    iss >> loop;
-    set_loop(loop);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else if (key == "snap_to_grid") {
-    bool snap_to_grid;
-    iss >> snap_to_grid;
-    set_snap_to_grid(snap_to_grid);
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of PathMovement: '" << key << "'");
-  }
+const std::string& PathMovement::get_lua_type_name() const {
+  return LuaContext::movement_path_module_name;
 }
 

@@ -1,0 +1,22 @@
+/**
+\page quest_map_data_file Map definition file
+
+The \c maps directory contains the full description and the script of each map.
+
+A map with id \c xx is defined with two files:
+- \c xx.dat: Definition of all entities of this map (tiles, enemies,
+  non-playing characters, chests, teletransporters, etc.).
+  This page will describe the syntax of this file.
+- \c xx.lua: Lua script of the map. It defines the dynamic events that happen
+  on your map at runtime, such as opening a door, making enemies appear,
+  moving a non-playing character, etc.
+  See the \ref lua_api_map "map API" page for more details about map scripts.
+
+Solarus Quest Editor fully supports the edition of maps.
+You should not have to edit map data files by hand unless you know what you
+are doing.
+
+\todo Write the new syntax specification of map data files.
+
+*/
+

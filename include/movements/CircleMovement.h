@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,50 +20,20 @@
 #include "Common.h"
 #include "movements/Movement.h"
 #include "lowlevel/Rectangle.h"
-#include "entities/EntityType.h"
 
 /**
  * @brief Movement that makes circles around a center.
  *
  * This movement is used by entities that makes a circle around a center point or another entity.
- * Properties:
- * - center_type
- * - center_name
- * - center_dx
- * - center_dy
- * - radius
- * - radius_speed
- * - direction
- * - initial_angle
- * - angle_speed
- * - max_rotations
- * - duration
- * - loop
- *
- * FIXME: center_type+center_name too complicated both for the user and for the source code
- * (specify an entity type and its name by a single string? "enemy:khotor", "npc:tom")
  */
 class CircleMovement: public Movement {
-
-  public:
-
-    /**
-     * @brief Possibles directions when making circles.
-     */
-    enum Direction {
-      COUNTER_CLOCKWISE,
-      CLOCKWISE
-    };
 
   private:
 
     // center of the circle
-    MapEntity *center_entity;                       /**< the entity to make circles around (NULL if only a point is used) */
+    MapEntity* center_entity;                       /**< the entity to make circles around (NULL if only a point is used) */
     Rectangle center_point;                         /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */
-
-    // used only by set_property()
-    EntityType center_type;                         /**< type of the entity to make circles around */
 
     // angle
     int current_angle;                              /**< current angle in the circle in degrees */
@@ -110,17 +80,17 @@ class CircleMovement: public Movement {
 
     // properties
     void set_center(const Rectangle &center_point);
-    void set_center(MapEntity *center_entity, int x = 0, int y = 0);
+    void set_center(MapEntity& center_entity, int x = 0, int y = 0);
     int get_radius();
     void set_radius(int radius);
     int get_radius_speed();
     void set_radius_speed(int radius_speed);
     int get_angle_speed();
     void set_angle_speed(int angle_speed);
-    int get_initial_angle();
-    void set_initial_angle(int initial_angle);
-    Direction get_direction();
-    void set_direction(Direction direction);
+    double get_initial_angle();
+    void set_initial_angle(double initial_angle);
+    bool is_clockwise();
+    void set_clockwise(bool clockwise);
     uint32_t get_duration();
     void set_duration(uint32_t duration);
     int get_max_rotations();
@@ -128,9 +98,7 @@ class CircleMovement: public Movement {
     uint32_t get_loop();
     void set_loop(uint32_t delay);
 
-    // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

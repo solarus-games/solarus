@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,40 +45,52 @@ public class Tile extends MapEntity {
      * @throws MapException if the tile is not valid
      */
     public Tile(Map map) throws MapException {
-	super(map, 0, 0);
-	this.tileset = map.getTileset();
-	this.layer = null;
+        super(map, 0, 0);
+        this.tileset = map.getTileset();
+        this.layer = null;
     }
 
     /**
-     * Sets a property specific to a tile.
-     * @param name name of the property
-     * @param value value of the property
+     * Creates a new tile from a dynamic tile.
+     * @param dynamicTile A dynamic tile to copy.
+     * @throws MapException if the tile is not valid.
      */
-    public void setProperty(String name, String value) throws MapException {
+    public Tile(DynamicTile dynamicTile) throws MapException {
+        this(dynamicTile.getMap());
+        setIntegerProperty("pattern", dynamicTile.getTilePatternId());
+        setLayer(dynamicTile.getLayer());
+        setPositionInMap(dynamicTile.getPositionInMap());
+        updateImageDescription();
+    }
 
-	super.setProperty(name, value);
+    /**
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
+     */
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
 
-	if (name.equals("tilePatternId")) {
-	    if (tileset == null) {
-		return;
-	    }
+        if (name.equals("pattern")) {
+            if (tileset == null) {
+                return;
+            }
 
-	    try {
-		TilePattern tilePattern = getTilePattern(); // get the tile pattern from the tileset
+            try {
+                TilePattern tilePattern = getTilePattern(); // get the tile pattern from the tileset
 
-		if (getWidth() == 0) {
-		    setSize(tilePattern.getWidth(), tilePattern.getHeight());
-		}
+                if (getWidth() == 0) {
+                    setSize(tilePattern.getWidth(), tilePattern.getHeight());
+                }
 
-		if (layer == null) {
-		    setLayer(tilePattern.getDefaultLayer());
-		}
-	    }
-	    catch (NoSuchElementException ex) {
-		throw new NoSuchTilePatternException(ex.getMessage());
-	    }
-	}
+                if (layer == null) {
+                    setLayer(tilePattern.getDefaultLayer());
+                }
+            }
+            catch (NoSuchElementException ex) {
+                throw new NoSuchTilePatternException(ex.getMessage());
+            }
+        }
     }
 
     /**
@@ -92,33 +104,33 @@ public class Tile extends MapEntity {
      */
     public void setTileset(Tileset tileset) throws NoSuchTilePatternException {
 
-	if (tileset != this.tileset) {
+        if (tileset != this.tileset) {
 
-	    int tilePatternId = getTilePatternId();
-	    try {
-		TilePattern newTilePattern = getTilePattern();
+            int tilePatternId = getTilePatternId();
+            try {
+                TilePattern newTilePattern = getTilePattern();
 
-		// if a tileset was already defined, check that the
-		// tile has the same properties
-		if (this.tileset != null) {
+                // if a tileset was already defined, check that the
+                // tile has the same properties
+                if (this.tileset != null) {
 
-		    TilePattern oldTilePattern = this.tileset.getTilePattern(tilePatternId);
+                    TilePattern oldTilePattern = this.tileset.getTilePattern(tilePatternId);
 
-		    if (!newTilePattern.equals(oldTilePattern)) {
-			throw new NoSuchTilePatternException("The tile pattern #" + tilePatternId + " is different in this tileset.");
-		    }
+                    if (!newTilePattern.equals(oldTilePattern)) {
+                        throw new NoSuchTilePatternException("The tile pattern #" + tilePatternId + " is different in this tileset.");
+                    }
 
-		    // update the size on the map if the size in the tileset has changed
-		    positionInMap.width = newTilePattern.getWidth() * getRepeatX();
-		    positionInMap.height = newTilePattern.getHeight() * getRepeatY();
-		}
+                    // update the size on the map if the size in the tileset has changed
+                    positionInMap.width = newTilePattern.getWidth() * getRepeatX();
+                    positionInMap.height = newTilePattern.getHeight() * getRepeatY();
+                }
 
-		this.tileset = tileset;
-	    }
-	    catch (NoSuchElementException e) {
-		throw new NoSuchTilePatternException("Unable to apply the tileset because the tile pattern #" + tilePatternId + " doesn't exist in this tileset.");
-	    }
-	}
+                this.tileset = tileset;
+            }
+            catch (NoSuchElementException e) {
+                throw new NoSuchTilePatternException("Unable to apply the tileset because the tile pattern #" + tilePatternId + " doesn't exist in this tileset.");
+            }
+        }
     }
 
     /**
@@ -126,7 +138,7 @@ public class Tile extends MapEntity {
      * @return the id of the tile pattern in the tileset.
      */
     public int getTilePatternId() {
-	return getIntegerProperty("tilePatternId");
+        return getIntegerProperty("pattern");
     }
 
     /**
@@ -134,7 +146,7 @@ public class Tile extends MapEntity {
      * @return the tile pattern in the tileset.
      */
     public TilePattern getTilePattern() {
-	return tileset.getTilePattern(getTilePatternId());
+        return tileset.getTilePattern(getTilePatternId());
     }
 
     /**
@@ -151,7 +163,17 @@ public class Tile extends MapEntity {
      * @return the tile's obstacle property
      */
     public Obstacle getObstacle() {
-	return getTilePattern().getObstacle();
+        return getTilePattern().getObstacle();
+    }
+
+    /**
+     * Returns whether this kind of entity is allowed to have a name.
+     * @return false.
+     */
+    public boolean canHaveName() {
+        // Tiles are not allowed to have a name because they are optimized away
+        // at runtime during the game.
+        return false;
     }
 
     /**
@@ -161,7 +183,7 @@ public class Tile extends MapEntity {
      * @return true
      */
     public boolean isResizable() {
-	return true;
+        return true;
     }
 
     /**
@@ -171,12 +193,12 @@ public class Tile extends MapEntity {
      */
     public Dimension getUnitarySize() {
 
-	if (tileset == null) { // special case when the tileset is not initialized yet
-	    return super.getUnitarySize();
-	}
+        if (tileset == null) { // special case when the tileset is not initialized yet
+            return super.getUnitarySize();
+        }
 
-	TilePattern tilePattern = getTilePattern();
-	return tilePattern.getSize();
+        TilePattern tilePattern = getTilePattern();
+        return tilePattern.getSize();
     }
 
     /**
@@ -184,7 +206,7 @@ public class Tile extends MapEntity {
      * @return the number of times the pattern is repeated on x
      */
     public int getRepeatX() {
-	return positionInMap.width / getUnitarySize().width;
+        return positionInMap.width / getUnitarySize().width;
     }
 
     /**
@@ -192,7 +214,7 @@ public class Tile extends MapEntity {
      * @return the number of times the pattern is repeated on y
      */
     public int getRepeatY() {
-	return positionInMap.height / getUnitarySize().height;
+        return positionInMap.height / getUnitarySize().height;
     }
 
     /**
@@ -204,56 +226,39 @@ public class Tile extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-	TilePattern tilePattern = getTilePattern();
+        TilePattern tilePattern = getTilePattern();
 
-	int x = getX();
-	int y = getY();
-	int repeatX = getRepeatX();
-	int repeatY = getRepeatY();
-	int width = tilePattern.getWidth();
-	int height = tilePattern.getHeight();
+        int x = getX();
+        int y = getY();
+        int repeatX = getRepeatX();
+        int repeatY = getRepeatY();
+        int width = tilePattern.getWidth();
+        int height = tilePattern.getHeight();
 
-	for (int i = 0; i < repeatY; i++) {
-	    for (int j = 0; j < repeatX; j++) {
-		tilePattern.paint(g, tileset, x, y, zoom, showTransparency);
-		x += width;
-	    }
-	    y += height;
-	    x = getX();
-	}
+        for (int i = 0; i < repeatY; i++) {
+            for (int j = 0; j < repeatX; j++) {
+                tilePattern.paint(g, tileset, x, y, zoom, showTransparency);
+                x += width;
+            }
+            y += height;
+            x = getX();
+        }
     }
 
     /**
      * Sets the default values of all properties specific to the current entity type.
      */
-    public void setPropertiesDefaultValues() throws MapException {
-	setProperty("tilePatternId", -1);
+    public void createProperties() throws MapException {
+        createIntegerProperty("pattern", false, null);
     }
 
     /**
      * Creates a dynamic tile with the same properties than this static tile.
      * @return the dynamic tile corresponding to this static tile
-     * @throws ZSDXException if the dynamic tile could not be created
+     * @throws QuestEditorException if the dynamic tile could not be created
      */
-    public final DynamicTile createDynamicTile() throws ZSDXException {
-
-	String description = toString();
-
-	// add the name and the 'enabled' boolean
-	int index = description.lastIndexOf('\t');
-	StringBuffer buff = new StringBuffer(description.substring(0, index));
-	buff.append('\t');
-	buff.append(getDefaultNamePrefix());
-	buff.append('\t');
-	buff.append(getTilePatternId());
-	buff.append('\t');
-	buff.append('1');
-
-	// change the entity type
-	index = description.indexOf('\t');
-	description = EntityType.DYNAMIC_TILE.getIndex() + buff.substring(index);
-
-	return (DynamicTile) createFromString(map, description); 
+    public final DynamicTile createDynamicTile() throws QuestEditorException {
+        return new DynamicTile(this);
     }
 }
 

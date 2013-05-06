@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #include "movements/StraightMovement.h"
 #include "lowlevel/Geometry.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 #include "Map.h"
 
 /**
@@ -82,8 +82,8 @@ void Hero::SwordTappingState::update() {
 
     const Rectangle& facing_point = hero.get_facing_point();
 
-    if (!get_controls().is_key_pressed(GameControls::SWORD)
-        || get_controls().get_wanted_direction8() != get_sprites().get_animation_direction8()
+    if (!get_commands().is_command_pressed(GameCommands::ATTACK)
+        || get_commands().get_wanted_direction8() != get_sprites().get_animation_direction8()
         || !get_map().test_collision_with_obstacles(hero.get_layer(), facing_point.get_x(), facing_point.get_y(), hero)) {
       // the sword key has been released, the player has moved or the obstacle is gone
 
@@ -99,7 +99,7 @@ void Hero::SwordTappingState::update() {
       if (get_sprites().get_current_frame() == 3 && now >= next_sound_date) {
 
         Detector* facing_entity = hero.get_facing_entity();
-        SoundId sound_id;
+        std::string sound_id;
         if (facing_entity != NULL) {
           sound_id = facing_entity->get_sword_tapping_sound();
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,9 +34,9 @@ class Color {
 
   private:
 
-    static SDL_Surface *format_surface;		/**< a dummy surface used to get a pixel format */
-    uint32_t internal_value;			/**< the SDL 32-bit value representing this color */
-    SDL_Color internal_color;			/**< the SDL color encapsulated */
+    static SDL_Surface *format_surface;	  /**< a dummy surface used to get a pixel format */
+    uint32_t internal_value;              /**< the SDL 32-bit value representing this color */
+    SDL_Color internal_color;             /**< the SDL color encapsulated */
 
     // some predefined colors
     static Color black;
@@ -48,7 +48,8 @@ class Color {
     static Color magenta;
     static Color cyan;
 
-    uint32_t get_internal_value();
+    Color(uint32_t internal_value);
+    uint32_t get_internal_value() const;
     SDL_Color* get_internal_color();
 
   public:
@@ -68,6 +69,8 @@ class Color {
     Color();
     Color(const Color &other);
     Color(int r, int g, int b);
+
+    void get_components(int& r, int& g, int& b) const;
 };
 
 /**

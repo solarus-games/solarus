@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,15 +20,16 @@
 #include "DialogBox.h"
 #include "Sprite.h"
 #include "Camera.h"
-#include "lua/MapScript.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Music.h"
+#include "lowlevel/Debug.h"
 #include "entities/Ground.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
 #include "entities/MapEntities.h"
-#include "entities/DestinationPoint.h"
+#include "entities/Destination.h"
 #include "entities/Detector.h"
 #include "entities/Hero.h"
 
@@ -39,12 +40,14 @@ MapLoader Map::map_loader;
  * @param id id of the map, used to determine the description file
  * and the script file of the map
  */
-Map::Map(MapId id):
+Map::Map(const std::string& id):
   game(NULL),
   id(id),
   tileset(NULL),
+  floor(NO_FLOOR),
+  loaded(false),
   started(false),
-  destination_point_name(""),
+  destination_name(""),
   entities(NULL),
   suspended(false),
   light(1) {
@@ -56,6 +59,9 @@ Map::Map(MapId id):
  */
 Map::~Map() {
 
+  Debug::check_assertion(!is_started(),
+      "Deleting a map that is still running. Call Map::leave() before.");
+
   if (is_loaded()) {
     unload();
   }
@@ -65,7 +71,7 @@ Map::~Map() {
  * @brief Returns the id of the map.
  * @return the map id
  */
-MapId Map::get_id() {
+const std::string& Map::get_id() {
   return id;
 }
 
@@ -81,7 +87,7 @@ Tileset& Map::get_tileset() {
  * @brief Returns the id of the tileset associated to this map.
  * @return the id of the tileset
  */
-TilesetId Map::get_tileset_id() {
+const std::string& Map::get_tileset_id() {
   // note that if set_tileset() has been called, tileset_id != tileset->get_id()
   return tileset_id;
 }
@@ -95,29 +101,31 @@ TilesetId Map::get_tileset_id() {
  * This function keeps the tiles of the previous tileset and loads the
  * image of the new tileset.
  *
- * @param tileset_id of the new tileset
+ * @param tileset_id Id of the new tileset.
  */
-void Map::set_tileset(TilesetId tileset_id) {
+void Map::set_tileset(const std::string& tileset_id) {
 
   Tileset new_tileset(tileset_id);
   new_tileset.load();
   tileset->set_images(new_tileset);
-}
-
-/**
- * @brief Returns the script of this map.
- * @return the map script
- */
-MapScript& Map::get_script() {
-  return *script;
+  get_entities().notify_tileset_changed();
+  this->tileset_id = tileset_id;
 }
 
 /**
  * @brief Returns the world where this map is.
- * @return 0 if this map is outside, -1 if it is inside, 1 to 20 if it is in a dungeon
+ * @return The world name.
  */
-int Map::get_world_number() {
+const std::string& Map::get_world() {
   return world;
+}
+
+/**
+ * @brief Returns the world where this map is.
+ * @param world The world name.
+ */
+void Map::set_world(const std::string& world) {
+  this->world = world;
 }
 
 /**
@@ -125,7 +133,7 @@ int Map::get_world_number() {
  * @return true if this map is in a dungeon
  */
 bool Map::is_in_dungeon() {
-  return get_world_number() > 0;
+  return get_world().substr(0, 8) == "dungeon_";
 }
 
 /**
@@ -133,71 +141,47 @@ bool Map::is_in_dungeon() {
  * @return true if this map is in the oustide world
  */
 bool Map::is_in_outside_world() {
-  return get_world_number() == 0;
+  return get_world() == "outside_world";
+}
+
+/**
+ * @brief Returns whether this map has a floor.
+ *
+ * This function returns true if the floor is not nil.
+ *
+ * @return true if there is a floor.
+ */
+bool Map::has_floor() {
+  return get_floor() != NO_FLOOR;
 }
 
 /**
  * @brief Returns the floor where this map is.
- *
- * The value returned can be:
- * - a floor number between -16 and 15,
- * - -100 to indicate that there is no floor,
- * - -99 to indicate an unknown floor (the '?' image will be displayed).
- *
- * @return the floor
+ * @return The floor or FLOOR_NIL.
  */
 int Map::get_floor() {
   return floor;
 }
 
 /**
- * @brief Returns whether this map has a floor.
- *
- * This function returns true if get_floor() is not -100.
- *
- * @return true if there is a floor
+ * @brief Sets the floor where this map is.
+ * @param floor The floor or FLOOR_NIL.
  */
-bool Map::has_floor() {
-  return get_floor() != -100;
+void Map::set_floor(int floor) {
+  this->floor = floor;
 }
 
 /**
  * @brief Returns the location of this map in its context.
  *
- * The location returned is:
- * - in the outside world: location of the map's top-left corner
- *   relative to the whole world map
- * - in the inside world: location of the map relative to the whole world map
- * - in a dungeon: location of the map's top-left corner relative to the whole floor
+ * The location returned is the location of the map's top-left corner
+ * relative to its context (its floor or its world).
  * The width and height fields correspond to the map size.
  *
- * @return the location of this map in its context.
+ * @return The location of this map in its context.
  */
 const Rectangle& Map::get_location() {
   return location;
-}
-
-/**
- * @brief Returns the index of the variable where the number of small keys for this
- * map is saved.
- *
- * -1 indicates that the small keys are not enabled on this map.
- *
- * @return the small keys savegame variable
- */
-int Map::get_small_keys_variable() {
-  return small_keys_variable;
-}
-
-/**
- * @brief Returns whether the small keys are enabled in this map.
- *
- * This function returns true if get_small_keys_variable() is not -1. 
- *
- * @return true if the small keys are enabled in this map
- */
-bool Map::has_small_keys() {
-  return get_small_keys_variable() != -1;
 }
 
 /**
@@ -243,7 +227,7 @@ int Map::get_height8() {
  * @return true if the map is loaded, false otherwise
  */
 bool Map::is_loaded() {
-  return this->entities != NULL;
+  return loaded;
 }
 
 /**
@@ -255,16 +239,24 @@ bool Map::is_loaded() {
  */
 void Map::unload() {
 
-  delete tileset;
-  delete visible_surface;
-  delete entities;
-  entities = NULL;
+  if (is_loaded()) {
+    delete tileset;
+    tileset = NULL;
+    visible_surface->decrement_refcount();
+    if (visible_surface->get_refcount() == 0) {
+      delete visible_surface;
+    }
+    visible_surface = NULL;
+    delete entities;
+    entities = NULL;
+    delete camera;
+    camera = NULL;
 
-  delete script;
-  delete camera;
-
-  for (int i = 0; i < 4; i++) {
-    delete dark_surfaces[i];
+    for (int i = 0; i < 4; i++) {
+      delete dark_surfaces[i];
+      dark_surfaces[i] = NULL;
+    }
+    loaded = false;
   }
 }
 
@@ -278,6 +270,7 @@ void Map::unload() {
 void Map::load(Game &game) {
 
   this->visible_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
+  this->visible_surface->increment_refcount();
   entities = new MapEntities(game, *this);
 
   // read the map file
@@ -288,6 +281,19 @@ void Map::load(Game &game) {
   dark_surfaces[1] = new Surface("entities/dark1.png");
   dark_surfaces[2] = new Surface("entities/dark2.png");
   dark_surfaces[3] = new Surface("entities/dark3.png");
+
+  loaded = true;
+}
+
+/**
+ * @brief Returns the shared Lua context.
+ *
+ * This function should not be called before the map is loaded into a game.
+ *
+ * @return The Lua context where all scripts are run.
+ */
+LuaContext& Map::get_lua_context() {
+  return game->get_lua_context();
 }
 
 /**
@@ -314,20 +320,41 @@ MapEntities& Map::get_entities() {
 
 /**
  * @brief Sets the current destination point of the map.
- * @param destination_point_name name of the destination point you want to use,
+ * @param destination_name name of the destination point you want to use,
  * or "_same" to keep the hero's coordinates, or "_side0", "_side1", "_side2"
  * or "_side3" to place the hero on a side of the map
  */
-void Map::set_destination_point(const std::string &destination_point_name) {
-  this->destination_point_name = destination_point_name;
+void Map::set_destination(const std::string &destination_name) {
+  this->destination_name = destination_name;
 }
 
 /**
- * @brief Returns the destination point index specified by the last call to set_destination_point().
+ * @brief Returns the destination point index specified by the last call to set_destination().
  * @return the name of the destination point previously set
  */
-const std::string& Map::get_destination_point_name() {
-  return destination_point_name;
+const std::string& Map::get_destination_name() {
+  return destination_name;
+}
+
+/**
+ * @brief Returns the destination point specified by the last call to
+ * set_destination().
+ *
+ * Returns NULL if the destination point was set to a special value ("_same",
+ * "_side0", "_side1", "_side2" or "_side3")
+ *
+ * @return The destination point previously set, or NULL.
+ */
+Destination* Map::get_destination() {
+
+  if (destination_name == "_same"
+      || destination_name.substr(0,5) == "_side") {
+    return NULL;
+  }
+  MapEntity* entity = get_entities().get_entity(destination_name);
+  Debug::check_assertion(entity->get_type() == DESTINATION,
+      "This entity is not a destination");
+  return static_cast<Destination*>(entity);
 }
 
 /**
@@ -337,8 +364,8 @@ const std::string& Map::get_destination_point_name() {
  */
 int Map::get_destination_side() {
 
-  if (destination_point_name.substr(0,5) == "_side") {
-    int destination_side = destination_point_name[5] - '0';
+  if (destination_name.substr(0,5) == "_side") {
+    int destination_side = destination_name[5] - '0';
     return destination_side;
   }
   return -1;
@@ -353,8 +380,8 @@ int Map::get_destination_side() {
  *
  * @return the surface where the map is displayed
  */
-Surface* Map::get_visible_surface() {
-  return visible_surface;
+Surface& Map::get_visible_surface() {
+  return *visible_surface;
 }
 
 /**
@@ -439,7 +466,18 @@ void Map::set_suspended(bool suspended) {
   this->suspended = suspended;
 
   entities->set_suspended(suspended);
-  script->set_suspended(suspended);
+  get_lua_context().notify_map_suspended(*this, suspended);
+}
+
+/**
+ * @brief This function is called when a low-level input event occurs on this map.
+ * @param event the event to handle
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool Map::notify_input(InputEvent& event) {
+
+  bool handled = get_lua_context().map_on_input(*this, event);
+  return handled;
 }
 
 /**
@@ -453,7 +491,7 @@ void Map::update() {
   // update the elements
   TilePattern::update();
   entities->update();
-  script->update();
+  get_lua_context().map_on_update(*this);
   camera->update();  // update the camera after the entities since this might
                      // be the last update() call for this map */
   set_clipping_rectangle(clipping_rectangle);
@@ -475,32 +513,37 @@ void Map::check_suspended() {
 }
 
 /**
- * @brief Displays the map with all its entities on the screen.
+ * @brief Draws the map with all its entities on the screen.
  */
-void Map::display() {
+void Map::draw() {
 
-  // background
-  display_background();
+  if (is_loaded()) {
+    // background
+    draw_background();
 
-  // display all entities (including the hero)
-  entities->display();
+    // draw all entities (including the hero)
+    entities->draw();
 
-  // foreground
-  display_foreground();
+    // foreground
+    draw_foreground();
+
+    // Lua
+    get_lua_context().map_on_draw(*this, *visible_surface);
+  }
 }
 
 /**
- * @brief Displays the background of the map.
+ * @brief Draws the background of the map.
  */
-void Map::display_background() {
+void Map::draw_background() {
 
   visible_surface->fill_with_color(tileset->get_background_color());
 }
 
 /**
- * @brief Displays the foreground of the map.
+ * @brief Draws the foreground of the map.
  */
-void Map::display_foreground() {
+void Map::draw_foreground() {
 
   if (light == 0) {
     // no light
@@ -512,7 +555,7 @@ void Map::display_foreground() {
     int y = 240 - hero_position.get_y() + camera_position.get_y();
     Rectangle src_position(x, y, SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
     Surface& dark_surface = *dark_surfaces[hero_direction];
-    dark_surface.blit(src_position, visible_surface);
+    dark_surface.draw_region(src_position, *visible_surface);
 
     // dark_surface may be too small if the screen size is greater
     // than 320*240: add black bars.
@@ -558,28 +601,31 @@ void Map::display_foreground() {
 }
 
 /**
- * @brief Displays a sprite on the map surface.
- * @param sprite the sprite to display
+ * @brief Draws a sprite on the map surface.
+ * @param sprite the sprite to draw
  * @param xy coordinates of the sprite's origin point in the map
  * (the size of the rectangle is ignored)
  */
-void Map::display_sprite(Sprite &sprite, const Rectangle &xy) {
+void Map::draw_sprite(Sprite &sprite, const Rectangle &xy) {
 
-  display_sprite(sprite, xy.get_x(), xy.get_y());
+  draw_sprite(sprite, xy.get_x(), xy.get_y());
 }
 
 /**
- * @brief Displays a sprite on the map surface.
- * @param sprite the sprite to display
+ * @brief Draws a sprite on the map surface.
+ * @param sprite the sprite to draw
  * @param x x coordinate of the sprite's origin point in the map
  * @param y y coordinate of the sprite's origin point in the map
  */
-void Map::display_sprite(Sprite &sprite, int x, int y) {
+void Map::draw_sprite(Sprite& sprite, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
-  const Rectangle &camera_position = get_camera_position();
-  sprite.display(visible_surface, x - camera_position.get_x(), y - camera_position.get_y());
+  const Rectangle& camera_position = get_camera_position();
+  sprite.draw(*visible_surface,
+      x - camera_position.get_x(),
+      y - camera_position.get_y()
+  );
 }
 
 /**
@@ -592,14 +638,10 @@ void Map::start() {
 
   this->started = true;
   this->visible_surface->set_opacity(255);
-  this->script->start(destination_point_name);
-  this->entities->notify_map_started();
-  get_game().get_equipment().set_map(*this);
 
-  if (!script->has_played_music()) {
-    // play the default music of the map, unless the script decided to play another music
-    Music::play(music_id);
-  }
+  Music::play(music_id);
+  this->entities->notify_map_started();
+  get_lua_context().run_map(*this, get_destination());
 }
 
 /**
@@ -609,6 +651,7 @@ void Map::start() {
  */
 void Map::leave() {
   started = false;
+  get_lua_context().map_on_finished(*this);
 }
 
 /**
@@ -631,7 +674,7 @@ void Map::notify_opening_transition_finished() {
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();
   entities->notify_map_opening_transition_finished();
-  get_script().event_map_opening_transition_finished(destination_point_name);
+  get_lua_context().map_on_opening_transition_finished(*this, get_destination());
 }
 
 /**
@@ -1019,5 +1062,13 @@ void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
       (*i)->check_collision(entity, sprite);
     }
   }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Map::get_lua_type_name() const {
+  return LuaContext::map_module_name;
 }
 

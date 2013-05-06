@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,6 +21,9 @@ import java.io.*;
 import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.*;
+import org.luaj.vm2.*;
+import org.luaj.vm2.lib.*;
+import org.luaj.vm2.compiler.*;
 import org.solarus.editor.*;
 
 /**
@@ -39,11 +42,6 @@ public class Tileset extends Observable {
      * Id of the tileset.
      */
     private String tilesetId;
-
-    /**
-     * Name of the tileset.
-     */
-    private String name;
 
     /**
      * Background color (default is black).
@@ -77,7 +75,7 @@ public class Tileset extends Observable {
      * Tells whether the tileset has changed since the last save.
      * True if there has been no modifications, false otherwise.
      */
-    private boolean isSaved; 
+    private boolean isSaved;
 
     /**
      * Id of the tile pattern currently selected by the user.
@@ -99,42 +97,49 @@ public class Tileset extends Observable {
      */
     private boolean isNewTilePatternAreaOverlapping;
 
-    /**
-     * Creates a new tileset.
-     * @throws ZSDXException if the resource list could not be updated after the map creation
-     */
-    public Tileset() throws ZSDXException {
-	super();
-
-	this.name = "New tileset";
-	this.backgroundColor = Color.BLACK;
-	this.isSaved = false;
-	this.maxId = 0;
-	this.selectedTilePatternId = 0; // none
-	this.tilePatterns = new TreeMap<Integer,TilePattern>();
-
-	// compute an id and a name for this tileset
-	this.name = "New tileset";
-	Resource tilesetResource = Project.getResource(ResourceType.TILESET);
-	this.tilesetId = tilesetResource.computeNewId();
-	reloadImage();
-
-	setSaved(true);
-
-	setChanged();
-	notifyObservers();
+    // TODO store this directly in the Obstacle enum
+    private static final HashMap<String, Obstacle> obstaclesByName =
+        new HashMap<String, Obstacle>();
+    static {
+        obstaclesByName.put("traversable", Obstacle.NONE);
+        obstaclesByName.put("wall", Obstacle.OBSTACLE);
+        obstaclesByName.put("wall_top_right", Obstacle.TOP_RIGHT);
+        obstaclesByName.put("wall_top_left", Obstacle.TOP_LEFT);
+        obstaclesByName.put("wall_bottom_left", Obstacle.BOTTOM_LEFT);
+        obstaclesByName.put("wall_bottom_right", Obstacle.BOTTOM_RIGHT);
+        obstaclesByName.put("empty", Obstacle.EMPTY);
+        obstaclesByName.put("water_top_right", Obstacle.TOP_RIGHT_WATER);
+        obstaclesByName.put("water_top_left", Obstacle.TOP_LEFT_WATER);
+        obstaclesByName.put("water_bottom_left", Obstacle.BOTTOM_LEFT_WATER);
+        obstaclesByName.put("water_bottom_right", Obstacle.BOTTOM_RIGHT_WATER);
+        obstaclesByName.put("deep_water", Obstacle.DEEP_WATER);
+        obstaclesByName.put("shallow_water", Obstacle.SHALLOW_WATER);
+        obstaclesByName.put("hole", Obstacle.HOLE);
+        obstaclesByName.put("ladder", Obstacle.LADDER);
+        obstaclesByName.put("prickles", Obstacle.PRICKLE);
+        obstaclesByName.put("lava", Obstacle.LAVA);
     }
 
     /**
-     * Loads an existing tileset.
-     * @param tilesetId id of the tileset to load
-     * @throws ZSDXException if the tileset could not be loaded
+     * Creates or loads a tileset.
+     * @param tilesetId Id of the tileset to create (may be a new one or an existing one).
+     * @throws QuestEditorException if the tileset could not be loaded
      */
-    public Tileset(String tilesetId) throws ZSDXException {
-	this.selectedTilePatternId = 0; // none
-	this.tilePatterns = new TreeMap<Integer,TilePattern>();
-	this.tilesetId = tilesetId;
-	load();
+    public Tileset(String tilesetId) throws QuestEditorException {
+
+        if (!isValidId(tilesetId)) {
+            throw new MapException("Invalid tileset ID: '" + tilesetId + "'");
+        }
+
+        this.backgroundColor = Color.BLACK;
+        this.isSaved = false;
+        this.maxId = 0;
+        this.selectedTilePatternId = 0; // none
+        this.tilePatterns = new TreeMap<Integer,TilePattern>();
+        this.tilesetId = tilesetId;
+
+        load();
+        setSaved(true);
     }
 
     /**
@@ -142,33 +147,66 @@ public class Tileset extends Observable {
      * @return the id of the tileset
      */
     public String getId() {
-	return tilesetId;
+        return tilesetId;
     }
 
     /**
-     * Returns the name of the tileset.
-     * @return the name of the tileset, for example "Light World"
+     * @brief Returns whether a string is a valid tileset id.
+     * @param mapId The id to check.
+     * @return true if this is legal.
      */
-    public String getName() {
-	return name;
+    public static boolean isValidId(String tilesetId) {
+
+        if (tilesetId.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < tilesetId.length(); i++) {
+            char c = tilesetId.charAt(i);
+            if (!Character.isLetterOrDigit(c) && c != '_') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
+    /**
+     * Returns a string representation of this tileset.
+     * @return The name of the tileset.
+     */
+    @Override
     public String toString() {
+        return getName();
+    }
+
+    /**
+     * Returns the tileset name.
+     * @return The human name of the tileset.
+     */
+    public String getName() {
+        Resource mapResource = Project.getResource(ResourceType.TILESET);
+        String name = tilesetId;
+        
+        try {
+            name = mapResource.getElementName(tilesetId);
+        }
+        catch (QuestEditorException ex) {
+            // Cannot happen: the tileset id must be valid.
+            ex.printStackTrace();
+        }
         return name;
     }
 
     /**
      * Changes the name of the tileset.
-     * @param name the name of the tileset, for example "Light World"
+     * @param name New human-readable name of the tileset.
      */
-    public void setName(String name) {
+    public void setName(String name) throws QuestEditorException {
 
-	if (!name.equals(this.name)) {
-	    this.name = name;
-	    setSaved(false);
-	    setChanged();
-	    notifyObservers();
-	}
+        if (!name.equals(getName())) {
+            Project.renameResourceElement(ResourceType.TILESET, tilesetId, name);
+        }
     }
 
     /**
@@ -176,7 +214,7 @@ public class Tileset extends Observable {
      * @return the background color
      */
     public Color getBackgroundColor() {
-	return backgroundColor;
+        return backgroundColor;
     }
 
     /**
@@ -184,40 +222,39 @@ public class Tileset extends Observable {
      * @param backgroundColor the new background color
      */
     public void setBackgroundColor(Color backgroundColor) {
-	this.backgroundColor = backgroundColor;
-	setSaved(false);
-	setChanged();
-	notifyObservers();
+        this.backgroundColor = backgroundColor;
+        setSaved(false);
+        setChanged();
+        notifyObservers();
     }
 
     /**
      * Reloads the tileset's image.
-     * This function is called when ZSDX root path is changed.
      * The observers are notified with the new image as parameter.
      */
     public void reloadImage() {
-	try {
-	    scaledImages = new BufferedImage[4];
+        try {
+            scaledImages = new BufferedImage[4];
 
-	    image = ImageIO.read(getImageFile());
-	    int width = image.getWidth(null);
-	    int height = image.getHeight(null);
+            image = ImageIO.read(getImageFile());
+            int width = image.getWidth(null);
+            int height = image.getHeight(null);
 
-	    scaledImages[0] = createScaledImage(image, width / 4, height / 4);
+            scaledImages[0] = createScaledImage(image, width / 4, height / 4);
 
-	    scaledImages[1] = createScaledImage(image, width / 2, height / 2);
+            scaledImages[1] = createScaledImage(image, width / 2, height / 2);
 
-	    scaledImages[2] = image;
+            scaledImages[2] = image;
 
-	    scaledImages[3] = createScaledImage(image, width * 2, height * 2);
-	}
-	catch (IOException e) {
-	    image = null;
-	    scaledImages = null;
-	}
+            scaledImages[3] = createScaledImage(image, width * 2, height * 2);
+        }
+        catch (IOException e) {
+            image = null;
+            scaledImages = null;
+        }
 
-	setChanged();
-	notifyObservers(image);
+        setChanged();
+        notifyObservers(image);
     }
 
     private BufferedImage createScaledImage(BufferedImage image, int width, int height) {
@@ -225,70 +262,68 @@ public class Tileset extends Observable {
         Graphics2D g = scaledImage.createGraphics();
         g.drawImage(image, 0, 0, width, height, null);
         g.dispose();
-	return scaledImage;
+        return scaledImage;
     }
-    
+
     /**
      * Returns the tileset's image file.
      * @return the image file of the tileset
      */
     public File getImageFile() {
-	return Project.getTilesetImageFile(tilesetId);
+        return Project.getTilesetImageFile(tilesetId);
     }
 
     /**
      * Returns the tileset's image, previously loaded by reloadImage().
-     * @return the tileset's image
+     * @return the tileset's image, or null if the image is not loaded
      */
     public BufferedImage getImage() {
-// 	if (image == null) {
-// 	    reloadImage();
-// 	}
-	return image;
+        return image;
     }
 
     /**
      * Returns a scaled version of the tileset image, previously loaded by reloadImage().
-     * @param zoom an integer representing the scale (0: 25%, 1: 50%, 2: 100%, 3: 200%) 
-     * @return the scaled tileset image
+     * @param zoom an integer representing the scale (0: 25%, 1: 50%, 2: 100%, 3: 200%)
+     * @return the scaled tileset image, or null if the image is not loaded
      */
     public BufferedImage getScaledImage(int zoom) {
-// 	if (doubleImage == null) {
-// 	    reloadImage();
-// 	}
-	return scaledImages[zoom];
+        return scaledImages == null ? null : scaledImages[zoom];
     }
 
     /**
      * Returns a scaled version of the tileset image, previously loaded by reloadImage().
-     * @param zoom the scale (0.25, 0.5, 1 or 2) 
-     * @return the scaled tileset image
+     * @param zoom the scale (0.25, 0.5, 1 or 2)
+     * @return the scaled tileset image, or null if the image is not loaded
      */
     public BufferedImage getScaledImage(double zoom) {
 
-	int index;
-	if (zoom == 0.25) {
-	    index = 0;
-	}
-	else if (zoom == 0.5) {
-	    index = 1;
-	}
-	else if (zoom == 1.0) {
-	    index = 2;
-	}
-	else {
-	    index = 3;
-	}
+        if (scaledImages == null) {
+            return null;
+        }
 
-	return scaledImages[index];
+        int index;
+        if (zoom == 0.25) {
+            index = 0;
+        }
+        else if (zoom == 0.5) {
+            index = 1;
+        }
+        else if (zoom == 1.0) {
+            index = 2;
+        }
+        else {
+            index = 3;
+        }
+
+        return scaledImages[index];
     }
 
     /**
      * Returns the 200% scaled version of the tileset's image, previously loaded by reloadImage().
-     * @return the tileset's image in 200%
+     * @return the tileset's image in 200%, or null if the image is not loaded
      */
     public BufferedImage getDoubleImage() {
-	return scaledImages[3];
+        return scaledImages == null ? null : scaledImages[3];
     }
 
     /**
@@ -296,7 +331,7 @@ public class Tileset extends Observable {
      * @return the number of tile patterns
      */
     public int getNbTilePatterns() {
-	return tilePatterns.size();
+        return tilePatterns.size();
     }
 
     /**
@@ -304,7 +339,7 @@ public class Tileset extends Observable {
      * @return the ids of the tile patterns
      */
     public Set<Integer> getTilePatternIds() {
-	return tilePatterns.keySet();
+        return tilePatterns.keySet();
     }
 
     /**
@@ -312,7 +347,7 @@ public class Tileset extends Observable {
      * @return the tile patterns
      */
     public Collection<TilePattern> getTilePatterns() {
-	return tilePatterns.values();
+        return tilePatterns.values();
     }
 
     /**
@@ -323,13 +358,13 @@ public class Tileset extends Observable {
      */
     public TilePattern getTilePattern(int id) throws NoSuchElementException {
 
-	TilePattern tilePattern = tilePatterns.get(id);
+        TilePattern tilePattern = tilePatterns.get(id);
 
-	if (tilePattern == null) {
-	    throw new NoSuchElementException("There is no tile pattern with id #" + id + " in the tileset.");
-	}
+        if (tilePattern == null) {
+            throw new NoSuchElementException("There is no tile pattern with id #" + id + " in the tileset.");
+        }
 
-	return tilePattern;
+        return tilePattern;
     }
 
     /**
@@ -341,14 +376,14 @@ public class Tileset extends Observable {
      */
     public int getTilePatternIdAt(int x, int y) {
 
-	for (int id: getTilePatternIds()) {
-	    Rectangle patternRectangle = getTilePattern(id).getPositionInTileset();
-	    if (patternRectangle.contains(x, y)) {
-		return id; // a tile pattern was found at this point
-	    }
-	}
+        for (int id: getTilePatternIds()) {
+            Rectangle patternRectangle = getTilePattern(id).getPositionInTileset();
+            if (patternRectangle.contains(x, y)) {
+                return id; // a tile pattern was found at this point
+            }
+        }
 
-	return 0; // no tile pattern found
+        return 0; // no tile pattern found
     }
 
     /**
@@ -357,7 +392,7 @@ public class Tileset extends Observable {
      * or -1 if a new tile pattern is selected
      */
     public int getSelectedTilePatternId() {
-	return selectedTilePatternId;
+        return selectedTilePatternId;
     }
 
     /**
@@ -367,16 +402,16 @@ public class Tileset extends Observable {
      * tile pattern with this id or -1 if a new tile pattern is selected
      */
     public void setSelectedTilePatternId(int selectedTilePatternId) {
-	if (selectedTilePatternId != this.selectedTilePatternId) {
-	    this.selectedTilePatternId = selectedTilePatternId;
+        if (selectedTilePatternId != this.selectedTilePatternId) {
+            this.selectedTilePatternId = selectedTilePatternId;
 
-	    if (selectedTilePatternId != getNbTilePatterns()) {
-		newTilePatternArea = null;
-	    }
+            if (selectedTilePatternId != getNbTilePatterns()) {
+                newTilePatternArea = null;
+            }
 
-	    setChanged();
-	    notifyObservers();
-	}
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -384,7 +419,7 @@ public class Tileset extends Observable {
      * This is equivalent to call setSelectedTileId(0).
      */
     public void unselectTilePattern() {
-	setSelectedTilePatternId(0);
+        setSelectedTilePatternId(0);
     }
 
     /**
@@ -392,7 +427,7 @@ public class Tileset extends Observable {
      * This is equivalent to call setSelectedTilePatternId(-1).
      */
     public void startSelectingNewTilePattern() {
-	setSelectedTilePatternId(-1);
+        setSelectedTilePatternId(-1);
     }
 
     /**
@@ -401,12 +436,12 @@ public class Tileset extends Observable {
      * tile pattern or if doesn't exist yet
      */
     public TilePattern getSelectedTilePattern() {
-	if (selectedTilePatternId > 0) {
-	    return getTilePattern(selectedTilePatternId);
-	}
-	else {
-	    return null;
-	}	
+        if (selectedTilePatternId > 0) {
+            return getTilePattern(selectedTilePatternId);
+        }
+        else {
+            return null;
+        }
     }
 
     /**
@@ -415,7 +450,7 @@ public class Tileset extends Observable {
      * i.e. if getSelectedTilePatternId() == -1
      */
     public boolean isSelectingNewTilePattern() {
-	return selectedTilePatternId == -1;
+        return selectedTilePatternId == -1;
     }
 
     /**
@@ -426,18 +461,18 @@ public class Tileset extends Observable {
      * @return rank of this tile pattern, in [0, getNbTilePatterns()[.
      */
     public int idToRank(int id) {
-	
-	// count the tiles until we find the right one
-	int rank = 0;
-	for (int idFound: getTilePatternIds()) {
-	    
-	    if (idFound == id) {
-		return rank;
-	    }
-	    rank++;
-	}
 
-	throw new NoSuchElementException("There is no tile pattern at id " + id + " in the tileset.");
+        // count the tiles until we find the right one
+        int rank = 0;
+        for (int idFound: getTilePatternIds()) {
+
+            if (idFound == id) {
+                return rank;
+            }
+            rank++;
+        }
+
+        throw new NoSuchElementException("There is no tile pattern at id " + id + " in the tileset.");
     }
 
     /**
@@ -448,18 +483,18 @@ public class Tileset extends Observable {
      * @return the id of the tile pattern with this rank
      */
     public int rankToId(int rank) {
-	
-	// count rank tiles
-	int i = 0;
-	for (int currentId: getTilePatternIds()) {
-	    
-	    if (i == rank) {
-		return currentId;
-	    }
-	    i++;
-	}
 
-	throw new NoSuchElementException("There is no tile pattern with rank " + rank + " in the tileset.");
+        // count rank tiles
+        int i = 0;
+        for (int currentId: getTilePatternIds()) {
+
+            if (i == rank) {
+                return currentId;
+            }
+            i++;
+        }
+
+        throw new NoSuchElementException("There is no tile pattern with rank " + rank + " in the tileset.");
     }
 
     /**
@@ -467,32 +502,32 @@ public class Tileset extends Observable {
      * @return position of the new tile pattern, or null if there no new tile pattern selected
      */
     public Rectangle getNewTilePatternArea() {
-	return newTilePatternArea;
+        return newTilePatternArea;
     }
 
     /**
      * Changes the position of the tile pattern the user is creating.
-     * If the specified area is the same than before, nothing is done. 
+     * If the specified area is the same than before, nothing is done.
      * @param newTileArea position of the new tile, or null if there is currently no new tile selected
      */
     public void setNewTilePatternArea(Rectangle newTilePatternArea) {
-	if (!newTilePatternArea.equals(this.newTilePatternArea)) {
+        if (!newTilePatternArea.equals(this.newTilePatternArea)) {
 
-	    this.newTilePatternArea = newTilePatternArea;
-	    
-	    // determine whether or not the new tile pattern area is overlapping an existing tile pattern
-	    isNewTilePatternAreaOverlapping = false;
-	    for (TilePattern pattern: getTilePatterns()) {
+            this.newTilePatternArea = newTilePatternArea;
 
-		if (pattern.getPositionInTileset().intersects(newTilePatternArea)) {
-		    isNewTilePatternAreaOverlapping = true;
-		    break;
-		}
-	    }
-	    
-	    setChanged();
-	    notifyObservers();
-	}
+            // determine whether or not the new tile pattern area is overlapping an existing tile pattern
+            isNewTilePatternAreaOverlapping = false;
+            for (TilePattern pattern: getTilePatterns()) {
+
+                if (pattern.getPositionInTileset().intersects(newTilePatternArea)) {
+                    isNewTilePatternAreaOverlapping = true;
+                    break;
+                }
+            }
+
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -501,7 +536,7 @@ public class Tileset extends Observable {
      * @return true if the new tile pattern area is overlapping an existing tile pattern, false otherwise
      */
     public boolean isNewTilePatternAreaOverlapping() {
-	return isNewTilePatternAreaOverlapping;
+        return isNewTilePatternAreaOverlapping;
     }
 
     /**
@@ -513,19 +548,19 @@ public class Tileset extends Observable {
      */
     public void addTilePattern(Obstacle obstacle) throws TilesetException {
 
-	if (isSelectingNewTilePattern() && !isNewTilePatternAreaOverlapping) {
-	    TilePattern tilePattern = new TilePattern(newTilePatternArea, Layer.LOW, obstacle);
+        if (isSelectingNewTilePattern() && !isNewTilePatternAreaOverlapping) {
+            TilePattern tilePattern = new TilePattern(newTilePatternArea, Layer.LOW, obstacle);
 
-	    maxId++;
-	    tilePatterns.put(maxId, tilePattern);
+            maxId++;
+            tilePatterns.put(maxId, tilePattern);
 
-	    setSelectedTilePatternId(maxId);
-	    
-	    isSaved = false;
-	    
-	    setChanged();
-	    notifyObservers(tilePattern); // indicates that a tile pattern has been created
-	}
+            setSelectedTilePatternId(maxId);
+
+            isSaved = false;
+
+            setChanged();
+            notifyObservers(tilePattern); // indicates that a tile pattern has been created
+        }
     }
 
     /**
@@ -534,7 +569,7 @@ public class Tileset extends Observable {
      * @param tilePattern the tile pattern to add
      */
     private void addTilePattern(int tilePatternId, TilePattern tilePattern) {
-	tilePatterns.put(tilePatternId, tilePattern);
+        tilePatterns.put(tilePatternId, tilePattern);
     }
 
     /**
@@ -542,17 +577,17 @@ public class Tileset extends Observable {
      * The oberservers are notified with the removed tile pattern as parameter.
      */
     public void removeTilePattern() {
-	Integer id = new Integer(getSelectedTilePatternId());
+        Integer id = new Integer(getSelectedTilePatternId());
 
-	if (id > 0) {
-	    tilePatterns.remove(id);
-	    setSelectedTilePatternId(0);
+        if (id > 0) {
+            tilePatterns.remove(id);
+            setSelectedTilePatternId(0);
 
-	    isSaved = false;
+            isSaved = false;
 
-	    setChanged();
-	    notifyObservers(id); // indicate that the tile has been removed
-	}
+            setChanged();
+            notifyObservers(id); // indicate that the tile has been removed
+        }
     }
 
     /**
@@ -560,123 +595,358 @@ public class Tileset extends Observable {
      * @return true if there has been no modifications, false otherwise
      */
     public boolean isSaved() {
-	return isSaved;
+        return isSaved;
     }
 
     /**
      * Sets whether the tileset has changed since the last save.
-     * @param isSaved true if there has been no modifications, false otherwise
+     * @param isSaved true if there has been no modifications.
      */
     public void setSaved(boolean isSaved) {
-	this.isSaved = isSaved;
+        this.isSaved = isSaved;
     }
-    
+
     /**
      * Loads the tileset from its file.
-     * @throws ZSDXException if the file could not be read
+     * @throws QuestEditorException if the file could not be read.
      */
-    public void load() throws ZSDXException {
+    public void load() throws QuestEditorException {
 
-	int lineNumber = 0;
-	try {
+        try {
+            File tilesetFile = Project.getTilesetFile(tilesetId);
+            LuaC.install();
+            LuaTable environment = LuaValue.tableOf();
 
-	    // get the tileset name in the game resource database
-	    Resource tilesetResource = Project.getResource(ResourceType.TILESET);
-	    setName(tilesetResource.getElementName(tilesetId));
+            environment.set("background_color", new BackgroundColorFunction());
+            environment.set("tile_pattern", new TilePatternFunction());
 
-	    File tilesetFile = Project.getTilesetFile(tilesetId);
-	    BufferedReader in = new BufferedReader(new FileReader(tilesetFile));
+            LuaFunction code = LoadState.load(new FileInputStream(tilesetFile),
+                "tileset", environment);
+            code.call();
+        }
+        catch (IOException ex) {
+            throw new QuestEditorException(ex.getMessage());
+        }
+        catch (LuaError ex) {
+            throw new QuestEditorException("Error when loading the tileset file: " + ex.getMessage());
+        }
 
-	    // read the tileset general info: "r g b"
-	    String line = in.readLine();
-
-	    if (line == null) {
-		throw new ZSDXException("The tileset file is empty");
-	    }
-
-	    lineNumber++;
-	    StringTokenizer tokenizer = new StringTokenizer(line);
-
-	    int r = Integer.parseInt(tokenizer.nextToken());
-	    int g = Integer.parseInt(tokenizer.nextToken());
-	    int b = Integer.parseInt(tokenizer.nextToken());
-
-	    setBackgroundColor(new Color(r, g, b));
-
-	    // read the tiles of the tileset
-	    line = in.readLine();
-	    while (line != null) {
-		lineNumber++;
-
-		int tabIndex = line.indexOf('\t');
-		int id = Integer.parseInt(line.substring(0, tabIndex));
-		TilePattern tilePattern = new TilePattern(line.substring(tabIndex + 1));
-		addTilePattern(id, tilePattern);
-
-		if (id > maxId) {
-		    maxId = id;
-		}
-
-		line = in.readLine();
-	    }
-
-	    in.close();
-
-	    setSaved(true);
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Line " + lineNumber + ": Integer expected");
-	}
-	catch (ZSDXException ex) {
-	    throw new ZSDXException("Line " + lineNumber + ": " + ex.getMessage());
-	}
-	catch (IOException ex) {
-	    throw new ZSDXException(ex.getMessage());
-	}
-
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
      * Saves the tileset into its file.
-     * @throws ZSDXException if the file could not be written
+     * @throws QuestEditorException if the file could not be written
      */
-    public void save() throws ZSDXException {
+    public void save() throws QuestEditorException {
 
-	try {
+        int lastId = -1;
+        try {
 
-	    // open the tileset file
-	    File tilesetFile = Project.getTilesetFile(tilesetId);
-	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
+            // Open the tileset file.
+            File tilesetFile = Project.getTilesetFile(tilesetId);
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
 
-	    // print the tileset general info: "r g b"
-	    out.print(backgroundColor.getRed());
-	    out.print('\t');
-	    out.print(backgroundColor.getGreen());
-	    out.print('\t');
-	    out.print(backgroundColor.getBlue());
-	    out.println();
+            // Background color.
+            out.println("background_color{ "
+                + backgroundColor.getRed()
+                + ", "
+                + backgroundColor.getGreen()
+                + ", "
+                + backgroundColor.getBlue()
+                + " }");
 
-	    // print the tile patterns
-	    for (int id: getTilePatternIds()) {
-		out.print(id);
-		out.print('\t');
-		out.print(getTilePattern(id).toString());
-		out.println();
-	    }
+            // Tile patterns.
+            for (int id: getTilePatternIds()) {
+                lastId = id;
+                TilePattern tilePattern = getTilePattern(id);
 
-	    out.close();
+                TilePattern.Animation animation = tilePattern.getAnimation();
+                int width = tilePattern.getWidth();
+                int height = tilePattern.getHeight();
+                String x;
+                String y;
+                if (tilePattern.isMultiFrame()) {
+                    int x1 = tilePattern.getX();
+                    int x2 = x1;
+                    int x3 = x1;
+                    int y1 = tilePattern.getY();
+                    int y2 = y1;
+                    int y3 = y1;
+                    TilePattern.AnimationSeparation separation = tilePattern.getAnimationSeparation();
+                    if (separation == TilePattern.AnimationSeparation.HORIZONTAL) {
+                        x2 = x1 + width;
+                        x3 = x2 + width;
+                    }
+                    else {
+                        y2 = y1 + height;
+                        y3 = y2 + height;
+                    }
+                    if (animation == TilePattern.Animation.SEQUENCE_012
+                        || animation == TilePattern.Animation.SEQUENCE_012_PARALLAX) {
+                        x = "{ " + x1 + ", " + x2 + ", " + x3 + " }";
+                        y = "{ " + y1 + ", " + y2 + ", " + y3 + " }";
+                    }
+                    else {
+                        x = "{ " + x1 + ", " + x2 + ", " + x3 + ", " + x2 + " }";
+                        y = "{ " + y1 + ", " + y2 + ", " + y3 + ", " + y2 + " }";
+                    }
+                }
+                else {
+                    x = Integer.toString(tilePattern.getX());
+                    y = Integer.toString(tilePattern.getY());
+                }
 
-	    setSaved(true);
+                // TODO store the scrolling string in the enum
+                String scrolling = null;
+                if (animation == TilePattern.Animation.SELF_SCROLLING) {
+                    scrolling = "self";
+                }
+                else if (animation == TilePattern.Animation.PARALLAX_SCROLLING
+                    || animation == TilePattern.Animation.SEQUENCE_012_PARALLAX
+                    || animation == TilePattern.Animation.SEQUENCE_0121_PARALLAX) {
+                    scrolling = "parallax";
+                }
 
-	    // also update the tileset name in the global resource list
-	    Resource tilesetResource = Project.getResource(ResourceType.TILESET);
-	    tilesetResource.setElementName(tilesetId, name);
-	    Project.getResourceDatabase().save();
-	}
-	catch (IOException ex) {
-	    throw new ZSDXException(ex.getMessage());
-	}
+                out.println("tile_pattern{");
+                out.println("  id = " + id + ",");
+                out.println("  ground = \"" + getObstacleName(tilePattern.getObstacle()) + "\",");
+                out.println("  default_layer = " + tilePattern.getDefaultLayer().getId() + ",");
+                out.println("  x = " + x + ",");
+                out.println("  y = " + y + ",");
+                out.println("  width = " + width + ",");
+                out.println("  height = " + height + ",");
+                if (scrolling != null) {
+                  out.println("  scrolling = \"" + scrolling + "\",");
+                }
+                out.println("}");
+                out.println();
+            }
+
+            out.close();
+
+            setSaved(true);
+        }
+        catch (Exception ex) {
+            String message = "";
+            if (lastId != -1) {
+                message = "Failed to save tile '" + lastId + "': ";
+            }
+            message += ex.getMessage();
+            throw new QuestEditorException(message);
+        }
+    }
+
+    /**
+     * @brief Turns a Lua obstacle name into an Obstacle enum value.
+     * @param name The Lua name.
+     * @return The corresponding enum value or null.
+     */
+    private Obstacle getObstacleByName(String name) throws QuestEditorException {
+
+        Obstacle obstacle = obstaclesByName.get(name);
+        if (obstacle == null) {
+            throw new QuestEditorException("Invalid obstacle name: '" + name);
+        }
+        return obstacle;
+    }
+
+    /**
+     * @brief Turns an obstacle enum value into a Lua obstacle nam.
+     * @param obstacle The obstacle value.
+     * @return The corresponding name.
+     */
+    private String getObstacleName(Obstacle obstacle) throws QuestEditorException {
+
+        for (java.util.Map.Entry<String, Obstacle> keyValue: obstaclesByName.entrySet()) {
+
+            if (keyValue.getValue() == obstacle) {
+                return keyValue.getKey();
+            }
+        }
+        throw new QuestEditorException("No name for obstacle " + obstacle);
+    }
+
+    /**
+     * @brief Lua function background_color() called by the tileset data file.
+     */
+    private class BackgroundColorFunction extends OneArgFunction {
+
+        public LuaValue call(LuaValue arg) {
+
+            LuaTable colorTable = arg.checktable();
+            setBackgroundColor(new Color(
+                  colorTable.get(1).checkint(),
+                  colorTable.get(2).checkint(),
+                  colorTable.get(3).checkint()
+            ));
+            return LuaValue.NIL;
+        }
+    }
+
+    /**
+     * @brief Lua function tile_pattern() called by the tileset data file.
+     */
+    private class TilePatternFunction extends OneArgFunction {
+
+        public LuaValue call(LuaValue arg) {
+
+            int id = -1;
+            Layer defaultLayer = null;
+            int width = 0;
+            int height = 0;
+            int[] x = { -1, -1, -1, -1 };
+            int[] y = { -1, -1, -1, -1 };
+            Obstacle ground = null;
+            String scrolling = null;
+            int i = 0;
+            int j = 0;
+
+            try {
+                LuaTable tilePatternTable = arg.checktable();
+                LuaValue key = LuaValue.NIL;
+                while (true) {
+                    Varargs keyValue = tilePatternTable.next(key);
+                    key = keyValue.arg1();
+                    if (key.isnil()) {
+                        break;
+                    }
+                    LuaValue value = keyValue.arg(2);
+
+                    String keyString = key.checkjstring();
+                    if (keyString.equals("id")) {
+                        id = value.checkint();
+                    }
+                    else if (keyString.equals("ground")) {
+                        String groundName = value.checkjstring();
+                        ground = getObstacleByName(groundName);
+                    }
+                    else if (keyString.equals("default_layer")) {
+                        defaultLayer = Layer.get(value.checkint());
+                    }
+                    else if (keyString.equals("x")) {
+                        if (value.isint()) {
+                            // Single frame.
+                            x[0] = value.checkint();
+                            i = 1;
+                        }
+                        else {
+                            // Multi-frame.
+                            LuaTable xTable = value.checktable();
+                            LuaValue current;
+                            do {
+                                current = xTable.get(i + 1);
+                                if (current.isint()) {
+                                    x[i] = current.checkint();
+                                    i++;
+                                }
+                            } while (i < 4 && current.isint());
+                        }
+                    }
+                    else if (keyString.equals("y")) {
+                        if (value.isint()) {
+                            // Single frame.
+                            y[0] = value.checkint();
+                            j = 1;
+                        }
+                        else {
+                            // Multi-frame.
+                            LuaTable yTable = value.checktable();
+                            LuaValue current;
+                            do {
+                                current = yTable.get(j + 1);
+                                if (current.isint()) {
+                                    y[j] = current.checkint();
+                                    j++;
+                                }
+                            } while (j < 4 && current.isint());
+                        }
+                    }
+                    else if (keyString.equals("width")) {
+                        width = value.checkint();
+                    }
+                    else if (keyString.equals("height")) {
+                        height = value.checkint();
+                    }
+                    else if (keyString.equals("scrolling")) {
+                        scrolling = value.checkjstring();
+                    }
+                    else {
+                        throw new LuaError("Unknown key '" + keyString + "'");
+                    }
+                }
+
+                // TODO check data
+
+                // Create the tile pattern.
+                Rectangle positionInTileset = new Rectangle();
+                positionInTileset.x = x[0];
+                positionInTileset.y = y[0];
+                positionInTileset.width = width;
+                positionInTileset.height = height;
+                TilePattern.AnimationSeparation separation = TilePattern.AnimationSeparation.HORIZONTAL;
+                TilePattern.Animation animation = TilePattern.Animation.NONE;
+                if (i > 1) {
+                    // Multi-frame.
+                    if (x[0] == x[1]) {
+                        separation = TilePattern.AnimationSeparation.VERTICAL;
+                        positionInTileset.height *= 3;
+                    }
+                    else {
+                        separation = TilePattern.AnimationSeparation.HORIZONTAL;
+                        positionInTileset.width *= 3;
+                    }
+                    if (scrolling != null && scrolling.equals("parallax")) {
+                        animation = (i == 3) ?
+                          TilePattern.Animation.SEQUENCE_012_PARALLAX :
+                          TilePattern.Animation.SEQUENCE_0121_PARALLAX;
+                    }
+                    else {
+                        animation = (i == 3) ?
+                          TilePattern.Animation.SEQUENCE_012 :
+                          TilePattern.Animation.SEQUENCE_0121;
+                    }
+                }
+                else {
+                    // Single frame.
+                    if (scrolling == null) {
+                        animation = TilePattern.Animation.NONE;
+                    }
+                    else if (scrolling.equals("parallax")) {
+                        animation = TilePattern.Animation.PARALLAX_SCROLLING;
+                    }
+                    else if (scrolling.equals("self")) {
+                        animation = TilePattern.Animation.SELF_SCROLLING;
+                    }
+                }
+
+                    // Add the tile pattern.
+                    addTilePattern(id, new TilePattern(
+                          positionInTileset,
+                          defaultLayer,
+                          ground,
+                          animation,
+                          separation
+                    ));
+                }
+            catch (Exception ex) {
+                System.out.println("exception");
+                String message = "";
+                if (id != -1) {
+                    message += "Failed to load tile '" + id + "': ";
+                }
+                message += ex.getMessage();
+                throw new LuaError(message);
+            }
+
+            if (id > maxId) {
+                maxId = id;
+            }
+            setSaved(true);
+
+            return LuaValue.NIL;
+        }
     }
 }
+

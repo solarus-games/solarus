@@ -1,0 +1,185 @@
+/**
+\page quest_language_dialogs Translated dialogs
+
+Dialogs are all messages shown to the player in the dialog box during the game.
+Some dialogs are triggered by the engine and others by your quest.
+They are all defined in the file
+\c languages/xx/text/dialogs.dat, where \c xx is a language code
+defined in
+\ref quest_language_list_file "languages.dat"
+(e.g. \c "en" or \c "fr").
+
+When translating the game, you have to translate this \c dialogs.dat
+file as well as the
+\ref quest_language_strings "strings file" (\c strings.dat).
+Have a look at the \ref translation page if you are interested in translating
+the game (and you should also contact us).
+
+\c dialogs.dat is a text file encoded in UTF-8.
+We specify here its full syntax,
+with instructions for quest makers and translators.
+
+Lines starting with the characters '--' are comments and are ignored by the
+engine. Empty lines are also ignored.
+Quest makers should put many comments to explain where each
+dialog is used and give instructions to translators if needed.
+
+The definition of a dialog starts with \c dialog{ and ends with
+\c }.
+Inside the braces, the properties of the dialog are specified.
+Properties are declared with the syntax \c key = value and
+separated with commas. It is allowed to have an extra comma after
+the last property. String values should be enclosed within
+double quotes, except when specified otherwise.
+Each dialog must have the following properties:
+
+- \c id (string): A name identifying the dialog.
+  The id allows the engine and the scripts to refer to the dialog whenever they
+  want to display it.
+  If you are translating dialogs, you must never translate the id.
+
+- \c text (multi-line string): Contents of this dialog.
+  If you are translating dialogs, \c text is the only property to translate.
+  The text has usually several lines.
+  The text should be enclosed between \c [[ and \c ]], which is
+  the notation for multiline strings.
+  In the game, it will be displayed in groups of 3 lines because the dialog box
+  has space for 3 lines. Each group of 3 lines is called a message.
+  There is no automatic line breaking: you have to break your lines explicitly.
+  A line shoud not exceed the maximum number of characters that fit in the
+  dialog box. This limit depends on the font used.
+  To make sure you don't exceed the limit, you 
+  should use a text editor with a fixed width font and that shows the column
+  number.
+  Hint: you can also put a special comment (outside the string!) whose only
+  purpose is to show the maximum line size.
+
+- \c skip (string, optional): Defines what happens when the player
+  tries to skip the dialog (by pressing the attack command).
+  There are three possible values:
+  - \c "none" (default): The message cannot be skipped.
+  - \c "current": If the command is pressed, the current group of 3 lines
+    is immediately shown (instead of being displayed gradually, letter by
+    letter).
+    This allows to get to the next message faster.
+  - \c "all": The whole dialog can be skipped.
+    The dialog box is immediataly closed and
+    the subsequent groups of 3 lines will not be displayed at all.
+    Use this only for non-essential dialogs that can be read again later.
+  The value of \c skip takes effect applies until the dialog box is closed.
+
+- \c icon (number, optional): displays a small image of 16x16 pixels in the
+  dialog box.
+  The value is a number that identifies the position of the icon in the icon
+  image file \c sprites/hud/dialog_icons.png.
+  The icon (if any) is displayed on the left of the dialog.
+  This takes space:
+  when an icon is shown, the whole text is shifted of 32 pixels to the right
+  in the dialog box. Therefore, there is less space for characters.
+  The icon remains displayed in the next message, until its value
+  is changed or the dialog box is closed. A value of -1
+  means that you want to remove the icon.
+
+- \c next (string, optional): Id of the next dialog to display.
+  If this value is not set, the dialog box is closed
+  when the current dialog finishes.
+
+  During the last message (group of 3 lines) of a dialog,
+  if \c next is set, then an arrow is displayed on the
+  bottom of the dialog box to indicate that there will
+  be at least another message after this one.
+  If \c next is not set, then this arrow is replaced
+  by a square to indicate that this message is the last one.
+  A message having a question (see below) is always displayed 
+  with an arrow.
+
+  Sometimes, even if a dialog is finished, you may
+  want to show an arrow.
+  This is typically the case when you know that another
+  dialog will start immediately, but you don't know which one yet
+  (a script will decide at the last moment). In this very specific
+  case, you can set an empty string (\c "") as the value of \c next
+  to indicate that the dialog will be followed by another one,
+  unknown for now.
+  This will display the arrow instead of the square, but everything
+  else works exactly as if the value \c next was not set.
+
+- \c question (boolean, optional): If set to \c true, the last message
+  (group of 3 lines) of the dialog will be displayed as a question
+  with two choices.
+  The first line of the message is considered as the question
+  and the two other lines are the two possible answers.
+  A cursor lets the player choose its answer. The cursor takes space:
+  when there is a question, the whole text is shifted of 32 pixels to the right
+  in the dialog box. Therefore, there is less space for characters.
+  It is possible to have both a question and an icon: in this case, you have
+  even less space for the text.
+
+- \c next2 (string, optional): If there is a question, you can define this
+  value \c next2. \c next specifies the message to show when the first answer
+  is selected. \c next2 specifies the message to show when the second answer
+  is selected.
+  As for \c next, if \c next2 is unspecified and the player chooses
+  the second answer, the sequence stops and the dialog box is closed.
+
+There exists special characters that you can put in the text of a
+message:
+- \c $0: Makes a break of one second in the letter scrolling.
+- \c $1: Sets the letter scrolling speed to slow.
+- \c $2: Sets the letter scrolling speed to medium.
+- \c $3: Sets the letter scrolling speed to fast (default).
+  Note that the letter scrolling speed applies until the dialog box is closed.
+- \c $v: Inserts in the text some value that is only known at runtime
+  (for example the player's name or some money reward won in a mini-game).
+  The \c $v sequence is substituted by the appropriate value. The value
+  has to be specified at runtime by the quest programmer using the Lua API
+  (see \ref lua_api_map_set_dialog_variable "map:set_dialog_variable()").
+
+Here is an small example of dialog file.
+
+\verbatim
+dialog{
+  id = "wise_man",
+  skip = "current",
+  question = true,
+  next = "wise_man.thanks",
+  next2 = "wise_man.insisting",
+  text = [[
+I can feel courage in
+you, $v.
+Do you think you can
+protect the Princess?
+Definitely!
+No way
+  ]],
+}
+
+dialog{
+  id = "wise_man.insisting",
+  question = true,
+  next = "wise_man.thanks",
+  next2 = "wise_man.insisting",
+  text = [[
+$v, I beg you.
+You are the only one
+one able to protect
+our kingdom...
+Sure
+No way
+  ]],
+}
+
+dialog{
+  id = "wise_man.thanks",
+  text = [[
+I knew I could count on
+your immense bravery.
+  ]],
+}
+\endverbatim
+
+\remark This syntax of the dialog file is actually valid Lua.
+  The engine internally uses Lua to parse it.
+
+*/
+

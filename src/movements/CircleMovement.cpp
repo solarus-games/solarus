@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/CircleMovement.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
@@ -31,7 +32,6 @@ CircleMovement::CircleMovement(bool ignore_obstacles):
 
   Movement(ignore_obstacles),
   center_entity(NULL),
-  center_type(ENEMY),
   current_angle(0),
   initial_angle(0),
   angle_increment(1),
@@ -56,6 +56,12 @@ CircleMovement::CircleMovement(bool ignore_obstacles):
  */
 CircleMovement::~CircleMovement() {
 
+  if (this->center_entity != NULL) {
+    this->center_entity->decrement_refcount();
+    if (this->center_entity->get_refcount() == 0) {
+      delete this->center_entity;
+    }
+  }
 }
 
 /**
@@ -65,7 +71,14 @@ CircleMovement::~CircleMovement() {
  *
  * @param center_point center of the circles to make
  */
-void CircleMovement::set_center(const Rectangle &center_point) {
+void CircleMovement::set_center(const Rectangle& center_point) {
+
+  if (this->center_entity != NULL) {
+    this->center_entity->decrement_refcount();
+    if (this->center_entity->get_refcount() == 0) {
+      delete this->center_entity;
+    }
+  }
 
   this->center_entity = NULL;
   this->center_point = center_point;
@@ -81,11 +94,17 @@ void CircleMovement::set_center(const Rectangle &center_point) {
  * @param x x coordinate of where the center should be placed relative to the entity's origin
  * @param y y coordinate of where the center should be placed relative to the entity's origin
  */
-void CircleMovement::set_center(MapEntity *center_entity, int x, int y) {
+void CircleMovement::set_center(MapEntity& center_entity, int x, int y) {
 
-  Debug::check_assertion(center_entity != NULL,  "The center entity is NULL");
+  if (this->center_entity != NULL) {
+    this->center_entity->decrement_refcount();
+    if (this->center_entity->get_refcount() == 0) {
+      delete this->center_entity;
+    }
+  }
 
-  this->center_entity = center_entity;
+  this->center_entity = &center_entity;
+  this->center_entity->increment_refcount();
   this->center_point.set_xy(x, y);
   recompute_position();
 }
@@ -175,40 +194,42 @@ void CircleMovement::set_angle_speed(int angle_speed) {
 
 /**
  * @brief Returns the angle from where the first circle starts.
- * @return the angle in degrees
+ * @return the angle in radians
  */
-int CircleMovement::get_initial_angle() {
-  return initial_angle;
+double CircleMovement::get_initial_angle() {
+
+  return Geometry::degrees_to_radians(initial_angle);
 }
 
 /**
  * @brief Sets the angle from where the first circle starts.
- * @param initial_angle angle in degrees
+ * @param initial_angle angle in radians
  */
-void CircleMovement::set_initial_angle(int initial_angle) {
+void CircleMovement::set_initial_angle(double initial_angle) {
 
-  Debug::check_assertion(initial_angle >= 0 && initial_angle < 360,
+  Debug::check_assertion(initial_angle >= 0 && initial_angle < Geometry::TWO_PI,
       StringConcat() << "Invalid initial angle: " << initial_angle);
 
-  this->initial_angle = initial_angle;
+  // convert to degrees (everything works in degrees in this class)
+  this->initial_angle = Geometry::radians_to_degrees(initial_angle);
 }
 
 /**
- * @brief Returns the direction of the circles;
- * @return CLOCKWISE or COUNTER_CLOCKWISE
+ * @brief Returns the direction of the circles.
+ * @return true if circles are clockwise
  */
-CircleMovement::Direction CircleMovement::get_direction() {
+bool CircleMovement::is_clockwise() {
 
-  return angle_increment > 0 ? COUNTER_CLOCKWISE : CLOCKWISE;
+  return angle_increment < 0;
 }
 
 /**
- * @brief Sets the direction of the circles.
- * @param direction CLOCKWISE or COUNTER_CLOCKWISE 
+ * @brief Sets the direction of circles.
+ * @param clockwise true to make clockwise circles
  */
-void CircleMovement::set_direction(Direction direction) {
+void CircleMovement::set_clockwise(bool clockwise) {
 
-  this->angle_increment = (direction == CLOCKWISE) ? -1 : 1;
+  this->angle_increment = clockwise ? -1 : 1;
 }
 
 /**
@@ -221,6 +242,7 @@ void CircleMovement::set_direction(Direction direction) {
  * @return duration of the movement in milliseconds, (0 means infinite)
  */
 uint32_t CircleMovement::get_duration() {
+
   return duration;
 }
 
@@ -245,7 +267,7 @@ void CircleMovement::set_duration(uint32_t duration) {
  * @brief Returns the number of rotations of the movement.
  *
  * When this number of rotations is reached, the movement stops.
- * Note that is the radius changes gradually, the movement will continue
+ * Note that if the radius changes gradually, the movement will continue
  * for a while until the radius reaches zero.
  *
  * @return the number of rotations to make (0 means infinite rotations)
@@ -299,6 +321,12 @@ void CircleMovement::set_loop(uint32_t delay) {
 void CircleMovement::update() {
 
   Movement::update();
+
+  if (center_entity != NULL && center_entity->is_being_removed()) {
+    set_center(Rectangle(
+          center_entity->get_x() + center_point.get_x(),
+          center_entity->get_y() + center_point.get_y()));
+  }
 
   if (is_suspended()) {
     return;
@@ -447,160 +475,10 @@ void CircleMovement::stop() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - center_type
- * - center_name
- * - center_dx
- * - center_dy
- * - radius
- * - radius_speed
- * - direction
- * - initial_angle
- * - angle_speed
- * - max_rotations
- * - duration
- * - loop
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string CircleMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "center_type") {
-    oss << ((center_entity != NULL) ? center_entity->get_type() : -1);
-  }
-  else if (key == "center_name") {
-    oss << ((center_entity != NULL) ? center_entity->get_name() : "");
-  }
-  else if (key == "center_dx") {
-    oss << center_point.get_x();
-  }
-  else if (key == "center_dy") {
-    oss << center_point.get_y();
-  }
-  else if (key == "radius_speed") {
-    oss << get_radius_speed();
-  }
-  else if (key == "radius") {
-    oss << get_radius();
-  }
-  else if (key == "direction") {
-    oss << get_direction();
-  }
-  else if (key == "initial_angle") {
-    oss << get_initial_angle();
-  }
-  else if (key == "angle_speed") {
-    oss << get_angle_speed();
-  }
-  else if (key == "max_rotations") {
-    oss << get_max_rotations();
-  }
-  else if (key == "duration") {
-    oss << get_duration();
-  }
-  else if (key == "loop") {
-    oss << get_loop();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of CircleMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - center_type
- * - center_name
- * - center_dx
- * - center_dy
- * - radius
- * - radius_speed
- * - direction
- * - initial_angle
- * - angle_speed
- * - max_rotations
- * - duration
- * - loop
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void CircleMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "center_type") {
-    int center_type;
-    iss >> center_type;
-    this->center_type = EntityType(center_type);
-  }
-  else if (key == "center_name") {
-    std::string center_name;
-    iss >> center_name;
-    MapEntities& entities = get_entity()->get_map().get_entities();
-    MapEntity* entity = entities.get_entity(center_type, center_name);
-    set_center(entity, 0, 0);
-  }
-  else if (key == "center_dx") {
-    int dx;
-    iss >> dx;
-    set_center(center_entity, dx, center_point.get_y());
-  }
-  else if (key == "center_dy") {
-    int dy;
-    iss >> dy;
-    set_center(center_entity, center_point.get_x(), dy);
-  }
-  else if (key == "radius") {
-    int radius;
-    iss >> radius;
-    set_radius(radius);
-  }
-  else if (key == "radius_speed") {
-    int radius_speed;
-    iss >> radius_speed;
-    set_radius_speed(radius_speed);
-  }
-  else if (key == "direction") {
-    int direction;
-    iss >> direction;
-    set_direction(Direction(direction));
-  }
-  else if (key == "initial_angle") {
-    int initial_angle;
-    iss >> initial_angle;
-    set_initial_angle(initial_angle);
-  }
-  else if (key == "angle_speed") {
-    int angle_speed;
-    iss >> angle_speed;
-    set_angle_speed(angle_speed);
-  }
-  else if (key == "max_rotations") {
-    int max_rotations;
-    iss >> max_rotations;
-    set_max_rotations(max_rotations);
-  }
-  else if (key == "duration") {
-    uint32_t duration;
-    iss >> duration;
-    set_duration(duration);
-  }
-  else if (key == "loop") {
-    uint32_t loop;
-    iss >> loop;
-    set_loop(loop);
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of CircleMovement: '" << key << "'");
-  }
+const std::string& CircleMovement::get_lua_type_name() const {
+  return LuaContext::movement_circle_module_name;
 }
 

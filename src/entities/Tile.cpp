@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,31 +31,10 @@
  * @param tile_pattern_id id of the tile pattern
  */
 Tile::Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id):
-  MapEntity(layer, x, y, width, height), tile_pattern_id(tile_pattern_id), tile_pattern(NULL) {
+  MapEntity(layer, x, y, width, height),
+  tile_pattern_id(tile_pattern_id),
+  tile_pattern(NULL) {
 
-}
-
-/**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Tile::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
-
-  int width, height, tile_pattern_id;
-
-  FileTools::read(is, width);
-  FileTools::read(is, height);
-  FileTools::read(is, tile_pattern_id);
-
-  return new Tile(layer, x, y, width, height, tile_pattern_id);
 }
 
 /**
@@ -87,46 +66,42 @@ void Tile::set_map(Map& map) {
 }
 
 /**
- * @brief Displays the tile on the map.
+ * @brief Returns whether this entity is drawn at its position on the map.
+ * @return true if this entity is drawn where it is located.
  */
-void Tile::display_on_map() {
-
-  display(get_map().get_visible_surface(), get_map().get_camera_position());
+bool Tile::is_drawn_at_its_position() {
+  return tile_pattern->is_drawn_at_its_position();
 }
 
 /**
- * @brief Displays the tile on the specified surface.
+ * @brief Draws the tile on the map.
+ */
+void Tile::draw_on_map() {
+
+  if (!is_drawn()) {
+    return;
+  }
+
+  // Note that the tiles are also optimized for drawing.
+  // This function is called at each frame only if the tile is in an
+  // animated region. Otherwise, tiles are drawn once when loading the map.
+  draw(get_map().get_visible_surface(), get_map().get_camera_position());
+}
+
+/**
+ * @brief Draws the tile on the specified surface.
  * @param dst_surface the destination surface
  * @param viewport coordinates of the top-left corner of dst_surface
  * relative to the map
  */
-void Tile::display(Surface* dst_surface, const Rectangle& viewport) {
+void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
 
-  Rectangle dst(0, 0);
+  Rectangle dst_position(get_top_left_x() - viewport.get_x(),
+      get_top_left_y() - viewport.get_y(),
+      get_width(), get_height());
 
-  int limit_x = get_top_left_x() - viewport.get_x() + get_width();
-  int limit_y = get_top_left_y() - viewport.get_y() + get_height();
-
-  for (int y = get_top_left_y() - viewport.get_y();
-      y < limit_y;
-      y += tile_pattern->get_height()) {
-
-    if ((y <= dst_surface->get_height() && y + tile_pattern->get_height() > 0)
-        || !tile_pattern->is_displayed_at_its_position()) {
-      dst.set_y(y);
-
-      for (int x = get_top_left_x() - viewport.get_x();
-          x < limit_x;
-          x += tile_pattern->get_width()) {
-
-        if ((x <= dst_surface->get_width() && x + tile_pattern->get_width() > 0)
-            || !tile_pattern->is_displayed_at_its_position()) {
-          dst.set_x(x);
-          tile_pattern->display(dst_surface, dst, get_map().get_tileset(), viewport);
-        }
-      }
-    }
-  }
+  tile_pattern->fill_surface(dst_surface, dst_position,
+      get_map().get_tileset(), viewport);
 }
 
 /**
@@ -142,7 +117,7 @@ TilePattern& Tile::get_tile_pattern() {
  *
  * Non-animated tiles may be rendered faster by using intermediate surfaces
  * that are drawn only once.
- * This function should return false if the tile pattern is always displayed the same way.
+ * This function should return false if the tile pattern is always drawn the same way.
  *
  * @return true if the pattern of this tile is animated
  */

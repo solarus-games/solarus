@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,48 +23,45 @@
 /**
  * @brief Movement of an entity that jumps towards a direction.
  *
- * Properties:
- * - direction8
- * - length
- * - speed
- * - ignore_obstacles
- *
  * TODO: inherit StraightMovement instead?
  */
 class JumpMovement: public PixelMovement {
 
-  private:
-
-    static const std::string basic_trajectories[];		/**< one-pixel trajectory of each direction */
-
-    // properties
-    int direction8;						/**< direction of the jump (0 to 7) */
-    int length;							/**< jump length in pixels */
-    int speed;							/**< speed in pixels per second */
-
-    // state
-    int jump_height;						/**< current height of the object while jumping */
-
-    void restart();
-
-  protected:
-
-    void notify_step_done(int step_index, bool success);
-
   public:
 
-    JumpMovement(int direction8, int length, int speed, bool ignore_obstacles);
+    JumpMovement(int direction8, int distance, int speed, bool ignore_obstacles);
     ~JumpMovement();
 
+    int get_direction8();
     void set_direction8(int direction8);
-    void set_length(int length);
+    int get_distance();
+    void set_distance(int distance);
+    int get_speed();
     void set_speed(int speed);
 
     int get_displayed_direction4();
     const Rectangle get_displayed_xy();
 
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);};
+    virtual const std::string& get_lua_type_name() const;
+
+  protected:
+
+    void notify_step_done(int step_index, bool success);
+
+  private:
+
+    static const std::string basic_trajectories[];  /**< one-pixel trajectory of each direction */
+
+    // properties
+    int direction8;                                 /**< direction of the jump (0 to 7) */
+    int distance;                                   /**< jump length in pixels */
+    int speed;                                      /**< speed in pixels per second */
+
+    // state
+    int jump_height;                                /**< current height of the object while jumping */
+
+    void restart();
+};
 
 #endif
 

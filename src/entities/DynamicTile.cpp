@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,32 +47,6 @@ DynamicTile::DynamicTile(const std::string &name, Layer layer, int x, int y,
  */
 DynamicTile::~DynamicTile() {
 
-}
-
-/**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* DynamicTile::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-
-  int width, height, tile_pattern_id, enabled;
-  std::string name;
-
-  FileTools::read(is, width);
-  FileTools::read(is, height);
-  FileTools::read(is, name);
-  FileTools::read(is, tile_pattern_id);
-  FileTools::read(is, enabled);
-
-  return new DynamicTile(name, Layer(layer), x, y, width, height, tile_pattern_id, enabled != 0);
 }
 
 /**
@@ -135,37 +109,23 @@ bool DynamicTile::is_obstacle_for(MapEntity &other) {
 }
 
 /**
- * @brief Displays the tile on the map.
+ * @brief Draws the tile on the map.
  */
-void DynamicTile::display_on_map() {
+void DynamicTile::draw_on_map() {
 
-  // FIXME this code is duplicated from Tile
-  Surface* map_surface = get_map().get_visible_surface();
+  if (!is_drawn()) {
+    return;
+  }
 
   const Rectangle& camera_position = get_map().get_camera_position();
   Rectangle dst(0, 0);
 
-  int limit_x = get_top_left_x() - camera_position.get_x() + get_width();
-  int limit_y = get_top_left_y() - camera_position.get_y() + get_height();
+  Rectangle dst_position(get_top_left_x() - camera_position.get_x(),
+      get_top_left_y() - camera_position.get_y(),
+      get_width(), get_height());
 
-  for (int y = get_top_left_y() - camera_position.get_y();
-      y < limit_y;
-      y += tile_pattern->get_height()) {
-
-    if (y <= SOLARUS_SCREEN_HEIGHT && y + tile_pattern->get_height() > 0) {
-      dst.set_y(y);
-
-      for (int x = get_top_left_x() - camera_position.get_x();
-          x < limit_x;
-          x += tile_pattern->get_width()) {
-
-        if (x <= SOLARUS_SCREEN_WIDTH && x + tile_pattern->get_width() > 0) {
-          dst.set_x(x);
-          tile_pattern->display(map_surface, dst, get_map().get_tileset(), get_map().get_camera_position());
-        }
-      }
-    }
-  }
+  tile_pattern->fill_surface(get_map().get_visible_surface(), dst_position,
+      get_map().get_tileset(), camera_position);
 }
 
 /**

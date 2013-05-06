@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@
  * depending on the movement and the interactions with the hero.
  *
  * On the contrary, a generalized NPC is just assumed to be a solid
- * interactive entity, and the map script has to handle explicitely its
+ * interactive entity, and the map script has to handle explicitly its
  * animations (if any).
  */
 class NPC: public Detector {
@@ -59,8 +59,8 @@ class NPC: public Detector {
      */
     enum Behavior {
        BEHAVIOR_DIALOG,                 /**< start a dialog */
-       BEHAVIOR_MAP_SCRIPT,             /**< call the map script */
-       BEHAVIOR_ITEM_SCRIPT             /**< call an item script */
+       BEHAVIOR_MAP_SCRIPT,             /**< notify the NPC in Lua */
+       BEHAVIOR_ITEM_SCRIPT             /**< notify an equipment item in Lua */
     };
 
   private:
@@ -68,24 +68,23 @@ class NPC: public Detector {
     Subtype subtype;                    /**< subtpype of NPC */
     Behavior behavior;                  /**< type of action done when the player interacts with this entity */
     std::string dialog_to_show;         /**< dialog to show when an interaction occurs, or an empty string */
-    Script* script_to_call;             /**< map script or item script to call when an interaction occurs, or NULL */
+    std::string item_name;              /**< name of an equipment item to notify when an interaction occurs */
 
-    void initialize_sprite(SpriteAnimationSetId& sprite_name, int initial_direction);
+    void initialize_sprite(const std::string& sprite_name, int initial_direction);
     void call_script_hero_interaction();
 
   public:
 
     NPC(Game& game, const std::string& name, Layer layer, int x, int y,
-        Subtype subtype, SpriteAnimationSetId sprite_name,
+        Subtype subtype, const std::string& sprite_name,
         int initial_direction, const std::string& behavior_string);
     ~NPC();
-    static CreationFunction parse;
 
     EntityType get_type();
 
     bool is_solid();
 
-    bool is_displayed_in_y_order();
+    bool is_drawn_in_y_order();
     bool is_obstacle_for(MapEntity& other);
     bool is_hero_obstacle(Hero& hero);
     bool is_npc_obstacle(NPC& npc);
@@ -93,12 +92,14 @@ class NPC: public Detector {
     bool is_sword_ignored();
 
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void action_key_pressed();
-    bool interaction_with_inventory_item(InventoryItem& item);
+    void notify_action_command_pressed();
+    bool interaction_with_item(EquipmentItem& item);
     void notify_position_changed();
     bool can_be_lifted();
 
     void update();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

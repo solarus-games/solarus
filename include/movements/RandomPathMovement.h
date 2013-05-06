@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +26,6 @@
  * The movement is composed of small random moves. Each
  * random move goes to one of the 4 main directions
  * and with a length that is a multiple of 8 pixels.
- *
- * Properties:
- * - speed
- * - displayed_direction (read-only)
  */
 class RandomPathMovement: public PathMovement {
 
@@ -41,9 +37,7 @@ class RandomPathMovement: public PathMovement {
     void update();
     bool is_finished();
 
-    // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

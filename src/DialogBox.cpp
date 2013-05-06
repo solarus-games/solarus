@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
-#include "lua/MapScript.h"
+#include "lua/LuaContext.h"
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
@@ -30,6 +30,7 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
+#include <lauxlib.h>
 
 const uint32_t DialogBox::char_delays[] = {
   60, // slow
@@ -41,9 +42,14 @@ const uint32_t DialogBox::char_delays[] = {
  * @brief Creates a new dialog box.
  * @param game the game this dialog box belongs to
  */
-DialogBox::DialogBox(Game &game):
+DialogBox::DialogBox(Game& game):
   game(game),
-  issuer_script(NULL),
+  callback_ref(LUA_REFNIL),
+  vertical_position(POSITION_AUTO),
+  skip_mode(Dialog::SKIP_NONE),
+  icon_number(-1),
+  skipped(false),
+  last_answer(-1),
   dialog_surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),
   box_img("hud/dialog_box.png"),
   icons_img("hud/dialog_icons.png"),
@@ -69,6 +75,7 @@ DialogBox::~DialogBox() {
   for (int i = 0; i < nb_visible_lines; i++) {
     delete line_surfaces[i];
   }
+  game.get_lua_context().cancel_callback(callback_ref);
 }
 
 /**
@@ -76,7 +83,6 @@ DialogBox::~DialogBox() {
  * @return the current game
  */
 Game& DialogBox::get_game() {
-
   return game;
 }
 
@@ -90,7 +96,15 @@ bool DialogBox::is_enabled() {
 }
 
 /**
- * @brief Sets the dialog box style for all subsequent dialogs.
+ * @brief Returns the dialog box style.
+ * @return The current style.
+ */
+DialogBox::Style DialogBox::get_style() {
+  return style;
+}
+
+/**
+ * @brief Sets the dialog box style for subsequent dialogs.
  *
  * The default style is DialogBox::STYLE_WITH_FRAME.
  *
@@ -106,33 +120,19 @@ void DialogBox::set_style(Style style) {
 }
 
 /**
- * @brief Sets the vertical position of the dialog box.
- * @param vertical_position the vertical position
+ * @brief Returns the vertical position of the dialog box.
+ * @return The vertical position.
+ */
+DialogBox::VerticalPosition DialogBox::get_vertical_position() {
+  return vertical_position;
+}
+
+/**
+ * @brief Sets the vertical position of the dialog box for subsequent dialogs.
+ * @param vertical_position The vertical position.
  */
 void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
-
-  if (vertical_position == POSITION_AUTO) {
-    // determine the position
-    const Rectangle& camera_position = game.get_current_map().get_camera_position();
-    vertical_position = POSITION_BOTTOM;
-
-    if (game.get_hero().get_y() >= camera_position.get_y() + 130) {
-      vertical_position = POSITION_TOP;
-    }
-  }
-
-  // set the coordinates of graphic objects
-  int x = SOLARUS_SCREEN_WIDTH_MIDDLE - 110;
-  int y = (vertical_position == POSITION_TOP) ? 32
-      : SOLARUS_SCREEN_HEIGHT - 96;
-
-  if (style == STYLE_WITHOUT_FRAME) {
-    y += (vertical_position == POSITION_TOP) ? (-24) : 24;
-  }
-
-  box_dst_position.set_xy(x, y);
-  question_dst_position.set_xy(x + 18, y + 27);
-  icon_dst_position.set_xy(x + 18, y + 22);
+  this->vertical_position = vertical_position;
 }
 
 /**
@@ -161,13 +161,12 @@ void DialogBox::set_variable(const std::string& dialog_id,
 }
 
 /**
- * @brief Same thing as set_variable(string, string) but with an integer
- * parameter.
+ * @brief Same as set_variable(string, string) but with an integer parameter.
  *
  * This function just converts the integer value to a string
  * add calls the other function.
  *
- * @param dialog id id of the dialog where this value will appear
+ * @param dialog_id id of the dialog where this value will appear
  * @param value the value to set
  */
 void DialogBox::set_variable(const std::string& dialog_id, int value) {
@@ -211,12 +210,20 @@ int DialogBox::get_last_answer() {
  * If there was already a dialog, it must be finished.
  *
  * @param dialog_id of the dialog
- * @param issuer_script the script that issued the request to start a dialog
- * (will be notified when the dialog finishes), or NULL
- * @param vertical_position vertical position where to display the dialog box (default: auto)
  */
-void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script,
-    VerticalPosition vertical_position) {
+void DialogBox::start_dialog(const std::string& dialog_id) {
+  start_dialog(dialog_id, LUA_REFNIL);
+}
+
+/**
+ * @brief Starts a dialog.
+ *
+ * If there was already a dialog, it must be finished.
+ *
+ * @param dialog_id of the dialog
+ * @param callback_ref Lua ref of a function to call when the dialog finishes.
+ */
+void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref) {
 
   Debug::check_assertion(!is_enabled() || is_full(), StringConcat()
       << "Cannot start dialog '" << dialog_id
@@ -224,7 +231,7 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
 
   bool first = !is_enabled();
   if (first) {
-    // save the action and sword keys
+    // save the action and sword commands
     KeysEffect& keys_effect = game.get_keys_effect();
     action_key_effect_saved = keys_effect.get_action_key_effect();
     sword_key_effect_saved = keys_effect.get_sword_key_effect();
@@ -232,6 +239,7 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
     this->skip_mode = Dialog::SKIP_NONE;
     this->char_delay = char_delays[SPEED_FAST];
     this->dialog_id = dialog_id;
+    this->last_answer = -1;
   }
 
   // initialize the dialog data
@@ -239,6 +247,7 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
   this->line_it = dialog.get_lines().begin();
   this->line_index = 0;
   this->char_index = 0;
+  this->callback_ref = callback_ref;
   this->skipped = false;
 
   if (dialog.get_skip_mode() != Dialog::SKIP_UNCHANGED) {
@@ -251,20 +260,33 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
   if (dialog.is_question()) {
     this->last_answer = 0;
   }
-  else {
-    this->last_answer = -1;
-  }
   question_dst_position.set_y(box_dst_position.get_y() + 27);
 
   if (first) {
-    set_vertical_position(vertical_position);
 
-    // notify the scripts
-    game.get_map_script().event_dialog_started(dialog_id);
-    this->issuer_script = issuer_script;
-    if (issuer_script != NULL) {
-      issuer_script->event_dialog_started(dialog_id);
+    // Determine the position.
+    bool top = false;
+    if (vertical_position == POSITION_TOP) {
+      top = true;
     }
+    else if (vertical_position == POSITION_AUTO) {
+      const Rectangle& camera_position = game.get_current_map().get_camera_position();
+      if (game.get_hero().get_y() >= camera_position.get_y() + 130) {
+        top = true;
+      }
+    }
+
+    // Set the coordinates of graphic objects.
+    int x = SOLARUS_SCREEN_WIDTH_MIDDLE - 110;
+    int y = top ? 32 : SOLARUS_SCREEN_HEIGHT - 96;
+
+    if (style == STYLE_WITHOUT_FRAME) {
+      y += top ? (-24) : 24;
+    }
+
+    box_dst_position.set_xy(x, y);
+    question_dst_position.set_xy(x + 18, y + 27);
+    icon_dst_position.set_xy(x + 18, y + 22);
   }
 
   // start displaying text
@@ -290,7 +312,8 @@ void DialogBox::show_more_lines() {
     keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
   }
   else {
-    keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
+    // TODO hide the attack icon in this case (SWORD_KEY_HIDDEN no longer exists)
+    keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
   }
 
   // hide the bottom arrow
@@ -336,7 +359,7 @@ void DialogBox::show_next_dialog() {
       dialog.get_next2() : dialog.get_next();
 
   if (next_dialog_id.size() > 0 && next_dialog_id != "_unknown") {
-    start_dialog(next_dialog_id);
+    start_dialog(next_dialog_id, callback_ref);
   }
   else {
     close();
@@ -348,50 +371,40 @@ void DialogBox::show_next_dialog() {
  */
 void DialogBox::close() {
 
-  const std::string previous_dialog_id = dialog_id;
-  Script* previous_issuer_script = issuer_script;
+  int previous_callback_ref = callback_ref;
+  callback_ref = LUA_REFNIL;
   dialog_id = "";
 
-  // restore the action and sword keys
+  // Restore the action and sword keys.
   KeysEffect& keys_effect = game.get_keys_effect();
   keys_effect.set_action_key_effect(action_key_effect_saved);
   keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
-  // notify the script if necessary
-  if (!skipped && previous_dialog_id[0] != '_') { // FIXME: remove the '_' restriction
-    // a dialog of the quest was just finished: notify the scripts
-    Script& map_script = game.get_map_script();
-    map_script.event_dialog_finished(previous_dialog_id, last_answer);
-
-    if (previous_issuer_script != NULL
-        && previous_issuer_script != &map_script) {
-      // also notify the issuer script if different
-      previous_issuer_script->event_dialog_finished(previous_dialog_id, last_answer);
-    }
-  }
+  // A dialog was just finished: notify Lua.
+  game.get_lua_context().notify_dialog_finished(previous_callback_ref, skipped, last_answer);
 }
 
 /**
- * @brief This function is called by the game when a key is pressed
+ * @brief This function is called by the game when a command is pressed
  * while displaying a dialog.
- * @param key the key pressed
+ * @param command The command pressed.
  */
-void DialogBox::key_pressed(GameControls::GameKey key) {
+void DialogBox::notify_command_pressed(GameCommands::Command command) {
 
-  switch (key) {
+  switch (command) {
 
     // action key
-    case GameControls::ACTION:
+    case GameCommands::ACTION:
       action_key_pressed();
       break;
 
       // sword key
-    case GameControls::SWORD:
+    case GameCommands::ATTACK:
       sword_key_pressed();
       break;
 
-    case GameControls::UP:
-    case GameControls::DOWN:
+    case GameCommands::UP:
+    case GameCommands::DOWN:
       up_or_down_key_pressed();
 
     default:
@@ -541,17 +554,18 @@ void DialogBox::update() {
         end_lines_sprite.set_current_animation("last");
       }
 
-      keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
+      // TODO hide the attack icon in this case (SWORD_KEY_HIDDEN no longer exists)
+      keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
       Sound::play("message_end");
     }
   }
 }
 
 /**
- * @brief Displays the dialog box on a surface.
- * @param destination_surface the surface
+ * @brief Draws the dialog box on a surface.
+ * @param dst_surface the surface
  */
-void DialogBox::display(Surface* destination_surface) {
+void DialogBox::draw(Surface& dst_surface) {
 
   int x = box_dst_position.get_x();
   int y = box_dst_position.get_y();
@@ -559,25 +573,24 @@ void DialogBox::display(Surface* destination_surface) {
   dialog_surface.fill_with_color(Color::get_black());
 
   if (style == STYLE_WITHOUT_FRAME) {
-    // display a dark rectangle
-    destination_surface->fill_with_color(Color::get_black(),
-        box_dst_position);
+    // draw a dark rectangle
+    dst_surface.fill_with_color(Color::get_black(), box_dst_position);
   }
   else {
-    // display the dialog box
-    box_img.blit(box_src_position, &dialog_surface, box_dst_position);
+    // draw the dialog box
+    box_img.draw_region(box_src_position, dialog_surface, box_dst_position);
   }
 
-  // display the text
+  // draw the text
   for (int i = 0; i < nb_visible_lines; i++) {
-    line_surfaces[i]->display(&dialog_surface);
+    line_surfaces[i]->draw(dialog_surface);
   }
 
-  // display the icon
+  // draw the icon
   if (icon_number != -1) {
     Rectangle src_position(0, 0, 16, 16);
     src_position.set_xy(16 * (icon_number % 10), 16 * (icon_number / 10));
-    icons_img.blit(src_position, &dialog_surface, icon_dst_position);
+    icons_img.draw_region(src_position, dialog_surface, icon_dst_position);
 
     question_dst_position.set_x(x + 50);
   }
@@ -585,20 +598,21 @@ void DialogBox::display(Surface* destination_surface) {
     question_dst_position.set_x(x + 18);
   }
 
-  // display the question arrow
+  // draw the question arrow
   if (dialog.is_question()
       && is_full()
       && !has_more_lines()) {
-    box_img.blit(question_src_position, &dialog_surface, question_dst_position);
+    box_img.draw_region(question_src_position, dialog_surface,
+        question_dst_position);
   }
 
-  // display the end message arrow
+  // draw the end message arrow
   if (is_full()) {
-    end_lines_sprite.display(&dialog_surface, x + 103, y + 56);
+    end_lines_sprite.draw(dialog_surface, x + 103, y + 56);
   }
 
   // final blit
-  dialog_surface.blit(destination_surface);
+  dialog_surface.draw(dst_surface);
 }
 
 /**

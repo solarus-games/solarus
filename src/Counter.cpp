@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,16 +28,16 @@
  * @param x x coordinate of the top-left corner of the counter on the destination surface
  * @param y y coordinate of the top-left corner of the counter on the destination surface
  */
-Counter::Counter(unsigned int nb_digits, bool fill_with_zeros,
-			 int x, int y):
-  style(BIG_DIGITS), nb_digits(nb_digits), fill_with_zeros(fill_with_zeros), maximum(0) {
+Counter::Counter(unsigned int nb_digits, bool fill_with_zeros, int x, int y):
+  style(BIG_DIGITS),
+  nb_digits(nb_digits),
+  fill_with_zeros(fill_with_zeros),
+  maximum(0),
+  surface_drawn(8 * nb_digits, 8),
+  dst_position(x, y),
+  img_digits("hud/digits.png") {
 
-  surface_drawn = new Surface(8 * nb_digits, 8);
-  surface_drawn->set_transparency_color(Color::get_black());
-  img_digits = new Surface("hud/digits.png");
-
-  destination_position.set_xy(x, y);
-
+  surface_drawn.set_transparency_color(Color::get_black());
   rebuild_with_value(0);
 }
 
@@ -45,8 +45,6 @@ Counter::Counter(unsigned int nb_digits, bool fill_with_zeros,
  * @brief Destructor.
  */
 Counter::~Counter() {
-  delete surface_drawn;
-  delete img_digits;
 }
 
 /**
@@ -110,7 +108,7 @@ void Counter::rebuild_with_value(unsigned int value) {
   this->value = value;
 
   // fill with transparent color
-  surface_drawn->fill_with_color(Color::get_black());
+  surface_drawn.fill_with_color(Color::get_black());
 
   int y, width;
   if (style == BIG_DIGITS) {
@@ -144,7 +142,8 @@ void Counter::rebuild_with_value(unsigned int value) {
       digit_position_in_src.set_x(digit * 8);
       digit_position_in_counter.set_x(i * width);
 
-      img_digits->blit(digit_position_in_src, surface_drawn, digit_position_in_counter);
+      img_digits.draw_region(digit_position_in_src, surface_drawn,
+          digit_position_in_counter);
 
       right_digit = false;
     }
@@ -172,24 +171,26 @@ void Counter::decrease() {
 }
 
 /**
- * @brief Displays the counter on a surface.
+ * @brief Draws the counter on a surface.
  *
- * The counter is displayed at the position specified when the constructor was called.
+ * The counter is drawn at the position specified when the constructor was called.
  *
- * @param destination the destination surface
+ * @param dst_surface the destination surface
  */
-void Counter::display(Surface *destination) {
-  surface_drawn->blit(destination, destination_position);
+void Counter::draw(Surface& dst_surface) {
+
+  surface_drawn.draw(dst_surface, dst_position);
 }
 
 /**
- * @brief Displays the counter on a surface, specifying the position.
- * @param destination the destination surface
+ * @brief Draws the counter on a surface, specifying the position.
+ * @param dst_surface the destination surface
  * @param x x coordinate of the top-left corner of the counter on the destination surface
  * @param y y coordinate of the top-left corner of the counter on the destination surface
  */
-void Counter::display(Surface *destination, int x, int y) {
-  destination_position.set_xy(x, y);
-  surface_drawn->blit(destination, destination_position);
+void Counter::draw(Surface& dst_surface, int x, int y) {
+
+  dst_position.set_xy(x, y);
+  surface_drawn.draw(dst_surface, dst_position);
 }
 

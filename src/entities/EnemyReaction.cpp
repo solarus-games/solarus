@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,9 +78,8 @@ void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType react
     set_general_reaction(reaction, life_lost);
   }
   else {
-    int sprite_id = sprite->get_unique_id();
-    sprite_reactions[sprite_id].type = reaction;
-    sprite_reactions[sprite_id].life_lost = life_lost;
+    sprite_reactions[sprite].type = reaction;
+    sprite_reactions[sprite].life_lost = life_lost;
   }
 }
 
@@ -92,9 +91,8 @@ void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType react
 const EnemyReaction::Reaction& EnemyReaction::get_reaction(const Sprite* sprite) {
 
   if (sprite != NULL) {
-    int sprite_id = sprite->get_unique_id();
-    if (sprite_reactions.count(sprite_id) > 0) {
-      return sprite_reactions[sprite_id];
+    if (sprite_reactions.count(sprite) > 0) {
+      return sprite_reactions[sprite];
     }
   }
   return general_reaction;

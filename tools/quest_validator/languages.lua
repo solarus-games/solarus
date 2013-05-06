@@ -9,7 +9,7 @@ function check_languages(quest_dir)
 
   print("Reading the list of languages")
 
-  local file = quest_dir .. "/languages/languages.lua"
+  local file = quest_dir .. "/languages/languages.dat"
   local languages, language_codes = load_language_list(file)
   local first_code, first_dialogs
 
@@ -19,7 +19,7 @@ function check_languages(quest_dir)
     print("Checking language '" .. code .. "'")
 
     local file = quest_dir .. "/languages/" .. code
-        .. "/text/dialogs.lua"
+        .. "/text/dialogs.dat"
     local dialogs = load_dialogs(file)
     dialogs.file = file
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Geometry.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 #include <sstream>
 
 /**
@@ -75,7 +75,7 @@ void Hero::SwordLoadingState::update() {
     sword_loaded = true;
   }
 
-  if (!get_controls().is_key_pressed(GameControls::SWORD)) {
+  if (!get_commands().is_command_pressed(GameCommands::ATTACK)) {
     // the player has just released the sword key
 
     // stop loading the sword, go to the normal state or make a spin attack

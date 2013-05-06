@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #include "entities/Hero.h"
 #include "entities/Switch.h"
 #include "movements/FollowMovement.h"
-#include "lua/MapScript.h"
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
@@ -27,6 +26,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Sound.h"
+#include "lua/LuaContext.h"
 
 /**
  * @brief Creates a block.
@@ -34,7 +34,7 @@
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
- * @param direction the only direction where the block can be pushed
+ * @param direction the only direction where the block can be moved
  * or -1 to allow it to be pushed in any direction
  * @param sprite_name animation set id of the sprite for this block
  * @param can_be_pushed true to allow the hero to push this block
@@ -43,7 +43,7 @@
  * be moved (0: none, 1: once: 2: infinite)
  */
 Block::Block(const std::string& name, Layer layer, int x, int y, int direction,
-    const SpriteAnimationSetId& sprite_name,
+    const std::string& sprite_name,
     bool can_be_pushed, bool can_be_pulled, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   maximum_moves(maximum_moves),
@@ -68,34 +68,6 @@ Block::~Block() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Block::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-
-  int direction, maximum_moves, can_be_pushed, can_be_pulled;
-  std::string name, sprite_name;
-
-  FileTools::read(is, name);
-  FileTools::read(is, direction);
-  FileTools::read(is, sprite_name);
-  FileTools::read(is, can_be_pushed);
-  FileTools::read(is, can_be_pulled);
-  FileTools::read(is, maximum_moves);
-
-  return new Block(name, Layer(layer), x, y, direction, sprite_name,
-      bool(can_be_pushed), bool(can_be_pulled), maximum_moves);
-}
-
-/**
  * @brief Returns the type of entity.
  * @return the type of entity
  */
@@ -104,14 +76,11 @@ EntityType Block::get_type() {
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether an entity of this type should be displayed above
- * the hero and other entities when it is in front of them.
- *
- * @return true if this entity is displayed at the same level as the hero
+ * @brief Returns whether this entity has to be drawn in y order.
+ * @return \c true if this type of entity should be drawn at the same level
+ * as the hero.
  */
-bool Block::is_displayed_in_y_order() {
+bool Block::is_drawn_in_y_order() {
   return get_sprite().get_size().get_height() > 16;
 }
 
@@ -163,11 +132,28 @@ bool Block::is_enemy_obstacle(Enemy& enemy) {
 
 /**
  * @brief Returns whether a destructible item is currently considered as an obstacle by this entity.
- * @param destructible_item a destructible item
+ * @param destructible a destructible item
  * @return true if the destructible item is currently an obstacle by this entity
  */
-bool Block::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
+bool Block::is_destructible_obstacle(Destructible& destructible) {
   return true;
+}
+
+/**
+ * @brief Sets the map.
+ *
+ * Warning: when this function is called during the map initialization,
+ * the current map of the game is still the old one.
+ *
+ * @param map The map.
+ */
+void Block::set_map(Map& map) {
+
+  Detector::set_map(map);
+  if (map.is_loaded()) {
+    // We are not during the map initialization phase.
+    check_collision_with_detectors(false);
+  }
 }
 
 /**
@@ -191,12 +177,14 @@ void Block::notify_collision_with_switch(Switch& sw, CollisionMode collision_mod
 }
 
 /**
- * @brief Notifies this detector that the player is interacting by pressing the action key.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  */
-void Block::action_key_pressed() {
+void Block::notify_action_command_pressed() {
 
   if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
     get_hero().start_grabbing();
@@ -282,7 +270,7 @@ void Block::stop_movement_by_hero() {
   }
 
   // notify the script
-  get_map_script().event_block_moved(get_name());
+  get_lua_context().block_on_moved(*this);
 }
 
 /**
@@ -299,5 +287,13 @@ void Block::reset() {
   set_xy(initial_position);
   last_position.set_xy(initial_position);
   this->maximum_moves = initial_maximum_moves;
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Block::get_lua_type_name() const {
+  return LuaContext::entity_block_module_name;
 }
 

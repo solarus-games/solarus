@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,12 +19,14 @@
 
 #include "Common.h"
 #include "Treasure.h"
+#include "Sprite.h"
 #include "entities/Detector.h"
+#include "lowlevel/TextSurface.h"
 
 /**
  * @brief An item the hero can buy in a shop.
  *
- * The item is automatically displayed with its icon,
+ * The item is automatically drawn with its icon,
  * the amount and the price. When the hero presses the action
  * key in front of it, a dialog is automatically showed and
  * the hero can buy the item.
@@ -39,8 +41,8 @@ class ShopItem: public Detector {
     std::string dialog_id;            /**< id of the dialog describing the shop item */
 
     // displaying
-    TextSurface *price_digits;        /**< the digits that show the price */
-    Sprite *rupee_icon_sprite;        /**< the rupee icon near the price */
+    TextSurface price_digits;         /**< the digits that show the price */
+    Sprite rupee_icon_sprite;         /**< the rupee icon near the price */
 
     // state
     bool is_looking_item;             /**< indicates that the message describing the item is being shown */
@@ -54,17 +56,16 @@ class ShopItem: public Detector {
     ~ShopItem();
     static ShopItem* create(Game& game, const std::string& name, Layer layer, int x, int y,
         const Treasure& treasure, int price, const std::string& dialog_id);
-    static CreationFunction parse;
 
     EntityType get_type();
 
     bool is_sword_ignored();
     bool is_obstacle_for(MapEntity &other);
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    void action_key_pressed();
+    void notify_action_command_pressed();
 
     void update();
-    void display_on_map();
+    void draw_on_map();
 };
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,14 +16,14 @@
  */
 #include "entities/ShopItem.h"
 #include "entities/Hero.h"
-#include "lua/MapScript.h"
-#include "lua/ItemScript.h"
+#include "lua/LuaContext.h"
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
 #include "DialogBox.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "Savegame.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/FileTools.h"
@@ -48,55 +48,20 @@ ShopItem::ShopItem(const std::string& name, Layer layer, int x, int y,
   treasure(treasure),
   price(price),
   dialog_id(dialog_id),
+  price_digits(0, 0, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP),
+  rupee_icon_sprite("entities/rupee_icon"),
   is_looking_item(false),
   is_asking_question(false) {
 
   std::ostringstream oss;
   oss << price;
-
-  price_digits = new TextSurface(x + 12, y + 21, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
-  price_digits->set_text(oss.str());
-
-  rupee_icon_sprite = new Sprite("entities/rupee_icon");
+  price_digits.set_text(oss.str());
 }
 
 /**
  * @brief Destructor.
  */
 ShopItem::~ShopItem() {
-
-  delete price_digits;
-  delete rupee_icon_sprite;
-}
-
-/**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* ShopItem::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
-
-  std::string name, treasure_name;
-  int treasure_variant, treasure_savegame_variable, price;
-  std::string dialog_id;
-
-  FileTools::read(is, name);
-  FileTools::read(is, treasure_name);
-  FileTools::read(is, treasure_variant);
-  FileTools::read(is, treasure_savegame_variable);
-  FileTools::read(is, price);
-  FileTools::read(is, dialog_id);
-
-  return create(game, name, Layer(layer), x, y,
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
-      price, dialog_id);
 }
 
 /**
@@ -174,13 +139,15 @@ void ShopItem::notify_collision(MapEntity &entity_overlapping, CollisionMode col
 }
 
 /**
- * @brief Notifies this entity that the player is interacting by pressing the action key.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  * A dialog is shown to let the hero buy the item.
  */
-void ShopItem::action_key_pressed() {
+void ShopItem::notify_action_command_pressed() {
 
   if (get_hero().is_free()
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
@@ -195,7 +162,7 @@ void ShopItem::action_key_pressed() {
  */
 void ShopItem::update() {
 
-  if (is_looking_item && !get_game().is_showing_dialog()) {
+  if (is_looking_item && !get_game().is_dialog_enabled()) {
 
     // the description message has just finished
     const std::string question_dialog_id = "_shop.question";
@@ -204,7 +171,7 @@ void ShopItem::update() {
     is_asking_question = true;
     is_looking_item = false;
   }
-  else if (is_asking_question && !get_game().is_showing_dialog()) {
+  else if (is_asking_question && !get_game().is_dialog_enabled()) {
 
     // the question has just finished
     is_asking_question = false;
@@ -214,32 +181,32 @@ void ShopItem::update() {
 
       // the player wants to buy the item
       Equipment& equipment = get_equipment();
+      EquipmentItem& item = treasure.get_item();
 
       if (equipment.get_money() < price) {
         // not enough rupees
         Sound::play("wrong");
         get_dialog_box().start_dialog("_shop.not_enough_money");
       }
-      else if (equipment.has_item_maximum(treasure.get_item_name())) {
+      else if (item.has_amount() && item.get_amount() >= item.get_max_amount()) {
         // the player already has the maximum amount of this item
         Sound::play("wrong");
         get_dialog_box().start_dialog("_shop.amount_full");
       }
       else {
 
-        bool can_buy = get_map_script().event_shop_item_buying(get_name());
+        bool can_buy = get_lua_context().shop_item_on_buying(*this);
         if (can_buy) {
 
           // give the treasure
           equipment.remove_money(price);
 
-          int savegame_variable = treasure.get_savegame_variable();
-          get_hero().start_treasure(treasure);
-          if (savegame_variable != -1) {
+          get_hero().start_treasure(treasure, LUA_REFNIL);
+          if (treasure.is_saved()) {
             remove_from_map();
-            get_savegame().set_boolean(savegame_variable, true);
+            get_savegame().set_boolean(treasure.get_savegame_variable(), true);
           }
-          get_map_script().event_shop_item_bought(get_name());
+          get_lua_context().shop_item_on_bought(*this);
         }
       }
     }
@@ -247,24 +214,30 @@ void ShopItem::update() {
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Draws the entity on the map.
  */
-void ShopItem::display_on_map() {
+void ShopItem::draw_on_map() {
 
-  Surface *map_surface = get_map().get_visible_surface();
+  if (!is_drawn()) {
+    return;
+  }
+
+  Surface& map_surface = get_map().get_visible_surface();
   int x = get_x();
   int y = get_y();
 
-  // display the treasure
-  const Rectangle &camera_position = get_map().get_camera_position();
-  treasure.display(map_surface,
-      x + 16 - camera_position.get_x(), y + 13 - camera_position.get_y());
+  // draw the treasure
+  const Rectangle& camera_position = get_map().get_camera_position();
+  treasure.draw(map_surface,
+      x + 16 - camera_position.get_x(),
+      y + 13 - camera_position.get_y());
 
-  // also display the price
-  price_digits->set_x(x + 12 - camera_position.get_x());
-  price_digits->set_y(y + 21 - camera_position.get_y());
-  price_digits->display(map_surface);
-  rupee_icon_sprite->display(map_surface,
-      x - camera_position.get_x(), y + 22 - camera_position.get_y());
+  // also draw the price
+  price_digits.draw(map_surface,
+      x + 12 - camera_position.get_x(),
+      y + 21 - camera_position.get_y());
+  rupee_icon_sprite.draw(map_surface,
+      x - camera_position.get_x(),
+      y + 22 - camera_position.get_y());
 }
 

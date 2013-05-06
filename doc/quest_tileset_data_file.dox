@@ -1,0 +1,42 @@
+/**
+\page quest_tileset_data_file Tileset definition file
+
+Maps are composed of small bricks called "tiles".
+Tiles are static entities: they cannot be moved or removed dynamically during
+the game.
+They are opposed to all dynamic entities such as enemies, doors, bushes,
+switches, etc.
+Each tile is a graphical element whose width and height are multiple of 8
+pixels.
+Tiles can overlap each other and have different sizes.
+A tileset is a list of tiles that a map can use.
+You can call it the skin of the map.
+For example, there may exist a tileset for the outside world,
+another one for houses,
+another one for dungeons, etc.
+
+The \c tilesets directory contains all tilesets and their images.
+For a tileset with id \c xx,
+there are three files:
+- \c xx.tiles.png: The PNG image containing all tiles of this tileset.
+- \c xx.dat: The definition of each tile in \c xx.tiles.png and their
+  properties. We detail the syntax of this file below.
+- \c xx.entities.png: some dynamic entities (i.e. other that tiles)
+  such as doors and blocks sometimes also have a skin that depends
+  on the tileset.
+  A door inside a dungeon has different graphics and colors from a door
+  inside a cave.
+  This is the purpose of this file:
+  \ref quest_sprite_data_file sprites that depend on the tileset pick their
+  frames in this image.
+
+We now specify the syntax of a tileset data file.
+
+Solarus Quest Editor fully supports the edition of tilesets.
+You should not have to edit tileset data files by hand unless you know what you
+are doing.
+
+\todo Write the new syntax specification of tileset data files.
+
+*/
+

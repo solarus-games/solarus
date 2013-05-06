@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,13 +17,17 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "lowlevel/IniFile.h"
-#include "Configuration.h"
+#include "lua/LuaContext.h"
 #include "StringResource.h"
 #include "DialogResource.h"
 #include <physfs.h>
-#include <lua.hpp>
 
+#if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
+#   include "lowlevel/apple/AppleInterface.h"
+#endif
+
+std::string FileTools::solarus_write_dir;
+std::string FileTools::quest_write_dir;
 std::string FileTools::language_code;
 std::string FileTools::default_language_code;
 std::map<std::string, std::string> FileTools::languages;
@@ -37,62 +41,46 @@ void FileTools::initialize(int argc, char** argv) {
 
   PHYSFS_init(argv[0]);
 
-  // look for the language options
-  const std::string language_flag = "-language=";
-  std::string language_arg = "";
-  for (int i = 1; i < argc; i++) {
-    std::string arg = argv[i];
-    if (arg.find(language_flag) == 0) {
-      language_arg = arg.substr(language_flag.size());
-    }
-  }
-
-  // set the quest path, by default as defined during the build process
+  // Set the quest path, by default as defined during the build process.
   std::string quest_path = SOLARUS_DEFAULT_QUEST;
 
-  // if a command-line argument was specified, use it instead
+  // If a command-line argument was specified, use it instead.
   if (argc > 1 && argv[argc - 1][0] != '-') {
-    // the last parameter is not an option: it is the quest path
+    // The last parameter is not an option: it is the quest path.
     quest_path = argv[argc - 1];
   }
 
-  // now, quest_path may be the path defined as command-line argument,
+  std::cout << "Opening quest '" << quest_path << "'" << std::endl;
+
+  // Now, quest_path may be the path defined as command-line argument,
   // the path defined during the build process, or the current directory
-  // if nothing was specified
+  // if nothing was specified.
 
   std::string dir_quest_path = quest_path + "/data";
   std::string archive_quest_path = quest_path + "/data.solarus";
 
+  const std::string& base_dir = PHYSFS_getBaseDir();
   PHYSFS_addToSearchPath(dir_quest_path.c_str(), 1);   // data directory
   PHYSFS_addToSearchPath(archive_quest_path.c_str(), 1); // data.solarus archive
+  PHYSFS_addToSearchPath((base_dir + "/" + dir_quest_path).c_str(), 1);
+  PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path).c_str(), 1);
 
-  // check the existence of the quest path
+  // Check the existence of a quest at this location.
   if (!FileTools::data_file_exists("quest.dat")) {
     Debug::die(StringConcat() << "No quest was found in the directory '" << quest_path
         << "'. To specify your quest's path, run: "
         << argv[0] << " path/to/quest");
   }
 
-  // then set the write directory to a "SOLARUS_WRITE_DIR/quest_dir" subdirectory of the user home
+  // Set the engine root write directory.
+  set_solarus_write_dir(SOLARUS_WRITE_DIR);
 
-  // first, create the directory
-   if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
-     Debug::die(StringConcat() << "Cannot write in user directory:" << PHYSFS_getLastError());
+  // Load the list of languages.
+  initialize_languages();
+
+  if (!default_language_code.empty()) {
+    set_language(default_language_code);
   }
-  IniFile ini("quest.dat", IniFile::READ);
-  ini.set_group("info");
-  std::string write_dir = (std::string) SOLARUS_WRITE_DIR + "/" + ini.get_string_value("write_dir");
-  PHYSFS_mkdir(write_dir.c_str());
-
-  // then set this directory as the write directory
-  write_dir = (std::string) PHYSFS_getUserDir() + write_dir;
-  if (!PHYSFS_setWriteDir(write_dir.c_str())) {
-    Debug::die(StringConcat() << "Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
-  }
-  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);     // directory for writing files (savegames and configuration file)
-
-  // load the list of languages
-  initialize_languages(language_arg);
 }
 
 /**
@@ -107,15 +95,13 @@ void FileTools::quit() {
 
 /**
  * @brief Loads the list of available languages.
- * @param arg_language the language specified as command-line argument
- * (or an empty string if not specified)
  */
-void FileTools::initialize_languages(const std::string& arg_language) {
+void FileTools::initialize_languages() {
 
-  static const std::string file_name = "languages/languages.lua";
+  static const std::string file_name = "languages/languages.dat";
 
   // read the languages file
-  lua_State* l = lua_open();
+  lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size);
@@ -130,22 +116,11 @@ void FileTools::initialize_languages(const std::string& arg_language) {
   }
 
   lua_close(l);
-
-  // set a language
-  if (arg_language.size() != 0) {
-    set_language(arg_language);
-  }
-  else {
-    std::string config_language = Configuration::get_value("language", "");
-    if (config_language.size() != 0) {
-      set_language(config_language);
-    }
-  }
 }
 
 /**
  * @brief Function called by Lua to add a language.
-
+ *
  * - Argument 1 (table): properties of the language (keys must be code and
  * name).
  *
@@ -156,43 +131,25 @@ int FileTools::l_language(lua_State* l) {
 
   luaL_checktype(l, 1, LUA_TTABLE);
 
-  std::string code;
-  std::string name;
+  std::string code = LuaContext::check_string_field(l, 1, "code");
+  std::string name = LuaContext::check_string_field(l, 1, "name");
+  bool is_default = LuaContext::opt_boolean_field(l, 1, "default", false);
 
-  // traverse the table, looking for properties
-  lua_pushnil(l); // first key
-  while (lua_next(l, 1) != 0) {
-
-    const std::string& key = luaL_checkstring(l, -2);
-    if (key == "code") {
-      code = luaL_checkstring(l, -1);
-    }
-    else if (key == "name") {
-      name = luaL_checkstring(l, -1);
-    }
-    else if (key == "default") {
-      bool is_default = lua_toboolean(l, -1);
-      if (is_default) {
-        default_language_code = language_code;
-      }
-    }
-    else {
-      luaL_error(l, (StringConcat() << "Invalid key '" << key << "'").c_str());
-    }
-    lua_pop(l, 1); // pop the value, let the key for the iteration
+  if (is_default || languages.empty()) {
+    default_language_code = code;
   }
-
-  if (code.empty()) {
-    luaL_error(l, "The code of this language is missing");
-  }
-
-  if (name.empty()) {
-    luaL_error(l, "The name of this language is missing");
-  }
-
   languages[code] = name;
 
   return 0;
+}
+
+/**
+ * @brief Returns whether a language exists for this quest.
+ * @param language_code Code of the language to test.
+ * @return true if this language exists.
+ */
+bool FileTools::has_language(const std::string& language_code) {
+  return languages.find(language_code) != languages.end();
 }
 
 /**
@@ -205,10 +162,9 @@ int FileTools::l_language(lua_State* l) {
  */
 void FileTools::set_language(const std::string& language_code) {
 
-  Debug::check_assertion(languages[language_code].size() > 0,
+  Debug::check_assertion(has_language(language_code),
       StringConcat() << "Unknown language '" << language_code << "'");
   FileTools::language_code = language_code;
-  Configuration::set_value("language", language_code);
   StringResource::initialize();
   DialogResource::initialize();
 }
@@ -248,9 +204,11 @@ const std::map<std::string, std::string>& FileTools::get_languages() {
 }
 
 /**
- * @brief Returns whether a file exists in the search path.
- * @param file_name a file name relative to a directory from the search path
- * @return true if this file exists
+ * @brief Returns whether a file exists in the quest data directory or
+ * in Solarus write directory.
+ * @param file_name a file name relative to the quest data directory
+ * or to Solarus write directory.
+ * @return true if this file exists.
  */
 bool FileTools::data_file_exists(const std::string& file_name) {
   return PHYSFS_exists(file_name.c_str());
@@ -300,7 +258,9 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
 
   std::string full_file_name;
   if (language_specific) {
-    full_file_name = (std::string) "languages/" + language_code + "/" + file_name;
+    Debug::check_assertion(!language_code.empty(), StringConcat() <<
+        "Cannot open language-specific file '" << file_name << "': no language was set");
+    full_file_name = std::string("languages/") + language_code + "/" + file_name;
   }
   else {
     full_file_name = file_name;
@@ -320,15 +280,15 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
   Debug::check_assertion(buffer != NULL, StringConcat()
       << "Cannot allocate memory to read file " << full_file_name);
 
-  PHYSFS_read(file, *buffer, 1, *size);
+  PHYSFS_read(file, *buffer, 1, PHYSFS_uint32(*size));
   PHYSFS_close(file);
 }
 
 /**
  * @brief Saves a buffer into a data file.
- * @param file_name name of the file to write
- * @param buffer the buffer to save
- * @param size number of bytes to write
+ * @param file_name Name of the file to write, relative to Solarus write directory.
+ * @param buffer The buffer to save.
+ * @param size Number of bytes to write.
  *
  */
 void FileTools::data_file_save_buffer(const std::string& file_name,
@@ -341,7 +301,7 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
       << PHYSFS_getLastError());
  
   // save the memory buffer 
-  if (PHYSFS_write(file, buffer, size, 1) == -1) {
+  if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {
     Debug::die(StringConcat() << "Cannot write file '" << file_name
         << "': " << PHYSFS_getLastError());
   }
@@ -359,7 +319,8 @@ void FileTools::data_file_close_buffer(char* buffer) {
  
 /**
  * @brief Removes a file from the write directory.
- * @param file_name name of the file to delete
+ * @param file_name Name of the file to delete, relative to the Solarus
+ * write directory.
  */
 void FileTools::data_file_delete(const std::string& file_name) {
 
@@ -410,5 +371,104 @@ void FileTools::read(std::istream& is, std::string& value) {
   if (!(is >> value)) {
     Debug::die("Cannot read string from input stream");
   }
+}
+
+/**
+ * @brief Returns the directory where the engine can write files.
+ * @returns The directory where the engine can write files, relative to the user's home.
+ */
+const std::string& FileTools::get_solarus_write_dir() {
+  return solarus_write_dir;
+}
+
+/**
+ * @brief Sets the directory where the engine can write files.
+ *
+ * Initially, this directory is set to the preprocessor constant
+ * SOLARUS_WRITE_DIR (by default ".solarus").
+ * You normally don't need to change this, it should have been set correctly
+ * at compilation time to a value that depends on the target system.
+ *
+ * @param solarus_write_dir The directory where the engine can write files,
+ * relative to the base write directory.
+ */
+void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
+
+  FileTools::solarus_write_dir = solarus_write_dir;
+
+  // First check that we can write in a directory.
+  if (!PHYSFS_setWriteDir(get_base_write_dir().c_str())) {
+     Debug::die(StringConcat() << "Cannot write in user directory '"
+         << get_base_write_dir().c_str()  << "': " << PHYSFS_getLastError());
+  }
+
+  // Create the directory.
+  PHYSFS_mkdir(solarus_write_dir.c_str());
+  
+  const std::string& full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
+  if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
+    Debug::die(StringConcat() << "Cannot set Solarus write directory to '"
+        << full_write_dir << "': " << PHYSFS_getLastError());
+  }
+
+  // The quest subdirectory may be new, create it if needed.
+  if (!quest_write_dir.empty()) {
+    set_quest_write_dir(quest_write_dir);
+  }
+
+  // We will also read savegames and configuration files from there.
+  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);
+}
+
+/**
+ * @brief Returns the subdirectory where files specific to the quest are
+ * saved, like savegames and configuration files.
+ * @return The quest write directory, relative to the Solarus write directory,
+ * or an empty string if it has not been set yet.
+ */
+const std::string& FileTools::get_quest_write_dir() {
+  return quest_write_dir;
+}
+
+/**
+ * @brief Sets the subdirectory where files specific to the quest are
+ * saved, like savegames and configuration files.
+ *
+ * You have to call this function before loading or saving savegames and
+ * configuration files.
+ * This directory should typically be named like your quest, to be sure other
+ * quests will not interfere.
+ *
+ * @param quest_write_dir The quest write directory, relative to the Solarus
+ * write directory.
+ */
+void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
+
+  FileTools::quest_write_dir = quest_write_dir;
+
+  if (!quest_write_dir.empty()) {
+    // Create this subdirectory in the Solarus write directory.
+    PHYSFS_mkdir(quest_write_dir.c_str());
+  }
+}
+
+/**
+ * @brief Returns the absolute path of the quest write directory.
+ */
+const std::string FileTools::get_full_quest_write_dir() {
+  return std::string(PHYSFS_getUserDir()) + "/" + get_solarus_write_dir() + "/" + get_quest_write_dir();
+}
+
+/**
+ * @brief Returns the privilegied base write directory, depending on the OS.
+ * @return The base write directory.
+ */
+std::string FileTools::get_base_write_dir() {
+
+#if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
+  return std::string(getUserApplicationSupportDirectory());
+#else
+  return std::string(PHYSFS_getUserDir());
+#endif
 }
 

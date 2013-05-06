@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,88 +17,20 @@
 #include "entities/MapEntity.h"
 #include "entities/MapEntities.h"
 #include "entities/Tileset.h"
-#include "entities/Tile.h"
-#include "entities/Teletransporter.h"
-#include "entities/DestinationPoint.h"
-#include "entities/PickableItem.h"
-#include "entities/DestructibleItem.h"
-#include "entities/Chest.h"
-#include "entities/Jumper.h"
-#include "entities/Enemy.h"
-#include "entities/NPC.h"
-#include "entities/Block.h"
-#include "entities/DynamicTile.h"
 #include "entities/Switch.h"
-#include "entities/CustomObstacle.h"
-#include "entities/Sensor.h"
-#include "entities/Crystal.h"
-#include "entities/CrystalBlock.h"
-#include "entities/ShopItem.h"
-#include "entities/ConveyorBelt.h"
-#include "entities/Door.h"
-#include "entities/Stairs.h"
-#include "entities/Arrow.h"
+#include "entities/Destructible.h"
 #include "entities/Hero.h"
 #include "movements/Movement.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "Sprite.h"
-#include "SpriteAnimationSet.h"
+#include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"
-
-MapEntity::CreationFunction* MapEntity::creation_functions[] = {
-  Tile::parse,
-  DestinationPoint::parse,
-  Teletransporter::parse,
-  PickableItem::parse,
-  DestructibleItem::parse,
-  Chest::parse,
-  Jumper::parse,
-  Enemy::parse,
-  NPC::parse,
-  Block::parse,
-  DynamicTile::parse,
-  Switch::parse,
-  CustomObstacle::parse,
-  Sensor::parse,
-  Crystal::parse,
-  CrystalBlock::parse,
-  ShopItem::parse,
-  ConveyorBelt::parse,
-  Door::parse,
-  Stairs::parse,
-};
-
-
-const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
-  // can_be_obstacle, can_detect_entities, can_be_displayed, is_displayed_in_y_order
-  // TODO isn't can_detect_entities stupid? just redefine the function in Detector should work
-  {false, false, false, false}, // tile (not used)
-  {false, false,  true, false}, // destination point
-  { true,  true,  true, false}, // teletransporter
-  {false,  true,  true, false}, // pickable item
-  { true,  true,  true, false}, // destructible item
-  { true,  true,  true,  true}, // chest
-  { true,  true, false, false}, // jumper
-  { true,  true,  true,  true}, // enemy
-  { true,  true,  true,  true}, // NPC
-  { true,  true,  true,  true}, // block
-  { true,  true,  true, false}, // dynamic tile
-  { true,  true,  true, false}, // switch
-  { true, false, false, false}, // custom obstacle
-  { true,  true, false, false}, // sensor
-  { true,  true,  true, false}, // crystal
-  { true,  true,  true, false}, // crystal block
-  { true,  true,  true, false}, // shop item
-  { true,  true,  true, false}, // conveyor belt
-  { true,  true,  true, false}, // door
-  { true,  true, false, false}, // stairs
-  // other entity types (the ones not stored in map files) does not use this array and must redefine the 4 functions
-  // TODO remove this array and just let all entities redefine the function
-};
+#include "Sprite.h"
+#include "SpriteAnimationSet.h"
 
 const Rectangle MapEntity::directions_to_xy_moves[] = {
   Rectangle( 1, 0),
@@ -115,6 +47,7 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
  * @brief Creates a map entity without specifying its properties now.
  */
 MapEntity::MapEntity():
+  main_loop(NULL),
   map(NULL),
   layer(LAYER_LOW),
   name(""),
@@ -146,6 +79,7 @@ MapEntity::MapEntity():
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
+  main_loop(NULL),
   map(NULL),
   layer(layer),
   bounding_box(x, y),
@@ -167,7 +101,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
 
 /**
  * @brief Creates an entity, specifying its position, its name and its direction.
- * @param name a name identifying the entity
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param direction direction of the entity
  * @param layer layer of the entity
  * @param x x position of the entity
@@ -175,8 +109,9 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * @param width width of the entity
  * @param height height of the entity
  */
-MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
+MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
 		     int x, int y, int width, int height):
+  main_loop(NULL),
   map(NULL),
   layer(layer),
   bounding_box(x, y),
@@ -218,57 +153,62 @@ bool MapEntity::is_hero() {
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
- *
- * If yes, the function is_obstacle_for() will be called
- * to determine whether this particular entity is an obstacle or not.
- *
- * @return true if this type of entity can be obstacle for other entities
- */
-bool MapEntity::can_be_obstacle() {
-  return entity_types_features[get_type()].can_be_obstacle;
-}
-
-/**
  * @brief Returns whether entities of this type have detection capabilities.
  *
  * This function returns whether entities of this type can detect the presence 
- * of the hero or other entities (this is possible only for
- * suclasses of Detector). If yes, the function 
+ * of the hero or other entities. If yes, the function
  * notify_collision() will be called when a collision is detected.
  *
- * @return true if this type of entity can detect other entities
+ * @return \c true if this type of entity can detect other entities.
  */
-bool MapEntity::can_detect_entities() {
-  return entity_types_features[get_type()].can_detect_entities;
+bool MapEntity::is_detector() {
+  return false;
 }
 
 /**
- * @brief Returns whether entities of this type can be displayed.
+ * @brief Returns whether entities of this type can be obstacles for other entities.
  *
- * If yes, the sprites added by the add_sprite() calls will be
- * displayed (if any).
+ * This function returns \c true by default.
+ * If this function returns \c true, the entity is added to the list of
+ * potential obstacles when it is added to a map.
+ * If your type of entity can never be an obstacle, you should redefine this
+ * function and return \c false to avoid useless collision checks.
  *
- * @return true if this type of entity can be displayed
+ * @return \c true if this type of entity can be obstacle for other entities.
  */
-bool MapEntity::can_be_displayed() {
-  return entity_types_features[get_type()].can_be_displayed;
+bool MapEntity::can_be_obstacle() {
+  return true;
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
+ * @brief Returns whether entities of this type can be drawn.
  *
- * This function returns whether an entity of this type should be displayed above
+ * This function returns \c true by default. Redefine it to return
+ * \c false if your type of entity has nothing to display.
+ *
+ * @return true if this type of entity can be drawn
+ */
+bool MapEntity::can_be_drawn() {
+  return true;
+}
+
+/**
+ * @brief Returns whether this entity has to be drawn in y order.
+ *
+ * This function returns whether an entity of this type should be drawn above
  * the hero and other entities having this property when it is in front of them.
  * This means that the displaying order of entities having this
  * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file),
- * and before the entities with the feature.
+ * are drawn in the normal order (i.e. in the order of their creation),
+ * and before the entities with this feature.
  *
- * @return true if this type of entity is displayed at the same level as the hero
+ * Returns \c false by default.
+ *
+ * @return \c true if this type of entity should be drawn at the same level
+ * as the hero.
  */
-bool MapEntity::is_displayed_in_y_order() {
-  return entity_types_features[get_type()].is_displayed_in_y_order;
+bool MapEntity::is_drawn_in_y_order() {
+  return false;
 }
 
 /**
@@ -286,13 +226,16 @@ bool MapEntity::is_on_map() {
  * Warning: when this function is called during the initialization of a new map,
  * the current map of the game is still the old one.
  *
- * @param map the map
+ * TODO make this function non-virtual and make a virtual function notify_added_to_map(Map& map).
+ *
+ * @param map The map.
  */
-void MapEntity::set_map(Map &map) {
+void MapEntity::set_map(Map& map) {
 
+  this->main_loop = &map.get_game().get_main_loop();
   this->map = &map;
   if (&get_game().get_current_map() == &map) {
-    set_sprites_map(map);
+    notify_tileset_changed();
   }
 }
 
@@ -300,23 +243,6 @@ void MapEntity::set_map(Map &map) {
  * @brief Notifies this entity that its map has just become active.
  */
 void MapEntity::notify_map_started() {
-
-  set_sprites_map(*map);
-}
-
-/**
- * @brief Notifies the sprites of this entity that they belong to a map.
- *
- * This is useful for tileset-dependent sprites such as doors and blocks.
- */
-void MapEntity::set_sprites_map(Map& map) {
-
-  std::list<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
-
-    Sprite& sprite = *(*it);
-    sprite.set_map(map);
-  }
 }
 
 /**
@@ -324,6 +250,21 @@ void MapEntity::set_sprites_map(Map& map) {
  * of the map is finished.
  */
 void MapEntity::notify_map_opening_transition_finished() {
+}
+
+/**
+ * @brief Notifies this entity that the tileset of the map has just changed.
+ *
+ * This is useful for tileset-dependent sprites such as doors and blocks.
+ */
+void MapEntity::notify_tileset_changed() {
+
+  std::list<Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+
+    Sprite& sprite = *(*it);
+    sprite.set_tileset(get_map().get_tileset());
+  }
 }
 
 /**
@@ -338,7 +279,8 @@ Map& MapEntity::get_map() {
  * @brief Returns the game that is running the map where this entity is.
  * @return the game
  */
-Game& MapEntity::get_game() {
+Game& MapEntity::get_game() const {
+  Debug::check_assertion(map != NULL, "No map was set");
   return map->get_game();
 }
 
@@ -346,23 +288,26 @@ Game& MapEntity::get_game() {
  * @brief Returns the entities of the current map.
  * @return the entities
  */
-MapEntities& MapEntity::get_entities() {
+MapEntities& MapEntity::get_entities() const {
+  Debug::check_assertion(map != NULL, "No map was set");
   return map->get_entities();
 }
 
 /**
- * @brief Returns the script of the current map.
- * @return the map script
+ * @brief Returns the shared Lua context.
+ * @return The Lua context where all scripts are run.
  */
-MapScript& MapEntity::get_map_script() {
-  return map->get_script();
+LuaContext& MapEntity::get_lua_context() const {
+
+  Debug::check_assertion(main_loop != NULL, "This entity is not fully constructed yet");
+  return main_loop->get_lua_context();
 }
 
 /**
  * @brief Returns the current equipment.
  * @return the equipment
  */
-Equipment& MapEntity::get_equipment() {
+Equipment& MapEntity::get_equipment() const {
   return get_game().get_equipment();
 }
 
@@ -370,23 +315,23 @@ Equipment& MapEntity::get_equipment() {
  * @brief Returns the keys effect manager.
  * @return the keys effect
  */
-KeysEffect& MapEntity::get_keys_effect() {
+KeysEffect& MapEntity::get_keys_effect() const {
   return get_game().get_keys_effect();
 }
 
 /**
- * @brief Returns the game controls.
- * @return the controls
+ * @brief Returns the game commands.
+ * @return The commands.
  */
-GameControls& MapEntity::get_controls() {
-  return get_game().get_controls();
+GameCommands& MapEntity::get_commands() const {
+  return get_game().get_commands();
 }
 
 /**
  * @brief Returns the dialog box manager.
  * @return the dialog box
  */
-DialogBox& MapEntity::get_dialog_box() {
+DialogBox& MapEntity::get_dialog_box() const {
   return get_game().get_dialog_box();
 }
 
@@ -394,7 +339,7 @@ DialogBox& MapEntity::get_dialog_box() {
  * @brief Returns the savegame.
  * @return the savegame
  */
-Savegame& MapEntity::get_savegame() {
+Savegame& MapEntity::get_savegame() const {
   return get_game().get_savegame();
 }
 
@@ -403,7 +348,7 @@ Savegame& MapEntity::get_savegame() {
  * @brief Returns the hero
  * @return the hero
  */
-Hero& MapEntity::get_hero() {
+Hero& MapEntity::get_hero() const {
   return get_entities().get_hero();
 }
 
@@ -427,6 +372,7 @@ void MapEntity::remove_from_map() {
  */
 void MapEntity::notify_being_removed() {
 
+  get_lua_context().entity_on_removed(*this);
   this->being_removed = true;
 }
 
@@ -616,7 +562,7 @@ void MapEntity::set_top_left_xy(int x, int y) {
 }
 
 /**
- * @brief Returns the coordinates where this entity should be displayed.
+ * @brief Returns the coordinates where this entity should be drawn.
  *
  * Most of the time, this function just returns get_xy().
  * But when the entity is moving, the movement may decide to display the
@@ -838,7 +784,8 @@ const Rectangle MapEntity::get_center_point() {
 
 /**
  * @brief Returns the name of the entity (if any).
- * @return the name of the entity, or an empty string if the entity is not identifiable
+ * @return the name of the entity, or an empty string if
+ * the entity has no name.
  */
 const std::string& MapEntity::get_name() const {
   return name;
@@ -931,13 +878,15 @@ std::list<Sprite*>& MapEntity::get_sprites() {
 
 /**
  * @brief Adds a sprite to this entity.
- * @param id id of the sprite's animation set to use
+ * @param animation_set_id id of the sprite's animation set to use
  * @param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
  * @return the sprite created
  */
-Sprite& MapEntity::create_sprite(const SpriteAnimationSetId& id, bool enable_pixel_collisions) {
+Sprite& MapEntity::create_sprite(const std::string& animation_set_id,
+    bool enable_pixel_collisions) {
 
-  Sprite* sprite = new Sprite(id);
+  Sprite* sprite = new Sprite(animation_set_id);
+  sprite->increment_refcount();
 
   if (enable_pixel_collisions) {
     sprite->enable_pixel_collisions();
@@ -950,13 +899,13 @@ Sprite& MapEntity::create_sprite(const SpriteAnimationSetId& id, bool enable_pix
 /**
  * @brief Marks a sprite of this entity to be removed as soon as possible.
  */
-void MapEntity::remove_sprite(Sprite* sprite) {
+void MapEntity::remove_sprite(Sprite& sprite) {
 
   bool found = false;
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end() && !found; it++) {
-    if (*it == sprite) {
-      old_sprites.push_back(sprite);
+    if (*it == &sprite) {
+      old_sprites.push_back(&sprite);
       found = true;
     }
   }
@@ -982,8 +931,13 @@ void MapEntity::clear_old_sprites() {
 
   std::list<Sprite*>::iterator it;
   for (it = old_sprites.begin(); it != old_sprites.end(); it++) {
-    sprites.remove(*it);
-    delete *it;
+    Sprite* sprite = *it;
+    sprites.remove(sprite);
+
+    sprite->decrement_refcount();
+    if (sprite->get_refcount() == 0) {
+      delete sprite;
+    }
   }
   old_sprites.clear();
 }
@@ -1048,9 +1002,10 @@ Movement* MapEntity::get_movement() {
  *
  * @param movement the movement to set, or NULL to set no movement
  */
-void MapEntity::set_movement(Movement *movement) {
+void MapEntity::set_movement(Movement* movement) {
 
   this->movement = movement;
+  movement->increment_refcount();
 
   if (movement != NULL) {
     movement->set_entity(this);
@@ -1071,8 +1026,9 @@ void MapEntity::set_movement(Movement *movement) {
 void MapEntity::clear_movement() {
 
   if (movement != NULL) {
-    movement->set_entity(NULL); // tell the movement to forget me
-    old_movements.push_back(movement); // destroy it later
+    movement->set_entity(NULL);         // Tell the movement to forget me.
+    movement->set_lua_context(NULL);    // Stop future Lua callbacks.
+    old_movements.push_back(movement);  // Destroy it later.
     movement = NULL;
   }
 }
@@ -1084,7 +1040,11 @@ void MapEntity::clear_old_movements() {
 
   std::list<Movement*>::iterator it;
   for (it = old_movements.begin(); it != old_movements.end(); it++) {
-    delete *it;
+    Movement* movement = *it;
+    movement->decrement_refcount();
+    if (movement->get_refcount() == 0) {
+      delete movement;
+    }
   }
   old_movements.clear();
 }
@@ -1211,13 +1171,15 @@ void MapEntity::set_enabled(bool enabled) {
       sprite.set_suspended(suspended || !enabled);
     }
 
-    notify_enabled(enabled);
+    if (is_on_map()) {
+      notify_enabled(enabled);
+    }
   }
 }
 
 /**
  * @brief Notifies this entity that it was just enabled or disabled.
- * @param enabled true if the entity is now enabled
+ * @param enabled \c true if the entity is now enabled.
  */
 void MapEntity::notify_enabled(bool enabled) {
 }
@@ -1464,12 +1426,12 @@ bool MapEntity::is_jumper_obstacle(Jumper& jumper) {
  * By default, this function returns true unless the destructible item is disabled
  * (e.g. a bomb flower that will regenerate).
  *
- * @param destructible_item a destructible item
+ * @param destructible a destructible item
  * @return true if the destructible item is currently an obstacle for this entity
  */
-bool MapEntity::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
+bool MapEntity::is_destructible_obstacle(Destructible& destructible) {
 
-  return !destructible_item.is_disabled();
+  return !destructible.is_disabled();
 }
 
 /**
@@ -1585,11 +1547,22 @@ bool MapEntity::is_center_in(const Rectangle &rectangle) {
 
 /**
  * @brief Returns the angle of the vector between the origin of this entity
- * and the origin of another entity.
- * @param other the other entity
- * @return the angle of the vector in radians
+ * and a point.
+ * @param x X coordinate of the point.
+ * @param y Y coordinate of the point.
+ * @return The angle of the vector in radians.
  */
-double MapEntity::get_vector_angle(MapEntity &other) {
+double MapEntity::get_angle(int x, int y) {
+  return Geometry::get_angle(get_x(), get_y(), x, y);
+}
+
+/**
+ * @brief Returns the angle of the vector between the origin of this entity
+ * and the origin of another entity.
+ * @param other The other entity.
+ * @return The angle of the vector in radians.
+ */
+double MapEntity::get_angle(MapEntity& other) {
   return Geometry::get_angle(get_x(), get_y(), other.get_x(), other.get_y());
 }
 
@@ -1604,21 +1577,12 @@ int MapEntity::get_distance(int x, int y) {
 }
 
 /**
- * @brief Returns the distance between the origin of this entity and a point.
- * @param xy x and y coordinates of a point
- * @return the distance between this entity and the point in pixels
- */
-int MapEntity::get_distance(const Rectangle& xy) {
-  return (int) Geometry::get_distance(get_x(), get_y(), xy.get_x(), xy.get_y());
-}
-
-/**
  * @brief Returns the distance between the origin of this entity
  * and the origin of another entity.
  * @param other the other entity
  * @return the distance between the two entities in pixels
  */
-int MapEntity::get_distance(MapEntity &other) {
+int MapEntity::get_distance(MapEntity& other) {
   return (int) Geometry::get_distance(get_x(), get_y(), other.get_x(), other.get_y());
 }
 
@@ -1636,10 +1600,10 @@ int MapEntity::get_distance_to_camera() {
 
 /**
  * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
- * @param destructible_item the destructible item
+ * @param destructible the destructible item
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
 }
 
 /**
@@ -1848,21 +1812,6 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 }
 
 /**
- * @brief Displays a fade-in or fade-out effect on the entity's sprites.
- * @param direction fade direction (0: in, 1: out)
- */
-void MapEntity::start_fading(int direction) {
-
-  // update the sprites
-  std::list<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
-    
-    Sprite& sprite = *(*it);
-    sprite.start_fading(direction);
-  }
-}
-
-/**
  * @brief Updates the entity.
  *
  * This function is called repeatedly by the map. By default, it updates the position
@@ -1876,7 +1825,7 @@ void MapEntity::update() {
 
   // enable if necessary
   if (waiting_enabled) {
-    Hero &hero = get_hero();
+    Hero& hero = get_hero();
     if (!is_obstacle_for(hero) || !overlaps(hero)) {
       this->enabled = true;
       this->waiting_enabled = false;
@@ -1942,27 +1891,53 @@ void MapEntity::update() {
  * @return true if the entity is visible and has a sprite in the visible part
  * of the map
  */
-bool MapEntity::is_displayed() {
+bool MapEntity::is_drawn() {
 
-  return is_visible() && overlaps_camera();
+  return is_visible() && (overlaps_camera() || !is_drawn_at_its_position());
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Returns whether this entity is drawn at its position on the map.
  *
- * By default, this function displays the entity's sprites (if any) and if
- * at least one of them is in the visible part of the map.
+ * Usually, this function returns true, and when it is the case, draw_on_map()
+ * is called only for entities located in the camera's rectangle.
+ *
+ * However, some entities may want to be drawn in the camera even when their
+ * position is outside, typically to make an illusion of movement like parallax
+ * scrolling.
+ *
+ * @return true if this entity is drawn where it is located.
  */
-void MapEntity::display_on_map() {
+bool MapEntity::is_drawn_at_its_position() {
+  return true;
+}
 
-  if (is_displayed()) {
-    // display the sprites
-    std::list<Sprite*>::iterator it;
-    for (it = sprites.begin(); it != sprites.end(); it++) {
+/**
+ * @brief Draws the entity on the map.
+ *
+ * By default, this function draws the entity's sprites (if any) and if
+ * at least one of them is in the visible part of the map.
+ * This function should do nothing if is_drawn() is false.
+ */
+void MapEntity::draw_on_map() {
 
-      Sprite& sprite = *(*it);
-      get_map().display_sprite(sprite, get_displayed_xy());
-    }
+  if (!is_drawn()) {
+    return;
   }
+
+  // Draw the sprites.
+  std::list<Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); ++it) {
+    Sprite& sprite = *(*it);
+    get_map().draw_sprite(sprite, get_displayed_xy());
+  }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& MapEntity::get_lua_type_name() const {
+  return LuaContext::entity_module_name;
 }
 

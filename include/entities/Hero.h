@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include "entities/EnemyAttack.h"
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief The hero's entity.
@@ -60,18 +60,18 @@ class Hero: public MapEntity {
                                      * in deep water or falled into a hole) */
     class StairsState;              /**< the hero is being moved by stairs */
     class VictoryState;             /**< the hero is make a victory sequence with his sword */
-    class InventoryItemState;       /**< the hero is currently using an item from the inventory */
+    class UsingItemState;           /**< the hero is currently using an equipment item */
     class BoomerangState;           /**< the hero is shooting a boomerang */
     class HookshotState;            /**< the hero is throwing his hookshot */
     class BowState;                 /**< the hero is shooting an arrow with a bow */
     class FreezedState;             /**< the hero cannot move for various possible reasons,
                                      * including an instruction from the script */
 
-    State *state;                   /**< the current internal state */
+    State* state;                   /**< the current internal state */
     std::list<State*> old_states;   /**< previous state objects to delete as soon as possible */
 
     // sprites
-    HeroSprites *sprites;           /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
+    HeroSprites* sprites;           /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // position
     static const int normal_walking_speed;   /**< default speed when walking */
@@ -128,10 +128,7 @@ class Hero: public MapEntity {
      * the main properties of this type of entity.
      */
     EntityType get_type();
-    bool can_be_obstacle();
-    bool can_detect_entities();
-    bool can_be_displayed();
-    bool is_displayed_in_y_order();
+    bool is_drawn_in_y_order();
 
     /**
      * @name Game loop.
@@ -139,23 +136,22 @@ class Hero: public MapEntity {
      * Functions called by the game loop.
      */
     void update();
-    void display_on_map();
+    void draw_on_map();
     void set_suspended(bool suspended);
-    void key_pressed(GameControls::GameKey key);
-    void key_released(GameControls::GameKey key);
+    void notify_command_pressed(GameCommands::Command command);
+    void notify_command_released(GameCommands::Command command);
 
     /**
      * @name Sprites.
      *
      * Functions relative to the sprites.
-     * The sprites are managed and displayed by the class HeroSprites.
+     * The sprites are managed and drawn by the class HeroSprites.
      */
     HeroSprites& get_sprites();
     int get_animation_direction();
     void set_animation_direction(int direction);
     bool is_animation_finished();
     void rebuild_equipment();
-    bool is_visible();
     bool is_shadow_visible();
 
     /**
@@ -166,7 +162,7 @@ class Hero: public MapEntity {
     void set_map(Map &map);
     void set_map(Map &map, int initial_direction);
     void notify_map_started();
-    void place_on_destination_point(Map& map, const Rectangle& previous_map_location);
+    void place_on_destination(Map& map, const Rectangle& previous_map_location);
     void notify_map_opening_transition_finished();
 
     /**
@@ -251,7 +247,7 @@ class Hero: public MapEntity {
      * Handle collisions between the hero and other entities.
      */
     void check_position();
-    void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
+    void notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy);
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
     void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);
@@ -287,11 +283,11 @@ class Hero: public MapEntity {
      *
      * These functions provide information about the hero's internal state
      * and allow to start actions which may modify this state.
-     * Actions can be triggered by inventory items, entities or scripts.
+     * Actions can be triggered by equipment items, entities or scripts.
      */
     bool is_free();
-    bool is_using_inventory_item();
-    InventoryItem& get_current_inventory_item();
+    bool is_using_item();
+    EquipmentItemUsage& get_item_being_used();
     bool is_grabbing_or_pulling();
     bool is_moving_grabbed_entity();
     void notify_grabbed_entity_collision();
@@ -306,23 +302,27 @@ class Hero: public MapEntity {
     void start_next_state();
     void start_free();
     void start_free_or_carrying();
-    void start_treasure(const Treasure &treasure);
+    void start_treasure(const Treasure& treasure, int callback_ref);
     void start_forced_walking(const std::string &path, bool loop, bool ignore_obstacles);
-    void start_jumping(int direction8, int length, bool ignore_obstacles,
+    void start_jumping(int direction8, int distance, bool ignore_obstacles,
         bool with_sound, uint32_t movement_delay = 0);
     void start_freezed();
-    void start_victory();
+    void start_victory(int callback_ref);
     void start_lifting(CarriedItem* item_to_lift);
     void start_running();
     void start_grabbing();
+    bool can_start_item(EquipmentItem& item);
+    void start_item(EquipmentItem& item);
     void start_boomerang(int max_distance, int speed,
         const std::string& tunic_preparing_animation,
-        const SpriteAnimationSetId& sprite_name);
+        const std::string& sprite_name);
     void start_bow();
     void start_hookshot();
     void start_back_to_solid_ground(bool use_memorized_xy,
         uint32_t end_delay = 0, bool with_sound = true);
     void start_state_from_ground();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

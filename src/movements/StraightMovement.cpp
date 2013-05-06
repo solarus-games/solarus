@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
  */
 #include "movements/StraightMovement.h"
 #include "entities/MapEntity.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
@@ -52,13 +53,11 @@ StraightMovement::~StraightMovement() {
 }
 
 /**
- * @brief Sets the entity to be controlled by this movement object.
- * @param entity the entity to control, or NULL if the movement is not
- * attached to a map entity
+ * @brief Notifies this movement that the object it controls has changed.
  */
-void StraightMovement::set_entity(MapEntity* entity) {
+void StraightMovement::notify_object_controlled() {
 
-  Movement::set_entity(entity);
+  Movement::notify_object_controlled();
   initial_xy.set_xy(get_xy());
 }
 
@@ -121,9 +120,7 @@ void StraightMovement::set_x_speed(double x_speed) {
   initial_xy.set_xy(get_xy());
   finished = false;
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -158,9 +155,7 @@ void StraightMovement::set_y_speed(double y_speed) {
   initial_xy.set_xy(get_xy());
   finished = false;
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -182,9 +177,7 @@ void StraightMovement::set_speed(double speed) {
   set_y_speed(-speed * std::sin(old_angle));
   this->angle = old_angle;
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -207,9 +200,7 @@ void StraightMovement::stop() {
   y_move = 0;
   this->angle = old_angle;
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -269,9 +260,7 @@ void StraightMovement::set_angle(double angle) {
   }
   this->angle = angle;
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -593,8 +582,6 @@ void StraightMovement::update_y() {
  */
 void StraightMovement::update() {
 
-  Movement::update();
-
   if (!is_suspended()) {
     uint32_t now = System::now();
 
@@ -649,7 +636,7 @@ void StraightMovement::update() {
 
       now = System::now();
 
-      if (max_distance != 0 && Geometry::get_distance(initial_xy.get_x(),
+      if (!finished && max_distance != 0 && Geometry::get_distance(initial_xy.get_x(),
           initial_xy.get_y(), get_x(), get_y()) >= max_distance) {
         set_finished();
       }
@@ -659,97 +646,16 @@ void StraightMovement::update() {
       }
     }
   }
+
+  // Do this at last so that Movement::update() knows whether we are finished.
+  Movement::update();
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - angle
- * - max_distance
- * - ignore_obstacles
- * - smooth
- * - displayed_direction
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string StraightMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "speed") {
-    oss << get_speed();
-  }
-  else if (key == "angle") {
-    oss << get_angle();
-  }
-  else if (key == "max_distance") {
-    oss << get_max_distance();
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else if (key == "smooth") {
-    oss << is_smooth();
-  }
-  else if (key == "displayed_direction") {
-    oss << get_displayed_direction4();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of StraightMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - angle
- * - ignore_obstacles
- * - max_distance
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void StraightMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "angle") {
-    double angle;
-    iss >> angle;
-    set_angle(angle);
-  }
-  else if (key == "max_distance") {
-    int max_distance;
-    iss >> max_distance;
-    set_max_distance(max_distance);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else if (key == "smooth") {
-    bool smooth;
-    iss >> smooth;
-    set_smooth(smooth);
-  }
-  else if (key == "displayed_direction") {
-    Debug::die("The property 'displayed_direction' of StraightMovement is read-only");
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of StraightMovement: '" << key << "'");
-  }
+const std::string& StraightMovement::get_lua_type_name() const {
+  return LuaContext::movement_straight_module_name;
 }
 

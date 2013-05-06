@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -16,45 +16,24 @@
  */
 package org.solarus.editor.gui;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import org.jdesktop.swinghelper.transformer.JXTransformer;
-import org.solarus.editor.MapEditorHistory;
-import org.solarus.editor.Project;
-import org.solarus.editor.ProjectObserver;
-import org.solarus.editor.ZSDXException;
-import org.solarus.editor.gui.tree.QuestDataTree;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import org.solarus.editor.*;
 
 /**
  * Main window of the editor.
  */
-public class EditorWindow extends JFrame implements Observer, ProjectObserver, ChangeListener {
+public class EditorWindow extends JFrame
+    implements Observer, ProjectObserver, ChangeListener {
 
-    private static final String mapEditorClass = "org.solarus.editor.gui.MapEditorWindow";
-    private static final String tilesetEditorClass = "org.solarus.editor.gui.TilesetEditorWindow";
-    private static final String fileEditorClass = "org.solarus.editor.gui.FileEditorWindow";
-    private EditorDesktop desktop;
-    private QuestDataTree qdt;
+    private EditorTabs tabs;
+    private QuestTree questTree;
+
+    // Menus and menu items memorized to enable or disable them later.
     private JMenu menuFile;
     private JMenu menuNew;
     private JMenuItem menuNewMap;
@@ -62,8 +41,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private JMenu menuOpen;
     private JMenuItem menuOpenMap;
     private JMenuItem menuOpenTileset;
-    private JMenuItem menuOpenIniFile;
-    private JMenuItem menuOpenTextFile;
     private JMenuItem menuItemSave;
     private JMenuItem menuItemClose;
     private JMenuItem menuItemUndo;
@@ -71,58 +48,32 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private JMenuItem menuItemCut;
     private JMenuItem menuItemCopy;
     private JMenuItem menuItemPaste;
-    // menus or menu items memorized to enable it later
-    /**
-     * The quest to load in the editor, for use in the sub-editors
-     */
-    private String quest;
 
     /**
      * Creates a new window.
-     * @param quest name of a quest to load, or null to show a dialog to select the quest
+     * @param questPath Path of a quest to load,
+     * or null to show a dialog to select the quest.
      */
-    public EditorWindow(String quest) {
-        super("Solarus Editor");
-        this.quest = quest;
+    public EditorWindow(String questPath) {
+        super("Solarus Quest Editor " + Project.SolarusFormat);
 
         Project.addProjectObserver(this);
         // set a nice look and feel
         GuiTools.setLookAndFeel();
 
-        desktop = new EditorDesktop();
-        desktop.addChangeListener(this);
+        tabs = new EditorTabs();
+        tabs.addChangeListener(this);
 
-        qdt = new QuestDataTree(quest, this);
-        qdt.setVisible(true);
-        final JScrollPane jsp = new JScrollPane(qdt);
-        jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, jsp, desktop);
-        splitPane.setDividerLocation(0);
-        jsp.setVisible(false);
-        JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
-        toolBar.setFloatable(false);
-        JToggleButton treeButton = new JToggleButton("Quest Data");
-        treeButton.addActionListener(new ActionListener() {
+        questTree = new QuestTree(this);
+        questTree.setVisible(true);
+        final JScrollPane questTreeScroller = new JScrollPane(questTree);
+        questTreeScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        questTreeScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        final JSplitPane mainSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, questTreeScroller, tabs);
+        mainSplitter.setOneTouchExpandable(true);
+        mainSplitter.setDividerLocation(300);
 
-            public void actionPerformed(ActionEvent e) {
-                jsp.setVisible(!jsp.isVisible());
-                if (jsp.isVisible()) {
-                    splitPane.setDividerLocation(300);
-                } else {
-                    splitPane.setDividerLocation(0);
-                }
-            }
-        });
-         
-       //  for(int i = 0; i < 10; i++) toolBar.add(new JLabel());
-        JXTransformer t = new JXTransformer(treeButton);
-        t.rotate(- Math.PI / 2);
-       toolBar.add(t);
-       JPanel pToolBar = new JPanel(new BorderLayout());
-       pToolBar.add(toolBar, BorderLayout.NORTH);
-        getContentPane().add(pToolBar, BorderLayout.WEST);
-        getContentPane().add(splitPane, BorderLayout.CENTER);
+        getContentPane().add(mainSplitter, BorderLayout.CENTER);
 
         // add a window listener to confirm when the user closes the window
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -131,26 +82,21 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             @Override
             public void windowClosing(WindowEvent e) {
                 if (checkCurrentFilesSaved()) {
-                    //if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
                     System.exit(0);
-                    //}
                 }
             }
         });
 
-//        getToolkit().addAWTEventListener(new ActionOnCurrentEditor(), AWTEvent.KEY_EVENT_MASK);
-
         // create the menu bar
         createMenuBar();
         update(null, null);
-        if (quest == null) {
-            new ActionListenerLoadProject().actionPerformed(null);
+        if (questPath == null) {
+            loadProject();
         } else {
             try {
-                Project.createExisting("../quests/" + quest);
-                  qdt.setRoot(Project.getDataPath());
-            } catch (ZSDXException ex) {
-                new ActionListenerLoadProject().actionPerformed(null);
+                Project.createExisting(questPath);
+            } catch (QuestEditorException ex) {
+                loadProject();
             }
         }
     }
@@ -164,16 +110,17 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         menuFile.setEnabled(Project.isLoaded());
 
-        if (desktop.getSelectedComponent() != null) {
-            String editorClass = desktop.getSelectedComponent().getClass().getName();
-            //System.out.println(c.getClass().getName());
-            boolean isMapEditor = mapEditorClass.equals(editorClass);
-            boolean isTilesetEditor = tilesetEditorClass.equals(editorClass);
-            boolean isFileEditor = fileEditorClass.equals(editorClass);
+        if (tabs.getSelectedComponent() != null) {
 
-            if (isMapEditor) {
+            menuItemUndo.setEnabled(false);
+            menuItemRedo.setEnabled(false);
+            menuItemCut.setEnabled(false);
+            menuItemCopy.setEnabled(false);
+            menuItemPaste.setEnabled(false);
 
-                MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            if (tabs.getSelectedComponent() instanceof MapEditorPanel) {
+
+                MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
                 MapEditorHistory history = mapEditor.getMap().getHistory();
                 menuItemUndo.setEnabled(history.canUndo());
                 menuItemRedo.setEnabled(history.canRedo());
@@ -182,18 +129,13 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
                 menuItemCut.setEnabled(!emptySelection);
                 menuItemCopy.setEnabled(!emptySelection);
                 menuItemPaste.setEnabled(mapEditor.getMapView().canPaste());
-            } else {
-                // No resource opened interface the editor : only new/open actions are enabled
-
-                menuItemUndo.setEnabled(false);
-                menuItemRedo.setEnabled(false);
-                menuItemCut.setEnabled(false);
-                menuItemCopy.setEnabled(false);
-                menuItemPaste.setEnabled(false);
             }
         }
     }
 
+    /**
+     * Buils the menu bar of the window.
+     */
     public void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
@@ -206,13 +148,13 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         item = new JMenuItem("New quest...");
         item.setMnemonic(KeyEvent.VK_N);
-        item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX quest");
+        item.getAccessibleContext().setAccessibleDescription("Create a new Solarus quest");
         item.addActionListener(new ActionListenerNewProject());
         menu.add(item);
 
         item = new JMenuItem("Load quest...");
         item.setMnemonic(KeyEvent.VK_O);
-        item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX quest");
+        item.getAccessibleContext().setAccessibleDescription("Open an existing Solarus quest");
         item.addActionListener(new ActionListenerLoadProject());
         menu.add(item);
 
@@ -220,76 +162,55 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         item = new JMenuItem("Quit");
         item.setMnemonic(KeyEvent.VK_Q);
-        item.getAccessibleContext().setAccessibleDescription("Teletransporter the tileset editor");
-        item.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent ev) {
-                if (checkCurrentFilesSaved()) {
-                    //if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
-                    System.exit(0);
-                    //}
-                }
-            }
-        });
+        item.getAccessibleContext().setAccessibleDescription("Exit Solarus Quest Editor");
+        item.addActionListener(new ActionListenerQuit());
         menu.add(item);
 
         menuBar.add(menu);
 
-        //MenuFile
+        // Menu File
         menuFile = new JMenu("File");
         menuFile.setEnabled(false);
         menuFile.setMnemonic(KeyEvent.VK_F);
-        //New
+        // Menu File > New
         menuNew = new JMenu("New");
         menuNew.setMnemonic(KeyEvent.VK_N);
-        // menu Map
+        // Item File > New > Map
         menuNewMap = new JMenuItem("Map");
         menuNewMap.setMnemonic(KeyEvent.VK_M);
         menuNewMap.getAccessibleContext().setAccessibleDescription("Create a new map");
         menuNewMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        menuNewMap.addActionListener(new ActionListenerNewMap());
+        menuNewMap.addActionListener(
+                new ActionListenerCreateResourceElement(ResourceType.MAP));
         menuNew.add(menuNewMap);
-        // menu Tileset
+
+        // Item File > New > Tileset
         menuNewTileset = new JMenuItem("Tileset");
         menuNewTileset.setMnemonic(KeyEvent.VK_T);
         menuNewTileset.getAccessibleContext().setAccessibleDescription("Create a new tileset");
-        menuNewTileset.addActionListener(new ActionNewTileset());
+        menuNewTileset.addActionListener(
+                new ActionListenerCreateResourceElement(ResourceType.TILESET));
         menuNew.add(menuNewTileset);
-        // menu TextFile
-        // incoming
         menuFile.add(menuNew);
 
-        // menu open
+        // Menu File > Open
         menuOpen = new JMenu("Open");
         menuOpen.setMnemonic(KeyEvent.VK_O);
-        menuOpen.addActionListener(new ActionListenerOpenMap());
 
         menuOpenMap = new JMenuItem("Map");
         menuOpenMap.setMnemonic(KeyEvent.VK_M);
         menuOpenMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        menuOpenMap.addActionListener(new ActionListenerOpenMap());
+        menuOpenMap.addActionListener(
+                new ActionListenerOpenResourceElement(ResourceType.MAP));
         menuOpen.add(menuOpenMap);
 
         menuOpenTileset = new JMenuItem("Tileset");
         menuOpenTileset.setMnemonic(KeyEvent.VK_T);
         menuOpenTileset.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
         menuOpenTileset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
-        menuOpenTileset.addActionListener(new ActionOpenTileset());
+        menuOpenTileset.addActionListener(
+                new ActionListenerOpenResourceElement(ResourceType.TILESET));
         menuOpen.add(menuOpenTileset);
-
-        menuOpenIniFile = new JMenuItem("Dialogs");
-        menuOpenIniFile.setMnemonic(KeyEvent.VK_D);
-        menuOpenIniFile.getAccessibleContext().setAccessibleDescription("Open an existing dialogs file");
-        //menuOpenIniFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
-        menuOpenIniFile.addActionListener(new ActionOpenIniFile());
-        menuOpen.add(menuOpenIniFile);
-
-        menuOpenTextFile = new JMenuItem("Text File");
-        menuOpenTextFile.setMnemonic(KeyEvent.VK_F);
-        menuOpenTextFile.getAccessibleContext().setAccessibleDescription("Open an existing file");
-        //menuOpenTextFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
-        menuOpenTextFile.addActionListener(new ActionOpenFile());
-        menuOpen.add(menuOpenTextFile);
 
         menuFile.add(menuOpen);
 
@@ -297,14 +218,14 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuItemClose.setMnemonic(KeyEvent.VK_C);
         menuItemClose.getAccessibleContext().setAccessibleDescription("Close the current editor");
         menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-        menuItemClose.addActionListener(new ActionCloseCurrentEditor());
+        menuItemClose.addActionListener(new ActionListenerCloseCurrentEditor());
         menuFile.add(menuItemClose);
 
         menuItemSave = new JMenuItem("Save");
         menuItemSave.setMnemonic(KeyEvent.VK_S);
         menuItemSave.getAccessibleContext().setAccessibleDescription("Save the current editor");
         menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        menuItemSave.addActionListener(new ActionSaveCurrentEditor());
+        menuItemSave.addActionListener(new ActionListenerSaveCurrentEditor());
         menuFile.add(menuItemSave);
 
         menuFile.addSeparator();
@@ -324,8 +245,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuItemRedo.addActionListener(new ActionListenerRedoMap());
         menuItemRedo.setEnabled(false);
         menuFile.add(menuItemRedo);
-
-        //menuBar.add(menuEdit);
 
         menuFile.addSeparator();
 
@@ -356,18 +275,25 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuBar.add(menuFile);
 
         setJMenuBar(menuBar);
+    }
 
+    /**
+     * Sets the title of the window.
+     */
+    private void updateWindowTitle() {
+        setTitle(Project.getPathBaseName() + " - Solarus Quest Editor "
+                + Project.SolarusFormat);
     }
 
     /**
      * This function is called when the user wants to quit the editor
-     * If any resource opened is not saved, we propose to save it.
-     * @return false if the user cancelled
+     * If any resource open is not saved, we propose to save it.
+     * @return false if the user canceled.
      */
     public boolean checkCurrentFilesSaved() {
         boolean result = true;
-        if (desktop.countEditors() > 0) {
-            for (AbstractEditorWindow editor : desktop.getEditors()) {
+        if (tabs.countEditors() > 0) {
+            for (AbstractEditorPanel editor : tabs.getEditors()) {
                 result = result && editor.checkCurrentFileSaved();
             }
         }
@@ -379,6 +305,8 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     public void currentProjectChanged() {
         menuFile.setEnabled(true);
+        tabs.removeAll();
+        updateWindowTitle();
     }
 
     /**
@@ -394,18 +322,17 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         String projectPath = chooser.getProjectPath();
 
         if (projectPath != null) {
-            Project project = Project.createNew(projectPath);
-
-            if (project == null) {
-                GuiTools.warningDialog("A project already exists in this directory.");
-            } else {
-                qdt.setRoot(projectPath);
-                setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
+            try {
+                Project.createNew(projectPath);
+                GuiTools.informationDialog("Quest successfully created!\n" +
+                		"The next step is to edit some important files\n" +
+                        "(sorry, their edition is not fully supported by this editor yet):\n" +
+                		"quest.dat, text/fonts.dat, languages/languages.dat");
+            }
+            catch (QuestEditorException ex) {
+                GuiTools.errorDialog("Cannot create the project: " + ex.getMessage());
             }
         }
-
-
-
     }
 
     /**
@@ -413,12 +340,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      * located in that directory.
      */
     private void loadProject() {
-        if (desktop.countEditors() > 0) {
-            for (AbstractEditorWindow editor : desktop.getEditors()) {
-                if (editor.checkCurrentFileSaved()) {
-                    return;
-                }
-            }
+
+        if (!checkCurrentFilesSaved()) {
+            return;
         }
 
         ProjectFileChooser chooser = new ProjectFileChooser();
@@ -426,31 +350,13 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         if (projectPath != null) {
             try {
-                Project project = Project.createExisting(projectPath);
-
-                if (project == null) {
-                    if (GuiTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
-                        Project.createNew(projectPath);
-
-                        if (project == null) {
-                            GuiTools.warningDialog("A project already exists in this directory.");
-                        } else {
-                            qdt.setRoot(projectPath);
-                            setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
-                        }
-                    }
-                } else {
-                    qdt.setRoot(projectPath);
-                    setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
-                }
-            } catch (ZSDXException ex) {
+                tabs.removeAll();
+                Project.createExisting(projectPath);
+            }
+            catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
             }
         }
-    }
-
-    public void addEditor(AbstractEditorWindow editor) {
-        desktop.addEditor(editor);
     }
 
     /**
@@ -459,6 +365,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerNewProject implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
             newProject();
         }
@@ -470,55 +377,95 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerLoadProject implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
             loadProject();
         }
     }
 
     /**
-     * Action performed when the user clicks on Map > New.
-     * Creates a new map, asking to the user the map name and the map file.
+     * Action performed when the user wants to exit the program.
      */
-    private class ActionListenerNewMap implements ActionListener {
+    public class ActionListenerQuit implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = new MapEditorWindow(EditorWindow.this.quest, EditorWindow.this);
-            mapEditor.newMap();
-            EditorWindow.this.desktop.addEditor(mapEditor);
-            mapEditor.getMap().addObserver(EditorWindow.this);
-           qdt.addMap( mapEditor.getMap());
-            qdt.repaint();
-          //   mapEditor.getMap().addObserver(EditorWindow.this.desktop);
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on Map > Load.
-     * Opens an existing map, asking to the user the map file.
-     */
-    private class ActionListenerOpenMap implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = new MapEditorWindow(EditorWindow.this.quest, EditorWindow.this);
-            mapEditor.openMap();
-            if (mapEditor.getMap() != null) {
-                EditorWindow.this.desktop.addEditor(mapEditor);
-                mapEditor.getMap().addObserver(EditorWindow.this);
+            if (checkCurrentFilesSaved()) {
+                System.exit(0);
             }
         }
     }
 
     /**
+     * Action performed when the user wants to create a new resource element.
+     */
+    public class ActionListenerCreateResourceElement implements ActionListener {
+
+        private ResourceType resourceType;
+
+        public ActionListenerCreateResourceElement(ResourceType resourceType) {
+            this.resourceType = resourceType;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ev) {
+            createResourceElement(resourceType);
+        }
+    }
+
+    /**
+     * Action performed when the user wants to open a resource element.
+     */
+    public class ActionListenerOpenResourceElement implements ActionListener {
+
+        private ResourceType resourceType;
+
+        public ActionListenerOpenResourceElement(ResourceType resourceType) {
+            this.resourceType = resourceType;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ev) {
+            openResourceElement(resourceType);
+        }
+    }
+
+    /**
+     * Action performed when the user clicks on File > Close.
+     * Closes the current editor unless the user is not okay with that..
+     */
+    private class ActionListenerCloseCurrentEditor implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ev) {
+            tabs.removeCurrentEditor(true);
+        }
+    }
+
+    /**
+     * Action performed when the user clicks on File > Save.
+     * Saves the resource in this editor.
+     */
+    private class ActionListenerSaveCurrentEditor implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ev) {
+            tabs.saveCurrentEditor();
+        }
+    }
+
+    /**
      * Action performed when user the user clicks on Edit > Undo or presses Ctrl + Z.
-     * The last action (if any) on the map is cancelled.
+     * The last action (if any) on the map is canceled.
      */
     private class ActionListenerUndoMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
             try {
                 mapEditor.getMap().getHistory().undo();
-            } catch (ZSDXException ex) {
+            } catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot undo: " + ex.getMessage());
             }
         }
@@ -526,15 +473,16 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
     /**
      * Action performed when user the user clicks on Edit > Redo or presses Ctrl + Y.
-     * The last action cancelled (if any) is done again.
+     * The last action canceled (if any) is done again.
      */
     private class ActionListenerRedoMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
             try {
                 mapEditor.getMap().getHistory().redo();
-            } catch (ZSDXException ex) {
+            } catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot redo: " + ex.getMessage());
             }
         }
@@ -546,8 +494,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerCutMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
             mapEditor.getMapView().cutSelectedEntities();
         }
     }
@@ -558,8 +507,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerCopyMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
             mapEditor.getMapView().copySelectedEntities();
         }
     }
@@ -570,123 +520,406 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      */
     private class ActionListenerPasteMap implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
+            MapEditorPanel mapEditor = (MapEditorPanel) tabs.getSelectedComponent();
             mapEditor.getMapView().paste();
         }
     }
-// Specific listeners for tileset editor
 
     /**
-     * Action performed when the user clicks on Tileset > New.
-     * Creates a new tileset, asking to the user the tileset name and the tileset file.
+     * Called when the state of the tabs has changed.
      */
-    private class ActionNewTileset implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(EditorWindow.this.quest, EditorWindow.this);
-            tilesetEditor.newTileset();
-            EditorWindow.this.desktop.addEditor(tilesetEditor);
-            qdt.addTileset( tilesetEditor.getTileset());
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on Tileset > Load.
-     * Opens an existing tileset, asking to the user the tileset name.
-     */
-    private class ActionOpenTileset implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(EditorWindow.this.quest, EditorWindow.this);
-            tilesetEditor.openTileset();
-            if (tilesetEditor.getTileset() == null) {
-                return;//user cancellation
-            }
-            EditorWindow.this.desktop.addEditor(tilesetEditor);
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on File > Load.
-     * Opens an existing file
-     */
-    private class ActionOpenIniFile implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(EditorWindow.this.quest, EditorWindow.this);
-            dialogsEditor.openDialogs();
-            if (dialogsEditor.getDialogs() == null) {
-                return;//user cancellation
-            }
-            EditorWindow.this.desktop.addEditor(dialogsEditor);
-
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on File > Load.
-     * Opens an existing file
-     */
-    private class ActionOpenFile implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            FileEditorWindow fileEditor = new FileEditorWindow(EditorWindow.this.quest, EditorWindow.this);
-            JFileChooser jfc = new JFileChooser(Project.getRootPath() + File.separator + "data");
-            jfc.showOpenDialog(EditorWindow.this);
-            File selectedFile = jfc.getSelectedFile();
-            if (selectedFile != null) {
-                fileEditor.setFile(selectedFile);
-                EditorWindow.this.desktop.addEditor(fileEditor);
-            }
-
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on File > Close.
-     * Closes the current file.
-     */
-    private class ActionCloseCurrentEditor implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            desktop.removeCurrentEditor();
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on Tileset > Save.
-     * Saves the tileset into its file.
-     */
-    private class ActionSaveCurrentEditor implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            desktop.saveCurrentEditor();
-        }
-    }
-
-//    /**
-//     * Action performed when the user uses the Ctrl-W or Ctrl-S keys
-//     * Close or save the current editor
-//     */
-//    private class ActionOnCurrentEditor implements AWTEventListener {
-//
-//        public void eventDispatched(AWTEvent ev) {
-//            if (ev instanceof KeyEvent) {
-//                KeyEvent kev = (KeyEvent) ev;
-//                System.out.println("Touche appuyÃ©e depuis " + this.getClass().getName());
-//                int code = kev.getKeyCode();
-//                if (kev.isControlDown()) {
-//                    if (code == KeyEvent.VK_W) {
-//                        desktop.removeCurrentEditor();
-//                    } else if (code == KeyEvent.VK_S) {
-//                        desktop.saveCurrentEditor();
-//                    }
-//                }
-//            }
-//        }
-//    }
+    @Override
     public void stateChanged(ChangeEvent e) {
         update(null, null);
+    }
+
+    /**
+     * Creates a resource element, asking its id to the user.
+     * @param resourceType Type of resource element to create.
+     */
+    public void createResourceElement(ResourceType resourceType) {
+
+        String resourceName = resourceType.getName();
+        String resourceNameLower = resourceName.toLowerCase();
+        try {
+            // TODO ask both the id and the name in the same dialog.
+            String id = JOptionPane.showInputDialog(
+                    null,
+                    "Please enter the id of your new " + resourceNameLower + "\n" +
+                    "Its file name will depend on it.",
+                    resourceName + " id",
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (id != null) {
+                if (Project.getResource(resourceType).exists(id)) {
+                    throw new QuestEditorException(
+                            resourceName + " '" + id + "' already exists");
+                }
+
+                String name = JOptionPane.showInputDialog(
+                        null,
+                        "Choose a friendly name for your " + resourceNameLower + "\n" +
+                        "It may contain spaces.",
+                        "User-friendly name",
+                        JOptionPane.QUESTION_MESSAGE);
+
+                if (name != null) {
+                    Project.newResourceElement(resourceType, id, name);
+                }
+            }
+        } catch (QuestEditorException ex) {
+            GuiTools.errorDialog("Cannot create " + resourceName + ": " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Opens a resource element, asking its id to the user.
+     * @param resourceType Type of resource.
+     */
+    public void openResourceElement(ResourceType resourceType) {
+
+        String resourceName = resourceType.getName();
+        String resourceNameLower = resourceName.toLowerCase();
+
+        ResourceChooserDialog dialog = new ResourceChooserDialog(resourceType);
+        dialog.setLocationRelativeTo(EditorWindow.this);
+        dialog.pack();
+        dialog.setVisible(true);
+        String id = dialog.getSelectedId();
+
+        if (id.isEmpty()) {
+            return;
+        }
+
+        if (!Project.getResource(resourceType).exists(id)) {
+            GuiTools.errorDialog(
+                    "No such " + resourceNameLower + ": '" + id + "'");
+        }
+        openResourceElement(resourceType, id);
+    }
+
+    /**
+     * Opens a resource element with its default editor.
+     * @param resourceType Type of resource.
+     * @param resourceId Id of the new element.
+     */
+    public void openResourceElement(ResourceType resourceType, String resourceId) {
+
+        try {
+            AbstractEditorPanel existingEditor;
+            switch (resourceType) {
+
+            case MAP:
+            {
+                existingEditor = tabs.getEditor(MapEditorPanel.getEditorId(resourceId));
+                if (existingEditor != null) {
+                    tabs.setSelectedComponent(existingEditor);
+                }
+                else {
+                    MapEditorPanel mapEditor = new MapEditorPanel(this, resourceId);
+                    tabs.addEditor(mapEditor);
+                    // Keep menu items Undo, Cut, Copy, etc. synchronized.
+                    mapEditor.getMap().addObserver(this);
+                }
+                break;
+            }
+
+            case TILESET:
+            {
+                existingEditor = tabs.getEditor(TilesetEditorPanel.getEditorId(resourceId));
+                if (existingEditor != null) {
+                    tabs.setSelectedComponent(existingEditor);
+                }
+                else {
+                    TilesetEditorPanel tilesetEditor = new TilesetEditorPanel(this, resourceId);
+                    tabs.addEditor(tilesetEditor);
+                }
+                break;
+            }
+
+            case LANGUAGE:
+            {
+                openTextEditor(Project.getDialogsFile(resourceId));
+                break;
+            }
+
+            case ENEMY:
+            {
+                openTextEditor(Project.getEnemyScriptFile(resourceId));
+                break;
+            }
+
+            case ITEM:
+            {
+                openTextEditor(Project.getItemScriptFile(resourceId));
+                break;
+            }
+
+            case SPRITE:
+            {
+                openTextEditor(Project.getSpriteFile(resourceId));
+                break;
+            }
+            }
+        }
+        catch (QuestEditorException ex) {
+            GuiTools.errorDialog(
+                    "Cannot open " + resourceType.getName().toLowerCase()
+                    + ": " + ex.getMessage());
+        }
+        catch (NoClassDefFoundError ex) {
+            ex.printStackTrace();
+            if (ex.getMessage().contains("lua")) {
+                // The LuaJ jar is probably missing in the classpath.
+                GuiTools.errorDialog(
+                        "Cannot open " + resourceType.getName().toLowerCase()
+                        + ": The LuaJ jar dependency is missing.\n"
+                        + "Please make sure that luaj-jse-2.0.2.jar exists and "
+                        + "it is placed in the current directory, and then "
+                        + "restart the editor.");
+            }
+            else {
+                // Unknown problem.
+                GuiTools.errorDialog(
+                        "Cannot open " + resourceType.getName().toLowerCase()
+                        + ": " + ex.toString());
+            }
+        }
+        catch (Throwable ex) {
+            // Unknown problem.
+            ex.printStackTrace();
+            GuiTools.errorDialog(
+                    "Cannot open " + resourceType.getName().toLowerCase()
+                    + ": " + ex.toString());
+        }
+    }
+
+    /**
+     * Opens a file in a text editor.
+     * @param file File to open.
+     */
+    public void openTextEditor(File file) {
+
+        AbstractEditorPanel existingEditor =
+                tabs.getEditor(TextEditorPanel.getEditorId(file));
+        if (existingEditor != null) {
+            tabs.setSelectedComponent(existingEditor);
+        }
+        else {
+            TextEditorPanel textEditor = new TextEditorPanel(this, file);
+            tabs.addEditor(textEditor);
+        }
+    }
+
+    /**
+     * Closes the editors of a resource element if some are open.
+     * Lets the use save the editors if he wants.
+     * @param resourceType Type of resource element to close.
+     * @param elementId Id of the resource element to close.
+     * @param promptSave true to let the user save the element if necessary,
+     * false to close it without confirmation.
+     */
+    public void closeResourceElement(ResourceType resourceType,
+            String elementId, boolean promptSave) {
+
+        // Determine ids of editors to remove.
+        ArrayList<String> editorIds = new ArrayList<String>();
+
+        switch (resourceType) {
+
+        case MAP:
+        {
+            editorIds.add(MapEditorPanel.getEditorId(elementId));
+            editorIds.add(TextEditorPanel.getEditorId(Project.getMapScriptFile(elementId)));
+            break;
+        }
+
+        case TILESET:
+        {
+            editorIds.add(TilesetEditorPanel.getEditorId(elementId));
+            break;
+        }
+
+        case LANGUAGE:
+        {
+            editorIds.add(TextEditorPanel.getEditorId(Project.getDialogsFile(elementId)));
+            editorIds.add(TextEditorPanel.getEditorId(Project.getStringsFile(elementId)));
+            break;
+        }
+
+        case ENEMY:
+        {
+            editorIds.add(TextEditorPanel.getEditorId(Project.getEnemyScriptFile(elementId)));
+            break;
+        }
+
+        case ITEM:
+        {
+            editorIds.add(TextEditorPanel.getEditorId(Project.getItemScriptFile(elementId)));
+            break;
+        }
+
+        case SPRITE:
+        {
+            editorIds.add(TextEditorPanel.getEditorId(Project.getSpriteFile(elementId)));
+            break;
+        }
+        }
+
+        for (String editorId: editorIds) {
+            tabs.removeEditor(editorId, promptSave);
+        }
+    }
+
+    /**
+     * Changes the id of a resource element, asking the new id to the user.
+     * @param resourceType Type of resource element to change.
+     * @param oldId The id to change.
+     */
+    public void moveResourceElement(ResourceType resourceType, String oldId) {
+
+        // First, close the element if it is open.
+        closeResourceElement(resourceType, oldId, true);
+
+        // Ask the new id.
+        String resourceName = resourceType.getName();
+        String resourceNameLower = resourceName.toLowerCase();
+        try {
+            String newId = JOptionPane.showInputDialog(
+                    null,
+                    "Please enter a new id for " + resourceNameLower + " '" + oldId + "'",
+                    "Change id of " + resourceNameLower + " '" + oldId + "'",
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (newId != null) {
+                if (Project.getResource(resourceType).exists(newId)) {
+                    throw new QuestEditorException(
+                            resourceName + " '" + newId + "' already exists");
+                }
+                Project.moveElement(resourceType, oldId, newId);
+            }
+        } catch (QuestEditorException ex) {
+            GuiTools.errorDialog("Cannot change id of " + resourceName + " '"
+                    + oldId + "': " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Changes the human-readable name of a resource element, asking the new
+     * name to the user.
+     * @param resourceType Type of resource element to change.
+     * @param id Id of the element to change.
+     */
+    public void renameResourceElement(ResourceType resourceType, String id) {
+
+        // Ask the new name.
+        Resource resource = Project.getResource(resourceType);
+        String resourceName = resourceType.getName();
+        String resourceNameLower = resourceName.toLowerCase();
+        try {
+            String oldName = resource.getElementName(id);
+            String newName = JOptionPane.showInputDialog(
+                    null,
+                    "Please enter a new name for '" + oldName + "'",
+                    "Rename " + resourceNameLower + " '" + oldName + "'",
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (newName != null) {
+                Project.renameResourceElement(resourceType, id, newName);
+            }
+        } catch (QuestEditorException ex) {
+            GuiTools.errorDialog("Cannot rename " + resourceName + " '"
+                    + id + "': " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Deletes a resource element after confirmation from the user.
+     * @param resourceType Type of resource.
+     * @param resourceId Id of the element to delete.
+     */
+    public void deleteResourceElement(ResourceType resourceType, String resourceId) {
+        try {
+            int answer = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to delete "
+                            + resourceType.getName() + " '" + resourceId + "'?",
+                    "Are you sure?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+            if (answer == JOptionPane.YES_OPTION) {
+                // Close the element if it is open.
+                closeResourceElement(resourceType, resourceId, false);
+
+                // Delete it.
+                Project.deleteResourceElement(resourceType, resourceId);
+            }
+        }
+        catch (QuestEditorException ex) {
+            GuiTools.errorDialog("Could not delete " + resourceType.getName()
+                    + ": " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Called when a new resource element has just been created.
+     * @param resourceType Type of resource.
+     * @param id Id of the new element.
+     */
+    @Override
+    public void resourceElementAdded(ResourceType resourceType, String id) {
+        openResourceElement(resourceType, id);
+    }
+
+    /**
+     * Called when a new resource element has just been deleted.
+     * @param resourceType Type of resource.
+     * @param id Id of the deleted element.
+     */
+    @Override
+    public void resourceElementRemoved(ResourceType resourceType, String id) {
+
+        // Close the editor if any (but it is a bug).
+        AbstractEditorPanel editor = tabs.getEditor(id); 
+        if (editor != null) {
+            tabs.removeEditor(editor, false);
+            new IllegalStateException(resourceType.getName() + " '" + id
+                    + "' was destroyed but its editor was still open"
+                    ).printStackTrace();
+        }
+    }
+
+    /**
+     * Called when a resource element has just been renamed.
+     * @param resourceType Type of resource.
+     * @param id Id of the element.
+     * @param name New human-readable name of the element.
+     */
+    @Override
+    public void resourceElementMoved(ResourceType resourceType, String oldId,
+            String newId) {
+
+        // Close the old editor if any (but it is a bug).
+        AbstractEditorPanel editor = tabs.getEditor(oldId); 
+        if (editor != null) {
+            tabs.removeEditor(editor, false);
+            new IllegalStateException(resourceType.getName() + " Id '" + oldId
+                    + "' was changed from '" + oldId + "' to '" + newId
+                    + "' but its editor was still open").printStackTrace();
+        }
+        closeResourceElement(resourceType, oldId, false);
+    }
+
+    /**
+     * Called when a resource element has just been renamed.
+     * @param resourceType Type of resource.
+     * @param id Id of the element.
+     * @param name New human-readable name of the element.
+     */
+    @Override
+    public void resourceElementRenamed(ResourceType resourceType,
+            String id, String name) {
+        tabs.repaint();  // TODO don't use repaint for this.
     }
 }

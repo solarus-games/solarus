@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,13 +24,6 @@
 /**
  * @brief A movement that makes successive steps of random directions
  * and (possibly) stays inside a limited rectangle.
- *
- * Properties:
- * - speed
- * - max_distance
- * - ignore_obstacles
- * - angle (read-only)
- * - displayed_direction (read-only)
  */
 class RandomMovement: public StraightMovement {
 
@@ -53,15 +46,13 @@ class RandomMovement: public StraightMovement {
     RandomMovement(int speed, int max_distance = 0);
     ~RandomMovement();
 
-    void set_entity(MapEntity *entity);
+    virtual void notify_object_controlled();
     void update();
     void set_suspended(bool suspended);
 
     void set_max_distance(int max_distance);
 
-    // properties
-    const std::string get_property(const std::string& key);
-    void set_property(const std::string& key, const std::string& value);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

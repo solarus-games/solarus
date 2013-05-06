@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,9 @@
  * @param direction direction of the transition effect (in or out)
  */
 TransitionFade::TransitionFade(Transition::Direction direction):
-  Transition(direction), alpha(-1) {
+  Transition(direction),
+  finished(false),
+  alpha(-1) {
 
   if (direction == OUT) {
     alpha_start = 256;
@@ -75,10 +77,11 @@ bool TransitionFade::is_started() {
 
 /**
  * @brief Returns whether the transition effect is finished.
- * @return true
+ * @return true if the transition effect is finished
  */
 bool TransitionFade::is_finished() {
-  return alpha == alpha_limit;
+
+  return finished;
 }
 
 /**
@@ -102,13 +105,16 @@ void TransitionFade::update() {
 }
 
 /**
- * @brief Displays the transition effect on a surface.
- * @param surface the destination surface
+ * @brief Draws the transition effect on a surface.
+ * @param dst_surface the destination surface
  */
-void TransitionFade::display(Surface *surface) {
+void TransitionFade::draw(Surface& dst_surface) {
 
-  // display the transition effect on the surface
+  // draw the transition effect on the surface
   int alpha_impl = std::min(alpha, 255);
-  surface->set_opacity(alpha_impl);
+  dst_surface.set_opacity(alpha_impl);
+
+  // make sure the final drawing was made before finishing
+  finished = (alpha == alpha_limit);
 }
 

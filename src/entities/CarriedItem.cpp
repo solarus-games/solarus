@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/CarriedItem.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Destructible.h"
 #include "entities/Hero.h"
 #include "entities/Enemy.h"
 #include "entities/Explosion.h"
@@ -59,8 +59,8 @@ const std::string CarriedItem::lifting_trajectories[4] = {
  * or 0 if the item does not explode
  */
 CarriedItem::CarriedItem(Hero& hero, MapEntity& original_entity,
-    const SpriteAnimationSetId& animation_set_id,
-    const SoundId& destruction_sound_id,
+    const std::string& animation_set_id,
+    const std::string& destruction_sound_id,
     int damage_on_enemies, uint32_t explosion_date):
 
   MapEntity(),
@@ -121,10 +121,6 @@ EntityType CarriedItem::get_type() {
 
 /**
  * @brief Returns whether entities of this type can be obstacles for other entities.
- *
- * If yes, the function is_obstacle_for() will be called
- * to determine whether this particular entity is an obstacle or not.
- *
  * @return true if this type of entity can be obstacle for other entities
  */
 bool CarriedItem::can_be_obstacle() {
@@ -132,44 +128,11 @@ bool CarriedItem::can_be_obstacle() {
 }
 
 /**
- * @brief Returns whether entities of this type have detection capabilities.
- *
- * This function returns whether entities of this type can detect the presence 
- * of the hero or other entities (this is possible only for
- * suclasses of Detector). If yes, the function 
- * notify_collision() will be called when a collision is detected.
- *
- * @return true if this type of entity can detect other entities
+ * @brief Returns whether this entity has to be drawn in y order.
+ * @return \c true if this type of entity should be drawn at the same level
+ * as the hero.
  */
-bool CarriedItem::can_detect_entities() {
-  return false;
-}
-
-/**
- * @brief Returns whether entities of this type can be displayed.
- *
- * If yes, the sprites added by the add_sprite() calls will be 
- * displayed (if any).
- *
- * @return true if this type of entity can be displayed
- */
-bool CarriedItem::can_be_displayed() {
-  return true; 
-}
-
-/**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether an entity of this type should be displayed above
- * the hero and other entities having this property when it is in front of them.
- * This means that the displaying order of entities having this
- * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file), 
- * and before the entities with the feature.
- *
- * @return true if this type of entity is displayed at the same level as the hero
- */
-bool CarriedItem::is_displayed_in_y_order() {
+bool CarriedItem::is_drawn_in_y_order() {
   return true;
 }
 
@@ -269,7 +232,7 @@ bool CarriedItem::will_explode_soon() {
 void CarriedItem::break_item() {
 
   if (is_throwing && throwing_direction != 3) {
-    // destroy the item where it is actually displayed
+    // destroy the item where it is actually drawn
     set_y(get_y() - item_height);
   }
 
@@ -284,7 +247,7 @@ void CarriedItem::break_item() {
     }
   }
   else {
-    get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
+    get_entities().add_entity(new Explosion("", get_layer(), get_xy(), true));
     Sound::play("explosion");
     if (is_throwing) {
       remove_from_map(); // because if the item was still carried by the hero, then the hero class will destroy it
@@ -405,22 +368,26 @@ void CarriedItem::update() {
 }
 
 /**
- * @brief Displays the carried item on the map.
+ * @brief Draws the carried item on the map.
  *
- * This is a redefinition of MapEntity::display_on_map()
- * to display the shadow independently of the item movement.
+ * This is a redefinition of MapEntity::draw_on_map()
+ * to draw the shadow independently of the item movement.
  */
-void CarriedItem::display_on_map() {
+void CarriedItem::draw_on_map() {
+
+  if (!is_drawn()) {
+    return;
+  }
 
   if (!is_throwing) {
-    // display the sprite normally
-    MapEntity::display_on_map();
+    // draw the sprite normally
+    MapEntity::draw_on_map();
   }
   else {
-    // when the item is being thrown, display the shadow and the item separately
+    // when the item is being thrown, draw the shadow and the item separately
     // TODO: this could probably be simplified by using a JumpMovement
-    get_map().display_sprite(*shadow_sprite, get_x(), get_y());
-    get_map().display_sprite(get_sprite(), get_x(), get_y() - item_height);
+    get_map().draw_sprite(*shadow_sprite, get_x(), get_y());
+    get_map().draw_sprite(get_sprite(), get_x(), get_y() - item_height);
   }
 }
 

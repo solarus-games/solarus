@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,24 +26,21 @@
  * This class provides some special keys that make it easier to debug the game,
  * including by allowing the hero to traverse walls.
  * This class exists for debugging purposes only and does nothing in official
- * releases (i.e. when DEBUG_KEYS is not defined)
+ * releases (i.e. when SOLARUS_DEBUG_KEYS is not defined)
  */
 class DebugKeys {
 
   private:
 
-    Solarus &solarus;      /**< the Solarus object */
-    Game *game;            /**< the current game, or NULL if no game is started */
+    MainLoop& main_loop;   /**< the Solarus main loop object */
 
   public:
 
-    DebugKeys(Solarus &solarus);
+    DebugKeys(MainLoop& main_loop);
     ~DebugKeys();
 
-    void set_game(Game *game);
+    MainLoop& get_main_loop();
 
-    void key_pressed(InputEvent::KeyboardKey key);
-    void key_released(InputEvent::KeyboardKey key);
     void update();
 };
 

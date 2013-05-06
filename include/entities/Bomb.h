@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,15 +31,13 @@ class Bomb: public Detector {
 
   public:
 
-    Bomb(Layer layer, int x, int y);
+    Bomb(const std::string& name, Layer layer, int x, int y);
     ~Bomb();
 
     EntityType get_type();
 
     bool can_be_obstacle();
-    bool can_detect_entities();
-    bool can_be_displayed();
-    bool is_displayed_in_y_order();
+    bool is_drawn_in_y_order();
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_deep_water_obstacle();
@@ -51,7 +49,7 @@ class Bomb: public Detector {
     void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
     void notify_position_changed();
-    void action_key_pressed();
+    void notify_action_command_pressed();
     void set_suspended(bool suspended);
     void update();
 

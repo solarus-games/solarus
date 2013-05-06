@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,8 +46,8 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
     void set_animation_stopped();
     void set_animation_walking();
 
-    void action_key_pressed();
-    void sword_key_pressed();
+    void notify_action_command_pressed();
+    void notify_attack_command_pressed();
 
     bool is_stairs_obstacle(Stairs& stairs);
     bool can_take_jumper();

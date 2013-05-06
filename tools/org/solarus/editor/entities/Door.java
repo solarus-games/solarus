@@ -1,97 +1,90 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.solarus.editor.entities;
 
 import java.awt.*;
+import java.util.NoSuchElementException;
+
 import org.solarus.editor.*;
 
 /**
- * Represents a door to open with a key or with an event.
+ * Represents a door to open by the player or by a script.
  */
 public class Door extends MapEntity {
 
     /**
-     * Subtypes of doors.
+     * The different possible ways of opening a door.
+     * Note that any kind door can always be opened manually from a Lua script.
      */
-    public enum Subtype implements EntitySubtype {
-	CLOSED,
-	SMALL_KEY,
-	SMALL_KEY_BLOCK,
-	BIG_KEY,
-	BOSS_KEY,
-	WEAK,
-	VERY_WEAK,
-	OBSOLETE, // this subtype does not exist anymore, its id may be reused in the future
-	WEAK_BLOCK
-	;
+    public enum OpeningMethod {
 
-	public static final String[] humanNames = {
-	    "Closed",
-	    "Use small key",
-	    "Use small key (block)",
-	    "Use big key",
-	    "Use boss key",
-	    "Weak",
-	    "Very weak",
-	    "",
-	    "Weak (block)"
-	};
+        BY_SCRIPT_ONLY("none"),
+        BY_INTERACTION("interaction"),
+        BY_INTERACTION_IF_SAVEGAME_VARIABLE("interaction_if_savegame_variable"),
+        BY_INTERACTION_IF_ITEM("interaction_if_item"),
+        BY_EXPLOSION("explosion");
 
-	public static Subtype get(int id) {
-	    return values()[id];
-	}
+        public static final String[] humanNames = {
+            "Cannot open",
+            "Hero can open",
+            "Hero needs savegame variable",
+            "Hero needs equipment item",
+            "Explosion"
+        };
 
-	public int getId() {
-	    return ordinal();
-	}
+        private final String id;
 
-	public boolean mustBeSaved() {
-	  return this != CLOSED;
-	}
+        private OpeningMethod(String id) {
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public static OpeningMethod get(String id) {
+            for (OpeningMethod opening_method: values()) {
+                if (opening_method.getId().equals(id)) {
+                    return opening_method;
+                }
+            }
+            throw new NoSuchElementException(
+                    "No door opening method with name '" + id + "'");
+        }
     }
 
     /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("door.png", 8, 48, 16, 16),
-	new EntityImageDescription("door.png", 40, 48, 16, 16),
-	new EntityImageDescription("door.png", 0, 0, 16, 16),
-	new EntityImageDescription("door.png", 72, 48, 16, 16),
-	new EntityImageDescription("door.png", 104, 48, 16, 16),
-	new EntityImageDescription("door.png", 136, 48, 16, 16),
-	new EntityImageDescription("door.png", 136, 48, 16, 16),
-	new EntityImageDescription("door.png", 136, 48, 16, 16),
-	new EntityImageDescription("door.png", 16, 0, 16, 16),
+        new EntityImageDescription("door.png", 8, 48, 16, 16),
     };
 
     /**
-     * X coordinate of the door in the tileset entities image for each kind of entity
-     * and for the direction top.
+     * The sprite representing this entity.
      */
-    private static final int[] imageX = { 0, 64, 16, 96, 128, 192, 192, 192, 16 };
-        
+    private Sprite sprite;
 
     /**
      * Creates a new door.
      * @param map the map
      */
     public Door(Map map) throws MapException {
-	super(map, 16, 16);
+        super(map, 16, 16);
     }
 
     /**
@@ -99,22 +92,15 @@ public class Door extends MapEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-	return new Point(0, 0);
+        return new Point(0, 0);
     }
 
-    /**
-     * Returns whether the entity has an identifier.
-     * @return true
-     */
-    public boolean hasName() {
-	return true;
-    }
     /**
      * Returns the number of possible directions of the entity.
      * @return 4
      */
     public int getNbDirections() {
-	return 4;
+        return 4;
     }
 
     /**
@@ -122,95 +108,40 @@ public class Door extends MapEntity {
      * @return Obstacle.OBSTACLE
      */
     public Obstacle getObstacle() {
-	return Obstacle.OBSTACLE;
+        return Obstacle.OBSTACLE;
     }
 
     /**
-     * Changes the direction of the entity.
-     * @param direction the entity's direction
-     * @throws UnsupportedOperationException if the entity has no direction
-     * @throws IllegalArgumentException if the direction is invalid
+     * Declares all properties specific to the current entity type and sets
+     * their initial values.
      */
-    public void setDirection(int direction) throws UnsupportedOperationException, IllegalArgumentException {
-      super.setDirection(direction);
-      setDoorSize();
+    public void createProperties() throws MapException {
+        setDirection(1);
+        createStringProperty("sprite", false, "");
+        createStringProperty("savegame_variable", true, null);
+        createStringProperty("opening_method", true, OpeningMethod.BY_SCRIPT_ONLY.getId());
+        createStringProperty("opening_condition", true, null);
+        createBooleanProperty("opening_condition_consumed", true, false);
+        createStringProperty("cannot_open_dialog", true, null);
     }
 
     /**
-     * Sets the subtype of this entity.
-     * @param subtype the subtype of entity
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
      */
-    public void setSubtype(EntitySubtype subtype) throws MapException {
-	int x = getX();
-	int y = getY();
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
 
-	super.setSubtype(subtype);
+        if (name.equals("sprite")) {
 
-	setDoorSize();
-	setPositionInMap(x, y);
-
-	setChanged();
-	notifyObservers();
-    }
-
-    /**
-     * Updates the description of the image currently representing the entity.
-     */
-    public void updateImageDescription() {
-
-      String fileName = Project.getTilesetEntitiesImageFile(map.getTileset().getId()).getName();
-      currentImageDescription.setImageFileName("tilesets/" + fileName, false);
-      currentImageDescription.setSize(getWidth(), getHeight());
-
-      if (getSubtype() == Subtype.SMALL_KEY_BLOCK) {
-        currentImageDescription.setXY(16, 0);
-      }
-      else if (getSubtype() == Subtype.WEAK_BLOCK) {
-        currentImageDescription.setXY(32, 0);
-      }
-
-      else {
-	int x = imageX[getSubtype().ordinal()];
-	int y = 0;
-	switch (getDirection()) {
-
-	  case 0:
-	    x = x / 2 + 112;
-	    y = 16;
-	    break;
-
-	  case 1:
-	    y = 48;
-	    break;
-
-	  case 2:
-	    x = x / 2;
-	    y = 16;
-	    break;
-
-	  case 3:
-            y = 64;
-	    break;
-
-	}
-	if (getSubtype() == Subtype.WEAK) {
-	  if (getDirection() % 2 == 0) {
-	    y += 8;
-	  }
-	  else {
-	    x += 8;
-	  }
-	}
-	currentImageDescription.setXY(x, y);
-      }
-    }
-
-    /**
-     * Sets the default values of all properties specific to the current entity type.
-     */
-    public void setPropertiesDefaultValues() throws MapException {
-	setProperty("savegameVariable", -1);
-	setDirection(1);
+            if (isValidSpriteName(value)) {
+                sprite = new Sprite(value, getMap());
+            }
+            else {
+                sprite = null;
+            }
+        }
     }
 
     /**
@@ -219,42 +150,48 @@ public class Door extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-	int savegameVariable = getIntegerProperty("savegameVariable");
-	if (savegameVariable < -1 || savegameVariable >= 32768) {
-	    throw new MapException("Invalid door savegame variable");
-	}
+        String spriteName = getStringProperty("sprite");
+        if (!isValidSpriteName(spriteName)) {
+            throw new MapException("Invalid sprite name: '" + spriteName + "'");
+        }
 
-	if (savegameVariable == -1 && mustBeSaved()) {
-	  throw new MapException("This kind of door must be saved");
-	}
+        String savegameVariable = getStringProperty("savegame_variable");
+        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
+            throw new MapException("Invalid door savegame variable");
+        }
 
-	if (getSubtype() == Subtype.OBSOLETE) {
-	  throw new MapException("Illegal subtype of door");
-	}
+        OpeningMethod openingMethod = Door.OpeningMethod.get(getStringProperty("opening_method"));
+        String openingCondition = getStringProperty("opening_condition");
+        if (openingMethod == OpeningMethod.BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
+            if (!isValidSavegameVariable(openingCondition)) {
+                throw new MapException("You must define a valid required savegame variable with this opening method");
+            }
+        }
+        else if (openingMethod == OpeningMethod.BY_INTERACTION_IF_ITEM) {
+            if (!isValidSavegameVariable(openingCondition)) {
+                throw new MapException("You must choose a required equipment item with this opening method");
+            }
+        }
     }
 
     /**
-     * Sets the appropriate size of the door depending on its subtype and its direction.
+     * Draws this entity on the map editor.
+     * @param g graphic context
+     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
+     * @param showTransparency true to make transparent pixels,
+     * false to replace them by a background color
      */
-    private void setDoorSize() {
+    public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-      if (getSubtype() == Subtype.SMALL_KEY_BLOCK || getSubtype() == Subtype.WEAK_BLOCK || getSubtype() == Subtype.WEAK) {
-	setSizeImpl(16, 16);
-      }
-      else if (getDirection() % 2 == 0) {
-	setSizeImpl(16, 32);
-      }
-      else {
-	setSizeImpl(32, 16);
-      }
-    }
-
-    /**
-     * Returns whether this door's state must be saved.
-     * @return true if this door's state must be saved
-     */
-    private boolean mustBeSaved() {
-      return subtype != Subtype.CLOSED;
+        if (sprite == null) {
+            super.paint(g, zoom, showTransparency);
+        }
+        else {
+            // display the sprite
+            int direction = getDirection();
+            sprite.paint(g, zoom, showTransparency,
+                    getX(), getY(), null, direction, 0);
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,25 +147,26 @@ void TransitionScrolling::update() {
 }
 
 /**
- * @brief Displays the transition effect on a surface.
- * @param surface the surface to draw
+ * @brief Draws the transition effect on a surface.
+ * @param dst_surface the surface to draw
  */
-void TransitionScrolling::display(Surface *surface) {
+void TransitionScrolling::draw(Surface& dst_surface) {
 
   if (direction == OUT) {
     return;
   }
 
-  Debug::check_assertion(previous_surface != NULL, "No previous surface defined for scrolling");
+  Debug::check_assertion(previous_surface != NULL,
+      "No previous surface defined for scrolling");
 
   // draw the old map
-  previous_surface->blit(both_maps_surface, previous_map_dst_position); 
+  previous_surface->draw(*both_maps_surface, previous_map_dst_position);
 
   // draw the new map
-  surface->blit(both_maps_surface, current_map_dst_position);
+  dst_surface.draw(*both_maps_surface, current_map_dst_position);
 
   // blit both surfaces
-  surface->fill_with_color(Color::get_black());
-  both_maps_surface->blit(current_scrolling_position, surface);
+  dst_surface.fill_with_color(Color::get_black());
+  both_maps_surface->draw_region(current_scrolling_position, dst_surface);
 }
 

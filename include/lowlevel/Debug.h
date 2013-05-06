@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,10 @@
 #define SOLARUS_DEBUG_H
 
 #include "Common.h"
-#include <stdexcept>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #ifndef NDEBUG
 #define SOLARUS_ASSERT(condition, message) Debug::check_assertion(condition, message)
@@ -49,29 +50,26 @@ class Debug {
 
 /**
  * @brief Prints a message if the program is in debug mode.
- *
- * This function does nothing if NDEBUG is defined.
- *
  * @param message the message to print.
  * @param os the output stream to write (default is std::cout)
  */
 inline void Debug::print(const std::string& message, std::ostream& os) {
 
-#ifndef NDEBUG
   os << message << std::endl;
-#endif
 }
 
 /**
  * @brief Throws an exception if the specified assertion fails.
  *
- * If the assertion fails, an std::logic_error with the specified error message is thrown.
+ * If the assertion fails, shows an error message and aborts.
  * The error message is saved in error.txt.
  * This function should be used to detect fatal errors only, that is,
- * errors in your code or in the quest (the data files) that require to stop the program.
+ * errors in your code or in the quest (the data files) that require to stop
+ * the program.
  *
- * @param assertion the boolean condition to check
- * @param error_message the error message to attach to the exception when the assertion fails
+ * @param assertion The boolean condition to check.
+ * @param error_message The error message to attach to print when the
+ * assertion fails.
  */
 inline void Debug::check_assertion(bool assertion, const std::string& error_message) {
 
@@ -81,18 +79,19 @@ inline void Debug::check_assertion(bool assertion, const std::string& error_mess
 }
 
 /**
- * @brief Throws an exception to stop the program.
+ * @brief Aborts the program.
  *
  * This function is equivalent to assert(false, error_message).
- * The error message is saved in error.txt.
+ * The error message is printed on stdout and also saved in error.txt.
  *
- * @param error_message the error message to attach to the exception
+ * @param error_message The error message to show.
  */
 inline void Debug::die(const std::string& error_message) {
 
+  std::cerr << "Fatal: " << error_message << std::endl;
   std::ofstream out("error.txt");
   out << error_message << std::endl << std::flush;
-  throw std::logic_error(error_message);
+  std::abort();
 }
 
 #endif

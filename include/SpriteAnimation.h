@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_SPRITE_ANIMATION_H
 
 #include "Common.h"
+#include <string>
+#include <vector>
 
 /**
  * @brief Stores the animated sequences of a sprite in a specific animation.
@@ -28,13 +30,13 @@ class SpriteAnimation {
 
   private:
 
-    Surface *src_image;          /**< image from which the frames are extracted;
+    Surface* src_image;          /**< image from which the frames are extracted;
                                   * this image is the same for
                                   * all directions of the sprite's animation */
-    bool src_image_loaded;       /**< indicates that src_image was loaded from this class */
-    const int nb_directions;     /**< number of directions of this animation */
-    SpriteAnimationDirection **directions; /**< array of directions:
-                                            * each direction is a sequence of images */
+    bool src_image_loaded;       /**< indicates that src_image was loaded from this instance */
+    std::vector<SpriteAnimationDirection*>
+        directions;               /**< list of directions:
+                                   * each direction is a sequence of images */
     const uint32_t frame_delay;  /**< default interval in milliseconds between two frames
                                   * (this delay is the same for all directions) */
     const int loop_on_frame;     /**< number of the frame to loop on, or -1 to make no loop */
@@ -46,18 +48,21 @@ class SpriteAnimation {
 
   public:
 
-    SpriteAnimation(const std::string &image_file_name, 
-	int nb_directions, SpriteAnimationDirection **directions, uint32_t frame_interval, int loop_on_frame);
-    virtual ~SpriteAnimation();
+    SpriteAnimation(
+        const std::string& image_file_name,
+        const std::vector<SpriteAnimationDirection*>& directions,
+        uint32_t frame_interval,
+        int loop_on_frame);
+    ~SpriteAnimation();
 
-    void set_map(Map &map);
+    void set_tileset(Tileset& tileset);
 
     int get_next_frame(int current_direction, int current_frame) const;
-    void display(Surface *destination, int x, int y,
-	int current_direction, int current_frame);
+    void draw(Surface& dst_surface, const Rectangle& dst_position,
+        int current_direction, int current_frame);
 
     int get_nb_directions() const;
-    const SpriteAnimationDirection *get_direction(int direction) const;
+    const SpriteAnimationDirection* get_direction(int direction) const;
     uint32_t get_frame_delay() const;
     bool is_looping() const;
 

@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,7 +39,7 @@ public class EditSwitchComponent extends EditEntityComponent {
      * @param entity the entity to edit
      */
     public EditSwitchComponent(Map map, MapEntity entity) {
-	super(map, entity);
+        super(map, entity);
     }
 
     /**
@@ -47,35 +47,35 @@ public class EditSwitchComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// needs block
-	needsBlockField = new JCheckBox("Requires a block or a statue to be activated");
-	addField("Activation", needsBlockField);
+        // needs block
+        needsBlockField = new JCheckBox("Requires a block or a statue to be activated");
+        addField("Activation", needsBlockField);
 
-	// disable when leaving
-	disableWhenLeavingField = new JCheckBox("Inactivate the switch when leaving");
-	addField("Stay on switch", disableWhenLeavingField);
+        // disable when leaving
+        disableWhenLeavingField = new JCheckBox("Inactivate the switch when leaving");
+        addField("Stay on switch", disableWhenLeavingField);
 
-	// disable the 'needs block' field when the subtype is invisible
-	subtypeField.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-		needsBlockField.setEnabled(subtypeField.getValue() == Subtype.WALKABLE_VISIBLE);
-		disableWhenLeavingField.setEnabled(Subtype.isWalkable(subtypeField.getValue()));
-	    }
-	});
+        // disable the 'needs block' field when the subtype is invisible
+        subtypeField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                needsBlockField.setEnabled(subtypeField.getValue() == Subtype.WALKABLE_VISIBLE);
+                disableWhenLeavingField.setEnabled(Subtype.isWalkable(subtypeField.getValue()));
+            }
+        });
     }
 
     /**
      * Updates the information displayed in the fields.
      */
     public void update() {
-	super.update(); // update the common fields
+        super.update(); // update the common fields
 
-	Switch sw = (Switch) entity;
+        Switch sw = (Switch) entity;
 
-	needsBlockField.setSelected(sw.getBooleanProperty("needsBlock"));
-	disableWhenLeavingField.setSelected(sw.getBooleanProperty("disableWhenLeaving"));
-	needsBlockField.setEnabled(entity.getSubtype() == Subtype.WALKABLE_VISIBLE);
-	disableWhenLeavingField.setEnabled(Subtype.isWalkable(entity.getSubtype()));
+        needsBlockField.setSelected(sw.getBooleanProperty("needs_block"));
+        disableWhenLeavingField.setSelected(sw.getBooleanProperty("inactivate_when_leaving"));
+        needsBlockField.setEnabled(entity.getSubtype() == Subtype.WALKABLE_VISIBLE);
+        disableWhenLeavingField.setEnabled(Subtype.isWalkable(entity.getSubtype()));
     }
 
     /**
@@ -84,10 +84,10 @@ public class EditSwitchComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	int needsBlock = needsBlockField.isSelected() ? 1 : 0;
-	int disableWhenLeaving = disableWhenLeavingField.isSelected() ? 1 : 0;
+        int needsBlock = needsBlockField.isSelected() ? 1 : 0;
+        int disableWhenLeaving = disableWhenLeavingField.isSelected() ? 1 : 0;
 
-	return new ActionEditEntitySpecific(entity, needsBlock, disableWhenLeaving);
+        return new ActionEditEntitySpecific(entity, needsBlock, disableWhenLeaving);
     }
 }
 

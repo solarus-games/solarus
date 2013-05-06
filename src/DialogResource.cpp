@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
-const std::string DialogResource::file_name = "text/dialogs.lua";
+const std::string DialogResource::file_name = "text/dialogs.dat";
 std::map<std::string, Dialog> DialogResource::dialogs;
 
 /**
@@ -40,7 +40,7 @@ DialogResource::~DialogResource() {
 /**
  * @brief Loads all dialogs of the game.
  *
- * The dialogs are loaded from the language-specific file "text/dialogs.lua"
+ * The dialogs are loaded from the language-specific file "text/dialogs.dat"
  * and stored into memory for future access by get_dialog().
  */
 void DialogResource::initialize() {
@@ -48,7 +48,7 @@ void DialogResource::initialize() {
   dialogs.clear();
 
   // read the dialogs file
-  lua_State* l = lua_open();
+  lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size, true);
@@ -74,14 +74,24 @@ void DialogResource::quit() {
 }
 
 /**
+ * @brief Returns whether the specified dialog exists.
+ * @param dialog_id Id of the dialog to test.
+ * @return true if such a dialog exists.
+ */
+bool DialogResource::exists(const std::string& dialog_id) {
+
+  return dialogs.find(dialog_id) != dialogs.end();
+}
+
+/**
  * @brief Returns a dialog stored in the language-specific file
- * "text/dialogs.lua".
+ * "text/dialogs.dat".
  * @param dialog_id id of the dialog to retrieve
  * @return the corresponding localized dialog
  */
 const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
 
-  Debug::check_assertion(dialogs.count(dialog_id) > 0, StringConcat()
+  Debug::check_assertion(exists(dialog_id), StringConcat()
       << "Cannot find dialog with id '" << dialog_id << "'");
   return dialogs[dialog_id];
 }
@@ -111,7 +121,7 @@ int DialogResource::l_dialog(lua_State* l) {
       dialog_id = luaL_checkstring(l, -1);
     }
     else if (key == "icon") {
-      int icon = luaL_checkinteger(l, -1);
+      int icon = luaL_checkint(l, -1);
       dialog.set_icon(icon);
     }
     else if (key == "skip") {

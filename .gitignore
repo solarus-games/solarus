@@ -1,17 +1,20 @@
 *~
 *.swp
-*.luac
 *.class
 *.pyc
+.DS_Store
 .cproject
 .project
 .classpath
 .settings
+.csettings
 tags
+valgrind.out
 callgrind.out.*
 doc/html/
 doc/0.*
 doc/1.*
+developer_doc/1.*
 tools/javadoc/
 tools/solaruskeystore
 work/unversioned/
@@ -21,12 +24,6 @@ CMakeFiles/
 Makefile
 cmake_install.cmake
 libsolarus_static.a
-solarus
+/solarus
 error.txt
-quests/*/CMakeFiles/
-quests/*/Makefile
-quests/*/cmake_install.cmake
-quests/*/data.solarus
-quests/zsdx/zsdx
-quests/zsxd/zsxd
 

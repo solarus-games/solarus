@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,7 +25,7 @@ import org.solarus.editor.entities.*;
  * A combo box to select an entity of a certain type.
  * This component displays the name of the entities of this type in the map.
  */
-public class EntityChooser extends JComboBox {
+public class EntityChooser extends JComboBox<String> {
 
     /**
      * The map.
@@ -49,19 +49,19 @@ public class EntityChooser extends JComboBox {
      * @param showEmptyOption true to add an empty option to the combo box
      */
     public EntityChooser(Map map, EntityType entityType, boolean showEmptyOption) {
-	super();
+        super();
 
-	this.map = map;
-	this.entityType = entityType;
+        this.map = map;
+        this.entityType = entityType;
 
-	if (showEmptyOption) {
-	    this.additionalOptions = new String[] {""};
-	}
-	else {
-	    this.additionalOptions = new String[] {};    
-	}
+        if (showEmptyOption) {
+            this.additionalOptions = new String[] {""};
+        }
+        else {
+            this.additionalOptions = new String[] {};
+        }
 
-	buildList();
+        buildList();
     }
 
     /**
@@ -71,13 +71,13 @@ public class EntityChooser extends JComboBox {
      * @param additionalOptions a list of special options to add to the combo box
      */
     public EntityChooser(Map map, EntityType entityType, String[] additionalOptions) {
-	super();
+        super();
 
-	this.map = map;
-	this.entityType = entityType;
-	this.additionalOptions = additionalOptions; 
+        this.map = map;
+        this.entityType = entityType;
+        this.additionalOptions = additionalOptions;
 
-	buildList();
+        buildList();
     }
 
     /**
@@ -85,27 +85,27 @@ public class EntityChooser extends JComboBox {
      */
     private void buildList() {
 
-	super.removeAllItems();
+        super.removeAllItems();
 
-	for (int i = 0; i < additionalOptions.length; i++) {
-	    addItem(additionalOptions[i]);
-	}
+        for (int i = 0; i < additionalOptions.length; i++) {
+            addItem(additionalOptions[i]);
+        }
 
-	if (map != null) {
-	    List<MapEntity> entities = map.getEntitiesOfType(entityType);
-	    for (MapEntity entity: entities) {
-		addItem(entity.getName());
-	    }
+        if (map != null) {
+            List<MapEntity> entities = map.getEntitiesOfType(entityType);
+            for (MapEntity entity: entities) {
+                addItem(entity.getName());
+            }
 
-	    // if there is only one entity, we make it selected
-	    if (entities.size() == 1) {
-		setSelectedIndex(additionalOptions.length);
-	    }
-	    setEnabled(true);
-	}
-	else {
-	    setEnabled(false);
-	}
+            // if there is only one entity, we make it selected
+            if (entities.size() == 1) {
+                setSelectedIndex(additionalOptions.length);
+            }
+            setEnabled(true);
+        }
+        else {
+            setEnabled(false);
+        }
     }
 
     /**
@@ -113,7 +113,7 @@ public class EntityChooser extends JComboBox {
      * @return the name of the selected entity, or an empty string if no entity is selected
      */
     public String getSelectedName() {
-	return (String) getSelectedItem();
+        return (String) getSelectedItem();
     }
 
     /**
@@ -121,7 +121,7 @@ public class EntityChooser extends JComboBox {
      * to select no entity
      */
     public void setSelectedName(String name) {
-	setSelectedItem(name);
+        setSelectedItem(name);
     }
 
     /**
@@ -130,7 +130,7 @@ public class EntityChooser extends JComboBox {
      * @param map the map
      */
     public void setMap(Map map) {
-	this.map = map;
-	buildList();
+        this.map = map;
+        buildList();
     }
 }

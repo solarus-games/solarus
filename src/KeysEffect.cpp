@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,52 @@
 #include "KeysEffect.h"
 
 /**
+ * @brief Lua name of each value of the ActionKeyEffect enum.
+ */
+const std::string KeysEffect::action_key_effect_names[] = {
+  "",
+  "next",
+  "return",
+  "look",
+  "open",
+  "lift",
+  "throw",
+  "grab",
+  "speak",
+  "swim",
+  ""  // Sentinel.
+};
+
+/**
+ * @brief Lua name of each value of the SwordKeyEffect enum.
+ */
+const std::string KeysEffect::sword_key_effect_names[] = {
+  "",
+  "skip",
+  "sword",
+  ""  // Sentinel.
+};
+
+/**
+ * @brief Lua name of each value of the PauseKeyEffect enum.
+ */
+const std::string KeysEffect::pause_key_effect_names[] = {
+  "",
+  "pause",
+  "return",
+  ""  // Sentinel.
+};
+
+/**
  * @brief Constructor.
  */
 KeysEffect::KeysEffect():
-  action_key_effect(ACTION_KEY_NONE), action_key_enabled(true),
-  sword_key_effect(SWORD_KEY_NONE), sword_key_enabled(true),
-  pause_key_effect(PAUSE_KEY_PAUSE), pause_key_enabled(true),
+  action_key_effect(ACTION_KEY_NONE),
+  action_key_enabled(true),
+  sword_key_effect(SWORD_KEY_NONE),
+  sword_key_enabled(true),
+  pause_key_effect(PAUSE_KEY_PAUSE),
+  pause_key_enabled(true),
   item_keys_enabled(true) {
 
 }
@@ -101,6 +141,34 @@ bool KeysEffect::is_action_key_acting_on_facing_entity() {
     || action_key_effect == ACTION_KEY_GRAB;
 }
 
+/**
+ * @brief Returns the name of an action command effect.
+ * @param effect An effect of the action command.
+ * @return The name of this effect, or an empty string if the effect is ACTION_KEY_NONE.
+ */
+const std::string& KeysEffect::get_action_key_effect_name(
+    ActionKeyEffect effect) {
+
+  return action_key_effect_names[effect];
+}
+
+/**
+ * @brief Returns an action command effect given its Lua name.
+ * @param effect_name Lua name of an action command effect.
+ * @return The corresponding action command effect, or ACTION_KEY_NONE
+ * if the name is invalid.
+ */
+KeysEffect::ActionKeyEffect KeysEffect::get_action_key_effect_by_name(
+    const std::string& effect_name) {
+
+  for (int i = 0; i < ACTION_KEY_NB; i++) {
+    if (action_key_effect_names[i] == effect_name) {
+      return ActionKeyEffect(i);
+    }
+  }
+  return ACTION_KEY_NONE;
+}
+
 // sword key
 
 /**
@@ -152,6 +220,33 @@ void KeysEffect::restore_sword_key_effect() {
   this->sword_key_effect = sword_key_effect_saved;
 }
 
+/**
+ * @brief Returns the name of an attack command effect.
+ * @param effect An effect of the attack command.
+ * @return The name of this effect, or an empty string if the effect is SWORD_KEY_NONE.
+ */
+const std::string& KeysEffect::get_sword_key_effect_name(
+    SwordKeyEffect effect) {
+
+  return sword_key_effect_names[effect];
+}
+
+/**
+ * @brief Returns an attack command effect given its Lua name.
+ * @param effect_name Lua name of an attack command effect.
+ * @return The corresponding attack command effect, or SWORD_KEY_NONE
+ * if the name is invalid.
+ */
+KeysEffect::SwordKeyEffect KeysEffect::get_sword_key_effect_by_name(
+    const std::string& effect_name) {
+
+  for (int i = 0; i < SWORD_KEY_NB; i++) {
+    if (sword_key_effect_names[i] == effect_name) {
+      return SwordKeyEffect(i);
+    }
+  }
+  return SWORD_KEY_NONE;
+}
 
 // pause key
 
@@ -185,6 +280,34 @@ bool KeysEffect::is_pause_key_enabled() {
  */
 void KeysEffect::set_pause_key_enabled(bool enable) {
   this->pause_key_enabled = enable;
+}
+
+/**
+ * @brief Returns the name of a pause command effect.
+ * @param effect An effect of the pause command.
+ * @return The name of this effect, or an empty string if the effect is PAUSE_KEY_NONE.
+ */
+const std::string& KeysEffect::get_pause_key_effect_name(
+    PauseKeyEffect effect) {
+
+  return pause_key_effect_names[effect];
+}
+
+/**
+ * @brief Returns a pause command effect given its Lua name.
+ * @param effect_name Lua name of a pause command effect.
+ * @return The corresponding pause command effect, or PAUSE_KEY_NONE
+ * if the name is invalid.
+ */
+KeysEffect::PauseKeyEffect KeysEffect::get_pause_key_effect_by_name(
+    const std::string& effect_name) {
+
+  for (int i = 0; i < PAUSE_KEY_NB; i++) {
+    if (pause_key_effect_names[i] == effect_name) {
+      return PauseKeyEffect(i);
+    }
+  }
+  return PAUSE_KEY_NONE;
 }
 
 // item keys

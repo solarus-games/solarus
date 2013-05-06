@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,11 +16,11 @@
  */
 #include "Camera.h"
 #include "Map.h"
-#include "lua/MapScript.h"
 #include "entities/MapEntity.h"
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
 #include "movements/TargetMovement.h"
+#include "lua/LuaContext.h"
 
 /**
  * @brief Creates a camera.
@@ -88,10 +88,10 @@ void Camera::update() {
       if (restoring) {
         restoring = false;
         fixed_on_hero = true;
-        map.get_script().notify_camera_back();
+        map.get_lua_context().map_on_camera_back(map);
       }
       else {
-        map.get_script().notify_camera_reached_target();
+        map.get_lua_context().notify_camera_reached_target(map);
       }
     }
   }
@@ -151,9 +151,8 @@ void Camera::move(int target_x, int target_y) {
   target_y = std::min(std::max(target_y, SOLARUS_SCREEN_HEIGHT_MIDDLE),
       map_location.get_height() - SOLARUS_SCREEN_HEIGHT_MIDDLE);
 
-  movement = new TargetMovement(target_x, target_y, speed);
-  movement->set_xy(position.get_x() + SOLARUS_SCREEN_WIDTH_MIDDLE,
-      position.get_y() + SOLARUS_SCREEN_HEIGHT_MIDDLE);
+  movement = new TargetMovement(target_x, target_y, speed, true);
+  movement->set_xy(position.get_x() + SOLARUS_SCREEN_WIDTH_MIDDLE, position.get_y() + 120);
 
   fixed_on_hero = false;
 }

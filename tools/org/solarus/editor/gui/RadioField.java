@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,7 +23,7 @@ import javax.swing.*;
  * A component with a group of radio options.
  */
 public class RadioField extends JPanel {
-    
+
     private JRadioButton[] buttons;
 
     /**
@@ -32,26 +32,26 @@ public class RadioField extends JPanel {
      * @param options the name of the options
      */
     public RadioField(String ... options) {
-	super();
+        super();
 
-	this.buttons = new JRadioButton[options.length];
+        this.buttons = new JRadioButton[options.length];
 
-	ButtonGroup buttonGroup = new ButtonGroup();
-	int i = 0;
+        ButtonGroup buttonGroup = new ButtonGroup();
+        int i = 0;
 
-	for (String option: options) {
-	    JRadioButton button = new JRadioButton(option);
+        for (String option: options) {
+            JRadioButton button = new JRadioButton(option);
 
-	    add(button);
-	    buttonGroup.add(button);
+            add(button);
+            buttonGroup.add(button);
 
-	    if (i == 0) {
-		button.setSelected(true);
-	    }
+            if (i == 0) {
+                button.setSelected(true);
+            }
 
-	    buttons[i] = button;
-	    i++;
-	}
+            buttons[i] = button;
+            i++;
+        }
     }
 
     /**
@@ -61,19 +61,19 @@ public class RadioField extends JPanel {
      */
     public int getSelectedIndex() {
 
-	int i;
-	boolean found = false;
+        int i;
+        boolean found = false;
 
-	for (i = 0; i < buttons.length && !found; i++) {
-	    if (buttons[i].isSelected()) {
-		found = true;
-	    }
-	}
+        for (i = 0; i < buttons.length && !found; i++) {
+            if (buttons[i].isSelected()) {
+                found = true;
+            }
+        }
 
-	if (found) {
-	    return i - 1;
-	}
-	return -1;
+        if (found) {
+            return i - 1;
+        }
+        return -1;
     }
 
     /**
@@ -81,16 +81,16 @@ public class RadioField extends JPanel {
      * @param index the index of the radio button to make selected
      */
     public void setSelectedIndex(int index) {
-	this.buttons[index].setSelected(true);
+        this.buttons[index].setSelected(true);
     }
 
     /*
      * Unselects all the radio buttons.
      * (does not seem to work)
     public void unselectAll() {
-	for (JRadioButton button: buttons) {
-	    button.setSelected(false);
-	}
+        for (JRadioButton button: buttons) {
+            button.setSelected(false);
+        }
     }
     */
 
@@ -99,9 +99,9 @@ public class RadioField extends JPanel {
      * @param enable true to enable, false to disable
      */
     public void setEnabled(boolean enable) {
-	for (JRadioButton button: buttons) {
-	    button.setEnabled(enable);
-	}
+        for (JRadioButton button: buttons) {
+            button.setEnabled(enable);
+        }
     }
 
     /**
@@ -109,8 +109,8 @@ public class RadioField extends JPanel {
      * @param listener the listener to add
      */
     public void addActionListener(ActionListener listener) {
-	for (JRadioButton button: buttons) {
-	    button.addActionListener(listener);
-	}
+        for (JRadioButton button: buttons) {
+            button.addActionListener(listener);
+        }
     }
 }

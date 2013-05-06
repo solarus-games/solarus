@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -19,7 +19,7 @@ package org.solarus.editor.map_editor_actions;
 import java.util.LinkedList;
 import org.solarus.editor.Map;
 import org.solarus.editor.MapEditorAction;
-import org.solarus.editor.ZSDXException;
+import org.solarus.editor.QuestEditorException;
 import org.solarus.editor.entities.Layer;
 import org.solarus.editor.entities.MapEntity;
 
@@ -77,18 +77,18 @@ public class ActionUpDownLayer extends MapEditorAction {
     }
 
     @Override
-    public void execute() throws ZSDXException {
+    public void execute() throws QuestEditorException {
         for (int i = 0; i < entities.size(); i++) {
-	    map.setEntityLayer(entities.get(i), layersAfter[i]);
-	}
+            map.setEntityLayer(entities.get(i), layersAfter[i]);
+        }
     }
 
     @Override
-    public void undo() throws ZSDXException {
+    public void undo() throws QuestEditorException {
         int i = 0;
-	for (MapEntity entity: entities) {
-	    map.setEntityLayer(entity, layersBefore[i]);
-	    i++;
-	}
+        for (MapEntity entity: entities) {
+            map.setEntityLayer(entity, layersBefore[i]);
+            i++;
+        }
     }
 }

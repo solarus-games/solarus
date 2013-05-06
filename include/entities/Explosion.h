@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,16 +34,12 @@ class Explosion: public Detector {
 
   public:
 
-    Explosion(Layer layer, const Rectangle &xy, bool with_damages);
+    Explosion(const std::string& name, Layer layer, const Rectangle& xy,
+        bool with_damages);
     ~Explosion();
 
     EntityType get_type();
-
-    // features
     bool can_be_obstacle();
-    bool can_detect_entities();
-    bool can_be_displayed();
-    bool is_displayed_in_y_order();
 
     // state
     void update();

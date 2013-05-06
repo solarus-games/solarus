@@ -1,23 +1,22 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.solarus.editor;
 
 import java.awt.*;
-import java.awt.image.*;
 
 /**
  * Represents an animation of a sprite.
@@ -41,7 +40,7 @@ public class SpriteAnimation {
      * or -1 to make no loop.
      */
     private int loopOnFrame;
-    
+
     /**
      * Creates an animation.
      * @param directions the list of directions of this animation
@@ -83,6 +82,44 @@ public class SpriteAnimation {
     public Image getFrame(int direction, int frame) {
 
         return directions[direction].getFrame(frame);
+    }
+
+    /**
+     * Returns the number of directions in this animation.
+     * @return The number of directions.
+     */
+    public int getNbDirections() {
+        return directions.length;
+    }
+
+    /**
+     * Returns a direction in this animation.
+     * @param direction Index of the direction to get (the first one is 0).
+     * @return The corresponding direction.
+     */
+    public SpriteAnimationDirection getDirection(int direction) {
+        return directions[direction];
+    }
+
+    /**
+     * @brief Returns the time interval between two frames.
+     *
+     * This delay is the same for all directions.
+     *
+     * @return The interval in milliseconds between two frames.
+     * 0 means infinite (only possible when there is one frame).
+     */
+    public int getFrameDelay() {
+        return frameDelay;
+    }
+
+    /**
+     * @brief Returns the frame where the animation loops.
+     * @returns The index of a frame where to the sprite loops after the last
+     * frame, or -1 if there is no loop.
+     */
+    public int getLoopOnFrame() {
+        return loopOnFrame;
     }
 
     /**

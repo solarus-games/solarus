@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,10 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "Configuration.h"
 
-VideoManager *VideoManager::instance = NULL;
+VideoManager* VideoManager::instance = NULL;
 
 // Resolutions.
 #if defined(SOLARUS_SCREEN_FORCE_MODE) && SOLARUS_SCREEN_FORCE_MODE != -1
@@ -46,35 +44,19 @@ Rectangle VideoManager::default_mode_sizes[] = {
   Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_SCALE2X_WIDE
 };
 
-// Properties of SDL surfaces.
-#if defined(SOLARUS_SCREEN_SOFTWARE_SURFACE) && SOLARUS_SCREEN_SOFTWARE_SURFACE != 0
-const int VideoManager::surface_flags = SDL_SWSURFACE;
-#else
-const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
-#endif
-
 /**
- * @brief Switch from windowed to fullscreen or from fullscreen to windowed,
- * keeping an equivalent video mode.
+ * @brief Lua name of each value of the VideoMode enum.
  */
-void VideoManager::switch_fullscreen() {
-
-  static const VideoMode next_modes[] = {
-      FULLSCREEN_NORMAL,      // WINDOWED_STRETCHED
-      FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
-      FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
-      WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
-      WINDOWED_STRETCHED,     // FULLSCREEN_WIDE
-      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
-      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X_WIDE
-  };
-
-  VideoMode mode = next_modes[get_video_mode()];
-  if (is_mode_supported(mode)) {
-    set_video_mode(mode);
-  }
-}
-
+const std::string VideoManager::video_mode_names[] = {
+  "windowed_stretched",
+  "windowed_scale2x",
+  "windowed_normal",
+  "fullscreen_normal",
+  "fullscreen_wide",
+  "fullscreen_scale2x",
+  "fullscreen_scale2x_wide",
+  ""  // Sentinel.
+};
 
 /**
  * @brief Initializes the video system and creates the window.
@@ -114,16 +96,36 @@ VideoManager* VideoManager::get_instance() {
 }
 
 /**
+ * @brief Returns the appropriate SDL_Surface flag depending on the requested display mode and what OS is running.
+ * @param the display mode which you wanted to know the SDL_Surface flag to use with.
+ * @return the better SDL_Surface flag to use
+ */
+Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
+    Uint32 flag;
+    
+    // Use software surface if there will be pixel access to blit with the mode in parameter
+    if(mode_sizes[mode].get_width() != SOLARUS_SCREEN_WIDTH || mode_sizes[mode].get_height() != SOLARUS_SCREEN_HEIGHT)
+        flag = SDL_SWSURFACE;
+    else 
+        flag = SDL_HWSURFACE;
+    
+#if SOLARUS_SCREEN_DOUBLEBUF != 0
+    flag |= SDL_DOUBLEBUF;
+#endif
+    
+    return flag;
+}
+
+/**
  * @brief Constructor.
  */
 VideoManager::VideoManager(bool disable_window):
-  disable_window(disable_window), screen_surface(NULL) {
+  disable_window(disable_window),
+  screen_surface(NULL) {
 
   // initialize the window
-  IniFile ini("quest.dat", IniFile::READ);
-  ini.set_group("info");
-  std::string title_bar = ini.get_string_value("title_bar"); // get the window title bar text (language-independent)
-  SDL_WM_SetCaption(title_bar.c_str(), NULL);
+  const std::string window_title = std::string("Solarus ") + SOLARUS_VERSION;
+  set_window_title(window_title);
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 
@@ -132,7 +134,7 @@ VideoManager::VideoManager(bool disable_window):
   for (int i = 0; i < NB_MODES; i++) {
     mode_sizes[i] = default_mode_sizes[i];
   }
-  int flags = surface_flags | SDL_FULLSCREEN;
+  int flags = get_surface_flag(FULLSCREEN_WIDE) | SDL_FULLSCREEN;
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
     mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
@@ -152,7 +154,7 @@ VideoManager::VideoManager(bool disable_window):
      }
      */
 
-  set_initial_video_mode();
+  set_default_video_mode();
 }
 
 /**
@@ -169,6 +171,10 @@ VideoManager::~VideoManager() {
  */
 bool VideoManager::is_mode_supported(VideoMode mode) {
 
+  if (mode == NO_MODE) {
+    return false;
+  }
+
   if (forced_mode != NO_MODE && mode != forced_mode) {
     return false;
   }
@@ -179,7 +185,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
     return false;
   }
 
-  int flags = surface_flags;
+  int flags = get_surface_flag(mode);
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;
   }
@@ -189,11 +195,53 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
 
 /**
  * @brief Returns whether a video mode is in fullscreen.
- * @param mode a video mode
- * @return true if this video mode is in fullscreen
+ * @param mode A video mode.
+ * @return true if this video mode is in fullscreen.
  */
 bool VideoManager::is_fullscreen(VideoMode mode) {
   return mode >= FULLSCREEN_NORMAL;
+}
+
+/**
+ * @brief Returns whether the current video mode is in fullscreen.
+ * @return true if the current video mode is in fullscreen.
+ */
+bool VideoManager::is_fullscreen() {
+  return is_fullscreen(get_video_mode());
+}
+
+/**
+ * @brief Sets the video mode to fullscreen or windowed,
+ * keeping an equivalent resolution.
+ * @param fullscreen true to make fullscreen.
+ */
+void VideoManager::set_fullscreen(bool fullscreen) {
+
+  if (fullscreen != is_fullscreen()) {
+    switch_fullscreen();
+  }
+}
+
+/**
+ * @brief Switches from windowed to fullscreen or from fullscreen to windowed,
+ * keeping an equivalent resolution.
+ */
+void VideoManager::switch_fullscreen() {
+
+  static const VideoMode next_modes[] = {
+      FULLSCREEN_NORMAL,      // WINDOWED_STRETCHED
+      FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
+      FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
+      WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
+      WINDOWED_STRETCHED,     // FULLSCREEN_WIDE
+      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
+      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X_WIDE
+  };
+
+  VideoMode mode = next_modes[get_video_mode()];
+  if (is_mode_supported(mode)) {
+    set_video_mode(mode);
+  }
 }
 
 /**
@@ -206,30 +254,6 @@ void VideoManager::switch_video_mode() {
     mode = (VideoMode) ((mode + 1) % NB_MODES);
   } while (!is_mode_supported(mode));
   set_video_mode(mode);
-}
-
-/**
- * @brief Sets the initial video mode.
- *
- * The initial video mode is read from the configuration file if existing.
- * Otherwise, the default video mode is chosen.
- */
-void VideoManager::set_initial_video_mode() {
-
-  int value = Configuration::get_value("video_mode", -1);
-
-  if (value < 0 || value >= NB_MODES) {
-    set_default_video_mode();
-  }
-  else {
-    VideoMode mode = VideoMode(value);
-    if (!is_mode_supported(mode)) {
-      set_default_video_mode();
-    }
-    else {
-      set_video_mode(mode);
-    }
-  }
 }
 
 /**
@@ -250,14 +274,16 @@ void VideoManager::set_default_video_mode() {
 
 /**
  * @brief Sets the video mode.
- *
- * The specified video mode is supposed to be supported.
- *
- * @param mode the video mode
+ * @param mode The video mode to set.
+ * @return true in case of success, false if this mode is not supported.
  */
-void VideoManager::set_video_mode(VideoMode mode) {
+bool VideoManager::set_video_mode(VideoMode mode) {
 
-  int flags = surface_flags;
+  if (!is_mode_supported(mode)) {
+    return false;
+  }
+
+  int flags = get_surface_flag(mode);
   int show_cursor;
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;
@@ -291,8 +317,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
   }
   this->video_mode = mode;
 
-  // Write the configuration file.
-  Configuration::set_value("video_mode", mode);
+  return true;
 }
 
 /**
@@ -304,10 +329,55 @@ VideoManager::VideoMode VideoManager::get_video_mode() {
 }
 
 /**
- * @brief Blits a surface on the screen with the current video mode.
- * @param src_surface the source surface to display on the screen
+ * @brief Returns a list of all supported video modes.
+ * @return The list of supported video modes.
  */
-void VideoManager::display(Surface *src_surface) {
+const std::list<VideoManager::VideoMode> VideoManager::get_video_modes() {
+
+  std::list<VideoManager::VideoMode> modes;
+  for (int i = 0; i < NB_MODES; i++) {
+    VideoMode mode = VideoMode(i);
+    if (is_mode_supported(mode)) {
+      modes.push_back(mode);
+    }
+  }
+  return modes;
+}
+
+/**
+ * @brief Returns the name of a video mode.
+ * @param mode A video mode.
+ * @return The name of this mode, or an empty string if the mode is NO_MODE.
+ */
+std::string VideoManager::get_video_mode_name(VideoMode mode) {
+
+  if (mode == NO_MODE) {
+    return "";
+  }
+
+  return video_mode_names[mode];
+}
+
+/**
+ * @brief Returns a video mode given its Lua name.
+ * @param mode_name Lua name of a video mode.
+ * @return The corresponding video mode, or NO_MODE if the name is invalid.
+ */
+VideoManager::VideoMode VideoManager::get_video_mode_by_name(const std::string& mode_name) {
+
+  for (int i = 0; i < NB_MODES; i++) {
+    if (video_mode_names[i] == mode_name) {
+      return VideoMode(i);
+    }
+  }
+  return NO_MODE;
+}
+
+/**
+ * @brief Blits a surface on the screen with the current video mode.
+ * @param src_surface The source surface to draw on the screen.
+ */
+void VideoManager::draw(Surface& src_surface) {
 
   if (disable_window) {
     return;
@@ -316,19 +386,19 @@ void VideoManager::display(Surface *src_surface) {
   switch (video_mode) {
 
     case WINDOWED_NORMAL:
-      blit(src_surface, screen_surface);
+      blit(src_surface, *screen_surface);
       break;
 
     case WINDOWED_STRETCHED:
     case FULLSCREEN_NORMAL:
     case FULLSCREEN_WIDE:
-      blit_stretched(src_surface, screen_surface);
+      blit_stretched(src_surface, *screen_surface);
       break;
 
     case WINDOWED_SCALE2X:
     case FULLSCREEN_SCALE2X:
     case FULLSCREEN_SCALE2X_WIDE:
-      blit_scale2x(src_surface, screen_surface);
+      blit_scale2x(src_surface, *screen_surface);
       break;
 
     default:
@@ -345,8 +415,8 @@ void VideoManager::display(Surface *src_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit(Surface* src_surface, Surface* dst_surface) {
-  src_surface->blit(dst_surface);
+void VideoManager::blit(Surface& src_surface, Surface& dst_surface) {
+  src_surface.draw(dst_surface);
 }
 
 /**
@@ -358,23 +428,21 @@ void VideoManager::blit(Surface* src_surface, Surface* dst_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
+void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
 
-  SDL_Surface* src_internal_surface = src_surface->get_internal_surface();
-  SDL_Surface* dst_internal_surface = dst_surface->get_internal_surface();
+  SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
+  SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
 
   SDL_LockSurface(src_internal_surface);
   SDL_LockSurface(dst_internal_surface);
 
-  uint32_t* src = (uint32_t*) src_internal_surface->pixels;
   uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
 
   int p = offset;
   for (int i = 0; i < SOLARUS_SCREEN_HEIGHT; i++) {
     for (int j = 0; j < SOLARUS_SCREEN_WIDTH; j++) {
-      dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = *src;
+      dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = src_surface.get_mapped_pixel(i * SOLARUS_SCREEN_WIDTH + j, dst_internal_surface->format);
       p += 2;
-      src++;
     }
 
     p += end_row_increment;
@@ -395,10 +463,10 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
+void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
 
-  SDL_Surface* src_internal_surface = src_surface->get_internal_surface();
-  SDL_Surface* dst_internal_surface = dst_surface->get_internal_surface();
+  SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
+  SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
 
   SDL_LockSurface(src_internal_surface);
   SDL_LockSurface(dst_internal_surface);
@@ -431,13 +499,13 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
       // compute the color
 
       if (src[b] != src[h] && src[d] != src[f]) {
-        dst[e1] = (src[d] == src[b]) ? src[d] : src[e];
-        dst[e2] = (src[b] == src[f]) ? src[f] : src[e];
-        dst[e3] = (src[d] == src[h]) ? src[d] : src[e];
-        dst[e4] = (src[h] == src[f]) ? src[f] : src[e];
+        dst[e1] = src_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
+        dst[e2] = src_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
+        dst[e3] = src_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
+        dst[e4] = src_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
       }
       else {
-        dst[e1] = dst[e2] = dst[e3] = dst[e4] = src[e];
+        dst[e1] = dst[e2] = dst[e3] = dst[e4] = src_surface.get_mapped_pixel(e, dst_internal_surface->format);
       }
       e1 += 2;
       e++;
@@ -447,5 +515,26 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
 
   SDL_UnlockSurface(dst_internal_surface);
   SDL_UnlockSurface(src_internal_surface);
+}
+
+/**
+ * @brief Returns the current text of the window title bar.
+ * @return The window title.
+ */
+const std::string VideoManager::get_window_title() {
+
+  char* window_title;
+  char* icon;
+  SDL_WM_GetCaption(&window_title, &icon);
+  return window_title;
+}
+
+/**
+ * @brief Sets the text of the window title bar.
+ * @param window_title The window title to set.
+ */
+void VideoManager::set_window_title(const std::string& window_title) {
+
+  SDL_WM_SetCaption(window_title.c_str(), NULL);
 }
 

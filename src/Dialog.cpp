@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,6 +54,7 @@ Dialog::~Dialog() {
 /**
  * @brief Assignment operator.
  * @param other the dialog to copy
+ * @return this dialog
  */
 Dialog& Dialog::operator=(const Dialog& other) {
 
@@ -200,8 +201,7 @@ const std::list<std::string>& Dialog::get_lines() const {
  *
  * Lines must be separated by '\n'. The last line of text may end with '\n'.
  *
- *
- * @return the text of this dialog
+ * @param text the text of this dialog
  */
 void Dialog::set_text(const std::string& text) {
 

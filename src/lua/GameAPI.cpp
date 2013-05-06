@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,673 +14,1212 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
+#include "MainLoop.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
+#include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
+const std::string LuaContext::game_module_name = "sol.game";
+
 /**
- * @brief Saves the game.
+ * @brief Initializes the game features provided to Lua.
  */
-int Script::game_api_save(lua_State *l) {
+void LuaContext::register_game_module() {
 
-  Script& script = get_script(l, 0);
+  static const luaL_Reg methods[] = {
+      { "exists", game_api_exists },
+      { "delete", game_api_delete },
+      { "load", game_api_load },
+      { "save", game_api_save },
+      { "start", game_api_start },
+      { "is_started", game_api_is_started },
+      { "is_suspended", game_api_is_suspended },
+      { "is_paused", game_api_is_paused },
+      { "set_paused", game_api_set_paused },
+      { "get_map", game_api_get_map },
+      { "get_value", game_api_get_value },
+      { "set_value", game_api_set_value },
+      { "get_starting_location", game_api_get_starting_location },
+      { "set_starting_location", game_api_set_starting_location },
+      { "get_life", game_api_get_life },
+      { "set_life", game_api_set_life },
+      { "add_life", game_api_add_life },
+      { "remove_life", game_api_remove_life },
+      { "get_max_life", game_api_get_max_life },
+      { "set_max_life", game_api_set_max_life },
+      { "add_max_life", game_api_add_max_life },
+      { "get_money", game_api_get_money },
+      { "set_money", game_api_set_money },
+      { "add_money", game_api_add_money },
+      { "remove_money", game_api_remove_money },
+      { "get_max_money", game_api_get_max_money },
+      { "set_max_money", game_api_set_max_money },
+      { "get_magic", game_api_get_magic},
+      { "set_magic", game_api_set_magic},
+      { "add_magic", game_api_add_magic},
+      { "remove_magic", game_api_remove_magic},
+      { "get_max_magic", game_api_get_max_magic},
+      { "set_max_magic", game_api_set_max_magic},
+      { "has_ability", game_api_has_ability },
+      { "get_ability", game_api_get_ability },
+      { "set_ability", game_api_set_ability },
+      { "get_item", game_api_get_item },
+      { "has_item", game_api_has_item },
+      { "get_item_assigned", game_api_get_item_assigned },
+      { "set_item_assigned", game_api_set_item_assigned },
+      { "is_command_pressed", game_api_is_command_pressed },
+      { "get_commands_direction", game_api_get_commands_direction },
+      { "get_command_effect", game_api_get_command_effect },
+      { "get_command_keyboard_binding", game_api_get_command_keyboard_binding },
+      { "set_command_keyboard_binding", game_api_set_command_keyboard_binding },
+      { "get_command_joypad_binding", game_api_get_command_joypad_binding },
+      { "set_command_joypad_binding", game_api_set_command_joypad_binding },
+      { "capture_command_binding", game_api_capture_command_binding },
+      { NULL, NULL }
+  };
+  static const luaL_Reg metamethods[] = {
+      { "__gc", userdata_meta_gc },
+      { "__newindex", userdata_meta_newindex_as_table },
+      { "__index", userdata_meta_index_as_table },
+      { NULL, NULL }
+  };
+  register_type(game_module_name, methods, metamethods);
+}
 
-  script.get_game().get_savegame().save();
+/**
+ * @brief Returns whether a value is a userdata of type game.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a game.
+ */
+bool LuaContext::is_game(lua_State* l, int index) {
+  return is_userdata(l, index, game_module_name);
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * game and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the game
+ */
+Savegame& LuaContext::check_game(lua_State* l, int index) {
+  return static_cast<Savegame&>(check_userdata(l, index, game_module_name));
+}
+
+/**
+ * @brief Pushes a game userdata onto the stack.
+ * @param l A Lua context.
+ * @param game A game.
+ */
+void LuaContext::push_game(lua_State* l, Savegame& game) {
+  push_userdata(l, game);
+}
+
+/**
+ * @brief Implementation of sol.game.exists().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_exists(lua_State* l) {
+
+  const std::string& file_name = luaL_checkstring(l, 1);
+
+  if (FileTools::get_quest_write_dir().empty()) {
+    luaL_error(l, "Cannot check savegame: no write directory was specified in quest.dat");
+  }
+
+  bool exists = FileTools::data_file_exists(
+      FileTools::get_quest_write_dir() + "/" + file_name);
+
+  lua_pushboolean(l, exists);
+  return 1;
+}
+
+/**
+ * @brief Implementation of sol.game.delete().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_delete(lua_State* l) {
+
+  const std::string& file_name = luaL_checkstring(l, 1);
+
+  if (FileTools::get_quest_write_dir().empty()) {
+    luaL_error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
+  }
+
+  FileTools::data_file_delete(
+      FileTools::get_quest_write_dir() + "/" + file_name);
 
   return 0;
 }
 
 /**
- * @brief Resets the game (comes back to the title screen).
+ * @brief Implementation of sol.game.load().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_reset(lua_State *l) {
+int LuaContext::game_api_load(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  const std::string& file_name = luaL_checkstring(l, 1);
 
-  script.get_game().reset();
+  if (FileTools::get_quest_write_dir().empty()) {
+    luaL_error(l, "Cannot load savegame: no write directory was specified in quest.dat");
+  }
+
+  Savegame* savegame = new Savegame(get_lua_context(l).get_main_loop(), file_name);
+
+  savegame->increment_refcount();
+  savegame->get_equipment().load_items();
+  savegame->decrement_refcount();
+
+  push_game(l, *savegame);
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:save().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_save(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  savegame.save();
 
   return 0;
 }
 
 /**
- * @brief Restarts the game with the current savegame.
- *
- * The game is restarted with the current savegame state,
- * even if it is not saved.
+ * @brief Implementation of game:start().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_restart(lua_State *l) {
+int LuaContext::game_api_start(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  Savegame& savegame = check_game(l, 1);
 
-  script.get_game().restart();
+  Game* game = savegame.get_game();
+  if (game != NULL) {
+    // A game is already running with this savegame: restart it.
+    game->restart();
+  }
+  else {
+    // Create a new game to run.
+    MainLoop& main_loop = savegame.get_lua_context().get_main_loop();
+    Game* game = new Game(main_loop, &savegame);
+    main_loop.set_game(game);
+  }
 
   return 0;
 }
 
 /**
- * @brief Returns a string value saved.
- *
- * - Argument 1 (integer): index of the string value to get (0 to 63)
- * - Return value (string): the string saved at this index
+ * @brief Implementation of game:is_started().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_get_string(lua_State* l) {
+int LuaContext::game_api_is_started(lua_State* l) {
 
-  Script& script = get_script(l, 1);
-  int index = luaL_checkinteger(l, 1);
+  Savegame& savegame = check_game(l, 1);
 
-  luaL_argcheck(l, index >= 0 && index < 64, 1,
-      "The index of a savegame string should be between 0 and 63");
+  Game* game = savegame.get_game();
+  bool is_started = game != NULL;
 
-  const std::string &value = script.get_game().get_savegame().get_string(index);
-  lua_pushstring(l, value.c_str());
+  lua_pushboolean(l, is_started);
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:is_suspended().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_is_suspended(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  bool is_suspended = game != NULL && game->is_suspended();
+
+  lua_pushboolean(l, is_suspended);
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:is_paused().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_is_paused(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  bool is_paused = game != NULL && game->is_paused();
+
+  lua_pushboolean(l, is_paused);
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:set_paused().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_paused(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  bool paused = true;
+  if (lua_gettop(l) >= 2) {
+    paused = lua_toboolean(l, 2);
+  }
+
+  Game* game = savegame.get_game();
+  if (game != NULL) {
+    game->set_paused(paused);
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of game:get_map().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_map(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  if (game == NULL || !game->has_current_map()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_map(l, game->get_current_map());
+  }
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:get_value().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_value(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  const std::string& key = luaL_checkstring(l, 2);
+
+  if (!is_valid_lua_identifier(key)) {
+    luaL_argerror(l, 3, (StringConcat() <<
+        "Invalid savegame variable '" << key <<
+        "': the name should only contain alphanumeric characters or '_'" <<
+        " and cannot start with a digit").c_str());
+  }
+
+  if (savegame.is_boolean(key)) {
+    lua_pushboolean(l, savegame.get_boolean(key));
+  }
+  else if (savegame.is_integer(key)) {
+    lua_pushinteger(l, savegame.get_integer(key));
+  }
+  else if (savegame.is_string(key)) {
+    lua_pushstring(l, savegame.get_string(key).c_str());
+  }
+  else {
+    lua_pushnil(l);
+  }
 
   return 1;
 }
 
 /**
- * @brief Returns an integer value saved.
- *
- * - Argument 1 (integer): index of the integer value to get (0 to 2047)
- * - Return value (integer): the integer saved at this index
+ * @brief Implementation of game:set_value().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_get_integer(lua_State *l) {
+int LuaContext::game_api_set_value(lua_State* l) {
 
-  Script& script = get_script(l, 1);
-  int index = luaL_checkinteger(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  const std::string& key = luaL_checkstring(l, 2);
 
-  luaL_argcheck(l, index >= 0 && index < 2048, 1,
-      "The index of a savegame integer should be between 0 and 2047");
+  if (key[0] == '_') {
+    luaL_argerror(l, 3, (StringConcat() <<
+        "Invalid savegame variable '" << key <<
+        "': names prefixed by '_' are reserved for built-in variables").c_str());
+  }
 
-  int value = script.get_game().get_savegame().get_integer(index);
-  lua_pushinteger(l, value);
+  if (!is_valid_lua_identifier(key)) {
+    luaL_argerror(l, 3, (StringConcat() <<
+        "Invalid savegame variable '" << key <<
+        "': the name should only contain alphanumeric characters or '_'" <<
+        " and cannot start with a digit").c_str());
+  }
 
-  return 1;
-}
+  switch (lua_type(l, 3)) {
 
-/**
- * @brief Returns a boolean value saved.
- *
- * - Argument 1 (integer): index of the boolean value to get
- * - Return value (boolean): the boolean saved at this index
- */
-int Script::game_api_savegame_get_boolean(lua_State *l) {
+    case LUA_TBOOLEAN:
+      savegame.set_boolean(key, lua_toboolean(l, 3));
+      break;
 
-  Script& script = get_script(l, 1);
-  int index = luaL_checkinteger(l, 1);
+    case LUA_TNUMBER:
+      savegame.set_integer(key, int(lua_tointeger(l, 3)));
+      break;
 
-  luaL_argcheck(l, index >= 0 && index < 32768, 1, (StringConcat()
-      << "Invalid savegame boolean: " << index << " (should be between 0 and 32767").c_str());
+    case LUA_TSTRING:
+      savegame.set_string(key, lua_tostring(l, 3));
+      break;
 
-  bool value = script.get_game().get_savegame().get_boolean(index);
-  lua_pushboolean(l, value ? 1 : 0);
+    case LUA_TNIL:
+      savegame.unset(key);
+      break;
 
-  return 1;
-}
-
-/**
- * @brief Sets a string value saved.
- *
- * - Argument 1 (integer): index of the string value to set, between 32 and 63
- * (lower indices are writable only by the game engine)
- * - Argument 2 (string): the string value to store at this index
- */
-int Script::game_api_savegame_set_string(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-  int index = luaL_checkinteger(l, 1);
-  const std::string &value = luaL_checkstring(l, 2);
-
-  luaL_argcheck(l, index >= 0 && index < 63, 1, (StringConcat()
-      << "Invalid savegame string: " << index << " (should be between 32 and 63").c_str());
-
-  luaL_argcheck(l, index >= 32, 1, (StringConcat()
-      << "Invalid savegame string: " << index << " (strings below 32 are read-only").c_str());
-
-  script.get_game().get_savegame().set_string(index, value);
+    default:
+      luaL_argerror(l, 3, (StringConcat() <<
+          "Expected string, number or boolean, got " << luaL_typename(l, 3)).c_str());
+  }
 
   return 0;
 }
 
 /**
- * @brief Sets an integer value saved.
- *
- * - Argument 1 (integer): index of the integer value to set, between 1024 and 2047
- * (lower indices are writable only by the game engine)
- * - Argument 2 (integer): the integer value to store at this index
+ * @brief Implementation of game:get_starting_location().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_set_integer(lua_State *l) {
+int LuaContext::game_api_get_starting_location(lua_State* l) {
 
-  Script& script = get_script(l, 2);
-  int index = luaL_checkinteger(l, 1);
-  int value = luaL_checkinteger(l, 2);
+  Savegame& savegame = check_game(l, 1);
 
-  luaL_argcheck(l, index >= 0 && index < 2048, 1, (StringConcat()
-      << "Invalid savegame integer: " << index << " (should be between 32 and 63").c_str());
+  push_string(l, savegame.get_string(Savegame::KEY_STARTING_MAP));
+  push_string(l, savegame.get_string(Savegame::KEY_STARTING_POINT));
+  return 2;
+}
 
-  luaL_argcheck(l, index >= 1024, 1, (StringConcat()
-      << "Invalid savegame integer: " << index << " (integers below 32 are read-only").c_str());
+/**
+ * @brief Implementation of game:set_starting_location().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_starting_location(lua_State* l) {
 
-  script.get_game().get_savegame().set_integer(index, value);
+  Savegame& savegame = check_game(l, 1);
+  const std::string& map_id = luaL_checkstring(l, 2);
+  const std::string& destination_name = luaL_checkstring(l, 3);
+
+  savegame.set_string(Savegame::KEY_STARTING_MAP, map_id);
+  savegame.set_string(Savegame::KEY_STARTING_POINT, destination_name);
 
   return 0;
 }
 
 /**
- * @brief Sets a boolean value saved.
- *
- * - Argument 1 (integer): index of the boolean value to set, between 0 and 32767
- * - Argument 2 (boolean): the boolean value to store at this index
+ * @brief Implementation of game:get_life().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_set_boolean(lua_State *l) {
+int LuaContext::game_api_get_life(lua_State* l) {
 
-  Script& script = get_script(l, 2);
-  int index = luaL_checkinteger(l, 1);
-  bool value = lua_toboolean(l, 2) != 0;
+  Savegame& savegame = check_game(l, 1);
 
-  luaL_argcheck(l, index >= 0 && index < 32768, 1, (StringConcat()
-      << "Invalid savegame boolean: " << index << " (should be between 0 and 32767").c_str());
-
-  script.get_game().get_savegame().set_boolean(index, value);
-
-  return 0;
-}
-
-/**
- * @brief Returns a string representing the name of the player.
- *
- * - Return value (string): the player's name
- */
-int Script::game_api_savegame_get_name(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  const std::string &name = script.get_game().get_savegame().get_string(Savegame::PLAYER_NAME);
-  lua_pushstring(l, name.c_str());
-
-  return 1;
-}
-
-/**
- * @brief Returns the current level of life of the player.
- *
- * - Return value (integer): the level of life
- */
-int Script::game_api_get_life(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  int life = script.get_game().get_equipment().get_life();
+  int life = savegame.get_equipment().get_life();
   lua_pushinteger(l, life);
-
   return 1;
 }
 
 /**
- * @brief Gives some life to the player.
- *
- * - Argument 1 (integer): amount of life to add
+ * @brief Implementation of game:set_life().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_add_life(lua_State *l) {
+int LuaContext::game_api_set_life(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  int life = luaL_checkint(l, 2);
 
-  int life = luaL_checkinteger(l, 1);
-
-  script.get_game().get_equipment().add_life(life);
+  savegame.get_equipment().set_life(life);
 
   return 0;
 }
 
 /**
- * @brief Removes some life from the player.
- *
- * - Argument 1 (integer): amount of life to remove
+ * @brief Implementation of game:add_life().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_remove_life(lua_State *l) {
+int LuaContext::game_api_add_life(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  int life = luaL_checkint(l, 2);
 
-  int life = luaL_checkinteger(l, 1);
-
-  script.get_game().get_equipment().remove_life(life);
+  savegame.get_equipment().add_life(life);
 
   return 0;
 }
 
 /**
- * @brief Returns the maximum level of life of the player.
- *
- * - Return value (integer): the maximum level of life
+ * @brief Implementation of game:remove_life().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_get_max_life(lua_State *l) {
+int LuaContext::game_api_remove_life(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  Savegame& savegame = check_game(l, 1);
+  int life = luaL_checkint(l, 2);
 
-  int life = script.get_game().get_equipment().get_max_life();
+  savegame.get_equipment().remove_life(life);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of game:get_max_life().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_max_life(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  int life = savegame.get_equipment().get_max_life();
+
   lua_pushinteger(l, life);
-
   return 1;
 }
 
 /**
- * @brief Sets the maximum level of life of the player.
- *
- * - Argument 1 (integer): the maximum level of life to set
+ * @brief Implementation of game:set_max_life().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_set_max_life(lua_State *l) {
+int LuaContext::game_api_set_max_life(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  int life = luaL_checkint(l, 2);
 
-  int life = luaL_checkinteger(l, 1);
-  script.get_game().get_equipment().set_max_life(life);
+  savegame.get_equipment().set_max_life(life);
 
   return 0;
 }
 
 /**
- * @brief Increases the maximum level of life of the player.
- *
- * - Argument 1 (integer): amount of life to add to the current maximum
+ * @brief Implementation of game:add_max_life().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_add_max_life(lua_State *l) {
+int LuaContext::game_api_add_max_life(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  int life = luaL_checkint(l, 2);
 
-  int life = luaL_checkinteger(l, 1);
-
-  Equipment &equipment = script.get_game().get_equipment();
+  Equipment &equipment = savegame.get_equipment();
   equipment.set_max_life(equipment.get_max_life() + life);
 
   return 0;
 }
 
 /**
- * @brief Returns the current amount of money of the player.
- *
- * - Return value (integer): the amount of money
+ * @brief Implementation of game:get_money().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_get_money(lua_State *l) {
+int LuaContext::game_api_get_money(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  Savegame& savegame = check_game(l, 1);
 
-  int money = script.get_game().get_equipment().get_money();
+  int money = savegame.get_equipment().get_money();
+
   lua_pushinteger(l, money);
-
   return 1;
 }
 
 /**
- * @brief Gives some money to the player.
- *
- * - Argument 1 (integer): amount of money to add
+ * @brief Implementation of game:set_money().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_add_money(lua_State *l) {
+int LuaContext::game_api_set_money(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  int money = luaL_checkint(l, 2);
 
-  int money = luaL_checkinteger(l, 1);
-
-  script.get_game().get_equipment().add_money(money);
+  savegame.get_equipment().set_money(money);
 
   return 0;
 }
 
 /**
- * @brief Removes some money from the player.
- *
- * - Argument 1 (integer): amount of money to remove
+ * @brief Implementation of game:add_money().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_remove_money(lua_State *l) {
+int LuaContext::game_api_add_money(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  int money = luaL_checkint(l, 2);
 
-  int money = luaL_checkinteger(l, 1);
-
-  script.get_game().get_equipment().remove_money(money);
+  savegame.get_equipment().add_money(money);
 
   return 0;
 }
 
 /**
- * @brief Returns the current number of magic points.
- *
- * - Return value: the current number of magic points
+ * @brief Implementation of game:remove_money().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_get_magic(lua_State *l) {
+int LuaContext::game_api_remove_money(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  Savegame& savegame = check_game(l, 1);
+  int money = luaL_checkint(l, 2);
 
-  int magic = script.get_game().get_equipment().get_magic();
+  savegame.get_equipment().remove_money(money);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of game:get_max_money().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_max_money(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  int money = savegame.get_equipment().get_max_money();
+
+  lua_pushinteger(l, money);
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:set_max_money().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_max_money(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  int money = luaL_checkint(l, 2);
+
+  savegame.get_equipment().set_max_money(money);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of game:get_magic().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_magic(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  int magic = savegame.get_equipment().get_magic();
+
   lua_pushinteger(l, magic);
-
   return 1;
 }
 
 /**
- * @brief Gives some magic points to the player.
- *
- * - Argument 1 (integer): number of magic points to add
+ * @brief Implementation of game:set_magic().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_add_magic(lua_State *l) {
+int LuaContext::game_api_set_magic(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  int magic = luaL_checkint(l, 2);
 
-  int magic = luaL_checkinteger(l, 1);
-
-  script.get_game().get_equipment().add_magic(magic);
+  savegame.get_equipment().set_magic(magic);
 
   return 0;
 }
 
 /**
- * @brief Removes some magic points from the player.
- *
- * - Argument 1 (integer): number of magic points to remove
+ * @brief Implementation of game:add_magic().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_remove_magic(lua_State *l) {
+int LuaContext::game_api_add_magic(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  int magic = luaL_checkint(l, 2);
 
-  int magic = luaL_checkinteger(l, 1);
-
-  script.get_game().get_equipment().remove_magic(magic);
+  savegame.get_equipment().add_magic(magic);
 
   return 0;
 }
 
 /**
- * @brief Starts a continuous decrease of the magic points.
- *
- * - Argument 1 (integer): delay in miliseconds between each decrease of 1 point
+ * @brief Implementation of game:remove_magic().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_start_decreasing_magic(lua_State *l) {
+int LuaContext::game_api_remove_magic(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  int magic = luaL_checkint(l, 2);
 
-  uint32_t delay = luaL_checkinteger(l, 1);
-
-  script.get_game().get_equipment().start_removing_magic(delay);
+  savegame.get_equipment().remove_magic(magic);
 
   return 0;
 }
 
 /**
- * @brief Stops a continuous decrease of the magic points.
+ * @brief Implementation of game:get_max_magic().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_stop_decreasing_magic(lua_State *l) {
+int LuaContext::game_api_get_max_magic(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  Savegame& savegame = check_game(l, 1);
 
-  script.get_game().get_equipment().stop_removing_magic();
+  int magic = savegame.get_equipment().get_max_magic();
 
-  return 0;
-}
-
-/**
- * @brief Returns the maximum number of magic points of the player.
- *
- * - Return value (integer): the maximum number of magic points
- */
-int Script::game_api_get_max_magic(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  int magic = script.get_game().get_equipment().get_max_magic();
   lua_pushinteger(l, magic);
-
   return 1;
 }
 
 /**
- * @brief Sets the maximum number of magic points of the player.
- *
- * - Argument 1 (integer): the maximum number of magic points to set
+ * @brief Implementation of game:set_max_magic().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_set_max_magic(lua_State *l) {
+int LuaContext::game_api_set_max_magic(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  int magic = luaL_checkint(l, 2);
 
-  int magic = luaL_checkinteger(l, 1);
-  script.get_game().get_equipment().set_max_magic(magic);
+  savegame.get_equipment().set_max_magic(magic);
 
   return 0;
 }
 
 /**
- * @brief Returns whether the player has the specified ability.
- *
- * This is equivalent to equipment_get_ability(ability_name) > 0.
- *
- * - Argument 1 (string): name of the ability to get
- * - Return value (boolean): true if the level of this ability is greater than 0
+ * @brief Implementation of game:has_ability().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_has_ability(lua_State *l) {
+int LuaContext::game_api_has_ability(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  const std::string& ability_name = luaL_checkstring(l, 2);
 
-  const std::string &ability_name = luaL_checkstring(l, 1);
+  bool has_ability = savegame.get_equipment().has_ability(ability_name);
 
-  bool has_ability = script.get_game().get_equipment().has_ability(ability_name);
   lua_pushboolean(l, has_ability);
-
   return 1;
 }
 
 /**
- * @brief Sets the level of an ability of the player.
- *
- * This function is typically called when the player obtains
- * an item that gives an ability
- *
- * - Argument 1 (string): name of the ability to set
- * - Argument 2 (integer): the level of this ability
+ * @brief Implementation of game:get_ability().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_set_ability(lua_State *l) {
+int LuaContext::game_api_get_ability(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Savegame& savegame = check_game(l, 1);
+  const std::string& ability_name = luaL_checkstring(l, 2);
 
-  const std::string &ability_name = luaL_checkstring(l, 1);
-  int level = luaL_checkinteger(l, 2);
+  int ability_level = savegame.get_equipment().get_ability(ability_name);
 
-  script.get_game().get_equipment().set_ability(ability_name, level);
-
-  return 0;
-}
-
-/**
- * @brief Returns the level of an ability of the player.
- *
- * - Argument 1 (string): name of the ability to get
- * - Return value (integer): the level of this ability
- */
-int Script::game_api_get_ability(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &ability_name = luaL_checkstring(l, 1);
-
-  int ability_level = script.get_game().get_equipment().get_ability(ability_name);
   lua_pushinteger(l, ability_level);
-
   return 1;
 }
 
 /**
- * @brief Returns whether the player has the specified item.
- *
- * This is equivalent to equipment_get_item(item_name) > 0.
- *
- * - Argument 1 (string): an item name
- * - Return value (boolean): true if the player has this item
+ * @brief Implementation of game:set_ability().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_has_item(lua_State *l) {
+int LuaContext::game_api_set_ability(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  const std::string& ability_name = luaL_checkstring(l, 2);
+  int level = luaL_checkint(l, 3);
 
-  const std::string &item_name = luaL_checkstring(l, 1);
-
-  bool has_item = script.get_game().get_equipment().has_item(item_name);
-  lua_pushboolean(l, has_item);
-
-  return 1;
-}
-
-/**
- * @brief Returns the possession state (also called the variant) of an item.
- *
- * - Argument 1 (string): an item name
- * - Return value (integer): the possession state of this item
- *   (0 if the player does not have the item)
- */
-int Script::game_api_get_item(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &item_name = luaL_checkstring(l, 1);
-
-  int variant = script.get_game().get_equipment().get_item_variant(item_name);
-  lua_pushinteger(l, variant);
-
-  return 1;
-}
-
-/**
- * @brief Sets the possession state of an item.
- *
- * - Argument 1 (string): an item name
- * - Argument 2 (integer): the possession state of this inventory item
- * (a value of 0 removes the item)
- */
-int Script::game_api_set_item(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string &item_name = luaL_checkstring(l, 1);
-  int variant = luaL_checkinteger(l, 2);
-
-  script.get_game().get_equipment().set_item_variant(item_name, variant);
-
-  return 1;
-}
-
-/**
- * @brief Returns whether the player has at least the specified amount of an item.
- *
- * This is equivalent to equipment_get_item_amount(item_name, amount) > 0.
- *
- * - Argument 1 (string): the name of an item having an amount
- * - Argument 2 (integer): the amount to check
- * - Return value (integer): true if the player has at least this amount
- */
-int Script::game_api_has_item_amount(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string &item_name = luaL_checkstring(l, 1);
-  int amount = luaL_checkinteger(l, 2);
-
-  bool has_amount = script.get_game().get_equipment().get_item_amount(item_name) >= amount;
-  lua_pushboolean(l, has_amount);
-
-  return 1;
-}
-
-/**
- * @brief Returns the amount the player has for an item.
- *
- * - Argument 1 (string): the name of an item having an amount
- * - Return value (integer): the amount possessed
- */
-int Script::game_api_get_item_amount(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &item_name = luaL_checkstring(l, 1);
-
-  int amount = script.get_game().get_equipment().get_item_amount(item_name);
-  lua_pushinteger(l, amount);
-
-  return 1;
-}
-
-/**
- * @brief Adds an amount of the specified item.
- *
- * - Argument 1 (string): the name of an item having an amount
- * - Argument 2 (integer): the amount to add
- */
-int Script::game_api_add_item_amount(lua_State *l) {
-
-  Script& script = get_script(l, 2);
-
-  const std::string &item_name = luaL_checkstring(l, 1);
-  int amount = luaL_checkinteger(l, 2);
-
-  script.get_game().get_equipment().add_item_amount(item_name, amount);
+  savegame.get_equipment().set_ability(ability_name, level);
 
   return 0;
 }
 
 /**
- * @brief Removes an amount of the specified item.
- *
- * - Argument 1 (string): the name of an item having an amount
- * - Argument 2 (integer): the amount to remove
+ * @brief Implementation of game:get_item().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_remove_item_amount(lua_State *l) {
+int LuaContext::game_api_get_item(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Savegame& savegame = check_game(l, 1);
+  const std::string& item_name = luaL_checkstring(l, 2);
 
-  const std::string &item_name = luaL_checkstring(l, 1);
-  int amount = luaL_checkinteger(l, 2);
+  push_item(l, savegame.get_equipment().get_item(item_name));
+  return 1;
+}
 
-  script.get_game().get_equipment().remove_item_amount(item_name, amount);
+/**
+ * @brief Implementation of game:has_item().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_has_item(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  const std::string& item_name = luaL_checkstring(l, 2);
+
+  lua_pushboolean(l, savegame.get_equipment().get_item(item_name).get_variant() > 0);
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:get_item_assigned().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_item_assigned(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  int slot = luaL_checkint(l, 2);
+
+  if (slot < 1 || slot > 2) {
+    luaL_argerror(l, 2, "The item slot should be 1 or 2");
+  }
+
+  EquipmentItem* item = savegame.get_equipment().get_item_assigned(slot);
+
+  if (item == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+    push_item(l, *item);
+  }
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:set_item_assigned().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_item_assigned(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  int slot = luaL_checkint(l, 2);
+  EquipmentItem* item = NULL;
+  if (!lua_isnil(l, 3)) {
+    item = &check_item(l, 3);
+  }
+
+  if (slot < 1 || slot > 2) {
+    luaL_argerror(l, 2, "The item slot should be 1 or 2");
+  }
+
+  savegame.get_equipment().set_item_assigned(slot, item);
 
   return 0;
 }
 
 /**
- * @brief Returns whether a dungeon is finished.
- *
- * A dungeon is considered as finished if the function dungeon_set_finished() was
- * called from the script of a map in that dungeon.
- * This information is saved by the engine (see include/Savegame.h).
- * - Argument 1 (integer): number of the dungeon to test
- * - Return value (boolean): true if that dungeon is finished
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of game:get_command_effect().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_is_dungeon_finished(lua_State *l) {
+int LuaContext::game_api_get_command_effect(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
 
-  int dungeon = luaL_checkinteger(l, 1);
-  bool finished = script.get_game().get_equipment().is_dungeon_finished(dungeon);
-  lua_pushboolean(l, finished);
+  Game* game = savegame.get_game();
+  if (game == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+
+    std::string effect_name;
+    switch (command) {
+
+      case GameCommands::ACTION:
+      {
+        KeysEffect::ActionKeyEffect effect = game->get_keys_effect().get_action_key_effect();
+        effect_name = KeysEffect::get_action_key_effect_name(effect);
+        break;
+      }
+
+      case GameCommands::ATTACK:
+      {
+        KeysEffect::SwordKeyEffect effect = game->get_keys_effect().get_sword_key_effect();
+        effect_name = KeysEffect::get_sword_key_effect_name(effect);
+        break;
+      }
+
+      case GameCommands::ITEM_1:
+      {
+        effect_name = game->is_suspended() ? "" : "use_item_1";
+        break;
+      }
+
+      case GameCommands::ITEM_2:
+      {
+        effect_name = game->is_suspended() ? "" : "use_item_2";
+        break;
+      }
+
+      case GameCommands::PAUSE:
+      {
+        KeysEffect::PauseKeyEffect effect = game->get_keys_effect().get_pause_key_effect();
+        effect_name = KeysEffect::get_pause_key_effect_name(effect);
+        break;
+      }
+
+      case GameCommands::RIGHT:
+      {
+        effect_name = game->is_suspended() ? "" : "move_right";
+        break;
+      }
+
+      case GameCommands::UP:
+      {
+        effect_name = game->is_suspended() ? "" : "move_up";
+        break;
+      }
+
+      case GameCommands::LEFT:
+      {
+        effect_name = game->is_suspended() ? "" : "move_left";
+        break;
+      }
+
+      case GameCommands::DOWN:
+      {
+        effect_name = game->is_suspended() ? "" : "move_down";
+        break;
+      }
+
+      default:
+        Debug::die(StringConcat() << "Invalid game command: " << command);
+    }
+
+    if (effect_name.empty()) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, effect_name);
+    }
+  }
 
   return 1;
 }
 
 /**
- * @brief Sets a dungeon as finished.
- *
- * You should call this function when the final dialog of the dungeon ending
- * sequence is finished.
- * - Argument 1 (integer): number of the dungeon to set
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of game:get_command_keyboard_binding().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_set_dungeon_finished(lua_State *l) {
+int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
 
-  int dungeon = luaL_checkinteger(l, 1);
-  script.get_game().get_equipment().set_dungeon_finished(dungeon);
+  GameCommands& commands = savegame.get_game()->get_commands();
+  InputEvent::KeyboardKey key = commands.get_keyboard_binding(command);
+  const std::string& key_name = InputEvent::get_keyboard_key_name(key);
+
+  if (key_name.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, key_name);
+  }
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:set_command_keyboard_binding().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+  if (lua_gettop(l) <= 3) {
+    luaL_typerror(l, 3, "string or nil");
+  }
+  const std::string& key_name = luaL_optstring(l, 3, "");
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
+  if (!key_name.empty() && key == InputEvent::KEY_NONE) {
+    luaL_argerror(l, 3, (StringConcat() <<
+          "Invalid keyboard key name: '" << key_name << "'").c_str());
+  }
+  commands.set_keyboard_binding(command, key);
 
   return 0;
+}
+
+/**
+ * @brief Implementation of game:get_command_joypad_binding().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  const std::string& joypad_string = commands.get_joypad_binding(command);
+
+  if (joypad_string.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, joypad_string);
+  }
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:set_command_joypad_binding().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+  if (lua_gettop(l) <= 3) {
+    luaL_typerror(l, 3, "string or nil");
+  }
+  const std::string& joypad_string = luaL_optstring(l, 3, "");
+
+  if (!joypad_string.empty() && !GameCommands::is_joypad_string_valid(joypad_string)) {
+    luaL_argerror(l, 3, (StringConcat() <<
+          "Invalid joypad string: '" << joypad_string << "'").c_str());
+  }
+  GameCommands& commands = savegame.get_game()->get_commands();
+  commands.set_joypad_binding(command, joypad_string);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of game:capture_command_binding().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_capture_command_binding(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 3) {
+    luaL_checktype(l, 3, LUA_TFUNCTION);
+    lua_settop(l, 3);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  commands.customize(command, callback_ref);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of game:is_command_pressed().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_is_command_pressed(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  lua_pushboolean(l, commands.is_command_pressed(command));
+
+  return 1;
+}
+
+/**
+ * @brief Implementation of game:get_commands_direction().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_commands_direction(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  int wanted_direction8 = commands.get_wanted_direction8();
+  if (wanted_direction8 == -1) {
+    lua_pushnil(l);
+  }
+  else {
+    lua_pushinteger(l, wanted_direction8);
+  }
+
+  return 1;
+}
+
+/**
+ * @brief Calls the on_started() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_started(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_finished() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_finished(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_finished();
+  remove_timers(-1);  // Stop timers and menus associated to this game.
+  remove_menus(-1);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_update() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_update(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_update();
+  menus_on_update(-1);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_draw() method of a Lua game.
+ * @param game A game.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
+
+  push_game(l, game.get_savegame());
+  menus_on_draw(-1, dst_surface);
+  on_draw(dst_surface);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_changed() method of a Lua game.
+ * @param game A game.
+ * @param map The new active map.
+ */
+void LuaContext::game_on_map_changed(Game& game, Map& map) {
+
+  push_game(l, game.get_savegame());
+  on_map_changed(map);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_paused() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_paused(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_paused();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_unpaused() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_unpaused(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_unpaused();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Notifies a Lua game that an input event has just occurred.
+ *
+ * The appropriate callback in the game is triggered if it exists.
+ *
+ * @param game A game.
+ * @param event The input event to handle.
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::game_on_input(Game& game, InputEvent& event) {
+
+  bool handled = false;
+  push_game(l, game.get_savegame());
+  handled = on_input(event);
+  if (!handled) {
+    handled = menus_on_input(-1, event);
+  }
+  lua_pop(l, 1);
+  return handled;
+}
+
+/**
+ * @brief Calls the on_command_pressed() method of a Lua game.
+ * @param game A game.
+ * @param command The command pressed.
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command command) {
+
+  bool handled = false;
+  push_game(l, game.get_savegame());
+  handled = on_command_pressed(command);
+  if (!handled) {
+    handled = menus_on_command_pressed(-1, command);
+  }
+  lua_pop(l, 1);
+  return handled;
+}
+
+/**
+ * @brief Calls the on_command_released() method of a Lua game.
+ * @param game A game.
+ * @param command The command released.
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::game_on_command_released(Game& game, GameCommands::Command command) {
+
+  bool handled = false;
+  push_game(l, game.get_savegame());
+  handled = on_command_released(command);
+  if (!handled) {
+    handled = menus_on_command_released(-1, command);
+  }
+  lua_pop(l, 1);
+  return handled;
 }
 

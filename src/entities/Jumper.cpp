@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,37 +61,19 @@ Jumper::~Jumper() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Jumper::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-
-  int jump_length, width, height, direction;
-  std::string name;
-
-  FileTools::read(is, width);
-  FileTools::read(is, height);
-  FileTools::read(is, name);
-  FileTools::read(is, direction);
-  FileTools::read(is, jump_length);
- 
-  return new Jumper(name, Layer(layer), x, y, width, height, direction, jump_length);
-}
-
-/**
  * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType Jumper::get_type() {
   return JUMPER;
+}
+
+/**
+ * @brief Returns whether entities of this type can be drawn.
+ * @return true if this type of entity can be drawn
+ */
+bool Jumper::can_be_drawn() {
+  return false;
 }
 
 /**

@@ -1,0 +1,71 @@
+/**
+\page quest_sounds Sounds
+
+The \c sounds directory contains all small sound effects used by both the
+engine and the quest.
+Sounds files must have the extension \c .ogg (Ogg Vorbis).
+
+Don't forget to add all sound files to the
+quest tree in the editor (or by editing
+\ref quest_resource_file "project_db.dat" by hand).
+
+Here is a list of sound effects played by the engine in various situations.
+All these sound effects should exist in the \c sounds directory.
+\verbatim
+arrow_hit.ogg
+boomerang.ogg
+boss_hurt.ogg
+boss_killed.ogg
+bow.ogg
+bush.ogg
+cane.ogg
+chest_open.ogg
+cursor.ogg
+danger.ogg
+door_closed.ogg
+door_open.ogg
+door_unlocked.ogg
+enemy_hurt.ogg
+enemy_killed.ogg
+explosion.ogg
+heart.ogg
+hero_dying.ogg
+hero_falls.ogg
+hero_hurt.ogg
+hero_lands.ogg
+hero_pushes.ogg
+hookshot.ogg
+jump.ogg
+lift.ogg
+message_end.ogg
+message_letter.ogg
+monster_hurt.ogg
+ok.ogg
+picked_item.ogg
+running.ogg
+shield.ogg
+splash.ogg
+stairs_up_start.ogg
+stairs_up_end.ogg
+stairs_down_start.ogg
+stairs_down_end.ogg
+stone.ogg
+swim.ogg
+switch.ogg
+sword1.ogg ...
+sword_spin_attack_load.ogg
+sword_spin_attack_release.ogg
+sword_tapping.ogg
+sword_tapping_weak_wall.ogg
+throw.ogg
+timer.ogg
+timer_hurry.ogg
+treasure.ogg
+victory.ogg
+walk_on_grass.ogg
+walk_on_water.ogg
+warp.ogg
+wrong.ogg
+\endverbatim
+*/
+

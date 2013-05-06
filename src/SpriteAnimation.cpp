@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
  */
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
-#include "Map.h"
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
@@ -25,17 +24,23 @@
 /**
  * @brief Constructor.
  * @param image_file_name the image from which the frames are extracted
- * @param nb_directions number of directions in this animation
  * @param directions the image sequence of each direction
  * @param frame_delay delay in millisecond between two frames for this sprite animation
  * (or 0 to make no animation, for example when you have only one frame)
  * @param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
  */
-SpriteAnimation::SpriteAnimation(const std::string &image_file_name, 
-    int nb_directions, SpriteAnimationDirection **directions, uint32_t frame_delay, int loop_on_frame):
+SpriteAnimation::SpriteAnimation(
+    const std::string& image_file_name,
+    const std::vector<SpriteAnimationDirection*>& directions,
+    uint32_t frame_delay,
+    int loop_on_frame):
 
-  src_image(NULL), src_image_loaded(false), nb_directions(nb_directions), directions(directions),
-  frame_delay(frame_delay), loop_on_frame(loop_on_frame), should_enable_pixel_collisions(false) {
+  src_image(NULL),
+  src_image_loaded(false),
+  directions(directions),
+  frame_delay(frame_delay),
+  loop_on_frame(loop_on_frame),
+  should_enable_pixel_collisions(false) {
 
   if (image_file_name != "tileset") {
     src_image = new Surface(image_file_name);
@@ -48,11 +53,10 @@ SpriteAnimation::SpriteAnimation(const std::string &image_file_name,
  */
 SpriteAnimation::~SpriteAnimation() {
 
-  for (int i = 0; i < nb_directions; i++) {
-    delete directions[i];
+  std::vector<SpriteAnimationDirection*>::iterator it;
+  for (it = directions.begin(); it != directions.end(); ++it) {
+    delete *it;
   }
-
-  delete[] directions;
 
   if (src_image_loaded) {
     delete src_image;
@@ -60,16 +64,16 @@ SpriteAnimation::~SpriteAnimation() {
 }
 
 /**
- * @brief When the sprite is displayed on a map, sets the map.
+ * @brief When the sprite is displayed on a map, sets the tileset.
  *
  * This function must be called if this sprite image depends on the map's tileset.
  *
- * @param map the map
+ * @param tileset The tileset.
  */
-void SpriteAnimation::set_map(Map &map) {
+void SpriteAnimation::set_tileset(Tileset& tileset) {
 
   if (!src_image_loaded) {
-    this->src_image = map.get_tileset().get_entities_image();
+    this->src_image = &tileset.get_entities_image();
     if (should_enable_pixel_collisions) {
       disable_pixel_collisions(); // to force creating the images again
       do_enable_pixel_collisions();
@@ -79,10 +83,10 @@ void SpriteAnimation::set_map(Map &map) {
 
 /**
  * @brief Returns the number of directions of this animation.
- * @return the number of directions
+ * @return The number of directions.
  */
 int SpriteAnimation::get_nb_directions() const {
-  return nb_directions;
+  return directions.size();
 }
 
 /**
@@ -90,7 +94,7 @@ int SpriteAnimation::get_nb_directions() const {
  * @param direction the direction
  * @return the sequence of images corresponding to this direction
  */
-const SpriteAnimationDirection * SpriteAnimation::get_direction(int direction) const {
+const SpriteAnimationDirection* SpriteAnimation::get_direction(int direction) const {
   return directions[direction];
 }
 
@@ -117,11 +121,14 @@ bool SpriteAnimation::is_looping() const {
  * @return the next frame of the current frame in this direction
  * (or -1 if the animation is over)
  */
-int SpriteAnimation::get_next_frame(int current_direction, int current_frame) const {
+int SpriteAnimation::get_next_frame(
+    int current_direction, int current_frame) const {
 
-  Debug::check_assertion(current_direction >= 0 && current_direction < nb_directions,
+  Debug::check_assertion(current_direction >= 0 &&
+      current_direction < get_nb_directions(),
     StringConcat() << "Invalid sprite direction '" << current_direction
-    << "': this sprite animation has only " << nb_directions << " direction(s)");
+        << "': this sprite animation has only " << get_nb_directions()
+        << " direction(s)");
 
   int next_frame = current_frame + 1;
 
@@ -136,20 +143,19 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) co
 }
 
 /**
- * @brief Displays a specific frame of this animation on a surface.
- * @param destination the surface on which the sprite will be displayed
- * @param x x coordinate of the sprite on this surface
- * (the origin point will be displayed at this position)
- * @param y y coordinate of the sprite on this surface
- * (the origin point will be displayed at this position)
+ * @brief Draws a specific frame of this animation on a surface.
+ * @param dst_surface the surface on which the sprite will be drawn
+ * @param dst_position coordinates on the destination surface
+ * (the origin point will be drawn at this position)
  * @param current_direction the direction to show
  * @param current_frame the frame to show in this direction
  */
-void SpriteAnimation::display(Surface *destination, int x, int y,
-    int current_direction, int current_frame) {
+void SpriteAnimation::draw(Surface& dst_surface,
+    const Rectangle& dst_position, int current_direction, int current_frame) {
 
   if (src_image != NULL) {
-    directions[current_direction]->display(destination, x, y, current_frame, src_image);
+    directions[current_direction]->draw(dst_surface, dst_position,
+        current_frame, *src_image);
   }
 }
 
@@ -172,8 +178,9 @@ void SpriteAnimation::enable_pixel_collisions() {
  */
 void SpriteAnimation::do_enable_pixel_collisions() {
 
-  for (int i = 0; i < nb_directions; i++) {
-    directions[i]->enable_pixel_collisions(src_image);
+  std::vector<SpriteAnimationDirection*>::iterator it;
+  for (it = directions.begin(); it != directions.end(); ++it) {
+    (*it)->enable_pixel_collisions(src_image);
   }
 }
 
@@ -182,8 +189,9 @@ void SpriteAnimation::do_enable_pixel_collisions() {
  */
 void SpriteAnimation::disable_pixel_collisions() {
 
-  for (int i = 0; i < nb_directions; i++) {
-    directions[i]->disable_pixel_collisions();
+  std::vector<SpriteAnimationDirection*>::iterator it;
+  for (it = directions.begin(); it != directions.end(); ++it) {
+    (*it)->disable_pixel_collisions();
   }
 }
 

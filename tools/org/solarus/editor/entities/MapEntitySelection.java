@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,8 +41,8 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @param map the map
      */
     public MapEntitySelection(Map map) {
-	this.map = map;
-	this.entities = new LinkedList<MapEntity>();
+        this.map = map;
+        this.entities = new LinkedList<MapEntity>();
     }
 
     /**
@@ -51,7 +51,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @return the entity at this index in the selection
      */
     public MapEntity getEntity(int index) {
-	return entities.get(index);
+        return entities.get(index);
     }
 
     /**
@@ -59,7 +59,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @return the selected entities
      */
     public LinkedList<MapEntity> getEntities() {
-	return entities;
+        return entities;
     }
 
     /**
@@ -67,7 +67,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @return an iterator over the selected entities.
      */
     public Iterator<MapEntity> iterator() {
-	return entities.iterator();
+        return entities.iterator();
     }
 
     /**
@@ -76,7 +76,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @return true if the entity is selected, false otherwise
      */
     public boolean isSelected(MapEntity entity) {
-	return entities.contains(entity);
+        return entities.contains(entity);
     }
 
     /**
@@ -84,7 +84,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @return the number of entities selected.
      */
     public int getNbEntitiesSelected() {
-	return entities.size();
+        return entities.size();
     }
 
     /**
@@ -92,7 +92,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @return true if there is no entity selected, false otherwise
      */
     public boolean isEmpty() {
-	return entities.size() == 0;
+        return entities.size() == 0;
     }
 
     /**
@@ -100,11 +100,11 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @param entity the entity to select
      */
     public void select(MapEntity entity) {
-	if (!isSelected(entity)) {
-	    entities.add(entity);
-	    setChanged();
-	    notifyObservers();
-	}
+        if (!isSelected(entity)) {
+            entities.add(entity);
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -114,11 +114,11 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public void select(List<MapEntity> entities) {
 
-	for (MapEntity entity: entities) {
-	    select(entity);
-	}
-	setChanged();
-	notifyObservers();
+        for (MapEntity entity: entities) {
+            select(entity);
+        }
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -126,20 +126,20 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @param entity the entity to unselect
      */
     public void unselect(MapEntity entity) {
-	if (entities.contains(entity)) {
-	    entities.remove(entity);
-	    setChanged();
-	    notifyObservers();
-	}
+        if (entities.contains(entity)) {
+            entities.remove(entity);
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
      * Unselects all entities.
      */
     public void unselectAll() {
-	entities.clear();
-	setChanged();
-	notifyObservers();
+        entities.clear();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -147,23 +147,23 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @param entity the entity to select or unselect
      */
     public void switchSelection(MapEntity entity) {
-	if (isSelected(entity)) {
-	    unselect(entity);
-	}
-	else {
-	    select(entity);
-	}
+        if (isSelected(entity)) {
+            unselect(entity);
+        }
+        else {
+            select(entity);
+        }
     }
 
     /**
      * Removes the selected entities from the map.
      * If there is no entity selected, nothing is done.
      */
-    public void removeFromMap() throws ZSDXException {
+    public void removeFromMap() throws QuestEditorException {
 
-	if (entities.size() > 0) {
-	    map.getHistory().doAction(new ActionRemoveEntities(map, entities));
-	}
+        if (entities.size() > 0) {
+            map.getHistory().doAction(new ActionRemoveEntities(map, entities));
+        }
     }
 
     /**
@@ -173,40 +173,40 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public Layer getLayer() {
 
-	Layer layer = entities.get(0).getLayer();
+        Layer layer = entities.get(0).getLayer();
 
-	for (int i = 1; i < entities.size(); i++) {
-	    if (entities.get(i).getLayer() != layer) {
-		return null;
-	    }
-	}
+        for (int i = 1; i < entities.size(); i++) {
+            if (entities.get(i).getLayer() != layer) {
+                return null;
+            }
+        }
 
-	return layer;
+        return layer;
     }
 
     /**
      * Changes the layer of the selected entities.
      * @param layer the new layer
      */
-    public void setLayer(Layer layer) throws ZSDXException {
+    public void setLayer(Layer layer) throws QuestEditorException {
 
-	map.getHistory().doAction(new ActionChangeLayer(map, entities, layer));
+        map.getHistory().doAction(new ActionChangeLayer(map, entities, layer));
     }
 
     /**
      * Brings the selected entities to the front in their layer.
      */
-    public void bringToFront() throws ZSDXException {
+    public void bringToFront() throws QuestEditorException {
 
-	map.getHistory().doAction(new ActionBringToFront(map, entities));
+        map.getHistory().doAction(new ActionBringToFront(map, entities));
     }
 
     /**
      * Brings the selected entities to the back in their layer.
      */
-    public void bringToBack() throws ZSDXException {
+    public void bringToBack() throws QuestEditorException {
 
-	map.getHistory().doAction(new ActionBringToBack(map, entities));
+        map.getHistory().doAction(new ActionBringToBack(map, entities));
     }
 
     /**
@@ -215,7 +215,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public boolean isResizable() {
 
-	return getNbEntitiesSelected() == 1 && getEntity(0).isResizable();
+        return getNbEntitiesSelected() == 1 && getEntity(0).isResizable();
     }
 
     /**
@@ -223,15 +223,15 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @return true if all selected entities have a direction property, false otherwise
      */
     public boolean hasDirectionProperty() {
-	
-	for (MapEntity entity: entities) {
-	    
-	    if (!entity.hasDirectionProperty()) {
-		return false;
-	    }
-	}
 
-	return true;
+        for (MapEntity entity: entities) {
+
+            if (!entity.hasDirectionProperty()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -242,22 +242,22 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public int getNbDirections() {
 
-	MapEntity e = entities.get(0);
-	
-	if (!e.hasDirectionProperty()) {
-	    return 0;
-	}
+        MapEntity e = entities.get(0);
 
-	int nbDirections = e.getNbDirections();
-	
-	for (MapEntity entity: entities) {
+        if (!e.hasDirectionProperty()) {
+            return 0;
+        }
 
-	    if (entity.getNbDirections() != nbDirections) {
-		return 0;
-	    }
-	}
+        int nbDirections = e.getNbDirections();
 
-	return nbDirections;
+        for (MapEntity entity: entities) {
+
+            if (entity.getNbDirections() != nbDirections) {
+                return 0;
+            }
+        }
+
+        return nbDirections;
     }
 
     /**
@@ -269,31 +269,31 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public int getDirection() {
 
-	MapEntity e = entities.get(0);
+        MapEntity e = entities.get(0);
 
-	if (!e.hasDirectionProperty()) {
-	    return -100;
-	}
+        if (!e.hasDirectionProperty()) {
+            return -100;
+        }
 
-	int direction = e.getDirection();
+        int direction = e.getDirection();
 
-	for (MapEntity entity: entities) {
+        for (MapEntity entity: entities) {
 
-	    if (!entity.hasDirectionProperty() || entity.getDirection() != direction) {
-		return -100;
-	    }
-	}
+            if (!entity.hasDirectionProperty() || entity.getDirection() != direction) {
+                return -100;
+            }
+        }
 
-	return direction;
+        return direction;
     }
 
     /**
      * Changes the direction of the selected entities.
      * @param direction the new direction
      */
-    public void setDirection(int direction) throws ZSDXException {
+    public void setDirection(int direction) throws QuestEditorException {
 
-	map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
+        map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
     }
 
     /**
@@ -308,19 +308,19 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public String getNoDirectionText() {
 
-	if (!canHaveNoDirection()) {
-	    return null;
-	}
+        if (!canHaveNoDirection()) {
+            return null;
+        }
 
-	String text = entities.get(0).getNoDirectionText();
-	for (MapEntity entity: entities) {
+        String text = entities.get(0).getNoDirectionText();
+        for (MapEntity entity: entities) {
 
-	    if (!entity.getNoDirectionText().equals(text)) {
-		return "No direction";
-	    }
-	}
+            if (!entity.getNoDirectionText().equals(text)) {
+                return "No direction";
+            }
+        }
 
-	return text;
+        return text;
     }
 
     /**
@@ -330,14 +330,14 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public boolean canHaveNoDirection() {
 
-	for (MapEntity entity: entities) {
+        for (MapEntity entity: entities) {
 
-	    if (!entity.hasDirectionProperty() || !entity.canHaveNoDirection()) {
-		return false;
-	    }
-	}
+            if (!entity.hasDirectionProperty() || !entity.canHaveNoDirection()) {
+                return false;
+            }
+        }
 
-	return true;
+        return true;
     }
 
     /**
@@ -345,13 +345,13 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @return true if all selected entities have a name, false otherwise
      */
     public boolean hasName() {
-	
-	for (MapEntity entity: entities) {
-	    if (!entity.hasName()) {
-		return false;
-	    }
-	}
 
-	return true;
+        for (MapEntity entity: entities) {
+            if (!entity.hasName()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,13 +92,34 @@ Color::Color(int r, int g, int b) {
 }
 
 /**
+ * @brief Creates a color from a 32-bit value.
+ *
+ * This constructor must be used only by low-level classes.
+ *
+ * @param internal_value The 32-bit value of the color to create.
+ */
+Color::Color(uint32_t internal_value):
+  internal_value(internal_value) {
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  internal_color.r = (internal_value & 0x00ff0000) / 0x10000;
+  internal_color.g = (internal_value & 0x0000ff00) / 0x100;
+  internal_color.b = (internal_value & 0x000000ff);
+#else
+  internal_color.r = (internal_value & 0x000000ff);
+  internal_color.g = (internal_value & 0x0000ff00) / 0x100;
+  internal_color.b = (internal_value & 0x00ff0000) / 0x10000;
+#endif
+}
+
+/**
  * @brief Returns the 32-bit value representing this color.
  *
  * This function must be used only by low-level classes.
  *
  * @return the 32-bit value of this color
  */
-uint32_t Color::get_internal_value() {
+uint32_t Color::get_internal_value() const {
   return internal_value;
 }
 
@@ -111,5 +132,18 @@ uint32_t Color::get_internal_value() {
  */
 SDL_Color* Color::get_internal_color() {
   return &internal_color;
+}
+
+/**
+ * @brief Returns the red, green and blue values of this color.
+ * @param r Red component to write.
+ * @param g Green component to write.
+ * @param b Blue component to write.
+ */
+void Color::get_components(int& r, int& g, int& b) const {
+
+  r = internal_color.r;
+  g = internal_color.g;
+  b = internal_color.b;
 }
 

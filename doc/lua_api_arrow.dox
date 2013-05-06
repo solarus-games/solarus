@@ -1,0 +1,29 @@
+/**
+\page lua_api_arrow Arrow
+
+\tableofcontents
+
+When the \ref lua_api_hero "hero" uses a bow,
+an arrow is created.
+
+This type of entity is entirely created and managed by the engine.
+You cannot create or access an arrow from Lua.
+
+\section lua_api_arrow_overview Overview
+
+An arrow entity is created when you call
+\ref lua_api_hero_start_bow "hero:start_bow()", after the bow animation.
+The arrow flies for a few seconds and disappears later.
+
+It can hurt \ref lua_api_enemy "enemies" and activate
+\ref lua_api_switch "switches" that are sensible to arrows.
+
+Note that
+there are no predefined bow and arrows \ref lua_api_item "equipment items".
+It is your responsability to make them if you want.
+If you decide to make them, you will typically call
+\ref lua_api_hero_start_bow "hero:start_bow()" from
+the \ref lua_api_item "item:on_using()" callback of your bow equipment item.
+
+*/
+

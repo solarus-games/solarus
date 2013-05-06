@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,12 +38,8 @@ class Arrow: public MapEntity {
     ~Arrow();
 
     EntityType get_type();
-
-    // features
     bool can_be_obstacle();
-    bool can_detect_entities();
-    bool can_be_displayed();
-    bool is_displayed_in_y_order();
+    bool is_drawn_in_y_order();
 
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
@@ -71,7 +67,7 @@ class Arrow: public MapEntity {
     // collisions
     void notify_collision_with_switch(Switch &sw, CollisionMode collision_mode);
     void notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode);
-    void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
+    void notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
     bool has_reached_map_border();

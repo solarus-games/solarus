@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,9 +61,9 @@ class AnimatedTilePattern: public TilePattern {
     ~AnimatedTilePattern();
 
     static void update();
-    void display(Surface* destination, const Rectangle& dst_position,
+    void draw(Surface& dst_surface, const Rectangle& dst_position,
         Tileset& tileset, const Rectangle& viewport);
-    virtual bool is_displayed_at_its_position();
+    virtual bool is_drawn_at_its_position();
 };
 
 #endif

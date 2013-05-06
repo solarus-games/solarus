@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,53 +33,53 @@ class Hero::State {
 
   private:
 
-    Map *map;				/**< the current map (it may change during this state) */
+    Map* map;                 /**< the current map (it may change during this state) */
 
   protected:
 
-    Hero &hero;				/**< the hero controlled by this state */
-    bool suspended;			/**< indicates whether this state is suspended */
-    uint32_t when_suspended;		/**< indicates when this state was suspended */
+    Hero& hero;               /**< the hero controlled by this state */
+    bool suspended;           /**< indicates whether this state is suspended */
+    uint32_t when_suspended;  /**< indicates when this state was suspended */
 
-    State(Hero &hero);
+    State(Hero& hero);
 
     bool is_current_state();
 
     // access to various game objects
-    HeroSprites& get_sprites();
-    Map& get_map();
+    LuaContext& get_lua_context();
     MapEntities& get_entities();
     Game& get_game();
+    Map& get_map();
     Equipment& get_equipment();
     KeysEffect& get_keys_effect();
-    GameControls& get_controls();
+    GameCommands& get_commands();
     DialogBox& get_dialog_box();
-    MapScript& get_map_script();
+    HeroSprites& get_sprites();
 
   public:
 
     // creation and destruction
     virtual ~State();
-    virtual void start(State *previous_state);
-    virtual void stop(State *next_state);
+    virtual void start(State* previous_state);
+    virtual void stop(State* next_state);
 
     // game loop
     virtual void update();
-    virtual void display_on_map();
+    virtual void draw_on_map();
     virtual void set_suspended(bool suspended);
-    void key_pressed(GameControls::GameKey key);
-    void key_released(GameControls::GameKey key);
-    virtual void action_key_pressed();
-    virtual void action_key_released();
-    virtual void sword_key_pressed();
-    virtual void sword_key_released();
-    virtual void directional_key_pressed(int direction4);
-    virtual void directional_key_released(int direction4);
-    virtual void item_key_pressed(int slot);
-    virtual void item_key_released(int slot);
+    void notify_command_pressed(GameCommands::Command command);
+    void notify_command_released(GameCommands::Command command);
+    virtual void notify_action_command_pressed();
+    virtual void notify_action_command_released();
+    virtual void notify_attack_command_pressed();
+    virtual void notify_attack_command_released();
+    virtual void notify_direction_command_pressed(int direction4);
+    virtual void notify_direction_command_released(int direction4);
+    virtual void notify_item_command_pressed(int slot);
+    virtual void notify_item_command_released(int slot);
 
     // game
-    virtual void set_map(Map &map);
+    virtual void set_map(Map& map);
     virtual bool can_start_gameover_sequence();
 
     // sprites
@@ -133,14 +133,14 @@ class Hero::State {
 
     // state specific
     virtual bool is_free();
-    virtual bool is_using_inventory_item();
-    virtual InventoryItem& get_current_inventory_item();
+    virtual bool is_using_item();
+    virtual EquipmentItemUsage& get_item_being_used();
     virtual bool is_grabbing_or_pulling();
     virtual bool is_moving_grabbed_entity();
     virtual void notify_grabbed_entity_collision();
-    virtual bool is_cutting_with_sword(Detector &detector);
+    virtual bool is_cutting_with_sword(Detector& detector);
     virtual bool can_start_sword();
-    virtual bool can_start_inventory_item();
+    virtual bool can_start_item(EquipmentItem& item);
     virtual bool can_take_stairs();
     virtual bool can_take_jumper();
     virtual bool can_sword_hit_crystal();

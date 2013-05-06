@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,9 +20,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
-
-import org.solarus.editor.entities.MapEntity;
-import org.solarus.editor.Map;
+import org.solarus.editor.entities.*;
 
 /**
  * Represents a sprite.
@@ -50,13 +48,19 @@ public class Sprite {
     private Map map;
 
     /**
+     * Default image for empty sprites.
+     */
+    private static Image emptySpriteImage = Project.getEditorImage("npc.png");
+
+    /**
      * Analyzes the description file of the animation set used by this sprite
      * and builds its animation set.
-     * @throws ZSDXException if there is an error when analyzing the file
+     * @throws MapException if there is an error when analyzing the file
      */
     public void parse() throws MapException {
 
         int lineNumber = 0;
+        String animationName = null;
         try {
 
             this.animations = new TreeMap<String, SpriteAnimation>();
@@ -73,7 +77,7 @@ public class Sprite {
 
                 // first line: animation info
                 StringTokenizer tokenizer = new StringTokenizer(line);
-                String animationName = tokenizer.nextToken();
+                animationName = tokenizer.nextToken();
                 String imageFileName = tokenizer.nextToken();
                 int nbDirections = Integer.parseInt(tokenizer.nextToken());
                 int frameDelay = Integer.parseInt(tokenizer.nextToken());
@@ -127,17 +131,21 @@ public class Sprite {
             throw new MapException(ex.getMessage());
         }
         catch (NumberFormatException ex) {
-            throw new MapException("Line " + lineNumber + ": Integer expected");
+            throw new MapException("Sprite '" + animationSetId + "': Syntax error line " + lineNumber + ": Integer expected");
         }
         catch (NoSuchElementException ex) {
-            throw new MapException("Line " + lineNumber + ": Value expected");
+            throw new MapException("Sprite '" + animationSetId + "': Syntax error line " + lineNumber + ": Value expected");
+        }
+        catch (QuestEditorException ex) {
+            throw new MapException("Sprite '" + animationSetId + "': Line " + lineNumber + ", animation '" + animationName + "':\n" + ex.getMessage());
         }
     }
 
     /**
      * Creates a sprite from the specified animation set id
-     * @param animationSetId id of the animation set to use 
+     * @param animationSetId id of the animation set to use
      * @param map the map where this sprite will be displayed (if any)
+     * @throws QuestEditorException If the sprite could not be loaded.
      */
     public Sprite(String animationSetId, Map map) throws MapException {
 
@@ -148,10 +156,29 @@ public class Sprite {
 
     /**
      * Returns the name of the default animation of this sprite.
-     * @return return default animation name, i.e. the first one in the description file
+     * @return The default animation name, i.e. the first one in the
+     * description file, or null if the sprite is empty.
      */
     public String getDefaultAnimationName() {
         return defaultAnimationName;
+    }
+
+    /**
+     * Returns whether the specified animation exists.
+     * @param animationName Name of an animation.
+     * @return true if such an animation exists.
+     */
+    public boolean hasAnimation(String animationName) {
+        return animations.containsKey(animationName);
+    }
+
+    /**
+     * Returns an animation of this sprite.
+     * @param animationName Name of the animation to get
+     * @return The corresponding animation.
+     */
+    public SpriteAnimation getAnimation(String animationName) {
+        return animations.get(animationName);
     }
 
     /**
@@ -159,9 +186,13 @@ public class Sprite {
      * @param animationName name of animation to use (null to pick the default one)
      * @param direction direction of animation
      * @param frame index of the frame to get
-     * @return the frame
+     * @return the frame, or null if the sprite is empty.
      */
     public Image getFrame(String animationName, int direction, int frame) {
+
+        if (animations.isEmpty()) {
+            return null;
+        }
 
         if (animationName == null) {
             animationName = getDefaultAnimationName();
@@ -177,6 +208,10 @@ public class Sprite {
      */
     public Point getOrigin(String animationName, int direction) {
 
+        if (animations.isEmpty()) {
+            return new Point(0, 0);
+        }
+
         if (animationName == null) {
             animationName = getDefaultAnimationName();
         }
@@ -191,9 +226,15 @@ public class Sprite {
      */
     public Dimension getSize(String animationName, int direction) {
 
-        if (animationName == null) {
+        if (animations.isEmpty()) {
+            // Empty sprite.
+            return new Dimension(16, 16);
+        }
+
+        if (animationName == null || !animations.containsKey(animationName)) {
             animationName = getDefaultAnimationName();
         }
+
         return animations.get(animationName).getSize(direction);
     }
 
@@ -211,11 +252,23 @@ public class Sprite {
     public void paint(Graphics g, double zoom, boolean showTransparency,
             int x, int y, String animationName, int direction, int frame) {
 
-        if (animationName == null) {
-            animationName = getDefaultAnimationName();
+        if (animations.isEmpty()) {
+            // Empty sprite.
+
+            if (showTransparency) {
+                g.drawImage(emptySpriteImage, x, y, 16, 16, null);
+            }
+            else {
+                g.drawImage(emptySpriteImage, x, y, 16, 16, MapEntity.bgColor, null);
+            }
         }
-        animations.get(animationName).paint(g, zoom, showTransparency,
-                x, y, direction, frame);        
+        else {
+            if (animationName == null) {
+                animationName = getDefaultAnimationName();
+            }
+            animations.get(animationName).paint(g, zoom, showTransparency,
+                    x, y, direction, frame);
+        }
     }
 }
 

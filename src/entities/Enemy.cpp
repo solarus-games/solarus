@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,21 +15,19 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Enemy.h"
-#include "entities/CustomEnemy.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
-#include "entities/PickableItem.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Pickable.h"
+#include "entities/Destructible.h"
 #include "entities/Fire.h"
+#include "lua/LuaContext.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
-#include "ItemProperties.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
-#include "lua/MapScript.h"
 #include "movements/StraightMovement.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/Geometry.h"
@@ -40,39 +38,23 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 
-const std::string Enemy::attack_names[] = {
-  "sword",
-  "thrown_item",
-  "explosion",
-  "arrow",
-  "hookshot",
-  "boomerang",
-  "fire",
-  "script"
-};
-
-const std::string Enemy::hurt_style_names[] = {
-  "normal",
-  "monster",
-  "boss",
-};
-
-const std::string Enemy::obstacle_behavior_names[] = {
-  "normal",
-  "flying",
-  "swimming",
-};
-
 /**
  * @brief Creates an enemy.
- *
- * This constructor can only be called by the subclasses. Use the static method create() to create enemies.
- *
- * @param params the name and position of the enemy
+ * @param game The game.
+ * @param name Id of the enemy.
+ * @param layer The layer on the map.
+ * @param x X position on the map.
+ * @param y Y position on the map.
+ * @param breed Breed of the enemy.
+ * @param treasure Treasure dropped when the enemy is killed.
  */
-Enemy::Enemy(const ConstructionParameters &params):
+Enemy::Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
+    const std::string& breed, const Treasure& treasure):
 
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
+  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE,
+      name, layer, x, y, 0, 0),
+
+  breed(breed),
   damage_on_hero(1),
   magic_damage_on_hero(0),
   life(1),
@@ -82,10 +64,10 @@ Enemy::Enemy(const ConstructionParameters &params):
   can_hurt_hero_running(false),
   minimum_shield_needed(0),
   rank(RANK_NORMAL),
-  savegame_variable(-1),
+  savegame_variable(),
   obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
-  displayed_in_y_order(true),
-  father_name(""),
+  drawn_in_y_order(true),
+  initialized(false),
   being_hurt(false),
   stop_hurt_date(0),
   invulnerable(false),
@@ -95,7 +77,7 @@ Enemy::Enemy(const ConstructionParameters &params):
   immobilized(false),
   start_shaking_date(0),
   end_shaking_date(0),
-  treasure(params.treasure),
+  treasure(treasure),
   exploding(false),
   nb_explosions(0),
   next_explosion_date(0) {
@@ -107,36 +89,6 @@ Enemy::Enemy(const ConstructionParameters &params):
  */
 Enemy::~Enemy() {
 
-}
-
-/**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-
-  int direction, rank, savegame_variable, treasure_variant, treasure_savegame_variable;
-  std::string name, breed, treasure_name;
-
-  FileTools::read(is, name);
-  FileTools::read(is, direction);
-  FileTools::read(is, breed);
-  FileTools::read(is, rank);
-  FileTools::read(is, savegame_variable);
-  FileTools::read(is, treasure_name);
-  FileTools::read(is, treasure_variant);
-  FileTools::read(is, treasure_savegame_variable);
-
-  return create(game, breed, Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction,
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
@@ -152,32 +104,32 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
  * @param breed breed of the enemy to create
  * @param name a name identifying the enemy
  * @param rank rank of the enemy: normal, miniboss or boss
- * @param savegame_variable index of the boolean variable indicating that
+ * @param savegame_variable name of the boolean variable indicating that the enemy is dead
  * @param layer layer of the enemy on the map
  * @param x x position of the enemy on the map
  * @param y y position of the enemy on the map
  * @param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
- * @param treasure the pickable item that the enemy drops (possibly NULL)
- * @return the enemy created (may be NULL)
+ * @param treasure the pickable item that the enemy drops
+ * @return the enemy created (may also be a Pickable or NULL)
  */
-MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int savegame_variable,
-    const std::string &name, Layer layer, int x, int y, int direction, const Treasure &treasure) {
+MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank,
+    const std::string& savegame_variable, const std::string &name, Layer layer, int x, int y,
+    int direction, const Treasure& treasure) {
 
   // see if the enemy is dead
-  if (savegame_variable != -1
+  if (!savegame_variable.empty()
       && game.get_savegame().get_boolean(savegame_variable)) {
 
     // the enemy is dead: create its pickable treasure (if any) instead
     if (treasure.is_saved() && !game.get_savegame().get_boolean(treasure.get_savegame_variable())) {
-      return PickableItem::create(game, layer, x, y, treasure, FALLING_NONE, true);
+      return Pickable::create(game, "", layer, x, y, treasure, FALLING_NONE, true);
     }
     return NULL;
   }
 
   // create the enemy
-  const ConstructionParameters params = {game, treasure, name, layer, x, y};
-  Enemy *enemy = new CustomEnemy(params, breed);
+  Enemy *enemy = new Enemy(game, name, layer, x, y, breed, treasure);
 
   // initialize the fields
   enemy->set_direction(direction);
@@ -203,20 +155,36 @@ EntityType Enemy::get_type() {
 }
 
 /**
+ * @brief Initializes the enemy.
+ */
+void Enemy::initialize() {
+
+  if (!initialized) {
+    initialized = true;
+    get_lua_context().run_enemy(*this);
+  }
+}
+
+/**
  * @brief Sets the map.
  *
- * Warning: as this function is called when initializing the map,
+ * Warning: when this function is called during the map initialization,
  * the current map of the game is still the old one.
  *
- * @param map the map
+ * @param map The map.
  */
-void Enemy::set_map(Map &map) {
+void Enemy::set_map(Map& map) {
 
-  MapEntity::set_map(map);
+  Detector::set_map(map);
 
   if (is_enabled()) {
     initialize();
     enable_pixel_collisions();
+  }
+
+  if (map.is_loaded()) {
+    // We are not during the map initialization phase.
+    restart();
   }
 }
 
@@ -248,11 +216,27 @@ void Enemy::notify_map_opening_transition_finished() {
 }
 
 /**
+ * @brief Returns the breed of this enemy.
+ * @return The breed.
+ */
+const std::string& Enemy::get_breed() {
+  return breed;
+}
+
+/**
  * @brief Returns the rank of the enemy.
  * @return the enemy rank
  */
 Enemy::Rank Enemy::get_rank() {
   return rank;
+}
+
+/**
+ * @brief Returns whether the state of this enemy is saved.
+ * @return true if this enemy is saved.
+ */
+bool Enemy::is_saved() {
+  return !savegame_variable.empty();
 }
 
 /**
@@ -267,14 +251,14 @@ bool Enemy::is_obstacle_for(MapEntity& other) {
 
 /**
  * @brief Returns whether a destructible item is currently considered as an obstacle for this entity.
- * @param destructible_item a destructible item
+ * @param destructible a destructible item
  * @return true if the destructible item is currently an obstacle this entity
  */
-bool Enemy::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
+bool Enemy::is_destructible_obstacle(Destructible& destructible) {
 
   // the destructible item is an obstacle unless the enemy is already overlapping it,
   // which is possible with bomb flowers
-  if (this->overlaps(destructible_item)) {
+  if (this->overlaps(destructible)) {
     return false;
   }
   return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
@@ -331,32 +315,35 @@ bool Enemy::is_lava_obstacle() {
 }
 
 /**
+ * @brief Returns the amount of damage this kind of enemy can make to the hero.
+ * @return Number of life points the player loses.
+ */
+int Enemy::get_damage() {
+  return damage_on_hero;
+}
+
+/**
  * @brief Sets the amount of damage this kind of enemy can make to the hero.
- * @param damage_on_hero number of heart quarters the player loses
+ * @param damage_on_hero Number of life points the player loses.
  */
 void Enemy::set_damage(int damage_on_hero) {
   this->damage_on_hero = damage_on_hero;
 }
 
 /**
- * @brief Sets the amount of damage this kind of enemy can make to the hero.
- * @param damage_on_hero number of heart quarters the player loses
- * @param magic_damage_on_hero number of magic points the player loses
+ * @brief Returns the amount of magic damage this kind of enemy can make to the hero.
+ * @return Number of magic points the player loses.
  */
-void Enemy::set_damage(int damage_on_hero, int magic_damage_on_hero) {
-  set_damage(damage_on_hero);
-  this->magic_damage_on_hero = magic_damage_on_hero;
+int Enemy::get_magic_damage() {
+  return magic_damage_on_hero;
 }
 
 /**
- * @brief Sets the number of health points of the enemy.
- * @param life number of health points of the enemy
+ * @brief Sets the amount of magic damage this kind of enemy can make to the hero.
+ * @param magic_damage_on_hero Number of magic points the player loses.
  */
-void Enemy::set_life(int life) {
-  this->life = life;
-  if (!being_hurt && this->life <= 0) {
-    kill();
-  }
+void Enemy::set_magic_damage(int magic_damage_on_hero) {
+  this->magic_damage_on_hero = magic_damage_on_hero;
 }
 
 /**
@@ -365,6 +352,54 @@ void Enemy::set_life(int life) {
  */
 int Enemy::get_life() {
   return life;
+}
+
+/**
+ * @brief Sets the number of health points of the enemy.
+ * @param life number of health points of the enemy
+ */
+void Enemy::set_life(int life) {
+
+  this->life = life;
+  if (!being_hurt && this->life <= 0) {
+    kill();
+  }
+}
+
+/**
+ * @brief Returns the style of sounds and animations when this enemy is hurt.
+ * @return The style when hurt.
+ */
+Enemy::HurtStyle Enemy::get_hurt_style() {
+  return hurt_style;
+}
+
+/**
+ * @brief Sets the style of sounds and animations when this enemy is hurt.
+ * @param hurt_style The style when hurt.
+ */
+void Enemy::set_hurt_style(HurtStyle hurt_style) {
+  this->hurt_style = hurt_style;
+}
+
+/**
+ * @brief Returns whether this enemy can currently attack the hero.
+ * @return true if this enemy can currently attack the hero
+ */
+bool Enemy::get_can_attack() {
+  return can_attack;
+}
+
+/**
+ * @brief Sets whether this enemy can attack the hero.
+ * @param can_attack true to allow this enemy to attack the hero
+ */
+void Enemy::set_can_attack(bool can_attack) {
+
+  this->can_attack = can_attack;
+  if (!can_attack) {
+    can_attack_again_date = 0;
+  }
 }
 
 /**
@@ -384,8 +419,17 @@ void Enemy::set_obstacle_behavior(ObstacleBehavior obstacle_behavior) {
 }
 
 /**
+ * @brief Returns whether the enemy is pushed back when it gets hurt by the hero.
+ * @return \c true if the enemy is pushed back when it gets hurt.
+ */
+bool Enemy::get_pushed_back_when_hurt() {
+  return pushed_back_when_hurt;
+}
+
+
+/**
  * @brief Sets whether the enemy is pushed back when it gets hurt by the hero.
- * @param pushed_back_when_hurt true to make the enemy pushed back when it gets hury
+ * @param pushed_back_when_hurt true to make the enemy pushed back when it gets hurt.
  */
 void Enemy::set_pushed_back_when_hurt(bool pushed_back_when_hurt) {
   this->pushed_back_when_hurt = pushed_back_when_hurt;
@@ -421,6 +465,34 @@ bool Enemy::get_can_hurt_hero_running() {
  */
 void Enemy::set_can_hurt_hero_running(bool can_hurt_hero_running) {
   this->can_hurt_hero_running = can_hurt_hero_running;
+}
+
+/**
+ * @brief Returns the shield level required to avoid attacks of this enemy.
+ * @return The minimum shield needed (\c 0 means unavoidable attacks).
+ */
+int Enemy::get_minimum_shield_needed() {
+  return minimum_shield_needed;
+}
+
+/**
+ * @brief Sets the shield level required to avoid attacks of this enemy.
+ * @param minimum_shield_needed The minimum shield needed (\c 0 means unavoidable attacks).
+ */
+void Enemy::set_minimum_shield_needed(int minimum_shield_needed) {
+  this->minimum_shield_needed = minimum_shield_needed;
+}
+
+/**
+ * @brief Returns the reaction corresponding to an attack on a sprite of this enemy.
+ * @param attack an attack this enemy receives
+ * @param this_sprite the sprite attacked, or NULL if the attack does not come from
+ * a pixel-precise collision test
+ * @return the corresponding reaction
+ */
+const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
+
+  return attack_reactions[attack].get_reaction(this_sprite);
 }
 
 /**
@@ -526,7 +598,7 @@ const std::string& Enemy::get_animation() {
  *
  * @param animation name of the animation to set
  */
-void Enemy::set_animation(const std::string &animation) {
+void Enemy::set_animation(const std::string& animation) {
 
   std::list<Sprite*>::iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
@@ -535,15 +607,12 @@ void Enemy::set_animation(const std::string &animation) {
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether the entity should be displayed above
- * the hero and other entities having this property when it is in front of them.
- *
- * @return true if this type of entity is displayed at the same level as the hero
+ * @brief Returns whether this entity has to be drawn in y order.
+ * @return \c true if this type of entity should be drawn at the same level
+ * as the hero.
  */
-bool Enemy::is_displayed_in_y_order() {
-  return displayed_in_y_order;
+bool Enemy::is_drawn_in_y_order() {
+  return drawn_in_y_order;
 }
 
 /**
@@ -610,7 +679,7 @@ void Enemy::update() {
       Rectangle xy;
       xy.set_x(get_top_left_x() + Random::get_number(get_width()));
       xy.set_y(get_top_left_y() + Random::get_number(get_height()));
-      get_entities().add_entity(new Explosion(LAYER_HIGH, xy, false));
+      get_entities().add_entity(new Explosion("", LAYER_HIGH, xy, false));
       Sound::play("explosion");
 
       next_explosion_date = now + 200;
@@ -624,19 +693,21 @@ void Enemy::update() {
 
   if (is_killed() && is_dying_animation_finished()) {
 
-    // create the pickable treasure if any
-    get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
+    // Create the pickable treasure if any.
+    get_entities().add_entity(Pickable::create(get_game(),
+        "", get_layer(), get_x(), get_y(),
         treasure, FALLING_HIGH, false));
 
-    // notify the enemy
-    notify_dead();
-
-    // remove the enemy
+    // Remove the enemy.
     remove_from_map();
 
-    // notify the scripts
-    get_map_script().event_enemy_dead(get_name());
+    // Notify Lua that this enemy is dead.
+    // We need to do this after remove_from_map() so that this enemy is
+    // considered dead in functions like map:has_entities(prefix).
+    notify_dead();
   }
+
+  get_lua_context().enemy_on_update(*this);
 }
 
 /**
@@ -651,11 +722,28 @@ void Enemy::set_suspended(bool suspended) {
     uint32_t diff = System::now() - when_suspended;
     stop_hurt_date += diff;
     vulnerable_again_date += diff;
-    can_attack_again_date += diff;
+    if (can_attack_again_date != 0) {
+      can_attack_again_date += diff;
+    }
     start_shaking_date += diff;
     end_shaking_date += diff;
     next_explosion_date += diff;
   }
+  get_lua_context().enemy_on_suspended(*this, suspended);
+}
+
+/**
+ * @brief Draws the entity on the map.
+ */
+void Enemy::draw_on_map() {
+
+  if (!is_drawn()) {
+    return;
+  }
+
+  get_lua_context().enemy_on_pre_draw(*this);
+  Detector::draw_on_map();
+  get_lua_context().enemy_on_post_draw(*this);
 }
 
 /**
@@ -664,42 +752,83 @@ void Enemy::set_suspended(bool suspended) {
  */
 void Enemy::notify_enabled(bool enabled) {
 
-  MapEntity::notify_enabled(enabled);
+  Detector::notify_enabled(enabled);
 
   if (enabled) {
-    initialize();
+    if (!initialized) {
+      initialize();
+    }
     restart();
+    get_lua_context().enemy_on_enabled(*this);
+  }
+  else {
+    get_lua_context().enemy_on_disabled(*this);
   }
 }
 
 /**
- * @brief Returns whether this enemy is in a normal state.
- *
- * The enemy is considered to be in its normal state if
- * it is not disabled, dying, being hurt or immobilized.
- * When this method returns false, the subclasses of Enemy
- * should not change the enemy properties.
- *
- * @return true if this enemy is in a normal state
+ * @brief Notifies this entity that it has just failed to change its position
+ * because of obstacles.
  */
-bool Enemy::is_in_normal_state() {
-  return is_enabled() && !is_being_hurt() && get_life() > 0 && !is_immobilized() && !is_being_removed();
+void Enemy::notify_obstacle_reached() {
+
+  Detector::notify_obstacle_reached();
+
+  if (!is_being_hurt()) {
+    get_lua_context().enemy_on_obstacle_reached(*this, *get_movement());
+  }
 }
 
 /**
- * @brief Notifies this enemy that it should restart his movement.
- *
- * This function is called when the enemy needs to restart its movement
- * because something happened (for example the enemy has just been created,
- * or it was just hurt).
- * By default, the "walking" animation is set on the enemy's sprites.
+ * @brief This function is called when the entity has just moved.
  */
-void Enemy::restart() {
+void Enemy::notify_position_changed() {
 
-  if (is_immobilized()) {
-    stop_immobilized();
+  Detector::notify_position_changed();
+
+  if (!is_being_hurt()) {
+    get_lua_context().enemy_on_position_changed(*this, get_xy(), get_layer());
   }
-  set_animation("walking");
+}
+
+/**
+ * @brief This function is called when the layer of this entity has just changed.
+ *
+ * Redefine it if you need to be notified.
+ */
+void Enemy::notify_layer_changed() {
+
+  Detector::notify_layer_changed();
+
+  if (!is_being_hurt()) {
+    get_lua_context().enemy_on_position_changed(*this, get_xy(), get_layer());
+  }
+}
+
+/**
+ * @brief This function can be called by the movement object
+ * to notify the entity when the movement has just changed
+ * (e.g. the speed, the angle or the trajectory).
+ */
+void Enemy::notify_movement_changed() {
+
+  Detector::notify_movement_changed();
+
+  if (!is_being_hurt()) {
+    get_lua_context().enemy_on_movement_changed(*this, *get_movement());
+  }
+}
+
+/**
+ * @brief This function is called when the movement of the entity is finished.
+ */
+void Enemy::notify_movement_finished() {
+
+  Detector::notify_movement_finished();
+
+  if (!is_being_hurt()) {
+    get_lua_context().enemy_on_movement_finished(*this);
+  }
 }
 
 /**
@@ -750,6 +879,21 @@ void Enemy::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
 }
 
 /**
+ * @brief This function is called when this enemy detects a collision with another enemy.
+ * @param other the other enemy
+ * @param other_sprite the other enemy's sprite that overlaps a sprite of this enemy
+ * @param this_sprite this enemy's sprite that overlaps the other
+ */
+void Enemy::notify_collision_with_enemy(Enemy& other,
+    Sprite& other_sprite, Sprite& this_sprite) {
+
+  if (is_in_normal_state()) {
+    get_lua_context().enemy_on_collision_enemy(
+        *this, other, other_sprite, this_sprite);
+  }
+}
+
+/**
  * @brief Attacks the hero if possible.
  *
  * This function is called when there is a collision between the enemy and the hero.
@@ -767,7 +911,7 @@ void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
         && get_equipment().has_ability("shield", minimum_shield_needed)) {
 
       // compute the direction corresponding to the angle between the enemy and the hero
-      double angle = hero.get_vector_angle(*this);
+      double angle = hero.get_angle(*this);
       int protected_direction4 = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
       protected_direction4 = (protected_direction4 + 4) % 4;
 
@@ -808,44 +952,11 @@ void Enemy::attack_stopped_by_hero_shield() {
 }
 
 /**
- * @brief Returns whether this enemy can currently attack the hero.
- * @return true if this enemy can currently attack the hero
- */
-bool Enemy::get_can_attack() {
-
-  return can_attack;
-}
-
-/**
- * @brief Sets whether this enemy can attack the hero.
- * @param can_attack true to allow this enemy to attack the hero
- */
-void Enemy::set_can_attack(bool can_attack) {
-
-  this->can_attack = can_attack;
-  if (!can_attack) {
-    can_attack_again_date = 0;
-  }
-}
-
-/**
- * @brief Returns the reaction corresponding to an attack on a sprite of this enemy.
- * @param attack an attack this enemy receives
- * @param this_sprite the sprite attacked, or NULL if the attack does not come from
- * a pixel-precise collision test
- * @return the corresponding reaction
- */
-const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
-
-  return attack_reactions[attack].get_reaction(this_sprite);
-}
-
-/**
  * @brief Plays the appropriate sound when the enemy is hurt.
  */
 void Enemy::play_hurt_sound() {
 
-  SoundId sound_id = "";
+  std::string sound_id = "";
   switch (hurt_style) {
 
     case HURT_NORMAL:
@@ -869,7 +980,50 @@ void Enemy::play_hurt_sound() {
 }
 
 /**
- * @brief Makes the enemy subject to an attack.
+ * @brief Notifies this enemy that it should restart his movement.
+ *
+ * This function is called when the enemy needs to restart its movement
+ * because something happened (for example the enemy has just been created,
+ * or it was just hurt).
+ * By default, the "walking" animation is set on the enemy's sprites.
+ */
+void Enemy::restart() {
+
+  if (is_immobilized()) {
+    stop_immobilized();
+  }
+  set_animation("walking");
+  get_lua_context().enemy_on_restarted(*this);
+}
+
+/**
+ * @brief Returns whether this enemy is in a normal state.
+ *
+ * The enemy is considered to be in its normal state if
+ * it is not disabled, dying, being hurt or immobilized.
+ * When this method returns false, the subclasses of Enemy
+ * should not change the enemy properties.
+ *
+ * @return true if this enemy is in a normal state
+ */
+bool Enemy::is_in_normal_state() {
+  return is_enabled()
+    && !is_being_hurt()
+    && get_life() > 0
+    && !is_immobilized()
+    && !is_being_removed();
+}
+
+/**
+ * @brief Returns whether this enemy is currently invulnerable.
+ * @return \c true if this enemy cannot be hurt for now.
+ */
+bool Enemy::is_invulnerable() {
+  return invulnerable;
+}
+
+/**
+ * @brief Makes the enemy receive an attack.
  *
  * He might resist to the attack or get hurt.
  *
@@ -878,7 +1032,7 @@ void Enemy::play_hurt_sound() {
  * @param this_sprite the sprite of this enemy that received the attack, or NULL
  * if the attack comes from a non pixel-precise collision test
  */
-void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite) {
+void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite) {
 
   EnemyReaction::Reaction reaction = get_attack_consequence(attack, this_sprite);
   if (invulnerable || reaction.type == EnemyReaction::IGNORED) {
@@ -974,7 +1128,7 @@ void Enemy::hurt(MapEntity &source) {
 
   // push the enemy back
   if (pushed_back_when_hurt) {
-    double angle = source.get_vector_angle(*this);
+    double angle = source.get_angle(*this);
     StraightMovement* movement = new StraightMovement(false, true);
     movement->set_max_distance(24);
     movement->set_speed(120);
@@ -994,8 +1148,9 @@ void Enemy::hurt(MapEntity &source) {
 void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 
   if (get_life() <= 0) {
-    get_map_script().event_enemy_dying(get_name());
+    get_lua_context().enemy_on_dying(*this);
   }
+  get_lua_context().enemy_on_hurt(*this, attack, life_points);
 }
 
 /**
@@ -1003,6 +1158,7 @@ void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) 
  */
 void Enemy::notify_dead() {
 
+  get_lua_context().enemy_on_dead(*this);
 }
 
 /**
@@ -1011,6 +1167,7 @@ void Enemy::notify_dead() {
  */
 void Enemy::notify_immobilized() {
 
+  get_lua_context().enemy_on_immobilized(*this);
 }
 
 /**
@@ -1046,7 +1203,7 @@ void Enemy::kill() {
   }
 
   // save the enemy state if required
-  if (savegame_variable != -1) {
+  if (is_saved()) {
     get_savegame().set_boolean(savegame_variable, true);
   }
 }
@@ -1150,106 +1307,14 @@ bool Enemy::is_immobilized() {
  */
 void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
-  // TODO merge Enemy and CustomEnemy since all enemies are scripted now, and
-  // remove this error that cannot happen anyway
-  Debug::die(StringConcat() << "The custom attack for enemy '" << get_name() << "' is not defined");
+  get_lua_context().enemy_on_custom_attack_received(*this, attack, this_sprite);
 }
 
 /**
- * @brief Sends a message from another enemy to this enemy.
- * @param sender the sender
- * @param message the message
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
  */
-void Enemy::notify_message_received(Enemy& sender, const std::string& message) {
-
+const std::string& Enemy::get_lua_type_name() const {
+  return LuaContext::entity_enemy_module_name;
 }
 
-/**
- * @brief Converts an attack enumerated value into a string.
- * @param attack an attack
- * @return the corresponding string
- */
-const std::string& Enemy::get_attack_name(EnemyAttack attack) {
-
-  Debug::check_assertion(attack >= 0 && attack < ATTACK_NUMBER,
-      StringConcat() << "Invalid attack number: " << attack);
-
-  return attack_names[attack];
-}
-
-/**
- * @brief Converts a string into an attack enumerated value.
- * @param attack_name name of an attack
- * @return the corresponding attack
- */
-EnemyAttack Enemy::get_attack_by_name(const std::string& attack_name) {
-
-  for (int i = 0; i < ATTACK_NUMBER; i++) {
-    if (attack_names[i] == attack_name) {
-      return EnemyAttack(i);
-    }
-  }
-
-  Debug::die(StringConcat() << "Invalid attack name: " << attack_name);
-  throw;
-}
-
-/**
- * @brief Converts a value of the HurtStyle enumeration into a string.
- * @param style a hurt style
- * @return the corresponding string
- */
-const std::string& Enemy::get_hurt_style_name(HurtStyle style) {
-
-  Debug::check_assertion(style >= 0 && style < HURT_NUMBER,
-      StringConcat() << "Invalid hurt style number: " << style);
-
-  return hurt_style_names[style];
-}
-
-/**
- * @brief Converts a string into a value of the HurtStyle enumeration.
- * @param name name of a hurt style
- * @return the corresponding hurt style
- */
-Enemy::HurtStyle Enemy::get_hurt_style_by_name(const std::string& name) {
-
-  for (int i = 0; i < HURT_NUMBER; i++) {
-    if (hurt_style_names[i] == name) {
-      return HurtStyle(i);
-    }
-  }
-
-  Debug::die(StringConcat() << "Invalid hurt style name: " << name);
-  throw;
-}
-
-/**
- * @brief Converts a value of the ObstacleBehavior enumeration into a string.
- * @param behavior a behavior with obstacles
- * @return the corresponding string
- */
-const std::string& Enemy::get_obstacle_behavior_name(ObstacleBehavior behavior) {
-
-  Debug::check_assertion(behavior >= 0 && behavior < OBSTACLE_BEHAVIOR_NUMBER,
-      StringConcat() << "Invalid obstacle behavior number: " << behavior);
-
-  return obstacle_behavior_names[behavior];
-}
-
-/**
- * @brief Converts a string into a value of the ObstacleBehavior enumeration.
- * @param name name of a behavior with obstacles
- * @return the corresponding behavior
- */
-Enemy::ObstacleBehavior Enemy::get_obstacle_behavior_by_name(const std::string& name) {
-
-  for (int i = 0; i < OBSTACLE_BEHAVIOR_NUMBER; i++) {
-    if (obstacle_behavior_names[i] == name) {
-      return ObstacleBehavior(i);
-    }
-  }
-
-  Debug::die(StringConcat() << "Invalid obstacle behavior name: " << name);
-  throw;
-}

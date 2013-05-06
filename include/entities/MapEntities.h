@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,13 +36,68 @@
  */
 class MapEntities {
 
+  public:
+
+    // creation and destruction
+    MapEntities(Game& game, Map& map);
+    ~MapEntities();
+
+    // entities
+    Hero& get_hero();
+    Obstacle get_obstacle_tile(Layer layer, int x, int y);
+    std::list<MapEntity*>& get_obstacle_entities(Layer layer);
+    std::list<Detector*>& get_detectors();
+    std::list<Stairs*>& get_stairs(Layer layer);
+    std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
+
+    MapEntity* get_entity(const std::string& name);
+    MapEntity* find_entity(const std::string& name);
+    std::list<MapEntity*> get_entities_with_prefix(const std::string& prefix);
+    std::list<MapEntity*> get_entities_with_prefix(EntityType type, const std::string& prefix);
+    bool has_entity_with_prefix(const std::string& prefix);
+
+    // handle entities
+    void add_entity(MapEntity* entity);
+    void remove_entity(MapEntity* entity);
+    void remove_entity(const std::string& name);
+    void remove_entities_with_prefix(const std::string& prefix);
+    void bring_to_front(MapEntity* entity);
+    void destroy_all_entities();
+    void destroy_entity(MapEntity* entity);
+    static bool compare_y(MapEntity* first, MapEntity* second);
+    void set_entity_layer(MapEntity& entity, Layer layer);
+
+    // specific to some entity types
+    bool overlaps_raised_blocks(Layer layer, const Rectangle& rectangle);
+    bool is_boomerang_present();
+    void remove_boomerang();
+    void remove_arrows();
+
+    // map events
+    void notify_map_started();
+    void notify_map_opening_transition_finished();
+    void notify_tileset_changed();
+
+    // game loop
+    void set_suspended(bool suspended);
+    void update();
+    void draw();
+
   private:
 
-    friend class MapLoader;                         /**< the map loader initializes the private fields of MapEntities */
+    friend class MapLoader;            /**< the map loader initializes the private fields of MapEntities */
+
+    void add_tile(Tile *tile);
+    void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
+    void build_non_animated_tiles();
+    void redraw_non_animated_tiles();
+    bool overlaps_animated_tile(Tile& tile);
+    void remove_marked_entities();
+    void update_crystal_blocks();
 
     // map
-    Game &game;                                     /**< the game running this map */
-    Map &map;                                       /**< the map */
+    Game& game;                                     /**< the game running this map */
+    Map& map;                                       /**< the map */
     int map_width8;                                 /**< number of 8*8 squares on a row of the map grid */
     int map_height8;                                /**< number of 8*8 squares on a column of the map grid */
 
@@ -60,18 +115,20 @@ class MapEntities {
         tiles_in_animated_regions[LAYER_NB];        /**< animated tiles and tiles overlapping them */
 
     // dynamic entities
-    Hero &hero;                                     /**< the hero (also stored in Game because it is kept when changing maps) */
+    Hero& hero;                                     /**< the hero (also stored in Game because it is kept when changing maps) */
 
+    std::map<std::string, MapEntity*>
+      named_entities;                               /**< entities identified by a name */
     std::list<MapEntity*> all_entities;             /**< all map entities except the tiles and the hero;
                                                      * this vector is used to delete the entities
                                                      * when the map is unloaded */
     std::list<MapEntity*> entities_to_remove;       /**< list of entities that need to be removed right now */
 
     std::list<MapEntity*>
-      entities_displayed_first[LAYER_NB];           /**< all map entities that are displayed in the normal order */
+      entities_drawn_first[LAYER_NB];               /**< all map entities that are drawn in the normal order */
 
     std::list<MapEntity*>
-      entities_displayed_y_order[LAYER_NB];         /**< all map entities that are displayed in the order
+      entities_drawn_y_order[LAYER_NB];             /**< all map entities that are drawn in the order
                                                      * defined by their y position, including the hero */
 
     std::list<Detector*> detectors;                 /**< all entities able to detect other entities
@@ -83,58 +140,10 @@ class MapEntities {
 
     std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
     std::list<CrystalBlock*>
-      crystal_blocks[LAYER_NB];				/**< all crystal blocks of the map */
-    Boomerang *boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
-    MusicId music_before_miniboss;                  /**< the music that was played before starting a miniboss fight */
+      crystal_blocks[LAYER_NB];	                    /**< all crystal blocks of the map */
 
-    void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
-    void build_non_animated_tiles();
-    bool overlaps_animated_tile(Tile& tile);
-    void remove_marked_entities();
-    void update_crystal_blocks();
-
-  public:
-
-    // creation and destruction
-    MapEntities(Game &game, Map &map);
-    ~MapEntities();
-
-    // entities
-    Hero& get_hero();
-    Obstacle get_obstacle_tile(Layer layer, int x, int y);
-    std::list<MapEntity*>& get_obstacle_entities(Layer layer);
-    std::list<Detector*>& get_detectors();
-    std::list<Stairs*>& get_stairs(Layer layer);
-    std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
-
-    MapEntity* get_entity(EntityType type, const std::string &name);
-    MapEntity* find_entity(EntityType type, const std::string &name);
-    std::list<MapEntity*> get_entities(EntityType type);
-    std::list<MapEntity*> get_entities_with_prefix(EntityType type, const std::string &prefix);
-
-    // handle entities
-    void add_tile(Tile *tile);
-    void add_entity(MapEntity *entity);
-    void remove_entity(MapEntity *entity);
-    void remove_entity(EntityType type, const std::string &name);
-    void remove_entities_with_prefix(EntityType type, const std::string& prefix);
-    void bring_to_front(MapEntity *entity);
-    void destroy_all_entities();
-    static bool compare_y(MapEntity *first, MapEntity *second);
-    void set_entity_layer(MapEntity& entity, Layer layer);
-
-    // specific to some entity types
-    bool overlaps_raised_blocks(Layer layer, const Rectangle& rectangle);
-    bool is_boomerang_present();
-    void remove_boomerang();
-    void remove_arrows();
-
-    // game loop
-    void notify_map_started();
-    void notify_map_opening_transition_finished();
-    void set_suspended(bool suspended);
-    void update();
-    void display();
+    Boomerang* boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
+    std::string music_before_miniboss;              /**< the music that was played before starting a miniboss fight */
 };
 
 /**

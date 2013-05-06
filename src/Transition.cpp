@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,8 @@ Transition::~Transition() {
  * @param game the current game if any (used by some kinds of transitions)
  * @return the transition created
  */
-Transition * Transition::create(Transition::Style style, Transition::Direction direction, Game *game) {
+Transition * Transition::create(Transition::Style style,
+    Transition::Direction direction, Game *game) {
 
   Transition *transition = NULL;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "SpriteAnimationDirection.h"
 #include "Game.h"
 #include "Map.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/System.h"
@@ -27,18 +28,12 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
-int Sprite::next_unique_id = 0;
-std::map<SpriteAnimationSetId, SpriteAnimationSet*> Sprite::all_animation_sets;
-Surface *Sprite::alpha_surface = NULL;
+std::map<std::string, SpriteAnimationSet*> Sprite::all_animation_sets;
 
 /**
  * @brief Initializes the sprites system.
  */
 void Sprite::initialize() {
-
-  // create only once an intermediary surface that will be used by transparent sprites
-  alpha_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
-  alpha_surface->set_transparency_color(Color::get_black());
 }
 
 /**
@@ -47,14 +42,11 @@ void Sprite::initialize() {
 void Sprite::quit() {
 
   // delete the animations loaded
-  std::map<SpriteAnimationSetId, SpriteAnimationSet*>::iterator it;
+  std::map<std::string, SpriteAnimationSet*>::iterator it;
   for (it = all_animation_sets.begin(); it != all_animation_sets.end(); it++) {
     delete it->second;
   }
   all_animation_sets.clear();
-
-  // delete the static alpha_surface
-  delete alpha_surface;
 }
 
 /**
@@ -66,9 +58,9 @@ void Sprite::quit() {
  * @param id id of the animation set
  * @return the corresponding animation set
  */
-SpriteAnimationSet& Sprite::get_animation_set(const SpriteAnimationSetId &id) {
+SpriteAnimationSet& Sprite::get_animation_set(const std::string &id) {
 
-  if (all_animation_sets.count(id) == 0) {
+  if (all_animation_sets.find(id) == all_animation_sets.end()) {
     all_animation_sets[id] = new SpriteAnimationSet(id);
   }
 
@@ -79,11 +71,12 @@ SpriteAnimationSet& Sprite::get_animation_set(const SpriteAnimationSetId &id) {
  * @brief Creates a sprite with the specified animation set.
  * @param id name of an animation set
  */
-Sprite::Sprite(const SpriteAnimationSetId &id):
-
-  unique_id(next_unique_id++),
+Sprite::Sprite(const std::string &id):
+  Drawable(),
+  lua_context(NULL),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
+  current_animation(NULL),
   current_direction(0),
   current_frame(-1),
   suspended(false),
@@ -91,10 +84,9 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
   paused(false),
   finished(false),
   synchronize_to(NULL),
-  blink_delay(0),
-  alpha(255),
-  alpha_next_change_date(0) {
- 
+  intermediate_surface(NULL),
+  blink_delay(0) {
+
   set_current_animation(animation_set.get_default_animation());
 }
 
@@ -103,36 +95,25 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
  */
 Sprite::~Sprite() {
 
-}
-
-/**
- * @brief Returns the unique id of this sprite.
- *
- * It is guaranteed that no other sprite instance will have the same id as this one
- * during the execution of the program, even after this sprite is deleted.
- *
- * @return the unique id of this movement
- */
-int Sprite::get_unique_id() const {
-  return unique_id;
+  delete intermediate_surface;
 }
 
 /**
  * @brief Returns the id of the animation set of this sprite.
  * @return the animation set id of this sprite
  */
-const SpriteAnimationSetId& Sprite::get_animation_set_id() const {
+const std::string& Sprite::get_animation_set_id() const {
   return animation_set_id;
 }
 
 /**
  * @brief Returns whether the id of the animation set of this sprite
  * contains the specified string.
- * @param s the string to check
+ * @param sequence the string to check
  * @return true if the animation set id contains this string
  */
-bool Sprite::contains(const std::string &s) const {
-  return animation_set_id.find(s) != std::string::npos;
+bool Sprite::contains(const std::string& sequence) const {
+  return animation_set_id.find(sequence) != std::string::npos;
 }
 
 /**
@@ -148,16 +129,15 @@ SpriteAnimationSet& Sprite::get_animation_set() {
 }
 
 /**
- * @brief When the sprite is displayed on a map, sets the map.
+ * @brief When the sprite is drawn on a map, sets the tileset.
  *
  * This function must be called if this sprite image depends on the map's tileset.
  *
- * @param map the map
+ * @param tileset The tileset.
  */
-void Sprite::set_map(Map &map) {
-  animation_set.set_map(map);
+void Sprite::set_tileset(Tileset& tileset) {
+  animation_set.set_tileset(tileset);
 }
-
 
 /**
  * @brief Enables the pixel-perfect collision detection for the animation set of this sprite.
@@ -177,33 +157,42 @@ bool Sprite::are_pixel_collisions_enabled() const {
 }
 
 /**
- * @brief Returns the size of a frame for the current animation and the current direction.
- * @return the size of a frame
+ * @brief Returns the size of the current frame.
+ * @return A rectangle whose size is the size of the current frame.
+ * X and Y are set to zero.
  */
-const Rectangle& Sprite::get_size() const {
+Rectangle Sprite::get_size() const {
 
-  const SpriteAnimation *animation = animation_set.get_animation(current_animation_name);
-  return animation->get_direction(current_direction)->get_size();
+  return current_animation->get_direction(current_direction)->get_size();
 }
 
 /**
- * @brief Returns the origin point of a frame for the current animation and the current direction.
+ * @brief Returns the maximum frame size of the animation set of this sprite.
+ * @return The maximum frame size.
+ */
+const Rectangle& Sprite::get_max_size() const {
+  return animation_set.get_max_size();
+}
+
+/**
+ * @brief Returns the origin point of a frame for the current animation and
+ * the current direction.
  * @return the origin point of a frame
  */
 const Rectangle& Sprite::get_origin() const {
 
-  const SpriteAnimation *animation = animation_set.get_animation(current_animation_name);
-  return animation->get_direction(current_direction)->get_origin();
+  return current_animation->get_direction(current_direction)->get_origin();
 }
 
 /**
  * @brief Returns the frame delay of the current animation.
  *
  * A value of 0 (only for 1-frame animations) means that the
- * animation must continue to be displayed: in this case,
+ * animation must continue to be drawn: in this case,
  * is_animation_finished() returns always false.
  *
- * @return the delay between two frames for the current animation (in miliseconds)
+ * @return The delay between two frames for the current animation
+ * in miliseconds.
  */
 uint32_t Sprite::get_frame_delay() const {
   return frame_delay;  
@@ -213,9 +202,10 @@ uint32_t Sprite::get_frame_delay() const {
  * @brief Sets the frame delay of the current animation.
  *
  * A value of 0 (only for 1-frame animations) means that the
- * animation will continue to be displayed.
+ * animation will continue to be drawn.
  *
- * @param frame_delay the delay between two frames for the current animation (in miliseconds)
+ * @param frame_delay The delay between two frames for the current animation
+ * in miliseconds.
  */
 void Sprite::set_frame_delay(uint32_t frame_delay) {
   this->frame_delay = frame_delay;  
@@ -223,17 +213,18 @@ void Sprite::set_frame_delay(uint32_t frame_delay) {
 
 /**
  * @brief Returns the next frame of the current frame.
- * @return the next frame of the current frame (or -1 if the animation is finished)
+ * @return The next frame of the current frame, or -1 if the animation is
+ * finished.
  */
 int Sprite::get_next_frame() const {
-  return current_animation->get_next_frame(current_direction, current_frame);    
+  return current_animation->get_next_frame(current_direction, current_frame);
 }
 
 /**
  * @brief Returns the current animation of the sprite.
  * @return the name of the current animation of the sprite
  */
-const std::string & Sprite::get_current_animation() const {
+const std::string& Sprite::get_current_animation() const {
   return current_animation_name;
 }
 
@@ -245,15 +236,13 @@ const std::string & Sprite::get_current_animation() const {
  *
  * @param animation_name name of the new animation of the sprite
  */
-void Sprite::set_current_animation(const std::string &animation_name) {
+void Sprite::set_current_animation(const std::string& animation_name) {
 
   if (animation_name != this->current_animation_name || !is_animation_started()) {
 
-    SpriteAnimation *animation = animation_set.get_animation(animation_name);
-
     this->current_animation_name = animation_name;
-    this->current_animation = animation;
-    set_frame_delay(animation->get_frame_delay());
+    this->current_animation = animation_set.get_animation(animation_name);;
+    set_frame_delay(current_animation->get_frame_delay());
     set_current_frame(0);
   }
 }
@@ -265,6 +254,15 @@ void Sprite::set_current_animation(const std::string &animation_name) {
  */
 bool Sprite::has_animation(const std::string& animation_name) {
   return animation_set.has_animation(animation_name);
+}
+
+/**
+ * @brief Returns the number of directions in the current animation of this
+ * sprite.
+ * @return The number of directions.
+ */
+int Sprite::get_nb_directions() const {
+  return current_animation->get_nb_directions();
 }
 
 /**
@@ -287,13 +285,23 @@ void Sprite::set_current_direction(int current_direction) {
   if (current_direction != this->current_direction) {
 
     Debug::check_assertion(current_direction >= 0
-        && current_direction < current_animation->get_nb_directions(),
-        StringConcat() << "Invalid direction of sprite '" << get_animation_set_id()
-        << "': " << current_direction);
+        && current_direction < get_nb_directions(),
+        StringConcat() << "Invalid direction " << current_direction
+        << " for sprite '" << get_animation_set_id()
+        << "' in animation '" << current_animation_name << "'");
 
     this->current_direction = current_direction;
     set_current_frame(0);
   }
+}
+
+/**
+ * @brief Returns the number of frames in the current direction of the current
+ * animation of this sprite.
+ * @return The number of frames.
+ */
+int Sprite::get_nb_frames() const {
+  return current_animation->get_direction(current_direction)->get_nb_frames();
 }
 
 /**
@@ -309,7 +317,7 @@ int Sprite::get_current_frame() const {
  *
  * If the animation was finished, it is restarted.
  * If the animation is suspended, it remains suspended
- * but the specified frame is displayed.
+ * but the specified frame is drawn.
  *
  * @param current_frame the current frame
  */
@@ -318,9 +326,18 @@ void Sprite::set_current_frame(int current_frame) {
   finished = false;
   next_frame_date = System::now() + get_frame_delay();
 
-  frame_changed = (current_frame != this->current_frame);
+  set_frame_changed(current_frame != this->current_frame);
 
   this->current_frame = current_frame;
+}
+
+/**
+ * @brief Returns the rectangle of the current frame.
+ * @return The current frame's rectangle.
+ */
+const Rectangle& Sprite::get_current_frame_rectangle() const {
+
+  return current_animation->get_direction(current_direction)->get_frame(current_frame);
 }
 
 /**
@@ -329,6 +346,18 @@ void Sprite::set_current_frame(int current_frame) {
  */
 bool Sprite::has_frame_changed() const {
   return frame_changed;
+}
+
+/**
+ * @brief Sets whether the frame has just changed.
+ * @param frame_changed true if the frame has just changed.
+ */
+void Sprite::set_frame_changed(bool frame_changed) {
+
+  this->frame_changed = frame_changed;
+  if (lua_context != NULL) {
+    lua_context->sprite_on_frame_changed(*this, current_animation_name, current_frame);
+  }
 }
 
 /**
@@ -398,9 +427,6 @@ void Sprite::set_suspended(bool suspended) {
       uint32_t now = System::now();
       next_frame_date = now + get_frame_delay();
       blink_next_change_date = now;
-      if (alpha_next_change_date != 0) {
-        alpha_next_change_date = now;
-      }
     }
     else {
       blink_is_sprite_visible = true;
@@ -480,8 +506,7 @@ bool Sprite::is_animation_finished() const {
  */
 bool Sprite::is_last_frame_reached() const {
 
-  const SpriteAnimationDirection *direction = current_animation->get_direction(current_direction);
-  return get_current_frame() == direction->get_nb_frames() - 1;
+  return get_current_frame() == get_nb_frames() - 1;
 }
 
 /**
@@ -504,40 +529,6 @@ void Sprite::set_blinking(uint32_t blink_delay) {
     blink_is_sprite_visible = false;
     blink_next_change_date = System::now();
   }
-}
- 
-/**
- * @brief Returns the alpha value currently applied to the sprite.
- * @return the transparency rate: 0 (tranparent) to 255 (opaque)
- */
-int Sprite::get_alpha() const {
-  return alpha;
-}
-
-/**
- * @brief Sets the alpha value applied to the sprite.
- * @param alpha the opacity rate: 0 (tranparent) to 255 (opaque)
- */
-void Sprite::set_alpha(int alpha) {
-  this->alpha = alpha;
-}
-
-/**
- * @brief Returns whether the entity's sprites are currently displaying a fade-in or fade-out effect.
- * @return true if there is currently a fade effect
- */
-bool Sprite::is_fading() const {
-  return alpha_next_change_date != 0;
-}
-
-/**
- * @brief Starts a fade-in or fade_out effect on this sprite.
- * @param direction direction of the effect (0: fade-in, 1: fade-out)
- */
-void Sprite::start_fading(int direction) {
-  alpha_next_change_date = System::now();
-  alpha_increment = (direction == 0) ? 20 : -20;
-  set_alpha((direction == 0) ? 0 : 255);
 }
 
 /**
@@ -571,6 +562,8 @@ bool Sprite::test_collision(Sprite& other, int x1, int y1, int x2, int y2) const
  */
 void Sprite::update() {
 
+  Drawable::update();
+
   if (suspended || paused) {
     return;
   }
@@ -592,12 +585,15 @@ void Sprite::update() {
       // test whether the animation is finished
       if (next_frame == -1) {
         finished = true;
+        if (lua_context != NULL) {
+          lua_context->sprite_on_animation_finished(*this, current_animation_name);
+        }
       }
       else {
         current_frame = next_frame;
         next_frame_date += get_frame_delay();
       }
-      frame_changed = true;
+      set_frame_changed(true);
     }
   }
   else {
@@ -606,7 +602,7 @@ void Sprite::update() {
     if (other_frame != current_frame) {
       current_frame = other_frame;
       next_frame_date = now + get_frame_delay();
-      frame_changed = true;
+      set_frame_changed(true);
     }
   }
 
@@ -619,46 +615,99 @@ void Sprite::update() {
       blink_next_change_date += blink_delay;
     }
   }
+}
 
-  if (is_fading() && now >= alpha_next_change_date) {
-    // the sprite is fading
+/**
+ * @brief Draws the sprite on a surface, with its current animation,
+ * direction and frame.
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates on the destination surface
+ * (the origin will be placed at this position).
+ */
+void Sprite::raw_draw(Surface& dst_surface,
+    const Rectangle& dst_position) {
 
-    int rate = get_alpha();
-    rate += alpha_increment;
-    rate = std::max(0, std::min(255, rate));
-    if (rate == 0 || rate == 255) { // fade finished
-      alpha_next_change_date = 0;
+  if (!is_animation_finished()
+      && (blink_delay == 0 || blink_is_sprite_visible)) {
+
+    if (intermediate_surface == NULL) {
+      current_animation->draw(dst_surface, dst_position,
+          current_direction, current_frame);
     }
     else {
-      alpha_next_change_date += 40;
+      current_animation->draw(*intermediate_surface, dst_position,
+        current_direction, current_frame);
+      intermediate_surface->draw_region(get_size(), dst_surface);
     }
-    set_alpha(rate);
   }
 }
 
 /**
- * @brief Displays the sprite on a surface, with its current animation, direction and frame.
- * @param destination the surface on which the sprite will be displayed
- * @param x x coordinate of the sprite on this surface
- * (the origin will be placed at this position)
- * @param y y coordinate of the sprite on this surface
- * (the origin will be placed at this position)
+ * @brief Draws a subrectangle of the current frame of this sprite.
+ * @param region The subrectangle to draw, relative to the top-left corner
+ * of the current frame.
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates on the destination surface.
  */
-void Sprite::display(Surface *destination, int x, int y) {
+void Sprite::raw_draw_region(const Rectangle& region,
+    Surface& dst_surface, const Rectangle& dst_position) {
 
-  if (!is_animation_finished() && (blink_delay == 0 || blink_is_sprite_visible)) {
+  if (!is_animation_finished()
+      && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    if (alpha >= 255) {
-      // opaque
-      current_animation->display(destination, x, y, current_direction, current_frame);
-    }
-    else {
-      // semi transparent
-      alpha_surface->set_opacity(alpha);
-      alpha_surface->fill_with_color(Color::get_black());
-      current_animation->display(alpha_surface, x, y, current_direction, current_frame);
-      alpha_surface->blit(destination);
-    }
+    current_animation->draw(get_intermediate_surface(), dst_position,
+        current_direction, current_frame);
+    get_intermediate_surface().draw_region(region, dst_surface);
   }
+}
+
+/**
+ * @brief Draws a transition effect on this drawable object.
+ * @param transition The transition effect to apply.
+ */
+void Sprite::draw_transition(Transition& transition) {
+
+  transition.draw(get_intermediate_surface());
+}
+
+/**
+ * @brief Returns the intermediate surface used for transitions and other
+ * effects for this sprite.
+ *
+ * Creates this intermediate surface if it does not exist yet.
+ *
+ * @return The intermediate surface of this sprite.
+ */
+Surface& Sprite::get_intermediate_surface() {
+
+  if (intermediate_surface == NULL) {
+    intermediate_surface = new Surface(get_max_size());
+  }
+  return *intermediate_surface;
+}
+
+/**
+ * @brief Returns the Solarus Lua API.
+ * @return The Lua context, or NULL if Lua callbacks are not enabled for this sprite.
+ */
+LuaContext* Sprite::get_lua_context() const {
+  return lua_context;
+}
+
+/**
+ * @brief Sets the Solarus Lua API.
+ * @param lua_context The Lua context, or NULL to disable Lua callbacks
+ * for this sprite.
+ */
+void Sprite::set_lua_context(LuaContext* lua_context) {
+  this->lua_context = lua_context;
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
+ */
+const std::string& Sprite::get_lua_type_name() const {
+  return LuaContext::sprite_module_name;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
  */
 class Music { // TODO make a subclass for each format, or at least make a better separation between them
 
-  private:
+  public:
 
     /**
      * The music file formats recognized.
@@ -43,7 +43,39 @@ class Music { // TODO make a subclass for each format, or at least make a better
       OGG       /**< Ogg Vorbis */
     };
 
-    MusicId id;                                  /**< id of this music */
+    static const std::string none;               /**< special id indicating that there is no music */
+    static const std::string unchanged;          /**< special id indicating that the music is the same as before */
+
+    Music(const std::string& music_id = none);
+    ~Music();
+
+    static void initialize();
+    static void quit();
+    static bool is_initialized();
+    static void update();
+
+    static int get_volume();
+    static void set_volume(int volume);
+
+    static void find_music_file(const std::string& music_id,
+        std::string& file_name, Format& format);
+    static bool exists(const std::string& music_id);
+    static void play(const std::string& music_id);
+    static Music* get_current_music();
+    static const std::string& get_current_music_id();
+
+    bool start();
+    void stop();
+    bool is_paused();
+    void set_paused(bool pause);
+
+    void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
+    void decode_it(ALuint destination_buffer, ALsizei nb_samples);
+    void decode_ogg(ALuint destination_buffer, ALsizei nb_samples);
+
+  private:
+
+    std::string id;                              /**< id of this music */
     std::string file_name;                       /**< name of the file to play */
     Format format;                               /**< format of the music, detected from the file name */
 
@@ -60,38 +92,9 @@ class Music { // TODO make a subclass for each format, or at least make a better
     static float volume;                         /**< volume of musics (0.0 to 1.0) */
 
     static Music *current_music;                 /**< the music currently played (if any) */
-    static std::map<MusicId,Music> all_musics;   /**< all musics created before */
+    static std::map<std::string, Music> all_musics;   /**< all musics created before */
 
     void update_playing();
-
-  public:
-
-    static const MusicId none;                   /**< special id indicating that there is no music */
-    static const MusicId unchanged;              /**< special id indicating that the music is the same as before */
-
-    Music(const MusicId& music_id = none);
-    ~Music();
-
-    static void initialize();
-    static void quit();
-    static bool is_initialized();
-    static void update();
-
-    static int get_volume();
-    static void set_volume(int volume);
-
-    static void play(const MusicId& music_id);
-    static Music* get_current_music();
-    static const MusicId& get_current_music_id();
-
-    bool start();
-    void stop();
-    bool is_paused();
-    void set_paused(bool pause);
-
-    void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
-    void decode_it(ALuint destination_buffer, ALsizei nb_samples);
-    void decode_ogg(ALuint destination_buffer, ALsizei nb_samples);
 };
 
 #endif

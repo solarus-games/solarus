@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,17 +51,19 @@ SpriteAnimationDirection::~SpriteAnimationDirection() {
 
 /**
  * @brief Returns the size of a frame.
- * @return the size of a frame
+ * @return The size of a frame.
  */
-const Rectangle & SpriteAnimationDirection::get_size() const {
-  return frames[0];
+Rectangle SpriteAnimationDirection::get_size() const {
+
+  Debug::check_assertion(nb_frames > 0, "Invalid number of frames");
+  return Rectangle(0, 0, frames[0].get_width(), frames[0].get_height());
 }
 
 /**
  * @brief Returns the origin point of a frame.
  * @return the origin point of a frame
  */
-const Rectangle & SpriteAnimationDirection::get_origin() const {
+const Rectangle& SpriteAnimationDirection::get_origin() const {
   return origin;
 }
 
@@ -78,31 +80,29 @@ int SpriteAnimationDirection::get_nb_frames() const {
  * @param frame a frame number
  * @return the rectangle of this frame
  */
-const Rectangle & SpriteAnimationDirection::get_frame(int frame) const {
+const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
   return frames[frame];
 }
 
 /**
- * @brief Displays a specific frame on the map.
- * @param destination the surface on which the frame will be displayed
- * @param x x coordinate of the sprite on this surface
- * (the origin point will be displayed at this position)
- * @param y y coordinate of the sprite on this surface
- * (the origin point will be displayed at this position)
+ * @brief Draws a specific frame on the map.
+ * @param dst_surface the surface on which the frame will be drawn
+ * @param dst_position coordinates on the destination surface
+ * (the origin point will be drawn at this position)
  * @param current_frame the frame to show
- * @param src_image the image from wich the frame is extracted
+ * @param src_image the image from which the frame is extracted
  */
-void SpriteAnimationDirection::display(Surface* destination, int x, int y,
-                                       int current_frame, Surface* src_image) {
-
-  Rectangle position_top_left; // position of the sprite's upper left corner
+void SpriteAnimationDirection::draw(Surface& dst_surface,
+    const Rectangle& dst_position, int current_frame, Surface& src_image) {
 
   const Rectangle& current_frame_rect = frames[current_frame];
 
-  position_top_left.set_xy(x - origin.get_x(), y - origin.get_y());
-  position_top_left.set_size(current_frame_rect.get_width(), current_frame_rect.get_height());
+  // position of the sprite's upper left corner
+  Rectangle position_top_left(dst_position);
+  position_top_left.add_xy(-origin.get_x(), -origin.get_y());
+  position_top_left.set_size(current_frame_rect);
 
-  src_image->blit(current_frame_rect, destination, position_top_left);
+  src_image.draw_region(current_frame_rect, dst_surface, position_top_left);
 }
 
 /**
@@ -157,7 +157,8 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
  */
 PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
 
-  SOLARUS_ASSERT(pixel_bits != NULL, "Pixel-precise collisions are not enabled for this sprite");
+  SOLARUS_ASSERT(pixel_bits != NULL,
+      "Pixel-precise collisions are not enabled for this sprite");
   SOLARUS_ASSERT(frame >= 0 && frame < nb_frames, "Invalid frame number");
 
   return *pixel_bits[frame];

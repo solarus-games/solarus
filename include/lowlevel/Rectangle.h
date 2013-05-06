@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <SDL.h>
+#include <ostream>
 
 /**
  * @brief Represents a rectangle.
@@ -43,7 +44,7 @@ class Rectangle {
   public:
 
     Rectangle(int x = 0, int y = 0, int width = 0, int height = 0);
-    Rectangle(const Rectangle &other);
+    Rectangle(const Rectangle& other);
     ~Rectangle();
 
     int get_x() const;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,9 @@
 #include "movements/PlayerMovement.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/Debug.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief Constructor.
@@ -57,8 +58,8 @@ void PlayerMovement::update() {
   else {
 
     // check whether the wanted direction has changed
-    GameControls& controls = get_entity()->get_game().get_controls();
-    int wanted_direction8 = controls.get_wanted_direction8();
+    GameCommands& commands = get_entity()->get_game().get_commands();
+    int wanted_direction8 = commands.get_wanted_direction8();
     if (wanted_direction8 != direction8 && !is_suspended()) {
       direction8 = wanted_direction8;
       compute_movement();
@@ -101,8 +102,8 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
 void PlayerMovement::set_wanted_direction() {
 
   if (get_entity() != NULL && get_entity()->is_on_map()) {
-    GameControls& controls = get_entity()->get_game().get_controls();
-    direction8 = controls.get_wanted_direction8();
+    GameCommands& commands = get_entity()->get_game().get_commands();
+    direction8 = commands.get_wanted_direction8();
   }
   else {
     direction8 = -1;
@@ -127,10 +128,17 @@ void PlayerMovement::compute_movement() {
     set_angle(Geometry::degrees_to_radians(direction8 * 45));
   }
 
-  if (get_entity() != NULL) {
-    // notify the entity that its movement has just changed:
-    // indeed, the entity may need to update its sprites
-    get_entity()->notify_movement_changed();
-  }
+  // notify the entity that its movement has just changed:
+  // indeed, the entity may need to update its sprites
+  notify_movement_changed();
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
+ */
+const std::string& PlayerMovement::get_lua_type_name() const {
+  Debug::die("No Lua binding for PlayerMovement");
+  throw;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,12 +40,12 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     void stop(State *next_state);
     void update();
     void set_suspended(bool suspended);
-    void action_key_pressed();
+    void notify_action_command_pressed();
     void notify_obstacle_reached();
 
     bool is_free();
     bool can_start_sword();
-    bool can_start_inventory_item();
+    bool can_start_item(EquipmentItem& item);
     bool can_take_stairs();
     bool can_take_jumper();
     CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);

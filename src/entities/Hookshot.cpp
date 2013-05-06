@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #include "entities/Hookshot.h"
 #include "entities/Enemy.h"
 #include "entities/Chest.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Destructible.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
@@ -88,44 +88,10 @@ bool Hookshot::can_be_obstacle() {
 }
 
 /**
- * @brief Returns whether entities of this type have detection capabilities.
- *
- * This function returns whether entities of this type can detect the presence 
- * of the hero or other entities (this is possible only for
- * suclasses of Detector). If yes, the function 
- * notify_collision() will be called when a collision is detected.
- *
- * @return true if this type of entity can detect other entities
+ * @brief Returns whether this entity has to be drawn in y order.
+ * @return true if this type of entity is drawn at the same level as the hero
  */
-bool Hookshot::can_detect_entities() {
-  return false;
-}
-
-/**
- * @brief Returns whether entities of this type can be displayed.
- *
- * If yes, the sprites added by the add_sprite() calls will be 
- * displayed (if any).
- *
- * @return true if this type of entity can be displayed
- */
-bool Hookshot::can_be_displayed() {
-  return true;
-}
-
-/**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether an entity of this type should be displayed above
- * the hero and other entities having this property when it is in front of them.
- * This means that the displaying order of entities having this
- * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file), 
- * and before the entities with the feature.
- *
- * @return true if this type of entity is displayed at the same level as the hero
- */
-bool Hookshot::is_displayed_in_y_order() {
+bool Hookshot::is_drawn_in_y_order() {
   return true;
 }
 
@@ -283,7 +249,7 @@ void Hookshot::update() {
 
       if (has_to_go_back) {
         going_back = true;
-        Movement *movement = new TargetMovement(&get_hero(), 192);
+        Movement *movement = new TargetMovement(&get_hero(), 192, true);
         clear_movement();
         set_movement(movement);
       }
@@ -300,9 +266,9 @@ void Hookshot::update() {
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Draws the entity on the map.
  */
-void Hookshot::display_on_map() {
+void Hookshot::draw_on_map() {
 
   static const int nb_links = 7;
   static const Rectangle dxy[] = {
@@ -312,23 +278,24 @@ void Hookshot::display_on_map() {
     Rectangle(0, 7)
   };
 
-  MapEntity::display_on_map();
+  if (!is_drawn()) {
+    return;
+  }
 
-  if (is_visible()) {
+  MapEntity::draw_on_map();
 
-    // also display the links
-    int direction = get_sprite().get_current_direction();
-    int x1 = get_hero().get_x() + dxy[direction].get_x();
-    int y1 = get_hero().get_y() + dxy[direction].get_y();
-    int x2 = get_x();
-    int y2 = get_y() - 5;
+  // also draw the links
+  int direction = get_sprite().get_current_direction();
+  int x1 = get_hero().get_x() + dxy[direction].get_x();
+  int y1 = get_hero().get_y() + dxy[direction].get_y();
+  int x2 = get_x();
+  int y2 = get_y() - 5;
 
-    Rectangle link_xy;
-    for (int i = 0; i < nb_links; i++) {
-      link_xy.set_x(x1 + (x2 - x1) * i / nb_links);
-      link_xy.set_y(y1 + (y2 - y1) * i / nb_links);
-      get_map().display_sprite(link_sprite, link_xy);
-    }
+  Rectangle link_xy;
+  for (int i = 0; i < nb_links; i++) {
+    link_xy.set_x(x1 + (x2 - x1) * i / nb_links);
+    link_xy.set_y(y1 + (y2 - y1) * i / nb_links);
+    get_map().draw_sprite(link_sprite, link_xy);
   }
 }
 
@@ -435,19 +402,19 @@ void Hookshot::notify_collision_with_chest(Chest& chest) {
 
 /**
  * @brief This function is called when a destructible item detects a non-pixel precise collision with this entity.
- * @param destructible_item the destructible item
+ * @param destructible the destructible item
  * @param collision_mode the collision mode that detected the event
  */
-void Hookshot::notify_collision_with_destructible_item(DestructibleItem& destructible_item, CollisionMode collision_mode) {
+void Hookshot::notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) {
 
-  if (destructible_item.is_obstacle_for(*this) && is_flying()) {
+  if (destructible.is_obstacle_for(*this) && is_flying()) {
 
-    if (destructible_item.can_explode()) {
-      destructible_item.explode();
-      remove_from_map();
+    if (destructible.can_explode()) {
+      destructible.explode();
+      go_back();
     }
     else {
-      attach_to(destructible_item);
+      attach_to(destructible);
     }
   }
 }

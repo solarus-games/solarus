@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,29 +47,31 @@ class Block: public Detector {
   public:
 
     Block(const std::string& name, Layer layer, int x, int y, int direction,
-        const SpriteAnimationSetId& sprite_name,
+        const std::string& sprite_name,
         bool can_be_pushed, bool can_be_pulled, int maximum_moves);
     ~Block();
-    static CreationFunction parse;
 
     EntityType get_type();
-    bool is_displayed_in_y_order();
+    bool is_drawn_in_y_order();
 
     bool is_obstacle_for(MapEntity& other);
     bool is_hole_obstacle();
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_hero_obstacle(Hero& hero);
     bool is_enemy_obstacle(Enemy& enemy);
-    bool is_destructible_item_obstacle(DestructibleItem& destructible_item);
+    bool is_destructible_obstacle(Destructible& destructible);
+    void set_map(Map& map);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
-    void action_key_pressed();
+    void notify_action_command_pressed();
     bool start_movement_by_hero();
     void stop_movement_by_hero();
     void notify_position_changed();
     void notify_obstacle_reached();
 
     void reset();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include "movements/StraightMovement.h"
 #include "lowlevel/Geometry.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief Constructor.
@@ -83,7 +83,7 @@ void Hero::SwordSwingingState::update() {
     if (hero.get_movement() == NULL) {
 
       // if the player is still pressing the sword key, start loading the sword
-      if (get_controls().is_key_pressed(GameControls::SWORD)
+      if (get_commands().is_command_pressed(GameCommands::ATTACK)
           && !attacked) {
         hero.set_state(new SwordLoadingState(hero));
       }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,15 +24,42 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include <iomanip>
+#include "lua/LuaContext.h"
+#include <lua.hpp>
+
+/**
+ * @brief Lua name of each ground type.
+ */
+static std::string ground_names[] = {
+    "traversable",
+    "wall",
+    "wall_top_right",
+    "wall_top_left",
+    "wall_bottom_left",
+    "wall_bottom_right",
+    "empty",
+    "water_top_right",
+    "water_top_left",
+    "water_bottom_left",
+    "water_bottom_right",
+    "deep_water",
+    "shallow_water",
+    "hole",
+    "ladder",
+    "prickles",
+    "lava",
+    ""  // Sentinel.
+};
 
 /**
  * @brief Constructor.
  * @param id id of the tileset to create
  */
-Tileset::Tileset(TilesetId id):
-  id(id), max_tile_id(0),
-  tiles_image(NULL), entities_image(NULL) {
+Tileset::Tileset(const std::string& id):
+  id(id),
+  max_tile_id(0),
+  tiles_image(NULL),
+  entities_image(NULL) {
 }
 
 /**
@@ -48,7 +75,7 @@ Tileset::~Tileset() {
  * @brief Returns the id of this tileset.
  * @return the tileset id
  */
-TilesetId Tileset::get_id() {
+const std::string& Tileset::get_id() {
   return id;
 }
 
@@ -72,99 +99,34 @@ void Tileset::add_tile_pattern(int id, TilePattern *tile_pattern) {
  */
 void Tileset::load() {
 
-  // compute the file name, depending on the id
-  std::ostringstream oss;
-  oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << ".dat";
-
   // open the tileset file
-  std::string file_name = oss.str();
-  std::istream &tileset_file = FileTools::data_file_open(file_name);
+  std::string file_name = std::string("tilesets/") + id + ".dat";
 
-  // parse the tileset file
-  std::string line;
+  lua_State* l = luaL_newstate();
+  size_t size;
+  char* buffer;
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
+  luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  FileTools::data_file_close_buffer(buffer);
 
-  // first line: tileset general info
-  if (!std::getline(tileset_file, line)) {
-    Debug::die(StringConcat() << "Empty file '" << file_name << "'");
+  lua_pushlightuserdata(l, this);
+  lua_setfield(l, LUA_REGISTRYINDEX, "tileset");
+  lua_register(l, "background_color", l_background_color);
+  lua_register(l, "tile_pattern", l_tile_pattern);
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::die(StringConcat() << "Failed to load tileset file '"
+        << file_name << "': " << lua_tostring(l, -1));
+    lua_pop(l, 1);
   }
 
-  int r, g, b;
-
-  std::istringstream iss(line);
-  FileTools::read(iss, r);
-  FileTools::read(iss, g);
-  FileTools::read(iss, b);
-  background_color = Color(r, g, b);
-
-  // read the tile patterns
-  int tile_pattern_id, animation, obstacle, default_layer;
-  while (std::getline(tileset_file, line)) {
-
-    iss.str(line);
-    iss.clear();
-    FileTools::read(iss, tile_pattern_id);
-    FileTools::read(iss, animation);
-    FileTools::read(iss, obstacle);
-    FileTools::read(iss, default_layer);
-
-    int width, height;
-
-    if (animation != 1 && animation != 5) {
-      // fixed, self scrolling, time scrolling or parallax scrolling
-
-      int x, y;
-
-      FileTools::read(iss, x);
-      FileTools::read(iss, y);
-      FileTools::read(iss, width);
-      FileTools::read(iss, height);
-
-      TilePattern *pattern = NULL;
-      if (animation == 0) {
-        pattern = new SimpleTilePattern(Obstacle(obstacle), x, y, width, height);
-      }
-      else if (animation == 2) {
-        pattern = new SelfScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
-      }
-      else if (animation == 3) {
-        pattern = new TimeScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
-      }
-      else if (animation == 4) {
-        pattern = new ParallaxScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
-      }
-      else {
-        Debug::die(StringConcat() << "Unknown tile pattern animation: " << animation);
-      }
-      add_tile_pattern(tile_pattern_id, pattern);
-    }
-    else { // multi-frame pattern
-      bool parallax = (animation == 5);
-      int sequence, x1, y1, x2, y2, x3, y3;
-
-      FileTools::read(iss, sequence);
-      FileTools::read(iss, width);
-      FileTools::read(iss, height);
-      FileTools::read(iss, x1);
-      FileTools::read(iss, y1);
-      FileTools::read(iss, x2);
-      FileTools::read(iss, y2);
-      FileTools::read(iss, x3);
-      FileTools::read(iss, y3);
-      add_tile_pattern(tile_pattern_id, new AnimatedTilePattern(Obstacle(obstacle),
-	    AnimatedTilePattern::AnimationSequence(sequence),
-	    width, height, x1, y1, x2, y2, x3, y3, parallax));
-    }
-  }
-  FileTools::data_file_close(tileset_file);
+  lua_close(l);
 
   // load the tileset images
-  oss.str("");
-  oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_tiles.png";
-  tiles_image = new Surface(oss.str(), Surface::DIR_DATA);
+  file_name = std::string("tilesets/") + id + ".tiles.png";
+  tiles_image = new Surface(file_name, Surface::DIR_DATA);
 
-  oss.str("");
-  oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_entities.png";
-  entities_image = new Surface(oss.str(), Surface::DIR_DATA);
+  file_name = std::string("tilesets/") + id + ".entities.png";
+  entities_image = new Surface(file_name, Surface::DIR_DATA);
 }
 
 /**
@@ -206,16 +168,16 @@ bool Tileset::is_loaded() {
  * @brief Returns the image containing the tiles of this tileset.
  * @return the tiles image
  */
-Surface* Tileset::get_tiles_image() {
-  return tiles_image;
+Surface& Tileset::get_tiles_image() {
+  return *tiles_image;
 }
 
 /**
  * @brief Returns the image containing the skin-dependent dynamic entities for this tileset.
  * @return the image containing the skin-dependent dynamic entities for this tileset
  */
-Surface* Tileset::get_entities_image() {
-  return entities_image;
+Surface& Tileset::get_entities_image() {
+  return *entities_image;
 }
 
 /**
@@ -239,8 +201,179 @@ TilePattern& Tileset::get_tile_pattern(int id) {
 void Tileset::set_images(Tileset& other) {
 
   delete tiles_image;
-  tiles_image = new Surface(*other.get_tiles_image());
+  tiles_image = new Surface(other.get_tiles_image());
   delete entities_image;
-  entities_image = new Surface(*other.get_entities_image());
+  entities_image = new Surface(other.get_entities_image());
   background_color = other.get_background_color();
+}
+
+/**
+ * @brief Function called by Lua to set the background color of the tileset.
+ *
+ * - Argument 1 (table): background color (must be an array of 3 integers).
+ *
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Tileset::l_background_color(lua_State* l) {
+
+  lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
+  void* p = lua_touserdata(l, -1);
+  Tileset* tileset = static_cast<Tileset*>(p);
+  lua_pop(l, 1);
+
+  luaL_checktype(l, 1, LUA_TTABLE);
+  lua_rawgeti(l, 1, 1);
+  lua_rawgeti(l, 1, 2);
+  lua_rawgeti(l, 1, 3);
+  Color color(luaL_checkint(l, -3),
+    luaL_checkint(l, -2),
+    luaL_checkint(l, -1));
+  lua_pop(l, 3);
+
+  tileset->background_color = color;
+
+  return 0;
+}
+
+/**
+ * @brief Function called by Lua to add a tile pattern to the tileset.
+ *
+ * - Argument 1 (table): A table describing the tile pattern to create.
+ *
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Tileset::l_tile_pattern(lua_State* l) {
+
+  lua_getfield(l, LUA_REGISTRYINDEX, "tileset");
+  Tileset* tileset = static_cast<Tileset*>(lua_touserdata(l, -1));
+  lua_pop(l, 1);
+
+  int id = -1, default_layer = -1, width = 0, height = 0;
+  int x[] = { -1, -1, -1, -1 };
+  int y[] = { -1, -1, -1, -1 };
+  Obstacle ground = OBSTACLE_NONE;
+  std::string scrolling;
+  int i = 0, j = 0;
+
+  // Traverse the table.
+  // TODO rewrite using check_string_field() and others.
+  lua_settop(l, 1);
+  lua_pushnil(l);
+  while (lua_next(l, 1) != 0) {
+
+    const std::string& key = luaL_checkstring(l, 2);
+    if (key == "id") {
+      id = luaL_checkint(l, 3);
+    }
+    else if (key == "ground") {
+      ground = LuaContext::check_enum<Obstacle>(l, 3, ground_names);
+    }
+    else if (key == "default_layer") {
+      default_layer = luaL_checkint(l, 3);
+    }
+    else if (key == "x") {
+      if (lua_isnumber(l, 3)) {
+        // Single frame.
+        x[0] = luaL_checkint(l, 3);
+        i = 1;
+      }
+      else {
+        // Multi-frame.
+        lua_pushnil(l);
+        while (lua_next(l, 3) != 0 && i < 4) {
+          x[i] = luaL_checkint(l, 5);
+          ++i;
+          lua_pop(l, 1);
+        }
+      }
+    }
+    else if (key == "y") {
+      if (lua_isnumber(l, 3)) {
+        // Single frame.
+        y[0] = luaL_checkint(l, 3);
+        j = 1;
+      }
+      else {
+        // Multi-frame.
+        lua_pushnil(l);
+        while (lua_next(l, 3) != 0 && j < 4) {
+          y[j] = luaL_checkint(l, 5);
+          ++j;
+          lua_pop(l, 1);
+        }
+      }
+    }
+    else if (key == "width") {
+      width = luaL_checkint(l, 3);
+    }
+    else if (key == "height") {
+      height = luaL_checkint(l, 3);
+    }
+    else if (key == "scrolling") {
+      scrolling = luaL_checkstring(l, 3);
+    }
+    else {
+      luaL_error(l, (StringConcat() << "Unknown key '" << key << "'").c_str());
+    }
+    lua_pop(l, 1);
+  }
+
+  // Check data.
+  if (id == -1) {
+    luaL_argerror(l, 1, "Missing id for this tile pattern");
+  }
+
+  if (default_layer == -1) {
+    luaL_argerror(l, 1, "Missing default layer for this tile pattern");
+  }
+
+  if (width == 0) {
+    luaL_argerror(l, 1, "Missing width for this tile pattern");
+  }
+
+  if (height == 0) {
+    luaL_argerror(l, 1, "Missing height for this tile pattern");
+  }
+
+  if (i != 1 && i != 3 && i != 4) {
+    luaL_argerror(l, 1, "Invalid number of frames for x");
+  }
+  if (j != 1 && j != 3 && j != 4) {
+    luaL_argerror(l, 1, "Invalid number of frames for y");
+  }
+  if (i != j) {
+    luaL_argerror(l, 1, "The length of x and y must match");
+  }
+
+  // Create the tile pattern.
+  TilePattern* tile_pattern = NULL;
+  if (i == 1) {
+    // Single frame.
+    if (scrolling.empty()) {
+      tile_pattern = new SimpleTilePattern(ground, x[0], y[0], width, height);
+    }
+    else if (scrolling == "parallax") {
+      tile_pattern = new ParallaxScrollingTilePattern(ground, x[0], y[0], width, height);
+    }
+    else if (scrolling == "self") {
+      tile_pattern = new SelfScrollingTilePattern(ground, x[0], y[0], width, height);
+    }
+  }
+  else {
+    // Multi-frame.
+    if (scrolling == "self") {
+      luaL_argerror(l, 1, "Multi-frame is not supported for self-scrolling tiles");
+    }
+    bool parallax = scrolling == "parallax";
+    AnimatedTilePattern::AnimationSequence sequence = (i == 3) ?
+        AnimatedTilePattern::ANIMATION_SEQUENCE_012 : AnimatedTilePattern::ANIMATION_SEQUENCE_0121;
+    tile_pattern = new AnimatedTilePattern(ground, sequence, width, height,
+        x[0], y[0], x[1], y[1], x[2], y[2], parallax);
+  }
+
+  tileset->add_tile_pattern(id, tile_pattern);
+
+  return 0;
 }

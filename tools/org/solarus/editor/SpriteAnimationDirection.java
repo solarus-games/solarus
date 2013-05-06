@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
- * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,30 +46,45 @@ public class SpriteAnimationDirection {
      * @param nbFrames number of frames to create
      * @param nbColumns number of columns (because the rectangles may be organized in several rows)
      * @param frames the list of rectangles representing the frames in the image
+     * @throws MapException If some rectangles are outside the image.
      */
-    public SpriteAnimationDirection(BufferedImage srcImage, Rectangle firstFrameRectangle,
-            int nbFrames, int nbColumns, int originX, int originY) {
+    public SpriteAnimationDirection(BufferedImage srcImage,
+            Rectangle firstFrameRectangle,
+            int nbFrames, int nbColumns, int originX, int originY)
+            throws MapException {
 
-        origin = new Point(originX, originY);
-        frames = new BufferedImage[nbFrames];
-
-        int nbRows = nbFrames / nbColumns;
-        if (nbFrames % nbColumns != 0) {
-            nbRows++;
-        }
-
+        int i = 0;
+        int j = 0;
+        int x = 0;
+        int y = 0;
+        int width = firstFrameRectangle.width;
+        int height = firstFrameRectangle.height;
         int frame = 0;
-        for (int i = 0; i < nbRows && frame < nbFrames; i++) {
-            for (int j = 0; j < nbColumns && frame < nbFrames; j++) {
 
-                int x = firstFrameRectangle.x + j * firstFrameRectangle.width;
-                int y = firstFrameRectangle.y + i * firstFrameRectangle.height;
-                Rectangle rectangle = new Rectangle(
-                        x, y, firstFrameRectangle.width, firstFrameRectangle.height);
-                frames[i] = srcImage.getSubimage(rectangle.x, rectangle.y,
-                        rectangle.width, rectangle.height);
-                frame++;
+        try {
+            origin = new Point(originX, originY);
+            frames = new BufferedImage[nbFrames];
+
+            int nbRows = nbFrames / nbColumns;
+            if (nbFrames % nbColumns != 0) {
+                nbRows++;
             }
+
+            for (i = 0; i < nbRows && frame < nbFrames; i++) {
+                for (j = 0; j < nbColumns && frame < nbFrames; j++) {
+
+                    x = firstFrameRectangle.x + j * width;
+                    y = firstFrameRectangle.y + i * height;
+                    frames[frame] = srcImage.getSubimage(x, y, width, height);
+                    frame++;
+                }
+            }
+        }
+        catch (RasterFormatException ex) {
+            throw new MapException("Invalid frame " + frame +
+                    ": (" + x + "," + y + "),(" + (x + width) + "," + (y + height) +
+                    "): size of source image is only " + srcImage.getWidth() + "x" + srcImage.getHeight() +
+                    "\nPlease fix your sprite file.");
         }
     }
 

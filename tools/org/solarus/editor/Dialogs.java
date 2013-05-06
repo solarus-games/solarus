@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  *
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -32,6 +32,7 @@ import java.util.Observable;
  *   (This makes all dialog of the quest become uninterruptible).
  * - Existing comments do not always stay at their original place in the file.
  * - There is no way to see if a line reaches the limit of characters.
+ * - The format of dialogs has changed.
  */
 
 /**
@@ -41,25 +42,30 @@ import java.util.Observable;
 public class Dialogs extends Observable {
 
     /**
-     * Id of the dialogs.
+     * Language of these dialogs.
      */
-    private String dialogsId;
+    private String languageId;
+
     /**
      * Name of the dialogs.
      */
     private String name;
+
     /**
      * Description of the dialogs
      */
     private String description;
+
     /**
      * Sections of the dialogs
      */
     private ArrayList<DialogSection> sections;
+
     /**
      * Sections of the dialogs
      */
     private ArrayList<DialogSection> filteredSections;
+
     /**
      *
      */
@@ -67,60 +73,58 @@ public class Dialogs extends Observable {
 
     /**
      * Creates a new dialogs file.
-     * @throws ZSDXException if the resource list could not be updated after the dialogs file creation
+     * @throws QuestEditorException if the resource list could not be updated
+     * after the dialogs file creation
      */
-    public Dialogs() throws ZSDXException {
+    public Dialogs() throws QuestEditorException {
         super();
 
+        /*
         this.name = "New Dialogs";
         this.description = "";
-        Resource dialogResource = Project.getResource(ResourceType.DIALOGS);
+        Resource dialogResource = Project.getResource(ResourceType.LANGUAGE);
 
         sections = new ArrayList<DialogSection>();
         filteredSections = new ArrayList<DialogSection>();
 
         setChanged();
         notifyObservers();
+        */
 
-	// disable the support of dialogs for now since it's not working
-	throw new ZSDXException("Creating dialogs with the GUI is not working yet, please use a text editor");
+        // disable the support of dialogs for now since it's not working
+        throw new QuestEditorException("Creating dialogs with the GUI is not working yet, please use a text editor");
     }
 
     /**
      * Loads an existing dialogs file.
-     * @param dialogsId id of the dialogs file to load
-     * @throws ZSDXException if the dialogs file could not be loaded
+     * @param languageId Languages of the dialogs to load.
+     * @throws QuestEditorException if the dialogs file could not be loaded
      */
-    public Dialogs(String dialogsId) throws ZSDXException {
-        this.dialogsId = dialogsId;
+    public Dialogs(String languageId) throws QuestEditorException {
+        this.languageId = languageId;
         this.sections = new ArrayList<DialogSection>();
         this.filteredSections = new ArrayList<DialogSection>();
         this.description = "";
         load();
 
-	// disable the support of dialogs for now since it's not working
-	throw new ZSDXException("Editing dialogs with the GUI is not working yet, please use a text editor");
+        // disable the support of dialogs for now since it's not working
+        throw new QuestEditorException("Editing dialogs with the GUI is not working yet, please use a text editor");
     }
 
     /**
      * Loads an existing dialogs file.
-     * @throws ZSDXException if the dialogs file could not be loaded
+     * @throws QuestEditorException if the dialogs file could not be loaded
      */
-    public void load() throws ZSDXException {
+    public void load() throws QuestEditorException {
         String line =  "";
         try {
-            // get the dialogs file name in the game resource database
-            Resource mapResource = Project.getResource(ResourceType.DIALOGS);
-            setName(mapResource.getElementName(dialogsId));
-
-            File dialogsFile = Project.getDialogsFile(dialogsId);
+            File dialogsFile = Project.getDialogsFile(languageId);
             BufferedReader in = new BufferedReader(new FileReader(dialogsFile));
 
-
-             line = in.readLine();
+            line = in.readLine();
 
             if (line == null) {
-                throw new ZSDXException("The dialogs file is empty");
+                throw new QuestEditorException("The dialogs file is empty");
             }
             // First step : read the file description.
             // It will ends at the start of the first section
@@ -179,15 +183,15 @@ public class Dialogs extends Observable {
 
         } catch (IOException ioe) {
             //System.out.println(line);
-            throw new ZSDXException(ioe.getMessage());
+            throw new QuestEditorException(ioe.getMessage());
         }
 
     }
 
-    public void save() throws ZSDXException {
+    public void save() throws QuestEditorException {
 
         try {
-            File dialogsFile = Project.getDialogsFile(dialogsId);
+            File dialogsFile = Project.getDialogsFile(languageId);
             OutputStreamWriter ost = new OutputStreamWriter(new FileOutputStream(dialogsFile), "UTF-8");
             BufferedWriter out = new BufferedWriter(ost);
             out.write(description);
@@ -198,7 +202,7 @@ public class Dialogs extends Observable {
             out.close();
             saved = true;
         } catch (IOException er) {
-            throw new ZSDXException(er.getMessage());
+            throw new QuestEditorException(er.getMessage());
         }
 
     }
@@ -212,19 +216,22 @@ public class Dialogs extends Observable {
     }
 
     /**
-     * Sets the name
-     * @param name the new name
+     * Returns the human-readable name of the language.
+     * @return The name of the language.
      */
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getLanguageName() {
 
-    /**
-     * Returns the name of the dialogs file
-     * @return the name of the dialogs file
-     */
-    public String getName() {
-        return name;
+        String languageName = "";
+        try {
+            Resource languages = Project.getResource(ResourceType.LANGUAGE);
+            languageName = languages.getElementName(languageId);
+        }
+        catch (QuestEditorException ex) {
+            // Should not happen.
+            ex.printStackTrace();
+        }
+        
+        return languageName;
     }
 
     /**
@@ -248,6 +255,10 @@ public class Dialogs extends Observable {
         return name;
     }
 
+    public String getLanguageId() {
+        return languageId;
+    }
+
     /**
      * @return the description
      */
@@ -263,7 +274,6 @@ public class Dialogs extends Observable {
     }
 
     public void filterList(String filter) {
-        //System.out.println("On filtre sur " + filter);
         filteredSections.clear();
         if (filter.length() == 0) {
             filteredSections.addAll(sections);
@@ -277,6 +287,4 @@ public class Dialogs extends Observable {
          setChanged();
          notifyObservers();
     }
-
-
 }

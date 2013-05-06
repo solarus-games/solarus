@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,20 +47,21 @@ class TilePattern {
     Obstacle get_obstacle() const;
 
     static void update();
+    void fill_surface(Surface& dst_surface, const Rectangle& dst_position,
+        Tileset& tileset, const Rectangle& viewport);
 
     /**
-     * @brief Displays the tile image on a surface.
+     * @brief Draws the tile image on a surface.
      * @param dst_surface the surface to draw
-     * @param dst_position position where tile pattern should be displayed on dst_surface
+     * @param dst_position position where tile pattern should be drawn on dst_surface
      * @param tileset the tileset of this tile
      * @param viewport coordinates of the top-left corner of dst_surface relative
      * to the map (may be used for scrolling tiles)
      */
-    virtual void display(Surface* dst_surface, const Rectangle& dst_position,
+    virtual void draw(Surface& dst_surface, const Rectangle& dst_position,
         Tileset& tileset, const Rectangle& viewport) = 0;
-
     virtual bool is_animated();
-    virtual bool is_displayed_at_its_position();
+    virtual bool is_drawn_at_its_position();
 };
 
 #endif

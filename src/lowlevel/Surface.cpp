@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +20,33 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lua/LuaContext.h"
+#include "Transition.h"
 #include <SDL_image.h>
 
 /**
- * @brief Creates a empty surface with the specified size.
+ * @brief Creates an empty surface with the specified size.
  * @param width the width in pixels
  * @param height the height in pixels
  */
 Surface::Surface(int width, int height):
+  Drawable(),
   internal_surface_created(true) {
 
   this->internal_surface = SDL_CreateRGBSurface(
       SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+}
+
+/**
+ * @brief Creates a empty surface with the specified size.
+ * @param size The size in pixels.
+ */
+Surface::Surface(const Rectangle& size):
+  Drawable(),
+  internal_surface_created(true) {
+
+  this->internal_surface = SDL_CreateRGBSurface(
+      SDL_HWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
 }
 
 /**
@@ -40,6 +55,7 @@ Surface::Surface(int width, int height):
  * @param base_directory the base directory to use
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
+  Drawable(),
   internal_surface_created(true) {
 
   std::string prefix = "";
@@ -57,7 +73,7 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
-  SDL_RWops* rw = SDL_RWFromMem(buffer, size);
+  SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
   this->internal_surface = IMG_Load_RW(rw, 0);
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
@@ -74,6 +90,7 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * @param internal_surface the internal surface data (the destructor will not free it)
  */
 Surface::Surface(SDL_Surface* internal_surface):
+  Drawable(),
   internal_surface(internal_surface),
   internal_surface_created(false) {
 
@@ -84,6 +101,7 @@ Surface::Surface(SDL_Surface* internal_surface):
  * @param other a surface to copy
  */
 Surface::Surface(const Surface& other):
+  Drawable(),
   internal_surface(SDL_ConvertSurface(other.internal_surface,
       other.internal_surface->format, other.internal_surface->flags)),
   internal_surface_created(true) {
@@ -104,7 +122,7 @@ Surface::~Surface() {
  * @brief Returns the width of the surface.
  * @return the width in pixels
  */
-int Surface::get_width() {
+int Surface::get_width() const {
   return internal_surface->w;
 }
 
@@ -112,7 +130,7 @@ int Surface::get_width() {
  * @brief Returns the height of the surface.
  * @return the height in pixels
  */
-int Surface::get_height() {
+int Surface::get_height() const {
   return internal_surface->h;
 }
 
@@ -120,19 +138,32 @@ int Surface::get_height() {
  * @brief Returns the size of this surface.
  * @return the size of this surface
  */
-const Rectangle Surface::get_size() {
+const Rectangle Surface::get_size() const {
   
   return Rectangle(0, 0, get_width(), get_height());
 }
 
 /**
+ * @brief Returns the transparency color of this surface.
+ *
+ * Pixels in that color will not be drawn.
+ *
+ * @return The transparency color.
+ */
+Color Surface::get_transparency_color() {
+
+  return Color(internal_surface->format->colorkey);
+}
+
+/**
  * @brief Sets the transparency color of this surface.
  *
- * Pixels in that color will not be displayed.
+ * Pixels in that color will not be drawn.
  *
- * @param color the transparency color to set
+ * @param color The transparency color to set.
  */
-void Surface::set_transparency_color(Color& color) {
+void Surface::set_transparency_color(const Color& color) {
+
   SDL_SetColorKey(internal_surface, SDL_SRCCOLORKEY, color.get_internal_value());
 }
 
@@ -160,7 +191,7 @@ void Surface::set_opacity(int opacity) {
  * The rectangle specified may be partially outside this rectangle
  * (then it will be resized to fit inside).
  *
- * @param clipping_rectangle a subarea of the rectangle to restrict the display to
+ * @param clipping_rectangle a subarea of the rectangle to restrict the drawing to
  */
 void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
 
@@ -192,52 +223,71 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 }
 
 /**
- * @brief Blits this whole surface on another surface.
- *
- * The top-left corner of this surface will be blitted on the other's surface top-left corner.
- *
- * @param destination the destination surface
+ * @brief Draws this surface on another surface.
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates on the destination surface.
  */
-void Surface::blit(Surface* destination) {
-  SDL_BlitSurface(internal_surface, NULL, destination->internal_surface, NULL);
-}
+void Surface::raw_draw(Surface& dst_surface,
+    const Rectangle& dst_position) {
 
-/**
- * @brief Blits this whole surface on a specified location of another surface.
- * @param dst the destination surface
- * @param dst_position the destination position where the current surface will be blitted on dst
- */
-void Surface::blit(Surface* dst, const Rectangle& dst_position) {
-
+  // Make a copy of the rectangle because SDL_BlitSurface modifies it.
   Rectangle dst_position2(dst_position);
-  SDL_BlitSurface(internal_surface, NULL, dst->internal_surface, dst_position2.get_internal_rect());
+  SDL_BlitSurface(internal_surface, NULL,
+      dst_surface.internal_surface, dst_position2.get_internal_rect());
 }
 
 /**
- * @brief Blits a subarea of this surface on another surface.
+ * @brief Draws a subrectangle of this surface on another surface.
+ * @param region The subrectangle to draw in this object.
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates on the destination surface.
+ */
+void Surface::raw_draw_region(const Rectangle& region,
+    Surface& dst_surface, const Rectangle& dst_position) {
+
+  // Make a copy of the rectangle because SDL_BlitSurface modifies it.
+  Rectangle region2(region);
+  Rectangle dst_position2(dst_position);
+  SDL_BlitSurface(internal_surface, region2.get_internal_rect(),
+      dst_surface.internal_surface, dst_position2.get_internal_rect());
+}
+
+/**
+ * @brief Draws a transition effect on this drawable object.
+ * @param transition The transition effect to apply.
+ */
+void Surface::draw_transition(Transition& transition) {
+  transition.draw(*this);
+}
+
+/**
+ * @brief Blits a region of this surface on another surface.
  *
  * The top-left corner of the source subarea will be blitted on the other's surface top-left corner.
  *
  * @param src_position the subrectangle of this surface to pick
- * @param dst the destination surface
+ * @param dst_surface the destination surface
  */
-void Surface::blit(const Rectangle& src_position, Surface* dst) {
+void Surface::draw_region(const Rectangle& src_position, Surface& dst_surface) {
 
   Rectangle src_position2(src_position);
-  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(), dst->internal_surface, NULL);
+  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(),
+      dst_surface.internal_surface, NULL);
 }
 
 /**
- * @brief Blits a subarea of this surface on a specified location of another surface.
+ * @brief Blits a region of this surface on a specified location of another surface.
  * @param src_position the subrectangle of this surface to pick
- * @param dst the destination surface
+ * @param dst_surface the destination surface
  * @param dst_position the destination position where the current surface will be blitted on dst
  */
-void Surface::blit(const Rectangle &src_position, Surface *dst, const Rectangle &dst_position) {
+void Surface::draw_region(const Rectangle &src_position, Surface& dst_surface,
+    const Rectangle &dst_position) {
 
   Rectangle src_position2(src_position);
   Rectangle dst_position2(dst_position);
-  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(), dst->internal_surface, dst_position2.get_internal_rect());
+  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(),
+      dst_surface.internal_surface, dst_position2.get_internal_rect());
 }
 
 /**
@@ -247,7 +297,65 @@ void Surface::blit(const Rectangle &src_position, Surface *dst, const Rectangle 
  *
  * @return the SDL surface encapsulated
  */
-SDL_Surface * Surface::get_internal_surface() {
+SDL_Surface* Surface::get_internal_surface() {
   return internal_surface;
+}
+
+/**
+ * @brief Return the 32bits pixel
+ * @param idx_pixel The index of the pixel to cast, can be any depth into 8 to 32 bits
+ * @return The casted 32bits pixel.
+ */
+uint32_t Surface::get_pixel32(int idx_pixel) {
+
+  uint32_t pixel32 = 0;
+  SDL_PixelFormat* format = internal_surface->format;
+
+  // In order from the most used to the most exotic
+  switch (format->BitsPerPixel) {
+    case 8:
+      pixel32 = ((uint8_t*) internal_surface->pixels)[idx_pixel];
+      break;
+    case 32:
+      pixel32 = ((uint32_t*) internal_surface->pixels)[idx_pixel];
+      break;
+    case 16:
+      pixel32 = ((uint16_t*) internal_surface->pixels)[idx_pixel];
+      break;
+    default :
+      // Manual cast of the pixel into uint32_t
+      pixel32 = (*(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * format->BytesPerPixel)
+          & (0xffffffff << (32 - format->BitsPerPixel)));
+  }
+
+  return pixel32;
+}
+
+/**
+ * @brief Returns the 32bits pixel, color-mapped from internal SDL_PixelFormat to dst_format.
+ *
+ * The source pixel depth format can be any size between 8 and 32bits.
+ * If the destination pixel depth format is less than 32-bpp then the unused upper bits of the return value can safely be ignored.
+ * This method should be used only by low-level classes, and after lock source internal_surface.
+ *
+ * It's the SDL_ConvertSurface() function equivalent for a pixel by pixel uses.
+ *
+ * @param idx_pixel the index of the pixel to convert
+ * @param dst_format the destination format
+ * @return the mapped 32bits pixel
+ */
+uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
+
+  uint8_t r, g, b, a;
+  SDL_GetRGBA(get_pixel32(idx_pixel), internal_surface->format, &r, &g, &b, &a);
+  return SDL_MapRGBA(dst_format, r, g, b, a);
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
+ */
+const std::string& Surface::get_lua_type_name() const {
+  return LuaContext::surface_module_name;
 }
 

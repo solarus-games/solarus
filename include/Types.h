@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,46 +26,14 @@
 #define SOLARUS_TYPES_H
 
 #include <stdint.h>
-#include <string>
-
-// types of the id of each resource.
-
-/**
- * @brief Type of the id of images.
- */
-typedef std::string ImageId;
-
-/**
- * @brief Type of the id of maps.
- */
-typedef uint32_t MapId;
-
-/**
- * @brief Type of the id of tilesets.
- */
-typedef uint32_t TilesetId;
-
-/**
- * @brief Type of the id of musics.
- */
-typedef std::string MusicId;
-
-/**
- * @brief Type of the id of sounds.
- */
-typedef std::string SoundId;
-
-/**
- * @brief Type of the id of sprite animation sets.
- */
-typedef std::string SpriteAnimationSetId;
 
 // declaration of all classes to avoid dependencies between the header files
 
 // main classes
-class Solarus;
+class MainLoop;
 class Screen;
-class Configuration;
+class QuestProperties;
+class Settings;
 class KeysEffect;
 
 // low level
@@ -83,36 +51,22 @@ class Random;
 class Geometry;
 class Rectangle;
 class PixelBits;
-class IniFile;
 class InputEvent;
 class Debug;
 class StringConcat;
 
 // menus
-class LanguageScreen;
-class TitleScreen;
-class SelectionMenu;
-class SelectionMenuPhase;
-class SelectionMenuEraseFile;
-class SelectionMenuConfirmErase;
-class SelectionMenuChooseName;
-class SelectionMenuChooseMode;
-class SelectionMenuOptions;
-class PauseMenu;
-class PauseSubmenu;
-class PauseSubmenuInventory;
-class PauseSubmenuMap;
-class PauseSubmenuQuestStatus;
-class PauseSubmenuOptions;
+class CustomScreen;
+class CustomMenu;
 class StringResource;
 
 // game
 class Game;
-class GameControls;
+class GameCommands;
 class Savegame;
 class Equipment;
-class ItemProperties;
-class InventoryItem;
+class EquipmentItem;
+class EquipmentItemUsage;
 class DebugKeys;
 class Dungeon;
 class Treasure;
@@ -124,32 +78,18 @@ class Camera;
 class Dialog;
 class DialogResource;
 class DialogBox;
-
-// scripts
-class Script;
-class MapScript;
-class ItemScript;
-class EnemyScript;
-
-// HUD
-class HUD;
-class HudElement;
-class ActionIcon;
-class SwordIcon;
-class PauseIcon;
-class ItemIcon;
 class Counter;
-class HeartsView;
-class RupeesCounter;
-class MagicBar;
-class SmallKeysCounter;
-class FloorView;
 
-// sprites
+// Lua
+class ExportableToLua;
+class LuaContext;
+
+// drawable objects
 class Sprite;
 class SpriteAnimationSet;
 class SpriteAnimation;
 class SpriteAnimationDirection;
+class Drawable;
 
 // transition effects
 class Transition;
@@ -166,19 +106,18 @@ class Tile;
 class DynamicTile;
 class Detector;
 class Teletransporter;
-class DestinationPoint;
-class PickableItem;
+class Destination;
+class Pickable;
 class CarriedItem;
-class DestructibleItem;
+class Destructible;
 class Chest;
 class Jumper;
 class Enemy;
-class CustomEnemy;
 class EnemyReaction;
 class NPC;
 class Block;
 class Switch;
-class CustomObstacle;
+class Wall;
 class Sensor;
 class Crystal;
 class CrystalBlock;

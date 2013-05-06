@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,12 +19,12 @@
 #include "DialogBox.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "DialogBox.h"
 #include "Counter.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "lua/MapScript.h"
-#include "lua/ItemScript.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -32,37 +32,43 @@
 /**
  * @brief Creates a new treasure.
  *
- * You must call decide_content() later because the real content of the treasure may differ
- * from the item name you specify, because of random treasures and unauthorized ones.
+ * You must call decide_content() later because the real content of the
+ * treasure may differ from the item name you specify, because of random
+ * treasures and unauthorized ones.
  *
- * @param game the current game (cannot be NULL)
- * @param item_name name of the item to give, according to items.dat
- * ("_random" and "_none" are also accepted)
- * @param variant variant of this item
- * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
- * or -1 if this treasure is not saved
+ * @param game The current game.
+ * @param item_name Name of the item to give, or an empty string to mean no
+ * treasure.
+ * @param variant Variant of this item.
+ * @param savegame_variable Name of the saved boolean indicating that the
+ * player has found this treasure, or an empty string if this treasure is not
+ * saved.
  */
-Treasure::Treasure(Game& game, const std::string& item_name, int variant, int savegame_variable):
+Treasure::Treasure(Game& game, const std::string& item_name, int variant,
+    const std::string& savegame_variable):
   game(&game),
   item_name(item_name),
   variant(variant),
   savegame_variable(savegame_variable),
   sprite(NULL) {
 
-  // if the treasure is unique, check its state
-  if (savegame_variable != -1 && game.get_savegame().get_boolean(savegame_variable)) {
-    this->item_name = "_none";
+  // If the treasure is unique and was found, remove it.
+  if (is_found()) {
+    this->item_name = "";
     this->variant = 1;
   }
 }
 
 /**
  * @brief Copy constructor.
- * @param other the treasure to copy
+ * @param other The treasure to copy.
  */
 Treasure::Treasure(const Treasure& other):
-  game(other.game), item_name(other.item_name), variant(other.variant),
-  savegame_variable(other.savegame_variable), sprite(NULL) {
+  game(other.game),
+  item_name(other.item_name),
+  variant(other.variant),
+  savegame_variable(other.savegame_variable),
+  sprite(NULL) {
 
 }
 
@@ -84,58 +90,64 @@ Treasure& Treasure::operator=(const Treasure& other) {
   this->item_name = other.item_name;
   this->variant = other.variant;
   this->savegame_variable = other.savegame_variable;
-  this->sprite = other.sprite;
+  this->sprite = NULL;
   return *this;
 }
 
 /**
- * @brief If the treasure is "_random", chooses a random item and variant according to the probabilities of items.dat.
- *
- * If the item is "_random", this function must be called before any function
- * that needs to know the treasure content:
- * get_item_name(), get_item_properties(), is_empty(), give_to_player() and display().
- * If the item is not "_random", this function has no effect.
+ * @brief Raises an assertion error if the player cannot obtain this treasure.
  */
-void Treasure::decide_content() {
+void Treasure::check_obtainable() const {
 
-  Equipment &equipment = game->get_equipment();
-  if (item_name == "_random") {
-    // choose a random item
-    equipment.get_random_item(item_name, variant);
-  }
+  Debug::check_assertion(item_name.empty()
+      || game->get_equipment().get_item(item_name).is_obtainable(),
+      StringConcat() << "Treasure '" << item_name
+      << "' is not allowed, did you call ensure_obtainable()?");
+}
 
-  // check that the item is authorized
-  if (item_name != "_none"
-      && !equipment.can_receive_item(item_name, variant)) {
-    item_name = "_none";
+/**
+ * @brief Makes sure that the content of this treasure is allowed.
+ *
+ * If the item is not allowed, the treasure becomes empty.
+ * This function must be called before any function
+ * that needs to know the treasure content:
+ * get_item_name(), get_item_properties(), is_empty(), give_to_player() and
+ * draw().
+ *
+ * This function is not called automatically because we want to decide to
+ * remove the treasure (or not) as late as possible. The obtainable property
+ * may indeed change after the creation of the treasure.
+ */
+void Treasure::ensure_obtainable() {
+
+  Equipment& equipment = game->get_equipment();
+  if (!item_name.empty() && !equipment.get_item(item_name).is_obtainable()) {
+    item_name = "";
     variant = 1;
   }
 }
 
 /**
- * @brief Returns the properties of the item given with this treasure.
- * @return the item properties
+ * @brief Returns the equipment item corresponding to this treasure's content.
+ * @return The equipment item.
  */
-ItemProperties& Treasure::get_item_properties() const {
-  return game->get_equipment().get_item_properties(get_item_name());
+EquipmentItem& Treasure::get_item() const {
+  return game->get_equipment().get_item(get_item_name());
 }
 
 /**
  * @brief Returns the name of the item.
- * @return the name of the item
+ * @return The name of the item.
  */
 const std::string& Treasure::get_item_name() const {
 
-  Debug::check_assertion(item_name != "_random", "This treasure has a random content and it is not decided yet");
-  Debug::check_assertion(item_name == "_none" || game->get_equipment().can_receive_item(item_name, variant),
-      StringConcat() << "The treasure '" << item_name << "' is not authorized by the equipment, did you call decide_content()?");
-
+  check_obtainable();
   return item_name;
 }
 
 /**
  * @brief Returns the variant of the item.
- * @return the variant
+ * @return The variant.
  */
 int Treasure::get_variant() const {
   return variant;
@@ -143,21 +155,22 @@ int Treasure::get_variant() const {
 
 /**
  * @brief Returns whether this treasure is saved.
- * @return true if this treasure is saved
+ * @return true if this treasure is saved.
  */
 bool Treasure::is_saved() const {
-  return get_savegame_variable() != -1;
+  return !get_savegame_variable().empty();
 }
 
 /**
- * @brief Returns whether the player has got this treasure according to the savegame.
+ * @brief Returns whether the player has got this treasure according to th
+ * savegame.
  *
- * Returns false if the treasure possession state is not saved.
+ * Returns false if the treasure is not saved.
  *
- * @return true if the player has found this treasure
+ * @return true if the player has found this treasure.
  */
 bool Treasure::is_found() const {
-  return savegame_variable != -1 && game->get_savegame().get_boolean(savegame_variable);
+  return is_saved() && game->get_savegame().get_boolean(savegame_variable);
 }
 
 /**
@@ -165,14 +178,15 @@ bool Treasure::is_found() const {
  * @return true if this treasure is empty
  */
 bool Treasure::is_empty() const {
-  return get_item_name() == "_none";
+  return get_item_name().empty();
 }
 
 /**
- * @brief Returns the index of the variable where this treasure is saved.
- * @return the savegame variable of this treasure, or -1 if it is not saved
+ * @brief Returns the name of the boolean variable where this treasure is saved.
+ * @return The savegame variable of this treasure, or an empty string if it is
+ * not saved.
  */
-int Treasure::get_savegame_variable() const {
+const std::string& Treasure::get_savegame_variable() const {
   return savegame_variable;
 }
 
@@ -180,40 +194,43 @@ int Treasure::get_savegame_variable() const {
  * @brief Gives the treasure to the player.
  *
  * Adds the item to the hero's equipment.
- * The item should not be "_none".
+ * The item should not be empty.
  */
 void Treasure::give_to_player() const {
 
-  // mark the treasure as found in the savegame
-  if (savegame_variable != -1) {
+  // Mark the treasure as found in the savegame.
+  if (is_saved()) {
     game->get_savegame().set_boolean(savegame_variable, true);
   }
 
-  // give the item
-  Equipment &equipment = game->get_equipment();
-  equipment.add_item(get_item_name(), get_variant());
+  // Give the item to the player.
+  EquipmentItem& item = get_item();
+  if (item.is_saved()) {
+    item.set_variant(get_variant());
+  }
 
-  // notify the scripts
-  equipment.get_item_script(get_item_name()).event_obtaining(*this);
-  game->get_map_script().event_treasure_obtaining(*this);
+  // Notify the Lua item and the Lua map.
+  LuaContext& lua_context = game->get_lua_context();
+  lua_context.item_on_obtaining(item, *this);
+  lua_context.map_on_obtaining_treasure(game->get_current_map(), *this);
 }
 
 /**
- * @brief Displays the treasure.
- * @param destination the surface where to draw
+ * @brief Draws the treasure.
+ * @param dst_surface the surface where to draw
  * @param x the treasure x position on this surface
  * @param y the treasure y position on this surface
  */
-void Treasure::display(Surface *destination, int x, int y) {
+void Treasure::draw(Surface& dst_surface, int x, int y) {
 
   if (sprite == NULL) {
-    // create the sprite only if needed (many treasures are actually never displayed)
+    // create the sprite only if needed (many treasures are actually never drawn)
     sprite = new Sprite("entities/items");
     sprite->set_current_animation(get_item_name());
     sprite->set_current_direction(get_variant() - 1);
   }
 
-  // display the item
-  sprite->display(destination, x, y);
+  // draw the item
+  sprite->draw(dst_surface, x, y);
 }
 

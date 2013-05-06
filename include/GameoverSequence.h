@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,17 @@
 #define SOLARUS_GAMEOVER_SEQUENCE_H
 
 #include "Common.h"
-#include "GameControls.h"
+#include "GameCommands.h"
+#include "Sprite.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Surface.h"
 
 // TODO remove ability get_back_from_death and script the game over sequence
 
 /**
  * @brief The game over sequence displayed when the hero dies.
  * 
- * This class displayed the game over sequence.
+ * This class shows the game over sequence.
  * If the player has a fairy, a special animation occurs, the hero gets some life back and the game is resumed.
  * If he does not, the game over menu is displayed.
  */
@@ -35,20 +37,20 @@ class GameoverSequence {
   private:
 
     // data
-    Game &game;                     /**< the game */
-    MusicId music_id;               /**< the music played before game over */
+    Game& game;                     /**< the game */
+    std::string music_id;           /**< the music played before game over */
 
     // graphics
-    Surface *gameover_menu_img;     /**< image of the game over menu */
-    Sprite *hero_dead_sprite;       /**< sprite of the hero dying or dead (different from the real hero which is
+    Surface gameover_menu_img;      /**< image of the game over menu */
+    Sprite hero_dead_sprite;        /**< sprite of the hero dying or dead (different from the real hero which is
 				     * suspended as all map entities) */
     int hero_dead_x;                /**< x position of the hero dead sprite on the screen */
     int hero_dead_y;                /**< y position of the hero dead sprite on the screen */
 
-    Sprite *fade_sprite;            /**< sprite of the fade in / fade out effect */
+    Sprite fade_sprite;             /**< sprite of the fade in / fade out effect */
     Color red_screen_color;         /**< exact color of the red screen */
 
-    Sprite *fairy_sprite;           /**< sprite of the fairy (as rescuing fairy or cursor for the menu) */
+    Sprite fairy_sprite;            /**< sprite of the fairy (as rescuing fairy or cursor for the menu) */
     int fairy_x;                    /**< x position of the fairy on the screen */
     int fairy_y;                    /**< y position of the fairy on the screen */
     TargetMovement *fairy_movement; /**< movement of the fairy */
@@ -72,19 +74,21 @@ class GameoverSequence {
     State state;              /**< current state of the gameover sequence */
     uint32_t next_state_date; /**< date when moving from a state to another one */
 
+    const std::string get_tunic_animation();
+
   public:
 
     // creation and destruction
-    GameoverSequence(Game &game, int hero_direction);
+    GameoverSequence(Game& game, int hero_direction);
     ~GameoverSequence();
 
     // state
     bool is_finished();
 
-    // update and display
+    // main loop
     void update();
-    void display(Surface *destination_surface);
-    void key_pressed(GameControls::GameKey key);
+    void draw(Surface& dst_surface);
+    void notify_command_pressed(GameCommands::Command command);
 };
 
 #endif

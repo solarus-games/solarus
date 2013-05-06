@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #define SOLARUS_TRANSITION_H
 
 #include "Common.h"
+#include <cstdlib>
 
 /**
  * @brief Abstract class for a transition effect between two phases.
@@ -44,17 +45,6 @@ class Transition {
       IN  = 0,
       OUT = 1
     };
-
-  protected:
-
-    Game *game;                    /**< the current game if any (required by some kinds of transitions) */
-    Direction direction;           /**< direction of the transition (in or out) */
-    Surface *previous_surface;     /**< during an in transition, this is the surface that was displayed 
-				    * when the out transition was played */
-
-    Transition(Direction direction);
-
-  public:
 
     virtual ~Transition();
     static Transition *create(Style style, Direction direction, Game *game = NULL);
@@ -86,10 +76,20 @@ class Transition {
     virtual void update() = 0;
 
     /**
-     * @brief Displays the transition effect on a surface.
-     * @param surface the surface to draw
+     * @brief Draws the transition effect on a surface.
+     * @param dst_surface the surface to draw
      */
-    virtual void display(Surface *surface) = 0;
+    virtual void draw(Surface& dst_surface) = 0;
+
+  protected:
+
+    Game *game;                    /**< the current game if any (required by some kinds of transitions) */
+    Direction direction;           /**< direction of the transition (in or out) */
+    Surface *previous_surface;     /**< during an in transition, this is the surface that was displayed
+                                    * when the out transition was played */
+
+    Transition(Direction direction);
+
 };
 
 #endif

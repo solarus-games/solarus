@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +24,6 @@
 
 /**
  * @brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
- *
- * Properties:
- * - trajectory
- * - delay
- * - loop
- * - ignore_obstacles
  */
 class PixelMovement: public Movement {
 
@@ -61,12 +55,12 @@ class PixelMovement: public Movement {
   public:
 
     // creation and destruction
-    PixelMovement(const std::string &trajectory_string, uint32_t delay, bool loop, bool ignore_obstacles);
+    PixelMovement(const std::string& trajectory_string, uint32_t delay, bool loop, bool ignore_obstacles);
     virtual ~PixelMovement();
 
     // properties
-    const std::string &get_trajectory();
-    void set_trajectory(const std::list<Rectangle> &trajectory);
+    const std::list<Rectangle>& get_trajectory();
+    void set_trajectory(const std::list<Rectangle>& trajectory);
     void set_trajectory(const std::string &trajectory_string);
     uint32_t get_delay();
     void set_delay(uint32_t delay);
@@ -82,9 +76,7 @@ class PixelMovement: public Movement {
     virtual void update();
     virtual void set_suspended(bool suspended);
 
-    // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

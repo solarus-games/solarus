@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 Christopho, Solarus - http://www.solarus-engine.org
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,33 +21,39 @@
 #include "entities/MapEntity.h"
 
 /**
- * @brief A small fixed piece of the map.
+ * @brief A small fixed piece of the map, optimized for collisions and drawing.
  *
- * It is composed of a tile pattern that can be repeated.
- * It can be an obstacle or not.
- * A tile cannot be removed from the map. Its pattern may be animated.
+ * A tile is composed of a tile pattern that can be repeated.
+ * Its pattern may be animated. It can be an obstacle or not.
+ *
  * Tiles are optimized to allow fast detection of obstacles and
  * fast rendering of the non-animated ones.
+ * The cost of these optimizations is that their presence on the map, their
+ * position, their size and their obstacle property are fixed.
+ * Tiles are added when the map is loaded and they are removed when the map
+ * is destroyed.
+ *
+ * If you need to dynamically enable or disable a tile, see DynamicTile.
  */
 class Tile: public MapEntity {
 
   private:
 
-    int tile_pattern_id;            /**< id of the tile pattern */
-    TilePattern* tile_pattern;      /**< pattern of the tile */
+    int tile_pattern_id;          /**< id of the tile pattern */
+    TilePattern* tile_pattern;    /**< pattern of the tile */
 
   public:
 
     Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id);
     ~Tile();
-    static CreationFunction parse;
 
     EntityType get_type();
     void set_map(Map& map);
-    void display_on_map();
-    void display(Surface* dst_surface, const Rectangle& viewport);
+    void draw_on_map();
+    void draw(Surface& dst_surface, const Rectangle& viewport);
     TilePattern& get_tile_pattern();
     bool is_animated();
+    virtual bool is_drawn_at_its_position();
 };
 
 #endif

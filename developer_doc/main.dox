@@ -1,0 +1,11 @@
+/**
+\mainpage
+
+This documentation is intended to people who wants to contribute to the
+C++ engine or extend it.
+
+The Solarus \a engine is an executable binary that can run a \a quest.
+We describe here the C++ classes of the engine.
+
+*/
+

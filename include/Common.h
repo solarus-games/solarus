@@ -73,8 +73,8 @@
 // Define the current platform constants on Apple Systems.
 
 /**
- * @def SOLARUS_OSX OR SOLARUS_IOS
- * @brief Define the current platform constants on Apple Systems.
+ * @cond doxygen_ignore
+ * Define the current platform constants on Apple Systems.
  */
 #if defined(__APPLE__)
 #  include "TargetConditionals.h"
@@ -85,6 +85,9 @@
 #    define SOLARUS_OSX
 #  endif
 #endif
+/**
+ * @endcond
+ */
 
 /**
  * @def SOLARUS_SCREEN_DOUBLEBUF

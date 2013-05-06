@@ -12,6 +12,8 @@ Bug fixes for the 1.0 release.
 * Editor: fix the map view not always updated when zooming in or out (#174).
 * Editor: show an appropriate error message if the LuaJ jar is missing (#173).
 * Editor: fix the title bar string (#176).
+* Split the C++ documentation and the quest data files documentation (#181).
+* Add a search feature to the documentation pages.
 
 solarus-1.0.0 (2013-05-03)
 

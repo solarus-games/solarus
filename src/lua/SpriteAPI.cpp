@@ -91,7 +91,7 @@ void LuaContext::push_sprite(lua_State* l, Sprite& sprite) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_create.
+ * @brief Implementation of sol.sprite.create().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -108,7 +108,7 @@ int LuaContext::sprite_api_create(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_get_animation.
+ * @brief Implementation of sprite:get_animation().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -123,7 +123,7 @@ int LuaContext::sprite_api_get_animation(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_set_animation.
+ * @brief Implementation of sprite:set_animation().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -145,7 +145,7 @@ int LuaContext::sprite_api_set_animation(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_get_direction.
+ * @brief Implementation of sprite:get_direction().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -158,7 +158,7 @@ int LuaContext::sprite_api_get_direction(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_set_direction.
+ * @brief Implementation of sprite:set_direction().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -179,7 +179,7 @@ int LuaContext::sprite_api_set_direction(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_get_frame.
+ * @brief Implementation of sprite:get_frame().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -192,7 +192,7 @@ int LuaContext::sprite_api_get_frame(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_set_frame.
+ * @brief Implementation of sprite:set_frame().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -214,7 +214,7 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_get_frame_delay.
+ * @brief Implementation of sprite:get_frame_delay().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -234,7 +234,7 @@ int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_set_frame_delay.
+ * @brief Implementation of sprite:set_frame_delay().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -252,7 +252,7 @@ int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_is_paused.
+ * @brief Implementation of sprite:is_paused().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -266,7 +266,7 @@ int LuaContext::sprite_api_is_paused(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_set_paused.
+ * @brief Implementation of sprite:set_paused().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -284,7 +284,7 @@ int LuaContext::sprite_api_set_paused(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_set_ignore_suspend.
+ * @brief Implementation of sprite:set_ignore_suspend().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -302,7 +302,7 @@ int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_sprite_synchronize.
+ * @brief Implementation of sprite:synchronize().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */

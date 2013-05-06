@@ -322,7 +322,7 @@ int LuaContext::l_camera_restore(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_game.
+ * @brief Implementation of map:get_game().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -335,7 +335,7 @@ int LuaContext::map_api_get_game(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_id.
+ * @brief Implementation of map:get_id().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -348,7 +348,7 @@ int LuaContext::map_api_get_id(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_world.
+ * @brief Implementation of map:get_world().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -361,7 +361,7 @@ int LuaContext::map_api_get_world(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_floor.
+ * @brief Implementation of map:get_floor().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -379,7 +379,7 @@ int LuaContext::map_api_get_floor(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_size.
+ * @brief Implementation of map:get_size().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -394,7 +394,7 @@ int LuaContext::map_api_get_size(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_location.
+ * @brief Implementation of map:get_location().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -409,7 +409,7 @@ int LuaContext::map_api_get_location(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_tileset.
+ * @brief Implementation of map:get_tileset().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -422,7 +422,7 @@ int LuaContext::map_api_get_tileset(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_set_tileset.
+ * @brief Implementation of map:set_tileset().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -437,7 +437,7 @@ int LuaContext::map_api_set_tileset(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_is_dialog_enabled.
+ * @brief Implementation of map:is_dialog_enabled().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -450,7 +450,7 @@ int LuaContext::map_api_is_dialog_enabled(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_start_dialog.
+ * @brief Implementation of map:start_dialog().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -484,7 +484,7 @@ int LuaContext::map_api_start_dialog(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_set_dialog_variable.
+ * @brief Implementation of map:set_dialog_variable().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -500,7 +500,7 @@ int LuaContext::map_api_set_dialog_variable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_set_dialog_style.
+ * @brief Implementation of map:set_dialog_style().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -515,7 +515,7 @@ int LuaContext::map_api_set_dialog_style(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_set_dialog_position.
+ * @brief Implementation of map:set_dialog_position().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -530,7 +530,7 @@ int LuaContext::map_api_set_dialog_position(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_draw_dialog_box.
+ * @brief Implementation of map:draw_dialog_box().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -546,7 +546,7 @@ int LuaContext::map_api_draw_dialog_box(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_set_pause_enabled.
+ * @brief Implementation of map:set_pause_enabled().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -561,7 +561,7 @@ int LuaContext::map_api_set_pause_enabled(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_light.
+ * @brief Implementation of map:get_light().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -576,7 +576,7 @@ int LuaContext::map_api_get_light(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_set_light.
+ * @brief Implementation of map:set_light().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -591,7 +591,7 @@ int LuaContext::map_api_set_light(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_camera_position.
+ * @brief Implementation of map:get_camera_position().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -607,7 +607,7 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_move_camera.
+ * @brief Implementation of map:move_camera().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -644,7 +644,7 @@ int LuaContext::map_api_move_camera(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_draw_sprite.
+ * @brief Implementation of map:draw_sprite().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -661,7 +661,7 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_crystal_state.
+ * @brief Implementation of map:get_crystal_state().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -674,7 +674,7 @@ int LuaContext::map_api_get_crystal_state(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_set_crystal_state.
+ * @brief Implementation of map:set_crystal_state().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -692,7 +692,7 @@ int LuaContext::map_api_set_crystal_state(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_change_crystal_state.
+ * @brief Implementation of map:change_crystal_state().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -706,7 +706,7 @@ int LuaContext::map_api_change_crystal_state(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_open_doors.
+ * @brief Implementation of map:open_doors().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -737,7 +737,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_close_doors.
+ * @brief Implementation of map:close_doors().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -768,7 +768,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_set_doors_open.
+ * @brief Implementation of map:set_doors_open().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -793,7 +793,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_entity.
+ * @brief Implementation of map:get_entity().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -814,7 +814,7 @@ int LuaContext::map_api_get_entity(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_has_entity.
+ * @brief Implementation of map:has_entity().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -830,7 +830,7 @@ int LuaContext::map_api_has_entity(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_entities.
+ * @brief Implementation of map:get_entities().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -854,7 +854,7 @@ int LuaContext::map_api_get_entities(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_entities_count.
+ * @brief Implementation of map:get_entities_count().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -871,7 +871,7 @@ int LuaContext::map_api_get_entities_count(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_has_entities.
+ * @brief Implementation of map:has_entities().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -885,7 +885,7 @@ int LuaContext::map_api_has_entities(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_set_entities_enabled.
+ * @brief Implementation of map:set_entities_enabled().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -909,7 +909,7 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_remove_entities.
+ * @brief Implementation of map:remove_entities().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -954,7 +954,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_destination.
+ * @brief Implementation of map:create_destination().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -980,7 +980,7 @@ int LuaContext::map_api_create_destination(lua_State* l) {
  }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_teletransporter.
+ * @brief Implementation of map:create_teletransporter().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1018,7 +1018,7 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_pickable.
+ * @brief Implementation of map:create_pickable().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1069,7 +1069,7 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_destructible.
+ * @brief Implementation of map:create_destructible().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1128,7 +1128,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_chest.
+ * @brief Implementation of map:create_chest().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1196,7 +1196,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_jumper.
+ * @brief Implementation of map:create_jumper().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1225,7 +1225,7 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_enemy.
+ * @brief Implementation of map:create_enemy().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1277,7 +1277,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_npc.
+ * @brief Implementation of map:create_npc().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1311,7 +1311,7 @@ int LuaContext::map_api_create_npc(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_block.
+ * @brief Implementation of map:create_block().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1341,7 +1341,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_dynamic_tile.
+ * @brief Implementation of map:create_dynamic_tile().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1370,7 +1370,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_switch.
+ * @brief Implementation of map:create_switch().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1402,7 +1402,7 @@ int LuaContext::map_api_create_switch(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_wall.
+ * @brief Implementation of map:create_wall().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1433,7 +1433,7 @@ int LuaContext::map_api_create_wall(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_sensor.
+ * @brief Implementation of map:create_sensor().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1459,7 +1459,7 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_crystal.
+ * @brief Implementation of map:create_crystal().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1483,7 +1483,7 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_crystal_block.
+ * @brief Implementation of map:create_crystal_block().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1516,7 +1516,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_shop_treasure.
+ * @brief Implementation of map:create_shop_treasure().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1559,7 +1559,7 @@ int LuaContext::map_api_create_shop_item(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_conveyor_belt.
+ * @brief Implementation of map:create_conveyor_belt().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1584,7 +1584,7 @@ int LuaContext::map_api_create_conveyor_belt(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_door.
+ * @brief Implementation of map:create_door().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1649,7 +1649,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_stairs.
+ * @brief Implementation of map:create_stairs().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1680,7 +1680,7 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_bomb.
+ * @brief Implementation of map:create_bomb().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1704,7 +1704,7 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_explosion.
+ * @brief Implementation of map:create_explosion().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1728,7 +1728,7 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_fire.
+ * @brief Implementation of map:create_fire().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */

@@ -102,7 +102,7 @@ void LuaContext::remove_menus() {
 }
 
 /**
- * @brief Implementation of \ref lua_api_menu_start.
+ * @brief Implementation of sol.menu.start().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -124,7 +124,7 @@ int LuaContext::menu_api_start(lua_State *l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_menu_stop.
+ * @brief Implementation of sol.menu.stop().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -158,7 +158,7 @@ int LuaContext::menu_api_stop(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_menu_stop_all.
+ * @brief Implementation of sol.menu.stop_all().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */

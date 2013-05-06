@@ -377,7 +377,7 @@ void LuaContext::update_movements() {
 }
 
 /**
- * @brief Implementation of \ref lua_api_movement_create.
+ * @brief Implementation of sol.movement.create().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -446,7 +446,7 @@ int LuaContext::movement_api_create(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_movement_get_xy.
+ * @brief Implementation of movement:get_xy().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -461,7 +461,7 @@ int LuaContext::movement_api_get_xy(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_movement_set_xy.
+ * @brief Implementation of movement:set_xy().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -477,7 +477,7 @@ int LuaContext::movement_api_set_xy(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_movement_start.
+ * @brief Implementation of movement:start().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -518,7 +518,7 @@ int LuaContext::movement_api_start(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_movement_stop.
+ * @brief Implementation of movement:stop().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -549,7 +549,7 @@ int LuaContext::movement_api_stop(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_movement_get_ignore_obstacles.
+ * @brief Implementation of movement:get_ignore_obstacles().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -562,7 +562,7 @@ int LuaContext::movement_api_get_ignore_obstacles(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_movement_set_ignore_obstacles.
+ * @brief Implementation of movement:set_ignore_obstacles().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -580,7 +580,7 @@ int LuaContext::movement_api_set_ignore_obstacles(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_movement_get_direction4.
+ * @brief Implementation of movement:get_direction4().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -615,7 +615,7 @@ StraightMovement& LuaContext::check_straight_movement(lua_State* l, int index) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_straight_movement_get_speed.
+ * @brief Implementation of straight_movement:get_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -627,7 +627,7 @@ int LuaContext::straight_movement_api_get_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_straight_movement_set_speed.
+ * @brief Implementation of straight_movement:set_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -640,7 +640,7 @@ int LuaContext::straight_movement_api_set_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_straight_movement_get_angle.
+ * @brief Implementation of straight_movement:get_angle().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -652,7 +652,7 @@ int LuaContext::straight_movement_api_get_angle(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_straight_movement_set_angle.
+ * @brief Implementation of straight_movement:set_angle().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -665,7 +665,7 @@ int LuaContext::straight_movement_api_set_angle(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_straight_movement_get_max_distance.
+ * @brief Implementation of straight_movement:get_max_distance().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -677,7 +677,7 @@ int LuaContext::straight_movement_api_get_max_distance(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_straight_movement_set_max_distance.
+ * @brief Implementation of straight_movement:set_max_distance().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -690,7 +690,7 @@ int LuaContext::straight_movement_api_set_max_distance(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_straight_movement_is_smooth.
+ * @brief Implementation of straight_movement:is_smooth().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -702,7 +702,7 @@ int LuaContext::straight_movement_api_is_smooth(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_straight_movement_set_smooth.
+ * @brief Implementation of straight_movement:set_smooth().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -741,7 +741,7 @@ RandomMovement& LuaContext::check_random_movement(lua_State* l, int index) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_random_movement_get_speed.
+ * @brief Implementation of random_movement:get_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -753,7 +753,7 @@ int LuaContext::random_movement_api_get_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_random_movement_set_speed.
+ * @brief Implementation of random_movement:set_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -766,7 +766,7 @@ int LuaContext::random_movement_api_set_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_random_movement_get_angle.
+ * @brief Implementation of random_movement:get_angle().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -778,7 +778,7 @@ int LuaContext::random_movement_api_get_angle(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_random_movement_get_max_distance.
+ * @brief Implementation of random_movement:get_max_distance().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -790,7 +790,7 @@ int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_random_movement_set_max_distance.
+ * @brief Implementation of random_movement:set_max_distance().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -803,7 +803,7 @@ int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_random_movement_is_smooth.
+ * @brief Implementation of random_movement:is_smooth().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -815,7 +815,7 @@ int LuaContext::random_movement_api_is_smooth(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_random_movement_set_smooth.
+ * @brief Implementation of random_movement:set_smooth().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -854,7 +854,7 @@ TargetMovement& LuaContext::check_target_movement(lua_State* l, int index) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_target_movement_set_target.
+ * @brief Implementation of target_movement:set_target().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -877,7 +877,7 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_target_movement_get_speed.
+ * @brief Implementation of target_movement:get_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -889,7 +889,7 @@ int LuaContext::target_movement_api_get_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_target_movement_set_speed.
+ * @brief Implementation of target_movement:set_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -902,7 +902,7 @@ int LuaContext::target_movement_api_set_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_target_movement_get_angle.
+ * @brief Implementation of target_movement:get_angle().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -914,7 +914,7 @@ int LuaContext::target_movement_api_get_angle(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_target_movement_is_smooth.
+ * @brief Implementation of target_movement:is_smooth().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -926,7 +926,7 @@ int LuaContext::target_movement_api_is_smooth(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_target_movement_set_smooth.
+ * @brief Implementation of target_movement:set_smooth().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -965,7 +965,7 @@ PathMovement& LuaContext::check_path_movement(lua_State* l, int index) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_get_path.
+ * @brief Implementation of path_movement:get_path().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -987,7 +987,7 @@ int LuaContext::path_movement_api_get_path(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_path.
+ * @brief Implementation of path_movement:set_path().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1010,7 +1010,7 @@ int LuaContext::path_movement_api_set_path(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_get_speed.
+ * @brief Implementation of path_movement:get_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1022,7 +1022,7 @@ int LuaContext::path_movement_api_get_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_speed.
+ * @brief Implementation of path_movement:set_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1035,7 +1035,7 @@ int LuaContext::path_movement_api_set_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_get_loop.
+ * @brief Implementation of path_movement:get_loop().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1047,7 +1047,7 @@ int LuaContext::path_movement_api_get_loop(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_loop.
+ * @brief Implementation of path_movement:set_loop().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1064,7 +1064,7 @@ int LuaContext::path_movement_api_set_loop(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_get_snap_to_grid.
+ * @brief Implementation of path_movement:get_snap_to_grid().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1076,7 +1076,7 @@ int LuaContext::path_movement_api_get_snap_to_grid(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_snap_to_grid.
+ * @brief Implementation of path_movement:set_snap_to_grid().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1115,7 +1115,7 @@ bool LuaContext::is_random_path_movement(lua_State* l, int index) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_random_path_movement_get_speed.
+ * @brief Implementation of random_path_movement:get_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1127,7 +1127,7 @@ int LuaContext::random_path_movement_api_get_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_random_path_movement_set_speed.
+ * @brief Implementation of random_path_movement:set_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1162,7 +1162,7 @@ PathFindingMovement& LuaContext::check_path_finding_movement(lua_State* l, int i
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_finding_movement_set_target.
+ * @brief Implementation of path_finding_movement:set_target().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1177,7 +1177,7 @@ int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_finding_movement_get_speed.
+ * @brief Implementation of path_finding_movement:get_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1189,7 +1189,7 @@ int LuaContext::path_finding_movement_api_get_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_finding_movement_set_speed.
+ * @brief Implementation of path_finding_movement:set_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1224,7 +1224,7 @@ CircleMovement& LuaContext::check_circle_movement(lua_State* l, int index) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_set_center.
+ * @brief Implementation of circle_movement:set_center().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1250,7 +1250,7 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_get_radius.
+ * @brief Implementation of circle_movement:get_radius().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1262,7 +1262,7 @@ int LuaContext::circle_movement_api_get_radius(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_set_radius.
+ * @brief Implementation of circle_movement:set_radius().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1275,7 +1275,7 @@ int LuaContext::circle_movement_api_set_radius(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_get_radius_speed.
+ * @brief Implementation of circle_movement:get_radius_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1287,7 +1287,7 @@ int LuaContext::circle_movement_api_get_radius_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_set_radius_speed.
+ * @brief Implementation of circle_movement:set_radius_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1300,7 +1300,7 @@ int LuaContext::circle_movement_api_set_radius_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_is_clockwise.
+ * @brief Implementation of circle_movement:is_clockwise().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1312,7 +1312,7 @@ int LuaContext::circle_movement_api_is_clockwise(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_set_clockwise.
+ * @brief Implementation of circle_movement:set_clockwise().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1329,7 +1329,7 @@ int LuaContext::circle_movement_api_set_clockwise(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_get_initial_angle.
+ * @brief Implementation of circle_movement:get_initial_angle().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1341,7 +1341,7 @@ int LuaContext::circle_movement_api_get_initial_angle(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_set_initial_angle.
+ * @brief Implementation of circle_movement:set_initial_angle().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1354,7 +1354,7 @@ int LuaContext::circle_movement_api_set_initial_angle(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_get_angle_speed.
+ * @brief Implementation of circle_movement:get_angle_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1366,7 +1366,7 @@ int LuaContext::circle_movement_api_get_angle_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_set_angle_speed.
+ * @brief Implementation of circle_movement:set_angle_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1379,7 +1379,7 @@ int LuaContext::circle_movement_api_set_angle_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_get_max_rotations.
+ * @brief Implementation of circle_movement:get_max_rotations().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1391,7 +1391,7 @@ int LuaContext::circle_movement_api_get_max_rotations(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_set_max_rotations.
+ * @brief Implementation of circle_movement:set_max_rotations().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1404,7 +1404,7 @@ int LuaContext::circle_movement_api_set_max_rotations(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_get_duration.
+ * @brief Implementation of circle_movement:get_duration().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1416,7 +1416,7 @@ int LuaContext::circle_movement_api_get_duration(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_set_duration.
+ * @brief Implementation of circle_movement:set_duration().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1429,7 +1429,7 @@ int LuaContext::circle_movement_api_set_duration(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_get_loop_delay.
+ * @brief Implementation of circle_movement:get_loop_delay().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1441,7 +1441,7 @@ int LuaContext::circle_movement_api_get_loop_delay(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_circle_movement_set_loop_delay.
+ * @brief Implementation of circle_movement:set_loop_delay().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1476,7 +1476,7 @@ JumpMovement& LuaContext::check_jump_movement(lua_State* l, int index) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_jump_movement_get_direction8.
+ * @brief Implementation of jump_movement:get_direction8().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1488,7 +1488,7 @@ int LuaContext::jump_movement_api_get_direction8(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_jump_movement_set_direction8.
+ * @brief Implementation of jump_movement:set_direction8().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1501,7 +1501,7 @@ int LuaContext::jump_movement_api_set_direction8(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_jump_movement_get_distance.
+ * @brief Implementation of jump_movement:get_distance().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1513,7 +1513,7 @@ int LuaContext::jump_movement_api_get_distance(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_jump_movement_set_distance.
+ * @brief Implementation of jump_movement:set_distance().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1526,7 +1526,7 @@ int LuaContext::jump_movement_api_set_distance(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_jump_movement_get_speed.
+ * @brief Implementation of jump_movement:get_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1538,7 +1538,7 @@ int LuaContext::jump_movement_api_get_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_jump_movement_set_speed.
+ * @brief Implementation of jump_movement:set_speed().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1573,7 +1573,7 @@ PixelMovement& LuaContext::check_pixel_movement(lua_State* l, int index) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_pixel_movement_get_trajectory.
+ * @brief Implementation of pixel_movement:get_trajectory().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1602,7 +1602,7 @@ int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_pixel_movement_set_trajectory.
+ * @brief Implementation of pixel_movement:set_trajectory().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1629,7 +1629,7 @@ int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_pixel_movement_get_loop.
+ * @brief Implementation of pixel_movement:get_loop().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1641,7 +1641,7 @@ int LuaContext::pixel_movement_api_get_loop(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_pixel_movement_set_loop.
+ * @brief Implementation of pixel_movement:set_loop().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1658,7 +1658,7 @@ int LuaContext::pixel_movement_api_set_loop(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_pixel_movement_get_delay.
+ * @brief Implementation of pixel_movement:get_delay().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1670,7 +1670,7 @@ int LuaContext::pixel_movement_api_get_delay(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_pixel_movement_set_delay.
+ * @brief Implementation of pixel_movement:set_delay().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */

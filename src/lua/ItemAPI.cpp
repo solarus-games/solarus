@@ -112,7 +112,7 @@ void LuaContext::push_item(lua_State* l, EquipmentItem& item) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_name.
+ * @brief Implementation of item:get_name().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -125,7 +125,7 @@ int LuaContext::item_api_get_name(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_game.
+ * @brief Implementation of item:get_game().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -138,7 +138,7 @@ int LuaContext::item_api_get_game(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_map.
+ * @brief Implementation of item:get_map().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -157,7 +157,7 @@ int LuaContext::item_api_get_map(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_savegame_variable.
+ * @brief Implementation of item:get_savegame_variable().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -176,7 +176,7 @@ int LuaContext::item_api_get_savegame_variable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_savegame_variable.
+ * @brief Implementation of item:set_savegame_variable().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -200,7 +200,7 @@ int LuaContext::item_api_set_savegame_variable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_amount_savegame_variable.
+ * @brief Implementation of item:get_amount_savegame_variable().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -219,7 +219,7 @@ int LuaContext::item_api_get_amount_savegame_variable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_amount_savegame_variable.
+ * @brief Implementation of item:set_amount_savegame_variable().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -243,7 +243,7 @@ int LuaContext::item_api_set_amount_savegame_variable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_is_obtainable.
+ * @brief Implementation of item:is_obtainable().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -256,7 +256,7 @@ int LuaContext::item_api_is_obtainable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_obtainable.
+ * @brief Implementation of item:set_obtainable().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -274,7 +274,7 @@ int LuaContext::item_api_set_obtainable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_is_assignable.
+ * @brief Implementation of item:is_assignable().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -287,7 +287,7 @@ int LuaContext::item_api_is_assignable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_assignable.
+ * @brief Implementation of item:set_assignable().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -305,7 +305,7 @@ int LuaContext::item_api_set_assignable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_can_disappear.
+ * @brief Implementation of item:get_can_disappear().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -318,7 +318,7 @@ int LuaContext::item_api_get_can_disappear(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_can_disappear.
+ * @brief Implementation of item:set_can_disappear().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -336,7 +336,7 @@ int LuaContext::item_api_set_can_disappear(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_brandish_when_picked.
+ * @brief Implementation of item:get_brandish_when_picked().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -349,7 +349,7 @@ int LuaContext::item_api_get_brandish_when_picked(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_brandish_when_picked.
+ * @brief Implementation of item:set_brandish_when_picked().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -367,7 +367,7 @@ int LuaContext::item_api_set_brandish_when_picked(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_shadow.
+ * @brief Implementation of item:get_shadow().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -386,7 +386,7 @@ int LuaContext::item_api_get_shadow(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_shadow.
+ * @brief Implementation of item:set_shadow().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -404,7 +404,7 @@ int LuaContext::item_api_set_shadow(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_sound_when_picked.
+ * @brief Implementation of item:get_sound_when_picked().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -423,7 +423,7 @@ int LuaContext::item_api_get_sound_when_picked(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_sound_when_picked.
+ * @brief Implementation of item:set_sound_when_picked().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -441,7 +441,7 @@ int LuaContext::item_api_set_sound_when_picked(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_sound_when_brandished.
+ * @brief Implementation of item:get_sound_when_brandished().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -460,7 +460,7 @@ int LuaContext::item_api_get_sound_when_brandished(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_sound_when_brandished.
+ * @brief Implementation of item:set_sound_when_brandished().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -478,7 +478,7 @@ int LuaContext::item_api_set_sound_when_brandished(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_has_variant.
+ * @brief Implementation of item:has_variant().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -495,7 +495,7 @@ int LuaContext::item_api_has_variant(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_variant.
+ * @brief Implementation of item:get_variant().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -513,7 +513,7 @@ int LuaContext::item_api_get_variant(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_variant.
+ * @brief Implementation of item:set_variant().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -533,7 +533,7 @@ int LuaContext::item_api_set_variant(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_has_amount.
+ * @brief Implementation of item:has_amount().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -555,7 +555,7 @@ int LuaContext::item_api_has_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_amount.
+ * @brief Implementation of item:get_amount().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -573,7 +573,7 @@ int LuaContext::item_api_get_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_amount.
+ * @brief Implementation of item:set_amount().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -593,7 +593,7 @@ int LuaContext::item_api_set_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_add_amount.
+ * @brief Implementation of item:add_amount().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -613,7 +613,7 @@ int LuaContext::item_api_add_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_remove_amount.
+ * @brief Implementation of item:remove_amount().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -633,7 +633,7 @@ int LuaContext::item_api_remove_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_max_amount.
+ * @brief Implementation of item:get_max_amount().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -651,7 +651,7 @@ int LuaContext::item_api_get_max_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_max_amount.
+ * @brief Implementation of item:set_max_amount().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -671,7 +671,7 @@ int LuaContext::item_api_set_max_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_set_finished.
+ * @brief Implementation of item:set_finished().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */

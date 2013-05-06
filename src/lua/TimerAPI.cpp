@@ -246,7 +246,7 @@ void LuaContext::notify_timers_map_suspended(bool suspended) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_start.
+ * @brief Implementation of sol.timer.start().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -299,7 +299,7 @@ int LuaContext::timer_api_start(lua_State *l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_stop.
+ * @brief Implementation of timer:stop().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -313,7 +313,7 @@ int LuaContext::timer_api_stop(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_stop_all.
+ * @brief Implementation of sol.timer.stop_all().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -330,7 +330,7 @@ int LuaContext::timer_api_stop_all(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_is_with_sound.
+ * @brief Implementation of timer:is_with_sound().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -343,7 +343,7 @@ int LuaContext::timer_api_is_with_sound(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_set_with_sound.
+ * @brief Implementation of timer:set_with_sound().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -361,7 +361,7 @@ int LuaContext::timer_api_set_with_sound(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_is_suspended.
+ * @brief Implementation of timer:is_suspended().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -374,7 +374,7 @@ int LuaContext::timer_api_is_suspended(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_set_suspended.
+ * @brief Implementation of timer:set_suspended().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -392,7 +392,7 @@ int LuaContext::timer_api_set_suspended(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_is_suspended_with_map.
+ * @brief Implementation of timer:is_suspended_with_map().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -405,7 +405,7 @@ int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_set_suspended_with_map.
+ * @brief Implementation of timer:set_suspended_with_map().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */

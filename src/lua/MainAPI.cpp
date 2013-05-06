@@ -63,7 +63,7 @@ void LuaContext::push_main(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_load_file.
+ * @brief Implementation of sol.main.load_file().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -79,7 +79,7 @@ int LuaContext::main_api_load_file(lua_State *l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_do_file.
+ * @brief Implementation of sol.main.do_file().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -93,7 +93,7 @@ int LuaContext::main_api_do_file(lua_State *l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_reset.
+ * @brief Implementation of sol.main.reset().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -105,7 +105,7 @@ int LuaContext::main_api_reset(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_exit.
+ * @brief Implementation of sol.main.exit().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -117,7 +117,7 @@ int LuaContext::main_api_exit(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_is_debug_enabled.
+ * @brief Implementation of sol.main.is_debug_enabled().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -135,7 +135,7 @@ int LuaContext::main_api_is_debug_enabled(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_get_quest_write_dir.
+ * @brief Implementation of sol.main.get_quest_write_dir().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -153,7 +153,7 @@ int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_set_quest_write_dir.
+ * @brief Implementation of sol.main.set_quest_write_dir().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -167,7 +167,7 @@ int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_load_settings.
+ * @brief Implementation of sol.main.load_settings().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -186,7 +186,7 @@ int LuaContext::main_api_load_settings(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_save_settings.
+ * @brief Implementation of sol.main.save_settings().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -205,7 +205,7 @@ int LuaContext::main_api_save_settings(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_get_distance.
+ * @brief Implementation of sol.main.get_distance().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -223,7 +223,7 @@ int LuaContext::main_api_get_distance(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_get_angle.
+ * @brief Implementation of sol.main.get_angle().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */

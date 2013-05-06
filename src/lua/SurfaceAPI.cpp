@@ -84,8 +84,7 @@ void LuaContext::push_surface(lua_State* l, Surface& surface) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_surface_create_empty and
- * \ref lua_api_surface_create_from_file.
+ * @brief Implementation of sol.surface.create().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -120,7 +119,7 @@ int LuaContext::surface_api_create(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_surface_get_size.
+ * @brief Implementation of surface:get_size().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -135,7 +134,7 @@ int LuaContext::surface_api_get_size(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_surface_fill_color.
+ * @brief Implementation of surface:fill_color().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -160,7 +159,7 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_surface_get_transparency_color.
+ * @brief Implementation of surface:get_transparency_color().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -175,7 +174,7 @@ int LuaContext::surface_api_get_transparency_color(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_surface_set_transparency_color.
+ * @brief Implementation of surface:set_transparency_color().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -189,7 +188,7 @@ int LuaContext::surface_api_set_transparency_color(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_surface_set_opacity.
+ * @brief Implementation of surface:set_opacity().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */

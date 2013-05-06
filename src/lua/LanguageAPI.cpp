@@ -40,7 +40,7 @@ void LuaContext::register_language_module() {
 }
 
 /**
- * @brief Implementation of \ref lua_api_language_get_language.
+ * @brief Implementation of sol.language.get_language().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -58,7 +58,7 @@ int LuaContext::language_api_get_language(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_language_set_language.
+ * @brief Implementation of sol.language.set_language().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -72,7 +72,7 @@ int LuaContext::language_api_set_language(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_language_get_language_name.
+ * @brief Implementation of sol.language.get_language_name().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -100,7 +100,7 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_language_get_languages.
+ * @brief Implementation of sol.language.get_languages().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -124,7 +124,7 @@ int LuaContext::language_api_get_languages(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_language_get_default_language.
+ * @brief Implementation of sol.language.get_default_language().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -137,7 +137,7 @@ int LuaContext::language_api_get_default_language(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_language_get_string.
+ * @brief Implementation of sol.language.get_string().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -151,7 +151,7 @@ int LuaContext::language_api_get_string(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_language_get_dialog.
+ * @brief Implementation of sol.language.get_dialog().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */

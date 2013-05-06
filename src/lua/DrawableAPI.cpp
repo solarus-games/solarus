@@ -87,7 +87,7 @@ void LuaContext::update_drawables() {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_draw.
+ * @brief Implementation of drawable:draw().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -103,7 +103,7 @@ int LuaContext::drawable_api_draw(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_draw_region.
+ * @brief Implementation of drawable:draw_region().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -127,7 +127,7 @@ int LuaContext::drawable_api_draw_region(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_fade_in.
+ * @brief Implementation of drawable:fade_in().
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -161,7 +161,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_fade_out.
+ * @brief Implementation of drawable:fade_out().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -195,7 +195,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_get_xy.
+ * @brief Implementation of drawable:get_xy().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -209,7 +209,7 @@ int LuaContext::drawable_api_get_xy(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_set_xy.
+ * @brief Implementation of drawable:set_xy().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -225,7 +225,7 @@ int LuaContext::drawable_api_set_xy(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_get_movement.
+ * @brief Implementation of drawable:get_movement().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -245,7 +245,7 @@ int LuaContext::drawable_api_get_movement(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_stop_movement.
+ * @brief Implementation of drawable:stop_movement().
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */

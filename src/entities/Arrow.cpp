@@ -46,6 +46,7 @@ Arrow::Arrow(Hero &hero):
   get_sprite().set_current_direction(direction);
   set_bounding_box_from_sprite();
   set_xy(hero.get_center_point());
+  set_optimization_distance(0); // Make the arrow continue outside the screen until disappear_date.
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);

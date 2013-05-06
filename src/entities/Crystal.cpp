@@ -41,7 +41,7 @@ Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
   next_possible_hit_date(System::now()) {
 
   set_origin(8, 13);
-  set_optimization_distance(2000); // because of placing a bomb on a switch
+  set_optimization_distance(2000);  // Because of bombs and arrows on the crystal.
   create_sprite("entities/crystal", true);
   star_sprite = new Sprite("entities/star");
   twinkle();

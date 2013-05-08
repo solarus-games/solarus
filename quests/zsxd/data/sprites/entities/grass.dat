@@ -1,5 +1,0 @@
-on_ground entities/destructible_items.png 1 0 -1
-192	0	16	16	8	13	1	1
-
-destroy entities/destructible_items.png 1 100 -1
-0	64	32	32	16	29	5	5

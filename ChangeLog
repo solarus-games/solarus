@@ -1,4 +1,4 @@
-solarus-0.9.3 (under development)
+solarus-0.9.3 (2013-05-08)
 
 * The game screen size can now be set at compilation time.
 * Change the savegames directory on Mac OS X.

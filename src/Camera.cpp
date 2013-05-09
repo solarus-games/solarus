@@ -19,6 +19,7 @@
 #include "entities/MapEntity.h"
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
+#include "entities/CameraStopper.h"
 #include "movements/TargetMovement.h"
 #include "lua/LuaContext.h"
 
@@ -74,6 +75,22 @@ void Camera::update() {
     else {
       y = std::min(std::max(y - SOLARUS_SCREEN_HEIGHT_MIDDLE, 0),
           map_location.get_height() - SOLARUS_SCREEN_HEIGHT);
+    }
+
+    // See if there is a camera stopper in the rectangle.
+    const std::list<CameraStopper*>& stoppers =
+        map.get_entities().get_camera_stoppers();
+    std::list<CameraStopper*>::const_iterator it;
+    for (it = stoppers.begin(); it != stoppers.end(); ++it) {
+      CameraStopper* stopper = *it;
+      if (stopper->get_width() == 16) {
+        // Vertical camera stopper.
+        int separation_x = stopper->get_x() + 8;
+        if (x < separation_x && separation_x < x + SOLARUS_SCREEN_WIDTH) {
+          x = separation_x - SOLARUS_SCREEN_WIDTH;
+          // TODO handle all cases
+        }
+      }
     }
   }
   else if (movement != NULL) {

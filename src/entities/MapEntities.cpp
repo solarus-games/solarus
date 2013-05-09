@@ -22,6 +22,8 @@
 #include "entities/Obstacle.h"
 #include "entities/CrystalBlock.h"
 #include "entities/Boomerang.h"
+#include "entities/Stairs.h"
+#include "entities/CameraStopper.h"
 #include "Map.h"
 #include "Game.h"
 #include "lowlevel/Surface.h"
@@ -132,7 +134,7 @@ Hero& MapEntities::get_hero() {
  * @param layer the layer
  * @return the obstacle entities on that layer
  */
-list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
+const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
   return obstacle_entities[layer];
 }
 
@@ -140,7 +142,7 @@ list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
  * @brief Returns all detectors on the map.
  * @return the detectors
  */
-list<Detector*>& MapEntities::get_detectors() {
+const list<Detector*>& MapEntities::get_detectors() {
   return detectors;
 }
 
@@ -149,7 +151,7 @@ list<Detector*>& MapEntities::get_detectors() {
  * @param layer the layer
  * @return the stairs on this layer
  */
-list<Stairs*>& MapEntities::get_stairs(Layer layer) {
+const list<Stairs*>& MapEntities::get_stairs(Layer layer) {
   return stairs[layer];
 }
 
@@ -158,8 +160,16 @@ list<Stairs*>& MapEntities::get_stairs(Layer layer) {
  * @param layer the layer
  * @return the crystal blocks on this layer
  */
-list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
+const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
   return crystal_blocks[layer];
+}
+
+/**
+ * @brief Returns all camera stoppers of the map..
+ * @return The camera stoppers.
+ */
+const list<CameraStopper*>& MapEntities::get_camera_stoppers() {
+  return camera_stoppers;
 }
 
 /**
@@ -554,15 +564,19 @@ void MapEntities::add_entity(MapEntity* entity) {
     switch (entity->get_type()) {
 
       case STAIRS:
-        stairs[layer].push_back((Stairs*) entity);
+        stairs[layer].push_back(static_cast<Stairs*>(entity));
         break;
 
       case CRYSTAL_BLOCK:
-        crystal_blocks[layer].push_back((CrystalBlock*) entity);
+        crystal_blocks[layer].push_back(static_cast<CrystalBlock*>(entity));
+        break;
+
+      case CAMERA_STOPPER:
+        camera_stoppers.push_back(static_cast<CameraStopper*>(entity));
         break;
 
       case BOOMERANG:
-        this->boomerang = (Boomerang*) entity;
+        this->boomerang = static_cast<Boomerang*>(entity);
         break;
 
       default:

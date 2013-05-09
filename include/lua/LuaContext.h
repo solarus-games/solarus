@@ -652,6 +652,7 @@ class LuaContext {
       map_api_create_bomb,
       map_api_create_explosion,
       map_api_create_fire,
+      map_api_create_camera_stopper,
 
       // Map entity API.
       // TODO entity:get_type()

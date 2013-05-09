@@ -793,13 +793,14 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if there is an obstacle entity at this point
  */
-bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_box, MapEntity &entity_to_check) {
+bool Map::test_collision_with_entities(Layer layer,
+    const Rectangle& collision_box, MapEntity& entity_to_check) {
 
-  std::list<MapEntity*> &obstacle_entities = entities->get_obstacle_entities(layer);
+  const std::list<MapEntity*> &obstacle_entities = entities->get_obstacle_entities(layer);
 
   bool collision = false;
 
-  std::list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::const_iterator i;
   for (i = obstacle_entities.begin();
        i != obstacle_entities.end() && !collision;
        i++) {
@@ -1018,10 +1019,10 @@ void Map::check_collision_with_detectors(MapEntity &entity) {
     return;
   }
 
-  std::list<Detector*> &detectors = entities->get_detectors();
+  const std::list<Detector*>& detectors = entities->get_detectors();
 
   // check each detector
-  std::list<Detector*>::iterator i;
+  std::list<Detector*>::const_iterator i;
 
   for (i = detectors.begin();
        i != detectors.end();
@@ -1050,9 +1051,9 @@ void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
     return;
   }
 
-  std::list<Detector*> &detectors = entities->get_detectors();
+  const std::list<Detector*>& detectors = entities->get_detectors();
   // check each detector
-  std::list<Detector*>::iterator i;
+  std::list<Detector*>::const_iterator i;
   for (i = detectors.begin();
        i != detectors.end();
        i++) {

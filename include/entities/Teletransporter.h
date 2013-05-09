@@ -59,8 +59,8 @@ class Teletransporter: public Detector {
         int height,
         const std::string& sprite_name,
         const std::string& sound_id,
-	Transition::Style transition_style,
-	const std::string& destination_map_id,
+        Transition::Style transition_style,
+        const std::string& destination_map_id,
         const std::string& destination_name);
     ~Teletransporter();
 

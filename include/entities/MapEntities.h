@@ -45,10 +45,11 @@ class MapEntities {
     // entities
     Hero& get_hero();
     Obstacle get_obstacle_tile(Layer layer, int x, int y);
-    std::list<MapEntity*>& get_obstacle_entities(Layer layer);
-    std::list<Detector*>& get_detectors();
-    std::list<Stairs*>& get_stairs(Layer layer);
-    std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
+    const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
+    const std::list<Detector*>& get_detectors();
+    const std::list<Stairs*>& get_stairs(Layer layer);
+    const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
+    const std::list<CameraStopper*>& get_camera_stoppers();
 
     MapEntity* get_entity(const std::string& name);
     MapEntity* find_entity(const std::string& name);
@@ -141,6 +142,7 @@ class MapEntities {
     std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
     std::list<CrystalBlock*>
       crystal_blocks[LAYER_NB];	                    /**< all crystal blocks of the map */
+    std::list<CameraStopper*> camera_stoppers;      /**< all camera stoppers of the map */
 
     Boomerang* boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
     std::string music_before_miniboss;              /**< the music that was played before starting a miniboss fight */

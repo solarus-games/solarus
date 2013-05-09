@@ -1405,6 +1405,23 @@ on the map.
 - Return value (\ref lua_api_fire "fire"): the
   fire created.
 
+\subsection lua_api_map_create_camera_stopper map:create_camera_stopper(properties)
+
+Creates an entity of type
+\ref lua_api_camera_stopper "camera stopper"
+on the map.
+- \c properties (table): A table that describles all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string, optional): Name identifying the entity or \c nil.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high). The layer has no effect for camera stoppers.
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c width (number): Width of the entity in pixels.
+  - \c height (number): Height of the entity in pixels.
+- Return value (\ref lua_api_camera_stopper "camera stopper"): The
+  camera_stopper created.
+
 \section lua_api_map_events Events of a map
 
 Events are callback methods automatically called by the engine if you define

@@ -46,6 +46,7 @@
 #include "entities/Bomb.h"
 #include "entities/Explosion.h"
 #include "entities/Fire.h"
+#include "entities/CameraStopper.h"
 #include "entities/Hero.h"
 #include "movements/Movement.h"
 #include "lowlevel/Sound.h"
@@ -117,6 +118,7 @@ void LuaContext::register_map_module() {
       { "create_bomb", map_api_create_bomb },
       { "create_explosion", map_api_create_explosion },
       { "create_fire", map_api_create_fire },
+      { "create_camera_stopper", map_api_create_camera_stopper },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -1742,6 +1744,39 @@ int LuaContext::map_api_create_fire(lua_State* l) {
   int y = check_int_field(l, 1, "y");
 
   MapEntity* entity = new Fire(name, layer, Rectangle(x, y));
+  map.get_entities().add_entity(entity);
+
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * @brief Implementation of map:create_camera_stopper().
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_camera_stopper(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+
+  MapEntity* entity = new CameraStopper(
+      name,
+      layer,
+      x,
+      y,
+      width,
+      height
+  );
   map.get_entities().add_entity(entity);
 
   if (map.is_started()) {

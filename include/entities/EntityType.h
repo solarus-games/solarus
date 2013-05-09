@@ -52,6 +52,7 @@ enum EntityType {
   CONVEYOR_BELT,             /**< a special terrain that moves the hero */
   DOOR,                      /**< a door to open with a key or another action */
   STAIRS,                    /**< stairs between two maps or inside a single map */
+  CAMERA_STOPPER,            /**< an horizontal or vertical limit for the camera */
 
   // entities created only during the game (not stored in maps)
 

@@ -131,6 +131,7 @@ class Explosion;
 class Bomb;
 class Fire;
 class Hookshot;
+class CameraStopper;
 
 // tile patterns
 class Tileset;

@@ -248,6 +248,6 @@ which they are copied from, and then just do this step once.
 Finally, see https://developer.apple.com/library/mac/#releasenotes/General/SubmittingToMacAppStore/_index.html#//apple_ref/doc/uid/TP40010572
 to make sure you have a fully 10.8+ and Mac App Store compatible application.
 
-
 * Add a quest into the OSX Bundle
 Just copy the quest file (data.solarus or data/) into ${SOLARUS_BUNDLE}.app/Contents/Resources/
+

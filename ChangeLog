@@ -77,7 +77,7 @@ Changes in Solarus Quest Editor:
 * Allow to show a grid on the map editor.
 * Fix a lot of bugs.
 
-solarus-0.9.3 (under development)
+solarus-0.9.3 (2013-05-08)
 
 This should be the last release of the 0.9 branch.
 Existing games must now upgrade to Solarus 1.0.

@@ -34,7 +34,7 @@ Surface::Surface(int width, int height):
   internal_surface_created(true) {
 
   this->internal_surface = SDL_CreateRGBSurface(
-      SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+    SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
 }
 
 /**
@@ -308,6 +308,7 @@ SDL_Surface* Surface::get_internal_surface() {
  */
 uint32_t Surface::get_pixel32(int idx_pixel) {
 
+<<<<<<< HEAD
   uint32_t pixel32 = 0;
   SDL_PixelFormat* format = internal_surface->format;
 

@@ -92,7 +92,7 @@ get_filename_component(library_name ${library_path} NAME)
         TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -R -L -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
+        ARGS -R -P -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
       )
     else()
       add_custom_command(

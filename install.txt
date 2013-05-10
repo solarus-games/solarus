@@ -251,3 +251,4 @@ to make sure you have a fully 10.8+ and Mac App Store compatible application.
 
 * Add a quest into the OSX Bundle
 Just copy the quest file (data.solarus or data/) into ${SOLARUS_BUNDLE}.app/Contents/Resources/
+

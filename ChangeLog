@@ -2,10 +2,12 @@ solarus-1.0.1 (under development)
 
 Bug fixes for the 1.0 release.
 
+* Fix a possible crash in TextSurface.
 * Fix parallax scrolling tiles not always displayed (#167).
 * Fix the setting joypad_enabled that had no effect (#163).
 * Fix a possible compilation warning in Surface.cpp.
 * Fix creating a transition from the callback of a previous one.
+* Improve the Mac OS X port.
 * Don't die if a script makes an error with a sprite (#151).
 * Pixel-precise collisions can now also be performed on 32-bit images.
 * Fix crystal blocks animated late when coming from a teletransporter (#61).
@@ -77,7 +79,7 @@ Changes in Solarus Quest Editor:
 * Allow to show a grid on the map editor.
 * Fix a lot of bugs.
 
-solarus-0.9.3 (under development)
+solarus-0.9.3 (2013-05-08)
 
 This should be the last release of the 0.9 branch.
 Existing games must now upgrade to Solarus 1.0.

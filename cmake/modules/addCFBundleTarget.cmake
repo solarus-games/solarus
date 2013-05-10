@@ -92,7 +92,7 @@ get_filename_component(library_name ${library_path} NAME)
         TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -R -L -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
+        ARGS -R -P -n -p "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
       )
     else()
       add_custom_command(
@@ -153,13 +153,16 @@ if(NOT SOLARUS_IOS_BUILD)
   )
 endif()
 
-# Use the bundle's resources path for the bundle's executable
-if(DEFAULT_QUEST)
-  remove_definitions(-DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")
-  unset(DEFAULT_QUEST CACHE)
-endif()
-set(DEFAULT_QUEST "../Resources" CACHE STRING "Path to the quest to launch with a bundle" FORCE)
-add_definitions(-DSOLARUS_DEFAULT_QUEST=\"../Resources\")
+# Move the main binary into resource folder, and substitute it
+# by a wrapper which call it with the resource path as parameter
+add_custom_command(
+  TARGET ${EXECUTABLE_MAIN_NAME}
+  POST_BUILD
+  COMMAND mv 
+  ARGS \"${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}\" \"${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Resources/solarus\"
+  COMMAND cp 
+  ARGS \"${PROJECT_BINARY_DIR}/cmake/apple/OSX-wrapper.sh\" \"${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}\"
+)
 
 # Code signing
 if(XCODE)

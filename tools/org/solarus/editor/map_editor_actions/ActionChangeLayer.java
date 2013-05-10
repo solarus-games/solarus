@@ -16,6 +16,7 @@
  */
 package org.solarus.editor.map_editor_actions;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
@@ -35,7 +36,7 @@ public class ActionChangeLayer extends MapEditorAction {
      * @param entities the entities for which the layer will be changed
      * @param layer the layer to set
      */
-    public ActionChangeLayer(Map map, LinkedList<MapEntity> entities, Layer layer) {
+    public ActionChangeLayer(Map map, Collection<MapEntity> entities, Layer layer) {
         super(map);
         this.entities = new LinkedList<MapEntity>(entities);
         this.layerAfter = layer;

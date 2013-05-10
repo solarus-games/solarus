@@ -16,6 +16,7 @@
  */
 package org.solarus.editor.map_editor_actions;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.LinkedList;
 import org.solarus.editor.*;
@@ -44,7 +45,7 @@ public class ActionRemoveEntities extends MapEditorAction {
      * @param map the map
      * @param entitiesToRemove the entities to remove
      */
-    public ActionRemoveEntities(Map map, List<MapEntity> entitiesToRemove) {
+    public ActionRemoveEntities(Map map, Collection<MapEntity> entitiesToRemove) {
         super(map);
         this.entitiesToRemove = map.getSortedEntities(entitiesToRemove);
     }
@@ -71,3 +72,4 @@ public class ActionRemoveEntities extends MapEditorAction {
         map.getEntitySelection().select(entitiesToRemove);
     }
 }
+

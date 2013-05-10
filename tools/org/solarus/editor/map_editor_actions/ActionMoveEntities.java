@@ -16,6 +16,7 @@
  */
 package org.solarus.editor.map_editor_actions;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.LinkedList;
 import org.solarus.editor.*;
@@ -52,7 +53,7 @@ public class ActionMoveEntities extends MapEditorAction {
      * @param dx number of pixels to move on x
      * @param dy number of pixels to move on y
      */
-    public ActionMoveEntities(Map map, List<MapEntity> entitiesToMove, int dx, int dy) {
+    public ActionMoveEntities(Map map, Collection<MapEntity> entitiesToMove, int dx, int dy) {
         super(map);
         this.entitiesToMove = new LinkedList<MapEntity>(entitiesToMove);
         this.dx = dx;
@@ -74,5 +75,5 @@ public class ActionMoveEntities extends MapEditorAction {
 
         map.moveEntities(entitiesToMove, -dx, -dy);
     }
-
 }
+

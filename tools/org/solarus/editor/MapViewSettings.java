@@ -18,21 +18,18 @@ package org.solarus.editor;
 
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
+import java.util.*;
 
 /**
  * Options indicating how to display the map in the map view of the map editor.
  * This options affect only the map editor, not the game.
  * This class allows to set:
- * - what layers are displayed
- * - show or not the obstacle or non obstacle entities
- * - show the transparency
+ * - which layers are displayed,
+ * - which entities are displayed,
+ * - whether transparency is rendered,
+ * - whether the grid is displayed.
  */
-public class MapViewRenderingOptions {
-
-    /**
-     * The map view affected by these options.
-     */
-    private MapView mapView;
+public class MapViewSettings extends Observable {
 
     /**
      * Zoom of the map view.
@@ -48,7 +45,6 @@ public class MapViewRenderingOptions {
     /**
      * True to render the transparency, false to replace the transparent pixels
      * by a background color.
-     * The transparency seems to make the program much slower with my Linux.
      */
     private boolean showTransparency;
 
@@ -65,21 +61,12 @@ public class MapViewRenderingOptions {
     /**
      * Constructor.
      */
-    public MapViewRenderingOptions(MapView mapView) {
-        this.mapView = mapView;
+    public MapViewSettings() {
         this.zoom = 2.0;
         this.showLayers = new boolean[] {true, true, true};
         this.showTransparency = true;
         this.showGrid = false;
         this.gridSize = 16;
-    }
-
-    /**
-     * Returns the map.
-     * @return the map
-     */
-    public Map getMap() {
-        return mapView.getMap();
     }
 
     /**
@@ -95,8 +82,11 @@ public class MapViewRenderingOptions {
      * @param zoom the zoom
      */
     public void setZoom(double zoom) {
-        this.zoom = zoom;
-        mapView.update(getMap(), null);
+        if (zoom != this.zoom) {
+            this.zoom = zoom;
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -117,26 +107,16 @@ public class MapViewRenderingOptions {
     }
 
     /**
-     * Sets the layers shown.
-     * @param showLowLayer true to show the entities of the low layer
-     * @param showIntermediateLayer true to show the entities of the low layer
-     * @param showHighLayer true to show the entities of the high layer
-     */
-    public void setShowLayers(boolean showLowLayer, boolean showIntermediateLayer, boolean showHighLayer) {
-        showLayers[Layer.LOW.getId()] = showLowLayer;
-        showLayers[Layer.INTERMEDIATE.getId()] = showIntermediateLayer;
-        showLayers[Layer.HIGH.getId()] = showHighLayer;
-        mapView.repaint();
-    }
-
-    /**
      * Sets whether or not a layer is shown.
      * @param layer a layer
      * @param show true to make the layer visible, false otherwise
      */
     public void setShowLayer(Layer layer, boolean show) {
-        showLayers[layer.getId()] = show;
-        mapView.repaint();
+        if (show != showLayers[layer.getId()]) {
+            showLayers[layer.getId()] = show;
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -156,8 +136,11 @@ public class MapViewRenderingOptions {
      *
      */
     public void setShowTransparency(boolean showTransparency) {
-        this.showTransparency = showTransparency;
-        mapView.repaint();
+        if (showTransparency != this.showTransparency) {
+            this.showTransparency = showTransparency;
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -173,8 +156,11 @@ public class MapViewRenderingOptions {
      * @param showGrid true to show the grid.
      */
     public void setShowGrid(boolean showGrid) {
-        this.showGrid = showGrid;
-        mapView.repaint();
+        if (showGrid != this.showGrid) {
+            this.showGrid = showGrid;
+            setChanged();
+            notifyObservers();
+        }
     }
     /**
      * Returns the current grid size in the map view
@@ -189,8 +175,11 @@ public class MapViewRenderingOptions {
      * @param gridSize The size of a square of the grid in pixels.
      */
     public void setGridSize(int gridSize) {
-        this.gridSize = gridSize;
-        mapView.repaint();
+        if (gridSize != this.gridSize) {
+            this.gridSize = gridSize;
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**

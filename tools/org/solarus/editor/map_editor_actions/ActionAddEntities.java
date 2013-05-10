@@ -16,6 +16,7 @@
  */
 package org.solarus.editor.map_editor_actions;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.LinkedList;
 import org.solarus.editor.*;
@@ -44,7 +45,7 @@ public class ActionAddEntities extends MapEditorAction {
      * @param map the map
      * @param entitiesToAdd the entities to add
      */
-    public ActionAddEntities(Map map, List<MapEntity> entitiesToAdd) {
+    public ActionAddEntities(Map map, Collection<MapEntity> entitiesToAdd) {
         super(map);
         this.entitiesToAdd = new LinkedList<MapEntity>(entitiesToAdd);
     }
@@ -71,5 +72,5 @@ public class ActionAddEntities extends MapEditorAction {
             map.removeEntity(entity);
         }
     }
-
 }
+

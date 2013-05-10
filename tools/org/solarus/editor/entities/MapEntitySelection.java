@@ -29,7 +29,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
     /**
      * The selected entities, in the same order than the map.
      */
-    private LinkedList<MapEntity> entities;
+    private HashSet<MapEntity> entities;
 
     /**
      * The map.
@@ -42,23 +42,14 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public MapEntitySelection(Map map) {
         this.map = map;
-        this.entities = new LinkedList<MapEntity>();
-    }
-
-    /**
-     * Returns a selected entity.
-     * @param index of the entity to get
-     * @return the entity at this index in the selection
-     */
-    public MapEntity getEntity(int index) {
-        return entities.get(index);
+        this.entities = new HashSet<MapEntity>();
     }
 
     /**
      * Returns all the selected entities.
      * @return the selected entities
      */
-    public LinkedList<MapEntity> getEntities() {
+    public Collection<MapEntity> getEntities() {
         return entities;
     }
 
@@ -68,6 +59,17 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public Iterator<MapEntity> iterator() {
         return entities.iterator();
+    }
+
+    /**
+     * Returns an arbitrary selected entity.
+     * @return A selected entity, or null if no entities are selected.
+     */
+    public MapEntity getEntity() {
+        if (isEmpty()) {
+            return null;
+        }
+        return iterator().next();
     }
 
     /**
@@ -92,7 +94,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * @return true if there is no entity selected, false otherwise
      */
     public boolean isEmpty() {
-        return entities.size() == 0;
+        return entities.isEmpty();
     }
 
     /**
@@ -112,10 +114,10 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * If other entities were selected, they are not unselected.
      * @param entities the entities to select
      */
-    public void select(List<MapEntity> entities) {
+    public void select(Collection<MapEntity> entities) {
 
         for (MapEntity entity: entities) {
-            select(entity);
+            this.entities.add(entity);
         }
         setChanged();
         notifyObservers();
@@ -132,6 +134,20 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
             notifyObservers();
         }
     }
+
+    /**
+     * Make some entities unselected.
+     * @param entities The entities to unselect
+     */
+    public void unselect(Collection<MapEntity> entities) {
+
+        for (MapEntity entity: entities) {
+            this.entities.remove(entity);
+        }
+        setChanged();
+        notifyObservers();
+    }
+
 
     /**
      * Unselects all entities.
@@ -161,7 +177,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public void removeFromMap() throws QuestEditorException {
 
-        if (entities.size() > 0) {
+        if (!entities.isEmpty()) {
             map.getHistory().doAction(new ActionRemoveEntities(map, entities));
         }
     }
@@ -173,11 +189,17 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public Layer getLayer() {
 
-        Layer layer = entities.get(0).getLayer();
+        Layer layer = null;
 
-        for (int i = 1; i < entities.size(); i++) {
-            if (entities.get(i).getLayer() != layer) {
-                return null;
+        for (MapEntity entity: entities) {
+            if (layer == null) {
+                // First entity.
+                layer = entity.getLayer();
+            }
+            else {
+                if (entity.getLayer() != layer) {
+                    return null;
+                }
             }
         }
 
@@ -215,7 +237,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public boolean isResizable() {
 
-        return getNbEntitiesSelected() == 1 && getEntity(0).isResizable();
+        return getNbEntitiesSelected() == 1 && getEntity().isResizable();
     }
 
     /**
@@ -242,7 +264,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public int getNbDirections() {
 
-        MapEntity e = entities.get(0);
+        MapEntity e = getEntity();
 
         if (!e.hasDirectionProperty()) {
             return 0;
@@ -269,7 +291,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      */
     public int getDirection() {
 
-        MapEntity e = entities.get(0);
+        MapEntity e = getEntity();
 
         if (!e.hasDirectionProperty()) {
             return -100;
@@ -312,7 +334,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
             return null;
         }
 
-        String text = entities.get(0).getNoDirectionText();
+        String text = getEntity().getNoDirectionText();
         for (MapEntity entity: entities) {
 
             if (!entity.getNoDirectionText().equals(text)) {
@@ -355,3 +377,4 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
         return true;
     }
 }
+

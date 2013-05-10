@@ -21,62 +21,82 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import java.util.Hashtable;
+import java.util.*;
 import org.solarus.editor.*;
+import org.solarus.editor.Map;
 import org.solarus.editor.entities.*;
 
 /**
- * A component to set the rendering options of the map view,
- * i.e. what tiles are displayed depending on their layer, etc.
+ * A component to set the view settings of the map editor,
+ * i.e. what entities are displayed and how.
  */
-public class MapViewRenderingOptionsView extends JPanel {
+public class MapViewSettingsPanel extends JPanel implements Observer {
 
     /**
      * The options visualised by this component.
      */
-    private MapViewRenderingOptions renderingOptions;
+    private MapViewSettings settings;
+
+    private JCheckBox showLowLayerCheckBox;
+    private JCheckBox showIntermediateLayerCheckBox;
+    private JCheckBox showHighLayerCheckBox;
+    private JCheckBox showTransparencyCheckBox;
+    private JCheckBox showGridCheckBox;
+    private ZoomChooser zoomChooser;
 
     /**
      * Constructor.
-     * @param renderingOptions the options to visualise with this component
+     * @param settings The map view settings to visualise with this component.
      */
-    public MapViewRenderingOptionsView(MapViewRenderingOptions renderingOptions) {
+    public MapViewSettingsPanel(MapViewSettings settings) {
         super(new BorderLayout());
 
-        this.renderingOptions = renderingOptions;
+        this.settings = settings;
 
-        ZoomChooser zoomChooser = new ZoomChooser();
+        zoomChooser = new ZoomChooser();
         JPanel boxesPanel = new JPanel(new GridLayout(2, 3));
 
-        JCheckBox box;
+        showLowLayerCheckBox = new JCheckBox("Show low layer");
+        showLowLayerCheckBox.addItemListener(new ItemListenerLayer(Layer.LOW));
+        boxesPanel.add(showLowLayerCheckBox);
 
-        box = new JCheckBox("Show low layer");
-        box.setSelected(renderingOptions.getShowLayer(Layer.LOW));
-        box.addItemListener(new ItemListenerLayer(Layer.LOW));
-        boxesPanel.add(box);
+        showIntermediateLayerCheckBox = new JCheckBox("Show intermediate layer");
+        showIntermediateLayerCheckBox.addItemListener(new ItemListenerLayer(Layer.INTERMEDIATE));
+        boxesPanel.add(showIntermediateLayerCheckBox);
 
-        box = new JCheckBox("Show intermediate layer");
-        box.setSelected(renderingOptions.getShowLayer(Layer.INTERMEDIATE));
-        box.addItemListener(new ItemListenerLayer(Layer.INTERMEDIATE));
-        boxesPanel.add(box);
+        showHighLayerCheckBox = new JCheckBox("Show high layer");
+        showHighLayerCheckBox.setSelected(settings.getShowLayer(Layer.HIGH));
+        showHighLayerCheckBox.addItemListener(new ItemListenerLayer(Layer.HIGH));
+        boxesPanel.add(showHighLayerCheckBox);
 
-        box = new JCheckBox("Show high layer");
-        box.setSelected(renderingOptions.getShowLayer(Layer.HIGH));
-        box.addItemListener(new ItemListenerLayer(Layer.HIGH));
-        boxesPanel.add(box);
-
-        box = new JCheckBox("Show transparency");
-        box.setSelected(renderingOptions.getShowTransparency());
-        box.addItemListener(new ItemListenerTransparency());
-        boxesPanel.add(box);
+        showTransparencyCheckBox = new JCheckBox("Show transparency");
+        showTransparencyCheckBox.addItemListener(new ItemListenerTransparency());
+        boxesPanel.add(showTransparencyCheckBox);
         
-        box = new JCheckBox("Show grid");
-        box.setSelected(renderingOptions.getShowGrid());
-        box.addItemListener(new ItemListenerGrid());
-        boxesPanel.add(box);
+        showGridCheckBox = new JCheckBox("Show grid");
+        showGridCheckBox.addItemListener(new ItemListenerGrid());
+        boxesPanel.add(showGridCheckBox);
 
         add(zoomChooser, BorderLayout.WEST);
         add(boxesPanel, BorderLayout.CENTER);
+
+        update(settings, null);
+        settings.addObserver(this);
+    }
+
+    /**
+     * Called when settings have changed.
+     */
+    @Override
+    public void update(Observable model, Object obj) {
+
+        if (model instanceof MapViewSettings) {
+            showLowLayerCheckBox.setSelected(settings.getShowLayer(Layer.LOW));
+            showIntermediateLayerCheckBox.setSelected(settings.getShowLayer(Layer.INTERMEDIATE));
+            showTransparencyCheckBox.setSelected(settings.getShowTransparency());
+            showGridCheckBox.setSelected(settings.getShowGrid());
+            zoomChooser.update();
+        }
     }
 
     /**
@@ -102,27 +122,20 @@ public class MapViewRenderingOptionsView extends JPanel {
          */
         public void itemStateChanged(ItemEvent itemEvent) {
 
-            Map map = renderingOptions.getMap();
-
-            if (map != null) {
-                // unselect everything
-                map.getEntitySelection().unselectAll();
-            }
-
             // get the new checkbox state
             boolean show = (itemEvent.getStateChange() == ItemEvent.SELECTED);
 
             // update the options
-            renderingOptions.setShowLayer(layer, show);
+            settings.setShowLayer(layer, show);
         }
     }
 
     /**
-     * Listener invoked when the state of the grid checkbox has changed
+     * Listener invoked when the state of the grid checkbox has changed.
      */
     private class ItemListenerGrid implements ItemListener {
     	/**
-    	 * Constructor
+    	 * Constructor.
     	 */
     	public ItemListenerGrid() {
     		
@@ -136,7 +149,7 @@ public class MapViewRenderingOptionsView extends JPanel {
             boolean show = (itemEvent.getStateChange() == ItemEvent.SELECTED);
 
             // update the options
-            renderingOptions.setShowGrid(show);
+            settings.setShowGrid(show);
         }
 
     }
@@ -149,7 +162,6 @@ public class MapViewRenderingOptionsView extends JPanel {
          * Constructor.
          */
         public ItemListenerTransparency() {
-
         }
 
         /**
@@ -161,7 +173,7 @@ public class MapViewRenderingOptionsView extends JPanel {
             boolean show = (itemEvent.getStateChange() == ItemEvent.SELECTED);
 
             // update the options
-            renderingOptions.setShowTransparency(show);
+            settings.setShowTransparency(show);
         }
     }
 
@@ -179,7 +191,7 @@ public class MapViewRenderingOptionsView extends JPanel {
 
             setBorder(BorderFactory.createTitledBorder("Zoom"));
 
-            slider = new JSlider(0, 3, 3);
+            slider = new JSlider(0, 3);
             add(slider, BorderLayout.CENTER);
 
             Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
@@ -198,8 +210,19 @@ public class MapViewRenderingOptionsView extends JPanel {
             slider.addChangeListener(this);
         }
 
+        public void update() {
+            double zoom = settings.getZoom();
+            for (int i = 0; i < zooms.length; i++) {
+                if (zooms[i] == zoom) {
+                    slider.setValue(i);
+                }
+            }
+        }
+
+        @Override
         public void stateChanged(ChangeEvent ev) {
-            renderingOptions.setZoom(zooms[slider.getValue()]);
+            settings.setZoom(zooms[slider.getValue()]);
         }
     }
 }
+

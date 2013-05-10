@@ -215,17 +215,18 @@ $ cmake -DSOLARUS_SYSROOT="/Developer/SDKs/MacOSX10.5.sdk" -DSOLARUS_ARCH="ppc;i
 You will only build the executable with the default command.
 To build the entire bundle, pass the following flag to cmake
 
-$ cmake -DSOLARUS_BUNDLE="SolarusDX" .
+$ cmake -DSOLARUS_BUNDLE="your_bundle_name" .
 
-Which will install the application into a bundle named "SolarusDX"
-A bundle is a .app suffixed folder, which typcially contains 
+Which will install the application into a bundle named "your_bundle_name"
+and place it in the /Applications folder.
+A bundle is a .app suffixed folder, which typically contains 
 the executable and all resources it needs.
 Pass SOLARUS_BUNDLE_QUEST , SOLARUS_BUNDLE_INFOPLIST , 
 SOLARUS_BUNDLE_ICON and SOLARUS_BUNDLE_VERSION flags 
 in addition to SOLARUS_BUNDLE to specify your own configuration.
-See ./cmake/modules/installCFBundle.cmake for more details.
+See ./cmake/modules/addCFBundleTarget.cmake for more details.
 
-All non-Mac-native frameworks are placed in ${SOLARUS_BUNDLE}.app/Contents/Frameworks/
+All non-Mac-native frameworks are placed in ${your_bundle_name}.app/Contents/Frameworks/
 You have to do a little verification on them : check if dependencies search
 path are correctly integrated, just by doing
 
@@ -238,9 +239,9 @@ $ install_name_tool -id new_path /dylib/or/binary/I/want/to/modify
 or
 $ install_name_tool -change old_path new_path /dylib/or/binary/I/want/to/modify
 
-The new_path string usually looks like @rpath/The_dylib.dylib or 
-@rpath/The_framework.framework/Version/A/The_binary on Mac 10.5+.
-Replace @rpath/ by @executable_path/../Frameworks/ on older OSX versions.
+The new_path string usually looks like "@rpath/The_dylib.dylib" or 
+"@rpath/The_framework.framework/Version/A/The_binary" on Mac 10.5+.
+Replace "@rpath/" by "@executable_path/../Frameworks/" on older OSX versions.
 
 Instead of using this command on embed libraries, you should directly do it on system libraries,
 which they are copied from, and then just do this step once.
@@ -250,5 +251,5 @@ to make sure you have a fully 10.8+ and Mac App Store compatible application.
 
 
 * Add a quest into the OSX Bundle
-Just copy the quest file (data.solarus or data/) into ${SOLARUS_BUNDLE}.app/Contents/Resources/
+Just copy the quest file (data.solarus or data/) into ${your_bundle_name}.app/Contents/Resources/
 

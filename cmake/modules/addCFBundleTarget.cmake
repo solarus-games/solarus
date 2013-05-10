@@ -57,6 +57,8 @@ else()
 endif()
 
 # Default files if not specified
+if(NOT SOLARUS_BUNDLE_INFOPLIST)
+  set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/OSX-Info.plist")
 if(NOT SOLARUS_BUNDLE_ICON)
   set(SOLARUS_BUNDLE_ICON           "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/icons/Solarus.icns")
 endif()
@@ -121,12 +123,8 @@ endif()
 
 # Info.plist template or additional lines
 get_filename_component(SOLARUS_BUNDLE_ICON_NAME "${SOLARUS_BUNDLE_ICON}" NAME)
-if(SOLARUS_BUNDLE_INFOPLIST)
-  set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
-		MACOSX_BUNDLE_INFO_PLIST             "SOLARUS_BUNDLE_INFOPLIST"
-  )
-else()
-  set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
+set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
+		MACOSX_BUNDLE_INFO_PLIST             "${SOLARUS_BUNDLE_INFOPLIST}"
 		MACOSX_BUNDLE_BUNDLE_NAME            "${SOLARUS_BUNDLE}"
 		MACOSX_BUNDLE_ICON_FILE              "${SOLARUS_BUNDLE_ICON_NAME}"
 		MACOSX_BUNDLE_BUNDLE_VERSION         "${SOLARUS_BUNDLE_VERSION}"
@@ -136,8 +134,7 @@ else()
 		MACOSX_BUNDLE_LONG_VERSION_STRING    "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}"
 		MACOSX_BUNDLE_COPYRIGHT              "Copyright 2013, ${COMPANY_IDENTIFIER}."
 		MACOSX_BUNDLE_INFO_STRING            "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}, Copyright 2013, ${COMPANY_IDENTIFIER}."
-  )
-endif()
+)
 
 # Embed library search path
 if(NOT SOLARUS_IOS_BUILD)
@@ -159,9 +156,9 @@ add_custom_command(
   TARGET ${EXECUTABLE_MAIN_NAME}
   POST_BUILD
   COMMAND mv 
-  ARGS \"${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}\" \"${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Resources/solarus\"
+  ARGS "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Resources/solarus"
   COMMAND cp 
-  ARGS \"${PROJECT_BINARY_DIR}/cmake/apple/OSX-wrapper.sh\" \"${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}\"
+  ARGS "${PROJECT_BINARY_DIR}/cmake/apple/OSX-wrapper.sh" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}"
 )
 
 # Code signing

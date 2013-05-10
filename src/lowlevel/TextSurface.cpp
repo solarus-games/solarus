@@ -97,6 +97,7 @@ int TextSurface::l_font(lua_State* l) {
   int font_size = LuaContext::opt_int_field(l, 1, "size", 11);
   bool is_default = LuaContext::opt_boolean_field(l, 1, "default", false);
 
+  fonts[font_id].bitmap = NULL;
   fonts[font_id].file_name = file_name;
   fonts[font_id].font_size = font_size;
 

@@ -160,16 +160,55 @@ public class QuestTree extends JTree
      * Rebuilds the whole tree from the resources.
      */
     public void rebuildTree() {
-        setModel(new QuestTreeModel());
+
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Quest");
+        DefaultTreeModel model = new DefaultTreeModel(root);
+        model.setAsksAllowsChildren(true);
+
+        // Create a parent node for each type of resource:
+        // map, tileset, sound, etc.
+        for (ResourceType resourceType: ResourceType.values()) {
+            DefaultMutableTreeNode resourceTypeNode =
+                    new DefaultMutableTreeNode(resourceType);
+            root.add(resourceTypeNode);
+            if (Project.isLoaded()) {
+                buildResourceTypeChildren(resourceTypeNode);
+            }
+        }
+
+        setModel(model);
         repaint();
+    }
+
+    /**
+     * Builds the subtree of a resource type node.
+     * @param resourceTypeNode The node where to built the subtree.
+     */
+    private void buildResourceTypeChildren(DefaultMutableTreeNode resourceTypeNode) {
+
+        ResourceType resourceType = (ResourceType) resourceTypeNode.getUserObject();
+        Resource resource = Project.getResource(resourceType);
+        String[] ids = resource.getIds();
+
+        try {
+            for (int i = 0; i < ids.length; i++) {
+                DefaultMutableTreeNode elementNode = new DefaultMutableTreeNode(
+                        new ResourceElement(resourceType, ids[i]));
+                elementNode.setAllowsChildren(false);
+                resourceTypeNode.add(elementNode);
+            }
+        }
+        catch (QuestEditorException ex) {
+            GuiTools.errorDialog("Unexpected error while building the quest tree: " + ex.getMessage());
+        }
     }
 
     /**
      * Returns the model used by the quest tree.
      * @return The model.
      */
-    private QuestTreeModel getQuestTreeModel() {
-        return (QuestTreeModel) getModel();
+    private DefaultTreeModel getQuestTreeModel() {
+        return (DefaultTreeModel) getModel();
     }
 
     /**
@@ -262,56 +301,6 @@ public class QuestTree extends JTree
         mapNode.setAllowsChildren(false);
         getQuestTreeModel().reload(mapNode);
         repaint();
-    }
-
-    /**
-     * Model used for the quest tree.
-     */
-    private class QuestTreeModel extends DefaultTreeModel {
-
-        /**
-         * Creates a quest tree.
-         */
-        public QuestTreeModel() {
-            super((new DefaultMutableTreeNode("Quest")));
-
-            setAsksAllowsChildren(true);
-
-            // Create a parent node for each type of resource:
-            // map, tileset, sound, etc.
-            for (ResourceType resourceType : ResourceType.values()) {
-                DefaultMutableTreeNode resourceNode =
-                        new DefaultMutableTreeNode(resourceType);
-                ((DefaultMutableTreeNode) getRoot()).add(resourceNode);
-                if (Project.isLoaded()) {
-                    addChildren(resourceNode, resourceType);
-                }
-            }
-        }
-
-        /**
-         * Builds the subtree of a resource type.
-         * @param parentNode The parent node of the subtree to create.
-         * @param resourceType A type of resource.
-         */
-        protected final void addChildren(DefaultMutableTreeNode parentNode,
-                ResourceType resourceType) {
-
-            Resource resource = Project.getResource(resourceType);
-            String[] ids = resource.getIds();
-
-            try {
-                for (int i = 0; i < ids.length; i++) {
-                    DefaultMutableTreeNode elementNode = new DefaultMutableTreeNode(
-                            new ResourceElement(resourceType, ids[i]));
-                    elementNode.setAllowsChildren(false);
-                    parentNode.add(elementNode);
-                }
-            }
-            catch (QuestEditorException ex) {
-                GuiTools.errorDialog("Unexpected error while building the quest tree: " + ex.getMessage());
-            }
-        }
     }
 
     /**

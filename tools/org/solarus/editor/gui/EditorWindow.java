@@ -23,6 +23,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import org.solarus.editor.*;
+import org.solarus.editor.Map;
 
 /**
  * Main window of the editor.
@@ -929,5 +930,20 @@ public class EditorWindow extends JFrame
     public void resourceElementRenamed(ResourceType resourceType,
             String id, String name) {
         tabs.repaint();  // TODO don't use repaint for this.
+    }
+
+    /**
+     * Returns a map currently open in an editor, given its id.
+     * @param mapId Id of the map to get.
+     * @return The corresponding map, or null if this map is not open.
+     */
+    public Map getOpenMap(String mapId) {
+
+        String editorId = MapEditorPanel.getEditorId(mapId);
+        AbstractEditorPanel editor = tabs.getEditor(editorId);
+        if (editor != null) {
+            return ((MapEditorPanel) editor).getMap();
+        }
+        return null;
     }
 }

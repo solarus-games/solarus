@@ -16,8 +16,12 @@
  */
 package org.solarus.editor.gui;
 
+import imagej.util.swing.tree.*;
+
 import java.awt.event.*;
 import java.util.NoSuchElementException;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -52,8 +56,7 @@ import org.solarus.editor.entities.EntityType;
  *     - ...
  *   - ...
  */
-public class QuestTree extends JTree
-        implements TreeSelectionListener, ProjectObserver {
+public class QuestTree extends JTree implements ProjectObserver, Observer {
 
     private EditorWindow editorWindow;  // The main window.
     
@@ -65,7 +68,13 @@ public class QuestTree extends JTree
         setModel(null);  // Because Java makes a stupid example tree by default.
         this.editorWindow = parent;
 
-        addTreeSelectionListener(this);
+        final CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();
+        setCellRenderer(renderer);
+
+        final CheckBoxNodeEditor editor = new CheckBoxNodeEditor(this);
+        setCellEditor(editor);
+        setEditable(true);
+
         addMouseListener(new QuestTreeMouseAdapter());
 
         Project.addProjectObserver(this);
@@ -80,6 +89,33 @@ public class QuestTree extends JTree
 
         // Initially expand maps.
         expandRow(ResourceType.MAP.ordinal() + 1);
+    }
+
+    /**
+     * Called when an observed model changes.
+     * @param model The model.
+     * @param param Parameter.
+     */
+    @Override
+    public void update(Observable model, Object param) {
+
+        if (model instanceof MapViewSettings) {
+            MapViewSettings mapViewSettings = (MapViewSettings) model;
+            Map map = mapViewSettings.getMap();
+            DefaultMutableTreeNode mapNode = getResourceElementNode(
+                    ResourceType.MAP, map.getId());
+
+            DefaultMutableTreeNode child =
+                    (DefaultMutableTreeNode) mapNode.getFirstChild();
+            while (child != null) {
+                CheckBoxNodeData data =
+                        (CheckBoxNodeData) child.getUserObject();
+                EntityType entityType = EntityType.values()[mapNode.getIndex(child)];
+                boolean shown = mapViewSettings.getShowEntityType(entityType);
+                data.setChecked(shown);
+                child = child.getNextSibling();
+            }
+        }
     }
 
     /**
@@ -152,10 +188,6 @@ public class QuestTree extends JTree
         }
     }
 
-    @Override
-    public void valueChanged(TreeSelectionEvent e) {
-    }
-
     /**
      * Rebuilds the whole tree from the resources.
      */
@@ -164,7 +196,7 @@ public class QuestTree extends JTree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Quest");
         DefaultTreeModel model = new DefaultTreeModel(root);
         model.setAsksAllowsChildren(true);
-
+        
         // Create a parent node for each type of resource:
         // map, tileset, sound, etc.
         for (ResourceType resourceType: ResourceType.values()) {
@@ -177,6 +209,45 @@ public class QuestTree extends JTree
         }
 
         setModel(model);
+
+        treeModel.addTreeModelListener(new TreeModelListener() {
+
+            @Override
+            public void treeNodesChanged(final TreeModelEvent event) {
+
+                Object[] children = event.getChildren();
+                for (final Object child: children) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) child;
+                    final Object userObject = node.getUserObject();
+
+                    if (node.getLevel() == 3 && userObject instanceof CheckBoxNodeData) {
+                        final CheckBoxNodeData data =
+                                (CheckBoxNodeData) userObject;
+                        DefaultMutableTreeNode mapNode = (DefaultMutableTreeNode) node.getParent();
+                        int index = mapNode.getIndex(node);
+                        EntityType entityType = EntityType.values()[index];
+
+                        String mapId = ((ResourceElement) mapNode.getUserObject()).id;
+                        Map map = editorWindow.getOpenMap(mapId);
+                        map.getViewSettings().setShowEntityType(
+                                entityType, data.isChecked());
+                    }
+                }
+            }
+
+            @Override
+            public void treeNodesInserted(final TreeModelEvent event) {
+            }
+
+            @Override
+            public void treeNodesRemoved(final TreeModelEvent event) {
+            }
+
+            @Override
+            public void treeStructureChanged(final TreeModelEvent event) {
+            }
+        });
+
         repaint();
     }
 
@@ -274,8 +345,11 @@ public class QuestTree extends JTree
         mapNode.removeAllChildren();
 
         for (EntityType entityType: EntityType.values()) {
-            DefaultMutableTreeNode entityTypeNode = new DefaultMutableTreeNode(
-                    entityType.getHumanName());
+            final CheckBoxNodeData data = new CheckBoxNodeData(
+                    entityType.getHumanName(),
+                    map.getViewSettings().getShowEntityType(entityType));
+            DefaultMutableTreeNode entityTypeNode =
+                    new DefaultMutableTreeNode(data);
             entityTypeNode.setAllowsChildren(false);
             getQuestTreeModel().insertNodeInto(
                     entityTypeNode,
@@ -286,6 +360,9 @@ public class QuestTree extends JTree
         TreePath path = new TreePath(mapNode.getPath());
         expandPath(path);
         scrollPathToVisible(path);
+
+        map.getViewSettings().addObserver(this);
+        update(map.getViewSettings(), null);
     }
 
     /**
@@ -295,6 +372,7 @@ public class QuestTree extends JTree
      */
     public void closeMap(Map map) {
 
+        map.getViewSettings().deleteObserver(this);
         DefaultMutableTreeNode mapNode = getResourceElementNode(
                 ResourceType.MAP, map.getId());
         mapNode.removeAllChildren();

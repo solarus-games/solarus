@@ -31,6 +31,11 @@ import java.util.*;
 public class MapViewSettings extends Observable {
 
     /**
+     * The map these view settings belong to.
+     */
+    private Map map;
+
+    /**
      * Zoom of the map view.
      * The possible values are 0.25, 0.5, 1, 2 (default).
      */
@@ -53,19 +58,38 @@ public class MapViewSettings extends Observable {
     private boolean showGrid;
 
     /**
+     * Whether or not each type of entity is shown.
+     */
+    private HashMap<EntityType, Boolean> showEntityTypes;
+
+    /**
      * Size of a square of the grid (16 pixels by default).
      */
     private int gridSize;
 
     /**
      * Constructor.
+     * @param map The map.
      */
-    public MapViewSettings() {
+    public MapViewSettings(Map map) {
+        this.map = map;
         this.zoom = 2.0;
         this.showLayers = new boolean[] {true, true, true};
         this.showTransparency = true;
         this.showGrid = false;
         this.gridSize = 16;
+        this.showEntityTypes = new HashMap<EntityType, Boolean>();
+        for (EntityType entityType: EntityType.values()) {
+            this.showEntityTypes.put(entityType, true);
+        }
+    }
+
+    /**
+     * Returns the map these view settings apply to.
+     * @return The map.
+     */
+    public Map getMap() {
+        return map;
     }
 
     /**
@@ -161,6 +185,29 @@ public class MapViewSettings extends Observable {
             notifyObservers();
         }
     }
+
+    /**
+     * Returns whether or not a type of entity is shown.
+     * @param entityType A type of entity.
+     * @return true if these entities are shown.
+     */
+    public boolean getShowEntityType(EntityType entityType) {
+        return showEntityTypes.get(entityType);
+    }
+
+    /**
+     * Sets whether or not a type of entity is shown.
+     * @param entityType A type of entity.
+     * @return true to show these entities.
+     */
+    public void setShowEntityType(EntityType entityType, boolean show) {
+        if (show != showEntityTypes.get(entityType)) {
+            showEntityTypes.put(entityType, show);
+            setChanged();
+            notifyObservers();
+        }
+    }
+
     /**
      * Returns the current grid size in the map view
      * @return The size of a square of the grid in pixels.
@@ -188,8 +235,9 @@ public class MapViewSettings extends Observable {
      * @return true if this entity is shown with the current options
      */
     public boolean isEntityShown(MapEntity entity) {
-        Layer layer = entity.getLayer();
-        return showLayers[layer.getId()];
+
+        return getShowLayer(entity.getLayer()) &&
+                getShowEntityType(entity.getType());
     }
 }
 

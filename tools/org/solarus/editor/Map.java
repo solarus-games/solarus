@@ -151,7 +151,7 @@ public class Map extends Observable {
 
         this.entitySelection = new MapEntitySelection(this);
         this.history = new MapEditorHistory();
-        this.viewSettings = new MapViewSettings();
+        this.viewSettings = new MapViewSettings(this);
     }
 
     /**

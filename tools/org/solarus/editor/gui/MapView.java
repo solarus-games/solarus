@@ -152,16 +152,16 @@ public class MapView extends JComponent implements Observer, Scrollable {
         setState(State.NORMAL);
 
         if (map != null) {
-            getViewSettings().addObserver(this);
             map.addObserver(this);
             map.getEntitySelection().addObserver(this);
             if (map.getTileset() != null) {
                 map.getTileset().addObserver(this);
             }
+            getViewSettings().addObserver(this);
+            update(getViewSettings(), null);
         }
 
         update(map, null);
-        update(getViewSettings(), null);
     }
 
     /**
@@ -174,13 +174,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * Returns the map view settings.
-     *
-     * Settings are common to all map views.
-     *
      * @return The map view settings.
      */
     public MapViewSettings getViewSettings() {
-        return map.getViewSettings();
+        return map == null ? null : map.getViewSettings();
     }
 
     /**

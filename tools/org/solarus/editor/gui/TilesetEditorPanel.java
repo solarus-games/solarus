@@ -17,7 +17,6 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
-import java.util.Observable;
 import javax.swing.*;
 
 import org.solarus.editor.*;

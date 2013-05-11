@@ -24,12 +24,12 @@ import java.lang.reflect.*;
  */
 public enum EntityType {
 
-    // Java name          human name           Lua name           class                  subtype enum (optional)
+    // Java name          human name           Lua name           class                   subtype enum (optional)
     TILE                 ("Tile",              "tile",            Tile.class,            null),
     DESTINATION          ("Destination",       "destination",     Destination.class,     null),
     TELETRANSPORTER      ("Teletransporter",   "teletransporter", Teletransporter.class, null),
-    PICKABLE             ("Pickable item",     "pickable",        Pickable.class,        null),
-    DESTRUCTIBLE         ("Destructible item", "destructible",    Destructible.class,    Destructible.Subtype.class),
+    PICKABLE             ("Pickable",          "pickable",        Pickable.class,        null),
+    DESTRUCTIBLE         ("Destructible",      "destructible",    Destructible.class,    Destructible.Subtype.class),
     CHEST                ("Chest",             "chest",           Chest.class,           null),
     JUMPER               ("Jumper",            "jumper",          Jumper.class,          null),
     ENEMY                ("Enemy",             "enemy",           Enemy.class,           null),

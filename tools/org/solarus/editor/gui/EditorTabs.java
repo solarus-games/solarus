@@ -44,7 +44,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
 
         if (getEditor(editor.getId()) != null) {
             throw new IllegalArgumentException(
-                    "There is already an editor with id '" + editor.getId());
+                    "There is already an editor with id '" + editor.getId() + "'");
         }
 
         add(editor.getTitle(), editor);
@@ -81,6 +81,7 @@ public class EditorTabs extends JTabbedPane implements MouseListener, ChangeList
      */
     public void removeEditor(AbstractEditorPanel editor, boolean promptSave) {
         if (!promptSave || editor.checkCurrentFileSaved()) {
+            editor.close();
             remove(editor);
             repaint();
         }

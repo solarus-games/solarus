@@ -102,6 +102,14 @@ public class EditorWindow extends JFrame
     }
 
     /**
+     * Returns the quest tree displayed in the left part of the window.
+     * @return The quest tree.
+     */
+    public QuestTree getQuestTree() {
+        return questTree;
+    }
+
+    /**
      * This function is called when the history changes.
      * @param o the history
      * @param obj additional parameter
@@ -432,7 +440,7 @@ public class EditorWindow extends JFrame
 
     /**
      * Action performed when the user clicks on File > Close.
-     * Closes the current editor unless the user is not okay with that..
+     * Closes the current editor unless the user is not okay with that.
      */
     private class ActionListenerCloseCurrentEditor implements ActionListener {
 

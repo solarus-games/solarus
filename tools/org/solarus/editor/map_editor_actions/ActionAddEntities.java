@@ -17,7 +17,6 @@
 package org.solarus.editor.map_editor_actions;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.LinkedList;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;

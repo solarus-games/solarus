@@ -17,7 +17,6 @@
 
 package org.solarus.editor.gui;
 
-import java.util.Observer;
 import javax.swing.JPanel;
 
 /**
@@ -73,20 +72,20 @@ public abstract class AbstractEditorPanel extends JPanel {
     public abstract void close();
 
     /**
+     * Returns the main window of the quest editor.
+     * @return The main window.
+     */
+    public final EditorWindow getMainWindow() {
+        return mainWindow;
+    }
+
+    /**
      * Returns an id that identifies the file open in this editor.
      * You can use it to determine whether this file is already open in
      * another editor.
      */
-    public String getId() {
+    public final String getId() {
         return id;
-    }
-
-    /**
-     * Returns the main window of the quest editor.
-     * @return The main window.
-     */
-    public EditorWindow getMainWindow() {
-        return mainWindow;
     }
 }
 

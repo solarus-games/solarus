@@ -23,7 +23,6 @@ import javax.swing.event.*;
 
 import java.util.*;
 import org.solarus.editor.*;
-import org.solarus.editor.Map;
 import org.solarus.editor.entities.*;
 
 /**

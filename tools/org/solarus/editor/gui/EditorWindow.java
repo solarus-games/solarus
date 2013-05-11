@@ -58,7 +58,6 @@ public class EditorWindow extends JFrame
     public EditorWindow(String questPath) {
         super("Solarus Quest Editor " + Project.SolarusFormat);
 
-        Project.addProjectObserver(this);
         // set a nice look and feel
         GuiTools.setLookAndFeel();
 
@@ -100,6 +99,11 @@ public class EditorWindow extends JFrame
                 loadProject();
             }
         }
+
+        // This object must be added as project observer after the quest tree.
+        // This is because we want the quest tree to be up-to-date before we
+        // build or destroy subtrees of maps.
+        Project.addProjectObserver(this);
     }
 
     /**

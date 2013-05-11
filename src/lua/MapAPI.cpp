@@ -1611,15 +1611,15 @@ int LuaContext::map_api_create_door(lua_State* l) {
     if (!is_valid_lua_identifier(opening_condition)) {
       luaL_argerror(l, 1, (StringConcat() <<
           "Bad field 'opening_condition' (expected a valid savegame variable identifier, got '" <<
-          opening_condition << "'").c_str());
+          opening_condition << "')").c_str());
     }
   }
 
   else if (opening_method == Door::OPENING_BY_INTERACTION_IF_ITEM) {
-    if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
+    if (opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
       luaL_argerror(l, 1, (StringConcat() <<
           "Bad field 'opening_condition' (there is no equipment item with name '" <<
-          opening_condition << "'").c_str());
+          opening_condition << "')").c_str());
     }
     EquipmentItem& item = game.get_equipment().get_item(opening_condition);
     if (!item.is_saved()) {

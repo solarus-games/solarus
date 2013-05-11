@@ -5,6 +5,7 @@ Bug fixes for the 1.0 release.
 * Fix a possible crash in TextSurface.
 * Fix parallax scrolling tiles not always displayed (#167).
 * Fix the setting joypad_enabled that had no effect (#163).
+* Fix doors not working when they require equipment items.
 * Fix a possible compilation warning in Surface.cpp.
 * Fix creating a transition from the callback of a previous one.
 * Improve the Mac OS X port.

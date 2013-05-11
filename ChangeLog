@@ -14,6 +14,8 @@ Bug fixes for the 1.0 release.
 * Fix crystal blocks animated late when coming from a teletransporter (#61).
 * Fix arrows that got stopped when outside the screen (#73).
 * Editor: add the possibility to show or hide each type of entity (#60).
+* Editor: keep the map coordinates shown when changing the zoom (#183).
+* Editor: fix the map view not updated correctly when changing the zoom (#174).
 * Editor: show an appropriate error message if the LuaJ jar is missing (#173).
 * Editor: fix the title bar string (#176).
 * Split the C++ documentation and the quest data files documentation (#181).

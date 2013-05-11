@@ -251,10 +251,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
     /**
      * This function is called when the map, the selected entities, the tileset 
      * or the view settings changes.
-     * @param o the object changed
-     * @param obj parameters
+     * @param o The object changed.
+     * @param parameter Parameter about what has changed, or null.
      */
-    public void update(Observable o, Object obj) {
+    public void update(Observable o, Object parameter) {
 
         if (map == null) { // the map has just been closed
             repaint();
@@ -264,7 +264,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         if (o instanceof Map) {
             // the map has been modified
 
-            if (obj instanceof Tileset) {
+            if (parameter instanceof Tileset) {
                 // the tileset has been changed
                 Tileset tileset = map.getTileset();
                 tileset.addObserver(this);
@@ -294,6 +294,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             }
         }
         else if (o instanceof MapViewSettings) {
+
             // Map view settings have changed: unselect hidden entities.
             ArrayList<MapEntity> hiddenEntities =
                 new ArrayList<MapEntity>();
@@ -303,6 +304,27 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 }
             }
             map.getEntitySelection().unselect(hiddenEntities);
+
+            if (parameter instanceof MapViewSettings.ChangeInfo) {
+
+                MapViewSettings.ChangeInfo info = (MapViewSettings.ChangeInfo) parameter;
+                if (info.setting.equals("zoom")) {
+                    // The zoom has changed.
+                    JViewport viewport = (JViewport) getParent();
+
+                    double oldZoom = (double) info.oldValue;
+                    double newZoom = (double) info.newValue;
+                    Rectangle viewRegion = viewport.getViewRect();
+
+                    int centerX = viewRegion.x + viewRegion.width / 2;
+                    int x = (int) (centerX / oldZoom * newZoom) - viewRegion.width / 2;
+
+                    int centerY = viewRegion.y + viewRegion.height / 2;
+                    int y = (int) (centerY / oldZoom * newZoom) - viewRegion.height / 2;
+
+                    viewport.setViewPosition(new Point(x, y));
+                }
+            }
         }
     }
 

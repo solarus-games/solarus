@@ -204,7 +204,7 @@ public class MapEditorPanel extends AbstractEditorPanel {
     /**
      * @return The map view.
      */
-    protected MapView getMapView() {
+    public MapView getMapView() {
         return mapView;
     }
 }

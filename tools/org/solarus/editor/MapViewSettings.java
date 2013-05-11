@@ -106,9 +106,10 @@ public class MapViewSettings extends Observable {
      */
     public void setZoom(double zoom) {
         if (zoom != this.zoom) {
+            double oldZoom = this.zoom;
             this.zoom = zoom;
             setChanged();
-            notifyObservers();
+            notifyObservers(new ChangeInfo("zoom", oldZoom, zoom));
         }
     }
 
@@ -205,6 +206,7 @@ public class MapViewSettings extends Observable {
             showEntityTypes.put(entityType, show);
             setChanged();
             notifyObservers();
+            // TODO add MapViewSettingChange parameter to notifyObservers()
         }
     }
 
@@ -238,6 +240,22 @@ public class MapViewSettings extends Observable {
 
         return getShowLayer(entity.getLayer()) &&
                 getShowEntityType(entity.getType());
+    }
+
+    /**
+     * Info about what has changed for notifyObservers().
+     */
+    public class ChangeInfo {
+
+        public final String setting;
+        public final Object oldValue;
+        public final Object newValue;
+
+        public ChangeInfo(String setting, Object oldValue, Object newValue) {
+            this.setting = setting;
+            this.oldValue = oldValue;
+            this.newValue = newValue;
+        }
     }
 }
 

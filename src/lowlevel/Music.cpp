@@ -176,6 +176,10 @@ void Music::find_music_file(const std::string& music_id,
  */
 bool Music::exists(const std::string& music_id) {
 
+  if (music_id == none || music_id == unchanged) {
+    return true;
+  }
+
   std::string file_name;
   Format format;
   find_music_file(music_id, file_name, format);

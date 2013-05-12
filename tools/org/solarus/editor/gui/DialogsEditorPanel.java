@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Observable;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -97,14 +96,12 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
 
     /**
      * Creates a new dialogs editor.
-     * @param parentEditor The main editor window.
+     * @param mainWindow The main window of the quest editor.
      * @param languageId Language of the dialogs to edit. 
      */
-	public DialogsEditorPanel(EditorWindow parentEditor, String languageId) {
-	    super(Project.getDialogsFile(languageId).getAbsolutePath());
+	public DialogsEditorPanel(EditorWindow mainWindow, String languageId) {
+	    super(mainWindow, Project.getDialogsFile(languageId).getAbsolutePath());
         setLayout(new BorderLayout());
-
-        this.parentEditor = parentEditor;
 
         JPanel leftPanel = new JPanel(new BorderLayout());
         sectionsList = new JList<>();
@@ -226,8 +223,6 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
 
         this.dialogs = dialogs;
 
-        dialogs.addObserver(parentEditor);
-
         model.setItems(dialogs.getSections());
         model.filterList("");
         sectionsList.setPreferredSize(new Dimension(250, sectionsList.getModel().getSize() * 18));
@@ -236,16 +231,6 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
 
         //setSection(dialogs.getSections().get(0));
         repaint();
-    }
-
-    /**
-     * This function is called when the dialogs changes.
-     * @param o the history
-     * @param obj additional parameter
-     */
-    @Override
-	public void update(Observable o, Object obj) {
-        this.parentEditor.update(o, obj);
     }
 
     /**

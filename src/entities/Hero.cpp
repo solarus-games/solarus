@@ -178,13 +178,16 @@ void Hero::set_suspended(bool suspended) {
 /**
  * @brief Updates the hero's position, movement and animation.
  *
- * This function is called repeteadly by the game loop.
+ * This function is called repetedly by the game loop.
  */
 void Hero::update() {
 
   update_movement();
-  update_state();
   sprites->update();
+
+  // Update the state now because it may be impacted by movements and sprites.
+  update_state();
+
   if (!is_suspended()) {
     update_ground();
     check_collision_with_detectors(false);

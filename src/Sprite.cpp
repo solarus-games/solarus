@@ -573,7 +573,9 @@ void Sprite::update() {
 
   // update the current frame
   if (synchronize_to == NULL
-      || current_animation_name != synchronize_to->get_current_animation()) {
+      || current_animation_name != synchronize_to->get_current_animation()
+      || synchronize_to->get_current_direction() > get_nb_directions()
+      || synchronize_to->get_current_frame() > get_nb_frames()) {
     // update the frames normally (with the time)
     int next_frame;
     while (!finished && !suspended && !paused && get_frame_delay() > 0
@@ -598,11 +600,19 @@ void Sprite::update() {
   }
   else {
     // take the same frame as the other sprite
-    int other_frame = synchronize_to->get_current_frame();
-    if (other_frame != current_frame) {
-      current_frame = other_frame;
-      next_frame_date = now + get_frame_delay();
-      set_frame_changed(true);
+    if (synchronize_to->is_animation_finished()) {
+      finished = true;
+      if (lua_context != NULL) {
+        lua_context->sprite_on_animation_finished(*this, current_animation_name);
+      }
+    }
+    else {
+      int other_frame = synchronize_to->get_current_frame();
+      if (other_frame != current_frame) {
+        current_frame = other_frame;
+        next_frame_date = now + get_frame_delay();
+        set_frame_changed(true);
+      }
     }
   }
 

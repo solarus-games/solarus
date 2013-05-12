@@ -17,7 +17,6 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
-import java.util.Observable;
 import javax.swing.*;
 
 import org.solarus.editor.*;
@@ -45,16 +44,15 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
 
     /**
      * Creates a tileset editor.
-     * @param parentEditor The main editor window.
+     * @param mainWindow The main window of the quest editor.
      * @param tileset Id of the tileset to open.
      * @throws QuestEditorException If the tileset could not be loaded.
      */
-    public TilesetEditorPanel(EditorWindow parentEditor, String tilesetId)
+    public TilesetEditorPanel(EditorWindow mainWindow, String tilesetId)
             throws QuestEditorException {
-        super(getEditorId(tilesetId));
+        super(mainWindow, getEditorId(tilesetId));
 
         setLayout(new BorderLayout());
-        this.parentEditor = parentEditor;
 
         // tile patterns list and tileset image
 
@@ -90,15 +88,6 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
      */
     public static String getEditorId(String tilesetId) {
         return Project.getTilesetFile(tilesetId).getAbsolutePath();
-    }
-
-    /**
-     * This function is called when the tileset changes.
-     * @param o the history
-     * @param obj additional parameter
-     */
-    public void update(Observable o, Object obj) {
-        this.parentEditor.update(o, obj);
     }
 
     /**

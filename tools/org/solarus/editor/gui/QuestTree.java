@@ -16,11 +16,18 @@
  */
 package org.solarus.editor.gui;
 
+import imagej.util.swing.tree.*;
+
 import java.awt.event.*;
+import java.util.NoSuchElementException;
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 import org.solarus.editor.*;
+import org.solarus.editor.entities.EntityType;
 
 /**
  * A tree that shows the whole resource list of the game:
@@ -49,11 +56,10 @@ import org.solarus.editor.*;
  *     - ...
  *   - ...
  */
-public class QuestTree extends JTree
-        implements TreeSelectionListener, ProjectObserver {
+public class QuestTree extends JTree implements ProjectObserver, Observer {
 
     private EditorWindow editorWindow;  // The main window.
-
+    
     /**
      * Creates a quest tree.
      * @param parent The main quest editor window.
@@ -62,7 +68,13 @@ public class QuestTree extends JTree
         setModel(null);  // Because Java makes a stupid example tree by default.
         this.editorWindow = parent;
 
-        addTreeSelectionListener(this);
+        final CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();
+        setCellRenderer(renderer);
+
+        final CheckBoxNodeEditor editor = new CheckBoxNodeEditor(this);
+        setCellEditor(editor);
+        setEditable(true);
+
         addMouseListener(new QuestTreeMouseAdapter());
 
         Project.addProjectObserver(this);
@@ -74,9 +86,36 @@ public class QuestTree extends JTree
     @Override
     public void currentProjectChanged() {
         rebuildTree();
-        
+
         // Initially expand maps.
-        expandRow(1);
+        expandRow(ResourceType.MAP.ordinal() + 1);
+    }
+
+    /**
+     * Called when an observed model changes.
+     * @param model The model.
+     * @param param Parameter.
+     */
+    @Override
+    public void update(Observable model, Object param) {
+
+        if (model instanceof MapViewSettings) {
+            MapViewSettings mapViewSettings = (MapViewSettings) model;
+            Map map = mapViewSettings.getMap();
+            DefaultMutableTreeNode mapNode = getResourceElementNode(
+                    ResourceType.MAP, map.getId());
+
+            DefaultMutableTreeNode child =
+                    (DefaultMutableTreeNode) mapNode.getFirstChild();
+            while (child != null) {
+                CheckBoxNodeData data =
+                        (CheckBoxNodeData) child.getUserObject();
+                EntityType entityType = EntityType.values()[mapNode.getIndex(child)];
+                boolean shown = mapViewSettings.getShowEntityType(entityType);
+                data.setChecked(shown);
+                child = child.getNextSibling();
+            }
+        }
     }
 
     /**
@@ -103,8 +142,8 @@ public class QuestTree extends JTree
      */
     @Override
     public void resourceElementRemoved(ResourceType resourceType, String id) {
-        rebuildTree();  // TODO Rebuilding the whole tree is slow.
-        expandRow(resourceType.ordinal() + 1);
+        DefaultMutableTreeNode resourceNode = getResourceElementNode(resourceType, id);
+        resourceNode.removeFromParent();
     }
 
     /**
@@ -116,8 +155,16 @@ public class QuestTree extends JTree
     @Override
     public void resourceElementMoved(ResourceType resourceType, String oldId,
             String newId) {
-        rebuildTree();  // TODO Rebuilding the whole tree is slow.
-        expandRow(resourceType.ordinal() + 1);
+
+        try {
+            DefaultMutableTreeNode resourceNode = getResourceElementNode(resourceType, oldId);
+            resourceNode.setUserObject(new ResourceElement(resourceType, newId));
+            repaint();
+        }
+        catch (QuestEditorException ex) {
+            // Should not happen.
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -129,20 +176,147 @@ public class QuestTree extends JTree
     @Override
     public void resourceElementRenamed(ResourceType resourceType,
             String id, String name) {
-        rebuildTree();  // TODO Rebuilding the whole tree is slow.
-        expandRow(resourceType.ordinal() + 1);
-    }
 
-    @Override
-    public void valueChanged(TreeSelectionEvent e) {
+        try {
+            DefaultMutableTreeNode resourceNode = getResourceElementNode(resourceType, id);
+            resourceNode.setUserObject(new ResourceElement(resourceType, id));
+            repaint();
+        }
+        catch (QuestEditorException ex) {
+            // Should not happen.
+            ex.printStackTrace();
+        }
     }
 
     /**
      * Rebuilds the whole tree from the resources.
      */
     public void rebuildTree() {
-        setModel(new QuestTreeModel());
+
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Quest");
+        DefaultTreeModel model = new DefaultTreeModel(root);
+        model.setAsksAllowsChildren(true);
+        
+        // Create a parent node for each type of resource:
+        // map, tileset, sound, etc.
+        for (ResourceType resourceType: ResourceType.values()) {
+            DefaultMutableTreeNode resourceTypeNode =
+                    new DefaultMutableTreeNode(resourceType);
+            root.add(resourceTypeNode);
+            if (Project.isLoaded()) {
+                buildResourceTypeChildren(resourceTypeNode);
+            }
+        }
+
+        setModel(model);
+
+        treeModel.addTreeModelListener(new TreeModelListener() {
+
+            @Override
+            public void treeNodesChanged(final TreeModelEvent event) {
+
+                Object[] children = event.getChildren();
+                for (final Object child: children) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) child;
+                    final Object userObject = node.getUserObject();
+
+                    if (node.getLevel() == 3 && userObject instanceof CheckBoxNodeData) {
+                        final CheckBoxNodeData data =
+                                (CheckBoxNodeData) userObject;
+                        DefaultMutableTreeNode mapNode = (DefaultMutableTreeNode) node.getParent();
+                        int index = mapNode.getIndex(node);
+                        EntityType entityType = EntityType.values()[index];
+
+                        String mapId = ((ResourceElement) mapNode.getUserObject()).id;
+                        Map map = editorWindow.getOpenMap(mapId);
+                        map.getViewSettings().setShowEntityType(
+                                entityType, data.isChecked());
+                    }
+                }
+            }
+
+            @Override
+            public void treeNodesInserted(final TreeModelEvent event) {
+            }
+
+            @Override
+            public void treeNodesRemoved(final TreeModelEvent event) {
+            }
+
+            @Override
+            public void treeStructureChanged(final TreeModelEvent event) {
+            }
+        });
+
         repaint();
+    }
+
+    /**
+     * Builds the subtree of a resource type node.
+     * @param resourceTypeNode The node where to built the subtree.
+     */
+    private void buildResourceTypeChildren(DefaultMutableTreeNode resourceTypeNode) {
+
+        ResourceType resourceType = (ResourceType) resourceTypeNode.getUserObject();
+        Resource resource = Project.getResource(resourceType);
+        String[] ids = resource.getIds();
+
+        try {
+            for (int i = 0; i < ids.length; i++) {
+                DefaultMutableTreeNode elementNode = new DefaultMutableTreeNode(
+                        new ResourceElement(resourceType, ids[i]));
+                elementNode.setAllowsChildren(false);
+                resourceTypeNode.add(elementNode);
+            }
+        }
+        catch (QuestEditorException ex) {
+            GuiTools.errorDialog("Unexpected error while building the quest tree: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Returns the model used by the quest tree.
+     * @return The model.
+     */
+    private DefaultTreeModel getQuestTreeModel() {
+        return (DefaultTreeModel) getModel();
+    }
+
+    /**
+     * Returns the node that represents a specified resource type.
+     * @param resourceType Type of resource.
+     * @return The node of this resource.
+     */
+    private DefaultMutableTreeNode getResourceTypeNode(
+            ResourceType resourceType) {
+
+        return (DefaultMutableTreeNode) getModel().getChild(
+                getModel().getRoot(), resourceType.ordinal());
+    }
+
+    /**
+     * Returns the node that represents a specified resource element.
+     * @param resourceType Type of resource.
+     * @param id Id of the element to get.
+     * @return The node of this element.
+     * @throws NoSuchElementException If such a resource node was not found in
+     * the tree.
+     */
+    private DefaultMutableTreeNode getResourceElementNode(ResourceType resourceType,
+            String id) throws NoSuchElementException {
+
+        DefaultMutableTreeNode typeNode = getResourceTypeNode(resourceType);
+        DefaultMutableTreeNode candidateNode = (DefaultMutableTreeNode) typeNode.getFirstChild();
+        while (candidateNode != null) {
+            ResourceElement element = (ResourceElement) candidateNode.getUserObject(); 
+            if (element.id.equals(id)) {
+                return candidateNode;
+            }
+            candidateNode = candidateNode.getNextSibling();
+        }
+
+        throw new NoSuchElementException("Cannot find a " +
+                resourceType.getName() + " node with id '" + id + "'");
     }
 
     /**
@@ -150,68 +324,61 @@ public class QuestTree extends JTree
      * @param element The resource element to add.
      */
     private void addResourceElementToTree(ResourceElement element) {
-        DefaultMutableTreeNode resourceNode = (DefaultMutableTreeNode)
-                treeModel.getChild(treeModel.getRoot(), element.type.ordinal());
-        ((QuestTreeModel) treeModel).insertNodeInto(
-                new DefaultMutableTreeNode(element), resourceNode, resourceNode.getChildCount());
+        DefaultMutableTreeNode resourceNode = getResourceTypeNode(element.type);
+        getQuestTreeModel().insertNodeInto(
+                new DefaultMutableTreeNode(element),
+                resourceNode,
+                resourceNode.getChildCount());
         repaint();
     }
 
     /**
-     * Model used for the quest tree.
+     * This function is called when a map is being opened in the editor.
+     * The quest tree then creates some nodes under that map.
+     * @param map The map just opened.
      */
-    private class QuestTreeModel extends DefaultTreeModel {
+    public void openMap(Map map) {
 
-        /**
-         * Creates a quest tree.
-         */
-        public QuestTreeModel() {
-            super((new DefaultMutableTreeNode("Quest")));
+        DefaultMutableTreeNode mapNode = getResourceElementNode(
+                ResourceType.MAP, map.getId());
+        mapNode.setAllowsChildren(true);
+        mapNode.removeAllChildren();
 
-            // Create a parent node for each type of resource:
-            // map, tileset, sound, etc.
-            for (ResourceType resourceType : ResourceType.values()) {
-                DefaultMutableTreeNode resourceNode =
-                        new DefaultMutableTreeNode(resourceType);
-                ((DefaultMutableTreeNode) getRoot()).add(resourceNode);
-                if (Project.isLoaded()) {
-                    addChildren(resourceNode, resourceType);
-                }
-            }
+        for (EntityType entityType: EntityType.values()) {
+            final CheckBoxNodeData data = new CheckBoxNodeData(
+                    entityType.getHumanName(),
+                    map.getViewSettings().getShowEntityType(entityType));
+            DefaultMutableTreeNode entityTypeNode =
+                    new DefaultMutableTreeNode(data);
+            entityTypeNode.setAllowsChildren(false);
+            getQuestTreeModel().insertNodeInto(
+                    entityTypeNode,
+                    mapNode,
+                    mapNode.getChildCount());
         }
 
-        /**
-         * Returns whether a node is a leaf.
-         * @param node A node of the tree.
-         * @return true if this node should be considered as a leaf.
-         */
-        @Override
-        public boolean isLeaf(Object node) {
-            return super.isLeaf(node) &&
-                    ((DefaultMutableTreeNode) node).getUserObject() instanceof ResourceElement;
-        }
+        TreePath path = new TreePath(mapNode.getPath());
+        expandPath(path);
+        scrollPathToVisible(path);
 
-        /**
-         * Builds the subtree of a resource type.
-         * @param parentNode The parent node of the subtree to create.
-         * @param resourceType A type of resource.
-         */
-        protected final void addChildren(DefaultMutableTreeNode parentNode,
-                ResourceType resourceType) {
+        map.getViewSettings().addObserver(this);
+        update(map.getViewSettings(), null);
+    }
 
-            Resource resource = Project.getResource(resourceType);
-            String[] ids = resource.getIds();
+    /**
+     * This function is called when a map is being closed in the editor.
+     * The quest tree then removes all nodes under that map.
+     * @param map The map being closed.
+     */
+    public void closeMap(Map map) {
 
-            try {
-                for (int i = 0; i < ids.length; i++) {
-                    parentNode.add(new DefaultMutableTreeNode(
-                            new ResourceElement(resourceType, ids[i])));
-                }
-            }
-            catch (QuestEditorException ex) {
-                GuiTools.errorDialog("Unexpected error while building the quest tree: " + ex.getMessage());
-            }
-        }
+        map.getViewSettings().deleteObserver(this);
+        DefaultMutableTreeNode mapNode = getResourceElementNode(
+                ResourceType.MAP, map.getId());
+        mapNode.removeAllChildren();
+        mapNode.setAllowsChildren(false);
+        getQuestTreeModel().reload(mapNode);
+        repaint();
     }
 
     /**
@@ -358,27 +525,5 @@ public class QuestTree extends JTree
             });
         }
     }
-
-    /**
-     * Stores the id of an element from a resource, its name and its
-     * resource type.
-     * This class is used as the user object for nodes of the quest tree.
-     */
-    private class ResourceElement {
-
-        public final ResourceType type;
-        public final String id;
-        public final String name;
-
-        public ResourceElement(ResourceType type, String id)
-                throws QuestEditorException {
-            this.type = type;
-            this.id = id;
-            this.name = Project.getResource(type).getElementName(id);
-        }
-
-        public String toString() {
-            return name;
-        }
-    }
 }
+

@@ -50,9 +50,9 @@ class EnemyReaction {
       int life_lost;     /**< number of life points lost (possibly zero) */
     };
 
-  private:
+    static const std::string reaction_names[]; /**< Lua name of each reaction type */
 
-    static const std::string reaction_names[]; /**< name of each reaction type */
+  private:
 
     Reaction general_reaction;                 /**< reaction to make unless sprite-specific override */
     std::map<const Sprite*, Reaction> sprite_reactions;  /**< sprite-specific reaction (overrides the default one) */

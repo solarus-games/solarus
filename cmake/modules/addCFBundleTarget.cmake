@@ -35,12 +35,19 @@ set(COMPANY_IDENTIFIER                "${EXECUTABLE_MAIN_NAME}-team")
 if(SOLARUS_IOS_BUILD)
   set(SOLARUS_OS_SOFTWARE             "iOS")
   set(SOLARUS_OS_HARDWARE             "IPhone")
-  set(SOLARUS_INSTALL_DESTINATION     "usr/share")
+  set(SOLARUS_INSTALL_DESTINATION     "local/share")
+  if(NOT SOLARUS_BUNDLE_INFOPLIST)
+    set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/iOS-Info.plist")
+  endif()
   set(SOLARUS_BUNDLE_COPIED_LIBRARIES "")
+
 else()
   set(SOLARUS_OS_SOFTWARE             "OSX")
   set(SOLARUS_OS_HARDWARE             "MacOSX")
   set(SOLARUS_INSTALL_DESTINATION     "/Applications")
+  if(NOT SOLARUS_BUNDLE_INFOPLIST)
+    set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/OSX-Info.plist")
+  endif()
 
   # Remove the hardcoded additional link on SDL path
   string(REPLACE "-framework Cocoa" "" SDL_FRAMEWORK "${SDL_LIBRARY}") 
@@ -92,7 +99,7 @@ get_filename_component(library_name ${library_path} NAME)
         TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -R -L -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
+        ARGS -R -P -n -p "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
       )
     else()
       add_custom_command(
@@ -121,23 +128,18 @@ endif()
 
 # Info.plist template or additional lines
 get_filename_component(SOLARUS_BUNDLE_ICON_NAME "${SOLARUS_BUNDLE_ICON}" NAME)
-if(SOLARUS_BUNDLE_INFOPLIST)
-  set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
-		MACOSX_BUNDLE_INFO_PLIST             "SOLARUS_BUNDLE_INFOPLIST"
-  )
-else()
-  set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
+set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
+		MACOSX_BUNDLE_INFO_PLIST             "${SOLARUS_BUNDLE_INFOPLIST}"
 		MACOSX_BUNDLE_BUNDLE_NAME            "${SOLARUS_BUNDLE}"
 		MACOSX_BUNDLE_ICON_FILE              "${SOLARUS_BUNDLE_ICON_NAME}"
 		MACOSX_BUNDLE_BUNDLE_VERSION         "${SOLARUS_BUNDLE_VERSION}"
 
-		MACOSX_BUNDLE_GUI_IDENTIFIER         "${COMPANY_IDENTIFIER}.${MACOSX_BUNDLE_BUNDLE_NAME}"
-		MACOSX_BUNDLE_SHORT_VERSION_STRING   "${MACOSX_BUNDLE_BUNDLE_VERSION}"
-		MACOSX_BUNDLE_LONG_VERSION_STRING    "${MACOSX_BUNDLE_BUNDLE_NAME} Version ${MACOSX_BUNDLE_SHORT_VERSION_STRING}"
+		MACOSX_BUNDLE_GUI_IDENTIFIER         "${COMPANY_IDENTIFIER}.${SOLARUS_BUNDLE}"
+		MACOSX_BUNDLE_SHORT_VERSION_STRING   "${SOLARUS_BUNDLE_VERSION}"
+		MACOSX_BUNDLE_LONG_VERSION_STRING    "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}"
 		MACOSX_BUNDLE_COPYRIGHT              "Copyright 2013, ${COMPANY_IDENTIFIER}."
-		MACOSX_BUNDLE_INFO_STRING            "${MACOSX_BUNDLE_LONG_VERSION_STRING}, ${MACOSX_BUNDLE_COPYRIGHT}"
-  )
-endif()
+		MACOSX_BUNDLE_INFO_STRING            "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}, Copyright 2013, ${COMPANY_IDENTIFIER}."
+)
 
 # Embed library search path
 if(NOT SOLARUS_IOS_BUILD)
@@ -153,13 +155,16 @@ if(NOT SOLARUS_IOS_BUILD)
   )
 endif()
 
-# Use the bundle's resources path for the bundle's executable
-if(DEFAULT_QUEST)
-  remove_definitions(-DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")
-  unset(DEFAULT_QUEST CACHE)
-endif()
-set(DEFAULT_QUEST "../Resources" CACHE STRING "Path to the quest to launch with a bundle" FORCE)
-add_definitions(-DSOLARUS_DEFAULT_QUEST=\"../Resources\")
+# Move the main binary into resource folder, and substitute it
+# by a wrapper which call it with the resource path as parameter
+add_custom_command(
+  TARGET ${EXECUTABLE_MAIN_NAME}
+  POST_BUILD
+  COMMAND mv 
+  ARGS "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Resources/solarus"
+  COMMAND cp 
+  ARGS "${PROJECT_BINARY_DIR}/cmake/apple/OSX-wrapper.sh" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}"
+)
 
 # Code signing
 if(XCODE)

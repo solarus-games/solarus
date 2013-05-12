@@ -41,29 +41,16 @@ public class Destructible extends MapEntity {
     };
 
     /**
-     * Size of each subtype.
+     * Animation set of a destructible item.
      */
-    private static final Dimension[] sizes = {
-        new Dimension(16, 16),
-        new Dimension(16, 16),
-        new Dimension(16, 16),
-        new Dimension(16, 16),
-        new Dimension(16, 16),
-        new Dimension(16, 16),
-        new Dimension(16, 24),
-    };
-
-    /**
-     * Origin point of a destructible item.
-     */
-    private static final Point[] origins = {
-      new Point(8, 13),
-      new Point(8, 13),
-      new Point(8, 13),
-      new Point(8, 13),
-      new Point(8, 13),
-      new Point(8, 13),
-      new Point(8, 21),
+    private static final String[] spriteIds = {
+        "entities/pot",
+        "",
+        "entities/bush",
+        "entities/stone_small_white",
+        "entities/stone_small_black",
+        "entities/grass",
+        "entities/bomb_flowe",
     };
 
     /**
@@ -110,6 +97,16 @@ public class Destructible extends MapEntity {
     };
 
     /**
+     * Origin point of this entity.
+     */
+    private static final Point origin = new Point(8, 13);
+
+    /**
+     * The sprite representing this entity.
+     */
+    private Sprite sprite;
+
+    /**
      * Creates a new destructible.
      * @param map the map
      */
@@ -119,10 +116,10 @@ public class Destructible extends MapEntity {
 
     /**
      * Returns the coordinates of the origin point of the entity.
-     * @return the origin point
+     * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-        return origins[subtype.ordinal()];
+        return origin;
     }
 
     /**
@@ -138,13 +135,10 @@ public class Destructible extends MapEntity {
      * @param subtype the subtype of entity
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
+
+        sprite = new Sprite(spriteIds[subtype.ordinal()], getMap());
+
         super.setSubtype(subtype);
-
-        Dimension size = sizes[getSubtype().ordinal()];
-        setSizeUnchecked(size.width, size.height);
-
-        setChanged();
-        notifyObservers();
     }
 
     /**
@@ -176,6 +170,20 @@ public class Destructible extends MapEntity {
         if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid treasure savegame variable");
         }
+    }
+
+    /**
+     * Draws this entity on the map editor.
+     * @param g graphic context
+     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
+     * @param showTransparency true to make transparent pixels,
+     * false to replace them by a background color
+     */
+    public void paint(Graphics g, double zoom, boolean showTransparency) {
+
+        // display the sprite
+        sprite.paint(g, zoom, showTransparency,
+                getX(), getY(), null, 0, 0);
     }
 }
 

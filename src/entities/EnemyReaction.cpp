@@ -19,12 +19,13 @@
 #include "lowlevel/StringConcat.h"
 #include "Sprite.h"
 
-const std::string EnemyReaction::reaction_names[REACTION_NUMBER] = {
+const std::string EnemyReaction::reaction_names[] = {
   "hurt",
   "ignored",
   "protected",
   "immobilized",
-  "custom"
+  "custom",
+  ""  // Sentinel for Lua.
 };
 
 /**

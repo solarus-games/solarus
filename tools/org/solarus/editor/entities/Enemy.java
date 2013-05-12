@@ -60,7 +60,7 @@ public class Enemy extends MapEntity {
      * Creates a new enemy.
      * @param map the map
      */
-    public Enemy(Map map)throws MapException {
+    public Enemy(Map map) throws MapException {
         super(map, 16, 16);
         setDirection(3);
     }

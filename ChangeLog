@@ -2,6 +2,8 @@ solarus-1.0.1 (under development)
 
 Bug fixes for the 1.0 release.
 
+Solarus changes:
+
 * Fix the Mac OS X port.
 * Fix jump movement accross two maps ending up in a wall (#189).
 * Fix a possible crash in TextSurface.
@@ -16,11 +18,18 @@ Bug fixes for the 1.0 release.
 * Don't die if a script makes an error with an enemy attack consequence.
 * Allow enemies to lose 0 life points when attacked (#137).
 * Pixel-precise collisions can now also be performed on 32-bit images.
+
+Solarus Quest Editor changes:
+
 * Editor: add the possibility to show or hide each type of entity (#60).
 * Editor: keep the map coordinates shown when changing the zoom (#183).
 * Editor: fix the map view not updated correctly when changing the zoom (#174).
+* Editor: show the correct sprite of destructible objects (#77).
 * Editor: show an appropriate error message if the LuaJ jar is missing (#173).
 * Editor: fix the title bar string (#176).
+
+Documentation changes:
+
 * Split the C++ documentation and the quest data files documentation (#181).
 * Add a search feature to the documentation pages.
 

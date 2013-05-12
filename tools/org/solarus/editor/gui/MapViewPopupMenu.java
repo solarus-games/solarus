@@ -18,7 +18,7 @@ package org.solarus.editor.gui;
 
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.LinkedList;
+import java.util.Collection;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.map_editor_actions.*;
@@ -95,7 +95,7 @@ public class MapViewPopupMenu extends JPopupMenu {
 
         if (selection.getNbEntitiesSelected() == 1) {
 
-            MapEntity entity = selection.getEntity(0);
+            MapEntity entity = selection.getEntity();
 
             if (entity instanceof Tile) {
 
@@ -290,7 +290,7 @@ public class MapViewPopupMenu extends JPopupMenu {
          */
         public void actionPerformed(ActionEvent ev) {
             try {
-                LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                Collection<MapEntity> entities = map.getEntitySelection().getEntities();
                 map.getHistory().doAction(new ActionChangeLayer(map, entities, layer));
             }
             catch (QuestEditorException e) {
@@ -323,7 +323,7 @@ public class MapViewPopupMenu extends JPopupMenu {
          */
         public void actionPerformed(ActionEvent ev) {
             try {
-                LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                Collection<MapEntity> entities = map.getEntitySelection().getEntities();
                 map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
             }
             catch (QuestEditorException e) {
@@ -343,7 +343,7 @@ public class MapViewPopupMenu extends JPopupMenu {
          */
         public void actionPerformed(ActionEvent ev) {
             try {
-                LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                Collection<MapEntity> entities = map.getEntitySelection().getEntities();
                 map.getHistory().doAction(new ActionBringToFront(map, entities));
             }
             catch (QuestEditorException e) {
@@ -363,7 +363,7 @@ public class MapViewPopupMenu extends JPopupMenu {
          */
         public void actionPerformed(ActionEvent ev) {
             try {
-                LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                Collection<MapEntity> entities = map.getEntitySelection().getEntities();
                 map.getHistory().doAction(new ActionBringToBack(map, entities));
             }
             catch (QuestEditorException e) {
@@ -390,7 +390,7 @@ public class MapViewPopupMenu extends JPopupMenu {
          */
         public void actionPerformed(ActionEvent ev) {
 
-            MapEntity entity = map.getEntitySelection().getEntity(0);
+            MapEntity entity = map.getEntitySelection().getEntity();
 
             EditEntityDialog dialog = new EditEntityDialog(map, entity);
             dialog.setLocationRelativeTo(MapViewPopupMenu.this);
@@ -435,3 +435,4 @@ public class MapViewPopupMenu extends JPopupMenu {
         }
     }
 }
+

@@ -23,6 +23,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import org.solarus.editor.*;
+import org.solarus.editor.Map;
 
 /**
  * Main window of the editor.
@@ -57,7 +58,6 @@ public class EditorWindow extends JFrame
     public EditorWindow(String questPath) {
         super("Solarus Quest Editor " + Project.SolarusFormat);
 
-        Project.addProjectObserver(this);
         // set a nice look and feel
         GuiTools.setLookAndFeel();
 
@@ -99,6 +99,19 @@ public class EditorWindow extends JFrame
                 loadProject();
             }
         }
+
+        // This object must be added as project observer after the quest tree.
+        // This is because we want the quest tree to be up-to-date before we
+        // build or destroy subtrees of maps.
+        Project.addProjectObserver(this);
+    }
+
+    /**
+     * Returns the quest tree displayed in the left part of the window.
+     * @return The quest tree.
+     */
+    public QuestTree getQuestTree() {
+        return questTree;
     }
 
     /**
@@ -432,7 +445,7 @@ public class EditorWindow extends JFrame
 
     /**
      * Action performed when the user clicks on File > Close.
-     * Closes the current editor unless the user is not okay with that..
+     * Closes the current editor unless the user is not okay with that.
      */
     private class ActionListenerCloseCurrentEditor implements ActionListener {
 
@@ -921,5 +934,20 @@ public class EditorWindow extends JFrame
     public void resourceElementRenamed(ResourceType resourceType,
             String id, String name) {
         tabs.repaint();  // TODO don't use repaint for this.
+    }
+
+    /**
+     * Returns a map currently open in an editor, given its id.
+     * @param mapId Id of the map to get.
+     * @return The corresponding map, or null if this map is not open.
+     */
+    public Map getOpenMap(String mapId) {
+
+        String editorId = MapEditorPanel.getEditorId(mapId);
+        AbstractEditorPanel editor = tabs.getEditor(editorId);
+        if (editor != null) {
+            return ((MapEditorPanel) editor).getMap();
+        }
+        return null;
     }
 }

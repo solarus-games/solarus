@@ -374,45 +374,50 @@ void StraightMovement::set_smooth(bool smooth) {
  */
 void StraightMovement::update_smooth_x() {
 
-  if (x_move != 0) { // the entity wants to move on x
+  if (x_move != 0) {  // The entity wants to move on x.
 
-    // by default, next_move_date_x will be incremented by x_delay,
-    // unless we modify the movement in such a way that the
-    // x speed needs to be fixed
+    // By default, next_move_date_x will be incremented by x_delay,
+    // unless we modify below the movement in such a way that the
+    // x speed needs to be fixed.
     uint32_t next_move_date_x_increment = x_delay;
 
     if (!test_collision_with_obstacles(x_move, 0)) {
 
-      translate_x(x_move); // make the move
+      translate_x(x_move);  // Make the move.
 
       if (y_move != 0 && test_collision_with_obstacles(0, y_move)) {
-        // if there is also a y move, and if this y move is illegal,
-        // we still allow the x move and we give it all the speed
+        // If there is also a y move, and if this y move is illegal,
+        // we still allow the x move and we give it all the speed.
         next_move_date_x_increment = (int) (1000.0 / get_speed());
       }
     }
     else {
       if (y_move == 0) {
-        // the move on x is not possible: let's try
-        // to add a move on y to make a diagonal move
+        // The move on x is not possible and there is no y move:
+        // let's try to add a move on y to make a diagonal move,
+        // but only if the wall is really diagonal: otherwise, the hero
+        // could bypass sensors.
 
-        if (!test_collision_with_obstacles(x_move, 1)
-            && test_collision_with_obstacles(0, -1)) {
+        if (!test_collision_with_obstacles(x_move, 1)    // Can move diagonally and:
+            && (test_collision_with_obstacles(0, -1) ||  // the wall is really diagonal
+                test_collision_with_obstacles(0, 1))     // or we don't have a choice anyway.
+        ) {
           translate_xy(x_move, 1);
-          next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2); // fix the speed
+          next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);  // Fix the speed.
         }
         else if (!test_collision_with_obstacles(x_move, -1)
-            && test_collision_with_obstacles(0, 1)) {
+            && (test_collision_with_obstacles(0, 1) ||
+                test_collision_with_obstacles(0, -1))
+        ) {
           translate_xy(x_move, -1);
           next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);
         }
         else {
 
-          /* The diagonal moves didn't work either.
-           * So we look for a place (up to 8 pixels up and down)
-           * where the required move would be allowed.
-           * If we find a such place, then we move towards this place.
-           */
+          // The diagonal moves didn't work either.
+          // So we look for a place (up to 8 pixels up and down)
+          // where the required move would be allowed.
+          // If we find a such place, then we move towards this place.
 
           bool moved = false;
           for (int i = 1; i <= 8 && !moved; i++) {
@@ -429,9 +434,14 @@ void StraightMovement::update_smooth_x() {
         }
       }
       else {
-        // no attractive place was found, but there is a vertical move
-        if (!test_collision_with_obstacles(0, y_move)) {
-          // do the vertical move right now, don't wait uselessly
+        // The move on x is not possible, but there is also a vertical move.
+        if (!test_collision_with_obstacles(x_move, y_move)) {
+          // This case is only necessary in narrow diagonal passages.
+          translate_xy(x_move, y_move);
+          next_move_date_y += y_delay;  // Delay the next update_smooth_y() since we just replaced it.
+        }
+        else if (!test_collision_with_obstacles(0, y_move)) {
+          // Do the vertical move right now, don't wait uselessly.
           update_y();
         }
       }
@@ -446,44 +456,49 @@ void StraightMovement::update_smooth_x() {
  */
 void StraightMovement::update_smooth_y() {
 
-  if (y_move != 0) { // the entity wants to move on y
+  if (y_move != 0) {  // The entity wants to move on y.
 
-    // by default, next_move_date_y will be incremented by y_delay,
+    // By default, next_move_date_y will be incremented by y_delay,
     // unless we modify the movement in such a way that the
-    // y speed needs to be fixed
+    // y speed needs to be fixed.
     uint32_t next_move_date_y_increment = y_delay;
 
     if (!test_collision_with_obstacles(0, y_move)) {
 
-      translate_y(y_move); // make the move
+      translate_y(y_move);  // Make the move.
 
       if (x_move != 0 && test_collision_with_obstacles(x_move, 0)) {
-        // if there is also an x move, and if this x move is illegal,
-        // we still allow the y move and we give it all the speed
+        // If there is also an x move, and if this x move is illegal,
+        // we still allow the y move and we give it all the speed.
         next_move_date_y_increment = (int) (1000.0 / get_speed());
       }
     }
     else {
       if (x_move == 0) {
-        // The move on y is not possible: let's try
-        // to add a move on x to make a diagonal move.
+        // The move on y is not possible and there is no x move:
+        // let's try to add a move on x to make a diagonal move,
+        // but only if the wall is really diagonal: otherwise, the hero
+        // could bypass sensors.
 
-        if (!test_collision_with_obstacles(1, y_move)
-            && test_collision_with_obstacles(-1, 0)) {
+        if (!test_collision_with_obstacles(1, y_move)    // Can move diagonally and:
+            && (test_collision_with_obstacles(-1, 0) ||  // the wall is really diagonal
+                test_collision_with_obstacles(1, 0))     // or we don't have a choice anyway.
+        ) {
           translate_xy(1, y_move);
-          next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2); // fix the speed
+          next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);  // Fix the speed.
         }
         else if (!test_collision_with_obstacles(-1, y_move)
-            && test_collision_with_obstacles(1, 0)) {
+            && (test_collision_with_obstacles(1, 0) ||
+                test_collision_with_obstacles(-1, 0))
+        ) {
           translate_xy(-1, y_move);
           next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);
         }
         else {
-          /* The diagonal moves didn't work either.
-           * So we look for a place (up to 8 pixels on the left and on the right)
-           * where the required move would be allowed.
-           * If we find a such place, then we move towards this place.
-           */
+          // The diagonal moves didn't work either.
+          // So we look for a place (up to 8 pixels on the left and on the right)
+          // where the required move would be allowed.
+          // If we find a such place, then we move towards this place.
 
           bool moved = false;
           for (int i = 1; i <= 8 && !moved; i++) {
@@ -500,9 +515,14 @@ void StraightMovement::update_smooth_y() {
         }
       }
       else {
-        // no attractive place was found, but there is a horizontal move
-        if (!test_collision_with_obstacles(x_move, 0)) {
-          // do the horizontal move right now, don't wait uselessly
+        // The move on y is not possible, but there is also a horizontal move.
+        if (!test_collision_with_obstacles(x_move, y_move)) {
+          // This case is only necessary in narrow diagonal passages.
+          translate_xy(x_move, y_move);
+          next_move_date_x += x_delay;  // Delay the next update_smooth_x() since we just replaced it.
+        }
+        else if (!test_collision_with_obstacles(x_move, 0)) {
+          // Do the horizontal move right now, don't wait uselessly.
           update_x();
         }
       }

@@ -1821,15 +1821,16 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
 
   if (lua_isnumber(l, 3)) {
     int life_points = luaL_checkint(l, 3);
-    Debug::check_assertion(life_points > 0, StringConcat()
-        << "Invalid attack consequence: " << life_points);
+    if (life_points < 0) {
+      luaL_argerror(l, 3, (StringConcat() <<
+          "Invalid life points number for attack consequence: '"
+          << life_points << "'").c_str());
+    }
     enemy.set_attack_consequence(attack, EnemyReaction::HURT, life_points);
   }
   else {
-    // TODO: simplify or encapsulate the C++ part of specifying attack consequences
-    // (but the important thing is that the Lua API is easy to use)
-    const std::string& reaction_name = lua_tostring(l, 3);
-    EnemyReaction::ReactionType reaction = EnemyReaction::get_reaction_by_name(reaction_name);
+    EnemyReaction::ReactionType reaction = check_enum<EnemyReaction::ReactionType>(
+        l, 3, EnemyReaction::reaction_names);
     enemy.set_attack_consequence(attack, reaction);
   }
 
@@ -1849,13 +1850,16 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
 
   if (lua_isnumber(l, 4)) {
     int life_points = luaL_checkint(l, 4);
-    Debug::check_assertion(life_points > 0, StringConcat()
-        << "Invalid attack consequence: " << life_points);
+    if (life_points < 0) {
+      luaL_argerror(l, 4, (StringConcat() <<
+          "Invalid life points number for attack consequence: '"
+          << life_points << "'").c_str());
+    }
     enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::HURT, life_points);
   }
   else {
-    const std::string& reaction_name = lua_tostring(l, 4);
-    EnemyReaction::ReactionType reaction = EnemyReaction::get_reaction_by_name(reaction_name);
+    EnemyReaction::ReactionType reaction = check_enum<EnemyReaction::ReactionType>(
+        l, 4, EnemyReaction::reaction_names);
     enemy.set_attack_consequence_sprite(sprite, attack, reaction);
   }
 

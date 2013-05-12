@@ -18,10 +18,11 @@ package org.solarus.editor.gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.util.List;
+import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 import org.solarus.editor.*;
@@ -91,11 +92,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
     // headers of the map view
 
     /**
-     * The display options (what layers are displayed, etc.).
-     */
-    private MapViewRenderingOptions renderingOptions;
-
-    /**
      * The toolbar to add entities on the map.
      */
     private AddEntitiesToolbar addEntitiesToolbar;
@@ -122,8 +118,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
         this.cursorLocation = new Point();
         this.fixedLocation = new Rectangle();
-        this.initialSelection = new LinkedList<MapEntity>();
-        this.renderingOptions = new MapViewRenderingOptions(this);
+        this.initialSelection = new ArrayList<MapEntity>();
 
         MouseInputListener mouseListener = new MapMouseInputListener();
         addMouseListener(mouseListener);
@@ -150,6 +145,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         if (this.map != null) {
             this.map.getEntitySelection().deleteObserver(this);
             this.map.deleteObserver(this);
+            getViewSettings().deleteObserver(this);
         }
 
         this.map = map;
@@ -161,6 +157,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
             if (map.getTileset() != null) {
                 map.getTileset().addObserver(this);
             }
+            getViewSettings().addObserver(this);
+            update(getViewSettings(), null);
         }
 
         update(map, null);
@@ -175,11 +173,19 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
+     * Returns the map view settings.
+     * @return The map view settings.
+     */
+    public MapViewSettings getViewSettings() {
+        return map == null ? null : map.getViewSettings();
+    }
+
+    /**
      * Returns the zoom of the map view.
      * @return the zoom
      */
     public double getZoom() {
-        return renderingOptions.getZoom();
+        return getViewSettings().getZoom();
     }
 
     /**
@@ -188,14 +194,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     public int getScaledSpaceAroundMap() {
         return (int) (AREA_AROUND_MAP * getZoom());
-    }
-
-    /**
-     * Returns the rendering options of the map view, i.e. how the entities are displayed.
-     * @return the rendering options
-     */
-    public MapViewRenderingOptions getRenderingOptions() {
-        return renderingOptions;
     }
 
     /**
@@ -251,11 +249,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * This function is called when the map, the selected entities or the tileset changes.
-     * @param o the object changed
-     * @param obj parameters
+     * This function is called when the map, the selected entities, the tileset 
+     * or the view settings changes.
+     * @param o The object changed.
+     * @param parameter Parameter about what has changed, or null.
      */
-    public void update(Observable o, Object obj) {
+    public void update(Observable o, Object parameter) {
 
         if (map == null) { // the map has just been closed
             repaint();
@@ -265,7 +264,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         if (o instanceof Map) {
             // the map has been modified
 
-            if (obj instanceof Tileset) {
+            if (parameter instanceof Tileset) {
                 // the tileset has been changed
                 Tileset tileset = map.getTileset();
                 tileset.addObserver(this);
@@ -292,6 +291,39 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 // entities selected in the map, unselected the entities in the map
                 setState(State.NORMAL);
                 map.getEntitySelection().unselectAll();
+            }
+        }
+        else if (o instanceof MapViewSettings) {
+
+            // Map view settings have changed: unselect hidden entities.
+            ArrayList<MapEntity> hiddenEntities =
+                new ArrayList<MapEntity>();
+            for (MapEntity entity: map.getEntitySelection()) {
+                if (!map.getViewSettings().isEntityShown(entity)) {
+                    hiddenEntities.add(entity);
+                }
+            }
+            map.getEntitySelection().unselect(hiddenEntities);
+
+            if (parameter instanceof MapViewSettings.ChangeInfo) {
+
+                MapViewSettings.ChangeInfo info = (MapViewSettings.ChangeInfo) parameter;
+                if (info.setting.equals("zoom")) {
+                    // The zoom has changed.
+                    JViewport viewport = (JViewport) getParent();
+
+                    double oldZoom = (double) info.oldValue;
+                    double newZoom = (double) info.newValue;
+                    Rectangle viewRegion = viewport.getViewRect();
+
+                    int centerX = viewRegion.x + viewRegion.width / 2;
+                    int x = (int) (centerX / oldZoom * newZoom) - viewRegion.width / 2;
+
+                    int centerY = viewRegion.y + viewRegion.height / 2;
+                    int y = (int) (centerY / oldZoom * newZoom) - viewRegion.height / 2;
+
+                    viewport.setViewPosition(new Point(x, y));
+                }
             }
         }
     }
@@ -326,7 +358,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         g.translate(scaledSpaceAroundMap, scaledSpaceAroundMap);
 
         // background color
-        if (renderingOptions.getShowLayer(Layer.LOW) && tileset != null) {
+        if (getViewSettings().getShowLayer(Layer.LOW) && tileset != null) {
             g.setColor(tileset.getBackgroundColor());
         } else {
             g.setColor(Color.black);
@@ -341,17 +373,17 @@ public class MapView extends JComponent implements Observer, Scrollable {
             for (Layer layer : Layer.values()) {
 
                 // nothing to do if this layer is not shown
-                if (renderingOptions.getShowLayer(layer)) {
+                if (getViewSettings().getShowLayer(layer)) {
 
                     MapEntities entities = map.getEntities(layer);
 
                     for (MapEntity entity : entities) {
 
                         // should we draw this entity?
-                        if (renderingOptions.isEntityShown(entity)) {
+                        if (getViewSettings().isEntityShown(entity)) {
 
                             // draw the entity
-                            entity.paint(g, zoom, renderingOptions.getShowTransparency());
+                            entity.paint(g, zoom, getViewSettings().getShowTransparency());
 
                             // draw the selection rectangle if the entity is selected
                             if (map.getEntitySelection().isSelected(entity)) {
@@ -373,15 +405,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
             } // for
 
             //draw the grid if needed
-            if (renderingOptions.getShowGrid()) {
+            if (getViewSettings().getShowGrid()) {
                 g.setColor(Color.GRAY);
                 // draw the vertical lines
-                for (int i = 0; i < (map.getWidth() / renderingOptions.getGridSize()); i++) {
-                    g.fillRect((int)(i * renderingOptions.getGridSize() * zoom), 0 ,1, (int)(map.getHeight() * zoom));
+                for (int i = 0; i < (map.getWidth() / getViewSettings().getGridSize()); i++) {
+                    g.fillRect((int)(i * getViewSettings().getGridSize() * zoom), 0 ,1, (int)(map.getHeight() * zoom));
                 }
                 // draw the horizontal lines
-                for (int i = 0; i < (map.getHeight() / renderingOptions.getGridSize() ); i++) {
-                    g.fillRect(0, (int)(i * renderingOptions.getGridSize() * zoom), (int)(map.getWidth() * zoom), 1);
+                for (int i = 0; i < (map.getHeight() / getViewSettings().getGridSize() ); i++) {
+                    g.fillRect(0, (int)(i * getViewSettings().getGridSize() * zoom), (int)(map.getWidth() * zoom), 1);
                 }
             }
 
@@ -392,7 +424,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                     if (isMouseInMapView) {
                         // display the entity on the map, under the cursor
-                        entityBeingAdded.paint(g, zoom, renderingOptions.getShowTransparency());
+                        entityBeingAdded.paint(g, zoom, getViewSettings().getShowTransparency());
                     }
                     break;
 
@@ -437,8 +469,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * Copies the selected entities to the clipboard.
      */
     public void copySelectedEntities() {
-        List<MapEntity> selectedEntities = map.getEntitySelection().getEntities();
-        copiedEntities = new LinkedList<MapEntity>();
+        Collection<MapEntity> selectedEntities = map.getEntitySelection().getEntities();
+        copiedEntities = new ArrayList<MapEntity>();
         selectedEntities = map.getSortedEntities(selectedEntities);
 
         try {
@@ -452,7 +484,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
             ex.printStackTrace();
         }
 
-        mapEditor.update(null, null);
+        // Update copy/paste menu items.
+        mapEditor.getMainWindow().update(null, null);
     }
 
     /**
@@ -704,7 +737,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         cursorLocation.y = fixedLocation.y;
 
         // save the entities already selected (useful for a multiple selection)
-        List<MapEntity> currentSelection = map.getEntitySelection().getEntities();
+        Collection<MapEntity> currentSelection = map.getEntitySelection().getEntities();
         initialSelection.clear();
         for (MapEntity entity : currentSelection) {
             initialSelection.add(entity);
@@ -744,7 +777,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
             // select the entities in the rectangle, except the hidden ones
             for (MapEntity entity : entitiesInRectangle) {
-                if (renderingOptions.isEntityShown(entity)) {
+                if (getViewSettings().isEntityShown(entity)) {
                     entitySelection.select(entity);
                 }
             }
@@ -767,7 +800,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         MapEntitySelection entitySelection = map.getEntitySelection();
 
         if (entitySelection.isResizable()) {
-            MapEntity entity = entitySelection.getEntity(0);
+            MapEntity entity = entitySelection.getEntity();
             Rectangle positionInMap = entity.getPositionInMap();
 
             fixedLocation.x = positionInMap.x;
@@ -800,7 +833,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         // resize only if the cursor is inside the drawn area
         if (xB < map.getWidth() + AREA_AROUND_MAP && yB < map.getHeight() + 2 * AREA_AROUND_MAP) {
 
-            MapEntity selectedEntity = map.getEntitySelection().getEntity(0);
+            MapEntity selectedEntity = map.getEntitySelection().getEntity();
 
             int width = selectedEntity.getUnitarySize().width;
             int height = selectedEntity.getUnitarySize().height;
@@ -868,7 +901,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     private void endResizingEntity() {
 
-        MapEntity entity = map.getEntitySelection().getEntity(0);
+        MapEntity entity = map.getEntitySelection().getEntity();
 
         // get a copy of the final rectangle before we restore the initial one
         Rectangle finalPosition = new Rectangle(entity.getPositionInMap());
@@ -934,7 +967,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             int dy = y - cursorLocation.y;
 
             // we move the entities during the dragging, to make them follow the mouse while dragging
-            List<MapEntity> entities = map.getEntitySelection().getEntities();
+            Collection<MapEntity> entities = map.getEntitySelection().getEntities();
 
             try {
                 map.moveEntities(entities, dx, dy);
@@ -965,7 +998,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
              * small 8-pixel steps. Now we want to consider the whole move as one step only, so that
              * it can be undone or redone directly later.
              */
-            List<MapEntity> entities = map.getEntitySelection().getEntities();
+            Collection<MapEntity> entities = map.getEntitySelection().getEntities();
 
             // we restore the entities at their initial position
             try {
@@ -1027,7 +1060,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 id--) {
 
             Layer layer = Layer.get(id);
-            if (renderingOptions.getShowLayer(layer)) {
+            if (getViewSettings().getShowLayer(layer)) {
                 entityClicked = map.getEntityAt(layer, x, y);
             }
         }
@@ -1233,7 +1266,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             switch (state) {
 
                 case RESIZING_ENTITY:
-                    MapEntity entity = map.getEntitySelection().getEntity(0);
+                    MapEntity entity = map.getEntitySelection().getEntity();
                     endResizingEntity();
 
                     if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
@@ -1374,7 +1407,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 case KeyEvent.VK_ENTER:
                     if (selectedEntities.getNbEntitiesSelected() == 1) {
-                        MapEntity entitySelected = selectedEntities.getEntity(0);
+                        MapEntity entitySelected = selectedEntities.getEntity();
                         EditEntityDialog dialog = new EditEntityDialog(map, entitySelected);
                         dialog.setLocationRelativeTo(MapView.this);
                         dialog.display();
@@ -1387,7 +1420,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 case KeyEvent.VK_T:
                     try {
-                        LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                        Collection<MapEntity> entities = map.getEntitySelection().getEntities();
                         map.getHistory().doAction(new ActionBringToFront(map, entities));
                     } catch (QuestEditorException e) {
                         GuiTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
@@ -1396,7 +1429,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 case KeyEvent.VK_B:
                     try {
-                        LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                        Collection<MapEntity> entities = map.getEntitySelection().getEntities();
                         map.getHistory().doAction(new ActionBringToBack(map, entities));
                     } catch (QuestEditorException e) {
                         GuiTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
@@ -1407,7 +1440,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 case KeyEvent.VK_ADD:
 
                     try {
-                        LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                        Collection<MapEntity> entities = map.getEntitySelection().getEntities();
                         map.getHistory().doAction(new ActionUpDownLayer(map, entities, true));
                     } catch (QuestEditorException e) {
                         GuiTools.errorDialog("Cannot change the layer: " + e.getMessage());
@@ -1418,7 +1451,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 case KeyEvent.VK_SUBTRACT:
 
                     try {
-                        LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                        Collection<MapEntity> entities = map.getEntitySelection().getEntities();
                         map.getHistory().doAction(new ActionUpDownLayer(map, entities, false));
                     } catch (QuestEditorException e) {
                         GuiTools.errorDialog("Cannot change the layer: " + e.getMessage());

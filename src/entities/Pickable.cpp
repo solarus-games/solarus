@@ -38,7 +38,7 @@
  * @param treasure the treasure to give when the item is picked
  */
 Pickable::Pickable(const std::string& name, Layer layer,
-    int x, int y, const Treasure &treasure):
+    int x, int y, const Treasure& treasure):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, name, layer, x, y, 0, 0),
   treasure(treasure),
   shadow_sprite(NULL),
@@ -261,7 +261,7 @@ void Pickable::notify_movement_changed() {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Pickable::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping.is_hero()
       && can_be_picked
@@ -272,14 +272,14 @@ void Pickable::notify_collision(MapEntity &entity_overlapping, CollisionMode col
   else if (entity_followed == NULL) {
     
     if (entity_overlapping.get_type() == BOOMERANG) {
-      Boomerang &boomerang = (Boomerang&) entity_overlapping;
+      Boomerang& boomerang = static_cast<Boomerang&>(entity_overlapping);
       if (!boomerang.is_going_back()) {
         boomerang.go_back();
       }
       entity_followed = &boomerang;
     }
     else if (entity_overlapping.get_type() == HOOKSHOT) {
-      Hookshot &hookshot = (Hookshot&) entity_overlapping;
+      Hookshot& hookshot = static_cast<Hookshot&>(entity_overlapping);
       if (!hookshot.is_going_back()) {
         hookshot.go_back();
       }
@@ -305,7 +305,8 @@ void Pickable::notify_collision(MapEntity &entity_overlapping, CollisionMode col
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Pickable::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+void Pickable::notify_collision(MapEntity& other_entity, Sprite& other_sprite,
+    Sprite& this_sprite) {
 
   // taking the item with the sword
   if (other_entity.is_hero()
@@ -411,6 +412,19 @@ void Pickable::update() {
   shadow_xy.set_x(get_x());
   if (!is_falling()) {
     shadow_xy.set_y(get_y());
+  }
+
+  if (entity_followed != NULL && entity_followed->is_being_removed()) {
+
+    if (entity_followed->get_type() == BOOMERANG ||
+        entity_followed->get_type() == HOOKSHOT) {
+      // The pickable may have been dropped by the boomerang/hookshot
+      // not exactly on the hero so let's fix this.
+      if (get_distance(get_hero()) < 8) {
+        give_item_to_player();
+      }
+    }
+    entity_followed = NULL;
   }
 
   if (!is_suspended()) {

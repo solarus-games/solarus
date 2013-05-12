@@ -16,29 +16,32 @@
  */
 package org.solarus.editor.gui;
 
+import org.solarus.editor.Map;
 import java.awt.*;
 import javax.swing.*;
 
 /**
- * This componenent shows the header of the map view.
- * It contains a tool bar to add new entities, and some options
+ * This component shows the header of the map view.
+ * It contains a toolbar to add new entities, and some options
  * to choose how the map is displayed.
  */
 public class MapViewHeader extends JPanel {
 
     /**
      * Constructor.
-     * @param mapView the map view
+     * @param map The map.
+     * @param mapView The map view.
      */
-    MapViewHeader(MapView mapView) {
+    MapViewHeader(Map map, MapView mapView) {
         super(new BorderLayout());
 
-        MapViewRenderingOptionsView renderingOptionsView =
-            new MapViewRenderingOptionsView(mapView.getRenderingOptions());
+        MapViewSettingsPanel settingsPanel =
+            new MapViewSettingsPanel(map.getViewSettings());
 
         AddEntitiesToolbar addEntitiesToolbar = new AddEntitiesToolbar(mapView);
 
-        add(renderingOptionsView, BorderLayout.CENTER);
+        add(settingsPanel, BorderLayout.CENTER);
         add(addEntitiesToolbar, BorderLayout.SOUTH);
     }
 }
+

@@ -18,7 +18,6 @@ package org.solarus.editor.gui;
 
 import java.awt.*;
 import java.io.*;
-import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -44,13 +43,12 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
 
     /**
      * Creates a text editor.
-     * @param parentEditor The main editor window.
+     * @param mainWindow The main window of the quest editor.
      * @param file The file to edit.
      */
-    public TextEditorPanel(EditorWindow parentEditor, File file) {
-        super(getEditorId(file));
+    public TextEditorPanel(EditorWindow mainWindow, File file) {
+        super(mainWindow, getEditorId(file));
         setLayout(new BorderLayout());
-        this.parentEditor = parentEditor;
 
         textArea = new JTextArea();
         textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
@@ -149,16 +147,6 @@ public class TextEditorPanel extends AbstractEditorPanel implements DocumentList
     @Override
     public void close() {
         setFile(null);
-    }
-
-    /**
-     * This function is called when the resource changes.
-     * @param o the history
-     * @param obj additional parameter
-     */
-    @Override
-    public void update(Observable o, Object obj) {
-        this.parentEditor.update(o, obj);
     }
 
     // Methods for checking modifications interface the text area.

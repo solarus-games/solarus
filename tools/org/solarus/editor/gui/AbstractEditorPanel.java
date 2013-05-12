@@ -17,14 +17,13 @@
 
 package org.solarus.editor.gui;
 
-import java.util.Observer;
 import javax.swing.JPanel;
 
 /**
  * Main component of an editor. Every editor (map, tileset...)
  * extends this class.
  */
-public abstract class AbstractEditorPanel extends JPanel implements Observer {
+public abstract class AbstractEditorPanel extends JPanel {
 
     /**
      * A name identifying this editor.
@@ -34,15 +33,17 @@ public abstract class AbstractEditorPanel extends JPanel implements Observer {
     private final String id;
 
     /**
-     * The editor window.
+     * The main window of the quest editor.
      */
-    protected EditorWindow parentEditor;
+    private EditorWindow mainWindow;
 
     /**
      * Creates an editor panel.
+     * @param mainWindow The main window of the quest editor.
      * @param id A name identifying the file being edited.
      */
-    protected AbstractEditorPanel(String id) {
+    protected AbstractEditorPanel(EditorWindow mainWindow, String id) {
+        this.mainWindow = mainWindow;
         this.id = id;
     }
 
@@ -71,11 +72,20 @@ public abstract class AbstractEditorPanel extends JPanel implements Observer {
     public abstract void close();
 
     /**
+     * Returns the main window of the quest editor.
+     * @return The main window.
+     */
+    public final EditorWindow getMainWindow() {
+        return mainWindow;
+    }
+
+    /**
      * Returns an id that identifies the file open in this editor.
      * You can use it to determine whether this file is already open in
      * another editor.
      */
-    public String getId() {
+    public final String getId() {
         return id;
     }
 }
+

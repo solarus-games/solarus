@@ -102,6 +102,11 @@ public class Map extends Observable {
     private MapEditorHistory history;
 
     /**
+     * View settings of this map (e.g. what entities are shown).
+     */
+    private MapViewSettings viewSettings;
+
+    /**
      * Minimum width of a map in pixels.
      */
     public static final int MINIMUM_WIDTH = 320;
@@ -146,10 +151,12 @@ public class Map extends Observable {
 
         this.entitySelection = new MapEntitySelection(this);
         this.history = new MapEditorHistory();
+        this.viewSettings = new MapViewSettings(this);
     }
+
     /**
      * Delete the files associated to a map
-     * @param id
+     * @param id Id of the map to delete.
      */
     public static void delete(String id) throws QuestEditorException {
         File mapFile = Project.getMapFile(id);
@@ -235,6 +242,14 @@ public class Map extends Observable {
      */
     public MapEditorHistory getHistory() {
         return history;
+    }
+
+    /**
+     * Returns the view settings of this map.
+     * @return The view settings.
+     */
+    public MapViewSettings getViewSettings() {
+        return viewSettings;
     }
 
     /**
@@ -727,7 +742,7 @@ public class Map extends Observable {
      * @param dy number of pixels to move on y
      * @throws MapException if the coordinates of an entity are not multiple of 8
      */
-    public void moveEntities(List<MapEntity> entities, int dx, int dy) throws MapException {
+    public void moveEntities(Collection<MapEntity> entities, int dx, int dy) throws MapException {
 
         for (MapEntity entity: entities) {
             entity.setAlignedToGrid();
@@ -786,10 +801,10 @@ public class Map extends Observable {
     /**
      * Returns the specified entities, sorted in the order of the map.
      * The first entity is the lowest one, the last entity is the highest one.
-     * @param entities the entities to sort
-     * @return the same entities, sorted as they are in the map
+     * @param entities The entities to sort.
+     * @return The same entities, sorted as they are in the map.
      */
-    public List<MapEntity> getSortedEntities(List<MapEntity> entities) {
+    public List<MapEntity> getSortedEntities(Collection<MapEntity> entities) {
 
         List<MapEntity> sortedEntities = new LinkedList<MapEntity>();
 
@@ -814,7 +829,7 @@ public class Map extends Observable {
      * The order of the specified entities in the map is unchanged.
      * @param entities the entities to move
      */
-    public void bringToBack(List<MapEntity> entities) {
+    public void bringToBack(Collection<MapEntity> entities) {
 
         List<MapEntity> sortedEntities = getSortedEntities(entities);
 
@@ -837,7 +852,7 @@ public class Map extends Observable {
      * The order of the specified entities in the map is unchanged.
      * @param entities the entities to move
      */
-    public void bringToFront(List<MapEntity> entities) {
+    public void bringToFront(Collection<MapEntity> entities) {
 
         List<MapEntity> sortedEntities = getSortedEntities(entities);
 

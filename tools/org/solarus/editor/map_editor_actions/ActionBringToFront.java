@@ -16,6 +16,7 @@
  */
 package org.solarus.editor.map_editor_actions;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
@@ -33,7 +34,7 @@ public class ActionBringToFront extends MapEditorAction {
      * @param map the map
      * @param entities the entities to bring to front
      */
-    public ActionBringToFront(Map map, LinkedList<MapEntity> entities) {
+    public ActionBringToFront(Map map, Collection<MapEntity> entities) {
         super(map);
 
         this.entities = new LinkedList<MapEntity>(entities);
@@ -59,5 +60,5 @@ public class ActionBringToFront extends MapEditorAction {
     public void undo() throws MapException {
         map.setAllEntities(allEntitiesBefore);
     }
-
 }
+

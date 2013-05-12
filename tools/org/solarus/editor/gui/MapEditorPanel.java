@@ -17,7 +17,6 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
-import java.util.*;
 import javax.swing.*;
 import org.solarus.editor.*;
 import org.solarus.editor.Map;
@@ -37,19 +36,22 @@ public class MapEditorPanel extends AbstractEditorPanel {
     private MapPropertiesView mapPropertiesView;
     private TilePicker tilePicker;
     private MapView mapView;
+    private MapViewHeader mapViewHeader;
 
     /**
      * Creates a map editor with the specified map.
+     * @param mainWindow The main window of the quest editor.
      * @param mapId Id of the map to open.
      * @throws QuestEditorException If the map could not be loaded.
      */
-    public MapEditorPanel(EditorWindow parentEditor, String mapId)
+    public MapEditorPanel(EditorWindow mainWindow, String mapId)
         throws QuestEditorException {
 
-        super(getEditorId(mapId));
+        super(mainWindow, getEditorId(mapId));
+
+        map = new Map(mapId);
 
         setLayout(new BorderLayout());
-        this.parentEditor = parentEditor;
 
         // Left panel : the map properties and the tile picker.
         mapPropertiesView = new MapPropertiesView();
@@ -67,7 +69,7 @@ public class MapEditorPanel extends AbstractEditorPanel {
         MapViewMouseCoordinates mapViewMouseCoordinates =
                 new MapViewMouseCoordinates(getMapView());
 
-        MapViewHeader mapViewHeader = new MapViewHeader(getMapView());
+        mapViewHeader = new MapViewHeader(map, getMapView());
 
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.add(mapViewHeader, BorderLayout.NORTH);
@@ -81,7 +83,6 @@ public class MapEditorPanel extends AbstractEditorPanel {
 
         add(rootPanel);
 
-        map = new Map(mapId);
         if (map.badTiles()) {
             GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in the tileset.");
         }
@@ -89,13 +90,16 @@ public class MapEditorPanel extends AbstractEditorPanel {
         // Notify the children views.
         mapPropertiesView.setMap(map);
         tilePicker.setMap(map);
-        getMapView().setMap(map);
+        mapView.setMap(map);
 
         // Observe the history and the selection to enable or disable menu items.
-        map.getHistory().addObserver(parentEditor);
-        map.getEntitySelection().addObserver(parentEditor);
+        map.getHistory().addObserver(getMainWindow());
+        map.getEntitySelection().addObserver(getMainWindow());
 
         mapPropertiesView.update(null, null);
+
+        // Synchronize the quest tree.
+        getMainWindow().getQuestTree().openMap(map);
     }
 
     /**
@@ -121,15 +125,6 @@ public class MapEditorPanel extends AbstractEditorPanel {
      */
     public String getResourceId() {
         return getMap().getId();
-    }
-
-    /**
-     * This function is called when the history changes.
-     * @param o the history
-     * @param obj additional parameter
-     */
-    public void update(Observable o, Object obj) {
-        this.parentEditor.update(o, obj);
     }
 
     /**
@@ -187,6 +182,9 @@ public class MapEditorPanel extends AbstractEditorPanel {
      */
     @Override
     public void close() {
+
+        getMainWindow().getQuestTree().closeMap(map);
+
         map.deleteObservers();
         map.getEntitySelection().deleteObservers();
         map.getHistory().deleteObservers();
@@ -206,7 +204,7 @@ public class MapEditorPanel extends AbstractEditorPanel {
     /**
      * @return The map view.
      */
-    protected MapView getMapView() {
+    public MapView getMapView() {
         return mapView;
     }
 }

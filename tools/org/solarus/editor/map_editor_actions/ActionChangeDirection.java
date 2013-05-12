@@ -16,6 +16,7 @@
  */
 package org.solarus.editor.map_editor_actions;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
@@ -35,7 +36,7 @@ public class ActionChangeDirection extends MapEditorAction {
      * @param entities the entities for which the direction will be changed
      * @param direction the direction to set
      */
-    public ActionChangeDirection(Map map, LinkedList<MapEntity> entities, int direction) {
+    public ActionChangeDirection(Map map, Collection<MapEntity> entities, int direction) {
         super(map);
         this.entities = new LinkedList<MapEntity>(entities);
         this.directionAfter = direction;

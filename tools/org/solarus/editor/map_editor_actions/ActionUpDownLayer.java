@@ -16,6 +16,7 @@
  */
 package org.solarus.editor.map_editor_actions;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import org.solarus.editor.Map;
 import org.solarus.editor.MapEditorAction;
@@ -38,7 +39,7 @@ public class ActionUpDownLayer extends MapEditorAction {
      * @param entities the entities for which the layer will be changed
      * @param up if the layer after is superior or not than the layer before
      */
-    public ActionUpDownLayer(Map map, LinkedList<MapEntity> entities, boolean up) {
+    public ActionUpDownLayer(Map map, Collection<MapEntity> entities, boolean up) {
         super(map);
         this.entities = new LinkedList<MapEntity>(entities);
 

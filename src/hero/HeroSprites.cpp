@@ -119,10 +119,20 @@ const std::string HeroSprites::ground_sound_ids[] = {
  * @param hero the hero
  * @param equipment the equipment
  */
-HeroSprites::HeroSprites(Hero &hero, Equipment &equipment):
-  hero(hero), equipment(equipment), tunic_sprite(NULL), sword_sprite(NULL),
-  sword_stars_sprite(NULL), shield_sprite(NULL), shadow_sprite(NULL), ground_sprite(NULL), trail_sprite(NULL),
-  end_blink_date(0), walking(false), clipping_rectangle(Rectangle()), lifted_item(NULL) {
+HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
+  hero(hero),
+  equipment(equipment),
+  tunic_sprite(NULL),
+  sword_sprite(NULL),
+  sword_stars_sprite(NULL),
+  shield_sprite(NULL),
+  shadow_sprite(NULL),
+  ground_sprite(NULL),
+  trail_sprite(NULL),
+  end_blink_date(0),
+  walking(false),
+  clipping_rectangle(Rectangle()),
+  lifted_item(NULL) {
 
 }
 
@@ -163,7 +173,8 @@ void HeroSprites::rebuild_equipment() {
 
   int tunic_number = equipment.get_ability("tunic");
   
-  Debug::check_assertion(tunic_number > 0, StringConcat() << "Invalid tunic number: " << tunic_number);
+  Debug::check_assertion(tunic_number > 0, StringConcat() <<
+      "Invalid tunic number: " << tunic_number);
 
   tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number - 1]);
   tunic_sprite->enable_pixel_collisions();
@@ -194,6 +205,7 @@ void HeroSprites::rebuild_equipment() {
     // the hero has a sword: get the sprite and the sound
     sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
     sword_sprite->enable_pixel_collisions();
+    sword_sprite->set_synchronized_to(tunic_sprite);
     if (sword_animation.empty()) {
       sword_sprite->stop_animation();
     }
@@ -221,6 +233,7 @@ void HeroSprites::rebuild_equipment() {
   if (shield_number > 0) {
     // the hero has a shield
     shield_sprite = new Sprite(shield_sprite_ids[shield_number - 1]);
+    shield_sprite->set_synchronized_to(tunic_sprite);
     if (shield_animation.empty()) {
       shield_sprite->stop_animation();
     }
@@ -576,7 +589,7 @@ void HeroSprites::draw_on_map() {
   int x = hero.get_x();
   int y = hero.get_y();
 
-  Map &map = hero.get_map();
+  Map& map = hero.get_map();
 
   if (clipping_rectangle.get_width() > 0) {
     // restrict the map drawing to the clipping rectangle specified (just for the hero's sprites)
@@ -587,7 +600,7 @@ void HeroSprites::draw_on_map() {
     map.draw_sprite(*shadow_sprite, x, y);
   }
 
-  const Rectangle&displayed_xy = hero.get_displayed_xy();
+  const Rectangle& displayed_xy = hero.get_displayed_xy();
   x = displayed_xy.get_x();
   y = displayed_xy.get_y();
 

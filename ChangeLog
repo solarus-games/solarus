@@ -2,6 +2,7 @@ solarus-1.0.1 (under development)
 
 Bug fixes for the 1.0 release.
 
+* Fix jump movement accross two maps ending up in a wall (#189).
 * Fix a possible crash in TextSurface.
 * Fix parallax scrolling tiles not always displayed (#167).
 * Fix the setting joypad_enabled that had no effect (#163).

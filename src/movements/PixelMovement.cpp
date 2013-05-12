@@ -166,13 +166,10 @@ void PixelMovement::update() {
 
   Movement::update();
 
-  if (is_suspended()) {
-    return;
-  }
-
   uint32_t now = System::now();
 
   while (now >= next_move_date
+      && !is_suspended()
       && !finished
       && (get_entity() == NULL || get_entity()->get_movement() == this)) {
 
@@ -180,7 +177,7 @@ void PixelMovement::update() {
     make_next_step();
 
     bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
-    if (!is_suspended() && !success) {
+    if (!success) {
       notify_obstacle_reached();
     }
   }
@@ -207,7 +204,7 @@ void PixelMovement::set_suspended(bool suspended) {
 void PixelMovement::make_next_step() {
 
   bool success = false;
-  const Rectangle &dxy = *trajectory_iterator;
+  const Rectangle& dxy = *trajectory_iterator;
 
   if (!test_collision_with_obstacles(dxy.get_x(), dxy.get_y())) {
     translate_xy(dxy);
@@ -232,7 +229,7 @@ void PixelMovement::make_next_step() {
 }
 
 /**
- * @brief This function is called when a step of the trajectory just occured.
+ * @brief This function is called when a step of the trajectory just occurred.
  * @param step_index index of the step in the trajectory (the first one is 0)
  * @param success true if the move was made, false if the movement was stopped by an obstacle
  */

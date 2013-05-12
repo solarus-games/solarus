@@ -7,6 +7,7 @@ Solarus changes:
 * Fix the Mac OS X port.
 * Fix jump movement accross two maps ending up in a wall (#189).
 * Fix a possible crash in TextSurface.
+* Fix the hero disappearing a short time after using the sword (#35).
 * Fix the boomerang failing to bring back pickables sometimes (#187).
 * Fix parallax scrolling tiles not always displayed (#167).
 * Fix the setting joypad_enabled that had no effect (#163).

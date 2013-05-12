@@ -14,6 +14,7 @@ Solarus changes:
 * Fix creating a transition from the callback of a previous one.
 * Fix crystal blocks animated late when coming from a teletransporter (#61).
 * Fix arrows that got stopped when outside the screen (#73).
+* Fix diagonal movement that failed in narrow passages (#39).
 * Don't die if a script makes an error with a sprite (#151).
 * Don't die if a script makes an error with an enemy attack consequence.
 * Allow enemies to lose 0 life points when attacked (#137).

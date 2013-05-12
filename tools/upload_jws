@@ -6,7 +6,7 @@ cd export
 tar xvf tools.tar
 rm tools.tar
 ./compile
-jar cvmf manifest.mf solarus-editor.jar org
+jar cvmf manifest.mf solarus-editor.jar org imagej
 #keytool -genkey -keystore ../solaruskeystore -alias solaruskey
 jarsigner -keystore ../solaruskeystore luaj-jse-2.0.2.jar solaruskey
 jarsigner -keystore ../solaruskeystore solarus-editor.jar solaruskey

@@ -2,7 +2,8 @@ solarus-1.0.2 (under development)
 
 Bug fixes for the 1.0 release.
 
-* Fix sol.audio.play_music() no longer accepting "none" or "same" (#201).
+* Fix sol.audio.play_music() that failed with "none" or "same" (#201).
+* Don't die if a music or a sound cannot be found.
 
 solarus-1.0.1 (2013-05-12)
 

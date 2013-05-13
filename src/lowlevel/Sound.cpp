@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <iostream> // std::cerr
 #include <cstring>  // memcpy
 #include <cmath>
 #include <sstream>
@@ -96,19 +95,19 @@ void Sound::initialize(int argc, char** argv) {
 
   device = alcOpenDevice(NULL);
   if (!device) {
-    std::cerr << "Cannot open audio device" << std::endl;
+    Debug::error("Cannot open audio device");
     return;
   }
 
   ALCint attr[] = { ALC_FREQUENCY, 32000, 0 }; // 32 KHz is the SPC output sampling rate
   context = alcCreateContext(device, attr);
   if (!context) {
-    std::cerr << "Cannot create audio context" << std::endl;
+    Debug::error("Cannot create audio context");
     alcCloseDevice(device);
     return;
   }
   if (!alcMakeContextCurrent(context)) {
-    std::cerr << "Cannot activate audio context" << std::endl;
+    Debug::error("Cannot activate audio context");
     alcDestroyContext(context);
     alcCloseDevice(device);
     return;
@@ -298,12 +297,10 @@ void Sound::load() {
     file_name += ".ogg";
   }
 
-  // create an OpenAL buffer with the sound decoded by the library
+  // Create an OpenAL buffer with the sound decoded by the library.
   buffer = decode_file(file_name);
 
-  if (buffer == AL_NONE) {
-    std::cerr << "Sound '" << file_name << "' will not be played" << std::endl;
-  }
+  // buffer is now AL_NONE if there was an error.
 }
 
 /**
@@ -331,7 +328,8 @@ bool Sound::start() {
       // play the sound
       int error = alGetError();
       if (error != AL_NO_ERROR) {
-        std::cerr << "Cannot attach buffer " << buffer << " to the source to play sound: error " << error << std::endl;
+        Debug::error(StringConcat() << "Cannot attach buffer " << buffer
+            << " to the source to play sound '" << id << "': error " << error);
         alDeleteSources(1, &source);
       }
       else {
@@ -341,7 +339,8 @@ bool Sound::start() {
         alSourcePlay(source);
         error = alGetError();
         if (error != AL_NO_ERROR) {
-          std::cerr << "Cannot play sound: error " << error << std::endl;
+          Debug::error(StringConcat() << "Cannot play sound '" << id
+              << "': error " << error);
         }
         else {
           success = true;
@@ -361,6 +360,11 @@ ALuint Sound::decode_file(const std::string& file_name) {
 
   ALuint buffer = AL_NONE;
 
+  if (!FileTools::data_file_exists(file_name)) {
+    Debug::error(StringConcat() << "Cannot find sound file '" << file_name << "'");
+    return AL_NONE;
+  }
+
   // load the sound file
   SoundFromMemory mem;
   mem.loop = false;
@@ -371,7 +375,8 @@ ALuint Sound::decode_file(const std::string& file_name) {
   int error = ov_open_callbacks(&mem, &file, NULL, 0, ogg_callbacks);
 
   if (error) {
-    std::cerr << "Cannot load sound file from memory: error " << error << std::endl;
+    Debug::error(StringConcat() << "Cannot load sound file '" << file_name
+        << "' from memory: error " << error);
   }
   else {
 
@@ -388,7 +393,8 @@ ALuint Sound::decode_file(const std::string& file_name) {
     }
 
     if (format == AL_NONE) {
-      std::cerr << "Invalid audio format" << std::endl;
+      Debug::error(StringConcat() << "Invalid audio format for sound file '"
+          << file_name << "'");
     }
     else {
 
@@ -401,7 +407,8 @@ ALuint Sound::decode_file(const std::string& file_name) {
       do {
         bytes_read = ov_read(&file, samples_buffer, 4096, 0, 2, 1, &bitstream);
         if (bytes_read < 0) {
-          std::cerr << "Error while decoding ogg chunk: " << bytes_read << std::endl;
+          Debug::error(StringConcat() << "Error while decoding ogg chunk in sound file '"
+              << file_name << "': " << bytes_read);
         }
         else {
           total_bytes_read += bytes_read;
@@ -426,7 +433,8 @@ ALuint Sound::decode_file(const std::string& file_name) {
       alGenBuffers(1, &buffer);
       alBufferData(buffer, AL_FORMAT_STEREO16, (ALshort*) &samples[0], ALsizei(total_bytes_read), sample_rate);
       if (alGetError() != AL_NO_ERROR) {
-        std::cerr << "Cannot copy the sound samples into buffer " << buffer << "\n";
+        Debug::error(StringConcat() << "Cannot copy the sound samples of '"
+            << file_name << " into buffer " << buffer);
         buffer = AL_NONE;
       }
     }

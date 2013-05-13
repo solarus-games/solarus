@@ -36,17 +36,11 @@ const std::string Music::unchanged = "same";
  * @param music_id id of the music (file name without extension)
  */
 Music::Music(const std::string& music_id):
-  id(music_id) {
+  id(music_id),
+  format(OGG) {
 
   if (!is_initialized() || music_id == none) {
     return;
-  }
-
-  find_music_file(music_id, file_name, format);
-
-  if (music_id.empty()) {
-    Debug::die(StringConcat() << "Cannot find music file 'musics/" << music_id
-        << "' (tried extensions .ogg, .it and .spc)");
   }
 
   for (int i = 0; i < nb_buffers; i++) {
@@ -358,7 +352,10 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
     bytes_read = ov_read(&ogg_file, ((char*) raw_data) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
     if (bytes_read < 0) {
       if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
-        std::cerr << "Error while decoding ogg chunk: " << bytes_read << std::endl;
+        Debug::error(StringConcat() << "Error while decoding ogg chunk: "
+            << bytes_read);
+        delete[] raw_data;
+        return;
       }
     }
     else {
@@ -374,8 +371,11 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   delete[] raw_data;
 
   int error = alGetError();
-  Debug::check_assertion(error == AL_NO_ERROR,
-      StringConcat() << "Failed to fill the audio buffer with decoded OGG data for music file '" << file_name << ": error " << error);
+  if (error != AL_NO_ERROR) {
+    Debug::error(StringConcat()
+        << "Failed to fill the audio buffer with decoded OGG data for music file '"
+        << file_name << "': error " << error);
+  }
 }
 
 /**
@@ -391,8 +391,20 @@ bool Music::start() {
     return false;
   }
 
-  Debug::check_assertion(current_music == NULL,
-      StringConcat() << "Cannot play music file '" << file_name << "': a music is already playing");
+  Debug::check_assertion(current_music == NULL, StringConcat()
+      << "Cannot play music '" << id
+      << "': a music is already playing");
+
+  // First time: find the file.
+  if (file_name.empty()) {
+    find_music_file(id, file_name, format);
+
+    if (file_name.empty()) {
+      Debug::error(StringConcat() << "Cannot find music file 'musics/" << id
+          << "' (tried with extensions .ogg, .it and .spc)");
+      return false;
+    }
+  }
 
   bool success = true;
 
@@ -441,7 +453,8 @@ bool Music::start() {
 
       int error = ov_open_callbacks(&ogg_mem, &ogg_file, NULL, 0, Sound::ogg_callbacks);
       if (error) {
-        std::cerr << "Cannot load music file from memory: error " << error << std::endl;
+        Debug::error(StringConcat() << "Cannot load music file '" << file_name
+          << "' from memory: error " << error);
       }
       else {
         for (int i = 0; i < nb_buffers; i++) {
@@ -455,17 +468,10 @@ bool Music::start() {
   alSourceQueueBuffers(source, nb_buffers, buffers);
   int error = alGetError();
   if (error != AL_NO_ERROR) {
-    std::cerr << "Cannot initialize buffers for music '" << file_name << "': error " << error << std::endl;
+    Debug::error(StringConcat() << "Cannot initialize buffers for music '"
+        << file_name << "': error " << error);
     success = false;
   }
-/*  else {
-    alSourcePlay(source);
-    int error = alGetError();
-    if (error != AL_NO_ERROR) {
-      std::cerr << "Cannot play music '" << file_name << "': error " << error << std::endl;
-      success = false;
-    }
-  }*/
 
   alSourcePlay(source);
 

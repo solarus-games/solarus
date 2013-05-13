@@ -123,8 +123,11 @@ void Savegame::set_initial_values() {
   // Set the initial controls.
   set_default_keyboard_controls();
   set_default_joypad_controls();
-  set_integer(KEY_MAX_LIFE, 1);
-  set_integer(KEY_CURRENT_LIFE, 1);
+
+  // Set the initial equipment.
+  equipment.set_max_life(1);
+  equipment.set_life(1);
+  equipment.set_ability("tunic", 1);  // Mandatory to have a valid hero sprite.
 }
 
 /**

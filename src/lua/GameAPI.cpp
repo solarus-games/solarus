@@ -206,6 +206,16 @@ int LuaContext::game_api_start(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
+  if (!savegame.is_string(Savegame::KEY_STARTING_MAP) ||
+      savegame.get_string(Savegame::KEY_STARTING_MAP).empty()) {
+    luaL_error(l, "No starting map is defined in this savegame. Did you forget to call game:start_starting_location()?");
+  }
+
+  if (!savegame.is_string(Savegame::KEY_STARTING_POINT) ||
+      savegame.get_string(Savegame::KEY_STARTING_POINT).empty()) {
+    luaL_error(l, "No destination for the starting map is defined in this savegame. Did you forget to call game:start_starting_location()?");
+  }
+
   Game* game = savegame.get_game();
   if (game != NULL) {
     // A game is already running with this savegame: restart it.

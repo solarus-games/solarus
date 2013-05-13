@@ -30,32 +30,42 @@
 #endif
 
 /**
- * @brief Provides functionalities for printing debug messages or making
- * runtime verifications, especially when the code is compiled in debugging
- * mode.
+ * @brief Provides functionalities for printing error messages or making
+ * runtime checks, especially when the code is compiled in debugging mode.
  */
 class Debug {
+
+  public:
+
+    static void warning(const std::string& message);
+    static void error(const std::string& message);
+    static void check_assertion(bool assertion, const std::string& error_message = "");
+    static void die(const std::string& error_message);
 
   private:
 
     Debug();    // don't instantiate this class
-
-  public:
-
-    static void print(const std::string& message, std::ostream& os = std::cout);
-    static void check_assertion(bool assertion, const std::string& error_message = "");
-    static void die(const std::string& error_message = "");
 };
 
+/**
+ * @brief Prints "Warning: " and a message on stderr.
+ * @param message The warning message to print.
+ */
+inline void Debug::warning(const std::string& message) {
+
+  std::cerr << "Warning: " << message << std::endl;
+}
 
 /**
- * @brief Prints a message if the program is in debug mode.
- * @param message the message to print.
- * @param os the output stream to write (default is std::cout)
+ * @brief Prints "Error: " and a message on stderr.
+ *
+ * Use this function for non fatal errors such as errors in quest data files.
+ *
+ * @param message The error message to print.
  */
-inline void Debug::print(const std::string& message, std::ostream& os) {
+inline void Debug::error(const std::string& message) {
 
-  os << message << std::endl;
+  std::cerr << "Error: " << message << std::endl;
 }
 
 /**
@@ -64,8 +74,7 @@ inline void Debug::print(const std::string& message, std::ostream& os) {
  * If the assertion fails, shows an error message and aborts.
  * The error message is saved in error.txt.
  * This function should be used to detect fatal errors only, that is,
- * errors in your code or in the quest (the data files) that require to stop
- * the program.
+ * internal errors in the C++ code that require to stop the program.
  *
  * @param assertion The boolean condition to check.
  * @param error_message The error message to attach to print when the
@@ -81,7 +90,7 @@ inline void Debug::check_assertion(bool assertion, const std::string& error_mess
 /**
  * @brief Aborts the program.
  *
- * This function is equivalent to assert(false, error_message).
+ * This function is equivalent to Debug::check_assertion(false, error_message).
  * The error message is printed on stdout and also saved in error.txt.
  *
  * @param error_message The error message to show.

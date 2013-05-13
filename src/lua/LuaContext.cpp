@@ -845,7 +845,7 @@ bool LuaContext::call_function(lua_State* l, int nb_arguments, int nb_results,
     const std::string& function_name) {
 
   if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
-    Debug::print(StringConcat() << "Error in " << function_name << "(): "
+    Debug::error(StringConcat() << "In " << function_name << "(): "
         << lua_tostring(l, -1));
     lua_pop(l, 1);
     return false;
@@ -899,7 +899,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
     FileTools::data_file_close_buffer(buffer);
 
     if (result != 0) {
-      Debug::print(StringConcat() << "Error: failed to load script '"
+      Debug::error(StringConcat() << "Failed to load script '"
           << script_name << "': " << lua_tostring(l, -1));
     }
     return true;

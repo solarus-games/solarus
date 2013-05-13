@@ -87,11 +87,11 @@ class Music { // TODO make a subclass for each format, or at least make a better
     ALuint buffers[nb_buffers];                  /**< multiple buffers used to stream the music */
     ALuint source;                               /**< the OpenAL source streaming the buffers */
 
-    static SpcDecoder *spc_decoder;              /**< the SPC decoder */
-    static ItDecoder *it_decoder;                /**< the IT decoder */
+    static SpcDecoder* spc_decoder;              /**< the SPC decoder */
+    static ItDecoder* it_decoder;                /**< the IT decoder */
     static float volume;                         /**< volume of musics (0.0 to 1.0) */
 
-    static Music *current_music;                 /**< the music currently played (if any) */
+    static Music* current_music;                 /**< the music currently played (if any) */
     static std::map<std::string, Music> all_musics;   /**< all musics created before */
 
     void update_playing();

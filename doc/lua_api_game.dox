@@ -105,6 +105,7 @@ Loads an existing savegame, or initializes a new one if it does not exist
 
 A valid quest write directory must be set (in your
 \ref quest_properties_file "quest.dat" file or by
+calling \ref lua_api_main_set_quest_write_dir "sol.main.set_quest_write_dir"),
 otherwise savegames cannot be used and this function generates a Lua error.
 - \c file_name (string): Name of a savegame file, relative to the
   to the \ref lua_api_main_get_quest_write_dir "quest write directory".

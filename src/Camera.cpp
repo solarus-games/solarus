@@ -87,9 +87,32 @@ void Camera::update() {
         // Vertical camera stopper.
         int separation_x = stopper->get_x() + 8;
         if (x < separation_x && separation_x < x + SOLARUS_SCREEN_WIDTH) {
-          x = separation_x - SOLARUS_SCREEN_WIDTH;
-          // TODO handle all cases
+          int left = separation_x - x;
+          int right = x + SOLARUS_SCREEN_WIDTH - separation_x;
+          if (left > right) {
+            x = separation_x - SOLARUS_SCREEN_WIDTH;
+          }
+          else {
+            x = separation_x;
+          }
         }
+      }
+      else if (stopper->get_height() == 16) {
+        // Horizontal camera stopper.
+        int separation_y = stopper->get_y() + 8;
+        if (y < separation_y && separation_y < y + SOLARUS_SCREEN_HEIGHT) {
+          int top = separation_y - y;
+          int bottom = y + SOLARUS_SCREEN_HEIGHT - separation_y;
+          if (top > bottom) {
+            y = separation_y - SOLARUS_SCREEN_HEIGHT;
+          }
+          else {
+            y = separation_y;
+          }
+        }
+      }
+      else {
+        Debug::die("Wrong size of camera stopper: width or height must be 16");
       }
     }
   }

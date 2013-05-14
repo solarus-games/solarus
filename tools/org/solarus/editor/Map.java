@@ -973,7 +973,12 @@ public class Map extends Observable {
             throw new QuestEditorException(ex.getMessage());
         }
         catch (LuaError ex) {
-            throw new QuestEditorException(ex.getCause().getMessage());
+            if (ex.getCause() != null) {
+                throw new QuestEditorException(ex.getCause().getMessage());
+            }
+            else {
+                throw new QuestEditorException(ex.getMessage());
+            }
         }
 
         history.setSaved();

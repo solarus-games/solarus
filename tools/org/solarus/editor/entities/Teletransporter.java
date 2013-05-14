@@ -65,15 +65,6 @@ public class Teletransporter extends MapEntity {
     }
 
     /**
-     * Returns whether two entities of this type can have different
-     * sizes, even if they are not resizable.
-     * @return true
-     */
-    public boolean isSizeVariable() {
-        return true;
-    }
-
-    /**
      * Returns the minimum size of the entity (for a resizable entity).
      * When the entity is resized, its new size must be a multiple of this minimum size.
      * @return (16,16)

@@ -1227,19 +1227,20 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Draws a rectangle border on the entity.
-     * This function can be called by the paint() method of suclasses that need
-     * to draw the entity in a complex way (i.e. not just by blitting an image file).
+     * Draws a border around a rectangle.
      * @param g the graphic context
      * @param zoom zoom of the image
-     * @param outlineColor a color to fill the area between the two lines of the border
+     * @param outlineColor a color to fill the area between the two lines of
+     * the border.
+     * @param rectangle The region to draw a border on, in map coordinates.
      */
-    protected void drawEntityOutline(Graphics g, double zoom, Color outlineColor) {
+    protected void drawRectangleOutline(Graphics g, double zoom,
+            Color outlineColor, Rectangle region) {
 
-        int dx1 = (int) (positionInMap.x * zoom);
-        int dy1 = (int) (positionInMap.y * zoom);
-        int dx2 = (int) (dx1 + positionInMap.width * zoom);
-        int dy2 = (int) (dy1 + positionInMap.height * zoom);
+        int dx1 = (int) (region.x * zoom);
+        int dy1 = (int) (region.y * zoom);
+        int dx2 = (int) (dx1 + region.width * zoom);
+        int dy2 = (int) (dy1 + region.height * zoom);
 
         g.setColor(Color.black);
         g.drawLine(dx1, dy1, dx2 - 1, dy1);
@@ -1260,6 +1261,19 @@ public abstract class MapEntity extends Observable {
         g.drawLine(dx1 + 2, dy1 + 2, dx1 + 2, dy2 - 3);
         g.drawLine(dx2 - 3, dy1 + 2, dx2 - 3, dy2 - 3);
         g.drawLine(dx2 - 2, dy1 + 1, dx2 - 2, dy2 - 2);
+    }
+
+    /**
+     * Draws a rectangle border on the entity.
+     * This function can be called by the paint() method of suclasses that need
+     * to draw the entity in a complex way (i.e. not just by blitting an image file).
+     * @param g the graphic context
+     * @param zoom zoom of the image
+     * @param outlineColor a color to fill the area between the two lines of the border
+     */
+    protected void drawEntityOutline(Graphics g, double zoom, Color outlineColor) {
+
+        drawRectangleOutline(g, zoom, outlineColor, positionInMap);
     }
 
     /**

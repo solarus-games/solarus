@@ -56,6 +56,7 @@ public class AddEntitiesToolbar extends JComponent {
         new Cell(EntityType.DOOR),
         new Cell(EntityType.STAIRS, Stairs.Subtype.SPIRAL_UPSTAIRS),
         new Cell(EntityType.STAIRS, Stairs.Subtype.INSIDE_FLOOR),
+        new Cell(EntityType.CAMERA_STOPPER),
     };
 
     /**

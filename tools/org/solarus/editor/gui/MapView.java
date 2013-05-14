@@ -818,7 +818,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * In state State.RESIZING_ENTITY, updates with the new mouse coordinates
-     * the rectangle of the tile that is being resized.
+     * the rectangle of the entity that is being resized.
      * @param x x coordinate of the pointer
      * @param y y coordinate of the pointer
      */
@@ -854,7 +854,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             if (xB != cursorLocation.x || yB != cursorLocation.y) {
                 // the rectangle has changed
 
-                // store the coordinates of point B for the next time
+                // store the coordinates of point B for next time
                 cursorLocation.x = xB;
                 cursorLocation.y = yB;
 
@@ -865,7 +865,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     int length = Math.max(diffX, diffY); // length of the square
                     xB = xA + signX * length;
                     yB = yA + signY * length;
-                } // point A or B may have to be updated so that the rectangle is extended
+                }
+                // point A or B may have to be updated so that the rectangle is extended
                 // only in allowed directions, making sure its size is never zero
                 else {
                     if (selectedEntity.isExtensible(0)) {

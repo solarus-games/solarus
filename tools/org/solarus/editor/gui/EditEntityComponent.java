@@ -59,6 +59,7 @@ public class EditEntityComponent extends JPanel {
         editEntityComponentClasses.put(EntityType.CONVEYOR_BELT, EditEntityComponent.class);
         editEntityComponentClasses.put(EntityType.DOOR, EditDoorComponent.class);
         editEntityComponentClasses.put(EntityType.STAIRS, EditEntityComponent.class);
+        editEntityComponentClasses.put(EntityType.CAMERA_STOPPER, EditEntityComponent.class);
     };
 
     /**
@@ -173,9 +174,8 @@ public class EditEntityComponent extends JPanel {
             throw (RuntimeException) ex.getCause();
         }
         catch (Exception ex) {
-            System.err.println("Cannot create the component to edit this entity: " + ex);
+            GuiTools.errorDialog("Internal error: " + ex);
             ex.printStackTrace();
-            System.exit(1);
         }
 
         return component;

@@ -99,19 +99,19 @@ get_filename_component(library_name ${library_path} NAME)
         TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -R -P -n -p "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
+        ARGS -n -a "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
       )
     else()
       # Get original name if it is a symbolic link
       execute_process(COMMAND readlink ${library_path}
-                OUTPUT_VARIABLE ORIGINAL_NAME
+                RESULT_VARIABLE ORIGINAL_NAME
       )
 
       add_custom_command(
         TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -L -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}"
+        ARGS -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}"
       )	
     endif()
   endif()

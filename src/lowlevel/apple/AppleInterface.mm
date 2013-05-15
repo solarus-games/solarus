@@ -7,6 +7,16 @@
 #  import <UIKit/UIKit.h>
 #endif
 
+
+// WORKAROUND : enum NSApplicationSupportDirectory and NSUserDomainMask can be not defined on older OSX frameworks, 
+// so we'll use a macro to get the Application Support folder from the User Domain
+#if defined(NSApplicationSupportDirectory)
+#  define USER_APP_SUPPORT [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] objectAtIndex:0] path]UTF8String];
+#else
+#  define USER_APP_SUPPORT [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Application Support/"] UTF8String];
+#endif
+
+
 /**
  * @brief Return "~/Library/Application Support/" or equivalent from the official way, which is available in OSX 10.6+ and iOS 4.0+.
  *
@@ -16,14 +26,5 @@
  */
 const char* getUserApplicationSupportDirectory()
 {
-    // If the running OS implement URLsForDirectory:inDomains: method
-    if ([NSFileManager respondsToSelector:@selector(URLsForDirectory:inDomains:)])
-        return [[[[[NSFileManager defaultManager] 
-                   URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] 
-                  objectAtIndex:0] 
-                 path]
-                UTF8String];
-    else
-        return [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Application Support/"]
-                UTF8String];
+    return USER_APP_SUPPORT;
 }

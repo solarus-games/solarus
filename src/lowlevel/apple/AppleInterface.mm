@@ -10,7 +10,7 @@
 
 // WORKAROUND : enum NSApplicationSupportDirectory and NSUserDomainMask can be not defined on older OSX frameworks, 
 // so we'll use a macro to get the Application Support folder from the User Domain
-#if defined(NSApplicationSupportDirectory)
+#if MAC_OS_X_VERSION_10_4 <= MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_2_0 <= __IPHONE_OS_VERSION_MAX_ALLOWED
 #  define USER_APP_SUPPORT [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] objectAtIndex:0] path]UTF8String];
 #else
 #  define USER_APP_SUPPORT [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Application Support/"] UTF8String];

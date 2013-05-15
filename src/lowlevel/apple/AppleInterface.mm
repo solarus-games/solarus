@@ -8,12 +8,13 @@
 #endif
 
 
-// WORKAROUND : enum NSApplicationSupportDirectory and NSUserDomainMask can be not defined on older OSX frameworks, 
-// so we'll use a macro to get the Application Support folder from the User Domain
+// WORKAROUND : enum NSApplicationSupportDirectory and NSUserDomainMask are not defined on older OSX frameworks, 
+// so we'll use a macro to get the Application Support folder from the User Domain by the official way
 #if MAC_OS_X_VERSION_10_4 <= MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_2_0 <= __IPHONE_OS_VERSION_MAX_ALLOWED
-#  define USER_APP_SUPPORT [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] objectAtIndex:0] path]UTF8String];
+#  define USER_APP_SUPPORT [[[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] objectAtIndex:0] path] UTF8String];
 #else
-#  define USER_APP_SUPPORT [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Application Support/"] UTF8String];
+// Should never be use, just avoid to report the "undefined" error on older versions
+#  define USER_APP_SUPPORT 0;
 #endif
 
 
@@ -27,4 +28,10 @@
 const char* getUserApplicationSupportDirectory()
 {
     return USER_APP_SUPPORT;
+    // If the running OS implement URLsForDirectory:inDomains: method
+    if ([NSFileManager respondsToSelector:@selector(URLsForDirectory:inDomains:)])
+        return USER_APP_SUPPORT;
+    else
+        return [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Application Support/"]
+                UTF8String];
 }

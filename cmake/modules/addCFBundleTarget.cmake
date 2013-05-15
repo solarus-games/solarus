@@ -171,6 +171,14 @@ add_custom_command(
   ARGS "${PROJECT_BINARY_DIR}/cmake/apple/OSX-wrapper.sh" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}"
 )
 
+# Copy the PkgInfo file
+add_custom_command(
+  TARGET ${EXECUTABLE_MAIN_NAME}
+  POST_BUILD
+  COMMAND cp
+  ARGS "${PROJECT_BINARY_DIR}/cmake/apple/PkgInfo" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/"
+)
+
 # Code signing
 if(XCODE)
   set_target_properties(${NAME} PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "${SOLARUS_OS_HARDWARE} Developer: ${COMPANY_IDENTIFIER}")

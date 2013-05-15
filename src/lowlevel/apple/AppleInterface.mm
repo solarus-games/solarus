@@ -27,7 +27,6 @@
  */
 const char* getUserApplicationSupportDirectory()
 {
-    return USER_APP_SUPPORT;
     // If the running OS implement URLsForDirectory:inDomains: method
     if ([NSFileManager respondsToSelector:@selector(URLsForDirectory:inDomains:)])
         return USER_APP_SUPPORT;

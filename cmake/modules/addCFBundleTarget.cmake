@@ -102,11 +102,16 @@ get_filename_component(library_name ${library_path} NAME)
         ARGS -R -P -n -p "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
       )
     else()
+      # Get original name if it is a symbolic link
+      execute_process(COMMAND readlink ${library_path}
+                OUTPUT_VARIABLE ORIGINAL_NAME
+      )
+
       add_custom_command(
         TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
+        ARGS -L -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}"
       )	
     endif()
   endif()
@@ -129,16 +134,16 @@ endif()
 # Info.plist template or additional lines
 get_filename_component(SOLARUS_BUNDLE_ICON_NAME "${SOLARUS_BUNDLE_ICON}" NAME)
 set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
-		MACOSX_BUNDLE_INFO_PLIST             "${SOLARUS_BUNDLE_INFOPLIST}"
-		MACOSX_BUNDLE_BUNDLE_NAME            "${SOLARUS_BUNDLE}"
-		MACOSX_BUNDLE_ICON_FILE              "${SOLARUS_BUNDLE_ICON_NAME}"
-		MACOSX_BUNDLE_BUNDLE_VERSION         "${SOLARUS_BUNDLE_VERSION}"
+  MACOSX_BUNDLE_INFO_PLIST             "${SOLARUS_BUNDLE_INFOPLIST}"
+  MACOSX_BUNDLE_BUNDLE_NAME            "${SOLARUS_BUNDLE}"
+  MACOSX_BUNDLE_ICON_FILE              "${SOLARUS_BUNDLE_ICON_NAME}"
+  MACOSX_BUNDLE_BUNDLE_VERSION         "${SOLARUS_BUNDLE_VERSION}"
 
-		MACOSX_BUNDLE_GUI_IDENTIFIER         "${COMPANY_IDENTIFIER}.${SOLARUS_BUNDLE}"
-		MACOSX_BUNDLE_SHORT_VERSION_STRING   "${SOLARUS_BUNDLE_VERSION}"
-		MACOSX_BUNDLE_LONG_VERSION_STRING    "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}"
-		MACOSX_BUNDLE_COPYRIGHT              "Copyright 2013, ${COMPANY_IDENTIFIER}."
-		MACOSX_BUNDLE_INFO_STRING            "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}, Copyright 2013, ${COMPANY_IDENTIFIER}."
+  MACOSX_BUNDLE_GUI_IDENTIFIER         "${COMPANY_IDENTIFIER}.${SOLARUS_BUNDLE}"
+  MACOSX_BUNDLE_SHORT_VERSION_STRING   "${SOLARUS_BUNDLE_VERSION}"
+  MACOSX_BUNDLE_LONG_VERSION_STRING    "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}"
+  MACOSX_BUNDLE_COPYRIGHT              "Copyright 2013, ${COMPANY_IDENTIFIER}."
+  MACOSX_BUNDLE_INFO_STRING            "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}, Copyright 2013, ${COMPANY_IDENTIFIER}."
 )
 
 # Embed library search path

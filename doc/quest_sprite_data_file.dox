@@ -73,18 +73,18 @@ x y frame_width frame_height origin_x origin_y nb_frames nb_columns
 - \c frame_width and \c frame_height: Size of each frame.
   Thus, the first frame is the rectangle of coordinates (\c x,\c y)
   and size (\c frame_width,\c frame_height).
-- \c origin_x and \c origin_y: Coordinates of the origin point of the sprite,
+- \c origin_x and \c origin_y: Coordinates of the reference point of the sprite,
   relative to the top-left rectangle of a frame.
   When a sprite is drawn at some coordinates, the origin point determine what
   exact point of the sprite's rectangle is at those coordinates.
   It is not necessarily the top-left corner of the rectangle.
-  The origin point is usually be the central point of contact between the
+  The origin point is usually the central point of contact between the
   sprite and the ground. For example, the origin point of the hero,
   of enemies, NPCs and most entities is usually the center of their shadow.
   Thus, for entities of size (<tt>16,16</tt>), the origin point is
   often (<tt>8,13</tt>).
   The origin point is the point of synchronization of an entity with its
-  sprites, because an entity that has a given size may have sprite with
+  sprites, because an entity that has a given size may have sprites with
   a different size.
 - \c nb_frames: Number of frames of this direction. Most of the time,
   this number is the same for all directions.

@@ -114,7 +114,8 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   # Force to be the less pedantic possible with the Release build
   set(CMAKE_CXX_FLAGS "-Wno-error -Wno-all -Wno-unknown-pragmas")
-  # Some additional "no-warning" flags are not supported with gcc < 4.0
+
+  # Some "no-warning" flags are not supported with gcc < 4.0
   if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     exec_program(gcc ARGS --version OUTPUT_VARIABLE CMAKE_C_COMPILER_VERSION)
     if(NOT CMAKE_C_COMPILER_VERSION MATCHES "[0-3]\\.[0-9]\\.[0-9]")
@@ -123,6 +124,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
   else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-fatal-errors -Wno-extra")
   endif()
+
 else()
   set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")

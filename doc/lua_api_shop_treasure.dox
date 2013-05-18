@@ -9,7 +9,7 @@ A shop treasure is a treasure that can be purchased by the
 This type of \ref lua_api_entity "map entity" can be declared in the
 \ref lua_api_map_overview_files "map data file".
 It can also be created dynamically with
-\ref lua_api_map_create_shop_treasure "map:create_shop_treasure()".
+\ref lua_api_map_create_shop_item "map:create_shop_item()".
 
 \section lua_api_shop_treasure_overview Overview
 

@@ -3,7 +3,7 @@
 
 \tableofcontents
 
-A wall is an invisible obstacle that blocks some specific types of
+A wall is an invisible obstacle that stops some specific types of
 \ref lua_api_entity "map entities".
 
 This type of \ref lua_api_entity "map entity" can be declared in the

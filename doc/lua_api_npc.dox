@@ -3,11 +3,11 @@
 
 \tableofcontents
 
-A non-playing character (%NPC)
-is an entity that the \ref lua_api_hero "hero" can interact with
+A non-playing character (NPC)
+is somebody or something that the \ref lua_api_hero "hero" can interact with
 by pressing the
 \ref lua_api_game_intro_commands "action command"
-r using an
+or by using an
 \ref lua_api_item "equipment item"
 just in front of it.
 

@@ -4,7 +4,7 @@
 \tableofcontents
 
 A door is an obstacle that can be opened by Lua,
-and optionally by the hero under some conditions.
+and optionally by the \ref lua_api_hero "hero" under some conditions.
 
 This type of \ref lua_api_entity "map entity" can be declared in the
 \ref lua_api_map_overview_files "map data file".

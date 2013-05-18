@@ -1410,6 +1410,7 @@ on the map.
   - \c y (number): Y coordinate on the map.
   - \c width (number): Width of the entity in pixels.
   - \c height (number): Height of the entity in pixels.
+    One of \c width or \c height must be 16 pixels.
 - Return value (\ref lua_api_camera_stopper "camera stopper"): The
   camera_stopper created.
 

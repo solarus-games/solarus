@@ -18,7 +18,7 @@ or a vertical bar with a width of 16 pixels.
 The separation is made in the middle of this bar: in other words, 8 pixels
 belong to each side.
 
-When the camera touches the separation, it stops like if it was a bound of
+When the camera touches the separation, it stops like if there was a bound of
 a map. If the hero touches the separation, he scrolls to the other side.
 
 Enemies and other entities cannot cross camera stoppers.

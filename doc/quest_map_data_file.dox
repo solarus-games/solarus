@@ -161,6 +161,8 @@ declared in the map data file, see the
   A door to open with an equipment item or another condition.
 - \ref quest_map_data_file_syntax_stairs "Stairs":
   Stairs between two maps or to a platform of a single map.
+- \ref quest_map_data_file_syntax_camera_stopper "Camera stopper":
+  A visual separation between parts of the map.
 
 The definition of a map entity starts with \c entity_type{ and ends with
 \c }, where \c entity_type is a type of entity (see below).
@@ -963,6 +965,32 @@ stairs{
   y = 272,
   direction = 3,
   subtype = "1",
+}
+\endverbatim
+
+\subsubsection quest_map_data_file_syntax_camera_stopper Camera stopper
+
+Camera stoppers allow to visually separate different regions of a map like
+if they were several maps.
+When the camera touches the separation, it stops like if there was a bound of
+a map. If the hero touches the separation, he scrolls to the other side.
+
+A camera stopper can be declared in the map data file with
+<tt>camera_stopper{ ... }</tt>.
+
+Additional properties:
+- \c width (number): Width of the camera stopper in pixels.
+- \c height (number): Height of the camera stopper in pixels.
+  One of \c width or \c height must be 16 pixels.
+
+Example of camera stopper:
+\verbatim
+camera_stopper{
+  layer = 2,
+  x = 320,
+  y = 0,
+  width = 16,
+  height = 1280,
 }
 \endverbatim
 

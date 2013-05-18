@@ -19,8 +19,10 @@ the game (and you should also contact us).
 We specify here its full syntax,
 with instructions for quest makers and translators.
 
-Lines starting with the characters '--' are comments and are ignored by the
-engine. Empty lines are also ignored.
+The sequence of characters \c \-\- (two dashes) marks
+the beginning of a comment.
+After them, the rest of the line is ignored by the engine.
+Empty lines are also ignored.
 Quest makers should put many comments to explain where each
 dialog is used and give instructions to translators if needed.
 

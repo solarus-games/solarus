@@ -19,8 +19,10 @@ The list of supported languages is defined in the
 We now specify the syntax of this file.
 
 \c languages/languages.dat is a text file encoded in UTF-8.
-Lines starting with the characters '--' are comments and are ignored by the
-engine. Empty lines are also ignored.
+The sequence of characters \c \-\- (two dashes) marks
+the beginning of a comment.
+After them, the rest of the line is ignored by the engine.
+Empty lines are also ignored.
 
 The definition of a language starts with \c language{ and ends with \c }.
 Inside the braces, the properties of the language are specified.

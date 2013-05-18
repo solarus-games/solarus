@@ -32,7 +32,7 @@ public class Project {
     /**
      * Current format of data files supported by the editor.
      */
-    public static final String SolarusFormat = "1.0";
+    public static final String SolarusFormat = "1.1";
 
     /**
      * Root path of the project.

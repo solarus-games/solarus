@@ -1,6 +1,8 @@
 /**
 \page quest_tileset_data_file Tileset definition file
 
+\tableofcontents
+
 Maps are composed of small bricks called tiles.
 Tiles are static entities: they cannot be moved or removed dynamically during
 the game.

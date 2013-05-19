@@ -21,7 +21,6 @@
 #include "Equipment.h"
 #include "EquipmentItem.h"
 #include "DialogBox.h"
-#include "Counter.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "lua/LuaContext.h"

@@ -78,7 +78,6 @@ class Camera;
 class Dialog;
 class DialogResource;
 class DialogBox;
-class Counter;
 
 // Lua
 class ExportableToLua;

@@ -58,27 +58,27 @@ class Rectangle {
     void set_height(int height);
 
     void set_xy(int x, int y);
-    void set_xy(const Rectangle &xy);
+    void set_xy(const Rectangle& xy);
     void set_size(int width, int height);
-    void set_size(const Rectangle &other);
+    void set_size(const Rectangle& other);
 
     void add_x(int dx);
     void add_y(int dy);
     void add_width(int dw);
     void add_height(int dh);
     void add_xy(int dx, int dy);
-    void add_xy(const Rectangle &other);
+    void add_xy(const Rectangle& other);
 
     bool contains(int x, int y) const;
-    bool contains(const Rectangle &other) const;
-    bool overlaps(const Rectangle &other) const;
+    bool contains(const Rectangle& other) const;
+    bool overlaps(const Rectangle& other) const;
     Rectangle get_center();
 
     bool equals(const Rectangle &other) const;
     bool equals_xy(const Rectangle &other) const;
 };
 
-std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle);
+std::ostream& operator <<(std::ostream& stream, const Rectangle& rectangle);
 
 /**
  * @brief Returns the x coordinate of the top-left corner of this rectangle.
@@ -162,7 +162,7 @@ inline void Rectangle::set_xy(int x, int y) {
  *
  * @param xy a rectangle whose coordinates should be copied from
  */
-inline void Rectangle::set_xy(const Rectangle &xy) {
+inline void Rectangle::set_xy(const Rectangle& xy) {
   set_xy(xy.get_x(), xy.get_y());
 }
 
@@ -183,7 +183,7 @@ inline void Rectangle::set_size(int width, int height) {
  *
  * @param other a rectangle whose size should be copied from
  */
-inline void Rectangle::set_size(const Rectangle &other) {
+inline void Rectangle::set_size(const Rectangle& other) {
   set_size(other.get_width(), other.get_height());
 }
 
@@ -236,7 +236,7 @@ inline void Rectangle::add_xy(int dx, int dy) {
  *
  * @param dxy a rectangle whose coordinates should be added to the current's
  */
-inline void Rectangle::add_xy(const Rectangle &dxy) {
+inline void Rectangle::add_xy(const Rectangle& dxy) {
   add_xy(dxy.get_x(), dxy.get_y());
 }
 
@@ -245,7 +245,7 @@ inline void Rectangle::add_xy(const Rectangle &dxy) {
  * @param other another rectangle
  * @return true if both rectangles have the same coordinates and size
  */
-inline bool Rectangle::equals(const Rectangle &other) const {
+inline bool Rectangle::equals(const Rectangle& other) const {
 
   return equals_xy(other)
       && other.get_width() == get_width()
@@ -257,7 +257,7 @@ inline bool Rectangle::equals(const Rectangle &other) const {
  * @param other another rectangle
  * @return true if both rectangles have the same x and y values (the size are ignored)
  */
-inline bool Rectangle::equals_xy(const Rectangle &other) const {
+inline bool Rectangle::equals_xy(const Rectangle& other) const {
 
   return other.get_x() == get_x() && other.get_y() == get_y();
 }

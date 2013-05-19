@@ -36,7 +36,7 @@ Rectangle::Rectangle(int x, int y, int width, int height) {
  * @brief Copy constructor.
  * @param other the rectangle to copy
  */
-Rectangle::Rectangle(const Rectangle &other):
+Rectangle::Rectangle(const Rectangle& other):
   rect(other.rect) {
 
 }
@@ -64,7 +64,7 @@ bool Rectangle::contains(int x, int y) const {
  * @param other another rectangle
  * @return true if the specified rectangle is inside this rectangle
  */
-bool Rectangle::contains(const Rectangle &other) const {
+bool Rectangle::contains(const Rectangle& other) const {
 
   return contains(other.get_x(), other.get_y())
     && contains(other.get_x() + other.get_width() - 1, other.get_y() + other.get_height() - 1);
@@ -76,7 +76,7 @@ bool Rectangle::contains(const Rectangle &other) const {
  * @param other another rectangle
  * @return true if the two rectangles overlap
  */
-bool Rectangle::overlaps(const Rectangle &other) const {
+bool Rectangle::overlaps(const Rectangle& other) const {
 
   int x1 = get_x();
   int x2 = x1 + get_width();
@@ -109,7 +109,7 @@ Rectangle Rectangle::get_center() {
  * @param stream the stream
  * @param rectangle a rectangle
  */
-std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle) {
+std::ostream & operator <<(std::ostream& stream, const Rectangle& rectangle) {
 
   stream << "(" << rectangle.get_x() << "," << rectangle.get_y() << ") x ("
     << rectangle.get_width() << "," << rectangle.get_height() << ")";
@@ -124,7 +124,7 @@ std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle) {
  *
  * @return the internal rectangle encapsulated
  */
-SDL_Rect * Rectangle::get_internal_rect() {
+SDL_Rect* Rectangle::get_internal_rect() {
 
   return &rect;
 }

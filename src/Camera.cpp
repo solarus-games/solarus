@@ -86,7 +86,10 @@ void Camera::update() {
       if (stopper->get_width() == 16) {
         // Vertical camera stopper.
         int separation_x = stopper->get_x() + 8;
-        if (x < separation_x && separation_x < x + SOLARUS_SCREEN_WIDTH) {
+
+        if (x < separation_x && separation_x < x + SOLARUS_SCREEN_WIDTH
+            && stopper->get_y() < y + SOLARUS_SCREEN_HEIGHT
+            && y < stopper->get_y() + stopper->get_height()) {
           int left = separation_x - x;
           int right = x + SOLARUS_SCREEN_WIDTH - separation_x;
           if (left > right) {
@@ -100,7 +103,9 @@ void Camera::update() {
       else if (stopper->get_height() == 16) {
         // Horizontal camera stopper.
         int separation_y = stopper->get_y() + 8;
-        if (y < separation_y && separation_y < y + SOLARUS_SCREEN_HEIGHT) {
+        if (y < separation_y && separation_y < y + SOLARUS_SCREEN_HEIGHT
+            && stopper->get_x() < x + SOLARUS_SCREEN_WIDTH
+            && x < stopper->get_x() + stopper->get_width()) {
           int top = separation_y - y;
           int bottom = y + SOLARUS_SCREEN_HEIGHT - separation_y;
           if (top > bottom) {

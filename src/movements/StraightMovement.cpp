@@ -435,14 +435,20 @@ void StraightMovement::update_smooth_x() {
       }
       else {
         // The move on x is not possible, but there is also a vertical move.
-        if (!test_collision_with_obstacles(x_move, y_move)) {
-          // This case is only necessary in narrow diagonal passages.
-          translate_xy(x_move, y_move);
-          next_move_date_y += y_delay;  // Delay the next update_smooth_y() since we just replaced it.
-        }
-        else if (!test_collision_with_obstacles(0, y_move)) {
+        if (!test_collision_with_obstacles(0, y_move)) {
           // Do the vertical move right now, don't wait uselessly.
           update_y();
+        }
+        else {
+          // The x move is not possible and neither is the y move.
+          // Last chance: do both x and y moves in one step.
+          // This case is only necessary in narrow diagonal passages.
+          // We do it as a last resort, because we want separate x and y
+          // steps whenever possible: otherwise, the hero could bypass sensors.
+          if (!test_collision_with_obstacles(x_move, y_move)) {
+            translate_xy(x_move, y_move);
+            next_move_date_y += y_delay;  // Delay the next update_smooth_y() since we just replaced it.
+          }
         }
       }
     }
@@ -516,14 +522,20 @@ void StraightMovement::update_smooth_y() {
       }
       else {
         // The move on y is not possible, but there is also a horizontal move.
-        if (!test_collision_with_obstacles(x_move, y_move)) {
-          // This case is only necessary in narrow diagonal passages.
-          translate_xy(x_move, y_move);
-          next_move_date_x += x_delay;  // Delay the next update_smooth_x() since we just replaced it.
-        }
-        else if (!test_collision_with_obstacles(x_move, 0)) {
+        if (!test_collision_with_obstacles(x_move, 0)) {
           // Do the horizontal move right now, don't wait uselessly.
           update_x();
+        }
+        else {
+          // The y move is not possible and neither is the x move.
+          // Last chance: do both x and y moves in one step.
+          // This case is only necessary in narrow diagonal passages.
+          // We do it as a last resort, because we want separate x and y
+          // steps whenever possible: otherwise, the hero could bypass sensors.
+          if (!test_collision_with_obstacles(x_move, y_move)) {
+            translate_xy(x_move, y_move);
+            next_move_date_x += x_delay;  // Delay the next update_smooth_x() since we just replaced it.
+          }
         }
       }
     }

@@ -472,7 +472,7 @@ int LuaContext::item_api_set_sound_when_brandished(lua_State* l) {
     sound_when_brandished = luaL_checkstring(l, 2);
   }
 
-  item.set_sound_when_picked(sound_when_brandished);
+  item.set_sound_when_brandished(sound_when_brandished);
 
   return 0;
 }

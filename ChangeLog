@@ -5,6 +5,7 @@ Bug fixes for the 1.0 release.
 * Fix sol.audio.play_music() that failed with "none" or "same" (#201).
 * Don't die if a music or a sound cannot be found.
 * Don't die if running a savegame without starting location specified.
+* Don't die if a script refers to a non-existing equipment item.
 * Fix dangling pointers after removing some kind of entities.
 * Editor: fix a possible NullPointerException when opening an invalid map.
 * Documentation: add the syntax specification of maps and tilesets.

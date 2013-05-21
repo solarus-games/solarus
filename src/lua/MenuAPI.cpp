@@ -72,7 +72,8 @@ void LuaContext::remove_menus(int context_index) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+        lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {
@@ -326,7 +327,8 @@ void LuaContext::menus_on_update(int context_index) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(lua_touserdata(l, context_index));
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+        lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {
@@ -351,7 +353,8 @@ void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(lua_touserdata(l, context_index));
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+        lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {
@@ -377,7 +380,8 @@ bool LuaContext::menus_on_input(int context_index, InputEvent& event) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(lua_touserdata(l, context_index));
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+        lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {
@@ -407,7 +411,8 @@ bool LuaContext::menus_on_command_pressed(int context_index,
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(lua_touserdata(l, context_index));
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+        lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {
@@ -437,7 +442,8 @@ bool LuaContext::menus_on_command_released(int context_index,
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = static_cast<ExportableToLua**>(lua_touserdata(l, context_index));
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+        lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {

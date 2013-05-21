@@ -35,6 +35,8 @@
 #include <iomanip>
 #include <lua.hpp>
 
+std::map<lua_State*, LuaContext*> LuaContext::lua_contexts;
+
 /**
  * @brief Creates a Lua context.
  * @param main_loop The Solarus main loop manager.
@@ -60,17 +62,12 @@ LuaContext::~LuaContext() {
  */
 LuaContext& LuaContext::get_lua_context(lua_State* l) {
 
-  // TODO use a static std::map<LuaState*, LuaContext*> instead
+  std::map<lua_State*, LuaContext*>::iterator it = lua_contexts.find(l);
 
-  // Retrieve the LuaContext object.
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
-  LuaContext* lua_context = static_cast<LuaContext*>(lua_touserdata(l, -1));
-  lua_pop(l, 1);
-
-  Debug::check_assertion(lua_context != NULL,
+  Debug::check_assertion(it != lua_contexts.end(),
       "This Lua state does not belong to a LuaContext object");
 
-  return *lua_context;
+  return *it->second;
 }
 
 /**
@@ -91,14 +88,11 @@ void LuaContext::initialize() {
   lua_atpanic(l, l_panic);
   luaL_openlibs(l);
 
-  // Put a pointer to this LuaContext object in the Lua context.
-                                  // --
-  lua_pushlightuserdata(l, this);
-                                  // this
-  lua_setfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
-                                  // --
+  // Associate this LuaContext object to the lua_State pointer.
+  lua_contexts[l] = this;
 
   // Create a table that will keep track of all userdata.
+                                  // --
   lua_newtable(l);
                                   // all_udata
   lua_newtable(l);
@@ -162,6 +156,7 @@ void LuaContext::exit() {
 
     // Finalize Lua.
     lua_close(l);
+    lua_contexts.erase(l);
     l = NULL;
   }
 }

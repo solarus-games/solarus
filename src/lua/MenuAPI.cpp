@@ -38,6 +38,9 @@ void LuaContext::register_menu_module() {
 
 /**
  * @brief Registers a menu into a context (table or a userdata).
+ *
+ * This function can be called safely even while iterating on the menus list.
+ *
  * @param menu_ref Lua ref of the menu to add.
  * @param context_index Index of the table or userdata in the stack.
  */
@@ -60,11 +63,12 @@ void LuaContext::add_menu(int menu_ref, int context_index) {
 
 /**
  * @brief Unregisters all menus associated to a context.
+ *
+ * This function can be called safely even while iterating on the menus list.
+ *
  * @param context_index Index of a table or userdata containing menus.
  */
 void LuaContext::remove_menus(int context_index) {
-
-  std::list<int> menus_to_remove;
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
@@ -80,14 +84,17 @@ void LuaContext::remove_menus(int context_index) {
     int menu_ref = it->ref;
     if (it->context == context) {
       menu_on_finished(menu_ref);
-      menus.erase(it--);
       destroy_ref(menu_ref);
+      it->ref = LUA_REFNIL;
+      it->context = NULL;
     }
   }
 }
 
 /**
  * @brief Unregisters all existing menus.
+ *
+ * This function can be called safely even while iterating on the menus list.
  */
 void LuaContext::remove_menus() {
 
@@ -95,11 +102,52 @@ void LuaContext::remove_menus() {
   for (it = menus.begin(); it != menus.end(); ++it) {
 
     int menu_ref = it->ref;
-    menu_on_finished(menu_ref);
-    destroy_ref(menu_ref);
+    if (menu_ref != LUA_REFNIL) {
+      menu_on_finished(menu_ref);
+      destroy_ref(menu_ref);
+      it->ref = LUA_REFNIL;
+      it->context = NULL;
+    }
+  }
+}
+
+/**
+ * @brief Destroys immediately all existing menus.
+ */
+void LuaContext::destroy_menus() {
+
+  std::list<LuaMenuData>::iterator it;
+  for (it = menus.begin(); it != menus.end(); ++it) {
+
+    int menu_ref = it->ref;
+    if (menu_ref != LUA_REFNIL) {
+      destroy_ref(menu_ref);
+    }
   }
   menus.clear();
 }
+
+/**
+ * @brief Checks all menus and removes the ones that have to be removed.
+ *
+ * Note that the on_update() is called by the context of each menu, not
+ * by this function.
+ */
+void LuaContext::update_menus() {
+
+  // Destroy the ones that should be removed.
+  std::list<LuaMenuData>::iterator it;
+  for (it = menus.begin(); it != menus.end(); ++it) {
+
+    if (it->ref == LUA_REFNIL) {
+      // LUA_REFNIL on a menu means that we should remove it.
+      // In this case, context must also be NULL.
+      Debug::check_assertion(it->context == NULL, "Menu with context and no ref");
+      menus.erase(it--);
+    }
+  }
+}
+
 
 /**
  * @brief Implementation of sol.menu.start().
@@ -143,15 +191,15 @@ int LuaContext::menu_api_stop(lua_State* l) {
     if (lua_equal(l, 1, -1)) {
       menu_ref = ref;
       lua_context.menu_on_finished(menu_ref);
-      menus.erase(it);
       lua_context.destroy_ref(menu_ref);
+      it->ref = LUA_REFNIL;  // Don't erase it immediately since we may be iterating menus.
+      it->context = NULL;
       break;
     }
   }
 
   if (menu_ref == LUA_REFNIL) {
-    push_string(l, "Unknown menu.");
-    lua_error(l);
+    luaL_error(l, "Unknown menu.");
   }
 
   return 0;
@@ -278,7 +326,7 @@ void LuaContext::menus_on_update(int context_index) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {
@@ -303,7 +351,7 @@ void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {
@@ -329,7 +377,7 @@ bool LuaContext::menus_on_input(int context_index, InputEvent& event) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {
@@ -359,7 +407,7 @@ bool LuaContext::menus_on_command_pressed(int context_index,
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {
@@ -389,7 +437,7 @@ bool LuaContext::menus_on_command_released(int context_index,
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {

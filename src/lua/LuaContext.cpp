@@ -60,6 +60,8 @@ LuaContext::~LuaContext() {
  */
 LuaContext& LuaContext::get_lua_context(lua_State* l) {
 
+  // TODO use a static std::map<LuaState*, LuaContext*> instead
+
   // Retrieve the LuaContext object.
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
   LuaContext* lua_context = static_cast<LuaContext*>(lua_touserdata(l, -1));
@@ -155,7 +157,7 @@ void LuaContext::exit() {
     main_on_finished();
 
     // Destroy unfinished menus and timers.
-    remove_menus();
+    destroy_menus();
     destroy_timers();
 
     // Finalize Lua.
@@ -174,6 +176,7 @@ void LuaContext::update() {
 
   update_drawables();
   update_movements();
+  update_menus();
   update_timers();
 
   // Call sol.main.on_update().

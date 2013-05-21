@@ -180,6 +180,8 @@ class LuaContext {
     void add_menu(int menu_ref, int context_index);
     void remove_menus(int context_index);
     void remove_menus();
+    void destroy_menus();
+    void update_menus();
 
     // Drawable objects.
     void add_drawable(Drawable* drawable);
@@ -758,7 +760,7 @@ class LuaContext {
      */
     struct LuaMenuData {
       int ref;               /**< Lua ref of the table of the menu. */
-      const void* context;  /**< Lua table or userdata the menu is attached to. */
+      const void* context;   /**< Lua table or userdata the menu is attached to. */
 
       LuaMenuData(int ref, const void* context):
         ref(ref),
@@ -980,7 +982,8 @@ class LuaContext {
     lua_State* l;                   /**< The Lua state encapsulated. */
     MainLoop& main_loop;            /**< The Solarus main loop. */
 
-    std::list<LuaMenuData> menus;   /**< The menus currently running in their context. */
+    std::list<LuaMenuData> menus;   /**< The menus currently running in their context.
+                                     * Invalid ones are to be removed at the next cycle. */
     std::map<Timer*, LuaTimerData>
         timers;                     /**< The timers currently running, with
                                      * their context and callback. */

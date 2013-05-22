@@ -310,7 +310,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
 
   uint32_t pixel = 0;
   SDL_PixelFormat* format = internal_surface->format;
-
+    
   // In order from the most used to the most exotic
   switch (format->BytesPerPixel) {
     case 1:
@@ -323,10 +323,14 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
       pixel = ((uint16_t*) internal_surface->pixels)[idx_pixel];
       break;
     case 3:
-      pixel = ((uint24_t*) internal_surface->pixels)[idx_pixel];
+      // Manual cast of the pixel into uint32_t
+      pixel = (*(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * format->BytesPerPixel)
+               & (0xffffffff << (32 - format->BitsPerPixel)));
       break;
+    default:
+      Debug::error("Surface should all have a depth between 8 and 32bits per pixel");
   }
-
+    
   return pixel;
 }
 

@@ -50,8 +50,8 @@ GameoverSequence::GameoverSequence(Game& game, int hero_direction):
   hero_dead_sprite.set_current_direction(hero_direction);
   hero_dead_sprite.set_suspended(true);
 
-  const Rectangle &camera_position = game.get_current_map().get_camera_position();
-  const Rectangle &hero_xy = game.get_hero_xy();
+  const Rectangle& camera_position = game.get_current_map().get_camera_position();
+  const Rectangle& hero_xy = game.get_hero_xy();
   hero_dead_x = hero_xy.get_x() - camera_position.get_x();
   hero_dead_y = hero_xy.get_y() - camera_position.get_y();
 
@@ -112,7 +112,7 @@ void GameoverSequence::update() {
       fade_sprite.update();
       if (fade_sprite.is_animation_finished()) {
 
-        Equipment &equipment = game.get_equipment();
+        Equipment& equipment = game.get_equipment();
         if (equipment.has_ability("get_back_from_death")) {
           state = SAVED_BY_FAIRY;
           fairy_x = hero_dead_x + 12;

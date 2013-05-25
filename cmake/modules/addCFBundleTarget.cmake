@@ -99,20 +99,19 @@ get_filename_component(library_name ${library_path} NAME)
         TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -n -a "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
+        ARGS -a "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
       )
     else()
       # Get original name if it is a symbolic link
       execute_process(COMMAND readlink ${library_path}
-                RESULT_VARIABLE ORIGINAL_NAME
-		OUTPUT_QUIET
+                OUTPUT_VARIABLE ORIGINAL_NAME
       )
 
       add_custom_command(
         TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}"
+        ARGS "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}"
       )	
     endif()
   endif()
@@ -167,9 +166,9 @@ add_custom_command(
   TARGET ${EXECUTABLE_MAIN_NAME}
   POST_BUILD
   COMMAND mv 
-  ARGS -n "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Resources/solarus"
+  ARGS "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Resources/solarus"
   COMMAND cp 
-  ARGS -n "${PROJECT_BINARY_DIR}/cmake/apple/OSX-wrapper.sh" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}"
+  ARGS "${PROJECT_BINARY_DIR}/cmake/apple/OSX-wrapper.sh" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}"
 )
 
 # Copy the PkgInfo file
@@ -177,7 +176,7 @@ add_custom_command(
   TARGET ${EXECUTABLE_MAIN_NAME}
   POST_BUILD
   COMMAND cp
-  ARGS -n "${PROJECT_BINARY_DIR}/cmake/apple/PkgInfo" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/"
+  ARGS "${PROJECT_BINARY_DIR}/cmake/apple/PkgInfo" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/"
 )
 
 # Code signing

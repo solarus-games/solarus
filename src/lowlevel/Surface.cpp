@@ -303,7 +303,7 @@ SDL_Surface* Surface::get_internal_surface() {
 
 /**
  * @brief Return the 32bits pixel
- * @param idx_pixel The index of the pixel to cast, can be any depth into 8 to 32 bits
+ * @param idx_pixel The index of the pixel to cast, can be any depth into 1 to 32 bits
  * @return The casted 32bits pixel.
  */
 uint32_t Surface::get_pixel32(int idx_pixel) {
@@ -324,11 +324,10 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
       break;
     case 3:
       // Manual cast of the pixel into uint32_t
-      pixel = (*(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * format->BytesPerPixel)
-               & (0xffffffff << (32 - format->BitsPerPixel)));
+      pixel = *(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00;
       break;
     default:
-      Debug::error("Surface should all have a depth between 8 and 32bits per pixel");
+      Debug::error("Surface should all have a depth between 1 and 32bits per pixel");
   }
     
   return pixel;
@@ -337,7 +336,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
 /**
  * @brief Returns the 32bits pixel, color-mapped from internal SDL_PixelFormat to dst_format.
  *
- * The source pixel depth format can be any size between 8 and 32bits.
+ * The source pixel depth format can be any size between 1 and 32bits.
  * If the destination pixel depth format is less than 32-bpp then the unused upper bits of the return value can safely be ignored.
  * This method should be used only by low-level classes, and after lock source internal_surface.
  *

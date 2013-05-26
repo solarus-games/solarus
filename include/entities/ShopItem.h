@@ -33,7 +33,26 @@
  */
 class ShopItem: public Detector {
 
+  public:
+
+    ~ShopItem();
+    static ShopItem* create(Game& game, const std::string& name, Layer layer, int x, int y,
+        const Treasure& treasure, int price, const std::string& dialog_id);
+
+    EntityType get_type();
+
+    bool is_sword_ignored();
+    bool is_obstacle_for(MapEntity& other);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_action_command_pressed();
+
+    void update();
+    void draw_on_map();
+
   private:
+
+    ShopItem(const std::string& name, Layer layer, int x, int y,
+        const Treasure& treasure, int price, const std::string& dialog_id);
 
     // data
     Treasure treasure;                /**< the treasure the player can buy */
@@ -47,25 +66,6 @@ class ShopItem: public Detector {
     // state
     bool is_looking_item;             /**< indicates that the message describing the item is being shown */
     bool is_asking_question;          /**< indicates that the buy question is being shown */
-
-    ShopItem(const std::string& name, Layer layer, int x, int y,
-        const Treasure& treasure, int price, const std::string& dialog_id);
-
-  public:
-
-    ~ShopItem();
-    static ShopItem* create(Game& game, const std::string& name, Layer layer, int x, int y,
-        const Treasure& treasure, int price, const std::string& dialog_id);
-
-    EntityType get_type();
-
-    bool is_sword_ignored();
-    bool is_obstacle_for(MapEntity &other);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    void notify_action_command_pressed();
-
-    void update();
-    void draw_on_map();
 };
 
 #endif

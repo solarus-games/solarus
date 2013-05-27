@@ -93,13 +93,13 @@ set_property(SOURCE
 # TODO : Remove when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
 macro(copy_into_bundle library_path destination_directory)
 get_filename_component(library_name ${library_path} NAME)
-  if(NOT EXISTS ${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${library_name})
+  if(NOT EXISTS "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${library_name}")
     if(IS_DIRECTORY ${library_path})
       add_custom_command(
         TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
-        COMMAND cp 
-        ARGS -d "${library_path}" ; then cp -a "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/" ; fi
+        COMMAND if 
+        ARGS [ ! -d "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${library_name}" ] \; then cp -a "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/" \; fi
       )
     else()
       # Get original name if it is a symbolic link

@@ -99,7 +99,7 @@ get_filename_component(library_name ${library_path} NAME)
         TARGET ${EXECUTABLE_MAIN_NAME}
         POST_BUILD
         COMMAND cp 
-        ARGS -a "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
+        ARGS -d "${library_path}" ; then cp -a "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/" ; fi
       )
     else()
       # Get original name if it is a symbolic link

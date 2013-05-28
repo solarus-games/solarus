@@ -303,7 +303,7 @@ SDL_Surface* Surface::get_internal_surface() {
 
 /**
  * @brief Return the 32bits pixel
- * @param idx_pixel The index of the pixel to cast, can be any depth into 1 to 32 bits
+ * @param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits
  * @return The casted 32bits pixel.
  */
 uint32_t Surface::get_pixel32(int idx_pixel) {

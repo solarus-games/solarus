@@ -50,7 +50,7 @@ public class Destructible extends MapEntity {
         "entities/stone_small_white",
         "entities/stone_small_black",
         "entities/grass",
-        "entities/bomb_flowe",
+        "entities/bomb_flower",
     };
 
     /**

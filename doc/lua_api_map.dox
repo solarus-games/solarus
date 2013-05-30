@@ -1402,9 +1402,13 @@ Events are callback methods automatically called by the engine if you define
 them.
 In the case of maps, they are only called on the current map.
 
-\subsection lua_api_map_on_started map:on_started()
+\subsection lua_api_map_on_started map:on_started(destination)
 
 Called when this map starts (when the player enters it).
+- \c destination (\ref lua_api_destination "destination"): The destination
+  entity from where the \ref lua_api_hero "hero" arrives on the map,
+  or \c nil if he used another way than a destination entity
+  (like the side of the map or direct coordinates).
 
 \subsection lua_api_map_on_finished map:on_finished()
 
@@ -1440,11 +1444,15 @@ When this happens, all \ref lua_api_entity "map entities" stop moving and most
 - \c suspended (boolean): \c true if the map was just suspended, \c
   false if it was resumed.
 
-\subsection lua_api_map_on_opening_transition_finished map:on_opening_transition_finished()
+\subsection lua_api_map_on_opening_transition_finished map:on_opening_transition_finished(destination)
 
 When the map begins, called when the opening transition effect finishes.
 After that moment, the player has the control of the \ref
 lua_api_hero "hero".
+- \c destination (\ref lua_api_destination "destination"): The destination
+  entity from where the \ref lua_api_hero "hero" arrived on the map,
+  or \c nil if he used another way than a destination entity
+  (like the side of the map or direct coordinates).
 
 \subsection lua_api_map_on_camera_back map:on_camera_back()
 

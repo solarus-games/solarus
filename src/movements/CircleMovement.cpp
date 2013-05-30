@@ -413,7 +413,7 @@ void CircleMovement::set_suspended(bool suspended) {
 
   Movement::set_suspended(suspended);
 
-  if (!suspended) {
+  if (get_when_suspended() != 0) {
     uint32_t diff = System::now() - get_when_suspended();
     next_angle_change_date += diff;
     next_radius_change_date += diff;

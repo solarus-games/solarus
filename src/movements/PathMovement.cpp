@@ -186,7 +186,7 @@ void PathMovement::set_suspended(bool suspended) {
 
 /**
  * @brief Returns whether the movement is finished.
- * @return true if the end of the path was reached or the entity 
+ * @return true if the end of the path was reached or the entity
  * was stopped by an obstacle
  */
 bool PathMovement::is_finished() {
@@ -310,7 +310,7 @@ uint32_t PathMovement::speed_to_delay(int speed, int direction) {
 Rectangle PathMovement::get_xy_change() {
 
   Rectangle xy;
-  
+
   std::string::const_iterator it;
   for (it = initial_path.begin(); it != initial_path.end(); it++) {
     int direction = *it - '0';

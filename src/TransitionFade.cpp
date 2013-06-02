@@ -36,7 +36,7 @@ TransitionFade::TransitionFade(Transition::Direction direction):
     alpha_start = 0;
     alpha_limit = 256;
     alpha_increment = 8;
-  }  
+  }
 
   set_delay(20);
 }

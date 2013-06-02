@@ -61,7 +61,7 @@ Teletransporter::Teletransporter(
   destination_name(destination_name),
   destination_side(-1),
   transporting_hero(false) {
-  
+
   if (!sprite_name.empty()) {
     create_sprite(sprite_name);
   }
@@ -103,7 +103,7 @@ void Teletransporter::set_map(Map& map) {
       destination_side = 1;
     }
     else {
-      Debug::die(StringConcat() << "Bad position of teletransporter '" << get_name() << "'"); 
+      Debug::die(StringConcat() << "Bad position of teletransporter '" << get_name() << "'");
     }
   }
 
@@ -236,7 +236,7 @@ void Teletransporter::transport_hero(Hero& hero) {
       break;
 
     default:
-      Debug::die(StringConcat() << "Bad destination side for teletransporter '" << get_name() << "'"); 
+      Debug::die(StringConcat() << "Bad destination side for teletransporter '" << get_name() << "'");
     }
   }
 

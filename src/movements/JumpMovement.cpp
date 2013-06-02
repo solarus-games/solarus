@@ -181,7 +181,7 @@ void JumpMovement::notify_step_done(int step_index, bool success) {
   else {
     int jump_sign = (step_index <= get_length() / 2) ? 1 : -1;
     int jump_unit = (get_length() <= 16) ? 2 : 1;
-    
+
     jump_height += jump_sign * jump_unit;
   }
 }

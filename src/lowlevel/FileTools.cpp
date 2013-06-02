@@ -300,7 +300,7 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
       << "Cannot open file '" << file_name << "' for writing: "
       << PHYSFS_getLastError());
  
-  // save the memory buffer 
+  // save the memory buffer
   if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {
     Debug::die(StringConcat() << "Cannot write file '" << file_name
         << "': " << PHYSFS_getLastError());
@@ -404,7 +404,7 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
   // Create the directory.
   PHYSFS_mkdir(solarus_write_dir.c_str());
-  
+
   const std::string& full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
   if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
     Debug::die(StringConcat() << "Cannot set Solarus write directory to '"

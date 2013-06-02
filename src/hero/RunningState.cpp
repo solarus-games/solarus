@@ -93,7 +93,7 @@ void Hero::RunningState::update() {
   }
 
   if (phase == 0) {
-    
+
     if (now >= next_phase_date) {
 
       double angle = Geometry::degrees_to_radians(get_sprites().get_animation_direction() * 90);

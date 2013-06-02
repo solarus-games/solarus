@@ -236,7 +236,7 @@ void InputEvent::set_key_repeat(int delay, int interval) {
  * @return true if the SHIFT key is currently down
  */
 bool InputEvent::is_shift_down() {
-  
+
   SDLMod mod = SDL_GetModState();
   return mod & (KMOD_LSHIFT | KMOD_RSHIFT);
 }
@@ -249,7 +249,7 @@ bool InputEvent::is_shift_down() {
  * @return true if the CTRL key is currently down
  */
 bool InputEvent::is_control_down() {
-  
+
   SDLMod mod = SDL_GetModState();
   return mod & (KMOD_LCTRL | KMOD_RCTRL);
 }
@@ -262,7 +262,7 @@ bool InputEvent::is_control_down() {
  * @return true if the ALT key is currently down
  */
 bool InputEvent::is_alt_down() {
-  
+
   SDLMod mod = SDL_GetModState();
   return mod & (KMOD_LALT | KMOD_RALT);
 }
@@ -395,7 +395,7 @@ bool InputEvent::is_keyboard_key_released(KeyboardKey key) {
 bool InputEvent::is_keyboard_key_released(const KeyboardKey *keys) {
 
   while (*keys != KEY_NONE) {
-    
+
     if (is_keyboard_key_released(*keys)) {
       return true;
     }
@@ -743,41 +743,41 @@ int InputEvent::get_joypad_hat_direction() {
   int result = -1;
 
   switch (internal_event.jhat.value) {
-  
+
     case SDL_HAT_RIGHT:
       result = 0;
       break;
-  
+
     case SDL_HAT_RIGHTUP:
       result = 1;
       break;
-  
+
     case SDL_HAT_UP:
       result = 2;
       break;
-  
+
     case SDL_HAT_LEFTUP:
       result = 3;
       break;
-  
+
     case SDL_HAT_LEFT:
       result = 4;
       break;
-  
+
     case SDL_HAT_LEFTDOWN:
       result = 5;
       break;
-  
+
     case SDL_HAT_DOWN:
       result = 6;
       break;
-  
+
     case SDL_HAT_RIGHTDOWN:
       result = 7;
       break;
 
   }
-  
+
   return result;
 }
 
@@ -813,7 +813,7 @@ int InputEvent::get_direction() {
   int result = -1;
 
   if (is_keyboard_direction_key_pressed()) {
-    
+
     switch (get_keyboard_key()) {
 
       case KEY_RIGHT:
@@ -848,7 +848,7 @@ int InputEvent::get_direction() {
     }
   }
   else if (is_joypad_hat_moved()) {
-    result = get_joypad_hat_direction(); 
+    result = get_joypad_hat_direction();
   }
 
   return result;

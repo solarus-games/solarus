@@ -185,7 +185,7 @@ void Hero::PullingState::notify_position_changed() {
 /**
  * @brief Makes the hero stop pulling the entity he is facing.
  *
- * This function is called while moving the entity, when the 
+ * This function is called while moving the entity, when the
  * hero or the entity collides with an obstacle or when
  * the hero's movement is finished.
  */

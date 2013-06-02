@@ -629,7 +629,7 @@ void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 }
 
 /**
- * @brief Removes and destroys the entities placed in the entities_to_remove list. 
+ * @brief Removes and destroys the entities placed in the entities_to_remove list.
  */
 void MapEntities::remove_marked_entities() {
 

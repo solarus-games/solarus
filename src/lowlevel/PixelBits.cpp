@@ -166,7 +166,7 @@ bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location
   }
   else {
     rows_a = &other.bits[offset_y2];
-    rows_b = &this->bits[offset_y1]; 
+    rows_b = &this->bits[offset_y1];
     nb_unused_masks_row_b = offset_x1 >> 5;
     nb_unused_bits_row_b = offset_x1 & 31;
   }
@@ -253,7 +253,7 @@ void PixelBits::print() const {
         std::cout << ".";
       }
 
-      mask >>= 1;      
+      mask >>= 1;
     }
     std::cout << std::endl;
   }

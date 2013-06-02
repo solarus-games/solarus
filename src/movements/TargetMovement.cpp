@@ -192,7 +192,7 @@ void TargetMovement::update() {
  * @brief Calculates the direction and the speed of the movement
  * depending on the target.
  */
-void TargetMovement::recompute_movement() { 
+void TargetMovement::recompute_movement() {
 
   if (target_entity != NULL) {
     // the target may be a moving entity

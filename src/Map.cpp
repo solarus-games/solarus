@@ -666,7 +666,7 @@ bool Map::is_started() {
 }
 
 /**
- * @brief This function is called when the map is started and 
+ * @brief This function is called when the map is started and
  * the opening transition is finished.
  */
 void Map::notify_opening_transition_finished() {
@@ -881,7 +881,7 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &en
     collision = test_collision_with_entities(layer, collision_box, entity_to_check);
   }
 
-  return collision;   
+  return collision;
 }
 
 /**

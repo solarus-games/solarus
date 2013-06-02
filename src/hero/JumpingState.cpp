@@ -36,7 +36,7 @@
  */
 Hero::JumpingState::JumpingState(Hero &hero, int direction8, int distance,
     bool ignore_obstacles, bool with_sound, uint32_t movement_delay):
-  
+
   State(hero),
   carried_item(NULL) {
 

@@ -195,7 +195,7 @@ const Rectangle& Sprite::get_origin() const {
  * in miliseconds.
  */
 uint32_t Sprite::get_frame_delay() const {
-  return frame_delay;  
+  return frame_delay;
 }
 
 /**
@@ -208,7 +208,7 @@ uint32_t Sprite::get_frame_delay() const {
  * in miliseconds.
  */
 void Sprite::set_frame_delay(uint32_t frame_delay) {
-  this->frame_delay = frame_delay;  
+  this->frame_delay = frame_delay;
 }
 
 /**

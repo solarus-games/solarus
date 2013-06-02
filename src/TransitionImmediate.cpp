@@ -36,7 +36,7 @@ TransitionImmediate::~TransitionImmediate() {
  * @brief Starts this transition effect.
  */
 void TransitionImmediate::start() {
-  
+
 }
 
 /**

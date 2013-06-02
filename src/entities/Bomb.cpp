@@ -72,7 +72,7 @@ EntityType Bomb::get_type() {
  * @return true if this type of entity can be obstacle for other entities
  */
 bool Bomb::can_be_obstacle() {
-  return false; 
+  return false;
 }
 
 /**

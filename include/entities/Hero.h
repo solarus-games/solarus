@@ -170,7 +170,7 @@ class Hero: public MapEntity {
      *
      * These function provide information about the position of
      * the hero relative to other entities, and about
-     * what is in front of him (we call this the "facing point"). 
+     * what is in front of him (we call this the "facing point").
      */
     const Rectangle get_facing_point();
     const Rectangle get_facing_point(int direction4);

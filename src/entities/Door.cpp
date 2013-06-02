@@ -166,7 +166,7 @@ bool Door::is_changing() const {
  * @param door_open true to make it opened, false to make it closed.
  */
 void Door::set_open(bool door_open) {
-  
+
   state = door_open ? OPEN : CLOSED;
 
   if (door_open) {

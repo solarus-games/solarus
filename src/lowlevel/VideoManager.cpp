@@ -102,17 +102,17 @@ VideoManager* VideoManager::get_instance() {
  */
 Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
     Uint32 flag;
-    
+
     // Use software surface if there will be pixel access to blit with the mode in parameter
     if(mode_sizes[mode].get_width() != SOLARUS_SCREEN_WIDTH || mode_sizes[mode].get_height() != SOLARUS_SCREEN_HEIGHT)
         flag = SDL_SWSURFACE;
-    else 
+    else
         flag = SDL_HWSURFACE;
-    
+
 #if SOLARUS_SCREEN_DOUBLEBUF != 0
     flag |= SDL_DOUBLEBUF;
 #endif
-    
+
     return flag;
 }
 

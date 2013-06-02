@@ -139,7 +139,7 @@ int Surface::get_height() const {
  * @return the size of this surface
  */
 const Rectangle Surface::get_size() const {
-  
+
   return Rectangle(0, 0, get_width(), get_height());
 }
 
@@ -310,7 +310,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
 
   uint32_t pixel = 0;
   SDL_PixelFormat* format = internal_surface->format;
-    
+
   // In order from the most used to the most exotic
   switch (format->BytesPerPixel) {
     case 1:
@@ -329,7 +329,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
     default:
       Debug::error("Surface should all have a depth between 1 and 32bits per pixel");
   }
-    
+
   return pixel;
 }
 

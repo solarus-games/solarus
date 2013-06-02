@@ -88,14 +88,14 @@ void PathFindingMovement::update() {
     else {
       set_path(create_random_path());
     }
-  } 
+  }
 }
 
 /**
  * @brief Calculates the direction and the speed of the movement
  * depending on the target.
  */
-void PathFindingMovement::recompute_movement() { 
+void PathFindingMovement::recompute_movement() {
 
   if (target != NULL) {
     PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);

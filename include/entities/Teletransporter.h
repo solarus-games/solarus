@@ -42,7 +42,7 @@ class Teletransporter: public Detector {
                                            * of the destination map this teletransporters leads to.
                                            * This depends on the teletransporter position on the original map.
                                            * -1 means a teletransporter other than "_side". */
-    int transition_direction;             /**< When the destination is "_side", indicates the direction 
+    int transition_direction;             /**< When the destination is "_side", indicates the direction
                                            * of the transition between the two maps (this is the opposite
                                            * direction of destination_side). */
     bool transporting_hero;               /**< indicates that the hero is currently being transported

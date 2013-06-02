@@ -154,7 +154,7 @@ std::string PathFinding::compute_path() {
             new_node.total_cost = new_node.previous_cost + new_node.heuristic;
             new_node.parent_index = index;
             new_node.direction = '0' + i;
-            open_list[new_node.index] = new_node; 
+            open_list[new_node.index] = new_node;
             add_index_sorted(&open_list[new_node.index]);
             //std::cout << "  node in direction " << i << " is not in the open list, adding it with cost "
             //  << new_node.previous_cost << " (" << current_node->previous_cost << " + "

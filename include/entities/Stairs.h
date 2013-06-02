@@ -52,7 +52,6 @@ class Stairs: public Detector {
       INSIDE_FLOOR              /**< small stairs inside a single floor, changing the hero's layer */
     };
 
-      
     /**
      * @brief Indicates the way an entity is walking on stairs.
      * - For stairs inside a single floor, 0 means that the hero is going upstairs

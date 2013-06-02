@@ -56,7 +56,7 @@ TransitionScrolling::~TransitionScrolling() {
  * @brief Starts this transition effect.
  */
 void TransitionScrolling::start() {
-  
+
   if (direction == OUT) {
     return;
   }

@@ -49,7 +49,7 @@ class Movement: public ExportableToLua {
 
     // obstacles (only when the movement is applied to an entity)
     Rectangle last_collision_box_on_obstacle;    /**< Copy of the entity's bounding box of the last call
-                                                  * to test_collision_with_map() returning true. */ 
+                                                  * to test_collision_with_map() returning true. */
 
     bool default_ignore_obstacles;               /**< Indicates that this movement normally ignores obstacles. */
     bool current_ignore_obstacles;               /**< Indicates that this movement currently ignores obstacles. */

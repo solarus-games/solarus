@@ -84,7 +84,7 @@ EntityType Hookshot::get_type() {
  * @return true if this type of entity can be obstacle for other entities
  */
 bool Hookshot::can_be_obstacle() {
-  return false; 
+  return false;
 }
 
 /**

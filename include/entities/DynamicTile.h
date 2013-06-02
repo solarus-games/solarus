@@ -23,7 +23,7 @@
 /**
  * @brief A special tile that can be enabled or disabled.
  *
- * A dynamic tile is a tile placed on the map 
+ * A dynamic tile is a tile placed on the map
  * that can be enabled or disabled by the script,
  * contrary to the Tile instances that are totally static for performance reasons.
  * An enabled dynamic tile behaves like a normal tile and may be an obstacle.

@@ -80,7 +80,7 @@ AnimatedTilePattern::AnimatedTilePattern(Obstacle obstacle,
  * @brief Destructor.
  */
 AnimatedTilePattern::~AnimatedTilePattern() {
-  
+
 }
 
 /**

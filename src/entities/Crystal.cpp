@@ -80,7 +80,7 @@ void Crystal::notify_map_started() {
 /**
  * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
- * @return true if this entity is an obstacle for the other one 
+ * @return true if this entity is an obstacle for the other one
  */
 bool Crystal::is_obstacle_for(MapEntity& other) {
   return other.is_crystal_obstacle(*this);

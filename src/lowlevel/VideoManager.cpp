@@ -100,8 +100,8 @@ VideoManager* VideoManager::get_instance() {
  * @param the display mode which you wanted to know the SDL_Surface flag to use with.
  * @return the better SDL_Surface flag to use
  */
-Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
-  Uint32 flag;
+uint32_t VideoManager::get_surface_flag(const VideoMode mode) {
+  uint32_t flag;
 
   // Use software surface if there will be pixel access to blit with the mode in parameter
   if (mode_sizes[mode].get_width() != SOLARUS_SCREEN_WIDTH

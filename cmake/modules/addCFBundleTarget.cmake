@@ -93,8 +93,8 @@ set_property(SOURCE
 # TODO : Remove when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
 macro(copy_into_bundle library_path destination_directory)
 get_filename_component(library_name ${library_path} NAME)
+  # Encapsulate cp with a condition instead of using -n flag, which is buggy on some OSX versions
   if(IS_DIRECTORY ${library_path})
-    # Encapsulate cp with a condition instead of using -n flag, which is buggy on some OSX versions
     add_custom_command(
       TARGET ${EXECUTABLE_MAIN_NAME}
       POST_BUILD
@@ -104,14 +104,18 @@ get_filename_component(library_name ${library_path} NAME)
   else()
     # Get original name if it is a symbolic link
     execute_process(COMMAND readlink ${library_path}
-              OUTPUT_VARIABLE ORIGINAL_NAME
+      OUTPUT_VARIABLE ORIGINAL_NAME
+      OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+    if(NOT ORIGINAL_NAME OR ORIGINAL_NAME STREQUAL "")
+      set(ORIGINAL_NAME ${library_name})
+    endif()
 
     add_custom_command(
       TARGET ${EXECUTABLE_MAIN_NAME}
       POST_BUILD
-      COMMAND cp -n
-      ARGS "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}"
+      COMMAND if
+      ARGS [ ! -f "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}" ] \; then cp "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}" \; fi
     )
   endif()
 endmacro()

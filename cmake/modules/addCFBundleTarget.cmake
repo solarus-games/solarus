@@ -151,8 +151,8 @@ set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
 
 # Embed library search path
 if(NOT SOLARUS_IOS_BUILD)
-  if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
-    set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path")
+  if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5" AND NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-Xlinker -rpath")
+    set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
     set(SOLARUS_RPATH                  "@rpath/")
   else()
     set(SOLARUS_RPATH                  "@executable_path/../Frameworks/")

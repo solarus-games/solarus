@@ -93,27 +93,30 @@ set_property(SOURCE
 # TODO : Remove when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
 macro(copy_into_bundle library_path destination_directory)
 get_filename_component(library_name ${library_path} NAME)
-  if(NOT EXISTS "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${library_name}")
-    if(IS_DIRECTORY ${library_path})
-      add_custom_command(
-        TARGET ${EXECUTABLE_MAIN_NAME}
-        POST_BUILD
-        COMMAND if 
-        ARGS [ ! -d "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${library_name}" ] \; then cp -a "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/" \; fi
-      )
-    else()
-      # Get original name if it is a symbolic link
-      execute_process(COMMAND readlink ${library_path}
-                OUTPUT_VARIABLE ORIGINAL_NAME
-      )
-
-      add_custom_command(
-        TARGET ${EXECUTABLE_MAIN_NAME}
-        POST_BUILD
-        COMMAND cp 
-        ARGS "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}"
-      )	
+  # Encapsulate cp with a condition instead of using -n flag, which is buggy on some OSX versions
+  if(IS_DIRECTORY ${library_path})
+    add_custom_command(
+      TARGET ${EXECUTABLE_MAIN_NAME}
+      POST_BUILD
+      COMMAND if 
+      ARGS [ ! -d "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${library_name}" ] \; then cp -a "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/" \; fi
+    )
+  else()
+    # Get original name if it is a symbolic link
+    execute_process(COMMAND readlink ${library_path}
+      OUTPUT_VARIABLE ORIGINAL_NAME
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if(NOT ORIGINAL_NAME OR ORIGINAL_NAME STREQUAL "")
+      set(ORIGINAL_NAME ${library_name})
     endif()
+
+    add_custom_command(
+      TARGET ${EXECUTABLE_MAIN_NAME}
+      POST_BUILD
+      COMMAND if
+      ARGS [ ! -f "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}" ] \; then cp "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}" \; fi
+    )
   endif()
 endmacro()
 if(NOT XCODE)
@@ -131,7 +134,7 @@ else()
   endforeach()
 endif()
 
-# Info.plist template or additional lines
+# Info.plist template and additional lines
 get_filename_component(SOLARUS_BUNDLE_ICON_NAME "${SOLARUS_BUNDLE_ICON}" NAME)
 set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
   MACOSX_BUNDLE_INFO_PLIST             "${SOLARUS_BUNDLE_INFOPLIST}"
@@ -148,7 +151,7 @@ set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
 
 # Embed library search path
 if(NOT SOLARUS_IOS_BUILD)
-  if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
+  if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5" AND NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-Xlinker -rpath")
     set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
     set(SOLARUS_RPATH                  "@rpath/")
   else()

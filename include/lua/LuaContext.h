@@ -184,8 +184,10 @@ class LuaContext {
     void update_menus();
 
     // Drawable objects.
+    bool has_drawable(Drawable* drawable);
     void add_drawable(Drawable* drawable);
     void remove_drawable(Drawable* drawable);
+    void destroy_drawables();
     void update_drawables();
 
     // Movements.
@@ -992,6 +994,9 @@ class LuaContext {
 
     std::set<Drawable*> drawables;  /**< All drawable objects created by
                                      * this script. */
+    std::set<Drawable*>
+        drawables_to_remove;        /**< Drawable objects to be removed at the
+                                     * next cycle. */
 
     static std::map<lua_State*, LuaContext*>
         lua_contexts;               /**< Mapping to get the encapsulating object

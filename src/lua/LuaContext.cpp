@@ -150,9 +150,10 @@ void LuaContext::exit() {
     // Call sol.main.on_finished() if it exists.
     main_on_finished();
 
-    // Destroy unfinished menus and timers.
+    // Destroy unfinished objects.
     destroy_menus();
     destroy_timers();
+    destroy_drawables();
 
     // Finalize Lua.
     lua_close(l);

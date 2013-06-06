@@ -43,6 +43,15 @@ file(
   include/snes_spc/*.h
 )
 
+# Configuration for OSX and iOS build and deployment
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  if(NOT SOLARUS_IOS_BUILD)
+    include(OSX)
+  else()
+    include(iOS)
+  endif()
+endif()
+
 # additional source files for Apple systems
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(source_files
@@ -128,15 +137,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 else()
   set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
-endif()
-
-# Configuration for OSX and iOS build and deployment
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  if(NOT SOLARUS_IOS_BUILD)
-    include(OSX)
-  else()
-    include(iOS)
-  endif()
 endif()
 
 # solarus options

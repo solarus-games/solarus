@@ -178,12 +178,14 @@ add_custom_command(
 )
 
 # Copy the PkgInfo file
-add_custom_command(
-  TARGET ${EXECUTABLE_MAIN_NAME}
-  POST_BUILD
-  COMMAND cp
-  ARGS "${PROJECT_BINARY_DIR}/cmake/apple/PkgInfo" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/"
-)
+if(NOT XCODE)
+  add_custom_command(
+    TARGET ${EXECUTABLE_MAIN_NAME}
+    POST_BUILD
+    COMMAND cp
+    ARGS "${PROJECT_BINARY_DIR}/cmake/apple/PkgInfo" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/"
+  )
+endif()
 
 # Code signing
 if(XCODE)

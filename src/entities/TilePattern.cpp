@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 /**
  * @brief Constructor.
  *
- * It is called by the subclasses. 
+ * It is called by the subclasses.
  * 
  * @param obstacle type of obstacle
  * @param width width of the tile in pixels (must be a multiple of 8)
@@ -57,7 +57,7 @@ TilePattern::~TilePattern() {
 
 /**
  * @brief Returns the width of the tile pattern.
- * @return the width of the tile 
+ * @return the width of the tile
  */
 int TilePattern::get_width() const {
   return width;
@@ -65,7 +65,7 @@ int TilePattern::get_width() const {
 
 /**
  * @brief Returns the height of the tile pattern.
- * @return the height of the tile 
+ * @return the height of the tile
  */
 int TilePattern::get_height() const {
   return height;

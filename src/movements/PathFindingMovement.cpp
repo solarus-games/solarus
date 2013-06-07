@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,14 +88,14 @@ void PathFindingMovement::update() {
     else {
       set_path(create_random_path());
     }
-  } 
+  }
 }
 
 /**
  * @brief Calculates the direction and the speed of the movement
  * depending on the target.
  */
-void PathFindingMovement::recompute_movement() { 
+void PathFindingMovement::recompute_movement() {
 
   if (target != NULL) {
     PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);

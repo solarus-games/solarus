@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1234,7 +1234,7 @@ bool Enemy::is_killed() {
  * @return true if the dying animation is finished
  */
 bool Enemy::is_dying_animation_finished() {
-  
+
   if (hurt_style != HURT_BOSS) {
     return get_sprite().is_animation_finished();
   }
@@ -1261,7 +1261,7 @@ void Enemy::set_treasure(const Treasure& treasure) {
 
 /**
  * @brief Returns true if the current sprite animation is finished or is looping.
- * @return true if the current sprite animation is finished or is looping 
+ * @return true if the current sprite animation is finished or is looping
  */
 bool Enemy::is_sprite_finished_or_looping() {
 
@@ -1275,7 +1275,7 @@ bool Enemy::is_sprite_finished_or_looping() {
 void Enemy::immobilize() {
 
   immobilized = true;
-  start_shaking_date = System::now() + 5000; 
+  start_shaking_date = System::now() + 5000;
 }
 
 /**
@@ -1288,8 +1288,8 @@ void Enemy::stop_immobilized() {
 }
 
 /**
- * @brief Returns whether this enemy is immobilized. 
- * @return true if this enemy is immobilized 
+ * @brief Returns whether this enemy is immobilized.
+ * @return true if this enemy is immobilized
  */
 bool Enemy::is_immobilized() {
 

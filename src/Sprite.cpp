@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -195,7 +195,7 @@ const Rectangle& Sprite::get_origin() const {
  * in miliseconds.
  */
 uint32_t Sprite::get_frame_delay() const {
-  return frame_delay;  
+  return frame_delay;
 }
 
 /**
@@ -208,7 +208,7 @@ uint32_t Sprite::get_frame_delay() const {
  * in miliseconds.
  */
 void Sprite::set_frame_delay(uint32_t frame_delay) {
-  this->frame_delay = frame_delay;  
+  this->frame_delay = frame_delay;
 }
 
 /**

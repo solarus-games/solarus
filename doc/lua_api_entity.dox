@@ -71,7 +71,7 @@ Here are the existing types of entities.
   lowered
   (travserable) or raised (obstacle) using a \ref lua_api_crystal "crystal".
 - \subpage lua_api_conveyor_belt "Conveyor belt": When walking on it, the \ref
-  lua_api_hero "hero" is moved into a direction.
+  lua_api_hero "hero" is forced to move into a direction.
 - \subpage lua_api_door "Door": A door to open with an \ref lua_api_item
   "equipment item" or another condition.
 - \subpage lua_api_stairs "Stairs": %Stairs between two \ref lua_api_map "maps"

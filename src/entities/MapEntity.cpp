@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -155,7 +155,7 @@ bool MapEntity::is_hero() {
 /**
  * @brief Returns whether entities of this type have detection capabilities.
  *
- * This function returns whether entities of this type can detect the presence 
+ * This function returns whether entities of this type can detect the presence
  * of the hero or other entities. If yes, the function
  * notify_collision() will be called when a collision is detected.
  *
@@ -1505,14 +1505,14 @@ bool MapEntity::overlaps_camera() {
  * @return true if this entity's origin point is in the specified rectangle
  */
 bool MapEntity::is_origin_point_in(const Rectangle &rectangle) {
-  return rectangle.contains(get_x(), get_y()); 
+  return rectangle.contains(get_x(), get_y());
 }
 
 /**
  * @brief Returns whether this entity's facing point is in
  * the specified rectangle.
  * @param rectangle the rectangle to check
- * @return true if this entity's facing point is in the specified rectangle 
+ * @return true if this entity's facing point is in the specified rectangle
  */
 bool MapEntity::is_facing_point_in(const Rectangle &rectangle) {
 
@@ -1786,7 +1786,7 @@ void MapEntity::set_suspended(bool suspended) {
   // suspend/unsuspend the sprites animations
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
-    
+
     Sprite& sprite = *(*it);
     sprite.set_suspended(suspended || !is_enabled());
   }
@@ -1805,7 +1805,7 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
-    
+
     Sprite& sprite = *(*it);
     sprite.set_ignore_suspend(ignore_suspend);
   }

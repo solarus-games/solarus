@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,7 +82,7 @@ EntityType Arrow::get_type() {
  * @return true if this type of entity can be obstacle for other entities
  */
 bool Arrow::can_be_obstacle() {
-  return false; 
+  return false;
 }
 
 /**
@@ -172,7 +172,7 @@ bool Arrow::is_switch_obstacle(Switch& sw) {
 /**
  * @brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
  * @param raised_block a crystal block raised
- * @return false 
+ * @return false
  */
 bool Arrow::is_raised_block_obstacle(CrystalBlock& raised_block) {
   // arrows can traverse the crystal blocks
@@ -256,7 +256,7 @@ void Arrow::update() {
   }
 
   uint32_t now = System::now();
-    
+
   // stop the movement if necessary (i.e. stop() was called)
   if (stop_now) {
     clear_movement();
@@ -270,7 +270,7 @@ void Arrow::update() {
   }
 
   if (entity_reached != NULL) {
-    
+
     // see if the entity reached is still valid
     if (is_stopped()) {
       // the arrow is stopped because the entity that was reached just disappeared

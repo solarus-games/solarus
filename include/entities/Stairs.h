@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,6 @@ class Stairs: public Detector {
       INSIDE_FLOOR              /**< small stairs inside a single floor, changing the hero's layer */
     };
 
-      
     /**
      * @brief Indicates the way an entity is walking on stairs.
      * - For stairs inside a single floor, 0 means that the hero is going upstairs

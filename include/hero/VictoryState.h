@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 class Hero::VictoryState: public Hero::State {
 
   private:
-    
+
     uint32_t end_victory_date;         /**< Date when the victory animation stops. */
     bool finished;                     /**< Indicates that the victory sequence is finished. */
     int callback_ref;                  /**< Lua ref of a function to call when the sequence finishes. */

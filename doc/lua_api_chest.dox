@@ -18,7 +18,7 @@ to the player when the \ref lua_api_hero "hero" opens its.
 - If the chest is empty, it may either mean that there is really
 no treasure, or that what happens when the player opens it
 is defined dynamically by your script
-(see the \ref lua_api_chest_on_empty chest:on_empty() event).
+(see the \ref lua_api_chest_on_empty "chest:on_empty()" event).
 
 The state of a chest is either open or closed.
 When a chest is closed, its treasure (if any) is still inside

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ void Camera::update() {
   int y = position.get_y();
   const Rectangle& map_location = map.get_location();
 
-  // if the camera is not moving, center it on the hero
+  // If the camera is not moving, center it on the hero.
   if (is_fixed_on_hero()) {
     const Rectangle& hero_center = map.get_entities().get_hero().get_center_point();
     x = hero_center.get_x();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,7 +124,7 @@ EntityType CarriedItem::get_type() {
  * @return true if this type of entity can be obstacle for other entities
  */
 bool CarriedItem::can_be_obstacle() {
-  return false; 
+  return false;
 }
 
 /**
@@ -220,7 +220,7 @@ bool CarriedItem::is_being_thrown() {
  
 /**
  * @brief Returns whether the item is about to explode.
- * @return true if the item is about to explode 
+ * @return true if the item is about to explode
  */
 bool CarriedItem::will_explode_soon() {
   return can_explode() && System::now() >= explosion_date - 1500;
@@ -324,9 +324,9 @@ void CarriedItem::update() {
 
   // when the item has finished flying, destroy it
   else if (can_explode() && !is_breaking) {
-    
+
     uint32_t now = System::now();
-    
+
     if (now >= explosion_date) {
       break_item();
     }
@@ -501,7 +501,7 @@ bool CarriedItem::is_switch_obstacle(Switch& sw) {
 /**
  * @brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
  * @param raised_block a crystal block raised
- * @return false 
+ * @return false
  */
 bool CarriedItem::is_raised_block_obstacle(CrystalBlock& raised_block) {
   // the thrown items can traverse the crystal blocks

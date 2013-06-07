@@ -9,9 +9,12 @@ including \c .ttf and \c .fon.
 This \c text directory also contains a \c fonts.dat file that defines the list
 of fonts available to the quest and their properties.
 
-\c fonts.dsta is a text file.
-Lines starting with the characters '--' are comments and are ignored by the
-engine. Empty lines are also ignored.
+\c fonts.dat is a text file.
+
+The sequence of characters \c \-\- (two dashes) marks
+the beginning of a comment.
+After them, the rest of the line is ignored by the engine.
+Empty lines are also ignored.
 
 The definition of a font starts with \c font{ and ends with \c }.
 Inside the braces, the properties of the font are specified.

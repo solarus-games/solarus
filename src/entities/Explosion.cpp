@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ EntityType Explosion::get_type() {
  * @return true if this type of entity can be obstacle for other entities
  */
 bool Explosion::can_be_obstacle() {
-  return false; 
+  return false;
 }
 
 
@@ -125,7 +125,7 @@ void Explosion::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapp
 }
 
 /**
- * @brief This function is called when a the sprite of a crystal 
+ * @brief This function is called when a the sprite of a crystal
  * detects a pixel-precise collision with a sprite of this entity.
  * @param crystal the crystal
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal
@@ -167,7 +167,7 @@ void Explosion::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, 
  * @param enemy_sprite the enemy's sprite detected by the explosion
  */
 void Explosion::try_attack_enemy(Enemy &enemy, Sprite &enemy_sprite) {
-  
+
   // see if the enemy was already hurt by this explosion
   bool found = false;
   std::list<Enemy*>::iterator it;

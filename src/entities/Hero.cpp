@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -473,7 +473,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
     // the hero's coordinates are the same as on the previous map
     // but we may have to change the layer
-    
+
     Layer layer = LAYER_INTERMEDIATE;
     if (map.get_entities().get_obstacle_tile(LAYER_INTERMEDIATE, get_x(), get_y()) == OBSTACLE_EMPTY) {
       layer = LAYER_LOW;
@@ -555,7 +555,7 @@ void Hero::notify_map_opening_transition_finished() {
 
   MapEntity::notify_map_opening_transition_finished();
 
-  int side = get_map().get_destination_side();  
+  int side = get_map().get_destination_side();
   if (side != -1) {
     // the hero was placed on the side of the map:
     // there was a scrolling between the previous map and this one
@@ -1597,7 +1597,7 @@ void Hero::notify_collision_with_crystal(Crystal &crystal, CollisionMode collisi
 }
 
 /**
- * @brief This function is called when a the sprite of a crystal 
+ * @brief This function is called when a the sprite of a crystal
  * detects a pixel-precise collision with a sprite of this entity.
  * @param crystal the crystal
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal
@@ -1606,7 +1606,7 @@ void Hero::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overla
 
   if (sprite_overlapping.contains("sword") // the hero's sword is overlapping the crystal
       && state->can_sword_hit_crystal()) {
-    
+
     crystal.activate(*this);
   }
 }

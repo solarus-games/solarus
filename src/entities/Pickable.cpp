@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -270,7 +270,7 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode col
     give_item_to_player();
   }
   else if (entity_followed == NULL) {
-    
+
     if (entity_overlapping.get_type() == BOOMERANG) {
       Boomerang& boomerang = static_cast<Boomerang&>(entity_overlapping);
       if (!boomerang.is_going_back()) {
@@ -381,7 +381,7 @@ void Pickable::set_suspended(bool suspended) {
     }
 
     if (will_disappear) {
-    
+
       // the game is being resumed
       // recalculate the blinking date and the disappearing date
       if (when_suspended != 0) {

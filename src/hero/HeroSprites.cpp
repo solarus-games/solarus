@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -172,7 +172,7 @@ void HeroSprites::rebuild_equipment() {
   }
 
   int tunic_number = equipment.get_ability("tunic");
-  
+
   Debug::check_assertion(tunic_number > 0, StringConcat() <<
       "Invalid tunic number: " << tunic_number);
 
@@ -444,7 +444,7 @@ int HeroSprites::get_animation_direction(int keys_direction, int real_movement_d
   }
   // the movement is diagonal: we have to choose between two directions
   else if (animation_directions[real_movement_direction][1] == get_animation_direction()) {
-    // we choose the second direction if it was already the sprite's direction 
+    // we choose the second direction if it was already the sprite's direction
     result = animation_directions[real_movement_direction][1];
   }
   else {
@@ -490,8 +490,8 @@ void HeroSprites::set_animation_direction(int direction) {
  * @brief Changes the direction of the hero's sprites.
  *
  * The direction specified is one of the 8 possible movement directions of the hero.
- * The hero's sprites only have four directions, so when 
- * the specified direction is a diagonal one, 
+ * The hero's sprites only have four directions, so when
+ * the specified direction is a diagonal one,
  * one of the two closest main directions is picked.
  *
  * @param direction the movement direction (0 to 7)
@@ -629,7 +629,7 @@ void HeroSprites::draw_on_map() {
   if (lifted_item != NULL) {
     lifted_item->draw_on_map();
   }
-  
+
   if (clipping_rectangle.get_width() > 0) {
     // restore the normal map drawing
     map.set_clipping_rectangle();

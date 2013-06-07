@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 /**
  * @brief A special tile that can be enabled or disabled.
  *
- * A dynamic tile is a tile placed on the map 
+ * A dynamic tile is a tile placed on the map
  * that can be enabled or disabled by the script,
  * contrary to the Tile instances that are totally static for performance reasons.
  * An enabled dynamic tile behaves like a normal tile and may be an obstacle.

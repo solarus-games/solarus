@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,20 +100,23 @@ VideoManager* VideoManager::get_instance() {
  * @param the display mode which you wanted to know the SDL_Surface flag to use with.
  * @return the better SDL_Surface flag to use
  */
-Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
-    Uint32 flag;
-    
-    // Use software surface if there will be pixel access to blit with the mode in parameter
-    if(mode_sizes[mode].get_width() != SOLARUS_SCREEN_WIDTH || mode_sizes[mode].get_height() != SOLARUS_SCREEN_HEIGHT)
-        flag = SDL_SWSURFACE;
-    else 
-        flag = SDL_HWSURFACE;
-    
+uint32_t VideoManager::get_surface_flag(const VideoMode mode) {
+  uint32_t flag;
+
+  // Use software surface if there will be pixel access to blit with the mode in parameter
+  if (mode_sizes[mode].get_width() != SOLARUS_SCREEN_WIDTH
+      || mode_sizes[mode].get_height() != SOLARUS_SCREEN_HEIGHT) {
+    flag = SDL_SWSURFACE;
+  }
+  else {
+    flag = SDL_HWSURFACE;
+  }
+
 #if SOLARUS_SCREEN_DOUBLEBUF != 0
-    flag |= SDL_DOUBLEBUF;
+  flag |= SDL_DOUBLEBUF;
 #endif
-    
-    return flag;
+
+  return flag;
 }
 
 /**

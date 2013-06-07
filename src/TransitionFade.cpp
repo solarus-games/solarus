@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ TransitionFade::TransitionFade(Transition::Direction direction):
     alpha_start = 0;
     alpha_limit = 256;
     alpha_increment = 8;
-  }  
+  }
 
   set_delay(20);
 }

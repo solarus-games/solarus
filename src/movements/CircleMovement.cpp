@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -413,7 +413,7 @@ void CircleMovement::set_suspended(bool suspended) {
 
   Movement::set_suspended(suspended);
 
-  if (!suspended) {
+  if (get_when_suspended() != 0) {
     uint32_t diff = System::now() - get_when_suspended();
     next_angle_change_date += diff;
     next_radius_change_date += diff;

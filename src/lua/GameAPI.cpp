@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -775,6 +775,11 @@ int LuaContext::game_api_get_item(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
 
+  if (!savegame.get_equipment().item_exists(item_name)) {
+    luaL_error(l, (StringConcat() <<
+        "No such item: '" << item_name << "'").c_str());
+  }
+
   push_item(l, savegame.get_equipment().get_item(item_name));
   return 1;
 }
@@ -789,7 +794,18 @@ int LuaContext::game_api_has_item(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
 
-  lua_pushboolean(l, savegame.get_equipment().get_item(item_name).get_variant() > 0);
+  Equipment& equipment = savegame.get_equipment();
+  if (!equipment.item_exists(item_name)) {
+    luaL_error(l, (StringConcat() <<
+        "No such item: '" << item_name << "'").c_str());
+  }
+
+  if (!equipment.get_item(item_name).is_saved()) {
+    luaL_error(l, (StringConcat() <<
+        "Item '" << item_name << "' is not saved").c_str());
+  }
+
+  lua_pushboolean(l, equipment.get_item(item_name).get_variant() > 0);
   return 1;
 }
 

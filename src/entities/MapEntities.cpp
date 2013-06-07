@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "entities/Obstacle.h"
 #include "entities/CrystalBlock.h"
 #include "entities/Boomerang.h"
+#include "entities/Stairs.h"
 #include "Map.h"
 #include "Game.h"
 #include "lowlevel/Surface.h"
@@ -517,14 +518,14 @@ void MapEntities::add_entity(MapEntity* entity) {
 
   if (entity->get_type() == TILE) {
     // Tiles are optimized specifically for obstacle checks and rendering.
-    add_tile((Tile*) entity);
+    add_tile(static_cast<Tile*>(entity));
   }
   else {
     Layer layer = entity->get_layer();
 
     // update the detectors list
     if (entity->is_detector()) {
-      detectors.push_back((Detector*) entity);
+      detectors.push_back(static_cast<Detector*>(entity));
     }
 
     // update the obstacle list
@@ -554,15 +555,15 @@ void MapEntities::add_entity(MapEntity* entity) {
     switch (entity->get_type()) {
 
       case STAIRS:
-        stairs[layer].push_back((Stairs*) entity);
+        stairs[layer].push_back(static_cast<Stairs*>(entity));
         break;
 
       case CRYSTAL_BLOCK:
-        crystal_blocks[layer].push_back((CrystalBlock*) entity);
+        crystal_blocks[layer].push_back(static_cast<CrystalBlock*>(entity));
         break;
 
       case BOOMERANG:
-        this->boomerang = (Boomerang*) entity;
+        this->boomerang = static_cast<Boomerang*>(entity);
         break;
 
       default:
@@ -628,7 +629,7 @@ void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 }
 
 /**
- * @brief Removes and destroys the entities placed in the entities_to_remove list. 
+ * @brief Removes and destroys the entities placed in the entities_to_remove list.
  */
 void MapEntities::remove_marked_entities() {
 
@@ -639,7 +640,7 @@ void MapEntities::remove_marked_entities() {
        it != entities_to_remove.end();
        it++) {
 
-    MapEntity *entity = *it;
+    MapEntity* entity = *it;
     Layer layer = entity->get_layer();
 
     // remove it from the obstacle entities list if present
@@ -657,7 +658,7 @@ void MapEntities::remove_marked_entities() {
 
     // remove it from the detectors list if present
     if (entity->is_detector()) {
-      detectors.remove((Detector*) entity);
+      detectors.remove(static_cast<Detector*>(entity));
     }
 
     // remove it from the sprite entities list if present
@@ -673,6 +674,25 @@ void MapEntities::remove_marked_entities() {
     const std::string& name = entity->get_name();
     if (!name.empty()) {
       named_entities.erase(name);
+    }
+
+    // update the specific entities lists
+    switch (entity->get_type()) {
+
+      case STAIRS:
+        stairs[layer].remove(static_cast<Stairs*>(entity));
+        break;
+
+      case CRYSTAL_BLOCK:
+        crystal_blocks[layer].remove(static_cast<CrystalBlock*>(entity));
+        break;
+
+      case BOOMERANG:
+        this->boomerang = NULL;
+        break;
+
+      default:
+      break;
     }
 
     // destroy it
@@ -900,10 +920,10 @@ void MapEntities::draw() {
     // draw the first sprites
     list<MapEntity*>::iterator i;
     for (i = entities_drawn_first[layer].begin();
-	 i != entities_drawn_first[layer].end();
-	 i++) {
+        i != entities_drawn_first[layer].end();
+        i++) {
 
-      MapEntity *entity = *i;
+      MapEntity* entity = *i;
       if (entity->is_enabled()) {
         entity->draw_on_map();
       }
@@ -912,10 +932,10 @@ void MapEntities::draw() {
     // draw the sprites at the hero's level, in the order
     // defined by their y position (including the hero)
     for (i = entities_drawn_y_order[layer].begin();
-	  i != entities_drawn_y_order[layer].end();
-	  i++) {
+        i != entities_drawn_y_order[layer].end();
+        i++) {
 
-      MapEntity *entity = *i;
+      MapEntity* entity = *i;
       if (entity->is_enabled()) {
         entity->draw_on_map();
       }
@@ -930,7 +950,7 @@ void MapEntities::draw() {
  * @return true if the y position of the first entity is lower
  * than the second one
  */
-bool MapEntities::compare_y(MapEntity *first, MapEntity *second) {
+bool MapEntities::compare_y(MapEntity* first, MapEntity* second) {
 
   // before was: first->get_top_left_y() < second->get_top_left_y(); but doesn't work for bosses
   return first->get_top_left_y() + first->get_height() < second->get_top_left_y() + second->get_height();

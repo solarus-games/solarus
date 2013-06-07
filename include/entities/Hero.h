@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -170,7 +170,7 @@ class Hero: public MapEntity {
      *
      * These function provide information about the position of
      * the hero relative to other entities, and about
-     * what is in front of him (we call this the "facing point"). 
+     * what is in front of him (we call this the "facing point").
      */
     const Rectangle get_facing_point();
     const Rectangle get_facing_point(int direction4);

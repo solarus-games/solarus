@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -666,7 +666,7 @@ bool Map::is_started() {
 }
 
 /**
- * @brief This function is called when the map is started and 
+ * @brief This function is called when the map is started and
  * the opening transition is finished.
  */
 void Map::notify_opening_transition_finished() {
@@ -881,7 +881,7 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &en
     collision = test_collision_with_entities(layer, collision_box, entity_to_check);
   }
 
-  return collision;   
+  return collision;
 }
 
 /**

@@ -24,10 +24,6 @@
  */
 class Random {
 
-  private:
-
-    Random();
-
   public:
 
     static void initialize();
@@ -35,6 +31,10 @@ class Random {
 
     static int get_number(unsigned int x);
     static int get_number(unsigned int x, unsigned int y);
+
+  private:
+
+    Random();
 };
 
 #endif

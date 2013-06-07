@@ -25,14 +25,14 @@
  */
 class StringConcat: public std::string {
 
-  private:
-
-    std::ostringstream oss;		/**< used to concatenate non string objects to this string */
-
   public:
 
     StringConcat& operator<<(const std::string& element);
     template <typename T> StringConcat& operator<<(const T &element);
+
+  private:
+
+    std::ostringstream oss;		/**< used to concatenate non string objects to this string */
 
 };
 
@@ -53,7 +53,7 @@ inline StringConcat& StringConcat::operator<<(const std::string& element) {
  * @return this string
  */
 template <typename T>
-inline StringConcat& StringConcat::operator<<(const T &element) {
+inline StringConcat& StringConcat::operator<<(const T& element) {
 
   oss.str("");
   oss << element;

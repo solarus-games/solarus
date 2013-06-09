@@ -152,7 +152,7 @@ set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
 # Embed library search path
 if(NOT SOLARUS_IOS_BUILD)
   if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
-    # Use condition to avoid duplicate flags caused by set(É FORCE)
+    # Use condition to avoid duplicate flags caused by set(... FORCE)
     if(NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-Xlinker -rpath")
       set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
     endif()

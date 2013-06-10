@@ -955,9 +955,7 @@ int LuaContext::get_positive_index(lua_State* l, int index) {
     positive_index = lua_gettop(l) + index + 1;
   }
 
-  Debug::check_assertion(positive_index > 0 && positive_index <= lua_gettop(l),
-      StringConcat() <<  "Invalid index " << index << ": stack has "
-      << lua_gettop(l) << " elements");
+  Debug::check_assertion(positive_index > 0, StringConcat() <<  "Invalid index " << index);
 
   return positive_index;
 }

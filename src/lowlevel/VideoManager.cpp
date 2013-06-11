@@ -112,7 +112,7 @@ uint32_t VideoManager::get_surface_flag(const VideoMode mode) {
     flag = SDL_HWSURFACE;
   }
 
-#if SOLARUS_SCREEN_DOUBLEBUF != 0
+#if defined(SOLARUS_SCREEN_DOUBLEBUF) && SOLARUS_SCREEN_DOUBLEBUF == 1
   flag |= SDL_DOUBLEBUF;
 #endif
 
@@ -193,7 +193,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
     flags |= SDL_FULLSCREEN;
   }
 
-#if SOLARUS_FORCE_ALL_VIDEOMODE
+#if defined(SOLARUS_FORCE_ALL_VIDEOMODE) && SOLARUS_FORCE_ALL_VIDEOMODE == 1
   return true;
 #else
   return SDL_VideoModeOK(size->get_width(), size->get_height(), 32, flags) != 0;

@@ -193,7 +193,11 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
     flags |= SDL_FULLSCREEN;
   }
 
+#if SOLARUS_FORCE_ALL_VIDEOMODE
+  return true;
+#else
   return SDL_VideoModeOK(size->get_width(), size->get_height(), 32, flags) != 0;
+#endif
 }
 
 /**

@@ -148,6 +148,12 @@ VideoManager::VideoManager(bool disable_window):
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(720, 480);
     dst_position_wide.set_xy((720 - SOLARUS_SCREEN_WIDTH * 2) / 2, 0);
   }
+  else {
+    mode_sizes[FULLSCREEN_WIDE].set_size(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
+    mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
+    dst_position_wide.set_xy(0, 0);
+  }
+  
 
   /* debug (see the fullscreen video modes supported)
      SDL_Rect **rects = SDL_ListModes(NULL, flags);

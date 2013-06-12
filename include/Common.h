@@ -109,9 +109,9 @@
 #ifndef SOLARUS_FORCE_ALL_VIDEOMODE
 #  if defined(SOLARUS_OSX)
 // Since OSX 10.7, SDL_VideoModeOK() always return 0 with SDL_FULLSCREEN flag
-#    define SOLARUS_FORCE_ALL_VIDEOMODE 0
-#  else
 #    define SOLARUS_FORCE_ALL_VIDEOMODE 1
+#  else
+#    define SOLARUS_FORCE_ALL_VIDEOMODE 0
 #  endif
 #endif
 

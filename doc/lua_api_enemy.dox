@@ -191,7 +191,7 @@ The default value is \c false.
 - \c push_hero_on_sword (boolean): \c true to push the hero away when
   hitting this enemy with his sword.
 
-\subsection lua_api_enemy_get_can_hurt_hero_running enemy_get_can_hurt_hero_running()
+\subsection lua_api_enemy_get_can_hurt_hero_running enemy:get_can_hurt_hero_running()
 
 Returns whether this enemy can hurt the
 \ref lua_api_hero "hero" even when the hero is running.

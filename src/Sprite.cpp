@@ -71,7 +71,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string &id) {
  * @brief Creates a sprite with the specified animation set.
  * @param id name of an animation set
  */
-Sprite::Sprite(const std::string &id):
+Sprite::Sprite(const std::string& id):
   Drawable(),
   lua_context(NULL),
   animation_set_id(id),
@@ -645,9 +645,12 @@ void Sprite::raw_draw(Surface& dst_surface,
           current_direction, current_frame);
     }
     else {
-      current_animation->draw(*intermediate_surface, dst_position,
-        current_direction, current_frame);
-      intermediate_surface->draw_region(get_size(), dst_surface);
+      intermediate_surface->fill_with_color(Color::get_black());
+      current_animation->draw(*intermediate_surface, get_origin(),
+          current_direction, current_frame);
+      Rectangle dst_position2(dst_position);
+      dst_position2.add_xy(-get_origin().get_x(), -get_origin().get_y());
+      intermediate_surface->draw_region(get_size(), dst_surface, dst_position2);
     }
   }
 }
@@ -665,9 +668,11 @@ void Sprite::raw_draw_region(const Rectangle& region,
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    current_animation->draw(get_intermediate_surface(), dst_position,
+    current_animation->draw(get_intermediate_surface(), get_origin(),
         current_direction, current_frame);
-    get_intermediate_surface().draw_region(region, dst_surface);
+    Rectangle dst_position2(dst_position);
+    dst_position2.add_xy(-get_origin().get_x(), -get_origin().get_y());
+    get_intermediate_surface().draw_region(region, dst_surface, dst_position2);
   }
 }
 
@@ -677,6 +682,7 @@ void Sprite::raw_draw_region(const Rectangle& region,
  */
 void Sprite::draw_transition(Transition& transition) {
 
+  get_intermediate_surface().fill_with_color(Color::get_black());
   transition.draw(get_intermediate_surface());
 }
 
@@ -692,6 +698,7 @@ Surface& Sprite::get_intermediate_surface() {
 
   if (intermediate_surface == NULL) {
     intermediate_surface = new Surface(get_max_size());
+    intermediate_surface->set_transparency_color(Color::get_black());
   }
   return *intermediate_surface;
 }

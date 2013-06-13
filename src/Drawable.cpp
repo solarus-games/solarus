@@ -138,6 +138,14 @@ void Drawable::stop_transition() {
 }
 
 /**
+ * @brief Returns the current transition of this drawable object.
+ * @return The object's transition, or NULL if there is no transition.
+ */
+Transition* Drawable::get_transition() {
+  return transition;
+}
+
+/**
  * @brief Updates this object.
  *
  * This function is called repeatedly.

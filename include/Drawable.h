@@ -43,6 +43,7 @@ class Drawable: public ExportableToLua {
 
     void start_transition(Transition& transition, int callback_ref, LuaContext* lua_context);
     void stop_transition();
+    Transition* get_transition();
 
     // drawing with effects
     void draw(Surface& dst_surface);

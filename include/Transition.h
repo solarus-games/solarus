@@ -47,10 +47,10 @@ class Transition {
     };
 
     virtual ~Transition();
-    static Transition *create(Style style, Direction direction, Game *game = NULL);
+    static Transition* create(Style style, Direction direction, Game* game = NULL);
 
     Direction get_direction();
-    void set_previous_surface(Surface *previous_surface);
+    void set_previous_surface(Surface* previous_surface);
     virtual bool needs_previous_surface();
 
     /**
@@ -83,9 +83,9 @@ class Transition {
 
   protected:
 
-    Game *game;                    /**< the current game if any (required by some kinds of transitions) */
+    Game* game;                    /**< the current game if any (required by some kinds of transitions) */
     Direction direction;           /**< direction of the transition (in or out) */
-    Surface *previous_surface;     /**< during an in transition, this is the surface that was displayed
+    Surface* previous_surface;     /**< during an in transition, this is the surface that was displayed
                                     * when the out transition was played */
 
     Transition(Direction direction);

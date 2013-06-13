@@ -175,6 +175,7 @@ class Map: public ExportableToLua {
     // main loop
     bool notify_input(InputEvent &event);
     void update();
+    bool is_suspended();
     void check_suspended();
     void draw();
     void draw_sprite(Sprite &sprite, const Rectangle &xy);

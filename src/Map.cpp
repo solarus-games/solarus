@@ -482,6 +482,14 @@ void Map::update() {
 }
 
 /**
+ * @brief Returns whether the map is currently suspended.
+ * @return true if the map is suspended.
+ */
+bool Map::is_suspended() {
+  return suspended;
+}
+
+/**
  * @brief Checks whether the game has just been suspended or resumed
  * and notifies the map elements when this is the case.
  *

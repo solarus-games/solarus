@@ -31,6 +31,7 @@
 #include "EquipmentItem.h"
 #include "Treasure.h"
 #include "Map.h"
+#include "Timer.h"
 #include <sstream>
 #include <iomanip>
 #include <lua.hpp>
@@ -307,6 +308,9 @@ void LuaContext::notify_camera_reached_target(Map& map) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
   lua_pushcfunction(l, l_camera_do_callback);
   timer_api_start(l);
+  Timer& timer = check_timer(l, -1);
+  timer.set_suspended(false);
+  lua_pop(l, 1);
 }
 
 /**

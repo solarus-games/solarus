@@ -112,8 +112,6 @@ class Map: public ExportableToLua {
     void set_tileset(const std::string& tileset_id);
     const std::string& get_world();
     void set_world(const std::string& world);
-    bool is_in_dungeon();  // TODO remove
-    bool is_in_outside_world();  // TODO remove
     bool has_floor();
     int get_floor();
     void set_floor(int floor);
@@ -177,6 +175,7 @@ class Map: public ExportableToLua {
     // main loop
     bool notify_input(InputEvent &event);
     void update();
+    bool is_suspended();
     void check_suspended();
     void draw();
     void draw_sprite(Sprite &sprite, const Rectangle &xy);

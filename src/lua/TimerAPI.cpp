@@ -19,6 +19,7 @@
 #include "Timer.h"
 #include "MainLoop.h"
 #include "Game.h"
+#include "Map.h"
 #include <list>
 #include <lua.hpp>
 
@@ -117,6 +118,7 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
         || is_entity(l, context_index)
         || is_item(l, context_index)) {
       timer->set_suspended_with_map(true);
+      timer->notify_map_suspended(game->get_current_map().is_suspended());
     }
   }
   timer->increment_refcount();

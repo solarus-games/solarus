@@ -413,6 +413,8 @@ int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
  */
 int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
 
+  LuaContext& lua_context = get_lua_context(l);
+
   Timer& timer = check_timer(l, 1);
   bool suspended_with_map = true;
   if (lua_gettop(l) >= 2) {
@@ -420,6 +422,9 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
   }
 
   timer.set_suspended_with_map(suspended_with_map);
+
+  Game* game = lua_context.get_main_loop().get_game();
+  timer.notify_map_suspended(game->get_current_map().is_suspended());
 
   return 0;
 }

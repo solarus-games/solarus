@@ -129,22 +129,6 @@ void Map::set_world(const std::string& world) {
 }
 
 /**
- * @brief Returns whether this map belongs to a dungeon.
- * @return true if this map is in a dungeon
- */
-bool Map::is_in_dungeon() {
-  return get_world().substr(0, 8) == "dungeon_";
-}
-
-/**
- * @brief Returns whether this map belongs to the outside world.
- * @return true if this map is in the oustide world
- */
-bool Map::is_in_outside_world() {
-  return get_world() == "outside_world";
-}
-
-/**
  * @brief Returns whether this map has a floor.
  *
  * This function returns true if the floor is not nil.

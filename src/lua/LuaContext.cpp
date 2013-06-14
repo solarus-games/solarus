@@ -635,6 +635,7 @@ int LuaContext::opt_function_field(
  * @return The reference created.
  */
 int LuaContext::create_ref() {
+
   return luaL_ref(l, LUA_REGISTRYINDEX);
 }
 
@@ -643,6 +644,7 @@ int LuaContext::create_ref() {
  * @param ref The Lua reference to free.
  */
 void LuaContext::destroy_ref(int ref) {
+
   luaL_unref(l, LUA_REGISTRYINDEX, ref);
 }
 
@@ -657,7 +659,7 @@ void LuaContext::do_callback(int callback_ref) {
   if (callback_ref != LUA_REFNIL) {
     push_callback(callback_ref);
     call_function(0, 0, "callback");
-    destroy_ref(callback_ref);
+    cancel_callback(callback_ref);
   }
 }
 
@@ -669,10 +671,10 @@ void LuaContext::do_callback(int callback_ref) {
 void LuaContext::push_callback(int callback_ref) {
 
   push_ref(l, callback_ref);
-  if (!lua_isfunction(l, -1)) {
-    Debug::die(StringConcat() << "No such Lua callback (function expected, got "
-        << luaL_typename(l, -1) << ")");
-  }
+  Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
+      << "There is no callback with ref " << callback_ref
+      << " (function expected, got " << luaL_typename(l, -1)
+      << "). Did you already invoke or cancel it?");
 }
 
 /**
@@ -684,7 +686,19 @@ void LuaContext::push_callback(int callback_ref) {
  * nothing is done)
  */
 void LuaContext::cancel_callback(int callback_ref) {
-  destroy_ref(callback_ref);
+
+  if (callback_ref != LUA_REFNIL) {
+    // Check that the callback is canceled only once.
+    // Otherwise, a duplicate call to luaL_unref() silently breaks the
+    // uniqueness of Lua refs.
+    push_ref(l, callback_ref);
+    Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
+        << "There is no callback with ref " << callback_ref
+        << " (function expected, got " << luaL_typename(l, -1)
+        << "). Did you already invoke or cancel it?");
+    lua_pop(l, 1);
+    destroy_ref(callback_ref);
+  }
 }
 
 /**

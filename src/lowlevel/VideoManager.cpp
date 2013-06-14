@@ -195,20 +195,14 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
   }
 
   int flags = get_surface_flag(mode);
-
+  if (is_fullscreen(mode)) {
 #if defined(SOLARUS_FULLSCREEN_FORCE_OK) && SOLARUS_FULLSCREEN_FORCE_OK == 1
-
-  if (is_fullscreen(mode)) {
     return true;
-  }
-  return SDL_VideoModeOK(size->get_width(), size->get_height(), 32, flags) != 0;
-#else
-
-  if (is_fullscreen(mode)) {
+#else 
     flags |= SDL_FULLSCREEN;
+#endif
   }
   return SDL_VideoModeOK(size->get_width(), size->get_height(), 32, flags) != 0;
-#endif
 }
 
 /**

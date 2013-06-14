@@ -133,12 +133,3 @@ void PlayerMovement::compute_movement() {
   notify_movement_changed();
 }
 
-/**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
- */
-const std::string& PlayerMovement::get_lua_type_name() const {
-  Debug::die("No Lua binding for PlayerMovement");
-  throw;
-}
-

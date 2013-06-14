@@ -51,8 +51,6 @@ class FollowMovement: public Movement {
 
     bool is_finished();
     const Rectangle get_displayed_xy();
-
-    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

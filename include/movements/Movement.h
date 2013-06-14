@@ -124,6 +124,7 @@ class Movement: public ExportableToLua {
     void set_lua_context(LuaContext* lua_context);
     int get_finished_callback() const;
     void set_finished_callback(int finished_callback_ref);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

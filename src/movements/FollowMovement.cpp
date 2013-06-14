@@ -113,12 +113,3 @@ const Rectangle FollowMovement::get_displayed_xy() {
   return displayed_xy;
 }
 
-/**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
- */
-const std::string& FollowMovement::get_lua_type_name() const {
-  Debug::die("No Lua binding for FollowMovement");
-  throw;
-}
-

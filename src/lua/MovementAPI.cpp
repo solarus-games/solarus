@@ -73,6 +73,8 @@ void LuaContext::register_movement_module() {
       { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
+  register_type(movement_module_name, common_methods,
+      common_metamethods);
 
   // straight movement
   static const luaL_Reg straight_movement_methods[] = {

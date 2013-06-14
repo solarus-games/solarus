@@ -102,16 +102,16 @@
 #endif
 
 /**
- * @def SOLARUS_FORCE_ALL_VIDEOMODE
- * @brief Define if the current platform should force all display mode available.
- * If set to 1, VideoManager::is_mode_supported() will not call SDL_VideoModeOK()
+ * @def SOLARUS_FULLSCREEN_FORCE_OK
+ * @brief Define if the current platform should force all fullscreen mode to be available.
+ * If set to 1, VideoManager::is_mode_supported() may not call SDL_VideoModeOK()
  */
-#ifndef SOLARUS_FORCE_ALL_VIDEOMODE
+#ifndef SOLARUS_FULLSCREEN_FORCE_OK
 #  if defined(SOLARUS_OSX)
 // Since OSX 10.7, SDL_VideoModeOK() always return 0 with SDL_FULLSCREEN flag
-#    define SOLARUS_FORCE_ALL_VIDEOMODE 1
+#    define SOLARUS_FULLSCREEN_FORCE_OK 1
 #  else
-#    define SOLARUS_FORCE_ALL_VIDEOMODE 0
+#    define SOLARUS_FULLSCREEN_FORCE_OK 0
 #  endif
 #endif
 

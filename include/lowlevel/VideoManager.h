@@ -69,6 +69,8 @@ class VideoManager {
     VideoManager(bool disable_window);
     ~VideoManager();
 
+    bool set_fullscreen_resolution(int flags, int size_x, int size_y);
+    
     void blit(Surface& src_surface, Surface& dst_surface);
     void blit_stretched(Surface& src_surface, Surface& dst_surface);
     void blit_scale2x(Surface& src_surface, Surface& dst_surface);

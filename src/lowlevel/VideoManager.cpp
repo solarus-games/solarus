@@ -132,22 +132,17 @@ VideoManager::VideoManager(bool disable_window):
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 
-  // detect what widescreen resolution is supported (16:10 or 15:10)
+  // detect what widescreen resolution is supported (16:10, 15:10 or 4:3)
 
   for (int i = 0; i < NB_MODES; i++) {
     mode_sizes[i] = default_mode_sizes[i];
   }
   int flags = get_surface_flag(FULLSCREEN_WIDE) | SDL_FULLSCREEN;
-  if (SDL_VideoModeOK(768, 480, 32, flags)) {
-    mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
-    dst_position_wide.set_xy((768 - SOLARUS_SCREEN_WIDTH * 2) / 2, 0);
-  }
-  else if (SDL_VideoModeOK(720, 480, 32, flags)) {
-    mode_sizes[FULLSCREEN_WIDE].set_size(720, 480);
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(720, 480);
-    dst_position_wide.set_xy((720 - SOLARUS_SCREEN_WIDTH * 2) / 2, 0);
-  }
+
+  int list_modes[3][2] = { {768, 480} , {720, 480} , {1600, 1200} };
+  for(int i=0 ; i<3 ; i++)
+    if(set_fullscreen_resolution(flags,list_modes[i][0],list_modes[i][1]))
+        break;
 
   /* debug (see the fullscreen video modes supported)
      SDL_Rect **rects = SDL_ListModes(NULL, flags);
@@ -165,6 +160,23 @@ VideoManager::VideoManager(bool disable_window):
  */
 VideoManager::~VideoManager() {
   delete screen_surface;
+}
+
+/**
+ * @brief Set mode size and position for requested resolution
+ * @param flags of the SDL video mode
+ * @param x the x size of the resolution
+ * @param y the y size of the resolution
+ * @return true if this resolution is supported
+ */
+bool VideoManager::set_fullscreen_resolution(int flags, int size_x, int size_y) {
+    if (SDL_VideoModeOK(size_x, size_y, 32, flags)) {
+        mode_sizes[FULLSCREEN_WIDE].set_size(size_x, size_y);
+        mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(size_x, size_y);
+        dst_position_wide.set_xy(size_x % SOLARUS_SCREEN_WIDTH / 2, 0);
+        return true;
+    }
+    return false;
 }
 
 /**

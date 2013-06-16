@@ -106,6 +106,10 @@ bool Timer::is_suspended_with_map() {
  */
 void Timer::set_suspended_with_map(bool suspended_with_map) {
   this->suspended_with_map = suspended_with_map;
+
+  if (is_suspended() && !suspended_with_map) {
+    set_suspended(false);
+  }
 }
 
 /**

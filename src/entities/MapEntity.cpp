@@ -1489,7 +1489,7 @@ bool MapEntity::overlaps_camera() {
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end() && !found; it++) {
     const Sprite* sprite = *it;
-    const Rectangle sprite_origin = sprite->get_origin();
+    const Rectangle& sprite_origin = sprite->get_origin();
     Rectangle sprite_bounding_box = sprite->get_size();
     sprite_bounding_box.set_xy(get_xy());
     sprite_bounding_box.add_xy(-sprite_origin.get_x(), -sprite_origin.get_y());
@@ -1888,12 +1888,16 @@ void MapEntity::update() {
 
 /**
  * @brief Returns whether this entity should be drawn on the map.
- * @return true if the entity is visible and has a sprite in the visible part
- * of the map
+ * @return true if the entity is visible and may have a sprite in the visible part
+ * of the map.
  */
 bool MapEntity::is_drawn() {
 
-  return is_visible() && (overlaps_camera() || !is_drawn_at_its_position());
+  return is_visible()
+      && (overlaps_camera()
+          || get_distance_to_camera() < get_optimization_distance()
+          || !is_drawn_at_its_position()
+      );
 }
 
 /**

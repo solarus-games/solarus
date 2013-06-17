@@ -503,7 +503,7 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
 
   int b, d, e = 0, f,  h;
   int p = offset;
-  uint_32_t pixel, dst_e[4];
+  uint32_t pixel, dst_e[4];
   for (int row = 0; row < SOLARUS_SCREEN_HEIGHT; row++) {
     for (int col = 0; col < SOLARUS_SCREEN_WIDTH; col++) {
 

@@ -164,7 +164,7 @@ VideoManager::~VideoManager() {
 
 /**
  * @brief Set mode size and position for requested resolution
- * @param flags of the SDL video mode
+ * @param flags flags of the SDL video mode
  * @param x the x size of the resolution
  * @param y the y size of the resolution
  * @return true if this resolution is supported
@@ -440,7 +440,7 @@ void VideoManager::blit(Surface& src_surface, Surface& dst_surface) {
 
 /**
  * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface,
- * stretching the image by the integer scale without deformation.
+ * stretching the image by the integer ratio without deformation.
  *
  * Two black side bars are added if the destination surface is wider than SOLARUS_SCREEN_WIDTH * 2.
  *
@@ -479,8 +479,8 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
 }
 
 /**
- * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface on a
- * double-size surface.
+ * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface,
+ * stretching the image by the integer ratio without deformation.
  *
  * The image is scaled with an implementation of the Scale2x algorithm.
  * Two black side bars if the destination surface is wider than
@@ -499,9 +499,11 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
 
   uint32_t* src = (uint32_t*) src_internal_surface->pixels;
   uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
+  int ratio = dst_internal_surface->w / src_internal_surface->w;
 
   int b, d, e = 0, f,  h;
-  int e1 = offset, e2, e3, e4;
+  int p = offset;
+  uint_32_t pixel, dst_e[4];
   for (int row = 0; row < SOLARUS_SCREEN_HEIGHT; row++) {
     for (int col = 0; col < SOLARUS_SCREEN_WIDTH; col++) {
 
@@ -517,26 +519,33 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
       if (col == 0)   { d = e; }
       if (col == SOLARUS_SCREEN_WIDTH - 1) { f = e; }
 
-      // compute e1 to e4
-      e2 = e1 + 1;
-      e3 = e1 + width;
-      e4 = e3 + 1;
-
       // compute the color
 
       if (src[b] != src[h] && src[d] != src[f]) {
-        dst[e1] = src_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
-        dst[e2] = src_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
-        dst[e3] = src_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
-        dst[e4] = src_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
+        dst_e[0] = src_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
+        dst_e[1] = src_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
+        dst_e[2] = src_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
+        dst_e[3] = src_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
+        
+        // map each "quarter" on destination surface
+        for (int k = 0; k < ratio; k++) {
+          for (int l = 0; l < ratio; l++) {
+            dst[p + k * width + l] = dst_e[ l*2/ratio + (k*2/ratio)*2];
+          }
+        }
       }
       else {
-        dst[e1] = dst[e2] = dst[e3] = dst[e4] = src_surface.get_mapped_pixel(e, dst_internal_surface->format);
+        pixel = src_surface.get_mapped_pixel(e, dst_internal_surface->format);
+        for (int k = 0; k < ratio; k++) {
+          for (int l = 0; l < ratio; l++) {
+            dst[p + k * width + l] = pixel;
+          }
+        }
       }
-      e1 += 2;
+      p += ratio;
       e++;
     }
-    e1 += end_row_increment;
+    p += offset * 2 + width * ratio;
   }
 
   SDL_UnlockSurface(dst_internal_surface);

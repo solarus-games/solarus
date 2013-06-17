@@ -141,7 +141,7 @@ VideoManager::VideoManager(bool disable_window):
 
   int list_modes[3][2] = { {768, 480} , {720, 480} , {1600, 1200} };
   for(int i=0 ; i<3 ; i++)
-    if(set_fullscreen_resolution(flags,list_modes[i][0],list_modes[i][1]))
+    if(set_fullscreen_resolution(flags, list_modes[i][0], list_modes[i][1]))
         break;
 
   /* debug (see the fullscreen video modes supported)
@@ -171,8 +171,8 @@ VideoManager::~VideoManager() {
  */
 bool VideoManager::set_fullscreen_resolution(int flags, int size_x, int size_y) {
     if (SDL_VideoModeOK(size_x, size_y, 32, flags)) {
-        mode_sizes[FULLSCREEN_NORMAL].set_size(size_x - size_x%SOLARUS_SCREEN_WIDTH, size_y - size_y%SOLARUS_SCREEN_HEIGHT);
-        mode_sizes[FULLSCREEN_SCALE2X].set_size(size_x - size_x%SOLARUS_SCREEN_WIDTH, size_y - size_y%SOLARUS_SCREEN_HEIGHT);
+        mode_sizes[FULLSCREEN_NORMAL].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y - size_y % SOLARUS_SCREEN_HEIGHT);
+        mode_sizes[FULLSCREEN_SCALE2X].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y - size_y % SOLARUS_SCREEN_HEIGHT);
         mode_sizes[FULLSCREEN_WIDE].set_size(size_x, size_y);
         mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(size_x, size_y);
         dst_position_wide.set_xy(size_x % SOLARUS_SCREEN_WIDTH / 2, 0);
@@ -453,25 +453,23 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
   SDL_LockSurface(src_internal_surface);
   SDL_LockSurface(dst_internal_surface);
 
-  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
-    
-  int ratio_x = dst_internal_surface->w / src_internal_surface->w;
-  int ratio_y = dst_internal_surface->h / src_internal_surface->h;
+  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels; 
+  int ratio = dst_internal_surface->w / src_internal_surface->w;
             
   int p = offset;
   for (int i = 0; i < SOLARUS_SCREEN_HEIGHT; i++) {
     for (int j = 0; j < SOLARUS_SCREEN_WIDTH; j++) {
       uint32_t src_pixel = src_surface.get_mapped_pixel(i * SOLARUS_SCREEN_WIDTH + j, dst_internal_surface->format);
         
-      for (int k = 0; k < ratio_y; k++) {
-        for (int l = 0; l < ratio_x; l++) {
-          dst[p + k*width + l] = src_pixel;
+      for (int k = 0; k < ratio; k++) {
+        for (int l = 0; l < ratio; l++) {
+          dst[p + k * width + l] = src_pixel;
         }
       }
-      p += ratio_x;
+      p += ratio;
     }
 
-    p += end_row_increment;
+    p += offset * 2 + width * ratio;
   }
 
   SDL_UnlockSurface(dst_internal_surface);

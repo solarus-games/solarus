@@ -111,9 +111,10 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   // Sanity check: check the uniqueness of the ref.
   std::map<Timer*, LuaTimerData>::iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
-    Debug::check_assertion(it->second.callback_ref != callback_ref,
-        StringConcat() << "Callback ref " << callback_ref
+    if (it->second.callback_ref == callback_ref) {
+      Debug::die(StringConcat() << "Callback ref " << callback_ref
             << " is already used by a timer (duplicate luaL_unref?)");
+    }
   }
 #endif
 

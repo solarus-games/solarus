@@ -452,12 +452,21 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
   SDL_LockSurface(dst_internal_surface);
 
   uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
-
+    
+  int ratio_x = dst_internal_surface->w / src_internal_surface->w;
+  int ratio_y = dst_internal_surface->h / src_internal_surface->h;
+            
   int p = offset;
   for (int i = 0; i < SOLARUS_SCREEN_HEIGHT; i++) {
     for (int j = 0; j < SOLARUS_SCREEN_WIDTH; j++) {
-      dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = src_surface.get_mapped_pixel(i * SOLARUS_SCREEN_WIDTH + j, dst_internal_surface->format);
-      p += 2;
+      uint32_t src_pixel = src_surface.get_mapped_pixel(i * SOLARUS_SCREEN_WIDTH + j, dst_internal_surface->format);
+        
+      for (int k = 0; k < ratio_y; k++) {
+        for (int l = 0; l < ratio_x; l++) {
+          dst[p + k*width + l] = src_pixel;
+        }
+      }
+      p += ratio_x;
     }
 
     p += end_row_increment;

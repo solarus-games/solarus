@@ -71,10 +71,10 @@ speed) towards its wanted value.
 Returns whether circles are made clockwise or counter-clockwise.
 - Return value (boolean): \c true if circles are clockwise.
 
-\subsection lua_api_circle_movement_set_clockwise circle_movement:set_clockwise(clockwise)
+\subsection lua_api_circle_movement_set_clockwise circle_movement:set_clockwise([clockwise])
 
 Sets whether circles are made clockwise or counter-clockwise.
-- \c clockwise (boolean): \c true to make circles clockwise.
+- \c clockwise (boolean, optional): \c true to make circles clockwise. No value means \c true.
 
 \subsection lua_api_circle_movement_get_initial_angle circle_movement:get_initial_angle()
 

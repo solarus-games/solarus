@@ -64,11 +64,12 @@ Returns whether this movement repeats itself once the end of the path is
 reached.
 - Return value (boolean): \c true if the path repeats itself.
 
-\subsection lua_api_path_movement_set_loop path_movement:set_loop(loop)
+\subsection lua_api_path_movement_set_loop path_movement:set_loop([loop])
 
 Sets whether this movement repeats itself once the end of the path is
 reached.
-- \c loop (boolean): \c true to make the path repeat itself.
+- \c loop (boolean, optional): \c true to make the path repeat itself.
+  No value means \c true.
 
 \subsection lua_api_path_movement_get_snap_to_grid path_movement:get_snap_to_grid()
 
@@ -83,7 +84,7 @@ not attached to a map entity.
 - Return value (boolean): \c true if this movement automatically snaps its map
   entity to the map grid.
 
-\subsection lua_api_path_movement_set_snap_to_grid path_movement:set_snap_to_grid(snap)
+\subsection lua_api_path_movement_set_snap_to_grid path_movement:set_snap_to_grid([snap])
 
 Sets whether this movement should automatically snap to the \ref
 lua_api_map "map" grid the \ref lua_api_entity "map entity"
@@ -93,8 +94,8 @@ The map grid is composed of squares of 8*8 pixels. All tiles are aligned to
 the grid.
 This property has no effect if there is no current map of if this movement is
 not attached to a \ref lua_api_entity "map entity".
-- \c snap (boolean): \c true to make this movement automatically snap its map
-  entity to the map grid.
+- \c snap (boolean, optional): \c true to make this movement automatically snap its map
+  entity to the map grid. No value means \c true.
 
 \section lua_api_path_movement_inherited_events Events inherited from movement
 

@@ -52,11 +52,11 @@ Returns whether this movement restarts automatically when the trajectory is
 finished.
 - Return value (boolean): \c true if the movement loops.
 
-\subsection lua_api_pixel_movement_set_loop pixel_movement:set_loop(loop)
+\subsection lua_api_pixel_movement_set_loop pixel_movement:set_loop([loop])
 
 Sets whether this movement should restart automatically when the trajectory is
 finished.
-- \c loop (boolean): \c true to make the movement loop.
+- \c loop (boolean, optional): \c true to make the movement loop. No value means \c true.
 
 \subsection lua_api_pixel_movement_get_delay pixel_movement:get_delay()
 

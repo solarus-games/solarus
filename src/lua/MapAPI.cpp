@@ -553,7 +553,10 @@ int LuaContext::map_api_draw_dialog_box(lua_State* l) {
 int LuaContext::map_api_set_pause_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  bool pause_key_available = lua_toboolean(l, 2) != 0;
+  bool pause_key_available = true;
+  if (lua_gettop(l) >= 2) {
+    pause_key_available = lua_toboolean(l, 2);
+  }
 
   map.get_game().set_pause_key_available(pause_key_available);
 
@@ -777,7 +780,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
   bool open = true;
-  if (lua_isboolean(l, 3)) {
+  if (lua_gettop(l) >= 3) {
     open = lua_toboolean(l, 3);
   }
 
@@ -894,7 +897,7 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
   bool enabled = true;
-  if (lua_isboolean(l, 3)) {
+  if (lua_gettop(l) >= 3) {
     enabled = lua_toboolean(l, 3);
   }
 

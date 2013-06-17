@@ -274,7 +274,7 @@ int LuaContext::sprite_api_set_paused(lua_State* l) {
 
   Sprite& sprite = check_sprite(l, 1);
   bool paused = true;  // true if unspecified.
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     paused = lua_toboolean(l, 2);
   }
 
@@ -292,7 +292,7 @@ int LuaContext::sprite_api_set_ignore_suspend(lua_State *l) {
 
   Sprite& sprite = check_sprite(l, 1);
   bool ignore_suspend = true;  // true if unspecified.
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     ignore_suspend = lua_toboolean(l, 2);
   }
 

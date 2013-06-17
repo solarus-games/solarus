@@ -436,11 +436,11 @@ When a dialog is active, call this function at an appropriate moment
   dialog box will become scriptable (you will have full control of drawing
   your dialog box).
 
-\subsection lua_api_map_set_pause_enabled map:set_pause_enabled(pause_enabled)
+\subsection lua_api_map_set_pause_enabled map:set_pause_enabled([pause_enabled])
 
 Sets whether the player can pause the \ref lua_api_game "game".
-- \c pause_enabled (boolean): \c true to allow the player to pause the
-  game.
+- \c pause_enabled (boolean, optional): \c true to allow the player to pause the
+  game. No value means \c true.
 
 \remark This function applies to the built-in \ref
   lua_api_game_intro_commands "pause command".
@@ -700,8 +700,8 @@ Disabled entities are not displayed and are not updated.
 Therefore, they don't move and their collisions are no longer detected.
 But they still exist and can be enabled back later.
 - \c prefix (string): Prefix of the entities to change.
-- \c enable (boolean): \c true to enable them, \c false to disable them
-  (no value means \c true).
+- \c enable (boolean, optional): \c true to enable them, \c false to disable them.
+  No value means \c true.
 
 \remark Equivalent to calling \ref lua_api_entity_set_enabled
   "entity:set_enabled()" on a group of entities.

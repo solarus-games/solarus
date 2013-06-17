@@ -80,6 +80,16 @@ If the delay is set to zero, the function is called immediately.
   Usually, you will store the return value only if you need to stop the timer
   explicitly later or to call another method on it.
 
+\remark When they are created, \ref lua_api_map "map" timers,
+\ref lua_api_enemy "enemy" timers and
+\ref lua_api_item "item" timers are initially suspended if a dialog is active.
+After that, they get automatically suspended and unsuspended when the map is
+suspended or unsuspended.
+This default behavior is suited for most use cases, but if you want to change
+it, you can use
+\ref lua_api_timer_set_suspended timer:set_suspended() and
+\ref lua_api_timer_set_suspended_with_map timer:set_suspended_with_map().
+
 \subsection lua_api_timer_stop_all sol.timer.stop_all(context)
 
 Cancels all timers that are currently running in a context.
@@ -152,7 +162,7 @@ Sets whether this timer should automatically be suspended when the
 suspended.
 
 The map is suspended by the engine in a few cases, like when the game is
-paused or when the camera is being moved by a script.
+paused, when there is a dialog or when the camera is being moved by a script.
 When this happens, all \ref lua_api_entity "map entities" stop moving and most
 \ref lua_api_sprite "sprites" stop their animation.
 With this setting, you can choose whether your timer gets suspended too.
@@ -163,6 +173,9 @@ By default, \ref lua_api_map "map" timers,
 map.
 - \c suspended_with_map (boolean, optional): \c true to suspend the timer when
   the map is suspended, \c false to continue (no value means \c true).
+
+\remark Even when this setting is set to \c true, you can override its
+behavior by calling \ref lua_api_timer_set_suspended "timer:set_suspended()"
 
 */
 

@@ -471,7 +471,7 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
       p += ratio;
     }
 
-    p += full_offset + width * ratio;
+    p += full_offset + width * (ratio - 1);
   }
 
   SDL_UnlockSurface(dst_internal_surface);
@@ -545,7 +545,7 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
       p += ratio;
       e++;
     }
-    p += full_offset + width * ratio;
+    p += full_offset + width * (ratio - 1);
   }
 
   SDL_UnlockSurface(dst_internal_surface);

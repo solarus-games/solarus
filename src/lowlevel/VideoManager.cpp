@@ -322,7 +322,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     offset = 0;
   }
   width = size.get_width();
-  end_row_increment = 2 * offset + width;
+  full_offset = 2 * offset;
 
   if (!disable_window) {
     SDL_Surface* screen_internal_surface = SDL_SetVideoMode(
@@ -471,7 +471,7 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
       p += ratio;
     }
 
-    p += offset * 2 + width * ratio;
+    p += full_offset + width * ratio;
   }
 
   SDL_UnlockSurface(dst_internal_surface);
@@ -545,7 +545,7 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
       p += ratio;
       e++;
     }
-    p += offset * 2 + width * ratio;
+    p += full_offset + width * ratio;
   }
 
   SDL_UnlockSurface(dst_internal_surface);

@@ -63,7 +63,7 @@ class VideoManager {
 
     int width;                                        /**< width of the current screen surface */
     int offset;                                       /**< width of a side bar when using a widescreen resolution */
-    int end_row_increment;                            /**< increment used by the stretching and scaling functions
+    int full_offset;                                  /**< width of non used part of the screen
                                                        * when changing the row */
 
     VideoManager(bool disable_window);

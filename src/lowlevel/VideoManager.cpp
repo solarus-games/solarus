@@ -440,7 +440,7 @@ void VideoManager::blit(Surface& src_surface, Surface& dst_surface) {
 
 /**
  * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface,
- * stretching the image by the nearest integer scale without deformation.
+ * stretching the image by the integer scale without deformation.
  *
  * Two black side bars are added if the destination surface is wider than SOLARUS_SCREEN_WIDTH * 2.
  *

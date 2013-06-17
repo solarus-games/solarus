@@ -175,7 +175,9 @@ bool VideoManager::set_fullscreen_resolution(int flags, int size_x, int size_y) 
         mode_sizes[FULLSCREEN_SCALE2X].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y - size_y % SOLARUS_SCREEN_HEIGHT);
         mode_sizes[FULLSCREEN_WIDE].set_size(size_x, size_y);
         mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(size_x, size_y);
+        
         dst_position_wide.set_xy(size_x % SOLARUS_SCREEN_WIDTH / 2, 0);
+        
         return true;
     }
     return false;
@@ -437,8 +439,8 @@ void VideoManager::blit(Surface& src_surface, Surface& dst_surface) {
 }
 
 /**
- * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface on a
- * double-size surface, stretching the image.
+ * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface,
+ * stretching the image by the nearest integer scale without deformation.
  *
  * Two black side bars are added if the destination surface is wider than SOLARUS_SCREEN_WIDTH * 2.
  *

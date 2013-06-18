@@ -55,11 +55,12 @@ class TransitionScrolling: public Transition {
     TransitionScrolling(Direction direction);
     ~TransitionScrolling();
 
-    bool needs_previous_surface();
+    bool needs_previous_surface() const;
 
     void start();
-    bool is_started();
-    bool is_finished();
+    bool is_started() const;
+    bool is_finished() const;
+    void notify_suspended(bool suspended);
     void update();
     void draw(Surface& dst_surface);
 };

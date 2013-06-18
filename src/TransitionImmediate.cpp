@@ -22,14 +22,12 @@
  */
 TransitionImmediate::TransitionImmediate(Transition::Direction direction):
   Transition(direction) {
-
 }
 
 /**
  * @brief Destructor.
  */
 TransitionImmediate::~TransitionImmediate() {
-
 }
 
 /**
@@ -43,7 +41,7 @@ void TransitionImmediate::start() {
  * @brief Returns whether the transition effect is started.
  * @return false
  */
-bool TransitionImmediate::is_started() {
+bool TransitionImmediate::is_started() const {
   return false;
 }
 
@@ -51,8 +49,16 @@ bool TransitionImmediate::is_started() {
  * @brief Returns whether the transition effect is finished.
  * @return true
  */
-bool TransitionImmediate::is_finished() {
+bool TransitionImmediate::is_finished() const {
   return true;
+}
+
+/**
+ * @brief Notifies the transition effect that it was just suspended
+ * or resumed.
+ * @param suspended true if suspended, false if resumed.
+ */
+void TransitionImmediate::notify_suspended(bool suspended) {
 }
 
 /**

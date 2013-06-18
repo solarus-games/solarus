@@ -20,6 +20,7 @@
 #include "SpriteAnimationDirection.h"
 #include "Game.h"
 #include "Map.h"
+#include "movements/Movement.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/Color.h"
@@ -430,6 +431,17 @@ void Sprite::set_suspended(bool suspended) {
     }
     else {
       blink_is_sprite_visible = true;
+    }
+
+    // Also suspend or resumed the transition effect and the movement if any.
+    Transition* transition = get_transition();
+    if (transition != NULL) {
+      transition->set_suspended(suspended);
+    }
+
+    Movement* movement = get_movement();
+    if (movement != NULL) {
+      movement->set_suspended(suspended);
     }
   }
 }

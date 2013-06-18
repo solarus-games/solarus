@@ -44,8 +44,9 @@ class TransitionFade: public Transition {
     void set_delay(uint32_t delay);
 
     void start();
-    bool is_started();
-    bool is_finished();
+    bool is_started() const;
+    bool is_finished() const;
+    void notify_suspended(bool suspended);
     void update();
     void draw(Surface& surface);
 };

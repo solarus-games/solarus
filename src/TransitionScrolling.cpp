@@ -38,7 +38,9 @@ const Rectangle TransitionScrolling::previous_map_dst_positions[] = {
  * @param direction direction of the transition (in or out)
  */
 TransitionScrolling::TransitionScrolling(Transition::Direction direction):
-  Transition(direction), dx(0), dy(0) {
+  Transition(direction),
+  dx(0),
+  dy(0) {
 
 }
 
@@ -47,7 +49,7 @@ TransitionScrolling::TransitionScrolling(Transition::Direction direction):
  */
 TransitionScrolling::~TransitionScrolling() {
 
-  if (direction == IN) {
+  if (get_direction() == IN) {
     delete both_maps_surface;
   }
 }
@@ -57,12 +59,12 @@ TransitionScrolling::~TransitionScrolling() {
  */
 void TransitionScrolling::start() {
 
-  if (direction == OUT) {
+  if (get_direction() == OUT) {
     return;
   }
 
   // get the scrolling direction
-  scrolling_direction = (game->get_current_map().get_destination_side() + 2) % 4;
+  scrolling_direction = (get_game()->get_current_map().get_destination_side() + 2) % 4;
 
   const int scrolling_step = 5;
   int width = SOLARUS_SCREEN_WIDTH;
@@ -95,7 +97,7 @@ void TransitionScrolling::start() {
  * @brief Returns whether this transition effect needs the previous surface.
  * @return true
  */
-bool TransitionScrolling::needs_previous_surface() {
+bool TransitionScrolling::needs_previous_surface() const {
   return true;
 }
 
@@ -103,7 +105,7 @@ bool TransitionScrolling::needs_previous_surface() {
  * @brief Returns whether the transition effect is started.
  * @return false
  */
-bool TransitionScrolling::is_started() {
+bool TransitionScrolling::is_started() const {
   return !is_finished();
 }
 
@@ -111,9 +113,9 @@ bool TransitionScrolling::is_started() {
  * @brief Returns whether the transition effect is finished.
  * @return true
  */
-bool TransitionScrolling::is_finished() {
+bool TransitionScrolling::is_finished() const {
 
-  if (direction == OUT) {
+  if (get_direction() == OUT) {
     return true;
   }
 
@@ -129,13 +131,25 @@ void TransitionScrolling::scroll() {
 }
 
 /**
+ * @brief Notifies the transition effect that it was just suspended
+ * or resumed.
+ * @param suspended true if suspended, false if resumed.
+ */
+void TransitionScrolling::notify_suspended(bool suspended) {
+
+  if (!suspended) {
+    next_scroll_date += System::now() - get_when_suspended();
+  }
+}
+
+/**
  * @brief Updates this transition effect.
  *
  * This function is called repeatedly while the transition exists.
  */
 void TransitionScrolling::update() {
 
-  if (!is_started()) {
+  if (!is_started() || is_suspended()) {
     return;
   }
 
@@ -152,10 +166,11 @@ void TransitionScrolling::update() {
  */
 void TransitionScrolling::draw(Surface& dst_surface) {
 
-  if (direction == OUT) {
+  if (get_direction() == OUT) {
     return;
   }
 
+  Surface* previous_surface = get_previous_surface();
   Debug::check_assertion(previous_surface != NULL,
       "No previous surface defined for scrolling");
 

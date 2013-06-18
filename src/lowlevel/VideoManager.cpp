@@ -143,7 +143,7 @@ VideoManager::VideoManager(bool disable_window):
   // lower than 1024x768 , and the only supported height multiple of SOLARUS_SCREEN_HEIGHT is 1200
   int list_modes[3][2] = { {768, 480} , {720, 480} , {1600, 1200} };
   for(int i=0 ; i<3 ; i++)
-    if(set_fullscreen_resolution(flags, list_modes[i][0], list_modes[i][1]))
+    if(initialize_fullscreen_size(flags, list_modes[i][0], list_modes[i][1]))
         break;
 
   /* debug (see the fullscreen video modes supported)
@@ -172,7 +172,7 @@ VideoManager::~VideoManager() {
  * @param y the y size of the resolution
  * @return true if this resolution is supported
  */
-bool VideoManager::set_fullscreen_resolution(int flags, int size_x, int size_y) {
+bool VideoManager::initialize_fullscreen_size(int flags, int size_x, int size_y) {
     if (SDL_VideoModeOK(size_x, size_y, 32, flags)) {
         mode_sizes[FULLSCREEN_NORMAL].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y - size_y % SOLARUS_SCREEN_HEIGHT);
         mode_sizes[FULLSCREEN_SCALE2X].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y - size_y % SOLARUS_SCREEN_HEIGHT);

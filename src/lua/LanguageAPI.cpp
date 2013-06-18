@@ -132,7 +132,12 @@ int LuaContext::language_api_get_default_language(lua_State* l) {
 
   const std::string& language = FileTools::get_default_language();
 
-  push_string(l, language);
+  if (language.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, language);
+  }
   return 1;
 }
 

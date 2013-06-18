@@ -19,7 +19,8 @@ The list of languages available in your quest is specified in the data file
 \subsection lua_api_language_get_language sol.language.get_language()
 
 Returns the code of the current language.
-- Return value (string): The code that identifies the current language.
+- Return value (string): The code that identifies the current language, or
+  \c nil if no language was set.
 
 \subsection lua_api_language_set_language sol.language.set_language(code)
 
@@ -44,10 +45,16 @@ Returns the list of available languages.
 \subsection lua_api_language_get_default_language sol.language.get_default_language()
 
 Returns the code of the default language.
-The default language is the one selected when before you call
-\ref lua_api_language_set_language "sol.language.set_language()".
+
+The engine does nothing with this default language property:
+it is up to you to use it like you want.
+When the user doesn't have a language saved in his settings, you
+can for example set the language to the default one.
+Or you can show a language selection
+menu where the default language will be initially selected.
 - Return value (string): The code of the default language as defined in
   \ref quest_language_list_file "languages/languages.dat".
+  Returns \c nil if no default language is specified.
 
 \subsection lua_api_language_get_string sol.language.get_string(key)
 

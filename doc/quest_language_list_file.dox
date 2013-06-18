@@ -26,7 +26,7 @@ Empty lines are also ignored.
 
 The definition of a language starts with \c language{ and ends with \c }.
 Inside the braces, the properties of the language are specified.
-Properties are declared with the syntax \c key = value and
+Properties are declared with the syntax <tt>key = value</tt> and
 separated with commas. It is allowed to have an extra comma after
 the last property. String values are enclosed within
 double quotes.
@@ -40,10 +40,13 @@ Each language must have the following properties:
 - \c name (string): A user-friendly name for this language, translated in the
   language itself. You can show this name to the user in your language
   selection menu.
-- \c default (boolean): If \c true, this language will be selected by default
-  of user that don't have a language saved in their settings.
-  If no language sets \c default to
-  true, then the first language defined will be the default one.
+- \c default (boolean): If \c true, this language will be considered as the
+  default one. However, the engine does nothing with this property.
+  It is up to your quest to use it if you want.
+  When the user doesn't have a language saved in his settings, your quest
+  can for example set the language to the default one.
+  Or you can show a language selection
+  menu where the default language will be initially selected.
 
 If the language list file is empty, you won't be able to use dialogs.
 Therefore, even if you only have one language, you need a language list file.

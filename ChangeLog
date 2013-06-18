@@ -4,6 +4,7 @@ Bug fixes for the 1.0 release.
 
 * Fix a crash when a treasure callback changes the hero's state (#224).
 * Fix an assertion error with FollowMovement of pickables.
+* Fix pickable treasures that could be obtained twice sometimes.
 * Fix fade-in/fade-out effects on sprites that did not work (#221).
 * Fix sol.audio.play_music() that failed with "none" or "same" (#201).
 * Fix item:set_sound_when_brandish() that did not work.

@@ -28,36 +28,6 @@
  */
 class Pickable: public Detector {
 
-  private:
-
-    Treasure treasure;                          /**< the treasure obtained when the player picks this item */
-
-    Sprite *shadow_sprite;                      /**< sprite of the shadow (if any) */
-    FallingHeight falling_height;               /**< indicates whether the item is falling when it appears */
-    bool will_disappear;                        /**< indicates that the item will disappear after an amount of time
-                                                 * (only possible for items not saved) */
-
-    // current state
-    Rectangle shadow_xy;                        /**< coordinates of the shadow (which does not move while the item does) */
-
-    uint32_t appear_date;                       /**< date when the item is created */
-    uint32_t allow_pick_date;                   /**< date when the item can be picked */
-    bool can_be_picked;                         /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
-    uint32_t blink_date;                        /**< date when the item starts blinking */
-    uint32_t disappear_date;                    /**< date when the item disappears */
-    MapEntity* entity_followed;                 /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
-
-    // creation and initialization
-    Pickable(const std::string& name, Layer layer, int x, int y,
-        const Treasure& treasure);
-
-    void initialize_sprites();
-    void initialize_movement();
-
-    // item
-    void give_item_to_player();
-    void set_blinking(bool blinking);
-
   public:
 
     // creation and destruction
@@ -88,6 +58,37 @@ class Pickable: public Detector {
     void draw_on_map();
 
     virtual const std::string& get_lua_type_name() const;
+
+  private:
+
+    // creation and initialization
+    Pickable(const std::string& name, Layer layer, int x, int y,
+        const Treasure& treasure);
+
+    void initialize_sprites();
+    void initialize_movement();
+
+    // item
+    void give_item_to_player();
+    void set_blinking(bool blinking);
+
+    Treasure treasure;                          /**< the treasure obtained when the player picks this item */
+    bool given_to_player;                       /**< indicates that the treasure was given to the player */
+
+    Sprite* shadow_sprite;                      /**< sprite of the shadow (if any) */
+    FallingHeight falling_height;               /**< indicates whether the item is falling when it appears */
+    bool will_disappear;                        /**< indicates that the item will disappear after an amount of time
+                                                 * (only possible for items not saved) */
+
+    // current state
+    Rectangle shadow_xy;                        /**< coordinates of the shadow (which does not move while the item does) */
+
+    uint32_t appear_date;                       /**< date when the item is created */
+    uint32_t allow_pick_date;                   /**< date when the item can be picked */
+    bool can_be_picked;                         /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
+    uint32_t blink_date;                        /**< date when the item starts blinking */
+    uint32_t disappear_date;                    /**< date when the item disappears */
+    MapEntity* entity_followed;                 /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 };
 
 #endif

@@ -41,6 +41,7 @@ Pickable::Pickable(const std::string& name, Layer layer,
     int x, int y, const Treasure& treasure):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, name, layer, x, y, 0, 0),
   treasure(treasure),
+  given_to_player(false),
   shadow_sprite(NULL),
   shadow_xy(Rectangle(x, y)),
   appear_date(System::now()),
@@ -323,6 +324,12 @@ void Pickable::notify_collision(MapEntity& other_entity, Sprite& other_sprite,
  */
 void Pickable::give_item_to_player() {
 
+  if (given_to_player) {
+    // Just to be sure.
+    return;
+  }
+  given_to_player = true;
+
   EquipmentItem& item = treasure.get_item();
 
   // play the sound
@@ -421,6 +428,7 @@ void Pickable::update() {
       // The pickable may have been dropped by the boomerang/hookshot
       // not exactly on the hero so let's fix this.
       if (get_distance(get_hero()) < 8) {
+        remove_from_map();
         give_item_to_player();
       }
     }

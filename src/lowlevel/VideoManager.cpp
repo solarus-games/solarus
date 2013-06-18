@@ -139,6 +139,8 @@ VideoManager::VideoManager(bool disable_window):
   }
   int flags = get_surface_flag(FULLSCREEN_WIDE) | SDL_FULLSCREEN;
 
+  // List of supported large modes. 1600x1200 was added because OSX 10.7+ doesn't support any fullscreen resolution
+  // lower than 1024x768 , and the only supported height multiple of SOLARUS_SCREEN_HEIGHT is 1200
   int list_modes[3][2] = { {768, 480} , {720, 480} , {1600, 1200} };
   for(int i=0 ; i<3 ; i++)
     if(set_fullscreen_resolution(flags, list_modes[i][0], list_modes[i][1]))
@@ -163,7 +165,8 @@ VideoManager::~VideoManager() {
 }
 
 /**
- * @brief Set mode size and position for requested resolution
+ * @brief Set mode size and position for requested resolution. 
+ * Set a 4:3 equivalent resolution (based on height) for non-wide modes
  * @param flags flags of the SDL video mode
  * @param x the x size of the resolution
  * @param y the y size of the resolution

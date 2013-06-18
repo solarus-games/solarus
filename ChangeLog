@@ -14,6 +14,7 @@ Bug fixes for the 1.0 release.
 * Fix hangling the default language.
 * Correctly suspend timers when set_suspended_with_map is called.
 * Don't die if a music or a sound cannot be found.
+* Don't die if an image cannot be found.
 * Don't die if running a savegame without starting location specified.
 * Don't die if a script refers to a non-existing equipment item.
 * Don't die if the self parameter is missing when calling a method (#219).

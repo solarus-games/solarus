@@ -105,16 +105,21 @@ int LuaContext::surface_api_create(lua_State* l) {
     // load from a file
     const std::string& file_name = lua_tostring(l, 1);
     bool language_specific = lua_toboolean(l, 2); // default is false
-    surface = new Surface(file_name, language_specific ?
+    surface = Surface::create_from_file(file_name, language_specific ?
         Surface::DIR_LANGUAGE : Surface::DIR_SPRITES);
   }
   else {
     luaL_typerror(l, 1, "number, string or no value");
   }
 
-  get_lua_context(l).add_drawable(surface);
-
-  push_surface(l, *surface);
+  if (surface == NULL) {
+    // Image file not found or not valid.
+    lua_pushnil(l);
+  }
+  else {
+    get_lua_context(l).add_drawable(surface);
+    push_surface(l, *surface);
+  }
   return 1;
 }
 

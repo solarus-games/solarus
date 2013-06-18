@@ -56,6 +56,9 @@ class Surface: public Drawable {
     Surface(const Surface& other);
     ~Surface();
 
+    static Surface* create_from_file(const std::string& file_name,
+        ImageDirectory base_directory = DIR_SPRITES);
+
     int get_width() const;
     int get_height() const;
     const Rectangle get_size() const;

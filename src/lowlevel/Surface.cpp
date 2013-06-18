@@ -51,8 +51,11 @@ Surface::Surface(const Rectangle& size):
 
 /**
  * @brief Creates a surface from the specified image file name.
- * @param file_name name of the image file to load, relative to the base directory specified
- * @param base_directory the base directory to use
+ *
+ * An assertion error occurs if the file cannot be loaded.
+ *
+ * @param file_name Name of the image file to load, relative to the base directory specified.
+ * @param base_directory The base directory to use.
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
@@ -78,7 +81,8 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
 
-  Debug::check_assertion(internal_surface != NULL, StringConcat() << "Cannot load image '" << prefixed_file_name << "'");
+  Debug::check_assertion(internal_surface != NULL, StringConcat() <<
+      "Cannot load image '" << prefixed_file_name << "'");
 }
 
 /**
@@ -116,6 +120,54 @@ Surface::~Surface() {
   if (internal_surface_created) {
     SDL_FreeSurface(internal_surface);
   }
+}
+
+/**
+ * @brief Creates a surface from the specified image file name.
+ *
+ * This function acts like a constructor excepts that it returns NULL if the
+ * file does not exist or is not a valid image.
+ *
+ * @param file_name Name of the image file to load, relative to the base directory specified.
+ * @param base_directory The base directory to use.
+ * @return The surface created, or NULL if the file could not be loaded.
+ */
+Surface* Surface::create_from_file(const std::string& file_name,
+    ImageDirectory base_directory) {
+
+  std::string prefix;
+  bool language_specific = false;
+
+  if (base_directory == DIR_SPRITES) {
+    prefix = "sprites/";
+  }
+  else if (base_directory == DIR_LANGUAGE) {
+    language_specific = true;
+    prefix = "images/";
+  }
+  std::string prefixed_file_name = prefix + file_name;
+
+  if (!FileTools::data_file_exists(prefixed_file_name, language_specific)) {
+    // File not found.
+    return NULL;
+  }
+
+  size_t size;
+  char* buffer;
+  FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
+  SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
+  SDL_Surface* internal_surface = IMG_Load_RW(rw, 0);
+  FileTools::data_file_close_buffer(buffer);
+  SDL_RWclose(rw);
+
+  if (internal_surface == NULL) {
+    // Not a valid image.
+    return NULL;
+  }
+
+  Surface* surface = new Surface(internal_surface);
+  surface->internal_surface_created = true;
+  return surface;
 }
 
 /**

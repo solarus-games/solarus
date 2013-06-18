@@ -42,7 +42,8 @@ class FileTools {
     static void quit();
 
     // Reading data files of the quest.
-    static bool data_file_exists(const std::string& file_name);
+    static bool data_file_exists(const std::string& file_name,
+        bool language_specific = false);
     static std::istream& data_file_open(const std::string& file_name,
         bool language_specific = false);
     static void data_file_close(const std::istream& data_file);

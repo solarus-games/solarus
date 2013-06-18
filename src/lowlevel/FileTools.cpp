@@ -202,12 +202,26 @@ const std::map<std::string, std::string>& FileTools::get_languages() {
 /**
  * @brief Returns whether a file exists in the quest data directory or
  * in Solarus write directory.
- * @param file_name a file name relative to the quest data directory
- * or to Solarus write directory.
+ * @param file_name A file name relative to the quest data directory,
+ * to the current language directory or to Solarus write directory.
+ * @param language_specific true if the file is relative to the current
+ * language directory.
  * @return true if this file exists.
  */
-bool FileTools::data_file_exists(const std::string& file_name) {
-  return PHYSFS_exists(file_name.c_str());
+bool FileTools::data_file_exists(const std::string& file_name,
+    bool language_specific) {
+
+  std::string full_file_name;
+  if (language_specific) {
+    if (language_code.empty()) {
+      return false;
+    }
+    full_file_name = std::string("languages/") + language_code + "/" + file_name;
+  }
+  else {
+    full_file_name = file_name;
+  }
+  return PHYSFS_exists(full_file_name.c_str());
 }
 
 /**

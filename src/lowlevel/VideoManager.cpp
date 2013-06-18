@@ -38,9 +38,9 @@ Rectangle VideoManager::default_mode_sizes[] = {
   Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // WINDOWED_STRETCHED
   Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // WINDOWED_SCALE2X
   Rectangle(0, 0, SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),          // WINDOWED_NORMAL
-  Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_NORMAL
+  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // FULLSCREEN_NORMAL
   Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_WIDE
-  Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_SCALE2X
+  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // FULLSCREEN_SCALE2X
   Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_SCALE2X_WIDE
 };
 
@@ -175,8 +175,8 @@ VideoManager::~VideoManager() {
 bool VideoManager::initialize_fullscreen_size(int flags, int size_x, int size_y) {
     // Make sure that the height is a multiple of SOLARUS_SCREEN_HEIGHT, and that the resolution is supported
     if (size_y % SOLARUS_SCREEN_HEIGHT == 0 && SDL_VideoModeOK(size_x, size_y, 32, flags)) {
-        mode_sizes[FULLSCREEN_NORMAL].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y - size_y % SOLARUS_SCREEN_HEIGHT);
-        mode_sizes[FULLSCREEN_SCALE2X].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y - size_y % SOLARUS_SCREEN_HEIGHT);
+        mode_sizes[FULLSCREEN_NORMAL].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y);
+        mode_sizes[FULLSCREEN_SCALE2X].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y);
         mode_sizes[FULLSCREEN_WIDE].set_size(size_x, size_y);
         mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(size_x, size_y);
         

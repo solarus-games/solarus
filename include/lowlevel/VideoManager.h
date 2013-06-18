@@ -63,12 +63,14 @@ class VideoManager {
 
     int width;                                        /**< width of the current screen surface */
     int offset;                                       /**< width of a side bar when using a widescreen resolution */
-    int end_row_increment;                            /**< increment used by the stretching and scaling functions
+    int full_offset;                                  /**< width of non used part of the screen
                                                        * when changing the row */
 
     VideoManager(bool disable_window);
     ~VideoManager();
 
+    bool initialize_fullscreen_size(int flags, int size_x, int size_y);
+    
     void blit(Surface& src_surface, Surface& dst_surface);
     void blit_stretched(Surface& src_surface, Surface& dst_surface);
     void blit_scale2x(Surface& src_surface, Surface& dst_surface);

@@ -132,22 +132,19 @@ VideoManager::VideoManager(bool disable_window):
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 
-  // detect what widescreen resolution is supported (16:10 or 15:10)
+  // detect what widescreen resolution is supported (16:10, 15:10 or 4:3)
 
   for (int i = 0; i < NB_MODES; i++) {
     mode_sizes[i] = default_mode_sizes[i];
   }
   int flags = get_surface_flag(FULLSCREEN_WIDE) | SDL_FULLSCREEN;
-  if (SDL_VideoModeOK(768, 480, 32, flags)) {
-    mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
-    dst_position_wide.set_xy((768 - SOLARUS_SCREEN_WIDTH * 2) / 2, 0);
-  }
-  else if (SDL_VideoModeOK(720, 480, 32, flags)) {
-    mode_sizes[FULLSCREEN_WIDE].set_size(720, 480);
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(720, 480);
-    dst_position_wide.set_xy((720 - SOLARUS_SCREEN_WIDTH * 2) / 2, 0);
-  }
+
+  // List of supported large modes. 1600x1200 was added because OSX 10.7+ doesn't support any fullscreen resolution
+  // lower than 1024x768 , and the only supported height multiple of SOLARUS_SCREEN_HEIGHT is 1200
+  int list_modes[3][2] = { {768, 480} , {720, 480} , {1600, 1200} };
+  for(int i=0 ; i<3 ; i++)
+    if(initialize_fullscreen_size(flags, list_modes[i][0], list_modes[i][1]))
+        break;
 
   /* debug (see the fullscreen video modes supported)
      SDL_Rect **rects = SDL_ListModes(NULL, flags);
@@ -165,6 +162,29 @@ VideoManager::VideoManager(bool disable_window):
  */
 VideoManager::~VideoManager() {
   delete screen_surface;
+}
+
+/**
+ * @brief Set mode size and position for requested resolution. 
+ * Set a 4:3 equivalent resolution (based on height) for non-wide modes
+ * @param flags flags of the SDL video mode
+ * @param x the x size of the resolution
+ * @param y the y size of the resolution
+ * @return true if this resolution is supported
+ */
+bool VideoManager::initialize_fullscreen_size(int flags, int size_x, int size_y) {
+    // Make sure that the height is a multiple of SOLARUS_SCREEN_HEIGHT, and that the resolution is supported
+    if (size_y % SOLARUS_SCREEN_HEIGHT == 0 && SDL_VideoModeOK(size_x, size_y, 32, flags)) {
+        mode_sizes[FULLSCREEN_NORMAL].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y);
+        mode_sizes[FULLSCREEN_SCALE2X].set_size(size_x - size_x % SOLARUS_SCREEN_WIDTH, size_y);
+        mode_sizes[FULLSCREEN_WIDE].set_size(size_x, size_y);
+        mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(size_x, size_y);
+        
+        dst_position_wide.set_xy(size_x % SOLARUS_SCREEN_WIDTH / 2, 0);
+        
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -306,7 +326,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     offset = 0;
   }
   width = size.get_width();
-  end_row_increment = 2 * offset + width;
+  full_offset = 2 * offset;
 
   if (!disable_window) {
     SDL_Surface* screen_internal_surface = SDL_SetVideoMode(
@@ -423,8 +443,8 @@ void VideoManager::blit(Surface& src_surface, Surface& dst_surface) {
 }
 
 /**
- * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface on a
- * double-size surface, stretching the image.
+ * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface,
+ * stretching the image by the integer ratio without deformation.
  *
  * Two black side bars are added if the destination surface is wider than SOLARUS_SCREEN_WIDTH * 2.
  *
@@ -439,16 +459,23 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
   SDL_LockSurface(src_internal_surface);
   SDL_LockSurface(dst_internal_surface);
 
-  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
-
+  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels; 
+  int ratio = dst_internal_surface->w / src_internal_surface->w;
+            
   int p = offset;
   for (int i = 0; i < SOLARUS_SCREEN_HEIGHT; i++) {
     for (int j = 0; j < SOLARUS_SCREEN_WIDTH; j++) {
-      dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = src_surface.get_mapped_pixel(i * SOLARUS_SCREEN_WIDTH + j, dst_internal_surface->format);
-      p += 2;
+      uint32_t src_pixel = src_surface.get_mapped_pixel(i * SOLARUS_SCREEN_WIDTH + j, dst_internal_surface->format);
+        
+      for (int k = 0; k < ratio; k++) {
+        for (int l = 0; l < ratio; l++) {
+          dst[p + k * width + l] = src_pixel;
+        }
+      }
+      p += ratio;
     }
 
-    p += end_row_increment;
+    p += full_offset + width * (ratio - 1);
   }
 
   SDL_UnlockSurface(dst_internal_surface);
@@ -456,8 +483,8 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
 }
 
 /**
- * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface on a
- * double-size surface.
+ * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface,
+ * stretching the image by the integer ratio without deformation.
  *
  * The image is scaled with an implementation of the Scale2x algorithm.
  * Two black side bars if the destination surface is wider than
@@ -476,9 +503,11 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
 
   uint32_t* src = (uint32_t*) src_internal_surface->pixels;
   uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
+  int ratio = dst_internal_surface->w / src_internal_surface->w;
 
   int b, d, e = 0, f,  h;
-  int e1 = offset, e2, e3, e4;
+  int p = offset;
+  uint32_t pixel, dst_e[4];
   for (int row = 0; row < SOLARUS_SCREEN_HEIGHT; row++) {
     for (int col = 0; col < SOLARUS_SCREEN_WIDTH; col++) {
 
@@ -494,26 +523,33 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
       if (col == 0)   { d = e; }
       if (col == SOLARUS_SCREEN_WIDTH - 1) { f = e; }
 
-      // compute e1 to e4
-      e2 = e1 + 1;
-      e3 = e1 + width;
-      e4 = e3 + 1;
-
       // compute the color
 
       if (src[b] != src[h] && src[d] != src[f]) {
-        dst[e1] = src_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
-        dst[e2] = src_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
-        dst[e3] = src_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
-        dst[e4] = src_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
+        dst_e[0] = src_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
+        dst_e[1] = src_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
+        dst_e[2] = src_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
+        dst_e[3] = src_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
+        
+        // map each "quarter" on destination surface
+        for (int k = 0; k < ratio; k++) {
+          for (int l = 0; l < ratio; l++) {
+            dst[p + k * width + l] = dst_e[ l*2/ratio + (k*2/ratio)*2];
+          }
+        }
       }
       else {
-        dst[e1] = dst[e2] = dst[e3] = dst[e4] = src_surface.get_mapped_pixel(e, dst_internal_surface->format);
+        pixel = src_surface.get_mapped_pixel(e, dst_internal_surface->format);
+        for (int k = 0; k < ratio; k++) {
+          for (int l = 0; l < ratio; l++) {
+            dst[p + k * width + l] = pixel;
+          }
+        }
       }
-      e1 += 2;
+      p += ratio;
       e++;
     }
-    e1 += end_row_increment;
+    p += full_offset + width * (ratio - 1);
   }
 
   SDL_UnlockSurface(dst_internal_surface);

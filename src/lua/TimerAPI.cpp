@@ -118,6 +118,9 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   }
 #endif
 
+  Debug::check_assertion(timers.find(timer) == timers.end(),
+      "Duplicate timer in the system");
+
   timers[timer].callback_ref = callback_ref;
   timers[timer].context = context;
 
@@ -225,11 +228,15 @@ void LuaContext::update_timers() {
   for (it = timers.begin(); it != timers.end(); ++it) {
 
     Timer* timer = it->first;
-    timer->update();
-    if (timer->is_finished()) {
-      do_callback(it->second.callback_ref);
-      it->second.callback_ref = LUA_REFNIL;
-      timers_to_remove.push_back(timer);
+    int callback_ref = it->second.callback_ref;
+    if (callback_ref != LUA_REFNIL) {
+      // The timer is not being removed: update it.
+      timer->update();
+      if (timer->is_finished()) {
+        do_callback(callback_ref);
+        it->second.callback_ref = LUA_REFNIL;
+        timers_to_remove.push_back(timer);
+      }
     }
   }
 
@@ -238,15 +245,19 @@ void LuaContext::update_timers() {
   for (it2 = timers_to_remove.begin(); it2 != timers_to_remove.end(); ++it2) {
 
     Timer* timer = *it2;
-    if (timers.find(timer) != timers.end()) {
+    it = timers.find(timer);
+    if (it != timers.end()) {
       if (!timer->is_finished()) {
-        cancel_callback(timers[timer].callback_ref);
+        cancel_callback(it->second.callback_ref);
       }
-      timers.erase(timer);
+      timers.erase(it);
       timer->decrement_refcount();
       if (timer->get_refcount() == 0) {
         delete timer;
       }
+
+      Debug::check_assertion(timers.find(timer) == timers.end(),
+          "Failed to remove timer");
     }
   }
   timers_to_remove.clear();

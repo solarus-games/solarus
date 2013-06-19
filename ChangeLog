@@ -3,6 +3,7 @@ solarus-1.0.2 (under development)
 Bug fixes for the 1.0 release.
 
 * Fix a crash when a treasure callback changes the hero's state (#224).
+* Fix a crash when a victory callback changes the hero's state.
 * Fix an assertion error with FollowMovement of pickables.
 * Fix pickable treasures that could be obtained twice sometimes.
 * Fix fade-in/fade-out effects on sprites that did not work (#221).

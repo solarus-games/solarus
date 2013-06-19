@@ -198,7 +198,7 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
 
   if (collision_mode == COLLISION_FACING_POINT && entity_overlapping.is_hero()) {
 
-    Hero& hero = (Hero&) entity_overlapping;
+    Hero& hero = static_cast<Hero&>(entity_overlapping);
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero.is_free()) {

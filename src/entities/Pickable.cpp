@@ -427,7 +427,7 @@ void Pickable::update() {
         entity_followed->get_type() == HOOKSHOT) {
       // The pickable may have been dropped by the boomerang/hookshot
       // not exactly on the hero so let's fix this.
-      if (get_distance(get_hero()) < 8) {
+      if (get_distance(get_hero()) < 16) {
         remove_from_map();
         give_item_to_player();
       }

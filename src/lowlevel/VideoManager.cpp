@@ -441,27 +441,45 @@ void VideoManager::blit(Surface& src_surface, Surface& dst_surface) {
  * @param dst_surface the destination surface
  */
 void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
-
-  SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
-  SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
-
-  SDL_LockSurface(src_internal_surface);
-  SDL_LockSurface(dst_internal_surface);
-
-  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
-
-  int p = offset;
-  for (int i = 0; i < SOLARUS_SCREEN_HEIGHT; i++) {
-    for (int j = 0; j < SOLARUS_SCREEN_WIDTH; j++) {
-      dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = src_surface.get_mapped_pixel(i * SOLARUS_SCREEN_WIDTH + j, dst_internal_surface->format);
-      p += 2;
+    
+    SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
+    SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
+    SDL_Surface* surface_to_draw;
+    
+#ifndef __APPLE__
+    surface_to_draw = dst_internal_surface;
+#else
+    /* On Mac OS X an intermediate surface is needed.
+     * FIXME: creating a new surface at each blit is probably a horrible loss
+     * of performance */
+    surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
+                                           dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
+#endif
+    
+    SDL_LockSurface(src_internal_surface);
+    SDL_LockSurface(surface_to_draw);
+    
+    uint32_t* src = (uint32_t*) src_internal_surface->pixels;
+    uint32_t* dst = (uint32_t*) surface_to_draw->pixels;
+    
+    int p = offset;
+    for (int i = 0; i < SOLARUS_SCREEN_HEIGHT; i++) {
+        for (int j = 0; j < SOLARUS_SCREEN_WIDTH; j++) {
+            dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = *src
+            p += 2;
+            src++;
+        }
+        
+        p += end_row_increment;
     }
-
-    p += end_row_increment;
-  }
-
-  SDL_UnlockSurface(dst_internal_surface);
-  SDL_UnlockSurface(src_internal_surface);
+    
+    SDL_UnlockSurface(surface_to_draw);
+    SDL_UnlockSurface(src_internal_surface);
+    
+#ifdef __APPLE__
+    SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
+    SDL_FreeSurface(surface_to_draw);
+#endif
 }
 
 /**
@@ -476,57 +494,73 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
  * @param dst_surface the destination surface
  */
 void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
-
-  SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
-  SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
-
-  SDL_LockSurface(src_internal_surface);
-  SDL_LockSurface(dst_internal_surface);
-
-  uint32_t* src = (uint32_t*) src_internal_surface->pixels;
-  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
-
-  int b, d, e = 0, f,  h;
-  int e1 = offset, e2, e3, e4;
-  for (int row = 0; row < SOLARUS_SCREEN_HEIGHT; row++) {
-    for (int col = 0; col < SOLARUS_SCREEN_WIDTH; col++) {
-
-      // compute a to i
-
-      b = e - SOLARUS_SCREEN_WIDTH;
-      d = e - 1;
-      f = e + 1;
-      h = e + SOLARUS_SCREEN_WIDTH;
-
-      if (row == 0)   { b = e; }
-      if (row == SOLARUS_SCREEN_HEIGHT - 1) { h = e; }
-      if (col == 0)   { d = e; }
-      if (col == SOLARUS_SCREEN_WIDTH - 1) { f = e; }
-
-      // compute e1 to e4
-      e2 = e1 + 1;
-      e3 = e1 + width;
-      e4 = e3 + 1;
-
-      // compute the color
-
-      if (src[b] != src[h] && src[d] != src[f]) {
-        dst[e1] = src_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
-        dst[e2] = src_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
-        dst[e3] = src_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
-        dst[e4] = src_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
-      }
-      else {
-        dst[e1] = dst[e2] = dst[e3] = dst[e4] = src_surface.get_mapped_pixel(e, dst_internal_surface->format);
-      }
-      e1 += 2;
-      e++;
+    
+    SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
+    SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
+    SDL_Surface* surface_to_draw;
+    
+#ifndef __APPLE__
+    surface_to_draw = dst_internal_surface;
+#else
+    /* On Mac OS X an intermediate surface is needed.
+     * FIXME: creating a new surface at each blit is probably a horrible loss
+     * of performance */
+    surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
+                                           dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
+#endif
+    
+    SDL_LockSurface(src_internal_surface);
+    SDL_LockSurface(surface_to_draw);
+    
+    uint32_t* src = (uint32_t*) src_internal_surface->pixels;
+    uint32_t* dst = (uint32_t*) surface_to_draw->pixels;
+    
+    int b, d, e = 0, f,  h;
+    int e1 = offset, e2, e3, e4;
+    for (int row = 0; row < SOLARUS_SCREEN_HEIGHT; row++) {
+        for (int col = 0; col < SOLARUS_SCREEN_WIDTH; col++) {
+            
+            // compute a to i
+            
+            b = e - SOLARUS_SCREEN_WIDTH;
+            d = e - 1;
+            f = e + 1;
+            h = e + SOLARUS_SCREEN_WIDTH;
+            
+            if (row == 0)   { b = e; }
+            if (row == SOLARUS_SCREEN_HEIGHT - 1) { h = e; }
+            if (col == 0)   { d = e; }
+            if (col == SOLARUS_SCREEN_WIDTH - 1) { f = e; }
+            
+            // compute e1 to e4
+            e2 = e1 + 1;
+            e3 = e1 + width;
+            e4 = e3 + 1;
+            
+            // compute the color
+            
+            if (src[b] != src[h] && src[d] != src[f]) {
+                dst[e1] = (src[d] == src[b]) ? src[d] : src[e];
+                dst[e2] = (src[b] == src[f]) ? src[f] : src[e];
+                dst[e3] = (src[d] == src[h]) ? src[d] : src[e];
+                dst[e4] = (src[h] == src[f]) ? src[f] : src[e];
+            }
+            else {
+                dst[e1] = dst[e2] = dst[e3] = dst[e4] = src[e];
+            }
+            e1 += 2;
+            e++;
+        }
+        e1 += end_row_increment;
     }
-    e1 += end_row_increment;
-  }
-
-  SDL_UnlockSurface(dst_internal_surface);
-  SDL_UnlockSurface(src_internal_surface);
+    
+    SDL_UnlockSurface(surface_to_draw);
+    SDL_UnlockSurface(src_internal_surface);
+    
+#ifdef __APPLE__
+    SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
+    SDL_FreeSurface(surface_to_draw);
+#endif
 }
 
 /**

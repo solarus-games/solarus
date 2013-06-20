@@ -11,6 +11,7 @@ Bug fixes for the 1.0 release.
 * Fix item:set_sound_when_brandish() that did not work.
 * Fix diagonal movement that could bypass sensors since Solarus 1.0.1.
 * Fix circle movement not working after entity:set_enabled(true).
+* Fix detection of movement finished for NPCs.
 * Fix memory issues with menus (#210).
 * Fix handling of nil parameter in boolean setters (#225).
 * Fix hangling the default language.

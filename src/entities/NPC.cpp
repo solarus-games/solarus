@@ -313,23 +313,6 @@ bool NPC::interaction_with_item(EquipmentItem& item_used) {
 }
 
 /**
- * @brief Updates the entity.
- */
-void NPC::update() {
-
-  Detector::update();
-
-  if (subtype == USUAL_NPC && get_movement() != NULL) {
-
-    if (get_movement()->is_finished()) {
-      get_sprite().set_current_animation("stopped");
-      clear_movement();
-      get_lua_context().npc_on_movement_finished(*this);
-    }
-  }
-}
-
-/**
  * @brief This function is called when the entity has just moved.
  *
  * If it is an NPC, its sprite's direction is updated.
@@ -351,6 +334,21 @@ void NPC::notify_position_changed() {
     }
   }
 }
+
+/**
+ * @brief This function is called when the movement of the entity is finished.
+ */
+void NPC::notify_movement_finished() {
+
+  Detector::notify_movement_finished();
+
+  if (subtype == USUAL_NPC) {
+
+    get_sprite().set_current_animation("stopped");
+    get_lua_context().npc_on_movement_finished(*this);
+  }
+}
+
 
 /**
  * @brief Returns whether this interactive entity can be lifted.

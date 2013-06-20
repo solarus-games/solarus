@@ -95,9 +95,8 @@ class NPC: public Detector {
     void notify_action_command_pressed();
     bool interaction_with_item(EquipmentItem& item);
     void notify_position_changed();
+    void notify_movement_finished();
     bool can_be_lifted();
-
-    void update();
 
     virtual const std::string& get_lua_type_name() const;
 };

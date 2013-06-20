@@ -164,8 +164,6 @@ void PixelMovement::restart() {
  */
 void PixelMovement::update() {
 
-  Movement::update();
-
   uint32_t now = System::now();
 
   while (now >= next_move_date
@@ -181,6 +179,9 @@ void PixelMovement::update() {
       notify_obstacle_reached();
     }
   }
+
+  // Do this at last so that Movement::update() knows whether we are finished.
+  Movement::update();
 }
 
 /**

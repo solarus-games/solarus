@@ -320,8 +320,6 @@ void CircleMovement::set_loop(uint32_t delay) {
  */
 void CircleMovement::update() {
 
-  Movement::update();
-
   if (center_entity != NULL && center_entity->is_being_removed()) {
     set_center(Rectangle(
           center_entity->get_x() + center_point.get_x(),
@@ -380,6 +378,9 @@ void CircleMovement::update() {
   if (update_needed) {
     recompute_position();
   }
+
+  // Do this at last so that Movement::update() knows whether we are finished.
+  Movement::update();
 }
 
 /**

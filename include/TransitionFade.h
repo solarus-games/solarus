@@ -36,8 +36,11 @@ class TransitionFade: public Transition {
     uint32_t next_frame_date;
     uint32_t delay;
 
+    Surface* dst_surface;
+
   public:
 
+    // TODO pass the destination surface at creation time
     TransitionFade(Direction direction);
     ~TransitionFade();
 

@@ -17,6 +17,7 @@
 #include "TransitionFade.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Creates a fade-in or fade-out transition effect.
@@ -25,7 +26,8 @@
 TransitionFade::TransitionFade(Transition::Direction direction):
   Transition(direction),
   finished(false),
-  alpha(-1) {
+  alpha(-1),
+  dst_surface(NULL) {
 
   if (direction == OUT) {
     alpha_start = 256;
@@ -110,9 +112,17 @@ void TransitionFade::update() {
   uint32_t now = System::now();
 
   // update the transition effect if needed
-  while (now >= next_frame_date && alpha != alpha_limit) {
+  while (now >= next_frame_date && !finished) {
     alpha += alpha_increment;
     next_frame_date += delay; // 20 ms between two frame updates
+
+    if (dst_surface != NULL) {
+      // make sure the final opacity is applied to the surface
+      int alpha_impl = std::min(alpha, 255);
+      dst_surface->set_opacity(alpha_impl);
+    }
+
+    finished = (alpha == alpha_limit);
   }
 }
 
@@ -122,11 +132,13 @@ void TransitionFade::update() {
  */
 void TransitionFade::draw(Surface& dst_surface) {
 
+  Debug::check_assertion(
+      this->dst_surface == NULL || this->dst_surface == &dst_surface,
+      "Unexpected surface for transition");
+
   // draw the transition effect on the surface
   int alpha_impl = std::min(alpha, 255);
   dst_surface.set_opacity(alpha_impl);
-
-  // make sure the final drawing was made before finishing
-  finished = (alpha == alpha_limit);
+  this->dst_surface = &dst_surface;
 }
 

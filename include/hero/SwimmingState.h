@@ -51,6 +51,7 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
 
     bool is_stairs_obstacle(Stairs& stairs);
     bool can_take_jumper();
+    bool can_pick_treasure(EquipmentItem& item);
 };
 
 #endif

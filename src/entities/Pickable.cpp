@@ -264,11 +264,8 @@ void Pickable::notify_movement_changed() {
  */
 void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping.is_hero()
-      && can_be_picked
-      && !get_game().is_dialog_enabled()) {
-    remove_from_map();
-    give_item_to_player();
+  if (entity_overlapping.is_hero()) {
+    try_give_item_to_player();
   }
   else if (entity_followed == NULL) {
 
@@ -311,26 +308,29 @@ void Pickable::notify_collision(MapEntity& other_entity, Sprite& other_sprite,
 
   // taking the item with the sword
   if (other_entity.is_hero()
-      && other_sprite.contains("sword")
-      && can_be_picked) {
+      && other_sprite.contains("sword")) {
 
-    remove_from_map();
-    give_item_to_player();
+    try_give_item_to_player();
   }
 }
 
 /**
  * @brief Gives the item to the player.
  */
-void Pickable::give_item_to_player() {
-
-  if (given_to_player) {
-    // Just to be sure.
-    return;
-  }
-  given_to_player = true;
+void Pickable::try_give_item_to_player() {
 
   EquipmentItem& item = treasure.get_item();
+
+  if (!can_be_picked
+      || given_to_player
+      || get_game().is_dialog_enabled()
+      || !get_hero().can_pick_treasure(item)) {
+    return;
+  }
+
+  given_to_player = true;
+
+  remove_from_map();
 
   // play the sound
   const std::string& sound_id = item.get_sound_when_picked();
@@ -428,8 +428,7 @@ void Pickable::update() {
       // The pickable may have been dropped by the boomerang/hookshot
       // not exactly on the hero so let's fix this.
       if (get_distance(get_hero()) < 16) {
-        remove_from_map();
-        give_item_to_player();
+        try_give_item_to_player();
       }
     }
     entity_followed = NULL;

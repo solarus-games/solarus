@@ -253,6 +253,15 @@ bool Hero::PushingState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::PushingState::can_pick_treasure(EquipmentItem& item) {
+  return true;
+}
+
+/**
  * @brief Returns whether shallow water is considered as an obstacle in this state.
  * @return true if shallow water is considered as an obstacle in this state
  */

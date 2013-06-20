@@ -183,3 +183,12 @@ bool Hero::PlayerMovementState::can_be_hurt(Enemy* attacker) {
   return true;
 }
 
+/**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) {
+  return true;
+}
+

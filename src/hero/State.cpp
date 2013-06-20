@@ -915,6 +915,18 @@ bool Hero::State::can_start_sword() {
 }
 
 /**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ *
+ * Returns false by default.
+ *
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::State::can_pick_treasure(EquipmentItem& item) {
+  return false;
+}
+
+/**
  * @brief Returns whether the hero can use an equipment item in this state.
  *
  * Returns false by default.

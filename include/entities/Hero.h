@@ -311,6 +311,7 @@ class Hero: public MapEntity {
     void start_lifting(CarriedItem* item_to_lift);
     void start_running();
     void start_grabbing();
+    bool can_pick_treasure(EquipmentItem& item);
     bool can_start_item(EquipmentItem& item);
     void start_item(EquipmentItem& item);
     void start_boomerang(int max_distance, int speed,

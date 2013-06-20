@@ -173,6 +173,15 @@ bool Hero::SwordLoadingState::can_take_stairs() {
 }
 
 /**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& item) {
+  return true;
+}
+
+/**
  * @brief Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::SwordLoadingState::set_animation_stopped() {

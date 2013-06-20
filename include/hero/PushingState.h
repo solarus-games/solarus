@@ -27,17 +27,17 @@ class Hero::PushingState: public Hero::State {
   private:
 
     int pushing_direction4;       /**< direction where the hero is looking (0 to 3) */
-    Detector *pushed_entity;      /**< the entity the hero is pushing (or NULL) */
+    Detector* pushed_entity;      /**< the entity the hero is pushing (or NULL) */
 
     void stop_moving_pushed_entity();
 
   public:
 
-    PushingState(Hero &hero);
+    PushingState(Hero& hero);
     ~PushingState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     bool can_avoid_conveyor_belt();
     bool can_start_sword();
@@ -48,6 +48,7 @@ class Hero::PushingState: public Hero::State {
     void notify_position_changed();
 
     bool can_be_hurt(Enemy* attacker);
+    bool can_pick_treasure(EquipmentItem& item);
     bool is_shallow_water_obstacle();
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();

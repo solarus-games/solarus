@@ -52,8 +52,8 @@ class Pickable: public Detector {
     void set_suspended(bool suspended);
     MapEntity* get_entity_followed();
     void notify_movement_changed();
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
     void update();
     void draw_on_map();
 
@@ -69,7 +69,7 @@ class Pickable: public Detector {
     void initialize_movement();
 
     // item
-    void give_item_to_player();
+    void try_give_item_to_player();
     void set_blinking(bool blinking);
 
     Treasure treasure;                          /**< the treasure obtained when the player picks this item */

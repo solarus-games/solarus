@@ -139,6 +139,15 @@ bool Hero::SwordTappingState::can_sword_hit_crystal() {
 }
 
 /**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& item) {
+  return true;
+}
+
+/**
  * @brief Tests whether the hero is cutting with his sword the specified detector
  * for which a collision was detected.
  * @param detector the detector to check

@@ -39,6 +39,7 @@ class Hero::SpinAttackState: public Hero::State {
     void update();
     bool can_sword_hit_crystal();
     bool can_be_hurt(Enemy* attacker);
+    bool can_pick_treasure(EquipmentItem& item);
     bool is_cutting_with_sword(Detector& detector);
     int get_sword_damage_factor();
     bool is_deep_water_obstacle();

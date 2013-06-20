@@ -2167,6 +2167,16 @@ void Hero::start_grabbing() {
 }
 
 /**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to pick.
+ * @return true if this equipment item can currently be picked.
+ */
+bool Hero::can_pick_treasure(EquipmentItem& item) {
+
+  return state->can_pick_treasure(item);
+}
+
+/**
  * @brief Returns whether the hero can starts using an equipment item.
  * @param item The equipment item to use.
  * @return true if this equipment item can currently be used.

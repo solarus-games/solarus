@@ -39,8 +39,8 @@ class Hero::RunningState: public Hero::State {
     RunningState(Hero& hero, GameCommands::Command command);
     ~RunningState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
     bool is_pressing_running_key();
@@ -51,6 +51,7 @@ class Hero::RunningState: public Hero::State {
     bool can_take_stairs();
     bool can_take_jumper();
     bool can_be_hurt(Enemy* attacker);
+    bool can_pick_treasure(EquipmentItem& item);
     bool can_start_gameover_sequence();
     bool is_touching_ground();
     bool can_avoid_deep_water();

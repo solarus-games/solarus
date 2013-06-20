@@ -170,6 +170,15 @@ bool Hero::HookshotState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::HookshotState::can_pick_treasure(EquipmentItem& item) {
+  return true;
+}
+
+/**
  * @brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */

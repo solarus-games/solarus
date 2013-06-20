@@ -115,6 +115,15 @@ bool Hero::SpinAttackState::can_sword_hit_crystal() {
 }
 
 /**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& item) {
+  return true;
+}
+
+/**
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  * @param attacker an attacker that is trying to hurt the hero

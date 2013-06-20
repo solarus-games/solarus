@@ -32,11 +32,11 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
 
   public:
 
-    CarryingState(Hero &hero, CarriedItem *carried_item);
+    CarryingState(Hero& hero, CarriedItem* carried_item);
     ~CarryingState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void set_map(Map &map);
     void notify_layer_changed();
     void set_suspended(bool suspended);

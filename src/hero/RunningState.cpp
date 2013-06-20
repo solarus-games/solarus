@@ -220,6 +220,15 @@ bool Hero::RunningState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::RunningState::can_pick_treasure(EquipmentItem& item) {
+  return true;
+}
+
+/**
  * @brief Returns whether the game over sequence can start in the current state.
  * @return true if the game over sequence can start in the current state
  */

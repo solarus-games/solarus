@@ -49,6 +49,7 @@ class Hero::PlayerMovementState: public Hero::State {
     void notify_movement_changed();
     void notify_layer_changed();
     bool can_be_hurt(Enemy* attacker);
+    bool can_pick_treasure(EquipmentItem& item);
 };
 
 #endif

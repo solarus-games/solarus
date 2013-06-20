@@ -125,6 +125,15 @@ bool Hero::SwordSwingingState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) {
+  return true;
+}
+
+/**
  * @brief Returns whether crystals can be activated by the sword in this state.
  * @return true if crystals can be activated by the sword in this state
  */

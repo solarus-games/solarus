@@ -140,6 +140,7 @@ class Hero::State {
     virtual void notify_grabbed_entity_collision();
     virtual bool is_cutting_with_sword(Detector& detector);
     virtual bool can_start_sword();
+    virtual bool can_pick_treasure(EquipmentItem& item);
     virtual bool can_start_item(EquipmentItem& item);
     virtual bool can_take_stairs();
     virtual bool can_take_jumper();

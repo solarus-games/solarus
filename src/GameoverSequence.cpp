@@ -125,7 +125,7 @@ void GameoverSequence::update() {
           state = MENU;
           Music::play("game_over");
           fairy_x = 76;
-          fairy_y = 124;
+          fairy_y = 112;
           cursor_position = 0;
         }
       }
@@ -207,12 +207,12 @@ void GameoverSequence::notify_command_pressed(GameCommands::Command command) {
     if (command == GameCommands::DOWN) {
       Sound::play("cursor");
       cursor_position = (cursor_position + 1) % 4;
-      fairy_y = 124 + cursor_position * 16;
+      fairy_y = 112 + cursor_position * 16;
     }
     else if (command == GameCommands::UP) {
       Sound::play("cursor");
       cursor_position = (cursor_position + 3) % 4;
-      fairy_y = 124 + cursor_position * 16;
+      fairy_y = 112 + cursor_position * 16;
     }
     else if (command == GameCommands::ACTION || command == GameCommands::ATTACK) {
       Sound::play("danger");

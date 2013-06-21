@@ -327,9 +327,10 @@ void Sprite::set_current_frame(int current_frame) {
   finished = false;
   next_frame_date = System::now() + get_frame_delay();
 
-  set_frame_changed(current_frame != this->current_frame);
-
-  this->current_frame = current_frame;
+  if (current_frame != this->current_frame) {
+    this->current_frame = current_frame;
+    set_frame_changed(current_frame != this->current_frame);
+  }
 }
 
 /**

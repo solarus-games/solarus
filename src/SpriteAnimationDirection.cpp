@@ -22,30 +22,27 @@
 
 /**
  * @brief Constructor.
- * @param nb_frames number of frames in the sequence
- * @param frames position of each frames of the sequence in the image
- * (the pointer is copied, not the array, so don't modify after calling this constructor)
- * @param x_origin x coordinate of the sprite's origin
- * @param y_origin y coordinate of the sprite's origin
+ * @param nb_frames Number of frames in the sequence.
+ * @param frames Position of each frame of the sequence in the image.
+ * @param origin Coordinates of the sprite's origin point.
  */
-SpriteAnimationDirection::SpriteAnimationDirection(int nb_frames, Rectangle *frames,
-						   int x_origin, int y_origin):
-  nb_frames(nb_frames), frames(frames), pixel_bits(NULL) {
+SpriteAnimationDirection::SpriteAnimationDirection(
+    const std::vector<Rectangle>& frames,
+    const Rectangle& origin):
+  frames(frames),
+  origin(origin) {
 
-  origin.set_xy(x_origin, y_origin);
+  Debug::check_assertion(!frames.empty(), "Empty sprite direction");
 }
 
 /**
  * @brief Destructor.
  */
 SpriteAnimationDirection::~SpriteAnimationDirection() {
-  delete[] frames;
 
-  if (pixel_bits != NULL) {
-    for (int i = 0; i < nb_frames; i++) {
-      delete pixel_bits[i];
-    }
-    delete[] pixel_bits;
+  std::vector<PixelBits*>::iterator it;
+  for (it = pixel_bits.begin(); it != pixel_bits.end(); ++it) {
+    delete *it;
   }
 }
 
@@ -55,7 +52,7 @@ SpriteAnimationDirection::~SpriteAnimationDirection() {
  */
 Rectangle SpriteAnimationDirection::get_size() const {
 
-  Debug::check_assertion(nb_frames > 0, "Invalid number of frames");
+  Debug::check_assertion(get_nb_frames() > 0, "Invalid number of frames");
   return Rectangle(0, 0, frames[0].get_width(), frames[0].get_height());
 }
 
@@ -72,7 +69,7 @@ const Rectangle& SpriteAnimationDirection::get_origin() const {
  * @return the number of frames
  */
 int SpriteAnimationDirection::get_nb_frames() const {
-  return nb_frames;
+  return frames.size();
 }
 
 /**
@@ -81,6 +78,11 @@ int SpriteAnimationDirection::get_nb_frames() const {
  * @return the rectangle of this frame
  */
 const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
+
+  if (frame < 0 || frame >= get_nb_frames()) {
+    Debug::die(StringConcat() << "Invalid frame " << frame
+        << ": this direction has " << get_nb_frames() << " frames");
+  }
   return frames[frame];
 }
 
@@ -95,9 +97,9 @@ const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
 void SpriteAnimationDirection::draw(Surface& dst_surface,
     const Rectangle& dst_position, int current_frame, Surface& src_image) {
 
-  const Rectangle& current_frame_rect = frames[current_frame];
+  const Rectangle& current_frame_rect = get_frame(current_frame);
 
-  // position of the sprite's upper left corner
+  // Position of the sprite's upper left corner.
   Rectangle position_top_left(dst_position);
   position_top_left.add_xy(-origin.get_x(), -origin.get_y());
   position_top_left.set_size(current_frame_rect);
@@ -115,12 +117,11 @@ void SpriteAnimationDirection::draw(Surface& dst_surface,
  *
  * @param src_image the surface containing the animations
  */
-void SpriteAnimationDirection::enable_pixel_collisions(Surface *src_image) {
+void SpriteAnimationDirection::enable_pixel_collisions(Surface* src_image) {
 
-  if (pixel_bits == NULL) {
-    pixel_bits = new PixelBits*[nb_frames];
-    for (int i = 0; i < nb_frames; i++) {
-      pixel_bits[i] = new PixelBits(*src_image, frames[i]);
+  if (!are_pixel_collisions_enabled()) {
+    for (int i = 0; i < get_nb_frames(); i++) {
+      pixel_bits.push_back(new PixelBits(*src_image, frames[i]));
     }
   }
 }
@@ -130,20 +131,19 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface *src_image) {
  */
 void SpriteAnimationDirection::disable_pixel_collisions() {
 
-  if (pixel_bits != NULL) {
-    for (int i = 0; i < nb_frames; i++) {
-      delete pixel_bits[i];
-    }
-    delete[] pixel_bits;
+  std::vector<PixelBits*>::iterator it;
+  for (it = pixel_bits.begin(); it != pixel_bits.end(); ++it) {
+    delete *it;
   }
-  pixel_bits = NULL;
+  pixel_bits.clear();
 }
+
 /**
  * @brief Returns whether the pixel-perfect collisions are enabled for this direction.
  * @return true if the pixel-perfect collisions are enabled
  */
 bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
-  return pixel_bits != NULL;
+  return !pixel_bits.empty();
 }
 
 /**
@@ -157,9 +157,9 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
  */
 PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
 
-  SOLARUS_ASSERT(pixel_bits != NULL,
+  SOLARUS_ASSERT(are_pixel_collisions_enabled(),
       "Pixel-precise collisions are not enabled for this sprite");
-  SOLARUS_ASSERT(frame >= 0 && frame < nb_frames, "Invalid frame number");
+  SOLARUS_ASSERT(frame >= 0 && frame < get_nb_frames(), "Invalid frame number");
 
   return *pixel_bits[frame];
 }

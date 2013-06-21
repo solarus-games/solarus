@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
+#include <vector>
 
 /**
  * @brief A sequence of frames representing a sprite animated in a particular direction.
@@ -28,21 +29,12 @@
  */
 class SpriteAnimationDirection {
 
-  private:
-
-    const int nb_frames;    /**< number of frames in this sequence */
-    Rectangle* frames;      /**< position of each frame of the sequence on the image */
-    Rectangle origin;       /**< coordinates of the sprite's origin from the
-                             * upper-left corner of its image. */
-
-    PixelBits** pixel_bits; /**< bit masks representing the non-transparent pixels of each frame,
-                             * computed only if enable_pixel_collisions() is called */
-
   public:
 
     // creation and destruction
-    SpriteAnimationDirection(int nb_frames, Rectangle* frames,
-        int x_origin, int y_origin);
+    SpriteAnimationDirection(
+        const std::vector<Rectangle>& frames,
+        const Rectangle& origin);
     ~SpriteAnimationDirection();
 
     // size and origin point
@@ -60,6 +52,15 @@ class SpriteAnimationDirection {
     void disable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
     PixelBits& get_pixel_bits(int frame) const;
+
+  private:
+
+    std::vector<Rectangle> frames;       /**< position of each frame of the sequence on the image */
+    Rectangle origin;                    /**< coordinates of the sprite's origin from the
+                                          * upper-left corner of its image. */
+
+    std::vector<PixelBits*> pixel_bits;  /**< bit masks representing the non-transparent pixels of each frame,
+                                          * computed only if enable_pixel_collisions() is called */
 };
 
 #endif

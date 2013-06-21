@@ -102,6 +102,20 @@
 #endif
 
 /**
+ * @def SOLARUS_FULLSCREEN_FORCE_OK
+ * @brief Define if the current platform should force all fullscreen mode to be available.
+ * If set to 1, VideoManager::is_mode_supported() may not call SDL_VideoModeOK()
+ */
+#ifndef SOLARUS_FULLSCREEN_FORCE_OK
+#  if defined(SOLARUS_OSX)
+// Since OSX 10.7, SDL_VideoModeOK() always return 0 with SDL_FULLSCREEN flag
+#    define SOLARUS_FULLSCREEN_FORCE_OK 1
+#  else
+#    define SOLARUS_FULLSCREEN_FORCE_OK 0
+#  endif
+#endif
+
+/**
  * @def SOLARUS_DEFAULT_QUEST
  * @brief Path of the quest to run is none is specified at runtime.
  */

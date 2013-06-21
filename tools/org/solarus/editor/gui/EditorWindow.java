@@ -943,11 +943,23 @@ public class EditorWindow extends JFrame
      */
     public Map getOpenMap(String mapId) {
 
-        String editorId = MapEditorPanel.getEditorId(mapId);
-        AbstractEditorPanel editor = tabs.getEditor(editorId);
-        if (editor != null) {
-            return ((MapEditorPanel) editor).getMap();
+        MapEditorPanel mapEditor = getOpenMapEditor(mapId);
+        if (mapEditor != null) {
+            return mapEditor.getMap();
         }
         return null;
     }
+
+    /**
+     * Returns the editor of a map currently open, given the map id.
+     * @param mapId Id of the map to get.
+     * @return The corresponding map editor, or null if this map is not open.
+     */
+    public MapEditorPanel getOpenMapEditor(String mapId) {
+
+        String editorId = MapEditorPanel.getEditorId(mapId);
+        AbstractEditorPanel editor = tabs.getEditor(editorId);
+        return (MapEditorPanel) editor;
+    }
 }
+

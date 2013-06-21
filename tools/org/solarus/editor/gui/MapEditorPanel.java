@@ -208,3 +208,4 @@ public class MapEditorPanel extends AbstractEditorPanel {
         return mapView;
     }
 }
+

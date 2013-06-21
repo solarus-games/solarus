@@ -2,10 +2,12 @@ solarus-1.0.2 (under development)
 
 Bug fixes for the 1.0 release.
 
+Solarus changes:
+
 * Fix a crash when a treasure callback changes the hero's state (#224).
 * Fix a crash when a victory callback changes the hero's state.
-* Fix an assertion error with FollowMovement of pickables.
 * Fix a crash due to invalid sprite frame when animation is changed (#26).
+* Fix an assertion error with FollowMovement of pickables.
 * Fix the fullscreen mode not working on Mac OS X 10.7+ (#213, #220).
 * Fix pickable treasures that could be obtained twice sometimes.
 * Fix fade-in/fade-out effects on sprites that did not work (#221).
@@ -25,8 +27,15 @@ Bug fixes for the 1.0 release.
 * Don't die if a script refers to a non-existing equipment item.
 * Don't die if the self parameter is missing when calling a method (#219).
 * Fix dangling pointers after removing some kind of entities.
+
+Solarus Quest Editor changes:
+
+* Editor: allow to create map entities from the quest tree (#208).
 * Editor: fix a typo in the bomb flower sprite (#214).
 * Editor: fix a possible NullPointerException when opening an invalid map.
+
+Documentation changes:
+
 * Documentation: add the syntax specification of maps and tilesets.
 
 solarus-1.0.1 (2013-05-12)

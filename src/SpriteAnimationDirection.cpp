@@ -22,7 +22,6 @@
 
 /**
  * @brief Constructor.
- * @param nb_frames Number of frames in the sequence.
  * @param frames Position of each frame of the sequence in the image.
  * @param origin Coordinates of the sprite's origin point.
  */

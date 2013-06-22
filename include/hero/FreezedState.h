@@ -26,10 +26,10 @@ class Hero::FreezedState: public Hero::State {
 
   public:
 
-    FreezedState(Hero &hero);
+    FreezedState(Hero& hero);
     ~FreezedState();
 
-    void start(State *previous_state);
+    void start(State* previous_state);
 };
 
 #endif

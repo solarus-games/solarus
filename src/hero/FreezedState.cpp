@@ -23,7 +23,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::FreezedState::FreezedState(Hero &hero):
+Hero::FreezedState::FreezedState(Hero& hero):
   State(hero) {
 
 }
@@ -39,7 +39,7 @@ Hero::FreezedState::~FreezedState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::FreezedState::start(State *previous_state) {
+void Hero::FreezedState::start(State* previous_state) {
 
   State::start(previous_state);
 

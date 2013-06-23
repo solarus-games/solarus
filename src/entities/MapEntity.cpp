@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -155,7 +155,7 @@ bool MapEntity::is_hero() {
 /**
  * @brief Returns whether entities of this type have detection capabilities.
  *
- * This function returns whether entities of this type can detect the presence 
+ * This function returns whether entities of this type can detect the presence
  * of the hero or other entities. If yes, the function
  * notify_collision() will be called when a collision is detected.
  *
@@ -1489,7 +1489,7 @@ bool MapEntity::overlaps_camera() {
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end() && !found; it++) {
     const Sprite* sprite = *it;
-    const Rectangle sprite_origin = sprite->get_origin();
+    const Rectangle& sprite_origin = sprite->get_origin();
     Rectangle sprite_bounding_box = sprite->get_size();
     sprite_bounding_box.set_xy(get_xy());
     sprite_bounding_box.add_xy(-sprite_origin.get_x(), -sprite_origin.get_y());
@@ -1505,14 +1505,14 @@ bool MapEntity::overlaps_camera() {
  * @return true if this entity's origin point is in the specified rectangle
  */
 bool MapEntity::is_origin_point_in(const Rectangle &rectangle) {
-  return rectangle.contains(get_x(), get_y()); 
+  return rectangle.contains(get_x(), get_y());
 }
 
 /**
  * @brief Returns whether this entity's facing point is in
  * the specified rectangle.
  * @param rectangle the rectangle to check
- * @return true if this entity's facing point is in the specified rectangle 
+ * @return true if this entity's facing point is in the specified rectangle
  */
 bool MapEntity::is_facing_point_in(const Rectangle &rectangle) {
 
@@ -1786,7 +1786,7 @@ void MapEntity::set_suspended(bool suspended) {
   // suspend/unsuspend the sprites animations
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
-    
+
     Sprite& sprite = *(*it);
     sprite.set_suspended(suspended || !is_enabled());
   }
@@ -1805,7 +1805,7 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
-    
+
     Sprite& sprite = *(*it);
     sprite.set_ignore_suspend(ignore_suspend);
   }
@@ -1888,12 +1888,16 @@ void MapEntity::update() {
 
 /**
  * @brief Returns whether this entity should be drawn on the map.
- * @return true if the entity is visible and has a sprite in the visible part
- * of the map
+ * @return true if the entity is visible and may have a sprite in the visible part
+ * of the map.
  */
 bool MapEntity::is_drawn() {
 
-  return is_visible() && (overlaps_camera() || !is_drawn_at_its_position());
+  return is_visible()
+      && (overlaps_camera()
+          || get_distance_to_camera() < get_optimization_distance()
+          || !is_drawn_at_its_position()
+      );
 }
 
 /**

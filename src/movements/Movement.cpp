@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -568,5 +568,13 @@ void Movement::set_finished_callback(int finished_callback_ref) {
 
   get_lua_context()->cancel_callback(this->finished_callback_ref);
   this->finished_callback_ref = finished_callback_ref;
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
+ */
+const std::string& Movement::get_lua_type_name() const {
+  return LuaContext::movement_module_name;
 }
 

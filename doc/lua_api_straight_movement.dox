@@ -78,7 +78,8 @@ Sets whether this movement should adjust its trajectory when an obstacle of the
 This property has no effect if the movement is not attached to a
 \ref lua_api_entity "map entity"
 or if the movement ignores obstacles.
-- \c smooth (boolean): \c true to make this movement smooth (no value means \c true).
+- \c smooth (boolean, optional): \c true to make this movement smooth.
+  No value means \c true.
 
 \section lua_api_straight_movement_inherited_events Events inherited from movement
 

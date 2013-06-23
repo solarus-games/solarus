@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -154,6 +154,11 @@ void SpriteAnimation::draw(Surface& dst_surface,
     const Rectangle& dst_position, int current_direction, int current_frame) {
 
   if (src_image != NULL) {
+    if (current_direction < 0 || current_direction >= get_nb_directions()) {
+      Debug::die(StringConcat() << "Invalid sprite direction "
+          << current_direction << ": this sprite has " << get_nb_directions()
+          << " directions");
+    }
     directions[current_direction]->draw(dst_surface, dst_position,
         current_frame, *src_image);
   }

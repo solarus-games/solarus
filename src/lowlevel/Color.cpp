@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ void Color::initialize() {
   format_surface = SDL_CreateRGBSurface(
       SDL_SWSURFACE, 1, 1, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
 
-  black =    Color(  0,   0,   0); 
+  black =    Color(  0,   0,   0);
   white =    Color(255, 255, 255);
   red =      Color(255,   0,   0);
   green =    Color(  0, 255,   0);

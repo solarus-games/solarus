@@ -93,22 +93,30 @@ set_property(SOURCE
 # TODO : Remove when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
 macro(copy_into_bundle library_path destination_directory)
 get_filename_component(library_name ${library_path} NAME)
-  if(NOT EXISTS ${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${library_name})
-    if(IS_DIRECTORY ${library_path})
-      add_custom_command(
-        TARGET ${EXECUTABLE_MAIN_NAME}
-        POST_BUILD
-        COMMAND cp 
-        ARGS -R -P -n -p "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
-      )
-    else()
-      add_custom_command(
-        TARGET ${EXECUTABLE_MAIN_NAME}
-        POST_BUILD
-        COMMAND cp 
-        ARGS -n "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/"
-      )	
+  # Encapsulate cp with a condition instead of using -n flag, which is buggy on some OSX versions
+  if(IS_DIRECTORY ${library_path})
+    add_custom_command(
+      TARGET ${EXECUTABLE_MAIN_NAME}
+      POST_BUILD
+      COMMAND if 
+      ARGS [ ! -d "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${library_name}" ] \; then cp -a "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/" \; fi
+    )
+  else()
+    # Get original name if it is a symbolic link
+    execute_process(COMMAND readlink ${library_path}
+      OUTPUT_VARIABLE ORIGINAL_NAME
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if(NOT ORIGINAL_NAME OR ORIGINAL_NAME STREQUAL "")
+      set(ORIGINAL_NAME ${library_name})
     endif()
+
+    add_custom_command(
+      TARGET ${EXECUTABLE_MAIN_NAME}
+      POST_BUILD
+      COMMAND if
+      ARGS [ ! -f "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}" ] \; then cp "${library_path}" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/${destination_directory}/${ORIGINAL_NAME}" \; fi
+    )
   endif()
 endmacro()
 if(NOT XCODE)
@@ -126,25 +134,28 @@ else()
   endforeach()
 endif()
 
-# Info.plist template or additional lines
+# Info.plist template and additional lines
 get_filename_component(SOLARUS_BUNDLE_ICON_NAME "${SOLARUS_BUNDLE_ICON}" NAME)
 set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
-		MACOSX_BUNDLE_INFO_PLIST             "${SOLARUS_BUNDLE_INFOPLIST}"
-		MACOSX_BUNDLE_BUNDLE_NAME            "${SOLARUS_BUNDLE}"
-		MACOSX_BUNDLE_ICON_FILE              "${SOLARUS_BUNDLE_ICON_NAME}"
-		MACOSX_BUNDLE_BUNDLE_VERSION         "${SOLARUS_BUNDLE_VERSION}"
+  MACOSX_BUNDLE_INFO_PLIST             "${SOLARUS_BUNDLE_INFOPLIST}"
+  MACOSX_BUNDLE_BUNDLE_NAME            "${SOLARUS_BUNDLE}"
+  MACOSX_BUNDLE_ICON_FILE              "${SOLARUS_BUNDLE_ICON_NAME}"
+  MACOSX_BUNDLE_BUNDLE_VERSION         "${SOLARUS_BUNDLE_VERSION}"
 
-		MACOSX_BUNDLE_GUI_IDENTIFIER         "${COMPANY_IDENTIFIER}.${SOLARUS_BUNDLE}"
-		MACOSX_BUNDLE_SHORT_VERSION_STRING   "${SOLARUS_BUNDLE_VERSION}"
-		MACOSX_BUNDLE_LONG_VERSION_STRING    "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}"
-		MACOSX_BUNDLE_COPYRIGHT              "Copyright 2013, ${COMPANY_IDENTIFIER}."
-		MACOSX_BUNDLE_INFO_STRING            "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}, Copyright 2013, ${COMPANY_IDENTIFIER}."
+  MACOSX_BUNDLE_GUI_IDENTIFIER         "${COMPANY_IDENTIFIER}.${SOLARUS_BUNDLE}"
+  MACOSX_BUNDLE_SHORT_VERSION_STRING   "${SOLARUS_BUNDLE_VERSION}"
+  MACOSX_BUNDLE_LONG_VERSION_STRING    "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}"
+  MACOSX_BUNDLE_COPYRIGHT              "Copyright 2013, ${COMPANY_IDENTIFIER}."
+  MACOSX_BUNDLE_INFO_STRING            "${SOLARUS_BUNDLE} Version ${SOLARUS_BUNDLE_VERSION}, Copyright 2013, ${COMPANY_IDENTIFIER}."
 )
 
 # Embed library search path
 if(NOT SOLARUS_IOS_BUILD)
   if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
-    set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
+    # Use condition to avoid duplicate flags caused by set(... FORCE)
+    if(NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-Xlinker -rpath")
+      set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
+    endif()
     set(SOLARUS_RPATH                  "@rpath/")
   else()
     set(SOLARUS_RPATH                  "@executable_path/../Frameworks/")
@@ -165,6 +176,16 @@ add_custom_command(
   COMMAND cp 
   ARGS "${PROJECT_BINARY_DIR}/cmake/apple/OSX-wrapper.sh" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/MacOS/${SOLARUS_BUNDLE}"
 )
+
+# Copy the PkgInfo file
+if(NOT XCODE)
+  add_custom_command(
+    TARGET ${EXECUTABLE_MAIN_NAME}
+    POST_BUILD
+    COMMAND cp
+    ARGS "${PROJECT_BINARY_DIR}/cmake/apple/PkgInfo" "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/"
+  )
+endif()
 
 # Code signing
 if(XCODE)

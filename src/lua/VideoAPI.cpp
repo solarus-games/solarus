@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -171,7 +171,7 @@ int LuaContext::video_api_is_fullscreen(lua_State *l) {
 int LuaContext::video_api_set_fullscreen(lua_State *l) {
 
   bool fullscreen = true;  // true if unspecified.
-  if (lua_isboolean(l, 1)) {
+  if (lua_gettop(l) >= 1) {
     fullscreen = lua_toboolean(l, 1);
   }
 

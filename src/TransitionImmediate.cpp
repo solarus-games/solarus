@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,28 +22,26 @@
  */
 TransitionImmediate::TransitionImmediate(Transition::Direction direction):
   Transition(direction) {
-
 }
 
 /**
  * @brief Destructor.
  */
 TransitionImmediate::~TransitionImmediate() {
-
 }
 
 /**
  * @brief Starts this transition effect.
  */
 void TransitionImmediate::start() {
-  
+
 }
 
 /**
  * @brief Returns whether the transition effect is started.
  * @return false
  */
-bool TransitionImmediate::is_started() {
+bool TransitionImmediate::is_started() const {
   return false;
 }
 
@@ -51,8 +49,16 @@ bool TransitionImmediate::is_started() {
  * @brief Returns whether the transition effect is finished.
  * @return true
  */
-bool TransitionImmediate::is_finished() {
+bool TransitionImmediate::is_finished() const {
   return true;
+}
+
+/**
+ * @brief Notifies the transition effect that it was just suspended
+ * or resumed.
+ * @param suspended true if suspended, false if resumed.
+ */
+void TransitionImmediate::notify_suspended(bool suspended) {
 }
 
 /**

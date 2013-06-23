@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -911,6 +911,18 @@ bool Hero::State::is_cutting_with_sword(Detector &detector) {
  * @return true if the hero can swing his sword in this state
  */
 bool Hero::State::can_start_sword() {
+  return false;
+}
+
+/**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ *
+ * Returns false by default.
+ *
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::State::can_pick_treasure(EquipmentItem& item) {
   return false;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,6 +73,8 @@ void LuaContext::register_movement_module() {
       { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
+  register_type(movement_module_name, common_methods,
+      common_metamethods);
 
   // straight movement
   static const luaL_Reg straight_movement_methods[] = {
@@ -570,7 +572,7 @@ int LuaContext::movement_api_set_ignore_obstacles(lua_State* l) {
 
   Movement& movement = check_movement(l, 1);
   bool ignore_obstacles = true; // true if unspecified
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     ignore_obstacles = lua_toboolean(l, 2);
   }
 
@@ -710,7 +712,7 @@ int LuaContext::straight_movement_api_set_smooth(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
   bool smooth = true; // true if unspecified
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     smooth = lua_toboolean(l, 2);
   }
   movement.set_smooth(smooth);
@@ -823,7 +825,7 @@ int LuaContext::random_movement_api_set_smooth(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
   bool smooth = true; // true if unspecified
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     smooth = lua_toboolean(l, 2);
   }
   movement.set_smooth(smooth);
@@ -934,7 +936,7 @@ int LuaContext::target_movement_api_set_smooth(lua_State* l) {
 
   TargetMovement& movement = check_target_movement(l, 1);
   bool smooth = true; // true if unspecified
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     smooth = lua_toboolean(l, 2);
   }
   movement.set_smooth(smooth);
@@ -1055,7 +1057,7 @@ int LuaContext::path_movement_api_set_loop(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
   bool loop = true; // true if unspecified
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     loop = lua_toboolean(l, 2);
   }
   movement.set_loop(loop);
@@ -1084,7 +1086,7 @@ int LuaContext::path_movement_api_set_snap_to_grid(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
   bool snap_to_grid = true; // true if unspecified
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     snap_to_grid = lua_toboolean(l, 2);
   }
   movement.set_snap_to_grid(snap_to_grid);
@@ -1320,7 +1322,7 @@ int LuaContext::circle_movement_api_set_clockwise(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   bool clockwise = true; // true if unspecified
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     clockwise = lua_toboolean(l, 2);
   }
   movement.set_clockwise(clockwise);
@@ -1649,7 +1651,7 @@ int LuaContext::pixel_movement_api_set_loop(lua_State* l) {
 
   PixelMovement& movement = check_pixel_movement(l, 1);
   bool loop = true; // true if unspecified
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     loop = lua_toboolean(l, 2);
   }
   movement.set_loop(loop);

@@ -113,7 +113,7 @@ Pauses or resumes the animation of this sprite.
 
 During a game, sets whether the animation should continue even when the map is
 suspended.
-- \c ignore (boolean): \c true to continue animation even when the map is
+- \c ignore (boolean, optional): \c true to continue animation even when the map is
   suspended, \c false otherwise. No value means \c true.
 
 \subsection lua_api_sprite_synchronize sprite:synchronize(reference_sprite)

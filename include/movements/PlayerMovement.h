@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ class PlayerMovement: public StraightMovement {
 
     int moving_speed;        /**< speed of the entity when it is moving */
     int direction8;          /**< current direction of the movement (0 to 7), as defined by the directional keys
-							  * currently pressed by the player (when the movement allows them) or -1 */
+                              * currently pressed by the player (when the movement allows them) or -1 */
 
     void set_wanted_direction();
 
@@ -49,8 +49,6 @@ class PlayerMovement: public StraightMovement {
     void set_moving_speed(int moving_speed);
     int get_wanted_direction8();
     void compute_movement();
-
-    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

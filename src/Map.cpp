@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -126,22 +126,6 @@ const std::string& Map::get_world() {
  */
 void Map::set_world(const std::string& world) {
   this->world = world;
-}
-
-/**
- * @brief Returns whether this map belongs to a dungeon.
- * @return true if this map is in a dungeon
- */
-bool Map::is_in_dungeon() {
-  return get_world().substr(0, 8) == "dungeon_";
-}
-
-/**
- * @brief Returns whether this map belongs to the outside world.
- * @return true if this map is in the oustide world
- */
-bool Map::is_in_outside_world() {
-  return get_world() == "outside_world";
 }
 
 /**
@@ -498,6 +482,14 @@ void Map::update() {
 }
 
 /**
+ * @brief Returns whether the map is currently suspended.
+ * @return true if the map is suspended.
+ */
+bool Map::is_suspended() {
+  return suspended;
+}
+
+/**
  * @brief Checks whether the game has just been suspended or resumed
  * and notifies the map elements when this is the case.
  *
@@ -666,7 +658,7 @@ bool Map::is_started() {
 }
 
 /**
- * @brief This function is called when the map is started and 
+ * @brief This function is called when the map is started and
  * the opening transition is finished.
  */
 void Map::notify_opening_transition_finished() {
@@ -882,7 +874,7 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &en
     collision = test_collision_with_entities(layer, collision_box, entity_to_check);
   }
 
-  return collision;   
+  return collision;
 }
 
 /**

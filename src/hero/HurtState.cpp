@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
  * @param magic_points number of magic points to remove
  */
-Hero::HurtState::HurtState(Hero &hero, const Rectangle& source_xy,
+Hero::HurtState::HurtState(Hero& hero, const Rectangle& source_xy,
     int life_points, int magic_points):
   State(hero),
   source_xy(source_xy),
@@ -53,7 +53,7 @@ Hero::HurtState::~HurtState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::HurtState::start(State *previous_state) {
+void Hero::HurtState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -92,7 +92,7 @@ void Hero::HurtState::start(State *previous_state) {
  * @brief Ends this state.
  * @param next_state the next state
  */
-void Hero::HurtState::stop(State *next_state) {
+void Hero::HurtState::stop(State* next_state) {
 
   State::stop(next_state);
 
@@ -150,7 +150,7 @@ bool Hero::HurtState::is_touching_ground() {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is an obstacle in this state
  */
-bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter &teletransporter) {
+bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return true;
 }
 
@@ -159,7 +159,7 @@ bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter &teletransport
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is an obstacle in this state
  */
-bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return true;
 }
 
@@ -168,7 +168,7 @@ bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::HurtState::is_sensor_obstacle(Sensor &sensor) {
+bool Hero::HurtState::is_sensor_obstacle(Sensor& sensor) {
   return true;
 }
 

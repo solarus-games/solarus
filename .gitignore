@@ -11,6 +11,7 @@
 tags
 valgrind.out
 callgrind.out.*
+core
 doc/html/
 doc/0.*
 doc/1.*

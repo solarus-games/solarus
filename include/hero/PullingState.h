@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,17 +26,17 @@ class Hero::PullingState: public Hero::State {
 
   private:
 
-    Detector *pulled_entity;			/**< the entity the hero is pulling (or NULL) */
+    Detector* pulled_entity;			/**< the entity the hero is pulling (or NULL) */
 
     void stop_moving_pulled_entity();
 
   public:
 
-    PullingState(Hero &hero);
+    PullingState(Hero& hero);
     ~PullingState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     void notify_grabbed_entity_collision();
     void notify_movement_finished();
@@ -52,6 +52,7 @@ class Hero::PullingState: public Hero::State {
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
 
     bool can_be_hurt(Enemy* attacker);
+    bool can_pick_treasure(EquipmentItem& item);
 };
 
 #endif

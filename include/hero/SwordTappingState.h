@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ class Hero::SwordTappingState: public Hero::State {
     void update();
     void set_suspended(bool suspended);
     bool can_sword_hit_crystal();
+    bool can_pick_treasure(EquipmentItem& item);
     bool is_cutting_with_sword(Detector& detector);
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     void notify_obstacle_reached();

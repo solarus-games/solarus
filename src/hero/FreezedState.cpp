@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::FreezedState::FreezedState(Hero &hero):
+Hero::FreezedState::FreezedState(Hero& hero):
   State(hero) {
 
 }
@@ -39,7 +39,7 @@ Hero::FreezedState::~FreezedState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::FreezedState::start(State *previous_state) {
+void Hero::FreezedState::start(State* previous_state) {
 
   State::start(previous_state);
 

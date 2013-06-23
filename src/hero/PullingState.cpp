@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -185,7 +185,7 @@ void Hero::PullingState::notify_position_changed() {
 /**
  * @brief Makes the hero stop pulling the entity he is facing.
  *
- * This function is called while moving the entity, when the 
+ * This function is called while moving the entity, when the
  * hero or the entity collides with an obstacle or when
  * the hero's movement is finished.
  */
@@ -235,6 +235,15 @@ void Hero::PullingState::stop_moving_pulled_entity() {
  */
 bool Hero::PullingState::can_be_hurt(Enemy* attacker) {
   return !is_moving_grabbed_entity();
+}
+
+/**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::PullingState::can_pick_treasure(EquipmentItem& item) {
+  return true;
 }
 
 /**

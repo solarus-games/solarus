@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,8 +51,11 @@ Surface::Surface(const Rectangle& size):
 
 /**
  * @brief Creates a surface from the specified image file name.
- * @param file_name name of the image file to load, relative to the base directory specified
- * @param base_directory the base directory to use
+ *
+ * An assertion error occurs if the file cannot be loaded.
+ *
+ * @param file_name Name of the image file to load, relative to the base directory specified.
+ * @param base_directory The base directory to use.
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
@@ -78,7 +81,8 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
 
-  Debug::check_assertion(internal_surface != NULL, StringConcat() << "Cannot load image '" << prefixed_file_name << "'");
+  Debug::check_assertion(internal_surface != NULL, StringConcat() <<
+      "Cannot load image '" << prefixed_file_name << "'");
 }
 
 /**
@@ -119,6 +123,54 @@ Surface::~Surface() {
 }
 
 /**
+ * @brief Creates a surface from the specified image file name.
+ *
+ * This function acts like a constructor excepts that it returns NULL if the
+ * file does not exist or is not a valid image.
+ *
+ * @param file_name Name of the image file to load, relative to the base directory specified.
+ * @param base_directory The base directory to use.
+ * @return The surface created, or NULL if the file could not be loaded.
+ */
+Surface* Surface::create_from_file(const std::string& file_name,
+    ImageDirectory base_directory) {
+
+  std::string prefix;
+  bool language_specific = false;
+
+  if (base_directory == DIR_SPRITES) {
+    prefix = "sprites/";
+  }
+  else if (base_directory == DIR_LANGUAGE) {
+    language_specific = true;
+    prefix = "images/";
+  }
+  std::string prefixed_file_name = prefix + file_name;
+
+  if (!FileTools::data_file_exists(prefixed_file_name, language_specific)) {
+    // File not found.
+    return NULL;
+  }
+
+  size_t size;
+  char* buffer;
+  FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
+  SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
+  SDL_Surface* internal_surface = IMG_Load_RW(rw, 0);
+  FileTools::data_file_close_buffer(buffer);
+  SDL_RWclose(rw);
+
+  if (internal_surface == NULL) {
+    // Not a valid image.
+    return NULL;
+  }
+
+  Surface* surface = new Surface(internal_surface);
+  surface->internal_surface_created = true;
+  return surface;
+}
+
+/**
  * @brief Returns the width of the surface.
  * @return the width in pixels
  */
@@ -139,7 +191,7 @@ int Surface::get_height() const {
  * @return the size of this surface
  */
 const Rectangle Surface::get_size() const {
-  
+
   return Rectangle(0, 0, get_width(), get_height());
 }
 
@@ -303,38 +355,40 @@ SDL_Surface* Surface::get_internal_surface() {
 
 /**
  * @brief Return the 32bits pixel
- * @param idx_pixel The index of the pixel to cast, can be any depth into 8 to 32 bits
+ * @param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits
  * @return The casted 32bits pixel.
  */
 uint32_t Surface::get_pixel32(int idx_pixel) {
 
-  uint32_t pixel32 = 0;
+  uint32_t pixel = 0;
   SDL_PixelFormat* format = internal_surface->format;
 
   // In order from the most used to the most exotic
-  switch (format->BitsPerPixel) {
-    case 8:
-      pixel32 = ((uint8_t*) internal_surface->pixels)[idx_pixel];
+  switch (format->BytesPerPixel) {
+    case 1:
+      pixel = ((uint8_t*) internal_surface->pixels)[idx_pixel];
       break;
-    case 32:
-      pixel32 = ((uint32_t*) internal_surface->pixels)[idx_pixel];
+    case 4:
+      pixel = ((uint32_t*) internal_surface->pixels)[idx_pixel];
       break;
-    case 16:
-      pixel32 = ((uint16_t*) internal_surface->pixels)[idx_pixel];
+    case 2:
+      pixel = ((uint16_t*) internal_surface->pixels)[idx_pixel];
       break;
-    default :
+    case 3:
       // Manual cast of the pixel into uint32_t
-      pixel32 = (*(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * format->BytesPerPixel)
-          & (0xffffffff << (32 - format->BitsPerPixel)));
+      pixel = *(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00;
+      break;
+    default:
+      Debug::error("Surface should all have a depth between 1 and 32bits per pixel");
   }
 
-  return pixel32;
+  return pixel;
 }
 
 /**
  * @brief Returns the 32bits pixel, color-mapped from internal SDL_PixelFormat to dst_format.
  *
- * The source pixel depth format can be any size between 8 and 32bits.
+ * The source pixel depth format can be any size between 1 and 32bits.
  * If the destination pixel depth format is less than 32-bpp then the unused upper bits of the return value can safely be ignored.
  * This method should be used only by low-level classes, and after lock source internal_surface.
  *

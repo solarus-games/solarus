@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,11 +47,15 @@ class Transition {
     };
 
     virtual ~Transition();
-    static Transition *create(Style style, Direction direction, Game *game = NULL);
+    static Transition* create(Style style, Direction direction, Game* game = NULL);
 
-    Direction get_direction();
-    void set_previous_surface(Surface *previous_surface);
-    virtual bool needs_previous_surface();
+    Game* get_game() const;
+    Direction get_direction() const;
+    void set_previous_surface(Surface* previous_surface);
+    virtual bool needs_previous_surface() const;
+
+    bool is_suspended() const;
+    void set_suspended(bool suspended);
 
     /**
      * @brief Starts this transition effect.
@@ -62,13 +66,13 @@ class Transition {
      * @brief Returns whether the transition effect is started.
      * @return true if the transition effect is started
      */
-    virtual bool is_started() = 0;
+    virtual bool is_started() const = 0;
 
     /**
      * @brief Returns whether the transition effect is finished.
      * @return true if the transition effect is finished
      */
-    virtual bool is_finished() = 0;
+    virtual bool is_finished() const = 0;
 
     /**
      * @brief Updates this transition effect.
@@ -83,13 +87,26 @@ class Transition {
 
   protected:
 
-    Game *game;                    /**< the current game if any (required by some kinds of transitions) */
-    Direction direction;           /**< direction of the transition (in or out) */
-    Surface *previous_surface;     /**< during an in transition, this is the surface that was displayed
-                                    * when the out transition was played */
-
     Transition(Direction direction);
 
+    Surface* get_previous_surface() const;
+
+    uint32_t get_when_suspended() const;
+
+    /**
+     * @brief Notifies the transition effect that it was just suspended
+     * or resumed.
+     */
+    virtual void notify_suspended(bool suspended) = 0;
+
+  private:
+
+    Game* game;                   /**< The current game if any (required by some kinds of transitions). */
+    Direction direction;          /**< Direction of the transition (in or out). */
+    Surface* previous_surface;    /**< During an in transition, this is the surface that was displayed
+                                    * when the out transition was played. */
+    bool suspended;               /**< Indicates that the transition is currently paused. */
+    uint32_t when_suspended;      /**< Date when the transition was suspended. */
 };
 
 #endif

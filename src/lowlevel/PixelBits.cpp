@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -166,7 +166,7 @@ bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location
   }
   else {
     rows_a = &other.bits[offset_y2];
-    rows_b = &this->bits[offset_y1]; 
+    rows_b = &this->bits[offset_y1];
     nb_unused_masks_row_b = offset_x1 >> 5;
     nb_unused_bits_row_b = offset_x1 & 31;
   }
@@ -253,7 +253,7 @@ void PixelBits::print() const {
         std::cout << ".";
       }
 
-      mask >>= 1;      
+      mask >>= 1;
     }
     std::cout << std::endl;
   }

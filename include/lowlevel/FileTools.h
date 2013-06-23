@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,8 @@ class FileTools {
     static void quit();
 
     // Reading data files of the quest.
-    static bool data_file_exists(const std::string& file_name);
+    static bool data_file_exists(const std::string& file_name,
+        bool language_specific = false);
     static std::istream& data_file_open(const std::string& file_name,
         bool language_specific = false);
     static void data_file_close(const std::istream& data_file);

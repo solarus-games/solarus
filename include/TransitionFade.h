@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,16 +36,20 @@ class TransitionFade: public Transition {
     uint32_t next_frame_date;
     uint32_t delay;
 
+    Surface* dst_surface;
+
   public:
 
+    // TODO pass the destination surface at creation time
     TransitionFade(Direction direction);
     ~TransitionFade();
 
     void set_delay(uint32_t delay);
 
     void start();
-    bool is_started();
-    bool is_finished();
+    bool is_started() const;
+    bool is_finished() const;
+    void notify_suspended(bool suspended);
     void update();
     void draw(Surface& surface);
 };

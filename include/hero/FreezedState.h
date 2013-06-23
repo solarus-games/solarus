@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +26,10 @@ class Hero::FreezedState: public Hero::State {
 
   public:
 
-    FreezedState(Hero &hero);
+    FreezedState(Hero& hero);
     ~FreezedState();
 
-    void start(State *previous_state);
+    void start(State* previous_state);
 };
 
 #endif

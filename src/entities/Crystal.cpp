@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ void Crystal::notify_map_started() {
 /**
  * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
- * @return true if this entity is an obstacle for the other one 
+ * @return true if this entity is an obstacle for the other one
  */
 bool Crystal::is_obstacle_for(MapEntity& other) {
   return other.is_crystal_obstacle(*this);

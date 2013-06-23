@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ void Hero::RunningState::update() {
   }
 
   if (phase == 0) {
-    
+
     if (now >= next_phase_date) {
 
       double angle = Geometry::degrees_to_radians(get_sprites().get_animation_direction() * 90);
@@ -217,6 +217,15 @@ bool Hero::RunningState::can_take_jumper() {
 bool Hero::RunningState::can_be_hurt(Enemy* attacker) {
   return phase == 0 ||
       (attacker != NULL && attacker->get_can_hurt_hero_running());
+}
+
+/**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::RunningState::can_pick_treasure(EquipmentItem& item) {
+  return true;
 }
 
 /**

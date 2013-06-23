@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -180,10 +180,14 @@ class LuaContext {
     void add_menu(int menu_ref, int context_index);
     void remove_menus(int context_index);
     void remove_menus();
+    void destroy_menus();
+    void update_menus();
 
     // Drawable objects.
+    bool has_drawable(Drawable* drawable);
     void add_drawable(Drawable* drawable);
     void remove_drawable(Drawable* drawable);
+    void destroy_drawables();
     void update_drawables();
 
     // Movements.
@@ -759,7 +763,7 @@ class LuaContext {
      */
     struct LuaMenuData {
       int ref;               /**< Lua ref of the table of the menu. */
-      const void* context;  /**< Lua table or userdata the menu is attached to. */
+      const void* context;   /**< Lua table or userdata the menu is attached to. */
 
       LuaMenuData(int ref, const void* context):
         ref(ref),
@@ -981,7 +985,8 @@ class LuaContext {
     lua_State* l;                   /**< The Lua state encapsulated. */
     MainLoop& main_loop;            /**< The Solarus main loop. */
 
-    std::list<LuaMenuData> menus;   /**< The menus currently running in their context. */
+    std::list<LuaMenuData> menus;   /**< The menus currently running in their context.
+                                     * Invalid ones are to be removed at the next cycle. */
     std::map<Timer*, LuaTimerData>
         timers;                     /**< The timers currently running, with
                                      * their context and callback. */
@@ -990,6 +995,13 @@ class LuaContext {
 
     std::set<Drawable*> drawables;  /**< All drawable objects created by
                                      * this script. */
+    std::set<Drawable*>
+        drawables_to_remove;        /**< Drawable objects to be removed at the
+                                     * next cycle. */
+
+    static std::map<lua_State*, LuaContext*>
+        lua_contexts;               /**< Mapping to get the encapsulating object
+                                     * from the lua_State pointer. */
 
     static const std::string enemy_attack_names[];
     static const std::string enemy_hurt_style_names[];

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,8 @@
 #include <iomanip>
 #include <lua.hpp>
 
+std::map<lua_State*, LuaContext*> LuaContext::lua_contexts;
+
 /**
  * @brief Creates a Lua context.
  * @param main_loop The Solarus main loop manager.
@@ -60,15 +62,12 @@ LuaContext::~LuaContext() {
  */
 LuaContext& LuaContext::get_lua_context(lua_State* l) {
 
-  // Retrieve the LuaContext object.
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
-  LuaContext* lua_context = static_cast<LuaContext*>(lua_touserdata(l, -1));
-  lua_pop(l, 1);
+  std::map<lua_State*, LuaContext*>::iterator it = lua_contexts.find(l);
 
-  Debug::check_assertion(lua_context != NULL,
+  Debug::check_assertion(it != lua_contexts.end(),
       "This Lua state does not belong to a LuaContext object");
 
-  return *lua_context;
+  return *it->second;
 }
 
 /**
@@ -89,14 +88,11 @@ void LuaContext::initialize() {
   lua_atpanic(l, l_panic);
   luaL_openlibs(l);
 
-  // Put a pointer to this LuaContext object in the Lua context.
-                                  // --
-  lua_pushlightuserdata(l, this);
-                                  // this
-  lua_setfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
-                                  // --
+  // Associate this LuaContext object to the lua_State pointer.
+  lua_contexts[l] = this;
 
   // Create a table that will keep track of all userdata.
+                                  // --
   lua_newtable(l);
                                   // all_udata
   lua_newtable(l);
@@ -154,12 +150,14 @@ void LuaContext::exit() {
     // Call sol.main.on_finished() if it exists.
     main_on_finished();
 
-    // Destroy unfinished menus and timers.
-    remove_menus();
+    // Destroy unfinished objects.
+    destroy_menus();
     destroy_timers();
+    destroy_drawables();
 
     // Finalize Lua.
     lua_close(l);
+    lua_contexts.erase(l);
     l = NULL;
   }
 }
@@ -174,6 +172,7 @@ void LuaContext::update() {
 
   update_drawables();
   update_movements();
+  update_menus();
   update_timers();
 
   // Call sol.main.on_update().
@@ -308,6 +307,7 @@ void LuaContext::notify_camera_reached_target(Map& map) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
   lua_pushcfunction(l, l_camera_do_callback);
   timer_api_start(l);
+  lua_pop(l, 1);
 }
 
 /**
@@ -632,6 +632,7 @@ int LuaContext::opt_function_field(
  * @return The reference created.
  */
 int LuaContext::create_ref() {
+
   return luaL_ref(l, LUA_REGISTRYINDEX);
 }
 
@@ -640,6 +641,7 @@ int LuaContext::create_ref() {
  * @param ref The Lua reference to free.
  */
 void LuaContext::destroy_ref(int ref) {
+
   luaL_unref(l, LUA_REGISTRYINDEX, ref);
 }
 
@@ -654,7 +656,7 @@ void LuaContext::do_callback(int callback_ref) {
   if (callback_ref != LUA_REFNIL) {
     push_callback(callback_ref);
     call_function(0, 0, "callback");
-    destroy_ref(callback_ref);
+    cancel_callback(callback_ref);
   }
 }
 
@@ -666,10 +668,10 @@ void LuaContext::do_callback(int callback_ref) {
 void LuaContext::push_callback(int callback_ref) {
 
   push_ref(l, callback_ref);
-  if (!lua_isfunction(l, -1)) {
-    Debug::die(StringConcat() << "No such Lua callback (function expected, got "
-        << luaL_typename(l, -1) << ")");
-  }
+  Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
+      << "There is no callback with ref " << callback_ref
+      << " (function expected, got " << luaL_typename(l, -1)
+      << "). Did you already invoke or cancel it?");
 }
 
 /**
@@ -681,7 +683,19 @@ void LuaContext::push_callback(int callback_ref) {
  * nothing is done)
  */
 void LuaContext::cancel_callback(int callback_ref) {
-  destroy_ref(callback_ref);
+
+  if (callback_ref != LUA_REFNIL) {
+    // Check that the callback is canceled only once.
+    // Otherwise, a duplicate call to luaL_unref() silently breaks the
+    // uniqueness of Lua refs.
+    push_ref(l, callback_ref);
+    Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
+        << "There is no callback with ref " << callback_ref
+        << " (function expected, got " << luaL_typename(l, -1)
+        << "). Did you already invoke or cancel it?");
+    lua_pop(l, 1);
+    destroy_ref(callback_ref);
+  }
 }
 
 /**
@@ -956,9 +970,7 @@ int LuaContext::get_positive_index(lua_State* l, int index) {
     positive_index = lua_gettop(l) + index + 1;
   }
 
-  Debug::check_assertion(positive_index > 0 && positive_index <= lua_gettop(l),
-      StringConcat() <<  "Invalid index " << index << ": stack has "
-      << lua_gettop(l) << " elements");
+  Debug::check_assertion(positive_index > 0, StringConcat() <<  "Invalid index " << index);
 
   return positive_index;
 }

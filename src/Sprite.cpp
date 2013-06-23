@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "SpriteAnimationDirection.h"
 #include "Game.h"
 #include "Map.h"
+#include "movements/Movement.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/Color.h"
@@ -71,7 +72,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string &id) {
  * @brief Creates a sprite with the specified animation set.
  * @param id name of an animation set
  */
-Sprite::Sprite(const std::string &id):
+Sprite::Sprite(const std::string& id):
   Drawable(),
   lua_context(NULL),
   animation_set_id(id),
@@ -195,7 +196,7 @@ const Rectangle& Sprite::get_origin() const {
  * in miliseconds.
  */
 uint32_t Sprite::get_frame_delay() const {
-  return frame_delay;  
+  return frame_delay;
 }
 
 /**
@@ -208,7 +209,7 @@ uint32_t Sprite::get_frame_delay() const {
  * in miliseconds.
  */
 void Sprite::set_frame_delay(uint32_t frame_delay) {
-  this->frame_delay = frame_delay;  
+  this->frame_delay = frame_delay;
 }
 
 /**
@@ -326,9 +327,10 @@ void Sprite::set_current_frame(int current_frame) {
   finished = false;
   next_frame_date = System::now() + get_frame_delay();
 
-  set_frame_changed(current_frame != this->current_frame);
-
-  this->current_frame = current_frame;
+  if (current_frame != this->current_frame) {
+    this->current_frame = current_frame;
+    set_frame_changed(current_frame != this->current_frame);
+  }
 }
 
 /**
@@ -430,6 +432,17 @@ void Sprite::set_suspended(bool suspended) {
     }
     else {
       blink_is_sprite_visible = true;
+    }
+
+    // Also suspend or resumed the transition effect and the movement if any.
+    Transition* transition = get_transition();
+    if (transition != NULL) {
+      transition->set_suspended(suspended);
+    }
+
+    Movement* movement = get_movement();
+    if (movement != NULL) {
+      movement->set_suspended(suspended);
     }
   }
 }
@@ -645,9 +658,12 @@ void Sprite::raw_draw(Surface& dst_surface,
           current_direction, current_frame);
     }
     else {
-      current_animation->draw(*intermediate_surface, dst_position,
-        current_direction, current_frame);
-      intermediate_surface->draw_region(get_size(), dst_surface);
+      intermediate_surface->fill_with_color(Color::get_black());
+      current_animation->draw(*intermediate_surface, get_origin(),
+          current_direction, current_frame);
+      Rectangle dst_position2(dst_position);
+      dst_position2.add_xy(-get_origin().get_x(), -get_origin().get_y());
+      intermediate_surface->draw_region(get_size(), dst_surface, dst_position2);
     }
   }
 }
@@ -665,9 +681,11 @@ void Sprite::raw_draw_region(const Rectangle& region,
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    current_animation->draw(get_intermediate_surface(), dst_position,
+    current_animation->draw(get_intermediate_surface(), get_origin(),
         current_direction, current_frame);
-    get_intermediate_surface().draw_region(region, dst_surface);
+    Rectangle dst_position2(dst_position);
+    dst_position2.add_xy(-get_origin().get_x(), -get_origin().get_y());
+    get_intermediate_surface().draw_region(region, dst_surface, dst_position2);
   }
 }
 
@@ -677,6 +695,7 @@ void Sprite::raw_draw_region(const Rectangle& region,
  */
 void Sprite::draw_transition(Transition& transition) {
 
+  get_intermediate_surface().fill_with_color(Color::get_black());
   transition.draw(get_intermediate_surface());
 }
 
@@ -692,6 +711,7 @@ Surface& Sprite::get_intermediate_surface() {
 
   if (intermediate_surface == NULL) {
     intermediate_surface = new Surface(get_max_size());
+    intermediate_surface->set_transparency_color(Color::get_black());
   }
   return *intermediate_surface;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,6 +135,14 @@ void Drawable::stop_transition() {
     lua_context->cancel_callback(this->transition_callback_ref);
     transition_callback_ref = LUA_REFNIL;
   }
+}
+
+/**
+ * @brief Returns the current transition of this drawable object.
+ * @return The object's transition, or NULL if there is no transition.
+ */
+Transition* Drawable::get_transition() {
+  return transition;
 }
 
 /**

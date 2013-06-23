@@ -1,12 +1,12 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
+ * Solarus Quest Editor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
@@ -17,17 +17,17 @@
 package org.solarus.editor.gui;
 
 import imagej.util.swing.tree.*;
-
 import java.awt.event.*;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
-
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
+import java.lang.reflect.*;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.EntityType;
+import org.solarus.editor.entities.EntitySubtype;
 
 /**
  * A tree that shows the whole resource list of the game:
@@ -422,6 +422,22 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
                     ResourceType resourceType = (ResourceType) clickedObject;
                     popupMenu = new ResourceParentPopupMenu(resourceType);
                 }
+                else if (clickedObject instanceof CheckBoxNodeData) {
+                    // Right click on a map entity type.
+                    final CheckBoxNodeData data =
+                        (CheckBoxNodeData) clickedObject;
+                    DefaultMutableTreeNode mapNode = (DefaultMutableTreeNode) clickedNode.getParent();
+                    int index = mapNode.getIndex(clickedNode);
+                    EntityType entityType = EntityType.values()[index];
+
+                    String mapId = ((ResourceElement) mapNode.getUserObject()).id;
+                    MapEditorPanel mapEditor = editorWindow.getOpenMapEditor(mapId);
+
+                    if (mapEditor == null) {
+                        throw new IllegalStateException("This map is not open");
+                    }
+                    popupMenu = new MapEntityTypePopupMenu(mapEditor, entityType);
+                }
                 
                 if (popupMenu != null) {
                     popupMenu.show((JComponent) ev.getSource(),
@@ -523,6 +539,75 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
                     editorWindow.deleteResourceElement(element.type, element.id);
                 }
             });
+        }
+    }
+
+    /**
+     * Popup menu of a map entity type.
+     */
+    private class MapEntityTypePopupMenu extends JPopupMenu {
+
+        /**
+         * Creates a popup menu for the given type of map entity.
+         * @param mapEditor A map editor currently open.
+         * @param entityType A type of map entity.
+         */
+        public MapEntityTypePopupMenu(final MapEditorPanel mapEditor, final EntityType entityType) {
+
+            // Create.
+            String entityTypeHumanName = entityType.getHumanName();
+            if (!entityType.hasSubtype()) {
+                // Only one subtype.
+                JMenuItem menuItem = new JMenuItem("Create " + entityTypeHumanName);
+                add(menuItem);
+                menuItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        mapEditor.getMapView().startAddingEntity(entityType, null);
+                    }
+                });
+            }
+            else {
+                // Several subtypes: make a submenu to give the choice.
+                Class<? extends EntitySubtype> subtypeEnum = entityType.getSubtypeEnum();
+                try {
+                    String[] humanNames = (String[]) subtypeEnum.getField("humanNames").get(null);
+                    Enum<?>[] values = (Enum<?>[]) subtypeEnum.getMethod("values").invoke(null);
+
+                    JMenu menu = new JMenu("Create " + entityTypeHumanName);
+                    for (int i = 0; i < values.length; i++) {
+                        final EntitySubtype entitySubtype = (EntitySubtype) values[i];
+                        JMenuItem menuItem = new JMenuItem(humanNames[i]);
+                        menu.add(menuItem);
+                        menuItem.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                mapEditor.getMapView().startAddingEntity(entityType, entitySubtype);
+                            }
+                        });
+                    }
+                    add(menu);
+                }
+                catch (NoSuchFieldException ex) {
+                    System.err.println("Field 'humanNames' is missing in enumeration " + subtypeEnum.getName());
+                    ex.printStackTrace();
+                    System.exit(1);
+                }
+                catch (NoSuchMethodException ex) {
+                    System.err.println("Method 'values' is missing in enumeration " + subtypeEnum.getName());
+                    ex.printStackTrace();
+                    System.exit(1);
+                }
+                catch (IllegalAccessException ex) {
+                    System.err.println("Cannot access a member in enumeration " + subtypeEnum.getName() + ": ex.getMessage()");
+                    ex.printStackTrace();
+                    System.exit(1);
+                }
+                catch (InvocationTargetException ex) {
+                    ex.getCause().printStackTrace();
+                    System.exit(1);
+                }
+            }
         }
     }
 }

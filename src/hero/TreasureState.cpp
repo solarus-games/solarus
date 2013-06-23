@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,8 +107,9 @@ void Hero::TreasureState::update() {
 
     // Notify the Lua item and the Lua map.
     LuaContext& lua_context = get_lua_context();
+    int callback_ref = this->callback_ref;
+    this->callback_ref = LUA_REFNIL;
     lua_context.do_callback(callback_ref);
-    callback_ref = LUA_REFNIL;
     lua_context.item_on_obtained(get_equipment().get_item(item_name), treasure);
     lua_context.map_on_obtained_treasure(get_map(), treasure);
 

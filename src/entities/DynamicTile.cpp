@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
  * @param y y position of the tile on the map
  * @param width width of the tile (the pattern can be repeated)
  * @param height height of the tile (the pattern can be repeated)
- * @param tile_pattern_id id of the tile pattern in the tileset 
+ * @param tile_pattern_id id of the tile pattern in the tileset
  * @param enabled true to make the tile active on the map
  */
 DynamicTile::DynamicTile(const std::string &name, Layer layer, int x, int y,

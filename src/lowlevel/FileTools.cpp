@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,10 +77,6 @@ void FileTools::initialize(int argc, char** argv) {
 
   // Load the list of languages.
   initialize_languages();
-
-  if (!default_language_code.empty()) {
-    set_language(default_language_code);
-  }
 }
 
 /**
@@ -135,10 +131,10 @@ int FileTools::l_language(lua_State* l) {
   std::string name = LuaContext::check_string_field(l, 1, "name");
   bool is_default = LuaContext::opt_boolean_field(l, 1, "default", false);
 
-  if (is_default || languages.empty()) {
+  languages[code] = name;
+  if (is_default) {
     default_language_code = code;
   }
-  languages[code] = name;
 
   return 0;
 }
@@ -206,12 +202,26 @@ const std::map<std::string, std::string>& FileTools::get_languages() {
 /**
  * @brief Returns whether a file exists in the quest data directory or
  * in Solarus write directory.
- * @param file_name a file name relative to the quest data directory
- * or to Solarus write directory.
+ * @param file_name A file name relative to the quest data directory,
+ * to the current language directory or to Solarus write directory.
+ * @param language_specific true if the file is relative to the current
+ * language directory.
  * @return true if this file exists.
  */
-bool FileTools::data_file_exists(const std::string& file_name) {
-  return PHYSFS_exists(file_name.c_str());
+bool FileTools::data_file_exists(const std::string& file_name,
+    bool language_specific) {
+
+  std::string full_file_name;
+  if (language_specific) {
+    if (language_code.empty()) {
+      return false;
+    }
+    full_file_name = std::string("languages/") + language_code + "/" + file_name;
+  }
+  else {
+    full_file_name = file_name;
+  }
+  return PHYSFS_exists(full_file_name.c_str());
 }
 
 /**
@@ -300,7 +310,7 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
       << "Cannot open file '" << file_name << "' for writing: "
       << PHYSFS_getLastError());
  
-  // save the memory buffer 
+  // save the memory buffer
   if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {
     Debug::die(StringConcat() << "Cannot write file '" << file_name
         << "': " << PHYSFS_getLastError());
@@ -404,7 +414,7 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
   // Create the directory.
   PHYSFS_mkdir(solarus_write_dir.c_str());
-  
+
   const std::string& full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
   if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
     Debug::die(StringConcat() << "Cannot set Solarus write directory to '"

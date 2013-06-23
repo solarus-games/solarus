@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ class Movement: public ExportableToLua {
 
     // obstacles (only when the movement is applied to an entity)
     Rectangle last_collision_box_on_obstacle;    /**< Copy of the entity's bounding box of the last call
-                                                  * to test_collision_with_map() returning true. */ 
+                                                  * to test_collision_with_map() returning true. */
 
     bool default_ignore_obstacles;               /**< Indicates that this movement normally ignores obstacles. */
     bool current_ignore_obstacles;               /**< Indicates that this movement currently ignores obstacles. */
@@ -124,6 +124,7 @@ class Movement: public ExportableToLua {
     void set_lua_context(LuaContext* lua_context);
     int get_finished_callback() const;
     void set_finished_callback(int finished_callback_ref);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

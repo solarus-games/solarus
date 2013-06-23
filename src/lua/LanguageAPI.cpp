@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -132,7 +132,12 @@ int LuaContext::language_api_get_default_language(lua_State* l) {
 
   const std::string& language = FileTools::get_default_language();
 
-  push_string(l, language);
+  if (language.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, language);
+  }
   return 1;
 }
 

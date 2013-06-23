@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -183,6 +183,15 @@ bool Hero::SwimmingState::is_stairs_obstacle(Stairs& stairs) {
  * @return true if the hero can use jumpers in this state
  */
 bool Hero::SwimmingState::can_take_jumper() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero can pick a treasure in this state.
+ * @param item The equipment item to obtain.
+ * @return true if the hero can pick that treasure in this state.
+ */
+bool Hero::SwimmingState::can_pick_treasure(EquipmentItem& item) {
   return true;
 }
 

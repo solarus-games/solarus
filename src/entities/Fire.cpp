@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ EntityType Fire::get_type() {
  * @return true if this type of entity can be obstacle for other entities
  */
 bool Fire::can_be_obstacle() {
-  return false; 
+  return false;
 }
 
 /**

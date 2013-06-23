@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -164,8 +164,6 @@ void PixelMovement::restart() {
  */
 void PixelMovement::update() {
 
-  Movement::update();
-
   uint32_t now = System::now();
 
   while (now >= next_move_date
@@ -181,6 +179,9 @@ void PixelMovement::update() {
       notify_obstacle_reached();
     }
   }
+
+  // Do this at last so that Movement::update() knows whether we are finished.
+  Movement::update();
 }
 
 /**

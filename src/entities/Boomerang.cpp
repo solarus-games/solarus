@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ EntityType Boomerang::get_type() {
  * @return true if this type of entity can be obstacle for other entities
  */
 bool Boomerang::can_be_obstacle() {
-  return false; 
+  return false;
 }
 
 /**
@@ -112,7 +112,7 @@ bool Boomerang::can_be_obstacle() {
  * @return true if this type of entity can be drawn
  */
 bool Boomerang::can_be_drawn() {
-  return true; 
+  return true;
 }
 
 /**
@@ -194,7 +194,7 @@ bool Boomerang::is_switch_obstacle(Switch& sw) {
 /**
  * @brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
  * @param raised_block a crystal block raised
- * @return false 
+ * @return false
  */
 bool Boomerang::is_raised_block_obstacle(CrystalBlock& raised_block) {
   // the boomerang can traverse the crystal blocks

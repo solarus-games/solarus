@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,10 +38,10 @@ SpriteAnimationSet::SpriteAnimationSet(const std::string& id):
   // read the file
   std::string line;
 
-  Rectangle* positions_in_src;
+  std::vector<Rectangle> positions_in_src;
   std::vector<SpriteAnimationDirection*> directions;
   std::string name, image_file_name;
-  int nb_directions, nb_frames, x_origin, y_origin, loop_on_frame;
+  int nb_directions, nb_frames, origin_x, origin_y, loop_on_frame;
   int x, y, width, height, rows, columns;
   uint32_t frame_delay;
 
@@ -77,8 +77,8 @@ SpriteAnimationSet::SpriteAnimationSet(const std::string& id):
       FileTools::read(iss, y);
       FileTools::read(iss, width);
       FileTools::read(iss, height);
-      FileTools::read(iss, x_origin);
-      FileTools::read(iss, y_origin);
+      FileTools::read(iss, origin_x);
+      FileTools::read(iss, origin_y);
       FileTools::read(iss, nb_frames);
       FileTools::read(iss, columns);
 
@@ -92,19 +92,24 @@ SpriteAnimationSet::SpriteAnimationSet(const std::string& id):
         rows = (nb_frames / columns) + 1;
       }
 
-      positions_in_src = new Rectangle[nb_frames];
+      positions_in_src.clear();
       int j = 0; // frame number
       for (int r = 0; r < rows && j < nb_frames; r++) {	
         for (int c = 0; c < columns && j < nb_frames; c++) {
 
-          positions_in_src[j].set_xy(x + c * width, y + r * height);
-          positions_in_src[j].set_size(width, height);
+          Rectangle position_in_src(
+              x + c * width,
+              y + r * height,
+              width,
+              height);
+          positions_in_src.push_back(position_in_src);
           j++;
         }
       }
 
       directions.push_back(new SpriteAnimationDirection(
-          nb_frames, positions_in_src, x_origin, y_origin));
+          positions_in_src,
+          Rectangle(origin_x, origin_y)));
     }
 
     Debug::check_assertion(animations.find(name) == animations.end(),

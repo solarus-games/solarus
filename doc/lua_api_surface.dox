@@ -20,11 +20,12 @@ Creates an empty surface.
 \subsection lua_api_surface_create_from_file sol.surface.create(file_name, [language_specific])
 
 Creates a surface from an image file.
-  - \c file_name (string): Name of the image file to load.
-  - \c language_specific (boolean, optional): \c true to load the image
-    from the \c images subdirectory of the current language directory
-    (default is \c false and loads the image from the \c sprites directory).
-  - Return value (surface): The surface created.
+- \c file_name (string): Name of the image file to load.
+- \c language_specific (boolean, optional): \c true to load the image
+  from the \c images subdirectory of the current language directory
+  (default is \c false and loads the image from the \c sprites directory).
+- Return value (surface): The surface created, or \c nil if the image file
+  could not be loaded.
 
 \section lua_api_surface_inherited_methods Methods inherited from drawable
 

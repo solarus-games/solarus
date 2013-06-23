@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -391,7 +391,7 @@ int LuaContext::entity_api_set_enabled(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
   bool enabled = true;
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     enabled = lua_toboolean(l, 2);
   }
 
@@ -640,7 +640,7 @@ int LuaContext::entity_api_set_visible(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
   bool visible = true;
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     visible = lua_toboolean(l, 2);
   }
 
@@ -1186,7 +1186,7 @@ int LuaContext::chest_api_set_open(lua_State* l) {
 
   Chest& chest = check_chest(l, 1);
   bool open = true;
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     open = lua_toboolean(l, 2);
   }
 
@@ -1291,7 +1291,7 @@ int LuaContext::switch_api_set_activated(lua_State* l) {
 
   Switch& sw = check_switch(l, 1);
   bool activated = true;
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     activated = lua_toboolean(l, 2);
   }
 
@@ -1309,7 +1309,7 @@ int LuaContext::switch_api_set_locked(lua_State* l) {
 
   Switch& sw = check_switch(l, 1);
   bool locked = true;
-  if (lua_isboolean(l, 2)) {
+  if (lua_gettop(l) >= 2) {
     locked = lua_toboolean(l, 2);
   }
 
@@ -1657,7 +1657,10 @@ int LuaContext::enemy_api_is_pushed_back_when_hurt(lua_State* l) {
 int LuaContext::enemy_api_set_pushed_back_when_hurt(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  bool push_back = lua_toboolean(l, 2);
+  bool push_back = true;
+  if (lua_gettop(l) >= 2) {
+    push_back = lua_toboolean(l, 2);
+  }
 
   enemy.set_pushed_back_when_hurt(push_back);
 
@@ -1685,7 +1688,10 @@ int LuaContext::enemy_api_get_push_hero_on_sword(lua_State* l) {
 int LuaContext::enemy_api_set_push_hero_on_sword(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  bool push = lua_toboolean(l, 2);
+  bool push = true;
+  if (lua_gettop(l) >= 2) {
+    push = lua_toboolean(l, 2);
+  }
 
   enemy.set_push_hero_on_sword(push);
 
@@ -1713,7 +1719,10 @@ int LuaContext::enemy_api_get_can_hurt_hero_running(lua_State* l) {
 int LuaContext::enemy_api_set_can_hurt_hero_running(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  bool can_hurt_hero_running = lua_toboolean(l, 2);
+  bool can_hurt_hero_running = true;
+  if (lua_gettop(l) >= 2) {
+    can_hurt_hero_running = lua_toboolean(l, 2);
+  }
 
   enemy.set_can_hurt_hero_running(can_hurt_hero_running);
 
@@ -1772,7 +1781,10 @@ int LuaContext::enemy_api_get_can_attack(lua_State* l) {
 int LuaContext::enemy_api_set_can_attack(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  bool can_attack = lua_toboolean(l, 2);
+  bool can_attack = true;
+  if (lua_gettop(l) >= 2) {
+    can_attack = lua_toboolean(l, 2);
+  }
 
   enemy.set_can_attack(can_attack);
 

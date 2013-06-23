@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,11 +58,25 @@ Drawable& LuaContext::check_drawable(lua_State* l, int index) {
 }
 
 /**
+ * @brief Returns whether a drawable object was created by this script.
+ * @param drawable A drawable object.
+ * @return true if the drawable object was created by this script.
+ */
+bool LuaContext::has_drawable(Drawable* drawable) {
+
+  return drawables.find(drawable) != drawables.end();
+}
+
+/**
  * @brief Registers a drawable object created by this script.
  * @param drawable a drawable object
  */
 void LuaContext::add_drawable(Drawable* drawable) {
 
+  Debug::check_assertion(!has_drawable(drawable),
+      "This drawable object is already registered");
+
+  drawable->increment_refcount();
   drawables.insert(drawable);
 }
 
@@ -72,7 +86,28 @@ void LuaContext::add_drawable(Drawable* drawable) {
  */
 void LuaContext::remove_drawable(Drawable* drawable) {
 
-  drawables.erase(drawable);
+  Debug::check_assertion(has_drawable(drawable),
+      "This drawable object was not created by Lua");
+
+  drawables_to_remove.insert(drawable);
+}
+
+/**
+ * @brief Destroys from Lua all drawable objects created
+ * by this script.
+ */
+void LuaContext::destroy_drawables() {
+
+  std::set<Drawable*>::iterator it;
+  for (it = drawables.begin(); it != drawables.end(); ++it) {
+    Drawable* drawable = *it;
+    drawable->decrement_refcount();
+    if (drawable->get_refcount() == 0) {
+      delete drawable;
+    }
+  }
+  drawables.clear();
+  drawables_to_remove.clear();
 }
 
 /**
@@ -80,10 +115,25 @@ void LuaContext::remove_drawable(Drawable* drawable) {
  */
 void LuaContext::update_drawables() {
 
+  // Update all drawables.
   std::set<Drawable*>::iterator it;
-  for (it = drawables.begin(); it != drawables.end(); it++) {
-    (*it)->update();
+  for (it = drawables.begin(); it != drawables.end(); ++it) {
+    Drawable* drawable = *it;
+    if (has_drawable(drawable)) {
+      drawable->update();
+    }
   }
+
+  // Remove the ones that should be removed.
+  for (it = drawables_to_remove.begin(); it != drawables_to_remove.end(); ++it) {
+    Drawable* drawable = *it;
+    drawables.erase(drawable);
+    drawable->decrement_refcount();
+    if (drawable->get_refcount() == 0) {
+      delete drawable;
+    }
+  }
+  drawables_to_remove.clear();
 }
 
 /**
@@ -268,7 +318,8 @@ int LuaContext::drawable_meta_gc(lua_State* l) {
   LuaContext& lua_context = get_lua_context(l);
   Drawable& drawable = check_drawable(l, 1);
 
-  if (drawable.get_refcount() == 1) {
+  if (lua_context.has_drawable(&drawable)) {
+    // This drawable was created from Lua.
     lua_context.remove_drawable(&drawable);
   }
   userdata_meta_gc(l);

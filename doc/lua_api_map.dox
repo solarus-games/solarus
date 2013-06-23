@@ -436,11 +436,11 @@ When a dialog is active, call this function at an appropriate moment
   dialog box will become scriptable (you will have full control of drawing
   your dialog box).
 
-\subsection lua_api_map_set_pause_enabled map:set_pause_enabled(pause_enabled)
+\subsection lua_api_map_set_pause_enabled map:set_pause_enabled([pause_enabled])
 
 Sets whether the player can pause the \ref lua_api_game "game".
-- \c pause_enabled (boolean): \c true to allow the player to pause the
-  game.
+- \c pause_enabled (boolean, optional): \c true to allow the player to pause the
+  game. No value means \c true.
 
 \remark This function applies to the built-in \ref
   lua_api_game_intro_commands "pause command".
@@ -700,8 +700,8 @@ Disabled entities are not displayed and are not updated.
 Therefore, they don't move and their collisions are no longer detected.
 But they still exist and can be enabled back later.
 - \c prefix (string): Prefix of the entities to change.
-- \c enable (boolean): \c true to enable them, \c false to disable them
-  (no value means \c true).
+- \c enable (boolean, optional): \c true to enable them, \c false to disable them.
+  No value means \c true.
 
 \remark Equivalent to calling \ref lua_api_entity_set_enabled
   "entity:set_enabled()" on a group of entities.
@@ -1420,9 +1420,13 @@ Events are callback methods automatically called by the engine if you define
 them.
 In the case of maps, they are only called on the current map.
 
-\subsection lua_api_map_on_started map:on_started()
+\subsection lua_api_map_on_started map:on_started(destination)
 
 Called when this map starts (when the player enters it).
+- \c destination (\ref lua_api_destination "destination"): The destination
+  entity from where the \ref lua_api_hero "hero" arrives on the map,
+  or \c nil if he used another way than a destination entity
+  (like the side of the map or direct coordinates).
 
 \subsection lua_api_map_on_finished map:on_finished()
 
@@ -1458,11 +1462,15 @@ When this happens, all \ref lua_api_entity "map entities" stop moving and most
 - \c suspended (boolean): \c true if the map was just suspended, \c
   false if it was resumed.
 
-\subsection lua_api_map_on_opening_transition_finished map:on_opening_transition_finished()
+\subsection lua_api_map_on_opening_transition_finished map:on_opening_transition_finished(destination)
 
 When the map begins, called when the opening transition effect finishes.
 After that moment, the player has the control of the \ref
 lua_api_hero "hero".
+- \c destination (\ref lua_api_destination "destination"): The destination
+  entity from where the \ref lua_api_hero "hero" arrived on the map,
+  or \c nil if he used another way than a destination entity
+  (like the side of the map or direct coordinates).
 
 \subsection lua_api_map_on_camera_back map:on_camera_back()
 

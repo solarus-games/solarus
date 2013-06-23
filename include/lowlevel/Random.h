@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,6 @@
  */
 class Random {
 
-  private:
-
-    Random();
-
   public:
 
     static void initialize();
@@ -35,6 +31,10 @@ class Random {
 
     static int get_number(unsigned int x);
     static int get_number(unsigned int x, unsigned int y);
+
+  private:
+
+    Random();
 };
 
 #endif

@@ -165,13 +165,13 @@ The default value is \c 0.
 Returns whether the enemy is pushed away when it is hurt.
 - Return value (boolean): \c true if the enemy is pushed away when hurt.
 
-\subsection lua_api_enemy_set_pushed_back_when_hurt enemy:set_pushed_back_when_hurt(pushed_back_when_hurt)
+\subsection lua_api_enemy_set_pushed_back_when_hurt enemy:set_pushed_back_when_hurt([pushed_back_when_hurt])
 
 Sets whether the enemy should be pushed away when it is hurt.
 
 The default value is \c true.
-- \c pushed_back_when_hurt (boolean): \c true to make the enemy pushed away
-  when hurt.
+- \c pushed_back_when_hurt (boolean, optional): \c true to make the enemy pushed away
+  when hurt. No value means \c true.
 
 \subsection lua_api_enemy_get_push_hero_on_sword enemy:get_push_hero_on_sword()
 
@@ -181,31 +181,31 @@ this enemy with his sword.
 - Return value (boolean): \c true if the hero is pushed away when hitting
   this enemy with his sword.
 
-\subsection lua_api_enemy_set_push_hero_on_sword enemy:set_push_hero_on_sword(push_hero_on_sword)
+\subsection lua_api_enemy_set_push_hero_on_sword enemy:set_push_hero_on_sword([push_hero_on_sword])
 
 Sets whether the
 \ref lua_api_hero "hero" should be pushed away when he hits
 this enemy with his sword.
 
 The default value is \c false.
-- \c push_hero_on_sword (boolean): \c true to push the hero away when
-  hitting this enemy with his sword.
+- \c push_hero_on_sword (boolean, optional): \c true to push the hero away when
+  hitting this enemy with his sword. No value means \c true.
 
-\subsection lua_api_enemy_get_can_hurt_hero_running enemy_get_can_hurt_hero_running()
+\subsection lua_api_enemy_get_can_hurt_hero_running enemy:get_can_hurt_hero_running()
 
 Returns whether this enemy can hurt the
 \ref lua_api_hero "hero" even when the hero is running.
 - Return value (boolean): \c true if the hero can be hurt by this enemy
   even when running.
 
-\subsection lua_api_enemy_set_can_hurt_hero_running enemy:set_can_hurt_hero_running(can_hurt_hero_running)
+\subsection lua_api_enemy_set_can_hurt_hero_running enemy:set_can_hurt_hero_running([can_hurt_hero_running])
 
 Sets whether this enemy can hurt the
 \ref lua_api_hero "hero" even when the hero is running.
 
 The default value is \c false.
-- \c can_hurt_hero_running (boolean): \c true so that the hero can be hurt
-  by this enemy even when running.
+- \c can_hurt_hero_running (boolean, optional): \c true so that the hero can be hurt
+  by this enemy even when running. No value means \c true.
 
 \subsection lua_api_enemy_get_hurt_style enemy:get_hurt_style()
 
@@ -225,14 +225,15 @@ Returns whether this enemy can currently attack the
 \ref lua_api_hero "hero".
 - Return value (boolean): \c true if the enemy can currently attack the hero.
 
-\subsection lua_api_enemy_set_can_attack enemy:set_can_attack(can_attack)
+\subsection lua_api_enemy_set_can_attack enemy:set_can_attack([can_attack])
 
 Sets whether this enemy can currently attack the
 \ref lua_api_hero "hero".
 
 When the enemy restarts after being hurt, \c can_attack is always
 set to \c true.
-- \c can_attack (boolean): \c true to allow the enemy to attack the hero.
+- \c can_attack (boolean, optional): \c true to allow the enemy to attack the hero.
+  No value means \c true.
 
 \subsection lua_api_enemy_get_minimum_shield_needed enemy:get_minimum_shield_needed()
 

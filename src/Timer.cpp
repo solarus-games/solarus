@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,7 +67,11 @@ bool Timer::is_suspended() {
 
 /**
  * @brief Suspends or resumes the timer.
- * @param suspended true to suspend the timer, false to resume it
+ *
+ * It is okay to call this function when is_suspended_with_map() is true:
+ * this means that you temporarily override the automatic suspending behavior.
+ *
+ * @param suspended true to suspend the timer, false to resume it.
  */
 void Timer::set_suspended(bool suspended) {
 
@@ -105,7 +109,14 @@ bool Timer::is_suspended_with_map() {
  * @param suspended_with_map true to suspend this timer with the map.
  */
 void Timer::set_suspended_with_map(bool suspended_with_map) {
-  this->suspended_with_map = suspended_with_map;
+
+  if (suspended_with_map != this->suspended_with_map) {
+    this->suspended_with_map = suspended_with_map;
+
+    if (is_suspended() && !suspended_with_map) {
+      set_suspended(false);
+    }
+  }
 }
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,8 +85,9 @@ void Hero::VictoryState::update() {
     finished = true;
     if (callback_ref != LUA_REFNIL) {
       // The behavior is defined by Lua.
+      int callback_ref = this->callback_ref;
+      this->callback_ref = LUA_REFNIL;
       get_lua_context().do_callback(callback_ref);
-      callback_ref = LUA_REFNIL;
     }
     else {
       // By default, get back to the normal state.

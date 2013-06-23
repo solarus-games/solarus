@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ Pickable::Pickable(const std::string& name, Layer layer,
     int x, int y, const Treasure& treasure):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, name, layer, x, y, 0, 0),
   treasure(treasure),
+  given_to_player(false),
   shadow_sprite(NULL),
   shadow_xy(Rectangle(x, y)),
   appear_date(System::now()),
@@ -263,14 +264,11 @@ void Pickable::notify_movement_changed() {
  */
 void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping.is_hero()
-      && can_be_picked
-      && !get_game().is_dialog_enabled()) {
-    remove_from_map();
-    give_item_to_player();
+  if (entity_overlapping.is_hero()) {
+    try_give_item_to_player();
   }
   else if (entity_followed == NULL) {
-    
+
     if (entity_overlapping.get_type() == BOOMERANG) {
       Boomerang& boomerang = static_cast<Boomerang&>(entity_overlapping);
       if (!boomerang.is_going_back()) {
@@ -310,20 +308,29 @@ void Pickable::notify_collision(MapEntity& other_entity, Sprite& other_sprite,
 
   // taking the item with the sword
   if (other_entity.is_hero()
-      && other_sprite.contains("sword")
-      && can_be_picked) {
+      && other_sprite.contains("sword")) {
 
-    remove_from_map();
-    give_item_to_player();
+    try_give_item_to_player();
   }
 }
 
 /**
  * @brief Gives the item to the player.
  */
-void Pickable::give_item_to_player() {
+void Pickable::try_give_item_to_player() {
 
   EquipmentItem& item = treasure.get_item();
+
+  if (!can_be_picked
+      || given_to_player
+      || get_game().is_dialog_enabled()
+      || !get_hero().can_pick_treasure(item)) {
+    return;
+  }
+
+  given_to_player = true;
+
+  remove_from_map();
 
   // play the sound
   const std::string& sound_id = item.get_sound_when_picked();
@@ -381,7 +388,7 @@ void Pickable::set_suspended(bool suspended) {
     }
 
     if (will_disappear) {
-    
+
       // the game is being resumed
       // recalculate the blinking date and the disappearing date
       if (when_suspended != 0) {
@@ -420,8 +427,8 @@ void Pickable::update() {
         entity_followed->get_type() == HOOKSHOT) {
       // The pickable may have been dropped by the boomerang/hookshot
       // not exactly on the hero so let's fix this.
-      if (get_distance(get_hero()) < 8) {
-        give_item_to_player();
+      if (get_distance(get_hero()) < 16) {
+        try_give_item_to_player();
       }
     }
     entity_followed = NULL;

@@ -157,14 +157,14 @@ Returns whether this game is currently paused.
 - Return value (boolean): \c true if this game is paused.
   Only possible when the game is running.
 
-\subsection lua_api_game_set_paused game:set_paused(paused)
+\subsection lua_api_game_set_paused game:set_paused([paused])
 
 Pauses or resumes the game explictly.
 
 Note that by default, a built-in game command already exists to pause and
 unpause the game.
-- \c paused (boolean): \c true to pause the game, \c false to unpause it.
-  Only possible when the game is running.
+- \c paused (boolean, optional): \c true to pause the game, \c false to unpause it.
+  Only possible when the game is running. No value means \c true.
 
 \subsection lua_api_game_get_map game:get_map()
 

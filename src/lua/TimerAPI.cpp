@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include "Timer.h"
 #include "MainLoop.h"
 #include "Game.h"
+#include "Map.h"
 #include <list>
 #include <lua.hpp>
 
@@ -106,17 +107,42 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   lua_pushvalue(l, callback_index);
   int callback_ref = create_ref();
 
+#ifndef NDEBUG
+  // Sanity check: check the uniqueness of the ref.
+  std::map<Timer*, LuaTimerData>::iterator it;
+  for (it = timers.begin(); it != timers.end(); ++it) {
+    if (it->second.callback_ref == callback_ref) {
+      Debug::die(StringConcat() << "Callback ref " << callback_ref
+            << " is already used by a timer (duplicate luaL_unref?)");
+    }
+  }
+#endif
+
+  Debug::check_assertion(timers.find(timer) == timers.end(),
+      "Duplicate timer in the system");
+
   timers[timer].callback_ref = callback_ref;
   timers[timer].context = context;
 
   Game* game = main_loop.get_game();
   if (game != NULL) {
     // We are during a game: depending on the timer's context,
-    // when the map is suspended, also suspend the timer or not.
+    // suspend the timer or not.
     if (is_map(l, context_index)
         || is_entity(l, context_index)
         || is_item(l, context_index)) {
+
+      // By default, we want the timer to be automatically suspended when a
+      // camera movement, a dialog or the pause menu starts.
       timer->set_suspended_with_map(true);
+
+      // But in the initial state, we override that rule.
+      // We initially suspend the timer only during a dialog.
+      // In particular, we don't want to suspend timers created during a
+      // camera movement.
+      // This would be very painful for users.
+      bool initially_suspended = game->is_dialog_enabled();
+      timer->set_suspended(initially_suspended);
     }
   }
   timer->increment_refcount();
@@ -202,11 +228,15 @@ void LuaContext::update_timers() {
   for (it = timers.begin(); it != timers.end(); ++it) {
 
     Timer* timer = it->first;
-    timer->update();
-    if (timer->is_finished()) {
-      do_callback(it->second.callback_ref);
-      it->second.callback_ref = LUA_REFNIL;
-      timers_to_remove.push_back(timer);
+    int callback_ref = it->second.callback_ref;
+    if (callback_ref != LUA_REFNIL) {
+      // The timer is not being removed: update it.
+      timer->update();
+      if (timer->is_finished()) {
+        do_callback(callback_ref);
+        it->second.callback_ref = LUA_REFNIL;
+        timers_to_remove.push_back(timer);
+      }
     }
   }
 
@@ -215,15 +245,19 @@ void LuaContext::update_timers() {
   for (it2 = timers_to_remove.begin(); it2 != timers_to_remove.end(); ++it2) {
 
     Timer* timer = *it2;
-    if (timers.find(timer) != timers.end()) {
+    it = timers.find(timer);
+    if (it != timers.end()) {
       if (!timer->is_finished()) {
-        cancel_callback(timers[timer].callback_ref);
+        cancel_callback(it->second.callback_ref);
       }
-      timers.erase(timer);
+      timers.erase(it);
       timer->decrement_refcount();
       if (timer->get_refcount() == 0) {
         delete timer;
       }
+
+      Debug::check_assertion(timers.find(timer) == timers.end(),
+          "Failed to remove timer");
     }
   }
   timers_to_remove.clear();
@@ -411,6 +445,8 @@ int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
  */
 int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
 
+  LuaContext& lua_context = get_lua_context(l);
+
   Timer& timer = check_timer(l, 1);
   bool suspended_with_map = true;
   if (lua_gettop(l) >= 2) {
@@ -418,6 +454,9 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
   }
 
   timer.set_suspended_with_map(suspended_with_map);
+
+  Game* game = lua_context.get_main_loop().get_game();
+  timer.notify_map_suspended(game->get_current_map().is_suspended());
 
   return 0;
 }

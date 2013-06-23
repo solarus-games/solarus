@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,9 +95,8 @@ class NPC: public Detector {
     void notify_action_command_pressed();
     bool interaction_with_item(EquipmentItem& item);
     void notify_position_changed();
+    void notify_movement_finished();
     bool can_be_lifted();
-
-    void update();
 
     virtual const std::string& get_lua_type_name() const;
 };

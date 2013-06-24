@@ -17,24 +17,30 @@
 #include "QuestProperties.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/VideoManager.h"
+#include "lowlevel/Rectangle.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 #include <lua.hpp>
+#include <sstream>
 
 namespace {
 
+/**
+ * @brief Version of the quest.
+ */
 std::string solarus_required_version;
 
 /**
  * @brief Checks that the quest is compatible with the current version of Solarus.
- * @param solarus_required_version Version of the quest
  */
-void check_version_compatibility(std::string solarus_required_version) {
+void check_version_compatibility() {
 
   if (solarus_required_version.empty()) {
     Debug::die("No Solarus version is specified in your quest.dat file!");
   }
+
+  // TODO check the syntax of the version string
 
   int dot_index_1 = solarus_required_version.find('.');
   std::istringstream iss(solarus_required_version.substr(0, dot_index_1));
@@ -60,6 +66,39 @@ void check_version_compatibility(std::string solarus_required_version) {
         << required_minor_version << ".x but you are running Solarus "
         << SOLARUS_VERSION);
   }
+}
+
+/**
+ * @brief Gets the width and the height values from a size string of the form
+ * "320x240".
+ * @param size_string The input string.
+ * @param size The resulting size.
+ * @return true in case of success, false if the string is not a valid size.
+ */
+bool parse_quest_size(const std::string& size_string, Rectangle& size) {
+
+  size_t index = size_string.find('x');
+  if (index == std::string::npos || index + 1 >= size_string.size()) {
+    return false;
+  }
+
+  const std::string& width_string = size_string.substr(0, index);
+  const std::string& height_string = size_string.substr(index + 1);
+
+  int width = 0;
+  int height = 0;
+  std::istringstream iss(width_string);
+  if (!(iss >> width) || width < 0) {
+    return false;
+  }
+
+  iss.str(height_string);
+  if (!(iss >> height || height < 0)) {
+    return false;
+  }
+
+  size.set_size(width, height);
+  return true;
 }
 
 }
@@ -102,7 +141,7 @@ void QuestProperties::load() {
     lua_pop(l, 1);
   }
 
-  check_version_compatibility(solarus_required_version);
+  check_version_compatibility();
 
   lua_close(l);
 }
@@ -116,11 +155,43 @@ int QuestProperties::l_quest(lua_State* l) {
       LuaContext::opt_string_field(l, 1, "write_dir", "");
   const std::string& title_bar =
       LuaContext::opt_string_field(l, 1, "title_bar", "");
+  const std::string& normal_quest_size_string =
+      LuaContext::opt_string_field(l, 1, "normal_quest_size", "320x240");
+  const std::string& min_quest_size_string =
+      LuaContext::opt_string_field(l, 1, "min_quest_size", normal_quest_size_string);
+  const std::string& max_quest_size_string =
+      LuaContext::opt_string_field(l, 1, "max_quest_size", normal_quest_size_string);
 
   FileTools::set_quest_write_dir(quest_write_dir);
   if (!title_bar.empty()) {
     VideoManager::get_instance()->set_window_title(title_bar);
   }
+
+  Rectangle normal_quest_size, min_quest_size, max_quest_size;
+  bool success = parse_quest_size(normal_quest_size_string, normal_quest_size);
+  if (!success) {
+    luaL_argerror(l, 1,
+        "Bad field 'normal_quest_size' (not a valid size string)");
+  }
+
+  success = parse_quest_size(min_quest_size_string, min_quest_size);
+  if (!success) {
+    luaL_argerror(l, 1,
+        "Bad field 'min_quest_size' (not a valid size string)");
+  }
+
+  success = parse_quest_size(max_quest_size_string, max_quest_size);
+  if (!success) {
+    luaL_argerror(l, 1,
+        "Bad field 'max_quest_size' (not a valid size string)");
+  }
+
+  /* TODO
+  VideoManager::get_instance()->set_quest_size_range(
+      normal_quest_size,
+      min_quest_size,
+      max_quest_size);
+      */
 
   return 0;
 }

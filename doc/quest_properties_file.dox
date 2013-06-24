@@ -1,11 +1,15 @@
 /**
 \page quest_properties_file Quest properties file
 
+\tableofcontents
+
 Some general information regarding your quest are stored in the quest
 properties file \c quest.dat.
 
 \c quest.dat is mandatory: if this file does not exist, the engine considers
 that there is no quest in the directory.
+
+\section quest_properties_file_syntax Syntax of the quest properties file
 
 \c quest.dat is a text file encoded in UTF-8.
 
@@ -23,10 +27,10 @@ double quotes.
 The properties must be:
 - \c solarus_version (string): Version of the engine your data files are
   compatible with. This string should be a major and minor version, for
-  example "1.0". You can also indicate a full version string, including
-  the patch number (like "1.0.0") but the patch number will be ignored.
+  example "1.1". You can also indicate a full version string, including
+  the patch number (like "1.1.0") but the patch number will be ignored.
   Patch versions are ignored since they don't break compatibility.
-  The latest stable version is \c "1.0".
+  The latest stable version is \c "1.1".
 - \c write_dir (string, optional): Directory where your quest will write its
   savegames and setting files. It will be a subdirectory of
   <tt>'$HOME/.solarus/'</tt>, automatically created by the engine.
@@ -35,22 +39,61 @@ The properties must be:
   You must define it before you can use savegames or setting files.
 - \c title_bar (string, optional): Title of the window. You should probably
   put the title of your game here.
+- \c normal_quest_size (string, optional): Usual size of the game screen in
+  pixels, as two integer values separated by \c "x". Example: \c "320x240".
+  The default value is \c "320x240".
+- \c min_quest_size (string, optional): Minimum size of the game screen in
+  pixels. Example: \c "320x200".
+  No value means the same value as \c normal_quest_size.
+- \c max_quest_size (table, optional): Maximum size of the game screen in
+  pixels. Example: \c "400x240".
+  No value means the same value as \c normal_quest_size.
+
+\section quest_properties_file_quest_size About the quest size
+
+\c normal_quest_size, \c min_quest_size and \c max_quest_size define the
+range of possible sizes of the game screen.
+That size represents how much content the user can see on the map when playing
+your quest.
+Allowing a range of sizes instead of only one size is a good idea because it
+allows maximum portability: each system and each user can pick one.
+For example, 320x240 is a good quest size to play on a PC, while 400x240 is
+great to play on Android and OpenPandora. Yes, it means that Android
+players will see more content than PC players on their screen when playing
+your game.
+
+At compilation time, systems can specify their preferred quest size.
+It will be used if it fits in the range of quest sizes of your quests.
+And the quest size can also be overriden at runtime with a command-line option.
+
+At runtime, you are guaranteed that the actual quest size will be in the range
+that you specified in this quest properties file.
+
+\remark In fullscreen mode, Solarus will automatically choose an appropriate
+resolution to display that quest size as best as possible, possibly by adding
+black horizontal or vertical bars if necessary, and by stretching the image
+if the available resolutions of the system are too high.
+
+\section quest_properties_file_example Example
 
 Example of \c quest.dat file:
 
 \verbatim
 quest{
-  solarus_version = "1.0",
+  solarus_version = "1.1",
   write_dir = "my_quest",
   title_bar = "My incredible quest",
+  normal_quest_size = {320, 240},  -- Works on most configurations.
+  min_quest_size = {320, 200},     -- Might make fullscreen compatible with more systems.
+  max_quest_size = {400, 240},     -- Suited for Android and other mobile devices.
 }
 \endverbatim
 
-The current version of the editor has poor support of this
+The current version of the quest editor has poor support of this
 file \c quest.dat for now. A default (and incomplete) one is generated
 when you create a quest, but then you have to edit it by hand.
 
-\remark The syntax of the language list file is actually valid Lua.
+\remark The syntax of the quest properties file is actually valid Lua.
   The engine internally uses Lua to parse it.
 
 */

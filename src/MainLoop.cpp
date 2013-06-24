@@ -49,7 +49,7 @@ MainLoop::MainLoop(int argc, char** argv):
   QuestProperties quest_properties(*this);
   quest_properties.load();
 
-  root_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
+  root_surface = new Surface(VideoManager::get_instance()->get_quest_size());
   root_surface->increment_refcount();
   debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);

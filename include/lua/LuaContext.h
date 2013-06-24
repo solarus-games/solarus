@@ -360,6 +360,7 @@ class LuaContext {
       video_api_get_modes,
       video_api_is_fullscreen,
       video_api_set_fullscreen,
+      video_api_get_quest_size,
 
       // Menu API.
       menu_api_start,

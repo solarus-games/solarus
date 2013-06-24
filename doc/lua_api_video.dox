@@ -5,16 +5,28 @@
 
 \c sol.video allows you to manage the window and to change the video mode.
 
-The screen size is fixed at compilation time: it's usually 320*240
-unless you set otherwise with the appropriate compilation flags.
-What we call "screen" or "logical screen" on this page is the logical
-surface where the game or the menus take place.
-Its size never changes at runtime.
+The area where the game takes place has a fixed size called the quest size.
+The quest size is in a range specified in the
+\ref quest_properties_file "quest.dat".
+This quest size defines how much content the player can see on the map.
+It is usually 320x240, but some systems may prefer other sizes,
+like 400x240 on Android.
+You should set a range of quest sizes in the quest properties files:
+this is a good idea for portability.
+However, it requires more work from the quest designer: in particular,
+you have to implement menus and a HUD that can adapt to any size in this
+range.
+Note however that the quest size never changes after the program is started.
 
 At runtime, the video mode can be changed. The video mode determines
 the size of the window, whether it runs in fullscreen,
-and how the logical screen is displayed on this
+and how the quest screen is displayed on this
 window when the window is larger.
+All quest sizes are not necessarily supported as fullscreen resolutions, but
+you don't have to worry:
+Solarus automatically chooses an available fullscreen resolution that can
+contain the quest size, possibly by adding black borders or by using a
+resolution of double size (stretching the image by a factor of 2).
 
 The video mode can be saved and loaded with the global settings,
 as well as the language and the volume, independently of any savegame
@@ -22,29 +34,36 @@ as well as the language and the volume, independently of any savegame
 
 Video modes are identified by strings in the Lua API.
 The following modes are implemented:
-  - \c "windowed_stretched" (default): The logical screen is stretched on a
-    window of double size.
-  - \c "windowed_scale2x": The logical screen is scaled on a window of
-    double size with the
-    <a href="http://scale2x.sourceforge.net/algorithm.html">Scale2X</a>
-    algorithm.
-  - \c "windowed_normal": The logical screen is displayed onto a window of the
-    same size.
-  - \c "fullscreen_normal": The logical screen is stretched on a surface of
-    double size, and then displayed in fullscreen with a resolution of that
-    double size. (That's because many
-    screens don't support very low fullscreen resolutions like 320x240.)
-  - \c "fullscreen_wide": The logical screen is stretched on a surface of
-    double size and then displayed in fullscreen onto a widescreen resolution
-    with two black side bars.
-    This video mode is adapted to wide devices.
-  - \c "fullscreen_scale2x": The logical screen is scaled on a surface of
-    double size with the Scale2X algorithm, and then displayed in fullscreen
-    with a resolution of that double size.
-  - \c "fullscreen_scale2x_wide": The logical screen is scaled on a surface of
-    double size with the Scale2X algorithm, and then displayed in fullscreen
-    onto a widescreen resolution with two black side bars.
-    This video mode is adapted to wide devices.
+- \c "windowed_stretched" (default): The quest screen is stretched on a
+  window of double size.
+- \c "windowed_scale2x": The quest screen is scaled on a window of
+  double size with the
+  <a href="http://scale2x.sourceforge.net/algorithm.html">Scale2X</a>
+  algorithm.
+- \c "windowed_normal": The quest screen is displayed onto a window of the
+  same size.
+- \c "fullscreen_normal": The quest screen is displayed in fullscreen.
+  Black borders are added if the exact resolution of the quest size
+  or of twice the quest size are not available.
+- \c "fullscreen_wide": The quest screen displayed in fullscreen onto a
+  widescreen resolution with two black vertical borders.
+- \c "fullscreen_scale2x": The quest screen is scaled on a surface of
+  double size with the Scale2X algorithm, and then displayed in fullscreen
+  with a resolution of that double size.
+  Black borders are added if the exact resolution of twice the quest size
+  is not available.
+- \c "fullscreen_scale2x_wide": The quest screen is scaled on a surface of
+  twice the quest size with the Scale2X algorithm, and then displayed in
+  fullscreen onto a widescreen resolution with two black vertical borders.
+
+Wide modes (\c "fullscreen_wide" and \c "fullscreen_scale2x_wide") look nice
+on wide devices when the quest size has a ratio of 4:3. By adding two vertical
+black borders, they try to keep pixels squares and therefore avoid distorsion.
+However, it is even better if you allow your quest to have a larger range of
+sizes (see \ref quest_properties_file "quest.dat").
+Indeed, if your quest can
+have a size like \c 400x240, the game can use the whole screen
+without distorsion and the player can see more content.
 
 \remark On some platforms, some video modes may be unavailable or disabled
   at compilation time. Use \ref lua_api_video_is_mode_supported
@@ -63,7 +82,7 @@ Returns the text of the title bar of the window.
 
 Sets the text of the title bar of the window.
 
-Note that the window title is already specified in your
+Note that the window title should already be specified in your
 \ref quest_properties_file "quest.dat" file.
 You usually don't have to call this function, unless you need to change it
 dynamically for some reason.
@@ -106,6 +125,20 @@ Returns whether the current video mode is fullscreen.
 Turns on or turns off fullscreen, keeping an equivalent video mode.
 - \c fullscreen (boolean, optional): \c true to set fullscreen (no value means
   \c true).
+
+\subsection lua_api_video_get_quest_size sol.video.get_quest_size()
+
+Returns the size of the quest screen.
+
+This quest size is fixed at runtime.
+It is always in the range of allowed quest sizes specified in
+\ref quest_properties_file quest.dat.
+
+The quest size is independent from the video mode:
+video mode are just various methods to draw the quest screen on a window
+or in fullscreen.
+- Return value 1 (number): Width of the quest screen in pixels.
+- Return value 2 (number): Height of the quest screen in pixels.
 
 */
 

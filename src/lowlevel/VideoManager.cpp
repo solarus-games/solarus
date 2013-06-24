@@ -582,3 +582,36 @@ void VideoManager::set_window_title(const std::string& window_title) {
   SDL_WM_SetCaption(window_title.c_str(), NULL);
 }
 
+/**
+ * @brief Gets the width and the height values from a size string of the form
+ * "320x240".
+ * @param size_string The input string.
+ * @param size The resulting size.
+ * @return true in case of success, false if the string is not a valid size.
+ */
+bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
+
+  size_t index = size_string.find('x');
+  if (index == std::string::npos || index + 1 >= size_string.size()) {
+    return false;
+  }
+
+  const std::string& width_string = size_string.substr(0, index);
+  const std::string& height_string = size_string.substr(index + 1);
+
+  int width = 0;
+  int height = 0;
+  std::istringstream iss(width_string);
+  if (!(iss >> width) || width < 0) {
+    return false;
+  }
+
+  iss.str(height_string);
+  if (!(iss >> height || height < 0)) {
+    return false;
+  }
+
+  size.set_size(width, height);
+  return true;
+}
+

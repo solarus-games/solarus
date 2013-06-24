@@ -49,7 +49,7 @@ class Surface: public Drawable {
 
   public:
 
-    Surface(int width = SOLARUS_SCREEN_WIDTH, int height = SOLARUS_SCREEN_HEIGHT);
+    Surface(int width, int height);
     Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
     Surface(SDL_Surface* internal_surface);

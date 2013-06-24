@@ -23,17 +23,6 @@
 #include "lowlevel/Debug.h"
 
 /**
- * @brief Position where the previous map is blitted on both_maps_surface,
- * for each possible scrolling direction.
- */
-const Rectangle TransitionScrolling::previous_map_dst_positions[] = {
-  Rectangle(0,   0),  // scroll to the east
-  Rectangle(0, SOLARUS_SCREEN_HEIGHT),  // scroll to the north
-  Rectangle(SOLARUS_SCREEN_WIDTH,  0), // scroll to the west
-  Rectangle(0 ,  0),  // scroll to the south
-};
-
-/**
  * @brief Creates a scrolling transition effect.
  * @param direction direction of the transition (in or out)
  */
@@ -55,6 +44,27 @@ TransitionScrolling::~TransitionScrolling() {
 }
 
 /**
+ * @brief Returns where the previous map should be blitted on
+ * both_maps_surface, for the specified scrolling direction.
+ * @param scrolling_direction The scrolling direction (0 to 3).
+ */
+Rectangle get_previous_map_dst_position(int scrolling_direction) {
+
+  const Rectangle& quest_size = VideoManager::get_instance()->get_quest_size();
+
+  Rectangle dst_position(0, 0);
+  if (scrolling_direction == 1) {
+    // Scroll to the north.
+    dst_position.set_y(quest_size.get_height());
+  }
+  else if (scrolling_direction == 2) {
+    // Scroll to the west.
+    dst_position.set_x(quest_size.get_width());
+  }
+  return dst_position;
+}
+
+/**
  * @brief Starts this transition effect.
  */
 void TransitionScrolling::start() {
@@ -67,8 +77,9 @@ void TransitionScrolling::start() {
   scrolling_direction = (get_game()->get_current_map().get_destination_side() + 2) % 4;
 
   const int scrolling_step = 5;
-  int width = SOLARUS_SCREEN_WIDTH;
-  int height = SOLARUS_SCREEN_HEIGHT;
+  const Rectangle& quest_size = VideoManager::get_instance()->get_size();
+  int width = quest_size.get_width();
+  int height = quest_size.get_height();
   if (scrolling_direction % 2 == 0) {
     // right or left
     width *= 2;
@@ -84,11 +95,10 @@ void TransitionScrolling::start() {
 
   // set the blitting rectangles
 
-  previous_map_dst_position = previous_map_dst_positions[scrolling_direction];
-  current_map_dst_position = previous_map_dst_positions[(scrolling_direction + 2) % 4];
+  previous_map_dst_position = get_previous_map_dst_position(scrolling_direction);
+  current_map_dst_position = get_previous_map_dst_position((scrolling_direction + 2) % 4);
   current_scrolling_position = previous_map_dst_position;
-
-  current_scrolling_position.set_size(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
+  current_scrolling_position.set_size(VideoManager::instance()->get_quest_size());
 
   next_scroll_date = System::now();
 }

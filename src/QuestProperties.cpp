@@ -68,39 +68,6 @@ void check_version_compatibility() {
   }
 }
 
-/**
- * @brief Gets the width and the height values from a size string of the form
- * "320x240".
- * @param size_string The input string.
- * @param size The resulting size.
- * @return true in case of success, false if the string is not a valid size.
- */
-bool parse_quest_size(const std::string& size_string, Rectangle& size) {
-
-  size_t index = size_string.find('x');
-  if (index == std::string::npos || index + 1 >= size_string.size()) {
-    return false;
-  }
-
-  const std::string& width_string = size_string.substr(0, index);
-  const std::string& height_string = size_string.substr(index + 1);
-
-  int width = 0;
-  int height = 0;
-  std::istringstream iss(width_string);
-  if (!(iss >> width) || width < 0) {
-    return false;
-  }
-
-  iss.str(height_string);
-  if (!(iss >> height || height < 0)) {
-    return false;
-  }
-
-  size.set_size(width, height);
-  return true;
-}
-
 }
 
 /**
@@ -168,30 +135,28 @@ int QuestProperties::l_quest(lua_State* l) {
   }
 
   Rectangle normal_quest_size, min_quest_size, max_quest_size;
-  bool success = parse_quest_size(normal_quest_size_string, normal_quest_size);
+  bool success = VideoManager::parse_size(normal_quest_size_string, normal_quest_size);
   if (!success) {
     luaL_argerror(l, 1,
         "Bad field 'normal_quest_size' (not a valid size string)");
   }
 
-  success = parse_quest_size(min_quest_size_string, min_quest_size);
+  success = VideoManager::parse_size(min_quest_size_string, min_quest_size);
   if (!success) {
     luaL_argerror(l, 1,
         "Bad field 'min_quest_size' (not a valid size string)");
   }
 
-  success = parse_quest_size(max_quest_size_string, max_quest_size);
+  success = VideoManager::parse_size(max_quest_size_string, max_quest_size);
   if (!success) {
     luaL_argerror(l, 1,
         "Bad field 'max_quest_size' (not a valid size string)");
   }
 
-  /* TODO
   VideoManager::get_instance()->set_quest_size_range(
       normal_quest_size,
       min_quest_size,
       max_quest_size);
-      */
 
   return 0;
 }

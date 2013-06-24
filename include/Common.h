@@ -140,36 +140,24 @@
 // Game size.
 
 /**
- * @def SOLARUS_SCREEN_WIDTH
- * @brief Screen height in pixels.
+ * @def SOLARUS_DEFAULT_QUEST_WIDTH
+ * @brief Width of the quest screen in pixels if not set at runtime.
  */
-#ifndef SOLARUS_SCREEN_WIDTH
+#ifndef SOLARUS_DEFAULT_QUEST_WIDTH
 #  if defined(PANDORA)
-#    define SOLARUS_SCREEN_WIDTH 400
+#    define SOLARUS_DEFAULT_QUEST_WIDTH 400
 #  else
-#    define SOLARUS_SCREEN_WIDTH 320
+#    define SOLARUS_DEFAULT_QUEST_WIDTH 320
 #  endif
 #endif
 
 /**
- * @def SOLARUS_SCREEN_HEIGHT
- * @brief Screen width in pixels.
+ * @def SOLARUS_DEFAULT_QUEST_HEIGHT
+ * @brief Height of the quest screen in pixels if not set at runtime.
  */
-#ifndef SOLARUS_SCREEN_HEIGHT
-#  define SOLARUS_SCREEN_HEIGHT 240
+#ifndef SOLARUS_DEFAULT_QUEST_HEIGHT
+#  define SOLARUS_DEFAULT_QUEST_HEIGHT 240
 #endif
-
-/**
- * @def SOLARUS_SCREEN_WIDTH_MIDDLE
- * @brief Half of the screen width in pixels.
- */
-#define SOLARUS_SCREEN_WIDTH_MIDDLE (SOLARUS_SCREEN_WIDTH / 2)
-
-/**
- * @def SOLARUS_SCREEN_HEIGHT_MIDDLE
- * @brief Half of the screen height in pixels.
- */
-#define SOLARUS_SCREEN_HEIGHT_MIDDLE (SOLARUS_SCREEN_HEIGHT / 2)
 
 /**
  * @def SOLARUS_COLOR_DEPTH

@@ -25,25 +25,29 @@
 #include <SDL_image.h>
 
 /**
- * @brief Creates an empty surface with the specified size.
- * @param width the width in pixels
- * @param height the height in pixels
+ * @brief Creates a surface with the specified size.
+ * @param width The width in pixels.
+ * @param height The height in pixels.
  */
 Surface::Surface(int width, int height):
   Drawable(),
   internal_surface_created(true) {
+
+  Debug::check_assertion(width > 0 && height > 0, "Empty surface");
 
   this->internal_surface = SDL_CreateRGBSurface(
     SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
 }
 
 /**
- * @brief Creates a empty surface with the specified size.
+ * @brief Creates a surface with the specified size.
  * @param size The size in pixels.
  */
 Surface::Surface(const Rectangle& size):
   Drawable(),
   internal_surface_created(true) {
+
+  Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
 
   this->internal_surface = SDL_CreateRGBSurface(
       SDL_HWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);

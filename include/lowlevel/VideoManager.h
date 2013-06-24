@@ -33,11 +33,11 @@ class VideoManager {
      */
     enum VideoMode {
       NO_MODE = -1,             /**< special value to mean no information */
-      WINDOWED_STRETCHED,       /**< the game surface is stretched into a double-size window (default) */
-      WINDOWED_SCALE2X,         /**< the game surface is scaled into a double-size window with the Scale2x algorithm */
-      WINDOWED_NORMAL,          /**< the game surface is drawn on a window of the same size */
-      FULLSCREEN_NORMAL,        /**< the game surface is drawn in fullscreen */
-      FULLSCREEN_WIDE,          /**< the game surface is stretched into a double-size surface
+      WINDOWED_STRETCHED,       /**< the quest surface is stretched into a double-size window (default) */
+      WINDOWED_SCALE2X,         /**< the quest surface is scaled into a double-size window with the Scale2x algorithm */
+      WINDOWED_NORMAL,          /**< the quest surface is drawn on a window of the same size */
+      FULLSCREEN_NORMAL,        /**< the quest surface is drawn in fullscreen */
+      FULLSCREEN_WIDE,          /**< the quest surface is stretched into a double-size surface
                                  * and then drawn on a widescreen resolution if possible
                                  * with two black side bars */
       FULLSCREEN_SCALE2X,       /**< the game surface is scaled into a double-size screen with the Scale2x algorithm */
@@ -47,24 +47,46 @@ class VideoManager {
       NB_MODES                  /**< number of existing video modes */
     };
 
+    static void initialize(int argc, char** argv);
+    static void quit();
+    static VideoManager* get_instance();
+
+    VideoMode get_video_mode() const;
+    bool set_video_mode(VideoMode mode);
+    void switch_video_mode();
+    void set_default_video_mode();
+    bool is_mode_supported(VideoMode mode) const;
+    const std::list<VideoMode> get_video_modes() const;
+
+    static std::string get_video_mode_name(VideoMode mode);
+    static VideoMode get_video_mode_by_name(const std::string& mode_name);
+
+    bool is_fullscreen(VideoMode mode) const;
+    bool is_fullscreen() const;
+    void set_fullscreen(bool fullscreen);
+    void switch_fullscreen();
+
+    const std::string get_window_title() const;
+    void set_window_title(const std::string& window_title);
+
+    static bool parse_size(const std::string& size_string, Rectangle& size);
+
+    const Rectangle& get_quest_size() const;
+    void set_quest_size(Rectangle& quest_size);
+    void get_quest_size_range(
+        Rectangle& normal_quest_size,
+        Rectangle& min_quest_size,
+        Rectangle& max_quest_size) const;
+    void set_quest_size_range(
+        const Rectangle& normal_quest_size,
+        const Rectangle& min_quest_size,
+        const Rectangle& max_quest_size);
+
+    void draw(Surface& src_surface);
+
+    static const std::string video_mode_names[];
+
   private:
-
-    static const VideoMode forced_mode;               /**< only video mode available (NO_MODE means no restriction) */
-
-    static VideoManager* instance;                    /**< the only instance */
-    static Rectangle default_mode_sizes[NB_MODES];    /**< default size of the surface for each video mode */
-
-    bool disable_window;                              /**< indicates that no window is displayed (used for unitary tests) */
-    Rectangle mode_sizes[NB_MODES];                   /**< verified size of the surface for each video mode */
-    Rectangle dst_position_wide;                      /**< position of the double-size surface on the wider video surface */
-
-    VideoMode video_mode;                             /**< current video mode of the screen */
-    Surface* screen_surface;                          /**< the screen surface */
-
-    int width;                                        /**< width of the current screen surface */
-    int offset;                                       /**< width of a side bar when using a widescreen resolution */
-    int end_row_increment;                            /**< increment used by the stretching and scaling functions
-                                                       * when changing the row */
 
     VideoManager(bool disable_window);
     ~VideoManager();
@@ -72,35 +94,28 @@ class VideoManager {
     void blit(Surface& src_surface, Surface& dst_surface);
     void blit_stretched(Surface& src_surface, Surface& dst_surface);
     void blit_scale2x(Surface& src_surface, Surface& dst_surface);
-    uint32_t get_surface_flag(const VideoMode mode);
+    uint32_t get_surface_flag(const VideoMode mode) const;
 
-  public:
+    static const VideoMode forced_mode;     /**< Only video mode available (NO_MODE means no restriction). */
 
-    static const std::string video_mode_names[];
+    static VideoManager* instance;          /**< The only instance. */
 
-    static void initialize(int argc, char** argv);
-    static void quit();
-    static VideoManager* get_instance();
+    bool disable_window;                    /**< Indicates that no window is displayed (used for unit tests). */
+    Rectangle mode_sizes[NB_MODES];         /**< Size of the screen surface for each video mode with the current quest size. */
+    Rectangle dst_position_wide;            /**< Position of the double-size surface on the wider video surface. */
 
-    VideoMode get_video_mode();
-    bool set_video_mode(VideoMode mode);
-    void switch_video_mode();
-    void set_default_video_mode();
-    bool is_mode_supported(VideoMode mode);
-    const std::list<VideoMode> get_video_modes();
+    VideoMode video_mode;                   /**< Current video mode of the screen. */
+    Surface* screen_surface;                /**< The screen surface. */
 
-    static std::string get_video_mode_name(VideoMode mode);
-    static VideoMode get_video_mode_by_name(const std::string& mode_name);
+    int width;                              /**< Width of the current screen surface. */
+    int offset;                             /**< Width of a black side bar when using a widescreen resolution. */
+    int end_row_increment;                  /**< Increment used by the stretching and scaling functions
+                                             * when changing the row. */
 
-    bool is_fullscreen(VideoMode mode);
-    bool is_fullscreen();
-    void set_fullscreen(bool fullscreen);
-    void switch_fullscreen();
-
-    const std::string get_window_title();
-    void set_window_title(const std::string& window_title);
-
-    void draw(Surface& src_surface);
+    Rectangle quest_size;                   /**< Current size of the quest surface to draw on the screen surface. */
+    Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */
+    Rectangle min_quest_size;               /**< Minimum value of quest_size (depends on the quest). */
+    Rectangle max_quest_size;               /**< Maximum value of quest_size (depends on the quest). */
 };
 
 #endif

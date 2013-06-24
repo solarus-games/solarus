@@ -30,7 +30,8 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
-#include <lauxlib.h>
+#include "lowlevel/VideoManager.h"
+#include <lua.h>
 
 const uint32_t DialogBox::char_delays[] = {
   60, // slow
@@ -50,7 +51,7 @@ DialogBox::DialogBox(Game& game):
   icon_number(-1),
   skipped(false),
   last_answer(-1),
-  dialog_surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),
+  dialog_surface(VideoManager::get_instance()->get_quest_size()),
   box_img("hud/dialog_box.png"),
   icons_img("hud/dialog_icons.png"),
   end_lines_sprite("hud/dialog_box_message_end"),
@@ -265,20 +266,20 @@ void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref) {
   if (first) {
 
     // Determine the position.
+    const Rectangle& camera_position = game.get_current_map().get_camera_position();
     bool top = false;
     if (vertical_position == POSITION_TOP) {
       top = true;
     }
     else if (vertical_position == POSITION_AUTO) {
-      const Rectangle& camera_position = game.get_current_map().get_camera_position();
       if (game.get_hero().get_y() >= camera_position.get_y() + 130) {
         top = true;
       }
     }
 
     // Set the coordinates of graphic objects.
-    int x = SOLARUS_SCREEN_WIDTH_MIDDLE - 110;
-    int y = top ? 32 : SOLARUS_SCREEN_HEIGHT - 96;
+    int x = camera_position.get_width() / 2 - 110;
+    int y = top ? 32 : camera_position.get_height() / 2 - 96;
 
     if (style == STYLE_WITHOUT_FRAME) {
       y += top ? (-24) : 24;

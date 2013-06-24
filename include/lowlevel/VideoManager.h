@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
 #include <list>
+#include <map>
 
 /**
  * @brief Draws the window and handles the video mode.
@@ -96,21 +97,20 @@ class VideoManager {
     void blit_scale2x(Surface& src_surface, Surface& dst_surface);
     uint32_t get_surface_flag(const VideoMode mode) const;
 
-    static const VideoMode forced_mode;     /**< Only video mode available (NO_MODE means no restriction). */
-
     static VideoManager* instance;          /**< The only instance. */
 
     bool disable_window;                    /**< Indicates that no window is displayed (used for unit tests). */
-    Rectangle mode_sizes[NB_MODES];         /**< Size of the screen surface for each video mode with the current quest size. */
-    Rectangle dst_position_wide;            /**< Position of the double-size surface on the wider video surface. */
+    std::map<VideoMode, Rectangle>
+        mode_sizes;                         /**< Size of the screen surface for each supported
+                                             * video mode with the current quest size. */
 
     VideoMode video_mode;                   /**< Current video mode of the screen. */
     Surface* screen_surface;                /**< The screen surface. */
 
-    int width;                              /**< Width of the current screen surface. */
-    int offset;                             /**< Width of a black side bar when using a widescreen resolution. */
+    int offset_x;                           /**< Width of black vertical bars added in the current resolution. */
+    int offset_y;                           /**< Height of black horizontal bars added in the current resolution. */
     int end_row_increment;                  /**< Increment used by the stretching and scaling functions
-                                             * when changing the row. */
+                                             * when changing the row in the current resolution. */
 
     Rectangle quest_size;                   /**< Current size of the quest surface to draw on the screen surface. */
     Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */

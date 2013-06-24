@@ -35,12 +35,6 @@ class Rectangle {
   // low-level classes allowed to manipulate directly the internal SDL rectangle encapsulated
   friend class Surface;
 
-  private:
-
-    SDL_Rect rect;		/**< the SDL_Rect encapsulated */
-
-    SDL_Rect* get_internal_rect();
-
   public:
 
     Rectangle(int x = 0, int y = 0, int width = 0, int height = 0);
@@ -51,6 +45,7 @@ class Rectangle {
     int get_y() const;
     int get_width()  const;
     int get_height() const;
+    bool is_flat() const;
 
     void set_x(int x);
     void set_y(int y);
@@ -74,8 +69,14 @@ class Rectangle {
     bool overlaps(const Rectangle& other) const;
     Rectangle get_center();
 
-    bool equals(const Rectangle &other) const;
-    bool equals_xy(const Rectangle &other) const;
+    bool equals(const Rectangle& other) const;
+    bool equals_xy(const Rectangle& other) const;
+
+  private:
+
+    SDL_Rect* get_internal_rect();
+
+    SDL_Rect rect;      /**< the SDL_Rect encapsulated */
 };
 
 std::ostream& operator <<(std::ostream& stream, const Rectangle& rectangle);
@@ -110,6 +111,14 @@ inline int Rectangle::get_width()  const {
  */
 inline int Rectangle::get_height() const {
   return rect.h;
+}
+
+/**
+ * @brief Returns whether this rectangle is flat.
+ * @return true if the width or the height is 0.
+ */
+inline bool Rectangle::is_flat() const {
+  return get_width() == 0 || get_height() == 0;
 }
 
 /**

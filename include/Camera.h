@@ -25,22 +25,13 @@
  *
  * The camera determines the visible area of the map.
  * Most of the time, the camera follows the hero movements.
- * Occasionaly, it can be moved towards a point and then restored towards the hero.
+ * Occasionally, it can be moved towards a point and then restored towards the hero.
  */
 class Camera {
 
-  private:
-
-    Map &map;				/**< the map */
-    bool fixed_on_hero;			/**< true if the camera is fixed on the hero */
-    bool restoring;			/**< true if the camera is moving back to the hero */
-    Rectangle position;			/**< position of the camera on the map */
-    int speed;				/**< speed of the movement */
-    TargetMovement *movement;		/**< movement of the camera, or NULL for no movement */
-
   public:
 
-    Camera(Map &map);
+    Camera(Map& map);
     ~Camera();
 
     void update();
@@ -51,6 +42,18 @@ class Camera {
     void move(int target_x, int target_y);
     void move(MapEntity& entity);
     void restore();
+
+  private:
+
+    int get_width();
+    int get_height();
+
+    Map& map;                     /**< The map. */
+    bool fixed_on_hero;           /**< true if the camera is fixed on the hero. */
+    bool restoring;               /**< true if the camera is moving back to the hero. */
+    Rectangle position;           /**< Position of the camera on the map. */
+    int speed;                    /**< Speed of the movement. */
+    TargetMovement* movement;     /**< Movement of the camera, or NULL for no movement. */
 };
 
 #endif

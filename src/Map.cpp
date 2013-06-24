@@ -23,6 +23,7 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/VideoManager.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
 #include "entities/Ground.h"
@@ -253,7 +254,7 @@ void Map::unload() {
  */
 void Map::load(Game &game) {
 
-  this->visible_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
+  this->visible_surface = new Surface(VideoManager::get_instance()->get_quest_size());
   this->visible_surface->increment_refcount();
   entities = new MapEntities(game, *this);
 
@@ -537,6 +538,8 @@ void Map::draw_background() {
  */
 void Map::draw_foreground() {
 
+  const int screen_width = visible_surface->get_width();
+  const int screen_height = visible_surface->get_height();
   if (light == 0) {
     // no light
 
@@ -545,7 +548,7 @@ void Map::draw_foreground() {
     const Rectangle& camera_position = camera->get_position();
     int x = 320 - hero_position.get_x() + camera_position.get_x();
     int y = 240 - hero_position.get_y() + camera_position.get_y();
-    Rectangle src_position(x, y, SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
+    Rectangle src_position(x, y, screen_width, screen_height);
     Surface& dark_surface = *dark_surfaces[hero_direction];
     dark_surface.draw_region(src_position, *visible_surface);
 
@@ -553,39 +556,39 @@ void Map::draw_foreground() {
     // than 320*240: add black bars.
     if (x < 0) {
       visible_surface->fill_with_color(Color::get_black(),
-          Rectangle(0, 0, -x, SOLARUS_SCREEN_HEIGHT));
+          Rectangle(0, 0, -x, screen_height));
     }
     if (y < 0) {
       visible_surface->fill_with_color(Color::get_black(),
-          Rectangle(0, 0, SOLARUS_SCREEN_WIDTH, -y));
+          Rectangle(0, 0, screen_width, -y));
     }
-    if (x > dark_surface.get_width() - SOLARUS_SCREEN_WIDTH) {
+    if (x > dark_surface.get_width() - screen_width) {
       visible_surface->fill_with_color(Color::get_black(),
           Rectangle(dark_surface.get_width() - x, 0,
-              x - dark_surface.get_width() + SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT));
+              x - dark_surface.get_width() + screen_width, screen_height));
     }
-    if (y > dark_surface.get_height() - SOLARUS_SCREEN_HEIGHT) {
+    if (y > dark_surface.get_height() - screen_height) {
       visible_surface->fill_with_color(Color::get_black(),
           Rectangle(0, dark_surface.get_height() - y,
-              SOLARUS_SCREEN_WIDTH, y - dark_surface.get_height() + SOLARUS_SCREEN_HEIGHT));
+              screen_width, y - dark_surface.get_height() + screen_height));
     }
   }
   // TODO intermediate light levels
 
   // If the map is too small for the screen, add black bars outside the map.
   const int map_width = get_width();
-  if (map_width < SOLARUS_SCREEN_WIDTH) {
-    int bar_width = (SOLARUS_SCREEN_WIDTH - map_width) / 2;
-    Rectangle dst_position(0, 0, bar_width, SOLARUS_SCREEN_HEIGHT);
+  if (map_width < screen_width) {
+    int bar_width = (screen_width - map_width) / 2;
+    Rectangle dst_position(0, 0, bar_width, screen_height);
     visible_surface->fill_with_color(Color::get_black(), dst_position);
     dst_position.set_x(bar_width + map_width);
     visible_surface->fill_with_color(Color::get_black(), dst_position);
   }
 
   const int map_height = get_height();
-  if (map_height < SOLARUS_SCREEN_HEIGHT) {
-    int bar_height = (SOLARUS_SCREEN_HEIGHT - map_height) / 2;
-    Rectangle dst_position(0, 0, SOLARUS_SCREEN_WIDTH, bar_height);
+  if (map_height < screen_height) {
+    int bar_height = (screen_height - map_height) / 2;
+    Rectangle dst_position(0, 0, screen_width, bar_height);
     visible_surface->fill_with_color(Color::get_black(), dst_position);
     dst_position.set_y(bar_height + map_height);
     visible_surface->fill_with_color(Color::get_black(), dst_position);

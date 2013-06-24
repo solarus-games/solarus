@@ -21,6 +21,7 @@
 #include "entities/Hero.h"
 #include "entities/CameraStopper.h"
 #include "movements/TargetMovement.h"
+#include "lowlevel/VideoManager.h"
 #include "lua/LuaContext.h"
 
 /**
@@ -31,10 +32,9 @@ Camera::Camera(Map& map):
   map(map),
   fixed_on_hero(true),
   restoring(false),
-  position(0, 0, SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),
+  position(VideoManager::get_instance()->get_quest_size()),
   speed(120),
   movement(NULL) {
-
 }
 
 /**
@@ -42,6 +42,22 @@ Camera::Camera(Map& map):
  */
 Camera::~Camera() {
   delete movement;
+}
+
+/**
+ * @brief Returns the width of the visible area shown by the camera.
+ * @return The width of the quest screen.
+ */
+int Camera::get_width() {
+  return position.get_width();
+}
+
+/**
+ * @brief Returns the height of the visible area shown by the camera.
+ * @return The height of the quest screen.
+ */
+int Camera::get_height() {
+  return position.get_height();
 }
 
 /**
@@ -61,20 +77,20 @@ void Camera::update() {
     x = hero_center.get_x();
     y = hero_center.get_y();
 
-    if (map_location.get_width() < SOLARUS_SCREEN_WIDTH) {
-      x = (map_location.get_width() - SOLARUS_SCREEN_WIDTH) / 2;
+    if (map_location.get_width() < get_width()) {
+      x = (map_location.get_width() - get_width()) / 2;
     }
     else {
-      x = std::min(std::max(x - SOLARUS_SCREEN_WIDTH_MIDDLE, 0),
-          map_location.get_width() - SOLARUS_SCREEN_WIDTH);
+      x = std::min(std::max(x - get_width() / 2, 0),
+          map_location.get_width() - get_width());
     }
 
-    if (map_location.get_height() < SOLARUS_SCREEN_HEIGHT) {
-      y = (map_location.get_height() - SOLARUS_SCREEN_HEIGHT) / 2;
+    if (map_location.get_height() < get_height()) {
+      y = (map_location.get_height() - get_height()) / 2;
     }
     else {
-      y = std::min(std::max(y - SOLARUS_SCREEN_HEIGHT_MIDDLE, 0),
-          map_location.get_height() - SOLARUS_SCREEN_HEIGHT);
+      y = std::min(std::max(y - get_height() / 2, 0),
+          map_location.get_height() - get_height());
     }
 
     // See if there is a camera stopper in the rectangle.
@@ -87,13 +103,13 @@ void Camera::update() {
         // Vertical camera stopper.
         int separation_x = stopper->get_x() + 8;
 
-        if (x < separation_x && separation_x < x + SOLARUS_SCREEN_WIDTH
-            && stopper->get_y() < y + SOLARUS_SCREEN_HEIGHT
+        if (x < separation_x && separation_x < x + get_width()
+            && stopper->get_y() < y + get_height()
             && y < stopper->get_y() + stopper->get_height()) {
           int left = separation_x - x;
-          int right = x + SOLARUS_SCREEN_WIDTH - separation_x;
+          int right = x + get_width() - separation_x;
           if (left > right) {
-            x = separation_x - SOLARUS_SCREEN_WIDTH;
+            x = separation_x - get_width();
           }
           else {
             x = separation_x;
@@ -103,13 +119,13 @@ void Camera::update() {
       else if (stopper->get_height() == 16) {
         // Horizontal camera stopper.
         int separation_y = stopper->get_y() + 8;
-        if (y < separation_y && separation_y < y + SOLARUS_SCREEN_HEIGHT
-            && stopper->get_x() < x + SOLARUS_SCREEN_WIDTH
+        if (y < separation_y && separation_y < y + get_height()
+            && stopper->get_x() < x + get_width()
             && x < stopper->get_x() + stopper->get_width()) {
           int top = separation_y - y;
-          int bottom = y + SOLARUS_SCREEN_HEIGHT - separation_y;
+          int bottom = y + get_height() - separation_y;
           if (top > bottom) {
-            y = separation_y - SOLARUS_SCREEN_HEIGHT;
+            y = separation_y - get_height();
           }
           else {
             y = separation_y;
@@ -123,8 +139,8 @@ void Camera::update() {
   }
   else if (movement != NULL) {
     movement->update();
-    x = movement->get_x() - SOLARUS_SCREEN_WIDTH_MIDDLE;
-    y = movement->get_y() - SOLARUS_SCREEN_HEIGHT_MIDDLE;
+    x = movement->get_x() - get_width() / 2;
+    y = movement->get_y() - get_height() / 2;
 
     if (movement->is_finished()) {
       delete movement;
@@ -191,13 +207,13 @@ void Camera::move(int target_x, int target_y) {
   }
 
   const Rectangle& map_location = map.get_location();
-  target_x = std::min(std::max(target_x, SOLARUS_SCREEN_WIDTH_MIDDLE),
-      map_location.get_width() - SOLARUS_SCREEN_WIDTH_MIDDLE);
-  target_y = std::min(std::max(target_y, SOLARUS_SCREEN_HEIGHT_MIDDLE),
-      map_location.get_height() - SOLARUS_SCREEN_HEIGHT_MIDDLE);
+  target_x = std::min(std::max(target_x, get_width() / 2),
+      map_location.get_width() - get_width() / 2);
+  target_y = std::min(std::max(target_y, get_height() / 2),
+      map_location.get_height() - get_height() / 2);
 
   movement = new TargetMovement(target_x, target_y, speed, true);
-  movement->set_xy(position.get_x() + SOLARUS_SCREEN_WIDTH_MIDDLE, position.get_y() + 120);
+  movement->set_xy(position.get_x() + get_width() / 2, position.get_y() + get_height() / 2);
 
   fixed_on_hero = false;
 }

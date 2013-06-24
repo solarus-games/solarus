@@ -20,29 +20,82 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include <vector>
 
 VideoManager* VideoManager::instance = NULL;
 
-// Resolutions.
+namespace {
+
+// Forcing a video mode at compilation time.
 #if defined(SOLARUS_SCREEN_FORCE_MODE) && SOLARUS_SCREEN_FORCE_MODE != -1
 // Force a unique video mode at compilation time.
-const VideoManager::VideoMode VideoManager::forced_mode =
+const VideoManager::VideoMode forced_mode =
   VideoManager::VideoMode(SOLARUS_SCREEN_FORCE_MODE);
 #else
 // Make all modes available.
-const VideoManager::VideoMode VideoManager::forced_mode = NO_MODE;
+const VideoManager::VideoMode forced_mode = VideoManager::NO_MODE;
 #endif
 
-// Size of the screen in each video mode.
-Rectangle VideoManager::default_mode_sizes[] = {
-  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // WINDOWED_STRETCHED
-  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // WINDOWED_SCALE2X
-  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),          // WINDOWED_NORMAL
-  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // FULLSCREEN_NORMAL
-  Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_WIDE
-  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // FULLSCREEN_SCALE2X
-  Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_SCALE2X_WIDE
-};
+// List of fullscreen resolutions available on the system.
+std::vector<Rectangle> available_fullscreen_resolutions;
+
+/**
+ * @brief Returns the lowest fullscreen resolution greater than or equal to
+ * the specified size.
+ * @param surface_size The size of the surface to fit.
+ * @return The lowest fullscreen resolution that can contain this surface, or
+ * an rectangle of size 0.
+ */
+Rectangle find_lowest_fullscreen_resolution(const Rectangle& surface_size) {
+
+  // Find the lowest fullscreen resolution that can contain the requested size.
+  std::vector<Rectangle>::reverse_iterator it;
+  for (it = available_fullscreen_resolutions.rbegin();
+      it != available_fullscreen_resolutions.rend();
+      ++it) {
+    // Reverse iterator because SDL_ListModes gives resolutions sorted from
+    // the highest one to the lowest one.
+    const Rectangle& resolution = *it;
+    if (resolution.get_width() >= surface_size.get_width()
+        && resolution.get_height() >= surface_size.get_height()) {
+      // Found one.
+      return resolution;
+    }
+  }
+
+  return Rectangle();
+}
+
+/**
+ * @brief Returns a fullscreen resolution whose width is larger than the
+ * specified width and whose height is minimal.
+ * @param surface_size The size of the surface to fit.
+ * @return The lowest wide fullscreen resolution that can contain this surface,
+ * or a rectangle of size 0.
+ */
+Rectangle find_wide_fullscreen_resolution(const Rectangle& surface_size) {
+
+  int best_height = 1e6;
+  Rectangle best_resolution;
+
+  std::vector<Rectangle>::iterator it;
+  for (it = available_fullscreen_resolutions.begin();
+      it != available_fullscreen_resolutions.end();
+      ++it) {
+    const Rectangle& resolution = *it;
+    if (resolution.get_width() > surface_size.get_width()
+        && resolution.get_height() >= surface_size.get_height()
+        && resolution.get_height() < best_height) {
+      // Found a better one.
+      best_height = resolution.get_height();
+      best_resolution = resolution;
+    }
+  }
+
+  return best_resolution;
+}
+
+}
 
 /**
  * @brief Lua name of each value of the VideoMode enum.
@@ -65,8 +118,8 @@ const std::string VideoManager::video_mode_names[] = {
  * If the argument -no-video is provided, no window will be displayed
  * but all surfaces will exist internally.
  *
- * @param argc command-line arguments number
- * @param argv command-line arguments
+ * @param argc Command-line arguments number.
+ * @param argv Command-line arguments.
  */
 void VideoManager::initialize(int argc, char **argv) {
 
@@ -76,6 +129,8 @@ void VideoManager::initialize(int argc, char **argv) {
     const std::string arg = *argv;
     disable = (arg.find("-no-video") == 0);
   }
+
+  // TODO parse the -quest-size argument
 
   instance = new VideoManager(disable);
 }
@@ -96,20 +151,17 @@ VideoManager* VideoManager::get_instance() {
 }
 
 /**
- * @brief Returns the appropriate SDL_Surface flag depending on the requested display mode and what OS is running.
+ * @brief Returns the appropriate SDL_Surface flag depending on the requested
+ * display mode and what OS is running.
  * @param the display mode which you wanted to know the SDL_Surface flag to use with.
  * @return the better SDL_Surface flag to use
  */
-uint32_t VideoManager::get_surface_flag(const VideoMode mode) {
-  uint32_t flag;
+uint32_t VideoManager::get_surface_flag(const VideoMode mode) const {
 
-  // Use software surface if there will be pixel access to blit with the mode in parameter
-  if (mode_sizes[mode].get_width() != SOLARUS_SCREEN_WIDTH
-      || mode_sizes[mode].get_height() != SOLARUS_SCREEN_HEIGHT) {
-    flag = SDL_SWSURFACE;
-  }
-  else {
-    flag = SDL_HWSURFACE;
+  uint32_t flag = SDL_SWSURFACE;
+
+  if (is_fullscreen(mode)) {
+    flag |= SDL_FULLSCREEN;
   }
 
 #if defined(SOLARUS_SCREEN_DOUBLEBUF) && SOLARUS_SCREEN_DOUBLEBUF == 1
@@ -126,40 +178,95 @@ VideoManager::VideoManager(bool disable_window):
   disable_window(disable_window),
   screen_surface(NULL) {
 
-  // initialize the window
+  // Initialize the window.
   const std::string window_title = std::string("Solarus ") + SOLARUS_VERSION;
   set_window_title(window_title);
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 
-  // detect what widescreen resolution is supported (16:10 or 15:10)
+  const Rectangle twice_quest_size(
+      0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
 
-  for (int i = 0; i < NB_MODES; i++) {
-    mode_sizes[i] = default_mode_sizes[i];
-  }
-  int flags = get_surface_flag(FULLSCREEN_WIDE) | SDL_FULLSCREEN;
-  if (SDL_VideoModeOK(768, 480, 32, flags)) {
-    mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
-    dst_position_wide.set_xy((768 - SOLARUS_SCREEN_WIDTH * 2) / 2, 0);
-  }
-  else if (SDL_VideoModeOK(720, 480, 32, flags)) {
-    mode_sizes[FULLSCREEN_WIDE].set_size(720, 480);
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(720, 480);
-    dst_position_wide.set_xy((720 - SOLARUS_SCREEN_WIDTH * 2) / 2, 0);
-  }
-  else
-    dst_position_wide.set_xy(0, 0);
-  
-  
+  mode_sizes[WINDOWED_STRETCHED] = twice_quest_size;
+  mode_sizes[WINDOWED_STRETCHED] = twice_quest_size;
+  mode_sizes[WINDOWED_NORMAL] =    quest_size;
 
-  /* debug (see the fullscreen video modes supported)
-     SDL_Rect **rects = SDL_ListModes(NULL, flags);
-     while (*rects != NULL) {
-     std::cout << "mode " << (*rects)->w << " x " << (*rects)->h << std::endl;
+  // Get the fullscreen video modes supported by the system.
+  int fullscreen_flags = get_surface_flag(FULLSCREEN_NORMAL);
+  SDL_Rect** rects = SDL_ListModes(NULL, fullscreen_flags);
+  while (*rects != NULL) {
+    available_fullscreen_resolutions.push_back(
+        Rectangle(0, 0, (*rects)->w, (*rects)->h));
      rects++;
-     }
-     */
+  }
+
+  // Find a fullscreen resolution well suited for our quest size.
+  Rectangle non_wide_resolution;
+  Rectangle twice_non_wide_resolution;
+  if (SDL_VideoModeOK(quest_size.get_width(), quest_size.get_height(),
+      32, fullscreen_flags)) {
+    // First try directly the resolution of the quest size.
+    non_wide_resolution.set_size(quest_size);
+  }
+
+  if (SDL_VideoModeOK(twice_quest_size.get_width(), twice_quest_size.get_height(),
+      32, fullscreen_flags)) {
+    // The resolution of twice the quest size will be used by the scaled
+    // video mode.
+    twice_non_wide_resolution.set_size(twice_quest_size);
+
+    if (non_wide_resolution.is_flat()) {
+      // Use twice the size also for the non-scaled mode because many systems
+      // accept 640x480 but not 320x240.
+      // The image will be stretched by a factor of two and the user
+      // won't see a difference.
+      non_wide_resolution = twice_non_wide_resolution;
+    }
+  }
+
+  if (non_wide_resolution.is_flat()) {
+    // Find the lowest fullscreen resolution that can contain the quest size.
+    // The image will be centered on a black background.
+    non_wide_resolution = find_lowest_fullscreen_resolution(quest_size);
+    if (non_wide_resolution.is_flat()) {
+      // No fullscreen resolution was detected. This is weird.
+      // Never mind: the user will play with a window. But there might be
+      // something wrong with our detection of fullscreen resolutions.
+      Debug::error("No available fullscreen resolution was detected.");
+    }
+  }
+  if (!non_wide_resolution.is_flat()) {
+    mode_sizes[FULLSCREEN_NORMAL] = non_wide_resolution;
+  }
+
+  if (twice_non_wide_resolution.is_flat()) {
+    twice_non_wide_resolution = find_lowest_fullscreen_resolution(twice_quest_size);
+  }
+  if (!twice_non_wide_resolution.is_flat()) {
+    mode_sizes[FULLSCREEN_SCALE2X] = twice_non_wide_resolution;
+  }
+
+  // Now let's find a wider resolution that can also contain the quest.
+  // This will look better on wide screens if the quest size is 4:3.
+  Rectangle wide_resolution = find_wide_fullscreen_resolution(quest_size);
+  Rectangle twice_wide_resolution = find_wide_fullscreen_resolution(twice_quest_size);
+  if (!wide_resolution.is_flat()) {
+    // Maybe there is a better resolution when we show twice the size
+    // (same reason as above).
+    if (!twice_wide_resolution.is_flat()
+        && twice_wide_resolution.get_height() / 2 < wide_resolution.get_height()) {
+      // Twice the size is better because we will have less horizontal
+      // black bars (or none).
+      wide_resolution = twice_wide_resolution;
+    }
+  }
+
+  if (!wide_resolution.is_flat()) {
+    mode_sizes[FULLSCREEN_WIDE] = wide_resolution;
+  }
+  if (!twice_wide_resolution.is_flat()) {
+    mode_sizes[FULLSCREEN_SCALE2X_WIDE] = wide_resolution;
+  }
 
   set_default_video_mode();
 }
@@ -176,7 +283,7 @@ VideoManager::~VideoManager() {
  * @param mode a video mode
  * @return true if this mode is supported
  */
-bool VideoManager::is_mode_supported(VideoMode mode) {
+bool VideoManager::is_mode_supported(VideoMode mode) const {
 
   if (mode == NO_MODE) {
     return false;
@@ -186,21 +293,27 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
     return false;
   }
 
-  const Rectangle* size = &mode_sizes[mode];
-
-  if (size->get_width() == 0) {
+  std::map<VideoMode, Rectangle>::const_iterator it = mode_sizes.find(mode);
+  if (it == mode_sizes.end()) {
+    // The initial detection of this mode failed.
     return false;
   }
 
-  int flags = get_surface_flag(mode);
-  if (is_fullscreen(mode)) {
-#if defined(SOLARUS_FULLSCREEN_FORCE_OK) && SOLARUS_FULLSCREEN_FORCE_OK == 1
-    return true;
-#else 
-    flags |= SDL_FULLSCREEN;
-#endif
+  const Rectangle& size = it->second;
+
+  if (size.is_flat()) {
+    Debug::die(StringConcat() <<
+        "Uninitialized size for video mode " << video_mode);
   }
-  return SDL_VideoModeOK(size->get_width(), size->get_height(), 32, flags) != 0;
+
+#if defined(SOLARUS_FULLSCREEN_FORCE_OK) && SOLARUS_FULLSCREEN_FORCE_OK == 1
+  if (is_fullscreen(mode)) {
+    return true;
+  }
+#endif
+
+  int flags = get_surface_flag(mode);
+  return SDL_VideoModeOK(size.get_width(), size.get_height(), 32, flags) != 0;
 }
 
 /**
@@ -208,7 +321,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
  * @param mode A video mode.
  * @return true if this video mode is in fullscreen.
  */
-bool VideoManager::is_fullscreen(VideoMode mode) {
+bool VideoManager::is_fullscreen(VideoMode mode) const {
   return mode >= FULLSCREEN_NORMAL;
 }
 
@@ -216,7 +329,7 @@ bool VideoManager::is_fullscreen(VideoMode mode) {
  * @brief Returns whether the current video mode is in fullscreen.
  * @return true if the current video mode is in fullscreen.
  */
-bool VideoManager::is_fullscreen() {
+bool VideoManager::is_fullscreen() const {
   return is_fullscreen(get_video_mode());
 }
 
@@ -296,7 +409,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
   int flags = get_surface_flag(mode);
   int show_cursor;
   if (is_fullscreen(mode)) {
-    flags |= SDL_FULLSCREEN;
     show_cursor = SDL_DISABLE;
   }
   else {
@@ -304,16 +416,18 @@ bool VideoManager::set_video_mode(VideoMode mode) {
   }
 
   const Rectangle& size = mode_sizes[mode];
+
+  /* TODO
   if (size.get_width() > SOLARUS_SCREEN_WIDTH * 2) {
     // Wide screen resolution with two black side bars.
-    offset = dst_position_wide.get_x();
+    offset_x = dst_position_wide.get_x();
   }
   else {
     // No side bars.
-    offset = 0;
+    offset_x = 0;
   }
-  width = size.get_width();
-  end_row_increment = 2 * offset + width;
+  end_row_increment = 2 * offset_x + size.get_width();
+  */
 
   if (!disable_window) {
     SDL_Surface* screen_internal_surface = SDL_SetVideoMode(
@@ -332,9 +446,9 @@ bool VideoManager::set_video_mode(VideoMode mode) {
 
 /**
  * @brief Returns the current video mode.
- * @return the video mode
+ * @return The video mode.
  */
-VideoManager::VideoMode VideoManager::get_video_mode() {
+VideoManager::VideoMode VideoManager::get_video_mode() const {
   return video_mode;
 }
 
@@ -342,7 +456,7 @@ VideoManager::VideoMode VideoManager::get_video_mode() {
  * @brief Returns a list of all supported video modes.
  * @return The list of supported video modes.
  */
-const std::list<VideoManager::VideoMode> VideoManager::get_video_modes() {
+const std::list<VideoManager::VideoMode> VideoManager::get_video_modes() const {
 
   std::list<VideoManager::VideoMode> modes;
   for (int i = 0; i < NB_MODES; i++) {
@@ -439,11 +553,11 @@ void VideoManager::blit(Surface& src_surface, Surface& dst_surface) {
  * @param dst_surface the destination surface
  */
 void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
-    
+
     SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
     SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
     SDL_Surface* surface_to_draw;
-    
+
 #ifndef __APPLE__
     surface_to_draw = dst_internal_surface;
 #else
@@ -451,29 +565,30 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
      * FIXME: creating a new surface at each blit is probably a horrible loss
      * of performance */
     surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                           dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
+        dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
 #endif
-    
+
     SDL_LockSurface(src_internal_surface);
     SDL_LockSurface(surface_to_draw);
-    
-    uint32_t* src = (uint32_t*) src_internal_surface->pixels;
-    uint32_t* dst = (uint32_t*) surface_to_draw->pixels;
-    
-    int p = offset;
-    for (int i = 0; i < SOLARUS_SCREEN_HEIGHT; i++) {
-        for (int j = 0; j < SOLARUS_SCREEN_WIDTH; j++) {
+
+    uint32_t* src = static_cast<uint32_t*>(src_internal_surface->pixels);
+    uint32_t* dst = static_cast<uint32_t*>(surface_to_draw->pixels);
+
+    int p = offset_x;
+    const int width = dst_surface.get_width();
+    for (int i = 0; i < quest_size.get_height(); i++) {
+        for (int j = 0; j < quest_size.get_width(); j++) {
             dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = *src;
             p += 2;
             src++;
         }
-        
+
         p += end_row_increment;
     }
-    
+
     SDL_UnlockSurface(surface_to_draw);
     SDL_UnlockSurface(src_internal_surface);
-    
+
 #ifdef __APPLE__
     SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
     SDL_FreeSurface(surface_to_draw);
@@ -492,11 +607,11 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
  * @param dst_surface the destination surface
  */
 void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
-    
+
     SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
     SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
     SDL_Surface* surface_to_draw;
-    
+
 #ifndef __APPLE__
     surface_to_draw = dst_internal_surface;
 #else
@@ -506,37 +621,46 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
     surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                            dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
 #endif
-    
+
     SDL_LockSurface(src_internal_surface);
     SDL_LockSurface(surface_to_draw);
-    
+
     uint32_t* src = (uint32_t*) src_internal_surface->pixels;
     uint32_t* dst = (uint32_t*) surface_to_draw->pixels;
-    
+
     int b, d, e = 0, f,  h;
-    int e1 = offset, e2, e3, e4;
-    for (int row = 0; row < SOLARUS_SCREEN_HEIGHT; row++) {
-        for (int col = 0; col < SOLARUS_SCREEN_WIDTH; col++) {
-            
+    int e1 = offset_x, e2, e3, e4;
+    const int width = dst_surface.get_width();
+    for (int row = 0; row < quest_size.get_height(); row++) {
+        for (int col = 0; col < quest_size.get_width(); col++) {
+
             // compute a to i
-            
-            b = e - SOLARUS_SCREEN_WIDTH;
+
+            b = e - quest_size.get_width();
             d = e - 1;
             f = e + 1;
-            h = e + SOLARUS_SCREEN_WIDTH;
-            
-            if (row == 0)   { b = e; }
-            if (row == SOLARUS_SCREEN_HEIGHT - 1) { h = e; }
-            if (col == 0)   { d = e; }
-            if (col == SOLARUS_SCREEN_WIDTH - 1) { f = e; }
-            
+            h = e + quest_size.get_width();
+
+            if (row == 0) {
+              b = e;
+            }
+            if (row == quest_size.get_height() - 1) {
+              h = e;
+            }
+            if (col == 0) {
+              d = e;
+            }
+            if (col == quest_size.get_width() - 1) {
+              f = e;
+            }
+
             // compute e1 to e4
             e2 = e1 + 1;
             e3 = e1 + width;
             e4 = e3 + 1;
-            
+
             // compute the color
-            
+
             if (src[b] != src[h] && src[d] != src[f]) {
                 dst[e1] = (src[d] == src[b]) ? src[d] : src[e];
                 dst[e2] = (src[b] == src[f]) ? src[f] : src[e];
@@ -551,10 +675,10 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
         }
         e1 += end_row_increment;
     }
-    
+
     SDL_UnlockSurface(surface_to_draw);
     SDL_UnlockSurface(src_internal_surface);
-    
+
 #ifdef __APPLE__
     SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
     SDL_FreeSurface(surface_to_draw);
@@ -565,7 +689,7 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
  * @brief Returns the current text of the window title bar.
  * @return The window title.
  */
-const std::string VideoManager::get_window_title() {
+const std::string VideoManager::get_window_title() const {
 
   char* window_title;
   char* icon;

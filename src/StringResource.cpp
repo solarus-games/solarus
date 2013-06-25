@@ -96,13 +96,25 @@ void StringResource::quit() {
 }
 
 /**
- * @brief Returns a string stored in the language-specific file "text/strings.dat".
- * @param key id of the string to retrieve
- * @return the corresponding localized string
+ * @brief Returns whether a string exists in the language-specific file
+ * "text/strings.dat" for the current language.
+ * @param key Id of a string.
+ * @return true if the string exists.
+ */
+bool StringResource::exists(const std::string& key) {
+
+  return strings.find(key) != strings.end();
+}
+
+/**
+ * @brief Returns a string stored in the language-specific file
+ * "text/strings.dat" for the current language.
+ * @param key Id of the string to retrieve. It must exist.
+ * @return The corresponding localized string.
  */
 const std::string& StringResource::get_string(const std::string& key) {
 
-  Debug::check_assertion(strings.count(key) > 0, StringConcat()
+  Debug::check_assertion(exists(key), StringConcat()
       << "Cannot find string with key '" << key << "'");
   return strings[key];
 }

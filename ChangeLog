@@ -13,6 +13,7 @@ Bug fixes for the 1.0 release.
 Solarus changes:
 
 * Fix blocks not completely moved since Solarus 1.0.2.
+* Don't crash if a script tries so show a missing string (#237).
 
 solarus-1.0.2 (2013-06-22)
 

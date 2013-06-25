@@ -2,6 +2,10 @@ solarus-1.0.4 (under development)
 
 Bug fixes for the 1.0 release.
 
+Solarus changes:
+
+* Don't die if a treasure has a variant unexistent in the item sprite.
+
 solarus-1.0.3 (2013-06-25)
 
 Bug fixes for the 1.0 release.

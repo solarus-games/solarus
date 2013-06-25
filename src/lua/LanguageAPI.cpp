@@ -150,8 +150,13 @@ int LuaContext::language_api_get_string(lua_State* l) {
 
   const std::string& key = luaL_checkstring(l, 1);
 
-  push_string(l, StringResource::get_string(key));
+  if (!StringResource::exists(key)) {
+    luaL_error(l, (StringConcat() << "No value with key '" << key
+        << "' in strings.dat for language '"
+        << FileTools::get_language() << "'").c_str());
+  }
 
+  push_string(l, StringResource::get_string(key));
   return 1;
 }
 

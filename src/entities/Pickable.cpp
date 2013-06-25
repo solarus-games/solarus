@@ -37,8 +37,12 @@
  * @param y y coordinate of the pickable item to create
  * @param treasure the treasure to give when the item is picked
  */
-Pickable::Pickable(const std::string& name, Layer layer,
-    int x, int y, const Treasure& treasure):
+Pickable::Pickable(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    const Treasure& treasure):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, name, layer, x, y, 0, 0),
   treasure(treasure),
   given_to_player(false),
@@ -86,9 +90,15 @@ EntityType Pickable::get_type() {
  * decide if it disappears after some time)
  * @return the pickable item created, or NULL
  */
-Pickable* Pickable::create(Game& game, const std::string& name,
-    Layer layer, int x, int y, Treasure treasure,
-    FallingHeight falling_height, bool force_persistent) {
+Pickable* Pickable::create(
+    Game& game,
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    Treasure treasure,
+    FallingHeight falling_height,
+    bool force_persistent) {
 
   treasure.ensure_obtainable();
 
@@ -97,7 +107,7 @@ Pickable* Pickable::create(Game& game, const std::string& name,
     return NULL;
   }
 
-  Pickable *pickable = new Pickable(name, layer, x, y, treasure);
+  Pickable* pickable = new Pickable(name, layer, x, y, treasure);
 
   // Set the item properties.
   pickable->falling_height = falling_height;
@@ -151,7 +161,17 @@ void Pickable::initialize_sprites() {
   create_sprite("entities/items");
   Sprite& item_sprite = get_sprite();
   item_sprite.set_current_animation(treasure.get_item_name());
-  item_sprite.set_current_direction(treasure.get_variant() - 1);
+  int direction = treasure.get_variant() - 1;
+  if (direction < 0 || direction >= item_sprite.get_nb_directions()) {
+    Debug::error(StringConcat() << 
+        "Pickable treasure '" << treasure.get_item_name() << "' has variant "
+        << treasure.get_variant()
+        << " but sprite 'entities/items' has only "
+        << item_sprite.get_nb_directions() << " variant(s) in animation '"
+        << treasure.get_item_name() << "'");
+    direction = 0;  // Fallback.
+  }
+  item_sprite.set_current_direction(direction);
   item_sprite.enable_pixel_collisions();
 
   // Set the origin point and the size of the entity.

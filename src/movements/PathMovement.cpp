@@ -164,11 +164,12 @@ void PathMovement::notify_object_controlled() {
  */
 void PathMovement::update() {
 
-  PixelMovement::update();
-
   if (!is_suspended() && is_current_elementary_move_finished()) {
     start_next_elementary_move();
   }
+
+  // Do this at last so that Movement::update() knows whether we are finished.
+  PixelMovement::update();
 }
 
 /**
@@ -244,7 +245,7 @@ bool PathMovement::is_current_elementary_move_finished() {
  */
 void PathMovement::start_next_elementary_move() {
 
-  MapEntity *entity = get_entity();
+  MapEntity* entity = get_entity();
 
   // don't move while the entity is unknown
   if (entity == NULL) {

@@ -431,10 +431,14 @@ ALuint Sound::decode_file(const std::string& file_name) {
 
       // copy the samples into an OpenAL buffer
       alGenBuffers(1, &buffer);
-      alBufferData(buffer, AL_FORMAT_STEREO16, (ALshort*) &samples[0], ALsizei(total_bytes_read), sample_rate);
+      alBufferData(buffer,
+          AL_FORMAT_STEREO16,
+          reinterpret_cast<ALshort*>(&samples[0]),
+          ALsizei(total_bytes_read),
+          sample_rate);
       if (alGetError() != AL_NO_ERROR) {
         Debug::error(StringConcat() << "Cannot copy the sound samples of '"
-            << file_name << " into buffer " << buffer);
+            << file_name << "' into buffer " << buffer);
         buffer = AL_NONE;
       }
     }

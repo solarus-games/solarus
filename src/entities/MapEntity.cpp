@@ -512,7 +512,7 @@ void MapEntity::set_xy(int x, int y) {
  *
  * @param xy the new coordinates of the entity on the map (the width and height are ignored)
  */
-void MapEntity::set_xy(const Rectangle &xy) {
+void MapEntity::set_xy(const Rectangle& xy) {
   set_xy(xy.get_x(), xy.get_y());
 }
 

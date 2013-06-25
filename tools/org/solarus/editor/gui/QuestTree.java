@@ -424,8 +424,6 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
                 }
                 else if (clickedObject instanceof CheckBoxNodeData) {
                     // Right click on a map entity type.
-                    final CheckBoxNodeData data =
-                        (CheckBoxNodeData) clickedObject;
                     DefaultMutableTreeNode mapNode = (DefaultMutableTreeNode) clickedNode.getParent();
                     int index = mapNode.getIndex(clickedNode);
                     EntityType entityType = EntityType.values()[index];

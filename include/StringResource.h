@@ -46,6 +46,7 @@ class StringResource {
     static void initialize();
     static void quit();
 
+    static bool exists(const std::string& key);
     static const std::string& get_string(const std::string& key);
 };
 

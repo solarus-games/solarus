@@ -29,8 +29,11 @@
  * @param loop true to make the movement return to the beginning once finished
  * @param ignore_obstacles true to make the movement ignore obstacles
  */
-PixelMovement::PixelMovement(const std::string &trajectory_string,
-			     uint32_t delay, bool loop, bool ignore_obstacles):
+PixelMovement::PixelMovement(
+    const std::string& trajectory_string,
+    uint32_t delay,
+    bool loop,
+    bool ignore_obstacles):
   Movement(ignore_obstacles),
   next_move_date(0), delay(delay), loop(loop), nb_steps_done(0), finished(false) {
 
@@ -269,4 +272,3 @@ bool PixelMovement::is_finished() {
 const std::string& PixelMovement::get_lua_type_name() const {
   return LuaContext::movement_pixel_module_name;
 }
-

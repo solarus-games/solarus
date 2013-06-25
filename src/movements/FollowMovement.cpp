@@ -25,8 +25,15 @@
  * @param y y coordinate of where this entity should be placed (relative to the entity followed)
  * @param ignore_obstacles true to make the movement ignore obstacles
  */
-FollowMovement::FollowMovement(MapEntity *entity_followed, int x, int y, bool ignore_obstacles):
-  Movement(ignore_obstacles), entity_followed(entity_followed), x(x), y(y), finished(false) {
+FollowMovement::FollowMovement(MapEntity* entity_followed,
+    int x,
+    int y,
+    bool ignore_obstacles):
+  Movement(ignore_obstacles),
+  entity_followed(entity_followed),
+  x(x),
+  y(y),
+  finished(false) {
 
 }
 
@@ -34,7 +41,6 @@ FollowMovement::FollowMovement(MapEntity *entity_followed, int x, int y, bool ig
  * @brief Destructor.
  */
 FollowMovement::~FollowMovement() {
-
 }
 
 /**

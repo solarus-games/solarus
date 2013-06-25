@@ -12,6 +12,24 @@ Lua API changes:
 
 * Add a function sol.video.get_quest_size().
 
+solarus-1.0.4 (2013-06-26)
+
+Bug fixes for the 1.0 release.
+
+Solarus changes:
+
+* Don't die if a script tries so show a missing string (#237).
+* Don't die if a treasure has a variant unexistent in the item sprite.
+* Fix customization of joypad commands.
+
+solarus-1.0.3 (2013-06-25)
+
+Bug fixes for the 1.0 release.
+
+Solarus changes:
+
+* Fix blocks not completely moved since Solarus 1.0.2.
+
 solarus-1.0.2 (2013-06-22)
 
 Bug fixes for the 1.0 release.

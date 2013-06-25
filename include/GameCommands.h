@@ -21,6 +21,7 @@
 #include "lowlevel/InputEvent.h"
 #include <string>
 #include <map>
+#include <set>
 
 /**
  * @brief Stores the mapping between the in-game high-level commands
@@ -60,18 +61,18 @@ class GameCommands {
     GameCommands(Game& game);
     ~GameCommands();
 
-    InputEvent::KeyboardKey get_keyboard_binding(Command command);
+    InputEvent::KeyboardKey get_keyboard_binding(Command command) const;
     void set_keyboard_binding(Command command, InputEvent::KeyboardKey keyboard_key);
-    const std::string& get_joypad_binding(Command command);
+    const std::string& get_joypad_binding(Command command) const;
     void set_joypad_binding(Command command, const std::string& joypad_string);
 
     void notify_input(InputEvent& event);
-    bool is_command_pressed(Command command);
-    int get_wanted_direction8();
+    bool is_command_pressed(Command command) const;
+    int get_wanted_direction8() const;
 
     void customize(Command command, int callback_ref);
-    bool is_customizing();
-    Command get_command_to_customize();
+    bool is_customizing() const;
+    Command get_command_to_customize() const;
 
     static bool is_joypad_string_valid(const std::string& joypad_string);
     static const std::string& get_command_name(Command command);
@@ -81,7 +82,7 @@ class GameCommands {
 
   private:
 
-    Savegame& get_savegame();
+    Savegame& get_savegame() const;  // TODO return const Savegame&
 
     // High-level resulting commands.
     void game_command_pressed(Command command);
@@ -90,18 +91,22 @@ class GameCommands {
     // Keyboard mapping.
     void keyboard_key_pressed(InputEvent::KeyboardKey keyboard_key_pressed);
     void keyboard_key_released(InputEvent::KeyboardKey keyboard_key_released);
-    const std::string& get_keyboard_binding_savegame_variable(Command command);
-    InputEvent::KeyboardKey get_saved_keyboard_binding(Command command);
+    const std::string& get_keyboard_binding_savegame_variable(Command command) const;
+    InputEvent::KeyboardKey get_saved_keyboard_binding(Command command) const;
     void set_saved_keyboard_binding(Command command, InputEvent::KeyboardKey key);
+    Command get_command_from_keyboard(InputEvent::KeyboardKey key) const;
 
     // Joypad mapping.
     void joypad_button_pressed(int button);
     void joypad_button_released(int button);
     void joypad_axis_moved(int axis, int direction);
     void joypad_hat_moved(int hat, int direction);
-    const std::string& get_joypad_binding_savegame_variable(Command command);
-    const std::string& get_saved_joypad_binding(Command command);
+    const std::string& get_joypad_binding_savegame_variable(Command command) const;
+    const std::string& get_saved_joypad_binding(Command command) const;
     void set_saved_joypad_binding(Command command, const std::string& joypad_string);
+    Command get_command_from_joypad(const std::string& joypad_string) const;
+
+    void do_customization_callback();
 
     Game& game;                          /**< The game we are controlling. */
     std::map<InputEvent::KeyboardKey, Command>
@@ -110,7 +115,7 @@ class GameCommands {
     std::map<std::string, Command>
         joypad_mapping;                  /**< Associates each game command to the
                                           * joypad action that triggers it. */
-    std::map<Command, bool>
+    std::set<Command>
         commands_pressed;                /**< Memorizes the state of each game command. */
 
     bool customizing;                    /**< Indicates that the next keyboard or

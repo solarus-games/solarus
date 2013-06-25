@@ -5,6 +5,7 @@ Bug fixes for the 1.0 release.
 Solarus changes:
 
 * Don't die if a treasure has a variant unexistent in the item sprite.
+* Fix customization of joypad commands.
 
 solarus-1.0.3 (2013-06-25)
 

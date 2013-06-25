@@ -1,3 +1,11 @@
+solarus-1.0.3 (2013-06-25)
+
+Bug fixes for the 1.0 release.
+
+Solarus changes:
+
+* Fix blocks not completely moved since Solarus 1.0.2.
+
 solarus-1.0.2 (2013-06-22)
 
 Bug fixes for the 1.0 release.

@@ -28,7 +28,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::PushingState::PushingState(Hero &hero):
+Hero::PushingState::PushingState(Hero& hero):
   State(hero),
   pushed_entity(NULL) {
 
@@ -45,7 +45,7 @@ Hero::PushingState::~PushingState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::PushingState::start(State *previous_state) {
+void Hero::PushingState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -56,7 +56,7 @@ void Hero::PushingState::start(State *previous_state) {
 /**
  * @brief Stops this state.
  */
-void Hero::PushingState::stop(State *next_state) {
+void Hero::PushingState::stop(State* next_state) {
 
   State::stop(next_state);
 
@@ -93,7 +93,7 @@ void Hero::PushingState::update() {
     // see if the obstacle pushed is an entity that the hero can move
     else {
  
-      Detector *facing_entity = hero.get_facing_entity();
+      Detector* facing_entity = hero.get_facing_entity();
       if (facing_entity != NULL) { // the obstacle pushed is an entity
 
         if (facing_entity->get_type() == BLOCK) { // it can be moved by the hero (TODO dynamic binding)
@@ -152,6 +152,7 @@ void Hero::PushingState::notify_movement_finished() {
 
   if (is_moving_grabbed_entity()) {
     // the 16 pixels of the path are completed
+    pushed_entity->update();
     stop_moving_pushed_entity();
   }
 }
@@ -164,6 +165,7 @@ void Hero::PushingState::notify_obstacle_reached() {
 
   if (is_moving_grabbed_entity()) {
     // an obstacle is reached before the 16 pixels are completed
+    pushed_entity->update();
     stop_moving_pushed_entity();
   }
 }
@@ -178,7 +180,7 @@ void Hero::PushingState::notify_position_changed() {
     // if the entity has made more than 8 pixels and is aligned on the grid,
     // we stop the movement
 
-    PathMovement *movement = (PathMovement*) hero.get_movement();
+    PathMovement* movement = static_cast<PathMovement*>(hero.get_movement());
 
     bool horizontal = pushing_direction4 % 2 == 0;
     bool has_reached_grid = movement->get_total_distance_covered() >= 16
@@ -186,6 +188,7 @@ void Hero::PushingState::notify_position_changed() {
           || (!horizontal && pushed_entity->is_aligned_to_grid_y()));
 
     if (has_reached_grid) {
+      pushed_entity->update();
       stop_moving_pushed_entity();
     }
   }

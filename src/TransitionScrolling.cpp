@@ -49,7 +49,8 @@ TransitionScrolling::~TransitionScrolling() {
  * both_maps_surface, for the specified scrolling direction.
  * @param scrolling_direction The scrolling direction (0 to 3).
  */
-Rectangle get_previous_map_dst_position(int scrolling_direction) {
+Rectangle TransitionScrolling::get_previous_map_dst_position(
+    int scrolling_direction) {
 
   const Rectangle& quest_size = VideoManager::get_instance()->get_quest_size();
 

@@ -107,15 +107,17 @@ class VideoManager {
     VideoMode video_mode;                   /**< Current video mode of the screen. */
     Surface* screen_surface;                /**< The screen surface. */
 
+    int enlargment_factor;                  /**< 1 if the quest surface it not stretched or scaled,
+                                             * 2 if it is stretched or scaled by a factor of 2. */
     int offset_x;                           /**< Width of black vertical bars added in the current resolution. */
     int offset_y;                           /**< Height of black horizontal bars added in the current resolution. */
     int end_row_increment;                  /**< Increment used by the stretching and scaling functions
                                              * when changing the row in the current resolution. */
 
-    Rectangle quest_size;                   /**< Current size of the quest surface to draw on the screen surface. */
     Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */
     Rectangle min_quest_size;               /**< Minimum value of quest_size (depends on the quest). */
     Rectangle max_quest_size;               /**< Maximum value of quest_size (depends on the quest). */
+    Rectangle quest_size;                   /**< Size of the quest surface to render on the screen surface. */
 };
 
 #endif

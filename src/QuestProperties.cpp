@@ -153,6 +153,13 @@ int QuestProperties::l_quest(lua_State* l) {
         "Bad field 'max_quest_size' (not a valid size string)");
   }
 
+  if (normal_quest_size.get_width() < min_quest_size.get_width()
+      || normal_quest_size.get_height() < min_quest_size.get_height()
+      || normal_quest_size.get_width() > max_quest_size.get_width()
+      || normal_quest_size.get_height() > max_quest_size.get_height()) {
+    luaL_argerror(l, 1, "Invalid range of quest sizes");
+  }
+
   VideoManager::get_instance()->set_quest_size_range(
       normal_quest_size,
       min_quest_size,

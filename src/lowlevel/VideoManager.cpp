@@ -176,7 +176,16 @@ uint32_t VideoManager::get_surface_flag(const VideoMode mode) const {
  */
 VideoManager::VideoManager(bool disable_window):
   disable_window(disable_window),
-  screen_surface(NULL) {
+  video_mode(NO_MODE),
+  screen_surface(NULL),
+  enlargment_factor(1),
+  offset_x(0),
+  offset_y(0),
+  end_row_increment(0),
+  normal_quest_size(0, 0, 320, 240),
+  min_quest_size(normal_quest_size),
+  max_quest_size(normal_quest_size),
+  quest_size(normal_quest_size) {
 
   // Initialize the window.
   const std::string window_title = std::string("Solarus ") + SOLARUS_VERSION;
@@ -415,10 +424,20 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     show_cursor = SDL_ENABLE;
   }
 
-  const Rectangle& size = mode_sizes[mode];
+  const Rectangle& mode_size = mode_sizes[mode];
+
+  if (mode_size.get_width() < 2 * quest_size.get_width()) {
+    enlargment_factor = 1;
+  }
+  else {
+    // The image will be stretched or scaled.
+    enlargment_factor = 2;
+  }
+
+
 
   /* TODO
-  if (size.get_width() > SOLARUS_SCREEN_WIDTH * 2) {
+  if (mode_size.get_width() > SOLARUS_SCREEN_WIDTH * 2) {
     // Wide screen resolution with two black side bars.
     offset_x = dst_position_wide.get_x();
   }
@@ -426,14 +445,18 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     // No side bars.
     offset_x = 0;
   }
-  end_row_increment = 2 * offset_x + size.get_width();
+  end_row_increment = 2 * offset_x + mode_size.get_width();
   */
 
   if (!disable_window) {
     SDL_Surface* screen_internal_surface = SDL_SetVideoMode(
-        size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, flags);
+        mode_size.get_width(),
+        mode_size.get_height(),
+        SOLARUS_COLOR_DEPTH,
+        flags);
 
-    Debug::check_assertion(screen_internal_surface != NULL, StringConcat() << "Cannot create the video surface for mode " << mode);
+    Debug::check_assertion(screen_internal_surface != NULL, StringConcat() <<
+        "Cannot create the video surface for mode " << mode);
 
     SDL_ShowCursor(show_cursor);
     delete this->screen_surface;
@@ -737,5 +760,73 @@ bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
 
   size.set_size(width, height);
   return true;
+}
+
+/**
+ * @brief Returns the size of the quest surface to render on the screen.
+ * @return The quest size.
+ */
+const Rectangle& VideoManager::get_quest_size() const {
+  return quest_size;
+}
+
+/**
+ * @brief Sets the size of the quest surface to render on the screen.
+ *
+ * If it is outside the range of allowed sizes for this quest, the normal
+ * quest size is applied instead.
+ *
+ * @param quest_size The quest size to set.
+ */
+void VideoManager::set_quest_size(Rectangle& quest_size) {
+
+  if (quest_size.get_width() >= min_quest_size.get_width()
+      && quest_size.get_height() >= min_quest_size.get_height()
+      && quest_size.get_width() <= max_quest_size.get_width()
+      && quest_size.get_height() <= max_quest_size.get_height()) {
+    this->quest_size = quest_size;
+  }
+  else {
+    this->quest_size = normal_quest_size;
+  }
+}
+
+/**
+ * @brief Gets the allowed range of quest sizes for this quest.
+ * @param normal_quest_size Gets the default size for this quest.
+ * @param min_quest_size Gets the minimum size for this quest.
+ * @param max_quest_size Gets the maximum size for this quest.
+ */
+void VideoManager::get_quest_size_range(
+    Rectangle& normal_quest_size,
+    Rectangle& min_quest_size,
+    Rectangle& max_quest_size) const {
+
+  normal_quest_size = this->normal_quest_size;
+  min_quest_size = this->min_quest_size;
+  max_quest_size = this->max_quest_size;
+}
+
+/**
+ * @brief Sets the allowed range of quest sizes for this quest.
+ * @param normal_quest_size Default size for this quest.
+ * @param min_quest_size Minimum size for this quest.
+ * @param max_quest_size Maximum size for this quest.
+ */
+void VideoManager::set_quest_size_range(
+    const Rectangle& normal_quest_size,
+    const Rectangle& min_quest_size,
+    const Rectangle& max_quest_size) {
+
+  Debug::check_assertion(
+      normal_quest_size.get_width() >= min_quest_size.get_width()
+      && normal_quest_size.get_height() >= min_quest_size.get_height()
+      && normal_quest_size.get_width() <= max_quest_size.get_width()
+      && normal_quest_size.get_height() <= max_quest_size.get_height(),
+      "Invalid quest size range");
+
+  this->normal_quest_size = normal_quest_size;
+  this->min_quest_size = min_quest_size;
+  this->max_quest_size = max_quest_size;
 }
 

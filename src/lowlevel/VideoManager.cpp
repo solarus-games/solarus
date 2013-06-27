@@ -83,7 +83,11 @@ Rectangle find_wide_fullscreen_resolution(const Rectangle& surface_size) {
       it != available_fullscreen_resolutions.end();
       ++it) {
     const Rectangle& resolution = *it;
-    if (resolution.get_width() > surface_size.get_width()
+    const double ratio =
+        (double) resolution.get_width() / resolution.get_height();
+
+    if (ratio > 1.34  // Wider than 4:3.
+        && resolution.get_width() > surface_size.get_width()
         && resolution.get_height() >= surface_size.get_height()
         && resolution.get_height() < best_height) {
       // Found a better one.

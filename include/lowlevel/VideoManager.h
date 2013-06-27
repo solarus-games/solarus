@@ -88,7 +88,7 @@ class VideoManager {
 
   private:
 
-    VideoManager(bool disable_window);
+    VideoManager(bool disable_window, const Rectangle& wanted_quest_size);
     ~VideoManager();
 
     void set_quest_size(Rectangle& quest_size);
@@ -120,6 +120,7 @@ class VideoManager {
     Rectangle min_quest_size;               /**< Minimum value of quest_size (depends on the quest). */
     Rectangle max_quest_size;               /**< Maximum value of quest_size (depends on the quest). */
     Rectangle quest_size;                   /**< Size of the quest surface to render on the screen surface. */
+    Rectangle wanted_quest_size;            /**< Size wanted by the user. */
 };
 
 #endif

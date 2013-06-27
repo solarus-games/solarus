@@ -135,22 +135,20 @@ void VideoManager::initialize(int argc, char **argv) {
     if (arg == "-no-video") {
       disable = true;
     }
-    else if (arg.find("-quest_size=") == 0) {
+    else if (arg.find("-quest-size=") == 0) {
       quest_size_string = arg.substr(12);
     }
   }
 
-  instance = new VideoManager(disable);
-
+  Rectangle wanted_quest_size(
+      SOLARUS_DEFAULT_QUEST_WIDTH, SOLARUS_DEFAULT_QUEST_HEIGHT);
   if (!quest_size_string.empty()) {
-    Rectangle quest_size;
-    if (!parse_size(quest_size_string, quest_size)) {
+    if (!parse_size(quest_size_string, wanted_quest_size)) {
       Debug::error(std::string("Invalid quest size: '") + quest_size_string + "'");
     }
-    else {
-      instance->set_quest_size(quest_size);
-    }
   }
+
+  instance = new VideoManager(disable, wanted_quest_size);
 }
 
 /**
@@ -191,8 +189,12 @@ uint32_t VideoManager::get_surface_flag(const VideoMode mode) const {
 
 /**
  * @brief Constructor.
+ * @brief disable_window true to entirely disable the displaying.
+ * @param wanted_quest_size Size of the quest as requested by the user.
  */
-VideoManager::VideoManager(bool disable_window):
+VideoManager::VideoManager(
+    bool disable_window,
+    const Rectangle& wanted_quest_size):
   disable_window(disable_window),
   video_mode(NO_MODE),
   screen_surface(NULL),
@@ -200,10 +202,7 @@ VideoManager::VideoManager(bool disable_window):
   enlargment_factor(1),
   offset_x(0),
   offset_y(0),
-  normal_quest_size(0, 0, 320, 240),
-  min_quest_size(normal_quest_size),
-  max_quest_size(normal_quest_size),
-  quest_size(normal_quest_size) {
+  wanted_quest_size(wanted_quest_size) {
 
   // Initialize the window.
   const std::string& window_title = std::string("Solarus ") + SOLARUS_VERSION;
@@ -654,7 +653,7 @@ void VideoManager::set_window_title(const std::string& window_title) {
  * @brief Gets the width and the height values from a size string of the form
  * "320x240".
  * @param size_string The input string.
- * @param size The resulting size.
+ * @param size The resulting size. Unchanged in case of failure.
  * @return true in case of success, false if the string is not a valid size.
  */
 bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
@@ -726,8 +725,7 @@ void VideoManager::get_quest_size_range(
 /**
  * @brief Sets the allowed range of quest sizes for this quest.
  *
- * This function sets the final quest size if necessary
- * (because if may have become invalid) and creates the screen.
+ * This function sets the actual quest size and creates the screen.
  *
  * @param normal_quest_size Default size for this quest.
  * @param min_quest_size Minimum size for this quest.
@@ -752,11 +750,24 @@ void VideoManager::set_quest_size_range(
   this->min_quest_size = min_quest_size;
   this->max_quest_size = max_quest_size;
 
-  if (quest_size.get_width() < min_quest_size.get_width()
-      || quest_size.get_height() < min_quest_size.get_height()
-      || quest_size.get_width() > max_quest_size.get_width()
-      || quest_size.get_height() > max_quest_size.get_height()) {
+  if (wanted_quest_size.get_width() < min_quest_size.get_width()
+      || wanted_quest_size.get_height() < min_quest_size.get_height()
+      || wanted_quest_size.get_width() > max_quest_size.get_width()
+      || wanted_quest_size.get_height() > max_quest_size.get_height()) {
+    Debug::warning(StringConcat() <<
+        "Cannot use quest size "
+        << wanted_quest_size.get_width() << "x" << wanted_quest_size.get_height()
+        << ": this quest only supports "
+        << min_quest_size.get_width() << "x" << min_quest_size.get_height()
+        << " to "
+        << max_quest_size.get_width() << "x" << max_quest_size.get_height()
+        << ". Using "
+        << normal_quest_size.get_width() << "x" << normal_quest_size.get_height()
+        << " instead.");
     quest_size = normal_quest_size;
+  }
+  else {
+    quest_size = wanted_quest_size;
   }
 
   // Everything is ready now.

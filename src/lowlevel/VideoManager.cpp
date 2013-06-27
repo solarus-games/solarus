@@ -796,13 +796,29 @@ void VideoManager::initialize_video_modes() {
     non_wide_resolution.set_size(quest_size);
   }
 
+  // This resolution may be okay but not listed by SDL.
+  // In the non-stretched case, we want to know if it is really listed.
+  // Because if SDL intends to center it inside a bigger screen,
+  // we will rather stretch the image.
+  bool is_non_wide_resolution_listed = false;
+  std::vector<Rectangle>::const_iterator it;
+  for (it = available_fullscreen_resolutions.begin();
+      it != available_fullscreen_resolutions.end();
+      ++it) {
+    if (it->equals(non_wide_resolution)) {
+      is_non_wide_resolution_listed = true;
+      break;
+    }
+  }
+
   if (SDL_VideoModeOK(twice_quest_size.get_width(), twice_quest_size.get_height(),
       32, fullscreen_flags)) {
     // The resolution of twice the quest size will be used by the scaled
     // video mode.
     twice_non_wide_resolution.set_size(twice_quest_size);
 
-    if (non_wide_resolution.is_flat()) {
+    if (non_wide_resolution.is_flat()
+        || !is_non_wide_resolution_listed) {
       // Use twice the size also for the non-scaled mode because many systems
       // accept 640x480 but not 320x240.
       // The image will be stretched by a factor of two and the user

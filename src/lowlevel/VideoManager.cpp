@@ -848,14 +848,14 @@ void VideoManager::initialize_video_modes() {
     mode_sizes[FULLSCREEN_WIDE] = wide_resolution;
   }
   if (!twice_wide_resolution.is_flat()) {
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE] = wide_resolution;
+    mode_sizes[FULLSCREEN_SCALE2X_WIDE] = twice_wide_resolution;
   }
 
+  /*
   for (int i = 0; i < NB_MODES; i++) {
     VideoMode mode = VideoMode(i);
-    Debug::check_assertion(mode_sizes.find(mode) != mode_sizes.end(),
-        StringConcat() << "Video mode " << get_video_mode_name(mode) << " was not initialized");
     //std::cout << "Screen size for mode " << get_video_mode_name(mode) << ": " << mode_sizes[mode] << std::endl;
   }
+  */
 }
 

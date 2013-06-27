@@ -2,7 +2,7 @@ solarus-1.1 (under development)
 
 Solarus changes:
 
-* Add the notion of quest size. Its range can be set at quest level.
+* Allow quest makers and users to set the size of the playing area.
 
 Data file format changes:
 

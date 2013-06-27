@@ -765,7 +765,7 @@ void VideoManager::initialize_video_modes() {
       0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
 
   mode_sizes[WINDOWED_STRETCHED] = twice_quest_size;
-  mode_sizes[WINDOWED_STRETCHED] = twice_quest_size;
+  mode_sizes[WINDOWED_SCALE2X] = twice_quest_size;
   mode_sizes[WINDOWED_NORMAL] =    quest_size;
 
   // Get the fullscreen video modes supported by the system.

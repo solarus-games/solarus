@@ -160,20 +160,6 @@
 #endif
 
 /**
- * \def SOLARUS_FULLSCREEN_FORCE_OK
- * \brief Define if the current platform should force all fullscreen mode to be available.
- * If set to 1, VideoManager::is_mode_supported() may not call SDL_VideoModeOK()
- */
-#ifndef SOLARUS_FULLSCREEN_FORCE_OK
-#  if defined(SOLARUS_OSX)
-// Since OSX 10.7, SDL_VideoModeOK() always return 0 with SDL_FULLSCREEN flag
-#    define SOLARUS_FULLSCREEN_FORCE_OK 1
-#  else
-#    define SOLARUS_FULLSCREEN_FORCE_OK 0
-#  endif
-#endif
-
-/**
  * \def SOLARUS_SCREEN_DOUBLEBUF
  * \brief Define if the current platform supports double buffering.
  */
@@ -182,21 +168,6 @@
 #    define SOLARUS_SCREEN_DOUBLEBUF 0
 #  else
 #    define SOLARUS_SCREEN_DOUBLEBUF 1
-#  endif
-#endif
-
-/**
- * \def SOLARUS_SCREEN_DOUBLEBUF
- * \brief Define to render the screen on an intermediate surface
- * (workaround to rendering issues in fullscreen).
- *
- * Don't define this if you have no problem.
- */
-#ifndef SOLARUS_SCREEN_INTERMEDIATE_SURFACE
-#  if defined(__APPLE__)
-#    define SOLARUS_SCREEN_INTERMEDIATE_SURFACE 0
-#  else
-#    define SOLARUS_SCREEN_INTERMEDIATE_SURFACE 1
 #  endif
 #endif
 

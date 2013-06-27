@@ -24,8 +24,8 @@
 #include <map>
 
 /**
- * @brief Creates the description of an item.
- * @param equipment The equipment object that stores all item descriptions.
+ * \brief Creates the description of an item.
+ * \param equipment The equipment object that stores all item descriptions.
  */
 EquipmentItem::EquipmentItem(Equipment& equipment):
   equipment(equipment),
@@ -49,65 +49,65 @@ EquipmentItem::~EquipmentItem() {
 }
 
 /**
- * @brief Returns the equipment object this item belongs to.
- * @return The equipment.
+ * \brief Returns the equipment object this item belongs to.
+ * \return The equipment.
  */
 Equipment& EquipmentItem::get_equipment() const {
   return equipment;
 }
 
 /**
- * @brief If this equipment item is currently running in a game, return that game.
- * @return A game or NULL.
+ * \brief If this equipment item is currently running in a game, return that game.
+ * \return A game or NULL.
  */
 Game* EquipmentItem::get_game() const {
   return equipment.get_game();
 }
 
 /**
- * @brief Returns the savegame.
- * @return The savegame.
+ * \brief Returns the savegame.
+ * \return The savegame.
  */
 Savegame& EquipmentItem::get_savegame() const {
   return equipment.get_savegame();
 }
 
 /**
- * @brief Returns the shared Lua context.
- * @return The Lua context where all scripts are run.
+ * \brief Returns the shared Lua context.
+ * \return The Lua context where all scripts are run.
  */
 LuaContext& EquipmentItem::get_lua_context() const {
   return get_savegame().get_lua_context();
 }
 
 /**
- * @brief Returns the name identifying the item.
- * @return The name of this item.
+ * \brief Returns the name identifying the item.
+ * \return The name of this item.
  */
 const std::string& EquipmentItem::get_name() const {
   return name;
 }
 
 /**
- * @brief Sets the name identifying the item.
- * @param name The name of this item.
+ * \brief Sets the name identifying the item.
+ * \param name The name of this item.
  */
 void EquipmentItem::set_name(const std::string& name) {
   this->name = name;
 }
 
 /**
- * @brief Returns whether the item possession state is saved.
- * @return true if the item is saved.
+ * \brief Returns whether the item possession state is saved.
+ * \return true if the item is saved.
  */
 bool EquipmentItem::is_saved() const {
   return !get_savegame_variable().empty();
 }
 
 /**
- * @brief Returns the savegame variable where the item possession state
+ * \brief Returns the savegame variable where the item possession state
  * is saved.
- * @return The savegame variable that stores the item possession state,
+ * \return The savegame variable that stores the item possession state,
  * or an empty string if the item is not saved.
  */
 const std::string& EquipmentItem::get_savegame_variable() const {
@@ -115,8 +115,8 @@ const std::string& EquipmentItem::get_savegame_variable() const {
 }
 
 /**
- * @brief Sets the savegame variable where the item possession state is saved.
- * @param savegame_variable The savegame variable that stores the item
+ * \brief Sets the savegame variable where the item possession state is saved.
+ * \param savegame_variable The savegame variable that stores the item
  * possession state, or an empty string.
  */
 void EquipmentItem::set_savegame_variable(const std::string& savegame_variable) {
@@ -124,17 +124,17 @@ void EquipmentItem::set_savegame_variable(const std::string& savegame_variable) 
 }
 
 /**
- * @brief Returns whether this item has an amount associated to it.
- * @return true if this item has an amount.
+ * \brief Returns whether this item has an amount associated to it.
+ * \return true if this item has an amount.
  */
 bool EquipmentItem::has_amount() const {
   return !get_amount_savegame_variable().empty();
 }
 
 /**
- * @brief If this item has an amount, returns the savegame variable
+ * \brief If this item has an amount, returns the savegame variable
  * that stores the value of this amount.
- * @return The savegame variable of the amount, or an empty string if there
+ * \return The savegame variable of the amount, or an empty string if there
  * is no amount associated to this item.
  */
 const std::string& EquipmentItem::get_amount_savegame_variable() const {
@@ -142,9 +142,9 @@ const std::string& EquipmentItem::get_amount_savegame_variable() const {
 }
 
 /**
- * @brief Sets the savegame variable that stores the value of the amount
+ * \brief Sets the savegame variable that stores the value of the amount
  * of this item (if any).
- * @param amount_savegame_variable The savegame variable of the amount
+ * \param amount_savegame_variable The savegame variable of the amount
  * or an empty string.
  */
 void EquipmentItem::set_amount_savegame_variable(
@@ -153,70 +153,70 @@ void EquipmentItem::set_amount_savegame_variable(
 }
 
 /**
- * @brief Returns whether this item can be obtained by the player.
- * @return true if this item can be obtained.
+ * \brief Returns whether this item can be obtained by the player.
+ * \return true if this item can be obtained.
  */
 bool EquipmentItem::is_obtainable() const {
   return obtainable;
 }
 
 /**
- * @brief Sets whether this item can be obtained by the player.
- * @param obtainable true to allow the player to obtain this item.
+ * \brief Sets whether this item can be obtained by the player.
+ * \param obtainable true to allow the player to obtain this item.
  */
 void EquipmentItem::set_obtainable(bool obtainable) {
   this->obtainable = obtainable;
 }
 
 /**
- * @brief Returns whether this item can be assigned to an item key
+ * \brief Returns whether this item can be assigned to an item key
  * and then used explicitly by pressing this item key.
- * @return true if this item can be assigned.
+ * \return true if this item can be assigned.
  */
 bool EquipmentItem::is_assignable() const {
   return assignable;
 }
 
 /**
- * @brief Sets whether this item can be assigned to an item key
+ * \brief Sets whether this item can be assigned to an item key
  * and then used explicitly by pressing this item key.
- * @param assignable true if this item can be assigned.
+ * \param assignable true if this item can be assigned.
  */
 void EquipmentItem::set_assignable(bool assignable) {
   this->assignable = assignable;
 }
 
 /**
- * @brief Returns whether this item disappears after a few seconds
+ * \brief Returns whether this item disappears after a few seconds
  * when it is dropped by an enemy or a destructible entity.
- * @return true if this item can disappear.
+ * \return true if this item can disappear.
  */
 bool EquipmentItem::get_can_disappear() const {
   return can_disappear;
 }
 
 /**
- * @brief Returns whether this item disappears after a few seconds
+ * \brief Returns whether this item disappears after a few seconds
  * when it is dropped by an enemy or a destructible entity.
- * @param can_disappear true if this item can disappear.
+ * \param can_disappear true if this item can disappear.
  */
 void EquipmentItem::set_can_disappear(bool can_disappear) {
   this->can_disappear = can_disappear;
 }
 
 /**
- * @brief Returns whether this item is brandished when the hero picks it
+ * \brief Returns whether this item is brandished when the hero picks it
  * on the ground.
- * @return true if the hero brandishes the item after he picks it.
+ * \return true if the hero brandishes the item after he picks it.
  */
 bool EquipmentItem::get_brandish_when_picked() const {
   return brandish_when_picked;
 }
 
 /**
- * @brief Sets whether this item is brandished when the hero picks it
+ * \brief Sets whether this item is brandished when the hero picks it
  * on the ground.
- * @param brandish_when_picked true to make the hero brandish the item after
+ * \param brandish_when_picked true to make the hero brandish the item after
  * he picks it.
  */
 void EquipmentItem::set_brandish_when_picked(bool brandish_when_picked) {
@@ -224,8 +224,8 @@ void EquipmentItem::set_brandish_when_picked(bool brandish_when_picked) {
 }
 
 /**
- * @brief Returns the sound to play when this item is picked on the ground.
- * @return The sound to play when this item is picked
+ * \brief Returns the sound to play when this item is picked on the ground.
+ * \return The sound to play when this item is picked
  * or an empty string.
  */
 const std::string& EquipmentItem::get_sound_when_picked() const {
@@ -233,8 +233,8 @@ const std::string& EquipmentItem::get_sound_when_picked() const {
 }
 
 /**
- * @brief Sets the sound to play when this item is picked on the ground.
- * @param sound_when_picked The sound to play when this item is picked
+ * \brief Sets the sound to play when this item is picked on the ground.
+ * \param sound_when_picked The sound to play when this item is picked
  * or an empty string.
  */
 void EquipmentItem::set_sound_when_picked(
@@ -243,16 +243,16 @@ void EquipmentItem::set_sound_when_picked(
 }
 
 /**
- * @brief Returns the sound to play when this item is brandished.
- * @return The sound to play when this item is brandished or an empty string.
+ * \brief Returns the sound to play when this item is brandished.
+ * \return The sound to play when this item is brandished or an empty string.
  */
 const std::string& EquipmentItem::get_sound_when_brandished() const {
   return sound_when_brandished;
 }
 
 /**
- * @brief Sets the sound to play when this item is brandished.
- * @param sound_when_brandished The sound to play when this item is brandished or an empty string.
+ * \brief Sets the sound to play when this item is brandished.
+ * \param sound_when_brandished The sound to play when this item is brandished or an empty string.
  */
 void EquipmentItem::set_sound_when_brandished(
     const std::string& sound_when_brandished) {
@@ -260,25 +260,25 @@ void EquipmentItem::set_sound_when_brandished(
 }
 
 /**
- * @brief Returns the animation of the shadow sprite to display when this item
+ * \brief Returns the animation of the shadow sprite to display when this item
  * is on the ground.
- * @return The animation of the shadow sprite, or an empty string.
+ * \return The animation of the shadow sprite, or an empty string.
  */
 const std::string& EquipmentItem::get_shadow() const {
   return shadow;
 }
 
 /**
- * @brief Sets the animation of the shadow sprite to display when this item is
+ * \brief Sets the animation of the shadow sprite to display when this item is
  * on the ground.
- * @param shadow The animation of the shadow sprite or an empty string.
+ * \param shadow The animation of the shadow sprite or an empty string.
  */
 void EquipmentItem::set_shadow(const std::string& shadow) {
   this->shadow = shadow;
 }
 
 /**
- * @brief This function is be called repeatedly by the game.
+ * \brief This function is be called repeatedly by the game.
  */
 void EquipmentItem::update() {
 
@@ -286,8 +286,8 @@ void EquipmentItem::update() {
 }
 
 /**
- * @brief This function is called when the game is suspended or resumed.
- * @param suspended true if the game is suspended, false if it is resumed
+ * \brief This function is called when the game is suspended or resumed.
+ * \param suspended true if the game is suspended, false if it is resumed
  */
 void EquipmentItem::set_suspended(bool suspended) {
 
@@ -295,7 +295,7 @@ void EquipmentItem::set_suspended(bool suspended) {
 }
 
 /**
- * @brief This function is called when the equipment object starts.
+ * \brief This function is called when the equipment object starts.
  */
 void EquipmentItem::initialize() {
 
@@ -304,7 +304,7 @@ void EquipmentItem::initialize() {
 }
 
 /**
- * @brief Starts this item.
+ * \brief Starts this item.
  *
  * When this function is called, all equipment items are initialized.
  */
@@ -314,7 +314,7 @@ void EquipmentItem::start() {
 }
 
 /**
- * @brief This function is called before the item is destroyed.
+ * \brief This function is called before the item is destroyed.
  */
 void EquipmentItem::exit() {
 
@@ -322,8 +322,8 @@ void EquipmentItem::exit() {
 }
 
 /**
- * @brief This function is called when a map becomes active.
- * @param map The map.
+ * \brief This function is called when a map becomes active.
+ * \param map The map.
  */
 void EquipmentItem::notify_map_changed(Map& map) {
 
@@ -331,8 +331,8 @@ void EquipmentItem::notify_map_changed(Map& map) {
 }
 
 /**
- * @brief Notifies this item that its possession state has just changed.
- * @param variant The new possession state.
+ * \brief Notifies this item that its possession state has just changed.
+ * \param variant The new possession state.
  */
 void EquipmentItem::notify_variant_changed(int variant) {
 
@@ -340,8 +340,8 @@ void EquipmentItem::notify_variant_changed(int variant) {
 }
 
 /**
- * @brief Notifies the script that the amount of this item has just changed.
- * @param amount The new amount.
+ * \brief Notifies the script that the amount of this item has just changed.
+ * \param amount The new amount.
  */
 void EquipmentItem::notify_amount_changed(int amount) {
 
@@ -349,7 +349,7 @@ void EquipmentItem::notify_amount_changed(int amount) {
 }
 
 /**
- * @brief Notifies the script that the hero is using this equipment item.
+ * \brief Notifies the script that the hero is using this equipment item.
  */
 void EquipmentItem::notify_using() {
 
@@ -357,8 +357,8 @@ void EquipmentItem::notify_using() {
 }
 
 /**
- * @brief Notifies this item that a built-in ability was used.
- * @param ability_name Name of an ability.
+ * \brief Notifies this item that a built-in ability was used.
+ * \param ability_name Name of an ability.
  */
 void EquipmentItem::notify_ability_used(const std::string& ability_name) {
 
@@ -366,9 +366,9 @@ void EquipmentItem::notify_ability_used(const std::string& ability_name) {
 }
 
 /**
- * @brief Notifies the script that a pickable instance of this item has
+ * \brief Notifies the script that a pickable instance of this item has
  * appeared on the map.
- * @param pickable The pickable treasure.
+ * \param pickable The pickable treasure.
  */
 void EquipmentItem::notify_pickable_appeared(Pickable& pickable) {
 
@@ -376,8 +376,8 @@ void EquipmentItem::notify_pickable_appeared(Pickable& pickable) {
 }
 
 /**
- * @brief Notifies the script that a pickable instance of this item has moved.
- * @param pickable The pickable treasure.
+ * \brief Notifies the script that a pickable instance of this item has moved.
+ * \param pickable The pickable treasure.
  */
 void EquipmentItem::notify_movement_changed(Pickable& pickable) {
 
@@ -385,11 +385,11 @@ void EquipmentItem::notify_movement_changed(Pickable& pickable) {
 }
 
 /**
- * @brief Returns the possession state of this item.
+ * \brief Returns the possession state of this item.
  *
  * The item must be saved.
  *
- * @return The possessed variant of this item.
+ * \return The possessed variant of this item.
  */
 int EquipmentItem::get_variant() const {
 
@@ -400,11 +400,11 @@ int EquipmentItem::get_variant() const {
 }
 
 /**
- * @brief Sets the possession state of this item.
+ * \brief Sets the possession state of this item.
  *
  * This function only makes sense if the item is saved.
  *
- * @param variant The possessed variant of this item.
+ * \param variant The possessed variant of this item.
  */
 void EquipmentItem::set_variant(int variant) {
 
@@ -427,8 +427,8 @@ void EquipmentItem::set_variant(int variant) {
 }
 
 /**
- * @brief Returns the current value of the amount associated to this item.
- * @return The player's current amount of this item.
+ * \brief Returns the current value of the amount associated to this item.
+ * \return The player's current amount of this item.
  */
 int EquipmentItem::get_amount() const {
 
@@ -439,8 +439,8 @@ int EquipmentItem::get_amount() const {
 }
 
 /**
- * @brief Sets the current value of the amount associated to this item.
- * @param amount The player's new amount of this item.
+ * \brief Sets the current value of the amount associated to this item.
+ * \param amount The player's new amount of this item.
  */
 void EquipmentItem::set_amount(int amount) {
 
@@ -454,8 +454,8 @@ void EquipmentItem::set_amount(int amount) {
 }
 
 /**
- * @brief Returns the maximum value of the amount associated to this item.
- * @return The maximum amount of this item.
+ * \brief Returns the maximum value of the amount associated to this item.
+ * \return The maximum amount of this item.
  */
 int EquipmentItem::get_max_amount() const {
 
@@ -466,8 +466,8 @@ int EquipmentItem::get_max_amount() const {
 }
 
 /**
- * @brief Sets the maximum value of the amount associated to this item.
- * @param max_amount The maximum amount of this item.
+ * \brief Sets the maximum value of the amount associated to this item.
+ * \param max_amount The maximum amount of this item.
  */
 void EquipmentItem::set_max_amount(int max_amount) {
 
@@ -478,8 +478,8 @@ void EquipmentItem::set_max_amount(int max_amount) {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& EquipmentItem::get_lua_type_name() const {
   return LuaContext::item_module_name;

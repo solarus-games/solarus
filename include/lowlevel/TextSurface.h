@@ -27,7 +27,7 @@
 struct lua_State;
 
 /**
- * @brief Draws a line of text on a surface.
+ * \brief Draws a line of text on a surface.
  *
  * This class encapsulates a graphic surface and handles text rendering,
  * horizontal and vertical text alignment, color and other properties.

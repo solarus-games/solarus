@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 
 /**
- * @brief An invisible entity that triggers something when it is walked on.
+ * \brief An invisible entity that triggers something when it is walked on.
  *
  * A sensor is an invisible entity that triggers an event
  * when the hero or another entity walks on it. Unlike the switches,

@@ -21,8 +21,8 @@
 #include "lowlevel/System.h"
 
 /**
- * @brief Creates and starts a timer.
- * @param delay duration of the timer in milliseconds
+ * \brief Creates and starts a timer.
+ * \param delay duration of the timer in milliseconds
  */
 Timer::Timer(uint32_t delay):
   expiration_date(System::now() + delay),
@@ -35,43 +35,43 @@ Timer::Timer(uint32_t delay):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Timer::~Timer() {
 
 }
 
 /**
- * @brief Returns whether a clock sound is played during this timer.
- * @return true if a clock sound is played.
+ * \brief Returns whether a clock sound is played during this timer.
+ * \return true if a clock sound is played.
  */
 bool Timer::is_with_sound() {
   return next_sound_date != 0;
 }
 
 /**
- * @brief Sets whether a clock sound is played during this timer.
- * @param with_sound true to play a clock sound during this timer.
+ * \brief Sets whether a clock sound is played during this timer.
+ * \param with_sound true to play a clock sound during this timer.
  */
 void Timer::set_with_sound(bool with_sound) {
   next_sound_date = with_sound ? System::now() : 0;
 }
 
 /**
- * @brief Returns whether this timer is currently suspended.
- * @return true if this timer is suspended.
+ * \brief Returns whether this timer is currently suspended.
+ * \return true if this timer is suspended.
  */
 bool Timer::is_suspended() {
   return suspended;
 }
 
 /**
- * @brief Suspends or resumes the timer.
+ * \brief Suspends or resumes the timer.
  *
  * It is okay to call this function when is_suspended_with_map() is true:
  * this means that you temporarily override the automatic suspending behavior.
  *
- * @param suspended true to suspend the timer, false to resume it.
+ * \param suspended true to suspend the timer, false to resume it.
  */
 void Timer::set_suspended(bool suspended) {
 
@@ -97,16 +97,16 @@ void Timer::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns whether this timer is suspended when the map is suspended.
- * @return true if this timer is suspended with the map.
+ * \brief Returns whether this timer is suspended when the map is suspended.
+ * \return true if this timer is suspended with the map.
  */
 bool Timer::is_suspended_with_map() {
   return suspended_with_map;
 }
 
 /**
- * @brief Sets whether this timer should be suspended when the map is suspended.
- * @param suspended_with_map true to suspend this timer with the map.
+ * \brief Sets whether this timer should be suspended when the map is suspended.
+ * \param suspended_with_map true to suspend this timer with the map.
  */
 void Timer::set_suspended_with_map(bool suspended_with_map) {
 
@@ -120,15 +120,15 @@ void Timer::set_suspended_with_map(bool suspended_with_map) {
 }
 
 /**
- * @brief Returns whether the timer is finished.
- * @return true if the timer is finished
+ * \brief Returns whether the timer is finished.
+ * \return true if the timer is finished
  */
 bool Timer::is_finished() {
   return finished;
 }
 
 /**
- * @brief Updates the timer.
+ * \brief Updates the timer.
  */
 void Timer::update() {
 
@@ -161,8 +161,8 @@ void Timer::update() {
 }
 
 /**
- * @brief Notifies this timer that the current map is being suspended or resumed.
- * @param suspended true if the map is suspended, false if it is resumed.
+ * \brief Notifies this timer that the current map is being suspended or resumed.
+ * \param suspended true if the map is suspended, false if it is resumed.
  */
 void Timer::notify_map_suspended(bool suspended) {
 
@@ -172,8 +172,8 @@ void Timer::notify_map_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& Timer::get_lua_type_name() const {
   return LuaContext::timer_module_name;

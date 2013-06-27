@@ -23,7 +23,7 @@
 #include "Treasure.h"
 
 /**
- * @brief An entity that the hero can destroy and that may contain a pickable item.
+ * \brief An entity that the hero can destroy and that may contain a pickable item.
  *
  * Some destructible items can be lifted and thrown (a pot, a stone, etc.),
  * some of them can be cut with the sword (for example some grass)

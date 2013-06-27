@@ -26,7 +26,7 @@
 // TODO remove ability get_back_from_death and script the game over sequence
 
 /**
- * @brief The game over sequence displayed when the hero dies.
+ * \brief The game over sequence displayed when the hero dies.
  * 
  * This class shows the game over sequence.
  * If the player has a fairy, a special animation occurs, the hero gets some life back and the game is resumed.
@@ -58,7 +58,7 @@ class GameoverSequence {
     int cursor_position;            /**< position of the cursor in the gameover menu (0 to 3) */
 
     /**
-     * @brief States of the game over sequence.
+     * \brief States of the game over sequence.
      */
     enum State {
       WAITING_START,  /**< the game over sequence will start soon */

@@ -21,7 +21,7 @@
 #include "movements/PixelMovement.h"
 
 /**
- * @brief Movement of an entity that follows a predetermined path.
+ * \brief Movement of an entity that follows a predetermined path.
  *
  * The path is a succession of basic moves, where each basic move
  * is an 8-pixel trajectory towards one of the 8 main directions.

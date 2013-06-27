@@ -22,7 +22,7 @@
 #include "entities/Detector.h"
 
 /**
- * @brief Represents a chest on a map.
+ * \brief Represents a chest on a map.
  *
  * It can be a normal chest or a big chest.
  */
@@ -31,7 +31,7 @@ class Chest: public Detector {
   public:
 
     /**
-     * @brief The different possible ways of opening a chest.
+     * \brief The different possible ways of opening a chest.
      */
     enum OpeningMethod {
       OPENING_BY_INTERACTION,                       /**< Can be opened by pressing the action command. */

@@ -21,7 +21,7 @@
 #include "movements/Movement.h"
 
 /**
- * @brief Movement of an entity attached to another entity.
+ * \brief Movement of an entity attached to another entity.
  *
  * At each moment, the entity is placed at a position
  * relative to the entity followed.

@@ -22,22 +22,22 @@
 #include "lowlevel/Sound.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::BowState::BowState(Hero &hero):
   State(hero) {
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::BowState::~BowState() {
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::BowState::start(State *previous_state) {
 
@@ -46,7 +46,7 @@ void Hero::BowState::start(State *previous_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::BowState::update() {
 

@@ -21,7 +21,7 @@
 #include "movements/StraightMovement.h"
 
 /**
- * @brief Movement of an entity controlled by the player.
+ * \brief Movement of an entity controlled by the player.
  *
  * This movement is an 8-direction movement typically used by the hero.
  * This class basically converts the combination of directional keys pressed

@@ -28,9 +28,9 @@
 #include "Equipment.h"
 
 /**
- * @brief Constructor.
- * @param hero The hero controlled by this state.
- * @param command The game command that triggers running.
+ * \brief Constructor.
+ * \param hero The hero controlled by this state.
+ * \param command The game command that triggers running.
  */
 Hero::RunningState::RunningState(Hero& hero, GameCommands::Command command):
   State(hero),
@@ -39,15 +39,15 @@ Hero::RunningState::RunningState(Hero& hero, GameCommands::Command command):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::RunningState::~RunningState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::RunningState::start(State *previous_state) {
 
@@ -63,7 +63,7 @@ void Hero::RunningState::start(State *previous_state) {
 }
 
 /**
- * @brief Stops this state.
+ * \brief Stops this state.
  */
 void Hero::RunningState::stop(State *next_state) {
 
@@ -75,7 +75,7 @@ void Hero::RunningState::stop(State *next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::RunningState::update() {
 
@@ -117,8 +117,8 @@ void Hero::RunningState::update() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::RunningState::set_suspended(bool suspended) {
 
@@ -132,17 +132,17 @@ void Hero::RunningState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns whether the hero is bouncing after he reached an obstacle during the run.
- * @return true if the hero is bouncing
+ * \brief Returns whether the hero is bouncing after he reached an obstacle during the run.
+ * \return true if the hero is bouncing
  */
 bool Hero::RunningState::is_bouncing() {
   return phase == 2;
 }
 
 /**
- * @brief Returns whether the hero is still pressing the key that made him
+ * \brief Returns whether the hero is still pressing the key that made him
  * start running.
- * @return true if the hero is still pressing the running key
+ * \return true if the hero is still pressing the running key
  */
 bool Hero::RunningState::is_pressing_running_key() {
 
@@ -150,8 +150,8 @@ bool Hero::RunningState::is_pressing_running_key() {
 }
 
 /**
- * @brief Notifies this state that a directional key was just pressed.
- * @param direction4 direction of the key (0 to 3)
+ * \brief Notifies this state that a directional key was just pressed.
+ * \param direction4 direction of the key (0 to 3)
  */
 void Hero::RunningState::notify_direction_command_pressed(int direction4) {
 
@@ -162,7 +162,7 @@ void Hero::RunningState::notify_direction_command_pressed(int direction4) {
 }
 
 /**
- * @brief Notifies this state that the hero has just failed to change its
+ * \brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */
 void Hero::RunningState::notify_obstacle_reached() {
@@ -179,40 +179,40 @@ void Hero::RunningState::notify_obstacle_reached() {
 }
 
 /**
- * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
+ * \brief Returns the direction of the hero's movement as defined by the controls applied by the player
  * and the movements allowed is the current state.
  *
  * If he is not moving, -1 is returned.
  * This direction may be different from the real movement direction because of obstacles.
  *
- * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::RunningState::get_wanted_movement_direction8() {
   return get_sprites().get_animation_direction8();
 }
 
 /**
- * @brief Returns whether the hero can take stairs in this state.
+ * \brief Returns whether the hero can take stairs in this state.
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
- * @return true if the hero ignores the effect of stairs in this state
+ * \return true if the hero ignores the effect of stairs in this state
  */
 bool Hero::RunningState::can_take_stairs() {
   return !is_bouncing();
 }
 /**
- * @brief Returns whether can trigger a jumper in this state.
+ * \brief Returns whether can trigger a jumper in this state.
  * If false is returned, jumpers have no effect (but they are obstacle for the hero).
- * @return true if the hero can use jumpers in this state
+ * \return true if the hero can use jumpers in this state
  */
 bool Hero::RunningState::can_take_jumper() {
   return !is_bouncing();
 }
 
 /**
- * @brief Returns whether the hero can be hurt by an attacker in this state.
- * @param attacker an attacker that is trying to hurt the hero
+ * \brief Returns whether the hero can be hurt by an attacker in this state.
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
- * @return true if the hero can be hurt in this state
+ * \return true if the hero can be hurt in this state
  */
 bool Hero::RunningState::can_be_hurt(Enemy* attacker) {
   return phase == 0 ||
@@ -220,92 +220,92 @@ bool Hero::RunningState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
- * @brief Returns whether the hero can pick a treasure in this state.
- * @param item The equipment item to obtain.
- * @return true if the hero can pick that treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in this state.
+ * \param item The equipment item to obtain.
+ * \return true if the hero can pick that treasure in this state.
  */
 bool Hero::RunningState::can_pick_treasure(EquipmentItem& item) {
   return true;
 }
 
 /**
- * @brief Returns whether the game over sequence can start in the current state.
- * @return true if the game over sequence can start in the current state
+ * \brief Returns whether the game over sequence can start in the current state.
+ * \return true if the game over sequence can start in the current state
  */
 bool Hero::RunningState::can_start_gameover_sequence() {
   return !is_bouncing();
 }
 
 /**
- * @brief Returns whether the hero is touching the ground in the current state.
- * @return true if the hero is touching the ground in the current state
+ * \brief Returns whether the hero is touching the ground in the current state.
+ * \return true if the hero is touching the ground in the current state
  */
 bool Hero::RunningState::is_touching_ground() {
   return !is_bouncing();
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of deep water in this state.
- * @return true if the hero ignores the effect of deep water in the current state
+ * \brief Returns whether the hero ignores the effect of deep water in this state.
+ * \return true if the hero ignores the effect of deep water in the current state
  */
 bool Hero::RunningState::can_avoid_deep_water() {
   return is_bouncing();
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of holes in this state.
- * @return true if the hero ignores the effect of holes in the current state
+ * \brief Returns whether the hero ignores the effect of holes in this state.
+ * \return true if the hero ignores the effect of holes in the current state
  */
 bool Hero::RunningState::can_avoid_hole() {
   return is_bouncing();
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of lava in this state.
- * @return true if the hero ignores the effect of lava in the current state
+ * \brief Returns whether the hero ignores the effect of lava in this state.
+ * \return true if the hero ignores the effect of lava in the current state
  */
 bool Hero::RunningState::can_avoid_lava() {
   return is_bouncing();
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of prickles in this state.
- * @return true if the hero ignores the effect of prickles in the current state
+ * \brief Returns whether the hero ignores the effect of prickles in this state.
+ * \return true if the hero ignores the effect of prickles in the current state
  */
 bool Hero::RunningState::can_avoid_prickle() {
   return is_bouncing();
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of teletransporters in this state.
- * @return true if the hero ignores the effect of teletransporters in this state
+ * \brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * \return true if the hero ignores the effect of teletransporters in this state
  */
 bool Hero::RunningState::can_avoid_teletransporter() {
   return is_bouncing();
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
- * @return true if the hero ignores the effect of conveyor belts in this state
+ * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ * \return true if the hero ignores the effect of conveyor belts in this state
  */
 bool Hero::RunningState::can_avoid_conveyor_belt() {
   return is_bouncing();
 }
 
 /**
- * @brief Returns whether a sensor is considered as an obstacle in this state.
- * @param sensor a sensor
- * @return true if the sensor is an obstacle in this state
+ * \brief Returns whether a sensor is considered as an obstacle in this state.
+ * \param sensor a sensor
+ * \return true if the sensor is an obstacle in this state
  */
 bool Hero::RunningState::is_sensor_obstacle(Sensor &sensor) {
   return is_bouncing();
 }
 
 /**
- * @brief Tests whether the hero is cutting with his sword the specified detector
+ * \brief Tests whether the hero is cutting with his sword the specified detector
  * for which a collision was detected.
- * @param detector the detector to check
- * @return true if the sword is cutting this detector
+ * \param detector the detector to check
+ * \return true if the sword is cutting this detector
  */
 bool Hero::RunningState::is_cutting_with_sword(Detector &detector) {
 
@@ -336,8 +336,8 @@ bool Hero::RunningState::is_cutting_with_sword(Detector &detector) {
 }
 
 /**
- * @brief Returns the damage power of the sword for the current attack.
- * @return the current damage factor of the sword
+ * \brief Returns the damage power of the sword for the current attack.
+ * \return the current damage factor of the sword
  */
 int Hero::RunningState::get_sword_damage_factor() {
 

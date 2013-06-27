@@ -27,7 +27,7 @@
 #include <list>
 
 /**
- * @brief Manages the whole content of a map.
+ * \brief Manages the whole content of a map.
  *
  * Each element of a map is called an entity and is an instance of
  * a subclass of MapEntity.
@@ -149,16 +149,16 @@ class MapEntities {
 };
 
 /**
- * @brief Returns the obstacle property of the tile located at a specified point.
+ * \brief Returns the obstacle property of the tile located at a specified point.
  *
  * This function assumes that the parameters are correct: for performance reasons,
  * no check is done here.
  * Dynamic tiles are not considered here.
  *
- * @param layer of the tile to get
- * @param x x coordinate of the point
- * @param y y coordinate of the point
- * @return the obstacle property of this tile
+ * \param layer of the tile to get
+ * \param x x coordinate of the point
+ * \param y y coordinate of the point
+ * \return the obstacle property of this tile
  */
 inline Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 

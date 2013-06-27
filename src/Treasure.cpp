@@ -29,17 +29,17 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Creates a new treasure.
+ * \brief Creates a new treasure.
  *
  * You must call decide_content() later because the real content of the
  * treasure may differ from the item name you specify, because of random
  * treasures and unauthorized ones.
  *
- * @param game The current game.
- * @param item_name Name of the item to give, or an empty string to mean no
+ * \param game The current game.
+ * \param item_name Name of the item to give, or an empty string to mean no
  * treasure.
- * @param variant Variant of this item.
- * @param savegame_variable Name of the saved boolean indicating that the
+ * \param variant Variant of this item.
+ * \param savegame_variable Name of the saved boolean indicating that the
  * player has found this treasure, or an empty string if this treasure is not
  * saved.
  */
@@ -59,8 +59,8 @@ Treasure::Treasure(Game& game, const std::string& item_name, int variant,
 }
 
 /**
- * @brief Copy constructor.
- * @param other The treasure to copy.
+ * \brief Copy constructor.
+ * \param other The treasure to copy.
  */
 Treasure::Treasure(const Treasure& other):
   game(other.game),
@@ -72,16 +72,16 @@ Treasure::Treasure(const Treasure& other):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Treasure::~Treasure() {
   delete sprite;
 }
 
 /**
- * @brief Assignment operator.
- * @param other the treasure to copy
- * @return this treasure
+ * \brief Assignment operator.
+ * \param other the treasure to copy
+ * \return this treasure
  */
 Treasure& Treasure::operator=(const Treasure& other) {
 
@@ -94,7 +94,7 @@ Treasure& Treasure::operator=(const Treasure& other) {
 }
 
 /**
- * @brief Raises an assertion error if the player cannot obtain this treasure.
+ * \brief Raises an assertion error if the player cannot obtain this treasure.
  */
 void Treasure::check_obtainable() const {
 
@@ -105,7 +105,7 @@ void Treasure::check_obtainable() const {
 }
 
 /**
- * @brief Makes sure that the content of this treasure is allowed.
+ * \brief Makes sure that the content of this treasure is allowed.
  *
  * If the item is not allowed, the treasure becomes empty.
  * This function must be called before any function
@@ -127,16 +127,16 @@ void Treasure::ensure_obtainable() {
 }
 
 /**
- * @brief Returns the equipment item corresponding to this treasure's content.
- * @return The equipment item.
+ * \brief Returns the equipment item corresponding to this treasure's content.
+ * \return The equipment item.
  */
 EquipmentItem& Treasure::get_item() const {
   return game->get_equipment().get_item(get_item_name());
 }
 
 /**
- * @brief Returns the name of the item.
- * @return The name of the item.
+ * \brief Returns the name of the item.
+ * \return The name of the item.
  */
 const std::string& Treasure::get_item_name() const {
 
@@ -145,44 +145,44 @@ const std::string& Treasure::get_item_name() const {
 }
 
 /**
- * @brief Returns the variant of the item.
- * @return The variant.
+ * \brief Returns the variant of the item.
+ * \return The variant.
  */
 int Treasure::get_variant() const {
   return variant;
 }
 
 /**
- * @brief Returns whether this treasure is saved.
- * @return true if this treasure is saved.
+ * \brief Returns whether this treasure is saved.
+ * \return true if this treasure is saved.
  */
 bool Treasure::is_saved() const {
   return !get_savegame_variable().empty();
 }
 
 /**
- * @brief Returns whether the player has got this treasure according to th
+ * \brief Returns whether the player has got this treasure according to th
  * savegame.
  *
  * Returns false if the treasure is not saved.
  *
- * @return true if the player has found this treasure.
+ * \return true if the player has found this treasure.
  */
 bool Treasure::is_found() const {
   return is_saved() && game->get_savegame().get_boolean(savegame_variable);
 }
 
 /**
- * @brief Returns whether this treasure is empty.
- * @return true if this treasure is empty
+ * \brief Returns whether this treasure is empty.
+ * \return true if this treasure is empty
  */
 bool Treasure::is_empty() const {
   return get_item_name().empty();
 }
 
 /**
- * @brief Returns the name of the boolean variable where this treasure is saved.
- * @return The savegame variable of this treasure, or an empty string if it is
+ * \brief Returns the name of the boolean variable where this treasure is saved.
+ * \return The savegame variable of this treasure, or an empty string if it is
  * not saved.
  */
 const std::string& Treasure::get_savegame_variable() const {
@@ -190,7 +190,7 @@ const std::string& Treasure::get_savegame_variable() const {
 }
 
 /**
- * @brief Gives the treasure to the player.
+ * \brief Gives the treasure to the player.
  *
  * Adds the item to the hero's equipment.
  * The item should not be empty.
@@ -215,10 +215,10 @@ void Treasure::give_to_player() const {
 }
 
 /**
- * @brief Draws the treasure.
- * @param dst_surface the surface where to draw
- * @param x the treasure x position on this surface
- * @param y the treasure y position on this surface
+ * \brief Draws the treasure.
+ * \param dst_surface the surface where to draw
+ * \param x the treasure x position on this surface
+ * \param y the treasure y position on this surface
  */
 void Treasure::draw(Surface& dst_surface, int x, int y) {
 

@@ -21,7 +21,7 @@
 #include "lowlevel/InputEvent.h"
 
 /**
- * @brief Provides special keys to debug the game.
+ * \brief Provides special keys to debug the game.
  *
  * This class provides some special keys that make it easier to debug the game,
  * including by allowing the hero to traverse walls.

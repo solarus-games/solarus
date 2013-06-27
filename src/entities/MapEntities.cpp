@@ -34,9 +34,9 @@
 using std::list;
 
 /**
- * @brief Constructor.
- * @param game the game
- * @param map the map (not loaded yet)
+ * \brief Constructor.
+ * \param game the game
+ * \param map the map (not loaded yet)
  */
 MapEntities::MapEntities(Game& game, Map& map):
   game(game),
@@ -57,7 +57,7 @@ MapEntities::MapEntities(Game& game, Map& map):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 MapEntities::~MapEntities() {
 
@@ -65,7 +65,7 @@ MapEntities::~MapEntities() {
 }
 
 /**
- * @brief Removes all entities from the map.
+ * \brief Removes all entities from the map.
  *
  * This function is called by the destructor or when the map is unloaded.
  */
@@ -103,11 +103,11 @@ void MapEntities::destroy_all_entities() {
 }
 
 /**
- * @brief Destroys an entity.
+ * \brief Destroys an entity.
  *
  * The object is freed if it is not used anywhere else.
  *
- * @param entity The entity to destroy.
+ * \param entity The entity to destroy.
  */
 void MapEntities::destroy_entity(MapEntity* entity) {
 
@@ -122,62 +122,62 @@ void MapEntities::destroy_entity(MapEntity* entity) {
 }
 
 /**
- * @brief Returns the hero.
- * @return the hero
+ * \brief Returns the hero.
+ * \return the hero
  */
 Hero& MapEntities::get_hero() {
   return hero;
 }
 
 /**
- * @brief Returns the entities (other that tiles) such that the hero cannot walk on them.
- * @param layer the layer
- * @return the obstacle entities on that layer
+ * \brief Returns the entities (other that tiles) such that the hero cannot walk on them.
+ * \param layer the layer
+ * \return the obstacle entities on that layer
  */
 const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
   return obstacle_entities[layer];
 }
 
 /**
- * @brief Returns all detectors on the map.
- * @return the detectors
+ * \brief Returns all detectors on the map.
+ * \return the detectors
  */
 const list<Detector*>& MapEntities::get_detectors() {
   return detectors;
 }
 
 /**
- * @brief Returns all stairs on the specified layer.
- * @param layer the layer
- * @return the stairs on this layer
+ * \brief Returns all stairs on the specified layer.
+ * \param layer the layer
+ * \return the stairs on this layer
  */
 const list<Stairs*>& MapEntities::get_stairs(Layer layer) {
   return stairs[layer];
 }
 
 /**
- * @brief Returns all crystal blocks on the specified layer.
- * @param layer the layer
- * @return the crystal blocks on this layer
+ * \brief Returns all crystal blocks on the specified layer.
+ * \param layer the layer
+ * \return the crystal blocks on this layer
  */
 const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
   return crystal_blocks[layer];
 }
 
 /**
- * @brief Returns all camera stoppers of the map..
- * @return The camera stoppers.
+ * \brief Returns all camera stoppers of the map..
+ * \return The camera stoppers.
  */
 const list<CameraStopper*>& MapEntities::get_camera_stoppers() {
   return camera_stoppers;
 }
 
 /**
- * @brief Sets the obstacle tile property of an 8*8 square of the map.
- * @param layer layer of the square
- * @param x8 x coordinate of the square (divided by 8)
- * @param y8 y coordinate of the square (divided by 8)
- * @param obstacle the obstacle property to set
+ * \brief Sets the obstacle tile property of an 8*8 square of the map.
+ * \param layer layer of the square
+ * \param x8 x coordinate of the square (divided by 8)
+ * \param y8 y coordinate of the square (divided by 8)
+ * \param obstacle the obstacle property to set
  */
 void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
 
@@ -188,12 +188,12 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
 }
 
 /**
- * @brief Returns the entity with the specified name.
+ * \brief Returns the entity with the specified name.
  *
  * The program stops if there is no such entity.
  *
- * @param name Name of the entity to get.
- * @return The entity requested.
+ * \param name Name of the entity to get.
+ * \return The entity requested.
  */
 MapEntity* MapEntities::get_entity(const std::string& name) {
 
@@ -207,9 +207,9 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
 }
 
 /**
- * @brief Returns the entity with the specified name, or NULL if it doesn't exist.
- * @param name Name of the entity to find.
- * @return The entity requested, or NULL if there is no entity with the specified name.
+ * \brief Returns the entity with the specified name, or NULL if it doesn't exist.
+ * \param name Name of the entity to find.
+ * \return The entity requested, or NULL if there is no entity with the specified name.
  */
 MapEntity* MapEntities::find_entity(const std::string& name) {
 
@@ -227,9 +227,9 @@ MapEntity* MapEntities::find_entity(const std::string& name) {
 }
 
 /**
- * @brief Returns the entities of the map having the specified name prefix.
- * @param prefix Prefix of the name.
- * @return The entities of this type and having this prefix in their name.
+ * \brief Returns the entities of the map having the specified name prefix.
+ * \param prefix Prefix of the name.
+ * \return The entities of this type and having this prefix in their name.
  */
 list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix) {
 
@@ -248,11 +248,11 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix
 }
 
 /**
- * @brief Returns the entities of the map with the specified type and having
+ * \brief Returns the entities of the map with the specified type and having
  * the specified name prefix.
- * @param type Type of entity.
- * @param prefix Prefix of the name.
- * @return The entities of this type and having this prefix in their name.
+ * \param type Type of entity.
+ * \param prefix Prefix of the name.
+ * \return The entities of this type and having this prefix in their name.
  */
 list<MapEntity*> MapEntities::get_entities_with_prefix(
     EntityType type, const std::string& prefix) {
@@ -272,10 +272,10 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(
 }
 
 /**
- * @brief Returns whether there exists at least one entity with the specified
+ * \brief Returns whether there exists at least one entity with the specified
  * name prefix on the map.
- * @param prefix Prefix of the name.
- * @return \c true if there exists an entity with this prefix.
+ * \param prefix Prefix of the name.
+ * \return \c true if there exists an entity with this prefix.
  */
 bool MapEntities::has_entity_with_prefix(const std::string& prefix) {
 
@@ -292,8 +292,8 @@ bool MapEntities::has_entity_with_prefix(const std::string& prefix) {
 }
 
 /**
- * @brief Brings to front an entity that is displayed as a sprite in the normal order.
- * @param entity the entity to bring to front
+ * \brief Brings to front an entity that is displayed as a sprite in the normal order.
+ * \param entity the entity to bring to front
  */
 void MapEntities::bring_to_front(MapEntity *entity) {
 
@@ -309,7 +309,7 @@ void MapEntities::bring_to_front(MapEntity *entity) {
 }
 
 /**
- * @brief Notifies all entities of the map that the map has just become active.
+ * \brief Notifies all entities of the map that the map has just become active.
  */
 void MapEntities::notify_map_started() {
 
@@ -327,7 +327,7 @@ void MapEntities::notify_map_started() {
 }
 
 /**
- * @brief Notifies all entities that the opening transition
+ * \brief Notifies all entities that the opening transition
  * of the map is finished.
  */
 void MapEntities::notify_map_opening_transition_finished() {
@@ -341,7 +341,7 @@ void MapEntities::notify_map_opening_transition_finished() {
 }
 
 /**
- * @brief Notifies this entity manager that the tileset of the map has
+ * \brief Notifies this entity manager that the tileset of the map has
  * changed.
  */
 void MapEntities::notify_tileset_changed() {
@@ -358,12 +358,12 @@ void MapEntities::notify_tileset_changed() {
 }
 
 /**
- * @brief Adds a tile on the map.
+ * \brief Adds a tile on the map.
  *
  * This function is called for each tile when loading the map.
  * The tiles cannot change during the game.
  *
- * @param tile the tile to add
+ * \param tile the tile to add
  */
 void MapEntities::add_tile(Tile *tile) {
 
@@ -511,13 +511,13 @@ void MapEntities::add_tile(Tile *tile) {
 }
 
 /**
- * @brief Adds an entity to the map.
+ * \brief Adds an entity to the map.
  *
  * This function is called when loading the map. If the entity
  * specified is NULL (because some entity creation functions
  * may return NULL), nothing is done.
  *
- * @param entity the entity to add (can be NULL)
+ * \param entity the entity to add (can be NULL)
  */
 void MapEntities::add_entity(MapEntity* entity) {
 
@@ -601,8 +601,8 @@ void MapEntities::add_entity(MapEntity* entity) {
 }
 
 /**
- * @brief Removes an entity from the map and schedules it to be destroyed.
- * @param entity the entity to remove
+ * \brief Removes an entity from the map and schedules it to be destroyed.
+ * \param entity the entity to remove
  */
 void MapEntities::remove_entity(MapEntity* entity) {
 
@@ -617,8 +617,8 @@ void MapEntities::remove_entity(MapEntity* entity) {
 }
 
 /**
- * @brief Removes an entity from the map.
- * @param name Name of the entity.
+ * \brief Removes an entity from the map.
+ * \param name Name of the entity.
  */
 void MapEntities::remove_entity(const std::string& name) {
 
@@ -629,8 +629,8 @@ void MapEntities::remove_entity(const std::string& name) {
 }
 
 /**
- * @brief Removes all entities of a type whose name starts with the specified prefix.
- * @param prefix Prefix of the name of the entities to remove.
+ * \brief Removes all entities of a type whose name starts with the specified prefix.
+ * \param prefix Prefix of the name of the entities to remove.
  */
 void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 
@@ -642,7 +642,7 @@ void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 }
 
 /**
- * @brief Removes and destroys the entities placed in the entities_to_remove list.
+ * \brief Removes and destroys the entities placed in the entities_to_remove list.
  */
 void MapEntities::remove_marked_entities() {
 
@@ -719,12 +719,12 @@ void MapEntities::remove_marked_entities() {
 }
 
 /**
- * @brief Suspends or resumes the movement and animations of the entities.
+ * \brief Suspends or resumes the movement and animations of the entities.
  *
  * This function is called by the map when the game
  * is being suspended or resumed.
  *
- * @param suspended true to suspend the movement and the animations,
+ * \param suspended true to suspend the movement and the animations,
  * false to resume them
  */
 void MapEntities::set_suspended(bool suspended) {
@@ -745,7 +745,7 @@ void MapEntities::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates the position, movement and animation each entity.
+ * \brief Updates the position, movement and animation each entity.
  */
 void MapEntities::update() {
 
@@ -780,7 +780,7 @@ void MapEntities::update() {
 }
 
 /**
- * @brief Determines which rectangles are animated and draws all non-animated
+ * \brief Determines which rectangles are animated and draws all non-animated
  * rectangles of tiles on intermediate surfaces.
  */
 void MapEntities::build_non_animated_tiles() {
@@ -846,7 +846,7 @@ void MapEntities::build_non_animated_tiles() {
 }
 
 /**
- * @brief Draws all non-animated rectangles of tiles on intermediate surfaces.
+ * \brief Draws all non-animated rectangles of tiles on intermediate surfaces.
  *
  * This function is similar to build_non_animated_tiles() except that it
  * assumes that animated and non-animated rectangles were already determined.
@@ -884,9 +884,9 @@ void MapEntities::redraw_non_animated_tiles() {
 }
 
 /**
- * @brief Returns whether a tile is overlapping an animated other tile.
- * @param tile the tile to check
- * @return true if this tile is overlapping an animated tile
+ * \brief Returns whether a tile is overlapping an animated other tile.
+ * \param tile the tile to check
+ * \return true if this tile is overlapping an animated tile
  */
 bool MapEntities::overlaps_animated_tile(Tile& tile) {
 
@@ -915,7 +915,7 @@ bool MapEntities::overlaps_animated_tile(Tile& tile) {
 }
 
 /**
- * @brief Draws the entities on the map surface.
+ * \brief Draws the entities on the map surface.
  */
 void MapEntities::draw() {
 
@@ -961,10 +961,10 @@ void MapEntities::draw() {
 }
 
 /**
- * @brief Compares the y position of two entities.
- * @param first an entity
- * @param second another entity
- * @return true if the y position of the first entity is lower
+ * \brief Compares the y position of two entities.
+ * \param first an entity
+ * \param second another entity
+ * \return true if the y position of the first entity is lower
  * than the second one
  */
 bool MapEntities::compare_y(MapEntity* first, MapEntity* second) {
@@ -974,12 +974,12 @@ bool MapEntities::compare_y(MapEntity* first, MapEntity* second) {
 }
 
 /**
- * @brief Changes the layer of an entity.
+ * \brief Changes the layer of an entity.
  *
  * Only some specific entities should change their layer.
  *
- * @param entity an entity
- * @param layer the new layer
+ * \param entity an entity
+ * \param layer the new layer
  */
 void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
 
@@ -1009,10 +1009,10 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
 }
 
 /**
- * @brief Returns whether a rectangle overlaps with a raised crystal block.
- * @param layer the layer to check
- * @param rectangle a rectangle
- * @return true if this rectangle overlaps a raised crystal block
+ * \brief Returns whether a rectangle overlaps with a raised crystal block.
+ * \param layer the layer to check
+ * \param rectangle a rectangle
+ * \return true if this rectangle overlaps a raised crystal block
  */
 bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle& rectangle) {
 
@@ -1028,15 +1028,15 @@ bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle& rectangle
 }
 
 /**
- * @brief Returns true if the player has thrown the boomerang.
- * @return true if the boomerang is present on the map
+ * \brief Returns true if the player has thrown the boomerang.
+ * \return true if the boomerang is present on the map
  */
 bool MapEntities::is_boomerang_present() {
   return boomerang != NULL;
 }
 
 /**
- * @brief Removes the boomerang from the map, if it is present.
+ * \brief Removes the boomerang from the map, if it is present.
  */
 void MapEntities::remove_boomerang() {
 
@@ -1047,7 +1047,7 @@ void MapEntities::remove_boomerang() {
 }
 
 /**
- * @brief Removes any boomerang from the map.
+ * \brief Removes any boomerang from the map.
  */
 void MapEntities::remove_arrows() {
 

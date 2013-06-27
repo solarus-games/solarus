@@ -25,8 +25,8 @@
 #include "KeysEffect.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::FreeState::FreeState(Hero &hero):
   PlayerMovementState(hero) {
@@ -34,14 +34,14 @@ Hero::FreeState::FreeState(Hero &hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::FreeState::~FreeState() {
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::FreeState::start(State *previous_state) {
 
@@ -52,8 +52,8 @@ void Hero::FreeState::start(State *previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::FreeState::stop(State *next_state) {
 
@@ -63,7 +63,7 @@ void Hero::FreeState::stop(State *next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::FreeState::update() {
 
@@ -78,8 +78,8 @@ void Hero::FreeState::update() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::FreeState::set_suspended(bool suspended) {
 
@@ -91,7 +91,7 @@ void Hero::FreeState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies this state that the action command was just pressed.
+ * \brief Notifies this state that the action command was just pressed.
  */
 void Hero::FreeState::notify_action_command_pressed() {
 
@@ -113,7 +113,7 @@ void Hero::FreeState::notify_action_command_pressed() {
 }
 
 /**
- * @brief Notifies this state that the hero has just failed to change its
+ * \brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */
 void Hero::FreeState::notify_obstacle_reached() {
@@ -134,53 +134,53 @@ void Hero::FreeState::notify_obstacle_reached() {
 }
 
 /**
- * @brief Returns whether the hero can walk normally and interact with entities
+ * \brief Returns whether the hero can walk normally and interact with entities
  * in this state.
- * @return true
+ * \return true
  */
 bool Hero::FreeState::is_free() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can swing his sword in this state.
- * @return true if the hero can swing his sword in this state
+ * \brief Returns whether the hero can swing his sword in this state.
+ * \return true if the hero can swing his sword in this state
  */
 bool Hero::FreeState::can_start_sword() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can use an equipment item in this state.
- * @param item The equipment item to check.
- * @return true if the hero can use this equipment item in this state.
+ * \brief Returns whether the hero can use an equipment item in this state.
+ * \param item The equipment item to check.
+ * \return true if the hero can use this equipment item in this state.
  */
 bool Hero::FreeState::can_start_item(EquipmentItem& item) {
   return hero.get_ground() != GROUND_HOLE;
 }
 
 /**
- * @brief Returns whether the hero can take stairs in this state.
+ * \brief Returns whether the hero can take stairs in this state.
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
- * @return true if the hero ignores the effect of stairs in this state
+ * \return true if the hero ignores the effect of stairs in this state
  */
 bool Hero::FreeState::can_take_stairs() {
   return true;
 }
 
 /**
- * @brief Returns whether can trigger a jumper in this state.
+ * \brief Returns whether can trigger a jumper in this state.
  * If false is returned, jumpers have no effect (but they are obstacle for the hero).
- * @return true if the hero can use jumpers in this state
+ * \return true if the hero can use jumpers in this state
  */
 bool Hero::FreeState::can_take_jumper() {
   return true;
 }
 
 /**
- * @brief Returns the action to do with an item previously carried by the hero when this state starts.
- * @param carried_item the item carried in the previous state
- * @return the action to do with a previous carried item when this state starts
+ * \brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * \param carried_item the item carried in the previous state
+ * \return the action to do with a previous carried item when this state starts
  */
 CarriedItem::Behavior Hero::FreeState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
   return CarriedItem::BEHAVIOR_DESTROY;

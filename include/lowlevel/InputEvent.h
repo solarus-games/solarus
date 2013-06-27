@@ -23,7 +23,7 @@
 #include <map>
 
 /**
- * @brief Represents a low-level event.
+ * \brief Represents a low-level event.
  *
  * This low-level class provides an API for input events (keyboard, joypad and window events).
  * It encapsulates the library-dependent events.

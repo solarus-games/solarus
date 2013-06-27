@@ -21,7 +21,7 @@
 #include <string>
 
 /**
- * @brief Main class of the game engine.
+ * \brief Main class of the game engine.
  *
  * It starts the program and handles the succession of its screens.
  */

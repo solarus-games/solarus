@@ -25,7 +25,7 @@
 #include "GameCommands.h"
 
 /**
- * @brief The hero's entity.
+ * \brief The hero's entity.
  *
  * This class represents the hero. It coordinates his position on the map and his state.
  * The hero is animated by several sprites that are handled by the HeroSprites class.
@@ -116,13 +116,13 @@ class Hero: public MapEntity {
   public:
 
     /**
-     * @name Creation and destruction.
+     * \name Creation and destruction.
      */
     Hero(Equipment &equipment);
     ~Hero();
 
     /**
-     * @name Features.
+     * \name Features.
      *
      * These functions, required by MapEntity, indicate
      * the main properties of this type of entity.
@@ -131,7 +131,7 @@ class Hero: public MapEntity {
     bool is_drawn_in_y_order();
 
     /**
-     * @name Game loop.
+     * \name Game loop.
      *
      * Functions called by the game loop.
      */
@@ -142,7 +142,7 @@ class Hero: public MapEntity {
     void notify_command_released(GameCommands::Command command);
 
     /**
-     * @name Sprites.
+     * \name Sprites.
      *
      * Functions relative to the sprites.
      * The sprites are managed and drawn by the class HeroSprites.
@@ -155,7 +155,7 @@ class Hero: public MapEntity {
     bool is_shadow_visible();
 
     /**
-     * @name Changing map.
+     * \name Changing map.
      *
      * Functions called when the player goes to another map.
      */
@@ -166,7 +166,7 @@ class Hero: public MapEntity {
     void notify_map_opening_transition_finished();
 
     /**
-     * @name Position.
+     * \name Position.
      *
      * These function provide information about the position of
      * the hero relative to other entities, and about
@@ -183,7 +183,7 @@ class Hero: public MapEntity {
     Stairs* get_stairs_overlapping();
 
     /**
-     * @name Movement.
+     * \name Movement.
      *
      * Information about the movement of the hero.
      * The hero is controlled by the player most of the time,
@@ -207,7 +207,7 @@ class Hero: public MapEntity {
     void reset_movement();
 
     /**
-     * @name Ground under the hero.
+     * \name Ground under the hero.
      *
      * Functions to handle the ground of the tiles under the hero.
      * Depending on the kind of ground, a special sprite may be displayed under him (grass, shallow water)
@@ -222,7 +222,7 @@ class Hero: public MapEntity {
     void reset_target_solid_ground_coords();
 
     /**
-     * @name Obstacles.
+     * \name Obstacles.
      *
      * Information about what is considered as an obstacle for the hero.
      */
@@ -242,7 +242,7 @@ class Hero: public MapEntity {
     bool is_jumper_obstacle(Jumper& jumper);
 
     /**
-     * @name Collisions.
+     * \name Collisions.
      *
      * Handle collisions between the hero and other entities.
      */
@@ -267,7 +267,7 @@ class Hero: public MapEntity {
     bool is_striking_with_sword(Detector &detector);
 
     /**
-     * @name Enemies.
+     * \name Enemies.
      *
      * Attacking enemies or getting hurt by them.
      */
@@ -279,7 +279,7 @@ class Hero: public MapEntity {
     void get_back_from_death();
 
     /**
-     * @name State.
+     * \name State.
      *
      * These functions provide information about the hero's internal state
      * and allow to start actions which may modify this state.

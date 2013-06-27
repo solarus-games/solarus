@@ -20,14 +20,14 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * @brief Constructor.
- * @param name Name of the destination to create.
- * @param layer The layer.
- * @param x X position of the destination point to create.
- * @param y Y position of the destination point to create.
- * @param hero_direction Initial direction of the hero in this state
+ * \brief Constructor.
+ * \param name Name of the destination to create.
+ * \param layer The layer.
+ * \param x X position of the destination point to create.
+ * \param y Y position of the destination point to create.
+ * \param hero_direction Initial direction of the hero in this state
  * (0 to 3, or -1 to indicate that the hero's direction is not changed).
- * @param sprite_name Animation set id of a sprite to represent this
+ * \param sprite_name Animation set id of a sprite to represent this
  * destination, or an empty string.
  */
 Destination::Destination(const std::string& name, Layer layer, int x, int y,
@@ -42,22 +42,22 @@ Destination::Destination(const std::string& name, Layer layer, int x, int y,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Destination::~Destination() {
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Destination::get_type() {
   return DESTINATION;
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
- * @return \c true if this type of entity can be obstacle for other entities.
+ * \brief Returns whether entities of this type can be obstacles for other entities.
+ * \return \c true if this type of entity can be obstacle for other entities.
  */
 bool Destination::can_be_obstacle() {
   return false;

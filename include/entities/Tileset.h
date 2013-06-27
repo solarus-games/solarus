@@ -25,7 +25,7 @@
 struct lua_State;
 
 /**
- * @brief An image containing all tile patterns.
+ * \brief An image containing all tile patterns.
  *
  * A tileset is an image containing a set of elements (tile patterns)
  * that one can use to compose a map.

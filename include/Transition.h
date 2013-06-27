@@ -21,7 +21,7 @@
 #include <cstdlib>
 
 /**
- * @brief Abstract class for a transition effect between two phases.
+ * \brief Abstract class for a transition effect between two phases.
  *
  * The transitions may be applied to maps or any surface.
  */
@@ -30,7 +30,7 @@ class Transition {
   public:
 
     /**
-     * @brief Styles of transitions.
+     * \brief Styles of transitions.
      */
     enum Style {
       IMMEDIATE = 0,  // no transition between the two surfaces
@@ -39,7 +39,7 @@ class Transition {
     };
 
     /**
-     * @brief Possible directions of a transition.
+     * \brief Possible directions of a transition.
      */
     enum Direction {
       IN  = 0,
@@ -58,30 +58,30 @@ class Transition {
     void set_suspended(bool suspended);
 
     /**
-     * @brief Starts this transition effect.
+     * \brief Starts this transition effect.
      */
     virtual void start() = 0;
 
     /**
-     * @brief Returns whether the transition effect is started.
-     * @return true if the transition effect is started
+     * \brief Returns whether the transition effect is started.
+     * \return true if the transition effect is started
      */
     virtual bool is_started() const = 0;
 
     /**
-     * @brief Returns whether the transition effect is finished.
-     * @return true if the transition effect is finished
+     * \brief Returns whether the transition effect is finished.
+     * \return true if the transition effect is finished
      */
     virtual bool is_finished() const = 0;
 
     /**
-     * @brief Updates this transition effect.
+     * \brief Updates this transition effect.
      */
     virtual void update() = 0;
 
     /**
-     * @brief Draws the transition effect on a surface.
-     * @param dst_surface the surface to draw
+     * \brief Draws the transition effect on a surface.
+     * \param dst_surface the surface to draw
      */
     virtual void draw(Surface& dst_surface) = 0;
 
@@ -94,7 +94,7 @@ class Transition {
     uint32_t get_when_suspended() const;
 
     /**
-     * @brief Notifies the transition effect that it was just suspended
+     * \brief Notifies the transition effect that it was just suspended
      * or resumed.
      */
     virtual void notify_suspended(bool suspended) = 0;

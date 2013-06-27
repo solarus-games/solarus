@@ -21,7 +21,7 @@
 #include <string>
 
 /**
- * @brief Associate to each game key its current effect on the game.
+ * \brief Associate to each game key its current effect on the game.
  *
  * This class associates to each game key (the action key,
  * the sword key, the pause key, and the two equipment item keys)
@@ -43,7 +43,7 @@ class KeysEffect {
   public:
 
     /**
-     * @brief What happens when the user presses the Action key.
+     * \brief What happens when the user presses the Action key.
      */
     enum ActionKeyEffect {
       ACTION_KEY_NONE,     /**< nothing happens when the user presses the Action key and the action icon is not shown */
@@ -62,7 +62,7 @@ class KeysEffect {
     };
 
     /**
-     * @brief What happens when the user presses the Sword key.
+     * \brief What happens when the user presses the Sword key.
      */
     enum SwordKeyEffect {
       SWORD_KEY_NONE,      /**< nothing happens when the user presses the Attack key */
@@ -72,7 +72,7 @@ class KeysEffect {
     };
 
     /**
-     * @brief What happens when the user presses the Pause key.
+     * \brief What happens when the user presses the Pause key.
      * TODO these values are not used but they should be.
      */
     enum PauseKeyEffect {

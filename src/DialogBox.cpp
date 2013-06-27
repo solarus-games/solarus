@@ -40,8 +40,8 @@ const uint32_t DialogBox::char_delays[] = {
 };
 
 /**
- * @brief Creates a new dialog box.
- * @param game the game this dialog box belongs to
+ * \brief Creates a new dialog box.
+ * \param game the game this dialog box belongs to
  */
 DialogBox::DialogBox(Game& game):
   game(game),
@@ -69,7 +69,7 @@ DialogBox::DialogBox(Game& game):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 DialogBox::~DialogBox() {
 
@@ -80,16 +80,16 @@ DialogBox::~DialogBox() {
 }
 
 /**
- * @brief Returns the game where this dialog box is displayed.
- * @return the current game
+ * \brief Returns the game where this dialog box is displayed.
+ * \return the current game
  */
 Game& DialogBox::get_game() {
   return game;
 }
 
 /**
- * @brief Returns whether the dialog box is currently active.
- * @return true if the dialog box is enabled
+ * \brief Returns whether the dialog box is currently active.
+ * \return true if the dialog box is enabled
  */
 bool DialogBox::is_enabled() {
 
@@ -97,19 +97,19 @@ bool DialogBox::is_enabled() {
 }
 
 /**
- * @brief Returns the dialog box style.
- * @return The current style.
+ * \brief Returns the dialog box style.
+ * \return The current style.
  */
 DialogBox::Style DialogBox::get_style() {
   return style;
 }
 
 /**
- * @brief Sets the dialog box style for subsequent dialogs.
+ * \brief Sets the dialog box style for subsequent dialogs.
  *
  * The default style is DialogBox::STYLE_WITH_FRAME.
  *
- * @param style the new style to set
+ * \param style the new style to set
  */
 void DialogBox::set_style(Style style) {
 
@@ -121,24 +121,24 @@ void DialogBox::set_style(Style style) {
 }
 
 /**
- * @brief Returns the vertical position of the dialog box.
- * @return The vertical position.
+ * \brief Returns the vertical position of the dialog box.
+ * \return The vertical position.
  */
 DialogBox::VerticalPosition DialogBox::get_vertical_position() {
   return vertical_position;
 }
 
 /**
- * @brief Sets the vertical position of the dialog box for subsequent dialogs.
- * @param vertical_position The vertical position.
+ * \brief Sets the vertical position of the dialog box for subsequent dialogs.
+ * \param vertical_position The vertical position.
  */
 void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
   this->vertical_position = vertical_position;
 }
 
 /**
- * @brief Returns whether a sound should be played when displaying the letters.
- * @return true if a sound should be played when displaying the letters
+ * \brief Returns whether a sound should be played when displaying the letters.
+ * \return true if a sound should be played when displaying the letters
  */
 bool DialogBox::is_letter_sound_enabled() {
 
@@ -146,14 +146,14 @@ bool DialogBox::is_letter_sound_enabled() {
 }
 
 /**
- * @brief Specifies the value of a variable that will occur in a dialog.
+ * \brief Specifies the value of a variable that will occur in a dialog.
  *
  * A value is expected in a dialog when the '$v' sequence is read.
  * You can specify only one variable at the same time per dialog.
  * If a variable was already specified for this dialog, it is replaced.
  *
- * @param dialog_id id of the dialog where this value will appear
- * @param value the value to add
+ * \param dialog_id id of the dialog where this value will appear
+ * \param value the value to add
  */
 void DialogBox::set_variable(const std::string& dialog_id,
     const std::string& value) {
@@ -162,13 +162,13 @@ void DialogBox::set_variable(const std::string& dialog_id,
 }
 
 /**
- * @brief Same as set_variable(string, string) but with an integer parameter.
+ * \brief Same as set_variable(string, string) but with an integer parameter.
  *
  * This function just converts the integer value to a string
  * add calls the other function.
  *
- * @param dialog_id id of the dialog where this value will appear
- * @param value the value to set
+ * \param dialog_id id of the dialog where this value will appear
+ * \param value the value to set
  */
 void DialogBox::set_variable(const std::string& dialog_id, int value) {
 
@@ -178,11 +178,11 @@ void DialogBox::set_variable(const std::string& dialog_id, int value) {
 }
 
 /**
- * @brief Returns the variable specified by a previous
+ * \brief Returns the variable specified by a previous
  * call to set_variable(), for the current dialog.
  * This function is called by
  * the current message when it reads the '$v' sequence.
- * @return the value of the variable
+ * \return the value of the variable
  */
 const std::string& DialogBox::get_variable() {
 
@@ -195,9 +195,9 @@ const std::string& DialogBox::get_variable() {
 }
 
 /**
- * @brief Returns the answer selected by the player in the question of the
+ * \brief Returns the answer selected by the player in the question of the
  * last dialog.
- * @return the answer selected: 0 for the first one, 1 for the second one,
+ * \return the answer selected: 0 for the first one, 1 for the second one,
  * -1 if the last dialog was not a question
  */
 int DialogBox::get_last_answer() {
@@ -206,23 +206,23 @@ int DialogBox::get_last_answer() {
 }
 
 /**
- * @brief Starts a dialog.
+ * \brief Starts a dialog.
  *
  * If there was already a dialog, it must be finished.
  *
- * @param dialog_id of the dialog
+ * \param dialog_id of the dialog
  */
 void DialogBox::start_dialog(const std::string& dialog_id) {
   start_dialog(dialog_id, LUA_REFNIL);
 }
 
 /**
- * @brief Starts a dialog.
+ * \brief Starts a dialog.
  *
  * If there was already a dialog, it must be finished.
  *
- * @param dialog_id of the dialog
- * @param callback_ref Lua ref of a function to call when the dialog finishes.
+ * \param dialog_id of the dialog
+ * \param callback_ref Lua ref of a function to call when the dialog finishes.
  */
 void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref) {
 
@@ -295,7 +295,7 @@ void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref) {
 }
 
 /**
- * @brief Shows a new group of 3 lines in the dialog box, if any.
+ * \brief Shows a new group of 3 lines in the dialog box, if any.
  */
 void DialogBox::show_more_lines() {
 
@@ -351,7 +351,7 @@ void DialogBox::show_more_lines() {
 }
 
 /** 
- * @brief Shows the next dialog (if any).
+ * \brief Shows the next dialog (if any).
  */
 void DialogBox::show_next_dialog() {
 
@@ -368,7 +368,7 @@ void DialogBox::show_next_dialog() {
 }
 
 /**
- * @brief Closes the dialog box.
+ * \brief Closes the dialog box.
  */
 void DialogBox::close() {
 
@@ -386,9 +386,9 @@ void DialogBox::close() {
 }
 
 /**
- * @brief This function is called by the game when a command is pressed
+ * \brief This function is called by the game when a command is pressed
  * while displaying a dialog.
- * @param command The command pressed.
+ * \param command The command pressed.
  */
 void DialogBox::notify_command_pressed(GameCommands::Command command) {
 
@@ -414,7 +414,7 @@ void DialogBox::notify_command_pressed(GameCommands::Command command) {
 }
 
 /**
- * @brief This function is called when the user presses the action key.
+ * \brief This function is called when the user presses the action key.
  */
 void DialogBox::action_key_pressed() {
 
@@ -427,7 +427,7 @@ void DialogBox::action_key_pressed() {
 }
 
 /**
- * @brief This function is called when the user presses the sword key.
+ * \brief This function is called when the user presses the sword key.
  */
 void DialogBox::sword_key_pressed() {
 
@@ -444,7 +444,7 @@ void DialogBox::sword_key_pressed() {
 }
 
 /**
- * @brief This function is called when the user pressed the up or down key.
+ * \brief This function is called when the user pressed the up or down key.
  */
 void DialogBox::up_or_down_key_pressed() {
 
@@ -461,7 +461,7 @@ void DialogBox::up_or_down_key_pressed() {
 }
 
 /**
- * @brief Stops displaying gradually the current 3 lines, shows them
+ * \brief Stops displaying gradually the current 3 lines, shows them
  * immediately.
  * If the 3 lines were already finished, the next group of 3 lines starts
  * (if any).
@@ -490,17 +490,17 @@ void DialogBox::show_all_now() {
 }
 
 /**
- * @brief Returns the id of the current dialog.
- * @return the id of the dialog currently shown
+ * \brief Returns the id of the current dialog.
+ * \return the id of the dialog currently shown
  */
 const std::string& DialogBox::get_dialog_id() {
   return dialog_id;
 }
 
 /**
- * @brief Returns whether all 3 current lines of the dialog box are entirely
+ * \brief Returns whether all 3 current lines of the dialog box are entirely
  * displayed.
- * @return true if the dialog box is full
+ * \return true if the dialog box is full
  */
 bool DialogBox::is_full() {
 
@@ -510,9 +510,9 @@ bool DialogBox::is_full() {
 }
 
 /**
- * @brief Returns whether there are more lines remaining to display after the
+ * \brief Returns whether there are more lines remaining to display after the
  * current 3 lines.
- * @return true if there are more lines
+ * \return true if there are more lines
  */
 bool DialogBox::has_more_lines() {
 
@@ -520,7 +520,7 @@ bool DialogBox::has_more_lines() {
 }
 
 /**
- * @brief Updates the dialog box.
+ * \brief Updates the dialog box.
  *
  * This function is called repeatedly by the game
  * while the dialog box exists.
@@ -563,8 +563,8 @@ void DialogBox::update() {
 }
 
 /**
- * @brief Draws the dialog box on a surface.
- * @param dst_surface the surface
+ * \brief Draws the dialog box on a surface.
+ * \param dst_surface the surface
  */
 void DialogBox::draw(Surface& dst_surface) {
 
@@ -617,7 +617,7 @@ void DialogBox::draw(Surface& dst_surface) {
 }
 
 /**
- * @brief Updates displaying the characters in the 3 lines.
+ * \brief Updates displaying the characters in the 3 lines.
  */
 void DialogBox::update_lines() {
 
@@ -637,7 +637,7 @@ void DialogBox::update_lines() {
 }
 
 /**
- * @brief Adds the next character to the message.
+ * \brief Adds the next character to the message.
  *
  * If this is a special character (like $0, $v, etc.),
  * the corresponding action is performed.

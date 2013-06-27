@@ -24,10 +24,10 @@
 #include <cmath>
 
 /**
- * @brief Constructor.
- * @param ignore_obstacles true to ignore obstacles of the map
+ * \brief Constructor.
+ * \param ignore_obstacles true to ignore obstacles of the map
  * (used only when there is a map and the movement is attached to an entity of this map)
- * @param smooth true to adjust the trajectory if an obstacle is reached
+ * \param smooth true to adjust the trajectory if an obstacle is reached
  * (only when ignore_obstacles is false)
  */
 StraightMovement::StraightMovement(bool ignore_obstacles, bool smooth):
@@ -46,14 +46,14 @@ StraightMovement::StraightMovement(bool ignore_obstacles, bool smooth):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 StraightMovement::~StraightMovement() {
 
 }
 
 /**
- * @brief Notifies this movement that the object it controls has changed.
+ * \brief Notifies this movement that the object it controls has changed.
  */
 void StraightMovement::notify_object_controlled() {
 
@@ -62,35 +62,35 @@ void StraightMovement::notify_object_controlled() {
 }
 
 /**
- * @brief Returns the x speed of the object.
- * @return the x speed of the entity, between -100 and 100
+ * \brief Returns the x speed of the object.
+ * \return the x speed of the entity, between -100 and 100
  */
 double StraightMovement::get_x_speed() {
   return x_speed;
 }
 
 /**
- * @brief Returns the y speed of the object.
- * @return the y speed of the entity, between -100 and 100
+ * \brief Returns the y speed of the object.
+ * \return the y speed of the entity, between -100 and 100
  */
 double StraightMovement::get_y_speed() {
   return y_speed;
 }
 
 /**
- * @brief Returns the total speed of the object.
+ * \brief Returns the total speed of the object.
  *
  * The speed is calculated as sqrt(x_speed^2 + y_speed^2).
  *
- * @return the speed in pixels per second
+ * \return the speed in pixels per second
  */
 double StraightMovement::get_speed() {
   return std::sqrt(x_speed * x_speed + y_speed * y_speed);
 }
 
 /**
- * @brief Sets the x speed.
- * @param x_speed the x speed of the object in pixels per second
+ * \brief Sets the x speed.
+ * \param x_speed the x speed of the object in pixels per second
  */
 void StraightMovement::set_x_speed(double x_speed) {
 
@@ -124,8 +124,8 @@ void StraightMovement::set_x_speed(double x_speed) {
 }
 
 /**
- * @brief Sets the y speed.
- * @param y_speed the y speed of the object in pixels per second
+ * \brief Sets the y speed.
+ * \param y_speed the y speed of the object in pixels per second
  */
 void StraightMovement::set_y_speed(double y_speed) {
 
@@ -159,11 +159,11 @@ void StraightMovement::set_y_speed(double y_speed) {
 }
 
 /**
- * @brief Changes the speed, keeping the same direction of the movement.
+ * \brief Changes the speed, keeping the same direction of the movement.
  *
  * x_speed and y_speed are recomputed so that the movement direction is unchanged.
  *
- * @param speed the new speed
+ * \param speed the new speed
  */
 void StraightMovement::set_speed(double speed) {
 
@@ -181,15 +181,15 @@ void StraightMovement::set_speed(double speed) {
 }
 
 /**
- * @brief Returns whether the speed is not zero.
- * @return true if the object is moving, false otherwise
+ * \brief Returns whether the speed is not zero.
+ * \return true if the object is moving, false otherwise
  */
 bool StraightMovement::is_started() {
   return x_speed != 0 || y_speed != 0;
 }
 
 /**
- * @brief Sets the speed to zero.
+ * \brief Sets the speed to zero.
  */
 void StraightMovement::stop() {
 
@@ -204,8 +204,8 @@ void StraightMovement::stop() {
 }
 
 /**
- * @brief Sets the date of the next change of the x coordinate.
- * @param next_move_date_x the date in milliseconds
+ * \brief Sets the date of the next change of the x coordinate.
+ * \param next_move_date_x the date in milliseconds
  */
 void StraightMovement::set_next_move_date_x(uint32_t next_move_date_x) {
 
@@ -219,8 +219,8 @@ void StraightMovement::set_next_move_date_x(uint32_t next_move_date_x) {
 }
 
 /**
- * @brief Sets the date of the next change of the y coordinate.
- * @param next_move_date_y the date in milliseconds
+ * \brief Sets the date of the next change of the y coordinate.
+ * \param next_move_date_y the date in milliseconds
  */
 void StraightMovement::set_next_move_date_y(uint32_t next_move_date_y) {
 
@@ -234,8 +234,8 @@ void StraightMovement::set_next_move_date_y(uint32_t next_move_date_y) {
 }
 
 /**
- * @brief Computes and returns the direction of the speed vector.
- * @return the current angle of the speed vector in degrees
+ * \brief Computes and returns the direction of the speed vector.
+ * \return the current angle of the speed vector in degrees
  */
 double StraightMovement::get_angle() {
 
@@ -243,13 +243,13 @@ double StraightMovement::get_angle() {
 }
 
 /**
- * @brief Changes the direction of the movement vector, keeping the same speed.
+ * \brief Changes the direction of the movement vector, keeping the same speed.
  *
  * x_speed and y_speed are recomputed so that the total speed is unchanged.
  * Warning: if x_speed and y_speed are both equal to zero, this function
  * stops the program on an error message.
  *
- * @param angle the new movement direction in radians
+ * \param angle the new movement direction in radians
  */
 void StraightMovement::set_angle(double angle) {
 
@@ -264,8 +264,8 @@ void StraightMovement::set_angle(double angle) {
 }
 
 /**
- * @brief Returns the distance after which the movement stops.
- * @return the maximum distance in pixels (0 means no limit)
+ * \brief Returns the distance after which the movement stops.
+ * \return the maximum distance in pixels (0 means no limit)
  */
 int StraightMovement::get_max_distance() {
 
@@ -273,8 +273,8 @@ int StraightMovement::get_max_distance() {
 }
 
 /**
- * @brief Sets the distance after which the movement stops.
- * @param max_distance the maximum distance in pixels (0 means no limit)
+ * \brief Sets the distance after which the movement stops.
+ * \param max_distance the maximum distance in pixels (0 means no limit)
  */
 void StraightMovement::set_max_distance(int max_distance) {
 
@@ -282,11 +282,11 @@ void StraightMovement::set_max_distance(int max_distance) {
 }
 
 /**
- * @brief Returns whether the movement is finished.
+ * \brief Returns whether the movement is finished.
  *
  * This functions returns true when max_distance is reached.
  *
- * @return true if the movement is finished
+ * \return true if the movement is finished
  */
 bool StraightMovement::is_finished() {
 
@@ -294,7 +294,7 @@ bool StraightMovement::is_finished() {
 }
 
 /**
- * @brief Stops the movement and marks it finished.
+ * \brief Stops the movement and marks it finished.
  */
 void StraightMovement::set_finished() {
 
@@ -303,8 +303,8 @@ void StraightMovement::set_finished() {
 }
 
 /**
- * @brief Returns the direction a sprite controlled by this movement should take.
- * @return the direction to use to display the object controlled by this movement (0 to 3)
+ * \brief Returns the direction a sprite controlled by this movement should take.
+ * \return the direction to use to display the object controlled by this movement (0 to 3)
  */
 int StraightMovement::get_displayed_direction4() {
 
@@ -313,12 +313,12 @@ int StraightMovement::get_displayed_direction4() {
 }
 
 /**
- * @brief Returns true if the object is about to try to move.
+ * \brief Returns true if the object is about to try to move.
  *
  * This function returns true if x_move is not equal to zero
  * and next_move_date_x is past, or the same thing for y.
  *
- * @return true if the entity is about to try to move
+ * \return true if the entity is about to try to move
  */
 bool StraightMovement::has_to_move_now() {
 
@@ -329,11 +329,11 @@ bool StraightMovement::has_to_move_now() {
 }
 
 /**
- * @brief Suspends or resumes the movement.
+ * \brief Suspends or resumes the movement.
  *
  * This function is called by the entity when the game is suspended or resumed.
  *
- * @param suspended true to suspend the movement, false to resume it
+ * \param suspended true to suspend the movement, false to resume it
  */
 void StraightMovement::set_suspended(bool suspended) {
 
@@ -351,25 +351,25 @@ void StraightMovement::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns whether the movement adjusts its trajectory when
+ * \brief Returns whether the movement adjusts its trajectory when
  * an obstacle is reached.
- * @return true if the movement is smooth
+ * \return true if the movement is smooth
  */
 bool StraightMovement::is_smooth() {
   return this->smooth;
 }
 
 /**
- * @brief Sets whether the movement adjusts its trajectory when
+ * \brief Sets whether the movement adjusts its trajectory when
  * an obstacle is reached.
- * @param smooth true if the movement is smooth
+ * \param smooth true if the movement is smooth
  */
 void StraightMovement::set_smooth(bool smooth) {
   this->smooth = smooth;
 }
 
 /**
- * @brief Updates the x position of the entity if it wants to move
+ * \brief Updates the x position of the entity if it wants to move
  * (smooth version).
  */
 void StraightMovement::update_smooth_x() {
@@ -457,7 +457,7 @@ void StraightMovement::update_smooth_x() {
 }
 
 /**
- * @brief Updates the y position of the entity if it wants to move
+ * \brief Updates the y position of the entity if it wants to move
  * (smooth version).
  */
 void StraightMovement::update_smooth_y() {
@@ -544,7 +544,7 @@ void StraightMovement::update_smooth_y() {
 }
 
 /**
- * @brief Updates the x position of the entity if it wants to move
+ * \brief Updates the x position of the entity if it wants to move
  * (non-smooth version).
  */
 void StraightMovement::update_non_smooth_x() {
@@ -563,7 +563,7 @@ void StraightMovement::update_non_smooth_x() {
 }
 
 /**
- * @brief Updates the y position of the entity if it wants to move
+ * \brief Updates the y position of the entity if it wants to move
  * (non-smooth version).
  */
 void StraightMovement::update_non_smooth_y() {
@@ -582,7 +582,7 @@ void StraightMovement::update_non_smooth_y() {
 }
 
 /**
- * @brief Updates the x position of the entity if it wants to move.
+ * \brief Updates the x position of the entity if it wants to move.
  */
 void StraightMovement::update_x() {
 
@@ -595,7 +595,7 @@ void StraightMovement::update_x() {
 }
 
 /**
- * @brief Updates the y position of the entity if it wants to move.
+ * \brief Updates the y position of the entity if it wants to move.
  */
 void StraightMovement::update_y() {
 
@@ -608,7 +608,7 @@ void StraightMovement::update_y() {
 }
 
 /**
- * @brief Updates the position of the object controlled by this movement.
+ * \brief Updates the position of the object controlled by this movement.
  *
  * This function is called repeatedly.
  */
@@ -684,8 +684,8 @@ void StraightMovement::update() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& StraightMovement::get_lua_type_name() const {
   return LuaContext::movement_straight_module_name;

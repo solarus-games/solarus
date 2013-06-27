@@ -20,7 +20,7 @@
 #include "hero/State.h"
 
 /**
- * @brief The state "Hurt" of the hero.
+ * \brief The state "Hurt" of the hero.
  */
 class Hero::HurtState: public Hero::State {
 

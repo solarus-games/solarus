@@ -23,7 +23,7 @@
 #include <vector>
 
 /**
- * @brief An item possibly possessed by the player.
+ * \brief An item possibly possessed by the player.
  *
  * Its properties are controlled by the script of the item.
  */

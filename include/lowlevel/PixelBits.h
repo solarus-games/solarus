@@ -20,7 +20,7 @@
 #include "Common.h"
 
 /**
- * @brief Provides pixel-perfect collision checks for a surface.
+ * \brief Provides pixel-perfect collision checks for a surface.
  *
  * This class stores efficiently the location of the non-transparent pixels of a surface.
  * For each pixel of the image, a bit indicates whether this pixel is transparent.

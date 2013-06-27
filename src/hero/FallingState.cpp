@@ -23,8 +23,8 @@
 #include "Equipment.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::FallingState::FallingState(Hero &hero):
   State(hero) {
@@ -32,15 +32,15 @@ Hero::FallingState::FallingState(Hero &hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::FallingState::~FallingState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::FallingState::start(State *previous_state) {
 
@@ -53,8 +53,8 @@ void Hero::FallingState::start(State *previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::FallingState::stop(State *next_state) {
 
@@ -65,7 +65,7 @@ void Hero::FallingState::stop(State *next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::FallingState::update() {
 
@@ -88,32 +88,32 @@ void Hero::FallingState::update() {
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of holes in this state.
- * @return true if the hero ignores the effect of holes in the current state
+ * \brief Returns whether the hero ignores the effect of holes in this state.
+ * \return true if the hero ignores the effect of holes in the current state
  */
 bool Hero::FallingState::can_avoid_hole() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of lava in this state.
- * @return true if the hero ignores the effect of lava in the current state
+ * \brief Returns whether the hero ignores the effect of lava in this state.
+ * \return true if the hero ignores the effect of lava in the current state
  */
 bool Hero::FallingState::can_avoid_lava() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of prickles in this state.
- * @return true if the hero ignores the effect of prickles in the current state
+ * \brief Returns whether the hero ignores the effect of prickles in this state.
+ * \return true if the hero ignores the effect of prickles in the current state
  */
 bool Hero::FallingState::can_avoid_prickle() {
   return true;
 }
 
 /**
- * @brief Returns whether the game over sequence can start in the current state.
- * @return true if the game over sequence can start in the current state
+ * \brief Returns whether the game over sequence can start in the current state.
+ * \return true if the game over sequence can start in the current state
  */
 bool Hero::FallingState::can_start_gameover_sequence() {
   return false;

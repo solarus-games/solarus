@@ -30,7 +30,7 @@
 #include <lua.hpp>
 
 /**
- * @brief This class represents a living Lua context that can execute dynamic
+ * \brief This class represents a living Lua context that can execute dynamic
  * scripts at runtime.
  *
  * Such scripts includes menus, map scripts, enemy behaviors, etc.
@@ -320,7 +320,7 @@ class LuaContext {
     // Implementation of the API.
 
     /**
-     * @brief Type of the functions that can be called by Lua.
+     * \brief Type of the functions that can be called by Lua.
      */
     typedef int (FunctionExportedToLua) (lua_State* l);
 
@@ -760,7 +760,7 @@ class LuaContext {
   private:
 
     /**
-     * @brief Data associated to any Lua menu.
+     * \brief Data associated to any Lua menu.
      */
     struct LuaMenuData {
       int ref;               /**< Lua ref of the table of the menu. */
@@ -773,7 +773,7 @@ class LuaContext {
     };
 
     /**
-     * @brief Data associated to any Lua timer.
+     * \brief Data associated to any Lua timer.
      */
     struct LuaTimerData {
       int callback_ref;     /**< Lua ref of the function to call after the timer. */
@@ -1011,7 +1011,7 @@ class LuaContext {
 };
 
 /**
- * @brief Checks whether a value is the name of an enumeration value and
+ * \brief Checks whether a value is the name of an enumeration value and
  * returns this value.
  *
  * Raises a Lua error if the value is not a string or if the string cannot
@@ -1022,11 +1022,11 @@ class LuaContext {
  * array of std::string instead of char*, and returns a value of enumerated
  * type E instead of int.
  *
- * @param l A Lua state.
- * @param index Index of a string in the Lua stack.
- * @param names An array of strings to search in. This array must be
+ * \param l A Lua state.
+ * \param index Index of a string in the Lua stack.
+ * \param names An array of strings to search in. This array must be
  * terminated by an empty string.
- * @return The index (converted to the enumerated type E) where the string was
+ * \return The index (converted to the enumerated type E) where the string was
  * found in the array.
  */
 template<typename E>
@@ -1055,14 +1055,14 @@ E LuaContext::check_enum(
 }
 
 /**
- * @brief Like check_enum but with a default value.
+ * \brief Like check_enum but with a default value.
  *
- * @param l A Lua state.
- * @param index Index of a string in the Lua stack.
- * @param names An array of strings to search in. This array must be
+ * \param l A Lua state.
+ * \param index Index of a string in the Lua stack.
+ * \param names An array of strings to search in. This array must be
  * terminated by an empty string.
- * @param default_value The default value to return.
- * @return The index (converted to the enumerated type E) where the string was
+ * \param default_value The default value to return.
+ * \return The index (converted to the enumerated type E) where the string was
  * found in the array.
  */
 template<typename E>
@@ -1077,17 +1077,17 @@ E LuaContext::opt_enum(
 }
 
 /**
- * @brief Checks that a table field is the name of an enumeration value and
+ * \brief Checks that a table field is the name of an enumeration value and
  * returns this value.
  *
  * This function acts like lua_getfield() followed by check_enum().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @param names An array of strings to search in. This array must be
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param names An array of strings to search in. This array must be
  * terminated by an empty string.
- * @return The index (converted to the enumerated type E) where the string was
+ * \return The index (converted to the enumerated type E) where the string was
  * found in the array.
  */
 template<typename E>
@@ -1109,15 +1109,15 @@ E LuaContext::check_enum_field(
 }
 
 /**
- * @brief Like check_enum_field but with a default value.
+ * \brief Like check_enum_field but with a default value.
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @param names An array of strings to search in. This array must be
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param names An array of strings to search in. This array must be
  * terminated by an empty string.
- * @param default_value The default value to return.
- * @return The index (converted to the enumerated type E) where the string was
+ * \param default_value The default value to return.
+ * \return The index (converted to the enumerated type E) where the string was
  * found in the array.
  */
 template<typename E>

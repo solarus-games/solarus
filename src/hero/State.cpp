@@ -28,11 +28,11 @@
 #include "KeysEffect.h"
 
 /**
- * @brief Creates a state.
+ * \brief Creates a state.
  *
  * This constructor can be called only from the subclasses.
  *
- * @param hero the hero to control with this state
+ * \param hero the hero to control with this state
  */
 Hero::State::State(Hero &hero):
 
@@ -44,7 +44,7 @@ Hero::State::State(Hero &hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  *
  * The state is destroyed once it is not the current state of the hero anymore.
  */
@@ -52,111 +52,111 @@ Hero::State::~State() {
 }
 
 /**
- * @brief Returns whether this state is the current state.
- * @return true if this state is the current state
+ * \brief Returns whether this state is the current state.
+ * \return true if this state is the current state
  */
 bool Hero::State::is_current_state() {
   return hero.state == this;
 }
 
 /**
- * @brief Returns the hero's sprites.
- * @return the sprites
+ * \brief Returns the hero's sprites.
+ * \return the sprites
  */
 HeroSprites& Hero::State::get_sprites() {
   return hero.get_sprites();
 }
 
 /**
- * @brief Returns the current map.
- * @return the map
+ * \brief Returns the current map.
+ * \return the map
  */
 Map& Hero::State::get_map() {
   return *map;
 }
 
 /**
- * @brief Returns the entities of the current map.
- * @return the entities
+ * \brief Returns the entities of the current map.
+ * \return the entities
  */
 MapEntities& Hero::State::get_entities() {
   return map->get_entities();
 }
 
 /**
- * @brief Returns the shared Lua context.
- * @return The Lua context where all scripts are run.
+ * \brief Returns the shared Lua context.
+ * \return The Lua context where all scripts are run.
  */
 LuaContext& Hero::State::get_lua_context() {
   return map->get_game().get_lua_context();
 }
 
 /**
- * @brief Returns the current game.
- * @return the game
+ * \brief Returns the current game.
+ * \return the game
  */
 Game& Hero::State::get_game() {
   return map->get_game();
 }
 
 /**
- * @brief Returns the current equipment.
- * @return the equipment
+ * \brief Returns the current equipment.
+ * \return the equipment
  */
 Equipment& Hero::State::get_equipment() {
   return get_game().get_equipment();
 }
 
 /**
- * @brief Returns the keys effect manager.
- * @return the keys effect
+ * \brief Returns the keys effect manager.
+ * \return the keys effect
  */
 KeysEffect& Hero::State::get_keys_effect() {
   return get_game().get_keys_effect();
 }
 
 /**
- * @brief Returns the game commands.
- * @return The commands.
+ * \brief Returns the game commands.
+ * \return The commands.
  */
 GameCommands& Hero::State::get_commands() {
   return get_game().get_commands();
 }
 
 /**
- * @brief Returns the dialog box manager.
- * @return the dialog box
+ * \brief Returns the dialog box manager.
+ * \return the dialog box
  */
 DialogBox& Hero::State::get_dialog_box() {
   return get_game().get_dialog_box();
 }
 
 /**
- * @brief Starts this state.
+ * \brief Starts this state.
  *
  * This function is called automatically when this state becomes the active state of the hero.
  * The initializations should be done here rather than in the constructor.
  *
- * @param previous_state the previous state or NULL if this is the first state (for information)
+ * \param previous_state the previous state or NULL if this is the first state (for information)
  */
 void Hero::State::start(State *previous_state) {
   set_suspended(hero.is_suspended());
 }
 
 /**
- * @brief Ends this state.
+ * \brief Ends this state.
  *
  * This function is called automatically when this state is not the active state anymore.
  * You should here close everything the start() function has opened.
  * The destructor will be called at the next cycle.
  *
- * @param next_state the next state (for information)
+ * \param next_state the next state (for information)
  */
 void Hero::State::stop(State *next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  *
  * This function is called repeatedly while this state is the active state.
  */
@@ -165,7 +165,7 @@ void Hero::State::update() {
 }
 
 /**
- * @brief Draws this state.
+ * \brief Draws this state.
  *
  * This function draws the hero's sprites in its current state.
  * If your state needs to draw additional elements, you can redefine this function.
@@ -176,8 +176,8 @@ void Hero::State::draw_on_map() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::State::set_suspended(bool suspended) {
 
@@ -193,9 +193,9 @@ void Hero::State::set_suspended(bool suspended) {
 }
 
 /**
- * @brief This function is called when a game command is pressed and the game
+ * \brief This function is called when a game command is pressed and the game
  * is not suspended.
- * @param command The command pressed.
+ * \param command The command pressed.
  */
 void Hero::State::notify_command_pressed(GameCommands::Command command) {
 
@@ -243,9 +243,9 @@ void Hero::State::notify_command_pressed(GameCommands::Command command) {
 }
 
 /**
- * @brief This function is called when a command is released if the game is
+ * \brief This function is called when a command is released if the game is
  * not suspended.
- * @param command The command released.
+ * \param command The command released.
  */
 void Hero::State::notify_command_released(GameCommands::Command command) {
 
@@ -289,19 +289,19 @@ void Hero::State::notify_command_released(GameCommands::Command command) {
 }
 
 /**
- * @brief Notifies this state that the action command was just pressed.
+ * \brief Notifies this state that the action command was just pressed.
  */
 void Hero::State::notify_action_command_pressed() {
 }
 
 /**
- * @brief Notifies this state that the action command was just released.
+ * \brief Notifies this state that the action command was just released.
  */
 void Hero::State::notify_action_command_released() {
 }
 
 /**
- * @brief Notifies this state that the attack command was just pressed.
+ * \brief Notifies this state that the attack command was just pressed.
  */
 void Hero::State::notify_attack_command_pressed() {
 
@@ -314,28 +314,28 @@ void Hero::State::notify_attack_command_pressed() {
 }
 
 /**
- * @brief Notifies this state that the attack command was just released.
+ * \brief Notifies this state that the attack command was just released.
  */
 void Hero::State::notify_attack_command_released() {
 }
 
 /**
- * @brief Notifies this state that a directional command was just pressed.
- * @param direction4 direction of the key (0 to 3)
+ * \brief Notifies this state that a directional command was just pressed.
+ * \param direction4 direction of the key (0 to 3)
  */
 void Hero::State::notify_direction_command_pressed(int direction4) {
 }
 
 /**
- * @brief Notifies this state that a directional command was just released.
- * @param direction4 direction of the key (0 to 3)
+ * \brief Notifies this state that a directional command was just released.
+ * \param direction4 direction of the key (0 to 3)
  */
 void Hero::State::notify_direction_command_released(int direction4) {
 }
 
 /**
- * @brief Notifies this state that an item command was just pressed.
- * @param slot The slot activated (1 or 2).
+ * \brief Notifies this state that an item command was just pressed.
+ * \param slot The slot activated (1 or 2).
  */
 void Hero::State::notify_item_command_pressed(int slot) {
 
@@ -347,41 +347,41 @@ void Hero::State::notify_item_command_pressed(int slot) {
 }
 
 /**
- * @brief Notifies this state that an item command was just released.
- * @param slot the slot (1 or 2)
+ * \brief Notifies this state that an item command was just released.
+ * \param slot the slot (1 or 2)
  */
 void Hero::State::notify_item_command_released(int slot) {
 }
 
 /**
- * @brief Changes the map.
+ * \brief Changes the map.
  *
  * This function is called when the hero is about to go to another map.
  *
- * @param map the new map
+ * \param map the new map
  */
 void Hero::State::set_map(Map &map) {
   this->map = &map;
 }
 
 /**
- * @brief Returns whether the game over sequence can start in the current state.
- * @return true if the game over sequence can start in the current state
+ * \brief Returns whether the game over sequence can start in the current state.
+ * \return true if the game over sequence can start in the current state
  */
 bool Hero::State::can_start_gameover_sequence() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero is visible in the current state.
- * @return true if the hero is displayed in the current state
+ * \brief Returns whether the hero is visible in the current state.
+ * \return true if the hero is displayed in the current state
  */
 bool Hero::State::is_hero_visible() {
   return true;
 }
 
 /**
- * @brief Returns whether the animation direction is locked.
+ * \brief Returns whether the animation direction is locked.
  *
  * When this function returns false, which is the case most of the time,
  * it means that the animation direction is set to the movement direction.
@@ -389,39 +389,39 @@ bool Hero::State::is_hero_visible() {
  * and do not depends on the movement direction anymore (this is the case
  * when the hero is loading his sword).
  *
- * @return true if the animation direction is locked
+ * \return true if the animation direction is locked
  */
 bool Hero::State::is_direction_locked() {
   return false;
 }
 
 /**
- * @brief Returns whether the player can control his movements in the current state.
+ * \brief Returns whether the player can control his movements in the current state.
  *
  * This function returns true if and only if the current movement of the hero is
  * an instance of PlayerMovement.
  *
- * @return true if the player can control his movements
+ * \return true if the player can control his movements
  */
 bool Hero::State::can_control_movement() {
   return false;
 }
 
 /**
- * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
+ * \brief Returns the direction of the hero's movement as defined by the controls applied by the player
  * and the movements allowed is the current state.
  *
  * If he is not moving, -1 is returned.
  * This direction may be different from the real movement direction because of obstacles.
  *
- * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::State::get_wanted_movement_direction8() {
   return -1;
 }
 
 /**
- * @brief Notifies this state that the walking speed has changed.
+ * \brief Notifies this state that the walking speed has changed.
  * 
  * If the hero can walk in this state, the state should modify its movement
  * to set the new speed.
@@ -430,13 +430,13 @@ void Hero::State::notify_walking_speed_changed() {
 }
 
 /**
- * @brief Notifies this state that the layer has changed.
+ * \brief Notifies this state that the layer has changed.
  */
 void Hero::State::notify_layer_changed() {
 }
 
 /**
- * @brief Notifies this state that the movement has changed.
+ * \brief Notifies this state that the movement has changed.
  *
  * This function is called when the hero's movement direction changes (for instance
  * because the player pressed or released a directional key, or the hero just reached an obstacle).
@@ -446,286 +446,286 @@ void Hero::State::notify_movement_changed() {
 }
 
 /**
- * @brief Notifies this state that the movement if finished.
+ * \brief Notifies this state that the movement if finished.
  */
 void Hero::State::notify_movement_finished() {
 }
 
 /**
- * @brief Notifies this state that the hero has just failed to change its
+ * \brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */
 void Hero::State::notify_obstacle_reached() {
 }
 
 /**
- * @brief Notifies this state that the hero has just changed its
+ * \brief Notifies this state that the hero has just changed its
  * position.
  */
 void Hero::State::notify_position_changed() {
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of deep water in this state.
+ * \brief Returns whether the hero ignores the effect of deep water in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of deep water in the current state
+ * \return true if the hero ignores the effect of deep water in the current state
  */
 bool Hero::State::can_avoid_deep_water() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of holes in this state.
+ * \brief Returns whether the hero ignores the effect of holes in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of holes in the current state
+ * \return true if the hero ignores the effect of holes in the current state
  */
 bool Hero::State::can_avoid_hole() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of lava in this state.
+ * \brief Returns whether the hero ignores the effect of lava in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of lava in the current state
+ * \return true if the hero ignores the effect of lava in the current state
  */
 bool Hero::State::can_avoid_lava() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of prickles in this state.
+ * \brief Returns whether the hero ignores the effect of prickles in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of prickles in the current state
+ * \return true if the hero ignores the effect of prickles in the current state
  */
 bool Hero::State::can_avoid_prickle() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero is touching the ground in the current state.
+ * \brief Returns whether the hero is touching the ground in the current state.
  *
  * Returns true by default.
  *
- * @return true if the hero is touching the ground in the current state
+ * \return true if the hero is touching the ground in the current state
  */
 bool Hero::State::is_touching_ground() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero's current position can be considered
+ * \brief Returns whether the hero's current position can be considered
  * as a place to come back after a bad ground (hole, deep water, etc).
  *
  * Returns is_touching_ground() by default.
  *
- * @return true if the hero can come back here
+ * \return true if the hero can come back here
  */
 bool Hero::State::can_come_from_bad_ground() {
   return is_touching_ground();
 }
 
 /**
- * @brief Notifies this state that the ground was just changed.
+ * \brief Notifies this state that the ground was just changed.
  */
 void Hero::State::notify_ground_changed() {
 }
 
 /**
- * @brief Returns whether this state ignores the collisions with the detectors and the ground.
- * @return true if the collisions are ignored
+ * \brief Returns whether this state ignores the collisions with the detectors and the ground.
+ * \return true if the collisions are ignored
  */
 bool Hero::State::are_collisions_ignored() {
   return false;
 }
 
 /**
- * @brief Returns whether shallow water is considered as an obstacle in this state.
+ * \brief Returns whether shallow water is considered as an obstacle in this state.
  *
  * Returns false by default.
  *
- * @return true if shallow water is considered as an obstacle in this state
+ * \return true if shallow water is considered as an obstacle in this state
  */
 bool Hero::State::is_shallow_water_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether deep water tile is considered as an obstacle in this state.
+ * \brief Returns whether deep water tile is considered as an obstacle in this state.
  *
  * Returns false by default.
  *
- * @return true if deep water is considered as an obstacle in this state
+ * \return true if deep water is considered as an obstacle in this state
  */
 bool Hero::State::is_deep_water_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a hole is considered as an obstacle in this state.
+ * \brief Returns whether a hole is considered as an obstacle in this state.
  *
  * Returns false by default.
  *
- * @return true if the holes are considered as obstacles in this state
+ * \return true if the holes are considered as obstacles in this state
  */
 bool Hero::State::is_hole_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether lava is considered as an obstacle in this state.
+ * \brief Returns whether lava is considered as an obstacle in this state.
  *
  * Returns false by default.
  *
- * @return true if lava is considered as obstacles in this state
+ * \return true if lava is considered as obstacles in this state
  */
 bool Hero::State::is_lava_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether prickles are considered as an obstacle in this state.
+ * \brief Returns whether prickles are considered as an obstacle in this state.
  *
  * Returns false by default.
  *
- * @return true if prickles are considered as obstacles in this state
+ * \return true if prickles are considered as obstacles in this state
  */
 bool Hero::State::is_prickle_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a ladder is considered as an obstacle in this state.
+ * \brief Returns whether a ladder is considered as an obstacle in this state.
  *
  * Returns false by default.
  *
- * @return true if the ladders are considered as obstacles in this state
+ * \return true if the ladders are considered as obstacles in this state
  */
 bool Hero::State::is_ladder_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a teletransporter is considered as an obstacle in this state.
+ * \brief Returns whether a teletransporter is considered as an obstacle in this state.
  *
  * Returns false by default.
  *
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is an obstacle in this state
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is an obstacle in this state
  */
 bool Hero::State::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * \brief Returns whether the hero ignores the effect of teletransporters in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of teletransporters in this state
+ * \return true if the hero ignores the effect of teletransporters in this state
  */
 bool Hero::State::can_avoid_teletransporter() {
   return false;
 }
 
 /**
- * @brief Returns whether the effect of teletransporters is delayed in this state.
+ * \brief Returns whether the effect of teletransporters is delayed in this state.
  *
  * When overlapping a teletransporter, if this function returns true, the teletransporter
  * will not be activated immediately. The state then has to activate it when it is ready.
  * Returns false by default.
  *
- * @return true if the effect of teletransporters is delayed in this state
+ * \return true if the effect of teletransporters is delayed in this state
  */
 bool Hero::State::is_teletransporter_delayed() {
   return false;
 }
 
 /**
- * @brief Returns whether a conveyor belt is considered as an obstacle in this state.
+ * \brief Returns whether a conveyor belt is considered as an obstacle in this state.
  *
  * Returns false by default.
  *
- * @param conveyor_belt a conveyor belt
- * @return true if the conveyor belt is an obstacle in this state
+ * \param conveyor_belt a conveyor belt
+ * \return true if the conveyor belt is an obstacle in this state
  */
 bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of conveyor belts in this state
+ * \return true if the hero ignores the effect of conveyor belts in this state
  */
 bool Hero::State::can_avoid_conveyor_belt() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero can take stairs in this state.
+ * \brief Returns whether the hero can take stairs in this state.
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  *
  * Returns false by default.
  *
- * @return true if the hero can take stairs in this state
+ * \return true if the hero can take stairs in this state
  */
 bool Hero::State::can_take_stairs() {
   return false;
 }
 
 /**
- * @brief Returns whether can trigger a jumper in this state.
+ * \brief Returns whether can trigger a jumper in this state.
  * If false is returned, jumpers have no effect (but they are obstacle for the hero).
  *
  * Returns false by default.
  *
- * @return true if the hero can use jumpers in this state
+ * \return true if the hero can use jumpers in this state
  */
 bool Hero::State::can_take_jumper() {
   return false;
 }
 
 /**
- * @brief Returns whether some stairs are considered as obstacle in this state.
+ * \brief Returns whether some stairs are considered as obstacle in this state.
  *
  * Returns true by default.
  *
- * @param stairs some stairs
- * @return true if the stairs are obstacle in this state
+ * \param stairs some stairs
+ * \return true if the stairs are obstacle in this state
  */
 bool Hero::State::is_stairs_obstacle(Stairs& stairs) {
   return true;
 }
 
 /**
- * @brief Returns whether a sensor is considered as an obstacle in this state.
+ * \brief Returns whether a sensor is considered as an obstacle in this state.
  *
  * Returns false by default.
  *
- * @param sensor a sensor
- * @return true if the sensor is an obstacle in this state
+ * \param sensor a sensor
+ * \return true if the sensor is an obstacle in this state
  */
 bool Hero::State::is_sensor_obstacle(Sensor& sensor) {
   return false;
 }
 
 /**
- * @brief Returns whether a jumper is considered as an obstacle in this state.
+ * \brief Returns whether a jumper is considered as an obstacle in this state.
  *
  * Returns !can_take_jumper() by default.
  *
- * @param jumper a jumper
- * @return true if the sensor is an obstacle in this state
+ * \param jumper a jumper
+ * \return true if the sensor is an obstacle in this state
  */
 bool Hero::State::is_jumper_obstacle(Jumper& jumper) {
   // if the jumpers cannot be used in this state, consider them as obstacles
@@ -733,70 +733,70 @@ bool Hero::State::is_jumper_obstacle(Jumper& jumper) {
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of sensors in this state.
+ * \brief Returns whether the hero ignores the effect of sensors in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of sensors in this state
+ * \return true if the hero ignores the effect of sensors in this state
  */
 bool Hero::State::can_avoid_sensor() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of switches in this state.
+ * \brief Returns whether the hero ignores the effect of switches in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of switches in this state
+ * \return true if the hero ignores the effect of switches in this state
  */
 bool Hero::State::can_avoid_switch() {
   return false;
 }
 
 /**
- * @brief Returns whether crystals can be activated by the sword in this state.
+ * \brief Returns whether crystals can be activated by the sword in this state.
  *
  * Returns false by default.
  *
- * @return true if crystals can be activated by the sword in this state
+ * \return true if crystals can be activated by the sword in this state
  */
 bool Hero::State::can_sword_hit_crystal() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of explosions in this state.
+ * \brief Returns whether the hero ignores the effect of explosions in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of explosions in this state
+ * \return true if the hero ignores the effect of explosions in this state
  */
 bool Hero::State::can_avoid_explosion() {
   return false;
 }
 
 /**
- * @brief Notifies this state that the hero has just attacked an enemy
+ * \brief Notifies this state that the hero has just attacked an enemy
  *
  * This function is called even if this attack was not successful.
  *
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack
- * @param killed indicates that the attack has just killed the enemy
+ * \param attack the attack
+ * \param victim the enemy just hurt
+ * \param result indicates how the enemy has reacted to the attack
+ * \param killed indicates that the attack has just killed the enemy
  */
 void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
     EnemyReaction::Reaction& result, bool killed) {
 }
 
 /**
- * @brief Returns the damage power of the sword for the current attack.
+ * \brief Returns the damage power of the sword for the current attack.
  *
  * Redefine the function if your state changes the power of the sword
  * (typically for a spin attack).
  *
- * @return the current damage factor of the sword
+ * \return the current damage factor of the sword
  */
 int Hero::State::get_sword_damage_factor() {
 
@@ -806,44 +806,44 @@ int Hero::State::get_sword_damage_factor() {
 }
 
 /**
- * @brief Returns whether the hero can be hurt in this state.
+ * \brief Returns whether the hero can be hurt in this state.
  *
  * Returns false by default.
  *
- * @param attacker an attacker that is trying to hurt the hero
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
- * @return true if the hero can be hurt in this state
+ * \return true if the hero can be hurt in this state
  */
 bool Hero::State::can_be_hurt(Enemy* attacker) {
   return false;
 }
 
 /**
- * @brief Returns whether the hero can walk normally and interact with entities
+ * \brief Returns whether the hero can walk normally and interact with entities
  * in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero can walk normally
+ * \return true if the hero can walk normally
  */
 bool Hero::State::is_free() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero is using an equipment item in this state.
+ * \brief Returns whether the hero is using an equipment item in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero is using an equipment item.
+ * \return true if the hero is using an equipment item.
  */
 bool Hero::State::is_using_item() {
   return false;
 }
 
 /**
- * @brief When the hero is using an equipment item, returns that item.
- * @return The current equipment item.
+ * \brief When the hero is using an equipment item, returns that item.
+ * \return The current equipment item.
  */
 EquipmentItemUsage& Hero::State::get_item_being_used() {
 
@@ -852,37 +852,37 @@ EquipmentItemUsage& Hero::State::get_item_being_used() {
 }
 
 /**
- * @brief Returns whether the hero is grabbing or pulling an entity in this state.
+ * \brief Returns whether the hero is grabbing or pulling an entity in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero is grabbing or pulling an entity
+ * \return true if the hero is grabbing or pulling an entity
  */
 bool Hero::State::is_grabbing_or_pulling() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero is grabbing and moving an entity in this state.
+ * \brief Returns whether the hero is grabbing and moving an entity in this state.
  *
  * If he is not grabbing any entity, false is returned.
  * Returns false by default.
  *
- * @return true if the hero is grabbing and moving an entity
+ * \return true if the hero is grabbing and moving an entity
  */
 bool Hero::State::is_moving_grabbed_entity() {
   return false;
 }
 
 /**
- * @brief Notifies the hero that the entity he is pushing or pulling in this state
+ * \brief Notifies the hero that the entity he is pushing or pulling in this state
  * cannot move anymore because of a collision.
  */
 void Hero::State::notify_grabbed_entity_collision() {
 }
 
 /**
- * @brief Tests whether the hero is cutting with his sword the specified detector
+ * \brief Tests whether the hero is cutting with his sword the specified detector
  * for which a collision was detected.
  *
  * When the sword sprite collides with a detector,
@@ -896,78 +896,78 @@ void Hero::State::notify_grabbed_entity_collision() {
  * hero wants to cut a bush or some grass.
  * Returns false by default.
  *
- * @param detector the detector to check
- * @return true if the sword is cutting this detector
+ * \param detector the detector to check
+ * \return true if the sword is cutting this detector
  */
 bool Hero::State::is_cutting_with_sword(Detector &detector) {
   return false;
 }
 
 /**
- * @brief Returns whether the hero can swing his sword in this state.
+ * \brief Returns whether the hero can swing his sword in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero can swing his sword in this state
+ * \return true if the hero can swing his sword in this state
  */
 bool Hero::State::can_start_sword() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero can pick a treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in this state.
  *
  * Returns false by default.
  *
- * @param item The equipment item to obtain.
- * @return true if the hero can pick that treasure in this state.
+ * \param item The equipment item to obtain.
+ * \return true if the hero can pick that treasure in this state.
  */
 bool Hero::State::can_pick_treasure(EquipmentItem& item) {
   return false;
 }
 
 /**
- * @brief Returns whether the hero can use an equipment item in this state.
+ * \brief Returns whether the hero can use an equipment item in this state.
  *
  * Returns false by default.
  *
- * @param item The equipment item to check.
- * @return true if the hero can use an equipment item in this state.
+ * \param item The equipment item to check.
+ * \return true if the hero can use an equipment item in this state.
  */
 bool Hero::State::can_start_item(EquipmentItem& item) {
   return false;
 }
 
 /**
- * @brief Returns whether the hero is currently carrying an item in this state.
+ * \brief Returns whether the hero is currently carrying an item in this state.
  *
  * This function returns true if get_carried_item() is not NULL.
  * Redefine get_carried_item() if the hero is able to carry an item in this state.
  *
- * @return true if the hero is currently carrying an item in this state
+ * \return true if the hero is currently carrying an item in this state
  */
 bool Hero::State::is_carrying_item() {
   return get_carried_item() != NULL;
 }
 
 /**
- * @brief Returns the item currently carried by the hero in this state, if any.
+ * \brief Returns the item currently carried by the hero in this state, if any.
  *
  * Redefine this function to make the hero able to carry an item in this state.
  *
- * @return the item carried by the hero, or NULL
+ * \return the item carried by the hero, or NULL
  */
 CarriedItem* Hero::State::get_carried_item() {
   return NULL;
 }
 
 /**
- * @brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * \brief Returns the action to do with an item previously carried by the hero when this state starts.
  * 
  * Returns CarriedItem::BEHAVIOR_THROW by default.
  *
- * @param carried_item the item carried in the previous state
- * @return the action to do with a previous carried item when this state starts
+ * \param carried_item the item carried in the previous state
+ * \return the action to do with a previous carried item when this state starts
  */
 CarriedItem::Behavior Hero::State::get_previous_carried_item_behavior(CarriedItem& carried_item) {
   return CarriedItem::BEHAVIOR_THROW;

@@ -21,7 +21,7 @@
 #include "EquipmentItemUsage.h"
 
 /**
- * @brief The state "using equipment item" of the hero.
+ * \brief The state "using equipment item" of the hero.
  */
 class Hero::UsingItemState: public Hero::State {
 

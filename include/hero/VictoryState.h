@@ -20,7 +20,7 @@
 #include "hero/State.h"
 
 /**
- * @brief The victory state of the hero.
+ * \brief The victory state of the hero.
  */
 class Hero::VictoryState: public Hero::State {
 

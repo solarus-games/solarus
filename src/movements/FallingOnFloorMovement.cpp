@@ -17,7 +17,7 @@
 #include "movements/FallingOnFloorMovement.h"
 
 /**
- * @brief Y move at each time frame.
+ * \brief Y move at each time frame.
  */
 const std::string FallingOnFloorMovement::trajectories[4] = {
 
@@ -32,8 +32,8 @@ const std::string FallingOnFloorMovement::trajectories[4] = {
 };
 
 /**
- * @brief Creates a movement falling object.
- * @param height height the entity will fall from
+ * \brief Creates a movement falling object.
+ * \param height height the entity will fall from
  */
 FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
   PixelMovement(trajectories[height], 30, false, true) {
@@ -41,7 +41,7 @@ FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 FallingOnFloorMovement::~FallingOnFloorMovement() {
 

@@ -22,13 +22,13 @@
 #include "lowlevel/Surface.h"
 
 /**
- * @brief Constructor.
+ * \brief Constructor.
  *
  * It is called by the subclasses.
  * 
- * @param obstacle type of obstacle
- * @param width width of the tile in pixels (must be a multiple of 8)
- * @param height height of the tile in pixels (must be a multiple of 8)
+ * \param obstacle type of obstacle
+ * \param width width of the tile in pixels (must be a multiple of 8)
+ * \param height height of the tile in pixels (must be a multiple of 8)
  */
 TilePattern::TilePattern(Obstacle obstacle, int width, int height):
   obstacle(obstacle), width(width), height(height) {
@@ -49,38 +49,38 @@ TilePattern::TilePattern(Obstacle obstacle, int width, int height):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 TilePattern::~TilePattern() {
 
 }
 
 /**
- * @brief Returns the width of the tile pattern.
- * @return the width of the tile
+ * \brief Returns the width of the tile pattern.
+ * \return the width of the tile
  */
 int TilePattern::get_width() const {
   return width;
 }
 
 /**
- * @brief Returns the height of the tile pattern.
- * @return the height of the tile
+ * \brief Returns the height of the tile pattern.
+ * \return the height of the tile
  */
 int TilePattern::get_height() const {
   return height;
 }
 
 /**
- * @brief Returns the obstacle property of this tile pattern.
- * @return the obstacle property of this tile pattern
+ * \brief Returns the obstacle property of this tile pattern.
+ * \return the obstacle property of this tile pattern
  */
 Obstacle TilePattern::get_obstacle() const {
   return obstacle;
 }
 
 /**
- * @brief Updates the current frame of all tile patterns.
+ * \brief Updates the current frame of all tile patterns.
  *
  * This function is called repeatedly by the map.
  */
@@ -90,7 +90,7 @@ void TilePattern::update() {
 }
 
 /**
- * @brief Returns whether this tile pattern is animated, i.e. not always drawn
+ * \brief Returns whether this tile pattern is animated, i.e. not always drawn
  * the same way.
  *
  * Non-animated tiles may be rendered faster by using intermediate surfaces
@@ -98,14 +98,14 @@ void TilePattern::update() {
  * This function should return false if the tile pattern is always drawn the same way.
  * Returns true by default.
  *
- * @return true if this tile pattern is animated
+ * \return true if this tile pattern is animated
  */
 bool TilePattern::is_animated() {
   return true;
 }
 
 /**
- * @brief Returns whether tiles having this tile pattern are drawn at their
+ * \brief Returns whether tiles having this tile pattern are drawn at their
  * position.
  *
  * Usually, this function returns true, and when it is the case, draw() is
@@ -115,18 +115,18 @@ bool TilePattern::is_animated() {
  * in the viewport, typically to make an illusion of movement like parallax
  * scrolling.
  *
- * @return true if tiles having this pattern are drawn where they are placed
+ * \return true if tiles having this pattern are drawn where they are placed
  */
 bool TilePattern::is_drawn_at_its_position() {
   return true;
 }
 
 /**
- * @brief Fills a rectangle by repeating this tile pattern.
- * @param dst_surface The destination surface.
- * @param dst_position Coordinates of the rectangle to fill in \c dst_surface.
- * @param tileset The tileset to use.
- * @param viewport Coordinates of the top-left corner of \c dst_surface
+ * \brief Fills a rectangle by repeating this tile pattern.
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates of the rectangle to fill in \c dst_surface.
+ * \param tileset The tileset to use.
+ * \param viewport Coordinates of the top-left corner of \c dst_surface
  * relative to the map (may be used for scrolling tiles).
  */
 void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_position,

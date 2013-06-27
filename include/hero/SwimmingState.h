@@ -20,7 +20,7 @@
 #include "hero/PlayerMovementState.h"
 
 /**
- * @brief The state "Swimming" of the hero.
+ * \brief The state "Swimming" of the hero.
  */
 class Hero::SwimmingState: public Hero::PlayerMovementState {
 

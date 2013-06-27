@@ -16,8 +16,8 @@
  */
 
 /**
- * @file Types.h
- * @brief Some declarations of types.
+ * \file Types.h
+ * \brief Some declarations of types.
  *
  * This header is included by Common.h and every class header file should include Common.h.
  */

@@ -37,7 +37,7 @@
 #include <sstream>
 
 /**
- * @brief Lua name of each value of the OpeningMethod enum.
+ * \brief Lua name of each value of the OpeningMethod enum.
  */
 const std::string Door::opening_method_names[] = {
   "none",
@@ -49,21 +49,21 @@ const std::string Door::opening_method_names[] = {
 };
 
 /**
- * @brief Creates a door.
- * @param game The game.
- * @param name Name identifying this entity.
- * @param layer Layer of the entity to create.
- * @param x X coordinate of the entity to create.
- * @param y Y coordinate of the entity to create.
- * @param direction Direction of the door.
- * @param sprite_name Name of the animation set of the
+ * \brief Creates a door.
+ * \param game The game.
+ * \param name Name identifying this entity.
+ * \param layer Layer of the entity to create.
+ * \param x X coordinate of the entity to create.
+ * \param y Y coordinate of the entity to create.
+ * \param direction Direction of the door.
+ * \param sprite_name Name of the animation set of the
  * sprite to create for the door.
  * The sprite must have an animation \c "closed", that will be shown while
  * the door is closed. Optionally, they sprite can also have animations
  * \c "opening" and \c "closing", that will be shown (if they exist)
  * while the door is being opened or closed, respectively.
  * If they don't exist, the door will get opened or closed instantly.
- * @param savegame_variable Boolean variable where the door's state is saved
+ * \param savegame_variable Boolean variable where the door's state is saved
  * (an empty string lets the door unsaved).
  */
 Door::Door(Game& game,
@@ -96,32 +96,32 @@ Door::Door(Game& game,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Door::~Door() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Door::get_type() {
   return DOOR;
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true
  */
 bool Door::is_obstacle_for(MapEntity& other) {
   return !is_open();
 }
 
 /**
- * @brief Returns whether this door is completely open.
- * @return true if this door is open, false if it is closed, closing or
+ * \brief Returns whether this door is completely open.
+ * \return true if this door is open, false if it is closed, closing or
  * opening.
  */
 bool Door::is_open() const {
@@ -129,16 +129,16 @@ bool Door::is_open() const {
 }
 
 /**
- * @brief Returns whether this door is being opened.
- * @return true if this door is being opened.
+ * \brief Returns whether this door is being opened.
+ * \return true if this door is being opened.
  */
 bool Door::is_opening() const {
   return state == OPENING;
 }
 
 /**
- * @brief Returns whether this door is completely closed.
- * @return true if this door is closed, false if it is open, opening or
+ * \brief Returns whether this door is completely closed.
+ * \return true if this door is closed, false if it is open, opening or
  * closing.
  */
 bool Door::is_closed() const {
@@ -146,24 +146,24 @@ bool Door::is_closed() const {
 }
 
 /**
- * @brief Returns whether this door is being closed.
- * @return true if this door is being closed.
+ * \brief Returns whether this door is being closed.
+ * \return true if this door is being closed.
  */
 bool Door::is_closing() const {
   return state == CLOSING;
 }
 
 /**
- * @brief Returns true if the door is currently being open or being closed.
- * @return true if the door is currently being open or being closed.
+ * \brief Returns true if the door is currently being open or being closed.
+ * \return true if the door is currently being open or being closed.
  */
 bool Door::is_changing() const {
   return state == OPENING || state == CLOSING;
 }
 
 /**
- * @brief Makes the door immediately open or closed.
- * @param door_open true to make it opened, false to make it closed.
+ * \brief Makes the door immediately open or closed.
+ * \param door_open true to make it opened, false to make it closed.
  */
 void Door::set_open(bool door_open) {
 
@@ -199,7 +199,7 @@ void Door::set_open(bool door_open) {
 }
 
 /**
- * @brief Enables or disables the dynamic tiles related to this door.
+ * \brief Enables or disables the dynamic tiles related to this door.
  *
  * The dynamic tiles impacted by this function are the ones whose prefix is the door's name
  * followed by "_closed" or "_open", depending on the door state.
@@ -221,12 +221,12 @@ void Door::update_dynamic_tiles() {
 }
 
 /**
- * @brief Notifies this detector that a collision was just detected with another entity.
+ * \brief Notifies this detector that a collision was just detected with another entity.
  *
  * This function is called by the engine when there is a collision with another entity.
  *
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void Door::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
@@ -250,14 +250,14 @@ void Door::notify_collision(MapEntity& entity_overlapping, CollisionMode collisi
 }
 
 /**
- * @brief Notifies this detector that a pixel-perfect collision was just detected with another sprite.
+ * \brief Notifies this detector that a pixel-perfect collision was just detected with another sprite.
  *
  * This function is called by check_collision(MapEntity&, Sprite&) when another entity's
  * sprite overlaps a sprite of this detector.
  *
- * @param other_entity the entity overlapping this detector
- * @param other_sprite the sprite of other_entity that is overlapping this detector
- * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \param other_entity the entity overlapping this detector
+ * \param other_sprite the sprite of other_entity that is overlapping this detector
+ * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Door::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
 
@@ -267,10 +267,10 @@ void Door::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprit
 }
 
 /**
- * @brief This function is called when an explosion's sprite
+ * \brief This function is called when an explosion's sprite
  * detects a pixel-perfect collision with a sprite of this entity.
- * @param explosion the explosion
- * @param sprite_overlapping the sprite of the current entity that collides with the explosion
+ * \param explosion the explosion
+ * \param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
 void Door::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) {
 
@@ -281,34 +281,34 @@ void Door::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_
 }
 
 /**
- * @brief Returns whether the state of this door is saved.
- * @return \c true if this door is saved.
+ * \brief Returns whether the state of this door is saved.
+ * \return \c true if this door is saved.
  */
 bool Door::is_saved() const {
   return !get_savegame_variable().empty();
 }
 
 /**
- * @brief Returns the name of the boolean saved variable that stores the
+ * \brief Returns the name of the boolean saved variable that stores the
  * state of this door.
- * @return The savegame variable, or an empty string if this door is not saved.
+ * \return The savegame variable, or an empty string if this door is not saved.
  */
 const std::string& Door::get_savegame_variable() const {
   return savegame_variable;
 }
 
 /**
- * @brief Returns the opening method of this door.
- * @return How this door can be opened.
+ * \brief Returns the opening method of this door.
+ * \return How this door can be opened.
  */
 Door::OpeningMethod Door::get_opening_method() const {
   return opening_method;
 }
 
 /**
- * @brief Returns whether this door should be opened by pressing the action
+ * \brief Returns whether this door should be opened by pressing the action
  * command in front of it.
- * @return \c true if the opening method is one of OPENING_BY_INTERACTION,
+ * \return \c true if the opening method is one of OPENING_BY_INTERACTION,
  * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE or
  * OPENING_BY_INTERACTION_IF_ITEM.
  */
@@ -320,15 +320,15 @@ bool Door::is_interaction_required() const {
 }
 
 /**
- * @brief Sets the opening method of this door.
- * @param opening_method How this door should be opened.
+ * \brief Sets the opening method of this door.
+ * \param opening_method How this door should be opened.
  */
 void Door::set_opening_method(OpeningMethod opening_method) {
   this->opening_method = opening_method;
 }
 
 /**
- * @brief Returns the savegame variable or the equipment item name required to
+ * \brief Returns the savegame variable or the equipment item name required to
  * open this door.
  *
  * A savegame variable is returned if the opening mode is
@@ -343,14 +343,14 @@ void Door::set_opening_method(OpeningMethod opening_method) {
  *
  * For the other opening methods, this setting has no effect.
  *
- * @return The savegame variable or the equipment item name required.
+ * \return The savegame variable or the equipment item name required.
  */
 const std::string& Door::get_opening_condition() const {
   return opening_condition;
 }
 
 /**
- * @brief Sets the savegame variable or the equipment item name required to
+ * \brief Sets the savegame variable or the equipment item name required to
  * open this door.
  *
  * You must set a savegame variable if the opening mode is
@@ -365,7 +365,7 @@ const std::string& Door::get_opening_condition() const {
  *
  * For the other opening methods, this setting has no effect.
  *
- * @param opening_condition The savegame variable or the equipment item name
+ * \param opening_condition The savegame variable or the equipment item name
  * required.
  */
 void Door::set_opening_condition(const std::string& opening_condition) {
@@ -373,7 +373,7 @@ void Door::set_opening_condition(const std::string& opening_condition) {
 }
 
 /**
- * @brief Returns whether opening this door consumes the condition that
+ * \brief Returns whether opening this door consumes the condition that
  * was required.
  *
  * If this setting is \c true, here is the behavior when the hero opens
@@ -388,7 +388,7 @@ void Door::set_opening_condition(const std::string& opening_condition) {
  *   - if the required item has no amount, its possession state is set to zero.
  * - With other opening methods, this setting has no effect.
  *
- * @return \c true if opening this door consumes the condition that was
+ * \return \c true if opening this door consumes the condition that was
  * required.
  */
 bool Door::is_opening_condition_consumed() const {
@@ -396,7 +396,7 @@ bool Door::is_opening_condition_consumed() const {
 }
 
 /**
- * @brief Sets whether opening this door should consume the condition that
+ * \brief Sets whether opening this door should consume the condition that
  * was required.
  *
  * If this setting is \c true, here is the behavior when the hero opens
@@ -411,7 +411,7 @@ bool Door::is_opening_condition_consumed() const {
  *   - if the required item has no amount, its possession state is set to zero.
  * - With other opening methods, this setting has no effect.
  *
- * @param opening_condition_consumed \c true if opening this door should
+ * \param opening_condition_consumed \c true if opening this door should
  * consume the condition that was required.
  */
 void Door::set_opening_condition_consumed(bool opening_condition_consumed) {
@@ -419,8 +419,8 @@ void Door::set_opening_condition_consumed(bool opening_condition_consumed) {
 }
 
 /**
- * @brief Returns whether the required conditions are met to open this door.
- * @return \c true if the hero can currently open the door by pressing the
+ * \brief Returns whether the required conditions are met to open this door.
+ * \return \c true if the hero can currently open the door by pressing the
  * action command.
  */
 bool Door::can_open() const {
@@ -474,10 +474,10 @@ bool Door::can_open() const {
 }
 
 /**
- * @brief Returns the id of the dialog to show when the player presses the action
+ * \brief Returns the id of the dialog to show when the player presses the action
  * command on the door but cannot open it (i.e. if can_open() is false).
  *
- * @return The id of the "cannot open" dialog for this door
+ * \return The id of the "cannot open" dialog for this door
  * (an empty string means no dialog).
  */
 const std::string& Door::get_cannot_open_dialog_id() const {
@@ -485,9 +485,9 @@ const std::string& Door::get_cannot_open_dialog_id() const {
 }
 
 /**
- * @brief Sets the id of the dialog to show when the player presses the action
+ * \brief Sets the id of the dialog to show when the player presses the action
  * command on the door but cannot open it (i.e. if can_open() is false).
- * @param cannot_open_dialog_id The id of the "cannot open" dialog for this door
+ * \param cannot_open_dialog_id The id of the "cannot open" dialog for this door
  * (an empty string means no dialog).
  */
 void Door::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) {
@@ -495,8 +495,8 @@ void Door::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) {
 }
 
 /**
- * @brief Suspends or resumes the entity.
- * @param suspended true to suspend the entity
+ * \brief Suspends or resumes the entity.
+ * \param suspended true to suspend the entity
  */
 void Door::set_suspended(bool suspended) {
 
@@ -508,7 +508,7 @@ void Door::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates the entity.
+ * \brief Updates the entity.
  */
 void Door::update() {
 
@@ -546,7 +546,7 @@ void Door::update() {
 }
 
 /**
- * @brief Draws the entity on the map.
+ * \brief Draws the entity on the map.
  */
 void Door::draw_on_map() {
 
@@ -560,7 +560,7 @@ void Door::draw_on_map() {
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by
+ * \brief Notifies this detector that the player is interacting with it by
  * pressing the action command.
  *
  * This function is called when the player presses the action command
@@ -596,7 +596,7 @@ void Door::notify_action_command_pressed() {
 }
 
 /**
- * @brief Consumes the savegame variable or the equipment item that was required
+ * \brief Consumes the savegame variable or the equipment item that was required
  * to open the door.
  */
 void Door::consume_opening_condition() {
@@ -647,8 +647,8 @@ void Door::consume_opening_condition() {
 }
 
 /**
- * @brief This function is called when the player is tapping his sword against this detector.
- * @return The sound to play when tapping this detector with the sword.
+ * \brief This function is called when the player is tapping his sword against this detector.
+ * \return The sound to play when tapping this detector with the sword.
  */
 std::string Door::get_sword_tapping_sound() {
 
@@ -657,7 +657,7 @@ std::string Door::get_sword_tapping_sound() {
 }
 
 /**
- * @brief Starts opening the door and plays the corresponding animations.
+ * \brief Starts opening the door and plays the corresponding animations.
  *
  * Nothing is done if the door is already in the process of being open.
  */
@@ -676,7 +676,7 @@ void Door::open() {
 }
 
 /**
- * @brief Makes the door being opened.
+ * \brief Makes the door being opened.
  */
 void Door::set_opening() {
 
@@ -690,7 +690,7 @@ void Door::set_opening() {
 }
 
 /**
- * @brief Starts closing the door and plays the corresponding animations.
+ * \brief Starts closing the door and plays the corresponding animations.
  *
  * Nothing is done if the door is already in the process of being closed.
  */
@@ -709,7 +709,7 @@ void Door::close() {
 }
 
 /**
- * @brief Makes the door being closed.
+ * \brief Makes the door being closed.
  */
 void Door::set_closing() {
 
@@ -723,8 +723,8 @@ void Door::set_closing() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& Door::get_lua_type_name() const {
   return LuaContext::entity_door_module_name;

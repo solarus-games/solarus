@@ -21,7 +21,7 @@
 #include "GameCommands.h"
 
 /**
- * @brief The state "Running" of the hero.
+ * \brief The state "Running" of the hero.
  */
 class Hero::RunningState: public Hero::State {
 

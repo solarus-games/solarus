@@ -20,9 +20,9 @@
 #include "entities/Detector.h"
 
 /**
- * @brief Constructor.
- * @param hero The hero controlled by this state.
- * @param item The equipment item to use.
+ * \brief Constructor.
+ * \param hero The hero controlled by this state.
+ * \param item The equipment item to use.
  */
 Hero::UsingItemState::UsingItemState(Hero& hero,
     EquipmentItem& item):
@@ -32,14 +32,14 @@ Hero::UsingItemState::UsingItemState(Hero& hero,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::UsingItemState::~UsingItemState() {
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state The previous state.
+ * \brief Starts this state.
+ * \param previous_state The previous state.
  */
 void Hero::UsingItemState::start(State* previous_state) {
 
@@ -60,7 +60,7 @@ void Hero::UsingItemState::start(State* previous_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::UsingItemState::update() {
 
@@ -74,16 +74,16 @@ void Hero::UsingItemState::update() {
 }
 
 /**
- * @brief Returns whether the hero is using an equipment item in this state.
- * @return true if the hero is using an equipment item.
+ * \brief Returns whether the hero is using an equipment item in this state.
+ * \return true if the hero is using an equipment item.
  */
 bool Hero::UsingItemState::is_using_item() {
   return true;
 }
 
 /**
- * @brief When the hero is using an equipment item, returns that item.
- * @return The current equipment item.
+ * \brief When the hero is using an equipment item, returns that item.
+ * \return The current equipment item.
  */
 EquipmentItemUsage& Hero::UsingItemState::get_item_being_used() {
   return item_usage;

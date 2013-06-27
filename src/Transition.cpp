@@ -22,8 +22,8 @@
 #include "lowlevel/System.h"
 
 /**
- * @brief Creates a transition effect.
- * @param direction direction of the transition effect (in or out)
+ * \brief Creates a transition effect.
+ * \param direction direction of the transition effect (in or out)
  */
 Transition::Transition(Transition::Direction direction):
   game(NULL),
@@ -35,17 +35,17 @@ Transition::Transition(Transition::Direction direction):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Transition::~Transition() {
 }
 
 /**
- * @brief Creates a transition effect with the specified type and direction.
- * @param style style of the transition: Transition::IMMEDIATE, Transition::FADE, etc.
- * @param direction Transition::IN or Transition::OUT
- * @param game the current game if any (used by some kinds of transitions)
- * @return the transition created
+ * \brief Creates a transition effect with the specified type and direction.
+ * \param style style of the transition: Transition::IMMEDIATE, Transition::FADE, etc.
+ * \param direction Transition::IN or Transition::OUT
+ * \param game the current game if any (used by some kinds of transitions)
+ * \return the transition created
  */
 Transition* Transition::create(Transition::Style style,
     Transition::Direction direction, Game* game) {
@@ -73,37 +73,37 @@ Transition* Transition::create(Transition::Style style,
 }
 
 /**
- * @brief Returns the current game.
+ * \brief Returns the current game.
  *
  * Some transition effects need a game to run.
  *
- * @return The current game or NULL.
+ * \return The current game or NULL.
  */
 Game* Transition::get_game() const {
   return game;
 }
 
 /**
- * @brief Returns the direction of this transition effect.
- * @returns the direction of this transition effect: Transition::IN or Transition::OUT
+ * \brief Returns the direction of this transition effect.
+ * \returns the direction of this transition effect: Transition::IN or Transition::OUT
  */
 Transition::Direction Transition::get_direction() const {
   return direction;
 }
 
 /**
- * @brief Returns the surface to show during the OUT transition
+ * \brief Returns the surface to show during the OUT transition
  * that was played before this IN transition.
- * @return The previous surface or NULL.
+ * \return The previous surface or NULL.
  */
 Surface* Transition::get_previous_surface() const {
   return previous_surface;
 }
 
 /**
- * @brief Indicates the surface that was shown during the OUT transition
+ * \brief Indicates the surface that was shown during the OUT transition
  * that was played before this IN transition.
- * @param previous_surface The previous surface or NULL.
+ * \param previous_surface The previous surface or NULL.
  */
 void Transition::set_previous_surface(Surface* previous_surface) {
 
@@ -114,24 +114,24 @@ void Transition::set_previous_surface(Surface* previous_surface) {
 }
 
 /**
- * @brief Returns whether this transition effect needs the previous surface.
- * @return false
+ * \brief Returns whether this transition effect needs the previous surface.
+ * \return false
  */
 bool Transition::needs_previous_surface() const {
   return false;
 }
 
 /**
- * @brief Returns whether this transition is currently suspended.
- * @return true if this transition is suspended.
+ * \brief Returns whether this transition is currently suspended.
+ * \return true if this transition is suspended.
  */
 bool Transition::is_suspended() const {
   return suspended;
 }
 
 /**
- * @brief Suspends or resumes this transition.
- * @param suspended true to suspend it, false to resume it.
+ * \brief Suspends or resumes this transition.
+ * \param suspended true to suspend it, false to resume it.
  */
 void Transition::set_suspended(bool suspended) {
 
@@ -145,8 +145,8 @@ void Transition::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns the date when this transition was suspended if it is.
- * @return The date when this transition was suspended or 0.
+ * \brief Returns the date when this transition was suspended if it is.
+ * \return The date when this transition was suspended or 0.
  */
 uint32_t Transition::get_when_suspended() const {
   return when_suspended;

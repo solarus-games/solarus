@@ -21,7 +21,7 @@
 #include "movements/Movement.h"
 
 /**
- * @brief A straight movement represented as a speed vector
+ * \brief A straight movement represented as a speed vector
  * whose properties (speed and angle) can be changed.
  */
 class StraightMovement: public Movement {

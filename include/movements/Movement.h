@@ -22,7 +22,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief Abstract class for representing a movement.
+ * \brief Abstract class for representing a movement.
  *
  * This is the parent class of all kinds of movement.
  * An instance of Movement can be applied to a map entity during the game,

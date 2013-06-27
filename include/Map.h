@@ -26,7 +26,7 @@
 #include "lua/ExportableToLua.h"
 
 /**
- * @brief Represents a map where the game can take place.
+ * \brief Represents a map where the game can take place.
  *
  * A map is a game scene. It contains various information, including:
  * - its dimensions,
@@ -185,10 +185,10 @@ class Map: public ExportableToLua {
 };
 
 /**
- * @brief Tests whether a point is outside the map area.
- * @param x x of the point to check
- * @param y y of the point to check
- * @return true if this point is outside the map area
+ * \brief Tests whether a point is outside the map area.
+ * \param x x of the point to check
+ * \param y y of the point to check
+ * \return true if this point is outside the map area
  */
 inline bool Map::test_collision_with_border(int x, int y) {
 

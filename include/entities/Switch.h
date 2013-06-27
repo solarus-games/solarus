@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 
 /**
- * @brief A button that the hero can trigger.
+ * \brief A button that the hero can trigger.
  *
  * A switch can be triggered by walking onto it
  * or by using weapons on it, depending on its subtype

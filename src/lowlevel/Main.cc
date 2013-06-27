@@ -23,7 +23,7 @@
 static void print_help(int argc, char** argv);
 
 /**
- * @brief Usual entry point of the program.
+ * \brief Usual entry point of the program.
  *
  * Usage: solarus [options] [quest_path]
  *
@@ -41,8 +41,8 @@ static void print_help(int argc, char** argv);
  *   -no-video           disables displaying (used for unitary tests)
  *   -quest-size=<width>x<height>         sets the size of the drawing area (if compatible with the quest)
  *
- * @param argc number of command-line arguments
- * @param argv command-line arguments
+ * \param argc number of command-line arguments
+ * \param argv command-line arguments
  */
 int main(int argc, char **argv) {
 
@@ -68,9 +68,9 @@ int main(int argc, char **argv) {
 }
 
 /**
- * @brief Prints the usage of the program.
- * @param argc number of command-line arguments
- * @param argv command-line arguments
+ * \brief Prints the usage of the program.
+ * \param argc number of command-line arguments
+ * \param argv command-line arguments
  */
 static void print_help(int argc, char **argv) {
 

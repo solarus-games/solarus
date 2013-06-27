@@ -28,13 +28,13 @@
 uint32_t System::ticks = 0;
 
 /**
- * @brief Initializes the whole lowlevel system.
+ * \brief Initializes the whole lowlevel system.
  *
  * Initializes the graphics, the audio system,
  * the data file system, etc.
  *
- * @param argc number of command line arguments
- * @param argv command line arguments
+ * \param argc number of command line arguments
+ * \param argv command line arguments
  */
 void System::initialize(int argc, char **argv) {
 
@@ -61,7 +61,7 @@ void System::initialize(int argc, char **argv) {
 }
 
 /**
- * @brief Closes the lowlevel system.
+ * \brief Closes the lowlevel system.
  *
  * This closes all initializations made in initialize().
  */
@@ -80,7 +80,7 @@ void System::quit() {
 }
 
 /**
- * @brief This function is called repeatedly by the main loop.
+ * \brief This function is called repeatedly by the main loop.
  *
  * It calls the update function of the low level systems that needs it.
  */
@@ -91,19 +91,19 @@ void System::update() {
 }
 
 /**
- * @brief Returns the number of milliseconds elapsed since the beginning of the program.
- * @return the number of milliseconds elapsed since the beginning of the program
+ * \brief Returns the number of milliseconds elapsed since the beginning of the program.
+ * \return the number of milliseconds elapsed since the beginning of the program
  */
 uint32_t System::now() {
   return ticks;
 }
 
 /**
- * @brief Makes the program sleep during some time.
+ * \brief Makes the program sleep during some time.
  *
  * Due to the OS scheduling, the real delay may be longer.
  *
- * @param duration duration of the sleep in milliseconds
+ * \param duration duration of the sleep in milliseconds
  */
 void System::sleep(uint32_t duration) {
   SDL_Delay(duration);

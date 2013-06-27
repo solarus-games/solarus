@@ -23,14 +23,14 @@
 #include <map>
 
 /**
- * @brief Draws the window and handles the video mode.
+ * \brief Draws the window and handles the video mode.
  */
 class VideoManager {
 
   public:
 
     /**
-     * @brief The different possible video modes.
+     * \brief The different possible video modes.
      */
     enum VideoMode {
       NO_MODE = -1,             /**< special value to mean no information */

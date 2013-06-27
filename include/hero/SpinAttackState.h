@@ -20,7 +20,7 @@
 #include "hero/State.h"
 
 /**
- * @brief The state "spin attack" of the hero.
+ * \brief The state "spin attack" of the hero.
  */
 class Hero::SpinAttackState: public Hero::State {
 

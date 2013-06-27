@@ -24,7 +24,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief An treasure placed on the ground and that the hero can take.
+ * \brief An treasure placed on the ground and that the hero can take.
  */
 class Pickable: public Detector {
 

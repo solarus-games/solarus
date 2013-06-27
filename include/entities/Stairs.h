@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 
 /**
- * @brief Some stairs that trigger a special animation on the hero.
+ * \brief Some stairs that trigger a special animation on the hero.
  *
  * A stairs entity is a special terrain where the hero walks
  * either before going to another floor
@@ -42,7 +42,7 @@ class Stairs: public Detector {
   public:
 
     /**
-     * @brief Subtypes of stairs.
+     * \brief Subtypes of stairs.
      */
     enum Subtype {
       SPIRAL_UPSTAIRS,          /**< going to the floor upstairs (spiral staircase) */
@@ -53,7 +53,7 @@ class Stairs: public Detector {
     };
 
     /**
-     * @brief Indicates the way an entity is walking on stairs.
+     * \brief Indicates the way an entity is walking on stairs.
      * - For stairs inside a single floor, 0 means that the hero is going upstairs
      *   and 1 means that he is going downstairs.
      * - For stairs between two different floors, 0 means that the hero is on the stairs

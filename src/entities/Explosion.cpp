@@ -24,11 +24,11 @@
 #include "SpriteAnimationSet.h"
 
 /**
- * @brief Creates an explosion.
- * @param name Unique name identifying the entity on the map or an empty string.
- * @param layer layer of the explosion
- * @param xy coordinates of the center of the explosion
- * @param with_damages true to hurt the hero and the enemies
+ * \brief Creates an explosion.
+ * \param name Unique name identifying the entity on the map or an empty string.
+ * \param layer layer of the explosion
+ * \param xy coordinates of the center of the explosion
+ * \param with_damages true to hurt the hero and the enemies
  */
 Explosion::Explosion(const std::string& name, Layer layer,
     const Rectangle& xy, bool with_damages):
@@ -45,27 +45,27 @@ Explosion::Explosion(const std::string& name, Layer layer,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Explosion::~Explosion() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Explosion::get_type() {
   return EXPLOSION;
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
+ * \brief Returns whether entities of this type can be obstacles for other entities.
  *
  * If yes, the function is_obstacle_for() will be called
  * to determine whether this particular entity is an obstacle or not.
  *
- * @return true if this type of entity can be obstacle for other entities
+ * \return true if this type of entity can be obstacle for other entities
  */
 bool Explosion::can_be_obstacle() {
   return false;
@@ -73,7 +73,7 @@ bool Explosion::can_be_obstacle() {
 
 
 /**
- * @brief Updates this entity.
+ * \brief Updates this entity.
  */
 void Explosion::update() {
 
@@ -85,10 +85,10 @@ void Explosion::update() {
 }
 
 /**
- * @brief Notifies this entity that the frame of one of its sprites has just changed.
- * @param sprite the sprite
- * @param animation the current animation
- * @param frame the new frame
+ * \brief Notifies this entity that the frame of one of its sprites has just changed.
+ * \param sprite the sprite
+ * \param animation the current animation
+ * \param frame the new frame
  */
 void Explosion::notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
 
@@ -99,14 +99,14 @@ void Explosion::notify_sprite_frame_changed(Sprite& sprite, const std::string& a
 }
 
 /**
- * @brief Notifies this entity that a pixel-perfect collision was just detected with another sprite.
+ * \brief Notifies this entity that a pixel-perfect collision was just detected with another sprite.
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.
  *
- * @param other_entity the entity overlapping this detector
- * @param other_sprite the sprite of other_entity that is overlapping this detector
- * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \param other_entity the entity overlapping this detector
+ * \param other_sprite the sprite of other_entity that is overlapping this detector
+ * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Explosion::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
 
@@ -114,10 +114,10 @@ void Explosion::notify_collision(MapEntity &other_entity, Sprite &other_sprite, 
 }
 
 /**
- * @brief This function is called when a the sprite of a switch
+ * \brief This function is called when a the sprite of a switch
  * detects a pixel-precise collision with a sprite of this entity.
- * @param sw the switch
- * @param sprite_overlapping the sprite of the current entity that collides with the switch
+ * \param sw the switch
+ * \param sprite_overlapping the sprite of the current entity that collides with the switch
  */
 void Explosion::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) {
 
@@ -125,10 +125,10 @@ void Explosion::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapp
 }
 
 /**
- * @brief This function is called when a the sprite of a crystal
+ * \brief This function is called when a the sprite of a crystal
  * detects a pixel-precise collision with a sprite of this entity.
- * @param crystal the crystal
- * @param sprite_overlapping the sprite of the current entity that collides with the crystal
+ * \param crystal the crystal
+ * \param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
 void Explosion::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping) {
 
@@ -136,9 +136,9 @@ void Explosion::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_o
 }
 
 /**
- * @brief This function is called when a sensor detects a collision with this entity.
- * @param sensor a sensor
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called when a sensor detects a collision with this entity.
+ * \param sensor a sensor
+ * \param collision_mode the collision mode that detected the collision
  */
 void Explosion::notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode) {
 
@@ -148,10 +148,10 @@ void Explosion::notify_collision_with_sensor(Sensor& sensor, CollisionMode colli
 }
 
 /**
- * @brief This function is called when an enemy's sprite collides with a sprite of this entity
- * @param enemy the enemy
- * @param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
- * @param this_sprite this entity's sprite that overlaps the enemy's sprite
+ * \brief This function is called when an enemy's sprite collides with a sprite of this entity
+ * \param enemy the enemy
+ * \param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
+ * \param this_sprite this entity's sprite that overlaps the enemy's sprite
  */
 void Explosion::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
 
@@ -159,12 +159,12 @@ void Explosion::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, 
 }
 
 /**
- * @brief Attacks the specified enemy if possible.
+ * \brief Attacks the specified enemy if possible.
  *
  * This function is called by this explosion when it detects an enemy, or by an enemy who detects this explosion.
  *
- * @param enemy the enemy to attack
- * @param enemy_sprite the enemy's sprite detected by the explosion
+ * \param enemy the enemy to attack
+ * \param enemy_sprite the enemy's sprite detected by the explosion
  */
 void Explosion::try_attack_enemy(Enemy &enemy, Sprite &enemy_sprite) {
 
@@ -181,14 +181,14 @@ void Explosion::try_attack_enemy(Enemy &enemy, Sprite &enemy_sprite) {
 }
 
 /**
- * @brief Notifies this entity that it has just attacked an enemy.
+ * \brief Notifies this entity that it has just attacked an enemy.
  *
  * This function is called even if this attack was not successful.
  *
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack
- * @param killed indicates that the attack has just killed the enemy
+ * \param attack the attack
+ * \param victim the enemy just hurt
+ * \param result indicates how the enemy has reacted to the attack
+ * \param killed indicates that the attack has just killed the enemy
  */
 void Explosion::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
     EnemyReaction::Reaction& result, bool killed) {

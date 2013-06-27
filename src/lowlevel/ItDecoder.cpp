@@ -19,7 +19,7 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Creates an Impulse Tracker decoder.
+ * \brief Creates an Impulse Tracker decoder.
  */
 ItDecoder::ItDecoder():
   modplug_file(NULL) {
@@ -33,15 +33,15 @@ ItDecoder::ItDecoder():
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 ItDecoder::~ItDecoder() {
 }
 
 /**
- * @brief Loads an IT file from memory.
- * @param sound_data the memory area to read
- * @param sound_size size of the memory area in bytes
+ * \brief Loads an IT file from memory.
+ * \param sound_data the memory area to read
+ * \param sound_size size of the memory area in bytes
  */
 void ItDecoder::load(void* sound_data, size_t sound_size) {
 
@@ -50,7 +50,7 @@ void ItDecoder::load(void* sound_data, size_t sound_size) {
 }
 
 /**
- * @brief Unloads the IT previously loaded.
+ * \brief Unloads the IT previously loaded.
  */
 void ItDecoder::unload() {
 
@@ -58,9 +58,9 @@ void ItDecoder::unload() {
 }
 
 /**
- * @brief Decodes a chunk of the previously loaded SPC data into PCM data.
- * @param decoded_data pointer to where you want the decoded data to be written
- * @param nb_samples number of samples to write
+ * \brief Decodes a chunk of the previously loaded SPC data into PCM data.
+ * \param decoded_data pointer to where you want the decoded data to be written
+ * \param nb_samples number of samples to write
  */
 void ItDecoder::decode(void* decoded_data, int nb_samples) {
 

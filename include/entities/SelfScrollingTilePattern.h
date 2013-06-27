@@ -21,7 +21,7 @@
 #include "entities/SimpleTilePattern.h"
 
 /**
- * @brief Tile pattern that scrolls on itself when the camera moves.
+ * \brief Tile pattern that scrolls on itself when the camera moves.
  *
  * The pattern scolls on itself from 1 pixel when the camera moves from 2
  * pixels. This gives an illusion of depth.

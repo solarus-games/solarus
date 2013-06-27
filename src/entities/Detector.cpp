@@ -22,14 +22,14 @@
 #include "lowlevel/Debug.h"
 
 /**
- * @brief Constructor.
- * @param collision_modes the detector's collision mode(s)
- * @param name Unique name identifying the entity on the map or an empty string.
- * @param layer layer of the detector
- * @param x x position of the detector's rectangle
- * @param y y position of the detector's rectangle
- * @param width width of the detector's rectangle
- * @param height height of the detector's rectangle
+ * \brief Constructor.
+ * \param collision_modes the detector's collision mode(s)
+ * \param name Unique name identifying the entity on the map or an empty string.
+ * \param layer layer of the detector
+ * \param x x position of the detector's rectangle
+ * \param y y position of the detector's rectangle
+ * \param width width of the detector's rectangle
+ * \param height height of the detector's rectangle
  */
 Detector::Detector(int collision_modes,
 		   const std::string &name, Layer layer,
@@ -41,28 +41,28 @@ Detector::Detector(int collision_modes,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Detector::~Detector() {
 
 }
 
 /**
- * @brief Returns whether entities of this type have detection capabilities.
+ * \brief Returns whether entities of this type have detection capabilities.
  *
  * This function returns whether entities of this type can detect the presence
  * of the hero or other entities. If yes, the function
  * notify_collision() will be called when a collision is detected.
  *
- * @return \c true if this type of entity can detect other entities.
+ * \return \c true if this type of entity can detect other entities.
  */
 bool Detector::is_detector() {
   return true;
 }
 
 /**
- * @brief Sets the collision modes of this detector.
- * @param collision_modes the detector's collision modes
+ * \brief Sets the collision modes of this detector.
+ * \param collision_modes the detector's collision modes
  * (can be an OR combination of collision modes)
  */
 void Detector::set_collision_modes(int collision_modes) {
@@ -74,8 +74,8 @@ void Detector::set_collision_modes(int collision_modes) {
 }
 
 /**
- * @brief Adds a collision mode to this detector.
- * @param collision_mode the collision mode to add
+ * \brief Adds a collision mode to this detector.
+ * \param collision_mode the collision mode to add
  */
 void Detector::add_collision_mode(CollisionMode collision_mode) {
 
@@ -83,17 +83,17 @@ void Detector::add_collision_mode(CollisionMode collision_mode) {
 }
 
 /**
- * @brief Returns whether the detector's collision modes includes
+ * \brief Returns whether the detector's collision modes includes
  * the specified collision mode.
- * @param collision_mode a collision mode
- * @return true if this collision mode is detected by this detector
+ * \param collision_mode a collision mode
+ * \return true if this collision mode is detected by this detector
  */
 bool Detector::has_collision_mode(CollisionMode collision_mode) {
   return (this->collision_modes & collision_mode) != 0;
 }
 
 /**
- * @brief Enables the pixel-perfect collision checks for all sprites
+ * \brief Enables the pixel-perfect collision checks for all sprites
  * of this detector.
  */
 void Detector::enable_pixel_collisions() {
@@ -105,25 +105,25 @@ void Detector::enable_pixel_collisions() {
 }
 
 /**
- * @brief Returns whether this entity can have collisions with entities even if
+ * \brief Returns whether this entity can have collisions with entities even if
  * they are not on the same layer.
- * @return true if this entity can collide with entities that are on another layer
+ * \return true if this entity can collide with entities that are on another layer
  */
 bool Detector::has_layer_independent_collisions() {
   return layer_independent_collisions;
 }
 
 /**
- * @brief Sets whether this entity can have collisions with entities even if
+ * \brief Sets whether this entity can have collisions with entities even if
  * they are not on the same layer.
- * @param independent true if this entity can collide with entities that are on another layer
+ * \param independent true if this entity can collide with entities that are on another layer
  */
 void Detector::set_layer_independent_collisions(bool independent) {
   this->layer_independent_collisions = independent;
 }
 
 /**
- * @brief Checks whether an entity collides with this detector.
+ * \brief Checks whether an entity collides with this detector.
  *
  * This function is called by the map when an entity has just moved.
  * It checks whether the entity collides with this detector.
@@ -131,7 +131,7 @@ void Detector::set_layer_independent_collisions(bool independent) {
  * functions are called.
  * If there is a collision, the notify_collision() method is called.
  *
- * @param entity the entity to check
+ * \param entity the entity to check
  */
 void Detector::check_collision(MapEntity &entity) {
 
@@ -175,12 +175,12 @@ void Detector::check_collision(MapEntity &entity) {
 }
 
 /**
- * @brief Checks whether a sprite collides with this detector.
+ * \brief Checks whether a sprite collides with this detector.
  *
  * If there is a collision, the notify_collision(MapEntity&, Sprite&, Sprite&) method is called.
  *
- * @param entity the entity to check
- * @param sprite the sprite of that entity
+ * \param entity the entity to check
+ * \param sprite the sprite of that entity
  */
 void Detector::check_collision(MapEntity &entity, Sprite &sprite) {
 
@@ -201,13 +201,13 @@ void Detector::check_collision(MapEntity &entity, Sprite &sprite) {
 }
 
 /**
- * @brief Returns whether an entity's rectangle is overlapping the detector's rectangle.
+ * \brief Returns whether an entity's rectangle is overlapping the detector's rectangle.
  *
  * This method is called by check_collision(MapEntity*) when the detector's collision
  * mode is COLLISION_RECTANGLE.
  *
- * @param entity the entity
- * @return true if the entity's rectangle is overlapping the detector's rectangle
+ * \param entity the entity
+ * \return true if the entity's rectangle is overlapping the detector's rectangle
  */
 bool Detector::test_collision_rectangle(MapEntity &entity) {
 
@@ -215,13 +215,13 @@ bool Detector::test_collision_rectangle(MapEntity &entity) {
 }
 
 /**
- * @brief Returns whether an entity's rectangle is entirely inside the detector's rectangle.
+ * \brief Returns whether an entity's rectangle is entirely inside the detector's rectangle.
  *
  * This method is called by check_collision(MapEntity*) when the detector's collision
  * mode is COLLISION_INSIDE.
  *
- * @param entity the entity
- * @return true if the entity's rectangle is entirely inside the detector's rectangle
+ * \param entity the entity
+ * \return true if the entity's rectangle is entirely inside the detector's rectangle
  */
 bool Detector::test_collision_inside(MapEntity &entity) {
 
@@ -230,13 +230,13 @@ bool Detector::test_collision_inside(MapEntity &entity) {
 
 
 /**
- * @brief Returns whether the origin point of an entity is overlapping the detector's rectangle.
+ * \brief Returns whether the origin point of an entity is overlapping the detector's rectangle.
  *
  * This method is called by check_entity_collision(MapEntity*) when the detector's collision
  * mode is COLLISION_ORIGIN_POINT.
  *
- * @param entity the entity
- * @return true if the entity's origin point is overlapping the detector's rectangle
+ * \param entity the entity
+ * \return true if the entity's origin point is overlapping the detector's rectangle
  */
 bool Detector::test_collision_origin_point(MapEntity &entity) {
 
@@ -244,13 +244,13 @@ bool Detector::test_collision_origin_point(MapEntity &entity) {
 }
 
 /**
- * @brief Returns whether the facing point of an entity is overlapping the detector's rectangle.
+ * \brief Returns whether the facing point of an entity is overlapping the detector's rectangle.
  *
  * This method is called by check_collision(MapEntity*) when the detector's collision
  * mode is COLLISION_FACING_POINT.
  *
- * @param entity the entity
- * @return true if the entity's facing point is overlapping the detector's rectangle
+ * \param entity the entity
+ * \return true if the entity's facing point is overlapping the detector's rectangle
  */
 bool Detector::test_collision_facing_point(MapEntity &entity) {
 
@@ -258,14 +258,14 @@ bool Detector::test_collision_facing_point(MapEntity &entity) {
 }
 
 /**
- * @brief Returns whether the facing point of an entity (in any of the four main directions)
+ * \brief Returns whether the facing point of an entity (in any of the four main directions)
  * is overlapping the detector's rectangle.
  *
  * This method is called by check_collision(MapEntity*) when the detector's collision
  * mode is COLLISION_FACING_POINT_ANY.
  *
- * @param entity the entity
- * @return true if a facing point of the entity is overlapping the detector's rectangle
+ * \param entity the entity
+ * \return true if a facing point of the entity is overlapping the detector's rectangle
  */
 bool Detector::test_collision_facing_point_any(MapEntity& entity) {
 
@@ -277,13 +277,13 @@ bool Detector::test_collision_facing_point_any(MapEntity& entity) {
 }
 
 /**
- * @brief Returns whether the center point of an entity is overlapping the detector's rectangle.
+ * \brief Returns whether the center point of an entity is overlapping the detector's rectangle.
  *
  * This method is called by check_collision(MapEntity*) when the detector's collision
  * mode is COLLISION_CENTER.
  *
- * @param entity the entity
- * @return true if the entity's center is overlapping the detector's rectangle
+ * \param entity the entity
+ * \return true if the entity's center is overlapping the detector's rectangle
  */
 bool Detector::test_collision_center(MapEntity &entity) {
 
@@ -291,14 +291,14 @@ bool Detector::test_collision_center(MapEntity &entity) {
 }
 
 /**
- * @brief Returns whether an entity collides with this detector with respect to a custom rule.
+ * \brief Returns whether an entity collides with this detector with respect to a custom rule.
  *
  * This method is called by check_collision(MapEntity*) when the detector's collision
  * mode is COLLISION_CUSTOM.
  * Redefine it if you want to use this collision mode.
  *
- * @param entity the entity
- * @return true if the entity's collides with this detector with respect to the custom rule
+ * \param entity the entity
+ * \return true if the entity's collides with this detector with respect to the custom rule
  */
 bool Detector::test_collision_custom(MapEntity &entity) {
 
@@ -307,14 +307,14 @@ bool Detector::test_collision_custom(MapEntity &entity) {
 }
 
 /**
- * @brief Notifies this detector that a collision was just detected with an entity.
+ * \brief Notifies this detector that a collision was just detected with an entity.
  *
  * This function is called by check_collision(MapEntity*)
  * when an entity overlaps the detector.
  * By default, nothing is done.
  *
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision (useful if
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision (useful if
  * the detector has several collision modes)
  */
 void Detector::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
@@ -322,22 +322,22 @@ void Detector::notify_collision(MapEntity &entity_overlapping, CollisionMode col
 }
 
 /**
- * @brief Notifies this detector that a pixel-perfect collision was just detected with another sprite.
+ * \brief Notifies this detector that a pixel-perfect collision was just detected with another sprite.
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.
  * By default, nothing happens. Redefine this method in the subclasses to do the appropriate action.
  *
- * @param other_entity the entity overlapping this detector
- * @param other_sprite the sprite of other_entity that is overlapping this detector
- * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \param other_entity the entity overlapping this detector
+ * \param other_sprite the sprite of other_entity that is overlapping this detector
+ * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Detector::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
 
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by
+ * \brief Notifies this detector that the player is interacting with it by
  * pressing the action command.
  *
  * This function is called when the player presses the action command
@@ -352,7 +352,7 @@ void Detector::notify_action_command_pressed() {
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by
+ * \brief Notifies this detector that the player is interacting with it by
  * using an equipment item.
  *
  * This function is called when the player uses an equipment item
@@ -362,48 +362,48 @@ void Detector::notify_action_command_pressed() {
  * Redefine your function in the subclasses to make your entity react to an
  * equipment item.
  *
- * @param item The equipment item used.
- * @return true if an interaction occured.
+ * \param item The equipment item used.
+ * \return true if an interaction occured.
  */
 bool Detector::interaction_with_item(EquipmentItem& item) {
   return false;
 }
 
 /**
- * @brief This function is called when the player tries to push or pull this
+ * \brief This function is called when the player tries to push or pull this
  * detector.
  *
  * By default, nothing happens.
  * Redefine your function in the subclasses to make something happen with the entity.
  *
- * @return true if the detector was pushed or pulled successfully
+ * \return true if the detector was pushed or pulled successfully
  */
 bool Detector::start_movement_by_hero() {
   return false;
 }
 
 /**
- * @brief This function is called when the player finishes to push or pull
+ * \brief This function is called when the player finishes to push or pull
  * this detector.
  *
  * By default, nothing happens.
  * Redefine your function in the subclasses to make something happen with the entity.
  *
- * @return true if the detector was pushed or pulled successfully
+ * \return true if the detector was pushed or pulled successfully
  */
 void Detector::stop_movement_by_hero() {
 }
 
 /**
- * @brief This function is called when the player is tapping his sword against this detector.
- * @return the sound to play when tapping this detector with the sword
+ * \brief This function is called when the player is tapping his sword against this detector.
+ * \return the sound to play when tapping this detector with the sword
  */
 std::string Detector::get_sword_tapping_sound() {
   return "sword_tapping";
 }
 
 /**
- * @brief Notifies this entity that it is about to be removed.
+ * \brief Notifies this entity that it is about to be removed.
  *
  * This function is called when the entity has just been added
  * to the list of entities that will be removed from the map

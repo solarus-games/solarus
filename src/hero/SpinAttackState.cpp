@@ -27,8 +27,8 @@
 #include <sstream>
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::SpinAttackState::SpinAttackState(Hero& hero):
   State(hero),
@@ -37,15 +37,15 @@ Hero::SpinAttackState::SpinAttackState(Hero& hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::SpinAttackState::~SpinAttackState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::SpinAttackState::start(State* previous_state) {
 
@@ -72,8 +72,8 @@ void Hero::SpinAttackState::start(State* previous_state) {
 }
 
 /**
- * @brief Ends this state.
- * @param next_state the next state
+ * \brief Ends this state.
+ * \param next_state the next state
  */
 void Hero::SpinAttackState::stop(State* next_state) {
 
@@ -86,7 +86,7 @@ void Hero::SpinAttackState::stop(State* next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::SpinAttackState::update() {
 
@@ -107,26 +107,26 @@ void Hero::SpinAttackState::update() {
 }
 
 /**
- * @brief Returns whether crystals can be activated by the sword in this state.
- * @return true if crystals can be activated by the sword in this state
+ * \brief Returns whether crystals can be activated by the sword in this state.
+ * \return true if crystals can be activated by the sword in this state
  */
 bool Hero::SpinAttackState::can_sword_hit_crystal() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can pick a treasure in this state.
- * @param item The equipment item to obtain.
- * @return true if the hero can pick that treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in this state.
+ * \param item The equipment item to obtain.
+ * \return true if the hero can pick that treasure in this state.
  */
 bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& item) {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can be hurt in this state.
- * @return true if the hero can be hurt in this state
- * @param attacker an attacker that is trying to hurt the hero
+ * \brief Returns whether the hero can be hurt in this state.
+ * \return true if the hero can be hurt in this state
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
 bool Hero::SpinAttackState::can_be_hurt(Enemy* attacker) {
@@ -134,10 +134,10 @@ bool Hero::SpinAttackState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
- * @brief Tests whether the hero is cutting with his sword the specified detector
+ * \brief Tests whether the hero is cutting with his sword the specified detector
  * for which a collision was detected.
- * @param detector the detector to check
- * @return true if the sword is cutting this detector
+ * \param detector the detector to check
+ * \return true if the sword is cutting this detector
  */
 bool Hero::SpinAttackState::is_cutting_with_sword(Detector& detector) {
 
@@ -146,8 +146,8 @@ bool Hero::SpinAttackState::is_cutting_with_sword(Detector& detector) {
 }
 
 /**
- * @brief Returns the damage power of the sword for the current attack.
- * @return the current damage factor of the sword
+ * \brief Returns the damage power of the sword for the current attack.
+ * \return the current damage factor of the sword
  */
 int Hero::SpinAttackState::get_sword_damage_factor() {
 
@@ -156,7 +156,7 @@ int Hero::SpinAttackState::get_sword_damage_factor() {
 }
 
 /**
- * @brief Plays the sword loading sound.
+ * \brief Plays the sword loading sound.
  */
 void Hero::SpinAttackState::play_spin_attack_sound() {
 
@@ -172,41 +172,41 @@ void Hero::SpinAttackState::play_spin_attack_sound() {
 }
 
 /**
- * @brief Returns whether a deep water tile is considered as an obstacle in this state.
- * @return true if the deep water tiles are considered as obstacles in this state
+ * \brief Returns whether a deep water tile is considered as an obstacle in this state.
+ * \return true if the deep water tiles are considered as obstacles in this state
  */
 bool Hero::SpinAttackState::is_deep_water_obstacle() {
   return !being_pushed;
 }
 
 /**
- * @brief Returns whether a hole is considered as an obstacle in this state.
- * @return true if the holes are considered as obstacles in this state
+ * \brief Returns whether a hole is considered as an obstacle in this state.
+ * \return true if the holes are considered as obstacles in this state
  */
 bool Hero::SpinAttackState::is_hole_obstacle() {
   return !being_pushed;
 }
 
 /**
- * @brief Returns whether lava is considered as an obstacle in this state.
- * @return true if lava is considered as obstacles in this state
+ * \brief Returns whether lava is considered as an obstacle in this state.
+ * \return true if lava is considered as obstacles in this state
  */
 bool Hero::SpinAttackState::is_lava_obstacle() {
   return !being_pushed;
 }
 
 /**
- * @brief Returns whether prickles are considered as an obstacle in this state.
- * @return true if prickles are considered as obstacles in this state
+ * \brief Returns whether prickles are considered as an obstacle in this state.
+ * \return true if prickles are considered as obstacles in this state
  */
 bool Hero::SpinAttackState::is_prickle_obstacle() {
   return !being_pushed;
 }
 
 /**
- * @brief Returns whether a teletransporter is considered as an obstacle in this state.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is an obstacle in this state
+ * \brief Returns whether a teletransporter is considered as an obstacle in this state.
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is an obstacle in this state
  */
 bool Hero::SpinAttackState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
 
@@ -216,7 +216,7 @@ bool Hero::SpinAttackState::is_teletransporter_obstacle(Teletransporter& teletra
 }
 
 /**
- * @brief Notifies this state that the hero has just failed to change its
+ * \brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */
 void Hero::SpinAttackState::notify_obstacle_reached() {
@@ -232,11 +232,11 @@ void Hero::SpinAttackState::notify_obstacle_reached() {
 }
 
 /**
- * @brief Notifies this state that the hero has just attacked an enemy.
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * @param killed indicates that the attack has just killed the enemy
+ * \brief Notifies this state that the hero has just attacked an enemy.
+ * \param attack the attack
+ * \param victim the enemy just hurt
+ * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
+ * \param killed indicates that the attack has just killed the enemy
  */
 void Hero::SpinAttackState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
     EnemyReaction::Reaction& result, bool killed) {

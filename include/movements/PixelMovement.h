@@ -23,7 +23,7 @@
 #include <list>
 
 /**
- * @brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
+ * \brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
  */
 class PixelMovement: public Movement {
 

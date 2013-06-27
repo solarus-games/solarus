@@ -28,14 +28,14 @@
 #include "lowlevel/Sound.h"
 
 /**
- * @brief Constructor.
- * @param name name of the entity
- * @param layer layer of the entity
- * @param x x position of the entity's rectangle
- * @param y y position of the entity's rectangle
- * @param subtype the subtype of switch
- * @param needs_block true if a block is required to activate this switch
- * @param inactivate_when_leaving true to inactivate the switch when the hero or
+ * \brief Constructor.
+ * \param name name of the entity
+ * \param layer layer of the entity
+ * \param x x position of the entity's rectangle
+ * \param y y position of the entity's rectangle
+ * \param subtype the subtype of switch
+ * \param needs_block true if a block is required to activate this switch
+ * \param inactivate_when_leaving true to inactivate the switch when the hero or
  * the block leaves it
  */
 Switch::Switch(const std::string& name, Layer layer, int x, int y,
@@ -68,65 +68,65 @@ Switch::Switch(const std::string& name, Layer layer, int x, int y,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Switch::~Switch() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Switch::get_type() {
   return SWITCH;
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one when
+ * \brief Returns whether this entity is an obstacle for another one when
  * it is enabled.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
+ * \param other another entity
+ * \return true if this entity is an obstacle for the other one
  */
 bool Switch::is_obstacle_for(MapEntity& other) {
   return other.is_switch_obstacle(*this);
 }
 
 /**
- * @brief Returns whether this switch is a walkable switch.
- * @return true if the subtype of this switch is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
+ * \brief Returns whether this switch is a walkable switch.
+ * \return true if the subtype of this switch is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
  */
 bool Switch::is_walkable() {
   return subtype == WALKABLE_INVISIBLE || subtype == WALKABLE_VISIBLE;
 }
 
 /**
- * @brief Returns whether this switch is an arrow target.
- * @return true if the subtype of this switch is ARROW_TARGET
+ * \brief Returns whether this switch is an arrow target.
+ * \return true if the subtype of this switch is ARROW_TARGET
  */
 bool Switch::is_arrow_target() {
   return subtype == ARROW_TARGET;
 }
 
 /**
- * @brief Returns whether this switch is a solid switch.
- * @return true if the subtype of this switch is SOLID
+ * \brief Returns whether this switch is a solid switch.
+ * \return true if the subtype of this switch is SOLID
  */
 bool Switch::is_solid() {
   return subtype == SOLID;
 }
 
 /**
- * @brief Returns whether this switch is currently activated.
+ * \brief Returns whether this switch is currently activated.
  *
- * @return true if the switch is activated
+ * \return true if the switch is activated
  */
 bool Switch::is_activated() {
   return activated;
 }
 
 /**
- * @brief Activates the switch, playing a sound and notifying the map script.
+ * \brief Activates the switch, playing a sound and notifying the map script.
  *
  * This function does nothing if the switch is locked or already activated.
  */
@@ -145,11 +145,11 @@ void Switch::activate() {
 }
 
 /**
- * @brief Activates or inactivates the switch, not playing any sound.
+ * \brief Activates or inactivates the switch, not playing any sound.
  *
  * This function can change the switch state even if the switch is locked.
  *
- * @param activated true to make the switch on, false to make it off
+ * \param activated true to make the switch on, false to make it off
  */
 void Switch::set_activated(bool activated) {
 
@@ -168,19 +168,19 @@ void Switch::set_activated(bool activated) {
 }
 
 /**
- * @brief Locks this switch is its current state or unlocks it.
+ * \brief Locks this switch is its current state or unlocks it.
  *
  * When the switch is locked, it cannot be activated or inactivated by other entities.
  * However, the state can still be changed manually by calling set_activated().
  *
- * @param locked true to lock the switch in its current state, false to unlock it
+ * \param locked true to lock the switch in its current state, false to unlock it
  */
 void Switch::set_locked(bool locked) {
   this->locked = locked;
 }
 
 /**
- * @brief Updates this switch.
+ * \brief Updates this switch.
  */
 void Switch::update() {
 
@@ -207,9 +207,9 @@ void Switch::update() {
 }
 
 /**
- * @brief Tests whether an entity's collides with this entity.
- * @param entity an entity
- * @return true if the entity's collides with this entity
+ * \brief Tests whether an entity's collides with this entity.
+ * \param entity an entity
+ * \return true if the entity's collides with this entity
  */
 bool Switch::test_collision_custom(MapEntity& entity) {
 
@@ -226,9 +226,9 @@ bool Switch::test_collision_custom(MapEntity& entity) {
 }
 
 /**
- * @brief This function is called by the engine when an entity overlaps the switch.
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called by the engine when an entity overlaps the switch.
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void Switch::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
@@ -244,14 +244,14 @@ void Switch::notify_collision(MapEntity& entity_overlapping, CollisionMode colli
 }
 
 /**
- * @brief Notifies this entity that another sprite is overlapping it.
+ * \brief Notifies this entity that another sprite is overlapping it.
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.
  *
- * @param other_entity the entity overlapping this detector
- * @param other_sprite the sprite of other_entity that is overlapping this detector
- * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \param other_entity the entity overlapping this detector
+ * \param other_sprite the sprite of other_entity that is overlapping this detector
+ * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Switch::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
 
@@ -261,11 +261,11 @@ void Switch::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Spr
 }
 
 /**
- * @brief This function is called when the hero overlaps this switch.
+ * \brief This function is called when the hero overlaps this switch.
  *
  * The switch is activated if its properties allow it.
  *
- * @param hero the hero
+ * \param hero the hero
  */
 void Switch::try_activate(Hero& hero) {
 
@@ -277,11 +277,11 @@ void Switch::try_activate(Hero& hero) {
 }
 
 /**
- * @brief This function is called when a block overlaps this switch.
+ * \brief This function is called when a block overlaps this switch.
  *
  * The switch is activated if its properties allow it.
  *
- * @param block the block overlapping this switch
+ * \param block the block overlapping this switch
  */
 void Switch::try_activate(Block& block) {
 
@@ -293,11 +293,11 @@ void Switch::try_activate(Block& block) {
 }
 
 /**
- * @brief This function is called when an arrow overlaps this switch.
+ * \brief This function is called when an arrow overlaps this switch.
  *
  * The switch is activated if its properties allow it.
  *
- * @param arrow the arrow overlapping this switch
+ * \param arrow the arrow overlapping this switch
  */
 void Switch::try_activate(Arrow& arrow) {
 
@@ -309,7 +309,7 @@ void Switch::try_activate(Arrow& arrow) {
 }
 
 /**
- * @brief This function is called when any entity overlaps this switch.
+ * \brief This function is called when any entity overlaps this switch.
  *
  * Only solid switches can be activated this way.
  * The switch is activated if its properties allow it.
@@ -323,8 +323,8 @@ void Switch::try_activate() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& Switch::get_lua_type_name() const {
   return LuaContext::entity_switch_module_name;

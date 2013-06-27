@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 
 /**
- * @brief A small fixed piece of the map, optimized for collisions and drawing.
+ * \brief A small fixed piece of the map, optimized for collisions and drawing.
  *
  * A tile is composed of a tile pattern that can be repeated.
  * Its pattern may be animated. It can be an obstacle or not.

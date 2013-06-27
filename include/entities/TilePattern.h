@@ -21,7 +21,7 @@
 #include "entities/Obstacle.h"
 
 /**
- * @brief Abstract class for a tile pattern.
+ * \brief Abstract class for a tile pattern.
  *
  * A tile pattern defines a rectangle image in a tileset and has an obstacle property.
  * It may have a special animation.
@@ -51,11 +51,11 @@ class TilePattern {
         Tileset& tileset, const Rectangle& viewport);
 
     /**
-     * @brief Draws the tile image on a surface.
-     * @param dst_surface the surface to draw
-     * @param dst_position position where tile pattern should be drawn on dst_surface
-     * @param tileset the tileset of this tile
-     * @param viewport coordinates of the top-left corner of dst_surface relative
+     * \brief Draws the tile image on a surface.
+     * \param dst_surface the surface to draw
+     * \param dst_position position where tile pattern should be drawn on dst_surface
+     * \param tileset the tileset of this tile
+     * \param viewport coordinates of the top-left corner of dst_surface relative
      * to the map (may be used for scrolling tiles)
      */
     virtual void draw(Surface& dst_surface, const Rectangle& dst_position,

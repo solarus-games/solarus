@@ -22,7 +22,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief Movement that makes circles around a center.
+ * \brief Movement that makes circles around a center.
  *
  * This movement is used by entities that makes a circle around a center point or another entity.
  */

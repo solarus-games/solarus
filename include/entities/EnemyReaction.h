@@ -22,7 +22,7 @@
 #include <map>
 
 /**
- * @brief Describes how an enemy reacts when it receives an attack.
+ * \brief Describes how an enemy reacts when it receives an attack.
  *
  * The reaction may be different between different sprites of the enemy.
  */
@@ -31,7 +31,7 @@ class EnemyReaction {
   public:
 
     /**
-     * @brief Types of reactions to an attack.
+     * \brief Types of reactions to an attack.
      */
     enum ReactionType {
       HURT,              /**< the enemy is hurt and loses some life points */
@@ -43,7 +43,7 @@ class EnemyReaction {
     };
 
     /**
-     * @brief Represents a reaction to an attack.
+     * \brief Represents a reaction to an attack.
      */
     struct Reaction {
       ReactionType type; /**< type of reaction */

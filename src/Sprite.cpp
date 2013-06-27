@@ -32,13 +32,13 @@
 std::map<std::string, SpriteAnimationSet*> Sprite::all_animation_sets;
 
 /**
- * @brief Initializes the sprites system.
+ * \brief Initializes the sprites system.
  */
 void Sprite::initialize() {
 }
 
 /**
- * @brief Uninitializes the sprites system.
+ * \brief Uninitializes the sprites system.
  */
 void Sprite::quit() {
 
@@ -51,13 +51,13 @@ void Sprite::quit() {
 }
 
 /**
- * @brief Returns the sprite animation set corresponding to the specified id.
+ * \brief Returns the sprite animation set corresponding to the specified id.
  *
  * The animation set may be created if it is new, or just retrieved from
  * memory if it way already used before.
  *
- * @param id id of the animation set
- * @return the corresponding animation set
+ * \param id id of the animation set
+ * \return the corresponding animation set
  */
 SpriteAnimationSet& Sprite::get_animation_set(const std::string &id) {
 
@@ -69,8 +69,8 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string &id) {
 }
 
 /**
- * @brief Creates a sprite with the specified animation set.
- * @param id name of an animation set
+ * \brief Creates a sprite with the specified animation set.
+ * \param id name of an animation set
  */
 Sprite::Sprite(const std::string& id):
   Drawable(),
@@ -92,7 +92,7 @@ Sprite::Sprite(const std::string& id):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Sprite::~Sprite() {
 
@@ -100,48 +100,48 @@ Sprite::~Sprite() {
 }
 
 /**
- * @brief Returns the id of the animation set of this sprite.
- * @return the animation set id of this sprite
+ * \brief Returns the id of the animation set of this sprite.
+ * \return the animation set id of this sprite
  */
 const std::string& Sprite::get_animation_set_id() const {
   return animation_set_id;
 }
 
 /**
- * @brief Returns whether the id of the animation set of this sprite
+ * \brief Returns whether the id of the animation set of this sprite
  * contains the specified string.
- * @param sequence the string to check
- * @return true if the animation set id contains this string
+ * \param sequence the string to check
+ * \return true if the animation set id contains this string
  */
 bool Sprite::contains(const std::string& sequence) const {
   return animation_set_id.find(sequence) != std::string::npos;
 }
 
 /**
- * @brief Returns the animation set of this sprite.
+ * \brief Returns the animation set of this sprite.
  *
  * If several sprites have the same animation set, they share the same instance of animation set
  * and the same pointer is returned here.
  *
- * @return the animation set of this sprite
+ * \return the animation set of this sprite
  */
 SpriteAnimationSet& Sprite::get_animation_set() {
   return animation_set;
 }
 
 /**
- * @brief When the sprite is drawn on a map, sets the tileset.
+ * \brief When the sprite is drawn on a map, sets the tileset.
  *
  * This function must be called if this sprite image depends on the map's tileset.
  *
- * @param tileset The tileset.
+ * \param tileset The tileset.
  */
 void Sprite::set_tileset(Tileset& tileset) {
   animation_set.set_tileset(tileset);
 }
 
 /**
- * @brief Enables the pixel-perfect collision detection for the animation set of this sprite.
+ * \brief Enables the pixel-perfect collision detection for the animation set of this sprite.
  *
  * All sprites that use the same animation set as this one will be affected.
  */
@@ -150,16 +150,16 @@ void Sprite::enable_pixel_collisions() {
 }
 
 /**
- * @brief Returns whether the pixel-perfect collisions are enabled for the animation set of this sprite.
- * @return true if the pixel-perfect collisions are enabled
+ * \brief Returns whether the pixel-perfect collisions are enabled for the animation set of this sprite.
+ * \return true if the pixel-perfect collisions are enabled
  */
 bool Sprite::are_pixel_collisions_enabled() const {
   return animation_set.are_pixel_collisions_enabled();
 }
 
 /**
- * @brief Returns the size of the current frame.
- * @return A rectangle whose size is the size of the current frame.
+ * \brief Returns the size of the current frame.
+ * \return A rectangle whose size is the size of the current frame.
  * X and Y are set to zero.
  */
 Rectangle Sprite::get_size() const {
@@ -168,17 +168,17 @@ Rectangle Sprite::get_size() const {
 }
 
 /**
- * @brief Returns the maximum frame size of the animation set of this sprite.
- * @return The maximum frame size.
+ * \brief Returns the maximum frame size of the animation set of this sprite.
+ * \return The maximum frame size.
  */
 const Rectangle& Sprite::get_max_size() const {
   return animation_set.get_max_size();
 }
 
 /**
- * @brief Returns the origin point of a frame for the current animation and
+ * \brief Returns the origin point of a frame for the current animation and
  * the current direction.
- * @return the origin point of a frame
+ * \return the origin point of a frame
  */
 const Rectangle& Sprite::get_origin() const {
 
@@ -186,13 +186,13 @@ const Rectangle& Sprite::get_origin() const {
 }
 
 /**
- * @brief Returns the frame delay of the current animation.
+ * \brief Returns the frame delay of the current animation.
  *
  * A value of 0 (only for 1-frame animations) means that the
  * animation must continue to be drawn: in this case,
  * is_animation_finished() returns always false.
  *
- * @return The delay between two frames for the current animation
+ * \return The delay between two frames for the current animation
  * in miliseconds.
  */
 uint32_t Sprite::get_frame_delay() const {
@@ -200,12 +200,12 @@ uint32_t Sprite::get_frame_delay() const {
 }
 
 /**
- * @brief Sets the frame delay of the current animation.
+ * \brief Sets the frame delay of the current animation.
  *
  * A value of 0 (only for 1-frame animations) means that the
  * animation will continue to be drawn.
  *
- * @param frame_delay The delay between two frames for the current animation
+ * \param frame_delay The delay between two frames for the current animation
  * in miliseconds.
  */
 void Sprite::set_frame_delay(uint32_t frame_delay) {
@@ -213,8 +213,8 @@ void Sprite::set_frame_delay(uint32_t frame_delay) {
 }
 
 /**
- * @brief Returns the next frame of the current frame.
- * @return The next frame of the current frame, or -1 if the animation is
+ * \brief Returns the next frame of the current frame.
+ * \return The next frame of the current frame, or -1 if the animation is
  * finished.
  */
 int Sprite::get_next_frame() const {
@@ -222,20 +222,20 @@ int Sprite::get_next_frame() const {
 }
 
 /**
- * @brief Returns the current animation of the sprite.
- * @return the name of the current animation of the sprite
+ * \brief Returns the current animation of the sprite.
+ * \return the name of the current animation of the sprite
  */
 const std::string& Sprite::get_current_animation() const {
   return current_animation_name;
 }
 
 /**
- * @brief Sets the current animation of the sprite.
+ * \brief Sets the current animation of the sprite.
  *
  * If the sprite is already playing another animation, this animation is interrupted.
  * If the sprite is already playing the same animation, nothing is done.
  *
- * @param animation_name name of the new animation of the sprite
+ * \param animation_name name of the new animation of the sprite
  */
 void Sprite::set_current_animation(const std::string& animation_name) {
 
@@ -249,37 +249,37 @@ void Sprite::set_current_animation(const std::string& animation_name) {
 }
 
 /**
- * @brief Returns whether this sprite has an animation with the specified name.
- * @param animation_name an animation name
- * @return true if this animation exists
+ * \brief Returns whether this sprite has an animation with the specified name.
+ * \param animation_name an animation name
+ * \return true if this animation exists
  */
 bool Sprite::has_animation(const std::string& animation_name) {
   return animation_set.has_animation(animation_name);
 }
 
 /**
- * @brief Returns the number of directions in the current animation of this
+ * \brief Returns the number of directions in the current animation of this
  * sprite.
- * @return The number of directions.
+ * \return The number of directions.
  */
 int Sprite::get_nb_directions() const {
   return current_animation->get_nb_directions();
 }
 
 /**
- * @brief Returns the current direction of the sprite's animation.
- * @return the current direction
+ * \brief Returns the current direction of the sprite's animation.
+ * \return the current direction
  */
 int Sprite::get_current_direction() const {
   return current_direction;
 }
 
 /**
- * @brief Sets the current direction of the sprite's animation and restarts the animation.
+ * \brief Sets the current direction of the sprite's animation and restarts the animation.
  *
  * If the specified direction is the current direction, nothing is done.
  *
- * @param current_direction the current direction
+ * \param current_direction the current direction
  */
 void Sprite::set_current_direction(int current_direction) {
 
@@ -297,30 +297,30 @@ void Sprite::set_current_direction(int current_direction) {
 }
 
 /**
- * @brief Returns the number of frames in the current direction of the current
+ * \brief Returns the number of frames in the current direction of the current
  * animation of this sprite.
- * @return The number of frames.
+ * \return The number of frames.
  */
 int Sprite::get_nb_frames() const {
   return current_animation->get_direction(current_direction)->get_nb_frames();
 }
 
 /**
- * @brief Returns the current frame of the sprite's animation.
- * @return the current frame
+ * \brief Returns the current frame of the sprite's animation.
+ * \return the current frame
  */
 int Sprite::get_current_frame() const {
   return current_frame;
 }
 
 /**
- * @brief Sets the current frame of the sprite's animation.
+ * \brief Sets the current frame of the sprite's animation.
  *
  * If the animation was finished, it is restarted.
  * If the animation is suspended, it remains suspended
  * but the specified frame is drawn.
  *
- * @param current_frame the current frame
+ * \param current_frame the current frame
  */
 void Sprite::set_current_frame(int current_frame) {
 
@@ -334,8 +334,8 @@ void Sprite::set_current_frame(int current_frame) {
 }
 
 /**
- * @brief Returns the rectangle of the current frame.
- * @return The current frame's rectangle.
+ * \brief Returns the rectangle of the current frame.
+ * \return The current frame's rectangle.
  */
 const Rectangle& Sprite::get_current_frame_rectangle() const {
 
@@ -343,16 +343,16 @@ const Rectangle& Sprite::get_current_frame_rectangle() const {
 }
 
 /**
- * @brief Returns whether the frame of this sprite has just changed.
- * @return true if the frame of this sprite has just changed.
+ * \brief Returns whether the frame of this sprite has just changed.
+ * \return true if the frame of this sprite has just changed.
  */
 bool Sprite::has_frame_changed() const {
   return frame_changed;
 }
 
 /**
- * @brief Sets whether the frame has just changed.
- * @param frame_changed true if the frame has just changed.
+ * \brief Sets whether the frame has just changed.
+ * \param frame_changed true if the frame has just changed.
  */
 void Sprite::set_frame_changed(bool frame_changed) {
 
@@ -363,34 +363,34 @@ void Sprite::set_frame_changed(bool frame_changed) {
 }
 
 /**
- * @brief Makes this sprite always synchronized with another one as soon as
+ * \brief Makes this sprite always synchronized with another one as soon as
  * they have the same animation name.
- * @param other the sprite to synchronize to, or NULL to stop any previous synchronization
+ * \param other the sprite to synchronize to, or NULL to stop any previous synchronization
  */
 void Sprite::set_synchronized_to(Sprite* other) {
   this->synchronize_to = other;
 }
 
 /**
- * @brief Returns true if the animation is started.
+ * \brief Returns true if the animation is started.
  *
  * It can be suspended.
  *
- * @return true if the animation is started, false otherwise
+ * \return true if the animation is started, false otherwise
  */
 bool Sprite::is_animation_started() const {
   return !is_animation_finished();
 }
 
 /**
- * @brief Starts the animation.
+ * \brief Starts the animation.
  */
 void Sprite::start_animation() {
   restart_animation();
 }
 
 /**
- * @brief Restarts the animation.
+ * \brief Restarts the animation.
  */
 void Sprite::restart_animation() {
   set_current_frame(0);
@@ -398,26 +398,26 @@ void Sprite::restart_animation() {
 }
 
 /**
- * @brief Stops the animation.
+ * \brief Stops the animation.
  */
 void Sprite::stop_animation() {
   finished = true;
 }
 
 /**
- * @brief Returns true if the game is suspended.
- * @return true if the game is suspended, false otherwise
+ * \brief Returns true if the game is suspended.
+ * \return true if the game is suspended, false otherwise
  */
 bool Sprite::is_suspended() const {
   return suspended;
 }
 
 /**
- * @brief Suspends or resumes the animation.
+ * \brief Suspends or resumes the animation.
  *
  * Nothing is done if the parameter specified does not change.
  *
- * @param suspended true to suspend the animation, false to resume it
+ * \param suspended true to suspend the animation, false to resume it
  */
 void Sprite::set_suspended(bool suspended) {
 
@@ -448,11 +448,11 @@ void Sprite::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Sets whether this sprite should keep playing its animation when the game is suspended.
+ * \brief Sets whether this sprite should keep playing its animation when the game is suspended.
  *
  * This will ignore subsequent calls to set_suspended().
  *
- * @param ignore_suspend true to make the sprite continue its animation even
+ * \param ignore_suspend true to make the sprite continue its animation even
  * when the game is suspended
  */
 void Sprite::set_ignore_suspend(bool ignore_suspend) {
@@ -461,19 +461,19 @@ void Sprite::set_ignore_suspend(bool ignore_suspend) {
 }
 
 /**
- * @brief Returns true if the animation is paused.
- * @return true if the animation is paused, false otherwise
+ * \brief Returns true if the animation is paused.
+ * \return true if the animation is paused, false otherwise
  */
 bool Sprite::is_paused() const {
   return paused;
 }
 
 /**
- * @brief Pauses or resumes the animation.
+ * \brief Pauses or resumes the animation.
  *
  * Nothing is done if the parameter specified does not change.
  *
- * @param paused true to pause the animation, false to resume it
+ * \param paused true to pause the animation, false to resume it
  */
 void Sprite::set_paused(bool paused) {
 
@@ -493,29 +493,29 @@ void Sprite::set_paused(bool paused) {
 }
 
 /**
- * @brief Returns true if the animation is looping.
- * @return true if the animation is looping
+ * \brief Returns true if the animation is looping.
+ * \return true if the animation is looping
  */
 bool Sprite::is_animation_looping() const {
   return current_animation->is_looping();
 }
 
 /**
- * @brief Returns true if the animation is finished.
+ * \brief Returns true if the animation is finished.
  *
  * The animation is finished after the last frame is reached
  * and if the frame delay is not zero (a frame delay
  * of zero should be used only for 1-frame animations).
  *
- * @return true if the animation is finished
+ * \return true if the animation is finished
  */
 bool Sprite::is_animation_finished() const {
   return finished;
 }
 
 /**
- * @brief Returns true if the last frame is reached.
- * @return true if the last frame is reached
+ * \brief Returns true if the last frame is reached.
+ * \return true if the last frame is reached
  */
 bool Sprite::is_last_frame_reached() const {
 
@@ -523,16 +523,16 @@ bool Sprite::is_last_frame_reached() const {
 }
 
 /**
- * @brief Returns whether the sprite is blinking.
- * @return true if the sprite is blinking
+ * \brief Returns whether the sprite is blinking.
+ * \return true if the sprite is blinking
  */
 bool Sprite::is_blinking() const {
   return blink_delay != 0;
 }
 
 /**
- * @brief Sets the blink delay of this sprite.
- * @param blink_delay blink delay of the sprite in milliseconds,
+ * \brief Sets the blink delay of this sprite.
+ * \param blink_delay blink delay of the sprite in milliseconds,
  * or zero to stop blinking.
  */
 void Sprite::set_blinking(uint32_t blink_delay) {
@@ -545,13 +545,13 @@ void Sprite::set_blinking(uint32_t blink_delay) {
 }
 
 /**
- * @brief Tests whether this sprite's pixels are overlapping another sprite.
- * @param other another sprite
- * @param x1 x coordinate of this sprite's origin point
- * @param y1 y coordinate of this sprite's origin point
- * @param x2 x coordinate of the other sprite's origin point
- * @param y2 y coordinate of the other sprite's origin point
- * @return true if the sprites are overlapping
+ * \brief Tests whether this sprite's pixels are overlapping another sprite.
+ * \param other another sprite
+ * \param x1 x coordinate of this sprite's origin point
+ * \param y1 y coordinate of this sprite's origin point
+ * \param x2 x coordinate of the other sprite's origin point
+ * \param y2 y coordinate of the other sprite's origin point
+ * \return true if the sprites are overlapping
  */
 bool Sprite::test_collision(Sprite& other, int x1, int y1, int x2, int y2) const {
 
@@ -569,7 +569,7 @@ bool Sprite::test_collision(Sprite& other, int x1, int y1, int x2, int y2) const
 }
 
 /**
- * @brief Checks whether the frame has to be changed.
+ * \brief Checks whether the frame has to be changed.
  *
  * If the frame changes, next_frame_date is updated.
  */
@@ -641,10 +641,10 @@ void Sprite::update() {
 }
 
 /**
- * @brief Draws the sprite on a surface, with its current animation,
+ * \brief Draws the sprite on a surface, with its current animation,
  * direction and frame.
- * @param dst_surface The destination surface.
- * @param dst_position Coordinates on the destination surface
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates on the destination surface
  * (the origin will be placed at this position).
  */
 void Sprite::raw_draw(Surface& dst_surface,
@@ -669,11 +669,11 @@ void Sprite::raw_draw(Surface& dst_surface,
 }
 
 /**
- * @brief Draws a subrectangle of the current frame of this sprite.
- * @param region The subrectangle to draw, relative to the top-left corner
+ * \brief Draws a subrectangle of the current frame of this sprite.
+ * \param region The subrectangle to draw, relative to the top-left corner
  * of the current frame.
- * @param dst_surface The destination surface.
- * @param dst_position Coordinates on the destination surface.
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates on the destination surface.
  */
 void Sprite::raw_draw_region(const Rectangle& region,
     Surface& dst_surface, const Rectangle& dst_position) {
@@ -690,8 +690,8 @@ void Sprite::raw_draw_region(const Rectangle& region,
 }
 
 /**
- * @brief Draws a transition effect on this drawable object.
- * @param transition The transition effect to apply.
+ * \brief Draws a transition effect on this drawable object.
+ * \param transition The transition effect to apply.
  */
 void Sprite::draw_transition(Transition& transition) {
 
@@ -700,12 +700,12 @@ void Sprite::draw_transition(Transition& transition) {
 }
 
 /**
- * @brief Returns the intermediate surface used for transitions and other
+ * \brief Returns the intermediate surface used for transitions and other
  * effects for this sprite.
  *
  * Creates this intermediate surface if it does not exist yet.
  *
- * @return The intermediate surface of this sprite.
+ * \return The intermediate surface of this sprite.
  */
 Surface& Sprite::get_intermediate_surface() {
 
@@ -717,16 +717,16 @@ Surface& Sprite::get_intermediate_surface() {
 }
 
 /**
- * @brief Returns the Solarus Lua API.
- * @return The Lua context, or NULL if Lua callbacks are not enabled for this sprite.
+ * \brief Returns the Solarus Lua API.
+ * \return The Lua context, or NULL if Lua callbacks are not enabled for this sprite.
  */
 LuaContext* Sprite::get_lua_context() const {
   return lua_context;
 }
 
 /**
- * @brief Sets the Solarus Lua API.
- * @param lua_context The Lua context, or NULL to disable Lua callbacks
+ * \brief Sets the Solarus Lua API.
+ * \param lua_context The Lua context, or NULL to disable Lua callbacks
  * for this sprite.
  */
 void Sprite::set_lua_context(LuaContext* lua_context) {
@@ -734,8 +734,8 @@ void Sprite::set_lua_context(LuaContext* lua_context) {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& Sprite::get_lua_type_name() const {
   return LuaContext::sprite_module_name;

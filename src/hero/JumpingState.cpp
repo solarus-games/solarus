@@ -26,13 +26,13 @@
 #include "Map.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param direction8 direction of the jump (0 to 7)
- * @param distance distance of the jump in pixels
- * @param ignore_obstacles true to make the movement ignore obstacles
- * @param with_sound true to play the "jump" sound
- * @param movement_delay delay between each one-pixel move in the jump movement (0: default)
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
+ * \param direction8 direction of the jump (0 to 7)
+ * \param distance distance of the jump in pixels
+ * \param ignore_obstacles true to make the movement ignore obstacles
+ * \param with_sound true to play the "jump" sound
+ * \param movement_delay delay between each one-pixel move in the jump movement (0: default)
  */
 Hero::JumpingState::JumpingState(Hero &hero, int direction8, int distance,
     bool ignore_obstacles, bool with_sound, uint32_t movement_delay):
@@ -46,15 +46,15 @@ Hero::JumpingState::JumpingState(Hero &hero, int direction8, int distance,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::JumpingState::~JumpingState() {
   delete carried_item;
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::JumpingState::start(State *previous_state) {
 
@@ -81,8 +81,8 @@ void Hero::JumpingState::start(State *previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::JumpingState::stop(State *next_state) {
 
@@ -118,8 +118,8 @@ void Hero::JumpingState::stop(State *next_state) {
 }
 
 /**
- * @brief Changes the map.
- * @param map the new map
+ * \brief Changes the map.
+ * \param map the new map
  */
 void Hero::JumpingState::set_map(Map& map) {
 
@@ -132,7 +132,7 @@ void Hero::JumpingState::set_map(Map& map) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::JumpingState::update() {
 
@@ -148,8 +148,8 @@ void Hero::JumpingState::update() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::JumpingState::set_suspended(bool suspended) {
 
@@ -161,7 +161,7 @@ void Hero::JumpingState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies this state that the layer has changed.
+ * \brief Notifies this state that the layer has changed.
  */
 void Hero::JumpingState::notify_layer_changed() {
 
@@ -171,86 +171,86 @@ void Hero::JumpingState::notify_layer_changed() {
 }
 
 /**
- * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
+ * \brief Returns the direction of the hero's movement as defined by the controls applied by the player
  * and the movements allowed is the current state.
  *
  * If he is not moving, -1 is returned.
  * This direction may be different from the real movement direction because of obstacles.
  *
- * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::JumpingState::get_wanted_movement_direction8() {
   return get_sprites().get_animation_direction8();
 }
 
 /**
- * @brief Returns whether the game over sequence can start in the current state.
- * @return true if the game over sequence can start in the current state
+ * \brief Returns whether the game over sequence can start in the current state.
+ * \return true if the game over sequence can start in the current state
  */
 bool Hero::JumpingState::can_start_gameover_sequence() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero is touching the ground in the current state.
- * @return true if the hero is touching the ground in the current state
+ * \brief Returns whether the hero is touching the ground in the current state.
+ * \return true if the hero is touching the ground in the current state
  */
 bool Hero::JumpingState::is_touching_ground() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of deep water in this state.
- * @return true if the hero ignores the effect of deep water in the current state
+ * \brief Returns whether the hero ignores the effect of deep water in this state.
+ * \return true if the hero ignores the effect of deep water in the current state
  */
 bool Hero::JumpingState::can_avoid_deep_water() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of holes in this state.
- * @return true if the hero ignores the effect of holes in the current state
+ * \brief Returns whether the hero ignores the effect of holes in this state.
+ * \return true if the hero ignores the effect of holes in the current state
  */
 bool Hero::JumpingState::can_avoid_hole() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of lava in this state.
- * @return true if the hero ignores the effect of lava in the current state
+ * \brief Returns whether the hero ignores the effect of lava in this state.
+ * \return true if the hero ignores the effect of lava in the current state
  */
 bool Hero::JumpingState::can_avoid_lava() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of prickles in this state.
- * @return true if the hero ignores the effect of prickles in the current state
+ * \brief Returns whether the hero ignores the effect of prickles in this state.
+ * \return true if the hero ignores the effect of prickles in the current state
  */
 bool Hero::JumpingState::can_avoid_prickle() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of teletransporters in this state.
- * @return true if the hero ignores the effect of teletransporters in this state
+ * \brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * \return true if the hero ignores the effect of teletransporters in this state
  */
 bool Hero::JumpingState::can_avoid_teletransporter() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
- * @return true if the hero ignores the effect of conveyor belts in this state
+ * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ * \return true if the hero ignores the effect of conveyor belts in this state
  */
 bool Hero::JumpingState::can_avoid_conveyor_belt() {
   return true;
 }
 
 /**
- * @brief Returns whether some stairs are considered as obstacle in this state.
- * @param stairs some stairs
- * @return true if the stairs are obstacle in this state
+ * \brief Returns whether some stairs are considered as obstacle in this state.
+ * \param stairs some stairs
+ * \return true if the stairs are obstacle in this state
  */
 bool Hero::JumpingState::is_stairs_obstacle(Stairs& stairs) {
   // allow to jump over stairs covered by water
@@ -258,9 +258,9 @@ bool Hero::JumpingState::is_stairs_obstacle(Stairs& stairs) {
 }
 
 /**
- * @brief Returns whether a sensor is considered as an obstacle in this state.
- * @param sensor a sensor
- * @return true if the sensor is an obstacle in this state
+ * \brief Returns whether a sensor is considered as an obstacle in this state.
+ * \param sensor a sensor
+ * \return true if the sensor is an obstacle in this state
  */
 bool Hero::JumpingState::is_sensor_obstacle(Sensor& sensor) {
 
@@ -268,8 +268,8 @@ bool Hero::JumpingState::is_sensor_obstacle(Sensor& sensor) {
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of sensors in this state.
- * @return true if the hero ignores the effect of sensors in this state
+ * \brief Returns whether the hero ignores the effect of sensors in this state.
+ * \return true if the hero ignores the effect of sensors in this state
  */
 bool Hero::JumpingState::can_avoid_sensor() {
 
@@ -277,17 +277,17 @@ bool Hero::JumpingState::can_avoid_sensor() {
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of switches in this state.
- * @return true if the hero ignores the effect of switches in this state
+ * \brief Returns whether the hero ignores the effect of switches in this state.
+ * \return true if the hero ignores the effect of switches in this state
  */
 bool Hero::JumpingState::can_avoid_switch() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can be hurt in this state.
- * @return true if the hero can be hurt in this state
- * @param attacker an attacker that is trying to hurt the hero
+ * \brief Returns whether the hero can be hurt in this state.
+ * \return true if the hero can be hurt in this state
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
 bool Hero::JumpingState::can_be_hurt(Enemy* attacker) {
@@ -295,17 +295,17 @@ bool Hero::JumpingState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
- * @brief Returns the item currently carried by the hero in this state, if any.
- * @return the item carried by the hero, or NULL
+ * \brief Returns the item currently carried by the hero in this state, if any.
+ * \return the item carried by the hero, or NULL
  */
 CarriedItem* Hero::JumpingState::get_carried_item() {
   return carried_item;
 }
 
 /**
- * @brief Returns the action to do with an item previously carried by the hero when this state starts.
- * @param carried_item the item carried in the previous state
- * @return the action to do with a previous carried item when this state starts
+ * \brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * \param carried_item the item carried in the previous state
+ * \return the action to do with a previous carried item when this state starts
  */
 CarriedItem::Behavior Hero::JumpingState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
 

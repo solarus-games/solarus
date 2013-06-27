@@ -22,7 +22,7 @@
 #include <list>
 
 /**
- * @brief Represents some fire on the map.
+ * \brief Represents some fire on the map.
  *
  * Fire can interact with entities.
  */

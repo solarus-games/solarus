@@ -18,7 +18,7 @@
 #define SOLARUS_OBSTACLE_H
 
 /**
- * @brief Obstacle property for the entities.
+ * \brief Obstacle property for the entities.
  */
 enum Obstacle {
 

@@ -22,7 +22,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief Animated tile pattern.
+ * \brief Animated tile pattern.
  *
  * Unlike simple tile patterns that always display the same image,
  * an animated tile pattern displays three frames alternatively.
@@ -32,7 +32,7 @@ class AnimatedTilePattern: public TilePattern {
   public:
 
     /**
-     * @brief Tile animation sequence mode: 0-1-2 or 0-1-2-1.
+     * \brief Tile animation sequence mode: 0-1-2 or 0-1-2-1.
      */
     enum AnimationSequence {
       ANIMATION_SEQUENCE_012  = 1,

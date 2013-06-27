@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 
 /**
- * @brief A block in the ground that can be raised or lowered with the help of a crystal.
+ * \brief A block in the ground that can be raised or lowered with the help of a crystal.
  *
  * When the block is raised, the hero cannot traverse it. However, if the hero is
  * on raised blocks, he can walk on them until he jumps back to the normal ground.

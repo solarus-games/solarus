@@ -18,7 +18,7 @@
 #define SOLARUS_LAYER_H
 
 /**
- * @brief Layer of an entity.
+ * \brief Layer of an entity.
  *
  * The layer represents the height or the entity in the map.
  */

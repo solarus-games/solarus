@@ -28,7 +28,7 @@
 const std::string LuaContext::game_module_name = "sol.game";
 
 /**
- * @brief Initializes the game features provided to Lua.
+ * \brief Initializes the game features provided to Lua.
  */
 void LuaContext::register_game_module() {
 
@@ -93,39 +93,39 @@ void LuaContext::register_game_module() {
 }
 
 /**
- * @brief Returns whether a value is a userdata of type game.
- * @param l A Lua context.
- * @param index An index in the stack.
- * @return true if the value at this index is a game.
+ * \brief Returns whether a value is a userdata of type game.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a game.
  */
 bool LuaContext::is_game(lua_State* l, int index) {
   return is_userdata(l, index, game_module_name);
 }
 
 /**
- * @brief Checks that the userdata at the specified index of the stack is a
+ * \brief Checks that the userdata at the specified index of the stack is a
  * game and returns it.
- * @param l a Lua context
- * @param index an index in the stack
- * @return the game
+ * \param l a Lua context
+ * \param index an index in the stack
+ * \return the game
  */
 Savegame& LuaContext::check_game(lua_State* l, int index) {
   return static_cast<Savegame&>(check_userdata(l, index, game_module_name));
 }
 
 /**
- * @brief Pushes a game userdata onto the stack.
- * @param l A Lua context.
- * @param game A game.
+ * \brief Pushes a game userdata onto the stack.
+ * \param l A Lua context.
+ * \param game A game.
  */
 void LuaContext::push_game(lua_State* l, Savegame& game) {
   push_userdata(l, game);
 }
 
 /**
- * @brief Implementation of sol.game.exists().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of sol.game.exists().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_exists(lua_State* l) {
 
@@ -143,9 +143,9 @@ int LuaContext::game_api_exists(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.game.delete().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of sol.game.delete().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_delete(lua_State* l) {
 
@@ -162,9 +162,9 @@ int LuaContext::game_api_delete(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.game.load().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of sol.game.load().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_load(lua_State* l) {
 
@@ -185,9 +185,9 @@ int LuaContext::game_api_load(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:save().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:save().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_save(lua_State* l) {
 
@@ -198,9 +198,9 @@ int LuaContext::game_api_save(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:start().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:start().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_start(lua_State* l) {
 
@@ -232,9 +232,9 @@ int LuaContext::game_api_start(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:is_started().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:is_started().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_is_started(lua_State* l) {
 
@@ -248,9 +248,9 @@ int LuaContext::game_api_is_started(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:is_suspended().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:is_suspended().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_is_suspended(lua_State* l) {
 
@@ -264,9 +264,9 @@ int LuaContext::game_api_is_suspended(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:is_paused().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:is_paused().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_is_paused(lua_State* l) {
 
@@ -280,9 +280,9 @@ int LuaContext::game_api_is_paused(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_paused().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_paused().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_paused(lua_State* l) {
 
@@ -301,9 +301,9 @@ int LuaContext::game_api_set_paused(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_map().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_map().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_map(lua_State* l) {
 
@@ -320,9 +320,9 @@ int LuaContext::game_api_get_map(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_value().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_value().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_value(lua_State* l) {
 
@@ -353,9 +353,9 @@ int LuaContext::game_api_get_value(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_value().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_value().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_value(lua_State* l) {
 
@@ -402,9 +402,9 @@ int LuaContext::game_api_set_value(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_starting_location().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_starting_location().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_starting_location(lua_State* l) {
 
@@ -416,9 +416,9 @@ int LuaContext::game_api_get_starting_location(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_starting_location().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_starting_location().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_starting_location(lua_State* l) {
 
@@ -433,9 +433,9 @@ int LuaContext::game_api_set_starting_location(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_life().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_life().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_life(lua_State* l) {
 
@@ -447,9 +447,9 @@ int LuaContext::game_api_get_life(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_life().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_life().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_life(lua_State* l) {
 
@@ -462,9 +462,9 @@ int LuaContext::game_api_set_life(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:add_life().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:add_life().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_add_life(lua_State* l) {
 
@@ -477,9 +477,9 @@ int LuaContext::game_api_add_life(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:remove_life().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:remove_life().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_remove_life(lua_State* l) {
 
@@ -492,9 +492,9 @@ int LuaContext::game_api_remove_life(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_max_life().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_max_life().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_max_life(lua_State* l) {
 
@@ -507,9 +507,9 @@ int LuaContext::game_api_get_max_life(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_max_life().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_max_life().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_max_life(lua_State* l) {
 
@@ -522,9 +522,9 @@ int LuaContext::game_api_set_max_life(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:add_max_life().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:add_max_life().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_add_max_life(lua_State* l) {
 
@@ -538,9 +538,9 @@ int LuaContext::game_api_add_max_life(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_money().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_money().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_money(lua_State* l) {
 
@@ -553,9 +553,9 @@ int LuaContext::game_api_get_money(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_money().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_money().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_money(lua_State* l) {
 
@@ -568,9 +568,9 @@ int LuaContext::game_api_set_money(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:add_money().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:add_money().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_add_money(lua_State* l) {
 
@@ -583,9 +583,9 @@ int LuaContext::game_api_add_money(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:remove_money().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:remove_money().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_remove_money(lua_State* l) {
 
@@ -598,9 +598,9 @@ int LuaContext::game_api_remove_money(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_max_money().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_max_money().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_max_money(lua_State* l) {
 
@@ -613,9 +613,9 @@ int LuaContext::game_api_get_max_money(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_max_money().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_max_money().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_max_money(lua_State* l) {
 
@@ -628,9 +628,9 @@ int LuaContext::game_api_set_max_money(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_magic().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_magic().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_magic(lua_State* l) {
 
@@ -643,9 +643,9 @@ int LuaContext::game_api_get_magic(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_magic().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_magic().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_magic(lua_State* l) {
 
@@ -658,9 +658,9 @@ int LuaContext::game_api_set_magic(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:add_magic().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:add_magic().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_add_magic(lua_State* l) {
 
@@ -673,9 +673,9 @@ int LuaContext::game_api_add_magic(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:remove_magic().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:remove_magic().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_remove_magic(lua_State* l) {
 
@@ -688,9 +688,9 @@ int LuaContext::game_api_remove_magic(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_max_magic().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_max_magic().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_max_magic(lua_State* l) {
 
@@ -703,9 +703,9 @@ int LuaContext::game_api_get_max_magic(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_max_magic().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_max_magic().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_max_magic(lua_State* l) {
 
@@ -718,9 +718,9 @@ int LuaContext::game_api_set_max_magic(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:has_ability().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:has_ability().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_has_ability(lua_State* l) {
 
@@ -734,9 +734,9 @@ int LuaContext::game_api_has_ability(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_ability().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_ability().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_ability(lua_State* l) {
 
@@ -750,9 +750,9 @@ int LuaContext::game_api_get_ability(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_ability().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_ability().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_ability(lua_State* l) {
 
@@ -766,9 +766,9 @@ int LuaContext::game_api_set_ability(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_item().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_item().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_item(lua_State* l) {
 
@@ -785,9 +785,9 @@ int LuaContext::game_api_get_item(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:has_item().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:has_item().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_has_item(lua_State* l) {
 
@@ -810,9 +810,9 @@ int LuaContext::game_api_has_item(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_item_assigned().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_item_assigned().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_item_assigned(lua_State* l) {
 
@@ -835,9 +835,9 @@ int LuaContext::game_api_get_item_assigned(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_item_assigned().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_item_assigned().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_item_assigned(lua_State* l) {
 
@@ -858,9 +858,9 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_command_effect().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_command_effect().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_command_effect(lua_State* l) {
 
@@ -950,9 +950,9 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_command_keyboard_binding().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_command_keyboard_binding().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
 
@@ -974,9 +974,9 @@ int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_command_keyboard_binding().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_command_keyboard_binding().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
 
@@ -1000,9 +1000,9 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_command_joypad_binding().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_command_joypad_binding().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
 
@@ -1023,9 +1023,9 @@ int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:set_command_joypad_binding().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:set_command_joypad_binding().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
 
@@ -1048,9 +1048,9 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:capture_command_binding().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:capture_command_binding().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_capture_command_binding(lua_State* l) {
 
@@ -1072,9 +1072,9 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:is_command_pressed().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:is_command_pressed().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_is_command_pressed(lua_State* l) {
 
@@ -1089,9 +1089,9 @@ int LuaContext::game_api_is_command_pressed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of game:get_commands_direction().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of game:get_commands_direction().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_commands_direction(lua_State* l) {
 
@@ -1110,8 +1110,8 @@ int LuaContext::game_api_get_commands_direction(lua_State* l) {
 }
 
 /**
- * @brief Calls the on_started() method of a Lua game.
- * @param game A game.
+ * \brief Calls the on_started() method of a Lua game.
+ * \param game A game.
  */
 void LuaContext::game_on_started(Game& game) {
 
@@ -1121,8 +1121,8 @@ void LuaContext::game_on_started(Game& game) {
 }
 
 /**
- * @brief Calls the on_finished() method of a Lua game.
- * @param game A game.
+ * \brief Calls the on_finished() method of a Lua game.
+ * \param game A game.
  */
 void LuaContext::game_on_finished(Game& game) {
 
@@ -1134,8 +1134,8 @@ void LuaContext::game_on_finished(Game& game) {
 }
 
 /**
- * @brief Calls the on_update() method of a Lua game.
- * @param game A game.
+ * \brief Calls the on_update() method of a Lua game.
+ * \param game A game.
  */
 void LuaContext::game_on_update(Game& game) {
 
@@ -1146,9 +1146,9 @@ void LuaContext::game_on_update(Game& game) {
 }
 
 /**
- * @brief Calls the on_draw() method of a Lua game.
- * @param game A game.
- * @param dst_surface The destination surface.
+ * \brief Calls the on_draw() method of a Lua game.
+ * \param game A game.
+ * \param dst_surface The destination surface.
  */
 void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
 
@@ -1159,9 +1159,9 @@ void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
 }
 
 /**
- * @brief Calls the on_changed() method of a Lua game.
- * @param game A game.
- * @param map The new active map.
+ * \brief Calls the on_changed() method of a Lua game.
+ * \param game A game.
+ * \param map The new active map.
  */
 void LuaContext::game_on_map_changed(Game& game, Map& map) {
 
@@ -1171,8 +1171,8 @@ void LuaContext::game_on_map_changed(Game& game, Map& map) {
 }
 
 /**
- * @brief Calls the on_paused() method of a Lua game.
- * @param game A game.
+ * \brief Calls the on_paused() method of a Lua game.
+ * \param game A game.
  */
 void LuaContext::game_on_paused(Game& game) {
 
@@ -1182,8 +1182,8 @@ void LuaContext::game_on_paused(Game& game) {
 }
 
 /**
- * @brief Calls the on_unpaused() method of a Lua game.
- * @param game A game.
+ * \brief Calls the on_unpaused() method of a Lua game.
+ * \param game A game.
  */
 void LuaContext::game_on_unpaused(Game& game) {
 
@@ -1193,13 +1193,13 @@ void LuaContext::game_on_unpaused(Game& game) {
 }
 
 /**
- * @brief Notifies a Lua game that an input event has just occurred.
+ * \brief Notifies a Lua game that an input event has just occurred.
  *
  * The appropriate callback in the game is triggered if it exists.
  *
- * @param game A game.
- * @param event The input event to handle.
- * @return \c true if the event was handled and should stop being propagated.
+ * \param game A game.
+ * \param event The input event to handle.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::game_on_input(Game& game, InputEvent& event) {
 
@@ -1214,10 +1214,10 @@ bool LuaContext::game_on_input(Game& game, InputEvent& event) {
 }
 
 /**
- * @brief Calls the on_command_pressed() method of a Lua game.
- * @param game A game.
- * @param command The command pressed.
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief Calls the on_command_pressed() method of a Lua game.
+ * \param game A game.
+ * \param command The command pressed.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command command) {
 
@@ -1232,10 +1232,10 @@ bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command comma
 }
 
 /**
- * @brief Calls the on_command_released() method of a Lua game.
- * @param game A game.
- * @param command The command released.
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief Calls the on_command_released() method of a Lua game.
+ * \param game A game.
+ * \param command The command released.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::game_on_command_released(Game& game, GameCommands::Command command) {
 

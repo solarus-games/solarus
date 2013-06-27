@@ -24,21 +24,21 @@ const std::string DialogResource::file_name = "text/dialogs.dat";
 std::map<std::string, Dialog> DialogResource::dialogs;
 
 /**
- * @brief Constructor.
+ * \brief Constructor.
  */
 DialogResource::DialogResource() {
 
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 DialogResource::~DialogResource() {
 
 }
 
 /**
- * @brief Loads all dialogs of the game.
+ * \brief Loads all dialogs of the game.
  *
  * The dialogs are loaded from the language-specific file "text/dialogs.dat"
  * and stored into memory for future access by get_dialog().
@@ -66,7 +66,7 @@ void DialogResource::initialize() {
 }
 
 /**
- * @brief Closes the dialog resource.
+ * \brief Closes the dialog resource.
  */
 void DialogResource::quit() {
 
@@ -74,9 +74,9 @@ void DialogResource::quit() {
 }
 
 /**
- * @brief Returns whether the specified dialog exists.
- * @param dialog_id Id of the dialog to test.
- * @return true if such a dialog exists.
+ * \brief Returns whether the specified dialog exists.
+ * \param dialog_id Id of the dialog to test.
+ * \return true if such a dialog exists.
  */
 bool DialogResource::exists(const std::string& dialog_id) {
 
@@ -84,10 +84,10 @@ bool DialogResource::exists(const std::string& dialog_id) {
 }
 
 /**
- * @brief Returns a dialog stored in the language-specific file
+ * \brief Returns a dialog stored in the language-specific file
  * "text/dialogs.dat".
- * @param dialog_id id of the dialog to retrieve
- * @return the corresponding localized dialog
+ * \param dialog_id id of the dialog to retrieve
+ * \return the corresponding localized dialog
  */
 const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
 
@@ -97,13 +97,13 @@ const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
 }
 
 /**
- * @brief Function called by Lua to add a dialog to the resource.
+ * \brief Function called by Lua to add a dialog to the resource.
  *
  * - Argument 1 (table): properties of the dialog (possible keys are id, icon,
  * skip, question, next, next2 and text)
  *
- * @param l the Lua context that is calling this function
- * @return number of values returned to Lua
+ * \param l the Lua context that is calling this function
+ * \return number of values returned to Lua
  */
 int DialogResource::l_dialog(lua_State* l) {
 

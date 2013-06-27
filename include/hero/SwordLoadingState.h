@@ -20,7 +20,7 @@
 #include "hero/PlayerMovementState.h"
 
 /**
- * @brief The state "sword loading" of the hero.
+ * \brief The state "sword loading" of the hero.
  */
 class Hero::SwordLoadingState: public Hero::PlayerMovementState {
 

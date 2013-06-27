@@ -22,7 +22,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief Scrolling transition between two maps.
+ * \brief Scrolling transition between two maps.
  *
  * This kind of transition can only be used for the transition between two maps.
  * The new map is drawn gradually, with a scrolling effect, and the hero

@@ -25,9 +25,9 @@
 #include <SDL_image.h>
 
 /**
- * @brief Creates a surface with the specified size.
- * @param width The width in pixels.
- * @param height The height in pixels.
+ * \brief Creates a surface with the specified size.
+ * \param width The width in pixels.
+ * \param height The height in pixels.
  */
 Surface::Surface(int width, int height):
   Drawable(),
@@ -40,8 +40,8 @@ Surface::Surface(int width, int height):
 }
 
 /**
- * @brief Creates a surface with the specified size.
- * @param size The size in pixels.
+ * \brief Creates a surface with the specified size.
+ * \param size The size in pixels.
  */
 Surface::Surface(const Rectangle& size):
   Drawable(),
@@ -54,12 +54,12 @@ Surface::Surface(const Rectangle& size):
 }
 
 /**
- * @brief Creates a surface from the specified image file name.
+ * \brief Creates a surface from the specified image file name.
  *
  * An assertion error occurs if the file cannot be loaded.
  *
- * @param file_name Name of the image file to load, relative to the base directory specified.
- * @param base_directory The base directory to use.
+ * \param file_name Name of the image file to load, relative to the base directory specified.
+ * \param base_directory The base directory to use.
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
@@ -90,12 +90,12 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
 }
 
 /**
- * @brief Creates a surface form the specified SDL surface.
+ * \brief Creates a surface form the specified SDL surface.
  *
  * This constructor must be used only by lowlevel classes that manipulate directly
  * SDL dependent surfaces.
  *
- * @param internal_surface the internal surface data (the destructor will not free it)
+ * \param internal_surface the internal surface data (the destructor will not free it)
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
@@ -105,8 +105,8 @@ Surface::Surface(SDL_Surface* internal_surface):
 }
 
 /**
- * @brief Copy constructor.
- * @param other a surface to copy
+ * \brief Copy constructor.
+ * \param other a surface to copy
  */
 Surface::Surface(const Surface& other):
   Drawable(),
@@ -117,7 +117,7 @@ Surface::Surface(const Surface& other):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Surface::~Surface() {
 
@@ -127,14 +127,14 @@ Surface::~Surface() {
 }
 
 /**
- * @brief Creates a surface from the specified image file name.
+ * \brief Creates a surface from the specified image file name.
  *
  * This function acts like a constructor excepts that it returns NULL if the
  * file does not exist or is not a valid image.
  *
- * @param file_name Name of the image file to load, relative to the base directory specified.
- * @param base_directory The base directory to use.
- * @return The surface created, or NULL if the file could not be loaded.
+ * \param file_name Name of the image file to load, relative to the base directory specified.
+ * \param base_directory The base directory to use.
+ * \return The surface created, or NULL if the file could not be loaded.
  */
 Surface* Surface::create_from_file(const std::string& file_name,
     ImageDirectory base_directory) {
@@ -175,24 +175,24 @@ Surface* Surface::create_from_file(const std::string& file_name,
 }
 
 /**
- * @brief Returns the width of the surface.
- * @return the width in pixels
+ * \brief Returns the width of the surface.
+ * \return the width in pixels
  */
 int Surface::get_width() const {
   return internal_surface->w;
 }
 
 /**
- * @brief Returns the height of the surface.
- * @return the height in pixels
+ * \brief Returns the height of the surface.
+ * \return the height in pixels
  */
 int Surface::get_height() const {
   return internal_surface->h;
 }
 
 /**
- * @brief Returns the size of this surface.
- * @return the size of this surface
+ * \brief Returns the size of this surface.
+ * \return the size of this surface
  */
 const Rectangle Surface::get_size() const {
 
@@ -200,11 +200,11 @@ const Rectangle Surface::get_size() const {
 }
 
 /**
- * @brief Returns the transparency color of this surface.
+ * \brief Returns the transparency color of this surface.
  *
  * Pixels in that color will not be drawn.
  *
- * @return The transparency color.
+ * \return The transparency color.
  */
 Color Surface::get_transparency_color() {
 
@@ -212,11 +212,11 @@ Color Surface::get_transparency_color() {
 }
 
 /**
- * @brief Sets the transparency color of this surface.
+ * \brief Sets the transparency color of this surface.
  *
  * Pixels in that color will not be drawn.
  *
- * @param color The transparency color to set.
+ * \param color The transparency color to set.
  */
 void Surface::set_transparency_color(const Color& color) {
 
@@ -224,8 +224,8 @@ void Surface::set_transparency_color(const Color& color) {
 }
 
 /**
- * @brief Sets the opacity of this surface.
- * @param opacity the opacity (0 to 255)
+ * \brief Sets the opacity of this surface.
+ * \param opacity the opacity (0 to 255)
  */
 void Surface::set_opacity(int opacity) {
 
@@ -239,7 +239,7 @@ void Surface::set_opacity(int opacity) {
 }
 
 /**
- * @brief Restricts drawing on this surface to a subarea.
+ * \brief Restricts drawing on this surface to a subarea.
  *
  * Sets a subarea of the surface where the next drawings will be restricted to
  * when this surface is used as the destination of blitting.
@@ -247,7 +247,7 @@ void Surface::set_opacity(int opacity) {
  * The rectangle specified may be partially outside this rectangle
  * (then it will be resized to fit inside).
  *
- * @param clipping_rectangle a subarea of the rectangle to restrict the drawing to
+ * \param clipping_rectangle a subarea of the rectangle to restrict the drawing to
  */
 void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
 
@@ -261,17 +261,17 @@ void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
 }
 
 /**
- * @brief Fills the entire surface with the specified color.
- * @param color a color
+ * \brief Fills the entire surface with the specified color.
+ * \param color a color
  */
 void Surface::fill_with_color(Color& color) {
   SDL_FillRect(internal_surface, NULL, color.get_internal_value());
 }
 
 /**
- * @brief Fills a rectangle of this surface with the specified color.
- * @param color a color
- * @param where the rectangle to fill
+ * \brief Fills a rectangle of this surface with the specified color.
+ * \param color a color
+ * \param where the rectangle to fill
  */
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
   Rectangle where2 = where;
@@ -279,9 +279,9 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 }
 
 /**
- * @brief Draws this surface on another surface.
- * @param dst_surface The destination surface.
- * @param dst_position Coordinates on the destination surface.
+ * \brief Draws this surface on another surface.
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates on the destination surface.
  */
 void Surface::raw_draw(Surface& dst_surface,
     const Rectangle& dst_position) {
@@ -293,10 +293,10 @@ void Surface::raw_draw(Surface& dst_surface,
 }
 
 /**
- * @brief Draws a subrectangle of this surface on another surface.
- * @param region The subrectangle to draw in this object.
- * @param dst_surface The destination surface.
- * @param dst_position Coordinates on the destination surface.
+ * \brief Draws a subrectangle of this surface on another surface.
+ * \param region The subrectangle to draw in this object.
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates on the destination surface.
  */
 void Surface::raw_draw_region(const Rectangle& region,
     Surface& dst_surface, const Rectangle& dst_position) {
@@ -309,20 +309,20 @@ void Surface::raw_draw_region(const Rectangle& region,
 }
 
 /**
- * @brief Draws a transition effect on this drawable object.
- * @param transition The transition effect to apply.
+ * \brief Draws a transition effect on this drawable object.
+ * \param transition The transition effect to apply.
  */
 void Surface::draw_transition(Transition& transition) {
   transition.draw(*this);
 }
 
 /**
- * @brief Blits a region of this surface on another surface.
+ * \brief Blits a region of this surface on another surface.
  *
  * The top-left corner of the source subarea will be blitted on the other's surface top-left corner.
  *
- * @param src_position the subrectangle of this surface to pick
- * @param dst_surface the destination surface
+ * \param src_position the subrectangle of this surface to pick
+ * \param dst_surface the destination surface
  */
 void Surface::draw_region(const Rectangle& src_position, Surface& dst_surface) {
 
@@ -332,10 +332,10 @@ void Surface::draw_region(const Rectangle& src_position, Surface& dst_surface) {
 }
 
 /**
- * @brief Blits a region of this surface on a specified location of another surface.
- * @param src_position the subrectangle of this surface to pick
- * @param dst_surface the destination surface
- * @param dst_position the destination position where the current surface will be blitted on dst
+ * \brief Blits a region of this surface on a specified location of another surface.
+ * \param src_position the subrectangle of this surface to pick
+ * \param dst_surface the destination surface
+ * \param dst_position the destination position where the current surface will be blitted on dst
  */
 void Surface::draw_region(const Rectangle &src_position, Surface& dst_surface,
     const Rectangle &dst_position) {
@@ -347,20 +347,20 @@ void Surface::draw_region(const Rectangle &src_position, Surface& dst_surface,
 }
 
 /**
- * @brief Returns the SDL surface encapsulated by this object.
+ * \brief Returns the SDL surface encapsulated by this object.
  *
  * This method should be used only by low-level classes.
  *
- * @return the SDL surface encapsulated
+ * \return the SDL surface encapsulated
  */
 SDL_Surface* Surface::get_internal_surface() {
   return internal_surface;
 }
 
 /**
- * @brief Return the 32bits pixel
- * @param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits
- * @return The casted 32bits pixel.
+ * \brief Return the 32bits pixel
+ * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits
+ * \return The casted 32bits pixel.
  */
 uint32_t Surface::get_pixel32(int idx_pixel) {
 
@@ -390,7 +390,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
 }
 
 /**
- * @brief Returns the 32bits pixel, color-mapped from internal SDL_PixelFormat to dst_format.
+ * \brief Returns the 32bits pixel, color-mapped from internal SDL_PixelFormat to dst_format.
  *
  * The source pixel depth format can be any size between 1 and 32bits.
  * If the destination pixel depth format is less than 32-bpp then the unused upper bits of the return value can safely be ignored.
@@ -398,9 +398,9 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
  *
  * It's the SDL_ConvertSurface() function equivalent for a pixel by pixel uses.
  *
- * @param idx_pixel the index of the pixel to convert
- * @param dst_format the destination format
- * @return the mapped 32bits pixel
+ * \param idx_pixel the index of the pixel to convert
+ * \param dst_format the destination format
+ * \return the mapped 32bits pixel
  */
 uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
 
@@ -410,8 +410,8 @@ uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& Surface::get_lua_type_name() const {
   return LuaContext::surface_module_name;

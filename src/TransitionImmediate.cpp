@@ -17,60 +17,60 @@
 #include "TransitionImmediate.h"
 
 /**
- * @brief Creates an immediate transition effect.
- * @param direction direction of the transition effect (in or out)
+ * \brief Creates an immediate transition effect.
+ * \param direction direction of the transition effect (in or out)
  */
 TransitionImmediate::TransitionImmediate(Transition::Direction direction):
   Transition(direction) {
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 TransitionImmediate::~TransitionImmediate() {
 }
 
 /**
- * @brief Starts this transition effect.
+ * \brief Starts this transition effect.
  */
 void TransitionImmediate::start() {
 
 }
 
 /**
- * @brief Returns whether the transition effect is started.
- * @return false
+ * \brief Returns whether the transition effect is started.
+ * \return false
  */
 bool TransitionImmediate::is_started() const {
   return false;
 }
 
 /**
- * @brief Returns whether the transition effect is finished.
- * @return true
+ * \brief Returns whether the transition effect is finished.
+ * \return true
  */
 bool TransitionImmediate::is_finished() const {
   return true;
 }
 
 /**
- * @brief Notifies the transition effect that it was just suspended
+ * \brief Notifies the transition effect that it was just suspended
  * or resumed.
- * @param suspended true if suspended, false if resumed.
+ * \param suspended true if suspended, false if resumed.
  */
 void TransitionImmediate::notify_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates this transition effect.
+ * \brief Updates this transition effect.
  */
 void TransitionImmediate::update() {
 
 }
 
 /**
- * @brief Draws the transition effect on a surface.
- * @param dst_surface the surface to draw
+ * \brief Draws the transition effect on a surface.
+ * \param dst_surface the surface to draw
  */
 void TransitionImmediate::draw(Surface& dst_surface) {
 

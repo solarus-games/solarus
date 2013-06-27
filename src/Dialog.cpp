@@ -17,7 +17,7 @@
 #include "Dialog.h"
 
 /**
- * @brief Constructor.
+ * \brief Constructor.
  */
 Dialog::Dialog():
   icon(-2),
@@ -30,8 +30,8 @@ Dialog::Dialog():
 }
 
 /**
- * @brief Copy constructor.
- * @param other the dialog to copy
+ * \brief Copy constructor.
+ * \param other the dialog to copy
  */
 Dialog::Dialog(const Dialog& other):
   icon(other.icon),
@@ -45,16 +45,16 @@ Dialog::Dialog(const Dialog& other):
 }
 
 /**
- * @brief Destructor
+ * \brief Destructor
  */
 Dialog::~Dialog() {
 
 }
 
 /**
- * @brief Assignment operator.
- * @param other the dialog to copy
- * @return this dialog
+ * \brief Assignment operator.
+ * \param other the dialog to copy
+ * \return this dialog
  */
 Dialog& Dialog::operator=(const Dialog& other) {
 
@@ -72,8 +72,8 @@ Dialog& Dialog::operator=(const Dialog& other) {
 }
 
 /**
- * @brief Returns the index of icon of this dialog.
- * @return the icon index, or -1 for no icon
+ * \brief Returns the index of icon of this dialog.
+ * \return the icon index, or -1 for no icon
  */
 int Dialog::get_icon() const {
 
@@ -81,8 +81,8 @@ int Dialog::get_icon() const {
 }
 
 /**
- * @brief Sets the icon of this dialog.
- * @param icon the icon index to set, or -1 for no icon
+ * \brief Sets the icon of this dialog.
+ * \param icon the icon index to set, or -1 for no icon
  */
 void Dialog::set_icon(int icon) {
 
@@ -90,8 +90,8 @@ void Dialog::set_icon(int icon) {
 }
 
 /**
- * @brief Returns the skip mode of this dialog.
- * @return the skip mode
+ * \brief Returns the skip mode of this dialog.
+ * \return the skip mode
  */
 Dialog::SkipMode Dialog::get_skip_mode() const {
 
@@ -99,8 +99,8 @@ Dialog::SkipMode Dialog::get_skip_mode() const {
 }
 
 /**
- * @brief Sets the skip mode of this dialog.
- * @param skip_mode the skip mode
+ * \brief Sets the skip mode of this dialog.
+ * \param skip_mode the skip mode
  */
 void Dialog::set_skip_mode(SkipMode skip_mode) {
 
@@ -108,8 +108,8 @@ void Dialog::set_skip_mode(SkipMode skip_mode) {
 }
 
 /**
- * @brief Returns whether this dialog ends with a question.
- * @return true if the last three lines are a question and two answers
+ * \brief Returns whether this dialog ends with a question.
+ * \return true if the last three lines are a question and two answers
  */
 bool Dialog::is_question() const {
 
@@ -117,8 +117,8 @@ bool Dialog::is_question() const {
 }
 
 /**
- * @brief Sets whether this dialogs ends with a question.
- * @param question true to make the last three lines be a question and two
+ * \brief Sets whether this dialogs ends with a question.
+ * \param question true to make the last three lines be a question and two
  * answers
  */
 void Dialog::set_question(bool question) {
@@ -127,8 +127,8 @@ void Dialog::set_question(bool question) {
 }
 
 /**
- * @brief Returns whether this dialog if followed by another one.
- * @return true if there is a next dialog (even if it is not known yet)
+ * \brief Returns whether this dialog if followed by another one.
+ * \return true if there is a next dialog (even if it is not known yet)
  */
 bool Dialog::has_next() const {
 
@@ -136,8 +136,8 @@ bool Dialog::has_next() const {
 }
 
 /**
- * @brief Returns the id of the dialog that follows this one.
- * @return the id of the next dialog, an empty string if there is no next
+ * \brief Returns the id of the dialog that follows this one.
+ * \return the id of the next dialog, an empty string if there is no next
  * dialog, or "_unknown" if the next dialog exists but is not known yet
  */
 const std::string& Dialog::get_next() const {
@@ -146,8 +146,8 @@ const std::string& Dialog::get_next() const {
 }
 
 /**
- * @brief Sets the id of the dialog that follows this one.
- * @param next the id of the next dialog, an empty string if there is no next
+ * \brief Sets the id of the dialog that follows this one.
+ * \param next the id of the next dialog, an empty string if there is no next
  * dialog, or "_unknown" if the next dialog exists but is not known yet
  */
 void Dialog::set_next(const std::string& next) {
@@ -156,8 +156,8 @@ void Dialog::set_next(const std::string& next) {
 }
 
 /**
- * @brief Returns the id of the alternative next dialog after a question.
- * @return the id of the next dialog if the player chooses the second answer
+ * \brief Returns the id of the alternative next dialog after a question.
+ * \return the id of the next dialog if the player chooses the second answer
  * if this dialog is a question, or an empty string if there is no question
  */
 const std::string& Dialog::get_next2() const {
@@ -166,8 +166,8 @@ const std::string& Dialog::get_next2() const {
 }
 
 /**
- * @brief Sets the id of the alternative next dialog after a question.
- * @param next2 id of the next dialog if the player chooses the second answer
+ * \brief Sets the id of the alternative next dialog after a question.
+ * \param next2 id of the next dialog if the player chooses the second answer
  * if this dialog is a question
  */
 void Dialog::set_next2(const std::string& next2) {
@@ -176,11 +176,11 @@ void Dialog::set_next2(const std::string& next2) {
 }
 
 /**
- * @brief Returns the whole text of this dialog.
+ * \brief Returns the whole text of this dialog.
  *
  * Lines are separated by '\n'.
  *
- * @return the text of this dialog
+ * \return the text of this dialog
  */
 const std::string& Dialog::get_text() const {
 
@@ -188,8 +188,8 @@ const std::string& Dialog::get_text() const {
 }
 
 /**
- * @brief Returns the text of this dialog split in lines.
- * @return the lines of text
+ * \brief Returns the text of this dialog split in lines.
+ * \return the lines of text
  */
 const std::list<std::string>& Dialog::get_lines() const {
 
@@ -197,11 +197,11 @@ const std::list<std::string>& Dialog::get_lines() const {
 }
 
 /**
- * @brief Sets the text of this dialog.
+ * \brief Sets the text of this dialog.
  *
  * Lines must be separated by '\n'. The last line of text may end with '\n'.
  *
- * @param text the text of this dialog
+ * \param text the text of this dialog
  */
 void Dialog::set_text(const std::string& text) {
 

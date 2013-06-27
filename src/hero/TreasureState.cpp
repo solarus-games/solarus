@@ -26,10 +26,10 @@
 #include <sstream>
 
 /**
- * @brief Constructor.
- * @param hero The hero controlled by this state.
- * @param treasure The treasure to give to the hero.
- * @param callback_ref Lua ref to a function to call when the
+ * \brief Constructor.
+ * \param hero The hero controlled by this state.
+ * \param treasure The treasure to give to the hero.
+ * \param callback_ref Lua ref to a function to call when the
  * treasure's dialog finishes (possibly LUA_REFNIL).
  */
 Hero::TreasureState::TreasureState(Hero& hero, const Treasure& treasure,
@@ -41,15 +41,15 @@ Hero::TreasureState::TreasureState(Hero& hero, const Treasure& treasure,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::TreasureState::~TreasureState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::TreasureState::start(State *previous_state) {
 
@@ -75,8 +75,8 @@ void Hero::TreasureState::start(State *previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::TreasureState::stop(State *next_state) {
 
@@ -89,7 +89,7 @@ void Hero::TreasureState::stop(State *next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::TreasureState::update() {
 
@@ -120,7 +120,7 @@ void Hero::TreasureState::update() {
 }
 
 /**
- * @brief Draws this state.
+ * \brief Draws this state.
  */
 void Hero::TreasureState::draw_on_map() {
 
@@ -136,9 +136,9 @@ void Hero::TreasureState::draw_on_map() {
 }
 
 /**
- * @brief Returns the action to do with an item previously carried by the hero when this state starts.
- * @param carried_item the item carried in the previous state
- * @return the action to do with a previous carried item when this state starts
+ * \brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * \param carried_item the item carried in the previous state
+ * \return the action to do with a previous carried item when this state starts
  */
 CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
   return CarriedItem::BEHAVIOR_DESTROY;

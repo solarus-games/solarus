@@ -25,13 +25,13 @@
 #include "Map.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param max_distance maximum distance of the movement in pixels
- * @param speed speed of the movement in pixels per second
- * @param tunic_preparing_animation animation name of the hero's tunic sprite
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
+ * \param max_distance maximum distance of the movement in pixels
+ * \param speed speed of the movement in pixels per second
+ * \param tunic_preparing_animation animation name of the hero's tunic sprite
  * when preparing the boomerang
- * @param sprite_name animation set id that represents the boomerang
+ * \param sprite_name animation set id that represents the boomerang
  */
 Hero::BoomerangState::BoomerangState(Hero& hero, int max_distance, int speed,
     const std::string& tunic_preparing_animation,
@@ -45,14 +45,14 @@ Hero::BoomerangState::BoomerangState(Hero& hero, int max_distance, int speed,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::BoomerangState::~BoomerangState() {
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::BoomerangState::start(State* previous_state) {
 
@@ -68,7 +68,7 @@ void Hero::BoomerangState::start(State* previous_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::BoomerangState::update() {
 

@@ -20,7 +20,7 @@
 #include "hero/State.h"
 
 /**
- * @brief The state "boomerang" of the hero.
+ * \brief The state "boomerang" of the hero.
  */
 class Hero::BoomerangState: public Hero::State {
 

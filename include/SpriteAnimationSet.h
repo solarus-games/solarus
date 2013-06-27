@@ -22,7 +22,7 @@
 #include <map>
 
 /**
- * @brief A set of animations representing a sprite.
+ * \brief A set of animations representing a sprite.
  *
  * Each animation correspond to a specific situation of a sprite
  * and is an instance of SpriteAnimation.

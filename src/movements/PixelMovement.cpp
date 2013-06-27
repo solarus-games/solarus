@@ -22,12 +22,12 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Creates a pixel movement object.
- * @param trajectory_string a string describing the succession of translations that compose this movement,
+ * \brief Creates a pixel movement object.
+ * \param trajectory_string a string describing the succession of translations that compose this movement,
  * with the syntax "dx1 dy1  dx2 dy2  dx3 dy3 ..." (the number of spaces between values does not matter)
- * @param delay delay in milliseconds between two translations
- * @param loop true to make the movement return to the beginning once finished
- * @param ignore_obstacles true to make the movement ignore obstacles
+ * \param delay delay in milliseconds between two translations
+ * \param loop true to make the movement return to the beginning once finished
+ * \param ignore_obstacles true to make the movement ignore obstacles
  */
 PixelMovement::PixelMovement(
     const std::string& trajectory_string,
@@ -41,28 +41,28 @@ PixelMovement::PixelMovement(
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 PixelMovement::~PixelMovement() {
 
 }
 
 /**
- * @brief Returns the trajectory of this movement.
- * @return the succession of translations that compose this movement
+ * \brief Returns the trajectory of this movement.
+ * \return the succession of translations that compose this movement
  */
 const std::list<Rectangle>& PixelMovement::get_trajectory() {
   return trajectory;
 }
 
 /**
- * @brief Sets the trajectory of this movement.
+ * \brief Sets the trajectory of this movement.
  *
  * This function can be called even if the object was moving with a previous trajectory.
  * The old trajectory is replaced and the movement starts the from beginning of the
  * new trajectory.
  *
- * @param trajectory a list of rectangles describing the succession of translations that compose this movement,
+ * \param trajectory a list of rectangles describing the succession of translations that compose this movement,
  * where each rectangle is an xy value representing a translation (the size is ignored)
  */
 void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
@@ -74,13 +74,13 @@ void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
 }
 
 /**
- * @brief Sets the trajectory of this movement from a string.
+ * \brief Sets the trajectory of this movement from a string.
  *
  * This function can be called even if the object was moving with a previous trajectory.
  * The old trajectory is replaced and the movement starts the from beginning of the
  * new trajectory.
  *
- * @param trajectory_string a string describing the succession of translations that compose this movement,
+ * \param trajectory_string a string describing the succession of translations that compose this movement,
  * with the syntax "dx1 dy1  dx2 dy2  dx3 dy3 ..." (the number of spaces between values does not matter)
  */
 void PixelMovement::set_trajectory(const std::string &trajectory_string) {
@@ -102,8 +102,8 @@ void PixelMovement::set_trajectory(const std::string &trajectory_string) {
 }
 
 /**
- * @brief Returns the delay between two moves.
- * @return the delay between two moves, in milliseconds
+ * \brief Returns the delay between two moves.
+ * \return the delay between two moves, in milliseconds
  */
 uint32_t PixelMovement::get_delay() {
 
@@ -111,8 +111,8 @@ uint32_t PixelMovement::get_delay() {
 }
 
 /**
- * @brief Changes the delay between two moves.
- * @param delay the new delay, in milliseconds
+ * \brief Changes the delay between two moves.
+ * \param delay the new delay, in milliseconds
  */
 void PixelMovement::set_delay(uint32_t delay) {
 
@@ -120,8 +120,8 @@ void PixelMovement::set_delay(uint32_t delay) {
 }
 
 /**
- * @brief Returns whether this movement loops when the end of the trajectory is reached.
- * @return true if the movement loops
+ * \brief Returns whether this movement loops when the end of the trajectory is reached.
+ * \return true if the movement loops
  */
 bool PixelMovement::get_loop() {
 
@@ -129,11 +129,11 @@ bool PixelMovement::get_loop() {
 }
 
 /**
- * @brief Sets whether this movement loops when the end of the trajectory is reached.
+ * \brief Sets whether this movement loops when the end of the trajectory is reached.
  *
  * Is the movement was finished and loop is set to true, the movement restarts.
  *
- * @param loop true to make the movement loop
+ * \param loop true to make the movement loop
  */
 void PixelMovement::set_loop(bool loop) {
 
@@ -145,7 +145,7 @@ void PixelMovement::set_loop(bool loop) {
 }
 
 /**
- * @brief Restarts this movement to the beginning.
+ * \brief Restarts this movement to the beginning.
  */
 void PixelMovement::restart() {
 
@@ -163,7 +163,7 @@ void PixelMovement::restart() {
 }
 
 /**
- * @brief Updates the position.
+ * \brief Updates the position.
  */
 void PixelMovement::update() {
 
@@ -188,8 +188,8 @@ void PixelMovement::update() {
 }
 
 /**
- * @brief Suspends or resumes this movement.
- * @param suspended true to suspend the movement, false to resume it
+ * \brief Suspends or resumes this movement.
+ * \param suspended true to suspend the movement, false to resume it
  */
 void PixelMovement::set_suspended(bool suspended) {
 
@@ -201,7 +201,7 @@ void PixelMovement::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Makes a move in the path.
+ * \brief Makes a move in the path.
  *
  * This function must be called only when the path is not finished yet.
  */
@@ -233,41 +233,41 @@ void PixelMovement::make_next_step() {
 }
 
 /**
- * @brief This function is called when a step of the trajectory just occurred.
- * @param step_index index of the step in the trajectory (the first one is 0)
- * @param success true if the move was made, false if the movement was stopped by an obstacle
+ * \brief This function is called when a step of the trajectory just occurred.
+ * \param step_index index of the step in the trajectory (the first one is 0)
+ * \param success true if the move was made, false if the movement was stopped by an obstacle
  */
 void PixelMovement::notify_step_done(int step_index, bool success) {
 }
 
 /**
- * @brief Returns the total number of moves in this trajectory.
- * @return the total number of moves in this trajectory
+ * \brief Returns the total number of moves in this trajectory.
+ * \return the total number of moves in this trajectory
  */
 int PixelMovement::get_length() {
   return int(trajectory.size());
 }
 
 /**
- * @brief Returns whether the entity controlled by this movement is moving.
- * @return true if the entity is moving, false otherwise
+ * \brief Returns whether the entity controlled by this movement is moving.
+ * \return true if the entity is moving, false otherwise
  */
 bool PixelMovement::is_started() {
   return !finished;
 }
 
 /**
- * @brief Returns whether the movement is finished, i.e.
+ * \brief Returns whether the movement is finished, i.e.
  * whether the end of the trajectory was reached.
- * @return true if the end of the trajectory was reached
+ * \return true if the end of the trajectory was reached
  */
 bool PixelMovement::is_finished() {
   return finished;
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& PixelMovement::get_lua_type_name() const {
   return LuaContext::movement_pixel_module_name;

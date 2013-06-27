@@ -23,7 +23,7 @@
 #include <lua.hpp>
 
 /**
- * @brief An object that can be drawn on a surface with additional effects.
+ * \brief An object that can be drawn on a surface with additional effects.
  *
  * Possible additional effects are movements and transitions.
  * Lua callbacks may be associated to the end of these effects.
@@ -53,38 +53,38 @@ class Drawable: public ExportableToLua {
         Surface& dst_surface, const Rectangle& dst_position);
 
     /**
-     * @brief Draws this object without applying dynamic effects.
+     * \brief Draws this object without applying dynamic effects.
      *
      * Redefine this function to draw your object onto the destination
      * surface.
      *
-     * @param dst_surface The destination surface.
-     * @param dst_position Coordinates on the destination surface.
+     * \param dst_surface The destination surface.
+     * \param dst_position Coordinates on the destination surface.
      */
     virtual void raw_draw(Surface& dst_surface,
         const Rectangle& dst_position) = 0;
 
     /**
-     * @brief Draws a subrectangle of this object without applying dynamic
+     * \brief Draws a subrectangle of this object without applying dynamic
      * effects.
      *
      * Redefine this function to draw your object onto the destination
      * surface.
      *
-     * @param region The subrectangle to draw in this object.
-     * @param dst_surface The destination surface.
-     * @param dst_position Coordinates on the destination surface.
+     * \param region The subrectangle to draw in this object.
+     * \param dst_surface The destination surface.
+     * \param dst_position Coordinates on the destination surface.
      */
     virtual void raw_draw_region(const Rectangle& region,
         Surface& dst_surface, const Rectangle& dst_position) = 0;
 
     /**
-     * @brief Draws a transition effect on this drawable object.
+     * \brief Draws a transition effect on this drawable object.
      *
      * Redefine this function to apply the transition effect on the surface
      * of your object.
      *
-     * @param transition The transition effect to apply.
+     * \param transition The transition effect to apply.
      */
     virtual void draw_transition(Transition& transition) = 0;
     virtual void update();

@@ -28,8 +28,8 @@
 #include "Map.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::SwordTappingState::SwordTappingState(Hero& hero):
   State(hero),
@@ -38,15 +38,15 @@ Hero::SwordTappingState::SwordTappingState(Hero& hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::SwordTappingState::~SwordTappingState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::SwordTappingState::start(State* previous_state) {
 
@@ -57,8 +57,8 @@ void Hero::SwordTappingState::start(State* previous_state) {
 }
 
 /**
- * @brief Ends this state.
- * @param next_state the next state
+ * \brief Ends this state.
+ * \param next_state the next state
  */
 void Hero::SwordTappingState::stop(State* next_state) {
 
@@ -71,7 +71,7 @@ void Hero::SwordTappingState::stop(State* next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::SwordTappingState::update() {
 
@@ -118,8 +118,8 @@ void Hero::SwordTappingState::update() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::SwordTappingState::set_suspended(bool suspended) {
 
@@ -131,27 +131,27 @@ void Hero::SwordTappingState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns whether crystals can be activated by the sword in this state.
- * @return true if crystals can be activated by the sword in this state
+ * \brief Returns whether crystals can be activated by the sword in this state.
+ * \return true if crystals can be activated by the sword in this state
  */
 bool Hero::SwordTappingState::can_sword_hit_crystal() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can pick a treasure in this state.
- * @param item The equipment item to obtain.
- * @return true if the hero can pick that treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in this state.
+ * \param item The equipment item to obtain.
+ * \return true if the hero can pick that treasure in this state.
  */
 bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& item) {
   return true;
 }
 
 /**
- * @brief Tests whether the hero is cutting with his sword the specified detector
+ * \brief Tests whether the hero is cutting with his sword the specified detector
  * for which a collision was detected.
- * @param detector the detector to check
- * @return true if the sword is cutting this detector
+ * \param detector the detector to check
+ * \return true if the sword is cutting this detector
  */
 bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) {
 
@@ -161,9 +161,9 @@ bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) {
 }
 
 /**
- * @brief Returns whether a teletransporter is considered as an obstacle in this state.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is an obstacle in this state
+ * \brief Returns whether a teletransporter is considered as an obstacle in this state.
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is an obstacle in this state
  */
 bool Hero::SwordTappingState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
 
@@ -172,7 +172,7 @@ bool Hero::SwordTappingState::is_teletransporter_obstacle(Teletransporter& telet
 }
 
 /**
- * @brief Notifies this state that the hero has just failed to change its
+ * \brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */
 void Hero::SwordTappingState::notify_obstacle_reached() {
@@ -183,11 +183,11 @@ void Hero::SwordTappingState::notify_obstacle_reached() {
 }
 
 /**
- * @brief Notifies this state that the hero has just attacked an enemy.
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * @param killed indicates that the attack has just killed the enemy
+ * \brief Notifies this state that the hero has just attacked an enemy.
+ * \param attack the attack
+ * \param victim the enemy just hurt
+ * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
+ * \param killed indicates that the attack has just killed the enemy
  */
 void Hero::SwordTappingState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
     EnemyReaction::Reaction& result, bool killed) {

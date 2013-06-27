@@ -27,7 +27,7 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Associates to each movement direction the possible directions of the hero's sprites.
+ * \brief Associates to each movement direction the possible directions of the hero's sprites.
  *
  * This array indicates the possible directions of the hero's animation (from 0 to 3, or -1 for no change)
  * for each movement direction.
@@ -51,7 +51,7 @@ const int HeroSprites::animation_directions[][2] = {
 
 
 /**
- * @brief String constants corresponding to the sprites of the tunics.
+ * \brief String constants corresponding to the sprites of the tunics.
  */
 const std::string HeroSprites::tunic_sprite_ids[] = {
   "hero/tunic1", // green tunic
@@ -60,7 +60,7 @@ const std::string HeroSprites::tunic_sprite_ids[] = {
 };
 
 /**
- * @brief String constants corresponding to the sprites of the swords.
+ * \brief String constants corresponding to the sprites of the swords.
  */
 const std::string HeroSprites::sword_sprite_ids[] = {
   "hero/sword1",
@@ -70,7 +70,7 @@ const std::string HeroSprites::sword_sprite_ids[] = {
 };
 
 /**
- * @brief String constants corresponding to the sprites of the stars of the swords.
+ * \brief String constants corresponding to the sprites of the stars of the swords.
  */
 const std::string HeroSprites::sword_stars_sprite_ids[] = {
   "hero/sword_stars1",
@@ -80,7 +80,7 @@ const std::string HeroSprites::sword_stars_sprite_ids[] = {
 };
 
 /**
- * @brief String constants corresponding to the sprites of the shields.
+ * \brief String constants corresponding to the sprites of the shields.
  */
 const std::string HeroSprites::shield_sprite_ids[] = {
   "hero/shield1",
@@ -89,7 +89,7 @@ const std::string HeroSprites::shield_sprite_ids[] = {
 };
 
 /**
- * @brief String constants corresponding to the sprites of the ground displayed under the hero.
+ * \brief String constants corresponding to the sprites of the ground displayed under the hero.
  */
 const std::string HeroSprites::ground_sprite_ids[] = {
   "hero/ground1",
@@ -97,7 +97,7 @@ const std::string HeroSprites::ground_sprite_ids[] = {
 };
 
 /**
- * @brief String constants corresponding to the sounds of the swords.
+ * \brief String constants corresponding to the sounds of the swords.
  */
 const std::string HeroSprites::sword_sound_ids[] = {
   "sword1",
@@ -107,7 +107,7 @@ const std::string HeroSprites::sword_sound_ids[] = {
 };
 
 /**
- * @brief String constants corresponding to the sounds of the ground under the hero.
+ * \brief String constants corresponding to the sounds of the ground under the hero.
  */
 const std::string HeroSprites::ground_sound_ids[] = {
   "walk_on_grass",
@@ -115,9 +115,9 @@ const std::string HeroSprites::ground_sound_ids[] = {
 };
 
 /**
- * @brief Constructor.
- * @param hero the hero
- * @param equipment the equipment
+ * \brief Constructor.
+ * \param hero the hero
+ * \param equipment the equipment
  */
 HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
   hero(hero),
@@ -137,7 +137,7 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 HeroSprites::~HeroSprites() {
   delete tunic_sprite;
@@ -150,7 +150,7 @@ HeroSprites::~HeroSprites() {
 }
 
 /**
- * @brief Loads (or reloads) the sprites and sounds of the hero and his equipment.
+ * \brief Loads (or reloads) the sprites and sounds of the hero and his equipment.
  *
  * The sprites and sounds loaded depend on his tunic, sword and shield as specified in the savegame.
  * This function must be called at the game beginning
@@ -253,47 +253,47 @@ void HeroSprites::rebuild_equipment() {
 }
 
 /**
- * @brief Returns whether the sword is currently displayed on the screen.
- * @return true if the sword is currently displayed on the screen
+ * \brief Returns whether the sword is currently displayed on the screen.
+ * \return true if the sword is currently displayed on the screen
  */
 bool HeroSprites::is_sword_visible() {
   return equipment.has_ability("sword") && sword_sprite != NULL && sword_sprite->is_animation_started();
 }
 
 /**
- * @brief Returns whether the stars of the sword are currently displayed on the screen.
- * @return true if the stars of the sword are currently displayed on the screen
+ * \brief Returns whether the stars of the sword are currently displayed on the screen.
+ * \return true if the stars of the sword are currently displayed on the screen
  */
 bool HeroSprites::is_sword_stars_visible() {
   return equipment.has_ability("sword") && sword_stars_sprite != NULL && sword_stars_sprite->is_animation_started();
 }
 
 /**
- * @brief Returns whether the shield is currently displayed on the screen.
- * @return true if the shield is currently displayed on the screen
+ * \brief Returns whether the shield is currently displayed on the screen.
+ * \return true if the shield is currently displayed on the screen
  */
 bool HeroSprites::is_shield_visible() {
   return equipment.has_ability("shield") && shield_sprite != NULL && shield_sprite->is_animation_started();
 }
 
 /**
- * @brief Returns whether the trail of dust is currently displayed.
- * @return true if the trail of dust is currently displayed
+ * \brief Returns whether the trail of dust is currently displayed.
+ * \return true if the trail of dust is currently displayed
  */
 bool HeroSprites::is_trail_visible() {
   return trail_sprite->is_animation_started();
 }
 
 /**
- * @brief Returns whether a special ground is displayed under the hero.
- * @return true if a ground is currently visible under the hero
+ * \brief Returns whether a special ground is displayed under the hero.
+ * \return true if a ground is currently visible under the hero
  */
 bool HeroSprites::is_ground_visible() {
   return hero.is_ground_visible() && ground_sprite != NULL;
 }
 
 /**
- * @brief Stops displaying the sword and the sword stars (if any).
+ * \brief Stops displaying the sword and the sword stars (if any).
  */
 void HeroSprites::stop_displaying_sword() {
 
@@ -304,7 +304,7 @@ void HeroSprites::stop_displaying_sword() {
 }
 
 /**
- * @brief Stops displaying the sword stars (if any).
+ * \brief Stops displaying the sword stars (if any).
  */
 void HeroSprites::stop_displaying_sword_stars() {
 
@@ -314,7 +314,7 @@ void HeroSprites::stop_displaying_sword_stars() {
 }
 
 /**
- * @brief Stops displaying the shield (if any).
+ * \brief Stops displaying the shield (if any).
  */
 void HeroSprites::stop_displaying_shield() {
 
@@ -324,14 +324,14 @@ void HeroSprites::stop_displaying_shield() {
 }
 
 /**
- * @brief Stops displaying the trail (if any).
+ * \brief Stops displaying the trail (if any).
  */
 void HeroSprites::stop_displaying_trail() {
   trail_sprite->stop_animation();
 }
 
 /**
- * @brief Makes the hero blink for a while.
+ * \brief Makes the hero blink for a while.
  */
 void HeroSprites::blink() {
   tunic_sprite->set_blinking(50);
@@ -348,7 +348,7 @@ void HeroSprites::blink() {
 }
 
 /**
- * @brief Stops making the hero's sprites blink.
+ * \brief Stops making the hero's sprites blink.
  */
 void HeroSprites::stop_blinking() {
 
@@ -366,66 +366,66 @@ void HeroSprites::stop_blinking() {
 }
 
 /**
- * @brief Returns whether the hero's sprites are currently blinking.
- * @return true if the hero's sprites are currently blinking
+ * \brief Returns whether the hero's sprites are currently blinking.
+ * \return true if the hero's sprites are currently blinking
  */
 bool HeroSprites::is_blinking() {
   return tunic_sprite->is_blinking();
 }
 
 /**
- * @brief Sets a rectangle of the map where the drawing of the hero's sprite will be restricted to.
+ * \brief Sets a rectangle of the map where the drawing of the hero's sprite will be restricted to.
  *
  * A (0,0,0,0) rectangle means that the sprite is not restricted to a subarea of the map.
  *
- * @param clipping_rectangle a subarea of the map to restrict the drawing to
+ * \param clipping_rectangle a subarea of the map to restrict the drawing to
  */
 void HeroSprites::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
   this->clipping_rectangle = clipping_rectangle;
 }
 
 /**
- * @brief Returns whether the sprites have currently a walking animation.
- * @return true if the sprites are walking
+ * \brief Returns whether the sprites have currently a walking animation.
+ * \return true if the sprites are walking
  */
 bool HeroSprites::is_walking() {
   return walking;
 }
 
 /**
- * @brief Returns the direction of the hero's sprites.
+ * \brief Returns the direction of the hero's sprites.
  *
  * It is different from the movement direction.
  *
- * @return the direction of the sprites (0 to 3)
+ * \return the direction of the sprites (0 to 3)
  */
 int HeroSprites::get_animation_direction() {
   return tunic_sprite->get_current_direction();
 }
 
 /**
- * @brief Returns the direction of the hero's sprites.
+ * \brief Returns the direction of the hero's sprites.
  *
  * It is different from the movement direction.
  *
- * @return the direction of the sprites (0 to 7, except diagonal directions)
+ * \return the direction of the sprites (0 to 7, except diagonal directions)
  */
 int HeroSprites::get_animation_direction8() {
   return get_animation_direction() * 2;
 }
 
 /**
- * @brief Returns the direction that the hero's sprites should take.
+ * \brief Returns the direction that the hero's sprites should take.
  *
  * This function returns the direction that the hero's sprites should take depending on the direction wanted
  * by the player and the real movement direction.
  * For diagonal directions, the direction returned depends
  * on the current real direction of the hero's sprites.
  *
- * @param keys_direction the direction defined by the combination of directional keys pressed (0 to 7),
+ * \param keys_direction the direction defined by the combination of directional keys pressed (0 to 7),
  * or -1 if this is not a valid direction
- * @param real_movement_direction the direction of the hero's actual movement (may be different from keys_direction)
- * @return the direction of the sprites corresponding to these arrows (0 to 3),
+ * \param real_movement_direction the direction of the hero's actual movement (may be different from keys_direction)
+ * \return the direction of the sprites corresponding to these arrows (0 to 3),
  * or -1 if the directional keys combination is illegal
  */
 int HeroSprites::get_animation_direction(int keys_direction, int real_movement_direction) {
@@ -456,11 +456,11 @@ int HeroSprites::get_animation_direction(int keys_direction, int real_movement_d
 }
 
 /**
- * @brief Changes the direction of the hero's sprites.
+ * \brief Changes the direction of the hero's sprites.
  *
  * It is different from the movement direction.
  *
- * @param direction the direction to set (0 to 3)
+ * \param direction the direction to set (0 to 3)
  */
 void HeroSprites::set_animation_direction(int direction) {
 
@@ -487,14 +487,14 @@ void HeroSprites::set_animation_direction(int direction) {
 }
 
 /**
- * @brief Changes the direction of the hero's sprites.
+ * \brief Changes the direction of the hero's sprites.
  *
  * The direction specified is one of the 8 possible movement directions of the hero.
  * The hero's sprites only have four directions, so when
  * the specified direction is a diagonal one,
  * one of the two closest main directions is picked.
  *
- * @param direction the movement direction (0 to 7)
+ * \param direction the movement direction (0 to 7)
  */
 void HeroSprites::set_animation_direction8(int direction) {
 
@@ -504,23 +504,23 @@ void HeroSprites::set_animation_direction8(int direction) {
 }
 
 /**
- * @brief Returns whether the sprites animations are finished.
- * @return true if the animation is finished
+ * \brief Returns whether the sprites animations are finished.
+ * \return true if the animation is finished
  */
 bool HeroSprites::is_animation_finished() {
   return tunic_sprite->is_animation_finished();
 }
 
 /**
- * @brief Returns the current frame of the tunic sprite.
- * @return the current frame
+ * \brief Returns the current frame of the tunic sprite.
+ * \return the current frame
  */
 int HeroSprites::get_current_frame() {
   return tunic_sprite->get_current_frame();
 }
 
 /**
- * @brief Saves the current direction of the the sprite.
+ * \brief Saves the current direction of the the sprite.
  *
  * Call restore_animation_direction() to restore the direction saved here.
  */
@@ -529,7 +529,7 @@ void HeroSprites::save_animation_direction() {
 }
 
 /**
- * @brief Restores the direction of the hero's sprite saved by the last
+ * \brief Restores the direction of the hero's sprite saved by the last
  * call to save_animation_direction().
  */
 void HeroSprites::restore_animation_direction() {
@@ -537,7 +537,7 @@ void HeroSprites::restore_animation_direction() {
 }
 
 /**
- * @brief Updates the animation of the hero's sprites if necessary.
+ * \brief Updates the animation of the hero's sprites if necessary.
  */
 void HeroSprites::update() {
 
@@ -582,7 +582,7 @@ void HeroSprites::update() {
 }
 
 /**
- * @brief Draws the hero's sprites on the map.
+ * \brief Draws the hero's sprites on the map.
  */
 void HeroSprites::draw_on_map() {
 
@@ -637,11 +637,11 @@ void HeroSprites::draw_on_map() {
 }
 
 /**
- * @brief Suspends or resumes the animation of the hero's sprites.
+ * \brief Suspends or resumes the animation of the hero's sprites.
  *
  * This function is called by the map when the game is suspended or resumed.
  *
- * @param suspended true to suspend the hero's sprites, false to resume them
+ * \param suspended true to suspend the hero's sprites, false to resume them
  */
 void HeroSprites::set_suspended(bool suspended) {
 
@@ -673,7 +673,7 @@ void HeroSprites::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies the hero's sprites that a map has just become active.
+ * \brief Notifies the hero's sprites that a map has just become active.
  */
 void HeroSprites::notify_map_started() {
 
@@ -688,7 +688,7 @@ void HeroSprites::notify_map_started() {
 }
 
 /**
- * @brief Restarts the animation of the hero's sprites.
+ * \brief Restarts the animation of the hero's sprites.
  *
  * This function is called when the sprites have to
  * get back to their first frame.
@@ -719,9 +719,9 @@ void HeroSprites::restart_animation() {
 }
 
 /**
- * @brief Sets whether the hero's sprite should keep playing their animation
+ * \brief Sets whether the hero's sprite should keep playing their animation
  * when the game is suspended.
- * @param ignore_suspend true to make the sprites continue their animation even
+ * \param ignore_suspend true to make the sprites continue their animation even
  * when the game is suspended
  */
 void HeroSprites::set_ignore_suspend(bool ignore_suspend) {
@@ -750,7 +750,7 @@ void HeroSprites::set_ignore_suspend(bool ignore_suspend) {
 }
 
 /**
- * @brief This function is called when the sprites take a "stopped" animation.
+ * \brief This function is called when the sprites take a "stopped" animation.
  *
  * It makes instructions common to all states having a "stopped" animation.
  * (e.g. free or carrying).
@@ -765,7 +765,7 @@ void HeroSprites::set_animation_stopped_common() {
 }
 
 /**
- * @brief Starts the basic "stopped" animation of the hero's sprites.
+ * \brief Starts the basic "stopped" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_stopped_normal() {
 
@@ -785,7 +785,7 @@ void HeroSprites::set_animation_stopped_normal() {
 }
 
 /**
- * @brief Starts the "stopped" animation of the hero's sprites with the sword loading.
+ * \brief Starts the "stopped" animation of the hero's sprites with the sword loading.
  */
 void HeroSprites::set_animation_stopped_sword_loading() {
 
@@ -808,7 +808,7 @@ void HeroSprites::set_animation_stopped_sword_loading() {
 }
 
 /**
- * @brief Starts the "stopped" animation with sprites that represent
+ * \brief Starts the "stopped" animation with sprites that represent
  * the hero carrying something.
  *
  * If the hero actually carries an item, the carried item also takes a "stopped" animation.
@@ -825,7 +825,7 @@ void HeroSprites::set_animation_stopped_carrying() {
 }
 
 /**
- * @brief Starts the "stopped" animation with sprites that represent
+ * \brief Starts the "stopped" animation with sprites that represent
  * the hero swimming.
  */
 void HeroSprites::set_animation_stopped_swimming() {
@@ -838,7 +838,7 @@ void HeroSprites::set_animation_stopped_swimming() {
 }
 
 /**
- * @brief This function is called when the sprites take a "walking" animation.
+ * \brief This function is called when the sprites take a "walking" animation.
  *
  * It makes instructions common to all states having a "walking" animation.
  * (e.g. free or carrying).
@@ -853,7 +853,7 @@ void HeroSprites::set_animation_walking_common() {
 }
 
 /**
- * @brief Starts the normal "walking" animation of the hero's sprites.
+ * \brief Starts the normal "walking" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_walking_normal() {
 
@@ -874,7 +874,7 @@ void HeroSprites::set_animation_walking_normal() {
 }
 
 /**
- * @brief Starts the "walking" animation of the hero's sprites with the sword loading.
+ * \brief Starts the "walking" animation of the hero's sprites with the sword loading.
  */
 void HeroSprites::set_animation_walking_sword_loading() {
 
@@ -898,7 +898,7 @@ void HeroSprites::set_animation_walking_sword_loading() {
 }
 
 /**
- * @brief Starts the "walking" animation with sprites that represent
+ * \brief Starts the "walking" animation with sprites that represent
  * the hero carrying something.
  *
  * If the hero actually carries an item, the carried item also takes a "walking" animation.
@@ -917,7 +917,7 @@ void HeroSprites::set_animation_walking_carrying() {
 }
 
 /**
- * @brief Starts the "swimming_slow" animation of the sprites.
+ * \brief Starts the "swimming_slow" animation of the sprites.
  */
 void HeroSprites::set_animation_swimming_slow() {
 
@@ -930,7 +930,7 @@ void HeroSprites::set_animation_swimming_slow() {
 }
 
 /**
- * @brief Starts the "swimming_fast" animation of the sprites.
+ * \brief Starts the "swimming_fast" animation of the sprites.
  */
 void HeroSprites::set_animation_swimming_fast() {
 
@@ -943,8 +943,8 @@ void HeroSprites::set_animation_swimming_fast() {
 }
 
 /**
- * @brief Starts the "walking_diagonal" animation of the hero's sprites.
- * @param direction8 the diagonal direction to take (1, 3, 5 or 7)
+ * \brief Starts the "walking_diagonal" animation of the hero's sprites.
+ * \param direction8 the diagonal direction to take (1, 3, 5 or 7)
  */
 void HeroSprites::set_animation_walking_diagonal(int direction8) {
 
@@ -956,7 +956,7 @@ void HeroSprites::set_animation_walking_diagonal(int direction8) {
 }
 
 /**
- * @brief Starts (or restarts) the "sword" animation of the hero's sprites.
+ * \brief Starts (or restarts) the "sword" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_sword() {
 
@@ -985,14 +985,14 @@ void HeroSprites::set_animation_sword() {
 }
 
 /**
- * @brief Plays the sound corresponding to the current sword.
+ * \brief Plays the sound corresponding to the current sword.
  */
 void HeroSprites::play_sword_sound() {
   Sound::play(sword_sound_id);
 }
 
 /**
- * @brief Starts (or restarts) the "sword tapping" animation of the hero's sprites.
+ * \brief Starts (or restarts) the "sword tapping" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_sword_tapping() {
 
@@ -1016,7 +1016,7 @@ void HeroSprites::set_animation_sword_tapping() {
 }
 
 /**
- * @brief Starts (or restarts) the "spin_attck" animation of the hero's sprites.
+ * \brief Starts (or restarts) the "spin_attck" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_spin_attack() {
 
@@ -1028,7 +1028,7 @@ void HeroSprites::set_animation_spin_attack() {
 }
 
 /**
- * @brief Starts (or restarts) the "super_spin_attck" animation of the hero's sprites.
+ * \brief Starts (or restarts) the "super_spin_attck" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_super_spin_attack() {
 
@@ -1040,7 +1040,7 @@ void HeroSprites::set_animation_super_spin_attack() {
 }
 
 /**
- * @brief Starts the "grabbing" animation of the hero's sprites.
+ * \brief Starts the "grabbing" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_grabbing() {
 
@@ -1050,7 +1050,7 @@ void HeroSprites::set_animation_grabbing() {
 }
 
 /**
- * @brief Starts the "pulling" animation of the hero's sprites.
+ * \brief Starts the "pulling" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_pulling() {
 
@@ -1060,7 +1060,7 @@ void HeroSprites::set_animation_pulling() {
 }
 
 /**
- * @brief Starts the "pushing" animation of the hero's sprites.
+ * \brief Starts the "pushing" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_pushing() {
 
@@ -1070,7 +1070,7 @@ void HeroSprites::set_animation_pushing() {
 }
 
 /**
- * @brief Starts the "lifting" animation of the hero's sprites.
+ * \brief Starts the "lifting" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_lifting() {
 
@@ -1080,7 +1080,7 @@ void HeroSprites::set_animation_lifting() {
 }
 
 /**
- * @brief Starts the "jumping" animation of the hero's sprites.
+ * \brief Starts the "jumping" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_jumping() {
 
@@ -1095,7 +1095,7 @@ void HeroSprites::set_animation_jumping() {
 }
 
 /**
- * @brief Starts the "hurt" animation of the hero's sprites.
+ * \brief Starts the "hurt" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_hurt() {
 
@@ -1106,7 +1106,7 @@ void HeroSprites::set_animation_hurt() {
 }
 
 /**
- * @brief Starts the "falling" animation of the hero's sprites.
+ * \brief Starts the "falling" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_falling() {
 
@@ -1118,7 +1118,7 @@ void HeroSprites::set_animation_falling() {
 }
 
 /**
- * @brief Starts the "brandish" animation of the hero's sprites.
+ * \brief Starts the "brandish" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_brandish() {
 
@@ -1130,7 +1130,7 @@ void HeroSprites::set_animation_brandish() {
 }
 
 /**
- * @brief Starts the "victory" animation of the hero's sprites.
+ * \brief Starts the "victory" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_victory() {
 
@@ -1144,7 +1144,7 @@ void HeroSprites::set_animation_victory() {
 }
 
 /**
- * @brief Starts the "prepare running" animation of the hero's sprites.
+ * \brief Starts the "prepare running" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_prepare_running() {
 
@@ -1153,7 +1153,7 @@ void HeroSprites::set_animation_prepare_running() {
 }
 
 /**
- * @brief Starts the "running" animation of the hero's sprites.
+ * \brief Starts the "running" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_running() {
 
@@ -1163,14 +1163,14 @@ void HeroSprites::set_animation_running() {
 }
 
 /**
- * @brief Starts a custom animation of the hero's sprites.
+ * \brief Starts a custom animation of the hero's sprites.
  *
  * The animation of the tunic and the shield (if any) can be specified here.
  * Other sprites are hidden. Many simple animations can be started with
  * this function. More complex one have dedicated functions.
  *
- * @param tunic_animation name of the animation to give to the tunic sprite
- * @param shield_animation name of the animation to give to the shield sprite,
+ * \param tunic_animation name of the animation to give to the tunic sprite
+ * \param shield_animation name of the animation to give to the shield sprite,
  * or an empty string to hide the shield.
  */
 void HeroSprites::set_animation(const std::string& tunic_animation,
@@ -1190,8 +1190,8 @@ void HeroSprites::set_animation(const std::string& tunic_animation,
 }
 
 /**
- * @brief Creates the ground sprite and sound corresponding to the specified ground.
- * @param ground a ground
+ * \brief Creates the ground sprite and sound corresponding to the specified ground.
+ * \param ground a ground
  */
 void HeroSprites::create_ground(Ground ground) {
 
@@ -1205,7 +1205,7 @@ void HeroSprites::create_ground(Ground ground) {
 }
 
 /**
- * @brief Deletes the ground sprite.
+ * \brief Deletes the ground sprite.
  */
 void HeroSprites::destroy_ground() {
 
@@ -1214,21 +1214,21 @@ void HeroSprites::destroy_ground() {
 }
 
 /**
- * @brief Plays a sound for the ground displayed under the hero.
+ * \brief Plays a sound for the ground displayed under the hero.
  */
 void HeroSprites::play_ground_sound() {
   Sound::play(ground_sound_id);
 }
 
 /**
- * @brief Indicates a lifted item to display with the hero's sprites.
+ * \brief Indicates a lifted item to display with the hero's sprites.
  *
  * Calling this function makes this class display the lifted item and
  * give it the appropriate animation, so that you don't have to make it yourself.
  * However, this class only handles displaying:
  * you still have to update it and make it follow the hero.
  *
- * @param lifted_item the item to display, or NULL to stop displaying a lifted item
+ * \param lifted_item the item to display, or NULL to stop displaying a lifted item
  */
 void HeroSprites::set_lifted_item(CarriedItem *lifted_item) {
   this->lifted_item = lifted_item;

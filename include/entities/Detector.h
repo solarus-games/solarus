@@ -22,7 +22,7 @@
 #include "entities/CollisionMode.h"
 
 /**
- * @brief Abstract class for an entity able to detect the presence of other entities.
+ * \brief Abstract class for an entity able to detect the presence of other entities.
  *
  * A detector is an object placed somewhere on the map
  * to detect the presence of the hero or other moving entities.

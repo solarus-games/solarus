@@ -25,9 +25,9 @@
 #include <sstream>
 
 /**
- * @brief Constructor.
- * @param speed speed of the movement in pixels per seconds
- * @param max_distance if the object goes further than this distance, it will come back
+ * \brief Constructor.
+ * \param speed speed of the movement in pixels per seconds
+ * \param max_distance if the object goes further than this distance, it will come back
  */
 RandomMovement::RandomMovement(int speed, int max_distance):
   StraightMovement(false, false),
@@ -39,14 +39,14 @@ RandomMovement::RandomMovement(int speed, int max_distance):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 RandomMovement::~RandomMovement() {
 
 }
 
 /**
- * @brief Notifies this movement that the object it controls has changed.
+ * \brief Notifies this movement that the object it controls has changed.
  */
 void RandomMovement::notify_object_controlled() {
 
@@ -55,8 +55,8 @@ void RandomMovement::notify_object_controlled() {
 }
 
 /**
- * @brief Sets the maximum distance of the movement.
- * @param max_distance if the object goes further than this distance, it will come back (0 means no limit)
+ * \brief Sets the maximum distance of the movement.
+ * \param max_distance if the object goes further than this distance, it will come back (0 means no limit)
  */
 void RandomMovement::set_max_distance(int max_distance) {
 
@@ -70,7 +70,7 @@ void RandomMovement::set_max_distance(int max_distance) {
 }
 
 /**
- * @brief Chooses a new direction for the movement.
+ * \brief Chooses a new direction for the movement.
  */
 void RandomMovement::set_next_direction() {
 
@@ -97,7 +97,7 @@ void RandomMovement::set_next_direction() {
 }
 
 /**
- * @brief Updates the fairy movement.
+ * \brief Updates the fairy movement.
  *
  * This function is called repeatedly by the map.
  * This is a redefinition of Movement::update()
@@ -118,8 +118,8 @@ void RandomMovement::update() {
 }
 
 /**
- * @brief Suspends or resumes this movement.
- * @param suspended true to suspend the movement, false to resume it
+ * \brief Suspends or resumes this movement.
+ * \param suspended true to suspend the movement, false to resume it
  */
 void RandomMovement::set_suspended(bool suspended) {
 
@@ -131,7 +131,7 @@ void RandomMovement::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies this movement that it just failed to apply
+ * \brief Notifies this movement that it just failed to apply
  * because of obstacles.
  */
 void RandomMovement::notify_obstacle_reached() {
@@ -141,8 +141,8 @@ void RandomMovement::notify_obstacle_reached() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& RandomMovement::get_lua_type_name() const {
   return LuaContext::movement_random_module_name;

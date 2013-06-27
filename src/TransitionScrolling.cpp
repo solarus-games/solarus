@@ -24,8 +24,8 @@
 #include "lowlevel/Debug.h"
 
 /**
- * @brief Creates a scrolling transition effect.
- * @param direction direction of the transition (in or out)
+ * \brief Creates a scrolling transition effect.
+ * \param direction direction of the transition (in or out)
  */
 TransitionScrolling::TransitionScrolling(Transition::Direction direction):
   Transition(direction),
@@ -35,7 +35,7 @@ TransitionScrolling::TransitionScrolling(Transition::Direction direction):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 TransitionScrolling::~TransitionScrolling() {
 
@@ -45,9 +45,9 @@ TransitionScrolling::~TransitionScrolling() {
 }
 
 /**
- * @brief Returns where the previous map should be blitted on
+ * \brief Returns where the previous map should be blitted on
  * both_maps_surface, for the specified scrolling direction.
- * @param scrolling_direction The scrolling direction (0 to 3).
+ * \param scrolling_direction The scrolling direction (0 to 3).
  */
 Rectangle TransitionScrolling::get_previous_map_dst_position(
     int scrolling_direction) {
@@ -67,7 +67,7 @@ Rectangle TransitionScrolling::get_previous_map_dst_position(
 }
 
 /**
- * @brief Starts this transition effect.
+ * \brief Starts this transition effect.
  */
 void TransitionScrolling::start() {
 
@@ -106,24 +106,24 @@ void TransitionScrolling::start() {
 }
 
 /**
- * @brief Returns whether this transition effect needs the previous surface.
- * @return true
+ * \brief Returns whether this transition effect needs the previous surface.
+ * \return true
  */
 bool TransitionScrolling::needs_previous_surface() const {
   return true;
 }
 
 /**
- * @brief Returns whether the transition effect is started.
- * @return false
+ * \brief Returns whether the transition effect is started.
+ * \return false
  */
 bool TransitionScrolling::is_started() const {
   return !is_finished();
 }
 
 /**
- * @brief Returns whether the transition effect is finished.
- * @return true
+ * \brief Returns whether the transition effect is finished.
+ * \return true
  */
 bool TransitionScrolling::is_finished() const {
 
@@ -136,16 +136,16 @@ bool TransitionScrolling::is_finished() const {
 }
 
 /**
- * @brief Makes a scrolling step.
+ * \brief Makes a scrolling step.
  */
 void TransitionScrolling::scroll() {
   current_scrolling_position.add_xy(dx, dy);
 }
 
 /**
- * @brief Notifies the transition effect that it was just suspended
+ * \brief Notifies the transition effect that it was just suspended
  * or resumed.
- * @param suspended true if suspended, false if resumed.
+ * \param suspended true if suspended, false if resumed.
  */
 void TransitionScrolling::notify_suspended(bool suspended) {
 
@@ -155,7 +155,7 @@ void TransitionScrolling::notify_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates this transition effect.
+ * \brief Updates this transition effect.
  *
  * This function is called repeatedly while the transition exists.
  */
@@ -173,8 +173,8 @@ void TransitionScrolling::update() {
 }
 
 /**
- * @brief Draws the transition effect on a surface.
- * @param dst_surface the surface to draw
+ * \brief Draws the transition effect on a surface.
+ * \param dst_surface the surface to draw
  */
 void TransitionScrolling::draw(Surface& dst_surface) {
 

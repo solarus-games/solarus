@@ -16,24 +16,24 @@
  */
 
 /**
- * @file Common.h
- * @brief This header should be included by each class header file.
+ * \file Common.h
+ * \brief This header should be included by each class header file.
  */
 
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
 
 /**
- * @cond doxygen_ignore
+ * \cond doxygen_ignore
  */
 #define SOLARUS_STRINGIFY1(x) #x
 #define SOLARUS_STRINGIFY(x) SOLARUS_STRINGIFY1(x)
 /**
- * @endcond
+ * \endcond
  */
 
 /**
- * @brief Solarus major version.
+ * \brief Solarus major version.
  *
  * A change of major version is a important step in the maturity of the
  * project.
@@ -44,7 +44,7 @@
 #define SOLARUS_MAJOR_VERSION 1
 
 /**
- * @brief Solarus minor version.
+ * \brief Solarus minor version.
  *
  * Minor versions add new features and may change the format of data files.
  * Data files other than scripts can be upgraded automatically.
@@ -54,7 +54,7 @@
 #define SOLARUS_MINOR_VERSION 1
 
 /**
- * @brief Solarus patch version.
+ * \brief Solarus patch version.
  *
  * Patch versions are only bug fixes.
  * Data files compatibility is always preserved between changes of the patch
@@ -63,7 +63,7 @@
 #define SOLARUS_PATCH_VERSION 0
 
 /**
- * @brief The Solarus version as a string.
+ * \brief The Solarus version as a string.
  *
  * This string has the form "x.y.z" where x is the major version, y is the
  * minor version and z is the patch version.
@@ -73,7 +73,7 @@
 // Define the current platform constants on Apple Systems.
 
 /**
- * @cond doxygen_ignore
+ * \cond doxygen_ignore
  * Define the current platform constants on Apple Systems.
  */
 #if defined(__APPLE__)
@@ -86,12 +86,12 @@
 #  endif
 #endif
 /**
- * @endcond
+ * \endcond
  */
 
 /**
- * @def SOLARUS_DEFAULT_QUEST
- * @brief Path of the quest to run is none is specified at runtime.
+ * \def SOLARUS_DEFAULT_QUEST
+ * \brief Path of the quest to run is none is specified at runtime.
  */
 #ifndef SOLARUS_DEFAULT_QUEST
 // if no default quest was specified at compilation time,
@@ -100,8 +100,8 @@
 #endif
 
 /**
- * @def SOLARUS_WRITE_DIR
- * @brief Where savegames are stored, relative to the user base write directory.
+ * \def SOLARUS_WRITE_DIR
+ * \brief Where savegames are stored, relative to the user base write directory.
  */
 #ifndef SOLARUS_WRITE_DIR
 #  if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
@@ -114,8 +114,8 @@
 // Game size.
 
 /**
- * @def SOLARUS_DEFAULT_QUEST_WIDTH
- * @brief Width of the quest screen in pixels if not set at runtime.
+ * \def SOLARUS_DEFAULT_QUEST_WIDTH
+ * \brief Width of the quest screen in pixels if not set at runtime.
  */
 #ifndef SOLARUS_DEFAULT_QUEST_WIDTH
 #  if defined(PANDORA)
@@ -126,16 +126,16 @@
 #endif
 
 /**
- * @def SOLARUS_DEFAULT_QUEST_HEIGHT
- * @brief Height of the quest screen in pixels if not set at runtime.
+ * \def SOLARUS_DEFAULT_QUEST_HEIGHT
+ * \brief Height of the quest screen in pixels if not set at runtime.
  */
 #ifndef SOLARUS_DEFAULT_QUEST_HEIGHT
 #  define SOLARUS_DEFAULT_QUEST_HEIGHT 240
 #endif
 
 /**
- * @def SOLARUS_COLOR_DEPTH
- * @brief Number of bits per pixel for surfaces.
+ * \def SOLARUS_COLOR_DEPTH
+ * \brief Number of bits per pixel for surfaces.
  */
 #ifndef SOLARUS_COLOR_DEPTH
 #  if defined(CAANOO) || defined(PANDORA)
@@ -146,8 +146,8 @@
 #endif
 
 /**
- * @def SOLARUS_SCREEN_FORCE_MODE
- * @brief Forces a unique video mode.
+ * \def SOLARUS_SCREEN_FORCE_MODE
+ * \brief Forces a unique video mode.
  */
 #ifndef SOLARUS_SCREEN_FORCE_MODE
 #  if defined(CAANOO)
@@ -160,8 +160,8 @@
 #endif
 
 /**
- * @def SOLARUS_FULLSCREEN_FORCE_OK
- * @brief Define if the current platform should force all fullscreen mode to be available.
+ * \def SOLARUS_FULLSCREEN_FORCE_OK
+ * \brief Define if the current platform should force all fullscreen mode to be available.
  * If set to 1, VideoManager::is_mode_supported() may not call SDL_VideoModeOK()
  */
 #ifndef SOLARUS_FULLSCREEN_FORCE_OK
@@ -174,8 +174,8 @@
 #endif
 
 /**
- * @def SOLARUS_SCREEN_DOUBLEBUF
- * @brief Define if the current platform supports double buffering.
+ * \def SOLARUS_SCREEN_DOUBLEBUF
+ * \brief Define if the current platform supports double buffering.
  */
 #ifndef SOLARUS_SCREEN_DOUBLEBUF
 #  if defined(SOLARUS_OSX)
@@ -186,8 +186,8 @@
 #endif
 
 /**
- * @def SOLARUS_SCREEN_DOUBLEBUF
- * @brief Define to render the screen on an intermediate surface
+ * \def SOLARUS_SCREEN_DOUBLEBUF
+ * \brief Define to render the screen on an intermediate surface
  * (workaround to rendering issues in fullscreen).
  *
  * Don't define this if you have no problem.

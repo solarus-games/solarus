@@ -29,8 +29,8 @@
 #include "lowlevel/Random.h"
 
 /**
- * @brief Constructor.
- * @param savegame The savegame to encapsulate.
+ * \brief Constructor.
+ * \param savegame The savegame to encapsulate.
  */
 Equipment::Equipment(Savegame& savegame):
   savegame(savegame),
@@ -39,7 +39,7 @@ Equipment::Equipment(Savegame& savegame):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Equipment::~Equipment() {
 
@@ -54,29 +54,29 @@ Equipment::~Equipment() {
 }
 
 /**
- * @brief Returns the savegame represented by this equipment object.
- * @return The savegame.
+ * \brief Returns the savegame represented by this equipment object.
+ * \return The savegame.
  */
 Savegame& Equipment::get_savegame() {
   return savegame;
 }
 
 /**
- * @brief If this equipment object is currently running in a game, return that game.
- * @return A game or NULL.
+ * \brief If this equipment object is currently running in a game, return that game.
+ * \return A game or NULL.
  */
 Game* Equipment::get_game() {
   return savegame.get_game();
 }
 
 /**
- * @brief Notifies the equipment that the game has just started.
+ * \brief Notifies the equipment that the game has just started.
  */
 void Equipment::notify_game_started() {
 }
 
 /**
- * @brief Notifies the equipment that the game has is finished.
+ * \brief Notifies the equipment that the game has is finished.
  */
 void Equipment::notify_game_finished() {
 
@@ -88,8 +88,8 @@ void Equipment::notify_game_finished() {
 }
 
 /**
- * @brief Notifies the equipment system has another map has just been started.
- * @param map the new current map
+ * \brief Notifies the equipment system has another map has just been started.
+ * \param map the new current map
  */
 void Equipment::notify_map_changed(Map& map) {
 
@@ -101,7 +101,7 @@ void Equipment::notify_map_changed(Map& map) {
 }
 
 /**
- * @brief This function is be called repeatedly by the game.
+ * \brief This function is be called repeatedly by the game.
  *
  * Most of the time, there is nothing to update in this class.
  * The only elements updated here are some dynamic things
@@ -129,8 +129,8 @@ void Equipment::update() {
 }
 
 /**
- * @brief This function is called when the game is suspended or resumed.
- * @param suspended true if the game is suspended, false if it is resumed
+ * \brief This function is called when the game is suspended or resumed.
+ * \param suspended true if the game is suspended, false if it is resumed
  */
 void Equipment::set_suspended(bool suspended) {
 
@@ -146,16 +146,16 @@ void Equipment::set_suspended(bool suspended) {
 // money
 
 /**
- * @brief Returns the maximum amount of money of the player.
- * @return the player's maximum number of money
+ * \brief Returns the maximum amount of money of the player.
+ * \return the player's maximum number of money
  */
 int Equipment::get_max_money() {
   return savegame.get_integer(Savegame::KEY_MAX_MONEY);
 }
 
 /**
- * @brief Sets the maximum amount of money of the player.
- * @param max_money the player's maximum amount number of money
+ * \brief Sets the maximum amount of money of the player.
+ * \param max_money the player's maximum amount number of money
  */
 void Equipment::set_max_money(int max_money) {
 
@@ -166,8 +166,8 @@ void Equipment::set_max_money(int max_money) {
 }
 
 /**
- * @brief Returns the player's current amount of money
- * @return the player's current amount of money
+ * \brief Returns the player's current amount of money
+ * \return the player's current amount of money
  */
 int Equipment::get_money() {
   return savegame.get_integer(Savegame::KEY_CURRENT_MONEY);
@@ -175,12 +175,12 @@ int Equipment::get_money() {
 
 
 /**
- * @brief Sets the player's current amount of money.
+ * \brief Sets the player's current amount of money.
  *
  * If the amount is lower than zero, it is replaced by zero.
  * If the amount is greater than get_max_money(), it is replaced by that value.
  *
- * @param money The player's new amount of money.
+ * \param money The player's new amount of money.
  */
 void Equipment::set_money(int money) {
 
@@ -189,11 +189,11 @@ void Equipment::set_money(int money) {
 }
 
 /**
- * @brief Adds some money to the player.
+ * \brief Adds some money to the player.
  *
  * If the maximum amount of money is reached, no more money is added.
  * 
- * @param money_to_add amount of money to add
+ * \param money_to_add amount of money to add
  */
 void Equipment::add_money(int money_to_add) {
 
@@ -201,11 +201,11 @@ void Equipment::add_money(int money_to_add) {
 }
 
 /**
- * @brief Removes some money from the player.
+ * \brief Removes some money from the player.
  *
  * If the money reaches zero, no more money is removed.
  *
- * @param money_to_remove amount of money to remove
+ * \param money_to_remove amount of money to remove
  */
 void Equipment::remove_money(int money_to_remove) {
 
@@ -215,20 +215,20 @@ void Equipment::remove_money(int money_to_remove) {
 // life
 
 /**
- * @brief Returns the maximum level of life of the player.
- * @return the player's maximum level of life
+ * \brief Returns the maximum level of life of the player.
+ * \return the player's maximum level of life
  */
 int Equipment::get_max_life() {
   return savegame.get_integer(Savegame::KEY_MAX_LIFE);
 }
 
 /**
- * @brief Sets the maximum level of life of the player.
+ * \brief Sets the maximum level of life of the player.
  *
  * The program exits with an error message if the specified maximum
  * life is not valid.
  * 
- * @param max_life the player's maximum life
+ * \param max_life the player's maximum life
  */
 void Equipment::set_max_life(int max_life) {
 
@@ -239,20 +239,20 @@ void Equipment::set_max_life(int max_life) {
 }
 
 /**
- * @brief Returns the current level of life of the player.
- * @return the player's current life
+ * \brief Returns the current level of life of the player.
+ * \return the player's current life
  */
 int Equipment::get_life() {
   return savegame.get_integer(Savegame::KEY_CURRENT_LIFE);
 }
 
 /**
- * @brief Sets the current life of the player.
+ * \brief Sets the current life of the player.
  *
  * If the life is lower than zero, it is replaced by zero.
  * If the life is greater than get_max_life(), it is replaced by that value.
  *
- * @param life The player's new level of life.
+ * \param life The player's new level of life.
  */
 void Equipment::set_life(int life) {
 
@@ -261,11 +261,11 @@ void Equipment::set_life(int life) {
 }
 
 /**
- * @brief Gives some life to the player.
+ * \brief Gives some life to the player.
  *
  * If the maximum life is reached, no more life is added.
  *
- * @param life_to_add level of life to add
+ * \param life_to_add level of life to add
  */
 void Equipment::add_life(int life_to_add) {
 
@@ -273,8 +273,8 @@ void Equipment::add_life(int life_to_add) {
 }
 
 /**
- * @brief Removes some life from the player.
- * @param life_to_remove amount of life to remove
+ * \brief Removes some life from the player.
+ * \param life_to_remove amount of life to remove
  */
 void Equipment::remove_life(int life_to_remove) {
 
@@ -282,7 +282,7 @@ void Equipment::remove_life(int life_to_remove) {
 }
 
 /**
- * @brief Restores all the life.
+ * \brief Restores all the life.
  */
 void Equipment::restore_all_life() {
 
@@ -292,20 +292,20 @@ void Equipment::restore_all_life() {
 // magic
 
 /**
- * @brief Returns the maximum number of magic points.
- * @return the maximum level of magic
+ * \brief Returns the maximum number of magic points.
+ * \return the maximum level of magic
  */
 int Equipment::get_max_magic() {
   return savegame.get_integer(Savegame::KEY_MAX_MAGIC);
 }
 
 /**
- * @brief Sets the maximum number of magic points.
+ * \brief Sets the maximum number of magic points.
  *
  * Exits with an error message if the value specified
  * if not valid.
  * 
- * @param max_magic the maximum level of magic
+ * \param max_magic the maximum level of magic
  */
 void Equipment::set_max_magic(int max_magic) {
 
@@ -318,20 +318,20 @@ void Equipment::set_max_magic(int max_magic) {
 }
 
 /**
- * @brief Returns the current number of magic points of the player.
- * @return the player's current number of magic points
+ * \brief Returns the current number of magic points of the player.
+ * \return the player's current number of magic points
  */
 int Equipment::get_magic() {
   return savegame.get_integer(Savegame::KEY_CURRENT_MAGIC);
 }
 
 /**
- * @brief Sets the current number of magic points of the player.
+ * \brief Sets the current number of magic points of the player.
  *
  * If the value is lower than zero, it is replaced by zero.
  * If the value is greater than get_max_life(), it is replaced by that value.
  *
- * @param magic The player's new number of magic points.
+ * \param magic The player's new number of magic points.
  */
 void Equipment::set_magic(int magic) {
 
@@ -340,11 +340,11 @@ void Equipment::set_magic(int magic) {
 }
 
 /**
- * @brief Adds some magic points to the player.
+ * \brief Adds some magic points to the player.
  *
  * If the maximum value is reached, no more magic points are added.
  * 
- * @param magic_to_add number of magic points to add
+ * \param magic_to_add number of magic points to add
  */
 void Equipment::add_magic(int magic_to_add) {
 
@@ -352,12 +352,12 @@ void Equipment::add_magic(int magic_to_add) {
 }
 
 /**
- * @brief Removes some magic points from the player.
+ * \brief Removes some magic points from the player.
  *
  * If the number of magic points reaches zero, no more magic points
  * are removed.
  *
- * @param magic_to_remove number of magic poits to remove
+ * \param magic_to_remove number of magic poits to remove
  */
 void Equipment::remove_magic(int magic_to_remove) {
 
@@ -365,7 +365,7 @@ void Equipment::remove_magic(int magic_to_remove) {
 }
 
 /**
- * @brief Restores all magic points.
+ * \brief Restores all magic points.
  */
 void Equipment::restore_all_magic() {
 
@@ -375,7 +375,7 @@ void Equipment::restore_all_magic() {
 // items
 
 /**
- * @brief Runs the Lua script of each equipment item.
+ * \brief Runs the Lua script of each equipment item.
  */
 void Equipment::load_items() {
 
@@ -421,9 +421,9 @@ void Equipment::load_items() {
 }
 
 /**
- * @brief Returns whether an equipment item with the specified name exists.
- * @param item_name Name of the item to check.
- * @return \c true if such an item exists.
+ * \brief Returns whether an equipment item with the specified name exists.
+ * \param item_name Name of the item to check.
+ * \return \c true if such an item exists.
  */
 bool Equipment::item_exists(const std::string& item_name) {
   return items.find(item_name) != items.end();
@@ -431,9 +431,9 @@ bool Equipment::item_exists(const std::string& item_name) {
 
 
 /**
- * @brief Returns an equipment item.
- * @param item_name name of the item to get
- * @return the corresponding item
+ * \brief Returns an equipment item.
+ * \param item_name name of the item to get
+ * \return the corresponding item
  */
 EquipmentItem& Equipment::get_item(const std::string& item_name) {
 
@@ -444,9 +444,9 @@ EquipmentItem& Equipment::get_item(const std::string& item_name) {
 }
 
 /**
- * @brief Returns the item currently assigned to a slot.
- * @param slot Slot of the item to get (1 or 2).
- * @return The item currently assigned to this slot or NULL.
+ * \brief Returns the item currently assigned to a slot.
+ * \param slot Slot of the item to get (1 or 2).
+ * \return The item currently assigned to this slot or NULL.
  */
 EquipmentItem* Equipment::get_item_assigned(int slot) {
 
@@ -467,13 +467,13 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
 }
 
 /**
- * @brief Assigns an item to a slot.
+ * \brief Assigns an item to a slot.
  *
  * The program exits with an error message if the specified item
  * cannot be assigned or if the player does not have it.
  * 
- * @param slot Slot to set (1 or 2).
- * @param item The item to assign to this slot or NULL to empty the slot.
+ * \param slot Slot to set (1 or 2).
+ * \param item The item to assign to this slot or NULL to empty the slot.
  */
 void Equipment::set_item_assigned(int slot, EquipmentItem* item) {
 
@@ -496,9 +496,9 @@ void Equipment::set_item_assigned(int slot, EquipmentItem* item) {
 }
 
 /**
- * @brief Returns the slot (1 or 2) where the specified item is currently assigned.
- * @param item The item to find.
- * @return The slot of this item, or 0 if this item is not assigned
+ * \brief Returns the slot (1 or 2) where the specified item is currently assigned.
+ * \param item The item to find.
+ * \return The slot of this item, or 0 if this item is not assigned
  */
 int Equipment::get_item_slot(EquipmentItem& item) {
 
@@ -515,9 +515,9 @@ int Equipment::get_item_slot(EquipmentItem& item) {
 // abilities
 
 /**
- * @brief Returns the index of the savegame variable that stores the specified ability.
- * @param ability_name Name of the ability.
- * @return Name of the boolean savegame variable that stores this ability.
+ * \brief Returns the index of the savegame variable that stores the specified ability.
+ * \param ability_name Name of the ability.
+ * \return Name of the boolean savegame variable that stores this ability.
  */
 const std::string Equipment::get_ability_savegame_variable(
     const std::string& ability_name) {
@@ -559,28 +559,28 @@ const std::string Equipment::get_ability_savegame_variable(
 }
 
 /**
- * @brief Returns whether the player has at least the specified level of an ability.
- * @param ability_name the ability to get
- * @param level the minimum level to check
- * @return true if the player has at least this level of the ability
+ * \brief Returns whether the player has at least the specified level of an ability.
+ * \param ability_name the ability to get
+ * \param level the minimum level to check
+ * \return true if the player has at least this level of the ability
  */
 bool Equipment::has_ability(const std::string& ability_name, int level) {
   return get_ability(ability_name) >= level;
 }
 
 /**
- * @brief Returns the level of the specified ability.
- * @param ability_name the ability to get
- * @return the level of this ability
+ * \brief Returns the level of the specified ability.
+ * \param ability_name the ability to get
+ * \return the level of this ability
  */
 int Equipment::get_ability(const std::string& ability_name) {
   return savegame.get_integer(get_ability_savegame_variable(ability_name));
 }
 
 /**
- * @brief Sets the level of the specified ability.
- * @param ability_name the ability to set
- * @param level the level of this ability
+ * \brief Sets the level of the specified ability.
+ * \param ability_name the ability to set
+ * \param level the level of this ability
  */
 void Equipment::set_ability(const std::string& ability_name, int level) {
 
@@ -598,11 +598,11 @@ void Equipment::set_ability(const std::string& ability_name, int level) {
 }
 
 /**
- * @brief This function is called when the player has just used an ability.
+ * \brief This function is called when the player has just used an ability.
  *
  * All item scripts are notified.
  *
- * @param ability_name the ability used
+ * \param ability_name the ability used
  */
 void Equipment::notify_ability_used(const std::string& ability_name) {
 

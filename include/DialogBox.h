@@ -27,7 +27,7 @@
 #include <map>
 
 /**
- * @brief A dialog box where a succession of messages can be displayed.
+ * \brief A dialog box where a succession of messages can be displayed.
  *
  * This class displays the dialog box and handles its properties:
  * the text speed and the state of the action and sword keys.

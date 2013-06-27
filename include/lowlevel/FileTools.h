@@ -24,7 +24,7 @@
 struct lua_State;
 
 /**
- * @brief Handles access to data files.
+ * \brief Handles access to data files.
  *
  * This class provides some functions to open and analyze a data file.
  * It encapsulates how the access to data files is done.

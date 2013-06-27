@@ -22,8 +22,8 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Loads the animations of a sprite from a file.
- * @param id Id of the sprite animation set to load
+ * \brief Loads the animations of a sprite from a file.
+ * \param id Id of the sprite animation set to load
  * (name of a sprite definition file, without the ".dat" extension).
  */
 SpriteAnimationSet::SpriteAnimationSet(const std::string& id):
@@ -129,7 +129,7 @@ SpriteAnimationSet::SpriteAnimationSet(const std::string& id):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 SpriteAnimationSet::~SpriteAnimationSet() {
 
@@ -142,11 +142,11 @@ SpriteAnimationSet::~SpriteAnimationSet() {
 }
 
 /**
- * @brief When the sprite is displayed on a map, sets the tileset.
+ * \brief When the sprite is displayed on a map, sets the tileset.
  *
  * This function must be called if this sprite image depends on the map's tileset.
  *
- * @param tileset The tileset.
+ * \param tileset The tileset.
  */
 void SpriteAnimationSet::set_tileset(Tileset& tileset) {
 
@@ -158,9 +158,9 @@ void SpriteAnimationSet::set_tileset(Tileset& tileset) {
 }
 
 /**
- * @brief Returns whether this animation set has an animation with the specified name.
- * @param animation_name an animation name
- * @return true if this animation exists
+ * \brief Returns whether this animation set has an animation with the specified name.
+ * \param animation_name an animation name
+ * \return true if this animation exists
  */
 bool SpriteAnimationSet::has_animation(
     const std::string& animation_name) const {
@@ -168,9 +168,9 @@ bool SpriteAnimationSet::has_animation(
 }
 
 /**
- * @brief Returns an animation.
- * @param animation_name name of the animation to get
- * @return the specified animation
+ * \brief Returns an animation.
+ * \param animation_name name of the animation to get
+ * \return the specified animation
  */
 const SpriteAnimation* SpriteAnimationSet::get_animation(
     const std::string& animation_name) const {
@@ -182,9 +182,9 @@ const SpriteAnimation* SpriteAnimationSet::get_animation(
 }
 
 /**
- * @brief Returns an animation.
- * @param animation_name name of the animation to get
- * @return the specified animation
+ * \brief Returns an animation.
+ * \param animation_name name of the animation to get
+ * \return the specified animation
  */
 SpriteAnimation* SpriteAnimationSet::get_animation(
     const std::string& animation_name) {
@@ -196,15 +196,15 @@ SpriteAnimation* SpriteAnimationSet::get_animation(
 }
 
 /**
- * @brief Returns the name of the default animation, i.e. the first one.
- * @return the name of the default animation
+ * \brief Returns the name of the default animation, i.e. the first one.
+ * \return the name of the default animation
  */
 const std::string& SpriteAnimationSet::get_default_animation() const {
   return default_animation_name;
 }
 
 /**
- * @brief Enables the pixel-perfect collision detection for these animations.
+ * \brief Enables the pixel-perfect collision detection for these animations.
  */
 void SpriteAnimationSet::enable_pixel_collisions() {
 
@@ -219,16 +219,16 @@ void SpriteAnimationSet::enable_pixel_collisions() {
 }
 
 /**
- * @brief Returns whether the pixel-perfect collisions are enabled for these animations.
- * @return true if the pixel-perfect collisions are enabled
+ * \brief Returns whether the pixel-perfect collisions are enabled for these animations.
+ * \return true if the pixel-perfect collisions are enabled
  */
 bool SpriteAnimationSet::are_pixel_collisions_enabled() const {
   return animations.begin()->second->are_pixel_collisions_enabled();
 }
 
 /**
- * @brief Returns a rectangle big enough to contain any frame of this animation set.
- * @return The maximum size of a frame in this animation set.
+ * \brief Returns a rectangle big enough to contain any frame of this animation set.
+ * \return The maximum size of a frame in this animation set.
  */
 const Rectangle& SpriteAnimationSet::get_max_size() const {
   return max_size;

@@ -22,8 +22,8 @@
 #include "GameCommands.h"
 
 /**
- * @brief Constructor.
- * @param moving_speed movement speed
+ * \brief Constructor.
+ * \param moving_speed movement speed
  */
 PlayerMovement::PlayerMovement(int moving_speed):
   StraightMovement(false, true),
@@ -33,14 +33,14 @@ PlayerMovement::PlayerMovement(int moving_speed):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 PlayerMovement::~PlayerMovement() {
 
 }
 
 /**
- * @brief Updates this movement.
+ * \brief Updates this movement.
  */
 void PlayerMovement::update() {
 
@@ -68,8 +68,8 @@ void PlayerMovement::update() {
 }
 
 /**
- * @brief Returns the direction this movement is trying to move towards.
- * @return the direction (0 to 7), or -1 if the player is not trying to go
+ * \brief Returns the direction this movement is trying to move towards.
+ * \return the direction (0 to 7), or -1 if the player is not trying to go
  * to a direction or the movement is disabled
  */
 int PlayerMovement::get_wanted_direction8() {
@@ -77,16 +77,16 @@ int PlayerMovement::get_wanted_direction8() {
 }
 
 /**
- * @brief Returns the moving speed of the entity.
- * @return the moving speed of the entity
+ * \brief Returns the moving speed of the entity.
+ * \return the moving speed of the entity
  */
 int PlayerMovement::get_moving_speed() {
   return moving_speed;
 }
 
 /**
- * @brief Sets the moving speed of the entity.
- * @param moving_speed the moving speed of the entity
+ * \brief Sets the moving speed of the entity.
+ * \param moving_speed the moving speed of the entity
  */
 void PlayerMovement::set_moving_speed(int moving_speed) {
 
@@ -96,7 +96,7 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
 }
 
 /**
- * @brief Determines the direction defined by the directional keys currently pressed
+ * \brief Determines the direction defined by the directional keys currently pressed
  * and computes the corresponding movement.
  */
 void PlayerMovement::set_wanted_direction() {
@@ -111,7 +111,7 @@ void PlayerMovement::set_wanted_direction() {
 }
 
 /**
- * @brief Changes the movement of the entity depending on the direction wanted.
+ * \brief Changes the movement of the entity depending on the direction wanted.
  *
  * This function is called when the direction is changed.
  */

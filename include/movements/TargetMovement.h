@@ -21,7 +21,7 @@
 #include "movements/StraightMovement.h"
 
 /**
- * @brief Movement of an object that goes to a target point.
+ * \brief Movement of an object that goes to a target point.
  *
  * The target point may be a fixed point or a moving entity.
  */

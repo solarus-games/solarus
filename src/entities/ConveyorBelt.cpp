@@ -20,12 +20,12 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * @brief Creates a new conveyor belt.
- * @param name Unique name identifying the entity on the map or an empty string.
- * @param layer layer of the entity to create on the map
- * @param x x coordinate of the entity to create
- * @param y y coordinate of the entity to create
- * @param direction direction of the conveyor belt
+ * \brief Creates a new conveyor belt.
+ * \param name Unique name identifying the entity on the map or an empty string.
+ * \param layer layer of the entity to create on the map
+ * \param x x coordinate of the entity to create
+ * \param y y coordinate of the entity to create
+ * \param direction direction of the conveyor belt
  */
 ConveyorBelt::ConveyorBelt(const std::string& name,
     Layer layer, int x, int y, int direction):
@@ -38,24 +38,24 @@ ConveyorBelt::ConveyorBelt(const std::string& name,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 ConveyorBelt::~ConveyorBelt() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType ConveyorBelt::get_type() {
   return CONVEYOR_BELT;
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true if this entity is an obstacle for the other one
  */
 bool ConveyorBelt::is_obstacle_for(MapEntity& other) {
 
@@ -63,9 +63,9 @@ bool ConveyorBelt::is_obstacle_for(MapEntity& other) {
 }
 
 /**
- * @brief This function is called when another entity overlaps this entity.
- * @param entity_overlapping the other entity
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called when another entity overlaps this entity.
+ * \param entity_overlapping the other entity
+ * \param collision_mode the collision mode that detected the collision
  */
 void ConveyorBelt::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 

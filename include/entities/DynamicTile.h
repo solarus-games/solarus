@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 
 /**
- * @brief A special tile that can be enabled or disabled.
+ * \brief A special tile that can be enabled or disabled.
  *
  * A dynamic tile is a tile placed on the map
  * that can be enabled or disabled by the script,

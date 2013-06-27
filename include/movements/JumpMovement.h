@@ -21,7 +21,7 @@
 #include "movements/PixelMovement.h"
 
 /**
- * @brief Movement of an entity that jumps towards a direction.
+ * \brief Movement of an entity that jumps towards a direction.
  *
  * TODO: inherit StraightMovement instead?
  */

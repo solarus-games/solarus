@@ -22,7 +22,7 @@
 #include <cstddef>
 
 /**
- * @brief Encapsulates the Impulse Tracker music decoding.
+ * \brief Encapsulates the Impulse Tracker music decoding.
  *
  * This class allows the Music class to be independent of the Impulse Tracker decoding library.
  */

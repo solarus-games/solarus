@@ -21,7 +21,7 @@
 #include "snes_spc/spc.h"
 
 /**
- * @brief Encapsulates the SPC music decoding.
+ * \brief Encapsulates the SPC music decoding.
  *
  * This class allows the Music class to be independent of the SPC library.
  * To decode SPC music files, the code of the Snes_SPC library is used.

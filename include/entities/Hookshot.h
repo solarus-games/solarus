@@ -22,7 +22,7 @@
 #include "Sprite.h"
 
 /**
- * @brief The hookshot thrown by the hero.
+ * \brief The hookshot thrown by the hero.
  */
 class Hookshot: public MapEntity {
 

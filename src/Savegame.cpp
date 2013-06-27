@@ -69,9 +69,9 @@ const std::string Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH =
     "_ability_get_back_from_death";                                    /**< Resurrection ability level. */
 
 /**
- * @brief Creates a savegame with a specified file name, existing or not.
- * @param main_loop The Solarus root object.
- * @param file_name Name of the savegame file (can be a new file),
+ * \brief Creates a savegame with a specified file name, existing or not.
+ * \param main_loop The Solarus root object.
+ * \param file_name Name of the savegame file (can be a new file),
  * relative to the quest write directory, with its extension.
  */
 Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
@@ -99,21 +99,21 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Savegame::~Savegame() {
 }
 
 /**
- * @brief Returns whether this is a new save.
- * @return true if there is no savegame file with this name yet
+ * \brief Returns whether this is a new save.
+ * \return true if there is no savegame file with this name yet
  */
 bool Savegame::is_empty() {
   return empty;
 }
 
 /**
- * @brief Loads the initial values.
+ * \brief Loads the initial values.
  */
 void Savegame::set_initial_values() {
 
@@ -131,7 +131,7 @@ void Savegame::set_initial_values() {
 }
 
 /**
- * @brief Sets default values for the keyboard game controls.
+ * \brief Sets default values for the keyboard game controls.
  */
 void Savegame::set_default_keyboard_controls() {
 
@@ -155,7 +155,7 @@ void Savegame::set_default_keyboard_controls() {
 }
 
 /**
- * @brief Sets default values for the joypad game controls.
+ * \brief Sets default values for the joypad game controls.
  */
 void Savegame::set_default_joypad_controls() {
 
@@ -171,7 +171,7 @@ void Savegame::set_default_joypad_controls() {
 }
 
 /**
- * @brief Reads the data from the savegame file.
+ * \brief Reads the data from the savegame file.
  */
 void Savegame::load() {
 
@@ -221,13 +221,13 @@ void Savegame::load() {
 }
 
 /**
- * @brief __newindex function of the environment of the savegame file.
+ * \brief __newindex function of the environment of the savegame file.
  *
  * This special __newindex function catches declaration of global variables
  * to store them into the savegame.
  *
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int Savegame::l_newindex(lua_State* l) {
 
@@ -260,7 +260,7 @@ int Savegame::l_newindex(lua_State* l) {
 }
 
 /**
- * @brief Saves the data into a file.
+ * \brief Saves the data into a file.
  */
 void Savegame::save() {
 
@@ -288,55 +288,55 @@ void Savegame::save() {
 }
 
 /**
- * @brief Returns the name of the file where the data is saved.
- * @return the file name of this savegame
+ * \brief Returns the name of the file where the data is saved.
+ * \return the file name of this savegame
  */
 const std::string& Savegame::get_file_name() {
   return file_name;
 }
 
 /**
- * @brief Returns the Solarus main loop.
- * @return The main loop.
+ * \brief Returns the Solarus main loop.
+ * \return The main loop.
  */
 MainLoop& Savegame::get_main_loop() {
   return main_loop;
 }
 
 /**
- * @brief Returns the Lua context where this savegame lives.
- * @return The Lua context.
+ * \brief Returns the Lua context where this savegame lives.
+ * \return The Lua context.
  */
 LuaContext& Savegame::get_lua_context() {
   return main_loop.get_lua_context();
 }
 
 /**
- * @brief Returns the player's equipment corresponding to this savegame.
- * @return the equipment
+ * \brief Returns the player's equipment corresponding to this savegame.
+ * \return the equipment
  */
 Equipment& Savegame::get_equipment() {
   return equipment;
 }
 
 /**
- * @brief If this savegame is currently running in a game, return that game.
- * @return A game or NULL.
+ * \brief If this savegame is currently running in a game, return that game.
+ * \return A game or NULL.
  */
 Game* Savegame::get_game() {
   return game;
 }
 
 /**
- * @brief Sets the game that is running this savegame.
- * @param game A game or NULL.
+ * \brief Sets the game that is running this savegame.
+ * \param game A game or NULL.
  */
 void Savegame::set_game(Game* game) {
   this->game = game;
 }
 
 /**
- * @brief Notifies this savegame that its game starts.
+ * \brief Notifies this savegame that its game starts.
  */
 void Savegame::notify_game_started() {
 
@@ -344,7 +344,7 @@ void Savegame::notify_game_started() {
 }
 
 /**
- * @brief Notifies this savegame that its game is finished.
+ * \brief Notifies this savegame that its game is finished.
  */
 void Savegame::notify_game_finished() {
 
@@ -352,9 +352,9 @@ void Savegame::notify_game_finished() {
 }
 
 /**
- * @brief Returns whether a saved value is a string.
- * @param key Name of the value to get.
- * @return true if this value exists and is a string.
+ * \brief Returns whether a saved value is a string.
+ * \param key Name of the value to get.
+ * \return true if this value exists and is a string.
  */
 bool Savegame::is_string(const std::string& key) {
 
@@ -370,9 +370,9 @@ bool Savegame::is_string(const std::string& key) {
 }
 
 /**
- * @brief Returns a string value saved.
- * @param key Name of the value to get.
- * @return The string value associated with this key or an empty string.
+ * \brief Returns a string value saved.
+ * \param key Name of the value to get.
+ * \return The string value associated with this key or an empty string.
  */
 const std::string& Savegame::get_string(const std::string& key) {
 
@@ -391,9 +391,9 @@ const std::string& Savegame::get_string(const std::string& key) {
 }
 
 /**
- * @brief Sets a string value saved.
- * @param key Name of the value to set.
- * @param value The string value to associate with this key.
+ * \brief Sets a string value saved.
+ * \param key Name of the value to set.
+ * \param value The string value to associate with this key.
  */
 void Savegame::set_string(const std::string& key, const std::string& value) {
 
@@ -405,9 +405,9 @@ void Savegame::set_string(const std::string& key, const std::string& value) {
 }
 
 /**
- * @brief Returns whether a saved value is an integer.
- * @param key Name of the value to get.
- * @return true if this value exists and is an integer.
+ * \brief Returns whether a saved value is an integer.
+ * \param key Name of the value to get.
+ * \return true if this value exists and is an integer.
  */
 bool Savegame::is_integer(const std::string& key) {
 
@@ -423,9 +423,9 @@ bool Savegame::is_integer(const std::string& key) {
 }
 
 /**
- * @brief Returns a integer value saved.
- * @param key Name of the value to get.
- * @return The integer value associated with this key or 0.
+ * \brief Returns a integer value saved.
+ * \param key Name of the value to get.
+ * \return The integer value associated with this key or 0.
  */
 int Savegame::get_integer(const std::string& key) {
 
@@ -443,9 +443,9 @@ int Savegame::get_integer(const std::string& key) {
 }
 
 /**
- * @brief Sets an integer value saved.
- * @param key Name of the value to set.
- * @param value The integer value to associate with this key.
+ * \brief Sets an integer value saved.
+ * \param key Name of the value to set.
+ * \param value The integer value to associate with this key.
  */
 void Savegame::set_integer(const std::string& key, int value) {
 
@@ -457,9 +457,9 @@ void Savegame::set_integer(const std::string& key, int value) {
 }
 
 /**
- * @brief Returns whether a saved value is a boolean.
- * @param key Name of the value to get.
- * @return true if this value exists and is a boolean.
+ * \brief Returns whether a saved value is a boolean.
+ * \param key Name of the value to get.
+ * \return true if this value exists and is a boolean.
  */
 bool Savegame::is_boolean(const std::string& key) {
 
@@ -475,9 +475,9 @@ bool Savegame::is_boolean(const std::string& key) {
 }
 
 /**
- * @brief Returns a boolean value saved.
- * @param key Name of the value to get.
- * @return The boolean value associated with this key or false.
+ * \brief Returns a boolean value saved.
+ * \param key Name of the value to get.
+ * \return The boolean value associated with this key or false.
  */
 bool Savegame::get_boolean(const std::string& key) {
 
@@ -495,9 +495,9 @@ bool Savegame::get_boolean(const std::string& key) {
 }
 
 /**
- * @brief Sets a boolean value saved.
- * @param key Name of the value to set.
- * @param value The boolean value to associate with this key.
+ * \brief Sets a boolean value saved.
+ * \param key Name of the value to set.
+ * \param value The boolean value to associate with this key.
  */
 void Savegame::set_boolean(const std::string& key, bool value) {
 
@@ -509,8 +509,8 @@ void Savegame::set_boolean(const std::string& key, bool value) {
 }
 
 /**
- * @brief Unsets a value saved.
- * @param key Name of the value to unset.
+ * \brief Unsets a value saved.
+ * \param key Name of the value to unset.
  */
 void Savegame::unset(const std::string& key) {
 
@@ -521,8 +521,8 @@ void Savegame::unset(const std::string& key) {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& Savegame::get_lua_type_name() const {
   return LuaContext::game_module_name;

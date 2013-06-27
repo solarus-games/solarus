@@ -30,7 +30,7 @@
 #endif
 
 /**
- * @brief Provides functionalities for printing error messages or making
+ * \brief Provides functionalities for printing error messages or making
  * runtime checks, especially when the code is compiled in debugging mode.
  */
 class Debug {
@@ -48,8 +48,8 @@ class Debug {
 };
 
 /**
- * @brief Prints "Warning: " and a message on stderr.
- * @param message The warning message to print.
+ * \brief Prints "Warning: " and a message on stderr.
+ * \param message The warning message to print.
  */
 inline void Debug::warning(const std::string& message) {
 
@@ -57,11 +57,11 @@ inline void Debug::warning(const std::string& message) {
 }
 
 /**
- * @brief Prints "Error: " and a message on stderr.
+ * \brief Prints "Error: " and a message on stderr.
  *
  * Use this function for non fatal errors such as errors in quest data files.
  *
- * @param message The error message to print.
+ * \param message The error message to print.
  */
 inline void Debug::error(const std::string& message) {
 
@@ -69,15 +69,15 @@ inline void Debug::error(const std::string& message) {
 }
 
 /**
- * @brief Throws an exception if the specified assertion fails.
+ * \brief Throws an exception if the specified assertion fails.
  *
  * If the assertion fails, shows an error message and aborts.
  * The error message is saved in error.txt.
  * This function should be used to detect fatal errors only, that is,
  * internal errors in the C++ code that require to stop the program.
  *
- * @param assertion The boolean condition to check.
- * @param error_message The error message to attach to print when the
+ * \param assertion The boolean condition to check.
+ * \param error_message The error message to attach to print when the
  * assertion fails.
  */
 inline void Debug::check_assertion(bool assertion, const std::string& error_message) {
@@ -88,12 +88,12 @@ inline void Debug::check_assertion(bool assertion, const std::string& error_mess
 }
 
 /**
- * @brief Aborts the program.
+ * \brief Aborts the program.
  *
  * This function is equivalent to Debug::check_assertion(false, error_message).
  * The error message is printed on stdout and also saved in error.txt.
  *
- * @param error_message The error message to show.
+ * \param error_message The error message to show.
  */
 inline void Debug::die(const std::string& error_message) {
 

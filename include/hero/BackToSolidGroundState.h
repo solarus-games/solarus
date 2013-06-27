@@ -20,7 +20,7 @@
 #include "hero/State.h"
 
 /**
- * @brief The state "back to solid ground" of the hero.
+ * \brief The state "back to solid ground" of the hero.
  */
 class Hero::BackToSolidGroundState: public Hero::State {
 

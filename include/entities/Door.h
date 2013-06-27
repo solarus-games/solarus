@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 
 /**
- * @brief A door that may be open or closed.
+ * \brief A door that may be open or closed.
  *
  * It can be opened by one of the following methods depending on your choice:
  * - by pressing the action key,
@@ -42,7 +42,7 @@ class Door: public Detector {
   public:
 
     /**
-     * @brief The different possible ways of opening a door.
+     * \brief The different possible ways of opening a door.
      *
      * Note that any kind door can always be opened manually from Lua.
      */

@@ -22,7 +22,7 @@
 #include <list>
 
 /**
- * @brief A switch that can be activated to change the state of the
+ * \brief A switch that can be activated to change the state of the
  * crystal blocks.
  */
 class Crystal: public Detector {

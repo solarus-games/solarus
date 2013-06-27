@@ -36,7 +36,7 @@
 #include "lowlevel/Geometry.h"
 
 /**
- * @brief Movement of the item when the hero is lifting it.
+ * \brief Movement of the item when the hero is lifting it.
  */
 const std::string CarriedItem::lifting_trajectories[4] = {
     "0 0  0 0  -3 -3  -5 -3  -5 -2",
@@ -46,16 +46,16 @@ const std::string CarriedItem::lifting_trajectories[4] = {
 };
 
 /**
- * @brief Creates a carried item (i.e. an item carried by the hero).
- * @param hero the hero who is lifting the item to be created
- * @param original_entity the entity that will be replaced by this carried item
+ * \brief Creates a carried item (i.e. an item carried by the hero).
+ * \param hero the hero who is lifting the item to be created
+ * \param original_entity the entity that will be replaced by this carried item
  * (its coordinates, size and origin will be copied)
- * @param animation_set_id name of the animation set for the sprite to create
- * @param destruction_sound_id name of the sound to play when this item is destroyed
+ * \param animation_set_id name of the animation set for the sprite to create
+ * \param destruction_sound_id name of the sound to play when this item is destroyed
  * (or an empty string)
- * @param damage_on_enemies damage received by an enemy if the item is thrown on him
+ * \param damage_on_enemies damage received by an enemy if the item is thrown on him
  * (possibly 0)
- * @param explosion_date date of the explosion if the item should explode,
+ * \param explosion_date date of the explosion if the item should explode,
  * or 0 if the item does not explode
  */
 CarriedItem::CarriedItem(Hero& hero, MapEntity& original_entity,
@@ -105,31 +105,31 @@ CarriedItem::CarriedItem(Hero& hero, MapEntity& original_entity,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 CarriedItem::~CarriedItem() {
   delete shadow_sprite;
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType CarriedItem::get_type() {
   return CARRIED_ITEM;
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
- * @return true if this type of entity can be obstacle for other entities
+ * \brief Returns whether entities of this type can be obstacles for other entities.
+ * \return true if this type of entity can be obstacle for other entities
  */
 bool CarriedItem::can_be_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether this entity has to be drawn in y order.
- * @return \c true if this type of entity should be drawn at the same level
+ * \brief Returns whether this entity has to be drawn in y order.
+ * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
 bool CarriedItem::is_drawn_in_y_order() {
@@ -137,15 +137,15 @@ bool CarriedItem::is_drawn_in_y_order() {
 }
 
 /**
- * @brief Returns the damage this item can cause to ennemies.
- * @return the damage on enemies
+ * \brief Returns the damage this item can cause to ennemies.
+ * \return the damage on enemies
  */
 int CarriedItem::get_damage_on_enemies() {
   return damage_on_enemies;
 }
 
 /**
- * @brief Makes the item sprite stop moving.
+ * \brief Makes the item sprite stop moving.
  *
  * This function is called when the hero stops walking while carrying the item.
  * The item also stops moving.
@@ -159,7 +159,7 @@ void CarriedItem::set_animation_stopped() {
 }
 
 /**
- * @brief Makes the item sprite move.
+ * \brief Makes the item sprite move.
  *
  * This function is called when the hero starts walking while carrying the item.
  * The item moves like him.
@@ -173,8 +173,8 @@ void CarriedItem::set_animation_walking() {
 }
 
 /**
- * @brief Throws the item.
- * @param direction direction where the hero throws the item (0 to 3)
+ * \brief Throws the item.
+ * \param direction direction where the hero throws the item (0 to 3)
  */
 void CarriedItem::throw_item(int direction) {
 
@@ -203,31 +203,31 @@ void CarriedItem::throw_item(int direction) {
 }
 
 /**
- * @brief Returns whether the item is being lifted.
- * @return true if the item is being lifted
+ * \brief Returns whether the item is being lifted.
+ * \return true if the item is being lifted
  */
 bool CarriedItem::is_being_lifted() {
   return is_lifting;
 }
 
 /**
- * @brief Returns whether the item is being thrown.
- * @return true if the item is being thrown
+ * \brief Returns whether the item is being thrown.
+ * \return true if the item is being thrown
  */
 bool CarriedItem::is_being_thrown() {
   return is_throwing;
 }
  
 /**
- * @brief Returns whether the item is about to explode.
- * @return true if the item is about to explode
+ * \brief Returns whether the item is about to explode.
+ * \return true if the item is about to explode
  */
 bool CarriedItem::will_explode_soon() {
   return can_explode() && System::now() >= explosion_date - 1500;
 }
 
 /**
- * @brief Destroys the item when it is being thrown.
+ * \brief Destroys the item when it is being thrown.
  */
 void CarriedItem::break_item() {
 
@@ -258,27 +258,27 @@ void CarriedItem::break_item() {
 }
 
 /**
- * @brief Returns whether the item is broken.
+ * \brief Returns whether the item is broken.
  *
  * When this function returns true, the item can be deleted from memory.
  *
- * @return true if the item is broken
+ * \return true if the item is broken
  */
 bool CarriedItem::is_broken() {
   return is_breaking && (get_sprite().is_animation_finished() || can_explode());
 }
 
 /**
- * @brief Returns whether the item can explode.
- * @return true if the item will explode
+ * \brief Returns whether the item can explode.
+ * \return true if the item will explode
  */
 bool CarriedItem::can_explode() {
   return explosion_date != 0;
 }
 
 /**
- * @brief This function is called by the map when the game is suspended or resumed.
- * @param suspended true to suspend the entity, false to resume it
+ * \brief This function is called by the map when the game is suspended or resumed.
+ * \param suspended true to suspend the entity, false to resume it
  */
 void CarriedItem::set_suspended(bool suspended) {
 
@@ -302,7 +302,7 @@ void CarriedItem::set_suspended(bool suspended) {
 }
 
 /**
- * @brief This function is called repeatedly.
+ * \brief This function is called repeatedly.
  */
 void CarriedItem::update() {
 
@@ -368,7 +368,7 @@ void CarriedItem::update() {
 }
 
 /**
- * @brief Draws the carried item on the map.
+ * \brief Draws the carried item on the map.
  *
  * This is a redefinition of MapEntity::draw_on_map()
  * to draw the shadow independently of the item movement.
@@ -392,8 +392,8 @@ void CarriedItem::draw_on_map() {
 }
 
 /**
- * @brief This function is called when this carried item collides an enemy.
- * @param enemy the enemy
+ * \brief This function is called when this carried item collides an enemy.
+ * \param enemy the enemy
  */
 void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
 
@@ -405,14 +405,14 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
 }
 
 /**
- * @brief Notifies this entity that it has just attacked an enemy.
+ * \brief Notifies this entity that it has just attacked an enemy.
  *
  * This function is called even if this attack was not successful.
  *
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack
- * @param killed indicates that the attack has just killed the enemy
+ * \param attack the attack
+ * \param victim the enemy just hurt
+ * \param result indicates how the enemy has reacted to the attack
+ * \param killed indicates that the attack has just killed the enemy
  */
 void CarriedItem::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
     EnemyReaction::Reaction& result, bool killed) {
@@ -423,85 +423,85 @@ void CarriedItem::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
 }
 
 /**
- * @brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is currently an obstacle for this entity
+ * \brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is currently an obstacle for this entity
  */
 bool CarriedItem::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
 /**
- * @brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
- * @param conveyor_belt a conveyor belt
- * @return true if the conveyor belt is currently an obstacle for this entity
+ * \brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
+ * \param conveyor_belt a conveyor belt
+ * \return true if the conveyor belt is currently an obstacle for this entity
  */
 bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
 /**
- * @brief Returns whether some stairs are currently considered as an obstacle for this entity.
- * @param stairs an stairs entity
- * @return true if the stairs are currently an obstacle for this entity
+ * \brief Returns whether some stairs are currently considered as an obstacle for this entity.
+ * \param stairs an stairs entity
+ * \return true if the stairs are currently an obstacle for this entity
  */
 bool CarriedItem::is_stairs_obstacle(Stairs& stairs) {
   return false;
 }
 
 /**
- * @brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
- * @return true if the deep water tiles are currently an obstacle for this entity
+ * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
+ * \return true if the deep water tiles are currently an obstacle for this entity
  */
 bool CarriedItem::is_deep_water_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a hole is currently considered as an obstacle for this entity.
- * @return true if the holes are currently an obstacle for this entity
+ * \brief Returns whether a hole is currently considered as an obstacle for this entity.
+ * \return true if the holes are currently an obstacle for this entity
  */
 bool CarriedItem::is_hole_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether lava is currently considered as an obstacle for this entity.
- * @return true if lava is currently an obstacle for this entity
+ * \brief Returns whether lava is currently considered as an obstacle for this entity.
+ * \return true if lava is currently an obstacle for this entity
  */
 bool CarriedItem::is_lava_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether prickles are currently considered as an obstacle for this entity.
- * @return true if prickles are currently an obstacle for this entity
+ * \brief Returns whether prickles are currently considered as an obstacle for this entity.
+ * \return true if prickles are currently an obstacle for this entity
  */
 bool CarriedItem::is_prickle_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
- * @return true if the ladders are currently an obstacle for this entity
+ * \brief Returns whether a ladder is currently considered as an obstacle for this entity.
+ * \return true if the ladders are currently an obstacle for this entity
  */
 bool CarriedItem::is_ladder_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a switch is currently considered as an obstacle by this entity.
- * @param sw a switch
- * @return true if the switch is currently an obstacle for this entity
+ * \brief Returns whether a switch is currently considered as an obstacle by this entity.
+ * \param sw a switch
+ * \return true if the switch is currently an obstacle for this entity
  */
 bool CarriedItem::is_switch_obstacle(Switch& sw) {
   return !is_being_thrown();
 }
 
 /**
- * @brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
- * @param raised_block a crystal block raised
- * @return false
+ * \brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
+ * \param raised_block a crystal block raised
+ * \return false
  */
 bool CarriedItem::is_raised_block_obstacle(CrystalBlock& raised_block) {
   // the thrown items can traverse the crystal blocks
@@ -509,45 +509,45 @@ bool CarriedItem::is_raised_block_obstacle(CrystalBlock& raised_block) {
 }
 
 /**
- * @brief Returns whether a crystal is currently considered as an obstacle for this entity.
- * @param crystal a crystal
- * @return true if the crystal is currently an obstacle for this entity
+ * \brief Returns whether a crystal is currently considered as an obstacle for this entity.
+ * \param crystal a crystal
+ * \return true if the crystal is currently an obstacle for this entity
  */
 bool CarriedItem::is_crystal_obstacle(Crystal& crystal) {
   return !is_being_thrown();
 }
 
 /**
- * @brief Returns whether a non-playing character is currently considered as an obstacle for this entity.
- * @param npc a non-playing character
- * @return true if the NPC is currently an obstacle for this entity
+ * \brief Returns whether a non-playing character is currently considered as an obstacle for this entity.
+ * \param npc a non-playing character
+ * \return true if the NPC is currently an obstacle for this entity
  */
 bool CarriedItem::is_npc_obstacle(NPC& npc) {
   return npc.is_solid();
 }
 
 /**
- * @brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
- * @param jumper a non-diagonal jumper
- * @return true if the jumper is currently an obstacle for this entity
+ * \brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
+ * \param jumper a non-diagonal jumper
+ * \return true if the jumper is currently an obstacle for this entity
  */
 bool CarriedItem::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 
 /**
- * @brief Returns whether a sensor is currently considered as an obstacle for this entity.
- * @param sensor a sensor
- * @return true if this sensor is currently an obstacle for this entity.
+ * \brief Returns whether a sensor is currently considered as an obstacle for this entity.
+ * \param sensor a sensor
+ * \return true if this sensor is currently an obstacle for this entity.
  */
 bool CarriedItem::is_sensor_obstacle(Sensor& sensor) {
   return false;
 }
 
 /**
- * @brief Returns whether an enemy character is considered as an obstacle for this entity.
- * @param enemy an enemy
- * @return true if this enemy is considered as an obstacle for this entity.
+ * \brief Returns whether an enemy character is considered as an obstacle for this entity.
+ * \param enemy an enemy
+ * \return true if this enemy is considered as an obstacle for this entity.
  */
 bool CarriedItem::is_enemy_obstacle(Enemy& enemy) {
   // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
@@ -555,9 +555,9 @@ bool CarriedItem::is_enemy_obstacle(Enemy& enemy) {
 }
 
 /**
- * @brief This function is called when a switch detects a collision with this entity.
- * @param sw the switch
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a switch detects a collision with this entity.
+ * \param sw the switch
+ * \param collision_mode the collision mode that detected the event
  */
 void CarriedItem::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
@@ -571,9 +571,9 @@ void CarriedItem::notify_collision_with_switch(Switch& sw, CollisionMode collisi
 }
 
 /**
- * @brief This function is called when a crystal detects a collision with this entity.
- * @param crystal the crystal
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a crystal detects a collision with this entity.
+ * \param crystal the crystal
+ * \param collision_mode the collision mode that detected the event
  */
 void CarriedItem::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
@@ -587,9 +587,9 @@ void CarriedItem::notify_collision_with_crystal(Crystal &crystal, CollisionMode 
 }
 
 /**
- * @brief This function is called when some stairs detect a collision with this entity.
- * @param stairs the stairs entity
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when some stairs detect a collision with this entity.
+ * \param stairs the stairs entity
+ * \param collision_mode the collision mode that detected the event
  */
 void CarriedItem::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
 

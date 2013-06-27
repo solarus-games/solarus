@@ -24,7 +24,7 @@
 #include "DialogBox.h"
 
 /**
- * @brief Represents the game currently running.
+ * \brief Represents the game currently running.
  *
  * The game shows the current map and handles all game elements.
  */

@@ -32,23 +32,23 @@
 #include "lua/LuaContext.h"
 
 /**
- * @brief Creates a map loader.
+ * \brief Creates a map loader.
  */
 MapLoader::MapLoader() {
 
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 MapLoader::~MapLoader() {
 
 }
 
 /**
- * @brief Loads a map into the game.
- * @param game The game.
- * @param map The map to load.
+ * \brief Loads a map into the game.
+ * \param game The game.
+ * \param map The map to load.
  */
 void MapLoader::load_map(Game& game, Map& map) {
 
@@ -86,13 +86,13 @@ void MapLoader::load_map(Game& game, Map& map) {
 }
 
 /**
- * @brief Implementation of the properties() function of the Lua map data file.
+ * \brief Implementation of the properties() function of the Lua map data file.
  *
  * Sets the properties of the map: position, dimensions, tileset, music, etc.
  * This function must be called before any entity creation function.
  *
- * @param l The Lua state that is calling this function.
- * @return Number of values to return to Lua.
+ * \param l The Lua state that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int MapLoader::l_properties(lua_State* l) {
 

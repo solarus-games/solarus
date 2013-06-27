@@ -23,7 +23,7 @@
 #include <SDL.h>
 
 /**
- * @brief Represents a graphic surface.
+ * \brief Represents a graphic surface.
  *
  * A surface is a rectangle of pixels.
  * A surface can be drawn or blitted on another surface.
@@ -39,7 +39,7 @@ class Surface: public Drawable {
   public:
 
     /**
-     * @brief The base directory to use when opening image files.
+     * \brief The base directory to use when opening image files.
      */
     enum ImageDirectory {
       DIR_DATA,        /**< the root directory of the data package */

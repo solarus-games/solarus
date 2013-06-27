@@ -22,7 +22,7 @@
 #include <list>
 
 /**
- * @brief Represents an explosion on the map.
+ * \brief Represents an explosion on the map.
  *
  * An explosion can hurt the hero, the enemies and open weak walls.
  */

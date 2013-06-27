@@ -28,11 +28,11 @@
 #include "lowlevel/Sound.h"
 
 /**
- * @brief Creates a new crystal.
- * @param name name of the entity to create
- * @param layer layer of the entity to create on the map
- * @param x x coordinate of the entity to create
- * @param y y coordinate of the entity to create
+ * \brief Creates a new crystal.
+ * \param name name of the entity to create
+ * \param layer layer of the entity to create on the map
+ * \param x x coordinate of the entity to create
+ * \param y y coordinate of the entity to create
  */
 Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
   Detector(COLLISION_SPRITE | COLLISION_RECTANGLE | COLLISION_FACING_POINT,
@@ -48,22 +48,22 @@ Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Crystal::~Crystal() {
   delete star_sprite;
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Crystal::get_type() {
   return CRYSTAL;
 }
 
 /**
- * @brief Notifies this entity that its map has just become active.
+ * \brief Notifies this entity that its map has just become active.
  */
 void Crystal::notify_map_started() {
 
@@ -78,39 +78,39 @@ void Crystal::notify_map_started() {
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true if this entity is an obstacle for the other one
  */
 bool Crystal::is_obstacle_for(MapEntity& other) {
   return other.is_crystal_obstacle(*this);
 }
 
 /**
- * @brief This function is called when another entity collides with this crystal.
- * @param entity_overlapping the other entity
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called when another entity collides with this crystal.
+ * \param entity_overlapping the other entity
+ * \param collision_mode the collision mode that detected the collision
  */
 void Crystal::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
   entity_overlapping.notify_collision_with_crystal(*this, collision_mode);
 }
 
 /**
- * @brief Notifies this entity that another sprite is overlapping it.
+ * \brief Notifies this entity that another sprite is overlapping it.
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.
  *
- * @param other_entity the entity overlapping this detector
- * @param other_sprite the sprite of other_entity that is overlapping this detector
- * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \param other_entity the entity overlapping this detector
+ * \param other_sprite the sprite of other_entity that is overlapping this detector
+ * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Crystal::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
   other_entity.notify_collision_with_crystal(*this, other_sprite);
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by
+ * \brief Notifies this detector that the player is interacting with it by
  * pressing the action command.
  *
  * This function is called when the player presses the action command
@@ -128,8 +128,8 @@ void Crystal::notify_action_command_pressed() {
 }
 
 /**
- * @brief Activates the crystal if the delay since the last activation allows it.
- * @param entity_activating the entity that activates this crystal
+ * \brief Activates the crystal if the delay since the last activation allows it.
+ * \param entity_activating the entity that activates this crystal
  */
 void Crystal::activate(MapEntity& entity_activating) {
 
@@ -149,7 +149,7 @@ void Crystal::activate(MapEntity& entity_activating) {
 }
 
 /**
- * @brief Makes a star twinkle on the crystal at a random position.
+ * \brief Makes a star twinkle on the crystal at a random position.
  */
 void Crystal::twinkle() {
 
@@ -158,7 +158,7 @@ void Crystal::twinkle() {
 }
 
 /**
- * @brief Updates the entity.
+ * \brief Updates the entity.
  */
 void Crystal::update() {
 
@@ -185,7 +185,7 @@ void Crystal::update() {
 }
 
 /**
- * @brief Draws the entity on the map.
+ * \brief Draws the entity on the map.
  *
  * This is a redefinition of MapEntity::draw_on_map() to also draw the twinkling star
  * which has a special position.
@@ -206,8 +206,8 @@ void Crystal::draw_on_map() {
 }
 
 /**
- * @brief Suspends or resumes the entity.
- * @param suspended true to suspend the entity, false to resume it
+ * \brief Suspends or resumes the entity.
+ * \param suspended true to suspend the entity, false to resume it
  */
 void Crystal::set_suspended(bool suspended) {
 

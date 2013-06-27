@@ -21,7 +21,7 @@
 #include <string>
 
 /**
- * @brief Represents an item that the hero brandishes when he receives it.
+ * \brief Represents an item that the hero brandishes when he receives it.
  *
  * Treasures include all items the hero can get in chest, buy in a shop,
  * pick on the ground or get from scripts (e.g. when talking to an NPC).

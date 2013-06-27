@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 
 /**
- * @brief A bomb that will explode soon.
+ * \brief A bomb that will explode soon.
  */
 class Bomb: public Detector {
 

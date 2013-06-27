@@ -24,7 +24,7 @@
 struct lua_State;
 
 /**
- * @brief This class reads the quest properties from file quest.lua
+ * \brief This class reads the quest properties from file quest.lua
  * and applies them.
  *
  * These properties are general information about the quest. They include:

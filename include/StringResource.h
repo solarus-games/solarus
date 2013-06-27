@@ -22,7 +22,7 @@
 #include <map>
 
 /**
- * @brief Provides access to strings translated in the current language.
+ * \brief Provides access to strings translated in the current language.
  *
  * This class provides some strings loaded from an external file containing
  * the texts in the current language.

@@ -21,7 +21,7 @@
 #include "entities/SimpleTilePattern.h"
 
 /**
- * @brief Tile pattern with a parallax scrolling effect.
+ * \brief Tile pattern with a parallax scrolling effect.
  *
  * The pattern moves from 1 pixel when the camera moves from 2 pixels.
  * This gives an illusion of depth. Only the position of where the pattern

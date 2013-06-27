@@ -24,7 +24,7 @@
 struct lua_State;
 
 /**
- * @brief Provides access to dialogs translated in the current language.
+ * \brief Provides access to dialogs translated in the current language.
  *
  * This class provides the game dialogs loaded from an external file
  * that depends on the current language.

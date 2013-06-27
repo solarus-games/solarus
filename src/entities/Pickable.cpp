@@ -30,12 +30,12 @@
 #include "EquipmentItem.h"
 
 /**
- * @brief Creates a pickable item with the specified subtype.
- * @param name Unique name identifying the entity on the map or an empty string.
- * @param layer layer of the pickable item to create on the map
- * @param x x coordinate of the pickable item to create
- * @param y y coordinate of the pickable item to create
- * @param treasure the treasure to give when the item is picked
+ * \brief Creates a pickable item with the specified subtype.
+ * \param name Unique name identifying the entity on the map or an empty string.
+ * \param layer layer of the pickable item to create on the map
+ * \param x x coordinate of the pickable item to create
+ * \param y y coordinate of the pickable item to create
+ * \param treasure the treasure to give when the item is picked
  */
 Pickable::Pickable(
     const std::string& name,
@@ -54,7 +54,7 @@ Pickable::Pickable(
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Pickable::~Pickable() {
 
@@ -62,15 +62,15 @@ Pickable::~Pickable() {
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Pickable::get_type() {
   return PICKABLE;
 }
 
 /**
- * @brief Creates a pickable item with the specified subtype.
+ * \brief Creates a pickable item with the specified subtype.
  *
  * This method acts like a constructor, except that it can return NULL in several cases:
  * - the treasure is saved and the player already has it,
@@ -79,16 +79,16 @@ EntityType Pickable::get_type() {
  * or:
  * - the item cannot be obtained by the hero yet.
  *
- * @param game the current game
- * @param name Unique name identifying the entity on the map or an empty string.
- * @param layer layer of the pickable item to create on the map
- * @param x x coordinate of the pickable item to create
- * @param y y coordinate of the pickable item to create
- * @param treasure the treasure to give
- * @param falling_height to make the item fall when it appears
- * @param force_persistent true to make the item stay forever (otherwise, the properties of the item
+ * \param game the current game
+ * \param name Unique name identifying the entity on the map or an empty string.
+ * \param layer layer of the pickable item to create on the map
+ * \param x x coordinate of the pickable item to create
+ * \param y y coordinate of the pickable item to create
+ * \param treasure the treasure to give
+ * \param falling_height to make the item fall when it appears
+ * \param force_persistent true to make the item stay forever (otherwise, the properties of the item
  * decide if it disappears after some time)
- * @return the pickable item created, or NULL
+ * \return the pickable item created, or NULL
  */
 Pickable* Pickable::create(
     Game& game,
@@ -121,15 +121,15 @@ Pickable* Pickable::create(
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
- * @return \c true if this type of entity can be obstacle for other entities.
+ * \brief Returns whether entities of this type can be obstacles for other entities.
+ * \return \c true if this type of entity can be obstacle for other entities.
  */
 bool Pickable::can_be_obstacle() {
   return false;
 }
 
 /**
- * @brief Creates the sprite of this pickable item,
+ * \brief Creates the sprite of this pickable item,
  * depending on its subtype.
  *
  * Pickable items represented with two sprites:
@@ -195,8 +195,8 @@ void Pickable::initialize_sprites() {
 }
 
 /**
- * @brief Notifies this entity that it has just been added to a map.
- * @param map the map
+ * \brief Notifies this entity that it has just been added to a map.
+ * \param map the map
  */
 void Pickable::set_map(Map& map) {
 
@@ -210,7 +210,7 @@ void Pickable::set_map(Map& map) {
 }
 
 /**
- * @brief Notifies this entity that its map has just become active.
+ * \brief Notifies this entity that its map has just become active.
  */
 void Pickable::notify_map_started() {
 
@@ -221,7 +221,7 @@ void Pickable::notify_map_started() {
 }
 
 /**
- * @brief Initializes the movement of the item (if it is falling),
+ * \brief Initializes the movement of the item (if it is falling),
  * depending on its subtype.
  */
 void Pickable::initialize_movement() {
@@ -232,39 +232,39 @@ void Pickable::initialize_movement() {
 }
 
 /**
- * @brief Returns whether the entity is currently falling.
- * @return true if the entity is currently falling
+ * \brief Returns whether the entity is currently falling.
+ * \return true if the entity is currently falling
  */
 bool Pickable::is_falling() {
   return get_falling_height() != FALLING_NONE;
 }
 
 /**
- * @brief Returns the height this pickable item falls from when it appears.
- * @return the falling height
+ * \brief Returns the height this pickable item falls from when it appears.
+ * \return the falling height
  */
 FallingHeight Pickable::get_falling_height() {
   return falling_height;
 }
 
 /**
- * @brief Returns the treasure the player receives if he picks this item.
- * @return the treasure
+ * \brief Returns the treasure the player receives if he picks this item.
+ * \return the treasure
  */
 const Treasure& Pickable::get_treasure() {
   return treasure;
 }
 
 /**
- * @brief Returns the entity (if any) followed by this pickable item.
- * @return the entity followed or NULL
+ * \brief Returns the entity (if any) followed by this pickable item.
+ * \return the entity followed or NULL
  */
 MapEntity* Pickable::get_entity_followed() {
   return entity_followed;
 }
 
 /**
- * @brief Notifies this pickable item that its movement has just changed.
+ * \brief Notifies this pickable item that its movement has just changed.
  */
 void Pickable::notify_movement_changed() {
 
@@ -275,12 +275,12 @@ void Pickable::notify_movement_changed() {
 }
 
 /**
- * @brief This function is called by the engine when an entity overlaps the pickable item.
+ * \brief This function is called by the engine when an entity overlaps the pickable item.
  *
  * If the entity is the player, we give him the item, and the map is notified
  * to destroy it.
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
@@ -314,14 +314,14 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode col
 }
 
 /**
- * @brief Notifies this entity that another sprite is overlapping it.
+ * \brief Notifies this entity that another sprite is overlapping it.
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.
  *
- * @param other_entity the entity overlapping this detector
- * @param other_sprite the sprite of other_entity that is overlapping this detector
- * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \param other_entity the entity overlapping this detector
+ * \param other_sprite the sprite of other_entity that is overlapping this detector
+ * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Pickable::notify_collision(MapEntity& other_entity, Sprite& other_sprite,
     Sprite& this_sprite) {
@@ -335,7 +335,7 @@ void Pickable::notify_collision(MapEntity& other_entity, Sprite& other_sprite,
 }
 
 /**
- * @brief Gives the item to the player.
+ * \brief Gives the item to the player.
  */
 void Pickable::try_give_item_to_player() {
 
@@ -368,8 +368,8 @@ void Pickable::try_give_item_to_player() {
 }
 
 /**
- * @brief Sets whether the pickable item is blinking.
- * @param blinking true to make it blink, false to make it stop blinking
+ * \brief Sets whether the pickable item is blinking.
+ * \param blinking true to make it blink, false to make it stop blinking
  */
 void Pickable::set_blinking(bool blinking) {
 
@@ -383,12 +383,12 @@ void Pickable::set_blinking(bool blinking) {
 }
 
 /**
- * @brief This function is called by the map when the game is suspended or resumed.
+ * \brief This function is called by the map when the game is suspended or resumed.
  *
  * This is a redefinition of MapEntity::set_suspended() to suspend the timer
  * which makes the pickable item disappear after a few seconds.
  *
- * @param suspended true to suspend the entity, false to resume it
+ * \param suspended true to suspend the entity, false to resume it
  */
 void Pickable::set_suspended(bool suspended) {
 
@@ -420,7 +420,7 @@ void Pickable::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates the pickable item.
+ * \brief Updates the pickable item.
  *
  * This function is called repeatedly by the map.
  * This is a redefinition of MapEntity::update() to make
@@ -481,7 +481,7 @@ void Pickable::update() {
 }
 
 /**
- * @brief Draws the pickable item on the map.
+ * \brief Draws the pickable item on the map.
  *
  * This is a redefinition of MapEntity::draw_on_map
  * to draw the shadow independently of the item movement.
@@ -502,8 +502,8 @@ void Pickable::draw_on_map() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& Pickable::get_lua_type_name() const {
   return LuaContext::entity_pickable_module_name;

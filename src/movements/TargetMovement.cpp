@@ -27,11 +27,11 @@
 const uint32_t TargetMovement::recomputation_delay = 150;
 
 /**
- * @brief Creates a new target movement towards a fixed point.
- * @param target_x x coordinate of the target point
- * @param target_y y coordinate of the target point
- * @param moving_speed speed of the movement when not stoppedstopped
- * @param ignore_obstacles true to ignore obstacles (if on a map)
+ * \brief Creates a new target movement towards a fixed point.
+ * \param target_x x coordinate of the target point
+ * \param target_y y coordinate of the target point
+ * \param moving_speed speed of the movement when not stoppedstopped
+ * \param ignore_obstacles true to ignore obstacles (if on a map)
  */
 TargetMovement::TargetMovement(int target_x, int target_y, int moving_speed,
     bool ignore_obstacles):
@@ -49,13 +49,13 @@ TargetMovement::TargetMovement(int target_x, int target_y, int moving_speed,
 }
 
 /**
- * @brief Creates a new target movement toward an entity.
+ * \brief Creates a new target movement toward an entity.
  *
  * The movement will update its trajectory if the entity's position is changed.
  *
- * @param target_entity the target entity
- * @param moving_speed speed of the movement when not stopped
- * @param ignore_obstacles true to ignore obstacles (if on a map)
+ * \param target_entity the target entity
+ * \param moving_speed speed of the movement when not stopped
+ * \param ignore_obstacles true to ignore obstacles (if on a map)
  */
 TargetMovement::TargetMovement(MapEntity* target_entity, int moving_speed,
     bool ignore_obstacles):
@@ -76,7 +76,7 @@ TargetMovement::TargetMovement(MapEntity* target_entity, int moving_speed,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 TargetMovement::~TargetMovement() {
 
@@ -89,7 +89,7 @@ TargetMovement::~TargetMovement() {
 }
 
 /**
- * @brief Notifies this movement that the object it controls has changed.
+ * \brief Notifies this movement that the object it controls has changed.
  */
 void TargetMovement::notify_object_controlled() {
 
@@ -100,9 +100,9 @@ void TargetMovement::notify_object_controlled() {
 }
 
 /**
- * @brief Changes the target of this movement.
- * @param target_x x coordinate of the target point
- * @param target_y y coordinate of the target point
+ * \brief Changes the target of this movement.
+ * \param target_x x coordinate of the target point
+ * \param target_y y coordinate of the target point
  */
 void TargetMovement::set_target(int target_x, int target_y) {
 
@@ -121,8 +121,8 @@ void TargetMovement::set_target(int target_x, int target_y) {
 }
 
 /**
- * @brief Changes the target of this movement.
- * @param target_entity the target entity
+ * \brief Changes the target of this movement.
+ * \param target_entity the target entity
  */
 void TargetMovement::set_target(MapEntity* target_entity) {
 
@@ -144,16 +144,16 @@ void TargetMovement::set_target(MapEntity* target_entity) {
 }
 
 /**
- * @brief Returns the speed of this movement when it is not stopped.
- * @return the speed when moving, in pixels per second
+ * \brief Returns the speed of this movement when it is not stopped.
+ * \return the speed when moving, in pixels per second
  */
 int TargetMovement::get_moving_speed() {
   return moving_speed;
 }
 
 /**
- * @brief Sets the speed of this movement when it is not stopped.
- * @param moving_speed the speed when moving, in pixels per second
+ * \brief Sets the speed of this movement when it is not stopped.
+ * \param moving_speed the speed when moving, in pixels per second
  */
 void TargetMovement::set_moving_speed(int moving_speed) {
   this->moving_speed = moving_speed;
@@ -161,7 +161,7 @@ void TargetMovement::set_moving_speed(int moving_speed) {
 }
 
 /**
- * @brief Updates the movement.
+ * \brief Updates the movement.
  */
 void TargetMovement::update() {
 
@@ -189,7 +189,7 @@ void TargetMovement::update() {
 }
 
 /**
- * @brief Calculates the direction and the speed of the movement
+ * \brief Calculates the direction and the speed of the movement
  * depending on the target.
  */
 void TargetMovement::recompute_movement() {
@@ -222,7 +222,7 @@ void TargetMovement::recompute_movement() {
 }
 
 /**
- * @brief Returns whether the movement is finished, i.e.
+ * \brief Returns whether the movement is finished, i.e.
  * whether the target was reached.
  */
 bool TargetMovement::is_finished() {
@@ -231,8 +231,8 @@ bool TargetMovement::is_finished() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& TargetMovement::get_lua_type_name() const {
   return LuaContext::movement_target_module_name;

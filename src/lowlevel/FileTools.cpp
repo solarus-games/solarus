@@ -33,9 +33,9 @@ std::string FileTools::default_language_code;
 std::map<std::string, std::string> FileTools::languages;
 
 /**
- * @brief Initializes the file tools.
- * @param argc number of command-line arguments
- * @param argv command line arguments
+ * \brief Initializes the file tools.
+ * \param argc number of command-line arguments
+ * \param argv command line arguments
  */
 void FileTools::initialize(int argc, char** argv) {
 
@@ -80,7 +80,7 @@ void FileTools::initialize(int argc, char** argv) {
 }
 
 /**
- * @brief Quits the file tools.
+ * \brief Quits the file tools.
  */
 void FileTools::quit() {
 
@@ -90,7 +90,7 @@ void FileTools::quit() {
 }
 
 /**
- * @brief Loads the list of available languages.
+ * \brief Loads the list of available languages.
  */
 void FileTools::initialize_languages() {
 
@@ -115,13 +115,13 @@ void FileTools::initialize_languages() {
 }
 
 /**
- * @brief Function called by Lua to add a language.
+ * \brief Function called by Lua to add a language.
  *
  * - Argument 1 (table): properties of the language (keys must be code and
  * name).
  *
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int FileTools::l_language(lua_State* l) {
 
@@ -140,21 +140,21 @@ int FileTools::l_language(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a language exists for this quest.
- * @param language_code Code of the language to test.
- * @return true if this language exists.
+ * \brief Returns whether a language exists for this quest.
+ * \param language_code Code of the language to test.
+ * \return true if this language exists.
  */
 bool FileTools::has_language(const std::string& language_code) {
   return languages.find(language_code) != languages.end();
 }
 
 /**
- * @brief Sets the current language.
+ * \brief Sets the current language.
  *
  * The language-specific data will be loaded from the directory of this language.
  * This function must be called before the first language-specific file is loaded.
  *
- * @param language_code code of the language
+ * \param language_code code of the language
  */
 void FileTools::set_language(const std::string& language_code) {
 
@@ -166,24 +166,24 @@ void FileTools::set_language(const std::string& language_code) {
 }
 
 /**
- * @brief Returns the current language.
+ * \brief Returns the current language.
  *
  * The language-specific data are be loaded from the directory of this language.
  *
- * @return code of the language, or an empty string if no language is set
+ * \return code of the language, or an empty string if no language is set
  */
 const std::string& FileTools::get_language() {
   return language_code;
 }
 
 /**
- * @brief Returns the default language.
+ * \brief Returns the default language.
  *
  * This default language is indicated in the languages file (languages/languages.lua).
  * It can be used to pick a language without user interaction, but you still have
  * to call set_language() otherwise no initial language is set.
  *
- * @return code of the default language, or an empty string if the languages file
+ * \return code of the default language, or an empty string if the languages file
  * does not specify a default language
  */
 const std::string& FileTools::get_default_language() {
@@ -192,21 +192,21 @@ const std::string& FileTools::get_default_language() {
 
 
 /**
- * @brief Returns the list of available languages.
- * @return the available languages (mapping of language codes to language names)
+ * \brief Returns the list of available languages.
+ * \return the available languages (mapping of language codes to language names)
  */
 const std::map<std::string, std::string>& FileTools::get_languages() {
   return languages;
 }
 
 /**
- * @brief Returns whether a file exists in the quest data directory or
+ * \brief Returns whether a file exists in the quest data directory or
  * in Solarus write directory.
- * @param file_name A file name relative to the quest data directory,
+ * \param file_name A file name relative to the quest data directory,
  * to the current language directory or to Solarus write directory.
- * @param language_specific true if the file is relative to the current
+ * \param language_specific true if the file is relative to the current
  * language directory.
- * @return true if this file exists.
+ * \return true if this file exists.
  */
 bool FileTools::data_file_exists(const std::string& file_name,
     bool language_specific) {
@@ -225,15 +225,15 @@ bool FileTools::data_file_exists(const std::string& file_name,
 }
 
 /**
- * @brief Opens in reading a text file in the Solarus data directory.
+ * \brief Opens in reading a text file in the Solarus data directory.
  *
  * The file name is relative to the Solarus data directory.
  * The program is stopped with an error message if the file cannot be open.
  * Don't forget to close the stream with data_file_close().
  *
- * @param file_name name of the file to open
- * @param language_specific true if the file is specific to the current language
- * @return the input stream
+ * \param file_name name of the file to open
+ * \param language_specific true if the file is specific to the current language
+ * \return the input stream
  */
 std::istream& FileTools::data_file_open(const std::string& file_name,
     bool language_specific) {
@@ -249,19 +249,19 @@ std::istream& FileTools::data_file_open(const std::string& file_name,
 }
 
 /**
- * @brief Closes a text file previously open with data_file_open().
- * @param data_file the input stream to close
+ * \brief Closes a text file previously open with data_file_open().
+ * \param data_file the input stream to close
  */
 void FileTools::data_file_close(const std::istream& data_file) {
   delete &data_file;
 }
 
 /**
- * @brief Opens a data file an loads its content into a buffer.
- * @param file_name name of the file to open
- * @param buffer the buffer to load
- * @param size number of bytes to read
- * @param language_specific true if the file is specific to the current language
+ * \brief Opens a data file an loads its content into a buffer.
+ * \param file_name name of the file to open
+ * \param buffer the buffer to load
+ * \param size number of bytes to read
+ * \param language_specific true if the file is specific to the current language
  */
 void FileTools::data_file_open_buffer(const std::string& file_name, char** buffer,
     size_t* size, bool language_specific) {
@@ -295,10 +295,10 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
 }
 
 /**
- * @brief Saves a buffer into a data file.
- * @param file_name Name of the file to write, relative to Solarus write directory.
- * @param buffer The buffer to save.
- * @param size Number of bytes to write.
+ * \brief Saves a buffer into a data file.
+ * \param file_name Name of the file to write, relative to Solarus write directory.
+ * \param buffer The buffer to save.
+ * \param size Number of bytes to write.
  *
  */
 void FileTools::data_file_save_buffer(const std::string& file_name,
@@ -319,8 +319,8 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
 }
 
 /**
- * @brief Closes a data buffer previously open with data_file_open_buffer().
- * @param buffer the buffer to close
+ * \brief Closes a data buffer previously open with data_file_open_buffer().
+ * \param buffer the buffer to close
  */
 void FileTools::data_file_close_buffer(char* buffer) {
 
@@ -328,8 +328,8 @@ void FileTools::data_file_close_buffer(char* buffer) {
 }
  
 /**
- * @brief Removes a file from the write directory.
- * @param file_name Name of the file to delete, relative to the Solarus
+ * \brief Removes a file from the write directory.
+ * \param file_name Name of the file to delete, relative to the Solarus
  * write directory.
  */
 void FileTools::data_file_delete(const std::string& file_name) {
@@ -338,12 +338,12 @@ void FileTools::data_file_delete(const std::string& file_name) {
 }
 
 /**
- * @brief Reads an integer value from an input stream.
+ * \brief Reads an integer value from an input stream.
  *
  * Stops the program on an error message if the read fails.
  *
- * @param is an input stream
- * @param value the value read
+ * \param is an input stream
+ * \param value the value read
  */
 void FileTools::read(std::istream& is, int& value) {
 
@@ -353,12 +353,12 @@ void FileTools::read(std::istream& is, int& value) {
 }
 
 /**
- * @brief Reads an integer value from an input stream.
+ * \brief Reads an integer value from an input stream.
  *
  * Stops the program on an error message if the read fails.
  *
- * @param is an input stream
- * @param value the value read
+ * \param is an input stream
+ * \param value the value read
  */
 void FileTools::read(std::istream& is, uint32_t& value) {
 
@@ -369,12 +369,12 @@ void FileTools::read(std::istream& is, uint32_t& value) {
 }
 
 /**
- * @brief Reads a string value from an input stream.
+ * \brief Reads a string value from an input stream.
  *
  * Stops the program on an error message if the read fails.
  *
- * @param is an input stream
- * @param value the value read
+ * \param is an input stream
+ * \param value the value read
  */
 void FileTools::read(std::istream& is, std::string& value) {
 
@@ -384,22 +384,22 @@ void FileTools::read(std::istream& is, std::string& value) {
 }
 
 /**
- * @brief Returns the directory where the engine can write files.
- * @returns The directory where the engine can write files, relative to the user's home.
+ * \brief Returns the directory where the engine can write files.
+ * \returns The directory where the engine can write files, relative to the user's home.
  */
 const std::string& FileTools::get_solarus_write_dir() {
   return solarus_write_dir;
 }
 
 /**
- * @brief Sets the directory where the engine can write files.
+ * \brief Sets the directory where the engine can write files.
  *
  * Initially, this directory is set to the preprocessor constant
  * SOLARUS_WRITE_DIR (by default ".solarus").
  * You normally don't need to change this, it should have been set correctly
  * at compilation time to a value that depends on the target system.
  *
- * @param solarus_write_dir The directory where the engine can write files,
+ * \param solarus_write_dir The directory where the engine can write files,
  * relative to the base write directory.
  */
 void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
@@ -431,9 +431,9 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 }
 
 /**
- * @brief Returns the subdirectory where files specific to the quest are
+ * \brief Returns the subdirectory where files specific to the quest are
  * saved, like savegames and configuration files.
- * @return The quest write directory, relative to the Solarus write directory,
+ * \return The quest write directory, relative to the Solarus write directory,
  * or an empty string if it has not been set yet.
  */
 const std::string& FileTools::get_quest_write_dir() {
@@ -441,7 +441,7 @@ const std::string& FileTools::get_quest_write_dir() {
 }
 
 /**
- * @brief Sets the subdirectory where files specific to the quest are
+ * \brief Sets the subdirectory where files specific to the quest are
  * saved, like savegames and configuration files.
  *
  * You have to call this function before loading or saving savegames and
@@ -449,7 +449,7 @@ const std::string& FileTools::get_quest_write_dir() {
  * This directory should typically be named like your quest, to be sure other
  * quests will not interfere.
  *
- * @param quest_write_dir The quest write directory, relative to the Solarus
+ * \param quest_write_dir The quest write directory, relative to the Solarus
  * write directory.
  */
 void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
@@ -463,15 +463,15 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
 }
 
 /**
- * @brief Returns the absolute path of the quest write directory.
+ * \brief Returns the absolute path of the quest write directory.
  */
 const std::string FileTools::get_full_quest_write_dir() {
   return std::string(PHYSFS_getUserDir()) + "/" + get_solarus_write_dir() + "/" + get_quest_write_dir();
 }
 
 /**
- * @brief Returns the privilegied base write directory, depending on the OS.
- * @return The base write directory.
+ * \brief Returns the privilegied base write directory, depending on the OS.
+ * \return The base write directory.
  */
 std::string FileTools::get_base_write_dir() {
 

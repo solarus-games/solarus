@@ -21,7 +21,7 @@
 const std::string LuaContext::video_module_name = "sol.video";
 
 /**
- * @brief Initializes the video features provided to Lua.
+ * \brief Initializes the video features provided to Lua.
  */
 void LuaContext::register_video_module() {
 
@@ -41,9 +41,9 @@ void LuaContext::register_video_module() {
 }
 
 /**
- * @brief Implementation of sol.video.get_window_title().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.video.get_window_title().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::video_api_get_window_title(lua_State *l) {
 
@@ -55,9 +55,9 @@ int LuaContext::video_api_get_window_title(lua_State *l) {
 }
 
 /**
- * @brief Implementation of sol.video.set_window_title().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.video.set_window_title().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::video_api_set_window_title(lua_State *l) {
 
@@ -68,9 +68,9 @@ int LuaContext::video_api_set_window_title(lua_State *l) {
 }
 
 /**
- * @brief Implementation of sol.video.get_mode().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.video.get_mode().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::video_api_get_mode(lua_State *l) {
 
@@ -82,9 +82,9 @@ int LuaContext::video_api_get_mode(lua_State *l) {
 }
 
 /**
- * @brief Implementation of sol.video.set_mode().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.video.set_mode().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::video_api_set_mode(lua_State *l) {
 
@@ -99,9 +99,9 @@ int LuaContext::video_api_set_mode(lua_State *l) {
 }
 
 /**
- * @brief Implementation of sol.video.switch_mode().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.video.switch_mode().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::video_api_switch_mode(lua_State *l) {
 
@@ -111,9 +111,9 @@ int LuaContext::video_api_switch_mode(lua_State *l) {
 }
 
 /**
- * @brief Implementation of sol.video.get_modes().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.video.get_modes().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::video_api_get_modes(lua_State* l) {
 
@@ -135,9 +135,9 @@ int LuaContext::video_api_get_modes(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.video.is_mode_supported().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.video.is_mode_supported().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::video_api_is_mode_supported(lua_State *l) {
 
@@ -151,9 +151,9 @@ int LuaContext::video_api_is_mode_supported(lua_State *l) {
 }
 
 /**
- * @brief Implementation of sol.video.is_fullscreen().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.video.is_fullscreen().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::video_api_is_fullscreen(lua_State *l) {
 
@@ -164,9 +164,9 @@ int LuaContext::video_api_is_fullscreen(lua_State *l) {
 }
 
 /**
- * @brief Implementation of sol.video.set_fullscreen().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.video.set_fullscreen().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::video_api_set_fullscreen(lua_State *l) {
 

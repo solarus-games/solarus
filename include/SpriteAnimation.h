@@ -22,7 +22,7 @@
 #include <vector>
 
 /**
- * @brief Stores the animated sequences of a sprite in a specific animation.
+ * \brief Stores the animated sequences of a sprite in a specific animation.
  *
  * Each animated sequence correspond to a direction of the sprite in this animation.
  */

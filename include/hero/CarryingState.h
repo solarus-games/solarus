@@ -20,7 +20,7 @@
 #include "hero/PlayerMovementState.h"
 
 /**
- * @brief The state "Carrying" of the hero.
+ * \brief The state "Carrying" of the hero.
  */
 class Hero::CarryingState: public Hero::PlayerMovementState {
 

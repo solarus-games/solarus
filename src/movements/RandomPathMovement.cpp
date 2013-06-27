@@ -21,8 +21,8 @@
 #include <sstream>
 
 /**
- * @brief Creates a random walk movement object.
- * @param speed speed of the movement in pixels per second
+ * \brief Creates a random walk movement object.
+ * \param speed speed of the movement in pixels per second
  */
 RandomPathMovement::RandomPathMovement(int speed):
   PathMovement(create_random_path(), speed, false, false, false) {
@@ -30,14 +30,14 @@ RandomPathMovement::RandomPathMovement(int speed):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 RandomPathMovement::~RandomPathMovement() {
 
 }
 
 /**
- * @brief Updates the movements: detects the collisions
+ * \brief Updates the movements: detects the collisions
  * in order to restart the movement.
  */
 void RandomPathMovement::update() {
@@ -52,8 +52,8 @@ void RandomPathMovement::update() {
 }
 
 /**
- * @brief Returns whether the movement is finished.
- * @return always false because the movement is restarted as soon as the path is finished
+ * \brief Returns whether the movement is finished.
+ * \return always false because the movement is restarted as soon as the path is finished
  * or an obstacle is reached
  */
 bool RandomPathMovement::is_finished() {
@@ -61,8 +61,8 @@ bool RandomPathMovement::is_finished() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& RandomPathMovement::get_lua_type_name() const {
   return LuaContext::movement_random_path_module_name;

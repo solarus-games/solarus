@@ -33,13 +33,12 @@
 #include "Map.h"
 #include <sstream>
 #include <iomanip>
-#include <lua.hpp>
 
 std::map<lua_State*, LuaContext*> LuaContext::lua_contexts;
 
 /**
- * @brief Creates a Lua context.
- * @param main_loop The Solarus main loop manager.
+ * \brief Creates a Lua context.
+ * \param main_loop The Solarus main loop manager.
  */
 LuaContext::LuaContext(MainLoop& main_loop):
   l(NULL),
@@ -48,7 +47,7 @@ LuaContext::LuaContext(MainLoop& main_loop):
 }
 
 /**
- * @brief Destroys this Lua context.
+ * \brief Destroys this Lua context.
  */
 LuaContext::~LuaContext() {
 
@@ -56,9 +55,9 @@ LuaContext::~LuaContext() {
 }
 
 /**
- * @brief Returns the LuaContext object that encapsulates a Lua state.
- * @param l A Lua state.
- * @return The LuaContext object encapsulating this Lua state.
+ * \brief Returns the LuaContext object that encapsulates a Lua state.
+ * \param l A Lua state.
+ * \return The LuaContext object encapsulating this Lua state.
  */
 LuaContext& LuaContext::get_lua_context(lua_State* l) {
 
@@ -71,15 +70,15 @@ LuaContext& LuaContext::get_lua_context(lua_State* l) {
 }
 
 /**
- * @brief Returns the Solarus main loop object.
- * @return The main loop manager.
+ * \brief Returns the Solarus main loop object.
+ * \return The main loop manager.
  */
 MainLoop& LuaContext::get_main_loop() {
   return main_loop;
 }
 
 /**
- * @brief Initializes Lua.
+ * \brief Initializes Lua.
  */
 void LuaContext::initialize() {
 
@@ -142,7 +141,7 @@ void LuaContext::initialize() {
 }
 
 /**
- * @brief Cleans Lua.
+ * \brief Cleans Lua.
  */
 void LuaContext::exit() {
 
@@ -163,7 +162,7 @@ void LuaContext::exit() {
 }
 
 /**
- * @brief Updates the Lua world.
+ * \brief Updates the Lua world.
  *
  * This function is called at each cycle.
  * sol.main.on_update() is called if it exists.
@@ -180,12 +179,12 @@ void LuaContext::update() {
 }
 
 /**
- * @brief Notifies Lua that an input event has just occurred.
+ * \brief Notifies Lua that an input event has just occurred.
  *
  * The appropriate callback in sol.main is notified.
  *
- * @param event The input event to handle.
- * @return \c true if the event was handled and should stop being propagated.
+ * \param event The input event to handle.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::notify_input(InputEvent& event) {
 
@@ -194,12 +193,12 @@ bool LuaContext::notify_input(InputEvent& event) {
 }
 
 /**
- * @brief Notifies Lua that a map has just been started.
+ * \brief Notifies Lua that a map has just been started.
  *
  * The Lua file of this map is automatically loaded.
  *
- * @param map The map started.
- * @param destination The destination point used if it's a normal one,
+ * \param map The map started.
+ * \param destination The destination point used if it's a normal one,
  * NULL otherwise.
  */
 void LuaContext::run_map(Map& map, Destination* destination) {
@@ -236,9 +235,9 @@ void LuaContext::run_map(Map& map, Destination* destination) {
 }
 
 /**
- * @brief Notifies Lua that a map has just been suspended or resumed.
- * @param map A map.
- * @param suspended \c true if it is suspended, false if it is resumed.
+ * \brief Notifies Lua that a map has just been suspended or resumed.
+ * \param map A map.
+ * \param suspended \c true if it is suspended, false if it is resumed.
  */
 void LuaContext::notify_map_suspended(Map& map, bool suspended) {
 
@@ -247,11 +246,11 @@ void LuaContext::notify_map_suspended(Map& map, bool suspended) {
 }
 
 /**
- * @brief Notifies the Lua world that an equipment item has just been created.
+ * \brief Notifies the Lua world that an equipment item has just been created.
  *
  * The Lua file of this item is automatically loaded.
  *
- * @param item The item.
+ * \param item The item.
  */
 void LuaContext::run_item(EquipmentItem& item) {
 
@@ -271,11 +270,11 @@ void LuaContext::run_item(EquipmentItem& item) {
 }
 
 /**
- * @brief Notifies the Lua world that an enemy has just been added to the map.
+ * \brief Notifies the Lua world that an enemy has just been added to the map.
  *
  * The Lua file of this enemy is automatically loaded.
  *
- * @param enemy The enemy.
+ * \param enemy The enemy.
  */
 void LuaContext::run_enemy(Enemy& enemy) {
 
@@ -295,9 +294,9 @@ void LuaContext::run_enemy(Enemy& enemy) {
 }
 
 /**
- * @brief Notifies Lua that the sequence started by a call to
+ * \brief Notifies Lua that the sequence started by a call to
  * map:move_camera() has reached its target.
- * @param map The current map.
+ * \param map The current map.
  */
 void LuaContext::notify_camera_reached_target(Map& map) {
 
@@ -311,10 +310,10 @@ void LuaContext::notify_camera_reached_target(Map& map) {
 }
 
 /**
- * @brief Notifies Lua that a dialog is finished.
- * @param callback_ref Lua ref of the function to call, if any.
- * @param skipped true if the dialog was skipped.
- * @param answer Answer of the dialog 0 or 1, or -1 if there was no question.
+ * \brief Notifies Lua that a dialog is finished.
+ * \param callback_ref Lua ref of the function to call, if any.
+ * \param skipped true if the dialog was skipped.
+ * \param answer Answer of the dialog 0 or 1, or -1 if there was no question.
  */
 void LuaContext::notify_dialog_finished(int callback_ref, bool skipped, int answer) {
 
@@ -339,14 +338,14 @@ void LuaContext::notify_dialog_finished(int callback_ref, bool skipped, int answ
 }
 
 /**
- * @brief Checks that a table field is a number and returns it as an integer.
+ * \brief Checks that a table field is a number and returns it as an integer.
  *
  * This function acts like lua_getfield() followed by luaL_checkint().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @return The wanted field as an integer.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as an integer.
  */
 int LuaContext::check_int_field(
     lua_State* l, int table_index, const std::string& key) {
@@ -365,15 +364,15 @@ int LuaContext::check_int_field(
 }
 
 /**
- * @brief Like check_int_field() but with a default value.
+ * \brief Like check_int_field() but with a default value.
  *
  * This function acts like lua_getfield() followed by luaL_optint().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @param default_value The default value to return if the field is \c nil.
- * @return The wanted field as an integer.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as an integer.
  */
 int LuaContext::opt_int_field(
     lua_State* l, int table_index, const std::string& key, int default_value) {
@@ -396,14 +395,14 @@ int LuaContext::opt_int_field(
 }
 
 /**
- * @brief Checks that a table field is a number and returns it as a double.
+ * \brief Checks that a table field is a number and returns it as a double.
  *
  * This function acts like lua_getfield() followed by luaL_checknumber().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @return The wanted field as a double.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a double.
  */
 double LuaContext::check_number_field(
     lua_State* l, int table_index, const std::string& key) {
@@ -422,15 +421,15 @@ double LuaContext::check_number_field(
 }
 
 /**
- * @brief Like check_number_field() but with a default value.
+ * \brief Like check_number_field() but with a default value.
  *
  * This function acts like lua_getfield() followed by luaL_optnumber().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @param default_value The default value to return if the field is \c nil.
- * @return The wanted field as a double.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as a double.
  */
 double LuaContext::opt_number_field(
     lua_State* l, int table_index, const std::string& key, double default_value) {
@@ -453,14 +452,14 @@ double LuaContext::opt_number_field(
 }
 
 /**
- * @brief Checks that a table field is a string and returns it.
+ * \brief Checks that a table field is a string and returns it.
  *
  * This function acts like lua_getfield() followed by luaL_checkstring().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @return The wanted field as an string.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as an string.
  */
 const std::string LuaContext::check_string_field(
     lua_State* l, int table_index, const std::string& key) {
@@ -479,15 +478,15 @@ const std::string LuaContext::check_string_field(
 }
 
 /**
- * @brief Like check_string_field() but with a default value.
+ * \brief Like check_string_field() but with a default value.
  *
  * This function acts like lua_getfield() followed by luaL_optstring().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @param default_value The default value to return if the field is \c nil.
- * @return The wanted field as a string.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as a string.
  */
 const std::string LuaContext::opt_string_field(
     lua_State* l, int table_index, const std::string& key, const std::string& default_value) {
@@ -512,15 +511,15 @@ const std::string LuaContext::opt_string_field(
 }
 
 /**
- * @brief Checks that a table field is a boolean and returns it.
+ * \brief Checks that a table field is a boolean and returns it.
  *
  * This function acts like lua_getfield() followed by luaL_checktype()
  * and lua_toboolean().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @return The wanted field as a boolean.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a boolean.
  */
 bool LuaContext::check_boolean_field(
     lua_State* l, int table_index, const std::string& key) {
@@ -539,15 +538,15 @@ bool LuaContext::check_boolean_field(
 }
 
 /**
- * @brief Like check_boolean_field() but with a default value.
+ * \brief Like check_boolean_field() but with a default value.
  *
  * This function acts like lua_getfield() followed by lua_toboolean().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @param default_value The default value to return if the field is \c nil.
- * @return The wanted field as a string.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as a string.
  */
 bool LuaContext::opt_boolean_field(
     lua_State* l, int table_index, const std::string& key, bool default_value) {
@@ -570,15 +569,15 @@ bool LuaContext::opt_boolean_field(
 }
 
 /**
- * @brief Checks that a table field is a function and returns a ref to it.
+ * \brief Checks that a table field is a function and returns a ref to it.
  *
  * This function acts like lua_getfield() followed by lua_isfunction() and
  * luaL_ref().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @return The wanted field as a Lua ref to the function.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a Lua ref to the function.
  */
 int LuaContext::check_function_field(
     lua_State* l, int table_index, const std::string& key) {
@@ -596,15 +595,15 @@ int LuaContext::check_function_field(
 }
 
 /**
- * @brief Like check_function_field() but the field is optional.
+ * \brief Like check_function_field() but the field is optional.
  *
  * This function acts like lua_getfield() followed by lua_isfunction() and
  * luaL_ref().
  *
- * @param l A Lua state.
- * @param table_index Index of a table in the stack.
- * @param key Key of the field to get in that table.
- * @return The wanted field as a Lua ref to the function, or LUA_REFNIL.
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a Lua ref to the function, or LUA_REFNIL.
  */
 int LuaContext::opt_function_field(
     lua_State* l, int table_index, const std::string& key) {
@@ -628,8 +627,8 @@ int LuaContext::opt_function_field(
 }
 
 /**
- * @brief Creates a reference to the Lua value on top of the stack.
- * @return The reference created.
+ * \brief Creates a reference to the Lua value on top of the stack.
+ * \return The reference created.
  */
 int LuaContext::create_ref() {
 
@@ -637,8 +636,8 @@ int LuaContext::create_ref() {
 }
 
 /**
- * @brief Releases a Lua reference.
- * @param ref The Lua reference to free.
+ * \brief Releases a Lua reference.
+ * \param ref The Lua reference to free.
  */
 void LuaContext::destroy_ref(int ref) {
 
@@ -646,9 +645,9 @@ void LuaContext::destroy_ref(int ref) {
 }
 
 /**
- * @brief Calls a function stored in the registry with a reference and
+ * \brief Calls a function stored in the registry with a reference and
  * releases this reference.
- * @param callback_ref Reference of the function to call (if LUA_REFNIL,
+ * \param callback_ref Reference of the function to call (if LUA_REFNIL,
  * nothing is done).
  */
 void LuaContext::do_callback(int callback_ref) {
@@ -661,8 +660,8 @@ void LuaContext::do_callback(int callback_ref) {
 }
 
 /**
- * @brief Pushes onto the stack a function stored as a Lua ref.
- * @param callback_ref Reference of the function to call (must be
+ * \brief Pushes onto the stack a function stored as a Lua ref.
+ * \param callback_ref Reference of the function to call (must be
  * a valid ref).
  */
 void LuaContext::push_callback(int callback_ref) {
@@ -675,11 +674,11 @@ void LuaContext::push_callback(int callback_ref) {
 }
 
 /**
- * @brief Releases the reference to a Lua callback.
+ * \brief Releases the reference to a Lua callback.
  *
  * The callback may then be collected by Lua.
  *
- * @param callback_ref reference of the function (if LUA_REFNIL,
+ * \param callback_ref reference of the function (if LUA_REFNIL,
  * nothing is done)
  */
 void LuaContext::cancel_callback(int callback_ref) {
@@ -699,12 +698,12 @@ void LuaContext::cancel_callback(int callback_ref) {
 }
 
 /**
- * @brief Looks up the specified global Lua function and places it onto the stack if it exists.
+ * \brief Looks up the specified global Lua function and places it onto the stack if it exists.
  *
  * If the function is not found, the stack is left unchanged.
  *
- * @param function_name Name of the function to find.
- * @return true if the function was found.
+ * \param function_name Name of the function to find.
+ * \return true if the function was found.
  */
 bool LuaContext::find_global_function(const std::string& function_name) {
 
@@ -723,14 +722,14 @@ bool LuaContext::find_global_function(const std::string& function_name) {
 }
 
 /**
- * @brief Gets a local Lua function from the environment of another one
+ * \brief Gets a local Lua function from the environment of another one
  * on top of the stack.
  *
  * This is equivalent to find_local_function(-1, function_name).
  *
- * @param function_name Name of the function to find in the environment of the
+ * \param function_name Name of the function to find in the environment of the
  * first one.
- * @return true if the function was found.
+ * \return true if the function was found.
  */
 bool LuaContext::find_local_function(const std::string& function_name) {
 
@@ -738,15 +737,15 @@ bool LuaContext::find_local_function(const std::string& function_name) {
 }
 
 /**
- * @brief Gets a local Lua function from the environment of another one.
+ * \brief Gets a local Lua function from the environment of another one.
  *
  * The function found is placed on top the stack if it exists.
  * If the function is not found, the stack is left unchanged.
  *
- * @param index Index of an existing function in the stack.
- * @param function_name Name of the function to find in the environment of the
+ * \param index Index of an existing function in the stack.
+ * \param function_name Name of the function to find in the environment of the
  * first one.
- * @return true if the function was found.
+ * \return true if the function was found.
  */
 bool LuaContext::find_local_function(int index, const std::string& function_name) {
 
@@ -771,12 +770,12 @@ bool LuaContext::find_local_function(int index, const std::string& function_name
 }
 
 /**
- * @brief Gets a method of the object on top of the stack.
+ * \brief Gets a method of the object on top of the stack.
  *
  * This is equivalent to find_method(-1, function_name).
  *
- * @param function_name Name of the function to find in the object.
- * @return true if the function was found.
+ * \param function_name Name of the function to find in the object.
+ * \return true if the function was found.
  */
 bool LuaContext::find_method(const std::string& function_name) {
 
@@ -784,15 +783,15 @@ bool LuaContext::find_method(const std::string& function_name) {
 }
 
 /**
- * @brief Gets a method of an object.
+ * \brief Gets a method of an object.
  *
  * If the method exists, the method and the object are both pushed
  * so that you can call the method immediately with the object as first parameter.
  * If the method is not found, the stack is left unchanged.
  *
- * @param index Index of the object in the stack.
- * @param function_name Name of the function to find in the object.
- * @return true if the function was found.
+ * \param index Index of the object in the stack.
+ * \param function_name Name of the function to find in the object.
+ * \return true if the function was found.
  */
 bool LuaContext::find_method(int index, const std::string& function_name) {
 
@@ -817,20 +816,20 @@ bool LuaContext::find_method(int index, const std::string& function_name) {
 }
 
 /**
- * @brief Calls the Lua function with its arguments on top of the stack.
+ * \brief Calls the Lua function with its arguments on top of the stack.
  *
  * This function is like lua_pcall, except that it additionaly handles the
  * error message if an error occurs in the Lua code (the error is printed).
  * This function leaves the results on the stack if there is no error,
  * and leaves nothing on the stack in case of error.
  *
- * @param nb_arguments number of arguments placed on the Lua stack above the
+ * \param nb_arguments number of arguments placed on the Lua stack above the
  * function to call
- * @param nb_results number of results expected (you get them on the stack if
+ * \param nb_results number of results expected (you get them on the stack if
  * there is no error)
- * @param function_name a name describing the Lua function (only used to print
+ * \param function_name a name describing the Lua function (only used to print
  * the error message if any)
- * @return true in case of success
+ * \return true in case of success
  */
 bool LuaContext::call_function(int nb_arguments, int nb_results,
     const std::string& function_name) {
@@ -839,21 +838,21 @@ bool LuaContext::call_function(int nb_arguments, int nb_results,
 }
 
 /**
- * @brief Calls the Lua function with its arguments on top of the stack.
+ * \brief Calls the Lua function with its arguments on top of the stack.
  *
  * This function is like lua_pcall, except that it additionaly handles the
  * error message if an error occurs in the Lua code (the error is printed).
  * This function leaves the results on the stack if there is no error,
  * and leaves nothing on the stack in case of error.
  *
- * @param l A Lua state.
- * @param nb_arguments Number of arguments placed on the Lua stack above the
+ * \param l A Lua state.
+ * \param nb_arguments Number of arguments placed on the Lua stack above the
  * function to call.
- * @param nb_results Number of results expected (you get them on the stack if
+ * \param nb_results Number of results expected (you get them on the stack if
  * there is no error).
- * @param function_name A name describing the Lua function (only used to print
+ * \param function_name A name describing the Lua function (only used to print
  * the error message if any).
- * @return true in case of success.
+ * \return true in case of success.
  */
 bool LuaContext::call_function(lua_State* l, int nb_arguments, int nb_results,
     const std::string& function_name) {
@@ -869,9 +868,9 @@ bool LuaContext::call_function(lua_State* l, int nb_arguments, int nb_results,
 }
 
 /**
- * @brief Opens a script and lets it on top of the stack as a function.
- * @param l A Lua state.
- * @param script_name File name of the script without extension,
+ * \brief Opens a script and lets it on top of the stack as a function.
+ * \param l A Lua state.
+ * \param script_name File name of the script without extension,
  * relative to the data directory.
  */
 void LuaContext::load_file(lua_State* l, const std::string& script_name) {
@@ -883,15 +882,15 @@ void LuaContext::load_file(lua_State* l, const std::string& script_name) {
 }
 
 /**
- * @brief Opens a script if it exists and lets it on top of the stack as a
+ * \brief Opens a script if it exists and lets it on top of the stack as a
  * function.
  *
  * If the file does not exist, the stack is left intact and false is returned.
  *
- * @param l A Lua state.
- * @param script_name File name of the script with or without extension,
+ * \param l A Lua state.
+ * \param script_name File name of the script with or without extension,
  * relative to the data directory.
- * @return true if the file exists and was loaded.
+ * \return true if the file exists and was loaded.
  */
 bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_name) {
 
@@ -922,13 +921,13 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
 }
 
 /**
- * @brief Opens a Lua file and executes it.
+ * \brief Opens a Lua file and executes it.
  *
  * This function just calls load_file() and call_function().
  * The file must exist.
  *
- * @param l A Lua state.
- * @param script_name File name of the script without extension,
+ * \param l A Lua state.
+ * \param script_name File name of the script without extension,
  * relative to the data directory.
  */
 void LuaContext::do_file(lua_State* l, const std::string& script_name) {
@@ -938,15 +937,15 @@ void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 }
 
 /**
- * @brief Opens a Lua file if it exists and executes it without arguments.
+ * \brief Opens a Lua file if it exists and executes it without arguments.
  *
  * This function just calls load_file_if_exists() and call_function().
  * Nothing is done if the file does not exists.
  *
- * @param l A Lua state.
- * @param script_name File name of the script without extension,
+ * \param l A Lua state.
+ * \param script_name File name of the script without extension,
  * relative to the data directory.
- * @return true if the file exists and was successfully executed.
+ * \return true if the file exists and was successfully executed.
  */
 bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
@@ -958,10 +957,10 @@ bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name)
 }
 
 /**
- * @brief For an index in the Lua stack, returns an equivalent positive index.
- * @param l A Lua state.
- * @param index An index in the stack (positive or negative, but not a pseudo-index).
- * @return The corresponding positive index.
+ * \brief For an index in the Lua stack, returns an equivalent positive index.
+ * \param l A Lua state.
+ * \param index An index in the stack (positive or negative, but not a pseudo-index).
+ * \return The corresponding positive index.
  */
 int LuaContext::get_positive_index(lua_State* l, int index) {
 
@@ -976,8 +975,8 @@ int LuaContext::get_positive_index(lua_State* l, int index) {
 }
 
 /**
- * @brief Prints on a line the content of the Lua stack for debugging purposes.
- * @param l A Lua state.
+ * \brief Prints on a line the content of the Lua stack for debugging purposes.
+ * \param l A Lua state.
  */
 void LuaContext::print_stack(lua_State* l) {
 
@@ -1025,9 +1024,9 @@ void LuaContext::print_stack(lua_State* l) {
 }
 
 /**
- * @brief Returns whether the specified name is a valid Lua identifier.
- * @param name The name to check.
- * @return true if the name only contains alphanumeric characters or '_' and
+ * \brief Returns whether the specified name is a valid Lua identifier.
+ * \param name The name to check.
+ * \return true if the name only contains alphanumeric characters or '_' and
  * does not start with a digit.
  */
 bool LuaContext::is_valid_lua_identifier(const std::string& name) {
@@ -1048,10 +1047,10 @@ bool LuaContext::is_valid_lua_identifier(const std::string& name) {
 }
 
 /**
- * @brief Defines some C++ functions into a Lua table.
- * @param module_name name of the table that will contain the functions
+ * \brief Defines some C++ functions into a Lua table.
+ * \param module_name name of the table that will contain the functions
  * (e.g. "sol.main")
- * @param functions list of functions to define in the table
+ * \param functions list of functions to define in the table
  * (must end with {NULLL, NULL})
  */
 void LuaContext::register_functions(const std::string& module_name,
@@ -1063,12 +1062,12 @@ void LuaContext::register_functions(const std::string& module_name,
 }
 
 /**
- * @brief Defines some C++ functions into a new Lua userdata type.
- * @param module_name name of the table that will contain the functions
+ * \brief Defines some C++ functions into a new Lua userdata type.
+ * \param module_name name of the table that will contain the functions
  * (e.g. "sol.movement") - this string will also identify the type
- * @param functions list of functions to define on the type
+ * \param functions list of functions to define on the type
  * (must end with {NULLL, NULL})
- * @param metamethods metamethods to define on the type (can be NULL)
+ * \param metamethods metamethods to define on the type (can be NULL)
  */
 void LuaContext::register_type(const std::string& module_name,
     const luaL_Reg* methods, const luaL_Reg* metamethods) {
@@ -1106,7 +1105,7 @@ void LuaContext::register_type(const std::string& module_name,
 }
 
 /**
- * @brief Tells the Lua context what C++ functions it can call.
+ * \brief Tells the Lua context what C++ functions it can call.
  */
 void LuaContext::register_modules() {
 
@@ -1129,27 +1128,27 @@ void LuaContext::register_modules() {
 }
 
 /**
- * @brief Pushes a Lua value from its reference.
- * @param l A Lua state.
- * @param ref A Lua reference.
+ * \brief Pushes a Lua value from its reference.
+ * \param l A Lua state.
+ * \param ref A Lua reference.
  */
 void LuaContext::push_ref(lua_State* l, int ref) {
   lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
 }
 
 /**
- * @brief Pushes a string.
- * @param l A Lua state.
- * @param text A string value.
+ * \brief Pushes a string.
+ * \param l A Lua state.
+ * \param text A string value.
  */
 void LuaContext::push_string(lua_State* l, const std::string& text) {
   lua_pushstring(l, text.c_str());
 }
 
 /**
- * @brief Pushes a userdata onto the stack.
- * @param l a Lua context
- * @param userdata a userdata
+ * \brief Pushes a userdata onto the stack.
+ * \param l a Lua context
+ * \param userdata a userdata
  */
 void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
 
@@ -1206,9 +1205,9 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
 }
 
 /**
- * @brief Pushes a color onto the stack.
- * @param l A Lua context.
- * @param color A color.
+ * \brief Pushes a color onto the stack.
+ * \param l A Lua context.
+ * \param color A color.
  */
 void LuaContext::push_color(lua_State* l, const Color& color) {
 
@@ -1224,11 +1223,11 @@ void LuaContext::push_color(lua_State* l, const Color& color) {
 }
 
 /**
- * @brief Returns whether a value is a userdata of a given type.
- * @param l a Lua context
- * @param index an index in the stack
- * @param module_name name of a userdata metatable in the registry
- * @return true if the value is a userdata with this metatable
+ * \brief Returns whether a value is a userdata of a given type.
+ * \param l a Lua context
+ * \param index an index in the stack
+ * \param module_name name of a userdata metatable in the registry
+ * \return true if the value is a userdata with this metatable
  */
 bool LuaContext::is_userdata(lua_State* l, int index,
     const std::string& module_name) {
@@ -1255,12 +1254,12 @@ bool LuaContext::is_userdata(lua_State* l, int index,
 }
 
 /**
- * @brief Checks that the value at the given index is userdata of the
+ * \brief Checks that the value at the given index is userdata of the
  * specified type and returns it.
- * @param l a Lua state
- * @param index an index in the Lua stack
- * @param module_name name identifying the userdata type
- * @return the userdata at this index
+ * \param l a Lua state
+ * \param index an index in the Lua stack
+ * \param module_name name identifying the userdata type
+ * \return the userdata at this index
  */
 ExportableToLua& LuaContext::check_userdata(lua_State* l, int index,
     const std::string& module_name) {
@@ -1273,10 +1272,10 @@ ExportableToLua& LuaContext::check_userdata(lua_State* l, int index,
 }
 
 /**
- * @brief Returns whether a value is a color.
- * @param l A Lua context.
- * @param index An index in the stack.
- * @return true if the value is a color, that is, an array with three integers.
+ * \brief Returns whether a value is a color.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value is a color, that is, an array with three integers.
  */
 bool LuaContext::is_color(lua_State* l, int index) {
 
@@ -1292,10 +1291,10 @@ bool LuaContext::is_color(lua_State* l, int index) {
 }
 
 /**
- * @brief Checks that the value at the given index is a color and returns it.
- * @param l a Lua state
- * @param index an index in the Lua stack
- * @return the color at this index
+ * \brief Checks that the value at the given index is a color and returns it.
+ * \param l a Lua state
+ * \param index an index in the Lua stack
+ * \return the color at this index
  */
 Color LuaContext::check_color(lua_State* l, int index) {
 
@@ -1314,9 +1313,9 @@ Color LuaContext::check_color(lua_State* l, int index) {
 }
 
 /**
- * @brief Finalizer of a userdata type.
- * @param l a Lua state
- * @return number of values to return to Lua
+ * \brief Finalizer of a userdata type.
+ * \param l a Lua state
+ * \return number of values to return to Lua
  */
 int LuaContext::userdata_meta_gc(lua_State* l) {
 
@@ -1356,7 +1355,7 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
 }
 
 /**
- * @brief Implementation of __newindex that allows userdata to be like tables.
+ * \brief Implementation of __newindex that allows userdata to be like tables.
  *
  * Lua code can make "object[key] = value" if object is a userdata with this
  * __newindex metamethod.
@@ -1364,8 +1363,8 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
  * This metamethod must be used with its corresponding __index
  * metamethod (see userdata_meta_index_as_table).
  *
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
 
@@ -1411,16 +1410,16 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
 }
 
 /**
- * @brief Implementation of __index that allows userdata to be like tables.
+ * \brief Implementation of __index that allows userdata to be like tables.
  *
  * Lua code can get "object[key]" for an arbitrary key previously set.
  *
  * This metamethod must be used with its corresponding __newindex
  * metamethod (see userdata_meta_newindex_as_table).
  *
- * @brief Implementation of __index for the type game.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of __index for the type game.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::userdata_meta_index_as_table(lua_State* l) {
 
@@ -1470,7 +1469,7 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
 }
 
 /**
- * @brief Calls the on_started() method of the object on top of the stack.
+ * \brief Calls the on_started() method of the object on top of the stack.
  */
 void LuaContext::on_started() {
 
@@ -1480,7 +1479,7 @@ void LuaContext::on_started() {
 }
 
 /**
- * @brief Calls the on_finished() method of the object on top of the stack.
+ * \brief Calls the on_finished() method of the object on top of the stack.
  */
 void LuaContext::on_finished() {
 
@@ -1490,7 +1489,7 @@ void LuaContext::on_finished() {
 }
 
 /**
- * @brief Calls the on_update() method of the object on top of the stack.
+ * \brief Calls the on_update() method of the object on top of the stack.
  */
 void LuaContext::on_update() {
 
@@ -1500,8 +1499,8 @@ void LuaContext::on_update() {
 }
 
 /**
- * @brief Calls the on_draw() method of the object on top of the stack.
- * @param dst_surface The destination surface.
+ * \brief Calls the on_draw() method of the object on top of the stack.
+ * \param dst_surface The destination surface.
  */
 void LuaContext::on_draw(Surface& dst_surface) {
 
@@ -1512,8 +1511,8 @@ void LuaContext::on_draw(Surface& dst_surface) {
 }
 
 /**
- * @brief Calls the on_pre_draw() method of the object on top of the stack.
- * @param dst_surface The destination surface.
+ * \brief Calls the on_pre_draw() method of the object on top of the stack.
+ * \param dst_surface The destination surface.
  */
 void LuaContext::on_pre_draw(Surface& dst_surface) {
 
@@ -1524,8 +1523,8 @@ void LuaContext::on_pre_draw(Surface& dst_surface) {
 }
 
 /**
- * @brief Calls the on_post_draw() method of the object on top of the stack.
- * @param dst_surface The destination surface.
+ * \brief Calls the on_post_draw() method of the object on top of the stack.
+ * \param dst_surface The destination surface.
  */
 void LuaContext::on_post_draw(Surface& dst_surface) {
 
@@ -1536,8 +1535,8 @@ void LuaContext::on_post_draw(Surface& dst_surface) {
 }
 
 /**
- * @brief Calls the on_suspended() method of the object on top of the stack.
- * @param suspended true to suspend the object, false to unsuspend it.
+ * \brief Calls the on_suspended() method of the object on top of the stack.
+ * \param suspended true to suspend the object, false to unsuspend it.
  */
 void LuaContext::on_suspended(bool suspended) {
 
@@ -1548,7 +1547,7 @@ void LuaContext::on_suspended(bool suspended) {
 }
 
 /**
- * @brief Calls the on_paused() method of the object on top of the stack.
+ * \brief Calls the on_paused() method of the object on top of the stack.
  */
 void LuaContext::on_paused() {
 
@@ -1558,7 +1557,7 @@ void LuaContext::on_paused() {
 }
 
 /**
- * @brief Calls the on_unpaused() method of the object on top of the stack.
+ * \brief Calls the on_unpaused() method of the object on top of the stack.
  */
 void LuaContext::on_unpaused() {
 
@@ -1568,9 +1567,9 @@ void LuaContext::on_unpaused() {
 }
 
 /**
- * @brief Calls an input callback method of the object on top of the stack.
- * @param event The input event to forward.
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief Calls an input callback method of the object on top of the stack.
+ * \param event The input event to forward.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::on_input(InputEvent& event) {
 
@@ -1608,11 +1607,11 @@ bool LuaContext::on_input(InputEvent& event) {
 }
 
 /**
- * @brief Notifies the object on top of the stack
+ * \brief Notifies the object on top of the stack
  * that a keyboard key was just pressed
  * (including if it is a directional key or a character).
- * @param event The corresponding input event.
- * @return \c true if the event was handled and should stop being propagated.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::on_key_pressed(InputEvent& event) {
 
@@ -1658,10 +1657,10 @@ bool LuaContext::on_key_pressed(InputEvent& event) {
 }
 
 /**
- * @brief Notifies the object on top of the stack
+ * \brief Notifies the object on top of the stack
  * that a character was just pressed with the keyboard.
- * @param event The corresponding input event.
- * @return \c true if the event was handled and should stop being propagated.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::on_character_pressed(InputEvent& event) {
 
@@ -1684,11 +1683,11 @@ bool LuaContext::on_character_pressed(InputEvent& event) {
 }
 
 /**
- * @brief Notifies the object on top of the stack
+ * \brief Notifies the object on top of the stack
  * that a keyboard key was just released
  * (including if it is a directional key).
- * @param event The corresponding input event.
- * @return \c true if the event was handled and should stop being propagated.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::on_key_released(InputEvent& event) {
 
@@ -1717,10 +1716,10 @@ bool LuaContext::on_key_released(InputEvent& event) {
 }
 
 /**
- * @brief Notifies the object on top of the stack
+ * \brief Notifies the object on top of the stack
  * that a joypad button was just pressed.
- * @param event The corresponding input event.
- * @return \c true if the event was handled and should stop being propagated.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::on_joypad_button_pressed(InputEvent& event) {
 
@@ -1743,10 +1742,10 @@ bool LuaContext::on_joypad_button_pressed(InputEvent& event) {
 }
 
 /**
- * @brief Notifies the object on top of the stack
+ * \brief Notifies the object on top of the stack
  * that a joypad button was just released.
- * @param event The corresponding input event.
- * @return \c true if the event was handled and should stop being propagated.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::on_joypad_button_released(InputEvent& event) {
 
@@ -1769,10 +1768,10 @@ bool LuaContext::on_joypad_button_released(InputEvent& event) {
 }
 
 /**
- * @brief Notifies the object on top of the stack
+ * \brief Notifies the object on top of the stack
  * that a joypad axis was just moved.
- * @param event The corresponding input event.
- * @return \c true if the event was handled and should stop being propagated.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::on_joypad_axis_moved(InputEvent& event) {
 
@@ -1797,10 +1796,10 @@ bool LuaContext::on_joypad_axis_moved(InputEvent& event) {
 }
 
 /**
- * @brief Notifies the object on top of the stack
+ * \brief Notifies the object on top of the stack
  * that a joypad hat was just moved.
- * @param event The corresponding input event.
- * @return \c true if the event was handled and should stop being propagated.
+ * \param event The corresponding input event.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::on_joypad_hat_moved(InputEvent& event) {
 
@@ -1825,8 +1824,8 @@ bool LuaContext::on_joypad_hat_moved(InputEvent& event) {
 }
 
 /**
- * @brief Calls the on_command_pressed() method of the object on top of the stack.
- * @param command The game command just pressed.
+ * \brief Calls the on_command_pressed() method of the object on top of the stack.
+ * \param command The game command just pressed.
  */
 bool LuaContext::on_command_pressed(GameCommands::Command command) {
 
@@ -1847,8 +1846,8 @@ bool LuaContext::on_command_pressed(GameCommands::Command command) {
 }
 
 /**
- * @brief Calls the on_command_released() method of the object on top of the stack.
- * @param command The game command just pressed.
+ * \brief Calls the on_command_released() method of the object on top of the stack.
+ * \param command The game command just pressed.
  */
 bool LuaContext::on_command_released(GameCommands::Command command) {
 
@@ -1869,8 +1868,8 @@ bool LuaContext::on_command_released(GameCommands::Command command) {
 }
 
 /**
- * @brief Calls the on_animation_finished() method of the object on top of the stack.
- * @param animation Name of the animation finished.
+ * \brief Calls the on_animation_finished() method of the object on top of the stack.
+ * \param animation Name of the animation finished.
  */
 void LuaContext::on_animation_finished(const std::string& animation) {
 
@@ -1881,9 +1880,9 @@ void LuaContext::on_animation_finished(const std::string& animation) {
 }
 
 /**
- * @brief Calls the on_frame_changed() method of the object on top of the stack.
- * @param animation Name of the sprite animation.
- * @param frame The new frame.
+ * \brief Calls the on_frame_changed() method of the object on top of the stack.
+ * \param animation Name of the sprite animation.
+ * \param frame The new frame.
  */
 void LuaContext::on_frame_changed(const std::string& animation, int frame) {
 
@@ -1895,7 +1894,7 @@ void LuaContext::on_frame_changed(const std::string& animation, int frame) {
 }
 
 /**
- * @brief Calls the on_position_changed() method of the object on top of the stack.
+ * \brief Calls the on_position_changed() method of the object on top of the stack.
  */
 void LuaContext::on_position_changed() {
 
@@ -1905,7 +1904,7 @@ void LuaContext::on_position_changed() {
 }
 
 /**
- * @brief Calls the on_obstacle_reached() method of the object on top of the stack.
+ * \brief Calls the on_obstacle_reached() method of the object on top of the stack.
  */
 void LuaContext::on_obstacle_reached() {
 
@@ -1915,7 +1914,7 @@ void LuaContext::on_obstacle_reached() {
 }
 
 /**
- * @brief Calls the on_changed() method of the object on top of the stack.
+ * \brief Calls the on_changed() method of the object on top of the stack.
  */
 void LuaContext::on_changed() {
 
@@ -1925,8 +1924,8 @@ void LuaContext::on_changed() {
 }
 
 /**
- * @brief Calls the on_started() method of the object on top of the stack.
- * @param destination The destination point used (NULL if it's a special one).
+ * \brief Calls the on_started() method of the object on top of the stack.
+ * \param destination The destination point used (NULL if it's a special one).
  */
 void LuaContext::on_started(Destination* destination) {
 
@@ -1942,8 +1941,8 @@ void LuaContext::on_started(Destination* destination) {
 }
 
 /**
- * @brief Calls the on_opening_transition_finished() method of the object on top of the stack.
- * @param destination The destination point used (NULL if it's a special one).
+ * \brief Calls the on_opening_transition_finished() method of the object on top of the stack.
+ * \param destination The destination point used (NULL if it's a special one).
  */
 void LuaContext::on_opening_transition_finished(Destination* destination) {
 
@@ -1959,7 +1958,7 @@ void LuaContext::on_opening_transition_finished(Destination* destination) {
 }
 
 /**
- * @brief Calls the on_camera_back() method of the object on top of the stack.
+ * \brief Calls the on_camera_back() method of the object on top of the stack.
  */
 void LuaContext::on_camera_back() {
 
@@ -1969,8 +1968,8 @@ void LuaContext::on_camera_back() {
 }
 
 /**
- * @brief Calls the on_obtaining_treasure() method of the object on top of the stack.
- * @param treasure The treasure being obtained.
+ * \brief Calls the on_obtaining_treasure() method of the object on top of the stack.
+ * \param treasure The treasure being obtained.
  */
 void LuaContext::on_obtaining_treasure(const Treasure& treasure) {
 
@@ -1988,8 +1987,8 @@ void LuaContext::on_obtaining_treasure(const Treasure& treasure) {
 }
 
 /**
- * @brief Calls the on_obtained_treasure() method of the object on top of the stack.
- * @param treasure The treasure just obtained.
+ * \brief Calls the on_obtained_treasure() method of the object on top of the stack.
+ * \param treasure The treasure just obtained.
  */
 void LuaContext::on_obtained_treasure(const Treasure& treasure) {
 
@@ -2007,7 +2006,7 @@ void LuaContext::on_obtained_treasure(const Treasure& treasure) {
 }
 
 /**
- * @brief Calls the on_activated() method of the object on top of the stack.
+ * \brief Calls the on_activated() method of the object on top of the stack.
  */
 void LuaContext::on_activated() {
 
@@ -2017,7 +2016,7 @@ void LuaContext::on_activated() {
 }
 
 /**
- * @brief Calls the on_inactivated_repeat() method of the object on top of the stack.
+ * \brief Calls the on_inactivated_repeat() method of the object on top of the stack.
  */
 void LuaContext::on_activated_repeat() {
 
@@ -2027,7 +2026,7 @@ void LuaContext::on_activated_repeat() {
 }
 
 /**
- * @brief Calls the on_inactivated() method of the object on top of the stack.
+ * \brief Calls the on_inactivated() method of the object on top of the stack.
  */
 void LuaContext::on_inactivated() {
 
@@ -2037,7 +2036,7 @@ void LuaContext::on_inactivated() {
 }
 
 /**
- * @brief Calls the on_left() method of the object on top of the stack.
+ * \brief Calls the on_left() method of the object on top of the stack.
  */
 void LuaContext::on_left() {
 
@@ -2047,8 +2046,8 @@ void LuaContext::on_left() {
 }
 
 /**
- * @brief Calls the on_npc_interaction() method of the object on top of the stack.
- * @param npc An NPC.
+ * \brief Calls the on_npc_interaction() method of the object on top of the stack.
+ * \param npc An NPC.
  */
 void LuaContext::on_npc_interaction(NPC& npc) {
 
@@ -2059,10 +2058,10 @@ void LuaContext::on_npc_interaction(NPC& npc) {
 }
 
 /**
- * @brief Calls the on_npc_interaction_item() method of the object on top of the stack.
- * @param npc An NPC.
- * @param item_used The equipment item used.
- * @return true if an interaction occurred.
+ * \brief Calls the on_npc_interaction_item() method of the object on top of the stack.
+ * \param npc An NPC.
+ * \param item_used The equipment item used.
+ * \return true if an interaction occurred.
  */
 bool LuaContext::on_npc_interaction_item(NPC& npc, EquipmentItem& item_used) {
 
@@ -2084,7 +2083,7 @@ bool LuaContext::on_npc_interaction_item(NPC& npc, EquipmentItem& item_used) {
 }
 
 /**
- * @brief Calls the on_interaction() method of the object on top of the stack.
+ * \brief Calls the on_interaction() method of the object on top of the stack.
  */
 void LuaContext::on_interaction() {
 
@@ -2094,9 +2093,9 @@ void LuaContext::on_interaction() {
 }
 
 /**
- * @brief Calls the on_interaction_item() method of the object on top of the stack.
- * @param item_used The equipment item used.
- * @return true if an interaction occurred.
+ * \brief Calls the on_interaction_item() method of the object on top of the stack.
+ * \param item_used The equipment item used.
+ * \return true if an interaction occurred.
  */
 bool LuaContext::on_interaction_item(EquipmentItem& item) {
 
@@ -2117,8 +2116,8 @@ bool LuaContext::on_interaction_item(EquipmentItem& item) {
 }
 
 /**
- * @brief Calls the on_npc_collision_fire() method of the object on top of the stack.
- * @param npc An NPC.
+ * \brief Calls the on_npc_collision_fire() method of the object on top of the stack.
+ * \param npc An NPC.
  */
 void LuaContext::on_npc_collision_fire(NPC& npc) {
 
@@ -2129,7 +2128,7 @@ void LuaContext::on_npc_collision_fire(NPC& npc) {
 }
 
 /**
- * @brief Calls the on_collision_fire() method of the object on top of the stack.
+ * \brief Calls the on_collision_fire() method of the object on top of the stack.
  */
 void LuaContext::on_collision_fire() {
 
@@ -2139,7 +2138,7 @@ void LuaContext::on_collision_fire() {
 }
 
 /**
- * @brief Calls the on_collision_explosion() method of the object on top of the stack.
+ * \brief Calls the on_collision_explosion() method of the object on top of the stack.
  */
 void LuaContext::on_collision_explosion() {
 
@@ -2149,8 +2148,8 @@ void LuaContext::on_collision_explosion() {
 }
 
 /**
- * @brief Calls the on_empty() method of the object on top of the stack.
- * @return \c true if the on_empty() method is defined.
+ * \brief Calls the on_empty() method of the object on top of the stack.
+ * \return \c true if the on_empty() method is defined.
  */
 bool LuaContext::on_empty() {
 
@@ -2162,8 +2161,8 @@ bool LuaContext::on_empty() {
 }
 
 /**
- * @brief Calls the on_buying() method of the object on top of the stack.
- * @return true if the player is allowed to buy the item.
+ * \brief Calls the on_buying() method of the object on top of the stack.
+ * \return true if the player is allowed to buy the item.
  */
 bool LuaContext::on_buying() {
 
@@ -2183,7 +2182,7 @@ bool LuaContext::on_buying() {
 }
 
 /**
- * @brief Calls the on_bought() method of the object on top of the stack.
+ * \brief Calls the on_bought() method of the object on top of the stack.
  */
 void LuaContext::on_bought() {
 
@@ -2193,7 +2192,7 @@ void LuaContext::on_bought() {
 }
 
 /**
- * @brief Calls the on_opened() method of the object on top of the stack.
+ * \brief Calls the on_opened() method of the object on top of the stack.
  */
 void LuaContext::on_opened() {
 
@@ -2203,7 +2202,7 @@ void LuaContext::on_opened() {
 }
 
 /**
- * @brief Calls the on_closed() method of the object on top of the stack.
+ * \brief Calls the on_closed() method of the object on top of the stack.
  */
 void LuaContext::on_closed() {
 
@@ -2213,7 +2212,7 @@ void LuaContext::on_closed() {
 }
 
 /**
- * @brief Calls the on_moved() method of the object on top of the stack.
+ * \brief Calls the on_moved() method of the object on top of the stack.
  */
 void LuaContext::on_moved() {
 
@@ -2223,8 +2222,8 @@ void LuaContext::on_moved() {
 }
 
 /**
- * @brief Calls the on_map_changed() method of the object on top of the stack.
- * @param map The new active map.
+ * \brief Calls the on_map_changed() method of the object on top of the stack.
+ * \param map The new active map.
  */
 void LuaContext::on_map_changed(Map& map) {
 
@@ -2235,8 +2234,8 @@ void LuaContext::on_map_changed(Map& map) {
 }
 
 /**
- * @brief Calls the on_pickable_created() method of the object on top of the stack.
- * @param pickable A pickable treasure.
+ * \brief Calls the on_pickable_created() method of the object on top of the stack.
+ * \param pickable A pickable treasure.
  */
 void LuaContext::on_pickable_created(Pickable& pickable) {
 
@@ -2247,9 +2246,9 @@ void LuaContext::on_pickable_created(Pickable& pickable) {
 }
 
 /**
- * @brief Calls the on_pickable_movement_changed() method of the object on top of the stack.
- * @param pickable A pickable treasure.
- * @param movement The movement of this pickable treasure.
+ * \brief Calls the on_pickable_movement_changed() method of the object on top of the stack.
+ * \param pickable A pickable treasure.
+ * \param movement The movement of this pickable treasure.
  */
 void LuaContext::on_pickable_movement_changed(Pickable& pickable, Movement& movement) {
 
@@ -2261,8 +2260,8 @@ void LuaContext::on_pickable_movement_changed(Pickable& pickable, Movement& move
 }
 
 /**
- * @brief Calls the on_variant_changed() method of the object on top of the stack.
- * @param variant Variant of an equipment item.
+ * \brief Calls the on_variant_changed() method of the object on top of the stack.
+ * \param variant Variant of an equipment item.
  */
 void LuaContext::on_variant_changed(int variant) {
 
@@ -2273,8 +2272,8 @@ void LuaContext::on_variant_changed(int variant) {
 }
 
 /**
- * @brief Calls the on_amount_changed() method of the object on top of the stack.
- * @param amount Amount of an equipment item.
+ * \brief Calls the on_amount_changed() method of the object on top of the stack.
+ * \param amount Amount of an equipment item.
  */
 void LuaContext::on_amount_changed(int amount) {
 
@@ -2285,8 +2284,8 @@ void LuaContext::on_amount_changed(int amount) {
 }
 
 /**
- * @brief Calls the on_obtaining() method of the object on top of the stack.
- * @param treasure The treasure being obtained.
+ * \brief Calls the on_obtaining() method of the object on top of the stack.
+ * \param treasure The treasure being obtained.
  */
 void LuaContext::on_obtaining(const Treasure& treasure) {
 
@@ -2303,8 +2302,8 @@ void LuaContext::on_obtaining(const Treasure& treasure) {
 }
 
 /**
- * @brief Calls the on_obtained() method of the object on top of the stack.
- * @param treasure The treasure just obtained.
+ * \brief Calls the on_obtained() method of the object on top of the stack.
+ * \param treasure The treasure just obtained.
  */
 void LuaContext::on_obtained(const Treasure& treasure) {
 
@@ -2321,7 +2320,7 @@ void LuaContext::on_obtained(const Treasure& treasure) {
 }
 
 /**
- * @brief Calls the on_using() method of the object on top of the stack.
+ * \brief Calls the on_using() method of the object on top of the stack.
  */
 void LuaContext::on_using() {
 
@@ -2331,8 +2330,8 @@ void LuaContext::on_using() {
 }
 
 /**
- * @brief Calls the on_ability_used() method of the object on top of the stack.
- * @param ability_name Id of a built-in ability.
+ * \brief Calls the on_ability_used() method of the object on top of the stack.
+ * \param ability_name Id of a built-in ability.
  */
 void LuaContext::on_ability_used(const std::string& ability_name) {
 
@@ -2343,7 +2342,7 @@ void LuaContext::on_ability_used(const std::string& ability_name) {
 }
 
 /**
- * @brief Calls the on_created() method of the object on top of the stack.
+ * \brief Calls the on_created() method of the object on top of the stack.
  */
 void LuaContext::on_created() {
 
@@ -2353,7 +2352,7 @@ void LuaContext::on_created() {
 }
 
 /**
- * @brief Calls the on_removed() method of the object on top of the stack.
+ * \brief Calls the on_removed() method of the object on top of the stack.
  */
 void LuaContext::on_removed() {
 
@@ -2363,7 +2362,7 @@ void LuaContext::on_removed() {
 }
 
 /**
- * @brief Calls the on_enabled() method of the object on top of the stack.
+ * \brief Calls the on_enabled() method of the object on top of the stack.
  */
 void LuaContext::on_enabled() {
 
@@ -2373,7 +2372,7 @@ void LuaContext::on_enabled() {
 }
 
 /**
- * @brief Calls the on_disabled() method of the object on top of the stack.
+ * \brief Calls the on_disabled() method of the object on top of the stack.
  */
 void LuaContext::on_disabled() {
 
@@ -2383,7 +2382,7 @@ void LuaContext::on_disabled() {
 }
 
 /**
- * @brief Calls the on_restarted() method of the object on top of the stack.
+ * \brief Calls the on_restarted() method of the object on top of the stack.
  */
 void LuaContext::on_restarted() {
 
@@ -2393,7 +2392,7 @@ void LuaContext::on_restarted() {
 }
 
 /**
- * @brief Calls the on_pre_draw() method of the object on top of the stack.
+ * \brief Calls the on_pre_draw() method of the object on top of the stack.
  */
 void LuaContext::on_pre_draw() {
 
@@ -2403,7 +2402,7 @@ void LuaContext::on_pre_draw() {
 }
 
 /**
- * @brief Calls the on_post_draw() method of the object on top of the stack.
+ * \brief Calls the on_post_draw() method of the object on top of the stack.
  */
 void LuaContext::on_post_draw() {
 
@@ -2413,9 +2412,9 @@ void LuaContext::on_post_draw() {
 }
 
 /**
- * @brief Calls the on_position_changed() method of the object on top of the stack.
- * @param xy The new position.
- * @param layer The new layer.
+ * \brief Calls the on_position_changed() method of the object on top of the stack.
+ * \param xy The new position.
+ * \param layer The new layer.
  */
 void LuaContext::on_position_changed(const Rectangle& xy, Layer layer) {
 
@@ -2428,8 +2427,8 @@ void LuaContext::on_position_changed(const Rectangle& xy, Layer layer) {
 }
 
 /**
- * @brief Calls the on_obstacle_reached() method of the object on top of the stack.
- * @param movement The movement that reached an obstacle.
+ * \brief Calls the on_obstacle_reached() method of the object on top of the stack.
+ * \param movement The movement that reached an obstacle.
  */
 void LuaContext::on_obstacle_reached(Movement& movement) {
 
@@ -2440,8 +2439,8 @@ void LuaContext::on_obstacle_reached(Movement& movement) {
 }
 
 /**
- * @brief Calls the on_movement_changed() method of the object on top of the stack.
- * @param movement A movement.
+ * \brief Calls the on_movement_changed() method of the object on top of the stack.
+ * \param movement A movement.
  */
 void LuaContext::on_movement_changed(Movement& movement) {
 
@@ -2452,7 +2451,7 @@ void LuaContext::on_movement_changed(Movement& movement) {
 }
 
 /**
- * @brief Calls the on_movement_finished() method of the object on top of the stack.
+ * \brief Calls the on_movement_finished() method of the object on top of the stack.
  */
 void LuaContext::on_movement_finished() {
 
@@ -2462,10 +2461,10 @@ void LuaContext::on_movement_finished() {
 }
 
 /**
- * @brief Calls the on_collision_enemy() method of the object on top of the stack.
- * @param other_enemy Another enemy colliding with the object on top of the stack.
- * @param other_sprite Colliding sprite of the other enemy.
- * @param this_sprite Colliding sprite of the first enemy.
+ * \brief Calls the on_collision_enemy() method of the object on top of the stack.
+ * \param other_enemy Another enemy colliding with the object on top of the stack.
+ * \param other_sprite Colliding sprite of the other enemy.
+ * \param this_sprite Colliding sprite of the first enemy.
  */
 void LuaContext::on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite) {
 
@@ -2478,9 +2477,9 @@ void LuaContext::on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sp
 }
 
 /**
- * @brief Calls the on_custom_attack_received() method of the object on top of the stack.
- * @param attack The attack received.
- * @param sprite The sprite that receives the attack if any.
+ * \brief Calls the on_custom_attack_received() method of the object on top of the stack.
+ * \param attack The attack received.
+ * \param sprite The sprite that receives the attack if any.
  */
 void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 
@@ -2498,9 +2497,9 @@ void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 }
 
 /**
- * @brief Calls the on_hurt() method of the object on top of the stack.
- * @param attack The attack received.
- * @param life_lost Number of life points just lost.
+ * \brief Calls the on_hurt() method of the object on top of the stack.
+ * \param attack The attack received.
+ * \param life_lost Number of life points just lost.
  */
 void LuaContext::on_hurt(EnemyAttack attack, int life_lost) {
 
@@ -2512,7 +2511,7 @@ void LuaContext::on_hurt(EnemyAttack attack, int life_lost) {
 }
 
 /**
- * @brief Calls the on_dying() method of the object on top of the stack.
+ * \brief Calls the on_dying() method of the object on top of the stack.
  */
 void LuaContext::on_dying() {
 
@@ -2522,7 +2521,7 @@ void LuaContext::on_dying() {
 }
 
 /**
- * @brief Calls the on_dead() method of the object on top of the stack.
+ * \brief Calls the on_dead() method of the object on top of the stack.
  */
 void LuaContext::on_dead() {
 
@@ -2532,7 +2531,7 @@ void LuaContext::on_dead() {
 }
 
 /**
- * @brief Calls the on_immobilized() method of the object on top of the stack.
+ * \brief Calls the on_immobilized() method of the object on top of the stack.
  */
 void LuaContext::on_immobilized() {
 
@@ -2542,9 +2541,9 @@ void LuaContext::on_immobilized() {
 }
 
 /**
- * @brief Function called when an unprotected Lua error occurs.
- * @param l The Lua context.
- * @return Number of values to return to Lua.
+ * \brief Function called when an unprotected Lua error occurs.
+ * \param l The Lua context.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::l_panic(lua_State* l) {
 
@@ -2556,10 +2555,10 @@ int LuaContext::l_panic(lua_State* l) {
 }
 
 /**
- * @brief A loader that makes require() able to load Lua files
+ * \brief A loader that makes require() able to load Lua files
  * from the quest data directory or archive.
- * @param l The Lua context.
- * @return Number of values to return to Lua.
+ * \param l The Lua context.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::l_loader(lua_State* l) {
 

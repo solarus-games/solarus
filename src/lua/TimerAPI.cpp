@@ -26,7 +26,7 @@
 const std::string LuaContext::timer_module_name = "sol.timer";
 
 /**
- * @brief Initializes the timer features provided to Lua.
+ * \brief Initializes the timer features provided to Lua.
  */
 void LuaContext::register_timer_module() {
 
@@ -57,40 +57,40 @@ void LuaContext::register_timer_module() {
 }
 
 /**
- * @brief Returns whether a value is a userdata of type timer.
- * @param l A Lua context.
- * @param index An index in the stack.
- * @return true if the value at this index is a timer.
+ * \brief Returns whether a value is a userdata of type timer.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a timer.
  */
 bool LuaContext::is_timer(lua_State* l, int index) {
   return is_userdata(l, index, timer_module_name);
 }
 
 /**
- * @brief Checks that the userdata at the specified index of the stack is a
+ * \brief Checks that the userdata at the specified index of the stack is a
  * timer and returns it.
- * @param l a Lua context
- * @param index an index in the stack
- * @return the timer
+ * \param l a Lua context
+ * \param index an index in the stack
+ * \return the timer
  */
 Timer& LuaContext::check_timer(lua_State* l, int index) {
   return static_cast<Timer&>(check_userdata(l, index, timer_module_name));
 }
 
 /**
- * @brief Pushes a timer userdata onto the stack.
- * @param l a Lua context
- * @param timer a timer
+ * \brief Pushes a timer userdata onto the stack.
+ * \param l a Lua context
+ * \param timer a timer
  */
 void LuaContext::push_timer(lua_State* l, Timer& timer) {
   push_userdata(l, timer);
 }
 
 /**
- * @brief Registers a timer into a context (table or a userdata).
- * @param timer A timer.
- * @param context_index Index of the table or userdata in the stack.
- * @param callback_index Index of the function to call when the timer finishes.
+ * \brief Registers a timer into a context (table or a userdata).
+ * \param timer A timer.
+ * \param context_index Index of the table or userdata in the stack.
+ * \param callback_index Index of the function to call when the timer finishes.
  */
 void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) {
 
@@ -149,11 +149,11 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
 }
 
 /**
- * @brief Unregisters a timer associated to a context.
+ * \brief Unregisters a timer associated to a context.
  *
  * This function can be called safely even while iterating on the timer list.
  *
- * @param timer A timer.
+ * \param timer A timer.
  */
 void LuaContext::remove_timer(Timer* timer) {
   if (timers.find(timer) != timers.end()) {
@@ -166,11 +166,11 @@ void LuaContext::remove_timer(Timer* timer) {
 }
 
 /**
- * @brief Unregisters all timers associated to a context.
+ * \brief Unregisters all timers associated to a context.
  *
  * This function can be called safely even while iterating on the timer list.
  *
- * @param context_index Index of a table or userdata containing timers.
+ * \param context_index Index of a table or userdata containing timers.
  */
 void LuaContext::remove_timers(int context_index) {
 
@@ -199,7 +199,7 @@ void LuaContext::remove_timers(int context_index) {
 }
 
 /**
- * @brief Destroys immediately all existing timers.
+ * \brief Destroys immediately all existing timers.
  */
 void LuaContext::destroy_timers() {
 
@@ -219,7 +219,7 @@ void LuaContext::destroy_timers() {
 }
 
 /**
- * @brief Updates all timers currently running for this script.
+ * \brief Updates all timers currently running for this script.
  */
 void LuaContext::update_timers() {
 
@@ -264,9 +264,9 @@ void LuaContext::update_timers() {
 }
 
 /**
- * @brief This function is called when the game (if any) is being suspended
+ * \brief This function is called when the game (if any) is being suspended
  * or resumed.
- * @param suspended true if the game is suspended, false if it is resumed.
+ * \param suspended true if the game is suspended, false if it is resumed.
  */
 void LuaContext::notify_timers_map_suspended(bool suspended) {
 
@@ -280,9 +280,9 @@ void LuaContext::notify_timers_map_suspended(bool suspended) {
 }
 
 /**
- * @brief Implementation of sol.timer.start().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.timer.start().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::timer_api_start(lua_State *l) {
 
@@ -333,9 +333,9 @@ int LuaContext::timer_api_start(lua_State *l) {
 }
 
 /**
- * @brief Implementation of timer:stop().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of timer:stop().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::timer_api_stop(lua_State* l) {
 
@@ -347,9 +347,9 @@ int LuaContext::timer_api_stop(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.timer.stop_all().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.timer.stop_all().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::timer_api_stop_all(lua_State* l) {
 
@@ -364,9 +364,9 @@ int LuaContext::timer_api_stop_all(lua_State* l) {
 }
 
 /**
- * @brief Implementation of timer:is_with_sound().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of timer:is_with_sound().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::timer_api_is_with_sound(lua_State* l) {
 
@@ -377,9 +377,9 @@ int LuaContext::timer_api_is_with_sound(lua_State* l) {
 }
 
 /**
- * @brief Implementation of timer:set_with_sound().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of timer:set_with_sound().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::timer_api_set_with_sound(lua_State* l) {
 
@@ -395,9 +395,9 @@ int LuaContext::timer_api_set_with_sound(lua_State* l) {
 }
 
 /**
- * @brief Implementation of timer:is_suspended().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of timer:is_suspended().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::timer_api_is_suspended(lua_State* l) {
 
@@ -408,9 +408,9 @@ int LuaContext::timer_api_is_suspended(lua_State* l) {
 }
 
 /**
- * @brief Implementation of timer:set_suspended().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of timer:set_suspended().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::timer_api_set_suspended(lua_State* l) {
 
@@ -426,9 +426,9 @@ int LuaContext::timer_api_set_suspended(lua_State* l) {
 }
 
 /**
- * @brief Implementation of timer:is_suspended_with_map().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of timer:is_suspended_with_map().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
 
@@ -439,9 +439,9 @@ int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
 }
 
 /**
- * @brief Implementation of timer:set_suspended_with_map().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of timer:set_suspended_with_map().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
 

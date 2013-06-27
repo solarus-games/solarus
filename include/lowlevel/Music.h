@@ -21,7 +21,7 @@
 #include "lowlevel/Sound.h"
 
 /**
- * @brief Represents a music that can be played.
+ * \brief Represents a music that can be played.
  *
  * A music should be in format .spc (Snes), .it (Impulse Tracker module) or .ogg.
  * The .mp3 format will probably be supported in a future version.

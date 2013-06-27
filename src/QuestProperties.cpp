@@ -27,12 +27,12 @@
 namespace {
 
 /**
- * @brief Version of the quest.
+ * \brief Version of the quest.
  */
 std::string solarus_required_version;
 
 /**
- * @brief Checks that the quest is compatible with the current version of Solarus.
+ * \brief Checks that the quest is compatible with the current version of Solarus.
  */
 void check_version_compatibility() {
 
@@ -71,8 +71,8 @@ void check_version_compatibility() {
 }
 
 /**
- * @brief Creates the quest properties loader.
- * @param main_loop The quest main loop.
+ * \brief Creates the quest properties loader.
+ * \param main_loop The quest main loop.
  */
 QuestProperties::QuestProperties(MainLoop& main_loop):
   main_loop(main_loop) {
@@ -80,14 +80,14 @@ QuestProperties::QuestProperties(MainLoop& main_loop):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 QuestProperties::~QuestProperties() {
 
 }
 
 /**
- * @brief Reads the quest properties data file quest.lua and applies
+ * \brief Reads the quest properties data file quest.lua and applies
  * these properties to the quest.
  */
 void QuestProperties::load() {

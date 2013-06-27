@@ -19,10 +19,10 @@
 #include "SpriteAnimationSet.h"
 
 /**
- * @brief Creates some fire.
- * @param name Unique name identifying the entity on the map or an empty string.
- * @param layer layer of the fire entity to create
- * @param xy coordinates of the fire
+ * \brief Creates some fire.
+ * \param name Unique name identifying the entity on the map or an empty string.
+ * \param layer layer of the fire entity to create
+ * \param xy coordinates of the fire
  */
 Fire::Fire(const std::string& name, Layer layer, const Rectangle& xy):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, name, layer, xy.get_x(), xy.get_y(), 16, 16) {
@@ -35,34 +35,34 @@ Fire::Fire(const std::string& name, Layer layer, const Rectangle& xy):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Fire::~Fire() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Fire::get_type() {
   return FIRE;
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
+ * \brief Returns whether entities of this type can be obstacles for other entities.
  *
  * If yes, the function is_obstacle_for() will be called
  * to determine whether this particular entity is an obstacle or not.
  *
- * @return true if this type of entity can be obstacle for other entities
+ * \return true if this type of entity can be obstacle for other entities
  */
 bool Fire::can_be_obstacle() {
   return false;
 }
 
 /**
- * @brief Updates this entity.
+ * \brief Updates this entity.
  */
 void Fire::update() {
 
@@ -76,14 +76,14 @@ void Fire::update() {
 }
 
 /**
- * @brief Notifies this entity that a pixel-precise collision was just detected with another sprite.
+ * \brief Notifies this entity that a pixel-precise collision was just detected with another sprite.
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.
  *
- * @param other_entity the entity overlapping this detector
- * @param other_sprite the sprite of other_entity that is overlapping this detector
- * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \param other_entity the entity overlapping this detector
+ * \param other_sprite the sprite of other_entity that is overlapping this detector
+ * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Fire::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
 

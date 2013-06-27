@@ -21,7 +21,7 @@
 #include "movements/PathMovement.h"
 
 /**
- * @brief Movement for an entity that looks for a path to another entity.
+ * \brief Movement for an entity that looks for a path to another entity.
  *
  * This movement is typically used by enemies that try to reach the hero.
  * The entity tries to find a path and to avoid the obstacles on the way.

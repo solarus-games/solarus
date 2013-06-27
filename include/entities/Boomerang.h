@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 
 /**
- * @brief A boomerang thrown on the map.
+ * \brief A boomerang thrown on the map.
  *
  * In the current implementation, only the hero is supposed to be able to
  * throw a boomerang.

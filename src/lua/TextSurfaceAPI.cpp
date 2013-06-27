@@ -44,7 +44,7 @@ static const std::string vertical_alignment_names[] = {
 };
 
 /**
- * @brief Initializes the text surface features provided to Lua.
+ * \brief Initializes the text surface features provided to Lua.
  */
 void LuaContext::register_text_surface_module() {
 
@@ -82,21 +82,21 @@ void LuaContext::register_text_surface_module() {
 }
 
 /**
- * @brief Returns whether a value is a userdata of type text surface.
- * @param l A Lua context.
- * @param index An index in the stack.
- * @return true if the value at this index is a text surface.
+ * \brief Returns whether a value is a userdata of type text surface.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a text surface.
  */
 bool LuaContext::is_text_surface(lua_State* l, int index) {
   return is_userdata(l, index, text_surface_module_name);
 }
 
 /**
- * @brief Checks that the userdata at the specified index of the stack is a
+ * \brief Checks that the userdata at the specified index of the stack is a
  * text surface and returns it.
- * @param l a Lua context
- * @param index an index in the stack
- * @return the text surface
+ * \param l a Lua context
+ * \param index an index in the stack
+ * \return the text surface
  */
 TextSurface& LuaContext::check_text_surface(lua_State* l, int index) {
   return static_cast<TextSurface&>(
@@ -104,18 +104,18 @@ TextSurface& LuaContext::check_text_surface(lua_State* l, int index) {
 }
 
 /**
- * @brief Pushes a text surface userdata onto the stack.
- * @param l a Lua context
- * @param text_surface a text surface
+ * \brief Pushes a text surface userdata onto the stack.
+ * \param l a Lua context
+ * \param text_surface a text surface
  */
 void LuaContext::push_text_surface(lua_State* l, TextSurface& text_surface) {
   push_userdata(l, text_surface);
 }
 
 /**
- * @brief Implementation of sol.text_surface.create().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of sol.text_surface.create().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::text_surface_api_create(lua_State* l) {
 
@@ -182,9 +182,9 @@ int LuaContext::text_surface_api_create(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:get_horizontal_alignment().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:get_horizontal_alignment().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
 
@@ -197,9 +197,9 @@ int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:set_horizontal_alignment().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:set_horizontal_alignment().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
 
@@ -213,9 +213,9 @@ int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:get_vertical_alignment().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:get_vertical_alignment().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 
@@ -228,9 +228,9 @@ int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:set_vertical_alignment().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:set_vertical_alignment().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
 
@@ -244,9 +244,9 @@ int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:get_font().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:get_font().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_get_font(lua_State* l) {
 
@@ -259,9 +259,9 @@ int LuaContext::text_surface_api_get_font(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:set_text().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:set_text().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_set_font(lua_State* l) {
 
@@ -278,9 +278,9 @@ int LuaContext::text_surface_api_set_font(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:get_rendering_mode().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:get_rendering_mode().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 
@@ -293,9 +293,9 @@ int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:set_rendering_mode().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:set_rendering_mode().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
 
@@ -309,9 +309,9 @@ int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:get_color().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:get_color().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_get_color(lua_State* l) {
 
@@ -324,9 +324,9 @@ int LuaContext::text_surface_api_get_color(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:set_color().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:set_color().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_set_color(lua_State* l) {
 
@@ -339,9 +339,9 @@ int LuaContext::text_surface_api_set_color(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:get_text().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:get_text().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_get_text(lua_State* l) {
 
@@ -354,9 +354,9 @@ int LuaContext::text_surface_api_get_text(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:set_text().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:set_text().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_set_text(lua_State* l) {
 
@@ -371,9 +371,9 @@ int LuaContext::text_surface_api_set_text(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:set_text_key().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:set_text_key().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_set_text_key(lua_State* l) {
 
@@ -392,9 +392,9 @@ int LuaContext::text_surface_api_set_text_key(lua_State* l) {
 }
 
 /**
- * @brief Implementation of text_surface:get_size().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of text_surface:get_size().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::text_surface_api_get_size(lua_State* l) {
 

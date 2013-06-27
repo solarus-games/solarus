@@ -23,8 +23,8 @@
 #include <cstring>
 
 /**
- * @brief Creates an old savegame converter with a specified existing file name.
- * @param file_name Name of the savegame file (must exist),
+ * \brief Creates an old savegame converter with a specified existing file name.
+ * \param file_name Name of the savegame file (must exist),
  * relative to the savegames directory.
  */
 SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
@@ -44,38 +44,38 @@ SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 SavegameConverterV1::~SavegameConverterV1() {
 }
 
 /**
- * @brief Returns a string value saved.
- * @param index index of the value to get, between 0 and 63
+ * \brief Returns a string value saved.
+ * \param index index of the value to get, between 0 and 63
  * (see enum StringIndex for their definition)
- * @return the string value saved at this index
+ * \return the string value saved at this index
  */
 const std::string SavegameConverterV1::get_string(int index) {
   return saved_data.strings[index];
 }
 
 /**
- * @brief Returns a integer value saved.
+ * \brief Returns a integer value saved.
  *
  * Values between 0 and 1023 are used by the engine (the C++ code)
  * and values between 1024 and 2047 are available to the map scripts.
- * @param index index of the value to get, between 0 and 2047
+ * \param index index of the value to get, between 0 and 2047
  * (see enum IntegerIndex for their definition)
- * @return the integer value saved at this index
+ * \return the integer value saved at this index
  */
 uint32_t SavegameConverterV1::get_integer(int index) {
   return saved_data.integers[index];
 }
 
 /**
- * @brief Returns a boolean value saved.
- * @param index index of the value to get, between 0 and 32767
- * @return the boolean value saved at this index
+ * \brief Returns a boolean value saved.
+ * \param index index of the value to get, between 0 and 32767
+ * \return the boolean value saved at this index
  */
 bool SavegameConverterV1::get_boolean(int index) {
 
@@ -84,8 +84,8 @@ bool SavegameConverterV1::get_boolean(int index) {
 }
 
 /**
- * @brief Converts this savegame v1 into a savegame v2.
- * @param savegame_v2 The savegame to fill.
+ * \brief Converts this savegame v1 into a savegame v2.
+ * \param savegame_v2 The savegame to fill.
  */
 void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
 

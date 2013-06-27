@@ -20,8 +20,8 @@
 #include "KeysEffect.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::FreezedState::FreezedState(Hero& hero):
   State(hero) {
@@ -29,15 +29,15 @@ Hero::FreezedState::FreezedState(Hero& hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::FreezedState::~FreezedState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::FreezedState::start(State* previous_state) {
 

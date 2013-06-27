@@ -32,8 +32,8 @@ const std::string Music::none = "none";
 const std::string Music::unchanged = "same";
 
 /**
- * @brief Creates a new music.
- * @param music_id id of the music (file name without extension)
+ * \brief Creates a new music.
+ * \param music_id id of the music (file name without extension)
  */
 Music::Music(const std::string& music_id):
   id(music_id),
@@ -50,7 +50,7 @@ Music::Music(const std::string& music_id):
 }
 
 /**
- * @brief Destroys the music.
+ * \brief Destroys the music.
  */
 Music::~Music() {
 
@@ -64,7 +64,7 @@ Music::~Music() {
 }
 
 /**
- * @brief Initializes the music system.
+ * \brief Initializes the music system.
  */
 void Music::initialize() {
 
@@ -76,7 +76,7 @@ void Music::initialize() {
 }
 
 /**
- * @brief Exits the music system.
+ * \brief Exits the music system.
  */
 void Music::quit() {
   if (is_initialized()) {
@@ -87,16 +87,16 @@ void Music::quit() {
 }
 
 /**
- * @brief Returns whether the music system is initialized.
- * @return true if the music system is initilialized
+ * \brief Returns whether the music system is initialized.
+ * \return true if the music system is initilialized
  */
 bool Music::is_initialized() {
   return spc_decoder != NULL;
 }
 
 /**
- * @brief Returns the current volume of music.
- * @return the volume (0 to 100)
+ * \brief Returns the current volume of music.
+ * \return the volume (0 to 100)
  */
 int Music::get_volume() {
 
@@ -104,8 +104,8 @@ int Music::get_volume() {
 }
 
 /**
- * @brief Sets the volume of musics.
- * @param volume the new volume (0 to 100)
+ * \brief Sets the volume of musics.
+ * \param volume the new volume (0 to 100)
  */
 void Music::set_volume(int volume) {
 
@@ -118,28 +118,28 @@ void Music::set_volume(int volume) {
 }
 
 /**
- * @brief Returns the music currently playing.
- * @return the current music, or NULL if no music is being played
+ * \brief Returns the music currently playing.
+ * \return the current music, or NULL if no music is being played
  */
 Music* Music::get_current_music() {
   return current_music;
 }
 
 /**
- * @brief Returns the id of the music currently playing.
- * @return the id of the current music, or "none" if no music is being played
+ * \brief Returns the id of the music currently playing.
+ * \return the id of the current music, or "none" if no music is being played
  */
 const std::string& Music::get_current_music_id() {
   return current_music != NULL ? current_music->id : none;
 }
 
 /**
- * @brief Tries to find a music file from a music id.
- * @param music_id Id of the music to find (file name without
+ * \brief Tries to find a music file from a music id.
+ * \param music_id Id of the music to find (file name without
  * directory or extension). Cannot be Music::none or Music::unchanged.
- * @param file_name Resulting file name with its extension
+ * \param file_name Resulting file name with its extension
  * (empty string if not found).
- * @param format Resulting music format.
+ * \param format Resulting music format.
  */
 void Music::find_music_file(const std::string& music_id,
     std::string& file_name, Format& format) {
@@ -163,10 +163,10 @@ void Music::find_music_file(const std::string& music_id,
 }
 
 /**
- * @brief Returns whether a music exists.
- * @param music_id Id of the music to test. Music::none and Music::unchanged
+ * \brief Returns whether a music exists.
+ * \param music_id Id of the music to test. Music::none and Music::unchanged
  * are also considered valid.
- * @return true If this music exists.
+ * \return true If this music exists.
  */
 bool Music::exists(const std::string& music_id) {
 
@@ -182,14 +182,14 @@ bool Music::exists(const std::string& music_id) {
 }
 
 /**
- * @brief Plays a music.
+ * \brief Plays a music.
  *
  * If the music is different from the current one,
  * the current one is stopped.
  * The music specified can also be Music::none_id (then the current music is just stopped)
  * or even Music::unchanged_id (nothing is done in this case).
  *
- * @param music_id id of the music to play (file name without extension)
+ * \param music_id id of the music to play (file name without extension)
  */
 void Music::play(const std::string& music_id) {
 
@@ -224,7 +224,7 @@ void Music::play(const std::string& music_id) {
 }
 
 /**
- * @brief Updates the music system.
+ * \brief Updates the music system.
  *
  * When a music is playing, this function makes it update.
  */
@@ -240,7 +240,7 @@ void Music::update() {
 }
 
 /**
- * @brief Updates this music when it is playing.
+ * \brief Updates this music when it is playing.
  *
  * This function handles the double buffering.
  */
@@ -282,9 +282,9 @@ void Music::update_playing() {
 }
 
 /**
- * @brief Decodes a chunk of SPC data into PCM data for the current music.
- * @param destination_buffer the destination buffer to write
- * @param nb_samples number of samples to write
+ * \brief Decodes a chunk of SPC data into PCM data for the current music.
+ * \param destination_buffer the destination buffer to write
+ * \param nb_samples number of samples to write
  */
 void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 
@@ -303,9 +303,9 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 }
 
 /**
- * @brief Decodes a chunk of IT data into PCM data for the current music.
- * @param destination_buffer the destination buffer to write
- * @param nb_samples number of samples to write
+ * \brief Decodes a chunk of IT data into PCM data for the current music.
+ * \param destination_buffer the destination buffer to write
+ * \param nb_samples number of samples to write
  */
 void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
 
@@ -324,9 +324,9 @@ void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
 }
 
 /**
- * @brief Decodes a chunk of OGG data into PCM data for the current music.
- * @param destination_buffer the destination buffer to write
- * @param nb_samples number of samples to write
+ * \brief Decodes a chunk of OGG data into PCM data for the current music.
+ * \param destination_buffer the destination buffer to write
+ * \param nb_samples number of samples to write
  */
 void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
 
@@ -379,11 +379,11 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
 }
 
 /**
- * @brief Loads the file and starts playing this music.
+ * \brief Loads the file and starts playing this music.
  *
  * No other music should be playing.
  *
- * @return true if the music was loaded successfully
+ * \return true if the music was loaded successfully
  */
 bool Music::start() {
 
@@ -482,7 +482,7 @@ bool Music::start() {
 }
 
 /**
- * @brief Stops playing the music.
+ * \brief Stops playing the music.
  */
 void Music::stop() {
 
@@ -530,8 +530,8 @@ void Music::stop() {
 }
 
 /**
- * @brief Returns whether the music is paused.
- * @return true if the music is paused, false otherwise
+ * \brief Returns whether the music is paused.
+ * \return true if the music is paused, false otherwise
  */
 bool Music::is_paused() {
 
@@ -545,8 +545,8 @@ bool Music::is_paused() {
 }
 
 /**
- * @brief Pauses or resumes the music.
- * @param pause true to pause the music, false to resume it
+ * \brief Pauses or resumes the music.
+ * \param pause true to pause the music, false to resume it
  */
 void Music::set_paused(bool pause) {
 

@@ -32,7 +32,7 @@ Color Color::magenta;
 Color Color::cyan;
 
 /**
- * @brief Initializes the color static fields.
+ * \brief Initializes the color static fields.
  */
 void Color::initialize() {
 
@@ -50,7 +50,7 @@ void Color::initialize() {
 }
 
 /**
- * @brief Uninitializes the color system.
+ * \brief Uninitializes the color system.
  */
 void Color::quit() {
 
@@ -59,7 +59,7 @@ void Color::quit() {
 }
 
 /**
- * @brief Creates a default color with unspecified RGB values.
+ * \brief Creates a default color with unspecified RGB values.
  */
 Color::Color() {
   internal_color.r = 0;
@@ -69,8 +69,8 @@ Color::Color() {
 }
 
 /**
- * @brief Copy constructor.
- * @param other another color
+ * \brief Copy constructor.
+ * \param other another color
  */
 Color::Color(const Color &other):
   internal_value(other.internal_value), internal_color(other.internal_color) {
@@ -78,10 +78,10 @@ Color::Color(const Color &other):
 }
 
 /**
- * @brief Creates a color with the specified RGB values.
- * @param r the red component (from 0 to 255)
- * @param g the green component (from 0 to 255)
- * @param b the blue component (from 0 to 255)
+ * \brief Creates a color with the specified RGB values.
+ * \param r the red component (from 0 to 255)
+ * \param g the green component (from 0 to 255)
+ * \param b the blue component (from 0 to 255)
  */
 Color::Color(int r, int g, int b) {
   internal_color.r = r;
@@ -92,11 +92,11 @@ Color::Color(int r, int g, int b) {
 }
 
 /**
- * @brief Creates a color from a 32-bit value.
+ * \brief Creates a color from a 32-bit value.
  *
  * This constructor must be used only by low-level classes.
  *
- * @param internal_value The 32-bit value of the color to create.
+ * \param internal_value The 32-bit value of the color to create.
  */
 Color::Color(uint32_t internal_value):
   internal_value(internal_value) {
@@ -113,32 +113,32 @@ Color::Color(uint32_t internal_value):
 }
 
 /**
- * @brief Returns the 32-bit value representing this color.
+ * \brief Returns the 32-bit value representing this color.
  *
  * This function must be used only by low-level classes.
  *
- * @return the 32-bit value of this color
+ * \return the 32-bit value of this color
  */
 uint32_t Color::get_internal_value() const {
   return internal_value;
 }
 
 /**
- * @brief Returns the internal color encapsulated by this object.
+ * \brief Returns the internal color encapsulated by this object.
  *
  * This function must be used only by low-level classes.
  *
- * @return the SDL color encapsulated
+ * \return the SDL color encapsulated
  */
 SDL_Color* Color::get_internal_color() {
   return &internal_color;
 }
 
 /**
- * @brief Returns the red, green and blue values of this color.
- * @param r Red component to write.
- * @param g Green component to write.
- * @param b Blue component to write.
+ * \brief Returns the red, green and blue values of this color.
+ * \param r Red component to write.
+ * \param g Green component to write.
+ * \param b Blue component to write.
  */
 void Color::get_components(int& r, int& g, int& b) const {
 

@@ -18,7 +18,7 @@
 #define SOLARUS_ENTITY_TYPE_H
 
 /**
- * @brief Constants to identify each kind of map entity.
+ * \brief Constants to identify each kind of map entity.
  *
  * Each constant correspond to a subclass of MapEntity.
  * They can be stored in the map file

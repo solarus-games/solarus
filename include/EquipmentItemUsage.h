@@ -21,7 +21,7 @@
 #include "Savegame.h"
 
 /**
- * @brief Represents an equipment item being used by the hero.
+ * \brief Represents an equipment item being used by the hero.
  *
  * This class handles the behavior of the item when the player uses it.
  */

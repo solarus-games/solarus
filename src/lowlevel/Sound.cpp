@@ -39,8 +39,8 @@ ov_callbacks Sound::ogg_callbacks = {
 };
 
 /**
- * @brief Creates a new Ogg Vorbis sound.
- * @param sound_id id of the sound: name of a .ogg file in the sounds subdirectory,
+ * \brief Creates a new Ogg Vorbis sound.
+ * \param sound_id id of the sound: name of a .ogg file in the sounds subdirectory,
  * without the extension (.ogg is added automatically)
  */
 Sound::Sound(const std::string& sound_id):
@@ -50,7 +50,7 @@ Sound::Sound(const std::string& sound_id):
 }
 
 /**
- * @brief Destroys the sound.
+ * \brief Destroys the sound.
  */
 Sound::~Sound() {
 
@@ -70,14 +70,14 @@ Sound::~Sound() {
 }
 
 /**
- * @brief Initializes the audio (music and sound) system.
+ * \brief Initializes the audio (music and sound) system.
  *
  * This method should be called when the application starts.
  * If the argument -no-audio is provided, this function has no effect and
  * there will be no sound.
  *
- * @param argc command-line arguments number
- * @param argv command-line arguments
+ * \param argc command-line arguments number
+ * \param argv command-line arguments
  */
 void Sound::initialize(int argc, char** argv) {
  
@@ -123,7 +123,7 @@ void Sound::initialize(int argc, char** argv) {
 }
 
 /**
- * @brief Closes the audio (music and sound) system.
+ * \brief Closes the audio (music and sound) system.
  *
  * This method should be called when exiting the application.
  */
@@ -150,15 +150,15 @@ void Sound::quit() {
 }
 
 /**
- * @brief Returns whether the audio (music and sound) system is initialized.
- * @return true if the audio (music and sound) system is initilialized
+ * \brief Returns whether the audio (music and sound) system is initialized.
+ * \return true if the audio (music and sound) system is initilialized
  */
 bool Sound::is_initialized() {
   return initialized;
 }
 
 /**
- * @brief Loads and decodes all sounds listed in the game database.
+ * \brief Loads and decodes all sounds listed in the game database.
  */
 void Sound::load_all() {
 
@@ -197,9 +197,9 @@ void Sound::load_all() {
 }
 
 /**
- * @brief Returns whether a sound exists.
- * @param sound_id id of the sound to test
- * @return true if the sound exists
+ * \brief Returns whether a sound exists.
+ * \param sound_id id of the sound to test
+ * \return true if the sound exists
  */
 bool Sound::exists(const std::string& sound_id) {
 
@@ -209,8 +209,8 @@ bool Sound::exists(const std::string& sound_id) {
 }
 
 /**
- * @brief Starts playing the specified sound.
- * @param sound_id id of the sound to play
+ * \brief Starts playing the specified sound.
+ * \param sound_id id of the sound to play
  */
 void Sound::play(const std::string& sound_id) {
 
@@ -222,8 +222,8 @@ void Sound::play(const std::string& sound_id) {
 }
 
 /**
- * @brief Returns the current volume of sound effects.
- * @return the volume (0 to 100)
+ * \brief Returns the current volume of sound effects.
+ * \return the volume (0 to 100)
  */
 int Sound::get_volume() {
 
@@ -231,8 +231,8 @@ int Sound::get_volume() {
 }
 
 /**
- * @brief Sets the volume of sound effects.
- * @param volume the new volume (0 to 100)
+ * \brief Sets the volume of sound effects.
+ * \param volume the new volume (0 to 100)
  */
 void Sound::set_volume(int volume) {
 
@@ -241,7 +241,7 @@ void Sound::set_volume(int volume) {
 }
 
 /**
- * @brief Updates the audio (music and sound) system.
+ * \brief Updates the audio (music and sound) system.
  *
  * This function is called repeatedly by the game.
  */
@@ -268,8 +268,8 @@ void Sound::update() {
 }
 
 /**
- * @brief Updates this sound when it is playing.
- * @return true if the sound is still playing, false if it is finished.
+ * \brief Updates this sound when it is playing.
+ * \return true if the sound is still playing, false if it is finished.
  */
 bool Sound::update_playing() {
 
@@ -288,7 +288,7 @@ bool Sound::update_playing() {
 }
 
 /**
- * @brief Loads and decodes the sound into memory.
+ * \brief Loads and decodes the sound into memory.
  */
 void Sound::load() {
 
@@ -304,8 +304,8 @@ void Sound::load() {
 }
 
 /**
- * @brief Plays the sound.
- * @return true if the sound was loaded successfully, false otherwise
+ * \brief Plays the sound.
+ * \return true if the sound was loaded successfully, false otherwise
  */
 bool Sound::start() {
 
@@ -352,9 +352,9 @@ bool Sound::start() {
 }
 
 /**
- * @brief Loads the specified sound file and decodes its content into an OpenAL buffer.
- * @param file_name name of the file to open
- * @return the buffer created, or AL_NONE if the sound could not be loaded
+ * \brief Loads the specified sound file and decodes its content into an OpenAL buffer.
+ * \param file_name name of the file to open
+ * \return the buffer created, or AL_NONE if the sound could not be loaded
  */
 ALuint Sound::decode_file(const std::string& file_name) {
 
@@ -452,15 +452,15 @@ ALuint Sound::decode_file(const std::string& file_name) {
 
 
 /**
- * @brief Loads an encoded sound from memory.
+ * \brief Loads an encoded sound from memory.
  *
  * This function respects the prototype specified by libvorbisfile.
  *
- * @param ptr pointer to a buffer to load
- * @param size size
- * @param nb_bytes number of bytes to load
- * @param datasource source of the data to read
- * @return number of bytes loaded
+ * \param ptr pointer to a buffer to load
+ * \param size size
+ * \param nb_bytes number of bytes to load
+ * \param datasource source of the data to read
+ * \return number of bytes loaded
  */
 size_t Sound::cb_read(void* ptr, size_t size, size_t nb_bytes, void* datasource) {
 

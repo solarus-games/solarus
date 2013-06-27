@@ -29,7 +29,7 @@ const std::string EnemyReaction::reaction_names[] = {
 };
 
 /**
- * @brief Constructor.
+ * \brief Constructor.
  */
 EnemyReaction::EnemyReaction() {
 
@@ -37,14 +37,14 @@ EnemyReaction::EnemyReaction() {
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 EnemyReaction::~EnemyReaction() {
 
 }
 
 /**
- * @brief Resets this reaction to its default value.
+ * \brief Resets this reaction to its default value.
  */
 void EnemyReaction::set_default_reaction() {
 
@@ -54,10 +54,10 @@ void EnemyReaction::set_default_reaction() {
 }
 
 /**
- * @brief Sets how the enemy reacts when the sprite that receives the attack
+ * \brief Sets how the enemy reacts when the sprite that receives the attack
  * has no specific reaction.
- * @param reaction the reaction to set
- * @param life_lost number of life points to remove (only for reaction HURT)
+ * \param reaction the reaction to set
+ * \param life_lost number of life points to remove (only for reaction HURT)
  */
 void EnemyReaction::set_general_reaction(ReactionType reaction, int life_lost) {
 
@@ -68,10 +68,10 @@ void EnemyReaction::set_general_reaction(ReactionType reaction, int life_lost) {
 }
 
 /**
- * @brief Makes the enemy reacts differently when the attack is received by a particular sprite.
- * @param sprite a sprite of the enemy (if NULL, this is equivalent to set_general_reaction)
- * @param reaction the reaction to make when this specific sprites receives an attack
- * @param life_lost number of life points to remove (only for reaction HURT)
+ * \brief Makes the enemy reacts differently when the attack is received by a particular sprite.
+ * \param sprite a sprite of the enemy (if NULL, this is equivalent to set_general_reaction)
+ * \param reaction the reaction to make when this specific sprites receives an attack
+ * \param life_lost number of life points to remove (only for reaction HURT)
  */
 void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType reaction, int life_lost) {
 
@@ -85,9 +85,9 @@ void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType react
 }
 
 /**
- * @brief Returns the reaction to an attack on a sprite.
- * @param sprite the sprite that receives the attack
- * @return the corresponding reaction
+ * \brief Returns the reaction to an attack on a sprite.
+ * \param sprite the sprite that receives the attack
+ * \return the corresponding reaction
  */
 const EnemyReaction::Reaction& EnemyReaction::get_reaction(const Sprite* sprite) {
 
@@ -100,9 +100,9 @@ const EnemyReaction::Reaction& EnemyReaction::get_reaction(const Sprite* sprite)
 }
 
 /**
- * @brief Returns the name corresponding to a type of reaction.
- * @param reaction a type of reaction
- * @return the corresponding name
+ * \brief Returns the name corresponding to a type of reaction.
+ * \param reaction a type of reaction
+ * \return the corresponding name
  */
 const std::string& EnemyReaction::get_reaction_name(ReactionType reaction) {
 
@@ -113,9 +113,9 @@ const std::string& EnemyReaction::get_reaction_name(ReactionType reaction) {
 }
 
 /**
- * @brief Returns a type of reaction from its name.
- * @param name a name of reaction type
- * @return the corresponding reaction type
+ * \brief Returns a type of reaction from its name.
+ * \param name a name of reaction type
+ * \return the corresponding reaction type
  */
 EnemyReaction::ReactionType EnemyReaction::get_reaction_by_name(const std::string& name) {
 

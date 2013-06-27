@@ -20,7 +20,7 @@
 #include "Common.h"
 
 /**
- * @brief Provides lowlevel functions and initialization.
+ * \brief Provides lowlevel functions and initialization.
  *
  * This class initializes all low-level features.
  */

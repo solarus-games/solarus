@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 
 /**
- * @brief A entity that the hero can push or pull.
+ * \brief A entity that the hero can push or pull.
  *
  * Some blocks can be moved only once or in only one direction.
  */

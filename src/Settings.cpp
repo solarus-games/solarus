@@ -25,9 +25,9 @@
 #include <sstream>
 
 /**
- * @brief Attempts to load the built-in settings from a file.
- * @param file_name Settings file to read, relative to the quest write directory.
- * @return true if settings were successfully loaded and applied.
+ * \brief Attempts to load the built-in settings from a file.
+ * \param file_name Settings file to read, relative to the quest write directory.
+ * \return true if settings were successfully loaded and applied.
  */
 bool Settings::load(const std::string& file_name) {
 
@@ -106,9 +106,9 @@ bool Settings::load(const std::string& file_name) {
 }
 
 /**
- * @brief Attempts to save the built-in settings to a file.
- * @param file_name Settings file to write, relative to the quest write directory.
- * @return true if settings were successfully saved.
+ * \brief Attempts to save the built-in settings to a file.
+ * \param file_name Settings file to write, relative to the quest write directory.
+ * \return true if settings were successfully saved.
  */
 bool Settings::save(const std::string& file_name) {
 

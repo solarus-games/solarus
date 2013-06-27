@@ -23,8 +23,8 @@
 #include "KeysEffect.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::SwimmingState::SwimmingState(Hero& hero):
   PlayerMovementState(hero),
@@ -34,15 +34,15 @@ Hero::SwimmingState::SwimmingState(Hero& hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::SwimmingState::~SwimmingState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::SwimmingState::start(State* previous_state) {
 
@@ -54,8 +54,8 @@ void Hero::SwimmingState::start(State* previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::SwimmingState::stop(State* next_state) {
 
@@ -66,7 +66,7 @@ void Hero::SwimmingState::stop(State* next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::SwimmingState::update() {
 
@@ -93,8 +93,8 @@ void Hero::SwimmingState::update() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::SwimmingState::set_suspended(bool suspended) {
 
@@ -126,20 +126,20 @@ void Hero::SwimmingState::set_animation_walking() {
 }
 
 /**
- * @brief Notifies this state that the action command was just pressed.
+ * \brief Notifies this state that the action command was just pressed.
  */
 void Hero::SwimmingState::notify_action_command_pressed() {
   try_swim_faster();
 }
 /**
- * @brief Notifies this state that the attack command was just pressed.
+ * \brief Notifies this state that the attack command was just pressed.
  */
 void Hero::SwimmingState::notify_attack_command_pressed() {
   try_swim_faster();
 }
 
 /**
- * @brief Makes the hero swim faster for a while if possible.
+ * \brief Makes the hero swim faster for a while if possible.
  */
 void Hero::SwimmingState::try_swim_faster() {
 
@@ -153,43 +153,43 @@ void Hero::SwimmingState::try_swim_faster() {
 }
 
 /**
- * @brief Returns the normal swimming speed.
- * @return the swimming speed in pixels per second
+ * \brief Returns the normal swimming speed.
+ * \return the swimming speed in pixels per second
  */
 int Hero::SwimmingState::get_slow_swimming_speed() {
   return hero.get_normal_walking_speed() / 2;
 }
 
 /**
- * @brief Returns the faster swimming speed.
- * @return the faster swimming speed in pixels per second
+ * \brief Returns the faster swimming speed.
+ * \return the faster swimming speed in pixels per second
  */
 int Hero::SwimmingState::get_fast_swimming_speed() {
   return hero.get_normal_walking_speed();
 }
 
 /**
- * @brief Returns whether some stairs are considered as obstacle in this state.
- * @param stairs some stairs
- * @return true if the stairs are obstacle in this state
+ * \brief Returns whether some stairs are considered as obstacle in this state.
+ * \param stairs some stairs
+ * \return true if the stairs are obstacle in this state
  */
 bool Hero::SwimmingState::is_stairs_obstacle(Stairs& stairs) {
   return false;
 }
 
 /**
- * @brief Returns whether can trigger a jumper in this state.
+ * \brief Returns whether can trigger a jumper in this state.
  * If false is returned, jumpers have no effect (but they are obstacle for the hero).
- * @return true if the hero can use jumpers in this state
+ * \return true if the hero can use jumpers in this state
  */
 bool Hero::SwimmingState::can_take_jumper() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can pick a treasure in this state.
- * @param item The equipment item to obtain.
- * @return true if the hero can pick that treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in this state.
+ * \param item The equipment item to obtain.
+ * \return true if the hero can pick that treasure in this state.
  */
 bool Hero::SwimmingState::can_pick_treasure(EquipmentItem& item) {
   return true;

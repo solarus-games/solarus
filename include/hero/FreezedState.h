@@ -20,7 +20,7 @@
 #include "hero/State.h"
 
 /**
- * @brief The state "Freezed" of the hero.
+ * \brief The state "Freezed" of the hero.
  */
 class Hero::FreezedState: public Hero::State {
 

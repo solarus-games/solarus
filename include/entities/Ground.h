@@ -18,7 +18,7 @@
 #define SOLARUS_GROUND_H
 
 /**
- * @brief The possible kinds of ground on the map.
+ * \brief The possible kinds of ground on the map.
  */
 enum Ground {
   GROUND_NORMAL,

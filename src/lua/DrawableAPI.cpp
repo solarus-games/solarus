@@ -25,10 +25,10 @@
  */
 
 /**
- * @brief Returns whether a value is a userdata of a type.
- * @param l A Lua context.
- * @param index An index in the stack.
- * @return true if the value at this index is a drawable.
+ * \brief Returns whether a value is a userdata of a type.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a drawable.
  */
 bool LuaContext::is_drawable(lua_State* l, int index) {
   return is_surface(l, index)
@@ -37,11 +37,11 @@ bool LuaContext::is_drawable(lua_State* l, int index) {
 }
 
 /**
- * @brief Check that the userdata at the specified index is a drawable
+ * \brief Check that the userdata at the specified index is a drawable
  * object (surface, text surface of sprite) and returns it.
- * @param l a Lua context
- * @param index an index in the stack
- * @return the surface
+ * \param l a Lua context
+ * \param index an index in the stack
+ * \return the surface
  */
 Drawable& LuaContext::check_drawable(lua_State* l, int index) {
 
@@ -58,9 +58,9 @@ Drawable& LuaContext::check_drawable(lua_State* l, int index) {
 }
 
 /**
- * @brief Returns whether a drawable object was created by this script.
- * @param drawable A drawable object.
- * @return true if the drawable object was created by this script.
+ * \brief Returns whether a drawable object was created by this script.
+ * \param drawable A drawable object.
+ * \return true if the drawable object was created by this script.
  */
 bool LuaContext::has_drawable(Drawable* drawable) {
 
@@ -68,8 +68,8 @@ bool LuaContext::has_drawable(Drawable* drawable) {
 }
 
 /**
- * @brief Registers a drawable object created by this script.
- * @param drawable a drawable object
+ * \brief Registers a drawable object created by this script.
+ * \param drawable a drawable object
  */
 void LuaContext::add_drawable(Drawable* drawable) {
 
@@ -81,8 +81,8 @@ void LuaContext::add_drawable(Drawable* drawable) {
 }
 
 /**
- * @brief Unregisters a drawable object created by this script.
- * @param drawable a drawable object
+ * \brief Unregisters a drawable object created by this script.
+ * \param drawable a drawable object
  */
 void LuaContext::remove_drawable(Drawable* drawable) {
 
@@ -93,7 +93,7 @@ void LuaContext::remove_drawable(Drawable* drawable) {
 }
 
 /**
- * @brief Destroys from Lua all drawable objects created
+ * \brief Destroys from Lua all drawable objects created
  * by this script.
  */
 void LuaContext::destroy_drawables() {
@@ -111,7 +111,7 @@ void LuaContext::destroy_drawables() {
 }
 
 /**
- * @brief Updates all drawable objects created by this script.
+ * \brief Updates all drawable objects created by this script.
  */
 void LuaContext::update_drawables() {
 
@@ -137,9 +137,9 @@ void LuaContext::update_drawables() {
 }
 
 /**
- * @brief Implementation of drawable:draw().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of drawable:draw().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::drawable_api_draw(lua_State* l) {
 
@@ -153,9 +153,9 @@ int LuaContext::drawable_api_draw(lua_State* l) {
 }
 
 /**
- * @brief Implementation of drawable:draw_region().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of drawable:draw_region().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::drawable_api_draw_region(lua_State* l) {
 
@@ -177,9 +177,9 @@ int LuaContext::drawable_api_draw_region(lua_State* l) {
 }
 
 /**
- * @brief Implementation of drawable:fade_in().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of drawable:fade_in().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::drawable_api_fade_in(lua_State* l) {
 
@@ -211,9 +211,9 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
 }
 
 /**
- * @brief Implementation of drawable:fade_out().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of drawable:fade_out().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::drawable_api_fade_out(lua_State* l) {
 
@@ -245,9 +245,9 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
 }
 
 /**
- * @brief Implementation of drawable:get_xy().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of drawable:get_xy().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::drawable_api_get_xy(lua_State* l) {
 
@@ -259,9 +259,9 @@ int LuaContext::drawable_api_get_xy(lua_State* l) {
 }
 
 /**
- * @brief Implementation of drawable:set_xy().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of drawable:set_xy().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::drawable_api_set_xy(lua_State* l) {
 
@@ -275,9 +275,9 @@ int LuaContext::drawable_api_set_xy(lua_State* l) {
 }
 
 /**
- * @brief Implementation of drawable:get_movement().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of drawable:get_movement().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::drawable_api_get_movement(lua_State* l) {
 
@@ -295,9 +295,9 @@ int LuaContext::drawable_api_get_movement(lua_State* l) {
 }
 
 /**
- * @brief Implementation of drawable:stop_movement().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of drawable:stop_movement().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::drawable_api_stop_movement(lua_State* l) {
 
@@ -309,9 +309,9 @@ int LuaContext::drawable_api_stop_movement(lua_State* l) {
 }
 
 /**
- * @brief Finalizer of types sprite, surface and text surface.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Finalizer of types sprite, surface and text surface.
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::drawable_meta_gc(lua_State* l) {
 

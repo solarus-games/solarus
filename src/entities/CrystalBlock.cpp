@@ -26,15 +26,15 @@
 #include <list>
 
 /**
- * @brief Creates a new crystal block.
- * @param game the current game
- * @param name Unique name identifying the entity on the map or an empty string.
- * @param layer layer of the entity to create on the map
- * @param x x coordinate of the entity to create
- * @param y y coordinate of the entity to create
- * @param width width of the block (the pattern can be repeated)
- * @param height height of the block (the pattern can be repeated)
- * @param subtype subtype of raised block
+ * \brief Creates a new crystal block.
+ * \param game the current game
+ * \param name Unique name identifying the entity on the map or an empty string.
+ * \param layer layer of the entity to create on the map
+ * \param x x coordinate of the entity to create
+ * \param y y coordinate of the entity to create
+ * \param width width of the block (the pattern can be repeated)
+ * \param height height of the block (the pattern can be repeated)
+ * \param subtype subtype of raised block
  */
 CrystalBlock::CrystalBlock(Game& game, const std::string& name,
     Layer layer, int x, int y, int width, int height, Subtype subtype):
@@ -60,23 +60,23 @@ CrystalBlock::CrystalBlock(Game& game, const std::string& name,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 CrystalBlock::~CrystalBlock() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType CrystalBlock::get_type() {
   return CRYSTAL_BLOCK;
 }
 
 /**
- * @brief Returns whether this block is raised.
- * @return true if this block is raised
+ * \brief Returns whether this block is raised.
+ * \return true if this block is raised
  */
 bool CrystalBlock::is_raised() {
 
@@ -85,9 +85,9 @@ bool CrystalBlock::is_raised() {
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true if this entity is an obstacle for the other one
  */
 bool CrystalBlock::is_obstacle_for(MapEntity& other) {
 
@@ -101,9 +101,9 @@ bool CrystalBlock::is_obstacle_for(MapEntity& other) {
 }
 
 /**
- * @brief This function is called when another entity overlaps this crystal block.
- * @param entity_overlapping the other entity
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called when another entity overlaps this crystal block.
+ * \param entity_overlapping the other entity
+ * \param collision_mode the collision mode that detected the collision
  */
 void CrystalBlock::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
@@ -161,12 +161,12 @@ void CrystalBlock::notify_collision(MapEntity& entity_overlapping, CollisionMode
 }
 
 /**
- * @brief Makes the hero leave this raised crystal block if possible.
- * @param hero the hero
- * @param collision_box destination wanted for the jump
- * @param jump_direction direction of the jump
- * @param jump_length length of the jump
- * @return true if the jump was done, i.e. if the collision box was overlapping
+ * \brief Makes the hero leave this raised crystal block if possible.
+ * \param hero the hero
+ * \param collision_box destination wanted for the jump
+ * \param jump_direction direction of the jump
+ * \param jump_length length of the jump
+ * \return true if the jump was done, i.e. if the collision box was overlapping
  * no obstacle and no raised crystal block.
  */
 bool CrystalBlock::try_jump(Hero& hero, const Rectangle& collision_box,
@@ -185,7 +185,7 @@ bool CrystalBlock::try_jump(Hero& hero, const Rectangle& collision_box,
 }
 
 /**
- * @brief Updates the entity.
+ * \brief Updates the entity.
  */
 void CrystalBlock::update() {
 
@@ -208,7 +208,7 @@ void CrystalBlock::update() {
 }
 
 /**
- * @brief Draws the entity on the map.
+ * \brief Draws the entity on the map.
  *
  * This is a redefinition of MapEntity::draw_on_map to repeat the block pattern.
  */

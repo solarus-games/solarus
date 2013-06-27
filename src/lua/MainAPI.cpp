@@ -26,7 +26,7 @@
 const std::string LuaContext::main_module_name = "sol.main";
 
 /**
- * @brief Initializes the main features provided to Lua.
+ * \brief Initializes the main features provided to Lua.
  */
 void LuaContext::register_main_module() {
 
@@ -48,8 +48,8 @@ void LuaContext::register_main_module() {
 }
 
 /**
- * @brief Pushes the sol.main table onto the stack.
- * @param l A Lua state.
+ * \brief Pushes the sol.main table onto the stack.
+ * \param l A Lua state.
  */
 void LuaContext::push_main(lua_State* l) {
 
@@ -63,9 +63,9 @@ void LuaContext::push_main(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.main.load_file().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of sol.main.load_file().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::main_api_load_file(lua_State *l) {
 
@@ -79,9 +79,9 @@ int LuaContext::main_api_load_file(lua_State *l) {
 }
 
 /**
- * @brief Implementation of sol.main.do_file().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of sol.main.do_file().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::main_api_do_file(lua_State *l) {
 
@@ -93,9 +93,9 @@ int LuaContext::main_api_do_file(lua_State *l) {
 }
 
 /**
- * @brief Implementation of sol.main.reset().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.main.reset().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::main_api_reset(lua_State* l) {
 
@@ -105,9 +105,9 @@ int LuaContext::main_api_reset(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.main.exit().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.main.exit().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::main_api_exit(lua_State* l) {
 
@@ -117,9 +117,9 @@ int LuaContext::main_api_exit(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.main.is_debug_enabled().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.main.is_debug_enabled().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::main_api_is_debug_enabled(lua_State* l) {
 
@@ -135,9 +135,9 @@ int LuaContext::main_api_is_debug_enabled(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.main.get_quest_write_dir().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.main.get_quest_write_dir().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
 
@@ -153,9 +153,9 @@ int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.main.set_quest_write_dir().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.main.set_quest_write_dir().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
 
@@ -167,9 +167,9 @@ int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.main.load_settings().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.main.load_settings().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::main_api_load_settings(lua_State* l) {
 
@@ -186,9 +186,9 @@ int LuaContext::main_api_load_settings(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.main.save_settings().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.main.save_settings().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::main_api_save_settings(lua_State* l) {
 
@@ -205,9 +205,9 @@ int LuaContext::main_api_save_settings(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.main.get_distance().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.main.get_distance().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::main_api_get_distance(lua_State* l) {
 
@@ -223,9 +223,9 @@ int LuaContext::main_api_get_distance(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.main.get_angle().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.main.get_angle().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::main_api_get_angle(lua_State* l) {
 
@@ -241,7 +241,7 @@ int LuaContext::main_api_get_angle(lua_State* l) {
 }
 
 /**
- * @brief Calls sol.main.on_started() if it exists.
+ * \brief Calls sol.main.on_started() if it exists.
  *
  * This function is called when the engine requests Lua to show an
  * initial screen, i.e. at the beginning of the program
@@ -255,7 +255,7 @@ void LuaContext::main_on_started() {
 }
 
 /**
- * @brief Calls sol.main.on_finished() if it exists.
+ * \brief Calls sol.main.on_finished() if it exists.
  *
  * This function is called when the program is reset or stopped.
  */
@@ -269,7 +269,7 @@ void LuaContext::main_on_finished() {
 }
 
 /**
- * @brief Calls sol.main.on_update() if it exists.
+ * \brief Calls sol.main.on_update() if it exists.
  *
  * This function is called at each cycle by the main loop.
  */
@@ -282,8 +282,8 @@ void LuaContext::main_on_update() {
 }
 
 /**
- * @brief Calls sol.main.on_draw() if it exists.
- * @param dst_surface The destination surface.
+ * \brief Calls sol.main.on_draw() if it exists.
+ * \param dst_surface The destination surface.
  */
 void LuaContext::main_on_draw(Surface& dst_surface) {
 
@@ -294,12 +294,12 @@ void LuaContext::main_on_draw(Surface& dst_surface) {
 }
 
 /**
- * @brief Notifies Lua that an input event has just occurred.
+ * \brief Notifies Lua that an input event has just occurred.
  *
  * The appropriate callback in sol.main is triggered if it exists.
  *
- * @param event The input event to handle.
- * @return \c true if the event was handled and should stop being propagated.
+ * \param event The input event to handle.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::main_on_input(InputEvent& event) {
 

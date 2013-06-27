@@ -18,7 +18,7 @@
 #define SOLARUS_COLLISION_MODE_H
 
 /**
- * @brief Collisions modes of a detector.
+ * \brief Collisions modes of a detector.
  *
  * The collision mode indicates what kind of collisions a detector will detect.
  */

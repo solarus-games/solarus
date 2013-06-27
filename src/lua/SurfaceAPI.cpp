@@ -26,7 +26,7 @@
 const std::string LuaContext::surface_module_name = "sol.surface";
 
 /**
- * @brief Initializes the surface features provided to Lua.
+ * \brief Initializes the surface features provided to Lua.
  */
 void LuaContext::register_surface_module() {
 
@@ -55,39 +55,39 @@ void LuaContext::register_surface_module() {
 }
 
 /**
- * @brief Returns whether a value is a userdata of type surface.
- * @param l A Lua context.
- * @param index An index in the stack.
- * @return true if the value at this index is a surface.
+ * \brief Returns whether a value is a userdata of type surface.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a surface.
  */
 bool LuaContext::is_surface(lua_State* l, int index) {
   return is_userdata(l, index, surface_module_name);
 }
 
 /**
- * @brief Checks that the userdata at the specified index of the stack is a
+ * \brief Checks that the userdata at the specified index of the stack is a
  * surface and returns it.
- * @param l a Lua context
- * @param index an index in the stack
- * @return the surface
+ * \param l a Lua context
+ * \param index an index in the stack
+ * \return the surface
  */
 Surface& LuaContext::check_surface(lua_State* l, int index) {
   return static_cast<Surface&>(check_userdata(l, index, surface_module_name));
 }
 
 /**
- * @brief Pushes a surface userdata onto the stack.
- * @param l a Lua context
- * @param surface a surface
+ * \brief Pushes a surface userdata onto the stack.
+ * \param l a Lua context
+ * \param surface a surface
  */
 void LuaContext::push_surface(lua_State* l, Surface& surface) {
   push_userdata(l, surface);
 }
 
 /**
- * @brief Implementation of sol.surface.create().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.surface.create().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::surface_api_create(lua_State* l) {
 
@@ -125,9 +125,9 @@ int LuaContext::surface_api_create(lua_State* l) {
 }
 
 /**
- * @brief Implementation of surface:get_size().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of surface:get_size().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::surface_api_get_size(lua_State* l) {
 
@@ -140,9 +140,9 @@ int LuaContext::surface_api_get_size(lua_State* l) {
 }
 
 /**
- * @brief Implementation of surface:fill_color().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of surface:fill_color().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::surface_api_fill_color(lua_State* l) {
 
@@ -165,9 +165,9 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
 }
 
 /**
- * @brief Implementation of surface:get_transparency_color().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of surface:get_transparency_color().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::surface_api_get_transparency_color(lua_State* l) {
 
@@ -180,9 +180,9 @@ int LuaContext::surface_api_get_transparency_color(lua_State* l) {
 }
 
 /**
- * @brief Implementation of surface:set_transparency_color().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of surface:set_transparency_color().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::surface_api_set_transparency_color(lua_State* l) {
 
@@ -194,9 +194,9 @@ int LuaContext::surface_api_set_transparency_color(lua_State* l) {
 }
 
 /**
- * @brief Implementation of surface:set_opacity().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of surface:set_opacity().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::surface_api_set_opacity(lua_State* l) {
 

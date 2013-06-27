@@ -24,15 +24,15 @@
 #include "Map.h"
 
 /**
- * @brief Creates a new dynamic tile on the map.
- * @param name a name to identify this tile
- * @param layer layer of the tile
- * @param x x position of the tile on the map
- * @param y y position of the tile on the map
- * @param width width of the tile (the pattern can be repeated)
- * @param height height of the tile (the pattern can be repeated)
- * @param tile_pattern_id id of the tile pattern in the tileset
- * @param enabled true to make the tile active on the map
+ * \brief Creates a new dynamic tile on the map.
+ * \param name a name to identify this tile
+ * \param layer layer of the tile
+ * \param x x position of the tile on the map
+ * \param y y position of the tile on the map
+ * \param width width of the tile (the pattern can be repeated)
+ * \param height height of the tile (the pattern can be repeated)
+ * \param tile_pattern_id id of the tile pattern in the tileset
+ * \param enabled true to make the tile active on the map
  */
 DynamicTile::DynamicTile(const std::string &name, Layer layer, int x, int y,
 			 int width, int height, int tile_pattern_id, bool enabled):
@@ -43,15 +43,15 @@ DynamicTile::DynamicTile(const std::string &name, Layer layer, int x, int y,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 DynamicTile::~DynamicTile() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType DynamicTile::get_type() {
 
@@ -59,12 +59,12 @@ EntityType DynamicTile::get_type() {
 }
 
 /**
- * @brief Sets the map of this entity.
+ * \brief Sets the map of this entity.
  *
  * Warning: as this function is called when initializing the map,
  * the current map of the game is still the old one.
  *
- * @param map the map
+ * \param map the map
  */
 void DynamicTile::set_map(Map &map) {
 
@@ -73,9 +73,9 @@ void DynamicTile::set_map(Map &map) {
 }
 
 /**
- * @brief Returns whether this tile is an obstacle for the specified entity.
- * @param other an entity
- * @return true if this tile is an obstacle for the entity
+ * \brief Returns whether this tile is an obstacle for the specified entity.
+ * \param other an entity
+ * \return true if this tile is an obstacle for the entity
  */
 bool DynamicTile::is_obstacle_for(MapEntity &other) {
 
@@ -109,7 +109,7 @@ bool DynamicTile::is_obstacle_for(MapEntity &other) {
 }
 
 /**
- * @brief Draws the tile on the map.
+ * \brief Draws the tile on the map.
  */
 void DynamicTile::draw_on_map() {
 
@@ -129,9 +129,9 @@ void DynamicTile::draw_on_map() {
 }
 
 /**
- * @brief Returns whether an entity collides with this detector with respect to a custom rule.
- * @param entity the entity
- * @return true if the entity's collides with this detector with respect to the custom rule
+ * \brief Returns whether an entity collides with this detector with respect to a custom rule.
+ * \param entity the entity
+ * \return true if the entity's collides with this detector with respect to the custom rule
  */
 bool DynamicTile::test_collision_custom(MapEntity &entity) {
 
@@ -140,9 +140,9 @@ bool DynamicTile::test_collision_custom(MapEntity &entity) {
 }
 
 /**
- * @brief Notifies this detector that a collision was just detected with an entity.
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision (useful if
+ * \brief Notifies this detector that a collision was just detected with an entity.
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision (useful if
  * the detector has several collision modes)
  */
 void DynamicTile::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
@@ -156,8 +156,8 @@ void DynamicTile::notify_collision(MapEntity &entity_overlapping, CollisionMode 
 }
 
 /**
- * @brief Notifies this entity that it was just enabled or disabled.
- * @param enabled true if the entity is now enabled
+ * \brief Notifies this entity that it was just enabled or disabled.
+ * \param enabled true if the entity is now enabled
  */
 void DynamicTile::notify_enabled(bool enabled) {
 

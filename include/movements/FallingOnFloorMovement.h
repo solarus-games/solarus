@@ -22,7 +22,7 @@
 #include "movements/FallingHeight.h"
 
 /**
- * @brief Movement of an entity that falls on the floor and bounces.
+ * \brief Movement of an entity that falls on the floor and bounces.
  *
  * Movement of an item that falls on the floor and
  * bounces one or several times before it stops.

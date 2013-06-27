@@ -21,7 +21,7 @@
 #include <SDL.h>
 
 /**
- * @brief Represents a color.
+ * \brief Represents a color.
  *
  * This module defines a type for the colors and provides some color related functions.
  * It encapsulates a library-dependent color.
@@ -74,64 +74,64 @@ class Color {
 };
 
 /**
- * @brief Returns the black color.
- * @return the black color
+ * \brief Returns the black color.
+ * \return the black color
  */
 inline Color& Color::get_black() {
   return black;
 }
 
 /**
- * @brief Returns the white color.
- * @return the white color
+ * \brief Returns the white color.
+ * \return the white color
  */
 inline Color& Color::get_white() {
   return white;
 }
 
 /**
- * @brief Returns the red color.
- * @return the red color
+ * \brief Returns the red color.
+ * \return the red color
  */
 inline Color& Color::get_red() {
   return red;
 }
 
 /**
- * @brief Returns the green color.
- * @return the green color
+ * \brief Returns the green color.
+ * \return the green color
  */
 inline Color& Color::get_green() {
   return green;
 }
 
 /**
- * @brief Returns the blue color.
- * @return the blue color
+ * \brief Returns the blue color.
+ * \return the blue color
  */
 inline Color& Color::get_blue() {
   return blue;
 }
 
 /**
- * @brief Returns the yellow color.
- * @return the yellow color
+ * \brief Returns the yellow color.
+ * \return the yellow color
  */
 inline Color& Color::get_yellow() {
   return yellow;
 }
 
 /**
- * @brief Returns the magenta color.
- * @return the magenta color
+ * \brief Returns the magenta color.
+ * \return the magenta color
  */
 inline Color& Color::get_magenta() {
   return magenta;
 }
 
 /**
- * @brief Returns the cyan color.
- * @return the cyan color
+ * \brief Returns the cyan color.
+ * \return the cyan color
  */
 inline Color& Color::get_cyan() {
   return cyan;

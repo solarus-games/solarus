@@ -20,15 +20,15 @@
 #include "lowlevel/Debug.h"
 
 /**
- * @brief Creates a jumper.
- * @param name a name identifying this jumper
- * @param layer layer of the sensor on the map
- * @param x x coordinate of the top-left corner of the sensor's rectangle
- * @param y y coordinate of the top-left corner of the sensor's rectangle
- * @param width width of the sensor's rectangle
- * @param height height of the sensor's rectangle
- * @param direction direction of the jump (0 to 7 as the jump may be diagonal)
- * @param jump_length length of the jump in pixels (usually a multiple of 8)
+ * \brief Creates a jumper.
+ * \param name a name identifying this jumper
+ * \param layer layer of the sensor on the map
+ * \param x x coordinate of the top-left corner of the sensor's rectangle
+ * \param y y coordinate of the top-left corner of the sensor's rectangle
+ * \param width width of the sensor's rectangle
+ * \param height height of the sensor's rectangle
+ * \param direction direction of the jump (0 to 7 as the jump may be diagonal)
+ * \param jump_length length of the jump in pixels (usually a multiple of 8)
  */
 Jumper::Jumper(const std::string &name, Layer layer, int x, int y, int width, int height,
 		       int direction, int jump_length):
@@ -54,32 +54,32 @@ Jumper::Jumper(const std::string &name, Layer layer, int x, int y, int width, in
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Jumper::~Jumper() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Jumper::get_type() {
   return JUMPER;
 }
 
 /**
- * @brief Returns whether entities of this type can be drawn.
- * @return true if this type of entity can be drawn
+ * \brief Returns whether entities of this type can be drawn.
+ * \return true if this type of entity can be drawn
  */
 bool Jumper::can_be_drawn() {
   return false;
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true if this entity is an obstacle for the other one
  */
 bool Jumper::is_obstacle_for(MapEntity &other) {
 
@@ -92,12 +92,12 @@ bool Jumper::is_obstacle_for(MapEntity &other) {
 }
 
 /**
- * @brief Returns whether an entity's collides with this jumper.
+ * \brief Returns whether an entity's collides with this jumper.
  *
  * The result depends on the sensor's shape.
  *
- * @param entity the entity
- * @return true if the entity's collides with this jumper
+ * \param entity the entity
+ * \return true if the entity's collides with this jumper
  */
 bool Jumper::test_collision_custom(MapEntity &entity) {
 
@@ -137,12 +137,12 @@ bool Jumper::test_collision_custom(MapEntity &entity) {
 }
 
 /**
- * @brief Returns whether the specified point is in the jumper's shape.
+ * \brief Returns whether the specified point is in the jumper's shape.
  *
  * This function is used only for a jumper with diagonal direction.
  *
- * @param point the point to check
- * @return true if this point is overlapping the jumper
+ * \param point the point to check
+ * \return true if this point is overlapping the jumper
  */
 bool Jumper::is_point_in_diagonal(const Rectangle &point) {
 
@@ -181,9 +181,9 @@ bool Jumper::is_point_in_diagonal(const Rectangle &point) {
 }
 
 /**
- * @brief This function is called when an entity overlaps the sensor.
- * @param entity_overlapping the entity that overalps the sensor
- * @param collision_mode the collision mode that triggered the event
+ * \brief This function is called when an entity overlaps the sensor.
+ * \param entity_overlapping the entity that overalps the sensor
+ * \param collision_mode the collision mode that triggered the event
  * (not used here since a jumper has only one collision mode)
  */
 void Jumper::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
@@ -192,8 +192,8 @@ void Jumper::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
 }
 
 /**
- * @brief Returns the length of the jump to make with this jumper.
- * @return length of the jump in pixels (usually a multiple of 8)
+ * \brief Returns the length of the jump to make with this jumper.
+ * \return length of the jump in pixels (usually a multiple of 8)
  */
 int Jumper::get_jump_length() {
   return jump_length;

@@ -19,12 +19,12 @@
 #include "lowlevel/Surface.h"
 
 /**
- * @brief Creates a tile pattern with self scrolling.
- * @param obstacle is the tile pattern an obstacle?
- * @param x x position of the tile pattern in the tileset
- * @param y y position of the tile pattern in the tileset
- * @param width width of the tile pattern in the tileset
- * @param height height of the tile pattern in the tileset
+ * \brief Creates a tile pattern with self scrolling.
+ * \param obstacle is the tile pattern an obstacle?
+ * \param x x position of the tile pattern in the tileset
+ * \param y y position of the tile pattern in the tileset
+ * \param width width of the tile pattern in the tileset
+ * \param height height of the tile pattern in the tileset
  */
 SelfScrollingTilePattern::SelfScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height):
   SimpleTilePattern(obstacle, x, y, width, height) {
@@ -32,18 +32,18 @@ SelfScrollingTilePattern::SelfScrollingTilePattern(Obstacle obstacle, int x, int
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 SelfScrollingTilePattern::~SelfScrollingTilePattern() {
 
 }
 
 /**
- * @brief Draws the tile image on a surface.
- * @param dst_surface the surface to draw
- * @param dst_position position where tile pattern should be drawn on dst_surface
- * @param tileset the tileset of this tile
- * @param viewport coordinates of the top-left corner of dst_surface relative
+ * \brief Draws the tile image on a surface.
+ * \param dst_surface the surface to draw
+ * \param dst_position position where tile pattern should be drawn on dst_surface
+ * \param tileset the tileset of this tile
+ * \param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
 void SelfScrollingTilePattern::draw(Surface& dst_surface,
@@ -109,13 +109,13 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
 }
 
 /**
- * @brief Returns whether this tile pattern is animated, i.e. not always displayed
+ * \brief Returns whether this tile pattern is animated, i.e. not always displayed
  * the same way.
  *
  * Non-animated tiles may be rendered faster by using intermediate surfaces
  * that are drawn only once.
  *
- * @return true if this tile pattern is animated
+ * \return true if this tile pattern is animated
  */
 bool SelfScrollingTilePattern::is_animated() {
   return true;

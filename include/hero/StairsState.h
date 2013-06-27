@@ -21,7 +21,7 @@
 #include "entities/Stairs.h"
 
 /**
- * @brief The state "Stairs" of the hero.
+ * \brief The state "Stairs" of the hero.
  */
 class Hero::StairsState: public Hero::State {
 

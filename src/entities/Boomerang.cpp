@@ -31,12 +31,12 @@
 #include "lowlevel/Sound.h"
 
 /**
- * @brief Creates a boomerang.
- * @param hero the hero
- * @param max_distance maximum distance of the movement in pixels
- * @param speed speed of the movement in pixels per second
- * @param angle the angle of the boomerang trajectory in radians
- * @param sprite_name animation set id representing the boomerang
+ * \brief Creates a boomerang.
+ * \param hero the hero
+ * \param max_distance maximum distance of the movement in pixels
+ * \param speed speed of the movement in pixels per second
+ * \param angle the angle of the boomerang trajectory in radians
+ * \param sprite_name animation set id representing the boomerang
  */
 Boomerang::Boomerang(Hero& hero, int max_distance, int speed, double angle,
     const std::string& sprite_name):
@@ -85,116 +85,116 @@ Boomerang::Boomerang(Hero& hero, int max_distance, int speed, double angle,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Boomerang::~Boomerang() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Boomerang::get_type() {
   return BOOMERANG;
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
- * @return true if this type of entity can be obstacle for other entities
+ * \brief Returns whether entities of this type can be obstacles for other entities.
+ * \return true if this type of entity can be obstacle for other entities
  */
 bool Boomerang::can_be_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether entities of this type can be drawn.
- * @return true if this type of entity can be drawn
+ * \brief Returns whether entities of this type can be drawn.
+ * \return true if this type of entity can be drawn
  */
 bool Boomerang::can_be_drawn() {
   return true;
 }
 
 /**
- * @brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is currently an obstacle for this entity
+ * \brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is currently an obstacle for this entity
  */
 bool Boomerang::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
 /**
- * @brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
- * @param conveyor_belt a conveyor belt
- * @return true if the conveyor belt is currently an obstacle for this entity
+ * \brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
+ * \param conveyor_belt a conveyor belt
+ * \return true if the conveyor belt is currently an obstacle for this entity
  */
 bool Boomerang::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
 /**
- * @brief Returns whether some stairs are currently considered as an obstacle for this entity.
- * @param stairs an stairs entity
- * @return true if the stairs are currently an obstacle for this entity
+ * \brief Returns whether some stairs are currently considered as an obstacle for this entity.
+ * \param stairs an stairs entity
+ * \return true if the stairs are currently an obstacle for this entity
  */
 bool Boomerang::is_stairs_obstacle(Stairs& stairs) {
   return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
 /**
- * @brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
- * @return true if the deep water tiles are currently an obstacle for this entity
+ * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
+ * \return true if the deep water tiles are currently an obstacle for this entity
  */
 bool Boomerang::is_deep_water_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a hole is currently considered as an obstacle for this entity.
- * @return true if the holes are currently an obstacle for this entity
+ * \brief Returns whether a hole is currently considered as an obstacle for this entity.
+ * \return true if the holes are currently an obstacle for this entity
  */
 bool Boomerang::is_hole_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether lava is currently considered as an obstacle for this entity.
- * @return true if lava is currently an obstacle for this entity
+ * \brief Returns whether lava is currently considered as an obstacle for this entity.
+ * \return true if lava is currently an obstacle for this entity
  */
 bool Boomerang::is_lava_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether prickles are currently considered as an obstacle for this entity.
- * @return true if prickles are currently an obstacle for this entity
+ * \brief Returns whether prickles are currently considered as an obstacle for this entity.
+ * \return true if prickles are currently an obstacle for this entity
  */
 bool Boomerang::is_prickle_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
- * @return true if the ladders are currently an obstacle for this entity
+ * \brief Returns whether a ladder is currently considered as an obstacle for this entity.
+ * \return true if the ladders are currently an obstacle for this entity
  */
 bool Boomerang::is_ladder_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a switch is currently considered as an obstacle by this entity.
- * @param sw a switch
- * @return true if the switch is currently an obstacle for this entity
+ * \brief Returns whether a switch is currently considered as an obstacle by this entity.
+ * \param sw a switch
+ * \return true if the switch is currently an obstacle for this entity
  */
 bool Boomerang::is_switch_obstacle(Switch& sw) {
   return false;
 }
 
 /**
- * @brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
- * @param raised_block a crystal block raised
- * @return false
+ * \brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
+ * \param raised_block a crystal block raised
+ * \return false
  */
 bool Boomerang::is_raised_block_obstacle(CrystalBlock& raised_block) {
   // the boomerang can traverse the crystal blocks
@@ -202,42 +202,42 @@ bool Boomerang::is_raised_block_obstacle(CrystalBlock& raised_block) {
 }
 
 /**
- * @brief Returns whether a crystal is currently considered as an obstacle for this entity.
- * @param crystal a crystal
- * @return true if the crystal is currently an obstacle for this entity
+ * \brief Returns whether a crystal is currently considered as an obstacle for this entity.
+ * \param crystal a crystal
+ * \return true if the crystal is currently an obstacle for this entity
  */
 bool Boomerang::is_crystal_obstacle(Crystal& crystal) {
   return false;
 }
 
 /**
- * @brief Returns whether a non-playing character is currently considered as an obstacle for this entity.
- * @param npc a non-playing character
- * @return true if the NPC is currently an obstacle for this entity
+ * \brief Returns whether a non-playing character is currently considered as an obstacle for this entity.
+ * \param npc a non-playing character
+ * \return true if the NPC is currently an obstacle for this entity
  */
 bool Boomerang::is_npc_obstacle(NPC& npc) {
   return npc.is_solid();
 }
 
 /**
- * @brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
- * @param jumper a non-diagonal jumper
- * @return true if the jumper is currently an obstacle for this entity
+ * \brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
+ * \param jumper a non-diagonal jumper
+ * \return true if the jumper is currently an obstacle for this entity
  */
 bool Boomerang::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 
 /**
- * @brief Returns whether the boomerang is going back towards the hero, i.e. if go_back() has been called.
- * @return true if the boomerang is going back
+ * \brief Returns whether the boomerang is going back towards the hero, i.e. if go_back() has been called.
+ * \return true if the boomerang is going back
  */
 bool Boomerang::is_going_back() {
   return has_to_go_back || going_back;
 }
 
 /**
- * @brief Makes the boomerang go back towards the hero.
+ * \brief Makes the boomerang go back towards the hero.
  */
 void Boomerang::go_back() {
 
@@ -247,7 +247,7 @@ void Boomerang::go_back() {
 }
 
 /**
- * @brief Updates the boomerang.
+ * \brief Updates the boomerang.
  */
 void Boomerang::update() {
 
@@ -272,7 +272,7 @@ void Boomerang::update() {
 }
 
 /**
- * @brief Notifies this entity that it has just failed to change its position
+ * \brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  */
 void Boomerang::notify_obstacle_reached() {
@@ -289,7 +289,7 @@ void Boomerang::notify_obstacle_reached() {
 }
 
 /**
- * @brief This function is called when the movement of the entity is finished.
+ * \brief This function is called when the movement of the entity is finished.
  */
 void Boomerang::notify_movement_finished() {
 
@@ -304,9 +304,9 @@ void Boomerang::notify_movement_finished() {
 }
 
 /**
- * @brief This function is called when a switch detects a collision with this entity.
- * @param sw the switch
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a switch detects a collision with this entity.
+ * \param sw the switch
+ * \param collision_mode the collision mode that detected the event
  */
 void Boomerang::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
@@ -321,9 +321,9 @@ void Boomerang::notify_collision_with_switch(Switch& sw, CollisionMode collision
 }
 
 /**
- * @brief This function is called when a crystal detects a collision with this entity.
- * @param crystal the crystal
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a crystal detects a collision with this entity.
+ * \param crystal the crystal
+ * \param collision_mode the collision mode that detected the event
  */
 void Boomerang::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
@@ -337,8 +337,8 @@ void Boomerang::notify_collision_with_crystal(Crystal &crystal, CollisionMode co
 }
 
 /**
- * @brief This function is called when an enemy collides with the entity.
- * @param enemy the enemy
+ * \brief This function is called when an enemy collides with the entity.
+ * \param enemy the enemy
  */
 void Boomerang::notify_collision_with_enemy(Enemy &enemy) {
 
@@ -348,14 +348,14 @@ void Boomerang::notify_collision_with_enemy(Enemy &enemy) {
 }
 
 /**
- * @brief Notifies this entity that it has just attacked an enemy.
+ * \brief Notifies this entity that it has just attacked an enemy.
  *
  * This function is called even if this attack was not successful.
  *
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack
- * @param killed indicates that the attack has just killed the enemy
+ * \param attack the attack
+ * \param victim the enemy just hurt
+ * \param result indicates how the enemy has reacted to the attack
+ * \param killed indicates that the attack has just killed the enemy
  */
 void Boomerang::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
     EnemyReaction::Reaction& result, bool killed) {

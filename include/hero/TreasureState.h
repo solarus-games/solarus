@@ -21,7 +21,7 @@
 #include "Treasure.h"
 
 /**
- * @brief The state "Treasure" of the hero.
+ * \brief The state "Treasure" of the hero.
  */
 class Hero::TreasureState: public Hero::State {
 

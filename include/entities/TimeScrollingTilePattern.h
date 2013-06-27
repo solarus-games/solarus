@@ -21,7 +21,7 @@
 #include "entities/SimpleTilePattern.h"
 
 /**
- * @brief Tile pattern with a scrolling effect.
+ * \brief Tile pattern with a scrolling effect.
  *
  * The pattern scrolls on itself with time,
  * giving the illusion of a movement.

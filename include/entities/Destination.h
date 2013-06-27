@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 
 /**
- * @brief A location of the map where the hero can arrive when using a teletransporter.
+ * \brief A location of the map where the hero can arrive when using a teletransporter.
  */
 class Destination: public MapEntity {
 

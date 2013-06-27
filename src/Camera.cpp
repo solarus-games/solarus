@@ -25,8 +25,8 @@
 #include "lua/LuaContext.h"
 
 /**
- * @brief Creates a camera.
- * @param map the map
+ * \brief Creates a camera.
+ * \param map the map
  */
 Camera::Camera(Map& map):
   map(map),
@@ -38,30 +38,30 @@ Camera::Camera(Map& map):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Camera::~Camera() {
   delete movement;
 }
 
 /**
- * @brief Returns the width of the visible area shown by the camera.
- * @return The width of the quest screen.
+ * \brief Returns the width of the visible area shown by the camera.
+ * \return The width of the quest screen.
  */
 int Camera::get_width() {
   return position.get_width();
 }
 
 /**
- * @brief Returns the height of the visible area shown by the camera.
- * @return The height of the quest screen.
+ * \brief Returns the height of the visible area shown by the camera.
+ * \return The height of the quest screen.
  */
 int Camera::get_height() {
   return position.get_height();
 }
 
 /**
- * @brief Updates the camera position.
+ * \brief Updates the camera position.
  *
  * This function is called continuously.
  */
@@ -161,44 +161,44 @@ void Camera::update() {
 }
 
 /**
- * @brief Returns the current position of the camera.
+ * \brief Returns the current position of the camera.
  *
  * This function returns the rectangle of the visible area of this camera.
  *
- * @return the visible area
+ * \return the visible area
  */
 const Rectangle& Camera::get_position() {
   return position;
 }
 
 /**
- * @brief Returns whether the camera is fixed on the hero.
+ * \brief Returns whether the camera is fixed on the hero.
  *
  * Most of the time, the camera follows the hero and this function returns true.
  * If the camera is being moved somewhere else, this function returns false.
  *
- * @return true if the camera is fixed on the hero
+ * \return true if the camera is fixed on the hero
  */
 bool Camera::is_fixed_on_hero() {
   return fixed_on_hero;
 }
 
 /**
- * @brief Sets the speed of the camera movement.
- * @param speed speed of the movement in pixels per second
+ * \brief Sets the speed of the camera movement.
+ * \param speed speed of the movement in pixels per second
  */
 void Camera::set_speed(int speed) {
   this->speed = speed;
 }
 
 /**
- * @brief Makes the camera move towards a destination point.
+ * \brief Makes the camera move towards a destination point.
  *
  * The camera will be centered on this point.
  * If there was already a movement, the new one replaces it.
  *
- * @param target_x x coordinate of the target point
- * @param target_y y coordinate of the target point
+ * \param target_x x coordinate of the target point
+ * \param target_y y coordinate of the target point
  */
 void Camera::move(int target_x, int target_y) {
 
@@ -219,13 +219,13 @@ void Camera::move(int target_x, int target_y) {
 }
 
 /**
- * @brief Makes the camera move towards an entity.
+ * \brief Makes the camera move towards an entity.
  *
  * The camera will be centered on the entity's center point.
  * If there was already a movement, the new one replaces it.
  * Note that the camera will not update its movement if the entity moves.
  *
- * @param entity the target entity
+ * \param entity the target entity
  */
 void Camera::move(MapEntity& entity) {
 
@@ -234,7 +234,7 @@ void Camera::move(MapEntity& entity) {
 }
 
 /**
- * @brief Moves the camera back to the hero.
+ * \brief Moves the camera back to the hero.
  *
  * The hero is not supposed to move during this time.
  * Once the movement is finished, the camera starts following the hero again.

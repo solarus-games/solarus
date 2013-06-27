@@ -25,7 +25,7 @@
 #include "entities/Explosion.h"
 
 /**
- * @brief Abstract class representing an enemy.
+ * \brief Abstract class representing an enemy.
  *
  * This class stores the attack and defense properties of the enemy.
  * Every enemy sprite must have at least the following animations
@@ -45,7 +45,7 @@ class Enemy: public Detector {
   public:
 
     /**
-     * @brief Enemy ranks.
+     * \brief Enemy ranks.
      */
     enum Rank {
       RANK_NORMAL,
@@ -54,7 +54,7 @@ class Enemy: public Detector {
     };
 
     /**
-     * @brief Defines the style of sounds and animations played when an enemy
+     * \brief Defines the style of sounds and animations played when an enemy
      * is hurt or killed.
      */
     enum HurtStyle {
@@ -65,7 +65,7 @@ class Enemy: public Detector {
     };
 
     /**
-     * @brief Defines how an enemy behaves with obstacles.
+     * \brief Defines how an enemy behaves with obstacles.
      */
     enum ObstacleBehavior {
       OBSTACLE_BEHAVIOR_NORMAL,   /**< the enemy is on the ground and stops on normal obstacles */

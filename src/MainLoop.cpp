@@ -30,9 +30,9 @@
 #include "DebugKeys.h"
 
 /**
- * @brief Initializes the game engine.
- * @param argc number of arguments of the command line
- * @param argv command-line arguments
+ * \brief Initializes the game engine.
+ * \param argc number of arguments of the command line
+ * \param argv command-line arguments
  */
 MainLoop::MainLoop(int argc, char** argv):
   root_surface(NULL),
@@ -57,7 +57,7 @@ MainLoop::MainLoop(int argc, char** argv):
 }
 
 /**
- * @brief Cleans everything.
+ * \brief Cleans everything.
  */
 MainLoop::~MainLoop() {
 
@@ -69,35 +69,35 @@ MainLoop::~MainLoop() {
 }
 
 /**
- * @brief Returns the debugging keys object.
- * @return the debugging keys object
+ * \brief Returns the debugging keys object.
+ * \return the debugging keys object
  */
 DebugKeys& MainLoop::get_debug_keys() {
   return *debug_keys;
 }
 
 /**
- * @brief Returns the shared Lua context.
- * @return The Lua context where all scripts are run.
+ * \brief Returns the shared Lua context.
+ * \return The Lua context where all scripts are run.
  */
 LuaContext& MainLoop::get_lua_context() {
   return *lua_context;
 }
 
 /**
- * @brief Returns whether the user just closed the window.
+ * \brief Returns whether the user just closed the window.
  *
  * When this function returns true, you should stop immediately
  * whatever you are doing, free your memory and let the program quit.
  *
- * @return true if the user wants to exit the program
+ * \return true if the user wants to exit the program
  */
 bool MainLoop::is_exiting() {
   return exiting;
 }
 
 /**
- * @brief Sets whether the user wants to quit the program.
+ * \brief Sets whether the user wants to quit the program.
  */
 void MainLoop::set_exiting() {
 
@@ -106,7 +106,7 @@ void MainLoop::set_exiting() {
 }
 
 /**
- * @brief Returns whether the program is being reset.
+ * \brief Returns whether the program is being reset.
  */
 bool MainLoop::is_resetting() {
 
@@ -114,7 +114,7 @@ bool MainLoop::is_resetting() {
 }
 
 /**
- * @brief Marks the current game as finished and sets the initial screen
+ * \brief Marks the current game as finished and sets the initial screen
  * to be started at the next cycle.
  */
 void MainLoop::set_resetting() {
@@ -124,16 +124,16 @@ void MainLoop::set_resetting() {
 }
 
 /**
- * @brief Returns the current game if any.
- * @return The game currently running or NULL.
+ * \brief Returns the current game if any.
+ * \return The game currently running or NULL.
  */
 Game* MainLoop::get_game() {
   return game;
 }
 
 /**
- * @brief Changes the game.
- * @param game The new game to start, or NULL to start no game.
+ * \brief Changes the game.
+ * \param game The new game to start, or NULL to start no game.
  */
 void MainLoop::set_game(Game* game) {
 
@@ -145,7 +145,7 @@ void MainLoop::set_game(Game* game) {
 }
 
 /**
- * @brief The main function.
+ * \brief The main function.
  *
  * The main loop is executed here.
  * The input events are forwarded to the current screen.
@@ -231,7 +231,7 @@ void MainLoop::run() {
 }
 
 /**
- * @brief This function is called when there is an input event.
+ * \brief This function is called when there is an input event.
  *
  * It handles the events common to all screens:
  * closing the window, pressing F5 or a debug key.
@@ -261,7 +261,7 @@ void MainLoop::notify_input(InputEvent& event) {
 }
 
 /**
- * @brief Updates the current screen.
+ * \brief Updates the current screen.
  *
  * This function is called repeatedly by the main loop.
  */
@@ -276,7 +276,7 @@ void MainLoop::update() {
 }
 
 /**
- * @brief Redraws the current screen.
+ * \brief Redraws the current screen.
  *
  * This function is called repeatedly by the main loop.
  */

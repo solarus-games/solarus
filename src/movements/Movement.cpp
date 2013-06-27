@@ -23,8 +23,8 @@
 #include "Drawable.h"
 
 /**
- * @brief Constructor.
- * @param ignore_obstacles When there is a map and the movement is attached to
+ * \brief Constructor.
+ * \param ignore_obstacles When there is a map and the movement is attached to
  * an entity of this map, indicates whether the movement should ignore
  * obstacles.
  */
@@ -46,7 +46,7 @@ Movement::Movement(bool ignore_obstacles):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Movement::~Movement() {
 
@@ -56,8 +56,8 @@ Movement::~Movement() {
 }
 
 /**
- * @brief Returns the entity controlled by this movement (if any).
- * @return the entity controlled by this movement, or NULL if this movement
+ * \brief Returns the entity controlled by this movement (if any).
+ * \return the entity controlled by this movement, or NULL if this movement
  * is not attached to a map entity
  */
 MapEntity* Movement::get_entity() const {
@@ -65,13 +65,13 @@ MapEntity* Movement::get_entity() const {
 }
 
 /**
- * @brief Sets the entity to be controlled by this movement object.
+ * \brief Sets the entity to be controlled by this movement object.
  *
  * This entity can be NULL if your movement applies to something else than a map entity.
  * However, some subclasses of Movement may require a non NULL entity because they
  * implement movements that depend on the map content (e.g. to handle the collisions).
  *
- * @param entity The entity to control, or NULL if the movement should not be
+ * \param entity The entity to control, or NULL if the movement should not be
  * attached to a map entity.
  */
 void Movement::set_entity(MapEntity* entity) {
@@ -91,8 +91,8 @@ void Movement::set_entity(MapEntity* entity) {
 }
 
 /**
- * @brief Returns the drawable controlled by this movement (if any).
- * @return The drawable controlled by this movement, or NULL if this movement
+ * \brief Returns the drawable controlled by this movement (if any).
+ * \return The drawable controlled by this movement, or NULL if this movement
  * is not attached to a drawable.
  */
 Drawable* Movement::get_drawable() const {
@@ -100,11 +100,11 @@ Drawable* Movement::get_drawable() const {
 }
 
 /**
- * @brief Sets the drawable to be controlled by this movement object.
+ * \brief Sets the drawable to be controlled by this movement object.
  *
  * This entity can be NULL if your movement applies to something else than a drawable.
  *
- * @param drawable The drawable to control, or NULL if the movement should not be
+ * \param drawable The drawable to control, or NULL if the movement should not be
  * attached to a drawable.
  */
 void Movement::set_drawable(Drawable* drawable) {
@@ -124,7 +124,7 @@ void Movement::set_drawable(Drawable* drawable) {
 }
 
 /**
- * @brief Notifies this movement that the object it controls has changed.
+ * \brief Notifies this movement that the object it controls has changed.
  *
  * Does nothing by default.
  */
@@ -132,8 +132,8 @@ void Movement::notify_object_controlled() {
 }
 
 /**
- * @brief Returns the x position of the object controlled by this movement.
- * @return the x position of the object controlled by this movement
+ * \brief Returns the x position of the object controlled by this movement.
+ * \return the x position of the object controlled by this movement
  */
 int Movement::get_x() {
 
@@ -141,8 +141,8 @@ int Movement::get_x() {
 }
 
 /**
- * @brief Returns the y position of the object controlled by this movement.
- * @return the y position of the object controlled by this movement
+ * \brief Returns the y position of the object controlled by this movement.
+ * \return the y position of the object controlled by this movement
  */
 int Movement::get_y() {
 
@@ -150,8 +150,8 @@ int Movement::get_y() {
 }
 
 /**
- * @brief Returns the coordinates of the object controlled by this movement.
- * @return The coordinates of the object controlled by this movement.
+ * \brief Returns the coordinates of the object controlled by this movement.
+ * \return The coordinates of the object controlled by this movement.
  */
 const Rectangle Movement::get_xy() {
 
@@ -170,33 +170,33 @@ const Rectangle Movement::get_xy() {
 }
 
 /**
- * @brief Sets the x position of the object controlled by this movement.
- * @param x The new x position
+ * \brief Sets the x position of the object controlled by this movement.
+ * \param x The new x position
  */
 void Movement::set_x(int x) {
   set_xy(x, get_y());
 }
 
 /**
- * @brief Sets the y position of the object controlled by this movement.
- * @param y The new y position.
+ * \brief Sets the y position of the object controlled by this movement.
+ * \param y The new y position.
  */
 void Movement::set_y(int y) {
   set_xy(get_x(), y);
 }
 
 /**
- * @brief Sets the position of the object controlled by this movement.
- * @param x The new x position.
- * @param y The new y position.
+ * \brief Sets the position of the object controlled by this movement.
+ * \param x The new x position.
+ * \param y The new y position.
  */
 void Movement::set_xy(int x, int y) {
   set_xy(Rectangle(x, y));
 }
 
 /**
- * @brief Sets the position of the object controlled by this movement.
- * @param xy The new coordinates (only x and y are used, the size of
+ * \brief Sets the position of the object controlled by this movement.
+ * \param xy The new coordinates (only x and y are used, the size of
  * the rectangle is ignored).
  */
 void Movement::set_xy(const Rectangle& xy) {
@@ -219,33 +219,33 @@ void Movement::set_xy(const Rectangle& xy) {
 }
 
 /**
- * @brief Moves the object on x.
- * @param dx number of pixels of the move
+ * \brief Moves the object on x.
+ * \param dx number of pixels of the move
  */
 void Movement::translate_x(int dx) {
   translate_xy(dx, 0);
 }
 
 /**
- * @brief Moves the object on y.
- * @param dy number of pixels of the move
+ * \brief Moves the object on y.
+ * \param dy number of pixels of the move
  */
 void Movement::translate_y(int dy) {
   translate_xy(0, dy);
 }
 
 /**
- * @brief Moves the object.
- * @param dx number of pixels of the move on x
- * @param dy number of pixels of the move on y
+ * \brief Moves the object.
+ * \param dx number of pixels of the move on x
+ * \param dy number of pixels of the move on y
  */
 void Movement::translate_xy(int dx, int dy) {
   set_xy(get_x() + dx, get_y() + dy);
 }
 
 /**
- * @brief Moves the object.
- * @param dxy number of pixel of the move on x and y
+ * \brief Moves the object.
+ * \param dxy number of pixel of the move on x and y
  * (the size of the rectangle is ignored)
  */
 void Movement::translate_xy(const Rectangle &dxy) {
@@ -253,7 +253,7 @@ void Movement::translate_xy(const Rectangle &dxy) {
 }
 
 /**
- * @brief Notifies this movement that the coordinates controlled by it
+ * \brief Notifies this movement that the coordinates controlled by it
  * have just been changed.
  */
 void Movement::notify_position_changed() {
@@ -271,7 +271,7 @@ void Movement::notify_position_changed() {
 }
 
 /**
- * @brief Notifies this movement that it just failed to apply
+ * \brief Notifies this movement that it just failed to apply
  * because of obstacles.
  */
 void Movement::notify_obstacle_reached() {
@@ -287,7 +287,7 @@ void Movement::notify_obstacle_reached() {
 }
 
 /**
- * @brief Notifies this movement that its characteristics (like speed or angle)
+ * \brief Notifies this movement that its characteristics (like speed or angle)
  * have changed.
  */
 void Movement::notify_movement_changed() {
@@ -303,7 +303,7 @@ void Movement::notify_movement_changed() {
 }
 
 /**
- * @brief Notifies this movement that it has just finished.
+ * \brief Notifies this movement that it has just finished.
  */
 void Movement::notify_movement_finished() {
 
@@ -321,27 +321,27 @@ void Movement::notify_movement_finished() {
 }
 
 /**
- * @brief Returns whether the movement is stopped.
- * @return true if the object is stopped, false otherwise
+ * \brief Returns whether the movement is stopped.
+ * \return true if the object is stopped, false otherwise
  */
 bool Movement::is_stopped() {
   return !is_started();
 }
 
 /**
- * @brief Returns whether the object is moving.
+ * \brief Returns whether the object is moving.
  *
  * Subclasses of Movement should redefine this function to indicate
  * whether the object is moving.
  *
- * @return true if the object is moving, false otherwise
+ * \return true if the object is moving, false otherwise
  */
 bool Movement::is_started() {
   return false;
 }
 
 /**
- * @brief Stops the movement.
+ * \brief Stops the movement.
  *
  * When this function returns, is_started() should be false.
  */
@@ -350,30 +350,30 @@ void Movement::stop() {
 }
 
 /**
- * @brief Returns whether this movement is finished.
+ * \brief Returns whether this movement is finished.
  *
  * You can redefine this function if your movement has an end.
  *
- * @return true if this movement is finished
+ * \return true if this movement is finished
  */
 bool Movement::is_finished() {
   return false;
 }
 
 /**
- * @brief Returns whether the movement is suspended.
- * @return true if the movement is suspended
+ * \brief Returns whether the movement is suspended.
+ * \return true if the movement is suspended
  */
 bool Movement::is_suspended() {
   return suspended;
 }
 
 /**
- * @brief Suspends or resumes the movement.
+ * \brief Suspends or resumes the movement.
  *
  * This function is called by the entity to suspend or resume its movement.
  *
- * @param suspended true to suspend the movement, false to resume it
+ * \param suspended true to suspend the movement, false to resume it
  */
 void Movement::set_suspended(bool suspended) {
 
@@ -390,18 +390,18 @@ void Movement::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns the date when this movement was suspended.
+ * \brief Returns the date when this movement was suspended.
  *
  * This function should be called only while the movement is suspended.
  *
- * @return the date when this movement started to be suspended
+ * \return the date when this movement started to be suspended
  */
 uint32_t Movement::get_when_suspended() {
   return when_suspended;
 }
 
 /**
- * @brief Updates the position of the object controlled by this movement.
+ * \brief Updates the position of the object controlled by this movement.
  *
  * This function is called repeatedly.
  * You can redefine this function.
@@ -418,15 +418,15 @@ void Movement::update() {
 }
 
 /**
- * @brief Returns whether the entity would collide with the map
+ * \brief Returns whether the entity would collide with the map
  * if it was moved a few pixels from its position.
  *
  * If the movement is not attached to an entity of a map,
  * or if obstacles are ignored, false is always returned.
  *
- * @param dx x distance between the current position and the position to check
- * @param dy y distance between the current position and the position to check
- * @return true if the entity would overlap the map obstacles in this position
+ * \param dx x distance between the current position and the position to check
+ * \param dy y distance between the current position and the position to check
+ * \return true if the entity would overlap the map obstacles in this position
  */
 bool Movement::test_collision_with_obstacles(int dx, int dy) {
 
@@ -450,22 +450,22 @@ bool Movement::test_collision_with_obstacles(int dx, int dy) {
 }
 
 /**
- * @brief Returns whether the entity would collide with the map
+ * \brief Returns whether the entity would collide with the map
  * if it was moved a few pixels from its position.
  *
  * If the movement is not attached to an entity of a map,
  * or if obstacles are ignored, false is always returned.
  *
- * @param dxy distance between the current position and the position to check
- * @return true if the entity would overlap the map obstacles in this position
+ * \param dxy distance between the current position and the position to check
+ * \return true if the entity would overlap the map obstacles in this position
  */
 bool Movement::test_collision_with_obstacles(const Rectangle& dxy) {
   return test_collision_with_obstacles(dxy.get_x(), dxy.get_y());
 }
 
 /**
- * @brief Returns the collision box of the last collision check that detected an obstacle.
- * @return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
+ * \brief Returns the collision box of the last collision check that detected an obstacle.
+ * \return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
  */
 const Rectangle& Movement::get_last_collision_box_on_obstacle() {
 
@@ -473,8 +473,8 @@ const Rectangle& Movement::get_last_collision_box_on_obstacle() {
 }
 
 /**
- * @brief Returns whether this movement currently ignores obstacles.
- * @return true if the obstacles are ignored
+ * \brief Returns whether this movement currently ignores obstacles.
+ * \return true if the obstacles are ignored
  */
 bool Movement::are_obstacles_ignored() {
 
@@ -482,8 +482,8 @@ bool Movement::are_obstacles_ignored() {
 }
 
 /**
- * @brief Sets whether this movement has the property to traverse obstacles.
- * @param ignore_obstacles true to ignore obstacles
+ * \brief Sets whether this movement has the property to traverse obstacles.
+ * \param ignore_obstacles true to ignore obstacles
  */
 void Movement::set_default_ignore_obstacles(bool ignore_obstacles) {
 
@@ -492,11 +492,11 @@ void Movement::set_default_ignore_obstacles(bool ignore_obstacles) {
 }
 
 /**
- * @brief Overrides temporarily the ability of this movement to traverse obstacles.
+ * \brief Overrides temporarily the ability of this movement to traverse obstacles.
  *
  * Use restore_default_ignore_obstacles() to restore the normal property of the movement.
  *
- * @param ignore_obstacles true to ignore obstacles
+ * \param ignore_obstacles true to ignore obstacles
  */
 void Movement::set_ignore_obstacles(bool ignore_obstacles) {
 
@@ -504,7 +504,7 @@ void Movement::set_ignore_obstacles(bool ignore_obstacles) {
 }
 
 /**
- * @brief Restores the normal value of ignore_obstacles.
+ * \brief Restores the normal value of ignore_obstacles.
  */
 void Movement::restore_default_ignore_obstacles() {
 
@@ -512,37 +512,37 @@ void Movement::restore_default_ignore_obstacles() {
 }
 
 /**
- * @brief Returns the direction a sprite controlled by this movement should take.
- * @return the direction to use to display the object controlled by this movement (0 to 3)
+ * \brief Returns the direction a sprite controlled by this movement should take.
+ * \return the direction to use to display the object controlled by this movement (0 to 3)
  */
 int Movement::get_displayed_direction4() {
   return 3; // by default, look down
 }
 
 /**
- * @brief Returns the coordinates where an object controlled by this movement
+ * \brief Returns the coordinates where an object controlled by this movement
  * should be displayed.
  *
  * By default, it returns the coordinates of the object itself. Redefine this function
  * if you want the object to be displayed at different coordinates than its real position.
  *
- * @return the coordinates to use to display the object controlled by this movement
+ * \return the coordinates to use to display the object controlled by this movement
  */
 const Rectangle Movement::get_displayed_xy() {
   return get_xy();
 }
 
 /**
- * @brief Returns the Solarus Lua API.
- * @return The Lua context, or NULL if Lua callbacks are not enabled for this movement.
+ * \brief Returns the Solarus Lua API.
+ * \return The Lua context, or NULL if Lua callbacks are not enabled for this movement.
  */
 LuaContext* Movement::get_lua_context() const {
   return lua_context;
 }
 
 /**
- * @brief Sets the Solarus Lua API.
- * @param lua_context The Lua context, or NULL to disable Lua callbacks
+ * \brief Sets the Solarus Lua API.
+ * \param lua_context The Lua context, or NULL to disable Lua callbacks
  * for this movement.
  */
 void Movement::set_lua_context(LuaContext* lua_context) {
@@ -550,17 +550,17 @@ void Movement::set_lua_context(LuaContext* lua_context) {
 }
 
 /**
- * @brief Returns the Lua registry ref to the function to call when this
+ * \brief Returns the Lua registry ref to the function to call when this
  * movement finishes.
- * @return The Lua ref to a function, or LUA_REFNIL.
+ * \return The Lua ref to a function, or LUA_REFNIL.
  */
 int Movement::get_finished_callback() const {
   return finished_callback_ref;
 }
 
 /**
- * @brief Sets the function to call when this movement finishes.
- * @param finished_callback_ref The Lua ref to a function, or LUA_REFNIL.
+ * \brief Sets the function to call when this movement finishes.
+ * \param finished_callback_ref The Lua ref to a function, or LUA_REFNIL.
  */
 void Movement::set_finished_callback(int finished_callback_ref) {
 
@@ -571,8 +571,8 @@ void Movement::set_finished_callback(int finished_callback_ref) {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& Movement::get_lua_type_name() const {
   return LuaContext::movement_module_name;

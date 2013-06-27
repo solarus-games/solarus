@@ -21,7 +21,7 @@
 #include <string>
 
 /**
- * @brief Interface of a C++ type that can also exist as a Lua userdata.
+ * \brief Interface of a C++ type that can also exist as a Lua userdata.
  *
  * An optional reference counting system is provided.
  * It allows you to share safely the object between C++ and Lua,
@@ -51,8 +51,8 @@ class ExportableToLua {
     void decrement_refcount();
 
     /**
-     * @brief Returns the name identifying this type in Lua.
-     * @return the name identifying this type in Lua
+     * \brief Returns the name identifying this type in Lua.
+     * \return the name identifying this type in Lua
      */
     virtual const std::string& get_lua_type_name() const = 0;
 

@@ -24,9 +24,9 @@
 #include "KeysEffect.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param lifted_item the item to lift (will be destroyed automatically)
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
+ * \param lifted_item the item to lift (will be destroyed automatically)
  */
 Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
   State(hero),
@@ -35,7 +35,7 @@ Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::LiftingState::~LiftingState() {
 
@@ -43,8 +43,8 @@ Hero::LiftingState::~LiftingState() {
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::LiftingState::start(State *previous_state) {
 
@@ -62,8 +62,8 @@ void Hero::LiftingState::start(State *previous_state) {
 }
 
 /**
- * @brief Ends this state.
- * @param next_state the next state
+ * \brief Ends this state.
+ * \param next_state the next state
  */
 void Hero::LiftingState::stop(State *next_state) {
 
@@ -94,7 +94,7 @@ void Hero::LiftingState::stop(State *next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::LiftingState::update() {
 
@@ -111,8 +111,8 @@ void Hero::LiftingState::update() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::LiftingState::set_suspended(bool suspended) {
 
@@ -124,9 +124,9 @@ void Hero::LiftingState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns whether the hero can be hurt in this state.
- * @return true if the hero can be hurt in this state
- * @param attacker an attacker that is trying to hurt the hero
+ * \brief Returns whether the hero can be hurt in this state.
+ * \return true if the hero can be hurt in this state
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
 bool Hero::LiftingState::can_be_hurt(Enemy* attacker) {
@@ -134,7 +134,7 @@ bool Hero::LiftingState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
- * @brief Throws the item that is being lifted.
+ * \brief Throws the item that is being lifted.
  *
  * This function is called when this state is interrupted by a new state,
  * e.g. when the hero is hurt while lifting an item.

@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 
 /**
- * @brief An item carried or thrown by the hero.
+ * \brief An item carried or thrown by the hero.
  *
  * Represents an item (pot, bush...) carried by the hero. He can throw it.
  * While the hero is carrying it, the item is attached to the hero, not to the map.

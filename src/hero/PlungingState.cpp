@@ -24,8 +24,8 @@
 #include "Equipment.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::PlungingState::PlungingState(Hero& hero):
   State(hero) {
@@ -33,15 +33,15 @@ Hero::PlungingState::PlungingState(Hero& hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::PlungingState::~PlungingState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::PlungingState::start(State* previous_state) {
 
@@ -57,7 +57,7 @@ void Hero::PlungingState::start(State* previous_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::PlungingState::update() {
 
@@ -90,16 +90,16 @@ void Hero::PlungingState::update() {
 }
 
 /**
- * @brief Returns whether the game over sequence can start in the current state.
- * @return true if the game over sequence can start in the current state
+ * \brief Returns whether the game over sequence can start in the current state.
+ * \return true if the game over sequence can start in the current state
  */
 bool Hero::PlungingState::can_start_gameover_sequence() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero is touching the ground in the current state.
- * @return true if the hero is touching the ground in the current state
+ * \brief Returns whether the hero is touching the ground in the current state.
+ * \return true if the hero is touching the ground in the current state
  */
 bool Hero::PlungingState::is_touching_ground() {
   return false;

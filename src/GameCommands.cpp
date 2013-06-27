@@ -26,7 +26,7 @@
 #include "lua/LuaContext.h"
 
 /**
- * @brief Lua name of each value of the Command enum.
+ * \brief Lua name of each value of the Command enum.
  */
 const std::string GameCommands::command_names[] = {
   "action",
@@ -75,8 +75,8 @@ const int GameCommands::masks_to_directions8[] = {
 };
 
 /**
- * @brief Constructor.
- * @param game the game
+ * \brief Constructor.
+ * \param game the game
  */
 GameCommands::GameCommands(Game& game):
   game(game),
@@ -100,7 +100,7 @@ GameCommands::GameCommands(Game& game):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 GameCommands::~GameCommands() {
 
@@ -108,29 +108,29 @@ GameCommands::~GameCommands() {
 }
 
 /**
- * @brief Returns the savegame.
- * @return The savegame.
+ * \brief Returns the savegame.
+ * \return The savegame.
  */
 Savegame& GameCommands::get_savegame() const {
   return game.get_savegame();
 }
 
 /**
- * @brief Returns whether the specified game command is pressed.
+ * \brief Returns whether the specified game command is pressed.
  *
  * The command can be activated from the keyboard or the joypad.
  *
- * @param command A game command.
- * @return true if this game command is currently pressed.
+ * \param command A game command.
+ * \return true if this game command is currently pressed.
  */
 bool GameCommands::is_command_pressed(Command command) const {
   return commands_pressed.find(command) != commands_pressed.end();
 }
 
 /**
- * @brief Returns the direction corresponding to the directional commands
+ * \brief Returns the direction corresponding to the directional commands
  * currently pressed by the player.
- * @return The direction (0 to 7), or -1 if no directional command is pressed
+ * \return The direction (0 to 7), or -1 if no directional command is pressed
  * or if the combination of directional command is not a valid direction.
  */
 int GameCommands::get_wanted_direction8() const {
@@ -153,8 +153,8 @@ int GameCommands::get_wanted_direction8() const {
 }
 
 /**
- * @brief This function is called by the game when a low-level event occurs.
- * @param event An input event.
+ * \brief This function is called by the game when a low-level event occurs.
+ * \param event An input event.
  */
 void GameCommands::notify_input(InputEvent& event) {
 
@@ -184,8 +184,8 @@ void GameCommands::notify_input(InputEvent& event) {
 }
 
 /**
- * @brief This function is called when a low-level keyboard key is pressed.
- * @param keyboard_key_pressed The key pressed.
+ * \brief This function is called when a low-level keyboard key is pressed.
+ * \param keyboard_key_pressed The key pressed.
  */
 void GameCommands::keyboard_key_pressed(InputEvent::KeyboardKey keyboard_key_pressed) {
 
@@ -211,8 +211,8 @@ void GameCommands::keyboard_key_pressed(InputEvent::KeyboardKey keyboard_key_pre
 }
 
 /**
- * @brief This function is called when a low-level keyboard key is released.
- * @param keyboard_control_released The key released.
+ * \brief This function is called when a low-level keyboard key is released.
+ * \param keyboard_control_released The key released.
  */
 void GameCommands::keyboard_key_released(InputEvent::KeyboardKey keyboard_key_released) {
 
@@ -226,8 +226,8 @@ void GameCommands::keyboard_key_released(InputEvent::KeyboardKey keyboard_key_re
 }
 
 /**
- * @brief This function is called when a joypad button is pressed.
- * @param button The button pressed.
+ * \brief This function is called when a joypad button is pressed.
+ * \param button The button pressed.
  */
 void GameCommands::joypad_button_pressed(int button) {
 
@@ -256,8 +256,8 @@ void GameCommands::joypad_button_pressed(int button) {
 }
 
 /**
- * @brief This function is called when a joypad button is released.
- * @param button The button released.
+ * \brief This function is called when a joypad button is released.
+ * \param button The button released.
  */
 void GameCommands::joypad_button_released(int button) {
 
@@ -274,9 +274,9 @@ void GameCommands::joypad_button_released(int button) {
 }
 
 /**
- * @brief This function is called when a joypad axis is moved.
- * @param axis The axis moved.
- * @param state The new axis direction (-1: left or up, 0: centered, 1: right or down).
+ * \brief This function is called when a joypad axis is moved.
+ * \param axis The axis moved.
+ * \param state The new axis direction (-1: left or up, 0: centered, 1: right or down).
  */
 void GameCommands::joypad_axis_moved(int axis, int state) {
 
@@ -335,9 +335,9 @@ void GameCommands::joypad_axis_moved(int axis, int state) {
 }
 
 /**
- * @brief This function is called when a joypad hat is moved.
- * @param hat The hat moved.
- * @param direction The new hat position (-1: centered, 0 to 7: a direction).
+ * \brief This function is called when a joypad hat is moved.
+ * \param hat The hat moved.
+ * \param direction The new hat position (-1: centered, 0 to 7: a direction).
  */
 void GameCommands::joypad_hat_moved(int hat, int value) {
 
@@ -474,11 +474,11 @@ void GameCommands::joypad_hat_moved(int hat, int value) {
 }
 
 /**
- * @brief This function is called when a game command is pressed.
+ * \brief This function is called when a game command is pressed.
  *
  * This event may come from the keyboard or the joypad.
  *
- * @param command The game command pressed.
+ * \param command The game command pressed.
  */
 void GameCommands::game_command_pressed(Command command) {
 
@@ -490,11 +490,11 @@ void GameCommands::game_command_pressed(Command command) {
 }
 
 /**
- * @brief This function is called when a game command is pressed.
+ * \brief This function is called when a game command is pressed.
  *
  * This event may come from the keyboard or the joypad.
  *
- * @param command The game command released.
+ * \param command The game command released.
  */
 void GameCommands::game_command_released(Command command) {
 
@@ -506,10 +506,10 @@ void GameCommands::game_command_released(Command command) {
 }
 
 /**
- * @brief Returns the low-level keyboard key where the specified game command
+ * \brief Returns the low-level keyboard key where the specified game command
  * is currently mapped.
- * @param command A game command.
- * @return The keyboard key mapped to this game command, or InputEvent::KEY_NONE
+ * \param command A game command.
+ * \return The keyboard key mapped to this game command, or InputEvent::KEY_NONE
  * if the command is not mapped to a keyboard key.
  */
 InputEvent::KeyboardKey GameCommands::get_keyboard_binding(Command command) const {
@@ -526,13 +526,13 @@ InputEvent::KeyboardKey GameCommands::get_keyboard_binding(Command command) cons
 }
 
 /**
- * @brief Maps the specified keyboard key to a new game command.
+ * \brief Maps the specified keyboard key to a new game command.
  *
  * If this key was already mapped to a command, both commands are switched.
  * (The old command gets the previous key of the new command.)
  *
- * @param command A game command.
- * @param key The keyboard key to map to this game command, or InputEvent::KEY_NONE
+ * \param command A game command.
+ * \param key The keyboard key to map to this game command, or InputEvent::KEY_NONE
  * to unmap the command.
  */
 void GameCommands::set_keyboard_binding(Command command, InputEvent::KeyboardKey key) {
@@ -557,10 +557,10 @@ void GameCommands::set_keyboard_binding(Command command, InputEvent::KeyboardKey
 }
 
 /**
- * @brief Returns a string representing the joypad action where the specified
+ * \brief Returns a string representing the joypad action where the specified
  * game command is currently mapped.
- * @param command A game command.
- * @return The joypad action mapped to this game command, or an empty string if
+ * \param command A game command.
+ * \return The joypad action mapped to this game command, or an empty string if
  * this game command is not mapped to a joypad action.
  */
 const std::string& GameCommands::get_joypad_binding(Command command) const {
@@ -578,13 +578,13 @@ const std::string& GameCommands::get_joypad_binding(Command command) const {
 }
 
 /**
- * @brief Maps the specified joypad action to a new game command.
+ * \brief Maps the specified joypad action to a new game command.
  *
  * If this joypad action was already mapped to a command, both commands are switched.
  * (The old command gets the previous joypad action of the new command.)
  *
- * @param command A game command.
- * @param joypad_string A string describing the joypad action to map to this
+ * \param command A game command.
+ * \param joypad_string A string describing the joypad action to map to this
  * game command, or an empty string to unmap the command.
  */
 void GameCommands::set_joypad_binding(Command command, const std::string& joypad_string) {
@@ -609,10 +609,10 @@ void GameCommands::set_joypad_binding(Command command, const std::string& joypad
 }
 
 /**
- * @brief Returns the name of the savegame variable that stores the keyboard
+ * \brief Returns the name of the savegame variable that stores the keyboard
  * mapping of a game command.
- * @param command A game command.
- * @return The savegame variable that stores the keyboard key mapped to this
+ * \param command A game command.
+ * \return The savegame variable that stores the keyboard key mapped to this
  * game command, or an empty string if this command is not mapped to a
  * keyboard key.
  */
@@ -635,10 +635,10 @@ const std::string& GameCommands::get_keyboard_binding_savegame_variable(
 }
 
 /**
- * @brief Returns the name of the savegame variable that stores the joypad
+ * \brief Returns the name of the savegame variable that stores the joypad
  * mapping of a game command.
- * @param command A game command.
- * @return The savegame variable that stores the joypad action mapped to this
+ * \param command A game command.
+ * \return The savegame variable that stores the joypad action mapped to this
  * game command, or an empty string if this command is not mapped to the joypad.
  */
 const std::string& GameCommands::get_joypad_binding_savegame_variable(
@@ -660,10 +660,10 @@ const std::string& GameCommands::get_joypad_binding_savegame_variable(
 }
 
 /**
- * @brief Determines from the savegame the low-level keyboard key where the
+ * \brief Determines from the savegame the low-level keyboard key where the
  * specified game command is mapped.
- * @param command A game command.
- * @return The keyboard key mapped to this game command in the savegame.
+ * \param command A game command.
+ * \return The keyboard key mapped to this game command in the savegame.
  */
 InputEvent::KeyboardKey GameCommands::get_saved_keyboard_binding(
     Command command) const {
@@ -674,10 +674,10 @@ InputEvent::KeyboardKey GameCommands::get_saved_keyboard_binding(
 }
 
 /**
- * @brief Saves the low-level keyboard command where the specified game key is
+ * \brief Saves the low-level keyboard command where the specified game key is
  * mapped.
- * @param command A game command.
- * @param keyboard_key The keyboard key to map to this game command in the
+ * \param command A game command.
+ * \param keyboard_key The keyboard key to map to this game command in the
  * savegame.
  */
 void GameCommands::set_saved_keyboard_binding(
@@ -689,10 +689,10 @@ void GameCommands::set_saved_keyboard_binding(
 }
 
 /**
- * @brief Returns the game command (if any) associated to the specified
+ * \brief Returns the game command (if any) associated to the specified
  * keyboard key.
- * @param key A keyboard key.
- * @return The game command mapped to that key or NONE.
+ * \param key A keyboard key.
+ * \return The game command mapped to that key or NONE.
  */
 GameCommands::Command GameCommands::get_command_from_keyboard(
     InputEvent::KeyboardKey key) const {
@@ -707,10 +707,10 @@ GameCommands::Command GameCommands::get_command_from_keyboard(
 }
 
 /**
- * @brief Determines from the savegame the low-level joypad action where the
+ * \brief Determines from the savegame the low-level joypad action where the
  * specified game command is mapped.
- * @param command A game command.
- * @return The joypad action mapped to this game command in the savegame.
+ * \param command A game command.
+ * \return The joypad action mapped to this game command in the savegame.
  */
 const std::string& GameCommands::get_saved_joypad_binding(
     Command command) const {
@@ -720,10 +720,10 @@ const std::string& GameCommands::get_saved_joypad_binding(
 }
 
 /**
- * @brief Saves the low-level joypad action where the specified game command
+ * \brief Saves the low-level joypad action where the specified game command
  * is mapped.
- * @param command A game command.
- * @return The joypad action to map to this game command in the savegame.
+ * \param command A game command.
+ * \return The joypad action to map to this game command in the savegame.
  */
 void GameCommands::set_saved_joypad_binding(
     Command command, const std::string& joypad_string) {
@@ -733,10 +733,10 @@ void GameCommands::set_saved_joypad_binding(
 }
 
 /**
- * @brief Returns the game command (if any) associated to the specified
+ * \brief Returns the game command (if any) associated to the specified
  * joypad action.
- * @param joypad_string A joypad action.
- * @return The game command mapped to that joypad action or NONE.
+ * \param joypad_string A joypad action.
+ * \return The game command mapped to that joypad action or NONE.
  */
 GameCommands::Command GameCommands::get_command_from_joypad(
     const std::string& joypad_string) const {
@@ -753,15 +753,15 @@ GameCommands::Command GameCommands::get_command_from_joypad(
 // customization
 
 /**
- * @brief Sets the specified command to be customized.
+ * \brief Sets the specified command to be customized.
  *
  * After this function is called, the next keyboard or joypad event received will
  * not be treated normally; it will be considered as the new keyboard or joypad
  * binding for this game key. Then, keyboard and joypad events will be treated
  * normally again.
  *
- * @param command The command to customize.
- * @param callback_ref Lua ref to a function to call when the customization
+ * \param command The command to customize.
+ * \param callback_ref Lua ref to a function to call when the customization
  * finishes, or LUA_REFNIL.
  */
 void GameCommands::customize(Command command, int callback_ref) {
@@ -771,17 +771,17 @@ void GameCommands::customize(Command command, int callback_ref) {
 }
 
 /**
- * @brief Returns whether the player is currently customizing a command.
- * @return true if the player is currently customizing a command.
+ * \brief Returns whether the player is currently customizing a command.
+ * \return true if the player is currently customizing a command.
  */
 bool GameCommands::is_customizing() const {
   return customizing;
 }
 
 /**
- * @brief When the player is customizing a command, returns the command that
+ * \brief When the player is customizing a command, returns the command that
  * is being customized.
- * @return The command being customized.
+ * \return The command being customized.
  */
 GameCommands::Command GameCommands::get_command_to_customize() const {
 
@@ -791,7 +791,7 @@ GameCommands::Command GameCommands::get_command_to_customize() const {
 }
 
 /**
- * @brief Calls the Lua function that was registered to be called after a
+ * \brief Calls the Lua function that was registered to be called after a
  * command customization phase.
  */
 void GameCommands::do_customization_callback() {
@@ -802,7 +802,7 @@ void GameCommands::do_customization_callback() {
 }
 
 /**
- * @brief Returns whether a string describes a valid joypad action.
+ * \brief Returns whether a string describes a valid joypad action.
  *
  * The string should have one of the following forms:
  * - "button X" where X is the index of a joypad button.
@@ -810,8 +810,8 @@ void GameCommands::do_customization_callback() {
  * - "axis X -" where X is the index of a joypad axis.
  * - "hat X Y" where X is the index of a joypad hat and Y is a direction (0 to 7).
  *
- * @param joypad_string The string to check.
- * @return true if this string is a valid joypad action.
+ * \param joypad_string The string to check.
+ * \return true if this string is a valid joypad action.
  */
 bool GameCommands::is_joypad_string_valid(const std::string& joypad_string) {
 
@@ -820,9 +820,9 @@ bool GameCommands::is_joypad_string_valid(const std::string& joypad_string) {
 }
 
 /**
- * @brief Returns the name of a game command.
- * @param command a game command.
- * @return The name of this command, or an empty string if the command is NONE.
+ * \brief Returns the name of a game command.
+ * \param command a game command.
+ * \return The name of this command, or an empty string if the command is NONE.
  */
 const std::string& GameCommands::get_command_name(Command command) {
 
@@ -835,9 +835,9 @@ const std::string& GameCommands::get_command_name(Command command) {
 }
 
 /**
- * @brief Returns a game command given its Lua name.
- * @param command_name Lua name of a game command.
- * @return The corresponding game command, or NONE if the name is invalid.
+ * \brief Returns a game command given its Lua name.
+ * \param command_name Lua name of a game command.
+ * \return The corresponding game command, or NONE if the name is invalid.
  */
 GameCommands::Command GameCommands::get_command_by_name(
     const std::string& command_name) {

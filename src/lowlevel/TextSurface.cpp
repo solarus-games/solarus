@@ -28,7 +28,7 @@ std::map<std::string, TextSurface::FontData> TextSurface::fonts;
 std::string TextSurface::default_font_id;
 
 /**
- * @brief Initializes the font system.
+ * \brief Initializes the font system.
  */
 void TextSurface::initialize() {
 
@@ -55,7 +55,7 @@ void TextSurface::initialize() {
 }
 
 /**
- * @brief Closes the font system.
+ * \brief Closes the font system.
  */
 void TextSurface::quit() {
 
@@ -81,12 +81,12 @@ void TextSurface::quit() {
 }
 
 /**
- * @brief Function called by the Lua data file to add a font.
+ * \brief Function called by the Lua data file to add a font.
  *
  * - Argument 1 (table): properties of the font.
  *
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int TextSurface::l_font(lua_State* l) {
 
@@ -130,7 +130,7 @@ int TextSurface::l_font(lua_State* l) {
 }
 
 /**
- * @brief Creates a text to draw with the default properties.
+ * \brief Creates a text to draw with the default properties.
  *
  * The default properties are:
  * - font: the default font defined in file text/fonts.dat
@@ -139,8 +139,8 @@ int TextSurface::l_font(lua_State* l) {
  * - rendering mode: solid
  * - text color: white
  *
- * @param x x position of the text on the destination surface
- * @param y y position of the text on the destination surface
+ * \param x x position of the text on the destination surface
+ * \param y y position of the text on the destination surface
  */
 TextSurface::TextSurface(int x, int y):
   Drawable(),
@@ -156,12 +156,12 @@ TextSurface::TextSurface(int x, int y):
 }
 
 /**
- * @brief Creates a text to draw with the specified alignment properties.
- * @param x x position of the text on the destination surface
- * @param y y position of the text on the destination surface
- * @param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
+ * \brief Creates a text to draw with the specified alignment properties.
+ * \param x x position of the text on the destination surface
+ * \param y y position of the text on the destination surface
+ * \param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
  * ALIGN_CENTER or ALIGN_RIGHT
- * @param vertical_alignment vertical alignment of the text: ALIGN_TOP,
+ * \param vertical_alignment vertical alignment of the text: ALIGN_TOP,
  * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
 TextSurface::TextSurface(int x, int y,
@@ -180,7 +180,7 @@ TextSurface::TextSurface(int x, int y,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 TextSurface::~TextSurface() {
 
@@ -191,9 +191,9 @@ TextSurface::~TextSurface() {
 }
 
 /**
- * @brief Returns whether a font exists.
- * @param font_id Id of a font.
- * @return true if this font exists.
+ * \brief Returns whether a font exists.
+ * \param font_id Id of a font.
+ * \return true if this font exists.
  */
 bool TextSurface::has_font(const std::string& font_id) {
 
@@ -201,16 +201,16 @@ bool TextSurface::has_font(const std::string& font_id) {
 }
 
 /**
- * @brief Returns the font used to draw this text.
- * @return Id of a font.
+ * \brief Returns the font used to draw this text.
+ * \return Id of a font.
  */
 const std::string& TextSurface::get_font() {
   return font_id;
 }
 
 /**
- * @brief Sets the font to use.
- * @param font_id Id of a font.
+ * \brief Sets the font to use.
+ * \param font_id Id of a font.
  */
 void TextSurface::set_font(const std::string& font_id) {
 
@@ -221,8 +221,8 @@ void TextSurface::set_font(const std::string& font_id) {
 }
 
 /**
- * @brief Returns the horizontal text alignment.
- * @return Horizontal alignment of the text: ALIGN_LEFT,
+ * \brief Returns the horizontal text alignment.
+ * \return Horizontal alignment of the text: ALIGN_LEFT,
  * ALIGN_CENTER or ALIGN_RIGHT.
  */
 TextSurface::HorizontalAlignment TextSurface::get_horizontal_alignment() {
@@ -230,8 +230,8 @@ TextSurface::HorizontalAlignment TextSurface::get_horizontal_alignment() {
 }
 
 /**
- * @brief Sets the horizontal text alignment.
- * @param horizontal_alignment Horizontal alignment of the text: ALIGN_LEFT,
+ * \brief Sets the horizontal text alignment.
+ * \param horizontal_alignment Horizontal alignment of the text: ALIGN_LEFT,
  * ALIGN_CENTER or ALIGN_RIGHT.
  */
 void TextSurface::set_horizontal_alignment(HorizontalAlignment horizontal_alignment) {
@@ -242,8 +242,8 @@ void TextSurface::set_horizontal_alignment(HorizontalAlignment horizontal_alignm
 }
 
 /**
- * @brief Returns the vertical text alignment.
- * @return Vertical alignment of the text: ALIGN_TOP,
+ * \brief Returns the vertical text alignment.
+ * \return Vertical alignment of the text: ALIGN_TOP,
  * ALIGN_MIDDLE or ALIGN_BOTTOM.
  */
 TextSurface::VerticalAlignment TextSurface::get_vertical_alignment() {
@@ -251,8 +251,8 @@ TextSurface::VerticalAlignment TextSurface::get_vertical_alignment() {
 }
 
 /**
- * @brief Sets the vertical text alignment.
- * @param vertical_alignment Vertical alignment of the text: ALIGN_TOP,
+ * \brief Sets the vertical text alignment.
+ * \param vertical_alignment Vertical alignment of the text: ALIGN_TOP,
  * ALIGN_MIDDLE or ALIGN_BOTTOM.
  */
 void TextSurface::set_vertical_alignment(VerticalAlignment vertical_alignment) {
@@ -263,10 +263,10 @@ void TextSurface::set_vertical_alignment(VerticalAlignment vertical_alignment) {
 }
 
 /**
- * @brief Sets the text alignment.
- * @param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
+ * \brief Sets the text alignment.
+ * \param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
  * ALIGN_CENTER or ALIGN_RIGHT
- * @param vertical_alignment vertical alignment of the text: ALIGN_TOP,
+ * \param vertical_alignment vertical alignment of the text: ALIGN_TOP,
  * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
 void TextSurface::set_alignment(HorizontalAlignment horizontal_alignment,
@@ -278,16 +278,16 @@ void TextSurface::set_alignment(HorizontalAlignment horizontal_alignment,
 }
 
 /**
- * @brief Returns the rendering mode of the text.
- * @return The rendering mode: TEXT_SOLID or TEXT_ANTIALIASING.
+ * \brief Returns the rendering mode of the text.
+ * \return The rendering mode: TEXT_SOLID or TEXT_ANTIALIASING.
  */
 TextSurface::RenderingMode TextSurface::get_rendering_mode() {
   return rendering_mode;
 }
 
 /**
- * @brief Sets the rendering mode of the text.
- * @param rendering_mode Rendering mode: TEXT_SOLID or TEXT_ANTIALIASING.
+ * \brief Sets the rendering mode of the text.
+ * \param rendering_mode Rendering mode: TEXT_SOLID or TEXT_ANTIALIASING.
  */
 void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) {
 
@@ -296,16 +296,16 @@ void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) 
 }
 
 /**
- * @brief Returns the color of the text.
- * @return The text color.
+ * \brief Returns the color of the text.
+ * \return The text color.
  */
 const Color& TextSurface::get_text_color() {
   return text_color;
 }
 
 /**
- * @brief Sets the color of the text.
- * @param color The color to set.
+ * \brief Sets the color of the text.
+ * \param color The color to set.
  */
 void TextSurface::set_text_color(const Color &color) {
   this->text_color = color;
@@ -313,10 +313,10 @@ void TextSurface::set_text_color(const Color &color) {
 }
 
 /**
- * @brief Sets the color of the text.
- * @param r red component (0 to 255)
- * @param g green component (0 to 255)
- * @param b blue component (0 to 255)
+ * \brief Sets the color of the text.
+ * \param r red component (0 to 255)
+ * \param g green component (0 to 255)
+ * \param b blue component (0 to 255)
  */
 void TextSurface::set_text_color(int r, int g, int b) {
   this->text_color = Color(r, g, b);
@@ -324,9 +324,9 @@ void TextSurface::set_text_color(int r, int g, int b) {
 }
 
 /**
- * @brief Sets the position of the text on the destination surface.
- * @param x X position of the text on the destination surface.
- * @param y Y position of the text on the destination surface.
+ * \brief Sets the position of the text on the destination surface.
+ * \param x X position of the text on the destination surface.
+ * \param y Y position of the text on the destination surface.
  */
 void TextSurface::set_position(int x, int y) {
   this->x = x;
@@ -335,16 +335,16 @@ void TextSurface::set_position(int x, int y) {
 }
 
 /**
- * @brief Returns the x position of the text on the destination surface.
- * @return X position of the text.
+ * \brief Returns the x position of the text on the destination surface.
+ * \return X position of the text.
  */
 int TextSurface::get_x() {
   return x;
 }
 
 /**
- * @brief Sets the x position of the text on the destination surface.
- * @param x x position of the text
+ * \brief Sets the x position of the text on the destination surface.
+ * \param x x position of the text
  */
 void TextSurface::set_x(int x) {
   this->x = x;
@@ -352,16 +352,16 @@ void TextSurface::set_x(int x) {
 }
 
 /**
- * @brief Returns the y position of the text on the destination surface.
- * @return y position of the text.
+ * \brief Returns the y position of the text on the destination surface.
+ * \return y position of the text.
  */
 int TextSurface::get_y() {
   return y;
 }
 
 /**
- * @brief Sets the y position of the text on the destination surface.
- * @param y y position of the text
+ * \brief Sets the y position of the text on the destination surface.
+ * \param y y position of the text
  */
 void TextSurface::set_y(int y) {
   this->y = y;
@@ -369,27 +369,27 @@ void TextSurface::set_y(int y) {
 }
 
 /**
- * @brief Returns whether the current text is an empty string.
- * @return true if there is no texte
+ * \brief Returns whether the current text is an empty string.
+ * \return true if there is no texte
  */
 bool TextSurface::is_empty() {
   return text.empty();
 }
 
 /**
- * @brief Returns the text currently displayed.
- * @return the text currently displayed, or NULL if there is no text
+ * \brief Returns the text currently displayed.
+ * \return the text currently displayed, or NULL if there is no text
  */
 const std::string& TextSurface::get_text() {
   return text;
 }
 
 /**
- * @brief Sets the string drawn.
+ * \brief Sets the string drawn.
  *
  * If the specified string is the same than the current text, nothing is done.
  *
- * @param text the text to display (cannot be NULL)
+ * \param text the text to display (cannot be NULL)
  */
 void TextSurface::set_text(const std::string& text) {
 
@@ -402,27 +402,27 @@ void TextSurface::set_text(const std::string& text) {
 }
 
 /**
- * @brief Adds a character to the string drawn.
+ * \brief Adds a character to the string drawn.
  *
  * This is equivalent to set_text(get_text() + c).
  *
- * @param c the character to add
+ * \param c the character to add
  */
 void TextSurface::add_char(char c) {
   set_text(text + c);
 }
 
 /**
- * @brief Returns the width of the surface containing the text.
- * @return the width in pixels
+ * \brief Returns the width of the surface containing the text.
+ * \return the width in pixels
  */
 int TextSurface::get_width() {
   return surface->get_width();
 }
 
 /**
- * @brief Returns the height of the surface containing the text.
- * @return the height in pixels
+ * \brief Returns the height of the surface containing the text.
+ * \return the height in pixels
  */
 int TextSurface::get_height() {
   return surface->get_height();
@@ -430,15 +430,15 @@ int TextSurface::get_height() {
 
 
 /**
- * @brief Returns the size of the surface containing the text.
- * @return the size of the surface
+ * \brief Returns the size of the surface containing the text.
+ * \return the size of the surface
  */
 const Rectangle TextSurface::get_size() {
   return Rectangle(0, 0, get_width(), get_height());
 }
 
 /**
- * @brief Redraws the text surface.
+ * \brief Redraws the text surface.
  *
  * This function is called when there is a change.
  */
@@ -502,7 +502,7 @@ void TextSurface::rebuild() {
 }
 
 /**
- * @brief Redraws the text surface in the case of a bitmap font.
+ * \brief Redraws the text surface in the case of a bitmap font.
  *
  * This function is called when there is a change.
  */
@@ -551,7 +551,7 @@ void TextSurface::rebuild_bitmap() {
 }
 
 /**
- * @brief Redraws the text surface in the case of a normal font.
+ * \brief Redraws the text surface in the case of a normal font.
  *
  * This function is called when there is a change.
  */
@@ -577,14 +577,14 @@ void TextSurface::rebuild_ttf() {
 }
 
 /**
- * @brief Draws the text on a surface.
+ * \brief Draws the text on a surface.
  *
  * This method blits the text at the position previously set
  * (by set_x(), set_y() or set_position())
  * plus the parameter dst_position.
  *
- * @param dst_surface The destination surface.
- * @param dst_position Coordinates on the destination surface.
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates on the destination surface.
  */
 void TextSurface::raw_draw(Surface& dst_surface,
     const Rectangle& dst_position) {
@@ -598,10 +598,10 @@ void TextSurface::raw_draw(Surface& dst_surface,
 }
 
 /**
- * @brief Draws a subrectangle of this text surface on another surface.
- * @param region The subrectangle to draw in this object.
- * @param dst_surface The destination surface.
- * @param dst_position Coordinates on the destination surface.
+ * \brief Draws a subrectangle of this text surface on another surface.
+ * \param region The subrectangle to draw in this object.
+ * \param dst_surface The destination surface.
+ * \param dst_position Coordinates on the destination surface.
  */
 void TextSurface::raw_draw_region(const Rectangle& region,
     Surface& dst_surface, const Rectangle& dst_position) {
@@ -615,16 +615,16 @@ void TextSurface::raw_draw_region(const Rectangle& region,
 }
 
 /**
- * @brief Draws a transition effect on this drawable object.
- * @param transition The transition effect to apply.
+ * \brief Draws a transition effect on this drawable object.
+ * \param transition The transition effect to apply.
  */
 void TextSurface::draw_transition(Transition& transition) {
   transition.draw(*surface);
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& TextSurface::get_lua_type_name() const {
   return LuaContext::text_surface_module_name;

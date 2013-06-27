@@ -19,14 +19,14 @@
 #include "movements/PathMovement.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param path the succession of basic moves
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
+ * \param path the succession of basic moves
  * composing this movement (each character represents
  * a direction between '0' and '7'), as in PathMovement
- * @param loop true to make the movement return to the beginning
+ * \param loop true to make the movement return to the beginning
  * once finished
- * @param ignore_obstacles true to make the movement ignore obstacles
+ * \param ignore_obstacles true to make the movement ignore obstacles
  */
 Hero::ForcedWalkingState::ForcedWalkingState(Hero &hero, const std::string &path,
     bool loop, bool ignore_obstacles):
@@ -38,14 +38,14 @@ Hero::ForcedWalkingState::ForcedWalkingState(Hero &hero, const std::string &path
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::ForcedWalkingState::~ForcedWalkingState() {
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::ForcedWalkingState::start(State *previous_state) {
 
@@ -60,8 +60,8 @@ void Hero::ForcedWalkingState::start(State *previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::ForcedWalkingState::stop(State *next_state) {
 
@@ -71,7 +71,7 @@ void Hero::ForcedWalkingState::stop(State *next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::ForcedWalkingState::update() {
 
@@ -86,90 +86,90 @@ void Hero::ForcedWalkingState::update() {
 }
 
 /**
- * @brief Returns whether the game over sequence can start in the current state.
- * @return true if the game over sequence can start in the current state
+ * \brief Returns whether the game over sequence can start in the current state.
+ * \return true if the game over sequence can start in the current state
  */
 bool Hero::ForcedWalkingState::can_start_gameover_sequence() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero is touching the ground in the current state.
- * @return true if the hero is touching the ground in the current state
+ * \brief Returns whether the hero is touching the ground in the current state.
+ * \return true if the hero is touching the ground in the current state
  */
 bool Hero::ForcedWalkingState::is_touching_ground() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of deep water in this state.
- * @return true if the hero ignores the effect of deep water in the current state
+ * \brief Returns whether the hero ignores the effect of deep water in this state.
+ * \return true if the hero ignores the effect of deep water in the current state
  */
 bool Hero::ForcedWalkingState::can_avoid_deep_water() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of holes in this state.
- * @return true if the hero ignores the effect of holes in the current state
+ * \brief Returns whether the hero ignores the effect of holes in this state.
+ * \return true if the hero ignores the effect of holes in the current state
  */
 bool Hero::ForcedWalkingState::can_avoid_hole() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of lava in this state.
- * @return true if the hero ignores the effect of lava in the current state
+ * \brief Returns whether the hero ignores the effect of lava in this state.
+ * \return true if the hero ignores the effect of lava in the current state
  */
 bool Hero::ForcedWalkingState::can_avoid_lava() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of prickles in this state.
- * @return true if the hero ignores the effect of prickles in the current state
+ * \brief Returns whether the hero ignores the effect of prickles in this state.
+ * \return true if the hero ignores the effect of prickles in the current state
  */
 bool Hero::ForcedWalkingState::can_avoid_prickle() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of teletransporters in this state.
- * @return true if the hero ignores the effect of teletransporters in this state
+ * \brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * \return true if the hero ignores the effect of teletransporters in this state
  */
 bool Hero::ForcedWalkingState::can_avoid_teletransporter() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
- * @return true if the hero ignores the effect of conveyor belts in this state
+ * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ * \return true if the hero ignores the effect of conveyor belts in this state
  */
 bool Hero::ForcedWalkingState::can_avoid_conveyor_belt() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of sensors in this state.
- * @return true if the hero ignores the effect of sensors in this state
+ * \brief Returns whether the hero ignores the effect of sensors in this state.
+ * \return true if the hero ignores the effect of sensors in this state
  */
 bool Hero::ForcedWalkingState::can_avoid_sensor() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of switches in this state.
- * @return true if the hero ignores the effect of switches in this state
+ * \brief Returns whether the hero ignores the effect of switches in this state.
+ * \return true if the hero ignores the effect of switches in this state
  */
 bool Hero::ForcedWalkingState::can_avoid_switch() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can be hurt in this state
- * @param attacker an attacker that is trying to hurt the hero
+ * \brief Returns whether the hero can be hurt in this state
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy).
- * @return true if the hero can be hurt in this state
+ * \return true if the hero can be hurt in this state
  */
 bool Hero::ForcedWalkingState::can_be_hurt(Enemy* attacker) {
   return false;

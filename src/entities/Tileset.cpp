@@ -28,7 +28,7 @@
 #include <lua.hpp>
 
 /**
- * @brief Lua name of each ground type.
+ * \brief Lua name of each ground type.
  */
 static std::string ground_names[] = {
     "traversable",
@@ -52,8 +52,8 @@ static std::string ground_names[] = {
 };
 
 /**
- * @brief Constructor.
- * @param id id of the tileset to create
+ * \brief Constructor.
+ * \param id id of the tileset to create
  */
 Tileset::Tileset(const std::string& id):
   id(id),
@@ -63,7 +63,7 @@ Tileset::Tileset(const std::string& id):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Tileset::~Tileset() {
   if (is_loaded()) {
@@ -72,20 +72,20 @@ Tileset::~Tileset() {
 }
 
 /**
- * @brief Returns the id of this tileset.
- * @return the tileset id
+ * \brief Returns the id of this tileset.
+ * \return the tileset id
  */
 const std::string& Tileset::get_id() {
   return id;
 }
 
 /**
- * @brief Adds a tile pattern to this tileset.
+ * \brief Adds a tile pattern to this tileset.
  *
  * This function is called by load().
  *
- * @param id id of this tile pattern (1 to 1024)
- * @param tile_pattern the tile pattern to add
+ * \param id id of this tile pattern (1 to 1024)
+ * \param tile_pattern the tile pattern to add
  */
 void Tileset::add_tile_pattern(int id, TilePattern *tile_pattern) {
 
@@ -95,7 +95,7 @@ void Tileset::add_tile_pattern(int id, TilePattern *tile_pattern) {
 }
 
 /**
- * @brief Loads the tileset from its file by creating all tile patterns.
+ * \brief Loads the tileset from its file by creating all tile patterns.
  */
 void Tileset::load() {
 
@@ -130,7 +130,7 @@ void Tileset::load() {
 }
 
 /**
- * @brief Destroys the tile patterns and frees the memory used
+ * \brief Destroys the tile patterns and frees the memory used
  * by the tileset image.
  */
 void Tileset::unload() {
@@ -149,41 +149,41 @@ void Tileset::unload() {
 }
 
 /**
- * @brief Returns the background color of this tileset.
- * @return the background color
+ * \brief Returns the background color of this tileset.
+ * \return the background color
  */
 Color& Tileset::get_background_color() {
   return background_color;
 }
 
 /**
- * @brief Returns whether this tileset is loaded.
- * @return true if this tileset is loaded
+ * \brief Returns whether this tileset is loaded.
+ * \return true if this tileset is loaded
  */
 bool Tileset::is_loaded() {
   return tiles_image != NULL;
 }
 
 /**
- * @brief Returns the image containing the tiles of this tileset.
- * @return the tiles image
+ * \brief Returns the image containing the tiles of this tileset.
+ * \return the tiles image
  */
 Surface& Tileset::get_tiles_image() {
   return *tiles_image;
 }
 
 /**
- * @brief Returns the image containing the skin-dependent dynamic entities for this tileset.
- * @return the image containing the skin-dependent dynamic entities for this tileset
+ * \brief Returns the image containing the skin-dependent dynamic entities for this tileset.
+ * \return the image containing the skin-dependent dynamic entities for this tileset
  */
 Surface& Tileset::get_entities_image() {
   return *entities_image;
 }
 
 /**
- * @brief Returns a tile pattern from this tileset.
- * @param id id of the tile pattern to get
- * @return the tile pattern with this id
+ * \brief Returns a tile pattern from this tileset.
+ * \param id id of the tile pattern to get
+ * \return the tile pattern with this id
  */
 TilePattern& Tileset::get_tile_pattern(int id) {
 
@@ -193,9 +193,9 @@ TilePattern& Tileset::get_tile_pattern(int id) {
 }
 
 /**
- * @brief Changes the tiles images, the entities images and the background color of
+ * \brief Changes the tiles images, the entities images and the background color of
  * this tileset.
- * @param other another tileset whose images and background color will be copied
+ * \param other another tileset whose images and background color will be copied
  * into this tileset
  */
 void Tileset::set_images(Tileset& other) {
@@ -208,12 +208,12 @@ void Tileset::set_images(Tileset& other) {
 }
 
 /**
- * @brief Function called by Lua to set the background color of the tileset.
+ * \brief Function called by Lua to set the background color of the tileset.
  *
  * - Argument 1 (table): background color (must be an array of 3 integers).
  *
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int Tileset::l_background_color(lua_State* l) {
 
@@ -237,12 +237,12 @@ int Tileset::l_background_color(lua_State* l) {
 }
 
 /**
- * @brief Function called by Lua to add a tile pattern to the tileset.
+ * \brief Function called by Lua to add a tile pattern to the tileset.
  *
  * - Argument 1 (table): A table describing the tile pattern to create.
  *
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int Tileset::l_tile_pattern(lua_State* l) {
 

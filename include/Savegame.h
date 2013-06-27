@@ -24,7 +24,7 @@
 struct lua_State;
 
 /**
- * @brief Manages the game data saved.
+ * \brief Manages the game data saved.
  *
  * This class provides read and write access to the saved data.
  */

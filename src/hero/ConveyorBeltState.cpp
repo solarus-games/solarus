@@ -24,9 +24,9 @@
 #include "Sprite.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param conveyor_belt the conveyor belt to take
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
+ * \param conveyor_belt the conveyor belt to take
  */
 Hero::ConveyorBeltState::ConveyorBeltState(Hero &hero, ConveyorBelt &conveyor_belt):
   State(hero), conveyor_belt(conveyor_belt) {
@@ -34,15 +34,15 @@ Hero::ConveyorBeltState::ConveyorBeltState(Hero &hero, ConveyorBelt &conveyor_be
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::ConveyorBeltState::~ConveyorBeltState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::ConveyorBeltState::start(State *previous_state) {
 
@@ -57,8 +57,8 @@ void Hero::ConveyorBeltState::start(State *previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::ConveyorBeltState::stop(State *next_state) {
 
@@ -68,7 +68,7 @@ void Hero::ConveyorBeltState::stop(State *next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::ConveyorBeltState::update() {
 
@@ -111,16 +111,16 @@ void Hero::ConveyorBeltState::update() {
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of teletransporters in this state.
- * @return true if the hero ignores the effect of teletransporters in this state
+ * \brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * \return true if the hero ignores the effect of teletransporters in this state
  */
 bool Hero::ConveyorBeltState::can_avoid_teletransporter() {
   return true; // ignore the teletransporter until the conveyor belt is finished
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
- * @return true if the hero ignores the effect of conveyor belts in this state
+ * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ * \return true if the hero ignores the effect of conveyor belts in this state
  */
 bool Hero::ConveyorBeltState::can_avoid_conveyor_belt() {
   return true;

@@ -22,7 +22,7 @@
 #include <string>
 
 /**
- * @brief Loads and saves the built-in settings of the quest.
+ * \brief Loads and saves the built-in settings of the quest.
  *
  * The settings include the language, the video mode and the audio volume.
  */

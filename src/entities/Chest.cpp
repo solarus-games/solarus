@@ -32,7 +32,7 @@
 #include <sstream>
 
 /**
- * @brief Lua name of each value of the OpeningMethod enum.
+ * \brief Lua name of each value of the OpeningMethod enum.
  */
 const std::string Chest::opening_method_names[] = {
   "interaction",
@@ -42,14 +42,14 @@ const std::string Chest::opening_method_names[] = {
 };
 
 /**
- * @brief Creates a new chest with the specified treasure.
- * @param name Name identifying this chest.
- * @param layer Layer of the chest to create on the map.
- * @param x X coordinate of the chest to create.
- * @param y Y coordinate of the chest to create.
- * @param sprite_name Name of the animation set of the
+ * \brief Creates a new chest with the specified treasure.
+ * \param name Name identifying this chest.
+ * \param layer Layer of the chest to create on the map.
+ * \param x X coordinate of the chest to create.
+ * \param y Y coordinate of the chest to create.
+ * \param sprite_name Name of the animation set of the
  * sprite to create for the chest. It must have animations "open" and "closed".
- * @param treasure The treasure in the chest.
+ * \param treasure The treasure in the chest.
  */
 Chest::Chest(
     const std::string& name,
@@ -74,22 +74,22 @@ Chest::Chest(
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Chest::~Chest() {
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Chest::get_type() {
   return CHEST;
 }
 
 /**
- * @brief Returns whether this entity has to be drawn in y order.
- * @return \c true if this type of entity should be drawn at the same level
+ * \brief Returns whether this entity has to be drawn in y order.
+ * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
 bool Chest::is_drawn_in_y_order() {
@@ -97,8 +97,8 @@ bool Chest::is_drawn_in_y_order() {
 }
 
 /**
- * @brief Notifies this entity that it was just enabled or disabled.
- * @param enabled \c true if the entity is now enabled.
+ * \brief Notifies this entity that it was just enabled or disabled.
+ * \param enabled \c true if the entity is now enabled.
  */
 void Chest::notify_enabled(bool enabled) {
 
@@ -109,15 +109,15 @@ void Chest::notify_enabled(bool enabled) {
 }
 
 /**
- * @brief Returns whether the player has found the treasure in this chest.
- * @return true if the chest is open
+ * \brief Returns whether the player has found the treasure in this chest.
+ * \return true if the chest is open
  */
 bool Chest::is_open() {
   return open;
 }
 
 /**
- * @brief Sets whether the chest is open.
+ * \brief Sets whether the chest is open.
  *
  * If you don't change the chest state, this function has no effect.
  * If you make the chest opened, its sprite is updated but this function does not give any treasure
@@ -125,7 +125,7 @@ bool Chest::is_open() {
  * If you close the chest, its sprite is updated and the chest will contain
  * its initial treasure again.
  *
- * @param open true to open the chest, false to close it
+ * \param open true to open the chest, false to close it
  */
 void Chest::set_open(bool open) {
 
@@ -146,8 +146,8 @@ void Chest::set_open(bool open) {
 }
 
 /**
- * @brief Returns whether the player is able to open this chest now.
- * @return true if this is a small chest or if the player has the big key.
+ * \brief Returns whether the player is able to open this chest now.
+ * \return true if this is a small chest or if the player has the big key.
  */
 bool Chest::can_open() {
 
@@ -200,23 +200,23 @@ bool Chest::can_open() {
 }
 
 /**
- * @brief Returns the opening method of this chest.
- * @return How this chest can be opened.
+ * \brief Returns the opening method of this chest.
+ * \return How this chest can be opened.
  */
 Chest::OpeningMethod Chest::get_opening_method() const {
   return opening_method;
 }
 
 /**
- * @brief Sets the opening method of this chest.
- * @param opening_method How this chest should be opened.
+ * \brief Sets the opening method of this chest.
+ * \param opening_method How this chest should be opened.
  */
 void Chest::set_opening_method(OpeningMethod opening_method) {
   this->opening_method = opening_method;
 }
 
 /**
- * @brief Returns the savegame variable or the equipment item name required to
+ * \brief Returns the savegame variable or the equipment item name required to
  * open this chest.
  *
  * A savegame variable is returned if the opening mode is
@@ -231,14 +231,14 @@ void Chest::set_opening_method(OpeningMethod opening_method) {
  *
  * For the other opening methods, this setting has no effect.
  *
- * @return The savegame variable or the equipment item name required.
+ * \return The savegame variable or the equipment item name required.
  */
 const std::string& Chest::get_opening_condition() const {
   return opening_condition;
 }
 
 /**
- * @brief Sets the savegame variable or the equipment item name required to
+ * \brief Sets the savegame variable or the equipment item name required to
  * open this chest.
  *
  * You must set a savegame variable if the opening mode is
@@ -253,7 +253,7 @@ const std::string& Chest::get_opening_condition() const {
  *
  * For the other opening methods, this setting has no effect.
  *
- * @param opening_condition The savegame variable or the equipment item name
+ * \param opening_condition The savegame variable or the equipment item name
  * required.
  */
 void Chest::set_opening_condition(const std::string& opening_condition) {
@@ -261,7 +261,7 @@ void Chest::set_opening_condition(const std::string& opening_condition) {
 }
 
 /**
- * @brief Returns whether opening this chest consumes the condition that
+ * \brief Returns whether opening this chest consumes the condition that
  * was required.
  *
  * If this setting is \c true, here is the behavior when the hero opens
@@ -276,7 +276,7 @@ void Chest::set_opening_condition(const std::string& opening_condition) {
  *   - if the required item has no amount, its possession state is set to zero.
  * - With other opening methods, this setting has no effect.
  *
- * @return \c true if opening this chest consumes the condition that was
+ * \return \c true if opening this chest consumes the condition that was
  * required.
  */
 bool Chest::is_opening_condition_consumed() const {
@@ -284,7 +284,7 @@ bool Chest::is_opening_condition_consumed() const {
 }
 
 /**
- * @brief Sets whether opening this chest should consume the condition that
+ * \brief Sets whether opening this chest should consume the condition that
  * was required.
  *
  * If this setting is \c true, here is the behavior when the hero opens
@@ -299,7 +299,7 @@ bool Chest::is_opening_condition_consumed() const {
  *   - if the required item has no amount, its possession state is set to zero.
  * - With other opening methods, this setting has no effect.
  *
- * @param opening_condition_consumed \c true if opening this chest should
+ * \param opening_condition_consumed \c true if opening this chest should
  * consume the condition that was required.
  */
 void Chest::set_opening_condition_consumed(bool opening_condition_consumed) {
@@ -307,10 +307,10 @@ void Chest::set_opening_condition_consumed(bool opening_condition_consumed) {
 }
 
 /**
- * @brief Returns the id of the dialog to show when the player presses the action
+ * \brief Returns the id of the dialog to show when the player presses the action
  * command on the chest but cannot open it (i.e. if can_open() is false).
  *
- * @return The id of the "cannot open" dialog for this chest
+ * \return The id of the "cannot open" dialog for this chest
  * (an empty string means no dialog).
  */
 const std::string& Chest::get_cannot_open_dialog_id() const {
@@ -318,9 +318,9 @@ const std::string& Chest::get_cannot_open_dialog_id() const {
 }
 
 /**
- * @brief Sets the id of the dialog to show when the player presses the action
+ * \brief Sets the id of the dialog to show when the player presses the action
  * command on the chest but cannot open it (i.e. if can_open() is false).
- * @param cannot_open_dialog_id The id of the "cannot open" dialog for this chest
+ * \param cannot_open_dialog_id The id of the "cannot open" dialog for this chest
  * (an empty string means no dialog).
  */
 void Chest::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) {
@@ -328,19 +328,19 @@ void Chest::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) 
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one when
+ * \brief Returns whether this entity is an obstacle for another one when
  * it is enabled.
- * @param other Another entity.
- * @return \c true if this entity is an obstacle for the other one.
+ * \param other Another entity.
+ * \return \c true if this entity is an obstacle for the other one.
  */
 bool Chest::is_obstacle_for(MapEntity& other) {
   return true;
 }
 
 /**
- * @brief This function is called by the engine when an entity overlaps the chest.
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called by the engine when an entity overlaps the chest.
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void Chest::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
@@ -350,7 +350,7 @@ void Chest::notify_collision(MapEntity& entity_overlapping, CollisionMode collis
 }
 
 /**
- * @brief Updates the chest.
+ * \brief Updates the chest.
  *
  * This function is called repeatedly by the map.
  * This is a redefinition of MapEntity::update()
@@ -396,7 +396,7 @@ void Chest::update() {
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by
+ * \brief Notifies this detector that the player is interacting with it by
  * pressing the action command.
  *
  * This function is called when the player presses the action command
@@ -424,12 +424,12 @@ void Chest::notify_action_command_pressed() {
 }
 
 /**
- * @brief This function is called by the map when the game is suspended or resumed.
+ * \brief This function is called by the map when the game is suspended or resumed.
  *
  * This is a redefinition of MapEntity::set_suspended() to suspend the timer
  * of the chest being opened.
  *
- * @param suspended true to suspend the entity, false to resume it
+ * \param suspended true to suspend the entity, false to resume it
  */
 void Chest::set_suspended(bool suspended) {
 
@@ -442,8 +442,8 @@ void Chest::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& Chest::get_lua_type_name() const {
   return LuaContext::entity_chest_module_name;

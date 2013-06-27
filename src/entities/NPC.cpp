@@ -31,17 +31,17 @@
 #include "EquipmentItemUsage.h"
 
 /**
- * @brief Creates an NPC.
- * @param game the game
- * @param name name identifying this NPC
- * @param layer layer of the entity to create
- * @param x x coordinate of the entity to create
- * @param subtype the subtype of interaction
- * @param y y coordinate of the entity to create
- * @param sprite_name sprite animation set of the entity, or an empty string to create no sprite
- * @param direction for a generalized NPC: direction for which the interactions are allowed
+ * \brief Creates an NPC.
+ * \param game the game
+ * \param name name identifying this NPC
+ * \param layer layer of the entity to create
+ * \param x x coordinate of the entity to create
+ * \param subtype the subtype of interaction
+ * \param y y coordinate of the entity to create
+ * \param sprite_name sprite animation set of the entity, or an empty string to create no sprite
+ * \param direction for a generalized NPC: direction for which the interactions are allowed
  * (0 to 4, or -1 for any direction), for a usual NPC: initial direction of the NPC's sprite
- * @param behavior_string indicates what happens when the hero interacts with this NPC:
+ * \param behavior_string indicates what happens when the hero interacts with this NPC:
  * "dialog#XXX" to start the dialog XXX, "map" to call the map script
  * (with an event_hero_interaction() call) or "item#XXX" to call the script
  * of item XXX  (with an event_hero_interaction() call)
@@ -78,23 +78,23 @@ NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 NPC::~NPC() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType NPC::get_type() {
   return NON_PLAYING_CHARACTER;
 }
 
 /**
- * @brief Returns whether this entity has to be drawn in y order.
- * @return \c true if this type of entity should be drawn at the same level
+ * \brief Returns whether this entity has to be drawn in y order.
+ * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
 bool NPC::is_drawn_in_y_order() {
@@ -104,9 +104,9 @@ bool NPC::is_drawn_in_y_order() {
 }
 
 /**
- * @brief Creates the sprite specified.
- * @param sprite_name sprite animation set of the entity, or an empty string to create no sprite
- * @param initial_direction direction of the entity's sprite (ignored if there is no sprite
+ * \brief Creates the sprite specified.
+ * \param sprite_name sprite animation set of the entity, or an empty string to create no sprite
+ * \param initial_direction direction of the entity's sprite (ignored if there is no sprite
  * of if the direction specified is -1)
  */
 void NPC::initialize_sprite(const std::string& sprite_name, int initial_direction) {
@@ -120,13 +120,13 @@ void NPC::initialize_sprite(const std::string& sprite_name, int initial_directio
 }
 
 /**
- * @brief Returns whether this NPC is a solid, non-traversable object.
+ * \brief Returns whether this NPC is a solid, non-traversable object.
  *
  * This function can be called by other entities who want to be able to
  * traverse people (usual NPCs) but not solid interactive entities
  * (generalized NPCs).
  *
- * @return true if the NPC is a solid object
+ * \return true if the NPC is a solid object
  */
 bool NPC::is_solid() {
 
@@ -134,9 +134,9 @@ bool NPC::is_solid() {
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true
  */
 bool NPC::is_obstacle_for(MapEntity& other) {
 
@@ -144,18 +144,18 @@ bool NPC::is_obstacle_for(MapEntity& other) {
 }
 
 /**
- * @brief Returns whether the hero is currently considered as an obstacle by this entity.
- * @param hero the hero
- * @return true if the hero is an obstacle for this entity
+ * \brief Returns whether the hero is currently considered as an obstacle by this entity.
+ * \param hero the hero
+ * \return true if the hero is an obstacle for this entity
  */
 bool NPC::is_hero_obstacle(Hero& hero) {
   return true;
 }
 
 /**
- * @brief Returns whether an NPC is currently considered as an obstacle by this entity.
- * @param npc an NPC
- * @return true if this NPC is currently considered as an obstacle by this entity
+ * \brief Returns whether an NPC is currently considered as an obstacle by this entity.
+ * \param npc an NPC
+ * \return true if this NPC is currently considered as an obstacle by this entity
  */
 bool NPC::is_npc_obstacle(NPC& npc) {
   // usual NPCs can traverse each other
@@ -163,9 +163,9 @@ bool NPC::is_npc_obstacle(NPC& npc) {
 }
 
 /**
- * @brief Returns whether an enemy character is currently considered as an obstacle by this entity.
- * @param enemy an enemy
- * @return true if this enemy is currently considered as an obstacle by this entity
+ * \brief Returns whether an enemy character is currently considered as an obstacle by this entity.
+ * \param enemy an enemy
+ * \return true if this enemy is currently considered as an obstacle by this entity
  */
 bool NPC::is_enemy_obstacle(Enemy& enemy) {
 
@@ -174,11 +174,11 @@ bool NPC::is_enemy_obstacle(Enemy& enemy) {
 }
 
 /**
- * @brief Returns true if this entity does not react to the sword.
+ * \brief Returns true if this entity does not react to the sword.
  *
  * If true is returned, nothing will happen when the hero hits this entity with the sword.
  *
- * @return true if the sword is ignored
+ * \return true if the sword is ignored
  */
 bool NPC::is_sword_ignored() {
 
@@ -187,12 +187,12 @@ bool NPC::is_sword_ignored() {
 }
 
 /**
- * @brief This function is called by the engine when there is a collision with another entity.
+ * \brief This function is called by the engine when there is a collision with another entity.
  *
  * If the entity is the hero, we allow him to interact with this entity.
  *
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
@@ -229,7 +229,7 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by
+ * \brief Notifies this detector that the player is interacting with it by
  * pressing the action command.
  *
  * This function is called when the player presses the action command
@@ -273,7 +273,7 @@ void NPC::notify_action_command_pressed() {
 }
 
 /**
- * @brief Notifies the appropriate script that the hero is interacting with this entity.
+ * \brief Notifies the appropriate script that the hero is interacting with this entity.
  */
 void NPC::call_script_hero_interaction() {
 
@@ -287,14 +287,14 @@ void NPC::call_script_hero_interaction() {
 }
 
 /**
- * @brief Notifies this detector that the player is interacting by using an
+ * \brief Notifies this detector that the player is interacting by using an
  * equipment item.
  *
  * This function is called when the player uses an equipment item
  * while the hero is facing this NPC.
  *
- * @param item_used The equipment item used.
- * @return true if an interaction occured.
+ * \param item_used The equipment item used.
+ * \return true if an interaction occured.
  */
 bool NPC::interaction_with_item(EquipmentItem& item_used) {
 
@@ -313,7 +313,7 @@ bool NPC::interaction_with_item(EquipmentItem& item_used) {
 }
 
 /**
- * @brief This function is called when the entity has just moved.
+ * \brief This function is called when the entity has just moved.
  *
  * If it is an NPC, its sprite's direction is updated.
  */
@@ -336,7 +336,7 @@ void NPC::notify_position_changed() {
 }
 
 /**
- * @brief This function is called when the movement of the entity is finished.
+ * \brief This function is called when the movement of the entity is finished.
  */
 void NPC::notify_movement_finished() {
 
@@ -351,7 +351,7 @@ void NPC::notify_movement_finished() {
 
 
 /**
- * @brief Returns whether this interactive entity can be lifted.
+ * \brief Returns whether this interactive entity can be lifted.
  */
 bool NPC::can_be_lifted() {
 
@@ -362,8 +362,8 @@ bool NPC::can_be_lifted() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& NPC::get_lua_type_name() const {
   return LuaContext::entity_npc_module_name;

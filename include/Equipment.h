@@ -24,7 +24,7 @@
 struct lua_State;
 
 /**
- * @brief Represents the hero's equipment.
+ * \brief Represents the hero's equipment.
  *
  * This class gives access to the equipment data saved and the properties of items
  * as defined in items.dat.

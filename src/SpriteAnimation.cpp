@@ -22,12 +22,12 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Constructor.
- * @param image_file_name the image from which the frames are extracted
- * @param directions the image sequence of each direction
- * @param frame_delay delay in millisecond between two frames for this sprite animation
+ * \brief Constructor.
+ * \param image_file_name the image from which the frames are extracted
+ * \param directions the image sequence of each direction
+ * \param frame_delay delay in millisecond between two frames for this sprite animation
  * (or 0 to make no animation, for example when you have only one frame)
- * @param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
+ * \param loop_on_frame frame to loop on after the last frame (or -1 to make no loop)
  */
 SpriteAnimation::SpriteAnimation(
     const std::string& image_file_name,
@@ -49,7 +49,7 @@ SpriteAnimation::SpriteAnimation(
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 SpriteAnimation::~SpriteAnimation() {
 
@@ -64,11 +64,11 @@ SpriteAnimation::~SpriteAnimation() {
 }
 
 /**
- * @brief When the sprite is displayed on a map, sets the tileset.
+ * \brief When the sprite is displayed on a map, sets the tileset.
  *
  * This function must be called if this sprite image depends on the map's tileset.
  *
- * @param tileset The tileset.
+ * \param tileset The tileset.
  */
 void SpriteAnimation::set_tileset(Tileset& tileset) {
 
@@ -82,43 +82,43 @@ void SpriteAnimation::set_tileset(Tileset& tileset) {
 }
 
 /**
- * @brief Returns the number of directions of this animation.
- * @return The number of directions.
+ * \brief Returns the number of directions of this animation.
+ * \return The number of directions.
  */
 int SpriteAnimation::get_nb_directions() const {
   return directions.size();
 }
 
 /**
- * @brief Returns a direction.
- * @param direction the direction
- * @return the sequence of images corresponding to this direction
+ * \brief Returns a direction.
+ * \param direction the direction
+ * \return the sequence of images corresponding to this direction
  */
 const SpriteAnimationDirection* SpriteAnimation::get_direction(int direction) const {
   return directions[direction];
 }
 
 /**
- * @brief Returns the delay between two frames for this sprite animation.
- * @return the frame delay in milliseconds
+ * \brief Returns the delay between two frames for this sprite animation.
+ * \return the frame delay in milliseconds
  */
 uint32_t SpriteAnimation::get_frame_delay() const {
   return frame_delay;
 }
 
 /**
- * @brief Returns whether this animation loops on a frame.
- * @return true if this animation loops
+ * \brief Returns whether this animation loops on a frame.
+ * \return true if this animation loops
  */
 bool SpriteAnimation::is_looping() const {
   return loop_on_frame != -1;
 }
 
 /**
- * @brief Returns the next frame of the current frame.
- * @param current_direction the current direction
- * @param current_frame the current frame
- * @return the next frame of the current frame in this direction
+ * \brief Returns the next frame of the current frame.
+ * \param current_direction the current direction
+ * \param current_frame the current frame
+ * \return the next frame of the current frame in this direction
  * (or -1 if the animation is over)
  */
 int SpriteAnimation::get_next_frame(
@@ -143,12 +143,12 @@ int SpriteAnimation::get_next_frame(
 }
 
 /**
- * @brief Draws a specific frame of this animation on a surface.
- * @param dst_surface the surface on which the sprite will be drawn
- * @param dst_position coordinates on the destination surface
+ * \brief Draws a specific frame of this animation on a surface.
+ * \param dst_surface the surface on which the sprite will be drawn
+ * \param dst_position coordinates on the destination surface
  * (the origin point will be drawn at this position)
- * @param current_direction the direction to show
- * @param current_frame the frame to show in this direction
+ * \param current_direction the direction to show
+ * \param current_frame the frame to show in this direction
  */
 void SpriteAnimation::draw(Surface& dst_surface,
     const Rectangle& dst_position, int current_direction, int current_frame) {
@@ -165,7 +165,7 @@ void SpriteAnimation::draw(Surface& dst_surface,
 }
 
 /**
- * @brief Enables the pixel-perfect collision detection for this animation.
+ * \brief Enables the pixel-perfect collision detection for this animation.
  */
 void SpriteAnimation::enable_pixel_collisions() {
 
@@ -179,7 +179,7 @@ void SpriteAnimation::enable_pixel_collisions() {
 }
 
 /**
- * @brief Internal function that enables the pixel-perfect collision detection for this animation now.
+ * \brief Internal function that enables the pixel-perfect collision detection for this animation now.
  */
 void SpriteAnimation::do_enable_pixel_collisions() {
 
@@ -190,7 +190,7 @@ void SpriteAnimation::do_enable_pixel_collisions() {
 }
 
 /**
- * @brief Disables the pixel-perfect collision detection for this animation.
+ * \brief Disables the pixel-perfect collision detection for this animation.
  */
 void SpriteAnimation::disable_pixel_collisions() {
 
@@ -201,8 +201,8 @@ void SpriteAnimation::disable_pixel_collisions() {
 }
 
 /**
- * @brief Returns whether the pixel-perfect collisions are enabled for this animations.
- * @return true if the pixel-perfect collisions are enabled
+ * \brief Returns whether the pixel-perfect collisions are enabled for this animations.
+ * \return true if the pixel-perfect collisions are enabled
  */
 bool SpriteAnimation::are_pixel_collisions_enabled() const {
   return directions[0]->are_pixel_collisions_enabled() || should_enable_pixel_collisions;

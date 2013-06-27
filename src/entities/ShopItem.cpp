@@ -33,14 +33,14 @@
 #include <sstream>
 
 /**
- * @brief Creates a new shop item with the specified treasure and price.
- * @param name the name identifying this entity
- * @param layer layer of the entity to create
- * @param x x coordinate of the entity to create
- * @param y y coordinate of the entity to create
- * @param treasure the treasure that the hero can buy (will be deleted automatically)
- * @param price the treasure's price in rupees
- * @param dialog_id id of the dialog describing the item when the player watches it
+ * \brief Creates a new shop item with the specified treasure and price.
+ * \param name the name identifying this entity
+ * \param layer layer of the entity to create
+ * \param x x coordinate of the entity to create
+ * \param y y coordinate of the entity to create
+ * \param treasure the treasure that the hero can buy (will be deleted automatically)
+ * \param price the treasure's price in rupees
+ * \param dialog_id id of the dialog describing the item when the player watches it
  */
 ShopItem::ShopItem(const std::string& name, Layer layer, int x, int y,
 		   const Treasure& treasure, int price, const std::string& dialog_id):
@@ -59,22 +59,22 @@ ShopItem::ShopItem(const std::string& name, Layer layer, int x, int y,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 ShopItem::~ShopItem() {
 }
 
 /**
- * @brief Creates a new shop item with the specified treasure and price.
- * @param game the current game
- * @param name the name identifying this entity
- * @param layer layer of the entity to create
- * @param x x coordinate of the entity to create
- * @param y y coordinate of the entity to create
- * @param treasure the treasure that the hero can buy
- * @param price the treasure's price in rupees
- * @param dialog_id id of the dialog describing the item when the player watches it
- * @return the shop item created, or NULL if it is already bought
+ * \brief Creates a new shop item with the specified treasure and price.
+ * \param game the current game
+ * \param name the name identifying this entity
+ * \param layer layer of the entity to create
+ * \param x x coordinate of the entity to create
+ * \param y y coordinate of the entity to create
+ * \param treasure the treasure that the hero can buy
+ * \param price the treasure's price in rupees
+ * \param dialog_id id of the dialog describing the item when the player watches it
+ * \return the shop item created, or NULL if it is already bought
  */
 ShopItem* ShopItem::create(Game& game, const std::string& name, Layer layer, int x, int y,
     const Treasure &treasure, int price, const std::string& dialog_id) {
@@ -88,40 +88,40 @@ ShopItem* ShopItem::create(Game& game, const std::string& name, Layer layer, int
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType ShopItem::get_type() {
   return SHOP_ITEM;
 }
 
 /**
- * @brief Returns true if this entity does not react to the sword.
+ * \brief Returns true if this entity does not react to the sword.
  *
  * If true is returned, nothing will happen when the hero taps this entity with the sword.
  *
- * @return true if the sword is ignored
+ * \return true if the sword is ignored
  */
 bool ShopItem::is_sword_ignored() {
   return true;
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true
  */
 bool ShopItem::is_obstacle_for(MapEntity &other) {
   return true;
 }
 
 /**
- * @brief This function is called by the engine when an entity overlaps the shop item.
+ * \brief This function is called by the engine when an entity overlaps the shop item.
  *
  * If the entity is the hero, we allow him to buy the item.
  *
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void ShopItem::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
@@ -139,7 +139,7 @@ void ShopItem::notify_collision(MapEntity &entity_overlapping, CollisionMode col
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by
+ * \brief Notifies this detector that the player is interacting with it by
  * pressing the action command.
  *
  * This function is called when the player presses the action command
@@ -158,7 +158,7 @@ void ShopItem::notify_action_command_pressed() {
 }
 
 /**
- * @brief Updates the entity.
+ * \brief Updates the entity.
  */
 void ShopItem::update() {
 
@@ -214,7 +214,7 @@ void ShopItem::update() {
 }
 
 /**
- * @brief Draws the entity on the map.
+ * \brief Draws the entity on the map.
  */
 void ShopItem::draw_on_map() {
 

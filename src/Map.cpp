@@ -37,8 +37,8 @@
 MapLoader Map::map_loader;
 
 /**
- * @brief Creates a map.
- * @param id id of the map, used to determine the description file
+ * \brief Creates a map.
+ * \param id id of the map, used to determine the description file
  * and the script file of the map
  */
 Map::Map(const std::string& id):
@@ -56,7 +56,7 @@ Map::Map(const std::string& id):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Map::~Map() {
 
@@ -69,24 +69,24 @@ Map::~Map() {
 }
 
 /**
- * @brief Returns the id of the map.
- * @return the map id
+ * \brief Returns the id of the map.
+ * \return the map id
  */
 const std::string& Map::get_id() {
   return id;
 }
 
 /**
- * @brief Returns the tileset associated to this map.
- * @return the tileset
+ * \brief Returns the tileset associated to this map.
+ * \return the tileset
  */
 Tileset& Map::get_tileset() {
   return *tileset;
 }
 
 /**
- * @brief Returns the id of the tileset associated to this map.
- * @return the id of the tileset
+ * \brief Returns the id of the tileset associated to this map.
+ * \return the id of the tileset
  */
 const std::string& Map::get_tileset_id() {
   // note that if set_tileset() has been called, tileset_id != tileset->get_id()
@@ -94,7 +94,7 @@ const std::string& Map::get_tileset_id() {
 }
 
 /**
- * @brief Changes the tileset used to draw this map.
+ * \brief Changes the tileset used to draw this map.
  *
  * The new tileset must be compatible with the previous one,
  * i.e. every tile of the previous tileset must exist in the new one
@@ -102,7 +102,7 @@ const std::string& Map::get_tileset_id() {
  * This function keeps the tiles of the previous tileset and loads the
  * image of the new tileset.
  *
- * @param tileset_id Id of the new tileset.
+ * \param tileset_id Id of the new tileset.
  */
 void Map::set_tileset(const std::string& tileset_id) {
 
@@ -114,109 +114,109 @@ void Map::set_tileset(const std::string& tileset_id) {
 }
 
 /**
- * @brief Returns the world where this map is.
- * @return The world name.
+ * \brief Returns the world where this map is.
+ * \return The world name.
  */
 const std::string& Map::get_world() {
   return world;
 }
 
 /**
- * @brief Returns the world where this map is.
- * @param world The world name.
+ * \brief Returns the world where this map is.
+ * \param world The world name.
  */
 void Map::set_world(const std::string& world) {
   this->world = world;
 }
 
 /**
- * @brief Returns whether this map has a floor.
+ * \brief Returns whether this map has a floor.
  *
  * This function returns true if the floor is not nil.
  *
- * @return true if there is a floor.
+ * \return true if there is a floor.
  */
 bool Map::has_floor() {
   return get_floor() != NO_FLOOR;
 }
 
 /**
- * @brief Returns the floor where this map is.
- * @return The floor or FLOOR_NIL.
+ * \brief Returns the floor where this map is.
+ * \return The floor or FLOOR_NIL.
  */
 int Map::get_floor() {
   return floor;
 }
 
 /**
- * @brief Sets the floor where this map is.
- * @param floor The floor or FLOOR_NIL.
+ * \brief Sets the floor where this map is.
+ * \param floor The floor or FLOOR_NIL.
  */
 void Map::set_floor(int floor) {
   this->floor = floor;
 }
 
 /**
- * @brief Returns the location of this map in its context.
+ * \brief Returns the location of this map in its context.
  *
  * The location returned is the location of the map's top-left corner
  * relative to its context (its floor or its world).
  * The width and height fields correspond to the map size.
  *
- * @return The location of this map in its context.
+ * \return The location of this map in its context.
  */
 const Rectangle& Map::get_location() {
   return location;
 }
 
 /**
- * @brief Returns the map width in pixels.
- * @return the map width
+ * \brief Returns the map width in pixels.
+ * \return the map width
  */
 int Map::get_width() {
   return location.get_width();
 }
 
 /**
- * @brief Returns the map height in pixels.
- * @return the map height
+ * \brief Returns the map height in pixels.
+ * \return the map height
  */
 int Map::get_height() {
   return location.get_height();
 }
 
 /**
- * @brief Returns the map width in number of 8*8 squares.
+ * \brief Returns the map width in number of 8*8 squares.
  *
  * This is equivalent to get_width() / 8.
  *
- * @return the map width in number of 8*8 squares
+ * \return the map width in number of 8*8 squares
  */
 int Map::get_width8() {
   return width8;
 }
 
 /**
- * @brief Returns the map height in number of 8*8 squares.
+ * \brief Returns the map height in number of 8*8 squares.
  *
  * This is equivalent to get_height() / 8.
  *
- * @return the map height in number of 8*8 squares
+ * \return the map height in number of 8*8 squares
  */
 int Map::get_height8() {
   return height8;
 }
 
 /**
- * @brief Returns whether the map is loaded.
- * @return true if the map is loaded, false otherwise
+ * \brief Returns whether the map is loaded.
+ * \return true if the map is loaded, false otherwise
  */
 bool Map::is_loaded() {
   return loaded;
 }
 
 /**
- * @brief Unloads the map.
+ * \brief Unloads the map.
  *
  * Destroys all entities in the map to free some memory. This function
  * can be called when the player exists the map. If the player is likely to
@@ -246,11 +246,11 @@ void Map::unload() {
 }
 
 /**
- * @brief Loads the map into a game.
+ * \brief Loads the map into a game.
  *
  * Reads the description file of the map.
  *
- * @param game the game
+ * \param game the game
  */
 void Map::load(Game &game) {
 
@@ -271,41 +271,41 @@ void Map::load(Game &game) {
 }
 
 /**
- * @brief Returns the shared Lua context.
+ * \brief Returns the shared Lua context.
  *
  * This function should not be called before the map is loaded into a game.
  *
- * @return The Lua context where all scripts are run.
+ * \return The Lua context where all scripts are run.
  */
 LuaContext& Map::get_lua_context() {
   return game->get_lua_context();
 }
 
 /**
- * @brief Returns the game that loaded this map.
+ * \brief Returns the game that loaded this map.
  *
  * This function should not be called before the map is loaded into a game.
  *
- * @return the game
+ * \return the game
  */
 Game& Map::get_game() {
   return *game;
 }
 
 /**
- * @brief Returns the entities of the map.
+ * \brief Returns the entities of the map.
  *
  * This function should not be called before the map is loaded into a game.
  *
- * @return the entities of the map
+ * \return the entities of the map
  */
 MapEntities& Map::get_entities() {
   return *entities;
 }
 
 /**
- * @brief Sets the current destination point of the map.
- * @param destination_name name of the destination point you want to use,
+ * \brief Sets the current destination point of the map.
+ * \param destination_name name of the destination point you want to use,
  * or "_same" to keep the hero's coordinates, or "_side0", "_side1", "_side2"
  * or "_side3" to place the hero on a side of the map
  */
@@ -314,21 +314,21 @@ void Map::set_destination(const std::string &destination_name) {
 }
 
 /**
- * @brief Returns the destination point index specified by the last call to set_destination().
- * @return the name of the destination point previously set
+ * \brief Returns the destination point index specified by the last call to set_destination().
+ * \return the name of the destination point previously set
  */
 const std::string& Map::get_destination_name() {
   return destination_name;
 }
 
 /**
- * @brief Returns the destination point specified by the last call to
+ * \brief Returns the destination point specified by the last call to
  * set_destination().
  *
  * Returns NULL if the destination point was set to a special value ("_same",
  * "_side0", "_side1", "_side2" or "_side3")
  *
- * @return The destination point previously set, or NULL.
+ * \return The destination point previously set, or NULL.
  */
 Destination* Map::get_destination() {
 
@@ -343,9 +343,9 @@ Destination* Map::get_destination() {
 }
 
 /**
- * @brief When the destination point is a side of the map,
+ * \brief When the destination point is a side of the map,
  * returns this side.
- * @return the destination side (0 to 3), or -1 if the destination point is not a side
+ * \return the destination side (0 to 3), or -1 if the destination point is not a side
  */
 int Map::get_destination_side() {
 
@@ -357,32 +357,32 @@ int Map::get_destination_side() {
 }
 
 /**
- * @brief Returns the surface where the map is displayed.
+ * \brief Returns the surface where the map is displayed.
  *
  * This surface is only the visible part of the map, so the
  * coordinates on this surface are relative to the screen,
  * not to the map.
  *
- * @return the surface where the map is displayed
+ * \return the surface where the map is displayed
  */
 Surface& Map::get_visible_surface() {
   return *visible_surface;
 }
 
 /**
- * @brief Returns the position of the visible area, relative to the map
+ * \brief Returns the position of the visible area, relative to the map
  * top-left corner.
- * @return the position of the visible area
+ * \return the position of the visible area
  */
 const Rectangle& Map::get_camera_position() {
   return camera->get_position();
 }
 
 /**
- * @brief Makes the camera move towards a point.
- * @param x x coordinate of the target point
- * @param y y coordinate of the target point
- * @param speed speed of the movement
+ * \brief Makes the camera move towards a point.
+ * \param x x coordinate of the target point
+ * \param y y coordinate of the target point
+ * \param speed speed of the movement
  */
 void Map::move_camera(int x, int y, int speed) {
   camera->set_speed(speed);
@@ -390,26 +390,26 @@ void Map::move_camera(int x, int y, int speed) {
 }
 
 /**
- * @brief Makes the camera move back to the hero.
+ * \brief Makes the camera move back to the hero.
  */
 void Map::restore_camera() {
   camera->restore();
 }
 
 /**
- * @brief Returns whether the camera is fixed on the hero.
- * @return true if the camera is following the hero
+ * \brief Returns whether the camera is fixed on the hero.
+ * \return true if the camera is following the hero
  */
 bool Map::is_camera_fixed_on_hero() {
   return camera->is_fixed_on_hero();
 }
 
 /**
- * @brief Sets a subarea of the map where the next drawings will be restricted to.
+ * \brief Sets a subarea of the map where the next drawings will be restricted to.
  *
  * A zero-sized rectangle means that drawings are not restricted to a subarea of the map.
  *
- * @param clipping_rectangle a subarea of the map to restrict the display to
+ * \param clipping_rectangle a subarea of the map to restrict the display to
  */
 void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
 
@@ -422,28 +422,28 @@ void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
 }
 
 /**
- * @brief Returns the current level of light of the map.
- * @return the light level (0: no light, a positive value: full light)
+ * \brief Returns the current level of light of the map.
+ * \return the light level (0: no light, a positive value: full light)
  */
 int Map::get_light() {
   return light;
 }
 
 /**
- * @brief Sets the level of light of the map.
- * @param light the new light level (0: no light, a positive value: full light)
+ * \brief Sets the level of light of the map.
+ * \param light the new light level (0: no light, a positive value: full light)
  */
 void Map::set_light(int light) {
   this->light = light;
 }
 
 /**
- * @brief Suspends or resumes the movement and animations of the entities.
+ * \brief Suspends or resumes the movement and animations of the entities.
  *
  * This function is called when the game is being suspended
  * or resumed.
  *
- * @param suspended true to suspend the movement and the animations,
+ * \param suspended true to suspend the movement and the animations,
  * false to resume them
  */
 void Map::set_suspended(bool suspended) {
@@ -455,9 +455,9 @@ void Map::set_suspended(bool suspended) {
 }
 
 /**
- * @brief This function is called when a low-level input event occurs on this map.
- * @param event the event to handle
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief This function is called when a low-level input event occurs on this map.
+ * \param event the event to handle
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool Map::notify_input(InputEvent& event) {
 
@@ -466,7 +466,7 @@ bool Map::notify_input(InputEvent& event) {
 }
 
 /**
- * @brief Updates the animation and the position of each map elements, including the hero.
+ * \brief Updates the animation and the position of each map elements, including the hero.
  */
 void Map::update() {
 
@@ -483,15 +483,15 @@ void Map::update() {
 }
 
 /**
- * @brief Returns whether the map is currently suspended.
- * @return true if the map is suspended.
+ * \brief Returns whether the map is currently suspended.
+ * \return true if the map is suspended.
  */
 bool Map::is_suspended() {
   return suspended;
 }
 
 /**
- * @brief Checks whether the game has just been suspended or resumed
+ * \brief Checks whether the game has just been suspended or resumed
  * and notifies the map elements when this is the case.
  *
  * This function is called at each cycle while this map is active,
@@ -506,7 +506,7 @@ void Map::check_suspended() {
 }
 
 /**
- * @brief Draws the map with all its entities on the screen.
+ * \brief Draws the map with all its entities on the screen.
  */
 void Map::draw() {
 
@@ -526,7 +526,7 @@ void Map::draw() {
 }
 
 /**
- * @brief Draws the background of the map.
+ * \brief Draws the background of the map.
  */
 void Map::draw_background() {
 
@@ -534,7 +534,7 @@ void Map::draw_background() {
 }
 
 /**
- * @brief Draws the foreground of the map.
+ * \brief Draws the foreground of the map.
  */
 void Map::draw_foreground() {
 
@@ -596,9 +596,9 @@ void Map::draw_foreground() {
 }
 
 /**
- * @brief Draws a sprite on the map surface.
- * @param sprite the sprite to draw
- * @param xy coordinates of the sprite's origin point in the map
+ * \brief Draws a sprite on the map surface.
+ * \param sprite the sprite to draw
+ * \param xy coordinates of the sprite's origin point in the map
  * (the size of the rectangle is ignored)
  */
 void Map::draw_sprite(Sprite &sprite, const Rectangle &xy) {
@@ -607,10 +607,10 @@ void Map::draw_sprite(Sprite &sprite, const Rectangle &xy) {
 }
 
 /**
- * @brief Draws a sprite on the map surface.
- * @param sprite the sprite to draw
- * @param x x coordinate of the sprite's origin point in the map
- * @param y y coordinate of the sprite's origin point in the map
+ * \brief Draws a sprite on the map surface.
+ * \param sprite the sprite to draw
+ * \param x x coordinate of the sprite's origin point in the map
+ * \param y y coordinate of the sprite's origin point in the map
  */
 void Map::draw_sprite(Sprite& sprite, int x, int y) {
 
@@ -624,7 +624,7 @@ void Map::draw_sprite(Sprite& sprite, int x, int y) {
 }
 
 /**
- * @brief Starts the map.
+ * \brief Starts the map.
  *
  * The map must be loaded.
  * The background music starts and the map script is initialized.
@@ -640,7 +640,7 @@ void Map::start() {
 }
 
 /**
- * @brief Exits the map.
+ * \brief Exits the map.
  *
  * This function is called when the hero leaves the map.
  */
@@ -650,18 +650,18 @@ void Map::leave() {
 }
 
 /**
- * @brief Returns whether the map is started.
+ * \brief Returns whether the map is started.
  *
  * This function returns whether this is the current map and the hero is on it.
  *
- * @return true if the map is started
+ * \return true if the map is started
  */
 bool Map::is_started() {
   return started;
 }
 
 /**
- * @brief This function is called when the map is started and
+ * \brief This function is called when the map is started and
  * the opening transition is finished.
  */
 void Map::notify_opening_transition_finished() {
@@ -673,9 +673,9 @@ void Map::notify_opening_transition_finished() {
 }
 
 /**
- * @brief Tests whether a rectangle has overlaps the outside part of the map area.
- * @param collision_box the rectangle to check
- * @return true if a point of the rectangle is outside the map area
+ * \brief Tests whether a rectangle has overlaps the outside part of the map area.
+ * \param collision_box the rectangle to check
+ * \return true if a point of the rectangle is outside the map area
  */
 bool Map::test_collision_with_border(const Rectangle &collision_box) {
 
@@ -684,15 +684,15 @@ bool Map::test_collision_with_border(const Rectangle &collision_box) {
 }
 
 /**
- * @brief Tests whether a point collides with a map tile.
+ * \brief Tests whether a point collides with a map tile.
  *
  * This method also returns true if the point is outside the map.
  *
- * @param layer layer of the point
- * @param x x of the point in pixels
- * @param y y of the point in pixels
- * @param entity_to_check the entity to check (used to decide what tiles are considered as an obstacle)
- * @return true if this point is on an obstacle
+ * \param layer layer of the point
+ * \param x x of the point in pixels
+ * \param y y of the point in pixels
+ * \param entity_to_check the entity to check (used to decide what tiles are considered as an obstacle)
+ * \return true if this point is on an obstacle
  */
 bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity_to_check) {
 
@@ -782,11 +782,11 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity
 }
 
 /**
- * @brief Tests whether a rectangle overlaps an obstacle entity.
- * @param layer the layer
- * @param collision_box the rectangle to check
- * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
- * @return true if there is an obstacle entity at this point
+ * \brief Tests whether a rectangle overlaps an obstacle entity.
+ * \param layer the layer
+ * \param collision_box the rectangle to check
+ * \param entity_to_check the entity to check (used to decide what is considered as an obstacle)
+ * \return true if there is an obstacle entity at this point
  */
 bool Map::test_collision_with_entities(Layer layer,
     const Rectangle& collision_box, MapEntity& entity_to_check) {
@@ -812,11 +812,11 @@ bool Map::test_collision_with_entities(Layer layer,
 }
 
 /**
- * @brief Tests whether a rectangle collides with the map obstacles.
- * @param layer layer of the rectangle in the map
- * @param collision_box the rectangle to check (its dimensions should be multiples of 8)
- * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
- * @return true if the rectangle is overlapping an obstacle, false otherwise
+ * \brief Tests whether a rectangle collides with the map obstacles.
+ * \param layer layer of the rectangle in the map
+ * \param collision_box the rectangle to check (its dimensions should be multiples of 8)
+ * \param entity_to_check the entity to check (used to decide what is considered as an obstacle)
+ * \return true if the rectangle is overlapping an obstacle, false otherwise
  */
 bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_box, MapEntity &entity_to_check) {
 
@@ -857,12 +857,12 @@ bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_
 }
 
 /**
- * @brief Tests whether a point collides with the map obstacles.
- * @param layer layer of point to check
- * @param x x coordinate of the point to check
- * @param y y coordinate of the point to check
- * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
- * @return true if the point is overlapping an obstacle, false otherwise
+ * \brief Tests whether a point collides with the map obstacles.
+ * \param layer layer of point to check
+ * \param x x coordinate of the point to check
+ * \param y y coordinate of the point to check
+ * \param entity_to_check the entity to check (used to decide what is considered as an obstacle)
+ * \return true if the point is overlapping an obstacle, false otherwise
  */
 bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &entity_to_check) {
 
@@ -881,14 +881,14 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &en
 }
 
 /**
- * @brief Returns the kind of ground that is under the specified point.
+ * \brief Returns the kind of ground that is under the specified point.
  *
  * Only the tiles are considered here (not the dynamic entities).
  *
- * @param layer layer of point to check
- * @param x x coordinate of the point to check
- * @param y y coordinate of the point to check
- * @return the ground at this place
+ * \param layer layer of point to check
+ * \param x x coordinate of the point to check
+ * \param y y coordinate of the point to check
+ * \return the ground at this place
  */
 Ground Map::get_tile_ground(Layer layer, int x, int y) {
 
@@ -896,10 +896,10 @@ Ground Map::get_tile_ground(Layer layer, int x, int y) {
 }
 
 /**
- * @brief Returns the value of ground equivalent to a value of obstacle.
+ * \brief Returns the value of ground equivalent to a value of obstacle.
  * TODO: remove Obstacle, only use Ground
- * @param obstacle an obstacle property
- * @return the corresponding ground
+ * \param obstacle an obstacle property
+ * \return the corresponding ground
  */
 Ground Map::obstacle_to_ground(Obstacle obstacle) {
 
@@ -952,26 +952,26 @@ Ground Map::obstacle_to_ground(Obstacle obstacle) {
 }
 
 /**
- * @brief Returns the kind of ground that is under the specified point.
+ * \brief Returns the kind of ground that is under the specified point.
  *
  * Only the tiles are considered here (not the dynamic entities).
  *
- * @param layer layer of point to check
- * @param coordinates coordinates of the point to check
- * @return the ground at this place
+ * \param layer layer of point to check
+ * \param coordinates coordinates of the point to check
+ * \return the ground at this place
  */
 Ground Map::get_tile_ground(Layer layer, const Rectangle &coordinates) {
   return get_tile_ground(layer, coordinates.get_x(), coordinates.get_y());
 }
 
 /**
- * @brief Returns whether there is at least one empty tile in the specified rectangle.
+ * \brief Returns whether there is at least one empty tile in the specified rectangle.
  *
  * Only the borders of the rectangle are checked.
  *
- * @param layer the layer
- * @param collision_box the rectangle to test
- * @return true if there is at least one empty tile in this rectangle
+ * \param layer the layer
+ * \param collision_box the rectangle to test
+ * \return true if there is at least one empty tile in this rectangle
  */
 bool Map::has_empty_tiles(Layer layer, const Rectangle& collision_box) {
 
@@ -997,7 +997,7 @@ bool Map::has_empty_tiles(Layer layer, const Rectangle& collision_box) {
 }
 
 /**
- * @brief Checks the collisions between an entity and the detectors of the map.
+ * \brief Checks the collisions between an entity and the detectors of the map.
  *
  * This function is called by an entity sensitive to the entity detectors
  * when this entity has just moved on the map, or when a detector
@@ -1005,7 +1005,7 @@ bool Map::has_empty_tiles(Layer layer, const Rectangle& collision_box) {
  * We check whether or not the entity overlaps an entity detector.
  * If the map is suspended, this function does nothing.
  *
- * @param entity the entity that has just moved (this entity should have
+ * \param entity the entity that has just moved (this entity should have
  * a movement sensible to the collisions)
  */
 void Map::check_collision_with_detectors(MapEntity &entity) {
@@ -1030,15 +1030,15 @@ void Map::check_collision_with_detectors(MapEntity &entity) {
 }
 
 /**
- * @brief Checks the pixel-perfect collisions between an entity and the detectors of the map.
+ * \brief Checks the pixel-perfect collisions between an entity and the detectors of the map.
  *
  * This function is called by an entity
  * when the frame of one of its sprites has just changed.
  * We check whether or not the sprite overlaps the detector.
  * If the map is suspended, this function does nothing.
  *
- * @param entity the sprite that has just changed
- * @param sprite the sprite that has just changed
+ * \param entity the sprite that has just changed
+ * \param sprite the sprite that has just changed
  */
 void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
 
@@ -1061,8 +1061,8 @@ void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& Map::get_lua_type_name() const {
   return LuaContext::map_module_name;

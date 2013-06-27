@@ -22,7 +22,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief A movement that makes successive steps of random directions
+ * \brief A movement that makes successive steps of random directions
  * and (possibly) stays inside a limited rectangle.
  */
 class RandomMovement: public StraightMovement {

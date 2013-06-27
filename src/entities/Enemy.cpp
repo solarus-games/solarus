@@ -39,14 +39,14 @@
 #include "lowlevel/Sound.h"
 
 /**
- * @brief Creates an enemy.
- * @param game The game.
- * @param name Id of the enemy.
- * @param layer The layer on the map.
- * @param x X position on the map.
- * @param y Y position on the map.
- * @param breed Breed of the enemy.
- * @param treasure Treasure dropped when the enemy is killed.
+ * \brief Creates an enemy.
+ * \param game The game.
+ * \param name Id of the enemy.
+ * \param layer The layer on the map.
+ * \param x X position on the map.
+ * \param y Y position on the map.
+ * \param breed Breed of the enemy.
+ * \param treasure Treasure dropped when the enemy is killed.
  */
 Enemy::Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
     const std::string& breed, const Treasure& treasure):
@@ -85,14 +85,14 @@ Enemy::Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Enemy::~Enemy() {
 
 }
 
 /**
- * @brief Creates an enemy.
+ * \brief Creates an enemy.
  *
  * This method acts like a constructor, and usually returns an enemy.
  * However, if the enemy is already dead and cannot be killed again,
@@ -100,18 +100,18 @@ Enemy::~Enemy() {
  * - NULL if the enemy has no treasure (or its treasure was already picked)
  * - or a pickable treasure if the enemy has one
  *
- * @param game the current game
- * @param breed breed of the enemy to create
- * @param name a name identifying the enemy
- * @param rank rank of the enemy: normal, miniboss or boss
- * @param savegame_variable name of the boolean variable indicating that the enemy is dead
- * @param layer layer of the enemy on the map
- * @param x x position of the enemy on the map
- * @param y y position of the enemy on the map
- * @param direction initial direction of the enemy on the map (0 to 3)
+ * \param game the current game
+ * \param breed breed of the enemy to create
+ * \param name a name identifying the enemy
+ * \param rank rank of the enemy: normal, miniboss or boss
+ * \param savegame_variable name of the boolean variable indicating that the enemy is dead
+ * \param layer layer of the enemy on the map
+ * \param x x position of the enemy on the map
+ * \param y y position of the enemy on the map
+ * \param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
- * @param treasure the pickable item that the enemy drops
- * @return the enemy created (may also be a Pickable or NULL)
+ * \param treasure the pickable item that the enemy drops
+ * \return the enemy created (may also be a Pickable or NULL)
  */
 MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank,
     const std::string& savegame_variable, const std::string &name, Layer layer, int x, int y,
@@ -147,15 +147,15 @@ MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank,
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Enemy::get_type() {
   return ENEMY;
 }
 
 /**
- * @brief Initializes the enemy.
+ * \brief Initializes the enemy.
  */
 void Enemy::initialize() {
 
@@ -166,12 +166,12 @@ void Enemy::initialize() {
 }
 
 /**
- * @brief Sets the map.
+ * \brief Sets the map.
  *
  * Warning: when this function is called during the map initialization,
  * the current map of the game is still the old one.
  *
- * @param map The map.
+ * \param map The map.
  */
 void Enemy::set_map(Map& map) {
 
@@ -189,7 +189,7 @@ void Enemy::set_map(Map& map) {
 }
 
 /**
- * @brief Notifies this entity that its map has just become active.
+ * \brief Notifies this entity that its map has just become active.
  */
 void Enemy::notify_map_started() {
 
@@ -204,7 +204,7 @@ void Enemy::notify_map_started() {
 }
 
 /**
- * @brief Notifies this entity that its map has just become active.
+ * \brief Notifies this entity that its map has just become active.
  */
 void Enemy::notify_map_opening_transition_finished() {
 
@@ -216,33 +216,33 @@ void Enemy::notify_map_opening_transition_finished() {
 }
 
 /**
- * @brief Returns the breed of this enemy.
- * @return The breed.
+ * \brief Returns the breed of this enemy.
+ * \return The breed.
  */
 const std::string& Enemy::get_breed() {
   return breed;
 }
 
 /**
- * @brief Returns the rank of the enemy.
- * @return the enemy rank
+ * \brief Returns the rank of the enemy.
+ * \return the enemy rank
  */
 Enemy::Rank Enemy::get_rank() {
   return rank;
 }
 
 /**
- * @brief Returns whether the state of this enemy is saved.
- * @return true if this enemy is saved.
+ * \brief Returns whether the state of this enemy is saved.
+ * \return true if this enemy is saved.
  */
 bool Enemy::is_saved() {
   return !savegame_variable.empty();
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true if this entity is an obstacle for the other one
  */
 bool Enemy::is_obstacle_for(MapEntity& other) {
 
@@ -250,9 +250,9 @@ bool Enemy::is_obstacle_for(MapEntity& other) {
 }
 
 /**
- * @brief Returns whether a destructible item is currently considered as an obstacle for this entity.
- * @param destructible a destructible item
- * @return true if the destructible item is currently an obstacle this entity
+ * \brief Returns whether a destructible item is currently considered as an obstacle for this entity.
+ * \param destructible a destructible item
+ * \return true if the destructible item is currently an obstacle this entity
  */
 bool Enemy::is_destructible_obstacle(Destructible& destructible) {
 
@@ -265,17 +265,17 @@ bool Enemy::is_destructible_obstacle(Destructible& destructible) {
 }
 
 /**
- * @brief Returns whether a teletransporter is currently considered as an obstacle.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is currently an obstacle for this entity
+ * \brief Returns whether a teletransporter is currently considered as an obstacle.
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is currently an obstacle for this entity
  */
 bool Enemy::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
 /**
- * @brief Returns whether a deep water tile is currently considered as an obstacle by this entity.
- * @return true if the deep water tiles are currently an obstacle for this entity
+ * \brief Returns whether a deep water tile is currently considered as an obstacle by this entity.
+ * \return true if the deep water tiles are currently an obstacle for this entity
  */
 bool Enemy::is_deep_water_obstacle() {
   return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING
@@ -283,80 +283,80 @@ bool Enemy::is_deep_water_obstacle() {
 }
 
 /**
- * @brief Returns whether a shallow water tile is currently considered as an obstacle by this entity.
- * @return true if the shallow water tiles are currently an obstacle for this entity
+ * \brief Returns whether a shallow water tile is currently considered as an obstacle by this entity.
+ * \return true if the shallow water tiles are currently an obstacle for this entity
  */
 bool Enemy::is_shallow_water_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a hole is currently considered as an obstacle by this entity.
- * @return true if the holes are currently an obstacle for this entity
+ * \brief Returns whether a hole is currently considered as an obstacle by this entity.
+ * \return true if the holes are currently an obstacle for this entity
  */
 bool Enemy::is_hole_obstacle() {
   return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
 }
 
 /**
- * @brief Returns whether prickles are currently considered as obstacle by this entity.
- * @return true if prickles are currently obstacle for this entity
+ * \brief Returns whether prickles are currently considered as obstacle by this entity.
+ * \return true if prickles are currently obstacle for this entity
  */
 bool Enemy::is_prickle_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether lava is currently considered as obstacle by this entity.
- * @return true if lava is currently obstacle for this entity
+ * \brief Returns whether lava is currently considered as obstacle by this entity.
+ * \return true if lava is currently obstacle for this entity
  */
 bool Enemy::is_lava_obstacle() {
   return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
 }
 
 /**
- * @brief Returns the amount of damage this kind of enemy can make to the hero.
- * @return Number of life points the player loses.
+ * \brief Returns the amount of damage this kind of enemy can make to the hero.
+ * \return Number of life points the player loses.
  */
 int Enemy::get_damage() {
   return damage_on_hero;
 }
 
 /**
- * @brief Sets the amount of damage this kind of enemy can make to the hero.
- * @param damage_on_hero Number of life points the player loses.
+ * \brief Sets the amount of damage this kind of enemy can make to the hero.
+ * \param damage_on_hero Number of life points the player loses.
  */
 void Enemy::set_damage(int damage_on_hero) {
   this->damage_on_hero = damage_on_hero;
 }
 
 /**
- * @brief Returns the amount of magic damage this kind of enemy can make to the hero.
- * @return Number of magic points the player loses.
+ * \brief Returns the amount of magic damage this kind of enemy can make to the hero.
+ * \return Number of magic points the player loses.
  */
 int Enemy::get_magic_damage() {
   return magic_damage_on_hero;
 }
 
 /**
- * @brief Sets the amount of magic damage this kind of enemy can make to the hero.
- * @param magic_damage_on_hero Number of magic points the player loses.
+ * \brief Sets the amount of magic damage this kind of enemy can make to the hero.
+ * \param magic_damage_on_hero Number of magic points the player loses.
  */
 void Enemy::set_magic_damage(int magic_damage_on_hero) {
   this->magic_damage_on_hero = magic_damage_on_hero;
 }
 
 /**
- * @brief Returns the number of health points of the enemy.
- * @return number of health points of the enemy
+ * \brief Returns the number of health points of the enemy.
+ * \return number of health points of the enemy
  */
 int Enemy::get_life() {
   return life;
 }
 
 /**
- * @brief Sets the number of health points of the enemy.
- * @param life number of health points of the enemy
+ * \brief Sets the number of health points of the enemy.
+ * \param life number of health points of the enemy
  */
 void Enemy::set_life(int life) {
 
@@ -367,32 +367,32 @@ void Enemy::set_life(int life) {
 }
 
 /**
- * @brief Returns the style of sounds and animations when this enemy is hurt.
- * @return The style when hurt.
+ * \brief Returns the style of sounds and animations when this enemy is hurt.
+ * \return The style when hurt.
  */
 Enemy::HurtStyle Enemy::get_hurt_style() {
   return hurt_style;
 }
 
 /**
- * @brief Sets the style of sounds and animations when this enemy is hurt.
- * @param hurt_style The style when hurt.
+ * \brief Sets the style of sounds and animations when this enemy is hurt.
+ * \param hurt_style The style when hurt.
  */
 void Enemy::set_hurt_style(HurtStyle hurt_style) {
   this->hurt_style = hurt_style;
 }
 
 /**
- * @brief Returns whether this enemy can currently attack the hero.
- * @return true if this enemy can currently attack the hero
+ * \brief Returns whether this enemy can currently attack the hero.
+ * \return true if this enemy can currently attack the hero
  */
 bool Enemy::get_can_attack() {
   return can_attack;
 }
 
 /**
- * @brief Sets whether this enemy can attack the hero.
- * @param can_attack true to allow this enemy to attack the hero
+ * \brief Sets whether this enemy can attack the hero.
+ * \param can_attack true to allow this enemy to attack the hero
  */
 void Enemy::set_can_attack(bool can_attack) {
 
@@ -403,24 +403,24 @@ void Enemy::set_can_attack(bool can_attack) {
 }
 
 /**
- * @brief Returns the current behavior with obstacles for this enemy.
- * @return the behavior with obstacles
+ * \brief Returns the current behavior with obstacles for this enemy.
+ * \return the behavior with obstacles
  */
 Enemy::ObstacleBehavior Enemy::get_obstacle_behavior() {
   return obstacle_behavior;
 }
 
 /**
- * @brief Sets the behavior with obstacles for this enemy.
- * @param obstacle_behavior the behavior with obstacles
+ * \brief Sets the behavior with obstacles for this enemy.
+ * \param obstacle_behavior the behavior with obstacles
  */
 void Enemy::set_obstacle_behavior(ObstacleBehavior obstacle_behavior) {
   this->obstacle_behavior = obstacle_behavior;
 }
 
 /**
- * @brief Returns whether the enemy is pushed back when it gets hurt by the hero.
- * @return \c true if the enemy is pushed back when it gets hurt.
+ * \brief Returns whether the enemy is pushed back when it gets hurt by the hero.
+ * \return \c true if the enemy is pushed back when it gets hurt.
  */
 bool Enemy::get_pushed_back_when_hurt() {
   return pushed_back_when_hurt;
@@ -428,67 +428,67 @@ bool Enemy::get_pushed_back_when_hurt() {
 
 
 /**
- * @brief Sets whether the enemy is pushed back when it gets hurt by the hero.
- * @param pushed_back_when_hurt true to make the enemy pushed back when it gets hurt.
+ * \brief Sets whether the enemy is pushed back when it gets hurt by the hero.
+ * \param pushed_back_when_hurt true to make the enemy pushed back when it gets hurt.
  */
 void Enemy::set_pushed_back_when_hurt(bool pushed_back_when_hurt) {
   this->pushed_back_when_hurt = pushed_back_when_hurt;
 }
 
 /**
- * @brief Returns whether the hero is pushed when he strikes the enemy with his sword.
- * @return true if the hero is pushed away when he strkes the enemy with his sword
+ * \brief Returns whether the hero is pushed when he strikes the enemy with his sword.
+ * \return true if the hero is pushed away when he strkes the enemy with his sword
  */
 bool Enemy::get_push_hero_on_sword() {
   return push_hero_on_sword;
 }
 
 /**
- * @brief Sets whether the hero is pushed when he hurts the enemy with his sword.
- * @param push_hero_on_sword true to make the hero pushed back when he hurts the enemy with his sword
+ * \brief Sets whether the hero is pushed when he hurts the enemy with his sword.
+ * \param push_hero_on_sword true to make the hero pushed back when he hurts the enemy with his sword
  */
 void Enemy::set_push_hero_on_sword(bool push_hero_on_sword) {
   this->push_hero_on_sword = push_hero_on_sword;
 }
 
 /**
- * @brief Returns whether this enemy can hurt the hero even if the hero is running.
- * @return true if this enemy can attack the hero while he is running
+ * \brief Returns whether this enemy can hurt the hero even if the hero is running.
+ * \return true if this enemy can attack the hero while he is running
  */
 bool Enemy::get_can_hurt_hero_running() {
   return can_hurt_hero_running;
 }
 
 /**
- * @brief Sets whether this enemy can hurt the hero even if the hero is running.
- * @param can_hurt_hero_running true to allow this enemy to attack the hero while he is running
+ * \brief Sets whether this enemy can hurt the hero even if the hero is running.
+ * \param can_hurt_hero_running true to allow this enemy to attack the hero while he is running
  */
 void Enemy::set_can_hurt_hero_running(bool can_hurt_hero_running) {
   this->can_hurt_hero_running = can_hurt_hero_running;
 }
 
 /**
- * @brief Returns the shield level required to avoid attacks of this enemy.
- * @return The minimum shield needed (\c 0 means unavoidable attacks).
+ * \brief Returns the shield level required to avoid attacks of this enemy.
+ * \return The minimum shield needed (\c 0 means unavoidable attacks).
  */
 int Enemy::get_minimum_shield_needed() {
   return minimum_shield_needed;
 }
 
 /**
- * @brief Sets the shield level required to avoid attacks of this enemy.
- * @param minimum_shield_needed The minimum shield needed (\c 0 means unavoidable attacks).
+ * \brief Sets the shield level required to avoid attacks of this enemy.
+ * \param minimum_shield_needed The minimum shield needed (\c 0 means unavoidable attacks).
  */
 void Enemy::set_minimum_shield_needed(int minimum_shield_needed) {
   this->minimum_shield_needed = minimum_shield_needed;
 }
 
 /**
- * @brief Returns the reaction corresponding to an attack on a sprite of this enemy.
- * @param attack an attack this enemy receives
- * @param this_sprite the sprite attacked, or NULL if the attack does not come from
+ * \brief Returns the reaction corresponding to an attack on a sprite of this enemy.
+ * \param attack an attack this enemy receives
+ * \param this_sprite the sprite attacked, or NULL if the attack does not come from
  * a pixel-precise collision test
- * @return the corresponding reaction
+ * \return the corresponding reaction
  */
 const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
 
@@ -496,14 +496,14 @@ const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack,
 }
 
 /**
- * @brief Sets how the enemy reacts to an attack.
+ * \brief Sets how the enemy reacts to an attack.
  *
  * This reaction will be used unless the attack is received by a sprite
  * that has a specific reaction (see set_attack_consequence_sprite()).
  *
- * @param attack an attack
- * @param reaction how the enemy will react
- * @param life_lost number of life points lost with this attack (possibly zero)
+ * \param attack an attack
+ * \param reaction how the enemy will react
+ * \param life_lost number of life points lost with this attack (possibly zero)
  */
 void Enemy::set_attack_consequence(EnemyAttack attack,
     EnemyReaction::ReactionType reaction, int life_lost) {
@@ -513,11 +513,11 @@ void Enemy::set_attack_consequence(EnemyAttack attack,
 }
 
 /**
- * @brief Sets how the enemy reacts to an attack on a particular sprite.
- * @param sprite a sprite of this enemy
- * @param attack an attack
- * @param reaction how the enemy will react
- * @param life_lost number of life points lost with this attack (possibly zero)
+ * \brief Sets how the enemy reacts to an attack on a particular sprite.
+ * \param sprite a sprite of this enemy
+ * \param attack an attack
+ * \param reaction how the enemy will react
+ * \param life_lost number of life points lost with this attack (possibly zero)
  */
 void Enemy::set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
     EnemyReaction::ReactionType reaction, int life_lost) {
@@ -527,7 +527,7 @@ void Enemy::set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
 }
 
 /**
- * @brief Sets the enemy insensible to all attacks.
+ * \brief Sets the enemy insensible to all attacks.
  */
 void Enemy::set_no_attack_consequences() {
 
@@ -537,8 +537,8 @@ void Enemy::set_no_attack_consequences() {
 }
 
 /**
- * @brief Sets a particular sprite of the enemy insensible to all attacks.
- * @param sprite a sprite of this enemy
+ * \brief Sets a particular sprite of the enemy insensible to all attacks.
+ * \param sprite a sprite of this enemy
  */
 void Enemy::set_no_attack_consequences_sprite(Sprite& sprite) {
 
@@ -548,7 +548,7 @@ void Enemy::set_no_attack_consequences_sprite(Sprite& sprite) {
 }
 
 /**
- * @brief Set some default values for the reactions of the attacks.
+ * \brief Set some default values for the reactions of the attacks.
  */
 void Enemy::set_default_attack_consequences() {
 
@@ -565,9 +565,9 @@ void Enemy::set_default_attack_consequences() {
 }
 
 /**
- * @brief Set some default values for the reactions of the attacks
+ * \brief Set some default values for the reactions of the attacks
  * on a particular sprite of this enemy.
- * @param sprite a sprite of this enemy
+ * \param sprite a sprite of this enemy
  */
 void Enemy::set_default_attack_consequences_sprite(Sprite& sprite) {
 
@@ -580,11 +580,11 @@ void Enemy::set_default_attack_consequences_sprite(Sprite& sprite) {
 }
 
 /**
- * @brief Returns the current animation of the first sprite of the enemy.
+ * \brief Returns the current animation of the first sprite of the enemy.
  *
  * This function is useful when the enemy has several sprites.
  *
- * @return name of the current animation of the first sprite
+ * \return name of the current animation of the first sprite
  */
 const std::string& Enemy::get_animation() {
 
@@ -592,11 +592,11 @@ const std::string& Enemy::get_animation() {
 }
 
 /**
- * @brief Changes the animation of this enemy's sprites.
+ * \brief Changes the animation of this enemy's sprites.
  *
  * This function is useful when the enemy has several sprites.
  *
- * @param animation name of the animation to set
+ * \param animation name of the animation to set
  */
 void Enemy::set_animation(const std::string& animation) {
 
@@ -607,8 +607,8 @@ void Enemy::set_animation(const std::string& animation) {
 }
 
 /**
- * @brief Returns whether this entity has to be drawn in y order.
- * @return \c true if this type of entity should be drawn at the same level
+ * \brief Returns whether this entity has to be drawn in y order.
+ * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
 bool Enemy::is_drawn_in_y_order() {
@@ -616,7 +616,7 @@ bool Enemy::is_drawn_in_y_order() {
 }
 
 /**
- * @brief Updates the enemy.
+ * \brief Updates the enemy.
  */
 void Enemy::update() {
 
@@ -711,8 +711,8 @@ void Enemy::update() {
 }
 
 /**
- * @brief Suspends or resumes the entity.
- * @param suspended true to suspend the entity, false to resume it
+ * \brief Suspends or resumes the entity.
+ * \param suspended true to suspend the entity, false to resume it
  */
 void Enemy::set_suspended(bool suspended) {
 
@@ -733,7 +733,7 @@ void Enemy::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Draws the entity on the map.
+ * \brief Draws the entity on the map.
  */
 void Enemy::draw_on_map() {
 
@@ -747,8 +747,8 @@ void Enemy::draw_on_map() {
 }
 
 /**
- * @brief Notifies this entity that it was just enabled or disabled.
- * @param enabled true if the entity is now enabled
+ * \brief Notifies this entity that it was just enabled or disabled.
+ * \param enabled true if the entity is now enabled
  */
 void Enemy::notify_enabled(bool enabled) {
 
@@ -767,7 +767,7 @@ void Enemy::notify_enabled(bool enabled) {
 }
 
 /**
- * @brief Notifies this entity that it has just failed to change its position
+ * \brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  */
 void Enemy::notify_obstacle_reached() {
@@ -780,7 +780,7 @@ void Enemy::notify_obstacle_reached() {
 }
 
 /**
- * @brief This function is called when the entity has just moved.
+ * \brief This function is called when the entity has just moved.
  */
 void Enemy::notify_position_changed() {
 
@@ -792,7 +792,7 @@ void Enemy::notify_position_changed() {
 }
 
 /**
- * @brief This function is called when the layer of this entity has just changed.
+ * \brief This function is called when the layer of this entity has just changed.
  *
  * Redefine it if you need to be notified.
  */
@@ -806,7 +806,7 @@ void Enemy::notify_layer_changed() {
 }
 
 /**
- * @brief This function can be called by the movement object
+ * \brief This function can be called by the movement object
  * to notify the entity when the movement has just changed
  * (e.g. the speed, the angle or the trajectory).
  */
@@ -820,7 +820,7 @@ void Enemy::notify_movement_changed() {
 }
 
 /**
- * @brief This function is called when the movement of the entity is finished.
+ * \brief This function is called when the movement of the entity is finished.
  */
 void Enemy::notify_movement_finished() {
 
@@ -832,9 +832,9 @@ void Enemy::notify_movement_finished() {
 }
 
 /**
- * @brief Notifies the enemy that a collision was just detected with another entity
- * @param entity_overlapping the other entity
- * @param collision_mode the collision mode that detected the collision
+ * \brief Notifies the enemy that a collision was just detected with another entity
+ * \param entity_overlapping the other entity
+ * \param collision_mode the collision mode that detected the collision
  */
 void Enemy::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
@@ -842,14 +842,14 @@ void Enemy::notify_collision(MapEntity &entity_overlapping, CollisionMode collis
 }
 
 /**
- * @brief Notifies this enemy that a pixel-precise collision was just detected with another sprite.
+ * \brief Notifies this enemy that a pixel-precise collision was just detected with another sprite.
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this enemy.
  *
- * @param other_entity the entity overlapping this detector
- * @param other_sprite the sprite of other_entity that is overlapping this detector
- * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \param other_entity the entity overlapping this detector
+ * \param other_sprite the sprite of other_entity that is overlapping this detector
+ * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Enemy::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
 
@@ -857,10 +857,10 @@ void Enemy::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Spri
 }
 
 /**
- * @brief This function is called when an explosion's sprite detects a collision
+ * \brief This function is called when an explosion's sprite detects a collision
  * with a sprite of this enemy.
- * @param explosion the explosion
- * @param sprite_overlapping the sprite of this enemy that collides with the explosion
+ * \param explosion the explosion
+ * \param sprite_overlapping the sprite of this enemy that collides with the explosion
  */
 void Enemy::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
 
@@ -868,10 +868,10 @@ void Enemy::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite
 }
 
 /**
- * @brief Notifies this entity that a sprite of fire
+ * \brief Notifies this entity that a sprite of fire
  * detects a pixel-precise collision with a sprite of this entity.
- * @param fire the fire
- * @param sprite_overlapping the sprite of the current entity that collides with the fire
+ * \param fire the fire
+ * \param sprite_overlapping the sprite of the current entity that collides with the fire
  */
 void Enemy::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
 
@@ -879,10 +879,10 @@ void Enemy::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
 }
 
 /**
- * @brief This function is called when this enemy detects a collision with another enemy.
- * @param other the other enemy
- * @param other_sprite the other enemy's sprite that overlaps a sprite of this enemy
- * @param this_sprite this enemy's sprite that overlaps the other
+ * \brief This function is called when this enemy detects a collision with another enemy.
+ * \param other the other enemy
+ * \param other_sprite the other enemy's sprite that overlaps a sprite of this enemy
+ * \param this_sprite this enemy's sprite that overlaps the other
  */
 void Enemy::notify_collision_with_enemy(Enemy& other,
     Sprite& other_sprite, Sprite& this_sprite) {
@@ -894,12 +894,12 @@ void Enemy::notify_collision_with_enemy(Enemy& other,
 }
 
 /**
- * @brief Attacks the hero if possible.
+ * \brief Attacks the hero if possible.
  *
  * This function is called when there is a collision between the enemy and the hero.
  *
- * @param hero the hero
- * @param this_sprite the sprite of this enemy that detected the collision with the hero,
+ * \param hero the hero
+ * \param this_sprite the sprite of this enemy that detected the collision with the hero,
  * or NULL if it was not a pixel-precise collision.
  */
 void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
@@ -936,7 +936,7 @@ void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
 }
 
 /**
- * @brief This function is called when the hero stops an attack with his shield.
+ * \brief This function is called when the hero stops an attack with his shield.
  *
  * By default, the shield sound is played and the enemy cannot attack again for a while.
  */
@@ -952,7 +952,7 @@ void Enemy::attack_stopped_by_hero_shield() {
 }
 
 /**
- * @brief Plays the appropriate sound when the enemy is hurt.
+ * \brief Plays the appropriate sound when the enemy is hurt.
  */
 void Enemy::play_hurt_sound() {
 
@@ -980,7 +980,7 @@ void Enemy::play_hurt_sound() {
 }
 
 /**
- * @brief Notifies this enemy that it should restart his movement.
+ * \brief Notifies this enemy that it should restart his movement.
  *
  * This function is called when the enemy needs to restart its movement
  * because something happened (for example the enemy has just been created,
@@ -997,14 +997,14 @@ void Enemy::restart() {
 }
 
 /**
- * @brief Returns whether this enemy is in a normal state.
+ * \brief Returns whether this enemy is in a normal state.
  *
  * The enemy is considered to be in its normal state if
  * it is not disabled, dying, being hurt or immobilized.
  * When this method returns false, the subclasses of Enemy
  * should not change the enemy properties.
  *
- * @return true if this enemy is in a normal state
+ * \return true if this enemy is in a normal state
  */
 bool Enemy::is_in_normal_state() {
   return is_enabled()
@@ -1015,21 +1015,21 @@ bool Enemy::is_in_normal_state() {
 }
 
 /**
- * @brief Returns whether this enemy is currently invulnerable.
- * @return \c true if this enemy cannot be hurt for now.
+ * \brief Returns whether this enemy is currently invulnerable.
+ * \return \c true if this enemy cannot be hurt for now.
  */
 bool Enemy::is_invulnerable() {
   return invulnerable;
 }
 
 /**
- * @brief Makes the enemy receive an attack.
+ * \brief Makes the enemy receive an attack.
  *
  * He might resist to the attack or get hurt.
  *
- * @param attack type of attack
- * @param source the entity attacking the enemy (often the hero)
- * @param this_sprite the sprite of this enemy that received the attack, or NULL
+ * \param attack type of attack
+ * \param source the entity attacking the enemy (often the hero)
+ * \param this_sprite the sprite of this enemy that received the attack, or NULL
  * if the attack comes from a non pixel-precise collision test
  */
 void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite) {
@@ -1103,11 +1103,11 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
 }
 
 /**
- * @brief Hurts the enemy.
+ * \brief Hurts the enemy.
  *
  * Updates its state, its sprite and plays the sound.
  *
- * @param source the entity attacking the enemy (often the hero)
+ * \param source the entity attacking the enemy (often the hero)
  */
 void Enemy::hurt(MapEntity &source) {
 
@@ -1140,10 +1140,10 @@ void Enemy::hurt(MapEntity &source) {
 }
 
 /**
- * @brief This function is called when the enemy has just been hurt.
- * @param source the source of the attack
- * @param attack the attack that was just successful
- * @param life_points the number of life points lost by this enemy
+ * \brief This function is called when the enemy has just been hurt.
+ * \param source the source of the attack
+ * \param attack the attack that was just successful
+ * \param life_points the number of life points lost by this enemy
  */
 void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 
@@ -1154,7 +1154,7 @@ void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) 
 }
 
 /**
- * @brief This function is called when the enemy has just finished dying.
+ * \brief This function is called when the enemy has just finished dying.
  */
 void Enemy::notify_dead() {
 
@@ -1162,7 +1162,7 @@ void Enemy::notify_dead() {
 }
 
 /**
- * @brief This function is called when the enemy is immobilized,
+ * \brief This function is called when the enemy is immobilized,
  * after the hurt animation.
  */
 void Enemy::notify_immobilized() {
@@ -1171,7 +1171,7 @@ void Enemy::notify_immobilized() {
 }
 
 /**
- * @brief Kills the enemy.
+ * \brief Kills the enemy.
  *
  * This function is called when the enemy has no more health points.
  */
@@ -1209,20 +1209,20 @@ void Enemy::kill() {
 }
 
 /**
- * @brief Returns whether the enemy is being hurt.
- * @return true if the enemy is being hurt
+ * \brief Returns whether the enemy is being hurt.
+ * \return true if the enemy is being hurt
  */
 bool Enemy::is_being_hurt() {
   return being_hurt;
 }
 
 /**
- * @brief Returns whether the enemy is killed.
+ * \brief Returns whether the enemy is killed.
  *
  * An enemy is considered as killed if he has no more life and its dying
  * animation has started.
  *
- * @return true if the enemy is killed
+ * \return true if the enemy is killed
  */
 bool Enemy::is_killed() {
   return life <= 0
@@ -1230,8 +1230,8 @@ bool Enemy::is_killed() {
 }
 
 /**
- * @brief When the enemy is killed, returns whether the dying animation is finished.
- * @return true if the dying animation is finished
+ * \brief When the enemy is killed, returns whether the dying animation is finished.
+ * \return true if the dying animation is finished
  */
 bool Enemy::is_dying_animation_finished() {
 
@@ -1243,8 +1243,8 @@ bool Enemy::is_dying_animation_finished() {
 }
 
 /**
- * @brief Returns whether the enemy is dying, i.e. his life has reached zero and the dying animation is playing.
- * @return true if the enemy is dying
+ * \brief Returns whether the enemy is dying, i.e. his life has reached zero and the dying animation is playing.
+ * \return true if the enemy is dying
  */
 bool Enemy::is_dying() {
 
@@ -1252,16 +1252,16 @@ bool Enemy::is_dying() {
 }
 
 /**
- * @brief Sets the treasure dropped by this enemy.
- * @param treasure the treasure to set
+ * \brief Sets the treasure dropped by this enemy.
+ * \param treasure the treasure to set
  */
 void Enemy::set_treasure(const Treasure& treasure) {
   this->treasure = treasure;
 }
 
 /**
- * @brief Returns true if the current sprite animation is finished or is looping.
- * @return true if the current sprite animation is finished or is looping
+ * \brief Returns true if the current sprite animation is finished or is looping.
+ * \return true if the current sprite animation is finished or is looping
  */
 bool Enemy::is_sprite_finished_or_looping() {
 
@@ -1270,7 +1270,7 @@ bool Enemy::is_sprite_finished_or_looping() {
 }
 
 /**
- * @brief Immobilizes this enemy.
+ * \brief Immobilizes this enemy.
  */
 void Enemy::immobilize() {
 
@@ -1279,7 +1279,7 @@ void Enemy::immobilize() {
 }
 
 /**
- * @brief Stops immobilizing the enemy.
+ * \brief Stops immobilizing the enemy.
  */
 void Enemy::stop_immobilized() {
 
@@ -1288,8 +1288,8 @@ void Enemy::stop_immobilized() {
 }
 
 /**
- * @brief Returns whether this enemy is immobilized.
- * @return true if this enemy is immobilized
+ * \brief Returns whether this enemy is immobilized.
+ * \return true if this enemy is immobilized
  */
 bool Enemy::is_immobilized() {
 
@@ -1297,12 +1297,12 @@ bool Enemy::is_immobilized() {
 }
 
 /**
- * @brief This function is called when the enemy is attacked by a custom effect attack.
+ * \brief This function is called when the enemy is attacked by a custom effect attack.
  *
  * Redefine this function to handle the attack.
  *
- * @param attack the attack
- * @param this_sprite the sprite of this enemy subject to the attack, or NULL
+ * \param attack the attack
+ * \param this_sprite the sprite of this enemy subject to the attack, or NULL
  * if the attack does not come from a pixel-precise collision test
  */
 void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
@@ -1311,8 +1311,8 @@ void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& Enemy::get_lua_type_name() const {
   return LuaContext::entity_enemy_module_name;

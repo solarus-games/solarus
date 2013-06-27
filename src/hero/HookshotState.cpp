@@ -24,8 +24,8 @@
 #include "Map.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::HookshotState::HookshotState(Hero &hero):
   State(hero),
@@ -34,14 +34,14 @@ Hero::HookshotState::HookshotState(Hero &hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::HookshotState::~HookshotState() {
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::HookshotState::start(State *previous_state) {
 
@@ -53,8 +53,8 @@ void Hero::HookshotState::start(State *previous_state) {
 }
 
 /**
- * @brief Ends this state.
- * @param next_state the next state (for information)
+ * \brief Ends this state.
+ * \param next_state the next state (for information)
  */
 void Hero::HookshotState::stop(State *next_state) {
 
@@ -68,65 +68,65 @@ void Hero::HookshotState::stop(State *next_state) {
 }
 
 /**
- * @brief Returns whether the hero is touching the ground in the current state.
- * @return true if the hero is touching the ground in the current state
+ * \brief Returns whether the hero is touching the ground in the current state.
+ * \return true if the hero is touching the ground in the current state
  */
 bool Hero::HookshotState::is_touching_ground() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of deep water in this state.
- * @return true if the hero ignores the effect of deep water in the current state
+ * \brief Returns whether the hero ignores the effect of deep water in this state.
+ * \return true if the hero ignores the effect of deep water in the current state
  */
 bool Hero::HookshotState::can_avoid_deep_water() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of holes in this state.
- * @return true if the hero ignores the effect of holes in the current state
+ * \brief Returns whether the hero ignores the effect of holes in this state.
+ * \return true if the hero ignores the effect of holes in the current state
  */
 bool Hero::HookshotState::can_avoid_hole() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of lava in this state.
- * @return true if the hero ignores the effect of lava in the current state
+ * \brief Returns whether the hero ignores the effect of lava in this state.
+ * \return true if the hero ignores the effect of lava in the current state
  */
 bool Hero::HookshotState::can_avoid_lava() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of prickles in this state.
- * @return true if the hero ignores the effect of prickles in the current state
+ * \brief Returns whether the hero ignores the effect of prickles in this state.
+ * \return true if the hero ignores the effect of prickles in the current state
  */
 bool Hero::HookshotState::can_avoid_prickle() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of teletransporters in this state.
- * @return true if the hero ignores the effect of teletransporters in this state
+ * \brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * \return true if the hero ignores the effect of teletransporters in this state
  */
 bool Hero::HookshotState::can_avoid_teletransporter() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
- * @return true if the hero ignores the effect of conveyor belts in this state
+ * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ * \return true if the hero ignores the effect of conveyor belts in this state
  */
 bool Hero::HookshotState::can_avoid_conveyor_belt() {
   return true;
 }
 
 /**
- * @brief Returns whether some stairs are considered as obstacle in this state.
- * @param stairs some stairs
- * @return true if the stairs are obstacle in this state
+ * \brief Returns whether some stairs are considered as obstacle in this state.
+ * \param stairs some stairs
+ * \return true if the stairs are obstacle in this state
  */
 bool Hero::HookshotState::is_stairs_obstacle(Stairs& stairs) {
   // allow to fly over stairs covered by water
@@ -134,52 +134,52 @@ bool Hero::HookshotState::is_stairs_obstacle(Stairs& stairs) {
 }
 
 /**
- * @brief Returns whether a sensor is considered as an obstacle in this state.
- * @param sensor a sensor
- * @return true if the sensor is an obstacle in this state
+ * \brief Returns whether a sensor is considered as an obstacle in this state.
+ * \param sensor a sensor
+ * \return true if the sensor is an obstacle in this state
  */
 bool Hero::HookshotState::is_sensor_obstacle(Sensor& sensor) {
   return false;
 }
 
 /**
- * @brief Returns whether a jumper is considered as an obstacle in this state.
- * @param jumper a jumper
- * @return true if the sensor is an obstacle in this state
+ * \brief Returns whether a jumper is considered as an obstacle in this state.
+ * \param jumper a jumper
+ * \return true if the sensor is an obstacle in this state
  */
 bool Hero::HookshotState::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of switches in this state.
- * @return true if the hero ignores the effect of switches in this state
+ * \brief Returns whether the hero ignores the effect of switches in this state.
+ * \return true if the hero ignores the effect of switches in this state
  */
 bool Hero::HookshotState::can_avoid_switch() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can be hurt in this state.
- * @param attacker an attacker that is trying to hurt the hero
+ * \brief Returns whether the hero can be hurt in this state.
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
- * @return true if the hero can be hurt in this state
+ * \return true if the hero can be hurt in this state
  */
 bool Hero::HookshotState::can_be_hurt(Enemy* attacker) {
   return false;
 }
 
 /**
- * @brief Returns whether the hero can pick a treasure in this state.
- * @param item The equipment item to obtain.
- * @return true if the hero can pick that treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in this state.
+ * \param item The equipment item to obtain.
+ * \return true if the hero can pick that treasure in this state.
  */
 bool Hero::HookshotState::can_pick_treasure(EquipmentItem& item) {
   return true;
 }
 
 /**
- * @brief Notifies this state that the hero has just failed to change its
+ * \brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */
 void Hero::HookshotState::notify_obstacle_reached() {
@@ -190,7 +190,7 @@ void Hero::HookshotState::notify_obstacle_reached() {
 }
 
 /**
- * @brief Returns control to the hero after its hookshot movement.
+ * \brief Returns control to the hero after its hookshot movement.
  *
  * This function is called when the hero has finished the hookshot movement.
  * It checks the validity of the destination position.

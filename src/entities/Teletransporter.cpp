@@ -25,19 +25,19 @@
 #include "lowlevel/Sound.h"
 
 /**
- * @brief Constructor.
- * @param name Name of the teletransporter.
- * @param layer Layer of the teletransporter.
- * @param x X position of the teletransporter's rectangle.
- * @param y Y position of the teletransporter's rectangle.
- * @param width Width of the teletransporter's rectangle.
- * @param height Height of the teletransporter's rectangle.
- * @param sprite_name Sprite animation set id to use, or an empty string.
- * @param sound_id Sound to play when using the teletransporter,
+ * \brief Constructor.
+ * \param name Name of the teletransporter.
+ * \param layer Layer of the teletransporter.
+ * \param x X position of the teletransporter's rectangle.
+ * \param y Y position of the teletransporter's rectangle.
+ * \param width Width of the teletransporter's rectangle.
+ * \param height Height of the teletransporter's rectangle.
+ * \param sprite_name Sprite animation set id to use, or an empty string.
+ * \param sound_id Sound to play when using the teletransporter,
  * or an empty string.
- * @param transition_style Style of transition between the two maps.
- * @param destination_map_id Id of the destination map.
- * @param destination_name Location on the destination map,
+ * \param transition_style Style of transition between the two maps.
+ * \param destination_map_id Id of the destination map.
+ * \param destination_name Location on the destination map,
  * or "_same" to keep the hero's coordinates,
  * or "_side" to place the hero on the appropriate side of the map.
  */
@@ -68,18 +68,18 @@ Teletransporter::Teletransporter(
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Teletransporter::~Teletransporter() {
 }
 
 /**
- * @brief Sets the map.
+ * \brief Sets the map.
  *
  * Warning: as this function is called when initializing the map,
  * the current map of the game is still the old one.
  *
- * @param map the map
+ * \param map the map
  */
 void Teletransporter::set_map(Map& map) {
 
@@ -111,17 +111,17 @@ void Teletransporter::set_map(Map& map) {
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Teletransporter::get_type() {
   return TELETRANSPORTER;
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true if this entity is an obstacle for the other one
  */
 bool Teletransporter::is_obstacle_for(MapEntity& other) {
 
@@ -129,9 +129,9 @@ bool Teletransporter::is_obstacle_for(MapEntity& other) {
 }
 
 /**
- * @brief Returns whether an entity's collides with this entity.
- * @param entity an entity
- * @return true if the entity's collides with this entity
+ * \brief Returns whether an entity's collides with this entity.
+ * \param entity an entity
+ * \return true if the entity's collides with this entity
  */
 bool Teletransporter::test_collision_custom(MapEntity& entity) {
 
@@ -178,9 +178,9 @@ bool Teletransporter::test_collision_custom(MapEntity& entity) {
 }
 
 /**
- * @brief This function is called by the engine when an entity overlaps the teletransporter.
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called by the engine when an entity overlaps the teletransporter.
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void Teletransporter::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
@@ -188,8 +188,8 @@ void Teletransporter::notify_collision(MapEntity& entity_overlapping, CollisionM
 }
 
 /**
- * @brief Makes the teletransporter move the hero to the destination.
- * @param hero the hero
+ * \brief Makes the teletransporter move the hero to the destination.
+ * \param hero the hero
  */
 void Teletransporter::transport_hero(Hero& hero) {
 
@@ -245,12 +245,12 @@ void Teletransporter::transport_hero(Hero& hero) {
 }
 
 /**
- * @brief Returns whether this teletransporter is on the side of the map.
+ * \brief Returns whether this teletransporter is on the side of the map.
  *
  * When true is returned, this means that the teletransporter can make the hero
  * scroll towards an adjacent map.
  *
- * @return true if this teletransporter is on the side of the map
+ * \return true if this teletransporter is on the side of the map
  */
 bool Teletransporter::is_on_map_side() {
   return destination_side >= 0;

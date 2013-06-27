@@ -25,12 +25,12 @@
 #include "Map.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param use_memorized_xy true to get back to the place previously memorized (if any),
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
+ * \param use_memorized_xy true to get back to the place previously memorized (if any),
  * false to get back to the last coordinates with solid ground
- * @param end_delay a delay to add at the end before returning control to the hero (default 0)
- * @param with_sound true to play a sound when returning to solid ground
+ * \param end_delay a delay to add at the end before returning control to the hero (default 0)
+ * \param with_sound true to play a sound when returning to solid ground
  */
 Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
     bool use_memorized_xy, uint32_t end_delay, bool with_sound):
@@ -52,15 +52,15 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::BackToSolidGroundState::~BackToSolidGroundState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::BackToSolidGroundState::start(State* previous_state) {
 
@@ -72,8 +72,8 @@ void Hero::BackToSolidGroundState::start(State* previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::BackToSolidGroundState::stop(State* next_state) {
 
@@ -83,7 +83,7 @@ void Hero::BackToSolidGroundState::stop(State* next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::BackToSolidGroundState::update() {
 
@@ -119,96 +119,96 @@ void Hero::BackToSolidGroundState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns whether the game over sequence can start in the current state.
- * @return true if the game over sequence can start in the current state
+ * \brief Returns whether the game over sequence can start in the current state.
+ * \return true if the game over sequence can start in the current state
  */
 bool Hero::BackToSolidGroundState::can_start_gameover_sequence() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero is visible in the current state.
- * @return true if the hero is displayed in the current state
+ * \brief Returns whether the hero is visible in the current state.
+ * \return true if the hero is displayed in the current state
  */
 bool Hero::BackToSolidGroundState::is_hero_visible() {
   return end_date != 0;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of deep water in this state.
- * @return true if the hero ignores the effect of deep water in the current state
+ * \brief Returns whether the hero ignores the effect of deep water in this state.
+ * \return true if the hero ignores the effect of deep water in the current state
  */
 bool Hero::BackToSolidGroundState::can_avoid_deep_water() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of holes in this state.
- * @return true if the hero ignores the effect of holes in the current state
+ * \brief Returns whether the hero ignores the effect of holes in this state.
+ * \return true if the hero ignores the effect of holes in the current state
  */
 bool Hero::BackToSolidGroundState::can_avoid_hole() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of lava in this state.
- * @return true if the hero ignores the effect of lava in the current state
+ * \brief Returns whether the hero ignores the effect of lava in this state.
+ * \return true if the hero ignores the effect of lava in the current state
  */
 bool Hero::BackToSolidGroundState::can_avoid_lava() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of prickles in this state.
- * @return true if the hero ignores the effect of prickles in the current state
+ * \brief Returns whether the hero ignores the effect of prickles in this state.
+ * \return true if the hero ignores the effect of prickles in the current state
  */
 bool Hero::BackToSolidGroundState::can_avoid_prickle() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero is touching the ground in the current state.
- * @return true if the hero is touching the ground in the current state
+ * \brief Returns whether the hero is touching the ground in the current state.
+ * \return true if the hero is touching the ground in the current state
  */
 bool Hero::BackToSolidGroundState::is_touching_ground() {
   return false;
 }
 
 /**
- * @brief Returns whether this state ignores the collisions with the detectors and the ground.
- * @return true if the collisions are ignored
+ * \brief Returns whether this state ignores the collisions with the detectors and the ground.
+ * \return true if the collisions are ignored
  */
 bool Hero::BackToSolidGroundState::are_collisions_ignored() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
- * @return true if the hero ignores the effect of conveyor belts in this state
+ * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ * \return true if the hero ignores the effect of conveyor belts in this state
  */
 bool Hero::BackToSolidGroundState::can_avoid_conveyor_belt() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of sensors in this state.
- * @return true if the hero ignores the effect of sensors in this state
+ * \brief Returns whether the hero ignores the effect of sensors in this state.
+ * \return true if the hero ignores the effect of sensors in this state
  */
 bool Hero::BackToSolidGroundState::can_avoid_sensor() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of switches in this state.
- * @return true if the hero ignores the effect of switches in this state
+ * \brief Returns whether the hero ignores the effect of switches in this state.
+ * \return true if the hero ignores the effect of switches in this state
  */
 bool Hero::BackToSolidGroundState::can_avoid_switch() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of explosions in this state.
- * @return true if the hero ignores the effect of explosions in this state
+ * \brief Returns whether the hero ignores the effect of explosions in this state.
+ * \return true if the hero ignores the effect of explosions in this state
  */
 bool Hero::BackToSolidGroundState::can_avoid_explosion() {
   return true;

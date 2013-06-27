@@ -20,7 +20,7 @@
 #include "hero/State.h"
 
 /**
- * @brief The state "ConveyorBelt" of the hero.
+ * \brief The state "ConveyorBelt" of the hero.
  */
 class Hero::ConveyorBeltState: public Hero::State {
 

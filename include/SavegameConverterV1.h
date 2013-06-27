@@ -22,7 +22,7 @@
 #include <string>
 
 /**
- * @brief Old format of savegames (version 1) kept for compatibility.
+ * \brief Old format of savegames (version 1) kept for compatibility.
  *
  * The version 1 format was binary, not portable, not evolutive and hard to use.
  * In particular, saved values were identified by integer indexes.
@@ -45,7 +45,7 @@ class SavegameConverterV1 {
     void convert_to_v2(Savegame& savegame_v2);
 
     /**
-     * @brief Index of each string saved in the file by the engine.
+     * \brief Index of each string saved in the file by the engine.
      */
     enum StringIndex {
       PLAYER_NAME                       = 0,  /**< a name for this savegame */
@@ -58,13 +58,13 @@ class SavegameConverterV1 {
       STARTING_MAP                      = 4,  /**< id of the map where the player appears */
 
       /**
-       * @name Joypad customizable controls.
+       * \name Joypad customizable controls.
        *
        * Variables 1 to 9 indicate the joypad event
        * of each game key: action, sword, item 1, item 2, pause,
        * right, up, left and down.
        * Examples: "button 1", "axis 1 +", "hat 1 left"
-       * @{
+       * \{
        */
       JOYPAD_ACTION_KEY                 = 10,
       JOYPAD_SWORD_KEY                  = 11,
@@ -76,14 +76,14 @@ class SavegameConverterV1 {
       JOYPAD_LEFT_KEY                   = 17,
       JOYPAD_DOWN_KEY                   = 18
       /**
-       * @}
+       * \}
        */
 
       // values above 32 are available to the quest
     };
 
     /**
-     * @brief Index of each integer saved in the file.
+     * \brief Index of each integer saved in the file.
      *
      * Do not change these numbers, otherwise you might break
      * the existing savegames.
@@ -94,48 +94,48 @@ class SavegameConverterV1 {
     enum IntegerIndex {
 
       /**
-       * @name Last game status
-       * @{
+       * \name Last game status
+       * \{
        */
       STARTING_MAP_INT                  = 0,  /**< deprecated (maps are identified by strings now) */
       PAUSE_LAST_SUBMENU                = 1,  /**< last submenu shown in the pause menu */
       INVENTORY_LAST_ITEM_INDEX         = 2,  /**< index of the last item selected in the inventory */
       EQUIPMENT_INITIALIZED             = 3,  /**< 1 if the initial items of the equipment have been set */
       /**
-       * @}
+       * \}
        */
 
       /**
-       * @name Current value of rupees, hearts and others
-       * @{
+       * \name Current value of rupees, hearts and others
+       * \{
        */
       CURRENT_LIFE                      = 10,  /**< current level of life */
       CURRENT_MONEY                     = 11,  /**< current amount of money */
       CURRENT_MAGIC                     = 12,  /**< current level of magic */
       /**
-       * @}
+       * \}
        */
 
       /**
-       * @name Maximum values
-       * @{
+       * \name Maximum values
+       * \{
        */
       MAX_LIFE                          = 20,  /**< maximum level of life */
       MAX_MONEY                         = 21,  /**< maximum amount of money */
       MAX_MAGIC                         = 22,  /**< maximum level of magic */
       /**
-       * @}
+       * \}
        */
 
       /**
-       * @name Keyboard customizable keys.
+       * \name Keyboard customizable keys.
        *
        * Variables 35 to 49 indicate the keyboard key
        * associated to each game key: action, sword, item 1, item 2, pause,
        * right, up, left and down.
        * Each integer corresponds to a value of the InputEvent::KeyboardKey
        * enumeration.
-       * @{
+       * \{
        */
       KEYBOARD_ACTION_KEY               = 35,
       KEYBOARD_SWORD_KEY                = 36,
@@ -150,12 +150,12 @@ class SavegameConverterV1 {
                                                 * If the version saved is different from Input::KEYBOARD_ENUM_VERSION, then
                                                 * we know it is obsolete and the customization is reset to some default values. */
       /**
-       * @}
+       * \}
        */
 
       /**
-       * @name General abilities.
-       * @{
+       * \name General abilities.
+       * \{
        */
       ABILITY_TUNIC                         = 50,
       ABILITY_SWORD                         = 51,
@@ -168,11 +168,11 @@ class SavegameConverterV1 {
       ABILITY_GET_BACK_FROM_DEATH           = 58,
       ABILITY_RUN                           = 59,
       /**
-       * @}
+       * \}
        */
 
       /**
-       * @name Dungeon-specific abilities and information.
+       * \name Dungeon-specific abilities and information.
        * Up to 40 dungeons can be saved.
        */
       DUNGEON_1_FINISHED                        = 200,
@@ -199,7 +199,7 @@ class SavegameConverterV1 {
   private:
 
     /**
-     * @brief Contains the data saved.
+     * \brief Contains the data saved.
      *
      * This structure contains the data saved (16 Ko of data are stored).
      * The system can save some strings, integers and boolean values.

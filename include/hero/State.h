@@ -22,7 +22,7 @@
 #include "entities/CarriedItem.h"
 
 /**
- * @brief Abstract base class for a state of the hero.
+ * \brief Abstract base class for a state of the hero.
  *
  * This class contains all hero-related functions that depend on his state
  * and provide a default implementation for them.

@@ -22,7 +22,7 @@
 #include "KeysEffect.h"
 
 /**
- * @brief A non-playing character or a more general interactive entity.
+ * \brief A non-playing character or a more general interactive entity.
  *
  * The entity triggers a message or an event
  * when the player presses the action key while facing it.
@@ -47,7 +47,7 @@ class NPC: public Detector {
   public:
 
     /**
-     * @brief The different kinds of interactions.
+     * \brief The different kinds of interactions.
      */
     enum Subtype {
       GENERALIZED_NPC,    /**< a custom interactive entity (not necessarily a person) */
@@ -55,7 +55,7 @@ class NPC: public Detector {
     };
 
     /**
-     * @brief Type of action done when an interaction occurs.
+     * \brief Type of action done when an interaction occurs.
      */
     enum Behavior {
        BEHAVIOR_DIALOG,                 /**< start a dialog */

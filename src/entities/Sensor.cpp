@@ -25,13 +25,13 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Constructor.
- * @param name name of the entity
- * @param layer layer of the entity
- * @param x x position of the entity's rectangle
- * @param y y position of the entity's rectangle
- * @param width width of the entity's rectangle
- * @param height height of the entity's rectangle
+ * \brief Constructor.
+ * \param name name of the entity
+ * \param layer layer of the entity
+ * \param x x position of the entity's rectangle
+ * \param y y position of the entity's rectangle
+ * \param width width of the entity's rectangle
+ * \param height height of the entity's rectangle
  */
 Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 	       int width, int height):
@@ -43,32 +43,32 @@ Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Sensor::~Sensor() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Sensor::get_type() {
   return SENSOR;
 }
 
 /**
- * @brief Returns whether entities of this type can be drawn.
- * @return true if this type of entity can be drawn
+ * \brief Returns whether entities of this type can be drawn.
+ * \return true if this type of entity can be drawn
  */
 bool Sensor::can_be_drawn() {
   return false;
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true if this entity is an obstacle for the other one
  */
 bool Sensor::is_obstacle_for(MapEntity &other) {
 
@@ -76,9 +76,9 @@ bool Sensor::is_obstacle_for(MapEntity &other) {
 }
 
 /**
- * @brief This function is called by the engine when an entity overlaps this sensor.
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called by the engine when an entity overlaps this sensor.
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
@@ -86,9 +86,9 @@ void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
 }
 
 /**
- * @brief This function is called when an explosion detects a collision with this entity.
- * @param explosion an explosion
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called when an explosion detects a collision with this entity.
+ * \param explosion an explosion
+ * \param collision_mode the collision mode that detected the collision
  */
 void Sensor::notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode) {
 
@@ -98,11 +98,11 @@ void Sensor::notify_collision_with_explosion(Explosion& explosion, CollisionMode
 }
 
 /**
- * @brief Activates this sensor.
+ * \brief Activates this sensor.
  *
  * This function is called when the hero overlaps the sensor.
  *
- * @param hero the hero
+ * \param hero the hero
  */
 void Sensor::activate(Hero& hero) {
 
@@ -126,7 +126,7 @@ void Sensor::activate(Hero& hero) {
 }
 
 /**
- * @brief Updates this entity.
+ * \brief Updates this entity.
  */
 void Sensor::update() {
 

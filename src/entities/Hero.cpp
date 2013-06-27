@@ -66,8 +66,8 @@
 const int Hero::normal_walking_speed = 88; // pixels per second
 
 /**
- * @brief Creates a hero.
- * @param equipment the equipment (needed to build the sprites even outside a game)
+ * \brief Creates a hero.
+ * \param equipment the equipment (needed to build the sprites even outside a game)
  */
 Hero::Hero(Equipment& equipment):
   MapEntity("hero", 0, LAYER_LOW, 0, 0, 16, 16),
@@ -92,7 +92,7 @@ Hero::Hero(Equipment& equipment):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::~Hero() {
 
@@ -106,15 +106,15 @@ Hero::~Hero() {
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Hero::get_type() {
   return HERO;
 }
 
 /**
- * @brief Returns whether this entity has to be drawn in y order.
+ * \brief Returns whether this entity has to be drawn in y order.
  *
  * This function returns whether an entity of this type should be drawn above
  * the hero and other entities having this property when it is in front of them.
@@ -122,20 +122,20 @@ EntityType Hero::get_type() {
  * feature depends on their y position. The entities without this feature
  * are drawn in the normal order (i.e. as specified by the map file),
  * and before the entities with the feature.
- * @return true if this type of entity is drawn at the same level as the hero
+ * \return true if this type of entity is drawn at the same level as the hero
  */
 bool Hero::is_drawn_in_y_order() {
   return true;
 }
 
 /**
- * @brief Changes the hero's internal state.
+ * \brief Changes the hero's internal state.
  *
  * This function stops the old state and starts the new one.
  * The old state will also be automatically destroyed, but not right now,
  * in order to allow this function to be called by the old state itself safely.
  *
- * @param state the new state of the hero
+ * \param state the new state of the hero
  */
 void Hero::set_state(State* new_state) {
 
@@ -155,11 +155,11 @@ void Hero::set_state(State* new_state) {
 }
 
 /**
- * @brief Suspends or resumes the animation and the movements of the hero.
+ * \brief Suspends or resumes the animation and the movements of the hero.
  *
  * This function is called by the map when the game is suspended or resumed.
  *
- * @param suspended true to suspend the hero, false to resume it
+ * \param suspended true to suspend the hero, false to resume it
  */
 void Hero::set_suspended(bool suspended) {
 
@@ -176,7 +176,7 @@ void Hero::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates the hero's position, movement and animation.
+ * \brief Updates the hero's position, movement and animation.
  *
  * This function is called repetedly by the game loop.
  */
@@ -196,7 +196,7 @@ void Hero::update() {
 }
 
 /**
- * @brief Updates the hero's internal state.
+ * \brief Updates the hero's internal state.
  *
  * This function is called repeatedly by update().
  */
@@ -214,7 +214,7 @@ void Hero::update_state() {
 }
 
 /**
- * @brief Updates the hero's position according to its movement.
+ * \brief Updates the hero's position according to its movement.
  *
  * This function is called repeatedly by update().
  */
@@ -229,7 +229,7 @@ void Hero::update_movement() {
 }
 
 /**
- * @brief Updates the ground under the hero.
+ * \brief Updates the ground under the hero.
  *
  * This function is called repeatedly.
  */
@@ -303,7 +303,7 @@ void Hero::update_ground() {
 }
 
 /**
- * @brief Checks that the hero has still some life.
+ * \brief Checks that the hero has still some life.
  *
  * If his life reaches zero, this function starts the gameover sequence.
  */
@@ -316,7 +316,7 @@ void Hero::check_gameover() {
 }
 
 /**
- * @brief Draws this entity on the map.
+ * \brief Draws this entity on the map.
  *
  * This function should draw the entity only if is_visible() returns true.
  * The hero is drawn with its current animation and at its current position.
@@ -335,63 +335,63 @@ void Hero::draw_on_map() {
 }
 
 /**
- * @brief This function is called when a game command is pressed
+ * \brief This function is called when a game command is pressed
  * and the game is not suspended.
- * @param command The command pressed.
+ * \param command The command pressed.
  */
 void Hero::notify_command_pressed(GameCommands::Command command) {
   state->notify_command_pressed(command);
 }
 
 /**
- * @brief This function is called when a game command is released
+ * \brief This function is called when a game command is released
  * if the game is not suspended.
- * @param command The command released.
+ * \param command The command released.
  */
 void Hero::notify_command_released(GameCommands::Command command) {
   state->notify_command_released(command);
 }
 
 /**
- * @brief Returns the sprites currently representing the hero.
- * @return the sprites
+ * \brief Returns the sprites currently representing the hero.
+ * \return the sprites
  */
 HeroSprites& Hero::get_sprites() {
   return *sprites;
 }
 
 /**
- * @brief Returns the direction of the hero's sprites.
+ * \brief Returns the direction of the hero's sprites.
  *
  * It is different from the movement direction.
  *
- * @return the direction of the sprites (0 to 3)
+ * \return the direction of the sprites (0 to 3)
  */
 int Hero::get_animation_direction() {
   return sprites->get_animation_direction();
 }
 
 /**
- * @brief Changes the direction of the hero's sprites.
+ * \brief Changes the direction of the hero's sprites.
  *
  * It is different from the movement direction.
  *
- * @param direction4 the direction to set (0 to 3)
+ * \param direction4 the direction to set (0 to 3)
  */
 void Hero::set_animation_direction(int direction4) {
   sprites->set_animation_direction(direction4);
 }
 
 /**
- * @brief Returns whether the sprites animations are finished.
- * @return true if the animation is finished
+ * \brief Returns whether the sprites animations are finished.
+ * \return true if the animation is finished
  */
 bool Hero::is_animation_finished() {
   return sprites->is_animation_finished();
 }
 
 /**
- * @brief Loads (or reloads) the sprites and sounds of the hero and his equipment.
+ * \brief Loads (or reloads) the sprites and sounds of the hero and his equipment.
  *
  * The sprites and sounds depend on its tunic, sword and shield as specified in the savegame.
  * This function must be called at the game beginning
@@ -403,21 +403,21 @@ void Hero::rebuild_equipment() {
 }
 
 /**
- * @brief Returns whether the shadow should be currently displayed, separate from the tunic sprite.
- * @return true if the shadow should be currently displayed.
+ * \brief Returns whether the shadow should be currently displayed, separate from the tunic sprite.
+ * \return true if the shadow should be currently displayed.
  */
 bool Hero::is_shadow_visible() {
   return get_displayed_xy().get_y() != get_y();
 }
 
 /**
- * @brief Sets the hero's current map.
+ * \brief Sets the hero's current map.
  *
  * This function is called when the map is changed.
  * Warning: as this function is called when initializing the map,
  * the current map of the game is still the old one.
  *
- * @param map the map
+ * \param map the map
  */
 void Hero::set_map(Map& map) {
 
@@ -432,7 +432,7 @@ void Hero::set_map(Map& map) {
 }
 
 /**
- * @brief Notifies this entity that its map has just become active.
+ * \brief Notifies this entity that its map has just become active.
  */
 void Hero::notify_map_started() {
 
@@ -441,12 +441,12 @@ void Hero::notify_map_started() {
 }
 
 /**
- * @brief Sets the hero's current map.
+ * \brief Sets the hero's current map.
  *
  * This function is called when the map is changed.
  *
- * @param map the map
- * @param initial_direction the direction of the hero (0 to 3)
+ * \param map the map
+ * \param initial_direction the direction of the hero (0 to 3)
  * or -1 to let the direction unchanged
  */
 void Hero::set_map(Map &map, int initial_direction) {
@@ -460,9 +460,9 @@ void Hero::set_map(Map &map, int initial_direction) {
 }
 
 /**
- * @brief Places the hero on the map specified and at its destination point selected.
- * @param map the new map
- * @param previous_map_location position of the previous map in its world
+ * \brief Places the hero on the map specified and at its destination point selected.
+ * \param map the new map
+ * \param previous_map_location position of the previous map in its world
  * (may be needed for scrolling transitions, but the previous map is already destroyed)
  */
 void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location) {
@@ -547,7 +547,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 }
 
 /**
- * @brief This function is called when the opening transition of the map is finished.
+ * \brief This function is called when the opening transition of the map is finished.
  *
  * The position of the hero is changed if necessary.
  */
@@ -586,13 +586,13 @@ void Hero::notify_map_opening_transition_finished() {
 }
 
 /**
- * @brief Returns the coordinates of the first point in the direction the hero's sprite is looking at.
+ * \brief Returns the coordinates of the first point in the direction the hero's sprite is looking at.
  *
  * This point is 1 pixel outside the hero's bounding box (and centered). It is used
  * to determine the actions he can do depending on the entity he is facing
  * (a bush, a pot, an NPC…)
  *
- * @return the point the hero is touching
+ * \return the point the hero is touching
  */
 const Rectangle Hero::get_facing_point() {
 
@@ -600,14 +600,14 @@ const Rectangle Hero::get_facing_point() {
 }
 
 /**
- * @brief Returns the coordinates of the first point in the specified direction.
+ * \brief Returns the coordinates of the first point in the specified direction.
  *
  * This point is 1 pixel outside the hero's bounding box (and centered). It is used
  * to determine the actions he can do depending on the entity he is facing
  * (a bush, a pot, an NPC…)
  *
- * @param direction a direction (0 to 3)
- * @return coordinates of the point the hero would be touching if he was looking towards that direction
+ * \param direction a direction (0 to 3)
+ * \return coordinates of the point the hero would be touching if he was looking towards that direction
  */
 const Rectangle Hero::get_facing_point(int direction) {
 
@@ -646,8 +646,8 @@ const Rectangle Hero::get_facing_point(int direction) {
 }
 
 /**
- * @brief Notifies this entity that its facing entity has just changed.
- * @param facing_entity the detector this entity is now facing (possibly NULL)
+ * \brief Notifies this entity that its facing entity has just changed.
+ * \param facing_entity the detector this entity is now facing (possibly NULL)
  */
 void Hero::notify_facing_entity_changed(Detector* facing_entity) {
 
@@ -660,7 +660,7 @@ void Hero::notify_facing_entity_changed(Detector* facing_entity) {
 }
 
 /**
- * @brief Returns whether there is an obstacle in front of the hero.
+ * \brief Returns whether there is an obstacle in front of the hero.
  *
  * This function returns whether he is touching an obstacle that
  * is just in front of him.
@@ -669,7 +669,7 @@ void Hero::notify_facing_entity_changed(Detector* facing_entity) {
  * This information is calculated and not stored, so it is
  * always up to date.
  *
- * @return true if the hero is facing an obstacle
+ * \return true if the hero is facing an obstacle
  */
 bool Hero::is_facing_obstacle() {
 
@@ -701,12 +701,12 @@ bool Hero::is_facing_obstacle() {
 }
 
 /**
- * @brief Returns whether the facing point of the hero is overlapping an obstacle.
+ * \brief Returns whether the facing point of the hero is overlapping an obstacle.
  *
  * This function returns whether his facing point is overlapping an obstacle of the map.
  * This information is calculated and not stored, so it is always up to date.
  *
- * @return true if the facing point is overlapping an obstacle
+ * \return true if the facing point is overlapping an obstacle
  */
 bool Hero::is_facing_point_on_obstacle() {
 
@@ -715,18 +715,18 @@ bool Hero::is_facing_point_on_obstacle() {
 }
 
 /**
- * @brief Returns whether the hero is looking towards the specified direction.
- * @param direction4 a direction (0 to 3)
- * @return true if the hero is looking towards the specified direction
+ * \brief Returns whether the hero is looking towards the specified direction.
+ * \param direction4 a direction (0 to 3)
+ * \return true if the hero is looking towards the specified direction
  */
 bool Hero::is_facing_direction4(int direction4) {
   return get_animation_direction() == direction4;
 }
 
 /**
- * @brief Returns whether the hero is looking towards the specified direction.
- * @param direction8 a direction (0 to 7)
- * @return true if the hero is looking towards the specified direction
+ * \brief Returns whether the hero is looking towards the specified direction.
+ * \param direction8 a direction (0 to 7)
+ * \return true if the hero is looking towards the specified direction
  * (always false for diagonal directions)
  */
 bool Hero::is_facing_direction8(int direction8) {
@@ -734,20 +734,20 @@ bool Hero::is_facing_direction8(int direction8) {
 }
 
 /**
- * @brief Returns whether the hero is currently on raised crystal blocks.
- * @return true if the hero is currently on raised crystal blocks
+ * \brief Returns whether the hero is currently on raised crystal blocks.
+ * \return true if the hero is currently on raised crystal blocks
  */
 bool Hero::is_on_raised_blocks() {
   return on_raised_blocks;
 }
 
 /**
- * @brief Returns the stairs the hero may be currently overlapping.
+ * \brief Returns the stairs the hero may be currently overlapping.
  *
  * The result is calculated (not stored) so that you can know it
  * even when the game is suspended.
  *
- * @return the stairs the hero is currently overlapping, or NULL
+ * \return the stairs the hero is currently overlapping, or NULL
  */
 Stairs* Hero::get_stairs_overlapping() {
 
@@ -766,32 +766,32 @@ Stairs* Hero::get_stairs_overlapping() {
 }
 
 /**
- * @brief Returns whether the player can control his movements in the current state.
- * @return true if the player can control his movements
+ * \brief Returns whether the player can control his movements in the current state.
+ * \return true if the player can control his movements
  */
 bool Hero::can_control_movement() {
   return state->can_control_movement();
 }
 
 /**
- * @brief Returns the default walking speed applied to the hero's movements when he is walking.
- * @return the default walking speed
+ * \brief Returns the default walking speed applied to the hero's movements when he is walking.
+ * \return the default walking speed
  */
 int Hero::get_normal_walking_speed() {
   return normal_walking_speed;
 }
 
 /**
- * @brief Returns the current speed applied to the hero's movements when he is walking.
- * @return the current walking speed
+ * \brief Returns the current speed applied to the hero's movements when he is walking.
+ * \return the current walking speed
  */
 int Hero::get_walking_speed() {
   return walking_speed;
 }
 
 /**
- * @brief Sets the speed to apply to the hero's movements when he is walking.
- * @param walking_speed the new walking speed
+ * \brief Sets the speed to apply to the hero's movements when he is walking.
+ * \param walking_speed the new walking speed
  */
 void Hero::set_walking_speed(int walking_speed) {
 
@@ -802,19 +802,19 @@ void Hero::set_walking_speed(int walking_speed) {
 }
 
 /**
- * @brief Returns the direction of the hero's movement as defined by the controls applied by the player.
+ * \brief Returns the direction of the hero's movement as defined by the controls applied by the player.
  *
  * If he is not moving, -1 is returned.
  * This direction may be different from the real movement direction because of obstacles.
  *
- * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::get_wanted_movement_direction8() {
   return state->get_wanted_movement_direction8();
 }
 
 /**
- * @brief Returns the actual direction of the hero's movement.
+ * \brief Returns the actual direction of the hero's movement.
  *
  * This function returns the actual direction of the hero's movement, which can be different from the one
  * defined by the directional keys pressed by the player because we consider obstacles here.
@@ -823,7 +823,7 @@ int Hero::get_wanted_movement_direction8() {
  * This function is not used to compute the hero's movement (PlayerMovement does that) but only
  * to decide what direction to give to its sprites once the movement is already computed.
  *
- * @return the hero's actual direction between 0 and 7, or -1 if he is stopped
+ * \return the hero's actual direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::get_real_movement_direction8() {
 
@@ -875,15 +875,15 @@ int Hero::get_real_movement_direction8() {
 }
 
 /**
- * @brief Returns whether the hero is moving towards the specified direction
+ * \brief Returns whether the hero is moving towards the specified direction
  * among the four main directions.
  *
  * If the hero is not moving, false is returned.
  * If he is making a diagonal move, this function considers that he is moving
  * towards both directions.
  *
- * @param direction4 one of the four main directions (0 to 3)
- * @return true if the hero is moving in that direction, even if he is actually doing a diagonal move
+ * \param direction4 one of the four main directions (0 to 3)
+ * \return true if the hero is moving in that direction, even if he is actually doing a diagonal move
  */
 bool Hero::is_moving_towards(int direction4) {
 
@@ -902,7 +902,7 @@ bool Hero::is_moving_towards(int direction4) {
 }
 
 /**
- * @brief Returns whether the animation direction is locked.
+ * \brief Returns whether the animation direction is locked.
  *
  * When this function returns false, which is the case most of the time,
  * it means that the animation direction is set to the movement direction.
@@ -910,14 +910,14 @@ bool Hero::is_moving_towards(int direction4) {
  * and do not depends on the movement direction anymore (this is the case
  * when the hero is loading his sword).
  *
- * @return true if the animation direction is locked
+ * \return true if the animation direction is locked
  */
 bool Hero::is_direction_locked() {
   return state->is_direction_locked();
 }
 
 /**
- * @brief This function is called when the movement of the entity is finished.
+ * \brief This function is called when the movement of the entity is finished.
  */
 void Hero::notify_movement_finished() {
 
@@ -925,7 +925,7 @@ void Hero::notify_movement_finished() {
 }
 
 /**
- * @brief Notifies this entity that it has just failed to change its position
+ * \brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  */
 void Hero::notify_obstacle_reached() {
@@ -936,7 +936,7 @@ void Hero::notify_obstacle_reached() {
 }
 
 /**
- * @brief This function is called when the hero's position is changed.
+ * \brief This function is called when the hero's position is changed.
  */
 void Hero::notify_position_changed() {
 
@@ -945,7 +945,7 @@ void Hero::notify_position_changed() {
 }
 
 /**
- * @brief Checks collisions with detectors, determines the facing entity
+ * \brief Checks collisions with detectors, determines the facing entity
  * and the ground below the hero in its current position.
  *
  * This function is called when these checks have to be done again,
@@ -1020,14 +1020,14 @@ void Hero::check_position() {
 }
 
 /**
- * @brief This function is called when the layer of this entity has just changed.
+ * \brief This function is called when the layer of this entity has just changed.
  */
 void Hero::notify_layer_changed() {
   state->notify_layer_changed();
 }
 
 /**
- * @brief Updates the hero depending on its movement.
+ * \brief Updates the hero depending on its movement.
  *
  * This function is called when the hero's movement direction changes (for instance
  * because the player pressed or released a directional key, or the hero just reached an obstacle).
@@ -1058,7 +1058,7 @@ void Hero::notify_movement_changed() {
 }
 
 /**
- * @brief Stops the movement of the player and lets the player restart it when he can.
+ * \brief Stops the movement of the player and lets the player restart it when he can.
  *
  * This function is typically called when the player loses temporarily the control
  * (e.g. because of a script or a teletransporter) whereas the movement remains the same.
@@ -1074,7 +1074,7 @@ void Hero::reset_movement() {
 }
 
 /**
- * @brief Starts activating the ground specified by the last call to set_ground().
+ * \brief Starts activating the ground specified by the last call to set_ground().
  */
 void Hero::notify_ground_changed() {
 
@@ -1135,20 +1135,20 @@ void Hero::notify_ground_changed() {
 }
 
 /**
- * @brief Returns the ground displayed under the hero.
- * @return ground the ground under the hero
+ * \brief Returns the ground displayed under the hero.
+ * \return ground the ground under the hero
  */
 Ground Hero::get_ground() {
   return ground;
 }
 
 /**
- * @brief Sets the ground under the hero.
+ * \brief Sets the ground under the hero.
  *
  * This function is called when the hero walks on an entity
  * having a special ground.
  *
- * @param ground the ground to set
+ * \param ground the ground to set
  */
 void Hero::set_ground(Ground ground) {
 
@@ -1163,7 +1163,7 @@ void Hero::set_ground(Ground ground) {
 }
 
 /**
- * @brief Returns whether the hero is in a state such that
+ * \brief Returns whether the hero is in a state such that
  * a ground can be displayed under him.
  */
 bool Hero::is_ground_visible() {
@@ -1173,21 +1173,21 @@ bool Hero::is_ground_visible() {
 }
 
 /**
- * @brief Returns the type of ground of the tile below the hero.
+ * \brief Returns the type of ground of the tile below the hero.
  *
  * Only static tiles are considered by this function
  * (dynamic tiles are ignored).
  *
- * @return the type of ground of the tile below the hero
+ * \return the type of ground of the tile below the hero
  */
 Ground Hero::get_tile_ground() {
   return get_map().get_tile_ground(get_layer(), get_ground_point());
 }
 
 /**
- * @brief Returns the coordinates of the point used to determine the ground
+ * \brief Returns the coordinates of the point used to determine the ground
  * below the hero.
- * @return the coordinates of the point used to determine the ground
+ * \return the coordinates of the point used to determine the ground
  * (relative to the map)
  */
 const Rectangle Hero::get_ground_point() {
@@ -1197,14 +1197,14 @@ const Rectangle Hero::get_ground_point() {
 }
 
 /**
- * @brief Specifies a point of the map where the hero will go back if he falls
+ * \brief Specifies a point of the map where the hero will go back if he falls
  * into a hole or some other bad ground.
  *
  * This function is usually called when the hero walks on a special sensor.
  *
- * @param target_solid_ground_coords coordinates of the position where
+ * \param target_solid_ground_coords coordinates of the position where
  * the hero will go if he falls into a hole or some other bad ground
- * @param layer the layer
+ * \param layer the layer
  */
 void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer) {
 
@@ -1213,7 +1213,7 @@ void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_c
 }
 
 /**
- * @brief Forgets the point of the map where the hero was supposed to go back
+ * \brief Forgets the point of the map where the hero was supposed to go back
  * if he falls into a hole or some other bad ground.
  *
  * The hero will now get back to the last solid ground instead of going back
@@ -1225,153 +1225,153 @@ void Hero::reset_target_solid_ground_coords() {
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true if this entity is an obstacle for the other one
  */
 bool Hero::is_obstacle_for(MapEntity &other) {
   return other.is_hero_obstacle(*this);
 }
 
 /**
- * @brief Returns whether shallow water is currently considered as an obstacle for the hero.
- * @return true if shallow water is currently an obstacle for the hero
+ * \brief Returns whether shallow water is currently considered as an obstacle for the hero.
+ * \return true if shallow water is currently an obstacle for the hero
  */
 bool Hero::is_shallow_water_obstacle() {
   return state->is_shallow_water_obstacle();
 }
 
 /**
- * @brief Returns whether deep water is currently considered as an obstacle for the hero.
- * @return true if deep water is currently an obstacle for the hero
+ * \brief Returns whether deep water is currently considered as an obstacle for the hero.
+ * \return true if deep water is currently an obstacle for the hero
  */
 bool Hero::is_deep_water_obstacle() {
   return state->is_deep_water_obstacle();
 }
 
 /**
- * @brief Returns whether a hole is currently considered as an obstacle for the hero.
- * @return true if the holes are currently an obstacle for the hero
+ * \brief Returns whether a hole is currently considered as an obstacle for the hero.
+ * \return true if the holes are currently an obstacle for the hero
  */
 bool Hero::is_hole_obstacle() {
   return state->is_hole_obstacle();
 }
 
 /**
- * @brief Returns whether lava is currently considered as an obstacle for the hero.
- * @return true if lava is currently an obstacle for the hero
+ * \brief Returns whether lava is currently considered as an obstacle for the hero.
+ * \return true if lava is currently an obstacle for the hero
  */
 bool Hero::is_lava_obstacle() {
   return state->is_lava_obstacle();
 }
 
 /**
- * @brief Returns whether prickles are currently considered as an obstacle for the hero.
- * @return true if prickles are currently an obstacle for the hero
+ * \brief Returns whether prickles are currently considered as an obstacle for the hero.
+ * \return true if prickles are currently an obstacle for the hero
  */
 bool Hero::is_prickle_obstacle() {
   return state->is_prickle_obstacle();
 }
 
 /**
- * @brief Returns whether a ladder is currently considered as an obstacle for the hero.
- * @return true if the ladders are currently an obstacle for the hero
+ * \brief Returns whether a ladder is currently considered as an obstacle for the hero.
+ * \return true if the ladders are currently an obstacle for the hero
  */
 bool Hero::is_ladder_obstacle() {
   return state->is_ladder_obstacle();
 }
 
 /**
- * @brief Returns whether a block is currently considered as an obstacle by this entity.
- * @param block a block
- * @return true if the teletransporter is currently an obstacle for this entity
+ * \brief Returns whether a block is currently considered as an obstacle by this entity.
+ * \param block a block
+ * \return true if the teletransporter is currently an obstacle for this entity
  */
 bool Hero::is_block_obstacle(Block &block) {
   return block.is_hero_obstacle(*this);
 }
 
 /**
- * @brief Returns whether a teletransporter is currently considered as an obstacle.
+ * \brief Returns whether a teletransporter is currently considered as an obstacle.
  *
  * This depends on the hero's state.
  *
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is currently an obstacle for the hero
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is currently an obstacle for the hero
  */
 bool Hero::is_teletransporter_obstacle(Teletransporter &teletransporter) {
   return state->is_teletransporter_obstacle(teletransporter);
 }
 
 /**
- * @brief Returns whether a conveyor belt is currently considered as an obstacle for the hero.
+ * \brief Returns whether a conveyor belt is currently considered as an obstacle for the hero.
  *
  * This depends on the hero's state.
  *
- * @param conveyor_belt a conveyor belt
- * @return true if the conveyor belt is currently an obstacle for this entity
+ * \param conveyor_belt a conveyor belt
+ * \return true if the conveyor belt is currently an obstacle for this entity
  */
 bool Hero::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
   return state->is_conveyor_belt_obstacle(conveyor_belt);
 }
 
 /**
- * @brief Returns whether some stairs are currently considered as an obstacle for this entity.
- * @param stairs an stairs entity
- * @return true if the stairs are currently an obstacle for this entity
+ * \brief Returns whether some stairs are currently considered as an obstacle for this entity.
+ * \param stairs an stairs entity
+ * \return true if the stairs are currently an obstacle for this entity
  */
 bool Hero::is_stairs_obstacle(Stairs& stairs) {
   return state->is_stairs_obstacle(stairs);
 }
 
 /**
- * @brief Returns whether a sensor is currently considered as an obstacle for the hero.
- * @param sensor a sensor (not used here)
- * @return true if this sensor is currently an obstacle for the hero
+ * \brief Returns whether a sensor is currently considered as an obstacle for the hero.
+ * \param sensor a sensor (not used here)
+ * \return true if this sensor is currently an obstacle for the hero
  */
 bool Hero::is_sensor_obstacle(Sensor &sensor) {
   return state->is_sensor_obstacle(sensor);
 }
 
 /**
- * @brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
- * @param raised_block a crystal block raised
- * @return true if the raised block is currently an obstacle for this entity
+ * \brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
+ * \param raised_block a crystal block raised
+ * \return true if the raised block is currently an obstacle for this entity
  */
 bool Hero::is_raised_block_obstacle(CrystalBlock &raised_block) {
   return !is_on_raised_blocks();
 }
 
 /**
- * @brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
- * @param jumper a non-diagonal jumper
- * @return true if the jumper is currently an obstacle for this entity
+ * \brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
+ * \param jumper a non-diagonal jumper
+ * \return true if the jumper is currently an obstacle for this entity
  */
 bool Hero::is_jumper_obstacle(Jumper& jumper) {
   return state->is_jumper_obstacle(jumper);
 }
 
 /**
- * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
- * @param destructible the destructible item
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
+ * \param destructible the destructible item
+ * \param collision_mode the collision mode that detected the event
  */
 void Hero::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
   destructible.notify_collision_with_hero(*this, collision_mode);
 }
 
 /**
- * @brief This function is called when the rectangle of an enemy collides with the hero.
- * @param enemy the enemy
+ * \brief This function is called when the rectangle of an enemy collides with the hero.
+ * \param enemy the enemy
  */
 void Hero::notify_collision_with_enemy(Enemy &enemy) {
   // hurt the hero only on pixel-precise collisions
 }
 
 /**
- * @brief This function is called when an enemy's sprite collides with a sprite of the hero.
- * @param enemy the enemy
- * @param enemy_sprite the enemy's sprite that overlaps a sprite of the hero
- * @param this_sprite the hero's sprite that overlaps the enemy's sprite
+ * \brief This function is called when an enemy's sprite collides with a sprite of the hero.
+ * \param enemy the enemy
+ * \param enemy_sprite the enemy's sprite that overlaps a sprite of the hero
+ * \param this_sprite the hero's sprite that overlaps the enemy's sprite
  */
 void Hero::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
 
@@ -1393,9 +1393,9 @@ void Hero::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprit
 }
 
 /**
- * @brief This function is called when a teletransporter detects a collision with the hero.
- * @param teletransporter the teletransporter
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a teletransporter detects a collision with the hero.
+ * \param teletransporter the teletransporter
+ * \param collision_mode the collision mode that detected the event
  */
 void Hero::notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode) {
 
@@ -1412,20 +1412,20 @@ void Hero::notify_collision_with_teletransporter(Teletransporter &teletransporte
 }
 
 /**
- * @brief Returns a teletransporter that has detected a collision with the hero
+ * \brief Returns a teletransporter that has detected a collision with the hero
  * bu will be activated when the current action is finished
  * (e.g. falling into a hole or taking stairs).
- * @return the delayed teletransporter
+ * \return the delayed teletransporter
  */
 Teletransporter* Hero::get_delayed_teletransporter() {
   return delayed_teletransporter;
 }
 
 /**
- * @brief This function is called when a conveyor belt detects a collision with this entity.
- * @param conveyor_belt a conveyor belt
- * @param dx direction of the x move in pixels (0, 1 or -1)
- * @param dy direction of the y move in pixels (0, 1 or -1)
+ * \brief This function is called when a conveyor belt detects a collision with this entity.
+ * \param conveyor_belt a conveyor belt
+ * \param dx direction of the x move in pixels (0, 1 or -1)
+ * \param dy direction of the y move in pixels (0, 1 or -1)
  */
 void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy) {
 
@@ -1471,9 +1471,9 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int 
 }
 
 /**
- * @brief This function is called when a stairs entity detects a collision with this entity.
- * @param stairs the stairs
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a stairs entity detects a collision with this entity.
+ * \param stairs the stairs
+ * \param collision_mode the collision mode that detected the event
  */
 void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
 
@@ -1500,8 +1500,8 @@ void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_
 }
 
 /**
- * @brief This function is called when a jumper detects a collision with this entity.
- * @param jumper the jumper
+ * \brief This function is called when a jumper detects a collision with this entity.
+ * \param jumper the jumper
  */
 void Hero::notify_collision_with_jumper(Jumper& jumper) {
 
@@ -1533,9 +1533,9 @@ void Hero::notify_collision_with_jumper(Jumper& jumper) {
 }
 
 /**
- * @brief This function is called when a sensor detects a collision with this entity.
- * @param sensor a sensor
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called when a sensor detects a collision with this entity.
+ * \param sensor a sensor
+ * \param collision_mode the collision mode that detected the collision
  */
 void Hero::notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode) {
 
@@ -1546,9 +1546,9 @@ void Hero::notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_
 }
 
 /**
- * @brief This function is called when a switch detects a collision with this entity.
- * @param sw the switch
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a switch detects a collision with this entity.
+ * \param sw the switch
+ * \param collision_mode the collision mode that detected the event
  */
 void Hero::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
@@ -1560,10 +1560,10 @@ void Hero::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode
 }
 
 /**
- * @brief This function is called when a the sprite of a switch
+ * \brief This function is called when a the sprite of a switch
  * detects a pixel-precise collision with a sprite of this entity.
- * @param sw the switch
- * @param sprite_overlapping the sprite of the current entity that collides with the crystal
+ * \param sw the switch
+ * \param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
 void Hero::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) {
 
@@ -1578,9 +1578,9 @@ void Hero::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) 
 }
 
 /**
- * @brief This function is called when a crystal detects a collision with this entity.
- * @param crystal the crystal
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a crystal detects a collision with this entity.
+ * \param crystal the crystal
+ * \param collision_mode the collision mode that detected the event
  */
 void Hero::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
@@ -1597,10 +1597,10 @@ void Hero::notify_collision_with_crystal(Crystal &crystal, CollisionMode collisi
 }
 
 /**
- * @brief This function is called when a the sprite of a crystal
+ * \brief This function is called when a the sprite of a crystal
  * detects a pixel-precise collision with a sprite of this entity.
- * @param crystal the crystal
- * @param sprite_overlapping the sprite of the current entity that collides with the crystal
+ * \param crystal the crystal
+ * \param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
 void Hero::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping) {
 
@@ -1612,8 +1612,8 @@ void Hero::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overla
 }
 
 /**
- * @brief This function is called when a chest detects a collision with this entity.
- * @param chest the chest
+ * \brief This function is called when a chest detects a collision with this entity.
+ * \param chest the chest
  */
 void Hero::notify_collision_with_chest(Chest& chest) {
 
@@ -1628,8 +1628,8 @@ void Hero::notify_collision_with_chest(Chest& chest) {
 }
 
 /**
- * @brief This function is called when a block detects a collision with this entity.
- * @param block the block
+ * \brief This function is called when a block detects a collision with this entity.
+ * \param block the block
  */
 void Hero::notify_collision_with_block(Block& block) {
 
@@ -1642,9 +1642,9 @@ void Hero::notify_collision_with_block(Block& block) {
 }
 
 /**
- * @brief This function is called when a bomb detects a collision with this entity.
- * @param bomb the bomb
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a bomb detects a collision with this entity.
+ * \param bomb the bomb
+ * \param collision_mode the collision mode that detected the event
  */
 void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) {
 
@@ -1662,9 +1662,9 @@ void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) 
 }
 
 /**
- * @brief This function is called when an explosion's sprite detects a collision with a sprite of the hero.
- * @param explosion the explosion
- * @param sprite_overlapping the sprite of the hero that collides with the explosion
+ * \brief This function is called when an explosion's sprite detects a collision with a sprite of the hero.
+ * \param explosion the explosion
+ * \param sprite_overlapping the sprite of the hero that collides with the explosion
  */
 void Hero::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
 
@@ -1676,13 +1676,13 @@ void Hero::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
 }
 
 /**
- * @brief Makes the hero escape from an entity that is overlapping him.
+ * \brief Makes the hero escape from an entity that is overlapping him.
  *
  * This function is called when an entity that just appeared may overlap the hero
  * (e.g. a chest or a door).
  *
- * @param entity the entity that just appeared
- * @param direction the direction of the hero relative to the entity
+ * \param entity the entity that just appeared
+ * \param direction the direction of the hero relative to the entity
  * (the hero will be moved into this direction): 0 to 3
  */
 void Hero::avoid_collision(MapEntity &entity, int direction) {
@@ -1718,7 +1718,7 @@ void Hero::avoid_collision(MapEntity &entity, int direction) {
 }
 
 /**
- * @brief Notifies the hero that the entity he is pushing or pulling
+ * \brief Notifies the hero that the entity he is pushing or pulling
  * cannot move anymore because of a collision.
  */
 void Hero::notify_grabbed_entity_collision() {
@@ -1726,7 +1726,7 @@ void Hero::notify_grabbed_entity_collision() {
 }
 
 /**
- * @brief Tests whether the hero is cutting with his sword the specified detector
+ * \brief Tests whether the hero is cutting with his sword the specified detector
  * for which a collision was detected.
  *
  * When the sword sprite collides with a detector,
@@ -1740,15 +1740,15 @@ void Hero::notify_grabbed_entity_collision() {
  * hero wants to cut a bush or some grass.
  * Returns false by default.
  *
- * @param detector the detector to check
- * @return true if the sword is cutting this detector
+ * \param detector the detector to check
+ * \return true if the sword is cutting this detector
  */
 bool Hero::is_striking_with_sword(Detector &detector) {
   return state->is_cutting_with_sword(detector);
 }
 
 /**
- * @brief Snaps the hero to the entity he is facing.
+ * \brief Snaps the hero to the entity he is facing.
  *
  * The hero is snapped if there is no collision and if he is not too far.
  */
@@ -1775,14 +1775,14 @@ void Hero::try_snap_to_facing_entity() {
 }
 
 /**
- * @brief Notifies this entity that it has just attacked an enemy
+ * \brief Notifies this entity that it has just attacked an enemy
  *
  * This function is called even if this attack was not successful.
  *
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * @param killed indicates that the attack has just killed the enemy
+ * \param attack the attack
+ * \param victim the enemy just hurt
+ * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
+ * \param killed indicates that the attack has just killed the enemy
  */
 void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
     EnemyReaction::Reaction& result, bool killed) {
@@ -1791,12 +1791,12 @@ void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
 }
 
 /**
- * @brief Returns the damage power of the sword for the current attack.
+ * \brief Returns the damage power of the sword for the current attack.
  *
  * The value returned takes into account the power of the current sword
  * and the fact that a spin attack is more powerful than other attacks.
  *
- * @return the current damage factor of the sword
+ * \return the current damage factor of the sword
  */
 int Hero::get_sword_damage_factor() {
 
@@ -1804,20 +1804,20 @@ int Hero::get_sword_damage_factor() {
 }
 
 /**
- * @brief Returns whether the hero can be hurt currently.
- * @param attacker an attacker that is trying to hurt the hero
+ * \brief Returns whether the hero can be hurt currently.
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
- * @return true if the hero can be hurt
+ * \return true if the hero can be hurt
  */
 bool Hero::can_be_hurt(Enemy* attacker) {
   return state->can_be_hurt(attacker);
 }
 
 /**
- * @brief Hurts the hero if possible.
- * @param source an entity that hurts the hero (usually an enemy)
- * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
- * @param magic_points number of magic points to remove
+ * \brief Hurts the hero if possible.
+ * \param source an entity that hurts the hero (usually an enemy)
+ * \param life_points number of heart quarters to remove (this number may be reduced by the tunic)
+ * \param magic_points number of magic points to remove
  */
 void Hero::hurt(MapEntity& source, int life_points, int magic_points) {
 
@@ -1833,10 +1833,10 @@ void Hero::hurt(MapEntity& source, int life_points, int magic_points) {
 }
 
 /**
- * @brief Hurts the hero if possible.
- * @param source_xy coordinates of whatever hurts the hero
- * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
- * @param magic_points number of magic points to remove
+ * \brief Hurts the hero if possible.
+ * \param source_xy coordinates of whatever hurts the hero
+ * \param life_points number of heart quarters to remove (this number may be reduced by the tunic)
+ * \param magic_points number of magic points to remove
  */
 void Hero::hurt(const Rectangle& source_xy, int life_points, int magic_points) {
 
@@ -1846,7 +1846,7 @@ void Hero::hurt(const Rectangle& source_xy, int life_points, int magic_points) {
 }
 
 /**
- * @brief Draws a grass sprite below the hero and makes him walk slower.
+ * \brief Draws a grass sprite below the hero and makes him walk slower.
  */
 void Hero::start_grass() {
 
@@ -1860,7 +1860,7 @@ void Hero::start_grass() {
 }
 
 /**
- * @brief Draws a shallow water sprite below the hero and makes him walk
+ * \brief Draws a shallow water sprite below the hero and makes him walk
  * slower.
  */
 void Hero::start_shallow_water() {
@@ -1875,7 +1875,7 @@ void Hero::start_shallow_water() {
 }
 
 /**
- * @brief This function is called when the hero was dead but saved by a fairy.
+ * \brief This function is called when the hero was dead but saved by a fairy.
  */
 void Hero::get_back_from_death() {
 
@@ -1885,7 +1885,7 @@ void Hero::get_back_from_death() {
 }
 
 /**
- * @brief Makes the hero drown or swim.
+ * \brief Makes the hero drown or swim.
  */
 void Hero::start_deep_water() {
 
@@ -1905,7 +1905,7 @@ void Hero::start_deep_water() {
 }
 
 /**
- * @brief Makes the hero move towards a hole of fall into it.
+ * \brief Makes the hero move towards a hole of fall into it.
  */
 void Hero::start_hole() {
 
@@ -1978,7 +1978,7 @@ void Hero::start_hole() {
 }
 
 /**
- * @brief Makes the hero drown into lava.
+ * \brief Makes the hero drown into lava.
  */
 void Hero::start_lava() {
 
@@ -1987,8 +1987,8 @@ void Hero::start_lava() {
 }
 
 /**
- * @brief Makes the hero being hurt by prickles.
- * @param delay delay before returning control to the player
+ * \brief Makes the hero being hurt by prickles.
+ * \param delay delay before returning control to the player
  */
 void Hero::start_prickle(uint32_t delay) {
 
@@ -1998,8 +1998,8 @@ void Hero::start_prickle(uint32_t delay) {
 }
 
 /**
- * @brief Returns whether the hero can walk normally and interact with entities.
- * @return true if the hero can walk normally
+ * \brief Returns whether the hero can walk normally and interact with entities.
+ * \return true if the hero can walk normally
  */
 bool Hero::is_free() {
 
@@ -2007,8 +2007,8 @@ bool Hero::is_free() {
 }
 
 /**
- * @brief Returns whether the hero is currently using an equipment item.
- * @return true if the hero is using an equipment item.
+ * \brief Returns whether the hero is currently using an equipment item.
+ * \return true if the hero is using an equipment item.
  */
 bool Hero::is_using_item() {
 
@@ -2016,8 +2016,8 @@ bool Hero::is_using_item() {
 }
 
 /**
- * @brief When the hero is using an equipment item, returns that item.
- * @return The current equipment item.
+ * \brief When the hero is using an equipment item, returns that item.
+ * \return The current equipment item.
  */
 EquipmentItemUsage& Hero::get_item_being_used() {
 
@@ -2025,11 +2025,11 @@ EquipmentItemUsage& Hero::get_item_being_used() {
 }
 
 /**
- * @brief Returns whether the hero is grabbing and moving an entity in its current state.
+ * \brief Returns whether the hero is grabbing and moving an entity in its current state.
  *
  * If he is not grabbing any entity, false is returned.
  *
- * @return true if the hero is grabbing and moving an entity
+ * \return true if the hero is grabbing and moving an entity
  */
 bool Hero::is_moving_grabbed_entity() {
  
@@ -2037,8 +2037,8 @@ bool Hero::is_moving_grabbed_entity() {
 }
 
 /**
- * @brief Returns whether the hero is grabbing or pulling an entity.
- * @return true if the hero is grabbing or pulling an entity
+ * \brief Returns whether the hero is grabbing or pulling an entity.
+ * \return true if the hero is grabbing or pulling an entity
  */
 bool Hero::is_grabbing_or_pulling() {
 
@@ -2046,7 +2046,7 @@ bool Hero::is_grabbing_or_pulling() {
 }
 
 /**
- * @brief Lets the hero walk normally.
+ * \brief Lets the hero walk normally.
  */
 void Hero::start_free() {
 
@@ -2056,7 +2056,7 @@ void Hero::start_free() {
 }
 
 /**
- * @brief Lets the hero walk, keeping a possible carried item from the
+ * \brief Lets the hero walk, keeping a possible carried item from the
  * previous state.
  */
 void Hero::start_free_or_carrying() {
@@ -2070,9 +2070,9 @@ void Hero::start_free_or_carrying() {
 }
 
 /**
- * @brief Makes the hero brandish a treasure.
- * @param treasure The treasure to give him.
- * @param callback_ref Lua ref to a function to call when the
+ * \brief Makes the hero brandish a treasure.
+ * \param treasure The treasure to give him.
+ * \param callback_ref Lua ref to a function to call when the
  * treasure's dialog finishes (possibly LUA_REFNIL).
  */
 void Hero::start_treasure(const Treasure& treasure, int callback_ref) {
@@ -2080,31 +2080,31 @@ void Hero::start_treasure(const Treasure& treasure, int callback_ref) {
 }
 
 /**
- * @brief Makes the hero walk with a predetermined path.
+ * \brief Makes the hero walk with a predetermined path.
  *
  * The player does not control him anymore.
  *
- * @param path the succession of basic moves
+ * \param path the succession of basic moves
  * composing this movement (each character represents
  * a direction between '0' and '7'), as in PathMovement
- * @param loop true to make the movement return to the beginning
+ * \param loop true to make the movement return to the beginning
  * once finished
- * @param ignore_obstacles true to make the movement ignore obstacles
+ * \param ignore_obstacles true to make the movement ignore obstacles
  */
 void Hero::start_forced_walking(const std::string &path, bool loop, bool ignore_obstacles) {
   set_state(new ForcedWalkingState(*this, path, loop, ignore_obstacles));
 }
 
 /**
- * @brief Makes the hero jump into a direction.
+ * \brief Makes the hero jump into a direction.
  *
  * While he is jumping, the player does not control him anymore.
  *
- * @param direction8 direction of the jump (0 to 7)
- * @param distance distance of the jump in pixels
- * @param ignore_obstacles true make the movement ignore obstacles
- * @param with_sound true to play the "jump" sound
- * @param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
+ * \param direction8 direction of the jump (0 to 7)
+ * \param distance distance of the jump in pixels
+ * \param ignore_obstacles true make the movement ignore obstacles
+ * \param with_sound true to play the "jump" sound
+ * \param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  */
 void Hero::start_jumping(int direction8, int distance, bool ignore_obstacles,
     bool with_sound, uint32_t movement_delay) {
@@ -2114,8 +2114,8 @@ void Hero::start_jumping(int direction8, int distance, bool ignore_obstacles,
 }
 
 /**
- * @brief Makes the hero brandish his sword meaning a victory.
- * @param callback_ref Lua ref to a function to call when the
+ * \brief Makes the hero brandish his sword meaning a victory.
+ * \param callback_ref Lua ref to a function to call when the
  * victory sequence finishes (possibly LUA_REFNIL).
  */
 void Hero::start_victory(int callback_ref) {
@@ -2123,7 +2123,7 @@ void Hero::start_victory(int callback_ref) {
 }
 
 /**
- * @brief Freezes the hero.
+ * \brief Freezes the hero.
  *
  * When the hero is freezed, he cannot move.
  * The current animation of the hero's sprites is stopped and the "stopped" animation is played.
@@ -2134,15 +2134,15 @@ void Hero::start_freezed() {
 }
 
 /**
- * @brief Makes the hero lift a destructible item.
- * @param item_to_lift the item to lift (will be destroyed automatically)
+ * \brief Makes the hero lift a destructible item.
+ * \param item_to_lift the item to lift (will be destroyed automatically)
  */
 void Hero::start_lifting(CarriedItem *item_to_lift) {
   set_state(new LiftingState(*this, item_to_lift));
 }
 
 /**
- * @brief Starts running with the speed shoes.
+ * \brief Starts running with the speed shoes.
  */
 void Hero::start_running() {
 
@@ -2160,16 +2160,16 @@ void Hero::start_running() {
 }
 
 /**
- * @brief Starts grabbing an obstacle.
+ * \brief Starts grabbing an obstacle.
  */
 void Hero::start_grabbing() {
   set_state(new GrabbingState(*this));
 }
 
 /**
- * @brief Returns whether the hero can pick a treasure in this state.
- * @param item The equipment item to pick.
- * @return true if this equipment item can currently be picked.
+ * \brief Returns whether the hero can pick a treasure in this state.
+ * \param item The equipment item to pick.
+ * \return true if this equipment item can currently be picked.
  */
 bool Hero::can_pick_treasure(EquipmentItem& item) {
 
@@ -2177,9 +2177,9 @@ bool Hero::can_pick_treasure(EquipmentItem& item) {
 }
 
 /**
- * @brief Returns whether the hero can starts using an equipment item.
- * @param item The equipment item to use.
- * @return true if this equipment item can currently be used.
+ * \brief Returns whether the hero can starts using an equipment item.
+ * \param item The equipment item to use.
+ * \return true if this equipment item can currently be used.
  */
 bool Hero::can_start_item(EquipmentItem& item) {
 
@@ -2189,8 +2189,8 @@ bool Hero::can_start_item(EquipmentItem& item) {
 }
 
 /**
- * @brief Starts using an equipment item.
- * @param item The equipment item to use.
+ * \brief Starts using an equipment item.
+ * \param item The equipment item to use.
  */
 void Hero::start_item(EquipmentItem& item) {
   Debug::check_assertion(can_start_item(item), StringConcat() <<
@@ -2199,12 +2199,12 @@ void Hero::start_item(EquipmentItem& item) {
 }
 
 /**
- * @brief Starts shooting a boomerang.
- * @param max_distance maximum distance of the movement in pixels
- * @param speed speed of the movement in pixels per second
- * @param tunic_preparing_animation animation name of the hero's tunic sprite
+ * \brief Starts shooting a boomerang.
+ * \param max_distance maximum distance of the movement in pixels
+ * \param speed speed of the movement in pixels per second
+ * \param tunic_preparing_animation animation name of the hero's tunic sprite
  * when preparing the boomerang
- * @param sprite_name animation set id that represents the boomerang
+ * \param sprite_name animation set id that represents the boomerang
  */
 void Hero::start_boomerang(int max_distance, int speed,
     const std::string& tunic_preparing_animation,
@@ -2215,25 +2215,25 @@ void Hero::start_boomerang(int max_distance, int speed,
 }
 
 /**
- * @brief Starts shooting an arrow with a bow.
+ * \brief Starts shooting an arrow with a bow.
  */
 void Hero::start_bow() {
   set_state(new BowState(*this));
 }
 
 /**
- * @brief Starts shooting the hookshot.
+ * \brief Starts shooting the hookshot.
  */
 void Hero::start_hookshot() {
   set_state(new HookshotState(*this));
 }
 
 /**
- * @brief Makes the hero return to his last solid ground position.
- * @param use_memorized_xy true to get back to the place previously memorized (if any),
+ * \brief Makes the hero return to his last solid ground position.
+ * \param use_memorized_xy true to get back to the place previously memorized (if any),
  * false to get back to the last coordinates with solid ground
- * @param end_delay a delay to add at the end before returning control to the hero (default 0)
- * @param with_sound true to play a sound when returning to solid ground (default true)
+ * \param end_delay a delay to add at the end before returning control to the hero (default 0)
+ * \param with_sound true to play a sound when returning to solid ground (default true)
  */
 void Hero::start_back_to_solid_ground(bool use_memorized_xy,
     uint32_t end_delay, bool with_sound) {
@@ -2242,7 +2242,7 @@ void Hero::start_back_to_solid_ground(bool use_memorized_xy,
 }
 
 /**
- * @brief Activates immediately the state corresponding to the current ground.
+ * \brief Activates immediately the state corresponding to the current ground.
  *
  * Only the state is changed here.
  * Some other functions like start_deep_water() and start_hole()
@@ -2296,8 +2296,8 @@ void Hero::start_state_from_ground() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& Hero::get_lua_type_name() const {
   return LuaContext::entity_hero_module_name;

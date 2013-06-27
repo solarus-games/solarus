@@ -26,7 +26,7 @@
 #include <vorbis/vorbisfile.h>
 
 /**
- * @brief Represents a sound effect that can be played in the program.
+ * \brief Represents a sound effect that can be played in the program.
  *
  * This class also handles the initialization of the whole audio system.
  * To create a sound, prefer the Sound::play() method
@@ -59,7 +59,7 @@ class Sound {
     // libvorbisfile
 
     /**
-     * @brief Buffer containing an encoded sound file.
+     * \brief Buffer containing an encoded sound file.
      */
     struct SoundFromMemory {
       char* data;               /**< the buffer */

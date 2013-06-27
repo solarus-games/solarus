@@ -21,9 +21,9 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Constructor.
- * @param frames Position of each frame of the sequence in the image.
- * @param origin Coordinates of the sprite's origin point.
+ * \brief Constructor.
+ * \param frames Position of each frame of the sequence in the image.
+ * \param origin Coordinates of the sprite's origin point.
  */
 SpriteAnimationDirection::SpriteAnimationDirection(
     const std::vector<Rectangle>& frames,
@@ -35,7 +35,7 @@ SpriteAnimationDirection::SpriteAnimationDirection(
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 SpriteAnimationDirection::~SpriteAnimationDirection() {
 
@@ -46,8 +46,8 @@ SpriteAnimationDirection::~SpriteAnimationDirection() {
 }
 
 /**
- * @brief Returns the size of a frame.
- * @return The size of a frame.
+ * \brief Returns the size of a frame.
+ * \return The size of a frame.
  */
 Rectangle SpriteAnimationDirection::get_size() const {
 
@@ -56,25 +56,25 @@ Rectangle SpriteAnimationDirection::get_size() const {
 }
 
 /**
- * @brief Returns the origin point of a frame.
- * @return the origin point of a frame
+ * \brief Returns the origin point of a frame.
+ * \return the origin point of a frame
  */
 const Rectangle& SpriteAnimationDirection::get_origin() const {
   return origin;
 }
 
 /**
- * @brief Returns the number of frames in this direction.
- * @return the number of frames
+ * \brief Returns the number of frames in this direction.
+ * \return the number of frames
  */
 int SpriteAnimationDirection::get_nb_frames() const {
   return frames.size();
 }
 
 /**
- * @brief Returns the rectangle representing the specified frame on the source image.
- * @param frame a frame number
- * @return the rectangle of this frame
+ * \brief Returns the rectangle representing the specified frame on the source image.
+ * \param frame a frame number
+ * \return the rectangle of this frame
  */
 const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
 
@@ -86,12 +86,12 @@ const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
 }
 
 /**
- * @brief Draws a specific frame on the map.
- * @param dst_surface the surface on which the frame will be drawn
- * @param dst_position coordinates on the destination surface
+ * \brief Draws a specific frame on the map.
+ * \param dst_surface the surface on which the frame will be drawn
+ * \param dst_position coordinates on the destination surface
  * (the origin point will be drawn at this position)
- * @param current_frame the frame to show
- * @param src_image the image from which the frame is extracted
+ * \param current_frame the frame to show
+ * \param src_image the image from which the frame is extracted
  */
 void SpriteAnimationDirection::draw(Surface& dst_surface,
     const Rectangle& dst_position, int current_frame, Surface& src_image) {
@@ -107,14 +107,14 @@ void SpriteAnimationDirection::draw(Surface& dst_surface,
 }
 
 /**
- * @brief Calculates the bit fields representing the non-transparent pixels
+ * \brief Calculates the bit fields representing the non-transparent pixels
  * of the images in this direction.
  *
  * This method has to be called if you want a sprite having this animations
  * to be able to detect pixel-perfect collisions.
  * If the pixel-perfect collisions are already enabled, this function does nothing.
  *
- * @param src_image the surface containing the animations
+ * \param src_image the surface containing the animations
  */
 void SpriteAnimationDirection::enable_pixel_collisions(Surface* src_image) {
 
@@ -126,7 +126,7 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface* src_image) {
 }
 
 /**
- * @brief Disables the pixel-perfect collision ability of this sprite animation direction.
+ * \brief Disables the pixel-perfect collision ability of this sprite animation direction.
  */
 void SpriteAnimationDirection::disable_pixel_collisions() {
 
@@ -138,21 +138,21 @@ void SpriteAnimationDirection::disable_pixel_collisions() {
 }
 
 /**
- * @brief Returns whether the pixel-perfect collisions are enabled for this direction.
- * @return true if the pixel-perfect collisions are enabled
+ * \brief Returns whether the pixel-perfect collisions are enabled for this direction.
+ * \return true if the pixel-perfect collisions are enabled
  */
 bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
   return !pixel_bits.empty();
 }
 
 /**
- * @brief Returns the pixel bits object of a frame.
+ * \brief Returns the pixel bits object of a frame.
  *
  * It represents the transparent bits of the frame and permits to detect pixel collisions.
  * The pixel collisions must be enabled.
  *
- * @param frame a frame of the animation
- * @return the pixel bits object of a frame
+ * \param frame a frame of the animation
+ * \return the pixel bits object of a frame
  */
 PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
 

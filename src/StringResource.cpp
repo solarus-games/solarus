@@ -22,21 +22,21 @@
 std::map<std::string, std::string> StringResource::strings;
 
 /**
- * @brief Constructor.
+ * \brief Constructor.
  */
 StringResource::StringResource() {
 
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 StringResource::~StringResource() {
 
 }
 
 /**
- * @brief Initializes the text resource by loading all strings.
+ * \brief Initializes the text resource by loading all strings.
  *
  * The strings are loaded from the language-specific file "text/strings.dat"
  * and stored into memory for future access by get_string().
@@ -89,17 +89,17 @@ void StringResource::initialize() {
 }
 
 /**
- * @brief Closes the text resource.
+ * \brief Closes the text resource.
  */
 void StringResource::quit() {
   strings.clear();
 }
 
 /**
- * @brief Returns whether a string exists in the language-specific file
+ * \brief Returns whether a string exists in the language-specific file
  * "text/strings.dat" for the current language.
- * @param key Id of a string.
- * @return true if the string exists.
+ * \param key Id of a string.
+ * \return true if the string exists.
  */
 bool StringResource::exists(const std::string& key) {
 
@@ -107,10 +107,10 @@ bool StringResource::exists(const std::string& key) {
 }
 
 /**
- * @brief Returns a string stored in the language-specific file
+ * \brief Returns a string stored in the language-specific file
  * "text/strings.dat" for the current language.
- * @param key Id of the string to retrieve. It must exist.
- * @return The corresponding localized string.
+ * \param key Id of the string to retrieve. It must exist.
+ * \return The corresponding localized string.
  */
 const std::string& StringResource::get_string(const std::string& key) {
 

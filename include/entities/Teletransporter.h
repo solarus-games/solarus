@@ -22,7 +22,7 @@
 #include "Transition.h"
 
 /**
- * @brief A detector that sends the hero to a destination.
+ * \brief A detector that sends the hero to a destination.
  *
  * A teletransporter is a detector placed on a map.
  * When the hero walks on this detector, he is placed on a destination

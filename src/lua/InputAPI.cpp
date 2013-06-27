@@ -22,7 +22,7 @@
 const std::string LuaContext::input_module_name = "sol.input";
 
 /**
- * @brief Initializes the input features provided to Lua.
+ * \brief Initializes the input features provided to Lua.
  */
 void LuaContext::register_input_module() {
 

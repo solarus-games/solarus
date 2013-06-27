@@ -22,7 +22,7 @@
 #include <list>
 
 /**
- * @brief A dialog that can be displayed during the game in the dialog box.
+ * \brief A dialog that can be displayed during the game in the dialog box.
  */
 class Dialog {
 

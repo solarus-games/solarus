@@ -22,9 +22,9 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Creates a new item to be used.
- * @param game The game.
- * @param item The item to use.
+ * \brief Creates a new item to be used.
+ * \param game The game.
+ * \param item The item to use.
  */
 EquipmentItemUsage::EquipmentItemUsage(Game& game, EquipmentItem& item):
   game(game),
@@ -35,21 +35,21 @@ EquipmentItemUsage::EquipmentItemUsage(Game& game, EquipmentItem& item):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 EquipmentItemUsage::~EquipmentItemUsage() {
 
 }
 
 /**
- * @brief Returns the equipment item being used.
+ * \brief Returns the equipment item being used.
  */
 EquipmentItem& EquipmentItemUsage::get_item() {
   return item;
 }
 
 /**
- * @brief Starts using this item.
+ * \brief Starts using this item.
  */
 void EquipmentItemUsage::start() {
 
@@ -62,21 +62,21 @@ void EquipmentItemUsage::start() {
 }
 
 /**
- * @brief Updates this item when it is being used.
+ * \brief Updates this item when it is being used.
  */
 void EquipmentItemUsage::update() {
 }
 
 /**
- * @brief Returns whether this item has finished to be used.
- * @return true if this item has finished to be used
+ * \brief Returns whether this item has finished to be used.
+ * \return true if this item has finished to be used
  */
 bool EquipmentItemUsage::is_finished() {
   return finished;
 }
 
 /**
- * @brief Indicates that the player has finished using this item.
+ * \brief Indicates that the player has finished using this item.
  */
 void EquipmentItemUsage::set_finished() {
   this->finished = true;

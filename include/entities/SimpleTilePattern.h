@@ -22,7 +22,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief Non-animated tile pattern.
+ * \brief Non-animated tile pattern.
  *
  * This tile pattern does not show any special effects and displays
  * a single image.

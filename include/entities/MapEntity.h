@@ -30,7 +30,7 @@
 struct lua_State;
 
 /**
- * @brief Abstract class for all objects placed on a map.
+ * \brief Abstract class for all objects placed on a map.
  *
  * Example of entities include tiles, enemies, the hero,
  * interactive objects, doors, chests, etc.
@@ -132,8 +132,8 @@ class MapEntity: public ExportableToLua {
     bool is_being_removed();
 
     /**
-     * @brief Returns the type of entity.
-     * @return the type of entity
+     * \brief Returns the type of entity.
+     * \return the type of entity
      */
     virtual EntityType get_type() = 0;  // TODO make const
     bool is_hero();

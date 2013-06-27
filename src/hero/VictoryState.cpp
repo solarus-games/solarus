@@ -24,9 +24,9 @@
 #include "Map.h"
 
 /**
- * @brief Constructor.
- * @param hero The hero controlled by this state.
- * @param callback_ref Lua ref to a function to call when the
+ * \brief Constructor.
+ * \param hero The hero controlled by this state.
+ * \param callback_ref Lua ref to a function to call when the
  * victory sequence finishes (possibly LUA_REFNIL).
  */
 Hero::VictoryState::VictoryState(Hero& hero, int callback_ref):
@@ -38,15 +38,15 @@ Hero::VictoryState::VictoryState(Hero& hero, int callback_ref):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::VictoryState::~VictoryState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::VictoryState::start(State* previous_state) {
 
@@ -63,8 +63,8 @@ void Hero::VictoryState::start(State* previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::VictoryState::stop(State* next_state) {
 
@@ -75,7 +75,7 @@ void Hero::VictoryState::stop(State* next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::VictoryState::update() {
 
@@ -97,8 +97,8 @@ void Hero::VictoryState::update() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::VictoryState::set_suspended(bool suspended) {
 

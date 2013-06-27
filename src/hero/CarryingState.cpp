@@ -25,9 +25,9 @@
 #include "Map.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param carried_item the item to carry
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
+ * \param carried_item the item to carry
  */
 Hero::CarryingState::CarryingState(Hero &hero, CarriedItem *carried_item):
   PlayerMovementState(hero), carried_item(carried_item) {
@@ -35,7 +35,7 @@ Hero::CarryingState::CarryingState(Hero &hero, CarriedItem *carried_item):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::CarryingState::~CarryingState() {
 
@@ -43,8 +43,8 @@ Hero::CarryingState::~CarryingState() {
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::CarryingState::start(State *previous_state) {
 
@@ -59,8 +59,8 @@ void Hero::CarryingState::start(State *previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::CarryingState::stop(State *next_state) {
 
@@ -93,8 +93,8 @@ void Hero::CarryingState::stop(State *next_state) {
 }
 
 /**
- * @brief Changes the map.
- * @param map the new map
+ * \brief Changes the map.
+ * \param map the new map
  */
 void Hero::CarryingState::set_map(Map &map) {
 
@@ -105,7 +105,7 @@ void Hero::CarryingState::set_map(Map &map) {
 }
 
 /**
- * @brief Notifies this state that the layer has changed.
+ * \brief Notifies this state that the layer has changed.
  */
 void Hero::CarryingState::notify_layer_changed() {
 
@@ -114,8 +114,8 @@ void Hero::CarryingState::notify_layer_changed() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::CarryingState::set_suspended(bool suspended) {
 
@@ -124,7 +124,7 @@ void Hero::CarryingState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::CarryingState::update() {
 
@@ -142,7 +142,7 @@ void Hero::CarryingState::update() {
 }
 
 /**
- * @brief Notifies this state that the action command was just pressed.
+ * \brief Notifies this state that the action command was just pressed.
  */
 void Hero::CarryingState::notify_action_command_pressed() {
 
@@ -153,7 +153,7 @@ void Hero::CarryingState::notify_action_command_pressed() {
 }
 
 /**
- * @brief Throws the item carried.
+ * \brief Throws the item carried.
  *
  * This function is called when the player presses the action key
  * or when another state becomes the current state.
@@ -166,57 +166,57 @@ void Hero::CarryingState::throw_item() {
 }
 
 /**
- * @brief Returns whether the hero can swing his sword in this state.
- * @return true if the hero can swing his sword in this state
+ * \brief Returns whether the hero can swing his sword in this state.
+ * \return true if the hero can swing his sword in this state
  */
 bool Hero::CarryingState::can_start_sword() {
   return true;
 }
 
 /**
- * @brief Returns whether can trigger a jumper in this state.
+ * \brief Returns whether can trigger a jumper in this state.
  * If false is returned, jumpers have no effect (but they are obstacle for the hero).
- * @return true if the hero can use jumpers in this state
+ * \return true if the hero can use jumpers in this state
  */
 bool Hero::CarryingState::can_take_jumper() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can take stairs in this state.
+ * \brief Returns whether the hero can take stairs in this state.
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
- * @return true if the hero ignores the effect of stairs in this state
+ * \return true if the hero ignores the effect of stairs in this state
  */
 bool Hero::CarryingState::can_take_stairs() {
   return true;
 }
 
 /**
- * @brief Gives the sprites the animation stopped corresponding to this state.
+ * \brief Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::CarryingState::set_animation_stopped() {
   get_sprites().set_animation_stopped_carrying();
 }
 
 /**
- * @brief Gives the sprites the animation walking corresponding to this state.
+ * \brief Gives the sprites the animation walking corresponding to this state.
  */
 void Hero::CarryingState::set_animation_walking() {
   get_sprites().set_animation_walking_carrying();
 }
 
 /**
- * @brief Returns the item currently carried by the hero in this state, if any.
- * @return the item carried by the hero, or NULL
+ * \brief Returns the item currently carried by the hero in this state, if any.
+ * \return the item carried by the hero, or NULL
  */
 CarriedItem* Hero::CarryingState::get_carried_item() {
   return carried_item;
 }
 
 /**
- * @brief Returns the action to do with an item previously carried by the hero when this state starts.
- * @param carried_item the item carried in the previous state
- * @return the action to do with a previous carried item when this state starts
+ * \brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * \param carried_item the item carried in the previous state
+ * \return the action to do with a previous carried item when this state starts
  */
 CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
 

@@ -24,7 +24,7 @@
 #include <set>
 
 /**
- * @brief Stores the mapping between the in-game high-level commands
+ * \brief Stores the mapping between the in-game high-level commands
  * and their keyboard and joypad bindings.
  *
  * This class receives the low-level keyboard and joypad events that occur
@@ -40,7 +40,7 @@ class GameCommands {
   public:
 
     /**
-     * @brief The built-in commands recognized by the engine during a game.
+     * \brief The built-in commands recognized by the engine during a game.
      *
      * These high-level commands can be mapped onto the keyboard and the joypad.
      */

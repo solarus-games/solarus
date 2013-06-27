@@ -28,14 +28,14 @@
 #include "KeysEffect.h"
 
 /**
- * @brief Constructor.
+ * \brief Constructor.
  *
  * Creates a bomb.
  *
- * @param name Unique name identifying the entity on the map or an empty string.
- * @param layer layer of the entity to create
- * @param x x coordinate of the entity to create
- * @param y y coordinate of the entity to create
+ * \param name Unique name identifying the entity on the map or an empty string.
+ * \param layer layer of the entity to create
+ * \param x x coordinate of the entity to create
+ * \param y y coordinate of the entity to create
  */
 Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
@@ -49,102 +49,102 @@ Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Bomb::~Bomb() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Bomb::get_type() {
   return BOMB;
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
+ * \brief Returns whether entities of this type can be obstacles for other entities.
  *
  * If yes, the function is_obstacle_for() will be called
  * to determine whether this particular entity is an obstacle or not.
  *
- * @return true if this type of entity can be obstacle for other entities
+ * \return true if this type of entity can be obstacle for other entities
  */
 bool Bomb::can_be_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether this entity has to be drawn in y order.
- * @return true if this type of entity is drawn at the same level as the hero
+ * \brief Returns whether this entity has to be drawn in y order.
+ * \return true if this type of entity is drawn at the same level as the hero
  */
 bool Bomb::is_drawn_in_y_order() {
   return true;
 }
 
 /**
- * @brief Returns whether a conveyor belt is currently considered as an obstacle by this entity.
- * @param conveyor_belt a conveyor belt
- * @return true if the conveyor belt is currently an obstacle for this entity
+ * \brief Returns whether a conveyor belt is currently considered as an obstacle by this entity.
+ * \param conveyor_belt a conveyor belt
+ * \return true if the conveyor belt is currently an obstacle for this entity
  */
 bool Bomb::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
 /**
- * @brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is currently an obstacle for this entity
+ * \brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is currently an obstacle for this entity
  */
 bool Bomb::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
 /**
- * @brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
- * @return true if the deep water tiles are currently an obstacle for this entity
+ * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
+ * \return true if the deep water tiles are currently an obstacle for this entity
  */
 bool Bomb::is_deep_water_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a hole is currently considered as an obstacle for this entity.
- * @return true if the holes are currently an obstacle for this entity
+ * \brief Returns whether a hole is currently considered as an obstacle for this entity.
+ * \return true if the holes are currently an obstacle for this entity
  */
 bool Bomb::is_hole_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether lava is currently considered as an obstacle for this entity.
- * @return true if lava is currently an obstacle for this entity
+ * \brief Returns whether lava is currently considered as an obstacle for this entity.
+ * \return true if lava is currently an obstacle for this entity
  */
 bool Bomb::is_lava_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether prickles are currently considered as an obstacle for this entity.
- * @return true if prickles are currently an obstacle for this entity
+ * \brief Returns whether prickles are currently considered as an obstacle for this entity.
+ * \return true if prickles are currently an obstacle for this entity
  */
 bool Bomb::is_prickle_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
- * @return true if the ladders are currently an obstacle for this entity
+ * \brief Returns whether a ladder is currently considered as an obstacle for this entity.
+ * \return true if the ladders are currently an obstacle for this entity
  */
 bool Bomb::is_ladder_obstacle() {
   return false;
 }
 
 /**
- * @brief This function is called by the engine when an entity overlaps this detector.
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called by the engine when an entity overlaps this detector.
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void Bomb::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
@@ -152,10 +152,10 @@ void Bomb::notify_collision(MapEntity& entity_overlapping, CollisionMode collisi
 }
 
 /**
- * @brief This function is called when an explosion's sprite
+ * \brief This function is called when an explosion's sprite
  * detects a pixel-perfect collision with a sprite of this entity.
- * @param explosion the explosion
- * @param sprite_overlapping the sprite of the current entity that collides with the explosion
+ * \param explosion the explosion
+ * \param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
 void Bomb::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) {
 
@@ -165,10 +165,10 @@ void Bomb::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_
 }
 
 /**
- * @brief This function is called when a conveyor belt detects a collision with this entity.
- * @param conveyor_belt a conveyor belt
- * @param dx direction of the x move in pixels (0, 1 or -1)
- * @param dy direction of the y move in pixels (0, 1 or -1)
+ * \brief This function is called when a conveyor belt detects a collision with this entity.
+ * \param conveyor_belt a conveyor belt
+ * \param dx direction of the x move in pixels (0, 1 or -1)
+ * \param dy direction of the y move in pixels (0, 1 or -1)
  */
 void Bomb::notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy) {
 
@@ -191,7 +191,7 @@ void Bomb::notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int 
 }
 
 /**
- * @brief This function is called when the entity has just moved.
+ * \brief This function is called when the entity has just moved.
  */
 void Bomb::notify_position_changed() {
 
@@ -204,7 +204,7 @@ void Bomb::notify_position_changed() {
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by
+ * \brief Notifies this detector that the player is interacting with it by
  * pressing the action command.
  *
  * This function is called when the player presses the action command
@@ -228,8 +228,8 @@ void Bomb::notify_action_command_pressed() {
 }
 
 /**
- * @brief This function is called by the map when the game is suspended or resumed.
- * @param suspended true to suspend the entity, false to resume it
+ * \brief This function is called by the map when the game is suspended or resumed.
+ * \param suspended true to suspend the entity, false to resume it
  */
 void Bomb::set_suspended(bool suspended) {
 
@@ -243,7 +243,7 @@ void Bomb::set_suspended(bool suspended) {
 }
 
 /**
- * @brief This function is called repeatedly.
+ * \brief This function is called repeatedly.
  */
 void Bomb::update() {
 
@@ -273,7 +273,7 @@ void Bomb::update() {
 }
 
 /**
- * @brief Makes the bomb explode.
+ * \brief Makes the bomb explode.
  */
 void Bomb::explode() {
 

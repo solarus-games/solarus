@@ -36,7 +36,7 @@
 #include <lauxlib.h>
 
 /**
- * @brief Features of each type of destructible item.
+ * \brief Features of each type of destructible item.
  */
 const Destructible::Features Destructible::features[] = {
   // animation set, sound, can be lifted, can be cut, can_explode, can_regenerate, weight, damage, special ground
@@ -50,13 +50,13 @@ const Destructible::Features Destructible::features[] = {
 };
 
 /**
- * @brief Creates a new destructible item with the specified subtype.
- * @param name Unique name identifying the entity on the map or an empty string.
- * @param layer layer of the destructible item to create on the map
- * @param x x coordinate of the destructible item to create
- * @param y y coordinate of the destructible item to create
- * @param subtype subtype of destructible item to create
- * @param treasure the pickable item that appears when the destructible
+ * \brief Creates a new destructible item with the specified subtype.
+ * \param name Unique name identifying the entity on the map or an empty string.
+ * \param layer layer of the destructible item to create on the map
+ * \param x x coordinate of the destructible item to create
+ * \param y y coordinate of the destructible item to create
+ * \param subtype subtype of destructible item to create
+ * \param treasure the pickable item that appears when the destructible
  * item is lifted or cut
  */
 Destructible::Destructible(const std::string& name, Layer layer, int x, int y,
@@ -89,7 +89,7 @@ Destructible::Destructible(const std::string& name, Layer layer, int x, int y,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Destructible::~Destructible() {
 
@@ -97,20 +97,20 @@ Destructible::~Destructible() {
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Destructible::get_type() {
   return DESTRUCTIBLE;
 }
 
 /**
- * @brief Returns whether this entity has to be drawn in y order.
+ * \brief Returns whether this entity has to be drawn in y order.
  *
  * Rhis function returns whether an entity of this type should be drawn above
  * the hero and other entities when it is in front of them.
  *
- * @return true if this entity is drawn at the same level as the hero
+ * \return true if this entity is drawn at the same level as the hero
  */
 bool Destructible::is_drawn_in_y_order() {
   return false;
@@ -118,72 +118,72 @@ bool Destructible::is_drawn_in_y_order() {
 
 
 /**
- * @brief Returns the damage this destructible item can cause to enemies
- * @return the damage on enemies
+ * \brief Returns the damage this destructible item can cause to enemies
+ * \return the damage on enemies
  */
 int Destructible::get_damage_on_enemies() {
   return features[subtype].damage_on_enemies;
 }
 
 /**
- * @brief Returns the animation set of this destructible item.
- * @return the animations of the sprite
+ * \brief Returns the animation set of this destructible item.
+ * \return the animations of the sprite
  */
 const std::string& Destructible::get_animation_set_id() {
   return features[subtype].animation_set_id;
 }
 
 /**
- * @brief Returns the id of the sound to play when this item is destroyed.
- * @return the destruction sound id
+ * \brief Returns the id of the sound to play when this item is destroyed.
+ * \return the destruction sound id
  */
 const std::string& Destructible::get_destruction_sound_id() {
   return features[subtype].destruction_sound_id;
 }
 
 /**
- * @brief Returns the special ground to display when walking on this destructible item.
- * @return the ground, or GROUND_NORMAL if there is no special ground to display
+ * \brief Returns the special ground to display when walking on this destructible item.
+ * \return the ground, or GROUND_NORMAL if there is no special ground to display
  */
 Ground Destructible::get_special_ground() {
   return features[subtype].special_ground;
 }
 
 /**
- * @brief Returns whether there is a special ground to display when walking on this destructible item.
- * @return true if there is a special ground
+ * \brief Returns whether there is a special ground to display when walking on this destructible item.
+ * \return true if there is a special ground
  */
 bool Destructible::has_special_ground() {
   return get_special_ground() != GROUND_NORMAL;
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
+ * \brief Returns whether this entity is an obstacle for another one.
  *
  * For a destructible item, this does not depend on the other
  * entity but only on the subtype of destructible item.
  *
- * @param other another entity
- * @return true if this entity is an obstacle for others
+ * \param other another entity
+ * \return true if this entity is an obstacle for others
  */
 bool Destructible::is_obstacle_for(MapEntity &other) {
   return features[subtype].can_be_lifted && !is_being_cut && other.is_destructible_obstacle(*this);
 }
 
 /**
- * @brief Tests whether an entity's collides with this entity.
+ * \brief Tests whether an entity's collides with this entity.
  *
  * This custom collision test is used for destructible items that change the ground drawn under the hero.
  *
- * @param entity an entity
- * @return true if the entity's collides with this entity
+ * \param entity an entity
+ * \return true if the entity's collides with this entity
  */
 bool Destructible::test_collision_custom(MapEntity &entity) {
   return overlaps(entity.get_x(), entity.get_y() - 2);
 }
 
 /**
- * @brief Adds to the map the pickable treasure (if any) hidden under this destructible item.
+ * \brief Adds to the map the pickable treasure (if any) hidden under this destructible item.
  */
 void Destructible::create_pickable() {
 
@@ -193,12 +193,12 @@ void Destructible::create_pickable() {
 }
 
 /**
- * @brief This function is called by the engine when an entity overlaps the destructible item.
+ * \brief This function is called by the engine when an entity overlaps the destructible item.
  *
  * If the entity is the hero, we allow him to lift the item.
  *
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void Destructible::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
@@ -206,9 +206,9 @@ void Destructible::notify_collision(MapEntity &entity_overlapping, CollisionMode
 }
 
 /**
- * @brief This function is called when this entity detects a collision with the hero.
- * @param hero the hero
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called when this entity detects a collision with the hero.
+ * \param hero the hero
+ * \param collision_mode the collision mode that detected the collision
  */
 void Destructible::notify_collision_with_hero(Hero &hero, CollisionMode collision_mode) {
 
@@ -234,14 +234,14 @@ void Destructible::notify_collision_with_hero(Hero &hero, CollisionMode collisio
 }
 
 /**
- * @brief Notifies this entity that another sprite is overlapping it.
+ * \brief Notifies this entity that another sprite is overlapping it.
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.
  *
- * @param other_entity the entity overlapping this detector
- * @param other_sprite the sprite of other_entity that is overlapping this detector
- * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ * \param other_entity the entity overlapping this detector
+ * \param other_sprite the sprite of other_entity that is overlapping this detector
+ * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void Destructible::notify_collision(MapEntity& other_entity,
     Sprite& other_sprite, Sprite& this_sprite) {
@@ -280,7 +280,7 @@ void Destructible::notify_collision(MapEntity& other_entity,
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by
+ * \brief Notifies this detector that the player is interacting with it by
  * pressing the action command.
  *
  * This function is called when the player presses the action command
@@ -338,7 +338,7 @@ void Destructible::notify_action_command_pressed() {
 }
 
 /**
- * @brief Plays the animation destroy of this item.
+ * \brief Plays the animation destroy of this item.
  */
 void Destructible::play_destroy_animation() {
 
@@ -351,9 +351,9 @@ void Destructible::play_destroy_animation() {
 }
 
 /**
- * @brief Sets a Lua function to be called when this destructible item is
+ * \brief Sets a Lua function to be called when this destructible item is
  * destroyed.
- * @param destruction_callback_ref a Lua ref to the callback in the registry
+ * \param destruction_callback_ref a Lua ref to the callback in the registry
  * (if you pass LUA_REFNIL, this function removes the previous callback that
  * was set, if any)
  */
@@ -366,7 +366,7 @@ void Destructible::set_destruction_callback(int destruction_callback_ref) {
 }
 
 /**
- * @brief Calls the Lua destruction callback of this item (if any).
+ * \brief Calls the Lua destruction callback of this item (if any).
  */
 void Destructible::destruction_callback() {
 
@@ -375,26 +375,26 @@ void Destructible::destruction_callback() {
 }
 
 /**
- * @brief Returns whether the item is disabled.
+ * \brief Returns whether the item is disabled.
  *
  * The item is disabled if it was lifted and is about to regenerate.
  *
- * @return true if the item is disabled
+ * \return true if the item is disabled
  */
 bool Destructible::is_disabled() {
   return regeneration_date != 0 && !is_regenerating;
 }
 
 /**
- * @brief Returns whether the item can explode.
- * @return true if the item will explode
+ * \brief Returns whether the item can explode.
+ * \return true if the item will explode
  */
 bool Destructible::can_explode() {
   return features[subtype].can_explode;
 }
 
 /**
- * @brief Creates an explosion on the item.
+ * \brief Creates an explosion on the item.
  */
 void Destructible::explode() {
   get_entities().add_entity(new Explosion("", get_layer(), get_xy(), true));
@@ -402,8 +402,8 @@ void Destructible::explode() {
 }
 
 /**
- * @brief This function is called by the map when the game is suspended or resumed.
- * @param suspended true to suspend the entity, false to resume it
+ * \brief This function is called by the map when the game is suspended or resumed.
+ * \param suspended true to suspend the entity, false to resume it
  */
 void Destructible::set_suspended(bool suspended) {
 
@@ -416,7 +416,7 @@ void Destructible::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates the item.
+ * \brief Updates the item.
  */
 void Destructible::update() {
 
@@ -451,9 +451,9 @@ void Destructible::update() {
 }
 
 /**
- * @brief Converts a value of the Subtype enumeration into a string.
- * @param subtype a subtype of destructible item
- * @return the name of this subtype
+ * \brief Converts a value of the Subtype enumeration into a string.
+ * \param subtype a subtype of destructible item
+ * \return the name of this subtype
  */
 const std::string& Destructible::get_subtype_name(Subtype subtype) {
 
@@ -465,9 +465,9 @@ const std::string& Destructible::get_subtype_name(Subtype subtype) {
 }
 
 /**
- * @brief Converts a subtype name into a value of the Subtype enumeration.
- * @param subtype_name the name of a destructible item subtype
- * @return the corresponding subtype
+ * \brief Converts a subtype name into a value of the Subtype enumeration.
+ * \param subtype_name the name of a destructible item subtype
+ * \return the corresponding subtype
  */
 Destructible::Subtype Destructible::get_subtype_by_name(
     const std::string& subtype_name) {

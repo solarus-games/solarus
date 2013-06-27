@@ -23,8 +23,8 @@
 #include "GameCommands.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::GrabbingState::GrabbingState(Hero &hero):
   State(hero) {
@@ -32,15 +32,15 @@ Hero::GrabbingState::GrabbingState(Hero &hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::GrabbingState::~GrabbingState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::GrabbingState::start(State *previous_state) {
 
@@ -50,7 +50,7 @@ void Hero::GrabbingState::start(State *previous_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::GrabbingState::update() {
 
@@ -76,27 +76,27 @@ void Hero::GrabbingState::update() {
 }
 
 /**
- * @brief Returns whether the hero is grabbing or pulling an entity in this state.
- * @return true if the hero is grabbing or pulling an entity
+ * \brief Returns whether the hero is grabbing or pulling an entity in this state.
+ * \return true if the hero is grabbing or pulling an entity
  */
 bool Hero::GrabbingState::is_grabbing_or_pulling() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can be hurt in this state.
- * @param attacker an attacker that is trying to hurt the hero
+ * \brief Returns whether the hero can be hurt in this state.
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
- * @return true if the hero can be hurt in this state
+ * \return true if the hero can be hurt in this state
  */
 bool Hero::GrabbingState::can_be_hurt(Enemy* attacker) {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can pick a treasure in this state.
- * @param item The equipment item to obtain.
- * @return true if the hero can pick that treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in this state.
+ * \param item The equipment item to obtain.
+ * \return true if the hero can pick that treasure in this state.
  */
 bool Hero::GrabbingState::can_pick_treasure(EquipmentItem& item) {
   return true;

@@ -22,7 +22,7 @@
 #include <lua.hpp>
 
 /**
- * @brief Constructor.
+ * \brief Constructor.
  */
 Drawable::Drawable():
   xy(),
@@ -34,7 +34,7 @@ Drawable::Drawable():
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Drawable::~Drawable() {
 
@@ -43,11 +43,11 @@ Drawable::~Drawable() {
 }
 
 /**
- * @brief Applies a movement to this object.
+ * \brief Applies a movement to this object.
  *
  * Any previous movement is stopped.
  *
- * @param movement The movement to apply.
+ * \param movement The movement to apply.
  */
 void Drawable::start_movement(Movement& movement) {
 
@@ -58,7 +58,7 @@ void Drawable::start_movement(Movement& movement) {
 }
 
 /**
- * @brief Stops the movement applied to the object, if any.
+ * \brief Stops the movement applied to the object, if any.
  *
  * The movement is deleted unless the owner script uses it elsewhere.
  */
@@ -75,40 +75,40 @@ void Drawable::stop_movement() {
 }
 
 /**
- * @brief Returns the current movement of this drawable object.
- * @return The object's movement, or NULL if there is no movement.
+ * \brief Returns the current movement of this drawable object.
+ * \return The object's movement, or NULL if there is no movement.
  */
 Movement* Drawable::get_movement() {
   return movement;
 }
 
 /**
- * @brief Returns the coordinates of this drawable object as defined by its
+ * \brief Returns the coordinates of this drawable object as defined by its
  * movement.
- * @return The coordinates of this drawable object.
+ * \return The coordinates of this drawable object.
  */
 const Rectangle& Drawable::get_xy() {
   return xy;
 }
 
 /**
- * @brief Sets the coordinates of this drawable object.
- * @param xy The new coordinates of this drawable object.
+ * \brief Sets the coordinates of this drawable object.
+ * \param xy The new coordinates of this drawable object.
  */
 void Drawable::set_xy(const Rectangle& xy) {
   this->xy.set_xy(xy);
 }
 
 /**
- * @brief Starts a transition effect on this object.
+ * \brief Starts a transition effect on this object.
  *
  * The transition will be automatically deleted when finished or stopped.
  * Any previous transition is stopped.
  *
- * @param transition The transition to start.
- * @param callback_ref A Lua registry ref to the function to call when
+ * \param transition The transition to start.
+ * \param callback_ref A Lua registry ref to the function to call when
  * the transition finishes, or LUA_REFNIL.
- * @param lua_context The Lua world for the callback (or NULL).
+ * \param lua_context The Lua world for the callback (or NULL).
  */
 void Drawable::start_transition(Transition& transition,
     int callback_ref, LuaContext* lua_context) {
@@ -122,7 +122,7 @@ void Drawable::start_transition(Transition& transition,
 }
 
 /**
- * @brief Stops the transition effect applied to this object, if any.
+ * \brief Stops the transition effect applied to this object, if any.
  *
  * The transition is deleted and the Lua callback (if any) is canceled.
  */
@@ -138,15 +138,15 @@ void Drawable::stop_transition() {
 }
 
 /**
- * @brief Returns the current transition of this drawable object.
- * @return The object's transition, or NULL if there is no transition.
+ * \brief Returns the current transition of this drawable object.
+ * \return The object's transition, or NULL if there is no transition.
  */
 Transition* Drawable::get_transition() {
   return transition;
 }
 
 /**
- * @brief Updates this object.
+ * \brief Updates this object.
  *
  * This function is called repeatedly.
  * You can redefine it for your needs.
@@ -179,8 +179,8 @@ void Drawable::update() {
 }
 
 /**
- * @brief Draws this object, applying dynamic effects.
- * @param dst_surface the destination surface
+ * \brief Draws this object, applying dynamic effects.
+ * \param dst_surface the destination surface
  */
 void Drawable::draw(Surface& dst_surface) {
 
@@ -188,10 +188,10 @@ void Drawable::draw(Surface& dst_surface) {
 }
 
 /**
- * @brief Draws this object, applying dynamic effects.
- * @param dst_surface the destination surface
- * @param x x coordinate of where to draw
- * @param y y coordinate of where to draw
+ * \brief Draws this object, applying dynamic effects.
+ * \param dst_surface the destination surface
+ * \param x x coordinate of where to draw
+ * \param y y coordinate of where to draw
  */
 void Drawable::draw(Surface& dst_surface, int x, int y) {
 
@@ -199,9 +199,9 @@ void Drawable::draw(Surface& dst_surface, int x, int y) {
 }
 
 /**
- * @brief Draws this object, applying dynamic effects.
- * @param dst_surface the destination surface
- * @param dst_position position on this surface
+ * \brief Draws this object, applying dynamic effects.
+ * \param dst_surface the destination surface
+ * \param dst_position position on this surface
  * (will be added to the position obtained by previous movements)
  */
 void Drawable::draw(Surface& dst_surface,
@@ -218,10 +218,10 @@ void Drawable::draw(Surface& dst_surface,
 }
 
 /**
- * @brief Draws a subrectangle of this object, applying dynamic effects.
- * @param region The rectangle to draw in this object.
- * @param dst_surface The destination surface
- * @param dst_position Position on this surface
+ * \brief Draws a subrectangle of this object, applying dynamic effects.
+ * \param region The rectangle to draw in this object.
+ * \param dst_surface The destination surface
+ * \param dst_position Position on this surface
  * (will be added to the position obtained by previous movements).
  */
 void Drawable::draw_region(const Rectangle& region,

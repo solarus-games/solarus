@@ -33,8 +33,8 @@
 #include "Map.h"
 
 /**
- * @brief Creates a hookshot.
- * @param hero the hero
+ * \brief Creates a hookshot.
+ * \param hero the hero
  */
 Hookshot::Hookshot(Hero &hero):
   next_sound_date(System::now()),
@@ -61,136 +61,136 @@ Hookshot::Hookshot(Hero &hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hookshot::~Hookshot() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Hookshot::get_type() {
   return HOOKSHOT;
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
+ * \brief Returns whether entities of this type can be obstacles for other entities.
  *
  * If yes, the function is_obstacle_for() will be called
  * to determine whether this particular entity is an obstacle or not.
  *
- * @return true if this type of entity can be obstacle for other entities
+ * \return true if this type of entity can be obstacle for other entities
  */
 bool Hookshot::can_be_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether this entity has to be drawn in y order.
- * @return true if this type of entity is drawn at the same level as the hero
+ * \brief Returns whether this entity has to be drawn in y order.
+ * \return true if this type of entity is drawn at the same level as the hero
  */
 bool Hookshot::is_drawn_in_y_order() {
   return true;
 }
 
 /**
- * @brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is currently an obstacle for this entity
+ * \brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is currently an obstacle for this entity
  */
 bool Hookshot::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
 /**
- * @brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
- * @param conveyor_belt a conveyor belt
- * @return true if the conveyor belt is currently an obstacle for this entity
+ * \brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
+ * \param conveyor_belt a conveyor belt
+ * \return true if the conveyor belt is currently an obstacle for this entity
  */
 bool Hookshot::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
 /**
- * @brief Returns whether some stairs are currently considered as an obstacle for this entity.
- * @param stairs an stairs entity
- * @return true if the stairs are currently an obstacle for this entity
+ * \brief Returns whether some stairs are currently considered as an obstacle for this entity.
+ * \param stairs an stairs entity
+ * \return true if the stairs are currently an obstacle for this entity
  */
 bool Hookshot::is_stairs_obstacle(Stairs& stairs) {
   return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
 /**
- * @brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
- * @return true if the deep water tiles are currently an obstacle for this entity
+ * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
+ * \return true if the deep water tiles are currently an obstacle for this entity
  */
 bool Hookshot::is_deep_water_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a hole is currently considered as an obstacle for this entity.
- * @return true if the holes are currently an obstacle for this entity
+ * \brief Returns whether a hole is currently considered as an obstacle for this entity.
+ * \return true if the holes are currently an obstacle for this entity
  */
 bool Hookshot::is_hole_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether lava is currently considered as an obstacle for this entity.
- * @return true if lava is currently an obstacle for this entity
+ * \brief Returns whether lava is currently considered as an obstacle for this entity.
+ * \return true if lava is currently an obstacle for this entity
  */
 bool Hookshot::is_lava_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether prickles are currently considered as an obstacle for this entity.
- * @return true if prickles are currently an obstacle for this entity
+ * \brief Returns whether prickles are currently considered as an obstacle for this entity.
+ * \return true if prickles are currently an obstacle for this entity
  */
 bool Hookshot::is_prickle_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
- * @return true if the ladders are currently an obstacle for this entity
+ * \brief Returns whether a ladder is currently considered as an obstacle for this entity.
+ * \return true if the ladders are currently an obstacle for this entity
  */
 bool Hookshot::is_ladder_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a switch is currently considered as an obstacle by this entity.
- * @param sw a switch
- * @return true if the switch is currently an obstacle for this entity
+ * \brief Returns whether a switch is currently considered as an obstacle by this entity.
+ * \param sw a switch
+ * \return true if the switch is currently an obstacle for this entity
  */
 bool Hookshot::is_switch_obstacle(Switch& sw) {
   return false;
 }
 
 /**
- * @brief Returns whether a crystal is currently considered as an obstacle for this entity.
- * @param crystal a crystal
- * @return true if the crystal is currently an obstacle for this entity
+ * \brief Returns whether a crystal is currently considered as an obstacle for this entity.
+ * \param crystal a crystal
+ * \return true if the crystal is currently an obstacle for this entity
  */
 bool Hookshot::is_crystal_obstacle(Crystal& crystal) {
   return false;
 }
 
 /**
- * @brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
- * @param jumper a non-diagonal jumper
- * @return true if the jumper is currently an obstacle for this entity
+ * \brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
+ * \param jumper a non-diagonal jumper
+ * \return true if the jumper is currently an obstacle for this entity
  */
 bool Hookshot::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 
 /**
- * @brief Returns the point located just outside the hookshot's collision box,
+ * \brief Returns the point located just outside the hookshot's collision box,
  * in its current direction.
  */
 const Rectangle Hookshot::get_facing_point() {
@@ -228,7 +228,7 @@ const Rectangle Hookshot::get_facing_point() {
 }
 
 /**
- * @brief Updates this entity.
+ * \brief Updates this entity.
  */
 void Hookshot::update() {
 
@@ -266,7 +266,7 @@ void Hookshot::update() {
 }
 
 /**
- * @brief Draws the entity on the map.
+ * \brief Draws the entity on the map.
  */
 void Hookshot::draw_on_map() {
 
@@ -300,23 +300,23 @@ void Hookshot::draw_on_map() {
 }
 
 /**
- * @brief Returns whether the hookshot is currently flying.
- * @return true if the hookshot was shot, is not going back and has not reached any target yet
+ * \brief Returns whether the hookshot is currently flying.
+ * \return true if the hookshot was shot, is not going back and has not reached any target yet
  */
 bool Hookshot::is_flying() {
   return !is_going_back() && entity_reached == NULL;
 }
 
 /**
- * @brief Returns whether the hookshot is going back towards the hero, i.e. if go_back() has been called.
- * @return true if the hookshot is going back
+ * \brief Returns whether the hookshot is going back towards the hero, i.e. if go_back() has been called.
+ * \return true if the hookshot is going back
  */
 bool Hookshot::is_going_back() {
   return has_to_go_back || going_back;
 }
 
 /**
- * @brief Makes the hookshot go back towards the hero.
+ * \brief Makes the hookshot go back towards the hero.
  */
 void Hookshot::go_back() {
 
@@ -326,8 +326,8 @@ void Hookshot::go_back() {
 }
 
 /**
- * @brief Attachs the hookshot to an entity and makes the hero move towards this entity.
- * @param entity_reached the entity to attach the hookshot to
+ * \brief Attachs the hookshot to an entity and makes the hero move towards this entity.
+ * \param entity_reached the entity to attach the hookshot to
  */
 void Hookshot::attach_to(MapEntity& entity_reached) {
 
@@ -343,7 +343,7 @@ void Hookshot::attach_to(MapEntity& entity_reached) {
 }
 
 /**
- * @brief Notifies this entity that it has just failed to change its position
+ * \brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  */
 void Hookshot::notify_obstacle_reached() {
@@ -359,10 +359,10 @@ void Hookshot::notify_obstacle_reached() {
 }
 
 /**
- * @brief This function is called when an enemy's sprite collides with a sprite of this entity.
- * @param enemy the enemy
- * @param enemy_sprite the enemy's sprite that overlaps the hero
- * @param this_sprite the arrow sprite
+ * \brief This function is called when an enemy's sprite collides with a sprite of this entity.
+ * \param enemy the enemy
+ * \param enemy_sprite the enemy's sprite that overlaps the hero
+ * \param this_sprite the arrow sprite
  */
 void Hookshot::notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
 
@@ -372,14 +372,14 @@ void Hookshot::notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, S
 }
 
 /**
- * @brief Notifies this entity that it has just attacked an enemy.
+ * \brief Notifies this entity that it has just attacked an enemy.
  *
  * This function is called even if this attack was not successful.
  *
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack
- * @param killed indicates that the attack has just killed the enemy
+ * \param attack the attack
+ * \param victim the enemy just hurt
+ * \param result indicates how the enemy has reacted to the attack
+ * \param killed indicates that the attack has just killed the enemy
  */
 void Hookshot::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
     EnemyReaction::Reaction& result, bool killed) {
@@ -390,8 +390,8 @@ void Hookshot::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
 }
 
 /**
- * @brief This function is called when a chest detects a collision with this entity.
- * @param chest the chest
+ * \brief This function is called when a chest detects a collision with this entity.
+ * \param chest the chest
  */
 void Hookshot::notify_collision_with_chest(Chest& chest) {
 
@@ -401,9 +401,9 @@ void Hookshot::notify_collision_with_chest(Chest& chest) {
 }
 
 /**
- * @brief This function is called when a destructible item detects a non-pixel precise collision with this entity.
- * @param destructible the destructible item
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a destructible item detects a non-pixel precise collision with this entity.
+ * \param destructible the destructible item
+ * \param collision_mode the collision mode that detected the event
  */
 void Hookshot::notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode) {
 
@@ -420,8 +420,8 @@ void Hookshot::notify_collision_with_destructible(Destructible& destructible, Co
 }
 
 /**
- * @brief This function is called when a block detects a collision with this entity.
- * @param block the block
+ * \brief This function is called when a block detects a collision with this entity.
+ * \param block the block
  */
 void Hookshot::notify_collision_with_block(Block& block) {
 
@@ -431,9 +431,9 @@ void Hookshot::notify_collision_with_block(Block& block) {
 }
 
 /**
- * @brief This function is called when a switch detects a collision with this entity.
- * @param sw the switch
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a switch detects a collision with this entity.
+ * \param sw the switch
+ * \param collision_mode the collision mode that detected the event
  */
 void Hookshot::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
@@ -448,9 +448,9 @@ void Hookshot::notify_collision_with_switch(Switch& sw, CollisionMode collision_
 }
 
 /**
- * @brief This function is called when a crystal detects a collision with this entity.
- * @param crystal the crystal
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a crystal detects a collision with this entity.
+ * \param crystal the crystal
+ * \param collision_mode the collision mode that detected the event
  */
 void Hookshot::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
 

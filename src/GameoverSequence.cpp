@@ -29,9 +29,9 @@
 #include <sstream>
 
 /**
- * @brief Creates a game over sequence.
- * @param game the game
- * @param hero_direction direction of the hero sprite before game over
+ * \brief Creates a game over sequence.
+ * \param game the game
+ * \param hero_direction direction of the hero sprite before game over
  */
 GameoverSequence::GameoverSequence(Game& game, int hero_direction):
     game(game),
@@ -61,7 +61,7 @@ GameoverSequence::GameoverSequence(Game& game, int hero_direction):
 }
 
 /**
- * @brief Destroys the game over sequence.
+ * \brief Destroys the game over sequence.
  */
 GameoverSequence::~GameoverSequence() {
 
@@ -69,7 +69,7 @@ GameoverSequence::~GameoverSequence() {
 }
 
 /**
- * @brief Updates the gameover sequence.
+ * \brief Updates the gameover sequence.
  */
 void GameoverSequence::update() {
 
@@ -164,8 +164,8 @@ void GameoverSequence::update() {
 }
 
 /**
- * @brief Draws the gameover sequence.
- * @param dst_surface the surface to draw
+ * \brief Draws the gameover sequence.
+ * \param dst_surface the surface to draw
  */
 void GameoverSequence::draw(Surface& dst_surface) {
 
@@ -197,8 +197,8 @@ void GameoverSequence::draw(Surface& dst_surface) {
 }
 
 /**
- * @brief This function is called when a game command is pressed.
- * @param command The game command pressed.
+ * \brief This function is called when a game command is pressed.
+ * \param command The game command pressed.
  */
 void GameoverSequence::notify_command_pressed(GameCommands::Command command) {
 
@@ -243,16 +243,16 @@ void GameoverSequence::notify_command_pressed(GameCommands::Command command) {
 }
 
 /**
- * @brief Returns whether the game over sequence is finished.
- * @return true if the game over sequence is finished
+ * \brief Returns whether the game over sequence is finished.
+ * \return true if the game over sequence is finished
  */
 bool GameoverSequence::is_finished() {
   return state == RESUME_GAME;
 }
 
 /**
- * @brief Returns the animation set id of the hero's tunic sprite.
- * @return the animation set id of the tunic
+ * \brief Returns the animation set id of the hero's tunic sprite.
+ * \return the animation set id of the tunic
  */
 const std::string GameoverSequence::get_tunic_animation() {
 

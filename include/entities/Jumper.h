@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 
 /**
- * @brief A sensor that makes the hero jump.
+ * \brief A sensor that makes the hero jump.
  *
  * A jumper is a detector placed on a map.
  * When the hero touches this detetor, he makes a jump with a specified length.

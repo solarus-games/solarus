@@ -21,7 +21,7 @@
 #include <sstream>
 
 /**
- * @brief Trajectory of the basic jump movement for each direction.
+ * \brief Trajectory of the basic jump movement for each direction.
  */
 const std::string JumpMovement::basic_trajectories[8] = {
     "1 0",	// right
@@ -35,11 +35,11 @@ const std::string JumpMovement::basic_trajectories[8] = {
 };
 
 /**
- * @brief Creates a jump movement.
- * @param direction8 of the movement (0 to 7)
- * @param distance distance of the jump in pixels
- * @param speed speed of the movement in pixels per second (0: default, based on the jump length)
- * @param ignore_obstacles true to make the movement ignore obstacles
+ * \brief Creates a jump movement.
+ * \param direction8 of the movement (0 to 7)
+ * \param distance distance of the jump in pixels
+ * \param speed speed of the movement in pixels per second (0: default, based on the jump length)
+ * \param ignore_obstacles true to make the movement ignore obstacles
  */
 JumpMovement::JumpMovement(int direction8, int distance, int speed, bool ignore_obstacles):
   PixelMovement("", 10, false, ignore_obstacles),
@@ -54,13 +54,13 @@ JumpMovement::JumpMovement(int direction8, int distance, int speed, bool ignore_
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 JumpMovement::~JumpMovement() {
 }
 
 /**
- * @brief Starts or restarts this movement.
+ * \brief Starts or restarts this movement.
  */
 void JumpMovement::restart() {
 
@@ -74,19 +74,19 @@ void JumpMovement::restart() {
 }
 
 /**
- * @brief Returns the direction of this movement.
- * @return the direction (0 to 7)
+ * \brief Returns the direction of this movement.
+ * \return the direction (0 to 7)
  */
 int JumpMovement::get_direction8() {
   return direction8;
 }
 
 /**
- * @brief Changes the direction of this movement.
+ * \brief Changes the direction of this movement.
  *
  * The movement is restarted.
  *
- * @param direction8 the new direction (0 to 7)
+ * \param direction8 the new direction (0 to 7)
  */
 void JumpMovement::set_direction8(int direction8) {
 
@@ -95,19 +95,19 @@ void JumpMovement::set_direction8(int direction8) {
 }
 
 /**
- * @brief Returns the distance of the jump.
- * @return the distance in pixels
+ * \brief Returns the distance of the jump.
+ * \return the distance in pixels
  */
 int JumpMovement::get_distance() {
   return distance;
 }
 
 /**
- * @brief Changes the distance of the jump.
+ * \brief Changes the distance of the jump.
  *
  * The movement is restarted.
  *
- * @param distance the new distance in pixels
+ * \param distance the new distance in pixels
  */
 void JumpMovement::set_distance(int distance) {
 
@@ -116,16 +116,16 @@ void JumpMovement::set_distance(int distance) {
 }
 
 /**
- * @brief Returns the speed of the movement.
- * @return the speed in pixels per second
+ * \brief Returns the speed of the movement.
+ * \return the speed in pixels per second
  */
 int JumpMovement::get_speed() {
   return speed;
 }
 
 /**
- * @brief Sets the speed of the movement.
- * @param speed the speed in pixels per second (0 means auto, based on the length of the jump)
+ * \brief Sets the speed of the movement.
+ * \param speed the speed in pixels per second (0 means auto, based on the length of the jump)
  */
 void JumpMovement::set_speed(int speed) {
 
@@ -140,8 +140,8 @@ void JumpMovement::set_speed(int speed) {
 }
 
 /**
- * @brief Returns the direction a sprite controlled by this movement should take.
- * @return the direction to use to display the object controlled by this movement (0 to 3)
+ * \brief Returns the direction a sprite controlled by this movement should take.
+ * \return the direction to use to display the object controlled by this movement (0 to 3)
  */
 int JumpMovement::get_displayed_direction4() {
 
@@ -150,13 +150,13 @@ int JumpMovement::get_displayed_direction4() {
 }
 
 /**
- * @brief Returns the coordinates where an object controlled by this movement
+ * \brief Returns the coordinates where an object controlled by this movement
  * should be displayed.
  *
  * The movement is applied to the shadow of the entity and
  * this function returns the coordinates where the entity should be displayed instead.
  *
- * @return the coordinates to use to display the object controlled by this movement
+ * \return the coordinates to use to display the object controlled by this movement
  */
 const Rectangle JumpMovement::get_displayed_xy() {
 
@@ -166,12 +166,12 @@ const Rectangle JumpMovement::get_displayed_xy() {
 }
 
 /**
- * @brief This function is called when a step of the trajectory just occured.
+ * \brief This function is called when a step of the trajectory just occured.
  *
  * If updates the height of the jump when a step of the basic movement is made.
  *
- * @param step_index index of the step in the trajectory (the first one is 0)
- * @param success true if the move was made, false if there was an obstacle
+ * \param step_index index of the step in the trajectory (the first one is 0)
+ * \param success true if the move was made, false if there was an obstacle
  */
 void JumpMovement::notify_step_done(int step_index, bool success) {
 
@@ -187,8 +187,8 @@ void JumpMovement::notify_step_done(int step_index, bool success) {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& JumpMovement::get_lua_type_name() const {
   return LuaContext::movement_jump_module_name;

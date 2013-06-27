@@ -22,7 +22,7 @@
 #include <list>
 
 /**
- * @brief An horizontal or vertical, invisible wall for the camera.
+ * \brief An horizontal or vertical, invisible wall for the camera.
  *
  * The camera cannot cross this wall except when the hero touches it: in this
  * case, scrolling is performed.

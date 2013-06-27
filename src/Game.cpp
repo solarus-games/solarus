@@ -34,9 +34,9 @@
 #include <sstream>
 
 /**
- * @brief Creates a game.
- * @param main_loop The Solarus root object.
- * @param savegame The saved data of this game. Will be deleted in the
+ * \brief Creates a game.
+ * \param main_loop The Solarus root object.
+ * \param savegame The saved data of this game. Will be deleted in the
  * destructor unless someone is still using it (the refcount info is used).
  */
 Game::Game(MainLoop& main_loop, Savegame* savegame):
@@ -74,7 +74,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
 }
 
 /**
- * @brief Destroys the game.
+ * \brief Destroys the game.
  */
 Game::~Game() {
 
@@ -113,7 +113,7 @@ Game::~Game() {
 }
 
 /**
- * @brief Starts this game.
+ * \brief Starts this game.
  */
 void Game::start() {
   started = true;
@@ -122,7 +122,7 @@ void Game::start() {
 }
 
 /**
- * @brief Ends this game.
+ * \brief Ends this game.
  */
 void Game::stop() {
 
@@ -135,36 +135,36 @@ void Game::stop() {
 }
 
 /**
- * @brief Returns the Solarus main loop.
- * @return The main loop object.
+ * \brief Returns the Solarus main loop.
+ * \return The main loop object.
  */
 MainLoop& Game::get_main_loop() {
   return main_loop;
 }
 
 /**
- * @brief Returns the Lua context of this game.
- * @return The Lua context.
+ * \brief Returns the Lua context of this game.
+ * \return The Lua context.
  */
 LuaContext& Game::get_lua_context() {
   return main_loop.get_lua_context();
 }
 
 /**
- * @brief Returns the hero.
- * @return the hero
+ * \brief Returns the hero.
+ * \return the hero
  */
 Hero& Game::get_hero() {
   return *hero;
 }
 
 /**
- * @brief Returns the coordinates of the hero on the current map.
+ * \brief Returns the coordinates of the hero on the current map.
  *
  * The coordinates returned are the coordinates of the hero's origin point on the map.
  * The width and height are not used.
  *
- * @return the position of the hero
+ * \return the position of the hero
  */
 const Rectangle& Game::get_hero_xy() {
 
@@ -174,44 +174,44 @@ const Rectangle& Game::get_hero_xy() {
 }
 
 /**
- * @brief Returns the game commands mapped to the keyboard and the joypad.
- * @return The game commands.
+ * \brief Returns the game commands mapped to the keyboard and the joypad.
+ * \return The game commands.
  */
 GameCommands& Game::get_commands() {
   return *commands;
 }
 
 /**
- * @brief Returns the current effect of the main keys (action, sword, pause, etc.).
- * @return the current effect of the main keys
+ * \brief Returns the current effect of the main keys (action, sword, pause, etc.).
+ * \return the current effect of the main keys
  */
 KeysEffect& Game::get_keys_effect() {
   return *keys_effect;
 }
 
 /**
- * @brief Returns the saved data associated to this game.
- * @return the saved data
+ * \brief Returns the saved data associated to this game.
+ * \return the saved data
  */
 Savegame& Game::get_savegame() {
   return *savegame;
 }
 
 /**
- * @brief Returns the equipment of the player.
+ * \brief Returns the equipment of the player.
  *
  * It is equivalent to get_savegame().get_equipment().
  *
- * @return the equipment
+ * \return the equipment
  */
 Equipment& Game::get_equipment() {
   return get_savegame().get_equipment();
 }
 
 /**
- * @brief This function is called when a low-level input event occurs during the game.
- * @param event the event to handle
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief This function is called when a low-level input event occurs during the game.
+ * \param event the event to handle
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool Game::notify_input(InputEvent& event) {
 
@@ -234,8 +234,8 @@ bool Game::notify_input(InputEvent& event) {
 }
 
 /**
- * @brief This function is called when a game command is pressed.
- * @param command A game command.
+ * \brief This function is called when a game command is pressed.
+ * \param command A game command.
  */
 void Game::notify_command_pressed(GameCommands::Command command) {
 
@@ -276,8 +276,8 @@ void Game::notify_command_pressed(GameCommands::Command command) {
 }
 
 /**
- * @brief This function is called when a game command is released.
- * @param command A game command.
+ * \brief This function is called when a game command is released.
+ * \param command A game command.
  */
 void Game::notify_command_released(GameCommands::Command command) {
 
@@ -294,7 +294,7 @@ void Game::notify_command_released(GameCommands::Command command) {
 }
 
 /**
- * @brief Updates the game elements.
+ * \brief Updates the game elements.
  *
  * Updates the map, the equipment, the HUD, etc.
  */
@@ -325,7 +325,7 @@ void Game::update() {
 }
 
 /**
- * @brief Handles the transitions.
+ * \brief Handles the transitions.
  *
  * This functions changes the map when needed and plays the
  * transitions between the two maps. This function is called
@@ -440,7 +440,7 @@ void Game::update_transitions() {
 }
 
 /**
- * @brief Makes sure the keys effects are coherent with the hero's equipment and abilities.
+ * \brief Makes sure the keys effects are coherent with the hero's equipment and abilities.
  */
 void Game::update_keys_effect() {
 
@@ -463,7 +463,7 @@ void Game::update_keys_effect() {
 }
 
 /**
- * @brief Updates the game over sequence.
+ * \brief Updates the game over sequence.
  *
  * This function is called repeatedly while the game over sequence is shown.
  */
@@ -479,8 +479,8 @@ void Game::update_gameover_sequence() {
 }
 
 /**
- * @brief Draws the game.
- * @param dst_surface The surface where the game will be drawn.
+ * \brief Draws the game.
+ * \param dst_surface The surface where the game will be drawn.
  */
 void Game::draw(Surface& dst_surface) {
 
@@ -502,34 +502,34 @@ void Game::draw(Surface& dst_surface) {
 }
 
 /**
- * @brief Returns whether there is a current map in this game.
+ * \brief Returns whether there is a current map in this game.
  *
  * This function always returns true except when the game is being created
  * and no map is loaded yet.
  *
- * @return true if there is a map
+ * \return true if there is a map
  */
 bool Game::has_current_map() {
   return current_map != NULL;
 }
 
 /**
- * @brief Returns the current map.
- * @return the current map
+ * \brief Returns the current map.
+ * \return the current map
  */
 Map& Game::get_current_map() {
   return *current_map;
 }
 
 /**
- * @brief Changes the current map.
+ * \brief Changes the current map.
  *
  * Call this function when you want the hero to go to another map.
  *
- * @param map_id id of the map to launch
- * @param destination_name name of the destination point of the map you want to use,
+ * \param map_id id of the map to launch
+ * \param destination_name name of the destination point of the map you want to use,
  * or en ampty string to pick the destination point saved
- * @param transition_style type of transition between the two maps
+ * \param transition_style type of transition between the two maps
  */
 void Game::set_current_map(const std::string& map_id, const std::string &destination_name,
     Transition::Style transition_style) {
@@ -567,7 +567,7 @@ void Game::set_current_map(const std::string& map_id, const std::string &destina
 }
 
 /**
- * @brief Notifies the game objects that the another map has just become active.
+ * \brief Notifies the game objects that the another map has just become active.
  */
 void Game::notify_map_changed() {
 
@@ -579,41 +579,41 @@ void Game::notify_map_changed() {
 }
 
 /**
- * @brief Returns the state of the crystal blocks.
+ * \brief Returns the state of the crystal blocks.
  *
  * Returns false if the orange blocks are lowered or true if the blue blocks are lowered.
  *
- * @return the state of the crystals or this world
+ * \return the state of the crystals or this world
  */
 bool Game::get_crystal_state() {
   return crystal_state;
 }
 
 /**
- * @brief Changes the state of the crystal blocks.
+ * \brief Changes the state of the crystal blocks.
  */
 void Game::change_crystal_state() {
   crystal_state = !crystal_state;
 }
 
 /**
- * @brief Returns whether the game is paused.
- * @return true if the game is paused
+ * \brief Returns whether the game is paused.
+ * \return true if the game is paused
  */
 bool Game::is_paused() {
   return paused;
 }
 
 /**
- * @brief Returns whether we are playing a transition between two maps.
- * @return true if there is a transition
+ * \brief Returns whether we are playing a transition between two maps.
+ * \return true if there is a transition
  */
 bool Game::is_playing_transition() {
   return transition != NULL || next_map != NULL;
 }
 
 /**
- * @brief Returns whether the game is suspended.
+ * \brief Returns whether the game is suspended.
  *
  * This is true in the following cases:
  * - the game is paused,
@@ -622,7 +622,7 @@ bool Game::is_playing_transition() {
  * - the game over sequence is active,
  * - the camera is moving.
  *
- * @return true if the game is suspended
+ * \return true if the game is suspended
  */
 bool Game::is_suspended() {
 
@@ -635,28 +635,28 @@ bool Game::is_suspended() {
 }
 
 /**
- * @brief Returns whether a dialog is currently active.
- * @return true if a dialog box is being shown
+ * \brief Returns whether a dialog is currently active.
+ * \return true if a dialog box is being shown
  */
 bool Game::is_dialog_enabled() {
   return dialog_box.is_enabled();
 }
 
 /**
- * @brief Returns the dialog box manager.
- * @return the dialog box manager
+ * \brief Returns the dialog box manager.
+ * \return the dialog box manager
  */
 DialogBox& Game::get_dialog_box() {
   return dialog_box;
 }
 
 /**
- * @brief Returns whether the player is currently allowed to pause the game.
+ * \brief Returns whether the player is currently allowed to pause the game.
  *
  * He can pause the game if the pause command is enabled
  * and if his life is greater than zero.
  *
- * @return true if the player is currently allowed to pause the game.
+ * \return true if the player is currently allowed to pause the game.
  */
 bool Game::can_pause() {
   return !is_suspended()
@@ -665,8 +665,8 @@ bool Game::can_pause() {
 }
 
 /**
- * @brief Returns whether the player is currently allowed to unpause the game.
- * @return true if the player is currently allowed to unpause the game.
+ * \brief Returns whether the player is currently allowed to unpause the game.
+ * \return true if the player is currently allowed to unpause the game.
  */
 bool Game::can_unpause() {
   return is_paused()
@@ -675,24 +675,24 @@ bool Game::can_unpause() {
 }
 
 /**
- * @brief Returns whether the pause key is available.
+ * \brief Returns whether the pause key is available.
  *
  * Even when the pause key is available, the player may still
  * be unauthorized to pause the game, depending on the result of can_pause().
  *
- * @return true if the pause key is available
+ * \return true if the pause key is available
  */
 bool Game::is_pause_key_available() {
   return pause_key_available;
 }
 
 /**
- * @brief Sets whether the pause key menu is available.
+ * \brief Sets whether the pause key menu is available.
  *
  * Even when the pause key is available, the player may still
  * be unauthorized to pause the game, depending on the result of can_pause().
  *
- * @param pause_key_available true to make the pause key available
+ * \param pause_key_available true to make the pause key available
  */
 void Game::set_pause_key_available(bool pause_key_available) {
 
@@ -701,8 +701,8 @@ void Game::set_pause_key_available(bool pause_key_available) {
 }
 
 /**
- * @brief Pauses or resumes the game.
- * @param paused true to pause the game, false to resume it.
+ * \brief Pauses or resumes the game.
+ * \param paused true to pause the game, false to resume it.
  */
 void Game::set_paused(bool paused) {
 
@@ -727,7 +727,7 @@ void Game::set_paused(bool paused) {
 }
 
 /**
- * @brief Restarts the game with the current savegame state.
+ * \brief Restarts the game with the current savegame state.
  */
 void Game::restart() {
 
@@ -737,22 +737,22 @@ void Game::restart() {
 }
 
 /**
- * @brief Launches the gameover sequence.
+ * \brief Launches the gameover sequence.
  */
 void Game::start_gameover_sequence() {
   gameover_sequence = new GameoverSequence(*this, hero->get_animation_direction());
 }
 
 /**
- * @brief Returns whether the gameover sequence is being shown.
- * @return true if the gameover sequence is being shown
+ * \brief Returns whether the gameover sequence is being shown.
+ * \return true if the gameover sequence is being shown
  */
 bool Game::is_showing_gameover() {
   return gameover_sequence != NULL;
 }
 
 /**
- * @brief This function is called when the hero was dead but saved by a fairy.
+ * \brief This function is called when the hero was dead but saved by a fairy.
  */
 void Game::get_back_from_death() {
   hero->get_back_from_death();

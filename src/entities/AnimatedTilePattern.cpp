@@ -21,12 +21,12 @@
 #include "lowlevel/Surface.h"
 
 /**
- * @brief Interval in millisecond between two frames of an animation.
+ * \brief Interval in millisecond between two frames of an animation.
  */
 static const uint32_t TILE_FRAME_INTERVAL = 250;
 
 /**
- * @brief Gives the current frame depending on the sequence type and the frame counter.
+ * \brief Gives the current frame depending on the sequence type and the frame counter.
  *
  * This array associates the current frame (0, 1 or 2) to
  * the sequence type and the frame counter (0 to 11).
@@ -43,18 +43,18 @@ int AnimatedTilePattern::current_frames[3] = {0, 0, 0};
 uint32_t AnimatedTilePattern::next_frame_date = 0;
 
 /**
- * @brief Constructor.
- * @param obstacle is the tile pattern an obstacle?
- * @param sequence animation sequence type
- * @param width width of the tile (the same for each frame of the animation)
- * @param height height of the tile (the same for each frame of the animation)
- * @param x1 x position of the first frame in the tileset
- * @param y1 y position of the first frame in the tileset
- * @param x2 x position of the second frame in the tileset
- * @param y2 y position of the second frame in the tileset
- * @param x3 x position of the third frame in the tileset
- * @param y3 y position of the third frame in the tileset
- * @param parallax true to also set parallax scrolling to the tile pattern
+ * \brief Constructor.
+ * \param obstacle is the tile pattern an obstacle?
+ * \param sequence animation sequence type
+ * \param width width of the tile (the same for each frame of the animation)
+ * \param height height of the tile (the same for each frame of the animation)
+ * \param x1 x position of the first frame in the tileset
+ * \param y1 y position of the first frame in the tileset
+ * \param x2 x position of the second frame in the tileset
+ * \param y2 y position of the second frame in the tileset
+ * \param x3 x position of the third frame in the tileset
+ * \param y3 y position of the third frame in the tileset
+ * \param parallax true to also set parallax scrolling to the tile pattern
  */
 AnimatedTilePattern::AnimatedTilePattern(Obstacle obstacle,
     AnimationSequence sequence,
@@ -77,14 +77,14 @@ AnimatedTilePattern::AnimatedTilePattern(Obstacle obstacle,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 AnimatedTilePattern::~AnimatedTilePattern() {
 
 }
 
 /**
- * @brief Updates the current frame of all tiles.
+ * \brief Updates the current frame of all tiles.
  *
  * This function is called repeatedly by the map.
  */
@@ -103,11 +103,11 @@ void AnimatedTilePattern::update() {
 }
 
 /**
- * @brief Draws the tile image on a surface.
- * @param dst_surface the surface to draw
- * @param dst_position position where tile pattern should be drawn on dst_surface
- * @param tileset the tileset of this tile
- * @param viewport coordinates of the top-left corner of dst_surface relative
+ * \brief Draws the tile image on a surface.
+ * \param dst_surface the surface to draw
+ * \param dst_position position where tile pattern should be drawn on dst_surface
+ * \param tileset the tileset of this tile
+ * \param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
 void AnimatedTilePattern::draw(Surface& dst_surface,
@@ -127,7 +127,7 @@ void AnimatedTilePattern::draw(Surface& dst_surface,
 }
 
 /**
- * @brief Returns whether tiles having this tile pattern are drawn at their
+ * \brief Returns whether tiles having this tile pattern are drawn at their
  * position.
  *
  * Usually, this function returns true, and when it is the case, drawn() is
@@ -137,7 +137,7 @@ void AnimatedTilePattern::draw(Surface& dst_surface,
  * in the viewport, typically to make an illusion of movement like parallax
  * scrolling.
  *
- * @return true to if this tile pattern is always drawn at its coordinates
+ * \return true to if this tile pattern is always drawn at its coordinates
  */
 bool AnimatedTilePattern::is_drawn_at_its_position() {
   return !parallax;

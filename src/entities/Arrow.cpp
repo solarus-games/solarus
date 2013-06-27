@@ -33,8 +33,8 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Creates an arrow.
- * @param hero the hero
+ * \brief Creates an arrow.
+ * \param hero the hero
  */
 Arrow::Arrow(Hero &hero):
   hero(hero) {
@@ -59,120 +59,120 @@ Arrow::Arrow(Hero &hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Arrow::~Arrow() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Arrow::get_type() {
   return ARROW;
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
+ * \brief Returns whether entities of this type can be obstacles for other entities.
  *
  * If yes, the function is_obstacle_for() will be called
  * to determine whether this particular entity is an obstacle or not.
  *
- * @return true if this type of entity can be obstacle for other entities
+ * \return true if this type of entity can be obstacle for other entities
  */
 bool Arrow::can_be_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether this entity has to be drawn in y order.
- * @return true if this type of entity is drawn at the same level as the hero
+ * \brief Returns whether this entity has to be drawn in y order.
+ * \return true if this type of entity is drawn at the same level as the hero
  */
 bool Arrow::is_drawn_in_y_order() {
   return true;
 }
 
 /**
- * @brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is currently an obstacle for this entity
+ * \brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is currently an obstacle for this entity
  */
 bool Arrow::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
 /**
- * @brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
- * @param conveyor_belt a conveyor belt
- * @return true if the conveyor belt is currently an obstacle for this entity
+ * \brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
+ * \param conveyor_belt a conveyor belt
+ * \return true if the conveyor belt is currently an obstacle for this entity
  */
 bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
 /**
- * @brief Returns whether some stairs are currently considered as an obstacle for this entity.
- * @param stairs an stairs entity
- * @return true if the stairs are currently an obstacle for this entity
+ * \brief Returns whether some stairs are currently considered as an obstacle for this entity.
+ * \param stairs an stairs entity
+ * \return true if the stairs are currently an obstacle for this entity
  */
 bool Arrow::is_stairs_obstacle(Stairs& stairs) {
   return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
 /**
- * @brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
- * @return true if the deep water tiles are currently an obstacle for this entity
+ * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
+ * \return true if the deep water tiles are currently an obstacle for this entity
  */
 bool Arrow::is_deep_water_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a hole is currently considered as an obstacle for this entity.
- * @return true if the holes are currently an obstacle for this entity
+ * \brief Returns whether a hole is currently considered as an obstacle for this entity.
+ * \return true if the holes are currently an obstacle for this entity
  */
 bool Arrow::is_hole_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether lava is currently considered as an obstacle for this entity.
- * @return true if lava is currently an obstacle for this entity
+ * \brief Returns whether lava is currently considered as an obstacle for this entity.
+ * \return true if lava is currently an obstacle for this entity
  */
 bool Arrow::is_lava_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether prickles are currently considered as an obstacle for this entity.
- * @return true if prickles are currently an obstacle for this entity
+ * \brief Returns whether prickles are currently considered as an obstacle for this entity.
+ * \return true if prickles are currently an obstacle for this entity
  */
 bool Arrow::is_prickle_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
- * @return true if the ladders are currently an obstacle for this entity
+ * \brief Returns whether a ladder is currently considered as an obstacle for this entity.
+ * \return true if the ladders are currently an obstacle for this entity
  */
 bool Arrow::is_ladder_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a switch is currently considered as an obstacle by this entity.
- * @param sw a switch
- * @return true if the switch is currently an obstacle for this entity
+ * \brief Returns whether a switch is currently considered as an obstacle by this entity.
+ * \param sw a switch
+ * \return true if the switch is currently an obstacle for this entity
  */
 bool Arrow::is_switch_obstacle(Switch& sw) {
   return false;
 }
 
 /**
- * @brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
- * @param raised_block a crystal block raised
- * @return false
+ * \brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
+ * \param raised_block a crystal block raised
+ * \return false
  */
 bool Arrow::is_raised_block_obstacle(CrystalBlock& raised_block) {
   // arrows can traverse the crystal blocks
@@ -180,34 +180,34 @@ bool Arrow::is_raised_block_obstacle(CrystalBlock& raised_block) {
 }
 
 /**
- * @brief Returns whether a crystal is currently considered as an obstacle for this entity.
- * @param crystal a crystal
- * @return true if the crystal is currently an obstacle for this entity
+ * \brief Returns whether a crystal is currently considered as an obstacle for this entity.
+ * \param crystal a crystal
+ * \return true if the crystal is currently an obstacle for this entity
  */
 bool Arrow::is_crystal_obstacle(Crystal& crystal) {
   return false;
 }
 
 /**
- * @brief Returns whether a non-playing character is currently considered as an obstacle for this entity.
- * @param npc a non-playing character
- * @return true if the NPC is currently an obstacle for this entity
+ * \brief Returns whether a non-playing character is currently considered as an obstacle for this entity.
+ * \param npc a non-playing character
+ * \return true if the NPC is currently an obstacle for this entity
  */
 bool Arrow::is_npc_obstacle(NPC& npc) {
   return npc.is_solid();
 }
 
 /**
- * @brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
- * @param jumper a non-diagonal jumper
- * @return true if the jumper is currently an obstacle for this entity
+ * \brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
+ * \param jumper a non-diagonal jumper
+ * \return true if the jumper is currently an obstacle for this entity
  */
 bool Arrow::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 
 /**
- * @brief Returns the point located just outside the arrow's collision box,
+ * \brief Returns the point located just outside the arrow's collision box,
  * in its current direction.
  */
 const Rectangle Arrow::get_facing_point() {
@@ -245,7 +245,7 @@ const Rectangle Arrow::get_facing_point() {
 }
 
 /**
- * @brief Updates this entity.
+ * \brief Updates this entity.
  */
 void Arrow::update() {
 
@@ -326,8 +326,8 @@ void Arrow::update() {
 }
 
 /**
- * @brief This function is called by the map when the game is suspended or resumed.
- * @param suspended true to suspend the entity, false to resume it
+ * \brief This function is called by the map when the game is suspended or resumed.
+ * \param suspended true to suspend the entity, false to resume it
  */
 void Arrow::set_suspended(bool suspended) {
 
@@ -340,31 +340,31 @@ void Arrow::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Stops the arrow movement.
+ * \brief Stops the arrow movement.
  */
 void Arrow::stop() {
   stop_now = true;
 }
 
 /**
- * @brief Returns whether the arrow is stopped.
- * @return true if the arrow is stopped
+ * \brief Returns whether the arrow is stopped.
+ * \return true if the arrow is stopped
  */
 bool Arrow::is_stopped() {
   return get_movement() == NULL || get_movement()->is_finished();
 }
 
 /**
- * @brief Returns whether the arrow is currently flying.
- * @return true if the arrow was shot and has not reached a target yet
+ * \brief Returns whether the arrow is currently flying.
+ * \return true if the arrow was shot and has not reached a target yet
  */
 bool Arrow::is_flying() {
   return !is_stopped() && entity_reached == NULL;
 }
 
 /**
- * @brief Stops the arrow movement and attaches the arrow to an entity that was just reached.
- * @param entity_reached the entity that was reached
+ * \brief Stops the arrow movement and attaches the arrow to an entity that was just reached.
+ * \param entity_reached the entity that was reached
  */
 void Arrow::attach_to(MapEntity &entity_reached) {
 
@@ -375,9 +375,9 @@ void Arrow::attach_to(MapEntity &entity_reached) {
 }
 
 /**
- * @brief This function is called when a switch detects a collision with this entity.
- * @param sw the switch
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a switch detects a collision with this entity.
+ * \param sw the switch
+ * \param collision_mode the collision mode that detected the event
  */
 void Arrow::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
@@ -391,9 +391,9 @@ void Arrow::notify_collision_with_switch(Switch& sw, CollisionMode collision_mod
 }
 
 /**
- * @brief This function is called when a crystal detects a collision with this entity.
- * @param crystal the crystal
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a crystal detects a collision with this entity.
+ * \param crystal the crystal
+ * \param collision_mode the collision mode that detected the event
  */
 void Arrow::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
@@ -405,9 +405,9 @@ void Arrow::notify_collision_with_crystal(Crystal &crystal, CollisionMode collis
 }
 
 /**
- * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
- * @param destructible the destructible item
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
+ * \param destructible the destructible item
+ * \param collision_mode the collision mode that detected the event
  */
 void Arrow::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
 
@@ -424,10 +424,10 @@ void Arrow::notify_collision_with_destructible(Destructible &destructible, Colli
 }
 
 /**
- * @brief This function is called when an enemy's sprite collides with a sprite of this entity.
- * @param enemy the enemy
- * @param enemy_sprite the enemy's sprite that overlaps the hero
- * @param this_sprite the arrow sprite
+ * \brief This function is called when an enemy's sprite collides with a sprite of this entity.
+ * \param enemy the enemy
+ * \param enemy_sprite the enemy's sprite that overlaps the hero
+ * \param this_sprite the arrow sprite
  */
 void Arrow::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
 
@@ -437,14 +437,14 @@ void Arrow::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Spri
 }
 
 /**
- * @brief Notifies this entity that it has just attacked an enemy.
+ * \brief Notifies this entity that it has just attacked an enemy.
  *
  * This function is called even if this attack was not successful.
  *
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack
- * @param killed indicates that the attack has just killed the enemy
+ * \param attack the attack
+ * \param victim the enemy just hurt
+ * \param result indicates how the enemy has reacted to the attack
+ * \param killed indicates that the attack has just killed the enemy
  */
 void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
     EnemyReaction::Reaction& result, bool killed) {
@@ -464,8 +464,8 @@ void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
 }
 
 /**
- * @brief Returns whether the arrow has just hit the map border.
- * @return true if the arrow has just hit the map border
+ * \brief Returns whether the arrow has just hit the map border.
+ * \return true if the arrow has just hit the map border
  */
 bool Arrow::has_reached_map_border() {
 

@@ -35,15 +35,15 @@ const std::string PathMovement::elementary_moves[] = {
 };
 
 /**
- * @brief Creates a path movement object.
- * @param path the succession of basic moves
+ * \brief Creates a path movement object.
+ * \param path the succession of basic moves
  * composing this movement (each character represents
  * a direction between '0' and '7')
- * @param speed speed of the movement
- * @param loop true to make the movement return to the beginning
+ * \param speed speed of the movement
+ * \param loop true to make the movement return to the beginning
  * once finished
- * @param ignore_obstacles true to make the movement ignore obstacles
- * @param must_be_aligned true to snap the entity to the map grid before moving it
+ * \param ignore_obstacles true to make the movement ignore obstacles
+ * \param must_be_aligned true to snap the entity to the map grid before moving it
  */
 PathMovement::PathMovement(const std::string& path, int speed,
     bool loop, bool ignore_obstacles, bool must_be_aligned):
@@ -62,15 +62,15 @@ PathMovement::PathMovement(const std::string& path, int speed,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 PathMovement::~PathMovement() {
 
 }
 
 /**
- * @brief Returns the path of this movement.
- * @return the path
+ * \brief Returns the path of this movement.
+ * \return the path
  */
 const std::string& PathMovement::get_path() {
 
@@ -78,8 +78,8 @@ const std::string& PathMovement::get_path() {
 }
 
 /**
- * @brief Sets the path of this movement.
- * @param path the succession of basic moves
+ * \brief Sets the path of this movement.
+ * \param path the succession of basic moves
  * composing this movement (each character represents
  * a direction between '0' and '7')
  */
@@ -90,24 +90,24 @@ void PathMovement::set_path(const std::string& path) {
 }
 
 /**
- * @brief Returns the speed of this movement.
- * @return the speed in pixels per second
+ * \brief Returns the speed of this movement.
+ * \return the speed in pixels per second
  */
 int PathMovement::get_speed() {
   return speed;
 }
 
 /**
- * @brief Sets the speed of this movement.
- * @param speed the speed in pixels per second
+ * \brief Sets the speed of this movement.
+ * \param speed the speed in pixels per second
  */
 void PathMovement::set_speed(int speed) {
   this->speed = speed;
 }
 
 /**
- * @brief Returns whether this movement loops when the end of the path is reached.
- * @return true if the movement loops
+ * \brief Returns whether this movement loops when the end of the path is reached.
+ * \return true if the movement loops
  */
 bool PathMovement::get_loop() {
 
@@ -115,11 +115,11 @@ bool PathMovement::get_loop() {
 }
 
 /**
- * @brief Sets whether this movement restarts when the path is finished.
+ * \brief Sets whether this movement restarts when the path is finished.
  *
  * If the movement was finished and loop is set to true, the movement restarts.
  *
- * @param loop true to make the movement loop
+ * \param loop true to make the movement loop
  */
 void PathMovement::set_loop(bool loop) {
 
@@ -131,9 +131,9 @@ void PathMovement::set_loop(bool loop) {
 }
 
 /**
- * @brief Returns whether the entity is snapped to the map grid before the
+ * \brief Returns whether the entity is snapped to the map grid before the
  * path starts.
- * @return true if the entity is made aligned to the grid
+ * \return true if the entity is made aligned to the grid
  */
 bool PathMovement::get_snap_to_grid() {
 
@@ -141,8 +141,8 @@ bool PathMovement::get_snap_to_grid() {
 }
 
 /**
- * @brief Sets whether the entity is snapped to the map grid before the path starts.
- * @param snap_to_grid true to make the entity aligned to the grid
+ * \brief Sets whether the entity is snapped to the map grid before the path starts.
+ * \param snap_to_grid true to make the entity aligned to the grid
  */
 void PathMovement::set_snap_to_grid(bool snap_to_grid) {
 
@@ -150,7 +150,7 @@ void PathMovement::set_snap_to_grid(bool snap_to_grid) {
 }
 
 /**
- * @brief Notifies this movement that the object it controls has changed.
+ * \brief Notifies this movement that the object it controls has changed.
  */
 void PathMovement::notify_object_controlled() {
 
@@ -159,7 +159,7 @@ void PathMovement::notify_object_controlled() {
 }
 
 /**
- * @brief Updates the movements: detects the collisions
+ * \brief Updates the movements: detects the collisions
  * in order to restart the movement.
  */
 void PathMovement::update() {
@@ -173,8 +173,8 @@ void PathMovement::update() {
 }
 
 /**
- * @brief Suspends or resumes this movement.
- * @param suspended true to suspend the movement, false to resume it
+ * \brief Suspends or resumes this movement.
+ * \param suspended true to suspend the movement, false to resume it
  */
 void PathMovement::set_suspended(bool suspended) {
 
@@ -186,8 +186,8 @@ void PathMovement::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns whether the movement is finished.
- * @return true if the end of the path was reached or the entity
+ * \brief Returns whether the movement is finished.
+ * \return true if the end of the path was reached or the entity
  * was stopped by an obstacle
  */
 bool PathMovement::is_finished() {
@@ -197,7 +197,7 @@ bool PathMovement::is_finished() {
 }
 
 /**
- * @brief Starts or restarts the movement.
+ * \brief Starts or restarts the movement.
  */
 void PathMovement::restart() {
 
@@ -210,9 +210,9 @@ void PathMovement::restart() {
 }
 
 /**
- * @brief This function is called when a one-pixel step of the current elementary move just occured.
- * @param step_index index of the one-pixel step in the elementary move (the first one is 0)
- * @param success true if the one-pixel move was made, false if the movement was stopped by an obstacle
+ * \brief This function is called when a one-pixel step of the current elementary move just occured.
+ * \param step_index index of the one-pixel step in the elementary move (the first one is 0)
+ * \param success true if the one-pixel move was made, false if the movement was stopped by an obstacle
  */
 void PathMovement::notify_step_done(int step_index, bool success) {
 
@@ -227,8 +227,8 @@ void PathMovement::notify_step_done(int step_index, bool success) {
 }
 
 /**
- * @brief Returns whether the current move of the path is finished.
- * @return true if the current move is finished
+ * \brief Returns whether the current move of the path is finished.
+ * \return true if the current move is finished
  */
 bool PathMovement::is_current_elementary_move_finished() {
 
@@ -236,7 +236,7 @@ bool PathMovement::is_current_elementary_move_finished() {
 }
 
 /**
- * @brief Starts the next 8-pixel trajectory of the path movement.
+ * \brief Starts the next 8-pixel trajectory of the path movement.
  *
  * This function is called when an 8-pixel trajectory of the movement is finished,
  * or when the movement is restarted.
@@ -291,9 +291,9 @@ void PathMovement::start_next_elementary_move() {
 }
 
 /**
- * @brief Converts a speed into a delay in milliseconds between each pixel move.
- * @param speed the speed in pixels per seconds, as specified in the constructor of PathMovement
- * @param direction direction of the movement (0 to 7), used to adapt the computation if the movement is diagonal
+ * \brief Converts a speed into a delay in milliseconds between each pixel move.
+ * \param speed the speed in pixels per seconds, as specified in the constructor of PathMovement
+ * \param direction direction of the movement (0 to 7), used to adapt the computation if the movement is diagonal
  */
 uint32_t PathMovement::speed_to_delay(int speed, int direction) {
 
@@ -305,8 +305,8 @@ uint32_t PathMovement::speed_to_delay(int speed, int direction) {
 }
 
 /**
- * @brief Returns an xy value representing the total distance of this movement.
- * @return the total x and y distance of this movement
+ * \brief Returns an xy value representing the total distance of this movement.
+ * \return the total x and y distance of this movement
  */
 Rectangle PathMovement::get_xy_change() {
 
@@ -323,11 +323,11 @@ Rectangle PathMovement::get_xy_change() {
 }
 
 /**
- * @brief Returns the current direction in the path.
+ * \brief Returns the current direction in the path.
  *
  * If the movement is finished, the last direction used is returned.
  *
- * @return the current direction (0 to 7)
+ * \return the current direction (0 to 7)
  */
 int PathMovement::get_current_direction() {
 
@@ -335,8 +335,8 @@ int PathMovement::get_current_direction() {
 }
 
 /**
- * @brief Returns the total distance covered by this movement.
- * @return the total distance in pixels (diagonal moves count for the same distance as non-diagonal moves),
+ * \brief Returns the total distance covered by this movement.
+ * \return the total distance in pixels (diagonal moves count for the same distance as non-diagonal moves),
  * not including the possible initial snapping phase
  */
 int PathMovement::get_total_distance_covered() {
@@ -344,8 +344,8 @@ int PathMovement::get_total_distance_covered() {
 }
 
 /**
- * @brief Returns the direction a sprite controlled by this movement should take.
- * @return the direction to use to display the object controlled by this movement (0 to 3)
+ * \brief Returns the direction a sprite controlled by this movement should take.
+ * \return the direction to use to display the object controlled by this movement (0 to 3)
  */
 int PathMovement::get_displayed_direction4() {
 
@@ -393,13 +393,13 @@ void PathMovement::snap() {
 }
 
 /**
- * @brief Computes a pixel-by-pixel trajectory (in the sense of PixelMovement) between two points and starts it.
+ * \brief Computes a pixel-by-pixel trajectory (in the sense of PixelMovement) between two points and starts it.
  *
  * This function is used to make a trajectory between the initial position of the entity and the closest grid point,
  * before the actual path is started.
  *
- * @param src current position of the entity
- * @param dst snapped position
+ * \param src current position of the entity
+ * \param dst snapped position
  */
 void PathMovement::set_snapping_trajectory(const Rectangle &src, const Rectangle &dst) {
 
@@ -434,8 +434,8 @@ void PathMovement::set_snapping_trajectory(const Rectangle &src, const Rectangle
 
 
 /**
- * @brief Returns a string describing a path with random length in one of the four main directions.
- * @return a random path
+ * \brief Returns a string describing a path with random length in one of the four main directions.
+ * \return a random path
  */
 const std::string PathMovement::create_random_path() {
 
@@ -450,8 +450,8 @@ const std::string PathMovement::create_random_path() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& PathMovement::get_lua_type_name() const {
   return LuaContext::movement_path_module_name;

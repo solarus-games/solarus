@@ -21,7 +21,7 @@
 #include "lua/ExportableToLua.h"
 
 /**
- * @brief Represents a timer that any class can start.
+ * \brief Represents a timer that any class can start.
  *
  * Timers are mostly used by the scripts.
  */

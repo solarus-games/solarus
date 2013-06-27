@@ -22,7 +22,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief Manages the animations of the hero's main sprites.
+ * \brief Manages the animations of the hero's main sprites.
  *
  * This class handles the animations of the hero's main sprites: the tunic,
  * the sword, the sword stars, the shield, the shadow and the ground.

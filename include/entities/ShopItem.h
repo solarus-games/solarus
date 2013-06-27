@@ -24,7 +24,7 @@
 #include "lowlevel/TextSurface.h"
 
 /**
- * @brief An item the hero can buy in a shop.
+ * \brief An item the hero can buy in a shop.
  *
  * The item is automatically drawn with its icon,
  * the amount and the price. When the hero presses the action

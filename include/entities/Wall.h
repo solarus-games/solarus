@@ -22,7 +22,7 @@
 #include <map>
 
 /**
- * @brief An invisible obstacle that stops other types of entities.
+ * \brief An invisible obstacle that stops other types of entities.
  *
  * The types of entities that are stopped can be specified.
  * This entity is typically used to prevent enemies from going to

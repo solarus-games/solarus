@@ -19,11 +19,11 @@
 #include "lowlevel/Debug.h"
 
 /**
- * @brief Creates a follow movement.
- * @param entity_followed the entity to follow
- * @param x x coordinate of where this entity should be placed (relative to the entity followed)
- * @param y y coordinate of where this entity should be placed (relative to the entity followed)
- * @param ignore_obstacles true to make the movement ignore obstacles
+ * \brief Creates a follow movement.
+ * \param entity_followed the entity to follow
+ * \param x x coordinate of where this entity should be placed (relative to the entity followed)
+ * \param y y coordinate of where this entity should be placed (relative to the entity followed)
+ * \param ignore_obstacles true to make the movement ignore obstacles
  */
 FollowMovement::FollowMovement(MapEntity* entity_followed,
     int x,
@@ -38,21 +38,21 @@ FollowMovement::FollowMovement(MapEntity* entity_followed,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 FollowMovement::~FollowMovement() {
 }
 
 /**
- * @brief Returns whether the movement is finished.
- * @return true if there was a collision or the entity followed disappeared
+ * \brief Returns whether the movement is finished.
+ * \return true if there was a collision or the entity followed disappeared
  */
 bool FollowMovement::is_finished() {
   return finished;
 }
 
 /**
- * @brief Updates the position.
+ * \brief Updates the position.
  */
 void FollowMovement::update() {
 
@@ -95,9 +95,9 @@ void FollowMovement::update() {
 }
 
 /**
- * @brief Returns the coordinates where an object controlled by this movement
+ * \brief Returns the coordinates where an object controlled by this movement
  * should be displayed.
- * @return the coordinates to use to display the object controlled by this movement
+ * \return the coordinates to use to display the object controlled by this movement
  */
 const Rectangle FollowMovement::get_displayed_xy() {
 

@@ -21,7 +21,7 @@
 #include "hero/PlayerMovementState.h"
 
 /**
- * @brief State of the hero where he can walk normally and interact with entities.
+ * \brief State of the hero where he can walk normally and interact with entities.
  */
 class Hero::FreeState: public Hero::PlayerMovementState {
 

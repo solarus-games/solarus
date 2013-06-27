@@ -21,7 +21,7 @@
 #include "Transition.h"
 
 /**
- * @brief Immediate transition effect.
+ * \brief Immediate transition effect.
  *
  * This transition just acts as if there was no transition:
  * the next surface is immediately displayed.

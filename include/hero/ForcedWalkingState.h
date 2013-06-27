@@ -20,7 +20,7 @@
 #include "hero/State.h"
 
 /**
- * @brief State of the hero where he is walking with a predetermined path.
+ * \brief State of the hero where he is walking with a predetermined path.
  *
  * The player does not control the hero in this state.
  */

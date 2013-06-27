@@ -25,12 +25,12 @@
 #include "Equipment.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param source_xy coordinates of the thing (usually an enemy) that hurts the hero,
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
+ * \param source_xy coordinates of the thing (usually an enemy) that hurts the hero,
  * used to compute the trajectory of the hero
- * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
- * @param magic_points number of magic points to remove
+ * \param life_points number of heart quarters to remove (this number may be reduced by the tunic)
+ * \param magic_points number of magic points to remove
  */
 Hero::HurtState::HurtState(Hero& hero, const Rectangle& source_xy,
     int life_points, int magic_points):
@@ -43,15 +43,15 @@ Hero::HurtState::HurtState(Hero& hero, const Rectangle& source_xy,
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::HurtState::~HurtState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::HurtState::start(State* previous_state) {
 
@@ -89,8 +89,8 @@ void Hero::HurtState::start(State* previous_state) {
 }
 
 /**
- * @brief Ends this state.
- * @param next_state the next state
+ * \brief Ends this state.
+ * \param next_state the next state
  */
 void Hero::HurtState::stop(State* next_state) {
 
@@ -100,7 +100,7 @@ void Hero::HurtState::stop(State* next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::HurtState::update() {
 
@@ -116,8 +116,8 @@ void Hero::HurtState::update() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::HurtState::set_suspended(bool suspended) {
 
@@ -130,61 +130,61 @@ void Hero::HurtState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns whether the game over sequence can start in the current state.
- * @return true if the game over sequence can start in the current state
+ * \brief Returns whether the game over sequence can start in the current state.
+ * \return true if the game over sequence can start in the current state
  */
 bool Hero::HurtState::can_start_gameover_sequence() {
   return false;
 }
 
 /**
- * @brief Returns whether the hero is touching the ground in the current state.
- * @return true if the hero is touching the ground in the current state
+ * \brief Returns whether the hero is touching the ground in the current state.
+ * \return true if the hero is touching the ground in the current state
  */
 bool Hero::HurtState::is_touching_ground() {
   return false;
 }
 
 /**
- * @brief Returns whether a teletransporter is considered as an obstacle in this state.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is an obstacle in this state
+ * \brief Returns whether a teletransporter is considered as an obstacle in this state.
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is an obstacle in this state
  */
 bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return true;
 }
 
 /**
- * @brief Returns whether a conveyor belt is considered as an obstacle in this state.
- * @param conveyor_belt a conveyor belt
- * @return true if the conveyor belt is an obstacle in this state
+ * \brief Returns whether a conveyor belt is considered as an obstacle in this state.
+ * \param conveyor_belt a conveyor belt
+ * \return true if the conveyor belt is an obstacle in this state
  */
 bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return true;
 }
 
 /**
- * @brief Returns whether a sensor is considered as an obstacle in this state.
- * @param sensor a sensor
- * @return true if the sensor is an obstacle in this state
+ * \brief Returns whether a sensor is considered as an obstacle in this state.
+ * \param sensor a sensor
+ * \return true if the sensor is an obstacle in this state
  */
 bool Hero::HurtState::is_sensor_obstacle(Sensor& sensor) {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can be hurt in this state.
- * @param attacker an attacker that is trying to hurt the hero
+ * \brief Returns whether the hero can be hurt in this state.
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
- * @return true if the hero can be hurt in this state
+ * \return true if the hero can be hurt in this state
  */
 bool Hero::HurtState::can_be_hurt(Enemy* attacker) {
   return false;
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of switches in this state.
- * @return true if the hero ignores the effect of switches in this state
+ * \brief Returns whether the hero ignores the effect of switches in this state.
+ * \return true if the hero ignores the effect of switches in this state
  */
 bool Hero::HurtState::can_avoid_switch() {
   return true;

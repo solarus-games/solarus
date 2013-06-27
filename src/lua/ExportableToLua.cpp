@@ -19,7 +19,7 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Creates an object exportable to Lua.
+ * \brief Creates an object exportable to Lua.
  */
 ExportableToLua::ExportableToLua():
   refcount(0) {
@@ -27,7 +27,7 @@ ExportableToLua::ExportableToLua():
 }
 
 /**
- * @brief Destroys this exportable object.
+ * \brief Destroys this exportable object.
  */
 ExportableToLua::~ExportableToLua() {
 
@@ -36,18 +36,18 @@ ExportableToLua::~ExportableToLua() {
 }
 
 /**
- * @brief Returns the current refcount of this object.
+ * \brief Returns the current refcount of this object.
  *
  * You must not delete this object if its refcount is not zero.
  *
- * @return the current refcount of this object
+ * \return the current refcount of this object
  */
 int ExportableToLua::get_refcount() const {
   return refcount;
 }
 
 /**
- * @brief Increments the refcount of this object.
+ * \brief Increments the refcount of this object.
  */
 void ExportableToLua::increment_refcount() {
 
@@ -55,7 +55,7 @@ void ExportableToLua::increment_refcount() {
 }
 
 /**
- * @brief Decrements the refcount of this object.
+ * \brief Decrements the refcount of this object.
  */
 void ExportableToLua::decrement_refcount() {
 

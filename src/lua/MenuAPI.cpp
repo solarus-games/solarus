@@ -22,7 +22,7 @@
 const std::string LuaContext::menu_module_name = "sol.menu";
 
 /**
- * @brief Initializes the menu features provided to Lua.
+ * \brief Initializes the menu features provided to Lua.
  */
 void LuaContext::register_menu_module() {
 
@@ -37,12 +37,12 @@ void LuaContext::register_menu_module() {
 }
 
 /**
- * @brief Registers a menu into a context (table or a userdata).
+ * \brief Registers a menu into a context (table or a userdata).
  *
  * This function can be called safely even while iterating on the menus list.
  *
- * @param menu_ref Lua ref of the menu to add.
- * @param context_index Index of the table or userdata in the stack.
+ * \param menu_ref Lua ref of the menu to add.
+ * \param context_index Index of the table or userdata in the stack.
  */
 void LuaContext::add_menu(int menu_ref, int context_index) {
 
@@ -62,11 +62,11 @@ void LuaContext::add_menu(int menu_ref, int context_index) {
 }
 
 /**
- * @brief Unregisters all menus associated to a context.
+ * \brief Unregisters all menus associated to a context.
  *
  * This function can be called safely even while iterating on the menus list.
  *
- * @param context_index Index of a table or userdata containing menus.
+ * \param context_index Index of a table or userdata containing menus.
  */
 void LuaContext::remove_menus(int context_index) {
 
@@ -93,7 +93,7 @@ void LuaContext::remove_menus(int context_index) {
 }
 
 /**
- * @brief Unregisters all existing menus.
+ * \brief Unregisters all existing menus.
  *
  * This function can be called safely even while iterating on the menus list.
  */
@@ -113,7 +113,7 @@ void LuaContext::remove_menus() {
 }
 
 /**
- * @brief Destroys immediately all existing menus.
+ * \brief Destroys immediately all existing menus.
  */
 void LuaContext::destroy_menus() {
 
@@ -129,7 +129,7 @@ void LuaContext::destroy_menus() {
 }
 
 /**
- * @brief Checks all menus and removes the ones that have to be removed.
+ * \brief Checks all menus and removes the ones that have to be removed.
  *
  * Note that the on_update() is called by the context of each menu, not
  * by this function.
@@ -151,9 +151,9 @@ void LuaContext::update_menus() {
 
 
 /**
- * @brief Implementation of sol.menu.start().
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
+ * \brief Implementation of sol.menu.start().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
  */
 int LuaContext::menu_api_start(lua_State *l) {
 
@@ -173,9 +173,9 @@ int LuaContext::menu_api_start(lua_State *l) {
 }
 
 /**
- * @brief Implementation of sol.menu.stop().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.menu.stop().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::menu_api_stop(lua_State* l) {
 
@@ -207,9 +207,9 @@ int LuaContext::menu_api_stop(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.menu.stop_all().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.menu.stop_all().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::menu_api_stop_all(lua_State* l) {
 
@@ -224,8 +224,8 @@ int LuaContext::menu_api_stop_all(lua_State* l) {
 }
 
 /**
- * @brief Calls the on_started() method of a Lua menu.
- * @param menu_ref A reference to the menu object.
+ * \brief Calls the on_started() method of a Lua menu.
+ * \param menu_ref A reference to the menu object.
  */
 void LuaContext::menu_on_started(int menu_ref) {
 
@@ -235,8 +235,8 @@ void LuaContext::menu_on_started(int menu_ref) {
 }
 
 /**
- * @brief Calls the on_finished() method of a Lua menu.
- * @param menu_ref A reference to the menu object.
+ * \brief Calls the on_finished() method of a Lua menu.
+ * \param menu_ref A reference to the menu object.
  */
 void LuaContext::menu_on_finished(int menu_ref) {
 
@@ -247,8 +247,8 @@ void LuaContext::menu_on_finished(int menu_ref) {
 }
 
 /**
- * @brief Calls the on_update() method of a Lua menu.
- * @param menu_ref A reference to the menu object.
+ * \brief Calls the on_update() method of a Lua menu.
+ * \param menu_ref A reference to the menu object.
  */
 void LuaContext::menu_on_update(int menu_ref) {
 
@@ -258,9 +258,9 @@ void LuaContext::menu_on_update(int menu_ref) {
 }
 
 /**
- * @brief Calls the on_draw() method of a Lua menu.
- * @param menu_ref A reference to the menu object.
- * @param dst_surface The destination surface.
+ * \brief Calls the on_draw() method of a Lua menu.
+ * \param menu_ref A reference to the menu object.
+ * \param dst_surface The destination surface.
  */
 void LuaContext::menu_on_draw(int menu_ref, Surface& dst_surface) {
 
@@ -270,10 +270,10 @@ void LuaContext::menu_on_draw(int menu_ref, Surface& dst_surface) {
 }
 
 /**
- * @brief Calls an input callback method of a Lua menu.
- * @param menu_ref A reference to the menu object.
- * @param event The input event to forward.
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief Calls an input callback method of a Lua menu.
+ * \param menu_ref A reference to the menu object.
+ * \param event The input event to forward.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menu_on_input(int menu_ref, InputEvent& event) {
 
@@ -290,10 +290,10 @@ bool LuaContext::menu_on_input(int menu_ref, InputEvent& event) {
 }
 
 /**
- * @brief Calls the on_command_pressed() method of a Lua menu.
- * @param menu_ref A reference to the menu object.
- * @param command The game command just pressed.
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief Calls the on_command_pressed() method of a Lua menu.
+ * \param menu_ref A reference to the menu object.
+ * \param command The game command just pressed.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menu_on_command_pressed(int menu_ref, GameCommands::Command command) {
 
@@ -305,10 +305,10 @@ bool LuaContext::menu_on_command_pressed(int menu_ref, GameCommands::Command com
 }
 
 /**
- * @brief Calls the on_command_released() method of a Lua menu.
- * @param menu_ref A reference to the menu object.
- * @param command The game command just released.
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief Calls the on_command_released() method of a Lua menu.
+ * \param menu_ref A reference to the menu object.
+ * \param command The game command just released.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menu_on_command_released(int menu_ref, GameCommands::Command command) {
 
@@ -320,8 +320,8 @@ bool LuaContext::menu_on_command_released(int menu_ref, GameCommands::Command co
 }
 
 /**
- * @brief Calls the on_update() method of the menus associated to a context.
- * @param context_index Index of an object with menus.
+ * \brief Calls the on_update() method of the menus associated to a context.
+ * \param context_index Index of an object with menus.
  */
 void LuaContext::menus_on_update(int context_index) {
 
@@ -345,9 +345,9 @@ void LuaContext::menus_on_update(int context_index) {
 }
 
 /**
- * @brief Calls the on_draw() method of the menus associated to a context.
- * @param context_index Index of an object with menus.
- * @param dst_surface The destination surface to draw.
+ * \brief Calls the on_draw() method of the menus associated to a context.
+ * \param context_index Index of an object with menus.
+ * \param dst_surface The destination surface to draw.
  */
 void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
 
@@ -371,10 +371,10 @@ void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
 }
 
 /**
- * @brief Calls the on_input() method of the menus associated to a context.
- * @param context_index Index of an object with menus.
- * @param event The input event to handle.
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief Calls the on_input() method of the menus associated to a context.
+ * \param context_index Index of an object with menus.
+ * \param event The input event to handle.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menus_on_input(int context_index, InputEvent& event) {
 
@@ -401,10 +401,10 @@ bool LuaContext::menus_on_input(int context_index, InputEvent& event) {
 }
 
 /**
- * @brief Calls the on_command_pressed() method of the menus associated to a context.
- * @param context_index Index of an object with menus.
- * @param command The game command just pressed.
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief Calls the on_command_pressed() method of the menus associated to a context.
+ * \param context_index Index of an object with menus.
+ * \param command The game command just pressed.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menus_on_command_pressed(int context_index,
     GameCommands::Command command) {
@@ -432,10 +432,10 @@ bool LuaContext::menus_on_command_pressed(int context_index,
 }
 
 /**
- * @brief Calls the on_command_released() method of the menus associated to a context.
- * @param context_index Index of an object with menus.
- * @param command The game command just released.
- * @return \c true if the event was handled and should stop being propagated.
+ * \brief Calls the on_command_released() method of the menus associated to a context.
+ * \param context_index Index of an object with menus.
+ * \param command The game command just released.
+ * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menus_on_command_released(int context_index,
     GameCommands::Command command) {

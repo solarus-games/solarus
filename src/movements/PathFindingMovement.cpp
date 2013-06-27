@@ -25,8 +25,8 @@
 #include <sstream>
 
 /**
- * @brief Creates a chase movement.
- * @param speed speed of the movement in pixels per second
+ * \brief Creates a chase movement.
+ * \param speed speed of the movement in pixels per second
  */
 PathFindingMovement::PathFindingMovement(int speed):
   PathMovement("", speed, false, false, true),
@@ -35,7 +35,7 @@ PathFindingMovement::PathFindingMovement(int speed):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 PathFindingMovement::~PathFindingMovement() {
 
@@ -48,7 +48,7 @@ PathFindingMovement::~PathFindingMovement() {
 }
 
 /**
- * @brief Sets the entity to target with this movement.
+ * \brief Sets the entity to target with this movement.
  */
 void PathFindingMovement::set_target(MapEntity& target) {
 
@@ -58,7 +58,7 @@ void PathFindingMovement::set_target(MapEntity& target) {
 }
 
 /**
- * @brief Updates the position.
+ * \brief Updates the position.
  */
 void PathFindingMovement::update() {
 
@@ -92,7 +92,7 @@ void PathFindingMovement::update() {
 }
 
 /**
- * @brief Calculates the direction and the speed of the movement
+ * \brief Calculates the direction and the speed of the movement
  * depending on the target.
  */
 void PathFindingMovement::recompute_movement() {
@@ -123,8 +123,8 @@ void PathFindingMovement::recompute_movement() {
 }
 
 /**
- * @brief Returns whether the movement is finished.
- * @return always false because the movement is restarted as soon as the path is finished
+ * \brief Returns whether the movement is finished.
+ * \return always false because the movement is restarted as soon as the path is finished
  * or an obstacle is reached
  */
 bool PathFindingMovement::is_finished() {
@@ -132,8 +132,8 @@ bool PathFindingMovement::is_finished() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return the name identifying this type in Lua
+ * \brief Returns the name identifying this type in Lua.
+ * \return the name identifying this type in Lua
  */
 const std::string& PathFindingMovement::get_lua_type_name() const {
   return LuaContext::movement_path_finding_module_name;

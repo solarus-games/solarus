@@ -21,7 +21,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief Manages the visible area of the map.
+ * \brief Manages the visible area of the map.
  *
  * The camera determines the visible area of the map.
  * Most of the time, the camera follows the hero movements.

@@ -21,7 +21,7 @@
 #include "movements/PathMovement.h"
 
 /**
- * @brief Movement of an entity that walks randomly.
+ * \brief Movement of an entity that walks randomly.
  *
  * The movement is composed of small random moves. Each
  * random move goes to one of the 4 main directions

@@ -29,10 +29,10 @@
 #include "lowlevel/Debug.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param stairs the stairs to take
- * @param way the way you are taking the stairs
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
+ * \param stairs the stairs to take
+ * \param way the way you are taking the stairs
  */
 Hero::StairsState::StairsState(Hero& hero, Stairs& stairs, Stairs::Way way):
   State(hero),
@@ -45,15 +45,15 @@ Hero::StairsState::StairsState(Hero& hero, Stairs& stairs, Stairs::Way way):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::StairsState::~StairsState() {
 
 }
 
 /**
- * @brief Changes the map.
- * @param map the new map
+ * \brief Changes the map.
+ * \param map the new map
  */
 void Hero::StairsState::set_map(Map& map) {
 
@@ -66,8 +66,8 @@ void Hero::StairsState::set_map(Map& map) {
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::StairsState::start(State* previous_state) {
 
@@ -111,8 +111,8 @@ void Hero::StairsState::start(State* previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
+ * \brief Stops this state.
+ * \param next_state the next state
  */
 void Hero::StairsState::stop(State* next_state) {
 
@@ -146,7 +146,7 @@ void Hero::StairsState::stop(State* next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::StairsState::update() {
 
@@ -252,8 +252,8 @@ void Hero::StairsState::update() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::StairsState::set_suspended(bool suspended) {
 
@@ -269,51 +269,51 @@ void Hero::StairsState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns whether the hero's current position can be considered
+ * \brief Returns whether the hero's current position can be considered
  * as a place to come back after a bad ground (hole, deep water, etc).
- * @return true if the hero can come back here
+ * \return true if the hero can come back here
  */
 bool Hero::StairsState::can_come_from_bad_ground() {
   return false;
 }
 
 /**
- * @brief Returns whether the effect of teletransporters is delayed in this state.
+ * \brief Returns whether the effect of teletransporters is delayed in this state.
  *
  * When overlapping a teletransporter, if this function returns true, the teletransporter
  * will not be activated immediately. The state then has to activate it when it is ready.
  *
- * @return true if the effect of teletransporters is delayed in this state
+ * \return true if the effect of teletransporters is delayed in this state
  */
 bool Hero::StairsState::is_teletransporter_delayed() {
   return true;
 }
 
 /**
- * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
+ * \brief Returns the direction of the hero's movement as defined by the controls applied by the player
  * and the movements allowed is the current state.
  *
  * If he is not moving, -1 is returned.
  * This direction may be different from the real movement direction because of obstacles.
  *
- * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::StairsState::get_wanted_movement_direction8() {
   return get_sprites().get_animation_direction8();
 }
 
 /**
- * @brief Returns the item currently carried by the hero in this state, if any.
- * @return the item carried by the hero, or NULL
+ * \brief Returns the item currently carried by the hero in this state, if any.
+ * \return the item carried by the hero, or NULL
  */
 CarriedItem* Hero::StairsState::get_carried_item() {
   return carried_item;
 }
 
 /**
- * @brief Returns the action to do with an item previously carried by the hero when this state starts.
- * @param carried_item the item carried in the previous state
- * @return the action to do with a previous carried item when this state starts
+ * \brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * \param carried_item the item carried in the previous state
+ * \return the action to do with a previous carried item when this state starts
  */
 CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
 
@@ -325,7 +325,7 @@ CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior(Carr
 }
 
 /**
- * @brief Notifies this state that the layer has changed.
+ * \brief Notifies this state that the layer has changed.
  */
 void Hero::StairsState::notify_layer_changed() {
 

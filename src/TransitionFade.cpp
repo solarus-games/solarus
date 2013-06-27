@@ -20,8 +20,8 @@
 #include "lowlevel/Debug.h"
 
 /**
- * @brief Creates a fade-in or fade-out transition effect.
- * @param direction direction of the transition effect (in or out)
+ * \brief Creates a fade-in or fade-out transition effect.
+ * \param direction direction of the transition effect (in or out)
  */
 TransitionFade::TransitionFade(Transition::Direction direction):
   Transition(direction),
@@ -44,24 +44,24 @@ TransitionFade::TransitionFade(Transition::Direction direction):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 TransitionFade::~TransitionFade() {
 }
 
 /**
- * @brief Sets the delay between two frames.
+ * \brief Sets the delay between two frames.
  *
  * The default delay is 20 ms.
  *
- * @param delay the new delay in milliseconds
+ * \param delay the new delay in milliseconds
  */
 void TransitionFade::set_delay(uint32_t delay) {
   this->delay = delay;
 }
 
 /**
- * @brief Starts this transition effect.
+ * \brief Starts this transition effect.
  */
 void TransitionFade::start() {
   alpha = alpha_start;
@@ -69,8 +69,8 @@ void TransitionFade::start() {
 }
 
 /**
- * @brief Returns whether the transition effect is started and not finished yet.
- * @return true if the transition effect is started
+ * \brief Returns whether the transition effect is started and not finished yet.
+ * \return true if the transition effect is started
  */
 bool TransitionFade::is_started() const {
 
@@ -78,8 +78,8 @@ bool TransitionFade::is_started() const {
 }
 
 /**
- * @brief Returns whether the transition effect is finished.
- * @return true if the transition effect is finished
+ * \brief Returns whether the transition effect is finished.
+ * \return true if the transition effect is finished
  */
 bool TransitionFade::is_finished() const {
 
@@ -87,9 +87,9 @@ bool TransitionFade::is_finished() const {
 }
 
 /**
- * @brief Notifies the transition effect that it was just suspended
+ * \brief Notifies the transition effect that it was just suspended
  * or resumed.
- * @param suspended true if suspended, false if resumed.
+ * \param suspended true if suspended, false if resumed.
  */
 void TransitionFade::notify_suspended(bool suspended) {
 
@@ -99,7 +99,7 @@ void TransitionFade::notify_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates this transition effect.
+ * \brief Updates this transition effect.
  *
  * This function should be called repeatedly while the transition exists.
  */
@@ -127,8 +127,8 @@ void TransitionFade::update() {
 }
 
 /**
- * @brief Draws the transition effect on a surface.
- * @param dst_surface the destination surface
+ * \brief Draws the transition effect on a surface.
+ * \param dst_surface the destination surface
  */
 void TransitionFade::draw(Surface& dst_surface) {
 

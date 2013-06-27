@@ -29,8 +29,8 @@
 #include <sstream>
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::SwordLoadingState::SwordLoadingState(Hero& hero):
   PlayerMovementState(hero) {
@@ -38,15 +38,15 @@ Hero::SwordLoadingState::SwordLoadingState(Hero& hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::SwordLoadingState::~SwordLoadingState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::SwordLoadingState::start(State* previous_state) {
 
@@ -57,7 +57,7 @@ void Hero::SwordLoadingState::start(State* previous_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::SwordLoadingState::update() {
 
@@ -91,8 +91,8 @@ void Hero::SwordLoadingState::update() {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended true if the game is suspended
  */
 void Hero::SwordLoadingState::set_suspended(bool suspended) {
 
@@ -104,7 +104,7 @@ void Hero::SwordLoadingState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies this state that the hero has just failed to change its
+ * \brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */
 void Hero::SwordLoadingState::notify_obstacle_reached() {
@@ -122,11 +122,11 @@ void Hero::SwordLoadingState::notify_obstacle_reached() {
 }
 
 /**
- * @brief Notifies this state that the hero has just attacked an enemy
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * @param killed indicates that the attack has just killed the enemy
+ * \brief Notifies this state that the hero has just attacked an enemy
+ * \param attack the attack
+ * \param victim the enemy just hurt
+ * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
+ * \param killed indicates that the attack has just killed the enemy
  */
 void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
     EnemyReaction::Reaction& result, bool killed) {
@@ -147,56 +147,56 @@ void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
 }
 
 /**
- * @brief Returns whether the animation direction is locked.
- * @return true if the animation direction is locked
+ * \brief Returns whether the animation direction is locked.
+ * \return true if the animation direction is locked
  */
 bool Hero::SwordLoadingState::is_direction_locked() {
   return true;
 }
 
 /**
- * @brief Returns whether can trigger a jumper in this state.
+ * \brief Returns whether can trigger a jumper in this state.
  * If false is returned, jumpers have no effect (but they are obstacle for the hero).
- * @return true if the hero can use jumpers in this state
+ * \return true if the hero can use jumpers in this state
  */
 bool Hero::SwordLoadingState::can_take_jumper() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can take stairs in this state.
+ * \brief Returns whether the hero can take stairs in this state.
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
- * @return true if the hero ignores the effect of stairs in this state
+ * \return true if the hero ignores the effect of stairs in this state
  */
 bool Hero::SwordLoadingState::can_take_stairs() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can pick a treasure in this state.
- * @param item The equipment item to obtain.
- * @return true if the hero can pick that treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in this state.
+ * \param item The equipment item to obtain.
+ * \return true if the hero can pick that treasure in this state.
  */
 bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& item) {
   return true;
 }
 
 /**
- * @brief Gives the sprites the animation stopped corresponding to this state.
+ * \brief Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::SwordLoadingState::set_animation_stopped() {
   get_sprites().set_animation_stopped_sword_loading();
 }
 
 /**
- * @brief Gives the sprites the animation walking corresponding to this state.
+ * \brief Gives the sprites the animation walking corresponding to this state.
  */
 void Hero::SwordLoadingState::set_animation_walking() {
   get_sprites().set_animation_walking_sword_loading();
 }
 
 /**
- * @brief Plays the sword loading sound.
+ * \brief Plays the sword loading sound.
  */
 void Hero::SwordLoadingState::play_load_sound() {
 

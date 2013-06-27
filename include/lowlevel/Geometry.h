@@ -18,7 +18,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief Provides functions to make mathematic computations.
+ * \brief Provides functions to make mathematic computations.
  */
 class Geometry {
 

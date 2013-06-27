@@ -29,17 +29,17 @@
 #include "lua/LuaContext.h"
 
 /**
- * @brief Creates a block.
- * @param name name identifying this block
- * @param layer layer of the entity to create
- * @param x x coordinate of the entity to create
- * @param y y coordinate of the entity to create
- * @param direction the only direction where the block can be moved
+ * \brief Creates a block.
+ * \param name name identifying this block
+ * \param layer layer of the entity to create
+ * \param x x coordinate of the entity to create
+ * \param y y coordinate of the entity to create
+ * \param direction the only direction where the block can be moved
  * or -1 to allow it to be pushed in any direction
- * @param sprite_name animation set id of the sprite for this block
- * @param can_be_pushed true to allow the hero to push this block
- * @param can_be_pulled true to allow the hero to pull this block
- * @param maximum_moves indicates how many times the block can
+ * \param sprite_name animation set id of the sprite for this block
+ * \param can_be_pushed true to allow the hero to push this block
+ * \param can_be_pulled true to allow the hero to pull this block
+ * \param maximum_moves indicates how many times the block can
  * be moved (0: none, 1: once: 2: infinite)
  */
 Block::Block(
@@ -66,23 +66,23 @@ Block::Block(
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Block::~Block() {
 
 }
 
 /**
- * @brief Returns the type of entity.
- * @return the type of entity
+ * \brief Returns the type of entity.
+ * \return the type of entity
  */
 EntityType Block::get_type() {
   return BLOCK;
 }
 
 /**
- * @brief Returns whether this entity has to be drawn in y order.
- * @return \c true if this type of entity should be drawn at the same level
+ * \brief Returns whether this entity has to be drawn in y order.
+ * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
 bool Block::is_drawn_in_y_order() {
@@ -90,9 +90,9 @@ bool Block::is_drawn_in_y_order() {
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other another entity
+ * \return true
  */
 bool Block::is_obstacle_for(MapEntity& other) {
 
@@ -100,17 +100,17 @@ bool Block::is_obstacle_for(MapEntity& other) {
 }
 
 /**
- * @brief Returns whether a hole is currently considered as an obstacle for this entity.
- * @return true if the holes are currently an obstacle for this entity
+ * \brief Returns whether a hole is currently considered as an obstacle for this entity.
+ * \return true if the holes are currently an obstacle for this entity
  */
 bool Block::is_hole_obstacle() {
   return false;
 }
 
 /**
- * @brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is currently an obstacle for this entity
+ * \brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * \param teletransporter a teletransporter
+ * \return true if the teletransporter is currently an obstacle for this entity
  */
 bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   // necessary to push a block into a hole having a teletransporter
@@ -118,39 +118,39 @@ bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
 }
 
 /**
- * @brief Returns whether the hero is currently considered as an obstacle by this entity.
- * @param hero the hero
- * @return true if the hero is an obstacle for this entity.
+ * \brief Returns whether the hero is currently considered as an obstacle by this entity.
+ * \param hero the hero
+ * \return true if the hero is an obstacle for this entity.
  */
 bool Block::is_hero_obstacle(Hero& hero) {
   return get_movement() == NULL;
 }
 
 /**
- * @brief Returns whether an enemy is currently considered as an obstacle by this entity.
- * @param enemy an enemy
- * @return true if this enemy is currently considered as an obstacle by this entity.
+ * \brief Returns whether an enemy is currently considered as an obstacle by this entity.
+ * \param enemy an enemy
+ * \return true if this enemy is currently considered as an obstacle by this entity.
  */
 bool Block::is_enemy_obstacle(Enemy& enemy) {
   return true;
 }
 
 /**
- * @brief Returns whether a destructible item is currently considered as an obstacle by this entity.
- * @param destructible a destructible item
- * @return true if the destructible item is currently an obstacle by this entity
+ * \brief Returns whether a destructible item is currently considered as an obstacle by this entity.
+ * \param destructible a destructible item
+ * \return true if the destructible item is currently an obstacle by this entity
  */
 bool Block::is_destructible_obstacle(Destructible& destructible) {
   return true;
 }
 
 /**
- * @brief Sets the map.
+ * \brief Sets the map.
  *
  * Warning: when this function is called during the map initialization,
  * the current map of the game is still the old one.
  *
- * @param map The map.
+ * \param map The map.
  */
 void Block::set_map(Map& map) {
 
@@ -162,9 +162,9 @@ void Block::set_map(Map& map) {
 }
 
 /**
- * @brief This function is called by the engine when there is a collision with another entity.
- * @param entity_overlapping the entity overlapping the detector
- * @param collision_mode the collision mode that detected the collision
+ * \brief This function is called by the engine when there is a collision with another entity.
+ * \param entity_overlapping the entity overlapping the detector
+ * \param collision_mode the collision mode that detected the collision
  */
 void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
@@ -172,9 +172,9 @@ void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode collis
 }
 
 /**
- * @brief This function is called when a switch detects a collision with this entity.
- * @param sw the switch
- * @param collision_mode the collision mode that detected the event
+ * \brief This function is called when a switch detects a collision with this entity.
+ * \param sw the switch
+ * \param collision_mode the collision mode that detected the event
  */
 void Block::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
@@ -182,7 +182,7 @@ void Block::notify_collision_with_switch(Switch& sw, CollisionMode collision_mod
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by
+ * \brief Notifies this detector that the player is interacting with it by
  * pressing the action command.
  *
  * This function is called when the player presses the action command
@@ -197,8 +197,8 @@ void Block::notify_action_command_pressed() {
 }
  
 /**
- * @brief This function is called when the player tries to push or pull this block.
- * @return true if the player is allowed to move this block
+ * \brief This function is called when the player tries to push or pull this block.
+ * \return true if the player is allowed to move this block
  */
 bool Block::start_movement_by_hero() {
 
@@ -230,7 +230,7 @@ bool Block::start_movement_by_hero() {
 }
 
 /**
- * @brief Notifies the block that it has just moved.
+ * \brief Notifies the block that it has just moved.
  */
 void Block::notify_position_changed() {
 
@@ -245,7 +245,7 @@ void Block::notify_position_changed() {
 }
 
 /**
- * @brief Notifies this entity that it has just failed to change its position
+ * \brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  */
 void Block::notify_obstacle_reached() {
@@ -255,7 +255,7 @@ void Block::notify_obstacle_reached() {
 }
 
 /**
- * @brief This function is called when this entity stops being moved by the
+ * \brief This function is called when this entity stops being moved by the
  * hero.
  */
 void Block::stop_movement_by_hero() {
@@ -279,7 +279,7 @@ void Block::stop_movement_by_hero() {
 }
 
 /**
- * @brief Resets the block at its initial position.
+ * \brief Resets the block at its initial position.
  */
 void Block::reset() {
 
@@ -295,8 +295,8 @@ void Block::reset() {
 }
 
 /**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
  */
 const std::string& Block::get_lua_type_name() const {
   return LuaContext::entity_block_module_name;

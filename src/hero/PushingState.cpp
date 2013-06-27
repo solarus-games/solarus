@@ -25,8 +25,8 @@
 #include "GameCommands.h"
 
 /**
- * @brief Constructor.
- * @param hero the hero controlled by this state
+ * \brief Constructor.
+ * \param hero the hero controlled by this state
  */
 Hero::PushingState::PushingState(Hero& hero):
   State(hero),
@@ -35,15 +35,15 @@ Hero::PushingState::PushingState(Hero& hero):
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 Hero::PushingState::~PushingState() {
 
 }
 
 /**
- * @brief Starts this state.
- * @param previous_state the previous state
+ * \brief Starts this state.
+ * \param previous_state the previous state
  */
 void Hero::PushingState::start(State* previous_state) {
 
@@ -54,7 +54,7 @@ void Hero::PushingState::start(State* previous_state) {
 }
 
 /**
- * @brief Stops this state.
+ * \brief Stops this state.
  */
 void Hero::PushingState::stop(State* next_state) {
 
@@ -66,7 +66,7 @@ void Hero::PushingState::stop(State* next_state) {
 }
 
 /**
- * @brief Updates this state.
+ * \brief Updates this state.
  */
 void Hero::PushingState::update() {
 
@@ -114,31 +114,31 @@ void Hero::PushingState::update() {
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
- * @return true if the hero ignores the effect of conveyor belts in this state
+ * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ * \return true if the hero ignores the effect of conveyor belts in this state
  */
 bool Hero::PushingState::can_avoid_conveyor_belt() {
   return true;
 }
 
 /**
- * @brief Returns whether the hero can swing his sword in this state.
- * @return true if the hero can swing his sword in this state
+ * \brief Returns whether the hero can swing his sword in this state.
+ * \return true if the hero can swing his sword in this state
  */
 bool Hero::PushingState::can_start_sword() {
   return !is_moving_grabbed_entity();
 }
 
 /**
- * @brief Returns whether the hero is grabbing and moving an entity in this state.
- * @return true if the hero is grabbing and moving an entity
+ * \brief Returns whether the hero is grabbing and moving an entity in this state.
+ * \return true if the hero is grabbing and moving an entity
  */
 bool Hero::PushingState::is_moving_grabbed_entity() {
   return pushed_entity != NULL;
 }
 
 /**
- * @brief Notifies the hero that the entity he is pushing cannot move any more because of a collision.
+ * \brief Notifies the hero that the entity he is pushing cannot move any more because of a collision.
  */
 void Hero::PushingState::notify_grabbed_entity_collision() {
 
@@ -146,7 +146,7 @@ void Hero::PushingState::notify_grabbed_entity_collision() {
 }
 
 /**
- * @brief Notifies this state that the movement if finished.
+ * \brief Notifies this state that the movement if finished.
  */
 void Hero::PushingState::notify_movement_finished() {
 
@@ -158,7 +158,7 @@ void Hero::PushingState::notify_movement_finished() {
 }
 
 /**
- * @brief Notifies this state that the hero has just failed to change its
+ * \brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */
 void Hero::PushingState::notify_obstacle_reached() {
@@ -171,7 +171,7 @@ void Hero::PushingState::notify_obstacle_reached() {
 }
 
 /**
- * @brief Notifies this state that the hero has just changed its
+ * \brief Notifies this state that the hero has just changed its
  * position.
  */
 void Hero::PushingState::notify_position_changed() {
@@ -195,7 +195,7 @@ void Hero::PushingState::notify_position_changed() {
 }
 
 /**
- * @brief Makes the hero stop pushing the entity he is facing.
+ * \brief Makes the hero stop pushing the entity he is facing.
  */
 void Hero::PushingState::stop_moving_pushed_entity() {
 
@@ -246,59 +246,59 @@ void Hero::PushingState::stop_moving_pushed_entity() {
 }
 
 /**
- * @brief Returns whether the hero can be hurt in this state.
- * @param attacker an attacker that is trying to hurt the hero
+ * \brief Returns whether the hero can be hurt in this state.
+ * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
- * @return true if the hero can be hurt in this state
+ * \return true if the hero can be hurt in this state
  */
 bool Hero::PushingState::can_be_hurt(Enemy* attacker) {
   return !is_moving_grabbed_entity();
 }
 
 /**
- * @brief Returns whether the hero can pick a treasure in this state.
- * @param item The equipment item to obtain.
- * @return true if the hero can pick that treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in this state.
+ * \param item The equipment item to obtain.
+ * \return true if the hero can pick that treasure in this state.
  */
 bool Hero::PushingState::can_pick_treasure(EquipmentItem& item) {
   return true;
 }
 
 /**
- * @brief Returns whether shallow water is considered as an obstacle in this state.
- * @return true if shallow water is considered as an obstacle in this state
+ * \brief Returns whether shallow water is considered as an obstacle in this state.
+ * \return true if shallow water is considered as an obstacle in this state
  */
 bool Hero::PushingState::is_shallow_water_obstacle() {
   return true;
 }
 
 /**
- * @brief Returns whether deep water is considered as an obstacle in this state.
- * @return true if deep water is considered as an obstacle in this state
+ * \brief Returns whether deep water is considered as an obstacle in this state.
+ * \return true if deep water is considered as an obstacle in this state
  */
 bool Hero::PushingState::is_deep_water_obstacle() {
   return true;
 }
 
 /**
- * @brief Returns whether a hole is considered as an obstacle in this state.
- * @return true if the holes are considered as obstacles in this state
+ * \brief Returns whether a hole is considered as an obstacle in this state.
+ * \return true if the holes are considered as obstacles in this state
  */
 bool Hero::PushingState::is_hole_obstacle() {
   return true;
 }
 
 /**
- * @brief Returns whether lava is considered as an obstacle in this state.
- * @return true if lava is considered as obstacles in this state
+ * \brief Returns whether lava is considered as an obstacle in this state.
+ * \return true if lava is considered as obstacles in this state
  */
 bool Hero::PushingState::is_lava_obstacle() {
   return true;
 }
 
 /**
- * @brief Returns whether prickles are considered as an obstacle in this state.
- * @return true if prickles are considered as obstacles in this state
+ * \brief Returns whether prickles are considered as an obstacle in this state.
+ * \return true if prickles are considered as obstacles in this state
  */
 bool Hero::PushingState::is_prickle_obstacle() {
   return true;

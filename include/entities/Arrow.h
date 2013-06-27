@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 
 /**
- * @brief An arrow thrown by the bow on the map.
+ * \brief An arrow thrown by the bow on the map.
  */
 class Arrow: public MapEntity {
 

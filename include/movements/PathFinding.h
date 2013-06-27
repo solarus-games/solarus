@@ -23,7 +23,7 @@
 #include <map>
 
 /**
- * @brief Implementation of the A* algorithm to compute a path.
+ * \brief Implementation of the A* algorithm to compute a path.
  *
  * In the current implementation, the computed path always corresponds to a
  * shape of 16*16. If the entity to move is bigger, some obstacles may prevent
@@ -34,7 +34,7 @@ class PathFinding {
   private:
 
     /**
-     * @brief Represents a node in the path to compute.
+     * \brief Represents a node in the path to compute.
      *
      * A node is the location of a 16*16 square of the map.
      * The algorithm tries to find the best sequence of nodes leading to the target.

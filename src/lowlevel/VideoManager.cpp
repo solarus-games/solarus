@@ -40,10 +40,10 @@ const VideoManager::VideoMode forced_mode = VideoManager::NO_MODE;
 std::vector<Rectangle> available_fullscreen_resolutions;
 
 /**
- * @brief Returns the lowest fullscreen resolution greater than or equal to
+ * \brief Returns the lowest fullscreen resolution greater than or equal to
  * the specified size.
- * @param surface_size The size of the surface to fit.
- * @return The lowest fullscreen resolution that can contain this surface, or
+ * \param surface_size The size of the surface to fit.
+ * \return The lowest fullscreen resolution that can contain this surface, or
  * an rectangle of size 0.
  */
 Rectangle find_lowest_fullscreen_resolution(const Rectangle& surface_size) {
@@ -67,10 +67,10 @@ Rectangle find_lowest_fullscreen_resolution(const Rectangle& surface_size) {
 }
 
 /**
- * @brief Returns a fullscreen resolution whose width is larger than the
+ * \brief Returns a fullscreen resolution whose width is larger than the
  * specified width and whose height is minimal.
- * @param surface_size The size of the surface to fit.
- * @return The lowest wide fullscreen resolution that can contain this surface,
+ * \param surface_size The size of the surface to fit.
+ * \return The lowest wide fullscreen resolution that can contain this surface,
  * or a rectangle of size 0.
  */
 Rectangle find_wide_fullscreen_resolution(const Rectangle& surface_size) {
@@ -102,7 +102,7 @@ Rectangle find_wide_fullscreen_resolution(const Rectangle& surface_size) {
 }
 
 /**
- * @brief Lua name of each value of the VideoMode enum.
+ * \brief Lua name of each value of the VideoMode enum.
  */
 const std::string VideoManager::video_mode_names[] = {
   "windowed_stretched",
@@ -116,13 +116,13 @@ const std::string VideoManager::video_mode_names[] = {
 };
 
 /**
- * @brief Initializes the video system and creates the window.
+ * \brief Initializes the video system and creates the window.
  *
  * This method should be called when the application starts.
  * Options "-no-video" and "-quest-size=<width>x<height>" are recognized.
  *
- * @param argc Command-line arguments number.
- * @param argv Command-line arguments.
+ * \param argc Command-line arguments number.
+ * \param argv Command-line arguments.
  */
 void VideoManager::initialize(int argc, char **argv) {
   // TODO pass options as an std::map<string> instead.
@@ -152,25 +152,25 @@ void VideoManager::initialize(int argc, char **argv) {
 }
 
 /**
- * @brief Closes the video system.
+ * \brief Closes the video system.
  */
 void VideoManager::quit() {
   delete instance;
 }
 
 /**
- * @brief Returns the video manager.
- * @return the only video manager
+ * \brief Returns the video manager.
+ * \return the only video manager
  */
 VideoManager* VideoManager::get_instance() {
   return instance;
 }
 
 /**
- * @brief Returns the appropriate SDL_Surface flag depending on the requested
+ * \brief Returns the appropriate SDL_Surface flag depending on the requested
  * display mode and what OS is running.
- * @param the display mode which you wanted to know the SDL_Surface flag to use with.
- * @return the better SDL_Surface flag to use
+ * \param the display mode which you wanted to know the SDL_Surface flag to use with.
+ * \return the better SDL_Surface flag to use
  */
 uint32_t VideoManager::get_surface_flag(const VideoMode mode) const {
 
@@ -188,9 +188,9 @@ uint32_t VideoManager::get_surface_flag(const VideoMode mode) const {
 }
 
 /**
- * @brief Constructor.
- * @brief disable_window true to entirely disable the displaying.
- * @param wanted_quest_size Size of the quest as requested by the user.
+ * \brief Constructor.
+ * \brief disable_window true to entirely disable the displaying.
+ * \param wanted_quest_size Size of the quest as requested by the user.
  */
 VideoManager::VideoManager(
     bool disable_window,
@@ -212,7 +212,7 @@ VideoManager::VideoManager(
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 VideoManager::~VideoManager() {
 
@@ -221,9 +221,9 @@ VideoManager::~VideoManager() {
 }
 
 /**
- * @brief Returns whether a video mode is supported.
- * @param mode a video mode
- * @return true if this mode is supported
+ * \brief Returns whether a video mode is supported.
+ * \param mode a video mode
+ * \return true if this mode is supported
  */
 bool VideoManager::is_mode_supported(VideoMode mode) const {
 
@@ -259,26 +259,26 @@ bool VideoManager::is_mode_supported(VideoMode mode) const {
 }
 
 /**
- * @brief Returns whether a video mode is in fullscreen.
- * @param mode A video mode.
- * @return true if this video mode is in fullscreen.
+ * \brief Returns whether a video mode is in fullscreen.
+ * \param mode A video mode.
+ * \return true if this video mode is in fullscreen.
  */
 bool VideoManager::is_fullscreen(VideoMode mode) const {
   return mode >= FULLSCREEN_NORMAL;
 }
 
 /**
- * @brief Returns whether the current video mode is in fullscreen.
- * @return true if the current video mode is in fullscreen.
+ * \brief Returns whether the current video mode is in fullscreen.
+ * \return true if the current video mode is in fullscreen.
  */
 bool VideoManager::is_fullscreen() const {
   return is_fullscreen(get_video_mode());
 }
 
 /**
- * @brief Sets the video mode to fullscreen or windowed,
+ * \brief Sets the video mode to fullscreen or windowed,
  * keeping an equivalent resolution.
- * @param fullscreen true to make fullscreen.
+ * \param fullscreen true to make fullscreen.
  */
 void VideoManager::set_fullscreen(bool fullscreen) {
 
@@ -288,7 +288,7 @@ void VideoManager::set_fullscreen(bool fullscreen) {
 }
 
 /**
- * @brief Switches from windowed to fullscreen or from fullscreen to windowed,
+ * \brief Switches from windowed to fullscreen or from fullscreen to windowed,
  * keeping an equivalent resolution.
  */
 void VideoManager::switch_fullscreen() {
@@ -310,7 +310,7 @@ void VideoManager::switch_fullscreen() {
 }
 
 /**
- * @brief Sets the next video mode.
+ * \brief Sets the next video mode.
  */
 void VideoManager::switch_video_mode() {
 
@@ -322,7 +322,7 @@ void VideoManager::switch_video_mode() {
 }
 
 /**
- * @brief Sets the default video mode.
+ * \brief Sets the default video mode.
  */
 void VideoManager::set_default_video_mode() {
 
@@ -338,9 +338,9 @@ void VideoManager::set_default_video_mode() {
 }
 
 /**
- * @brief Sets the video mode.
- * @param mode The video mode to set.
- * @return true in case of success, false if this mode is not supported.
+ * \brief Sets the video mode.
+ * \param mode The video mode to set.
+ * \return true in case of success, false if this mode is not supported.
  */
 bool VideoManager::set_video_mode(VideoMode mode) {
 
@@ -405,16 +405,16 @@ bool VideoManager::set_video_mode(VideoMode mode) {
 }
 
 /**
- * @brief Returns the current video mode.
- * @return The video mode.
+ * \brief Returns the current video mode.
+ * \return The video mode.
  */
 VideoManager::VideoMode VideoManager::get_video_mode() const {
   return video_mode;
 }
 
 /**
- * @brief Returns a list of all supported video modes.
- * @return The list of supported video modes.
+ * \brief Returns a list of all supported video modes.
+ * \return The list of supported video modes.
  */
 const std::list<VideoManager::VideoMode> VideoManager::get_video_modes() const {
 
@@ -429,9 +429,9 @@ const std::list<VideoManager::VideoMode> VideoManager::get_video_modes() const {
 }
 
 /**
- * @brief Returns the name of a video mode.
- * @param mode A video mode.
- * @return The name of this mode, or an empty string if the mode is NO_MODE.
+ * \brief Returns the name of a video mode.
+ * \param mode A video mode.
+ * \return The name of this mode, or an empty string if the mode is NO_MODE.
  */
 std::string VideoManager::get_video_mode_name(VideoMode mode) {
 
@@ -443,9 +443,9 @@ std::string VideoManager::get_video_mode_name(VideoMode mode) {
 }
 
 /**
- * @brief Returns a video mode given its Lua name.
- * @param mode_name Lua name of a video mode.
- * @return The corresponding video mode, or NO_MODE if the name is invalid.
+ * \brief Returns a video mode given its Lua name.
+ * \param mode_name Lua name of a video mode.
+ * \return The corresponding video mode, or NO_MODE if the name is invalid.
  */
 VideoManager::VideoMode VideoManager::get_video_mode_by_name(const std::string& mode_name) {
 
@@ -458,8 +458,8 @@ VideoManager::VideoMode VideoManager::get_video_mode_by_name(const std::string& 
 }
 
 /**
- * @brief Draws the quest surface on the screen with the current video mode.
- * @param quest_surface The quest surface to draw on the screen.
+ * \brief Draws the quest surface on the screen with the current video mode.
+ * \param quest_surface The quest surface to draw on the screen.
  */
 void VideoManager::draw(Surface& quest_surface) {
 
@@ -483,11 +483,11 @@ void VideoManager::draw(Surface& quest_surface) {
 }
 
 /**
- * @brief Draws the quest surface on the screen at its size.
+ * \brief Draws the quest surface on the screen at its size.
  *
  * Black bars are added if the screen is bigger than the quest size.
  *
- * @param quest_surface The quest surface to draw.
+ * \param quest_surface The quest surface to draw.
  */
 void VideoManager::draw_unscaled(Surface& quest_surface) {
 
@@ -500,12 +500,12 @@ void VideoManager::draw_unscaled(Surface& quest_surface) {
 }
 
 /**
- * @brief Draws the quest surface on the screen, stretching the image by
+ * \brief Draws the quest surface on the screen, stretching the image by
  * a factor of 2.
  *
  * Black bars are added if the screen is bigger than twice the quest size.
  *
- * @param quest_surface The quest surface to draw.
+ * \param quest_surface The quest surface to draw.
  */
 void VideoManager::draw_stretched(Surface& quest_surface) {
 
@@ -546,12 +546,12 @@ void VideoManager::draw_stretched(Surface& quest_surface) {
 }
 
 /**
- * @brief Draws the quest surface on the screen, scaled the image by
+ * \brief Draws the quest surface on the screen, scaled the image by
  * a factor of 2 with the Scale2x algorithm.
  *
  * Black bars are added if the screen is bigger than twice the quest size.
  *
- * @param quest_surface The quest surface to draw.
+ * \param quest_surface The quest surface to draw.
  */
 void VideoManager::draw_scale2x(Surface& quest_surface) {
 
@@ -629,8 +629,8 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
 }
 
 /**
- * @brief Returns the current text of the window title bar.
- * @return The window title.
+ * \brief Returns the current text of the window title bar.
+ * \return The window title.
  */
 const std::string VideoManager::get_window_title() const {
 
@@ -641,8 +641,8 @@ const std::string VideoManager::get_window_title() const {
 }
 
 /**
- * @brief Sets the text of the window title bar.
- * @param window_title The window title to set.
+ * \brief Sets the text of the window title bar.
+ * \param window_title The window title to set.
  */
 void VideoManager::set_window_title(const std::string& window_title) {
 
@@ -650,11 +650,11 @@ void VideoManager::set_window_title(const std::string& window_title) {
 }
 
 /**
- * @brief Gets the width and the height values from a size string of the form
+ * \brief Gets the width and the height values from a size string of the form
  * "320x240".
- * @param size_string The input string.
- * @param size The resulting size. Unchanged in case of failure.
- * @return true in case of success, false if the string is not a valid size.
+ * \param size_string The input string.
+ * \param size The resulting size. Unchanged in case of failure.
+ * \return true in case of success, false if the string is not a valid size.
  */
 bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
 
@@ -684,19 +684,19 @@ bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
 }
 
 /**
- * @brief Returns the size of the quest surface to render on the screen.
- * @return The quest size.
+ * \brief Returns the size of the quest surface to render on the screen.
+ * \return The quest size.
  */
 const Rectangle& VideoManager::get_quest_size() const {
   return quest_size;
 }
 
 /**
- * @brief Sets the size of the quest surface to render on the screen.
+ * \brief Sets the size of the quest surface to render on the screen.
  *
  * This function should be called before video modes are initialized.
  *
- * @param quest_size The quest size to set.
+ * \param quest_size The quest size to set.
  */
 void VideoManager::set_quest_size(Rectangle& quest_size) {
 
@@ -707,10 +707,10 @@ void VideoManager::set_quest_size(Rectangle& quest_size) {
 }
 
 /**
- * @brief Gets the allowed range of quest sizes for this quest.
- * @param normal_quest_size Gets the default size for this quest.
- * @param min_quest_size Gets the minimum size for this quest.
- * @param max_quest_size Gets the maximum size for this quest.
+ * \brief Gets the allowed range of quest sizes for this quest.
+ * \param normal_quest_size Gets the default size for this quest.
+ * \param min_quest_size Gets the minimum size for this quest.
+ * \param max_quest_size Gets the maximum size for this quest.
  */
 void VideoManager::get_quest_size_range(
     Rectangle& normal_quest_size,
@@ -723,13 +723,13 @@ void VideoManager::get_quest_size_range(
 }
 
 /**
- * @brief Sets the allowed range of quest sizes for this quest.
+ * \brief Sets the allowed range of quest sizes for this quest.
  *
  * This function sets the actual quest size and creates the screen.
  *
- * @param normal_quest_size Default size for this quest.
- * @param min_quest_size Minimum size for this quest.
- * @param max_quest_size Maximum size for this quest.
+ * \param normal_quest_size Default size for this quest.
+ * \param min_quest_size Minimum size for this quest.
+ * \param max_quest_size Maximum size for this quest.
  */
 void VideoManager::set_quest_size_range(
     const Rectangle& normal_quest_size,
@@ -776,7 +776,7 @@ void VideoManager::set_quest_size_range(
 }
 
 /**
- * @brief Detects the available resolutions and initializes the properties
+ * \brief Detects the available resolutions and initializes the properties
  * of video modes.
  */
 void VideoManager::initialize_video_modes() {

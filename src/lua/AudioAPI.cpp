@@ -22,7 +22,7 @@
 const std::string LuaContext::audio_module_name = "sol.audio";
 
 /**
- * @brief Initializes the audio features provided to Lua.
+ * \brief Initializes the audio features provided to Lua.
  */
 void LuaContext::register_audio_module() {
 
@@ -41,9 +41,9 @@ void LuaContext::register_audio_module() {
 }
 
 /**
- * @brief Implementation of sol.audio.play_sound().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.audio.play_sound().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::audio_api_play_sound(lua_State* l) {
 
@@ -59,9 +59,9 @@ int LuaContext::audio_api_play_sound(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.audio.preload_sounds().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.audio.preload_sounds().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::audio_api_preload_sounds(lua_State* l) {
 
@@ -71,9 +71,9 @@ int LuaContext::audio_api_preload_sounds(lua_State* l) {
 
 
 /**
- * @brief Implementation of sol.audio.play_music().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.audio.play_music().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::audio_api_play_music(lua_State* l) {
 
@@ -90,9 +90,9 @@ int LuaContext::audio_api_play_music(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.audio.stop_music().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.audio.stop_music().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::audio_api_stop_music(lua_State* l) {
 
@@ -102,9 +102,9 @@ int LuaContext::audio_api_stop_music(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.audio.get_sound_volume().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.audio.get_sound_volume().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::audio_api_get_sound_volume(lua_State* l) {
 
@@ -113,9 +113,9 @@ int LuaContext::audio_api_get_sound_volume(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.audio.set_sound_volume().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.audio.set_sound_volume().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::audio_api_set_sound_volume(lua_State* l) {
 
@@ -127,9 +127,9 @@ int LuaContext::audio_api_set_sound_volume(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.audio.get_music_volume().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.audio.get_music_volume().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::audio_api_get_music_volume(lua_State* l) {
 
@@ -138,9 +138,9 @@ int LuaContext::audio_api_get_music_volume(lua_State* l) {
 }
 
 /**
- * @brief Implementation of sol.audio.set_music_volume().
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * \brief Implementation of sol.audio.set_music_volume().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
  */
 int LuaContext::audio_api_set_music_volume(lua_State* l) {
 

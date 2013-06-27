@@ -17,13 +17,13 @@
 #include "entities/CameraStopper.h"
 
 /**
- * @brief Creates a new camera stopper.
- * @param name Name of the entity to create.
- * @param layer Layer of the entity to create on the map.
- * @param x X coordinate of the entity to create.
- * @param y Y coordinate of the entity to create.
- * @param width Width of the camera stopper (16 means a vertical stopper).
- * @param height Height of the camera stopper (16 means an horizontal stopper).
+ * \brief Creates a new camera stopper.
+ * \param name Name of the entity to create.
+ * \param layer Layer of the entity to create on the map.
+ * \param x X coordinate of the entity to create.
+ * \param y Y coordinate of the entity to create.
+ * \param width Width of the camera stopper (16 means a vertical stopper).
+ * \param height Height of the camera stopper (16 means an horizontal stopper).
  */
 CameraStopper::CameraStopper(
     const std::string& name,
@@ -37,14 +37,14 @@ CameraStopper::CameraStopper(
 }
 
 /**
- * @brief Destructor.
+ * \brief Destructor.
  */
 CameraStopper::~CameraStopper() {
 }
 
 /**
- * @brief Returns the type of entity.
- * @return The type of entity.
+ * \brief Returns the type of entity.
+ * \return The type of entity.
  */
 EntityType CameraStopper::get_type() {
   return CAMERA_STOPPER;

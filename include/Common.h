@@ -90,32 +90,6 @@
  */
 
 /**
- * @def SOLARUS_SCREEN_DOUBLEBUF
- * @brief Define if the current platform support double buffering.
- */
-#ifndef SOLARUS_SCREEN_DOUBLEBUF
-#  if defined(SOLARUS_OSX)
-#    define SOLARUS_SCREEN_DOUBLEBUF 0
-#  else
-#    define SOLARUS_SCREEN_DOUBLEBUF 1
-#  endif
-#endif
-
-/**
- * @def SOLARUS_FULLSCREEN_FORCE_OK
- * @brief Define if the current platform should force all fullscreen mode to be available.
- * If set to 1, VideoManager::is_mode_supported() may not call SDL_VideoModeOK()
- */
-#ifndef SOLARUS_FULLSCREEN_FORCE_OK
-#  if defined(SOLARUS_OSX)
-// Since OSX 10.7, SDL_VideoModeOK() always return 0 with SDL_FULLSCREEN flag
-#    define SOLARUS_FULLSCREEN_FORCE_OK 1
-#  else
-#    define SOLARUS_FULLSCREEN_FORCE_OK 0
-#  endif
-#endif
-
-/**
  * @def SOLARUS_DEFAULT_QUEST
  * @brief Path of the quest to run is none is specified at runtime.
  */
@@ -182,6 +156,47 @@
 #    define SOLARUS_SCREEN_FORCE_MODE 5
 #  else
 #    define SOLARUS_SCREEN_FORCE_MODE -1
+#  endif
+#endif
+
+/**
+ * @def SOLARUS_FULLSCREEN_FORCE_OK
+ * @brief Define if the current platform should force all fullscreen mode to be available.
+ * If set to 1, VideoManager::is_mode_supported() may not call SDL_VideoModeOK()
+ */
+#ifndef SOLARUS_FULLSCREEN_FORCE_OK
+#  if defined(SOLARUS_OSX)
+// Since OSX 10.7, SDL_VideoModeOK() always return 0 with SDL_FULLSCREEN flag
+#    define SOLARUS_FULLSCREEN_FORCE_OK 1
+#  else
+#    define SOLARUS_FULLSCREEN_FORCE_OK 0
+#  endif
+#endif
+
+/**
+ * @def SOLARUS_SCREEN_DOUBLEBUF
+ * @brief Define if the current platform supports double buffering.
+ */
+#ifndef SOLARUS_SCREEN_DOUBLEBUF
+#  if defined(SOLARUS_OSX)
+#    define SOLARUS_SCREEN_DOUBLEBUF 0
+#  else
+#    define SOLARUS_SCREEN_DOUBLEBUF 1
+#  endif
+#endif
+
+/**
+ * @def SOLARUS_SCREEN_DOUBLEBUF
+ * @brief Define to render the screen on an intermediate surface
+ * (workaround to rendering issues in fullscreen).
+ *
+ * Don't define this if you have no problem.
+ */
+#ifndef SOLARUS_SCREEN_INTERMEDIATE_SURFACE
+#  if defined(__APPLE__)
+#    define SOLARUS_SCREEN_INTERMEDIATE_SURFACE 0
+#  else
+#    define SOLARUS_SCREEN_INTERMEDIATE_SURFACE 1
 #  endif
 #endif
 

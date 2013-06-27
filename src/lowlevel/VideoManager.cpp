@@ -192,6 +192,7 @@ VideoManager::VideoManager(bool disable_window):
   disable_window(disable_window),
   video_mode(NO_MODE),
   screen_surface(NULL),
+  intermediate_screen_surface(NULL),
   enlargment_factor(1),
   offset_x(0),
   offset_y(0),
@@ -211,7 +212,9 @@ VideoManager::VideoManager(bool disable_window):
  * @brief Destructor.
  */
 VideoManager::~VideoManager() {
+
   delete screen_surface;
+  delete intermediate_screen_surface;
 }
 
 /**
@@ -239,7 +242,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) const {
 
   if (size.is_flat()) {
     Debug::die(StringConcat() <<
-        "Uninitialized size for video mode " << video_mode);
+        "Uninitialized size for video mode " << get_video_mode_name(video_mode));
   }
 
 #if defined(SOLARUS_FULLSCREEN_FORCE_OK) && SOLARUS_FULLSCREEN_FORCE_OK == 1
@@ -378,11 +381,16 @@ bool VideoManager::set_video_mode(VideoMode mode) {
         flags);
 
     Debug::check_assertion(screen_internal_surface != NULL, StringConcat() <<
-        "Cannot create the video surface for mode " << mode);
+        "Cannot create the video surface for mode " << get_video_mode_name(mode));
 
     SDL_ShowCursor(show_cursor);
     delete this->screen_surface;
     this->screen_surface = new Surface(screen_internal_surface);
+
+#if defined(SOLARUS_SCREEN_INTERMEDIATE_SURFACE) && SOLARUS_SCREEN_INTERMEDIATE_SURFACE != 0
+    delete this->intermediate_screen_surface;
+    this->intermediate_screen_surface = new Surface(screen_surface->get_size());
+#endif
   }
   this->video_mode = mode;
 
@@ -498,12 +506,9 @@ void VideoManager::draw_stretched(Surface& quest_surface) {
     SDL_Surface* dst_internal_surface = screen_surface->get_internal_surface();
     SDL_Surface* surface_to_draw = dst_internal_surface;
 
-#ifdef __APPLE__
-    /* On Mac OS X an intermediate surface is needed.
-     * FIXME: creating a new surface at each blit is probably a horrible loss
-     * of performance */
-    surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
-        dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
+#if defined(SOLARUS_SCREEN_INTERMEDIATE_SURFACE) && SOLARUS_SCREEN_INTERMEDIATE_SURFACE != 0
+    // On some systems, an intermediate surface is used as a workaround to rendering problems.
+    surface_to_draw = intermediate_screen_surface->get_internal_surface();
 #endif
 
     SDL_LockSurface(src_internal_surface);
@@ -528,9 +533,8 @@ void VideoManager::draw_stretched(Surface& quest_surface) {
     SDL_UnlockSurface(surface_to_draw);
     SDL_UnlockSurface(src_internal_surface);
 
-#ifdef __APPLE__
+#if defined(SOLARUS_SCREEN_INTERMEDIATE_SURFACE) && SOLARUS_SCREEN_INTERMEDIATE_SURFACE != 0
     SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
-    SDL_FreeSurface(surface_to_draw);
 #endif
 }
 
@@ -548,12 +552,9 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
     SDL_Surface* dst_internal_surface = screen_surface->get_internal_surface();
     SDL_Surface* surface_to_draw = dst_internal_surface;
 
-#ifdef __APPLE__
-    /* On Mac OS X an intermediate surface is needed.
-     * FIXME: creating a new surface at each blit is probably a horrible loss
-     * of performance */
-    surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
-        dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
+#if defined(SOLARUS_SCREEN_INTERMEDIATE_SURFACE) && SOLARUS_SCREEN_INTERMEDIATE_SURFACE != 0
+    // On some systems, an intermediate surface is used as a workaround to rendering problems.
+    surface_to_draw = intermediate_screen_surface->get_internal_surface();
 #endif
 
     SDL_LockSurface(src_internal_surface);
@@ -615,9 +616,8 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
     SDL_UnlockSurface(surface_to_draw);
     SDL_UnlockSurface(src_internal_surface);
 
-#ifdef __APPLE__
+#if defined(SOLARUS_SCREEN_INTERMEDIATE_SURFACE) && SOLARUS_SCREEN_INTERMEDIATE_SURFACE != 0
     SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
-    SDL_FreeSurface(surface_to_draw);
 #endif
 }
 
@@ -843,6 +843,12 @@ void VideoManager::initialize_video_modes() {
   }
   if (!twice_wide_resolution.is_flat()) {
     mode_sizes[FULLSCREEN_SCALE2X_WIDE] = wide_resolution;
+  }
+
+  for (int i = 0; i < NB_MODES; i++) {
+    VideoMode mode = VideoMode(i);
+    Debug::check_assertion(mode_sizes.find(mode) != mode_sizes.end(),
+        StringConcat() << "Video mode " << get_video_mode_name(mode) << " was not initialized");
   }
 }
 

@@ -140,8 +140,9 @@ void VideoManager::initialize(int argc, char **argv) {
     }
   }
 
-  Rectangle wanted_quest_size(
+  Rectangle wanted_quest_size(0, 0,
       SOLARUS_DEFAULT_QUEST_WIDTH, SOLARUS_DEFAULT_QUEST_HEIGHT);
+
   if (!quest_size_string.empty()) {
     if (!parse_size(quest_size_string, wanted_quest_size)) {
       Debug::error(std::string("Invalid quest size: '") + quest_size_string + "'");

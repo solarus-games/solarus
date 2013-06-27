@@ -279,7 +279,7 @@ void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref) {
 
     // Set the coordinates of graphic objects.
     int x = camera_position.get_width() / 2 - 110;
-    int y = top ? 32 : camera_position.get_height() / 2 - 96;
+    int y = top ? 32 : camera_position.get_height() - 96;
 
     if (style == STYLE_WITHOUT_FRAME) {
       y += top ? (-24) : 24;

@@ -32,9 +32,11 @@ namespace {
 std::string solarus_required_version;
 
 /**
- * \brief Checks that the quest is compatible with the current version of Solarus.
+ * \brief Checks that the quest is compatible with the current version of
+ * Solarus.
+ * \param solarus_required_version Version of the quest.
  */
-void check_version_compatibility() {
+void check_version_compatibility(const std::string& solarus_required_version) {
 
   if (solarus_required_version.empty()) {
     Debug::die("No Solarus version is specified in your quest.dat file!");
@@ -108,8 +110,6 @@ void QuestProperties::load() {
     lua_pop(l, 1);
   }
 
-  check_version_compatibility();
-
   lua_close(l);
 }
 
@@ -117,7 +117,9 @@ int QuestProperties::l_quest(lua_State* l) {
 
   // Retrieve the quest properties from the table parameter.
   luaL_checktype(l, 1, LUA_TTABLE);
-  solarus_required_version = LuaContext::opt_string_field(l, 1, "solarus_version", "");
+  const std::string& solarus_required_version =
+      LuaContext::opt_string_field(l, 1, "solarus_version", "");
+  check_version_compatibility(solarus_required_version);
   const std::string& quest_write_dir =
       LuaContext::opt_string_field(l, 1, "write_dir", "");
   const std::string& title_bar =

@@ -33,7 +33,8 @@ Surface::Surface(int width, int height):
   Drawable(),
   internal_surface_created(true) {
 
-  Debug::check_assertion(width > 0 && height > 0, "Empty surface");
+  Debug::check_assertion(width > 0 && height > 0,
+      "Attempt to create a surface with an empty size");
 
   this->internal_surface = SDL_CreateRGBSurface(
     SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);

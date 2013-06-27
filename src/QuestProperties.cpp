@@ -105,8 +105,7 @@ void QuestProperties::load() {
 
   lua_register(l, "quest", l_quest);
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(StringConcat() << "Error: failed to load quest.dat: "
-        << lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load quest.dat: ") + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
 
@@ -139,20 +138,23 @@ int QuestProperties::l_quest(lua_State* l) {
   Rectangle normal_quest_size, min_quest_size, max_quest_size;
   bool success = VideoManager::parse_size(normal_quest_size_string, normal_quest_size);
   if (!success) {
-    luaL_argerror(l, 1,
-        "Bad field 'normal_quest_size' (not a valid size string)");
+    luaL_argerror(l, 1, (std::string(
+        "Bad field 'normal_quest_size' (not a valid size string: '")
+        + normal_quest_size_string + "')").c_str());
   }
 
   success = VideoManager::parse_size(min_quest_size_string, min_quest_size);
   if (!success) {
-    luaL_argerror(l, 1,
-        "Bad field 'min_quest_size' (not a valid size string)");
+    luaL_argerror(l, 1, (std::string(
+        "Bad field 'min_quest_size' (not a valid size string: '")
+        + min_quest_size_string + "')").c_str());
   }
 
   success = VideoManager::parse_size(max_quest_size_string, max_quest_size);
   if (!success) {
-    luaL_argerror(l, 1,
-        "Bad field 'max_quest_size' (not a valid size string)");
+    luaL_argerror(l, 1, (std::string(
+        "Bad field 'max_quest_size' (not a valid size string: '")
+        + max_quest_size_string + "')").c_str());
   }
 
   if (normal_quest_size.get_width() < min_quest_size.get_width()

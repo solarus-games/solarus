@@ -91,7 +91,6 @@ class VideoManager {
     VideoManager(bool disable_window, const Rectangle& wanted_quest_size);
     ~VideoManager();
 
-    void set_quest_size(Rectangle& quest_size);
     void initialize_video_modes();
 
     void draw_unscaled(Surface& quest_surface);

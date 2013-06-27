@@ -693,21 +693,6 @@ const Rectangle& VideoManager::get_quest_size() const {
 }
 
 /**
- * \brief Sets the size of the quest surface to render on the screen.
- *
- * This function should be called before video modes are initialized.
- *
- * \param quest_size The quest size to set.
- */
-void VideoManager::set_quest_size(Rectangle& quest_size) {
-
-  Debug::check_assertion(screen_surface == NULL,
-      "The screen is already created");
-
-  this->quest_size = quest_size;
-}
-
-/**
  * \brief Gets the allowed range of quest sizes for this quest.
  * \param normal_quest_size Gets the default size for this quest.
  * \param min_quest_size Gets the minimum size for this quest.

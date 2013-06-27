@@ -67,9 +67,14 @@ void FileTools::initialize(int argc, char** argv) {
 
   // Check the existence of a quest at this location.
   if (!FileTools::data_file_exists("quest.dat")) {
+#if defined __OpenBSD__
+    printf("No quest found. Please run solarus path/to/quest, zsdx, or zsxd instead.\n");
+    std::exit(EXIT_SUCCESS);
+#else
     Debug::die(StringConcat() << "No quest was found in the directory '" << quest_path
         << "'. To specify your quest's path, run: "
         << argv[0] << " path/to/quest");
+#endif
   }
 
   // Set the engine root write directory.

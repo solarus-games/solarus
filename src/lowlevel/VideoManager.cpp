@@ -355,9 +355,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
   }
 
   const Rectangle& mode_size = mode_sizes[mode];
-  Rectangle scaled_quest_size(
-      quest_size.get_width() * enlargment_factor,
-      quest_size.get_height() * enlargment_factor);
 
   if (mode_size.get_width() < 2 * quest_size.get_width()
       || mode_size.get_height() < 2 * quest_size.get_height()) {
@@ -368,6 +365,10 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     // The quest surface will be rendered stretched or scaled.
     enlargment_factor = 2;
   }
+
+  Rectangle scaled_quest_size(0, 0,
+      quest_size.get_width() * enlargment_factor,
+      quest_size.get_height() * enlargment_factor);
 
   // Add black bars if needed.
   offset_x = (mode_size.get_width() - scaled_quest_size.get_width()) / 2;
@@ -393,6 +394,9 @@ bool VideoManager::set_video_mode(VideoMode mode) {
 #endif
   }
   this->video_mode = mode;
+
+  //std::cout << "Set mode " << get_video_mode_name(mode) << ": offset = "
+  //  << offset_x << "," << offset_y << ", factor: " << enlargment_factor << std::endl;
 
   return true;
 }
@@ -767,15 +771,16 @@ void VideoManager::initialize_video_modes() {
 
   mode_sizes[WINDOWED_STRETCHED] = twice_quest_size;
   mode_sizes[WINDOWED_SCALE2X] = twice_quest_size;
-  mode_sizes[WINDOWED_NORMAL] =    quest_size;
+  mode_sizes[WINDOWED_NORMAL] = quest_size;
 
   // Get the fullscreen video modes supported by the system.
   int fullscreen_flags = get_surface_flag(FULLSCREEN_NORMAL);
   SDL_Rect** rects = SDL_ListModes(NULL, fullscreen_flags);
   while (*rects != NULL) {
+    //std::cout << "Detected fullscreen resolution " << (*rects)->w << "x" << (*rects)->h << std::endl;
     available_fullscreen_resolutions.push_back(
         Rectangle(0, 0, (*rects)->w, (*rects)->h));
-     rects++;
+    rects++;
   }
 
   // Find a fullscreen resolution well suited for our quest size.
@@ -850,6 +855,7 @@ void VideoManager::initialize_video_modes() {
     VideoMode mode = VideoMode(i);
     Debug::check_assertion(mode_sizes.find(mode) != mode_sizes.end(),
         StringConcat() << "Video mode " << get_video_mode_name(mode) << " was not initialized");
+    //std::cout << "Screen size for mode " << get_video_mode_name(mode) << ": " << mode_sizes[mode] << std::endl;
   }
 }
 

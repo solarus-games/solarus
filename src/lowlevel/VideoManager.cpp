@@ -199,7 +199,6 @@ VideoManager::VideoManager(
   disable_window(disable_window),
   video_mode(NO_MODE),
   screen_surface(NULL),
-  intermediate_screen_surface(NULL),
   enlargment_factor(1),
   offset_x(0),
   offset_y(0),
@@ -218,7 +217,6 @@ VideoManager::VideoManager(
 VideoManager::~VideoManager() {
 
   delete screen_surface;
-  delete intermediate_screen_surface;
 }
 
 /**
@@ -248,12 +246,6 @@ bool VideoManager::is_mode_supported(VideoMode mode) const {
     Debug::die(StringConcat() <<
         "Uninitialized size for video mode " << get_video_mode_name(video_mode));
   }
-
-#if defined(SOLARUS_FULLSCREEN_FORCE_OK) && SOLARUS_FULLSCREEN_FORCE_OK == 1
-  if (is_fullscreen(mode)) {
-    return true;
-  }
-#endif
 
   int flags = get_surface_flag(mode);
   return SDL_VideoModeOK(size.get_width(), size.get_height(), 32, flags) != 0;
@@ -391,11 +383,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     SDL_ShowCursor(show_cursor);
     delete this->screen_surface;
     this->screen_surface = new Surface(screen_internal_surface);
-
-#if defined(SOLARUS_SCREEN_INTERMEDIATE_SURFACE) && SOLARUS_SCREEN_INTERMEDIATE_SURFACE != 0
-    delete this->intermediate_screen_surface;
-    this->intermediate_screen_surface = new Surface(screen_surface->get_size());
-#endif
   }
   this->video_mode = mode;
 
@@ -512,38 +499,29 @@ void VideoManager::draw_stretched(Surface& quest_surface) {
 
     SDL_Surface* src_internal_surface = quest_surface.get_internal_surface();
     SDL_Surface* dst_internal_surface = screen_surface->get_internal_surface();
-    SDL_Surface* surface_to_draw = dst_internal_surface;
-
-#if defined(SOLARUS_SCREEN_INTERMEDIATE_SURFACE) && SOLARUS_SCREEN_INTERMEDIATE_SURFACE != 0
-    // On some systems, an intermediate surface is used as a workaround to rendering problems.
-    surface_to_draw = intermediate_screen_surface->get_internal_surface();
-#endif
 
     SDL_LockSurface(src_internal_surface);
-    SDL_LockSurface(surface_to_draw);
+    SDL_LockSurface(dst_internal_surface);
 
-    uint32_t* src = static_cast<uint32_t*>(src_internal_surface->pixels);
-    uint32_t* dst = static_cast<uint32_t*>(surface_to_draw->pixels);
+    int idx_src = 0;
+    uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
 
     const int width = dst_internal_surface->w;
     const int end_row_increment = 2 * offset_x + width;
     int p = width * offset_y + offset_x;
     for (int i = 0; i < quest_size.get_height(); i++) {
         for (int j = 0; j < quest_size.get_width(); j++) {
-            dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = *src;
+            dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] 
+                   = quest_surface.get_mapped_pixel(idx_src, dst_internal_surface->format);
             p += 2;
-            src++;
+            idx_src++;
         }
 
         p += end_row_increment;
     }
 
-    SDL_UnlockSurface(surface_to_draw);
+    SDL_UnlockSurface(dst_internal_surface);
     SDL_UnlockSurface(src_internal_surface);
-
-#if defined(SOLARUS_SCREEN_INTERMEDIATE_SURFACE) && SOLARUS_SCREEN_INTERMEDIATE_SURFACE != 0
-    SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
-#endif
 }
 
 /**
@@ -558,18 +536,12 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
 
     SDL_Surface* src_internal_surface = quest_surface.get_internal_surface();
     SDL_Surface* dst_internal_surface = screen_surface->get_internal_surface();
-    SDL_Surface* surface_to_draw = dst_internal_surface;
-
-#if defined(SOLARUS_SCREEN_INTERMEDIATE_SURFACE) && SOLARUS_SCREEN_INTERMEDIATE_SURFACE != 0
-    // On some systems, an intermediate surface is used as a workaround to rendering problems.
-    surface_to_draw = intermediate_screen_surface->get_internal_surface();
-#endif
 
     SDL_LockSurface(src_internal_surface);
-    SDL_LockSurface(surface_to_draw);
+    SDL_LockSurface(dst_internal_surface);
 
     uint32_t* src = (uint32_t*) src_internal_surface->pixels;
-    uint32_t* dst = (uint32_t*) surface_to_draw->pixels;
+    uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
 
     const int end_row_increment = 2 * offset_x + dst_internal_surface->w;
 
@@ -607,13 +579,13 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
             // compute the color
 
             if (src[b] != src[h] && src[d] != src[f]) {
-                dst[e1] = (src[d] == src[b]) ? src[d] : src[e];
-                dst[e2] = (src[b] == src[f]) ? src[f] : src[e];
-                dst[e3] = (src[d] == src[h]) ? src[d] : src[e];
-                dst[e4] = (src[h] == src[f]) ? src[f] : src[e];
+                dst[e1] = quest_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
+                dst[e2] = quest_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
+                dst[e3] = quest_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
+                dst[e4] = quest_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
             }
             else {
-                dst[e1] = dst[e2] = dst[e3] = dst[e4] = src[e];
+                dst[e1] = dst[e2] = dst[e3] = dst[e4] = quest_surface.get_mapped_pixel(e, dst_internal_surface->format);
             }
             e1 += 2;
             e++;
@@ -621,12 +593,8 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
         e1 += end_row_increment;
     }
 
-    SDL_UnlockSurface(surface_to_draw);
+    SDL_UnlockSurface(dst_internal_surface);
     SDL_UnlockSurface(src_internal_surface);
-
-#if defined(SOLARUS_SCREEN_INTERMEDIATE_SURFACE) && SOLARUS_SCREEN_INTERMEDIATE_SURFACE != 0
-    SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
-#endif
 }
 
 /**

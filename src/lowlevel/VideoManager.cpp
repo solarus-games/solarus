@@ -666,8 +666,9 @@ bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
     return false;
   }
 
-  iss.str(height_string);
-  if (!(iss >> height || height < 0)) {
+  iss.str(width_string);
+  iss.clear();
+  if (!(iss >> height) || height < 0) {
     return false;
   }
 

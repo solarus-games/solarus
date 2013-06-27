@@ -73,7 +73,6 @@ class VideoManager {
     static bool parse_size(const std::string& size_string, Rectangle& size);
 
     const Rectangle& get_quest_size() const;
-    void set_quest_size(Rectangle& quest_size);
     void get_quest_size_range(
         Rectangle& normal_quest_size,
         Rectangle& min_quest_size,
@@ -83,7 +82,7 @@ class VideoManager {
         const Rectangle& min_quest_size,
         const Rectangle& max_quest_size);
 
-    void draw(Surface& src_surface);
+    void draw(Surface& quest_surface);
 
     static const std::string video_mode_names[];
 
@@ -92,9 +91,12 @@ class VideoManager {
     VideoManager(bool disable_window);
     ~VideoManager();
 
-    void blit(Surface& src_surface, Surface& dst_surface);
-    void blit_stretched(Surface& src_surface, Surface& dst_surface);
-    void blit_scale2x(Surface& src_surface, Surface& dst_surface);
+    void set_quest_size(Rectangle& quest_size);
+    void initialize_video_modes();
+
+    void draw_unscaled(Surface& quest_surface);
+    void draw_stretched(Surface& quest_surface);
+    void draw_scale2x(Surface& quest_surface);
     uint32_t get_surface_flag(const VideoMode mode) const;
 
     static VideoManager* instance;          /**< The only instance. */
@@ -111,8 +113,6 @@ class VideoManager {
                                              * 2 if it is stretched or scaled by a factor of 2. */
     int offset_x;                           /**< Width of black vertical bars added in the current resolution. */
     int offset_y;                           /**< Height of black horizontal bars added in the current resolution. */
-    int end_row_increment;                  /**< Increment used by the stretching and scaling functions
-                                             * when changing the row in the current resolution. */
 
     Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */
     Rectangle min_quest_size;               /**< Minimum value of quest_size (depends on the quest). */

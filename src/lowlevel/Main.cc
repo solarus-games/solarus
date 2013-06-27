@@ -39,6 +39,7 @@ static void print_help(int argc, char** argv);
  *   -help               shows a help message
  *   -no-audio           disables sounds and musics
  *   -no-video           disables displaying (used for unitary tests)
+ *   -quest-size=<width>x<height>         sets the size of the drawing area (if compatible with the quest)
  *
  * @param argc number of command-line arguments
  * @param argv command-line arguments

@@ -106,9 +106,7 @@ class VideoManager {
                                              * video mode with the current quest size. */
 
     VideoMode video_mode;                   /**< Current video mode of the screen. */
-    Surface* screen_surface;                /**< The screen surface. */
-    Surface* intermediate_screen_surface;   /**< An intermediate surface to use for pixel operations
-                                             * when SOLARUS_SCREEN_INTERMEDIATE_SURFACE is on. */
+    Surface* screen_surface;                /**< The screen surface. */\
 
     int enlargment_factor;                  /**< 1 if the quest surface it not stretched or scaled,
                                              * 2 if it is stretched or scaled by a factor of 2. */

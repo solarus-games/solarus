@@ -35,14 +35,15 @@ See \ref lua_api_entity_methods to know these methods.
 
 The following methods are specific to the hero.
 
-\subsection lua_api_hero_teleport hero:teleport(map_id, destination_name, [transition_style])
+\subsection lua_api_hero_teleport hero:teleport(map_id, [destination_name], [transition_style])
 
 Teletransports the hero to a different place.
 - \c map_id (string): Id of the \ref lua_api_map "map" to go to
   (may be the same map or another one).
-- \c destination_name (string): Name of the \ref lua_api_destination
+- \c destination_name (string, optional): Name of the \ref lua_api_destination
   "destination entity" to go to on that map,
   or the special keyword \c "_same" to go to the same coordinates.
+  No value means the default destination entity of the map.
 - \c transition_style (string, optional): \c "immediate" (no transition effect)
   or \c "fade" (fade-out and fade-in effect). The default value is \c "fade".
 

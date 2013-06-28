@@ -737,6 +737,12 @@ on the map.
   - \c sprite (string, optional): Id of the animation set of a
     \ref lua_api_sprite "sprite" to create for the destination.
     No value means no sprite (the destination will then be invisible).
+  - \c default (boolean, optional): Sets this destination as the default one
+    when teletransporting the hero to this map without destination specified.
+    No value means \c false.
+    Only one destination can be the default one on a map.
+    If no default destination is set, then the first one declared becomes the
+    default one.
 - Return value (\ref lua_api_destination "destination"): The destination
   created.
 
@@ -765,11 +771,12 @@ on the map.
     fade-out effect, \c 2: scrolling between maps.
   - \c destination_map (string): Id of the map to transport to (can be
     id of the current map).
-  - \c destination_name (string): Location on the destination map.
+  - \c destination_name (string, optional): Location on the destination map.
     Can be the name of a \ref lua_api_destination "destination" entity,
     the special value \c "_same" to keep the hero's coordinates,
     or the special value \c "_side" to place on hero on the corresponding side
     of an adjacent map (normally used with the scrolling transition style).
+    No value means the default destination entity of the map.
 - Return value (\ref lua_api_teletransporter "teletransporter"): The
   teletransporter created.
 

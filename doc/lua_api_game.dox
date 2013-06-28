@@ -199,21 +199,28 @@ Values can be strings, integers or booleans.
 Returns the location where the hero is placed when this game is started or
 restarted.
 - Return value 1 (string): Id of the starting map.
+  \c nil means that it was not set: in this case, the first map declared in
+  \ref quest_resource_file "project_db.dat" will be used.
 - Return value 2 (string): Name of the destination where the hero will be
   placed on that map.
+  \c nil means that it was not set: in this case, the default destination
+  entity of that map will be used.
 
-\subsection lua_api_game_set_starting_location game:set_starting_location(map_id, destination_name)
+\subsection lua_api_game_set_starting_location game:set_starting_location([map_id, [destination_name]])
 
 Sets the location where the hero should be placed when this game is started or
 restarted.
-- \c map_id (string): Id of the starting map.
-- \c destination_name (string): Name of the destination where the hero should
-  be placed on that map.
+- \c map_id (string, optional): Id of the starting map. By default, the first
+  map declared in
+  \ref quest_resource_file "project_db.dat" is used.
+- \c destination_name (string, optional): Name of the destination where the hero should
+  be placed on that map. By default, the default destination of the map is used.
 
 \remark When the hero moves from a map to another map that belongs to a
   different world (for example, from a dungeon to the outside world), the
   starting location is automatically set to this point. If this behavior is
-  okay for your quest, you don't need to call this function.
+  okay for your quest, you never need to call this function except the first
+  time (when initializing a new savegame file).
 
 \subsection lua_api_game_get_life game:get_life()
 

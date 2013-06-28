@@ -329,6 +329,12 @@ Additional properties:
 - \c sprite (string, optional): Name of the animation set of a
   \ref quest_sprite_data_file "sprite" to create for the destination.
   No value means no sprite (the destination will then be invisible).
+- \c default (boolean, optional): Sets this destination as the default one
+  when teletransporting the hero to this map without destination specified.
+  No value means \c false.
+  Only one destination can be the default one on a map.
+  If no default destination is set, then the first one declared in set as
+  the default one.
 
 Example of destination:
 \verbatim
@@ -338,6 +344,7 @@ destination{
   x = 160,
   y = 37,
   direction = 1,
+  default = true,
 }
 \endverbatim
 

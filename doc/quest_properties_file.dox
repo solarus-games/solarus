@@ -83,9 +83,9 @@ quest{
   solarus_version = "1.1",
   write_dir = "my_quest",
   title_bar = "My incredible quest",
-  normal_quest_size = {320, 240},  -- Works on most configurations.
-  min_quest_size = {320, 200},     -- Might make fullscreen compatible with more systems.
-  max_quest_size = {400, 240},     -- Suited for Android and other mobile devices.
+  normal_quest_size = "320x240",  -- Works on most configurations.
+  min_quest_size = "320x200",     -- Might make fullscreen compatible with more systems.
+  max_quest_size = "400x240",     -- Suited for Android and other mobile devices.
 }
 \endverbatim
 

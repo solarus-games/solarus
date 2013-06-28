@@ -67,9 +67,10 @@ void FileTools::initialize(int argc, char** argv) {
 
   // Check the existence of a quest at this location.
   if (!FileTools::data_file_exists("quest.dat")) {
-    Debug::die(StringConcat() << "No quest was found in the directory '" << quest_path
-        << "'. To specify your quest's path, run: "
-        << argv[0] << " path/to/quest");
+    std::cout << "Fatal: No quest was found in the directory '" << quest_path
+        << "'.\n" << "To specify your quest's path, run: "
+        << argv[0] << " path/to/quest" << std::endl;
+    std::exit(EXIT_SUCCESS);
   }
 
   // Set the engine root write directory.

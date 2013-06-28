@@ -206,16 +206,6 @@ if(SCREEN_DOUBLEBUF)
   add_definitions(-DSOLARUS_SCREEN_DOUBLEBUF)
 endif()
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(INITIAL_SCREEN_INTERMEDIATE_SURFACE ON)
-else()
-  set(INITIAL_SCREEN_INTERMEDIATE_SURFACE OFF)
-endif()
-option(SCREEN_INTERMEDIATE_SURFACE "Workaround to rendering problems: draws the screen on an intermediate surface." ${INITIAL_SCREEN_INTERMEDIATE_SURFACE})
-if(SCREEN_INTERMEDIATE_SURFACE)
-  add_definitions(-DSOLARUS_SCREEN_INTERMEDIATE_SURFACE)
-endif()
-
 # files to install with make install
 # install the bundle if requested, or only the binary else
 if(SOLARUS_BUNDLE)

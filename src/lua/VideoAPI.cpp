@@ -180,3 +180,17 @@ int LuaContext::video_api_set_fullscreen(lua_State *l) {
   return 0;
 }
 
+/**
+ * \brief Implementation of sol.video.get_quest_size().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::video_api_get_quest_size(lua_State* l) {
+
+  const Rectangle& quest_size = VideoManager::get_instance()->get_quest_size();
+
+  lua_pushinteger(l, quest_size.get_width());
+  lua_pushinteger(l, quest_size.get_height());
+  return 2;
+}
+

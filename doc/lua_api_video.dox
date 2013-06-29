@@ -6,7 +6,7 @@
 \c sol.video allows you to manage the window and to change the video mode.
 
 The area where the game takes place has a fixed size called the quest size.
-The quest size is in a range specified in the
+The quest size is in a range specified in
 \ref quest_properties_file "quest.dat".
 This quest size defines how much content the player can see on the map.
 It is usually 320x240, but some systems may prefer other sizes,
@@ -132,7 +132,7 @@ Returns the size of the quest screen.
 
 This quest size is fixed at runtime.
 It is always in the range of allowed quest sizes specified in
-\ref quest_properties_file quest.dat.
+\ref quest_properties_file "quest.dat".
 
 The quest size is independent from the video mode:
 video mode are just various methods to draw the quest screen on a window

@@ -1,13 +1,13 @@
 /**
 \page quest_resource_file Resource list
 
-The \c project_db.dat file is used by Solarus Quest Editor.
-This file contains a list of all resources (maps, musics, sprites, items,
-enemies, etc.) of the quest and their user-friendly names.
-The quest editor needs this file to provide graphical components that let the
-user choose a resource in a list of user-friendly names.
+The \c project_db.dat file declares all resources
+(maps, musics, sprites, items, enemies, etc.) of your quest
+and their user-friendly names.
 Each resource usually corresponds to a data file.
 
+The quest editor needs this file to provide graphical components that let the
+user choose a resource in a list of user-friendly names.
 For instance, when the user creates a teletransporter on the map, a graphical
 list lets him choose the destination map of the teletransporter.
 This list contains the user-friendly name of each map.
@@ -16,36 +16,84 @@ Note that user-friendly names are only useful in the quest editor.
 The engine does not use them.
 
 We give here the syntax of \c project_db.dat.
-This is a text file where each line represents a single resource element.
-Each line has the following syntax:
+
+\c project_db.dat is a text file encoded in UTF-8.
+The sequence of characters \c \-\- (two dashes) marks
+the beginning of a comment.
+After them, the rest of the line is ignored.
+Empty lines are also ignored.
+
+The definition of each resource starts with the name of a resource type
+(\c map, \c tileset, \c sound, \c music, \c sprite, \c item, \c enemy
+or \c language),
+followed by an opening brace, and ends with a closing brace.
+Inside the braces, the properties of the resource are specified.
+Properties are declared with the syntax <tt>key = value</tt> and
+separated with commas. It is allowed to have an extra comma after
+the last property. String values are enclosed within double quotes.
+Each resource must have the following two properties:
+- \c id (string): Id of the element. It should not contain spaces.
+  The id determines the data file(s) of this element.
+  - For a map: the id is the name of the
+    \ref quest_map_data_file "map data file" without its extension,
+    relative to the \c maps directory.
+    Note that the first map declared in this file will be the default map.
+  - For a tileset: the id is the name of the
+    \ref quest_tileset_data_file "tileset data file" without its extension,
+    relative to the \c tilesets directory.
+  - For a sound: the id is the sound file name without its extension,
+    relative to the \c sounds directory.
+  - For a music: the id is the music file name without its extension,
+    relative to the \c musics directory.
+  - For a sprite: the id is the name of the
+    \ref quest_sprite_data_file "sprite data file",
+    relative to the \c sprites directory.
+    The sprite data file may be in a hierarchy of subdirectories.
+    Subdirectories must be separated by a slash "/" character in the sprite id.
+  - For an equipment item: the id is the name of the item's Lua script
+    without its extension, relative to the \c items directory.
+  - For an enemy model: the id is the is name of the enemy's Lua script
+    without its extension, relative to the \c enemies directory.
+  - For a language: the id is the language id
+    (see the \ref quest_language_list_file "language list file"),
+    which is also the name of a subdirectory of the \c languages directory.
+- \c name (string): A human-readable short description of this element.
+  It may contain spaces. It is only used in the quest editor to show to quest
+  makers a more readable name than the id.
+
+Example of a quest resource list file:
 
 \verbatim
-resource_type        id        user-friendly name
+map{     id = "outside",      name = "Outside World" }
+map{     id = "hero_house",   name = "House of the hero" }
+map{     id = "shop",         name = "Shop" }
+map{     id = "dungeon_1_1f", name = "Dungeon 1 - First floor" }
+map{     id = "dungeon_1_2f", name = "Dungeon 1 - Second floor" }
+
+tileset{ id = "overworld",    name = "Overworld" }
+tileset{ id = "house",        name = "House" }
+tileset{ id = "dungeon",      name = "Dungeon" }
+
+sound{   id = "door_closed",  name = "Door closing" }
+sound{   id = "door_open",    name = "Door opening" }
+sound{   id = "enemy_hurt",   name = "Enemy hurt" }
+sound{   id = "jump",         name = "Jumping" }
+sound{   id = "treasure",     name = "Treasure" }
+
+item{    id = "sword",        name = "Sword" }
+item{    id = "bow",          name = "Bow" }
+item{    id = "arrow",        name = "Arrows (x1 / x5 / x10)" }
+
+enemy{   id = "soldier",      name = "Soldier" }
+enemy{   id = "dragon",       name = "Dragon" }
 \endverbatim
 
-\c resource_type, \c id and <tt>user-friendly name</tt> can be separated
-by an arbitrary number of spaces or tab characters.
-\c resource_type is an integer identifying the type of resource (a map,
-a music, a sprite, etc.).
-\c id is a value that identifies the element. The id allows to find the
-resource file(s). It may not contain spaces.
-<tt>user-friendly name</tt> is a name that describes the resource for the
-quest developers and may contain spaces.
-The quest editor will display this name to the user, but will use the id
-internally.
-
-The current types of resources are:
-- 0: a map (the id is the map file name without its extension),
-- 1: a tileset (the id is the tileset file name without its extension),
-- 2: a music (the id is the music file name without extension),
-- 3: a sprite (the id is the sprite file name without extension),
-- 4: a sound (the id is the music file name without extension),
-- 5: an item (the id is the name of the item's Lua script without its extension),
-- 6: an enemy (the id is the name of the enemy's Lua script without its extension),
-- 7: a language (the id is the language code).
-
 In the quest editor, you can add, remove, rename and change the id of resources
-from the quest tree. Therefore, you probably don't need to edit this file by hand.
+from the quest tree.
+Therefore, you probably don't need to edit this file by hand.
+
+\remark The syntax of this resource list file is actually valid Lua.
+  The engine internally uses Lua to parse it.
 
 */
 

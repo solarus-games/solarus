@@ -57,39 +57,39 @@ Each resource must have the following two properties:
   - For a language: the id is the language id
     (see the \ref quest_language_list_file "language list file"),
     which is also the name of a subdirectory of the \c languages directory.
-- \c name (string): A human-readable short description of this element.
+- \c description (string): A human-readable name that describes this element.
   It may contain spaces. It is only used in the quest editor to show to quest
-  makers a more readable name than the id.
+  makers something more user-friendly than the id.
 
 Example of a quest resource list file:
 
 \verbatim
-map{     id = "outside",      name = "Outside World" }
-map{     id = "hero_house",   name = "House of the hero" }
-map{     id = "shop",         name = "Shop" }
-map{     id = "dungeon_1_1f", name = "Dungeon 1 - First floor" }
-map{     id = "dungeon_1_2f", name = "Dungeon 1 - Second floor" }
+map{     id = "outside",      description = "Outside World" }
+map{     id = "hero_house",   description = "House of the hero" }
+map{     id = "shop",         description = "Shop" }
+map{     id = "dungeon_1_1f", description = "Dungeon 1 - First floor" }
+map{     id = "dungeon_1_2f", description = "Dungeon 1 - Second floor" }
 
-tileset{ id = "overworld",    name = "Overworld" }
-tileset{ id = "house",        name = "House" }
-tileset{ id = "dungeon",      name = "Dungeon" }
+tileset{ id = "overworld",    description = "Overworld" }
+tileset{ id = "house",        description = "House" }
+tileset{ id = "dungeon",      description = "Dungeon" }
 
-sound{   id = "door_closed",  name = "Door closing" }
-sound{   id = "door_open",    name = "Door opening" }
-sound{   id = "enemy_hurt",   name = "Enemy hurt" }
-sound{   id = "jump",         name = "Jumping" }
-sound{   id = "treasure",     name = "Treasure" }
+sound{   id = "door_closed",  description = "Door closing" }
+sound{   id = "door_open",    description = "Door opening" }
+sound{   id = "enemy_hurt",   description = "Enemy hurt" }
+sound{   id = "jump",         description = "Jumping" }
+sound{   id = "treasure",     description = "Treasure" }
 
-item{    id = "sword",        name = "Sword" }
-item{    id = "bow",          name = "Bow" }
-item{    id = "arrow",        name = "Arrows (x1 / x5 / x10)" }
+item{    id = "sword",        description = "Sword" }
+item{    id = "bow",          description = "Bow" }
+item{    id = "arrow",        description = "Arrows (x1 / x5 / x10)" }
 
-enemy{   id = "soldier",      name = "Soldier" }
-enemy{   id = "dragon",       name = "Dragon" }
+enemy{   id = "soldier",      description = "Soldier" }
+enemy{   id = "dragon",       description = "Dragon" }
 \endverbatim
 
-In the quest editor, you can add, remove, rename and change the id of resources
-from the quest tree.
+In the quest editor, you can add, remove and change the id and the description
+of resources from the quest tree.
 Therefore, you probably don't need to edit this file by hand.
 
 \remark The syntax of this resource list file is actually valid Lua.

@@ -99,6 +99,8 @@ public class Project {
         Project project = new Project(path);
 
         try {
+            // TODO use quest.dat to detect whether the project exists
+            // and don't throw IOException from ResourceDatabase.load().
             project.resourceDatabase.load();
 
             // if no exception was raised, a project exists (and has been successfully loaded)
@@ -837,18 +839,13 @@ public class Project {
             String id, String name)
             throws QuestEditorException {
 
-        try {
-            // Move the resource in the resource list.
-            getResource(resourceType).setElementName(id, name);
-            getResourceDatabase().save();
+        // Move the resource in the resource list.
+        getResource(resourceType).setElementName(id, name);
+        getResourceDatabase().save();
 
-            // Notify the GUI.
-            for (ProjectObserver o: new ArrayList<ProjectObserver>(observers)) {
-                o.resourceElementRenamed(resourceType, id, name);
-            }
-        }
-        catch (IOException ex) {
-            throw new QuestEditorException(ex.getMessage());
+        // Notify the GUI.
+        for (ProjectObserver o: new ArrayList<ProjectObserver>(observers)) {
+            o.resourceElementRenamed(resourceType, id, name);
         }
     }
 

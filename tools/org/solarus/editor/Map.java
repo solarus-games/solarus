@@ -962,7 +962,7 @@ public class Map extends Observable {
 
             environment.set("properties", new PropertiesFunction());
             for (EntityType entityType: EntityType.values()) {
-              environment.set(entityType.getLuaName(), new MapEntityCreationFunction(entityType));
+                environment.set(entityType.getLuaName(), new MapEntityCreationFunction(entityType));
             }
 
             LuaFunction code = LoadState.load(new FileInputStream(mapFile),

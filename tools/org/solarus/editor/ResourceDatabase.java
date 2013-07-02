@@ -18,6 +18,9 @@ package org.solarus.editor;
 
 import java.io.*;
 import java.util.*;
+import org.luaj.vm2.*;
+import org.luaj.vm2.lib.*;
+import org.luaj.vm2.compiler.*;
 
 /**
  * This class contains the list of the game resources and their name in the project.
@@ -74,58 +77,47 @@ public class ResourceDatabase extends Observable {
     /**
      * Reads the file project_db.dat of the project, i.e. the list
      * of the game resources and their name.
-     * @throws QuestEditorException if the file contains an error
-     * @throws IOException if the file could not be loaded
+     * @throws QuestEditorException if the file contains an error.
+     * @throws IOException if the file could not be loaded.
      */
     public void load() throws QuestEditorException, IOException {
 
-        int lineNumber = 0;
-
         try {
-            clear();
-
             File dbFile = project.getResourceDatabaseFile();
-            BufferedReader buff = new BufferedReader(new FileReader(dbFile));
+            LuaC.install();
+            LuaTable environment = LuaValue.tableOf();
 
-            String line = buff.readLine();
-            while (line != null) {
-
-                lineNumber++;
-
-                if (line.length() != 0 && line.charAt(0) != '#') {
-                    // skip the comments and the empty lines
-
-                    StringTokenizer tokenizer = new StringTokenizer(line, "\t");
-                    ResourceType resourceType = ResourceType.get(Integer.parseInt(tokenizer.nextToken()));
-
-                    String id = tokenizer.nextToken();
-                    String name = tokenizer.nextToken();
-                    getResource(resourceType).setElementName(id, name);
-                }
-
-                line = buff.readLine();
+            for (ResourceType resourceType: ResourceType.values()) {
+                environment.set(resourceType.getLuaName(),
+                        new ResourceElementDeclarationFunction(resourceType));
             }
-            buff.close();
+
+            LuaFunction code = LoadState.load(new FileInputStream(dbFile),
+                dbFile.getName(), environment);
+            code.call();
         }
-        catch (NoSuchElementException ex) {
-            throw new QuestEditorException(fileName + " line " + lineNumber + ": Value expected");
+        /* TODO enable this once the caller is fixed
+        catch (IOException ex) {
+            throw new QuestEditorException(ex.getMessage());
         }
-        catch (NumberFormatException ex) {
-            throw new QuestEditorException(fileName + " line " + lineNumber + ": Integer expected");
-        }
-        catch (QuestEditorException ex) {
-            throw new QuestEditorException(fileName + " line " + lineNumber + ": " + ex.getMessage());
+        */
+        catch (LuaError ex) {
+            if (ex.getCause() != null) {
+                throw new QuestEditorException(ex.getCause().getMessage());
+            }
+            else {
+                throw new QuestEditorException(ex.getMessage());
+            }
         }
     }
 
     /**
      * Saves the list of the game resources and their names into the file project_db.dat.
-     * @throws IOException if the file could not be written
+     * @throws QuestEditorException if the file could not be written
      */
-    public void save() throws IOException {
+    public void save() throws QuestEditorException {
 
         try {
-
             File dbFile = project.getResourceDatabaseFile();
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dbFile)));
             Iterator<String> it;
@@ -138,15 +130,20 @@ public class ResourceDatabase extends Observable {
                 while (it.hasNext()) {
                     String id = it.next();
                     String name = resource.getElementName(id);
-                    out.print(resourceType.getId());
-                    out.print('\t');
+                    out.print(resourceType.getLuaName());
+                    out.print("{ id = \"");
                     out.print(id);
-                    out.print('\t');
+                    out.print("\", name = \"");
                     out.print(name);
+                    out.print("\" }");
                     out.println();
                 }
+                out.println();
             }
             out.close();
+        }
+        catch (IOException ex) {
+            throw new QuestEditorException(ex.getMessage());
         }
         catch (QuestEditorException ex) {
             System.err.println("Unexpected error: " + ex.getMessage());
@@ -154,4 +151,47 @@ public class ResourceDatabase extends Observable {
             System.exit(1);
         }
     }
+
+    /**
+     * @brief Lua function called by the quest resource list file to declare
+     * a resource element.
+     */
+    private class ResourceElementDeclarationFunction extends OneArgFunction {
+
+        private ResourceType type;
+
+        /**
+         * @brief Constructor for a specified type of resource.
+         * @param type The resource type to use.
+         */
+        public ResourceElementDeclarationFunction(ResourceType type) {
+            super();
+            this.type = type;
+        }
+
+        public LuaValue call(LuaValue arg) {
+
+            try {
+                LuaTable table = arg.checktable();
+                String id = table.get("id").checkjstring();
+                String name = table.get("description").checkjstring();
+                getResource(type).setElementName(id, name);
+            }
+            catch (QuestEditorException ex) {
+                // Error in the input file.
+                throw new LuaError(ex);
+            }
+            catch (LuaError ex) {
+                // Error in the input file.
+                throw ex;
+            }
+            catch (Exception ex) {
+                // Error in the editor.
+                ex.printStackTrace();
+                throw new LuaError(ex);
+            }
+            return LuaValue.NIL;
+        }
+    }
 }
+

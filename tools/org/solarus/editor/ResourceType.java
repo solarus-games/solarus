@@ -5,14 +5,14 @@ package org.solarus.editor;
  */
 public enum ResourceType {
 
-    MAP("Map"),
-    TILESET("Tileset"),
-    MUSIC("Music"),
-    SPRITE("Sprite"),
-    SOUND("Sound"),
-    ITEM("Item"),
-    ENEMY("Enemy"),
-    LANGUAGE("Language");
+    MAP("Map", "map"),
+    TILESET("Tileset", "tileset"),
+    SPRITE("Sprite", "sprite"),
+    MUSIC("Music", "music"),
+    SOUND("Sound", "sound"),
+    ITEM("Item", "item"),
+    ENEMY("Enemy", "enemy"),
+    LANGUAGE("Language", "language");
 
     /**
      * The human-readable name of the resource type.
@@ -20,11 +20,18 @@ public enum ResourceType {
     private String name;
 
     /**
-     * Creates a new resource type.
-     * @param name name of the resource type
+     * The name of this resource type for Lua.
      */
-    private ResourceType(String name) {
+    private String luaName;
+
+    /**
+     * Creates a new resource type.
+     * @param name Name of the resource type.
+     * @param luaName Lua name of the resource type.
+     */
+    private ResourceType(String name, String luaName) {
         this.name = name;
+        this.luaName = luaName;
     }
 
     /**
@@ -52,13 +59,22 @@ public enum ResourceType {
     }
 
     /**
-     * Returns the human-readable name of the resource type
+     * Returns the human-readable name of the resource type.
      * This name will be used everywhere in the GUI.
      * @return The name of the resource type.
      */
     public String getName() {
         return name;
     }
+
+    /**
+     * Returns the Lua name of the resource type.
+     * @return The Lua name of the resource type.
+     */
+    public String getLuaName() {
+        return luaName;
+    }
+
 
     /**
      * Returns a string representation of this resource type.
@@ -68,3 +84,4 @@ public enum ResourceType {
         return getName();
     }
 }
+

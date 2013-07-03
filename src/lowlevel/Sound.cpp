@@ -23,6 +23,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "QuestResourceList.h"
 
 ALCdevice* Sound::device = NULL;
 ALCcontext* Sound::context = NULL;
@@ -164,33 +165,14 @@ void Sound::load_all() {
 
   if (is_initialized() && !sounds_preloaded) {
 
-    // open the resource database file
-    static const std::string file_name = "project_db.dat";
-    std::istream& database_file = FileTools::data_file_open(file_name);
-    std::string line;
-
-    while (std::getline(database_file, line)) {
-
-      if (line.size() == 0 || line[0] == '\r') {
-        continue;
-      }
-
-      int resource_type;
-      std::string resource_id, resource_name;
-      std::istringstream iss(line);
-      FileTools::read(iss, resource_type);
-      FileTools::read(iss, resource_id);
-      FileTools::read(iss, resource_name);
-
-      if (resource_type == 4) { // it's a sound
-
-        if (all_sounds.count(resource_id) == 0) {
-          all_sounds[resource_id] = Sound(resource_id);
-          all_sounds[resource_id].load();
-        }
-      }
+    const std::vector<std::string>& sound_ids =
+        QuestResourceList::get_elements(QuestResourceList::RESOURCE_SOUND);
+    std::vector<std::string>::const_iterator it;
+    for (it = sound_ids.begin(); it != sound_ids.end(); ++it) {
+      const std::string& sound_id = *it;
+      all_sounds[sound_id] = Sound(sound_id);
+      all_sounds[sound_id].load();
     }
-    FileTools::data_file_close(database_file);
  
     sounds_preloaded = true;
   }

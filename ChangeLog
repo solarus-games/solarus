@@ -1,14 +1,21 @@
 solarus-1.1 (under development)
 
-Solarus changes:
+Solarus changes
+---------------
 
 * Allow quest makers and users to set the size of the playing area.
 
-Data file format changes:
+Data file format changes
+------------------------
+
+You can use the script tools/data_files_conversion/1.0_to_1.1/update_quest.lua
+to automatically update your data files.
 
 * quest.dat: Allow to specify a range of supported quest sizes.
+* project_db.dat: New syntax easier to read and parse (#169).
 
-Lua API changes:
+Lua API changes
+---------------
 
 * Add a function sol.video.get_quest_size().
 

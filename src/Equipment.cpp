@@ -20,6 +20,7 @@
 #include "DialogBox.h"
 #include "EquipmentItem.h"
 #include "Map.h"
+#include "QuestResourceList.h"
 #include "entities/Hero.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/System.h"
@@ -379,34 +380,19 @@ void Equipment::restore_all_magic() {
  */
 void Equipment::load_items() {
 
-  // TODO implement a separate class that provides the info of project_db.dat.
-
-  // Load the list of equipment item names.
-  static const std::string file_name = "project_db.dat";
-  std::istream& database_file = FileTools::data_file_open(file_name);
-  std::string line;
-
-  while (std::getline(database_file, line)) {
-
-    if (line.size() == 0 || line[0] == '\r') {
-      continue;
-    }
-
-    int resource_type;
-    std::string resource_id, resource_name;
-    std::istringstream iss(line);
-    FileTools::read(iss, resource_type);
-    FileTools::read(iss, resource_id);
-    FileTools::read(iss, resource_name);
-
-    if (resource_type == 5) {  // It's an equipment item.
+  // Create each equipment item declared in project_db.dat.
+  {
+    const std::vector<std::string>& item_ids =
+      QuestResourceList::get_elements(QuestResourceList::RESOURCE_ITEM);
+    std::vector<std::string>::const_iterator it;
+    for (it = item_ids.begin(); it != item_ids.end(); ++it) {
+      const std::string& item_id = *it;
       EquipmentItem* item = new EquipmentItem(*this);
       item->increment_refcount();
-      item->set_name(resource_id);
-      items[resource_id] = item;
+      item->set_name(item_id);
+      items[item_id] = item;
     }
   }
-  FileTools::data_file_close(database_file);
 
   // Load the item scripts.
   std::map<std::string, EquipmentItem*>::const_iterator it;

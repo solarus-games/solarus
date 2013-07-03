@@ -27,6 +27,7 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "StringResource.h"
+#include "QuestResourceList.h"
 #include "DebugKeys.h"
 
 /**
@@ -49,6 +50,9 @@ MainLoop::MainLoop(int argc, char** argv):
   QuestProperties quest_properties(*this);
   quest_properties.load();
 
+  // Read the quest resource list from file project_db.dat.
+  QuestResourceList::initialize();
+
   root_surface = new Surface(VideoManager::get_instance()->get_quest_size());
   root_surface->increment_refcount();
   debug_keys = new DebugKeys(*this);
@@ -65,6 +69,7 @@ MainLoop::~MainLoop() {
   root_surface->decrement_refcount();
   delete root_surface;
   delete debug_keys;
+  QuestResourceList::quit();
   System::quit();
 }
 

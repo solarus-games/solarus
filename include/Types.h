@@ -33,8 +33,11 @@
 class MainLoop;
 class Screen;
 class QuestProperties;
+class QuestResourceList;
 class Settings;
 class KeysEffect;
+class StringResource;
+class Timer;
 
 // low level
 class System;
@@ -55,11 +58,6 @@ class InputEvent;
 class Debug;
 class StringConcat;
 
-// menus
-class CustomScreen;
-class CustomMenu;
-class StringResource;
-
 // game
 class Game;
 class GameCommands;
@@ -68,11 +66,9 @@ class Equipment;
 class EquipmentItem;
 class EquipmentItemUsage;
 class DebugKeys;
-class Dungeon;
 class Treasure;
 class Map;
 class MapLoader;
-class Timer;
 class GameoverSequence;
 class Camera;
 class Dialog;

@@ -15,40 +15,46 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOLARUS_QUEST_PROPERTIES_H
-#define SOLARUS_QUEST_PROPERTIES_H
+#ifndef SOLARUS_QUEST_RESOURCE_LIST_H
+#define SOLARUS_QUEST_RESOURCE_LIST_H
 
 #include "Common.h"
+#include <vector>
+#include <map>
 #include <string>
 
-struct lua_State;
-
 /**
- * \brief This class reads the quest properties from file quest.dat
- * and applies them.
- *
- * These properties are general information about the quest. They include:
- * - the writing directory for savegames of this quest,
- * - the window title bar.
- *
- * The main reason why these quest properties are stored as a data file
- * (even if they are also available through the Solarus scripting API)
- * is to make them easily editable in quest editors.
+ * \brief This class reads the quest resource list from file project_db.dat
+ * and stores them.
  */
-class QuestProperties {
+class QuestResourceList {
 
   public:
 
-    QuestProperties(MainLoop& main_loop);
-    ~QuestProperties();
+    /**
+     * \brief Types of existing resources in a quest.
+     */
+    enum ResourceType {
+      RESOURCE_MAP,
+      RESOURCE_TILESET,
+      RESOURCE_SPRITE,
+      RESOURCE_MUSIC,
+      RESOURCE_SOUND,
+      RESOURCE_ITEM,
+      RESOURCE_ENEMY,
+      RESOURCE_LANGUAGE,
+      RESOURCE_NB
+    };
 
-    void load();
+    static void initialize();
+    static void quit();
+
+    static const std::vector<std::string>& get_elements(ResourceType resource_type);
 
   private:
 
-    static int l_quest(lua_State* l);
-
-    MainLoop& main_loop;  /**< The quest main loop. */
+    QuestResourceList();
+    ~QuestResourceList();
 };
 
 #endif

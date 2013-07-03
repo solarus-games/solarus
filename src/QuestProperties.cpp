@@ -89,7 +89,7 @@ QuestProperties::~QuestProperties() {
 }
 
 /**
- * \brief Reads the quest properties data file quest.lua and applies
+ * \brief Reads the quest properties data file quest.dat and applies
  * these properties to the quest.
  */
 void QuestProperties::load() {

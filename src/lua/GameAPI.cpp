@@ -206,16 +206,6 @@ int LuaContext::game_api_start(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
-  if (!savegame.is_string(Savegame::KEY_STARTING_MAP) ||
-      savegame.get_string(Savegame::KEY_STARTING_MAP).empty()) {
-    luaL_error(l, "No starting map is defined in this savegame. Did you forget to call game:start_starting_location()?");
-  }
-
-  if (!savegame.is_string(Savegame::KEY_STARTING_POINT) ||
-      savegame.get_string(Savegame::KEY_STARTING_POINT).empty()) {
-    luaL_error(l, "No destination for the starting map is defined in this savegame. Did you forget to call game:start_starting_location()?");
-  }
-
   Game* game = savegame.get_game();
   if (game != NULL) {
     // A game is already running with this savegame: restart it.
@@ -410,8 +400,21 @@ int LuaContext::game_api_get_starting_location(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
-  push_string(l, savegame.get_string(Savegame::KEY_STARTING_MAP));
-  push_string(l, savegame.get_string(Savegame::KEY_STARTING_POINT));
+  const std::string& starting_map = savegame.get_string(Savegame::KEY_STARTING_MAP);
+  const std::string& starting_point = savegame.get_string(Savegame::KEY_STARTING_POINT);
+
+  if (starting_map.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, savegame.get_string(Savegame::KEY_STARTING_MAP));
+  }
+  if (starting_point.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, savegame.get_string(Savegame::KEY_STARTING_POINT));
+  }
   return 2;
 }
 
@@ -424,7 +427,7 @@ int LuaContext::game_api_set_starting_location(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& map_id = luaL_checkstring(l, 2);
-  const std::string& destination_name = luaL_checkstring(l, 3);
+  const std::string& destination_name = luaL_optstring(l, 3, "");
 
   savegame.set_string(Savegame::KEY_STARTING_MAP, map_id);
   savegame.set_string(Savegame::KEY_STARTING_POINT, destination_name);

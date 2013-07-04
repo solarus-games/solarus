@@ -24,6 +24,7 @@
 #include "entities/Boomerang.h"
 #include "entities/Stairs.h"
 #include "entities/CameraStopper.h"
+#include "entities/Destination.h"
 #include "Map.h"
 #include "Game.h"
 #include "lowlevel/Surface.h"
@@ -42,6 +43,8 @@ MapEntities::MapEntities(Game& game, Map& map):
   game(game),
   map(map),
   hero(game.get_hero()),
+  default_destination(NULL),
+  boomerang(NULL),
   music_before_miniboss(Music::none) {
 
   Layer layer = hero.get_layer();
@@ -147,6 +150,15 @@ const list<Detector*>& MapEntities::get_detectors() {
 }
 
 /**
+ * \brief Returns the default destination of the map.
+ * \return The default destination, or NULL if there exists no destination
+ * on this map.
+ */
+Destination* MapEntities::get_default_destination() {
+  return default_destination;
+}
+
+/**
  * \brief Returns all stairs on the specified layer.
  * \param layer the layer
  * \return the stairs on this layer
@@ -199,9 +211,10 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
 
   MapEntity* entity = find_entity(name);
 
-  Debug::check_assertion(entity != NULL, StringConcat()
-      << "Map '" << map.get_id()
-      << "': Cannot find entity with name '" << name << "'");
+  if (entity == NULL) {
+    Debug::die(std::string("Map '") + map.get_id()
+        + "': Cannot find entity with name '" + name + "'");
+  }
 
   return entity;
 }
@@ -579,6 +592,15 @@ void MapEntities::add_entity(MapEntity* entity) {
         this->boomerang = static_cast<Boomerang*>(entity);
         break;
 
+      case DESTINATION:
+        {
+          Destination* destination = static_cast<Destination*>(entity);
+          if (this->default_destination == NULL || destination->is_default()) {
+            this->default_destination = destination;
+            break;
+          }
+        }
+
       default:
       break;
     }
@@ -591,7 +613,7 @@ void MapEntities::add_entity(MapEntity* entity) {
   if (!name.empty()) {
     Debug::check_assertion(named_entities.find(name) == named_entities.end(),
         StringConcat()
-        << "Error: an entity with name '" << name << "' already exists.");
+        << "An entity with name '" << name << "' already exists.");
     named_entities[name] = entity;
   }
   entity->increment_refcount();

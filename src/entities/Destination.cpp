@@ -29,10 +29,18 @@
  * (0 to 3, or -1 to indicate that the hero's direction is not changed).
  * \param sprite_name Animation set id of a sprite to represent this
  * destination, or an empty string.
+ * \param is_default \true to make this destination the default one.
  */
-Destination::Destination(const std::string& name, Layer layer, int x, int y,
-    int hero_direction, const std::string& sprite_name):
-  MapEntity(name, hero_direction, layer, x, y, 16, 16) {
+Destination::Destination(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    int hero_direction,
+    const std::string& sprite_name,
+    bool is_default):
+  MapEntity(name, hero_direction, layer, x, y, 16, 16),
+  is_default_destination(is_default) {
 
   set_origin(8, 13);
 
@@ -61,5 +69,13 @@ EntityType Destination::get_type() {
  */
 bool Destination::can_be_obstacle() {
   return false;
+}
+
+/**
+ * \brief Returns whether this destination is the default one of the map.
+ * \return \c true if this destination is the default one.
+ */
+bool Destination::is_default() const {
+  return is_default_destination;
 }
 

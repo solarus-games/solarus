@@ -813,13 +813,10 @@ int LuaContext::hero_api_teleport(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
   const std::string& map_id = luaL_checkstring(l, 2);
-  const std::string& destination_name = luaL_checkstring(l, 3);
+  const std::string& destination_name = luaL_optstring(l, 3, "");
   Transition::Style transition_style = opt_enum<Transition::Style>(
       l, 4, transition_style_names, Transition::FADE);
 
-  if (destination_name.empty()) {
-    luaL_argerror(l, 3, "Empty destination name");
-  }
   // TODO don't allow side destinations and scrolling?
 
   hero.get_game().set_current_map(map_id, destination_name, transition_style);

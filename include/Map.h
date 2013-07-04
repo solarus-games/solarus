@@ -86,7 +86,8 @@ class Map: public ExportableToLua {
     std::string destination_name; /**< current destination point on the map,
                                    * or "_same" to keep the hero's coordinates,
                                    * or "_side0", "_side1", "_side2" or "_side3"
-                                   * to place the hero on a side of the map */
+                                   * to place the hero on a side of the map,
+                                   * or an empty string to use the one saved. */
 
     MapEntities* entities;        /**< the entities on the map */
     bool suspended;               /**< indicates whether the game is suspended */

@@ -27,12 +27,23 @@ class Destination: public MapEntity {
 
   public:
 
-    Destination(const std::string &name, Layer layer, int x, int y,
-        int hero_direction, const std::string& sprite_name);
+    Destination(
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        int hero_direction,
+        const std::string& sprite_name,
+        bool is_default);
     ~Destination();
 
     EntityType get_type();
     bool can_be_obstacle();
+    bool is_default() const;
+
+  private:
+
+    bool is_default_destination;
 };
 
 #endif

@@ -973,8 +973,9 @@ int LuaContext::map_api_create_destination(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   int direction = check_int_field(l, 1, "direction");
   const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
+  bool is_default = opt_boolean_field(l, 1, "default", false);
 
-  MapEntity* entity = new Destination(name, layer, x, y, direction, sprite_name);
+  MapEntity* entity = new Destination(name, layer, x, y, direction, sprite_name, is_default);
   map.get_entities().add_entity(entity);
 
   if (map.is_started()) {

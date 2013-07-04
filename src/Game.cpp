@@ -23,6 +23,7 @@
 #include "Treasure.h"
 #include "GameoverSequence.h"
 #include "DebugKeys.h"
+#include "QuestResourceList.h"
 #include "lua/LuaContext.h"
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
@@ -32,6 +33,7 @@
 #include "lowlevel/Music.h"
 #include "lowlevel/VideoManager.h"
 #include <sstream>
+#include <vector>
 
 /**
  * \brief Creates a game.
@@ -68,9 +70,19 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   keys_effect = new KeysEffect();
   update_keys_effect();
 
-  // launch the starting map
-  set_current_map(get_savegame().get_string(Savegame::KEY_STARTING_MAP),
-      "", Transition::FADE);
+  // Launch the starting map.
+  std::string starting_map_id = get_savegame().get_string(Savegame::KEY_STARTING_MAP);
+  if (starting_map_id.empty()) {
+    // When no starting map is set, use the first one declared in the resource list file.
+    const std::vector<std::string>& map_ids =
+        QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP);
+    if (map_ids.empty()) {
+      Debug::die("This quest has no map");
+    }
+    starting_map_id = map_ids[0];
+  }
+  set_current_map(starting_map_id,
+      savegame->get_string(Savegame::KEY_STARTING_POINT), Transition::FADE);
 }
 
 /**
@@ -528,10 +540,12 @@ Map& Game::get_current_map() {
  *
  * \param map_id id of the map to launch
  * \param destination_name name of the destination point of the map you want to use,
- * or en ampty string to pick the destination point saved
+ * or en ampty string to use the default destination point.
  * \param transition_style type of transition between the two maps
  */
-void Game::set_current_map(const std::string& map_id, const std::string &destination_name,
+void Game::set_current_map(
+    const std::string& map_id,
+    const std::string& destination_name,
     Transition::Style transition_style) {
 
   if (current_map != NULL) {
@@ -556,13 +570,7 @@ void Game::set_current_map(const std::string& map_id, const std::string &destina
     current_map->check_suspended();
   }
 
-  // initialize the destination point, from the specified name or from the savegame
-  if (destination_name == "") {
-    next_map->set_destination(get_savegame().get_string(Savegame::KEY_STARTING_POINT));
-  }
-  else {
-    next_map->set_destination(destination_name);
-  }
+  next_map->set_destination(destination_name);
   this->transition_style = transition_style;
 }
 

@@ -50,6 +50,7 @@ class MapEntities {
     const std::list<Stairs*>& get_stairs(Layer layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
     const std::list<CameraStopper*>& get_camera_stoppers();
+    Destination* get_default_destination();
 
     MapEntity* get_entity(const std::string& name);
     MapEntity* find_entity(const std::string& name);
@@ -134,6 +135,7 @@ class MapEntities {
 
     std::list<Detector*> detectors;                 /**< all entities able to detect other entities
                                                      * on this map */
+    Destination* default_destination;               /**< the default destination of this map */
 
     std::list<MapEntity*>
       obstacle_entities[LAYER_NB];                  /**< all entities that might be obstacle for other

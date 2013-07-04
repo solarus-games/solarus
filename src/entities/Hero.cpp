@@ -522,9 +522,9 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     }
     else {
 
-      // normal case: the location is specified by a destination point object
+      // Normal case: the location is specified by a destination point object.
 
-      MapEntity* destination = map.get_entities().get_entity(destination_name);
+      MapEntity* destination = map.get_destination();
 
       set_map(map, destination->get_direction());
       set_xy(destination->get_x(), destination->get_y());
@@ -533,7 +533,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
 
-      Stairs *stairs = get_stairs_overlapping();
+      Stairs* stairs = get_stairs_overlapping();
       if (stairs != NULL) {
         // the hero arrived on the map by stairs
         set_state(new StairsState(*this, *stairs, Stairs::REVERSE_WAY));

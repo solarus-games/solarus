@@ -37,7 +37,8 @@ class Teletransporter: public Detector {
     Transition::Style transition_style;   /**< Style of transition between the two maps. */
     std::string destination_map_id;       /**< Id of the destination map. */
     std::string destination_name;         /**< Destination on that map, or "_same" to keep the hero's coordinates,
-                                           * or "_side" to place the hero on the appropriate side of the map. */
+                                           * or "_side" to place the hero on the appropriate side of the map.
+                                           * An empty string means the default destination entity of the map. */
     int destination_side;                 /**< When the destination is "_side", indicates which side
                                            * of the destination map this teletransporters leads to.
                                            * This depends on the teletransporter position on the original map.

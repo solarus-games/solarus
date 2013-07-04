@@ -1004,7 +1004,7 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
   const std::string& sound_id = opt_string_field(l, 1, "sound", "");
   Transition::Style transition_style = Transition::Style(check_int_field(l, 1, "transition"));
   const std::string& destination_map_id = check_string_field(l, 1, "destination_map");
-  const std::string& destination_name = check_string_field(l, 1, "destination");
+  const std::string& destination_name = opt_string_field(l, 1, "destination", "");
 
   MapEntity* entity = new Teletransporter(
       name,

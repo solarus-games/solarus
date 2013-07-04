@@ -1,25 +1,39 @@
-solarus-1.1 (under development)
+_______________________________
 
-Solarus changes
----------------
+Solarus 1.1 (under development)
+_______________________________
+
+Engine changes
+--------------
 
 * Allow quest makers and users to set the size of the playing area.
+* Allow maps to have a default destination entity (#231).
+* A game can now start without specifying an initial map and destination.
 
-Data file format changes
-------------------------
+Data files format changes
+-------------------------
 
 You can use the script tools/data_files_conversion/1.0_to_1.1/update_quest.lua
 to automatically update your data files.
+Don't forget to make a backup first.
 
 * quest.dat: Allow to specify a range of supported quest sizes.
 * project_db.dat: New syntax easier to read and parse (#169).
+* Maps: add the property "default" to destinations.
+* Maps: make optional the property "destination" of teletransporters.
 
 Lua API changes
 ---------------
 
 * Add a function sol.video.get_quest_size().
+* game:get/set_starting_location(): map and destination can now be nil.
+* hero:teleport(): make destination optional (maps now have a default one).
+* map:create_teletransporter(): make destination optional.
+
+__________________________
 
 solarus-1.0.4 (2013-06-26)
+__________________________
 
 Bug fixes for the 1.0 release.
 

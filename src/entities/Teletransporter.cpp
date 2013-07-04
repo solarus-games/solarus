@@ -40,6 +40,7 @@
  * \param destination_name Location on the destination map,
  * or "_same" to keep the hero's coordinates,
  * or "_side" to place the hero on the appropriate side of the map.
+ * An empty string means the default destination entity of the map.
  */
 Teletransporter::Teletransporter(
     const std::string& name,

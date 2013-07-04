@@ -17,6 +17,8 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+import java.util.List;
+
 import org.solarus.editor.*;
 
 /**
@@ -101,6 +103,7 @@ public class Destination extends MapEntity {
      */
     public void createProperties() throws MapException {
         createStringProperty("sprite", true, null);
+        createBooleanProperty("default", true, false);
     }
 
     /**
@@ -118,6 +121,21 @@ public class Destination extends MapEntity {
             }
             else {
                 sprite = null;
+            }
+        }
+
+        else if (name.equals("default")) {
+            if (value.equals("1")) {
+                List<MapEntity> destinations =
+                        getMap().getEntitiesOfType(EntityType.DESTINATION);
+                for (MapEntity entity: destinations) {
+                    Destination destination = (Destination) entity;
+                    if (destination != this && destination.getBooleanProperty("default")) {
+                        // That destination is no longer the default one.
+                        destination.setBooleanProperty("default", false);
+                        break;
+                    }
+                }
             }
         }
     }

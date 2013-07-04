@@ -82,7 +82,7 @@ public class Teletransporter extends MapEntity {
         createStringProperty("sound", true, null);
         createIntegerProperty("transition", false, Transition.FADE.getId());
         createStringProperty("destination_map", false, getMap().getId());
-        createStringProperty("destination", false, "");
+        createStringProperty("destination", true, null);
     }
 
     /**
@@ -125,10 +125,6 @@ public class Teletransporter extends MapEntity {
 
         if (destinationMapId.isEmpty()) {
             throw new MapException("You must choose a destination map");
-        }
-
-        if (destinationName.isEmpty()) {
-            throw new MapException("You must choose a destination point on the destination map");
         }
 
         if (destinationMapId.equals(getMap().getId()) &&

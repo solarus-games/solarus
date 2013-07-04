@@ -39,6 +39,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
     private ResourceChooser mapField;
     private EntityChooser destinationField;
 
+    private static final String defaultDestinationText = "<Default destination>";
     private static final String samePointText = "<Same point>";
     private static final String sidePointText = "<Side of the map>";
 
@@ -66,7 +67,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 
         // destination point
         destinationField = new EntityChooser(null, EntityType.DESTINATION,
-                new String[] {"", samePointText, sidePointText});
+                new String[] {defaultDestinationText, samePointText, sidePointText});
         addField("Destination point", destinationField);
 
         // has a sprite?
@@ -131,6 +132,9 @@ public class EditTeletransporterComponent extends EditEntityComponent {
         }
 
         String destinationName = teletransporter.getStringProperty("destination");
+        if (destinationName == null || destinationName.isEmpty()) {
+            destinationName = defaultDestinationText;
+        }
         if (destinationName.equals("_same")) {
             destinationName = samePointText;
         }
@@ -159,7 +163,10 @@ public class EditTeletransporterComponent extends EditEntityComponent {
         String destinationMapId = mapField.getSelectedId();
         String destinationName = destinationField.getSelectedName();
 
-        if (destinationName.equals(samePointText)) {
+        if (destinationName.equals(defaultDestinationText)) {
+            destinationName = null;
+        }
+        else if (destinationName.equals(samePointText)) {
             destinationName = "_same";
         }
         else if (destinationName.equals(sidePointText)) {
@@ -167,9 +174,11 @@ public class EditTeletransporterComponent extends EditEntityComponent {
         }
 
         return new ActionEditEntitySpecific(entity,
-                sprite, sound,
+                sprite,
+                sound,
                 Integer.toString(transitionField.getValue().getId()),
-                destinationMapId, destinationName);
+                destinationMapId,
+                destinationName);
     }
 
     /**

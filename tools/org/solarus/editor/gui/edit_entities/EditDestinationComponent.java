@@ -31,6 +31,7 @@ public class EditDestinationComponent extends EditEntityComponent {
     // specific fields of this entity
     private JCheckBox withSpriteField;
     private ResourceChooser spriteField;
+    private JCheckBox defaultField;
 
     /**
      * Constructor.
@@ -60,6 +61,11 @@ public class EditDestinationComponent extends EditEntityComponent {
                 spriteField.setEnabled(withSpriteField.isSelected());
             }
         });
+
+        // default destination
+        defaultField = new JCheckBox("Set as the default destination");
+        addField("Hero", defaultField);
+
     }
 
     /**
@@ -78,6 +84,8 @@ public class EditDestinationComponent extends EditEntityComponent {
         spriteField.setSelectedId(hasSprite ? sprite : "");
 
         spriteField.setEnabled(hasSprite);
+
+        defaultField.setSelected(destination.getBooleanProperty("default"));
     }
 
     /**
@@ -91,7 +99,9 @@ public class EditDestinationComponent extends EditEntityComponent {
             sprite = null;
         }
 
-        return new ActionEditEntitySpecific(entity, sprite);
+        return new ActionEditEntitySpecific(entity,
+                sprite,
+                defaultField.isSelected() ? "1" : "0");
     }
 }
 

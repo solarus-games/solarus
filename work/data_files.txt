@@ -8,6 +8,7 @@ items/
 maps/
 tilesets/
 musics/
+  game_over.ogg|spc|it
 languages/
   languages.dat
   XX/
@@ -75,14 +76,31 @@ sounds/
   wrong.ogg
 sprites/
   entities/
-    items.dat
-    shadow.dat
-    star.dat
-    hookshot.dat
+    arrow.dat
+    block.dat
+    bomb.dat
+    bomb_flower.dat
+    bush.dat
+    chest.dat
+    conveyor_belt.dat
+    crystal.dat
     dark0.png
     dark1.png
     dark2.png
     dark3.png
+    explosion.dat
+    fire.dat
+    grass.dat
+    hookshot.dat
+    items.dat
+    miscellaneous.png
+    pot.dat
+    shadow.dat
+    solid_switch.dat
+    star.dat
+    stone_small_black.dat
+    stone_small_white.dat
+    switch.dat
   hud/
     dialog_box_message_end.dat
     gameover_fade.dat
@@ -96,6 +114,4 @@ sprites/
     ground1.dat
     ground2.dat
     trail.dat
-  menus/
-    dialog_icons.png
 

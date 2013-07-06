@@ -594,12 +594,12 @@ public class Project {
         out.println();
         out.println("-- Below is just an example of quest that does almost nothing.");
         out.println("-- Feel free to change this!");
-        out.println("function sol.main.on_started()");
+        out.println("function sol.main:on_started()");
         out.println("  -- This function is called when Solarus starts.");
         out.println("  print(\"Welcome to my quest.\")");
         out.println("end");
         out.println("");
-        out.println("function sol.main.on_finished()");
+        out.println("function sol.main:on_finished()");
         out.println("  -- This function is called when Solarus stops or is reset.");
         out.println("  print(\"See you!\")");
         out.println("end");

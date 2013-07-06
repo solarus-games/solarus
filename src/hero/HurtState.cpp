@@ -32,8 +32,11 @@
  * \param life_points number of heart quarters to remove (this number may be reduced by the tunic)
  * \param magic_points number of magic points to remove
  */
-Hero::HurtState::HurtState(Hero& hero, const Rectangle& source_xy,
-    int life_points, int magic_points):
+Hero::HurtState::HurtState(
+    Hero& hero,
+    const Rectangle& source_xy,
+    int life_points,
+    int magic_points):
   State(hero),
   source_xy(source_xy),
   life_points(life_points),
@@ -57,7 +60,7 @@ void Hero::HurtState::start(State* previous_state) {
 
   State::start(previous_state);
 
-  Equipment &equipment = get_equipment();
+  Equipment& equipment = get_equipment();
 
   Sound::play("hero_hurt");
 

@@ -33,17 +33,20 @@ class Hero::HurtState: public Hero::State {
 
   public:
 
-    HurtState(Hero &hero, const Rectangle& source_xy, int life_points, int magic_points);
+    HurtState(Hero& hero,
+        const Rectangle& source_xy,
+        int life_points,
+        int magic_points);
     ~HurtState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
     bool can_start_gameover_sequence();
     bool is_touching_ground();
-    bool is_teletransporter_obstacle(Teletransporter &teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
     bool is_sensor_obstacle(Sensor &sensor);
     bool can_be_hurt(Enemy* attacker);
     bool can_avoid_switch();

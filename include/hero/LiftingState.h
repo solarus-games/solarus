@@ -24,12 +24,6 @@
  */
 class Hero::LiftingState: public Hero::State {
 
-  private:
-
-    CarriedItem* lifted_item;			/**< the item currently being lifted */
-
-    void throw_item();
-
   public:
 
     LiftingState(Hero& hero, CarriedItem* lifted_item);
@@ -40,6 +34,12 @@ class Hero::LiftingState: public Hero::State {
     void update();
     void set_suspended(bool suspended);
     bool can_be_hurt(Enemy* attacker);
+
+  private:
+
+    void throw_item();
+
+    CarriedItem* lifted_item;           /**< the item currently being lifted */
 };
 
 #endif

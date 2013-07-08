@@ -23,8 +23,8 @@ import org.luaj.vm2.lib.*;
 import org.luaj.vm2.compiler.*;
 
 /**
- * This class contains the list of the game resources and their name in the project.
- * Each resource name is associated with an id.
+ * This class contains the list of the game resources and their description in the project.
+ * Each resource description is associated with an id.
  * This class stores the information of the file project_db.dat.
  */
 public class ResourceDatabase extends Observable {
@@ -76,7 +76,7 @@ public class ResourceDatabase extends Observable {
 
     /**
      * Reads the file project_db.dat of the project, i.e. the list
-     * of the game resources and their name.
+     * of the game resources and their description.
      * @throws QuestEditorException if the file contains an error.
      * @throws IOException if the file could not be loaded.
      */
@@ -112,7 +112,7 @@ public class ResourceDatabase extends Observable {
     }
 
     /**
-     * Saves the list of the game resources and their names into the file project_db.dat.
+     * Saves the list of the game resources and their descriptions into the file project_db.dat.
      * @throws QuestEditorException if the file could not be written
      */
     public void save() throws QuestEditorException {
@@ -129,12 +129,12 @@ public class ResourceDatabase extends Observable {
 
                 while (it.hasNext()) {
                     String id = it.next();
-                    String name = resource.getElementName(id);
+                    String description = resource.getElementName(id);
                     out.print(resourceType.getLuaName());
                     out.print("{ id = \"");
                     out.print(id);
-                    out.print("\", name = \"");
-                    out.print(name);
+                    out.print("\", description = \"");
+                    out.print(description);
                     out.print("\" }");
                     out.println();
                 }
@@ -174,8 +174,8 @@ public class ResourceDatabase extends Observable {
             try {
                 LuaTable table = arg.checktable();
                 String id = table.get("id").checkjstring();
-                String name = table.get("name").checkjstring();
-                getResource(type).setElementName(id, name);
+                String description = table.get("description").checkjstring();
+                getResource(type).setElementName(id, description);
             }
             catch (QuestEditorException ex) {
                 // Error in the input file.

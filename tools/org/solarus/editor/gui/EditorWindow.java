@@ -56,7 +56,7 @@ public class EditorWindow extends JFrame
      * or null to show a dialog to select the quest.
      */
     public EditorWindow(String questPath) {
-        super("Solarus Quest Editor " + Project.SolarusFormat);
+        super("Solarus Quest Editor " + Project.solarusFormat);
 
         // set a nice look and feel
         GuiTools.setLookAndFeel();
@@ -93,12 +93,7 @@ public class EditorWindow extends JFrame
         if (questPath == null) {
             loadProject();
         } else {
-            // TODO fix this mess
-            try {
-                Project.createExisting(questPath);
-            } catch (QuestEditorException ex) {
-                loadProject();
-            }
+            loadProject(questPath);
         }
 
         // This object must be added as project observer after the quest tree.
@@ -296,7 +291,7 @@ public class EditorWindow extends JFrame
      */
     private void updateWindowTitle() {
         setTitle(Project.getPathBaseName() + " - Solarus Quest Editor "
-                + Project.SolarusFormat);
+                + Project.solarusFormat);
     }
 
     /**
@@ -360,16 +355,34 @@ public class EditorWindow extends JFrame
         }
 
         ProjectFileChooser chooser = new ProjectFileChooser();
-        String projectPath = chooser.getProjectPath();
+        String questPath = chooser.getProjectPath();
 
-        if (projectPath != null) {
-            try {
-                tabs.removeAll();
-                Project.createExisting(projectPath);
-            }
-            catch (QuestEditorException ex) {
-                GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
-            }
+        loadProject(questPath);
+    }
+
+    /**
+     * Loads the project located in the specified directory.
+     * @param questPath Path of the quest to load.
+     */
+    private void loadProject(String questPath) {
+
+        if (!checkCurrentFilesSaved()) {
+            return;
+        }
+
+        try {
+            tabs.removeAll();
+            Project.createExisting(questPath);
+        }
+        catch (ObsoleteQuestException ex) {
+            // TODO Upgrade data files automatically.
+            GuiTools.errorDialog(ex.getMessage());
+        }
+        catch (ObsoleteEditorException ex) {
+            GuiTools.errorDialog(ex.getMessage());
+        }
+        catch (QuestEditorException ex) {
+            GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
         }
     }
 

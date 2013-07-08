@@ -45,12 +45,22 @@ public class QuestProperties extends Observable {
      */
     private LinkedHashMap<String, String> properties;
 
+    private static final String[] propertyNames = {
+      "solarus_version",
+      "write_dir",
+      "title_bar",
+      "normal_quest_size",
+      "min_quest_size",
+      "max_quest_size"
+    };
+
     /**
      * Constructor.
      */
     public QuestProperties(Project project) {
 
         this.project = project;
+        this.properties = new LinkedHashMap<String, String>();
     }
 
     /**
@@ -70,6 +80,8 @@ public class QuestProperties extends Observable {
             LuaFunction code = LoadState.load(new FileInputStream(file),
                 file.getName(), environment);
             code.call();
+
+            checkVersionCompatibility();
         }
         catch (IOException ex) {
             throw new QuestEditorException(ex.getMessage());
@@ -94,11 +106,20 @@ public class QuestProperties extends Observable {
             File dbFile = project.getQuestPropertiesFile();
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dbFile)));
 
+            out.println("quest{");
             // Save each property.
             for (Entry<String, String> property: properties.entrySet()) {
-                // TODO
-                out.println();
+                if (property.getValue() != null) {
+                    out.print("  ");
+                    out.print(property.getKey());
+                    out.print(" = \"");
+                    out.print(property.getValue());
+                    out.print("\",");
+                    out.println();
+                }
             }
+            out.println("}");
+            out.println();
             out.close();
         }
         catch (IOException ex) {
@@ -123,12 +144,10 @@ public class QuestProperties extends Observable {
 
             try {
                 LuaTable table = arg.checktable();
-                String solarusVersion = table.get("solarus_version").checkjstring();
-                String writeDir = table.get("write_dir").optjstring(null);
-                String titleBar = table.get("title_bar").optjstring(null);
-                String normalQuestSize = table.get("normal_quest_size").optjstring(null);
-                String minQuestSize = table.get("min_quest_size").optjstring(null);
-                String maxQuestSize = table.get("max_quest_size").optjstring(null);
+                for (String key: propertyNames) {
+                    String value = table.get(key).optjstring(null);
+                    properties.put(key, value);
+                }
             }
             catch (LuaError ex) {
                 // Error in the input file.
@@ -140,6 +159,48 @@ public class QuestProperties extends Observable {
                 throw new LuaError(ex);
             }
             return LuaValue.NIL;
+        }
+    }
+
+    /**
+     * @brief Checks that the Solarus version of this quest is compatible with
+     * the current version of the editor.
+     * @throws QuestEditorException If the version of the quest is not
+     * specified in quest.dat or if it does not correspond to the version of
+     * the editor.
+     */
+    private void checkVersionCompatibility() throws QuestEditorException {
+
+        String questVersion = properties.get("solarus_version");
+        if (questVersion == null) {
+            throw new QuestEditorException("No Solarus version is specified in your quest.dat file!");
+        }
+
+        try {
+            int dotIndex1 = questVersion.indexOf('.');
+            int dotIndex2 = questVersion.indexOf('.', dotIndex1 + 1);
+            if (dotIndex2 != -1) {
+                // Remove the patch version (it does not break compatibility).
+                questVersion = questVersion.substring(0, dotIndex2 - 1);
+            }
+            int questMajor = Integer.parseInt(questVersion.substring(0, dotIndex1));
+            int questMinor = Integer.parseInt(questVersion.substring(dotIndex1 + 1));
+
+            dotIndex1 = Project.solarusFormat.indexOf('.');
+            int editorMajor = Integer.parseInt(Project.solarusFormat.substring(0, dotIndex1));
+            int editorMinor = Integer.parseInt(Project.solarusFormat.substring(dotIndex1 + 1));
+
+            if (questMajor > editorMajor ||
+                    (questMajor == editorMajor && questMinor > editorMinor)) {
+                throw new ObsoleteEditorException(questVersion);
+            }
+            else if (questMajor < editorMajor ||
+                    (questMajor == editorMajor && questMinor < editorMinor)) {
+                throw new ObsoleteQuestException(questVersion);
+            }
+        }
+        catch (NumberFormatException ex) {
+            throw new QuestEditorException("Invalid syntax of solarus_version: '" + questVersion + "'");
         }
     }
 }

@@ -77,10 +77,10 @@ public class ResourceDatabase extends Observable {
     /**
      * Reads the file project_db.dat of the project, i.e. the list
      * of the game resources and their description.
-     * @throws QuestEditorException if the file contains an error.
-     * @throws IOException if the file could not be loaded.
+     * @throws QuestEditorException If the file could not be loaded or
+     * contains an error.
      */
-    public void load() throws QuestEditorException, IOException {
+    public void load() throws QuestEditorException {
 
         try {
             File dbFile = project.getResourceDatabaseFile();
@@ -96,11 +96,9 @@ public class ResourceDatabase extends Observable {
                 dbFile.getName(), environment);
             code.call();
         }
-        /* TODO enable this once the caller is fixed
         catch (IOException ex) {
             throw new QuestEditorException(ex.getMessage());
         }
-        */
         catch (LuaError ex) {
             if (ex.getCause() != null) {
                 throw new QuestEditorException(ex.getCause().getMessage());

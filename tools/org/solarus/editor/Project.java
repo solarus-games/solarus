@@ -32,7 +32,7 @@ public class Project {
     /**
      * Current format of data files supported by the editor.
      */
-    public static final String SolarusFormat = "1.1";
+    public static final String solarusFormat = "1.1";
 
     /**
      * Root path of the project.
@@ -104,19 +104,11 @@ public class Project {
 
         Project project = new Project(path);
 
-        try {
-            // TODO use quest.dat to detect whether the project exists
-            // and don't throw IOException from ResourceDatabase.load().
-            project.resourceDatabase.load();
-
-            // if no exception was raised, a project exists (and has been successfully loaded)
+        if (project.getQuestPropertiesFile().exists()) {
             throw new QuestEditorException("A project already exists in this directory");
         }
-        catch (IOException ex) {
-            // normal case: there is no project file yet
-            setCurrentProject(project);
-            project.createInitialFiles();
-        }
+        setCurrentProject(project);
+        project.createInitialFiles();
     }
 
     /**
@@ -129,16 +121,9 @@ public class Project {
 
         Project project = new Project(path);
 
-        try {
-            project.resourceDatabase.load();
-
-            // normal case: a project exists and has been successfully loaded
-            setCurrentProject(project);
-        }
-        catch (IOException ex) {
-            // the project doesn't exist
-            throw new QuestEditorException(ex.getMessage());
-        }
+        project.questProperties.load();
+        project.resourceDatabase.load();
+        setCurrentProject(project);
     }
 
     /**
@@ -568,7 +553,7 @@ public class Project {
         out.println("quest{");
         out.println("  -- Format of your quest data files. You should not change this unless you");
         out.println("  -- know what you are doing.");
-        out.println("  solarus_version = \"" + SolarusFormat + "\",");
+        out.println("  solarus_version = \"" + solarusFormat + "\",");
         out.println();
         out.println("  -- Directory where your quest will write its savegames and setting files.");
         out.println("  -- It will be a subdirectory of '$HOME/.solarus/', automatically created by");

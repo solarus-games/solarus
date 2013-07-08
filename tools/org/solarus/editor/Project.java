@@ -45,6 +45,11 @@ public class Project {
     private String pathBaseName;
 
     /**
+     * Properties of this quest.
+     */
+    private QuestProperties questProperties;
+
+    /**
      * The resources associated to this project.
      */
     private ResourceDatabase resourceDatabase;
@@ -83,6 +88,7 @@ public class Project {
             this.pathBaseName = path;
         }
 
+        questProperties = new QuestProperties(this);
         resourceDatabase = new ResourceDatabase(this);
         editorImagesLoaded = new TreeMap<String, BufferedImage>();
         projectImagesLoaded = new TreeMap<String, BufferedImage>();
@@ -145,6 +151,15 @@ public class Project {
         for (ProjectObserver o: new ArrayList<ProjectObserver>(observers)) {
             o.currentProjectChanged();
         }
+    }
+
+    /**
+     * Returns the file containing the quest properties (quest.dat).
+     * This method can be called even if this project is not the current project.
+     * @return The file containing the quest properties.
+     */
+    public File getQuestPropertiesFile() {
+        return new File(projectPath + "/data/" + QuestProperties.fileName);
     }
 
     /**
@@ -291,14 +306,6 @@ public class Project {
         }
 
         return image;
-    }
-
-    /**
-     * Returns the quest properties file.
-     * @return The quest properties file.
-     */
-    public static File getQuestPropertiesFile() {
-        return new File(getDataPath() + "/quest.dat");
     }
 
     /**

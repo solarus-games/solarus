@@ -93,6 +93,7 @@ public class EditorWindow extends JFrame
         if (questPath == null) {
             loadProject();
         } else {
+            // TODO fix this mess
             try {
                 Project.createExisting(questPath);
             } catch (QuestEditorException ex) {

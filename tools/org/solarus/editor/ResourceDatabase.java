@@ -174,7 +174,7 @@ public class ResourceDatabase extends Observable {
             try {
                 LuaTable table = arg.checktable();
                 String id = table.get("id").checkjstring();
-                String name = table.get("description").checkjstring();
+                String name = table.get("name").checkjstring();
                 getResource(type).setElementName(id, name);
             }
             catch (QuestEditorException ex) {

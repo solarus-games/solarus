@@ -24,19 +24,13 @@
  */
 class Hero::HookshotState: public Hero::State {
 
-  private:
-
-    Hookshot *hookshot;    /**< the hookshot thrown by the hero */
-
-    void finish_movement();
-
   public:
 
-    HookshotState(Hero &hero);
+    HookshotState(Hero& hero);
     ~HookshotState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
 
     bool is_touching_ground();
     bool can_avoid_deep_water();
@@ -52,6 +46,12 @@ class Hero::HookshotState: public Hero::State {
     bool can_be_hurt(Enemy* attacker);
     bool can_pick_treasure(EquipmentItem& item);
     void notify_obstacle_reached();
+
+  private:
+
+    void finish_movement();
+
+    Hookshot* hookshot;    /**< the hookshot thrown by the hero */
 };
 
 #endif

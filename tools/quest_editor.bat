@@ -1,2 +1,2 @@
-java -classpath .;.\luaj-jse-2.0.2.jar org.solarus.editor.Editor
+java -classpath .;.\luaj-jse-3.0-beta1.jar org.solarus.editor.Editor
 pause

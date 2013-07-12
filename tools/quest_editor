@@ -14,5 +14,5 @@ else
   quest_path=$(grep 'DEFAULT_QUEST:STRING=' ${solarus_path}/CMakeCache.txt | sed -e 's/.*=//')
 fi
 
-java -cp ${tools_path}:${tools_path}/luaj-jse-2.0.2.jar org.solarus.editor.Editor $quest_path
+java -cp ${tools_path}:${tools_path}/luaj-jse-3.0-beta1.jar org.solarus.editor.Editor $quest_path
 

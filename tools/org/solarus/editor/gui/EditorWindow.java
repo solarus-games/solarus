@@ -375,8 +375,11 @@ public class EditorWindow extends JFrame
             Project.createExisting(questPath);
         }
         catch (ObsoleteQuestException ex) {
-            // TODO Upgrade data files automatically.
+            // Quest data files are obsolete: upgrade them and try again.
             GuiTools.errorDialog(ex.getMessage());
+            if (upgradeProject(questPath, ex.getQuestFormat())) {
+                loadProject(questPath);
+            }
         }
         catch (ObsoleteEditorException ex) {
             GuiTools.errorDialog(ex.getMessage());
@@ -384,6 +387,37 @@ public class EditorWindow extends JFrame
         catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
         }
+    }
+
+    /**
+     * Upgrades the data files of the specified project to the most recent
+     * format.
+     * A dialog box is shown to display the status of the operation.
+     * @param questPath Path of the quest to upgrade.
+     * @param questFormat The (obsolete) format of the quest.
+     * @return true in case of success.
+     */
+    private boolean upgradeProject(String questPath, String questFormat) {
+
+        try {
+            // First backup the files.
+            String backupDirectory = questPath + "/data." + questFormat + ".bak";
+            FileTools.copyDirectory(questPath + "/data", backupDirectory);
+
+            // Upgrade data files.
+            ExternalLuaScriptDialog dialog = new ExternalLuaScriptDialog("Upgrading quest data files", "/data_files_conversion/update_quest");
+            boolean upgradeSuccess = dialog.display();
+            if (!upgradeSuccess) {
+                // TODO restore the backuped version
+                GuiTools.errorDialog("Failed to upgrade the quest data files.\nYour previous data files were saved in '" + backupDirectory + "'");
+                return false;
+            }
+        }
+        catch (IOException ex) {
+            GuiTools.errorDialog("Failed to backup the quest data files:\n" + ex.getMessage());
+            return false;
+        }
+        return true;
     }
 
     /**

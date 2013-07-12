@@ -183,9 +183,10 @@ public abstract class OkCancelDialog extends JDialog {
      */
     public boolean display() {
         setLocationRelativeTo(null);
-         pack();
-         setVisible(true);
+        pack();
+        setVisible(true);
 
-         return appliedModifications;
+        return appliedModifications;
     }
 }
+

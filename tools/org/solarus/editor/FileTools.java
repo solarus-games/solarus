@@ -17,6 +17,8 @@
 package org.solarus.editor;
 
 import java.io.*;
+import java.nio.file.*;
+import java.nio.file.attribute.*;
 
 /**
  * Utility class to make easy some common operations related to the files:
@@ -86,4 +88,44 @@ public class FileTools {
 
         return name;
     }
+
+    /**
+     * Copies a directory and all its content into another directory.
+     * @param from The source directory.
+     * @param to The destination directory (will be created if necessary).
+     * @throws IOException If an error occurs.
+     */
+    public static void copyDirectory(String from, String to) throws IOException {
+        Files.walkFileTree(Paths.get(from), new CopyFileVisitor(Paths.get(to)));
+    }
+
+    private static class CopyFileVisitor extends SimpleFileVisitor<Path> {
+        private final Path targetPath;
+        private Path sourcePath = null;
+        public CopyFileVisitor(Path targetPath) {
+            this.targetPath = targetPath;
+        }
+
+        @Override
+        public FileVisitResult preVisitDirectory(final Path dir,
+                final BasicFileAttributes attrs) throws IOException {
+            if (sourcePath == null) {
+                sourcePath = dir;
+            } else {
+                Files.createDirectories(targetPath.resolve(sourcePath
+                            .relativize(dir)));
+            }
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult visitFile(final Path file,
+                final BasicFileAttributes attrs) throws IOException {
+            Files.copy(file,
+                    targetPath.resolve(sourcePath.relativize(file)));
+            return FileVisitResult.CONTINUE;
+        }
+    }
+
 }
+

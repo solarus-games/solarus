@@ -99,6 +99,27 @@ public class FileTools {
         Files.walkFileTree(Paths.get(from), new CopyFileVisitor(Paths.get(to)));
     }
 
+    /**
+     * Deletes a directory and all its content.
+     * Does nothing if the directory does not exist.
+     * @param directory Directory to delete.
+     */
+    public static void deleteDirectory(String directory) throws IOException {
+        if (new File(directory).exists()) {
+            Files.walkFileTree(Paths.get(directory), new DeleteFileVisitor());
+        }
+    }
+
+    /**
+     * Renames a directory.
+     * @param oldName The source directory.
+     * @param newName The new name.
+     * @throws IOException If an error occurs.
+     */
+    public static void renameDirectory(String oldName, String newName) throws IOException {
+        new File(oldName).renameTo(new File(newName));
+    }
+
     private static class CopyFileVisitor extends SimpleFileVisitor<Path> {
         private final Path targetPath;
         private Path sourcePath = null;
@@ -127,5 +148,30 @@ public class FileTools {
         }
     }
 
+    private static class DeleteFileVisitor extends SimpleFileVisitor<Path> {
+
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            Files.delete(file);
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+            Files.delete(file);
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+            if (exc == null) {
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
+            }
+            else {
+                throw exc;
+            }
+        }
+    }
 }
 

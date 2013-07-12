@@ -16,17 +16,35 @@
  */
 package org.solarus.editor;
 
+import org.luaj.vm2.*;
+import org.luaj.vm2.lib.*;
+import org.luaj.vm2.lib.jse.*;
+import org.luaj.vm2.compiler.*;
+
 /**
  * This class provides utility features related to Lua.
  */
 public class LuaTools {
 
     /**
-     *
+     * Runs the specified script and saves its output.
+     * @param fileName Script to run (without extension).
+     * @param arg An argument to pass to the script, or null.
+     * @param logFile A file to save the output to, or null.
+     * @throws LuaError If the script failed.
      */
-    public static void runScript(String fileName) {
+    public static void runScript(String fileName, String arg, String logFile)
+        throws LuaError {
 
-        // TODO
+        LuaValue _G = JsePlatform.standardGlobals();
+        _G.get("io").get("output").call(LuaValue.valueOf(logFile));
+        LuaValue code = _G.get("loadfile").call(fileName + ".lua");
+        if (arg != null) {
+            code.call(arg);
+        }
+        else {
+            code.call();
+        }
     }
 }
 

@@ -30,6 +30,11 @@ Lua API changes
 * hero:teleport(): make destination optional (maps now have a default one).
 * map:create_teletransporter(): make destination optional.
 
+Solarus Quest Editor changes
+----------------------------
+
+* Add a GUI to upgrade automatically quest files to the latest format (#247).
+
 __________________________
 
 solarus-1.0.4 (2013-06-26)

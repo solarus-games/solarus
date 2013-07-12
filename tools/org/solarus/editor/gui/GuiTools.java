@@ -96,6 +96,22 @@ public class GuiTools {
     }
 
     /**
+     * Shows a dialog box with a message and the "OK" and "Cancel" options.
+     * @param message message the message to show
+     * @return true if the user chose "OK"
+     */
+    public static boolean okCancelDialog(String message) {
+
+        int result = JOptionPane.showConfirmDialog(null,
+                message,
+                "Confirmation",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.INFORMATION_MESSAGE);
+
+        return (result == JOptionPane.OK_OPTION);
+    }
+
+    /**
      * Rounds an integer number to the closest multiple of 8.
      * This method is useful to handle the clicks on the game components.
      * @param x an integer (can be negative)

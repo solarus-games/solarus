@@ -9,10 +9,17 @@ local solarus_formats = {
   "1.1",
 }
 
+local function write_info(message)
+
+  message = message or ""
+  io.write(message, "\n")
+  io.flush()
+end
+
 local quest_path = ...
 if quest_path == nil then
-  print("Usage: lua update_quest.lua path/to/your_quest")
-  os.exit()
+  write_info("Usage: lua update_quest.lua path/to/your_quest")
+  os.exit(1)
 end
 
 -- Determines and returns the format of a quest.
@@ -53,33 +60,42 @@ local function update_step(quest_path, old_format, new_format)
   package.path = old_package_path
 end
 
-local quest_format = get_quest_format(quest_path)
+-- Main function.
+local function update_quest(quest_path)
+  local quest_format = get_quest_format(quest_path)
 
-if quest_format == nil then
-  error("Failed to determine the format of this quest")
+  if quest_format == nil then
+    error("Failed to determine the format of this quest")
+  end
+
+  local solarus_format = solarus_formats[#solarus_formats]
+  write_info("Format of the quest: " .. quest_format)
+  write_info("Latest Solarus format: " .. solarus_format)
+
+  if quest_format == solarus_format then
+    -- Nothing to do.
+    write_info("This quest is already up-to-date.")
+  else
+    -- Update to do.
+    local started = false
+    for _, format in ipairs(solarus_formats) do
+      if started then
+        write_info("====== Step " .. quest_format .. " to " .. format .. " ======")
+        update_step(quest_path, quest_format, format)
+        write_info("====== Step done ======")
+        write_info()
+        quest_format = format
+      elseif format == quest_format then
+        started = true
+      end
+    end
+    write_info("All updates were successful!")
+  end
 end
 
-local solarus_format = solarus_formats[#solarus_formats]
-print("Format of the quest: " .. quest_format)
-print("Latest Solarus format: " .. solarus_format)
-
-if quest_format == solarus_format then
-  -- Nothing to do.
-  print("This quest is already up-to-date.")
-else
-  -- Update to do.
-  local started = false
-  for _, format in ipairs(solarus_formats) do
-    if started then
-      print("====== Step " .. quest_format .. " to " .. format .. " ======")
-      update_step(quest_path, quest_format, format)
-      print("====== Step done ======")
-      print()
-      quest_format = format
-    elseif format == quest_format then
-      started = true
-    end
-  end
-  print("All updates were successful!")
+local success, error_message = pcall(update_quest, quest_path)
+if not success then
+  write_info(error_message)
+  error(error_message)
 end
 

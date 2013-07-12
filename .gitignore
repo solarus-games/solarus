@@ -27,4 +27,5 @@ cmake_install.cmake
 libsolarus_static.a
 /solarus
 error.txt
+tools/update_quest.log
 

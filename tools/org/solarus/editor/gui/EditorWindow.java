@@ -376,8 +376,12 @@ public class EditorWindow extends JFrame
         }
         catch (ObsoleteQuestException ex) {
             // Quest data files are obsolete: upgrade them and try again.
-            GuiTools.errorDialog(ex.getMessage());
-            if (upgradeProject(questPath, ex.getQuestFormat())) {
+            boolean upgrade = GuiTools.okCancelDialog(
+                "The format of this quest (" + ex.getQuestFormat()
+                + ") is outdated.\n"
+                + "Your data files will be automatically updated to Solarus "
+                + Project.solarusFormat + ".");
+            if (upgrade && upgradeProject(questPath, ex.getQuestFormat())) {
                 loadProject(questPath);
             }
         }
@@ -402,15 +406,30 @@ public class EditorWindow extends JFrame
         try {
             // First backup the files.
             String backupDirectory = questPath + "/data." + questFormat + ".bak";
+            FileTools.deleteDirectory(backupDirectory);  // Remove any previous backup.
             FileTools.copyDirectory(questPath + "/data", backupDirectory);
 
             // Upgrade data files.
-            ExternalLuaScriptDialog dialog = new ExternalLuaScriptDialog("Upgrading quest data files", "/data_files_conversion/update_quest");
+            ExternalLuaScriptDialog dialog = new ExternalLuaScriptDialog("Upgrading quest data files",
+                "update_quest", questPath);
             boolean upgradeSuccess = dialog.display();
             if (!upgradeSuccess) {
-                // TODO restore the backuped version
-                GuiTools.errorDialog("Failed to upgrade the quest data files.\nYour previous data files were saved in '" + backupDirectory + "'");
-                return false;
+                // The upgrade failed.
+                try {
+                    // Restore the backuped version.
+                    FileTools.renameDirectory(questPath + "/data", questPath + "/data.err");
+                    FileTools.renameDirectory(backupDirectory, questPath + "/data");
+                    GuiTools.warningDialog("Sorry, an error occured while upgrading the quest.\n"
+                            + "Your quest was kept unchanged in format '" + questFormat + "'");
+                    return false;
+                }
+                catch (IOException ex) {
+                    // The restoration failed for some reason.
+                    GuiTools.warningDialog("Sorry, an error occured while upgrading the quest.\n"
+                            + "A backup of your quest was saved in format " + questFormat
+                            + " was saved in '" + backupDirectory + "'.");
+                    return false;
+                }
             }
         }
         catch (IOException ex) {

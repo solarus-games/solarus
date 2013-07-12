@@ -16,9 +16,12 @@
  */
 package org.solarus.editor.gui;
 
+import org.solarus.editor.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.*;
+import org.luaj.vm2.*;
 
 /**
  * A dialog that runs an external Lua script and shows its output.
@@ -26,9 +29,19 @@ import javax.swing.*;
 public class ExternalLuaScriptDialog extends JDialog {
 
     /**
-     * The script to run.
+     * The script to run (without extension).
      */
     private String fileName;
+
+    /**
+     * Argument to pass to the script or null.
+     */
+    private String arg;
+
+    /**
+     * Label indicating the status of running the script.
+     */
+    private JLabel statusLabel;
 
     /**
      * Text area containing the output of the script.
@@ -53,13 +66,15 @@ public class ExternalLuaScriptDialog extends JDialog {
     /**
      * Constructor.
      * @param title Title of the dialog box.
-     * @param fileName The script to run.
+     * @param fileName The script to run, without extension.
+     * @param arg An argument to pass to the script, or null.
      */
-    public ExternalLuaScriptDialog(String title, String fileName) {
+    public ExternalLuaScriptDialog(String title, String fileName, String arg) {
 
         super((Frame) null, title, true);
 
         this.fileName = fileName;
+        this.arg = arg;
         this.finished = false;
 
         Container contentPane = getContentPane();
@@ -68,11 +83,21 @@ public class ExternalLuaScriptDialog extends JDialog {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         // Description.
-        JLabel label = new JLabel(title);
+        JLabel descriptionLabel = new JLabel(title + "...");
+        statusLabel = new JLabel("In progress");
+        statusLabel.setForeground(new Color(255, 128, 0));
+
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
+
+        topPanel.add(Box.createHorizontalStrut(20));
+        topPanel.add(descriptionLabel);
+        topPanel.add(Box.createHorizontalStrut(10));
+        topPanel.add(statusLabel);
+        topPanel.add(Box.createHorizontalGlue());
 
         // Script output.
         textArea = new JTextArea(30, 80);
-        textArea.setText("Hello world");
         JScrollPane scrollPane = new JScrollPane(textArea);
         JPanel outputPanel = new JPanel();
         outputPanel.add(scrollPane);
@@ -97,7 +122,7 @@ public class ExternalLuaScriptDialog extends JDialog {
         bottomPanel.add(Box.createHorizontalStrut(20));
 
         getContentPane().add(Box.createVerticalStrut(10));
-        getContentPane().add(label);
+        getContentPane().add(topPanel);
         getContentPane().add(Box.createVerticalStrut(20));
         getContentPane().add(outputPanel);
         getContentPane().add(Box.createVerticalStrut(20));
@@ -110,8 +135,8 @@ public class ExternalLuaScriptDialog extends JDialog {
      * @return true in the script was successful, false otherwise.
      */
     public boolean display() {
-        // TODO run the script
-        setFinished();
+        new ScriptRunner().start();
+        new LogFileReader().start();
 
         setLocationRelativeTo(null);
         pack();
@@ -124,7 +149,56 @@ public class ExternalLuaScriptDialog extends JDialog {
      */
     private void setFinished() {
         okButton.setEnabled(true);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         finished = true;
+        if (success) {
+            statusLabel.setText("Success!");
+            statusLabel.setForeground(new Color(0, 128, 0));
+        }
+        else {
+            statusLabel.setText("Failure");
+            statusLabel.setForeground(Color.red);
+        }
+    }
+
+    private class ScriptRunner extends Thread {
+
+        public void run() {
+            try {
+                LuaTools.runScript(fileName, arg, fileName + ".log");
+                success = true;
+            }
+            catch (LuaError ex) {
+            }
+            setFinished();
+        }
+    }
+
+    private class LogFileReader extends Thread {
+
+        public void run() {
+            try {
+                int totalLinesRead = 0;
+                while (!finished) {
+                    Thread.sleep(200);
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(fileName + ".log")));
+                    String line;
+
+                    int linesRead = 0;
+                    while ((line = buffer.readLine()) != null) {
+                        if (linesRead >= totalLinesRead) {
+                            textArea.append(line);
+                            textArea.append("\n");
+                            totalLinesRead++;
+                        }
+                        linesRead++;
+                    }
+                }
+            }
+            catch (Exception ex) {
+                textArea.append("Error: " + ex.getMessage());
+            }
+        }
     }
 }
 

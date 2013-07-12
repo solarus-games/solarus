@@ -15,6 +15,7 @@ if quest_path == nil then
   os.exit()
 end
 
+-- Determines and returns the format of a quest.
 local function get_quest_format(quest_path)
 
   local quest_format = nil
@@ -25,12 +26,31 @@ local function get_quest_format(quest_path)
     quest_format = properties.solarus_version
   end
 
-  dofile(quest_path .. "/data/quest.dat")
+  local quest_file = loadfile(quest_path .. "/data/quest.dat")
+  if quest_file == nil then
+    error("No quest was found in '" .. quest_path .. "'")
+  end
+  quest_file()
 
   if quest_format ~= nil then
     quest_format = quest_format:match("^([0-9]+%.[0-9]+)%.?")
   end
   return quest_format
+end
+
+-- Makes an upgrade step from the current format to the next one.
+local function update_step(quest_path, old_format, new_format)
+
+  local old_package_path = package.path
+  local step_directory = old_format .. "_to_" .. new_format
+  package.path = "data_files_conversion/" .. step_directory .. "/?.lua;" .. package.path 
+  local script_path = "data_files_conversion/" .. step_directory .. "/update_quest.lua"
+  local update_script = loadfile(script_path)
+  if update_script == nil then
+    error("Cannot find script '" .. script_path .. "'")
+  end
+  update_script(quest_path)
+  package.path = old_package_path
 end
 
 local quest_format = get_quest_format(quest_path)
@@ -51,8 +71,11 @@ else
   local started = false
   for _, format in ipairs(solarus_formats) do
     if started then
-      print("Updating to " .. format)
-      -- TODO
+      print("====== Step " .. quest_format .. " to " .. format .. " ======")
+      update_step(quest_path, quest_format, format)
+      print("====== Step done ======")
+      print()
+      quest_format = format
     elseif format == quest_format then
       started = true
     end

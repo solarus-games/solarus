@@ -420,7 +420,7 @@ public class EditorWindow extends JFrame
                     FileTools.renameDirectory(questPath + "/data", questPath + "/data.err");
                     FileTools.renameDirectory(backupDirectory, questPath + "/data");
                     GuiTools.warningDialog("Sorry, an error occured while upgrading the quest.\n"
-                            + "Your quest was kept unchanged in format '" + questFormat + "'");
+                            + "Your quest was kept unchanged in format " + questFormat + ".");
                     return false;
                 }
                 catch (IOException ex) {

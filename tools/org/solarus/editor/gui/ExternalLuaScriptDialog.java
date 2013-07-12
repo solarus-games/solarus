@@ -169,6 +169,10 @@ public class ExternalLuaScriptDialog extends JDialog {
                 success = true;
             }
             catch (LuaError ex) {
+                if (textArea.getText().isEmpty()) {
+                    // Otherwise we assume that the error message is already printed.
+                    textArea.setText(ex.getMessage());
+                }
             }
             setFinished();
         }

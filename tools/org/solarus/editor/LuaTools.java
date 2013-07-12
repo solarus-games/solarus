@@ -39,6 +39,9 @@ public class LuaTools {
         LuaValue _G = JsePlatform.standardGlobals();
         _G.get("io").get("output").call(LuaValue.valueOf(logFile));
         LuaValue code = _G.get("loadfile").call(fileName + ".lua");
+        if (code.isnil()) {
+            throw new LuaError("Failed to load script '" + fileName + ".lua'");
+        }
         if (arg != null) {
             code.call(arg);
         }

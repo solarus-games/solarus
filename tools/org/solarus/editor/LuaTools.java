@@ -17,9 +17,7 @@
 package org.solarus.editor;
 
 import org.luaj.vm2.*;
-import org.luaj.vm2.lib.*;
 import org.luaj.vm2.lib.jse.*;
-import org.luaj.vm2.compiler.*;
 
 /**
  * This class provides utility features related to Lua.

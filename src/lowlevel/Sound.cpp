@@ -432,7 +432,6 @@ ALuint Sound::decode_file(const std::string& file_name) {
   return buffer;
 }
 
-
 /**
  * \brief Loads an encoded sound from memory.
  *

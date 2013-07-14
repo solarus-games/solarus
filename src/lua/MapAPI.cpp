@@ -848,14 +848,18 @@ int LuaContext::map_api_get_entities(lua_State* l) {
     map.get_entities().get_entities_with_prefix(prefix);
 
   lua_newtable(l);
-  int i = 0;
   std::list<MapEntity*>::const_iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
     MapEntity* entity = *it;
     push_entity(l, *entity);
-    lua_rawseti(l, -2, ++i);
+    lua_pushboolean(l, true);
+    lua_rawset(l, -3);
   }
-  return 1;
+  lua_getglobal(l, "pairs");
+  lua_pushvalue(l, -2);
+  lua_call(l, 1, 3);
+
+  return 3;
 }
 
 /**

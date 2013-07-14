@@ -25,6 +25,12 @@ Don't forget to make a backup first.
 Lua API changes
 ---------------
 
+Changes with incompatibilities:
+
+* Make map:get_entities() return an iterator instead of an array (#249).
+
+Changes without incompatibilities:
+
 * game:get/set_starting_location(): map and destination can now be nil.
 * hero:teleport(): make destination optional (maps now have a default one).
 * map:create_teletransporter(): make destination optional.

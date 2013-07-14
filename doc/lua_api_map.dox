@@ -661,10 +661,17 @@ Returns whether there currently exists a
 
 \subsection lua_api_map_get_entities map:get_entities(prefix)
 
-Returns all \ref lua_api_entity "map entities"
+Returns an iterator to all \ref lua_api_entity "map entities"
 whose name has the specified prefix.
+
+The typical usage of this function is:
+\verbatim
+for entity in map:get_entities("your_prefix") do
+  -- some code related to the entity
+end
+\endverbatim
 - \c prefix (string): Prefix of the entities to get.
-- Return value (table): An array of all existing entities with this prefix.
+- Return value (function): An iterator to all entities with this prefix.
 
 \subsection lua_api_map_get_entities_count map:get_entities_count(prefix)
 
@@ -672,9 +679,6 @@ Returns the number of \ref lua_api_entity "map entities"
 having the specified prefix.
 - \c prefix (string): Prefix of the entities to count.
 - Return value (number): The number of entities having this prefix on the map.
-
-\remark Equivalent to <tt>map:get_entities(prefix)</tt> (but avoids the
-  table creation and the export of entities to Lua).
 
 \subsection lua_api_map_has_entities map:has_entities(prefix)
 

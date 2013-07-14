@@ -56,6 +56,14 @@ Only one music can be played at a time.
   You can also specify the special value \c "none" to stop playing any music,
   or \c "same" to let the music unchanged.
 
+\subsection lua_api_audio_get_music sol.audio.get_music()
+
+Returns the name of the music currently playing.
+
+- Return value (string): Name of the music file currently playing, relative to
+  the \c musics directory and without extension. Returns \c nil if no music is
+  playing.
+
 \subsection lua_api_audio_stop_music sol.audio.stop_music()
 
 Stops playing music.

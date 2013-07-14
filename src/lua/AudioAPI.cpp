@@ -31,6 +31,7 @@ void LuaContext::register_audio_module() {
       { "preload_sounds", audio_api_preload_sounds },
       { "play_music", audio_api_play_music },
       { "stop_music", audio_api_stop_music },
+      { "get_music", audio_api_get_music },
       { "get_sound_volume", audio_api_get_sound_volume },
       { "set_sound_volume", audio_api_set_sound_volume },
       { "get_music_volume", audio_api_get_music_volume },
@@ -99,6 +100,24 @@ int LuaContext::audio_api_stop_music(lua_State* l) {
   Music::play(Music::none);
 
   return 0;
+}
+
+/**
+ * \brief Implementation of sol.audio.get_music().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::audio_api_get_music(lua_State* l) {
+
+  const std::string& music_id = Music::get_current_music_id();
+
+  if (music_id == Music::none) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, music_id);
+  }
+  return 1;
 }
 
 /**

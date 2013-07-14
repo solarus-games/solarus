@@ -25,10 +25,11 @@ Don't forget to make a backup first.
 Lua API changes
 ---------------
 
-* Add a function sol.video.get_quest_size().
 * game:get/set_starting_location(): map and destination can now be nil.
 * hero:teleport(): make destination optional (maps now have a default one).
 * map:create_teletransporter(): make destination optional.
+* Add a function sol.video.get_quest_size().
+* Add a function sol.audio.get_music() (#146).
 
 Solarus Quest Editor changes
 ----------------------------

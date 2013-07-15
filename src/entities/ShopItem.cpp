@@ -21,7 +21,6 @@
 #include "Map.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
-#include "DialogBox.h"
 #include "Equipment.h"
 #include "EquipmentItem.h"
 #include "Savegame.h"
@@ -49,9 +48,7 @@ ShopItem::ShopItem(const std::string& name, Layer layer, int x, int y,
   price(price),
   dialog_id(dialog_id),
   price_digits(0, 0, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP),
-  rupee_icon_sprite("entities/rupee_icon"),
-  is_looking_item(false),
-  is_asking_question(false) {
+  rupee_icon_sprite("entities/rupee_icon") {
 
   std::ostringstream oss;
   oss << price;
@@ -93,6 +90,31 @@ ShopItem* ShopItem::create(Game& game, const std::string& name, Layer layer, int
  */
 EntityType ShopItem::get_type() {
   return SHOP_ITEM;
+}
+
+/**
+ * \brief Returns the treasure for sale in this entity.
+ * \return The treasure.
+ */
+const Treasure& ShopItem::get_treasure() const {
+  return treasure;
+}
+
+/**
+ * \brief Returns the price of this shop item.
+ * \return The price.
+ */
+int ShopItem::get_price() const {
+  return price;
+}
+
+/**
+ * \brief Returns the id of the dialog describing this shop item when the
+ * player watches it.
+ * \return The dialog id.
+ */
+const std::string& ShopItem::get_dialog_id() const {
+  return dialog_id;
 }
 
 /**
@@ -152,64 +174,8 @@ void ShopItem::notify_action_command_pressed() {
   if (get_hero().is_free()
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
 
-    get_dialog_box().start_dialog(dialog_id);
-    is_looking_item = true;
-  }
-}
-
-/**
- * \brief Updates the entity.
- */
-void ShopItem::update() {
-
-  if (is_looking_item && !get_game().is_dialog_enabled()) {
-
-    // the description message has just finished
-    const std::string question_dialog_id = "_shop.question";
-    get_dialog_box().start_dialog(question_dialog_id);
-    get_dialog_box().set_variable(question_dialog_id, price);
-    is_asking_question = true;
-    is_looking_item = false;
-  }
-  else if (is_asking_question && !get_game().is_dialog_enabled()) {
-
-    // the question has just finished
-    is_asking_question = false;
-    int answer = get_dialog_box().get_last_answer();
-
-    if (answer == 0) {
-
-      // the player wants to buy the item
-      Equipment& equipment = get_equipment();
-      EquipmentItem& item = treasure.get_item();
-
-      if (equipment.get_money() < price) {
-        // not enough rupees
-        Sound::play("wrong");
-        get_dialog_box().start_dialog("_shop.not_enough_money");
-      }
-      else if (item.has_amount() && item.get_amount() >= item.get_max_amount()) {
-        // the player already has the maximum amount of this item
-        Sound::play("wrong");
-        get_dialog_box().start_dialog("_shop.amount_full");
-      }
-      else {
-
-        bool can_buy = get_lua_context().shop_item_on_buying(*this);
-        if (can_buy) {
-
-          // give the treasure
-          equipment.remove_money(price);
-
-          get_hero().start_treasure(treasure, LUA_REFNIL);
-          if (treasure.is_saved()) {
-            remove_from_map();
-            get_savegame().set_boolean(treasure.get_savegame_variable(), true);
-          }
-          get_lua_context().shop_item_on_bought(*this);
-        }
-      }
-    }
+    LuaContext& lua_context = get_lua_context();
+    lua_context.notify_shop_item_interaction(*this);
   }
 }
 

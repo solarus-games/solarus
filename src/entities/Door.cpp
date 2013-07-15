@@ -27,7 +27,6 @@
 #include "lowlevel/Geometry.h"
 #include "Sprite.h"
 #include "Game.h"
-#include "DialogBox.h"
 #include "Equipment.h"
 #include "KeysEffect.h"
 #include "Savegame.h"
@@ -590,7 +589,7 @@ void Door::notify_action_command_pressed() {
     }
     else if (!cannot_open_dialog_id.empty()) {
       Sound::play("wrong");
-      get_dialog_box().start_dialog(cannot_open_dialog_id);
+      get_game().start_dialog(cannot_open_dialog_id, LUA_REFNIL);
     }
   }
 }

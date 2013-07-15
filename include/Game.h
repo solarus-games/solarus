@@ -21,7 +21,6 @@
 #include "Transition.h"
 #include "GameCommands.h"
 #include "Savegame.h"
-#include "DialogBox.h"
 
 /**
  * \brief Represents the game currently running.
@@ -40,6 +39,7 @@ class Game {
     // current game state (elements currently shown)
     bool pause_key_available;  /**< indicates that the player is allowed to use the pause key */
     bool paused;               /**< indicates that the game is paused */
+    bool dialog_enabled;       /**< indicates that a dialog is shown */
     GameoverSequence* gameover_sequence; /**< the game over sequence (if currently shown) */
     bool started;              /**< true if this game is running, false if it is not yet started or being closed. */
     bool restarting;           /**< true if the game will be restarted */
@@ -61,12 +61,8 @@ class Game {
     // world (i.e. the current set of maps)
     bool crystal_state;        /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */
 
-    // graphics
-    DialogBox dialog_box;      /**< the dialog box manager */
-
     // update functions
     void update_keys_effect();
-    void update_dialog_box();
     void update_transitions();
     void update_gameover_sequence();
     void notify_map_changed();
@@ -123,8 +119,9 @@ class Game {
     void set_pause_key_available(bool pause_key_available);
     void set_paused(bool paused);
 
-    // dialog box
-    DialogBox& get_dialog_box();
+    // dialogs
+    void start_dialog(const std::string& dialog_id, int callback_ref);
+    void stop_dialog();
 
     // game over
     void start_gameover_sequence();

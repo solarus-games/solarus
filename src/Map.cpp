@@ -18,7 +18,6 @@
 #include "MapLoader.h"
 #include "Game.h"
 #include "Savegame.h"
-#include "DialogBox.h"
 #include "Sprite.h"
 #include "Camera.h"
 #include "lua/LuaContext.h"

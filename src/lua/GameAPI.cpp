@@ -42,6 +42,9 @@ void LuaContext::register_game_module() {
       { "is_suspended", game_api_is_suspended },
       { "is_paused", game_api_is_paused },
       { "set_paused", game_api_set_paused },
+      { "is_dialog_enabled", game_api_is_dialog_enabled },
+      { "start_dialog", game_api_start_dialog },
+      { "stop_dialog", game_api_stop_dialog },
       { "get_map", game_api_get_map },
       { "get_value", game_api_get_value },
       { "set_value", game_api_set_value },
@@ -286,6 +289,87 @@ int LuaContext::game_api_set_paused(lua_State* l) {
   if (game != NULL) {
     game->set_paused(paused);
   }
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of game:is_dialog_enabled().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  if (game == NULL) {
+    lua_pushboolean(l, false);
+  }
+  else {
+    lua_pushboolean(l, game->is_dialog_enabled());
+  }
+  return 1;
+}
+
+/**
+ * \brief Implementation of game:start_dialog().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::game_api_start_dialog(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  const std::string& dialog_id = luaL_checkstring(l, 2);
+  // TODO optional parameter for substituted value
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 3) {
+    luaL_checktype(l, 3, LUA_TFUNCTION);
+    lua_settop(l, 3);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
+
+  if (!DialogResource::exists(dialog_id)) {
+    luaL_argerror(l, 2, (StringConcat()
+          << "No such dialog: '" << dialog_id << "'").c_str());
+  }
+
+  Game* game = savegame.get_game();
+  if (game == NULL) {
+    luaL_error(l, "Cannot start dialog: this game is not running");
+
+  }
+
+  if (game->is_dialog_enabled()) {
+    luaL_argerror(l, 2, (std::string("Cannot start dialog '")
+        +  dialog_id + "': another dialog is already active").c_str());
+  }
+
+  game->start_dialog(dialog_id, callback_ref);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of game:stop_dialog().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::game_api_stop_dialog(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  // TODO optional parameter for answer
+
+  Game* game = savegame.get_game();
+  if (game == NULL) {
+    luaL_error(l, "Cannot stop dialog: this game is not running.");
+  }
+
+  if (!game->is_dialog_enabled()) {
+    luaL_argerror(l, 2, "Cannot stop dialog: no dialog is active.");
+  }
+
+  game->stop_dialog();
 
   return 0;
 }

@@ -27,7 +27,6 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "Game.h"
-#include "DialogBox.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "Treasure.h"
@@ -325,13 +324,13 @@ void Destructible::notify_action_command_pressed() {
       if (features[subtype].can_be_cut
           && !features[subtype].can_explode
           && !get_equipment().has_ability("sword", 1)) {
-        get_dialog_box().start_dialog("_cannot_lift_should_cut");
+        get_game().start_dialog("_cannot_lift_should_cut", LUA_REFNIL);
       }
       else if (!get_equipment().has_ability("lift", 1)) {
-        get_dialog_box().start_dialog("_cannot_lift_too_heavy");
+        get_game().start_dialog("_cannot_lift_too_heavy", LUA_REFNIL);
       }
       else {
-        get_dialog_box().start_dialog("_cannot_lift_still_too_heavy");
+        get_game().start_dialog("_cannot_lift_still_too_heavy", LUA_REFNIL);
       }
     }
   }

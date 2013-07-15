@@ -17,7 +17,6 @@
 #include "DebugKeys.h"
 #include "MainLoop.h"
 #include "Game.h"
-#include "DialogBox.h"
 #include "entities/Hero.h"
 #include "movements/Movement.h"
 
@@ -51,12 +50,6 @@ void DebugKeys::update() {
 
 #ifdef SOLARUS_DEBUG_KEYS
   Game* game = main_loop.get_game();
-  if (InputEvent::is_shift_down()) {
-    if (game != NULL && game->is_dialog_enabled()) {
-      game->get_dialog_box().show_all_now();
-    }
-  }
-
   // traverse walls when control is pressed
   if (game != NULL) {
 

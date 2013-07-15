@@ -42,6 +42,7 @@ const std::string LuaContext::entity_chest_module_name = "sol.entity.chest";
 const std::string LuaContext::entity_block_module_name = "sol.entity.block";
 const std::string LuaContext::entity_switch_module_name = "sol.entity.switch";
 const std::string LuaContext::entity_door_module_name = "sol.entity.door";
+const std::string LuaContext::entity_shop_item_module_name = "sol.entity.shop_item";
 const std::string LuaContext::entity_pickable_module_name = "sol.entity.pickable";
 const std::string LuaContext::entity_enemy_module_name = "sol.entity.enemy";
 
@@ -191,6 +192,14 @@ void LuaContext::register_entity_module() {
   };
   register_functions(entity_door_module_name, common_methods);
   register_type(entity_door_module_name, door_methods,
+      common_metamethods);
+
+  // Shop item.
+  static const luaL_Reg shop_item_methods[] = {
+      { NULL, NULL }
+  };
+  register_functions(entity_shop_item_module_name, common_methods);
+  register_type(entity_shop_item_module_name, shop_item_methods,
       common_metamethods);
 
   // Pickable.
@@ -1395,6 +1404,144 @@ int LuaContext::door_api_is_closing(lua_State* l) {
 
   lua_pushboolean(l, door.is_closing());
   return 1;
+}
+
+/**
+ * \brief Returns whether a value is a userdata of type shop item.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a shop item.
+ */
+bool LuaContext::is_shop_item(lua_State* l, int index) {
+  return is_userdata(l, index, entity_shop_item_module_name);
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * shop item and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The shop item.
+ */
+Door& LuaContext::check_shop_item(lua_State* l, int index) {
+  return static_cast<ShopItem&>(
+      check_userdata(l, index, entity_shop_item_module_name));
+}
+
+/**
+ * \brief Pushes a shop item userdata onto the stack.
+ * \param l A Lua context.
+ * \param shop_item A shop item.
+ */
+void LuaContext::push_shop_item(lua_State* l, ShopItem& shop_item) {
+  push_userdata(l, shop_item);
+}
+
+/**
+ * \brief Notifies Lua that the hero interacts with a shop item.
+ *
+ * Lua then manages the dialogs shown to the player.
+ *
+ * \param shop_item A shop item.
+ */
+void LuaContext::notify_shop_item_interaction(ShopItem& shop_item) {
+
+  // Call game:start_dialog(shop_item_dialog_id, description_callback)
+  push_game(l, shop_item.get_game().get_savegame());
+  push_string(l, shop_item.get_dialog_id());
+  push_shop_item(l, shop_item);
+  lua_pushcclosure(l, l_shop_item_description_dialog_finished, 1);
+  game_api_start_dialog(l);
+}
+
+/**
+ * \brief Callback function executed after the description dialog of
+ * a shop item.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_shop_item_description_dialog_finished(lua_State* l) {
+
+  LuaContext& lua_context = get_lua_context(l);
+
+  // The description message has just finished.
+  // The shop item is the first upvalue.
+  ShopItem& shop_item = lua_context.check_shop_item(l, lua_upvalueindex(1));
+
+  if (shop_item.is_being_removed()) {
+    // The shop item was removed during the dialog.
+    return 0;
+  }
+
+  // Call game:start_dialog("_shop.question", price, question_callback)
+  push_game(l, shop_item.get_game().get_savegame());
+  push_string(l, "_shop.question");
+  lua_pushinteger(l, shop_item.get_price());
+  push_shop_item(l, shop_item);
+  lua_pushcclosure(l, l_shop_item_question_dialog_finished, 1);
+  game_api_start_dialog(l);
+
+  return 0;
+}
+
+/**
+ * \brief Callback function executed after the question dialog of
+ * a shop item.
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_shop_item_question_dialog_finished(lua_State* l) {
+
+  LuaContext& lua_context = get_lua_context(l);
+
+  // The "do you want to buy?" question has just been displayed.
+  // The shop item is the first upvalue.
+  ShopItem& shop_item = check_shop_item(l, lua_upvalueindex(1));
+
+  if (shop_item.is_being_removed()) {
+    // The shop item was removed during the dialog.
+    return 0;
+  }
+
+  // The first parameter is the answer or "skipped".
+  bool wants_to_buy = lua_isboolean(l, 1) && lua_toboolean(l, 1);
+
+  Game& game = shop_item.get_game();
+  if (wants_to_buy) {
+
+    // The player wants to buy the item.
+    Equipment& equipment = game.get_equipment();
+    Treasure& treasure = shop_item.get_treasure();
+    EquipmentItem& item = treasure.get_item();
+
+    if (equipment.get_money() < shop_item.get_price()) {
+      // not enough rupees
+      Sound::play("wrong");
+      game.start_dialog("_shop.not_enough_money", LUA_REFNIL);
+    }
+    else if (item.has_amount() && item.get_amount() >= item.get_max_amount()) {
+      // the player already has the maximum amount of this item
+      Sound::play("wrong");
+      game.start_dialog("_shop.amount_full", LUA_REFNIL);
+    }
+    else {
+
+      bool can_buy = lua_context.shop_item_on_buying(shop_item);
+      if (can_buy) {
+
+        // give the treasure
+        equipment.remove_money(shop_item.get_price());
+
+        game.get_hero().start_treasure(treasure, LUA_REFNIL);
+        if (treasure.is_saved()) {
+          shop_item.remove_from_map();
+          game.get_savegame().set_boolean(treasure.get_savegame_variable(), true);
+        }
+        lua_context.shop_item_on_bought(shop_item);
+      }
+    }
+  }
+  return 0;
 }
 
 /**

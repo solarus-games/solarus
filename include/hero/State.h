@@ -53,7 +53,6 @@ class Hero::State {
     Equipment& get_equipment();
     KeysEffect& get_keys_effect();
     GameCommands& get_commands();
-    DialogBox& get_dialog_box();
     HeroSprites& get_sprites();
 
   public:

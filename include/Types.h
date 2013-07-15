@@ -73,7 +73,6 @@ class GameoverSequence;
 class Camera;
 class Dialog;
 class DialogResource;
-class DialogBox;
 
 // Lua
 class ExportableToLua;

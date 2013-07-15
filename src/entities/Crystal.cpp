@@ -17,7 +17,6 @@
 #include "entities/Crystal.h"
 #include "entities/Hero.h"
 #include "Game.h"
-#include "DialogBox.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
@@ -123,7 +122,7 @@ void Crystal::notify_action_command_pressed() {
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog
-    get_dialog_box().start_dialog("_crystal");
+    get_game().start_dialog("_crystal", LUA_REFNIL);
   }
 }
 

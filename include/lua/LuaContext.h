@@ -78,6 +78,7 @@ class LuaContext {
     static const std::string entity_block_module_name;           /**< sol.entity.block */
     static const std::string entity_switch_module_name;          /**< sol.entity.switch */
     static const std::string entity_door_module_name;            /**< sol.entity.door */
+    static const std::string entity_shop_item_module_name;       /**< sol.entity.shop_item */
     static const std::string entity_pickable_module_name;        /**< sol.entity.pickable */
     static const std::string entity_enemy_module_name;           /**< sol.entity.enemy */
 
@@ -95,7 +96,8 @@ class LuaContext {
     bool notify_input(InputEvent& event);
     void notify_map_suspended(Map& map, bool suspended);
     void notify_camera_reached_target(Map& map);
-    void notify_dialog_finished(int callback_ref, bool skipped, int answer);
+    void notify_shop_item_interaction(ShopItem& shop_item);
+    void notify_dialog_finished(int callback_ref, bool skipped, int answer);  // TODO remove
     void run_item(EquipmentItem& item);
     void run_map(Map& map, Destination* destination);
     void run_enemy(Enemy& enemy);
@@ -527,6 +529,9 @@ class LuaContext {
       game_api_is_suspended,
       game_api_is_paused,
       game_api_set_paused,
+      game_api_is_dialog_enabled,
+      game_api_start_dialog,
+      game_api_stop_dialog,
       game_api_get_map,
       game_api_get_value,
       game_api_set_value,
@@ -610,12 +615,6 @@ class LuaContext {
       map_api_get_location,
       map_api_get_tileset,
       map_api_set_tileset,
-      map_api_is_dialog_enabled,  // TODO script the dialog box, remove set_dialog_style, set_dialog_position, draw_dialog_box
-      map_api_start_dialog,
-      map_api_set_dialog_variable,
-      map_api_set_dialog_style,
-      map_api_set_dialog_position,
-      map_api_draw_dialog_box,
       map_api_set_pause_enabled,  // TODO move to game api?
       map_api_get_light,  // TODO remove (this should be scripted)
       map_api_set_light,  // TODO remove (this should be scripted)
@@ -838,6 +837,7 @@ class LuaContext {
     static void push_block(lua_State* l, Block& block);
     static void push_switch(lua_State* l, Switch& sw);
     static void push_door(lua_State* l, Door& door);
+    static void push_shop_item(lua_State* l, ShopItem& shop_item);
     static void push_pickable(lua_State* l, Pickable& pickable);
     static void push_enemy(lua_State* l, Enemy& enemy);
 
@@ -896,6 +896,8 @@ class LuaContext {
     static Switch& check_switch(lua_State* l, int index);
     static bool is_door(lua_State* l, int index);
     static Door& check_door(lua_State* l, int index);
+    static bool is_shop_item(lua_State* l, int index);
+    static Door& check_shop_item(lua_State* l, int index);
     static bool is_pickable(lua_State* l, int index);
     static Pickable& check_pickable(lua_State* l, int index);
     static bool is_enemy(lua_State* l, int index);
@@ -981,7 +983,10 @@ class LuaContext {
       l_loader,
       l_get_map_entity_or_global,
       l_camera_do_callback,
-      l_camera_restore;
+      l_camera_restore,
+      l_shop_item_description_dialog_finished,
+      l_shop_item_question_dialog_finished;
+
 
     // Script data.
     lua_State* l;                   /**< The Lua state encapsulated. */

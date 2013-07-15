@@ -17,7 +17,6 @@
 #include "Equipment.h"
 #include "Game.h"
 #include "Savegame.h"
-#include "DialogBox.h"
 #include "EquipmentItem.h"
 #include "Map.h"
 #include "QuestResourceList.h"

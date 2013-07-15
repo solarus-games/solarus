@@ -328,14 +328,6 @@ GameCommands& MapEntity::get_commands() const {
 }
 
 /**
- * \brief Returns the dialog box manager.
- * \return the dialog box
- */
-DialogBox& MapEntity::get_dialog_box() const {
-  return get_game().get_dialog_box();
-}
-
-/**
  * \brief Returns the savegame.
  * \return the savegame
  */

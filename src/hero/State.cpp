@@ -124,14 +124,6 @@ GameCommands& Hero::State::get_commands() {
 }
 
 /**
- * \brief Returns the dialog box manager.
- * \return the dialog box
- */
-DialogBox& Hero::State::get_dialog_box() {
-  return get_game().get_dialog_box();
-}
-
-/**
  * \brief Starts this state.
  *
  * This function is called automatically when this state becomes the active state of the hero.

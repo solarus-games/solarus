@@ -16,11 +16,9 @@
  */
 #include "Treasure.h"
 #include "Game.h"
-#include "DialogBox.h"
 #include "Savegame.h"
 #include "Equipment.h"
 #include "EquipmentItem.h"
-#include "DialogBox.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "lua/LuaContext.h"

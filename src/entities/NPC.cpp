@@ -24,7 +24,6 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 #include "Game.h"
-#include "DialogBox.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "Equipment.h"
@@ -253,7 +252,7 @@ void NPC::notify_action_command_pressed() {
     if (effect != KeysEffect::ACTION_KEY_LIFT) {
       // start the normal behavior
       if (behavior == BEHAVIOR_DIALOG) {
-        get_dialog_box().start_dialog(dialog_to_show);
+        get_game().start_dialog(dialog_to_show, LUA_REFNIL);
       }
       else {
         call_script_hero_interaction();

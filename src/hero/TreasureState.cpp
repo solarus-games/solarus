@@ -21,7 +21,6 @@
 #include "lua/LuaContext.h"
 #include "EquipmentItem.h"
 #include "Game.h"
-#include "DialogBox.h"
 #include "Map.h"
 #include <sstream>
 

@@ -47,6 +47,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   savegame(savegame),
   pause_key_available(true),
   paused(false),
+  dialog_enabled(false),
   gameover_sequence(NULL),
   started(false),
   restarting(false),
@@ -56,8 +57,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   previous_map_surface(NULL),
   transition_style(Transition::IMMEDIATE),
   transition(NULL),
-  crystal_state(false),
-  dialog_box(*this) {
+  crystal_state(false) {
 
   // notify objects
   savegame->increment_refcount();
@@ -251,13 +251,8 @@ bool Game::notify_input(InputEvent& event) {
  */
 void Game::notify_command_pressed(GameCommands::Command command) {
 
-  // Is a dialog being shown?
-  if (is_dialog_enabled()) {
-    dialog_box.notify_command_pressed(command);
-  }
-
   // Is the game over sequence shown?
-  else if (is_showing_gameover()) {
+  if (is_showing_gameover()) {
     gameover_sequence->notify_command_pressed(command);
   }
 
@@ -328,7 +323,6 @@ void Game::update() {
   // update the equipment and HUD
   get_equipment().update();
   update_keys_effect();
-  dialog_box.update();
 
   // update the game over sequence (if any)
   if (is_showing_gameover()) {
@@ -647,15 +641,7 @@ bool Game::is_suspended() {
  * \return true if a dialog box is being shown
  */
 bool Game::is_dialog_enabled() {
-  return dialog_box.is_enabled();
-}
-
-/**
- * \brief Returns the dialog box manager.
- * \return the dialog box manager
- */
-DialogBox& Game::get_dialog_box() {
-  return dialog_box;
+  return dialog_enabled;
 }
 
 /**

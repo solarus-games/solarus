@@ -18,7 +18,6 @@
 #include "entities/Hero.h"
 #include "KeysEffect.h"
 #include "Game.h"
-#include "DialogBox.h"
 #include "Savegame.h"
 #include "Sprite.h"
 #include "Savegame.h"
@@ -385,7 +384,7 @@ void Chest::update() {
           // the script does not define any behavior:
           // by default, we tell the player the chest is empty
           Sound::play("wrong");
-          get_dialog_box().start_dialog("_empty_chest");
+          get_game().start_dialog("_empty_chest", LUA_REFNIL);
           get_hero().start_free();
         }
       }
@@ -418,7 +417,7 @@ void Chest::notify_action_command_pressed() {
     }
     else if (!get_cannot_open_dialog_id().empty()) {
       Sound::play("wrong");
-      get_dialog_box().start_dialog(get_cannot_open_dialog_id());
+      get_game().start_dialog(get_cannot_open_dialog_id(), LUA_REFNIL);
     }
   }
 }

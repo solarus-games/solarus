@@ -18,7 +18,6 @@
 #include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"
-#include "DialogBox.h"
 #include "DialogResource.h"
 #include "Treasure.h"
 #include "EquipmentItem.h"
@@ -71,12 +70,6 @@ void LuaContext::register_map_module() {
       { "get_floor", map_api_get_floor },
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
-      { "is_dialog_enabled", map_api_is_dialog_enabled },
-      { "start_dialog", map_api_start_dialog },
-      { "set_dialog_variable", map_api_set_dialog_variable },
-      { "set_dialog_style", map_api_set_dialog_style },
-      { "set_dialog_position", map_api_set_dialog_position },
-      { "draw_dialog_box", map_api_draw_dialog_box },
       { "set_pause_enabled", map_api_set_pause_enabled },
       { "get_light", map_api_get_light },
       { "set_light", map_api_set_light },
@@ -434,115 +427,6 @@ int LuaContext::map_api_set_tileset(lua_State* l) {
   const std::string& tileset_id = luaL_checkstring(l, 2);
 
   map.set_tileset(tileset_id);
-
-  return 0;
-}
-
-/**
- * \brief Implementation of map:is_dialog_enabled().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_is_dialog_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  lua_pushboolean(l, map.get_game().is_dialog_enabled());
-  return 1;
-}
-
-/**
- * \brief Implementation of map:start_dialog().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_start_dialog(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& dialog_id = luaL_checkstring(l, 2);
-  int callback_ref = LUA_REFNIL;
-  if (lua_gettop(l) >= 3) {
-    luaL_checktype(l, 3, LUA_TFUNCTION);
-    lua_settop(l, 3);
-    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  }
-
-  if (!DialogResource::exists(dialog_id)) {
-    luaL_argerror(l, 2, (StringConcat()
-          << "No such dialog: '" << dialog_id << "'").c_str());
-  }
-
-  DialogBox& dialog_box = map.get_game().get_dialog_box();
-  if (dialog_box.is_enabled()) {
-    luaL_argerror(l, 2, (StringConcat()
-          << "Cannot start dialog '" << dialog_id << "': another dialog '"
-          << dialog_box.get_dialog_id() << "' is already active").c_str());
-
-  }
-
-  dialog_box.start_dialog(dialog_id, callback_ref);
-
-  return 0;
-}
-
-/**
- * \brief Implementation of map:set_dialog_variable().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_set_dialog_variable(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& dialog_id = luaL_checkstring(l, 2);
-  const std::string& value = luaL_checkstring(l, 3);
-
-  map.get_game().get_dialog_box().set_variable(dialog_id, value);
-
-  return 0;
-}
-
-/**
- * \brief Implementation of map:set_dialog_style().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_set_dialog_style(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  int style = luaL_checkint(l, 2);
-
-  map.get_game().get_dialog_box().set_style(DialogBox::Style(style));
-
-  return 0;
-}
-
-/**
- * \brief Implementation of map:set_dialog_position().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_set_dialog_position(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  int position = luaL_checkint(l, 2);
-
-  map.get_game().get_dialog_box().set_vertical_position(DialogBox::VerticalPosition(position));
-
-  return 0;
-}
-
-/**
- * \brief Implementation of map:draw_dialog_box().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_draw_dialog_box(lua_State* l) {
-
-  // TODO remove the built-in dialog box, draw the dialog box from the script
-  Map& map = check_map(l, 1);
-  Surface& dst_surface = check_surface(l, 2);
-
-  map.get_game().get_dialog_box().draw(dst_surface);
 
   return 0;
 }

@@ -119,7 +119,6 @@ class MapEntity: public ExportableToLua {
     Equipment& get_equipment() const;
     KeysEffect& get_keys_effect() const;
     GameCommands& get_commands() const;
-    DialogBox& get_dialog_box() const;
     Savegame& get_savegame() const;
     Hero& get_hero() const;
 

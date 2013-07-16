@@ -20,6 +20,8 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "EquipmentItem.h"
+#include "DialogResource.h"
+#include "KeysEffect.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -321,7 +323,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& dialog_id = luaL_checkstring(l, 2);
-  // TODO optional parameter for substituted value
+  // TODO dialog_box: optional parameter for substituted value
   int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 3) {
     luaL_checktype(l, 3, LUA_TFUNCTION);
@@ -358,7 +360,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
 int LuaContext::game_api_stop_dialog(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  // TODO optional parameter for answer
+  // TODO dialog_box: optional parameter for answer
 
   Game* game = savegame.get_game();
   if (game == NULL) {

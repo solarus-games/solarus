@@ -125,6 +125,14 @@ void Treasure::ensure_obtainable() {
 }
 
 /**
+ * \brief Returns the game where this treasure was created.
+ * \return The game.
+ */
+Game& Treasure::get_game() const {
+  return *game;
+}
+
+/**
  * \brief Returns the equipment item corresponding to this treasure's content.
  * \return The equipment item.
  */

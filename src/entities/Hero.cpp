@@ -2037,6 +2037,15 @@ bool Hero::is_moving_grabbed_entity() {
 }
 
 /**
+ * \brief Returns whether the hero is brandishing a treasure.
+ * \return \c true if the hero is brandishing a treasure.
+ */
+bool Hero::is_brandishing_treasure() {
+
+  return state->is_brandishing_treasure();
+}
+
+/**
  * \brief Returns whether the hero is grabbing or pulling an entity.
  * \return true if the hero is grabbing or pulling an entity
  */

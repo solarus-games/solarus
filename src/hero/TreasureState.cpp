@@ -22,7 +22,6 @@
 #include "EquipmentItem.h"
 #include "Game.h"
 #include "Map.h"
-#include <sstream>
 
 /**
  * \brief Constructor.
@@ -50,34 +49,34 @@ Hero::TreasureState::~TreasureState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::TreasureState::start(State *previous_state) {
+void Hero::TreasureState::start(State* previous_state) {
 
   State::start(previous_state);
 
-  // show the animation
+  // Show the animation.
   get_sprites().save_animation_direction();
   get_sprites().set_animation_brandish();
 
-  // play the sound
+  // Play the sound.
   const std::string& sound_id = treasure.get_item().get_sound_when_brandished();
   if (!sound_id.empty()) {
     Sound::play(sound_id);
   }
 
-  // give the treasure
+  // Give the treasure.
   treasure.give_to_player();
 
-  // show a message
-  std::ostringstream oss;
-  oss << "_treasure." << treasure.get_item_name() << "." << treasure.get_variant();
-  get_dialog_box().start_dialog(oss.str());
+  // Show a dialog (Lua does the job after this).
+  int callback_ref = this->callback_ref;
+  this->callback_ref = LUA_REFNIL;
+  get_lua_context().notify_hero_brandish_treasure(treasure, callback_ref);
 }
 
 /**
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::TreasureState::stop(State *next_state) {
+void Hero::TreasureState::stop(State* next_state) {
 
   State::stop(next_state);
 
@@ -85,37 +84,6 @@ void Hero::TreasureState::stop(State *next_state) {
   get_sprites().restore_animation_direction();
   get_lua_context().cancel_callback(callback_ref);
   callback_ref = LUA_REFNIL;
-}
-
-/**
- * \brief Updates this state.
- */
-void Hero::TreasureState::update() {
-
-  State::update();
-
-  if (!get_game().is_dialog_enabled()) {
-
-    // the treasure's dialog is over: if the treasure was a tunic,
-    // a sword or a shield, we have to reload the hero's sprites now
-    // FIXME do this in scripts (item names are no longer hardcoded) and also do it when giving the ability without treasure
-    const std::string& item_name = treasure.get_item_name();
-    if (item_name == "tunic" || item_name == "sword" || item_name == "shield") {
-      hero.rebuild_equipment();
-    }
-
-    // Notify the Lua item and the Lua map.
-    LuaContext& lua_context = get_lua_context();
-    int callback_ref = this->callback_ref;
-    this->callback_ref = LUA_REFNIL;
-    lua_context.do_callback(callback_ref);
-    lua_context.item_on_obtained(get_equipment().get_item(item_name), treasure);
-    lua_context.map_on_obtained_treasure(get_map(), treasure);
-
-    if (is_current_state()) { // because the script may have changed the state
-      hero.set_state(new FreeState(hero));
-    }
-  }
 }
 
 /**
@@ -141,5 +109,13 @@ void Hero::TreasureState::draw_on_map() {
  */
 CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
   return CarriedItem::BEHAVIOR_DESTROY;
+}
+
+/**
+ * \brief Returns whether the hero is brandishing a treasure in this state.
+ * \return \c true if the hero is brandishing a treasure.
+ */
+bool Hero::TreasureState::is_brandishing_treasure() {
+  return true;
 }
 

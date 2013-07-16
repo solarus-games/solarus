@@ -97,6 +97,8 @@ class LuaContext {
     void notify_map_suspended(Map& map, bool suspended);
     void notify_camera_reached_target(Map& map);
     void notify_shop_item_interaction(ShopItem& shop_item);
+    void notify_hero_brandish_treasure(
+        const Treasure& treasure, int callback_ref);
     void notify_dialog_finished(int callback_ref, bool skipped, int answer);  // TODO remove
     void run_item(EquipmentItem& item);
     void run_map(Map& map, Destination* destination);
@@ -897,7 +899,7 @@ class LuaContext {
     static bool is_door(lua_State* l, int index);
     static Door& check_door(lua_State* l, int index);
     static bool is_shop_item(lua_State* l, int index);
-    static Door& check_shop_item(lua_State* l, int index);
+    static ShopItem& check_shop_item(lua_State* l, int index);
     static bool is_pickable(lua_State* l, int index);
     static Pickable& check_pickable(lua_State* l, int index);
     static bool is_enemy(lua_State* l, int index);
@@ -984,6 +986,7 @@ class LuaContext {
       l_get_map_entity_or_global,
       l_camera_do_callback,
       l_camera_restore,
+      l_treasure_dialog_finished,
       l_shop_item_description_dialog_finished,
       l_shop_item_question_dialog_finished;
 

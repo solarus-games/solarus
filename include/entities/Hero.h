@@ -288,6 +288,7 @@ class Hero: public MapEntity {
     bool is_free();
     bool is_using_item();
     EquipmentItemUsage& get_item_being_used();
+    bool is_brandishing_treasure();
     bool is_grabbing_or_pulling();
     bool is_moving_grabbed_entity();
     void notify_grabbed_entity_collision();

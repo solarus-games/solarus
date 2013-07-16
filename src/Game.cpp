@@ -645,6 +645,20 @@ bool Game::is_dialog_enabled() {
 }
 
 /**
+ * TODO
+ */
+void Game::start_dialog(const std::string& dialog_id, int callback_ref) {
+  // TODO dialog_box
+}
+
+/**
+ * TODO
+ */
+void Game::stop_dialog() {
+  // TODO dialog_box
+}
+
+/**
  * \brief Returns whether the player is currently allowed to pause the game.
  *
  * He can pause the game if the pause command is enabled

@@ -18,7 +18,6 @@
 #include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"
-#include "DialogResource.h"
 #include "Treasure.h"
 #include "EquipmentItem.h"
 #include "entities/MapEntities.h"

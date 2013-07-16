@@ -32,6 +32,7 @@
 #include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"
+#include "Drawable.h"
 
 const std::string LuaContext::movement_module_name = "sol.movement";
 const std::string LuaContext::movement_straight_module_name = "sol.movement.straight";

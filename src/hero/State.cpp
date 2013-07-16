@@ -844,6 +844,17 @@ EquipmentItemUsage& Hero::State::get_item_being_used() {
 }
 
 /**
+ * \brief Returns whether the hero is brandishing a treasure in this state.
+ *
+ * Returns false by default.
+ *
+ * \return \c true if the hero is brandishing a treasure.
+ */
+bool Hero::State::is_brandishing_treasure() {
+  return false;
+}
+
+/**
  * \brief Returns whether the hero is grabbing or pulling an entity in this state.
  *
  * Returns false by default.

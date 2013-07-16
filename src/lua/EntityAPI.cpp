@@ -31,9 +31,11 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
+#include "EquipmentItem.h"
 
 const std::string LuaContext::entity_module_name = "sol.entity";
 const std::string LuaContext::entity_hero_module_name = "sol.entity.hero";
@@ -988,7 +990,8 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
   }
 
   hero.start_treasure(
-      Treasure(hero.get_game(), item_name, variant, savegame_variable), callback_ref);
+      Treasure(hero.get_game(), item_name, variant, savegame_variable),
+      callback_ref);
 
   return 0;
 }
@@ -1106,6 +1109,92 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
 
   hero.hurt(Rectangle(source_x, source_y),
       life_points, magic_points);
+
+  return 0;
+}
+
+/**
+ * \brief Notifies Lua that the hero is brandishing a treasure.
+ *
+ * Lua then manages the treasure's dialog.
+ *
+ * \param treasure The treasure being brandished.
+ * \param callback_ref Lua ref to a function to call when the
+ * treasure's dialog finishes (possibly LUA_REFNIL).
+ */
+void LuaContext::notify_hero_brandish_treasure(
+    const Treasure& treasure, int callback_ref) {
+
+  std::ostringstream oss;
+  oss << "_treasure." << treasure.get_item_name() << "." << treasure.get_variant();
+  const std::string& dialog_id = oss.str();
+
+  // Call game:start_dialog(dialog_id, l_treasure_dialog_finished).
+  push_game(l, treasure.get_game().get_savegame());
+  push_string(l, dialog_id);
+  push_item(l, treasure.get_item());
+  lua_pushcclosure(l, l_treasure_dialog_finished, 1);
+  if (callback_ref == LUA_REFNIL) {
+    lua_pushnil(l);
+  }
+  else {
+    push_callback(callback_ref);
+    cancel_callback(callback_ref);  // Now we have the callback as a regular function, so remove the ref.
+  }
+  game_api_start_dialog(l);
+}
+
+/**
+ * \brief Callback function executed after the dialog of obtaining a treasure.
+ *
+ * Upvalues: item, variant, savegame variable, callback/nil.
+ *
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::l_treasure_dialog_finished(lua_State* l) {
+
+  LuaContext& lua_context = get_lua_context(l);
+
+  // The treasure's dialog is over.
+  // The item obtained is the first upvalue, the callback is the second one.
+  EquipmentItem& item = lua_context.check_item(l, lua_upvalueindex(1));
+  int treasure_variant = luaL_checkinteger(l, lua_upvalueindex(2));
+  const std::string& treasure_savegame_variable =
+      luaL_checkstring(l, lua_upvalueindex(3));
+  lua_pushvalue(l, lua_upvalueindex(4));
+
+  // Check upvalues. Any error here would be the fault of the C++ side
+  // because the user cannot call this function.
+  Debug::check_assertion(item.get_game() != NULL,
+      "Equipment item without game");
+
+  Debug::check_assertion(lua_isnil(l, -1) || lua_isfunction(l, -1),
+        "Expected function or nil for treasure callback");
+
+  Game& game = *item.get_game();
+  Hero& hero = game.get_hero();
+  Treasure treasure(game, item.get_name(), treasure_variant, treasure_savegame_variable);
+
+  // If the treasure was a tunic,
+  // a sword or a shield, we have to reload the hero's sprites now.
+  // FIXME do this in scripts (item names are no longer hardcoded)
+  // and also do it when giving the ability without treasure.
+  const std::string& item_name = item.get_name();
+  if (item_name == "tunic" || item_name == "sword" || item_name == "shield") {
+    hero.rebuild_equipment();
+  }
+
+  // Notify the Lua item and the Lua map.
+  lua_context.call_function(0, 0, "treasure callback");
+  lua_context.item_on_obtained(item, treasure);
+  lua_context.map_on_obtained_treasure(game.get_current_map(), treasure);
+
+  if (hero.is_brandishing_treasure()) {
+    // The script may have changed the hero's state.
+    // If not, stop the treasure state.
+    hero.start_free();
+  }
 
   return 0;
 }
@@ -1423,7 +1512,7 @@ bool LuaContext::is_shop_item(lua_State* l, int index) {
  * \param index An index in the stack.
  * \return The shop item.
  */
-Door& LuaContext::check_shop_item(lua_State* l, int index) {
+ShopItem& LuaContext::check_shop_item(lua_State* l, int index) {
   return static_cast<ShopItem&>(
       check_userdata(l, index, entity_shop_item_module_name));
 }
@@ -1511,7 +1600,7 @@ int LuaContext::l_shop_item_question_dialog_finished(lua_State* l) {
 
     // The player wants to buy the item.
     Equipment& equipment = game.get_equipment();
-    Treasure& treasure = shop_item.get_treasure();
+    const Treasure& treasure = shop_item.get_treasure();
     EquipmentItem& item = treasure.get_item();
 
     if (equipment.get_money() < shop_item.get_price()) {

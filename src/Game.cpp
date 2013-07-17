@@ -645,17 +645,29 @@ bool Game::is_dialog_enabled() {
 }
 
 /**
- * TODO
+ * \brief Starts to show a dialog.
+ *
+ * No other dialog should be already running.
+ *
+ * \param dialog_id Id of the dialog to show.
+ * \param callback_ref Lua ref to a function to call when the dialog finishes,
+ * or LUA_REFNIL.
  */
 void Game::start_dialog(const std::string& dialog_id, int callback_ref) {
-  // TODO dialog_box
+
+  Debug::check_assertion(!dialog_enabled, "Another dialog is already active");
+
+  dialog_enabled = true;
+  // TODO dialog_box: make a class DialogBox (again) to make the job,
+  // remove dialog_enabled
 }
 
 /**
- * TODO
+ * \brief Stops the dialog currently running if any.
  */
 void Game::stop_dialog() {
-  // TODO dialog_box
+
+  dialog_enabled = true;
 }
 
 /**

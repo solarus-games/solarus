@@ -47,7 +47,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   savegame(savegame),
   pause_key_available(true),
   paused(false),
-  dialog_enabled(false),
+  dialog_box(*this),
   gameover_sequence(NULL),
   started(false),
   restarting(false),
@@ -641,7 +641,7 @@ bool Game::is_suspended() {
  * \return true if a dialog box is being shown
  */
 bool Game::is_dialog_enabled() {
-  return dialog_enabled;
+  return dialog_box.is_enabled();
 }
 
 /**
@@ -655,11 +655,7 @@ bool Game::is_dialog_enabled() {
  */
 void Game::start_dialog(const std::string& dialog_id, int callback_ref) {
 
-  Debug::check_assertion(!dialog_enabled, "Another dialog is already active");
-
-  dialog_enabled = true;
   // TODO dialog_box: make a class DialogBox (again) to make the job,
-  // remove dialog_enabled
 }
 
 /**
@@ -667,7 +663,7 @@ void Game::start_dialog(const std::string& dialog_id, int callback_ref) {
  */
 void Game::stop_dialog() {
 
-  dialog_enabled = true;
+  // TODO dialog_box
 }
 
 /**

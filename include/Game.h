@@ -21,6 +21,7 @@
 #include "Transition.h"
 #include "GameCommands.h"
 #include "Savegame.h"
+#include "DialogBox.h"
 
 /**
  * \brief Represents the game currently running.
@@ -39,7 +40,7 @@ class Game {
     // current game state (elements currently shown)
     bool pause_key_available;  /**< indicates that the player is allowed to use the pause key */
     bool paused;               /**< indicates that the game is paused */
-    bool dialog_enabled;       /**< indicates that a dialog is shown */
+    DialogBox dialog_box;      /**< The dialog box manager. */
     GameoverSequence* gameover_sequence; /**< the game over sequence (if currently shown) */
     bool started;              /**< true if this game is running, false if it is not yet started or being closed. */
     bool restarting;           /**< true if the game will be restarted */

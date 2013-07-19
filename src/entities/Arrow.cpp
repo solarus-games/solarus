@@ -36,7 +36,7 @@
  * \brief Creates an arrow.
  * \param hero the hero
  */
-Arrow::Arrow(Hero &hero):
+Arrow::Arrow(Hero& hero):
   hero(hero) {
 
   // initialize the entity
@@ -366,7 +366,7 @@ bool Arrow::is_flying() {
  * \brief Stops the arrow movement and attaches the arrow to an entity that was just reached.
  * \param entity_reached the entity that was reached
  */
-void Arrow::attach_to(MapEntity &entity_reached) {
+void Arrow::attach_to(MapEntity& entity_reached) {
 
   Debug::check_assertion(this->entity_reached == NULL, "This arrow is already attached to an entity");
 
@@ -395,7 +395,7 @@ void Arrow::notify_collision_with_switch(Switch& sw, CollisionMode collision_mod
  * \param crystal the crystal
  * \param collision_mode the collision mode that detected the event
  */
-void Arrow::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
+void Arrow::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_RECTANGLE && is_flying()) {
 
@@ -409,7 +409,8 @@ void Arrow::notify_collision_with_crystal(Crystal &crystal, CollisionMode collis
  * \param destructible the destructible item
  * \param collision_mode the collision mode that detected the event
  */
-void Arrow::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
+void Arrow::notify_collision_with_destructible(
+    Destructible& destructible, CollisionMode collision_mode) {
 
   if (destructible.is_obstacle_for(*this) && is_flying()) {
 
@@ -429,7 +430,8 @@ void Arrow::notify_collision_with_destructible(Destructible &destructible, Colli
  * \param enemy_sprite the enemy's sprite that overlaps the hero
  * \param this_sprite the arrow sprite
  */
-void Arrow::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
+void Arrow::notify_collision_with_enemy(
+    Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
 
   if (!overlaps(hero) && is_flying()) {
     enemy.try_hurt(ATTACK_ARROW, *this, &enemy_sprite);

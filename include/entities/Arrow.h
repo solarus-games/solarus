@@ -27,14 +27,14 @@ class Arrow: public MapEntity {
 
   private:
 
-    Hero &hero;                /**< the hero */
+    Hero& hero;                /**< the hero */
     uint32_t disappear_date;   /**< date when the arrow disappears */
     bool stop_now;             /**< true to make the arrow stop now */
-    MapEntity *entity_reached; /**< a dynamic entity reached by the arrow (i.e. an enemy or a crystal, not a usual wall) */
+    MapEntity* entity_reached; /**< a dynamic entity reached by the arrow (i.e. an enemy or a crystal, not a usual wall) */
 
   public:
 
-    Arrow(Hero &hero);
+    Arrow(Hero& hero);
     ~Arrow();
 
     EntityType get_type();
@@ -65,11 +65,12 @@ class Arrow: public MapEntity {
     const Rectangle get_facing_point();
 
     // collisions
-    void notify_collision_with_switch(Switch &sw, CollisionMode collision_mode);
-    void notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode);
-    void notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode);
-    void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
+    void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
+    void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
+    void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
+    void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+        EnemyReaction::Reaction& result, bool killed);
     bool has_reached_map_border();
 };
 

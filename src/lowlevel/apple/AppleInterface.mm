@@ -25,15 +25,15 @@
 
 
 /**
- * @brief Return "~/Library/Application Support/" or equivalent from the official way, which is available in OSX 10.6+ and iOS 4.0+.
+ * @brief Return "~/Library/Application Support" or equivalent from the official way, which is available in OSX 10.6+ and iOS 4.0+.
  *
- * Return an OSX 10.0+ and iOS 1.0+ (not compatible with Iphone Simulator) hardcoded equivalent workaround if URLsForDirectory:inDomains: is not found.
+ * Return an OSX 10.0+ and iOS 1.0+ (not compatible with Iphone Simulator) hardcoded equivalent workaround if build against lower SDK.
  *
  * @return The Application Support folder from the User Domain
  */
 const char* getUserApplicationSupportDirectory()
 {
-#if (defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_MIN_ALLOWED >= MAC_OS_X_VERSION_10_6) || (defined(__IPHONE_4_0) && __IPHONE_OS_VERSION_MIN_ALLOWED >= __IPHONE_4_0)
+#if defined(MAC_OS_X_VERSION_10_6) || defined(__IPHONE_4_0)
     return [[[[[NSFileManager defaultManager] 
                URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] 
               objectAtIndex:0] 
@@ -42,7 +42,7 @@ const char* getUserApplicationSupportDirectory()
 #else
     // WORKAROUND : Avoid to report errors with undefined enum, and warning with undefined functions.
     // ( enum NSApplicationSupportDirectory and NSUserDomainMask are not defined on older OSX frameworks )
-    return [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Application Support/"] 
+    return [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Application Support"] 
             UTF8String];
 #endif
 }

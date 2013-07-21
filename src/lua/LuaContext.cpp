@@ -310,31 +310,54 @@ void LuaContext::notify_camera_reached_target(Map& map) {
 }
 
 /**
- * \brief Notifies Lua that a dialog is finished.
- * \param callback_ref Lua ref of the function to call, if any.
- * \param skipped true if the dialog was skipped.
- * \param answer Answer of the dialog 0 or 1, or -1 if there was no question.
+ * \brief Notifies Lua that a dialog starts.
+ * \param game The game.
+ * \param dialog_id Id of the dialog that was active.
+ * \param info_ref Lua ref to an optional info parameter to pass to
+ * Lua, or LUA_REFNIL.
+ * \return true if Lua handles the dialog, false otherwise.
  */
-void LuaContext::notify_dialog_finished(int callback_ref, bool skipped, int answer) {
+bool LuaContext::notify_dialog_started(
+    Game& game,
+    const std::string& dialog_id,
+    int info_ref) {
+
+  return game_on_dialog_started(game, dialog_id, info_ref);
+}
+
+/**
+ * \brief Notifies Lua that a dialog is finished.
+ * \param game The game.
+ * \param dialog_id Id of the dialog that was active.
+ * \param callback_ref Lua ref of the function to call, or LUA_REFNIL.
+ * \param status_ref Lua ref to a status value to pass to the callback.
+ * "skipped" means that the dialog was canceled by the user.
+ */
+void LuaContext::notify_dialog_finished(
+    Game& game,
+    const std::string& dialog_id,
+    int callback_ref,
+    int status_ref) {
 
   if (callback_ref != LUA_REFNIL) {
     push_callback(callback_ref);
-    if (skipped) {
-      lua_pushstring(l, "skipped");
+    destroy_ref(callback_ref);
+    if (status_ref != LUA_REFNIL) {
+      push_ref(l, status_ref);
+      destroy_ref(status_ref);
     }
     else {
-      // The meaning of the answer parameter is different in the Lua API.
-      if (answer == 1) {
-        answer = 2;  // Second answer.
-      }
-      else {
-        answer = 1;  // First answer or no question.
-      }
-      lua_pushinteger(l, answer);
+      // No status.
+      lua_pushnil(l);
     }
     call_function(1, 0, "dialog callback");
-    destroy_ref(callback_ref);
   }
+  else {
+    // No callback: the status if ignored if any.
+    destroy_ref(status_ref);
+  }
+
+  game_on_dialog_finished(game, dialog_id);
 }
 
 /**
@@ -627,7 +650,8 @@ int LuaContext::opt_function_field(
 }
 
 /**
- * \brief Creates a reference to the Lua value on top of the stack.
+ * \brief Creates a reference to the Lua value on top of the stack and pops this
+ * value.
  * \return The reference created.
  */
 int LuaContext::create_ref() {
@@ -958,18 +982,19 @@ bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name)
 
 /**
  * \brief For an index in the Lua stack, returns an equivalent positive index.
+ *
+ * Pseudo-indexes are unchanged.
+ *
  * \param l A Lua state.
- * \param index An index in the stack (positive or negative, but not a pseudo-index).
+ * \param index An index in the stack.
  * \return The corresponding positive index.
  */
 int LuaContext::get_positive_index(lua_State* l, int index) {
 
   int positive_index = index;
-  if (index < 0) {
+  if (index < 0 && index >= -lua_gettop(l)) {
     positive_index = lua_gettop(l) + index + 1;
   }
-
-  Debug::check_assertion(positive_index > 0, StringConcat() <<  "Invalid index " << index);
 
   return positive_index;
 }
@@ -1256,10 +1281,10 @@ bool LuaContext::is_userdata(lua_State* l, int index,
 /**
  * \brief Checks that the value at the given index is userdata of the
  * specified type and returns it.
- * \param l a Lua state
- * \param index an index in the Lua stack
- * \param module_name name identifying the userdata type
- * \return the userdata at this index
+ * \param l A Lua state.
+ * \param index An index in the Lua stack.
+ * \param module_name Name identifying the userdata type.
+ * \return The userdata at this index.
  */
 ExportableToLua& LuaContext::check_userdata(lua_State* l, int index,
     const std::string& module_name) {
@@ -1563,6 +1588,42 @@ void LuaContext::on_unpaused() {
 
   if (find_method("on_unpaused")) {
     call_function(1, 0, "on_unpaused");
+  }
+}
+
+/**
+ * \brief Calls the on_dialog_started() method of the object on top of the stack.
+ * \param dialog_id Id of the dialog just started.
+ * \param info_ref Lua ref to the info parameter to pass to the method,
+ * or LUA_REFNIL.
+ * \return true if the on_dialog_started() method is defined.
+ */
+bool LuaContext::on_dialog_started(const std::string& dialog_id, int info_ref) {
+
+  if (find_method("on_dialog_started")) {
+    push_string(l, dialog_id);  // TODO push the dialog table instead.
+    if (info_ref == LUA_REFNIL) {
+      lua_pushnil(l);
+    }
+    else {
+      push_ref(l, info_ref);
+      destroy_ref(info_ref);
+    }
+    call_function(3, 0, "on_dialog_started");
+    return true;
+  }
+  return false;
+}
+
+/**
+ * \brief Calls the on_dialog_finished() method of the object on top of the stack.
+ * \param dialog_id Id of the dialog just finished.
+ */
+void LuaContext::on_dialog_finished(const std::string& dialog_id) {
+
+  if (find_method("on_dialog_finished")) {
+    push_string(l, dialog_id);  // TODO push the dialog table instead.
+    call_function(2, 0, "on_dialog_finished");
   }
 }
 

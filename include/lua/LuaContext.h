@@ -99,7 +99,10 @@ class LuaContext {
     void notify_shop_item_interaction(ShopItem& shop_item);
     void notify_hero_brandish_treasure(
         const Treasure& treasure, int callback_ref);
-    void notify_dialog_finished(int callback_ref, bool skipped, int answer);  // TODO remove
+    bool notify_dialog_started(Game& game, const std::string& dialog_id,
+        int info_ref);
+    void notify_dialog_finished(Game& game, const std::string& dialog_id,
+        int callback_ref, int status_ref);
     void run_item(EquipmentItem& item);
     void run_map(Map& map, Destination* destination);
     void run_enemy(Enemy& enemy);
@@ -263,6 +266,9 @@ class LuaContext {
     void game_on_map_changed(Game& game, Map& map);
     void game_on_paused(Game& game);
     void game_on_unpaused(Game& game);
+    bool game_on_dialog_started(Game& game, const std::string& dialog_id,
+        int info_ref);
+    void game_on_dialog_finished(Game& game, const std::string& dialog_id);
     bool game_on_input(Game& game, InputEvent& event);
     bool game_on_command_pressed(Game& game, GameCommands::Command command);
     bool game_on_command_released(Game& game, GameCommands::Command command);
@@ -915,6 +921,8 @@ class LuaContext {
     void on_suspended(bool suspended);
     void on_paused();
     void on_unpaused();
+    bool on_dialog_started(const std::string& dialog_id, int info_ref);
+    void on_dialog_finished(const std::string& dialog_id);
     bool on_input(InputEvent& event);
     bool on_key_pressed(InputEvent& event);
     bool on_key_released(InputEvent& event);

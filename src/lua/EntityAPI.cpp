@@ -1125,15 +1125,15 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
 void LuaContext::notify_hero_brandish_treasure(
     const Treasure& treasure, int callback_ref) {
 
+  // This is getting tricky. We will define our own dialog callback
+  // that will do some work and call callback_ref.
   std::ostringstream oss;
   oss << "_treasure." << treasure.get_item_name() << "." << treasure.get_variant();
   const std::string& dialog_id = oss.str();
 
-  // Call game:start_dialog(dialog_id, l_treasure_dialog_finished).
-  push_game(l, treasure.get_game().get_savegame());
-  push_string(l, dialog_id);
   push_item(l, treasure.get_item());
-  lua_pushcclosure(l, l_treasure_dialog_finished, 1);
+  lua_pushinteger(l, treasure.get_variant());
+  push_string(l, treasure.get_savegame_variable());
   if (callback_ref == LUA_REFNIL) {
     lua_pushnil(l);
   }
@@ -1141,7 +1141,10 @@ void LuaContext::notify_hero_brandish_treasure(
     push_callback(callback_ref);
     cancel_callback(callback_ref);  // Now we have the callback as a regular function, so remove the ref.
   }
-  game_api_start_dialog(l);
+  lua_pushcclosure(l, l_treasure_dialog_finished, 4);
+  int dialog_callback_ref = create_ref();
+
+  treasure.get_game().start_dialog(dialog_id, LUA_REFNIL, dialog_callback_ref);
 }
 
 /**
@@ -1157,7 +1160,6 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
   LuaContext& lua_context = get_lua_context(l);
 
   // The treasure's dialog is over.
-  // The item obtained is the first upvalue, the callback is the second one.
   EquipmentItem& item = lua_context.check_item(l, lua_upvalueindex(1));
   int treasure_variant = luaL_checkinteger(l, lua_upvalueindex(2));
   const std::string& treasure_savegame_variable =
@@ -1186,7 +1188,10 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
   }
 
   // Notify the Lua item and the Lua map.
-  lua_context.call_function(0, 0, "treasure callback");
+  if (!lua_isnil(l, -1)) {
+    // There is a user callback for this treasure.
+    lua_context.call_function(0, 0, "treasure callback");
+  }
   lua_context.item_on_obtained(item, treasure);
   lua_context.map_on_obtained_treasure(game.get_current_map(), treasure);
 
@@ -1535,12 +1540,11 @@ void LuaContext::push_shop_item(lua_State* l, ShopItem& shop_item) {
  */
 void LuaContext::notify_shop_item_interaction(ShopItem& shop_item) {
 
-  // Call game:start_dialog(shop_item_dialog_id, description_callback)
-  push_game(l, shop_item.get_game().get_savegame());
-  push_string(l, shop_item.get_dialog_id());
   push_shop_item(l, shop_item);
   lua_pushcclosure(l, l_shop_item_description_dialog_finished, 1);
-  game_api_start_dialog(l);
+  int callback_ref = create_ref();
+
+  shop_item.get_game().start_dialog(shop_item.get_dialog_id(), LUA_REFNIL, callback_ref);
 }
 
 /**
@@ -1556,19 +1560,21 @@ int LuaContext::l_shop_item_description_dialog_finished(lua_State* l) {
   // The description message has just finished.
   // The shop item is the first upvalue.
   ShopItem& shop_item = lua_context.check_shop_item(l, lua_upvalueindex(1));
+  Game& game = shop_item.get_game();
 
   if (shop_item.is_being_removed()) {
     // The shop item was removed during the dialog.
     return 0;
   }
 
-  // Call game:start_dialog("_shop.question", price, question_callback)
-  push_game(l, shop_item.get_game().get_savegame());
-  push_string(l, "_shop.question");
   lua_pushinteger(l, shop_item.get_price());
+  int price_ref = lua_context.create_ref();
+
   push_shop_item(l, shop_item);
   lua_pushcclosure(l, l_shop_item_question_dialog_finished, 1);
-  game_api_start_dialog(l);
+  int callback_ref = lua_context.create_ref();
+
+  game.start_dialog("_shop.question", price_ref, callback_ref);
 
   return 0;
 }
@@ -1606,12 +1612,12 @@ int LuaContext::l_shop_item_question_dialog_finished(lua_State* l) {
     if (equipment.get_money() < shop_item.get_price()) {
       // not enough rupees
       Sound::play("wrong");
-      game.start_dialog("_shop.not_enough_money", LUA_REFNIL);
+      game.start_dialog("_shop.not_enough_money");
     }
     else if (item.has_amount() && item.get_amount() >= item.get_max_amount()) {
       // the player already has the maximum amount of this item
       Sound::play("wrong");
-      game.start_dialog("_shop.amount_full", LUA_REFNIL);
+      game.start_dialog("_shop.amount_full");
     }
     else {
 
@@ -2381,9 +2387,9 @@ void LuaContext::block_on_moved(Block& block) {
 bool LuaContext::chest_on_empty(Chest& chest) {
 
   push_chest(l, chest);
-  bool result = on_empty();
+  bool exists = on_empty();
   lua_pop(l, 1);
-  return result;
+  return exists;
 }
 
 /**

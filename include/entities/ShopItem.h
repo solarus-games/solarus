@@ -54,6 +54,8 @@ class ShopItem: public Detector {
 
     void draw_on_map();
 
+    virtual const std::string& get_lua_type_name() const;
+
   private:
 
     ShopItem(const std::string& name, Layer layer, int x, int y,

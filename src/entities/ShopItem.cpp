@@ -207,3 +207,11 @@ void ShopItem::draw_on_map() {
       y + 22 - camera_position.get_y());
 }
 
+/**
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
+ */
+const std::string& ShopItem::get_lua_type_name() const {
+  return LuaContext::entity_shop_item_module_name;
+}
+

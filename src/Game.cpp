@@ -650,20 +650,26 @@ bool Game::is_dialog_enabled() {
  * No other dialog should be already running.
  *
  * \param dialog_id Id of the dialog to show.
+ * \param info_ref Lua ref to an optional info parameter to pass to the
+ * dialog box, or LUA_REFNIL.
  * \param callback_ref Lua ref to a function to call when the dialog finishes,
  * or LUA_REFNIL.
  */
-void Game::start_dialog(const std::string& dialog_id, int callback_ref) {
+void Game::start_dialog(const std::string& dialog_id,
+    int info_ref, int callback_ref) {
 
-  // TODO dialog_box: make a class DialogBox (again) to make the job,
+  dialog_box.open(dialog_id, info_ref, callback_ref);
 }
 
 /**
  * \brief Stops the dialog currently running if any.
+ * \param status_ref Lua ref to a status value to return to the start_dialog
+ * callback, or LUA_REFNIL. "skipped" means that the dialog was canceled by
+ * the user.
  */
-void Game::stop_dialog() {
+void Game::stop_dialog(int status_ref) {
 
-  // TODO dialog_box
+  dialog_box.close(status_ref);
 }
 
 /**

@@ -442,10 +442,10 @@ effect changes a lot depending on the context.
 
 \remark All these built-in game commands are initially mapped to some default
 keyboard and joypad inputs. You can use 
-\ref lua_api_game_set_command_keyboard_binding "game:set_command_keyboard_binding()"
-\ref lua_api_game_set_command_joypad_binding "game:set_command_joypad_binding()".
+\ref lua_api_game_set_command_keyboard_binding "game:set_command_keyboard_binding()",
+\ref lua_api_game_set_command_joypad_binding "game:set_command_joypad_binding()"
 and
-\ref lua_api_game_capture_command_binding "game:capture_command_binding()").
+\ref lua_api_game_capture_command_binding "game:capture_command_binding()"
 to change or even disable these mappings.
 
 \remark It is also possible to override the behavior of game commands by

@@ -126,20 +126,35 @@ int DialogResource::l_dialog(lua_State* l) {
     }
     else {
       // Custom property.
-      const std::string value = luaL_checkstring(l, -1);
+      std::string value;
+      int type = lua_type(l, -1);
+      if (type == LUA_TSTRING || type == LUA_TNUMBER) {
+        value = lua_tostring(l, -1);
+      }
+      else if (type == LUA_TBOOLEAN) {
+        value = lua_toboolean(l, -1) ? "1" : "0";
+      }
+      else {
+        luaL_error(l, (std::string("Invalid value '") + key + "' for dialog '"
+            + dialog_id + "'").c_str());
+      }
       dialog.set_property(key, value);
     }
     lua_pop(l, 1);
   }
 
-  if (dialog_id.empty()) {
+  dialog.set_id(dialog_id);
+  if (dialog.get_id().empty()) {
     luaL_error(l, "Missing value dialog_id");
   }
 
   if (dialog.get_text().empty()) {
-    luaL_error(l, "Missing dialog text");
+    luaL_error(l, (std::string("Missing text for dialog '") + dialog_id + "'").c_str());
   }
 
+  if (exists(dialog_id)) {
+    luaL_error(l, (std::string("Duplicate dialog '") + dialog_id + "'").c_str());
+  }
   dialogs[dialog_id] = dialog;
 
   return 0;

@@ -312,30 +312,30 @@ void LuaContext::notify_camera_reached_target(Map& map) {
 /**
  * \brief Notifies Lua that a dialog starts.
  * \param game The game.
- * \param dialog_id Id of the dialog that was active.
+ * \param dialog The dialog that is becoming active.
  * \param info_ref Lua ref to an optional info parameter to pass to
  * Lua, or LUA_REFNIL.
  * \return true if Lua handles the dialog, false otherwise.
  */
 bool LuaContext::notify_dialog_started(
     Game& game,
-    const std::string& dialog_id,
+    const Dialog& dialog,
     int info_ref) {
 
-  return game_on_dialog_started(game, dialog_id, info_ref);
+  return game_on_dialog_started(game, dialog, info_ref);
 }
 
 /**
  * \brief Notifies Lua that a dialog is finished.
  * \param game The game.
- * \param dialog_id Id of the dialog that was active.
+ * \param dialog The dialog that was active.
  * \param callback_ref Lua ref of the function to call, or LUA_REFNIL.
  * \param status_ref Lua ref to a status value to pass to the callback.
  * "skipped" means that the dialog was canceled by the user.
  */
 void LuaContext::notify_dialog_finished(
     Game& game,
-    const std::string& dialog_id,
+    const Dialog& dialog,
     int callback_ref,
     int status_ref) {
 
@@ -357,7 +357,7 @@ void LuaContext::notify_dialog_finished(
     destroy_ref(status_ref);
   }
 
-  game_on_dialog_finished(game, dialog_id);
+  game_on_dialog_finished(game, dialog);
 }
 
 /**
@@ -1593,15 +1593,15 @@ void LuaContext::on_unpaused() {
 
 /**
  * \brief Calls the on_dialog_started() method of the object on top of the stack.
- * \param dialog_id Id of the dialog just started.
+ * \param dialog The dialog that just started.
  * \param info_ref Lua ref to the info parameter to pass to the method,
  * or LUA_REFNIL.
  * \return true if the on_dialog_started() method is defined.
  */
-bool LuaContext::on_dialog_started(const std::string& dialog_id, int info_ref) {
+bool LuaContext::on_dialog_started(const Dialog& dialog, int info_ref) {
 
   if (find_method("on_dialog_started")) {
-    push_string(l, dialog_id);  // TODO push the dialog table instead.
+    push_dialog(l, dialog);
     if (info_ref == LUA_REFNIL) {
       lua_pushnil(l);
     }
@@ -1617,12 +1617,12 @@ bool LuaContext::on_dialog_started(const std::string& dialog_id, int info_ref) {
 
 /**
  * \brief Calls the on_dialog_finished() method of the object on top of the stack.
- * \param dialog_id Id of the dialog just finished.
+ * \param dialog The dialog that has just finished.
  */
-void LuaContext::on_dialog_finished(const std::string& dialog_id) {
+void LuaContext::on_dialog_finished(const Dialog& dialog) {
 
   if (find_method("on_dialog_finished")) {
-    push_string(l, dialog_id);  // TODO push the dialog table instead.
+    push_dialog(l, dialog);
     call_function(2, 0, "on_dialog_finished");
   }
 }

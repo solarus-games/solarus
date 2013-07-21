@@ -30,6 +30,7 @@ Dialog::Dialog():
  * \param other the dialog to copy
  */
 Dialog::Dialog(const Dialog& other):
+  id(other.id),
   text(other.text),
   properties(other.properties) {
 
@@ -49,11 +50,28 @@ Dialog::~Dialog() {
 Dialog& Dialog::operator=(const Dialog& other) {
 
   if (&other != this) {
+    this->id = other.id;
     this->text = other.text;
     this->properties = other.properties;
   }
 
   return *this;
+}
+
+/**
+ * Returns the id of this dialog.
+ * \return The id.
+ */
+const std::string& Dialog::get_id() const {
+  return id;
+}
+
+/**
+ * \brief Sets the id of this dialog.
+ * \param id The id.
+ */
+void Dialog::set_id(const std::string& id) {
+  this->id = id;
 }
 
 /**
@@ -64,7 +82,6 @@ Dialog& Dialog::operator=(const Dialog& other) {
  * \return the text of this dialog
  */
 const std::string& Dialog::get_text() const {
-
   return text;
 }
 
@@ -76,7 +93,6 @@ const std::string& Dialog::get_text() const {
  * \param text the text of this dialog
  */
 void Dialog::set_text(const std::string& text) {
-
   this->text = text;
 }
 

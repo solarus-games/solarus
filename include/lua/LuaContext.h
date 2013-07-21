@@ -99,9 +99,9 @@ class LuaContext {
     void notify_shop_item_interaction(ShopItem& shop_item);
     void notify_hero_brandish_treasure(
         const Treasure& treasure, int callback_ref);
-    bool notify_dialog_started(Game& game, const std::string& dialog_id,
+    bool notify_dialog_started(Game& game, const Dialog& dialog,
         int info_ref);
-    void notify_dialog_finished(Game& game, const std::string& dialog_id,
+    void notify_dialog_finished(Game& game, const Dialog& dialog,
         int callback_ref, int status_ref);
     void run_item(EquipmentItem& item);
     void run_map(Map& map, Destination* destination);
@@ -266,9 +266,9 @@ class LuaContext {
     void game_on_map_changed(Game& game, Map& map);
     void game_on_paused(Game& game);
     void game_on_unpaused(Game& game);
-    bool game_on_dialog_started(Game& game, const std::string& dialog_id,
+    bool game_on_dialog_started(Game& game, const Dialog& dialog,
         int info_ref);
-    void game_on_dialog_finished(Game& game, const std::string& dialog_id);
+    void game_on_dialog_finished(Game& game, const Dialog& dialog);
     bool game_on_input(Game& game, InputEvent& event);
     bool game_on_command_pressed(Game& game, GameCommands::Command command);
     bool game_on_command_released(Game& game, GameCommands::Command command);
@@ -830,6 +830,7 @@ class LuaContext {
     static void push_string(lua_State* l, const std::string& text);
     static void push_userdata(lua_State* l, ExportableToLua& userdata);
     static void push_color(lua_State* l, const Color& color);
+    static void push_dialog(lua_State* l, const Dialog& dialog);
     static void push_timer(lua_State* l, Timer& timer);
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
@@ -921,8 +922,8 @@ class LuaContext {
     void on_suspended(bool suspended);
     void on_paused();
     void on_unpaused();
-    bool on_dialog_started(const std::string& dialog_id, int info_ref);
-    void on_dialog_finished(const std::string& dialog_id);
+    bool on_dialog_started(const Dialog& dialog, int info_ref);
+    void on_dialog_finished(const Dialog& dialog);
     bool on_input(InputEvent& event);
     bool on_key_pressed(InputEvent& event);
     bool on_key_released(InputEvent& event);

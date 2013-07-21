@@ -23,6 +23,33 @@
 const std::string LuaContext::language_module_name = "sol.language";
 
 /**
+ * \brief Pushes a dialog onto the stack.
+ * \param l A Lua context.
+ * \param dialog A dialog.
+ */
+void LuaContext::push_dialog(lua_State* l, const Dialog& dialog) {
+
+  lua_newtable(l);
+
+  // Dialog id.
+  push_string(l, dialog.get_id());
+  lua_setfield(l, -2, "id");
+
+  // Text.
+  push_string(l, dialog.get_text());
+  lua_setfield(l, -2, "text");
+
+  // User properties.
+  const std::map<std::string, std::string>& properties =
+      dialog.get_properties();
+  std::map<std::string, std::string>::const_iterator it;
+  for (it = properties.begin(); it != properties.end(); ++it) {
+    push_string(l, it->second);
+    lua_setfield(l, -2, it->first.c_str());
+  }
+}
+
+/**
  * \brief Initializes the language features provided to Lua.
  */
 void LuaContext::register_language_module() {
@@ -171,30 +198,10 @@ int LuaContext::language_api_get_dialog(lua_State* l) {
 
   if (!DialogResource::exists(dialog_id)) {
     lua_pushnil(l);
-    return 1;
   }
-
-  const Dialog& dialog = DialogResource::get_dialog(dialog_id);
-
-  lua_newtable(l);
-
-  // Dialog id.
-  push_string(l, dialog_id);
-  lua_setfield(l, -2, "dialog_id");
-
-  // Text.
-  push_string(l, dialog.get_text());
-  lua_setfield(l, -2, "text");
-
-  // User properties.
-  const std::map<std::string, std::string>& properties =
-      dialog.get_properties();
-  std::map<std::string, std::string>::const_iterator it;
-  for (it = properties.begin(); it != properties.end(); ++it) {
-    push_string(l, it->second);
-    lua_setfield(l, -2, it->first.c_str());
+  else {
+    push_dialog(l, DialogResource::get_dialog(dialog_id));
   }
-
   return 1;
 }
 

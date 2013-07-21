@@ -102,7 +102,7 @@ void DialogBox::open(const std::string& dialog_id,
 
   // A dialog was just started: notify Lua.
   bool handled = game.get_lua_context().notify_dialog_started(
-      game, dialog_id, info_ref);
+      game, dialog, info_ref);
 
   if (!handled) {
     // TODO show a built-in default dialog box.
@@ -120,13 +120,12 @@ void DialogBox::close(int status_ref) {
   Debug::check_assertion(is_enabled(), "No dialog is active");
 
   int callback_ref = this->callback_ref;
-  const std::string& dialog_id = this->dialog_id;
   this->callback_ref = LUA_REFNIL;
   this->dialog_id = "";
 
   // A dialog was just finished: notify Lua.
   game.get_lua_context().notify_dialog_finished(
-      game, dialog_id, callback_ref, status_ref);
+      game, dialog, callback_ref, status_ref);
 
   // Restore commands.
   KeysEffect& keys_effect = game.get_keys_effect();

@@ -33,6 +33,9 @@ class Dialog {
     ~Dialog();
     Dialog& operator=(const Dialog& other);
 
+    const std::string& get_id() const;
+    void set_id(const std::string& id);
+
     const std::string& get_text() const;
     void set_text(const std::string& text);
 
@@ -43,6 +46,7 @@ class Dialog {
 
   private:
 
+    std::string id;               /**< Id of this dialog. */
     std::string text;             /**< The whole text of this dialog. */
     std::map<std::string, std::string>
         properties;               /**< Custom properties of this dialog. */

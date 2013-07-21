@@ -1300,16 +1300,16 @@ void LuaContext::game_on_unpaused(Game& game) {
 /**
  * \brief Calls the on_dialog_started() method of a Lua game.
  * \param game A game.
- * \param dialog_id Id of the dialog just started.
+ * \param dialog The dialog just started.
  * \param info_ref Lua ref to the info parameter to pass to the method,
  * or LUA_REFNIL.
  * \return true if the game:on_dialog_started() method is defined.
  */
 bool LuaContext::game_on_dialog_started(Game& game,
-    const std::string& dialog_id, int info_ref) {
+    const Dialog& dialog, int info_ref) {
 
   push_game(l, game.get_savegame());
-  bool exists = on_dialog_started(dialog_id, info_ref);
+  bool exists = on_dialog_started(dialog, info_ref);
   lua_pop(l, 1);
 
   return exists;
@@ -1318,13 +1318,13 @@ bool LuaContext::game_on_dialog_started(Game& game,
 /**
  * \brief Calls the on_dialog_finished() method of a Lua game.
  * \param game A game.
- * \param dialog_id Id of the dialog just finished.
+ * \param dialog The dialog just finished.
  */
 void LuaContext::game_on_dialog_finished(Game& game,
-    const std::string& dialog_id) {
+    const Dialog& dialog) {
 
   push_game(l, game.get_savegame());
-  on_dialog_finished(dialog_id);
+  on_dialog_finished(dialog);
   lua_pop(l, 1);
 }
 

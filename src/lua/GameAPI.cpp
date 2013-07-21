@@ -321,7 +321,6 @@ int LuaContext::game_api_is_dialog_enabled(lua_State* l) {
  */
 int LuaContext::game_api_start_dialog(lua_State* l) {
 
-  print_stack(l);
   Savegame& savegame = check_game(l, 1);
   const std::string& dialog_id = luaL_checkstring(l, 2);
   int info_ref = LUA_REFNIL;

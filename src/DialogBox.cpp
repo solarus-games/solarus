@@ -17,7 +17,9 @@
 #include "DialogBox.h"
 #include "DialogResource.h"
 #include "Game.h"
+#include "Map.h"
 #include "KeysEffect.h"
+#include "entities/Hero.h"
 #include "lowlevel/TextSurface.h"
 #include "lua/LuaContext.h"
 
@@ -27,11 +29,13 @@
  */
 DialogBox::DialogBox(Game& game):
   game(game),
-  callback_ref(LUA_REFNIL) {
+  callback_ref(LUA_REFNIL),
+  built_in(false) {
 
   for (int i = 0; i < nb_visible_lines; i++) {
-    line_surfaces[i] = new TextSurface(0, 0, TextSurface::ALIGN_LEFT,
-        TextSurface::ALIGN_TOP);
+    line_surfaces[i] = new TextSurface(0, 0,
+        TextSurface::ALIGN_CENTER, TextSurface::ALIGN_BOTTOM);
+    line_surfaces[i]->set_text_color(Color::get_white());
   }
 }
 
@@ -101,11 +105,37 @@ void DialogBox::open(const std::string& dialog_id,
   keys_effect.set_pause_key_effect(KeysEffect::PAUSE_KEY_NONE);
 
   // A dialog was just started: notify Lua.
-  bool handled = game.get_lua_context().notify_dialog_started(
+  built_in = !game.get_lua_context().notify_dialog_started(
       game, dialog, info_ref);
 
-  if (!handled) {
-    // TODO show a built-in default dialog box.
+  if (built_in) {
+
+    // Show a built-in default dialog box.
+    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
+
+    // Prepare the text.
+    remaining_lines.clear();
+    std::istringstream iss(dialog.get_text());
+    std::string line;
+    while (std::getline(iss, line)) {
+      remaining_lines.push_back(line);
+    }
+
+    // Prepare the graphics.
+
+    // Determine the position.
+    const Rectangle& camera_position = game.get_current_map().get_camera_position();
+    bool top = false;
+    if (game.get_hero().get_y() >= camera_position.get_y() + 130) {
+      top = true;
+    }
+    int x = camera_position.get_width() / 2;
+    int y = top ? 32 : camera_position.get_height() - 96;
+
+    text_position.set_xy(x, y);
+
+    // Start showing text.
+    show_more_lines();
   }
 }
 
@@ -132,5 +162,86 @@ void DialogBox::close(int status_ref) {
   keys_effect.restore_action_key_effect();
   keys_effect.restore_sword_key_effect();
   keys_effect.restore_pause_key_effect();
+}
+
+/**
+ * \brief Returns whether there are more lines remaining to display after the
+ * current 3 lines in the built-in dialog box.
+ * \return \c true if there are more lines.
+ */
+bool DialogBox::has_more_lines() {
+  return !remaining_lines.empty();
+}
+
+/**
+ * \brief Shows a new group of 3 lines (if possible) in the built-in
+ * dialog box.
+ */
+void DialogBox::show_more_lines() {
+
+  if (!has_more_lines()) {
+    close(LUA_REFNIL);
+    return;
+  }
+
+  KeysEffect& keys_effect = game.get_keys_effect();
+  keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
+
+  // Prepare the 3 lines.
+  int text_x = text_position.get_x();
+  int text_y = text_position.get_y();
+  for (int i = 0; i < nb_visible_lines; i++) {
+    text_y += 16;
+    line_surfaces[i]->set_x(text_x);
+    line_surfaces[i]->set_y(text_y);
+
+    if (has_more_lines()) {
+      line_surfaces[i]->set_text(*remaining_lines.begin());
+      remaining_lines.pop_front();
+    }
+    else {
+      line_surfaces[i]->set_text("");
+    }
+  }
+}
+
+/**
+ * \brief This function is called by the game when a command is pressed
+ * while a dialog is active.
+ *
+ * Nothing happens if the dialog is handled in Lua.
+ *
+ * \param command The command pressed.
+ */
+void DialogBox::notify_command_pressed(GameCommands::Command command) {
+
+  if (!built_in) {
+    // The dialog box is handled by a Lua script.
+    return;
+  }
+
+  if (command == GameCommands::ACTION) {
+    show_more_lines();
+  }
+}
+
+/**
+ * \brief Draws the dialog box on a surface.
+ *
+ * Draws nothing if the dialog is handled by Lua.
+ *
+ * \param dst_surface The destination surface.
+ */
+void DialogBox::draw(Surface& dst_surface) {
+
+  if (!built_in) {
+    // The dialog box is handled by a Lua script.
+    return;
+  }
+
+  // Draw the text.
+  for (int i = 0; i < nb_visible_lines; i++) {
+    line_surfaces[i]->draw(dst_surface);
+  }
 }
 

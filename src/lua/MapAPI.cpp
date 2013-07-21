@@ -1749,6 +1749,42 @@ bool LuaContext::map_on_input(Map& map, InputEvent& event) {
 }
 
 /**
+ * \brief Calls the on_command_pressed() method of a Lua map.
+ * \param map A map.
+ * \param command The command pressed.
+ * \return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command) {
+
+  bool handled = false;
+  push_map(l, map);
+  handled = on_command_pressed(command);
+  if (!handled) {
+    handled = menus_on_command_pressed(-1, command);
+  }
+  lua_pop(l, 1);
+  return handled;
+}
+
+/**
+ * \brief Calls the on_command_released() method of a Lua map.
+ * \param map A map.
+ * \param command The command released.
+ * \return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::map_on_command_released(Map& map, GameCommands::Command command) {
+
+  bool handled = false;
+  push_map(l, map);
+  handled = on_command_released(command);
+  if (!handled) {
+    handled = menus_on_command_released(-1, command);
+  }
+  lua_pop(l, 1);
+  return handled;
+}
+
+/**
  * \brief Calls the on_suspended() method of a Lua map.
  * \param map A map.
  * \param suspended true if the map is suspended.

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "Dialog.h"
 #include "GameCommands.h"
+#include "lowlevel/Rectangle.h"
+#include <list>
 
 /**
  * \brief Manages the dialog box where dialogs can be displayed.
@@ -43,20 +45,24 @@ class DialogBox {
     void notify_command_pressed(GameCommands::Command command);
     const std::string& get_dialog_id();
 
-    void update();
     void draw(Surface& dst_surface);
 
   private:
 
-    Game& game;                                     /**< the game this dialog box belongs to */
-    std::string dialog_id;                          /**< id of the current dialog or an empty string */
-    Dialog dialog;                                  /**< current dialog */
+    bool has_more_lines();
+    void show_more_lines();
+
+    Game& game;                                     /**< The game this dialog box belongs to. */
+    std::string dialog_id;                          /**< Id of the current dialog or an empty string. */
+    Dialog dialog;                                  /**< Current dialog. */
     int callback_ref;                               /**< Lua ref of a function to call when the dialog finishes. */
 
     // Built-in dialog box.
-    static const int nb_visible_lines = 3;
-    std::string lines[nb_visible_lines];            /**< text of the 3 lines currently shown */
-    TextSurface* line_surfaces[nb_visible_lines];   /**< text surface of each line */
+    bool built_in;                                  /**< Indicates that we are using the built-in dialog box. */
+    static const int nb_visible_lines = 3;          /**< Maximum number of visible lines. */
+    std::list<std::string> remaining_lines;         /**< Text of each line still to be displayed. */
+    TextSurface* line_surfaces[nb_visible_lines];   /**< Text surface of each visible line. */
+    Rectangle text_position;                        /**< Destination position of the first line. */
 };
 
 #endif

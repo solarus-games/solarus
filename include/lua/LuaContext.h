@@ -285,6 +285,8 @@ class LuaContext {
     void map_on_obtaining_treasure(Map& map, const Treasure& treasure);
     void map_on_obtained_treasure(Map& map, const Treasure& treasure);
     bool map_on_input(Map& map, InputEvent& event);
+    bool map_on_command_pressed(Map& map, GameCommands::Command command);
+    bool map_on_command_released(Map& map, GameCommands::Command command);
 
     // Map entity events.
     // TODO entity_on_created

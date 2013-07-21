@@ -251,8 +251,13 @@ bool Game::notify_input(InputEvent& event) {
  */
 void Game::notify_command_pressed(GameCommands::Command command) {
 
+  // Is a dialog being shown?
+  if (is_dialog_enabled()) {
+    dialog_box.notify_command_pressed(command);
+  }
+
   // Is the game over sequence shown?
-  if (is_showing_gameover()) {
+  else if (is_showing_gameover()) {
     gameover_sequence->notify_command_pressed(command);
   }
 
@@ -260,23 +265,28 @@ void Game::notify_command_pressed(GameCommands::Command command) {
     bool handled = get_lua_context().game_on_command_pressed(*this, command);
 
     if (!handled) {
-      // The Lua script did not override the command: do the built-in behavior.
 
-      if (command == GameCommands::PAUSE) {
-        if (is_paused()) {
-          if (can_unpause()) {
-            set_paused(false);
+      handled = get_lua_context().map_on_command_pressed(get_current_map(), command);
+
+      if (!handled) {
+        // The Lua script did not override the command: do the built-in behavior.
+
+        if (command == GameCommands::PAUSE) {
+          if (is_paused()) {
+            if (can_unpause()) {
+              set_paused(false);
+            }
+          }
+          else {
+            if (can_pause()) {
+              set_paused(true);
+            }
           }
         }
-        else {
-          if (can_pause()) {
-            set_paused(true);
-          }
+        else if (!is_suspended()) {
+          // When the game is not suspended, all other commands apply to the hero.
+          hero->notify_command_pressed(command);
         }
-      }
-      else if (!is_suspended()) {
-        // when the game is not suspended, all other keys apply to the hero
-        hero->notify_command_pressed(command);
       }
     }
   }
@@ -291,11 +301,16 @@ void Game::notify_command_released(GameCommands::Command command) {
   bool handled = get_lua_context().game_on_command_released(*this, command);
 
   if (!handled) {
-    // The Lua script did not override the command: do the built-in behavior.
 
-    if (!is_suspended()) {
-      // When the game is not suspended, the command apply to the hero.
-      hero->notify_command_released(command);
+    handled = get_lua_context().map_on_command_released(get_current_map(), command);
+
+    if (!handled) {
+      // The Lua script did not override the command: do the built-in behavior.
+
+      if (!is_suspended()) {
+        // When the game is not suspended, the command apply to the hero.
+        hero->notify_command_released(command);
+      }
     }
   }
 }
@@ -490,7 +505,7 @@ void Game::update_gameover_sequence() {
  */
 void Game::draw(Surface& dst_surface) {
 
-  // draw the map
+  // Draw the map.
   if (current_map->is_loaded()) {
     current_map->draw();
     if (transition != NULL) {
@@ -498,9 +513,14 @@ void Game::draw(Surface& dst_surface) {
     }
     current_map->get_visible_surface().draw(dst_surface);
 
-    // draw the game over sequence if any
+    // Draw the game over sequence if any.
     if (is_showing_gameover()) {
       gameover_sequence->draw(dst_surface);
+    }
+
+    // Draw the built-in dialog box if any.
+    if (is_dialog_enabled()) {
+      dialog_box.draw(dst_surface);
     }
   }
 

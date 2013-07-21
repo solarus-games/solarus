@@ -9,6 +9,7 @@ Engine changes
 * Allow quest makers and users to set the size of the playing area.
 * Allow maps to have a default destination entity (#231).
 * A game can now start without specifying an initial map and destination.
+* Fix map menus not receiving on_command_pressed/released() events.
 
 Data files format changes
 -------------------------

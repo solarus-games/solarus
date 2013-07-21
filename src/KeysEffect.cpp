@@ -36,7 +36,6 @@ const std::string KeysEffect::action_key_effect_names[] = {
  */
 const std::string KeysEffect::sword_key_effect_names[] = {
   "",
-  "skip",
   "sword",
   ""  // Sentinel.
 };

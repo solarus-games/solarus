@@ -17,6 +17,7 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "StringResource.h"
+#include "DialogResource.h"
 #include <lua.hpp>
 
 const std::string LuaContext::language_module_name = "sol.language";
@@ -151,12 +152,11 @@ int LuaContext::language_api_get_string(lua_State* l) {
   const std::string& key = luaL_checkstring(l, 1);
 
   if (!StringResource::exists(key)) {
-    luaL_error(l, (StringConcat() << "No value with key '" << key
-        << "' in strings.dat for language '"
-        << FileTools::get_language() << "'").c_str());
+    lua_pushnil(l);
   }
-
-  push_string(l, StringResource::get_string(key));
+  else {
+    push_string(l, StringResource::get_string(key));
+  }
   return 1;
 }
 
@@ -167,8 +167,33 @@ int LuaContext::language_api_get_string(lua_State* l) {
  */
 int LuaContext::language_api_get_dialog(lua_State* l) {
 
-  // TODO
-  lua_pushnil(l);
+  const std::string& dialog_id = luaL_checkstring(l, 1);
+
+  if (!DialogResource::exists(dialog_id)) {
+    lua_pushnil(l);
+    return 1;
+  }
+
+  const Dialog& dialog = DialogResource::get_dialog(dialog_id);
+
+  lua_newtable(l);
+
+  // Dialog id.
+  push_string(l, dialog_id);
+  lua_setfield(l, -2, "dialog_id");
+
+  // Text.
+  push_string(l, dialog.get_text());
+  lua_setfield(l, -2, "text");
+
+  // User properties.
+  const std::map<std::string, std::string>& properties =
+      dialog.get_properties();
+  std::map<std::string, std::string>::const_iterator it;
+  for (it = properties.begin(); it != properties.end(); ++it) {
+    push_string(l, it->second);
+    lua_setfield(l, -2, it->first.c_str());
+  }
 
   return 1;
 }

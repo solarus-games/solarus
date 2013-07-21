@@ -120,42 +120,24 @@ int DialogResource::l_dialog(lua_State* l) {
     if (key == "id") {
       dialog_id = luaL_checkstring(l, -1);
     }
-    else if (key == "icon") {
-      int icon = luaL_checkint(l, -1);
-      dialog.set_icon(icon);
-    }
-    else if (key == "skip") {
-      const std::string skip_mode = luaL_checkstring(l, -1);
-      if (skip_mode == "current") {
-        dialog.set_skip_mode(Dialog::SKIP_CURRENT);
-      }
-      else if (skip_mode == "all") {
-        dialog.set_skip_mode(Dialog::SKIP_ALL);
-      }
-      else {
-        dialog.set_skip_mode(Dialog::SKIP_NONE);
-      }
-    }
-    else if (key == "question") {
-      bool question = lua_toboolean(l, -1);
-      dialog.set_question(question);
-    }
-    else if (key == "next") {
-      const std::string next = luaL_checkstring(l, -1);
-      dialog.set_next(next);
-    }
-    else if (key == "next2") {
-      const std::string next2 = luaL_checkstring(l, -1);
-      dialog.set_next2(next2);
-    }
     else if (key == "text") {
       const std::string text = luaL_checkstring(l, -1);
       dialog.set_text(text);
     }
     else {
-      luaL_error(l, (StringConcat() << "Invalid key '" << key << "'").c_str());
+      // Custom property.
+      const std::string value = luaL_checkstring(l, -1);
+      dialog.set_property(key, value);
     }
-    lua_pop(l, 1); // pop the value, let the key for the iteration
+    lua_pop(l, 1);
+  }
+
+  if (dialog_id.empty()) {
+    luaL_error(l, "Missing value dialog_id");
+  }
+
+  if (dialog.get_text().empty()) {
+    luaL_error(l, "Missing dialog text");
   }
 
   dialogs[dialog_id] = dialog;

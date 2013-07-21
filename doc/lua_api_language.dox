@@ -67,20 +67,24 @@ language-specific directory (e.g. \c languages/en/text/strings.dat).
   pair must be defined in
   \ref quest_language_strings "text/strings.dat".
 - Return value (string): The value associated to this key in
-  \ref quest_language_strings "text/strings.dat".
+  \ref quest_language_strings "text/strings.dat", or \c nil if it does
+  not exist.
 
-\subsection lua_api_language_get_dialog sol.language.get_dialog(key)
+\subsection lua_api_language_get_dialog sol.language.get_dialog(dialog_id)
 
 Returns a dialog translated in the current language.
 Translated dialogs are defined in the file
 \ref quest_language_dialogs "text/dialogs.dat" of the
 language-specific directory (e.g. \c languages/en/text/dialogs.dat).
-- \c key (string): Key of the dialog to get. This dialog must exist in
-  \ref quest_language_dialogs "text/dialogs.dat".
-- Return value (string): The corresponding dialog in
-  \ref quest_language_dialogs "text/dialogs.dat".
-
-\todo This function is not implemented yet.
+- \c dialog_id (string): Id of the dialog to get.
+- Return value (table): The corresponding dialog in the current language,
+  or \c nil if it does not exist.
+  The dialog is a table with at least the following two entries:
+  - \c dialog_id (string): Id of the dialog.
+  - \c text (string): Text of the dialog.
+  The table also contains all custom entries defined in \c "text/dialogs.dat"
+  for this dialog. These custom entries (if any) always have string keys and
+  string values.
 
 */
 

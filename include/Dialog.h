@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include <string>
-#include <list>
+#include <map>
 
 /**
  * \brief A dialog that can be displayed during the game in the dialog box.
@@ -28,45 +28,24 @@ class Dialog {
 
   public:
 
-    /**
-     * Indicates what happens when the user tries to skip a dialog.
-     */
-    enum SkipMode {
-      SKIP_NONE,      /**< the current dialog cannot be skipped */
-      SKIP_CURRENT,   /**< the player can display the 3 current lines immediately */
-      SKIP_ALL,       /**< the dialog box can be totally skipped */
-      SKIP_UNCHANGED  /**< keep the skip property of the previous dialog */
-    };
-
     Dialog();
     Dialog(const Dialog& other);
     ~Dialog();
     Dialog& operator=(const Dialog& other);
 
-    int get_icon() const;
-    void set_icon(int icon);
-    SkipMode get_skip_mode() const;
-    void set_skip_mode(SkipMode skip_mode);
-    bool is_question() const;
-    void set_question(bool question);
-    bool has_next() const;
-    const std::string& get_next() const;
-    void set_next(const std::string& next);
-    const std::string& get_next2() const;
-    void set_next2(const std::string& next2);
     const std::string& get_text() const;
-    const std::list<std::string>& get_lines() const;
     void set_text(const std::string& text);
+
+    const std::map<std::string, std::string>& get_properties() const;
+    bool has_property(const std::string& key) const;
+    const std::string& get_property(const std::string& key) const;
+    void set_property(const std::string& key, const std::string& value);
 
   private:
 
-    int icon;                     /**< index of an icon to show (-1 for none, -2 for unchanged) */
-    SkipMode skip_mode;           /**< skip mode of this dialog */
-    bool question;                /**< is this dialog a question? */
-    std::string next;             /**< id of the next dialog if any (possibly "_unknown") */
-    std::string next2;            /**< id of the alternative next dialog in a question */
-    std::string text;             /**< the whole text of this dialog */
-    std::list<std::string> lines; /**< the text split in lines */
+    std::string text;             /**< The whole text of this dialog. */
+    std::map<std::string, std::string>
+        properties;               /**< Custom properties of this dialog. */
 };
 
 #endif

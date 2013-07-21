@@ -87,6 +87,7 @@ class KeysEffect {
     bool sword_key_enabled;                  /**< indicates that the sword key is currently enabled */
 
     PauseKeyEffect pause_key_effect;         /**< current effect of the pause key */
+    PauseKeyEffect pause_key_effect_saved;   /**< a previous effect of the pause key */
     bool pause_key_enabled;                  /**< indicates that the pause key is currently enabled */
 
     bool item_keys_enabled;
@@ -129,6 +130,8 @@ class KeysEffect {
     void set_pause_key_effect(PauseKeyEffect pause_key_effect);
     bool is_pause_key_enabled();
     void set_pause_key_enabled(bool enable);
+    void save_pause_key_effect();
+    void restore_pause_key_effect();
     static const std::string& get_pause_key_effect_name(PauseKeyEffect effect);
     static PauseKeyEffect get_pause_key_effect_by_name(const std::string& effect_name);
 

@@ -17,6 +17,7 @@
 #include "DialogBox.h"
 #include "DialogResource.h"
 #include "Game.h"
+#include "KeysEffect.h"
 #include "lowlevel/TextSurface.h"
 #include "lua/LuaContext.h"
 
@@ -90,6 +91,15 @@ void DialogBox::open(const std::string& dialog_id,
   this->dialog = DialogResource::get_dialog(dialog_id);
   this->callback_ref = callback_ref;
 
+  // Save commands.
+  KeysEffect& keys_effect = game.get_keys_effect();
+  keys_effect.save_action_key_effect();
+  keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  keys_effect.save_sword_key_effect();
+  keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
+  keys_effect.save_pause_key_effect();
+  keys_effect.set_pause_key_effect(KeysEffect::PAUSE_KEY_NONE);
+
   // A dialog was just started: notify Lua.
   bool handled = game.get_lua_context().notify_dialog_started(
       game, dialog_id, info_ref);
@@ -117,5 +127,11 @@ void DialogBox::close(int status_ref) {
   // A dialog was just finished: notify Lua.
   game.get_lua_context().notify_dialog_finished(
       game, dialog_id, callback_ref, status_ref);
+
+  // Restore commands.
+  KeysEffect& keys_effect = game.get_keys_effect();
+  keys_effect.restore_action_key_effect();
+  keys_effect.restore_sword_key_effect();
+  keys_effect.restore_pause_key_effect();
 }
 

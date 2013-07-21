@@ -279,6 +279,23 @@ void KeysEffect::set_pause_key_enabled(bool enable) {
 }
 
 /**
+ * \brief Saves the current effect of the pause key.
+ *
+ * Call restore_pause_key_effect to restore the pause key saved here.
+ */
+void KeysEffect::save_pause_key_effect() {
+  this->pause_key_effect_saved = get_pause_key_effect();
+}
+
+/**
+ * \brief Restores the pause key effect saved by the last
+ * call to save_pause_key_effect().
+ */
+void KeysEffect::restore_pause_key_effect() {
+  this->pause_key_effect = pause_key_effect_saved;
+}
+
+/**
  * \brief Returns the name of a pause command effect.
  * \param effect An effect of the pause command.
  * \return The name of this effect, or an empty string if the effect is PAUSE_KEY_NONE.

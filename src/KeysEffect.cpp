@@ -21,8 +21,6 @@
  */
 const std::string KeysEffect::action_key_effect_names[] = {
   "",
-  "next",
-  "return",
   "look",
   "open",
   "lift",
@@ -71,7 +69,6 @@ KeysEffect::KeysEffect():
  * \brief Destructor.
  */
 KeysEffect::~KeysEffect() {
-
 }
 
 // action key

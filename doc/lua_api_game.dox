@@ -37,7 +37,7 @@ They can be seen as an abstraction of the keyboard and the joypad.
 %Game commands are like a virtual game device that provides
 the the following buttons:
 - \c "action": Contextual action such as talking, swimming, throwing, etc.
-- \c "attack": Main attack (using the sword). Also used to skip dialogs.
+- \c "attack": Main attack (using the sword).
 - \c "pause": Pausing or unpausing the game.
 - \c "item_1": Using the equipment item placed in slot 1 (see \ref
   lua_api_game_get_item_assigned "game:get_item_assigned()")
@@ -431,7 +431,7 @@ effect changes a lot depending on the context.
   effect (for example because the game is paused). Possible values are:
   - For command \c "action": \c "next", \c "return", \c "look", \c "open",
     \c "lift", \c "throw", \c "grab", \c "speak", \c "swim", \c "run" or \c nil.
-  - For command \c "attack": \c "skip", \c "sword" or \c nil.
+  - For command \c "attack": \c "sword" or \c nil.
   - For command \c "pause": \c "pause", \c "return" or \c nil.
   - For command \c "item_1": \c "use_item_1" or \c nil.
   - For command \c "item_2": \c "use_item_2" or \c nil.

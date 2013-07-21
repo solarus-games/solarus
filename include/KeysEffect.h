@@ -35,7 +35,6 @@
  *
  * TODO rename to CommandsEffects
  * TODO make a single enum for all commands
- * TODO remove effects that are no longer built-in
  * TODO rename Sword to Attack
  */
 class KeysEffect {
@@ -47,10 +46,6 @@ class KeysEffect {
      */
     enum ActionKeyEffect {
       ACTION_KEY_NONE,     /**< nothing happens when the user presses the Action key and the action icon is not shown */
-
-      ACTION_KEY_NEXT,     /**< display the next message in a dialog */
-      ACTION_KEY_RETURN,   /**< exit a dialog or a submenu */
-
       ACTION_KEY_LOOK,     /**< look at something */
       ACTION_KEY_OPEN,     /**< open a door or a chest */
       ACTION_KEY_LIFT,     /**< lift an objet */
@@ -66,7 +61,6 @@ class KeysEffect {
      */
     enum SwordKeyEffect {
       SWORD_KEY_NONE,      /**< nothing happens when the user presses the Attack key */
-      SWORD_KEY_SKIP,      /**< skip a message in a dialog */
       SWORD_KEY_SWORD,     /**< swing the sword (this is the case most of the time) */
       SWORD_KEY_NB
     };

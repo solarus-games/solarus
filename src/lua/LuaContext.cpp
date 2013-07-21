@@ -339,6 +339,10 @@ void LuaContext::notify_dialog_finished(
     int callback_ref,
     int status_ref) {
 
+  game_on_dialog_finished(game, dialog);
+
+  // Execute the callback after game:on_dialog_finished()
+  // because the callback may start another dialog.
   if (callback_ref != LUA_REFNIL) {
     push_callback(callback_ref);
     destroy_ref(callback_ref);
@@ -356,8 +360,6 @@ void LuaContext::notify_dialog_finished(
     // No callback: the status if ignored if any.
     destroy_ref(status_ref);
   }
-
-  game_on_dialog_finished(game, dialog);
 }
 
 /**

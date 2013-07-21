@@ -46,6 +46,7 @@ class KeysEffect {
      */
     enum ActionKeyEffect {
       ACTION_KEY_NONE,     /**< nothing happens when the user presses the Action key and the action icon is not shown */
+      ACTION_KEY_NEXT,     /**< display the next message in a dialog */
       ACTION_KEY_LOOK,     /**< look at something */
       ACTION_KEY_OPEN,     /**< open a door or a chest */
       ACTION_KEY_LIFT,     /**< lift an objet */

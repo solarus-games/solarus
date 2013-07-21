@@ -429,7 +429,7 @@ effect changes a lot depending on the context.
 - Return value (string): A string describing the current built-in effect of
   this game command. \c nil means that this command has currently no built-in
   effect (for example because the game is paused). Possible values are:
-  - For command \c "action": \c "next", \c "return", \c "look", \c "open",
+  - For command \c "action": \c "next", \c "look", \c "open",
     \c "lift", \c "throw", \c "grab", \c "speak", \c "swim", \c "run" or \c nil.
   - For command \c "attack": \c "sword" or \c nil.
   - For command \c "pause": \c "pause", \c "return" or \c nil.

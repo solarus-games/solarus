@@ -21,6 +21,7 @@
  */
 const std::string KeysEffect::action_key_effect_names[] = {
   "",
+  "next",
   "look",
   "open",
   "lift",

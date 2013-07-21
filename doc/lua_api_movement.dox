@@ -91,7 +91,7 @@ Starts this movement on an object.
 - \c callback (function, optional): A function to call when the movement
   finishes.
 
-\note After this point, the novement belongs to the object moved.
+\note After this point, the movement belongs to the object moved.
   Even if the movement gets out of scope in your Lua script,
   it will continue to exist and to move the object.
   It will get destroyed only when the object moved is garbage-collected.

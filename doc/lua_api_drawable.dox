@@ -39,18 +39,62 @@ Draws a subrectangle of this object on a destination surface.
 \subsection lua_api_drawable_fade_in drawable:fade_in([delay], [callback])
 
 Starts a fade-in effect on this object.
+
+You can specify a callback function to be executed when the fade-in effect
+finishes.
+
+If the drawable object is a
+\ref lua_api_sprite "sprite" attached to a \ref lua_api_entity "map entity"
+during a game, the fade-in effect gets the lifetime of that entity.
+The behavior is probably what you expect:
+the fade-in effect gets suspended when the entity gets suspended,
+and it gets canceled (that is, the callback is never executed)
+when the map entity is destroyed.
 - \c delay (number, optional): Delay in milliseconds between two
   frames of the fade-in animation (default \c 20).
 - \c callback (function, optional): A function to call when the
   fade-in effect finishes.
 
+\note When your drawable object does not belong to a
+  \ref lua_api_entity "map entity" (typically in a title screen
+  before a game is started, or in your pause menu),
+  the fade-in effect continues until the drawable object is
+  garbage-collected.
+  In other words, the callback can be executed even if you have stopped
+  using the drawable object in the meantime.
+  Therefore, you should use the \c callback parameter with care.
+  In these situations, using a \ref lua_api_timer "timer" for your callback
+  is easier because timers have an explicit lifetime.
+
 \subsection lua_api_drawable_fade_out drawable:fade_out([delay], [callback])
 
 Starts a fade-out effect on this object.
+
+You can specify a callback function to be executed when the fade-out effect
+finishes.
+
+If the drawable object is a
+\ref lua_api_sprite "sprite" attached to a \ref lua_api_entity "map entity"
+during a game, the fade-out effect gets the lifetime of that entity.
+The behavior is probably what you expect:
+the fade-out effect gets suspended when the entity gets suspended,
+and it gets canceled (that is, the callback is never executed)
+when the map entity is destroyed.
 - \c delay (number, optional): Delay in milliseconds between two
   frames of the fade-out animation (default \c 20).
 - \c callback (function, optional): A function to call when the
   fade-out effect finishes.
+
+\note When your drawable object does not belong to a
+  \ref lua_api_entity "map entity" (typically in a title screen
+  before a game is started, or in your pause menu),
+  the fade-out effect continues until the drawable object is
+  garbage-collected.
+  In other words, the callback can be executed even if you have stopped
+  using the drawable object in the meantime.
+  Therefore, you should use the \c callback parameter with care.
+  In these situations, using a \ref lua_api_timer "timer" for your callback
+  is easier because timers have an explicit lifetime.
 
 \subsection lua_api_drawable_get_xy drawable:get_xy()
 

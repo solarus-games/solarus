@@ -86,6 +86,7 @@ class LuaContext {
     ~LuaContext();
 
     static LuaContext& get_lua_context(lua_State* l);
+    lua_State* get_internal_state();
 
     MainLoop& get_main_loop();
 

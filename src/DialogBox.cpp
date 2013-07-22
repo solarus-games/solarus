@@ -106,7 +106,9 @@ void DialogBox::open(const std::string& dialog_id,
   keys_effect.set_pause_key_effect(KeysEffect::PAUSE_KEY_NONE);
 
   // A dialog was just started: notify Lua.
-  built_in = !game.get_lua_context().notify_dialog_started(
+  LuaContext& lua_context = game.get_lua_context();
+  lua_State* l = lua_context.get_internal_state();
+  built_in = !lua_context.notify_dialog_started(
       game, dialog, info_ref);
 
   if (built_in) {
@@ -115,15 +117,31 @@ void DialogBox::open(const std::string& dialog_id,
     keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
 
     // Prepare the text.
+    std::string text = dialog.get_text();
+    this->is_question = false;
+
+    if (dialog_id == "_shop.question") {
+      // Built-in dialog with the "do you want to buy" question and the price.
+      this->is_question = true;
+      size_t index = text.find("$v");
+      if (index != std::string::npos) {
+        // Replace the special sequence '$v' by the price of the shop item.
+        lua_rawgeti(l, LUA_REGISTRYINDEX, info_ref);
+        int price = luaL_checkinteger(l, -1);
+        lua_pop(l, -1);
+        std::ostringstream oss;
+        oss << price;
+        text = text.replace(index, 2, oss.str());
+      }
+    }
+    luaL_unref(l, LUA_REGISTRYINDEX, info_ref);
+
     remaining_lines.clear();
-    std::istringstream iss(dialog.get_text());
+    std::istringstream iss(text);
     std::string line;
     while (std::getline(iss, line)) {
       remaining_lines.push_back(line);
     }
-
-    // Is the dialog a question? Shop treasures needs this feature.
-    this->is_question = (dialog_id == "_shop.question");
 
     // Determine the position.
     const Rectangle& camera_position = game.get_current_map().get_camera_position();
@@ -155,15 +173,15 @@ void DialogBox::close(int status_ref) {
   this->callback_ref = LUA_REFNIL;
   this->dialog_id = "";
 
-  // A dialog was just finished: notify Lua.
-  game.get_lua_context().notify_dialog_finished(
-      game, dialog, callback_ref, status_ref);
-
   // Restore commands.
   KeysEffect& keys_effect = game.get_keys_effect();
   keys_effect.restore_action_key_effect();
   keys_effect.restore_sword_key_effect();
   keys_effect.restore_pause_key_effect();
+
+  // A dialog was just finished: notify Lua.
+  game.get_lua_context().notify_dialog_finished(
+      game, dialog, callback_ref, status_ref);
 }
 
 /**
@@ -181,8 +199,19 @@ bool DialogBox::has_more_lines() {
  */
 void DialogBox::show_more_lines() {
 
+  // This function is only called in the built-in case.
+  Debug::check_assertion(built_in, "This dialog box is not the built-in one");
+
   if (!has_more_lines()) {
-    close(LUA_REFNIL);
+
+    int status_ref = LUA_REFNIL;
+    if (is_question) {
+      // Send the answer to the callback.
+      LuaContext& lua_context = game.get_lua_context();
+      lua_pushboolean(lua_context.get_internal_state(), selected_first_answer);
+      status_ref = lua_context.create_ref();
+    }
+    close(status_ref);
     return;
   }
 

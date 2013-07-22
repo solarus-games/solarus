@@ -30,12 +30,13 @@
 DialogBox::DialogBox(Game& game):
   game(game),
   callback_ref(LUA_REFNIL),
-  built_in(false) {
+  built_in(false),
+  is_question(false),
+  selected_first_answer(true) {
 
   for (int i = 0; i < nb_visible_lines; i++) {
     line_surfaces[i] = new TextSurface(0, 0,
-        TextSurface::ALIGN_CENTER, TextSurface::ALIGN_BOTTOM);
-    line_surfaces[i]->set_text_color(Color::get_white());
+        TextSurface::ALIGN_LEFT, TextSurface::ALIGN_BOTTOM);
   }
 }
 
@@ -121,7 +122,8 @@ void DialogBox::open(const std::string& dialog_id,
       remaining_lines.push_back(line);
     }
 
-    // Prepare the graphics.
+    // Is the dialog a question? Shop treasures needs this feature.
+    this->is_question = (dialog_id == "_shop.question");
 
     // Determine the position.
     const Rectangle& camera_position = game.get_current_map().get_camera_position();
@@ -129,7 +131,7 @@ void DialogBox::open(const std::string& dialog_id,
     if (game.get_hero().get_y() >= camera_position.get_y() + 130) {
       top = true;
     }
-    int x = camera_position.get_width() / 2;
+    int x = camera_position.get_width() / 2 - 110;
     int y = top ? 32 : camera_position.get_height() - 96;
 
     text_position.set_xy(x, y);
@@ -194,6 +196,7 @@ void DialogBox::show_more_lines() {
     text_y += 16;
     line_surfaces[i]->set_x(text_x);
     line_surfaces[i]->set_y(text_y);
+    line_surfaces[i]->set_text_color(Color::get_white());
 
     if (has_more_lines()) {
       line_surfaces[i]->set_text(*remaining_lines.begin());
@@ -202,6 +205,16 @@ void DialogBox::show_more_lines() {
     else {
       line_surfaces[i]->set_text("");
     }
+  }
+
+  if (built_in && is_question && !has_more_lines()) {
+    // If the dialog is a question, we assume that the last group of 3 lines
+    // are the question and the two possible answers.
+    // Remember that this is only the case of the built-in dialog box:
+    // if the user needs something more elaborate, he should make his own
+    // dialog box in Lua.
+    this->selected_first_answer = true;
+    line_surfaces[nb_visible_lines - 2]->set_text_color(Color::get_yellow());
   }
 }
 
@@ -222,6 +235,17 @@ void DialogBox::notify_command_pressed(GameCommands::Command command) {
 
   if (command == GameCommands::ACTION) {
     show_more_lines();
+  }
+  else if (command == GameCommands::UP || command == GameCommands::DOWN) {
+    if (is_question && !has_more_lines()) {
+      // Switch the selected answer.
+      selected_first_answer = !selected_first_answer;
+      int selected_line_index = selected_first_answer ? 1 : 2;
+      for (int i = 0; i < nb_visible_lines; i++) {
+        line_surfaces[i]->set_text_color(Color::get_white());
+      }
+      line_surfaces[selected_line_index]->set_text_color(Color::get_yellow());
+    }
   }
 }
 

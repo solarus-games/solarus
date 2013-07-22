@@ -99,7 +99,7 @@ void Hero::BackToSolidGroundState::update() {
       get_sprites().blink();
 
       if (with_sound) {
-        Sound::play("message_end");
+        Sound::play("message_end");  // TODO rename this sound.
       }
     }
 

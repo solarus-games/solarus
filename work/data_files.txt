@@ -46,7 +46,6 @@ sounds/
   jump.ogg
   lift.ogg
   message_end.ogg
-  message_letter.ogg
   monster_hurt.ogg
   ok.ogg
   picked_item.ogg
@@ -102,10 +101,7 @@ sprites/
     stone_small_white.dat
     switch.dat
   hud/
-    dialog_box_message_end.dat
     gameover_fade.dat
-    dialog_box.png
-    dialog_icons.png
   hero/
     tunic1.dat ...
     sword1.dat ...

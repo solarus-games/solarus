@@ -6,6 +6,8 @@ _______________________________
 Engine changes
 --------------
 
+* Allow scripted dialog boxes (#184).
+* Replace the old built-in dialog box by a very minimal one.
 * Allow quest makers and users to set the size of the playing area.
 * Allow maps to have a default destination entity (#231).
 * A game can now start without specifying an initial map and destination.
@@ -20,8 +22,9 @@ Don't forget to make a backup first.
 
 * quest.dat: Allow to specify a range of supported quest sizes.
 * project_db.dat: New syntax easier to read and parse (#169).
-* Maps: add the property "default" to destinations.
-* Maps: make optional the property "destination" of teletransporters.
+* Maps: Add the property "default" to destinations.
+* Maps: Make optional the property "destination" of teletransporters.
+* dialogs.dat: Allow any property in dialogs. dialog_id and text are mandatory.
 
 Lua API changes
 ---------------
@@ -29,6 +32,12 @@ Lua API changes
 Changes with incompatibilities:
 
 * Make map:get_entities() return an iterator instead of an array (#249).
+* map:is_dialog_enabled() is replaced by game:is_dialog_enabled().
+* map:start_dialog() is replaced by game:start_dialog().
+* Remove map:draw_dialog_box(), no longer needed.
+* Remove map:set_dialog_style(): replace it in your own dialog box system.
+* Remove map:set_dialog_position(): replace it in your own dialog box system.
+* Remove map:set_dialog_variable(): use the info param of game:start_dialog().
 
 Changes without incompatibilities:
 
@@ -37,9 +46,12 @@ Changes without incompatibilities:
 * map:create_teletransporter(): make destination optional.
 * Add a function sol.video.get_quest_size().
 * Add a function sol.audio.get_music() (#146).
-* Return nil if the string is not found in sol.language.get_string().
-* Return nil if the dialog is not found in sol.language.get_dialog().
 * Make map:get_camera_position() also return the size of the visible area.
+* Return nil if the string is not found in sol.language.get_string().
+* sol.language.get_dialog() is now implemented.
+* Add a function game:stop_dialog(status) to close the scripted dialog box.
+* Add an event game:on_dialog_started(dialog, info).
+* Add an event game:on_dialog_finished(dialog).
 
 Solarus Quest Editor changes
 ----------------------------

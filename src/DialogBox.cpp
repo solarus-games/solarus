@@ -254,12 +254,18 @@ void DialogBox::show_more_lines() {
  * Nothing happens if the dialog is handled in Lua.
  *
  * \param command The command pressed.
+ * \return \c true if the command was handled (that is, if the dialog box
+ * is active and is the built-in one).
  */
-void DialogBox::notify_command_pressed(GameCommands::Command command) {
+bool DialogBox::notify_command_pressed(GameCommands::Command command) {
+
+  if (!is_enabled()) {
+    return false;
+  }
 
   if (!built_in) {
     // The dialog box is handled by a Lua script.
-    return;
+    return false;
   }
 
   if (command == GameCommands::ACTION) {
@@ -276,6 +282,8 @@ void DialogBox::notify_command_pressed(GameCommands::Command command) {
       line_surfaces[selected_line_index]->set_text_color(Color::get_yellow());
     }
   }
+
+  return true;
 }
 
 /**

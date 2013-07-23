@@ -251,44 +251,46 @@ bool Game::notify_input(InputEvent& event) {
  */
 void Game::notify_command_pressed(GameCommands::Command command) {
 
-  // Is a dialog being shown?
+  // Is a built-in dialog box being shown?
   if (is_dialog_enabled()) {
-    dialog_box.notify_command_pressed(command);
+    if (dialog_box.notify_command_pressed(command)) {
+      return;
+    }
   }
 
-  // Is the game over sequence shown?
-  else if (is_showing_gameover()) {
+  // Is the game over sequence being shown?
+  if (is_showing_gameover()) {
     gameover_sequence->notify_command_pressed(command);
+    return;
   }
 
-  else {
-    bool handled = get_lua_context().game_on_command_pressed(*this, command);
+  // See if the game script handles the command.
+  if (get_lua_context().game_on_command_pressed(*this, command)) {
+    return;
+  }
 
-    if (!handled) {
+  // See if the map script handled the command.
+  if (get_lua_context().map_on_command_pressed(get_current_map(), command)) {
+    return;
+  }
 
-      handled = get_lua_context().map_on_command_pressed(get_current_map(), command);
-
-      if (!handled) {
-        // The Lua script did not override the command: do the built-in behavior.
-
-        if (command == GameCommands::PAUSE) {
-          if (is_paused()) {
-            if (can_unpause()) {
-              set_paused(false);
-            }
-          }
-          else {
-            if (can_pause()) {
-              set_paused(true);
-            }
-          }
-        }
-        else if (!is_suspended()) {
-          // When the game is not suspended, all other commands apply to the hero.
-          hero->notify_command_pressed(command);
-        }
+  // Lua scripts did not override the command: do the built-in behavior.
+  if (command == GameCommands::PAUSE) {
+    if (is_paused()) {
+      if (can_unpause()) {
+        set_paused(false);
       }
     }
+    else {
+      if (can_pause()) {
+        set_paused(true);
+      }
+    }
+  }
+
+  else if (!is_suspended()) {
+    // When the game is not suspended, all other commands apply to the hero.
+    hero->notify_command_pressed(command);
   }
 }
 

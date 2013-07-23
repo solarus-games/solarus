@@ -42,7 +42,7 @@ class DialogBox {
 
     void open(const std::string& dialog_id, int info_ref, int callback_ref);
     void close(int status_ref);
-    void notify_command_pressed(GameCommands::Command command);
+    bool notify_command_pressed(GameCommands::Command command);
     const std::string& get_dialog_id();
 
     void draw(Surface& dst_surface);

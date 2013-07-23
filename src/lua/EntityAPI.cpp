@@ -1598,7 +1598,7 @@ int LuaContext::l_shop_item_question_dialog_finished(lua_State* l) {
     return 0;
   }
 
-  // The first parameter is the answer or "skipped".
+  // The first parameter is the answer.
   bool wants_to_buy = lua_isboolean(l, 1) && lua_toboolean(l, 1);
 
   Game& game = shop_item.get_game();

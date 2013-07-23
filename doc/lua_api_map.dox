@@ -461,10 +461,11 @@ Sets the light level of the map.
 
 \subsection lua_api_map_get_camera_position map:get_camera_position()
 
-Returns the coordinates of the top-left corner of the currently visible area
-of the map on the screen.
-- Return value 1 (number): X coordinate of the camera.
-- Return value 2 (number): Y coordinate of the camera.
+Returns the currently visible area of the map.
+- Return value 1 (number): X coordinate of the visible area.
+- Return value 2 (number): Y coordinate of the visible area.
+- Return value 3 (number): Width of the visible area.
+- Return value 4 (number): Height of the visible area.
 
 \subsection lua_api_map_move_camera map:move_camera(x, y, speed, callback, [delay_before], [delay_after])
 

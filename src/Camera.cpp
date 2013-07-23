@@ -165,7 +165,7 @@ void Camera::update() {
  *
  * This function returns the rectangle of the visible area of this camera.
  *
- * \return the visible area
+ * \return The visible area.
  */
 const Rectangle& Camera::get_position() {
   return position;

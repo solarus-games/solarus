@@ -49,9 +49,9 @@ class Camera {
     int get_height();
 
     Map& map;                     /**< The map. */
-    bool fixed_on_hero;           /**< true if the camera is fixed on the hero. */
-    bool restoring;               /**< true if the camera is moving back to the hero. */
-    Rectangle position;           /**< Position of the camera on the map. */
+    bool fixed_on_hero;           /**< \c true if the camera is fixed on the hero. */
+    bool restoring;               /**< \c true if the camera is moving back to the hero. */
+    Rectangle position;           /**< Visible area of the camera on the map. */
     int speed;                    /**< Speed of the movement. */
     TargetMovement* movement;     /**< Movement of the camera, or NULL for no movement. */
 };

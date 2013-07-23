@@ -397,7 +397,7 @@ Surface& Map::get_visible_surface() {
 /**
  * \brief Returns the position of the visible area, relative to the map
  * top-left corner.
- * \return the position of the visible area
+ * \return The rectangle of the visible area.
  */
 const Rectangle& Map::get_camera_position() {
   return camera->get_position();

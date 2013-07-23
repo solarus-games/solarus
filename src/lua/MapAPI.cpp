@@ -491,7 +491,9 @@ int LuaContext::map_api_get_camera_position(lua_State* l) {
 
   lua_pushinteger(l, camera_position.get_x());
   lua_pushinteger(l, camera_position.get_y());
-  return 2;
+  lua_pushinteger(l, camera_position.get_width());
+  lua_pushinteger(l, camera_position.get_height());
+  return 4;
 }
 
 /**

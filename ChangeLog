@@ -39,6 +39,7 @@ Changes without incompatibilities:
 * Add a function sol.audio.get_music() (#146).
 * Return nil if the string is not found in sol.language.get_string().
 * Return nil if the dialog is not found in sol.language.get_dialog().
+* Make map:get_camera_position() also return the size of the visible area.
 
 Solarus Quest Editor changes
 ----------------------------

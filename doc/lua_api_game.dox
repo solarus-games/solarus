@@ -166,6 +166,157 @@ unpause the game.
 - \c paused (boolean, optional): \c true to pause the game, \c false to unpause it.
   Only possible when the game is running. No value means \c true.
 
+\subsection lua_api_game_is_dialog_enabled game:is_dialog_enabled()
+
+Returns whether this game is currently showing a dialog.
+
+It does not matter whether the dialog is shown with the built-in,
+minimal dialog box or with your custom dialog box
+(see \ref lua_api_game_on_dialog_started "game:on_dialog_started()").
+
+Only possible when the game is running.
+- Return value (boolean): \c true if a dialog is being shown.
+
+\subsection lua_api_game_start_dialog game:start_dialog(dialog_id, [info], [callback])
+
+Starts showing a dialog.
+
+A dialog must not be already active.
+This function returns immediately, but you can provide a callback that will
+be executed when the dialog finishes.
+The game is suspended during the dialog, like when it is paused.
+
+If the event 
+\ref lua_api_game_on_dialog_started "game:on_dialog_started()"
+is not defined, then the engine will show a default, minimal dialog system
+without decoration.
+The user will be able to close the dialog by pressing
+the action command
+(you don't need to call
+\ref lua_api_game_stop_dialog "game:stop_dialog()").
+
+On the contrary, if the event
+\ref lua_api_game_on_dialog_started "game:on_dialog_started()"
+is defined, the engine calls it and does nothing else.
+This is the recommended way, because you can make your custom dialog box
+implementation with any feature you need.
+The game will be suspended until you call
+\ref lua_api_game_stop_dialog "game:stop_dialog()" explicitly.
+- \c dialog_id (string): Id of the dialog to show.
+  The corresponding dialog must exist in the
+  \ref quest_language_dialogs "dialogs.dat"
+  file of the current
+  \ref quest_language_list_file "language".
+- \c info (any type, optional): Any
+  information you want to pass to the 
+  \ref lua_api_game_on_dialog_started "game:on_dialog_started()" event.
+  You can use this parameter to include in the dialog any information that is
+  only known at runtime, for example the name of the player, the best score of
+  a mini-game or the time spent so far in the game. See the examples below.
+- \c callback (function, optional): A function to be called when the dialog
+  finishes. A status parameter (possibly \c nil)
+  is passed to your function: its value is the argument of
+  \ref lua_api_game_stop_dialog "game:stop_dialog()" and it represents
+  the result of the dialog.
+  This feature may be used by your dialog box system to return any useful
+  information to the map script, like the answer chosen by the player if the
+  dialog was a question, or whether the dialog was skipped.
+
+Example of a small map script with an NPC that shows a simple dialog:
+\verbatim
+local map = ...
+
+function some_npc:on_interaction()
+  -- Remember that you specify a dialog id, not directly the text to show.
+  -- The text is defined in the dialogs.dat file of the current language.
+  map:get_game():start_dialog("welcome_to_my_house")
+end
+\endverbatim
+
+Here is a more complex example, with an NPC that asks a question.
+This example assumes that your dialog box system can ask questions to the
+player, and returns the answer as a boolean value passed to
+\ref lua_api_game_stop_dialog "game:stop_dialog()".
+\verbatim
+local map = ...
+local game = map:get_game()
+function another_npc:on_interaction()
+  game:start_dialog("give_me_100_rupees_please", function(answer)
+    if answer then
+      if game:get_money() >= 100 then
+        game:remove_money(100)
+        game:start_dialog("thanks")
+      else
+        sol.audio.play_sound("wrong")
+        game:start_dialog("not_enough_money")
+      end
+    else
+      game:start_dialog("not_happy")
+    end
+  end)
+end
+\endverbatim
+
+Finally, to illustrate the use of the \c info parameter, let's modify the
+previous example to make the amount of money only determined at runtime.
+In other words, we want an NPC that can say "Please give me 100 rupees",
+but also "Please give me 25 rupees" or any number.
+Since the number is only known at runtime, it can no longer be hardcoded
+in the text of the
+\ref quest_language_dialogs "dialog".
+So let's assume that the text of the dialog contains instead a special
+sequence (like \c "$v") to be substituted by the final value.
+(Note that \ref lua_api_shop_treasure_dialogs "shop treasures" use a very similar
+convention for their dialogs.)
+\verbatim
+local map = ...
+local game = map:get_game()
+
+function another_npc:on_interaction()
+  local how_much = math.random(100)
+  game:start_dialog("give_me_x_rupees_please", how_much, function(answer)
+    if answer then
+      if game:get_money() >= how_much then
+        game:remove_money(how_much)
+        -- ... The rest is unchanged.
+\endverbatim
+To make this example work, you need a dialog box system
+that 
+performs the substitution when \c info is set.
+See \ref lua_api_game_on_dialog_started "game:on_dialog_started()".
+
+\note The \c info parameter of
+  \ref lua_api_game_start_dialog "game:start_dialog()"
+  and the status parameter of the callback
+  are a flexible way to make the map script communicate with the dialog
+  box system in both directions.
+  They can been seen as the parameter and the result (respectively)
+  of the dialog being displayed.
+  They can both be any value, like a table with many information.
+
+\subsection lua_api_game_stop_dialog game:stop_dialog([status])
+
+Stops the current dialog.
+
+A dialog must be active when you call this function.
+The dialog stops being displayed and the game can resume.
+This function is typically called by your dialog box system when it
+wants to close the dialog.
+
+The
+\ref lua_api_game_on_dialog_finished "game:on_dialog_finished()"
+event is first called (if it is defined).
+Then, the callback that was passed to 
+\ref lua_api_game_start_dialog "game:start_dialog()"
+is called (if it was defined)
+with the \c status argument.
+- \c status (any type, optional): Some information to return to the
+  script that started the dialog.
+  For example, you can pass the result of the dialog if it was a question,
+  or whether it was skipped by the user before the end.
+  See the
+  \ref lua_api_game_start_dialog "examples above".
+
 \subsection lua_api_game_get_map game:get_map()
 
 Returns the current map.
@@ -619,6 +770,52 @@ game command) or by you (by calling
 \ref lua_api_game_set_paused "game:set_paused(false)").
 
 This is probably a good place to stop your pause menu.
+
+\subsection lua_api_game_on_dialog_started game:on_dialog_started(dialog, [info])
+
+Called when a dialog starts.
+
+The dialog may be triggered by a Lua script
+(by calling \ref lua_api_game_start_dialog "game:start_dialog()")
+or by the engine because in various situations (for example
+when finding a treasure).
+
+If this event is not defined, the engine shows a minimal dialog box without
+decoration and you have nothing else to do.
+
+If this event is defined, the engine does nothing and your script is
+responsible to show the dialog in any way you want,
+and to close it later by calling
+\ref lua_api_game_stop_dialog "game:stop_dialog()").
+It is recommended to implement your dialog system as a
+\ref lua_api_menu "menu": if you do so,
+you will automatically get called by the engine
+when a command is pressed,
+when you need to draw the dialog box on the screen, etc.
+- \c dialog (table): All properties of the dialog to show.
+  This table is identical to the one returned by
+  \ref lua_api_language_get_dialog "sol.language.get_dialog()".
+  It is a table with at least the following two entries:
+  - \c dialog_id (string): Id of the dialog.
+  - \c text (string): Text of the dialog in the current language.
+  The table also contains all custom entries defined in
+  \ref quest_language_dialogs "text/dialogs.dat"
+  for this dialog.
+  These custom entries always have string keys and string values.
+  Values that were defined as numbers in \c "text/dialogs.dat" are replaced
+  in this table by their string representation,
+  and values that were defined as booleans are
+  replaced by the string \c "1" for \c true and \c "0" for \c false.
+- \c info (any value, optional): Some additional information for this 
+  particular dialog. You can get here some data that is only known at runtime.
+  See the examples of \ref lua_api_game_start_dialog "game:start_dialog()".
+
+\subsection lua_api_game_on_dialog_finished game:on_dialog_finished(dialog)
+
+Called when the current dialog stops.
+- \c dialog (table): All properties of the dialog that was shown.
+  See \ref lua_api_game_on_dialog_started "game:on_dialog_started()"
+  for a description of this table.
 
 \subsection lua_api_game_on_key_pressed game:on_key_pressed(key, modifiers)
 

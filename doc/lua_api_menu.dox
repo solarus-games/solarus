@@ -4,6 +4,7 @@
 \tableofcontents
 
 To display various information such as a title screen,
+a dialog box,
 a HUD (head-up display) or a pause screen, you can use one or several menus.
 
 A menu is an arbitrary Lua table.

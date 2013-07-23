@@ -24,7 +24,7 @@ When a sensor is activated, the event
 is called.
 Define that event to implement what happens:
 \ref lua_api_map_close_doors "closing a door",
-\ref lua_api_map_start_dialog "starting a dialog", etc.
+\ref lua_api_game_start_dialog "starting a dialog", etc.
 
 Sensors can have any size, but like all entities, their width and height
 must be multiples of 8 pixels.

@@ -59,6 +59,7 @@ menu where the default language will be initially selected.
 \subsection lua_api_language_get_string sol.language.get_string(key)
 
 Returns a string translated in the current language.
+
 Translated strings are defined in the file
 \ref quest_language_strings "text/strings.dat"
 of the
@@ -73,6 +74,7 @@ language-specific directory (e.g. \c languages/en/text/strings.dat).
 \subsection lua_api_language_get_dialog sol.language.get_dialog(dialog_id)
 
 Returns a dialog translated in the current language.
+
 Translated dialogs are defined in the file
 \ref quest_language_dialogs "text/dialogs.dat" of the
 language-specific directory (e.g. \c languages/en/text/dialogs.dat).
@@ -82,9 +84,14 @@ language-specific directory (e.g. \c languages/en/text/dialogs.dat).
   The dialog is a table with at least the following two entries:
   - \c dialog_id (string): Id of the dialog.
   - \c text (string): Text of the dialog.
-  The table also contains all custom entries defined in \c "text/dialogs.dat"
-  for this dialog. These custom entries (if any) always have string keys and
-  string values.
+  The table also contains all custom entries defined in
+  \ref quest_language_dialogs "text/dialogs.dat"
+  for this dialog.
+  These custom entries always have string keys and string values.
+  Values that were defined as numbers in \c "text/dialogs.dat" are replaced
+  in this table by their string representation,
+  and values that were defined as booleans are
+  replaced by the string \c "1" for \c true and \c "0" for \c false.
 
 */
 

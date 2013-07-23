@@ -35,6 +35,7 @@ void LuaContext::register_video_module() {
       { "get_modes", video_api_get_modes },
       { "is_fullscreen", video_api_is_fullscreen },
       { "set_fullscreen", video_api_set_fullscreen },
+      { "get_quest_size", video_api_get_quest_size },
       { NULL, NULL }
   };
   register_functions(video_module_name, functions);

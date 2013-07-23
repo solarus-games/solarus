@@ -20,7 +20,7 @@ Empty lines are also ignored.
 
 The definition of your quest properties
 start with \c quest{ and end with \c }.
-Each property is declared with the syntax \c key = value and
+Each property is declared with the syntax <tt>key = value</tt> and
 separated with commas. It is allowed to have an extra comma after
 the last property. String values are enclosed within
 double quotes.

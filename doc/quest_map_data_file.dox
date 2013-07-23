@@ -48,7 +48,7 @@ Empty lines are also ignored.
 The first element in the map data file describes the properties of the map.
 The definition of these properties starts with
 \c properties{ and ends with \c }.
-Properties are declared with the syntax \c key = value and
+Properties are declared with the syntax <tt>key = value</tt> and
 separated with commas. It is allowed to have an extra comma after
 the last property. String values should be enclosed within
 double quotes.
@@ -167,7 +167,7 @@ declared in the map data file, see the
 The definition of a map entity starts with \c entity_type{ and ends with
 \c }, where \c entity_type is a type of entity (see below).
 Inside the braces, the properties of the entity are specified.
-Properties are declared with the syntax \c key = value and
+Properties are declared with the syntax <tt>key = value</tt> and
 separated with commas. It is allowed to have an extra comma after
 the last property. String values should be enclosed within
 double quotes.

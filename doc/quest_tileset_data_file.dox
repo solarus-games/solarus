@@ -73,7 +73,7 @@ The rest of the tileset data file defines all tile patterns of the tileset.
 The definition of a tile pattern starts with \c tile_pattern{ and ends with
 \c }.
 Inside the braces, the properties of the tile pattern are specified.
-Properties are declared with the syntax \c key = value and
+Properties are declared with the syntax <tt>key = value</tt> and
 separated with commas. It is allowed to have an extra comma after
 the last property. String values should be enclosed within
 double quotes.

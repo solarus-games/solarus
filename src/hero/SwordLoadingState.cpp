@@ -30,10 +30,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
 Hero::SwordLoadingState::SwordLoadingState(Hero& hero):
-  PlayerMovementState(hero) {
+  PlayerMovementState(hero, "sword loading") {
 
 }
 

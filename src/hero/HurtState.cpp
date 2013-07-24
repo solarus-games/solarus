@@ -26,18 +26,18 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
- * \param source_xy coordinates of the thing (usually an enemy) that hurts the hero,
- * used to compute the trajectory of the hero
- * \param life_points number of heart quarters to remove (this number may be reduced by the tunic)
- * \param magic_points number of magic points to remove
+ * \param hero The hero controlled by this state.
+ * \param source_xy Coordinates of the thing (usually an enemy) that hurts the hero,
+ * used to compute the trajectory of the hero.
+ * \param life_points Number of heart quarters to remove (this number may be reduced by the tunic).
+ * \param magic_points Number of magic points to remove.
  */
 Hero::HurtState::HurtState(
     Hero& hero,
     const Rectangle& source_xy,
     int life_points,
     int magic_points):
-  State(hero),
+  State(hero, "hurt"),
   source_xy(source_xy),
   life_points(life_points),
   magic_points(magic_points),

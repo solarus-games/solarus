@@ -50,6 +50,7 @@ void LuaContext::register_game_module() {
       { "start_dialog", game_api_start_dialog },
       { "stop_dialog", game_api_stop_dialog },
       { "get_map", game_api_get_map },
+      { "get_hero", game_api_get_hero },
       { "get_value", game_api_get_value },
       { "set_value", game_api_set_value },
       { "get_starting_location", game_api_get_starting_location },
@@ -447,6 +448,25 @@ int LuaContext::game_api_get_map(lua_State* l) {
   }
   else {
     push_map(l, game->get_current_map());
+  }
+  return 1;
+}
+
+/**
+ * \brief Implementation of game:get_hero().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_hero(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  if (game == NULL || !game->has_current_map()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_hero(l, game->get_hero());
   }
   return 1;
 }

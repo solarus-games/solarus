@@ -24,8 +24,11 @@ are managed by the engine.
 
 The hero entity persists accross map changes.
 In other words, the effect of functions like
-\ref lua_api_set_walking_speed "hero:set_walking_speed()"
+\ref lua_api_hero_set_walking_speed "hero:set_walking_speed()"
 persists when the player goes to another map.
+Similarly, events that you define on the hero
+(like \ref lua_api_hero_on_state_changed "hero:on_state_changed()")
+continue to get called on any map while the game is active.
 
 We describe here the Lua API that you can use to change the hero's state.
 
@@ -114,6 +117,38 @@ Forgets a position that was previously memorized by
 The initial behavior is restored: the hero will now get
 back to where he was just before falling, instead going to of a memorized
 position.
+
+\subsection lua_api_hero_get_state hero:get_state()
+
+Returns the name of the current built-in state of the hero.
+- Return value (\c string): The current state. Can be one of:
+  \c "back to solid ground",
+  \c "boomerang",
+  \c "bow",
+  \c "carrying",
+  \c "conveyor belt",
+  \c "falling",
+  \c "forced walking",
+  \c "free",
+  \c "freezed",
+  \c "grabbing",
+  \c "hookshot",
+  \c "hurt",
+  \c "jumping",
+  \c "lifting",
+  \c "plunging",
+  \c "pulling",
+  \c "pushing",
+  \c "running",
+  \c "stairs",
+  \c "swimming",
+  \c "sword loading",
+  \c "sword spin attack",
+  \c "sword swinging",
+  \c "sword tapping",
+  \c "treasure",
+  \c "using item"
+  or \c "victory".
 
 \subsection lua_api_hero_freeze hero:freeze()
 
@@ -250,7 +285,21 @@ See \ref lua_api_entity_events to know these events.
 
 \section lua_api_hero_events Events of the type hero
 
-None.
+The following events are specific to the hero.
+
+Recall that the hero persists when the player goes to another map, and
+so do the events defined on the hero.
+
+\subsection lua_api_hero_on_state_changed hero:on_state_changed(state)
+
+Called when the built-in state of the hero changes.
+- \c state (string): Name of the new state. See
+  \ref lua_api_hero_get_state "hero:get_state()" for the list of possible
+  states.
+
+\remark This event is called even for the initial state of the hero,
+  right after \ref lua_api_game_on_started "game:on_started()".
+  This initial state is always \c "free".
 
 */
 

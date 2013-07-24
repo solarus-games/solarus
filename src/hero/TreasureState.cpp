@@ -30,9 +30,12 @@
  * \param callback_ref Lua ref to a function to call when the
  * treasure's dialog finishes (possibly LUA_REFNIL).
  */
-Hero::TreasureState::TreasureState(Hero& hero, const Treasure& treasure,
+Hero::TreasureState::TreasureState(
+    Hero& hero,
+    const Treasure& treasure,
     int callback_ref):
-  State(hero),
+
+  State(hero, "treasure"),
   treasure(treasure),
   callback_ref(callback_ref) {
 

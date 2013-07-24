@@ -24,10 +24,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
-Hero::FallingState::FallingState(Hero &hero):
-  State(hero) {
+Hero::FallingState::FallingState(Hero& hero):
+  State(hero, "falling") {
 
 }
 

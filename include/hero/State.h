@@ -31,34 +31,11 @@
  */
 class Hero::State {
 
-  private:
-
-    Map* map;                 /**< the current map (it may change during this state) */
-
-  protected:
-
-    Hero& hero;               /**< the hero controlled by this state */
-    bool suspended;           /**< indicates whether this state is suspended */
-    uint32_t when_suspended;  /**< indicates when this state was suspended */
-
-    State(Hero& hero);
-
-    bool is_current_state();
-
-    // access to various game objects
-    LuaContext& get_lua_context();
-    MapEntities& get_entities();
-    Game& get_game();
-    Map& get_map();
-    Equipment& get_equipment();
-    KeysEffect& get_keys_effect();
-    GameCommands& get_commands();
-    HeroSprites& get_sprites();
-
   public:
 
     // creation and destruction
     virtual ~State();
+    const std::string& get_name() const;
     virtual void start(State* previous_state);
     virtual void stop(State* next_state);
 
@@ -148,6 +125,32 @@ class Hero::State {
     bool is_carrying_item();
     virtual CarriedItem* get_carried_item();
     virtual CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
+
+  protected:
+
+    State(Hero& hero, const std::string& state_name);
+
+    bool is_current_state();
+
+    // access to various game objects
+    LuaContext& get_lua_context();
+    MapEntities& get_entities();
+    Game& get_game();
+    Map& get_map();
+    Equipment& get_equipment();
+    KeysEffect& get_keys_effect();
+    GameCommands& get_commands();
+    HeroSprites& get_sprites();
+
+    Hero& hero;               /**< The hero controlled by this state. */
+    bool suspended;           /**< Whether this state is suspended. */
+    uint32_t when_suspended;  /**< When this state was suspended. */
+
+  private:
+
+    Map* map;                 /**< The current map (it may change during this state). */
+    const std::string name;   /**< Name describing this state. */
+
 };
 
 #endif

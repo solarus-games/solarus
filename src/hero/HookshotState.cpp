@@ -25,10 +25,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
 Hero::HookshotState::HookshotState(Hero& hero):
-  State(hero),
+  State(hero, "hookshot"),
   hookshot(NULL) {
 
 }

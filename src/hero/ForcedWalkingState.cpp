@@ -28,10 +28,13 @@
  * once finished
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
-Hero::ForcedWalkingState::ForcedWalkingState(Hero &hero, const std::string &path,
-    bool loop, bool ignore_obstacles):
+Hero::ForcedWalkingState::ForcedWalkingState(
+    Hero& hero,
+    const std::string& path,
+    bool loop,
+    bool ignore_obstacles):
 
-  State(hero) {
+  State(hero, "forced walking") {
 
   this->movement = new PathMovement(path, hero.get_walking_speed(),
       loop, ignore_obstacles, false);

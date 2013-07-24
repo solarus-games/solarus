@@ -25,10 +25,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
-Hero::PullingState::PullingState(Hero &hero):
-  State(hero) {
+Hero::PullingState::PullingState(Hero& hero):
+  State(hero, "pulling") {
 
 }
 

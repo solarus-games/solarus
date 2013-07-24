@@ -26,11 +26,12 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
- * \param carried_item the item to carry
+ * \param hero The hero controlled by this state.
+ * \param carried_item The item to carry.
  */
-Hero::CarryingState::CarryingState(Hero &hero, CarriedItem *carried_item):
-  PlayerMovementState(hero), carried_item(carried_item) {
+Hero::CarryingState::CarryingState(Hero& hero, CarriedItem* carried_item):
+  PlayerMovementState(hero, "carrying"),
+  carried_item(carried_item) {
 
 }
 

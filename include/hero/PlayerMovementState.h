@@ -29,16 +29,12 @@
  */
 class Hero::PlayerMovementState: public Hero::State {
 
-  protected:
-
-    PlayerMovementState(Hero &hero);
-
   public:
 
     virtual ~PlayerMovementState();
-    virtual void start(State *previous_state);
-    virtual void stop(State *next_state);
-    void set_map(Map &map);
+    virtual void start(State* previous_state);
+    virtual void stop(State* next_state);
+    void set_map(Map& map);
     PlayerMovement* get_player_movement();
 
     virtual void set_animation_stopped();
@@ -50,6 +46,11 @@ class Hero::PlayerMovementState: public Hero::State {
     void notify_layer_changed();
     bool can_be_hurt(Enemy* attacker);
     bool can_pick_treasure(EquipmentItem& item);
+
+  protected:
+
+    PlayerMovementState(Hero& hero, const std::string& state_name);
+
 };
 
 #endif

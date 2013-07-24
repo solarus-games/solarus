@@ -24,10 +24,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
-Hero::GrabbingState::GrabbingState(Hero &hero):
-  State(hero) {
+Hero::GrabbingState::GrabbingState(Hero& hero):
+  State(hero, "grabbing") {
 
 }
 

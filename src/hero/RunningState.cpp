@@ -33,7 +33,7 @@
  * \param command The game command that triggers running.
  */
 Hero::RunningState::RunningState(Hero& hero, GameCommands::Command command):
-  State(hero),
+  State(hero, "running"),
   command(command) {
 
 }

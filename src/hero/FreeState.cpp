@@ -26,10 +26,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
-Hero::FreeState::FreeState(Hero &hero):
-  PlayerMovementState(hero) {
+Hero::FreeState::FreeState(Hero& hero):
+  PlayerMovementState(hero, "free") {
 
 }
 

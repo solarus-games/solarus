@@ -30,7 +30,7 @@
  * victory sequence finishes (possibly LUA_REFNIL).
  */
 Hero::VictoryState::VictoryState(Hero& hero, int callback_ref):
-  State(hero),
+  State(hero, "victory"),
   end_victory_date(0),
   finished(false),
   callback_ref(callback_ref) {

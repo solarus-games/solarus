@@ -26,10 +26,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
 Hero::PushingState::PushingState(Hero& hero):
-  State(hero),
+  State(hero, "pushing"),
   pushed_entity(NULL) {
 
 }

@@ -28,10 +28,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
 Hero::SpinAttackState::SpinAttackState(Hero& hero):
-  State(hero),
+  State(hero, "sword spin attack"),
   being_pushed(false) {
 
 }

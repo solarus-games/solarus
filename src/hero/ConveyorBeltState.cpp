@@ -25,11 +25,13 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
- * \param conveyor_belt the conveyor belt to take
+ * \param hero The hero controlled by this state.
+ * \param conveyor_belt The conveyor belt to take.
  */
-Hero::ConveyorBeltState::ConveyorBeltState(Hero &hero, ConveyorBelt &conveyor_belt):
-  State(hero), conveyor_belt(conveyor_belt) {
+Hero::ConveyorBeltState::ConveyorBeltState(
+    Hero& hero, ConveyorBelt& conveyor_belt):
+  State(hero, "conveyor belt"),
+  conveyor_belt(conveyor_belt) {
 
 }
 

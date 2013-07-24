@@ -30,12 +30,12 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
- * \param stairs the stairs to take
- * \param way the way you are taking the stairs
+ * \param hero The hero controlled by this state.
+ * \param stairs The stairs to take.
+ * \param way The way you are taking the stairs.
  */
 Hero::StairsState::StairsState(Hero& hero, Stairs& stairs, Stairs::Way way):
-  State(hero),
+  State(hero, "stairs"),
   stairs(stairs),
   way(way),
   phase(0),

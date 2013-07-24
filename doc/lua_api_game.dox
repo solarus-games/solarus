@@ -339,6 +339,20 @@ Returns the current map.
 - Return value (\ref lua_api_map "map"): The current map of this game
   (\c nil if this game is not running).
 
+\subsection lua_api_game_get_hero game:get_hero()
+
+Returns the
+\ref lua_api_hero "hero".
+
+The hero is a \ref lua_api_entity "map entity" that always exists
+while the game is running, and that persists when the map changes.
+For this reason, he can be seen as belonging to the game more than to the
+current map. That's why this function exists.
+- Return value (\ref lua_api_hero "hero"): The hero, or \c nil if the game
+  is not running.
+
+\remark Equivalent to <tt>game:get_map():get_entity("hero")</tt>.
+
 \subsection lua_api_game_get_value game:get_value(savegame_variable)
 
 Returns a value saved.

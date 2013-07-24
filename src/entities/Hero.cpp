@@ -128,6 +128,15 @@ bool Hero::is_drawn_in_y_order() {
 }
 
 /**
+ * \brief Returns the name of the hero's internal state.
+ * \return A name describing the current state of the hero.
+ */
+const std::string& Hero::get_state_name() const {
+
+  return state->get_name();
+}
+
+/**
  * \brief Changes the hero's internal state.
  *
  * This function stops the old state and starts the new one.
@@ -138,19 +147,23 @@ bool Hero::is_drawn_in_y_order() {
  */
 void Hero::set_state(State* new_state) {
 
-  // stop the previous state
+  // Stop the previous state.
   State* old_state = this->state;
   if (old_state != NULL) {
     old_state->stop(new_state);
   }
 
-  // don't delete the previous state immediately since it may be the caller of this function
+  // Don't delete the previous state immediately since it may be the caller
+  // of this function.
   this->old_states.push_back(old_state);
 
   this->state = new_state;
-  this->state->start(old_state);
+  this->state->start(old_state);  // May also change the state again.
 
-  check_position();
+  if (this->state == new_state) {
+    // If the state has not already changed again.
+    check_position();
+  }
 }
 
 /**

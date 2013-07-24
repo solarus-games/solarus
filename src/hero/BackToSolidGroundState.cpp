@@ -34,7 +34,7 @@
  */
 Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
     bool use_memorized_xy, uint32_t end_delay, bool with_sound):
-  State(hero),
+  State(hero, "back to solid ground"),
   end_delay(end_delay),
   end_date(0),
   with_sound(with_sound) {

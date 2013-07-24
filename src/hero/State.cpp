@@ -20,6 +20,7 @@
 #include "entities/Hero.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
+#include "lua/LuaContext.h"
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
@@ -32,14 +33,15 @@
  *
  * This constructor can be called only from the subclasses.
  *
- * \param hero the hero to control with this state
+ * \param hero The hero to control with this state.
+ * \param state_name A name describing this state.
  */
-Hero::State::State(Hero &hero):
-
-  map(&hero.get_map()),
+Hero::State::State(Hero& hero, const std::string& state_name):
   hero(hero),
   suspended(false),
-  when_suspended(0) {
+  when_suspended(0),
+  map(&hero.get_map()),
+  name(state_name) {
 
 }
 
@@ -49,6 +51,14 @@ Hero::State::State(Hero &hero):
  * The state is destroyed once it is not the current state of the hero anymore.
  */
 Hero::State::~State() {
+}
+
+/**
+ * \brief Returns a name describing this state.
+ * \return A name describing this state.
+ */
+const std::string& Hero::State::get_name() const {
+  return name;
 }
 
 /**
@@ -126,25 +136,34 @@ GameCommands& Hero::State::get_commands() {
 /**
  * \brief Starts this state.
  *
- * This function is called automatically when this state becomes the active state of the hero.
+ * This function is called automatically when this state becomes the active
+ * state of the hero.
  * The initializations should be done here rather than in the constructor.
  *
- * \param previous_state the previous state or NULL if this is the first state (for information)
+ * \param previous_state The previous state or NULL if this is the first state
+ * (for information).
  */
-void Hero::State::start(State *previous_state) {
+void Hero::State::start(State* previous_state) {
+
   set_suspended(hero.is_suspended());
+
+  // Notify Lua.
+  if (hero.is_on_map()) {
+    get_lua_context().hero_on_state_changed(hero, get_name());
+  }
 }
 
 /**
  * \brief Ends this state.
  *
- * This function is called automatically when this state is not the active state anymore.
+ * This function is called automatically when this state is not the active
+ * state anymore.
  * You should here close everything the start() function has opened.
  * The destructor will be called at the next cycle.
  *
  * \param next_state the next state (for information)
  */
-void Hero::State::stop(State *next_state) {
+void Hero::State::stop(State* next_state) {
 }
 
 /**

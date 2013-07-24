@@ -23,10 +23,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
-Hero::BowState::BowState(Hero &hero):
-  State(hero) {
+Hero::BowState::BowState(Hero& hero):
+  State(hero, "bow") {
 }
 
 /**

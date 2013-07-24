@@ -24,9 +24,11 @@
  * \param hero The hero controlled by this state.
  * \param item The equipment item to use.
  */
-Hero::UsingItemState::UsingItemState(Hero& hero,
+Hero::UsingItemState::UsingItemState(
+    Hero& hero,
     EquipmentItem& item):
-  State(hero),
+
+  State(hero, "using item"),
   item_usage(hero.get_game(), item) {
 
 }

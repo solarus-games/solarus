@@ -25,11 +25,11 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
- * \param lifted_item the item to lift (will be destroyed automatically)
+ * \param hero The hero controlled by this state.
+ * \param lifted_item The item to lift (will be destroyed automatically).
  */
 Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
-  State(hero),
+  State(hero, "lifting"),
   lifted_item(lifted_item) {
 
 }

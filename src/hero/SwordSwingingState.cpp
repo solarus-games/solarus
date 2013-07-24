@@ -26,10 +26,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
 Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
-  State(hero),
+  State(hero, "sword swinging"),
   attacked(false),
   sword_finished(false) {
 

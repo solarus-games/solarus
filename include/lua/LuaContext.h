@@ -292,6 +292,7 @@ class LuaContext {
     // Map entity events.
     // TODO entity_on_created
     void entity_on_removed(MapEntity& entity);
+    void hero_on_state_changed(Hero& hero, const std::string& state_name);
     // TODO add destination_on_activated
     void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now)
     void npc_on_interaction(NPC& npc);
@@ -546,6 +547,7 @@ class LuaContext {
       game_api_start_dialog,
       game_api_stop_dialog,
       game_api_get_map,
+      game_api_get_hero,
       game_api_get_value,
       game_api_set_value,
       game_api_get_starting_location,
@@ -707,6 +709,7 @@ class LuaContext {
       hero_api_set_walking_speed,
       hero_api_save_solid_ground,
       hero_api_reset_solid_ground,
+      hero_api_get_state,
       hero_api_freeze,
       hero_api_unfreeze,
       hero_api_walk,
@@ -950,6 +953,7 @@ class LuaContext {
     void on_camera_back();
     void on_obtaining_treasure(const Treasure& treasure);
     void on_obtained_treasure(const Treasure& treasure);
+    void on_state_changed(const std::string& state_name);
     void on_activated();
     void on_activated_repeat();
     void on_inactivated();

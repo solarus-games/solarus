@@ -21,11 +21,12 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero
+ * \param hero The hero controlled by this state.
+ * \param state_name A name describing this state.
  */
-Hero::PlayerMovementState::PlayerMovementState(Hero &hero):
-  State(hero) {
-
+Hero::PlayerMovementState::PlayerMovementState(
+    Hero& hero, const std::string& state_name):
+  State(hero, state_name) {
 }
 
 /**
@@ -53,7 +54,9 @@ PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
  *
  * \param previous_state the previous state
  */
-void Hero::PlayerMovementState::start(State *previous_state) {
+void Hero::PlayerMovementState::start(State* previous_state) {
+
+  State::start(previous_state);
 
   hero.set_movement(new PlayerMovement(hero.get_walking_speed()));
 

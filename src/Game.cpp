@@ -131,6 +131,7 @@ void Game::start() {
   started = true;
   get_savegame().notify_game_started();
   get_lua_context().game_on_started(*this);
+  get_lua_context().hero_on_state_changed(get_hero(), get_hero().get_state_name());
 }
 
 /**

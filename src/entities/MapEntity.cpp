@@ -299,7 +299,8 @@ MapEntities& MapEntity::get_entities() const {
  */
 LuaContext& MapEntity::get_lua_context() const {
 
-  Debug::check_assertion(main_loop != NULL, "This entity is not fully constructed yet");
+  Debug::check_assertion(main_loop != NULL,
+      "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
 }
 

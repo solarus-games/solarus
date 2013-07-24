@@ -2077,6 +2077,18 @@ void LuaContext::on_obtained_treasure(const Treasure& treasure) {
 }
 
 /**
+ * \brief Calls the on_state_changed() method of the object on top of the stack.
+ * \param state_name A name describing the new state.
+ */
+void LuaContext::on_state_changed(const std::string& state_name) {
+
+  if (find_method("on_state_changed")) {
+    push_string(l, state_name);
+    call_function(2, 0, "on_state_changed");
+  }
+}
+
+/**
  * \brief Calls the on_activated() method of the object on top of the stack.
  */
 void LuaContext::on_activated() {

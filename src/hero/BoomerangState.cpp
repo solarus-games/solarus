@@ -33,10 +33,13 @@
  * when preparing the boomerang
  * \param sprite_name animation set id that represents the boomerang
  */
-Hero::BoomerangState::BoomerangState(Hero& hero, int max_distance, int speed,
+Hero::BoomerangState::BoomerangState(
+    Hero& hero,
+    int max_distance,
+    int speed,
     const std::string& tunic_preparing_animation,
     const std::string& sprite_name):
-  State(hero),
+  State(hero, "boomerang"),
   max_distance(max_distance),
   speed(speed),
   tunic_preparing_animation(tunic_preparing_animation),

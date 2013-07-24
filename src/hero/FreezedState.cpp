@@ -21,10 +21,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
 Hero::FreezedState::FreezedState(Hero& hero):
-  State(hero) {
+  State(hero, "freezed") {
 
 }
 

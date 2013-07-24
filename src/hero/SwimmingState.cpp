@@ -24,10 +24,10 @@
 
 /**
  * \brief Constructor.
- * \param hero the hero controlled by this state
+ * \param hero The hero controlled by this state.
  */
 Hero::SwimmingState::SwimmingState(Hero& hero):
-  PlayerMovementState(hero),
+  PlayerMovementState(hero, "swimming"),
   fast_swimming(false),
   end_fast_swim_date(0) {
 

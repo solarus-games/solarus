@@ -128,6 +128,7 @@ void LuaContext::register_entity_module() {
       { "set_walking_speed", hero_api_set_walking_speed },
       { "save_solid_ground", hero_api_save_solid_ground },
       { "reset_solid_ground", hero_api_reset_solid_ground },
+      { "get_state", hero_api_get_state },
       { "freeze", hero_api_freeze },
       { "unfreeze", hero_api_unfreeze },
       { "walk", hero_api_walk },  // TODO use the more general movement:start
@@ -929,6 +930,19 @@ int LuaContext::hero_api_reset_solid_ground(lua_State* l) {
   hero.reset_target_solid_ground_coords();
 
   return 0;
+}
+
+/**
+ * \brief Implementation of hero:get_state().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_get_state(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  push_string(l, hero.get_state_name());
+  return 1;
 }
 
 /**
@@ -2347,6 +2361,19 @@ void LuaContext::entity_on_removed(MapEntity& entity) {
   push_entity(l, entity);
   on_removed();
   remove_timers(-1);  // Stop timers associated to this entity.
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_state_changed() method of a Lua hero.
+ * \param hero The hero.
+ * \param state_name A name describing the new state.
+ */
+void LuaContext::hero_on_state_changed(
+    Hero& hero, const std::string& state_name) {
+
+  push_hero(l, hero);
+  on_state_changed(state_name);
   lua_pop(l, 1);
 }
 

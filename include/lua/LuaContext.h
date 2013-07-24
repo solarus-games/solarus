@@ -703,6 +703,8 @@ class LuaContext {
       hero_api_teleport,
       hero_api_get_direction,
       hero_api_set_direction,
+      hero_api_get_walking_speed,
+      hero_api_set_walking_speed,
       hero_api_save_solid_ground,
       hero_api_reset_solid_ground,
       hero_api_freeze,

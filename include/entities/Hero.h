@@ -74,8 +74,8 @@ class Hero: public MapEntity {
     HeroSprites* sprites;           /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // position
-    static const int normal_walking_speed;   /**< default speed when walking */
-    int walking_speed;                       /**< current walking speed */
+    int normal_walking_speed;      /**< speed when normally walking */
+    int walking_speed;             /**< current walking speed (possibly changed by the ground) */
 
     // state specific
     Teletransporter *delayed_teletransporter;   /**< a teletransporter that will be activated when the hero finishes
@@ -193,6 +193,7 @@ class Hero: public MapEntity {
     bool can_control_movement();
     bool can_control_direction();
     int get_normal_walking_speed();
+    void set_normal_walking_speed(int normal_walking_speed);
     int get_walking_speed();
     void set_walking_speed(int walking_speed);
     int get_wanted_movement_direction8();

@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <lua.hpp>
 #include "lua/LuaContext.h"
 #include "entities/Hero.h"
 #include "entities/NPC.h"
@@ -125,6 +124,8 @@ void LuaContext::register_entity_module() {
       { "teleport", hero_api_teleport },
       { "get_direction", hero_api_get_direction },
       { "set_direction", hero_api_set_direction },
+      { "get_walking_speed", hero_api_get_walking_speed },
+      { "set_walking_speed", hero_api_set_walking_speed },
       { "save_solid_ground", hero_api_save_solid_ground },
       { "reset_solid_ground", hero_api_reset_solid_ground },
       { "freeze", hero_api_freeze },
@@ -859,6 +860,34 @@ int LuaContext::hero_api_set_direction(lua_State* l) {
   int direction = luaL_checkint(l, 2);
 
   hero.set_animation_direction(direction);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of hero:get_walking_speed().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_get_walking_speed(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  lua_pushinteger(l, hero.get_normal_walking_speed());
+  return 1;
+}
+
+/**
+ * \brief Implementation of hero:set_walking_speed().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_walking_speed(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  int normal_walking_speed = luaL_checkint(l, 2);
+
+  hero.set_normal_walking_speed(normal_walking_speed);
 
   return 0;
 }

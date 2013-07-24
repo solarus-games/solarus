@@ -22,6 +22,11 @@ His size is always 16x16 pixels and his sprites
 (tunic, sword, shield, shadow, etc.)
 are managed by the engine.
 
+The hero entity persists accross map changes.
+In other words, the effect of functions like
+\ref lua_api_set_walking_speed "hero:set_walking_speed()"
+persists when the player goes to another map.
+
 We describe here the Lua API that you can use to change the hero's state.
 
 \section lua_api_hero_inherited_methods Methods inherited from map entity
@@ -72,6 +77,23 @@ Sets the direction of the hero's \ref lua_api_sprite "sprites".
   direction pressed by the \ref lua_api_game_get_commands_direction "player's
   commands" and from the actual direction of the hero's \ref lua_api_movement
   "movement".
+
+\subsection lua_api_hero_get_walking_speed hero:get_walking_speed()
+
+Returns the speed of the normal walking movement of hero.
+
+This speed is automatically reduced when the hero walks on special ground like
+grass, ladders or holes.
+- Return value (number): The speed of normal walk in pixels par second.
+
+\subsection lua_api_hero_set_walking_speed hero:set_walking_speed(walking_speed)
+
+Sets the speed of the normal walking movement of hero.
+
+The default walking speed is 88 pixels per second.
+This speed is automatically reduced when the hero walks on special ground like
+grass, ladders or holes.
+- \c walking speed (number): The speed of normal walk in pixels par second.
 
 \subsection lua_api_hero_save_solid_ground hero:save_solid_ground([x, y, layer])
 

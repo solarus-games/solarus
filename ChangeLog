@@ -42,6 +42,7 @@ Changes with incompatibilities:
 
 * Replace map:set_pause_enabled() by game:set_pause_allowed().
 
+
 Changes without incompatibilities:
 
 * game:get/set_starting_location(): map and destination can now be nil.
@@ -51,6 +52,7 @@ Changes without incompatibilities:
 * Add a function sol.audio.get_music() (#146).
 * Add a function sol.video.get_quest_size().
 * Make map:get_camera_position() also return the size of the visible area.
+* Add functions hero:get/set_walking_speed() (#206).
 
 * Return nil if the string is not found in sol.language.get_string().
 * sol.language.get_dialog() is now implemented.

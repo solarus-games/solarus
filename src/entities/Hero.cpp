@@ -63,8 +63,6 @@
 #include "KeysEffect.h"
 #include "Sprite.h"
 
-const int Hero::normal_walking_speed = 88; // pixels per second
-
 /**
  * \brief Creates a hero.
  * \param equipment the equipment (needed to build the sprites even outside a game)
@@ -72,6 +70,7 @@ const int Hero::normal_walking_speed = 88; // pixels per second
 Hero::Hero(Equipment& equipment):
   MapEntity("hero", 0, LAYER_LOW, 0, 0, 16, 16),
   state(NULL),
+  normal_walking_speed(88),
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
   on_raised_blocks(false),
@@ -774,16 +773,29 @@ bool Hero::can_control_movement() {
 }
 
 /**
- * \brief Returns the default walking speed applied to the hero's movements when he is walking.
- * \return the default walking speed
+ * \brief Returns the speed applied to the walking movement on normal ground.
+ * \return The normal walking speed in pixels per second.
  */
 int Hero::get_normal_walking_speed() {
   return normal_walking_speed;
 }
 
 /**
+ * \brief Sets the speed applied to the walking movement on normal ground.
+ * \param normal_walking_speed The normal walking speed to set in pixels per second.
+ */
+void Hero::set_normal_walking_speed(int normal_walking_speed) {
+
+  bool was_normal = (this->walking_speed == this->normal_walking_speed);
+  this->normal_walking_speed = normal_walking_speed;
+  if (was_normal) {
+    set_walking_speed(normal_walking_speed);
+  }
+}
+
+/**
  * \brief Returns the current speed applied to the hero's movements when he is walking.
- * \return the current walking speed
+ * \return The current walking speed.
  */
 int Hero::get_walking_speed() {
   return walking_speed;

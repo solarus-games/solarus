@@ -540,6 +540,8 @@ class LuaContext {
       game_api_is_suspended,
       game_api_is_paused,
       game_api_set_paused,
+      game_api_is_pause_allowed,
+      game_api_set_pause_allowed,
       game_api_is_dialog_enabled,
       game_api_start_dialog,
       game_api_stop_dialog,
@@ -626,7 +628,6 @@ class LuaContext {
       map_api_get_location,
       map_api_get_tileset,
       map_api_set_tileset,
-      map_api_set_pause_enabled,  // TODO move to game api?
       map_api_get_light,  // TODO remove (this should be scripted)
       map_api_set_light,  // TODO remove (this should be scripted)
       map_api_get_camera_position,

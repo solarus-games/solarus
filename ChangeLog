@@ -32,6 +32,7 @@ Lua API changes
 Changes with incompatibilities:
 
 * Make map:get_entities() return an iterator instead of an array (#249).
+
 * map:is_dialog_enabled() is replaced by game:is_dialog_enabled().
 * map:start_dialog() is replaced by game:start_dialog().
 * Remove map:draw_dialog_box(), no longer needed.
@@ -39,19 +40,25 @@ Changes with incompatibilities:
 * Remove map:set_dialog_position(): replace it in your own dialog box system.
 * Remove map:set_dialog_variable(): use the info param of game:start_dialog().
 
+* Replace map:set_pause_enabled() by game:set_pause_allowed().
+
 Changes without incompatibilities:
 
 * game:get/set_starting_location(): map and destination can now be nil.
 * hero:teleport(): make destination optional (maps now have a default one).
 * map:create_teletransporter(): make destination optional.
-* Add a function sol.video.get_quest_size().
+
 * Add a function sol.audio.get_music() (#146).
+* Add a function sol.video.get_quest_size().
 * Make map:get_camera_position() also return the size of the visible area.
+
 * Return nil if the string is not found in sol.language.get_string().
 * sol.language.get_dialog() is now implemented.
 * Add a function game:stop_dialog(status) to close the scripted dialog box.
 * Add an event game:on_dialog_started(dialog, info).
 * Add an event game:on_dialog_finished(dialog).
+
+* Add a function game:is_pause_allowed().
 
 Solarus Quest Editor changes
 ----------------------------

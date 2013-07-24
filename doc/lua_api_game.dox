@@ -166,6 +166,22 @@ unpause the game.
 - \c paused (boolean, optional): \c true to pause the game, \c false to unpause it.
   Only possible when the game is running. No value means \c true.
 
+\subsection lua_api_map_is_pause_allowed game:is_pause_allowed()
+
+Returns whether the player can pause or unpause the \ref lua_api_game "game".
+- Return value (boolean): \c true if the player is allowed to pause the game.
+
+\subsection lua_api_map_set_pause_allowed game:set_pause_allowed([pause_allowed])
+
+Sets whether the player can pause or unpause the \ref lua_api_game "game".
+- \c pause_allowed (boolean, optional): \c true to allow the player to pause the
+  game. No value means \c true.
+
+\remark This function applies to the built-in \ref
+  lua_api_game_intro_commands "pause command".
+  Your script can still pause the game explicitly by calling
+  \ref lua_api_game_set_paused "game:set_paused()".
+
 \subsection lua_api_game_is_dialog_enabled game:is_dialog_enabled()
 
 Returns whether this game is currently showing a dialog.

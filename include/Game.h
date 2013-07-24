@@ -39,7 +39,7 @@ class Game {
     Hero* hero;
 
     // current game state (elements currently shown)
-    bool pause_key_available;  /**< indicates that the player is allowed to use the pause key */
+    bool pause_allowed;        /**< indicates that the player is allowed to use the pause command */
     bool paused;               /**< indicates that the game is paused */
     DialogBox dialog_box;      /**< The dialog box manager. */
     GameoverSequence* gameover_sequence; /**< the game over sequence (if currently shown) */
@@ -117,8 +117,8 @@ class Game {
     // pause
     bool can_pause();
     bool can_unpause();
-    bool is_pause_key_available();
-    void set_pause_key_available(bool pause_key_available);
+    bool is_pause_allowed();
+    void set_pause_allowed(bool pause_allowed);
     void set_paused(bool paused);
 
     // dialogs

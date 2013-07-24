@@ -69,7 +69,6 @@ void LuaContext::register_map_module() {
       { "get_floor", map_api_get_floor },
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
-      { "set_pause_enabled", map_api_set_pause_enabled },
       { "get_light", map_api_get_light },
       { "set_light", map_api_set_light },
       { "get_camera_position", map_api_get_camera_position },
@@ -426,24 +425,6 @@ int LuaContext::map_api_set_tileset(lua_State* l) {
   const std::string& tileset_id = luaL_checkstring(l, 2);
 
   map.set_tileset(tileset_id);
-
-  return 0;
-}
-
-/**
- * \brief Implementation of map:set_pause_enabled().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::map_api_set_pause_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  bool pause_key_available = true;
-  if (lua_gettop(l) >= 2) {
-    pause_key_available = lua_toboolean(l, 2);
-  }
-
-  map.get_game().set_pause_key_available(pause_key_available);
 
   return 0;
 }

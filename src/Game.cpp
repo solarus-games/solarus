@@ -45,7 +45,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
 
   main_loop(main_loop),
   savegame(savegame),
-  pause_key_available(true),
+  pause_allowed(true),
   paused(false),
   dialog_box(*this),
   gameover_sequence(NULL),
@@ -695,53 +695,53 @@ void Game::stop_dialog(int status_ref) {
 }
 
 /**
- * \brief Returns whether the player is currently allowed to pause the game.
+ * \brief Returns whether the player can currently pause the game.
  *
  * He can pause the game if the pause command is enabled
  * and if his life is greater than zero.
  *
- * \return true if the player is currently allowed to pause the game.
+ * \return \c true if the player can currently pause the game.
  */
 bool Game::can_pause() {
   return !is_suspended()
-      && is_pause_key_available()         // see if the map currently allows the pause key
+      && is_pause_allowed()               // see if the map currently allows the pause command
       && get_equipment().get_life() > 0;  // don't allow to pause the game if the gameover sequence is about to start
 }
 
 /**
- * \brief Returns whether the player is currently allowed to unpause the game.
- * \return true if the player is currently allowed to unpause the game.
+ * \brief Returns whether the player can currently unpause the game.
+ * \return \c true if the player can currently unpause the game.
  */
 bool Game::can_unpause() {
   return is_paused()
-      && is_pause_key_available()
+      && is_pause_allowed()
       && !is_dialog_enabled();
 }
 
 /**
- * \brief Returns whether the pause key is available.
+ * \brief Returns whether the pause command is available.
  *
- * Even when the pause key is available, the player may still
+ * Even when the pause command is available, the player may still
  * be unauthorized to pause the game, depending on the result of can_pause().
  *
- * \return true if the pause key is available
+ * \return \c true if the pause command is available.
  */
-bool Game::is_pause_key_available() {
-  return pause_key_available;
+bool Game::is_pause_allowed() {
+  return pause_allowed;
 }
 
 /**
- * \brief Sets whether the pause key menu is available.
+ * \brief Sets whether the pause command is available.
  *
- * Even when the pause key is available, the player may still
+ * Even when the pause command is available, the player may still
  * be unauthorized to pause the game, depending on the result of can_pause().
  *
- * \param pause_key_available true to make the pause key available
+ * \param pause_allowed \c true to make the pause command available.
  */
-void Game::set_pause_key_available(bool pause_key_available) {
+void Game::set_pause_allowed(bool pause_allowed) {
 
-  this->pause_key_available = pause_key_available;
-  keys_effect->set_pause_key_enabled(pause_key_available);
+  this->pause_allowed = pause_allowed;
+  keys_effect->set_pause_key_enabled(pause_allowed);
 }
 
 /**

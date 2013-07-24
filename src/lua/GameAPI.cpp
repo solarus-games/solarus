@@ -44,6 +44,8 @@ void LuaContext::register_game_module() {
       { "is_suspended", game_api_is_suspended },
       { "is_paused", game_api_is_paused },
       { "set_paused", game_api_set_paused },
+      { "is_pause_allowed", game_api_is_pause_allowed },
+      { "set_pause_allowed", game_api_set_pause_allowed },
       { "is_dialog_enabled", game_api_is_dialog_enabled },
       { "start_dialog", game_api_start_dialog },
       { "stop_dialog", game_api_stop_dialog },
@@ -290,6 +292,44 @@ int LuaContext::game_api_set_paused(lua_State* l) {
   Game* game = savegame.get_game();
   if (game != NULL) {
     game->set_paused(paused);
+  }
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of game:is_pause_allowed().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::game_api_is_pause_allowed(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  bool is_pause_allowed = game != NULL && game->is_pause_allowed();
+
+  lua_pushboolean(l, is_pause_allowed);
+  return 1;
+}
+
+/**
+ * \brief Implementation of game:set_pause_allowed().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_pause_allowed(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  bool pause_allowed = true;
+  if (lua_gettop(l) >= 2) {
+    pause_allowed = lua_toboolean(l, 2);
+  }
+
+  Game* game = savegame.get_game();
+  if (game != NULL) {
+    game->set_pause_allowed(pause_allowed);
   }
 
   return 0;

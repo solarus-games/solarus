@@ -361,17 +361,6 @@ and only loads the image of the new tileset.
 \remark If the new tileset is not compatible with the previous one,
   tiles will be displayed with wrong graphics.
 
-\subsection lua_api_map_set_pause_enabled map:set_pause_enabled([pause_enabled])
-
-Sets whether the player can pause the \ref lua_api_game "game".
-- \c pause_enabled (boolean, optional): \c true to allow the player to pause the
-  game. No value means \c true.
-
-\remark This function applies to the built-in \ref
-  lua_api_game_intro_commands "pause command".
-  Your script can still pause the game explicitly by calling
-  \ref lua_api_game_set_paused "game:set_paused()".
-
 \subsection lua_api_map_get_light map:get_light()
 
 Returns the current light level of the map.

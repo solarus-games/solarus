@@ -9,6 +9,7 @@ Several files have to be translated so that a quest works in a new language:
 - some images containing text,
 - some strings displayed in the HUD and the menu,
 - all dialogs of the game (most of the work to do is here).
+
 All these language-specific data files are in the directory
 \c languages/xx of the quest data (where \c xx
 is the code of the language, for instance \c en or \c fr).
@@ -35,9 +36,18 @@ in the \ref quest_language_strings "Translated strings" page.
 Dialogs are all messages displayed to the player in the dialog box during the
 game. They represent the biggest part of the translation work.
 All dialogs are defined in the file
-\c languages/xx/text/dialogs.lua.
-This file is a Lua data file whose precise content is specified 
+\c languages/xx/text/dialogs.dat.
+The syntax of this file is specified
 in the \ref quest_language_dialogs "Translated dialogs" page.
+However,
+this is a very extensible syntax
+because the dialog box system is entirely customizable.
+Each game extends the syntax of \c dialogs.dat in its own way by
+adding custom properties.
+
+If you want to translate one of our games, we give translation instructions
+and describe precisely these custom properties in the comments
+of the \c dialogs.dat file itself.
 
 */
 

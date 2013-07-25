@@ -20,7 +20,7 @@
  */
 #include "lowlevel/Color.h"
 
-SDL_Surface * Color::format_surface = NULL;
+SDL_Surface* Color::format_surface = NULL;
 
 Color Color::black;
 Color Color::white;
@@ -72,7 +72,7 @@ Color::Color() {
  * \brief Copy constructor.
  * \param other another color
  */
-Color::Color(const Color &other):
+Color::Color(const Color& other):
   internal_value(other.internal_value), internal_color(other.internal_color) {
 
 }

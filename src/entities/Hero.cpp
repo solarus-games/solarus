@@ -379,7 +379,7 @@ HeroSprites& Hero::get_sprites() {
  *
  * \return the direction of the sprites (0 to 3)
  */
-int Hero::get_animation_direction() {
+int Hero::get_animation_direction() const {
   return sprites->get_animation_direction();
 }
 
@@ -606,7 +606,7 @@ void Hero::notify_map_opening_transition_finished() {
  *
  * \return the point the hero is touching
  */
-const Rectangle Hero::get_facing_point() {
+const Rectangle Hero::get_facing_point() const {
 
   return get_facing_point(get_animation_direction());
 }
@@ -621,7 +621,7 @@ const Rectangle Hero::get_facing_point() {
  * \param direction a direction (0 to 3)
  * \return coordinates of the point the hero would be touching if he was looking towards that direction
  */
-const Rectangle Hero::get_facing_point(int direction) {
+const Rectangle Hero::get_facing_point(int direction) const {
 
   Rectangle facing_point;
   const Rectangle& bounding_box = get_bounding_box();

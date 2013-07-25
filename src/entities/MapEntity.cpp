@@ -425,7 +425,7 @@ void MapEntity::notify_layer_changed() {
  *
  * \return the direction of the entity
  */
-int MapEntity::get_direction() {
+int MapEntity::get_direction() const {
   return direction;
 }
 
@@ -623,7 +623,7 @@ void MapEntity::set_size(const Rectangle &size) {
  *
  * \return the position and size of the entity
  */
-const Rectangle& MapEntity::get_bounding_box() {
+const Rectangle& MapEntity::get_bounding_box() const {
   return bounding_box;
 }
 
@@ -658,7 +658,7 @@ void MapEntity::set_bounding_box_from_sprite() {
  * \brief Returns whether the entity's bounding box is aligned with the 8*8 grid of the map.
  * \return true if the entity's bounding box is aligned
  */
-bool MapEntity::is_aligned_to_grid() {
+bool MapEntity::is_aligned_to_grid() const {
   return is_aligned_to_grid_x() && is_aligned_to_grid_y();
 }
 
@@ -667,7 +667,7 @@ bool MapEntity::is_aligned_to_grid() {
  * horizontally with the 8*8 grid of the map.
  * \return true if the entity's top-left corner is aligned hotizontally
  */
-bool MapEntity::is_aligned_to_grid_x() {
+bool MapEntity::is_aligned_to_grid_x() const {
   return get_top_left_x() % 8 == 0;
 }
 
@@ -676,7 +676,7 @@ bool MapEntity::is_aligned_to_grid_x() {
  * vertically with the 8*8 grid of the map.
  * \return true if the entity's top-left corner is aligned vertically
  */
-bool MapEntity::is_aligned_to_grid_y() {
+bool MapEntity::is_aligned_to_grid_y() const {
   return get_top_left_y() % 8 == 0;
 }
 
@@ -724,7 +724,7 @@ void MapEntity::set_aligned_to_grid_y() {
  *
  * \return the coordinates of the point the entity is looking at
  */
-const Rectangle MapEntity::get_facing_point() {
+const Rectangle MapEntity::get_facing_point() const {
   return Rectangle(-1, -1);
 }
 
@@ -737,7 +737,7 @@ const Rectangle MapEntity::get_facing_point() {
  * \param direction a direction (0 to 3)
  * \return the coordinates of the point the entity in this direction
  */
-const Rectangle MapEntity::get_facing_point(int direction) {
+const Rectangle MapEntity::get_facing_point(int direction) const {
   return Rectangle(-1, -1);
 }
 
@@ -790,7 +790,7 @@ const std::string& MapEntity::get_name() const {
  * \param prefix a prefix
  * \return true if the name starts with this prefix
  */
-bool MapEntity::has_prefix(const std::string &prefix) {
+bool MapEntity::has_prefix(const std::string& prefix) const {
   return name.substr(0, prefix.size()) == prefix;
 }
 
@@ -799,7 +799,7 @@ bool MapEntity::has_prefix(const std::string &prefix) {
  * relative to the top-left corner of its rectangle.
  * \return the origin point
  */
-const Rectangle& MapEntity::get_origin() {
+const Rectangle& MapEntity::get_origin() const {
   return origin;
 }
 
@@ -820,7 +820,7 @@ void MapEntity::set_origin(int x, int y) {
  * relative to the top-left corner of its rectangle.
  * \param origin x and y coordinates of the origin
  */
-void MapEntity::set_origin(const Rectangle &origin) {
+void MapEntity::set_origin(const Rectangle& origin) {
   set_origin(origin.get_x(), origin.get_y());
 }
 
@@ -831,7 +831,7 @@ void MapEntity::set_origin(const Rectangle &origin) {
  *
  * \return the optimization distance (0 means infinite)
  */
-int MapEntity::get_optimization_distance() {
+int MapEntity::get_optimization_distance() const {
   return optimization_distance;
 }
 
@@ -850,23 +850,33 @@ void MapEntity::set_optimization_distance(int distance) {
  * \brief Returns whether the entity has at least one sprite.
  * \return true if the entity has at least one sprite.
  */
-bool MapEntity::has_sprite() {
+bool MapEntity::has_sprite() const {
   return sprites.size() != 0;
 }
 
 /**
- * \brief Returns the sprite created with the first call to create_sprite() for this entity.
- * \return the first sprite created
+ * \brief Returns the sprite created with the first call to create_sprite()
+ * for this entity.
+ * \return The first sprite created.
  */
 Sprite& MapEntity::get_sprite() {
   return *sprites.front();
 }
 
 /**
- * \brief Returns all sprites of this entity.
- * \return the sprites
+ * \brief Returns the const version of the sprite created with the first call
+ * to create_sprite() for this entity.
+ * \return The first sprite created.
  */
-std::list<Sprite*>& MapEntity::get_sprites() {
+const Sprite& MapEntity::get_sprite() const {
+  return *sprites.front();
+}
+
+/**
+ * \brief Returns all sprites of this entity.
+ * \return The sprites.
+ */
+const std::list<Sprite*>& MapEntity::get_sprites() {
   return sprites;
 }
 
@@ -964,7 +974,7 @@ void MapEntity::notify_sprite_animation_finished(Sprite& sprite, const std::stri
  * \brief Returns whether this entity is currently visible.
  * \return true if this entity is currently visible
  */
-bool MapEntity::is_visible() {
+bool MapEntity::is_visible() const {
   return visible;
 }
 
@@ -1136,7 +1146,7 @@ const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
  * \brief Returns whether this entity is enabled.
  * \return true if this entity is enabled
  */
-bool MapEntity::is_enabled() {
+bool MapEntity::is_enabled() const {
   return enabled;
 }
 
@@ -1187,7 +1197,7 @@ void MapEntity::notify_enabled(bool enabled) {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool MapEntity::is_obstacle_for(MapEntity &other) {
+bool MapEntity::is_obstacle_for(MapEntity& other) {
   return false;
 }
 
@@ -1199,7 +1209,7 @@ bool MapEntity::is_obstacle_for(MapEntity &other) {
  *
  * \return true if this entity can collide with entities that are on another layer
  */
-bool MapEntity::has_layer_independent_collisions() {
+bool MapEntity::has_layer_independent_collisions() const {
   return false;
 }
 
@@ -1444,7 +1454,7 @@ bool MapEntity::is_sword_ignored() {
  * \param rectangle the rectangle to check
  * \return true if this entity's bounding box overlaps the specified rectangle
  */
-bool MapEntity::overlaps(const Rectangle &rectangle) {
+bool MapEntity::overlaps(const Rectangle& rectangle) const {
   return bounding_box.overlaps(rectangle);
 }
 
@@ -1454,7 +1464,7 @@ bool MapEntity::overlaps(const Rectangle &rectangle) {
  * \param y y coordinate of the point to check
  * \return true if the point is in this entity's bounding box
  */
-bool MapEntity::overlaps(int x, int y) {
+bool MapEntity::overlaps(int x, int y) const {
   return bounding_box.contains(x, y);
 }
 
@@ -1464,7 +1474,7 @@ bool MapEntity::overlaps(int x, int y) {
  * \param other another entity
  * \return true if this entity's bounding box overlaps the other entity's bounding box
  */
-bool MapEntity::overlaps(MapEntity &other) {
+bool MapEntity::overlaps(const MapEntity& other) const {
   return overlaps(other.get_bounding_box());
 }
 
@@ -1498,7 +1508,7 @@ bool MapEntity::overlaps_camera() {
  * \param rectangle the rectangle to check
  * \return true if this entity's origin point is in the specified rectangle
  */
-bool MapEntity::is_origin_point_in(const Rectangle &rectangle) {
+bool MapEntity::is_origin_point_in(const Rectangle& rectangle) const {
   return rectangle.contains(get_x(), get_y());
 }
 
@@ -1508,9 +1518,9 @@ bool MapEntity::is_origin_point_in(const Rectangle &rectangle) {
  * \param rectangle the rectangle to check
  * \return true if this entity's facing point is in the specified rectangle
  */
-bool MapEntity::is_facing_point_in(const Rectangle &rectangle) {
+bool MapEntity::is_facing_point_in(const Rectangle& rectangle) const {
 
-  const Rectangle &facing_point = get_facing_point();
+  const Rectangle& facing_point = get_facing_point();
   return rectangle.contains(facing_point.get_x(), facing_point.get_y());
 }
 
@@ -1521,9 +1531,10 @@ bool MapEntity::is_facing_point_in(const Rectangle &rectangle) {
  * \param direction direction of the facing point to consider (0 to 3)
  * \return true if this facing point is in the specified rectangle
  */
-bool MapEntity::is_facing_point_in(const Rectangle &rectangle, int direction) {
+bool MapEntity::is_facing_point_in(
+    const Rectangle& rectangle, int direction) const {
 
-  const Rectangle &facing_point = get_facing_point(direction);
+  const Rectangle& facing_point = get_facing_point(direction);
   return rectangle.contains(facing_point.get_x(), facing_point.get_y());
 }
 
@@ -1533,9 +1544,9 @@ bool MapEntity::is_facing_point_in(const Rectangle &rectangle, int direction) {
  * \param rectangle the rectangle to check
  * \return true if this entity's center is in the specified rectangle
  */
-bool MapEntity::is_center_in(const Rectangle &rectangle) {
+bool MapEntity::is_center_in(const Rectangle& rectangle) const {
 
-  const Rectangle &center = get_center_point();
+  const Rectangle& center = get_center_point();
   return rectangle.contains(center.get_x(), center.get_y());
 }
 

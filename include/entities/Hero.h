@@ -68,7 +68,7 @@ class Hero: public MapEntity {
      * The sprites are managed and drawn by the class HeroSprites.
      */
     HeroSprites& get_sprites();
-    int get_animation_direction();
+    int get_animation_direction() const;
     void set_animation_direction(int direction);
     bool is_animation_finished();
     void rebuild_equipment();
@@ -92,8 +92,8 @@ class Hero: public MapEntity {
      * the hero relative to other entities, and about
      * what is in front of him (we call this the "facing point").
      */
-    const Rectangle get_facing_point();
-    const Rectangle get_facing_point(int direction4);
+    const Rectangle get_facing_point() const;
+    const Rectangle get_facing_point(int direction4) const;
     void notify_facing_entity_changed(Detector* facing_entity);
     bool is_facing_obstacle();
     bool is_facing_point_on_obstacle();

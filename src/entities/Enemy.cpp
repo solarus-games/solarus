@@ -197,7 +197,7 @@ void Enemy::notify_map_started() {
 
   // give the sprite their initial direction
   int initial_direction = get_direction();
-  std::list<Sprite*>::iterator it;
+  std::list<Sprite*>::const_iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     (*it)->set_current_direction(initial_direction);
   }
@@ -600,7 +600,7 @@ const std::string& Enemy::get_animation() {
  */
 void Enemy::set_animation(const std::string& animation) {
 
-  std::list<Sprite*>::iterator it;
+  std::list<Sprite*>::const_iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     (*it)->set_current_animation(animation);
   }

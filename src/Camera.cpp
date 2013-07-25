@@ -119,7 +119,9 @@ void Camera::update_fixed_on_hero() {
         }
       }
     }
-    else if (separator.is_horizontal()) {
+    else {
+      Debug::check_assertion(separator.is_horizontal(), "Invalid separator shape");
+
       // Horizontal separator.
       int separation_y = separator.get_y() + 8;
       if (y < separation_y && separation_y < y + get_height()
@@ -134,9 +136,6 @@ void Camera::update_fixed_on_hero() {
           y = separation_y;
         }
       }
-    }
-    else {
-      Debug::die("Wrong separator size: width or height must be 16");
     }
   }
 

@@ -210,7 +210,7 @@ bool Arrow::is_jumper_obstacle(Jumper& jumper) {
  * \brief Returns the point located just outside the arrow's collision box,
  * in its current direction.
  */
-const Rectangle Arrow::get_facing_point() {
+const Rectangle Arrow::get_facing_point() const {
 
   Rectangle facing_point = get_xy();
 

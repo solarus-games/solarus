@@ -84,11 +84,11 @@ class Stairs: public Detector {
     bool can_be_drawn();
 
     void notify_map_started();
-    bool is_inside_floor();
-    bool has_layer_independent_collisions();
+    bool is_inside_floor() const;
+    bool has_layer_independent_collisions() const;
     bool is_sword_ignored();
-    bool is_obstacle_for(MapEntity &other);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    bool is_obstacle_for(MapEntity& other);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_enabled(bool enabled);
 
     int get_movement_direction(Way way);

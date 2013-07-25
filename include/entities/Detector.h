@@ -69,12 +69,12 @@ class Detector: public MapEntity {
     virtual void notify_being_removed();
 
     // properties
-    bool has_layer_independent_collisions();
+    bool has_layer_independent_collisions() const;
     void set_layer_independent_collisions(bool independent);
 
     // general collision checking functions
-    void check_collision(MapEntity &entity);
-    void check_collision(MapEntity &entity, Sprite &sprite);
+    void check_collision(MapEntity& entity);
+    void check_collision(MapEntity& entity, Sprite& sprite);
 
     virtual void notify_action_command_pressed();
     virtual bool interaction_with_item(EquipmentItem& item);

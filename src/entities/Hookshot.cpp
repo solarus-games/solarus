@@ -36,7 +36,7 @@
  * \brief Creates a hookshot.
  * \param hero the hero
  */
-Hookshot::Hookshot(Hero &hero):
+Hookshot::Hookshot(Hero& hero):
   next_sound_date(System::now()),
   has_to_go_back(false),
   going_back(false),
@@ -193,7 +193,7 @@ bool Hookshot::is_jumper_obstacle(Jumper& jumper) {
  * \brief Returns the point located just outside the hookshot's collision box,
  * in its current direction.
  */
-const Rectangle Hookshot::get_facing_point() {
+const Rectangle Hookshot::get_facing_point() const {
 
   Rectangle facing_point = get_center_point();
 

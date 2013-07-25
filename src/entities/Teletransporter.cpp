@@ -142,7 +142,7 @@ bool Teletransporter::test_collision_custom(MapEntity& entity) {
   // specific collision tests for some situations
   if (entity.is_hero()) {
 
-    Hero& hero = (Hero&) entity;
+    Hero& hero = static_cast<Hero&>(entity);
     if (is_on_map_side()) {
       // scrolling towards an adjacent map
       Rectangle facing_point = hero.get_facing_point(transition_direction);

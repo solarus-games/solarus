@@ -85,7 +85,7 @@ void Stairs::notify_map_started() {
  * \brief Returns whether the subtype of these stairs is INSIDE_FLOOR.
  * \return true if the subtype if INSIDE_FLOOR
  */
-bool Stairs::is_inside_floor() {
+bool Stairs::is_inside_floor() const {
   return subtype == INSIDE_FLOOR;
 }
 
@@ -94,7 +94,7 @@ bool Stairs::is_inside_floor() {
  * they are not on the same layer.
  * \return true if this entity can collide with entities that are on another layer
  */
-bool Stairs::has_layer_independent_collisions() {
+bool Stairs::has_layer_independent_collisions() const {
   return is_inside_floor();
 }
 

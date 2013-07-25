@@ -170,10 +170,10 @@ class MapEntity: public ExportableToLua {
     const Rectangle& get_size() const;
     void set_size(int width, int height);
     void set_size(const Rectangle &size);
-    const Rectangle& get_bounding_box();
+    const Rectangle& get_bounding_box() const;
     void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle &bounding_box);
-    const Rectangle& get_origin();
+    const Rectangle& get_origin() const;
     void set_origin(int x, int y);
     void set_origin(const Rectangle &origin);
     int get_top_left_x() const;
@@ -182,40 +182,41 @@ class MapEntity: public ExportableToLua {
     void set_top_left_y(int y);
     void set_top_left_xy(int x, int y);
 
-    virtual const Rectangle get_facing_point();
-    virtual const Rectangle get_facing_point(int direction);
+    virtual const Rectangle get_facing_point() const;
+    virtual const Rectangle get_facing_point(int direction) const;
     const Rectangle get_center_point() const;
 
-    bool is_aligned_to_grid();
-    bool is_aligned_to_grid_x();
-    bool is_aligned_to_grid_y();
+    bool is_aligned_to_grid() const;
+    bool is_aligned_to_grid_x() const;
+    bool is_aligned_to_grid_y() const;
     void set_aligned_to_grid();
     void set_aligned_to_grid_x();
     void set_aligned_to_grid_y();
 
-    int get_optimization_distance();
+    int get_optimization_distance() const;
     void set_optimization_distance(int distance);
 
-    bool is_enabled();
+    bool is_enabled() const;
     void set_enabled(bool enable);
     virtual void notify_enabled(bool enabled);
 
     // properties
     const std::string& get_name() const;
-    bool has_prefix(const std::string &prefix);
-    int get_direction();
+    bool has_prefix(const std::string& prefix) const;
+    int get_direction() const;
 
     // sprites
-    bool has_sprite();
+    bool has_sprite() const;
     Sprite& get_sprite();
-    std::list<Sprite*>& get_sprites();
+    const Sprite& get_sprite() const;
+    const std::list<Sprite*>& get_sprites();
     Sprite& create_sprite(const std::string& animation_set_id,
         bool enable_pixel_collisions = false);
     void remove_sprite(Sprite& sprite);
     void clear_sprites();
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
-    bool is_visible();
+    bool is_visible() const;
     void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
 
@@ -235,14 +236,14 @@ class MapEntity: public ExportableToLua {
     static const Rectangle& direction_to_xy_move(int direction8);
 
     // geometry
-    bool overlaps(const Rectangle &rectangle);
-    bool overlaps(int x, int y);
-    bool overlaps(MapEntity &other);
+    bool overlaps(const Rectangle &rectangle) const;
+    bool overlaps(int x, int y) const;
+    bool overlaps(const MapEntity& other) const;
     bool overlaps_camera();
-    bool is_origin_point_in(const Rectangle &rectangle);
-    bool is_facing_point_in(const Rectangle &rectangle);
-    bool is_facing_point_in(const Rectangle &rectangle, int direction);
-    bool is_center_in(const Rectangle &rectangle);
+    bool is_origin_point_in(const Rectangle& rectangle) const;
+    bool is_facing_point_in(const Rectangle& rectangle) const;
+    bool is_facing_point_in(const Rectangle& rectangle, int direction) const;
+    bool is_center_in(const Rectangle& rectangle) const;
 
     double get_angle(int x, int y);
     double get_angle(MapEntity &other);
@@ -252,7 +253,7 @@ class MapEntity: public ExportableToLua {
     bool is_in_same_region(MapEntity& other);
 
     // collisions
-    virtual bool has_layer_independent_collisions();
+    virtual bool has_layer_independent_collisions() const;
 
     void check_collision_with_detectors(bool with_pixel_precise);
     void check_collision_with_detectors(Sprite& sprite);

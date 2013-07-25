@@ -19,6 +19,7 @@
 #include "entities/Tileset.h"
 #include "entities/Switch.h"
 #include "entities/Destructible.h"
+#include "entities/Separator.h"
 #include "entities/Hero.h"
 #include "movements/Movement.h"
 #include "lua/LuaContext.h"
@@ -440,7 +441,7 @@ void MapEntity::set_direction(int direction) {
  * \brief Returns the current x position of the entity.
  * \return the x position of the entity
  */
-int MapEntity::get_x() {
+int MapEntity::get_x() const {
   return bounding_box.get_x() + origin.get_x();
 }
 
@@ -448,7 +449,7 @@ int MapEntity::get_x() {
  * \brief Returns the current y position of the entity.
  * \return the y position of the entity
  */
-int MapEntity::get_y() {
+int MapEntity::get_y() const {
   return bounding_box.get_y() + origin.get_y();
 }
 
@@ -481,7 +482,7 @@ void MapEntity::set_y(int y) {
  *
  * \return the coordinates of the entity on the map
  */
-const Rectangle MapEntity::get_xy() {
+const Rectangle MapEntity::get_xy() const {
   return Rectangle(get_x(), get_y());
 }
 
@@ -513,7 +514,7 @@ void MapEntity::set_xy(const Rectangle& xy) {
  * \brief Returns the x position of the entity's top-left corner.
  * \return the x position of the entity's top-left corner
  */
-int MapEntity::get_top_left_x() {
+int MapEntity::get_top_left_x() const {
   return bounding_box.get_x();
 }
 
@@ -521,7 +522,7 @@ int MapEntity::get_top_left_x() {
  * \brief Returns the y position of the entity's top-left corner.
  * \return the y position of the entity's top-left corner
  */
-int MapEntity::get_top_left_y() {
+int MapEntity::get_top_left_y() const {
   return bounding_box.get_y();
 }
 
@@ -576,7 +577,7 @@ const Rectangle MapEntity::get_displayed_xy() {
  * \brief Returns the width of the entity.
  * \return the width of the entity
  */
-int MapEntity::get_width() {
+int MapEntity::get_width() const {
   return bounding_box.get_width();
 }
 
@@ -584,7 +585,7 @@ int MapEntity::get_width() {
  * \brief Returns the height of the entity.
  * \return the height of the entity
  */
-int MapEntity::get_height() {
+int MapEntity::get_height() const {
   return bounding_box.get_height();
 }
 
@@ -593,7 +594,7 @@ int MapEntity::get_height() {
  * \return a rectangle whose width and height represent the size of the entity
  * (its coordinates should be ignored)
  */
-const Rectangle& MapEntity::get_size() {
+const Rectangle& MapEntity::get_size() const {
   return bounding_box;
 }
 
@@ -771,7 +772,7 @@ void MapEntity::notify_facing_entity_changed(Detector* facing_entity) {
  * \brief Returns the coordinates of the center point of the entity's rectangle.
  * \return the coordinates of the center point of the entity
  */
-const Rectangle MapEntity::get_center_point() {
+const Rectangle MapEntity::get_center_point() const {
   return bounding_box.get_center();
 }
 
@@ -1589,6 +1590,48 @@ int MapEntity::get_distance_to_camera() {
   const Rectangle& camera = get_map().get_camera_position();
   return (int) Geometry::get_distance(get_x(), get_y(),
       camera.get_x() + 160, camera.get_y() + 120);
+}
+
+/**
+ * \brief Returns whether an entity is in the same region as this one.
+ *
+ * Regions are defined by the position of separators on the map.
+ *
+ * \return \c true if both entities are in the same region.
+ */
+bool MapEntity::is_in_same_region(MapEntity& other) {
+
+  const std::list<Separator*>& separators =
+      get_entities().get_separators();
+  std::list<Separator*>::const_iterator it;
+  for (it = separators.begin(); it != separators.end(); ++it) {
+
+    const Separator& separator = *(*it);
+    if (separator.is_vertical()) {
+      // Vertical separation.
+      const int separation_x = separator.get_center_point().get_x();
+      if (get_x() < separation_x && separation_x <= other.get_x()) {
+        return false;
+      }
+
+      if (other.get_x() < separation_x && separation_x <= get_x()) {
+        return false;
+      }
+    }
+    else {
+      // Horizontal separation.
+      const int separation_y = separator.get_center_point().get_y();
+      if (get_y() < separation_y && separation_y <= other.get_y()) {
+        return false;
+      }
+
+      if (other.get_y() < separation_y && separation_y <= get_y()) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
 
 /**

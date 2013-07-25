@@ -296,6 +296,18 @@ The default value depends on the type of entity and is usually fine,
 but you may need to increase it in some cases, for example for an \ref lua_api_enemy "enemy" in a huge room.
 - \c optimization_distance (number): The optimization distance to set in pixels.
 
+\subsection lua_api_entity_is_in_same_region entity:is_in_same_region(other_entity)
+
+Returns whether another entity is in the same region than this one.
+
+Regions of the map are defined by the position of
+\ref lua_api_separator "separators".
+You can use this function to make sure that an
+\ref lua_api_enemy "enemy" close to the
+\ref lua_api_hero "hero" but in the other side of a separator won't attack him.
+- \c other_entity (entity): Another entity.
+- Return value (boolean): \c true if both entities are in the same region.
+
 \subsection lua_api_entity_test_obstacles entity:test_obstacles(dx, dy)
 
 Returns whether there would be a collision with obstacles

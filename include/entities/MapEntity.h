@@ -156,18 +156,18 @@ class MapEntity: public ExportableToLua {
     Layer get_layer();
     void set_layer(Layer layer);
 
-    int get_x();
-    int get_y();
+    int get_x() const;
+    int get_y() const;
     void set_x(int x);
     void set_y(int y);
-    const Rectangle get_xy();
+    const Rectangle get_xy() const;
     void set_xy(const Rectangle &xy);
     void set_xy(int x, int y);
     const Rectangle get_displayed_xy();
 
-    int get_width();
-    int get_height();
-    const Rectangle& get_size();
+    int get_width() const;
+    int get_height() const;
+    const Rectangle& get_size() const;
     void set_size(int width, int height);
     void set_size(const Rectangle &size);
     const Rectangle& get_bounding_box();
@@ -176,15 +176,15 @@ class MapEntity: public ExportableToLua {
     const Rectangle& get_origin();
     void set_origin(int x, int y);
     void set_origin(const Rectangle &origin);
-    int get_top_left_x();
-    int get_top_left_y();
+    int get_top_left_x() const;
+    int get_top_left_y() const;
     void set_top_left_x(int x);
     void set_top_left_y(int y);
     void set_top_left_xy(int x, int y);
 
     virtual const Rectangle get_facing_point();
     virtual const Rectangle get_facing_point(int direction);
-    const Rectangle get_center_point();
+    const Rectangle get_center_point() const;
 
     bool is_aligned_to_grid();
     bool is_aligned_to_grid_x();
@@ -249,6 +249,7 @@ class MapEntity: public ExportableToLua {
     int get_distance(int x, int y);
     int get_distance(MapEntity& other);
     int get_distance_to_camera();
+    bool is_in_same_region(MapEntity& other);
 
     // collisions
     virtual bool has_layer_independent_collisions();

@@ -8,6 +8,7 @@ Engine changes
 
 * Allow scripted dialog boxes (#184).
 * Replace the old built-in dialog box by a very minimal one.
+* Add separators to visually separate some regions in a map (#177).
 * Allow quest makers and users to set the size of the playing area.
 * Allow maps to have a default destination entity (#231).
 * A game can now start without specifying an initial map and destination.
@@ -52,6 +53,7 @@ Changes that do not introduce incompatibilities:
 * Add a function sol.audio.get_music() (#146).
 * Add a function sol.video.get_quest_size().
 * Make map:get_camera_position() also return the size of the visible area.
+* Add a method entity:is_in_same_region(entity).
 * Add a method game:get_hero().
 * Add a method hero:get/set_walking_speed() (#206).
 * Add hero:get_state() and hero:on_state_changed() (#207).

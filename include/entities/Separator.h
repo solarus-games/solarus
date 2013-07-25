@@ -44,6 +44,8 @@ class Separator: public Detector {
 
     EntityType get_type();
 
+    bool is_horizontal() const;
+    bool is_vertical() const;
 };
 
 #endif

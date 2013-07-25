@@ -702,6 +702,7 @@ class LuaContext {
       entity_api_test_obstacles,
       entity_api_get_optimization_distance,
       entity_api_set_optimization_distance,
+      entity_api_is_in_same_region,
       hero_api_teleport,
       hero_api_get_direction,
       hero_api_set_direction,

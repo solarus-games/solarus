@@ -67,7 +67,7 @@ class Rectangle {
     bool contains(int x, int y) const;
     bool contains(const Rectangle& other) const;
     bool overlaps(const Rectangle& other) const;
-    Rectangle get_center();
+    Rectangle get_center() const;
 
     bool equals(const Rectangle& other) const;
     bool equals_xy(const Rectangle& other) const;

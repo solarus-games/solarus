@@ -102,6 +102,7 @@ void LuaContext::register_entity_module() {
       { "get_angle", entity_api_get_angle},
       { "get_optimization_distance", entity_api_get_optimization_distance },
       { "set_optimization_distance", entity_api_set_optimization_distance },
+      { "is_in_same_region", entity_api_is_in_same_region },
       { "test_obstacles", entity_api_test_obstacles },
       { "is_visible", entity_api_is_visible },
       { "set_visible", entity_api_set_visible },
@@ -785,6 +786,20 @@ int LuaContext::entity_api_set_optimization_distance(lua_State* l) {
   entity.set_optimization_distance(distance);
 
   return 0;
+}
+
+/**
+ * \brief Implementation of entity:is_in_same_region().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_is_in_same_region(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  MapEntity& other_entity = check_entity(l, 2);
+
+  lua_pushboolean(l, entity.is_in_same_region(other_entity));
+  return 1;
 }
 
 /**

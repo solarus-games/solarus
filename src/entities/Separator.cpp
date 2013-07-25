@@ -53,3 +53,19 @@ EntityType Separator::get_type() {
   return SEPARATOR;
 }
 
+/**
+ * \brief Returns whether this is an horizontal separator.
+ * \return \c true if this separator is horizontal, \c false if it is vertical.
+ */
+bool Separator::is_horizontal() const {
+  return get_height() == 16;
+}
+
+/**
+ * \brief Returns whether this is an vertical separator.
+ * \return \c true if this separator is vertical, \c false if it is horizontal.
+ */
+bool Separator::is_vertical() const {
+  return get_width() == 16;
+}
+

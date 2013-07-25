@@ -128,7 +128,7 @@ class Map: public ExportableToLua {
     const Rectangle& get_camera_position();
     void move_camera(int x, int y, int speed);
     void restore_camera();
-    bool is_camera_fixed_on_hero();
+    bool is_camera_moving();
     void set_clipping_rectangle(const Rectangle &clipping_rectangle = Rectangle());
     int get_light();
     void set_light(int light);

@@ -24,8 +24,11 @@
  * \brief Manages the visible area of the map.
  *
  * The camera determines the visible area of the map.
- * Most of the time, the camera follows the hero movements.
- * Occasionally, it can be moved towards a point and then restored towards the hero.
+ * Most of the time, the camera is centered on the hero movements,
+ * blocking on the map borders and on camera stoppers.
+ *
+ * Occasionally, it can also be moved towards a point and then restored
+ * towards the hero.
  */
 class Camera {
 
@@ -37,7 +40,7 @@ class Camera {
     void update();
     const Rectangle& get_position();
 
-    bool is_fixed_on_hero();
+    bool is_moving();
     void set_speed(int speed);
     void move(int target_x, int target_y);
     void move(MapEntity& entity);
@@ -48,11 +51,23 @@ class Camera {
     int get_width();
     int get_height();
 
+    void update_fixed_on_hero();
+    void update_moving();
+
     Map& map;                     /**< The map. */
-    bool fixed_on_hero;           /**< \c true if the camera is fixed on the hero. */
-    bool restoring;               /**< \c true if the camera is moving back to the hero. */
     Rectangle position;           /**< Visible area of the camera on the map. */
-    int speed;                    /**< Speed of the movement. */
+
+    // Camera centered on the hero.
+    bool fixed_on_hero;           /**< \c true if the camera is fixed on the hero. */
+    Rectangle stopper_scrolling_position;
+    Rectangle stopper_target_position;
+    int stopper_scrolling_dx;
+    int stopper_scrolling_dy;
+    uint32_t stopper_next_scrolling_date;
+
+    // Camera being moved toward a point or back to the hero.
+    bool restoring;               /**< \c true if the camera is moving back to the hero. */
+    int speed;                    /**< Speed of the next movement. */
     TargetMovement* movement;     /**< Movement of the camera, or NULL for no movement. */
 };
 

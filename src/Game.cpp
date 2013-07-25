@@ -656,7 +656,7 @@ bool Game::is_suspended() {
       || is_dialog_enabled()
       || is_playing_transition()
       || is_showing_gameover()
-      || !current_map->is_camera_fixed_on_hero();
+      || current_map->is_camera_moving();
 }
 
 /**

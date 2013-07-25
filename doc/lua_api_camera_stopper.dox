@@ -18,8 +18,24 @@ or a vertical bar with a width of 16 pixels.
 The separation is made in the middle of this bar: in other words, 8 pixels
 belong to each side.
 
-When the camera touches the separation, it stops like if there was a bound of
-a map. If the hero touches the separation, he scrolls to the other side.
+When the camera touches the separation, it stops like if it was a limit of
+a map.
+If the hero touches the separation, he automatically scrolls to the other side.
+
+It is your responsibility to make sure that your camera stoppers don't
+conflict.
+For example,
+if you make a camera stopper too close to a limit of the map,
+or if you make two vertical camera stoppers too close to each other,
+it is impossible for the engine to respect all constraints.
+In such cases, the result will look weird.
+The good news is that you know the maximum size of the visible quest screen:
+it is a property of your quest,
+specified in (\ref quest_properties_file "quest.dat").
+If the space between vertical camera stoppers is greater than the maximum
+quest width, you will be safe.
+The rule is the same for horizontal camera stoppers and the maximum
+quest height.
 
 Enemies and other entities cannot cross camera stoppers.
 

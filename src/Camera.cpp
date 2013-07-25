@@ -26,13 +26,16 @@
 
 /**
  * \brief Creates a camera.
- * \param map the map
+ * \param map The map.
  */
 Camera::Camera(Map& map):
   map(map),
-  fixed_on_hero(true),
-  restoring(false),
   position(VideoManager::get_instance()->get_quest_size()),
+  fixed_on_hero(true),
+  stopper_scrolling_dx(0),
+  stopper_scrolling_dy(0),
+  stopper_next_scrolling_date(0),
+  restoring(false),
   speed(120),
   movement(NULL) {
 }
@@ -63,97 +66,129 @@ int Camera::get_height() {
 /**
  * \brief Updates the camera position.
  *
- * This function is called continuously.
+ * This function is called continuously by the game loop.
  */
 void Camera::update() {
 
-  int x = position.get_x();
-  int y = position.get_y();
-  const Rectangle& map_location = map.get_location();
-
-  // If the camera is not moving, center it on the hero.
-  if (is_fixed_on_hero()) {
-    const Rectangle& hero_center = map.get_entities().get_hero().get_center_point();
-    x = hero_center.get_x();
-    y = hero_center.get_y();
-
-    if (map_location.get_width() < get_width()) {
-      x = (map_location.get_width() - get_width()) / 2;
-    }
-    else {
-      x = std::min(std::max(x - get_width() / 2, 0),
-          map_location.get_width() - get_width());
-    }
-
-    if (map_location.get_height() < get_height()) {
-      y = (map_location.get_height() - get_height()) / 2;
-    }
-    else {
-      y = std::min(std::max(y - get_height() / 2, 0),
-          map_location.get_height() - get_height());
-    }
-
-    // See if there is a camera stopper in the rectangle.
-    const std::list<CameraStopper*>& stoppers =
-        map.get_entities().get_camera_stoppers();
-    std::list<CameraStopper*>::const_iterator it;
-    for (it = stoppers.begin(); it != stoppers.end(); ++it) {
-      CameraStopper* stopper = *it;
-      if (stopper->get_width() == 16) {
-        // Vertical camera stopper.
-        int separation_x = stopper->get_x() + 8;
-
-        if (x < separation_x && separation_x < x + get_width()
-            && stopper->get_y() < y + get_height()
-            && y < stopper->get_y() + stopper->get_height()) {
-          int left = separation_x - x;
-          int right = x + get_width() - separation_x;
-          if (left > right) {
-            x = separation_x - get_width();
-          }
-          else {
-            x = separation_x;
-          }
-        }
-      }
-      else if (stopper->get_height() == 16) {
-        // Horizontal camera stopper.
-        int separation_y = stopper->get_y() + 8;
-        if (y < separation_y && separation_y < y + get_height()
-            && stopper->get_x() < x + get_width()
-            && x < stopper->get_x() + stopper->get_width()) {
-          int top = separation_y - y;
-          int bottom = y + get_height() - separation_y;
-          if (top > bottom) {
-            y = separation_y - get_height();
-          }
-          else {
-            y = separation_y;
-          }
-        }
-      }
-      else {
-        Debug::die("Wrong size of camera stopper: width or height must be 16");
-      }
-    }
+  // If the camera is not moving towards a target, center it on the hero.
+  if (fixed_on_hero) {
+    update_fixed_on_hero();
   }
   else if (movement != NULL) {
-    movement->update();
-    x = movement->get_x() - get_width() / 2;
-    y = movement->get_y() - get_height() / 2;
+    update_moving();
+  }
+}
 
-    if (movement->is_finished()) {
-      delete movement;
-      movement = NULL;
+/**
+ * \brief Updates the position of the camera when the camera is fixed
+ * on the hero.
+ */
+void Camera::update_fixed_on_hero() {
 
-      if (restoring) {
-        restoring = false;
-        fixed_on_hero = true;
-        map.get_lua_context().map_on_camera_back(map);
+  Debug::check_assertion(fixed_on_hero,
+      "Illegal call to Camera::update_fixed_on_hero()");
+
+  // First compute the camera coordinates ignoring map borders and camera stoppers.
+  const Rectangle& hero_center = map.get_entities().get_hero().get_center_point();
+  const int hero_x = hero_center.get_x();
+  const int hero_y = hero_center.get_y();
+  int x = hero_x - get_width() / 2;
+  int y = hero_y - get_height() / 2;
+
+  // See if there is a camera stopper in the rectangle.
+  const std::list<CameraStopper*>& stoppers =
+      map.get_entities().get_camera_stoppers();
+  std::list<CameraStopper*>::const_iterator it;
+  for (it = stoppers.begin(); it != stoppers.end(); ++it) {
+    CameraStopper* stopper = *it;
+
+    if (stopper->get_width() == 16) {
+      // Vertical camera stopper.
+      int separation_x = stopper->get_x() + 8;
+
+      if (x < separation_x && separation_x < x + get_width()
+          && stopper->get_y() < y + get_height()
+          && y < stopper->get_y() + stopper->get_height()) {
+        int left = separation_x - x;
+        int right = x + get_width() - separation_x;
+        if (left > right) {
+          x = separation_x - get_width();
+        }
+        else {
+          x = separation_x;
+        }
       }
-      else {
-        map.get_lua_context().notify_camera_reached_target(map);
+    }
+    else if (stopper->get_height() == 16) {
+      // Horizontal camera stopper.
+      int separation_y = stopper->get_y() + 8;
+      if (y < separation_y && separation_y < y + get_height()
+          && stopper->get_x() < x + get_width()
+          && x < stopper->get_x() + stopper->get_width()) {
+        int top = separation_y - y;
+        int bottom = y + get_height() - separation_y;
+        if (top > bottom) {
+          y = separation_y - get_height();
+        }
+        else {
+          y = separation_y;
+        }
       }
+    }
+    else {
+      Debug::die("Wrong size of camera stopper: width or height must be 16");
+    }
+  }
+
+  // Take care of the limits of the map.
+  const Rectangle& map_location = map.get_location();
+  if (map_location.get_width() < get_width()) {
+    x = (map_location.get_width() - get_width()) / 2;
+  }
+  else {
+    x = std::min(std::max(x, 0),
+        map_location.get_width() - get_width());
+  }
+
+  if (map_location.get_height() < get_height()) {
+    y = (map_location.get_height() - get_height()) / 2;
+  }
+  else {
+    y = std::min(std::max(y, 0),
+        map_location.get_height() - get_height());
+  }
+
+  position.set_xy(x, y);
+}
+
+/**
+ * \brief Updates the position of the camera when the camera is moving
+ * towards a point or back to the hero.
+ */
+void Camera::update_moving() {
+
+  Debug::check_assertion(!fixed_on_hero,
+      "Illegal call to Camera::update_fixed_on_hero()");
+
+  if (movement == NULL) {
+    return;
+  }
+
+  movement->update();
+  int x = movement->get_x() - get_width() / 2;
+  int y = movement->get_y() - get_height() / 2;
+
+  if (movement->is_finished()) {
+    delete movement;
+    movement = NULL;
+
+    if (restoring) {
+      restoring = false;
+      fixed_on_hero = true;
+      map.get_lua_context().map_on_camera_back(map);
+    }
+    else {
+      map.get_lua_context().notify_camera_reached_target(map);
     }
   }
 
@@ -172,15 +207,16 @@ const Rectangle& Camera::get_position() {
 }
 
 /**
- * \brief Returns whether the camera is fixed on the hero.
+ * \brief Returns whether there is a camera movement.
  *
- * Most of the time, the camera follows the hero and this function returns true.
- * If the camera is being moved somewhere else, this function returns false.
+ * It may be a movement towards a point or a scrolling movement due to a
+ * camera stopper.
  *
- * \return true if the camera is fixed on the hero
+ * \return \c true if the camera is moving.
  */
-bool Camera::is_fixed_on_hero() {
-  return fixed_on_hero;
+bool Camera::is_moving() {
+  return !fixed_on_hero
+      || stopper_next_scrolling_date != 0;
 }
 
 /**

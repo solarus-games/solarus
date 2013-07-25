@@ -422,11 +422,15 @@ void Map::restore_camera() {
 }
 
 /**
- * \brief Returns whether the camera is fixed on the hero.
- * \return true if the camera is following the hero
+ * \brief Returns whether there is a camera movement.
+ *
+ * It may be a movement towards a point or a scrolling movement due to a
+ * camera stopper.
+ *
+ * \return \c true if the camera is moving.
  */
-bool Map::is_camera_fixed_on_hero() {
-  return camera->is_fixed_on_hero();
+bool Map::is_camera_moving() {
+  return camera->is_moving();
 }
 
 /**

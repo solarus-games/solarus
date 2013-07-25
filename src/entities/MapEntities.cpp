@@ -23,7 +23,7 @@
 #include "entities/CrystalBlock.h"
 #include "entities/Boomerang.h"
 #include "entities/Stairs.h"
-#include "entities/CameraStopper.h"
+#include "entities/Separator.h"
 #include "entities/Destination.h"
 #include "Map.h"
 #include "Game.h"
@@ -177,11 +177,11 @@ const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
 }
 
 /**
- * \brief Returns all camera stoppers of the map..
- * \return The camera stoppers.
+ * \brief Returns all separators of the map..
+ * \return The separators.
  */
-const list<CameraStopper*>& MapEntities::get_camera_stoppers() {
-  return camera_stoppers;
+const list<Separator*>& MapEntities::get_separators() {
+  return separators;
 }
 
 /**
@@ -584,8 +584,8 @@ void MapEntities::add_entity(MapEntity* entity) {
         crystal_blocks[layer].push_back(static_cast<CrystalBlock*>(entity));
         break;
 
-      case CAMERA_STOPPER:
-        camera_stoppers.push_back(static_cast<CameraStopper*>(entity));
+      case SEPARATOR:
+        separators.push_back(static_cast<Separator*>(entity));
         break;
 
       case BOOMERANG:
@@ -722,8 +722,8 @@ void MapEntities::remove_marked_entities() {
         crystal_blocks[layer].remove(static_cast<CrystalBlock*>(entity));
         break;
 
-      case CAMERA_STOPPER:
-        camera_stoppers.remove(static_cast<CameraStopper*>(entity));
+      case SEPARATOR:
+        separators.remove(static_cast<Separator*>(entity));
         break;
 
       case BOOMERANG:

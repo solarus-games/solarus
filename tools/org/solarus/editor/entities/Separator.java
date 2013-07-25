@@ -11,38 +11,39 @@ import org.solarus.editor.MapException;
 import org.solarus.editor.Project;
 
 /**
- * An horizontal or vertical, invisible wall for the camera.
+ * An horizontal or vertical separation between two parts of the map.
+ * It acts like an invisible wall for the camera.
  */
-public class CameraStopper extends MapEntity {
+public class Separator extends MapEntity {
 
     /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("camera_stopper.png", 0, 0, 32, 32)
+        new EntityImageDescription("separator.png", 0, 0, 32, 32)
     };
 
     /**
-     * Resizable pattern of a wall.
+     * Resizable pattern of a separator.
      */
     private static Image patternImage;
 
     /**
-     * Unitary size of a teletransporter.
+     * Unitary size of a separator.
      */
     private static final Dimension unitarySize = new Dimension(16, 16);
 
     /**
-     * Creates a new camera stopper.
+     * Creates a new separator.
      * @param map The map.
      */
-    public CameraStopper(Map map) throws MapException {
+    public Separator(Map map) throws MapException {
         super(map, 16, 16);
     }
 
     /**
      * Returns whether or not the entity is currently resizable.
-     * @return true if the entity is resizable
+     * @return true if the entity is resizable.
      */
     public boolean isResizable() {
         return true;
@@ -100,7 +101,7 @@ public class CameraStopper extends MapEntity {
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
         if (patternImage == null) {
-            patternImage = Project.getEditorImage("resizable_camera_stopper.png");
+            patternImage = Project.getEditorImage("resizable_separator.png");
         }
 
         Rectangle positionInMap = getPositionInMap();

@@ -425,7 +425,7 @@ void Map::restore_camera() {
  * \brief Returns whether there is a camera movement.
  *
  * It may be a movement towards a point or a scrolling movement due to a
- * camera stopper.
+ * separator.
  *
  * \return \c true if the camera is moving.
  */

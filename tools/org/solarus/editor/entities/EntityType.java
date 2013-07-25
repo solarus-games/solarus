@@ -45,7 +45,7 @@ public enum EntityType {
     CONVEYOR_BELT        ("Conveyor belt",     "conveyor_belt",   ConveyorBelt.class,    null),
     DOOR                 ("Door",              "door",            Door.class,            null),
     STAIRS               ("Stairs",            "stairs",          Stairs.class,          Stairs.Subtype.class),
-    CAMERA_STOPPER       ("Camera stopper",    "camera_stopper",  CameraStopper.class,   null)
+    SEPARATOR            ("Separator",         "separator",       Separator.class,       null)
     ;
 
     private Class<? extends MapEntity> entityClass;

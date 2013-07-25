@@ -59,7 +59,7 @@ public class EditEntityComponent extends JPanel {
         editEntityComponentClasses.put(EntityType.CONVEYOR_BELT, EditEntityComponent.class);
         editEntityComponentClasses.put(EntityType.DOOR, EditDoorComponent.class);
         editEntityComponentClasses.put(EntityType.STAIRS, EditEntityComponent.class);
-        editEntityComponentClasses.put(EntityType.CAMERA_STOPPER, EditEntityComponent.class);
+        editEntityComponentClasses.put(EntityType.SEPARATOR, EditEntityComponent.class);
     };
 
     /**

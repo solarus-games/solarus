@@ -49,7 +49,7 @@ class MapEntities {
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
-    const std::list<CameraStopper*>& get_camera_stoppers();
+    const std::list<Separator*>& get_separators();
     Destination* get_default_destination();
 
     MapEntity* get_entity(const std::string& name);
@@ -89,7 +89,7 @@ class MapEntities {
 
     friend class MapLoader;            /**< the map loader initializes the private fields of MapEntities */
 
-    void add_tile(Tile *tile);
+    void add_tile(Tile* tile);
     void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
     void build_non_animated_tiles();
     void redraw_non_animated_tiles();
@@ -144,7 +144,7 @@ class MapEntities {
     std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
     std::list<CrystalBlock*>
       crystal_blocks[LAYER_NB];	                    /**< all crystal blocks of the map */
-    std::list<CameraStopper*> camera_stoppers;      /**< all camera stoppers of the map */
+    std::list<Separator*> separators;               /**< all separators of the map */
 
     Boomerang* boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
     std::string music_before_miniboss;              /**< the music that was played before starting a miniboss fight */

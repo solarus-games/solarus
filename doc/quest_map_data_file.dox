@@ -161,7 +161,7 @@ declared in the map data file, see the
   A door to open with an equipment item or another condition.
 - \ref quest_map_data_file_syntax_stairs "Stairs":
   Stairs between two maps or to a platform of a single map.
-- \ref quest_map_data_file_syntax_camera_stopper "Camera stopper":
+- \ref quest_map_data_file_syntax_separator "Separator":
   A visual separation between parts of the map.
 
 The definition of a map entity starts with \c entity_type{ and ends with
@@ -976,24 +976,24 @@ stairs{
 }
 \endverbatim
 
-\subsubsection quest_map_data_file_syntax_camera_stopper Camera stopper
+\subsubsection quest_map_data_file_syntax_separator Separator
 
-Camera stoppers allow to visually separate different regions of a map like
+Separators allow to visually separate different regions of a map like
 if they were several maps.
-When the camera touches the separation, it stops like if there was a bound of
+When the camera touches the separation, it stops like if there was a limit of
 a map. If the hero touches the separation, he scrolls to the other side.
 
-A camera stopper can be declared in the map data file with
-<tt>camera_stopper{ ... }</tt>.
+A separator can be declared in the map data file with
+<tt>separator{ ... }</tt>.
 
 Additional properties:
-- \c width (number): Width of the camera stopper in pixels.
-- \c height (number): Height of the camera stopper in pixels.
+- \c width (number): Width of the separator in pixels.
+- \c height (number): Height of the separator in pixels.
   One of \c width or \c height must be 16 pixels.
 
-Example of camera stopper:
+Example of separator:
 \verbatim
-camera_stopper{
+separator{
   layer = 2,
   x = 320,
   y = 0,

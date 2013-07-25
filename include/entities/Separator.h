@@ -14,33 +14,33 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_CAMERA_STOPPER_H
-#define SOLARUS_CAMERA_STOPPER_H
+#ifndef SOLARUS_SEPARATOR_H
+#define SOLARUS_SEPARATOR_H
 
 #include "Common.h"
 #include "entities/Detector.h"
 #include <list>
 
 /**
- * \brief An horizontal or vertical, invisible wall for the camera.
+ * \brief An horizontal or vertical separation between two parts of the map.
  *
- * The camera cannot cross this wall except when the hero touches it: in this
- * case, scrolling is performed.
+ * The camera cannot cross this separation except when the hero touches it:
+ * in this case, scrolling is performed.
  * This entity allows to separate parts of the map like if there was several
  * maps.
  */
-class CameraStopper: public Detector {
+class Separator: public Detector {
 
   public:
 
-    CameraStopper(
+    Separator(
         const std::string& name,
         Layer layer,
         int x,
         int y,
         int width,
         int height);
-    ~CameraStopper();
+    ~Separator();
 
     EntityType get_type();
 

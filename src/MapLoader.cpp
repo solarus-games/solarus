@@ -165,7 +165,7 @@ int MapLoader::l_properties(lua_State* l) {
     { "conveyor_belt",    LuaContext::map_api_create_conveyor_belt },
     { "door",             LuaContext::map_api_create_door },
     { "stairs",           LuaContext::map_api_create_stairs },
-    { "camera_stopper",   LuaContext::map_api_create_camera_stopper },
+    { "separator",        LuaContext::map_api_create_separator },
     { NULL, NULL }
   };
   const luaL_Reg* function = functions;

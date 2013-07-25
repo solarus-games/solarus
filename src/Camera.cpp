@@ -19,7 +19,7 @@
 #include "entities/MapEntity.h"
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
-#include "entities/CameraStopper.h"
+#include "entities/Separator.h"
 #include "movements/TargetMovement.h"
 #include "lowlevel/VideoManager.h"
 #include "lua/LuaContext.h"
@@ -32,9 +32,9 @@ Camera::Camera(Map& map):
   map(map),
   position(VideoManager::get_instance()->get_quest_size()),
   fixed_on_hero(true),
-  stopper_scrolling_dx(0),
-  stopper_scrolling_dy(0),
-  stopper_next_scrolling_date(0),
+  separator_scrolling_dx(0),
+  separator_scrolling_dy(0),
+  separator_next_scrolling_date(0),
   restoring(false),
   speed(120),
   movement(NULL) {
@@ -88,27 +88,27 @@ void Camera::update_fixed_on_hero() {
   Debug::check_assertion(fixed_on_hero,
       "Illegal call to Camera::update_fixed_on_hero()");
 
-  // First compute the camera coordinates ignoring map borders and camera stoppers.
+  // First compute the camera coordinates ignoring map borders and separators.
   const Rectangle& hero_center = map.get_entities().get_hero().get_center_point();
   const int hero_x = hero_center.get_x();
   const int hero_y = hero_center.get_y();
   int x = hero_x - get_width() / 2;
   int y = hero_y - get_height() / 2;
 
-  // See if there is a camera stopper in the rectangle.
-  const std::list<CameraStopper*>& stoppers =
-      map.get_entities().get_camera_stoppers();
-  std::list<CameraStopper*>::const_iterator it;
-  for (it = stoppers.begin(); it != stoppers.end(); ++it) {
-    CameraStopper* stopper = *it;
+  // See if there is a separator in the rectangle.
+  const std::list<Separator*>& separators =
+      map.get_entities().get_separators();
+  std::list<Separator*>::const_iterator it;
+  for (it = separators.begin(); it != separators.end(); ++it) {
+    Separator* separator = *it;
 
-    if (stopper->get_width() == 16) {
-      // Vertical camera stopper.
-      int separation_x = stopper->get_x() + 8;
+    if (separator->get_width() == 16) {
+      // Vertical separator.
+      int separation_x = separator->get_x() + 8;
 
       if (x < separation_x && separation_x < x + get_width()
-          && stopper->get_y() < y + get_height()
-          && y < stopper->get_y() + stopper->get_height()) {
+          && separator->get_y() < y + get_height()
+          && y < separator->get_y() + separator->get_height()) {
         int left = separation_x - x;
         int right = x + get_width() - separation_x;
         if (left > right) {
@@ -119,12 +119,12 @@ void Camera::update_fixed_on_hero() {
         }
       }
     }
-    else if (stopper->get_height() == 16) {
-      // Horizontal camera stopper.
-      int separation_y = stopper->get_y() + 8;
+    else if (separator->get_height() == 16) {
+      // Horizontal separator.
+      int separation_y = separator->get_y() + 8;
       if (y < separation_y && separation_y < y + get_height()
-          && stopper->get_x() < x + get_width()
-          && x < stopper->get_x() + stopper->get_width()) {
+          && separator->get_x() < x + get_width()
+          && x < separator->get_x() + separator->get_width()) {
         int top = separation_y - y;
         int bottom = y + get_height() - separation_y;
         if (top > bottom) {
@@ -136,7 +136,7 @@ void Camera::update_fixed_on_hero() {
       }
     }
     else {
-      Debug::die("Wrong size of camera stopper: width or height must be 16");
+      Debug::die("Wrong separator size: width or height must be 16");
     }
   }
 
@@ -210,13 +210,13 @@ const Rectangle& Camera::get_position() {
  * \brief Returns whether there is a camera movement.
  *
  * It may be a movement towards a point or a scrolling movement due to a
- * camera stopper.
+ * separator.
  *
  * \return \c true if the camera is moving.
  */
 bool Camera::is_moving() {
   return !fixed_on_hero
-      || stopper_next_scrolling_date != 0;
+      || separator_next_scrolling_date != 0;
 }
 
 /**

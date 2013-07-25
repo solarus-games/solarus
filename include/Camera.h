@@ -25,7 +25,7 @@
  *
  * The camera determines the visible area of the map.
  * Most of the time, the camera is centered on the hero movements,
- * blocking on the map borders and on camera stoppers.
+ * blocking on the map borders and on separators.
  *
  * Occasionally, it can also be moved towards a point and then restored
  * towards the hero.
@@ -58,12 +58,12 @@ class Camera {
     Rectangle position;           /**< Visible area of the camera on the map. */
 
     // Camera centered on the hero.
-    bool fixed_on_hero;           /**< \c true if the camera is fixed on the hero. */
-    Rectangle stopper_scrolling_position;
-    Rectangle stopper_target_position;
-    int stopper_scrolling_dx;
-    int stopper_scrolling_dy;
-    uint32_t stopper_next_scrolling_date;
+    bool fixed_on_hero;                     /**< \c true if the camera is fixed on the hero. */
+    Rectangle separator_scrolling_position; /**< Current camera position while crossing a separator. */
+    Rectangle separator_target_position;    /**< Target camera position when crossing a separator. */
+    int separator_scrolling_dx;             /**< X increment to the camera position when crossing a separator. */
+    int separator_scrolling_dy;             /**< Y increment to the camera position when crossing a separator. */
+    uint32_t separator_next_scrolling_date; /**< Next camera position change when crossing a separator. */
 
     // Camera being moved toward a point or back to the hero.
     bool restoring;               /**< \c true if the camera is moving back to the hero. */

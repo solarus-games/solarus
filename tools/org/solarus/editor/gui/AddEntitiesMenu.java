@@ -66,7 +66,7 @@ public class AddEntitiesMenu extends JMenu {
                 CrystalBlock.Subtype.ORANGE,
                 CrystalBlock.Subtype.BLUE
         ),
-        new ItemDefinition(EntityType.CAMERA_STOPPER, KeyEvent.VK_A),
+        new ItemDefinition(EntityType.SEPARATOR, KeyEvent.VK_A),
     };
 
     /**

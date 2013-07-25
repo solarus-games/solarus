@@ -14,18 +14,19 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/CameraStopper.h"
+#include "entities/Separator.h"
+#include "lowlevel/Debug.h"
 
 /**
- * \brief Creates a new camera stopper.
+ * \brief Creates a new separator.
  * \param name Name of the entity to create.
  * \param layer Layer of the entity to create on the map.
  * \param x X coordinate of the entity to create.
  * \param y Y coordinate of the entity to create.
- * \param width Width of the camera stopper (16 means a vertical stopper).
- * \param height Height of the camera stopper (16 means an horizontal stopper).
+ * \param width Width of the separator (16 means a vertical separator).
+ * \param height Height of the separator (16 means an horizontal separator).
  */
-CameraStopper::CameraStopper(
+Separator::Separator(
     const std::string& name,
     Layer layer,
     int x,
@@ -34,19 +35,21 @@ CameraStopper::CameraStopper(
     int height):
   Detector(COLLISION_RECTANGLE, name, layer, x, y, width, height) {
 
+  Debug::check_assertion((width == 16 && height > 16)
+      || (width > 16 && height == 16), "Invalid separator size");
 }
 
 /**
  * \brief Destructor.
  */
-CameraStopper::~CameraStopper() {
+Separator::~Separator() {
 }
 
 /**
  * \brief Returns the type of entity.
  * \return The type of entity.
  */
-EntityType CameraStopper::get_type() {
-  return CAMERA_STOPPER;
+EntityType Separator::get_type() {
+  return SEPARATOR;
 }
 

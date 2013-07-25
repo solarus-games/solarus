@@ -376,6 +376,12 @@ Sets the light level of the map.
 \subsection lua_api_map_get_camera_position map:get_camera_position()
 
 Returns the currently visible area of the map.
+
+Except during a
+\ref lua_api_map_move_camera "camera moving sequence",
+this area is centered on the hero, stopping on the limits of the maps
+and on
+\ref lua_api_separator "separators".
 - Return value 1 (number): X coordinate of the visible area.
 - Return value 2 (number): Y coordinate of the visible area.
 - Return value 3 (number): Width of the visible area.
@@ -395,6 +401,9 @@ The camera moves towards a target point.
 When the target is reached, after a first delay,
 your callback function is called.
 Then, after a second delay, the camera moves back towards the hero.
+
+During the sequence, the camera ignores
+\ref lua_api_separator "separators".
 
 The game is suspended during the whole sequence (meaning that
 the hero and other \ref lua_api_entity "map entities" cannot move).
@@ -1322,23 +1331,23 @@ on the map.
 - Return value (\ref lua_api_fire "fire"): the
   fire created.
 
-\subsection lua_api_map_create_camera_stopper map:create_camera_stopper(properties)
+\subsection lua_api_map_create_separator map:create_separator(properties)
 
 Creates an entity of type
-\ref lua_api_camera_stopper "camera stopper"
+\ref lua_api_separator "separator"
 on the map.
 - \c properties (table): A table that describles all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
-    \c 2: high). The layer has no effect for camera stoppers.
+    \c 2: high). The layer has no effect for separators.
   - \c x (number): X coordinate on the map.
   - \c y (number): Y coordinate on the map.
   - \c width (number): Width of the entity in pixels.
   - \c height (number): Height of the entity in pixels.
     One of \c width or \c height must be 16 pixels.
-- Return value (\ref lua_api_camera_stopper "camera stopper"): The
-  camera_stopper created.
+- Return value (\ref lua_api_separator "separator"): The
+  separator created.
 
 \section lua_api_map_events Events of a map
 

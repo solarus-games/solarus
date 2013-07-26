@@ -50,6 +50,8 @@ class LuaContext {
     // Functions and types.
     static const std::string main_module_name;                   /**< sol.main */
     static const std::string audio_module_name;                  /**< sol.audio */
+    static const std::string video_module_name;                  /**< sol.video */
+    static const std::string input_module_name;                  /**< sol.input */
     static const std::string timer_module_name;                  /**< sol.timer */
     static const std::string game_module_name;                   /**< sol.game */
     static const std::string map_module_name;                    /**< sol.map */
@@ -57,8 +59,6 @@ class LuaContext {
     static const std::string surface_module_name;                /**< sol.surface */
     static const std::string text_surface_module_name;           /**< sol.text_surface */
     static const std::string sprite_module_name;                 /**< sol.sprite */
-    static const std::string input_module_name;                  /**< sol.input */
-    static const std::string video_module_name;                  /**< sol.video */
     static const std::string menu_module_name;                   /**< sol.menu */
     static const std::string language_module_name;               /**< sol.language */
     static const std::string movement_module_name;               /**< sol.movement */
@@ -376,6 +376,14 @@ class LuaContext {
       video_api_is_fullscreen,
       video_api_set_fullscreen,
       video_api_get_quest_size,
+
+      // Input API.
+      input_api_is_joypad_enabled,
+      input_api_set_joypad_enabled,
+      input_api_is_key_pressed,
+      input_api_is_joypad_button_pressed,
+      input_api_get_joypad_axis_state,
+      input_api_get_joypad_hat_direction,
 
       // Menu API.
       menu_api_start,

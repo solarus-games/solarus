@@ -43,7 +43,6 @@ Changes that introduce incompatibilities:
 * Remove map:set_dialog_variable(): use the info param of game:start_dialog().
 
 * Replace map:set_pause_enabled() by game:set_pause_allowed().
-* target_movement:set_target(entity) now accepts an x,y offset (#154).
 
 
 Changes that do not introduce incompatibilities:
@@ -59,6 +58,14 @@ Changes that do not introduce incompatibilities:
 * Add a method game:get_hero().
 * Add a method hero:get/set_walking_speed() (#206).
 * Add hero:get_state() and hero:on_state_changed() (#207).
+* target_movement:set_target(entity) now accepts an x,y offset (#154).
+* Add a function game:is_pause_allowed().
+
+* Add a function sol.input.is_key_pressed().
+* Add a function sol.input.is_joypad_button_pressed().
+* Add a function sol.input.get_joypad_axis_state().
+* Add a function sol.input.get_joypad_hat_direction().
+* Add functions sol.input.is/set_joypad_enabled() (#175).
 
 * Return nil if the string is not found in sol.language.get_string().
 * sol.language.get_dialog() is now implemented.
@@ -66,7 +73,6 @@ Changes that do not introduce incompatibilities:
 * Add an event game:on_dialog_started(dialog, info).
 * Add an event game:on_dialog_finished(dialog).
 
-* Add a function game:is_pause_allowed().
 
 Solarus Quest Editor changes
 ----------------------------

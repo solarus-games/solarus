@@ -180,9 +180,9 @@ void InputEvent::quit() {
 
 /**
  * \brief Creates a keyboard event.
- * \param event the internal event to encapsulate
+ * \param event The internal event to encapsulate.
  */
-InputEvent::InputEvent(const SDL_Event &event):
+InputEvent::InputEvent(const SDL_Event& event):
   internal_event(event) {
 
 }
@@ -199,16 +199,16 @@ InputEvent::~InputEvent() {
  * if there is no event.
  * \return the current event to handle, or NULL if there is no event
  */
-InputEvent * InputEvent::get_event() {
+InputEvent* InputEvent::get_event() {
 
-  InputEvent *result = NULL;
+  InputEvent* result = NULL;
   SDL_Event internal_event;
   if (SDL_PollEvent(&internal_event)) {
 
     // ignore intermediate positions of joystick axis
     if (internal_event.type != SDL_JOYAXISMOTION
-	|| internal_event.jaxis.value <= 1000
-	|| internal_event.jaxis.value >= 10000) {
+        || internal_event.jaxis.value <= 1000
+        || internal_event.jaxis.value >= 10000) {
 
       result = new InputEvent(internal_event);
     }
@@ -266,6 +266,111 @@ bool InputEvent::is_alt_down() {
   SDLMod mod = SDL_GetModState();
   return mod & (KMOD_LALT | KMOD_RALT);
 }
+
+/**
+ * \brief Returns whether a keyboard key is currently down.
+ * \param key A keyboard key.
+ * \return \c true if this keyboard key is currently down.
+ */
+bool InputEvent::is_key_down(KeyboardKey key) {
+
+  int num_keys = 0;
+  Uint8* keys_state = SDL_GetKeyState(&num_keys);
+  return keys_state[key];
+}
+
+/**
+ * \brief Returns whether a joypad button is currently down.
+ * \param key A joypad button.
+ * \return \c true if this joypad button is currently down.
+ */
+bool InputEvent::is_joypad_button_down(int button) {
+
+  if (joystick == NULL) {
+    return false;
+  }
+
+  return SDL_JoystickGetButton(joystick, button) != 0;
+}
+
+/**
+ * \brief Returns the state of a joypad axis.
+ * \param axis Index of a joypad axis.
+ * \return The state of that axis:
+ * -1 (left or up), 0 (centered) or 1 (right or down).
+ */
+int InputEvent::get_joypad_axis_state(int axis) {
+
+  if (joystick == NULL) {
+    return 0;
+  }
+
+  int state = SDL_JoystickGetAxis(joystick, axis);
+
+  int result;
+  if (abs(state) < 10000) {
+    result = 0;
+  }
+  else {
+    result = (state > 0) ? 1 : -1;
+  }
+
+  return result;
+}
+
+/**
+ * \brief Returns the direction of a joypad hat.
+ * \param axis Index of a joypad hat.
+ * \return The direction of that hat (0 to 7, or -1 if centered).
+ */
+int InputEvent::get_joypad_hat_direction(int hat) {
+
+  if (joystick == NULL) {
+    return -1;
+  }
+
+  int state = SDL_JoystickGetHat(joystick, hat);
+  int result = -1;
+
+  switch (state) {
+
+    case SDL_HAT_RIGHT:
+      result = 0;
+      break;
+
+    case SDL_HAT_RIGHTUP:
+      result = 1;
+      break;
+
+    case SDL_HAT_UP:
+      result = 2;
+      break;
+
+    case SDL_HAT_LEFTUP:
+      result = 3;
+      break;
+
+    case SDL_HAT_LEFT:
+      result = 4;
+      break;
+
+    case SDL_HAT_LEFTDOWN:
+      result = 5;
+      break;
+
+    case SDL_HAT_DOWN:
+      result = 6;
+      break;
+
+    case SDL_HAT_RIGHTDOWN:
+      result = 7;
+      break;
+
+  }
+
+  return result;
+}
+
 
 // event type
 

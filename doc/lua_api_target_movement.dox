@@ -35,7 +35,7 @@ See \ref lua_api_movement_methods to know these methods.
 
 The following methods are specific to target movements.
 
-\subsection lua_api_target_movement_set_target target_movement:set_target(x, y), target_movement:set_target(entity)
+\subsection lua_api_target_movement_set_target target_movement:set_target(x, y), target_movement:set_target(entity, [x, y])
 
 Sets the target of this movement as a fixed point or a
 \ref lua_api_entity "map entity".
@@ -46,6 +46,10 @@ To target a fixed point:
 
 To target a map entity (only during a \ref lua_api_game "game"):
 - \c entity (\ref lua_api_entity "entity"): The entity to target.
+- \c x (number, optional): X offset to add to the target entity's coordinates.
+  Default is \c 0.
+- \c y (number, optional): Y offset to add to the target entity's coordinates.
+  Default is \c 0.
 
 \subsection lua_api_target_movement_get_speed target_movement:get_speed()
 

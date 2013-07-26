@@ -401,10 +401,10 @@ int LuaContext::movement_api_create(lua_State* l) {
     if (game != NULL) {
       // If we are on a map, the default target is the hero.
       movement = new TargetMovement(
-          &game->get_hero(), 96, false);
+          &game->get_hero(), 0, 0, 96, false);
     }
     else {
-      movement = new TargetMovement(0, 0, 32, false);
+      movement = new TargetMovement(NULL, 0, 0, 32, false);
     }
   }
   else if (type == "path") {
@@ -864,16 +864,23 @@ TargetMovement& LuaContext::check_target_movement(lua_State* l, int index) {
 int LuaContext::target_movement_api_set_target(lua_State* l) {
 
   TargetMovement& movement = check_target_movement(l, 1);
-  if (lua_isnumber(l, 3)) {
-    // the target is a fixed point
+  if (lua_isnumber(l, 2)) {
+    // The target is a fixed point.
     int x = luaL_checkint(l, 2);
     int y = luaL_checkint(l, 3);
-    movement.set_target(x, y);
+    movement.set_target(NULL, x, y);
   }
   else {
-    // the target is an entity
+    // the target is an entity, possibly with an offset.
     MapEntity& target = check_entity(l, 2);
-    movement.set_target(&target);
+    int x = 0;
+    int y = 0;
+    if (lua_isnumber(l, 3)) {
+       // There is an offset.
+       x = luaL_checkint(l, 3);
+       y = luaL_checkint(l, 4);
+    }
+    movement.set_target(&target, x, y);
   }
 
   return 0;

@@ -266,7 +266,7 @@ void Boomerang::update() {
   if (!going_back && has_to_go_back) {
     going_back = true;
     clear_movement();
-    set_movement(new TargetMovement(&hero, speed, true));
+    set_movement(new TargetMovement(&hero, 0, 0, speed, true));
     get_entities().set_entity_layer(*this, hero.get_layer()); // because the hero's layer may have changed
   }
 }

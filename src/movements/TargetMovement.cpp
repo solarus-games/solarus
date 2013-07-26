@@ -27,43 +27,26 @@
 const uint32_t TargetMovement::recomputation_delay = 150;
 
 /**
- * \brief Creates a new target movement towards a fixed point.
- * \param target_x x coordinate of the target point
- * \param target_y y coordinate of the target point
- * \param moving_speed speed of the movement when not stoppedstopped
- * \param ignore_obstacles true to ignore obstacles (if on a map)
+ * \brief Creates a new target movement toward an entity or a fixed point.
+ * \param target_entity The entity to target or NULL.
+ * \param target_x X of the target point, or X offset in the case of an entity.
+ * \param target_y Y of the target point, or Y offset in the case of an entity.
+ * \param moving_speed Speed of the movement when not stopped0
+ * \param ignore_obstacles \c true to ignore obstacles (if on a map).
  */
-TargetMovement::TargetMovement(int target_x, int target_y, int moving_speed,
+TargetMovement::TargetMovement(
+    MapEntity* target_entity,
+    int x,
+    int y,
+    int moving_speed,
     bool ignore_obstacles):
 
   StraightMovement(ignore_obstacles, true),
-  target_x(target_x),
-  target_y(target_y),
-  target_entity(NULL),
-  sign_x(0),
-  sign_y(0),
-  moving_speed(moving_speed),
-  next_recomputation_date(System::now()),
-  finished(false) {
-
-}
-
-/**
- * \brief Creates a new target movement toward an entity.
- *
- * The movement will update its trajectory if the entity's position is changed.
- *
- * \param target_entity the target entity
- * \param moving_speed speed of the movement when not stopped
- * \param ignore_obstacles true to ignore obstacles (if on a map)
- */
-TargetMovement::TargetMovement(MapEntity* target_entity, int moving_speed,
-    bool ignore_obstacles):
-
-  StraightMovement(ignore_obstacles, true),
-  target_x(target_entity->get_x()),
-  target_y(target_entity->get_y()),
+  target_x(x),
+  target_y(y),
   target_entity(target_entity),
+  entity_offset_x(x),
+  entity_offset_y(y),
   sign_x(0),
   sign_y(0),
   moving_speed(moving_speed),
@@ -101,30 +84,11 @@ void TargetMovement::notify_object_controlled() {
 
 /**
  * \brief Changes the target of this movement.
- * \param target_x x coordinate of the target point
- * \param target_y y coordinate of the target point
+ * \param target_entity The entity to target or NULL.
+ * \param x X of the target point, or X offset in the case of an entity.
+ * \param y Y of the target point, or Y offset in the case of an entity.
  */
-void TargetMovement::set_target(int target_x, int target_y) {
-
-  if (this->target_entity != NULL) {
-    this->target_entity->decrement_refcount();
-    if (this->target_entity->get_refcount() == 0) {
-      delete this->target_entity;
-    }
-  }
-
-  this->target_x = target_x;
-  this->target_y = target_y;
-  this->target_entity = NULL;
-  recompute_movement();
-  next_recomputation_date = System::now() + recomputation_delay;
-}
-
-/**
- * \brief Changes the target of this movement.
- * \param target_entity the target entity
- */
-void TargetMovement::set_target(MapEntity* target_entity) {
+void TargetMovement::set_target(MapEntity* target_entity, int x, int y) {
 
   if (this->target_entity != NULL) {
     this->target_entity->decrement_refcount();
@@ -137,6 +101,12 @@ void TargetMovement::set_target(MapEntity* target_entity) {
 
   if (this->target_entity != NULL) {
     this->target_entity->increment_refcount();
+    this->entity_offset_x = x;
+    this->entity_offset_y = y;
+  }
+  else {
+    this->target_x = x;
+    this->target_y = y;
   }
 
   recompute_movement();
@@ -166,7 +136,7 @@ void TargetMovement::set_moving_speed(int moving_speed) {
 void TargetMovement::update() {
 
   if (target_entity != NULL && target_entity->is_being_removed()) {
-    set_target(NULL);
+    set_target(NULL, target_x, target_y);
   }
 
   if (System::now() >= next_recomputation_date) {
@@ -179,7 +149,7 @@ void TargetMovement::update() {
   int dy = target_y - get_y();
   if (dx * sign_x <= 0 && dy * sign_y <= 0) {
     if (!test_collision_with_obstacles(dx, dy)) {
-      set_xy(target_x, target_y); // because the target movement may have not been very precise
+      set_xy(target_x, target_y);  // Because the target movement may have not been very precise.
       stop();
       finished = true;
     }
@@ -196,8 +166,8 @@ void TargetMovement::recompute_movement() {
 
   if (target_entity != NULL) {
     // the target may be a moving entity
-    target_x = target_entity->get_x();
-    target_y = target_entity->get_y();
+    target_x = target_entity->get_x() + entity_offset_x;
+    target_y = target_entity->get_y() + entity_offset_y;
   }
 
   if (get_x() != target_x || get_y() != target_y) {
@@ -226,7 +196,6 @@ void TargetMovement::recompute_movement() {
  * whether the target was reached.
  */
 bool TargetMovement::is_finished() {
-
   return finished;
 }
 

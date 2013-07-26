@@ -43,6 +43,7 @@ Changes that introduce incompatibilities:
 * Remove map:set_dialog_variable(): use the info param of game:start_dialog().
 
 * Replace map:set_pause_enabled() by game:set_pause_allowed().
+* target_movement:set_target(entity) now accepts an x,y offset (#154).
 
 
 Changes that do not introduce incompatibilities:

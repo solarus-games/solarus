@@ -27,32 +27,17 @@
  */
 class TargetMovement: public StraightMovement {
 
-  protected:
-
-    int target_x;                      /**< x coordinate of the point to track */
-    int target_y;                      /**< y coordinate of the point to track */
-    MapEntity* target_entity;          /**< the entity to track (can be NULL if only a point is targeted) */
-
-    int sign_x;                        /**< sign of the x movement (1: right, -1: left) */
-    int sign_y;                        /**< sign of the y movement (1: down, -1: up) */
-    int moving_speed;                  /**< speed when moving */
-
-    static const uint32_t recomputation_delay; /**< delay between two recomputations */
-    uint32_t next_recomputation_date;  /**< date when the movement is recalculated */
-    bool finished;				       /**< true if the target is reached */
-
-    void recompute_movement();
-
   public:
 
-    TargetMovement(int target_x, int target_y, int moving_speed,
-        bool ignore_obstacles);
-    TargetMovement(MapEntity* target_entity, int moving_speed,
+    TargetMovement(
+        MapEntity* target_entity,
+        int x,
+        int y,
+        int moving_speed,
         bool ignore_obstacles);
     ~TargetMovement();
 
-    void set_target(int target_x, int target_y);
-    void set_target(MapEntity* target_entity);
+    void set_target(MapEntity* target_entity, int x, int y);
 
     int get_moving_speed();
     void set_moving_speed(int moving_speed);
@@ -62,6 +47,26 @@ class TargetMovement: public StraightMovement {
     void update();
 
     virtual const std::string& get_lua_type_name() const;
+
+  private:
+
+    void recompute_movement();
+
+    int target_x;                      /**< X coordinate of the point or entity to track. */
+    int target_y;                      /**< Y coordinate of the point or entity to track. */
+    MapEntity* target_entity;          /**< The entity to track (NULL if only
+                                        * a point is targeted) */
+    int entity_offset_x;               /**< X value to add to the entity's coordinates. */
+    int entity_offset_y;               /**< Y value to add to the entity's coordinates. */
+
+    int sign_x;                        /**< Sign of the x movement (1: right, -1: left) */
+    int sign_y;                        /**< Sign of the y movement (1: down, -1: up) */
+    int moving_speed;                  /**< Speed when moving */
+
+    static const uint32_t recomputation_delay; /**< Delay between two recomputations. */
+    uint32_t next_recomputation_date;  /**< Date when the movement is recalculated. */
+    bool finished;				       /**< \c true if the target is reached. */
+
 };
 
 #endif

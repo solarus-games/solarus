@@ -92,8 +92,10 @@ void Hero::StairsState::start(State* previous_state) {
 
   if (stairs.is_inside_floor()) {
     if (way == Stairs::NORMAL_WAY) {
-      // low layer to intermediate layer: change the layer now
-      get_entities().set_entity_layer(hero, LAYER_INTERMEDIATE);
+      // Towards an upper layer: change the layer now
+      Layer layer = stairs.get_layer();
+      Debug::check_assertion(layer != LAYER_HIGH, "Invalid stairs layer");
+      get_entities().set_entity_layer(hero, Layer(layer + 1));
     }
   }
   else {
@@ -174,7 +176,7 @@ void Hero::StairsState::update() {
     if (hero.get_movement()->is_finished()) {
 
       if (way == Stairs::REVERSE_WAY) {
-        get_entities().set_entity_layer(hero, LAYER_LOW);
+        get_entities().set_entity_layer(hero, stairs.get_layer());
       }
       hero.clear_movement();
       if (carried_item == NULL) {
@@ -188,7 +190,7 @@ void Hero::StairsState::update() {
   else {
     // stairs between two different floors: more complicated
 
-    HeroSprites &sprites = get_sprites();
+    HeroSprites& sprites = get_sprites();
     if (hero.get_movement()->is_finished()) {
       hero.clear_movement();
 
@@ -203,7 +205,7 @@ void Hero::StairsState::update() {
         // we are on the old floor:
         // there must be a teletransporter associated with these stairs,
         // otherwise the hero would get stuck into the walls
-        Teletransporter *teletransporter = hero.get_delayed_teletransporter();
+        Teletransporter* teletransporter = hero.get_delayed_teletransporter();
         Debug::check_assertion(teletransporter != NULL, "Teletransporter expected with the stairs");
         teletransporter->transport_hero(hero);
       }
@@ -315,7 +317,8 @@ CarriedItem* Hero::StairsState::get_carried_item() {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior(
+    CarriedItem& carried_item) {
 
   if (stairs.is_inside_floor()) {
     this->carried_item = &carried_item;

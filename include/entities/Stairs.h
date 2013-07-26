@@ -28,8 +28,9 @@
  * or to change its layer inside a single floor.
  *
  * For stairs inside a single floor,
- * only one stairs entity has to be placed and the collisions will be detected on both layers.
- * This entity is usually placed on the low layer even if there is no obligation.
+ * only one stairs entity has to be placed and the collisions will be
+ * detected on both layers.
+ * This entity has to be placed on the lowest of both layers.
  *
  * For stairs that send the hero to another floor (i.e. another map),
  * there must be three entities:
@@ -61,23 +62,13 @@ class Stairs: public Detector {
      */
     enum Way {
       NORMAL_WAY,    /**< for stairs inside a single floor, indicates that the entity is going upstairs;
-		      * for stairs between two floors, indicates that the entity is leaving this floor */
+                      * for stairs between two floors, indicates that the entity is leaving this floor */
       REVERSE_WAY    /**< for stairs inside a single floor, indicates that the entity is going downstairs;
                       * for stairs between two floors, indicates that the entity is arriving on this floor */
     };
 
-  private:
-
-    Subtype subtype;            /**< subtype of stairs */
-    bool enabled;               /**< indicates that the stairs are enabled
-                                 * (if not, they have no effect and are not obstacle) */
-
-    void update_dynamic_tiles();
-
-  public:
-
-    Stairs(const std::string &name, Layer layer, int x, int y,
-	   int direction, Subtype subtype);
+    Stairs(const std::string& name, Layer layer, int x, int y,
+       int direction, Subtype subtype);
     ~Stairs();
 
     EntityType get_type();
@@ -96,6 +87,15 @@ class Stairs: public Detector {
     void play_sound(Way way);
     std::string get_path(Way way);
     Rectangle get_clipping_rectangle(Way way);
+
+  private:
+
+    Subtype subtype;            /**< subtype of stairs */
+    bool enabled;               /**< indicates that the stairs are enabled
+                                 * (if not, they have no effect and are not obstacle) */
+
+    void update_dynamic_tiles();
+
 };
 
 #endif

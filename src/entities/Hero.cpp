@@ -1506,27 +1506,32 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int 
 }
 
 /**
- * \brief This function is called when a stairs entity detects a collision with this entity.
- * \param stairs the stairs
- * \param collision_mode the collision mode that detected the event
+ * \brief This function is called when a stairs entity detects a collision
+ * with this entity.
+ * \param stairs The stairs.
+ * \param collision_mode The collision mode that detected the event.
  */
-void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
+void Hero::notify_collision_with_stairs(
+    Stairs& stairs, CollisionMode collision_mode) {
 
   if (get_ground() == GROUND_EMPTY) {
-    set_ground(GROUND_NORMAL); // allow the hero to stay on the intermediate layer
+    // Allow the hero to stay on the highest of both layers of the stairs.
+    set_ground(GROUND_NORMAL);
   }
 
   if (state->can_take_stairs()) {
 
     Stairs::Way stairs_way;
     if (stairs.is_inside_floor()) {
-      stairs_way = (get_layer() == LAYER_LOW) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
+      stairs_way = (get_layer() == stairs.get_layer()) ?
+          Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
     else {
-      stairs_way = (collision_mode == COLLISION_FACING_POINT_ANY) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
+      stairs_way = (collision_mode == COLLISION_FACING_POINT_ANY) ?
+          Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
 
-    // check whether the hero is trying to move in the direction of the stairs
+    // Check whether the hero is trying to move in the direction of the stairs.
     int correct_direction = stairs.get_movement_direction(stairs_way);
     if (is_moving_towards(correct_direction / 2)) {
       set_state(new StairsState(*this, stairs, stairs_way));

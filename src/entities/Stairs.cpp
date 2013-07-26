@@ -25,25 +25,32 @@
 
 /**
  * \brief Creates a new stairs entity.
- * \param name name of the entity to create
- * \param layer layer of the entity to create on the map
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
- * \param direction direction of the stairs (0 to 3)
- * \param subtype the subtype of stairs
+ * \param name Name of the entity to create.
+ * \param layer Layer of the entity to create on the map.
+ * \param x X coordinate of the entity to create.
+ * \param y Y coordinate of the entity to create.
+ * \param direction Direction of the stairs (0 to 3).
+ * \param subtype The subtype of stairs.
  */
-Stairs::Stairs(const std::string &name, Layer layer, int x, int y,
-               int direction, Subtype subtype):
+Stairs::Stairs(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    int direction,
+    Subtype subtype):
   Detector(COLLISION_FACING_POINT_ANY | COLLISION_RECTANGLE, name, layer, x, y, 16, 16),
-  subtype(subtype), enabled(true) {
+  subtype(subtype),
+  enabled(true) {
 
-  Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH, "Cannot put single floor stairs on the high layer");
+  Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH,
+      "Cannot put single floor stairs on the high layer");
 
   set_direction(direction);
 
   if (!is_inside_floor()) {
     set_size(16, 8);
-    if (direction == 3) { // down
+    if (direction == 3) {  // Down.
       set_origin(0, -8);
     }
   }
@@ -66,7 +73,7 @@ EntityType Stairs::get_type() {
 
 /**
  * \brief Returns whether entities of this type can be drawn.
- * \return true if this type of entity can be drawn
+ * \return \c true if this type of entity can be drawn.
  */
 bool Stairs::can_be_drawn() {
   return false;
@@ -83,16 +90,17 @@ void Stairs::notify_map_started() {
 
 /**
  * \brief Returns whether the subtype of these stairs is INSIDE_FLOOR.
- * \return true if the subtype if INSIDE_FLOOR
+ * \return \c true if the subtype if INSIDE_FLOOR.
  */
 bool Stairs::is_inside_floor() const {
   return subtype == INSIDE_FLOOR;
 }
 
 /**
- * \brief Returns whether this entity can have collisions with entities even if
- * they are not on the same layer.
- * \return true if this entity can collide with entities that are on another layer
+ * \brief Returns whether this entity can have collisions with entities even
+ * if they are not on the same layer.
+ * \return \c true if this entity can collide with entities that are on
+ * another layer.
  */
 bool Stairs::has_layer_independent_collisions() const {
   return is_inside_floor();
@@ -101,9 +109,10 @@ bool Stairs::has_layer_independent_collisions() const {
 /**
  * \brief Returns true if this entity does not react to the sword.
  *
- * If true is returned, nothing will happen when the hero taps this entity with the sword.
+ * If true is returned, nothing will happen when the hero taps this entity
+ * with the sword.
  *
- * \return true if the sword is ignored
+ * \return \c true if the sword is ignored.
  */
 bool Stairs::is_sword_ignored() {
   return true;
@@ -115,17 +124,18 @@ bool Stairs::is_sword_ignored() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Stairs::is_obstacle_for(MapEntity &other) {
+bool Stairs::is_obstacle_for(MapEntity& other) {
 
   return other.is_stairs_obstacle(*this);
 }
 
 /**
  * \brief This function is called when another entity overlaps this entity.
- * \param entity_overlapping the other entity
- * \param collision_mode the collision mode that detected the collision
+ * \param entity_overlapping The other entity.
+ * \param collision_mode The collision mode that detected the collision.
  */
-void Stairs::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Stairs::notify_collision(
+    MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (is_enabled()) {
     entity_overlapping.notify_collision_with_stairs(*this, collision_mode);
@@ -133,9 +143,11 @@ void Stairs::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
 }
 
 /**
- * \brief Returns the direction of the movement an entity would take when activating these stairs.
- * \param way the way you intend to take these stairs
- * \return the movement direction an entity should take on these stairs (0 to 7)
+ * \brief Returns the direction of the movement an entity would take when
+ * activating these stairs.
+ * \param way The way you intend to take these stairs.
+ * \return The movement direction an entity should take on these stairs
+ * (0 to 7).
  */
 int Stairs::get_movement_direction(Way way) {
 
@@ -148,12 +160,13 @@ int Stairs::get_movement_direction(Way way) {
 }
 
 /**
- * \brief Returns the direction of the animation an entity should take when walking these stairs.
+ * \brief Returns the direction of the animation an entity should take when
+ * walking these stairs.
  *
  * For spiral stairs, the direction returned is diagonal.
  *
- * \param way the way you are taking these stairs
- * \return the direction of animation (0 to 7)
+ * \param way The way you are taking these stairs.
+ * \return The direction of animation (0 to 7).
  */
 int Stairs::get_animation_direction(Way way) {
 
@@ -180,18 +193,19 @@ int Stairs::get_animation_direction(Way way) {
  * When an entity collides with the stairs (usually the hero),
  * it can call this function to play the appropriate stairs sound.
  *
- * \param way the way you are taking these stairs
+ * \param way The way you are taking these stairs.
  */
 void Stairs::play_sound(Way way) {
 
   std::string sound_id;
   if (is_inside_floor()) {
-    // choose the sound depending on whether we are going upstairs or downstairs
+    // Choose the sound depending on whether we are going
+    // upstairs or downstairs.
     sound_id = (way == NORMAL_WAY) ? "stairs_up_end" : "stairs_down_end";
   }
   else {
-    // choose the sound depending on whether we are on the old floor or the new floor, and
-    // going upstairs or downstairs
+    // Choose the sound depending on whether we are on the old floor or the
+    // new floor, and going upstairs or downstairs.
     if (subtype == SPIRAL_UPSTAIRS || subtype == STRAIGHT_UPSTAIRS) {
       sound_id = (way == NORMAL_WAY) ? "stairs_up_start" : "stairs_down_end";
     }
@@ -206,14 +220,15 @@ void Stairs::play_sound(Way way) {
  * \brief Returns the path an entity should follow to take these stairs.
  *
  * When an entity collides with the stairs (usually the hero),
- * it can call this function to know the path it should take to make the appropriate movement.
+ * it can call this function to know the path it should take to make the
+ * appropriate movement.
  *
- * \param way the way you are taking these stairs
- * \return the corresponding path to make
+ * \param way The way you are taking these stairs.
+ * \return The corresponding path to make.
  */
 std::string Stairs::get_path(Way way) {
 
-  // determine the movement direction
+  // Determine the movement direction.
   int initial_direction = get_direction() * 2;
   std::string path = "";
   int nb_steps;
@@ -229,11 +244,13 @@ std::string Stairs::get_path(Way way) {
 
   if (!is_inside_floor()) {
 
+    // Second direction to take for each subtype of stairs
+    // (assuming the direction is north).
     static const int second_directions[] = {
-      0, 4, 2, 2 // second direction to take for each subtype of stairs (assuming the direction is north)
+      0, 4, 2, 2
     };
     int second_direction = second_directions[subtype];
-    if (get_direction() == 3) { // direction south
+    if (get_direction() == 3) {  // Direction south.
       second_direction = (second_direction + 4) % 8;
     }
     char c = '0' + second_direction;
@@ -260,9 +277,11 @@ std::string Stairs::get_path(Way way) {
 }
 
 /**
- * \brief Returns the subarea in which an entity tooking these stairs can be displayed.
- * \param way the way you are taking these stairs
- * \return the subarea of the map where the entity displaying should be restricted to
+ * \brief Returns the subarea in which an entity tooking these stairs can be
+ * displayed.
+ * \param way The way you are taking these stairs.
+ * \return The subarea of the map where the entity displaying should be
+ * restricted to.
  */
 Rectangle Stairs::get_clipping_rectangle(Way way) {
 
@@ -300,7 +319,7 @@ Rectangle Stairs::get_clipping_rectangle(Way way) {
 
 /**
  * \brief Notifies this entity that it was just enabled or disabled.
- * \param enabled true if the entity is now enabled
+ * \param enabled \c true if the entity is now enabled.
  *
  * All dynamic tiles whose prefix is "stairsname_enabled"
  * and "stairsame_disabled" will be updated depending on the stairs state
@@ -313,21 +332,24 @@ void Stairs::notify_enabled(bool enabled) {
 /**
  * \brief Enables or disables the dynamic tiles related to these stairs.
  *
- * The dynamic tiles impacted by this function are the ones whose prefix is the stairs's name
+ * The dynamic tiles impacted by this function are the ones whose prefix is
+ * the stairs's name
  * followed by "_enabled" or "_disabled", depending on the stairs state.
  */
 void Stairs::update_dynamic_tiles() {
 
-  std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_enabled");
+  std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(
+      DYNAMIC_TILE, get_name() + "_enabled");
   std::list<MapEntity*>::iterator it;
-  for (it = tiles.begin(); it != tiles.end(); it++) {
-    DynamicTile *tile = (DynamicTile*) *it;
+  for (it = tiles.begin(); it != tiles.end(); ++it) {
+    DynamicTile* tile = static_cast<DynamicTile*>(*it);
     tile->set_enabled(is_enabled());
   }
 
-  tiles = get_entities().get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_disabled");
-  for (it = tiles.begin(); it != tiles.end(); it++) {
-    DynamicTile *tile = (DynamicTile*) *it;
+  tiles = get_entities().get_entities_with_prefix(
+      DYNAMIC_TILE, get_name() + "_disabled");
+  for (it = tiles.begin(); it != tiles.end(); ++it) {
+    DynamicTile* tile = static_cast<DynamicTile*>(*it);
     tile->set_enabled(!is_enabled());
   }
 }

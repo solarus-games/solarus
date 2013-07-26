@@ -274,6 +274,13 @@ bool Hero::JumpingState::is_sensor_obstacle(Sensor& sensor) {
 }
 
 /**
+ * \copydoc Hero::State::is_separator_obstacle
+ */
+bool Hero::JumpingState::is_separator_obstacle(Separator& separator) {
+  return true;
+}
+
+/**
  * \brief Returns whether the hero ignores the effect of sensors in this state.
  * \return true if the hero ignores the effect of sensors in this state
  */

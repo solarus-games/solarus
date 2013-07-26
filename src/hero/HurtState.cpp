@@ -176,6 +176,13 @@ bool Hero::HurtState::is_sensor_obstacle(Sensor& sensor) {
 }
 
 /**
+ * \copydoc Hero::State::is_separator_obstacle
+ */
+bool Hero::HurtState::is_separator_obstacle(Separator& separator) {
+  return true;
+}
+
+/**
  * \brief Returns whether the hero can be hurt in this state.
  * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)

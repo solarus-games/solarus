@@ -258,28 +258,28 @@ class MapEntity: public ExportableToLua {
     void check_collision_with_detectors(bool with_pixel_precise);
     void check_collision_with_detectors(Sprite& sprite);
 
-    virtual void notify_collision_with_enemy(Enemy &enemy);
-    virtual void notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode);
-    virtual void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);
-    virtual void notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy);
-    virtual void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
-    virtual void notify_collision_with_jumper(Jumper &jumper);
-    virtual void notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode);
+    virtual void notify_collision_with_enemy(Enemy& enemy);
+    virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
+    virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
+    virtual void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
+    virtual void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
+    virtual void notify_collision_with_jumper(Jumper& jumper);
+    virtual void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode);
     virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     virtual void notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping);
-    virtual void notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode);
-    virtual void notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping);
+    virtual void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
+    virtual void notify_collision_with_crystal(Crystal& crystal, Sprite& sprite_overlapping);
     virtual void notify_collision_with_chest(Chest& chest);
     virtual void notify_collision_with_block(Block& block);
     virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
     virtual void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode);
-    virtual void notify_collision_with_explosion(Explosion& explosion, Sprite &sprite_overlapping);
+    virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
-    virtual void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
+    virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
 
-    virtual bool is_obstacle_for(MapEntity &other);
+    virtual bool is_obstacle_for(MapEntity& other);
     virtual bool is_shallow_water_obstacle();
     virtual bool is_deep_water_obstacle();
     virtual bool is_hole_obstacle();
@@ -299,6 +299,7 @@ class MapEntity: public ExportableToLua {
     virtual bool is_enemy_obstacle(Enemy& enemy);
     virtual bool is_jumper_obstacle(Jumper& jumper);
     virtual bool is_destructible_obstacle(Destructible& destructible);
+    virtual bool is_separator_obstacle(Separator& separator);
     virtual bool is_sword_ignored();
 
     // game loop

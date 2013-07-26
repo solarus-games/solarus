@@ -216,6 +216,13 @@ bool Hero::SpinAttackState::is_teletransporter_obstacle(Teletransporter& teletra
 }
 
 /**
+ * \copydoc Hero::State::is_separator_obstacle
+ */
+bool Hero::SpinAttackState::is_separator_obstacle(Separator& separator) {
+  return true;
+}
+
+/**
  * \brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */

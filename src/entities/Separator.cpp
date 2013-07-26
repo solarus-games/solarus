@@ -37,6 +37,8 @@ Separator::Separator(
 
   Debug::check_assertion((width == 16 && height > 16)
       || (width > 16 && height == 16), "Invalid separator size");
+
+  set_layer_independent_collisions(true);
 }
 
 /**
@@ -67,5 +69,15 @@ bool Separator::is_horizontal() const {
  */
 bool Separator::is_vertical() const {
   return get_width() == 16;
+}
+
+/**
+ * \brief Returns whether this entity is an obstacle for another one when
+ * it is enabled.
+ * \param other Another entity.
+ * \return \c true if this entity is an obstacle for the other one.
+ */
+bool Separator::is_obstacle_for(MapEntity& other) {
+  return other.is_separator_obstacle(*this);
 }
 

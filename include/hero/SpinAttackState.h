@@ -47,6 +47,7 @@ class Hero::SpinAttackState: public Hero::State {
     bool is_lava_obstacle();
     bool is_prickle_obstacle();
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool is_separator_obstacle(Separator& separator);
     void notify_obstacle_reached();
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);

@@ -147,20 +147,21 @@ class Hero: public MapEntity {
      *
      * Information about what is considered as an obstacle for the hero.
      */
-    bool is_obstacle_for(MapEntity &other);
+    bool is_obstacle_for(MapEntity& other);
     bool is_shallow_water_obstacle();
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_lava_obstacle();
     bool is_prickle_obstacle();
     bool is_ladder_obstacle();
-    bool is_block_obstacle(Block &block);
-    bool is_teletransporter_obstacle(Teletransporter &teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
-    bool is_stairs_obstacle(Stairs &stairs);
-    bool is_sensor_obstacle(Sensor &sensor);
-    bool is_raised_block_obstacle(CrystalBlock &raised_block);
+    bool is_block_obstacle(Block& block);
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    bool is_stairs_obstacle(Stairs& stairs);
+    bool is_sensor_obstacle(Sensor& sensor);
+    bool is_raised_block_obstacle(CrystalBlock& raised_block);
     bool is_jumper_obstacle(Jumper& jumper);
+    bool is_separator_obstacle(Separator& separator);
 
     /**
      * \name Collisions.

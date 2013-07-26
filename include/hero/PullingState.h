@@ -50,6 +50,7 @@ class Hero::PullingState: public Hero::State {
     bool is_lava_obstacle();
     bool is_prickle_obstacle();
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    bool is_separator_obstacle(Separator& separator);
 
     bool can_be_hurt(Enemy* attacker);
     bool can_pick_treasure(EquipmentItem& item);

@@ -43,7 +43,7 @@ Hero::PullingState::~PullingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::PullingState::start(State *previous_state) {
+void Hero::PullingState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -54,7 +54,7 @@ void Hero::PullingState::start(State *previous_state) {
 /**
  * \brief Stops this state.
  */
-void Hero::PullingState::stop(State *next_state) {
+void Hero::PullingState::stop(State* next_state) {
 
   State::stop(next_state);
 
@@ -292,6 +292,13 @@ bool Hero::PullingState::is_prickle_obstacle() {
  * \return true if the conveyor belt is an obstacle in this state
  */
 bool Hero::PullingState::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+  return true;
+}
+
+/**
+ * \copydoc Hero::State::is_separator_obstacle
+ */
+bool Hero::PullingState::is_separator_obstacle(Separator& separator) {
   return true;
 }
 

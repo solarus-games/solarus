@@ -1311,7 +1311,7 @@ bool Hero::is_ladder_obstacle() {
  * \param block a block
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Hero::is_block_obstacle(Block &block) {
+bool Hero::is_block_obstacle(Block& block) {
   return block.is_hero_obstacle(*this);
 }
 
@@ -1323,7 +1323,7 @@ bool Hero::is_block_obstacle(Block &block) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for the hero
  */
-bool Hero::is_teletransporter_obstacle(Teletransporter &teletransporter) {
+bool Hero::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return state->is_teletransporter_obstacle(teletransporter);
 }
 
@@ -1335,7 +1335,7 @@ bool Hero::is_teletransporter_obstacle(Teletransporter &teletransporter) {
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Hero::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+bool Hero::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return state->is_conveyor_belt_obstacle(conveyor_belt);
 }
 
@@ -1353,7 +1353,7 @@ bool Hero::is_stairs_obstacle(Stairs& stairs) {
  * \param sensor a sensor (not used here)
  * \return true if this sensor is currently an obstacle for the hero
  */
-bool Hero::is_sensor_obstacle(Sensor &sensor) {
+bool Hero::is_sensor_obstacle(Sensor& sensor) {
   return state->is_sensor_obstacle(sensor);
 }
 
@@ -1362,7 +1362,7 @@ bool Hero::is_sensor_obstacle(Sensor &sensor) {
  * \param raised_block a crystal block raised
  * \return true if the raised block is currently an obstacle for this entity
  */
-bool Hero::is_raised_block_obstacle(CrystalBlock &raised_block) {
+bool Hero::is_raised_block_obstacle(CrystalBlock& raised_block) {
   return !is_on_raised_blocks();
 }
 
@@ -1376,11 +1376,19 @@ bool Hero::is_jumper_obstacle(Jumper& jumper) {
 }
 
 /**
+ * \copydoc MapEntity::is_separator_obstacle
+ */
+bool Hero::is_separator_obstacle(Separator& separator) {
+  return state->is_separator_obstacle(separator);
+}
+
+/**
  * \brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
  * \param destructible the destructible item
  * \param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
+void Hero::notify_collision_with_destructible(
+    Destructible& destructible, CollisionMode collision_mode) {
   destructible.notify_collision_with_hero(*this, collision_mode);
 }
 
@@ -1388,7 +1396,7 @@ void Hero::notify_collision_with_destructible(Destructible &destructible, Collis
  * \brief This function is called when the rectangle of an enemy collides with the hero.
  * \param enemy the enemy
  */
-void Hero::notify_collision_with_enemy(Enemy &enemy) {
+void Hero::notify_collision_with_enemy(Enemy& enemy) {
   // hurt the hero only on pixel-precise collisions
 }
 
@@ -1398,7 +1406,8 @@ void Hero::notify_collision_with_enemy(Enemy &enemy) {
  * \param enemy_sprite the enemy's sprite that overlaps a sprite of the hero
  * \param this_sprite the hero's sprite that overlaps the enemy's sprite
  */
-void Hero::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
+void Hero::notify_collision_with_enemy(
+    Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
 
   if (this_sprite.contains("sword")) {
     // the hero's sword overlaps the enemy
@@ -1422,7 +1431,8 @@ void Hero::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprit
  * \param teletransporter the teletransporter
  * \param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode) {
+void Hero::notify_collision_with_teletransporter(
+    Teletransporter& teletransporter, CollisionMode collision_mode) {
 
   if (teletransporter.is_on_map_side() || !state->can_avoid_teletransporter()) {
 

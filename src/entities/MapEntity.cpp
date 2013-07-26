@@ -1439,6 +1439,20 @@ bool MapEntity::is_destructible_obstacle(Destructible& destructible) {
 }
 
 /**
+ * \brief Returns whether a separator is currently considered as an obstacle
+ * by this entity.
+ *
+ * By default, this function returns \c true.
+ *
+ * \param separator A separator.
+ * \return \c true if the separator is currently an obstacle for this entity.
+ */
+bool MapEntity::is_separator_obstacle(Separator& separator) {
+
+  return true;
+}
+
+/**
  * \brief Returns true if this entity does not react to the sword.
  *
  * If true is returned, nothing will happen when the hero taps this entity with the sword.

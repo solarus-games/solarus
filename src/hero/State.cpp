@@ -744,6 +744,19 @@ bool Hero::State::is_jumper_obstacle(Jumper& jumper) {
 }
 
 /**
+ * \brief Returns whether a separator is considered as an obstacle in this
+ * state.
+ *
+ * Returns false by default.
+ *
+ * \param separator A separator.
+ * \return \c true if the separator is an obstacle in this state.
+ */
+bool Hero::State::is_separator_obstacle(Separator& separator) {
+  return false;
+}
+
+/**
  * \brief Returns whether the hero ignores the effect of sensors in this state.
  *
  * Returns false by default.

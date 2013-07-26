@@ -46,6 +46,8 @@ class Separator: public Detector {
 
     bool is_horizontal() const;
     bool is_vertical() const;
+
+    virtual bool is_obstacle_for(MapEntity& other);
 };
 
 #endif

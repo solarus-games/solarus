@@ -46,14 +46,15 @@ class Hero::JumpingState: public Hero::State {
     int get_wanted_movement_direction8();
     bool can_start_gameover_sequence();
     bool is_touching_ground();
+    bool is_stairs_obstacle(Stairs& stairs);
+    bool is_sensor_obstacle(Sensor& sensor);
+    bool is_separator_obstacle(Separator& separator);
     bool can_avoid_deep_water();
     bool can_avoid_hole();
     bool can_avoid_lava();
     bool can_avoid_prickle();
     bool can_avoid_teletransporter();
     bool can_avoid_conveyor_belt();
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_sensor_obstacle(Sensor& sensor);
     bool can_avoid_sensor();
     bool can_avoid_switch();
     bool can_be_hurt(Enemy* attacker);

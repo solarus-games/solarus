@@ -47,7 +47,8 @@ class Hero::HurtState: public Hero::State {
     bool is_touching_ground();
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_sensor_obstacle(Sensor &sensor);
+    bool is_sensor_obstacle(Sensor& sensor);
+    bool is_separator_obstacle(Separator& separator);
     bool can_be_hurt(Enemy* attacker);
     bool can_avoid_switch();
 };

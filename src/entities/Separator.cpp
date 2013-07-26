@@ -87,6 +87,11 @@ bool Separator::test_collision_custom(MapEntity& entity) {
 
   const Rectangle& separator_center = get_center_point();
   const Rectangle& center = entity.get_center_point();
+
+  if (!overlaps(center)) {
+    return false;
+  }
+
   if (is_horizontal()) {
     if (center.get_y() < separator_center.get_y()) {
       // The entity is above the separator.

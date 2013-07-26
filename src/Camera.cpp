@@ -102,11 +102,15 @@ void Camera::update_fixed_on_hero() {
     y = hero_y - get_height() / 2;
 
     // See if there is a separator in the rectangle.
+    // TODO simplify: treat horizontal separators first and then all vertical ones.
+    int adjusted_x = x;  // Updated coordinates after applying separators.
+    int adjusted_y = y;
+    std::list<Separator*> applied_separators;
     const std::list<Separator*>& separators =
         map.get_entities().get_separators();
     std::list<Separator*>::const_iterator it;
     for (it = separators.begin(); it != separators.end(); ++it) {
-      const Separator& separator = *(*it);
+      Separator& separator = *(*it);
 
       if (separator.is_vertical()) {
         // Vertical separator.
@@ -118,11 +122,12 @@ void Camera::update_fixed_on_hero() {
           int left = separation_x - x;
           int right = x + get_width() - separation_x;
           if (left > right) {
-            x = separation_x - get_width();
+            adjusted_x = separation_x - get_width();
           }
           else {
-            x = separation_x;
+            adjusted_x = separation_x;
           }
+          applied_separators.push_back(&separator);
         }
       }
       else {
@@ -136,13 +141,56 @@ void Camera::update_fixed_on_hero() {
           int top = separation_y - y;
           int bottom = y + get_height() - separation_y;
           if (top > bottom) {
-            y = separation_y - get_height();
+            adjusted_y = separation_y - get_height();
           }
           else {
-            y = separation_y;
+            adjusted_y = separation_y;
           }
+          applied_separators.push_back(&separator);
         }
       }
+    }  // End for each separator.
+
+    bool must_adjust_x = true;
+    bool must_adjust_y = true;
+    if (adjusted_x != x && adjusted_y != y) {
+      // Both directions were modified. Maybe it is a T configuration where
+      // a separator inactivates another one.
+
+      must_adjust_x = false;
+      must_adjust_y = false;
+      std::list<Separator*>::const_iterator it;
+      for (it = applied_separators.begin(); it != applied_separators.end(); ++it) {
+        Separator& separator = *(*it);
+
+        if (separator.is_vertical()) {
+          // Vertical separator.
+          int separation_x = separator.get_x() + 8;
+
+          if (x < separation_x && separation_x < x + get_width()
+              && separator.get_y() < adjusted_y + get_height()
+              && adjusted_y < separator.get_y() + separator.get_height()) {
+            must_adjust_x = true;
+          }
+        }
+        else {
+          // Horizontal separator.
+          int separation_y = separator.get_y() + 8;
+
+          if (y < separation_y && separation_y < y + get_height()
+              && separator.get_x() < adjusted_x + get_width()
+              && adjusted_x < separator.get_x() + separator.get_width()) {
+            must_adjust_y = true;
+          }
+        }
+      }  // End for each separator applied.
+    } // End if both directions.
+
+    if (must_adjust_x) {
+      x = adjusted_x;
+    }
+    if (must_adjust_y) {
+      y = adjusted_y;
     }
   }
   else {

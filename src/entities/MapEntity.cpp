@@ -1622,6 +1622,7 @@ int MapEntity::get_distance_to_camera() {
  *
  * Regions are defined by the position of separators on the map.
  *
+ * \param other Another entity.
  * \return \c true if both entities are in the same region.
  */
 bool MapEntity::is_in_same_region(MapEntity& other) {
@@ -1755,6 +1756,17 @@ void MapEntity::notify_collision_with_chest(Chest& chest) {
  * \param block the block
  */
 void MapEntity::notify_collision_with_block(Block& block) {
+}
+
+/**
+ * \brief This function is called when a separator detects a collision with
+ * this entity.
+ * \param separator The separator.
+ * \param collision_mode The collision mode that detected the event.
+ */
+void MapEntity::notify_collision_with_separator(
+    Separator& separator, CollisionMode collision_mode) {
+
 }
 
 /**

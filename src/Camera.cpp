@@ -22,6 +22,7 @@
 #include "entities/Separator.h"
 #include "movements/TargetMovement.h"
 #include "lowlevel/VideoManager.h"
+#include "lowlevel/System.h"
 #include "lua/LuaContext.h"
 
 /**
@@ -70,8 +71,8 @@ int Camera::get_height() {
  */
 void Camera::update() {
 
-  // If the camera is not moving towards a target, center it on the hero.
   if (fixed_on_hero) {
+    // If the camera is not moving towards a target, center it on the hero.
     update_fixed_on_hero();
   }
   else if (movement != NULL) {
@@ -88,55 +89,79 @@ void Camera::update_fixed_on_hero() {
   Debug::check_assertion(fixed_on_hero,
       "Illegal call to Camera::update_fixed_on_hero()");
 
-  // First compute the camera coordinates ignoring map borders and separators.
-  const Rectangle& hero_center = map.get_entities().get_hero().get_center_point();
-  const int hero_x = hero_center.get_x();
-  const int hero_y = hero_center.get_y();
-  int x = hero_x - get_width() / 2;
-  int y = hero_y - get_height() / 2;
+  int x = 0;
+  int y = 0;
+  if (separator_next_scrolling_date == 0) {
+    // Normal case: not traversing a separator.
 
-  // See if there is a separator in the rectangle.
-  const std::list<Separator*>& separators =
-      map.get_entities().get_separators();
-  std::list<Separator*>::const_iterator it;
-  for (it = separators.begin(); it != separators.end(); ++it) {
-    const Separator& separator = *(*it);
+    // First compute the camera coordinates ignoring map borders and separators.
+    const Rectangle& hero_center = map.get_entities().get_hero().get_center_point();
+    const int hero_x = hero_center.get_x();
+    const int hero_y = hero_center.get_y();
+    x = hero_x - get_width() / 2;
+    y = hero_y - get_height() / 2;
 
-    if (separator.is_vertical()) {
-      // Vertical separator.
-      int separation_x = separator.get_x() + 8;
+    // See if there is a separator in the rectangle.
+    const std::list<Separator*>& separators =
+        map.get_entities().get_separators();
+    std::list<Separator*>::const_iterator it;
+    for (it = separators.begin(); it != separators.end(); ++it) {
+      const Separator& separator = *(*it);
 
-      if (x < separation_x && separation_x < x + get_width()
-          && separator.get_y() < y + get_height()
-          && y < separator.get_y() + separator.get_height()) {
-        int left = separation_x - x;
-        int right = x + get_width() - separation_x;
-        if (left > right) {
-          x = separation_x - get_width();
+      if (separator.is_vertical()) {
+        // Vertical separator.
+        int separation_x = separator.get_x() + 8;
+
+        if (x < separation_x && separation_x < x + get_width()
+            && separator.get_y() < y + get_height()
+            && y < separator.get_y() + separator.get_height()) {
+          int left = separation_x - x;
+          int right = x + get_width() - separation_x;
+          if (left > right) {
+            x = separation_x - get_width();
+          }
+          else {
+            x = separation_x;
+          }
         }
-        else {
-          x = separation_x;
+      }
+      else {
+        Debug::check_assertion(separator.is_horizontal(), "Invalid separator shape");
+
+        // Horizontal separator.
+        int separation_y = separator.get_y() + 8;
+        if (y < separation_y && separation_y < y + get_height()
+            && separator.get_x() < x + get_width()
+            && x < separator.get_x() + separator.get_width()) {
+          int top = separation_y - y;
+          int bottom = y + get_height() - separation_y;
+          if (top > bottom) {
+            y = separation_y - get_height();
+          }
+          else {
+            y = separation_y;
+          }
         }
       }
     }
-    else {
-      Debug::check_assertion(separator.is_horizontal(), "Invalid separator shape");
+  }
+  else {
+    // Traversing a separator.
+    uint32_t now = System::now();
+    while (separator_next_scrolling_date != 0
+        && now >= separator_next_scrolling_date) {
+      separator_scrolling_position.add_xy(
+          separator_scrolling_dx, separator_scrolling_dy);
 
-      // Horizontal separator.
-      int separation_y = separator.get_y() + 8;
-      if (y < separation_y && separation_y < y + get_height()
-          && separator.get_x() < x + get_width()
-          && x < separator.get_x() + separator.get_width()) {
-        int top = separation_y - y;
-        int bottom = y + get_height() - separation_y;
-        if (top > bottom) {
-          y = separation_y - get_height();
-        }
-        else {
-          y = separation_y;
-        }
+      separator_next_scrolling_date += 1;
+
+      if (separator_scrolling_position.equals(separator_target_position)) {
+        // Finished.
+        separator_next_scrolling_date = 0;
       }
     }
+    x = separator_scrolling_position.get_x();
+    y = separator_scrolling_position.get_y();
   }
 
   // Take care of the limits of the map.
@@ -214,8 +239,8 @@ const Rectangle& Camera::get_position() {
  * \return \c true if the camera is moving.
  */
 bool Camera::is_moving() {
-  return !fixed_on_hero
-      || separator_next_scrolling_date != 0;
+  return !fixed_on_hero                      // Moving to a point.
+      || separator_next_scrolling_date != 0;  // Traversing a separator.
 }
 
 /**
@@ -278,5 +303,52 @@ void Camera::restore() {
 
   move(map.get_entities().get_hero());
   restoring = true;
+}
+
+/**
+ * \brief Starts traversing a separator.
+ *
+ * The hero must touch the separator when you call this function.
+ *
+ * \param Separator The separator to traverse.
+ */
+void Camera::traverse_separator(const Separator& separator) {
+
+  // Save the current position of the camera.
+  separator_scrolling_position = position;
+
+  // Start scrolling.
+  separator_scrolling_dx = 0;
+  separator_scrolling_dy = 0;
+  separator_target_position = position;
+  Hero& hero = map.get_entities().get_hero();
+  const Rectangle& hero_center = hero.get_center_point();
+  const Rectangle& separator_center = separator.get_center_point();
+  if (separator.is_horizontal()) {
+    if (hero_center.get_y() < separator_center.get_y()) {
+      separator_scrolling_dy = 1;
+      separator_target_position.add_y(get_height());
+    }
+    else {
+      separator_scrolling_dy = -1;
+      separator_target_position.add_y(-get_height());
+    }
+  }
+  else {
+    if (hero_center.get_x() < separator_center.get_x()) {
+      separator_scrolling_dx = 1;
+      separator_target_position.add_x(get_width());
+    }
+    else {
+      separator_scrolling_dx = -1;
+      separator_target_position.add_x(-get_width());
+    }
+  }
+
+  separator_next_scrolling_date = System::now();
+
+  // Move the hero two pixels ahead to avoid to traversed the separator again.
+  hero.set_xy(hero.get_x() + 2 * separator_scrolling_dx,
+      hero.get_y() + 2 * separator_scrolling_dy);
 }
 

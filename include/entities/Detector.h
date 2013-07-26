@@ -22,45 +22,14 @@
 #include "entities/CollisionMode.h"
 
 /**
- * \brief Abstract class for an entity able to detect the presence of other entities.
+ * \brief Abstract class for an entity able to detect the presence of other
+ * entities.
  *
  * A detector is an object placed somewhere on the map
  * to detect the presence of the hero or other moving entities.
- * Examples of detectors include teletransporters, switches, bushes and enemies.
+ * Examples of detectors include teletransporters, switches and enemies.
  */
 class Detector: public MapEntity {
-
-  private:
-
-    int collision_modes;                    /**< collision modes of the detector
-                                             * (can be an OR combination of CollisionMode values) */
-    bool layer_independent_collisions;      /**< indicates that the detector detects collisions on every layer */
-
-  protected:
-
-    // construction
-    Detector(int collision_mode, const std::string& name, Layer layer,
-        int x, int y, int width, int height);
-    bool is_detector();
-
-    // properties of the detector
-    void set_collision_modes(int collision_modes);
-    void add_collision_mode(CollisionMode collision_mode);
-    bool has_collision_mode(CollisionMode collision_mode);
-    void enable_pixel_collisions();
-
-    // specialized collision checking functions
-    bool test_collision_rectangle(MapEntity &entity);
-    bool test_collision_inside(MapEntity &entity);
-    bool test_collision_origin_point(MapEntity &entity);
-    bool test_collision_facing_point(MapEntity &entity);
-    bool test_collision_facing_point_any(MapEntity &entity);
-    bool test_collision_center(MapEntity &entity);
-    virtual bool test_collision_custom(MapEntity &entity);
-
-    // functions called when a collision is detected
-    virtual void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    virtual void notify_collision(MapEntity &entity, Sprite &this_sprite, Sprite &other_sprite);
 
   public:
 
@@ -81,6 +50,41 @@ class Detector: public MapEntity {
     virtual bool start_movement_by_hero();
     virtual void stop_movement_by_hero();
     virtual std::string get_sword_tapping_sound();
+
+  protected:
+
+    // construction
+    Detector(int collision_mode, const std::string& name, Layer layer,
+        int x, int y, int width, int height);
+    bool is_detector();
+
+    // properties of the detector
+    void set_collision_modes(int collision_modes);
+    void add_collision_mode(CollisionMode collision_mode);
+    bool has_collision_mode(CollisionMode collision_mode);
+    void enable_pixel_collisions();
+
+    // specialized collision checking functions
+    bool test_collision_rectangle(MapEntity& entity);
+    bool test_collision_inside(MapEntity& entity);
+    bool test_collision_origin_point(MapEntity& entity);
+    bool test_collision_facing_point(MapEntity& entity);
+    bool test_collision_facing_point_any(MapEntity& entity);
+    bool test_collision_center(MapEntity& entity);
+    virtual bool test_collision_custom(MapEntity& entity);
+
+    // functions called when a collision is detected
+    virtual void notify_collision(
+        MapEntity& entity_overlapping, CollisionMode collision_mode);
+    virtual void notify_collision(
+        MapEntity& entity, Sprite& this_sprite, Sprite& other_sprite);
+
+  private:
+
+    int collision_modes;                    /**< collision modes of the detector
+                                             * (can be an OR combination of CollisionMode values) */
+    bool layer_independent_collisions;      /**< indicates that the detector detects collisions on every layer */
+
 };
 
 #endif

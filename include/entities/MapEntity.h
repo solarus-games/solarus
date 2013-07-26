@@ -271,6 +271,7 @@ class MapEntity: public ExportableToLua {
     virtual void notify_collision_with_crystal(Crystal& crystal, Sprite& sprite_overlapping);
     virtual void notify_collision_with_chest(Chest& chest);
     virtual void notify_collision_with_block(Block& block);
+    virtual void notify_collision_with_separator(Separator& separator, CollisionMode collision_mode);
     virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
     virtual void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode);
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);

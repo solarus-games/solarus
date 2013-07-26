@@ -8,7 +8,7 @@ Engine changes
 
 * Allow scripted dialog boxes (#184).
 * Replace the old built-in dialog box by a very minimal one.
-* Add separators to visually separate some regions in a map (#177).
+* New entity: separators to visually separate some regions in a map (#177).
 * Allow quest makers and users to set the size of the playing area.
 * Allow maps to have a default destination entity (#231).
 * A game can now start without specifying an initial map and destination.

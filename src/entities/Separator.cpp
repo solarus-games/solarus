@@ -33,7 +33,7 @@ Separator::Separator(
     int y,
     int width,
     int height):
-  Detector(COLLISION_RECTANGLE, name, layer, x, y, width, height) {
+  Detector(COLLISION_CUSTOM, name, layer, x, y, width, height) {
 
   Debug::check_assertion((width == 16 && height > 16)
       || (width > 16 && height == 16), "Invalid separator size");
@@ -48,8 +48,7 @@ Separator::~Separator() {
 }
 
 /**
- * \brief Returns the type of entity.
- * \return The type of entity.
+ * \copydoc MapEntity::get_type
  */
 EntityType Separator::get_type() {
   return SEPARATOR;
@@ -72,12 +71,50 @@ bool Separator::is_vertical() const {
 }
 
 /**
- * \brief Returns whether this entity is an obstacle for another one when
- * it is enabled.
- * \param other Another entity.
- * \return \c true if this entity is an obstacle for the other one.
+ * \copydoc MapEntity::is_obstacle_for
  */
 bool Separator::is_obstacle_for(MapEntity& other) {
   return other.is_separator_obstacle(*this);
+}
+
+/**
+ * \copydoc Detector::test_collision_custom
+ */
+bool Separator::test_collision_custom(MapEntity& entity) {
+
+  // Trigger the collision if the center point crosses the middle of the
+  // separator.
+
+  const Rectangle& separator_center = get_center_point();
+  const Rectangle& center = entity.get_center_point();
+  if (is_horizontal()) {
+    if (center.get_y() < separator_center.get_y()) {
+      // The entity is above the separator.
+      return center.get_y() == separator_center.get_y() - 1;
+    }
+    else {
+      // The entity is below the separator.
+      return center.get_y() == separator_center.get_y();
+    }
+  }
+  else {
+    if (center.get_x() < separator_center.get_x()) {
+      // The entity is west of the separator.
+      return center.get_x() == separator_center.get_x() - 1;
+    }
+    else {
+      // The entity is east of the separator.
+      return center.get_x() == separator_center.get_x();
+    }
+  }
+}
+
+/**
+ * \copydoc Detector::notify_collision
+ */
+void Separator::notify_collision(
+    MapEntity& entity_overlapping, CollisionMode collision_mode) {
+
+  entity_overlapping.notify_collision_with_separator(*this, collision_mode);
 }
 

@@ -434,6 +434,14 @@ bool Map::is_camera_moving() {
 }
 
 /**
+ * \brief Makes the camera traverse a separator.
+ * \param Separator The separator to traverse.
+ */
+void Map::traverse_separator(const Separator& separator) {
+  camera->traverse_separator(separator);
+}
+
+/**
  * \brief Sets a subarea of the map where the next drawings will be restricted to.
  *
  * A zero-sized rectangle means that drawings are not restricted to a subarea of the map.

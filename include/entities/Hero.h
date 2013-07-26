@@ -169,24 +169,25 @@ class Hero: public MapEntity {
      * Handle collisions between the hero and other entities.
      */
     void check_position();
-    void notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode);
-    void notify_collision_with_enemy(Enemy &enemy);
-    void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
-    void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);
-    void notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy);
-    void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
-    void notify_collision_with_jumper(Jumper &jumper);
-    void notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode);
-    void notify_collision_with_switch(Switch &sw, CollisionMode collision_mode);
-    void notify_collision_with_switch(Switch &sw, Sprite &sprite_overlapping);
-    void notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode);
-    void notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping);
+    void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
+    void notify_collision_with_enemy(Enemy& enemy);
+    void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
+    void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
+    void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
+    void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
+    void notify_collision_with_jumper(Jumper& jumper);
+    void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode);
+    void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
+    void notify_collision_with_switch(Switch& sw, Sprite &sprite_overlapping);
+    void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
+    void notify_collision_with_crystal(Crystal& crystal, Sprite &sprite_overlapping);
     void notify_collision_with_chest(Chest& chest);
     void notify_collision_with_block(Block& block);
+    void notify_collision_with_separator(Separator& separator, CollisionMode collision_mode);
     void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
-    void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
-    void avoid_collision(MapEntity &entity, int direction);
-    bool is_striking_with_sword(Detector &detector);
+    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
+    void avoid_collision(MapEntity& entity, int direction);
+    bool is_striking_with_sword(Detector& detector);
 
     /**
      * \name Enemies.

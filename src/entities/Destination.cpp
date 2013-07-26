@@ -29,7 +29,7 @@
  * (0 to 3, or -1 to indicate that the hero's direction is not changed).
  * \param sprite_name Animation set id of a sprite to represent this
  * destination, or an empty string.
- * \param is_default \true to make this destination the default one.
+ * \param is_default \c true to make this destination the default one.
  */
 Destination::Destination(
     const std::string& name,

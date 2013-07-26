@@ -45,6 +45,7 @@ class Camera {
     void move(int target_x, int target_y);
     void move(MapEntity& entity);
     void restore();
+    void traverse_separator(const Separator& separator);
 
   private:
 

@@ -129,13 +129,14 @@ class Map: public ExportableToLua {
     void move_camera(int x, int y, int speed);
     void restore_camera();
     bool is_camera_moving();
-    void set_clipping_rectangle(const Rectangle &clipping_rectangle = Rectangle());
+    void traverse_separator(const Separator& separator);
+    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
     int get_light();
     void set_light(int light);
 
     // loading
     bool is_loaded();
-    void load(Game &game);
+    void load(Game& game);
     void unload();
     Game& get_game();
     LuaContext& get_lua_context();
@@ -152,35 +153,38 @@ class Map: public ExportableToLua {
     void leave();
 
     // current destination point
-    void set_destination(const std::string &destination_name);
+    void set_destination(const std::string& destination_name);
     const std::string& get_destination_name();
     Destination* get_destination();
     int get_destination_side();
 
     // collisions with obstacles (checked before a move)
     bool test_collision_with_border(int x, int y);
-    bool test_collision_with_border(const Rectangle &collision_box);
-    bool test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity_to_check);
-    bool test_collision_with_entities(Layer layer, const Rectangle &collision_box, MapEntity &entity_to_check);
-    bool test_collision_with_obstacles(Layer layer, const Rectangle &collision_box, MapEntity &entity_to_check);
-    bool test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &entity_to_check);
+    bool test_collision_with_border(const Rectangle& collision_box);
+    bool test_collision_with_tiles(Layer layer, int x, int y, MapEntity& entity_to_check);
+    bool test_collision_with_entities(Layer layer,
+        const Rectangle& collision_box, MapEntity& entity_to_check);
+    bool test_collision_with_obstacles(Layer layer,
+        const Rectangle& collision_box, MapEntity& entity_to_check);
+    bool test_collision_with_obstacles(Layer layer, int x, int y,
+        MapEntity& entity_to_check);
     Ground get_tile_ground(Layer layer, int x, int y);
-    Ground get_tile_ground(Layer layer, const Rectangle &coordinates);
+    Ground get_tile_ground(Layer layer, const Rectangle& coordinates);
     bool has_empty_tiles(Layer layer, const Rectangle& collision_box);
 
     // collisions with detectors (checked after a move)
-    void check_collision_with_detectors(MapEntity &entity);
-    void check_collision_with_detectors(MapEntity &entity, Sprite &sprite);
+    void check_collision_with_detectors(MapEntity& entity);
+    void check_collision_with_detectors(MapEntity& entity, Sprite& sprite);
     static Ground obstacle_to_ground(Obstacle obstacle);
 
     // main loop
-    bool notify_input(InputEvent &event);
+    bool notify_input(InputEvent& event);
     void update();
     bool is_suspended();
     void check_suspended();
     void draw();
-    void draw_sprite(Sprite &sprite, const Rectangle &xy);
-    void draw_sprite(Sprite &sprite, int x, int y);
+    void draw_sprite(Sprite& sprite, const Rectangle& xy);
+    void draw_sprite(Sprite& sprite, int x, int y);
 
     static const int NO_FLOOR = -9999;  /**< Represents a non-existent floor (nil in data files). */
 };

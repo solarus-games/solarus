@@ -51,7 +51,6 @@ Changes that do not introduce incompatibilities:
 * hero:teleport(): make destination optional (maps now have a default one).
 * map:create_teletransporter(): make destination optional.
 
-* Add a function sol.audio.get_music() (#146).
 * Add a function sol.video.get_quest_size().
 * Make map:get_camera_position() also return the size of the visible area.
 * Add a method entity:is_in_same_region(entity).
@@ -67,7 +66,11 @@ Changes that do not introduce incompatibilities:
 * Add a function sol.input.get_joypad_hat_direction().
 * Add functions sol.input.is/set_joypad_enabled() (#175).
 
-* Add functions to get/set the tempo and channel volume of .it musics (#250).
+* Add a function sol.audio.get_music() (#146).
+* Add a function sol.audio.get_music_format().
+* Add a function sol.audio.get_music_num_channels().
+* Add functions sol.audio.get/set_music_channel_volume() for .it files (#250).
+* Add functions sol.audio.get/set_music_tempo() for .it files (#250).
 
 * Return nil if the string is not found in sol.language.get_string().
 * sol.language.get_dialog() is now implemented.

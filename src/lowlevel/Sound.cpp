@@ -55,7 +55,7 @@ Sound::Sound(const std::string& sound_id):
  */
 Sound::~Sound() {
 
-  if (is_initialized()) {
+  if (is_initialized() && buffer != AL_NONE) {
 
     // stop the sources where this buffer is attached
     std::list<ALuint>::iterator it;
@@ -81,7 +81,7 @@ Sound::~Sound() {
  * \param argv command-line arguments
  */
 void Sound::initialize(int argc, char** argv) {
- 
+
   // check the -no-audio option
   bool disable = false;
   for (argv++; argc > 1 && !disable; argv++, argc--) {
@@ -170,10 +170,11 @@ void Sound::load_all() {
     std::vector<std::string>::const_iterator it;
     for (it = sound_ids.begin(); it != sound_ids.end(); ++it) {
       const std::string& sound_id = *it;
+
       all_sounds[sound_id] = Sound(sound_id);
       all_sounds[sound_id].load();
     }
- 
+
     sounds_preloaded = true;
   }
 }
@@ -274,7 +275,11 @@ bool Sound::update_playing() {
  */
 void Sound::load() {
 
-  std::string file_name = (std::string) "sounds/" + id;
+  if (alGetError() != AL_NONE) {
+    Debug::error("Previous audio error not cleaned");
+  }
+
+  std::string file_name = std::string("sounds/" + id);
   if (id.find(".") == std::string::npos) {
     file_name += ".ogg";
   }
@@ -379,15 +384,15 @@ ALuint Sound::decode_file(const std::string& file_name) {
           << file_name << "'");
     }
     else {
-
       // decode the sound with vorbisfile
       std::vector<char> samples;
       int bitstream;
       long bytes_read;
       long total_bytes_read = 0;
-      char samples_buffer[4096];
+      const int buffer_size = 4096;
+      char samples_buffer[buffer_size];
       do {
-        bytes_read = ov_read(&file, samples_buffer, 4096, 0, 2, 1, &bitstream);
+        bytes_read = ov_read(&file, samples_buffer, buffer_size, 0, 2, 1, &bitstream);
         if (bytes_read < 0) {
           Debug::error(StringConcat() << "Error while decoding ogg chunk in sound file '"
               << file_name << "': " << bytes_read);
@@ -413,14 +418,19 @@ ALuint Sound::decode_file(const std::string& file_name) {
 
       // copy the samples into an OpenAL buffer
       alGenBuffers(1, &buffer);
+      if (alGetError() != AL_NO_ERROR) {
+          Debug::error("Failed to generate audio buffer");
+      }
       alBufferData(buffer,
           AL_FORMAT_STEREO16,
           reinterpret_cast<ALshort*>(&samples[0]),
           ALsizei(total_bytes_read),
           sample_rate);
-      if (alGetError() != AL_NO_ERROR) {
+      ALenum error = alGetError();
+      if (error != AL_NO_ERROR) {
         Debug::error(StringConcat() << "Cannot copy the sound samples of '"
-            << file_name << "' into buffer " << buffer);
+            << file_name << "' into buffer " << buffer
+            << ": error " << error);
         buffer = AL_NONE;
       }
     }

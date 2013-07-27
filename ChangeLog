@@ -67,6 +67,8 @@ Changes that do not introduce incompatibilities:
 * Add a function sol.input.get_joypad_hat_direction().
 * Add functions sol.input.is/set_joypad_enabled() (#175).
 
+* Add functions to get/set the tempo and channel volume of .it musics (#250).
+
 * Return nil if the string is not found in sol.language.get_string().
 * sol.language.get_dialog() is now implemented.
 * Add a function game:stop_dialog(status) to close the scripted dialog box.

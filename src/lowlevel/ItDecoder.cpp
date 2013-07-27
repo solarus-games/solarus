@@ -17,6 +17,8 @@
 #include "lowlevel/ItDecoder.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include <stdafx.h>  // These two headers are with the libmodplug ones.
+#include <sndfile.h>
 
 /**
  * \brief Creates an Impulse Tracker decoder.
@@ -71,5 +73,76 @@ void ItDecoder::decode(void* decoded_data, int nb_samples) {
     // on some systems, we have to make the music loop manually
     ModPlug_Seek(modplug_file, 0);
   }
+}
+
+/**
+ * \brief Returns the number of channels in this music.
+ * \return The number of channels.
+ */
+int ItDecoder::get_num_channels() {
+  return ModPlug_NumChannels(modplug_file);
+}
+
+/**
+ * \brief Returns the volume of a channel.
+ * \param channel A channel index.
+ * \return The volume of this channel.
+ */
+int ItDecoder::get_channel_volume(int channel) {
+
+  const int num_patterns = ModPlug_NumPatterns(modplug_file);
+
+  Debug::check_assertion(channel >= 0 && channel < get_num_channels(),
+      "Invalid channel number");
+
+  if (num_patterns == 0) {
+    return 0;
+  }
+
+  unsigned int num_rows = 0;
+  ModPlugNote* notes = ModPlug_GetPattern(modplug_file, 0, &num_rows);
+
+  if (num_rows == 0) {
+    return 0;
+  }
+
+  return notes[0].Volume;
+}
+
+/**
+ * \brief Sets the volume of a channel.
+ * \param channel A channel index.
+ * \param volume The volume to set.
+ */
+void ItDecoder::set_channel_volume(int channel, int volume) {
+
+  const int num_channels = get_num_channels();
+  const int num_patterns = ModPlug_NumPatterns(modplug_file);
+
+  for (int pattern = 0; pattern < num_patterns; ++pattern) {
+    unsigned int num_rows;
+    ModPlugNote* notes = ModPlug_GetPattern(modplug_file, pattern, &num_rows);
+    for (int j = channel; j < num_rows * num_channels; j += num_channels) {
+      notes[j].Volume = volume;
+    }
+  }
+}
+
+/**
+ * \brief Returns the tempo of the music.
+ * \return The tempo.
+ */
+int ItDecoder::get_tempo() {
+
+  return reinterpret_cast<CSoundFile*>(modplug_file)->GetMusicTempo();
+}
+
+/**
+ * \brief Sets the tempo of the music.
+ * \param tempo The tempo to set.
+ */
+void ItDecoder::set_tempo(int tempo) {
+
+  reinterpret_cast<CSoundFile*>(modplug_file)->SetTempo(tempo);
 }
 

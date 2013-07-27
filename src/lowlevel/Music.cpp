@@ -32,6 +32,17 @@ const std::string Music::none = "none";
 const std::string Music::unchanged = "same";
 
 /**
+ * \brief Lua name of each music format.
+ */
+const std::string Music::format_names[] = {
+  "",
+  "spc",
+  "it",
+  "ogg",
+  ""  // Sentinel.
+};
+
+/**
  * \brief Creates a new music.
  * \param music_id id of the music (file name without extension)
  */
@@ -95,6 +106,19 @@ bool Music::is_initialized() {
 }
 
 /**
+ * \brief Returns the format of the current music.
+ * \return The format of the current music.
+ */
+Music::Format Music::get_format() {
+
+  if (current_music == NULL) {
+    return NO_FORMAT;
+  }
+
+  return current_music->format;
+}
+
+/**
  * \brief Returns the current volume of music.
  * \return the volume (0 to 100)
  */
@@ -116,6 +140,84 @@ void Music::set_volume(int volume) {
     alSourcef(current_music->source, AL_GAIN, Music::volume);
   }
 }
+
+/**
+ * \brief Returns the number of channels of the current music.
+ *
+ * This function is only supported for .it musics.
+ *
+ * \return The number of channels.
+ */
+int Music::get_num_channels() {
+
+  Debug::check_assertion(get_format() == IT,
+      "This function is only supported for .it musics");
+
+  return it_decoder->get_num_channels();
+}
+
+/**
+ * \brief Returns the volume of a channel of the current music.
+ *
+ * This function is only supported for .it musics.
+ *
+ * \param channel Index of a channel.
+ * \return The volume of this channel.
+ */
+int Music::get_channel_volume(int channel) {
+
+  Debug::check_assertion(get_format() == IT,
+      "This function is only supported for .it musics");
+
+  return it_decoder->get_channel_volume(channel);
+}
+
+/**
+ * \brief Sets the volume of a channel of the current music.
+ *
+ * This function is only supported for .it musics.
+ *
+ * \param channel Index of a channel.
+ * \param volume The volume to set.
+ */
+void Music::set_channel_volume(int channel, int volume) {
+
+  Debug::check_assertion(get_format() == IT,
+      "This function is only supported for .it musics");
+
+  it_decoder->set_channel_volume(channel, volume);
+}
+
+/**
+ * \brief Returns the tempo of the current music.
+ *
+ * This function is only supported for .it musics.
+ *
+ * \return The tempo of the current music.
+ */
+int Music::get_tempo() {
+
+  Debug::check_assertion(get_format() == IT,
+      "This function is only supported for .it musics");
+
+  return it_decoder->get_tempo();
+}
+
+/**
+ * \brief Sets the tempo of the current music.
+ *
+ * This function is only supported for .it musics.
+ *
+ * \param tempo The tempo to set.
+ */
+void Music::set_tempo(int tempo) {
+
+  Debug::check_assertion(get_format() == IT,
+      "This function is only supported for .it musics");
+
+  it_decoder->set_tempo(tempo);
+}
+
 
 /**
  * \brief Returns the music currently playing.
@@ -268,6 +370,10 @@ void Music::update_playing() {
 
       case OGG:
         decode_ogg(buffer, 4096);
+        break;
+
+      case NO_FORMAT:
+        Debug::die("Invalid music format");
         break;
     }
     alSourceQueueBuffers(source, 1, &buffer);   // queue it again
@@ -446,6 +552,7 @@ bool Music::start() {
 
     case OGG:
 
+    {
       ogg_mem.position = 0;
       ogg_mem.loop = true;
       FileTools::data_file_open_buffer(file_name, &ogg_mem.data, &ogg_mem.size);
@@ -461,6 +568,11 @@ bool Music::start() {
           decode_ogg(buffers[i], 4096);
         }
       }
+      break;
+    }
+
+    case NO_FORMAT:
+      Debug::die("Invalid music format");
       break;
   }
 
@@ -525,6 +637,10 @@ void Music::stop() {
     case OGG:
       ov_clear(&ogg_file);
       FileTools::data_file_close_buffer(ogg_mem.data);
+      break;
+
+    case NO_FORMAT:
+      Debug::die("Invalid music format");
       break;
   }
 }

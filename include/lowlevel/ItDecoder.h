@@ -28,10 +28,6 @@
  */
 class ItDecoder {
 
-  private:
-
-    ModPlugFile* modplug_file;
-
   public:
 
     ItDecoder();
@@ -40,6 +36,17 @@ class ItDecoder {
     void load(void* sound_data, size_t sound_size);
     void unload();
     void decode(void* decoded_data, int nb_samples);
+
+    int get_num_channels();
+    int get_channel_volume(int channel);
+    void set_channel_volume(int channel, int volume);
+    int get_tempo();
+    void set_tempo(int tempo);
+
+  private:
+
+    ModPlugFile* modplug_file;
+
 };
 
 #endif

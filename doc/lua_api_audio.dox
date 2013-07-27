@@ -110,5 +110,54 @@ This volume applies to all musics played by \ref lua_api_audio_play_music.
 - \c volume (number): The new volume of musics, as an integer
   between \c 0 (no music) and \c 100 (full volume).
 
+\subsection lua_api_audio_get_music_format sol.audio.get_music_format()
+
+Returns the format of the music currently playing.
+- Return value (string): Format of the music: \c "ogg", \c "it" or \c "spc".
+  Returns \c nil if no music is playing.
+
+\subsection lua_api_audio_get_music_num_channels sol.audio.get_music_num_channels()
+
+Returns the number of channels of the current .it music.
+
+This function is only supported for .it musics.
+- Return value (number): Number of channels of the music.
+  Returns \c nil if the current music format is not .it.
+
+\subsection lua_api_audio_get_music_channel_volume sol.audio.get_music_channel_volume(channel)
+
+Returns the volume of notes of a channel for the current .it music.
+
+This function is only supported for .it musics.
+- \c channel (number): Index of a channel (the first one is zero).
+- Return value (number): Volume of the channel.
+  Returns \c nil if the current music format is not .it.
+
+\remark The channel should have the same volume for all its notes.
+  Otherwise, calling this function does not make much sense.
+
+\subsection lua_api_audio_set_music_channel_volume sol.audio.set_music_channel_volume(channel, volume)
+
+Sets the volume of all notes of a channel for the current .it music.
+
+This function has no effect for musics other than .it.
+- \c channel (number): Index of a channel (the first one is zero).
+- \c volume (number): The volume to set.
+
+\subsection lua_api_audio_get_tempo sol.audio.get_tempo()
+
+Returns the tempo of the current .it music.
+
+This function is only supported for .it musics.
+- Return value (number): Tempo of the music.
+  Returns \c nil if the current music format is not .it.
+
+\subsection lua_api_audio_set_tempo sol.audio.set_tempo(tempo)
+
+Sets the tempo of the current .it music.
+
+This function is only supported for .it musics.
+- \c tempo (number): Tempo to set.
+
 */
 

@@ -38,13 +38,15 @@ class Music { // TODO make a subclass for each format, or at least make a better
      * The music file formats recognized.
      */
     enum Format {
-      SPC,      /**< original Snes music */
-      IT,       /**< Impulse Tracker module */
-      OGG       /**< Ogg Vorbis */
+      NO_FORMAT,  /**< No music. */
+      SPC,        /**< original Snes music */
+      IT,         /**< Impulse Tracker module */
+      OGG         /**< Ogg Vorbis */
     };
 
     static const std::string none;               /**< special id indicating that there is no music */
     static const std::string unchanged;          /**< special id indicating that the music is the same as before */
+    static const std::string format_names[];     /**< Name of each format. */
 
     Music(const std::string& music_id = none);
     ~Music();
@@ -54,8 +56,14 @@ class Music { // TODO make a subclass for each format, or at least make a better
     static bool is_initialized();
     static void update();
 
+    static Format get_format();
     static int get_volume();
     static void set_volume(int volume);
+    static int get_num_channels();
+    static int get_channel_volume(int channel);
+    static void set_channel_volume(int channel, int volume);
+    static int get_tempo();
+    static void set_tempo(int tempo);
 
     static void find_music_file(const std::string& music_id,
         std::string& file_name, Format& format);
@@ -63,6 +71,8 @@ class Music { // TODO make a subclass for each format, or at least make a better
     static void play(const std::string& music_id);
     static Music* get_current_music();
     static const std::string& get_current_music_id();
+
+  private:
 
     bool start();
     void stop();
@@ -73,7 +83,7 @@ class Music { // TODO make a subclass for each format, or at least make a better
     void decode_it(ALuint destination_buffer, ALsizei nb_samples);
     void decode_ogg(ALuint destination_buffer, ALsizei nb_samples);
 
-  private:
+    void update_playing();
 
     std::string id;                              /**< id of this music */
     std::string file_name;                       /**< name of the file to play */
@@ -94,7 +104,6 @@ class Music { // TODO make a subclass for each format, or at least make a better
     static Music* current_music;                 /**< the music currently played (if any) */
     static std::map<std::string, Music> all_musics;   /**< all musics created before */
 
-    void update_playing();
 };
 
 #endif

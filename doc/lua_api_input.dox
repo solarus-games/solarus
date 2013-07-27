@@ -1,0 +1,69 @@
+/**
+\page lua_api_input Inputs
+
+\tableofcontents
+
+You can get information about the low-level keyboard and joypad inputs
+through \c sol.input.
+
+But remember that when a low-level keyboard or joypad input event occurs,
+all useful objects
+(\ref lua_api_main "sol.main",
+the \ref lua_api_game "game",
+\ref lua_api_map "map"
+and
+\ref lua_api_menu "menus")
+are already notified.
+For example, when the user presses a keyboard key,
+the engine automatically calls
+\ref lua_api_main_on_key_pressed "sol.main:on_key_pressed()".
+
+Also note that during the game, there exists the higher-level notion of
+\ref lua_api_game_intro_commands "game commands" to ease your life.
+
+\section lua_api_input_functions Functions of sol.input
+
+\subsection lua_api_input_is_joypad_enabled sol.input.is_joypad_enabled()
+
+Returns whether joypad support is enabled.
+
+This may be true even without any joypad plugged.
+- Return value (boolean): \c true if joypad support is enabled.
+
+\subsection lua_api_input_set_joypad_enabled sol.input.set_joypad_enabled([joypad_enabled])
+
+Enables or disables joypad support.
+
+Joypad support may be enabled even without any joypad plugged.
+- \c joypad_enabled \c true to enable joypad support, false to disable it.
+  No value means \c true.
+
+\subsection lua_api_input_is_key_pressed sol.input.is_key_pressed(key)
+
+Returns whether a keyboard key is currently down.
+- \c key (string): The name of a keyboard key.
+- Return value (boolean): \c true if this keyboard key is currently down.
+
+\subsection lua_api_input_is_joypad_button_pressed sol.input.is_joypad_button_pressed(button)
+
+Returns whether a joypad button is currently down.
+- \c button (number): Index of a button of the joypad.
+- Return value (boolean): \c true if this joypad button is currently down.
+
+\subsection lua_api_input_get_joypad_axis_state sol.input.get_joypad_axis_state(axis)
+
+Returns the current state of an axis of the joypad.
+- \c axis (number): Index of a joypad axis. The first one is \c 0.
+- Return value (number): The state of that axis.
+  \c -1 means left or up, \c 0 means centered and \c 1 means right or down.
+
+\subsection lua_api_input_get_joypad_hat_direction sol.input.get_joypad_hat_direction(hat)
+
+Returns the current direction of a hat of the joypad.
+- \c hat (number): Index of a joypad hat. The first one is \c 0.
+- Return value (number): The direction of that hat.
+  \c -1 means that the hat is centered.
+  \c 0 to \c 7 indicates that the hat is in one of the eight main directions.
+
+*/
+

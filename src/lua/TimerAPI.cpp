@@ -178,7 +178,8 @@ void LuaContext::remove_timers(int context_index) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+        lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {

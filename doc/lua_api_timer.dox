@@ -35,7 +35,7 @@ If the delay is set to zero, the function is called immediately.
 - \c context (\ref lua_api_map "map",
   \ref lua_api_game "game",
   \ref lua_api_item "item",
-  \ref lua_api_enemy "enemy",
+  \ref lua_api_entity "map entity",
   \ref lua_api_menu "menu"
   or
   \ref lua_api_main "sol.main"; optional): Determines the lifetime of
@@ -55,8 +55,10 @@ If the delay is set to zero, the function is called immediately.
     Example: hot water that becomes cold after a few minutes,
     and that the player should bring to an %NPC on another map while it's still
     hot.
-  - If you set the context to an \ref lua_api_enemy "enemy", the timer is
-    canceled when the enemy is killed or removed from the map.
+  - If you set the context to a \ref lua_api_entity "map entity", the timer is
+    canceled when the entity is removed from the map.
+    In the case of an enemy, the timer is also canceled when the enemy
+    is hurt, immobilized or restarts.
     Most enemy scripts usually create timers.
     Example: a boss who shoots fireballs every 10 seconds.
   - If you set the context to a \ref lua_api_menu "menu", the timer is
@@ -81,7 +83,7 @@ If the delay is set to zero, the function is called immediately.
   explicitly later or to call another method on it.
 
 \remark When they are created, \ref lua_api_map "map" timers,
-\ref lua_api_enemy "enemy" timers and
+\ref lua_api_entity "map entity" timers and
 \ref lua_api_item "item" timers are initially suspended if a dialog is active.
 After that, they get automatically suspended and unsuspended when the map is
 suspended or unsuspended.

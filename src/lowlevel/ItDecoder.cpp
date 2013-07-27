@@ -116,13 +116,13 @@ int ItDecoder::get_channel_volume(int channel) {
  */
 void ItDecoder::set_channel_volume(int channel, int volume) {
 
-  const int num_channels = get_num_channels();
-  const int num_patterns = ModPlug_NumPatterns(modplug_file);
+  const unsigned int num_channels = get_num_channels();
+  const unsigned int num_patterns = ModPlug_NumPatterns(modplug_file);
 
-  for (int pattern = 0; pattern < num_patterns; ++pattern) {
+  for (unsigned int pattern = 0; pattern < num_patterns; ++pattern) {
     unsigned int num_rows;
     ModPlugNote* notes = ModPlug_GetPattern(modplug_file, pattern, &num_rows);
-    for (int j = channel; j < num_rows * num_channels; j += num_channels) {
+    for (unsigned int j = channel; j < num_rows * num_channels; j += num_channels) {
       notes[j].Volume = volume;
     }
   }

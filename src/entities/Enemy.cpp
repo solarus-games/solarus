@@ -113,9 +113,17 @@ Enemy::~Enemy() {
  * \param treasure the pickable item that the enemy drops
  * \return the enemy created (may also be a Pickable or NULL)
  */
-MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank,
-    const std::string& savegame_variable, const std::string &name, Layer layer, int x, int y,
-    int direction, const Treasure& treasure) {
+MapEntity* Enemy::create(
+    Game& game,
+    const std::string& breed,
+    Rank rank,
+    const std::string& savegame_variable,
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    int direction,
+    const Treasure& treasure) {
 
   // see if the enemy is dead
   if (!savegame_variable.empty()

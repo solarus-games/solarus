@@ -33,8 +33,6 @@ Lua API changes
 
 Changes that introduce incompatibilities:
 
-* Make map:get_entities() return an iterator instead of an array (#249).
-
 * map:is_dialog_enabled() is replaced by game:is_dialog_enabled().
 * map:start_dialog() is replaced by game:start_dialog().
 * Remove map:draw_dialog_box(), no longer needed.
@@ -42,7 +40,9 @@ Changes that introduce incompatibilities:
 * Remove map:set_dialog_position(): replace it in your own dialog box system.
 * Remove map:set_dialog_variable(): use the info param of game:start_dialog().
 
+* Make map:get_entities() return an iterator instead of an array (#249).
 * Replace map:set_pause_enabled() by game:set_pause_allowed().
+* Make the enemy:create_enemy() more like map:create_enemy() (#215).
 
 
 Changes that do not introduce incompatibilities:

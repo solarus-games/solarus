@@ -465,19 +465,62 @@ The sprite must have been created before by
 - \c sprite (\ref lua_api_sprite "sprite"): The sprite to remove.
   The default value is the first sprite that was created.
 
-\subsection lua_api_enemy_create_enemy enemy:create_enemy(name, breed, x, y, [layer])
+\subsection lua_api_enemy_create_enemy enemy:create_enemy(properties)
 
 Creates another enemy on the \ref lua_api_map "map",
 specifying its coordinates as relative to the current enemy.
-- \c name (string): Name identifying the new entity.
-  It must be unique in the map.
-- \c breed (string): Model of enemy to create.
-- \c x (number): X coordinate of the new enemy, relative to the current one.
-- \c y (number): Y coordinate of the new enemy, relative to the current one.
-- \c layer (number, optional): Layer of the new enemy
-  (\c 0: low, \c 1: intermediate, \c 2: high).
-  By default, the layer is the one of the current enemy.
-- Return value (enemy): The enemy created.
+
+This function is similar to
+\ref lua_api_map_create_enemy "map:create_enemy()"
+but the coordinates are relative to the current enemy,
+and the layer is the one of the current enemy by default.
+- \c properties (table): A table that describes all properties of the enemy
+  to create. Its key-value pairs must be:
+  - \c name (string, optional): Name identifying the entity.
+    No value means no name.
+  - \c layer (number, optional): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+    No value means the same layer as the current enemy.
+  - \c x (number, optional): X coordinate on the map, relative to the current
+    enemy. The default value is \c 0.
+  - \c y (number, optional): Y coordinate on the map, relative to the current
+    enemy. The default value is \c 0.
+  - \c direction (number, optional): Initial direction of the enemy, between
+    \c 0 (East) and \c 3 (South). The default value is \c 3.
+  - \c breed (string): Model of enemy to create.
+  - \c rank (number, optional): \c 0 for a normal enemy (default),
+    \c 1 for a miniboss, \c 2 for a boss.
+  - \c savegame_variable (string, optional): Name of the boolean value that
+    stores in the \ref lua_api_game "savegame" whether this enemy is dead.
+    No value means that the enemy is not saved.
+    If the enemy is saved and was already killed, then no enemy is created.
+    Instead, its \ref lua_api_pickable "pickable treasure" is created if it
+    is a saved one.
+  - \c treasure_name (string, optional): Kind of
+    \ref lua_api_pickable "pickable treasure" to drop when the
+    enemy is killed
+    (the name of an \ref lua_api_item "equipment item").
+    If this value is not set, or corresponds to a
+    \ref lua_api_item_is_obtainable "non obtainable" item, then
+    the enemy won't drop anything.
+  - \c treasure_variant (number, optional): Variant of the treasure
+    (because some \ref lua_api_item "equipment items"
+    may have several variants).
+    The default value is \c 1 (the first variant).
+  - \c treasure_savegame_variable (string, optional): Name of the boolean
+    value that stores in the \ref lua_api_game "savegame"
+    whether the \ref lua_api_pickable "pickable treasure"
+    of this enemy was obtained.
+    No value means that the state of the treasure is not saved.
+    If the treasure is saved and the player already has it, then the
+    enemy won't drop anything.
+- Return value (enemy or \ref lua_api_pickable
+  "pickable treasure"): The enemy created, except when it is a saved enemy
+  that is already dead.
+  In this case, if the enemy dropped a saved
+  treasure that is not obtained yet, this
+  \ref lua_api_pickable "pickable treasure" is created and returned.
+  Otherwise, \c nil is returned.
 
 \section lua_api_enemy_inherited_events Events inherited from map entity
 

@@ -2338,32 +2338,64 @@ int LuaContext::enemy_api_hurt(lua_State* l) {
 int LuaContext::enemy_api_create_enemy(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  const std::string& breed = luaL_checkstring(l, 3);
-  int x = luaL_checkint(l, 4);
-  int y = luaL_checkint(l, 5);
-  int layer;
-  if (lua_gettop(l) >= 6) {
-    layer = luaL_checkint(l, 6);
-  }
-  else {
-    layer = enemy.get_layer();
+  luaL_checktype(l, 2, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 2, "name", "");
+  Layer layer = Layer(opt_int_field(l, 2, "layer", enemy.get_layer()));
+  int x = opt_int_field(l, 2, "x", 0);
+  int y = opt_int_field(l, 2, "y", 0);
+  int direction = opt_int_field(l, 2, "direction", 3);
+  const std::string& breed = check_string_field(l, 2, "breed");
+  Enemy::Rank rank = Enemy::Rank(opt_int_field(l, 2, "rank", 0));
+  const std::string& savegame_variable = opt_string_field(l, 2, "savegame_variable", "");
+  const std::string& treasure_name = opt_string_field(l, 2, "treasure_name", "");
+  int treasure_variant = opt_int_field(l, 2, "treasure_variant", 1);
+  const std::string& treasure_savegame_variable = opt_string_field(l, 2, "treasure_savegame_variable", "");
+
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    luaL_argerror(l, 2, (StringConcat() <<
+        "Bad field 'savegame_variable' (invalid savegame variable identifier '" <<
+        savegame_variable << "'").c_str());
   }
 
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 2, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
+  }
+
+  // Make x and y relative to the existing enemy.
   x += enemy.get_x();
   y += enemy.get_y();
 
-  Game& game = enemy.get_game();
-  MapEntities& entities = enemy.get_map().get_entities();
-  Treasure treasure(game, "", 1, "");
-  Enemy* other_enemy = static_cast<Enemy*>(Enemy::create(
-      game, breed, Enemy::RANK_NORMAL,
-      "", name, Layer(layer), x, y, 0, treasure));
-  other_enemy->set_optimization_distance(enemy.get_optimization_distance());
-  entities.add_entity(other_enemy);
-  other_enemy->restart();
+  // Create the new enemy.
+  Map& map = enemy.get_map();
+  Game& game = map.get_game();
+  MapEntity* entity = Enemy::create(
+      game,
+      breed,
+      rank,
+      savegame_variable,
+      name,
+      layer,
+      x,
+      y,
+      direction,
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 
-  push_entity(l, *other_enemy);
+  if (entity == NULL) {
+    // The enemy is saved as already dead.
+    lua_pushnil(l);
+    return 1;
+  }
+
+  entity->set_optimization_distance(enemy.get_optimization_distance());
+  map.get_entities().add_entity(entity);
+
+  if (entity->get_type() == ENEMY) {  // Because it may also be a pickable treasure.
+    (static_cast<Enemy*>(entity))->restart();
+  }
+
+  push_entity(l, *entity);
   return 1;
 }
 

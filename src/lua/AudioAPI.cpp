@@ -82,8 +82,7 @@ int LuaContext::audio_api_play_sound(lua_State* l) {
   const std::string& sound_id = luaL_checkstring(l, 1);
 
   if (!Sound::exists(sound_id)) {
-    luaL_error(l, (StringConcat() <<
-        "Cannot find sound '" << sound_id << "'").c_str());
+    error(l, StringConcat() << "Cannot find sound '" << sound_id << "'");
   }
 
   Sound::play(sound_id);
@@ -136,8 +135,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
   const std::string& music_id = luaL_checkstring(l, 1);
 
   if (!Music::exists(music_id)) {
-    luaL_error(l, (StringConcat() <<
-        "Cannot find music '" << music_id << "'").c_str());
+    error(l, StringConcat() << "Cannot find music '" << music_id << "'");
   }
 
   Music::play(music_id);
@@ -224,8 +222,8 @@ int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
   }
   else {
     if (channel < 0 || channel >= Music::get_num_channels()) {
-      luaL_argerror(l, 1, (StringConcat() <<
-          "Invalid channel number: " << channel).c_str());
+      arg_error(l, 1, StringConcat() <<
+          "Invalid channel number: " << channel);
     }
     lua_pushinteger(l, Music::get_channel_volume(channel));
   }
@@ -247,8 +245,8 @@ int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
   }
   else {
     if (channel < 0 || channel >= Music::get_num_channels()) {
-      luaL_argerror(l, 1, (StringConcat() <<
-          "Invalid channel number: " << channel).c_str());
+      arg_error(l, 1, StringConcat() <<
+          "Invalid channel number: " << channel);
     }
     Music::set_channel_volume(channel, volume);
     lua_pushboolean(l, true);

@@ -1035,9 +1035,9 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
   const std::string& savegame_variable = luaL_optstring(l, 4, "");
 
   if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
-    luaL_argerror(l, 4, (StringConcat() <<
+    arg_error(l, 4, StringConcat() <<
         "savegame variable identifier expected, got '" <<
-        savegame_variable << "'").c_str());
+        savegame_variable << "'");
   }
 
   int callback_ref = LUA_REFNIL;
@@ -2131,9 +2131,9 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
   if (lua_isnumber(l, 3)) {
     int life_points = luaL_checkint(l, 3);
     if (life_points < 0) {
-      luaL_argerror(l, 3, (StringConcat() <<
+      LuaContext::arg_error(l, 3, StringConcat() <<
           "Invalid life points number for attack consequence: '"
-          << life_points << "'").c_str());
+          << life_points << "'");
     }
     enemy.set_attack_consequence(attack, EnemyReaction::HURT, life_points);
   }
@@ -2160,9 +2160,9 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
   if (lua_isnumber(l, 4)) {
     int life_points = luaL_checkint(l, 4);
     if (life_points < 0) {
-      luaL_argerror(l, 4, (StringConcat() <<
+      LuaContext::arg_error(l, 4, StringConcat() <<
           "Invalid life points number for attack consequence: '"
-          << life_points << "'").c_str());
+          << life_points << "'");
     }
     enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::HURT, life_points);
   }
@@ -2255,9 +2255,9 @@ int LuaContext::enemy_api_set_treasure(lua_State* l) {
   }
 
   if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
-    luaL_argerror(l, 4, (StringConcat() <<
+    LuaContext::arg_error(l, 4, StringConcat() <<
         "savegame variable identifier expected, got '" <<
-        savegame_variable << "'").c_str());
+        savegame_variable << "'");
   }
 
   Treasure treasure(enemy.get_game(), item_name, variant, savegame_variable);
@@ -2352,15 +2352,15 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
   const std::string& treasure_savegame_variable = opt_string_field(l, 2, "treasure_savegame_variable", "");
 
   if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
-    luaL_argerror(l, 2, (StringConcat() <<
+    LuaContext::arg_error(l, 2, StringConcat() <<
         "Bad field 'savegame_variable' (invalid savegame variable identifier '" <<
-        savegame_variable << "'").c_str());
+        savegame_variable << "'");
   }
 
   if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
-    luaL_argerror(l, 2, (StringConcat() <<
+    LuaContext::arg_error(l, 2, StringConcat() <<
         "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
-        treasure_savegame_variable << "'").c_str());
+        treasure_savegame_variable << "'");
   }
 
   // Make x and y relative to the existing enemy.

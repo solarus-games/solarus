@@ -161,16 +161,16 @@ int LuaContext::text_surface_api_create(lua_State* l) {
 
         if (!StringResource::exists(text_key)) {
           delete text_surface;
-          luaL_error(l, (StringConcat() << "No value with key '" << text_key
+          error(l, StringConcat() << "No value with key '" << text_key
               << "' in strings.dat for language '"
-              << FileTools::get_language() << "'").c_str());
+              << FileTools::get_language() << "'");
         }
         text_surface->set_text(StringResource::get_string(text_key));
       }
       else {
         delete text_surface;
-        luaL_error(l, (StringConcat() << "Invalid key '" << key
-            << "' for text surface properties").c_str());
+        error(l, StringConcat() << "Invalid key '" << key
+            << "' for text surface properties");
       }
       lua_pop(l, 1); // Pop the value, let the key for the iteration.
     }
@@ -269,8 +269,8 @@ int LuaContext::text_surface_api_set_font(lua_State* l) {
   const std::string& font_id = luaL_checkstring(l, 2);
 
   if (!TextSurface::has_font(font_id)) {
-    luaL_argerror(l, 2, (StringConcat() <<
-        "No such font: '" << font_id << "'").c_str());
+    arg_error(l, 2, StringConcat() <<
+        "No such font: '" << font_id << "'");
   }
   text_surface.set_font(font_id);
 
@@ -381,9 +381,9 @@ int LuaContext::text_surface_api_set_text_key(lua_State* l) {
   const std::string& key = luaL_checkstring(l, 2);
 
   if (!StringResource::exists(key)) {
-    luaL_argerror(l, 2, (StringConcat() << "No value with key '" << key
+    arg_error(l, 2, StringConcat() << "No value with key '" << key
         << "' in strings.dat for language '"
-        << FileTools::get_language() << "'").c_str());
+        << FileTools::get_language() << "'");
   }
 
   text_surface.set_text(StringResource::get_string(key));

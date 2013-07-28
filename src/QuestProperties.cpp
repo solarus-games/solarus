@@ -138,30 +138,30 @@ int QuestProperties::l_quest(lua_State* l) {
   Rectangle normal_quest_size, min_quest_size, max_quest_size;
   bool success = VideoManager::parse_size(normal_quest_size_string, normal_quest_size);
   if (!success) {
-    luaL_argerror(l, 1, (std::string(
+    LuaContext::arg_error(l, 1, std::string(
         "Bad field 'normal_quest_size' (not a valid size string: '")
-        + normal_quest_size_string + "')").c_str());
+        + normal_quest_size_string + "')");
   }
 
   success = VideoManager::parse_size(min_quest_size_string, min_quest_size);
   if (!success) {
-    luaL_argerror(l, 1, (std::string(
+    LuaContext::arg_error(l, 1, std::string(
         "Bad field 'min_quest_size' (not a valid size string: '")
-        + min_quest_size_string + "')").c_str());
+        + min_quest_size_string + "')");
   }
 
   success = VideoManager::parse_size(max_quest_size_string, max_quest_size);
   if (!success) {
-    luaL_argerror(l, 1, (std::string(
+    LuaContext::arg_error(l, 1, std::string(
         "Bad field 'max_quest_size' (not a valid size string: '")
-        + max_quest_size_string + "')").c_str());
+        + max_quest_size_string + "')");
   }
 
   if (normal_quest_size.get_width() < min_quest_size.get_width()
       || normal_quest_size.get_height() < min_quest_size.get_height()
       || normal_quest_size.get_width() > max_quest_size.get_width()
       || normal_quest_size.get_height() > max_quest_size.get_height()) {
-    luaL_argerror(l, 1, "Invalid range of quest sizes");
+    LuaContext::arg_error(l, 1, "Invalid range of quest sizes");
   }
 
   VideoManager::get_instance()->set_quest_size_range(

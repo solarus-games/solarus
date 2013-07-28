@@ -432,7 +432,7 @@ int LuaContext::movement_api_create(lua_State* l) {
     movement = new PixelMovement("", 30, false, false);
   }
   else {
-    luaL_argerror(l, 1, "should be one of: "
+    arg_error(l, 1, "should be one of: "
         "\"straight\", "
         "\"random\", "
         "\"target\", "

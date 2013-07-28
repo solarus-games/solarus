@@ -140,7 +140,7 @@ int LuaContext::game_api_exists(lua_State* l) {
   const std::string& file_name = luaL_checkstring(l, 1);
 
   if (FileTools::get_quest_write_dir().empty()) {
-    luaL_error(l, "Cannot check savegame: no write directory was specified in quest.dat");
+    error(l, "Cannot check savegame: no write directory was specified in quest.dat");
   }
 
   bool exists = FileTools::data_file_exists(
@@ -160,7 +160,7 @@ int LuaContext::game_api_delete(lua_State* l) {
   const std::string& file_name = luaL_checkstring(l, 1);
 
   if (FileTools::get_quest_write_dir().empty()) {
-    luaL_error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
+    error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
   }
 
   FileTools::data_file_delete(
@@ -179,7 +179,7 @@ int LuaContext::game_api_load(lua_State* l) {
   const std::string& file_name = luaL_checkstring(l, 1);
 
   if (FileTools::get_quest_write_dir().empty()) {
-    luaL_error(l, "Cannot load savegame: no write directory was specified in quest.dat");
+    error(l, "Cannot load savegame: no write directory was specified in quest.dat");
   }
 
   Savegame* savegame = new Savegame(get_lua_context(l).get_main_loop(), file_name);
@@ -374,11 +374,11 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
 
   Game* game = savegame.get_game();
   if (game == NULL) {
-    luaL_error(l, "Cannot start dialog: this game is not running");
+    error(l, "Cannot start dialog: this game is not running");
   }
 
   if (game->is_dialog_enabled()) {
-    luaL_error(l, "Cannot start dialog: another dialog is already active");
+    error(l, "Cannot start dialog: another dialog is already active");
   }
 
   if (lua_gettop(l) >= 3) {
@@ -414,11 +414,11 @@ int LuaContext::game_api_stop_dialog(lua_State* l) {
 
   Game* game = savegame.get_game();
   if (game == NULL) {
-    luaL_error(l, "Cannot stop dialog: this game is not running.");
+    error(l, "Cannot stop dialog: this game is not running.");
   }
 
   if (!game->is_dialog_enabled()) {
-    luaL_error(l, "Cannot stop dialog: no dialog is active.");
+    error(l, "Cannot stop dialog: no dialog is active.");
   }
 
   // Optional parameter: status.
@@ -941,8 +941,7 @@ int LuaContext::game_api_get_item(lua_State* l) {
   const std::string& item_name = luaL_checkstring(l, 2);
 
   if (!savegame.get_equipment().item_exists(item_name)) {
-    luaL_error(l, (StringConcat() <<
-        "No such item: '" << item_name << "'").c_str());
+    error(l, StringConcat() << "No such item: '" << item_name << "'");
   }
 
   push_item(l, savegame.get_equipment().get_item(item_name));
@@ -961,13 +960,11 @@ int LuaContext::game_api_has_item(lua_State* l) {
 
   Equipment& equipment = savegame.get_equipment();
   if (!equipment.item_exists(item_name)) {
-    luaL_error(l, (StringConcat() <<
-        "No such item: '" << item_name << "'").c_str());
+    error(l, StringConcat() << "No such item: '" << item_name << "'");
   }
 
   if (!equipment.get_item(item_name).is_saved()) {
-    luaL_error(l, (StringConcat() <<
-        "Item '" << item_name << "' is not saved").c_str());
+    error(l, StringConcat() << "Item '" << item_name << "' is not saved");
   }
 
   lua_pushboolean(l, equipment.get_item(item_name).get_variant() > 0);

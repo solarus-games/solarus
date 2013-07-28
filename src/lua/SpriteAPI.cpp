@@ -133,9 +133,9 @@ int LuaContext::sprite_api_set_animation(lua_State* l) {
 
   const std::string& animation_name = luaL_checkstring(l, 2);
   if (!sprite.has_animation(animation_name)) {
-    luaL_argerror(l, 2, (StringConcat() << "Animation '" << animation_name
+    arg_error(l, 2, StringConcat() << "Animation '" << animation_name
         << "' does not exist in sprite '" << sprite.get_animation_set_id()
-        << "'").c_str());
+        << "'");
   }
 
   sprite.set_current_animation(animation_name);
@@ -168,10 +168,10 @@ int LuaContext::sprite_api_set_direction(lua_State* l) {
   int direction = luaL_checkint(l, 2);
 
   if (direction < 0 || direction >= sprite.get_nb_directions()) {
-    luaL_argerror(l, 2, (StringConcat() << "Illegal direction " << direction
+    arg_error(l, 2, StringConcat() << "Illegal direction " << direction
         << " for sprite '" << sprite.get_animation_set_id()
         << "' in animation '" << sprite.get_current_animation()
-        << "'").c_str());
+        << "'");
   }
   sprite.set_current_direction(direction);
 
@@ -202,11 +202,11 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
   int frame = luaL_checkint(l, 2);
 
   if (frame < 0 || frame >= sprite.get_nb_frames()) {
-    luaL_argerror(l, 2, (StringConcat() << "Illegal frame " << frame
+    arg_error(l, 2, StringConcat() << "Illegal frame " << frame
         << " for sprite '" << sprite.get_animation_set_id()
         << "' in direction " << sprite.get_current_direction()
         << " of animation '" << sprite.get_current_animation()
-        << "'").c_str());
+        << "'");
   }
   sprite.set_current_frame(frame);
 

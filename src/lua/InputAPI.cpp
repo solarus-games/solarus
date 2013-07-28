@@ -76,8 +76,8 @@ int LuaContext::input_api_is_key_pressed(lua_State* l) {
   InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
 
   if (key == InputEvent::KEY_NONE) {
-    luaL_argerror(l, 1, std::string(
-        "Unknown keyboard key name: '" + key_name + "'").c_str());
+    arg_error(l, 1, std::string(
+        "Unknown keyboard key name: '") + key_name + "'");
   }
 
   lua_pushboolean(l, InputEvent::is_key_down(key));

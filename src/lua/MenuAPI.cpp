@@ -200,7 +200,7 @@ int LuaContext::menu_api_stop(lua_State* l) {
   }
 
   if (menu_ref == LUA_REFNIL) {
-    luaL_error(l, "Unknown menu.");
+    error(l, "Unknown menu.");
   }
 
   return 0;

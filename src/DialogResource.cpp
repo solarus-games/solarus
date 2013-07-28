@@ -18,7 +18,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include <lua.hpp>
+#include "lua/LuaContext.h"
 
 const std::string DialogResource::file_name = "text/dialogs.dat";
 std::map<std::string, Dialog> DialogResource::dialogs;
@@ -135,8 +135,8 @@ int DialogResource::l_dialog(lua_State* l) {
         value = lua_toboolean(l, -1) ? "1" : "0";
       }
       else {
-        luaL_error(l, (std::string("Invalid value '") + key + "' for dialog '"
-            + dialog_id + "'").c_str());
+        LuaContext::error(l, std::string("Invalid value '") + key + "' for dialog '"
+            + dialog_id + "'");
       }
       dialog.set_property(key, value);
     }
@@ -145,15 +145,15 @@ int DialogResource::l_dialog(lua_State* l) {
 
   dialog.set_id(dialog_id);
   if (dialog.get_id().empty()) {
-    luaL_error(l, "Missing value dialog_id");
+    LuaContext::error(l, "Missing value dialog_id");
   }
 
   if (dialog.get_text().empty()) {
-    luaL_error(l, (std::string("Missing text for dialog '") + dialog_id + "'").c_str());
+    LuaContext::error(l, std::string("Missing text for dialog '") + dialog_id + "'");
   }
 
   if (exists(dialog_id)) {
-    luaL_error(l, (std::string("Duplicate dialog '") + dialog_id + "'").c_str());
+    LuaContext::error(l, std::string("Duplicate dialog '") + dialog_id + "'");
   }
   dialogs[dialog_id] = dialog;
 

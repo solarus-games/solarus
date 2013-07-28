@@ -189,9 +189,9 @@ int LuaContext::item_api_set_savegame_variable(lua_State* l) {
   }
 
   if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
-    luaL_argerror(l, 2, (StringConcat() <<
+    arg_error(l, 2, StringConcat() <<
         "savegame variable identifier expected, got '" <<
-        savegame_variable << "'").c_str());
+        savegame_variable << "'");
   }
 
   item.set_savegame_variable(savegame_variable);
@@ -232,9 +232,9 @@ int LuaContext::item_api_set_amount_savegame_variable(lua_State* l) {
   }
 
   if (!amount_savegame_variable.empty() && !is_valid_lua_identifier(amount_savegame_variable)) {
-    luaL_argerror(l, 2, (StringConcat() <<
+    arg_error(l, 2, StringConcat() <<
         "savegame variable identifier expected, got '" <<
-        amount_savegame_variable << "'").c_str());
+        amount_savegame_variable << "'");
   }
 
   item.set_amount_savegame_variable(amount_savegame_variable);
@@ -504,8 +504,7 @@ int LuaContext::item_api_get_variant(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
 
   if (!item.is_saved()) {
-    luaL_error(l, (StringConcat()
-        << "Item '" << item.get_name() << "' is not saved").c_str());
+    error(l, StringConcat() << "Item '" << item.get_name() << "' is not saved");
   }
 
   lua_pushinteger(l, item.get_variant());
@@ -523,8 +522,8 @@ int LuaContext::item_api_set_variant(lua_State* l) {
   int variant = luaL_checkint(l, 2);
 
   if (!item.is_saved()) {
-    luaL_error(l, (StringConcat()
-        << "Item '" << item.get_name() << "' is not saved").c_str());
+    error(l, StringConcat()
+        << "Item '" << item.get_name() << "' is not saved");
   }
 
   item.set_variant(variant);
@@ -543,8 +542,8 @@ int LuaContext::item_api_has_amount(lua_State* l) {
   if (lua_gettop(l) >= 2) {
     int amount = luaL_checkint(l, 2);
     if (!item.has_amount()) {
-      luaL_error(l, (StringConcat() <<
-          "Item '" << item.get_name() << "' has no amount").c_str());
+      error(l, StringConcat() <<
+          "Item '" << item.get_name() << "' has no amount");
     }
     lua_pushboolean(l, item.get_amount() >= amount);
   }
@@ -583,8 +582,8 @@ int LuaContext::item_api_set_amount(lua_State* l) {
   int amount = luaL_checkint(l, 2);
 
   if (!item.has_amount()) {
-    luaL_error(l, (StringConcat() <<
-        "Item '" << item.get_name() << "' has no amount").c_str());
+    error(l, StringConcat() <<
+        "Item '" << item.get_name() << "' has no amount");
   }
 
   item.set_amount(amount);
@@ -603,8 +602,8 @@ int LuaContext::item_api_add_amount(lua_State* l) {
   int amount = luaL_checkint(l, 2);
 
   if (!item.has_amount()) {
-    luaL_error(l, (StringConcat() <<
-        "Item '" << item.get_name() << "' has no amount").c_str());
+    error(l, StringConcat() <<
+        "Item '" << item.get_name() << "' has no amount");
   }
 
   item.set_amount(item.get_amount() + amount);
@@ -623,8 +622,8 @@ int LuaContext::item_api_remove_amount(lua_State* l) {
   int amount = luaL_checkint(l, 2);
 
   if (!item.has_amount()) {
-    luaL_error(l, (StringConcat() <<
-        "Item '" << item.get_name() << "' has no amount").c_str());
+    error(l, StringConcat() <<
+        "Item '" << item.get_name() << "' has no amount");
   }
 
   item.set_amount(item.get_amount() - amount);
@@ -642,8 +641,7 @@ int LuaContext::item_api_get_max_amount(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
 
   if (!item.has_amount()) {
-    luaL_error(l, (StringConcat() <<
-        "Item '" << item.get_name() << "' has no amount").c_str());
+    error(l, StringConcat() << "Item '" << item.get_name() << "' has no amount");
   }
 
   lua_pushinteger(l, item.get_max_amount());
@@ -661,8 +659,7 @@ int LuaContext::item_api_set_max_amount(lua_State* l) {
   int max_amount = luaL_checkint(l, 2);
 
   if (!item.has_amount()) {
-    luaL_error(l, (StringConcat() <<
-        "Item '" << item.get_name() << "' has no amount").c_str());
+    error(l, StringConcat() << "Item '" << item.get_name() << "' has no amount");
   }
 
   item.set_max_amount(max_amount);

@@ -315,36 +315,36 @@ int Tileset::l_tile_pattern(lua_State* l) {
       scrolling = luaL_checkstring(l, 3);
     }
     else {
-      luaL_error(l, (StringConcat() << "Unknown key '" << key << "'").c_str());
+      LuaContext::error(l, StringConcat() << "Unknown key '" << key << "'");
     }
     lua_pop(l, 1);
   }
 
   // Check data.
   if (id == -1) {
-    luaL_argerror(l, 1, "Missing id for this tile pattern");
+    LuaContext::arg_error(l, 1, "Missing id for this tile pattern");
   }
 
   if (default_layer == -1) {
-    luaL_argerror(l, 1, "Missing default layer for this tile pattern");
+    LuaContext::arg_error(l, 1, "Missing default layer for this tile pattern");
   }
 
   if (width == 0) {
-    luaL_argerror(l, 1, "Missing width for this tile pattern");
+    LuaContext::arg_error(l, 1, "Missing width for this tile pattern");
   }
 
   if (height == 0) {
-    luaL_argerror(l, 1, "Missing height for this tile pattern");
+    LuaContext::arg_error(l, 1, "Missing height for this tile pattern");
   }
 
   if (i != 1 && i != 3 && i != 4) {
-    luaL_argerror(l, 1, "Invalid number of frames for x");
+    LuaContext::arg_error(l, 1, "Invalid number of frames for x");
   }
   if (j != 1 && j != 3 && j != 4) {
-    luaL_argerror(l, 1, "Invalid number of frames for y");
+    LuaContext::arg_error(l, 1, "Invalid number of frames for y");
   }
   if (i != j) {
-    luaL_argerror(l, 1, "The length of x and y must match");
+    LuaContext::arg_error(l, 1, "The length of x and y must match");
   }
 
   // Create the tile pattern.
@@ -364,7 +364,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
   else {
     // Multi-frame.
     if (scrolling == "self") {
-      luaL_argerror(l, 1, "Multi-frame is not supported for self-scrolling tiles");
+      LuaContext::arg_error(l, 1, "Multi-frame is not supported for self-scrolling tiles");
     }
     bool parallax = scrolling == "parallax";
     AnimatedTilePattern::AnimationSequence sequence = (i == 3) ?

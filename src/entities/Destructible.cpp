@@ -39,13 +39,13 @@
  */
 const Destructible::Features Destructible::features[] = {
   // animation set, sound, can be lifted, can be cut, can_explode, can_regenerate, weight, damage, special ground
-  {"pot",         "entities/pot",               "stone", true,  false, false, false, 0, 2, GROUND_NORMAL},
-  {"",            "",                           "",      false, false, false, false, 0, 1, GROUND_NORMAL},
-  {"bush",        "entities/bush",              "bush",  true,  true,  false, false, 1, 1, GROUND_NORMAL},
-  {"white_stone", "entities/stone_small_white", "stone", true,  false, false, false, 1, 2, GROUND_NORMAL},
-  {"black_stone", "entities/stone_small_black", "stone", true,  false, false, false, 2, 4, GROUND_NORMAL},
+  {"pot",         "entities/pot",               "stone", true,  false, false, false, 0, 2, GROUND_TRAVERSABLE},
+  {"",            "",                           "",      false, false, false, false, 0, 1, GROUND_TRAVERSABLE},
+  {"bush",        "entities/bush",              "bush",  true,  true,  false, false, 1, 1, GROUND_TRAVERSABLE},
+  {"white_stone", "entities/stone_small_white", "stone", true,  false, false, false, 1, 2, GROUND_TRAVERSABLE},
+  {"black_stone", "entities/stone_small_black", "stone", true,  false, false, false, 2, 4, GROUND_TRAVERSABLE},
   {"grass",       "entities/grass",             "bush",  false, true,  false, false, 0, 0, GROUND_GRASS},
-  {"bomb_flower", "entities/bomb_flower",       "bush",  true,   true, true,  true,  1, 1, GROUND_NORMAL},
+  {"bomb_flower", "entities/bomb_flower",       "bush",  true,   true, true,  true,  1, 1, GROUND_TRAVERSABLE},
 };
 
 /**
@@ -59,7 +59,7 @@ const Destructible::Features Destructible::features[] = {
  * item is lifted or cut
  */
 Destructible::Destructible(const std::string& name, Layer layer, int x, int y,
-    Subtype subtype, const Treasure &treasure):
+    Subtype subtype, const Treasure& treasure):
 
   Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
   subtype(subtype),
@@ -149,11 +149,12 @@ Ground Destructible::get_special_ground() {
 }
 
 /**
- * \brief Returns whether there is a special ground to display when walking on this destructible item.
- * \return true if there is a special ground
+ * \brief Returns whether there is a special ground to display when walking
+ * on this destructible item.
+ * \return \c true if there is a special ground.
  */
 bool Destructible::has_special_ground() {
-  return get_special_ground() != GROUND_NORMAL;
+  return get_special_ground() != GROUND_TRAVERSABLE;
 }
 
 /**
@@ -165,7 +166,7 @@ bool Destructible::has_special_ground() {
  * \param other another entity
  * \return true if this entity is an obstacle for others
  */
-bool Destructible::is_obstacle_for(MapEntity &other) {
+bool Destructible::is_obstacle_for(MapEntity& other) {
   return features[subtype].can_be_lifted && !is_being_cut && other.is_destructible_obstacle(*this);
 }
 

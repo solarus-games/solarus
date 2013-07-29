@@ -35,7 +35,7 @@ class SimpleTilePattern: public TilePattern {
 
   public:
 
-    SimpleTilePattern(Obstacle obstacle, int x, int y, int width, int height);
+    SimpleTilePattern(Ground ground, int x, int y, int width, int height);
     ~SimpleTilePattern();
 
     virtual void draw(Surface& dst_surface, const Rectangle& dst_position,

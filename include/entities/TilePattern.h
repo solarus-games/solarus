@@ -18,25 +18,16 @@
 #define SOLARUS_TILE_PATTERN_H
 
 #include "Common.h"
-#include "entities/Obstacle.h"
+#include "entities/Ground.h"
 
 /**
  * \brief Abstract class for a tile pattern.
  *
- * A tile pattern defines a rectangle image in a tileset and has an obstacle property.
+ * A tile pattern defines a rectangle image in a tileset and has a ground property.
  * It may have a special animation.
  * The width and the height of a tile pattern are always multiples or 8.
  */
 class TilePattern {
-
-  protected:
-
-    const Obstacle obstacle; /**< is the tile an obstacle? */
-
-    const int width;         /**< tile width (multiple of 8) */
-    const int height;        /**< tile height (multiple of 8) */
-
-    TilePattern(Obstacle obstacle, int width, int height);
 
   public:
 
@@ -44,7 +35,7 @@ class TilePattern {
 
     int get_width() const;
     int get_height() const;
-    Obstacle get_obstacle() const;
+    Ground get_ground() const;
 
     static void update();
     void fill_surface(Surface& dst_surface, const Rectangle& dst_position,
@@ -52,16 +43,26 @@ class TilePattern {
 
     /**
      * \brief Draws the tile image on a surface.
-     * \param dst_surface the surface to draw
-     * \param dst_position position where tile pattern should be drawn on dst_surface
-     * \param tileset the tileset of this tile
-     * \param viewport coordinates of the top-left corner of dst_surface relative
-     * to the map (may be used for scrolling tiles)
+     * \param dst_surface The surface to draw.
+     * \param dst_position Position where the tile pattern should be drawn.
+     * \param tileset The tileset of this tile.
+     * \param viewport Coordinates of the top-left corner of dst_surface
+     * relative to the map (may be used for scrolling tiles).
      */
     virtual void draw(Surface& dst_surface, const Rectangle& dst_position,
         Tileset& tileset, const Rectangle& viewport) = 0;
     virtual bool is_animated();
     virtual bool is_drawn_at_its_position();
+
+  protected:
+
+    const Ground ground;     /**< Kind of tile. */
+
+    const int width;         /**< Pattern width (multiple of 8). */
+    const int height;        /**< Pattern height (multiple of 8). */
+
+    TilePattern(Ground ground, int width, int height);
+
 };
 
 #endif

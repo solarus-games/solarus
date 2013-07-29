@@ -40,7 +40,7 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
 
     static const int ratio;
 
-    ParallaxScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height);
+    ParallaxScrollingTilePattern(Ground ground, int x, int y, int width, int height);
     ~ParallaxScrollingTilePattern();
 
     void draw(Surface& dst_surface, const Rectangle& dst_position,

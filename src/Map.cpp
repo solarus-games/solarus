@@ -725,92 +725,95 @@ bool Map::test_collision_with_border(const Rectangle &collision_box) {
  *
  * This method also returns true if the point is outside the map.
  *
- * \param layer layer of the point
- * \param x x of the point in pixels
- * \param y y of the point in pixels
- * \param entity_to_check the entity to check (used to decide what tiles are considered as an obstacle)
- * \return true if this point is on an obstacle
+ * \param layer Layer of the point.
+ * \param x X of the point in pixels.
+ * \param y Y of the point in pixels.
+ * \param entity_to_check The entity to check (used to decide what tiles are
+ * considered as obstacle).
+ * \return \c true if this point is on an obstacle.
  */
-bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity_to_check) {
+bool Map::test_collision_with_tiles(Layer layer, int x, int y,
+    MapEntity& entity_to_check) {
 
-  Obstacle obstacle_type;
+  Ground ground;
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
 
-  // if the point is outside the map, there is only obstacles
+  // If the point is outside the map, this is an obstacle.
   if (test_collision_with_border(x, y)) {
     return true;
   }
 
-  // get the obstacle property of the tile under that point
-  obstacle_type = entities->get_obstacle_tile(layer, x, y);
+  // Get the ground property of the 8x8 square containing this point.
+  ground = entities->get_tile_ground(layer, x, y);
 
-  // test the obstacle property of this square
-  switch (obstacle_type) {
+  // Test the obstacle property of this square.
+  switch (ground) {
 
-  case OBSTACLE_NONE:
-  case OBSTACLE_EMPTY:
-    // the square is not an obstacle
+  case GROUND_EMPTY:
+  case GROUND_TRAVERSABLE:
+  case GROUND_GRASS:
+    // The square is not an obstacle.
     on_obstacle = false;
     break;
 
-  case OBSTACLE:
-    // the square is entirely an obstacle
+  case GROUND_WALL:
+    // The square is entirely an obstacle.
     on_obstacle = true;
     break;
 
-  case OBSTACLE_TOP_RIGHT:
-  case OBSTACLE_TOP_RIGHT_WATER:
-    // the upper right half of the square is an obstacle
-    // so we have to test the position of the point
+  case GROUND_WALL_TOP_RIGHT:
+  case GROUND_WALL_TOP_RIGHT_WATER:
+    // The upper right half of the square is an obstacle
+    // so we have to test the position of the point in the square.
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile <= x_in_tile;
     break;
 
-  case OBSTACLE_TOP_LEFT:
-  case OBSTACLE_TOP_LEFT_WATER:
-    // same thing
+  case GROUND_WALL_TOP_LEFT:
+  case GROUND_WALL_TOP_LEFT_WATER:
+    // Same thing.
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile <= 7 - x_in_tile;
     break;
 
-  case OBSTACLE_BOTTOM_LEFT:
-  case OBSTACLE_BOTTOM_LEFT_WATER:
+  case GROUND_WALL_BOTTOM_LEFT:
+  case GROUND_WALL_BOTTOM_LEFT_WATER:
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile >= x_in_tile;
     break;
 
-  case OBSTACLE_BOTTOM_RIGHT:
-  case OBSTACLE_BOTTOM_RIGHT_WATER:
+  case GROUND_WALL_BOTTOM_RIGHT:
+  case GROUND_WALL_BOTTOM_RIGHT_WATER:
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile >= 7 - x_in_tile;
     break;
 
-  case OBSTACLE_SHALLOW_WATER:
+  case GROUND_SHALLOW_WATER:
     on_obstacle = entity_to_check.is_shallow_water_obstacle();
     break;
 
-  case OBSTACLE_DEEP_WATER:
+  case GROUND_DEEP_WATER:
     on_obstacle = entity_to_check.is_deep_water_obstacle();
     break;
 
-  case OBSTACLE_HOLE:
+  case GROUND_HOLE:
     on_obstacle = entity_to_check.is_hole_obstacle();
     break;
 
-  case OBSTACLE_LAVA:
+  case GROUND_LAVA:
     on_obstacle = entity_to_check.is_lava_obstacle();
     break;
 
-  case OBSTACLE_PRICKLE:
+  case GROUND_PRICKLE:
     on_obstacle = entity_to_check.is_prickle_obstacle();
     break;
 
-  case OBSTACLE_LADDER:
+  case GROUND_LADDER:
     on_obstacle = entity_to_check.is_ladder_obstacle();
     break;
   }
@@ -819,23 +822,24 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity
 }
 
 /**
- * \brief Tests whether a rectangle overlaps an obstacle entity.
- * \param layer the layer
- * \param collision_box the rectangle to check
- * \param entity_to_check the entity to check (used to decide what is considered as an obstacle)
- * \return true if there is an obstacle entity at this point
+ * \brief Tests whether a rectangle overlaps an obstacle dynamic entity.
+ * \param layer The layer.
+ * \param collision_box The rectangle to check.
+ * \param entity_to_check The entity to check (used to decide what is
+ * considered as obstacle).
+ * \return \c true if there is an obstacle entity at this point.
  */
 bool Map::test_collision_with_entities(Layer layer,
     const Rectangle& collision_box, MapEntity& entity_to_check) {
 
-  const std::list<MapEntity*> &obstacle_entities = entities->get_obstacle_entities(layer);
+  const std::list<MapEntity*>& obstacle_entities = entities->get_obstacle_entities(layer);
 
   bool collision = false;
 
   std::list<MapEntity*>::const_iterator i;
   for (i = obstacle_entities.begin();
        i != obstacle_entities.end() && !collision;
-       i++) {
+       ++i) {
 
     MapEntity *entity = *i;
     collision =
@@ -850,17 +854,21 @@ bool Map::test_collision_with_entities(Layer layer,
 
 /**
  * \brief Tests whether a rectangle collides with the map obstacles.
- * \param layer layer of the rectangle in the map
- * \param collision_box the rectangle to check (its dimensions should be multiples of 8)
- * \param entity_to_check the entity to check (used to decide what is considered as an obstacle)
- * \return true if the rectangle is overlapping an obstacle, false otherwise
+ * \param layer Layer of the rectangle in the map.
+ * \param collision_box The rectangle to check (its dimensions should be
+ * multiples of 8).
+ * \param entity_to_check The entity to check (used to decide what is
+ * considered as obstacle),
+ * \return \c true if the rectangle is overlapping an obstacle.
  */
-bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_box, MapEntity &entity_to_check) {
+bool Map::test_collision_with_obstacles(Layer layer,
+    const Rectangle& collision_box,
+    MapEntity& entity_to_check) {
 
   int x, y, x1, x2, y1, y2;
   bool collision = false;
 
-  // collisions with tiles: we just check the borders of the collision box
+  // Collisions with tiles: we just check the borders of the collision box.
   y1 = collision_box.get_y();
   y2 = y1 + collision_box.get_height() - 1;
   x1 = collision_box.get_x();
@@ -877,7 +885,7 @@ bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_
   }
 
 /*
-  // slow version: check every pixel of the collision_box rectangle
+  // Slow version: check every pixel of the collision_box rectangle.
   for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1++) {
     for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1++) {
       collision = test_collision_with_tiles(layer, x1, y1, entity_to_check);
@@ -885,7 +893,7 @@ bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_
   }
 */
 
-  // collisions with entities
+  // Collisions with dynamic entities.
   if (!collision) {
     collision = test_collision_with_entities(layer, collision_box, entity_to_check);
   }
@@ -895,20 +903,22 @@ bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_
 
 /**
  * \brief Tests whether a point collides with the map obstacles.
- * \param layer layer of point to check
- * \param x x coordinate of the point to check
- * \param y y coordinate of the point to check
- * \param entity_to_check the entity to check (used to decide what is considered as an obstacle)
- * \return true if the point is overlapping an obstacle, false otherwise
+ * \param layer Layer of point to check.
+ * \param x X coordinate of the point to check.
+ * \param y Y coordinate of the point to check.
+ * \param entity_to_check The entity to check (used to decide what is
+ * considered as obstacle)
+ * \return \c true if the point is overlapping an obstacle.
  */
-bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &entity_to_check) {
+bool Map::test_collision_with_obstacles(Layer layer, int x, int y,
+    MapEntity& entity_to_check) {
 
   bool collision;
 
-  // test the tiles
+  // Test the tiles.
   collision = test_collision_with_tiles(layer, x, y, entity_to_check);
 
-  // test the entities
+  // Test the dynamic entities.
   if (!collision) {
     Rectangle collision_box(x, y, 1, 1);
     collision = test_collision_with_entities(layer, collision_box, entity_to_check);
@@ -918,116 +928,32 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &en
 }
 
 /**
- * \brief Returns the kind of ground that is under the specified point.
- *
- * Only the tiles are considered here (not the dynamic entities).
- *
- * \param layer layer of point to check
- * \param x x coordinate of the point to check
- * \param y y coordinate of the point to check
- * \return the ground at this place
- */
-Ground Map::get_tile_ground(Layer layer, int x, int y) {
-
-  return obstacle_to_ground(entities->get_obstacle_tile(layer, x, y));
-}
-
-/**
- * \brief Returns the value of ground equivalent to a value of obstacle.
- * TODO: remove Obstacle, only use Ground
- * \param obstacle an obstacle property
- * \return the corresponding ground
- */
-Ground Map::obstacle_to_ground(Obstacle obstacle) {
-
-  Ground ground = GROUND_EMPTY;
-  switch (obstacle) {
-
-    case OBSTACLE_SHALLOW_WATER:
-      ground = GROUND_SHALLOW_WATER;
-      break;
-
-    case OBSTACLE_DEEP_WATER:
-    case OBSTACLE_TOP_RIGHT_WATER:
-    case OBSTACLE_TOP_LEFT_WATER:
-    case OBSTACLE_BOTTOM_RIGHT_WATER:
-    case OBSTACLE_BOTTOM_LEFT_WATER:
-      ground = GROUND_DEEP_WATER;
-      break;
-
-    case OBSTACLE_HOLE:
-      ground = GROUND_HOLE;
-      break;
-
-    case OBSTACLE_LAVA:
-      ground = GROUND_LAVA;
-      break;
-
-    case OBSTACLE_PRICKLE:
-      ground = GROUND_PRICKLE;
-      break;
-
-    case OBSTACLE_LADDER:
-      ground = GROUND_LADDER;
-      break;
-
-    case OBSTACLE_EMPTY:
-      ground = GROUND_EMPTY;
-      break;
-
-    case OBSTACLE:
-    case OBSTACLE_NONE:
-    case OBSTACLE_TOP_RIGHT:
-    case OBSTACLE_TOP_LEFT:
-    case OBSTACLE_BOTTOM_RIGHT:
-    case OBSTACLE_BOTTOM_LEFT:
-      ground = GROUND_NORMAL;
-      break;
-  }
-
-  return ground;
-}
-
-/**
- * \brief Returns the kind of ground that is under the specified point.
- *
- * Only the tiles are considered here (not the dynamic entities).
- *
- * \param layer layer of point to check
- * \param coordinates coordinates of the point to check
- * \return the ground at this place
- */
-Ground Map::get_tile_ground(Layer layer, const Rectangle &coordinates) {
-  return get_tile_ground(layer, coordinates.get_x(), coordinates.get_y());
-}
-
-/**
- * \brief Returns whether there is at least one empty tile in the specified rectangle.
+ * \brief Returns whether there is empty ground in the specified rectangle.
  *
  * Only the borders of the rectangle are checked.
  *
- * \param layer the layer
- * \param collision_box the rectangle to test
- * \return true if there is at least one empty tile in this rectangle
+ * \param layer The layer.
+ * \param collision_box The rectangle to test.
+ * \return \c true if there is at least one empty tile in this rectangle.
  */
-bool Map::has_empty_tiles(Layer layer, const Rectangle& collision_box) {
+bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) {
 
   bool empty_tile = false;
 
-  // we just check the borders of the collision box
+  // We just check the borders of the collision box.
   int y1 = collision_box.get_y();
   int y2 = y1 + collision_box.get_height() - 1;
   int x1 = collision_box.get_x();
   int x2 = x1 + collision_box.get_width() - 1;
 
   for (int x = x1; x <= x2 && !empty_tile; x++) {
-    empty_tile = entities->get_obstacle_tile(layer, x, y1) == OBSTACLE_EMPTY
-        || entities->get_obstacle_tile(layer, x, y2) == OBSTACLE_EMPTY;
+    empty_tile = entities->get_ground(layer, x, y1) == GROUND_EMPTY
+        || entities->get_ground(layer, x, y2) == GROUND_EMPTY;
   }
 
   for (int y = y1; y <= y2 && !empty_tile; y++) {
-    empty_tile = entities->get_obstacle_tile(layer, x1, y) == OBSTACLE_EMPTY
-        || entities->get_obstacle_tile(layer, x2, y) == OBSTACLE_EMPTY;
+    empty_tile = entities->get_ground(layer, x1, y) == GROUND_EMPTY
+        || entities->get_ground(layer, x2, y) == GROUND_EMPTY;
   }
 
   return empty_tile;

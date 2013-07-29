@@ -80,28 +80,29 @@ void DynamicTile::set_map(Map &map) {
 bool DynamicTile::is_obstacle_for(MapEntity &other) {
 
   bool result = false;
-  switch (tile_pattern->get_obstacle()) {
+  switch (tile_pattern->get_ground()) {
 
-    case OBSTACLE:
-    case OBSTACLE_TOP_RIGHT:
-    case OBSTACLE_TOP_LEFT:
-    case OBSTACLE_BOTTOM_LEFT:
-    case OBSTACLE_BOTTOM_RIGHT:
-    case OBSTACLE_TOP_RIGHT_WATER:
-    case OBSTACLE_TOP_LEFT_WATER:
-    case OBSTACLE_BOTTOM_LEFT_WATER:
-    case OBSTACLE_BOTTOM_RIGHT_WATER:
+    case GROUND_WALL:
+    case GROUND_WALL_TOP_RIGHT:
+    case GROUND_WALL_TOP_LEFT:
+    case GROUND_WALL_BOTTOM_LEFT:
+    case GROUND_WALL_BOTTOM_RIGHT:
+    case GROUND_WALL_TOP_RIGHT_WATER:
+    case GROUND_WALL_TOP_LEFT_WATER:
+    case GROUND_WALL_BOTTOM_LEFT_WATER:
+    case GROUND_WALL_BOTTOM_RIGHT_WATER:
       result = true;
       break;
 
-    case OBSTACLE_EMPTY:
-    case OBSTACLE_NONE:
-    case OBSTACLE_SHALLOW_WATER:
-    case OBSTACLE_DEEP_WATER:
-    case OBSTACLE_HOLE:
-    case OBSTACLE_LAVA:
-    case OBSTACLE_PRICKLE:
-    case OBSTACLE_LADDER:
+    case GROUND_EMPTY:
+    case GROUND_TRAVERSABLE:
+    case GROUND_SHALLOW_WATER:
+    case GROUND_DEEP_WATER:
+    case GROUND_GRASS:
+    case GROUND_HOLE:
+    case GROUND_LAVA:
+    case GROUND_PRICKLE:
+    case GROUND_LADDER:
       result = false;
       break;
   }
@@ -133,9 +134,10 @@ void DynamicTile::draw_on_map() {
  * \param entity the entity
  * \return true if the entity's collides with this detector with respect to the custom rule
  */
-bool DynamicTile::test_collision_custom(MapEntity &entity) {
+bool DynamicTile::test_collision_custom(MapEntity& entity) {
 
-  // we must test the same coordinates as non-dynamic tiles (see Hero::get_ground_point())
+  // We must test the same coordinates as non-dynamic tiles
+  // (see Hero::get_ground_point()).
   return overlaps(entity.get_x(), entity.get_y() - 2);
 }
 
@@ -145,13 +147,12 @@ bool DynamicTile::test_collision_custom(MapEntity &entity) {
  * \param collision_mode the collision mode that detected the collision (useful if
  * the detector has several collision modes)
  */
-void DynamicTile::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void DynamicTile::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping.is_hero()) {
     // tell the hero that he is on the ground of this tile
-    Hero& hero = (Hero&) entity_overlapping;
-    Ground ground = Map::obstacle_to_ground(tile_pattern->get_obstacle());
-    hero.set_ground(ground);
+    Hero& hero = static_cast<Hero&>(entity_overlapping);
+    hero.set_ground(tile_pattern->get_ground());
   }
 }
 

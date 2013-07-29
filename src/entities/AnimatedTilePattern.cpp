@@ -44,7 +44,7 @@ uint32_t AnimatedTilePattern::next_frame_date = 0;
 
 /**
  * \brief Constructor.
- * \param obstacle is the tile pattern an obstacle?
+ * \param ground Kind of ground of the tile pattern.
  * \param sequence animation sequence type
  * \param width width of the tile (the same for each frame of the animation)
  * \param height height of the tile (the same for each frame of the animation)
@@ -56,14 +56,14 @@ uint32_t AnimatedTilePattern::next_frame_date = 0;
  * \param y3 y position of the third frame in the tileset
  * \param parallax true to also set parallax scrolling to the tile pattern
  */
-AnimatedTilePattern::AnimatedTilePattern(Obstacle obstacle,
+AnimatedTilePattern::AnimatedTilePattern(Ground ground,
     AnimationSequence sequence,
     int width, int height,
     int x1, int y1,
     int x2, int y2,
     int x3, int y3,
     bool parallax):
-  TilePattern(obstacle, width, height),
+  TilePattern(ground, width, height),
   sequence(sequence),
   parallax(parallax) {
 

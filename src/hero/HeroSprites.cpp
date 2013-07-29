@@ -49,6 +49,8 @@ const int HeroSprites::animation_directions[][2] = {
   { 0,  3}   // right-down: right or down
 };
 
+// TODO Build sprite and sound ids automatically to allow more than 3 tunics,
+// 4 swords, etc.
 
 /**
  * \brief String constants corresponding to the sprites of the tunics.
@@ -89,14 +91,6 @@ const std::string HeroSprites::shield_sprite_ids[] = {
 };
 
 /**
- * \brief String constants corresponding to the sprites of the ground displayed under the hero.
- */
-const std::string HeroSprites::ground_sprite_ids[] = {
-  "hero/ground1",
-  "hero/ground2",
-};
-
-/**
  * \brief String constants corresponding to the sounds of the swords.
  */
 const std::string HeroSprites::sword_sound_ids[] = {
@@ -104,14 +98,6 @@ const std::string HeroSprites::sword_sound_ids[] = {
   "sword2",
   "sword3",
   "sword4",
-};
-
-/**
- * \brief String constants corresponding to the sounds of the ground under the hero.
- */
-const std::string HeroSprites::ground_sound_ids[] = {
-  "walk_on_grass",
-  "walk_on_water",
 };
 
 /**
@@ -1190,18 +1176,32 @@ void HeroSprites::set_animation(const std::string& tunic_animation,
 }
 
 /**
- * \brief Creates the ground sprite and sound corresponding to the specified ground.
- * \param ground a ground
+ * \brief Creates the ground sprite and sound corresponding to the specified
+ * ground.
+ * \param ground A ground.
  */
 void HeroSprites::create_ground(Ground ground) {
 
   delete ground_sprite;
-  ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
-  ground_sprite->set_tileset(hero.get_map().get_tileset());
-  if (hero.get_ground() != GROUND_SHALLOW_WATER) {
-    ground_sprite->set_current_animation(walking ? "walking" : "stopped");
+  ground_sprite = NULL;
+
+  std::string sprite_id;
+  if (ground == GROUND_GRASS) {
+    sprite_id = "hero/ground1";
+    ground_sound_id = "walk_on_grass";
   }
-  ground_sound_id = ground_sound_ids[ground - 1];
+  else if (ground == GROUND_SHALLOW_WATER) {
+    sprite_id = "hero/ground2";
+    ground_sound_id = "walk_on_water";
+  }
+
+  if (!sprite_id.empty()) {
+    ground_sprite = new Sprite(sprite_id);
+    ground_sprite->set_tileset(hero.get_map().get_tileset());
+    if (ground != GROUND_SHALLOW_WATER) {
+      ground_sprite->set_current_animation(walking ? "walking" : "stopped");
+    }
+  }
 }
 
 /**

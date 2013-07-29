@@ -74,7 +74,7 @@ Hero::Hero(Equipment& equipment):
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
   on_raised_blocks(false),
-  ground(GROUND_NORMAL),
+  ground(GROUND_TRAVERSABLE),
   next_ground_date(0) {
 
   // position
@@ -437,7 +437,7 @@ void Hero::set_map(Map& map) {
 
   last_solid_ground_coords.set_xy(-1, -1);
   target_solid_ground_coords.set_xy(-1, -1);
-  ground = GROUND_NORMAL;
+  ground = GROUND_TRAVERSABLE;
   get_sprites().set_clipping_rectangle();
 
   state->set_map(map);
@@ -483,11 +483,11 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
   if (destination_name == "_same") {
 
-    // the hero's coordinates are the same as on the previous map
-    // but we may have to change the layer
+    // The hero's coordinates are the same as on the previous map
+    // but we may have to change the layer.
 
     Layer layer = LAYER_INTERMEDIATE;
-    if (map.get_entities().get_obstacle_tile(LAYER_INTERMEDIATE, get_x(), get_y()) == OBSTACLE_EMPTY) {
+    if (map.get_entities().get_tile_ground(LAYER_INTERMEDIATE, get_x(), get_y()) == GROUND_EMPTY) {
       layer = LAYER_LOW;
     }
     set_map(map);
@@ -1003,6 +1003,9 @@ void Hero::check_position() {
   }
 
   // see the ground indicated by the dynamic entities, also find the facing entity
+
+  // TODO use the new function MapEntities::get_ground() instead to determine
+  // the ground cleanly.
   check_collision_with_detectors(true);
 
   if (this->ground != previous_ground) {
@@ -1031,13 +1034,13 @@ void Hero::check_position() {
     MapEntities& entities = get_entities();
 
     if (layer > LAYER_LOW
-        && entities.get_obstacle_tile(layer, x, y) == OBSTACLE_EMPTY
-        && entities.get_obstacle_tile(layer, x + 15, y) == OBSTACLE_EMPTY
-        && entities.get_obstacle_tile(layer, x, y + 15) == OBSTACLE_EMPTY
-        && entities.get_obstacle_tile(layer, x + 15, y + 15) == OBSTACLE_EMPTY) {
+        && entities.get_ground(layer, x, y) == GROUND_EMPTY
+        && entities.get_ground(layer, x + 15, y) == GROUND_EMPTY
+        && entities.get_ground(layer, x, y + 15) == GROUND_EMPTY
+        && entities.get_ground(layer, x + 15, y + 15) == GROUND_EMPTY) {
 
       get_entities().set_entity_layer(*this, Layer(layer - 1));
-      if (state->is_free() && get_tile_ground() == GROUND_NORMAL) {
+      if (state->is_free() && get_tile_ground() == GROUND_TRAVERSABLE) {
         Sound::play("hero_lands");
       }
     }
@@ -1099,41 +1102,41 @@ void Hero::reset_movement() {
 }
 
 /**
- * \brief Starts activating the ground specified by the last call to set_ground().
+ * \brief Starts activating the new ground of the hero.
  */
 void Hero::notify_ground_changed() {
 
   switch (ground) {
 
-  case GROUND_NORMAL:
-    // normal ground: remove any special sprite displayed under the hero
+  case GROUND_TRAVERSABLE:
+    // Traversable ground: remove any special sprite displayed under the hero.
     sprites->destroy_ground();
     set_walking_speed(normal_walking_speed);
     break;
 
   case GROUND_DEEP_WATER:
-    // deep water: plunge if the hero is not jumping
+    // Deep water: plunge if the hero is not jumping.
     if (!state->can_avoid_deep_water()) {
       start_deep_water();
     }
     break;
 
   case GROUND_HOLE:
-    // hole: attract the hero towards the hole
+    // Hole: attract the hero towards the hole.
     if (!state->can_avoid_hole()) {
       start_hole();
     }
     break;
 
   case GROUND_LAVA:
-    // lava: plunge into lava
+    // Lava: plunge into lava.
     if (!state->can_avoid_lava()) {
       start_lava();
     }
     break;
 
   case GROUND_PRICKLE:
-    // prickles
+    // Prickles.
     if (!state->can_avoid_prickle()) {
       start_prickle(500);
     }
@@ -1151,17 +1154,32 @@ void Hero::notify_ground_changed() {
     set_walking_speed(normal_walking_speed * 3 / 5);
     break;
 
+  case GROUND_WALL:
+  case GROUND_WALL_TOP_RIGHT:
+  case GROUND_WALL_TOP_LEFT:
+  case GROUND_WALL_BOTTOM_LEFT:
+  case GROUND_WALL_BOTTOM_RIGHT:
+  case GROUND_WALL_TOP_RIGHT_WATER:
+  case GROUND_WALL_TOP_LEFT_WATER:
+  case GROUND_WALL_BOTTOM_LEFT_WATER:
+  case GROUND_WALL_BOTTOM_RIGHT_WATER:
+    // The hero is stuck in a wall. Damn.
+    // This is the fault of the quest maker, unless there is a bug in Solarus.
+    // The user will have to save and quit his game.
+    // TODO maybe we could use the back to solid ground mechanism here?
+    break;
+
   case GROUND_EMPTY:
     break;
   }
 
-  // notify the state
+  // Notify the state.
   state->notify_ground_changed();
 }
 
 /**
  * \brief Returns the ground displayed under the hero.
- * \return ground the ground under the hero
+ * \return ground The ground under the hero.
  */
 Ground Hero::get_ground() {
   return ground;
@@ -1172,6 +1190,8 @@ Ground Hero::get_ground() {
  *
  * This function is called when the hero walks on an entity
  * having a special ground.
+ *
+ * TODO remove this function, compute the ground on demand with MapEntities::get_ground.
  *
  * \param ground the ground to set
  */
@@ -1203,10 +1223,14 @@ bool Hero::is_ground_visible() {
  * Only static tiles are considered by this function
  * (dynamic tiles are ignored).
  *
+ * TODO move to MapEntity
+ *
  * \return the type of ground of the tile below the hero
  */
 Ground Hero::get_tile_ground() {
-  return get_map().get_tile_ground(get_layer(), get_ground_point());
+
+  const Rectangle& ground_point = get_ground_point();
+  return get_entities().get_tile_ground(get_layer(), ground_point.get_x(), ground_point.get_y());
 }
 
 /**
@@ -1214,6 +1238,8 @@ Ground Hero::get_tile_ground() {
  * below the hero.
  * \return the coordinates of the point used to determine the ground
  * (relative to the map)
+ *
+ * TODO move to MapEntity. Enemies also need a ground point.
  */
 const Rectangle Hero::get_ground_point() {
   // we must return here the same coordinates as dynamic tiles
@@ -1231,7 +1257,8 @@ const Rectangle Hero::get_ground_point() {
  * the hero will go if he falls into a hole or some other bad ground
  * \param layer the layer
  */
-void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer) {
+void Hero::set_target_solid_ground_coords(
+    const Rectangle& target_solid_ground_coords, Layer layer) {
 
   this->target_solid_ground_coords = target_solid_ground_coords;
   this->target_solid_ground_layer = layer;
@@ -1516,7 +1543,7 @@ void Hero::notify_collision_with_stairs(
 
   if (get_ground() == GROUND_EMPTY) {
     // Allow the hero to stay on the highest of both layers of the stairs.
-    set_ground(GROUND_NORMAL);
+    set_ground(GROUND_TRAVERSABLE);
   }
 
   if (state->can_take_stairs()) {
@@ -2331,7 +2358,7 @@ void Hero::start_state_from_ground() {
     break;
 
   case GROUND_PRICKLE:
-    // there is no specific state for prickles (yet?)
+    // There is no specific state for prickles (yet?).
     set_state(new FreeState(*this));
     start_prickle(0);
     break;
@@ -2347,8 +2374,23 @@ void Hero::start_state_from_ground() {
     break;
 
   case GROUND_LADDER:
-  case GROUND_NORMAL:
+  case GROUND_TRAVERSABLE:
   case GROUND_EMPTY:
+    start_free_or_carrying();
+    break;
+
+  case GROUND_WALL:
+  case GROUND_WALL_TOP_RIGHT:
+  case GROUND_WALL_TOP_LEFT:
+  case GROUND_WALL_BOTTOM_LEFT:
+  case GROUND_WALL_BOTTOM_RIGHT:
+  case GROUND_WALL_TOP_RIGHT_WATER:
+  case GROUND_WALL_TOP_LEFT_WATER:
+  case GROUND_WALL_BOTTOM_LEFT_WATER:
+  case GROUND_WALL_BOTTOM_RIGHT_WATER:
+    // The hero is stuck in a wall,
+    // possibly because a teletransporter sent him here.
+    // It is the fault of the quest maker and there is not much we can do.
     start_free_or_carrying();
     break;
   }

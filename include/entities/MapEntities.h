@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "Transition.h"
-#include "entities/Obstacle.h"
+#include "entities/Ground.h"
 #include "entities/Layer.h"
 #include "entities/EntityType.h"
 #include "entities/Enemy.h"
@@ -44,7 +44,8 @@ class MapEntities {
 
     // entities
     Hero& get_hero();
-    Obstacle get_obstacle_tile(Layer layer, int x, int y);
+    Ground get_tile_ground(Layer layer, int x, int y);
+    Ground get_ground(Layer layer, int x, int y);
     const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
@@ -90,7 +91,7 @@ class MapEntities {
     friend class MapLoader;            /**< the map loader initializes the private fields of MapEntities */
 
     void add_tile(Tile* tile);
-    void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
+    void set_tile_ground(Layer layer, int x8, int y8, Ground ground);
     void build_non_animated_tiles();
     void redraw_non_animated_tiles();
     bool overlaps_animated_tile(Tile& tile);
@@ -100,15 +101,15 @@ class MapEntities {
     // map
     Game& game;                                     /**< the game running this map */
     Map& map;                                       /**< the map */
-    int map_width8;                                 /**< number of 8*8 squares on a row of the map grid */
-    int map_height8;                                /**< number of 8*8 squares on a column of the map grid */
+    int map_width8;                                 /**< number of 8x8 squares on a row of the map grid */
+    int map_height8;                                /**< number of 8x8 squares on a column of the map grid */
 
     // tiles
     std::vector<Tile*> tiles[LAYER_NB];             /**< all tiles of the map (a vector for each layer) */
-    int tiles_grid_size;                            /**< number of 8*8 squares in the map
+    int tiles_grid_size;                            /**< number of 8x8 squares in the map
                                                      * (tiles_grid_size = map_width8 * map_height8) */
-    Obstacle* obstacle_tiles[LAYER_NB];				/**< array of size tiles_grid_size representing which squares
-                                                     * are obstacles and how */
+    Ground* tiles_ground[LAYER_NB];                 /**< array of size tiles_grid_size representing the ground property
+                                                     * of each 8x8 square. */
     bool* animated_tiles[LAYER_NB];                 /**< array of size tiles_grid_size that remembers which squares
                                                      * have animated tiles */
     Surface* non_animated_tiles_surfaces[LAYER_NB]; /**< all non-animated tiles are rendered once for all on these surfaces
@@ -143,7 +144,7 @@ class MapEntities {
 
     std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
     std::list<CrystalBlock*>
-      crystal_blocks[LAYER_NB];	                    /**< all crystal blocks of the map */
+      crystal_blocks[LAYER_NB];                     /**< all crystal blocks of the map */
     std::list<Separator*> separators;               /**< all separators of the map */
 
     Boomerang* boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
@@ -151,23 +152,27 @@ class MapEntities {
 };
 
 /**
- * \brief Returns the obstacle property of the tile located at a specified point.
+ * \brief Returns the ground property of tiles at the specified point.
  *
- * This function assumes that the parameters are correct: for performance reasons,
- * no check is done here.
- * Dynamic tiles are not considered here.
+ * Only static tiles are considered here (not the dynamic entities).
+ * Use get_ground() instead to also take into account dynamic entities that
+ * may change the ground, like dynamic tiles and destructible entities.
  *
- * \param layer of the tile to get
- * \param x x coordinate of the point
- * \param y y coordinate of the point
- * \return the obstacle property of this tile
+ * This function assumes that the parameters are correct: for performance
+ * reasons, no check is done here.
+ *
+ * \param layer Layer of the point.
+ * \param X x coordinate of the point.
+ * \param Y y coordinate of the point.
+ * \return The ground of the highest tile at this place.
  */
-inline Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
+inline Ground MapEntities::get_tile_ground(Layer layer, int x, int y) {
 
-  // warning: this function is called very often so it has been optimized and should remain so
+  // Warning: this function is called very often so it has been optimized and
+  // should remain so.
 
-  // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
-  return obstacle_tiles[layer][(y >> 3) * map_width8 + (x >> 3)];
+  // Optimization of: return tiles_ground[layer][(y / 8) * map_width8 + (x / 8)];
+  return tiles_ground[layer][(y >> 3) * map_width8 + (x >> 3)];
 }
 
 #endif

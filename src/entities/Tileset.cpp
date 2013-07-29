@@ -31,24 +31,25 @@
  * \brief Lua name of each ground type.
  */
 static std::string ground_names[] = {
-    "traversable",
-    "wall",
-    "wall_top_right",
-    "wall_top_left",
-    "wall_bottom_left",
-    "wall_bottom_right",
-    "empty",
-    "wall_top_right_water",
-    "wall_top_left_water",
-    "wall_bottom_left_water",
-    "wall_bottom_right_water",
-    "deep_water",
-    "shallow_water",
-    "hole",
-    "ladder",
-    "prickles",
-    "lava",
-    ""  // Sentinel.
+  "empty",
+  "traversable",
+  "wall",
+  "wall_top_right",
+  "wall_top_left",
+  "wall_bottom_left",
+  "wall_bottom_right",
+  "wall_top_right_water",
+  "wall_top_left_water",
+  "wall_bottom_left_water",
+  "wall_bottom_right_water",
+  "deep_water",
+  "shallow_water",
+  "grass",
+  "hole",
+  "ladder",
+  "prickles",
+  "lava",
+  ""  // Sentinel.
 };
 
 /**
@@ -253,7 +254,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
   int id = -1, default_layer = -1, width = 0, height = 0;
   int x[] = { -1, -1, -1, -1 };
   int y[] = { -1, -1, -1, -1 };
-  Obstacle ground = OBSTACLE_NONE;
+  Ground ground = GROUND_EMPTY;
   std::string scrolling;
   int i = 0, j = 0;
 
@@ -268,7 +269,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
       id = luaL_checkint(l, 3);
     }
     else if (key == "ground") {
-      ground = LuaContext::check_enum<Obstacle>(l, 3, ground_names);
+      ground = LuaContext::check_enum<Ground>(l, 3, ground_names);
     }
     else if (key == "default_layer") {
       default_layer = luaL_checkint(l, 3);
@@ -377,3 +378,4 @@ int Tileset::l_tile_pattern(lua_State* l) {
 
   return 0;
 }
+

@@ -21,14 +21,15 @@
 
 /**
  * \brief Creates a simple tile pattern.
- * \param obstacle is the tile pattern an obstacle?
+ * \param ground Kind of the of the tile pattern.
  * \param x x position of the tile pattern in the tileset
  * \param y y position of the tile pattern in the tileset
  * \param width width of the tile pattern in the tileset
  * \param height height of the tile pattern in the tileset
  */
-SimpleTilePattern::SimpleTilePattern(Obstacle obstacle, int x, int y, int width, int height):
-  TilePattern(obstacle, width, height), position_in_tileset(x, y, width, height) {
+SimpleTilePattern::SimpleTilePattern(Ground ground, int x, int y, int width, int height):
+  TilePattern(ground, width, height),
+  position_in_tileset(x, y, width, height) {
 
 }
 

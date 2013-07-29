@@ -23,7 +23,6 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Music.h"
-#include "entities/Obstacle.h"
 #include "entities/Layer.h"
 #include "entities/Tileset.h"
 #include "entities/MapEntities.h"
@@ -133,11 +132,11 @@ int MapLoader::l_properties(lua_State* l) {
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     entities.animated_tiles[layer] = new bool[entities.tiles_grid_size];
-    entities.obstacle_tiles[layer] = new Obstacle[entities.tiles_grid_size];
-    Obstacle initial_obstacle = (layer == LAYER_LOW) ? OBSTACLE_NONE : OBSTACLE_EMPTY;
+    entities.tiles_ground[layer] = new Ground[entities.tiles_grid_size];
+    Ground initial_ground = (layer == LAYER_LOW) ? GROUND_TRAVERSABLE : GROUND_EMPTY;
     for (int i = 0; i < entities.tiles_grid_size; i++) {
       entities.animated_tiles[layer][i] = false;
-      entities.obstacle_tiles[layer][i] = initial_obstacle;
+      entities.tiles_ground[layer][i] = initial_ground;
     }
   }
   entities.boomerang = NULL;

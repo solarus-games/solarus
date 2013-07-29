@@ -20,14 +20,14 @@
 
 /**
  * \brief Creates a tile pattern with self scrolling.
- * \param obstacle is the tile pattern an obstacle?
+ * \param ground Kind of ground of the tile pattern.
  * \param x x position of the tile pattern in the tileset
  * \param y y position of the tile pattern in the tileset
  * \param width width of the tile pattern in the tileset
  * \param height height of the tile pattern in the tileset
  */
-SelfScrollingTilePattern::SelfScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height):
-  SimpleTilePattern(obstacle, x, y, width, height) {
+SelfScrollingTilePattern::SelfScrollingTilePattern(Ground ground, int x, int y, int width, int height):
+  SimpleTilePattern(ground, x, y, width, height) {
 
 }
 

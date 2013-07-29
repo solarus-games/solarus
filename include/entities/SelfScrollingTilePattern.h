@@ -36,7 +36,7 @@ class SelfScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
-    SelfScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height);
+    SelfScrollingTilePattern(Ground ground, int x, int y, int width, int height);
     ~SelfScrollingTilePattern();
 
     void draw(Surface& dst_surface, const Rectangle& dst_position,

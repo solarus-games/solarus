@@ -19,7 +19,6 @@
 #include "entities/Tile.h"
 #include "entities/TilePattern.h"
 #include "entities/Layer.h"
-#include "entities/Obstacle.h"
 #include "entities/CrystalBlock.h"
 #include "entities/Boomerang.h"
 #include "entities/Stairs.h"
@@ -82,7 +81,7 @@ void MapEntities::destroy_all_entities() {
     }
 
     tiles[layer].clear();
-    delete[] obstacle_tiles[layer];
+    delete[] tiles_ground[layer];
     delete[] animated_tiles[layer];
     delete non_animated_tiles_surfaces[layer];
 
@@ -133,9 +132,26 @@ Hero& MapEntities::get_hero() {
 }
 
 /**
+ * \brief Returns the ground at the specified point.
+ *
+ * Static tiles and dynamic entities are all taken into account here.
+ *
+ * \param layer Layer of the point.
+ * \param X x coordinate of the point.
+ * \param Y y coordinate of the point.
+ * \return The ground of the highest tile at this place.
+ */
+
+Ground MapEntities::get_ground(Layer layer, int x, int y) {
+
+  // TODO
+  return get_tile_ground(layer, x, y);
+}
+
+/**
  * \brief Returns the entities (other that tiles) such that the hero cannot walk on them.
- * \param layer the layer
- * \return the obstacle entities on that layer
+ * \param layer The layer.
+ * \return The obstacle entities on that layer.
  */
 const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
   return obstacle_entities[layer];
@@ -185,17 +201,21 @@ const list<Separator*>& MapEntities::get_separators() {
 }
 
 /**
- * \brief Sets the obstacle tile property of an 8*8 square of the map.
- * \param layer layer of the square
- * \param x8 x coordinate of the square (divided by 8)
- * \param y8 y coordinate of the square (divided by 8)
- * \param obstacle the obstacle property to set
+ * \brief Sets the tile ground property of an 8*8 square of the map.
+ *
+ * Coordinates outside the range of the map are not an error:
+ * in this case, this function does nothing.
+ *
+ * \param layer Layer of the square.
+ * \param x8 X coordinate of the square (divided by 8).
+ * \param y8 Y coordinate of the square (divided by 8).
+ * \param ground The ground property to set.
  */
-void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
+void MapEntities::set_tile_ground(Layer layer, int x8, int y8, Ground ground) {
 
   if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
     int index = y8 * map_width8 + x8;
-    obstacle_tiles[layer][index] = obstacle;
+    tiles_ground[layer][index] = ground;
   }
 }
 
@@ -308,7 +328,7 @@ bool MapEntities::has_entity_with_prefix(const std::string& prefix) {
  * \brief Brings to front an entity that is displayed as a sprite in the normal order.
  * \param entity the entity to bring to front
  */
-void MapEntities::bring_to_front(MapEntity *entity) {
+void MapEntities::bring_to_front(MapEntity* entity) {
 
   Debug::check_assertion(entity->can_be_drawn(),
       StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is not drawn");
@@ -378,16 +398,16 @@ void MapEntities::notify_tileset_changed() {
  *
  * \param tile the tile to add
  */
-void MapEntities::add_tile(Tile *tile) {
+void MapEntities::add_tile(Tile* tile) {
 
   Layer layer = tile->get_layer();
 
-  // add the tile to the map
+  // Add the tile to the map.
   tiles[layer].push_back(tile);
   tile->set_map(map);
 
-  // update the collision list
-  Obstacle obstacle = tile->get_tile_pattern().get_obstacle();
+  // Update the ground list.
+  Ground ground = tile->get_tile_pattern().get_ground();
 
   int tile_x8 = tile->get_x() / 8;
   int tile_y8 = tile->get_y() / 8;
@@ -395,130 +415,130 @@ void MapEntities::add_tile(Tile *tile) {
   int tile_height8 = tile->get_height() / 8;
 
   int i, j;
-  Obstacle non_obstacle_triangle;
+  Ground non_obstacle_triangle;
  
-  switch (obstacle) {
+  switch (ground) {
 
-    /* If the obstacle property is the same for all points inside the base tile,
-     * then all 8*8 squares of the extended tile have the same property.
-     */
-  case OBSTACLE_NONE:
-  case OBSTACLE_SHALLOW_WATER:
-  case OBSTACLE_DEEP_WATER:
-  case OBSTACLE_HOLE:
-  case OBSTACLE_LAVA:
-  case OBSTACLE_PRICKLE:
-  case OBSTACLE_LADDER:
-  case OBSTACLE:
+    // If the obstacle property is the same for all points inside the tile
+    // pattern, then all 8x8 squares of the extended tile have the same
+    // property.
+  case GROUND_TRAVERSABLE:
+  case GROUND_SHALLOW_WATER:
+  case GROUND_DEEP_WATER:
+  case GROUND_GRASS:
+  case GROUND_HOLE:
+  case GROUND_LAVA:
+  case GROUND_PRICKLE:
+  case GROUND_LADDER:
+  case GROUND_WALL:
     for (i = 0; i < tile_height8; i++) {
       for (j = 0; j < tile_width8; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, obstacle);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, ground);
       }
     }
     break;
 
-    /* If the top right corner of the tile is an obstacle,
-     * then the top right 8*8 squares are OBSTACLE, the bottom left
-     * 8*8 squares are OBSTACLE_NONE or OBSTACLE_DEEP_WATER and the 8*8 squares
-     * on the diagonal are OBSTACLE_TOP_RIGHT.
-     */
-  case OBSTACLE_TOP_RIGHT:
-  case OBSTACLE_TOP_RIGHT_WATER:
+    // If the top right corner of the tile is an obstacle,
+    // then the top right 8x8 squares are GROUND_WALL, the bottom left 8x8
+    // squares are GROUND_TRAVERSABLE or GROUND_DEEP_WATER and the 8x8 squares
+    // on the diagonal are GROUND_WALL_TOP_RIGHT.
+  case GROUND_WALL_TOP_RIGHT:
+  case GROUND_WALL_TOP_RIGHT_WATER:
 
-    non_obstacle_triangle = (obstacle == OBSTACLE_TOP_RIGHT) ?
-        OBSTACLE_NONE : OBSTACLE_DEEP_WATER;
+    non_obstacle_triangle = (ground == GROUND_WALL_TOP_RIGHT) ?
+        GROUND_TRAVERSABLE : GROUND_DEEP_WATER;
 
-    // we traverse each row of 8*8 squares on the tile
+    // We traverse each row of 8x8 squares on the tile.
     for (i = 0; i < tile_height8; i++) {
 
-      // 8*8 square on the diagonal
-      set_obstacle(layer, tile_x8 + i, tile_y8 + i, OBSTACLE_TOP_RIGHT);
+      // 8x8 square on the diagonal.
+      set_tile_ground(layer, tile_x8 + i, tile_y8 + i, GROUND_WALL_TOP_RIGHT);
 
-      // left part of the row: we are in the bottom-left corner
+      // Left part of the row: we are in the bottom-left corner.
       for (j = 0; j < i; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
       }
 
-      // right part of the row: we are in the top-right corner
+      // Right part of the row: we are in the top-right corner.
       for (j = i + 1; j < tile_width8; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL);
       }
     }
     break;
 
-  case OBSTACLE_TOP_LEFT:
-  case OBSTACLE_TOP_LEFT_WATER:
+  case GROUND_WALL_TOP_LEFT:
+  case GROUND_WALL_TOP_LEFT_WATER:
 
-    non_obstacle_triangle = (obstacle == OBSTACLE_TOP_LEFT) ?
-        OBSTACLE_NONE : OBSTACLE_DEEP_WATER;
+    non_obstacle_triangle = (ground == GROUND_WALL_TOP_LEFT) ?
+        GROUND_TRAVERSABLE : GROUND_DEEP_WATER;
 
-    // we traverse each row of 8*8 squares on the tile
+    // We traverse each row of 8x8 squares on the tile.
     for (i = 0; i < tile_height8; i++) {
 
-      // right part of the row: we are in the bottom-right corner
+      // Right part of the row: we are in the bottom-right corner.
       for (j = tile_width8 - i; j < tile_width8; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
       }
 
-      // left part of the row: we are in the top-left corner
+      // Left part of the row: we are in the top-left corner.
       for (j = 0; j < tile_width8 - i - 1; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL);
       }
 
-      // 8*8 square on the diagonal
-      set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_TOP_LEFT);
+      // 8x8 square on the diagonal.
+      set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL_TOP_LEFT);
     }
     break;
 
-  case OBSTACLE_BOTTOM_LEFT:
-  case OBSTACLE_BOTTOM_LEFT_WATER:
+  case GROUND_WALL_BOTTOM_LEFT:
+  case GROUND_WALL_BOTTOM_LEFT_WATER:
 
-    non_obstacle_triangle = (obstacle == OBSTACLE_BOTTOM_LEFT) ?
-        OBSTACLE_NONE : OBSTACLE_DEEP_WATER;
+    non_obstacle_triangle = (ground == GROUND_WALL_BOTTOM_LEFT) ?
+        GROUND_TRAVERSABLE : GROUND_DEEP_WATER;
 
-    // we traverse each row of 8*8 squares on the tile
+    // We traverse each row of 8x8 squares on the tile.
     for (i = 0; i < tile_height8; i++) {
 
-      // right part of the row: we are in the top-right corner
+      // Right part of the row: we are in the top-right corner.
       for (j = i + 1; j < tile_width8; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
       }
-      // left part of the row: we are in the bottom-left corner
+      // Left part of the row: we are in the bottom-left corner.
       for (j = 0; j < i; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL);
       }
 
-      // 8*8 square on the diagonal
-      set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_BOTTOM_LEFT);
+      // 8x8 square on the diagonal.
+      set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL_BOTTOM_LEFT);
     }
     break;
 
-  case OBSTACLE_BOTTOM_RIGHT:
-  case OBSTACLE_BOTTOM_RIGHT_WATER:
+  case GROUND_WALL_BOTTOM_RIGHT:
+  case GROUND_WALL_BOTTOM_RIGHT_WATER:
 
-    non_obstacle_triangle = (obstacle == OBSTACLE_BOTTOM_RIGHT) ?
-        OBSTACLE_NONE : OBSTACLE_DEEP_WATER;
+    non_obstacle_triangle = (ground == GROUND_WALL_BOTTOM_RIGHT) ?
+        GROUND_TRAVERSABLE : GROUND_DEEP_WATER;
 
-    // we traverse each row of 8*8 squares on the tile
+    // We traverse each row of 8x8 squares on the tile.
     for (i = 0; i < tile_height8; i++) {
 
-      // 8*8 square on the diagonal
-      set_obstacle(layer, tile_x8 + tile_width8 - i - 1, tile_y8 + i, OBSTACLE_BOTTOM_RIGHT);
+      // 8x8 square on the diagonal
+      set_tile_ground(layer, tile_x8 + tile_width8 - i - 1, tile_y8 + i, GROUND_WALL_BOTTOM_RIGHT);
 
-      // left part of the row: we are in the top-left corner
+      // Left part of the row: we are in the top-left corner.
       for (j = 0; j < tile_width8 - i - 1; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
       }
 
-      // right part of the row: we are in the bottom-right corner
+      // Right part of the row: we are in the bottom-right corner.
       for (j = tile_width8 - i; j < tile_width8; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
+        set_tile_ground(layer, tile_x8 + j, tile_y8 + i, GROUND_WALL);
       }
     }
     break;
 
-  case OBSTACLE_EMPTY:
-    // keep the obstacle property from any tile already here
+  case GROUND_EMPTY:
+    // Keep the ground property from any tile placed before.
     break;
   }
 }
@@ -530,7 +550,7 @@ void MapEntities::add_tile(Tile *tile) {
  * specified is NULL (because some entity creation functions
  * may return NULL), nothing is done.
  *
- * \param entity the entity to add (can be NULL)
+ * \param entity The entity to add (can be NULL).
  */
 void MapEntities::add_entity(MapEntity* entity) {
 

@@ -35,17 +35,17 @@ class HeroSprites {
 
   private:
 
-    Hero &hero;				/**< the hero */
-    Equipment &equipment;		/**< equipment of the player */
+    Hero& hero;				/**< the hero */
+    Equipment& equipment;		/**< equipment of the player */
 
-    Sprite *tunic_sprite;		/**< sprite of the current tunic */
-    Sprite *sword_sprite;		/**< current sword sprite */
-    Sprite *sword_stars_sprite;		/**< stars running along the sword when the sword is loading */
-    Sprite *shield_sprite;		/**< current shield sprite */
-    Sprite *shadow_sprite;		/**< shadow of the hero, only in specific states (most of the time
+    Sprite* tunic_sprite;		/**< sprite of the current tunic */
+    Sprite* sword_sprite;		/**< current sword sprite */
+    Sprite* sword_stars_sprite;		/**< stars running along the sword when the sword is loading */
+    Sprite* shield_sprite;		/**< current shield sprite */
+    Sprite* shadow_sprite;		/**< shadow of the hero, only in specific states (most of the time
 					 * the shadow is with the tunic sprite) */
-    Sprite *ground_sprite;		/**< ground displayed under the hero (e.g. grass or shallow water) */
-    Sprite *trail_sprite;		/**< trail of dust that the hero lets behind him (e.g. when running) */
+    Sprite* ground_sprite;		/**< ground displayed under the hero (e.g. grass or shallow water) */
+    Sprite* trail_sprite;		/**< trail of dust that the hero lets behind him (e.g. when running) */
 
     std::string sword_sound_id;          /**< sound id of the current sword */
     std::string ground_sound_id;         /**< sound id of the current ground displayed under the hero */
@@ -56,9 +56,7 @@ class HeroSprites {
     static const std::string sword_sprite_ids[];        /**< name of each sword sprite */
     static const std::string sword_stars_sprite_ids[];  /**< name of each sword stars sprite */
     static const std::string shield_sprite_ids[];       /**< name of each shield sprite */
-    static const std::string ground_sprite_ids[];       /**< name of each ground sprite */
     static const std::string sword_sound_ids[];         /**< name of each sword sound */
-    static const std::string ground_sound_ids[];        /**< name of each ground sound */
 
     int animation_direction_saved;	/**< direction of the hero's sprites, saved before
 					 * showing a sprite animation having only one direction */
@@ -70,7 +68,7 @@ class HeroSprites {
     Rectangle clipping_rectangle;	/**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
 					 * (usually, the whole map is considered and this rectangle's values are all 0) */
 
-    CarriedItem *lifted_item;		/**< if not NULL, an item to display above the hero */
+    CarriedItem* lifted_item;		/**< if not NULL, an item to display above the hero */
 
     bool is_visible();
     bool is_sword_visible();
@@ -86,7 +84,7 @@ class HeroSprites {
 
   public:
 
-    HeroSprites(Hero &hero, Equipment &equipment);
+    HeroSprites(Hero& hero, Equipment& equipment);
     ~HeroSprites();
 
     void update();
@@ -99,7 +97,7 @@ class HeroSprites {
     void stop_blinking();
     bool is_blinking();
     bool is_walking();
-    void set_clipping_rectangle(const Rectangle &clipping_rectangle = Rectangle());
+    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
 
     int get_animation_direction(int keys_direction, int real_movement_direction);
     int get_animation_direction();
@@ -148,7 +146,7 @@ class HeroSprites {
     void destroy_ground();
     void play_ground_sound();
 
-    void set_lifted_item(CarriedItem *lifted_item);
+    void set_lifted_item(CarriedItem* lifted_item);
 };
 
 #endif

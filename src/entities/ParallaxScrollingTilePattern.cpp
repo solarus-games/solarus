@@ -25,17 +25,15 @@ const int ParallaxScrollingTilePattern::ratio = 2;
 
 /**
  * \brief Creates a tile pattern with parallax scrolling.
- * \param obstacle is the tile pattern an obstacle?
+ * \param ground Kind of ground of the tile pattern.
  * \param x x position of the tile pattern in the tileset
-      else if (animation == 2) {
-        pattern = new ParallaxScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
-      }
  * \param y y position of the tile pattern in the tileset
  * \param width width of the tile pattern in the tileset
  * \param height height of the tile pattern in the tileset
  */
-ParallaxScrollingTilePattern::ParallaxScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height):
-  SimpleTilePattern(obstacle, x, y, width, height) {
+ParallaxScrollingTilePattern::ParallaxScrollingTilePattern(
+    Ground ground, int x, int y, int width, int height):
+  SimpleTilePattern(ground, x, y, width, height) {
 
 }
 

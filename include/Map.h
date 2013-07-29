@@ -21,7 +21,6 @@
 #include "Transition.h"
 #include "entities/Layer.h"
 #include "entities/Ground.h"
-#include "entities/Obstacle.h"
 #include "lowlevel/Rectangle.h"
 #include "lua/ExportableToLua.h"
 
@@ -32,7 +31,7 @@
  * - its dimensions,
  * - the tileset,
  * - the tiles and the other entities placed on the map,
- * - the obstacles,
+ * - the ground of each 8x8 square,
  * - the background music,
  * - the position of the camera.
  */
@@ -168,14 +167,11 @@ class Map: public ExportableToLua {
         const Rectangle& collision_box, MapEntity& entity_to_check);
     bool test_collision_with_obstacles(Layer layer, int x, int y,
         MapEntity& entity_to_check);
-    Ground get_tile_ground(Layer layer, int x, int y);
-    Ground get_tile_ground(Layer layer, const Rectangle& coordinates);
-    bool has_empty_tiles(Layer layer, const Rectangle& collision_box);
+    bool has_empty_ground(Layer layer, const Rectangle& collision_box);
 
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity& entity);
     void check_collision_with_detectors(MapEntity& entity, Sprite& sprite);
-    static Ground obstacle_to_ground(Obstacle obstacle);
 
     // main loop
     bool notify_input(InputEvent& event);

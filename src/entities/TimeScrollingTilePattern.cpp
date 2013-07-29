@@ -24,15 +24,15 @@ uint32_t TimeScrollingTilePattern::next_shift_date = 0;
 
 /**
  * \brief Creates a tile pattern with scrolling.
- * \param obstacle is the tile pattern an obstacle?
+ * \param ground Kind of ground of the tile pattern.
  * \param x x position of the tile pattern in the tileset
  * \param y y position of the tile pattern in the tileset
  * \param width width of the tile pattern in the tileset
  * \param height height of the tile pattern in the tileset
  */
-TimeScrollingTilePattern::TimeScrollingTilePattern(Obstacle obstacle,
+TimeScrollingTilePattern::TimeScrollingTilePattern(Ground ground,
     int x, int y, int width, int height):
-  SimpleTilePattern(obstacle, x, y, width, height) {
+  SimpleTilePattern(ground, x, y, width, height) {
 
 }
 

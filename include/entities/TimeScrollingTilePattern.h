@@ -35,7 +35,7 @@ class TimeScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
-    TimeScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height);
+    TimeScrollingTilePattern(Ground ground, int x, int y, int width, int height);
     ~TimeScrollingTilePattern();
 
     static void update();

@@ -26,33 +26,34 @@
  *
  * It is called by the subclasses.
  * 
- * \param obstacle type of obstacle
- * \param width width of the tile in pixels (must be a multiple of 8)
- * \param height height of the tile in pixels (must be a multiple of 8)
+ * \param ground Kind of ground.
+ * \param width Width of the pattern in pixels (must be a multiple of 8).
+ * \param height Height of the pattern in pixels (must be a multiple of 8).
  */
-TilePattern::TilePattern(Obstacle obstacle, int width, int height):
-  obstacle(obstacle), width(width), height(height) {
+TilePattern::TilePattern(Ground ground, int width, int height):
+  ground(ground),
+  width(width),
+  height(height) {
 
-  // check the width and the height
-  Debug::check_assertion(width > 0
-      && height > 0
-      && width % 8 == 0
-      && height % 8 == 0,
-      StringConcat() << "Invalid tile pattern: the size is (" << width << "x" << height <<
-      ") but should be positive and multiple of 8 pixels");
+  // Check the width and the height.
+  Debug::check_assertion(
+      width > 0 && height > 0
+      && width % 8 == 0 && height % 8 == 0,
+      StringConcat() << "Invalid tile pattern: the size is ("
+          << width << "x" << height <<
+          ") but should be positive and multiple of 8 pixels");
 
-  // diagonal obstacle: check that the tile is square
-  Debug::check_assertion(obstacle < OBSTACLE_TOP_RIGHT
-      || obstacle > OBSTACLE_BOTTOM_RIGHT
-      || width == height,
-      "Invalid tile pattern: a tile pattern with a diagonal obstacle must be square");
+  // Diagonal obstacle: check that the tile is square.
+  if (ground >= GROUND_WALL_TOP_RIGHT && ground <= GROUND_WALL_BOTTOM_RIGHT_WATER) {
+    Debug::check_assertion(width == height,
+        "Invalid tile pattern: a tile pattern with a diagonal wall must be square");
+  }
 }
 
 /**
  * \brief Destructor.
  */
 TilePattern::~TilePattern() {
-
 }
 
 /**
@@ -72,11 +73,11 @@ int TilePattern::get_height() const {
 }
 
 /**
- * \brief Returns the obstacle property of this tile pattern.
- * \return the obstacle property of this tile pattern
+ * \brief Returns the king of ground of this tile pattern.
+ * \return The ground of this tile pattern
  */
-Obstacle TilePattern::get_obstacle() const {
-  return obstacle;
+Ground TilePattern::get_ground() const {
+  return ground;
 }
 
 /**

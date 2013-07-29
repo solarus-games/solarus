@@ -27,6 +27,7 @@ Don't forget to make a backup first.
 * project_db.dat: New syntax easier to read and parse (#169).
 * Maps: Add the property "default" to destinations.
 * Maps: Make optional the property "destination" of teletransporters.
+* Tilesets: The ground value of diagonal walls with water has changed.
 * dialogs.dat: Allow any property in dialogs. dialog_id and text are mandatory.
 
 Lua API changes

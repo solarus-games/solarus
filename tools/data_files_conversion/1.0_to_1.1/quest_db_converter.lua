@@ -85,6 +85,8 @@ function converter.convert(quest_path)
     output_file:write("\n");
   end
   output_file:close()
+
+  return resources
 end
 
 return converter

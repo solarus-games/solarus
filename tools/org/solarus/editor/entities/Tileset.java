@@ -108,10 +108,10 @@ public class Tileset extends Observable {
         obstaclesByName.put("wall_bottom_left", Obstacle.BOTTOM_LEFT);
         obstaclesByName.put("wall_bottom_right", Obstacle.BOTTOM_RIGHT);
         obstaclesByName.put("empty", Obstacle.EMPTY);
-        obstaclesByName.put("water_top_right", Obstacle.TOP_RIGHT_WATER);
-        obstaclesByName.put("water_top_left", Obstacle.TOP_LEFT_WATER);
-        obstaclesByName.put("water_bottom_left", Obstacle.BOTTOM_LEFT_WATER);
-        obstaclesByName.put("water_bottom_right", Obstacle.BOTTOM_RIGHT_WATER);
+        obstaclesByName.put("wall_top_right_water", Obstacle.TOP_RIGHT_WATER);
+        obstaclesByName.put("wall_top_left_water", Obstacle.TOP_LEFT_WATER);
+        obstaclesByName.put("wall_bottom_left_water", Obstacle.BOTTOM_LEFT_WATER);
+        obstaclesByName.put("wall_bottom_right_water", Obstacle.BOTTOM_RIGHT_WATER);
         obstaclesByName.put("deep_water", Obstacle.DEEP_WATER);
         obstaclesByName.put("shallow_water", Obstacle.SHALLOW_WATER);
         obstaclesByName.put("hole", Obstacle.HOLE);

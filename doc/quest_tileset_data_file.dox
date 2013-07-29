@@ -81,23 +81,24 @@ Each tile pattern must have the following properties:
 - \c id (number): Id of the tile pattern. Maps refer to this id when they want
   to use the tile pattern. It must be unique in the tileset.
 - \c ground (string): Kind of ground. Must be one of:
+  - \c "empty": There is no ground, this tile is purely decorative.
+    Keep the ground of the tile below instead (if any).
   - \c "traversable": Normal ground without obstacle.
   - \c "wall": Cannot be traversed.
   - \c "wall_top_right": The upper-right half of the tile is an obstacle.
   - \c "wall_top_left": The upper-left halt of the tile is an obstacle.
   - \c "wall_bottom_left": The lower-left half of the tile is an obstacle.
   - \c "wall_bottom_right": The lower-right half of the tile is an obstacle.
-  - \c "empty": There is no ground, this tile is purely decorative.
-  - \c "water_top_right": The upper-right half of the tile is an obstacle,
+  - \c "wall_top_right_water": The upper-right half of the tile is an obstacle,
     the rest is deep water.
-  - \c "water_top_left": The upper-left half of the tile is an obstacle,
+  - \c "wall_top_left_water": The upper-left half of the tile is an obstacle,
     the rest is deep water.
-  - \c "water_bottom_left": The lower-left half of the tile is an obstacle,
+  - \c "wall_bottom_left_water": The lower-left half of the tile is an obstacle,
     the rest is deep water.
-  - \c "water_bottom_right": The lower-right half of the tile is an obstacle,
+  - \c "wall_bottom_right_water": The lower-right half of the tile is an obstacle,
     the rest is deep water.
   - \c "deep_water": Deep water (the hero drowns or swims).
-  - \c "shallow_water": Shallow water (the hero may walk on it).
+  - \c "shallow_water": Shallow water (the hero can walk on it).
   - \c "hole": A hole (the hero falls into it).
   - \c "ladder": A ladder (the hero walks slowly on it).
   - \c "prickles": Untraversable spikes (it hurts the hero).

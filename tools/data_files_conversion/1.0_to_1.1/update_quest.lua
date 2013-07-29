@@ -27,7 +27,16 @@ quest_properties_converter.convert(quest_path)
 -- Convert the resource list file project_db.dat.
 write_info("  Converting the resource list file...")
 local quest_db_converter = require("quest_db_converter")
-quest_db_converter.convert(quest_path)
+local resources = quest_db_converter.convert(quest_path)
+
+-- Convert tilesets.
+write_info("  Converting the tilesets...")
+local tileset_converter = require("tileset_converter")
+for _, resource in pairs(resources["tileset"]) do
+  print("    Tileset " .. resource.id .. " (" .. resource.human_name .. ")")
+  tileset_converter.convert(quest_path, resource.id)
+end
+print("  All tilesets were converted.")
 
 write_info("Update successful!")
 

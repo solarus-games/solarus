@@ -29,9 +29,7 @@
 /**
  * \brief Creates a new treasure.
  *
- * You must call decide_content() later because the real content of the
- * treasure may differ from the item name you specify, because of random
- * treasures and unauthorized ones.
+ * You must call ensure_obtainable() later because of unauthorized treasures.
  *
  * \param game The current game.
  * \param item_name Name of the item to give, or an empty string to mean no
@@ -49,11 +47,6 @@ Treasure::Treasure(Game& game, const std::string& item_name, int variant,
   savegame_variable(savegame_variable),
   sprite(NULL) {
 
-  // If the treasure is unique and was found, remove it.
-  if (is_found()) {
-    this->item_name = "";
-    this->variant = 1;
-  }
 }
 
 /**
@@ -202,6 +195,8 @@ const std::string& Treasure::get_savegame_variable() const {
  * The item should not be empty.
  */
 void Treasure::give_to_player() const {
+
+  Debug::check_assertion(!is_found(), "This treasure was already found");
 
   // Mark the treasure as found in the savegame.
   if (is_saved()) {

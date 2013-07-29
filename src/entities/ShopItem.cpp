@@ -74,7 +74,7 @@ ShopItem::~ShopItem() {
  * \return the shop item created, or NULL if it is already bought
  */
 ShopItem* ShopItem::create(Game& game, const std::string& name, Layer layer, int x, int y,
-    const Treasure &treasure, int price, const std::string& dialog_id) {
+    const Treasure& treasure, int price, const std::string& dialog_id) {
 
   // see if the item is not already bought
   if (treasure.is_found()) {

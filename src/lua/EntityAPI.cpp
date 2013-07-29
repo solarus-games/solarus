@@ -1234,7 +1234,7 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
 
   Game& game = *item.get_game();
   Hero& hero = game.get_hero();
-  Treasure treasure(game, item.get_name(), treasure_variant, treasure_savegame_variable);
+  const Treasure treasure(game, item.get_name(), treasure_variant, treasure_savegame_variable);
 
   // If the treasure was a tunic,
   // a sword or a shield, we have to reload the hero's sprites now.

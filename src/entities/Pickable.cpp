@@ -103,7 +103,7 @@ Pickable* Pickable::create(
   treasure.ensure_obtainable();
 
   // Don't create anything if there is no treasure to give.
-  if (treasure.is_empty()) {
+  if (treasure.is_found() || treasure.is_empty()) {
     return NULL;
   }
 

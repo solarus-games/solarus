@@ -18,6 +18,8 @@
 #include "hero/SwordSwingingState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Hero.h"
+#include "entities/Jumper.h"
+#include "entities/Stairs.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lua/LuaContext.h"
@@ -708,13 +710,19 @@ bool Hero::State::can_take_jumper() {
 
 /**
  * \brief Returns whether some stairs are considered as obstacle in this state.
- *
- * Returns true by default.
- *
- * \param stairs some stairs
- * \return true if the stairs are obstacle in this state
+ * \param stairs Some stairs.
+ * \return \c true if the stairs are obstacle in this state.
  */
 bool Hero::State::is_stairs_obstacle(Stairs& stairs) {
+
+  // The hero may overlap stairs in rare cases,
+  // for example if he arrived by swimming over them
+  // and thus did not activate them.
+  // This is allowed and can be used to leave water pools for example.
+  if (hero.overlaps(stairs)) {
+    return false;
+  }
+
   return true;
 }
 
@@ -732,15 +740,37 @@ bool Hero::State::is_sensor_obstacle(Sensor& sensor) {
 
 /**
  * \brief Returns whether a jumper is considered as an obstacle in this state.
- *
- * Returns !can_take_jumper() by default.
- *
  * \param jumper a jumper
  * \return true if the sensor is an obstacle in this state
  */
 bool Hero::State::is_jumper_obstacle(Jumper& jumper) {
-  // if the jumpers cannot be used in this state, consider them as obstacles
-  return !can_take_jumper();
+
+  if (hero.overlaps(jumper)) {
+    // The hero may overlap the jumper if he arrived by another direction
+    // and thus did not activate it.
+    // This is allowed and can be used to leave water pools for example.
+    return false;
+  }
+
+  if (!can_take_jumper()) {
+    // If jumpers cannot be used in this state, consider them as obstacles.
+    return true;
+  }
+
+  // At this point, we know that the jumper can be activated.
+
+  if (jumper.is_in_jump_position(hero)) {
+    // If the hero is correctly placed (ready to jump), make the jumper
+    // obstacle so that the player has to move in the jumper's direction
+    // during a small delay before jumping.
+    // This also prevents the hero to be partially inside the jumper when
+    // starting the jump.
+    return true;
+  }
+
+  // But if the hero is not placed correctly, make the jumper traversable so
+  // that the smooth movement can slide to it.
+  return false;
 }
 
 /**

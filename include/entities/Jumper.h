@@ -28,24 +28,36 @@
  */
 class Jumper: public Detector {
 
-  private:
-
-    int jump_length; /**< length of the jump in pixels (should be a multiple of 8) */
-
   public:
 
-    Jumper(const std::string &name, Layer layer, int x, int y, int width, int height,
-	int direction, int jump_length);
+    Jumper(const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        int width,
+        int height,
+	int direction,
+        int jump_length);
     ~Jumper();
 
     EntityType get_type();
     bool can_be_drawn();
+    bool is_sword_ignored();
+    bool is_obstacle_for(MapEntity& other);
+    bool test_collision_custom(MapEntity& entity);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
 
-    bool is_obstacle_for(MapEntity &other);
-    bool is_point_in_diagonal(const Rectangle &point);
-    bool test_collision_custom(MapEntity &entity);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    int get_jump_length();
+    int get_jump_length() const;
+    bool is_jump_horizontal() const;
+    bool is_jump_vertical() const;
+    bool is_jump_diagonal() const;
+    bool is_in_jump_position(const MapEntity& entity) const;
+
+  private:
+
+    bool is_point_in_diagonal(const Rectangle& point) const;
+
+    int jump_length; /**< length of the jump in pixels (should be a multiple of 8) */
 
 };
 

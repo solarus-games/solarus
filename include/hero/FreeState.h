@@ -33,11 +33,11 @@ class Hero::FreeState: public Hero::PlayerMovementState {
 
   public:
 
-    FreeState(Hero &hero);
+    FreeState(Hero& hero);
     ~FreeState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
     void notify_action_command_pressed();

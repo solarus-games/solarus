@@ -26,7 +26,7 @@ to the player.
 
 Think of a jumper like an horizontal, vertical or diagonal line
 (depending on the direction of the jump: one of the 8 main directions).
-That line has actually a thickness of 8 pixels so that it can be handed more
+This line has actually a thickness of 8 pixels so that it can be handled more
 easily in the editor, but this thickness does not really matter:
 the jump starts as soon as the hero touches the jumper.
 

@@ -1695,9 +1695,10 @@ void MapEntity::notify_collision_with_stairs(Stairs &stairs, CollisionMode colli
 
 /**
  * \brief This function is called when a jumper detects a collision with this entity.
- * \param jumper the jumper
+ * \param jumper The jumper.
+ * \param collision_mode The collision mode that detected the event.
  */
-void MapEntity::notify_collision_with_jumper(Jumper &jumper) {
+void MapEntity::notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode) {
 }
 
 /**

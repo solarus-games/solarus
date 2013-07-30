@@ -175,7 +175,7 @@ class Hero: public MapEntity {
     void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
     void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
     void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
-    void notify_collision_with_jumper(Jumper& jumper);
+    void notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode);
     void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch& sw, Sprite &sprite_overlapping);
@@ -286,7 +286,7 @@ class Hero: public MapEntity {
                                      * including an instruction from the script */
 
     // state
-    void set_state(State *state);
+    void set_state(State* state);
     void update_state();
 
     // position

@@ -15,6 +15,7 @@ Engine changes
 * Stairs inside a single floor can now go from any layer to a next one (#178).
 * Fix map menus not receiving on_command_pressed/released() events.
 * Fix an error when loading sounds (#236). Sounds were working anyway.
+* Jumpers can no longer be activated the opposite way when in water.
 
 Data files format changes
 -------------------------

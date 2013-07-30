@@ -30,9 +30,16 @@
  * \param direction direction of the jump (0 to 7 as the jump may be diagonal)
  * \param jump_length length of the jump in pixels (usually a multiple of 8)
  */
-Jumper::Jumper(const std::string &name, Layer layer, int x, int y, int width, int height,
-		       int direction, int jump_length):
-  Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
+Jumper::Jumper(const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    int width,
+    int height,
+    int direction,
+    int jump_length):
+  Detector(COLLISION_CUSTOM | COLLISION_FACING_POINT, // Facing point detection is necessary to avoid sword tapping.
+      name, layer, x, y, width, height),
   jump_length(jump_length) {
 
   set_direction(direction);
@@ -81,7 +88,7 @@ bool Jumper::can_be_drawn() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Jumper::is_obstacle_for(MapEntity &other) {
+bool Jumper::is_obstacle_for(MapEntity& other) {
 
   if (get_direction() % 2 != 0) {
     return false; // diagonal jumper: never obstacle (the tiles below the jumper should block entities)
@@ -92,6 +99,36 @@ bool Jumper::is_obstacle_for(MapEntity &other) {
 }
 
 /**
+ * \brief Returns whether an entity is correctly placed to start jumping
+ * with this jumper.
+ * \param entity A map entity.
+ * \return \c true if the entity is correctly placed to start the jump.
+ */
+bool Jumper::is_in_jump_position(const MapEntity& entity) const {
+
+  const int direction8 = get_direction();
+
+  if (is_jump_diagonal()) {
+    // The sensor's shape is a diagonal bar.
+
+    return is_point_in_diagonal(entity.get_facing_point((direction8 - 1) / 2))
+      || is_point_in_diagonal(entity.get_facing_point((direction8 + 1) % 8 / 2));
+  }
+
+  // The sensor has one of the four main directions.
+  // Its shape is exactly its rectangle.
+
+  const int expected_direction4 = direction8 / 2;
+  const Rectangle& facing_point = entity.get_facing_point(expected_direction4);
+  const bool horizontal_jump = is_jump_horizontal();
+
+  return overlaps(facing_point.get_x() + (horizontal_jump ? 0 : -8),
+      facing_point.get_y() + (horizontal_jump ? -8 : 0))
+    && overlaps(facing_point.get_x() + (horizontal_jump ? 0 : 7),
+        facing_point.get_y() + (horizontal_jump ? 7 : 0));
+}
+
+/**
  * \brief Returns whether an entity's collides with this jumper.
  *
  * The result depends on the sensor's shape.
@@ -99,41 +136,60 @@ bool Jumper::is_obstacle_for(MapEntity &other) {
  * \param entity the entity
  * \return true if the entity's collides with this jumper
  */
-bool Jumper::test_collision_custom(MapEntity &entity) {
+bool Jumper::test_collision_custom(MapEntity& entity) {
 
   if (!entity.is_hero()) {
     return false;
   }
 
-  Hero &hero = (Hero&) entity;
-  int direction8 = get_direction();
+  Hero& hero = static_cast<Hero&>(entity);
+  const int direction8 = get_direction();
 
-  // if the sensor's has one of the four main directions, then
-  // its shape is exactly its rectangle
-  if (direction8 % 2 == 0) {
+  if (!is_jump_diagonal()) {
 
     int expected_hero_direction4 = direction8 / 2;
-    if (hero.get_ground() == GROUND_DEEP_WATER) {
-      // if the hero is swimming, the jumper can be used the opposite way
-      expected_hero_direction4 = (expected_hero_direction4 + 2) % 4;
-    }
-
     if (!hero.is_moving_towards(expected_hero_direction4)) {
       return false;
     }
-
-    bool horizontal = (direction8 % 4 == 0); // horizontal or vertical jumper
-    const Rectangle &facing_point = hero.get_facing_point(expected_hero_direction4);
-    return overlaps(facing_point.get_x() + (horizontal ? 0 : -8),
-		    facing_point.get_y() + (horizontal ? -8 : 0))
-      && overlaps(facing_point.get_x() + (horizontal ? 0 : 7),
-		  facing_point.get_y() + (horizontal ? 7 : 0));
   }
 
-  // otherwise, the sensor's shape is a diagonal bar
+  return is_in_jump_position(hero);
+}
 
-  return is_point_in_diagonal(hero.get_facing_point((direction8 - 1) / 2))
-    || is_point_in_diagonal(hero.get_facing_point((direction8 + 1) % 8 / 2));
+/**
+ * \brief Returns the length of the jump to make with this jumper.
+ * \return Length of the jump in pixels (usually a multiple of 8).
+ */
+int Jumper::get_jump_length() const {
+  return jump_length;
+}
+
+/**
+ * \brief Returns whether this jumper makes horizontal jumps.
+ * \return \c true if this jumper makes horizontal jumps.
+ */
+bool Jumper::is_jump_horizontal() const {
+
+  return get_direction() == 0 || get_direction() == 4;
+}
+
+/**
+ * \brief Returns whether this jumper makes vertical jumps.
+ * \return \c true if this jumper makes vertical jumps.
+ */
+bool Jumper::is_jump_vertical() const {
+
+  return get_direction() == 2 || get_direction() == 6;
+}
+
+
+/**
+ * \brief Returns whether the direction of this jumper is diagonal.
+ * \return \c true if this jumper is a diagonal one.
+ */
+bool Jumper::is_jump_diagonal() const {
+
+  return get_direction() % 2 != 0;
 }
 
 /**
@@ -144,7 +200,7 @@ bool Jumper::test_collision_custom(MapEntity &entity) {
  * \param point the point to check
  * \return true if this point is overlapping the jumper
  */
-bool Jumper::is_point_in_diagonal(const Rectangle &point) {
+bool Jumper::is_point_in_diagonal(const Rectangle& point) const {
 
   if (!overlaps(point.get_x(), point.get_y())) {
     return false;
@@ -181,21 +237,27 @@ bool Jumper::is_point_in_diagonal(const Rectangle &point) {
 }
 
 /**
- * \brief This function is called when an entity overlaps the sensor.
- * \param entity_overlapping the entity that overalps the sensor
- * \param collision_mode the collision mode that triggered the event
- * (not used here since a jumper has only one collision mode)
+ * \brief This function is called when an entity overlaps the jumper.
+ * \param entity_overlapping The entity that overlaps the jumper.
+ * \param collision_mode The collision mode that triggered the event.
  */
-void Jumper::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Jumper::notify_collision(MapEntity& entity_overlapping,
+    CollisionMode collision_mode) {
 
-  entity_overlapping.notify_collision_with_jumper(*this);
+  entity_overlapping.notify_collision_with_jumper(*this, collision_mode);
 }
 
 /**
- * \brief Returns the length of the jump to make with this jumper.
- * \return length of the jump in pixels (usually a multiple of 8)
+ * \brief Returns true if this entity does not react to the sword.
+ *
+ * If true is returned, nothing will happen when the hero hits this entity
+ * with the sword.
+ *
+ * \return \c true if the sword is ignored
  */
-int Jumper::get_jump_length() {
-  return jump_length;
+bool Jumper::is_sword_ignored() {
+
+  // We don't want a sword tapping animation.
+  return true;
 }
 

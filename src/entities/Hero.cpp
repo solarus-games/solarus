@@ -1567,35 +1567,16 @@ void Hero::notify_collision_with_stairs(
 }
 
 /**
- * \brief This function is called when a jumper detects a collision with this entity.
- * \param jumper the jumper
+ * \copydoc MapEntity::notify_collision_with_jumper
  */
-void Hero::notify_collision_with_jumper(Jumper& jumper) {
+void Hero::notify_collision_with_jumper(Jumper& jumper,
+    CollisionMode collision_mode) {
 
-  if (state->can_take_jumper()) {
+  if (collision_mode == COLLISION_CUSTOM && state->can_take_jumper()) {
 
-    int jump_direction = jumper.get_direction();
-    int jump_length = jumper.get_jump_length();
-    if (jump_direction % 2 == 0) {
-
-      if (get_ground() == GROUND_DEEP_WATER) {
-        jump_direction = (jump_direction + 4) % 8; // make a reverse jump to get out of water
-        jump_length = 24;
-      }
-
-      // this non-diagonal jumper is not currently an obstacle for the hero
-      // (in order to allow his smooth collision movement),
-      // so the hero may be one pixel inside the jumper before jumping
-      if (jump_direction % 4 == 0) {
-        set_aligned_to_grid_x();
-      }
-      else {
-        set_aligned_to_grid_y();
-      }
-    }
-
-    // jump
-    start_jumping(jump_direction, jump_length, true, true, 0);
+    // Jump.
+    start_jumping(jumper.get_direction(), jumper.get_jump_length(),
+        true, true, 0);
   }
 }
 
@@ -1604,7 +1585,7 @@ void Hero::notify_collision_with_jumper(Jumper& jumper) {
  * \param sensor a sensor
  * \param collision_mode the collision mode that detected the collision
  */
-void Hero::notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode) {
+void Hero::notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_INSIDE    // the hero is entirely inside the sensor
       && !state->can_avoid_sensor()) {

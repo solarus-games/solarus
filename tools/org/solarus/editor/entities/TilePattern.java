@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
 import java.util.*;
+import java.io.*;
 import org.solarus.editor.*;
 
 /**
@@ -93,7 +94,13 @@ public class TilePattern extends Observable {
                 icons = new ImageIcon[values().length];
                 int i = 0;
                 for (AnimationSeparation value: values()) {
-                    icons[i] = Project.getEditorImageIcon(value.iconFileName);
+                    try {
+                        icons[i] = Project.getEditorImageIcon(value.iconFileName);
+                    }
+                    catch (IOException ex) {
+                        System.err.println(ex.getMessage());
+                        icons[i] = new ImageIcon();
+                    }
                     icons[i].setDescription(value.name());
                     i++;
                 }

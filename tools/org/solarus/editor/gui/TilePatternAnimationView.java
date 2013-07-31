@@ -132,3 +132,4 @@ public class TilePatternAnimationView extends JPanel implements ActionListener {
         }
     }
 }
+

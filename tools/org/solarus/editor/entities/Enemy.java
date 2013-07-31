@@ -17,6 +17,7 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+import java.io.*;
 
 import org.solarus.editor.*;
 
@@ -109,8 +110,17 @@ public class Enemy extends MapEntity {
         if (name.equals("breed")) {
 
             if (value.length() > 0) {
-                sprite = new Sprite("enemies/" + value, getMap());
-                setSizeUnchecked(sprite.getSize(null, 0));
+                try {
+                    sprite = new Sprite("enemies/" + value, getMap());
+                    setSizeUnchecked(sprite.getSize(null, 0));
+                }
+                catch (QuestEditorException ex) {
+                    System.err.println(ex.getMessage());
+
+                    // Keep the default sprite.
+                    sprite = null;
+                    setSizeUnchecked(16, 16);
+                }
             }
             else {
                 sprite = null;

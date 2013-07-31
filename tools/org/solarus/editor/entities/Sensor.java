@@ -101,7 +101,7 @@ public class Sensor extends MapEntity {
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
         if (resizableImage == null) {
-            resizableImage = Project.getEditorImage("resizable_sensors.png");
+            resizableImage = Project.getEditorImageOrEmpty("resizable_sensors.png");
         }
 
         Rectangle positionInMap = getPositionInMap();

@@ -17,6 +17,8 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+import java.awt.image.*;
+import java.io.*;
 import org.solarus.editor.*;
 
 /**
@@ -182,12 +184,12 @@ public class EntityImageDescription {
         // get the image
         if (image == null) {
 
-          if (relativeToEditor) {
-            image = Project.getEditorImage(imageFileName);
-          }
-          else {
-            image = Project.getProjectImage(imageFileName);
-          }
+            if (relativeToEditor) {
+                image = Project.getEditorImageOrEmpty(imageFileName);
+            }
+            else {
+                image = Project.getProjectImageOrEmpty(imageFileName);
+            }
         }
 
         // calculate the coordinates

@@ -159,7 +159,7 @@ public class Teletransporter extends MapEntity {
         else {
             // no sprite: display a teletransporter icon
             if (resizableTeletransporterImage == null) {
-                resizableTeletransporterImage = Project.getEditorImage("resizable_teletransporter.png");
+                resizableTeletransporterImage = Project.getEditorImageOrEmpty("resizable_teletransporter.png");
             }
 
             Rectangle positionInMap = getPositionInMap();

@@ -96,7 +96,7 @@ public class Wall extends MapEntity {
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
         if (resizableObstacleImage == null) {
-            resizableObstacleImage = Project.getEditorImage("resizable_custom_obstacle.png");
+            resizableObstacleImage = Project.getEditorImageOrEmpty("resizable_custom_obstacle.png");
         }
 
         Rectangle positionInMap = getPositionInMap();

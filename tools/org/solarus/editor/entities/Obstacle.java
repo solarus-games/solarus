@@ -18,6 +18,7 @@ package org.solarus.editor.entities;
 
 import org.solarus.editor.*;
 import javax.swing.*;
+import java.io.*;
 
 /**
  * Enumeration of the obstacle property of the tiles.
@@ -127,7 +128,13 @@ public enum Obstacle {
             icons = new ImageIcon[values().length];
             int i = 0;
             for (Obstacle value: values()) {
-                icons[i] = Project.getEditorImageIcon(value.iconFileName);
+                try {
+                    icons[i] = Project.getEditorImageIcon(value.iconFileName);
+                }
+                catch (IOException ex) {
+                    System.err.println(ex.getMessage());
+                    icons[i] = new ImageIcon();
+                }
                 icons[i].setDescription(value.name());
                 i++;
             }

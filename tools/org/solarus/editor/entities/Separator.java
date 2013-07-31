@@ -101,7 +101,7 @@ public class Separator extends MapEntity {
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
         if (patternImage == null) {
-            patternImage = Project.getEditorImage("resizable_separator.png");
+            patternImage = Project.getEditorImageOrEmpty("resizable_separator.png");
         }
 
         Rectangle positionInMap = getPositionInMap();

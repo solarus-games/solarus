@@ -88,6 +88,7 @@ Solarus Quest Editor changes
 
 * Add a GUI to upgrade automatically quest files to the latest format (#247).
 * Simplify the add entity toolbar by showing only one icon per entity type.
+* Survive when images cannot be found (#256).
 
 __________________________
 

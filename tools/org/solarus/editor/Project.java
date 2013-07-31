@@ -212,8 +212,9 @@ public class Project {
      * @param imageFileName the name of the image file to read, relative to the
      * images directory of the editor
      * @return the image
+     * @throws IOException If the image could not be loaded.
      */
-    public static BufferedImage getEditorImage(String imageFileName) {
+    public static BufferedImage getEditorImage(String imageFileName) throws IOException {
 
         // see if the image has been already loaded
         BufferedImage image = currentProject.editorImagesLoaded.get(imageFileName);
@@ -223,18 +224,34 @@ public class Project {
                 String path = "/org/solarus/editor/images/" + imageFileName;
                 URL url = Project.class.getResource(path);
                 if (url == null) {
-                    throw new IOException("File not found: " + path);
+                    throw new IOException("File not found");
                 }
                 image = ImageIO.read(url);
                 currentProject.editorImagesLoaded.put(imageFileName, image);
             }
             catch (IOException ex) {
-                System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
-                ex.printStackTrace();
-                System.exit(1);
+                throw new IOException("Cannot load image '" + imageFileName + "': " + ex.getMessage());
             }
         }
         return image;
+    }
+
+    /**
+     * Loads an image of the editor from a specified file name.
+     * If the image have been already loaded, it is not loaded again.
+     * If the image cannot be loaded, an empty 16x16 image is returned instead.
+     * @param imageFileName the name of the image file to read, relative to the
+     * images directory of the editor
+     * @return the image
+     */
+    public static BufferedImage getEditorImageOrEmpty(String imageFileName) {
+
+        try {
+            return getEditorImage(imageFileName);
+        }
+        catch (IOException ex) {
+            return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        }
     }
 
     /**
@@ -243,25 +260,22 @@ public class Project {
      * @param imageFileName the name of the image file to read, relative to the
      * images directory of the editor
      * @return the image
+     * @throws IOException If the image could not be loaded.
      */
-    public static ImageIcon getEditorImageIcon(String imageFileName) {
+    public static ImageIcon getEditorImageIcon(String imageFileName)
+        throws IOException {
 
-        ImageIcon icon = null;
         try {
             String path = "/org/solarus/editor/images/" + imageFileName;
             URL url = Project.class.getResource(path);
             if (url == null) {
-                throw new IOException("File not found: " + path);
+                throw new IOException("File not found");
             }
-            icon = new ImageIcon(url);
+            return new ImageIcon(url);
         }
         catch (IOException ex) {
-            System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
-            ex.printStackTrace();
-            System.exit(1);
+            throw new IOException("Cannot load image '" + imageFileName + "': " + ex.getMessage());
         }
-
-        return icon;
     }
 
     /**
@@ -270,27 +284,45 @@ public class Project {
      * @param imageFileName the name of the image file to read, relative to the
      * data path of the project
      * @return the image
+     * @throws IOException If the image could not be loaded.
      */
-    public static BufferedImage getProjectImage(String imageFileName) {
+    public static BufferedImage getProjectImage(String imageFileName)
+        throws IOException {
 
-        // see if the image has been already loaded
-        BufferedImage image = currentProject.projectImagesLoaded.get(imageFileName);
+        try {
+            // See if the image has been already loaded.
+            BufferedImage image = currentProject.projectImagesLoaded.get(imageFileName);
 
-        if (image == null) {
-          String path = getDataPath() + "/" + imageFileName;
+            if (image == null) {
+                String path = getDataPath() + "/" + imageFileName;
 
-          try {
-            image = ImageIO.read(new File(path));
-            currentProject.projectImagesLoaded.put(imageFileName, image);
-          }
-          catch (IOException ex) {
-            System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
-            ex.printStackTrace();
-            System.exit(1);
-          }
+                image = ImageIO.read(new File(path));
+                currentProject.projectImagesLoaded.put(imageFileName, image);
+            }
+
+            return image;
         }
+        catch (IOException ex) {
+            throw new IOException("Cannot load image '" + imageFileName + "': " + ex.getMessage());
+        }
+    }
 
-        return image;
+    /**
+     * Loads an image of the project from a specified file name.
+     * If the image has been already loaded, it is not loaded again.
+     * If the image cannot be loaded, an empty 16x16 image is returned instead.
+     * @param imageFileName the name of the image file to read, relative to the
+     * data path of the project
+     * @return the image
+     */
+    public static BufferedImage getProjectImageOrEmpty(String imageFileName) {
+
+        try {
+            return getProjectImage(imageFileName);
+        }
+        catch (IOException ex) {
+            return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        }
     }
 
     /**

@@ -47,7 +47,7 @@ void DialogResource::initialize() {
 
   dialogs.clear();
 
-  // read the dialogs file
+  // Read the dialogs file.
   lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;
@@ -57,7 +57,8 @@ void DialogResource::initialize() {
 
   lua_register(l, "dialog", l_dialog);
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(StringConcat() << "Error: failed to load dialog file "
+    Debug::error(StringConcat() << "Failed to load dialog file '" << file_name
+        << "' for language '" << FileTools::get_language() << "': "
         << lua_tostring(l, -1));
     lua_pop(l, 1);
   }

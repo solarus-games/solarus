@@ -16,6 +16,7 @@ Engine changes
 * Fix map menus not receiving on_command_pressed/released() events.
 * Fix an error when loading sounds (#236). Sounds were working anyway.
 * Jumpers can no longer be activated the opposite way when in water.
+* Don't die if there is a syntax error in dialogs.dat.
 
 Data files format changes
 -------------------------

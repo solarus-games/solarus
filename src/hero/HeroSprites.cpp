@@ -49,57 +49,6 @@ const int HeroSprites::animation_directions[][2] = {
   { 0,  3}   // right-down: right or down
 };
 
-// TODO Build sprite and sound ids automatically to allow more than 3 tunics,
-// 4 swords, etc.
-
-/**
- * \brief String constants corresponding to the sprites of the tunics.
- */
-const std::string HeroSprites::tunic_sprite_ids[] = {
-  "hero/tunic1", // green tunic
-  "hero/tunic2", // blue tunic
-  "hero/tunic3", // red tunic
-};
-
-/**
- * \brief String constants corresponding to the sprites of the swords.
- */
-const std::string HeroSprites::sword_sprite_ids[] = {
-  "hero/sword1",
-  "hero/sword2",
-  "hero/sword3",
-  "hero/sword4",
-};
-
-/**
- * \brief String constants corresponding to the sprites of the stars of the swords.
- */
-const std::string HeroSprites::sword_stars_sprite_ids[] = {
-  "hero/sword_stars1",
-  "hero/sword_stars1",
-  "hero/sword_stars2",
-  "hero/sword_stars2",
-};
-
-/**
- * \brief String constants corresponding to the sprites of the shields.
- */
-const std::string HeroSprites::shield_sprite_ids[] = {
-  "hero/shield1",
-  "hero/shield2",
-  "hero/shield3",
-};
-
-/**
- * \brief String constants corresponding to the sounds of the swords.
- */
-const std::string HeroSprites::sword_sound_ids[] = {
-  "sword1",
-  "sword2",
-  "sword3",
-  "sword4",
-};
-
 /**
  * \brief Constructor.
  * \param hero the hero
@@ -162,7 +111,9 @@ void HeroSprites::rebuild_equipment() {
   Debug::check_assertion(tunic_number > 0, StringConcat() <<
       "Invalid tunic number: " << tunic_number);
 
-  tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number - 1]);
+  std::ostringstream oss;
+  oss << "hero/tunic" << tunic_number;
+  tunic_sprite = new Sprite(oss.str());
   tunic_sprite->enable_pixel_collisions();
   if (!tunic_animation.empty()) {
     tunic_sprite->set_current_animation(tunic_animation);
@@ -189,7 +140,9 @@ void HeroSprites::rebuild_equipment() {
 
   if (sword_number > 0) {
     // the hero has a sword: get the sprite and the sound
-    sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
+    oss.str("");
+    oss << "hero/sword" << sword_number;
+    sword_sprite = new Sprite(oss.str());
     sword_sprite->enable_pixel_collisions();
     sword_sprite->set_synchronized_to(tunic_sprite);
     if (sword_animation.empty()) {
@@ -199,9 +152,13 @@ void HeroSprites::rebuild_equipment() {
       sword_sprite->set_current_animation(sword_animation);
     }
 
-    sword_sound_id = sword_sound_ids[sword_number - 1];
+    oss.str("");
+    oss << "sword" << sword_number;
+    sword_sound_id = oss.str();
 
-    sword_stars_sprite = new Sprite(sword_stars_sprite_ids[sword_number - 1]);
+    oss.str("");
+    oss << "hero/sword_stars" << sword_number;
+    sword_stars_sprite = new Sprite(oss.str());
     sword_stars_sprite->stop_animation();
   }
 
@@ -218,7 +175,9 @@ void HeroSprites::rebuild_equipment() {
 
   if (shield_number > 0) {
     // the hero has a shield
-    shield_sprite = new Sprite(shield_sprite_ids[shield_number - 1]);
+    oss.str("");
+    oss << "hero/shield" << shield_number;
+    shield_sprite = new Sprite(oss.str());
     shield_sprite->set_synchronized_to(tunic_sprite);
     if (shield_animation.empty()) {
       shield_sprite->stop_animation();
@@ -238,7 +197,7 @@ void HeroSprites::rebuild_equipment() {
   }
 }
 
-/**
+ /**
  * \brief Returns whether the sword is currently displayed on the screen.
  * \return true if the sword is currently displayed on the screen
  */

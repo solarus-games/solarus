@@ -52,12 +52,6 @@ class HeroSprites {
 
     static const int animation_directions[8][2];		/**< possible directions of the animation for each movement direction */
 
-    static const std::string tunic_sprite_ids[];        /**< name of each tunic sprite */
-    static const std::string sword_sprite_ids[];        /**< name of each sword sprite */
-    static const std::string sword_stars_sprite_ids[];  /**< name of each sword stars sprite */
-    static const std::string shield_sprite_ids[];       /**< name of each shield sprite */
-    static const std::string sword_sound_ids[];         /**< name of each sword sound */
-
     int animation_direction_saved;	/**< direction of the hero's sprites, saved before
 					 * showing a sprite animation having only one direction */
     uint32_t when_suspended;		/**< date when the game was suspended */

@@ -282,16 +282,10 @@ void Hero::PlayerMovementState::notify_jumper_activated(Jumper& jumper) {
     return;
   }
 
-  if (jumper.is_jump_diagonal()) {
-    hero.start_jumping(jumper.get_direction(), jumper.get_jump_length(),
-        true, true, 0);
-  }
-  else {
-    // Add a small delay if the jumper is not diagonal.
-    current_jumper = &jumper;
-    current_jumper->increment_refcount();
-    jumper_start_date = System::now() + 200;
-  }
+  // Add a small delay before jumping.
+  current_jumper = &jumper;
+  current_jumper->increment_refcount();
+  jumper_start_date = System::now() + 200;
 }
 
 /**

@@ -18,6 +18,7 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Enemy.h"
+#include "entities/Jumper.h"
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
 #include "lowlevel/System.h"
@@ -199,13 +200,28 @@ int Hero::RunningState::get_wanted_movement_direction8() {
 bool Hero::RunningState::can_take_stairs() {
   return !is_bouncing();
 }
+
 /**
  * \brief Returns whether can trigger a jumper in this state.
- * If false is returned, jumpers have no effect (but they are obstacle for the hero).
+ *
+ * If false is returned, jumpers have no effect (but they are obstacle
+ * for the hero).
+ *
  * \return true if the hero can use jumpers in this state
  */
 bool Hero::RunningState::can_take_jumper() {
   return !is_bouncing();
+}
+
+/**
+ * \brief Notifies this state that the hero is activating a jumper.
+ * \param jumper The jumper activated.
+ */
+void Hero::RunningState::notify_jumper_activated(Jumper& jumper) {
+
+  // Jump immediately.
+  hero.start_jumping(jumper.get_direction(), jumper.get_jump_length(),
+      true, true, 0);
 }
 
 /**

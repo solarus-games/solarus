@@ -1572,11 +1572,8 @@ void Hero::notify_collision_with_stairs(
 void Hero::notify_collision_with_jumper(Jumper& jumper,
     CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_CUSTOM && state->can_take_jumper()) {
-
-    // Jump.
-    start_jumping(jumper.get_direction(), jumper.get_jump_length(),
-        true, true, 0);
+  if (collision_mode == COLLISION_CUSTOM) {
+    state->notify_jumper_activated(jumper);
   }
 }
 

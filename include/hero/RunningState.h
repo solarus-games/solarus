@@ -48,8 +48,9 @@ class Hero::RunningState: public Hero::State {
     void notify_obstacle_reached();
     int get_wanted_movement_direction8();
 
-    bool can_take_stairs();
     bool can_take_jumper();
+    void notify_jumper_activated(Jumper& jumper);
+    bool can_take_stairs();
     bool can_be_hurt(Enemy* attacker);
     bool can_pick_treasure(EquipmentItem& item);
     bool can_start_gameover_sequence();

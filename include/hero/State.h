@@ -121,8 +121,9 @@ class Hero::State {
     virtual bool can_pick_treasure(EquipmentItem& item);
     virtual bool can_start_item(EquipmentItem& item);
     virtual bool can_take_stairs();
-    virtual bool can_take_jumper();
     virtual bool can_sword_hit_crystal();
+    virtual bool can_take_jumper();
+    virtual void notify_jumper_activated(Jumper& jumper);
     bool is_carrying_item();
     virtual CarriedItem* get_carried_item();
     virtual CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);

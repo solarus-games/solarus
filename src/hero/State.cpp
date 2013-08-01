@@ -697,18 +697,6 @@ bool Hero::State::can_take_stairs() {
 }
 
 /**
- * \brief Returns whether can trigger a jumper in this state.
- * If false is returned, jumpers have no effect (but they are obstacle for the hero).
- *
- * Returns false by default.
- *
- * \return true if the hero can use jumpers in this state
- */
-bool Hero::State::can_take_jumper() {
-  return false;
-}
-
-/**
  * \brief Returns whether some stairs are considered as obstacle in this state.
  * \param stairs Some stairs.
  * \return \c true if the stairs are obstacle in this state.
@@ -828,6 +816,31 @@ bool Hero::State::can_sword_hit_crystal() {
  */
 bool Hero::State::can_avoid_explosion() {
   return false;
+}
+
+/**
+ * \brief Returns whether the hero can trigger a jumper in this state.
+ *
+ * If false is returned, jumpers have no effect (but they are obstacle for
+ * the hero).
+ *
+ * Returns false by default.
+ *
+ * \return \c true if the hero can use jumpers in this state.
+ */
+bool Hero::State::can_take_jumper() {
+  return false;
+}
+
+/**
+ * \brief Notifies this state that the hero is activating a jumper.
+ *
+ * Does nothing by default.
+ * Redefine this function if you want to perform the jump in your state.
+ *
+ * \param jumper The jumper activated.
+ */
+void Hero::State::notify_jumper_activated(Jumper& jumper) {
 }
 
 /**

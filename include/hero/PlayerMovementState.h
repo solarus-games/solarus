@@ -35,7 +35,6 @@ class Hero::PlayerMovementState: public Hero::State {
     virtual void start(State* previous_state);
     virtual void stop(State* next_state);
     void set_map(Map& map);
-    PlayerMovement* get_player_movement();
 
     virtual void set_animation_stopped();
     virtual void set_animation_walking();
@@ -46,11 +45,14 @@ class Hero::PlayerMovementState: public Hero::State {
     void notify_layer_changed();
     bool can_be_hurt(Enemy* attacker);
     bool can_pick_treasure(EquipmentItem& item);
+    bool can_take_jumper();
+    void notify_jumper_activated(Jumper& jumper);
 
   protected:
 
     PlayerMovementState(Hero& hero, const std::string& state_name);
 
+    PlayerMovement* get_player_movement();
 };
 
 #endif

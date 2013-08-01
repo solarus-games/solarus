@@ -178,15 +178,6 @@ bool Hero::SwimmingState::is_stairs_obstacle(Stairs& stairs) {
 }
 
 /**
- * \brief Returns whether can trigger a jumper in this state.
- * If false is returned, jumpers have no effect (but they are obstacle for the hero).
- * \return true if the hero can use jumpers in this state
- */
-bool Hero::SwimmingState::can_take_jumper() {
-  return true;
-}
-
-/**
  * \brief Returns whether the hero can pick a treasure in this state.
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.

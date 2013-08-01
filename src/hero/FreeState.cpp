@@ -169,15 +169,6 @@ bool Hero::FreeState::can_take_stairs() {
 }
 
 /**
- * \brief Returns whether can trigger a jumper in this state.
- * If false is returned, jumpers have no effect (but they are obstacle for the hero).
- * \return true if the hero can use jumpers in this state
- */
-bool Hero::FreeState::can_take_jumper() {
-  return true;
-}
-
-/**
  * \brief Returns the action to do with an item previously carried by the hero when this state starts.
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts

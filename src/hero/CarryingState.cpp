@@ -175,15 +175,6 @@ bool Hero::CarryingState::can_start_sword() {
 }
 
 /**
- * \brief Returns whether can trigger a jumper in this state.
- * If false is returned, jumpers have no effect (but they are obstacle for the hero).
- * \return true if the hero can use jumpers in this state
- */
-bool Hero::CarryingState::can_take_jumper() {
-  return true;
-}
-
-/**
  * \brief Returns whether the hero can take stairs in this state.
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  * \return true if the hero ignores the effect of stairs in this state

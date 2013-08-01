@@ -47,7 +47,6 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     bool can_start_sword();
     bool can_start_item(EquipmentItem& item);
     bool can_take_stairs();
-    bool can_take_jumper();
     CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
     void set_animation_stopped();
     void set_animation_walking();

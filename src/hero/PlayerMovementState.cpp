@@ -16,6 +16,7 @@
  */
 #include "hero/PlayerMovementState.h"
 #include "hero/HeroSprites.h"
+#include "entities/Jumper.h"
 #include "movements/PlayerMovement.h"
 #include "lowlevel/Debug.h"
 
@@ -44,7 +45,7 @@ Hero::PlayerMovementState::~PlayerMovementState() {
  * \return the movement
  */
 PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
-  return (PlayerMovement*) hero.get_movement();
+  return static_cast<PlayerMovement*>(hero.get_movement());
 }
 
 /**
@@ -194,4 +195,28 @@ bool Hero::PlayerMovementState::can_be_hurt(Enemy* attacker) {
 bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) {
   return true;
 }
+
+/**
+ * \brief Returns whether can trigger a jumper in this state.
+ *
+ * If false is returned, jumpers have no effect (but they are obstacle for
+ * the hero).
+ *
+ * \return \v true if the hero can use jumpers in this state.
+ */
+bool Hero::PlayerMovementState::can_take_jumper() {
+  return true;
+}
+
+/**
+ * \brief Notifies this state that the hero is activating a jumper.
+ * \param jumper The jumper activated.
+ */
+void Hero::PlayerMovementState::notify_jumper_activated(Jumper& jumper) {
+
+  // TODO jump after a small delay if the jumper is not diagonal.
+  hero.start_jumping(jumper.get_direction(), jumper.get_jump_length(),
+      true, true, 0);
+}
+
 

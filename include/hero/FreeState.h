@@ -25,12 +25,6 @@
  */
 class Hero::FreeState: public Hero::PlayerMovementState {
 
-  private:
-
-    int pushing_direction4;         /**< direction where the hero is trying to
-                                     * push an obstacle (0 to 3) or -1 */
-    uint32_t start_pushing_date;    /**< date when the state pushing starts */
-
   public:
 
     FreeState(Hero& hero);
@@ -50,6 +44,13 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
     void set_animation_stopped();
     void set_animation_walking();
+
+  private:
+
+    int pushing_direction4;         /**< direction where the hero is trying to
+                                     * push an obstacle (0 to 3) or -1 */
+    uint32_t start_pushing_date;    /**< date when the state pushing starts */
+
 };
 
 #endif

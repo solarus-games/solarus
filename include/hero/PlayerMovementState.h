@@ -36,12 +36,15 @@ class Hero::PlayerMovementState: public Hero::State {
     virtual void stop(State* next_state);
     void set_map(Map& map);
 
+    virtual void update();
+    virtual void set_suspended(bool suspended);
     virtual void set_animation_stopped();
     virtual void set_animation_walking();
     bool can_control_movement();
     int get_wanted_movement_direction8();
     void notify_walking_speed_changed();
     void notify_movement_changed();
+    void notify_position_changed();
     void notify_layer_changed();
     bool can_be_hurt(Enemy* attacker);
     bool can_pick_treasure(EquipmentItem& item);
@@ -53,6 +56,14 @@ class Hero::PlayerMovementState: public Hero::State {
     PlayerMovementState(Hero& hero, const std::string& state_name);
 
     PlayerMovement* get_player_movement();
+
+  private:
+
+    void cancel_jumper();
+
+    Jumper* current_jumper;            /**< The jumper about to be triggered or NULL */
+    uint32_t jumper_start_date;        /**< Date to trigger the jumper
+                                        * (because a small delay is necessary) */
 };
 
 #endif

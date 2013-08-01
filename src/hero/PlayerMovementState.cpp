@@ -19,6 +19,7 @@
 #include "entities/Jumper.h"
 #include "movements/PlayerMovement.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/System.h"
 
 /**
  * \brief Constructor.
@@ -27,7 +28,9 @@
  */
 Hero::PlayerMovementState::PlayerMovementState(
     Hero& hero, const std::string& state_name):
-  State(hero, state_name) {
+  State(hero, state_name),
+  current_jumper(NULL),
+  jumper_start_date(0) {
 }
 
 /**
@@ -83,10 +86,11 @@ void Hero::PlayerMovementState::start(State* previous_state) {
  *
  * \param next_state the next state (for information)
  */
-void Hero::PlayerMovementState::stop(State *next_state) {
+void Hero::PlayerMovementState::stop(State* next_state) {
 
   hero.clear_movement();
   get_sprites().set_animation_stopped_normal();
+  cancel_jumper();
 }
 
 /**
@@ -100,6 +104,55 @@ void Hero::PlayerMovementState::set_map(Map &map) {
 
   State::set_map(map);
   set_animation_stopped();
+}
+
+/**
+ * \brief Updates this state.
+ */
+void Hero::PlayerMovementState::update() {
+
+  State::update();
+
+  if (!suspended) {
+
+    if (current_jumper != NULL) {
+
+      const int jump_direction8 = current_jumper->get_direction();
+      if (!current_jumper->is_enabled()
+          || current_jumper->is_being_removed()
+          || !hero.is_moving_towards(jump_direction8 / 2)
+          || !current_jumper->is_in_jump_position(hero)) {
+
+        // Cancel the jumper preparation.
+        current_jumper->decrement_refcount();
+        if (current_jumper->get_refcount() == 0) {
+          delete current_jumper;
+        }
+        current_jumper = NULL;
+        jumper_start_date = 0;
+      }
+      else if (System::now() >= jumper_start_date) {
+        // Time to make the jump and everything is okay.
+        hero.start_jumping(
+            jump_direction8, current_jumper->get_jump_length(), true, true, 0);
+      }
+    }
+  }
+}
+
+/**
+ * \brief Notifies this state that the game was just suspended or resumed.
+ * \param suspended \c true if the game is suspended.
+ */
+void Hero::PlayerMovementState::set_suspended(bool suspended) {
+
+  State::set_suspended(suspended);
+
+  if (!suspended) {
+    if (jumper_start_date != 0) {
+      jumper_start_date += System::now() - when_suspended;
+    }
+  }
 }
 
 /**
@@ -171,6 +224,16 @@ void Hero::PlayerMovementState::notify_movement_changed() {
 }
 
 /**
+ * \brief Notifies this state that the hero has just changed its
+ * position.
+ */
+void Hero::PlayerMovementState::notify_position_changed() {
+
+  // Stop the preparation to a jump if any.
+  cancel_jumper();
+}
+
+/**
  * \brief Notifies this state that the layer has changed.
  */
 void Hero::PlayerMovementState::notify_layer_changed() {
@@ -214,9 +277,35 @@ bool Hero::PlayerMovementState::can_take_jumper() {
  */
 void Hero::PlayerMovementState::notify_jumper_activated(Jumper& jumper) {
 
-  // TODO jump after a small delay if the jumper is not diagonal.
-  hero.start_jumping(jumper.get_direction(), jumper.get_jump_length(),
-      true, true, 0);
+  if (&jumper == current_jumper) {
+    // We already know.
+    return;
+  }
+
+  if (jumper.is_jump_diagonal()) {
+    hero.start_jumping(jumper.get_direction(), jumper.get_jump_length(),
+        true, true, 0);
+  }
+  else {
+    // Add a small delay if the jumper is not diagonal.
+    current_jumper = &jumper;
+    current_jumper->increment_refcount();
+    jumper_start_date = System::now() + 200;
+  }
 }
 
+/**
+ * \brief Cancels the jump preparation that was ongoing if any.
+ */
+void Hero::PlayerMovementState::cancel_jumper() {
+
+  if (current_jumper != NULL) {
+    current_jumper->decrement_refcount();
+    if (current_jumper->get_refcount() == 0) {
+      delete current_jumper;
+    }
+    current_jumper = NULL;
+    jumper_start_date = 0;
+  }
+}
 

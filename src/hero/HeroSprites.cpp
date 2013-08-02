@@ -703,7 +703,7 @@ void HeroSprites::set_ignore_suspend(bool ignore_suspend) {
 void HeroSprites::set_animation_stopped_common() {
 
   if (is_ground_visible()
-      && hero.get_ground() != GROUND_SHALLOW_WATER) {
+      && hero.get_ground_below() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation("stopped");
   }
   walking = false;
@@ -790,7 +790,7 @@ void HeroSprites::set_animation_stopped_swimming() {
  */
 void HeroSprites::set_animation_walking_common() {
 
-  if (is_ground_visible() && hero.get_ground() != GROUND_SHALLOW_WATER) {
+  if (is_ground_visible() && hero.get_ground_below() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation("walking");
   }
 

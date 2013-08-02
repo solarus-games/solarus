@@ -34,7 +34,7 @@
  * \param tile_pattern_id id of the tile pattern in the tileset
  * \param enabled true to make the tile active on the map
  */
-DynamicTile::DynamicTile(const std::string &name, Layer layer, int x, int y,
+DynamicTile::DynamicTile(const std::string& name, Layer layer, int x, int y,
 			 int width, int height, int tile_pattern_id, bool enabled):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
   tile_pattern_id(tile_pattern_id), tile_pattern(NULL) {
@@ -129,6 +129,7 @@ void DynamicTile::draw_on_map() {
       get_map().get_tileset(), camera_position);
 }
 
+// TODO with the new ground system, DynamicTile should no longer be a detector.
 /**
  * \brief Returns whether an entity collides with this detector with respect to a custom rule.
  * \param entity the entity
@@ -152,7 +153,7 @@ void DynamicTile::notify_collision(MapEntity& entity_overlapping, CollisionMode 
   if (entity_overlapping.is_hero()) {
     // tell the hero that he is on the ground of this tile
     Hero& hero = static_cast<Hero&>(entity_overlapping);
-    hero.set_ground(tile_pattern->get_ground());
+    hero.set_ground_below(tile_pattern->get_ground());
   }
 }
 
@@ -169,3 +170,4 @@ void DynamicTile::notify_enabled(bool enabled) {
     get_hero().check_position();
   }
 }
+

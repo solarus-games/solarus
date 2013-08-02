@@ -76,7 +76,7 @@ void Hero::SwimmingState::update() {
     return;
   }
 
-  if (hero.get_ground() != GROUND_DEEP_WATER) {
+  if (hero.get_ground_below() != GROUND_DEEP_WATER) {
     hero.set_state(new FreeState(hero));
   }
   else if (fast_swimming && System::now() >= end_fast_swim_date) {

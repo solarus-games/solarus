@@ -999,7 +999,7 @@ void Hero::check_position() {
 
     this->ground = GROUND_EMPTY;
     Ground tiles_ground = get_tile_ground();
-    set_ground(tiles_ground);
+    set_ground_below(tiles_ground);
   }
 
   // see the ground indicated by the dynamic entities, also find the facing entity
@@ -1178,34 +1178,21 @@ void Hero::notify_ground_changed() {
 }
 
 /**
- * \brief Returns the ground displayed under the hero.
- * \return ground The ground under the hero.
+ * \brief Returns the ground where the hero is.
+ * \return The ground under the hero.
  */
-Ground Hero::get_ground() {
+Ground Hero::get_ground_below() {
   return ground;
 }
 
 /**
- * \brief Sets the ground under the hero.
- *
- * This function is called when the hero walks on an entity
- * having a special ground.
- *
- * TODO remove this function, compute the ground on demand with MapEntities::get_ground.
- *
- * \param ground the ground to set
+ * \brief Sets the ground where the hero is.
+ * \param ground The ground under the hero.
  */
-void Hero::set_ground(Ground ground) {
-
-  if (ground != this->ground
-      && ground != GROUND_EMPTY
-      && !state->are_collisions_ignored()) {
-    this->ground = ground;
-  }
-  // we don't call notify_ground_changed() from here because set_ground()
-  // may be called several times if several grounds are stacked on the
-  // same location (e.g. one from a tile and one from a dynamic entity)
+void Hero::set_ground_below(Ground ground) {
+  this->ground = ground;
 }
+
 
 /**
  * \brief Returns whether the hero is in a state such that
@@ -1213,6 +1200,7 @@ void Hero::set_ground(Ground ground) {
  */
 bool Hero::is_ground_visible() {
 
+  Ground ground = get_ground_below();
   return (ground == GROUND_GRASS || ground == GROUND_SHALLOW_WATER)
     && state->is_touching_ground();
 }
@@ -1463,7 +1451,7 @@ void Hero::notify_collision_with_teletransporter(
 
   if (teletransporter.is_on_map_side() || !state->can_avoid_teletransporter()) {
 
-    bool on_hole = get_ground() == GROUND_HOLE;
+    bool on_hole = get_ground_below() == GROUND_HOLE;
     if (on_hole || state->is_teletransporter_delayed()) {
       this->delayed_teletransporter = &teletransporter; // fall into the hole (or do something else) first, transport later
     }
@@ -1541,9 +1529,9 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int 
 void Hero::notify_collision_with_stairs(
     Stairs& stairs, CollisionMode collision_mode) {
 
-  if (get_ground() == GROUND_EMPTY) {
+  if (get_ground_below() == GROUND_EMPTY) {
     // Allow the hero to stay on the highest of both layers of the stairs.
-    set_ground(GROUND_TRAVERSABLE);
+    set_ground_below(GROUND_TRAVERSABLE);
   }
 
   if (state->can_take_stairs()) {

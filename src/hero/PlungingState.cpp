@@ -47,7 +47,7 @@ void Hero::PlungingState::start(State* previous_state) {
 
   State::start(previous_state);
 
-  if (hero.get_ground() == GROUND_DEEP_WATER) {
+  if (hero.get_ground_below() == GROUND_DEEP_WATER) {
     get_sprites().set_animation("plunging_water", "");
   }
   else {
@@ -66,7 +66,7 @@ void Hero::PlungingState::update() {
   if (get_sprites().is_animation_finished()) {
 
     int drown = 0;
-    if (hero.get_ground() == GROUND_DEEP_WATER) {
+    if (hero.get_ground_below() == GROUND_DEEP_WATER) {
 
       if (get_equipment().has_ability("swim")) {
         hero.set_state(new SwimmingState(hero));
@@ -75,7 +75,7 @@ void Hero::PlungingState::update() {
         drown = 1;
       }
     }
-    else if (hero.get_ground() == GROUND_LAVA) {
+    else if (hero.get_ground_below() == GROUND_LAVA) {
       drown = 4;
     }
     else {

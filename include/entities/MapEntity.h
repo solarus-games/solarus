@@ -58,6 +58,8 @@ class MapEntity: public ExportableToLua {
     bool is_hero() const;
     virtual bool is_detector();
     virtual bool can_be_obstacle();
+    // TODO virtual bool can_change_ground() const;
+    // TODO virtual bool get_ground() const;
     virtual bool can_be_drawn();
     virtual bool is_drawn_in_y_order();
     virtual bool is_drawn_at_its_position() const;

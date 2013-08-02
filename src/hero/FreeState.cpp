@@ -156,7 +156,7 @@ bool Hero::FreeState::can_start_sword() {
  * \return true if the hero can use this equipment item in this state.
  */
 bool Hero::FreeState::can_start_item(EquipmentItem& item) {
-  return hero.get_ground() != GROUND_HOLE;
+  return hero.get_ground_below() != GROUND_HOLE;
 }
 
 /**

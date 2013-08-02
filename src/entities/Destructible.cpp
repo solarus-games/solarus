@@ -229,7 +229,7 @@ void Destructible::notify_collision_with_hero(Hero &hero, CollisionMode collisio
   }
 
   else if (collision_mode == COLLISION_CUSTOM && has_special_ground() && !is_being_cut) {
-    hero.set_ground(get_special_ground());
+    hero.set_ground_below(get_special_ground());
   }
 }
 

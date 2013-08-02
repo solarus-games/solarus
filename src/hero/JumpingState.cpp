@@ -260,7 +260,7 @@ bool Hero::JumpingState::can_avoid_conveyor_belt() {
  */
 bool Hero::JumpingState::is_stairs_obstacle(Stairs& stairs) {
   // allow to jump over stairs covered by water
-  return hero.get_ground() != GROUND_DEEP_WATER;
+  return hero.get_ground_below() != GROUND_DEEP_WATER;
 }
 
 /**

@@ -53,7 +53,7 @@ DynamicTile::~DynamicTile() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType DynamicTile::get_type() {
+EntityType DynamicTile::get_type() const {
 
   return DYNAMIC_TILE;
 }

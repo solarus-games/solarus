@@ -37,7 +37,7 @@ class Destination: public MapEntity {
         bool is_default);
     ~Destination();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_obstacle();
     bool is_default() const;
 

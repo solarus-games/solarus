@@ -115,7 +115,7 @@ CarriedItem::~CarriedItem() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType CarriedItem::get_type() {
+EntityType CarriedItem::get_type() const {
   return CARRIED_ITEM;
 }
 

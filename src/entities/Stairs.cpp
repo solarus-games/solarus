@@ -67,7 +67,7 @@ Stairs::~Stairs() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Stairs::get_type() {
+EntityType Stairs::get_type() const {
   return STAIRS;
 }
 

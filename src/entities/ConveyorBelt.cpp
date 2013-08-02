@@ -48,7 +48,7 @@ ConveyorBelt::~ConveyorBelt() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType ConveyorBelt::get_type() {
+EntityType ConveyorBelt::get_type() const {
   return CONVEYOR_BELT;
 }
 

@@ -59,7 +59,7 @@ Bomb::~Bomb() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Bomb::get_type() {
+EntityType Bomb::get_type() const {
   return BOMB;
 }
 

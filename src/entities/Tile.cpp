@@ -48,7 +48,7 @@ Tile::~Tile() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Tile::get_type() {
+EntityType Tile::get_type() const {
   return TILE;
 }
 
@@ -69,7 +69,7 @@ void Tile::set_map(Map& map) {
  * \brief Returns whether this entity is drawn at its position on the map.
  * \return true if this entity is drawn where it is located.
  */
-bool Tile::is_drawn_at_its_position() {
+bool Tile::is_drawn_at_its_position() const {
   return tile_pattern->is_drawn_at_its_position();
 }
 

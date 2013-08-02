@@ -51,7 +51,7 @@ class Block: public Detector {
         bool can_be_pushed, bool can_be_pulled, int maximum_moves);
     ~Block();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool is_drawn_in_y_order();
 
     bool is_obstacle_for(MapEntity& other);

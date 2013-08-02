@@ -59,7 +59,7 @@ Destination::~Destination() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Destination::get_type() {
+EntityType Destination::get_type() const {
   return DESTINATION;
 }
 

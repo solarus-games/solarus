@@ -71,7 +71,7 @@ class Stairs: public Detector {
        int direction, Subtype subtype);
     ~Stairs();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_drawn();
 
     void notify_map_started();

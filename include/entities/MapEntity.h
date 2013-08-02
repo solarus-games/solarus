@@ -44,116 +44,36 @@ class MapEntity: public ExportableToLua {
 
   public:
 
-    static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
-
-  private:
-
-    MainLoop* main_loop;                        /**< The Solarus main loop. */
-    Map* map;                                   /**< The map where this entity is, or NULL
-                                                 * (automatically set by class MapEntities after adding the entity to the map) */
-
-    Layer layer;                                /**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
-                                                 * The layer is constant for the tiles and can change for the hero and the dynamic entities.
-                                                 * The layer is private to make sure the set_layer() function is always called. */
-
-    Rectangle bounding_box;                     /**< This rectangle represents the position of the entity of the map and is
-                                                 * used for the collision tests. It corresponds to the bounding box of the entity.
-                                                 * It can be different from the sprite's rectangle of the entity.
-                                                 * For example, the hero's bounding box is a 16*16 rectangle, but its sprite may be
-                                                 * a 24*32 rectangle. */
-
-    Rectangle origin;                           /**< Coordinates of the origin point of the entity,
-                                                 * relative to the top-left corner of its rectangle.
-                                                 * Remember that when you call get_x() and get_y(), you get the coordinates
-                                                 * of the origin point on the map, not the coordinates of the rectangle's
-                                                 * top-left corner.
-                                                 * This is useful because the top-left corner of the entity's bounding box does
-                                                 * not represent the actual entity's coordinates and does not match necessarily
-                                                 * the sprite's rectangle. */
-
-    // other data, used for some kinds of entities only
-
-    std::string name;                           /**< Name of the entity or an empty string.
-                                                 * The name uniquely identifies the entity in the map. */
-
-    int direction;                              /**< direction of the entity, not used for all kinds of entities */
-
-    std::list<Sprite*> sprites;                 /**< sprites representing the entity;
-                                                 * note that some entities manage their sprites themselves rather than using this field */
-    std::list<Sprite*> old_sprites;             /**< sprites to remove and destroy as soon as possible */
-    bool visible;                               /**< indicates that this entity's sprites are currently displayed */
-    Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
-                                                 * NULL indicates that the entity has no movement */
-    std::list<Movement*> old_movements;         /**< old movements to destroy as soon as possible */
-    Detector* facing_entity;                    /**< the detector in front of this entity (if any) */
-
-    // entity state
-    bool being_removed;                         /**< indicates that the entity is not valid anymore because it is about to be removed */
-    bool enabled;                               /**< indicates that the entity is enabled
-                                                 * (if not, it will not be displayed and collisions will not be notified) */
-    bool waiting_enabled;                       /**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
-
-    int optimization_distance;                  /**< above this distance from the visible area,
-                                                 * the entity is suspended (0 means infinite) */
-    static const int
-        default_optimization_distance = 400;    /**< default value */
-
-  protected:
-
-    bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
-    uint32_t when_suspended;                    /**< indicates when this entity was suspended */
-
-    // creation
-    MapEntity();
-    MapEntity(Layer layer, int x, int y, int width, int height);
-    MapEntity(const std::string& name, int direction, Layer layer, int x, int y, int width, int height);
-
-    void clear_old_movements();
-    void clear_old_sprites();
-
-    void set_direction(int direction);
-
-    // easy access to various game objects
-    LuaContext& get_lua_context() const;
-    MapEntities& get_entities() const;
-    Equipment& get_equipment() const;
-    KeysEffect& get_keys_effect() const;
-    GameCommands& get_commands() const;
-    Savegame& get_savegame() const;
-    Hero& get_hero() const;
-
-  public:
-
     // destruction
     virtual ~MapEntity();
     void remove_from_map();
     virtual void notify_being_removed();
-    bool is_being_removed();
+    bool is_being_removed() const;
 
     /**
      * \brief Returns the type of entity.
      * \return the type of entity
      */
-    virtual EntityType get_type() = 0;  // TODO make const
-    bool is_hero();
+    virtual EntityType get_type() const = 0;
+    bool is_hero() const;
     virtual bool is_detector();
     virtual bool can_be_obstacle();
     virtual bool can_be_drawn();
     virtual bool is_drawn_in_y_order();
-    virtual bool is_drawn_at_its_position();
-    bool is_drawn();
+    virtual bool is_drawn_at_its_position() const;
+    bool is_drawn() const;
 
     // adding to a map
-    bool is_on_map();
+    bool is_on_map() const;
     virtual void set_map(Map &map);
-    Map& get_map();
+    Map& get_map() const;
     virtual void notify_map_started();
     virtual void notify_map_opening_transition_finished();
     virtual void notify_tileset_changed();
     Game& get_game() const;
 
     // position in the map
-    Layer get_layer();
+    Layer get_layer() const;
     void set_layer(Layer layer);
 
     int get_x() const;
@@ -161,7 +81,7 @@ class MapEntity: public ExportableToLua {
     void set_x(int x);
     void set_y(int y);
     const Rectangle get_xy() const;
-    void set_xy(const Rectangle &xy);
+    void set_xy(const Rectangle& xy);
     void set_xy(int x, int y);
     const Rectangle get_displayed_xy();
 
@@ -169,13 +89,13 @@ class MapEntity: public ExportableToLua {
     int get_height() const;
     const Rectangle& get_size() const;
     void set_size(int width, int height);
-    void set_size(const Rectangle &size);
+    void set_size(const Rectangle& size);
     const Rectangle& get_bounding_box() const;
     void set_bounding_box_from_sprite();
-    void set_bounding_box(const Rectangle &bounding_box);
+    void set_bounding_box(const Rectangle& bounding_box);
     const Rectangle& get_origin() const;
     void set_origin(int x, int y);
-    void set_origin(const Rectangle &origin);
+    void set_origin(const Rectangle& origin);
     int get_top_left_x() const;
     int get_top_left_y() const;
     void set_top_left_x(int x);
@@ -239,18 +159,18 @@ class MapEntity: public ExportableToLua {
     bool overlaps(const Rectangle &rectangle) const;
     bool overlaps(int x, int y) const;
     bool overlaps(const MapEntity& other) const;
-    bool overlaps_camera();
+    bool overlaps_camera() const;
     bool is_origin_point_in(const Rectangle& rectangle) const;
     bool is_facing_point_in(const Rectangle& rectangle) const;
     bool is_facing_point_in(const Rectangle& rectangle, int direction) const;
     bool is_center_in(const Rectangle& rectangle) const;
 
-    double get_angle(int x, int y);
-    double get_angle(MapEntity &other);
-    int get_distance(int x, int y);
-    int get_distance(MapEntity& other);
-    int get_distance_to_camera();
-    bool is_in_same_region(MapEntity& other);
+    double get_angle(int x, int y) const;
+    double get_angle(const MapEntity& other) const;
+    int get_distance(int x, int y) const;
+    int get_distance(const MapEntity& other) const;
+    int get_distance_to_camera() const;
+    bool is_in_same_region(const MapEntity& other) const;
 
     // collisions
     virtual bool has_layer_independent_collisions() const;
@@ -310,6 +230,86 @@ class MapEntity: public ExportableToLua {
     virtual void draw_on_map();
 
     virtual const std::string& get_lua_type_name() const;
+
+    static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
+
+  protected:
+
+    // creation
+    MapEntity();
+    MapEntity(Layer layer, int x, int y, int width, int height);
+    MapEntity(const std::string& name, int direction, Layer layer, int x, int y, int width, int height);
+
+    void clear_old_movements();
+    void clear_old_sprites();
+
+    void set_direction(int direction);
+
+    // easy access to various game objects
+    LuaContext& get_lua_context() const;
+    MapEntities& get_entities() const;
+    Equipment& get_equipment() const;
+    KeysEffect& get_keys_effect() const;
+    GameCommands& get_commands() const;
+    Savegame& get_savegame() const;
+    Hero& get_hero() const;
+
+    // TODO make private
+    bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
+    uint32_t when_suspended;                    /**< indicates when this entity was suspended */
+
+  private:
+
+    MainLoop* main_loop;                        /**< The Solarus main loop. */
+    Map* map;                                   /**< The map where this entity is, or NULL
+                                                 * (automatically set by class MapEntities after adding the entity to the map) */
+
+    Layer layer;                                /**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
+                                                 * The layer is constant for the tiles and can change for the hero and the dynamic entities.
+                                                 * The layer is private to make sure the set_layer() function is always called. */
+
+    Rectangle bounding_box;                     /**< This rectangle represents the position of the entity of the map and is
+                                                 * used for the collision tests. It corresponds to the bounding box of the entity.
+                                                 * It can be different from the sprite's rectangle of the entity.
+                                                 * For example, the hero's bounding box is a 16*16 rectangle, but its sprite may be
+                                                 * a 24*32 rectangle. */
+
+    Rectangle origin;                           /**< Coordinates of the origin point of the entity,
+                                                 * relative to the top-left corner of its rectangle.
+                                                 * Remember that when you call get_x() and get_y(), you get the coordinates
+                                                 * of the origin point on the map, not the coordinates of the rectangle's
+                                                 * top-left corner.
+                                                 * This is useful because the top-left corner of the entity's bounding box does
+                                                 * not represent the actual entity's coordinates and does not match necessarily
+                                                 * the sprite's rectangle. */
+
+    // other data, used for some kinds of entities only
+
+    std::string name;                           /**< Name of the entity or an empty string.
+                                                 * The name uniquely identifies the entity in the map. */
+
+    int direction;                              /**< direction of the entity, not used for all kinds of entities */
+
+    std::list<Sprite*> sprites;                 /**< sprites representing the entity;
+                                                 * note that some entities manage their sprites themselves rather than using this field */
+    std::list<Sprite*> old_sprites;             /**< sprites to remove and destroy as soon as possible */
+    bool visible;                               /**< indicates that this entity's sprites are currently displayed */
+    Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
+                                                 * NULL indicates that the entity has no movement */
+    std::list<Movement*> old_movements;         /**< old movements to destroy as soon as possible */
+    Detector* facing_entity;                    /**< the detector in front of this entity (if any) */
+
+    // entity state
+    bool being_removed;                         /**< indicates that the entity is not valid anymore because it is about to be removed */
+    bool enabled;                               /**< indicates that the entity is enabled
+                                                 * (if not, it will not be displayed and collisions will not be notified) */
+    bool waiting_enabled;                       /**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
+
+    int optimization_distance;                  /**< above this distance from the visible area,
+                                                 * the entity is suspended (0 means infinite) */
+    static const int
+        default_optimization_distance = 400;    /**< default value */
+
 };
 
 #endif

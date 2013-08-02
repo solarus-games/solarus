@@ -37,7 +37,7 @@ class Arrow: public MapEntity {
     Arrow(Hero& hero);
     ~Arrow();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_obstacle();
     bool is_drawn_in_y_order();
 

@@ -99,7 +99,7 @@ Destructible::~Destructible() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Destructible::get_type() {
+EntityType Destructible::get_type() const {
   return DESTRUCTIBLE;
 }
 

@@ -47,7 +47,7 @@ class DynamicTile: public Detector {
 	int width, int height, int tile_pattern_id, bool visible);
     ~DynamicTile();
 
-    EntityType get_type();
+    EntityType get_type() const;
     void set_map(Map &map);
     bool is_obstacle_for(MapEntity &other);
     void draw_on_map();

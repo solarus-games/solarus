@@ -78,7 +78,7 @@ Switch::~Switch() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Switch::get_type() {
+EntityType Switch::get_type() const {
   return SWITCH;
 }
 

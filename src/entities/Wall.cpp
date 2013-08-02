@@ -54,7 +54,7 @@ Wall::~Wall() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Wall::get_type() {
+EntityType Wall::get_type() const {
   return WALL;
 }
 

@@ -158,7 +158,7 @@ MapEntity* Enemy::create(
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Enemy::get_type() {
+EntityType Enemy::get_type() const {
   return ENEMY;
 }
 

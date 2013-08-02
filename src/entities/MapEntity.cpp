@@ -48,6 +48,8 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
  * \brief Creates a map entity without specifying its properties now.
  */
 MapEntity::MapEntity():
+  suspended(false),
+  when_suspended(0),
   main_loop(NULL),
   map(NULL),
   layer(LAYER_LOW),
@@ -59,9 +61,7 @@ MapEntity::MapEntity():
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
-  optimization_distance(default_optimization_distance),
-  suspended(false),
-  when_suspended(0) {
+  optimization_distance(default_optimization_distance) {
 
   bounding_box.set_xy(0, 0);
   origin.set_xy(0, 0);
@@ -80,6 +80,8 @@ MapEntity::MapEntity():
  * \param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
+  suspended(false),
+  when_suspended(0),
   main_loop(NULL),
   map(NULL),
   layer(layer),
@@ -92,9 +94,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
-  optimization_distance(default_optimization_distance),
-  suspended(false),
-  when_suspended(0) {
+  optimization_distance(default_optimization_distance) {
 
   origin.set_xy(0, 0);
   set_size(width, height);
@@ -112,6 +112,8 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  */
 MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
 		     int x, int y, int width, int height):
+  suspended(false),
+  when_suspended(0),
   main_loop(NULL),
   map(NULL),
   layer(layer),
@@ -124,9 +126,7 @@ MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
-  optimization_distance(default_optimization_distance),
-  suspended(false),
-  when_suspended(0) {
+  optimization_distance(default_optimization_distance) {
 
   origin.set_xy(0, 0);
   set_size(width, height);
@@ -149,7 +149,7 @@ MapEntity::~MapEntity() {
  * \brief Returns whether this entity is the hero controlled by the player.
  * \return true if this entity is the hero
  */
-bool MapEntity::is_hero() {
+bool MapEntity::is_hero() const {
   return get_type() == HERO;
 }
 
@@ -217,7 +217,7 @@ bool MapEntity::is_drawn_in_y_order() {
  * whether set_map() has been called.
  * \return true if the entity is on a map
  */
-bool MapEntity::is_on_map() {
+bool MapEntity::is_on_map() const {
   return map != NULL;
 }
 
@@ -272,7 +272,7 @@ void MapEntity::notify_tileset_changed() {
  * \brief Returns the map where this entity is.
  * \return the map
  */
-Map& MapEntity::get_map() {
+Map& MapEntity::get_map() const {
   return *map;
 }
 
@@ -378,7 +378,7 @@ void MapEntity::notify_being_removed() {
  *
  * \return true if this entity is about to be deleted
  */
-bool MapEntity::is_being_removed() {
+bool MapEntity::is_being_removed() const {
   return being_removed;
 }
 
@@ -386,7 +386,7 @@ bool MapEntity::is_being_removed() {
  * \brief Returns the layer of the entity on the map.
  * \return the layer of the entity on the map
  */
-Layer MapEntity::get_layer() {
+Layer MapEntity::get_layer() const {
   return layer;
 }
 
@@ -1497,14 +1497,14 @@ bool MapEntity::overlaps(const MapEntity& other) const {
  * the visible part of the map
  * \return true if the entity is in the visible part of the map
  */
-bool MapEntity::overlaps_camera() {
+bool MapEntity::overlaps_camera() const {
 
   if (bounding_box.overlaps(get_map().get_camera_position())) {
     return true;
   }
 
   bool found = false;
-  std::list<Sprite*>::iterator it;
+  std::list<Sprite*>::const_iterator it;
   for (it = sprites.begin(); it != sprites.end() && !found; it++) {
     const Sprite* sprite = *it;
     const Rectangle& sprite_origin = sprite->get_origin();
@@ -1571,7 +1571,7 @@ bool MapEntity::is_center_in(const Rectangle& rectangle) const {
  * \param y Y coordinate of the point.
  * \return The angle of the vector in radians.
  */
-double MapEntity::get_angle(int x, int y) {
+double MapEntity::get_angle(int x, int y) const {
   return Geometry::get_angle(get_x(), get_y(), x, y);
 }
 
@@ -1581,7 +1581,7 @@ double MapEntity::get_angle(int x, int y) {
  * \param other The other entity.
  * \return The angle of the vector in radians.
  */
-double MapEntity::get_angle(MapEntity& other) {
+double MapEntity::get_angle(const MapEntity& other) const {
   return Geometry::get_angle(get_x(), get_y(), other.get_x(), other.get_y());
 }
 
@@ -1591,7 +1591,7 @@ double MapEntity::get_angle(MapEntity& other) {
  * \param y y coordinate of the point
  * \return the distance between this entity and the point in pixels
  */
-int MapEntity::get_distance(int x, int y) {
+int MapEntity::get_distance(int x, int y) const {
   return (int) Geometry::get_distance(get_x(), get_y(), x, y);
 }
 
@@ -1601,7 +1601,7 @@ int MapEntity::get_distance(int x, int y) {
  * \param other the other entity
  * \return the distance between the two entities in pixels
  */
-int MapEntity::get_distance(MapEntity& other) {
+int MapEntity::get_distance(const MapEntity& other) const {
   return (int) Geometry::get_distance(get_x(), get_y(), other.get_x(), other.get_y());
 }
 
@@ -1610,7 +1610,7 @@ int MapEntity::get_distance(MapEntity& other) {
  * and the center point of the visible part of the map.
  * \return the distance in pixels
  */
-int MapEntity::get_distance_to_camera() {
+int MapEntity::get_distance_to_camera() const {
 
   const Rectangle& camera = get_map().get_camera_position();
   return (int) Geometry::get_distance(get_x(), get_y(),
@@ -1625,7 +1625,7 @@ int MapEntity::get_distance_to_camera() {
  * \param other Another entity.
  * \return \c true if both entities are in the same region.
  */
-bool MapEntity::is_in_same_region(MapEntity& other) {
+bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
   const std::list<Separator*>& separators =
       get_entities().get_separators();
@@ -1965,7 +1965,7 @@ void MapEntity::update() {
  * \return true if the entity is visible and may have a sprite in the visible part
  * of the map.
  */
-bool MapEntity::is_drawn() {
+bool MapEntity::is_drawn() const {
 
   return is_visible()
       && (overlaps_camera()
@@ -1986,7 +1986,7 @@ bool MapEntity::is_drawn() {
  *
  * \return true if this entity is drawn where it is located.
  */
-bool MapEntity::is_drawn_at_its_position() {
+bool MapEntity::is_drawn_at_its_position() const {
   return true;
 }
 

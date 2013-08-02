@@ -47,7 +47,7 @@ class Hero: public MapEntity {
      * These functions, required by MapEntity, indicate
      * the main properties of this type of entity.
      */
-    EntityType get_type();
+    EntityType get_type() const;
     bool is_drawn_in_y_order();
 
     /**

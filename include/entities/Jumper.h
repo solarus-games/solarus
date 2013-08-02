@@ -40,7 +40,7 @@ class Jumper: public Detector {
         int jump_length);
     ~Jumper();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_drawn();
     bool is_sword_ignored();
     bool is_obstacle_for(MapEntity& other);

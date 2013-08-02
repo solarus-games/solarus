@@ -46,7 +46,7 @@ class Boomerang: public MapEntity {
         const std::string& sprite_name);
     ~Boomerang();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_obstacle();
     bool can_be_drawn();
 

@@ -81,7 +81,7 @@ class CarriedItem: public MapEntity {
         uint32_t explosion_date);
     ~CarriedItem();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_obstacle();
     bool is_drawn_in_y_order();
 

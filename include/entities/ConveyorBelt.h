@@ -33,7 +33,7 @@ class ConveyorBelt: public Detector {
         int direction);
     ~ConveyorBelt();
 
-    EntityType get_type();
+    EntityType get_type() const;
 
     bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);

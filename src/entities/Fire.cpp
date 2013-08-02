@@ -45,7 +45,7 @@ Fire::~Fire() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Fire::get_type() {
+EntityType Fire::get_type() const {
   return FIRE;
 }
 

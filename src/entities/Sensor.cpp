@@ -53,7 +53,7 @@ Sensor::~Sensor() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Sensor::get_type() {
+EntityType Sensor::get_type() const {
   return SENSOR;
 }
 

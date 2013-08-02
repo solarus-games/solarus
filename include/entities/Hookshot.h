@@ -41,7 +41,7 @@ class Hookshot: public MapEntity {
     Hookshot(Hero &hero);
     ~Hookshot();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_obstacle();
     bool is_drawn_in_y_order();
 

@@ -69,7 +69,7 @@ Arrow::~Arrow() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Arrow::get_type() {
+EntityType Arrow::get_type() const {
   return ARROW;
 }
 

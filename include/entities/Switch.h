@@ -62,7 +62,7 @@ class Switch: public Detector {
 	Subtype subtype, bool needs_block, bool inactivate_when_leaving);
     ~Switch();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool is_obstacle_for(MapEntity& other);
 
     bool is_walkable();

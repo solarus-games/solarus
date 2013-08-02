@@ -147,7 +147,7 @@ class Enemy: public Detector {
         const std::string& name, Layer layer, int x, int y, int direction,
         const Treasure& treasure);
 
-    EntityType get_type();
+    EntityType get_type() const;
     void set_map(Map &map);
     void notify_map_started();
     void notify_map_opening_transition_finished();

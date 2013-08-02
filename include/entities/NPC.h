@@ -80,7 +80,7 @@ class NPC: public Detector {
         int initial_direction, const std::string& behavior_string);
     ~NPC();
 
-    EntityType get_type();
+    EntityType get_type() const;
 
     bool is_solid();
 

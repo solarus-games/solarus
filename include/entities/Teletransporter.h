@@ -65,7 +65,7 @@ class Teletransporter: public Detector {
         const std::string& destination_name);
     ~Teletransporter();
 
-    EntityType get_type();
+    EntityType get_type() const;
     void set_map(Map& map);
 
     bool is_obstacle_for(MapEntity& other);

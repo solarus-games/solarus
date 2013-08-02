@@ -43,7 +43,7 @@ class Crystal: public Detector {
     Crystal(const std::string& name, Layer layer, int x, int y);
     ~Crystal();
 
-    EntityType get_type();
+    EntityType get_type() const;
 
     void notify_map_started();
     bool is_obstacle_for(MapEntity& other);

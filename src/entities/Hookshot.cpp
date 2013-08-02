@@ -71,7 +71,7 @@ Hookshot::~Hookshot() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Hookshot::get_type() {
+EntityType Hookshot::get_type() const {
   return HOOKSHOT;
 }
 

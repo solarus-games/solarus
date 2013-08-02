@@ -37,7 +37,7 @@ class Pickable: public Detector {
 
     ~Pickable();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_obstacle();
 
     void set_map(Map& map);

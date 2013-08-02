@@ -43,7 +43,7 @@ class Wall: public MapEntity {
         bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks);
     ~Wall();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_drawn();
     bool is_obstacle_for(MapEntity &other);
 };

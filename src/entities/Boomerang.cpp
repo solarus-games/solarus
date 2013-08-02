@@ -95,7 +95,7 @@ Boomerang::~Boomerang() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Boomerang::get_type() {
+EntityType Boomerang::get_type() const {
   return BOOMERANG;
 }
 

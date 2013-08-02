@@ -70,7 +70,7 @@ CrystalBlock::~CrystalBlock() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType CrystalBlock::get_type() {
+EntityType CrystalBlock::get_type() const {
   return CRYSTAL_BLOCK;
 }
 

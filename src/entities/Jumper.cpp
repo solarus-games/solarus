@@ -71,7 +71,7 @@ Jumper::~Jumper() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Jumper::get_type() {
+EntityType Jumper::get_type() const {
   return JUMPER;
 }
 

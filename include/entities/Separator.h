@@ -42,7 +42,7 @@ class Separator: public Detector {
         int height);
     ~Separator();
 
-    EntityType get_type();
+    EntityType get_type() const;
 
     bool is_horizontal() const;
     bool is_vertical() const;

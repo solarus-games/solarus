@@ -88,7 +88,7 @@ ShopItem* ShopItem::create(Game& game, const std::string& name, Layer layer, int
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType ShopItem::get_type() {
+EntityType ShopItem::get_type() const {
   return SHOP_ITEM;
 }
 

@@ -48,7 +48,7 @@ class Chest: public Detector {
         const Treasure& treasure);
     ~Chest();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool is_drawn_in_y_order();
 
     bool is_open();

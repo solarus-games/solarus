@@ -92,7 +92,7 @@ class Destructible: public Detector {
         Subtype subtype, const Treasure &treasure);
     ~Destructible();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool is_drawn_in_y_order();
 
     const std::string& get_animation_set_id();

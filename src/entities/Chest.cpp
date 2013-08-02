@@ -82,7 +82,7 @@ Chest::~Chest() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Chest::get_type() {
+EntityType Chest::get_type() const {
   return CHEST;
 }
 

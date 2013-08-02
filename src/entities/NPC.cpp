@@ -87,7 +87,7 @@ NPC::~NPC() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType NPC::get_type() {
+EntityType NPC::get_type() const {
   return NON_PLAYING_CHARACTER;
 }
 

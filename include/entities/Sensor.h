@@ -34,7 +34,7 @@ class Sensor: public Detector {
     Sensor(const std::string& name, Layer layer, int x, int y, int width, int height);
     ~Sensor();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_drawn();
 
     bool is_obstacle_for(MapEntity& other);

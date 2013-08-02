@@ -76,7 +76,7 @@ Block::~Block() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Block::get_type() {
+EntityType Block::get_type() const {
   return BLOCK;
 }
 

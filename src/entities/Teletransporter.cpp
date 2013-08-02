@@ -115,7 +115,7 @@ void Teletransporter::set_map(Map& map) {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Teletransporter::get_type() {
+EntityType Teletransporter::get_type() const {
   return TELETRANSPORTER;
 }
 

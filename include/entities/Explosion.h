@@ -38,7 +38,7 @@ class Explosion: public Detector {
         bool with_damages);
     ~Explosion();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_obstacle();
 
     // state

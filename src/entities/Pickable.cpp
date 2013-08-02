@@ -65,7 +65,7 @@ Pickable::~Pickable() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Pickable::get_type() {
+EntityType Pickable::get_type() const {
   return PICKABLE;
 }
 

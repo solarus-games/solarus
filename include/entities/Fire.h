@@ -33,7 +33,7 @@ class Fire: public Detector {
     Fire(const std::string& name, Layer layer, const Rectangle& xy);
     ~Fire();
 
-    EntityType get_type();
+    EntityType get_type() const;
     bool can_be_obstacle();
 
     // state

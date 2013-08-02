@@ -47,13 +47,13 @@ class Tile: public MapEntity {
     Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id);
     ~Tile();
 
-    EntityType get_type();
+    EntityType get_type() const;
     void set_map(Map& map);
     void draw_on_map();
     void draw(Surface& dst_surface, const Rectangle& viewport);
     TilePattern& get_tile_pattern();
     bool is_animated();
-    virtual bool is_drawn_at_its_position();
+    virtual bool is_drawn_at_its_position() const;
 };
 
 #endif

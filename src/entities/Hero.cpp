@@ -108,7 +108,7 @@ Hero::~Hero() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Hero::get_type() {
+EntityType Hero::get_type() const {
   return HERO;
 }
 

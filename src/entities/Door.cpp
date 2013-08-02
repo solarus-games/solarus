@@ -105,7 +105,7 @@ Door::~Door() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType Door::get_type() {
+EntityType Door::get_type() const {
   return DOOR;
 }
 

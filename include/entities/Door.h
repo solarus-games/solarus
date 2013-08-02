@@ -62,7 +62,7 @@ class Door: public Detector {
         const std::string& savegame_variable);
     ~Door();
 
-    EntityType get_type();
+    EntityType get_type() const;
 
     bool is_obstacle_for(MapEntity& other);
     void set_suspended(bool suspended);

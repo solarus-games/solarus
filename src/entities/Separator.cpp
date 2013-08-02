@@ -50,7 +50,7 @@ Separator::~Separator() {
 /**
  * \copydoc MapEntity::get_type
  */
-EntityType Separator::get_type() {
+EntityType Separator::get_type() const {
   return SEPARATOR;
 }
 

@@ -721,7 +721,11 @@ bool Map::test_collision_with_border(const Rectangle &collision_box) {
 }
 
 /**
- * \brief Tests whether a point collides with a map tile.
+ * \brief Tests whether a point collides with the ground of the map.
+ *
+ * The ground is the terrain of the point. It is defined by the tiles and
+ * by the presence of entities that may change it
+ * (like dynamic tiles and destructible items).
  *
  * This method also returns true if the point is outside the map.
  *
@@ -732,7 +736,7 @@ bool Map::test_collision_with_border(const Rectangle &collision_box) {
  * considered as obstacle).
  * \return \c true if this point is on an obstacle.
  */
-bool Map::test_collision_with_tiles(Layer layer, int x, int y,
+bool Map::test_collision_with_ground(Layer layer, int x, int y,
     MapEntity& entity_to_check) {
 
   Ground ground;
@@ -745,9 +749,9 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y,
   }
 
   // Get the ground property of the 8x8 square containing this point.
-  ground = entities->get_tile_ground(layer, x, y);
+  ground = entities->get_ground(layer, x, y);
 
-  // Test the obstacle property of this square.
+  // Test the ground property of this square.
   switch (ground) {
 
   case GROUND_EMPTY:
@@ -868,27 +872,29 @@ bool Map::test_collision_with_obstacles(Layer layer,
   int x, y, x1, x2, y1, y2;
   bool collision = false;
 
-  // Collisions with tiles: we just check the borders of the collision box.
+  // Collisions with the terrain
+  // (i.e., tiles and dynamic entities that may change it):
+  // we just check the borders of the collision box.
   y1 = collision_box.get_y();
   y2 = y1 + collision_box.get_height() - 1;
   x1 = collision_box.get_x();
   x2 = x1 + collision_box.get_width() - 1;
 
   for (x = x1; x <= x2 && !collision; x++) {
-    collision = test_collision_with_tiles(layer, x, y1, entity_to_check) ||
-      test_collision_with_tiles(layer, x, y2, entity_to_check);
+    collision = test_collision_with_ground(layer, x, y1, entity_to_check) ||
+      test_collision_with_ground(layer, x, y2, entity_to_check);
   }
 
   for (y = y1; y <= y2 && !collision; y++) {
-    collision = test_collision_with_tiles(layer, x1, y, entity_to_check) ||
-      test_collision_with_tiles(layer, x2, y, entity_to_check);
+    collision = test_collision_with_ground(layer, x1, y, entity_to_check) ||
+      test_collision_with_ground(layer, x2, y, entity_to_check);
   }
 
 /*
   // Slow version: check every pixel of the collision_box rectangle.
   for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1++) {
     for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1++) {
-      collision = test_collision_with_tiles(layer, x1, y1, entity_to_check);
+      collision = test_collision_with_ground(layer, x1, y1, entity_to_check);
     }
   }
 */
@@ -915,8 +921,8 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y,
 
   bool collision;
 
-  // Test the tiles.
-  collision = test_collision_with_tiles(layer, x, y, entity_to_check);
+  // Test the terrain.
+  collision = test_collision_with_ground(layer, x, y, entity_to_check);
 
   // Test the dynamic entities.
   if (!collision) {

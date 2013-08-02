@@ -1139,15 +1139,20 @@ void MapEntity::notify_position_changed() {
  */
 void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
 
-  if (get_distance_to_camera() > optimization_distance && optimization_distance > 0) {
-    // don't check detectors far for the visible area
+  if (!is_on_map()) {
+    // The entity is still being initialized.
     return;
   }
 
-  // detect simple collisions
+  if (get_distance_to_camera() > optimization_distance && optimization_distance > 0) {
+    // Don't check detectors far for the visible area.
+    return;
+  }
+
+  // Detect simple collisions.
   get_map().check_collision_with_detectors(*this);
 
-  // detect pixel-precise collisions
+  // Detect pixel-precise collisions.
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 

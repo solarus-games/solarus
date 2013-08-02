@@ -271,6 +271,16 @@ void Hero::StairsState::set_suspended(bool suspended) {
 }
 
 /**
+ * \brief Returns whether the hero is touching the ground in the current state.
+ * \return \c true if the hero is touching the ground in the current state.
+ */
+bool Hero::StairsState::is_touching_ground() {
+  // To avoid falling to the lower layer when going upstairs
+  // with INSIDE_FLOOR stairs.
+  return false;
+}
+
+/**
  * \brief Returns whether the hero's current position can be considered
  * as a place to come back after a bad ground (hole, deep water, etc).
  * \return true if the hero can come back here

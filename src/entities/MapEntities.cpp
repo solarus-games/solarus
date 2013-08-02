@@ -49,7 +49,6 @@ MapEntities::MapEntities(Game& game, Map& map):
   Layer layer = hero.get_layer();
   this->obstacle_entities[layer].push_back(&hero);
   this->entities_drawn_y_order[layer].push_back(&hero);
-  // TODO update that when the layer changes, same thing for enemies
   this->named_entities[hero.get_name()] = &hero;
 
   // surfaces to pre-render static tiles
@@ -88,6 +87,7 @@ void MapEntities::destroy_all_entities() {
     entities_drawn_first[layer].clear();
     entities_drawn_y_order[layer].clear();
     obstacle_entities[layer].clear();
+    ground_modifiers[layer].clear();
     stairs[layer].clear();
   }
 
@@ -137,15 +137,41 @@ Hero& MapEntities::get_hero() {
  * Static tiles and dynamic entities are all taken into account here.
  *
  * \param layer Layer of the point.
- * \param X x coordinate of the point.
- * \param Y y coordinate of the point.
- * \return The ground of the highest tile at this place.
+ * \param x X coordinate of the point.
+ * \param y Y coordinate of the point.
+ * \return The ground at this place.
  */
-
 Ground MapEntities::get_ground(Layer layer, int x, int y) {
 
-  // TODO
-  return get_tile_ground(layer, x, y);
+  // First get the ground defined by static tiles (this is very fast).
+  Ground ground = get_tile_ground(layer, x, y);
+
+  // Then, look for entities that may change the ground.
+  std::list<MapEntity*>::const_iterator it;
+  for (it = ground_modifiers[layer].begin(); it != ground_modifiers[layer].end(); it++) {
+    const MapEntity& ground_modifier = *(*it);
+    if (ground_modifier.is_enabled()
+        && !ground_modifier.is_being_removed()
+        && ground_modifier.overlaps(x, y)) {
+      ground = ground_modifier.get_ground();
+    }
+  }
+
+  return ground;
+}
+
+/**
+ * \brief Returns the ground at the specified point.
+ *
+ * Static tiles and dynamic entities are all taken into account here.
+ *
+ * \param layer Layer of the point.
+ * \param xy Coordinate of the point.
+ * \return The ground at this place.
+ */
+
+Ground MapEntities::get_ground(Layer layer, const Rectangle& xy) {
+  return get_ground(layer, xy.get_x(), xy.get_y());
 }
 
 /**
@@ -585,6 +611,11 @@ void MapEntities::add_entity(MapEntity* entity) {
       }
     }
 
+    // update the ground modifiers list
+    if (entity->can_change_ground()) {
+      ground_modifiers[layer].push_back(entity);
+    }
+
     // update the sprites list
     if (entity->is_drawn_in_y_order()) {
       entities_drawn_y_order[layer].push_back(entity);
@@ -714,6 +745,11 @@ void MapEntities::remove_marked_entities() {
     // remove it from the detectors list if present
     if (entity->is_detector()) {
       detectors.remove(static_cast<Detector*>(entity));
+    }
+
+    // remove it from the ground modifiers list if present
+    if (entity->can_change_ground()) {
+      ground_modifiers[layer].remove(entity);
     }
 
     // remove it from the sprite entities list if present
@@ -1034,6 +1070,13 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
       obstacle_entities[old_layer].remove(&entity);
       obstacle_entities[layer].push_back(&entity);
     }
+
+    // update the ground modifiers list
+    if (entity.can_change_ground()) {
+      ground_modifiers[old_layer].remove(&entity);
+      ground_modifiers[layer].push_back(&entity);
+    }
+
 
     // update the sprites list
     if (entity.is_drawn_in_y_order()) {

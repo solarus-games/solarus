@@ -63,7 +63,7 @@ void Hero::SwordLoadingState::update() {
 
   PlayerMovementState::update();
 
-  if (suspended) {
+  if (suspended || !is_current_state()) {
     return;
   }
 

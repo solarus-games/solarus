@@ -135,9 +135,7 @@ class Hero: public MapEntity {
      * or something bad can happen (deep water, holes).
      */
     Ground get_ground_below();
-    void set_ground_below(Ground ground);  // TODO make private
     bool is_ground_visible();
-    Ground get_tile_ground();
     const Rectangle get_ground_point();
     void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
     void reset_target_solid_ground_coords();

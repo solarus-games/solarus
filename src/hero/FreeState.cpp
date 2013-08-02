@@ -70,6 +70,7 @@ void Hero::FreeState::update() {
   PlayerMovementState::update();
 
   if (!suspended
+      && is_current_state()
       && pushing_direction4 != -1					// the hero is trying to push
       && get_wanted_movement_direction8() != pushing_direction4 * 2) {	// but his movement direction has changed
 

@@ -195,6 +195,8 @@ void Bomb::notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int 
  */
 void Bomb::notify_position_changed() {
 
+  Detector::notify_position_changed();
+
   if (get_hero().get_facing_entity() == this
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LIFT
       && !get_hero().is_facing_point_in(get_bounding_box())) {

@@ -101,6 +101,8 @@ bool Chest::is_drawn_in_y_order() {
  */
 void Chest::notify_enabled(bool enabled) {
 
+  Detector::notify_enabled(enabled);
+
   // Make sure the chest does not appear on the hero.
   if (enabled && overlaps(get_hero())) {
     get_hero().avoid_collision(*this, 3);

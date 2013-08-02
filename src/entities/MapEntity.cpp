@@ -182,6 +182,57 @@ bool MapEntity::can_be_obstacle() {
 }
 
 /**
+ * \brief Returns whether entities of this type can override the ground
+ * of where they are placed.
+ *
+ * The ground of a point is computed as the ground of the tile below it,
+ * possibly modified by entities overlapping the point and who redefine
+ * can_change_ground() to \c true.
+ *
+ * This function returns \c false by default.
+ * If this function returns \c true, the entity is added to the list of
+ * potential ground modifiers when it is added to a map.
+ *
+ * \return \c true if this type of entity can change the ground.
+ */
+bool MapEntity::can_change_ground() const {
+  return false;
+}
+
+/**
+ * \brief When can_change_ground() is \c true, returns the ground defined
+ * by this entity.
+ *
+ * Entities overlapping it should take it into account.
+ *
+ * \return The ground defined by this entity.
+ */
+Ground MapEntity::get_ground() const {
+  return GROUND_EMPTY;
+}
+
+/**
+ * \brief Inform entities sensible to their ground that it may have just
+ * changed because of this entity.
+ * TODO for now, only the hero is updated: also update enemies and blocks
+ * by making in MapEntities a list of entities sensible to their ground.
+ */
+void MapEntity::update_ground_observers() {
+
+  if (!can_change_ground()) {
+    // Nothing to do.
+    return;
+  }
+
+  // For now the hero is the only entity sensible to its ground.
+  const Rectangle& hero_ground_point = get_hero().get_ground_point();
+  if (overlaps(hero_ground_point.get_x(), hero_ground_point.get_y())) {
+    get_hero().check_position();
+  }
+}
+
+
+/**
  * \brief Returns whether entities of this type can be drawn.
  *
  * This function returns \c true by default. Redefine it to return
@@ -368,6 +419,9 @@ void MapEntity::notify_being_removed() {
 
   get_lua_context().entity_on_removed(*this);
   this->being_removed = true;
+
+  // If this entity defines a ground, tell people that it is disappearing.
+  update_ground_observers();
 }
 
 /**
@@ -413,7 +467,9 @@ void MapEntity::set_layer(Layer layer) {
  * Redefine it if you need to be notified.
  */
 void MapEntity::notify_layer_changed() {
-  // nothing done by default
+
+  check_collision_with_detectors(true);
+  update_ground_observers();
 }
 
 /**
@@ -1066,11 +1122,14 @@ void MapEntity::notify_obstacle_reached() {
 /**
  * \brief This function is called when the entity has just moved.
  *
- * It checks collisions with the detectors on the map.
+ * It checks collisions with the detectors on the map
+ * and, if this entity defines a ground, updates entities sensible to their
+ * ground.
  */
 void MapEntity::notify_position_changed() {
 
   check_collision_with_detectors(true);
+  update_ground_observers();
 }
 
 /**
@@ -1186,6 +1245,8 @@ void MapEntity::set_enabled(bool enabled) {
  * \param enabled \c true if the entity is now enabled.
  */
 void MapEntity::notify_enabled(bool enabled) {
+
+  update_ground_observers();
 }
 
 /**

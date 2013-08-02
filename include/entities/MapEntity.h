@@ -21,6 +21,7 @@
 #include "lua/ExportableToLua.h"
 #include "entities/EntityType.h"
 #include "entities/Layer.h"
+#include "entities/Ground.h"
 #include "entities/CollisionMode.h"
 #include "entities/EnemyAttack.h"
 #include "entities/EnemyReaction.h"
@@ -58,8 +59,8 @@ class MapEntity: public ExportableToLua {
     bool is_hero() const;
     virtual bool is_detector();
     virtual bool can_be_obstacle();
-    // TODO virtual bool can_change_ground() const;
-    // TODO virtual bool get_ground() const;
+    virtual bool can_change_ground() const;
+    virtual Ground get_ground() const;
     virtual bool can_be_drawn();
     virtual bool is_drawn_in_y_order();
     virtual bool is_drawn_at_its_position() const;
@@ -158,7 +159,7 @@ class MapEntity: public ExportableToLua {
     static const Rectangle& direction_to_xy_move(int direction8);
 
     // geometry
-    bool overlaps(const Rectangle &rectangle) const;
+    bool overlaps(const Rectangle& rectangle) const;
     bool overlaps(int x, int y) const;
     bool overlaps(const MapEntity& other) const;
     bool overlaps_camera() const;
@@ -246,6 +247,7 @@ class MapEntity: public ExportableToLua {
     void clear_old_sprites();
 
     void set_direction(int direction);
+    void update_ground_observers();
 
     // easy access to various game objects
     LuaContext& get_lua_context() const;

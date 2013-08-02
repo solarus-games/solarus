@@ -46,6 +46,7 @@ class MapEntities {
     Hero& get_hero();
     Ground get_tile_ground(Layer layer, int x, int y);
     Ground get_ground(Layer layer, int x, int y);
+    Ground get_ground(Layer layer, const Rectangle& xy);
     const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
@@ -135,7 +136,11 @@ class MapEntities {
                                                      * defined by their y position, including the hero */
 
     std::list<Detector*> detectors;                 /**< all entities able to detect other entities
-                                                     * on this map */
+                                                     * on this map.
+                                                     * TODO store them by layer like obstacle_entities */
+    std::list<MapEntity*>
+      ground_modifiers[LAYER_NB];                   /**< all dynamic entities that may define the ground of
+                                                     * entities overlapping them */
     Destination* default_destination;               /**< the default destination of this map */
 
     std::list<MapEntity*>
@@ -162,8 +167,8 @@ class MapEntities {
  * reasons, no check is done here.
  *
  * \param layer Layer of the point.
- * \param X x coordinate of the point.
- * \param Y y coordinate of the point.
+ * \param x X coordinate of the point.
+ * \param y Y coordinate of the point.
  * \return The ground of the highest tile at this place.
  */
 inline Ground MapEntities::get_tile_ground(Layer layer, int x, int y) {

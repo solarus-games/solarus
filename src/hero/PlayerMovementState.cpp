@@ -108,6 +108,9 @@ void Hero::PlayerMovementState::set_map(Map &map) {
 
 /**
  * \brief Updates this state.
+ *
+ * This function may change the state of the hero,
+ * so when you call it from a subclass, call is_current_state() then.
  */
 void Hero::PlayerMovementState::update() {
 

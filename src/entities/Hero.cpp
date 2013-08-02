@@ -983,36 +983,30 @@ void Hero::check_position() {
   }
 
   if (state->are_collisions_ignored()) {
-    // do not take care of the ground or detectors
+    // Do not take care of the ground or detectors.
     return;
   }
 
-  // the facing entity has to be recomputed
+  // Recompute the facing entity.
   set_facing_entity(NULL);
+  check_collision_with_detectors(true);
 
-  // save the current ground
-  Ground previous_ground = this->ground;
-
-  // see the ground indicated by the non-dynamic tiles
-  if (!is_suspended()) { // when suspended, the hero may have invalid coordinates
-                         // (e.g. transition between maps)
-
-    this->ground = GROUND_EMPTY;
-    Ground tiles_ground = get_tile_ground();
-    set_ground_below(tiles_ground);
+  // Recompute the ground below the hero.
+  if (is_suspended()) {
+    // When suspended, the hero may have invalid coordinates
+    // (e.g. transition between maps).
+    return;
   }
 
-  // see the ground indicated by the dynamic entities, also find the facing entity
-
-  // TODO use the new function MapEntities::get_ground() instead to determine
-  // the ground cleanly.
-  check_collision_with_detectors(true);
+  // Save the previous ground and determine the new one.
+  Ground previous_ground = this->ground;
+  this->ground = get_entities().get_ground(get_layer(), get_ground_point());
 
   if (this->ground != previous_ground) {
     notify_ground_changed();
   }
 
-  // save the hero's last valid position
+  // Save the hero's last valid position.
   if (ground != GROUND_DEEP_WATER
       && ground != GROUND_HOLE
       && ground != GROUND_LAVA
@@ -1025,8 +1019,8 @@ void Hero::check_position() {
     last_solid_ground_layer = get_layer();
   }
 
-  // with empty ground, possibly go to the lower layer
-  if (ground == GROUND_EMPTY && state->is_touching_ground()) {
+  // With empty ground, possibly go to the lower layer.
+  if (this->ground == GROUND_EMPTY && state->is_touching_ground()) {
 
     int x = get_top_left_x();
     int y = get_top_left_y();
@@ -1040,7 +1034,11 @@ void Hero::check_position() {
         && entities.get_ground(layer, x + 15, y + 15) == GROUND_EMPTY) {
 
       get_entities().set_entity_layer(*this, Layer(layer - 1));
-      if (state->is_free() && get_tile_ground() == GROUND_TRAVERSABLE) {
+      Ground new_ground = entities.get_ground(get_layer(), x, y);
+      if (state->is_free() && 
+          (new_ground == GROUND_TRAVERSABLE
+           || new_ground == GROUND_GRASS
+           || new_ground == GROUND_LADDER)) {
         Sound::play("hero_lands");
       }
     }
@@ -1186,15 +1184,6 @@ Ground Hero::get_ground_below() {
 }
 
 /**
- * \brief Sets the ground where the hero is.
- * \param ground The ground under the hero.
- */
-void Hero::set_ground_below(Ground ground) {
-  this->ground = ground;
-}
-
-
-/**
  * \brief Returns whether the hero is in a state such that
  * a ground can be displayed under him.
  */
@@ -1203,22 +1192,6 @@ bool Hero::is_ground_visible() {
   Ground ground = get_ground_below();
   return (ground == GROUND_GRASS || ground == GROUND_SHALLOW_WATER)
     && state->is_touching_ground();
-}
-
-/**
- * \brief Returns the type of ground of the tile below the hero.
- *
- * Only static tiles are considered by this function
- * (dynamic tiles are ignored).
- *
- * TODO move to MapEntity
- *
- * \return the type of ground of the tile below the hero
- */
-Ground Hero::get_tile_ground() {
-
-  const Rectangle& ground_point = get_ground_point();
-  return get_entities().get_tile_ground(get_layer(), ground_point.get_x(), ground_point.get_y());
 }
 
 /**
@@ -1528,11 +1501,6 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int 
  */
 void Hero::notify_collision_with_stairs(
     Stairs& stairs, CollisionMode collision_mode) {
-
-  if (get_ground_below() == GROUND_EMPTY) {
-    // Allow the hero to stay on the highest of both layers of the stairs.
-    set_ground_below(GROUND_TRAVERSABLE);
-  }
 
   if (state->can_take_stairs()) {
 

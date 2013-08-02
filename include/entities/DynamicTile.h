@@ -18,7 +18,7 @@
 #define SOLARUS_DYNAMIC_TILE_H
 
 #include "Common.h"
-#include "entities/Detector.h"
+#include "entities/MapEntity.h"
 
 /**
  * \brief A special tile that can be enabled or disabled.
@@ -26,32 +26,29 @@
  * A dynamic tile is a tile placed on the map
  * that can be enabled or disabled by the script,
  * contrary to the Tile instances that are totally static for performance reasons.
- * An enabled dynamic tile behaves like a normal tile and may be an obstacle.
+ * An enabled dynamic tile behaves like a normal tile and may be an obstacle or any ground.
  * A disabled dynamic tile is invisible and can be traversed.
  */
-class DynamicTile: public Detector {
-
-  private:
-
-    int tile_pattern_id;       /**< id of the tile pattern */
-    TilePattern *tile_pattern; /**< pattern of the tile */
-
-  protected:
-
-    bool test_collision_custom(MapEntity &entity);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+class DynamicTile: public MapEntity {
 
   public:
 
-    DynamicTile(const std::string &name, Layer layer, int x, int y,
+    DynamicTile(const std::string& name, Layer layer, int x, int y,
 	int width, int height, int tile_pattern_id, bool visible);
     ~DynamicTile();
 
     EntityType get_type() const;
-    void set_map(Map &map);
-    bool is_obstacle_for(MapEntity &other);
+    void set_map(Map& map);
+    bool can_change_ground() const;
+    Ground get_ground() const;
+    bool is_obstacle_for(MapEntity& other);
     void draw_on_map();
-    void notify_enabled(bool enabled);
+
+  private:
+
+    int tile_pattern_id;       /**< id of the tile pattern */
+    TilePattern* tile_pattern; /**< pattern of the tile */
+
 };
 
 #endif

@@ -318,6 +318,8 @@ bool NPC::interaction_with_item(EquipmentItem& item_used) {
  */
 void NPC::notify_position_changed() {
 
+  Detector::notify_position_changed();
+
   if (subtype == USUAL_NPC) {
 
     if (get_sprite().get_current_animation() == "walking") {

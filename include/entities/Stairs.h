@@ -73,6 +73,8 @@ class Stairs: public Detector {
 
     EntityType get_type() const;
     bool can_be_drawn();
+    bool can_change_ground() const;
+    Ground get_ground() const;
 
     void notify_map_started();
     bool is_inside_floor() const;
@@ -90,11 +92,11 @@ class Stairs: public Detector {
 
   private:
 
+    void update_dynamic_tiles();
+
     Subtype subtype;            /**< subtype of stairs */
     bool enabled;               /**< indicates that the stairs are enabled
                                  * (if not, they have no effect and are not obstacle) */
-
-    void update_dynamic_tiles();
 
 };
 

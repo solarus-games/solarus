@@ -242,6 +242,7 @@ void Block::notify_position_changed() {
   }
 
   check_collision_with_detectors(false);
+  update_ground_observers();
 }
 
 /**

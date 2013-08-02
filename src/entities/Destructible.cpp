@@ -39,13 +39,13 @@
  */
 const Destructible::Features Destructible::features[] = {
   // animation set, sound, can be lifted, can be cut, can_explode, can_regenerate, weight, damage, special ground
-  {"pot",         "entities/pot",               "stone", true,  false, false, false, 0, 2, GROUND_TRAVERSABLE},
-  {"",            "",                           "",      false, false, false, false, 0, 1, GROUND_TRAVERSABLE},
-  {"bush",        "entities/bush",              "bush",  true,  true,  false, false, 1, 1, GROUND_TRAVERSABLE},
-  {"white_stone", "entities/stone_small_white", "stone", true,  false, false, false, 1, 2, GROUND_TRAVERSABLE},
-  {"black_stone", "entities/stone_small_black", "stone", true,  false, false, false, 2, 4, GROUND_TRAVERSABLE},
+  {"pot",         "entities/pot",               "stone", true,  false, false, false, 0, 2, GROUND_EMPTY},
+  {"",            "",                           "",      false, false, false, false, 0, 1, GROUND_EMPTY},
+  {"bush",        "entities/bush",              "bush",  true,  true,  false, false, 1, 1, GROUND_EMPTY},
+  {"white_stone", "entities/stone_small_white", "stone", true,  false, false, false, 1, 2, GROUND_EMPTY},
+  {"black_stone", "entities/stone_small_black", "stone", true,  false, false, false, 2, 4, GROUND_EMPTY},
   {"grass",       "entities/grass",             "bush",  false, true,  false, false, 0, 0, GROUND_GRASS},
-  {"bomb_flower", "entities/bomb_flower",       "bush",  true,   true, true,  true,  1, 1, GROUND_TRAVERSABLE},
+  {"bomb_flower", "entities/bomb_flower",       "bush",  true,   true, true,  true,  1, 1, GROUND_EMPTY},
 };
 
 /**
@@ -81,10 +81,6 @@ Destructible::Destructible(const std::string& name, Layer layer, int x, int y,
       || features[subtype].can_explode) {
     add_collision_mode(COLLISION_SPRITE);
   }
-
-  if (has_special_ground()) { // display a special ground under the hero
-    add_collision_mode(COLLISION_CUSTOM);
-  }
 }
 
 /**
@@ -115,6 +111,29 @@ bool Destructible::is_drawn_in_y_order() {
   return false;
 }
 
+/**
+ * \brief Returns whether entities of this type can override the ground
+ * of where they are placed.
+ * \return \c true if this type of entity can change the ground.
+ */
+bool Destructible::can_change_ground() const {
+  // Because some kinds of destructibles (like grass) set a special ground.
+  return true;
+}
+
+/**
+ * \brief When can_change_ground() is \c true, returns the ground defined
+ * by this entity.
+ * \return The ground defined by this entity.
+ */
+Ground Destructible::get_ground() const {
+
+  if (is_disabled() || is_being_cut) {
+    return GROUND_EMPTY;
+  }
+
+  return features[subtype].special_ground;
+}
 
 /**
  * \brief Returns the damage this destructible item can cause to enemies
@@ -138,23 +157,6 @@ const std::string& Destructible::get_animation_set_id() {
  */
 const std::string& Destructible::get_destruction_sound_id() {
   return features[subtype].destruction_sound_id;
-}
-
-/**
- * \brief Returns the special ground to display when walking on this destructible item.
- * \return the ground, or GROUND_NORMAL if there is no special ground to display
- */
-Ground Destructible::get_special_ground() {
-  return features[subtype].special_ground;
-}
-
-/**
- * \brief Returns whether there is a special ground to display when walking
- * on this destructible item.
- * \return \c true if there is a special ground.
- */
-bool Destructible::has_special_ground() {
-  return get_special_ground() != GROUND_TRAVERSABLE;
 }
 
 /**
@@ -210,7 +212,7 @@ void Destructible::notify_collision(MapEntity &entity_overlapping, CollisionMode
  * \param hero the hero
  * \param collision_mode the collision mode that detected the collision
  */
-void Destructible::notify_collision_with_hero(Hero &hero, CollisionMode collision_mode) {
+void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode collision_mode) {
 
   if (features[subtype].can_be_lifted
       && !is_being_cut
@@ -226,10 +228,6 @@ void Destructible::notify_collision_with_hero(Hero &hero, CollisionMode collisio
     else {
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
     }
-  }
-
-  else if (collision_mode == COLLISION_CUSTOM && has_special_ground() && !is_being_cut) {
-    hero.set_ground_below(get_special_ground());
   }
 }
 
@@ -348,6 +346,7 @@ void Destructible::play_destroy_animation() {
   if (!is_drawn_in_y_order()) {
     get_entities().bring_to_front(this); // show animation destroy to front
   }
+  update_ground_observers();  // The ground (if any) has just disappeared.
 }
 
 /**
@@ -381,7 +380,7 @@ void Destructible::destruction_callback() {
  *
  * \return true if the item is disabled
  */
-bool Destructible::is_disabled() {
+bool Destructible::is_disabled() const {
   return regeneration_date != 0 && !is_regenerating;
 }
 

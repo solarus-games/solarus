@@ -80,6 +80,28 @@ bool Stairs::can_be_drawn() {
 }
 
 /**
+ * \brief Returns whether entities of this type can override the ground
+ * of where they are placed.
+ * \return \c true if this type of entity can change the ground.
+ */
+bool Stairs::can_change_ground() const {
+  // To allow the hero to stay on the highest of both layers of the stairs.
+  return true;
+}
+
+/**
+ * \brief When can_change_ground() is \c true, returns the ground defined
+ * by this entity.
+ *
+ * Entities overlapping it should take it into account.
+ *
+ * \return The ground defined by this entity.
+ */
+Ground Stairs::get_ground() const {
+  return GROUND_TRAVERSABLE;
+}
+
+/**
  * \brief Notifies this entity that its map has just become active.
  */
 void Stairs::notify_map_started() {
@@ -326,6 +348,9 @@ Rectangle Stairs::get_clipping_rectangle(Way way) {
  * (where stairsname is the name of the stairs).
  */
 void Stairs::notify_enabled(bool enabled) {
+
+  Detector::notify_enabled(enabled);
+
   update_dynamic_tiles();
 }
 

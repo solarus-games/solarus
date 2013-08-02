@@ -130,14 +130,18 @@ void Hero::CarryingState::set_suspended(bool suspended) {
 void Hero::CarryingState::update() {
 
   PlayerMovementState::update();
-  carried_item->update();
 
-  if (!suspended) {
+  // The state may have just been changed for example by a jumper.
+  if (is_current_state()) { 
+    carried_item->update();
 
-    if (carried_item->is_broken()) {
-      delete carried_item;
-      carried_item = NULL;
-      hero.set_state(new FreeState(hero));
+    if (!suspended) {
+
+      if (carried_item->is_broken()) {
+        delete carried_item;
+        carried_item = NULL;
+        hero.set_state(new FreeState(hero));
+      }
     }
   }
 }

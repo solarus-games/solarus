@@ -17,6 +17,7 @@ Engine changes
 * Fix an error when loading sounds (#236). Sounds were working anyway.
 * Jumpers can no longer be activated the opposite way when in water.
 * Non-diagonal jumpers are now activated after a slight delay (#253).
+* Correctly detect the ground below the hero or any point.
 * Don't die if there is a syntax error in dialogs.dat.
 
 Data files format changes

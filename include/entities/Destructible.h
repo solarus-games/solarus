@@ -94,22 +94,22 @@ class Destructible: public Detector {
 
     EntityType get_type() const;
     bool is_drawn_in_y_order();
+    bool can_change_ground() const;
+    Ground get_ground() const;
 
     const std::string& get_animation_set_id();
     const std::string& get_destruction_sound_id();
     int get_damage_on_enemies();
-    bool has_special_ground();
-    Ground get_special_ground();
     void explode();
     bool can_explode();
-    bool is_disabled();
+    bool is_disabled() const;
     void set_destruction_callback(int destroy_callback_ref);
 
     bool is_obstacle_for(MapEntity &other);
     bool test_collision_custom(MapEntity &entity);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
-    void notify_collision_with_hero(Hero &hero, CollisionMode collision_mode);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+    void notify_collision_with_hero(Hero& hero, CollisionMode collision_mode);
     void notify_action_command_pressed();
 
     void set_suspended(bool suspended);

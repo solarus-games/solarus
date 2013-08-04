@@ -10,6 +10,7 @@ Engine changes
 * Replace the old built-in dialog box by a very minimal one.
 * New entity: separators to visually separate some regions in a map (#177).
 * Blocks and thrown items can now fall into holes, lava and water (#191).
+* Kill enemies that fall into holes, lava and water (#190).
 * Allow quest makers and users to set the size of the playing area.
 * Allow maps to have a default destination entity (#231).
 * A game can now start without specifying an initial map and destination.

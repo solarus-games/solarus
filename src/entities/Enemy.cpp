@@ -48,8 +48,14 @@
  * \param breed Breed of the enemy.
  * \param treasure Treasure dropped when the enemy is killed.
  */
-Enemy::Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
-    const std::string& breed, const Treasure& treasure):
+Enemy::Enemy(
+    Game& game,
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    const std::string& breed,
+    const Treasure& treasure):
 
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE,
       name, layer, x, y, 0, 0),
@@ -77,6 +83,7 @@ Enemy::Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
   immobilized(false),
   start_shaking_date(0),
   end_shaking_date(0),
+  dying_animation_started(false),
   treasure(treasure),
   exploding(false),
   nb_explosions(0),
@@ -137,7 +144,7 @@ MapEntity* Enemy::create(
   }
 
   // create the enemy
-  Enemy *enemy = new Enemy(game, name, layer, x, y, breed, treasure);
+  Enemy* enemy = new Enemy(game, name, layer, x, y, breed, treasure);
 
   // initialize the fields
   enemy->set_direction(direction);
@@ -160,6 +167,23 @@ MapEntity* Enemy::create(
  */
 EntityType Enemy::get_type() const {
   return ENEMY;
+}
+
+/**
+ * \brief Returns whether this entity has to be drawn in y order.
+ * \return \c true if this type of entity should be drawn at the same level
+ * as the hero.
+ */
+bool Enemy::is_drawn_in_y_order() {
+  return drawn_in_y_order;
+}
+
+/**
+ * \brief Returns whether this entity is sensible to the ground below it.
+ * \return \c true if this entity is sensible to its ground.
+ */
+bool Enemy::is_ground_observer() const {
+  return true;  // To make enemies fall into holes, water, etc.
 }
 
 /**
@@ -286,8 +310,27 @@ bool Enemy::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \return true if the deep water tiles are currently an obstacle for this entity
  */
 bool Enemy::is_deep_water_obstacle() {
-  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING
-      && obstacle_behavior != OBSTACLE_BEHAVIOR_SWIMMING;
+
+  if (obstacle_behavior == OBSTACLE_BEHAVIOR_FLYING
+      || obstacle_behavior == OBSTACLE_BEHAVIOR_SWIMMING) {
+    return false;
+  }
+
+  if (is_being_hurt()) {
+    return false;
+  }
+
+  const Layer layer = get_layer();
+  const int x = get_top_left_x();
+  const int y = get_top_left_y();
+  if (get_entities().get_ground(layer, x, y) == GROUND_DEEP_WATER
+      || get_entities().get_ground(layer, x + get_width() - 1, y) == GROUND_DEEP_WATER
+      || get_entities().get_ground(layer, x, y + get_height() - 1) == GROUND_DEEP_WATER
+      || get_entities().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_DEEP_WATER) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -303,7 +346,26 @@ bool Enemy::is_shallow_water_obstacle() {
  * \return true if the holes are currently an obstacle for this entity
  */
 bool Enemy::is_hole_obstacle() {
-  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
+
+  if (obstacle_behavior == OBSTACLE_BEHAVIOR_FLYING) {
+    return false;
+  }
+
+  if (is_being_hurt()) {
+    return false;
+  }
+
+  const Layer layer = get_layer();
+  const int x = get_top_left_x();
+  const int y = get_top_left_y();
+  if (get_entities().get_ground(layer, x, y) == GROUND_HOLE
+      || get_entities().get_ground(layer, x + get_width() - 1, y) == GROUND_HOLE
+      || get_entities().get_ground(layer, x, y + get_height() - 1) == GROUND_HOLE
+      || get_entities().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_HOLE) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -319,7 +381,26 @@ bool Enemy::is_prickle_obstacle() {
  * \return true if lava is currently obstacle for this entity
  */
 bool Enemy::is_lava_obstacle() {
-  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
+
+  if (obstacle_behavior == OBSTACLE_BEHAVIOR_FLYING) {
+    return false;
+  }
+
+  if (is_being_hurt()) {
+    return false;
+  }
+
+  const Layer layer = get_layer();
+  const int x = get_top_left_x();
+  const int y = get_top_left_y();
+  if (get_entities().get_ground(layer, x, y) == GROUND_LAVA
+      || get_entities().get_ground(layer, x + get_width() - 1, y) == GROUND_LAVA
+      || get_entities().get_ground(layer, x, y + get_height() - 1) == GROUND_LAVA
+      || get_entities().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_LAVA) {
+    return false;
+  }
+
+  return true;
 }
 
 /**
@@ -615,15 +696,6 @@ void Enemy::set_animation(const std::string& animation) {
 }
 
 /**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return \c true if this type of entity should be drawn at the same level
- * as the hero.
- */
-bool Enemy::is_drawn_in_y_order() {
-  return drawn_in_y_order;
-}
-
-/**
  * \brief Updates the enemy.
  */
 void Enemy::update() {
@@ -801,8 +873,6 @@ void Enemy::notify_position_changed() {
 
 /**
  * \brief This function is called when the layer of this entity has just changed.
- *
- * Redefine it if you need to be notified.
  */
 void Enemy::notify_layer_changed() {
 
@@ -810,6 +880,31 @@ void Enemy::notify_layer_changed() {
 
   if (!is_being_hurt()) {
     get_lua_context().enemy_on_position_changed(*this, get_xy(), get_layer());
+  }
+}
+
+/**
+ * \copydoc MapEntity::notify_ground_below_changed
+ */
+void Enemy::notify_ground_below_changed() {
+
+  if (get_obstacle_behavior() != OBSTACLE_BEHAVIOR_NORMAL
+      || get_life() <= 0) {
+    return;
+  }
+
+  Ground ground = get_ground_below();
+  switch (ground) {
+
+    case GROUND_HOLE:
+    case GROUND_LAVA:
+    case GROUND_DEEP_WATER:
+      // Kill the enemy.
+      set_life(0);
+      break;
+
+    default:
+      break;
   }
 }
 
@@ -1196,18 +1291,39 @@ void Enemy::kill() {
   invulnerable = true;
   can_attack = false;
   can_attack_again_date = 0;
+  dying_animation_started = true;
 
-  if (hurt_style != HURT_BOSS) {
-    // replace the enemy sprites
-    clear_sprites();
-    create_sprite("enemies/enemy_killed");
-    Sound::play("enemy_killed");
-  }
-  else {
-    // a boss: create some explosions
+  if (hurt_style == HURT_BOSS) {
+    // A boss: create some explosions.
     exploding = true;
     nb_explosions = 0;
     next_explosion_date = System::now() + 2000;
+  }
+  else {
+    // Replace the enemy sprites.
+    clear_sprites();
+    switch (get_ground_below()) {
+
+      case GROUND_HOLE:
+        // TODO animation of falling into a hole.
+        Sound::play("jump");
+        break;
+
+      case GROUND_DEEP_WATER:
+        // TODO water animation.
+        Sound::play("splash");
+        break;
+
+      case GROUND_LAVA:
+        // TODO lava animation.
+        Sound::play("splash");
+        break;
+
+      default:
+        create_sprite("enemies/enemy_killed");
+        Sound::play("enemy_killed");
+        break;
+    }
   }
 
   // save the enemy state if required
@@ -1233,8 +1349,7 @@ bool Enemy::is_being_hurt() {
  * \return true if the enemy is killed
  */
 bool Enemy::is_killed() {
-  return life <= 0
-    && (get_sprite().get_animation_set_id() == "enemies/enemy_killed" || next_explosion_date > 0);
+  return life <= 0 && dying_animation_started;
 }
 
 /**
@@ -1243,11 +1358,15 @@ bool Enemy::is_killed() {
  */
 bool Enemy::is_dying_animation_finished() {
 
-  if (hurt_style != HURT_BOSS) {
+  if (nb_explosions > 0 && !exploding) {
+    return true;
+  }
+
+  if (has_sprite()) {
     return get_sprite().is_animation_finished();
   }
 
-  return nb_explosions > 0 && !exploding;
+  return false;
 }
 
 /**
@@ -1273,7 +1392,7 @@ void Enemy::set_treasure(const Treasure& treasure) {
  */
 bool Enemy::is_sprite_finished_or_looping() {
 
-  Sprite &sprite = get_sprite();
+  Sprite& sprite = get_sprite();
   return sprite.is_animation_finished() || sprite.is_animation_looping();
 }
 

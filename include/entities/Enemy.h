@@ -113,6 +113,7 @@ class Enemy: public Detector {
     bool immobilized;                  /**< indicates that the enemy is currently immobilized */
     uint32_t start_shaking_date;       /**< date when the enemy shakes */
     uint32_t end_shaking_date;         /**< date when the enemy stops shaking and walks again */
+    bool dying_animation_started;      /**< whether the dying animation was started */
 
     Treasure treasure;                 /**< pickable item that appears when this enemy gets killed */
 
@@ -148,6 +149,9 @@ class Enemy: public Detector {
         const Treasure& treasure);
 
     EntityType get_type() const;
+    bool is_drawn_in_y_order();
+    bool is_ground_observer() const;
+
     void set_map(Map &map);
     void notify_map_started();
     void notify_map_opening_transition_finished();
@@ -199,7 +203,6 @@ class Enemy: public Detector {
     bool is_lava_obstacle();
 
     // enemy state
-    bool is_drawn_in_y_order();
     void update();
     void set_suspended(bool suspended);
     void draw_on_map();
@@ -208,6 +211,7 @@ class Enemy: public Detector {
     void notify_obstacle_reached();
     void notify_position_changed();
     void notify_layer_changed();
+    void notify_ground_below_changed();
     void notify_movement_changed();
     void notify_movement_finished();
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);

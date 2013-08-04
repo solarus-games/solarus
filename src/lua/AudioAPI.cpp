@@ -215,7 +215,7 @@ int LuaContext::audio_api_get_music_num_channels(lua_State* l) {
  */
 int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
 
-  int channel = luaL_checkinteger(l, 1);
+  int channel = luaL_checkint(l, 1);
 
   if (Music::get_format() != Music::IT) {
     lua_pushnil(l);
@@ -237,8 +237,8 @@ int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
 
-  int channel = luaL_checkinteger(l, 1);
-  int volume = luaL_checkinteger(l, 2);
+  int channel = luaL_checkint(l, 1);
+  int volume = luaL_checkint(l, 2);
 
   if (Music::get_format() != Music::IT) {
     lua_pushboolean(l, false);
@@ -277,7 +277,7 @@ int LuaContext::audio_api_get_music_tempo(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_tempo(lua_State* l) {
 
-  int tempo = luaL_checkinteger(l, 1);
+  int tempo = luaL_checkint(l, 1);
 
   if (Music::get_format() != Music::IT) {
     lua_pushboolean(l, false);

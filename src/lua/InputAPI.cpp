@@ -91,7 +91,7 @@ int LuaContext::input_api_is_key_pressed(lua_State* l) {
  */
 int LuaContext::input_api_is_joypad_button_pressed(lua_State* l) {
 
-  int button = luaL_checkinteger(l, 1);
+  int button = luaL_checkint(l, 1);
 
   lua_pushboolean(l, InputEvent::is_joypad_button_down(button));
   return 1;
@@ -104,7 +104,7 @@ int LuaContext::input_api_is_joypad_button_pressed(lua_State* l) {
  */
 int LuaContext::input_api_get_joypad_axis_state(lua_State* l) {
 
-  int axis = luaL_checkinteger(l, 1);
+  int axis = luaL_checkint(l, 1);
 
   lua_pushinteger(l, InputEvent::get_joypad_axis_state(axis));
   return 1;
@@ -117,7 +117,7 @@ int LuaContext::input_api_get_joypad_axis_state(lua_State* l) {
  */
 int LuaContext::input_api_get_joypad_hat_direction(lua_State* l) {
 
-  int hat = luaL_checkinteger(l, 1);
+  int hat = luaL_checkint(l, 1);
 
   lua_pushinteger(l, InputEvent::get_joypad_hat_direction(hat));
   return 1;

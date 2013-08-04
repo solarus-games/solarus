@@ -1219,7 +1219,7 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
 
   // The treasure's dialog is over.
   EquipmentItem& item = lua_context.check_item(l, lua_upvalueindex(1));
-  int treasure_variant = luaL_checkinteger(l, lua_upvalueindex(2));
+  int treasure_variant = luaL_checkint(l, lua_upvalueindex(2));
   const std::string& treasure_savegame_variable =
       luaL_checkstring(l, lua_upvalueindex(3));
   lua_pushvalue(l, lua_upvalueindex(4));

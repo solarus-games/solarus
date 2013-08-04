@@ -127,7 +127,7 @@ void DialogBox::open(const std::string& dialog_id,
       if (index != std::string::npos) {
         // Replace the special sequence '$v' by the price of the shop item.
         lua_rawgeti(l, LUA_REGISTRYINDEX, info_ref);
-        int price = luaL_checkinteger(l, -1);
+        int price = luaL_checkint(l, -1);
         lua_pop(l, -1);
         std::ostringstream oss;
         oss << price;

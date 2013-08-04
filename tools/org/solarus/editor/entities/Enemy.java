@@ -17,7 +17,6 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
-import java.io.*;
 
 import org.solarus.editor.*;
 

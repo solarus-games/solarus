@@ -503,7 +503,7 @@ int LuaContext::map_api_move_camera(lua_State* l) {
   lua_settop(l, 5); // let the function on top of the stack
 
   // store the function and the delays
-  // TODO store this in the map's table instead of globally
+  // TODO store this as Lua refs instead of globally
   lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
   lua_pushinteger(l, delay_before);
   lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");

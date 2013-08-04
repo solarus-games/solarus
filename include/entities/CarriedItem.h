@@ -30,39 +30,6 @@
  */
 class CarriedItem: public MapEntity {
 
-  private:
-
-    // game data
-    Hero& hero;				/**< the hero, who is carrying or throwing this item */
-
-    // state
-    bool is_lifting;			/**< indicates that the hero is lifting this item */
-    bool is_throwing;			/**< indicates that the item is being thrown */
-    bool is_breaking;			/**< indicates that the item is breaking */
-    bool break_on_intermediate_layer;	/**<  indicates that the item has to get broken now and on the intermediate layer instead of the lower one */
-    std::string destruction_sound_id;	/**< the sound played when the item breaks */
-    int damage_on_enemies;		/**< damage for an enemy that receives the item */
-
-    // throwing the item
-    Sprite* shadow_sprite;		/**< sprite of the shadow when the item is being thrown */
-    int throwing_direction;		/**< direction where the item is thrown (0 to 3) */
-    uint32_t next_down_date;		/**< when the item is thrown, date when it move one pixel downwards next time */
-    int item_height;			/**< current height where the item is drawn above its shadow */
-    int y_increment;			/**< next y change for item_height */
-
-    // explosion of the item
-    uint32_t explosion_date;		/**< date when the item explodes (0 if there is no explosion) */
-
-    static const std::string lifting_trajectories[4];	/**< trajectory of the lifting movement for each direction */
-
-    void initialize(const Rectangle& xy, const Rectangle& size,
-	const Rectangle& origin,
-        const std::string& animation_set_id,
-        const std::string& destruction_sound_id,
-        int damage_on_enemies, uint32_t explosion_date);
-
-    bool will_explode_soon();
-
   public:
 
     /**
@@ -74,7 +41,9 @@ class CarriedItem: public MapEntity {
       BEHAVIOR_KEEP            /**< let the hero continue to carry the item */
     };
 
-    CarriedItem(Hero& hero, MapEntity& original_entity,
+    CarriedItem(
+        Hero& hero,
+        const MapEntity& original_entity,
         const std::string& animation_set_id,
         const std::string& destruction_sound_id,
         int damage_on_enemies,
@@ -116,10 +85,49 @@ class CarriedItem: public MapEntity {
     bool is_jumper_obstacle(Jumper& jumper);
     bool is_enemy_obstacle(Enemy& enemy);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
-    void notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode);
-    void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
-    void notify_collision_with_enemy(Enemy &enemy);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
+    void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
+    void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
+    void notify_collision_with_enemy(Enemy& enemy);
+    void notify_attacked_enemy(EnemyAttack attack,
+        Enemy& victim, EnemyReaction::Reaction& result, bool killed);
+
+  private:
+
+    // game data
+    Hero& hero;             /**< the hero, who is carrying or throwing this item */
+
+    // state
+    bool is_lifting;            /**< indicates that the hero is lifting this item */
+    bool is_throwing;           /**< indicates that the item is being thrown */
+    bool is_breaking;           /**< indicates that the item is breaking */
+    bool break_one_layer_above; /**<  indicates that the item has to get broken
+                                 * now one layer above its current position */
+    std::string destruction_sound_id;   /**< the sound played when the item breaks */
+    int damage_on_enemies;      /**< damage for an enemy that receives the item */
+
+    // throwing the item
+    Sprite* shadow_sprite;      /**< sprite of the shadow when the item is being thrown */
+    int throwing_direction;     /**< direction where the item is thrown (0 to 3) */
+    uint32_t next_down_date;    /**< when the item is thrown, date when it move one pixel downwards next time */
+    int item_height;            /**< current height where the item is drawn above its shadow */
+    int y_increment;            /**< next y change for item_height */
+
+    // explosion of the item
+    uint32_t explosion_date;        /**< date when the item explodes (0 if there is no explosion) */
+
+    static const std::string lifting_trajectories[4];   /**< trajectory of the lifting movement for each direction */
+
+    void initialize(
+        const Rectangle& xy,
+        const Rectangle& size,
+        const Rectangle& origin,
+        const std::string& animation_set_id,
+        const std::string& destruction_sound_id,
+        int damage_on_enemies,
+        uint32_t explosion_date);
+
+    bool will_explode_soon();
+
 };
 
 #endif

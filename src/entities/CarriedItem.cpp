@@ -58,17 +58,20 @@ const std::string CarriedItem::lifting_trajectories[4] = {
  * \param explosion_date date of the explosion if the item should explode,
  * or 0 if the item does not explode
  */
-CarriedItem::CarriedItem(Hero& hero, MapEntity& original_entity,
+CarriedItem::CarriedItem(
+    Hero& hero,
+    const MapEntity& original_entity,
     const std::string& animation_set_id,
     const std::string& destruction_sound_id,
-    int damage_on_enemies, uint32_t explosion_date):
+    int damage_on_enemies,
+    uint32_t explosion_date):
 
   MapEntity(),
   hero(hero),
   is_lifting(true),
   is_throwing(false),
   is_breaking(false),
-  break_on_intermediate_layer(false) {
+  break_one_layer_above(false) {
 
   // put the item on the hero's layer
   set_layer(hero.get_layer());
@@ -85,7 +88,7 @@ CarriedItem::CarriedItem(Hero& hero, MapEntity& original_entity,
   set_size(original_entity.get_size());
 
   // create the lift movement and the sprite
-  PixelMovement *movement = new PixelMovement(lifting_trajectories[direction], 100, false, true);
+  PixelMovement* movement = new PixelMovement(lifting_trajectories[direction], 100, false, true);
   create_sprite(animation_set_id);
   get_sprite().set_current_animation("stopped");
   set_movement(movement);
@@ -348,10 +351,13 @@ void CarriedItem::update() {
     if (is_broken()) {
       remove_from_map();
     }
-    else if (break_on_intermediate_layer) {
+    else if (break_one_layer_above) {
       break_item();
-      get_entities().set_entity_layer(*this, LAYER_INTERMEDIATE);
-      break_on_intermediate_layer = false;
+      Layer layer = get_layer();
+      if (layer != LAYER_HIGH) {
+        get_entities().set_entity_layer(*this, Layer(layer + 1));
+      }
+      break_one_layer_above = false;
     }
     else if (get_movement()->is_stopped() || y_increment >= 7) {
       break_item();
@@ -591,11 +597,13 @@ void CarriedItem::notify_collision_with_crystal(Crystal &crystal, CollisionMode 
  * \param stairs the stairs entity
  * \param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
+void CarriedItem::notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode) {
 
-  if (is_throwing && !is_breaking
-      && stairs.is_inside_floor() && get_layer() == LAYER_LOW) {
-    break_on_intermediate_layer = true; // show the destruction animation above the stairs
+  if (is_throwing
+      && !is_breaking
+      && stairs.is_inside_floor()
+      && get_layer() == stairs.get_layer()) {
+    break_one_layer_above = true; // show the destruction animation above the stairs
   }
 }
 

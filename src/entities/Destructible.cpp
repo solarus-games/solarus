@@ -45,7 +45,7 @@ const Destructible::Features Destructible::features[] = {
   {"white_stone", "entities/stone_small_white", "stone", true,  false, false, false, 1, 2, GROUND_EMPTY},
   {"black_stone", "entities/stone_small_black", "stone", true,  false, false, false, 2, 4, GROUND_EMPTY},
   {"grass",       "entities/grass",             "bush",  false, true,  false, false, 0, 0, GROUND_GRASS},
-  {"bomb_flower", "entities/bomb_flower",       "bush",  true,   true, true,  true,  1, 1, GROUND_EMPTY},
+  {"bomb_flower", "entities/bomb_flower",       "bush",  true,  true,  true,  true,  1, 1, GROUND_EMPTY},
 };
 
 /**

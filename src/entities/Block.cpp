@@ -90,6 +90,14 @@ bool Block::is_drawn_in_y_order() {
 }
 
 /**
+ * \brief Returns whether this entity is sensible to the ground below it.
+ * \return \c true if this entity is sensible to its ground.
+ */
+bool Block::is_ground_observer() const {
+  return true;  // To make blocks fall into holes.
+}
+
+/**
  * \brief Returns whether this entity is an obstacle for another one.
  * \param other another entity
  * \return true
@@ -242,7 +250,7 @@ void Block::notify_position_changed() {
   }
 
   check_collision_with_detectors(false);
-  update_ground_observers();
+  update_ground_below();
 }
 
 /**
@@ -253,6 +261,30 @@ void Block::notify_obstacle_reached() {
 
   // the block is stopped by an obstacle while being pushed or pulled
   get_hero().notify_grabbed_entity_collision();
+}
+
+/**
+ * \copydoc MapEntity::notify_ground_below_changed
+ */
+void Block::notify_ground_below_changed() {
+
+  Ground ground = get_ground_below();
+  switch (ground) {
+
+    case GROUND_HOLE:
+      Sound::play("jump");
+      remove_from_map();
+      break;
+
+    case GROUND_LAVA:
+    case GROUND_DEEP_WATER:
+      Sound::play("splash");
+      remove_from_map();
+      break;
+
+    default:
+      break;
+  }
 }
 
 /**

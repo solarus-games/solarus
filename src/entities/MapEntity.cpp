@@ -185,7 +185,7 @@ bool MapEntity::can_be_obstacle() {
 }
 
 /**
- * \brief Returns this entity is sensible to the ground below it.
+ * \brief Returns whether this entity is sensible to the ground below it.
  *
  * This function returns \c false by default.
  * If this function returns \c true when it is added to a map,
@@ -525,6 +525,7 @@ void MapEntity::notify_layer_changed() {
 
   check_collision_with_detectors(true);
   update_ground_observers();
+  update_ground_below();
 }
 
 /**
@@ -1205,6 +1206,7 @@ void MapEntity::notify_position_changed() {
 
   check_collision_with_detectors(true);
   update_ground_observers();
+  update_ground_below();
 }
 
 /**
@@ -1327,6 +1329,7 @@ void MapEntity::set_enabled(bool enabled) {
 void MapEntity::notify_enabled(bool enabled) {
 
   update_ground_observers();
+  update_ground_below();
 }
 
 /**

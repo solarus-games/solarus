@@ -989,7 +989,6 @@ void Hero::check_position() {
   set_facing_entity(NULL);
   check_collision_with_detectors(true);
 
-  // Recompute the ground below the hero.
   if (is_suspended()) {
     // When suspended, the hero may have invalid coordinates
     // (e.g. transition between maps).
@@ -1183,7 +1182,7 @@ bool Hero::is_ground_visible() {
 }
 
 /**
- * \brief Returns this entity is sensible to the ground below it.
+ * \brief Returns whether this entity is sensible to the ground below it.
  * \return \c true if this entity is sensible to its ground.
  */
 bool Hero::is_ground_observer() const {

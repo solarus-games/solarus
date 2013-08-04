@@ -152,7 +152,8 @@ Ground MapEntities::get_ground(Layer layer, int x, int y) {
     const MapEntity& ground_modifier = *(*it);
     if (ground_modifier.is_enabled()
         && !ground_modifier.is_being_removed()
-        && ground_modifier.overlaps(x, y)) {
+        && ground_modifier.overlaps(x, y)
+        && ground_modifier.get_ground() != GROUND_EMPTY) {
       ground = ground_modifier.get_ground();
     }
   }

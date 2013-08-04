@@ -487,7 +487,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     // but we may have to change the layer.
 
     Layer layer = LAYER_INTERMEDIATE;
-    if (map.get_entities().get_tile_ground(LAYER_INTERMEDIATE, get_x(), get_y()) == GROUND_EMPTY) {
+    if (map.get_entities().get_ground(LAYER_INTERMEDIATE, get_x(), get_y()) == GROUND_EMPTY) {
       layer = LAYER_LOW;
     }
     set_map(map);

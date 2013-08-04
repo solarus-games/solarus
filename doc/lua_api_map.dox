@@ -434,6 +434,40 @@ end
   Like \ref lua_api_timer "timers", this function it returns immediately.
   Your callback will be automatically called later by the engine.
 
+\subsection lua_api_map_get_ground map:get_ground(x, y, layer)
+
+Returns the kind of ground (terrain) of a point.
+
+The ground is defined by
+\ref lua_api_tile "tiles"
+(and other entities that may change it like
+\ref lua_api_dynamic_tile "dynamic tiles")
+that overlap this point.
+- \c x (number): X coordinate of a point of the map.
+- \c y (number): Y coordinate of a point of the map.
+- \c layer (number): The layer
+  (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
+- Return value (string): The kind of ground. The possible values are the
+  same as the \c ground property of the
+  \ref quest_tileset_data_file "tileset file":
+  \c "empty",
+  \c "traversable",
+  \c "wall",
+  \c "wall_top_right",
+  \c "wall_top_left",
+  \c "wall_bottom_left",
+  \c "wall_bottom_right",
+  \c "wall_top_right_water",
+  \c "wall_top_left_water",
+  \c "wall_bottom_left_water",
+  \c "wall_bottom_right_water",
+  \c "deep_water",
+  \c "shallow_water",
+  \c "hole",
+  \c "ladder",
+  \c "prickles" or
+  \c "lava".
+
 \subsection lua_api_map_draw_sprite map:draw_sprite(sprite, x, y)
 
 Draws a \ref lua_api_sprite "sprite" at the given map coordinates.

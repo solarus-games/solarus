@@ -27,10 +27,7 @@
 #include "lua/LuaContext.h"
 #include <lua.hpp>
 
-/**
- * \brief Lua name of each ground type.
- */
-static std::string ground_names[] = {
+const std::string Tileset::ground_names[] = {
   "empty",
   "traversable",
   "wall",

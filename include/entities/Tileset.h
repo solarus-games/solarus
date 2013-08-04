@@ -62,6 +62,8 @@ class Tileset {
     Surface& get_entities_image();
     TilePattern& get_tile_pattern(int id);
     void set_images(Tileset& other);
+
+    static const std::string ground_names[];  /**< Lua name of each ground type. */
 };
 
 #endif

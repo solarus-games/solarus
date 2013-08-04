@@ -652,6 +652,7 @@ class LuaContext {
       map_api_set_light,  // TODO remove (this should be scripted)
       map_api_get_camera_position,
       map_api_move_camera,  // TODO set any movement to the camera instead
+      map_api_get_ground,
       map_api_draw_sprite,  // TODO allow to also draw a surface or a text surface
       map_api_get_crystal_state,
       map_api_set_crystal_state,

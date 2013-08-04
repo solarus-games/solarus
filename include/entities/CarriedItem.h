@@ -53,6 +53,7 @@ class CarriedItem: public MapEntity {
     EntityType get_type() const;
     bool can_be_obstacle();
     bool is_drawn_in_y_order();
+    bool is_ground_observer() const;
 
     int get_damage_on_enemies();
 
@@ -62,6 +63,7 @@ class CarriedItem: public MapEntity {
     bool is_being_lifted();
     bool is_being_thrown();
     void break_item();
+    void break_item_on_ground();
     bool is_broken();
     bool can_explode();
 
@@ -84,6 +86,7 @@ class CarriedItem: public MapEntity {
     bool is_npc_obstacle(NPC& npc);
     bool is_jumper_obstacle(Jumper& jumper);
     bool is_enemy_obstacle(Enemy& enemy);
+    void notify_obstacle_reached();
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
     void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);

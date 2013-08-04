@@ -140,6 +140,14 @@ bool CarriedItem::is_drawn_in_y_order() {
 }
 
 /**
+ * \brief Returns whether this entity is sensible to the ground below it.
+ * \return \c true if this entity is sensible to its ground.
+ */
+bool CarriedItem::is_ground_observer() const {
+  return true;  // To make the item fall into holes, water, etc.
+}
+
+/**
  * \brief Returns the damage this item can cause to ennemies.
  * \return the damage on enemies
  */
@@ -189,7 +197,7 @@ void CarriedItem::throw_item(int direction) {
   Sound::play("throw");
 
   // stop the sprite animation
-  Sprite &sprite = get_sprite();
+  Sprite& sprite = get_sprite();
   sprite.set_current_animation("stopped");
 
   // set the movement of the item sprite
@@ -230,7 +238,7 @@ bool CarriedItem::will_explode_soon() {
 }
 
 /**
- * \brief Destroys the item when it is being thrown.
+ * \brief Destroys the item while it is being thrown.
  */
 void CarriedItem::break_item() {
 
@@ -256,6 +264,39 @@ void CarriedItem::break_item() {
       remove_from_map(); // because if the item was still carried by the hero, then the hero class will destroy it
     }
   }
+  is_throwing = false;
+  is_breaking = true;
+}
+
+/**
+ * \brief Destroys the item after it finishes its thrown movement.
+ *
+ * How the item breaks depends on the ground where it lands.
+ */
+void CarriedItem::break_item_on_ground() {
+
+  get_movement()->stop();
+
+  Ground ground = get_ground_below();
+  switch (ground) {
+
+    case GROUND_HOLE:
+      Sound::play("jump");
+      remove_from_map();
+      break;
+
+    case GROUND_DEEP_WATER:
+    case GROUND_LAVA:
+      Sound::play("walk_on_water");
+      remove_from_map();
+      break;
+
+    default:
+      // Break the item normally.
+      break_item();
+      break;
+  }
+
   is_throwing = false;
   is_breaking = true;
 }
@@ -360,7 +401,8 @@ void CarriedItem::update() {
       break_one_layer_above = false;
     }
     else if (get_movement()->is_stopped() || y_increment >= 7) {
-      break_item();
+      // Interrupt the movement.
+      break_item_on_ground();
     }
     else {
       uint32_t now = System::now();
@@ -370,6 +412,17 @@ void CarriedItem::update() {
         y_increment++;
       }
     }
+  }
+}
+
+/**
+ * \brief Notifies this entity that it has just failed to change its position
+ * because of obstacles.
+ */
+void CarriedItem::notify_obstacle_reached() {
+
+  if (is_throwing && !is_broken()) {
+    break_item();
   }
 }
 
@@ -420,8 +473,11 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
  * \param result indicates how the enemy has reacted to the attack
  * \param killed indicates that the attack has just killed the enemy
  */
-void CarriedItem::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void CarriedItem::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED) {
     break_item();

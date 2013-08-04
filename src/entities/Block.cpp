@@ -94,7 +94,7 @@ bool Block::is_drawn_in_y_order() {
  * \return \c true if this entity is sensible to its ground.
  */
 bool Block::is_ground_observer() const {
-  return true;  // To make blocks fall into holes.
+  return true;  // To make blocks fall into holes, water, etc.
 }
 
 /**

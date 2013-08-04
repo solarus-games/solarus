@@ -523,9 +523,11 @@ void MapEntity::set_layer(Layer layer) {
  */
 void MapEntity::notify_layer_changed() {
 
-  check_collision_with_detectors(true);
-  update_ground_observers();
-  update_ground_below();
+  if (is_on_map()) {
+    check_collision_with_detectors(true);
+    update_ground_observers();
+    update_ground_below();
+  }
 }
 
 /**

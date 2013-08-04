@@ -53,6 +53,7 @@ MapEntity::MapEntity():
   main_loop(NULL),
   map(NULL),
   layer(LAYER_LOW),
+  ground_below(GROUND_EMPTY),
   name(""),
   direction(0),
   visible(true),
@@ -86,6 +87,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   map(NULL),
   layer(layer),
   bounding_box(x, y),
+  ground_below(GROUND_EMPTY),
   name(""),
   direction(0),
   visible(true),
@@ -118,6 +120,7 @@ MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
   map(NULL),
   layer(layer),
   bounding_box(x, y),
+  ground_below(GROUND_EMPTY),
   name(name),
   direction(direction),
   visible(true),
@@ -182,7 +185,21 @@ bool MapEntity::can_be_obstacle() {
 }
 
 /**
- * \brief Returns whether entities of this type can override the ground
+ * \brief Returns this entity is sensible to the ground below it.
+ *
+ * This function returns \c false by default.
+ * If this function returns \c true when it is added to a map,
+ * get_ground_below() will then return the ground below it
+ * and notify_ground_below_changed() will be called when it changes.
+ *
+ * \return \c true if this entity is sensible to its ground.
+ */
+bool MapEntity::is_ground_observer() const {
+  return false;
+}
+
+/**
+ * \brief Returns whether this entity can override the ground
  * of where they are placed.
  *
  * The ground of a point is computed as the ground of the tile below it,
@@ -193,44 +210,76 @@ bool MapEntity::can_be_obstacle() {
  * If this function returns \c true, the entity is added to the list of
  * potential ground modifiers when it is added to a map.
  *
- * \return \c true if this type of entity can change the ground.
+ * \return \c true if this entity can change the ground.
  */
-bool MapEntity::can_change_ground() const {
+bool MapEntity::is_ground_modifier() const {
   return false;
 }
 
 /**
- * \brief When can_change_ground() is \c true, returns the ground defined
+ * \brief When is_ground_modifier() is \c true, returns the ground defined
  * by this entity.
  *
  * Entities overlapping it should take it into account.
  *
  * \return The ground defined by this entity.
  */
-Ground MapEntity::get_ground() const {
+Ground MapEntity::get_modified_ground() const {
   return GROUND_EMPTY;
 }
 
 /**
  * \brief Inform entities sensible to their ground that it may have just
  * changed because of this entity.
- * TODO for now, only the hero is updated: also update enemies and blocks
- * by making in MapEntities a list of entities sensible to their ground.
  */
 void MapEntity::update_ground_observers() {
 
-  if (!can_change_ground()) {
+  if (!is_ground_modifier()) {
     // Nothing to do.
     return;
   }
 
-  // For now the hero is the only entity sensible to its ground.
-  const Rectangle& hero_ground_point = get_hero().get_ground_point();
-  if (overlaps(hero_ground_point.get_x(), hero_ground_point.get_y())) {
-    get_hero().check_position();
+  // Update overlapping entities sensible to their ground.
+  std::list<MapEntity*>::const_iterator it;
+  const std::list<MapEntity*>& ground_observers =
+      get_entities().get_ground_observers(get_layer());
+  for (it = ground_observers.begin(); it != ground_observers.end(); ++it) {
+    MapEntity& ground_observer = *(*it);
+    if (overlaps(ground_observer.get_ground_point())) {
+      ground_observer.update_ground_below();
+    }
   }
 }
 
+/**
+ * \brief Returns the ground where this entity is.
+ *
+ * If the entity is not sensible to its ground, always returns GROUND_EMPTY.
+ *
+ * \return The ground under this entity.
+ */
+Ground MapEntity::get_ground_below() const {
+  return ground_below;
+}
+
+/**
+ * \brief Recomputes the kind of ground below this entity.
+ *
+ * This function does nothing if the entity is not sensible to its ground.
+ */
+void MapEntity::update_ground_below() {
+
+  if (!is_ground_observer()) {
+    return;
+  }
+
+  Ground previous_ground = this->ground_below;
+  this->ground_below = get_entities().get_ground(
+      get_layer(), get_ground_point());
+  if (this->ground_below != previous_ground) {
+    notify_ground_below_changed();
+  }
+}
 
 /**
  * \brief Returns whether entities of this type can be drawn.
@@ -289,6 +338,8 @@ void MapEntity::set_map(Map& map) {
   if (&get_game().get_current_map() == &map) {
     notify_tileset_changed();
   }
+
+  this->ground_below = GROUND_EMPTY;
 }
 
 /**
@@ -302,6 +353,10 @@ void MapEntity::notify_map_started() {
  * of the map is finished.
  */
 void MapEntity::notify_map_opening_transition_finished() {
+
+  if (is_ground_observer()) {
+    update_ground_below();
+  }
 }
 
 /**
@@ -470,6 +525,13 @@ void MapEntity::notify_layer_changed() {
 
   check_collision_with_detectors(true);
   update_ground_observers();
+}
+
+/**
+ * \brief This function is called when the ground below this entity has
+ * just changed.
+ */
+void MapEntity::notify_ground_below_changed() {
 }
 
 /**
@@ -822,6 +884,19 @@ void MapEntity::set_facing_entity(Detector* facing_entity) {
  * \param facing_entity the detector this entity is now facing (possibly NULL)
  */
 void MapEntity::notify_facing_entity_changed(Detector* facing_entity) {
+}
+
+/**
+ * \brief Returns the point that determines the ground below this entity.
+ *
+ * By default, returns the coordinates of the entity.
+ * The size of the rectangle returned must be 1x1.
+ *
+ * \return The point used to determine the ground (relative to the map).
+ */
+const Rectangle MapEntity::get_ground_point() const {
+
+  return get_xy();
 }
 
 /**

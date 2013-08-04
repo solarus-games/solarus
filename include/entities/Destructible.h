@@ -94,8 +94,8 @@ class Destructible: public Detector {
 
     EntityType get_type() const;
     bool is_drawn_in_y_order();
-    bool can_change_ground() const;
-    Ground get_ground() const;
+    bool is_ground_modifier() const;
+    Ground get_modified_ground() const;
 
     const std::string& get_animation_set_id();
     const std::string& get_destruction_sound_id();

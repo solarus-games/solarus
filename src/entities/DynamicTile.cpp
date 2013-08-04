@@ -77,16 +77,16 @@ void DynamicTile::set_map(Map &map) {
  * of where they are placed.
  * \return \c true if this type of entity can change the ground.
  */
-bool DynamicTile::can_change_ground() const {
+bool DynamicTile::is_ground_modifier() const {
   return true;
 }
 
 /**
- * \brief When can_change_ground() is \c true, returns the ground defined
+ * \brief When is_ground_modifier() is \c true, returns the ground defined
  * by this entity.
  * \return The ground defined by this entity.
  */
-Ground DynamicTile::get_ground() const {
+Ground DynamicTile::get_modified_ground() const {
   return tile_pattern->get_ground();
 }
 
@@ -95,10 +95,12 @@ Ground DynamicTile::get_ground() const {
  * \param other an entity
  * \return true if this tile is an obstacle for the entity
  */
-bool DynamicTile::is_obstacle_for(MapEntity &other) {
+bool DynamicTile::is_obstacle_for(MapEntity& other) {
 
+  // TODO normally, this function can be removed since there is already
+  // a modified ground
   bool result = false;
-  switch (get_ground()) {
+  switch (get_modified_ground()) {
 
     case GROUND_WALL:
     case GROUND_WALL_TOP_RIGHT:

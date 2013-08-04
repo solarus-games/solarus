@@ -58,8 +58,13 @@ const Destructible::Features Destructible::features[] = {
  * \param treasure the pickable item that appears when the destructible
  * item is lifted or cut
  */
-Destructible::Destructible(const std::string& name, Layer layer, int x, int y,
-    Subtype subtype, const Treasure& treasure):
+Destructible::Destructible(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    Subtype subtype,
+    const Treasure& treasure):
 
   Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
   subtype(subtype),
@@ -116,17 +121,17 @@ bool Destructible::is_drawn_in_y_order() {
  * of where they are placed.
  * \return \c true if this type of entity can change the ground.
  */
-bool Destructible::can_change_ground() const {
+bool Destructible::is_ground_modifier() const {
   // Because some kinds of destructibles (like grass) set a special ground.
-  return true;
+  return features[subtype].special_ground != GROUND_EMPTY;
 }
 
 /**
- * \brief When can_change_ground() is \c true, returns the ground defined
+ * \brief When is_ground_modifier() is \c true, returns the ground defined
  * by this entity.
  * \return The ground defined by this entity.
  */
-Ground Destructible::get_ground() const {
+Ground Destructible::get_modified_ground() const {
 
   if (is_disabled() || is_being_cut) {
     return GROUND_EMPTY;

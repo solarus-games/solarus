@@ -87,6 +87,7 @@ void MapEntities::destroy_all_entities() {
     entities_drawn_first[layer].clear();
     entities_drawn_y_order[layer].clear();
     obstacle_entities[layer].clear();
+    ground_observers[layer].clear();
     ground_modifiers[layer].clear();
     stairs[layer].clear();
   }
@@ -140,6 +141,8 @@ Hero& MapEntities::get_hero() {
  * \param x X coordinate of the point.
  * \param y Y coordinate of the point.
  * \return The ground at this place.
+ *
+ * TODO move to the Map class (the ground is the terrain of the map)
  */
 Ground MapEntities::get_ground(Layer layer, int x, int y) {
 
@@ -153,8 +156,8 @@ Ground MapEntities::get_ground(Layer layer, int x, int y) {
     if (ground_modifier.is_enabled()
         && !ground_modifier.is_being_removed()
         && ground_modifier.overlaps(x, y)
-        && ground_modifier.get_ground() != GROUND_EMPTY) {
-      ground = ground_modifier.get_ground();
+        && ground_modifier.get_modified_ground() != GROUND_EMPTY) {
+      ground = ground_modifier.get_modified_ground();
     }
   }
 
@@ -182,6 +185,15 @@ Ground MapEntities::get_ground(Layer layer, const Rectangle& xy) {
  */
 const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
   return obstacle_entities[layer];
+}
+
+/**
+ * \brief Returns the entities that are sensible to the ground below them.
+ * \param layer The layer.
+ * \return The ground observers on that layer.
+ */
+const list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
+  return ground_observers[layer];
 }
 
 /**
@@ -612,8 +624,13 @@ void MapEntities::add_entity(MapEntity* entity) {
       }
     }
 
+    // update the ground observers list
+    if (entity->is_ground_observer()) {
+      ground_observers[layer].push_back(entity);
+    }
+
     // update the ground modifiers list
-    if (entity->can_change_ground()) {
+    if (entity->is_ground_modifier()) {
       ground_modifiers[layer].push_back(entity);
     }
 
@@ -748,8 +765,13 @@ void MapEntities::remove_marked_entities() {
       detectors.remove(static_cast<Detector*>(entity));
     }
 
+    // remove it from the ground obsevers list if present
+    if (entity->is_ground_observer()) {
+      ground_observers[layer].remove(entity);
+    }
+
     // remove it from the ground modifiers list if present
-    if (entity->can_change_ground()) {
+    if (entity->is_ground_modifier()) {
       ground_modifiers[layer].remove(entity);
     }
 
@@ -1072,12 +1094,17 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
       obstacle_entities[layer].push_back(&entity);
     }
 
+    // update the ground observers list
+    if (entity.is_ground_observer()) {
+      ground_observers[old_layer].remove(&entity);
+      ground_observers[layer].push_back(&entity);
+    }
+
     // update the ground modifiers list
-    if (entity.can_change_ground()) {
+    if (entity.is_ground_modifier()) {
       ground_modifiers[old_layer].remove(&entity);
       ground_modifiers[layer].push_back(&entity);
     }
-
 
     // update the sprites list
     if (entity.is_drawn_in_y_order()) {

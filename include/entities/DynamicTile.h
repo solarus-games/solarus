@@ -39,8 +39,8 @@ class DynamicTile: public MapEntity {
 
     EntityType get_type() const;
     void set_map(Map& map);
-    bool can_change_ground() const;
-    Ground get_ground() const;
+    bool is_ground_modifier() const;
+    Ground get_modified_ground() const;
     bool is_obstacle_for(MapEntity& other);
     void draw_on_map();
 

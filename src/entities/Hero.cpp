@@ -74,7 +74,6 @@ Hero::Hero(Equipment& equipment):
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
   on_raised_blocks(false),
-  ground(GROUND_TRAVERSABLE),
   next_ground_date(0) {
 
   // position
@@ -201,7 +200,7 @@ void Hero::update() {
   update_state();
 
   if (!is_suspended()) {
-    update_ground();
+    update_ground_effects();
     check_collision_with_detectors(false);
     check_gameover();
   }
@@ -241,11 +240,11 @@ void Hero::update_movement() {
 }
 
 /**
- * \brief Updates the ground under the hero.
+ * \brief Updates the effects (if any) of the ground below the hero.
  *
  * This function is called repeatedly.
  */
-void Hero::update_ground() {
+void Hero::update_ground_effects() {
 
   // see if it's time to do something (depending on the ground)
   uint32_t now = System::now();
@@ -261,7 +260,7 @@ void Hero::update_ground() {
       }
     }
 
-    else if (ground == GROUND_HOLE && !state->can_avoid_hole()) {
+    else if (get_ground_below() == GROUND_HOLE && !state->can_avoid_hole()) {
       // the hero is being attracted by a hole and it's time to move one more pixel into the hole
 
       next_ground_date = now + 60;
@@ -437,7 +436,6 @@ void Hero::set_map(Map& map) {
 
   last_solid_ground_coords.set_xy(-1, -1);
   target_solid_ground_coords.set_xy(-1, -1);
-  ground = GROUND_TRAVERSABLE;
   get_sprites().set_clipping_rectangle();
 
   state->set_map(map);
@@ -998,15 +996,11 @@ void Hero::check_position() {
     return;
   }
 
-  // Save the previous ground and determine the new one.
-  Ground previous_ground = this->ground;
-  this->ground = get_entities().get_ground(get_layer(), get_ground_point());
-
-  if (this->ground != previous_ground) {
-    notify_ground_changed();
-  }
+  // Determine the new ground if it has changed.
+  update_ground_below();
 
   // Save the hero's last valid position.
+  Ground ground = get_ground_below();
   if (ground != GROUND_DEEP_WATER
       && ground != GROUND_HOLE
       && ground != GROUND_LAVA
@@ -1020,7 +1014,7 @@ void Hero::check_position() {
   }
 
   // With empty ground, possibly go to the lower layer.
-  if (this->ground == GROUND_EMPTY && state->is_touching_ground()) {
+  if (ground == GROUND_EMPTY && state->is_touching_ground()) {
 
     int x = get_top_left_x();
     int y = get_top_left_y();
@@ -1102,9 +1096,11 @@ void Hero::reset_movement() {
 /**
  * \brief Starts activating the new ground of the hero.
  */
-void Hero::notify_ground_changed() {
+void Hero::notify_ground_below_changed() {
 
-  switch (ground) {
+  MapEntity::notify_ground_below_changed();
+
+  switch (get_ground_below()) {
 
   case GROUND_TRAVERSABLE:
     // Traversable ground: remove any special sprite displayed under the hero.
@@ -1176,14 +1172,6 @@ void Hero::notify_ground_changed() {
 }
 
 /**
- * \brief Returns the ground where the hero is.
- * \return The ground under the hero.
- */
-Ground Hero::get_ground_below() {
-  return ground;
-}
-
-/**
  * \brief Returns whether the hero is in a state such that
  * a ground can be displayed under him.
  */
@@ -1195,16 +1183,18 @@ bool Hero::is_ground_visible() {
 }
 
 /**
- * \brief Returns the coordinates of the point used to determine the ground
- * below the hero.
- * \return the coordinates of the point used to determine the ground
- * (relative to the map)
- *
- * TODO move to MapEntity. Enemies also need a ground point.
+ * \brief Returns this entity is sensible to the ground below it.
+ * \return \c true if this entity is sensible to its ground.
  */
-const Rectangle Hero::get_ground_point() {
-  // we must return here the same coordinates as dynamic tiles
-  // (see DynamicTile::test_collision_custom)
+bool Hero::is_ground_observer() const {
+  return true;
+}
+
+/**
+ * \brief Returns the point that determines the ground below this entity.
+ * \return The point used to determine the ground (relative to the map).
+ */
+const Rectangle Hero::get_ground_point() const {
   return Rectangle(get_x(), get_y() - 2, 1, 1);
 }
 
@@ -2277,7 +2267,7 @@ void Hero::start_back_to_solid_ground(bool use_memorized_xy,
  */
 void Hero::start_state_from_ground() {
 
-  switch (ground) {
+  switch (get_ground_below()) {
 
   case GROUND_DEEP_WATER:
     set_state(new PlungingState(*this));

@@ -59,8 +59,10 @@ class MapEntity: public ExportableToLua {
     bool is_hero() const;
     virtual bool is_detector();
     virtual bool can_be_obstacle();
-    virtual bool can_change_ground() const;
-    virtual Ground get_ground() const;
+    virtual bool is_ground_observer() const;
+    virtual const Rectangle get_ground_point() const;
+    virtual bool is_ground_modifier() const;
+    virtual Ground get_modified_ground() const;
     virtual bool can_be_drawn();
     virtual bool is_drawn_in_y_order();
     virtual bool is_drawn_at_its_position() const;
@@ -78,6 +80,7 @@ class MapEntity: public ExportableToLua {
     // position in the map
     Layer get_layer() const;
     void set_layer(Layer layer);
+    Ground get_ground_below() const;
 
     int get_x() const;
     int get_y() const;
@@ -151,6 +154,7 @@ class MapEntity: public ExportableToLua {
     virtual void notify_obstacle_reached();
     virtual void notify_position_changed();
     virtual void notify_layer_changed();
+    virtual void notify_ground_below_changed();
     virtual void notify_movement_changed();
     virtual void notify_movement_finished();
     Detector* get_facing_entity();
@@ -247,7 +251,9 @@ class MapEntity: public ExportableToLua {
     void clear_old_sprites();
 
     void set_direction(int direction);
+
     void update_ground_observers();
+    void update_ground_below();
 
     // easy access to various game objects
     LuaContext& get_lua_context() const;
@@ -269,14 +275,16 @@ class MapEntity: public ExportableToLua {
                                                  * (automatically set by class MapEntities after adding the entity to the map) */
 
     Layer layer;                                /**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
-                                                 * The layer is constant for the tiles and can change for the hero and the dynamic entities.
-                                                 * The layer is private to make sure the set_layer() function is always called. */
+                                                 * The layer is constant for the tiles and can change for the hero and the dynamic entities. */
 
     Rectangle bounding_box;                     /**< This rectangle represents the position of the entity of the map and is
                                                  * used for the collision tests. It corresponds to the bounding box of the entity.
                                                  * It can be different from the sprite's rectangle of the entity.
                                                  * For example, the hero's bounding box is a 16*16 rectangle, but its sprite may be
                                                  * a 24*32 rectangle. */
+
+    Ground ground_below;                        /**< Kind of ground under this entity: grass, shallow water, etc.
+                                                 * Only used by entities sensible to their ground. */
 
     Rectangle origin;                           /**< Coordinates of the origin point of the entity,
                                                  * relative to the top-left corner of its rectangle.

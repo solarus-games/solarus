@@ -134,9 +134,10 @@ class Hero: public MapEntity {
      * Depending on the kind of ground, a special sprite may be displayed under him (grass, shallow water)
      * or something bad can happen (deep water, holes).
      */
-    Ground get_ground_below();
     bool is_ground_visible();
-    const Rectangle get_ground_point();
+    bool is_ground_observer() const;
+    const Rectangle get_ground_point() const;
+    void notify_ground_below_changed();
     void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
     void reset_target_solid_ground_coords();
 
@@ -293,8 +294,7 @@ class Hero: public MapEntity {
     Teletransporter* get_delayed_teletransporter();
 
     // ground
-    void update_ground();
-    void notify_ground_changed();
+    void update_ground_effects();
 
     // life
     void check_gameover();
@@ -310,15 +310,14 @@ class Hero: public MapEntity {
     int walking_speed;             /**< current walking speed (possibly changed by the ground) */
 
     // state specific
-    Teletransporter *delayed_teletransporter;   /**< a teletransporter that will be activated when the hero finishes
-                                                  * a special behavior, such as falling into a hole or walking on stairs */
+    Teletransporter* delayed_teletransporter;   /**< a teletransporter that will be activated when the hero finishes
+                                                 * a special behavior, such as falling into a hole or walking on stairs */
     bool on_conveyor_belt;          /**< indicates that the hero's rectangle is currently overlapping a conveyor belt
                                      * (even if the collision is not enough to take the conveyor belt and move the hero) */
     bool on_raised_blocks;          /**< indicates that the hero is currently on
                                      * raised crystal blocks */
 
     // ground
-    Ground ground;                         /**< kind of ground under the hero: grass, shallow water, etc. */
     Rectangle last_solid_ground_coords;    /**< coordinates of the last hero position on a ground
                                             * where he can walk (e.g. before jumping or falling into a hole) */
     Layer last_solid_ground_layer;         /**< layer of the last hero position on a solid ground */

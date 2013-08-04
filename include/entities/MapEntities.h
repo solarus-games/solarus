@@ -48,6 +48,7 @@ class MapEntities {
     Ground get_ground(Layer layer, int x, int y);
     Ground get_ground(Layer layer, const Rectangle& xy);
     const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
+    const std::list<MapEntity*>& get_ground_observers(Layer layer);
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
@@ -139,8 +140,11 @@ class MapEntities {
                                                      * on this map.
                                                      * TODO store them by layer like obstacle_entities */
     std::list<MapEntity*>
-      ground_modifiers[LAYER_NB];                   /**< all dynamic entities that may define the ground of
-                                                     * entities overlapping them */
+      ground_observers[LAYER_NB];                   /**< all dynamic entities sensible to the ground
+                                                     * below them */
+    std::list<MapEntity*>
+      ground_modifiers[LAYER_NB];                   /**< all dynamic entities that may change the ground of
+                                                     * the map where they are placed */
     Destination* default_destination;               /**< the default destination of this map */
 
     std::list<MapEntity*>

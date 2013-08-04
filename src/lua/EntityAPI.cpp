@@ -508,7 +508,7 @@ int LuaContext::entity_api_set_position(lua_State* l) {
 
   entity.set_xy(x, y);
   if (layer != -1) {
-    if (layer < LAYER_LOW || layer > LAYER_NB) {
+    if (layer < LAYER_LOW || layer >= LAYER_NB) {
       arg_error(l, 4, StringConcat() << "Invalid layer: " << layer);
     }
     MapEntities& entities = entity.get_map().get_entities();
@@ -924,7 +924,7 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
     x = luaL_checkint(l, 2);
     y = luaL_checkint(l, 3);
     layer = luaL_checkint(l, 4);
-    if (layer < LAYER_LOW || layer > LAYER_NB) {
+    if (layer < LAYER_LOW || layer >= LAYER_NB) {
       arg_error(l, 4, StringConcat() << "Invalid layer: " << layer);
     }
   }
@@ -2357,7 +2357,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
   int treasure_variant = opt_int_field(l, 2, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 2, "treasure_savegame_variable", "");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 2, StringConcat() << "Invalid layer: " << layer);
   }
 

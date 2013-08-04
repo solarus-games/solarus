@@ -528,7 +528,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
   int y = luaL_checkint(l, 3);
   int layer = luaL_checkint(l, 4);
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     error(l, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -846,7 +846,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
   int height = check_int_field(l, 1, "height");
   int tile_pattern_id = check_int_field(l, 1, "pattern");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -879,7 +879,7 @@ int LuaContext::map_api_create_destination(lua_State* l) {
   const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
   bool is_default = opt_boolean_field(l, 1, "default", false);
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -921,7 +921,7 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
   const std::string& destination_map_id = check_string_field(l, 1, "destination_map");
   const std::string& destination_name = opt_string_field(l, 1, "destination", "");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -963,7 +963,7 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1023,7 +1023,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1094,7 +1094,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
   bool opening_condition_consumed = opt_boolean_field(l, 1, "opening_condition_consumed", false);
   const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog", "");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1166,7 +1166,7 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
   int direction = check_int_field(l, 1, "direction");
   int jump_length = check_int_field(l, 1, "jump_length");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1209,7 +1209,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1269,7 +1269,7 @@ int LuaContext::map_api_create_npc(lua_State* l) {
   const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
   const std::string& behavior = opt_string_field(l, 1, "behavior", "map");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1316,7 +1316,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
   bool pullable = check_boolean_field(l, 1, "pullable");
   int maximum_moves = check_int_field(l, 1, "maximum_moves");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1357,7 +1357,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
   int tile_pattern_id = check_int_field(l, 1, "pattern");
   bool enabled_at_start = check_boolean_field(l, 1, "enabled_at_start");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1396,7 +1396,7 @@ int LuaContext::map_api_create_switch(lua_State* l) {
   bool needs_block = check_boolean_field(l, 1, "needs_block");
   bool inactivate_when_leaving = check_boolean_field(l, 1, "inactivate_when_leaving");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1441,7 +1441,7 @@ int LuaContext::map_api_create_wall(lua_State* l) {
   bool stops_npcs = check_boolean_field(l, 1, "stops_npcs");
   bool stops_blocks = check_boolean_field(l, 1, "stops_blocks");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1481,7 +1481,7 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
   int width = check_int_field(l, 1, "width");
   int height = check_int_field(l, 1, "height");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1515,7 +1515,7 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1550,7 +1550,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
   int height = check_int_field(l, 1, "height");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1596,7 +1596,7 @@ int LuaContext::map_api_create_shop_item(lua_State* l) {
   int price = check_int_field(l, 1, "price");
   const std::string& dialog_id = check_string_field(l, 1, "dialog");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1645,7 +1645,7 @@ int LuaContext::map_api_create_conveyor_belt(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   int direction = check_int_field(l, 1, "direction");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1686,7 +1686,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
   bool opening_condition_consumed = opt_boolean_field(l, 1, "opening_condition_consumed", false);
   const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog", "");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1752,7 +1752,7 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
   int direction = check_int_field(l, 1, "direction");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1823,7 +1823,7 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1855,7 +1855,7 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
@@ -1887,7 +1887,7 @@ int LuaContext::map_api_create_fire(lua_State* l) {
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
 
-  if (layer < LAYER_LOW || layer > LAYER_NB) {
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 

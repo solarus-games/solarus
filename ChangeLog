@@ -9,6 +9,7 @@ Engine changes
 * Allow scripted dialog boxes (#184).
 * Replace the old built-in dialog box by a very minimal one.
 * New entity: separators to visually separate some regions in a map (#177).
+* Blocks can now fall into holes and drown into lava and water (#191).
 * Allow quest makers and users to set the size of the playing area.
 * Allow maps to have a default destination entity (#231).
 * A game can now start without specifying an initial map and destination.
@@ -16,7 +17,7 @@ Engine changes
 * Fix map menus not receiving on_command_pressed/released() events.
 * Fix an error when loading sounds (#236). Sounds were working anyway.
 * Jumpers can no longer be activated the opposite way when in water.
-* Non-diagonal jumpers are now activated after a slight delay (#253).
+* Jumpers are now activated after a slight delay (#253).
 * Correctly detect the ground below the hero or any point.
 * Don't die if there is a syntax error in dialogs.dat.
 

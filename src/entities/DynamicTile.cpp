@@ -37,7 +37,8 @@
 DynamicTile::DynamicTile(const std::string& name, Layer layer, int x, int y,
 			 int width, int height, int tile_pattern_id, bool enabled):
   MapEntity(name, 0, layer, x, y, width, height),
-  tile_pattern_id(tile_pattern_id), tile_pattern(NULL) {
+  tile_pattern_id(tile_pattern_id),
+  tile_pattern(NULL) {
 
   set_enabled(enabled);
 }
@@ -123,6 +124,7 @@ bool DynamicTile::is_obstacle_for(MapEntity& other) {
     case GROUND_LAVA:
     case GROUND_PRICKLE:
     case GROUND_LADDER:
+    case GROUND_ICE:
       result = false;
       break;
   }

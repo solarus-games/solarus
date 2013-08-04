@@ -757,6 +757,7 @@ bool Map::test_collision_with_ground(Layer layer, int x, int y,
   case GROUND_EMPTY:
   case GROUND_TRAVERSABLE:
   case GROUND_GRASS:
+  case GROUND_ICE:
     // The square is not an obstacle.
     on_obstacle = false;
     break;

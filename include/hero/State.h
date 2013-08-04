@@ -75,6 +75,7 @@ class Hero::State {
     // ground
     virtual bool can_avoid_deep_water();
     virtual bool can_avoid_hole();
+    virtual bool can_avoid_ice();
     virtual bool can_avoid_lava();
     virtual bool can_avoid_prickle();
     virtual bool is_touching_ground();

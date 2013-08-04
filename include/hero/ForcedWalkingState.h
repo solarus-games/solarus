@@ -26,22 +26,23 @@
  */
 class Hero::ForcedWalkingState: public Hero::State {
 
-  private:
-
-    PathMovement *movement;       /**< the movement applied to the hero */
-
   public:
 
-    ForcedWalkingState(Hero &hero, const std::string &path, bool loop, bool ignore_obstacles);
+    ForcedWalkingState(
+        Hero& hero,
+        const std::string& path,
+        bool loop,
+        bool ignore_obstacles);
     ~ForcedWalkingState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     bool can_start_gameover_sequence();
     bool is_touching_ground();
     bool can_avoid_deep_water();
     bool can_avoid_hole();
+    bool can_avoid_ice();
     bool can_avoid_lava();
     bool can_avoid_prickle();
     bool can_avoid_teletransporter();
@@ -49,6 +50,11 @@ class Hero::ForcedWalkingState: public Hero::State {
     bool can_avoid_sensor();
     bool can_avoid_switch();
     bool can_be_hurt(Enemy* attacker);
+
+  private:
+
+    PathMovement* movement;       /**< the movement applied to the hero */
+
 };
 
 #endif

@@ -200,3 +200,11 @@ bool Hero::HurtState::can_avoid_switch() {
   return true;
 }
 
+/**
+ * \brief Returns whether the hero ignores the effect of ice in this state.
+ * \return \c true if the hero ignores the effect of ice in the current state.
+ */
+bool Hero::HurtState::can_avoid_ice() {
+  return true;
+}
+

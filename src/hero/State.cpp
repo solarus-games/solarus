@@ -501,6 +501,17 @@ bool Hero::State::can_avoid_hole() {
 }
 
 /**
+ * \brief Returns whether the hero ignores the effect of ice in this state.
+ *
+ * Returns false by default.
+ *
+ * \return \c true if the hero ignores the effect of ice in the current state.
+ */
+bool Hero::State::can_avoid_ice() {
+  return false;
+}
+
+/**
  * \brief Returns whether the hero ignores the effect of lava in this state.
  *
  * Returns false by default.

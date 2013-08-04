@@ -100,6 +100,7 @@ Each tile pattern must have the following properties:
   - \c "deep_water": Deep water (the hero drowns or swims).
   - \c "shallow_water": Shallow water (the hero can walk on it).
   - \c "hole": A hole (the hero falls into it).
+  - \c "ice": Ice (the hero slides).
   - \c "ladder": A ladder (the hero walks slowly on it).
   - \c "prickles": Untraversable spikes (it hurts the hero).
   - \c "lava": Lava (the hero drowns and gets hurt).

@@ -466,6 +466,7 @@ void MapEntities::add_tile(Tile* tile) {
   case GROUND_DEEP_WATER:
   case GROUND_GRASS:
   case GROUND_HOLE:
+  case GROUND_ICE:
   case GROUND_LAVA:
   case GROUND_PRICKLE:
   case GROUND_LADDER:

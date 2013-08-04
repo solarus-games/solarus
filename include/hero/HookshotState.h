@@ -35,6 +35,7 @@ class Hero::HookshotState: public Hero::State {
     bool is_touching_ground();
     bool can_avoid_deep_water();
     bool can_avoid_hole();
+    bool can_avoid_ice();
     bool can_avoid_lava();
     bool can_avoid_prickle();
     bool can_avoid_teletransporter();

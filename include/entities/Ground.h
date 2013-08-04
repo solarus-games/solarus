@@ -47,6 +47,7 @@ enum Ground {
   GROUND_SHALLOW_WATER,           /**< Shallow water where the hero can walk but slower. */
   GROUND_GRASS,                   /**< Grass where the hero walks slower. */
   GROUND_HOLE,                    /**< A hole where the hero can fall. */
+  GROUND_ICE,                     /**< Ice terrain where the hero slides. */
   GROUND_LADDER,                  /**< A ladder that slows down the hero. */
   GROUND_PRICKLE,                 /**< Some untraversable prickles that hurt the hero. */
   GROUND_LAVA,                    /**< Some lava where the hero drowns and gets hurt. */

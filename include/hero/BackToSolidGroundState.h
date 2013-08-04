@@ -24,22 +24,17 @@
  */
 class Hero::BackToSolidGroundState: public Hero::State {
 
-  private:
-
-    Rectangle target_xy;            /**< coordinates of the solid ground location to go to*/
-    Layer target_layer;             /**< layer of the target location */
-    uint32_t end_delay;             /**< delay before returning control to the player */
-    uint32_t end_date;              /**< date when the state ends */
-    bool with_sound;                /**< true to play a sound when reaching the solid ground */
-
   public:
 
-    BackToSolidGroundState(Hero &hero, bool use_memorized_xy,
-        uint32_t end_delay = 0, bool with_sound = true);
+    BackToSolidGroundState(
+        Hero& hero,
+        bool use_memorized_xy,
+        uint32_t end_delay = 0,
+        bool with_sound = true);
     ~BackToSolidGroundState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
     bool can_start_gameover_sequence();
@@ -47,6 +42,7 @@ class Hero::BackToSolidGroundState: public Hero::State {
     bool are_collisions_ignored();
     bool can_avoid_deep_water();
     bool can_avoid_hole();
+    bool can_avoid_ice();
     bool can_avoid_lava();
     bool can_avoid_prickle();
     bool is_touching_ground();
@@ -54,6 +50,14 @@ class Hero::BackToSolidGroundState: public Hero::State {
     bool can_avoid_sensor();
     bool can_avoid_switch();
     bool can_avoid_explosion();
+
+  private:
+
+    Rectangle target_xy;            /**< coordinates of the solid ground location to go to*/
+    Layer target_layer;             /**< layer of the target location */
+    uint32_t end_delay;             /**< delay before returning control to the player */
+    uint32_t end_date;              /**< date when the state ends */
+    bool with_sound;                /**< true to play a sound when reaching the solid ground */
 
 };
 

@@ -51,6 +51,7 @@ class Hero::HurtState: public Hero::State {
     bool is_separator_obstacle(Separator& separator);
     bool can_be_hurt(Enemy* attacker);
     bool can_avoid_switch();
+    bool can_avoid_ice();
 };
 
 #endif

@@ -74,7 +74,8 @@ Hero::Hero(Equipment& equipment):
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
   on_raised_blocks(false),
-  next_ground_date(0) {
+  next_ground_date(0),
+  next_ice_date(0) {
 
   // position
   set_origin(8, 13);
@@ -253,62 +254,143 @@ void Hero::update_ground_effects() {
     if (is_ground_visible() && get_movement() != NULL) {
 
       // a special ground is displayed under the hero and it's time to play a sound
-      double speed = ((StraightMovement*) get_movement())->get_speed();
+      double speed = (static_cast<StraightMovement*>(get_movement()))->get_speed();
       next_ground_date = now + std::max(150, (int) (20000 / speed));
       if (sprites->is_walking() && state->is_touching_ground()) {
         sprites->play_ground_sound();
       }
     }
 
-    else if (get_ground_below() == GROUND_HOLE && !state->can_avoid_hole()) {
-      // the hero is being attracted by a hole and it's time to move one more pixel into the hole
+    else {
 
-      next_ground_date = now + 60;
+      Ground ground = get_ground_below();
+      if (ground == GROUND_HOLE && !state->can_avoid_hole()) {
+        // the hero is being attracted by a hole and it's time to move one more pixel into the hole
 
-      if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
-        // too far from the solid ground: make the hero fall
-        set_walking_speed(normal_walking_speed);
-        set_state(new FallingState(*this));
-      }
-      else {
+        next_ground_date = now + 60;
 
-        // not too far yet
-        bool moved = false;
-        Rectangle collision_box = get_bounding_box();
-        collision_box.add_xy(hole_dxy);
-
-        if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-          set_bounding_box(collision_box);
-          notify_position_changed();
-          moved = true;
-        }
-
-        if (!moved && hole_dxy.get_x() != 0) { // try x only
-          collision_box = get_bounding_box();
-          collision_box.add_xy(hole_dxy.get_x(), 0);
-          if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-            set_bounding_box(collision_box);
-            notify_position_changed();
-            moved = true;
-          }
-        }
-
-        if (!moved && hole_dxy.get_y() != 0) { // try y only
-          collision_box = get_bounding_box();
-          collision_box.add_xy(0, hole_dxy.get_y());
-          if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-            set_bounding_box(collision_box);
-            notify_position_changed();
-            moved = true;
-          }
-        }
-
-        if (!moved) {
-          // the hero cannot be moved towards the direction previously calculated
+        if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
+          // too far from the solid ground: make the hero fall
           set_walking_speed(normal_walking_speed);
           set_state(new FallingState(*this));
         }
+        else {
+          // not too far yet
+          apply_additional_ground_movement();
+        }
       }
+      else if (ground == GROUND_ICE) {
+
+        // Slide on ice.
+        if (!state->can_avoid_ice()) {
+          apply_additional_ground_movement();
+        }
+
+        next_ground_date = now + 20;
+
+        if (now >= next_ice_date) {
+          // Time to update the additional movement.
+          update_ice();
+          ice_movement_direction8 = get_wanted_movement_direction8();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * \brief Updates the additional movement applied when the hero is on ice ground.
+ */
+void Hero::update_ice() {
+
+  uint32_t now = System::now();
+  int wanted_movement_direction8 = get_wanted_movement_direction8();
+  if (wanted_movement_direction8 == -1) {
+    // The player wants to stop.
+    if (ice_movement_direction8 == -1) {
+      // And he does for a while so stop.
+      ground_dxy.set_xy(0, 0);
+      next_ice_date = now + 1000;
+    }
+    else {
+      // But he was just moving on ice: continue the ice movement.
+      ground_dxy.set_xy(direction_to_xy_move(ice_movement_direction8));
+      next_ice_date = now + 300;
+    }
+  }
+  else {
+    // The player wants to move.
+    if (ice_movement_direction8 == -1) {
+      // But he was not just moving on ice: resist to the wanted movement.
+      ground_dxy.set_xy(direction_to_xy_move((wanted_movement_direction8 + 4) % 8));
+    }
+    else if (ice_movement_direction8 != wanted_movement_direction8) {
+      // He changed his direction: continue the ice movement.
+      ground_dxy.set_xy(direction_to_xy_move(ice_movement_direction8));
+      next_ice_date = now + 300;
+    }
+    else {
+      // He continues in the same direction.
+      ground_dxy.set_xy(direction_to_xy_move(wanted_movement_direction8));
+      next_ice_date = now + 300;
+    }
+  }
+}
+
+/**
+ * \brief Stops the additional movement applied when the hero is on ice ground.
+ */
+void Hero::stop_ice_movement() {
+
+  ice_movement_direction8 = 0;
+  ground_dxy.set_xy(0, 0);
+}
+
+/**
+ * \brief Changes the position of the hero as an effect of his current ground
+ * (like hole or ice).
+ */
+void Hero::apply_additional_ground_movement() {
+
+  if (ground_dxy.get_x() == 0 && ground_dxy.get_y() == 0) {
+    return;
+  }
+
+  bool moved = false;
+  Rectangle collision_box = get_bounding_box();
+  collision_box.add_xy(ground_dxy);
+
+  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+    set_bounding_box(collision_box);
+    notify_position_changed();
+    moved = true;
+  }
+
+  if (!moved && ground_dxy.get_x() != 0) { // try x only
+    collision_box = get_bounding_box();
+    collision_box.add_xy(ground_dxy.get_x(), 0);
+    if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+      set_bounding_box(collision_box);
+      notify_position_changed();
+      moved = true;
+    }
+  }
+
+  if (!moved && ground_dxy.get_y() != 0) { // try y only
+    collision_box = get_bounding_box();
+    collision_box.add_xy(0, ground_dxy.get_y());
+    if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+      set_bounding_box(collision_box);
+      notify_position_changed();
+      moved = true;
+    }
+  }
+
+  if (!moved) {
+    if (get_ground_below() == GROUND_HOLE) {
+      // the hero cannot be moved towards the direction previously calculated
+      set_walking_speed(normal_walking_speed);
+      set_state(new FallingState(*this));
     }
   }
 }
@@ -956,6 +1038,11 @@ void Hero::notify_obstacle_reached() {
   MapEntity::notify_obstacle_reached();
 
   state->notify_obstacle_reached();
+
+  if (get_ground_below() == GROUND_ICE) {
+    ground_dxy.set_xy(0, 0);
+    ice_movement_direction8 = -1;
+  }
 }
 
 /**
@@ -1074,6 +1161,10 @@ void Hero::notify_movement_changed() {
   // let the state pick the animation corresponding to the movement tried by the player
   state->notify_movement_changed();
   check_position();
+
+  if (get_ground_below() == GROUND_ICE) {
+    update_ice();
+  }
 }
 
 /**
@@ -1118,6 +1209,13 @@ void Hero::notify_ground_below_changed() {
     // Hole: attract the hero towards the hole.
     if (!state->can_avoid_hole()) {
       start_hole();
+    }
+    break;
+
+  case GROUND_ICE:
+    // Ice: make the hero slide.
+    if (!state->can_avoid_ice()) {
+      start_ice();
     }
     break;
 
@@ -1919,36 +2017,8 @@ void Hero::start_hole() {
 
     next_ground_date = System::now();
 
-    /* version where the attraction direction is calculated based on the wanted movement:
-     * problem because the wanted movement may be different from the real one
-    if (is_moving_towards(0)) {
-      hole_dxy.set_x(1);
-    }
-    else if (is_moving_towards(2)) {
-      hole_dxy.set_x(-1);
-    }
-    else {
-      hole_dxy.set_x(0);
-    }
-
-    if (is_moving_towards(1)) {
-      hole_dxy.set_y(-1);
-    }
-    else if (is_moving_towards(3)) {
-      hole_dxy.set_y(1);
-    }
-    else {
-      hole_dxy.set_y(0);
-    }
-
-    if (hole_dxy.get_x() == 0 && hole_dxy.get_y() == 0) {
-      // fall immediately because the hero was not moving but directly placed on the hole
-      set_state(new FallingState(*this));
-    }
-    else {
-      set_walking_speed(normal_walking_speed / 3);
-    }
-    */
+    // Don't calculate the attraction direction based on the wanted movement
+    // because the wanted movement may be different from the real one
 
     if (last_solid_ground_coords.get_x() == -1 ||
 	(last_solid_ground_coords.get_x() == get_x() && last_solid_ground_coords.get_y() == get_y())) {
@@ -1957,23 +2027,41 @@ void Hero::start_hole() {
     }
     else {
 
-      hole_dxy.set_xy(0, 0);
+      ground_dxy.set_xy(0, 0);
 
       if (get_x() > last_solid_ground_coords.get_x()) {
-        hole_dxy.set_x(1);
+        ground_dxy.set_x(1);
       }
       else if (get_x() < last_solid_ground_coords.get_x()) {
-        hole_dxy.set_x(-1);
+        ground_dxy.set_x(-1);
       }
 
       if (get_y() > last_solid_ground_coords.get_y()) {
-        hole_dxy.set_y(1);
+        ground_dxy.set_y(1);
       }
       else if (get_y() < last_solid_ground_coords.get_y()) {
-        hole_dxy.set_y(-1);
+        ground_dxy.set_y(-1);
       }
       set_walking_speed(normal_walking_speed / 3);
     }
+  }
+}
+
+/**
+ * \brief Makes the hero slide on ice ground.
+ */
+void Hero::start_ice() {
+
+  next_ground_date = System::now();
+  next_ice_date = System::now();
+
+  ice_movement_direction8 = get_wanted_movement_direction8();
+  if (ice_movement_direction8 == -1) {
+    ground_dxy = Rectangle(0, 0);
+  }
+  else {
+    // Exagerate the movement.
+    ground_dxy = direction_to_xy_move(ice_movement_direction8);
   }
 }
 
@@ -2296,9 +2384,10 @@ void Hero::start_state_from_ground() {
     start_free_or_carrying();
     break;
 
-  case GROUND_LADDER:
   case GROUND_TRAVERSABLE:
   case GROUND_EMPTY:
+  case GROUND_LADDER:
+  case GROUND_ICE:
     start_free_or_carrying();
     break;
 

@@ -43,6 +43,7 @@ const std::string Tileset::ground_names[] = {
   "shallow_water",
   "grass",
   "hole",
+  "ice",
   "ladder",
   "prickles",
   "lava",

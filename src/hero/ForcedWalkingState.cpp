@@ -50,7 +50,7 @@ Hero::ForcedWalkingState::~ForcedWalkingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::ForcedWalkingState::start(State *previous_state) {
+void Hero::ForcedWalkingState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -66,7 +66,7 @@ void Hero::ForcedWalkingState::start(State *previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::ForcedWalkingState::stop(State *next_state) {
+void Hero::ForcedWalkingState::stop(State* next_state) {
 
   State::stop(next_state);
 
@@ -117,6 +117,14 @@ bool Hero::ForcedWalkingState::can_avoid_deep_water() {
  * \return true if the hero ignores the effect of holes in the current state
  */
 bool Hero::ForcedWalkingState::can_avoid_hole() {
+  return true;
+}
+
+/**
+ * \brief Returns whether the hero ignores the effect of ice in this state.
+ * \return \c true if the hero ignores the effect of ice in the current state.
+ */
+bool Hero::ForcedWalkingState::can_avoid_ice() {
   return true;
 }
 

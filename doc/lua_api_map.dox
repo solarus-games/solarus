@@ -464,6 +464,7 @@ that overlap this point.
   \c "deep_water",
   \c "shallow_water",
   \c "hole",
+  \c "ice",
   \c "ladder",
   \c "prickles" or
   \c "lava".

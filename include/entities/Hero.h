@@ -220,6 +220,7 @@ class Hero: public MapEntity {
     void start_shallow_water();
     void start_deep_water();
     void start_hole();
+    void start_ice();
     void start_lava();
     void start_prickle(uint32_t delay);
 
@@ -291,10 +292,13 @@ class Hero: public MapEntity {
     // position
     void update_movement();
     void try_snap_to_facing_entity();
+    void apply_additional_ground_movement();
     Teletransporter* get_delayed_teletransporter();
 
     // ground
     void update_ground_effects();
+    void update_ice();
+    void stop_ice_movement();
 
     // life
     void check_gameover();
@@ -325,8 +329,11 @@ class Hero: public MapEntity {
                                             * into a hole (or some other bad ground), or (-1,-1) to indicate
                                             * that the hero will just return to the last solid ground coordinates */
     Layer target_solid_ground_layer;       /**< layer of the place to go back when falling in some bad ground */
-    uint32_t next_ground_date;             /**< when something will happend with the ground next time (a sound or a movement) */
-    Rectangle hole_dxy;                    /**< direction of the movement when the hero is being attracted by a hole */
+    uint32_t next_ground_date;             /**< when something will happen with the ground next time (a sound or a movement) */
+    uint32_t next_ice_date;                /**< when recomputing the additional movement on ice */
+    int ice_movement_direction8;           /**< wanted movement direction a while ago */
+    Rectangle ground_dxy;                  /**< additional movement with special ground (hole or ice) */
+
 };
 
 #endif

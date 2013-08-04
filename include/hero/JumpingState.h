@@ -51,6 +51,7 @@ class Hero::JumpingState: public Hero::State {
     bool is_separator_obstacle(Separator& separator);
     bool can_avoid_deep_water();
     bool can_avoid_hole();
+    bool can_avoid_ice();
     bool can_avoid_lava();
     bool can_avoid_prickle();
     bool can_avoid_teletransporter();

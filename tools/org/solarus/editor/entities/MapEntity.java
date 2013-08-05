@@ -475,11 +475,11 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns the entity's obstacle property (default is Obstacle.NONE).
+     * Returns the entity's obstacle property (default is Obstacle.TRAVERSABLE).
      * @return the obstacle property
      */
     public Obstacle getObstacle() {
-        return Obstacle.NONE;
+        return Obstacle.TRAVERSABLE;
     }
 
     /**

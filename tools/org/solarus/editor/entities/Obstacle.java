@@ -22,18 +22,16 @@ import java.io.*;
 
 /**
  * Enumeration of the obstacle property of the tiles.
- * Values lower than or equal to NONE correspond to entities the hero can walk on.
- * Values higher than NONE correspond to obstacles.
  */
 public enum Obstacle {
 
-    NONE("obstacle_none.png"),
+    EMPTY("obstacle_empty.png"),
+    TRAVERSABLE("obstacle_none.png"),
     OBSTACLE("obstacle.png"),
     TOP_RIGHT("obstacle_top_right.png"),
     TOP_LEFT("obstacle_top_left.png"),
     BOTTOM_LEFT("obstacle_bottom_left.png"),
     BOTTOM_RIGHT("obstacle_bottom_right.png"),
-    EMPTY("obstacle_empty.png"),
     TOP_RIGHT_WATER("obstacle_top_right_water.png"),
     TOP_LEFT_WATER("obstacle_top_left_water.png"),
     BOTTOM_LEFT_WATER("obstacle_bottom_left_water.png"),
@@ -41,6 +39,7 @@ public enum Obstacle {
     DEEP_WATER("obstacle_deep_water.png"),
     SHALLOW_WATER("obstacle_shallow_water.png"),
     HOLE("obstacle_hole.png"),
+    ICE("obstacle_ice.png"),
     LADDER("obstacle_ladder.png"),
     PRICKLE("obstacle_prickle.png"),
     LAVA("obstacle_lava.png"),
@@ -51,13 +50,13 @@ public enum Obstacle {
     private static ImageIcon[] icons = null;
 
     public static final String[] humanNames = {
-            "No obstacle",
+            "Empty",
+            "Traversable",
             "Full obstacle",
             "Top right",
             "Top left",
             "Bottom left",
             "Bottom right",
-            "Empty",
             "Top right (water)",
             "Top left (water)",
             "Bottom left (water)",
@@ -65,6 +64,7 @@ public enum Obstacle {
             "Deep water",
             "Shallow water",
             "Hole",
+            "Ice",
             "Ladder",
             "Prickles",
             "Lava",

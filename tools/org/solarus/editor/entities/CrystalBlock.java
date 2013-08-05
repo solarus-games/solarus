@@ -86,7 +86,7 @@ public class CrystalBlock extends MapEntity {
      * @return true if this entity is an obstacle
      */
     public Obstacle getObstacle() {
-        return (subtype == Subtype.BLUE) ? Obstacle.OBSTACLE : Obstacle.NONE;
+        return (subtype == Subtype.BLUE) ? Obstacle.OBSTACLE : Obstacle.TRAVERSABLE;
     }
 
     /**

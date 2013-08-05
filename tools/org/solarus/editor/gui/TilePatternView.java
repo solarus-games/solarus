@@ -53,10 +53,10 @@ public class TilePatternView extends JPanel implements Observer {
         constraints.insets = new Insets(5, 5, 5, 5); // margins
         constraints.anchor = GridBagConstraints.LINE_START; // alignment of the components
 
-        // obstacle
+        // Ground.
         constraints.gridx = 0;
         constraints.gridy = 0;
-        add(new JLabel("Obstacle"), constraints);
+        add(new JLabel("Ground"), constraints);
         obstacleView = new EnumerationIconChooser<Obstacle>(Obstacle.class);
 
         obstacleView.addActionListener(new ActionListener() {
@@ -151,7 +151,7 @@ public class TilePatternView extends JPanel implements Observer {
         else {
             buttonDelete.setEnabled(false);
             obstacleView.setEnabled(false);
-            obstacleView.setValue(Obstacle.NONE);
+            obstacleView.setValue(Obstacle.TRAVERSABLE);
             defaultLayerView.setEnabled(false);
         }
         animationView.update(tilePattern);

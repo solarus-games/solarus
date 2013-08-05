@@ -101,13 +101,13 @@ public class Tileset extends Observable {
     private static final HashMap<String, Obstacle> obstaclesByName =
         new HashMap<String, Obstacle>();
     static {
-        obstaclesByName.put("traversable", Obstacle.NONE);
+        obstaclesByName.put("empty", Obstacle.EMPTY);
+        obstaclesByName.put("traversable", Obstacle.TRAVERSABLE);
         obstaclesByName.put("wall", Obstacle.OBSTACLE);
         obstaclesByName.put("wall_top_right", Obstacle.TOP_RIGHT);
         obstaclesByName.put("wall_top_left", Obstacle.TOP_LEFT);
         obstaclesByName.put("wall_bottom_left", Obstacle.BOTTOM_LEFT);
         obstaclesByName.put("wall_bottom_right", Obstacle.BOTTOM_RIGHT);
-        obstaclesByName.put("empty", Obstacle.EMPTY);
         obstaclesByName.put("wall_top_right_water", Obstacle.TOP_RIGHT_WATER);
         obstaclesByName.put("wall_top_left_water", Obstacle.TOP_LEFT_WATER);
         obstaclesByName.put("wall_bottom_left_water", Obstacle.BOTTOM_LEFT_WATER);
@@ -115,6 +115,7 @@ public class Tileset extends Observable {
         obstaclesByName.put("deep_water", Obstacle.DEEP_WATER);
         obstaclesByName.put("shallow_water", Obstacle.SHALLOW_WATER);
         obstaclesByName.put("hole", Obstacle.HOLE);
+        obstaclesByName.put("ice", Obstacle.ICE);
         obstaclesByName.put("ladder", Obstacle.LADDER);
         obstaclesByName.put("prickles", Obstacle.PRICKLE);
         obstaclesByName.put("lava", Obstacle.LAVA);

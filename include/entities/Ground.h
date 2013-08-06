@@ -31,6 +31,8 @@ enum Ground {
   GROUND_EMPTY,                   /**< Keep unchanged the ground of entities below. */
   GROUND_TRAVERSABLE,             /**< Normal travserable ground. */
   GROUND_WALL,                    /**< Obstacle entity. */
+  GROUND_LOW_WALL,                /**< Can only be traversed by projectiles like arrows,
+                                   * boomerang, thrown items, etc. */
   GROUND_WALL_TOP_RIGHT,          /**< The upper-right half of the entity is an obstacle. */
   GROUND_WALL_TOP_LEFT,           /**< The upper-left half of the entity is an obstacle. */
   GROUND_WALL_BOTTOM_LEFT,        /**< The lower-left half of the entity is an obstacle. */

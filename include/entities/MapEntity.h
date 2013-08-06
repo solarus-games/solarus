@@ -208,6 +208,7 @@ class MapEntity: public ExportableToLua {
         EnemyReaction::Reaction& result, bool killed);
 
     virtual bool is_obstacle_for(MapEntity& other);
+    virtual bool is_low_wall_obstacle();
     virtual bool is_shallow_water_obstacle();
     virtual bool is_deep_water_obstacle();
     virtual bool is_hole_obstacle();

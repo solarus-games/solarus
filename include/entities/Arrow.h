@@ -43,7 +43,8 @@ class Arrow: public MapEntity {
 
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_stairs_obstacle(Stairs &stairs);
+    bool is_stairs_obstacle(Stairs& stairs);
+    bool is_low_wall_obstacle();
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_lava_obstacle();

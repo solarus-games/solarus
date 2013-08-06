@@ -798,6 +798,10 @@ bool Map::test_collision_with_ground(Layer layer, int x, int y,
     on_obstacle = y_in_tile >= 7 - x_in_tile;
     break;
 
+  case GROUND_LOW_WALL:
+    on_obstacle = entity_to_check.is_low_wall_obstacle();
+    break;
+
   case GROUND_SHALLOW_WATER:
     on_obstacle = entity_to_check.is_shallow_water_obstacle();
     break;

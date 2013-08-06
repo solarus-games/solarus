@@ -104,6 +104,7 @@ bool DynamicTile::is_obstacle_for(MapEntity& other) {
   switch (get_modified_ground()) {
 
     case GROUND_WALL:
+    case GROUND_LOW_WALL:
     case GROUND_WALL_TOP_RIGHT:
     case GROUND_WALL_TOP_LEFT:
     case GROUND_WALL_BOTTOM_LEFT:

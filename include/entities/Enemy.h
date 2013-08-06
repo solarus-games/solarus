@@ -196,6 +196,7 @@ class Enemy: public Detector {
     bool is_obstacle_for(MapEntity& other);
     bool is_destructible_obstacle(Destructible& destructible);
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool is_low_wall_obstacle();
     bool is_deep_water_obstacle();
     bool is_shallow_water_obstacle();
     bool is_hole_obstacle();

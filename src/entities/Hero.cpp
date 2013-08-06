@@ -1246,6 +1246,7 @@ void Hero::notify_ground_below_changed() {
     break;
 
   case GROUND_WALL:
+  case GROUND_LOW_WALL:
   case GROUND_WALL_TOP_RIGHT:
   case GROUND_WALL_TOP_LEFT:
   case GROUND_WALL_BOTTOM_LEFT:
@@ -2392,6 +2393,7 @@ void Hero::start_state_from_ground() {
     break;
 
   case GROUND_WALL:
+  case GROUND_LOW_WALL:
   case GROUND_WALL_TOP_RIGHT:
   case GROUND_WALL_TOP_LEFT:
   case GROUND_WALL_BOTTOM_LEFT:

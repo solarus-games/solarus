@@ -1360,6 +1360,18 @@ bool MapEntity::has_layer_independent_collisions() const {
 }
 
 /**
+ * \brief Returns whether a low wall is currently considered as an obstacle
+ * by this entity.
+ *
+ * This function returns \c true by default.
+ *
+ * \return \c true if low walls are currently obstacle for this entity.
+ */
+bool MapEntity::is_low_wall_obstacle() {
+  return true;
+}
+
+/**
  * \brief Returns whether shallow water is currently considered as an obstacle by this entity.
  *
  * This function returns is_deep_water_obstacle() by default.

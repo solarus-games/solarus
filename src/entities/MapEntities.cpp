@@ -462,6 +462,7 @@ void MapEntities::add_tile(Tile* tile) {
     // pattern, then all 8x8 squares of the extended tile have the same
     // property.
   case GROUND_TRAVERSABLE:
+  case GROUND_LOW_WALL:
   case GROUND_SHALLOW_WATER:
   case GROUND_DEEP_WATER:
   case GROUND_GRASS:

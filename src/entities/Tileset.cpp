@@ -31,6 +31,7 @@ const std::string Tileset::ground_names[] = {
   "empty",
   "traversable",
   "wall",
+  "low_wall",
   "wall_top_right",
   "wall_top_left",
   "wall_bottom_left",

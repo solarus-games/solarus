@@ -85,6 +85,8 @@ Each tile pattern must have the following properties:
     Keep the ground of the tile below instead (if any).
   - \c "traversable": Normal ground without obstacle.
   - \c "wall": Cannot be traversed.
+  - \c "low_wall": Cannot only be traversed by projectiles like thrown items,
+    arrows, the boomerang or flying enemies.
   - \c "wall_top_right": The upper-right half of the tile is an obstacle.
   - \c "wall_top_left": The upper-left halt of the tile is an obstacle.
   - \c "wall_bottom_left": The lower-left half of the tile is an obstacle.

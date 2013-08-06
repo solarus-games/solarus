@@ -104,6 +104,7 @@ public class Tileset extends Observable {
         obstaclesByName.put("empty", Obstacle.EMPTY);
         obstaclesByName.put("traversable", Obstacle.TRAVERSABLE);
         obstaclesByName.put("wall", Obstacle.OBSTACLE);
+        obstaclesByName.put("low_wall", Obstacle.LOW_WALL);
         obstaclesByName.put("wall_top_right", Obstacle.TOP_RIGHT);
         obstaclesByName.put("wall_top_left", Obstacle.TOP_LEFT);
         obstaclesByName.put("wall_bottom_left", Obstacle.BOTTOM_LEFT);

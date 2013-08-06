@@ -143,6 +143,15 @@ bool Boomerang::is_stairs_obstacle(Stairs& stairs) {
 }
 
 /**
+ * \brief Returns whether a low wall is currently considered as an obstacle
+ * by this entity.
+ * \return \c true if low walls are currently obstacle for this entity.
+ */
+bool Boomerang::is_low_wall_obstacle() {
+  return false;
+}
+
+/**
  * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
  * \return true if the deep water tiles are currently an obstacle for this entity
  */

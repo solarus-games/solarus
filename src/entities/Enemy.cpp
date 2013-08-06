@@ -282,6 +282,17 @@ bool Enemy::is_obstacle_for(MapEntity& other) {
 }
 
 /**
+ * \brief Returns whether a low wall is currently considered as an obstacle
+ * by this entity.
+ * \return \c true if low walls are currently obstacle for this entity.
+ */
+bool Enemy::is_low_wall_obstacle() {
+
+  // Flying enemies can traverse low walls.
+  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
+}
+
+/**
  * \brief Returns whether a destructible item is currently considered as an obstacle for this entity.
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle this entity

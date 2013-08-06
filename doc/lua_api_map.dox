@@ -453,6 +453,7 @@ that overlap this point.
   \c "empty",
   \c "traversable",
   \c "wall",
+  \c "low_wall",
   \c "wall_top_right",
   \c "wall_top_left",
   \c "wall_bottom_left",

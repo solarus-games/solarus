@@ -10,6 +10,7 @@ Engine changes
 * Replace the old built-in dialog box by a very minimal one.
 * New entity: separators to visually separate some regions in a map (#177).
 * New type of ground: ice (#182).
+* New type of ground: low walls (#117).
 * Blocks and thrown items can now fall into holes, lava and water (#191).
 * Kill enemies that fall into holes, lava and water (#190).
 * Allow quest makers and users to set the size of the playing area.
@@ -35,6 +36,7 @@ Don't forget to make a backup first.
 * Maps: Add the property "default" to destinations.
 * Maps: Make optional the property "destination" of teletransporters.
 * Tilesets: The ground value of diagonal walls with water has changed.
+* Tilesets: New ground values "ice" and "low_wall".
 * dialogs.dat: Allow any property in dialogs. dialog_id and text are mandatory.
 
 Lua API changes

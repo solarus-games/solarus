@@ -334,30 +334,6 @@ public class Project {
     }
 
     /**
-     * Returns the languages path.
-     * @return The languages path.
-     */
-    public static String getLanguagePath() {
-        return getDataPath() + "/languages";
-    }
-
-    /**
-     * Returns the languages directory.
-     * @return The languages directory.
-     */
-    public static File getLanguageDir() {
-        return new File(getLanguagePath());
-    }
-
-    /**
-     * Returns the language list file.
-     * @return The language list file.
-     */
-    public static File getLanguageListFile() {
-        return new File(getLanguagePath() + "/languages.dat");
-    }
-
-    /**
      * Returns the path of the text directory.
      * @return The path of the text directory.
      */
@@ -387,6 +363,14 @@ public class Project {
      */
     public static String getTilesetPath() {
         return getDataPath() + "/tilesets";
+    }
+
+    /**
+     * Returns the tilesets directory.
+     * @return The tilesets directory.
+     */
+    public static File getTilesetDir() {
+        return new File(getTilesetPath());
     }
 
     /**
@@ -428,6 +412,14 @@ public class Project {
     }
 
     /**
+     * Returns the maps directory.
+     * @return The maps directory.
+     */
+    public static File getMapDir() {
+        return new File(getMapPath());
+    }
+
+    /**
      * Returns a map script file knowing its id for the current project.
      * @param mapId id of a map
      * @return the script file corresponding to this id
@@ -456,6 +448,14 @@ public class Project {
     }
 
     /**
+     * Returns the sprites directory.
+     * @return The sprites directory.
+     */
+    public static File getSpriteDir() {
+        return new File(getSpritePath());
+    }
+
+    /**
      * Returns a sprite animation set description file knowing its id for the current project.
      * @param animationSetId Id of a spite animation set.
      * @return The file corresponding to this id.
@@ -470,17 +470,101 @@ public class Project {
      * @return the path of the music files
      */
     public static String getMusicPath() {
-        return getDataPath() + "/music";
+        return getDataPath() + "/musics";
     }
 
     /**
-     * Returns the path of the languages files,
-     * determined with the current project root path.
+     * Returns the musics directory.
+     * @return The musics directory.
+     */
+    public static File getMusicDir() {
+        return new File(getMusicPath());
+    }
+
+    /**
+     * Returns the path of the sound files, determined with the current project root path.
+     * @return the path of the sound files
+     */
+    public static String getSoundPath() {
+        return getDataPath() + "/sounds";
+    }
+
+    /**
+     * Returns the sounds directory.
+     * @return The sounds directory.
+     */
+    public static File getSoundDir() {
+        return new File(getSoundPath());
+    }
+
+    /**
+     * Returns the languages path.
+     * @return The languages path.
+     */
+    public static String getLanguagePath() {
+        return getDataPath() + "/languages";
+    }
+
+    /**
+     * Returns the languages directory.
+     * @return The languages directory.
+     */
+    public static File getLanguageDir() {
+        return new File(getLanguagePath());
+    }
+
+    /**
+     * Returns the path of the languages files, for a language.
      * @param languageId Id of a language.
-     * @return The path of the languages files.
+     * @return The path of the corresponding languages files.
      */
     public static String getLanguagePath(String languageId) {
-        return getDataPath() + "/languages/" + languageId;
+        return getLanguagePath() + "/" + languageId;
+    }
+
+    /**
+     * Returns the directory of the languages files, for a language.
+     * @param languageId Id of a language.
+     * @return The directory of the corresponding languages files.
+     */
+    public static File getLanguageDir(String languageId) {
+        return new File(getLanguagePath(languageId));
+    }
+
+    /**
+     * Returns the path of the language-specific images for a language.
+     * @param languageId Id of a language.
+     * @return The path of the corresponding language images.
+     */
+    public static String getLanguageImagePath(String languageId) {
+        return getLanguagePath(languageId) + "/images";
+    }
+
+    /**
+     * Returns the direcotry of the language-specific images for a language.
+     * @param languageId Id of a language.
+     * @return The directory of the corresponding language images.
+     */
+    public static File getLanguageImageDir(String languageId) {
+        return new File(getLanguageImagePath(languageId));
+    }
+
+    /**
+     * Returns the path of the language-specific texts for a language.
+     * @param languageId Id of a language.
+     * @return The path of the corresponding language texts.
+     */
+    public static String getLanguageTextPath(String languageId) {
+        return getLanguagePath(languageId) + "/text";
+    }
+
+    /**
+     * Returns the direcotry of the language-specific texts for a language.
+     * @param languageId Id of a language.
+     * @return The directory of the corresponding language texts.
+     */
+    public static File getLanguageTextDir(String languageId) {
+        return new File(getLanguageTextPath(languageId));
     }
 
     /**
@@ -489,7 +573,7 @@ public class Project {
      * @return The dialogs file in this language.
      */
     public static File getDialogsFile(String languageId) {
-        return new File(getLanguagePath(languageId) + "/text/dialogs.dat");
+        return new File(getLanguageTextPath(languageId) + "/dialogs.dat");
     }
 
     /**
@@ -498,7 +582,23 @@ public class Project {
      * @return The dialogs file in this language.
      */
     public static File getStringsFile(String languageId) {
-        return new File(getLanguagePath(languageId) + "/text/strings.dat");
+        return new File(getLanguageTextPath(languageId) + "/strings.dat");
+    }
+
+    /**
+     * Returns the path of the enemy scripts.
+     * @return The path of the enemy scripts.
+     */
+    public static String getEnemyPath() {
+        return getDataPath() + "/enemies";
+    }
+
+    /**
+     * Returns the enemies directory.
+     * @return The enemies directory.
+     */
+    public static File getEnemyDir() {
+        return new File(getEnemyPath());
     }
 
     /**
@@ -507,7 +607,23 @@ public class Project {
      * @return The enemy script file.
      */
     public static File getEnemyScriptFile(String enemyId) {
-        return new File(getDataPath() + "/enemies/" + enemyId + ".lua");
+        return new File(getEnemyPath() + "/" + enemyId + ".lua");
+    }
+
+    /**
+     * Returns the path of the item scripts.
+     * @return The path of the item scripts.
+     */
+    public static String getItemPath() {
+        return getDataPath() + "/items";
+    }
+
+    /**
+     * Returns the items directory.
+     * @return The items directory.
+     */
+    public static File getItemDir() {
+        return new File(getItemPath());
     }
 
     /**
@@ -516,7 +632,7 @@ public class Project {
      * @return The item script file.
      */
     public static File getItemScriptFile(String itemId) {
-        return new File(getDataPath() + "/items/" + itemId + ".lua");
+        return new File(getItemPath() + "/" + itemId + ".lua");
     }
 
     /**
@@ -552,7 +668,7 @@ public class Project {
     
             // Create the resource database file.
             File resourceDatabaseFile = getResourceDatabaseFile();
-            if (!resourceDatabaseFile.createNewFile()) {
+            if (resourceDatabaseFile.exists()) {
                 // This file determines whether the project exists or not.
                 // Therefore, it must not exist in this function.
                 throw new QuestEditorException("Failed to create the resource database file '"
@@ -560,17 +676,44 @@ public class Project {
             }
 
             // Create the various needed files if not existing.
+            createInitialResourceDatabaseFile();
             createInitialQuestPropertiesFile();
-            createMainScriptFile();
+            createInitialMainScriptFile();
             getLanguageDir().mkdir();
-            getLanguageListFile().createNewFile();
+            getLanguageDir("en").mkdir();
+            getLanguageImageDir("en").mkdir();
+            getLanguageTextDir("en").mkdir();
+            getDialogsFile("en").createNewFile();
+            getStringsFile("en").createNewFile();
             getTextDir().mkdir();
             getFontsFile().createNewFile();
+            getMusicDir().mkdir();
+            getSoundDir().mkdir();
+            getSpriteDir().mkdir();
+            getItemDir().mkdir();
+            getMapDir().mkdir();
+            getTilesetDir().mkdir();
+            getEnemyDir().mkdir();
         }
         catch (IOException ex) {
             ex.printStackTrace();
             throw new QuestEditorException(ex.getMessage());
         }
+    }
+
+    /**
+     * Creates the initial project_db.dat file for a new project.
+     * @throw IOException If something went wrong while creating the file.
+     */
+    private void createInitialResourceDatabaseFile() throws IOException{
+
+        File file = getResourceDatabaseFile();
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+
+        out.println("language{ id = \"en\", description = \"English\" }");
+        out.println();
+
+        out.close();
     }
 
     /**
@@ -607,7 +750,7 @@ public class Project {
      * Creates the initial main.lua script for a new project.
      * @throw IOException If something went wrong while creating the file.
      */
-    private void createMainScriptFile() throws IOException{
+    private void createInitialMainScriptFile() throws IOException{
 
         File file = getMainScriptFile();
         PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
@@ -621,6 +764,9 @@ public class Project {
         out.println("function sol.main:on_started()");
         out.println("  -- This function is called when Solarus starts.");
         out.println("  print(\"Welcome to my quest.\")");
+        out.println("");
+        out.println("  -- Setting a language is useful for displaying text and dialogs.");
+        out.println("  sol.language.set_language(\"en\")");
         out.println("end");
         out.println("");
         out.println("function sol.main:on_finished()");

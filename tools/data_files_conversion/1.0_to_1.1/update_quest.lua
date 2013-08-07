@@ -19,6 +19,11 @@ end
 write_info("Updating your quest " .. quest_path .. " from Solarus 1.0 to Solarus 1.1.")
 write_info("It is recommended to backup your quest files before.")
 
+-- Remove the language list file.
+write_info("  Removing the obsolete language list file...")
+local language_list_converter = require("language_list_converter")
+local languages = language_list_converter.convert(quest_path)
+
 -- Convert the quest properties file.
 write_info("  Converting the quest properties file...")
 local quest_properties_converter = require("quest_properties_converter")
@@ -27,7 +32,7 @@ quest_properties_converter.convert(quest_path)
 -- Convert the resource list file project_db.dat.
 write_info("  Converting the resource list file...")
 local quest_db_converter = require("quest_db_converter")
-local resources = quest_db_converter.convert(quest_path)
+local resources = quest_db_converter.convert(quest_path, languages)
 
 -- Convert tilesets.
 write_info("  Converting the tilesets...")

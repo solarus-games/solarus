@@ -222,7 +222,7 @@ The game will be suspended until you call
   The corresponding dialog must exist in the
   \ref quest_language_dialogs "dialogs.dat"
   file of the current
-  \ref quest_language_list_file "language".
+  \ref lua_api_language "language".
 - \c info (any type, optional): Any
   information you want to pass to the 
   \ref lua_api_game_on_dialog_started "game:on_dialog_started()" event.

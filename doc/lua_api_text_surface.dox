@@ -35,7 +35,7 @@ Creates a text surface with the specified properties.
     to show. The string must exist in the file
     \ref quest_language_strings "text/strings.dat" of the
     current
-    \ref quest_language_list_file "language".
+    \ref lua_api_language "language".
   - Return value (text surface): The text surface created.
 
 \section lua_api_text_surface_inherited_methods Methods inherited from drawable

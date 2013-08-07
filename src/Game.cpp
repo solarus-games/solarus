@@ -74,12 +74,12 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   std::string starting_map_id = get_savegame().get_string(Savegame::KEY_STARTING_MAP);
   if (starting_map_id.empty()) {
     // When no starting map is set, use the first one declared in the resource list file.
-    const std::vector<std::string>& map_ids =
+    const std::vector<QuestResourceList::Element>& maps =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP);
-    if (map_ids.empty()) {
+    if (maps.empty()) {
       Debug::die("This quest has no map");
     }
-    starting_map_id = map_ids[0];
+    starting_map_id = maps[0].first;
   }
   set_current_map(starting_map_id,
       savegame->get_string(Savegame::KEY_STARTING_POINT), Transition::FADE);

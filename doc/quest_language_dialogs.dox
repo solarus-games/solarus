@@ -6,7 +6,7 @@ Some dialogs are triggered by the engine and others by your quest.
 They are all defined in the file
 \c languages/xx/text/dialogs.dat, where \c xx is a language code
 defined in
-\ref quest_language_list_file "languages.dat"
+\ref quest_resource_file "project_db.dat"
 (e.g. \c "en" or \c "fr").
 
 When translating the game, you have to translate this \c dialogs.dat

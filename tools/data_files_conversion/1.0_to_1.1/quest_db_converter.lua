@@ -1,3 +1,10 @@
+-- This module reads a quest resource list file with the format of solarus 1.0
+-- (project_db.dat) and converts it into the format of solarus 1.1.
+
+-- The new syntax is more readable.
+-- Also, languages are now clearly a resource and their list is rebuilt from
+-- the obsolete language list file languages.dat.
+
 local converter = {}
 
 local resource_type_names = {
@@ -11,8 +18,9 @@ local resource_type_names = {
   [7] = "language",
 }
 
-local function load_quest_db(quest_path)
+local function load_quest_db(quest_path, languages)
 
+  languages = languages or {}
   local resources = {}
 
   -- Create a table for each type of resource.
@@ -46,20 +54,34 @@ local function load_quest_db(quest_path)
       error("Line " .. line_number .. ": Wrong resource name")
     end
 
-    local resources_of_current_type = resources[resource_type_name]
-    resources_of_current_type[#resources_of_current_type + 1] = {
-      id = resource_id,
-      human_name = resource_human_name
+    if resource_type_name ~= "language" then
+      -- Ignore languages mentioned in project_db.dat, they were useless before.
+
+      local resources_of_current_type = resources[resource_type_name]
+      resources_of_current_type[#resources_of_current_type + 1] = {
+        id = resource_id,
+        human_name = resource_human_name
+      }
+    end
+  end
+
+  -- Now add the languages coming from the only reliable place
+  -- (the old language list file).
+  local language_resources = resources["language"]
+  for _, language in ipairs(languages) do
+    language_resources[#language_resources + 1] = {
+      id = language.code,
+      human_name = language.name,
     }
   end
 
   return resources
 end
 
-function converter.convert(quest_path)
+function converter.convert(quest_path, languages)
 
   -- Read project_db.dat.
-  local resources = load_quest_db(quest_path)
+  local resources = load_quest_db(quest_path, languages)
 
   -- Write the 1.1 file.
   local output_file = io.open(quest_path .. "/data/project_db.dat", "w")

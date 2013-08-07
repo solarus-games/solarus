@@ -33,15 +33,21 @@ namespace {
     "",  // Sentinel for Lua.
   };
 
-  std::vector<std::string> resource_elements[QuestResourceList::RESOURCE_NB];
+  std::vector<QuestResourceList::Element> resource_elements[QuestResourceList::RESOURCE_NB];
 
+  /**
+   * \brief Implement of the resource() function.
+   * \param l The Lua state of the quest resource file.
+   * \return Number of values to return to Lua.
+   */
   int l_resource_element(lua_State* l) {
 
     QuestResourceList::ResourceType resource_type =
         LuaContext::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
     const std::string& id = LuaContext::check_string_field(l, 2, "id");
+    const std::string& description = LuaContext::check_string_field(l, 2, "description");
 
-    resource_elements[resource_type].push_back(id);
+    resource_elements[resource_type].push_back(std::make_pair(id, description));
 
     return 0;
   }
@@ -94,8 +100,8 @@ void QuestResourceList::quit() {
  * \param resource_type A type of resource.
  * \return The IDs of all declared element of this type.
  */
-const std::vector<std::string>& QuestResourceList::get_elements(
-    ResourceType resource_type) {
+const std::vector<QuestResourceList::Element>&
+    QuestResourceList::get_elements(ResourceType resource_type) {
 
   Debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
       "Invalid resource type");

@@ -165,11 +165,11 @@ void Sound::load_all() {
 
   if (is_initialized() && !sounds_preloaded) {
 
-    const std::vector<std::string>& sound_ids =
+    const std::vector<QuestResourceList::Element>& sound_elements =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_SOUND);
-    std::vector<std::string>::const_iterator it;
-    for (it = sound_ids.begin(); it != sound_ids.end(); ++it) {
-      const std::string& sound_id = *it;
+    std::vector<QuestResourceList::Element>::const_iterator it;
+    for (it = sound_elements.begin(); it != sound_elements.end(); ++it) {
+      const std::string& sound_id = it->first;
 
       all_sounds[sound_id] = Sound(sound_id);
       all_sounds[sound_id].load();

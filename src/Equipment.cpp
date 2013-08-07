@@ -381,11 +381,11 @@ void Equipment::load_items() {
 
   // Create each equipment item declared in project_db.dat.
   {
-    const std::vector<std::string>& item_ids =
+    const std::vector<QuestResourceList::Element>& item_elements =
       QuestResourceList::get_elements(QuestResourceList::RESOURCE_ITEM);
-    std::vector<std::string>::const_iterator it;
-    for (it = item_ids.begin(); it != item_ids.end(); ++it) {
-      const std::string& item_id = *it;
+    std::vector<QuestResourceList::Element>::const_iterator it;
+    for (it = item_elements.begin(); it != item_elements.end(); ++it) {
+      const std::string& item_id = it->first;
       EquipmentItem* item = new EquipmentItem(*this);
       item->increment_refcount();
       item->set_name(item_id);

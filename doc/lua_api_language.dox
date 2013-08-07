@@ -11,8 +11,9 @@ human-readable name (like \c "English", \c "Français").
 The language code corresponds to the name of the directory with files
 translated in this language (sprites, strings and dialogs).
 
-The list of languages available in your quest is specified in the data file
-\ref quest_language_list_file "languages/languages.dat".
+The list of languages available in your quest is specified in the
+quest resource list
+\ref quest_resource_file "project_db.dat".
 
 \section lua_api_language_functions Functions of sol.language
 
@@ -27,7 +28,7 @@ Returns the code of the current language.
 Changes the current language.
 - \c code (string): The code that identifies the new language to set.
   It must be a valid code as defined in
-  \ref quest_language_list_file "languages/languages.dat".
+  \ref quest_resource_file "project_db.dat".
 
 \subsection lua_api_language_get_language_name sol.language.get_language_name([code])
 
@@ -40,21 +41,8 @@ Returns the human-readable name of a language.
 
 Returns the list of available languages.
 - Return value (table): An array of all language codes defined in
-  \ref quest_language_list_file "languages/languages.dat".
-
-\subsection lua_api_language_get_default_language sol.language.get_default_language()
-
-Returns the code of the default language.
-
-The engine does nothing with this default language property:
-it is up to you to use it like you want.
-When the user doesn't have a language saved in his settings, you
-can for example set the language to the default one.
-Or you can show a language selection
-menu where the default language will be initially selected.
-- Return value (string): The code of the default language as defined in
-  \ref quest_language_list_file "languages/languages.dat".
-  Returns \c nil if no default language is specified.
+  \ref quest_resource_file "project_db.dat".
+  Languages are in the same order as in \c project_db.dat.
 
 \subsection lua_api_language_get_string sol.language.get_string(key)
 

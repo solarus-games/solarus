@@ -6,14 +6,14 @@ The \c project_db.dat file declares all resources
 and their user-friendly names.
 Each resource usually corresponds to a data file.
 
+The engine needs this file to preload or initialize some resources when the
+program starts.
+
 The quest editor needs this file to provide graphical components that let the
 user choose a resource in a list of user-friendly names.
 For instance, when the user creates a teletransporter on the map, a graphical
 list lets him choose the destination map of the teletransporter.
 This list contains the user-friendly name of each map.
-
-Note that user-friendly names are only useful in the quest editor.
-The engine does not use them.
 
 We give here the syntax of \c project_db.dat.
 
@@ -49,43 +49,45 @@ Each resource must have the following two properties:
     \ref quest_sprite_data_file "sprite data file",
     relative to the \c sprites directory.
     The sprite data file may be in a hierarchy of subdirectories.
-    Subdirectories must be separated by a slash "/" character in the sprite id.
+    Subdirectories must be separated by a slash "/" character in the sprite
+    id.
   - For an equipment item: the id is the name of the item's Lua script
     without its extension, relative to the \c items directory.
   - For an enemy model: the id is the is name of the enemy's Lua script
     without its extension, relative to the \c enemies directory.
-  - For a language: the id is the language id
-    (see the \ref quest_language_list_file "language list file"),
-    which is also the name of a subdirectory of the \c languages directory.
+  - For a language: the id is the name of a subdirectory of the \c languages
+    directory.
 - \c description (string): A human-readable name that describes this element.
-  It may contain spaces. It is only used in the quest editor to show to quest
-  makers something more user-friendly than the id.
+  It may contain spaces. It is useful to show to userse something more
+  user-friendly than the id.
 
 Example of a quest resource list file:
 
 \verbatim
-map{     id = "outside",      description = "Outside World" }
-map{     id = "hero_house",   description = "House of the hero" }
-map{     id = "shop",         description = "Shop" }
-map{     id = "dungeon_1_1f", description = "Dungeon 1 - First floor" }
-map{     id = "dungeon_1_2f", description = "Dungeon 1 - Second floor" }
+map{      id = "outside",      description = "Outside World" }
+map{      id = "hero_house",   description = "House of the hero" }
+map{      id = "shop",         description = "Shop" }
+map{      id = "dungeon_1_1f", description = "Dungeon 1 - First floor" }
+map{      id = "dungeon_1_2f", description = "Dungeon 1 - Second floor" }
 
-tileset{ id = "overworld",    description = "Overworld" }
-tileset{ id = "house",        description = "House" }
-tileset{ id = "dungeon",      description = "Dungeon" }
+tileset{  id = "overworld",    description = "Overworld" }
+tileset{  id = "house",        description = "House" }
+tileset{  id = "dungeon",      description = "Dungeon" }
 
-sound{   id = "door_closed",  description = "Door closing" }
-sound{   id = "door_open",    description = "Door opening" }
-sound{   id = "enemy_hurt",   description = "Enemy hurt" }
-sound{   id = "jump",         description = "Jumping" }
-sound{   id = "treasure",     description = "Treasure" }
+sound{    id = "door_closed",  description = "Door closing" }
+sound{    id = "door_open",    description = "Door opening" }
+sound{    id = "enemy_hurt",   description = "Enemy hurt" }
+sound{    id = "jump",         description = "Jumping" }
+sound{    id = "treasure",     description = "Treasure" }
 
-item{    id = "sword",        description = "Sword" }
-item{    id = "bow",          description = "Bow" }
-item{    id = "arrow",        description = "Arrows (x1 / x5 / x10)" }
+item{     id = "sword",        description = "Sword" }
+item{     id = "bow",          description = "Bow" }
+item{     id = "arrow",        description = "Arrows (x1 / x5 / x10)" }
 
-enemy{   id = "soldier",      description = "Soldier" }
-enemy{   id = "dragon",       description = "Dragon" }
+enemy{    id = "soldier",      description = "Soldier" }
+enemy{    id = "dragon",       description = "Dragon" }
+
+language{ id = "en",           description = "English" }
 \endverbatim
 
 In the quest editor, you can add, remove and change the id and the description

@@ -6,7 +6,7 @@ need to be localized in the current language.
 To this end, a \c strings.dat file is placed inside each
 \c languages/xx/text directory, where \c xx is a language code
 defined in
-\ref quest_language_list_file "languages.dat"
+\ref quest_resource_file "project_db.dat"
 (e.g. \c "en" or \c "fr").
 
 When translating the game, you have to translate this \c strings.dat

@@ -38,6 +38,7 @@ Don't forget to make a backup first.
 * Tilesets: The ground value of diagonal walls with water has changed.
 * Tilesets: New ground values "ice" and "low_wall".
 * dialogs.dat: Allow any property in dialogs. dialog_id and text are mandatory.
+* languages.dat no longer exists. Languages are in project_db.dat now (#265).
 
 Lua API changes
 ---------------
@@ -54,7 +55,7 @@ Changes that introduce incompatibilities:
 * Make map:get_entities() return an iterator instead of an array (#249).
 * Replace map:set_pause_enabled() by game:set_pause_allowed().
 * Make the enemy:create_enemy() more like map:create_enemy() (#215).
-
+* Remove sol.language.get_default_language(), useless and misleading (#265).
 
 Changes that do not introduce incompatibilities:
 
@@ -89,7 +90,6 @@ Changes that do not introduce incompatibilities:
 * Add a function game:stop_dialog(status) to close the scripted dialog box.
 * Add an event game:on_dialog_started(dialog, info).
 * Add an event game:on_dialog_finished(dialog).
-
 
 Solarus Quest Editor changes
 ----------------------------

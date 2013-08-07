@@ -20,6 +20,7 @@
 #include "lua/LuaContext.h"
 #include "StringResource.h"
 #include "DialogResource.h"
+#include "QuestResourceList.h"
 #include <physfs.h>
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
@@ -29,8 +30,6 @@
 std::string FileTools::solarus_write_dir;
 std::string FileTools::quest_write_dir;
 std::string FileTools::language_code;
-std::string FileTools::default_language_code;
-std::map<std::string, std::string> FileTools::languages;
 
 /**
  * \brief Initializes the file tools.
@@ -75,9 +74,6 @@ void FileTools::initialize(int argc, char** argv) {
 
   // Set the engine root write directory.
   set_solarus_write_dir(SOLARUS_WRITE_DIR);
-
-  // Load the list of languages.
-  initialize_languages();
 }
 
 /**
@@ -91,62 +87,22 @@ void FileTools::quit() {
 }
 
 /**
- * \brief Loads the list of available languages.
- */
-void FileTools::initialize_languages() {
-
-  static const std::string file_name = "languages/languages.dat";
-
-  // read the languages file
-  lua_State* l = luaL_newstate();
-  size_t size;
-  char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  luaL_loadbuffer(l, buffer, size, file_name.c_str());
-  FileTools::data_file_close_buffer(buffer);
-
-  lua_register(l, "language", l_language);
-  if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(StringConcat() << "Failed to load language file: "
-        << lua_tostring(l, -1));
-    lua_pop(l, 1);
-  }
-
-  lua_close(l);
-}
-
-/**
- * \brief Function called by Lua to add a language.
- *
- * - Argument 1 (table): properties of the language (keys must be code and
- * name).
- *
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
- */
-int FileTools::l_language(lua_State* l) {
-
-  luaL_checktype(l, 1, LUA_TTABLE);
-
-  std::string code = LuaContext::check_string_field(l, 1, "code");
-  std::string name = LuaContext::check_string_field(l, 1, "name");
-  bool is_default = LuaContext::opt_boolean_field(l, 1, "default", false);
-
-  languages[code] = name;
-  if (is_default) {
-    default_language_code = code;
-  }
-
-  return 0;
-}
-
-/**
  * \brief Returns whether a language exists for this quest.
  * \param language_code Code of the language to test.
- * \return true if this language exists.
+ * \return \c true if this language exists.
  */
 bool FileTools::has_language(const std::string& language_code) {
-  return languages.find(language_code) != languages.end();
+
+  const std::vector<QuestResourceList::Element>& languages =
+    QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
+
+  std::vector<QuestResourceList::Element>::const_iterator it;
+  for (it = languages.begin(); it != languages.end(); ++it) {
+    if (it->first == language_code) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
@@ -155,12 +111,13 @@ bool FileTools::has_language(const std::string& language_code) {
  * The language-specific data will be loaded from the directory of this language.
  * This function must be called before the first language-specific file is loaded.
  *
- * \param language_code code of the language
+ * \param language_code Code of the language to set.
  */
 void FileTools::set_language(const std::string& language_code) {
 
   Debug::check_assertion(has_language(language_code),
       StringConcat() << "Unknown language '" << language_code << "'");
+
   FileTools::language_code = language_code;
   StringResource::initialize();
   DialogResource::initialize();
@@ -178,26 +135,25 @@ const std::string& FileTools::get_language() {
 }
 
 /**
- * \brief Returns the default language.
- *
- * This default language is indicated in the languages file (languages/languages.lua).
- * It can be used to pick a language without user interaction, but you still have
- * to call set_language() otherwise no initial language is set.
- *
- * \return code of the default language, or an empty string if the languages file
- * does not specify a default language
+ * \brief Returns the user-friendly name of a language for this quest.
+ * \param language_code Code of a language.
+ * \return Name of this language of an empty string.
  */
-const std::string& FileTools::get_default_language() {
-  return default_language_code;
-}
+const std::string& FileTools::get_language_name(
+    const std::string& language_code) {
 
+  const std::vector<QuestResourceList::Element>& languages =
+    QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
 
-/**
- * \brief Returns the list of available languages.
- * \return the available languages (mapping of language codes to language names)
- */
-const std::map<std::string, std::string>& FileTools::get_languages() {
-  return languages;
+  std::vector<QuestResourceList::Element>::const_iterator it;
+  for (it = languages.begin(); it != languages.end(); ++it) {
+    if (it->first == language_code) {
+      return it->second;
+    }
+  }
+
+  static std::string empty_string;
+  return empty_string;
 }
 
 /**

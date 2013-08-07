@@ -31,6 +31,8 @@ class QuestResourceList {
 
   public:
 
+    typedef std::pair<std::string, std::string> Element;
+
     /**
      * \brief Types of existing resources in a quest.
      */
@@ -49,7 +51,7 @@ class QuestResourceList {
     static void initialize();
     static void quit();
 
-    static const std::vector<std::string>& get_elements(ResourceType resource_type);
+    static const std::vector<Element>& get_elements(ResourceType resource_type);
 
   private:
 

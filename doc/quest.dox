@@ -44,8 +44,6 @@ archive of a quest and the syntax of each file.
     their properties.
   - \c text/*.{ttf, fon, png, ...}: your font files.
 - \c languages/: contains the language-specific files.
-  - \subpage quest_language_list_file "languages/languages.dat": list of
-    supported languages.
   - \subpage quest_language_strings "languages/xx/text/strings.dat": strings of
     language \c "xx".
   - \subpage quest_language_dialogs "languages/xx/text/dialogs.txt": dialogs of

@@ -53,7 +53,7 @@ public class EditorWindow extends JFrame
     /**
      * Creates a new window.
      * @param questPath Path of a quest to load,
-     * or null to show a dialog to select the quest.
+     * or null to load the default quest if any.
      */
     public EditorWindow(String questPath) {
         super("Solarus Quest Editor " + Project.solarusFormat);
@@ -90,9 +90,7 @@ public class EditorWindow extends JFrame
         // create the menu bar
         createMenuBar();
         update(null, null);
-        if (questPath == null) {
-            loadProject();
-        } else {
+        if (questPath != null) {
             loadProject(questPath);
         }
 

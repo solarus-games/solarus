@@ -95,6 +95,7 @@ Solarus Quest Editor changes
 ----------------------------
 
 * Add a GUI to upgrade automatically quest files to the latest format (#247).
+* Remove the initial prompt dialog to open a quest (#264).
 * Simplify the add entity toolbar by showing only one icon per entity type.
 * Survive when images cannot be found (#256).
 * Create more initial directories when creating a new quest (#258).

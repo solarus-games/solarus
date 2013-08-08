@@ -101,14 +101,26 @@ void QuestProperties::load() {
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size);
   luaL_loadbuffer(l, buffer, size, file_name.c_str());
-  FileTools::data_file_close_buffer(buffer);
 
   lua_register(l, "quest", l_quest);
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(std::string("Failed to load quest.dat: ") + lua_tostring(l, -1));
+    // Loading quest.dat failed.
+    // There may be a syntax error, or this is a quest for Solarus 0.9.
+    // There was no version number at that time.
+
+    if (std::string(buffer).find("[info]")) {
+      // Quest format of Solarus 0.9.
+      Debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
+          + SOLARUS_VERSION);
+    }
+    else {
+      // Syntax error in quest.dat.
+      Debug::die(std::string("Failed to load quest.dat: ") + lua_tostring(l, -1));
+    }
     lua_pop(l, 1);
   }
 
+  FileTools::data_file_close_buffer(buffer);
   lua_close(l);
 }
 

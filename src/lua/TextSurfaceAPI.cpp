@@ -131,6 +131,9 @@ int LuaContext::text_surface_api_create(lua_State* l) {
       const std::string& key = luaL_checkstring(l, 2);
       if (key == "font") {
         const std::string& font_id = luaL_checkstring(l, 3);
+        if (!TextSurface::has_font(font_id)) {
+          error(l, std::string("No such font: '") + font_id + "'");
+        }
         text_surface->set_font(font_id);
       }
       else if (key == "rendering_mode") {

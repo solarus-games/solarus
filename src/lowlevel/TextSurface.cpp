@@ -24,6 +24,7 @@
 #include "Transition.h"
 #include <lua.hpp>
 
+bool TextSurface::fonts_loaded = false;
 std::map<std::string, TextSurface::FontData> TextSurface::fonts;
 std::string TextSurface::default_font_id;
 
@@ -33,6 +34,16 @@ std::string TextSurface::default_font_id;
 void TextSurface::initialize() {
 
   TTF_Init();
+
+  // At this point, don't assume that data files are ready to be loaded.
+  // We don't even know if the format of the quest is compatible.
+  // This is why we make a lazy loading of the fonts.
+}
+
+/**
+ * \brief Loads the fonts.
+ */
+void TextSurface::load_fonts() {
 
   // Load the list of available fonts.
   static const std::string file_name = "text/fonts.dat";
@@ -52,6 +63,7 @@ void TextSurface::initialize() {
   }
 
   lua_close(l);
+  fonts_loaded = true;
 }
 
 /**
@@ -62,7 +74,7 @@ void TextSurface::quit() {
   std::map<std::string, FontData>::iterator it;
   for (it = fonts.begin(); it != fonts.end(); it++) {
     std::string font_id = it->first;
-    FontData *font = &it->second;
+    FontData* font = &it->second;
 
     if (font->bitmap != NULL) {
       // It's a bitmap font.
@@ -78,6 +90,7 @@ void TextSurface::quit() {
   }
 
   TTF_Quit();
+  fonts_loaded = false;
 }
 
 /**
@@ -214,8 +227,6 @@ const std::string& TextSurface::get_font() {
  */
 void TextSurface::set_font(const std::string& font_id) {
 
-  Debug::check_assertion(has_font(font_id), StringConcat() <<
-      "No such font: '" << font_id << "'");
   this->font_id = font_id;
   rebuild();
 }
@@ -444,6 +455,11 @@ const Rectangle TextSurface::get_size() {
  */
 void TextSurface::rebuild() {
 
+  if (!fonts_loaded) {
+    // First time: lazy load of the fonts.
+    load_fonts();
+  }
+
   if (surface != NULL) {
     // another text was previously set: delete it
     if (!surface->internal_surface_created) {
@@ -457,6 +473,9 @@ void TextSurface::rebuild() {
     // empty string: no surface to create
     return;
   }
+
+  Debug::check_assertion(has_font(font_id), StringConcat() <<
+      "No such font: '" << font_id << "'");
 
   if (fonts[font_id].bitmap) {
     rebuild_bitmap();

@@ -23,6 +23,7 @@ Engine changes
 * Jumpers are now activated after a slight delay (#253).
 * Correctly detect the ground below the hero or any point.
 * Don't die if there is a syntax error in dialogs.dat.
+* Show a better error message if trying to play a Solarus 0.9 quest (#260).
 
 Data files format changes
 -------------------------

@@ -68,46 +68,8 @@ class TextSurface: public Drawable {
       TEXT_ANTIALIASING                               /**< letters are drawn with a smooth effect (slower) */
     };
 
-  private:
-
-    /**
-     * This structures stores the data of a font.
-     */
-    struct FontData {
-      std::string file_name;                          /**< name of the font file, relative to the data directory */
-      int font_size;                                  /**< size of the characters */
-      char* buffer;                                   /**< the file loaded into memory */
-      SDL_RWops* rw;                                  /**< read/write object used to open the font file from memory */
-      TTF_Font* internal_font;                        /**< the library-dependent font object */
-      Surface* bitmap;                                /**< only used if it's a PNG font */
-    };
-
-    static std::map<std::string, FontData> fonts;     /**< the data of each font, loaded from the file text/fonts.dat
-                                                       * (fond id -> font data) */
-    static std::string default_font_id;               /**< id of the default font to use */
-
-    std::string font_id;                              /**< id of the font of the current text surface */
-    HorizontalAlignment horizontal_alignment;         /**< horizontal alignment of the current text surface */
-    VerticalAlignment vertical_alignment;             /**< vertical alignment of the current text surface */
-    RenderingMode rendering_mode;                     /**< rendering mode of the current text surface */
-    Color text_color;                                 /**< color of the text */
-
-    int x;                                            /**< x coordinate of where the text is aligned */
-    int y;                                            /**< y coordinate of where the text is aligned */
-    Surface *surface;                                 /**< the surface to draw */
-    Rectangle text_position;                          /**< position of the top-left corner of the surface on the screen */
-
-    std::string text;                                 /**< the string to draw (only one line) */
-
-    void rebuild();
-    void rebuild_bitmap();
-    void rebuild_ttf();
-
-  public:
-
     static void initialize();
     static void quit();
-    static int l_font(lua_State* l);
 
     TextSurface(int x, int y);
     TextSurface(int x, int y,
@@ -150,6 +112,46 @@ class TextSurface: public Drawable {
     void draw_transition(Transition& transition);
 
     const std::string& get_lua_type_name() const;
+
+  private:
+
+    /**
+     * This structures stores the data of a font.
+     */
+    struct FontData {
+      std::string file_name;                          /**< name of the font file, relative to the data directory */
+      int font_size;                                  /**< size of the characters */
+      char* buffer;                                   /**< the file loaded into memory */
+      SDL_RWops* rw;                                  /**< read/write object used to open the font file from memory */
+      TTF_Font* internal_font;                        /**< the library-dependent font object */
+      Surface* bitmap;                                /**< only used if it's a PNG font */
+    };
+
+    static void load_fonts();
+    static int l_font(lua_State* l);
+ 
+    void rebuild();
+    void rebuild_bitmap();
+    void rebuild_ttf();
+
+    static bool fonts_loaded;                         /**< Whether fonts.dat was read. */
+    static std::map<std::string, FontData> fonts;     /**< the data of each font, loaded from the file text/fonts.dat
+                                                       * (fond id -> font data) */
+    static std::string default_font_id;               /**< id of the default font to use */
+
+    std::string font_id;                              /**< id of the font of the current text surface */
+    HorizontalAlignment horizontal_alignment;         /**< horizontal alignment of the current text surface */
+    VerticalAlignment vertical_alignment;             /**< vertical alignment of the current text surface */
+    RenderingMode rendering_mode;                     /**< rendering mode of the current text surface */
+    Color text_color;                                 /**< color of the text */
+
+    int x;                                            /**< x coordinate of where the text is aligned */
+    int y;                                            /**< y coordinate of where the text is aligned */
+    Surface* surface;                                 /**< the surface to draw */
+    Rectangle text_position;                          /**< position of the top-left corner of the surface on the screen */
+
+    std::string text;                                 /**< the string to draw (only one line) */
+
 };
 
 #endif

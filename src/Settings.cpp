@@ -35,8 +35,7 @@ bool Settings::load(const std::string& file_name) {
   Debug::check_assertion(!quest_write_dir.empty(),
       "Cannot load settings: no quest write directory was specified in quest.dat");
 
-  const std::string& prefixed_file_name = quest_write_dir + "/" + file_name;
-  if (!FileTools::data_file_exists(prefixed_file_name)) {
+  if (!FileTools::data_file_exists(file_name)) {
     return false;
   }
 
@@ -44,8 +43,8 @@ bool Settings::load(const std::string& file_name) {
   lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;
-  FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size);
-  luaL_loadbuffer(l, buffer, size, prefixed_file_name.c_str());
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
+  luaL_loadbuffer(l, buffer, size, file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
 
   if (lua_pcall(l, 0, 0, 0) != 0) {
@@ -116,8 +115,6 @@ bool Settings::save(const std::string& file_name) {
   Debug::check_assertion(!quest_write_dir.empty(),
       "Cannot save settings: no quest write directory was specified in quest.dat");
 
-  const std::string& prefixed_file_name = quest_write_dir + "/" + file_name;
-
   std::ostringstream oss;
   VideoManager::VideoMode video_mode = VideoManager::get_instance()->get_video_mode();
   oss << "video_mode = \"" << VideoManager::video_mode_names[video_mode] << "\"\n";
@@ -129,7 +126,7 @@ bool Settings::save(const std::string& file_name) {
   oss << "joypad_enabled = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
 
   const std::string& text = oss.str();
-  FileTools::data_file_save_buffer(prefixed_file_name, text.c_str(), text.size());
+  FileTools::data_file_save_buffer(file_name, text.c_str(), text.size());
   return true;
 }
 

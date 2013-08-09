@@ -85,7 +85,8 @@ calling \ref lua_api_main_set_quest_write_dir "sol.main.set_quest_write_dir()"),
 otherwise savegames cannot be used and this function generates a Lua error.
 - \c file_name (string): Name of the file to test, relative
   to the \ref lua_api_main_get_quest_write_dir "quest write directory".
-- Return value (boolean): \c true if this savegame file exists.
+- Return value (boolean): \c true if there exists a file with this name
+  in the quest write directory.
 
 \subsection lua_api_game_delete sol.game.delete(file_name)
 

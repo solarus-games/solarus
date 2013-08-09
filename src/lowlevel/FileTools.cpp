@@ -342,7 +342,8 @@ void FileTools::read(std::istream& is, std::string& value) {
 
 /**
  * \brief Returns the directory where the engine can write files.
- * \returns The directory where the engine can write files, relative to the user's home.
+ * \returns The directory where the engine can write files, relative to the
+ * base write directory.
  */
 const std::string& FileTools::get_solarus_write_dir() {
   return solarus_write_dir;
@@ -360,6 +361,11 @@ const std::string& FileTools::get_solarus_write_dir() {
  * relative to the base write directory.
  */
 void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
+
+  // This setting never changes at runtime.
+  // Allowing to change it would be complex and we don't need that.
+  Debug::check_assertion(FileTools::solarus_write_dir.empty(),
+      "The Solarus write directory is already set");
 
   FileTools::solarus_write_dir = solarus_write_dir;
 
@@ -382,9 +388,6 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
   if (!quest_write_dir.empty()) {
     set_quest_write_dir(quest_write_dir);
   }
-
-  // We will also read savegames and configuration files from there.
-  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);
 }
 
 /**
@@ -411,11 +414,33 @@ const std::string& FileTools::get_quest_write_dir() {
  */
 void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
 
+  if (!FileTools::quest_write_dir.empty()) {
+    // There was already a previous quest subdirectory: remove it from the
+    // search path.
+    PHYSFS_removeFromSearchPath(PHYSFS_getWriteDir());
+  }
+
   FileTools::quest_write_dir = quest_write_dir;
 
+  // Reset the write directory to the Solarus directory
+  // so that we can create the new quest subdirectory.
+  std::string full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
+  if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
+    Debug::die(StringConcat() << "Cannot set Solarus write directory to '"
+        << full_write_dir << "': " << PHYSFS_getLastError());
+  }
+
   if (!quest_write_dir.empty()) {
-    // Create this subdirectory in the Solarus write directory.
+    // Create the quest subdirectory (if not existing)
+    // in the Solarus write directory.
     PHYSFS_mkdir(quest_write_dir.c_str());
+
+    // Set the write directory to this new place.
+    full_write_dir = get_base_write_dir() + "/" + solarus_write_dir + "/" + quest_write_dir;
+    PHYSFS_setWriteDir(full_write_dir.c_str());
+
+    // Also allow the quest to read savegames, settings and data files there.
+    PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 1);
   }
 }
 

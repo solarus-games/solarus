@@ -60,7 +60,6 @@ class FileTools {
 
     // Writing files.
     static const std::string& get_solarus_write_dir();
-    static void set_solarus_write_dir(const std::string& solarus_write_dir);
     static const std::string& get_quest_write_dir();
     static void set_quest_write_dir(const std::string& quest_write_dir);
     static const std::string get_full_quest_write_dir();
@@ -73,6 +72,8 @@ class FileTools {
     static const std::string& get_language_name(const std::string& language_code);
 
   private:
+
+    static void set_solarus_write_dir(const std::string& solarus_write_dir);
 
     static std::string get_base_write_dir();
 

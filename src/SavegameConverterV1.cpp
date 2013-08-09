@@ -25,7 +25,7 @@
 /**
  * \brief Creates an old savegame converter with a specified existing file name.
  * \param file_name Name of the savegame file (must exist),
- * relative to the savegames directory.
+ * relative to the savegames directory of the quest.
  */
 SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
 

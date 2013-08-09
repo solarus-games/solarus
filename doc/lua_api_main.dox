@@ -15,12 +15,15 @@ Loads a Lua file (but does not run it).
 
 This function is a replacement to the usual Lua function \c loadfile().
 The difference is that it looks for a file in the quest tree
-(which may be a directory or an archive).
+(which may be a directory or an archive) and also in the
+\ref lua_api_main_set_quest_write_dir "quest write directory".
+The quest write directory is tried first.
 
-- \c script_name (string): Name of the Lua file to load, relative to the
-  root data directory of your quest (with our without extension).
+- \c script_name (string): Name of the Lua file to load
+  (with or without extension),
+  relative to the data directory or the write directory of your quest.
 - Return value (function): A function representing the chunk loaded,
-  or \c nil if the file does not exist or could not be loaded.
+  or \c nil if the file does not exist or could not be loaded as Lua.
 
 \remark Keep in mind that Lua files, as all data files of your quest,
   may be located inside an archive instead of being regular files.
@@ -33,7 +36,8 @@ The difference is that it looks for a file in the quest tree
 \remark Note however that \c require() can be used normally because it is
   a higher-level function.
   Indeed, a specific loader is automatically set by the engine
-  so that \c require() looks in the archive if necessary.
+  so that \c require() looks in the archive if necessary
+  and in the quest write directory.
 
 \subsection lua_api_main_do_file sol.main.do_file(script_name)
 
@@ -41,14 +45,17 @@ Loads and runs a Lua file into the current context.
 
 This function is a replacement to the usual Lua function \c dofile().
 The difference is that it looks for a file in the quest tree
-(which may be a directory or an archive).
+(which may be a directory or an archive) and also in the
+\ref lua_api_main_set_quest_write_dir "quest write directory".
+The quest write directory is tried first.
 The file must exist.
 
 Use \ref lua_api_main_load_file "sol.main.load_file()"
 explicitly if you need to check the existence
 of the file or to use parameters and return values.
-- \c script_name (string): Name of the Lua file to execute, relative to the
-  root data directory of your quest (with or without extension).
+- \c script_name (string): Name of the Lua file to load
+  (with or without extension),
+  relative to the data directory or the write directory of your quest.
 
 \remark This function is equivalent to <tt>sol.main.load_file(script_name)()</tt>.
 
@@ -64,7 +71,7 @@ Exits the program after the current cycle.
 \subsection lua_api_main_get_quest_write_dir sol.main.get_quest_write_dir()
 
 Returns the subdirectory where files specific to the quest are saved,
-like savegames and configuration files.
+like savegames and settings.
 The quest write directory is specified in your
 \ref quest_properties_file "quest.dat"
 file and may be changed dynamically with

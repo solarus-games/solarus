@@ -35,7 +35,6 @@ void LuaContext::register_main_module() {
       { "do_file", main_api_do_file },
       { "reset", main_api_reset },
       { "exit", main_api_exit },
-      { "is_debug_enabled", main_api_is_debug_enabled },
       { "get_quest_write_dir", main_api_get_quest_write_dir },
       { "set_quest_write_dir", main_api_set_quest_write_dir },
       { "load_settings", main_api_load_settings },
@@ -114,24 +113,6 @@ int LuaContext::main_api_exit(lua_State* l) {
   get_lua_context(l).get_main_loop().set_exiting();
 
   return 0;
-}
-
-/**
- * \brief Implementation of sol.main.is_debug_enabled().
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
- */
-int LuaContext::main_api_is_debug_enabled(lua_State* l) {
-
-  bool debug;
-#ifdef SOLARUS_DEBUG_KEYS
-  debug = true;
-#else
-  debug = false;
-#endif
-
-  lua_pushboolean(l, debug);
-  return 1;
 }
 
 /**

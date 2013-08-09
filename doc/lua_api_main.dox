@@ -61,21 +61,6 @@ Lua will be entirely shut down and then initialized again.
 
 Exits the program after the current cycle.
 
-\subsection lua_api_main_is_debug_enabled sol.main.is_debug_enabled()
-
-Returns whether Solarus is running in debug mode.
-
-The debug mode is intended to provide some debugging features to developers,
-such as traversing walls or skipping dialogs with special keys to make the
-development easier.
-Such features are not enabled when the game is compiled in release mode
-(in other words, regular players cannot cheat).
-You may want to implement additional debugging features when this function
-returns \c true.
-
-- Return value (boolean): \c true if the Solarus engine is running in debug
-  mode.
-
 \subsection lua_api_main_get_quest_write_dir sol.main.get_quest_write_dir()
 
 Returns the subdirectory where files specific to the quest are saved,

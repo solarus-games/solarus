@@ -25,6 +25,7 @@ Engine changes
 * Don't die if there is a syntax error in dialogs.dat.
 * Show a better error message if trying to play a Solarus 0.9 quest (#260).
 * Remove built-in debug keys. This can be done from Lua now.
+* Remove the preprocessor constant SOLARUS_DEBUG_KEYS.
 
 Data files format changes
 -------------------------
@@ -58,6 +59,7 @@ Changes that introduce incompatibilities:
 * Replace map:set_pause_enabled() by game:set_pause_allowed().
 * Make the enemy:create_enemy() more like map:create_enemy() (#215).
 * Remove sol.language.get_default_language(), useless and misleading (#265).
+* Remove sol.main.is_debug_enabled().
 
 Changes that do not introduce incompatibilities:
 

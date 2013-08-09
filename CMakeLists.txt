@@ -139,12 +139,6 @@ else()
   set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 endif()
 
-# solarus options
-option(DEBUG_KEYS "Enable the debugging keys." OFF)
-if(DEBUG_KEYS)
-  add_definitions(-DSOLARUS_DEBUG_KEYS)
-endif()
-
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
 if(DEFAULT_QUEST)
   add_definitions(-DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")

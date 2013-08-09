@@ -381,10 +381,15 @@ void TextSurface::set_y(int y) {
 
 /**
  * \brief Returns whether the current text is an empty string.
- * \return true if there is no texte
+ *
+ * A string with only whitespaces characters is considered empty.
+ *
+ * \return \c true if there is no text.
  */
 bool TextSurface::is_empty() {
-  return text.empty();
+
+  std::string whitespaces = " \t\n\r";
+  return text.find_first_not_of(whitespaces) == std::string::npos;
 }
 
 /**
@@ -470,7 +475,8 @@ void TextSurface::rebuild() {
   }
 
   if (is_empty()) {
-    // empty string: no surface to create
+    // Empty string or only whitespaces: no surface to create.
+    // Some fonts make TTF_Font fail if the string contains only whitespaces.
     return;
   }
 

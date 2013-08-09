@@ -287,7 +287,8 @@ bool LuaContext::is_entity(lua_State* l, int index) {
       || is_switch(l, index)
       || is_door(l, index)
       || is_pickable(l, index)
-      || is_enemy(l, index);
+      || is_enemy(l, index)
+      || is_shop_item(l, index);
 }
 
 /**

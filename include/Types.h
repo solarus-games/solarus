@@ -65,7 +65,6 @@ class Savegame;
 class Equipment;
 class EquipmentItem;
 class EquipmentItemUsage;
-class DebugKeys;
 class Treasure;
 class Map;
 class MapLoader;

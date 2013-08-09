@@ -28,7 +28,6 @@
 #include "Savegame.h"
 #include "StringResource.h"
 #include "QuestResourceList.h"
-#include "DebugKeys.h"
 
 /**
  * \brief Initializes the game engine.
@@ -37,7 +36,6 @@
  */
 MainLoop::MainLoop(int argc, char** argv):
   root_surface(NULL),
-  debug_keys(NULL),
   lua_context(NULL),
   exiting(false),
   game(NULL),
@@ -55,7 +53,6 @@ MainLoop::MainLoop(int argc, char** argv):
 
   root_surface = new Surface(VideoManager::get_instance()->get_quest_size());
   root_surface->increment_refcount();
-  debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);
   lua_context->initialize();
 }
@@ -68,17 +65,8 @@ MainLoop::~MainLoop() {
   delete lua_context;
   root_surface->decrement_refcount();
   delete root_surface;
-  delete debug_keys;
   QuestResourceList::quit();
   System::quit();
-}
-
-/**
- * \brief Returns the debugging keys object.
- * \return the debugging keys object
- */
-DebugKeys& MainLoop::get_debug_keys() {
-  return *debug_keys;
 }
 
 /**
@@ -272,7 +260,6 @@ void MainLoop::notify_input(InputEvent& event) {
  */
 void MainLoop::update() {
 
-  debug_keys->update();
   if (game != NULL) {
     game->update();
   }

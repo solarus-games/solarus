@@ -22,7 +22,6 @@
 #include "Equipment.h"
 #include "Treasure.h"
 #include "GameoverSequence.h"
-#include "DebugKeys.h"
 #include "QuestResourceList.h"
 #include "lua/LuaContext.h"
 #include "entities/Hero.h"

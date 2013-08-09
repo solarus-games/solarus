@@ -24,6 +24,7 @@ Engine changes
 * Correctly detect the ground below the hero or any point.
 * Don't die if there is a syntax error in dialogs.dat.
 * Show a better error message if trying to play a Solarus 0.9 quest (#260).
+* Remove built-in debug keys. This can be done from Lua now.
 
 Data files format changes
 -------------------------

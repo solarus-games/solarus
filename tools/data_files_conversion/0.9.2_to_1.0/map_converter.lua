@@ -98,7 +98,7 @@ local function convert_chest_is_big(is_big_chest, entity)
     io.stderr:write("Info: Map " .. metadata.map_id .. ", line "
         .. line_number .. " (entity '" .. name
         .. "'): Big chests have now the same collision box as normal ones "
-        .. "(16x16). Use tiles to make sure your chest is not travserable.\n")
+        .. "(16x16). Use tiles to make sure your chest is not traversable.\n")
 
     return {
       sprite = "entities/big_chest",

@@ -37,68 +37,6 @@
  */
 class Map: public ExportableToLua {
 
-  private:
-
-    friend class MapLoader; // the map loader modifies the private fields of Map
-
-    static MapLoader map_loader;  /**< the map file parser */
-
-    // map properties
-
-    Game* game;                   /**< the game this map was started in */
-    std::string id;               /**< id of the map */
-
-    int width8;                   /**< map width in 8*8 squares (width8 = get_width() / 8) */
-    int height8;                  /**< map height in 8*8 squares (height8 = get_height() / 8) */
-
-    std::string tileset_id;       /**< id of the current tileset */
-    Tileset* tileset;             /**< tileset of the map: every tile of this map
-                                   * is extracted from this tileset */
-
-    std::string music_id;         /**< id of the background music of the map:
-                                   * can be a valid music, Music::none or Music::unchanged */
-
-    std::string world;            /**< Name of the context where this map is. When changing context,
-                                   * the savegame starting position is set and crystal switches are reset. */
-
-    int floor;                    /**< The floor where this map is (possibly NO_FLOOR). */
-
-    Rectangle location;           /**< location of the map in its context: the width and height fields
-                                   * indicate the map size in pixel, and the x and y field indicate the position:
-                                   * - in the outside world: location of the map's top-left corner
-                                   *   relative to the whole world map
-                                   * - in the inside world: location of the map relative to the whole world map
-                                   * - in a dungeon: location of the map's top-left corner relative to the whole floor */
-
-    // screen
-
-    Camera* camera;               /**< determines the visible area of the map */
-    Surface* visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
-                                   * of the map, so the coordinates on this surface are relative to the screen,
-                                   * not to the map */
-    Rectangle clipping_rectangle; /**< when drawing the map, indicates an area of the surface to be restricted to
-                                   * (usually, the whole map is considered and this rectangle's values are all 0) */
-
-    // map state
-    bool loaded;                  /**< true if the loading phase is finished */
-    bool started;                 /**< true if this map is the current map */
-    std::string destination_name; /**< current destination point on the map,
-                                   * or "_same" to keep the hero's coordinates,
-                                   * or "_side0", "_side1", "_side2" or "_side3"
-                                   * to place the hero on a side of the map,
-                                   * or an empty string to use the one saved. */
-
-    MapEntities* entities;        /**< the entities on the map */
-    bool suspended;               /**< indicates whether the game is suspended */
-
-    // light
-    int light;                    /**< light level (0: dark, 1: full light) */
-    Surface* dark_surfaces[4];    /**< dark foreground shown when there is no light */
-
-    void set_suspended(bool suspended);
-    void draw_background();
-    void draw_foreground();
-
   public:
 
     // creation and destruction
@@ -183,6 +121,69 @@ class Map: public ExportableToLua {
     void draw_sprite(Sprite& sprite, int x, int y);
 
     static const int NO_FLOOR = -9999;  /**< Represents a non-existent floor (nil in data files). */
+
+  private:
+
+    friend class MapLoader; // the map loader modifies the private fields of Map
+
+    void set_suspended(bool suspended);
+    void draw_background();
+    void draw_foreground();
+
+    static MapLoader map_loader;  /**< the map file parser */
+
+    // map properties
+
+    Game* game;                   /**< the game this map was started in */
+    std::string id;               /**< id of the map */
+
+    int width8;                   /**< map width in 8*8 squares (width8 = get_width() / 8) */
+    int height8;                  /**< map height in 8*8 squares (height8 = get_height() / 8) */
+
+    std::string tileset_id;       /**< id of the current tileset */
+    Tileset* tileset;             /**< tileset of the map: every tile of this map
+                                   * is extracted from this tileset */
+
+    std::string music_id;         /**< id of the background music of the map:
+                                   * can be a valid music, Music::none or Music::unchanged */
+
+    std::string world;            /**< Name of the context where this map is. When changing context,
+                                   * the savegame starting position is set and crystal switches are reset. */
+
+    int floor;                    /**< The floor where this map is (possibly NO_FLOOR). */
+
+    Rectangle location;           /**< location of the map in its context: the width and height fields
+                                   * indicate the map size in pixel, and the x and y field indicate the position:
+                                   * - in the outside world: location of the map's top-left corner
+                                   *   relative to the whole world map
+                                   * - in the inside world: location of the map relative to the whole world map
+                                   * - in a dungeon: location of the map's top-left corner relative to the whole floor */
+
+    // screen
+
+    Camera* camera;               /**< determines the visible area of the map */
+    Surface* visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
+                                   * of the map, so the coordinates on this surface are relative to the screen,
+                                   * not to the map */
+    Rectangle clipping_rectangle; /**< when drawing the map, indicates an area of the surface to be restricted to
+                                   * (usually, the whole map is considered and this rectangle's values are all 0) */
+
+    // map state
+    bool loaded;                  /**< true if the loading phase is finished */
+    bool started;                 /**< true if this map is the current map */
+    std::string destination_name; /**< current destination point on the map,
+                                   * or "_same" to keep the hero's coordinates,
+                                   * or "_side0", "_side1", "_side2" or "_side3"
+                                   * to place the hero on a side of the map,
+                                   * or an empty string to use the one saved. */
+
+    MapEntities* entities;        /**< the entities on the map */
+    bool suspended;               /**< indicates whether the game is suspended */
+
+    // light
+    int light;                    /**< light level (0: dark, 1: full light) */
+    Surface* dark_surfaces[4];    /**< dark foreground shown when there is no light */
+
 };
 
 /**

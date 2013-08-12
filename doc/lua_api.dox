@@ -81,8 +81,8 @@ See the specification page of each feature for more details.
 - \subpage lua_api_main "sol.main": some general-purpose features.
 - \subpage lua_api_audio "sol.audio": playing musics and sounds.
 - \subpage lua_api_video "sol.video": setting the video mode.
-- \subpage lua_api_file "sol.file": directly accessing data files.
 - \subpage lua_api_input "sol.input": checking keyboard and joypad state.
+- \subpage lua_api_file "sol.file": directly accessing data files.
 - \subpage lua_api_menu "sol.menu": showing various information on the screen.
 - \subpage lua_api_language "sol.language": handling translations.
 - \subpage lua_api_timer "sol.timer": making an action later with a delay.

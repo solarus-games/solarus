@@ -52,7 +52,8 @@ class FileTools {
     static void data_file_save_buffer(const std::string& file_name,
         const char* buffer, size_t size);
     static void data_file_close_buffer(char* buffer);
-    static void data_file_delete(const std::string& file_name);
+    static bool data_file_delete(const std::string& file_name);
+    static bool data_file_mkdir(const std::string& dir_name);
 
     static void read(std::istream& is, int& value);
     static void read(std::istream& is, uint32_t& value);

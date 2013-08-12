@@ -288,10 +288,30 @@ void FileTools::data_file_close_buffer(char* buffer) {
  * \brief Removes a file from the write directory.
  * \param file_name Name of the file to delete, relative to the Solarus
  * write directory.
+ * \return \c true in case of success.
  */
-void FileTools::data_file_delete(const std::string& file_name) {
+bool FileTools::data_file_delete(const std::string& file_name) {
 
-  PHYSFS_delete(file_name.c_str());
+  if (!PHYSFS_delete(file_name.c_str())) {
+    return false;
+  }
+
+  return true;
+}
+ 
+/**
+ * \brief Creates a directory in the write directory.
+ * \param dir_name Name of the directory to delete, relative to the Solarus
+ * write directory.
+ * \return \c true in case of success.
+ */
+bool FileTools::data_file_mkdir(const std::string& dir_name) {
+
+  if (!PHYSFS_mkdir(dir_name.c_str())) {
+    return false;
+  }
+
+  return true;
 }
 
 /**

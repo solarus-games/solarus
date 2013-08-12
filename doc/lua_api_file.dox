@@ -46,6 +46,33 @@ Examples of use:
 
 \section lua_api_file_functions Functions of sol.file
 
+\subsection lua_api_file_open sol.file.open(file_name, [mode])
+
+Same as
+<a href="http://www.lua.org/manual/5.1/manual.html#pdf-io.open">io.open()</a>,
+but relative to the quest write directory or to the data directory.
+
+If a valid quest write directory is set
+(in your
+\ref quest_properties_file "quest.dat file" or by
+calling \ref lua_api_main_set_quest_write_dir "sol.main.set_quest_write_dir()"),
+that directory is tried first.
+Then, the \c data directory of your quest is tried if the mode is \c "r"
+(read mode).
+
+This function just calls \c io.open() with the actual path and the mode as
+parameters, and returns its results.
+- \c file_name (string): Name of the file to open, relative to the quest write
+  directory or to the data directory.
+- \c mode (string, optional): Opening mode (see the Lua documentation of
+<a href="http://www.lua.org/manual/5.1/manual.html#pdf-io.open">io.open()</a>
+).
+- Return value (file or nil+string): The file object created, or \c nil plus
+  an error message in case of failure.
+  The file value is the standard Lua file object as returned by \c io.open(),
+  and you can then use all Lua file functions
+  (file:read(), file:write(), file:lines(), file:close(), etc.).
+
 \subsection lua_api_file_exists sol.file.exists(file_name)
 
 Returns whether the specified file exists
@@ -103,33 +130,6 @@ otherwise this function generates a Lua error.
   to the \ref lua_api_main_get_quest_write_dir "quest write directory".
 - Return value (boolean or nil+string): \c true in case of success, \c nil plus
   an error message in case of failure.
-
-\subsection lua_api_file_open sol.file.open(file_name, [mode])
-
-Same as
-<a href="http://www.lua.org/manual/5.1/manual.html#pdf-io.open">io.open()</a>,
-but relative to the quest write directory or to the data directory.
-
-If a valid quest write directory is set
-(in your
-\ref quest_properties_file "quest.dat file" or by
-calling \ref lua_api_main_set_quest_write_dir "sol.main.set_quest_write_dir()"),
-that directory is tried first.
-Then, the \c data directory of your quest is tried if the mode is \c "r"
-(read mode).
-
-This function just calls \c io.open() with the actual path and the mode as
-parameters, and returns its results.
-- \c file_name (string): Name of the file to open, relative to the quest write
-  directory or to the data directory.
-- \c mode (string, optional): Opening mode (see the Lua documentation of
-<a href="http://www.lua.org/manual/5.1/manual.html#pdf-io.open">io.open()</a>
-).
-- Return value (file or nil+string): The file object created, or \c nil plus
-  an error message in case of failure.
-  The file value is the standard Lua file object as returned by \c io.open(),
-  and you can then use all Lua file functions
-  (file:read(), file:write(), file:lines(), file:close(), etc.).
 
 */
 

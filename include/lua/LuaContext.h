@@ -52,6 +52,7 @@ class LuaContext {
     static const std::string audio_module_name;                  /**< sol.audio */
     static const std::string video_module_name;                  /**< sol.video */
     static const std::string input_module_name;                  /**< sol.input */
+    static const std::string file_module_name;                   /**< sol.file */
     static const std::string timer_module_name;                  /**< sol.timer */
     static const std::string game_module_name;                   /**< sol.game */
     static const std::string map_module_name;                    /**< sol.map */
@@ -393,6 +394,12 @@ class LuaContext {
       input_api_is_joypad_button_pressed,
       input_api_get_joypad_axis_state,
       input_api_get_joypad_hat_direction,
+
+      // File API.
+      file_api_open,
+      file_api_exists,
+      file_api_remove,
+      file_api_mkdir,
 
       // Menu API.
       menu_api_start,
@@ -837,14 +844,15 @@ class LuaContext {
     void register_modules();
     void register_main_module();
     void register_audio_module();
+    void register_video_module();
+    void register_input_module();
+    void register_file_module();
     void register_timer_module();
     void register_item_module();
     void register_surface_module();
     void register_text_surface_module();
     void register_sprite_module();
     void register_movement_module();
-    void register_input_module();
-    void register_video_module();
     void register_menu_module();
     void register_language_module();
     void register_game_module();

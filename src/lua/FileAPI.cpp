@@ -42,6 +42,13 @@ void LuaContext::register_file_module() {
 }
 
 /**
+ * \brief Destroys any temporary files previously created.
+ */
+void LuaContext::destroy_files() {
+
+}
+
+/**
  * \brief Implementation of sol.file.open().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.

@@ -22,6 +22,7 @@
 #include "DialogResource.h"
 #include "QuestResourceList.h"
 #include <physfs.h>
+#include <cstdlib>  // tmpnam()
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 #   include "lowlevel/apple/AppleInterface.h"
@@ -80,6 +81,8 @@ void FileTools::initialize(int argc, char** argv) {
  * \brief Quits the file tools.
  */
 void FileTools::quit() {
+
+  remove_temporary_files();
 
   DialogResource::quit();
   StringResource::quit();
@@ -154,6 +157,42 @@ const std::string& FileTools::get_language_name(
 
   static std::string empty_string;
   return empty_string;
+}
+
+/**
+ * \brief Returns the physical location of a data file.
+ *
+ * This function is not often necessary since the whole point of this class
+ * is to access files independently of their real file location
+ * (in the quest write directory, in the data directory or in the data archive).
+ *
+ * \param file_name The file to look for.
+ * \return Where it is actually located, or LOCATION_NONE if not found.
+ */
+FileTools::DataFileLocation FileTools::data_file_get_location(
+    const std::string& file_name) {
+
+  const char* path_ptr = PHYSFS_getRealDir(file_name.c_str());
+  std::string path = path_ptr == NULL ? "" : path_ptr;
+  if (path.empty()) {
+    // File does not exist.
+    return LOCATION_NONE;
+  }
+
+  if (PHYSFS_getWriteDir() != NULL && path == PHYSFS_getWriteDir()) {
+    return LOCATION_WRITE_DIRECTORY;
+  }
+
+  if (path.rfind("data") == path.size() - 4) {
+    return LOCATION_DATA_DIRECTORY;
+  }
+
+  if (path.rfind("data.solarus") == path.size() - 12) {
+    return LOCATION_DATA_ARCHIVE;
+  }
+
+  Debug::die(std::string("Unexpected search path element: " + path));
+  return LOCATION_NONE;
 }
 
 /**
@@ -482,5 +521,19 @@ std::string FileTools::get_base_write_dir() {
 #else
   return std::string(PHYSFS_getUserDir());
 #endif
+}
+ 
+const std::string FileTools::create_temporary_file(char* buffer, size_t size) {
+
+  // TODO
+  return "";
+}
+
+void FileTools::remove_temporary_files() {
+  // TODO
+}
+
+void FileTools::read_temporary_file(const std::string& file_name, char*& buffer, size_t& size) {
+  // TODO
 }
 

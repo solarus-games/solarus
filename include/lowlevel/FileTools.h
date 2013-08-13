@@ -37,11 +37,20 @@ class FileTools {
 
   public:
 
+    enum DataFileLocation {
+      LOCATION_NONE,
+      LOCATION_DATA_DIRECTORY,
+      LOCATION_DATA_ARCHIVE,
+      LOCATION_WRITE_DIRECTORY,
+    };
+
     // Initialization.
     static void initialize(int argc, char** argv);
     static void quit();
 
     // Reading data files of the quest.
+    static DataFileLocation data_file_get_location(
+        const std::string& file_name);
     static bool data_file_exists(const std::string& file_name,
         bool language_specific = false);
     static std::istream& data_file_open(const std::string& file_name,
@@ -65,6 +74,11 @@ class FileTools {
     static void set_quest_write_dir(const std::string& quest_write_dir);
     static const std::string get_full_quest_write_dir();
  
+    // Temporary files.
+    static const std::string create_temporary_file(char* buffer, size_t size);
+    static void read_temporary_file(const std::string& file_name, char*& buffer, size_t& size);
+    static void remove_temporary_files();
+
     // Languages.
     // TODO move to a new class Language in lowlevel
     static bool has_language(const std::string& language_code);

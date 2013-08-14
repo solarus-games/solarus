@@ -23,14 +23,17 @@
 #include "QuestResourceList.h"
 #include <physfs.h>
 #include <cstdlib>  // tmpnam()
+#include <cstdio>   // remove()
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 #   include "lowlevel/apple/AppleInterface.h"
 #endif
 
+std::string FileTools::quest_path;
 std::string FileTools::solarus_write_dir;
 std::string FileTools::quest_write_dir;
 std::string FileTools::language_code;
+std::vector<std::string> FileTools::temporary_files;
 
 /**
  * \brief Initializes the file tools.
@@ -42,7 +45,7 @@ void FileTools::initialize(int argc, char** argv) {
   PHYSFS_init(argv[0]);
 
   // Set the quest path, by default as defined during the build process.
-  std::string quest_path = SOLARUS_DEFAULT_QUEST;
+  quest_path = SOLARUS_DEFAULT_QUEST;
 
   // If a command-line argument was specified, use it instead.
   if (argc > 1 && argv[argc - 1][0] != '-') {
@@ -160,6 +163,15 @@ const std::string& FileTools::get_language_name(
 }
 
 /**
+ * \brief Returns the path of the quest, relative to thecurrent directory.
+ * \return Path of the data directory or the data.solarus archive, relative
+ * to the current directory.
+ */
+const std::string& FileTools::get_quest_path() {
+  return quest_path;
+}
+
+/**
  * \brief Returns the physical location of a data file.
  *
  * This function is not often necessary since the whole point of this class
@@ -179,7 +191,7 @@ FileTools::DataFileLocation FileTools::data_file_get_location(
     return LOCATION_NONE;
   }
 
-  if (PHYSFS_getWriteDir() != NULL && path == PHYSFS_getWriteDir()) {
+  if (!get_quest_write_dir().empty() && path == PHYSFS_getWriteDir()) {
     return LOCATION_WRITE_DIRECTORY;
   }
 
@@ -258,6 +270,7 @@ void FileTools::data_file_close(const std::istream& data_file) {
  * \param buffer the buffer to load
  * \param size number of bytes to read
  * \param language_specific true if the file is specific to the current language
+ * TODO pass buffer and size by reference
  */
 void FileTools::data_file_open_buffer(const std::string& file_name, char** buffer,
     size_t* size, bool language_specific) {
@@ -507,7 +520,7 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
  * \brief Returns the absolute path of the quest write directory.
  */
 const std::string FileTools::get_full_quest_write_dir() {
-  return std::string(PHYSFS_getUserDir()) + "/" + get_solarus_write_dir() + "/" + get_quest_write_dir();
+  return get_base_write_dir() + "/" + get_solarus_write_dir() + "/" + get_quest_write_dir();
 }
 
 /**
@@ -523,17 +536,51 @@ std::string FileTools::get_base_write_dir() {
 #endif
 }
  
-const std::string FileTools::create_temporary_file(char* buffer, size_t size) {
+/**
+ * \brief Creates a temporary file with the specified content and closes it.
+ * \param buffer Content of the file to create, or NULL to create an empty file.
+ * \param size Size of the buffer.
+ * \return Full name of the file created, or en ampty string in case of failure.
+ */
+std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
 
-  // TODO
-  return "";
+  std::string file_name = std::tmpnam(NULL);
+  std::ofstream out(file_name.c_str());
+
+  if (!out) {
+    file_name = "";
+    return file_name;
+  }
+
+  // File successfully created.
+  temporary_files.push_back(file_name);
+
+  if (buffer != NULL) {
+    out.write(buffer, size);
+    if (!out) {
+      file_name = "";
+      return file_name;
+    }
+  }
+
+  out.close();
+
+  return file_name;
 }
+  
+/**
+ * \brief Deletes all files previously created with create_temporary_file().
+ * \return \c true in case of success, \c false if at least one file could not
+ * be deleted.
+ */
+bool FileTools::remove_temporary_files() {
 
-void FileTools::remove_temporary_files() {
-  // TODO
-}
+  bool success = true;
+  std::vector<std::string>::iterator it;
+  for (it = temporary_files.begin(); it != temporary_files.end(); ++it) {
+    success = (std::remove(it->c_str()) == 0) && success;
+  }
 
-void FileTools::read_temporary_file(const std::string& file_name, char*& buffer, size_t& size) {
-  // TODO
+  return success;
 }
 

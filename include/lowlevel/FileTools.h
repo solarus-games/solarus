@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include <string>
-#include <map>
+#include <vector>
 
 struct lua_State;
 
@@ -49,6 +49,7 @@ class FileTools {
     static void quit();
 
     // Reading data files of the quest.
+    static const std::string& get_quest_path();
     static DataFileLocation data_file_get_location(
         const std::string& file_name);
     static bool data_file_exists(const std::string& file_name,
@@ -69,15 +70,15 @@ class FileTools {
     static void read(std::istream& is, std::string& value);
 
     // Writing files.
+    static std::string get_base_write_dir();
     static const std::string& get_solarus_write_dir();
     static const std::string& get_quest_write_dir();
     static void set_quest_write_dir(const std::string& quest_write_dir);
     static const std::string get_full_quest_write_dir();
  
     // Temporary files.
-    static const std::string create_temporary_file(char* buffer, size_t size);
-    static void read_temporary_file(const std::string& file_name, char*& buffer, size_t& size);
-    static void remove_temporary_files();
+    static std::string create_temporary_file(const char* buffer, size_t size);
+    static bool remove_temporary_files();
 
     // Languages.
     // TODO move to a new class Language in lowlevel
@@ -90,12 +91,14 @@ class FileTools {
 
     static void set_solarus_write_dir(const std::string& solarus_write_dir);
 
-    static std::string get_base_write_dir();
-
+    static std::string quest_path;                       /**< Path of the data directory or the data.solarus archive,
+                                                          * relative to the current directory. */
     static std::string solarus_write_dir;                /**< Directory where the engine can write files, relative to the user's home. */
     static std::string quest_write_dir;                  /**< Write directory of the current quest, relative to solarus_write_dir. */
 
     static std::string language_code;                    /**< Code of the current language (e.g. "en", "fr", etc.). */
+
+    static std::vector<std::string> temporary_files;     /**< Name of all temporary files created. */
 };
 
 #endif

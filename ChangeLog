@@ -95,6 +95,8 @@ Changes that do not introduce incompatibilities:
 * Add an event game:on_dialog_started(dialog, info).
 * Add an event game:on_dialog_finished(dialog).
 
+* Add sol.file functions: open(), exists(), remove(), mkdir() (#267).
+
 Solarus Quest Editor changes
 ----------------------------
 

@@ -42,21 +42,79 @@ void LuaContext::register_file_module() {
 }
 
 /**
- * \brief Destroys any temporary files previously created.
- */
-void LuaContext::destroy_files() {
-
-}
-
-/**
  * \brief Implementation of sol.file.open().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
 int LuaContext::file_api_open(lua_State* l) {
 
-  // TODO
-  return 0;
+  const std::string& file_name = luaL_checkstring(l, 1);
+  const std::string& mode = luaL_optstring(l, 2, "r");
+
+  const bool writing = mode != "r" && mode != "rb";
+
+  // file_name is relative to the data directory, the data archive or the
+  // quest write directory.
+  // Let's determine the real file name and pass it to io.open().
+  std::string real_file_name;
+  if (writing) {
+
+    // Writing a file.
+    if (FileTools::get_quest_write_dir().empty()) {
+      error(l, "Cannot open file in writing: no write directory was specified in quest.dat");
+    }
+
+    real_file_name = FileTools::get_full_quest_write_dir() + "/" + file_name;
+  }
+  else {
+    // Reading a file.
+    FileTools::DataFileLocation location = FileTools::data_file_get_location(file_name);
+
+    switch (location) {
+ 
+      case FileTools::LOCATION_NONE:
+        // Not found.
+        lua_pushnil(l);
+        push_string(l, std::string("Cannot find file '") + file_name
+            + "' in the quest write directory, in data or in data.solarus");
+        return 2;
+
+      case FileTools::LOCATION_WRITE_DIRECTORY:
+        // Found in the quest write directory.
+        real_file_name = FileTools::get_full_quest_write_dir() + "/" + file_name;
+        break;
+
+      case FileTools::LOCATION_DATA_DIRECTORY:
+        // Found in the data directory.
+        real_file_name = FileTools::get_quest_path() + "/data/" + file_name;
+        break;
+
+      case FileTools::LOCATION_DATA_ARCHIVE:
+        {
+          // Found in the data archive.
+          // To call io.open(), we need a regular file, so let's create
+          // a temporary one.
+          char* buffer;
+          size_t size;
+          FileTools::data_file_open_buffer(file_name, &buffer, &size);
+          real_file_name = FileTools::create_temporary_file(buffer, size);
+          FileTools::data_file_close_buffer(buffer);
+          break;
+        }
+    }
+  }
+
+  // Call io.open.
+  lua_getfield(l, LUA_REGISTRYINDEX, "io.open");
+  push_string(l, real_file_name);
+  push_string(l, mode);
+
+  bool called = call_function(l, 2, 2, "io.open");
+  if (!called) {
+    error(l, "Unexpected error: failed to call io.open()");
+  }
+
+  return 2;
 }
 
 /**

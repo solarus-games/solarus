@@ -203,9 +203,6 @@ class LuaContext {
     void destroy_drawables();
     void update_drawables();
 
-    // Files.
-    void destroy_files();
-
     // Movements.
     void start_movement_on_point(Movement& movement, int point_index);
     void stop_movement_on_point(Movement& movement);

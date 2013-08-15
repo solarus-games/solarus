@@ -404,7 +404,7 @@ void Hero::check_gameover() {
 
   if (get_equipment().get_life() <= 0 && state->can_start_gameover_sequence()) {
     sprites->stop_blinking();
-    get_game().start_gameover_sequence();
+    get_game().start_game_over();
   }
 }
 
@@ -1973,13 +1973,16 @@ void Hero::start_shallow_water() {
 }
 
 /**
- * \brief This function is called when the hero was dead but saved by a fairy.
+ * \brief This function is called when the hero was dying but the game-over
+ * sequence was canceled.
  */
-void Hero::get_back_from_death() {
+void Hero::notify_game_over_finished() {
 
-  sprites->blink();
-  start_state_from_ground();
-  when_suspended = System::now();
+  if (is_on_map()) {
+    sprites->blink();
+    start_state_from_ground();
+    when_suspended = System::now();
+  }
 }
 
 /**

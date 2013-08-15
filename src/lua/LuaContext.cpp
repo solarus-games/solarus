@@ -1650,6 +1650,28 @@ void LuaContext::on_dialog_finished(const Dialog& dialog) {
 }
 
 /**
+ * \brief Calls the on_game_over_started() method of the object on top of the stack.
+ */
+bool LuaContext::on_game_over_started() {
+
+  if (find_method("on_game_over_started")) {
+    call_function(1, 0, "on_game_over_started");
+    return true;
+  }
+  return false;
+}
+
+/**
+ * \brief Calls the on_game_over_finished() method of the object on top of the stack.
+ */
+void LuaContext::on_game_over_finished() {
+
+  if (find_method("on_game_over_finished")) {
+    call_function(1, 0, "on_game_over_finished");
+  }
+}
+
+/**
  * \brief Calls an input callback method of the object on top of the stack.
  * \param event The input event to forward.
  * \return \c true if the event was handled and should stop being propagated.

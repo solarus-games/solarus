@@ -77,6 +77,7 @@ class Game {
 
     void start();
     void stop();
+    void restart();
 
     // global objects
     MainLoop& get_main_loop();
@@ -127,9 +128,8 @@ class Game {
     void stop_dialog(int status_ref = LUA_REFNIL);
 
     // game over
-    void start_gameover_sequence();
-    void get_back_from_death();
-    void restart();
+    void start_game_over();
+    void stop_game_over();
 };
 
 #endif

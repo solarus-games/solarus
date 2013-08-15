@@ -68,6 +68,11 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   keys_effect = new KeysEffect();
   update_keys_effect();
 
+  // Maybe we are restarting after a game-over sequence.
+  if (get_equipment().get_life() <= 0) {
+    get_equipment().restore_all_life();
+  }
+
   // Launch the starting map.
   std::string starting_map_id = get_savegame().get_string(Savegame::KEY_STARTING_MAP);
   if (starting_map_id.empty()) {
@@ -747,14 +752,6 @@ void Game::restart() {
 }
 
 /**
- * \brief Launches the game-over sequence.
- */
-void Game::start_gameover_sequence() {
-  showing_game_over = true;
-  // TODO
-}
-
-/**
  * \brief Returns whether the gameover sequence is being shown.
  * \return true if the gameover sequence is being shown
  */
@@ -763,9 +760,35 @@ bool Game::is_showing_game_over() {
 }
 
 /**
- * \brief This function is called when the hero was dead but saved by a fairy.
+ * \brief Launches the game-over sequence.
  */
-void Game::get_back_from_death() {
-  hero->get_back_from_death();
+void Game::start_game_over() {
+
+  Debug::check_assertion(!is_showing_game_over(),
+      "The game-over sequence is already active");
+
+  showing_game_over = true;
+
+  if (!get_lua_context().game_on_game_over_started(*this)) {
+    // The script does not define a game-over sequence:
+    // then, the built-in behavior is to restart the game.
+    restart();
+    stop_game_over();
+  }
+}
+
+/**
+ * \brief Cancels the current game-over sequence.
+ */
+void Game::stop_game_over() {
+
+  Debug::check_assertion(is_showing_game_over(),
+      "The game-over sequence is not running");
+
+  get_lua_context().game_on_game_over_finished(*this);
+  showing_game_over = false;
+  if (!restarting) {
+    hero->notify_game_over_finished();
+  }
 }
 

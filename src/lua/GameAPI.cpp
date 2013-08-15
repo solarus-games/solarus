@@ -1384,6 +1384,31 @@ void LuaContext::game_on_dialog_finished(Game& game,
 }
 
 /**
+ * \brief Calls the on_game_over_started() method of a Lua game.
+ * \param game A game.
+ * \return true if the game:on_game_over_started() method is defined.
+ */
+bool LuaContext::game_on_game_over_started(Game& game) {
+
+  push_game(l, game.get_savegame());
+  bool exists = on_game_over_started();
+  lua_pop(l, 1);
+
+  return exists;
+}
+
+/**
+ * \brief Calls the on_game_over_finished() method of a Lua game.
+ * \param game A game.
+ */
+void LuaContext::game_on_game_over_finished(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_game_over_finished();
+  lua_pop(l, 1);
+}
+
+/**
  * \brief Notifies a Lua game that an input event has just occurred.
  *
  * The appropriate callback in the game is triggered if it exists.

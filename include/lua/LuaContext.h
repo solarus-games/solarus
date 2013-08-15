@@ -275,6 +275,8 @@ class LuaContext {
     bool game_on_dialog_started(Game& game, const Dialog& dialog,
         int info_ref);
     void game_on_dialog_finished(Game& game, const Dialog& dialog);
+    bool game_on_game_over_started(Game& game);
+    void game_on_game_over_finished(Game& game);
     bool game_on_input(Game& game, InputEvent& event);
     bool game_on_command_pressed(Game& game, GameCommands::Command command);
     bool game_on_command_released(Game& game, GameCommands::Command command);
@@ -959,6 +961,8 @@ class LuaContext {
     void on_unpaused();
     bool on_dialog_started(const Dialog& dialog, int info_ref);
     void on_dialog_finished(const Dialog& dialog);
+    bool on_game_over_started();
+    void on_game_over_finished();
     bool on_input(InputEvent& event);
     bool on_key_pressed(InputEvent& event);
     bool on_key_released(InputEvent& event);

@@ -198,7 +198,7 @@ class Hero: public MapEntity {
     bool can_be_hurt(Enemy* attacker);
     void hurt(MapEntity& source, int life_points, int magic_points);
     void hurt(const Rectangle& source_xy, int life_points, int magic_points);
-    void get_back_from_death();
+    void notify_game_over_finished();
 
     /**
      * \name State.

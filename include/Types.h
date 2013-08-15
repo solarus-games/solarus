@@ -68,7 +68,6 @@ class EquipmentItemUsage;
 class Treasure;
 class Map;
 class MapLoader;
-class GameoverSequence;
 class Camera;
 class Dialog;
 class DialogResource;

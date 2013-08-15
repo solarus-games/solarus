@@ -42,7 +42,7 @@ class Game {
     bool pause_allowed;        /**< indicates that the player is allowed to use the pause command */
     bool paused;               /**< indicates that the game is paused */
     DialogBox dialog_box;      /**< The dialog box manager. */
-    GameoverSequence* gameover_sequence; /**< the game over sequence (if currently shown) */
+    bool showing_game_over;    /**< Whether a game-over sequence is currently active. */
     bool started;              /**< true if this game is running, false if it is not yet started or being closed. */
     bool restarting;           /**< true if the game will be restarted */
 
@@ -111,7 +111,7 @@ class Game {
     bool is_paused();
     bool is_dialog_enabled();
     bool is_playing_transition();
-    bool is_showing_gameover();
+    bool is_showing_game_over();
     bool is_suspended(); // true if at least one of the three functions above returns true
 
     // pause

@@ -136,7 +136,8 @@ can be running at a time.
 
 You can also call this function to restart the current game itself,
 even if it was not saved recently (saved data will not be reset).
-This may be useful to restart the game after the game-over screen.
+This may be useful to restart the game after the
+\ref lua_api_game_on_game_over_started "game-over sequence".
 
 \subsection lua_api_game_is_started game:is_started()
 
@@ -346,9 +347,8 @@ gets to zero, or when you call
 Define the event
 \ref lua_api_game_on_game_over_started "game:on_game_over_started()"
 to show your game-over menu.
-If you don't define this event, by default, the engine restarts the
-game (but does not save it).
-
+If you don't define this event, by default, there is no game-over sequence
+and the engine immediately restarts the game (but does not save it).
 - Return value (boolean): \c true if a game-over sequence is running.
 
 \subsection lua_api_game_start_game_over game:start_game_over()
@@ -359,7 +359,7 @@ Only possible when the game is running.
 
 This function is seldom needed since the game-over sequence
 automatically starts when the player's life reaches zero.
-But you can use if you want to start a game-over sequence even
+But you can use it if you want to start a game-over sequence even
 when the player's life is greater than zero.
 
 \subsection lua_api_game_stop_game_over game:stop_game_over()
@@ -369,12 +369,12 @@ Cancels the current game-over sequence and resumes the game.
 Only possible during a game-over sequence.
 
 During the game-over sequence, the game is suspended just like
-if it was paused.
+when it is paused.
 Therefore, if you call this function, the game normally resumes.
-This allows you to make the hero come back to life when he was dying.
+The hero comes back to life like if nothing happened.
 But don't forget to
-\ref lua_api_game_add_life "give some life points" to the player, otherwise,
-if the life was zero, a new game-over sequence will start again!
+\ref lua_api_game_add_life "give some life points" to the player before,
+otherwise, if the life was zero, a new game-over sequence will start again!
 
 \subsection lua_api_game_get_map game:get_map()
 
@@ -594,8 +594,6 @@ actions like attacking, swimming or running.
   - \c "run": Ability to run when pressing the action command.
   - \c "detect_weak_walls": Notifies the player with a sound when a weak wall
     is nearby.
-  - \c "get_back_from_death": Ability to come back to the game and get some
-    life back after the dying sequence.
 - Return value (number): Level of this ability
   (\c 0 means not having this ability yet).
 
@@ -889,6 +887,47 @@ Called when the current dialog stops.
 - \c dialog (table): All properties of the dialog that was shown.
   See \ref lua_api_game_on_dialog_started "game:on_dialog_started()"
   for a description of this table.
+
+\subsection lua_api_game_on_game_over_started game:on_game_over_started()
+
+Called when a game-over sequence starts.
+
+This event is automatically called when the player's life reaches zero,
+as soon as the
+\ref lua_api_hero "hero"
+is in a state that allows game-over.
+You can also start a game-over sequence manually with
+\ref lua_api_game_start_game_over "game:start_game_over()".
+
+If this event is not defined, there is no game-over sequence and the game
+restarts immediately, like if you called
+\ref lua_api_game_start "game:start()", and the full life of the player
+is restored.
+
+If this event is defined, the engine does nothing.
+Your script is
+responsible to show a game-over sequence in any way you want.
+This may be for instance a
+\ref lua_api_game_start_dialog "dialog"
+that lets the player continue the game or save and quit,
+or you a
+\ref lua_api_menu "menu"
+with more options.
+
+During your game-over sequence, the game is suspended
+like when it is paused.
+
+It is also possible to cancel the game-over sequence and to make the
+\ref lua_api_hero "hero" come back to life, by calling
+\ref lua_api_game_stop_game_over "game:stop_game_over()".
+In this particular case, the game resumes normally like if nothing
+had happened.
+But if you do this, don't forget to give some life to the player,
+otherwise a new game-over sequence will start again if the life was zero.
+
+\subsection lua_api_game_on_game_over_finished game:on_game_over_finished()
+
+Called when the current game-over sequence stops.
 
 \subsection lua_api_game_on_key_pressed game:on_key_pressed(key, modifiers)
 

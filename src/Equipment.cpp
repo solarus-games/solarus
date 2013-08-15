@@ -533,9 +533,6 @@ const std::string Equipment::get_ability_savegame_variable(
   else if (ability_name == "detect_weak_walls") {
     savegame_variable = Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
   }
-  else if (ability_name == "get_back_from_death") {
-    savegame_variable = Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH;
-  }
   else {
     Debug::die(StringConcat() << "Unknown ability '" << ability_name << "'");
   }

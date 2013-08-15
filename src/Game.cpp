@@ -21,7 +21,6 @@
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "Treasure.h"
-#include "GameoverSequence.h"
 #include "QuestResourceList.h"
 #include "lua/LuaContext.h"
 #include "entities/Hero.h"
@@ -47,7 +46,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   pause_allowed(true),
   paused(false),
   dialog_box(*this),
-  gameover_sequence(NULL),
+  showing_game_over(false),
   started(false),
   restarting(false),
   keys_effect(NULL),
@@ -110,7 +109,6 @@ Game::~Game() {
   Music::play(Music::none);
 
   delete transition;
-  delete gameover_sequence;
   delete keys_effect;
   hero->decrement_refcount();
   if (hero->get_refcount() == 0) {
@@ -258,12 +256,6 @@ void Game::notify_command_pressed(GameCommands::Command command) {
     }
   }
 
-  // Is the game over sequence being shown?
-  if (is_showing_gameover()) {
-    gameover_sequence->notify_command_pressed(command);
-    return;
-  }
-
   // See if the game script handles the command.
   if (get_lua_context().game_on_command_pressed(*this, command)) {
     return;
@@ -340,11 +332,6 @@ void Game::update() {
   // update the equipment and HUD
   get_equipment().update();
   update_keys_effect();
-
-  // update the game over sequence (if any)
-  if (is_showing_gameover()) {
-    update_gameover_sequence();
-  }
 }
 
 /**
@@ -486,22 +473,6 @@ void Game::update_keys_effect() {
 }
 
 /**
- * \brief Updates the game over sequence.
- *
- * This function is called repeatedly while the game over sequence is shown.
- */
-void Game::update_gameover_sequence() {
-
-  if (!gameover_sequence->is_finished()) {
-    gameover_sequence->update();
-  }
-  else {
-    delete gameover_sequence;
-    gameover_sequence = NULL;
-  }
-}
-
-/**
  * \brief Draws the game.
  * \param dst_surface The surface where the game will be drawn.
  */
@@ -514,11 +485,6 @@ void Game::draw(Surface& dst_surface) {
       transition->draw(current_map->get_visible_surface());
     }
     current_map->get_visible_surface().draw(dst_surface);
-
-    // Draw the game over sequence if any.
-    if (is_showing_gameover()) {
-      gameover_sequence->draw(dst_surface);
-    }
 
     // Draw the built-in dialog box if any.
     if (is_dialog_enabled()) {
@@ -654,7 +620,7 @@ bool Game::is_suspended() {
       || is_paused()
       || is_dialog_enabled()
       || is_playing_transition()
-      || is_showing_gameover()
+      || is_showing_game_over()
       || current_map->is_camera_moving();
 }
 
@@ -781,18 +747,19 @@ void Game::restart() {
 }
 
 /**
- * \brief Launches the gameover sequence.
+ * \brief Launches the game-over sequence.
  */
 void Game::start_gameover_sequence() {
-  gameover_sequence = new GameoverSequence(*this, hero->get_animation_direction());
+  showing_game_over = true;
+  // TODO
 }
 
 /**
  * \brief Returns whether the gameover sequence is being shown.
  * \return true if the gameover sequence is being shown
  */
-bool Game::is_showing_gameover() {
-  return gameover_sequence != NULL;
+bool Game::is_showing_game_over() {
+  return showing_game_over;
 }
 
 /**

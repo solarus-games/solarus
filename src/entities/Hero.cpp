@@ -420,8 +420,7 @@ void Hero::draw_on_map() {
     return;
   }
 
-  if (state->is_hero_visible()
-      && !get_game().is_showing_gameover()) {
+  if (state->is_hero_visible()) {
     // The state may call get_sprites()->draw_on_map() or make its own drawings.
     state->draw_on_map();
   }

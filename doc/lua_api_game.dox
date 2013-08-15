@@ -31,10 +31,10 @@ Only one game can be running at a time.
 
 An important concept that comes with the game is the notion of
 game commands.
-%Game commands are built-in game actions that can be mapped to a
+Game commands are built-in game actions that can be mapped to a
 low-level keyboard or joypad input.
 They can be seen as an abstraction of the keyboard and the joypad.
-%Game commands are like a virtual game device that provides
+Game commands are like a virtual game device that provides
 the the following buttons:
 - \c "action": Contextual action such as talking, swimming, throwing, etc.
 - \c "attack": Main attack (using the sword).
@@ -333,6 +333,48 @@ with the \c status argument.
   or whether it was skipped by the user before the end.
   See the
   \ref lua_api_game_start_dialog "examples above".
+
+\subsection lua_api_game_is_game_over_enabled game:is_game_over_enabled()
+
+Returns whether this game is currently showing a game-over sequence.
+
+Only possible when the game is running.
+
+The game-over sequence automatically starts when the player's life
+gets to zero, or when you call
+\ref lua_api_game_start_game_over "game:start_game_over()" explicitly.
+Define the event
+\ref lua_api_game_on_game_over_started "game:on_game_over_started()"
+to show your game-over menu.
+If you don't define this event, by default, the engine restarts the
+game (but does not save it).
+
+- Return value (boolean): \c true if a game-over sequence is running.
+
+\subsection lua_api_game_start_game_over game:start_game_over()
+
+Starts the game-over sequence manually.
+
+Only possible when the game is running.
+
+This function is seldom needed since the game-over sequence
+automatically starts when the player's life reaches zero.
+But you can use if you want to start a game-over sequence even
+when the player's life is greater than zero.
+
+\subsection lua_api_game_stop_game_over game:stop_game_over()
+
+Cancels the current game-over sequence and resumes the game.
+
+Only possible during a game-over sequence.
+
+During the game-over sequence, the game is suspended just like
+if it was paused.
+Therefore, if you call this function, the game normally resumes.
+This allows you to make the hero come back to life when he was dying.
+But don't forget to
+\ref lua_api_game_add_life "give some life points" to the player, otherwise,
+if the life was zero, a new game-over sequence will start again!
 
 \subsection lua_api_game_get_map game:get_map()
 

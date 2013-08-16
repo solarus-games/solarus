@@ -804,9 +804,11 @@ solutions when possible, like \ref lua_api_timer "timers" and other events.
 
 Called when the game has just been redrawn by the engine.
 
-The engine has already drawn the current map as well as the
-\ref lua_api_menu "menus" of this game is any.
-Use this event if you want to draw some additional content.
+The engine has already drawn the current map, since the map is always drawn
+before the game.
+If the game has
+\ref lua_api_menu "menus", these menu are not drawn yet at this point.
+Use this event if you want to draw some additional content before the menus.
 - \c dst_surface (\ref lua_api_surface "surface"): The surface where the game
   is drawn.
 

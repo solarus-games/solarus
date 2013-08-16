@@ -1949,8 +1949,8 @@ void LuaContext::map_on_update(Map& map) {
 void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
 
   push_map(l, map);
-  menus_on_draw(-1, dst_surface);
   on_draw(dst_surface);
+  menus_on_draw(-1, dst_surface);
   lua_pop(l, 1);
 }
 

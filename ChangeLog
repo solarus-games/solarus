@@ -27,6 +27,7 @@ Engine changes
 * Show a better error message if trying to play a Solarus 0.9 quest (#260).
 * Remove built-in debug keys. This can be done from Lua now.
 * Remove the preprocessor constant SOLARUS_DEBUG_KEYS.
+* Call on_draw() before drawing menus.
 
 Data files format changes
 -------------------------

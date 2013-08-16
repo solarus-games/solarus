@@ -269,8 +269,8 @@ void LuaContext::main_on_update() {
 void LuaContext::main_on_draw(Surface& dst_surface) {
 
   push_main(l);
-  menus_on_draw(-1, dst_surface);
   on_draw(dst_surface);
+  menus_on_draw(-1, dst_surface);
   lua_pop(l, 1);
 }
 

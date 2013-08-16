@@ -119,7 +119,7 @@ Menus of are updated in the following order:
 When several menus exist in the same context, they are updated from the back
 one to the front one.
 You can control this order thanks to the
-\c in_front parameter of
+\c on_top parameter of
 \ref lua_api_menu_start "menu:start()" when you start a menu.
 
 \remark As this function is called at each cycle, it is recommended to use other
@@ -141,7 +141,7 @@ Menus of are drawn in the following order:
 When several menus exist in the same context, they are updated from the back
 one to the front one.
 You can control this order thanks to the
-\c in_front parameter of
+\c on_top parameter of
 \ref lua_api_menu_start "menu:start()" when you start a menu.
 
 \subsection lua_api_menu_on_key_pressed menu:on_key_pressed(key, modifiers)

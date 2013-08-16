@@ -1414,9 +1414,10 @@ solutions when possible, like \ref lua_api_timer "timers" and other events.
 
 Called when the map has just been redrawn by the engine.
 
-The engine has already drawn the map as well as the
+The engine has already drawn the map, but not the
 \ref lua_api_menu "menus" of this map is any.
-Use this event if you want to draw some additional content.
+Use this event if you want to draw some additional content on the map
+before the menus, for example an overlay.
 - \c dst_surface (\ref lua_api_surface "surface"): The surface where the map
   is drawn. This surface represents the visible part of the screen, not the
   whole map.

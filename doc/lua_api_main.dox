@@ -193,7 +193,8 @@ Called at each cycle of the program's main loop.
 Called when the program's screen is redrawn.
 
 At this point, the engine has already drawn the game (if a game is running)
-and the menus of \c sol.main (if you have created menus on \c sol.main).
+and has not drawn yet the menus of
+\c sol.main (if you have created menus on \c sol.main).
 Use this event if you want to draw some additional content.
 - \c dst_surface (\ref lua_api_surface "surface"): The surface where the
   screen is drawn.

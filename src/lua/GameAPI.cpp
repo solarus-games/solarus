@@ -1373,8 +1373,8 @@ void LuaContext::game_on_update(Game& game) {
 void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
 
   push_game(l, game.get_savegame());
-  menus_on_draw(-1, dst_surface);
   on_draw(dst_surface);
+  menus_on_draw(-1, dst_surface);
   lua_pop(l, 1);
 }
 

@@ -8,6 +8,7 @@ Engine changes
 
 * Allow scripted dialog boxes (#184).
 * Replace the old built-in dialog box by a very minimal one.
+* Remove the old built-in game-over menu (#261).
 * New entity: separators to visually separate some regions in a map (#177).
 * New type of ground: ice (#182).
 * New type of ground: low walls (#117).
@@ -94,6 +95,9 @@ Changes that do not introduce incompatibilities:
 * Add a function game:stop_dialog(status) to close the scripted dialog box.
 * Add an event game:on_dialog_started(dialog, info).
 * Add an event game:on_dialog_finished(dialog).
+
+* Add functions game:start_game_over() and game:stop_game_over (#261).
+* Add events game:on_game_over_started(), game:on_game_over_finished (#261).
 
 * Add sol.file functions: open(), exists(), remove(), mkdir() (#267).
 

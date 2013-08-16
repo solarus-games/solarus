@@ -77,6 +77,7 @@ Changes that do not introduce incompatibilities:
 * target_movement:set_target(entity) now accepts an x,y offset (#154).
 * Add a method game:is_pause_allowed().
 * Add a method map:get_ground() (#141).
+* Add an optional parameter on_top to sol.menu.start.
 
 * Add a function sol.input.is_key_pressed().
 * Add a function sol.input.is_joypad_button_pressed().

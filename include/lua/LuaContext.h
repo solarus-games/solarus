@@ -190,7 +190,7 @@ class LuaContext {
     void notify_timers_map_suspended(bool suspended);
 
     // Menus.
-    void add_menu(int menu_ref, int context_index);
+    void add_menu(int menu_ref, int context_index, bool on_top);
     void remove_menus(int context_index);
     void remove_menus();
     void destroy_menus();

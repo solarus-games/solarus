@@ -35,7 +35,7 @@ automatically whenever they need to be notified.
 
 \section lua_api_menu_functions Functions of sol.menu
 
-\subsection lua_api_menu_start sol.menu.start(context, menu)
+\subsection lua_api_menu_start sol.menu.start(context, menu, [on_top])
 
 Starts a menu in a context.
 
@@ -61,6 +61,13 @@ it is stopped.
 - \c menu (table): The menu to activate. It can be any table. The only thing
   that makes it special is the presence of callback functions (events) as
   described in section \ref lua_api_menu_events.
+- \c on_top (boolean, optional): Whether this menu should be drawn on top
+  of other existing menus of the same context or behind them.
+  If \c true, the
+  \ref lua_api_menu_on_draw "on_draw()" event of your menu will be the last
+  to be called if there are several menus in the context.
+  If \c false, it will be the first one.
+  No value means \c true.
 
 \subsection lua_api_menu_stop sol.menu.stop(menu)
 
@@ -80,7 +87,6 @@ Stops all menus that are currently running in a context.
 
 This function is not often needed since menus are already automatically
 stopped when their context is closed.
-
 
 \section lua_api_menu_events Events of a menu
 
@@ -110,8 +116,11 @@ Menus of are updated in the following order:
 -# \ref lua_api_game "Game" menus (only during a game).
 -# \ref lua_api_main "Main" menus (the more general ones).
 
-When several menus exist in the same context, they are updated from the first
-one that was started to the last one.
+When several menus exist in the same context, they are updated from the back
+one to the front one.
+You can control this order thanks to the
+\c in_front parameter of
+\ref lua_api_menu_start "menu:start()" when you start a menu.
 
 \remark As this function is called at each cycle, it is recommended to use other
 solutions when possible, like \ref lua_api_timer "timers" and other events.
@@ -129,9 +138,11 @@ Menus of are drawn in the following order:
 -# \ref lua_api_game "Game" menus (only during a game).
 -# \ref lua_api_main "Main" menus (the more general ones).
 
-When several menus exist in the same context, they are drawn from the first
-one that was started to the last one.
-It means that a newly created menu appears on top of existing ones.
+When several menus exist in the same context, they are updated from the back
+one to the front one.
+You can control this order thanks to the
+\c in_front parameter of
+\ref lua_api_menu_start "menu:start()" when you start a menu.
 
 \subsection lua_api_menu_on_key_pressed menu:on_key_pressed(key, modifiers)
 
@@ -162,7 +173,7 @@ corresponding character instead (if any), see
 \subsection lua_api_menu_on_key_released menu:on_key_released(key, modifiers)
 
 Called when the user releases a keyboard key while your menu is active.
-Most recent menus are notified first.
+Menus on top are notified first.
 - \c key (string): Name of the raw key that was released.
 - \c modifiers (table): A table whose keys indicate what modifiers were
   down during the event. Possible table keys are \c "shift", \c "control" and
@@ -176,7 +187,7 @@ Most recent menus are notified first.
 
 Called when the user presses a keyboard key mapped to a character
 while your menu is active.
-Most recent menus are notified first.
+Menus on top are notified first.
 - \c character (string): A utf-8 string representing the character that was
   pressed.
 - Return value (boolean): Indicates whether the event was handled. If you
@@ -197,7 +208,7 @@ strings.
 \subsection lua_api_menu_on_joypad_button_pressed menu:on_joypad_button_pressed(button)
 
 Called when the user presses a joypad button while your menu is active.
-Most recent menus are notified first.
+Menus on top are notified first.
 - \c button (number): Index of the button that was pressed.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
@@ -207,7 +218,7 @@ Most recent menus are notified first.
 \subsection lua_api_menu_on_joypad_button_released menu:on_joypad_button_released(button)
 
 Called when the user releases a joypad button while your menu is active.
-Most recent menus are notified first.
+Menus on top are notified first.
 - \c button (number): Index of the button that was released.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
@@ -217,7 +228,7 @@ Most recent menus are notified first.
 \subsection lua_api_menu_on_joypad_axis_moved menu:on_joypad_axis_moved(axis, state)
 
 Called when the user moves a joypad axis while your menu is active.
-Most recent menus are notified first.
+Menus on top are notified first.
 - \c axis (number): Index of the axis that was moved. Usually, \c 0 is an
   horizontal axis and \c 1 is a vertical axis.
 - \c state (number): The new state of the axis that was moved. \c -1 means
@@ -230,7 +241,7 @@ Most recent menus are notified first.
 \subsection lua_api_menu_on_joypad_hat_moved menu:on_joypad_hat_moved(hat, direction8)
 
 Called when the user moves a joypad hat while your menu is active.
-Most recent menus are notified first.
+Menus on top are notified first.
 - \c hat (number): Index of the hat that was moved.
 - \c direction8 (number): The new direction of the hat. \c -1 means that the
   hat is centered. \c 0 to \c 7 indicates that the hat is in one of the eight
@@ -247,7 +258,7 @@ Called during a game when the player presses a
 (a keyboard key or a joypad action mapped to a built-in game behavior).
 You can use this event to override the normal built-in behavior of the game
 command.
-Most recent menus are notified first.
+Menus on top are notified first.
 - \c command (string): Name of the built-in game command that was pressed (see
   the \ref lua_api_game_intro_commands "game API" for the list of existing
   game commands).
@@ -267,7 +278,7 @@ Called during a game when the player released a game command
 (a keyboard key or a joypad action mapped to a built-in game behavior).
 You can use this event to override the normal built-in behavior of the game
 command.
-Most recent menus are notified first.
+Menus on top are notified first.
 - \c command (string): Name of the built-in game command that was released (see
   the \ref lua_api_game_intro_commands "game API" for the list of existing
   game commands).

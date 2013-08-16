@@ -43,8 +43,10 @@ void LuaContext::register_menu_module() {
  *
  * \param menu_ref Lua ref of the menu to add.
  * \param context_index Index of the table or userdata in the stack.
+ * \param on_top \c true to place this menu on top of existing one in the
+ * same context, \c false to place it behind.
  */
-void LuaContext::add_menu(int menu_ref, int context_index) {
+void LuaContext::add_menu(int menu_ref, int context_index, bool on_top) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
@@ -56,7 +58,12 @@ void LuaContext::add_menu(int menu_ref, int context_index) {
     context = lua_topointer(l, context_index);
   }
 
-  menus.push_back(LuaMenuData(menu_ref, context));
+  if (on_top) {
+    menus.push_back(LuaMenuData(menu_ref, context));
+  }
+  else {
+    menus.push_front(LuaMenuData(menu_ref, context));
+  }
 
   menu_on_started(menu_ref);
 }
@@ -149,7 +156,6 @@ void LuaContext::update_menus() {
   }
 }
 
-
 /**
  * \brief Implementation of sol.menu.start().
  * \param l The Lua context that is calling this function.
@@ -163,11 +169,15 @@ int LuaContext::menu_api_start(lua_State *l) {
     luaL_typerror(l, 1, "table or userdata");
   }
   luaL_checktype(l, 2, LUA_TTABLE);
+  bool on_top = true;
+  if (lua_gettop(l) >= 3) {
+    on_top = lua_toboolean(l, 3);
+  }
   lua_settop(l, 2);
 
   LuaContext& lua_context = get_lua_context(l);
   int menu_ref = lua_context.create_ref();
-  lua_context.add_menu(menu_ref, 1);
+  lua_context.add_menu(menu_ref, 1, on_top);
 
   return 0;
 }

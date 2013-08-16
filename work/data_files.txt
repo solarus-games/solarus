@@ -8,7 +8,6 @@ items/
 maps/
 tilesets/
 musics/
-  game_over.ogg|spc|it
 languages/
   languages.dat
   XX/
@@ -16,7 +15,6 @@ languages/
       strings.dat
       dialogs.dat
     images/
-      gameover_menu.png
 text/
   fonts.dat
 sounds/
@@ -28,7 +26,6 @@ sounds/
   bush.ogg
   cane.ogg
   chest_open.ogg
-  cursor.ogg
   danger.ogg
   door_closed.ogg
   door_open.ogg
@@ -37,7 +34,6 @@ sounds/
   enemy_killed.ogg
   explosion.ogg
   heart.ogg
-  hero_dying.ogg
   hero_falls.ogg
   hero_hurt.ogg
   hero_lands.ogg
@@ -100,8 +96,6 @@ sprites/
     stone_small_black.dat
     stone_small_white.dat
     switch.dat
-  hud/
-    gameover_fade.dat
   hero/
     tunic1.dat ...
     sword1.dat ...

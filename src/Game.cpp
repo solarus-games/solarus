@@ -787,7 +787,8 @@ void Game::stop_game_over() {
 
   get_lua_context().game_on_game_over_finished(*this);
   showing_game_over = false;
-  if (!restarting) {
+  if (!restarting && !get_main_loop().is_resetting()) {
+    // The hero gets back to life.
     hero->notify_game_over_finished();
   }
 }

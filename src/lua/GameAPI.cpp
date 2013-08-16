@@ -49,6 +49,9 @@ void LuaContext::register_game_module() {
       { "is_dialog_enabled", game_api_is_dialog_enabled },
       { "start_dialog", game_api_start_dialog },
       { "stop_dialog", game_api_stop_dialog },
+      { "is_game_over_enabled", game_api_is_game_over_enabled },
+      { "start_game_over", game_api_start_game_over },
+      { "stop_game_over", game_api_stop_game_over },
       { "get_map", game_api_get_map },
       { "get_hero", game_api_get_hero },
       { "get_value", game_api_get_value },
@@ -427,6 +430,63 @@ int LuaContext::game_api_stop_dialog(lua_State* l) {
   }
 
   game->stop_dialog(status_ref);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of game:is_game_over_enabled().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::game_api_is_game_over_enabled(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  if (game == NULL) {
+    lua_pushboolean(l, false);
+  }
+  else {
+    lua_pushboolean(l, game->is_showing_game_over());
+  }
+  return 1;
+}
+
+/**
+ * \brief Implementation of game:start_game_over().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::game_api_start_game_over(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  if (game == NULL) {
+    error(l, "Cannot start game-over: this game is not running");
+  }
+
+  game->start_game_over();
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of game:stop_game_over().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::game_api_stop_game_over(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  if (game == NULL) {
+    error(l, "Cannot stop game-over: this game is not running.");
+  }
+
+  game->stop_game_over();
 
   return 0;
 }

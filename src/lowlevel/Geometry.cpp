@@ -34,6 +34,11 @@ const double Geometry::TWO_PI = 2.0 * PI;
 const double Geometry::PI_OVER_2 = PI / 2.0;
 
 /**
+ * \brief pi / 2.
+ */
+const double Geometry::PI_OVER_4 = PI / 4.0;
+
+/**
  * \brief 3 * pi / 2.
  */
 const double Geometry::THREE_PI_OVER_2 = 3 * PI_OVER_2;
@@ -93,7 +98,7 @@ double Geometry::get_distance(const Rectangle& xy1, const Rectangle& xy2) {
  * \param y1 y coordinate of the first point
  * \param x2 x coordinate of the second point
  * \param y2 y coordinate of the second point
- * \return the angle in radians
+ * \return The angle in radians, between 0 and TWO_PI.
  */
 double Geometry::get_angle(int x1, int y1, int x2, int y2) {
 
@@ -109,8 +114,13 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
     }
   }
   else {
-    // special case (cannot divide by zero and compute atan)
+    // Special case (cannot divide by zero and compute atan).
     angle = (dy > 0) ? -PI_OVER_2 : PI_OVER_2;
+  }
+
+  // Normalize.
+  if (angle < 0) {
+    angle += TWO_PI;
   }
 
   return angle;

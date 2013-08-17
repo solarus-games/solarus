@@ -75,6 +75,7 @@ Changes that do not introduce incompatibilities:
 * Make map:get_camera_position() also return the size of the visible area.
 * Add a method entity:is_in_same_region(entity).
 * Add a method entity:get_center_position().
+* Add methods entity:get_direction4_to(), entity:get_direction8_to() (#150).
 * Add a method game:get_hero().
 * Add methods hero:get/set_walking_speed() (#206).
 * Add hero:get_state() and hero:on_state_changed() (#207).

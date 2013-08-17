@@ -30,6 +30,7 @@ class Geometry {
     static const double PI;
     static const double TWO_PI;
     static const double PI_OVER_2;
+    static const double PI_OVER_4;
     static const double THREE_PI_OVER_2;
     static const double SQRT_2;
 

@@ -281,11 +281,55 @@ To compute the angle to a specified point:
 - \c y (number): Y coordinate of the point.
 - Return value (number): The angle in radians between the origin point of
   this entity and the specified point.
+  The angle is between \c 0 and <tt>2 * math.pi</tt>.
 
 To compute the angle to another map entity:
 - \c other_entity (entity): The entity to compute the angle to.
 - Return value (number): The angle in radians between the origin point of
   this entity and the origin point of the other entity.
+  The angle is between \c 0 and <tt>2 * math.pi</tt>.
+
+\subsection lua_api_entity_get_direction4_to entity:get_direction4_to(x, y), entity:get_direction4_to(other_entity)
+
+Like
+\ref lua_api_entity_get_angle "entity:get_angle()",
+but instead of an angle in radians,
+returns the closest direction among the 4 main directions.
+
+This is a utility function that essentially rounds the result of
+\ref lua_api_entity_get_angle "entity:get_angle()".
+
+To compute the direction to a specified point:
+- \c x (number): X coordinate of the point.
+- \c y (number): Y coordinate of the point.
+- Return value (number): The direction this entity should take to look at
+  this point, between 0 (East) and 3 (South).
+
+To compute the direction to another map entity:
+- \c other_entity (entity): An entity to target.
+- Return value (number): The direction this entity should take to look at
+  the other entity, between 0 (East) and 3 (South).
+
+\subsection lua_api_entity_get_direction8_to entity:get_direction8_to(x, y), entity:get_direction8_to(other_entity)
+
+Like
+\ref lua_api_entity_get_angle "entity:get_angle()",
+but instead of an angle in radians,
+returns the closest direction among the 8 main directions.
+
+This is a utility function that essentially rounds the result of
+\ref lua_api_entity_get_angle "entity:get_angle()".
+
+To compute the direction to a specified point:
+- \c x (number): X coordinate of the point.
+- \c y (number): Y coordinate of the point.
+- Return value (number): The direction this entity should take to look at
+  this point, between 0 (East) and 7 (South-East).
+
+To compute the direction to another map entity:
+- \c other_entity (entity): An entity to target.
+- Return value (number): The direction this entity should take to look at
+  the other entity, between 0 (East) and 7 (South-East).
 
 \subsection lua_api_entity_get_optimization_distance entity:get_optimization_distance()
 

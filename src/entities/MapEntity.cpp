@@ -1727,7 +1727,7 @@ bool MapEntity::is_center_in(const Rectangle& rectangle) const {
  * and a point.
  * \param x X coordinate of the point.
  * \param y Y coordinate of the point.
- * \return The angle of the vector in radians.
+ * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
  */
 double MapEntity::get_angle(int x, int y) const {
   return Geometry::get_angle(get_x(), get_y(), x, y);
@@ -1737,7 +1737,7 @@ double MapEntity::get_angle(int x, int y) const {
  * \brief Returns the angle of the vector between the origin of this entity
  * and the origin of another entity.
  * \param other The other entity.
- * \return The angle of the vector in radians.
+ * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
  */
 double MapEntity::get_angle(const MapEntity& other) const {
   return Geometry::get_angle(get_x(), get_y(), other.get_x(), other.get_y());

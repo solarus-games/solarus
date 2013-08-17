@@ -100,7 +100,9 @@ void LuaContext::register_entity_module() {
       { "get_center_position", entity_api_get_center_position },
       { "snap_to_grid", entity_api_snap_to_grid },
       { "get_distance", entity_api_get_distance },
-      { "get_angle", entity_api_get_angle},
+      { "get_angle", entity_api_get_angle },
+      { "get_direction4_to", entity_api_get_direction4_to },
+      { "get_direction8_to", entity_api_get_direction8_to },
       { "get_optimization_distance", entity_api_get_optimization_distance },
       { "set_optimization_distance", entity_api_set_optimization_distance },
       { "is_in_same_region", entity_api_is_in_same_region },
@@ -595,6 +597,64 @@ int LuaContext::entity_api_get_angle(lua_State* l) {
   }
 
   lua_pushnumber(l, angle);
+  return 1;
+}
+
+/**
+ * \brief Implementation of entity:get_direction4_to().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_direction4_to(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  double angle;
+  if (lua_gettop(l) >= 3) {
+    int x = luaL_checknumber(l, 2);
+    int y = luaL_checknumber(l, 3);
+    angle = entity.get_angle(x, y);
+  }
+  else {
+    MapEntity& other_entity = check_entity(l, 2);
+    angle = entity.get_angle(other_entity);
+  }
+
+  // Convert from radians.
+  int direction4 = (angle + Geometry::PI_OVER_4) / Geometry::PI_OVER_2;
+
+  // Normalize.
+  direction4 = (direction4 + 4) % 4;
+
+  lua_pushnumber(l, direction4);
+  return 1;
+}
+
+/**
+ * \brief Implementation of entity:get_direction8_to().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_direction8_to(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  double angle;
+  if (lua_gettop(l) >= 3) {
+    int x = luaL_checknumber(l, 2);
+    int y = luaL_checknumber(l, 3);
+    angle = entity.get_angle(x, y);
+  }
+  else {
+    MapEntity& other_entity = check_entity(l, 2);
+    angle = entity.get_angle(other_entity);
+  }
+
+  // Convert from radians.
+  int direction8 = (angle + Geometry::PI_OVER_4 / 2) / Geometry::PI_OVER_4;
+
+  // Normalize.
+  direction8 = (direction8 + 8) % 8;
+
+  lua_pushnumber(l, direction8);
   return 1;
 }
 

@@ -9,12 +9,13 @@ in version 3.
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0).
 http://creativecommons.org/licenses/by-sa/3.0/
 
-Scripts under GNU GPL v3:
--------------------------
-**.lua
+Scripts under GNU GPL v3:                           Author/Origin (if known)
+-------------------------                           ------------------------
+**.lua                                              Christopho
 
 Data files under CC BY-SA 3.0:                      Author/Origin (if known)
 ------------------------------                      ------------------------
+**.dat                                              Christopho
 sprites/entities/bomb.png                           Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis
 sprites/entities/chest.png                          Bertram - adapted from sprites here: http://opengameart.org/content/modified-32x32-treasure-chest, http://opengameart.org/content/jrpg-chests-16-32-64-and-128px-squared
 sprites/entities/explosion.png                      Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis

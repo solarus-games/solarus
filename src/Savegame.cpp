@@ -179,11 +179,11 @@ void Savegame::load() {
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  int result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
 
   // Call the Lua savegame file.
-  if (result == 0) {
+  if (load_result == 0) {
     // The buffer was successfully loaded.
 
     // Make the Lua world aware of this savegame object.
@@ -210,7 +210,7 @@ void Savegame::load() {
       lua_pop(l, 1);
     }
   }
-  else if (result == LUA_ERRSYNTAX) {
+  else if (load_result == LUA_ERRSYNTAX) {
      // Apparently it was not a Lua file.
      // Let's try the obsolete format of Solarus 0.9.
      SavegameConverterV1 converter(file_name);

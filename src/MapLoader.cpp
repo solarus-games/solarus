@@ -59,8 +59,14 @@ void MapLoader::load_map(Game& game, Map& map) {
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
+
+  if (load_result != 0) {
+    Debug::die(StringConcat() << "Failed to load map data file '"
+        << file_name << "': " << lua_tostring(l, -1));
+    lua_pop(l, 1);
+  }
 
   // Register the properties() function to Lua.
   lua_register(l, "properties", l_properties);

@@ -52,15 +52,23 @@ void DialogResource::initialize() {
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size, true);
-  luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
 
-  lua_register(l, "dialog", l_dialog);
-  if (lua_pcall(l, 0, 0, 0) != 0) {
+  if (load_result != 0) {
     Debug::error(StringConcat() << "Failed to load dialog file '" << file_name
         << "' for language '" << FileTools::get_language() << "': "
         << lua_tostring(l, -1));
     lua_pop(l, 1);
+  }
+  else {
+    lua_register(l, "dialog", l_dialog);
+    if (lua_pcall(l, 0, 0, 0) != 0) {
+      Debug::error(StringConcat() << "Failed to load dialog file '" << file_name
+          << "' for language '" << FileTools::get_language() << "': "
+          << lua_tostring(l, -1));
+      lua_pop(l, 1);
+    }
   }
 
   lua_close(l);

@@ -44,10 +44,10 @@ bool Settings::load(const std::string& file_name) {
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
 
-  if (lua_pcall(l, 0, 0, 0) != 0) {
+  if (load_result != 0 || lua_pcall(l, 0, 0, 0) != 0) {
     lua_pop(l, 1);
     lua_close(l);
     return false;

@@ -9,6 +9,7 @@ Engine changes
 * Allow scripted dialog boxes (#184).
 * Replace the old built-in dialog box by a very minimal one.
 * Remove the old built-in game-over menu (#261).
+* Remove the old built-in dark rooms displaying (#205).
 * New entity: separators to visually separate some regions in a map (#177).
 * New type of ground: ice (#182).
 * New type of ground: low walls (#117).
@@ -62,6 +63,7 @@ Changes that introduce incompatibilities:
 * Make the enemy:create_enemy() more like map:create_enemy() (#215).
 * Remove sol.language.get_default_language(), useless and misleading (#265).
 * Remove sol.main.is_debug_enabled().
+* Remove map:get_light() and map:set_light() (#205).
 
 Changes that do not introduce incompatibilities:
 

@@ -68,8 +68,6 @@ class Map: public ExportableToLua {
     bool is_camera_moving();
     void traverse_separator(const Separator& separator);
     void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
-    int get_light();
-    void set_light(int light);
 
     // loading
     bool is_loaded();
@@ -179,11 +177,6 @@ class Map: public ExportableToLua {
 
     MapEntities* entities;        /**< the entities on the map */
     bool suspended;               /**< indicates whether the game is suspended */
-
-    // light
-    int light;                    /**< light level (0: dark, 1: full light) */
-    Surface* dark_surfaces[4];    /**< dark foreground shown when there is no light */
-
 };
 
 /**

@@ -79,7 +79,7 @@ Use the Lua notation \c "..." to get this parameter and store
 it into a regular variable.
 
 Here is a basic example of script for a map that does nothing special
-except turning the lights off and showing an evil welcome dialog when the
+except playing a special music and showing an evil welcome dialog when the
 hero enters it.
 \verbatim
 -- First, we put the parameter into a variable called "my_map".
@@ -89,8 +89,8 @@ local my_map = ...
 -- Event called when the player enters the map, at initialization time.
 function my_map:on_started()
 
-  -- Put the room into the dark (before the first draw).
-  my_map:set_light(0)
+  -- Play an evil music.
+  sol.audio.play_music("evil")
 end
 
 -- Event called when the player enters the map, after the opening transition.
@@ -360,18 +360,6 @@ and only loads the image of the new tileset.
 
 \remark If the new tileset is not compatible with the previous one,
   tiles will be displayed with wrong graphics.
-
-\subsection lua_api_map_get_light map:get_light()
-
-Returns the current light level of the map.
-- Return value (number): The light level (\c 0: no light except near the
-  \ref lua_api_hero "hero", \c 1: full light).
-
-\subsection lua_api_map_set_light map:set_light(light)
-
-Sets the light level of the map.
-- \c light (number): The light level to set (\c 0: no light except near the
-  \ref lua_api_hero "hero", \c 1: full light).
 
 \subsection lua_api_map_get_camera_position map:get_camera_position()
 

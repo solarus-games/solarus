@@ -50,8 +50,7 @@ Map::Map(const std::string& id):
   started(false),
   destination_name(""),
   entities(NULL),
-  suspended(false),
-  light(1) {
+  suspended(false) {
 
 }
 
@@ -237,10 +236,6 @@ void Map::unload() {
     delete camera;
     camera = NULL;
 
-    for (int i = 0; i < 4; i++) {
-      delete dark_surfaces[i];
-      dark_surfaces[i] = NULL;
-    }
     loaded = false;
   }
 }
@@ -252,7 +247,7 @@ void Map::unload() {
  *
  * \param game the game
  */
-void Map::load(Game &game) {
+void Map::load(Game& game) {
 
   this->visible_surface = new Surface(VideoManager::get_instance()->get_quest_size());
   this->visible_surface->increment_refcount();
@@ -260,12 +255,6 @@ void Map::load(Game &game) {
 
   // read the map file
   map_loader.load_map(game, *this);
-
-  // initialize the light
-  dark_surfaces[0] = new Surface("entities/dark0.png");
-  dark_surfaces[1] = new Surface("entities/dark1.png");
-  dark_surfaces[2] = new Surface("entities/dark2.png");
-  dark_surfaces[3] = new Surface("entities/dark3.png");
 
   loaded = true;
 }
@@ -459,22 +448,6 @@ void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
 }
 
 /**
- * \brief Returns the current level of light of the map.
- * \return the light level (0: no light, a positive value: full light)
- */
-int Map::get_light() {
-  return light;
-}
-
-/**
- * \brief Sets the level of light of the map.
- * \param light the new light level (0: no light, a positive value: full light)
- */
-void Map::set_light(int light) {
-  this->light = light;
-}
-
-/**
  * \brief Suspends or resumes the movement and animations of the entities.
  *
  * This function is called when the game is being suspended
@@ -577,40 +550,6 @@ void Map::draw_foreground() {
 
   const int screen_width = visible_surface->get_width();
   const int screen_height = visible_surface->get_height();
-  if (light == 0) {
-    // no light
-
-    int hero_direction = get_entities().get_hero().get_animation_direction();
-    const Rectangle& hero_position = get_entities().get_hero().get_center_point();
-    const Rectangle& camera_position = camera->get_position();
-    int x = 320 - hero_position.get_x() + camera_position.get_x();
-    int y = 240 - hero_position.get_y() + camera_position.get_y();
-    Rectangle src_position(x, y, screen_width, screen_height);
-    Surface& dark_surface = *dark_surfaces[hero_direction];
-    dark_surface.draw_region(src_position, *visible_surface);
-
-    // dark_surface may be too small if the screen size is greater
-    // than 320*240: add black bars.
-    if (x < 0) {
-      visible_surface->fill_with_color(Color::get_black(),
-          Rectangle(0, 0, -x, screen_height));
-    }
-    if (y < 0) {
-      visible_surface->fill_with_color(Color::get_black(),
-          Rectangle(0, 0, screen_width, -y));
-    }
-    if (x > dark_surface.get_width() - screen_width) {
-      visible_surface->fill_with_color(Color::get_black(),
-          Rectangle(dark_surface.get_width() - x, 0,
-              x - dark_surface.get_width() + screen_width, screen_height));
-    }
-    if (y > dark_surface.get_height() - screen_height) {
-      visible_surface->fill_with_color(Color::get_black(),
-          Rectangle(0, dark_surface.get_height() - y,
-              screen_width, y - dark_surface.get_height() + screen_height));
-    }
-  }
-  // TODO intermediate light levels
 
   // If the map is too small for the screen, add black bars outside the map.
   const int map_width = get_width();

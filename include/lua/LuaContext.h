@@ -658,8 +658,6 @@ class LuaContext {
       map_api_get_location,
       map_api_get_tileset,
       map_api_set_tileset,
-      map_api_get_light,  // TODO remove (this should be scripted)
-      map_api_set_light,  // TODO remove (this should be scripted)
       map_api_get_camera_position,
       map_api_move_camera,  // TODO set any movement to the camera instead
       map_api_get_ground,

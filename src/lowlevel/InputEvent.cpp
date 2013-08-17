@@ -281,7 +281,7 @@ bool InputEvent::is_key_down(KeyboardKey key) {
 
 /**
  * \brief Returns whether a joypad button is currently down.
- * \param key A joypad button.
+ * \param button A joypad button.
  * \return \c true if this joypad button is currently down.
  */
 bool InputEvent::is_joypad_button_down(int button) {
@@ -320,7 +320,7 @@ int InputEvent::get_joypad_axis_state(int axis) {
 
 /**
  * \brief Returns the direction of a joypad hat.
- * \param axis Index of a joypad hat.
+ * \param hat Index of a joypad hat.
  * \return The direction of that hat (0 to 7, or -1 if centered).
  */
 int InputEvent::get_joypad_hat_direction(int hat) {

@@ -358,7 +358,7 @@ void Camera::restore() {
  *
  * The hero must touch the separator when you call this function.
  *
- * \param Separator The separator to traverse.
+ * \param separator The separator to traverse.
  */
 void Camera::traverse_separator(const Separator& separator) {
 

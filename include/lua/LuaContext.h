@@ -112,7 +112,6 @@ class LuaContext {
     // Lua helpers.
     static int error(lua_State* l, const std::string& message);
     static int arg_error(lua_State* l, int arg_index, const std::string& message);
-    static int type_error(lua_State* l, int arg_index, const std::string& expected_type);
 
     static bool is_color(lua_State* l, int index);
     static Color check_color(lua_State* l, int index);

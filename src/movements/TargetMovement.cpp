@@ -29,8 +29,8 @@ const uint32_t TargetMovement::recomputation_delay = 150;
 /**
  * \brief Creates a new target movement toward an entity or a fixed point.
  * \param target_entity The entity to target or NULL.
- * \param target_x X of the target point, or X offset in the case of an entity.
- * \param target_y Y of the target point, or Y offset in the case of an entity.
+ * \param x X of the target point, or X offset in the case of an entity.
+ * \param y Y of the target point, or Y offset in the case of an entity.
  * \param moving_speed Speed of the movement when not stopped0
  * \param ignore_obstacles \c true to ignore obstacles (if on a map).
  */

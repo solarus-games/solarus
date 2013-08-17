@@ -268,7 +268,7 @@ bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) {
  * If false is returned, jumpers have no effect (but they are obstacle for
  * the hero).
  *
- * \return \v true if the hero can use jumpers in this state.
+ * \return \c true if the hero can use jumpers in this state.
  */
 bool Hero::PlayerMovementState::can_take_jumper() {
   return true;

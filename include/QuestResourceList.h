@@ -31,6 +31,9 @@ class QuestResourceList {
 
   public:
 
+    /**
+     * \brief A resource element: id and description.
+     */
     typedef std::pair<std::string, std::string> Element;
 
     /**

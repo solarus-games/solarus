@@ -37,6 +37,10 @@ class FileTools {
 
   public:
 
+    /**
+     * \brief Describes the possible physical locations of a data file
+     * of the quest.
+     */
     enum DataFileLocation {
       LOCATION_NONE,
       LOCATION_DATA_DIRECTORY,

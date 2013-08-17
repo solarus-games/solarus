@@ -1,0 +1,11 @@
+on_ground tileset 1 0 -1
+96	80	16	24	8	13	1	1
+
+stopped tileset 1 0 -1
+96	80	16	24	8	13	1	1
+
+walking tileset 1 100 0
+96	80	16	24	8	13	3	3
+
+destroy tileset 1 100 -1
+0 	168	32	32	16	29	8	8

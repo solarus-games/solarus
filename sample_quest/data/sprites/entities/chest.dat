@@ -1,0 +1,6 @@
+closed entities/chest.png 1 0 -1
+0	0	16	16	8	13	1	1
+
+open entities/chest.png 1 0 -1
+16	0	16	16	8	13	1	1
+

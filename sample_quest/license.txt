@@ -1,0 +1,32 @@
+This file gives the license information of all data files of this quest.
+Some resources come from communities like OpenGameArt, and others are original
+creations made by us, the Solarus team.
+
+- Lua scripts are licensed under the terms of the GNU General Public License
+in version 3.
+
+- All data files we created are licensed under
+Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0).
+http://creativecommons.org/licenses/by-sa/3.0/
+
+Scripts under GNU GPL v3:
+-------------------------
+**.lua
+
+Data files under CC BY-SA 3.0:                      Author/Origin (if known)
+------------------------------                      ------------------------
+sprites/entities/bomb.png                           Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis
+sprites/entities/chest.png                          Bertram - adapted from sprites here: http://opengameart.org/content/modified-32x32-treasure-chest, http://opengameart.org/content/jrpg-chests-16-32-64-and-128px-squared
+sprites/entities/explosion.png                      Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis
+sprites/entities/items.png                          Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis
+sprites/entities/shadow.png                         Christopho
+sprites/menus/solarus_logo.png                      Neovyse
+tilesets/castle.entities.png                        Bertram, adapted from tiles of: http://opengameart.org/content/lpc-tile-atlas
+tilesets/castle.tiles.png                           Christopho, adapted from Challener (Redshrike): http://opengameart.org/content/16x16-indoor-rpg-tileset-the-baseline
+sprites/hero/stopped.tunic.png                      Christopho, adapted from Arikel: http://opengameart.org/content/2d-rpg-character-walk-spritesheet
+sprites/hero/walking.tunic.png                      Christopho, adapted from Arikel: http://opengameart.org/content/2d-rpg-character-walk-spritesheet
+
+Data files under public domain:                     Author/Origin (if known)
+-------------------------------                     ------------------------
+text/victoria_bold.png                              Christopho (added borders), adapted from: http://opengameart.org/content/a-package-of-8-bit-fonts-for-grafx2-and-linux
+

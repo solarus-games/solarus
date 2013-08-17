@@ -1,0 +1,15 @@
+map{ id = "first_map", description = "First map" }
+
+tileset{ id = "castle", description = "Castle" }
+
+sprite{ id = "entities/chest", description = "Chest" }
+sprite{ id = "entities/sign", description = "Sign" }
+sprite{ id = "entities/block", description = "Block" }
+
+
+
+item{ id = "bomb", description = "Bomb" }
+
+
+language{ id = "en", description = "English" }
+

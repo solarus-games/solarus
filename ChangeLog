@@ -6,9 +6,11 @@ _______________________________
 Engine changes
 --------------
 
+* Add a very short sample quest with free graphics (#232).
 * Allow scripted dialog boxes (#184).
+* Allow a scripted game-over menu (#261).
 * Replace the old built-in dialog box by a very minimal one.
-* Remove the old built-in game-over menu (#261).
+* Remove the old built-in game-over menu.
 * Remove the old built-in dark rooms displaying (#205).
 * New entity: separators to visually separate some regions in a map (#177).
 * New type of ground: ice (#182).

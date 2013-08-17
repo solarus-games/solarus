@@ -26,14 +26,12 @@ sounds/
   bush.ogg
   cane.ogg
   chest_open.ogg
-  danger.ogg
   door_closed.ogg
   door_open.ogg
   door_unlocked.ogg
   enemy_hurt.ogg
   enemy_killed.ogg
   explosion.ogg
-  heart.ogg
   hero_falls.ogg
   hero_hurt.ogg
   hero_lands.ogg
@@ -43,7 +41,6 @@ sounds/
   lift.ogg
   message_end.ogg
   monster_hurt.ogg
-  ok.ogg
   picked_item.ogg
   running.ogg
   shield.ogg
@@ -67,7 +64,6 @@ sounds/
   victory.ogg
   walk_on_grass.ogg
   walk_on_water.ogg
-  warp.ogg
   wrong.ogg
 sprites/
   entities/

@@ -107,14 +107,6 @@ public class Block extends MapEntity {
   }
 
   /**
-   * Returns whether this entity is an obstacle.
-   * @return Obstacle.OBSTACLE
-   */
-  public Obstacle getObstacle() {
-    return Obstacle.OBSTACLE;
-  }
-
-  /**
    * Declares all properties specific to the current entity type and sets
    * their initial values.
    */

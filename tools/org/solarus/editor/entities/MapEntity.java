@@ -41,8 +41,6 @@ import java.util.*;
  *       to check the validity of the specific properties.
  *   - Create a constructor with the following signature:
  *       public YourEntity(Map map) throws MapException.
- *   - Redefine if necessary the getObstacle() method: public Obstacle getObstacle()
- *       if your entity is an obstacle.
  *   - Redefine if necessary some methods to define the direction property of your type of entity:
  *       - public int getNbDirections(): returns the number of possible
  *           directions of this kind of entity (should be 0, 4 or 8; default is zero)
@@ -472,14 +470,6 @@ public abstract class MapEntity extends Observable {
      */
     public boolean hasInitialLayer() {
         return false;
-    }
-
-    /**
-     * Returns the entity's obstacle property (default is Obstacle.TRAVERSABLE).
-     * @return the obstacle property
-     */
-    public Obstacle getObstacle() {
-        return Obstacle.TRAVERSABLE;
     }
 
     /**

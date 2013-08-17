@@ -52,12 +52,4 @@ public class Crystal extends MapEntity {
     protected Point getOrigin() {
         return origin;
     }
-
-    /**
-     * Returns whether this entity is an obstacle.
-     * @return Obstacle.OBSTACLE
-     */
-    public Obstacle getObstacle() {
-        return Obstacle.OBSTACLE;
-    }
 }

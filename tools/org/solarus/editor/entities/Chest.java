@@ -141,14 +141,6 @@ public class Chest extends MapEntity {
     }
 
     /**
-     * Returns whether this entity is an obstacle.
-     * @return Obstacle.OBSTACLE
-     */
-    public Obstacle getObstacle() {
-        return Obstacle.OBSTACLE;
-    }
-
-    /**
      * Notifies this entity that a property specific to its type has just changed.
      * Does nothing by default.
      * @param name Name of the property that has changed.

@@ -159,14 +159,6 @@ public class Tile extends MapEntity {
     }
 
     /**
-     * Returns the tile's obstacle property.
-     * @return the tile's obstacle property
-     */
-    public Obstacle getObstacle() {
-        return getTilePattern().getObstacle();
-    }
-
-    /**
      * Returns whether this kind of entity is allowed to have a name.
      * @return false.
      */

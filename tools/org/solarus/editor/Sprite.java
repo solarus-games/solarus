@@ -50,7 +50,7 @@ public class Sprite {
     /**
      * Default image for empty sprites.
      */
-    private static Image emptySpriteImage = Project.getEditorImageOrEmpty("npc.png");
+    private static Image emptySpriteImage = Project.getEditorImageOrEmpty("entity_npc.png");
 
     /**
      * Analyzes the description file of the animation set used by this sprite

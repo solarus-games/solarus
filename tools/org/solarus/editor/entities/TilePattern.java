@@ -124,9 +124,9 @@ public class TilePattern extends Observable {
     private BufferedImage[] images;
 
     /**
-     * Obstacle property.
+     * Ground property of this tile pattern.
      */
-    private Obstacle obstacle;
+    private Ground ground;
 
     /**
      * Type of animation.
@@ -149,23 +149,24 @@ public class TilePattern extends Observable {
      * Simple constructor with no animation.
      * @param positionInTileset position of the tile pattern in the tileset
      * @param defaultLayer default layer of the tile pattern
-     * @param obstacle the obstacle property of this tile pattern
+     * @param ground the ground type of this tile pattern
      * @throws TilesetException if the tile size is incorrect
      */
-    public TilePattern(Rectangle positionInTileset, Layer defaultLayer, Obstacle obstacle) throws TilesetException {
-        this(positionInTileset, defaultLayer, obstacle, Animation.NONE, AnimationSeparation.HORIZONTAL);
+    public TilePattern(Rectangle positionInTileset,
+            Layer defaultLayer, Ground ground) throws TilesetException {
+        this(positionInTileset, defaultLayer, ground, Animation.NONE, AnimationSeparation.HORIZONTAL);
     }
 
     /**
      * Constructor.
      * @param positionInTileset position of the tile pattern in the tileset
      * @param defaultLayer default layer of the tiles created with this pattern
-     * @param obstacle the obstacle property of this tile pattern
+     * @param ground the ground type of this tile pattern
      * @param animation type of animation
      * @param animationSeparation separation of the 3 animation frames in the tileset image
      * @throws TilesetException if the pattern size is incorrect
      */
-    public TilePattern(Rectangle positionInTileset, Layer defaultLayer, Obstacle obstacle,
+    public TilePattern(Rectangle positionInTileset, Layer defaultLayer, Ground ground,
                 Animation animation, AnimationSeparation animationSeparation) throws TilesetException {
         super();
 
@@ -179,7 +180,7 @@ public class TilePattern extends Observable {
         this.defaultLayer = defaultLayer;
         setAnimation(animation);
         setAnimationSeparation(animationSeparation);
-        setObstacle(obstacle);
+        setGround(ground);
 
         this.images = new BufferedImage[4];
     }
@@ -253,27 +254,27 @@ public class TilePattern extends Observable {
     }
 
     /**
-     * Returns the tile pattern's obstacle property.
-     * @return the obstacle property
+     * Returns the ground type of this tile pattern.
+     * @return The type of ground.
      */
-    public Obstacle getObstacle() {
-        return obstacle;
+    public Ground getGround() {
+        return ground;
     }
 
     /**
-     * Changes the tile pattern's obstacle property.
-     * @param obstacle the obstacle propery
-     * @throws TilesetException if the obstacle specified is diagonal
-     * and the tile pattern is not square
+     * Changes the ground type of this tile pattern.
+     * @param ground The new type of ground.
+     * @throws TilesetException if the ground specified is diagonal
+     * and the tile pattern is not square.
      */
-    public void setObstacle(Obstacle obstacle) throws TilesetException {
+    public void setGround(Ground ground) throws TilesetException {
 
         // diagonal obstacle: check that the tile is square
-        if (obstacle.isDiagonal() && getWidth() != getHeight()) {
+        if (ground.isDiagonal() && getWidth() != getHeight()) {
             throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile pattern (size is " + getWidth() + "x" + getHeight() + ")");
         }
 
-        this.obstacle = obstacle;
+        this.ground = ground;
         setChanged();
         notifyObservers();
     }
@@ -427,7 +428,7 @@ public class TilePattern extends Observable {
 
         TilePattern tilePattern = (TilePattern) other;
 
-        return obstacle == tilePattern.obstacle
+        return ground == tilePattern.ground
             && animation == tilePattern.animation
             && animationSeparation == tilePattern.animationSeparation
             && positionInTileset.equals(tilePattern.positionInTileset);

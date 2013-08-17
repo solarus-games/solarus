@@ -123,14 +123,6 @@ public class Destructible extends MapEntity {
     }
 
     /**
-     * Returns the entity's obstacle property.
-     * @return Obstacle.OBSTACLE
-     */
-    public Obstacle getObstacle() {
-        return Obstacle.OBSTACLE;
-    }
-
-    /**
      * Sets the subtype of this entity.
      * @param subtype the subtype of entity
      */

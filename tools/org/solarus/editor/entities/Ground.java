@@ -23,27 +23,27 @@ import java.io.*;
 /**
  * Enumeration of the obstacle property of the tiles.
  */
-public enum Obstacle {
+public enum Ground {
 
-    EMPTY("obstacle_empty.png"),
-    TRAVERSABLE("obstacle_none.png"),
-    OBSTACLE("obstacle.png"),
-    LOW_WALL("obstacle_low_wall.png"),
-    TOP_RIGHT("obstacle_top_right.png"),
-    TOP_LEFT("obstacle_top_left.png"),
-    BOTTOM_LEFT("obstacle_bottom_left.png"),
-    BOTTOM_RIGHT("obstacle_bottom_right.png"),
-    TOP_RIGHT_WATER("obstacle_top_right_water.png"),
-    TOP_LEFT_WATER("obstacle_top_left_water.png"),
-    BOTTOM_LEFT_WATER("obstacle_bottom_left_water.png"),
-    BOTTOM_RIGHT_WATER("obstacle_bottom_right_water.png"),
-    DEEP_WATER("obstacle_deep_water.png"),
-    SHALLOW_WATER("obstacle_shallow_water.png"),
-    HOLE("obstacle_hole.png"),
-    ICE("obstacle_ice.png"),
-    LADDER("obstacle_ladder.png"),
-    PRICKLE("obstacle_prickle.png"),
-    LAVA("obstacle_lava.png"),
+    EMPTY("ground_empty.png"),
+    TRAVERSABLE("ground_traversable.png"),
+    WALL("ground_wall.png"),
+    LOW_WALL("ground_low_wall.png"),
+    WALL_TOP_RIGHT("ground_wall_top_right.png"),
+    WALL_TOP_LEFT("ground_wall_top_left.png"),
+    WALL_BOTTOM_LEFT("ground_wall_bottom_left.png"),
+    WALL_BOTTOM_RIGHT("ground_wall_bottom_right.png"),
+    WALL_TOP_RIGHT_WATER("ground_wall_top_right_water.png"),
+    WALL_TOP_LEFT_WATER("ground_wall_top_left_water.png"),
+    WALL_BOTTOM_LEFT_WATER("ground_wall_bottom_left_water.png"),
+    WALL_BOTTOM_RIGHT_WATER("ground_wall_bottom_right_water.png"),
+    DEEP_WATER("ground_deep_water.png"),
+    SHALLOW_WATER("ground_shallow_water.png"),
+    HOLE("ground_hole.png"),
+    ICE("ground_ice.png"),
+    LADDER("ground_ladder.png"),
+    PRICKLE("ground_prickles.png"),
+    LAVA("ground_lava.png"),
     ;
 
     private String iconFileName;
@@ -73,48 +73,48 @@ public enum Obstacle {
     };
 
     /**
-     * Creates an obstacle property
-     * @param id id of this obstacle property
-     * @param iconFileName name of the icon file representing this obstacle property
+     * Creates a ground kind.
+     * @param id Id of this ground kind.
+     * @param iconFileName Name of the icon file representing this ground kind.
      */
-    private Obstacle(String iconFileName) {
+    private Ground(String iconFileName) {
         this.iconFileName = iconFileName;
     }
 
     /**
-     * Returns the name of this obstacle property.
-     * @return the name
+     * Returns the name of this ground kind.
+     * @return The name.
      */
     public String getName() {
         return humanNames[ordinal()];
     }
 
     /**
-     * Returns whether this obstacle property corresponds to a wall.
-     * @return true if this is a wall
+     * Returns whether this ground kind corresponds to a wall.
+     * @return \c true if this is a wall.
      */
     public boolean isWall() {
-        return this == OBSTACLE || isDiagonal();
+        return this == WALL || isDiagonal();
     }
 
     /**
-     * Returns whether this obstacle property corresponds to a diagonal wall.
-     * @return true if this is a diagonal wall
+     * Returns whether this ground property corresponds to a diagonal wall.
+     * @return \c true if this is a diagonal wall.
      */
     public boolean isDiagonal() {
-        return this == TOP_RIGHT ||
-          this == TOP_LEFT ||
-          this == BOTTOM_LEFT ||
-          this == BOTTOM_RIGHT ||
-          this == TOP_RIGHT_WATER ||
-          this == TOP_LEFT_WATER ||
-          this == BOTTOM_LEFT_WATER ||
-          this == BOTTOM_RIGHT_WATER;
+        return this == WALL_TOP_RIGHT ||
+          this == WALL_TOP_LEFT ||
+          this == WALL_BOTTOM_LEFT ||
+          this == WALL_BOTTOM_RIGHT ||
+          this == WALL_TOP_RIGHT_WATER ||
+          this == WALL_TOP_LEFT_WATER ||
+          this == WALL_BOTTOM_LEFT_WATER ||
+          this == WALL_BOTTOM_RIGHT_WATER;
     }
 
     /**
-     * Returns the icon representing this obstacle property.
-     * @return the icon for this obstacle property
+     * Returns the icon representing this ground.
+     * @return The icon for this ground.
      */
     public ImageIcon getIcon() {
         return getIcons()[ordinal()];
@@ -122,14 +122,14 @@ public enum Obstacle {
 
     /**
      * Returns all the icons.
-     * @return icon of each type of obstacle
+     * @return Icon of each type of ground.
      */
     public static ImageIcon[] getIcons() {
 
         if (icons == null) {
             icons = new ImageIcon[values().length];
             int i = 0;
-            for (Obstacle value: values()) {
+            for (Ground value: values()) {
                 try {
                     icons[i] = Project.getEditorImageIcon(value.iconFileName);
                 }

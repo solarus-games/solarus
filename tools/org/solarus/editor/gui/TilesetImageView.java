@@ -68,9 +68,9 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     private JPopupMenu popupMenuSelectedTilePattern;
 
     /**
-     * Items in the popup menu to set the type of obstacle of the selected tile pattern.
+     * Items in the popup menu to set the type of ground of the selected tile pattern.
      */
-    private JRadioButtonMenuItem[] itemsObstacle;
+    private JRadioButtonMenuItem[] itemsGround;
 
     /**
      * Constructor.
@@ -92,12 +92,12 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
             // popup menu to create a tile pattern
             popupMenuCreate = new JPopupMenu();
 
-            item = new JMenuItem("Create (traversable)", Obstacle.TRAVERSABLE.getIcon());
-            item.addActionListener(new ActionCreateTilePattern(Obstacle.TRAVERSABLE));
+            item = new JMenuItem("Create (traversable)", Ground.TRAVERSABLE.getIcon());
+            item.addActionListener(new ActionCreateTilePattern(Ground.TRAVERSABLE));
             popupMenuCreate.add(item);
 
-            item = new JMenuItem("Create (wall)", Obstacle.OBSTACLE.getIcon());
-            item.addActionListener(new ActionCreateTilePattern(Obstacle.OBSTACLE));
+            item = new JMenuItem("Create (wall)", Ground.WALL.getIcon());
+            item.addActionListener(new ActionCreateTilePattern(Ground.WALL));
             popupMenuCreate.add(item);
 
             itemCancelCreate.addActionListener(new ActionListener() {
@@ -110,15 +110,15 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
             // popup menu for a selected tile pattern
             popupMenuSelectedTilePattern = new JPopupMenu();
-            itemsObstacle = new JRadioButtonMenuItem[Obstacle.values().length];
+            itemsGround = new JRadioButtonMenuItem[Ground.values().length];
             ButtonGroup itemsObstacleGroup = new ButtonGroup();
 
             int i = 0;
-            for (Obstacle obstacle: Obstacle.values()) {
-                itemsObstacle[i] = new JRadioButtonMenuItem(obstacle.getName(), obstacle.getIcon());
-                itemsObstacle[i].addActionListener(new ActionChangeObstacle(obstacle));
-                popupMenuSelectedTilePattern.add(itemsObstacle[i]);
-                itemsObstacleGroup.add(itemsObstacle[i]);
+            for (Ground ground: Ground.values()) {
+                itemsGround[i] = new JRadioButtonMenuItem(ground.getName(), ground.getIcon());
+                itemsGround[i].addActionListener(new ActionChangeGround(ground));
+                popupMenuSelectedTilePattern.add(itemsGround[i]);
+                itemsObstacleGroup.add(itemsGround[i]);
                 i++;
             }
 
@@ -381,8 +381,8 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
                     // right click: if the tileset is editable, we show a popup menu
                     if (mouseEvent.getButton() == MouseEvent.BUTTON3 && editable) {
-                        Obstacle obstacle = tileset.getSelectedTilePattern().getObstacle();
-                        itemsObstacle[obstacle.ordinal()].setSelected(true);
+                        Ground ground = tileset.getSelectedTilePattern().getGround();
+                        itemsGround[ground.ordinal()].setSelected(true);
                         popupMenuSelectedTilePattern.show(TilesetImageView.this,
                                 mouseEvent.getX(),
                                 mouseEvent.getY());
@@ -528,16 +528,16 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     private class ActionCreateTilePattern implements ActionListener {
 
         /**
-         * Obstacle property to set when the action is invoked.
+         * Ground property to set when the action is invoked.
          */
-        private Obstacle obstacle;
+        private Ground ground;
 
         /**
          * Constructor.
-         * @param obstacle obstacle property of the tile pattern to create
+         * @param ground Ground property of the tile pattern to create.
          */
-        public ActionCreateTilePattern(Obstacle obstacle) {
-            this.obstacle = obstacle;
+        public ActionCreateTilePattern(Ground ground) {
+            this.ground = ground;
         }
 
         /**
@@ -545,7 +545,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
          */
         public void actionPerformed(ActionEvent ev) {
             try {
-                tileset.addTilePattern(obstacle);
+                tileset.addTilePattern(ground);
             }
             catch (TilesetException e) {
                 JOptionPane.showMessageDialog(null,
@@ -557,22 +557,22 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     }
 
     /**
-     * Action listener invoked when the user changes the type of obstacle of a tile
+     * Action listener invoked when the user changes the type of ground of a tile
      * pattern from the popup menu after a right click.
      */
-    private class ActionChangeObstacle implements ActionListener {
+    private class ActionChangeGround implements ActionListener {
 
         /**
-         * Obstacle property to set when the action is invoked.
+         * Ground property to set when the action is invoked.
          */
-        private Obstacle obstacle;
+        private Ground ground;
 
         /**
          * Constructor.
-         * @param obstacle obstacle property to set when the action is invoked.
+         * @param ground Ground property to set when the action is invoked.
          */
-        public ActionChangeObstacle(Obstacle obstacle) {
-            this.obstacle = obstacle;
+        public ActionChangeGround(Ground ground) {
+            this.ground = ground;
         }
 
         /**
@@ -580,16 +580,16 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
          */
         public void actionPerformed(ActionEvent ev) {
             TilePattern tilePattern = tileset.getSelectedTilePattern();
-            Obstacle currentObstacle = tilePattern.getObstacle();
+            Ground currentGround = tilePattern.getGround();
 
-            if (currentObstacle != obstacle) {
+            if (currentGround != ground) {
 
                 try {
-                    tilePattern.setObstacle(obstacle);
+                    tilePattern.setGround(ground);
                 }
                 catch (TilesetException e) {
                     JOptionPane.showMessageDialog(null,
-                                                  "Unable to set this type of obstacle: " + e.getMessage(),
+                                                  "Unable to set this type of ground: " + e.getMessage(),
                                                   "Error",
                                                   JOptionPane.ERROR_MESSAGE);
                 }

@@ -95,14 +95,6 @@ public class Stairs extends MapEntity {
     }
 
     /**
-     * Returns whether this entity is an obstacle.
-     * @return Obstacle.OBSTACLE
-     */
-    public Obstacle getObstacle() {
-        return Obstacle.OBSTACLE;
-    }
-
-    /**
      * Sets the subtype of this entity.
      * @param subtype the subtype of entity
      */

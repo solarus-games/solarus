@@ -82,14 +82,6 @@ public class ShopItem extends MapEntity {
     }
 
     /**
-     * Returns whether this entity is an obstacle.
-     * @return Obstacle.OBSTACLE
-     */
-    public Obstacle getObstacle() {
-        return Obstacle.OBSTACLE;
-    }
-
-    /**
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {

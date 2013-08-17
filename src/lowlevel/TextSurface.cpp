@@ -463,6 +463,9 @@ void TextSurface::rebuild() {
   if (!fonts_loaded) {
     // First time: lazy load of the fonts.
     load_fonts();
+    if (font_id.empty()) {
+      font_id = default_font_id;
+    }
   }
 
   if (surface != NULL) {

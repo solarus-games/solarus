@@ -44,7 +44,7 @@ static void print_help(int argc, char** argv);
  * \param argc number of command-line arguments
  * \param argv command-line arguments
  */
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
 
   std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
 
@@ -91,7 +91,9 @@ static void print_help(int argc, char **argv) {
     << std::endl
     << "  -no-audio           disables sounds and musics"
     << std::endl
-    << "  -no-video           disables displaying (may be useful for tests)"
+    << "  -no-video           disables displaying (may be useful for automated tests)"
+    << std::endl
+    << "  -quest-size=<width>x<height>         sets the size of the drawing area (if compatible with the quest)"
     << std::endl;
 }
 

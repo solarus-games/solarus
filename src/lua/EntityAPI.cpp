@@ -97,6 +97,7 @@ void LuaContext::register_entity_module() {
       { "get_origin", entity_api_get_origin },
       { "get_position", entity_api_get_position },
       { "set_position", entity_api_set_position },
+      { "get_center_position", entity_api_get_center_position },
       { "snap_to_grid", entity_api_snap_to_grid },
       { "get_distance", entity_api_get_distance },
       { "get_angle", entity_api_get_angle},
@@ -518,6 +519,21 @@ int LuaContext::entity_api_set_position(lua_State* l) {
   entity.notify_position_changed();
 
   return 0;
+}
+
+/**
+ * \brief Implementation of entity:get_center_position().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_center_position(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  const Rectangle& center_point = entity.get_center_point();
+  lua_pushinteger(l, center_point.get_x());
+  lua_pushinteger(l, center_point.get_y());
+  return 2;
 }
 
 /**

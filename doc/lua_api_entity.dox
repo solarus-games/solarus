@@ -220,6 +220,17 @@ Returns the position of this entity on the \ref lua_api_map "map"
 - Return value 3 (number): Layer where the entity is on the map
   (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
 
+\subsection lua_api_entity_get_center_position entity:get_center_position()
+
+Returns the coordinates of the center point of this entity on the
+\ref lua_api_map "map"
+- Return value 1 (number): X coordinate of the center of this entity's
+  bounding box,
+  relative to the top-left corner of the map.
+- Return value 2 (number): Y coordinate of the center of this entity's
+  bounding box,
+  relative to the top-left corner of the map.
+
 \subsection lua_api_entity_set_position entity:set_position(x, y, [layer]):
 
 Changes instantly the position of this entity on the map

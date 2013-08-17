@@ -80,6 +80,7 @@ Changes that do not introduce incompatibilities:
 * Add methods hero:get/set_walking_speed() (#206).
 * Add hero:get_state() and hero:on_state_changed() (#207).
 * Add methods enemy:is/set_traversable() (#147).
+* Add a method enemy:immobilize() (#160).
 * target_movement:set_target(entity) now accepts an x,y offset (#154).
 * Add a method game:is_pause_allowed().
 * Add a method map:get_ground() (#141).

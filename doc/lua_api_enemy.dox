@@ -452,6 +452,12 @@ The enemy is not hurt if he is currently invulnerable
 (for example because he is already in the process of being hurt).
 - \c life_points (number): Number of life points to remove from the enemy.
 
+\subsection lua_api_enemy_immobilize enemy:immobilize()
+
+Immobilizes this enemy for a while if possible.
+
+After a few seconds, the enemy shakes and then restarts.
+
 \subsection lua_api_enemy_get_sprite enemy:get_sprite()
 
 Returns the \ref lua_api_sprite "sprite" of this enemy,

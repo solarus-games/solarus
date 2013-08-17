@@ -265,6 +265,7 @@ void LuaContext::register_entity_module() {
       { "set_origin", entity_api_set_origin },
       { "restart", enemy_api_restart },
       { "hurt", enemy_api_hurt },
+      { "immobilize", enemy_api_immobilize },
       { "get_sprite", entity_api_get_sprite },
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
@@ -2441,6 +2442,24 @@ int LuaContext::enemy_api_hurt(lua_State* l) {
   if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
     Hero& hero = enemy.get_map().get_entities().get_hero();
     enemy.set_attack_consequence(ATTACK_SCRIPT, EnemyReaction::HURT, life_points);
+    enemy.try_hurt(ATTACK_SCRIPT, hero, NULL);
+  }
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of enemy:immobilize().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_immobilize(lua_State* l) {
+
+  Enemy& enemy = check_enemy(l, 1);
+
+  if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
+    Hero& hero = enemy.get_map().get_entities().get_hero();
+    enemy.set_attack_consequence(ATTACK_SCRIPT, EnemyReaction::IMMOBILIZED, 0);
     enemy.try_hurt(ATTACK_SCRIPT, hero, NULL);
   }
 

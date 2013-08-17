@@ -201,6 +201,11 @@ int LuaContext::game_api_load(lua_State* l) {
 int LuaContext::game_api_save(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
+
+  if (FileTools::get_quest_write_dir().empty()) {
+    error(l, "Cannot save game: no write directory was specified in quest.dat");
+  }
+
   savegame.save();
 
   return 0;

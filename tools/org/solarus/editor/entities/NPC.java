@@ -70,14 +70,6 @@ public class NPC extends MapEntity {
     };
 
     /**
-     * Description of the image currently representing this kind of entity.
-     */
-    public static final EntityImageDescription[] currentImageDescriptions = {
-        generalImageDescriptions[0],
-        new EntityImageDescription("npc.png", 32, 0, 16, 24)
-    };
-
-    /**
      * The sprite representing this entity (if any).
      */
     private Sprite sprite;
@@ -165,13 +157,6 @@ public class NPC extends MapEntity {
         return behavior.equals("map")
             || behavior.substring(0, 5).equals("item#")
             || behavior.substring(0, 7).equals("dialog#");
-    }
-
-    /**
-     * Updates the description of the image currently representing the entity.
-     */
-    public void updateImageDescription() {
-        currentImageDescription = currentImageDescriptions[getSubtype().ordinal()];
     }
 
     /**

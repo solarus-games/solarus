@@ -69,7 +69,7 @@ class Sprite: public Drawable {
     void set_current_direction(int current_direction);
     int get_nb_frames() const;
     int get_current_frame() const;
-    void set_current_frame(int current_frame);
+    void set_current_frame(int current_frame, bool notify_script = true);
     const Rectangle& get_current_frame_rectangle() const;
     uint32_t get_frame_delay() const;
     void set_frame_delay(uint32_t frame_delay);

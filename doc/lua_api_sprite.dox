@@ -141,6 +141,17 @@ If the animation loops, this function is never called.
 Unless you start another animation, the sprite is no longer shown.
 - \c animation (string): Name of the animation that has just finished.
 
+\subsection lua_api_sprite_on_animation_changed sprite:on_animation_changed(animation)
+
+Called whenever the animation of this sprite has changed.
+- \c animation (string): Name of the new animation.
+
+\subsection lua_api_sprite_on_direction_changed sprite:on_direction_changed(animation, direction)
+
+Called whenever the direction of this sprite has changed.
+- \c animation (string): Name of the current animation.
+- \c direction (number): The new current direction (the first one is \c 0).
+
 \subsection lua_api_sprite_on_frame_changed sprite:on_frame_changed(animation, frame)
 
 Called whenever the frame of this sprite has changed.

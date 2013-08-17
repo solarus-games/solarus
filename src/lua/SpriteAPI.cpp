@@ -335,10 +335,36 @@ void LuaContext::sprite_on_animation_finished(Sprite& sprite,
 }
 
 /**
+ * \brief Calls the on_animation_changed() method of a Lua sprite.
+ * \param sprite A sprite whose animation has just changed.
+ * \param animation Name of the new animation.
+ */
+void LuaContext::sprite_on_animation_changed(
+    Sprite& sprite, const std::string& animation) {
+
+  push_sprite(l, sprite);
+  on_animation_changed(animation);
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_direction_changed() method of a Lua sprite.
+ * \param sprite A sprite whose direction has just changed.
+ * \param animation Name of the current animation.
+ * \param direction The new direction.
+ */
+void LuaContext::sprite_on_direction_changed(Sprite& sprite,
+    const std::string& animation, int direction) {
+
+  push_sprite(l, sprite);
+  on_direction_changed(animation, direction);
+  lua_pop(l, 1);
+}
+
+/**
  * \brief Calls the on_frame_changed() method of a Lua sprite.
  * \param sprite A sprite whose frame has just changed.
  * \param animation Name of the current animation.
- * \param animation Name of the sprite animation.
  * \param frame The new frame.
  */
 void LuaContext::sprite_on_frame_changed(Sprite& sprite,

@@ -242,9 +242,15 @@ void Sprite::set_current_animation(const std::string& animation_name) {
   if (animation_name != this->current_animation_name || !is_animation_started()) {
 
     this->current_animation_name = animation_name;
-    this->current_animation = animation_set.get_animation(animation_name);;
+    this->current_animation = animation_set.get_animation(animation_name);
     set_frame_delay(current_animation->get_frame_delay());
-    set_current_frame(0);
+
+    set_current_frame(0, false);
+
+    if (lua_context != NULL) {
+      lua_context->sprite_on_animation_changed(*this, current_animation_name);
+      lua_context->sprite_on_frame_changed(*this, current_animation_name, 0);
+    }
   }
 }
 
@@ -292,7 +298,13 @@ void Sprite::set_current_direction(int current_direction) {
         << "' in animation '" << current_animation_name << "'");
 
     this->current_direction = current_direction;
-    set_current_frame(0);
+
+    set_current_frame(0, false);
+
+    if (lua_context != NULL) {
+      lua_context->sprite_on_direction_changed(*this, current_animation_name, current_direction);
+      lua_context->sprite_on_frame_changed(*this, current_animation_name, 0);
+    }
   }
 }
 
@@ -320,16 +332,24 @@ int Sprite::get_current_frame() const {
  * If the animation is suspended, it remains suspended
  * but the specified frame is drawn.
  *
- * \param current_frame the current frame
+ * \param current_frame The current frame.
+ * \param notify_script \c true to notify the Lua sprite if any.
+ * Don't set notify_script to \c false unless you do the notification
+ * yourself later.
  */
-void Sprite::set_current_frame(int current_frame) {
+void Sprite::set_current_frame(int current_frame, bool notify_script) {
 
   finished = false;
   next_frame_date = System::now() + get_frame_delay();
 
   if (current_frame != this->current_frame) {
     this->current_frame = current_frame;
-    set_frame_changed(current_frame != this->current_frame);
+    set_frame_changed(true);
+
+    if (lua_context != NULL) {
+      lua_context->sprite_on_frame_changed(
+          *this, current_animation_name, current_frame);
+    }
   }
 }
 
@@ -357,9 +377,6 @@ bool Sprite::has_frame_changed() const {
 void Sprite::set_frame_changed(bool frame_changed) {
 
   this->frame_changed = frame_changed;
-  if (lua_context != NULL) {
-    lua_context->sprite_on_frame_changed(*this, current_animation_name, current_frame);
-  }
 }
 
 /**
@@ -609,6 +626,10 @@ void Sprite::update() {
         next_frame_date += get_frame_delay();
       }
       set_frame_changed(true);
+
+      if (lua_context != NULL) {
+        lua_context->sprite_on_frame_changed(*this, current_animation_name, current_frame);
+      }
     }
   }
   else {
@@ -625,6 +646,10 @@ void Sprite::update() {
         current_frame = other_frame;
         next_frame_date = now + get_frame_delay();
         set_frame_changed(true);
+
+        if (lua_context != NULL) {
+          lua_context->sprite_on_frame_changed(*this, current_animation_name, current_frame);
+        }
       }
     }
   }

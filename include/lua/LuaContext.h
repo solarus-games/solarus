@@ -235,8 +235,14 @@ class LuaContext {
     bool menus_on_command_released(int context_index, GameCommands::Command command);
 
     // Sprite events.
-    void sprite_on_animation_finished(Sprite& sprite, const std::string& animation);
-    void sprite_on_frame_changed(Sprite& sprite, const std::string& animation, int frame);
+    void sprite_on_animation_finished(
+        Sprite& sprite, const std::string& animation);
+    void sprite_on_animation_changed(
+        Sprite& sprite, const std::string& animation);
+    void sprite_on_direction_changed(
+        Sprite& sprite, const std::string& animation, int direction);
+    void sprite_on_frame_changed(
+        Sprite& sprite, const std::string& animation, int frame);
 
     // Movement events.
     void movement_on_position_changed(Movement& movement);
@@ -978,6 +984,8 @@ class LuaContext {
     bool on_command_pressed(GameCommands::Command command);
     bool on_command_released(GameCommands::Command command);
     void on_animation_finished(const std::string& animation);
+    void on_animation_changed(const std::string& animation);
+    void on_direction_changed(const std::string& animation, int direction);
     void on_frame_changed(const std::string& animation, int frame);
     void on_position_changed();
     void on_obstacle_reached();

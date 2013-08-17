@@ -83,6 +83,7 @@ Changes that do not introduce incompatibilities:
 * Add a method game:is_pause_allowed().
 * Add a method map:get_ground() (#141).
 * Add an optional parameter on_top to sol.menu.start.
+* Add sprite:on_animation_changed() and sprite:on_direction_changed() (#153).
 
 * Add a function sol.input.is_key_pressed().
 * Add a function sol.input.is_joypad_button_pressed().

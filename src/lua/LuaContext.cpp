@@ -1985,6 +1985,33 @@ void LuaContext::on_animation_finished(const std::string& animation) {
 }
 
 /**
+ * \brief Calls the on_animation_changed() method of the object on top of the stack.
+ * \param animation Name of the new animation.
+ */
+void LuaContext::on_animation_changed(const std::string& animation) {
+
+  if (find_method("on_animation_changed")) {
+    push_string(l, animation);
+    call_function(2, 0, "on_animation_changed");
+  }
+}
+
+/**
+ * \brief Calls the on_direction_changed() method of the object on top of the stack.
+ * \param animation Name of the sprite animation.
+ * \param frame The new frame.
+ */
+void LuaContext::on_direction_changed(
+    const std::string& animation, int direction) {
+
+  if (find_method("on_direction_changed")) {
+    push_string(l, animation);
+    lua_pushinteger(l, direction);
+    call_function(3, 0, "on_direction_changed");
+  }
+}
+
+/**
  * \brief Calls the on_frame_changed() method of the object on top of the stack.
  * \param animation Name of the sprite animation.
  * \param frame The new frame.

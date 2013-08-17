@@ -1511,6 +1511,7 @@ void Hero::notify_collision_with_teletransporter(
 
   if (teletransporter.is_on_map_side() || !state->can_avoid_teletransporter()) {
 
+    update_ground_below();  // Make sure the ground is up-to-date.
     bool on_hole = get_ground_below() == GROUND_HOLE;
     if (on_hole || state->is_teletransporter_delayed()) {
       this->delayed_teletransporter = &teletransporter; // fall into the hole (or do something else) first, transport later

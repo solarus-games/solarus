@@ -255,6 +255,8 @@ void LuaContext::register_entity_module() {
       { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "set_treasure", enemy_api_set_treasure },
+      { "is_traversable", enemy_api_is_traversable },
+      { "set_traversable", enemy_api_set_traversable },
       { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
       { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
       { "set_size", entity_api_set_size },
@@ -2285,6 +2287,38 @@ int LuaContext::enemy_api_set_treasure(lua_State* l) {
 
   Treasure treasure(enemy.get_game(), item_name, variant, savegame_variable);
   enemy.set_treasure(treasure);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of enemy:is_traversable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_is_traversable(lua_State* l) {
+
+  Enemy& enemy = check_enemy(l, 1);
+
+  lua_pushboolean(l, enemy.is_traversable());
+  return 1;
+}
+
+/**
+ * \brief Implementation of enemy:set_traversable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_set_traversable(lua_State* l) {
+
+  Enemy& enemy = check_enemy(l, 1);
+
+  bool traversable = true;
+  if (lua_gettop(l) >= 2) {
+    traversable = lua_toboolean(l, 2);
+  }
+
+  enemy.set_traversable(traversable);
 
   return 0;
 }

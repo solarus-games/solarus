@@ -366,6 +366,25 @@ Sets the \ref lua_api_pickable
   whether the treasure dropped is found.
   \c nil or no value means that the treasure is not saved.
 
+\subsection lua_api_enemy_is_traversable enemy:is_traversable()
+
+Returns whether this enemy is traversed by other entities.
+- Return value (boolean): \c true if this enemy is traversable.
+
+\subsection lua_api_enemy_set_traversable enemy:set_traversable([traversable])
+
+Sets whether this enemy can be traversed by other entities.
+
+By default, the enemy is traversable.
+For example, if you want to prevent the
+\ref lua_api_enemy "hero"
+to pass without killing the enemy, you can use this function to make the
+enemy become an obstacle.
+But make sure that the enemy's sprite is greater than its bounding box,
+otherwise, the enemy cannot touch the hero (and hurt him) anymore.
+- \c traversable (boolean, optional): \c true to make this enemy traversable.
+  No value means \c true.
+
 \subsection lua_api_enemy_get_obstacle_behavior enemy:get_obstacle_behavior()
 
 Returns how the enemy behaves with obstacles.

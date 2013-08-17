@@ -71,6 +71,7 @@ Enemy::Enemy(
   minimum_shield_needed(0),
   rank(RANK_NORMAL),
   savegame_variable(),
+  traversable(true),
   obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
   drawn_in_y_order(true),
   initialized(false),
@@ -273,12 +274,16 @@ bool Enemy::is_saved() {
 
 /**
  * \brief Returns whether this entity is an obstacle for another one.
- * \param other another entity
- * \return true if this entity is an obstacle for the other one
+ * \param other Another entity.
+ * \return \c true if this entity is an obstacle for the other one.
  */
 bool Enemy::is_obstacle_for(MapEntity& other) {
 
-  return is_enabled() && other.is_enemy_obstacle(*this);
+  if (!is_enabled()) {
+    return false;
+  }
+
+  return !is_traversable() || other.is_enemy_obstacle(*this);
 }
 
 /**
@@ -519,13 +524,40 @@ void Enemy::set_obstacle_behavior(ObstacleBehavior obstacle_behavior) {
 }
 
 /**
+ * \brief Returns whether this enemy is traversable.by other entities.
+ *
+ * If the enemy is not traversable, is_obstacle_for() will always return
+ * \c false.
+ * If the enemy is traversable, is_obstacle_for() will call
+ * is_enemy_obstacle() on the entity to test.
+ *
+ * \return \c true if this enemy is traversable.
+ */
+bool Enemy::is_traversable() const {
+  return traversable;
+}
+
+/**
+ * \brief Sets whether this enemy is traversable.by other entities.
+ *
+ * If the enemy is not traversable, is_obstacle_for() will always return
+ * \c false.
+ * If the enemy is traversable, is_obstacle_for() will call
+ * is_enemy_obstacle() on the entity to test.
+ *
+ * \param traversable \c true to make this enemy traversable.
+ */
+void Enemy::set_traversable(bool traversable) {
+  this->traversable = traversable;
+}
+
+/**
  * \brief Returns whether the enemy is pushed back when it gets hurt by the hero.
  * \return \c true if the enemy is pushed back when it gets hurt.
  */
 bool Enemy::get_pushed_back_when_hurt() {
   return pushed_back_when_hurt;
 }
-
 
 /**
  * \brief Sets whether the enemy is pushed back when it gets hurt by the hero.

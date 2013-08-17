@@ -35,7 +35,7 @@ public class Destination extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("destination_point.png", 64, 0, 32, 32)
+        new EntityImageDescription("entity_destination.png", 128, 0, 32, 32)
     };
 
     /**

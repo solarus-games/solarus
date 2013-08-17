@@ -71,7 +71,7 @@ public class Door extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("door.png", 8, 48, 16, 16),
+        new EntityImageDescription("entity_door.png", 0, 0, 32, 32),
     };
 
     /**

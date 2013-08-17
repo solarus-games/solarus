@@ -29,7 +29,7 @@ public class Jumper extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("miscellaneous_entities.png", 0, 0, 32, 32)
+        new EntityImageDescription("entity_jumper.png", 0, 0, 32, 32)
     };
 
     /**

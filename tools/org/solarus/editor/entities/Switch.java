@@ -71,10 +71,10 @@ public class Switch extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("miscellaneous_entities.png", 56, 16, 16, 16),  // walkable invisible
-        new EntityImageDescription("miscellaneous_entities.png", 72, 16, 16, 16),  // walkable visible
-        new EntityImageDescription("miscellaneous_entities.png", 88, 16, 16, 16),  // arrow target
-        new EntityImageDescription("miscellaneous_entities.png", 104, 16, 16, 16), // solid
+        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32),  // walkable invisible
+        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32),  // walkable visible
+        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32),  // arrow target
+        new EntityImageDescription("entity_switch.png", 0, 0, 32, 32), // solid
     };
 
     /**

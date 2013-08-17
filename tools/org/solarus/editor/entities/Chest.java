@@ -72,7 +72,7 @@ public class Chest extends MapEntity {
      * Description of the default images representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions =
-        {new EntityImageDescription("chest.png", 0, 0, 16, 16)};
+        {new EntityImageDescription("entity_chest.png", 0, 0, 32, 32)};
 
     /**
      * Creates a new chest.

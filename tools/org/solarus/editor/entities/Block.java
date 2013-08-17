@@ -56,7 +56,7 @@ public class Block extends MapEntity {
    * Description of the default image representing this kind of entity.
    */
   public static final EntityImageDescription[] generalImageDescriptions = {
-    new EntityImageDescription("miscellaneous_entities.png", 56, 0, 16, 16),
+    new EntityImageDescription("entity_block.png", 0, 0, 32, 32),
   };
 
   /**

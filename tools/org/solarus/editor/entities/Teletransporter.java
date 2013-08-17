@@ -35,7 +35,7 @@ public class Teletransporter extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("teletransporter.png", 0, 0, 32, 32)
+        new EntityImageDescription("entity_teletransporter.png", 0, 0, 32, 32)
     };
 
     /**
@@ -123,12 +123,13 @@ public class Teletransporter extends MapEntity {
             throw new MapException("Invalid sound id: '" + soundId + "'");
         }
 
-        if (destinationMapId.isEmpty()) {
+        if (destinationMapId == null || destinationMapId.isEmpty()) {
             throw new MapException("You must choose a destination map");
         }
 
         if (destinationMapId.equals(getMap().getId()) &&
-            destinationName.equals("_same")) {
+                destinationName != null &&
+                destinationName.equals("_same")) {
             throw new MapException("Cannot teleport to the same point on the same map");
         }
     }
@@ -159,7 +160,8 @@ public class Teletransporter extends MapEntity {
         else {
             // no sprite: display a teletransporter icon
             if (resizableTeletransporterImage == null) {
-                resizableTeletransporterImage = Project.getEditorImageOrEmpty("resizable_teletransporter.png");
+                resizableTeletransporterImage = Project.getEditorImageOrEmpty(
+                        "entity_teletransporter_resizable.png");
             }
 
             Rectangle positionInMap = getPositionInMap();

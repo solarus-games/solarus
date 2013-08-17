@@ -65,8 +65,8 @@ public class NPC extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("npc.png", 0, 0, 32, 32),
-        new EntityImageDescription("npc.png", 32, 0, 16, 16)
+        new EntityImageDescription("entity_npc.png", 0, 0, 32, 32),
+        new EntityImageDescription("entity_npc.png", 0, 0, 32, 32)
     };
 
     /**

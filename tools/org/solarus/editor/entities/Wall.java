@@ -29,13 +29,13 @@ public class Wall extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("miscellaneous_entities.png", 0, 32, 32, 32)
+        new EntityImageDescription("entity_wall.png", 0, 0, 32, 32)
     };
 
     /**
      * Resizable image of a wall.
      */
-    private static Image resizableObstacleImage;
+    private static Image resizableWallImage;
 
     /**
      * Constructor.
@@ -87,8 +87,8 @@ public class Wall extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-        if (resizableObstacleImage == null) {
-            resizableObstacleImage = Project.getEditorImageOrEmpty("resizable_custom_obstacle.png");
+        if (resizableWallImage == null) {
+            resizableWallImage = Project.getEditorImageOrEmpty("entity_wall_resizable.png");
         }
 
         Rectangle positionInMap = getPositionInMap();
@@ -102,7 +102,7 @@ public class Wall extends MapEntity {
 
         for (int x = x1; x < x2; x += step) {
             for (int y = y1; y < y2 ; y += step) {
-                g.drawImage(resizableObstacleImage, x, y, x + step, y + step, 0, 0, 8, 8, null);
+                g.drawImage(resizableWallImage, x, y, x + step, y + step, 0, 0, 8, 8, null);
             }
         }
         drawEntityOutline(g, zoom, new Color(240, 142, 142));

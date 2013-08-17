@@ -31,13 +31,13 @@ public class Destructible extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("destructible_items.png", 0, 0, 16, 16),
-        new EntityImageDescription("destructible_items.png", 16, 0, 16, 16),
-        new EntityImageDescription("destructible_items.png", 32, 0, 16, 16),
-        new EntityImageDescription("destructible_items.png", 48, 0, 16, 16),
-        new EntityImageDescription("destructible_items.png", 64, 0, 16, 16),
-        new EntityImageDescription("destructible_items.png", 80, 0, 16, 16),
-        new EntityImageDescription("destructible_items.png", 96, 0, 16, 24),
+        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
+        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
+        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
+        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
+        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
+        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
+        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
     };
 
     /**

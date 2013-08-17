@@ -46,7 +46,7 @@ public class Sensor extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("sensors.png", 0, 0, 32, 32)
+        new EntityImageDescription("entity_sensor.png", 0, 0, 32, 32)
     };
 
     /**
@@ -101,7 +101,7 @@ public class Sensor extends MapEntity {
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
         if (resizableImage == null) {
-            resizableImage = Project.getEditorImageOrEmpty("resizable_sensors.png");
+            resizableImage = Project.getEditorImageOrEmpty("entity_sensor_resizable.png");
         }
 
         Rectangle positionInMap = getPositionInMap();
@@ -110,7 +110,7 @@ public class Sensor extends MapEntity {
         int w = (int) (positionInMap.width * zoom);
         int h = (int) (positionInMap.height * zoom);
 
-        g.setColor(new Color(64, 160, 64));
+        g.setColor(new Color(200, 224, 96));
         g.fillRect(x, y, w, h);
 
         int dx1 = (int) ((positionInMap.x + positionInMap.width / 2 - 8) * zoom);
@@ -123,7 +123,7 @@ public class Sensor extends MapEntity {
 
         g.drawImage(resizableImage, dx1, dy1, dx2, dy2, sx1, 0, sx2, 32, null);
 
-        drawEntityOutline(g, zoom, new Color(142, 240, 142));
+        drawEntityOutline(g, zoom, new Color(184, 200, 96));
     }
 }
 

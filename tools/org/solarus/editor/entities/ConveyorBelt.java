@@ -28,7 +28,7 @@ public class ConveyorBelt extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("conveyor_belt.png", 128, 0, 16, 16)
+        new EntityImageDescription("entity_conveyor_belt.png", 128, 0, 32, 32)
     };
 
     /**

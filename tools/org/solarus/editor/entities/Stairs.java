@@ -71,11 +71,11 @@ public class Stairs extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("stairs.png",   0, 32, 32, 32),
-        new EntityImageDescription("stairs.png",  32, 32, 32, 32),
-        new EntityImageDescription("stairs.png",  64, 32, 32, 32),
-        new EntityImageDescription("stairs.png",  96, 32, 32, 32),
-        new EntityImageDescription("stairs.png", 128, 32, 32, 32),
+        new EntityImageDescription("entity_stairs.png",   0, 32, 32, 32),
+        new EntityImageDescription("entity_stairs.png",  32, 32, 32, 32),
+        new EntityImageDescription("entity_stairs.png",  64, 32, 32, 32),
+        new EntityImageDescription("entity_stairs.png",  96, 32, 32, 32),
+        new EntityImageDescription("entity_stairs.png", 128, 32, 32, 32),
     };
 
     /**

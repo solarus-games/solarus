@@ -20,7 +20,7 @@ public class Separator extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("separator.png", 0, 0, 32, 32)
+        new EntityImageDescription("entity_separator.png", 0, 0, 32, 32)
     };
 
     /**
@@ -101,7 +101,7 @@ public class Separator extends MapEntity {
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
         if (patternImage == null) {
-            patternImage = Project.getEditorImageOrEmpty("resizable_separator.png");
+            patternImage = Project.getEditorImageOrEmpty("entity_separator_resizable.png");
         }
 
         Rectangle positionInMap = getPositionInMap();

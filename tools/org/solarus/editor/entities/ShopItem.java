@@ -27,7 +27,7 @@ public class ShopItem extends MapEntity {
      * Description of the default images representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions =
-    {new EntityImageDescription("miscellaneous_entities.png", 64, 32, 32, 32)};
+    {new EntityImageDescription("entity_shop_item.png", 0, 0, 32, 32)};
 
     /**
      * Creates a new shop item.
@@ -79,13 +79,6 @@ public class ShopItem extends MapEntity {
         if (dialogId == null || dialogId.length() == 0) {
             throw new MapException("No description dialog defined");
         }
-    }
-
-    /**
-     * Updates the description of the image currently representing the entity.
-     */
-    public void updateImageDescription() {
-        currentImageDescription = new EntityImageDescription("miscellaneous_entities.png", 0, 64, 64, 64);
     }
 }
 

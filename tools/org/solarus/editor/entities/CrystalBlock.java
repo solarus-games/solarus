@@ -63,8 +63,8 @@ public class CrystalBlock extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("miscellaneous_entities.png", 32, 48, 16, 16), // orange
-        new EntityImageDescription("miscellaneous_entities.png", 48, 48, 16, 16)  // blue
+        new EntityImageDescription("entity_crystal_block.png", 0, 0, 32, 32), // initially lowered
+        new EntityImageDescription("entity_crystal_block.png", 32, 0, 32, 32)  // initially raised
     };
 
     /**

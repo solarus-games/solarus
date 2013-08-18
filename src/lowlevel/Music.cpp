@@ -91,9 +91,9 @@ void Music::initialize() {
  */
 void Music::quit() {
   if (is_initialized()) {
+    all_musics.clear();
     delete spc_decoder;
     delete it_decoder;
-    all_musics.clear();
   }
 }
 

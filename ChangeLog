@@ -31,6 +31,7 @@ Engine changes
 * Remove built-in debug keys. This can be done from Lua now.
 * Remove the preprocessor constant SOLARUS_DEBUG_KEYS.
 * Call on_draw() before drawing menus.
+* Fix .it musics looping when they should not.
 
 Data files format changes
 -------------------------

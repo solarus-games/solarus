@@ -98,6 +98,7 @@ public class AddEntitiesToolbar extends JComponent {
         this.mapView = mapView;
         mapView.setAddEntitiesToolbar(this); // to be notified when the map view state changes
         addMouseListener(new AddEntitiesToolbarMouseListener());
+        addMouseMotionListener(new AddEntitiesToolbarMouseMotionListener());
 
         // count the number of cells to build
         int nbCells = cells.length;
@@ -176,6 +177,7 @@ public class AddEntitiesToolbar extends JComponent {
          */
         public void mousePressed(MouseEvent ev) {
 
+            System.out.println("mouse pressed");
             int cell = ev.getX() / 32;
 
             if (mapView.getMap() == null || cell >= cells.length) {
@@ -185,6 +187,34 @@ public class AddEntitiesToolbar extends JComponent {
             EntityType typeClicked = cells[cell].getType();
             EntitySubtype subtypeClicked = cells[cell].getSubtype();
             mapView.startAddingEntity(typeClicked, subtypeClicked);
+        }
+    }
+
+    /**
+     * The mouse motion listener associated to this component.
+     */
+    private class AddEntitiesToolbarMouseMotionListener extends MouseAdapter {
+
+        /**
+         * Constructor.
+         */
+        public AddEntitiesToolbarMouseMotionListener() {
+
+        }
+
+        /**
+         * This method is called when the mouse is moved onto the component.
+         */
+        public void mouseMoved(MouseEvent ev) {
+
+            int cell = ev.getX() / 32;
+
+            if (mapView.getMap() == null || cell >= cells.length) {
+                return;
+            }
+
+            EntityType typeClicked = cells[cell].getType();
+            setToolTipText("Create " + typeClicked.getHumanName());
         }
     }
 }

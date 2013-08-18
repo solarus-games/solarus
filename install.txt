@@ -46,14 +46,17 @@ SDL_image
 SDL_ttf
 openal
 vorbisfile
-modplug
+modplug (0.8.8.4 or greater)
 lua5.1
 physfs
 
+Note that another library is directly embedded in the source code:
+snes_spc, an SPC music decoding library.
 
-Note that two other libraries are directly embedded in the source code:
-SimpleIni, an ini file parsing library which consists in only two header files
-(no source files), and snes_spc, an SPC music decoding library.
+We maintain a fork of libmodplug 0.8.8.4 here:
+https://github.com/christopho/libmodplug
+Previous versions of libmodplug cause compilation problems as well as issues
+like .it musics that do not correctly loop.
 
 
 Linux developers:

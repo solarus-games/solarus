@@ -60,19 +60,14 @@ void ItDecoder::unload() {
 }
 
 /**
- * \brief Decodes a chunk of the previously loaded SPC data into PCM data.
+ * \brief Decodes a chunk of the previously loaded IT data into PCM data.
  * \param decoded_data pointer to where you want the decoded data to be written
  * \param nb_samples number of samples to write
  */
 void ItDecoder::decode(void* decoded_data, int nb_samples) {
 
   // decode from the IT data the specified number of PCM samples
-  int bytes_read = ModPlug_Read(modplug_file, decoded_data, nb_samples);
-
-  if (bytes_read == 0) {
-    // on some systems, we have to make the music loop manually
-    ModPlug_Seek(modplug_file, 0);
-  }
+  ModPlug_Read(modplug_file, decoded_data, nb_samples);
 }
 
 /**

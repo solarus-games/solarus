@@ -45,7 +45,7 @@ class Camera {
     void move(int target_x, int target_y);
     void move(MapEntity& entity);
     void restore();
-    void traverse_separator(const Separator& separator);
+    void traverse_separator(Separator* separator);
 
   private:
 
@@ -65,6 +65,7 @@ class Camera {
     int separator_scrolling_dx;             /**< X increment to the camera position when crossing a separator. */
     int separator_scrolling_dy;             /**< Y increment to the camera position when crossing a separator. */
     uint32_t separator_next_scrolling_date; /**< Next camera position change when crossing a separator. */
+    Separator* separator_traversed;         /**< Separator currently being traversed or NULL. */
 
     // Camera being moved toward a point or back to the hero.
     bool restoring;               /**< \c true if the camera is moving back to the hero. */

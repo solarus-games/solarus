@@ -70,7 +70,17 @@ See \ref lua_api_entity_events to know these events.
 
 \section lua_api_separator_events Events of the type separator
 
-None.
+The following events are specific to separators.
+
+\subsection lua_api_separator_on_activating separator:on_activating()
+
+Called when the camera starts traversing on this separator.
+
+\subsection lua_api_separator_on_activated separator:on_activated()
+
+Called when the camera has finished traversing this separator.
+
+The hero is now on the other side.
 
 */
 

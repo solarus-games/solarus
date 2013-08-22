@@ -196,6 +196,7 @@ void Camera::update_fixed_on_hero() {
   else {
     // Traversing a separator.
     uint32_t now = System::now();
+    bool finished = false;
     while (separator_next_scrolling_date != 0
         && now >= separator_next_scrolling_date) {
       separator_scrolling_position.add_xy(
@@ -205,11 +206,21 @@ void Camera::update_fixed_on_hero() {
 
       if (separator_scrolling_position.equals(separator_target_position)) {
         // Finished.
-        separator_next_scrolling_date = 0;
+        finished = true;
       }
     }
     x = separator_scrolling_position.get_x();
     y = separator_scrolling_position.get_y();
+
+    if (finished) {
+        separator_next_scrolling_date = 0;
+        separator_traversed->notify_activated();
+        separator_traversed->decrement_refcount();
+        if (separator_traversed->get_refcount() == 0) {
+          delete separator_traversed;
+        }
+        separator_traversed = NULL;
+    }
   }
 
   // Take care of the limits of the map.
@@ -358,21 +369,26 @@ void Camera::restore() {
  *
  * The hero must touch the separator when you call this function.
  *
- * \param separator The separator to traverse.
+ * \param separator The separator to traverse (cannot be NULL).
  */
-void Camera::traverse_separator(const Separator& separator) {
+void Camera::traverse_separator(Separator* separator) {
+
+  Debug::check_assertion(separator != NULL);
 
   // Save the current position of the camera.
   separator_scrolling_position = position;
 
   // Start scrolling.
+  separator_traversed = separator;
+  separator->increment_refcount();
+  separator->notify_activating();
   separator_scrolling_dx = 0;
   separator_scrolling_dy = 0;
   separator_target_position = position;
   Hero& hero = map.get_entities().get_hero();
   const Rectangle& hero_center = hero.get_center_point();
-  const Rectangle& separator_center = separator.get_center_point();
-  if (separator.is_horizontal()) {
+  const Rectangle& separator_center = separator->get_center_point();
+  if (separator->is_horizontal()) {
     if (hero_center.get_y() < separator_center.get_y()) {
       separator_scrolling_dy = 1;
       separator_target_position.add_y(get_height());

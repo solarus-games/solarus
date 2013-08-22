@@ -63,6 +63,8 @@ Here are the existing types of entities.
   lua_api_hero "hero" can activate.
 - \subpage lua_api_sensor "Sensor": An invisible detector that detects the
   presence of the \ref lua_api_hero "hero".
+- \subpage lua_api_separator "Separator": An horizontal or vertical
+  separation between two parts of the map.
 - \subpage lua_api_wall "Wall": An invisible object that stops some kinds of
   entities.
 - \subpage lua_api_crystal "Crystal": A switch that lowers or raises
@@ -76,8 +78,6 @@ Here are the existing types of entities.
   "equipment item" or another condition.
 - \subpage lua_api_stairs "Stairs": %Stairs between two \ref lua_api_map "maps"
   or to a platform of a single map.
-- \subpage lua_api_separator "Separator": An horizontal or vertical
-  separation between two parts of the map.
 - \subpage lua_api_bomb "Bomb": A bomb that will explode after a few seconds
   and that may be lifted by the \ref lua_api_hero "hero".
 - \subpage lua_api_explosion "Explosion": An explosion that can hurt the

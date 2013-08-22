@@ -318,6 +318,8 @@ class LuaContext {
     void sensor_on_activated(Sensor& sensor);
     void sensor_on_activated_repeat(Sensor& sensor);
     void sensor_on_collision_explosion(Sensor& sensor);
+    void separator_on_activating(Separator& separator);
+    void separator_on_activated(Separator& separator);
     void door_on_opened(Door& door);
     void door_on_closed(Door& door);
     bool shop_item_on_buying(ShopItem& shop_item);
@@ -998,6 +1000,7 @@ class LuaContext {
     void on_obtaining_treasure(const Treasure& treasure);
     void on_obtained_treasure(const Treasure& treasure);
     void on_state_changed(const std::string& state_name);
+    void on_activating();
     void on_activated();
     void on_activated_repeat();
     void on_inactivated();

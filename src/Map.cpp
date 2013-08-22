@@ -426,7 +426,7 @@ bool Map::is_camera_moving() {
  * \brief Makes the camera traverse a separator.
  * \param separator The separator to traverse.
  */
-void Map::traverse_separator(const Separator& separator) {
+void Map::traverse_separator(Separator* separator) {
   camera->traverse_separator(separator);
 }
 

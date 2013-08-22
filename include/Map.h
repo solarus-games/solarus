@@ -66,7 +66,7 @@ class Map: public ExportableToLua {
     void move_camera(int x, int y, int speed);
     void restore_camera();
     bool is_camera_moving();
-    void traverse_separator(const Separator& separator);
+    void traverse_separator(Separator* separator);
     void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
 
     // loading

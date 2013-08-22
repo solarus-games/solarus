@@ -51,6 +51,8 @@ class Separator: public Detector {
     bool test_collision_custom(MapEntity& entity);
     void notify_collision(
         MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_activating();
+    void notify_activated();
 };
 
 #endif

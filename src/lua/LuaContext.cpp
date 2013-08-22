@@ -2150,6 +2150,16 @@ void LuaContext::on_state_changed(const std::string& state_name) {
 }
 
 /**
+ * \brief Calls the on_activating() method of the object on top of the stack.
+ */
+void LuaContext::on_activating() {
+
+  if (find_method("on_activating")) {
+    call_function(1, 0, "on_activating");
+  }
+}
+
+/**
  * \brief Calls the on_activated() method of the object on top of the stack.
  */
 void LuaContext::on_activated() {

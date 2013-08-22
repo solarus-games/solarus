@@ -16,6 +16,7 @@
  */
 #include "entities/Separator.h"
 #include "lowlevel/Debug.h"
+#include "lua/LuaContext.h"
 
 /**
  * \brief Creates a new separator.
@@ -121,5 +122,22 @@ void Separator::notify_collision(
     MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_separator(*this, collision_mode);
+}
+
+/**
+ * \brief This function is called when this separator starts being traversed.
+ */
+void Separator::notify_activating() {
+
+  get_lua_context().separator_on_activating(*this);
+}
+
+/**
+ * \brief This function is called when the camera has finished to traverse
+ * this separator.
+ */
+void Separator::notify_activated() {
+
+  get_lua_context().separator_on_activated(*this);
 }
 

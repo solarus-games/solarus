@@ -1736,9 +1736,8 @@ void Hero::notify_collision_with_block(Block& block) {
 void Hero::notify_collision_with_separator(
     Separator& separator, CollisionMode collision_mode) {
 
-  get_map().traverse_separator(separator);
+  get_map().traverse_separator(&separator);
 }
-
 
 /**
  * \brief This function is called when a bomb detects a collision with this entity.

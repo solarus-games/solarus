@@ -23,6 +23,7 @@
 #include "entities/Door.h"
 #include "entities/Enemy.h"
 #include "entities/Sensor.h"
+#include "entities/Separator.h"
 #include "entities/ShopItem.h"
 #include "entities/Pickable.h"
 #include "entities/MapEntities.h"
@@ -2698,6 +2699,28 @@ void LuaContext::sensor_on_collision_explosion(Sensor& sensor) {
 
   push_entity(l, sensor);
   on_collision_explosion();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_activating() method of a Lua separator.
+ * \param separator A separator.
+ */
+void LuaContext::separator_on_activating(Separator& separator) {
+
+  push_entity(l, separator);
+  on_activating();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_activated() method of a Lua separator.
+ * \param separator A separator.
+ */
+void LuaContext::separator_on_activated(Separator& separator) {
+
+  push_entity(l, separator);
+  on_activated();
   lua_pop(l, 1);
 }
 

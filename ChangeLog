@@ -67,6 +67,7 @@ Changes that introduce incompatibilities:
 * Remove sol.language.get_default_language(), useless and misleading (#265).
 * Remove sol.main.is_debug_enabled().
 * Remove map:get_light() and map:set_light() (#205).
+* In game:get/set_ability(), ability "get_back_from_death" no longer exists.
 
 Changes that do not introduce incompatibilities:
 

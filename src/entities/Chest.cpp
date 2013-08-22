@@ -366,15 +366,15 @@ void Chest::update() {
       treasure_date = 0;
 
       if (!treasure.is_empty()) {
-        // give a treasure to the player
+        // Give a treasure to the player.
 
         get_hero().start_treasure(treasure, LUA_REFNIL);
         treasure_given = true;
       }
-      else { // the chest is empty
+      else {  // The chest is empty.
 
-        // mark the treasure as found in the savegame
         if (treasure.is_saved()) {
+          // Mark the treasure as found in the savegame.
           get_savegame().set_boolean(treasure.get_savegame_variable(), true);
         }
 
@@ -382,11 +382,8 @@ void Chest::update() {
 
         bool done = get_lua_context().chest_on_empty(*this);
         if (!done) {
-
-          // the script does not define any behavior:
-          // by default, we tell the player the chest is empty
-          Sound::play("wrong");
-          get_game().start_dialog("_empty_chest");
+          // The script does not define any behavior:
+          // by default, do nothing and unfreeze the hero.
           get_hero().start_free();
         }
       }

@@ -68,6 +68,7 @@ Changes that introduce incompatibilities:
 * Remove sol.main.is_debug_enabled().
 * Remove map:get_light() and map:set_light() (#205).
 * In game:get/set_ability(), ability "get_back_from_death" no longer exists.
+* Empty chests no longer show a dialog if there is no on:empty() event (#274).
 
 Changes that do not introduce incompatibilities:
 

@@ -125,7 +125,7 @@ const std::string VideoManager::video_mode_names[] = {
  * \param argv Command-line arguments.
  */
 void VideoManager::initialize(int argc, char **argv) {
-  // TODO pass options as an std::map<string> instead.
+  // TODO pass options as an std::set<string> instead.
 
   // check the -no-video and the -quest-size options.
   bool disable = false;

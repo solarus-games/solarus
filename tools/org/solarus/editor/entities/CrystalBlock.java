@@ -30,12 +30,12 @@ public class CrystalBlock extends MapEntity {
      */
     public enum Subtype implements EntitySubtype {
         // We use integers ids for historical reasons.
-        ORANGE("0"),
-        BLUE("1");
+        INITIALLY_LOWERED("0"),
+        INITIALLY_RAISED("1");
 
         public static final String[] humanNames = {
-            "Orange (initially lowered)",
-            "Blue (initially raised)"
+            "Initially lowered",
+            "Initially raised"
         };
 
         private String id;
@@ -78,7 +78,7 @@ public class CrystalBlock extends MapEntity {
      */
     public CrystalBlock(Map map) throws MapException {
         super(map, 16, 16);
-        subtype = Subtype.ORANGE;
+        subtype = Subtype.INITIALLY_LOWERED;
     }
 
     /**
@@ -102,7 +102,7 @@ public class CrystalBlock extends MapEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-        int x = (subtype == Subtype.ORANGE) ? 32 : 48;
+        int x = (subtype == Subtype.INITIALLY_LOWERED) ? 0 : 32;
         currentImageDescription.setX(x);
     }
 
@@ -129,3 +129,4 @@ public class CrystalBlock extends MapEntity {
         }
     }
 }
+

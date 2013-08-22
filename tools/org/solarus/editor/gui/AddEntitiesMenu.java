@@ -56,15 +56,18 @@ public class AddEntitiesMenu extends JMenu {
         new ItemDefinition(EntityType.SENSOR, KeyEvent.VK_N),
         new ItemDefinition(EntityType.CRYSTAL, KeyEvent.VK_Y),
         new ItemDefinition(EntityType.CRYSTAL_BLOCK, KeyEvent.VK_N,
-                CrystalBlock.Subtype.ORANGE,
-                CrystalBlock.Subtype.BLUE
+                CrystalBlock.Subtype.INITIALLY_LOWERED,
+                CrystalBlock.Subtype.INITIALLY_RAISED
         ),
         new ItemDefinition(EntityType.SHOP_ITEM, KeyEvent.VK_H),
         new ItemDefinition(EntityType.CONVEYOR_BELT, KeyEvent.VK_V),
         new ItemDefinition(EntityType.DOOR, KeyEvent.VK_R),
         new ItemDefinition(EntityType.STAIRS, KeyEvent.VK_S,
-                CrystalBlock.Subtype.ORANGE,
-                CrystalBlock.Subtype.BLUE
+                Stairs.Subtype.SPIRAL_UPSTAIRS,
+                Stairs.Subtype.SPIRAL_DOWNSTAIRS,
+                Stairs.Subtype.STRAIGHT_UPSTAIRS,
+                Stairs.Subtype.STRAIGHT_DOWNSTAIRS,
+                Stairs.Subtype.INSIDE_FLOOR
         ),
         new ItemDefinition(EntityType.SEPARATOR, KeyEvent.VK_A),
     };

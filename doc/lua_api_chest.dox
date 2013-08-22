@@ -75,12 +75,12 @@ The following events are specific to chests.
 
 \subsection lua_api_chest_on_empty chest:on_empty()
 
-Called when the hero opens this chest if the chest no treasure.
+Called when the hero opens this chest if the chest has no treasure.
 
 Your script has to define what happens.
 You may either give a treasure decided dynamically
-(by calling \ref lua_api_hero_start_treasure "hero:start_treasure")
-or do something else: showing a dialog, playing a sound, close the chest
+(by calling \ref lua_api_hero_start_treasure "hero:start_treasure()")
+or do something else: show a dialog, play a sound, close the chest
 again, etc.
 
 The hero is automatically freezed during the whole process of opening a chest.
@@ -88,6 +88,9 @@ If you don't give him a treasure,
 then you have to unblock him explicitely by calling
 \ref lua_api_hero_unfreeze "hero:unfreeze()" when you want to restore control
 to the player.
+
+If you don't define this event, by default, the engine does nothing special
+and just restores control to the player.
 
 */
 

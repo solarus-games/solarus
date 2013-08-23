@@ -38,6 +38,11 @@ The quest write directory is tried first.
   Indeed, a specific loader is automatically set by the engine
   so that \c require() looks in the archive if necessary
   and in the quest write directory.
+  \c require() is the recommended way to load code from another file, because
+  unlike
+  \ref lua_api_main_load_file "sol.main.load_file()" and
+  \ref lua_api_main_do_file "sol.main.do_file()",
+  it does not parses the file again every time you call it.
 
 \subsection lua_api_main_do_file sol.main.do_file(script_name)
 
@@ -58,6 +63,12 @@ of the file or to use parameters and return values.
   relative to the data directory or the write directory of your quest.
 
 \remark This function is equivalent to <tt>sol.main.load_file(script_name)()</tt>.
+
+\remark \c require() is the recommended way to load code from another file, because
+  unlike
+  \ref lua_api_main_load_file "sol.main.load_file()" and
+  \ref lua_api_main_do_file "sol.main.do_file()",
+  it does not parses the file again every time you call it.
 
 \subsection lua_api_main_reset sol.main.reset()
 

@@ -2160,12 +2160,36 @@ void LuaContext::on_activating() {
 }
 
 /**
+ * \brief Calls the on_activating() method of the object on top of the stack.
+ * \param direction Direction to pass as parameter.
+ */
+void LuaContext::on_activating(int direction) {
+
+  if (find_method("on_activating")) {
+    lua_pushinteger(l, direction);
+    call_function(2, 0, "on_activating");
+  }
+}
+
+/**
  * \brief Calls the on_activated() method of the object on top of the stack.
  */
 void LuaContext::on_activated() {
 
   if (find_method("on_activated")) {
     call_function(1, 0, "on_activated");
+  }
+}
+
+/**
+ * \brief Calls the on_activated() method of the object on top of the stack.
+ * \param direction Direction to pass as parameter.
+ */
+void LuaContext::on_activated(int direction) {
+
+  if (find_method("on_activated")) {
+    lua_pushinteger(l, direction);
+    call_function(2, 0, "on_activated");
   }
 }
 

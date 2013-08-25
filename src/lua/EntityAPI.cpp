@@ -2705,22 +2705,24 @@ void LuaContext::sensor_on_collision_explosion(Sensor& sensor) {
 /**
  * \brief Calls the on_activating() method of a Lua separator.
  * \param separator A separator.
+ * \param direction4 Direction of the traversal.
  */
-void LuaContext::separator_on_activating(Separator& separator) {
+void LuaContext::separator_on_activating(Separator& separator, int direction4) {
 
   push_entity(l, separator);
-  on_activating();
+  on_activating(direction4);
   lua_pop(l, 1);
 }
 
 /**
  * \brief Calls the on_activated() method of a Lua separator.
  * \param separator A separator.
+ * \param direction4 Direction of the traversal.
  */
-void LuaContext::separator_on_activated(Separator& separator) {
+void LuaContext::separator_on_activated(Separator& separator, int direction4) {
 
   push_entity(l, separator);
-  on_activated();
+  on_activated(direction4);
   lua_pop(l, 1);
 }
 

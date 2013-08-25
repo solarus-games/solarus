@@ -126,18 +126,20 @@ void Separator::notify_collision(
 
 /**
  * \brief This function is called when this separator starts being traversed.
+ * \param direction4 Direction of the traversal.
  */
-void Separator::notify_activating() {
+void Separator::notify_activating(int direction4) {
 
-  get_lua_context().separator_on_activating(*this);
+  get_lua_context().separator_on_activating(*this, direction4);
 }
 
 /**
  * \brief This function is called when the camera has finished to traverse
  * this separator.
+ * \param direction4 Direction of the traversal.
  */
-void Separator::notify_activated() {
+void Separator::notify_activated(int direction4) {
 
-  get_lua_context().separator_on_activated(*this);
+  get_lua_context().separator_on_activated(*this, direction4);
 }
 

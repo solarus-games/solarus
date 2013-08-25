@@ -36,6 +36,8 @@ Camera::Camera(Map& map):
   separator_scrolling_dx(0),
   separator_scrolling_dy(0),
   separator_next_scrolling_date(0),
+  separator_scrolling_direction4(0),
+  separator_traversed(NULL),
   restoring(false),
   speed(120),
   movement(NULL) {
@@ -214,12 +216,13 @@ void Camera::update_fixed_on_hero() {
 
     if (finished) {
         separator_next_scrolling_date = 0;
-        separator_traversed->notify_activated();
+        separator_traversed->notify_activated(separator_scrolling_direction4);
         separator_traversed->decrement_refcount();
         if (separator_traversed->get_refcount() == 0) {
           delete separator_traversed;
         }
         separator_traversed = NULL;
+        separator_scrolling_direction4 = 0;
     }
   }
 
@@ -381,7 +384,6 @@ void Camera::traverse_separator(Separator* separator) {
   // Start scrolling.
   separator_traversed = separator;
   separator->increment_refcount();
-  separator->notify_activating();
   separator_scrolling_dx = 0;
   separator_scrolling_dy = 0;
   separator_target_position = position;
@@ -390,25 +392,30 @@ void Camera::traverse_separator(Separator* separator) {
   const Rectangle& separator_center = separator->get_center_point();
   if (separator->is_horizontal()) {
     if (hero_center.get_y() < separator_center.get_y()) {
+      separator_scrolling_direction4 = 3;
       separator_scrolling_dy = 1;
       separator_target_position.add_y(get_height());
     }
     else {
+      separator_scrolling_direction4 = 1;
       separator_scrolling_dy = -1;
       separator_target_position.add_y(-get_height());
     }
   }
   else {
     if (hero_center.get_x() < separator_center.get_x()) {
+      separator_scrolling_direction4 = 0;
       separator_scrolling_dx = 1;
       separator_target_position.add_x(get_width());
     }
     else {
+      separator_scrolling_direction4 = 2;
       separator_scrolling_dx = -1;
       separator_target_position.add_x(-get_width());
     }
   }
 
+  separator->notify_activating(separator_scrolling_direction4);
   separator_next_scrolling_date = System::now();
 
   // Move the hero two pixels ahead to avoid to traversed the separator again.

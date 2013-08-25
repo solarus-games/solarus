@@ -72,15 +72,19 @@ See \ref lua_api_entity_events to know these events.
 
 The following events are specific to separators.
 
-\subsection lua_api_separator_on_activating separator:on_activating()
+\subsection lua_api_separator_on_activating separator:on_activating(direction4)
 
 Called when the camera starts traversing on this separator.
+- \c direction4 (number): Direction of the hero when traversing the separator,
+  \c beween 0 (East) to \c 3 (South).
 
-\subsection lua_api_separator_on_activated separator:on_activated()
+\subsection lua_api_separator_on_activated separator:on_activated(direction4)
 
 Called when the camera has finished traversing this separator.
 
 The hero is now on the other side.
+- \c direction4 (number): Direction of the hero when traversing the separator,
+  \c beween 0 (East) to \c 3 (South).
 
 */
 

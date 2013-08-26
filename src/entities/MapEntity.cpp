@@ -113,7 +113,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * \param height height of the entity
  */
 MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
-		     int x, int y, int width, int height):
+    int x, int y, int width, int height):
   suspended(false),
   when_suspended(0),
   main_loop(NULL),

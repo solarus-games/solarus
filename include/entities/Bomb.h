@@ -25,10 +25,6 @@
  */
 class Bomb: public Detector {
 
-  private:
-
-    uint32_t explosion_date;		/**< date when the bomb explodes */
-
   public:
 
     Bomb(const std::string& name, Layer layer, int x, int y);
@@ -54,6 +50,11 @@ class Bomb: public Detector {
     void update();
 
     void explode();
+
+  private:
+
+    uint32_t explosion_date;  /**< date when the bomb explodes */
+
 };
 
 #endif

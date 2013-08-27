@@ -65,7 +65,7 @@ class TargetMovement: public StraightMovement {
 
     static const uint32_t recomputation_delay; /**< Delay between two recomputations. */
     uint32_t next_recomputation_date;  /**< Date when the movement is recalculated. */
-    bool finished;				       /**< \c true if the target is reached. */
+    bool finished;                     /**< \c true if the target is reached. */
 
 };
 

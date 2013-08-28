@@ -96,4 +96,6 @@ sprites/
     ground1.dat
     ground2.dat
     trail.dat
+  enemies/
+    enemy_killed.dat
 

@@ -1,9 +1,14 @@
 /**
 \page quest_sprite_data_file Sprite data file
 
+\tableofcontents
+
 A sprite is an animated image that can be displayed on a surface or attached
 to an entity of the map.
-More precisely, a sprite displays images from an animation set with a current
+
+\section quest_sprite_data_file_overview Overview
+
+A sprite displays images from an animation set with a current
 animation, a current direction and a current frame.
 Several sprites displayed at the same time can share the same animation set
 and have different states (i.e. different animations, directions and frames).
@@ -26,7 +31,63 @@ The sprite animation sets are represented as in Multimedia Fusion:
   the first one).
 
 The definition file \c sprites/xx.dat contains those information.
-We now specify its syntax.
+
+\section quest_sprite_data_file_origin Origin point
+
+A crucial concept that comes with sprites is the notion of origin point.
+
+The origin point indicates where to anchor any frame of your sprite.
+When a sprite is drawn at some coordinates, it is actually its origin point
+that is drawn at these coordinates.
+The origin point is not necessarily the upper-left corner of a frame.
+
+The origin point is essential when your sprite has several animations of
+different frame sizes, and also when your sprite represents a
+map entity whose collision box has a different size
+(usually, the sprite of a character is larger than its collision box).
+
+Let's take an exemple: the animation \c "walking" of a character's sprite has
+frames of size \c 24x32 in the PNG image,
+while its animation \c "plunging" has frames of size \c 64x24
+(for instance, because some water splashing is displayed next to the body).
+
+In such a case, how can you indicate to the engine the relative position of
+frames of both animations?
+When switching from \c "walking" to \c "plunging", you most likely don't want
+the upper-left corner of the \c 64x24 rectangle to be simply displayed
+where the upper-left corner of the \c 24x32 rectangle was displayed.
+
+The solution is to specify a point of \c "walking" frames that should match a
+point of \c "plunging" frames.
+We call this point the origin point. You can specify it on each
+animation, relative to the upper-left corner of a frame.
+In the example above, the origin point might be \c <tt>12,29</tt> for animation
+\c "walking" and <tt>32,21</tt> for animation \c "plunging".
+
+Furthermore, when the sprite is used to represent a character or an enemy on
+the map,
+the collision box of that character or enemy is a rectangle whose size is
+usually \c 16x16
+(used to avoid obstacles when moving).
+The sprite is often larger than this collision box, so in this situation, we
+also need the notion of origin point.
+Therefore, map entities also have an origin point property that allows
+to correctly anchor sprites of any size on their collision box.
+
+We normally choose
+as origin point
+the central point of contact
+between the entity and the ground.
+For example, the hero and the non-playing characters always have a collision
+box of \c 16x16, and their origin point is always <tt>8,13</tt>
+(the center of their shadow).
+Sprites have to take care of this setting to obtain correct results.
+
+\remark The origin point is the same thing as the "hotspot"
+  property in Multimedia Fusion, except that in Solarus, it is the same for
+  all frames of a direction.
+
+\section quest_sprite_data_file_syntax Syntax of the quest properties file
 
 The sequence of characters \c \-\- (two dashes) marks
 the beginning of a comment.
@@ -84,22 +145,17 @@ The properties must be:
   - \c frame_height (number): Height of each frame in the PNG image.
     Thus, the first frame is the rectangle of coordinates (\c x, \c y)
     and size (\c frame_width, \c frame_height).
-  - \c origin_x (number, optional): X coordinate of the reference point of
-    the sprite, relative to the top-left rectangle of a frame.
+  - \c origin_x (number, optional): X coordinate of the
+    \ref quest_sprite_data_file_origin "origin point" of
+    the sprite, relative to the upper-left rectangle of a frame.
     When a sprite is drawn at some coordinates, the origin point determines what
     exact point of the sprite's rectangle is at those coordinates.
     It is not necessarily the top-left corner of the rectangle.
-    The origin point is usually the central point of contact between the
-    sprite and the ground. For example, the origin point of the hero,
-    of enemies, NPCs and most entities is usually the center of their shadow.
-    Thus, for entities of size (<tt>16,16</tt>), the origin point is
-    often (<tt>8,13</tt>).
-    The origin point is the point of synchronization of an entity with its
-    sprites, because an entity that has a given size may have sprites with
-    a different size.
     No values means \c 0.
-  - \c origin_y (number, optional): Y coordinates of the reference point of
-    the sprite, relative to the top-left rectangle of a frame.
+  - \c origin_y (number, optional): Y coordinate of the
+    \ref quest_sprite_data_file_origin "origin point" of
+    the sprite, relative to the upper-left rectangle of a frame.
+    No values means \c 0.
   - \c num_frames (number, optional): Number of frames of this direction.
     Most of the time, this number is the same for all directions.
     The default number of frames is \c 1.

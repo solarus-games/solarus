@@ -36,10 +36,9 @@ The definition file \c sprites/xx.dat contains those information.
 
 A crucial concept that comes with sprites is the notion of origin point.
 
-The origin point indicates where to anchor any frame of your sprite.
-When a sprite is drawn at some coordinates, it is actually its origin point
-that is drawn at these coordinates.
-The origin point is not necessarily the upper-left corner of a frame.
+When a sprite is drawn at some coordinates, the origin point determines what
+exact point of the sprite's rectangle is at those coordinates.
+This point is not necessarily the upper-left corner of the rectangle.
 
 The origin point is essential when your sprite has several animations of
 different frame sizes, and also when your sprite represents a

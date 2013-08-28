@@ -22,97 +22,135 @@ The sprite animation sets are represented as in Multimedia Fusion:
   Non-playing characters and usual enemies have four directions.
 - Each direction is a sequence of frames, where a frame is a static image.
   Frames are numbered from 0. Once the animation is finished, the sequence may
-  loop, that is, come back to a specific frame (often but not necessarily
+  loop, that is, come back to a specific frame (often, but not necessarily,
   the first one).
 
 The definition file \c sprites/xx.dat contains those information.
 We now specify its syntax.
 
-A sprite definition file is a text file that defines each animation.
-For each animation, we first have a line that gives general information about
-this animation:
+The sequence of characters \c \-\- (two dashes) marks
+the beginning of a comment.
+After them, the rest of the line is ignored by the engine.
+Empty lines are also ignored.
 
-\verbatim
-animation_name image_file nb_directions frame_delay frame_to_loop_on
-\endverbatim
-- \c animation_name: A name that identifies this animation (no quotes).
-  It cannot contain spaces.
-- \c image_file: Name of a PNG image that contains all frames of all
+The definition of each animation
+starts with \c animation{ and ends with \c }.
+Between the braces are defined the properties of the animation.
+Properties are declared with the syntax <tt>key = value</tt> and
+are separated with commas. It is allowed to have an extra comma after
+the last property. String values are enclosed within
+double quotes.
+The properties must be:
+- \c name (string): A name identifying this animation.
+- \c src_image (string): Name of a PNG image that contains all frames of all
   directions of this animation. It cannot contain spaces.
   Its path is relative to the directory \c sprites.
-  Alternatively, \c image_file may also be the keyword \c tileset:
+  Alternatively, \c src_image may also be the keyword \c "tileset":
   in this case, it means that the sprite is tileset-dependent.
   Indeed, you may want to make sprites that change with the skin of the current
   map (like animated doors). The PNG file is then
   \c tilesets/yy.entities.png where \c yy is the id of the current tileset.
-- \c nb_directions: Number of directions of this animation.
-- \c frame_delay: Delay in milliseconds between two frames of the
-  animation, or 0 if there is only one frame and you want it to stay displayed.
-- \c frame_to_loop_on: Index of the frame where you want the animation to
-  come back when the last frame finishes. A value of -1 means no loop (the
-  animation stops after the last frame). If the value is -1, the sprite will
-  stop being displayed after the last frame, unless \c frame_delay is 0
-  (meaning that the only frame stays displayed).
-
-After this first line, there is a line for each direction of the animation.
-For each direction, this line determines the location of individual frames
-of this direction.
-In the PNG image, all frames of a direction are rectangles of the same size,
-placed in adjacent locations from left to right and possibly from top to
-bottom (in other words, organized in several columns and several rows).
-Therefore, instead of defining the frames one by one, we just specify the
-location of the first frame, the number of frames and the number of columns
-by row. This is enough to determine the exact position of each frame.
-A direction line has the following syntax:
-
-\verbatim
-x y frame_width frame_height origin_x origin_y nb_frames nb_columns
-\endverbatim
-- \c x and \c y: Coordinates of the top-left corner of area containg the
-  frames.
-- \c frame_width and \c frame_height: Size of each frame.
-  Thus, the first frame is the rectangle of coordinates (\c x,\c y)
-  and size (\c frame_width,\c frame_height).
-- \c origin_x and \c origin_y: Coordinates of the reference point of the sprite,
-  relative to the top-left rectangle of a frame.
-  When a sprite is drawn at some coordinates, the origin point determine what
-  exact point of the sprite's rectangle is at those coordinates.
-  It is not necessarily the top-left corner of the rectangle.
-  The origin point is usually the central point of contact between the
-  sprite and the ground. For example, the origin point of the hero,
-  of enemies, NPCs and most entities is usually the center of their shadow.
-  Thus, for entities of size (<tt>16,16</tt>), the origin point is
-  often (<tt>8,13</tt>).
-  The origin point is the point of synchronization of an entity with its
-  sprites, because an entity that has a given size may have sprites with
-  a different size.
-- \c nb_frames: Number of frames of this direction. Most of the time,
-  this number is the same for all directions.
-- \c nb_columns: Number of columns of the grid containing the frames of this
-  direction in the PNG image. The number of rows is then deduced from
-  \c nb_frames and \c nb_columns. Note that the last row of the grid may be
-  incomplete.
+- \c frame_delay (number, optional): Delay in milliseconds between two frames
+  of the animation.
+  Zero or no value means an infinite delay.
+  In this case, the sprite will show a fixed image and will never finish its
+  animation.
+- \c frame_to_loop_on (number, optional): Index of the frame where you want the
+  animation to come back when the last frame finishes (the first frame is \c 0).
+  No value means no loop (the sprite stops being displayed after the last frame).
+  Note that when \c delay is \c 0, this can never happen
+  since the first frame can never finish.
+- \c directions (table): List of all directions (sequences of frames)
+  of this animation.
+  The list of directions is enclosed between \c { and \c },
+  where directions are separated by commas.
+  Each direction defines a sequence of individual frames.
+  In the PNG image, all frames of a direction are rectangles of the same size,
+  placed in adjacent locations from left to right and possibly from top to
+  bottom (in other words, organized in several columns and several rows).
+  Therefore, instead of defining the frames one by one, we just specify the
+  location of the first frame, the number of frames and the number of columns
+  by row. This is enough to determine the exact position of each frame.
+  The syntax of a direction is as follows.
+  The direction is enclosed between \c { and \c } and contains
+  some properties declared with the syntax <tt>key = value</tt> and separated by
+  commas.
+  A direction has the following properties:
+  - \c x (number): X coordinate of the top-left corner of area containing the
+    frames in the PNG image.
+  - \c y (number): Y coordinate of the top-left corner of area containing the
+    frames in the PNG image.
+  - \c frame_width (number): Width of each frame in the PNG image.
+  - \c frame_height (number): Height of each frame in the PNG image.
+    Thus, the first frame is the rectangle of coordinates (\c x, \c y)
+    and size (\c frame_width, \c frame_height).
+  - \c origin_x (number, optional): X coordinate of the reference point of
+    the sprite, relative to the top-left rectangle of a frame.
+    When a sprite is drawn at some coordinates, the origin point determines what
+    exact point of the sprite's rectangle is at those coordinates.
+    It is not necessarily the top-left corner of the rectangle.
+    The origin point is usually the central point of contact between the
+    sprite and the ground. For example, the origin point of the hero,
+    of enemies, NPCs and most entities is usually the center of their shadow.
+    Thus, for entities of size (<tt>16,16</tt>), the origin point is
+    often (<tt>8,13</tt>).
+    The origin point is the point of synchronization of an entity with its
+    sprites, because an entity that has a given size may have sprites with
+    a different size.
+    No values means \c 0.
+  - \c origin_y (number, optional): Y coordinates of the reference point of
+    the sprite, relative to the top-left rectangle of a frame.
+  - \c num_frames (number, optional): Number of frames of this direction.
+    Most of the time, this number is the same for all directions.
+    The default number of frames is \c 1.
+  - \c num_columns: Number of columns of the grid containing the frames of this
+    direction in the PNG image. The number of rows is then deduced from
+    \c num_frames and \c num_columns.
+    Note that the last row of the grid may be incomplete.
+    No value means \c num_frames, meaning that all frames are
+    arranged in the only one row in the PNG image.
 
 Example of a sprite animation set definition file:
 
 \verbatim
-stopped hero/stopped.tunic.png 4 0 -1
-0	0	24	24	12	21	1	1
-24	0	24	24	12	21	1	1
-72	0	24	24	12	21	1	1
-96	0	24	24	12	21	1	1
+animation{
+  -- This animation is actually a fixed image (only one frame, no delay property).
+  name = "stopped",
+  src_image = "hero/stopped.tunic.png",
+  directions = {
+    { x =  0, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 24, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 72, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+    { x = 96, y = 0, frame_width = 24, frame_height = 24, origin_x = 12, origin_y = 21 },
+  }
+}
 
-walking hero/walking.tunic.png 4 100 0
-0	0	24	32	12	29	8	8
-0	32	24	32	12	29	8	8
-0	96	24	32	12	29	8	8
-0	128	24	32	12	29	8	8
+animation{
+  -- This animation loops on the first frame.
+  name = "walking",
+  src_image = "hero/walking.tunic.png",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 0, y =   0, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 29, num_frames = 8 },
+    { x = 0, y =  32, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 29, num_frames = 8 },
+    { x = 0, y =  96, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 29, num_frames = 8 },
+    { x = 0, y = 128, frame_width = 24, frame_height = 32, origin_x = 12, origin_y = 29, num_frames = 8 },
+  }
+}
 
-sword hero/sword.tunic0.png 4 30 -1
-0	0	32	32	16	29	12	12
-0	32	32	32	16	29	12	12
-0	64	32	32	16	29	12	12
-0	96	32	32	16	29	12	12
+animation{
+  -- This animation stops after its last frame (no frame_to_loop_on property).
+  name = "sword",
+  src_image = "hero/sword.tunic.png",
+  frame_delay = 30,
+  directions = {
+    { x = 0, y =  0, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 12 },
+    { x = 0, y = 32, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 12 },
+    { x = 0, y = 64, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 12 },
+    { x = 0, y = 96, frame_width = 32, frame_height = 32, origin_x = 16, origin_y = 29, num_frames = 12 },
+  }
+}
 \endverbatim
 The current version of the editor does not support edition of sprites yet.
 You have to edit it them by hand. However, graphical edition of sprites is the

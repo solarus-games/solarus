@@ -108,6 +108,14 @@ local sprites_possibly_unlisted = {
   { id = "enemies/khorneth_right_blade",    description = "Enemy: Khorneth right blade" },
   { id = "enemies/poutroxor_head",          description = "Enemy: Poutroxor head" },
   { id = "enemies/poutroxor_skeleton",      description = "Enemy: Poutroxor skeleton" },
+  { id = "enemies/cannonball_big",          description = "Enemy: Big cannonball" },
+  { id = "enemies/dkc_bananas",             description = "Enemy: Bananas" },
+  { id = "enemies/dkc_barrel",              description = "Enemy: Barrel" },
+  { id = "enemies/mc_pickaxe",              description = "Enemy: Pickaxe" },
+  { id = "enemies/smb_block",               description = "Enemy: Coin block" },
+  { id = "enemies/smk_mario",               description = "Enemy: Kart 1" },
+  { id = "enemies/smk_toad",                description = "Enemy: Kart 2" },
+  { id = "enemies/smk_yoshi",               description = "Enemy: Kart 3" },
 
 }
 local sprites_listed = {}

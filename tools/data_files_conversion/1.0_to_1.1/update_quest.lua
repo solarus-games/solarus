@@ -38,19 +38,19 @@ local resources = quest_db_converter.convert(quest_path, languages)
 write_info("  Converting tilesets...")
 local tileset_converter = require("tileset_converter")
 for _, resource in pairs(resources["tileset"]) do
-  print("    Tileset " .. resource.id .. " (" .. resource.description .. ")")
+  write_info("    Tileset " .. resource.id .. " (" .. resource.description .. ")")
   tileset_converter.convert(quest_path, resource.id)
 end
-print("  All tilesets were converted.")
+write_info("  All tilesets were converted.")
 
 -- Convert sprites.
 write_info("  Converting sprites...")
 local sprite_converter = require("sprite_converter")
 for _, resource in pairs(resources["sprite"]) do
-  print("    Sprite " .. resource.id .. " (" .. resource.description .. ")")
+  write_info("    Sprite " .. resource.id .. " (" .. resource.description .. ")")
   sprite_converter.convert(quest_path, resource.id)
 end
-print("  All sprites were converted.")
+write_info("  All sprites were converted.")
 
 write_info("Update successful!")
 

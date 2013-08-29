@@ -158,8 +158,9 @@ The properties must be:
   - \c num_frames (number, optional): Number of frames of this direction.
     Most of the time, this number is the same for all directions.
     The default number of frames is \c 1.
-  - \c num_columns: Number of columns of the grid containing the frames of this
-    direction in the PNG image. The number of rows is then deduced from
+  - \c num_columns (number, optional): Number of columns of the grid
+    containing the frames of this direction in the PNG image.
+    The number of rows is then deduced from
     \c num_frames and \c num_columns.
     Note that the last row of the grid may be incomplete.
     No value means \c num_frames, meaning that all frames are

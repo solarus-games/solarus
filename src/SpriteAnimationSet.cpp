@@ -20,6 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lua/LuaContext.h"
 
 /**
  * \brief Loads the animations of a sprite from a file.
@@ -29,103 +30,7 @@
 SpriteAnimationSet::SpriteAnimationSet(const std::string& id):
   id(id) {
 
-  // compute the file name
-  std::string file_name = std::string("sprites/") + id + ".dat";
-
-  // open the file
-  std::istream &sprite_file = FileTools::data_file_open(file_name);
-
-  // read the file
-  std::string line;
-
-  std::vector<Rectangle> positions_in_src;
-  std::vector<SpriteAnimationDirection*> directions;
-  std::string name, image_file_name;
-  int nb_directions, nb_frames, origin_x, origin_y, loop_on_frame;
-  int x, y, width, height, rows, columns;
-  uint32_t frame_delay;
-
-  // read each animation
-  while (std::getline(sprite_file, line)) {
-
-    if (line.size() == 0 || line[0] == '\r') {
-      continue;
-    }
-
-    // first line: animation info
-
-    std::istringstream iss0(line);
-    FileTools::read(iss0, name);
-    FileTools::read(iss0, image_file_name);
-    FileTools::read(iss0, nb_directions);
-    FileTools::read(iss0, frame_delay);
-    FileTools::read(iss0, loop_on_frame);
-
-    directions.clear();
-
-    for (int i = 0; i < nb_directions; ++i) {
-
-      do {
-        if (!std::getline(sprite_file, line)) {
-          Debug::die(StringConcat() << "Unexpected end of input in file '" << file_name << "'");
-        }
-      }
-      while (line.size() == 0);
-
-      std::istringstream iss(line);
-      FileTools::read(iss, x);
-      FileTools::read(iss, y);
-      FileTools::read(iss, width);
-      FileTools::read(iss, height);
-      FileTools::read(iss, origin_x);
-      FileTools::read(iss, origin_y);
-      FileTools::read(iss, nb_frames);
-      FileTools::read(iss, columns);
-
-      max_size.set_width(std::max(width, max_size.get_width()));
-      max_size.set_height(std::max(height, max_size.get_height()));
-
-      if (nb_frames % columns == 0) {
-        rows = nb_frames / columns;
-      }
-      else {
-        rows = (nb_frames / columns) + 1;
-      }
-
-      positions_in_src.clear();
-      int j = 0; // frame number
-      for (int r = 0; r < rows && j < nb_frames; r++) {	
-        for (int c = 0; c < columns && j < nb_frames; c++) {
-
-          Rectangle position_in_src(
-              x + c * width,
-              y + r * height,
-              width,
-              height);
-          positions_in_src.push_back(position_in_src);
-          j++;
-        }
-      }
-
-      directions.push_back(new SpriteAnimationDirection(
-          positions_in_src,
-          Rectangle(origin_x, origin_y)));
-    }
-
-    Debug::check_assertion(animations.find(name) == animations.end(),
-        StringConcat() << "Duplicate animation '" << name << "' in sprite '"
-        << id << "'");
-
-    animations[name] = new SpriteAnimation(
-        image_file_name, directions, frame_delay, loop_on_frame);
-
-    // Set the first animation as the default one.
-    if (animations.size() == 1) {
-      default_animation_name = name;
-    }
-  }
-
-  FileTools::data_file_close(sprite_file);
+  load();
 }
 
 /**
@@ -139,6 +44,145 @@ SpriteAnimationSet::~SpriteAnimationSet() {
   for (it = animations.begin(); it != animations.end(); it++) {
     delete it->second;
   }
+}
+
+/**
+ * \brief Attempts to load this animation set from its file.
+ */
+void SpriteAnimationSet::load() {
+
+  Debug::check_assertion(animations.empty(),
+      "Animation set already loaded");
+
+  // Compute the file name.
+  std::string file_name = std::string("sprites/") + id + ".dat";
+
+  lua_State* l = luaL_newstate();
+  size_t size;
+  char* buffer;
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
+  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  FileTools::data_file_close_buffer(buffer);
+
+  if (load_result != 0) {
+    Debug::error(StringConcat() << "Failed to load sprite file '" << file_name
+        << "': " << lua_tostring(l, -1));
+    lua_pop(l, 1);
+  }
+  else {
+    lua_pushlightuserdata(l, this);
+    lua_setfield(l, LUA_REGISTRYINDEX, "animation_set");
+    lua_register(l, "animation", l_animation);
+    if (lua_pcall(l, 0, 0, 0) != 0) {
+      Debug::error(StringConcat() << "Failed to load sprite file '" << file_name
+          << "': " << lua_tostring(l, -1));
+      lua_pop(l, 1);
+    }
+  }
+  lua_close(l);
+}
+
+/**
+ * \brief Function called by the Lua data file to define an animation.
+ *
+ * - Argument 1 (table): properties of the animation.
+ *
+ * \param l the Lua context that is calling this function
+ * \return Number of values to return to Lua.
+ */
+int SpriteAnimationSet::l_animation(lua_State* l) {
+
+  lua_getfield(l, LUA_REGISTRYINDEX, "animation_set");
+  SpriteAnimationSet* animation_set = static_cast<SpriteAnimationSet*>(
+      lua_touserdata(l, -1));
+  lua_pop(l, 1);
+
+  luaL_checktype(l, 1, LUA_TTABLE);
+
+
+  std::string animation_name = LuaContext::check_string_field(l, 1, "name");
+  std::string src_image = LuaContext::check_string_field(l, 1, "src_image");
+  uint32_t frame_delay = uint32_t(LuaContext::opt_int_field(l, 1, "frame_delay", 0));
+  int frame_to_loop_on = LuaContext::opt_int_field(l, 1, "frame_to_loop_on", -1);
+
+  lua_settop(l, 1);
+  lua_getfield(l, 1, "directions");
+  if (lua_type(l, 2) != LUA_TTABLE) {
+    LuaContext::arg_error(l, 1, StringConcat() <<
+          "Bad field 'directions' (table expected, got " <<
+          luaL_typename(l, -1) << ")");
+  }
+
+  // Traverse the directions table.
+  std::vector<SpriteAnimationDirection*> directions;
+  int i = 1;
+  lua_rawgeti(l, -1, i);
+  while (!lua_isnil(l, -1)) {
+    ++i;
+
+    if (lua_type(l, -1) != LUA_TTABLE) {
+      LuaContext::arg_error(l, 1, StringConcat() <<
+          "Bad field 'directions' (got " <<
+          luaL_typename(l, -1) << " in the table)");
+    }
+
+    int x = LuaContext::check_int_field(l, -1, "x");
+    int y = LuaContext::check_int_field(l, -1, "y");
+    int frame_width = LuaContext::check_int_field(l, -1, "frame_width");
+    int frame_height = LuaContext::check_int_field(l, -1, "frame_height");
+    int origin_x = LuaContext::opt_int_field(l, -1, "origin_x", 0);
+    int origin_y = LuaContext::opt_int_field(l, -1, "origin_y", 0);
+    int num_frames = LuaContext::opt_int_field(l, -1, "origin_x", 1);
+    int num_columns = LuaContext::opt_int_field(l, -1, "origin_x", num_frames);
+
+    lua_pop(l, 1);
+    lua_rawgeti(l, -1, i);
+
+    animation_set->max_size.set_width(std::max(frame_width, animation_set->max_size.get_width()));
+    animation_set->max_size.set_height(std::max(frame_height, animation_set->max_size.get_height()));
+
+    int num_rows;
+    if (num_frames % num_columns == 0) {
+      num_rows = num_frames / num_columns;
+    }
+    else {
+      num_rows = (num_frames / num_columns) + 1;
+    }
+
+    std::vector<Rectangle> positions_in_src;
+    int j = 0;  // Frame number.
+    for (int r = 0; r < num_rows && j < num_frames; ++r) {
+      for (int c = 0; c < num_columns && j < num_frames; ++c) {
+
+        Rectangle position_in_src(
+            x + c * frame_width,
+            y + r * frame_height,
+            frame_width,
+            frame_height);
+        positions_in_src.push_back(position_in_src);
+        ++j;
+      }
+    }
+
+    directions.push_back(new SpriteAnimationDirection(
+          positions_in_src,
+          Rectangle(origin_x, origin_y)));
+  }
+
+  if (animation_set->animations.find(animation_name) != animation_set->animations.end()) {
+    LuaContext::error(l, std::string("Duplicate animation '") + animation_name
+        + "' in sprite '" + animation_set->id + "'");
+  }
+
+  animation_set->animations[animation_name] = new SpriteAnimation(
+      src_image, directions, frame_delay, frame_to_loop_on);
+
+  // Set the first animation as the default one.
+  if (animation_set->animations.size() == 1) {
+    animation_set->default_animation_name = animation_name;
+  }
+
+  return 0;
 }
 
 /**

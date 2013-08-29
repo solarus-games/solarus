@@ -108,11 +108,10 @@ const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
 /**
  * \brief Function called by Lua to add a dialog to the resource.
  *
- * - Argument 1 (table): properties of the dialog (possible keys are id, icon,
- * skip, question, next, next2 and text)
+ * - Argument 1 (table): properties of the dialog.
  *
  * \param l the Lua context that is calling this function
- * \return number of values returned to Lua
+ * \return Number of values to return to Lua.
  */
 int DialogResource::l_dialog(lua_State* l) {
 

@@ -21,6 +21,8 @@
 #include "lowlevel/Rectangle.h"
 #include <map>
 
+struct lua_State;
+
 /**
  * \brief A set of animations representing a sprite.
  *
@@ -38,6 +40,7 @@ class SpriteAnimationSet {
 
     void set_tileset(Tileset& tileset);
 
+    bool is_valid() const;  // TODO
     bool has_animation(const std::string& animation_name) const;
     const SpriteAnimation* get_animation(const std::string& animation_name) const;
     SpriteAnimation* get_animation(const std::string& animation_name);
@@ -48,6 +51,9 @@ class SpriteAnimationSet {
     const Rectangle& get_max_size() const;
 
   private:
+
+    void load();
+    static int l_animation(lua_State* l);
 
     std::string id;                          /**< Id of this animation set. */
     std::map<std::string, SpriteAnimation*>

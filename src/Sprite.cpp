@@ -59,13 +59,22 @@ void Sprite::quit() {
  * \param id id of the animation set
  * \return the corresponding animation set
  */
-SpriteAnimationSet& Sprite::get_animation_set(const std::string &id) {
+SpriteAnimationSet& Sprite::get_animation_set(const std::string& id) {
 
-  if (all_animation_sets.find(id) == all_animation_sets.end()) {
-    all_animation_sets[id] = new SpriteAnimationSet(id);
+  SpriteAnimationSet* animation_set = NULL;
+  std::map<std::string, SpriteAnimationSet*>::iterator it =
+      all_animation_sets.find(id);
+  if (it != all_animation_sets.end()) {
+    animation_set = it->second;
+  }
+  else {
+    animation_set = new SpriteAnimationSet(id);
+    all_animation_sets[id] = animation_set;
   }
 
-  return *all_animation_sets[id];
+  Debug::check_assertion(animation_set != NULL);
+
+  return *animation_set;
 }
 
 /**

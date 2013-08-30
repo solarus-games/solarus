@@ -132,8 +132,8 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
     int frame_height = LuaContext::check_int_field(l, -1, "frame_height");
     int origin_x = LuaContext::opt_int_field(l, -1, "origin_x", 0);
     int origin_y = LuaContext::opt_int_field(l, -1, "origin_y", 0);
-    int num_frames = LuaContext::opt_int_field(l, -1, "origin_x", 1);
-    int num_columns = LuaContext::opt_int_field(l, -1, "origin_x", num_frames);
+    int num_frames = LuaContext::opt_int_field(l, -1, "num_frames", 1);
+    int num_columns = LuaContext::opt_int_field(l, -1, "num_columns", num_frames);
 
     lua_pop(l, 1);
     lua_rawgeti(l, -1, i);

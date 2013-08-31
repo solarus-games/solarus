@@ -42,10 +42,10 @@ class CrystalBlock: public Detector {
 
     Subtype subtype;                   /**< indicates whether this is an orange or a blue block */
     bool orange_raised;                /**< true if the orange blocks are raised,
-					* false if the blue blocks are raised */
+                                        * false if the blue blocks are raised */
 
     bool try_jump(Hero& hero, const Rectangle& collision_box,
-	int jump_direction, int jump_length);
+        int jump_direction, int jump_length);
 
   public:
 

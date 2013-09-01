@@ -922,23 +922,23 @@ int InputEvent::get_direction() {
     switch (get_keyboard_key()) {
 
       case KEY_RIGHT:
-	result = 0;
-	break;
+        result = 0;
+        break;
 
       case KEY_UP:
-	result = 2;
-	break;
+        result = 2;
+        break;
 
       case KEY_LEFT:
-	result = 4;
-	break;
+        result = 4;
+        break;
 
       case KEY_DOWN:
-	result = 6;
-	break;
+        result = 6;
+        break;
 
       default:
-	break;
+        break;
     }
   }
   else if (is_joypad_axis_moved() && !is_joypad_axis_centered()) {

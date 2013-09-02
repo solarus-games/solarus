@@ -1,21 +1,64 @@
-on_ground tileset 1 0 -1
-256	80	16	24	8	21	1	1
+animation{
+  name = "on_ground",
+  src_image = "tileset",
+  directions = {
+    { x = 256, y = 80, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 21 },
+  },
+}
 
-stopped tileset 1 0 -1
-272	80	16	24	8	21	1	1
+animation{
+  name = "stopped",
+  src_image = "tileset",
+  directions = {
+    { x = 272, y = 80, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 21 },
+  },
+}
 
-stopped_explosion_soon tileset 1 50 0
-256	112	16	24	8	21	4	4
+animation{
+  name = "stopped_explosion_soon",
+  src_image = "tileset",
+  frame_delay = 50,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 256, y = 112, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 21, num_frames = 4 },
+  },
+}
 
-walking tileset 1 100 0
-272	80	16	32	8	21	3	3
+animation{
+  name = "walking",
+  src_image = "tileset",
+  frame_delay = 100,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 272, y = 80, frame_width = 16, frame_height = 32, origin_x = 8, origin_y = 21, num_frames = 3 },
+  },
+}
 
-walking_explosion_soon tileset 1 50 0
-272	136	16	32	8	21	3	3
+animation{
+  name = "walking_explosion_soon",
+  src_image = "tileset",
+  frame_delay = 50,
+  frame_to_loop_on = 0,
+  directions = {
+    { x = 272, y = 136, frame_width = 16, frame_height = 32, origin_x = 8, origin_y = 21, num_frames = 3 },
+  },
+}
 
-destroy tileset 1 100 -1
-0	272	40	48	24	32	8	8
+animation{
+  name = "destroy",
+  src_image = "tileset",
+  frame_delay = 100,
+  directions = {
+    { x = 0, y = 272, frame_width = 40, frame_height = 48, origin_x = 24, origin_y = 32, num_frames = 8 },
+  },
+}
 
-regenerating tileset 1 200 -1
-256	136	16	24	8	21	2	1
+animation{
+  name = "regenerating",
+  src_image = "tileset",
+  frame_delay = 200,
+  directions = {
+    { x = 256, y = 136, frame_width = 16, frame_height = 24, origin_x = 8, origin_y = 21, num_frames = 2, num_columns = 1 },
+  },
+}
 

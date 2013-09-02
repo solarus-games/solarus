@@ -20,6 +20,15 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
+
+import org.luaj.vm2.LoadState;
+import org.luaj.vm2.LuaError;
+import org.luaj.vm2.LuaFunction;
+import org.luaj.vm2.LuaTable;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.Varargs;
+import org.luaj.vm2.compiler.LuaC;
+import org.luaj.vm2.lib.OneArgFunction;
 import org.solarus.editor.entities.*;
 
 /**
@@ -53,91 +62,106 @@ public class Sprite {
     private static Image emptySpriteImage = Project.getEditorImageOrEmpty("entity_npc.png");
 
     /**
-     * Analyzes the description file of the animation set used by this sprite
+     * Loads the description file of the animation set used by this sprite
      * and builds its animation set.
-     * @throws MapException if there is an error when analyzing the file
+     * @throws MapException if there is an error when analyzing the file.
      */
-    public void parse() throws MapException {
+    public void load() throws MapException {
 
-        int lineNumber = 0;
-        String animationName = null;
         try {
-
             this.animations = new TreeMap<String, SpriteAnimation>();
-            BufferedReader in = new BufferedReader(new FileReader(Project.getSpriteFile(animationSetId)));
+            File spriteFile = Project.getSpriteFile(animationSetId);
+            LuaC.install();
+            LuaTable environment = LuaValue.tableOf();
 
-            // read each animation
-            String line;
-            while ((line = in.readLine()) != null) {
+            environment.set("animation", new AnimationFunction());
 
-                lineNumber++;
-                if (line.length() == 0) {
-                    continue;
-                }
-
-                // first line: animation info
-                StringTokenizer tokenizer = new StringTokenizer(line);
-                animationName = tokenizer.nextToken();
-                String imageFileName = tokenizer.nextToken();
-                int nbDirections = Integer.parseInt(tokenizer.nextToken());
-                int frameDelay = Integer.parseInt(tokenizer.nextToken());
-                int loopOnFrame = Integer.parseInt(tokenizer.nextToken());
-
-                BufferedImage srcImage;
-
-                if (!imageFileName.equals("tileset")) {
-                  srcImage = Project.getProjectImage("sprites/" + imageFileName);
-                }
-                else {
-                  srcImage = Project.getProjectImage("tilesets/" + Project.getTilesetEntitiesImageFile(map.getTilesetId()).getName());
-                }
-
-                SpriteAnimationDirection[] directions = new SpriteAnimationDirection[nbDirections];
-
-                // read each direction
-                for (int i = 0; i < nbDirections; i++) {
-
-                    do {
-                        line = in.readLine();
-                        lineNumber++;
-                        if (line == null) {
-                            throw new MapException("Line " + lineNumber + ": Unexpected end of file");
-                        }
-                    }
-                    while (line.length() == 0);
-
-                    tokenizer = new StringTokenizer(line);
-                    int x = Integer.parseInt(tokenizer.nextToken());
-                    int y = Integer.parseInt(tokenizer.nextToken());
-                    int width = Integer.parseInt(tokenizer.nextToken());
-                    int height = Integer.parseInt(tokenizer.nextToken());
-                    int originX = Integer.parseInt(tokenizer.nextToken());
-                    int originY = Integer.parseInt(tokenizer.nextToken());
-                    int nbFrames = Integer.parseInt(tokenizer.nextToken());
-                    int nbColumns = Integer.parseInt(tokenizer.nextToken());
-
-                    Rectangle firstFrameRectangle = new Rectangle(x, y, width, height);
-                    directions[i] = new SpriteAnimationDirection(
-                            srcImage, firstFrameRectangle, nbFrames, nbColumns, originX, originY);
-                }
-                SpriteAnimation animation = new SpriteAnimation(directions, frameDelay, loopOnFrame);
-                animations.put(animationName, animation);
-                if (defaultAnimationName == null) {
-                    defaultAnimationName = animationName; // set first animation as the default one
-                }
-            }
+            LuaFunction code = LoadState.load(new FileInputStream(spriteFile),
+                "sprite", environment);
+            code.call();
         }
         catch (IOException ex) {
             throw new MapException(ex.getMessage());
         }
-        catch (NumberFormatException ex) {
-            throw new MapException("Sprite '" + animationSetId + "': Syntax error line " + lineNumber + ": Integer expected");
+        catch (LuaError ex) {
+            throw new MapException("Error when loading the sprite file: " + ex.getMessage());
         }
-        catch (NoSuchElementException ex) {
-            throw new MapException("Sprite '" + animationSetId + "': Syntax error line " + lineNumber + ": Value expected");
-        }
-        catch (QuestEditorException ex) {
-            throw new MapException("Sprite '" + animationSetId + "': Line " + lineNumber + ", animation '" + animationName + "':\n" + ex.getMessage());
+    }
+
+    /**
+     * @brief Lua function animation() called by the sprite data file.
+     */
+    private class AnimationFunction extends OneArgFunction {
+
+        public LuaValue call(LuaValue arg) {
+
+            try {
+                LuaTable table = arg.checktable();
+
+                String animationName = table.get("name").checkjstring();
+                String srcImageName = table.get("src_image").checkjstring();
+                int frameDelay = table.get("frame_delay").optint(0);
+                int frameToLoopOn = table.get("frame_to_loop_on").optint(-1);
+                LuaTable directionsTable = table.get("directions").checktable();
+
+                BufferedImage srcImage;
+
+                if (!srcImageName.equals("tileset")) {
+                    srcImage = Project.getProjectImage("sprites/" + srcImageName);
+                }
+                else {
+                    srcImage = Project.getProjectImage(
+                            "tilesets/" + Project.getTilesetEntitiesImageFile(map.getTilesetId()).getName());
+                }
+
+                Vector<SpriteAnimationDirection> directions = new Vector<SpriteAnimationDirection>();
+
+                // Traverse the directions table.
+                LuaValue key = LuaValue.NIL;
+                while (true) {
+
+                    Varargs keyValue = directionsTable.next(key);
+                    key = keyValue.arg1();
+                    if (key.isnil()) {
+                        break;
+                    }
+                    LuaValue directionTable = keyValue.arg(2);
+
+                    int x = directionTable.get("x").checkint();
+                    int y = directionTable.get("y").checkint();
+                    int frameWidth = directionTable.get("frame_width").checkint();
+                    int frameHeight = directionTable.get("frame_height").checkint();
+                    int originX = directionTable.get("origin_x").optint(0);
+                    int originY = directionTable.get("origin_y").optint(0);
+                    int numFrames = directionTable.get("num_frames").optint(1);
+                    int numColumns = directionTable.get("num_colums").optint(numFrames);
+
+                    Rectangle firstFrameRectangle = new Rectangle(x, y, frameWidth, frameHeight);
+                    directions.add(new SpriteAnimationDirection(
+                            srcImage, firstFrameRectangle, numFrames, numColumns, originX, originY));
+
+                    SpriteAnimation animation = new SpriteAnimation(directions, frameDelay, frameToLoopOn);
+                    animations.put(animationName, animation);
+                    if (defaultAnimationName == null) {
+                        defaultAnimationName = animationName; // set first animation as the default one
+                    }
+                }
+            }
+            catch (IOException ex) {
+                // File error.
+                throw new LuaError(ex);
+            }
+            catch (MapException ex) {
+                // Error in the input file.
+                throw new LuaError(ex);
+            }
+            catch (Exception ex) {
+                // Error in the editor.
+                ex.printStackTrace();
+                throw new LuaError(ex);
+            }
+
+            return LuaValue.NIL;
         }
     }
 
@@ -151,7 +175,7 @@ public class Sprite {
 
         this.animationSetId = animationSetId;
         this.map = map;
-        parse();
+        load();
     }
 
     /**

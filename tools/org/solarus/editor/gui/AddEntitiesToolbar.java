@@ -177,7 +177,6 @@ public class AddEntitiesToolbar extends JComponent {
          */
         public void mousePressed(MouseEvent ev) {
 
-            System.out.println("mouse pressed");
             int cell = ev.getX() / 32;
 
             if (mapView.getMap() == null || cell >= cells.length) {

@@ -17,6 +17,7 @@
 package org.solarus.editor;
 
 import java.awt.*;
+import java.util.Vector;
 
 /**
  * Represents an animation of a sprite.
@@ -26,7 +27,7 @@ public class SpriteAnimation {
     /**
      * @brief The directions of this animation.
      */
-    private SpriteAnimationDirection[] directions;
+    private Vector<SpriteAnimationDirection> directions;
 
     /**
      * @brief Interval in milliseconds between two frames
@@ -47,7 +48,7 @@ public class SpriteAnimation {
      * @param frameDelay interval in milliseconds between two frames
      * @param loopOnFrame index of a frame to loop on when the animation is finished, or -1
      */
-    public SpriteAnimation(SpriteAnimationDirection[] directions, int frameDelay, int loopOnFrame) {
+    public SpriteAnimation(Vector<SpriteAnimationDirection> directions, int frameDelay, int loopOnFrame) {
         this.directions = directions;
         this.frameDelay = frameDelay;
         this.loopOnFrame = loopOnFrame;
@@ -60,7 +61,7 @@ public class SpriteAnimation {
      */
     public Point getOrigin(int direction) {
 
-        return directions[direction].getOrigin();
+        return directions.get(direction).getOrigin();
     }
 
     /**
@@ -70,7 +71,7 @@ public class SpriteAnimation {
      */
     public Dimension getSize(int direction) {
 
-        return directions[direction].getSize();
+        return directions.get(direction).getSize();
     }
 
     /**
@@ -81,7 +82,7 @@ public class SpriteAnimation {
      */
     public Image getFrame(int direction, int frame) {
 
-        return directions[direction].getFrame(frame);
+        return directions.get(direction).getFrame(frame);
     }
 
     /**
@@ -89,7 +90,7 @@ public class SpriteAnimation {
      * @return The number of directions.
      */
     public int getNbDirections() {
-        return directions.length;
+        return directions.size();
     }
 
     /**
@@ -98,7 +99,7 @@ public class SpriteAnimation {
      * @return The corresponding direction.
      */
     public SpriteAnimationDirection getDirection(int direction) {
-        return directions[direction];
+        return directions.get(direction);
     }
 
     /**
@@ -135,6 +136,6 @@ public class SpriteAnimation {
     public void paint(Graphics g, double zoom, boolean showTransparency,
             int x, int y, int direction, int frame) {
 
-        directions[direction].paint(g, zoom, showTransparency, x, y, frame);
+        directions.get(direction).paint(g, zoom, showTransparency, x, y, frame);
     }
 }

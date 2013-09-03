@@ -51,7 +51,7 @@
  * Lua API changes may sometimes break compatibility, so check the ChangeLog
  * before upgrading.
  */
-#define SOLARUS_MINOR_VERSION 1
+#define SOLARUS_MINOR_VERSION 2
 
 /**
  * \brief Solarus patch version.

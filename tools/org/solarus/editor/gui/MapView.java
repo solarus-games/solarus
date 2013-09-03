@@ -573,6 +573,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 entityBeingAdded = MapEntity.create(map, entityType, entitySubtype);
 
                 if (entityBeingAdded == null) {
+                    // Cannot happen: MapEntity.create() returns an entity
+                    // or throws a MapException.
                     throw new NullPointerException();
                 }
 
@@ -592,6 +594,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 updateAddingEntity(x, y);
             } catch (MapException ex) {
                 GuiTools.errorDialog("Cannot create the entity: " + ex.getMessage());
+                returnToNormalState();
             }
         }
     }

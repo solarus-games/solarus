@@ -128,7 +128,13 @@ public class Destructible extends MapEntity {
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
 
-        sprite = new Sprite(spriteIds[subtype.ordinal()], getMap());
+        try {
+            sprite = new Sprite(spriteIds[subtype.ordinal()], getMap());
+        }
+        catch (MapException ex) {
+            // The sprite creation failed.
+            sprite = null;
+        }
 
         super.setSubtype(subtype);
     }

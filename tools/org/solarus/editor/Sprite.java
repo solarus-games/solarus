@@ -110,6 +110,10 @@ public class Sprite {
                     srcImage = Project.getProjectImage("sprites/" + srcImageName);
                 }
                 else {
+                    String tilesetId = map.getTilesetId();
+                    if (tilesetId.isEmpty()) {
+                        throw new MapException("No tileset selected");
+                    }
                     srcImage = Project.getProjectImage(
                             "tilesets/" + Project.getTilesetEntitiesImageFile(map.getTilesetId()).getName());
                 }

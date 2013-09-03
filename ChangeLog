@@ -128,6 +128,7 @@ Solarus Quest Editor changes
 * Survive when images cannot be found (#256).
 * Create more initial directories when creating a new quest (#258).
 * Improve error messages.
+* Fix a crash when creating a destructible without tileset selected (#283).
 
 __________________________
 

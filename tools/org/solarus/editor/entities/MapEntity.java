@@ -188,9 +188,11 @@ public abstract class MapEntity extends Observable {
      * @param map the map
      * @param entityType the type of entity to create
      * @param entitySubtype the subtype of entity to create
-     * @return the entity created
+     * @return The entity created (never null).
+     * @throws MapException If the entity creation failed.
      */
-    public static MapEntity create(Map map, EntityType entityType, EntitySubtype entitySubtype) throws MapException {
+    public static MapEntity create(Map map, EntityType entityType, EntitySubtype entitySubtype)
+            throws MapException {
 
         MapEntity entity = null;
         Class<? extends MapEntity> entityClass = null;
@@ -203,11 +205,11 @@ public abstract class MapEntity extends Observable {
         }
         catch (InvocationTargetException ex) {
             System.err.println("Cannot create the entity: " + ex.getCause().getMessage());
-            ex.getCause().printStackTrace();
             throw new MapException(ex.getCause().getMessage());
         }
         catch (NoSuchMethodException ex) {
             System.err.println("Cannot find the constructor of " + entityClass);
+            ex.getCause().printStackTrace();
             throw new MapException(ex.getMessage());
         }
         catch (InstantiationException ex) {

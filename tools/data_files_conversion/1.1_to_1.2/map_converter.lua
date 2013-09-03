@@ -12,7 +12,7 @@ function converter.convert(quest_path, map_id)
   end
 
   -- Do the substitution.
-  local text = input_file:read("*all")  -- Read the whole file.
+  local text = input_file:read("*a")  -- Read the whole file.
   text = text:gsub("shop_item{", "shop_treasure{")
   input_file:close()
 

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/ShopItem.h"
+#include "entities/ShopTreasure.h"
 #include "entities/Hero.h"
 #include "lua/LuaContext.h"
 #include "Game.h"
@@ -32,7 +32,7 @@
 #include <sstream>
 
 /**
- * \brief Creates a new shop item with the specified treasure and price.
+ * \brief Creates a new shop treasure with the specified treasure and price.
  * \param name the name identifying this entity
  * \param layer layer of the entity to create
  * \param x x coordinate of the entity to create
@@ -41,8 +41,14 @@
  * \param price the treasure's price in rupees
  * \param dialog_id id of the dialog describing the item when the player watches it
  */
-ShopItem::ShopItem(const std::string& name, Layer layer, int x, int y,
-		   const Treasure& treasure, int price, const std::string& dialog_id):
+ShopTreasure::ShopTreasure(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    const Treasure& treasure,
+    int price,
+    const std::string& dialog_id):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 32, 32),
   treasure(treasure),
   price(price),
@@ -58,11 +64,11 @@ ShopItem::ShopItem(const std::string& name, Layer layer, int x, int y,
 /**
  * \brief Destructor.
  */
-ShopItem::~ShopItem() {
+ShopTreasure::~ShopTreasure() {
 }
 
 /**
- * \brief Creates a new shop item with the specified treasure and price.
+ * \brief Creates a new shop treasure with the specified treasure and price.
  * \param game the current game
  * \param name the name identifying this entity
  * \param layer layer of the entity to create
@@ -71,32 +77,39 @@ ShopItem::~ShopItem() {
  * \param treasure the treasure that the hero can buy
  * \param price the treasure's price in rupees
  * \param dialog_id id of the dialog describing the item when the player watches it
- * \return the shop item created, or NULL if it is already bought
+ * \return the shop treasure created, or NULL if it is already bought
  */
-ShopItem* ShopItem::create(Game& game, const std::string& name, Layer layer, int x, int y,
-    const Treasure& treasure, int price, const std::string& dialog_id) {
+ShopTreasure* ShopTreasure::create(
+    Game& game,
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    const Treasure& treasure,
+    int price,
+    const std::string& dialog_id) {
 
   // see if the item is not already bought
   if (treasure.is_found()) {
     return NULL;
   }
 
-  return new ShopItem(name, layer, x, y, treasure, price, dialog_id);
+  return new ShopTreasure(name, layer, x, y, treasure, price, dialog_id);
 }
 
 /**
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType ShopItem::get_type() const {
-  return ENTITY_SHOP_ITEM;
+EntityType ShopTreasure::get_type() const {
+  return ENTITY_SHOP_TREASURE;
 }
 
 /**
  * \brief Returns the treasure for sale in this entity.
  * \return The treasure.
  */
-const Treasure& ShopItem::get_treasure() const {
+const Treasure& ShopTreasure::get_treasure() const {
   return treasure;
 }
 
@@ -104,7 +117,7 @@ const Treasure& ShopItem::get_treasure() const {
  * \brief Returns the price of this shop item.
  * \return The price.
  */
-int ShopItem::get_price() const {
+int ShopTreasure::get_price() const {
   return price;
 }
 
@@ -113,7 +126,7 @@ int ShopItem::get_price() const {
  * player watches it.
  * \return The dialog id.
  */
-const std::string& ShopItem::get_dialog_id() const {
+const std::string& ShopTreasure::get_dialog_id() const {
   return dialog_id;
 }
 
@@ -124,7 +137,7 @@ const std::string& ShopItem::get_dialog_id() const {
  *
  * \return true if the sword is ignored
  */
-bool ShopItem::is_sword_ignored() {
+bool ShopTreasure::is_sword_ignored() {
   return true;
 }
 
@@ -133,7 +146,7 @@ bool ShopItem::is_sword_ignored() {
  * \param other another entity
  * \return true
  */
-bool ShopItem::is_obstacle_for(MapEntity &other) {
+bool ShopTreasure::is_obstacle_for(MapEntity &other) {
   return true;
 }
 
@@ -145,7 +158,7 @@ bool ShopItem::is_obstacle_for(MapEntity &other) {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void ShopItem::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void ShopTreasure::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping.is_hero() && !get_game().is_suspended()) {
 
@@ -169,20 +182,20 @@ void ShopItem::notify_collision(MapEntity &entity_overlapping, CollisionMode col
  * him do this.
  * A dialog is shown to let the hero buy the item.
  */
-void ShopItem::notify_action_command_pressed() {
+void ShopTreasure::notify_action_command_pressed() {
 
   if (get_hero().is_free()
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
 
     LuaContext& lua_context = get_lua_context();
-    lua_context.notify_shop_item_interaction(*this);
+    lua_context.notify_shop_treasure_interaction(*this);
   }
 }
 
 /**
  * \brief Draws the entity on the map.
  */
-void ShopItem::draw_on_map() {
+void ShopTreasure::draw_on_map() {
 
   if (!is_drawn()) {
     return;
@@ -211,7 +224,7 @@ void ShopItem::draw_on_map() {
  * \brief Returns the name identifying this type in Lua.
  * \return The name identifying this type in Lua.
  */
-const std::string& ShopItem::get_lua_type_name() const {
-  return LuaContext::entity_shop_item_module_name;
+const std::string& ShopTreasure::get_lua_type_name() const {
+  return LuaContext::entity_shop_treasure_module_name;
 }
 

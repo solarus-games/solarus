@@ -1150,7 +1150,7 @@ on the map.
 - Return value (\ref lua_api_crystal_block "crystal block"): the crystal block
   created.
 
-\subsection lua_api_map_create_shop_item map:create_shop_item(properties)
+\subsection lua_api_map_create_shop_treasure map:create_shop_treasure(properties)
 
 Creates an entity of type
 \ref lua_api_shop_treasure "shop treasure"

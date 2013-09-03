@@ -1,5 +1,26 @@
 _______________________________
 
+Solarus 1.2 (under development)
+_______________________________
+
+Data files format changes
+-------------------------
+
+You can use the script tools/data_files_conversion/1.1_to_1.2/update_quest.lua
+to automatically update your data files.
+Don't forget to make a backup first.
+
+* Maps: Rename entity shop_item to shop_treasure.
+
+Lua API changes
+---------------
+
+Changes that introduce incompatibilities:
+
+* map:create_shop_item() is replaced by map:create_shop_item().
+
+_______________________________
+
 Solarus 1.1 (under development)
 _______________________________
 

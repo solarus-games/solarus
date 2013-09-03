@@ -26,20 +26,27 @@
 struct lua_State;
 
 /**
- * \brief An item the hero can buy in a shop.
+ * \brief A treasure the hero can buy in a shop.
  *
- * The item is automatically drawn with its icon,
+ * The treasure is automatically drawn with its icon,
  * the amount and the price. When the hero presses the action
  * key in front of it, a dialog is automatically showed and
  * the hero can buy the item.
  */
-class ShopItem: public Detector {
+class ShopTreasure: public Detector {
 
   public:
 
-    ~ShopItem();
-    static ShopItem* create(Game& game, const std::string& name, Layer layer, int x, int y,
-        const Treasure& treasure, int price, const std::string& dialog_id);
+    ~ShopTreasure();
+    static ShopTreasure* create(
+        Game& game,
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        const Treasure& treasure,
+        int price,
+        const std::string& dialog_id);
 
     EntityType get_type() const;
 
@@ -58,8 +65,14 @@ class ShopItem: public Detector {
 
   private:
 
-    ShopItem(const std::string& name, Layer layer, int x, int y,
-        const Treasure& treasure, int price, const std::string& dialog_id);
+    ShopTreasure(
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        const Treasure& treasure,
+        int price,
+        const std::string& dialog_id);
 
     // data
     Treasure treasure;                /**< the treasure the player can buy */

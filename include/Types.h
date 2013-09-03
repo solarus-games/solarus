@@ -113,7 +113,7 @@ class Wall;
 class Sensor;
 class Crystal;
 class CrystalBlock;
-class ShopItem;
+class ShopTreasure;
 class Boomerang;
 class Arrow;
 class ConveyorBelt;

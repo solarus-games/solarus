@@ -38,7 +38,7 @@
 #include "entities/Sensor.h"
 #include "entities/Crystal.h"
 #include "entities/CrystalBlock.h"
-#include "entities/ShopItem.h"
+#include "entities/ShopTreasure.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/Door.h"
 #include "entities/Stairs.h"
@@ -102,7 +102,7 @@ void LuaContext::register_map_module() {
       { "create_sensor", map_api_create_sensor },
       { "create_crystal", map_api_create_crystal },
       { "create_crystal_block", map_api_create_crystal_block },
-      { "create_shop_item", map_api_create_shop_item },
+      { "create_shop_treasure", map_api_create_shop_treasure },
       { "create_conveyor_belt", map_api_create_conveyor_belt },
       { "create_door", map_api_create_door },
       { "create_stairs", map_api_create_stairs },
@@ -1550,7 +1550,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::map_api_create_shop_item(lua_State* l) {
+int LuaContext::map_api_create_shop_treasure(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
@@ -1575,7 +1575,7 @@ int LuaContext::map_api_create_shop_item(lua_State* l) {
   }
 
   Game& game = map.get_game();
-  MapEntity* entity = ShopItem::create(
+  MapEntity* entity = ShopTreasure::create(
       game,
       name,
       Layer(layer),

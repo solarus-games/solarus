@@ -230,7 +230,7 @@ public class Project {
                 currentProject.editorImagesLoaded.put(imageFileName, image);
             }
             catch (IOException ex) {
-                throw new IOException("Cannot load image '" + imageFileName + "': " + ex.getMessage());
+                throw new IOException("Cannot load image '" + imageFileName + "'");
             }
         }
         return image;
@@ -274,7 +274,7 @@ public class Project {
             return new ImageIcon(url);
         }
         catch (IOException ex) {
-            throw new IOException("Cannot load image '" + imageFileName + "': " + ex.getMessage());
+            throw new IOException("Cannot load image '" + imageFileName + "'");
         }
     }
 
@@ -303,7 +303,7 @@ public class Project {
             return image;
         }
         catch (IOException ex) {
-            throw new IOException("Cannot load image '" + imageFileName + "': " + ex.getMessage());
+            throw new IOException("Cannot load image '" + imageFileName + "'");
         }
     }
 

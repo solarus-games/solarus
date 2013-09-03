@@ -77,14 +77,14 @@ public class Sprite {
             environment.set("animation", new AnimationFunction());
 
             LuaFunction code = LoadState.load(new FileInputStream(spriteFile),
-                "sprite", environment);
+                spriteFile.getName(), environment);
             code.call();
         }
         catch (IOException ex) {
             throw new MapException(ex.getMessage());
         }
         catch (LuaError ex) {
-            throw new MapException("Error when loading the sprite file: " + ex.getMessage());
+            throw new MapException(ex.getMessage());
         }
     }
 

@@ -127,6 +127,7 @@ Solarus Quest Editor changes
 * Simplify the add entity toolbar by showing only one icon per entity type.
 * Survive when images cannot be found (#256).
 * Create more initial directories when creating a new quest (#258).
+* Improve error messages.
 
 __________________________
 

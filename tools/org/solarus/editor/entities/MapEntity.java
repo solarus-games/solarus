@@ -201,24 +201,24 @@ public abstract class MapEntity extends Observable {
             entity.setSubtype(entitySubtype);
             entity.initializeImageDescription();
         }
+        catch (InvocationTargetException ex) {
+            System.err.println("Cannot create the entity: " + ex.getCause().getMessage());
+            ex.getCause().printStackTrace();
+            throw new MapException(ex.getCause().getMessage());
+        }
         catch (NoSuchMethodException ex) {
             System.err.println("Cannot find the constructor of " + entityClass);
-            System.exit(1);
-        }
-        catch (InvocationTargetException ex) {
-            System.err.println("Cannot create the entity: " + ex.getMessage());
-            ex.getCause().printStackTrace();
-            System.exit(1);
+            throw new MapException(ex.getMessage());
         }
         catch (InstantiationException ex) {
             System.err.println("Cannot create the entity: " + ex.getMessage());
             ex.printStackTrace();
-            System.exit(1);
+            throw new MapException(ex.getMessage());
         }
         catch (IllegalAccessException ex) {
             System.err.println("Cannot create the entity: " + ex.getMessage());
             ex.printStackTrace();
-            System.exit(1);
+            throw new MapException(ex.getMessage());
         }
 
         return entity;

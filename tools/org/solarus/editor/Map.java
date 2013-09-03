@@ -966,7 +966,7 @@ public class Map extends Observable {
             }
 
             LuaFunction code = LoadState.load(new FileInputStream(mapFile),
-                "map", environment);
+                mapFile.getName(), environment);
             code.call();
         }
         catch (IOException ex) {

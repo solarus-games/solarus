@@ -623,7 +623,7 @@ public class Tileset extends Observable {
             environment.set("tile_pattern", new TilePatternFunction());
 
             LuaFunction code = LoadState.load(new FileInputStream(tilesetFile),
-                "tileset", environment);
+                tilesetFile.getName(), environment);
             code.call();
         }
         catch (IOException ex) {

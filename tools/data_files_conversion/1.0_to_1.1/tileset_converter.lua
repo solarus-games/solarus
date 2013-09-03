@@ -14,7 +14,7 @@ function converter.convert(quest_path, tileset_id)
   end
 
   -- Do the substitution.
-  local text = input_file:read("*all")  -- Read the whole file.
+  local text = input_file:read("*a")  -- Read the whole file.
   text = text:gsub("water_([a-z_]*)", "wall_%1_water")
   input_file:close()
 

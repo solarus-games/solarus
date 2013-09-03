@@ -339,7 +339,7 @@ Destination* Map::get_destination() {
     // Use the destination whose name was specified.
     MapEntity* entity = get_entities().get_entity(destination_name);
 
-    if (entity->get_type() != DESTINATION) {
+    if (entity->get_type() != ENTITY_DESTINATION) {
       Debug::die(std::string("Map '") + get_id() + "': entity '"
           + destination_name + "' is not a destination");
     }

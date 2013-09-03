@@ -60,7 +60,7 @@ Bomb::~Bomb() {
  * \return the type of entity
  */
 EntityType Bomb::get_type() const {
-  return BOMB;
+  return ENTITY_BOMB;
 }
 
 /**

@@ -88,7 +88,7 @@ NPC::~NPC() {
  * \return the type of entity
  */
 EntityType NPC::get_type() const {
-  return NON_PLAYING_CHARACTER;
+  return ENTITY_NPC;
 }
 
 /**
@@ -215,7 +215,7 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
       }
     }
   }
-  else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == FIRE) {
+  else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == ENTITY_FIRE) {
 
     if (behavior == BEHAVIOR_ITEM_SCRIPT) {
       EquipmentItem& item = get_equipment().get_item(item_name);

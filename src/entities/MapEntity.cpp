@@ -153,7 +153,7 @@ MapEntity::~MapEntity() {
  * \return true if this entity is the hero
  */
 bool MapEntity::is_hero() const {
-  return get_type() == HERO;
+  return get_type() == ENTITY_HERO;
 }
 
 /**

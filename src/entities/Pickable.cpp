@@ -66,7 +66,7 @@ Pickable::~Pickable() {
  * \return the type of entity
  */
 EntityType Pickable::get_type() const {
-  return PICKABLE;
+  return ENTITY_PICKABLE;
 }
 
 /**
@@ -289,14 +289,14 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode col
   }
   else if (entity_followed == NULL) {
 
-    if (entity_overlapping.get_type() == BOOMERANG) {
+    if (entity_overlapping.get_type() == ENTITY_BOOMERANG) {
       Boomerang& boomerang = static_cast<Boomerang&>(entity_overlapping);
       if (!boomerang.is_going_back()) {
         boomerang.go_back();
       }
       entity_followed = &boomerang;
     }
-    else if (entity_overlapping.get_type() == HOOKSHOT) {
+    else if (entity_overlapping.get_type() == ENTITY_HOOKSHOT) {
       Hookshot& hookshot = static_cast<Hookshot&>(entity_overlapping);
       if (!hookshot.is_going_back()) {
         hookshot.go_back();
@@ -443,8 +443,8 @@ void Pickable::update() {
 
   if (entity_followed != NULL && entity_followed->is_being_removed()) {
 
-    if (entity_followed->get_type() == BOOMERANG ||
-        entity_followed->get_type() == HOOKSHOT) {
+    if (entity_followed->get_type() == ENTITY_BOOMERANG ||
+        entity_followed->get_type() == ENTITY_HOOKSHOT) {
       // The pickable may have been dropped by the boomerang/hookshot
       // not exactly on the hero so let's fix this.
       if (get_distance(get_hero()) < 16) {

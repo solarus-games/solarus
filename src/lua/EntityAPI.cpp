@@ -2532,7 +2532,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
   entity->set_optimization_distance(enemy.get_optimization_distance());
   map.get_entities().add_entity(entity);
 
-  if (entity->get_type() == ENEMY) {  // Because it may also be a pickable treasure.
+  if (entity->get_type() == ENTITY_ENEMY) {  // Because it may also be a pickable treasure.
     (static_cast<Enemy*>(entity))->restart();
   }
 

@@ -46,7 +46,7 @@ Fire::~Fire() {
  * \return the type of entity
  */
 EntityType Fire::get_type() const {
-  return FIRE;
+  return ENTITY_FIRE;
 }
 
 /**

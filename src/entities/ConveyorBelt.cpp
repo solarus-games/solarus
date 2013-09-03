@@ -49,7 +49,7 @@ ConveyorBelt::~ConveyorBelt() {
  * \return the type of entity
  */
 EntityType ConveyorBelt::get_type() const {
-  return CONVEYOR_BELT;
+  return ENTITY_CONVEYOR_BELT;
 }
 
 /**

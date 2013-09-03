@@ -96,7 +96,26 @@ public class FileTools {
      * @throws IOException If an error occurs.
      */
     public static void copyDirectory(String from, String to) throws IOException {
+        new File(to).mkdir();
         Files.walkFileTree(Paths.get(from), new CopyFileVisitor(Paths.get(to)));
+    }
+
+    /**
+     * Deletes a file or a directory with all its content.
+     * Does nothing if the file or directory does not exist.
+     * @param fileName File or directory to delete.
+     */
+    public static void deleteRecursive(String fileName) throws IOException {
+
+        File file = new File(fileName);
+        if (file.exists()) {
+            if (file.isDirectory()) {
+                Files.walkFileTree(Paths.get(fileName), new DeleteFileVisitor());
+            }
+            else {
+                file.delete();
+            }
+        }
     }
 
     /**
@@ -114,10 +133,23 @@ public class FileTools {
      * Renames a directory.
      * @param oldName The source directory.
      * @param newName The new name.
+     *
+     * The new name should not already exist.
+     *
      * @throws IOException If an error occurs.
      */
     public static void renameDirectory(String oldName, String newName) throws IOException {
-        new File(oldName).renameTo(new File(newName));
+
+        File newDirectory = new File(newName);
+        if (newDirectory.exists()) {
+            if (newDirectory.isDirectory()) {
+                deleteDirectory(newName);
+            }
+            else {
+                newDirectory.delete();
+            }
+        }
+        new File(oldName).renameTo(newDirectory);
     }
 
     private static class CopyFileVisitor extends SimpleFileVisitor<Path> {

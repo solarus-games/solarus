@@ -19,6 +19,7 @@ package org.solarus.editor.gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.nio.file.NoSuchFileException;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -404,7 +405,7 @@ public class EditorWindow extends JFrame
         try {
             // First backup the files.
             String backupDirectory = questPath + "/data." + questFormat + ".bak";
-            FileTools.deleteDirectory(backupDirectory);  // Remove any previous backup.
+            FileTools.deleteRecursive(backupDirectory);  // Remove any previous backup.
             FileTools.copyDirectory(questPath + "/data", backupDirectory);
 
             // Upgrade data files.
@@ -415,7 +416,9 @@ public class EditorWindow extends JFrame
                 // The upgrade failed.
                 try {
                     // Restore the backuped version.
+                    FileTools.deleteRecursive(questPath + "/data.err");
                     FileTools.renameDirectory(questPath + "/data", questPath + "/data.err");
+                    FileTools.deleteRecursive(questPath + "/data");
                     FileTools.renameDirectory(backupDirectory, questPath + "/data");
                     GuiTools.warningDialog("Sorry, an error occured while upgrading the quest.\n"
                             + "Your quest was kept unchanged in format " + questFormat + ".");
@@ -429,6 +432,11 @@ public class EditorWindow extends JFrame
                     return false;
                 }
             }
+        }
+        catch (NoSuchFileException ex) {
+            ex.printStackTrace();
+            GuiTools.errorDialog("Failed to backup the quest data files:\nNo such file: " + ex.getMessage());
+            return false;
         }
         catch (IOException ex) {
             GuiTools.errorDialog("Failed to backup the quest data files:\n" + ex.getMessage());

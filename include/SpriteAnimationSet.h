@@ -40,7 +40,6 @@ class SpriteAnimationSet {
 
     void set_tileset(Tileset& tileset);
 
-    bool is_valid() const;  // TODO
     bool has_animation(const std::string& animation_name) const;
     const SpriteAnimation* get_animation(const std::string& animation_name) const;
     SpriteAnimation* get_animation(const std::string& animation_name);

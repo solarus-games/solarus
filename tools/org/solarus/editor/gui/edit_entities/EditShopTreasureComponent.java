@@ -25,7 +25,7 @@ import org.solarus.editor.map_editor_actions.*;
 /**
  * A component to edit a shop item.
  */
-public class EditShopItemComponent extends EditEntityComponent {
+public class EditShopTreasureComponent extends EditEntityComponent {
 
     // specific fields of this type of entity
     private TreasureChooser treasureField;
@@ -37,7 +37,7 @@ public class EditShopItemComponent extends EditEntityComponent {
      * @param map the map
      * @param entity the entity to edit
      */
-    public EditShopItemComponent(Map map, MapEntity entity) {
+    public EditShopTreasureComponent(Map map, MapEntity entity) {
         super(map, entity);
     }
 
@@ -65,14 +65,14 @@ public class EditShopItemComponent extends EditEntityComponent {
     public void update() {
         super.update(); // update the common fields
 
-        ShopItem shopItem = (ShopItem) entity;
+        ShopTreasure shopTreasure = (ShopTreasure) entity;
 
         treasureField.setTreasure(
-                shopItem.getStringProperty("treasure_name"),
-                shopItem.getIntegerProperty("treasure_variant"),
-                shopItem.getStringProperty("treasure_savegame_variable"));
-        priceField.setNumber(shopItem.getIntegerProperty("price"));
-        dialogIdField.setText(shopItem.getStringProperty("dialog"));
+                shopTreasure.getStringProperty("treasure_name"),
+                shopTreasure.getIntegerProperty("treasure_variant"),
+                shopTreasure.getStringProperty("treasure_savegame_variable"));
+        priceField.setNumber(shopTreasure.getIntegerProperty("price"));
+        dialogIdField.setText(shopTreasure.getStringProperty("dialog"));
     }
 
     /**

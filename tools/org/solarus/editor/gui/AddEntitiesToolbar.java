@@ -46,7 +46,7 @@ public class AddEntitiesToolbar extends JComponent {
         new Cell(EntityType.SENSOR),
         new Cell(EntityType.CRYSTAL),
         new Cell(EntityType.CRYSTAL_BLOCK, CrystalBlock.Subtype.INITIALLY_LOWERED),
-        new Cell(EntityType.SHOP_ITEM),
+        new Cell(EntityType.SHOP_TREASURE),
         new Cell(EntityType.CONVEYOR_BELT),
         new Cell(EntityType.DOOR),
         new Cell(EntityType.STAIRS, Stairs.Subtype.SPIRAL_UPSTAIRS),

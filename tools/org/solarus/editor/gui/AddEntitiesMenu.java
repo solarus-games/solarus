@@ -59,7 +59,7 @@ public class AddEntitiesMenu extends JMenu {
                 CrystalBlock.Subtype.INITIALLY_LOWERED,
                 CrystalBlock.Subtype.INITIALLY_RAISED
         ),
-        new ItemDefinition(EntityType.SHOP_ITEM, KeyEvent.VK_H),
+        new ItemDefinition(EntityType.SHOP_TREASURE, KeyEvent.VK_H),
         new ItemDefinition(EntityType.CONVEYOR_BELT, KeyEvent.VK_V),
         new ItemDefinition(EntityType.DOOR, KeyEvent.VK_R),
         new ItemDefinition(EntityType.STAIRS, KeyEvent.VK_S,

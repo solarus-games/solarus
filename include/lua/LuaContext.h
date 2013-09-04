@@ -79,9 +79,10 @@ class LuaContext {
     static const std::string entity_block_module_name;           /**< sol.entity.block */
     static const std::string entity_switch_module_name;          /**< sol.entity.switch */
     static const std::string entity_door_module_name;            /**< sol.entity.door */
-    static const std::string entity_shop_treasure_module_name;       /**< sol.entity.shop_item */
+    static const std::string entity_shop_treasure_module_name;   /**< sol.entity.shop_treasure */
     static const std::string entity_pickable_module_name;        /**< sol.entity.pickable */
     static const std::string entity_enemy_module_name;           /**< sol.entity.enemy */
+    static const std::string entity_custom_module_name;          /**< sol.entity.custom */
 
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
@@ -702,13 +703,14 @@ class LuaContext {
       map_api_create_conveyor_belt,
       map_api_create_door,
       map_api_create_stairs,
+      map_api_create_separator,
+      map_api_create_custom_entity,
       map_api_create_bomb,
       map_api_create_explosion,
       map_api_create_fire,
-      map_api_create_separator,
 
       // Map entity API.
-      // TODO entity:get_type()
+      entity_api_get_type,
       entity_api_get_map,
       entity_api_get_name,
       entity_api_exists,
@@ -809,6 +811,7 @@ class LuaContext {
       enemy_api_hurt,
       enemy_api_immobilize,
       enemy_api_create_enemy,
+      custom_entity_api_get_model,
 
       // available to all userdata types
       userdata_meta_gc,
@@ -900,6 +903,7 @@ class LuaContext {
     static void push_shop_treasure(lua_State* l, ShopTreasure& shop_treasure);
     static void push_pickable(lua_State* l, Pickable& pickable);
     static void push_enemy(lua_State* l, Enemy& enemy);
+    static void push_custom_entity(lua_State* l, CustomEntity& entity);
 
     // Getting userdata objects from Lua.
     static bool is_userdata(lua_State* l, int index,
@@ -962,6 +966,8 @@ class LuaContext {
     static Pickable& check_pickable(lua_State* l, int index);
     static bool is_enemy(lua_State* l, int index);
     static Enemy& check_enemy(lua_State* l, int index);
+    static bool is_custom_entity(lua_State* l, int index);
+    static CustomEntity& check_custom_entity(lua_State* l, int index);
 
     // Events.
     void on_started();

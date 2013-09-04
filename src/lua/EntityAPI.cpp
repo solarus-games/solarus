@@ -26,6 +26,7 @@
 #include "entities/Separator.h"
 #include "entities/ShopTreasure.h"
 #include "entities/Pickable.h"
+#include "entities/CustomEntity.h"
 #include "entities/MapEntities.h"
 #include "movements/Movement.h"
 #include "lowlevel/Debug.h"
@@ -47,7 +48,9 @@ const std::string LuaContext::entity_door_module_name = "sol.entity.door";
 const std::string LuaContext::entity_shop_treasure_module_name = "sol.entity.shop_treasure";
 const std::string LuaContext::entity_pickable_module_name = "sol.entity.pickable";
 const std::string LuaContext::entity_enemy_module_name = "sol.entity.enemy";
+const std::string LuaContext::entity_custom_module_name = "sol.entity.custom";
 
+// TODO move this to Enemy
 const std::string LuaContext::enemy_attack_names[] = {
   "sword",
   "thrown_item",
@@ -74,6 +77,7 @@ const std::string LuaContext::enemy_obstacle_behavior_names[] = {
   ""  // Sentinel.
 };
 
+// TODO move this to Transition
 const std::string LuaContext::transition_style_names[] = {
   "immediate",
   "fade",
@@ -88,6 +92,7 @@ void LuaContext::register_entity_module() {
 
   // Methods common to all entity types.
   static const luaL_Reg common_methods[] = {
+      { "get_type", entity_api_get_type },
       { "get_map", entity_api_get_map },
       { "get_name", entity_api_get_name },
       { "exists", entity_api_exists },
@@ -277,6 +282,14 @@ void LuaContext::register_entity_module() {
   register_type(entity_enemy_module_name, enemy_methods,
       common_metamethods);
 
+  // Custom entity.
+  static const luaL_Reg custom_entity_methods[] = {
+      { "get_model", custom_entity_api_get_model },
+      { NULL, NULL }
+  };
+  register_functions(entity_custom_module_name, common_methods);
+  register_type(entity_custom_module_name, custom_entity_methods,
+          common_metamethods);
 }
 
 /**
@@ -330,6 +343,19 @@ MapEntity& LuaContext::check_entity(lua_State* l, int index) {
 void LuaContext::push_entity(lua_State* l, MapEntity& entity) {
 
   push_userdata(l, entity);
+}
+
+/**
+ * \brief Implementation of entity:get_type().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_type(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  push_string(l, entity.get_type_name());
+  return 1;
 }
 
 /**
@@ -1885,6 +1911,27 @@ Enemy& LuaContext::check_enemy(lua_State* l, int index) {
 }
 
 /**
+ * \brief Returns whether a value is a userdata of type custom entity.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a custom entity.
+ */
+bool LuaContext::is_custom_entity(lua_State* l, int index) {
+  return is_userdata(l, index, entity_custom_module_name);
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * custom entity and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The custom entity.
+ */
+CustomEntity& LuaContext::check_custom_entity(lua_State* l, int index) {
+  return static_cast<CustomEntity&>(check_userdata(l, index, entity_custom_module_name));
+}
+
+/**
  * \brief Pushes an enemy userdata onto the stack.
  * \param l A Lua context.
  * \param enemy An enemy.
@@ -2537,6 +2584,28 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
   }
 
   push_entity(l, *entity);
+  return 1;
+}
+
+/**
+ * \brief Pushes a custom entity userdata onto the stack.
+ * \param l A Lua context.
+ * \param custom_entity A custom entity.
+ */
+void LuaContext::push_custom_entity(lua_State* l, CustomEntity& entity) {
+  push_userdata(l, entity);
+}
+
+/**
+ * \brief Implementation of custom_entity:get_model().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_get_model(lua_State* l) {
+
+  CustomEntity& entity = check_custom_entity(l, 1);
+
+  push_string(l, entity.get_model());
   return 1;
 }
 

@@ -53,17 +53,20 @@ enum EntityType {
   ENTITY_DOOR,               /**< a door to open with a key or another action */
   ENTITY_STAIRS,             /**< stairs between two maps or inside a single map */
   ENTITY_SEPARATOR,          /**< an horizontal or vertical separation for the camera */
+  ENTITY_CUSTOM,             /**< a entity fully controlled by the scripts */
 
   // entities created only during the game (not stored in maps)
 
-  ENTITY_HERO,                      /**< the hero */
-  ENTITY_CARRIED_ITEM,              /**< item carried and thrown by the hero (comes from a destructible item) */
-  ENTITY_BOOMERANG,                 /**< a boomerang thrown */
-  ENTITY_EXPLOSION,                 /**< an explosion, that may be caused by a bomb, a bomb flower, an enemy, etc. */
-  ENTITY_ARROW,                     /**< an arrow thrown by the bow */
-  ENTITY_BOMB,                      /**< a bomb that will explode soon */
-  ENTITY_FIRE,                      /**< some fire */
-  ENTITY_HOOKSHOT,                  /**< the hookshot thrown by the hero */
+  ENTITY_HERO,               /**< the hero */
+  ENTITY_CARRIED_ITEM,       /**< item carried and thrown by the hero (comes from a destructible item) */
+  ENTITY_BOOMERANG,          /**< a boomerang thrown */
+  ENTITY_EXPLOSION,          /**< an explosion, that may be caused by a bomb, a bomb flower, an enemy, etc. */
+  ENTITY_ARROW,              /**< an arrow thrown by the bow */
+  ENTITY_BOMB,               /**< a bomb that will explode soon */
+  ENTITY_FIRE,               /**< some fire */
+  ENTITY_HOOKSHOT,           /**< the hookshot thrown by the hero */
+
+  ENTITY_NUMBER,             /**< Number of entity types. */
 };
 
 #endif

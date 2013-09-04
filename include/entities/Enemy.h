@@ -25,7 +25,7 @@
 #include "entities/Explosion.h"
 
 /**
- * \brief Abstract class representing an enemy.
+ * \brief Represents an enemy.
  *
  * This class stores the attack and defense properties of the enemy.
  * Every enemy sprite must have at least the following animations
@@ -79,16 +79,23 @@ class Enemy: public Detector {
     // creation and destruction
     ~Enemy();
 
-    static MapEntity* create(Game& game,
-        const std::string& breed, Rank rank, const std::string& savegame_variable,
-        const std::string& name, Layer layer, int x, int y, int direction,
+    static MapEntity* create(
+        Game& game,
+        const std::string& breed,
+        Rank rank,
+        const std::string& savegame_variable,
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        int direction,
         const Treasure& treasure);
 
     EntityType get_type() const;
     bool is_drawn_in_y_order();
     bool is_ground_observer() const;
 
-    void set_map(Map &map);
+    void set_map(Map& map);
     void notify_map_started();
     void notify_map_opening_transition_finished();
     Rank get_rank();
@@ -128,7 +135,7 @@ class Enemy: public Detector {
 
     // sprites
     const std::string& get_animation();
-    void set_animation(const std::string &animation);
+    void set_animation(const std::string& animation);
 
     // obstacles
     bool is_obstacle_for(MapEntity& other);
@@ -160,7 +167,7 @@ class Enemy: public Detector {
     void notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite);
 
     // attack the hero
-    void attack_hero(Hero &hero, Sprite *this_sprite);
+    void attack_hero(Hero& hero, Sprite* this_sprite);
     void attack_stopped_by_hero_shield();
 
     // receive an attack
@@ -171,7 +178,7 @@ class Enemy: public Detector {
     bool is_immobilized();
     bool is_killed();
     bool is_dying_animation_finished();
-    void try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite);
+    void try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite);
     void hurt(MapEntity& source);
     void kill();
     bool is_dying();
@@ -182,8 +189,14 @@ class Enemy: public Detector {
   private:
 
     // creation
-    Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
-        const std::string& breed, const Treasure& treasure);
+    Enemy(
+        Game& game,
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        const std::string& breed,
+        const Treasure& treasure);
     void initialize();
 
     // hurt the enemy

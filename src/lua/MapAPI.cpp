@@ -42,10 +42,11 @@
 #include "entities/ConveyorBelt.h"
 #include "entities/Door.h"
 #include "entities/Stairs.h"
+#include "entities/Separator.h"
+#include "entities/CustomEntity.h"
 #include "entities/Bomb.h"
 #include "entities/Explosion.h"
 #include "entities/Fire.h"
-#include "entities/Separator.h"
 #include "entities/Hero.h"
 #include "movements/Movement.h"
 #include "lowlevel/Sound.h"
@@ -1772,6 +1773,46 @@ int LuaContext::map_api_create_separator(lua_State* l) {
 
   if (map.is_started()) {
     push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * \brief Implementation of map:create_custom_entity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_custom_entity(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  int layer = check_int_field(l, 1, "layer");
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = opt_int_field(l, 1, "width", 16);
+  int height = opt_int_field(l, 1, "height", 16);
+  const std::string& model = opt_string_field(l, 1, "model", "");
+
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
+    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+
+  Game& game = map.get_game();
+  CustomEntity* entity = new CustomEntity(
+      game,
+      name,
+      Layer(layer),
+      x,
+      y,
+      width,
+      height,
+      model);
+
+  map.get_entities().add_entity(entity);
+  if (map.is_started()) {
+    push_custom_entity(l, *entity);
     return 1;
   }
   return 0;

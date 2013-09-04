@@ -1373,6 +1373,33 @@ on the map.
 - Return value (\ref lua_api_separator "separator"): The
   separator created.
 
+\subsection lua_api_map_create_custom_entity map:create_custom_entity(properties)
+
+Creates an entity of type
+\ref lua_api_custom_entity "custom entity"
+on the map.
+- \c properties (table): A table that describles all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string, optional): Name identifying the entity or \c nil.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c width (number, optional): Width of the entity in pixels
+    (default \c 16).
+  - \c height (number, optional): Height of the entity in pixels
+    (default \c 16).
+  - \c model (string, optional): Model of custom entity or \c nil.
+    The model is the name of a Lua script in the \c "entities" directory
+    that will define the behavior of your entity.
+    This script will be called with the entity as parameter.
+    Models are useful when you need to create lots of similar entities,
+    especially in different maps.
+    \c nil means no model: in this case, no particular script will be called
+    and your entity will be blank.
+- Return value (\ref lua_api_custom_entity "custom entity"): The
+  custom entity created and initialized with its model if any.
+
 \section lua_api_map_events Events of a map
 
 Events are callback methods automatically called by the engine if you define

@@ -171,6 +171,7 @@ int MapLoader::l_properties(lua_State* l) {
     { "door",             LuaContext::map_api_create_door },
     { "stairs",           LuaContext::map_api_create_stairs },
     { "separator",        LuaContext::map_api_create_separator },
+    { "custom",           LuaContext::map_api_create_custom_entity },
     { NULL, NULL }
   };
   const luaL_Reg* function = functions;

@@ -1,3 +1,9 @@
+Properties:
+
+model
+sprite?
+direction?
+
 Methods:
 
 Common from entity:

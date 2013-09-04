@@ -12,6 +12,7 @@ public enum ResourceType {
     SOUND("Sound", "sound"),
     ITEM("Item", "item"),
     ENEMY("Enemy", "enemy"),
+    ENTITY("Custom entity", "entity"),
     LANGUAGE("Language", "language");
 
     /**

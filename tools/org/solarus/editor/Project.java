@@ -611,6 +611,31 @@ public class Project {
     }
 
     /**
+     * Returns the path of the custom entity scripts.
+     * @return The path of the custom entity scripts.
+     */
+    public static String getEntityPath() {
+        return getDataPath() + "/entities";
+    }
+
+    /**
+     * Returns the custom entities directory.
+     * @return The custom entities directory.
+     */
+    public static File getEntityDir() {
+        return new File(getEntityPath());
+    }
+
+    /**
+     * Returns a custom entity script file for the current project.
+     * @param entityId Id of a custom entity model.
+     * @return The custom entity script file.
+     */
+    public static File getEntityScriptFile(String entityId) {
+        return new File(getEntityPath() + "/" + entityId + ".lua");
+    }
+
+    /**
      * Returns the path of the item scripts.
      * @return The path of the item scripts.
      */
@@ -694,6 +719,7 @@ public class Project {
             getMapDir().mkdir();
             getTilesetDir().mkdir();
             getEnemyDir().mkdir();
+            getEntityDir().mkdir();
         }
         catch (IOException ex) {
             ex.printStackTrace();

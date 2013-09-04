@@ -51,6 +51,7 @@ public class AddEntitiesToolbar extends JComponent {
         new Cell(EntityType.DOOR),
         new Cell(EntityType.STAIRS, Stairs.Subtype.SPIRAL_UPSTAIRS),
         new Cell(EntityType.SEPARATOR),
+        new Cell(EntityType.CUSTOM),
     };
 
     /**

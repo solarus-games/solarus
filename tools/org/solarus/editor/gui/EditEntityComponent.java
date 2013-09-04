@@ -60,6 +60,7 @@ public class EditEntityComponent extends JPanel {
         editEntityComponentClasses.put(EntityType.DOOR, EditDoorComponent.class);
         editEntityComponentClasses.put(EntityType.STAIRS, EditEntityComponent.class);
         editEntityComponentClasses.put(EntityType.SEPARATOR, EditEntityComponent.class);
+        editEntityComponentClasses.put(EntityType.CUSTOM, EditCustomEntityComponent.class);
     };
 
     /**

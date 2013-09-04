@@ -70,6 +70,7 @@ public class AddEntitiesMenu extends JMenu {
                 Stairs.Subtype.INSIDE_FLOOR
         ),
         new ItemDefinition(EntityType.SEPARATOR, KeyEvent.VK_A),
+        new ItemDefinition(EntityType.CUSTOM, KeyEvent.VK_U),
     };
 
     /**

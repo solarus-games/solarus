@@ -45,7 +45,8 @@ public enum EntityType {
     CONVEYOR_BELT        ("Conveyor belt",     "conveyor_belt",   ConveyorBelt.class,    null),
     DOOR                 ("Door",              "door",            Door.class,            null),
     STAIRS               ("Stairs",            "stairs",          Stairs.class,          Stairs.Subtype.class),
-    SEPARATOR            ("Separator",         "separator",       Separator.class,       null)
+    SEPARATOR            ("Separator",         "separator",       Separator.class,       null),
+    CUSTOM               ("Custom entity",     "custom",          CustomEntity.class,    null)
     ;
 
     private Class<? extends MapEntity> entityClass;

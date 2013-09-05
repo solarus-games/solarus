@@ -1148,8 +1148,8 @@ void Hero::notify_movement_changed() {
     int animation_direction = sprites->get_animation_direction(wanted_direction8, get_real_movement_direction8());
 
     if (animation_direction != old_animation_direction
-	&& animation_direction != -1
-	&& !is_direction_locked()) {
+        && animation_direction != -1
+        && !is_direction_locked()) {
       // if the direction defined by the directional keys has changed,
       // update the sprite's direction of animation
       // (unless the hero is loading his sword)
@@ -1677,7 +1677,7 @@ void Hero::notify_collision_with_crystal(Crystal &crystal, CollisionMode collisi
     // the hero is touching the crystal and is looking in its direction
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& is_free()) {
+        && is_free()) {
 
       // we show the action icon
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
@@ -1751,7 +1751,7 @@ void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) 
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
         && get_facing_entity() == &bomb
-	&& is_free()) {
+        && is_free()) {
 
       // we show the action icon
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
@@ -2024,7 +2024,7 @@ void Hero::start_hole() {
     // because the wanted movement may be different from the real one
 
     if (last_solid_ground_coords.get_x() == -1 ||
-	(last_solid_ground_coords.get_x() == get_x() && last_solid_ground_coords.get_y() == get_y())) {
+        (last_solid_ground_coords.get_x() == get_x() && last_solid_ground_coords.get_y() == get_y())) {
       // fall immediately because the hero was not moving but directly placed on the hole
       set_state(new FallingState(*this));
     }

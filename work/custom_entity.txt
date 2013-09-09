@@ -1,3 +1,5 @@
+Notes about the future custom entity API.
+
 Properties:
 
 model
@@ -56,6 +58,20 @@ get/set_modified_ground()
 get/set_facing_point()
 is/set_sword_ignored()
 get/set_sword_tapping_sound()
+
+set_entity_type_traversable(entity_type, traversable)
+  Describes if a type of entities can be traversed by the current entity.
+  The traversable parameter may be:
+  - a boolean (fast): whether that entity type is traversable or not.
+  - nil (fast): default.
+  - a function: a function that takes the other entity as parameter and should
+    return a boolean or nil. Allows to decide dynamically.
+Also allow a table parameter with entity_type as keys?
+is_entity_traversable(entity_type)
+
+set_ground_traversable(ground, traversable)
+is_ground_traversable(ground)
+
 
 Events:
 

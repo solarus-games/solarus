@@ -72,6 +72,9 @@ is_entity_traversable(entity_type)
 set_ground_traversable(ground, traversable)
 is_ground_traversable(ground)
 
+set_collision_mode(mode, ...)
+  With modes being strings or functions that take an entity and return a boolean.
+get_collision_modes
 
 Events:
 
@@ -96,9 +99,6 @@ on_collision()
 on_ground_below_changed()
 on_facing_entity_changed()
 on_attacked_enemy()
-on_test_ground_traversable()
-on_test_entity_traversable()
-on_test_collision_custom()
 on_interaction()
 on_interaction_item()
 

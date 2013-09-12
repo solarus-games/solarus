@@ -3,8 +3,8 @@ Notes about the future custom entity API.
 Properties:
 
 model
-sprite?
-direction?
+sprite
+direction
 
 Methods:
 
@@ -44,6 +44,7 @@ set_layer_independent_collisions()
 is_traversable()
 set_traversable()
 set_size()
+set_direction()
 set_origin()
 get_sprite()
 create_sprite()

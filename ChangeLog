@@ -32,6 +32,7 @@ Engine changes
 * Remove the preprocessor constant SOLARUS_DEBUG_KEYS.
 * Call on_draw() before drawing menus.
 * Fix .it musics looping when they should not.
+* Log all errors in error.txt (#287).
 
 Data files format changes
 -------------------------

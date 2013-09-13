@@ -210,7 +210,7 @@ void MainLoop::run() {
         if (delay >= 15) {
           // if we have much time, increase the FPS number
           frame_interval--;
-          //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
+          std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
         }
       }
     }
@@ -238,7 +238,7 @@ void MainLoop::notify_input(InputEvent& event) {
   }
   else if (event.is_keyboard_key_pressed()) {
     // A key was pressed.
-#if (defined PANDORA || defined GCWZERO)
+#ifdef PANDORA
     // TODO make a clean flag
     if (event.get_keyboard_key() == InputEvent::KEY_ESCAPE) {
       exiting = true;

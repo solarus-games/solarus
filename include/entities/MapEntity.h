@@ -27,6 +27,7 @@
 #include "entities/EnemyReaction.h"
 #include "lowlevel/Rectangle.h"
 #include <list>
+#include <vector>
 
 struct lua_State;
 
@@ -135,7 +136,7 @@ class MapEntity: public ExportableToLua {
     bool has_sprite() const;
     Sprite& get_sprite();
     const Sprite& get_sprite() const;
-    const std::list<Sprite*>& get_sprites();
+    const std::vector<Sprite*>& get_sprites();
     Sprite& create_sprite(const std::string& animation_set_id,
         bool enable_pixel_collisions = false);
     void remove_sprite(Sprite& sprite);
@@ -303,9 +304,9 @@ class MapEntity: public ExportableToLua {
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
-    std::list<Sprite*> sprites;                 /**< sprites representing the entity;
+    std::vector<Sprite*> sprites;                 /**< sprites representing the entity;
                                                  * note that some entities manage their sprites themselves rather than using this field */
-    std::list<Sprite*> old_sprites;             /**< sprites to remove and destroy as soon as possible */
+    std::vector<Sprite*> old_sprites;             /**< sprites to remove and destroy as soon as possible */
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
                                                  * NULL indicates that the entity has no movement */

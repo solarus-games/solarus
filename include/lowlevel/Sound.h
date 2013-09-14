@@ -36,24 +36,6 @@
  */
 class Sound {
 
-  private:
-
-    static ALCdevice* device;
-    static ALCcontext* context;
-
-    std::string id;                              /**< id of this sound */
-    ALuint buffer;                               /**< the OpenAL buffer containing the PCM decoded data of this sound */
-    std::list<ALuint> sources;                   /**< the sources currently playing this sound */
-    static std::list<Sound*> current_sounds;     /**< the sounds currently playing */
-    static std::map<std::string, Sound> all_sounds;   /**< all sounds created before */
-
-    static bool initialized;                     /**< indicates that the audio system is initialized */
-    static bool sounds_preloaded;                /**< true if load_all() was called */
-    static float volume;                         /**< the volume of sound effects (0.0 to 1.0) */
-
-    ALuint decode_file(const std::string &file_name);
-    bool update_playing();
-
   public:
 
     // libvorbisfile
@@ -88,6 +70,25 @@ class Sound {
 
     static int get_volume();
     static void set_volume(int volume);
+
+  private:
+
+    static ALCdevice* device;
+    static ALCcontext* context;
+
+    std::string id;                              /**< id of this sound */
+    ALuint buffer;                               /**< the OpenAL buffer containing the PCM decoded data of this sound */
+    std::list<ALuint> sources;                   /**< the sources currently playing this sound */
+    static std::list<Sound*> current_sounds;     /**< the sounds currently playing */
+    static std::map<std::string, Sound> all_sounds;   /**< all sounds created before */
+
+    static bool initialized;                     /**< indicates that the audio system is initialized */
+    static bool sounds_preloaded;                /**< true if load_all() was called */
+    static float volume;                         /**< the volume of sound effects (0.0 to 1.0) */
+
+    ALuint decode_file(const std::string &file_name);
+    bool update_playing();
+
 };
 
 #endif

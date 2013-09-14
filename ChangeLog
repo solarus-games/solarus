@@ -23,6 +23,7 @@ Engine changes
 * Stairs inside a single floor can now go from any layer to a next one (#178).
 * Fix map menus not receiving on_command_pressed/released() events.
 * Fix an error when loading sounds (#236). Sounds were working anyway.
+* Fix a possible memory error when playing sounds.
 * Jumpers can no longer be activated the opposite way when in water.
 * Jumpers are now activated after a slight delay (#253).
 * Correctly detect the ground below the hero or any point.

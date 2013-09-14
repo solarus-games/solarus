@@ -22,6 +22,7 @@ Engine changes
 * A game can now start without specifying an initial map and destination.
 * Stairs inside a single floor can now go from any layer to a next one (#178).
 * Fix map menus not receiving on_command_pressed/released() events.
+* Fix a crash when adding a new menu during a menu:on_finished() event.
 * Fix an error when loading sounds (#236). Sounds were working anyway.
 * Fix a possible memory error when playing sounds.
 * Jumpers can no longer be activated the opposite way when in water.

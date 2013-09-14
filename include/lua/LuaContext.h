@@ -821,12 +821,15 @@ class LuaContext {
      * \brief Data associated to any Lua menu.
      */
     struct LuaMenuData {
-      int ref;               /**< Lua ref of the table of the menu. */
+      int ref;               /**< Lua ref of the table of the menu.
+                              * LUA_REFNIL means that the menu will be removed. */
       const void* context;   /**< Lua table or userdata the menu is attached to. */
+      bool recently_added;   /**< Used to avoid elements added during an iteration. */
 
       LuaMenuData(int ref, const void* context):
         ref(ref),
-        context(context) {
+        context(context),
+        recently_added(true) {
       }
     };
 

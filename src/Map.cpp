@@ -806,49 +806,40 @@ bool Map::test_collision_with_entities(Layer layer,
  * \param collision_box The rectangle to check (its dimensions should be
  * multiples of 8).
  * \param entity_to_check The entity to check (used to decide what is
- * considered as obstacle),
+ * considered as obstacle).
  * \return \c true if the rectangle is overlapping an obstacle.
  */
 bool Map::test_collision_with_obstacles(Layer layer,
     const Rectangle& collision_box,
     MapEntity& entity_to_check) {
 
-  int x, y, x1, x2, y1, y2;
-  bool collision = false;
+  // This function is called very often.
+  // For performance reasons, we only check the border of the of the collision box.
+  // TODO check that the size is a multiple of 8x8 in MapEntity::set_size().
 
   // Collisions with the terrain
   // (i.e., tiles and dynamic entities that may change it):
-  // we just check the borders of the collision box.
-  y1 = collision_box.get_y();
-  y2 = y1 + collision_box.get_height() - 1;
-  x1 = collision_box.get_x();
-  x2 = x1 + collision_box.get_width() - 1;
+  const int x1 = collision_box.get_x();
+  const int x2 = x1 + collision_box.get_width() - 1;
+  const int y1 = collision_box.get_y();
+  const int y2 = y1 + collision_box.get_height() - 1;
 
-  for (x = x1; x <= x2 && !collision; x++) {
-    collision = test_collision_with_ground(layer, x, y1, entity_to_check) ||
-      test_collision_with_ground(layer, x, y2, entity_to_check);
-  }
-
-  for (y = y1; y <= y2 && !collision; y++) {
-    collision = test_collision_with_ground(layer, x1, y, entity_to_check) ||
-      test_collision_with_ground(layer, x2, y, entity_to_check);
-  }
-
-/*
-  // Slow version: check every pixel of the collision_box rectangle.
-  for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1++) {
-    for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1++) {
-      collision = test_collision_with_ground(layer, x1, y1, entity_to_check);
+  for (int x = x1; x <= x2; ++x) {
+    if (test_collision_with_ground(layer, x, y1, entity_to_check)
+        || test_collision_with_ground(layer, x, y2, entity_to_check)) {
+      return true;
     }
   }
-*/
 
-  // Collisions with dynamic entities.
-  if (!collision) {
-    collision = test_collision_with_entities(layer, collision_box, entity_to_check);
+  for (int y = y1; y <= y2; ++y) {
+    if (test_collision_with_ground(layer, x1, y, entity_to_check)
+        || test_collision_with_ground(layer, x2, y, entity_to_check)) {
+      return true;
+    }
   }
 
-  return collision;
+  // No collision with the terrain: check collisions with dynamic entities.
+  return test_collision_with_entities(layer, collision_box, entity_to_check);
 }
 
 /**

@@ -85,24 +85,27 @@ PixelBits::~PixelBits() {
 }
 
 /**
- * \brief Detects whether the image represented by these pixel bits is overlapping another image.
- * \param other the other image
- * \param location1 position of the top-left corner of this image on the map (only x and y must be specified)
- * \param location2 position of the top-left corner of the other image on the map (only x and y must be specified)
- * \return true if there is a collision
+ * \brief Detects whether the image represented by these pixel bits is
+ * overlapping another image.
+ * \param other The other image.
+ * \param location1 Position of the upper-left corner of this image on the map
+ * (only x and y must be specified).
+ * \param location2 Position of the upper-left corner of the other image
+ * on the map (only x and y must be specified).
+ * \return \c true if there is a collision.
  */
-bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location1, const Rectangle& location2) const {
+bool PixelBits::test_collision(
+    const PixelBits& other,
+    const Rectangle& location1,
+    const Rectangle& location2) const {
 
-  bool debug_pixel_collisions = false;
+  const bool debug_pixel_collisions = false;
 
-  // compute the two bounding boxes
-  Rectangle bounding_box1 = location1;
-  bounding_box1.set_size(width, height);
+  // Compute both bounding boxes.
+  const Rectangle bounding_box1(location1.get_x(), location1.get_y(), width, height);
+  const Rectangle bounding_box2(location2.get_x(), location2.get_y(), other.width, other.height);
 
-  Rectangle bounding_box2 = location2;
-  bounding_box2.set_size(other.width, other.height);
-
-  // check the collision between the two bounding boxes
+  // Check collision between the two bounding boxes.
   if (!bounding_box1.overlaps(bounding_box2)) {
     return false;
   }
@@ -115,35 +118,35 @@ bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location
     other.print();
   }
 
-  // compute the intersection between the two rectangles
-  Rectangle intersection;
-  intersection.set_x(std::max(bounding_box1.get_x(), bounding_box2.get_x()));
-  intersection.set_y(std::max(bounding_box1.get_y(), bounding_box2.get_y()));
-  intersection.set_width(std::min(bounding_box1.get_x() + bounding_box1.get_width(),
-      bounding_box2.get_x() + bounding_box2.get_width()) - intersection.get_x());
-  intersection.set_height(std::min(bounding_box1.get_y() + bounding_box1.get_height(),
-      bounding_box2.get_y() + bounding_box2.get_height()) - intersection.get_y());
+  // Compute the intersection between both rectangles.
+  const int intersection_x = std::max(bounding_box1.get_x(), bounding_box2.get_x());
+  const int intersection_y = std::max(bounding_box1.get_y(), bounding_box2.get_y());
+  const Rectangle intersection(
+      intersection_x,
+      intersection_y,
+      std::min(bounding_box1.get_x() + bounding_box1.get_width(),
+          bounding_box2.get_x() + bounding_box2.get_width()) - intersection_x,
+      std::min(bounding_box1.get_y() + bounding_box1.get_height(),
+          bounding_box2.get_y() + bounding_box2.get_height()) - intersection_y);
 
   if (debug_pixel_collisions) {
     std::cout << "intersection: " << intersection << "\n";
   }
 
   // compute the relative position of the intersection rectangle for each bounding_box
-  int offset_x1 = intersection.get_x() - bounding_box1.get_x();
-  int offset_y1 = intersection.get_y() - bounding_box1.get_y();
+  const int offset_x1 = intersection.get_x() - bounding_box1.get_x();
+  const int offset_y1 = intersection.get_y() - bounding_box1.get_y();
 
-  int offset_x2 = intersection.get_x() - bounding_box2.get_x();
-  int offset_y2 = intersection.get_y() - bounding_box2.get_y();
+  const int offset_x2 = intersection.get_x() - bounding_box2.get_x();
+  const int offset_y2 = intersection.get_y() - bounding_box2.get_y();
 
   if (debug_pixel_collisions) {
     std::cout << "offset_x1 = " << offset_x1 << ", offset_y1 = " << offset_y1;
     std::cout << ", offset_x2 = " << offset_x2 << ", offset_y2 = " << offset_y2 << std::endl;
   }
 
-  /*
-   * For each row of the intersection, we will call row 'a' the row coming from the right bounding box
-   * and row 'b' the one coming from the left bounding box.
-   */
+  // For each row of the intersection, we will call row 'a' the row coming from the right bounding box
+  // and row 'b' the one coming from the left bounding box.
 
   uint32_t** rows_a;           // for each row: array of masks of the right bounding box
   uint32_t** rows_b;           // for each row: array of masks of the left bounding box
@@ -185,8 +188,7 @@ bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location
   }
 
   // check the collisions each row of the intersection rectangle
-  bool collision = false;
-  for (int i = 0; i < intersection.get_height() && !collision; i++) {
+  for (int i = 0; i < intersection.get_height(); ++i) {
 
     // current row
     bits_a = rows_a[i];
@@ -196,13 +198,11 @@ bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location
       std::cout << "*** checking row " << i << " of the intersection rectangle\n";
     }
 
-    // check each mask
-    for (int j = 0; j < nb_masks_per_row_a && !collision; j++) {
+    // Check each mask.
+    for (int j = 0; j < nb_masks_per_row_a; ++j) {
 
-      /*
-       * We compare the left of a with the right part of b,
-       * and the right part of a with the right part of the next b if any.
-       */
+      // We compare the left of a with the right part of b,
+      // and the right part of a with the right part of the next b if any.
 
       uint32_t mask_a = bits_a[j];
       uint32_t mask_b = bits_b[j + nb_unused_masks_row_b];
@@ -223,11 +223,13 @@ bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location
         std::cout << "\n";
       }
 
-      collision = ((mask_a_left & mask_b) | (mask_a & next_mask_b_left)) != 0x00000000;
+      if (((mask_a_left & mask_b) | (mask_a & next_mask_b_left)) != 0x00000000) {
+        return true;
+      }
     }
   }
  
-  return collision;
+  return false;
 }
 
 /**

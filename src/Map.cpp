@@ -965,8 +965,7 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
   for (it = detectors.begin(); it != detectors.end(); ++it) {
 
     Detector* detector = *it;
-    if (!detector->is_suspended()  // Detectors far from the camera are suspended.
-        && detector->is_enabled()
+    if (detector->is_enabled()
         && !detector->is_being_removed()) {
       detector->check_collision(entity);
     }

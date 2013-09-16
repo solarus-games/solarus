@@ -1949,7 +1949,7 @@ void MapEntity::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
  * \brief Returns whether the movement and the animations of this entity are suspended.
  * \return true if the movement and the animations are suspended
  */
-bool MapEntity::is_suspended() {
+bool MapEntity::is_suspended() const {
   return suspended;
 }
 

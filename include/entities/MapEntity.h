@@ -232,7 +232,7 @@ class MapEntity: public ExportableToLua {
     virtual bool is_sword_ignored();
 
     // game loop
-    bool is_suspended();
+    bool is_suspended() const;
     virtual void set_suspended(bool suspended);
     virtual void update();
     virtual void draw_on_map();

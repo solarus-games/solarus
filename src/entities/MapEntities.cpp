@@ -151,12 +151,13 @@ Ground MapEntities::get_ground(Layer layer, int x, int y) {
 
   // Then, look for entities that may change the ground.
   std::list<MapEntity*>::const_iterator it;
-  for (it = ground_modifiers[layer].begin(); it != ground_modifiers[layer].end(); it++) {
+  std::list<MapEntity*>::const_iterator end = ground_modifiers[layer].end();
+  for (it = ground_modifiers[layer].begin(); it != end; ++it) {
     const MapEntity& ground_modifier = *(*it);
-    if (ground_modifier.is_enabled()
+    if (ground_modifier.get_modified_ground() != GROUND_EMPTY
+        && ground_modifier.is_enabled()
         && !ground_modifier.is_being_removed()
-        && ground_modifier.overlaps(x, y)
-        && ground_modifier.get_modified_ground() != GROUND_EMPTY) {
+        && ground_modifier.overlaps(x, y)) {
       ground = ground_modifier.get_modified_ground();
     }
   }

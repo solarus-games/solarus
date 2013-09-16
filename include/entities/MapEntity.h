@@ -325,5 +325,25 @@ class MapEntity: public ExportableToLua {
 
 };
 
+/**
+ * \brief Returns whether this entity is enabled.
+ * \return true if this entity is enabled
+ */
+inline bool MapEntity::is_enabled() const {
+  return enabled;
+}
+
+/**
+ * \brief Returns true if this entity is about to be deleted.
+ *
+ * When this function returns true, the entity is not
+ * considered to be on the map anymore.
+ *
+ * \return true if this entity is about to be deleted
+ */
+inline bool MapEntity::is_being_removed() const {
+  return being_removed;
+}
+
 #endif
 

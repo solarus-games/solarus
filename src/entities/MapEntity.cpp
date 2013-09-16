@@ -480,18 +480,6 @@ void MapEntity::notify_being_removed() {
 }
 
 /**
- * \brief Returns true if this entity is about to be deleted.
- *
- * When this function returns true, the entity is not
- * considered to be on the map anymore.
- *
- * \return true if this entity is about to be deleted
- */
-bool MapEntity::is_being_removed() const {
-  return being_removed;
-}
-
-/**
  * \brief Returns the layer of the entity on the map.
  * \return the layer of the entity on the map
  */
@@ -1283,14 +1271,6 @@ void MapEntity::notify_movement_finished() {
  */
 const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
   return directions_to_xy_moves[direction8];
-}
-
-/**
- * \brief Returns whether this entity is enabled.
- * \return true if this entity is enabled
- */
-bool MapEntity::is_enabled() const {
-  return enabled;
 }
 
 /**

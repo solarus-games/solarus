@@ -345,5 +345,35 @@ inline bool MapEntity::is_being_removed() const {
   return being_removed;
 }
 
+/**
+ * \brief Returns whether or not this entity's bounding box overlaps a specified rectangle.
+ * \param rectangle the rectangle to check
+ * \return true if this entity's bounding box overlaps the specified rectangle
+ */
+inline bool MapEntity::overlaps(const Rectangle& rectangle) const {
+  return bounding_box.overlaps(rectangle);
+}
+
+/**
+ * \brief Returns whether or not a point overlaps this entity's bounding box.
+ * \param x x coordinate of the point to check
+ * \param y y coordinate of the point to check
+ * \return true if the point is in this entity's bounding box
+ */
+inline bool MapEntity::overlaps(int x, int y) const {
+  return bounding_box.contains(x, y);
+}
+
+/**
+ * \brief Returns whether or not this entity's bounding box overlaps
+ * another entity's bounding box.
+ * \param other another entity
+ * \return true if this entity's bounding box overlaps the other entity's bounding box
+ */
+inline bool MapEntity::overlaps(const MapEntity& other) const {
+  return overlaps(other.get_bounding_box());
+}
+
+
 #endif
 

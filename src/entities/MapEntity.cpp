@@ -1602,35 +1602,6 @@ bool MapEntity::is_sword_ignored() {
 }
 
 /**
- * \brief Returns whether or not this entity's bounding box overlaps a specified rectangle.
- * \param rectangle the rectangle to check
- * \return true if this entity's bounding box overlaps the specified rectangle
- */
-bool MapEntity::overlaps(const Rectangle& rectangle) const {
-  return bounding_box.overlaps(rectangle);
-}
-
-/**
- * \brief Returns whether or not a point overlaps this entity's bounding box.
- * \param x x coordinate of the point to check
- * \param y y coordinate of the point to check
- * \return true if the point is in this entity's bounding box
- */
-bool MapEntity::overlaps(int x, int y) const {
-  return bounding_box.contains(x, y);
-}
-
-/**
- * \brief Returns whether or not this entity's bounding box overlaps
- * another entity's bounding box.
- * \param other another entity
- * \return true if this entity's bounding box overlaps the other entity's bounding box
- */
-bool MapEntity::overlaps(const MapEntity& other) const {
-  return overlaps(other.get_bounding_box());
-}
-
-/**
  * \brief Returns whether the bounding box or a sprite of this entity overlaps
  * the visible part of the map
  * \return true if the entity is in the visible part of the map

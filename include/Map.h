@@ -96,7 +96,12 @@ class Map: public ExportableToLua {
     // collisions with obstacles (checked before a move)
     bool test_collision_with_border(int x, int y);
     bool test_collision_with_border(const Rectangle& collision_box);
-    bool test_collision_with_ground(Layer layer, int x, int y, MapEntity& entity_to_check);
+    bool test_collision_with_ground(
+        Layer layer,
+        int x,
+        int y,
+        MapEntity& entity_to_check,
+        bool& found_diagonal_wall);
     bool test_collision_with_entities(Layer layer,
         const Rectangle& collision_box, MapEntity& entity_to_check);
     bool test_collision_with_obstacles(Layer layer,

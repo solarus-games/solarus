@@ -1212,7 +1212,7 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
   }
 
   if (get_distance_to_camera() > optimization_distance && optimization_distance > 0) {
-    // Don't check detectors far for the visible area.
+    // Don't check entities far for the visible area.
     return;
   }
 
@@ -1238,7 +1238,7 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
 void MapEntity::check_collision_with_detectors(Sprite& sprite) {
 
   if (get_distance_to_camera() > optimization_distance && optimization_distance > 0) {
-    // don't check detectors far for the visible area
+    // Don't check entities far for the visible area.
     return;
   }
 

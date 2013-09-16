@@ -951,7 +951,7 @@ bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) {
  * \param entity the entity that has just moved (this entity should have
  * a movement sensible to the collisions)
  */
-void Map::check_collision_with_detectors(MapEntity &entity) {
+void Map::check_collision_with_detectors(MapEntity& entity) {
 
   if (suspended) {
     return;
@@ -959,15 +959,16 @@ void Map::check_collision_with_detectors(MapEntity &entity) {
 
   const std::list<Detector*>& detectors = entities->get_detectors();
 
-  // check each detector
-  std::list<Detector*>::const_iterator i;
+  // Check each detector.
+  std::list<Detector*>::const_iterator it;
+  const std::list<Detector*>::const_iterator end = detectors.end();
+  for (it = detectors.begin(); it != detectors.end(); ++it) {
 
-  for (i = detectors.begin();
-       i != detectors.end();
-       i++) {
-
-    if (!(*i)->is_being_removed() && (*i)->is_enabled()) {
-      (*i)->check_collision(entity);
+    Detector* detector = *it;
+    if (!detector->is_suspended()  // Detectors far from the camera are suspended.
+        && detector->is_enabled()
+        && !detector->is_being_removed()) {
+      detector->check_collision(entity);
     }
   }
 }

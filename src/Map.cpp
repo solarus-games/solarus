@@ -788,24 +788,23 @@ bool Map::test_collision_with_ground(
 bool Map::test_collision_with_entities(Layer layer,
     const Rectangle& collision_box, MapEntity& entity_to_check) {
 
-  const std::list<MapEntity*>& obstacle_entities = entities->get_obstacle_entities(layer);
+  const std::list<MapEntity*>& obstacle_entities =
+      entities->get_obstacle_entities(layer);
+  const std::list<MapEntity*>::const_iterator end =
+      obstacle_entities.end();
 
-  bool collision = false;
+  std::list<MapEntity*>::const_iterator it;
+  for (it = obstacle_entities.begin(); it != end; ++it) {
 
-  std::list<MapEntity*>::const_iterator i;
-  for (i = obstacle_entities.begin();
-       i != obstacle_entities.end() && !collision;
-       ++i) {
-
-    MapEntity *entity = *i;
-    collision =
-	entity != &entity_to_check
-	&& entity->is_enabled()
-	&& entity->is_obstacle_for(entity_to_check)
-	&& entity->overlaps(collision_box);
+    MapEntity* entity = *it;
+    if (entity->overlaps(collision_box)
+        && entity->is_obstacle_for(entity_to_check)
+        && entity->is_enabled()
+        && entity != &entity_to_check)
+      return true;
   }
 
-  return collision;
+  return false;
 }
 
 /**

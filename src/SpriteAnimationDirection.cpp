@@ -56,14 +56,6 @@ Rectangle SpriteAnimationDirection::get_size() const {
 }
 
 /**
- * \brief Returns the origin point of a frame.
- * \return the origin point of a frame
- */
-const Rectangle& SpriteAnimationDirection::get_origin() const {
-  return origin;
-}
-
-/**
  * \brief Returns the number of frames in this direction.
  * \return the number of frames
  */
@@ -143,23 +135,5 @@ void SpriteAnimationDirection::disable_pixel_collisions() {
  */
 bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
   return !pixel_bits.empty();
-}
-
-/**
- * \brief Returns the pixel bits object of a frame.
- *
- * It represents the transparent bits of the frame and permits to detect pixel collisions.
- * The pixel collisions must be enabled.
- *
- * \param frame a frame of the animation
- * \return the pixel bits object of a frame
- */
-PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
-
-  SOLARUS_ASSERT(are_pixel_collisions_enabled(),
-      "Pixel-precise collisions are not enabled for this sprite");
-  SOLARUS_ASSERT(frame >= 0 && frame < get_nb_frames(), "Invalid frame number");
-
-  return *pixel_bits[frame];
 }
 

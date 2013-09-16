@@ -22,7 +22,10 @@ Engine changes
 * A game can now start without specifying an initial map and destination.
 * Stairs inside a single floor can now go from any layer to a next one (#178).
 * Fix map menus not receiving on_command_pressed/released() events.
+* Fix a crash when adding a new menu during a menu:on_finished() event.
 * Fix an error when loading sounds (#236). Sounds were working anyway.
+* Fix a possible memory error when playing sounds.
+* Fix blocks that continue to follow the hero after picking a treasure (#284).
 * Jumpers can no longer be activated the opposite way when in water.
 * Jumpers are now activated after a slight delay (#253).
 * Correctly detect the ground below the hero or any point.
@@ -32,6 +35,7 @@ Engine changes
 * Remove the preprocessor constant SOLARUS_DEBUG_KEYS.
 * Call on_draw() before drawing menus.
 * Fix .it musics looping when they should not.
+* Log all errors in error.txt (#287).
 
 Data files format changes
 -------------------------

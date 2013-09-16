@@ -61,15 +61,15 @@ void StringResource::initialize() {
     // get the key
     size_t index = line.find_first_of(" \t");
     Debug::check_assertion(index != std::string::npos,
-	StringConcat() << "strings.dat, line " << i
-	<< ": invalid line (expected a key and a value)");
+        StringConcat() << "strings.dat, line " << i
+        << ": invalid line (expected a key and a value)");
     std::string key = line.substr(0, index);
 
     // get the value
     do {
       index++;
     } while (index < line.size()
-	&& (line[index] == ' ' || line[index] == '\t' || line[index] == '\r'));
+        && (line[index] == ' ' || line[index] == '\t' || line[index] == '\r'));
 
     Debug::check_assertion(index < line.size(),
       StringConcat() << "strings.dat, line " << i

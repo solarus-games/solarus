@@ -76,6 +76,7 @@ class Destructible: public Detector {
     bool is_being_cut;                           /**< indicates that the item is being cut */
     uint32_t regeneration_date;                  /**< date when the item starts regenerating */
     bool is_regenerating;                        /**< indicates that the item is currently regenerating */
+    Ground modified_ground;                      /**< The ground defined by this entity if any. */
     int destruction_callback_ref;                /**< Lua registry ref of a function to call when the item is destroyed */
 
     static const Features features[];

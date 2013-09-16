@@ -671,14 +671,20 @@ bool Map::test_collision_with_border(const Rectangle &collision_box) {
  * \param layer Layer of the point.
  * \param x X of the point in pixels.
  * \param y Y of the point in pixels.
- * \param entity_to_check The entity to check (used to decide what tiles are
+ * \param entity_to_check The entity to check (used to decide what grounds are
  * considered as obstacle).
+ * \param [out] found_diagonal_wall \c true if the ground under this point was
+ * a diagonal wall, unchanged otherwise.
+ * Your algorithm may decide to check more points if there is a diagonal wall.
  * \return \c true if this point is on an obstacle.
  */
-bool Map::test_collision_with_ground(Layer layer, int x, int y,
-    MapEntity& entity_to_check) {
+bool Map::test_collision_with_ground(
+    Layer layer,
+    int x,
+    int y,
+    MapEntity& entity_to_check,
+    bool& found_diagonal_wall) {
 
-  Ground ground;
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
 
@@ -687,10 +693,8 @@ bool Map::test_collision_with_ground(Layer layer, int x, int y,
     return true;
   }
 
-  // Get the ground property of the 8x8 square containing this point.
-  ground = entities->get_ground(layer, x, y);
-
-  // Test the ground property of this square.
+  // Get the ground property under this point.
+  Ground ground = entities->get_ground(layer, x, y);
   switch (ground) {
 
   case GROUND_EMPTY:
@@ -713,6 +717,7 @@ bool Map::test_collision_with_ground(Layer layer, int x, int y,
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile <= x_in_tile;
+    found_diagonal_wall = true;
     break;
 
   case GROUND_WALL_TOP_LEFT:
@@ -721,6 +726,7 @@ bool Map::test_collision_with_ground(Layer layer, int x, int y,
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile <= 7 - x_in_tile;
+    found_diagonal_wall = true;
     break;
 
   case GROUND_WALL_BOTTOM_LEFT:
@@ -728,6 +734,7 @@ bool Map::test_collision_with_ground(Layer layer, int x, int y,
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile >= x_in_tile;
+    found_diagonal_wall = true;
     break;
 
   case GROUND_WALL_BOTTOM_RIGHT:
@@ -735,6 +742,7 @@ bool Map::test_collision_with_ground(Layer layer, int x, int y,
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile >= 7 - x_in_tile;
+    found_diagonal_wall = true;
     break;
 
   case GROUND_LOW_WALL:
@@ -780,24 +788,23 @@ bool Map::test_collision_with_ground(Layer layer, int x, int y,
 bool Map::test_collision_with_entities(Layer layer,
     const Rectangle& collision_box, MapEntity& entity_to_check) {
 
-  const std::list<MapEntity*>& obstacle_entities = entities->get_obstacle_entities(layer);
+  const std::list<MapEntity*>& obstacle_entities =
+      entities->get_obstacle_entities(layer);
+  const std::list<MapEntity*>::const_iterator end =
+      obstacle_entities.end();
 
-  bool collision = false;
+  std::list<MapEntity*>::const_iterator it;
+  for (it = obstacle_entities.begin(); it != end; ++it) {
 
-  std::list<MapEntity*>::const_iterator i;
-  for (i = obstacle_entities.begin();
-       i != obstacle_entities.end() && !collision;
-       ++i) {
-
-    MapEntity *entity = *i;
-    collision =
-	entity != &entity_to_check
-	&& entity->is_enabled()
-	&& entity->is_obstacle_for(entity_to_check)
-	&& entity->overlaps(collision_box);
+    MapEntity* entity = *it;
+    if (entity->overlaps(collision_box)
+        && entity->is_obstacle_for(entity_to_check)
+        && entity->is_enabled()
+        && entity != &entity_to_check)
+      return true;
   }
 
-  return collision;
+  return false;
 }
 
 /**
@@ -806,49 +813,71 @@ bool Map::test_collision_with_entities(Layer layer,
  * \param collision_box The rectangle to check (its dimensions should be
  * multiples of 8).
  * \param entity_to_check The entity to check (used to decide what is
- * considered as obstacle),
+ * considered as obstacle).
  * \return \c true if the rectangle is overlapping an obstacle.
  */
 bool Map::test_collision_with_obstacles(Layer layer,
     const Rectangle& collision_box,
     MapEntity& entity_to_check) {
 
-  int x, y, x1, x2, y1, y2;
-  bool collision = false;
+  // This function is called very often.
+  // For performance reasons, we only check the border of the of the collision box.
+  // TODO check that the size is a multiple of 8x8 in MapEntity::set_size().
 
   // Collisions with the terrain
-  // (i.e., tiles and dynamic entities that may change it):
-  // we just check the borders of the collision box.
-  y1 = collision_box.get_y();
-  y2 = y1 + collision_box.get_height() - 1;
-  x1 = collision_box.get_x();
-  x2 = x1 + collision_box.get_width() - 1;
+  // (i.e., tiles and dynamic entities that may change it).
+  const int x1 = collision_box.get_x();
+  const int x2 = x1 + collision_box.get_width() - 1;
+  const int y1 = collision_box.get_y();
+  const int y2 = y1 + collision_box.get_height() - 1;
 
-  for (x = x1; x <= x2 && !collision; x++) {
-    collision = test_collision_with_ground(layer, x, y1, entity_to_check) ||
-      test_collision_with_ground(layer, x, y2, entity_to_check);
-  }
-
-  for (y = y1; y <= y2 && !collision; y++) {
-    collision = test_collision_with_ground(layer, x1, y, entity_to_check) ||
-      test_collision_with_ground(layer, x2, y, entity_to_check);
-  }
-
-/*
-  // Slow version: check every pixel of the collision_box rectangle.
-  for (y1 = collision_box.y; y1 < collision_box.y + collision_box.h && !collision; y1++) {
-    for (x1 = collision_box.x; x1 < collision_box.x + collision_box.w && !collision; x1++) {
-      collision = test_collision_with_ground(layer, x1, y1, entity_to_check);
+  // First, only check the terrain of both extremities of each 8-pixel
+  // segment of the border.
+  // This is enough for all terrains (except diagonal ones, see below)
+  // because the tested collision box makes at least 8x8 pixels.
+  bool found_diagonal_wall = false;
+  for (int x = x1; x <= x2; x += 8) {
+    if (test_collision_with_ground(layer, x, y1, entity_to_check, found_diagonal_wall)
+        || test_collision_with_ground(layer, x, y2, entity_to_check, found_diagonal_wall)
+        || test_collision_with_ground(layer, x + 7, y1, entity_to_check, found_diagonal_wall)
+        || test_collision_with_ground(layer, x + 7, y2, entity_to_check, found_diagonal_wall)) {
+      return true;
     }
   }
-*/
 
-  // Collisions with dynamic entities.
-  if (!collision) {
-    collision = test_collision_with_entities(layer, collision_box, entity_to_check);
+  for (int y = y1; y <= y2; y += 8) {
+    if (test_collision_with_ground(layer, x1, y, entity_to_check, found_diagonal_wall)
+        || test_collision_with_ground(layer, x2, y, entity_to_check, found_diagonal_wall)
+        || test_collision_with_ground(layer, x1, y + 7, entity_to_check, found_diagonal_wall)
+        || test_collision_with_ground(layer, x2, y + 7, entity_to_check, found_diagonal_wall)) {
+      return true;
+    }
   }
 
-  return collision;
+  // Is a full check of the border needed?
+  // This is costly, but hopefully, we seldom need it.
+  if (found_diagonal_wall) {
+    // A diagonal wall ground was involved in the terrain check.
+    // In this case, we need to test all points of the border of the collision
+    // box. Otherwise, walls with sharp angles like 'V' become
+    // partially traversable.
+    for (int x = x1; x <= x2; ++x) {
+      if (test_collision_with_ground(layer, x, y1, entity_to_check, found_diagonal_wall)
+          || test_collision_with_ground(layer, x, y2, entity_to_check, found_diagonal_wall)) {
+        return true;
+      }
+    }
+
+    for (int y = y1; y <= y2; ++y) {
+      if (test_collision_with_ground(layer, x1, y, entity_to_check, found_diagonal_wall)
+          || test_collision_with_ground(layer, x2, y, entity_to_check, found_diagonal_wall)) {
+        return true;
+      }
+    }
+  }
+
+  // No collision with the terrain: check collisions with dynamic entities.
+  return test_collision_with_entities(layer, collision_box, entity_to_check);
 }
 
 /**
@@ -864,9 +893,10 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y,
     MapEntity& entity_to_check) {
 
   bool collision;
+  bool is_diagonal_wall;
 
   // Test the terrain.
-  collision = test_collision_with_ground(layer, x, y, entity_to_check);
+  collision = test_collision_with_ground(layer, x, y, entity_to_check, is_diagonal_wall);
 
   // Test the dynamic entities.
   if (!collision) {
@@ -921,7 +951,7 @@ bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) {
  * \param entity the entity that has just moved (this entity should have
  * a movement sensible to the collisions)
  */
-void Map::check_collision_with_detectors(MapEntity &entity) {
+void Map::check_collision_with_detectors(MapEntity& entity) {
 
   if (suspended) {
     return;
@@ -929,15 +959,15 @@ void Map::check_collision_with_detectors(MapEntity &entity) {
 
   const std::list<Detector*>& detectors = entities->get_detectors();
 
-  // check each detector
-  std::list<Detector*>::const_iterator i;
+  // Check each detector.
+  std::list<Detector*>::const_iterator it;
+  const std::list<Detector*>::const_iterator end = detectors.end();
+  for (it = detectors.begin(); it != detectors.end(); ++it) {
 
-  for (i = detectors.begin();
-       i != detectors.end();
-       i++) {
-
-    if (!(*i)->is_being_removed() && (*i)->is_enabled()) {
-      (*i)->check_collision(entity);
+    Detector* detector = *it;
+    if (detector->is_enabled()
+        && !detector->is_being_removed()) {
+      detector->check_collision(entity);
     }
   }
 }

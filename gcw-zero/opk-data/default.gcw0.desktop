@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Solarus
+Comment=An open-source Zelda-like game engine
+Exec=run_solarus.sh
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=solarus
+Categories=games

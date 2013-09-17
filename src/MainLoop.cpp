@@ -238,7 +238,7 @@ void MainLoop::notify_input(InputEvent& event) {
   }
   else if (event.is_keyboard_key_pressed()) {
     // A key was pressed.
-if defined(PANDORA)
+#if defined(PANDORA)
     // TODO make a clean flag
     if (event.get_keyboard_key() == InputEvent::KEY_ESCAPE) {
       exiting = true;

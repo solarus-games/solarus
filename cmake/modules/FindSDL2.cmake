@@ -12,7 +12,7 @@ endif(SDL2_INCLUDE_DIR)
 
 find_path(SDL2_INCLUDE_DIR NAMES SDL.h SDL_opengles.h
     HINTS /usr/local/angstrom/arm/arm-angstrom-linux-gnueabi/usr
-    PATH_SUFFIXES SDL libSDL)
+    PATH_SUFFIXES SDL2)
 
 find_library(SDL2_LIBRARY NAMES SDL2)
 

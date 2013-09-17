@@ -12,14 +12,14 @@ endif(SDL2_TTF_INCLUDE_DIR)
 
 find_path(SDL2_TTF_INCLUDE_DIR NAMES SDL_ttf.h
     HINTS /usr/local/angstrom/arm/arm-angstrom-linux-gnueabi/usr
-    PATH_SUFFIXES SDL_image libSDL_image)
+    PATH_SUFFIXES SDL2_ttf)
 
-find_library(SDL2_TTF_LIBRARY NAMES SDL2_TTF)
+find_library(SDL2_TTF_LIBRARY NAMES SDL2_ttf)
 
 # Handle the QUIETLY and REQUIRED arguments and set SDL2_TTF_FOUND to TRUE if
 # all listed variables are TRUE.
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SDL2_TTF DEFAULT_MSG
+find_package_handle_standard_args(SDL2_ttf DEFAULT_MSG
     SDL2_TTF_INCLUDE_DIR SDL2_TTF_LIBRARY)
 
 if(SDL2_TTF_FOUND)

@@ -39,67 +39,6 @@ const VideoManager::VideoMode forced_mode = VideoManager::NO_MODE;
 // List of fullscreen resolutions available on the system.
 std::vector<Rectangle> available_fullscreen_resolutions;
 
-/**
- * \brief Returns the lowest fullscreen resolution greater than or equal to
- * the specified size.
- * \param surface_size The size of the surface to fit.
- * \return The lowest fullscreen resolution that can contain this surface, or
- * an rectangle of size 0.
- */
-Rectangle find_lowest_fullscreen_resolution(const Rectangle& surface_size) {
-
-  // Find the lowest fullscreen resolution that can contain the requested size.
-  std::vector<Rectangle>::reverse_iterator it;
-  for (it = available_fullscreen_resolutions.rbegin();
-      it != available_fullscreen_resolutions.rend();
-      ++it) {
-    // Reverse iterator because SDL_ListModes gives resolutions sorted from
-    // the highest one to the lowest one.
-    const Rectangle& resolution = *it;
-    if (resolution.get_width() >= surface_size.get_width()
-        && resolution.get_height() >= surface_size.get_height()) {
-      // Found one.
-      return resolution;
-    }
-  }
-
-  return Rectangle();
-}
-
-/**
- * \brief Returns a fullscreen resolution whose width is larger than the
- * specified width and whose height is minimal.
- * \param surface_size The size of the surface to fit.
- * \return The lowest wide fullscreen resolution that can contain this surface,
- * or a rectangle of size 0.
- */
-Rectangle find_wide_fullscreen_resolution(const Rectangle& surface_size) {
-
-  int best_height = 1e6;
-  Rectangle best_resolution;
-
-  std::vector<Rectangle>::iterator it;
-  for (it = available_fullscreen_resolutions.begin();
-      it != available_fullscreen_resolutions.end();
-      ++it) {
-    const Rectangle& resolution = *it;
-    const double ratio =
-        (double) resolution.get_width() / resolution.get_height();
-
-    if (ratio > 1.34  // Wider than 4:3.
-        && resolution.get_width() > surface_size.get_width()
-        && resolution.get_height() >= surface_size.get_height()
-        && resolution.get_height() < best_height) {
-      // Found a better one.
-      best_height = resolution.get_height();
-      best_resolution = resolution;
-    }
-  }
-
-  return best_resolution;
-}
-
-}
 
 /**
  * \brief Lua name of each value of the VideoMode enum.
@@ -165,27 +104,6 @@ void VideoManager::quit() {
  */
 VideoManager* VideoManager::get_instance() {
   return instance;
-}
-
-/**
- * \brief Returns the appropriate SDL_Surface flag depending on the requested
- * display mode and what OS is running.
- * \param the display mode which you wanted to know the SDL_Surface flag to use with.
- * \return the better SDL_Surface flag to use
- */
-uint32_t VideoManager::get_surface_flag(const VideoMode mode) const {
-
-  uint32_t flag = SDL_SWSURFACE;
-
-  if (is_fullscreen(mode)) {
-    flag |= SDL_FULLSCREEN;
-  }
-
-#if defined(SOLARUS_SCREEN_DOUBLEBUF) && SOLARUS_SCREEN_DOUBLEBUF == 1
-  flag |= SDL_DOUBLEBUF;
-#endif
-
-  return flag;
 }
 
 /**
@@ -485,43 +403,6 @@ void VideoManager::draw_unscaled(Surface& quest_surface) {
   else {
     quest_surface.draw(*screen_surface, Rectangle(offset_x, offset_y));
   }
-}
-
-/**
- * \brief Draws the quest surface on the screen, stretching the image by
- * a factor of 2.
- *
- * Black bars are added if the screen is bigger than twice the quest size.
- *
- * \param quest_surface The quest surface to draw.
- */
-void VideoManager::draw_stretched(Surface& quest_surface) {
-
-    SDL_Surface* src_internal_surface = quest_surface.get_internal_surface();
-    SDL_Surface* dst_internal_surface = screen_surface->get_internal_surface();
-
-    SDL_LockSurface(src_internal_surface);
-    SDL_LockSurface(dst_internal_surface);
-
-    int idx_src = 0;
-    uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
-
-    const int width = dst_internal_surface->w;
-    const int end_row_increment = 2 * offset_x + width;
-    int p = width * offset_y + offset_x;
-    for (int i = 0; i < quest_size.get_height(); i++) {
-        for (int j = 0; j < quest_size.get_width(); j++) {
-            dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] 
-                   = quest_surface.get_mapped_pixel(idx_src, dst_internal_surface->format);
-            p += 2;
-            idx_src++;
-        }
-
-        p += end_row_increment;
-    }
-
-    SDL_UnlockSurface(dst_internal_surface);
-    SDL_UnlockSurface(src_internal_surface);
 }
 
 /**

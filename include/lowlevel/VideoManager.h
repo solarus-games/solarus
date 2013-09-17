@@ -94,9 +94,7 @@ class VideoManager {
     void initialize_video_modes();
 
     void draw_unscaled(Surface& quest_surface);
-    void draw_stretched(Surface& quest_surface);
     void draw_scale2x(Surface& quest_surface);
-    uint32_t get_surface_flag(const VideoMode mode) const;
 
     static VideoManager* instance;          /**< The only instance. */
 

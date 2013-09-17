@@ -9,9 +9,9 @@ set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 set(SOLARUS_INSTALL_DESTINATION "bin")
 
 # find the headers and the libraries of dependencies
-find_package(SDL "2" REQUIRED)
-find_package(SDL_image "2" REQUIRED)
-find_package(SDL_ttf "2.0.12" REQUIRED)
+find_package(SDL2 "2" REQUIRED)
+find_package(SDL2_image "2" REQUIRED)
+find_package(SDL2_ttf "2.0.12" REQUIRED)
 find_package(OpenAL REQUIRED)
 find_package(VorbisFile REQUIRED)
 find_package(Ogg REQUIRED)

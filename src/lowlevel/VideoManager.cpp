@@ -174,11 +174,8 @@ VideoManager* VideoManager::get_instance() {
  * \return the better SDL_Surface flag to use
  */
 uint32_t VideoManager::get_surface_flag(const VideoMode mode) const {
-#ifdef GCWZERO
-  uint32_t flag = SDL_HWSURFACE;
-#else
+
   uint32_t flag = SDL_SWSURFACE;
-#endif
 
   if (is_fullscreen(mode)) {
     flag |= SDL_FULLSCREEN;

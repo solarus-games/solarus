@@ -236,7 +236,7 @@ void InputEvent::set_key_repeat(bool repeat) {
  */
 bool InputEvent::is_shift_down() {
 
-  SDLMod mod = SDL_GetModState();
+  SDL_Keymod mod = SDL_GetModState();
   return mod & (KMOD_LSHIFT | KMOD_RSHIFT);
 }
 
@@ -249,7 +249,7 @@ bool InputEvent::is_shift_down() {
  */
 bool InputEvent::is_control_down() {
 
-  SDLMod mod = SDL_GetModState();
+  SDL_Keymod mod = SDL_GetModState();
   return mod & (KMOD_LCTRL | KMOD_RCTRL);
 }
 
@@ -262,7 +262,7 @@ bool InputEvent::is_control_down() {
  */
 bool InputEvent::is_alt_down() {
 
-  SDLMod mod = SDL_GetModState();
+  SDL_Keymod mod = SDL_GetModState();
   return mod & (KMOD_LALT | KMOD_RALT);
 }
 
@@ -274,7 +274,7 @@ bool InputEvent::is_alt_down() {
 bool InputEvent::is_key_down(KeyboardKey key) {
 
   int num_keys = 0;
-  Uint8* keys_state = SDL_GetKeyboardState(&num_keys);
+  const Uint8* keys_state = SDL_GetKeyboardState(&num_keys);
   return keys_state[key];
 }
 
@@ -380,7 +380,7 @@ int InputEvent::get_joypad_hat_direction(int hat) {
 bool InputEvent::is_keyboard_event() {
 
   return (internal_event.type == SDL_KEYDOWN || internal_event.type == SDL_KEYUP) 
-    && (!internal_event.repeat || repeat_keyboard);
+    && (!internal_event.key.repeat || repeat_keyboard);
 }
 
 /**
@@ -414,7 +414,7 @@ bool InputEvent::is_window_event() {
 bool InputEvent::is_keyboard_key_pressed() {
 
   return internal_event.type == SDL_KEYDOWN 
-    && (!internal_event.repeat || repeat_keyboard);
+    && (!internal_event.key.repeat || repeat_keyboard);
 }
 
 /**
@@ -477,7 +477,7 @@ bool InputEvent::is_keyboard_non_direction_key_pressed() {
 bool InputEvent::is_keyboard_key_released() {
 
   return internal_event.type == SDL_KEYUP 
-    && (!internal_event.repeat || repeat_keyboard);
+    && (!internal_event.key.repeat || repeat_keyboard);
 }
 
 /**
@@ -626,7 +626,7 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& 
  */
 bool InputEvent::is_character_pressed() {
 
-  return internal_event.key.keysym.unicode != 0;
+  return internal_event.key.keysym.sym != 0;
 }
 
 /**
@@ -637,7 +637,7 @@ const std::string InputEvent::get_character() {
 
   std::string result;
   if (is_character_pressed()) {
-    uint16_t utf16_char = (uint16_t) internal_event.key.keysym.unicode;
+    uint16_t utf16_char = (uint16_t) internal_event.key.keysym.sym;
     char buffer[3] = { 0 };
     // SDL gives us UCS-2: convert it to UTF-8.
     if ((utf16_char & 0xFF80) != 0) {

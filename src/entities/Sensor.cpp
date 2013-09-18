@@ -33,8 +33,13 @@
  * \param width width of the entity's rectangle
  * \param height height of the entity's rectangle
  */
-Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
-	       int width, int height):
+Sensor::Sensor(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    int width,
+    int height):
   Detector(COLLISION_INSIDE | COLLISION_RECTANGLE, name, layer, x, y, width, height),
   activated_by_hero(false),
   notifying_script(false) {
@@ -80,7 +85,7 @@ bool Sensor::is_obstacle_for(MapEntity &other) {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Sensor::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_sensor(*this, collision_mode);
 }
@@ -139,3 +144,4 @@ void Sensor::update() {
     }
   }
 }
+

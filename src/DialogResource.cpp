@@ -17,6 +17,7 @@
 #include "DialogResource.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Language.h"
 #include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 
@@ -57,7 +58,7 @@ void DialogResource::initialize() {
 
   if (load_result != 0) {
     Debug::error(StringConcat() << "Failed to load dialog file '" << file_name
-        << "' for language '" << FileTools::get_language() << "': "
+        << "' for language '" << Language::get_language() << "': "
         << lua_tostring(l, -1));
     lua_pop(l, 1);
   }
@@ -65,7 +66,7 @@ void DialogResource::initialize() {
     lua_register(l, "dialog", l_dialog);
     if (lua_pcall(l, 0, 0, 0) != 0) {
       Debug::error(StringConcat() << "Failed to load dialog file '" << file_name
-          << "' for language '" << FileTools::get_language() << "': "
+          << "' for language '" << Language::get_language() << "': "
           << lua_tostring(l, -1));
       lua_pop(l, 1);
     }

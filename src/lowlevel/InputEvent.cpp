@@ -32,10 +32,6 @@ std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
  */
 void InputEvent::initialize() {
 
-  // initialize the keyboard
-  SDL_EnableUNICODE(SDL_ENABLE);
-  SDL_EnableKeyRepeat(0, 0);
-
   // initialize the joypad
   set_joypad_enabled(true);
 

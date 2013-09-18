@@ -38,13 +38,7 @@ class VideoManager {
       WINDOWED_SCALE2X,         /**< the quest surface is scaled into a double-size window with the Scale2x algorithm */
       WINDOWED_NORMAL,          /**< the quest surface is drawn on a window of the same size */
       FULLSCREEN_NORMAL,        /**< the quest surface is drawn in fullscreen */
-      FULLSCREEN_WIDE,          /**< the quest surface is stretched into a double-size surface
-                                 * and then drawn on a widescreen resolution if possible
-                                 * with two black side bars */
       FULLSCREEN_SCALE2X,       /**< the game surface is scaled into a double-size screen with the Scale2x algorithm */
-      FULLSCREEN_SCALE2X_WIDE,  /**< the game surface is scaled into a double-size surface with the Scale2x algorithm
-                                 * and then drawn on a widescreen resolution if possible
-                                 * with two black side bars */
       NB_MODES                  /**< number of existing video modes */
     };
 

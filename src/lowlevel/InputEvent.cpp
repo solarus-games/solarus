@@ -271,7 +271,7 @@ bool InputEvent::is_alt_down() {
 bool InputEvent::is_key_down(KeyboardKey key) {
 
   int num_keys = 0;
-  Uint8* keys_state = SDL_GetKeyState(&num_keys);
+  Uint8* keys_state = SDL_GetKeyboardState(&num_keys);
   return keys_state[key];
 }
 
@@ -376,8 +376,8 @@ int InputEvent::get_joypad_hat_direction(int hat) {
  */
 bool InputEvent::is_keyboard_event() {
 
-  return internal_event.type == SDL_KEYDOWN
-    || internal_event.type == SDL_KEYUP;
+  return (internal_event.type == SDL_KEYDOWN || internal_event.type == SDL_KEYUP) 
+    && !internal_event.repeat;
 }
 
 /**
@@ -410,7 +410,7 @@ bool InputEvent::is_window_event() {
  */
 bool InputEvent::is_keyboard_key_pressed() {
 
-  return internal_event.type == SDL_KEYDOWN;
+  return internal_event.type == SDL_KEYDOWN && !internal_event.repeat;
 }
 
 /**
@@ -472,7 +472,7 @@ bool InputEvent::is_keyboard_non_direction_key_pressed() {
  */
 bool InputEvent::is_keyboard_key_released() {
 
-  return internal_event.type == SDL_KEYUP;
+  return internal_event.type == SDL_KEYUP && !internal_event.repeat;
 }
 
 /**

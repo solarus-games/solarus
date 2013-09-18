@@ -119,7 +119,6 @@ void Sensor::activate(Hero& hero) {
     notifying_script = true;
     get_lua_context().sensor_on_activated(*this);
     notifying_script = false;
-    get_hero().reset_movement();
   }
   else {
     if (!notifying_script && !get_game().is_suspended()) {

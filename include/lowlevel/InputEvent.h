@@ -184,6 +184,7 @@ class InputEvent {
     SDL_Event internal_event;                     /**< the internal event encapsulated */
     static std::map<KeyboardKey, std::string>
       keyboard_key_names;                         /**< Names of all existing keyboard keys. */
+    static bool repeat_keyboard;                  /**< True to handle repeat KEYDOWN and KEYUP events. */
 
   public:
 
@@ -202,7 +203,7 @@ class InputEvent {
     static InputEvent* get_event();
 
     // global information
-    static void set_key_repeat(int delay, int interval);
+    static void set_key_repeat(bool repeat);
     static bool is_shift_down();
     static bool is_control_down();
     static bool is_alt_down();

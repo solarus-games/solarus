@@ -28,6 +28,7 @@ Engine changes
 * Fix blocks that continue to follow the hero after picking a treasure (#284).
 * Jumpers can no longer be activated the opposite way when in water.
 * Jumpers are now activated after a slight delay (#253).
+* Sensors no longer automatically reset the hero's movement (#292).
 * Correctly detect the ground below the hero or any point.
 * Don't die if there is a syntax error in dialogs.dat.
 * Show a better error message if trying to play a Solarus 0.9 quest (#260).

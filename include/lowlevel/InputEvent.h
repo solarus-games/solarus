@@ -35,14 +35,13 @@ class InputEvent {
     /**
      * Enumeration of keyboard keys.
      * This is a Solarus dedicated enumeration.
-     * To make the SDL encapsulation easier, this enumeration is compatible with the SDLKey enumeration from SDL.
-     * If you intend to replace SDL by another library one day, the API of the Input class will not have to change
-     * (only its implementation will) but you may want to
-     * change the enumeration numeric values in order to encapsulate the new library more easily,
-     * The game will still work, but remember that the savegame files store values from this enumeration to save
-     * the customization of keys chosen by the player.
-     * Therefore, you should also change the value of KEYBOARD_ENUMERATION_VERSION
-     * so that the savegames can detect that their keyboard customization is obsolete and reset it.
+     * To make the SDL encapsulation easier, this enumeration is compatible
+     * with the SDLKey enumeration from SDL.
+     * If you intend to replace SDL by another library one day, the API of the
+     * Input class will not have to change
+     * (only its implementation will).
+     * The numeric values of the enumeration can be changed without breaking
+     * savegames because savegames use a string name to store the commands.
      */
     enum KeyboardKey {
       KEY_NONE                     = SDLK_UNKNOWN,

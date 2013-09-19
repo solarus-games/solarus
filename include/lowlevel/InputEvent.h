@@ -237,7 +237,7 @@ class InputEvent {
     static const std::string& get_keyboard_key_name(InputEvent::KeyboardKey key);
     static InputEvent::KeyboardKey get_keyboard_key_by_name(const std::string& keyboard_key_name);
 
-    bool is_character_entered();
+    bool is_text_event();
     const std::string get_character();
 
     // joypad

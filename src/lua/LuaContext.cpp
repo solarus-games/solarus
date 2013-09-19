@@ -1684,13 +1684,13 @@ bool LuaContext::on_input(InputEvent& event) {
     // Keyboard.
     if (event.is_keyboard_key_pressed()) {
       handled = on_key_pressed(event) || handled;
-      if (event.is_character_pressed()) {
-        handled = on_character_pressed(event) || handled;
-      }
     }
     else if (event.is_keyboard_key_released()) {
       handled = on_key_released(event) || handled;
     }
+  }
+  else if (event.is_text_event()) {
+    handled = on_character_pressed(event) || handled;
   }
   else if (event.is_joypad_event()) {
     // Joypad.

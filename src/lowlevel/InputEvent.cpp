@@ -620,11 +620,10 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& 
 }
 
 /**
- * \brief Returns whether this event is a text event
- * corresponding to pressing a character key.
- * \return true if this event corresponds to entered text character.
+ * \brief Returns whether this event is a text event.
+ * \return true if this event corresponds to entered text.
  */
-bool InputEvent::is_character_entered() {
+bool InputEvent::is_text_event() {
 
   return internal_event.type == SDL_TEXTINPUT;
 }
@@ -635,11 +634,7 @@ bool InputEvent::is_character_entered() {
  */
 const std::string InputEvent::get_character() {
 
-  std::string result;
-  if (is_character_entered()) {
-    result = internal_event.text.text;
-  }
-  return result;
+  return internal_event.text.text;
 }
 
 // joypad

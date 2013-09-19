@@ -32,10 +32,10 @@ std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
  */
 void InputEvent::initialize() {
 
-  //Repeat keyboard events
+  // initialize the keyboard.
   repeat_keyboard = false;
     
-  // initialize the joypad
+  // initialize the joypad.
   set_joypad_enabled(true);
 
   // Initialize the map of keyboard key names.
@@ -620,35 +620,24 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& 
 }
 
 /**
- * \brief Returns whether this event is a keyboard event
+ * \brief Returns whether this event is a text event
  * corresponding to pressing a character key.
- * \return true if this event corresponds to pressing a character key.
+ * \return true if this event corresponds to entered text character.
  */
-bool InputEvent::is_character_pressed() {
+bool InputEvent::is_character_entered() {
 
-  return internal_event.key.keysym.sym != 0;
+  return internal_event.type == SDL_TEXTINPUT;
 }
 
 /**
- * \brief Returns a UTF-8 representation of the character that was pressed during this keyboard event.
- * \return The UTF-8 string corresponding to the key pressed, or an empty string if the key was not a character.
+ * \brief Returns a UTF-8 representation of the character that was pressed during this text event.
+ * \return The UTF-8 string corresponding to the entered character, or an empty string if this is not a text event.
  */
 const std::string InputEvent::get_character() {
 
   std::string result;
-  if (is_character_pressed()) {
-    uint16_t utf16_char = (uint16_t) internal_event.key.keysym.sym;
-    char buffer[3] = { 0 };
-    // SDL gives us UCS-2: convert it to UTF-8.
-    if ((utf16_char & 0xFF80) != 0) {
-      // Two bytes.
-      buffer[0] = (uint8_t) (0xC0 | utf16_char >> 6);
-      buffer[1] = (uint8_t) (0x80 | (utf16_char & 0x3F));
-    }
-    else {
-      buffer[0] = (uint8_t) utf16_char;
-    }
-    result = buffer;
+  if (is_character_entered()) {
+    result = internal_event.text.text;
   }
   return result;
 }

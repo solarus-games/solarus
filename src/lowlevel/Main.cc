@@ -79,7 +79,11 @@ static void print_help(int argc, char **argv) {
     << std::endl << std::endl
     << "The quest path is the name of a directory that contains either the data"
     << std::endl
+#ifdef GCWZERO
+    << "directory or the data archive (data.solarus.zip) of the game to run."
+#else
     << "directory or the data archive (data.solarus) of the game to run."
+#endif
     << std::endl
     << "If the quest path is not specified, the default directory will be: '"
     << SOLARUS_DEFAULT_QUEST << "'."

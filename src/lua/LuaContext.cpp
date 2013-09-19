@@ -2745,8 +2745,13 @@ int LuaContext::l_loader(lua_State* l) {
 
   if (!exists) {
     std::ostringstream oss;
+#ifdef GCWZERO
+    oss << std::endl << "\tno quest file '" << script_name
+      << ".lua' in 'data' or 'data.solarus.zip'";
+#else
     oss << std::endl << "\tno quest file '" << script_name
       << ".lua' in 'data' or 'data.solarus'";
+#endif
     push_string(l, oss.str());
   }
   return 1;

@@ -51,7 +51,7 @@ Surface::Surface(const Rectangle& size):
   Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
 
   this->internal_surface = SDL_CreateRGBSurface(
-      SDL_HWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+      SDL_SWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
 }
 
 /**
@@ -204,12 +204,15 @@ const Rectangle Surface::get_size() const {
  * \brief Returns the transparency color of this surface.
  *
  * Pixels in that color will not be drawn.
+ * Return black if no colorkey is found.
  *
  * \return The transparency color.
  */
 Color Surface::get_transparency_color() {
 
-  return Color(internal_surface->format->colorkey);
+  Uint32 colorkey = 0x00000000;
+  SDL_GetColorKey(internal_surface, &colorkey);
+  return Color(colorkey);
 }
 
 /**
@@ -221,7 +224,7 @@ Color Surface::get_transparency_color() {
  */
 void Surface::set_transparency_color(const Color& color) {
 
-  SDL_SetColorKey(internal_surface, SDL_SRCCOLORKEY, color.get_internal_value());
+  SDL_SetColorKey(internal_surface, SDL_TRUE, color.get_internal_value());
 }
 
 /**
@@ -230,13 +233,14 @@ void Surface::set_transparency_color(const Color& color) {
  */
 void Surface::set_opacity(int opacity) {
 
+  //TODO see if SDL2 solve the problem
   // SDL has a special handling of the alpha value 128
   // which doesn't work well with my computer
   if (opacity == 128) {
     opacity = 127;
   }
 
-  SDL_SetAlpha(internal_surface, SDL_SRCALPHA, opacity);
+  SDL_SetSurfaceAlphaMod(internal_surface, opacity);
 }
 
 /**

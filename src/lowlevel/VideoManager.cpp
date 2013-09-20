@@ -48,9 +48,7 @@ const std::string VideoManager::video_mode_names[] = {
   "windowed_scale2x",
   "windowed_normal",
   "fullscreen_normal",
-  "fullscreen_wide",
   "fullscreen_scale2x",
-  "fullscreen_scale2x_wide",
   ""  // Sentinel.
 };
 
@@ -209,9 +207,7 @@ void VideoManager::switch_fullscreen() {
       FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
       FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
       WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
-      WINDOWED_STRETCHED,     // FULLSCREEN_WIDE
       WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
-      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X_WIDE
   };
 
   VideoMode mode = next_modes[get_video_mode()];
@@ -377,8 +373,7 @@ void VideoManager::draw(Surface& quest_surface) {
     draw_unscaled(quest_surface);
   }
   else if (video_mode == WINDOWED_SCALE2X
-      || video_mode == FULLSCREEN_SCALE2X
-      || video_mode == FULLSCREEN_SCALE2X_WIDE) {
+      || video_mode == FULLSCREEN_SCALE2X) {
     draw_scale2x(quest_surface);
   }
   else {
@@ -405,6 +400,18 @@ void VideoManager::draw_unscaled(Surface& quest_surface) {
   }
 }
 
+/**
+ * \brief Draws the quest surface on the screen, stretching the image by
+ * a factor of 2.
+ *
+ * Black bars are added if the screen is bigger than twice the quest size.
+ *
+ * \param quest_surface The quest surface to draw.
+ */
+void VideoManager::draw_stretched(Surface& quest_surface) {
+    
+}
+  
 /**
  * \brief Draws the quest surface on the screen, scaled the image by
  * a factor of 2 with the Scale2x algorithm.

@@ -97,7 +97,7 @@ class VideoManager {
         mode_sizes;                         /**< Size of the screen surface for each supported
                                              * video mode with the current quest size. */
 
-    VideoMode video_mode;                   /**< Current video mode of the screen. */
+    VideoMode video_mode;                   /**< Current display mode. */
     Surface* screen_surface;                /**< The screen surface. */\
 
     int enlargment_factor;                  /**< 1 if the quest surface it not stretched or scaled,

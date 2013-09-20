@@ -60,17 +60,16 @@ void FileTools::initialize(int argc, char** argv) {
   // if nothing was specified.
 
   std::string dir_quest_path = quest_path + "/data";
-#ifdef GCWZERO
-  std::string archive_quest_path = quest_path + "/data.solarus.zip";
-#else
-  std::string archive_quest_path = quest_path + "/data.solarus";
-#endif
+  std::string archive_quest_path_1 = quest_path + "/data.solarus";
+  std::string archive_quest_path_2 = quest_path + "/data.solarus.zip";
 
   const std::string& base_dir = PHYSFS_getBaseDir();
   PHYSFS_addToSearchPath(dir_quest_path.c_str(), 1);   // data directory
-  PHYSFS_addToSearchPath(archive_quest_path.c_str(), 1); // data.solarus archive
+  PHYSFS_addToSearchPath(archive_quest_path_1.c_str(), 1); // data.solarus archive
+  PHYSFS_addToSearchPath(archive_quest_path_2.c_str(), 1); // data.solarus.zip archive
   PHYSFS_addToSearchPath((base_dir + "/" + dir_quest_path).c_str(), 1);
-  PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path).c_str(), 1);
+  PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path_1).c_str(), 1);
+  PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path_2).c_str(), 1);
 
   // Check the existence of a quest at this location.
   if (!FileTools::data_file_exists("quest.dat")) {
@@ -168,8 +167,8 @@ const std::string& FileTools::get_language_name(
 
 /**
  * \brief Returns the path of the quest, relative to thecurrent directory.
- * \return Path of the data directory or the data.solarus archive, relative
- * to the current directory.
+ * \return Path of the data/ directory, the data.solarus archive or the
+ * data.solarus.zip archive, relative to the current directory.
  */
 const std::string& FileTools::get_quest_path() {
   return quest_path;
@@ -203,11 +202,8 @@ FileTools::DataFileLocation FileTools::data_file_get_location(
     return LOCATION_DATA_DIRECTORY;
   }
 
-#ifdef GCWZERO
-  if (path.rfind("data.solarus.zip") == path.size() - 16) {
-#else
-  if (path.rfind("data.solarus") == path.size() - 12) {
-#endif
+  if (path.rfind("data.solarus") == path.size() - 12
+      || path.rfind("data.solarus.zip") == path.size() - 16) {
     return LOCATION_DATA_ARCHIVE;
   }
 

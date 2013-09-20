@@ -126,7 +126,8 @@ void LuaContext::initialize() {
   // Register the C++ functions and types accessible by Lua.
   register_modules();
 
-  // Make require() able to load Lua files even from the data.solarus archive.
+  // Make require() able to load Lua files even from the
+  // data.solarus or data.solarus.zip archive.
                                   // --
   lua_getglobal(l, "sol");
                                   // -- sol
@@ -2745,13 +2746,8 @@ int LuaContext::l_loader(lua_State* l) {
 
   if (!exists) {
     std::ostringstream oss;
-#ifdef GCWZERO
     oss << std::endl << "\tno quest file '" << script_name
-      << ".lua' in 'data' or 'data.solarus.zip'";
-#else
-    oss << std::endl << "\tno quest file '" << script_name
-      << ".lua' in 'data' or 'data.solarus'";
-#endif
+      << ".lua' in 'data/', 'data.solarus' or 'data.solarus.zip'";
     push_string(l, oss.str());
   }
   return 1;

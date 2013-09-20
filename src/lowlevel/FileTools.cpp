@@ -578,7 +578,6 @@ std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
     out.write(buffer, size);
     if (!out) {
       file_name = "";
-      return file_name;
     }
   }
 

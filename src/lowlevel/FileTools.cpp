@@ -60,7 +60,11 @@ void FileTools::initialize(int argc, char** argv) {
   // if nothing was specified.
 
   std::string dir_quest_path = quest_path + "/data";
+#ifdef GCWZERO
+  std::string archive_quest_path = quest_path + "/data.solarus.zip";
+#else
   std::string archive_quest_path = quest_path + "/data.solarus";
+#endif
 
   const std::string& base_dir = PHYSFS_getBaseDir();
   PHYSFS_addToSearchPath(dir_quest_path.c_str(), 1);   // data directory
@@ -199,7 +203,11 @@ FileTools::DataFileLocation FileTools::data_file_get_location(
     return LOCATION_DATA_DIRECTORY;
   }
 
+#ifdef GCWZERO
+  if (path.rfind("data.solarus.zip") == path.size() - 16) {
+#else
   if (path.rfind("data.solarus") == path.size() - 12) {
+#endif
     return LOCATION_DATA_ARCHIVE;
   }
 

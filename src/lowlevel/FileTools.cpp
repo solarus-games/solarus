@@ -22,7 +22,7 @@
 #include "DialogResource.h"
 #include "QuestResourceList.h"
 #include <physfs.h>
-#include <cstdlib>  // tmpnam()
+#include <cstdlib>  // mkstemp(), tmpnam()
 #include <cstdio>   // remove()
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
@@ -326,7 +326,7 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
   Debug::check_assertion(file != NULL, StringConcat()
       << "Cannot open file '" << file_name << "' for writing: "
       << PHYSFS_getLastError());
- 
+
   // save the memory buffer
   if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {
     Debug::die(StringConcat() << "Cannot write file '" << file_name
@@ -343,7 +343,7 @@ void FileTools::data_file_close_buffer(char* buffer) {
 
   delete[] buffer;
 }
- 
+
 /**
  * \brief Removes a file from the write directory.
  * \param file_name Name of the file to delete, relative to the Solarus
@@ -358,7 +358,7 @@ bool FileTools::data_file_delete(const std::string& file_name) {
 
   return true;
 }
- 
+
 /**
  * \brief Creates a directory in the write directory.
  * \param dir_name Name of the directory to delete, relative to the Solarus
@@ -543,7 +543,7 @@ std::string FileTools::get_base_write_dir() {
   return std::string(PHYSFS_getUserDir());
 #endif
 }
- 
+
 /**
  * \brief Creates a temporary file with the specified content and closes it.
  * \param buffer Content of the file to create, or NULL to create an empty file.
@@ -552,12 +552,27 @@ std::string FileTools::get_base_write_dir() {
  */
 std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
 
-  std::string file_name = std::tmpnam(NULL);
+  // Determine the name of our temporary file.
+  std::string file_name;
+
+#ifdef HAVE_MKSTEMP
+  // mkstemp+close is safer than tmpname, but POSIX only.
+  char name_template[] = "/tmp/solarus.XXXXXX";
+  int file_descriptor = mkstemp(name_template);
+  if (file_descriptor == -1) {
+    // Failure.
+    return "";
+  }
+  close(file_descriptor);
+  file_name = name_template;
+#else
+  file_name = std::tmpnam(NULL);
+#endif
+
   std::ofstream out(file_name.c_str());
 
   if (!out) {
-    file_name = "";
-    return file_name;
+    return "";
   }
 
   // File successfully created.
@@ -575,7 +590,7 @@ std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
 
   return file_name;
 }
-  
+
 /**
  * \brief Deletes all files previously created with create_temporary_file().
  * \return \c true in case of success, \c false if at least one file could not

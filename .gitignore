@@ -24,6 +24,7 @@ install_manifest.txt
 CMakeFiles/
 Makefile
 cmake_install.cmake
+include/config.h
 libsolarus_static.a
 /solarus
 error.txt

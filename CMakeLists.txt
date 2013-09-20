@@ -19,6 +19,10 @@ find_package(ModPlug REQUIRED)
 find_package(Lua51 REQUIRED)
 find_package(PhysFS REQUIRED)
 
+include(CheckFunctionExists)
+check_function_exists(mkstemp HAVE_MKSTEMP)
+configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
+
 # source files
 file(
   GLOB

@@ -400,8 +400,8 @@ void VideoManager::draw(Surface& quest_surface) {
     draw_unscaled(quest_surface);
   }
   
-  //Update the internal texture with the given 
-  SDL_Surface* screen_sdl_surface = screen_surface.get_internal_surface();
+  //Update the internal texture with the internal surface, and render it
+  SDL_Surface* screen_sdl_surface = screen_surface->get_internal_surface();
   SDL_UpdateTexture(screen_texture, NULL, screen_sdl_surface->pixels, screen_sdl_surface->pitch);
   SDL_RenderClear(main_renderer);
   SDL_RenderCopy(main_renderer, screen_texture, NULL, NULL);

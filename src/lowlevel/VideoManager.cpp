@@ -386,7 +386,7 @@ void VideoManager::draw(Surface& quest_surface) {
   SDL_Surface* quest_sdl_surface = quest_surface.get_internal_surface();
   if (video_mode == WINDOWED_SCALE2X
       || video_mode == FULLSCREEN_SCALE2X) {
-    draw_scale2x(quest_surface);
+    //draw_scale2x(quest_surface);
   }
   
   //Update the internal texture with the given 

@@ -26,14 +26,13 @@ const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
 bool InputEvent::joypad_enabled = false;
 SDL_Joystick* InputEvent::joystick = NULL;
 std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
+bool InputEvent::repeat_keyboard = false;
+
 
 /**
  * \brief Initializes the input event manager.
  */
 void InputEvent::initialize() {
-
-  // initialize the keyboard.
-  repeat_keyboard = false;
     
   // initialize the joypad.
   set_joypad_enabled(true);

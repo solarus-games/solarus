@@ -12,7 +12,7 @@ endif(SDL2_IMAGE_INCLUDE_DIR)
 
 find_path(SDL2_IMAGE_INCLUDE_DIR NAMES SDL_image.h
     HINTS /usr/local/angstrom/arm/arm-angstrom-linux-gnueabi/usr
-    PATH_SUFFIXES SDL_image)
+    PATH_SUFFIXES SDL2_image)
 
 find_library(SDL2_IMAGE_LIBRARY NAMES SDL2_image)
 

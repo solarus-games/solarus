@@ -19,6 +19,12 @@ find_package(ModPlug REQUIRED)
 find_package(Lua51 REQUIRED)
 find_package(PhysFS REQUIRED)
 
+# Explicit link to libdl is needed for Lua on some systems.
+find_library(DL_LIBRARY dl)
+if(${DL_LIBRARY} MATCHES DL_LIBRARY-NOTFOUND)
+  set(DL_LIBRARY "")
+endif()
+
 include(CheckFunctionExists)
 check_function_exists(mkstemp HAVE_MKSTEMP)
 configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
@@ -116,6 +122,7 @@ target_link_libraries(solarus
   ${SDLTTF_LIBRARY}
   ${OPENAL_LIBRARY}
   ${LUA_LIBRARY}
+  ${DL_LIBRARY}
   ${PHYSFS_LIBRARY}
   ${VORBISFILE_LIBRARY}
   ${OGG_LIBRARY}

@@ -344,9 +344,7 @@ void NPC::notify_movement_finished() {
   Detector::notify_movement_finished();
 
   if (subtype == USUAL_NPC) {
-
     get_sprite().set_current_animation("stopped");
-    get_lua_context().npc_on_movement_finished(*this);
   }
 }
 

@@ -756,6 +756,7 @@ void Enemy::update() {
     // see if we should stop the animation "hurt"
     if (now >= stop_hurt_date) {
       being_hurt = false;
+      set_movement_events_enabled(true);
 
       if (life <= 0) {
         kill();
@@ -890,43 +891,6 @@ void Enemy::notify_enabled(bool enabled) {
 }
 
 /**
- * \brief Notifies this entity that it has just failed to change its position
- * because of obstacles.
- */
-void Enemy::notify_obstacle_reached() {
-
-  Detector::notify_obstacle_reached();
-
-  if (!is_being_hurt()) {
-    get_lua_context().enemy_on_obstacle_reached(*this, *get_movement());
-  }
-}
-
-/**
- * \brief This function is called when the entity has just moved.
- */
-void Enemy::notify_position_changed() {
-
-  Detector::notify_position_changed();
-
-  if (!is_being_hurt()) {
-    get_lua_context().enemy_on_position_changed(*this, get_xy(), get_layer());
-  }
-}
-
-/**
- * \brief This function is called when the layer of this entity has just changed.
- */
-void Enemy::notify_layer_changed() {
-
-  Detector::notify_layer_changed();
-
-  if (!is_being_hurt()) {
-    get_lua_context().enemy_on_position_changed(*this, get_xy(), get_layer());
-  }
-}
-
-/**
  * \copydoc MapEntity::notify_ground_below_changed
  */
 void Enemy::notify_ground_below_changed() {
@@ -948,32 +912,6 @@ void Enemy::notify_ground_below_changed() {
 
     default:
       break;
-  }
-}
-
-/**
- * \brief This function can be called by the movement object
- * to notify the entity when the movement has just changed
- * (e.g. the speed, the angle or the trajectory).
- */
-void Enemy::notify_movement_changed() {
-
-  Detector::notify_movement_changed();
-
-  if (!is_being_hurt()) {
-    get_lua_context().enemy_on_movement_changed(*this, *get_movement());
-  }
-}
-
-/**
- * \brief This function is called when the movement of the entity is finished.
- */
-void Enemy::notify_movement_finished() {
-
-  Detector::notify_movement_finished();
-
-  if (!is_being_hurt()) {
-    get_lua_context().enemy_on_movement_finished(*this);
   }
 }
 
@@ -1255,12 +1193,13 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
  *
  * \param source the entity attacking the enemy (often the hero)
  */
-void Enemy::hurt(MapEntity &source) {
+void Enemy::hurt(MapEntity& source) {
 
   uint32_t now = System::now();
 
   // update the enemy state
   being_hurt = true;
+  set_movement_events_enabled(false);
 
   can_attack = false;
   can_attack_again_date = now + 300;

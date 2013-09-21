@@ -95,6 +95,10 @@ Changes that do not introduce incompatibilities:
 * Add events separator:on_activating() and separator:on_activated() (#272).
 * Add methods enemy:is/set_traversable() (#147).
 * Add a method enemy:immobilize() (#160).
+* Add on_position_changed() to all entities, not only enemies (#298).
+* Add on_obstacle_reached() to all entities, not only enemies (#298).
+* Add on_movement_changed() to all entities, not only enemies (#298).
+* Add on_movement_finished() to all entities, not only enemies/NPCs (#298).
 * target_movement:set_target(entity) now accepts an x,y offset (#154).
 * Add a method game:is_pause_allowed().
 * Add a method map:get_ground() (#141).

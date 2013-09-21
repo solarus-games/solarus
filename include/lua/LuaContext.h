@@ -304,9 +304,12 @@ class LuaContext {
     // Map entity events.
     // TODO entity_on_created
     void entity_on_removed(MapEntity& entity);
+    void entity_on_position_changed(MapEntity& entity, const Rectangle& xy, Layer layer);
+    void entity_on_obstacle_reached(MapEntity& entity, Movement& movement);
+    void entity_on_movement_changed(MapEntity& entity, Movement& movement);
+    void entity_on_movement_finished(MapEntity& entity);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
     // TODO add destination_on_activated
-    void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now)
     void npc_on_interaction(NPC& npc);
     bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(NPC& npc);
@@ -332,10 +335,6 @@ class LuaContext {
     void enemy_on_restarted(Enemy& enemy);
     void enemy_on_pre_draw(Enemy& enemy);
     void enemy_on_post_draw(Enemy& enemy);
-    void enemy_on_position_changed(Enemy& enemy, const Rectangle& xy, Layer layer);
-    void enemy_on_obstacle_reached(Enemy& enemy, Movement& movement);
-    void enemy_on_movement_changed(Enemy& enemy, Movement& movement);
-    void enemy_on_movement_finished(Enemy& enemy);
     void enemy_on_collision_enemy(Enemy& enemy,
         Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void enemy_on_custom_attack_received(Enemy& enemy,

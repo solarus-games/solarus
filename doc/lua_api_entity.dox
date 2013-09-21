@@ -411,5 +411,34 @@ them.
 Called when this entity is about to be removed from the map
 (and therefore destroyed).
 
+\subsection lua_api_entity_on_position_changed entity:on_position_changed(x, y, layer)
+
+Called when the coordinates of this entity have just changed.
+- \c x (number): The new X coordinate of the entity.
+- \c y (number): The new Y coordinate of the entity.
+- \c layer (number): The new layer of the entity.
+
+\subsection lua_api_entity_on_obstacle_reached entity:on_obstacle_reached(movement)
+
+Called when the \ref lua_api_movement "movement"
+of this entity was stopped because of an obstacle.
+
+When an obstacle is reached, this event is called instead of
+\ref lua_api_entity_on_position_changed "entity:on_position_changed()".
+- \c movement (\ref lua_api_movement "movement"): The movement of the entity.
+
+\subsection lua_api_entity_on_movement_changed entity:on_movement_changed(movement)
+
+Called when some characteristics of this entity's
+\ref lua_api_movement "movement"
+(like the speed or the angle) have just changed.
+- \c movement (\ref lua_api_movement "movement"): The movement of the entity.
+
+\subsection lua_api_entity_on_movement_finished entity:on_movement_finished()
+
+Called when the
+\ref lua_api_movement "movement"
+of the entity is finished (if there is an end).
+
 */
 

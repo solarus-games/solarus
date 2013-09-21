@@ -621,35 +621,6 @@ You may display additional things below the enemy.
 Called just after the enemy is drawn on the map.
 You may display additional things above the enemy.
 
-\subsection lua_api_enemy_on_position_changed enemy:on_position_changed(x, y, layer)
-
-Called when the coordinates of this enemy have just changed.
-- \c x (number): The new X coordinate of the enemy.
-- \c y (number): The new Y coordinate of the enemy.
-- \c layer (number): The new layer of the enemy.
-
-\subsection lua_api_enemy_on_obstacle_reached enemy:on_obstacle_reached(movement)
-
-Called when the \ref lua_api_movement "movement"
-of this enemy was stopped because of an obstacle.
-
-When an obstacle is reached, this event is called instead of
-\ref lua_api_enemy_on_position_changed "enemy:on_position_changed()".
-- \c movement (\ref lua_api_movement "movement"): The movement of the enemy.
-
-\subsection lua_api_enemy_on_movement_changed enemy:on_movement_changed(movement)
-
-Called when some characteristics of this enemy's
-\ref lua_api_movement "movement"
-(like the speed or the angle) have just changed.
-- \c movement (\ref lua_api_movement "movement"): The movement of the enemy.
-
-\subsection lua_api_enemy_on_movement_finished enemy:on_movement_finished()
-
-Called when the
-\ref lua_api_movement "movement"
-of the enemy is finished (if there is an end).
-
 \subsection lua_api_enemy_on_collision_enemy enemy:on_collision_enemy(other_enemy, other_sprite, my_sprite)
 
 Called when a \ref lua_api_sprite "sprite"

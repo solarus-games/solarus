@@ -1051,6 +1051,10 @@ void Hero::notify_position_changed() {
 
   check_position();
   state->notify_position_changed();
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+  }
 }
 
 /**

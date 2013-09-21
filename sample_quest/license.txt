@@ -29,5 +29,5 @@ sprites/hero/walking.tunic.png                      Christopho, adapted from Ari
 
 Data files under public domain:                     Author/Origin (if known)
 -------------------------------                     ------------------------
-text/victoria_bold.png                              Christopho (added borders), adapted from: http://opengameart.org/content/a-package-of-8-bit-fonts-for-grafx2-and-linux
+text/8_bit.png                                      Christopho, adapted from: http://opengameart.org/content/a-package-of-8-bit-fonts-for-grafx2-and-linux
 

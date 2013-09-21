@@ -1,5 +1,5 @@
 font{
-  id = "8bit",
-  file = "text/victoria_bold.png",
+  id = "8_bit",
+  file = "text/8_bit.png",
 }
 

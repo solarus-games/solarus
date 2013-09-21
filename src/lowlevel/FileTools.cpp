@@ -24,6 +24,9 @@
 #include <physfs.h>
 #include <cstdlib>  // mkstemp(), tmpnam()
 #include <cstdio>   // remove()
+#ifdef HAVE_UNISTD_H
+#  include <unistd.h>
+#endif
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 #   include "lowlevel/apple/AppleInterface.h"

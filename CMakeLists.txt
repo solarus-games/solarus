@@ -23,6 +23,10 @@ include(CheckFunctionExists)
 check_function_exists(mkstemp HAVE_MKSTEMP)
 configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
 
+include(CheckIncludeFiles)
+check_include_files(unistd.h HAVE_UNISTD_H)
+configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
+
 # source files
 file(
   GLOB

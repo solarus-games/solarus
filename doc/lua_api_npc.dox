@@ -91,11 +91,6 @@ See \ref lua_api_entity_events to know these events.
 
 The following events are specific to non-playing characters.
 
-\subsection lua_api_npc_on_movement_finished npc:on_movement_finished()
-
-Called when the movement (if any) of this %NPC has just finished
-(if there is an end).
-
 \subsection lua_api_npc_on_interaction npc:on_interaction()
 
 Called when the \ref lua_api_hero "hero" interacts

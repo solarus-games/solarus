@@ -333,9 +333,8 @@ public class EditorWindow extends JFrame
             try {
                 Project.createNew(projectPath);
                 GuiTools.informationDialog("Quest successfully created!\n" +
-                    "The next step is to edit some important files\n" +
-                    "(sorry, their edition is not fully supported by this editor yet):\n" +
-                    "quest.dat, text/fonts.dat");
+                    "The next step is to manually edit your quest properties in quest.dat\n" +
+                    "(sorry, this is not fully supported by the editor yet).\n");
             }
             catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot create the project: " + ex.getMessage());

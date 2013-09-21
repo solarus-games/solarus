@@ -147,10 +147,12 @@ class MapEntity: public ExportableToLua {
     void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
 
-    // movement
+    // Movement.
     Movement* get_movement();
-    void set_movement(Movement *movement);
+    void set_movement(Movement* movement);
     void clear_movement();
+    bool are_movement_notifications_enabled() const;
+    void set_movement_events_enabled(bool notify);
 
     virtual void notify_obstacle_reached();
     virtual void notify_position_changed();
@@ -233,7 +235,7 @@ class MapEntity: public ExportableToLua {
     virtual bool is_sword_ignored();
 
     // game loop
-    bool is_suspended();
+    bool is_suspended() const;
     virtual void set_suspended(bool suspended);
     virtual void update();
     virtual void draw_on_map();
@@ -312,6 +314,7 @@ class MapEntity: public ExportableToLua {
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
                                                  * NULL indicates that the entity has no movement */
     std::list<Movement*> old_movements;         /**< old movements to destroy as soon as possible */
+    bool movement_events_enabled;         /**< Whether entity:on_position_changed() and friends should be called. */
     Detector* facing_entity;                    /**< the detector in front of this entity (if any) */
 
     // entity state
@@ -326,6 +329,56 @@ class MapEntity: public ExportableToLua {
         default_optimization_distance = 400;    /**< default value */
 
 };
+
+/**
+ * \brief Returns whether this entity is enabled.
+ * \return true if this entity is enabled
+ */
+inline bool MapEntity::is_enabled() const {
+  return enabled;
+}
+
+/**
+ * \brief Returns true if this entity is about to be deleted.
+ *
+ * When this function returns true, the entity is not
+ * considered to be on the map anymore.
+ *
+ * \return true if this entity is about to be deleted
+ */
+inline bool MapEntity::is_being_removed() const {
+  return being_removed;
+}
+
+/**
+ * \brief Returns whether or not this entity's bounding box overlaps a specified rectangle.
+ * \param rectangle the rectangle to check
+ * \return true if this entity's bounding box overlaps the specified rectangle
+ */
+inline bool MapEntity::overlaps(const Rectangle& rectangle) const {
+  return bounding_box.overlaps(rectangle);
+}
+
+/**
+ * \brief Returns whether or not a point overlaps this entity's bounding box.
+ * \param x x coordinate of the point to check
+ * \param y y coordinate of the point to check
+ * \return true if the point is in this entity's bounding box
+ */
+inline bool MapEntity::overlaps(int x, int y) const {
+  return bounding_box.contains(x, y);
+}
+
+/**
+ * \brief Returns whether or not this entity's bounding box overlaps
+ * another entity's bounding box.
+ * \param other another entity
+ * \return true if this entity's bounding box overlaps the other entity's bounding box
+ */
+inline bool MapEntity::overlaps(const MapEntity& other) const {
+  return overlaps(other.get_bounding_box());
+}
+
 
 #endif
 

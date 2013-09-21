@@ -90,15 +90,6 @@ int SpriteAnimation::get_nb_directions() const {
 }
 
 /**
- * \brief Returns a direction.
- * \param direction the direction
- * \return the sequence of images corresponding to this direction
- */
-const SpriteAnimationDirection* SpriteAnimation::get_direction(int direction) const {
-  return directions[direction];
-}
-
-/**
  * \brief Returns the delay between two frames for this sprite animation.
  * \return the frame delay in milliseconds
  */

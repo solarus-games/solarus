@@ -87,10 +87,16 @@ void LuaContext::remove_menus(int context_index) {
     context = lua_topointer(l, context_index);
   }
 
+  // Some menu:on_finished() callbacks may create menus themselves,
+  // and we don't want those new menus to get removed.
   std::list<LuaMenuData>::iterator it;
   for (it = menus.begin(); it != menus.end(); ++it) {
+    it->recently_added = false;
+  }
+
+  for (it = menus.begin(); it != menus.end(); ++it) {
     int menu_ref = it->ref;
-    if (it->context == context) {
+    if (it->context == context && !it->recently_added) {
       menu_on_finished(menu_ref);
       destroy_ref(menu_ref);
       it->ref = LUA_REFNIL;
@@ -106,15 +112,23 @@ void LuaContext::remove_menus(int context_index) {
  */
 void LuaContext::remove_menus() {
 
+  // Some menu:on_finished() callbacks may create menus themselves,
+  // and we don't want those new menus to get removed.
   std::list<LuaMenuData>::iterator it;
   for (it = menus.begin(); it != menus.end(); ++it) {
+    it->recently_added = false;
+  }
 
-    int menu_ref = it->ref;
-    if (menu_ref != LUA_REFNIL) {
-      menu_on_finished(menu_ref);
-      destroy_ref(menu_ref);
-      it->ref = LUA_REFNIL;
-      it->context = NULL;
+  for (it = menus.begin(); it != menus.end(); ++it) {
+
+    if (!it->recently_added) {
+      int menu_ref = it->ref;
+      if (menu_ref != LUA_REFNIL) {
+        menu_on_finished(menu_ref);
+        destroy_ref(menu_ref);
+        it->ref = LUA_REFNIL;
+        it->context = NULL;
+      }
     }
   }
 }
@@ -147,6 +161,7 @@ void LuaContext::update_menus() {
   std::list<LuaMenuData>::iterator it;
   for (it = menus.begin(); it != menus.end(); ++it) {
 
+    it->recently_added = false;
     if (it->ref == LUA_REFNIL) {
       // LUA_REFNIL on a menu means that we should remove it.
       // In this case, context must also be NULL.
@@ -203,7 +218,7 @@ int LuaContext::menu_api_stop(lua_State* l) {
       menu_ref = ref;
       lua_context.menu_on_finished(menu_ref);
       lua_context.destroy_ref(menu_ref);
-      it->ref = LUA_REFNIL;  // Don't erase it immediately since we may be iterating menus.
+      it->ref = LUA_REFNIL;  // Don't erase it immediately since we may be iterating over menus.
       it->context = NULL;
       break;
     }

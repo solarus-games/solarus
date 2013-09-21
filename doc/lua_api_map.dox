@@ -1480,8 +1480,12 @@ before the treasure's dialog (if any).
 
 \subsection lua_api_map_on_obtained_treasure map:on_obtained_treasure(treasure_item, treasure_variant, treasure_savegame_variable)
 
-Called after the \ref lua_api_hero "hero" has obtained a treasure on this map,
-when the treasure's dialog (if any) finishes.
+Called after the \ref lua_api_hero "hero" has obtained a treasure on this map.
+
+In the case of a brandished treasure, this event is called once the
+treasure's dialog is finished.
+Otherwise, it is called immediately after
+\ref lua_api_map_on_obtaining_treasure "map:on_obtaining_treasure()".
 - \c treasure_item (\ref lua_api_item "item"): Equipment item being obtained.
 - \c treasure_variant (number): Variant of the treasure
   (because some \ref lua_api_item "equipment items"

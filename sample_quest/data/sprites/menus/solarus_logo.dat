@@ -1,0 +1,33 @@
+animation{
+  name = "subtitle",
+  src_image = "menus/solarus_logo.png",
+  directions = {
+    { x = 0, y = 32, frame_width = 201, frame_height = 13, origin_y = -35 },
+  },
+}
+
+animation{
+  name = "sun",
+  src_image = "menus/solarus_logo.png",
+  directions = {
+    { x = 0, y = 45, frame_width = 46, frame_height = 46, origin_x = -24 },
+    { x = 46, y = 45, frame_width = 46, frame_height = 46, origin_x = -24 },
+  },
+}
+
+animation{
+  name = "sword",
+  src_image = "menus/solarus_logo.png",
+  directions = {
+    { x = 92, y = 49, frame_width = 39, frame_height = 39, origin_x = -21, origin_y = -8 },
+  },
+}
+
+animation{
+  name = "title",
+  src_image = "menus/solarus_logo.png",
+  directions = {
+    { x = 0, y = 0, frame_width = 201, frame_height = 32, origin_y = -1 },
+  },
+}
+

@@ -1,6 +1,6 @@
 local game_manager = {}
 
-function game_manager.start_game()
+function game_manager:start_game()
 
   local exists = sol.game.exists("save1.dat")
   local game = sol.game.load("save1.dat")

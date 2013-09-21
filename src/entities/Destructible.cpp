@@ -72,6 +72,7 @@ Destructible::Destructible(
   is_being_cut(false),
   regeneration_date(0),
   is_regenerating(false),
+  modified_ground(features[subtype].special_ground),
   destruction_callback_ref(LUA_REFNIL) {
 
   set_origin(8, 13);
@@ -133,11 +134,7 @@ bool Destructible::is_ground_modifier() const {
  */
 Ground Destructible::get_modified_ground() const {
 
-  if (is_disabled() || is_being_cut) {
-    return GROUND_EMPTY;
-  }
-
-  return features[subtype].special_ground;
+  return modified_ground;
 }
 
 /**
@@ -346,6 +343,7 @@ void Destructible::notify_action_command_pressed() {
 void Destructible::play_destroy_animation() {
 
   is_being_cut = true;
+  modified_ground = GROUND_EMPTY;
   Sound::play(get_destruction_sound_id());
   get_sprite().set_current_animation("destroy");
   if (!is_drawn_in_y_order()) {
@@ -447,6 +445,7 @@ void Destructible::update() {
     get_sprite().set_current_animation("regenerating");
     is_regenerating = true;
     regeneration_date = 0;
+    modified_ground = features[subtype].special_ground;
   }
   else if (is_regenerating && get_sprite().is_animation_finished()) {
     get_sprite().set_current_animation("on_ground");

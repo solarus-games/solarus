@@ -92,6 +92,7 @@ MapEntity::MapEntity():
   direction(0),
   visible(true),
   movement(NULL),
+  movement_events_enabled(true),
   facing_entity(NULL),
   being_removed(false),
   enabled(true),
@@ -126,6 +127,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   direction(0),
   visible(true),
   movement(NULL),
+  movement_events_enabled(true),
   facing_entity(NULL),
   being_removed(false),
   enabled(true),
@@ -159,6 +161,7 @@ MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
   direction(direction),
   visible(true),
   movement(NULL),
+  movement_events_enabled(true),
   facing_entity(NULL),
   being_removed(false),
   enabled(true),
@@ -514,18 +517,6 @@ void MapEntity::notify_being_removed() {
 }
 
 /**
- * \brief Returns true if this entity is about to be deleted.
- *
- * When this function returns true, the entity is not
- * considered to be on the map anymore.
- *
- * \return true if this entity is about to be deleted
- */
-bool MapEntity::is_being_removed() const {
-  return being_removed;
-}
-
-/**
  * \brief Returns the layer of the entity on the map.
  * \return the layer of the entity on the map
  */
@@ -561,6 +552,10 @@ void MapEntity::notify_layer_changed() {
     check_collision_with_detectors(true);
     update_ground_observers();
     update_ground_below();
+
+    if (are_movement_notifications_enabled()) {
+      get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+    }
   }
 }
 
@@ -1222,13 +1217,42 @@ void MapEntity::clear_old_movements() {
 }
 
 /**
+ * \brief Returns whether Lua movement events are enabled for this entity.
+ *
+ * If no, events entity:on_position_changed(), entity:on_obstacle_reached(),
+ * entity:on_movement_changed() and entity:on_movement_finished() won't be
+ * called.
+ *
+ * \return Whether movement events are currently enabled.
+ */
+bool MapEntity::are_movement_notifications_enabled() const {
+  return movement_events_enabled;
+}
+
+/**
+ * \brief Sets whether Lua movement events are enabled for this entity.
+ *
+ * If no, events entity:on_position_changed(), entity:on_obstacle_reached(),
+ * entity:on_movement_changed() and entity:on_movement_finished() won't be
+ * called.
+ *
+ * \param notify \c true to enable movement events.
+ */
+void MapEntity::set_movement_events_enabled(bool notify) {
+  this->movement_events_enabled = notify;
+}
+
+/**
  * \brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  *
  * This function is called only when the movement is not suspended.
- * By default, nothing is done.
  */
 void MapEntity::notify_obstacle_reached() {
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context().entity_on_obstacle_reached(*this, *get_movement());
+  }
 }
 
 /**
@@ -1243,6 +1267,10 @@ void MapEntity::notify_position_changed() {
   check_collision_with_detectors(true);
   update_ground_observers();
   update_ground_below();
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+  }
 }
 
 /**
@@ -1258,7 +1286,7 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
   }
 
   if (get_distance_to_camera() > optimization_distance && optimization_distance > 0) {
-    // Don't check detectors far for the visible area.
+    // Don't check entities far for the visible area.
     return;
   }
 
@@ -1284,7 +1312,7 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
 void MapEntity::check_collision_with_detectors(Sprite& sprite) {
 
   if (get_distance_to_camera() > optimization_distance && optimization_distance > 0) {
-    // don't check detectors far for the visible area
+    // Don't check entities far for the visible area.
     return;
   }
 
@@ -1296,18 +1324,23 @@ void MapEntity::check_collision_with_detectors(Sprite& sprite) {
  * to notify the entity when the movement has just changed
  * (e.g. the speed, the angle or the trajectory).
  *
- * By default, nothing is done.
  * TODO: actually call this function from all movement subclasses
  */
 void MapEntity::notify_movement_changed() {
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context().entity_on_movement_changed(*this, *get_movement());
+  }
 }
 
 /**
  * \brief This function is called when the movement of the entity is finished.
- *
- * By default, nothing is done.
  */
 void MapEntity::notify_movement_finished() {
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context().entity_on_movement_finished(*this);
+  }
 }
 
 /**
@@ -1317,14 +1350,6 @@ void MapEntity::notify_movement_finished() {
  */
 const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
   return directions_to_xy_moves[direction8];
-}
-
-/**
- * \brief Returns whether this entity is enabled.
- * \return true if this entity is enabled
- */
-bool MapEntity::is_enabled() const {
-  return enabled;
 }
 
 /**
@@ -1653,35 +1678,6 @@ bool MapEntity::is_separator_obstacle(Separator& separator) {
  */
 bool MapEntity::is_sword_ignored() {
   return false;
-}
-
-/**
- * \brief Returns whether or not this entity's bounding box overlaps a specified rectangle.
- * \param rectangle the rectangle to check
- * \return true if this entity's bounding box overlaps the specified rectangle
- */
-bool MapEntity::overlaps(const Rectangle& rectangle) const {
-  return bounding_box.overlaps(rectangle);
-}
-
-/**
- * \brief Returns whether or not a point overlaps this entity's bounding box.
- * \param x x coordinate of the point to check
- * \param y y coordinate of the point to check
- * \return true if the point is in this entity's bounding box
- */
-bool MapEntity::overlaps(int x, int y) const {
-  return bounding_box.contains(x, y);
-}
-
-/**
- * \brief Returns whether or not this entity's bounding box overlaps
- * another entity's bounding box.
- * \param other another entity
- * \return true if this entity's bounding box overlaps the other entity's bounding box
- */
-bool MapEntity::overlaps(const MapEntity& other) const {
-  return overlaps(other.get_bounding_box());
 }
 
 /**
@@ -2032,7 +2028,7 @@ void MapEntity::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
  * \brief Returns whether the movement and the animations of this entity are suspended.
  * \return true if the movement and the animations are suspended
  */
-bool MapEntity::is_suspended() {
+bool MapEntity::is_suspended() const {
   return suspended;
 }
 

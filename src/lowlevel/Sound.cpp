@@ -256,8 +256,13 @@ void Sound::update() {
  */
 bool Sound::update_playing() {
 
-  // see whether a source playing this sound has finished playing
-  ALuint source = *sources.begin();
+  // See if this sound is still playing.
+  std::list<ALuint>::iterator it = sources.begin();
+  if (it == sources.end()) {
+    return false;
+  }
+
+  ALuint source = *it;
   ALint status;
   alGetSourcei(source, AL_SOURCE_STATE, &status);
 
@@ -267,7 +272,7 @@ bool Sound::update_playing() {
     alDeleteSources(1, &source);
   }
 
-  return sources.size() != 0;
+  return !sources.empty();
 }
 
 /**

@@ -2622,6 +2622,57 @@ void LuaContext::entity_on_removed(MapEntity& entity) {
 }
 
 /**
+ * \brief Calls the on_position_changed() method of a Lua map entity.
+ * \param entity A map entity.
+ * \param xy The new coordinates.
+ * \param layer The new layer.
+ */
+void LuaContext::entity_on_position_changed(
+    MapEntity& entity, const Rectangle& xy, Layer layer) {
+
+  push_entity(l, entity);
+  on_position_changed(xy, layer);
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_obstacle_reached() method of a Lua map entity.
+ * \param entity A map entity.
+ * \param movement The movement that reached an obstacle.
+ */
+void LuaContext::entity_on_obstacle_reached(
+    MapEntity& entity, Movement& movement) {
+
+  push_entity(l, entity);
+  on_obstacle_reached(movement);
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_movement_changed() method of a Lua map entity.
+ * \param entity A map entity.
+ * \param movement Its movement.
+ */
+void LuaContext::entity_on_movement_changed(
+    MapEntity& entity, Movement& movement) {
+
+  push_entity(l, entity);
+  on_movement_changed(movement);
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_movement_finished() method of a Lua map entity.
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_movement_finished(MapEntity& entity) {
+
+  push_entity(l, entity);
+  on_movement_finished();
+  lua_pop(l, 1);
+}
+
+/**
  * \brief Calls the on_state_changed() method of a Lua hero.
  * \param hero The hero.
  * \param state_name A name describing the new state.
@@ -2631,17 +2682,6 @@ void LuaContext::hero_on_state_changed(
 
   push_hero(l, hero);
   on_state_changed(state_name);
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_movement_finished() method of a Lua NPC.
- * \param npc An NPC.
- */
-void LuaContext::npc_on_movement_finished(NPC& npc) {
-
-  push_npc(l, npc);
-  on_movement_finished();
   lua_pop(l, 1);
 }
 
@@ -2928,56 +2968,6 @@ void LuaContext::enemy_on_post_draw(Enemy& enemy) {
 
   push_enemy(l, enemy);
   on_post_draw();
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_position_changed() method of a Lua enemy.
- * \param enemy An enemy.
- * \param xy The new coordinates.
- * \param layer The new layer.
- */
-void LuaContext::enemy_on_position_changed(
-    Enemy& enemy, const Rectangle& xy, Layer layer) {
-
-  push_enemy(l, enemy);
-  on_position_changed(xy, layer);
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_obstacle_reached() method of a Lua enemy.
- * \param enemy An enemy.
- * \param movement The movement that reached an obstacle.
- */
-void LuaContext::enemy_on_obstacle_reached(Enemy& enemy, Movement& movement) {
-
-  push_enemy(l, enemy);
-  on_obstacle_reached(movement);
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_movement_changed() method of a Lua enemy.
- * \param enemy An enemy.
- * \param movement Its movement.
- */
-void LuaContext::enemy_on_movement_changed(Enemy& enemy,
-    Movement& movement) {
-
-  push_enemy(l, enemy);
-  on_movement_changed(movement);
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_movement_finished() method of a Lua enemy.
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_movement_finished(Enemy& enemy) {
-
-  push_enemy(l, enemy);
-  on_movement_finished();
   lua_pop(l, 1);
 }
 

@@ -525,7 +525,7 @@ int LuaContext::game_api_get_hero(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  if (game == NULL || !game->has_current_map()) {
+  if (game == NULL) {
     lua_pushnil(l);
   }
   else {

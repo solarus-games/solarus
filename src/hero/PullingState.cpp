@@ -60,6 +60,8 @@ void Hero::PullingState::stop(State* next_state) {
 
   if (is_moving_grabbed_entity()) {
     hero.clear_movement();
+    pulled_entity->update();
+    stop_moving_pulled_entity();
   }
 }
 

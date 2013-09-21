@@ -171,6 +171,7 @@
 #  endif
 #endif
 
+#include "config.h"
 #include "Types.h"
 
 #endif

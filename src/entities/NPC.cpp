@@ -200,18 +200,18 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
     Hero& hero = static_cast<Hero&>(entity_overlapping);
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero.is_free()) {
+        && hero.is_free()) {
 
       if (subtype == USUAL_NPC // the hero can talk to usual NPCs from any direction
-	  || get_direction() == -1
-	  || hero.is_facing_direction4((get_direction() + 2) % 4)) {
+          || get_direction() == -1
+          || hero.is_facing_direction4((get_direction() + 2) % 4)) {
 
-	// show the appropriate action icon
-	get_keys_effect().set_action_key_effect(subtype == USUAL_NPC ?
-	    KeysEffect::ACTION_KEY_SPEAK : KeysEffect::ACTION_KEY_LOOK);
+        // show the appropriate action icon
+        get_keys_effect().set_action_key_effect(subtype == USUAL_NPC ?
+            KeysEffect::ACTION_KEY_SPEAK : KeysEffect::ACTION_KEY_LOOK);
       }
       else if (can_be_lifted() && get_equipment().has_ability("lift")) {
-	get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+        get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
       }
     }
   }
@@ -328,8 +328,8 @@ void NPC::notify_position_changed() {
     }
 
     if (get_hero().get_facing_entity() == this &&
-	get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
-	!get_hero().is_facing_point_in(get_bounding_box())) {
+        get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
+        !get_hero().is_facing_point_in(get_bounding_box())) {
 
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }
@@ -344,9 +344,7 @@ void NPC::notify_movement_finished() {
   Detector::notify_movement_finished();
 
   if (subtype == USUAL_NPC) {
-
     get_sprite().set_current_animation("stopped");
-    get_lua_context().npc_on_movement_finished(*this);
   }
 }
 

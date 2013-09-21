@@ -24,14 +24,14 @@
  * \brief Trajectory of the basic jump movement for each direction.
  */
 const std::string JumpMovement::basic_trajectories[8] = {
-    "1 0",	// right
-    "1 -1",	// right-up
-    "0 -1",	// up
-    "-1 -1",	// left-up
-    "-1 0",	// left
-    "-1 1",	// left-down
-    "0 1",	// down
-    "1 1"	// right-down
+  "1 0",    // right
+  "1 -1",   // right-up
+  "0 -1",   // up
+  "-1 -1",  // left-up
+  "-1 0",   // left
+  "-1 1",   // left-down
+  "0 1",    // down
+  "1 1"     // right-down
 };
 
 /**

@@ -146,22 +146,23 @@ Hero& MapEntities::get_hero() {
  */
 Ground MapEntities::get_ground(Layer layer, int x, int y) {
 
-  // First get the ground defined by static tiles (this is very fast).
-  Ground ground = get_tile_ground(layer, x, y);
-
-  // Then, look for entities that may change the ground.
-  std::list<MapEntity*>::const_iterator it;
-  for (it = ground_modifiers[layer].begin(); it != ground_modifiers[layer].end(); it++) {
+  // See if a dynamic entity changes the ground.
+  // TODO store ground modifiers in a quad tree for performance.
+  std::list<MapEntity*>::const_reverse_iterator it;
+  const std::list<MapEntity*>::const_reverse_iterator rend =
+      ground_modifiers[layer].rend();
+  for (it = ground_modifiers[layer].rbegin(); it != rend; ++it) {
     const MapEntity& ground_modifier = *(*it);
-    if (ground_modifier.is_enabled()
-        && !ground_modifier.is_being_removed()
-        && ground_modifier.overlaps(x, y)
-        && ground_modifier.get_modified_ground() != GROUND_EMPTY) {
-      ground = ground_modifier.get_modified_ground();
+    if (ground_modifier.overlaps(x, y)
+        && ground_modifier.get_modified_ground() != GROUND_EMPTY
+        && ground_modifier.is_enabled()
+        && !ground_modifier.is_being_removed()) {
+      return ground_modifier.get_modified_ground();
     }
   }
 
-  return ground;
+  // Otherwise, return the ground defined by static tiles (this is very fast).
+  return get_tile_ground(layer, x, y);
 }
 
 /**

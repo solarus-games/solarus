@@ -27,7 +27,7 @@ Examples of such features are
 \ref lua_api_movement_start "moving an enemy".
 In the opposite way, Solarus will also call your own Lua functions (if you
 define them), for example to notify your script that
-\ref lua_api_enemy_on_obstacle_reached "an enemy has reached an obstacle",
+\ref lua_api_entity_on_obstacle_reached "an enemy has reached an obstacle",
 that \ref lua_api_switch_on_activated "a pressure plate has just been activated"
 or that the \ref lua_api_hero "hero" is
 \ref lua_api_npc_on_interaction "talking to a particular non-playing character".

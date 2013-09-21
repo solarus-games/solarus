@@ -272,33 +272,40 @@ bool VideoManager::set_video_mode(VideoMode mode) {
   else {
     show_cursor = SDL_ENABLE;
   }
-
+  
+  const Rectangle& render_size = mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X ?
+    mode_sizes[WINDOWED_SCALE2X] :
+    mode_sizes[WINDOWED_NORMAL];
   const Rectangle& mode_size = mode_sizes[mode];
 
   if (!disable_window) {
     SDL_Surface* screen_internal_surface = SDL_CreateRGBSurface(0, 
-      mode_size.get_width(),
-      mode_size.get_height(), 
+      render_size.get_width(),
+      render_size.get_height(), 
       32,
-      0x00FF000,
+      0x00FF0000,
       0x0000FF00,
       0x000000FF,
       0xFF000000);
+    
+    Debug::check_assertion(screen_internal_surface != NULL, StringConcat() <<
+      "Cannot create the video surface for mode " << get_video_mode_name(mode));
+    
+    delete this->screen_surface;
+    this->screen_surface = new Surface(screen_internal_surface);
     
     if(screen_texture)
       SDL_DestroyTexture(screen_texture);
     screen_texture = SDL_CreateTexture(main_renderer,
       SDL_PIXELFORMAT_ARGB8888,
       SDL_TEXTUREACCESS_STREAMING,
-      mode_size.get_width(),
-      mode_size.get_height());
-
-    Debug::check_assertion(screen_texture != NULL, StringConcat() <<
-        "Cannot create the video surface for mode " << get_video_mode_name(mode));
-
+      render_size.get_width(),
+      render_size.get_height());
+    
+    SDL_SetWindowSize(main_window, mode_size.get_width(), mode_size.get_height());
+    if(is_fullscreen(mode))
+      SDL_SetWindowFullscreen(main_window, SDL_WINDOW_FULLSCREEN);
     SDL_ShowCursor(show_cursor);
-    delete this->screen_surface;
-    this->screen_surface = new Surface(screen_internal_surface);
   }
   this->video_mode = mode;
 

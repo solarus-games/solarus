@@ -19,6 +19,8 @@ package org.solarus.editor;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * Utility class to make easy some common operations related to the files:
@@ -204,6 +206,46 @@ public class FileTools {
                 throw exc;
             }
         }
+    }
+
+    /**
+     * Extracts the content of a zip file into a directory.
+     * @param zipFile Path of the zip file to extract, relative to the
+     * quest editor directory.
+     * @param destinationPath Where to extract the zip.
+     * @throws IOException If the extraction failed.
+     */
+    public static void extractZipFile(String zipFile, String destinationPath)
+            throws IOException {
+
+        InputStream input = FileTools.class.getResourceAsStream("/" + zipFile);
+        if (input == null) {
+            throw new IOException("Cannot open zip file '" + zipFile + "'");
+        }
+        ZipInputStream zipStream = new ZipInputStream(input);
+        ZipEntry entry;
+
+        int bufferSize = 4096;
+        while ((entry = zipStream.getNextEntry()) != null) {
+
+            File destinationFile = new File(destinationPath, entry.getName());
+
+            // Create the parent directories needed.
+            destinationFile.getParentFile().mkdirs();
+
+            if (!entry.isDirectory()) {
+                int bytesRead;
+                byte data[] = new byte[bufferSize];
+                BufferedOutputStream output = new BufferedOutputStream(
+                        new FileOutputStream(destinationFile));
+                while ((bytesRead = zipStream.read(data, 0, bufferSize)) != -1) {
+                    output.write(data, 0, bytesRead);
+                }
+                output.flush();
+                output.close();
+            }
+        }
+        zipStream.close();
     }
 }
 

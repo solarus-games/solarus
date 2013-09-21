@@ -107,8 +107,11 @@ public class Project {
         if (project.getQuestPropertiesFile().exists()) {
             throw new QuestEditorException("A project already exists in this directory");
         }
-        setCurrentProject(project);
+
         project.createInitialFiles();
+        project.questProperties.load();
+        project.resourceDatabase.load();
+        setCurrentProject(project);
     }
 
     /**
@@ -659,10 +662,11 @@ public class Project {
 
         try {
             // Data directory.
-            File dataDir = new File(getDataPath());
+            String dataPath = projectPath + "/data";
+            File dataDir = new File(dataPath);
             if (!dataDir.exists()) {
                 if (!dataDir.mkdir()) {
-                    throw new QuestEditorException("Failed to create the \"data\" directory");
+                    throw new IOException("Failed to create the \"data\" directory");
                 }
             }
     
@@ -671,112 +675,16 @@ public class Project {
             if (resourceDatabaseFile.exists()) {
                 // This file determines whether the project exists or not.
                 // Therefore, it must not exist in this function.
-                throw new QuestEditorException("Failed to create the resource database file '"
-                        + resourceDatabaseFile.getPath() + "'");
+                throw new QuestEditorException("A project already exists in this directory.");
             }
 
-            // Create the various needed files if not existing.
-            createInitialResourceDatabaseFile();
-            createInitialQuestPropertiesFile();
-            createInitialMainScriptFile();
-            getLanguageDir().mkdir();
-            getLanguageDir("en").mkdir();
-            getLanguageImageDir("en").mkdir();
-            getLanguageTextDir("en").mkdir();
-            getDialogsFile("en").createNewFile();
-            getStringsFile("en").createNewFile();
-            getTextDir().mkdir();
-            getFontsFile().createNewFile();
-            getMusicDir().mkdir();
-            getSoundDir().mkdir();
-            getSpriteDir().mkdir();
-            getItemDir().mkdir();
-            getMapDir().mkdir();
-            getTilesetDir().mkdir();
-            getEnemyDir().mkdir();
+            // Create the various initial files.
+            FileTools.extractZipFile("initial_quest/data.solarus.zip", dataPath);
         }
         catch (IOException ex) {
             ex.printStackTrace();
-            throw new QuestEditorException(ex.getMessage());
+            throw new QuestEditorException("Failed to extract data.solarus.zip: " + ex.getMessage());
         }
-    }
-
-    /**
-     * Creates the initial project_db.dat file for a new project.
-     * @throw IOException If something went wrong while creating the file.
-     */
-    private void createInitialResourceDatabaseFile() throws IOException{
-
-        File file = getResourceDatabaseFile();
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-
-        out.println("language{ id = \"en\", description = \"English\" }");
-        out.println();
-
-        out.close();
-    }
-
-    /**
-     * Creates the initial quest.dat file for a new project.
-     * @throw IOException If something went wrong while creating the file.
-     */
-    private void createInitialQuestPropertiesFile() throws IOException{
-
-        File file = getQuestPropertiesFile();
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-
-        out.println("quest{");
-        out.println("  -- Format of your quest data files. You should not change this unless you");
-        out.println("  -- know what you are doing.");
-        out.println("  solarus_version = \"" + solarusFormat + "\",");
-        out.println();
-        out.println("  -- Directory where your quest will write its savegames and setting files.");
-        out.println("  -- It will be a subdirectory of '$HOME/.solarus/', automatically created by");
-        out.println("  -- the engine. Its name should identify your quest, to avoid confusion with");
-        out.println("  -- other Solarus quests that might also be installed on the user's machine.");
-        out.println("  -- You must define it before you can use savegames or setting files.");
-        out.println("  -- Uncomment the line below and set its value to the name of that directory:");
-        out.println("  -- write_dir = \"\",");
-        out.println();
-        out.println("  -- Title of the window. You should probably put the title of your game here.");
-        out.println("  title_bar = \"A game made with Solarus. Edit quest.dat to change this title!\",");
-        out.println("}");
-        out.println();
-
-        out.close();
-    }
-
-    /**
-     * Creates the initial main.lua script for a new project.
-     * @throw IOException If something went wrong while creating the file.
-     */
-    private void createInitialMainScriptFile() throws IOException{
-
-        File file = getMainScriptFile();
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-
-        out.println("-- This is the main Lua script of your project.");
-        out.println("-- You will probably make a title screen and then start a game.");
-        out.println("-- See the Lua API! http://www.solarus-games.org/solarus/documentation/");
-        out.println();
-        out.println("-- Below is just an example of quest that does almost nothing.");
-        out.println("-- Feel free to change this!");
-        out.println("function sol.main:on_started()");
-        out.println("  -- This function is called when Solarus starts.");
-        out.println("  print(\"Welcome to my quest.\")");
-        out.println("");
-        out.println("  -- Setting a language is useful for displaying text and dialogs.");
-        out.println("  sol.language.set_language(\"en\")");
-        out.println("end");
-        out.println("");
-        out.println("function sol.main:on_finished()");
-        out.println("  -- This function is called when Solarus stops or is reset.");
-        out.println("  print(\"See you!\")");
-        out.println("end");
-        out.println("");
-        out.println("");
-
-        out.close();
     }
 
     /**

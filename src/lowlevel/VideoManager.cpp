@@ -115,6 +115,7 @@ VideoManager::VideoManager(
     const Rectangle& wanted_quest_size):
   disable_window(disable_window),
   video_mode(NO_MODE),
+  screen_surface(NULL),
   screen_texture(NULL),
   enlargment_factor(1),
   offset_x(0),
@@ -141,6 +142,7 @@ VideoManager::VideoManager(
  */
 VideoManager::~VideoManager() {
 
+  delete screen_surface;
   if(screen_texture)
     SDL_DestroyTexture(screen_texture);
   SDL_DestroyRenderer(main_renderer);
@@ -295,15 +297,15 @@ bool VideoManager::set_video_mode(VideoMode mode) {
   offset_y = (mode_size.get_height() - scaled_quest_size.get_height()) / 2;
 
   if (!disable_window) {
-    //DEBUG may be useful for color-mapping
-    /*SDL_Surface* screen_internal_surface = SDL_CreateRGBSurface(0, 
-                                                                mode_size.get_width(),
-                                                                mode_size.get_height(), 
-                                                                32,
-                                                                0x00FF000,
-                                                                0x0000FF00,
-                                                                0x000000FF,
-                                                                0xFF000000);*/
+    SDL_Surface* screen_internal_surface = SDL_CreateRGBSurface(0, 
+      mode_size.get_width(),
+      mode_size.get_height(), 
+      32,
+      0x00FF000,
+      0x0000FF00,
+      0x000000FF,
+      0xFF000000);
+    
     if(screen_texture)
       SDL_DestroyTexture(screen_texture);
     screen_texture = SDL_CreateTexture(main_renderer,
@@ -316,6 +318,8 @@ bool VideoManager::set_video_mode(VideoMode mode) {
         "Cannot create the video surface for mode " << get_video_mode_name(mode));
 
     SDL_ShowCursor(show_cursor);
+    delete this->screen_surface;
+    this->screen_surface = new Surface(screen_internal_surface);
   }
   this->video_mode = mode;
 
@@ -388,19 +392,39 @@ void VideoManager::draw(Surface& quest_surface) {
     return;
   }
   
-  SDL_Surface* quest_sdl_surface = quest_surface.get_internal_surface();
   if (video_mode == WINDOWED_SCALE2X
       || video_mode == FULLSCREEN_SCALE2X) {
-    //draw_scale2x(quest_surface);
+    draw_scale2x(quest_surface);
+  }
+  else {
+    draw_unscaled(quest_surface);
   }
   
   //Update the internal texture with the given 
-  SDL_UpdateTexture(screen_texture, NULL, quest_sdl_surface->pixels, quest_sdl_surface->pitch);
+  SDL_Surface* screen_sdl_surface = screen_surface.get_internal_surface();
+  SDL_UpdateTexture(screen_texture, NULL, screen_sdl_surface->pixels, screen_sdl_surface->pitch);
   SDL_RenderClear(main_renderer);
   SDL_RenderCopy(main_renderer, screen_texture, NULL, NULL);
   SDL_RenderPresent(main_renderer);
 }
   
+/**
+ * \brief Draws the quest surface on the screen at its size.
+ *
+ * Black bars are added if the screen is bigger than the quest size.
+ *
+ * \param quest_surface The quest surface to draw.
+ */
+void VideoManager::draw_unscaled(Surface& quest_surface) {
+
+  if (offset_x == 0 && offset_y == 0) {
+    quest_surface.draw(*screen_surface);
+  }
+  else {
+    quest_surface.draw(*screen_surface, Rectangle(offset_x, offset_y));
+  }
+}
+
 /**
  * \brief Draws the quest surface on the screen, scaled the image by
  * a factor of 2 with the Scale2x algorithm.

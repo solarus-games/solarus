@@ -47,13 +47,13 @@ else()
     set(SOLARUS_BUNDLE_INFOPLIST      "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/apple/OSX-Info.plist")
   endif()
 
-  # Remove the hardcoded additional link on SDL path
-  string(REPLACE "-framework Cocoa" "" SDL_FRAMEWORK "${SDL_LIBRARY}") 
+  # Remove the hardcoded additional link on SDL2 path
+  string(REPLACE "-framework Cocoa" "" SDL2_FRAMEWORK "${SDL2_LIBRARY}") 
 
   set(SOLARUS_BUNDLE_COPIED_LIBRARIES
-    ${SDL_FRAMEWORK} 
-    ${SDLIMAGE_LIBRARY} 
-    ${SDLTTF_LIBRARY}
+    ${SDL2_FRAMEWORK} 
+    ${SDL2_IMAGE_LIBRARY} 
+    ${SDL2_TTF_LIBRARY}
     ${VORBISFILE_LIBRARY} 
     ${OGG_LIBRARY} 
     ${PHYSFS_LIBRARY} 

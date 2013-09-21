@@ -12,10 +12,6 @@
 # module will attempt to locate and set the the proper link flags
 # as part of the returned SDL2_LIBRARY variable.
 #
-# Don't forget to include SDL2main.h and SDL2main.m your project for the
-# OS X framework based version. (Other versions link to -lSDL2main which
-# this module will try to find on your behalf.) Also for OS X, this
-# module will automatically add the -framework Cocoa on your behalf.
 #
 #
 # Additional Note: If you see an empty SDL2_LIBRARY_TEMP in your configuration

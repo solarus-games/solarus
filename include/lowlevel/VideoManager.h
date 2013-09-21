@@ -87,10 +87,11 @@ class VideoManager {
 
     void initialize_video_modes();
 
-    void draw_unscaled(Surface& quest_surface);
     void draw_scale2x(Surface& quest_surface);
 
     static VideoManager* instance;          /**< The only instance. */
+    static SDL_Window* main_window;         /**< The window. */
+    static SDL_Renderer* main_renderer;     /**< The screen renderer. */
 
     bool disable_window;                    /**< Indicates that no window is displayed (used for unit tests). */
     std::map<VideoMode, Rectangle>
@@ -98,7 +99,8 @@ class VideoManager {
                                              * video mode with the current quest size. */
 
     VideoMode video_mode;                   /**< Current display mode. */
-    Surface* screen_surface;                /**< The screen surface. */\
+    Surface* screen_surface;                /**< The screen surface. */
+    SDL_Texture* screen_texture;            /**< The screen texture. */
 
     int enlargment_factor;                  /**< 1 if the quest surface it not stretched or scaled,
                                              * 2 if it is stretched or scaled by a factor of 2. */

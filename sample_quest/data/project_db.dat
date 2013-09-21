@@ -59,7 +59,6 @@ sound{ id = "monster_hurt", description = "monster_hurt" }
 sound{ id = "picked_item", description = "picked_item" }
 sound{ id = "running", description = "running" }
 sound{ id = "shield", description = "shield" }
-sound{ id = "solarus_logo", description = "Solarus logo" }
 sound{ id = "splash", description = "splash" }
 sound{ id = "stairs_down_end", description = "stairs_down_end" }
 sound{ id = "stairs_down_start", description = "stairs_down_start" }

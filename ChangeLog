@@ -133,7 +133,7 @@ Solarus Quest Editor changes
 * Add tooltips to the add entity toolbar.
 * Simplify the add entity toolbar by showing only one icon per entity type.
 * Survive when images cannot be found (#256).
-* Create more initial directories when creating a new quest (#258).
+* Create more content when creating a new quest (#258, #279).
 * Improve error messages.
 * Fix a crash when creating a destructible without tileset selected (#283).
 

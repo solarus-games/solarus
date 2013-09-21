@@ -211,7 +211,7 @@ tile_pattern{
 
 tile_pattern{
   id = 22,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 16,
   y = 40,
@@ -221,7 +221,7 @@ tile_pattern{
 
 tile_pattern{
   id = 23,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 32,
   y = 40,
@@ -231,7 +231,7 @@ tile_pattern{
 
 tile_pattern{
   id = 24,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 48,
   y = 40,
@@ -241,7 +241,7 @@ tile_pattern{
 
 tile_pattern{
   id = 25,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 64,
   y = 40,
@@ -391,7 +391,7 @@ tile_pattern{
 
 tile_pattern{
   id = 40,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 64,
   y = 64,
@@ -431,7 +431,7 @@ tile_pattern{
 
 tile_pattern{
   id = 44,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 0,
   y = 136,
@@ -441,7 +441,7 @@ tile_pattern{
 
 tile_pattern{
   id = 45,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 16,
   y = 176,
@@ -451,7 +451,7 @@ tile_pattern{
 
 tile_pattern{
   id = 46,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 64,
   y = 136,
@@ -481,7 +481,7 @@ tile_pattern{
 
 tile_pattern{
   id = 49,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 112,
   y = 96,
@@ -491,7 +491,7 @@ tile_pattern{
 
 tile_pattern{
   id = 50,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 128,
   y = 96,
@@ -501,7 +501,7 @@ tile_pattern{
 
 tile_pattern{
   id = 51,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 144,
   y = 96,
@@ -511,7 +511,7 @@ tile_pattern{
 
 tile_pattern{
   id = 52,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 160,
   y = 96,
@@ -521,7 +521,7 @@ tile_pattern{
 
 tile_pattern{
   id = 53,
-  ground = "traversable",
+  ground = "low_wall",
   default_layer = 0,
   x = 112,
   y = 112,
@@ -531,7 +531,7 @@ tile_pattern{
 
 tile_pattern{
   id = 54,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 128,
   y = 112,
@@ -541,7 +541,7 @@ tile_pattern{
 
 tile_pattern{
   id = 55,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 112,
   y = 128,
@@ -551,7 +551,7 @@ tile_pattern{
 
 tile_pattern{
   id = 56,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 128,
   y = 128,
@@ -561,7 +561,7 @@ tile_pattern{
 
 tile_pattern{
   id = 57,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 144,
   y = 120,
@@ -571,7 +571,7 @@ tile_pattern{
 
 tile_pattern{
   id = 58,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 160,
   y = 120,
@@ -581,7 +581,7 @@ tile_pattern{
 
 tile_pattern{
   id = 59,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 112,
   y = 144,
@@ -591,7 +591,7 @@ tile_pattern{
 
 tile_pattern{
   id = 60,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 128,
   y = 144,
@@ -601,7 +601,7 @@ tile_pattern{
 
 tile_pattern{
   id = 61,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 144,
   y = 144,
@@ -611,7 +611,7 @@ tile_pattern{
 
 tile_pattern{
   id = 62,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 160,
   y = 144,
@@ -621,7 +621,7 @@ tile_pattern{
 
 tile_pattern{
   id = 63,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 176,
   y = 136,
@@ -631,7 +631,7 @@ tile_pattern{
 
 tile_pattern{
   id = 64,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 192,
   y = 128,
@@ -641,7 +641,7 @@ tile_pattern{
 
 tile_pattern{
   id = 65,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 240,
   y = 128,
@@ -651,7 +651,7 @@ tile_pattern{
 
 tile_pattern{
   id = 66,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 256,
   y = 128,
@@ -801,7 +801,7 @@ tile_pattern{
 
 tile_pattern{
   id = 81,
-  ground = "wall",
+  ground = "low_wall",
   default_layer = 0,
   x = 0,
   y = 40,

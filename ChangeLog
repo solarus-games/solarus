@@ -26,6 +26,7 @@ Engine changes
 * Fix an error when loading sounds (#236). Sounds were working anyway.
 * Fix a possible memory error when playing sounds.
 * Fix blocks that continue to follow the hero after picking a treasure (#284).
+* Fix on_obtained() that was not called for non-brandished treasures (#295).
 * Jumpers can no longer be activated the opposite way when in water.
 * Jumpers are now activated after a slight delay (#253).
 * Sensors no longer automatically reset the hero's movement (#292).

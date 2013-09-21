@@ -139,7 +139,10 @@ VideoManager::VideoManager(
  */
 VideoManager::~VideoManager() {
 
-  SDL_DestroyTexture(screen_texture);
+  if(screen_texture)
+    SDL_DestroyTexture(screen_texture);
+  SDL_DestroyRenderer(main_renderer);
+  SDL_DestroyWindow(main_window);
 }
 
 /**

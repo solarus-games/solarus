@@ -122,9 +122,11 @@ VideoManager::VideoManager(
   wanted_quest_size(wanted_quest_size) {
 
   // Initialize the window.
-    const std::string& window_title = std::string("Solarus ") + SOLARUS_VERSION;
-  main_window = SDL_CreateWindow(window_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                   wanted_quest_size.get_width(), wanted_quest_size.get_height(), SDL_WINDOW_SHOWN);
+  const std::string& window_title = std::string("Solarus ") + SOLARUS_VERSION;
+  main_window = SDL_CreateWindow(window_title.c_str(), 
+    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    wanted_quest_size.get_width(), wanted_quest_size.get_height(), 
+    SDL_WINDOW_SHOWN);
     
   main_renderer = SDL_CreateRenderer(main_window, -1, 0);
   if(!main_renderer)

@@ -622,7 +622,7 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& 
  * \brief Returns whether this event is a text event.
  * \return true if this event corresponds to entered text.
  */
-bool InputEvent::is_text_event() {
+bool InputEvent::is_character_pressed() {
 
   return internal_event.type == SDL_TEXTINPUT;
 }

@@ -29,7 +29,7 @@ NSAutoreleasePool* solarus_pool = nil;
 /**
  * @brief Initialize and allocate the NSAutoreleasePool object.
  *
- * Allow to use the Cocoa’s reference-counted memory management system on Cocoa objects.
+ * Allow to use the Cocoa's reference-counted memory management system on Cocoa objects.
  */
 void initPool()
 {

@@ -1689,7 +1689,7 @@ bool LuaContext::on_input(InputEvent& event) {
       handled = on_key_released(event) || handled;
     }
   }
-  else if (event.is_text_event()) {
+  else if (event.is_character_pressed()) {
     handled = on_character_pressed(event) || handled;
   }
   else if (event.is_joypad_event()) {

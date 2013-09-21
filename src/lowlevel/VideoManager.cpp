@@ -117,9 +117,6 @@ VideoManager::VideoManager(
   video_mode(NO_MODE),
   screen_surface(NULL),
   screen_texture(NULL),
-  enlargment_factor(1),
-  offset_x(0),
-  offset_y(0),
   wanted_quest_size(wanted_quest_size) {
 
   // Initialize the window.
@@ -278,24 +275,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
 
   const Rectangle& mode_size = mode_sizes[mode];
 
-  if (mode_size.get_width() < 2 * quest_size.get_width()
-      || mode_size.get_height() < 2 * quest_size.get_height()) {
-    // The quest surface will be rendered directly.
-    enlargment_factor = 1;
-  }
-  else {
-    // The quest surface will be rendered stretched or scaled.
-    enlargment_factor = 2;
-  }
-
-  Rectangle scaled_quest_size(0, 0,
-      quest_size.get_width() * enlargment_factor,
-      quest_size.get_height() * enlargment_factor);
-
-  // Add black bars if needed.
-  offset_x = (mode_size.get_width() - scaled_quest_size.get_width()) / 2;
-  offset_y = (mode_size.get_height() - scaled_quest_size.get_height()) / 2;
-
   if (!disable_window) {
     SDL_Surface* screen_internal_surface = SDL_CreateRGBSurface(0, 
       mode_size.get_width(),
@@ -309,10 +288,10 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     if(screen_texture)
       SDL_DestroyTexture(screen_texture);
     screen_texture = SDL_CreateTexture(main_renderer,
-                                       SDL_PIXELFORMAT_ARGB8888,
-                                       SDL_TEXTUREACCESS_STREAMING,
-                                       mode_size.get_width(),
-                                       mode_size.get_height());
+      SDL_PIXELFORMAT_ARGB8888,
+      SDL_TEXTUREACCESS_STREAMING,
+      mode_size.get_width(),
+      mode_size.get_height());
 
     Debug::check_assertion(screen_texture != NULL, StringConcat() <<
         "Cannot create the video surface for mode " << get_video_mode_name(mode));
@@ -322,9 +301,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     this->screen_surface = new Surface(screen_internal_surface);
   }
   this->video_mode = mode;
-
-  //std::cout << "Set mode " << get_video_mode_name(mode) << ": offset = "
-  //  << offset_x << "," << offset_y << ", factor: " << enlargment_factor << std::endl;
 
   return true;
 }
@@ -400,7 +376,7 @@ void VideoManager::draw(Surface& quest_surface) {
     draw_unscaled(quest_surface);
   }
   
-  //Update the internal texture with the internal surface, and render it
+  // Update the internal texture with the internal surface, and render it.
   SDL_Surface* screen_sdl_surface = screen_surface->get_internal_surface();
   SDL_UpdateTexture(screen_texture, NULL, screen_sdl_surface->pixels, screen_sdl_surface->pitch);
   SDL_RenderClear(main_renderer);
@@ -417,12 +393,7 @@ void VideoManager::draw(Surface& quest_surface) {
  */
 void VideoManager::draw_unscaled(Surface& quest_surface) {
 
-  if (offset_x == 0 && offset_y == 0) {
-    quest_surface.draw(*screen_surface);
-  }
-  else {
-    quest_surface.draw(*screen_surface, Rectangle(offset_x, offset_y));
-  }
+  quest_surface.draw(*screen_surface);
 }
 
 /**
@@ -444,9 +415,9 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
     uint32_t* src = (uint32_t*) src_internal_surface->pixels;
     uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
 
-    const int end_row_increment = 2 * offset_x + dst_internal_surface->w;
+    const int end_row_increment = dst_internal_surface->w;
 
-    int e1 = dst_internal_surface->w * offset_y + offset_x;
+    int e1 = dst_internal_surface->w;
     int e2, e3, e4;
     int b, d, e = 0, f,  h;
     for (int row = 0; row < quest_size.get_height(); row++) {

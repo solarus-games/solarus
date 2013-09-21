@@ -97,16 +97,11 @@ class VideoManager {
         mode_sizes;                         /**< Size of the screen surface for each supported
                                              * video mode with the current quest size. */
 
-    VideoMode video_mode;                   /**< Current display mode. */
     SDL_Window* main_window;                /**< The window. */
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
     Surface* screen_surface;                /**< The screen surface. */
     SDL_Texture* screen_texture;            /**< The screen texture. */
-
-    int enlargment_factor;                  /**< 1 if the quest surface it not stretched or scaled,
-                                             * 2 if it is stretched or scaled by a factor of 2. */
-    int offset_x;                           /**< Width of black vertical bars added in the current resolution. */
-    int offset_y;                           /**< Height of black horizontal bars added in the current resolution. */
+    VideoMode video_mode;                   /**< Current display mode. */
 
     Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */
     Rectangle min_quest_size;               /**< Minimum value of quest_size (depends on the quest). */

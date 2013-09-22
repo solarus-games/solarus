@@ -187,7 +187,7 @@ if(GCWZERO)
   add_definitions(-DGCWZERO)
 endif()
 
-if(PANDORA OR CAANOO OR GCWZERO)
+if(CAANOO OR GCWZERO)
   set(INITIAL_COLOR_DEPTH 16)
 else()
   set(INITIAL_COLOR_DEPTH 32)

@@ -185,8 +185,8 @@ TextSurface::TextSurface(int x, int y):
  * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
 TextSurface::TextSurface(int x, int y,
-			 TextSurface::HorizontalAlignment horizontal_alignment,
-			 TextSurface::VerticalAlignment vertical_alignment):
+    TextSurface::HorizontalAlignment horizontal_alignment,
+    TextSurface::VerticalAlignment vertical_alignment):
   Drawable(),
   font_id(default_font_id),
   horizontal_alignment(horizontal_alignment),
@@ -288,7 +288,7 @@ void TextSurface::set_vertical_alignment(VerticalAlignment vertical_alignment) {
  * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
 void TextSurface::set_alignment(HorizontalAlignment horizontal_alignment,
-				  VerticalAlignment vertical_alignment) {
+    VerticalAlignment vertical_alignment) {
   this->horizontal_alignment = horizontal_alignment;
   this->vertical_alignment = vertical_alignment;
 

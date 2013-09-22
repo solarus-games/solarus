@@ -5,13 +5,6 @@ SET(CMAKE_SYSTEM_NAME Linux)
 SET(CMAKE_C_COMPILER   /opt/pandora-toolchain/bin/arm-none-linux-gnueabi-gcc)
 SET(CMAKE_CXX_COMPILER /opt/pandora-toolchain/bin/arm-none-linux-gnueabi-g++)
 
-SET(CMAKE_BUILD_TYPE release)
-SET(CMAKE_CXX_FLAGS "-O3 -pipe -march=armv7-a -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp -ftree-vectorize -ffast-math -fsingle-precision-constant -fsigned-char -I${PND_SDK}/usr/include")
-SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS}")
-SET(CMAKE_CXX_FLAGS_RELEASE "-O3 -pipe -march=armv7-a -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp -ftree-vectorize -ffast-math -fsingle-precision-constant -fsigned-char -I${PND_SDK}/usr/include")
-SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
-set(CXX_DEFINES "-DPANDORA -DHAVE_GLES")
-
 # where is the target environment 
 SET(CMAKE_FIND_ROOT_PATH  /opt/pandora-toolchain/)
 
@@ -21,3 +14,9 @@ SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM BOTH)
 SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
+#usage sample with the sample case "wesnoth":
+#current 1.10 setup:
+#PATH=/home/christophe/pandora-dev/arm-2011.09/usr/bin:$PATH CFLAGS="-DPANDORA -O3 -pipe -march=armv7-a -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=softfp" CXXFLAGS="-DPANDORA -O3 -pipe -march=armv7-a -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=softfp" cmake -DCMAKE_BUILD_TYPE=release -DENABLE_STRICT_COMPILATION=off -DCMAKE_TOOLCHAIN_FILE=/home/christophe/pandora-dev/sdk_utils/PandoraToolchain.cmake -DPKG_CONFIG_EXECUTABLE=/home/christophe/pandora-dev/arm-2011.09/bin/arm-none-linux-gnueabi-pkg-config -DSDL_CONFIG=/home/christophe/pandora-dev/arm-2011.09/usr/bin/sdl-config -DLIBINTL_INCLUDE_DIR=/home/christophe/pandora-dev/arm-2011.09/arm-none-linux-gnueabi/libc/usr/include/ -DPREFERENCES_DIR=wesnoth-1.10_userdata ../wesnoth-1.10.x
+#
+#current 1.11 setup:
+#PATH=/home/christophe/pandora-dev/arm-2011.09/usr/bin:$PATH CFLAGS="-DPANDORA -O3 -pipe -march=armv7-a -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=softfp" CXXFLAGS="-DPANDORA -O3 -pipe -march=armv7-a -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=softfp" cmake -DCMAKE_BUILD_TYPE=release -DENABLE_STRICT_COMPILATION=off -DCMAKE_TOOLCHAIN_FILE=/home/christophe/pandora-dev/sdk_utils/PandoraToolchain.cmake -DPKG_CONFIG_EXECUTABLE=/home/christophe/pandora-dev/arm-2011.09/bin/arm-none-linux-gnueabi-pkg-config -DSDL_CONFIG=/home/christophe/pandora-dev/arm-2011.09/usr/bin/sdl-config -DLIBINTL_INCLUDE_DIR=/home/christophe/pandora-dev/arm-2011.09/arm-none-linux-gnueabi/libc/usr/include/ -DPREFERENCES_DIR=wesnoth-1.11_userdata ../wesnoth-1.11.x

@@ -1192,7 +1192,7 @@ void MapEntity::clear_old_movements() {
  * \return Whether movement events are currently enabled.
  */
 bool MapEntity::are_movement_notifications_enabled() const {
-  return movement_events_enabled;
+  return main_loop != NULL && movement_events_enabled;
 }
 
 /**

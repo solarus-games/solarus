@@ -426,7 +426,7 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
 
     const int end_row_increment = dst_internal_surface->w;
 
-    int e1 = dst_internal_surface->w;
+    int e1 = 0;
     int e2, e3, e4;
     int b, d, e = 0, f,  h;
     for (int row = 0; row < quest_size.get_height(); row++) {

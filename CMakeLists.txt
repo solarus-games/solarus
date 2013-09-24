@@ -101,6 +101,7 @@ endif()
 
 # generate -I flags
 include_directories(
+  ${CMAKE_BINARY_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/snes_spc
   ${SDL_INCLUDE_DIR}
@@ -137,7 +138,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   # Force to be the less pedantic possible with the Release build
-  set(CMAKE_CXX_FLAGS "-Wno-error -Wno-all -Wno-unknown-pragmas")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-all -Wno-unknown-pragmas")
 
   # Some "no-warning" flags are not supported with gcc < 4.0
   if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)

@@ -85,6 +85,7 @@ class VideoManager {
     VideoManager(bool disable_window, const Rectangle& wanted_quest_size);
     ~VideoManager();
 
+    Rectangle find_closest_fullscreen_resolution(const Rectangle& surface_size);
     void initialize_video_modes();
 
     void draw_unscaled(Surface& quest_surface);

@@ -266,10 +266,13 @@ bool VideoManager::set_video_mode(VideoMode mode) {
   }
 
   int show_cursor;
+  Uint32 fullscreen_flag;
   if (is_fullscreen(mode)) {
+    fullscreen_flag = SDL_WINDOW_FULLSCREEN;
     show_cursor = SDL_DISABLE;
   }
   else {
+    fullscreen_flag = 0;
     show_cursor = SDL_ENABLE;
   }
   
@@ -303,8 +306,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
       render_size.get_height());
     
     SDL_SetWindowSize(main_window, mode_size.get_width(), mode_size.get_height());
-    if(is_fullscreen(mode))
-      SDL_SetWindowFullscreen(main_window, SDL_WINDOW_FULLSCREEN);
+    SDL_SetWindowFullscreen(main_window, fullscreen_flag);
     SDL_ShowCursor(show_cursor);
   }
   this->video_mode = mode;
@@ -606,6 +608,26 @@ void VideoManager::set_quest_size_range(
 }
 
 /**
+ * \brief Returns the closest fullscreen resolution greater than or equal to
+ * the specified size.
+ * \param surface_size The size of the surface to fit.
+ * \return The lowest fullscreen resolution that can contain this surface.
+ */
+Rectangle VideoManager::find_closest_fullscreen_resolution(const Rectangle& surface_size) {
+  
+  // Find the closest fullscreen resolution that can contain the requested size.
+  SDL_DisplayMode target = {surface_size.get_width(), surface_size.get_height(), 0, 0, 0};
+  SDL_DisplayMode closest;
+  
+  if(!SDL_GetClosestDisplayMode(0, &target, &closest)) {
+    Debug::error(StringConcat() << "No suitable display mode was found for size" 
+      << surface_size.get_width() << "x" << surface_size.get_height());
+  }
+     
+  return Rectangle(0, 0, closest.w, closest.h);
+}
+     
+/**
  * \brief Detects the available resolutions and initializes the properties
  * of video modes.
  */
@@ -617,8 +639,8 @@ void VideoManager::initialize_video_modes() {
   mode_sizes[WINDOWED_STRETCHED] = twice_quest_size;
   mode_sizes[WINDOWED_SCALE2X] = twice_quest_size;
   mode_sizes[WINDOWED_NORMAL] = quest_size;
-
-  mode_sizes[FULLSCREEN_NORMAL] = quest_size;
-  mode_sizes[FULLSCREEN_SCALE2X] = twice_quest_size;
+  
+  mode_sizes[FULLSCREEN_SCALE2X] = find_closest_fullscreen_resolution(twice_quest_size);
+  mode_sizes[FULLSCREEN_NORMAL] = find_closest_fullscreen_resolution(quest_size);
 }
 

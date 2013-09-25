@@ -140,6 +140,7 @@ Solarus Quest Editor changes
 * Create more content when creating a new quest (#258, #279).
 * Improve error messages.
 * Fix a crash when creating a destructible without tileset selected (#283).
+* Fix the sprite field disabled in the NPC properties dialog (#303).
 
 __________________________
 

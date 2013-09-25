@@ -146,10 +146,12 @@ class MapEntity: public ExportableToLua {
     void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
 
-    // movement
+    // Movement.
     Movement* get_movement();
-    void set_movement(Movement *movement);
+    void set_movement(Movement* movement);
     void clear_movement();
+    bool are_movement_notifications_enabled() const;
+    void set_movement_events_enabled(bool notify);
 
     virtual void notify_obstacle_reached();
     virtual void notify_position_changed();
@@ -310,6 +312,7 @@ class MapEntity: public ExportableToLua {
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
                                                  * NULL indicates that the entity has no movement */
     std::list<Movement*> old_movements;         /**< old movements to destroy as soon as possible */
+    bool movement_events_enabled;         /**< Whether entity:on_position_changed() and friends should be called. */
     Detector* facing_entity;                    /**< the detector in front of this entity (if any) */
 
     // entity state

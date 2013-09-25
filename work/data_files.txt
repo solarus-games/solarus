@@ -45,10 +45,10 @@ sounds/
   running.ogg
   shield.ogg
   splash.ogg
-  stairs_up_start.ogg
-  stairs_up_end.ogg
   stairs_down_start.ogg
   stairs_down_end.ogg
+  stairs_up_start.ogg
+  stairs_up_end.ogg
   stone.ogg
   swim.ogg
   switch.ogg

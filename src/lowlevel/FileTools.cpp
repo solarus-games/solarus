@@ -22,8 +22,11 @@
 #include "DialogResource.h"
 #include "QuestResourceList.h"
 #include <physfs.h>
-#include <cstdlib>  // tmpnam()
+#include <cstdlib>  // mkstemp(), tmpnam()
 #include <cstdio>   // remove()
+#ifdef HAVE_UNISTD_H
+#  include <unistd.h>
+#endif
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 #   include "lowlevel/apple/AppleInterface.h"
@@ -60,13 +63,16 @@ void FileTools::initialize(int argc, char** argv) {
   // if nothing was specified.
 
   std::string dir_quest_path = quest_path + "/data";
-  std::string archive_quest_path = quest_path + "/data.solarus";
+  std::string archive_quest_path_1 = quest_path + "/data.solarus";
+  std::string archive_quest_path_2 = quest_path + "/data.solarus.zip";
 
   const std::string& base_dir = PHYSFS_getBaseDir();
   PHYSFS_addToSearchPath(dir_quest_path.c_str(), 1);   // data directory
-  PHYSFS_addToSearchPath(archive_quest_path.c_str(), 1); // data.solarus archive
+  PHYSFS_addToSearchPath(archive_quest_path_1.c_str(), 1); // data.solarus archive
+  PHYSFS_addToSearchPath(archive_quest_path_2.c_str(), 1); // data.solarus.zip archive
   PHYSFS_addToSearchPath((base_dir + "/" + dir_quest_path).c_str(), 1);
-  PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path).c_str(), 1);
+  PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path_1).c_str(), 1);
+  PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path_2).c_str(), 1);
 
   // Check the existence of a quest at this location.
   if (!FileTools::data_file_exists("quest.dat")) {
@@ -164,8 +170,8 @@ const std::string& FileTools::get_language_name(
 
 /**
  * \brief Returns the path of the quest, relative to thecurrent directory.
- * \return Path of the data directory or the data.solarus archive, relative
- * to the current directory.
+ * \return Path of the data/ directory, the data.solarus archive or the
+ * data.solarus.zip archive, relative to the current directory.
  */
 const std::string& FileTools::get_quest_path() {
   return quest_path;
@@ -199,7 +205,8 @@ FileTools::DataFileLocation FileTools::data_file_get_location(
     return LOCATION_DATA_DIRECTORY;
   }
 
-  if (path.rfind("data.solarus") == path.size() - 12) {
+  if (path.rfind("data.solarus") == path.size() - 12
+      || path.rfind("data.solarus.zip") == path.size() - 16) {
     return LOCATION_DATA_ARCHIVE;
   }
 
@@ -318,7 +325,7 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
   Debug::check_assertion(file != NULL, StringConcat()
       << "Cannot open file '" << file_name << "' for writing: "
       << PHYSFS_getLastError());
- 
+
   // save the memory buffer
   if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {
     Debug::die(StringConcat() << "Cannot write file '" << file_name
@@ -335,7 +342,7 @@ void FileTools::data_file_close_buffer(char* buffer) {
 
   delete[] buffer;
 }
- 
+
 /**
  * \brief Removes a file from the write directory.
  * \param file_name Name of the file to delete, relative to the Solarus
@@ -350,7 +357,7 @@ bool FileTools::data_file_delete(const std::string& file_name) {
 
   return true;
 }
- 
+
 /**
  * \brief Creates a directory in the write directory.
  * \param dir_name Name of the directory to delete, relative to the Solarus
@@ -535,7 +542,7 @@ std::string FileTools::get_base_write_dir() {
   return std::string(PHYSFS_getUserDir());
 #endif
 }
- 
+
 /**
  * \brief Creates a temporary file with the specified content and closes it.
  * \param buffer Content of the file to create, or NULL to create an empty file.
@@ -544,12 +551,27 @@ std::string FileTools::get_base_write_dir() {
  */
 std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
 
-  std::string file_name = std::tmpnam(NULL);
+  // Determine the name of our temporary file.
+  std::string file_name;
+
+#ifdef HAVE_MKSTEMP
+  // mkstemp+close is safer than tmpname, but POSIX only.
+  char name_template[] = "/tmp/solarus.XXXXXX";
+  int file_descriptor = mkstemp(name_template);
+  if (file_descriptor == -1) {
+    // Failure.
+    return "";
+  }
+  close(file_descriptor);
+  file_name = name_template;
+#else
+  file_name = std::tmpnam(NULL);
+#endif
+
   std::ofstream out(file_name.c_str());
 
   if (!out) {
-    file_name = "";
-    return file_name;
+    return "";
   }
 
   // File successfully created.
@@ -559,7 +581,6 @@ std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
     out.write(buffer, size);
     if (!out) {
       file_name = "";
-      return file_name;
     }
   }
 
@@ -567,7 +588,7 @@ std::string FileTools::create_temporary_file(const char* buffer, size_t size) {
 
   return file_name;
 }
-  
+
 /**
  * \brief Deletes all files previously created with create_temporary_file().
  * \return \c true in case of success, \c false if at least one file could not

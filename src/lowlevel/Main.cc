@@ -28,7 +28,8 @@ static void print_help(int argc, char** argv);
  * Usage: solarus [options] [quest_path]
  *
  * The quest path is the name of a directory that contains either the data
- * directory ("data") or the data archive ("data.solarus").
+ * directory ("data") or the data archive ("data.solarus" or
+ * "data.solarus.zip").
  * If the quest path is not specified, it is set to the preprocessor constant
  * DEFAULT_QUEST, which is the current directory "." by default.
  * In all cases, this quest path is relative to the working directory,
@@ -79,7 +80,7 @@ static void print_help(int argc, char **argv) {
     << std::endl << std::endl
     << "The quest path is the name of a directory that contains either the data"
     << std::endl
-    << "directory or the data archive (data.solarus) of the game to run."
+    << "directory or the data archive (data.solarus or data.solarus.zip) of the game to run."
     << std::endl
     << "If the quest path is not specified, the default directory will be: '"
     << SOLARUS_DEFAULT_QUEST << "'."

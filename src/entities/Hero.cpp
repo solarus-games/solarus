@@ -1051,6 +1051,10 @@ void Hero::notify_position_changed() {
 
   check_position();
   state->notify_position_changed();
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+  }
 }
 
 /**
@@ -1169,8 +1173,8 @@ void Hero::notify_movement_changed() {
 /**
  * \brief Stops the movement of the player and lets the player restart it when he can.
  *
- * This function is typically called when the player loses temporarily the control
- * (e.g. because of a script or a teletransporter) whereas the movement remains the same.
+ * This function is typically called when the player temporarily loses the control
+ * (e.g. because of a script or a map change) whereas the movement remains the same.
  * Then the movement may want to move a few pixels more as soon as it is resumed.
  * This function removes such residual effects of the player's movement.
  * If the current movement is not controlled by the player, this function has no effect.
@@ -1764,7 +1768,7 @@ void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) 
  * \param explosion the explosion
  * \param sprite_overlapping the sprite of the hero that collides with the explosion
  */
-void Hero::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+void Hero::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) {
 
   if (!state->can_avoid_explosion()) {
     if (sprite_overlapping.contains("tunic")) {
@@ -1783,7 +1787,7 @@ void Hero::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
  * \param direction the direction of the hero relative to the entity
  * (the hero will be moved into this direction): 0 to 3
  */
-void Hero::avoid_collision(MapEntity &entity, int direction) {
+void Hero::avoid_collision(MapEntity& entity, int direction) {
 
   // fix the hero's position, whatever the entity's) size is
   switch (direction) {
@@ -1841,7 +1845,7 @@ void Hero::notify_grabbed_entity_collision() {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::is_striking_with_sword(Detector &detector) {
+bool Hero::is_striking_with_sword(Detector& detector) {
   return state->is_cutting_with_sword(detector);
 }
 

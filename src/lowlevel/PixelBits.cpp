@@ -60,7 +60,7 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
         bits[i][k] = 0x00000000;  // Initialize the sequence to transparent.
       }
 
-      if (!surface.get_pixel32(pixel_index) == colorkey) {
+      if (surface.get_pixel32(pixel_index) != colorkey) {
         // The pixel is opaque.
         bits[i][k] |= mask;
       }

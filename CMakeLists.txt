@@ -19,6 +19,20 @@ find_package(ModPlug REQUIRED)
 find_package(Lua51 REQUIRED)
 find_package(PhysFS REQUIRED)
 
+# Explicit link to libdl is needed for Lua on some systems.
+find_library(DL_LIBRARY dl)
+if(${DL_LIBRARY} MATCHES DL_LIBRARY-NOTFOUND)
+  set(DL_LIBRARY "")
+endif()
+
+include(CheckFunctionExists)
+check_function_exists(mkstemp HAVE_MKSTEMP)
+configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
+
+include(CheckIncludeFiles)
+check_include_files(unistd.h HAVE_UNISTD_H)
+configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
+
 # source files
 file(
   GLOB
@@ -79,6 +93,7 @@ endif()
 
 # generate -I flags
 include_directories(
+  ${CMAKE_BINARY_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/snes_spc
   ${SDL2_INCLUDE_DIR}
@@ -100,6 +115,7 @@ target_link_libraries(solarus
   ${SDL2_TTF_LIBRARY}
   ${OPENAL_LIBRARY}
   ${LUA_LIBRARY}
+  ${DL_LIBRARY}
   ${PHYSFS_LIBRARY}
   ${VORBISFILE_LIBRARY}
   ${OGG_LIBRARY}
@@ -114,7 +130,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   # Force to be the less pedantic possible with the Release build
-  set(CMAKE_CXX_FLAGS "-Wno-error -Wno-all -Wno-unknown-pragmas")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-all -Wno-unknown-pragmas")
 
   # Some "no-warning" flags are not supported with gcc < 4.0
   if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
@@ -160,7 +176,11 @@ if(DEFAULT_QUEST_HEIGHT)
   add_definitions(-DSOLARUS_DEFAULT_QUEST_HEIGHT=${DEFAULT_QUEST_HEIGHT})
 endif()
 
-if(PANDORA OR CAANOO)
+if(GCWZERO)
+  add_definitions(-DGCWZERO)
+endif()
+
+if(CAANOO OR GCWZERO)
   set(INITIAL_COLOR_DEPTH 16)
 else()
   set(INITIAL_COLOR_DEPTH 32)
@@ -170,7 +190,7 @@ if(COLOR_DEPTH)
   add_definitions(-DSOLARUS_COLOR_DEPTH=${COLOR_DEPTH})
 endif()
 
-if(CAANOO)
+if(CAANOO OR GCWZERO)
   set(INITIAL_SCREEN_FORCE_MODE 2)
 elseif(PANDORA)
   set(INITIAL_SCREEN_FORCE_MODE 5)

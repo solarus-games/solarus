@@ -147,12 +147,7 @@ class Enemy: public Detector {
     void draw_on_map();
 
     void notify_enabled(bool enabled);
-    void notify_obstacle_reached();
-    void notify_position_changed();
-    void notify_layer_changed();
     void notify_ground_below_changed();
-    void notify_movement_changed();
-    void notify_movement_finished();
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
     void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);

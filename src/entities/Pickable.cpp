@@ -360,15 +360,21 @@ void Pickable::try_give_item_to_player() {
 
   // give the item
   if (item.get_brandish_when_picked()) {
+    // The treasure is brandished.
+    // on_obtained() will be called after the dialog.
     get_hero().start_treasure(treasure, LUA_REFNIL);
   }
   else {
     treasure.give_to_player();
+
+    // Call on_obtained() immediately since the treasure is not brandished.
+    get_lua_context().item_on_obtained(item, treasure);
+    get_lua_context().map_on_obtained_treasure(get_map(), treasure);
   }
 }
 
 /**
- * \brief Sets whether the pickable item is blinking.
+ * \brief Sets whether the pickable treasure is blinking.
  * \param blinking true to make it blink, false to make it stop blinking
  */
 void Pickable::set_blinking(bool blinking) {

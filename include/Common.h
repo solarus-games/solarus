@@ -148,7 +148,7 @@
  * \brief Number of bits per pixel for surfaces.
  */
 #ifndef SOLARUS_COLOR_DEPTH
-#  if defined(CAANOO) || defined(PANDORA)
+#  if defined(CAANOO)
 #    define SOLARUS_COLOR_DEPTH 16
 #  else
 #    define SOLARUS_COLOR_DEPTH 32
@@ -181,6 +181,7 @@
 #  endif
 #endif
 
+#include "config.h"
 #include "Types.h"
 
 #endif

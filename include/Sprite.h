@@ -95,7 +95,7 @@ class Sprite: public Drawable {
     void set_blinking(uint32_t blink_delay);
 
     // collisions
-    bool test_collision(Sprite& other, int x1, int y1, int x2, int y2) const;
+    bool test_collision(const Sprite& other, int x1, int y1, int x2, int y2) const;
 
     // udpate and draw
     void update();

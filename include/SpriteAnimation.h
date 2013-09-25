@@ -18,6 +18,7 @@
 #define SOLARUS_SPRITE_ANIMATION_H
 
 #include "Common.h"
+#include "lowlevel/Debug.h"
 #include <string>
 #include <vector>
 
@@ -69,6 +70,19 @@ class SpriteAnimation {
     bool should_enable_pixel_collisions; /**< indicates that pixel-perfect collisions should be
                                            * enabled as soon as the image becomes available */
 };
+
+/**
+ * \brief Returns a direction.
+ * \param direction the direction
+ * \return the sequence of images corresponding to this direction
+ */
+inline const SpriteAnimationDirection* SpriteAnimation::get_direction(
+    int direction) const {
+
+  SOLARUS_ASSERT(direction >= 0 && direction < get_nb_directions(),
+      "Invalid sprite direction");
+  return directions[direction];
+}
 
 #endif
 

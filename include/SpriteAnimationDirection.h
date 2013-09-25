@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/Debug.h"
 #include <vector>
 
 /**
@@ -62,6 +63,33 @@ class SpriteAnimationDirection {
     std::vector<PixelBits*> pixel_bits;  /**< bit masks representing the non-transparent pixels of each frame,
                                           * computed only if enable_pixel_collisions() is called */
 };
+
+/**
+ * \brief Returns the origin point of a frame.
+ * \return The origin point of a frame.
+ */
+inline const Rectangle& SpriteAnimationDirection::get_origin() const {
+  return origin;
+}
+
+/**
+ * \brief Returns the pixel bits object of a frame.
+ *
+ * It represents the transparent bits of the frame and permits to detect
+ * pixel-precise collisions.
+ * The pixel collisions must be enabled.
+ *
+ * \param frame A frame of the animation.
+ * \return The pixel bits object of a frame.
+ */
+inline PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
+
+  SOLARUS_ASSERT(are_pixel_collisions_enabled(),
+      "Pixel-precise collisions are not enabled for this sprite");
+  SOLARUS_ASSERT(frame >= 0 && frame < get_nb_frames(), "Invalid frame number");
+
+  return *pixel_bits[frame];
+}
 
 #endif
 

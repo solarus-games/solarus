@@ -364,6 +364,9 @@ SDL_Surface* Surface::get_internal_surface() {
 
 /**
  * \brief Return the 32bits pixel
+ *
+ * If then pixel is less than 32bpp, then the unused upper bits of the return value can safely be ignored
+ *
  * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits
  * \return The casted 32bits pixel.
  */
@@ -388,7 +391,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
       pixel = *(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00;
       break;
     default:
-      Debug::error("Surface should all have a depth between 1 and 32bits per pixel");
+      Debug::error("Surface should all have a depth between 1 and 4bytes per pixel");
   }
 
   return pixel;

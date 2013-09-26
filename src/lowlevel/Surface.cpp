@@ -388,7 +388,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
       pixel = *(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00;
       break;
     default:
-      Debug::error("Surface should all have a depth between 1 and 4bytes per pixel");
+      Debug::error("Surface should all have a depth between 1 and 32bits per pixel");
   }
 
   return pixel;

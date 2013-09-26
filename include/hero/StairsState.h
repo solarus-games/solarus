@@ -59,6 +59,7 @@ class Hero::StairsState: public Hero::State {
     uint32_t next_phase_date;	 	/**< date when the stairs phase changes */
     CarriedItem* carried_item;		/**< an item carried by the hero while taking the stairs, or NULL */
 
+    void destroy_carried_item();
 };
 
 #endif

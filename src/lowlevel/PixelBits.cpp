@@ -47,10 +47,9 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
     for (int i = 0; i < height; i++) {
       bits[i] = new uint32_t[nb_integers_per_row];
       for (int j = 0; j < nb_integers_per_row; j++) {
-        bits[i][j] = 0xFFFFFFFF;
+        bits[i][j] = 0;
       }
     }
-    return;
   }
 
   int pixel_index = image_position.get_y() * surface.get_width() + image_position.get_x();

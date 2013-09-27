@@ -71,7 +71,7 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
       }
 
       // If the pixel is opaque.
-      if (no_colorkey && surface.get_pixel32(pixel_index) & alpha_mask != 0 
+      if (no_colorkey && (surface.get_pixel32(pixel_index) & alpha_mask) != 0 
           || !no_colorkey && surface.get_pixel32(pixel_index) != colorkey) {
         bits[i][k] |= mask;
       }

@@ -31,7 +31,8 @@
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  internal_surface_created(true) {
+  internal_surface_created(true),
+  with_colorkey(false) {
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
@@ -46,7 +47,8 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(const Rectangle& size):
   Drawable(),
-  internal_surface_created(true) {
+  internal_surface_created(true),
+  with_colorkey(false) {
 
   Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
 
@@ -85,6 +87,8 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   this->internal_surface = IMG_Load_RW(rw, 0);
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
+    
+  with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
 
   Debug::check_assertion(internal_surface != NULL, StringConcat() <<
       "Cannot load image '" << prefixed_file_name << "'");
@@ -101,7 +105,8 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
   internal_surface(internal_surface),
-  internal_surface_created(false) {
+  internal_surface_created(false),
+  with_colorkey(SDL_GetColorKey(internal_surface, &colorkey) == 0) {
 
 }
 
@@ -113,7 +118,8 @@ Surface::Surface(const Surface& other):
   Drawable(),
   internal_surface(SDL_ConvertSurface(other.internal_surface,
       other.internal_surface->format, other.internal_surface->flags)),
-  internal_surface_created(true) {
+  internal_surface_created(true),
+  with_colorkey(SDL_GetColorKey(other.internal_surface, &colorkey) == 0) {
 
 }
 
@@ -210,9 +216,10 @@ const Rectangle Surface::get_size() const {
  */
 Color Surface::get_transparency_color() {
 
-  Uint32 colorkey = 0x00000000;
-  SDL_GetColorKey(internal_surface, &colorkey);
-  return Color(colorkey);
+  if(with_colorkey)
+    return Color(colorkey);
+  
+  return Color();
 }
 
 /**
@@ -224,7 +231,9 @@ Color Surface::get_transparency_color() {
  */
 void Surface::set_transparency_color(const Color& color) {
 
-  SDL_SetColorKey(internal_surface, SDL_TRUE, color.get_internal_value());
+  with_colorkey = true;
+  colorkey = color.get_internal_value();
+  SDL_SetColorKey(internal_surface, SDL_TRUE, colorkey);
 }
 
 /**
@@ -428,17 +437,15 @@ uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
  */
 bool Surface::is_pixel_transparent(int idx_pixel) {
   
-  uint32_t colorkey;
-  
-  if(SDL_GetColorKey(internal_surface, &colorkey) != 0)
-  {
-    // If no colorkey found, use the alpha channel.
-    if(!(get_pixel32(idx_pixel) & internal_surface->format->Amask))
+  if (with_colorkey) {
+    if (get_pixel32(idx_pixel) == colorkey)
       return true;
   }
-  
-  if (get_pixel32(idx_pixel) == colorkey)
-    return true;
+  // If no colorkey, use the alpha channel.
+  else {
+    if (!(get_pixel32(idx_pixel) & internal_surface->format->Amask))
+      return true;
+  }
   
   return false;
 }

@@ -91,6 +91,9 @@ class Surface: public Drawable {
     bool is_pixel_transparent(int idx_pixel);
   
     SDL_Surface* get_internal_surface();
+  
+    bool with_colorkey;
+    uint32_t colorkey;
 };
 
 #endif

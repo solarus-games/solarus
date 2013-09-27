@@ -87,11 +87,11 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   this->internal_surface = IMG_Load_RW(rw, 0);
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
-    
-  with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
 
   Debug::check_assertion(internal_surface != NULL, StringConcat() <<
       "Cannot load image '" << prefixed_file_name << "'");
+    
+  with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
 }
 
 /**
@@ -119,7 +119,7 @@ Surface::Surface(const Surface& other):
   internal_surface(SDL_ConvertSurface(other.internal_surface,
       other.internal_surface->format, other.internal_surface->flags)),
   internal_surface_created(true),
-  with_colorkey(SDL_GetColorKey(other.internal_surface, &colorkey) == 0) {
+  with_colorkey(SDL_GetColorKey(internal_surface, &colorkey) == 0) {
 
 }
 
@@ -238,7 +238,7 @@ void Surface::set_transparency_color(const Color& color) {
 
 /**
  * \brief Sets the opacity of this surface.
- * \param opacity the opacity (0 to 255)
+ * \param opacity the opacity (0 to 255).
  */
 void Surface::set_opacity(int opacity) {
 
@@ -248,8 +248,17 @@ void Surface::set_opacity(int opacity) {
   if (opacity == 128) {
     opacity = 127;
   }
-
+  set_blending_mode(MODE_BLEND);
   SDL_SetSurfaceAlphaMod(internal_surface, opacity);
+}
+
+/**
+ * \brief Sets the blending mode of this surface.
+ * \param the blending mode.
+ */
+void Surface::set_blending_mode(BlendingMode mode) {
+  
+  SDL_SetSurfaceBlendMode(internal_surface, SDL_BlendMode(mode));
 }
 
 /**

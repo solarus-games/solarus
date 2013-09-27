@@ -102,6 +102,7 @@ Changes that do not introduce incompatibilities:
 * target_movement:set_target(entity) now accepts an x,y offset (#154).
 * Add a method game:is_pause_allowed().
 * Add a method map:get_ground() (#141).
+* Add a method map:get_music() (#306).
 * Add an optional parameter on_top to sol.menu.start.
 * Add sprite:on_animation_changed() and sprite:on_direction_changed() (#153).
 

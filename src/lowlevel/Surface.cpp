@@ -363,11 +363,11 @@ SDL_Surface* Surface::get_internal_surface() {
 }
 
 /**
- * \brief Return the 32bits pixel
+ * \brief Return the 32bits pixel.
  *
- * If the pixel is less than 32bpp, then the unused upper bits of the return value can safely be ignored
+ * If the pixel is less than 32bpp, then the unused upper bits of the return value can safely be ignored.
  *
- * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits
+ * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits.
  * \return The casted 32bits pixel.
  */
 uint32_t Surface::get_pixel32(int idx_pixel) {
@@ -388,7 +388,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
       break;
     case 3:
       // Manual cast of the pixel into uint32_t
-      pixel = *(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00;
+      pixel = (*(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00) >> 8;
       break;
     default:
       Debug::error("Surface should all have a depth between 1 and 4bytes per pixel");
@@ -406,15 +406,41 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
  *
  * It's the SDL_ConvertSurface() function equivalent for a pixel by pixel uses.
  *
- * \param idx_pixel the index of the pixel to convert
- * \param dst_format the destination format
- * \return the mapped 32bits pixel
+ * \param idx_pixel the index of the pixel to convert.
+ * \param dst_format the destination format.
+ * \return the mapped 32bits pixel.
  */
 uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
 
   uint8_t r, g, b, a;
   SDL_GetRGBA(get_pixel32(idx_pixel), internal_surface->format, &r, &g, &b, &a);
   return SDL_MapRGBA(dst_format, r, g, b, a);
+}
+
+/**
+ * \brief Return true if the pixel is transparent.
+ *
+ * The pixel is transparent if it correspond to the colorkey.
+ * If there is no colorkey, it is transparent if the alpha channel of the pixel equal 0.
+ *
+ * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits.
+ * \return if the pixel is transparent.
+ */
+bool Surface::is_pixel_transparent(int idx_pixel) {
+  
+  uint32_t colorkey;
+  
+  if(SDL_GetColorKey(internal_surface, &colorkey) != 0)
+  {
+    // If no colorkey found, use the alpha channel.
+    if(!(get_pixel32(idx_pixel) & internal_surface->format->Amask))
+      return true;
+  }
+  
+  if (get_pixel32(idx_pixel) == colorkey)
+    return true;
+  
+  return false;
 }
 
 /**

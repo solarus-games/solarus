@@ -31,19 +31,6 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
 
   // Create a list of boolean values representing the transparency of each pixel.
   // This list is implemented as bit fields.
-  
-  SDL_Surface* internal_sdl_surface = surface.get_internal_surface();
-
-  uint32_t colorkey;
-  uint32_t alpha_mask;
-  bool no_colorkey = false;
-  
-  if(SDL_GetColorKey(internal_sdl_surface, &colorkey) != 0)
-  {
-    //If no colorkey found, use the alpha channel.
-    alpha_mask = internal_sdl_surface->format->Amask;
-    no_colorkey = true;
-  }
 
   width = image_position.get_width();
   height = image_position.get_height();
@@ -71,8 +58,7 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
       }
 
       // If the pixel is opaque.
-      if (no_colorkey && (surface.get_pixel32(pixel_index) & alpha_mask) != 0 
-          || !no_colorkey && surface.get_pixel32(pixel_index) != colorkey) {
+      if (!surface.is_pixel_transparent(pixel_index)) {
         bits[i][k] |= mask;
       }
 

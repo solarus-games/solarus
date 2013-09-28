@@ -117,18 +117,9 @@ VideoManager::VideoManager(
   video_mode(NO_MODE),
   screen_surface(NULL),
   screen_texture(NULL),
-  wanted_quest_size(wanted_quest_size) {
-
-  // Initialize the window.
-  const std::string& window_title = std::string("Solarus ") + SOLARUS_VERSION;
-  main_window = SDL_CreateWindow(window_title.c_str(), 
-    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-    wanted_quest_size.get_width(), wanted_quest_size.get_height(), 
-    SDL_WINDOW_SHOWN);
-    
-  main_renderer = SDL_CreateRenderer(main_window, -1, 0);
-  if(!main_renderer)
-    Debug::error(std::string("Cannot create the window."));
+  main_window(NULL),
+  wanted_quest_size(wanted_quest_size),
+  outset_title(std::string("Solarus ") + SOLARUS_VERSION) {
 
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
@@ -144,6 +135,25 @@ VideoManager::~VideoManager() {
     SDL_DestroyTexture(screen_texture);
   SDL_DestroyRenderer(main_renderer);
   SDL_DestroyWindow(main_window);
+}
+
+/**
+ * \brief Create the window.
+ */
+void VideoManager::create_window() {
+  
+  // Initialize the window.
+  Rectangle window_size = mode_sizes[video_mode];
+  main_window = SDL_CreateWindow(outset_title.c_str(), 
+    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    window_size.get_width(), window_size.get_height(), 
+    SDL_WINDOW_SHOWN);
+  
+  main_renderer = SDL_CreateRenderer(main_window, -1, 0);
+  if(!main_renderer)
+    Debug::error(std::string("Cannot create the window."));
+  
+  set_video_mode(video_mode);
 }
 
 /**
@@ -243,15 +253,12 @@ void VideoManager::switch_video_mode() {
  */
 void VideoManager::set_default_video_mode() {
 
-  VideoMode mode;
   if (forced_mode != NO_MODE) {
-    mode = forced_mode;
+    video_mode = forced_mode;
   }
   else {
-    mode = WINDOWED_STRETCHED;
+    video_mode = WINDOWED_STRETCHED;
   }
-
-  set_video_mode(mode);
 }
 
 /**
@@ -263,6 +270,12 @@ bool VideoManager::set_video_mode(VideoMode mode) {
 
   if (!is_mode_supported(mode)) {
     return false;
+  }
+  
+  // If the window isn't created yet, just store the video mode.
+  if(!main_window) {
+    this->video_mode = mode;
+    return true;
   }
 
   int show_cursor;
@@ -290,9 +303,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
       0x0000FF00,
       0x000000FF,
       0xFF000000);
-    
-    Debug::check_assertion(screen_internal_surface != NULL, StringConcat() <<
-      "Cannot create the video surface for mode " << get_video_mode_name(mode));
     
     delete this->screen_surface;
     this->screen_surface = new Surface(screen_internal_surface);
@@ -493,7 +503,11 @@ const std::string VideoManager::get_window_title() const {
  */
 void VideoManager::set_window_title(const std::string& window_title) {
 
-  SDL_SetWindowTitle(main_window, window_title.c_str());
+  if(main_window)
+    SDL_SetWindowTitle(main_window, window_title.c_str());
+  // If the window isn't created yet, just store the title.
+  else
+    outset_title = window_title;
 }
 
 /**

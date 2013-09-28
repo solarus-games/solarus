@@ -439,8 +439,8 @@ uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
 /**
  * \brief Return true if the pixel is transparent.
  *
- * The pixel is transparent if it correspond to the colorkey.
- * If there is no colorkey, it is transparent if the alpha channel of the pixel equal 0.
+ * The pixel is transparent if it correspond to the colorkey or if the alpha channel 
+ * of the pixel equal 0.
  *
  * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits.
  * \return if the pixel is transparent.
@@ -449,13 +449,10 @@ bool Surface::is_pixel_transparent(int idx_pixel) {
   
   uint32_t pixel = get_pixel32(idx_pixel);
   
-  if (with_colorkey) {
-    if (pixel == colorkey)
-      return true;
-  }
-  
-  if ((pixel & internal_surface->format->Amask) == 0)
+  if (with_colorkey && pixel == colorkey
+      || (pixel & internal_surface->format->Amask) == 0) {
     return true;
+  }
   
   return false;
 }

@@ -454,7 +454,7 @@ bool Surface::is_pixel_transparent(int idx_pixel) {
       return true;
   }
   
-  if ((pixel & internal_surface->format->Amask) != 0)
+  if ((pixel & internal_surface->format->Amask) == 0)
     return true;
   
   return false;

@@ -447,15 +447,15 @@ uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
  */
 bool Surface::is_pixel_transparent(int idx_pixel) {
   
+  uint32_t pixel = get_pixel32(idx_pixel);
+  
   if (with_colorkey) {
-    if (get_pixel32(idx_pixel) == colorkey)
+    if (pixel == colorkey)
       return true;
   }
-  // If no colorkey, use the alpha channel.
-  else {
-    if (!(get_pixel32(idx_pixel) & internal_surface->format->Amask))
-      return true;
-  }
+  
+  if ((pixel & internal_surface->format->Amask) != 0)
+    return true;
   
   return false;
 }

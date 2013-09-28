@@ -49,6 +49,7 @@ Hero::StairsState::StairsState(Hero& hero, Stairs& stairs, Stairs::Way way):
  */
 Hero::StairsState::~StairsState() {
 
+  destroy_carried_item();
 }
 
 /**
@@ -132,8 +133,7 @@ void Hero::StairsState::stop(State* next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
-      delete carried_item;
-      carried_item = NULL;
+      destroy_carried_item();
       get_sprites().set_lifted_item(NULL);
       break;
 
@@ -320,6 +320,20 @@ int Hero::StairsState::get_wanted_movement_direction8() {
  */
 CarriedItem* Hero::StairsState::get_carried_item() {
   return carried_item;
+}
+
+/**
+ * \brief Destroys the item carried if any and sets it to NULL.
+ */
+void Hero::StairsState::destroy_carried_item() {
+
+  if (carried_item != NULL) {
+    carried_item->decrement_refcount();
+    if (carried_item->get_refcount() == 0) {
+      delete carried_item;
+    }
+    carried_item = NULL;
+  }
 }
 
 /**

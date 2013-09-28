@@ -40,14 +40,14 @@ Hero::CarryingState::CarryingState(Hero& hero, CarriedItem* carried_item):
  */
 Hero::CarryingState::~CarryingState() {
 
-  delete carried_item;
+  destroy_carried_item();
 }
 
 /**
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::CarryingState::start(State *previous_state) {
+void Hero::CarryingState::start(State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
@@ -63,7 +63,7 @@ void Hero::CarryingState::start(State *previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::CarryingState::stop(State *next_state) {
+void Hero::CarryingState::stop(State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
@@ -79,8 +79,7 @@ void Hero::CarryingState::stop(State *next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
-      delete carried_item;
-      carried_item = NULL;
+      destroy_carried_item();
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
@@ -138,8 +137,7 @@ void Hero::CarryingState::update() {
     if (!suspended) {
 
       if (carried_item->is_broken()) {
-        delete carried_item;
-        carried_item = NULL;
+        destroy_carried_item();
         hero.set_state(new FreeState(hero));
       }
     }
@@ -207,6 +205,20 @@ void Hero::CarryingState::set_animation_walking() {
  */
 CarriedItem* Hero::CarryingState::get_carried_item() {
   return carried_item;
+}
+
+/**
+ * \brief Destroys the item carried if any and sets it to NULL.
+ */
+void Hero::CarryingState::destroy_carried_item() {
+
+  if (carried_item != NULL) {
+    carried_item->decrement_refcount();
+    if (carried_item->get_refcount() == 0) {
+      delete carried_item;
+    }
+    carried_item = NULL;
+  }
 }
 
 /**

@@ -113,6 +113,15 @@ void Map::set_tileset(const std::string& tileset_id) {
 }
 
 /**
+ * \brief Returns the id of the music associated to this map.
+ * \return The id of the music, possibly Music::none or Music::unchanged.
+ */
+const std::string& Map::get_music_id() const {
+  return music_id;
+}
+
+
+/**
  * \brief Returns the world where this map is.
  * \return The world name.
  */

@@ -39,7 +39,7 @@ Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
  */
 Hero::LiftingState::~LiftingState() {
 
-  delete lifted_item;
+  destroy_lifted_item();
 }
 
 /**
@@ -81,8 +81,7 @@ void Hero::LiftingState::stop(State* next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
-      delete lifted_item;
-      lifted_item = NULL;
+      destroy_lifted_item();
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
@@ -144,5 +143,19 @@ void Hero::LiftingState::throw_item() {
   lifted_item->throw_item(get_sprites().get_animation_direction());
   get_entities().add_entity(lifted_item);
   lifted_item = NULL;
+}
+
+/**
+ * \brief Destroys the item being lifted if any and sets it to NULL.
+ */
+void Hero::LiftingState::destroy_lifted_item() {
+
+  if (lifted_item != NULL) {
+    lifted_item->decrement_refcount();
+    if (lifted_item->get_refcount() == 0) {
+      delete lifted_item;
+    }
+    lifted_item = NULL;
+  }
 }
 

@@ -191,9 +191,9 @@ if(COLOR_DEPTH)
 endif()
 
 if(CAANOO OR GCWZERO)
-  set(INITIAL_SCREEN_FORCE_MODE 2)
+  set(INITIAL_SCREEN_FORCE_MODE 2)  # Windowed normal.
 elseif(PANDORA)
-  set(INITIAL_SCREEN_FORCE_MODE 5)
+  set(INITIAL_SCREEN_FORCE_MODE 3)  # Fullscreen normal.
 else()
   set(INITIAL_SCREEN_FORCE_MODE -1)
 endif()

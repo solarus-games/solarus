@@ -248,7 +248,7 @@ void Surface::set_opacity(int opacity) {
   if (opacity == 128) {
     opacity = 127;
   }
-  
+
   set_blending_mode(MODE_BLEND);
   SDL_SetSurfaceAlphaMod(internal_surface, opacity);
 }

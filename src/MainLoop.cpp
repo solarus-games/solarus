@@ -50,7 +50,7 @@ MainLoop::MainLoop(int argc, char** argv):
 
   // Read the quest resource list from file project_db.dat.
   QuestResourceList::initialize();
-    
+
   root_surface = new Surface(VideoManager::get_instance()->get_quest_size());
   root_surface->increment_refcount();
   lua_context = new LuaContext(*this);

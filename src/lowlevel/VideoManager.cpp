@@ -120,9 +120,6 @@ VideoManager::VideoManager(
   main_window(NULL),
   wanted_quest_size(wanted_quest_size),
   outset_title(std::string("Solarus ") + SOLARUS_VERSION) {
-
-  putenv((char*) "SDL_VIDEO_CENTERED=center");
-  putenv((char*) "SDL_NOMOUSE");
 }
 
 /**

@@ -32,6 +32,7 @@ Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
   State(hero, "lifting"),
   lifted_item(lifted_item) {
 
+  lifted_item->increment_refcount();
 }
 
 /**

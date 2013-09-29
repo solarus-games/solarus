@@ -114,12 +114,12 @@ VideoManager::VideoManager(
     bool disable_window,
     const Rectangle& wanted_quest_size):
   disable_window(disable_window),
-  video_mode(NO_MODE),
+  main_window(NULL),
   screen_surface(NULL),
   screen_texture(NULL),
-  main_window(NULL),
-  wanted_quest_size(wanted_quest_size),
-  outset_title(std::string("Solarus ") + SOLARUS_VERSION) {
+  outset_title(std::string("Solarus ") + SOLARUS_VERSION),
+  video_mode(NO_MODE),
+  wanted_quest_size(wanted_quest_size) {
 }
 
 /**

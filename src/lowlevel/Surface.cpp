@@ -449,8 +449,11 @@ bool Surface::is_pixel_transparent(int idx_pixel) {
   
   uint32_t pixel = get_pixel32(idx_pixel);
   
-  if (with_colorkey && pixel == colorkey
-      || (pixel & internal_surface->format->Amask) == 0) {
+  if (with_colorkey && pixel == colorkey) {
+    return true;
+  }
+
+  if ((pixel & internal_surface->format->Amask) == 0) {
     return true;
   }
   

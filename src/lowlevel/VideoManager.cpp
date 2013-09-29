@@ -154,7 +154,7 @@ void VideoManager::create_window() {
   
   main_renderer = SDL_CreateRenderer(main_window, -1, 0);
   if(!main_renderer)
-    Debug::error(std::string("Cannot create the window."));
+    Debug::die(std::string("Cannot create the window."));
   
   set_video_mode(video_mode);
 }
@@ -637,7 +637,7 @@ Rectangle VideoManager::find_closest_fullscreen_resolution(const Rectangle& surf
   SDL_DisplayMode closest;
   
   if(!SDL_GetClosestDisplayMode(0, &target, &closest)) {
-    Debug::error(StringConcat() << "No suitable display mode was found for size" 
+    Debug::die(StringConcat() << "No suitable display mode was found for size" 
       << surface_size.get_width() << "x" << surface_size.get_height());
   }
      

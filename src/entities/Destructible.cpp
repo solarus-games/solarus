@@ -302,8 +302,14 @@ void Destructible::notify_action_command_pressed() {
     if (get_equipment().has_ability("lift", weight)) {
 
       uint32_t explosion_date = can_explode() ? System::now() + 6000 : 0;
-      get_hero().start_lifting(new CarriedItem(get_hero(), *this,
-	  get_animation_set_id(), get_destruction_sound_id(), get_damage_on_enemies(), explosion_date));
+      get_hero().start_lifting(new CarriedItem(
+          get_hero(),
+          *this,
+          get_animation_set_id(),
+          get_destruction_sound_id(),
+          get_damage_on_enemies(),
+          explosion_date)
+      );
 
       // play the sound
       Sound::play("lift");

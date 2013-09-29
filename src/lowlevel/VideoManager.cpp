@@ -115,6 +115,7 @@ VideoManager::VideoManager(
     const Rectangle& wanted_quest_size):
   disable_window(disable_window),
   main_window(NULL),
+  main_renderer(NULL),
   screen_surface(NULL),
   screen_texture(NULL),
   outset_title(std::string("Solarus ") + SOLARUS_VERSION),
@@ -128,10 +129,15 @@ VideoManager::VideoManager(
 VideoManager::~VideoManager() {
 
   delete screen_surface;
-  if(screen_texture)
+  if (screen_texture != NULL) {
     SDL_DestroyTexture(screen_texture);
-  SDL_DestroyRenderer(main_renderer);
-  SDL_DestroyWindow(main_window);
+  }
+  if (main_renderer != NULL) {
+    SDL_DestroyRenderer(main_renderer);
+  }
+  if (main_window != NULL) {
+    SDL_DestroyWindow(main_window);
+  }
 }
 
 /**

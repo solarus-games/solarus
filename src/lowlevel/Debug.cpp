@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Debug.h"
+#include <SDL_messagebox.h>
 
 namespace {
 
@@ -85,6 +86,13 @@ void Debug::die(const std::string& error_message) {
   }
   error_output_file << "Fatal: " << error_message << std::endl << std::flush;
   std::cerr << "Fatal: " << error_message << std::endl;
-  std::abort();
+
+  SDL_ShowSimpleMessageBox(
+      SDL_MESSAGEBOX_ERROR,
+      "Error",
+      error_message.c_str(),
+      NULL);
+
+  std::exit(EXIT_FAILURE);
 }
 

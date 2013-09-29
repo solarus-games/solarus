@@ -275,8 +275,8 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     return false;
   }
   
-  // If the window isn't created yet, just store the video mode.
   if(!main_window) {
+    // If the window isn't created yet, just store the video mode.
     this->video_mode = mode;
     return true;
   }
@@ -497,7 +497,11 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
  */
 const std::string VideoManager::get_window_title() const {
 
-  return SDL_GetWindowTitle(main_window);
+  if(main_window) {
+    return SDL_GetWindowTitle(main_window);
+  }
+  
+  return outset_title;
 }
 
 /**
@@ -506,11 +510,13 @@ const std::string VideoManager::get_window_title() const {
  */
 void VideoManager::set_window_title(const std::string& window_title) {
 
-  if(main_window)
+  if(main_window) {
     SDL_SetWindowTitle(main_window, window_title.c_str());
-  // If the window isn't created yet, just store the title.
-  else
+  }
+  else {
+    // If the window isn't created yet, just store the title.
     outset_title = window_title;
+  }
 }
 
 /**

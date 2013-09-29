@@ -1,5 +1,16 @@
 _______________________________
 
+Solarus 1.2 (under development)
+_______________________________
+
+Engine changes
+--------------
+
+* Upgrade to SDL 2.
+* Show a dialog box in case of fatal error.
+
+_______________________________
+
 Solarus 1.1 (under development)
 _______________________________
 

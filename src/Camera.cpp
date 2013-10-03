@@ -324,9 +324,7 @@ void Camera::set_speed(int speed) {
  */
 void Camera::move(int target_x, int target_y) {
 
-  if (movement != NULL) {
-    delete movement;
-  }
+  delete movement;
 
   const Rectangle& map_location = map.get_location();
   target_x = std::min(std::max(target_x, get_width() / 2),

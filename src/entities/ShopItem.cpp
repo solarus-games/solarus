@@ -41,8 +41,14 @@
  * \param price the treasure's price in rupees
  * \param dialog_id id of the dialog describing the item when the player watches it
  */
-ShopItem::ShopItem(const std::string& name, Layer layer, int x, int y,
-		   const Treasure& treasure, int price, const std::string& dialog_id):
+ShopItem::ShopItem(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    const Treasure& treasure,
+    int price,
+    const std::string& dialog_id):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 32, 32),
   treasure(treasure),
   price(price),

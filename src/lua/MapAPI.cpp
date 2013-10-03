@@ -20,7 +20,6 @@
 #include "Map.h"
 #include "Treasure.h"
 #include "EquipmentItem.h"
-#include "Timer.h"
 #include "entities/MapEntities.h"
 #include "entities/Tile.h"
 #include "entities/Tileset.h"
@@ -299,8 +298,6 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
   lua_pushcfunction(l, l_camera_restore);
   timer_api_start(l);
-  Timer& timer = check_timer(l, -1);
-  timer.set_suspended_with_map(false);
 
   return 0;
 }

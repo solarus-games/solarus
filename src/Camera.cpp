@@ -326,11 +326,24 @@ void Camera::move(int target_x, int target_y) {
 
   delete movement;
 
+  // Take care of the limits of the map.
+  // TODO Also take care of separators.
   const Rectangle& map_location = map.get_location();
-  target_x = std::min(std::max(target_x, get_width() / 2),
-      map_location.get_width() - get_width() / 2);
-  target_y = std::min(std::max(target_y, get_height() / 2),
-      map_location.get_height() - get_height() / 2);
+  if (map_location.get_width() < get_width()) {
+    target_x = map_location.get_width() / 2;
+  }
+  else {
+    target_x = std::min(std::max(target_x, get_width() / 2),
+        map_location.get_width() - get_width() / 2);
+  }
+
+  if (map_location.get_height() < get_height()) {
+    target_y = map_location.get_height() / 2;
+  }
+  else {
+    target_y = std::min(std::max(target_y, get_height() / 2),
+        map_location.get_height() - get_height() / 2);
+  }
 
   movement = new TargetMovement(NULL, target_x, target_y, speed, true);
   movement->set_xy(position.get_x() + get_width() / 2, position.get_y() + get_height() / 2);

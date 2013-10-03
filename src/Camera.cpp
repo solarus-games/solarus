@@ -254,7 +254,7 @@ void Camera::update_fixed_on_hero() {
 void Camera::update_moving() {
 
   Debug::check_assertion(!fixed_on_hero,
-      "Illegal call to Camera::update_fixed_on_hero()");
+      "Illegal call to Camera::update_moving()");
 
   if (movement == NULL) {
     return;

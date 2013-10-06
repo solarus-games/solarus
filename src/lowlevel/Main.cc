@@ -18,7 +18,6 @@
 
 #include "MainLoop.h"
 #include <iostream>
-#include <SDL.h>  // Necessary on some systems for SDLMain.
 
 static void print_help(int argc, char** argv);
 

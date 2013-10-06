@@ -151,10 +151,13 @@ void VideoManager::create_window() {
     SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
     window_size.get_width(), window_size.get_height(), 
     SDL_WINDOW_SHOWN);
+  if(!main_window)
+    Debug::die(std::string("Cannot create the window : ") + SDL_GetError());
+  
   
   main_renderer = SDL_CreateRenderer(main_window, -1, 0);
   if(!main_renderer)
-    Debug::die(std::string("Cannot create the window."));
+    Debug::die(std::string("Cannot create the renderer : ") + SDL_GetError());
   
   set_video_mode(video_mode);
 }

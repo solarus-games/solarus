@@ -171,8 +171,9 @@ void PathMovement::update() {
   bool parent_update_done = false;
   while (!is_suspended()
       && is_current_elementary_move_finished()
-      && !is_finished()) {
+      && !PathMovement::is_finished()) {
     start_next_elementary_move();
+    PixelMovement::update();
   }
 
   // Do this at last so that Movement::update() knows whether we are finished.
@@ -293,7 +294,6 @@ void PathMovement::start_next_elementary_move() {
       PixelMovement::set_delay(speed_to_delay(speed, current_direction));
       PixelMovement::set_trajectory(elementary_moves[current_direction]);
       remaining_path = remaining_path.substr(1);
-      PixelMovement::update();
     }
   }
 }

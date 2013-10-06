@@ -29,9 +29,14 @@
  * This movement can be used only on a map entity.
  *
  * A "path" refers to a succession of small 8-pixel trajectories.
- * The notion of path is specific to PathMovement and its subclasses (like PathFindingMovement and RandomPathMovement).
- * A "trajectory" is a move of 8 pixels in the sense of the PixelMovement class.
- * A path is composed of several trajectories. The notion of trajectory is hidden from the public interface of PathMovement.
+ * The notion of path is specific to PathMovement and its subclasses
+ * (like PathFindingMovement and RandomPathMovement).
+ * A "trajectory" is a move of 8 pixels in the sense of the PixelMovement
+ * class.
+ * A path is composed of several trajectories. The notion of trajectory is
+ * hidden from the public interface of PathMovement.
+ *
+ * TODO don't inherit PixelMovement
  */
 class PathMovement: public PixelMovement {
 

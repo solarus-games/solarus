@@ -133,7 +133,8 @@ class Hero::State {
 
     State(Hero& hero, const std::string& state_name);
 
-    bool is_current_state();
+    bool is_current_state() const;
+    bool is_stopping() const;
 
     // access to various game objects
     LuaContext& get_lua_context();
@@ -153,6 +154,7 @@ class Hero::State {
 
     Map* map;                 /**< The current map (it may change during this state). */
     const std::string name;   /**< Name describing this state. */
+    bool stopping;            /**< Indicates that this state is being stopped. */
 
 };
 

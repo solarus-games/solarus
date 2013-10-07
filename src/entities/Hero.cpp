@@ -2004,7 +2004,11 @@ void Hero::start_deep_water() {
       set_state(new SwimmingState(*this));
     }
     else {
-      start_jumping(get_wanted_movement_direction8(), 32, false, true, 13);
+      int direction8 = get_wanted_movement_direction8();
+      if (direction8 == -1) {
+        direction8 = get_animation_direction() * 2;
+      }
+      start_jumping(direction8, 32, false, true, 13);
     }
   }
 }

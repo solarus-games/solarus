@@ -187,7 +187,9 @@ void PathMovement::set_suspended(bool suspended) {
 
   PixelMovement::set_suspended(suspended);
 
-  if (!suspended) {
+  if (!suspended
+      && get_when_suspended() != 0
+      && stop_snapping_date != 0) {
     stop_snapping_date += System::now() - get_when_suspended();
   }
 }

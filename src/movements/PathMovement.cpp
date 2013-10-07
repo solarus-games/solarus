@@ -170,7 +170,8 @@ void PathMovement::update() {
 
   while (!is_suspended()
       && is_current_elementary_move_finished()
-      && !PathMovement::is_finished()) {
+      && !PathMovement::is_finished()
+      && get_entity() != NULL) {
     start_next_elementary_move();
     PixelMovement::update();
   }
@@ -263,7 +264,7 @@ void PathMovement::start_next_elementary_move() {
 
   // before starting the move, check that the entity is aligned with the 8*8 squares grid if necessary
   if (snap_to_grid && !entity->is_aligned_to_grid()) {
- 
+
     // the entity has to be aligned but is not
     snap();
   }

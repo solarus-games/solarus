@@ -168,7 +168,6 @@ void PathMovement::notify_object_controlled() {
  */
 void PathMovement::update() {
 
-  bool parent_update_done = false;
   while (!is_suspended()
       && is_current_elementary_move_finished()
       && !PathMovement::is_finished()) {

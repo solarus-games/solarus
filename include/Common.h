@@ -165,7 +165,7 @@
 #  elif defined(CAANOO)
 #    define SOLARUS_SCREEN_FORCE_MODE 2
 #  elif defined(PANDORA)
-#    define SOLARUS_SCREEN_FORCE_MODE 5
+#    define SOLARUS_SCREEN_FORCE_MODE 3
 #  else
 #    define SOLARUS_SCREEN_FORCE_MODE -1
 #  endif

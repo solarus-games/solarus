@@ -308,9 +308,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     double dst_height = double(mode_size.get_height());
     
     // Get the renderer position and destination size on the window.
-    double ratio = std::min(
-        dst_width / src_width, 
-        dst_width / src_width);
+    double ratio = std::min(dst_width/src_width, dst_height/src_height);
     render_position = Rectangle(
         (dst_width - (src_width*ratio)) / 2,
         (dst_height - (src_height*ratio)) / 2,

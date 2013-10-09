@@ -1,4 +1,4 @@
-Every XCode projects are currently hardcoded for my environment, but you easily can modify it to match yours, or read the following instructions to use the same environment as me.
+Every XCode projects are currently hardcoded for my environment, but you easily can modify them to match yours, or read the following instructions to use the same environment than me.
 
 
 Install header files :

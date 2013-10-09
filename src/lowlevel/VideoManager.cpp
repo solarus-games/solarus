@@ -30,7 +30,7 @@ namespace {
 #if defined(SOLARUS_SCREEN_FORCE_MODE) && SOLARUS_SCREEN_FORCE_MODE != -1
 // Force a unique video mode at compilation time.
 const VideoManager::VideoMode forced_mode =
-  VideoManager::VideoMode(SOLARUS_SCREEN_FORCE_MODE);
+  VideoManager::VideoMode(3);
 #else
 // Make all modes available.
 const VideoManager::VideoMode forced_mode = VideoManager::NO_MODE;
@@ -153,7 +153,6 @@ void VideoManager::create_window() {
     SDL_WINDOW_SHOWN);
   if(!main_window)
     Debug::die(std::string("Cannot create the window : ") + SDL_GetError());
-  
   
   main_renderer = SDL_CreateRenderer(main_window, -1, 0);
   if(!main_renderer)
@@ -295,12 +294,30 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     show_cursor = SDL_ENABLE;
   }
   
-  const Rectangle& render_size = mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X ?
-    mode_sizes[WINDOWED_SCALE2X] :
-    mode_sizes[WINDOWED_NORMAL];
   const Rectangle& mode_size = mode_sizes[mode];
 
   if (!disable_window) {
+    // Get the renderer source size.
+    const Rectangle& render_size = mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X ?
+        mode_sizes[WINDOWED_SCALE2X] :
+        mode_sizes[WINDOWED_NORMAL];
+    
+    double src_width = double(render_size.get_width());
+    double src_height = double(render_size.get_height());
+    double dst_width = double(mode_size.get_width());
+    double dst_height = double(mode_size.get_height());
+    
+    // Get the renderer position and destination size on the window.
+    double ratio = std::min(
+        dst_width / src_width, 
+        dst_width / src_width);
+    render_position = Rectangle(
+        (dst_width - (src_width*ratio)) / 2,
+        (dst_height - (src_height*ratio)) / 2,
+        src_width * ratio,
+        src_height * ratio);
+    
+    // Initialize the video mode
     SDL_Surface* screen_internal_surface = SDL_CreateRGBSurface(0, 
       render_size.get_width(),
       render_size.get_height(), 
@@ -405,7 +422,7 @@ void VideoManager::draw(Surface& quest_surface) {
   SDL_Surface* screen_sdl_surface = screen_surface->get_internal_surface();
   SDL_UpdateTexture(screen_texture, NULL, screen_sdl_surface->pixels, screen_sdl_surface->pitch);
   SDL_RenderClear(main_renderer);
-  SDL_RenderCopy(main_renderer, screen_texture, NULL, NULL);
+  SDL_RenderCopy(main_renderer, screen_texture, NULL, render_position.get_internal_rect());
   SDL_RenderPresent(main_renderer);
 }
   

@@ -103,6 +103,7 @@ class VideoManager {
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
     Surface* screen_surface;                /**< The screen surface. */
     SDL_Texture* screen_texture;            /**< The screen texture. */
+    Rectangle render_position;              /**< The renderer final position on the window. */
   
     std::string outset_title;               /**< Title used when creating the window. */
     VideoMode video_mode;                   /**< Current display mode. */

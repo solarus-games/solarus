@@ -277,6 +277,10 @@ void MapEntity::update_ground_below() {
     return;
   }
 
+  if (!is_enabled() || is_being_removed()) {
+    return;
+  }
+
   if (map->test_collision_with_border(get_ground_point())) {
     // If the entity is outside the map, which is legal during a scrolling
     // transition, don't try to determine any ground.

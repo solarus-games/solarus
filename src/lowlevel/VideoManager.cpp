@@ -30,7 +30,7 @@ namespace {
 #if defined(SOLARUS_SCREEN_FORCE_MODE) && SOLARUS_SCREEN_FORCE_MODE != -1
 // Force a unique video mode at compilation time.
 const VideoManager::VideoMode forced_mode =
-  VideoManager::VideoMode(3);
+  VideoManager::VideoMode(SOLARUS_SCREEN_FORCE_MODE);
 #else
 // Make all modes available.
 const VideoManager::VideoMode forced_mode = VideoManager::NO_MODE;

@@ -307,6 +307,17 @@ Ground MapEntity::get_ground_below() const {
 void MapEntity::update_ground_below() {
 
   if (!is_ground_observer()) {
+    // This entity does not care about the ground below it.
+    return;
+  }
+
+  if (!is_enabled() || is_being_removed()) {
+    return;
+  }
+
+  if (map->test_collision_with_border(get_ground_point())) {
+    // If the entity is outside the map, which is legal during a scrolling
+    // transition, don't try to determine any ground.
     return;
   }
 
@@ -1226,7 +1237,7 @@ void MapEntity::clear_old_movements() {
  * \return Whether movement events are currently enabled.
  */
 bool MapEntity::are_movement_notifications_enabled() const {
-  return movement_events_enabled;
+  return main_loop != NULL && movement_events_enabled;
 }
 
 /**

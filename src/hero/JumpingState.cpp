@@ -55,7 +55,7 @@ Hero::JumpingState::JumpingState(
  * \brief Destructor.
  */
 Hero::JumpingState::~JumpingState() {
-  delete carried_item;
+  destroy_carried_item();
 }
 
 /**
@@ -108,8 +108,7 @@ void Hero::JumpingState::stop(State *next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
-      delete carried_item;
-      carried_item = NULL;
+      destroy_carried_item();
       get_sprites().set_lifted_item(NULL);
       break;
 
@@ -321,6 +320,20 @@ bool Hero::JumpingState::can_be_hurt(Enemy* attacker) {
  */
 CarriedItem* Hero::JumpingState::get_carried_item() {
   return carried_item;
+}
+
+/**
+ * \brief Destroys the item carried if any and sets it to NULL.
+ */
+void Hero::JumpingState::destroy_carried_item() {
+
+  if (carried_item != NULL) {
+    carried_item->decrement_refcount();
+    if (carried_item->get_refcount() == 0) {
+      delete carried_item;
+    }
+    carried_item = NULL;
+  }
 }
 
 /**

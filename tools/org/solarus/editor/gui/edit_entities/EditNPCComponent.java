@@ -89,7 +89,16 @@ public class EditNPCComponent extends EditEntityComponent {
             public void actionPerformed(ActionEvent ev) {
 
                 Subtype subtype = (Subtype) subtypeField.getValue();
-                withSpriteField.setEnabled(subtype != Subtype.USUAL_NPC);
+                if (subtype == Subtype.USUAL_NPC) {
+                  // Sprite is mandatory.
+                  withSpriteField.setEnabled(false);
+                  withSpriteField.setSelected(true);
+                  spriteField.setEnabled(true);
+                }
+                else {
+                  // Sprite is optional.
+                  withSpriteField.setEnabled(true);
+                }
             }
         });
     }
@@ -103,13 +112,14 @@ public class EditNPCComponent extends EditEntityComponent {
         NPC npc = (NPC) entity;
         String sprite = npc.getStringProperty("sprite");
         String behavior = npc.getStringProperty("behavior");
+        Subtype subtype = (Subtype) npc.getSubtype();
 
         boolean hasSprite = sprite != null;
+        boolean mustHaveSprite = subtype == Subtype.USUAL_NPC;
 
-        withSpriteField.setSelected(hasSprite);
+        withSpriteField.setSelected(hasSprite || mustHaveSprite);
+        spriteField.setEnabled(hasSprite || mustHaveSprite);
         spriteField.setSelectedId(hasSprite ? sprite : "");
-
-        spriteField.setEnabled(hasSprite);
 
         if (behavior.equals("map")) {
           behaviorField.setSelectedIndex(1);

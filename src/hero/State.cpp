@@ -43,7 +43,8 @@ Hero::State::State(Hero& hero, const std::string& state_name):
   suspended(false),
   when_suspended(0),
   map(&hero.get_map()),
-  name(state_name) {
+  name(state_name),
+  stopping(false) {
 
 }
 
@@ -65,10 +66,18 @@ const std::string& Hero::State::get_name() const {
 
 /**
  * \brief Returns whether this state is the current state.
- * \return true if this state is the current state
+ * \return \c true if this state is the current state.
  */
-bool Hero::State::is_current_state() {
-  return hero.state == this;
+bool Hero::State::is_current_state() const {
+  return hero.state == this && !hero.state->is_stopping();
+}
+
+/**
+ * \brief Returns whether this state is being stopped.
+ * \return \c true if this state is being stopped.
+ */
+bool Hero::State::is_stopping() const {
+  return stopping;
 }
 
 /**
@@ -163,9 +172,10 @@ void Hero::State::start(State* previous_state) {
  * You should here close everything the start() function has opened.
  * The destructor will be called at the next cycle.
  *
- * \param next_state the next state (for information)
+ * \param next_state The next state (for information).
  */
 void Hero::State::stop(State* next_state) {
+  this->stopping = true;
 }
 
 /**

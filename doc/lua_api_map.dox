@@ -361,6 +361,20 @@ and only loads the image of the new tileset.
 \remark If the new tileset is not compatible with the previous one,
   tiles will be displayed with wrong graphics.
 
+\subsection lua_api_map_get_music map:get_music()
+
+Returns the name of the music associated to this map.
+
+This is the music to play when the map starts, as specified in the map file.
+It may be different from the music currently being played.
+To get the music currently being played, see
+\ref lua_api_audio_get_music "sol.audio.get_music()".
+- Return value (string): Name of the music of this map, relative to
+  the \c musics directory and without extension.
+  It can also be the special value \c "same" if the map specifies to keep the
+  music unchanged,
+  or \c nil if the map specifies to play no music.
+
 \subsection lua_api_map_get_camera_position map:get_camera_position()
 
 Returns the currently visible area of the map.

@@ -36,8 +36,8 @@ public class NPC extends MapEntity {
         USUAL_NPC("1");
 
         public static final String[] humanNames = {
-            "Generalized NPC (some solid object)",
-            "Usual NPC (a person)"
+            "Generalized NPC (something)",
+            "Usual NPC (somebody)"
         };
 
         private String id;

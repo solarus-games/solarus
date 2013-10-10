@@ -234,15 +234,22 @@ void Hero::PushingState::stop_moving_pushed_entity() {
 
   hero.clear_movement();
 
-  if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
-    // the hero was pushing an entity without grabbing it
+  if (!is_current_state()) {
+    // Another state is already starting (for example TreasureState).
+    // In this case, don't overwrite it.
+    return;
+  }
 
-    // stop the animation pushing if his direction changed
+  if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
+    // The hero was pushing an entity without grabbing it.
+
+    // Stop the animation pushing if his direction changed.
     if (get_commands().get_wanted_direction8() != pushing_direction4 * 2) {
       hero.set_state(new FreeState(hero));
     }
   }
   else {
+    // The hero was pushing an entity and grabbing it.
     hero.set_state(new GrabbingState(hero));
   }
 }

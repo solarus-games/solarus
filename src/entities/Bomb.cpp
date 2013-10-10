@@ -222,8 +222,14 @@ void Bomb::notify_action_command_pressed() {
       && get_hero().get_facing_entity() == this
       && get_hero().is_facing_point_in(get_bounding_box())) {
 
-    get_hero().start_lifting(new CarriedItem(get_hero(), *this,
-	"entities/bomb", "", 0, explosion_date));
+    get_hero().start_lifting(new CarriedItem(
+        get_hero(),
+        *this,
+        "entities/bomb",
+        "",
+        0,
+        explosion_date)
+    );
     Sound::play("lift");
     remove_from_map();
   }

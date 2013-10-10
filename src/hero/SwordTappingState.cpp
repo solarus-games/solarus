@@ -155,9 +155,9 @@ bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& item) {
  */
 bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) {
 
-  return detector.is_obstacle_for(hero)		// only obstacle entities can be cut
-    && hero.get_facing_entity() == &detector	// only one entity at a time
-    && get_sprites().get_current_frame() >= 3;	// wait until the animation shows an appropriate frame
+  return detector.is_obstacle_for(hero)         // only obstacle entities can be cut
+    && hero.get_facing_entity() == &detector    // only one entity at a time
+    && get_sprites().get_current_frame() >= 3;  // wait until the animation shows an appropriate frame
 }
 
 /**

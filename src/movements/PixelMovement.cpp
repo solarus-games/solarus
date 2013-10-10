@@ -35,7 +35,11 @@ PixelMovement::PixelMovement(
     bool loop,
     bool ignore_obstacles):
   Movement(ignore_obstacles),
-  next_move_date(0), delay(delay), loop(loop), nb_steps_done(0), finished(false) {
+  next_move_date(0),
+  delay(delay),
+  loop(loop),
+  nb_steps_done(0),
+  finished(false) {
 
   set_trajectory(trajectory_string);
 }
@@ -65,7 +69,7 @@ const std::list<Rectangle>& PixelMovement::get_trajectory() {
  * \param trajectory a list of rectangles describing the succession of translations that compose this movement,
  * where each rectangle is an xy value representing a translation (the size is ignored)
  */
-void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
+void PixelMovement::set_trajectory(const std::list<Rectangle>& trajectory) {
 
   this->trajectory = trajectory;
   this->trajectory_string = ""; // will be computed only on demand
@@ -83,7 +87,7 @@ void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
  * \param trajectory_string a string describing the succession of translations that compose this movement,
  * with the syntax "dx1 dy1  dx2 dy2  dx3 dy3 ..." (the number of spaces between values does not matter)
  */
-void PixelMovement::set_trajectory(const std::string &trajectory_string) {
+void PixelMovement::set_trajectory(const std::string& trajectory_string) {
 
   int dx = 0;
   int dy = 0;
@@ -156,7 +160,12 @@ void PixelMovement::restart() {
     nb_steps_done = 0;
     finished = false;
     trajectory_iterator = trajectory.begin();
-    next_move_date = System::now() + delay;
+
+    if (next_move_date == 0) {
+      // Keep the previous date if we just looped.
+      next_move_date = System::now();
+    }
+    next_move_date += delay;
 
     notify_movement_changed();
   }
@@ -195,15 +204,17 @@ void PixelMovement::set_suspended(bool suspended) {
 
   Movement::set_suspended(suspended);
 
-  if (!suspended && get_when_suspended() != 0) {
+  if (!suspended
+      && get_when_suspended() != 0
+      && next_move_date != 0) {
     next_move_date += System::now() - get_when_suspended();
   }
 }
 
 /**
- * \brief Makes a move in the path.
+ * \brief Makes a move in the trajectory.
  *
- * This function must be called only when the path is not finished yet.
+ * This function must be called only when the trajectory is not finished yet.
  */
 void PixelMovement::make_next_step() {
 
@@ -215,7 +226,6 @@ void PixelMovement::make_next_step() {
     success = true;
   }
 
-  next_move_date += delay;
   trajectory_iterator++;
 
   if (trajectory_iterator == trajectory.end()) {
@@ -225,6 +235,11 @@ void PixelMovement::make_next_step() {
     else {
       finished = true;
     }
+  }
+
+  if (!finished) {
+    // Add the delay unless we are finished, because we may be looping.
+    next_move_date += delay;
   }
 
   int step_index = nb_steps_done;

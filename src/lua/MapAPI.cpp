@@ -20,6 +20,7 @@
 #include "Map.h"
 #include "Treasure.h"
 #include "EquipmentItem.h"
+#include "Timer.h"
 #include "entities/MapEntities.h"
 #include "entities/Tile.h"
 #include "entities/Tileset.h"
@@ -50,6 +51,7 @@
 #include "entities/Hero.h"
 #include "movements/Movement.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
@@ -71,6 +73,7 @@ void LuaContext::register_map_module() {
       { "get_floor", map_api_get_floor },
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
+      { "get_music", map_api_get_music },
       { "get_camera_position", map_api_get_camera_position },
       { "move_camera", map_api_move_camera },
       { "get_ground", map_api_get_ground },
@@ -297,6 +300,8 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
   lua_pushcfunction(l, l_camera_restore);
   timer_api_start(l);
+  Timer& timer = check_timer(l, -1);
+  timer.set_suspended_with_map(false);
 
   return 0;
 }
@@ -412,6 +417,30 @@ int LuaContext::map_api_get_tileset(lua_State* l) {
   Map& map = check_map(l, 1);
 
   push_string(l, map.get_tileset_id());
+  return 1;
+}
+
+/**
+ * \brief Implementation of map:get_music().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_music(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  const std::string& music_id = map.get_music_id();
+  if (music_id == Music::none) {
+    // Special id to stop any music.
+    lua_pushnil(l);
+  }
+  else if (music_id == Music::unchanged) {
+    // Special id to keep the music unchanged.
+    push_string(l, "same");
+  }
+  else {
+    push_string(l, music_id);
+  }
   return 1;
 }
 

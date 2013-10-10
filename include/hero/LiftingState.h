@@ -40,6 +40,8 @@ class Hero::LiftingState: public Hero::State {
     void throw_item();
 
     CarriedItem* lifted_item;           /**< the item currently being lifted */
+    void destroy_lifted_item();
+
 };
 
 #endif

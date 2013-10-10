@@ -24,21 +24,19 @@
  */
 class Hero::JumpingState: public Hero::State {
 
-  private:
-
-    JumpMovement *movement;			/**< the movement applied to the hero */
-    int direction8;				/**< direction of the jump (0 to 7) */
-    bool with_sound;				/**< indicates that a jump sound is played */
-    CarriedItem* carried_item;			/**< an item carried by the hero while making this jump, or NULL */
-
   public:
 
-    JumpingState(Hero &hero, int direction8, int distance, bool ignore_obstacles, bool with_sound,
+    JumpingState(
+        Hero& hero,
+        int direction8,
+        int distance,
+        bool ignore_obstacles,
+        bool with_sound,
 	uint32_t movement_delay = 0);
     ~JumpingState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void set_map(Map& map);
     void update();
     void set_suspended(bool suspended);
@@ -61,6 +59,16 @@ class Hero::JumpingState: public Hero::State {
     bool can_be_hurt(Enemy* attacker);
     CarriedItem* get_carried_item();
     CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
+
+  private:
+
+    JumpMovement* movement;			/**< the movement applied to the hero */
+    int direction8;				/**< direction of the jump (0 to 7) */
+    bool with_sound;				/**< indicates that a jump sound is played */
+    CarriedItem* carried_item;			/**< an item carried by the hero while making this jump, or NULL */
+
+    void destroy_carried_item();
+
 };
 
 #endif

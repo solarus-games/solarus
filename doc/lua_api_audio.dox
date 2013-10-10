@@ -40,40 +40,21 @@ The list of sound files to load is read from the
 
 This function does nothing if you already called it before.
 
-\subsection lua_api_audio_play_music sol.audio.play_music(music_id, [loop, [callback]])
+\subsection lua_api_audio_play_music sol.audio.play_music(music_id)
 
 Plays a music.
 
 Generates a Lua error if the music does not exist.
 
-Only one music can be played at a time.
-If the same music is already playing, it continues normally and does not
-restart.
+If the same music is already playing, this function has no effect.
 If a different music was already playing, it is stopped and replaced by
 the new one.
+Only one music can be played at a time.
 - \c music_id (string): Name of the music file to play, relative to the
   \c musics directory and without extension. The following extensions will be
   tried in this order: \c <tt>.ogg</tt>, \c <tt>.it</tt> and \c <tt>.spc</tt>.
   You can also specify the special value \c "none" to stop playing any music,
   or \c "same" to let the music unchanged.
-- \c loop (boolean, optional): \c true to make the music restart when it
-  finishes.
-  By default, \c loop is \c true for \c .ogg musics,
-  and \c false for \c <tt>.it</tt> and \c <tt>.spc</tt> musics.
-  This is because \c <tt>.it</tt> and \c <tt>.spc</tt> music files usually
-  already contain loop information when they need to.
-- \c callback (function, optional): A function to be called when the music
-  finishes (reaches its end).
-  When you change or stop the music, its callback (if any) is canceled.
-  If you set the music to \c "same" or to the same music id, then
-  - If you define this \c callback parameter, it replaces the previous callback
-    (\c nil removes the previous callback).
-  - If you don't define this \c callback parameter, then the previous callback
-    is preserved.
-
-\remark Note that if the music loops, it never finishes and your callback will
-  never be called. If you set the music to \c "none", the \c loop and
-  \c callback parameters have no effect.
 
 \subsection lua_api_audio_get_music sol.audio.get_music()
 

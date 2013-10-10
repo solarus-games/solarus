@@ -113,7 +113,9 @@ class Wall;
 class Sensor;
 class Crystal;
 class CrystalBlock;
-class ShopItem;
+class ShopTreasure;
+class Separator;
+class CustomEntity;
 class Boomerang;
 class Arrow;
 class ConveyorBelt;
@@ -123,7 +125,6 @@ class Explosion;
 class Bomb;
 class Fire;
 class Hookshot;
-class Separator;
 
 // tile patterns
 class Tileset;

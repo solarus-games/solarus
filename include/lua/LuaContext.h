@@ -79,9 +79,10 @@ class LuaContext {
     static const std::string entity_block_module_name;           /**< sol.entity.block */
     static const std::string entity_switch_module_name;          /**< sol.entity.switch */
     static const std::string entity_door_module_name;            /**< sol.entity.door */
-    static const std::string entity_shop_item_module_name;       /**< sol.entity.shop_item */
+    static const std::string entity_shop_treasure_module_name;   /**< sol.entity.shop_treasure */
     static const std::string entity_pickable_module_name;        /**< sol.entity.pickable */
     static const std::string entity_enemy_module_name;           /**< sol.entity.enemy */
+    static const std::string entity_custom_module_name;          /**< sol.entity.custom */
 
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
@@ -98,7 +99,7 @@ class LuaContext {
     bool notify_input(InputEvent& event);
     void notify_map_suspended(Map& map, bool suspended);
     void notify_camera_reached_target(Map& map);
-    void notify_shop_item_interaction(ShopItem& shop_item);
+    void notify_shop_treasure_interaction(ShopTreasure& shop_treasure);
     void notify_hero_brandish_treasure(
         const Treasure& treasure, int callback_ref);
     bool notify_dialog_started(Game& game, const Dialog& dialog,
@@ -325,8 +326,8 @@ class LuaContext {
     void separator_on_activated(Separator& separator, int direction4);
     void door_on_opened(Door& door);
     void door_on_closed(Door& door);
-    bool shop_item_on_buying(ShopItem& shop_item);
-    void shop_item_on_bought(ShopItem& shop_item);
+    bool shop_treasure_on_buying(ShopTreasure& shop_treasure);
+    void shop_treasure_on_bought(ShopTreasure& shop_treasure);
     void enemy_on_update(Enemy& enemy);
     void enemy_on_suspended(Enemy& enemy, bool suspended);
     void enemy_on_created(Enemy& enemy);  // TODO remove?
@@ -698,17 +699,18 @@ class LuaContext {
       map_api_create_sensor,
       map_api_create_crystal,
       map_api_create_crystal_block,
-      map_api_create_shop_item,  // TODO rename to shop treasure
+      map_api_create_shop_treasure,  // TODO rename to shop treasure
       map_api_create_conveyor_belt,
       map_api_create_door,
       map_api_create_stairs,
+      map_api_create_separator,
+      map_api_create_custom_entity,
       map_api_create_bomb,
       map_api_create_explosion,
       map_api_create_fire,
-      map_api_create_separator,
 
       // Map entity API.
-      // TODO entity:get_type()
+      entity_api_get_type,
       entity_api_get_map,
       entity_api_get_name,
       entity_api_exists,
@@ -809,6 +811,7 @@ class LuaContext {
       enemy_api_hurt,
       enemy_api_immobilize,
       enemy_api_create_enemy,
+      custom_entity_api_get_model,
 
       // available to all userdata types
       userdata_meta_gc,
@@ -900,9 +903,10 @@ class LuaContext {
     static void push_block(lua_State* l, Block& block);
     static void push_switch(lua_State* l, Switch& sw);
     static void push_door(lua_State* l, Door& door);
-    static void push_shop_item(lua_State* l, ShopItem& shop_item);
+    static void push_shop_treasure(lua_State* l, ShopTreasure& shop_treasure);
     static void push_pickable(lua_State* l, Pickable& pickable);
     static void push_enemy(lua_State* l, Enemy& enemy);
+    static void push_custom_entity(lua_State* l, CustomEntity& entity);
 
     // Getting userdata objects from Lua.
     static bool is_userdata(lua_State* l, int index,
@@ -959,12 +963,14 @@ class LuaContext {
     static Switch& check_switch(lua_State* l, int index);
     static bool is_door(lua_State* l, int index);
     static Door& check_door(lua_State* l, int index);
-    static bool is_shop_item(lua_State* l, int index);
-    static ShopItem& check_shop_item(lua_State* l, int index);
+    static bool is_shop_treasure(lua_State* l, int index);
+    static ShopTreasure& check_shop_treasure(lua_State* l, int index);
     static bool is_pickable(lua_State* l, int index);
     static Pickable& check_pickable(lua_State* l, int index);
     static bool is_enemy(lua_State* l, int index);
     static Enemy& check_enemy(lua_State* l, int index);
+    static bool is_custom_entity(lua_State* l, int index);
+    static CustomEntity& check_custom_entity(lua_State* l, int index);
 
     // Events.
     void on_started();
@@ -1058,8 +1064,8 @@ class LuaContext {
       l_camera_do_callback,
       l_camera_restore,
       l_treasure_dialog_finished,
-      l_shop_item_description_dialog_finished,
-      l_shop_item_question_dialog_finished;
+      l_shop_treasure_description_dialog_finished,
+      l_shop_treasure_question_dialog_finished;
 
 
     // Script data.

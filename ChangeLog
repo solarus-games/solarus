@@ -9,6 +9,22 @@ Engine changes
 * Upgrade to SDL 2.
 * Show a dialog box in case of fatal error.
 
+Data files format changes
+-------------------------
+
+You can use the script tools/data_files_conversion/1.1_to_1.2/update_quest.lua
+to automatically update your data files.
+Don't forget to make a backup first.
+
+* Maps: Rename entity shop_item to shop_treasure.
+
+Lua API changes
+---------------
+
+Changes that introduce incompatibilities:
+
+* map:create_shop_item() is replaced by map:create_shop_item().
+
 _______________________________
 
 Solarus 1.1 (under development)

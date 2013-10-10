@@ -60,7 +60,7 @@ Destination::~Destination() {
  * \return the type of entity
  */
 EntityType Destination::get_type() const {
-  return DESTINATION;
+  return ENTITY_DESTINATION;
 }
 
 /**

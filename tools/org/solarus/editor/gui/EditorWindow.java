@@ -730,12 +730,6 @@ public class EditorWindow extends JFrame
                 break;
             }
 
-            case ENEMY:
-            {
-                openTextEditor(Project.getEnemyScriptFile(resourceId));
-                break;
-            }
-
             case ITEM:
             {
                 openTextEditor(Project.getItemScriptFile(resourceId));
@@ -745,6 +739,18 @@ public class EditorWindow extends JFrame
             case SPRITE:
             {
                 openTextEditor(Project.getSpriteFile(resourceId));
+                break;
+            }
+
+            case ENEMY:
+            {
+                openTextEditor(Project.getEnemyScriptFile(resourceId));
+                break;
+            }
+
+            case ENTITY:
+            {
+                openTextEditor(Project.getEntityScriptFile(resourceId));
                 break;
             }
             }

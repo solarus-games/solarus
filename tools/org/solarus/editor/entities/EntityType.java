@@ -41,11 +41,12 @@ public enum EntityType {
     SENSOR               ("Sensor",            "sensor",          Sensor.class,          null),
     CRYSTAL              ("Crystal",           "crystal",         Crystal.class,         null),
     CRYSTAL_BLOCK        ("Crystal block",     "crystal_block",   CrystalBlock.class,    CrystalBlock.Subtype.class),
-    SHOP_ITEM            ("Shop item",         "shop_item",       ShopItem.class,        null),
+    SHOP_TREASURE        ("Shop treasure",     "shop_treasure",   ShopTreasure.class,    null),
     CONVEYOR_BELT        ("Conveyor belt",     "conveyor_belt",   ConveyorBelt.class,    null),
     DOOR                 ("Door",              "door",            Door.class,            null),
     STAIRS               ("Stairs",            "stairs",          Stairs.class,          Stairs.Subtype.class),
-    SEPARATOR            ("Separator",         "separator",       Separator.class,       null)
+    SEPARATOR            ("Separator",         "separator",       Separator.class,       null),
+    CUSTOM               ("Custom entity",     "custom",          CustomEntity.class,    null)
     ;
 
     private Class<? extends MapEntity> entityClass;

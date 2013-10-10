@@ -20,7 +20,7 @@
 #include "entities/Sensor.h"
 #include "entities/NPC.h"
 #include "entities/Chest.h"
-#include "entities/ShopItem.h"
+#include "entities/ShopTreasure.h"
 #include "entities/Door.h"
 #include "entities/Block.h"
 #include "entities/Enemy.h"

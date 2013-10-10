@@ -1,0 +1,105 @@
+Notes about the future custom entity API.
+
+Properties:
+
+model
+sprite
+direction
+
+Methods:
+
+Common from entity:
+
+get_type()
+get_map()
+get_name()
+exists()
+remove()
+is_enabled()
+set_enabled()
+get_size()
+get_origin()
+get_position()
+set_position()
+get_center_position()
+snap_to_grid()
+get_distance()
+get_angle()
+get_direction4_to()
+get_direction8_to()
+get_optimization_distance()
+set_optimization_distance()
+is_in_same_region()
+test_obstacles()
+is_visible()
+set_visible()
+get_movement()
+stop_movement()
+
+Specific to custom entity:
+
+get_model()
+has_layer_independent_collisions()
+set_layer_independent_collisions()
+is_traversable()
+set_traversable()
+set_size()
+set_direction()
+set_origin()
+get_sprite()
+create_sprite()
+remove_sprite()
+
+is/set_drawn_in_y_order()
+is/set_drawn_at_its_position()
+is/set_ground_observer()
+is/set_ground_modifier()
+get/set_ground_point()
+get/set_modified_ground()
+get/set_facing_point()
+is/set_sword_ignored()
+get/set_sword_tapping_sound()
+
+set_entity_type_traversable(entity_type, traversable)
+  Describes if a type of entities can be traversed by the current entity.
+  The traversable parameter may be:
+  - a boolean (fast): whether that entity type is traversable or not.
+  - nil (fast): default.
+  - a function: a function that takes the other entity as parameter and should
+    return a boolean or nil. Allows to decide dynamically.
+Also allow a table parameter with entity_type as keys?
+is_entity_traversable(entity_type)
+
+set_ground_traversable(ground, traversable)
+is_ground_traversable(ground)
+
+set_collision_mode(mode, ...)
+  With modes being strings or functions that take an entity and return a boolean.
+get_collision_modes
+
+Events:
+
+Common from entity:
+
+on_removed()
+
+Specific to custom entity:
+
+on_update()
+on_suspended()
+on_created()
+on_enabled()
+on_disabled()
+on_pre_draw()
+on_post_draw()
+on_position_changed()
+on_obstacle_reached()
+on_movement_changed()
+on_movement_finished()
+on_collision()
+on_ground_below_changed()
+on_facing_entity_changed()
+on_attacked_enemy()
+on_interaction()
+on_interaction_item()
+

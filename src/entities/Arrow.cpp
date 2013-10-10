@@ -70,7 +70,7 @@ Arrow::~Arrow() {
  * \return the type of entity
  */
 EntityType Arrow::get_type() const {
-  return ARROW;
+  return ENTITY_ARROW;
 }
 
 /**
@@ -285,10 +285,10 @@ void Arrow::update() {
       // the arrow is stopped because the entity that was reached just disappeared
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
+    else if (entity_reached->get_type() == ENTITY_DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == ENEMY && ((Enemy*) entity_reached)->is_dying()) {
+    else if (entity_reached->get_type() == ENTITY_ENEMY && ((Enemy*) entity_reached)->is_dying()) {
       // the enemy is dying
       disappear_date = now;
     }

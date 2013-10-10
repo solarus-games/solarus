@@ -150,7 +150,24 @@ void Hero::set_state(State* new_state) {
   // Stop the previous state.
   State* old_state = this->state;
   if (old_state != NULL) {
-    old_state->stop(new_state);
+
+    old_state->stop(new_state);  // Should not change the state again.
+
+    // Sanity check.
+    if (old_state != this->state) {
+      // old_state->stop() called set_state() again in the meantime.
+      // This is not a normal situation since we only called stop() to allow
+      // new_state to start.
+      Debug::error(std::string("Hero state '") + old_state->get_name()
+                + "' did not stop properly to let state '" + new_state->get_name()
+                + "' go, it started state '" + this->state->get_name() + "' instead. "
+                + "State '" + new_state->get_name() + "' will be forced.");
+
+      // Let's start the state that was supposed to start in the first place.
+      // Note that old_state is already in the old_states list.
+      set_state(new_state);
+      return;
+    }
   }
 
   // Don't delete the previous state immediately since it may be the caller
@@ -2004,7 +2021,11 @@ void Hero::start_deep_water() {
       set_state(new SwimmingState(*this));
     }
     else {
-      start_jumping(get_wanted_movement_direction8(), 32, false, true, 13);
+      int direction8 = get_wanted_movement_direction8();
+      if (direction8 == -1) {
+        direction8 = get_animation_direction() * 2;
+      }
+      start_jumping(direction8, 32, false, true, 13);
     }
   }
 }

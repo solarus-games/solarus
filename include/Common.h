@@ -161,7 +161,7 @@
  */
 #ifndef SOLARUS_SCREEN_FORCE_MODE
 #  if defined(SOLARUS_IOS)
-#    define SOLARUS_SCREEN_FORCE_MODE 4
+#    define SOLARUS_SCREEN_FORCE_MODE 3
 #  elif defined(CAANOO)
 #    define SOLARUS_SCREEN_FORCE_MODE 2
 #  elif defined(PANDORA)

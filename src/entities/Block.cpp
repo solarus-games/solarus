@@ -77,7 +77,7 @@ Block::~Block() {
  * \return the type of entity
  */
 EntityType Block::get_type() const {
-  return BLOCK;
+  return ENTITY_BLOCK;
 }
 
 /**

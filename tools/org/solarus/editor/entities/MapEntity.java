@@ -36,7 +36,7 @@ import java.util.*;
  *   - If your entity has a notion of subtype, create a Subtype enumeration
  *       that implements the EntitySubtype interface.
  *   - Define the specific properties and their default values
- *       by redefining the method setPropertiesDefaultValues().
+ *       by redefining the method createProperties().
  *   - Redefine the checkProperties() method: public boolean checkProperties()
  *       to check the validity of the specific properties.
  *   - Create a constructor with the following signature:

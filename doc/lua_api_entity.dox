@@ -89,6 +89,8 @@ Here are the existing types of entities.
   \ref lua_api_hero "hero".
 - \subpage lua_api_boomerang "Boomerang": A boomerang shot by the
   \ref lua_api_hero "hero".
+- \subpage lua_api_custom_entity "Custom entity": An entity fully controlled
+  by your Lua scripts.
 
 \remark Note that \ref lua_api_sprite "sprites" and \ref lua_api_movement
 "movements" are not map entities, but they can be attached to map entities
@@ -100,6 +102,44 @@ Sprites and movements can also be used outside a
 \section lua_api_entity_methods Methods of all entity types
 
 These methods exist in all entity types.
+
+\subsection lua_api_entity_get_type entity:get_type()
+
+Returns the type of entity.
+- Return value (string): The type of this entity. Can be one of:
+  \c "hero",
+  \c "dynamic_tile",
+  \c "teletransporter",
+  \c "destination",
+  \c "pickable",
+  \c "destructible",
+  \c "carried_object",
+  \c "chest",
+  \c "shop_treasure",
+  \c "enemy",
+  \c "npc",
+  \c "block",
+  \c "jumper",
+  \c "switch",
+  \c "sensor",
+  \c "separator",
+  \c "wall",
+  \c "crystal",
+  \c "crystal_block",
+  \c "conveyor_belt",
+  \c "door",
+  \c "stairs",
+  \c "bomb",
+  \c "explosion",
+  \c "fire",
+  \c "arrow",
+  \c "hookshot",
+  \c "boomerang" or
+  \c "custom",
+
+\remark The type \c "tile" is not is this list because
+  \ref lua_api_tile "tiles" don't exist at
+  runtime for optimization reasons.
 
 \subsection lua_api_entity_get_map entity:get_map()
 

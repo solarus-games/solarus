@@ -44,6 +44,40 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
   Rectangle( 1, 1)
 };
 
+const std::string MapEntity::entity_type_names[ENTITY_NUMBER + 1] = {
+    "tile",
+    "destination",
+    "teletransporter",
+    "pickable",
+    "destructible",
+    "chest",
+    "jumper",
+    "enemy",
+    "npc",
+    "block",
+    "dynamic_tile",
+    "switch",
+    "wall",
+    "sensor",
+    "crystal",
+    "crystal_block",
+    "shop_treasure",
+    "conveyor_belt",
+    "door",
+    "stairs",
+    "separator",
+    "custom",
+    "hero",
+    "carried_object",
+    "boomerang",
+    "explosion",
+    "arrow",
+    "bomb",
+    "fire",
+    "hookshot",
+    ""  // Sentinel.
+};
+
 /**
  * \brief Creates a map entity without specifying its properties now.
  */
@@ -156,7 +190,7 @@ MapEntity::~MapEntity() {
  * \return true if this entity is the hero
  */
 bool MapEntity::is_hero() const {
-  return get_type() == HERO;
+  return get_type() == ENTITY_HERO;
 }
 
 /**
@@ -273,6 +307,17 @@ Ground MapEntity::get_ground_below() const {
 void MapEntity::update_ground_below() {
 
   if (!is_ground_observer()) {
+    // This entity does not care about the ground below it.
+    return;
+  }
+
+  if (!is_enabled() || is_being_removed()) {
+    return;
+  }
+
+  if (map->test_collision_with_border(get_ground_point())) {
+    // If the entity is outside the map, which is legal during a scrolling
+    // transition, don't try to determine any ground.
     return;
   }
 
@@ -2173,3 +2218,10 @@ const std::string& MapEntity::get_lua_type_name() const {
   return LuaContext::entity_module_name;
 }
 
+/**
+ * \brief Returns the Lua name of this entity type.
+ */
+const std::string& MapEntity::get_type_name() const {
+
+  return entity_type_names[get_type()];
+}

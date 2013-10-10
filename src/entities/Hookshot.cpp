@@ -72,7 +72,7 @@ Hookshot::~Hookshot() {
  * \return the type of entity
  */
 EntityType Hookshot::get_type() const {
-  return HOOKSHOT;
+  return ENTITY_HOOKSHOT;
 }
 
 /**

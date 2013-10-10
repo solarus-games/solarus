@@ -68,7 +68,7 @@ Stairs::~Stairs() {
  * \return the type of entity
  */
 EntityType Stairs::get_type() const {
-  return STAIRS;
+  return ENTITY_STAIRS;
 }
 
 /**
@@ -364,7 +364,7 @@ void Stairs::notify_enabled(bool enabled) {
 void Stairs::update_dynamic_tiles() {
 
   std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(
-      DYNAMIC_TILE, get_name() + "_enabled");
+      ENTITY_DYNAMIC_TILE, get_name() + "_enabled");
   std::list<MapEntity*>::iterator it;
   for (it = tiles.begin(); it != tiles.end(); ++it) {
     DynamicTile* tile = static_cast<DynamicTile*>(*it);
@@ -372,7 +372,7 @@ void Stairs::update_dynamic_tiles() {
   }
 
   tiles = get_entities().get_entities_with_prefix(
-      DYNAMIC_TILE, get_name() + "_disabled");
+      ENTITY_DYNAMIC_TILE, get_name() + "_disabled");
   for (it = tiles.begin(); it != tiles.end(); ++it) {
     DynamicTile* tile = static_cast<DynamicTile*>(*it);
     tile->set_enabled(!is_enabled());

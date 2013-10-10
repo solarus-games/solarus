@@ -20,7 +20,7 @@
 #include "entities/Sensor.h"
 #include "entities/NPC.h"
 #include "entities/Chest.h"
-#include "entities/ShopItem.h"
+#include "entities/ShopTreasure.h"
 #include "entities/Door.h"
 #include "entities/Block.h"
 #include "entities/Enemy.h"
@@ -31,6 +31,7 @@
 #include "EquipmentItem.h"
 #include "Treasure.h"
 #include "Map.h"
+#include "Timer.h"
 #include <sstream>
 #include <iomanip>
 
@@ -315,7 +316,9 @@ void LuaContext::notify_camera_reached_target(Map& map) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
   lua_pushcfunction(l, l_camera_do_callback);
   timer_api_start(l);
-  lua_pop(l, 1);
+  Timer& timer = check_timer(l, -1);
+  timer.set_suspended_with_map(false);
+  lua_settop(l, 0);
 }
 
 /**

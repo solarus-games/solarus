@@ -600,7 +600,7 @@ void MapEntities::add_entity(MapEntity* entity) {
     return;
   }
 
-  if (entity->get_type() == TILE) {
+  if (entity->get_type() == ENTITY_TILE) {
     // Tiles are optimized specifically for obstacle checks and rendering.
     add_tile(static_cast<Tile*>(entity));
   }
@@ -648,23 +648,23 @@ void MapEntities::add_entity(MapEntity* entity) {
     // update the specific entities lists
     switch (entity->get_type()) {
 
-      case STAIRS:
+      case ENTITY_STAIRS:
         stairs[layer].push_back(static_cast<Stairs*>(entity));
         break;
 
-      case CRYSTAL_BLOCK:
+      case ENTITY_CRYSTAL_BLOCK:
         crystal_blocks[layer].push_back(static_cast<CrystalBlock*>(entity));
         break;
 
-      case SEPARATOR:
+      case ENTITY_SEPARATOR:
         separators.push_back(static_cast<Separator*>(entity));
         break;
 
-      case BOOMERANG:
+      case ENTITY_BOOMERANG:
         this->boomerang = static_cast<Boomerang*>(entity);
         break;
 
-      case DESTINATION:
+      case ENTITY_DESTINATION:
         {
           Destination* destination = static_cast<Destination*>(entity);
           if (this->default_destination == NULL || destination->is_default()) {
@@ -796,19 +796,19 @@ void MapEntities::remove_marked_entities() {
     // update the specific entities lists
     switch (entity->get_type()) {
 
-      case STAIRS:
+      case ENTITY_STAIRS:
         stairs[layer].remove(static_cast<Stairs*>(entity));
         break;
 
-      case CRYSTAL_BLOCK:
+      case ENTITY_CRYSTAL_BLOCK:
         crystal_blocks[layer].remove(static_cast<CrystalBlock*>(entity));
         break;
 
-      case SEPARATOR:
+      case ENTITY_SEPARATOR:
         separators.remove(static_cast<Separator*>(entity));
         break;
 
-      case BOOMERANG:
+      case ENTITY_BOOMERANG:
         this->boomerang = NULL;
         break;
 
@@ -1171,7 +1171,7 @@ void MapEntities::remove_arrows() {
   std::list<MapEntity*>::iterator it;
   for (it = all_entities.begin(); it != all_entities.end(); it++) {
     MapEntity* entity = *it;
-    if (entity->get_type() == ARROW) {
+    if (entity->get_type() == ENTITY_ARROW) {
       remove_entity(entity);
     }
   }

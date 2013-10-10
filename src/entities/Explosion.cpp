@@ -56,7 +56,7 @@ Explosion::~Explosion() {
  * \return the type of entity
  */
 EntityType Explosion::get_type() const {
-  return EXPLOSION;
+  return ENTITY_EXPLOSION;
 }
 
 /**

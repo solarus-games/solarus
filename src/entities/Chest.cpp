@@ -83,7 +83,7 @@ Chest::~Chest() {
  * \return the type of entity
  */
 EntityType Chest::get_type() const {
-  return CHEST;
+  return ENTITY_CHEST;
 }
 
 /**

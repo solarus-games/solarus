@@ -29,6 +29,7 @@ namespace {
     "sound",
     "item",
     "enemy",
+    "entity",
     "language",
     "",  // Sentinel for Lua.
   };

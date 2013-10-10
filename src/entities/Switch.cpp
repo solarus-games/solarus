@@ -38,8 +38,14 @@
  * \param inactivate_when_leaving true to inactivate the switch when the hero or
  * the block leaves it
  */
-Switch::Switch(const std::string& name, Layer layer, int x, int y,
-	       Subtype subtype, bool needs_block, bool inactivate_when_leaving):
+Switch::Switch(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    Subtype subtype,
+    bool needs_block,
+    bool inactivate_when_leaving):
   Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
   subtype(subtype),
   activated(false),
@@ -79,7 +85,7 @@ Switch::~Switch() {
  * \return the type of entity
  */
 EntityType Switch::get_type() const {
-  return SWITCH;
+  return ENTITY_SWITCH;
 }
 
 /**

@@ -20,6 +20,7 @@
 #include "Map.h"
 #include "Treasure.h"
 #include "EquipmentItem.h"
+#include "Timer.h"
 #include "entities/MapEntities.h"
 #include "entities/Tile.h"
 #include "entities/Tileset.h"
@@ -38,14 +39,15 @@
 #include "entities/Sensor.h"
 #include "entities/Crystal.h"
 #include "entities/CrystalBlock.h"
-#include "entities/ShopItem.h"
+#include "entities/ShopTreasure.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/Door.h"
 #include "entities/Stairs.h"
+#include "entities/Separator.h"
+#include "entities/CustomEntity.h"
 #include "entities/Bomb.h"
 #include "entities/Explosion.h"
 #include "entities/Fire.h"
-#include "entities/Separator.h"
 #include "entities/Hero.h"
 #include "movements/Movement.h"
 #include "lowlevel/Sound.h"
@@ -104,7 +106,7 @@ void LuaContext::register_map_module() {
       { "create_sensor", map_api_create_sensor },
       { "create_crystal", map_api_create_crystal },
       { "create_crystal_block", map_api_create_crystal_block },
-      { "create_shop_item", map_api_create_shop_item },
+      { "create_shop_treasure", map_api_create_shop_treasure },
       { "create_conveyor_belt", map_api_create_conveyor_belt },
       { "create_door", map_api_create_door },
       { "create_stairs", map_api_create_stairs },
@@ -298,6 +300,8 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
   lua_pushcfunction(l, l_camera_restore);
   timer_api_start(l);
+  Timer& timer = check_timer(l, -1);
+  timer.set_suspended_with_map(false);
 
   return 0;
 }
@@ -606,7 +610,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
 
   bool done = false;
   MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
+  std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door* door = static_cast<Door*>(*it);
@@ -637,7 +641,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
 
   bool done = false;
   MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
+  std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door* door = static_cast<Door*>(*it);
@@ -671,7 +675,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
   }
 
   MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
+  std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door* door = static_cast<Door*>(*it);
@@ -1576,7 +1580,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::map_api_create_shop_item(lua_State* l) {
+int LuaContext::map_api_create_shop_treasure(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
@@ -1601,7 +1605,7 @@ int LuaContext::map_api_create_shop_item(lua_State* l) {
   }
 
   Game& game = map.get_game();
-  MapEntity* entity = ShopItem::create(
+  MapEntity* entity = ShopTreasure::create(
       game,
       name,
       Layer(layer),
@@ -1798,6 +1802,46 @@ int LuaContext::map_api_create_separator(lua_State* l) {
 
   if (map.is_started()) {
     push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * \brief Implementation of map:create_custom_entity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_custom_entity(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  int layer = check_int_field(l, 1, "layer");
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = opt_int_field(l, 1, "width", 16);
+  int height = opt_int_field(l, 1, "height", 16);
+  const std::string& model = opt_string_field(l, 1, "model", "");
+
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
+    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+
+  Game& game = map.get_game();
+  CustomEntity* entity = new CustomEntity(
+      game,
+      name,
+      Layer(layer),
+      x,
+      y,
+      width,
+      height,
+      model);
+
+  map.get_entities().add_entity(entity);
+  if (map.is_started()) {
+    push_custom_entity(l, *entity);
     return 1;
   }
   return 0;

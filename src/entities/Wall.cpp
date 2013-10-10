@@ -46,10 +46,10 @@ Wall::Wall(
   enabled(true),
   waiting_enabled(false) {
 
-  entity_types_stopped[HERO] = stops_hero;
-  entity_types_stopped[ENEMY] = stops_enemies;
-  entity_types_stopped[NON_PLAYING_CHARACTER] = stops_npcs;
-  entity_types_stopped[BLOCK] = stops_blocks;
+  entity_types_stopped[ENTITY_HERO] = stops_hero;
+  entity_types_stopped[ENTITY_ENEMY] = stops_enemies;
+  entity_types_stopped[ENTITY_NPC] = stops_npcs;
+  entity_types_stopped[ENTITY_BLOCK] = stops_blocks;
 }
 
 /**
@@ -64,7 +64,7 @@ Wall::~Wall() {
  * \return the type of entity
  */
 EntityType Wall::get_type() const {
-  return WALL;
+  return ENTITY_WALL;
 }
 
 /**

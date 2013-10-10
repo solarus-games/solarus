@@ -116,7 +116,7 @@ void Teletransporter::set_map(Map& map) {
  * \return the type of entity
  */
 EntityType Teletransporter::get_type() const {
-  return TELETRANSPORTER;
+  return ENTITY_TELETRANSPORTER;
 }
 
 /**
@@ -147,7 +147,7 @@ bool Teletransporter::test_collision_custom(MapEntity& entity) {
       // scrolling towards an adjacent map
       Rectangle facing_point = hero.get_facing_point(transition_direction);
       collision = hero.is_moving_towards(transition_direction)
-	    && overlaps(facing_point.get_x(), facing_point.get_y());
+          && overlaps(facing_point.get_x(), facing_point.get_y());
       normal_case = false;
     }
 

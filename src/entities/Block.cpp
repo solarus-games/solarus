@@ -244,7 +244,7 @@ void Block::notify_position_changed() {
 
   // now we know that the block moves at least of 1 pixel:
   // we can play the sound
-  if (!sound_played) {
+  if (get_movement() != NULL && !sound_played) {
     Sound::play("hero_pushes");
     sound_played = true;
   }

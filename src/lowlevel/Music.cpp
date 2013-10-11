@@ -20,6 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include <vector>
 
 const int Music::nb_buffers;
 SpcDecoder* Music::spc_decoder = NULL;
@@ -395,13 +396,11 @@ void Music::update_playing() {
 void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 
   // decode the SPC data
-  ALushort* raw_data = new ALushort[nb_samples];
-  spc_decoder->decode((int16_t*) raw_data, nb_samples);
+  std::vector<ALushort> raw_data(nb_samples);
+  spc_decoder->decode((int16_t*) &raw_data[0], nb_samples);
 
   // put this decoded data into the buffer
-  alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data, nb_samples * 2, 32000);
-
-  delete[] raw_data;
+  alBufferData(destination_buffer, AL_FORMAT_STEREO16, &raw_data[0], nb_samples * 2, 32000);
 
   int error = alGetError();
   Debug::check_assertion(error == AL_NO_ERROR,
@@ -416,13 +415,11 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
 
   // decode the IT data
-  ALushort* raw_data = new ALushort[nb_samples];
-  it_decoder->decode(raw_data, nb_samples);
+  std::vector<ALushort> raw_data(nb_samples);
+  it_decoder->decode(&raw_data[0], nb_samples);
 
   // put this decoded data into the buffer
-  alBufferData(destination_buffer, AL_FORMAT_STEREO16, raw_data, nb_samples, 44100);
-
-  delete[] raw_data;
+  alBufferData(destination_buffer, AL_FORMAT_STEREO16, &raw_data[0], nb_samples, 44100);
 
   int error = alGetError();
   Debug::check_assertion(error == AL_NO_ERROR,
@@ -449,18 +446,17 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   }
 
   // decode the OGG data
-  ALshort* raw_data = new ALshort[nb_samples * info->channels];
+  std::vector<ALshort> raw_data(nb_samples * info->channels);
   int bitstream;
   long bytes_read;
   long total_bytes_read = 0;
   long remaining_bytes = nb_samples * info->channels * sizeof(ALshort);
   do {
-    bytes_read = ov_read(&ogg_file, ((char*) raw_data) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
+    bytes_read = ov_read(&ogg_file, ((char*) &raw_data[0]) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
     if (bytes_read < 0) {
       if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
         Debug::error(StringConcat() << "Error while decoding ogg chunk: "
             << bytes_read);
-        delete[] raw_data;
         return;
       }
     }
@@ -472,9 +468,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   while (remaining_bytes > 0 && bytes_read > 0);
 
   // put this decoded data into the buffer
-  alBufferData(destination_buffer, al_format, raw_data, ALsizei(total_bytes_read), sample_rate);
-
-  delete[] raw_data;
+  alBufferData(destination_buffer, al_format, &raw_data[0], ALsizei(total_bytes_read), sample_rate);
 
   int error = alGetError();
   if (error != AL_NO_ERROR) {

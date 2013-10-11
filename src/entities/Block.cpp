@@ -251,6 +251,10 @@ void Block::notify_position_changed() {
 
   check_collision_with_detectors(false);
   update_ground_below();
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+  }
 }
 
 /**
@@ -261,6 +265,8 @@ void Block::notify_obstacle_reached() {
 
   // the block is stopped by an obstacle while being pushed or pulled
   get_hero().notify_grabbed_entity_collision();
+
+  Detector::notify_obstacle_reached();
 }
 
 /**

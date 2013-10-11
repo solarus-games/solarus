@@ -6,7 +6,7 @@ _______________________________
 Engine changes
 --------------
 
-* Add a very short sample quest with free graphics (#232).
+* Add a very short sample quest with free graphics and musics (#232, #318).
 * Allow scripted dialog boxes (#184).
 * Allow a scripted game-over menu (#261).
 * Replace the old built-in dialog box by a very minimal one.

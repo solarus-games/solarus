@@ -17,7 +17,7 @@ Data files under CC BY-SA 3.0:                      Author/Origin (if known)
 ------------------------------                      ------------------------
 **.dat                                              Christopho
 sprites/entities/bomb.png                           Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis
-sprites/entities/chest.png                          Bertram - adapted from sprites here: http://opengameart.org/content/modified-32x32-treasure-chest, http://opengameart.org/content/jrpg-chests-16-32-64-and-128px-squared
+sprites/entities/chest.png                          Bertram, adapted from sprites here: http://opengameart.org/content/modified-32x32-treasure-chest, http://opengameart.org/content/jrpg-chests-16-32-64-and-128px-squared
 sprites/entities/explosion.png                      Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis
 sprites/entities/items.png                          Bertram, adapted from: http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis
 sprites/entities/shadow.png                         Christopho
@@ -26,6 +26,7 @@ tilesets/castle.entities.png                        Bertram, adapted from tiles 
 tilesets/castle.tiles.png                           Christopho, adapted from Challener (Redshrike): http://opengameart.org/content/16x16-indoor-rpg-tileset-the-baseline
 sprites/hero/stopped.tunic.png                      Christopho, adapted from Arikel: http://opengameart.org/content/2d-rpg-character-walk-spritesheet
 sprites/hero/walking.tunic.png                      Christopho, adapted from Arikel: http://opengameart.org/content/2d-rpg-character-walk-spritesheet
+musics/village.ogg                                  Eduardo Dueñas
 
 Data files under public domain:                     Author/Origin (if known)
 -------------------------------                     ------------------------

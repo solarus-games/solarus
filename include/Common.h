@@ -161,25 +161,13 @@
  */
 #ifndef SOLARUS_SCREEN_FORCE_MODE
 #  if defined(SOLARUS_IOS)
-#    define SOLARUS_SCREEN_FORCE_MODE 3
+#    define SOLARUS_SCREEN_FORCE_MODE 4
 #  elif defined(CAANOO)
 #    define SOLARUS_SCREEN_FORCE_MODE 2
 #  elif defined(PANDORA)
 #    define SOLARUS_SCREEN_FORCE_MODE 3
 #  else
 #    define SOLARUS_SCREEN_FORCE_MODE -1
-#  endif
-#endif
-
-/**
- * \def SOLARUS_SCREEN_DOUBLEBUF
- * \brief Define if the current platform supports double buffering.
- */
-#ifndef SOLARUS_SCREEN_DOUBLEBUF
-#  if defined(SOLARUS_OSX)
-#    define SOLARUS_SCREEN_DOUBLEBUF 0
-#  else
-#    define SOLARUS_SCREEN_DOUBLEBUF 1
 #  endif
 #endif
 

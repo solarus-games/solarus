@@ -86,7 +86,7 @@ void VideoManager::initialize(int argc, char **argv) {
       Debug::error(std::string("Invalid quest size: '") + quest_size_string + "'");
     }
   }
-
+  
   instance = new VideoManager(disable, wanted_quest_size);
 }
 
@@ -121,6 +121,8 @@ VideoManager::VideoManager(
   outset_title(std::string("Solarus ") + SOLARUS_VERSION),
   video_mode(NO_MODE),
   wanted_quest_size(wanted_quest_size) {
+    
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");  // Make the scaled rendering look smoothed.
 }
 
 /**
@@ -297,27 +299,13 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     fullscreen_flag = 0;
     show_cursor = SDL_ENABLE;
   }
-  
-  const Rectangle& mode_size = mode_sizes[mode];
 
   if (!disable_window) {
-    // Get rending surfaces source size.
+    // Get rending context size.
+    const Rectangle& mode_size = mode_sizes[mode];
     const Rectangle& render_size = mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X ?
         mode_sizes[WINDOWED_SCALE2X] :
         mode_sizes[WINDOWED_NORMAL];
-    
-    double src_width = double(render_size.get_width());
-    double src_height = double(render_size.get_height());
-    double dst_width = double(mode_size.get_width());
-    double dst_height = double(mode_size.get_height());
-    
-    // Get the rending texture position and destination size on the window.
-    double ratio = std::min(dst_width/src_width, dst_height/src_height);
-    render_position = Rectangle(
-        (dst_width - (src_width*ratio)) / 2,
-        (dst_height - (src_height*ratio)) / 2,
-        src_width * ratio,
-        src_height * ratio);
     
     // Create intermediate rending surfaces.
     SDL_Surface* screen_internal_surface = SDL_CreateRGBSurface(0, 
@@ -343,6 +331,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
+    SDL_RenderSetLogicalSize(main_renderer, render_size.get_width(), render_size.get_height());
     SDL_SetWindowSize(main_window, mode_size.get_width(), mode_size.get_height());
     SDL_ShowCursor(show_cursor);
   }
@@ -426,7 +415,7 @@ void VideoManager::draw(Surface& quest_surface) {
   SDL_Surface* screen_sdl_surface = screen_surface->get_internal_surface();
   SDL_UpdateTexture(screen_texture, NULL, screen_sdl_surface->pixels, screen_sdl_surface->pitch);
   SDL_RenderClear(main_renderer);
-  SDL_RenderCopy(main_renderer, screen_texture, NULL, render_position.get_internal_rect());
+  SDL_RenderCopy(main_renderer, screen_texture, NULL, NULL);
   SDL_RenderPresent(main_renderer);
 }
   

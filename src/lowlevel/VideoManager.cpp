@@ -301,7 +301,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
   const Rectangle& mode_size = mode_sizes[mode];
 
   if (!disable_window) {
-    // Get the render texture source size.
+    // Get rending surfaces source size.
     const Rectangle& render_size = mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X ?
         mode_sizes[WINDOWED_SCALE2X] :
         mode_sizes[WINDOWED_NORMAL];
@@ -311,7 +311,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     double dst_width = double(mode_size.get_width());
     double dst_height = double(mode_size.get_height());
     
-    // Get the render texture position and destination size on the window.
+    // Get the rending texture position and destination size on the window.
     double ratio = std::min(dst_width/src_width, dst_height/src_height);
     render_position = Rectangle(
         (dst_width - (src_width*ratio)) / 2,
@@ -319,7 +319,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
         src_width * ratio,
         src_height * ratio);
     
-    // Initialize the video mode.
+    // Create intermediate rending surfaces.
     SDL_Surface* screen_internal_surface = SDL_CreateRGBSurface(0, 
       render_size.get_width(),
       render_size.get_height(), 
@@ -340,6 +340,8 @@ bool VideoManager::set_video_mode(VideoMode mode) {
       render_size.get_width(),
       render_size.get_height());
     
+    // Initialize the window.
+    // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
     SDL_SetWindowSize(main_window, mode_size.get_width(), mode_size.get_height());
     SDL_ShowCursor(show_cursor);

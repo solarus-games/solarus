@@ -121,8 +121,6 @@ VideoManager::VideoManager(
   outset_title(std::string("Solarus ") + SOLARUS_VERSION),
   video_mode(NO_MODE),
   wanted_quest_size(wanted_quest_size) {
-    
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");  // Make the scaled rendering look smoothed.
 }
 
 /**

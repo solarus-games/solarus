@@ -128,6 +128,10 @@ VideoManager::VideoManager(
  */
 VideoManager::~VideoManager() {
 
+  if(is_fullscreen()) {
+    // Get back on desktop before destroy the window.
+    SDL_SetWindowFullscreen(main_window, 0);
+  }
   delete screen_surface;
   if (screen_texture != NULL) {
     SDL_DestroyTexture(screen_texture);

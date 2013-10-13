@@ -166,6 +166,7 @@ void Block::set_map(Map& map) {
   if (map.is_loaded()) {
     // We are not during the map initialization phase.
     check_collision_with_detectors(false);
+    update_ground_below();
   }
 }
 

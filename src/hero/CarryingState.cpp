@@ -101,7 +101,9 @@ void Hero::CarryingState::set_map(Map &map) {
   PlayerMovementState::set_map(map);
 
   // the hero may go to another map while carrying an item
-  carried_item->set_map(map);
+  if (carried_item != NULL) {
+    carried_item->set_map(map);
+  }
 }
 
 /**
@@ -110,7 +112,10 @@ void Hero::CarryingState::set_map(Map &map) {
 void Hero::CarryingState::notify_layer_changed() {
 
   PlayerMovementState::notify_layer_changed();
-  carried_item->set_layer(hero.get_layer());
+
+  if (carried_item != NULL) {
+    carried_item->set_layer(hero.get_layer());
+  }
 }
 
 /**
@@ -120,7 +125,10 @@ void Hero::CarryingState::notify_layer_changed() {
 void Hero::CarryingState::set_suspended(bool suspended) {
 
   PlayerMovementState::set_suspended(suspended);
-  carried_item->set_suspended(suspended);
+
+  if (carried_item != NULL) {
+    carried_item->set_suspended(suspended);
+  }
 }
 
 /**

@@ -103,6 +103,7 @@ class Sprite: public Drawable {
     void raw_draw_region(const Rectangle& region,
         Surface& dst_surface, const Rectangle& dst_position);
     void draw_transition(Transition& transition);
+    Surface& get_transition_surface();
 
     LuaContext* get_lua_context() const;
     void set_lua_context(LuaContext* lua_context);

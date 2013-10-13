@@ -87,6 +87,13 @@ class Drawable: public ExportableToLua {
      * \param transition The transition effect to apply.
      */
     virtual void draw_transition(Transition& transition) = 0;
+
+    /**
+     * \brief Returns the surface where transitions on this drawable object
+     * are applied.
+     * \return The surface for transitions.
+     */
+    virtual Surface& get_transition_surface() = 0;
     virtual void update();
 
   protected:

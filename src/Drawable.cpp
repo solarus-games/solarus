@@ -110,8 +110,10 @@ void Drawable::set_xy(const Rectangle& xy) {
  * the transition finishes, or LUA_REFNIL.
  * \param lua_context The Lua world for the callback (or NULL).
  */
-void Drawable::start_transition(Transition& transition,
-    int callback_ref, LuaContext* lua_context) {
+void Drawable::start_transition(
+    Transition& transition,
+    int callback_ref,
+    LuaContext* lua_context) {
 
   stop_transition();
 

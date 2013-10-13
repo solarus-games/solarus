@@ -82,6 +82,7 @@ class Surface: public Drawable {
     void raw_draw_region(const Rectangle& region,
         Surface& dst_surface, const Rectangle& dst_position);
     void draw_transition(Transition& transition);
+    Surface& get_transition_surface();
 
   private:
 

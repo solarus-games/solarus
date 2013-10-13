@@ -361,7 +361,11 @@ void Game::update_transitions() {
       next_map = NULL;
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
-      transition = Transition::create(transition_style, Transition::OUT, this);
+      transition = Transition::create(
+          transition_style,
+          Transition::OUT,
+          current_map->get_visible_surface(),
+          this);
       transition->start();
     }
   }
@@ -388,7 +392,11 @@ void Game::update_transitions() {
       if (next_map == current_map) {
         // same map
         hero->place_on_destination(*current_map, previous_map_location);
-        transition = Transition::create(transition_style, Transition::IN, this);
+        transition = Transition::create(
+            transition_style,
+            Transition::IN,
+            current_map->get_visible_surface(),
+            this);
         transition->start();
         next_map = NULL;
       }
@@ -440,7 +448,11 @@ void Game::update_transitions() {
 
   // if a map has just been set as the current map, start it and play the in transition
   if (started && !current_map->is_started()) {
-    transition = Transition::create(transition_style, Transition::IN, this);
+    transition = Transition::create(
+        transition_style,
+        Transition::IN,
+        current_map->get_visible_surface(),
+        this);
 
     if (previous_map_surface != NULL) {
       // some transition effects need to display both maps simultaneously
@@ -746,7 +758,11 @@ void Game::set_paused(bool paused) {
  */
 void Game::restart() {
 
-  transition = Transition::create(Transition::FADE, Transition::OUT, this);
+  transition = Transition::create(
+      Transition::FADE,
+      Transition::OUT,
+      current_map->get_visible_surface(),
+      this);
   transition->start();
   restarting = true;
 }

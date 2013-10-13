@@ -658,6 +658,15 @@ void TextSurface::draw_transition(Transition& transition) {
 }
 
 /**
+ * \brief Returns the surface where transitions on this drawable object
+ * are applied.
+ * \return The surface for transitions.
+ */
+Surface& TextSurface::get_transition_surface() {
+  return *surface;
+}
+
+/**
  * \brief Returns the name identifying this type in Lua.
  * \return the name identifying this type in Lua
  */

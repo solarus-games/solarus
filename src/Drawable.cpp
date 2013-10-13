@@ -157,16 +157,16 @@ void Drawable::update() {
     transition->update();
     if (transition->is_finished()) {
 
-        delete transition;
-        transition = NULL;
+      delete transition;
+      transition = NULL;
 
-        int ref = transition_callback_ref;
-        transition_callback_ref = LUA_REFNIL;
+      int ref = transition_callback_ref;
+      transition_callback_ref = LUA_REFNIL;
 
-        if (lua_context != NULL) {
-          // Note that this callback may create a new transition right now.
-          lua_context->do_callback(ref);
-        }
+      if (lua_context != NULL) {
+        // Note that this callback may create a new transition right now.
+        lua_context->do_callback(ref);
+      }
     }
   }
 

@@ -51,7 +51,7 @@ Surface::Surface(const Rectangle& size):
   Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
 
   this->internal_surface = SDL_CreateRGBSurface(
-      SDL_HWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+      SDL_SWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
 }
 
 /**
@@ -204,12 +204,15 @@ const Rectangle Surface::get_size() const {
  * \brief Returns the transparency color of this surface.
  *
  * Pixels in that color will not be drawn.
+ * Return black if no colorkey is found.
  *
  * \return The transparency color.
  */
 Color Surface::get_transparency_color() {
 
-  return Color(internal_surface->format->colorkey);
+  Uint32 colorkey = 0x00000000;
+  SDL_GetColorKey(internal_surface, &colorkey);
+  return Color(colorkey);
 }
 
 /**
@@ -221,7 +224,7 @@ Color Surface::get_transparency_color() {
  */
 void Surface::set_transparency_color(const Color& color) {
 
-  SDL_SetColorKey(internal_surface, SDL_SRCCOLORKEY, color.get_internal_value());
+  SDL_SetColorKey(internal_surface, SDL_TRUE, color.get_internal_value());
 }
 
 /**
@@ -230,13 +233,14 @@ void Surface::set_transparency_color(const Color& color) {
  */
 void Surface::set_opacity(int opacity) {
 
+  //TODO see if SDL2 solve the problem
   // SDL has a special handling of the alpha value 128
   // which doesn't work well with my computer
   if (opacity == 128) {
     opacity = 127;
   }
 
-  SDL_SetAlpha(internal_surface, SDL_SRCALPHA, opacity);
+  SDL_SetSurfaceAlphaMod(internal_surface, opacity);
 }
 
 /**
@@ -368,8 +372,11 @@ SDL_Surface* Surface::get_internal_surface() {
 }
 
 /**
- * \brief Return the 32bits pixel
- * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits
+ * \brief Return the 32bits pixel.
+ *
+ * If the pixel is less than 32bpp, then the unused upper bits of the return value can safely be ignored.
+ *
+ * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits.
  * \return The casted 32bits pixel.
  */
 uint32_t Surface::get_pixel32(int idx_pixel) {
@@ -390,10 +397,10 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
       break;
     case 3:
       // Manual cast of the pixel into uint32_t
-      pixel = *(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00;
+      pixel = (*(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00) >> 8;
       break;
     default:
-      Debug::error("Surface should all have a depth between 1 and 32bits per pixel");
+      Debug::error("Surface should all have a depth between 1 and 4bytes per pixel");
   }
 
   return pixel;
@@ -408,15 +415,41 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
  *
  * It's the SDL_ConvertSurface() function equivalent for a pixel by pixel uses.
  *
- * \param idx_pixel the index of the pixel to convert
- * \param dst_format the destination format
- * \return the mapped 32bits pixel
+ * \param idx_pixel the index of the pixel to convert.
+ * \param dst_format the destination format.
+ * \return the mapped 32bits pixel.
  */
 uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
 
   uint8_t r, g, b, a;
   SDL_GetRGBA(get_pixel32(idx_pixel), internal_surface->format, &r, &g, &b, &a);
   return SDL_MapRGBA(dst_format, r, g, b, a);
+}
+
+/**
+ * \brief Return true if the pixel is transparent.
+ *
+ * The pixel is transparent if it correspond to the colorkey.
+ * If there is no colorkey, it is transparent if the alpha channel of the pixel equal 0.
+ *
+ * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits.
+ * \return if the pixel is transparent.
+ */
+bool Surface::is_pixel_transparent(int idx_pixel) {
+  
+  uint32_t colorkey;
+  
+  if(SDL_GetColorKey(internal_surface, &colorkey) != 0)
+  {
+    // If no colorkey found, use the alpha channel.
+    if(!(get_pixel32(idx_pixel) & internal_surface->format->Amask))
+      return true;
+  }
+  
+  if (get_pixel32(idx_pixel) == colorkey)
+    return true;
+  
+  return false;
 }
 
 /**

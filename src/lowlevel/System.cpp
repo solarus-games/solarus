@@ -24,6 +24,9 @@
 #include "lowlevel/InputEvent.h"
 #include "Sprite.h"
 #include <SDL.h>
+#ifdef SOLARUS_USE_APPLE_POOL 
+#  include "lowlevel/apple/AppleInterface.h"
+#endif
 
 uint32_t System::ticks = 0;
 
@@ -38,6 +41,11 @@ uint32_t System::ticks = 0;
  */
 void System::initialize(int argc, char** argv) {
 
+#ifdef SOLARUS_USE_APPLE_POOL 
+  // initialize pool if any
+  initPool();
+#endif
+  
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
 
@@ -77,6 +85,9 @@ void System::quit() {
   FileTools::quit();
 
   SDL_Quit();
+#ifdef SOLARUS_USE_APPLE_POOL 
+  drainPool();
+#endif
 }
 
 /**

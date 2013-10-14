@@ -38,13 +38,7 @@ class VideoManager {
       WINDOWED_SCALE2X,         /**< the quest surface is scaled into a double-size window with the Scale2x algorithm */
       WINDOWED_NORMAL,          /**< the quest surface is drawn on a window of the same size */
       FULLSCREEN_NORMAL,        /**< the quest surface is drawn in fullscreen */
-      FULLSCREEN_WIDE,          /**< the quest surface is stretched into a double-size surface
-                                 * and then drawn on a widescreen resolution if possible
-                                 * with two black side bars */
       FULLSCREEN_SCALE2X,       /**< the game surface is scaled into a double-size screen with the Scale2x algorithm */
-      FULLSCREEN_SCALE2X_WIDE,  /**< the game surface is scaled into a double-size surface with the Scale2x algorithm
-                                 * and then drawn on a widescreen resolution if possible
-                                 * with two black side bars */
       NB_MODES                  /**< number of existing video modes */
     };
 
@@ -91,12 +85,11 @@ class VideoManager {
     VideoManager(bool disable_window, const Rectangle& wanted_quest_size);
     ~VideoManager();
 
+    Rectangle find_closest_fullscreen_resolution(const Rectangle& surface_size);
     void initialize_video_modes();
 
     void draw_unscaled(Surface& quest_surface);
-    void draw_stretched(Surface& quest_surface);
     void draw_scale2x(Surface& quest_surface);
-    uint32_t get_surface_flag(const VideoMode mode) const;
 
     static VideoManager* instance;          /**< The only instance. */
 
@@ -105,13 +98,11 @@ class VideoManager {
         mode_sizes;                         /**< Size of the screen surface for each supported
                                              * video mode with the current quest size. */
 
-    VideoMode video_mode;                   /**< Current video mode of the screen. */
-    Surface* screen_surface;                /**< The screen surface. */\
-
-    int enlargment_factor;                  /**< 1 if the quest surface it not stretched or scaled,
-                                             * 2 if it is stretched or scaled by a factor of 2. */
-    int offset_x;                           /**< Width of black vertical bars added in the current resolution. */
-    int offset_y;                           /**< Height of black horizontal bars added in the current resolution. */
+    SDL_Window* main_window;                /**< The window. */
+    SDL_Renderer* main_renderer;            /**< The screen renderer. */
+    Surface* screen_surface;                /**< The screen surface. */
+    SDL_Texture* screen_texture;            /**< The screen texture. */
+    VideoMode video_mode;                   /**< Current display mode. */
 
     Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */
     Rectangle min_quest_size;               /**< Minimum value of quest_size (depends on the quest). */

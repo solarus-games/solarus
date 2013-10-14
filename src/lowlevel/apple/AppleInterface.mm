@@ -24,16 +24,40 @@
 #endif
 
 
+NSAutoreleasePool* solarus_pool = nil;
+
+/**
+ * @brief Initialize and allocate the NSAutoreleasePool object.
+ *
+ * Allow to use the Cocoa's reference-counted memory management system on Cocoa objects.
+ */
+void initPool()
+{
+    if (solarus_pool == nil)
+        solarus_pool = [[NSAutoreleasePool alloc] init];
+}
+
+/**
+ * @brief Drain the NSAutoreleasePool object.
+ */
+void drainPool()
+{
+    if (solarus_pool)
+        [solarus_pool drain];
+}
+
 /**
  * @brief Return "~/Library/Application Support" or equivalent from the official way, which is available in OSX 10.6+ and iOS 4.0+.
  *
- * Return an OSX 10.0+ and iOS 1.0+ (not compatible with Iphone Simulator) hardcoded equivalent workaround if build against lower SDK.
+ * Return an OSX 10.0+ and iOS 1.0+ (not compatible with Iphone Simulator) hardcoded equivalent workaround if the 
+ * build configuration is set for a lower minimum version.
  *
- * @return The Application Support folder from the User Domain
+ * @return The Application Support folder from the User Domain.
  */
 const char* getUserApplicationSupportDirectory()
 {
-#if defined(MAC_OS_X_VERSION_10_6) || defined(__IPHONE_4_0)
+#if defined(SOLARUS_OSX) && __MAC_OS_X_VERSION_MIN_REQUIRED  >= MAC_OS_X_VERSION_10_6 \
+ || defined(SOLARUS_IOS) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0
     return [[[[[NSFileManager defaultManager] 
                URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] 
               objectAtIndex:0] 

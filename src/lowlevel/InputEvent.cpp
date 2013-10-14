@@ -26,17 +26,15 @@ const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
 bool InputEvent::joypad_enabled = false;
 SDL_Joystick* InputEvent::joystick = NULL;
 std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
+bool InputEvent::repeat_keyboard = false;
+
 
 /**
  * \brief Initializes the input event manager.
  */
 void InputEvent::initialize() {
-
-  // initialize the keyboard
-  SDL_EnableUNICODE(SDL_ENABLE);
-  SDL_EnableKeyRepeat(0, 0);
-
-  // initialize the joypad
+    
+  // initialize the joypad.
   set_joypad_enabled(true);
 
   // Initialize the map of keyboard key names.
@@ -164,8 +162,6 @@ void InputEvent::initialize() {
   keyboard_key_names[InputEvent::KEY_LEFT_ALT]              = "left alt";
   keyboard_key_names[InputEvent::KEY_RIGHT_META]            = "right meta";
   keyboard_key_names[InputEvent::KEY_LEFT_META]             = "left meta";
-  keyboard_key_names[InputEvent::KEY_LEFT_WINDOWS]          = "right windows";
-  keyboard_key_names[InputEvent::KEY_RIGHT_WINDOWS]         = "left windows";
 }
 
 /**
@@ -221,11 +217,13 @@ InputEvent* InputEvent::get_event() {
 
 /**
  * \brief Sets the keyboard repeat preferences.
- * \param delay delay in milliseconds before the event begins repeating (0 means no repeating)
- * \param interval interval in milliseconds between two events while repeating
+ *
+ * If true, the delay and the interval are set from the OS's settings.
+ *
+ * \param repeat true to accept repeated keyboard event.
  */
-void InputEvent::set_key_repeat(int delay, int interval) {
-  SDL_EnableKeyRepeat(delay, interval);
+void InputEvent::set_key_repeat(bool repeat) {
+  repeat_keyboard = repeat;
 }
 
 /**
@@ -237,7 +235,7 @@ void InputEvent::set_key_repeat(int delay, int interval) {
  */
 bool InputEvent::is_shift_down() {
 
-  SDLMod mod = SDL_GetModState();
+  SDL_Keymod mod = SDL_GetModState();
   return mod & (KMOD_LSHIFT | KMOD_RSHIFT);
 }
 
@@ -250,7 +248,7 @@ bool InputEvent::is_shift_down() {
  */
 bool InputEvent::is_control_down() {
 
-  SDLMod mod = SDL_GetModState();
+  SDL_Keymod mod = SDL_GetModState();
   return mod & (KMOD_LCTRL | KMOD_RCTRL);
 }
 
@@ -263,7 +261,7 @@ bool InputEvent::is_control_down() {
  */
 bool InputEvent::is_alt_down() {
 
-  SDLMod mod = SDL_GetModState();
+  SDL_Keymod mod = SDL_GetModState();
   return mod & (KMOD_LALT | KMOD_RALT);
 }
 
@@ -275,7 +273,7 @@ bool InputEvent::is_alt_down() {
 bool InputEvent::is_key_down(KeyboardKey key) {
 
   int num_keys = 0;
-  Uint8* keys_state = SDL_GetKeyState(&num_keys);
+  const Uint8* keys_state = SDL_GetKeyboardState(&num_keys);
   return keys_state[key];
 }
 
@@ -380,8 +378,8 @@ int InputEvent::get_joypad_hat_direction(int hat) {
  */
 bool InputEvent::is_keyboard_event() {
 
-  return internal_event.type == SDL_KEYDOWN
-    || internal_event.type == SDL_KEYUP;
+  return (internal_event.type == SDL_KEYDOWN || internal_event.type == SDL_KEYUP) 
+    && (!internal_event.key.repeat || repeat_keyboard);
 }
 
 /**
@@ -414,7 +412,8 @@ bool InputEvent::is_window_event() {
  */
 bool InputEvent::is_keyboard_key_pressed() {
 
-  return internal_event.type == SDL_KEYDOWN;
+  return internal_event.type == SDL_KEYDOWN 
+    && (!internal_event.key.repeat || repeat_keyboard);
 }
 
 /**
@@ -476,7 +475,8 @@ bool InputEvent::is_keyboard_non_direction_key_pressed() {
  */
 bool InputEvent::is_keyboard_key_released() {
 
-  return internal_event.type == SDL_KEYUP;
+  return internal_event.type == SDL_KEYUP 
+    && (!internal_event.key.repeat || repeat_keyboard);
 }
 
 /**
@@ -619,37 +619,21 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& 
 }
 
 /**
- * \brief Returns whether this event is a keyboard event
- * corresponding to pressing a character key.
- * \return true if this event corresponds to pressing a character key.
+ * \brief Returns whether this event is a text event.
+ * \return true if this event corresponds to entered text.
  */
 bool InputEvent::is_character_pressed() {
 
-  return internal_event.key.keysym.unicode != 0;
+  return internal_event.type == SDL_TEXTINPUT;
 }
 
 /**
- * \brief Returns a UTF-8 representation of the character that was pressed during this keyboard event.
- * \return The UTF-8 string corresponding to the key pressed, or an empty string if the key was not a character.
+ * \brief Returns a UTF-8 representation of the character that was pressed during this text event.
+ * \return The UTF-8 string corresponding to the entered character, or an empty string if this is not a text event.
  */
 const std::string InputEvent::get_character() {
 
-  std::string result;
-  if (is_character_pressed()) {
-    uint16_t utf16_char = (uint16_t) internal_event.key.keysym.unicode;
-    char buffer[3] = { 0 };
-    // SDL gives us UCS-2: convert it to UTF-8.
-    if ((utf16_char & 0xFF80) != 0) {
-      // Two bytes.
-      buffer[0] = (uint8_t) (0xC0 | utf16_char >> 6);
-      buffer[1] = (uint8_t) (0x80 | (utf16_char & 0x3F));
-    }
-    else {
-      buffer[0] = (uint8_t) utf16_char;
-    }
-    result = buffer;
-  }
-  return result;
+  return internal_event.text.text;
 }
 
 // joypad

@@ -9,9 +9,9 @@ set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 set(SOLARUS_INSTALL_DESTINATION "bin")
 
 # find the headers and the libraries of dependencies
-find_package(SDL REQUIRED)
-find_package(SDL_image REQUIRED)
-find_package(SDL_ttf REQUIRED)
+find_package(SDL2 "2" REQUIRED)
+find_package(SDL2_image "2" REQUIRED)
+find_package(SDL2_ttf "2.0.12" REQUIRED)
 find_package(OpenAL REQUIRED)
 find_package(VorbisFile REQUIRED)
 find_package(Ogg REQUIRED)
@@ -73,14 +73,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     src/lowlevel/apple/AppleInterface.mm
     include/lowlevel/apple/AppleInterface.h
   )
-  # SDL 1.3 avoid to link SDLMain
-  if(SDL_VERSION VERSION_LESS "1.3")
-    set(source_files
-      ${source_files}
-      src/lowlevel/apple/SDLMain.m
-      include/lowlevel/apple/SDLMain.h
-    )
-  endif()
 endif()
 
 # build the executable
@@ -104,9 +96,9 @@ include_directories(
   ${CMAKE_BINARY_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/snes_spc
-  ${SDL_INCLUDE_DIR}
-  ${SDLTTF_INCLUDE_DIR}
-  ${SDLIMAGE_INCLUDE_DIR}
+  ${SDL2_INCLUDE_DIR}
+  ${SDL2_TTF_INCLUDE_DIR}
+  ${SDL2_IMAGE_INCLUDE_DIR}
   ${OPENAL_INCLUDE_DIR}
   ${VORBISFILE_INCLUDE_DIR}
   ${OGG_INCLUDE_DIR}
@@ -118,9 +110,9 @@ include_directories(
 # generate -l flags
 target_link_libraries(solarus
   solarus_static
-  ${SDL_LIBRARY}
-  ${SDLIMAGE_LIBRARY}
-  ${SDLTTF_LIBRARY}
+  ${SDL2_LIBRARY}
+  ${SDL2_IMAGE_LIBRARY}
+  ${SDL2_TTF_LIBRARY}
   ${OPENAL_LIBRARY}
   ${LUA_LIBRARY}
   ${DL_LIBRARY}

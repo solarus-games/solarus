@@ -47,8 +47,6 @@ class Surface: public Drawable {
       DIR_LANGUAGE     /**< the language-specific image directory of the data package, for the current language */
     };
 
-  public:
-
     Surface(int width, int height);
     Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
@@ -91,6 +89,8 @@ class Surface: public Drawable {
 
     uint32_t get_pixel32(int idx_pixel);
     uint32_t get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format);
+    bool is_pixel_transparent(int idx_pixel);
+  
     SDL_Surface* get_internal_surface();
 };
 

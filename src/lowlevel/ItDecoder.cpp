@@ -17,8 +17,14 @@
 #include "lowlevel/ItDecoder.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+
+#if defined(__OpenBSD__)
+#include <libmodplug/stdafx.h>  // OpenBSD puts these in a different location.
+#include <libmodplug/sndfile.h>
+#else
 #include <stdafx.h>  // These two headers are with the libmodplug ones.
 #include <sndfile.h>
+#endif
 
 /**
  * \brief Creates an Impulse Tracker decoder.

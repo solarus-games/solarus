@@ -341,6 +341,15 @@ void Surface::draw_transition(Transition& transition) {
 }
 
 /**
+ * \brief Returns the surface where transitions on this drawable object
+ * are applied.
+ * \return The surface for transitions.
+ */
+Surface& Surface::get_transition_surface() {
+  return *this;
+}
+
+/**
  * \brief Blits a region of this surface on another surface.
  *
  * The top-left corner of the source subarea will be blitted on the other's surface top-left corner.

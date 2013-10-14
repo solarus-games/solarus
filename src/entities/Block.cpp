@@ -166,6 +166,7 @@ void Block::set_map(Map& map) {
   if (map.is_loaded()) {
     // We are not during the map initialization phase.
     check_collision_with_detectors(false);
+    update_ground_below();
   }
 }
 
@@ -244,13 +245,17 @@ void Block::notify_position_changed() {
 
   // now we know that the block moves at least of 1 pixel:
   // we can play the sound
-  if (!sound_played) {
+  if (get_movement() != NULL && !sound_played) {
     Sound::play("hero_pushes");
     sound_played = true;
   }
 
   check_collision_with_detectors(false);
   update_ground_below();
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+  }
 }
 
 /**
@@ -261,6 +266,8 @@ void Block::notify_obstacle_reached() {
 
   // the block is stopped by an obstacle while being pushed or pulled
   get_hero().notify_grabbed_entity_collision();
+
+  Detector::notify_obstacle_reached();
 }
 
 /**

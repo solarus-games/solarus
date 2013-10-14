@@ -89,8 +89,8 @@ After that, they get automatically suspended and unsuspended when the map is
 suspended or unsuspended.
 This default behavior is suited for most use cases, but if you want to change
 it, you can use
-\ref lua_api_timer_set_suspended timer:set_suspended() and
-\ref lua_api_timer_set_suspended_with_map timer:set_suspended_with_map().
+\ref lua_api_timer_set_suspended "timer:set_suspended()" and
+\ref lua_api_timer_set_suspended_with_map "timer:set_suspended_with_map()".
 
 \subsection lua_api_timer_stop_all sol.timer.stop_all(context)
 
@@ -98,7 +98,7 @@ Cancels all timers that are currently running in a context.
 - \c context (\ref lua_api_map "map",
   \ref lua_api_game "game",
   \ref lua_api_item "item",
-  \ref lua_api_enemy "enemy",
+  \ref lua_api_entity "map entity",
   \ref lua_api_menu "menu"
   or
   \ref lua_api_main "sol.main"): The context where you
@@ -148,7 +148,7 @@ Returns whether this timer is currently suspended.
 
 Returns whether this timer is currently suspended.
 - \c suspended (boolean, optional): \c true to suspend the timer, \c false to
-  unsuspended it (no value means \c true).
+  unsuspend it (no value means \c true).
 
 \subsection lua_api_timer_is_suspended_with_map timer:is_suspended_with_map()
 
@@ -170,7 +170,7 @@ When this happens, all \ref lua_api_entity "map entities" stop moving and most
 With this setting, you can choose whether your timer gets suspended too.
 
 By default, \ref lua_api_map "map" timers,
-\ref lua_api_enemy "enemy" timers and
+\ref lua_api_entity "map entity" timers and
 \ref lua_api_item "item" timers are suspended with the
 map.
 - \c suspended_with_map (boolean, optional): \c true to suspend the timer when

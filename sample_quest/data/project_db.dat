@@ -33,6 +33,8 @@ sprite{ id = "hero/trail", description = "Hero trail" }
 sprite{ id = "enemies/enemy_killed", description = "Enemy killed" }
 sprite{ id = "menus/solarus_logo", description = "Menu: Solarus logo" }
 
+music{ id = "village", description = "Village" }
+
 sound{ id = "arrow_hit", description = "arrow_hit" }
 sound{ id = "boomerang", description = "boomerang" }
 sound{ id = "boss_hurt", description = "boss_hurt" }
@@ -81,6 +83,7 @@ sound{ id = "walk_on_water", description = "walk_on_water" }
 sound{ id = "wrong", description = "wrong" }
 
 item{ id = "bomb", description = "Bomb" }
+
 
 language{ id = "en", description = "English" }
 

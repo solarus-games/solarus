@@ -19,6 +19,8 @@ developer_doc/1.*
 tools/javadoc/
 tools/solaruskeystore
 tools/initial_quest/data.solarus.zip
+tools/update_quest.log
+tools/solarus-editor.jar
 work/unversioned/
 CMakeCache.txt
 install_manifest.txt
@@ -29,6 +31,5 @@ include/config.h
 libsolarus_static.a
 /solarus
 error.txt
-tools/update_quest.log
 build/
 gcwbuild/

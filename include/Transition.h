@@ -47,7 +47,11 @@ class Transition {
     };
 
     virtual ~Transition();
-    static Transition* create(Style style, Direction direction, Game* game = NULL);
+    static Transition* create(
+        Style style,
+        Direction direction,
+        Surface& dst_surface,
+        Game* game = NULL);
 
     Game* get_game() const;
     Direction get_direction() const;

@@ -734,6 +734,15 @@ void Sprite::draw_transition(Transition& transition) {
 }
 
 /**
+ * \brief Returns the surface where transitions on this drawable object
+ * are applied.
+ * \return The surface for transitions.
+ */
+Surface& Sprite::get_transition_surface() {
+  return get_intermediate_surface();
+}
+
+/**
  * \brief Returns the intermediate surface used for transitions and other
  * effects for this sprite.
  *

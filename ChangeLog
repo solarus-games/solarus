@@ -1,12 +1,13 @@
 _______________________________
 
-Solarus 1.2 (under development)
+Solarus 1.2.0 (under development)
 _______________________________
 
 Engine changes
 --------------
 
-* Upgrade to SDL 2.
+* Upgrade to SDL 2 (#262). Thanks Vlag.
+* New map entity type: custom entities, fully scripted (#323).
 * Show a dialog box in case of fatal error.
 
 Data files format changes
@@ -23,17 +24,20 @@ Lua API changes
 
 Changes that introduce incompatibilities:
 
-* map:create_shop_item() is replaced by map:create_shop_item().
+* map:create_shop_item() is replaced by map:create_shop_treasure().
 
+Changes that do not introduce incompatibilities:
+
+* New Lua type and methods for custom map entities.
 _______________________________
 
-Solarus 1.1 (under development)
+Solarus 1.1.0 (2013-10-13)
 _______________________________
 
 Engine changes
 --------------
 
-* Add a very short sample quest with free graphics (#232).
+* Add a very short sample quest with free graphics and musics (#232, #318).
 * Allow scripted dialog boxes (#184).
 * Allow a scripted game-over menu (#261).
 * Replace the old built-in dialog box by a very minimal one.

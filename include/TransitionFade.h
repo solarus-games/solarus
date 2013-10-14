@@ -25,6 +25,20 @@
  */
 class TransitionFade: public Transition {
 
+  public:
+
+    TransitionFade(Direction direction, Surface& dst_surface);
+    ~TransitionFade();
+
+    void set_delay(uint32_t delay);
+
+    void start();
+    bool is_started() const;
+    bool is_finished() const;
+    void notify_suspended(bool suspended);
+    void update();
+    void draw(Surface& surface);
+
   private:
 
     bool finished;
@@ -38,20 +52,6 @@ class TransitionFade: public Transition {
 
     Surface* dst_surface;
 
-  public:
-
-    // TODO pass the destination surface at creation time
-    TransitionFade(Direction direction);
-    ~TransitionFade();
-
-    void set_delay(uint32_t delay);
-
-    void start();
-    bool is_started() const;
-    bool is_finished() const;
-    void notify_suspended(bool suspended);
-    void update();
-    void draw(Surface& surface);
 };
 
 #endif

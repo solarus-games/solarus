@@ -203,7 +203,9 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
     }
   }
 
-  TransitionFade* transition = new TransitionFade(Transition::IN);
+  TransitionFade* transition = new TransitionFade(
+      Transition::IN,
+      drawable.get_transition_surface());
   transition->set_delay(delay);
   drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
 
@@ -237,7 +239,9 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
     }
   }
 
-  TransitionFade* transition = new TransitionFade(Transition::OUT);
+  TransitionFade* transition = new TransitionFade(
+      Transition::OUT,
+      drawable.get_transition_surface());
   transition->set_delay(delay);
   drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
 

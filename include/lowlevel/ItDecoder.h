@@ -18,8 +18,9 @@
 #define SOLARUS_IT_DECODER_H
 
 #include "Common.h"
-#include <modplug.h>
 #include <cstddef>
+
+typedef struct _ModPlugFile ModPlugFile;
 
 /**
  * \brief Encapsulates the Impulse Tracker music decoding.

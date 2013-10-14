@@ -17,8 +17,18 @@
 #include "lowlevel/ItDecoder.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include <stdafx.h>  // These two headers are with the libmodplug ones.
-#include <sndfile.h>
+
+/*
+ * We put explicitly the libmodplug prefix to include these three headers in
+ * order to avoid any confusion with the sndfile.h of the system if it also
+ * exists, because it might be different.
+ *
+ * These headers are shipped with libmodplug 0.8.8.4.
+ * See https://github.com/christopho/libmodplug
+ */
+#include <libmodplug/modplug.h>
+#include <libmodplug/stdafx.h>  
+#include <libmodplug/sndfile.h>
 
 /**
  * \brief Creates an Impulse Tracker decoder.

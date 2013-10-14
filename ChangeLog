@@ -3,6 +3,12 @@ _______________________________
 Solarus 1.2.0 (under development)
 _______________________________
 
+Engine changes
+--------------
+
+* Upgrade to SDL 2 (#262). Thanks Vlag.
+* New map entity type: custom entities, fully scripted (#323).
+
 Data files format changes
 -------------------------
 
@@ -19,6 +25,9 @@ Changes that introduce incompatibilities:
 
 * map:create_shop_item() is replaced by map:create_shop_treasure().
 
+Changes that do not introduce incompatibilities:
+
+* New Lua type and methods for custom map entities.
 _______________________________
 
 Solarus 1.1.0 (2013-10-13)

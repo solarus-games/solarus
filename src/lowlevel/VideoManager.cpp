@@ -114,24 +114,13 @@ VideoManager::VideoManager(
     bool disable_window,
     const Rectangle& wanted_quest_size):
   disable_window(disable_window),
-  video_mode(NO_MODE),
+  main_window(NULL),
+  main_renderer(NULL),
   screen_surface(NULL),
   screen_texture(NULL),
+  outset_title(std::string("Solarus ") + SOLARUS_VERSION),
+  video_mode(NO_MODE),
   wanted_quest_size(wanted_quest_size) {
-
-  // Initialize the window.
-  const std::string& window_title = std::string("Solarus ") + SOLARUS_VERSION;
-  main_window = SDL_CreateWindow(window_title.c_str(), 
-    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-    wanted_quest_size.get_width(), wanted_quest_size.get_height(), 
-    SDL_WINDOW_SHOWN);
-    
-  main_renderer = SDL_CreateRenderer(main_window, -1, 0);
-  if(!main_renderer)
-    Debug::error(std::string("Cannot create the window."));
-
-  putenv((char*) "SDL_VIDEO_CENTERED=center");
-  putenv((char*) "SDL_NOMOUSE");
 }
 
 /**
@@ -139,11 +128,41 @@ VideoManager::VideoManager(
  */
 VideoManager::~VideoManager() {
 
+  if(is_fullscreen()) {
+    // Get back on desktop before destroy the window.
+    SDL_SetWindowFullscreen(main_window, 0);
+  }
   delete screen_surface;
-  if(screen_texture)
+  if (screen_texture != NULL) {
     SDL_DestroyTexture(screen_texture);
-  SDL_DestroyRenderer(main_renderer);
-  SDL_DestroyWindow(main_window);
+  }
+  if (main_renderer != NULL) {
+    SDL_DestroyRenderer(main_renderer);
+  }
+  if (main_window != NULL) {
+    SDL_DestroyWindow(main_window);
+  }
+}
+
+/**
+ * \brief Create the window.
+ */
+void VideoManager::create_window() {
+  
+  // Initialize the window.
+  Rectangle window_size = mode_sizes[video_mode];
+  main_window = SDL_CreateWindow(outset_title.c_str(), 
+    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    window_size.get_width(), window_size.get_height(), 
+    SDL_WINDOW_SHOWN);
+  if(!main_window)
+    Debug::die(std::string("Cannot create the window : ") + SDL_GetError());
+  
+  main_renderer = SDL_CreateRenderer(main_window, -1, 0);
+  if(!main_renderer)
+    Debug::die(std::string("Cannot create the renderer : ") + SDL_GetError());
+  
+  set_video_mode(video_mode);
 }
 
 /**
@@ -243,15 +262,12 @@ void VideoManager::switch_video_mode() {
  */
 void VideoManager::set_default_video_mode() {
 
-  VideoMode mode;
   if (forced_mode != NO_MODE) {
-    mode = forced_mode;
+    video_mode = forced_mode;
   }
   else {
-    mode = WINDOWED_STRETCHED;
+    video_mode = WINDOWED_STRETCHED;
   }
-
-  set_video_mode(mode);
 }
 
 /**
@@ -263,6 +279,12 @@ bool VideoManager::set_video_mode(VideoMode mode) {
 
   if (!is_mode_supported(mode)) {
     return false;
+  }
+  
+  if(!main_window) {
+    // If the window isn't created yet, just store the video mode.
+    this->video_mode = mode;
+    return true;
   }
 
   int show_cursor;
@@ -276,12 +298,28 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     show_cursor = SDL_ENABLE;
   }
   
-  const Rectangle& render_size = mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X ?
-    mode_sizes[WINDOWED_SCALE2X] :
-    mode_sizes[WINDOWED_NORMAL];
   const Rectangle& mode_size = mode_sizes[mode];
 
   if (!disable_window) {
+    // Get rending surfaces source size.
+    const Rectangle& render_size = mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X ?
+        mode_sizes[WINDOWED_SCALE2X] :
+        mode_sizes[WINDOWED_NORMAL];
+    
+    double src_width = double(render_size.get_width());
+    double src_height = double(render_size.get_height());
+    double dst_width = double(mode_size.get_width());
+    double dst_height = double(mode_size.get_height());
+    
+    // Get the rending texture position and destination size on the window.
+    double ratio = std::min(dst_width/src_width, dst_height/src_height);
+    render_position = Rectangle(
+        (dst_width - (src_width*ratio)) / 2,
+        (dst_height - (src_height*ratio)) / 2,
+        src_width * ratio,
+        src_height * ratio);
+    
+    // Create intermediate rending surfaces.
     SDL_Surface* screen_internal_surface = SDL_CreateRGBSurface(0, 
       render_size.get_width(),
       render_size.get_height(), 
@@ -290,9 +328,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
       0x0000FF00,
       0x000000FF,
       0xFF000000);
-    
-    Debug::check_assertion(screen_internal_surface != NULL, StringConcat() <<
-      "Cannot create the video surface for mode " << get_video_mode_name(mode));
     
     delete this->screen_surface;
     this->screen_surface = new Surface(screen_internal_surface);
@@ -305,8 +340,10 @@ bool VideoManager::set_video_mode(VideoMode mode) {
       render_size.get_width(),
       render_size.get_height());
     
-    SDL_SetWindowSize(main_window, mode_size.get_width(), mode_size.get_height());
+    // Initialize the window.
+    // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
+    SDL_SetWindowSize(main_window, mode_size.get_width(), mode_size.get_height());
     SDL_ShowCursor(show_cursor);
   }
   this->video_mode = mode;
@@ -389,7 +426,7 @@ void VideoManager::draw(Surface& quest_surface) {
   SDL_Surface* screen_sdl_surface = screen_surface->get_internal_surface();
   SDL_UpdateTexture(screen_texture, NULL, screen_sdl_surface->pixels, screen_sdl_surface->pitch);
   SDL_RenderClear(main_renderer);
-  SDL_RenderCopy(main_renderer, screen_texture, NULL, NULL);
+  SDL_RenderCopy(main_renderer, screen_texture, NULL, render_position.get_internal_rect());
   SDL_RenderPresent(main_renderer);
 }
   
@@ -484,7 +521,11 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
  */
 const std::string VideoManager::get_window_title() const {
 
-  return SDL_GetWindowTitle(main_window);
+  if(main_window) {
+    return SDL_GetWindowTitle(main_window);
+  }
+  
+  return outset_title;
 }
 
 /**
@@ -493,7 +534,13 @@ const std::string VideoManager::get_window_title() const {
  */
 void VideoManager::set_window_title(const std::string& window_title) {
 
-  SDL_SetWindowTitle(main_window, window_title.c_str());
+  if(main_window) {
+    SDL_SetWindowTitle(main_window, window_title.c_str());
+  }
+  else {
+    // If the window isn't created yet, just store the title.
+    outset_title = window_title;
+  }
 }
 
 /**
@@ -620,7 +667,7 @@ Rectangle VideoManager::find_closest_fullscreen_resolution(const Rectangle& surf
   SDL_DisplayMode closest;
   
   if(!SDL_GetClosestDisplayMode(0, &target, &closest)) {
-    Debug::error(StringConcat() << "No suitable display mode was found for size" 
+    Debug::die(StringConcat() << "No suitable display mode was found for size" 
       << surface_size.get_width() << "x" << surface_size.get_height());
   }
      

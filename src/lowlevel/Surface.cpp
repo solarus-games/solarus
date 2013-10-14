@@ -31,7 +31,8 @@
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  internal_surface_created(true) {
+  internal_surface_created(true),
+  with_colorkey(false) {
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
@@ -46,7 +47,8 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(const Rectangle& size):
   Drawable(),
-  internal_surface_created(true) {
+  internal_surface_created(true),
+  with_colorkey(false) {
 
   Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
 
@@ -88,6 +90,8 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
 
   Debug::check_assertion(internal_surface != NULL, StringConcat() <<
       "Cannot load image '" << prefixed_file_name << "'");
+    
+  with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
 }
 
 /**
@@ -101,7 +105,8 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
   internal_surface(internal_surface),
-  internal_surface_created(false) {
+  internal_surface_created(false),
+  with_colorkey(SDL_GetColorKey(internal_surface, &colorkey) == 0) {
 
 }
 
@@ -113,7 +118,8 @@ Surface::Surface(const Surface& other):
   Drawable(),
   internal_surface(SDL_ConvertSurface(other.internal_surface,
       other.internal_surface->format, other.internal_surface->flags)),
-  internal_surface_created(true) {
+  internal_surface_created(true),
+  with_colorkey(SDL_GetColorKey(internal_surface, &colorkey) == 0) {
 
 }
 
@@ -210,9 +216,10 @@ const Rectangle Surface::get_size() const {
  */
 Color Surface::get_transparency_color() {
 
-  Uint32 colorkey = 0x00000000;
-  SDL_GetColorKey(internal_surface, &colorkey);
-  return Color(colorkey);
+  if(with_colorkey)
+    return Color(colorkey);
+  
+  return Color();
 }
 
 /**
@@ -224,12 +231,14 @@ Color Surface::get_transparency_color() {
  */
 void Surface::set_transparency_color(const Color& color) {
 
-  SDL_SetColorKey(internal_surface, SDL_TRUE, color.get_internal_value());
+  with_colorkey = true;
+  colorkey = color.get_internal_value();
+  SDL_SetColorKey(internal_surface, SDL_TRUE, colorkey);
 }
 
 /**
  * \brief Sets the opacity of this surface.
- * \param opacity the opacity (0 to 255)
+ * \param opacity the opacity (0 to 255).
  */
 void Surface::set_opacity(int opacity) {
 
@@ -240,7 +249,17 @@ void Surface::set_opacity(int opacity) {
     opacity = 127;
   }
 
+  set_blending_mode(MODE_BLEND);
   SDL_SetSurfaceAlphaMod(internal_surface, opacity);
+}
+
+/**
+ * \brief Sets the blending mode of this surface.
+ * \param the blending mode.
+ */
+void Surface::set_blending_mode(BlendingMode mode) {
+  
+  SDL_SetSurfaceBlendMode(internal_surface, SDL_BlendMode(mode));
 }
 
 /**
@@ -400,7 +419,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
       pixel = (*(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00) >> 8;
       break;
     default:
-      Debug::error("Surface should all have a depth between 1 and 4bytes per pixel");
+      Debug::die("Surface should all have a depth between 1 and 4bytes per pixel");
   }
 
   return pixel;
@@ -429,25 +448,23 @@ uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
 /**
  * \brief Return true if the pixel is transparent.
  *
- * The pixel is transparent if it correspond to the colorkey.
- * If there is no colorkey, it is transparent if the alpha channel of the pixel equal 0.
+ * The pixel is transparent if it correspond to the colorkey or if the alpha channel 
+ * of the pixel equal 0.
  *
  * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits.
  * \return if the pixel is transparent.
  */
 bool Surface::is_pixel_transparent(int idx_pixel) {
   
-  uint32_t colorkey;
+  uint32_t pixel = get_pixel32(idx_pixel);
   
-  if(SDL_GetColorKey(internal_surface, &colorkey) != 0)
-  {
-    // If no colorkey found, use the alpha channel.
-    if(!(get_pixel32(idx_pixel) & internal_surface->format->Amask))
-      return true;
-  }
-  
-  if (get_pixel32(idx_pixel) == colorkey)
+  if (with_colorkey && pixel == colorkey) {
     return true;
+  }
+
+  if ((pixel & internal_surface->format->Amask) == 0) {
+    return true;
+  }
   
   return false;
 }

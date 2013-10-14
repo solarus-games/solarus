@@ -55,6 +55,9 @@ MainLoop::MainLoop(int argc, char** argv):
   root_surface->increment_refcount();
   lua_context = new LuaContext(*this);
   lua_context->initialize();
+    
+  // Create the window now that we know the final outset size.
+  VideoManager::get_instance()->create_window();
 }
 
 /**

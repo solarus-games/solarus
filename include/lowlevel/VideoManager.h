@@ -46,6 +46,7 @@ class VideoManager {
     static void quit();
     static VideoManager* get_instance();
 
+    void create_window();
     VideoMode get_video_mode() const;
     bool set_video_mode(VideoMode mode);
     void switch_video_mode();
@@ -85,8 +86,8 @@ class VideoManager {
     VideoManager(bool disable_window, const Rectangle& wanted_quest_size);
     ~VideoManager();
 
-    Rectangle find_closest_fullscreen_resolution(const Rectangle& surface_size);
     void initialize_video_modes();
+    Rectangle find_closest_fullscreen_resolution(const Rectangle& surface_size);
 
     void draw_unscaled(Surface& quest_surface);
     void draw_scale2x(Surface& quest_surface);
@@ -102,6 +103,9 @@ class VideoManager {
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
     Surface* screen_surface;                /**< The screen surface. */
     SDL_Texture* screen_texture;            /**< The screen texture. */
+    Rectangle render_position;              /**< The portion of the window where to draw the texture screen. */
+  
+    std::string outset_title;               /**< Title used when creating the window. */
     VideoMode video_mode;                   /**< Current display mode. */
 
     Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */

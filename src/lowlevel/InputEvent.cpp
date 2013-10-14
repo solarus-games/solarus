@@ -274,7 +274,8 @@ bool InputEvent::is_key_down(KeyboardKey key) {
 
   int num_keys = 0;
   const Uint8* keys_state = SDL_GetKeyboardState(&num_keys);
-  return keys_state[key];
+  SDL_Scancode scan_code = SDL_GetScancodeFromKey(SDL_Keycode(key));
+  return keys_state[scan_code];
 }
 
 /**

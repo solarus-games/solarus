@@ -72,7 +72,7 @@ Jumper::~Jumper() {
  * \return the type of entity
  */
 EntityType Jumper::get_type() const {
-  return JUMPER;
+  return ENTITY_JUMPER;
 }
 
 /**

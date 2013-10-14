@@ -19,21 +19,21 @@ package org.solarus.editor.entities;
 import org.solarus.editor.*;
 
 /**
- * Represents a shop item that the hero can buy.
+ * Represents a shop treasure that the hero can buy.
  */
-public class ShopItem extends MapEntity {
+public class ShopTreasure extends MapEntity {
 
     /**
      * Description of the default images representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions =
-    {new EntityImageDescription("entity_shop_item.png", 0, 0, 32, 32)};
+    {new EntityImageDescription("entity_shop_treasure.png", 0, 0, 32, 32)};
 
     /**
-     * Creates a new shop item.
+     * Creates a new shop treasure.
      * @param map the map
      */
-    public ShopItem(Map map) throws MapException {
+    public ShopTreasure(Map map) throws MapException {
         super(map, 32, 32);
     }
 
@@ -57,7 +57,7 @@ public class ShopItem extends MapEntity {
 
         String treasureName = getStringProperty("treasure_name");
         if (treasureName == null) {
-            throw new MapException("The treasure of a shop item cannot be empty");
+            throw new MapException("The treasure of a shop treasure cannot be empty");
         }
 
         Integer variant = getIntegerProperty("treasure_variant");

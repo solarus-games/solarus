@@ -32,7 +32,7 @@ public class Project {
     /**
      * Current format of data files supported by the editor.
      */
-    public static final String solarusFormat = "1.1";
+    public static final String solarusFormat = "1.2";
 
     /**
      * Root path of the project.
@@ -611,6 +611,31 @@ public class Project {
      */
     public static File getEnemyScriptFile(String enemyId) {
         return new File(getEnemyPath() + "/" + enemyId + ".lua");
+    }
+
+    /**
+     * Returns the path of the custom entity scripts.
+     * @return The path of the custom entity scripts.
+     */
+    public static String getEntityPath() {
+        return getDataPath() + "/entities";
+    }
+
+    /**
+     * Returns the custom entities directory.
+     * @return The custom entities directory.
+     */
+    public static File getEntityDir() {
+        return new File(getEntityPath());
+    }
+
+    /**
+     * Returns a custom entity script file for the current project.
+     * @param entityId Id of a custom entity model.
+     * @return The custom entity script file.
+     */
+    public static File getEntityScriptFile(String entityId) {
+        return new File(getEntityPath() + "/" + entityId + ".lua");
     }
 
     /**

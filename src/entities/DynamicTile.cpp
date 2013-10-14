@@ -56,7 +56,7 @@ DynamicTile::~DynamicTile() {
  */
 EntityType DynamicTile::get_type() const {
 
-  return DYNAMIC_TILE;
+  return ENTITY_DYNAMIC_TILE;
 }
 
 /**

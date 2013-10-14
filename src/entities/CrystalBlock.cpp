@@ -71,7 +71,7 @@ CrystalBlock::~CrystalBlock() {
  * \return the type of entity
  */
 EntityType CrystalBlock::get_type() const {
-  return CRYSTAL_BLOCK;
+  return ENTITY_CRYSTAL_BLOCK;
 }
 
 /**

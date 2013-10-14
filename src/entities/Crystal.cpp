@@ -58,7 +58,7 @@ Crystal::~Crystal() {
  * \return the type of entity
  */
 EntityType Crystal::get_type() const {
-  return CRYSTAL;
+  return ENTITY_CRYSTAL;
 }
 
 /**

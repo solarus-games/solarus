@@ -24,8 +24,9 @@
 #include "entities/Enemy.h"
 #include "entities/Sensor.h"
 #include "entities/Separator.h"
-#include "entities/ShopItem.h"
+#include "entities/ShopTreasure.h"
 #include "entities/Pickable.h"
+#include "entities/CustomEntity.h"
 #include "entities/MapEntities.h"
 #include "movements/Movement.h"
 #include "lowlevel/Debug.h"
@@ -44,10 +45,12 @@ const std::string LuaContext::entity_chest_module_name = "sol.entity.chest";
 const std::string LuaContext::entity_block_module_name = "sol.entity.block";
 const std::string LuaContext::entity_switch_module_name = "sol.entity.switch";
 const std::string LuaContext::entity_door_module_name = "sol.entity.door";
-const std::string LuaContext::entity_shop_item_module_name = "sol.entity.shop_item";
+const std::string LuaContext::entity_shop_treasure_module_name = "sol.entity.shop_treasure";
 const std::string LuaContext::entity_pickable_module_name = "sol.entity.pickable";
 const std::string LuaContext::entity_enemy_module_name = "sol.entity.enemy";
+const std::string LuaContext::entity_custom_module_name = "sol.entity.custom";
 
+// TODO move this to Enemy
 const std::string LuaContext::enemy_attack_names[] = {
   "sword",
   "thrown_item",
@@ -74,6 +77,7 @@ const std::string LuaContext::enemy_obstacle_behavior_names[] = {
   ""  // Sentinel.
 };
 
+// TODO move this to Transition
 const std::string LuaContext::transition_style_names[] = {
   "immediate",
   "fade",
@@ -88,6 +92,7 @@ void LuaContext::register_entity_module() {
 
   // Methods common to all entity types.
   static const luaL_Reg common_methods[] = {
+      { "get_type", entity_api_get_type },
       { "get_map", entity_api_get_map },
       { "get_name", entity_api_get_name },
       { "exists", entity_api_exists },
@@ -203,12 +208,12 @@ void LuaContext::register_entity_module() {
   register_type(entity_door_module_name, door_methods,
       common_metamethods);
 
-  // Shop item.
-  static const luaL_Reg shop_item_methods[] = {
+  // Shop treasure.
+  static const luaL_Reg shop_treasure_methods[] = {
       { NULL, NULL }
   };
-  register_functions(entity_shop_item_module_name, common_methods);
-  register_type(entity_shop_item_module_name, shop_item_methods,
+  register_functions(entity_shop_treasure_module_name, common_methods);
+  register_type(entity_shop_treasure_module_name, shop_treasure_methods,
       common_metamethods);
 
   // Pickable.
@@ -277,6 +282,14 @@ void LuaContext::register_entity_module() {
   register_type(entity_enemy_module_name, enemy_methods,
       common_metamethods);
 
+  // Custom entity.
+  static const luaL_Reg custom_entity_methods[] = {
+      { "get_model", custom_entity_api_get_model },
+      { NULL, NULL }
+  };
+  register_functions(entity_custom_module_name, common_methods);
+  register_type(entity_custom_module_name, custom_entity_methods,
+          common_metamethods);
 }
 
 /**
@@ -295,7 +308,7 @@ bool LuaContext::is_entity(lua_State* l, int index) {
       || is_door(l, index)
       || is_pickable(l, index)
       || is_enemy(l, index)
-      || is_shop_item(l, index);
+      || is_shop_treasure(l, index);
 }
 
 /**
@@ -330,6 +343,19 @@ MapEntity& LuaContext::check_entity(lua_State* l, int index) {
 void LuaContext::push_entity(lua_State* l, MapEntity& entity) {
 
   push_userdata(l, entity);
+}
+
+/**
+ * \brief Implementation of entity:get_type().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_type(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  push_string(l, entity.get_type_name());
+  return 1;
 }
 
 /**
@@ -1646,77 +1672,77 @@ int LuaContext::door_api_is_closing(lua_State* l) {
 }
 
 /**
- * \brief Returns whether a value is a userdata of type shop item.
+ * \brief Returns whether a value is a userdata of type shop treasure.
  * \param l A Lua context.
  * \param index An index in the stack.
- * \return true if the value at this index is a shop item.
+ * \return true if the value at this index is a shop treasure.
  */
-bool LuaContext::is_shop_item(lua_State* l, int index) {
-  return is_userdata(l, index, entity_shop_item_module_name);
+bool LuaContext::is_shop_treasure(lua_State* l, int index) {
+  return is_userdata(l, index, entity_shop_treasure_module_name);
 }
 
 /**
  * \brief Checks that the userdata at the specified index of the stack is a
- * shop item and returns it.
+ * shop treasure and returns it.
  * \param l A Lua context.
  * \param index An index in the stack.
- * \return The shop item.
+ * \return The shop treasure.
  */
-ShopItem& LuaContext::check_shop_item(lua_State* l, int index) {
-  return static_cast<ShopItem&>(
-      check_userdata(l, index, entity_shop_item_module_name));
+ShopTreasure& LuaContext::check_shop_treasure(lua_State* l, int index) {
+  return static_cast<ShopTreasure&>(
+      check_userdata(l, index, entity_shop_treasure_module_name));
 }
 
 /**
- * \brief Pushes a shop item userdata onto the stack.
+ * \brief Pushes a shop treasure userdata onto the stack.
  * \param l A Lua context.
- * \param shop_item A shop item.
+ * \param shop_treasure A shop treasure.
  */
-void LuaContext::push_shop_item(lua_State* l, ShopItem& shop_item) {
-  push_userdata(l, shop_item);
+void LuaContext::push_shop_treasure(lua_State* l, ShopTreasure& shop_treasure) {
+  push_userdata(l, shop_treasure);
 }
 
 /**
- * \brief Notifies Lua that the hero interacts with a shop item.
+ * \brief Notifies Lua that the hero interacts with a shop treasure.
  *
  * Lua then manages the dialogs shown to the player.
  *
- * \param shop_item A shop item.
+ * \param shop_treasure A shop treasure.
  */
-void LuaContext::notify_shop_item_interaction(ShopItem& shop_item) {
+void LuaContext::notify_shop_treasure_interaction(ShopTreasure& shop_treasure) {
 
-  push_shop_item(l, shop_item);
-  lua_pushcclosure(l, l_shop_item_description_dialog_finished, 1);
+  push_shop_treasure(l, shop_treasure);
+  lua_pushcclosure(l, l_shop_treasure_description_dialog_finished, 1);
   int callback_ref = create_ref();
 
-  shop_item.get_game().start_dialog(shop_item.get_dialog_id(), LUA_REFNIL, callback_ref);
+  shop_treasure.get_game().start_dialog(shop_treasure.get_dialog_id(), LUA_REFNIL, callback_ref);
 }
 
 /**
  * \brief Callback function executed after the description dialog of
- * a shop item.
+ * a shop treasure.
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::l_shop_item_description_dialog_finished(lua_State* l) {
+int LuaContext::l_shop_treasure_description_dialog_finished(lua_State* l) {
 
   LuaContext& lua_context = get_lua_context(l);
 
   // The description message has just finished.
-  // The shop item is the first upvalue.
-  ShopItem& shop_item = lua_context.check_shop_item(l, lua_upvalueindex(1));
-  Game& game = shop_item.get_game();
+  // The shop treasure is the first upvalue.
+  ShopTreasure& shop_treasure = lua_context.check_shop_treasure(l, lua_upvalueindex(1));
+  Game& game = shop_treasure.get_game();
 
-  if (shop_item.is_being_removed()) {
-    // The shop item was removed during the dialog.
+  if (shop_treasure.is_being_removed()) {
+    // The shop treasure was removed during the dialog.
     return 0;
   }
 
-  lua_pushinteger(l, shop_item.get_price());
+  lua_pushinteger(l, shop_treasure.get_price());
   int price_ref = lua_context.create_ref();
 
-  push_shop_item(l, shop_item);
-  lua_pushcclosure(l, l_shop_item_question_dialog_finished, 1);
+  push_shop_treasure(l, shop_treasure);
+  lua_pushcclosure(l, l_shop_treasure_question_dialog_finished, 1);
   int callback_ref = lua_context.create_ref();
 
   game.start_dialog("_shop.question", price_ref, callback_ref);
@@ -1726,35 +1752,35 @@ int LuaContext::l_shop_item_description_dialog_finished(lua_State* l) {
 
 /**
  * \brief Callback function executed after the question dialog of
- * a shop item.
+ * a shop treasure.
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::l_shop_item_question_dialog_finished(lua_State* l) {
+int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
 
   LuaContext& lua_context = get_lua_context(l);
 
   // The "do you want to buy?" question has just been displayed.
-  // The shop item is the first upvalue.
-  ShopItem& shop_item = check_shop_item(l, lua_upvalueindex(1));
+  // The shop treasure is the first upvalue.
+  ShopTreasure& shop_treasure = check_shop_treasure(l, lua_upvalueindex(1));
 
-  if (shop_item.is_being_removed()) {
-    // The shop item was removed during the dialog.
+  if (shop_treasure.is_being_removed()) {
+    // The shop treasure was removed during the dialog.
     return 0;
   }
 
   // The first parameter is the answer.
   bool wants_to_buy = lua_isboolean(l, 1) && lua_toboolean(l, 1);
 
-  Game& game = shop_item.get_game();
+  Game& game = shop_treasure.get_game();
   if (wants_to_buy) {
 
     // The player wants to buy the item.
     Equipment& equipment = game.get_equipment();
-    const Treasure& treasure = shop_item.get_treasure();
+    const Treasure& treasure = shop_treasure.get_treasure();
     EquipmentItem& item = treasure.get_item();
 
-    if (equipment.get_money() < shop_item.get_price()) {
+    if (equipment.get_money() < shop_treasure.get_price()) {
       // not enough rupees
       Sound::play("wrong");
       game.start_dialog("_shop.not_enough_money");
@@ -1766,18 +1792,18 @@ int LuaContext::l_shop_item_question_dialog_finished(lua_State* l) {
     }
     else {
 
-      bool can_buy = lua_context.shop_item_on_buying(shop_item);
+      bool can_buy = lua_context.shop_treasure_on_buying(shop_treasure);
       if (can_buy) {
 
         // give the treasure
-        equipment.remove_money(shop_item.get_price());
+        equipment.remove_money(shop_treasure.get_price());
 
         game.get_hero().start_treasure(treasure, LUA_REFNIL);
         if (treasure.is_saved()) {
-          shop_item.remove_from_map();
+          shop_treasure.remove_from_map();
           game.get_savegame().set_boolean(treasure.get_savegame_variable(), true);
         }
-        lua_context.shop_item_on_bought(shop_item);
+        lua_context.shop_treasure_on_bought(shop_treasure);
       }
     }
   }
@@ -1882,6 +1908,27 @@ bool LuaContext::is_enemy(lua_State* l, int index) {
  */
 Enemy& LuaContext::check_enemy(lua_State* l, int index) {
   return static_cast<Enemy&>(check_userdata(l, index, entity_enemy_module_name));
+}
+
+/**
+ * \brief Returns whether a value is a userdata of type custom entity.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return true if the value at this index is a custom entity.
+ */
+bool LuaContext::is_custom_entity(lua_State* l, int index) {
+  return is_userdata(l, index, entity_custom_module_name);
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * custom entity and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The custom entity.
+ */
+CustomEntity& LuaContext::check_custom_entity(lua_State* l, int index) {
+  return static_cast<CustomEntity&>(check_userdata(l, index, entity_custom_module_name));
 }
 
 /**
@@ -2532,11 +2579,33 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
   entity->set_optimization_distance(enemy.get_optimization_distance());
   map.get_entities().add_entity(entity);
 
-  if (entity->get_type() == ENEMY) {  // Because it may also be a pickable treasure.
+  if (entity->get_type() == ENTITY_ENEMY) {  // Because it may also be a pickable treasure.
     (static_cast<Enemy*>(entity))->restart();
   }
 
   push_entity(l, *entity);
+  return 1;
+}
+
+/**
+ * \brief Pushes a custom entity userdata onto the stack.
+ * \param l A Lua context.
+ * \param custom_entity A custom entity.
+ */
+void LuaContext::push_custom_entity(lua_State* l, CustomEntity& entity) {
+  push_userdata(l, entity);
+}
+
+/**
+ * \brief Implementation of custom_entity:get_model().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_get_model(lua_State* l) {
+
+  CustomEntity& entity = check_custom_entity(l, 1);
+
+  push_string(l, entity.get_model());
   return 1;
 }
 
@@ -2789,25 +2858,25 @@ void LuaContext::door_on_closed(Door& door) {
 }
 
 /**
- * \brief Calls the on_buying() method of a Lua shop item.
- * \param shop_item A shop item.
- * \return \c true if the player is allowed to buy the item.
+ * \brief Calls the on_buying() method of a Lua shop treasure.
+ * \param shop_treasure A shop treasure.
+ * \return \c true if the player is allowed to buy the treasure.
  */
-bool LuaContext::shop_item_on_buying(ShopItem& shop_item) {
+bool LuaContext::shop_treasure_on_buying(ShopTreasure& shop_treasure) {
 
-  push_entity(l, shop_item);
+  push_shop_treasure(l, shop_treasure);
   bool result = on_buying();
   lua_pop(l, 1);
   return result;
 }
 
 /**
- * \brief Calls the on_bought() method of a Lua shop item.
- * \param shop_item A shop item.
+ * \brief Calls the on_bought() method of a Lua shop treasure.
+ * \param shop_treasure A shop treasure.
  */
-void LuaContext::shop_item_on_bought(ShopItem& shop_item) {
+void LuaContext::shop_treasure_on_bought(ShopTreasure& shop_treasure) {
 
-  push_entity(l, shop_item);
+  push_shop_treasure(l, shop_treasure);
   on_bought();
   lua_pop(l, 1);
 }

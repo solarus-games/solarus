@@ -109,7 +109,7 @@ Hero::~Hero() {
  * \return the type of entity
  */
 EntityType Hero::get_type() const {
-  return HERO;
+  return ENTITY_HERO;
 }
 
 /**
@@ -1941,7 +1941,7 @@ bool Hero::can_be_hurt(Enemy* attacker) {
 void Hero::hurt(MapEntity& source, int life_points, int magic_points) {
 
   Enemy* enemy = NULL;
-  if (source.get_type() == ENEMY) {
+  if (source.get_type() == ENTITY_ENEMY) {
     // TODO make state->can_be_hurt(MapEntity*)
     enemy = (Enemy*) &source;
   }

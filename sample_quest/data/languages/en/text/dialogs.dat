@@ -3,8 +3,7 @@ dialog{
   text = [[
 You found some Bombs!
 Press X to drop a bomb
-and blow everything
-up!
+and blow everything up!
 ]]
 }
 

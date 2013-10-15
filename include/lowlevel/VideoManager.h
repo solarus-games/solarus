@@ -59,6 +59,8 @@ class VideoManager {
 
     bool is_fullscreen(VideoMode mode) const;
     bool is_fullscreen() const;
+    bool is_scale2x(VideoMode mode) const
+    bool is_scale2x() const;
     void set_fullscreen(bool fullscreen);
     void switch_fullscreen();
 

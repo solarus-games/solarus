@@ -214,6 +214,23 @@ bool VideoManager::is_fullscreen() const {
 }
 
 /**
+ * \brief Returns whether a video mode is stretched with scale2x algorithm.
+ * \param mode A video mode.
+ * \return true if this video mode is in scale2x.
+ */
+bool VideoManager::is_scale2x(VideoMode mode) const {
+  return mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X;
+}
+
+/**
+ * \brief Returns whether the current video mode is stretched with scale2x algorithm.
+ * \return true if the current video mode is in scale2x.
+ */
+bool VideoManager::is_scale2x() const {
+  return is_scale2x(get_video_mode());
+}
+
+/**
  * \brief Sets the video mode to fullscreen or windowed,
  * keeping an equivalent resolution.
  * \param fullscreen true to make fullscreen.
@@ -301,7 +318,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
   if (!disable_window) {
     // Get rending context size.
     const Rectangle& mode_size = mode_sizes[mode];
-    const Rectangle& render_size = mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X ?
+    const Rectangle& render_size = is_scale2x(mode) ?
         mode_sizes[WINDOWED_SCALE2X] :
         mode_sizes[WINDOWED_NORMAL];
     
@@ -401,8 +418,7 @@ void VideoManager::draw(Surface& quest_surface) {
     return;
   }
   
-  if (video_mode == WINDOWED_SCALE2X
-      || video_mode == FULLSCREEN_SCALE2X) {
+  if (is_scale2x()) {
     draw_scale2x(quest_surface);
   }
   else {

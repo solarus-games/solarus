@@ -34,7 +34,10 @@ bool InputEvent::repeat_keyboard = false;
  */
 void InputEvent::initialize() {
     
-  // initialize the joypad.
+  // Initialize text events.
+  SDL_StartTextInput();
+  
+  // Initialize the joypad.
   set_joypad_enabled(true);
 
   // Initialize the map of keyboard key names.
@@ -172,6 +175,7 @@ void InputEvent::quit() {
   if (joystick != NULL) {
     SDL_JoystickClose(joystick);
   }
+  SDL_StopTextInput();
 }
 
 /**

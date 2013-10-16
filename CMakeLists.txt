@@ -96,13 +96,13 @@ include_directories(
   ${CMAKE_BINARY_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/snes_spc
+  ${MODPLUG_INCLUDE_DIR}  # Before SDL because we want the sndfile.h of ModPlug.
   ${SDL2_INCLUDE_DIR}
   ${SDL2_TTF_INCLUDE_DIR}
   ${SDL2_IMAGE_INCLUDE_DIR}
   ${OPENAL_INCLUDE_DIR}
   ${VORBISFILE_INCLUDE_DIR}
   ${OGG_INCLUDE_DIR}
-  ${MODPLUG_INCLUDE_DIR}
   ${LUA_INCLUDE_DIR}
   ${PHYSFS_INCLUDE_DIR}
 )

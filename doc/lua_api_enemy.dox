@@ -648,7 +648,7 @@ special reaction, etc.
 \subsection lua_api_enemy_on_hurt enemy:on_hurt(attack, life_lost)
 
 Called when this enemy was just hurt.
-- \c The attack that was received:
+- \c attack (string): The attack that was received:
   \c "sword", \c "thrown_item", \c "explosion",
   \c "arrow", \c "hookshot", \c "boomerang" or \c "fire".
 - \c life_lost (number): The number of life points just lost by the enemy.

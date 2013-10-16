@@ -95,15 +95,14 @@ class Surface: public Drawable {
 
   private:
 
-    SDL_Surface* internal_surface;               /**< the SDL_Surface encapsulated */
-    bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
-
     uint32_t get_pixel32(int idx_pixel);
     uint32_t get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format);
     bool is_pixel_transparent(int idx_pixel);
   
     SDL_Surface* get_internal_surface();
-  
+
+    SDL_Surface* internal_surface;               /**< the SDL_Surface encapsulated */
+    bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
     bool with_colorkey;
     uint32_t colorkey;
 };

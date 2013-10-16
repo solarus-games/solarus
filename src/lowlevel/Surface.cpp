@@ -31,8 +31,10 @@
  */
 Surface::Surface(int width, int height):
   Drawable(),
+  internal_surface(NULL),
   internal_surface_created(true),
-  with_colorkey(false) {
+  with_colorkey(false),
+  colorkey(0) {
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
@@ -47,8 +49,10 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(const Rectangle& size):
   Drawable(),
+  internal_surface(NULL),
   internal_surface_created(true),
-  with_colorkey(false) {
+  with_colorkey(false),
+  colorkey(0) {
 
   Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
 
@@ -66,7 +70,10 @@ Surface::Surface(const Rectangle& size):
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
-  internal_surface_created(true) {
+  internal_surface(NULL),
+  internal_surface_created(true),
+  with_colorkey(false),
+  colorkey(0) {
 
   std::string prefix = "";
   bool language_specific = false;
@@ -106,8 +113,10 @@ Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
   internal_surface(internal_surface),
   internal_surface_created(false),
-  with_colorkey(SDL_GetColorKey(internal_surface, &colorkey) == 0) {
+  with_colorkey(false),
+  colorkey(0) {
 
+  with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
 }
 
 /**
@@ -116,10 +125,13 @@ Surface::Surface(SDL_Surface* internal_surface):
  */
 Surface::Surface(const Surface& other):
   Drawable(),
-  internal_surface(SDL_ConvertSurface(other.internal_surface,
-      other.internal_surface->format, other.internal_surface->flags)),
+  internal_surface(SDL_ConvertSurface(
+      other.internal_surface,
+      other.internal_surface->format,
+      other.internal_surface->flags)),
   internal_surface_created(true),
-  with_colorkey(SDL_GetColorKey(internal_surface, &colorkey) == 0) {
+  with_colorkey(other.with_colorkey),
+  colorkey(other.colorkey) {
 
 }
 
@@ -216,8 +228,9 @@ const Rectangle Surface::get_size() const {
  */
 Color Surface::get_transparency_color() {
 
-  if(with_colorkey)
+  if (with_colorkey) {
     return Color(colorkey);
+  }
   
   return Color();
 }

@@ -392,7 +392,7 @@ SDL_Surface* Surface::get_internal_surface() {
 /**
  * \brief Returns a 32-bit representation of a pixel of this surface.
  *
- * The pixel format is presereved: if it is lower than 32 bpp, then the unused
+ * The pixel format is preserved: if it is lower than 32 bpp, then the unused
  * upper bits of the value are is padded with zeros.
  *
  * \param idx_pixel The index of the pixel to get.

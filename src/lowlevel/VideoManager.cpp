@@ -128,7 +128,7 @@ VideoManager::VideoManager(
  */
 VideoManager::~VideoManager() {
 
-  if(is_fullscreen()) {
+  if (is_fullscreen()) {
     // Get back on desktop before destroy the window.
     SDL_SetWindowFullscreen(main_window, 0);
   }
@@ -155,12 +155,14 @@ void VideoManager::create_window() {
     SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
     window_size.get_width(), window_size.get_height(), 
     SDL_WINDOW_SHOWN);
-  if(!main_window)
+  if (!main_window) {
     Debug::die(std::string("Cannot create the window : ") + SDL_GetError());
+  }
   
   main_renderer = SDL_CreateRenderer(main_window, -1, 0);
-  if(!main_renderer)
+  if (!main_renderer) {
     Debug::die(std::string("Cannot create the renderer : ") + SDL_GetError());
+  }
   
   set_video_mode(video_mode);
 }
@@ -335,8 +337,9 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     delete this->screen_surface;
     this->screen_surface = new Surface(screen_internal_surface);
     
-    if(screen_texture)
+    if (screen_texture) {
       SDL_DestroyTexture(screen_texture);
+    }
     screen_texture = SDL_CreateTexture(main_renderer,
       SDL_PIXELFORMAT_ARGB8888,
       SDL_TEXTUREACCESS_STREAMING,
@@ -500,13 +503,13 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
             // compute the color
 
             if (src[b] != src[h] && src[d] != src[f]) {
-                dst[e1] = quest_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
-                dst[e2] = quest_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
-                dst[e3] = quest_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
-                dst[e4] = quest_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
+              dst[e1] = quest_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
+              dst[e2] = quest_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
+              dst[e3] = quest_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
+              dst[e4] = quest_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
             }
             else {
-                dst[e1] = dst[e2] = dst[e3] = dst[e4] = quest_surface.get_mapped_pixel(e, dst_internal_surface->format);
+              dst[e1] = dst[e2] = dst[e3] = dst[e4] = quest_surface.get_mapped_pixel(e, dst_internal_surface->format);
             }
             e1 += 2;
             e++;

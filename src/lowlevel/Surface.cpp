@@ -381,21 +381,22 @@ Surface& Surface::get_transition_surface() {
 /**
  * \brief Returns the SDL surface encapsulated by this object.
  *
- * This method should be used only by low-level classes.
+ * This method should only be used by low-level classes.
  *
- * \return the SDL surface encapsulated
+ * \return The SDL surface encapsulated.
  */
 SDL_Surface* Surface::get_internal_surface() {
   return internal_surface;
 }
 
 /**
- * \brief Return the 32bits pixel.
+ * \brief Returns a 32-bit representation of a pixel of this surface.
  *
- * If the pixel is less than 32bpp, then the unused upper bits of the return value can safely be ignored.
+ * The pixel format is presereved: if it is lower than 32 bpp, then the unused
+ * upper bits of the value are is padded with zeros.
  *
- * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits.
- * \return The casted 32bits pixel.
+ * \param idx_pixel The index of the pixel to get.
+ * \return The value of this pixel, casted to 32-bit.
  */
 uint32_t Surface::get_pixel32(int idx_pixel) const {
 
@@ -425,17 +426,14 @@ uint32_t Surface::get_pixel32(int idx_pixel) const {
 }
 
 /**
- * \brief Returns the 32bits pixel, color-mapped from internal SDL_PixelFormat to dst_format.
+ * \brief Returns a pixel value converted to another format.
  *
- * The source pixel depth format can be any size between 1 and 32bits.
- * If the destination pixel depth format is less than 32-bpp then the unused upper bits of the return value can safely be ignored.
- * This method should be used only by low-level classes, and after lock source internal_surface.
+ * The source pixel depth format can have any size.
+ * This is an equivalent to SDL_ConvertSurface() for pixel by pixel uses.
  *
- * It's the SDL_ConvertSurface() function equivalent for a pixel by pixel uses.
- *
- * \param idx_pixel the index of the pixel to convert.
- * \param dst_format the destination format.
- * \return the mapped 32bits pixel.
+ * \param idx_pixel Index of the pixel to convert.
+ * \param dst_format The destination format.
+ * \return The converted pixel.
  */
 uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) const {
 
@@ -445,13 +443,13 @@ uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) c
 }
 
 /**
- * \brief Return true if the pixel is transparent.
+ * \brief Returns whether a pixel is transparent.
  *
- * The pixel is transparent if it correspond to the colorkey or if the alpha channel 
- * of the pixel equal 0.
+ * A pixel is transparent if it corresponds to the colorkey or if its alpha
+ * channel is equal to 0.
  *
- * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits.
- * \return if the pixel is transparent.
+ * \param idx_pixel The index of the pixel to test.
+ * \return \c true if the pixel is transparent.
  */
 bool Surface::is_pixel_transparent(int idx_pixel) const {
   

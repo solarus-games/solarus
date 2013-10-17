@@ -382,7 +382,6 @@ SDL_Surface* Surface::get_internal_surface() {
  */
 uint32_t Surface::get_pixel(int index) const {
 
-  uint32_t pixel = 0;
   SDL_PixelFormat* format = internal_surface->format;
 
   // Test from the most common to the most exotic.

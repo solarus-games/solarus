@@ -151,10 +151,13 @@ void VideoManager::create_window() {
   
   // Initialize the window.
   Rectangle window_size = mode_sizes[video_mode];
-  main_window = SDL_CreateWindow(outset_title.c_str(), 
-    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-    window_size.get_width(), window_size.get_height(), 
-    SDL_WINDOW_SHOWN);
+  main_window = SDL_CreateWindow(
+      outset_title.c_str(),
+      SDL_WINDOWPOS_CENTERED,
+      SDL_WINDOWPOS_CENTERED,
+      window_size.get_width(),
+      window_size.get_height(),
+      SDL_WINDOW_SHOWN);
   if (!main_window) {
     Debug::die(std::string("Cannot create the window : ") + SDL_GetError());
   }
@@ -304,7 +307,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     return false;
   }
   
-  if(!main_window) {
+  if (main_window == NULL) {
     // If the window isn't created yet, just store the video mode.
     this->video_mode = mode;
     return true;
@@ -313,7 +316,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
   int show_cursor;
   Uint32 fullscreen_flag;
   if (is_fullscreen(mode)) {
-    fullscreen_flag = SDL_WINDOW_FULLSCREEN;
+    fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
     show_cursor = SDL_DISABLE;
   }
   else {
@@ -329,7 +332,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
         mode_sizes[WINDOWED_NORMAL];
     
     // Create intermediate rending surfaces.
-    if (screen_texture) {
+    if (screen_texture != NULL) {
       SDL_DestroyTexture(screen_texture);
     }
     screen_texture = SDL_CreateTexture(main_renderer,
@@ -674,7 +677,7 @@ void VideoManager::initialize_video_modes() {
   mode_sizes[WINDOWED_SCALE2X] = twice_quest_size;
   mode_sizes[WINDOWED_NORMAL] = quest_size;
   
-  mode_sizes[FULLSCREEN_SCALE2X] = find_closest_fullscreen_resolution(twice_quest_size);
-  mode_sizes[FULLSCREEN_NORMAL] = find_closest_fullscreen_resolution(quest_size);
+  mode_sizes[FULLSCREEN_SCALE2X] = twice_quest_size;
+  mode_sizes[FULLSCREEN_NORMAL] = quest_size;
 }
 

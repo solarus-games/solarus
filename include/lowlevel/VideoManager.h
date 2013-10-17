@@ -91,7 +91,6 @@ class VideoManager {
     void initialize_video_modes();
     Rectangle find_closest_fullscreen_resolution(const Rectangle& surface_size);
 
-    void draw_unscaled(Surface& quest_surface);
     void draw_scale2x(Surface& quest_surface);
 
     static VideoManager* instance;          /**< The only instance. */
@@ -103,8 +102,8 @@ class VideoManager {
 
     SDL_Window* main_window;                /**< The window. */
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
-    Surface* screen_surface;                /**< The screen surface. */
     SDL_Texture* screen_texture;            /**< The screen texture. */
+    Surface* scaled_surface;                /**< The screen surface used with scale2x mode. */
   
     std::string outset_title;               /**< Title used when creating the window. */
     VideoMode video_mode;                   /**< Current display mode. */

@@ -116,8 +116,8 @@ VideoManager::VideoManager(
   disable_window(disable_window),
   main_window(NULL),
   main_renderer(NULL),
-  screen_surface(NULL),
   screen_texture(NULL),
+  scaled_surface(NULL),
   outset_title(std::string("Solarus ") + SOLARUS_VERSION),
   video_mode(NO_MODE),
   wanted_quest_size(wanted_quest_size) {
@@ -132,7 +132,7 @@ VideoManager::~VideoManager() {
     // Get back on desktop before destroy the window.
     SDL_SetWindowFullscreen(main_window, 0);
   }
-  delete screen_surface;
+  delete scaled_surface;
   if (screen_texture != NULL) {
     SDL_DestroyTexture(screen_texture);
   }
@@ -163,6 +163,9 @@ void VideoManager::create_window() {
   if (!main_renderer) {
     Debug::die(std::string("Cannot create the renderer : ") + SDL_GetError());
   }
+  
+  // Initalize the intermediate surface used with scaled mode.
+  this->scaled_surface = new Surface(mode_sizes[WINDOWED_SCALE2X]);
   
   set_video_mode(video_mode);
 }
@@ -325,9 +328,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
         mode_sizes[WINDOWED_NORMAL];
     
     // Create intermediate rending surfaces.
-    delete this->screen_surface;
-    this->screen_surface = new Surface(render_size);
-    
     if (screen_texture) {
       SDL_DestroyTexture(screen_texture);
     }
@@ -412,31 +412,20 @@ void VideoManager::draw(Surface& quest_surface) {
     return;
   }
   
+  SDL_Surface* screen_sdl_surface;
   if (is_scale2x()) {
     draw_scale2x(quest_surface);
+    screen_sdl_surface = scaled_surface->get_internal_surface();
   }
   else {
-    draw_unscaled(quest_surface);
+    screen_sdl_surface = quest_surface.get_internal_surface();
   }
   
   // Update the internal texture with the internal surface, and render it.
-  SDL_Surface* screen_sdl_surface = screen_surface->get_internal_surface();
   SDL_UpdateTexture(screen_texture, NULL, screen_sdl_surface->pixels, screen_sdl_surface->pitch);
   SDL_RenderClear(main_renderer);
   SDL_RenderCopy(main_renderer, screen_texture, NULL, NULL);
   SDL_RenderPresent(main_renderer);
-}
-  
-/**
- * \brief Draws the quest surface on the screen at its size.
- *
- * Black bars are added if the screen is bigger than the quest size.
- *
- * \param quest_surface The quest surface to draw.
- */
-void VideoManager::draw_unscaled(Surface& quest_surface) {
-
-  quest_surface.draw(*screen_surface);
 }
 
 /**
@@ -450,7 +439,7 @@ void VideoManager::draw_unscaled(Surface& quest_surface) {
 void VideoManager::draw_scale2x(Surface& quest_surface) {
 
     SDL_Surface* src_internal_surface = quest_surface.get_internal_surface();
-    SDL_Surface* dst_internal_surface = screen_surface->get_internal_surface();
+    SDL_Surface* dst_internal_surface = scaled_surface->get_internal_surface();
 
     SDL_LockSurface(src_internal_surface);
     SDL_LockSurface(dst_internal_surface);

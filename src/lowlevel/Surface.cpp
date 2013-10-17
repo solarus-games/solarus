@@ -390,56 +390,72 @@ SDL_Surface* Surface::get_internal_surface() {
 }
 
 /**
- * \brief Returns a 32-bit representation of a pixel of this surface.
+ * \brief Returns a pixel value of this surface.
  *
  * The pixel format is preserved: if it is lower than 32 bpp, then the unused
  * upper bits of the value are is padded with zeros.
  *
- * \param idx_pixel The index of the pixel to get.
- * \return The value of this pixel, casted to 32-bit.
+ * \param index Index of the pixel to get.
+ * \return The value of this pixel.
  */
-uint32_t Surface::get_pixel32(int idx_pixel) const {
+uint32_t Surface::get_pixel(int index) const {
 
   uint32_t pixel = 0;
   SDL_PixelFormat* format = internal_surface->format;
 
-  // In order from the most used to the most exotic
+  // Test from the most common to the most exotic.
   switch (format->BytesPerPixel) {
+
     case 1:
-      pixel = ((uint8_t*) internal_surface->pixels)[idx_pixel];
-      break;
+      {
+        uint8_t* pixels = static_cast<uint8_t*>(internal_surface->pixels);
+        return pixels[index];
+      }
+
     case 4:
-      pixel = ((uint32_t*) internal_surface->pixels)[idx_pixel];
-      break;
+      {
+        uint32_t* pixels = static_cast<uint32_t*>(internal_surface->pixels);
+        return pixels[index];
+      }
+
     case 2:
-      pixel = ((uint16_t*) internal_surface->pixels)[idx_pixel];
-      break;
+      {
+        uint16_t* pixels = static_cast<uint16_t*>(internal_surface->pixels);
+        return pixels[index];
+      }
+
     case 3:
-      // Manual cast of the pixel into uint32_t
-      pixel = (*(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00) >> 8;
-      break;
-    default:
-      Debug::die("Surface should all have a depth between 1 and 4bytes per pixel");
+      {
+        // Manual cast of the pixel into uint32_t.
+        uint8_t* bytes = static_cast<uint8_t*>(internal_surface->pixels);
+        return *reinterpret_cast<uint32_t*>(&bytes[index * 3]) & 0xffffff00 >> 8;
+      }
   }
 
-  return pixel;
+  Debug::die(StringConcat() << "Unknown pixel depth: " << format->BitsPerPixel);
+  return 0;
 }
 
 /**
- * \brief Returns a pixel value converted to another format.
+ * \brief Returns a pixel value converted into the format of another surface.
  *
- * The source pixel depth format can have any size.
- * This is an equivalent to SDL_ConvertSurface() for pixel by pixel uses.
+ * The source and destination formats can be anything.
  *
- * \param idx_pixel Index of the pixel to convert.
+ * \param index Index of the pixel to convert.
  * \param dst_format The destination format.
  * \return The converted pixel.
  */
-uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) const {
+uint32_t Surface::get_converted_pixel(int index, const Surface& dst_surface) const {
+
+  uint32_t pixel = get_pixel(index);
+  if (dst_surface.internal_surface->format->format == internal_surface->format->format) {
+    // Same format: nothing to do.
+    return pixel;
+  }
 
   uint8_t r, g, b, a;
-  SDL_GetRGBA(get_pixel32(idx_pixel), internal_surface->format, &r, &g, &b, &a);
-  return SDL_MapRGBA(dst_format, r, g, b, a);
+  SDL_GetRGBA(pixel, internal_surface->format, &r, &g, &b, &a);
+  return SDL_MapRGBA(dst_surface.internal_surface->format, r, g, b, a);
 }
 
 /**
@@ -448,12 +464,12 @@ uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) c
  * A pixel is transparent if it corresponds to the colorkey or if its alpha
  * channel is equal to 0.
  *
- * \param idx_pixel The index of the pixel to test.
+ * \param index The index of the pixel to test.
  * \return \c true if the pixel is transparent.
  */
-bool Surface::is_pixel_transparent(int idx_pixel) const {
+bool Surface::is_pixel_transparent(int index) const {
   
-  uint32_t pixel = get_pixel32(idx_pixel);
+  uint32_t pixel = get_pixel(index);
   
   if (with_colorkey && pixel == colorkey) {
     return true;

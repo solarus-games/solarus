@@ -503,13 +503,13 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
             // compute the color
 
             if (src[b] != src[h] && src[d] != src[f]) {
-              dst[e1] = quest_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
-              dst[e2] = quest_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
-              dst[e3] = quest_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
-              dst[e4] = quest_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
+              dst[e1] = quest_surface.get_converted_pixel((src[d] == src[b]) ? d : e, dst_internal_surface);
+              dst[e2] = quest_surface.get_converted_pixel((src[b] == src[f]) ? f : e, dst_internal_surface);
+              dst[e3] = quest_surface.get_converted_pixel((src[d] == src[h]) ? d : e, dst_internal_surface);
+              dst[e4] = quest_surface.get_converted_pixel((src[h] == src[f]) ? f : e, dst_internal_surface);
             }
             else {
-              dst[e1] = dst[e2] = dst[e3] = dst[e4] = quest_surface.get_mapped_pixel(e, dst_internal_surface->format);
+              dst[e1] = dst[e2] = dst[e3] = dst[e4] = quest_surface.get_converted_pixel(e, dst_internal_surface);
             }
             e1 += 2;
             e++;

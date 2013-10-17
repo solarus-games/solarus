@@ -277,17 +277,8 @@ void Surface::set_opacity(int opacity) {
     opacity = 127;
   }
 
-  set_blending_mode(MODE_BLEND);
+  SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
   SDL_SetSurfaceAlphaMod(internal_surface, opacity);
-}
-
-/**
- * \brief Sets the blending mode of this surface.
- * \param the blending mode.
- */
-void Surface::set_blending_mode(BlendingMode mode) {
-  
-  SDL_SetSurfaceBlendMode(internal_surface, SDL_BlendMode(mode));
 }
 
 /**

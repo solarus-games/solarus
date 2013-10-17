@@ -47,17 +47,6 @@ class Surface: public Drawable {
       DIR_LANGUAGE     /**< the language-specific image directory of the data package, for the current language */
     };
   
-    /**
-     * \brief The blending mode to use when drawing the surface.
-     * TODO is this used?
-     */
-    enum BlendingMode {
-      MODE_NONE       = SDL_BLENDMODE_NONE,     /**< no blending */
-      MODE_BLEND      = SDL_BLENDMODE_BLEND,    /**< alpha blending */
-      MODE_ADD        = SDL_BLENDMODE_ADD,      /**< additive blending */
-      MODE_MOD        = SDL_BLENDMODE_MOD       /**< color modulate */
-    };
-
     Surface(int width, int height);
     Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
@@ -75,7 +64,6 @@ class Surface: public Drawable {
     Color get_transparency_color() const;
     void set_transparency_color(const Color& color);
     void set_opacity(int opacity);
-    void set_blending_mode(BlendingMode mode);
     void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);

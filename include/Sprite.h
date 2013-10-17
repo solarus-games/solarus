@@ -111,6 +111,11 @@ class Sprite: public Drawable {
 
   private:
 
+    static SpriteAnimationSet& get_animation_set(const std::string& id);
+    int get_next_frame() const;
+    Surface& get_intermediate_surface() const ;
+    void set_frame_changed(bool frame_changed);
+
     LuaContext* lua_context;           /**< The Solarus Lua API (NULL means no callbacks for this sprite). TODO move this to ExportableToLua */
 
     // animation set
@@ -145,11 +150,6 @@ class Sprite: public Drawable {
     uint32_t blink_delay;              /**< blink delay of the sprite, or zero if the sprite is not blinking */
     bool blink_is_sprite_visible;      /**< when blinking, true if the sprite is visible or false if it is invisible */
     uint32_t blink_next_change_date;   /**< date of the next change when blinking: visible or not */
-
-    static SpriteAnimationSet& get_animation_set(const std::string& id);
-    int get_next_frame() const;
-    Surface& get_intermediate_surface() const ;
-    void set_frame_changed(bool frame_changed);
 
 };
 

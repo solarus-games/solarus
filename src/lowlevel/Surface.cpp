@@ -452,8 +452,8 @@ uint32_t Surface::get_converted_pixel(int index, const Surface& dst_surface) con
 /**
  * \brief Returns whether a pixel is transparent.
  *
- * A pixel is transparent if it corresponds to the colorkey or if its alpha
- * channel is equal to 0.
+ * A pixel is transparent if it corresponds to the colorkey
+ * or if its alpha channel is equal to 0.
  *
  * \param index The index of the pixel to test.
  * \return \c true if the pixel is transparent.
@@ -463,10 +463,13 @@ bool Surface::is_pixel_transparent(int index) const {
   uint32_t pixel = get_pixel(index);
   
   if (with_colorkey && pixel == colorkey) {
+    // The pixel has the transparency color.
     return true;
   }
 
-  if ((pixel & internal_surface->format->Amask) == 0) {
+  if (internal_surface->format->Amask != 0               // There exists an alpha channel.
+      && (pixel & internal_surface->format->Amask) == 0  // The pixel is fully transparent.
+      ) {
     return true;
   }
   

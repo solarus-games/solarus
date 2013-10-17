@@ -32,7 +32,7 @@
 Surface::Surface(int width, int height):
   Drawable(),
   internal_surface(NULL),
-  internal_surface_created(true),
+  owns_internal_surface(true),
   with_colorkey(false),
   colorkey(0) {
 
@@ -50,7 +50,7 @@ Surface::Surface(int width, int height):
 Surface::Surface(const Rectangle& size):
   Drawable(),
   internal_surface(NULL),
-  internal_surface_created(true),
+  owns_internal_surface(true),
   with_colorkey(false),
   colorkey(0) {
 
@@ -71,7 +71,7 @@ Surface::Surface(const Rectangle& size):
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
   internal_surface(NULL),
-  internal_surface_created(true),
+  owns_internal_surface(true),
   with_colorkey(false),
   colorkey(0) {
 
@@ -107,13 +107,14 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * This constructor must be used only by lowlevel classes that manipulate directly
  * SDL dependent surfaces.
  *
- * \param internal_surface The internal surface data. It must remain valid
- * during the lifetime of this surface. The destructor will not free it.
+ * \param internal_surface The internal surface data. It won't be copied.
+ * It must remain valid during the lifetime of this surface.
+ * The destructor will not free it.
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
   internal_surface(internal_surface),
-  internal_surface_created(false),
+  owns_internal_surface(false),
   with_colorkey(false),
   colorkey(0) {
 
@@ -123,31 +124,21 @@ Surface::Surface(SDL_Surface* internal_surface):
 /**
  * \brief Creates a surface from an existing surface.
  *
+ * The internal surface encapsulated is not copied: its ownership is
+ * transferred to the new one.
+ * Use with care!
  * Transitions and movements applied on the existing surface are not copied.
  *
  * \param other A surface to copy.
  */
-Surface::Surface(const Surface& other):
+Surface::Surface(Surface& other):
   Drawable(),
-  internal_surface(NULL),
-  internal_surface_created(true),
-  with_colorkey(false),
-  colorkey(0) {
+  internal_surface(other.internal_surface),
+  owns_internal_surface(other.owns_internal_surface),
+  with_colorkey(other.with_colorkey),
+  colorkey(other.colorkey) {
 
-  // For some reason, since SDL2, SDL_ConvertSurface() does not work to copy
-  // the surface. Let's copy it more manually.
-
-  internal_surface = SDL_CreateRGBSurface(
-      SDL_SWSURFACE,
-      other.get_width(),
-      other.get_height(),
-      SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
-  with_colorkey = SDL_GetColorKey(other.internal_surface, &colorkey) == 0;
-  if (with_colorkey) {
-    set_transparency_color(other.colorkey);
-  }
-
-  SDL_BlitSurface(other.internal_surface, NULL, internal_surface, NULL);
+  other.owns_internal_surface = false;
 }
 
 /**
@@ -155,7 +146,7 @@ Surface::Surface(const Surface& other):
  */
 Surface::~Surface() {
 
-  if (internal_surface_created) {
+  if (owns_internal_surface) {
     SDL_FreeSurface(internal_surface);
   }
 }
@@ -204,7 +195,7 @@ Surface* Surface::create_from_file(const std::string& file_name,
   }
 
   Surface* surface = new Surface(internal_surface);
-  surface->internal_surface_created = true;
+  surface->owns_internal_surface = true;
   return surface;
 }
 

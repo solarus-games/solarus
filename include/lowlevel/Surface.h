@@ -51,7 +51,7 @@ class Surface: public Drawable {
     explicit Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
     explicit Surface(SDL_Surface* internal_surface);
-    explicit Surface(const Surface& other);
+    explicit Surface(Surface& other);
     ~Surface();
 
     static Surface* create_from_file(const std::string& file_name,
@@ -91,8 +91,8 @@ class Surface: public Drawable {
   
     SDL_Surface* get_internal_surface();
 
-    SDL_Surface* internal_surface;               /**< the SDL_Surface encapsulated */
-    bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
+    SDL_Surface* internal_surface;     /**< the SDL_Surface encapsulated */
+    bool owns_internal_surface;        /**< indicates that internal_surface belongs to this object */
     bool with_colorkey;
     uint32_t colorkey;
 };

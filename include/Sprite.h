@@ -140,15 +140,17 @@ class Sprite: public Drawable {
                                         * when they have the same animation name (or NULL) */
 
     // effects
-    Surface* intermediate_surface;     /**< an intermediate surface used to show transitions and other effects */
+    mutable Surface*
+        intermediate_surface;          /**< an intermediate surface used to show transitions and other effects */
     uint32_t blink_delay;              /**< blink delay of the sprite, or zero if the sprite is not blinking */
     bool blink_is_sprite_visible;      /**< when blinking, true if the sprite is visible or false if it is invisible */
     uint32_t blink_next_change_date;   /**< date of the next change when blinking: visible or not */
 
     static SpriteAnimationSet& get_animation_set(const std::string& id);
     int get_next_frame() const;
-    Surface& get_intermediate_surface();
+    Surface& get_intermediate_surface() const ;
     void set_frame_changed(bool frame_changed);
+
 };
 
 #endif

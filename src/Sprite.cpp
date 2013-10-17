@@ -681,7 +681,8 @@ void Sprite::update() {
  * \param dst_position Coordinates on the destination surface
  * (the origin will be placed at this position).
  */
-void Sprite::raw_draw(Surface& dst_surface,
+void Sprite::raw_draw(
+    Surface& dst_surface,
     const Rectangle& dst_position) {
 
   if (!is_animation_finished()
@@ -709,8 +710,10 @@ void Sprite::raw_draw(Surface& dst_surface,
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void Sprite::raw_draw_region(const Rectangle& region,
-    Surface& dst_surface, const Rectangle& dst_position) {
+void Sprite::raw_draw_region(
+    const Rectangle& region,
+    Surface& dst_surface,
+    const Rectangle& dst_position) {
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
@@ -750,7 +753,7 @@ Surface& Sprite::get_transition_surface() {
  *
  * \return The intermediate surface of this sprite.
  */
-Surface& Sprite::get_intermediate_surface() {
+Surface& Sprite::get_intermediate_surface() const {
 
   if (intermediate_surface == NULL) {
     intermediate_surface = new Surface(get_max_size());

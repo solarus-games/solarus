@@ -87,7 +87,7 @@ Movement* Drawable::get_movement() {
  * movement.
  * \return The coordinates of this drawable object.
  */
-const Rectangle& Drawable::get_xy() {
+const Rectangle& Drawable::get_xy() const {
   return xy;
 }
 
@@ -222,12 +222,26 @@ void Drawable::draw(Surface& dst_surface,
 /**
  * \brief Draws a subrectangle of this object, applying dynamic effects.
  * \param region The rectangle to draw in this object.
+ * \param dst_surface The destination surface.
+ */
+void Drawable::draw_region(
+    const Rectangle& region,
+    Surface& dst_surface) {
+
+  draw_region(region, dst_surface, Rectangle(0, 0));
+}
+
+/**
+ * \brief Draws a subrectangle of this object, applying dynamic effects.
+ * \param region The rectangle to draw in this object.
  * \param dst_surface The destination surface
  * \param dst_position Position on this surface
  * (will be added to the position obtained by previous movements).
  */
-void Drawable::draw_region(const Rectangle& region,
-    Surface& dst_surface, const Rectangle& dst_position) {
+void Drawable::draw_region(
+    const Rectangle& region,
+    Surface& dst_surface,
+    const Rectangle& dst_position) {
 
   Rectangle dst_position2(dst_position);
   dst_position2.add_xy(xy);

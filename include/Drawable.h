@@ -38,7 +38,7 @@ class Drawable: public ExportableToLua {
     void start_movement(Movement& movement);
     void stop_movement();
     Movement* get_movement();
-    const Rectangle& get_xy();
+    const Rectangle& get_xy() const;
     void set_xy(const Rectangle& xy);
 
     void start_transition(Transition& transition, int callback_ref, LuaContext* lua_context);
@@ -49,6 +49,7 @@ class Drawable: public ExportableToLua {
     void draw(Surface& dst_surface);
     void draw(Surface& dst_surface, int x, int y);
     void draw(Surface& dst_surface, const Rectangle& dst_position);
+    void draw_region(const Rectangle& region, Surface& dst_surface);
     void draw_region(const Rectangle& region,
         Surface& dst_surface, const Rectangle& dst_position);
 
@@ -75,8 +76,10 @@ class Drawable: public ExportableToLua {
      * \param dst_surface The destination surface.
      * \param dst_position Coordinates on the destination surface.
      */
-    virtual void raw_draw_region(const Rectangle& region,
-        Surface& dst_surface, const Rectangle& dst_position) = 0;
+    virtual void raw_draw_region(
+        const Rectangle& region,
+        Surface& dst_surface,
+        const Rectangle& dst_position) = 0;
 
     /**
      * \brief Draws a transition effect on this drawable object.
@@ -85,6 +88,8 @@ class Drawable: public ExportableToLua {
      * of your object.
      *
      * \param transition The transition effect to apply.
+     *
+     * TODO Since there is get_transition_surface() now, this function can probably be removed.
      */
     virtual void draw_transition(Transition& transition) = 0;
 

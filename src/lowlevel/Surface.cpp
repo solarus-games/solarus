@@ -107,7 +107,8 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * This constructor must be used only by lowlevel classes that manipulate directly
  * SDL dependent surfaces.
  *
- * \param internal_surface the internal surface data (the destructor will not free it)
+ * \param internal_surface The internal surface data. It must remain valid
+ * during the lifetime of this surface. The destructor will not free it.
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
@@ -120,8 +121,11 @@ Surface::Surface(SDL_Surface* internal_surface):
 }
 
 /**
- * \brief Copy constructor.
- * \param other a surface to copy
+ * \brief Creates a surface from an existing surface.
+ *
+ * Transitions and movements applied on the existing surface are not copied.
+ *
+ * \param other A surface to copy.
  */
 Surface::Surface(const Surface& other):
   Drawable(),
@@ -143,8 +147,7 @@ Surface::Surface(const Surface& other):
     set_transparency_color(other.colorkey);
   }
 
-  // TODO make draw() const
-  const_cast<Surface&>(other).draw(*this);
+  SDL_BlitSurface(other.internal_surface, NULL, internal_surface, NULL);
 }
 
 /**
@@ -238,7 +241,7 @@ const Rectangle Surface::get_size() const {
  *
  * \return The transparency color.
  */
-Color Surface::get_transparency_color() {
+Color Surface::get_transparency_color() const {
 
   if (with_colorkey) {
     return Color(colorkey);
@@ -332,8 +335,7 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void Surface::raw_draw(Surface& dst_surface,
-    const Rectangle& dst_position) {
+void Surface::raw_draw(Surface& dst_surface, const Rectangle& dst_position) {
 
   // Make a copy of the rectangle because SDL_BlitSurface modifies it.
   Rectangle dst_position2(dst_position);
@@ -347,8 +349,10 @@ void Surface::raw_draw(Surface& dst_surface,
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void Surface::raw_draw_region(const Rectangle& region,
-    Surface& dst_surface, const Rectangle& dst_position) {
+void Surface::raw_draw_region(
+    const Rectangle& region,
+    Surface& dst_surface,
+    const Rectangle& dst_position) {
 
   // Make a copy of the rectangle because SDL_BlitSurface modifies it.
   Rectangle region2(region);
@@ -375,36 +379,6 @@ Surface& Surface::get_transition_surface() {
 }
 
 /**
- * \brief Blits a region of this surface on another surface.
- *
- * The top-left corner of the source subarea will be blitted on the other's surface top-left corner.
- *
- * \param src_position the subrectangle of this surface to pick
- * \param dst_surface the destination surface
- */
-void Surface::draw_region(const Rectangle& src_position, Surface& dst_surface) {
-
-  Rectangle src_position2(src_position);
-  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(),
-      dst_surface.internal_surface, NULL);
-}
-
-/**
- * \brief Blits a region of this surface on a specified location of another surface.
- * \param src_position the subrectangle of this surface to pick
- * \param dst_surface the destination surface
- * \param dst_position the destination position where the current surface will be blitted on dst
- */
-void Surface::draw_region(const Rectangle &src_position, Surface& dst_surface,
-    const Rectangle &dst_position) {
-
-  Rectangle src_position2(src_position);
-  Rectangle dst_position2(dst_position);
-  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(),
-      dst_surface.internal_surface, dst_position2.get_internal_rect());
-}
-
-/**
  * \brief Returns the SDL surface encapsulated by this object.
  *
  * This method should be used only by low-level classes.
@@ -423,7 +397,7 @@ SDL_Surface* Surface::get_internal_surface() {
  * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits.
  * \return The casted 32bits pixel.
  */
-uint32_t Surface::get_pixel32(int idx_pixel) {
+uint32_t Surface::get_pixel32(int idx_pixel) const {
 
   uint32_t pixel = 0;
   SDL_PixelFormat* format = internal_surface->format;
@@ -463,7 +437,7 @@ uint32_t Surface::get_pixel32(int idx_pixel) {
  * \param dst_format the destination format.
  * \return the mapped 32bits pixel.
  */
-uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
+uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) const {
 
   uint8_t r, g, b, a;
   SDL_GetRGBA(get_pixel32(idx_pixel), internal_surface->format, &r, &g, &b, &a);
@@ -479,7 +453,7 @@ uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
  * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits.
  * \return if the pixel is transparent.
  */
-bool Surface::is_pixel_transparent(int idx_pixel) {
+bool Surface::is_pixel_transparent(int idx_pixel) const {
   
   uint32_t pixel = get_pixel32(idx_pixel);
   

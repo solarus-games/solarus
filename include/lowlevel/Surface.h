@@ -49,6 +49,7 @@ class Surface: public Drawable {
   
     /**
      * \brief The blending mode to use when drawing the surface.
+     * TODO is this used?
      */
     enum BlendingMode {
       MODE_NONE       = SDL_BLENDMODE_NONE,     /**< no blending */
@@ -71,7 +72,7 @@ class Surface: public Drawable {
     int get_height() const;
     const Rectangle get_size() const;
 
-    Color get_transparency_color();
+    Color get_transparency_color() const;
     void set_transparency_color(const Color& color);
     void set_opacity(int opacity);
     void set_blending_mode(BlendingMode mode);
@@ -79,25 +80,26 @@ class Surface: public Drawable {
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
 
-    void draw_region(const Rectangle& src_position, Surface& dst_surface);
-    void draw_region(const Rectangle& src_position, Surface& dst_surface, const Rectangle& dst_position);
-
     const std::string& get_lua_type_name() const;
 
   protected:
 
-    // implementation from Drawable
-    void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
-    void raw_draw_region(const Rectangle& region,
-        Surface& dst_surface, const Rectangle& dst_position);
+    // Implementation from Drawable.
+    void raw_draw(
+        Surface& dst_surface,
+        const Rectangle& dst_position);
+    void raw_draw_region(
+        const Rectangle& region,
+        Surface& dst_surface,
+        const Rectangle& dst_position);
     void draw_transition(Transition& transition);
     Surface& get_transition_surface();
 
   private:
 
-    uint32_t get_pixel32(int idx_pixel);
-    uint32_t get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format);
-    bool is_pixel_transparent(int idx_pixel);
+    uint32_t get_pixel32(int idx_pixel) const;
+    uint32_t get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) const;
+    bool is_pixel_transparent(int idx_pixel) const;
   
     SDL_Surface* get_internal_surface();
 

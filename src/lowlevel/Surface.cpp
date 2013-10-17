@@ -125,14 +125,26 @@ Surface::Surface(SDL_Surface* internal_surface):
  */
 Surface::Surface(const Surface& other):
   Drawable(),
-  internal_surface(SDL_ConvertSurface(
-      other.internal_surface,
-      other.internal_surface->format,
-      other.internal_surface->flags)),
+  internal_surface(NULL),
   internal_surface_created(true),
-  with_colorkey(other.with_colorkey),
-  colorkey(other.colorkey) {
+  with_colorkey(false),
+  colorkey(0) {
 
+  // For some reason, since SDL2, SDL_ConvertSurface() does not work to copy
+  // the surface. Let's copy it more manually.
+
+  internal_surface = SDL_CreateRGBSurface(
+      SDL_SWSURFACE,
+      other.get_width(),
+      other.get_height(),
+      SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+  with_colorkey = SDL_GetColorKey(other.internal_surface, &colorkey) == 0;
+  if (with_colorkey) {
+    set_transparency_color(other.colorkey);
+  }
+
+  // TODO make draw() const
+  const_cast<Surface&>(other).draw(*this);
 }
 
 /**
@@ -255,9 +267,9 @@ void Surface::set_transparency_color(const Color& color) {
  */
 void Surface::set_opacity(int opacity) {
 
-  //TODO see if SDL2 solve the problem
+  // TODO see if SDL2 solves the problem.
   // SDL has a special handling of the alpha value 128
-  // which doesn't work well with my computer
+  // which doesn't work well with my computer.
   if (opacity == 128) {
     opacity = 127;
   }

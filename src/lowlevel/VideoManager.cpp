@@ -325,17 +325,8 @@ bool VideoManager::set_video_mode(VideoMode mode) {
         mode_sizes[WINDOWED_NORMAL];
     
     // Create intermediate rending surfaces.
-    SDL_Surface* screen_internal_surface = SDL_CreateRGBSurface(0, 
-      render_size.get_width(),
-      render_size.get_height(), 
-      32,
-      0x00FF0000,
-      0x0000FF00,
-      0x000000FF,
-      0xFF000000);
-    
     delete this->screen_surface;
-    this->screen_surface = new Surface(screen_internal_surface);
+    this->screen_surface = new Surface(render_size);
     
     if (screen_texture) {
       SDL_DestroyTexture(screen_texture);

@@ -24,10 +24,10 @@
 
 /**
  * \brief Creates a pixel bits object.
- * \param surface the surface where the image is
- * \param image_position position of the image on this surface
+ * \param surface The surface where the image is.
+ * \param image_position Position of the image on this surface.
  */
-PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
+PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position) {
 
   // Create a list of boolean values representing the transparency of each pixel.
   // This list is implemented as bit fields.

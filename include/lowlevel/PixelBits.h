@@ -30,7 +30,7 @@ class PixelBits {
 
   public:
 
-    PixelBits(Surface& surface, const Rectangle& image_position);
+    PixelBits(const Surface& surface, const Rectangle& image_position);
     ~PixelBits();
 
     bool test_collision(const PixelBits& other,

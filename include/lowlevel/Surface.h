@@ -48,10 +48,10 @@ class Surface: public Drawable {
     };
   
     Surface(int width, int height);
-    Surface(const Rectangle& size);
+    explicit Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
-    Surface(SDL_Surface* internal_surface);
-    Surface(const Surface& other);
+    explicit Surface(SDL_Surface* internal_surface);
+    explicit Surface(const Surface& other);
     ~Surface();
 
     static Surface* create_from_file(const std::string& file_name,

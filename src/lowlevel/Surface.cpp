@@ -261,13 +261,6 @@ void Surface::set_transparency_color(const Color& color) {
  */
 void Surface::set_opacity(int opacity) {
 
-  // TODO see if SDL2 solves the problem.
-  // SDL has a special handling of the alpha value 128
-  // which doesn't work well with my computer.
-  if (opacity == 128) {
-    opacity = 127;
-  }
-
   SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
   SDL_SetSurfaceAlphaMod(internal_surface, opacity);
 }

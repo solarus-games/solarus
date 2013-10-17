@@ -494,13 +494,13 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
             // compute the color
 
             if (src[b] != src[h] && src[d] != src[f]) {
-              dst[e1] = quest_surface.get_converted_pixel((src[d] == src[b]) ? d : e, *screen_surface);
-              dst[e2] = quest_surface.get_converted_pixel((src[b] == src[f]) ? f : e, *screen_surface);
-              dst[e3] = quest_surface.get_converted_pixel((src[d] == src[h]) ? d : e, *screen_surface);
-              dst[e4] = quest_surface.get_converted_pixel((src[h] == src[f]) ? f : e, *screen_surface);
+              dst[e1] = quest_surface.get_pixel((src[d] == src[b]) ? d : e);
+              dst[e2] = quest_surface.get_pixel((src[b] == src[f]) ? f : e);
+              dst[e3] = quest_surface.get_pixel((src[d] == src[h]) ? d : e);
+              dst[e4] = quest_surface.get_pixel((src[h] == src[f]) ? f : e);
             }
             else {
-              dst[e1] = dst[e2] = dst[e3] = dst[e4] = quest_surface.get_converted_pixel(e, *screen_surface);
+              dst[e1] = dst[e2] = dst[e3] = dst[e4] = quest_surface.get_pixel(e);
             }
             e1 += 2;
             e++;

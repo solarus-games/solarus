@@ -86,7 +86,6 @@ class Surface: public Drawable {
   private:
 
     uint32_t get_pixel(int index) const;
-    uint32_t get_converted_pixel(int index, const Surface& dst_surface) const;
     bool is_pixel_transparent(int index) const;
   
     SDL_Surface* get_internal_surface();

@@ -418,28 +418,6 @@ uint32_t Surface::get_pixel(int index) const {
 }
 
 /**
- * \brief Returns a pixel value converted into the format of another surface.
- *
- * The source and destination formats can be anything.
- *
- * \param index Index of the pixel to convert.
- * \param dst_format The destination format.
- * \return The converted pixel.
- */
-uint32_t Surface::get_converted_pixel(int index, const Surface& dst_surface) const {
-
-  uint32_t pixel = get_pixel(index);
-  if (dst_surface.internal_surface->format->format == internal_surface->format->format) {
-    // Same format: nothing to do.
-    return pixel;
-  }
-
-  uint8_t r, g, b, a;
-  SDL_GetRGBA(pixel, internal_surface->format, &r, &g, &b, &a);
-  return SDL_MapRGBA(dst_surface.internal_surface->format, r, g, b, a);
-}
-
-/**
  * \brief Returns whether a pixel is transparent.
  *
  * A pixel is transparent if it corresponds to the colorkey

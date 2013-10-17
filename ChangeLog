@@ -29,6 +29,12 @@ Changes that introduce incompatibilities:
 Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
+
+Solarus Quest Editor changes
+----------------------------
+
+* Fix NullPointerException when canceling the Open Project dialog.
+
 _________________________________
 
 Solarus 1.1.1 (under development)

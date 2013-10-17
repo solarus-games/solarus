@@ -355,7 +355,9 @@ public class EditorWindow extends JFrame
         ProjectFileChooser chooser = new ProjectFileChooser();
         String questPath = chooser.getProjectPath();
 
-        loadProject(questPath);
+        if (questPath != null) {
+            loadProject(questPath);
+        }
     }
 
     /**

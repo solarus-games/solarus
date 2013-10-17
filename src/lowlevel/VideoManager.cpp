@@ -204,7 +204,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) const {
  * \return true if this video mode is in fullscreen.
  */
 bool VideoManager::is_fullscreen(VideoMode mode) const {
-  return mode >= FULLSCREEN_NORMAL;
+  return mode == FULLSCREEN_NORMAL || mode == FULLSCREEN_SCALE2X;
 }
 
 /**

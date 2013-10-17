@@ -43,27 +43,11 @@ The following modes are implemented:
 - \c "windowed_normal": The quest screen is displayed onto a window of the
   same size.
 - \c "fullscreen_normal": The quest screen is displayed in fullscreen.
-  Black borders are added if the exact resolution of the quest size
-  or of twice the quest size are not available.
-- \c "fullscreen_wide": The quest screen displayed in fullscreen onto a
-  widescreen resolution with two black vertical borders.
+  Black borders may be added if necessary.
 - \c "fullscreen_scale2x": The quest screen is scaled on a surface of
   double size with the Scale2X algorithm, and then displayed in fullscreen
   with a resolution of that double size.
-  Black borders are added if the exact resolution of twice the quest size
-  is not available.
-- \c "fullscreen_scale2x_wide": The quest screen is scaled on a surface of
-  twice the quest size with the Scale2X algorithm, and then displayed in
-  fullscreen onto a widescreen resolution with two black vertical borders.
-
-Wide modes (\c "fullscreen_wide" and \c "fullscreen_scale2x_wide") look nice
-on wide devices when the quest size has a ratio of 4:3. By adding two vertical
-black borders, they try to keep pixels squares and therefore avoid distorsion.
-However, it is even better if you allow your quest to have a larger range of
-sizes (see \ref quest_properties_file "quest.dat").
-Indeed, if your quest can
-have a size like \c 400x240, the game can use the whole screen
-without distorsion and the player can see more content.
+  Black borders are added if necessary.
 
 \remark On some platforms, some video modes may be unavailable or disabled
   at compilation time. Use \ref lua_api_video_is_mode_supported

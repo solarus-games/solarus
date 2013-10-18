@@ -143,6 +143,7 @@
 #  define SOLARUS_DEFAULT_QUEST_HEIGHT 240
 #endif
 
+// TODO see if this flag still works/is needed with 16bpp surface on Caanoo.
 /**
  * \def SOLARUS_COLOR_DEPTH
  * \brief Number of bits per pixel for surfaces.

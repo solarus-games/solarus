@@ -645,26 +645,6 @@ void VideoManager::set_quest_size_range(
 }
 
 /**
- * \brief Returns the closest fullscreen resolution greater than or equal to
- * the specified size.
- * \param surface_size The size of the surface to fit.
- * \return The lowest fullscreen resolution that can contain this surface.
- */
-Rectangle VideoManager::find_closest_fullscreen_resolution(const Rectangle& surface_size) {
-  
-  // Find the closest fullscreen resolution that can contain the requested size.
-  SDL_DisplayMode target = {surface_size.get_width(), surface_size.get_height(), 0, 0, 0};
-  SDL_DisplayMode closest;
-  
-  if(!SDL_GetClosestDisplayMode(0, &target, &closest)) {
-    Debug::die(StringConcat() << "No suitable display mode was found for size" 
-      << surface_size.get_width() << "x" << surface_size.get_height());
-  }
-     
-  return Rectangle(0, 0, closest.w, closest.h);
-}
-     
-/**
  * \brief Detects the available resolutions and initializes the properties
  * of video modes.
  */

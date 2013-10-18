@@ -89,8 +89,6 @@ class VideoManager {
     ~VideoManager();
 
     void initialize_video_modes();
-    Rectangle find_closest_fullscreen_resolution(const Rectangle& surface_size);
-
     void draw_scale2x(Surface& quest_surface);
 
     static VideoManager* instance;          /**< The only instance. */

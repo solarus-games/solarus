@@ -48,6 +48,7 @@ class TextSurface;
 class Color;
 class PixelFilter;
 class Scale2xFilter;
+class Hq4xFilter;
 class Sound;
 class Music;
 class SpcDecoder;

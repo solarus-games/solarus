@@ -18,6 +18,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Scale2xFilter.h"
+#include "lowlevel/Hq4xFilter.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -38,6 +39,7 @@ const VideoManager::VideoMode forced_mode = VideoManager::NO_MODE;
 #endif
 
 Scale2xFilter scale2x_filter;
+Hq4xFilter hq4x_filter;
 };
 
 /**
@@ -46,9 +48,11 @@ Scale2xFilter scale2x_filter;
 const std::string VideoManager::video_mode_names[] = {
   "windowed_stretched",
   "windowed_scale2x",
+  "windowed_hq4x",
   "windowed_normal",
   "fullscreen_normal",
   "fullscreen_scale2x",
+  "fullscreen_hq4x",
   ""  // Sentinel.
 };
 
@@ -208,7 +212,9 @@ bool VideoManager::is_mode_supported(VideoMode mode) const {
  * \return true if this video mode is in fullscreen.
  */
 bool VideoManager::is_fullscreen(VideoMode mode) const {
-  return mode == FULLSCREEN_NORMAL || mode == FULLSCREEN_SCALE2X;
+  return mode == FULLSCREEN_NORMAL
+      || mode == FULLSCREEN_SCALE2X
+      || mode == FULLSCREEN_HQ4X;
 }
 
 /**
@@ -217,23 +223,6 @@ bool VideoManager::is_fullscreen(VideoMode mode) const {
  */
 bool VideoManager::is_fullscreen() const {
   return is_fullscreen(get_video_mode());
-}
-
-/**
- * \brief Returns whether a video mode is stretched with scale2x algorithm.
- * \param mode A video mode.
- * \return true if this video mode is in scale2x.
- */
-bool VideoManager::is_scale2x(VideoMode mode) const {
-  return mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X;
-}
-
-/**
- * \brief Returns whether the current video mode is stretched with scale2x algorithm.
- * \return true if the current video mode is in scale2x.
- */
-bool VideoManager::is_scale2x() const {
-  return is_scale2x(get_video_mode());
 }
 
 /**
@@ -257,9 +246,11 @@ void VideoManager::switch_fullscreen() {
   static const VideoMode next_modes[] = {
       FULLSCREEN_NORMAL,      // WINDOWED_STRETCHED
       FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
+      FULLSCREEN_HQ4X,        // WINDOWED_HQ4X
       FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
       WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
       WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
+      WINDOWED_HQ4X,          // FULLSCREEN_HQ4X
   };
 
   VideoMode mode = next_modes[get_video_mode()];
@@ -327,8 +318,11 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     Rectangle render_size = quest_size;
 
     // Initalize the scaling mode.
-    if (is_scale2x(mode)) {
+    if (mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X) {
       pixel_filter = &scale2x_filter;
+    }
+    else if (mode == WINDOWED_HQ4X || mode == FULLSCREEN_HQ4X) {
+      pixel_filter = &hq4x_filter;
     }
     else {
       pixel_filter = NULL;
@@ -619,14 +613,18 @@ void VideoManager::set_quest_size_range(
  */
 void VideoManager::initialize_video_modes() {
 
-  const Rectangle twice_quest_size(
+  const Rectangle quest_size_2(
       0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
+  const Rectangle quest_size_4(
+      0, 0, quest_size.get_width() * 4, quest_size.get_height() * 4);
 
-  mode_sizes[WINDOWED_STRETCHED] = twice_quest_size;
-  mode_sizes[WINDOWED_SCALE2X] = twice_quest_size;
+  mode_sizes[WINDOWED_STRETCHED] = quest_size_2;
+  mode_sizes[WINDOWED_SCALE2X] = quest_size_2;
+  mode_sizes[WINDOWED_HQ4X] = quest_size_4;
   mode_sizes[WINDOWED_NORMAL] = quest_size;
 
-  mode_sizes[FULLSCREEN_SCALE2X] = twice_quest_size;
+  mode_sizes[FULLSCREEN_SCALE2X] = quest_size_2;
+  mode_sizes[FULLSCREEN_HQ4X] = quest_size_4;
   mode_sizes[FULLSCREEN_NORMAL] = quest_size;
 }
 

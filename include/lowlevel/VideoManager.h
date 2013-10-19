@@ -36,9 +36,11 @@ class VideoManager {
       NO_MODE = -1,             /**< special value to mean no information */
       WINDOWED_STRETCHED,       /**< the quest surface is stretched into a double-size window (default) */
       WINDOWED_SCALE2X,         /**< the quest surface is scaled into a double-size window with the Scale2x algorithm */
+      WINDOWED_HQ4X,            /**< the quest surface is scaled into a quadruple-size window with the hq4x algorithm */
       WINDOWED_NORMAL,          /**< the quest surface is drawn on a window of the same size */
       FULLSCREEN_NORMAL,        /**< the quest surface is drawn in fullscreen */
-      FULLSCREEN_SCALE2X,       /**< the game surface is scaled into a double-size screen with the Scale2x algorithm */
+      FULLSCREEN_SCALE2X,       /**< the quest surface is scaled into a double-size screen with the Scale2x algorithm */
+      FULLSCREEN_HQ4X,          /**< the quest surface is scaled into a double-size screen with the Scale2x algorithm */
       NB_MODES                  /**< number of existing video modes */
     };
 
@@ -59,8 +61,6 @@ class VideoManager {
 
     bool is_fullscreen(VideoMode mode) const;
     bool is_fullscreen() const;
-    bool is_scale2x(VideoMode mode) const;
-    bool is_scale2x() const;
     void set_fullscreen(bool fullscreen);
     void switch_fullscreen();
 

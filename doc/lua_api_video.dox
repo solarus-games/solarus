@@ -40,13 +40,19 @@ The following modes are implemented:
   double size with the
   <a href="http://scale2x.sourceforge.net/algorithm.html">Scale2X</a>
   algorithm.
+- \c "windowed_hq4x": The quest screen is scaled on a window of
+  quadruple size with the
+  <a href="http://en.wikipedia.org/wiki/Hqx">hq4x</a>
+  algorithm.
 - \c "windowed_normal": The quest screen is displayed onto a window of the
   same size.
 - \c "fullscreen_normal": The quest screen is displayed in fullscreen.
   Black borders may be added if necessary.
 - \c "fullscreen_scale2x": The quest screen is scaled on a surface of
-  double size with the Scale2X algorithm, and then displayed in fullscreen
-  with a resolution of that double size.
+  double size with the Scale2X algorithm, and then displayed in fullscreen.
+  Black borders are added if necessary.
+- \c "fullscreen_hq4x": The quest screen is scaled on a surface of
+  quadruple size with the hq4x algorithm, and then displayed in fullscreen.
   Black borders are added if necessary.
 
 \remark On some platforms, some video modes may be unavailable or disabled

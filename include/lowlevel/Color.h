@@ -33,10 +33,9 @@ class Color {
   friend class TextSurface;
 
   private:
-
-    static SDL_Surface* format_surface;	  /**< a dummy surface used to get a pixel format */
-    uint32_t internal_value;              /**< the SDL 32-bit value representing this color */
+  
     SDL_Color internal_color;             /**< the SDL color encapsulated */
+    uint32_t internal_value;              /**< the SDL 32-bit value representing this color */
 
     // some predefined colors
     static Color black;

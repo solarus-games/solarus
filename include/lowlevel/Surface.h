@@ -22,6 +22,13 @@
 #include "lowlevel/Rectangle.h"
 #include <SDL.h>
 
+
+typedef struct _SubSurface {
+  Surface* surface;
+  Rectangle src_rect;
+  Rectangle dst_rect;
+} SubSurface;
+
 /**
  * \brief Represents a graphic surface.
  *
@@ -50,7 +57,7 @@ class Surface: public Drawable {
     Surface(int width, int height);
     explicit Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
-    explicit Surface(SDL_Surface* internal_surface);
+    explicit Surface(SDL_Texture* internal_texture);
     explicit Surface(Surface& other);
     ~Surface();
 
@@ -61,8 +68,6 @@ class Surface: public Drawable {
     int get_height() const;
     const Rectangle get_size() const;
 
-    Color get_transparency_color() const;
-    void set_transparency_color(const Color& color);
     void set_opacity(int opacity);
     void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
     void fill_with_color(Color& color);
@@ -88,12 +93,14 @@ class Surface: public Drawable {
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
   
-    SDL_Surface* get_internal_surface();
+    void render();
+  
+    SDL_Texture* get_internal_texture();
+  
+    std::vector<SubSurface*> subsurfaces;
 
-    SDL_Surface* internal_surface;     /**< the SDL_Surface encapsulated */
-    bool owns_internal_surface;        /**< indicates that internal_surface belongs to this object */
-    bool with_colorkey;
-    uint32_t colorkey;
+    SDL_Texture* internal_texture;     /**< the SDL_Texture encapsulated, if any */
+    bool owns_internal_texture;        /**< indicates that internal_surface belongs to this object */
 };
 
 #endif

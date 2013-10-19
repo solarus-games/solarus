@@ -101,7 +101,9 @@ class VideoManager {
     SDL_Window* main_window;                /**< The window. */
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
     SDL_Texture* screen_texture;            /**< The screen texture. */
-    Surface* scaled_surface;                /**< The screen surface used with scale2x mode. */
+    const PixelFilter* pixel_filter;        /**< The pixel filtering algorithm (if any) applied with
+                                             * the current video mode. */
+    Surface* scaled_surface;                /**< The screen surface used with scaled modes. */
   
     std::string outset_title;               /**< Title used when creating the window. */
     VideoMode video_mode;                   /**< Current display mode. */

@@ -46,6 +46,8 @@ class VideoManager;
 class Surface;
 class TextSurface;
 class Color;
+class PixelFilter;
+class Scale2xFilter;
 class Sound;
 class Music;
 class SpcDecoder;

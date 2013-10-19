@@ -427,8 +427,10 @@ void VideoManager::draw(Surface& quest_surface) {
   }
   
   SDL_Surface* screen_sdl_surface;
-  if (is_scale2x()) {
-    draw_scale2x(quest_surface);
+  if (pixel_filter != NULL) {
+    Debug::check_assertion(scaled_surface != NULL,
+        "Missing destination surface for scaling");
+    apply_pixel_filter(quest_surface, *scaled_surface);
     screen_sdl_surface = scaled_surface->get_internal_surface();
   }
   else {
@@ -443,76 +445,30 @@ void VideoManager::draw(Surface& quest_surface) {
 }
 
 /**
- * \brief Draws the quest surface on the screen, scaled the image by
- * a factor of 2 with the Scale2x algorithm.
- *
- * Black bars are added if the screen is bigger than twice the quest size.
- *
- * \param quest_surface The quest surface to draw.
+ * \brief Applies to current pixel filter on a surface.
+ * \param src_surface The source surface.
+ * \param dst_surface The destination surface. It must have the size of the
+ * source surface multiplied by the scaling factor of the filter.
  */
-void VideoManager::draw_scale2x(Surface& quest_surface) {
+void VideoManager::apply_pixel_filter(
+    Surface& src_surface, Surface& dst_surface) {
 
-  Debug::check_assertion(scaled_surface != NULL,
-      "Missing destination surface for scaling");
+  Debug::check_assertion(pixel_filter != NULL, "Missing pixel filter");
 
-  SDL_Surface* src_internal_surface = quest_surface.get_internal_surface();
-  SDL_Surface* dst_internal_surface = scaled_surface->get_internal_surface();
+  int factor = pixel_filter->get_scaling_factor();
+  Debug::check_assertion(dst_surface.get_width() == src_surface.get_width() * factor);
+  Debug::check_assertion(dst_surface.get_height() == src_surface.get_height() * factor);
+
+  SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
+  SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
 
   SDL_LockSurface(src_internal_surface);
   SDL_LockSurface(dst_internal_surface);
 
-  uint32_t* src = (uint32_t*) src_internal_surface->pixels;
-  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
+  uint32_t* src = static_cast<uint32_t*>(src_internal_surface->pixels);
+  uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
 
-  const int end_row_increment = dst_internal_surface->w;
-
-  int e1 = 0;
-  int e2, e3, e4;
-  int b, d, e = 0, f,  h;
-  for (int row = 0; row < quest_size.get_height(); row++) {
-    for (int col = 0; col < quest_size.get_width(); col++) {
-
-      // compute a to i
-
-      b = e - quest_size.get_width();
-      d = e - 1;
-      f = e + 1;
-      h = e + quest_size.get_width();
-
-      if (row == 0) {
-        b = e;
-      }
-      if (row == quest_size.get_height() - 1) {
-        h = e;
-      }
-      if (col == 0) {
-        d = e;
-      }
-      if (col == quest_size.get_width() - 1) {
-        f = e;
-      }
-
-      // compute e1 to e4
-      e2 = e1 + 1;
-      e3 = e1 + dst_internal_surface->w;
-      e4 = e3 + 1;
-
-      // compute the color
-
-      if (src[b] != src[h] && src[d] != src[f]) {
-        dst[e1] = quest_surface.get_pixel((src[d] == src[b]) ? d : e);
-        dst[e2] = quest_surface.get_pixel((src[b] == src[f]) ? f : e);
-        dst[e3] = quest_surface.get_pixel((src[d] == src[h]) ? d : e);
-        dst[e4] = quest_surface.get_pixel((src[h] == src[f]) ? f : e);
-      }
-      else {
-        dst[e1] = dst[e2] = dst[e3] = dst[e4] = quest_surface.get_pixel(e);
-      }
-      e1 += 2;
-      e++;
-    }
-    e1 += end_row_increment;
-  }
+  pixel_filter->filter(src, src_surface.get_width(), src_surface.get_height(), dst);
 
   SDL_UnlockSurface(dst_internal_surface);
   SDL_UnlockSurface(src_internal_surface);

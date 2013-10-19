@@ -22,6 +22,8 @@
 
 /**
  * \brief Implementation of the Scale2x algorithm.
+ *
+ * See http://scale2x.sourceforge.net/algorithm.html
  */
 class Scale2xFilter: public PixelFilter {
 

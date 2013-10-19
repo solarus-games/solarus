@@ -16,11 +16,15 @@
  */
 #include "lowlevel/PixelFilter.h"
 
+/**
+ * \brief Constructor.
+ */
 PixelFilter::PixelFilter() {
-
 }
 
+/**
+ * \brief Destructor.
+ */
 PixelFilter::~PixelFilter() {
-
 }
 

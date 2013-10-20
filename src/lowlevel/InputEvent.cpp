@@ -29,7 +29,6 @@ SDL_Joystick* InputEvent::joystick = NULL;
 std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
 bool InputEvent::repeat_keyboard = false;
 
-
 /**
  * \brief Initializes the input event manager.
  */

@@ -33,7 +33,7 @@
 Surface::Surface(int width, int height):
   Drawable(),
   internal_texture(NULL),
-  owns_internal_texture(false),
+  owns_internal_texture(true),
   width(width),
   height(height),
   clipping_rect(Rectangle(0, 0, width, height)) {
@@ -291,7 +291,7 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
   for(int i=0 ; i<array_size ; i++)
     pixels[i] = color.get_internal_value();
   
-  SDL_UpdateTexture(internal_texture, ((Rectangle&)where).get_internal_rect(), pixels, width * sizeof (Uint32));
+  SDL_UpdateTexture(internal_texture, static_cast<Rectangle>(where).get_internal_rect(), pixels, width * sizeof (Uint32));
 }
 
 /**
@@ -366,7 +366,7 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
                                               dst_rect.get_y() + clipping_rect.get_y(),
                                               clipping_rect.get_width(),
                                               clipping_rect.get_height());
-    //SDL_RenderSetClipRect(renderer, clipping_rect.get_internal_rect());
+    SDL_RenderSetClipRect(renderer, final_clipping_rect.get_internal_rect());
     SDL_RenderCopy(renderer, internal_texture, src_rect.get_internal_rect(), dst_rect.get_internal_rect());
   }
   

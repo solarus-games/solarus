@@ -757,7 +757,6 @@ Surface& Sprite::get_intermediate_surface() const {
 
   if (intermediate_surface == NULL) {
     intermediate_surface = new Surface(get_max_size());
-    intermediate_surface->set_transparency_color(Color::get_black());
   }
   return *intermediate_surface;
 }

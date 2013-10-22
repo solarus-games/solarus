@@ -34,8 +34,6 @@ void LuaContext::register_surface_module() {
       { "create", surface_api_create },
       { "get_size", surface_api_get_size },
       { "fill_color", surface_api_fill_color },
-      { "get_transparency_color", surface_api_get_transparency_color },
-      { "set_transparency_color", surface_api_set_transparency_color },
       { "set_opacity", surface_api_set_opacity },
       { "draw", drawable_api_draw },
       { "draw_region", drawable_api_draw_region },
@@ -160,35 +158,6 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
   else {
     surface.fill_with_color(color);
   }
-
-  return 0;
-}
-
-/**
- * \brief Implementation of surface:get_transparency_color().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::surface_api_get_transparency_color(lua_State* l) {
-
-  Surface& surface = check_surface(l, 1);
-
-  const Color& color = surface.get_transparency_color();
-
-  push_color(l, color);
-  return 1;
-}
-
-/**
- * \brief Implementation of surface:set_transparency_color().
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
- */
-int LuaContext::surface_api_set_transparency_color(lua_State* l) {
-
-  Surface& surface = check_surface(l, 1);
-  Color color = check_color(l, 2);
-  surface.set_transparency_color(color);
 
   return 0;
 }

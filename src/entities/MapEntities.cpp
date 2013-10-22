@@ -894,8 +894,6 @@ void MapEntities::build_non_animated_tiles() {
 
     delete non_animated_tiles_surfaces[layer];
     non_animated_tiles_surfaces[layer] = new Surface(map_size.get_width(), map_size.get_height());
-    non_animated_tiles_surfaces[layer]->set_transparency_color(Color::get_magenta());
-    non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta());
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       Tile& tile = *tiles[layer][i];

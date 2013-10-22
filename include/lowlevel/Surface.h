@@ -79,6 +79,7 @@ class Surface: public Drawable {
   protected:
 
     // Implementation from Drawable.
+    void add_subsurface(SubSurface* subsurface);
     void raw_draw(
         Surface& dst_surface,
         const Rectangle& dst_position);
@@ -98,12 +99,12 @@ class Surface: public Drawable {
   
     SDL_Texture* get_internal_texture();
   
-    std::vector<SubSurface*> subsurfaces;
+    std::vector<SubSurface*> subsurfaces; /**< buffer queue of every sub Surface with their drawing source and destination. */
 
-    SDL_Texture* internal_texture;     /**< the SDL_Texture encapsulated, if any */
-    bool owns_internal_texture;        /**< indicates that internal_surface belongs to this object */
-    int width, height;                 /**< size of the texture, avoid to use SDL_QueryTexture */
-    Rectangle clipping_rect;           /**< clipping rectangle to apply when drawing to this surface */
+    SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
+    bool owns_internal_texture;           /**< indicates that internal_surface belongs to this object. */
+    int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
+    Rectangle clipping_rect;              /**< clipping rectangle to apply when drawing to this surface. */
 };
 
 #endif

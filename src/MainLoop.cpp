@@ -277,7 +277,6 @@ void MainLoop::update() {
  */
 void MainLoop::draw() {
 
-  root_surface->fill_with_color(Color::get_black());
   if (game != NULL) {
     game->draw(*root_surface);
   }

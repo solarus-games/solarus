@@ -295,18 +295,23 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 }
 
 /**
+ * \brief Add a SubSurface to draw on the vector buffer.
+ * \param subsurface The SubSurface to add on the buffer queue.
+ */
+void Surface::add_subsurface(SubSurface* subsurface) {
+  
+  subsurfaces.push_back(subsurface);
+}
+
+/**
  * \brief Draws this surface on another surface.
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
 void Surface::raw_draw(Surface& dst_surface, const Rectangle& dst_position) {
 
-  SubSurface* subsurface = new SubSurface();
-  subsurface->surface = this;
-  subsurface->src_rect = Rectangle(0, 0, width, height);
-  subsurface->dst_rect = dst_position;
-  
-  subsurfaces.push_back(subsurface);
+  Rectangle region = Rectangle(0, 0, width, height);
+  raw_draw_region(region, dst_surface, dst_position);
 }
 
 /**
@@ -325,7 +330,7 @@ void Surface::raw_draw_region(
   subsurface->src_rect = region;
   subsurface->dst_rect = dst_position;
   
-  subsurfaces.push_back(subsurface);
+  dst_surface.add_subsurface(subsurface);
 }
 
 /**
@@ -340,7 +345,9 @@ void Surface::draw_transition(Transition& transition) {
  * \brief Draw the internal texture if any, and all subtextures on the renderer.
  *
  * Empty the subsurfaces vector at the end of the method.
- * TODO params when freezed
+ * \param renderer The renderer where to draw.
+ * \param src_rect The subrectangle of the texture to draw.
+ * \param dst_rect The portion of renderer where to draw.
  */
 void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect) {
   
@@ -353,7 +360,7 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
                                               dst_rect.get_y() + clipping_rect.get_y(),
                                               clipping_rect.get_width(),
                                               clipping_rect.get_height());
-    SDL_RenderSetClipRect(renderer, clipping_rect.get_internal_rect());
+    //SDL_RenderSetClipRect(renderer, clipping_rect.get_internal_rect());
     SDL_RenderCopy(renderer, internal_texture, src_rect.get_internal_rect(), dst_rect.get_internal_rect());
   }
   

@@ -46,6 +46,7 @@ file(
   src/menus/*.cpp
   src/movements/*.cpp
   src/snes_spc/*.cpp
+  src/third_party/hqx/*.c
   include/*.h
   include/entities/*.h
   include/hero/*.h
@@ -55,6 +56,7 @@ file(
   include/menus/*.h
   include/movements/*.h
   include/snes_spc/*.h
+  include/third_party/hqx/*.h
 )
 
 # Configuration for OSX and iOS build and deployment
@@ -96,6 +98,7 @@ include_directories(
   ${CMAKE_BINARY_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/snes_spc
+  ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party
   ${MODPLUG_INCLUDE_DIR}  # Before SDL because we want the sndfile.h of ModPlug.
   ${SDL2_INCLUDE_DIR}
   ${SDL2_TTF_INCLUDE_DIR}

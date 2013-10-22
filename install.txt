@@ -25,11 +25,13 @@ When it is installed, the project is divided in two parts:
 - Solarus (the engine), which is an executable file written in C++ and called
   solarus.
 - One (or several) quests, each quest corresponding to a game, represented as a
-  zip archive called data.solarus and containing all the data of the quest.
+  directory called "data" or a zip archive called "data.solarus" or
+  "data.solarus.zip" and containing all the data of the quest.
 This readme is about compiling and installing solarus (the engine).
 To execute it, you will also need a quest with all its game data files
-(graphics, musics, sounds, scripts, dialogs, etc.). Our quests can be found on
-the development blog: http://www.solarus-games.org.
+(graphics, musics, sounds, scripts, dialogs, etc.).
+A short sample quest is provided in the directory "sample_quest".
+Our quests can be found on the development blog: http://www.solarus-games.org.
 
 
 ------------------------
@@ -40,10 +42,10 @@ The build process of solarus uses cmake.
 To compile Solarus, you obviously need a C++ compiler.
 The following libraries are required to compile and to execute Solarus:
 
-SDL
-SDLmain
-SDL_image
-SDL_ttf
+SDL2
+SDL2main
+SDL2_image
+SDL2_ttf
 openal
 vorbisfile
 modplug (0.8.8.4 or greater)
@@ -63,7 +65,7 @@ Linux developers:
 
 Just install the corresponding packages. For example, with Ubuntu or Debian:
 
-libsdl1.2-dev libsdl-image1.2-dev libsdl-ttf2.0-dev liblua5.1-0-dev
+libsdl2-dev libsdl-image2-dev libsdl2-ttf-dev liblua5.1-0-dev
 libphysfs-dev libopenal-dev libvorbis-dev libmodplug-dev
 
 
@@ -109,11 +111,9 @@ backward compatibility if you want to deploy your application.
 
 To compile solarus with cmake, go to the solarus directory and type:
 
-$ cmake -DCMAKE_BUILD_TYPE=Release .
+$ cmake .
 
 This generates the appropriate Makefiles for your system.
-The -DCMAKE_BUILD_TYPE=Release parameter optimizes the compilation and
-disables debugging assertions. Games will run significantly faster.
 
 Then you can compile the engine with:
 
@@ -131,7 +131,8 @@ Then, to execute a quest, type
 $ solarus path/to/your/quest
 
 The argument must be a directory containing the "data" subdirectory of your
-quest, or containing the "data.solarus" archive of your quest.
+quest, or containing the "data.solarus" or "data.solarus.zip" archive of
+your quest.
 
 
 3.2  Change the install directory
@@ -155,7 +156,7 @@ replaced by the one you specified.
 There are several ways to make the engine find the data of a quest.
 If the command-line argument is set (see above), then the engine looks into
 the directory specified (and expects a "data" subdirectory or a "data.solarus"
-zip archive).
+or "data.solarus.zip" zip archive).
 If the command-line argument is not specified, the preprocessor constant
 DEFAULT_QUEST is used.
 The DEFAULT_QUEST constant can be configured from your cmake command by using:
@@ -184,14 +185,15 @@ have a linker error with Music.h.
 Here is my procedure with Code::Blocks:
 - Create a C++ project.
 - Add recursively the files from include and src to your project.
+- Create an empty file include/config.h.
 - In Build options > Compiler settings > defines, for the Release mode,
   add NDEBUG (very important for performance).
 - Also in Build options, link to the following libraries in this order:
-  mingw32, SDLmain, SDL, SDL_image, SDL_ttf, lua5.1, physfs, OpenAL32,
+  mingw32, SDL2main, SDL2, SDL2_image, SDL2_ttf, lua5.1, physfs, OpenAL32,
   modplug, vorbis, vorbisfile. Some of them may be specified as relative
   file names of their DLL (in particular the ones I provide in the git
   repository). You are supposed to have installed the other ones in the
-  compiler’s environment.
+  compiler's environment.
 - Build the game with Code::Blocks. I recommend to compile in Release mode
   for performance (because NDEBUG is set) and for executable size, unless
   you are a developer. The build error messages will tell you which headers
@@ -254,7 +256,7 @@ to make sure you have a fully 10.8+ and Mac App Store compatible application.
 
 
 * Add a quest into the OSX Bundle
-Just copy the quest file (data.solarus or data/) into ${your_bundle_name}.app/Contents/Resources/
+Just copy the quest file (data.solarus, data.solarus.zip or data/) into ${your_bundle_name}.app/Contents/Resources/
 
 
 3.6  OpenPandora

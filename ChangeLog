@@ -10,6 +10,7 @@ Engine changes
 * New map entity type: custom entities, fully scripted (#323).
 * Show a dialog box in case of fatal error.
 * The "wide" video modes do not exist anymore. SDL2 does the job now.
+* Add the hq4x pixel filter algorithm as a new video mode.
 
 Data files format changes
 -------------------------
@@ -31,6 +32,7 @@ Changes that introduce incompatibilities:
 Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
+* sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
 
 Solarus Quest Editor changes
 ----------------------------

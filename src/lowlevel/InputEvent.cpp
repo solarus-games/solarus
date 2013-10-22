@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/InputEvent.h"
+#include <cstdlib>  // std::abs
 
 const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
     KEY_RIGHT,
@@ -27,7 +28,6 @@ bool InputEvent::joypad_enabled = false;
 SDL_Joystick* InputEvent::joystick = NULL;
 std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
 bool InputEvent::repeat_keyboard = false;
-
 
 /**
  * \brief Initializes the input event manager.
@@ -311,7 +311,7 @@ int InputEvent::get_joypad_axis_state(int axis) {
   int state = SDL_JoystickGetAxis(joystick, axis);
 
   int result;
-  if (abs(state) < 10000) {
+  if (std::abs(state) < 10000) {
     result = 0;
   }
   else {
@@ -766,7 +766,7 @@ int InputEvent::get_joypad_axis_state() {
  
   int result;
   int value = internal_event.jaxis.value;
-  if (abs(value) < 10000) {
+  if (std::abs(value) < 10000) {
     result = 0;
   }
   else {

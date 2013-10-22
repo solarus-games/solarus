@@ -330,6 +330,12 @@ void Surface::raw_draw_region(
   subsurface->src_rect = region;
   subsurface->dst_rect = dst_position;
   
+  if(subsurface->dst_rect.is_flat())
+  {
+    subsurface->dst_rect.set_width(width);
+    subsurface->dst_rect.set_height(height);
+  }
+  
   dst_surface.add_subsurface(subsurface);
 }
 
@@ -360,7 +366,7 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
                                               dst_rect.get_y() + clipping_rect.get_y(),
                                               clipping_rect.get_width(),
                                               clipping_rect.get_height());
-    SDL_RenderSetClipRect(renderer, clipping_rect.get_internal_rect());
+    //SDL_RenderSetClipRect(renderer, clipping_rect.get_internal_rect());
     SDL_RenderCopy(renderer, internal_texture, src_rect.get_internal_rect(), dst_rect.get_internal_rect());
   }
   
@@ -371,8 +377,9 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
     // and keeping the surface size.
     Rectangle dst_subrect = Rectangle(dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
                                       dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
-                                      subsurfaces.at(i)->surface->width,
-                                      subsurfaces.at(i)->surface->height);
+                                      subsurfaces.at(i)->dst_rect.get_width(),
+                                      subsurfaces.at(i)->dst_rect.get_height());
+      
     subsurfaces.at(i)->surface->render(renderer, subsurfaces.at(i)->src_rect, dst_subrect);
     delete subsurfaces.at(i);
   }

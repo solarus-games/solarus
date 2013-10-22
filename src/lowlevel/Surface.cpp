@@ -360,7 +360,7 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
                                               dst_rect.get_y() + clipping_rect.get_y(),
                                               clipping_rect.get_width(),
                                               clipping_rect.get_height());
-    //SDL_RenderSetClipRect(renderer, clipping_rect.get_internal_rect());
+    SDL_RenderSetClipRect(renderer, clipping_rect.get_internal_rect());
     SDL_RenderCopy(renderer, internal_texture, src_rect.get_internal_rect(), dst_rect.get_internal_rect());
   }
   

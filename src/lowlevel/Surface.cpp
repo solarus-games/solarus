@@ -20,6 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/VideoManager.h"
 #include "lua/LuaContext.h"
 #include "Transition.h"
 #include <SDL_image.h>
@@ -31,16 +32,19 @@
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  internal_surface(NULL),
-  owns_internal_surface(true),
-  with_colorkey(false),
-  colorkey(0) {
+  internal_texture(NULL),
+  owns_internal_texture(false),
+  width(width),
+  height(height),
+  clipping_rect(Rectangle(0, 0, width, height)) {
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
 
-  this->internal_surface = SDL_CreateRGBSurface(
-    SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+  this->internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
+    SDL_PIXELFORMAT_ARGB8888,
+    SDL_TEXTUREACCESS_STATIC,
+    width, height);
 }
 
 /**
@@ -49,15 +53,18 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(const Rectangle& size):
   Drawable(),
-  internal_surface(NULL),
-  owns_internal_surface(true),
-  with_colorkey(false),
-  colorkey(0) {
+  internal_texture(NULL),
+  owns_internal_texture(true),
+  width(size.get_width()),
+  height(size.get_height()),
+  clipping_rect(Rectangle(0, 0, width, height))  {
 
   Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
 
-  this->internal_surface = SDL_CreateRGBSurface(
-      SDL_SWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+  this->internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
+    SDL_PIXELFORMAT_ARGB8888,
+    SDL_TEXTUREACCESS_STATIC,
+    size.get_width(), size.get_height());
 }
 
 /**
@@ -70,10 +77,8 @@ Surface::Surface(const Rectangle& size):
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
-  internal_surface(NULL),
-  owns_internal_surface(true),
-  with_colorkey(false),
-  colorkey(0) {
+  internal_texture(NULL),
+  owns_internal_texture(true) {
 
   std::string prefix = "";
   bool language_specific = false;
@@ -91,14 +96,18 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   char* buffer;
   FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
   SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
-  this->internal_surface = IMG_Load_RW(rw, 0);
-  FileTools::data_file_close_buffer(buffer);
+    
+  SDL_Surface* internal_surface = IMG_Load_RW(rw, 0);
+  this->internal_texture = SDL_CreateTextureFromSurface(VideoManager::get_instance()->get_renderer(), internal_surface);
+  this->width = internal_surface->w;
+  this->height = internal_surface->h;
+  clipping_rect = Rectangle(0, 0, width, height);
+    
   SDL_RWclose(rw);
+  FileTools::data_file_close_buffer(buffer);
 
   Debug::check_assertion(internal_surface != NULL, StringConcat() <<
       "Cannot load image '" << prefixed_file_name << "'");
-    
-  with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
 }
 
 /**
@@ -111,14 +120,15 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * It must remain valid during the lifetime of this surface.
  * The destructor will not free it.
  */
-Surface::Surface(SDL_Surface* internal_surface):
+Surface::Surface(SDL_Texture* internal_texture):
   Drawable(),
-  internal_surface(internal_surface),
-  owns_internal_surface(false),
-  with_colorkey(false),
-  colorkey(0) {
-
-  with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
+  internal_texture(internal_texture),
+  owns_internal_texture(false)
+{
+  Uint32 format;
+  int access;
+  SDL_QueryTexture(internal_texture, &format, &access, &width, &height);
+  clipping_rect = Rectangle(0, 0, width, height);
 }
 
 /**
@@ -133,12 +143,13 @@ Surface::Surface(SDL_Surface* internal_surface):
  */
 Surface::Surface(Surface& other):
   Drawable(),
-  internal_surface(other.internal_surface),
-  owns_internal_surface(other.owns_internal_surface),
-  with_colorkey(other.with_colorkey),
-  colorkey(other.colorkey) {
+  internal_texture(other.internal_texture),
+  owns_internal_texture(other.owns_internal_texture),
+  width(other.get_width()),
+  height(other.get_height()),
+  clipping_rect(other.clipping_rect){
 
-  other.owns_internal_surface = false;
+  other.owns_internal_texture = false;
 }
 
 /**
@@ -146,8 +157,8 @@ Surface::Surface(Surface& other):
  */
 Surface::~Surface() {
 
-  if (owns_internal_surface) {
-    SDL_FreeSurface(internal_surface);
+  if (owns_internal_texture) {
+    SDL_DestroyTexture(internal_texture);
   }
 }
 
@@ -185,7 +196,10 @@ Surface* Surface::create_from_file(const std::string& file_name,
   char* buffer;
   FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
   SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
+  
   SDL_Surface* internal_surface = IMG_Load_RW(rw, 0);
+  SDL_Texture* internal_texture = SDL_CreateTextureFromSurface(VideoManager::get_instance()->get_renderer(), internal_surface);
+  
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
 
@@ -194,8 +208,8 @@ Surface* Surface::create_from_file(const std::string& file_name,
     return NULL;
   }
 
-  Surface* surface = new Surface(internal_surface);
-  surface->owns_internal_surface = true;
+  Surface* surface = new Surface(internal_texture);
+  surface->owns_internal_texture = true;
   return surface;
 }
 
@@ -204,7 +218,7 @@ Surface* Surface::create_from_file(const std::string& file_name,
  * \return the width in pixels
  */
 int Surface::get_width() const {
-  return internal_surface->w;
+  return width;
 }
 
 /**
@@ -212,7 +226,7 @@ int Surface::get_width() const {
  * \return the height in pixels
  */
 int Surface::get_height() const {
-  return internal_surface->h;
+  return height;
 }
 
 /**
@@ -225,44 +239,13 @@ const Rectangle Surface::get_size() const {
 }
 
 /**
- * \brief Returns the transparency color of this surface.
- *
- * Pixels in that color will not be drawn.
- * Return black if no colorkey is found.
- *
- * \return The transparency color.
- */
-Color Surface::get_transparency_color() const {
-
-  if (with_colorkey) {
-    return Color(colorkey);
-  }
-  
-  return Color();
-}
-
-/**
- * \brief Sets the transparency color of this surface.
- *
- * Pixels in that color will not be drawn.
- *
- * \param color The transparency color to set.
- */
-void Surface::set_transparency_color(const Color& color) {
-
-  with_colorkey = true;
-  colorkey = color.get_internal_value();
-  SDL_SetColorKey(internal_surface, SDL_TRUE, colorkey);
-}
-
-/**
  * \brief Sets the opacity of this surface.
  * \param opacity the opacity (0 to 255).
  */
 void Surface::set_opacity(int opacity) {
 
-  SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
-  SDL_SetSurfaceAlphaMod(internal_surface, opacity);
+  SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
+  SDL_SetTextureAlphaMod(internal_texture, opacity);
 }
 
 /**
@@ -279,11 +262,10 @@ void Surface::set_opacity(int opacity) {
 void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
 
   if (clipping_rectangle.get_width() == 0) {
-    SDL_SetClipRect(internal_surface, NULL);
+    clipping_rect = Rectangle(0, 0, width, height);
   }
   else {
-    Rectangle copy = clipping_rectangle;
-    SDL_SetClipRect(internal_surface, copy.get_internal_rect());
+    clipping_rect = clipping_rectangle;
   }
 }
 
@@ -292,7 +274,9 @@ void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
  * \param color a color
  */
 void Surface::fill_with_color(Color& color) {
-  SDL_FillRect(internal_surface, NULL, color.get_internal_value());
+  
+  Rectangle size = Rectangle(0, 0, width, height);
+  fill_with_color(color, size);
 }
 
 /**
@@ -301,8 +285,13 @@ void Surface::fill_with_color(Color& color) {
  * \param where the rectangle to fill
  */
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
-  Rectangle where2 = where;
-  SDL_FillRect(internal_surface, where2.get_internal_rect(), color.get_internal_value());
+
+  int array_size = where.get_width() * where.get_height();
+  uint32_t pixels[array_size];
+  for(int i=0 ; i<array_size ; i++)
+    pixels[i] = color.get_internal_value();
+  
+  SDL_UpdateTexture(internal_texture, ((Rectangle&)where).get_internal_rect(), pixels, width * sizeof (Uint32));
 }
 
 /**
@@ -312,10 +301,12 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
  */
 void Surface::raw_draw(Surface& dst_surface, const Rectangle& dst_position) {
 
-  // Make a copy of the rectangle because SDL_BlitSurface modifies it.
-  Rectangle dst_position2(dst_position);
-  SDL_BlitSurface(internal_surface, NULL,
-      dst_surface.internal_surface, dst_position2.get_internal_rect());
+  SubSurface* subsurface = new SubSurface();
+  subsurface->surface = this;
+  subsurface->src_rect = Rectangle(0, 0, width, height);
+  subsurface->dst_rect = dst_position;
+  
+  subsurfaces.push_back(subsurface);
 }
 
 /**
@@ -329,11 +320,12 @@ void Surface::raw_draw_region(
     Surface& dst_surface,
     const Rectangle& dst_position) {
 
-  // Make a copy of the rectangle because SDL_BlitSurface modifies it.
-  Rectangle region2(region);
-  Rectangle dst_position2(dst_position);
-  SDL_BlitSurface(internal_surface, region2.get_internal_rect(),
-      dst_surface.internal_surface, dst_position2.get_internal_rect());
+  SubSurface* subsurface = new SubSurface();
+  subsurface->surface = this;
+  subsurface->src_rect = region;
+  subsurface->dst_rect = dst_position;
+  
+  subsurfaces.push_back(subsurface);
 }
 
 /**
@@ -342,6 +334,43 @@ void Surface::raw_draw_region(
  */
 void Surface::draw_transition(Transition& transition) {
   transition.draw(*this);
+}
+
+/**
+ * \brief Draw the internal texture if any, and all subtextures on the renderer.
+ *
+ * Empty the subsurfaces vector at the end of the method.
+ * TODO params when freezed
+ */
+void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect) {
+  
+  // Draw the internal texture
+  if(internal_texture)
+  {
+    // Calculate subrect destination rectangle with recursive x and y coords,
+    // and keeping the internal clipping rectangle size.
+    Rectangle final_clipping_rect = Rectangle(dst_rect.get_x() + clipping_rect.get_x(),
+                                              dst_rect.get_y() + clipping_rect.get_y(),
+                                              clipping_rect.get_width(),
+                                              clipping_rect.get_height());
+    SDL_RenderSetClipRect(renderer, clipping_rect.get_internal_rect());
+    SDL_RenderCopy(renderer, internal_texture, src_rect.get_internal_rect(), dst_rect.get_internal_rect());
+  }
+  
+  // Draw all subtextures
+  for(int i=0 ; i<subsurfaces.size() ; i++)
+  {
+    // Calculate subrect destination rectangle with recursive x and y coord,
+    // and keeping the surface size.
+    Rectangle dst_subrect = Rectangle(dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
+                                      dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
+                                      subsurfaces.at(i)->surface->width,
+                                      subsurfaces.at(i)->surface->height);
+    subsurfaces.at(i)->surface->render(renderer, subsurfaces.at(i)->src_rect, dst_subrect);
+    delete subsurfaces.at(i);
+  }
+  
+  subsurfaces.clear();
 }
 
 /**
@@ -354,14 +383,14 @@ Surface& Surface::get_transition_surface() {
 }
 
 /**
- * \brief Returns the SDL surface encapsulated by this object.
+ * \brief Returns the SDL texture encapsulated by this object.
  *
  * This method should only be used by low-level classes.
  *
- * \return The SDL surface encapsulated.
+ * \return The SDL texture encapsulated.
  */
-SDL_Surface* Surface::get_internal_surface() {
-  return internal_surface;
+SDL_Texture* Surface::get_internal_texture() {
+  return internal_texture;
 }
 
 /**
@@ -375,7 +404,7 @@ SDL_Surface* Surface::get_internal_surface() {
  */
 uint32_t Surface::get_pixel(int index) const {
 
-  SDL_PixelFormat* format = internal_surface->format;
+  /*SDL_PixelFormat* format = internal_surface->format;
 
   // Test from the most common to the most exotic.
   switch (format->BytesPerPixel) {
@@ -406,7 +435,7 @@ uint32_t Surface::get_pixel(int index) const {
       }
   }
 
-  Debug::die(StringConcat() << "Unknown pixel depth: " << format->BitsPerPixel);
+  Debug::die(StringConcat() << "Unknown pixel depth: " << format->BitsPerPixel);*/
   return 0;
 }
 
@@ -421,7 +450,10 @@ uint32_t Surface::get_pixel(int index) const {
  */
 bool Surface::is_pixel_transparent(int index) const {
   
-  uint32_t pixel = get_pixel(index);
+  /*uint32_t pixel = get_pixel(index);
+  uint32_t colorkey;
+  bool with_colorkey = false;
+  // TODO with_colorkey = SDL_GetColorKey() == 0;
   
   if (with_colorkey && pixel == colorkey) {
     // The pixel has the transparency color.
@@ -432,7 +464,7 @@ bool Surface::is_pixel_transparent(int index) const {
       && (pixel & internal_surface->format->Amask) == 0  // The pixel is fully transparent.
       ) {
     return true;
-  }
+  }*/
   
   return false;
 }

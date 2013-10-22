@@ -34,6 +34,8 @@ class Color {
 
   private:
   
+    // TODO remove format_surface
+    static SDL_Surface* format_surface;   /**< a dummy surface used to get a pixel format */
     SDL_Color internal_color;             /**< the SDL color encapsulated */
     uint32_t internal_value;              /**< the SDL 32-bit value representing this color */
 

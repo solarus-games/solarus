@@ -20,6 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/VideoManager.h"
 #include "lua/LuaContext.h"
 #include "Transition.h"
 #include <lua.hpp>
@@ -204,8 +205,8 @@ TextSurface::TextSurface(int x, int y,
  */
 TextSurface::~TextSurface() {
 
-  if (surface != NULL && !surface->owns_internal_surface) {
-    SDL_FreeSurface(surface->get_internal_surface());
+  if (surface != NULL && !surface->owns_internal_texture) {
+    SDL_DestroyTexture(surface->get_internal_texture());
   }
   delete surface;
 }
@@ -476,8 +477,8 @@ void TextSurface::rebuild() {
 
   if (surface != NULL) {
     // another text was previously set: delete it
-    if (!surface->owns_internal_surface) {
-      SDL_FreeSurface(surface->get_internal_surface());
+    if (!surface->owns_internal_texture) {
+      SDL_DestroyTexture(surface->get_internal_texture());
     }
     delete surface;
     surface = NULL;
@@ -560,7 +561,6 @@ void TextSurface::rebuild_bitmap() {
   int char_height = bitmap_size.get_height() / 16;
 
   surface = new Surface(char_width * num_chars, char_height);
-  surface->set_transparency_color(bitmap.get_transparency_color());
 
   // Traverse the string again to draw the characters.
   Rectangle dst_position(0, 0);
@@ -593,7 +593,8 @@ void TextSurface::rebuild_ttf() {
 
   // create the text surface
 
-  SDL_Surface *internal_surface = NULL;
+  SDL_Surface* internal_surface = NULL;
+  SDL_Texture* internal_texture;
   switch (rendering_mode) {
 
   case TEXT_SOLID:
@@ -607,7 +608,9 @@ void TextSurface::rebuild_ttf() {
 
   Debug::check_assertion(internal_surface != NULL, StringConcat()
       << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
-  surface = new Surface(internal_surface);
+  
+  internal_texture = SDL_CreateTextureFromSurface(VideoManager::get_instance()->get_renderer(), internal_surface);
+  surface = new Surface(internal_texture);
 }
 
 /**

@@ -46,6 +46,7 @@ class VideoManager {
     static void quit();
     static VideoManager* get_instance();
 
+    SDL_Renderer* get_renderer();
     void create_window();
     VideoMode get_video_mode() const;
     bool set_video_mode(VideoMode mode);
@@ -100,8 +101,6 @@ class VideoManager {
 
     SDL_Window* main_window;                /**< The window. */
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
-    SDL_Texture* screen_texture;            /**< The screen texture. */
-    Surface* scaled_surface;                /**< The screen surface used with scale2x mode. */
   
     std::string outset_title;               /**< Title used when creating the window. */
     VideoMode video_mode;                   /**< Current display mode. */
@@ -109,7 +108,7 @@ class VideoManager {
     Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */
     Rectangle min_quest_size;               /**< Minimum value of quest_size (depends on the quest). */
     Rectangle max_quest_size;               /**< Maximum value of quest_size (depends on the quest). */
-    Rectangle quest_size;                   /**< Size of the quest surface to render on the screen surface. */
+    Rectangle quest_size;                   /**< Size of the quest surface to render. */
     Rectangle wanted_quest_size;            /**< Size wanted by the user. */
 };
 

@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "Drawable.h"
 #include "lowlevel/Rectangle.h"
+#include <vector>
 #include <SDL.h>
 
 
@@ -93,7 +94,7 @@ class Surface: public Drawable {
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
   
-    void render();
+    void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect);
   
     SDL_Texture* get_internal_texture();
   
@@ -101,6 +102,8 @@ class Surface: public Drawable {
 
     SDL_Texture* internal_texture;     /**< the SDL_Texture encapsulated, if any */
     bool owns_internal_texture;        /**< indicates that internal_surface belongs to this object */
+    int width, height;                 /**< size of the texture, avoid to use SDL_QueryTexture */
+    Rectangle clipping_rect;           /**< clipping rectangle to apply when drawing to this surface */
 };
 
 #endif

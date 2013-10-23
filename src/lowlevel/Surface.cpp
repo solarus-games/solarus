@@ -108,12 +108,12 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
 }
 
 /**
- * \brief Creates a surface form the specified SDL surface.
+ * \brief Creates a surface form the specified SDL texture.
  *
  * This constructor must be used only by lowlevel classes that manipulate directly
  * SDL dependent surfaces.
  *
- * \param internal_surface The internal surface data. It won't be copied.
+ * \param internal_texture The internal texture data. It won't be copied.
  * It must remain valid during the lifetime of this surface.
  * The destructor will not free it.
  */
@@ -131,7 +131,7 @@ Surface::Surface(SDL_Texture* internal_texture):
 /**
  * \brief Creates a surface from an existing surface.
  *
- * The internal surface encapsulated is not copied: its ownership is
+ * The internal texture encapsulated is not copied: its ownership is
  * transferred to the new one.
  * Use with care!
  * Transitions and movements applied on the existing surface are not copied.
@@ -354,28 +354,29 @@ void Surface::draw_transition(Transition& transition) {
  */
 void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect) {
   
-  // Draw the internal texture
+  // Draw the internal texture.
   if(internal_texture)
   {
-    // Calculate subrect destination rectangle with recursive x and y coords,
-    // and keeping the internal clipping rectangle size.
-    Rectangle final_clipping_rect = Rectangle(dst_rect.get_x() + clipping_rect.get_x(),
-                                              dst_rect.get_y() + clipping_rect.get_y(),
-                                              clipping_rect.get_width(),
-                                              clipping_rect.get_height());
+    // Calculate absolute clipping rectangle position.
+    Rectangle final_clipping_rect = Rectangle(
+      dst_rect.get_x() + clipping_rect.get_x(),
+      dst_rect.get_y() + clipping_rect.get_y(),
+      clipping_rect.get_width(),
+      clipping_rect.get_height());
+    
     SDL_RenderSetClipRect(renderer, final_clipping_rect.get_internal_rect());
     SDL_RenderCopy(renderer, internal_texture, src_rect.get_internal_rect(), dst_rect.get_internal_rect());
   }
   
-  // Draw all subtextures
+  // Draw all subtextures.
   for(int i=0 ; i<subsurfaces.size() ; i++)
   {
-    // Calculate subrect destination rectangle with recursive x and y coord,
-    // and keeping the surface size.
-    Rectangle dst_subrect = Rectangle(dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
-                                      dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
-                                      subsurfaces.at(i)->dst_rect.get_width(),
-                                      subsurfaces.at(i)->dst_rect.get_height());
+    // Calculate absolute subrectangle position, and keeping the surface size.
+    Rectangle dst_subrect = Rectangle(
+      dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
+      dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
+      subsurfaces.at(i)->dst_rect.get_width(),
+      subsurfaces.at(i)->dst_rect.get_height());
       
     subsurfaces.at(i)->surface->render(renderer, subsurfaces.at(i)->src_rect, dst_subrect);
     delete subsurfaces.at(i);

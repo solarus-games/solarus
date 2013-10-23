@@ -127,7 +127,6 @@ VideoManager::VideoManager(
   disable_window(disable_window),
   main_window(NULL),
   main_renderer(NULL),
-  screen_texture(NULL),
   pixel_filter(NULL),
   scaled_surface(NULL),
   outset_title(std::string("Solarus ") + SOLARUS_VERSION),
@@ -145,9 +144,6 @@ VideoManager::~VideoManager() {
     SDL_SetWindowFullscreen(main_window, 0);
   }
   delete scaled_surface;
-  if (screen_texture != NULL) {
-    SDL_DestroyTexture(screen_texture);
-  }
   if (main_renderer != NULL) {
     SDL_DestroyRenderer(main_renderer);
   }
@@ -343,16 +339,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
       scaled_surface = new Surface(render_size);
     }
 
-    // Create intermediate rending surfaces.
-    if (screen_texture != NULL) {
-      SDL_DestroyTexture(screen_texture);
-    }
-    screen_texture = SDL_CreateTexture(main_renderer,
-      SDL_PIXELFORMAT_ARGB8888,
-      SDL_TEXTUREACCESS_STREAMING,
-      render_size.get_width(),
-      render_size.get_height());
-
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
@@ -444,7 +430,7 @@ void VideoManager::apply_pixel_filter(
 
   Debug::check_assertion(pixel_filter != NULL, "Missing pixel filter");
 
-  int factor = pixel_filter->get_scaling_factor();
+  /*int factor = pixel_filter->get_scaling_factor();
   Debug::check_assertion(dst_surface.get_width() == src_surface.get_width() * factor);
   Debug::check_assertion(dst_surface.get_height() == src_surface.get_height() * factor);
 
@@ -460,7 +446,7 @@ void VideoManager::apply_pixel_filter(
   pixel_filter->filter(src, src_surface.get_width(), src_surface.get_height(), dst);
 
   SDL_UnlockSurface(dst_internal_surface);
-  SDL_UnlockSurface(src_internal_surface);
+  SDL_UnlockSurface(src_internal_surface);*/
 }
 
 /**

@@ -32,7 +32,6 @@
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  internal_texture(NULL),
   owns_internal_texture(true),
   width(width),
   height(height),
@@ -53,7 +52,6 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(const Rectangle& size):
   Drawable(),
-  internal_texture(NULL),
   owns_internal_texture(true),
   width(size.get_width()),
   height(size.get_height()),
@@ -77,7 +75,6 @@ Surface::Surface(const Rectangle& size):
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
-  internal_texture(NULL),
   owns_internal_texture(true) {
 
   std::string prefix = "";
@@ -261,7 +258,7 @@ void Surface::set_opacity(int opacity) {
  */
 void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
 
-  if (clipping_rectangle.get_width() == 0) {
+  if (clipping_rectangle.is_flat()) {
     clipping_rect = Rectangle(0, 0, width, height);
   }
   else {
@@ -275,7 +272,7 @@ void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
  */
 void Surface::fill_with_color(Color& color) {
   
-  Rectangle size = Rectangle(0, 0, width, height);
+  const Rectangle& size = Rectangle(0, 0, width, height);
   fill_with_color(color, size);
 }
 

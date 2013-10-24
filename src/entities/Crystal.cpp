@@ -35,7 +35,7 @@
  */
 Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
   Detector(COLLISION_SPRITE | COLLISION_RECTANGLE | COLLISION_FACING_POINT,
-	   name, layer, x, y, 16, 16),
+      name, layer, x, y, 16, 16),
   state(false),
   next_possible_hit_date(System::now()) {
 

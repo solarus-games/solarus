@@ -1355,6 +1355,14 @@ void MapEntity::notify_movement_finished() {
 }
 
 /**
+ * \brief This function is called when this entity has just finished to get
+ * moved by another one.
+ */
+void MapEntity::notify_moved_by(MapEntity& entity) {
+  // Do nothing by default.
+}
+
+/**
  * \brief Converts a direction into the corresponding one-pixel move on x and y.
  * \param direction8 a direction (0 to 7)
  * \return a rectangle with x and y set to -1, 0 or 1 depending on the direction

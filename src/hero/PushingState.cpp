@@ -229,10 +229,12 @@ void Hero::PushingState::stop_moving_pushed_entity() {
         hero.set_y(pushed_entity->get_y() - 16);
         break;
     }
-    pushed_entity = NULL;
-  }
 
-  hero.clear_movement();
+    hero.clear_movement();
+    MapEntity* entity_just_moved = pushed_entity;
+    pushed_entity = NULL;
+    entity_just_moved->notify_moved_by(hero);
+  }
 
   if (!is_current_state()) {
     // Another state is already starting (for example TreasureState).

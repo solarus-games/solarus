@@ -222,10 +222,13 @@ void Hero::PullingState::stop_moving_pulled_entity() {
         hero.set_y(pulled_entity->get_y() - 16);
         break;
     }
-  }
-  pulled_entity = NULL;
 
-  hero.clear_movement();
+    hero.clear_movement();
+    MapEntity* entity_just_moved = pulled_entity;
+    pulled_entity = NULL;
+    entity_just_moved->notify_moved_by(hero);
+  }
+
   hero.set_state(new GrabbingState(hero));
 }
 

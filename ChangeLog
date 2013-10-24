@@ -8,8 +8,9 @@ Bug fixes for the 1.1 release.
 Engine changes
 --------------
 
-* Fix teletransporters activated while coming back from falling (#346).
 * Fix a libmodplug compilation problem due to wrong sndfile.h (#324).
+* Fix teletransporters activated while coming back from falling (#346).
+* Fix a crash when changing the hero state in block:on_moved (#340).
 
 _______________________________
 

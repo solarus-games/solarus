@@ -159,6 +159,7 @@ class MapEntity: public ExportableToLua {
     virtual void notify_ground_below_changed();
     virtual void notify_movement_changed();
     virtual void notify_movement_finished();
+    virtual void notify_moved_by(MapEntity& entity);
     Detector* get_facing_entity();
     void set_facing_entity(Detector* facing_entity);
     virtual void notify_facing_entity_changed(Detector* facing_entity);

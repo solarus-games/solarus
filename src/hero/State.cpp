@@ -175,6 +175,10 @@ void Hero::State::start(State* previous_state) {
  * \param next_state The next state (for information).
  */
 void Hero::State::stop(State* next_state) {
+
+  Debug::check_assertion(!is_stopping(),
+      std::string("This state is already stopping: ") + get_name());
+
   this->stopping = true;
 }
 

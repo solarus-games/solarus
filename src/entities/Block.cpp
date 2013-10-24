@@ -313,8 +313,14 @@ void Block::stop_movement_by_hero() {
       maximum_moves = 0;      // then it cannot move anymore
     }
   }
+}
 
-  // notify the script
+/**
+ * \brief This function is called when this entity has just finished to get
+ * moved by another one.
+ */
+void Block::notify_moved_by(MapEntity& entity) {
+
   get_lua_context().block_on_moved(*this);
 }
 

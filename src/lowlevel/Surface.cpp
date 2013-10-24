@@ -371,7 +371,7 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
   // Draw all subtextures.
   for(int i=0 ; i<subsurfaces.size() ; i++)
   {
-    // Calculate absolute subrectangle position, and keeping the surface size.
+    // Calculate absolute destination subrectangle position.
     Rectangle dst_subrect = Rectangle(
       dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
       dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),

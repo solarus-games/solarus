@@ -191,6 +191,14 @@ bool Hero::BackToSolidGroundState::are_collisions_ignored() {
 }
 
 /**
+ * \brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * \return true if the hero ignores the effect of conveyor belts in this state
+ */
+bool Hero::BackToSolidGroundState::can_avoid_teletransporter() {
+  return true;
+}
+
+/**
  * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * \return true if the hero ignores the effect of conveyor belts in this state
  */

@@ -46,6 +46,7 @@ class Hero::BackToSolidGroundState: public Hero::State {
     bool can_avoid_lava();
     bool can_avoid_prickle();
     bool is_touching_ground();
+    bool can_avoid_teletransporter();
     bool can_avoid_conveyor_belt();
     bool can_avoid_sensor();
     bool can_avoid_switch();

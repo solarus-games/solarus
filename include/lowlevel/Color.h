@@ -34,12 +34,13 @@ class Color {
 
   private:
   
-    // TODO remove format_surface
-    static SDL_Surface* format_surface;   /**< a dummy surface used to get a pixel format */
-    SDL_Color internal_color;             /**< the SDL color encapsulated */
-    uint32_t internal_value;              /**< the SDL 32-bit value representing this color */
+    static SDL_PixelFormat* pixel_format; /**< the internal color format. */
+  
+    SDL_Color internal_color;             /**< the SDL color encapsulated. */
+    uint32_t internal_value;              /**< the SDL 32-bit value representing this color. */
 
     // some predefined colors
+    static Color transparent;
     static Color black;
     static Color white;
     static Color red;
@@ -57,7 +58,8 @@ class Color {
 
     static void initialize();
     static void quit();
-
+  
+    static Color& get_transparent();
     static Color& get_black();
     static Color& get_white();
     static Color& get_red();
@@ -69,10 +71,19 @@ class Color {
 
     Color();
     Color(const Color& other);
-    Color(int r, int g, int b);
+    Color(int r, int g, int b, int a=255);
 
     void get_components(int& r, int& g, int& b) const;
+    void get_alpha_component(int& a) const;
 };
+
+/**
+ * \brief Returns the transparent color.
+ * \return the transparent color
+ */
+inline Color& Color::get_transparent() {
+  return transparent;
+}
 
 /**
  * \brief Returns the black color.

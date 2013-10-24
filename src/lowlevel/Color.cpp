@@ -20,8 +20,9 @@
  */
 #include "lowlevel/Color.h"
 
-SDL_Surface* Color::format_surface = NULL;
+SDL_PixelFormat* Color::pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
 
+Color Color::transparent;
 Color Color::black;
 Color Color::white;
 Color Color::red;
@@ -35,36 +36,33 @@ Color Color::cyan;
  * \brief Initializes the color static fields.
  */
 void Color::initialize() {
-
-  format_surface = SDL_CreateRGBSurface(
-      SDL_SWSURFACE, 1, 1, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
-
-  black =    Color(  0,   0,   0);
-  white =    Color(255, 255, 255);
-  red =      Color(255,   0,   0);
-  green =    Color(  0, 255,   0);
-  blue =     Color(  0,   0, 255);
-  yellow =   Color(255, 255,   0);
-  magenta =  Color(255,   0, 255);
-  cyan =     Color(  0, 255, 255);
+  
+  transparent = Color(  0,   0,   0,   0);
+  black =       Color(  0,   0,   0);
+  white =       Color(255, 255, 255);
+  red =         Color(255,   0,   0);
+  green =       Color(  0, 255,   0);
+  blue =        Color(  0,   0, 255);
+  yellow =      Color(255, 255,   0);
+  magenta =     Color(255,   0, 255);
+  cyan =        Color(  0, 255, 255);
 }
 
 /**
  * \brief Uninitializes the color system.
  */
 void Color::quit() {
-
-  SDL_FreeSurface(format_surface);
-  format_surface = NULL;
+  SDL_FreeFormat(pixel_format);
 }
 
 /**
- * \brief Creates a default color with unspecified RGB values.
+ * \brief Creates a transparent color with black RGB values.
  */
 Color::Color() {
   internal_color.r = 0;
   internal_color.g = 0;
   internal_color.b = 0;
+  internal_color.a = 0;
   internal_value = 0;
 }
 
@@ -78,17 +76,19 @@ Color::Color(const Color& other):
 }
 
 /**
- * \brief Creates a color with the specified RGB values.
+ * \brief Creates a color with the specified RGBA values.
  * \param r the red component (from 0 to 255)
  * \param g the green component (from 0 to 255)
  * \param b the blue component (from 0 to 255)
+ * \param a the alpha component (from 0 to 255)
  */
-Color::Color(int r, int g, int b) {
+Color::Color(int r, int g, int b, int a) {
   internal_color.r = r;
   internal_color.g = g;
   internal_color.b = b;
+  internal_color.a = a;
 
-  internal_value = SDL_MapRGB(format_surface->format, r, g, b);
+  internal_value = SDL_MapRGBA(pixel_format, r, g, b, a);
 }
 
 /**
@@ -102,6 +102,7 @@ Color::Color(uint32_t internal_value):
   internal_value(internal_value) {
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  internal_color.a = (internal_value & 0xff000000) / 0x1000000;
   internal_color.r = (internal_value & 0x00ff0000) / 0x10000;
   internal_color.g = (internal_value & 0x0000ff00) / 0x100;
   internal_color.b = (internal_value & 0x000000ff);
@@ -109,6 +110,7 @@ Color::Color(uint32_t internal_value):
   internal_color.r = (internal_value & 0x000000ff);
   internal_color.g = (internal_value & 0x0000ff00) / 0x100;
   internal_color.b = (internal_value & 0x00ff0000) / 0x10000;
+  internal_color.a = (internal_value & 0xff000000) / 0x1000000;
 #endif
 }
 
@@ -145,5 +147,14 @@ void Color::get_components(int& r, int& g, int& b) const {
   r = internal_color.r;
   g = internal_color.g;
   b = internal_color.b;
+}
+
+/**
+ * \brief Returns the alpha value of this color.
+ * \param a Alpha component to write.
+ */
+void Color::get_alpha_component(int&a) const {
+  
+  a = internal_color.a;
 }
 

@@ -1217,6 +1217,7 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
   }
   else {
     // Create a new userdata.
+    userdata.set_exported_to_lua(true);
                                   // ... all_udata nil
     lua_pop(l, 1);
                                   // ... all_udata
@@ -1372,11 +1373,12 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
 
   ExportableToLua* userdata =
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
+  userdata->set_exported_to_lua(false);
 
-  // Note that the userdata disappears from Lua but it may come back later!
+  // Note that the full userdata disappears from Lua but it may come back later!
   // So we need to keep its table if the refcount is not zero.
   // The full userdata is destroyed, but if the refcount is zero, the light
-  // userdata and its table persists.
+  // userdata and its table persist.
 
   // We don't need to remove the entry from sol.all_userdata
   // because it is already done: that table is weak on its values and the

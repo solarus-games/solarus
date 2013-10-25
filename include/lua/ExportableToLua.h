@@ -45,6 +45,9 @@ class ExportableToLua {
     ExportableToLua();
     virtual ~ExportableToLua();
 
+    bool is_exported_to_lua() const;
+    void set_exported_to_lua(bool exported_to_lua);
+
     // Reference counting.
     int get_refcount() const;
     void increment_refcount();
@@ -58,9 +61,10 @@ class ExportableToLua {
 
   private:
 
-    int refcount;                /**< number of pointers to the object
+    int refcount;                /**< Number of pointers to the object
                                   * including the Lua ones
-                                  * (0 means that it can be deleted) */
+                                  * (0 means that it can be deleted). */
+    bool exported_to_lua;        /**< Whether this object exists in the Lua side. */
 };
 
 #endif

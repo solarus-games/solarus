@@ -22,7 +22,8 @@
  * \brief Creates an object exportable to Lua.
  */
 ExportableToLua::ExportableToLua():
-  refcount(0) {
+  refcount(0),
+  exported_to_lua(false) {
 
 }
 
@@ -33,6 +34,22 @@ ExportableToLua::~ExportableToLua() {
 
   Debug::check_assertion(refcount == 0, StringConcat()
       << "This object is still used somewhere else: refcount is " << refcount);
+}
+
+/**
+ * \brief Returns whether this object exists in the Lua side.
+ * \return \c true if this object exists in the Lua side.
+ */
+bool ExportableToLua::is_exported_to_lua() const {
+  return exported_to_lua;
+}
+
+/**
+ * \brief Sets whether this object exists in the Lua side.
+ * \param exported_to_lua \c true if this object exists in the Lua side.
+ */
+void ExportableToLua::set_exported_to_lua(bool exported_to_lua) {
+  this->exported_to_lua = exported_to_lua;
 }
 
 /**

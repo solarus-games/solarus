@@ -137,24 +137,17 @@ SDL_Color* Color::get_internal_color() {
 }
 
 /**
- * \brief Returns the red, green and blue values of this color.
+ * \brief Returns the red, green, blue and alpha values of this color.
  * \param r Red component to write.
  * \param g Green component to write.
  * \param b Blue component to write.
+ * \param a Alpha component to write.
  */
-void Color::get_components(int& r, int& g, int& b) const {
+void Color::get_components(int& r, int& g, int& b, int& a) const {
 
   r = internal_color.r;
   g = internal_color.g;
   b = internal_color.b;
-}
-
-/**
- * \brief Returns the alpha value of this color.
- * \param a Alpha component to write.
- */
-void Color::get_alpha_component(int&a) const {
-  
   a = internal_color.a;
 }
 

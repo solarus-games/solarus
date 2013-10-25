@@ -1262,8 +1262,8 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
  */
 void LuaContext::push_color(lua_State* l, const Color& color) {
 
-  int r, g, b;
-  color.get_components(r, g, b);
+  int r, g, b, a;
+  color.get_components(r, g, b, a);
   lua_newtable(l);
   lua_pushinteger(l, r);
   lua_rawseti(l, -2, 1);
@@ -1271,6 +1271,8 @@ void LuaContext::push_color(lua_State* l, const Color& color) {
   lua_rawseti(l, -2, 2);
   lua_pushinteger(l, b);
   lua_rawseti(l, -2, 3);
+  lua_pushinteger(l, a);
+  lua_rawseti(l, -2, 4);
 }
 
 /**
@@ -1335,14 +1337,16 @@ bool LuaContext::is_color(lua_State* l, int index) {
     lua_rawgeti(l, index, 1);
     lua_rawgeti(l, index, 2);
     lua_rawgeti(l, index, 3);
-    result = lua_isnumber(l, -3) && lua_isnumber(l, -2) && lua_isnumber(l, -1);
-    lua_pop(l, 3);
+    lua_rawgeti(l, index, 4);
+    result = lua_isnumber(l, -4) && lua_isnumber(l, -3) && lua_isnumber(l, -2) && lua_isnumber(l, -1);
+    lua_pop(l, 4);
   }
   return result;
 }
 
 /**
  * \brief Checks that the value at the given index is a color and returns it.
+ * Set opaque value by default if alpha channel is not specified.
  * \param l a Lua state
  * \param index an index in the Lua stack
  * \return the color at this index
@@ -1355,10 +1359,12 @@ Color LuaContext::check_color(lua_State* l, int index) {
   lua_rawgeti(l, index, 1);
   lua_rawgeti(l, index, 2);
   lua_rawgeti(l, index, 3);
-  Color color(luaL_checkint(l, -3),
+  lua_rawgeti(l, index, 4);
+  Color color(luaL_checkint(l, -4),
+    luaL_checkint(l, -3),
     luaL_checkint(l, -2),
-    luaL_checkint(l, -1));
-  lua_pop(l, 3);
+    luaL_optint(l, -1, 255));
+  lua_pop(l, 4);
 
   return color;
 }

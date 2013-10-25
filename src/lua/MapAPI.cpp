@@ -1944,10 +1944,17 @@ int LuaContext::map_api_create_fire(lua_State* l) {
 
 /**
  * \brief Calls the on_started() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  * \param destination The destination point used (NULL if it's a special one).
  */
 void LuaContext::map_on_started(Map& map, Destination* destination) {
+
+  if (!map.is_with_lua_table()) {
+    return;
+  }
 
   push_map(l, map);
   on_started(destination);
@@ -1955,13 +1962,22 @@ void LuaContext::map_on_started(Map& map, Destination* destination) {
 }
 
 /**
- * \brief Calls the on_finished() method of a Lua map.
+ * \brief Calls the on_finished() method of a Lua map if it is defined.
+ *
+ * Also stops timers and menus associated to the map.
+ *
  * \param map A map.
  */
 void LuaContext::map_on_finished(Map& map) {
 
+  if (!map.is_known_to_lua()) {
+    return;
+  }
+
   push_map(l, map);
-  on_finished();
+  if (map.is_with_lua_table()) {
+    on_finished();
+  }
   remove_timers(-1);  // Stop timers and menus associated to this map.
   remove_menus(-1);
   lua_pop(l, 1);
@@ -1969,25 +1985,42 @@ void LuaContext::map_on_finished(Map& map) {
 
 /**
  * \brief Calls the on_update() method of a Lua map.
+ *
+ * Also calls the method on its menus.
+ *
  * \param map A map.
  */
 void LuaContext::map_on_update(Map& map) {
 
+  if (!map.is_known_to_lua()) {
+    return;
+  }
+
   push_map(l, map);
-  on_update();
+  if (map.is_with_lua_table()) {
+    on_update();
+  }
   menus_on_update(-1);
   lua_pop(l, 1);
 }
 
 /**
- * \brief Calls the on_draw() method of a Lua map.
+ * \brief Calls the on_draw() method of a Lua map if it is defined.
+ *
+ * Also calls the method on its menus.
+ *
  * \param map A map.
  * \param dst_surface The destination surface.
  */
 void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
 
+  if (!map.is_known_to_lua()) {
+    return;
+  }
   push_map(l, map);
-  on_draw(dst_surface);
+  if (map.is_with_lua_table()) {
+    on_draw(dst_surface);
+  }
   menus_on_draw(-1, dst_surface);
   lua_pop(l, 1);
 }
@@ -1996,6 +2029,8 @@ void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
  * \brief Notifies a Lua map that an input event has just occurred.
  *
  * The appropriate callback in the map is triggered if it exists.
+ * Also notifies the menus of the game if the game itself does not handle the
+ * event.
  *
  * \param event The input event to handle.
  * \param map A map.
@@ -2003,9 +2038,15 @@ void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
  */
 bool LuaContext::map_on_input(Map& map, InputEvent& event) {
 
+  if (!map.is_known_to_lua()) {
+    return false;
+  }
+
   bool handled = false;
   push_map(l, map);
-  handled = on_input(event);
+  if (map.is_with_lua_table()) {
+    handled = on_input(event);
+  }
   if (!handled) {
     handled = menus_on_input(-1, event);
   }
@@ -2015,15 +2056,25 @@ bool LuaContext::map_on_input(Map& map, InputEvent& event) {
 
 /**
  * \brief Calls the on_command_pressed() method of a Lua map.
+ *
+ * Also notifies the menus of the game if the game itself does not handle the
+ * event.
+ *
  * \param map A map.
  * \param command The command pressed.
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command) {
 
+  if (!map.is_known_to_lua()) {
+    return false;
+  }
+
   bool handled = false;
   push_map(l, map);
-  handled = on_command_pressed(command);
+  if (map.is_with_lua_table()) {
+    handled = on_command_pressed(command);
+  }
   if (!handled) {
     handled = menus_on_command_pressed(-1, command);
   }
@@ -2033,15 +2084,25 @@ bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command)
 
 /**
  * \brief Calls the on_command_released() method of a Lua map.
+ *
+ * Also notifies the menus of the game if the game itself does not handle the
+ * event.
+ *
  * \param map A map.
  * \param command The command released.
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::map_on_command_released(Map& map, GameCommands::Command command) {
 
+  if (!map.is_known_to_lua()) {
+    return false;
+  }
+
   bool handled = false;
   push_map(l, map);
-  handled = on_command_released(command);
+  if (map.is_with_lua_table()) {
+    handled = on_command_released(command);
+  }
   if (!handled) {
     handled = menus_on_command_released(-1, command);
   }
@@ -2051,10 +2112,17 @@ bool LuaContext::map_on_command_released(Map& map, GameCommands::Command command
 
 /**
  * \brief Calls the on_suspended() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  * \param suspended true if the map is suspended.
  */
 void LuaContext::map_on_suspended(Map& map, bool suspended) {
+
+  if (!map.is_with_lua_table()) {
+    return;
+  }
 
   push_map(l, map);
   on_suspended(suspended);
@@ -2063,11 +2131,18 @@ void LuaContext::map_on_suspended(Map& map, bool suspended) {
 
 /**
  * \brief Calls the on_opening_transition_finished() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  * \param destination The destination point used (NULL if it's a special one).
  */
 void LuaContext::map_on_opening_transition_finished(Map& map,
     Destination* destination) {
+
+  if (!map.is_with_lua_table()) {
+    return;
+  }
 
   push_map(l, map);
   on_opening_transition_finished(destination);
@@ -2076,9 +2151,16 @@ void LuaContext::map_on_opening_transition_finished(Map& map,
 
 /**
  * \brief Calls the on_camera_back() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  */
 void LuaContext::map_on_camera_back(Map& map) {
+
+  if (!map.is_with_lua_table()) {
+    return;
+  }
 
   push_map(l, map);
   on_camera_back();
@@ -2087,10 +2169,17 @@ void LuaContext::map_on_camera_back(Map& map) {
 
 /**
  * \brief Calls the on_obtaining_treasure() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  * \param treasure A treasure the hero is about to obtain on that map.
  */
 void LuaContext::map_on_obtaining_treasure(Map& map, const Treasure& treasure) {
+
+  if (!map.is_with_lua_table()) {
+    return;
+  }
 
   push_map(l, map);
   on_obtaining_treasure(treasure);
@@ -2099,10 +2188,17 @@ void LuaContext::map_on_obtaining_treasure(Map& map, const Treasure& treasure) {
 
 /**
  * \brief Calls the on_obtained_treasure() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  * \param treasure The treasure just obtained.
  */
 void LuaContext::map_on_obtained_treasure(Map& map, const Treasure& treasure) {
+
+  if (!map.is_with_lua_table()) {
+    return;
+  }
 
   push_map(l, map);
   on_obtained_treasure(treasure);

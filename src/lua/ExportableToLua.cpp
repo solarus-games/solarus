@@ -23,7 +23,8 @@
  */
 ExportableToLua::ExportableToLua():
   refcount(0),
-  known_to_lua(false) {
+  known_to_lua(false),
+  with_lua_table(false) {
 
 }
 
@@ -55,6 +56,26 @@ bool ExportableToLua::is_known_to_lua() const {
  */
 void ExportableToLua::set_known_to_lua(bool known_to_lua) {
   this->known_to_lua = known_to_lua;
+}
+
+/**
+ * \brief Returns whether this userdata has an associated table in Lua.
+ *
+ * This is the case if __newindex was called at least once for the userdata.
+ * It might be \c true even if the userdata does not exist anymore in Lua.
+ *
+ * \return \c true if there is a Lua table for this userdata.
+ */
+bool ExportableToLua::is_with_lua_table() const {
+  return with_lua_table;
+}
+
+/**
+ * \brief Sets whether this userdata has an associated table in Lua.
+ * \param with_lua_table \c true if there is a Lua table for this userdata.
+ */
+void ExportableToLua::set_with_lua_table(bool with_lua_table) {
+  this->with_lua_table = with_lua_table;
 }
 
 /**

@@ -47,6 +47,8 @@ class ExportableToLua {
 
     bool is_known_to_lua() const;
     void set_known_to_lua(bool known_to_lua);
+    bool is_with_lua_table() const;
+    void set_with_lua_table(bool with_lua_table);
 
     // Reference counting.
     int get_refcount() const;
@@ -66,6 +68,8 @@ class ExportableToLua {
                                   * (0 means that it can be deleted). */
     bool known_to_lua;           /**< Whether this object was exported to Lua
                                   * at least once. */
+    bool with_lua_table;         /**< Whether a Lua table was created to make
+                                  * this userdata indexable like a table. */
 };
 
 #endif

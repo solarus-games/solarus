@@ -37,16 +37,21 @@ ExportableToLua::~ExportableToLua() {
 }
 
 /**
- * \brief Returns whether this object exists in the Lua side.
- * \return \c true if this object exists in the Lua side.
+ * \brief Returns whether this object was exported in the Lua side.
+ *
+ * This stays \c true even if the object was collected from Lua.
+ *
+ * \param exported_to_lua \c true if this object was exported in the Lua side
+ * at least once.
  */
 bool ExportableToLua::is_exported_to_lua() const {
   return exported_to_lua;
 }
 
 /**
- * \brief Sets whether this object exists in the Lua side.
- * \param exported_to_lua \c true if this object exists in the Lua side.
+ * \brief Sets whether this object was exported in the Lua side.
+ * \param exported_to_lua \c true if this object was exported in the Lua side
+ * at least once.
  */
 void ExportableToLua::set_exported_to_lua(bool exported_to_lua) {
   this->exported_to_lua = exported_to_lua;

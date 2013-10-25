@@ -850,6 +850,7 @@ class LuaContext {
     bool find_local_function(const std::string& function_name);
     bool find_method(int index, const std::string& function_name);
     bool find_method(const std::string& function_name);
+    bool has_userdata_table(ExportableToLua& userdata) const;
     bool call_function(int nb_arguments, int nb_results,
         const std::string& function_name);
     static bool call_function(lua_State* l, int nb_arguments, int nb_results,

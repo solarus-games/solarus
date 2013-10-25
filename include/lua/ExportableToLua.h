@@ -64,7 +64,8 @@ class ExportableToLua {
     int refcount;                /**< Number of pointers to the object
                                   * including the Lua ones
                                   * (0 means that it can be deleted). */
-    bool exported_to_lua;        /**< Whether this object exists in the Lua side. */
+    bool exported_to_lua;        /**< Whether this object was exported to Lua
+                                  * at least once. */
 };
 
 #endif

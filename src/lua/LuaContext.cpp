@@ -865,6 +865,40 @@ bool LuaContext::find_method(int index, const std::string& function_name) {
 }
 
 /**
+ * \brief Returns whether a userdata has an associated table in Lua.
+ *
+ * This is the case if __newindex was called at least once for the userdata.
+ * It might be \c true even if the userdata does not exist anymore in Lua.
+ *
+ * When this function returns false, it is guaranteed that no event is defined
+ * on this userdata.
+ * When this function returns true, then some events may exist.
+ *
+ * \param userdata The userdata to test.
+ * \return \c true if there is a Lua table for this userdata.
+ */
+bool LuaContext::has_userdata_table(ExportableToLua& userdata) const {
+
+  if (!userdata.is_exported_to_lua()) {
+    // The object never existed in the Lua side.
+    return false;
+  }
+
+  // The object exists or has existed in the Lua side.
+  // Check if it has an associated table.
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
+                                    // ... udata_tables
+  lua_pushlightuserdata(l, &userdata);
+                                    // ... udata_tables lightudata
+  lua_gettable(l, -2);
+                                    // ... udata_tables udata/nil
+  const bool result = !lua_isnil(l, -1);
+  lua_pop(l, 2);
+                                    // ...
+  return result;
+}
+
+/**
  * \brief Calls the Lua function with its arguments on top of the stack.
  *
  * This function is like lua_pcall, except that it additionaly handles the
@@ -1212,12 +1246,20 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata udata/nil
   if (!lua_isnil(l, -1)) {
                                   // ... all_udata udata
+    Debug::check_assertion(userdata.is_exported_to_lua(),
+        std::string("Known userdata ") + userdata.get_lua_type_name()
+        + " is marked as non-existing in Lua");
     lua_remove(l, -2);
                                   // ... udata
   }
   else {
     // Create a new userdata.
-    userdata.set_exported_to_lua(true);
+
+    if (!userdata.is_exported_to_lua()) {
+      // This is the first time we create a Lua userdata for this object.
+      userdata.set_exported_to_lua(true);
+    }
+
                                   // ... all_udata nil
     lua_pop(l, 1);
                                   // ... all_udata
@@ -1373,7 +1415,6 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
 
   ExportableToLua* userdata =
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
-  userdata->set_exported_to_lua(false);
 
   // Note that the full userdata disappears from Lua but it may come back later!
   // So we need to keep its table if the refcount is not zero.
@@ -1392,13 +1433,13 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
     // its table from this deleted one!
                                     // udata
     lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
-                                    // udata all_udata
+                                    // udata udata_tables
     lua_pushlightuserdata(l, userdata);
-                                    // udata all_udata lightudata
+                                    // udata udata_tables lightudata
     lua_pushnil(l);
-                                    // udata all_udata lightudata nil
+                                    // udata udata_tables lightudata nil
     lua_settable(l, -3);
-                                    // udata all_udata
+                                    // udata udata_tables
     lua_pop(l, 1);
                                     // udata
     delete userdata;
@@ -1428,10 +1469,9 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
   ExportableToLua* userdata =
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
 
-  /* The user wants to make udata[key] = value but udata is a userdata.
-   * So what we make instead is udata_tables[udata][key] = value.
-   * This redirection is totally transparent from the Lua side.
-   */
+  // The user wants to make udata[key] = value but udata is a userdata.
+  // So what we make instead is udata_tables[udata][key] = value.
+  // This redirection is totally transparent from the Lua side.
 
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables

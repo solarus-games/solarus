@@ -387,7 +387,7 @@ void Camera::restore() {
  */
 void Camera::traverse_separator(Separator* separator) {
 
-  Debug::check_assertion(separator != NULL);
+  Debug::check_assertion(separator != NULL, "Missing parameter separator");
 
   // Save the current position of the camera.
   separator_scrolling_position = position;

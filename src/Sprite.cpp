@@ -72,7 +72,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string& id) {
     all_animation_sets[id] = animation_set;
   }
 
-  Debug::check_assertion(animation_set != NULL);
+  Debug::check_assertion(animation_set != NULL, "No animation set");
 
   return *animation_set;
 }

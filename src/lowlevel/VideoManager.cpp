@@ -450,8 +450,10 @@ void VideoManager::apply_pixel_filter(
   Debug::check_assertion(pixel_filter != NULL, "Missing pixel filter");
 
   int factor = pixel_filter->get_scaling_factor();
-  Debug::check_assertion(dst_surface.get_width() == src_surface.get_width() * factor);
-  Debug::check_assertion(dst_surface.get_height() == src_surface.get_height() * factor);
+  Debug::check_assertion(dst_surface.get_width() == src_surface.get_width() * factor,
+      "Wrong destination surface size");
+  Debug::check_assertion(dst_surface.get_height() == src_surface.get_height() * factor,
+      "Wrong destination surface size");
 
   SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
   SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();

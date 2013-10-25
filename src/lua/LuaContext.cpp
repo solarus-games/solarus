@@ -1338,7 +1338,10 @@ bool LuaContext::is_color(lua_State* l, int index) {
     lua_rawgeti(l, index, 2);
     lua_rawgeti(l, index, 3);
     lua_rawgeti(l, index, 4);
-    result = lua_isnumber(l, -4) && lua_isnumber(l, -3) && lua_isnumber(l, -2) && lua_isnumber(l, -1);
+    result = lua_isnumber(l, -4) 
+      && lua_isnumber(l, -3)
+      && lua_isnumber(l, -2) 
+      && (lua_isnumber(l, -1) || lua_isnil(l, -1));
     lua_pop(l, 4);
   }
   return result;
@@ -1346,7 +1349,9 @@ bool LuaContext::is_color(lua_State* l, int index) {
 
 /**
  * \brief Checks that the value at the given index is a color and returns it.
- * Set opaque value by default if alpha channel is not specified.
+ *
+ * Set opaque by default if alpha channel is not specified.
+ *
  * \param l a Lua state
  * \param index an index in the Lua stack
  * \return the color at this index

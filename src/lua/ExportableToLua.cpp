@@ -23,7 +23,7 @@
  */
 ExportableToLua::ExportableToLua():
   refcount(0),
-  exported_to_lua(false) {
+  known_to_lua(false) {
 
 }
 
@@ -41,20 +41,20 @@ ExportableToLua::~ExportableToLua() {
  *
  * This stays \c true even if the object was collected from Lua.
  *
- * \param exported_to_lua \c true if this object was exported in the Lua side
+ * \param known_to_lua \c true if this object was exported in the Lua side
  * at least once.
  */
-bool ExportableToLua::is_exported_to_lua() const {
-  return exported_to_lua;
+bool ExportableToLua::is_known_to_lua() const {
+  return known_to_lua;
 }
 
 /**
  * \brief Sets whether this object was exported in the Lua side.
- * \param exported_to_lua \c true if this object was exported in the Lua side
+ * \param known_to_lua \c true if this object was exported in the Lua side
  * at least once.
  */
-void ExportableToLua::set_exported_to_lua(bool exported_to_lua) {
-  this->exported_to_lua = exported_to_lua;
+void ExportableToLua::set_known_to_lua(bool known_to_lua) {
+  this->known_to_lua = known_to_lua;
 }
 
 /**

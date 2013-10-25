@@ -879,7 +879,7 @@ bool LuaContext::find_method(int index, const std::string& function_name) {
  */
 bool LuaContext::has_userdata_table(ExportableToLua& userdata) const {
 
-  if (!userdata.is_exported_to_lua()) {
+  if (!userdata.is_known_to_lua()) {
     // The object never existed in the Lua side.
     return false;
   }
@@ -1246,18 +1246,15 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata udata/nil
   if (!lua_isnil(l, -1)) {
                                   // ... all_udata udata
-    Debug::check_assertion(userdata.is_exported_to_lua(),
-        std::string("Known userdata ") + userdata.get_lua_type_name()
-        + " is marked as non-existing in Lua");
     lua_remove(l, -2);
                                   // ... udata
   }
   else {
     // Create a new userdata.
 
-    if (!userdata.is_exported_to_lua()) {
+    if (!userdata.is_known_to_lua()) {
       // This is the first time we create a Lua userdata for this object.
-      userdata.set_exported_to_lua(true);
+      userdata.set_known_to_lua(true);
     }
 
                                   // ... all_udata nil

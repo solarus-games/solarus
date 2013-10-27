@@ -944,6 +944,14 @@ Detector* MapEntity::get_facing_entity() {
 }
 
 /**
+ * \brief Returns the detector in front of this entity.
+ * \return the detector this entity is touching, or NULL if there is no detector in front of him
+ */
+const Detector* MapEntity::get_facing_entity() const {
+  return facing_entity;
+}
+
+/**
  * \brief Sets the entity this entity is currently facing.
  *
  * This function is called when this entity is facing a new detector.

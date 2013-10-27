@@ -1877,7 +1877,7 @@ bool Hero::is_striking_with_sword(Detector& detector) const {
 void Hero::try_snap_to_facing_entity() {
 
   Rectangle collision_box = get_bounding_box();
-  Detector* facing_entity = get_facing_entity();
+  const Detector* facing_entity = get_facing_entity();
 
   if (get_animation_direction() % 2 == 0) {
     if (abs(collision_box.get_y() - facing_entity->get_top_left_y()) <= 5) {

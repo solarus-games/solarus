@@ -64,6 +64,7 @@ void Hero::SwordTappingState::stop(State* next_state) {
 
   State::stop(next_state);
 
+  Hero& hero = get_hero();
   if (hero.get_movement() != NULL) {
     // stop the movement of being pushed by an enemy after hitting him
     hero.clear_movement();
@@ -77,6 +78,7 @@ void Hero::SwordTappingState::update() {
 
   State::update();
 
+  Hero& hero = get_hero();
   if (hero.get_movement() == NULL) {
     // the hero is not being pushed after hitting an enemy
 
@@ -126,7 +128,7 @@ void Hero::SwordTappingState::set_suspended(bool suspended) {
   State::set_suspended(suspended);
 
   if (!suspended) {
-    next_sound_date += System::now() - when_suspended;
+    next_sound_date += System::now() - get_when_suspended();
   }
 }
 
@@ -155,6 +157,7 @@ bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& item) const {
  */
 bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) const {
 
+  const Hero& hero = get_hero();
   return detector.is_obstacle_for(hero)         // only obstacle entities can be cut
     && hero.get_facing_entity() == &detector    // only one entity at a time
     && get_sprites().get_current_frame() >= 3;  // wait until the animation shows an appropriate frame
@@ -169,7 +172,7 @@ bool Hero::SwordTappingState::is_teletransporter_obstacle(
     const Teletransporter& teletransporter) const {
 
   // if the hero was pushed by an enemy, don't go on a teletransporter
-  return hero.get_movement() != NULL;
+  return get_hero().get_movement() != NULL;
 }
 
 /**
@@ -179,6 +182,7 @@ bool Hero::SwordTappingState::is_teletransporter_obstacle(
 void Hero::SwordTappingState::notify_obstacle_reached() {
 
   // the hero reached an obstacle while being pushed after hitting an enemy
+  Hero& hero = get_hero();
   hero.clear_movement();
   hero.set_state(new FreeState(hero));
 }
@@ -197,6 +201,7 @@ void Hero::SwordTappingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
 
     if (victim.get_push_hero_on_sword()) {
 
+      Hero& hero = get_hero();
       double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
           hero.get_x(), hero.get_y());
       StraightMovement* movement = new StraightMovement(false, true);

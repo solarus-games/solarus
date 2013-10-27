@@ -41,24 +41,25 @@ class Hero::JumpingState: public Hero::State {
     void update();
     void set_suspended(bool suspended);
     void notify_layer_changed();
-    int get_wanted_movement_direction8();
-    bool can_start_gameover_sequence();
-    bool is_touching_ground();
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_sensor_obstacle(Sensor& sensor);
-    bool is_separator_obstacle(Separator& separator);
-    bool can_avoid_deep_water();
-    bool can_avoid_hole();
-    bool can_avoid_ice();
-    bool can_avoid_lava();
-    bool can_avoid_prickle();
-    bool can_avoid_teletransporter();
-    bool can_avoid_conveyor_belt();
-    bool can_avoid_sensor();
-    bool can_avoid_switch();
-    bool can_be_hurt(Enemy* attacker);
+    int get_wanted_movement_direction8() const;
+    bool can_start_gameover_sequence() const;
+    bool is_touching_ground() const;
+    bool is_stairs_obstacle(const Stairs& stairs) const;
+    bool is_sensor_obstacle(const Sensor& sensor) const;
+    bool is_separator_obstacle(const Separator& separator) const;
+    bool can_avoid_deep_water() const;
+    bool can_avoid_hole() const;
+    bool can_avoid_ice() const;
+    bool can_avoid_lava() const;
+    bool can_avoid_prickle() const;
+    bool can_avoid_teletransporter() const;
+    bool can_avoid_conveyor_belt() const;
+    bool can_avoid_sensor() const;
+    bool can_avoid_switch() const;
+    bool can_be_hurt(Enemy* attacker) const;
     CarriedItem* get_carried_item();
-    CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
+    CarriedItem::Behavior get_previous_carried_item_behavior(
+        CarriedItem& carried_item);
 
   private:
 

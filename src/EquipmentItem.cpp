@@ -52,7 +52,7 @@ EquipmentItem::~EquipmentItem() {
  * \brief Returns the equipment object this item belongs to.
  * \return The equipment.
  */
-Equipment& EquipmentItem::get_equipment() const {
+Equipment& EquipmentItem::get_equipment() {
   return equipment;
 }
 
@@ -60,7 +60,7 @@ Equipment& EquipmentItem::get_equipment() const {
  * \brief If this equipment item is currently running in a game, return that game.
  * \return A game or NULL.
  */
-Game* EquipmentItem::get_game() const {
+Game* EquipmentItem::get_game() {
   return equipment.get_game();
 }
 
@@ -68,7 +68,15 @@ Game* EquipmentItem::get_game() const {
  * \brief Returns the savegame.
  * \return The savegame.
  */
-Savegame& EquipmentItem::get_savegame() const {
+Savegame& EquipmentItem::get_savegame() {
+  return equipment.get_savegame();
+}
+
+/**
+ * \brief Returns the savegame.
+ * \return The savegame.
+ */
+const Savegame& EquipmentItem::get_savegame() const {
   return equipment.get_savegame();
 }
 
@@ -76,7 +84,7 @@ Savegame& EquipmentItem::get_savegame() const {
  * \brief Returns the shared Lua context.
  * \return The Lua context where all scripts are run.
  */
-LuaContext& EquipmentItem::get_lua_context() const {
+LuaContext& EquipmentItem::get_lua_context() {
   return get_savegame().get_lua_context();
 }
 

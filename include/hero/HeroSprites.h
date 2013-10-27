@@ -93,14 +93,14 @@ class HeroSprites {
     bool is_walking();
     void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
 
-    int get_animation_direction(int keys_direction, int real_movement_direction);
-    int get_animation_direction();
-    int get_animation_direction8();
+    int get_animation_direction(int keys_direction, int real_movement_direction) const;
+    int get_animation_direction() const;
+    int get_animation_direction8() const;
     void set_animation_direction(int direction);
     void set_animation_direction8(int direction);
     void restart_animation();
     bool is_animation_finished();
-    int get_current_frame();
+    int get_current_frame() const;
     void save_animation_direction();
     void restore_animation_direction();
     void set_ignore_suspend(bool ignore_suspend);

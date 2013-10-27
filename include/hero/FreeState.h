@@ -37,11 +37,12 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     void notify_action_command_pressed();
     void notify_obstacle_reached();
 
-    bool is_free();
-    bool can_start_sword();
-    bool can_start_item(EquipmentItem& item);
-    bool can_take_stairs();
-    CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
+    bool is_free() const;
+    bool can_start_sword() const;
+    bool can_start_item(EquipmentItem& item) const;
+    bool can_take_stairs() const;
+    CarriedItem::Behavior get_previous_carried_item_behavior(
+        CarriedItem& carried_item);
     void set_animation_stopped();
     void set_animation_walking();
 

@@ -40,15 +40,15 @@ class Hero::PlayerMovementState: public Hero::State {
     virtual void set_suspended(bool suspended);
     virtual void set_animation_stopped();
     virtual void set_animation_walking();
-    bool can_control_movement();
-    int get_wanted_movement_direction8();
+    bool can_control_movement() const;
+    int get_wanted_movement_direction8() const;
     void notify_walking_speed_changed();
     void notify_movement_changed();
     void notify_position_changed();
     void notify_layer_changed();
-    bool can_be_hurt(Enemy* attacker);
-    bool can_pick_treasure(EquipmentItem& item);
-    bool can_take_jumper();
+    bool can_be_hurt(Enemy* attacker) const;
+    bool can_pick_treasure(EquipmentItem& item) const;
+    bool can_take_jumper() const;
     void notify_jumper_activated(Jumper& jumper);
 
   protected:
@@ -56,6 +56,7 @@ class Hero::PlayerMovementState: public Hero::State {
     PlayerMovementState(Hero& hero, const std::string& state_name);
 
     PlayerMovement* get_player_movement();
+    const PlayerMovement* get_player_movement() const;
 
   private:
 

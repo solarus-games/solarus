@@ -197,6 +197,14 @@ GameCommands& Game::get_commands() {
 }
 
 /**
+ * \brief Returns the game commands mapped to the keyboard and the joypad.
+ * \return The game commands.
+ */
+const GameCommands& Game::get_commands() const {
+  return *commands;
+}
+
+/**
  * \brief Returns the current effect of the main keys (action, sword, pause, etc.).
  * \return the current effect of the main keys
  */
@@ -206,9 +214,17 @@ KeysEffect& Game::get_keys_effect() {
 
 /**
  * \brief Returns the saved data associated to this game.
- * \return the saved data
+ * \return The saved data.
  */
 Savegame& Game::get_savegame() {
+  return *savegame;
+}
+
+/**
+ * \brief Returns the saved data associated to this game.
+ * \return The saved data.
+ */
+const Savegame& Game::get_savegame() const {
   return *savegame;
 }
 
@@ -217,9 +233,20 @@ Savegame& Game::get_savegame() {
  *
  * It is equivalent to get_savegame().get_equipment().
  *
- * \return the equipment
+ * \return The equipment.
  */
 Equipment& Game::get_equipment() {
+  return get_savegame().get_equipment();
+}
+
+/**
+ * \brief Returns the equipment of the player.
+ *
+ * It is equivalent to get_savegame().get_equipment().
+ *
+ * \return The equipment.
+ */
+const Equipment& Game::get_equipment() const {
   return get_savegame().get_equipment();
 }
 

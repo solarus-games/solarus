@@ -36,10 +36,10 @@ class Hero::StairsState: public Hero::State {
     void update();
     void set_suspended(bool suspended);
 
-    bool is_touching_ground();
-    bool can_come_from_bad_ground();
-    bool is_teletransporter_delayed();
-    int get_wanted_movement_direction8();
+    bool is_touching_ground() const;
+    bool can_come_from_bad_ground() const;
+    bool is_teletransporter_delayed() const;
+    int get_wanted_movement_direction8() const;
     CarriedItem* get_carried_item();
     CarriedItem::Behavior get_previous_carried_item_behavior(
         CarriedItem& carried_item);

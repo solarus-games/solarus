@@ -1694,9 +1694,16 @@ int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
 
 /**
  * \brief Calls the on_position_changed() method of a Lua movement.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param movement A movement.
  */
 void LuaContext::movement_on_position_changed(Movement& movement) {
+
+  if (!movement.is_with_lua_table()) {
+    return;
+  }
 
                                   // ...
   push_movement(l, movement);
@@ -1727,9 +1734,16 @@ void LuaContext::movement_on_position_changed(Movement& movement) {
 
 /**
  * \brief Calls the on_obstacle_reached() method of a Lua movement.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param movement A movement.
  */
 void LuaContext::movement_on_obstacle_reached(Movement& movement) {
+
+  if (!movement.is_with_lua_table()) {
+    return;
+  }
 
   push_movement(l, movement);
   on_obstacle_reached();
@@ -1738,9 +1752,16 @@ void LuaContext::movement_on_obstacle_reached(Movement& movement) {
 
 /**
  * \brief Calls the on_changed() method of a Lua movement.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param movement A movement.
  */
 void LuaContext::movement_on_changed(Movement& movement) {
+
+  if (!movement.is_with_lua_table()) {
+    return;
+  }
 
   push_movement(l, movement);
   on_changed();
@@ -1749,9 +1770,16 @@ void LuaContext::movement_on_changed(Movement& movement) {
 
 /**
  * \brief Calls the on_finished() method of a Lua movement.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param movement A movement.
  */
 void LuaContext::movement_on_finished(Movement& movement) {
+
+  if (!movement.is_with_lua_table()) {
+    return;
+  }
 
   push_movement(l, movement);
   on_finished();

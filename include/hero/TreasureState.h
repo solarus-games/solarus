@@ -39,8 +39,9 @@ class Hero::TreasureState: public Hero::State {
     void start(State* previous_state);
     void stop(State* next_state);
     void draw_on_map();
-    CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
-    bool is_brandishing_treasure();
+    CarriedItem::Behavior get_previous_carried_item_behavior(
+        CarriedItem& carried_item);
+    bool is_brandishing_treasure() const;
 };
 
 #endif

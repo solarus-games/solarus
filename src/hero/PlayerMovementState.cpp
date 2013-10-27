@@ -45,10 +45,22 @@ Hero::PlayerMovementState::~PlayerMovementState() {
  * This function should be called only when the movement of the hero is
  * an instance of PlayerMovement.
  *
- * \return the movement
+ * \return The movement.
  */
 PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
   return static_cast<PlayerMovement*>(hero.get_movement());
+}
+
+/**
+ * \brief Returns the movement of the hero controlled by the player.
+ *
+ * This function should be called only when the movement of the hero is
+ * an instance of PlayerMovement.
+ *
+ * \return The movement.
+ */
+const PlayerMovement* Hero::PlayerMovementState::get_player_movement() const {
+  return static_cast<const PlayerMovement*>(hero.get_movement());
 }
 
 /**
@@ -174,7 +186,7 @@ void Hero::PlayerMovementState::set_animation_walking() {
  * \brief Returns whether the player can control his movements in the current state.
  * \return true if the player can control his movements
  */
-bool Hero::PlayerMovementState::can_control_movement() {
+bool Hero::PlayerMovementState::can_control_movement() const {
   return true;
 }
 
@@ -187,7 +199,7 @@ bool Hero::PlayerMovementState::can_control_movement() {
  *
  * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::PlayerMovementState::get_wanted_movement_direction8() {
+int Hero::PlayerMovementState::get_wanted_movement_direction8() const {
   return get_player_movement()->get_wanted_direction8();
 }
 
@@ -249,7 +261,7 @@ void Hero::PlayerMovementState::notify_layer_changed() {
  * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
-bool Hero::PlayerMovementState::can_be_hurt(Enemy* attacker) {
+bool Hero::PlayerMovementState::can_be_hurt(Enemy* attacker) const {
   return true;
 }
 
@@ -258,7 +270,7 @@ bool Hero::PlayerMovementState::can_be_hurt(Enemy* attacker) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 
@@ -270,7 +282,7 @@ bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) {
  *
  * \return \c true if the hero can use jumpers in this state.
  */
-bool Hero::PlayerMovementState::can_take_jumper() {
+bool Hero::PlayerMovementState::can_take_jumper() const {
   return true;
 }
 

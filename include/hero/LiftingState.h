@@ -33,7 +33,7 @@ class Hero::LiftingState: public Hero::State {
     void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
-    bool can_be_hurt(Enemy* attacker);
+    bool can_be_hurt(Enemy* attacker) const;
 
   private:
 

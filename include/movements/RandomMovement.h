@@ -27,6 +27,23 @@
  */
 class RandomMovement: public StraightMovement {
 
+  public:
+
+    RandomMovement(int speed, int max_distance = 0);
+    ~RandomMovement();
+
+    virtual void notify_object_controlled();
+    void update();
+    void set_suspended(bool suspended);
+
+    void set_max_distance(int max_distance);  // TODO rename to avoid to hide the parent
+
+    virtual const std::string& get_lua_type_name() const;
+
+  protected:
+
+    virtual void notify_obstacle_reached();
+
   private:
 
     int normal_speed;                                   /**< speed of this movement */
@@ -37,22 +54,6 @@ class RandomMovement: public StraightMovement {
 
     void set_next_direction();
 
-  protected:
-
-    virtual void notify_obstacle_reached();
-
-  public:
-
-    RandomMovement(int speed, int max_distance = 0);
-    ~RandomMovement();
-
-    virtual void notify_object_controlled();
-    void update();
-    void set_suspended(bool suspended);
-
-    void set_max_distance(int max_distance);
-
-    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

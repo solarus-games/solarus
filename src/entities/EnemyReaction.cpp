@@ -89,11 +89,14 @@ void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType react
  * \param sprite the sprite that receives the attack
  * \return the corresponding reaction
  */
-const EnemyReaction::Reaction& EnemyReaction::get_reaction(const Sprite* sprite) {
+const EnemyReaction::Reaction& EnemyReaction::get_reaction(
+    const Sprite* sprite) const {
 
   if (sprite != NULL) {
-    if (sprite_reactions.count(sprite) > 0) {
-      return sprite_reactions[sprite];
+    std::map<const Sprite*, Reaction>::const_iterator it =
+        sprite_reactions.find(sprite);
+    if (it != sprite_reactions.end()) {
+      return it->second;
     }
   }
   return general_reaction;

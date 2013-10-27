@@ -71,7 +71,7 @@ EntityType Bomb::get_type() const {
  *
  * \return true if this type of entity can be obstacle for other entities
  */
-bool Bomb::can_be_obstacle() {
+bool Bomb::can_be_obstacle() const {
   return false;
 }
 
@@ -79,7 +79,7 @@ bool Bomb::can_be_obstacle() {
  * \brief Returns whether this entity has to be drawn in y order.
  * \return true if this type of entity is drawn at the same level as the hero
  */
-bool Bomb::is_drawn_in_y_order() {
+bool Bomb::is_drawn_in_y_order() const {
   return true;
 }
 
@@ -88,7 +88,7 @@ bool Bomb::is_drawn_in_y_order() {
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Bomb::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool Bomb::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
   return false;
 }
 
@@ -97,7 +97,7 @@ bool Bomb::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Bomb::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Bomb::is_teletransporter_obstacle(const Teletransporter& teletransporter) const {
   return false;
 }
 
@@ -105,7 +105,7 @@ bool Bomb::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
  * \return true if the deep water tiles are currently an obstacle for this entity
  */
-bool Bomb::is_deep_water_obstacle() {
+bool Bomb::is_deep_water_obstacle() const {
   return false;
 }
 
@@ -113,7 +113,7 @@ bool Bomb::is_deep_water_obstacle() {
  * \brief Returns whether a hole is currently considered as an obstacle for this entity.
  * \return true if the holes are currently an obstacle for this entity
  */
-bool Bomb::is_hole_obstacle() {
+bool Bomb::is_hole_obstacle() const {
   return false;
 }
 
@@ -121,7 +121,7 @@ bool Bomb::is_hole_obstacle() {
  * \brief Returns whether lava is currently considered as an obstacle for this entity.
  * \return true if lava is currently an obstacle for this entity
  */
-bool Bomb::is_lava_obstacle() {
+bool Bomb::is_lava_obstacle() const {
   return false;
 }
 
@@ -129,7 +129,7 @@ bool Bomb::is_lava_obstacle() {
  * \brief Returns whether prickles are currently considered as an obstacle for this entity.
  * \return true if prickles are currently an obstacle for this entity
  */
-bool Bomb::is_prickle_obstacle() {
+bool Bomb::is_prickle_obstacle() const {
   return false;
 }
 
@@ -137,7 +137,7 @@ bool Bomb::is_prickle_obstacle() {
  * \brief Returns whether a ladder is currently considered as an obstacle for this entity.
  * \return true if the ladders are currently an obstacle for this entity
  */
-bool Bomb::is_ladder_obstacle() {
+bool Bomb::is_ladder_obstacle() const {
   return false;
 }
 

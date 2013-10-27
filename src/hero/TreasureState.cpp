@@ -110,7 +110,8 @@ void Hero::TreasureState::draw_on_map() {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior(
+    CarriedItem& carried_item) {
   return CarriedItem::BEHAVIOR_DESTROY;
 }
 
@@ -118,7 +119,7 @@ CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior(Ca
  * \brief Returns whether the hero is brandishing a treasure in this state.
  * \return \c true if the hero is brandishing a treasure.
  */
-bool Hero::TreasureState::is_brandishing_treasure() {
+bool Hero::TreasureState::is_brandishing_treasure() const {
   return true;
 }
 

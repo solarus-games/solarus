@@ -115,7 +115,7 @@ void Hero::PullingState::update() {
  * \brief Returns whether the hero is grabbing or pulling an entity in this state.
  * \return true if the hero is grabbing or pulling an entity
  */
-bool Hero::PullingState::is_grabbing_or_pulling() {
+bool Hero::PullingState::is_grabbing_or_pulling() const {
   return true;
 }
 
@@ -123,7 +123,7 @@ bool Hero::PullingState::is_grabbing_or_pulling() {
  * \brief Returns whether the hero is grabbing and moving an entity in this state.
  * \return true if the hero is grabbing and moving an entity
  */
-bool Hero::PullingState::is_moving_grabbed_entity() {
+bool Hero::PullingState::is_moving_grabbed_entity() const {
   return pulled_entity != NULL;
 }
 
@@ -222,10 +222,13 @@ void Hero::PullingState::stop_moving_pulled_entity() {
         hero.set_y(pulled_entity->get_y() - 16);
         break;
     }
-  }
-  pulled_entity = NULL;
 
-  hero.clear_movement();
+    hero.clear_movement();
+    MapEntity* entity_just_moved = pulled_entity;
+    pulled_entity = NULL;
+    entity_just_moved->notify_moved_by(hero);
+  }
+
   hero.set_state(new GrabbingState(hero));
 }
 
@@ -235,7 +238,7 @@ void Hero::PullingState::stop_moving_pulled_entity() {
  * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
-bool Hero::PullingState::can_be_hurt(Enemy* attacker) {
+bool Hero::PullingState::can_be_hurt(Enemy* attacker) const {
   return !is_moving_grabbed_entity();
 }
 
@@ -244,7 +247,7 @@ bool Hero::PullingState::can_be_hurt(Enemy* attacker) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::PullingState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::PullingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 
@@ -252,7 +255,7 @@ bool Hero::PullingState::can_pick_treasure(EquipmentItem& item) {
  * \brief Returns whether shallow water is considered as an obstacle in this state.
  * \return true if shallow water is considered as an obstacle in this state
  */
-bool Hero::PullingState::is_shallow_water_obstacle() {
+bool Hero::PullingState::is_shallow_water_obstacle() const {
   return true;
 }
 
@@ -260,7 +263,7 @@ bool Hero::PullingState::is_shallow_water_obstacle() {
  * \brief Returns whether deep water is considered as an obstacle in this state.
  * \return true if deep water is considered as an obstacle in this state
  */
-bool Hero::PullingState::is_deep_water_obstacle() {
+bool Hero::PullingState::is_deep_water_obstacle() const {
   return true;
 }
 
@@ -268,7 +271,7 @@ bool Hero::PullingState::is_deep_water_obstacle() {
  * \brief Returns whether a hole is considered as an obstacle in this state.
  * \return true if the holes are considered as obstacles in this state
  */
-bool Hero::PullingState::is_hole_obstacle() {
+bool Hero::PullingState::is_hole_obstacle() const {
   return true;
 }
 
@@ -276,7 +279,7 @@ bool Hero::PullingState::is_hole_obstacle() {
  * \brief Returns whether lava is considered as an obstacle in this state.
  * \return true if lava is considered as obstacles in this state
  */
-bool Hero::PullingState::is_lava_obstacle() {
+bool Hero::PullingState::is_lava_obstacle() const {
   return true;
 }
 
@@ -284,7 +287,7 @@ bool Hero::PullingState::is_lava_obstacle() {
  * \brief Returns whether prickles are considered as an obstacle in this state.
  * \return true if prickles are considered as obstacles in this state
  */
-bool Hero::PullingState::is_prickle_obstacle() {
+bool Hero::PullingState::is_prickle_obstacle() const {
   return true;
 }
 
@@ -293,14 +296,16 @@ bool Hero::PullingState::is_prickle_obstacle() {
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is an obstacle in this state
  */
-bool Hero::PullingState::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool Hero::PullingState::is_conveyor_belt_obstacle(
+    const ConveyorBelt& conveyor_belt) const {
   return true;
 }
 
 /**
  * \copydoc Hero::State::is_separator_obstacle
  */
-bool Hero::PullingState::is_separator_obstacle(Separator& separator) {
+bool Hero::PullingState::is_separator_obstacle(
+    const Separator& separator) const {
   return true;
 }
 

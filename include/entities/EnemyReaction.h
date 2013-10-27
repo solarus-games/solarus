@@ -65,7 +65,7 @@ class EnemyReaction {
     void set_default_reaction();
     void set_general_reaction(ReactionType reaction, int life_lost = 0);
     void set_sprite_reaction(const Sprite* sprite, ReactionType reaction, int life_lost = 0);
-    const Reaction& get_reaction(const Sprite* sprite);
+    const Reaction& get_reaction(const Sprite* sprite) const;
 
     static const std::string& get_reaction_name(ReactionType reaction);
     static ReactionType get_reaction_by_name(const std::string& name);

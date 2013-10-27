@@ -344,7 +344,7 @@ bool HeroSprites::is_walking() {
  *
  * \return the direction of the sprites (0 to 3)
  */
-int HeroSprites::get_animation_direction() {
+int HeroSprites::get_animation_direction() const {
   return tunic_sprite->get_current_direction();
 }
 
@@ -355,7 +355,7 @@ int HeroSprites::get_animation_direction() {
  *
  * \return the direction of the sprites (0 to 7, except diagonal directions)
  */
-int HeroSprites::get_animation_direction8() {
+int HeroSprites::get_animation_direction8() const {
   return get_animation_direction() * 2;
 }
 
@@ -373,7 +373,8 @@ int HeroSprites::get_animation_direction8() {
  * \return the direction of the sprites corresponding to these arrows (0 to 3),
  * or -1 if the directional keys combination is illegal
  */
-int HeroSprites::get_animation_direction(int keys_direction, int real_movement_direction) {
+int HeroSprites::get_animation_direction(
+    int keys_direction, int real_movement_direction) const {
 
   int result;
 
@@ -460,7 +461,7 @@ bool HeroSprites::is_animation_finished() {
  * \brief Returns the current frame of the tunic sprite.
  * \return the current frame
  */
-int HeroSprites::get_current_frame() {
+int HeroSprites::get_current_frame() const {
   return tunic_sprite->get_current_frame();
 }
 

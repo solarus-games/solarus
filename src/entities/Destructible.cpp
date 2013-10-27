@@ -113,7 +113,7 @@ EntityType Destructible::get_type() const {
  *
  * \return true if this entity is drawn at the same level as the hero
  */
-bool Destructible::is_drawn_in_y_order() {
+bool Destructible::is_drawn_in_y_order() const {
   return false;
 }
 
@@ -170,7 +170,7 @@ const std::string& Destructible::get_destruction_sound_id() {
  * \param other another entity
  * \return true if this entity is an obstacle for others
  */
-bool Destructible::is_obstacle_for(MapEntity& other) {
+bool Destructible::is_obstacle_for(const MapEntity& other) const {
   return features[subtype].can_be_lifted && !is_being_cut && other.is_destructible_obstacle(*this);
 }
 

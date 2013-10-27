@@ -114,7 +114,7 @@ EntityType Door::get_type() const {
  * \param other another entity
  * \return true
  */
-bool Door::is_obstacle_for(MapEntity& other) {
+bool Door::is_obstacle_for(const MapEntity& other) const {
   return !is_open();
 }
 
@@ -438,7 +438,7 @@ bool Door::can_open() const {
         return false;
       }
 
-      Savegame& savegame = get_savegame();
+      const Savegame& savegame = get_savegame();
       if (savegame.is_boolean(required_savegame_variable)) {
         return savegame.get_boolean(required_savegame_variable);
       }

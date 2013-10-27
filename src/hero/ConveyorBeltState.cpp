@@ -46,7 +46,7 @@ Hero::ConveyorBeltState::~ConveyorBeltState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::ConveyorBeltState::start(State *previous_state) {
+void Hero::ConveyorBeltState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -62,7 +62,7 @@ void Hero::ConveyorBeltState::start(State *previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::ConveyorBeltState::stop(State *next_state) {
+void Hero::ConveyorBeltState::stop(State* next_state) {
 
   State::stop(next_state);
 
@@ -116,7 +116,7 @@ void Hero::ConveyorBeltState::update() {
  * \brief Returns whether the hero ignores the effect of teletransporters in this state.
  * \return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::ConveyorBeltState::can_avoid_teletransporter() {
+bool Hero::ConveyorBeltState::can_avoid_teletransporter() const {
   return true; // ignore the teletransporter until the conveyor belt is finished
 }
 
@@ -124,7 +124,7 @@ bool Hero::ConveyorBeltState::can_avoid_teletransporter() {
  * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * \return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::ConveyorBeltState::can_avoid_conveyor_belt() {
+bool Hero::ConveyorBeltState::can_avoid_conveyor_belt() const {
   return true;
 }
 

@@ -274,7 +274,7 @@ void Hero::StairsState::set_suspended(bool suspended) {
  * \brief Returns whether the hero is touching the ground in the current state.
  * \return \c true if the hero is touching the ground in the current state.
  */
-bool Hero::StairsState::is_touching_ground() {
+bool Hero::StairsState::is_touching_ground() const {
   // To avoid falling to the lower layer when going upstairs
   // with INSIDE_FLOOR stairs.
   return false;
@@ -285,7 +285,7 @@ bool Hero::StairsState::is_touching_ground() {
  * as a place to come back after a bad ground (hole, deep water, etc).
  * \return true if the hero can come back here
  */
-bool Hero::StairsState::can_come_from_bad_ground() {
+bool Hero::StairsState::can_come_from_bad_ground() const {
   return false;
 }
 
@@ -297,7 +297,7 @@ bool Hero::StairsState::can_come_from_bad_ground() {
  *
  * \return true if the effect of teletransporters is delayed in this state
  */
-bool Hero::StairsState::is_teletransporter_delayed() {
+bool Hero::StairsState::is_teletransporter_delayed() const {
   return true;
 }
 
@@ -310,7 +310,7 @@ bool Hero::StairsState::is_teletransporter_delayed() {
  *
  * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::StairsState::get_wanted_movement_direction8() {
+int Hero::StairsState::get_wanted_movement_direction8() const {
   return get_sprites().get_animation_direction8();
 }
 

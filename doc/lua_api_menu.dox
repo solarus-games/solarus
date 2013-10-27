@@ -185,7 +185,7 @@ Menus on top are notified first.
 
 \subsection lua_api_menu_on_character_pressed menu:on_character_pressed(character)
 
-Called when the user presses a keyboard key mapped to a character
+Called when the user enters text
 while your menu is active.
 Menus on top are notified first.
 - \c character (string): A utf-8 string representing the character that was

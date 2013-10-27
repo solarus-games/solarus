@@ -96,7 +96,7 @@ void Hero::CarryingState::stop(State* next_state) {
  * \brief Changes the map.
  * \param map the new map
  */
-void Hero::CarryingState::set_map(Map &map) {
+void Hero::CarryingState::set_map(Map& map) {
 
   PlayerMovementState::set_map(map);
 
@@ -180,7 +180,7 @@ void Hero::CarryingState::throw_item() {
  * \brief Returns whether the hero can swing his sword in this state.
  * \return true if the hero can swing his sword in this state
  */
-bool Hero::CarryingState::can_start_sword() {
+bool Hero::CarryingState::can_start_sword() const {
   return true;
 }
 
@@ -189,7 +189,7 @@ bool Hero::CarryingState::can_start_sword() {
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  * \return true if the hero ignores the effect of stairs in this state
  */
-bool Hero::CarryingState::can_take_stairs() {
+bool Hero::CarryingState::can_take_stairs() const {
   return true;
 }
 
@@ -234,7 +234,8 @@ void Hero::CarryingState::destroy_carried_item() {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior(
+    CarriedItem& carried_item) {
 
   return CarriedItem::BEHAVIOR_KEEP;
 }

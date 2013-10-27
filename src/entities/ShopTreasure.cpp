@@ -137,7 +137,7 @@ const std::string& ShopTreasure::get_dialog_id() const {
  *
  * \return true if the sword is ignored
  */
-bool ShopTreasure::is_sword_ignored() {
+bool ShopTreasure::is_sword_ignored() const {
   return true;
 }
 
@@ -146,7 +146,7 @@ bool ShopTreasure::is_sword_ignored() {
  * \param other another entity
  * \return true
  */
-bool ShopTreasure::is_obstacle_for(MapEntity &other) {
+bool ShopTreasure::is_obstacle_for(const MapEntity& other) const {
   return true;
 }
 
@@ -158,7 +158,8 @@ bool ShopTreasure::is_obstacle_for(MapEntity &other) {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void ShopTreasure::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void ShopTreasure::notify_collision(
+    MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping.is_hero() && !get_game().is_suspended()) {
 

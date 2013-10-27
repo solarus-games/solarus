@@ -60,7 +60,6 @@ Stairs::Stairs(
  * \brief Destructor.
  */
 Stairs::~Stairs() {
-
 }
 
 /**
@@ -75,7 +74,7 @@ EntityType Stairs::get_type() const {
  * \brief Returns whether entities of this type can be drawn.
  * \return \c true if this type of entity can be drawn.
  */
-bool Stairs::can_be_drawn() {
+bool Stairs::can_be_drawn() const {
   return false;
 }
 
@@ -136,7 +135,7 @@ bool Stairs::has_layer_independent_collisions() const {
  *
  * \return \c true if the sword is ignored.
  */
-bool Stairs::is_sword_ignored() {
+bool Stairs::is_sword_ignored() const {
   return true;
 }
 
@@ -146,7 +145,7 @@ bool Stairs::is_sword_ignored() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Stairs::is_obstacle_for(MapEntity& other) {
+bool Stairs::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_stairs_obstacle(*this);
 }

@@ -48,22 +48,22 @@ class PathMovement: public PixelMovement {
     void notify_object_controlled();
     virtual void update();
     virtual void set_suspended(bool suspended);
-    virtual bool is_finished();
+    virtual bool is_finished() const;
     void restart();
 
-    const std::string& get_path();
+    const std::string& get_path() const;
     void set_path(const std::string& path);
-    int get_speed();
+    int get_speed() const;
     void set_speed(int speed);
-    bool get_loop();
+    bool get_loop() const;
     void set_loop(bool loop);
-    bool get_snap_to_grid();
+    bool get_snap_to_grid() const;
     void set_snap_to_grid(bool snap_to_grid);
 
-    Rectangle get_xy_change();
-    int get_current_direction();
-    int get_total_distance_covered();
-    int get_displayed_direction4();
+    Rectangle get_xy_change() const;
+    int get_current_direction() const;
+    int get_total_distance_covered() const;
+    int get_displayed_direction4() const;
 
     static const std::string create_random_path();
 
@@ -74,6 +74,14 @@ class PathMovement: public PixelMovement {
     void notify_step_done(int step_index, bool success);
 
   private:
+
+    static uint32_t speed_to_delay(int speed, int direction);
+
+    void start_next_elementary_move();
+    bool is_current_elementary_move_finished() const;
+
+    void snap();
+    void set_snapping_trajectory(const Rectangle& src, const Rectangle& dst);
 
     std::string initial_path;					/**< the path: each character is a direction ('0' to '7')
 								* and corresponds to a trajectory of 8 pixels (performed by PixelMovement) */
@@ -92,13 +100,6 @@ class PathMovement: public PixelMovement {
 
     static const std::string elementary_moves[];		/**< 8 pixel trajectory (in the PixelMovement sense) for each direction (0 to 7) */
 
-    static uint32_t speed_to_delay(int speed, int direction);
-
-    void start_next_elementary_move();
-    bool is_current_elementary_move_finished();
-
-    void snap();
-    void set_snapping_trajectory(const Rectangle& src, const Rectangle& dst);
 };
 
 #endif

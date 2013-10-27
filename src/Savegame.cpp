@@ -107,7 +107,7 @@ Savegame::~Savegame() {
  * \brief Returns whether this is a new save.
  * \return true if there is no savegame file with this name yet
  */
-bool Savegame::is_empty() {
+bool Savegame::is_empty() const {
   return empty;
 }
 
@@ -296,7 +296,7 @@ void Savegame::save() {
  * \brief Returns the name of the file where the data is saved.
  * \return the file name of this savegame
  */
-const std::string& Savegame::get_file_name() {
+const std::string& Savegame::get_file_name() const {
   return file_name;
 }
 
@@ -318,9 +318,17 @@ LuaContext& Savegame::get_lua_context() {
 
 /**
  * \brief Returns the player's equipment corresponding to this savegame.
- * \return the equipment
+ * \return The equipment.
  */
 Equipment& Savegame::get_equipment() {
+  return equipment;
+}
+
+/**
+ * \brief Returns the player's equipment corresponding to this savegame.
+ * \return The equipment.
+ */
+const Equipment& Savegame::get_equipment() const {
   return equipment;
 }
 
@@ -361,14 +369,15 @@ void Savegame::notify_game_finished() {
  * \param key Name of the value to get.
  * \return true if this value exists and is a string.
  */
-bool Savegame::is_string(const std::string& key) {
+bool Savegame::is_string(const std::string& key) const {
 
   Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
       "Savegame variable '" << key << "' is not a valid key");
 
   bool result = false;
-  if (saved_values.count(key) > 0) {
-    const SavedValue& value = saved_values[key];
+  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  if (it != saved_values.end()) {
+    const SavedValue& value = it->second;
     result = (value.type == SavedValue::VALUE_STRING);
   }
   return result;
@@ -379,13 +388,14 @@ bool Savegame::is_string(const std::string& key) {
  * \param key Name of the value to get.
  * \return The string value associated with this key or an empty string.
  */
-const std::string& Savegame::get_string(const std::string& key) {
+const std::string& Savegame::get_string(const std::string& key) const {
 
   Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
       "Savegame variable '" << key << "' is not a valid key");
 
-  if (saved_values.count(key) > 0) {
-    const SavedValue& value = saved_values[key];
+  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  if (it != saved_values.end()) {
+    const SavedValue& value = it->second;
     Debug::check_assertion(value.type == SavedValue::VALUE_STRING, StringConcat() <<
         "Value '" << key << "' is not a string");
     return value.string_data;
@@ -414,14 +424,15 @@ void Savegame::set_string(const std::string& key, const std::string& value) {
  * \param key Name of the value to get.
  * \return true if this value exists and is an integer.
  */
-bool Savegame::is_integer(const std::string& key) {
+bool Savegame::is_integer(const std::string& key) const {
 
   Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
       "Savegame variable '" << key << "' is not a valid key");
 
   bool result = false;
-  if (saved_values.count(key) > 0) {
-    const SavedValue& value = saved_values[key];
+  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  if (it != saved_values.end()) {
+    const SavedValue& value = it->second;
     result = (value.type == SavedValue::VALUE_INTEGER);
   }
   return result;
@@ -432,14 +443,15 @@ bool Savegame::is_integer(const std::string& key) {
  * \param key Name of the value to get.
  * \return The integer value associated with this key or 0.
  */
-int Savegame::get_integer(const std::string& key) {
+int Savegame::get_integer(const std::string& key) const {
 
   Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
       "Savegame variable '" << key << "' is not a valid key");
 
   int result = 0;
-  if (saved_values.count(key) > 0) {
-    const SavedValue& value = saved_values[key];
+  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  if (it != saved_values.end()) {
+    const SavedValue& value = it->second;
     Debug::check_assertion(value.type == SavedValue::VALUE_INTEGER, StringConcat() <<
         "Value '" << key << "' is not an integer");
     result = value.int_data;
@@ -466,14 +478,15 @@ void Savegame::set_integer(const std::string& key, int value) {
  * \param key Name of the value to get.
  * \return true if this value exists and is a boolean.
  */
-bool Savegame::is_boolean(const std::string& key) {
+bool Savegame::is_boolean(const std::string& key) const {
 
   Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
       "Savegame variable '" << key << "' is not a valid key");
 
   bool result = false;
-  if (saved_values.count(key) > 0) {
-    const SavedValue& value = saved_values[key];
+  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  if (it != saved_values.end()) {
+    const SavedValue& value = it->second;
     result = (value.type == SavedValue::VALUE_BOOLEAN);
   }
   return result;
@@ -484,14 +497,15 @@ bool Savegame::is_boolean(const std::string& key) {
  * \param key Name of the value to get.
  * \return The boolean value associated with this key or false.
  */
-bool Savegame::get_boolean(const std::string& key) {
+bool Savegame::get_boolean(const std::string& key) const {
 
   Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
       "Savegame variable '" << key << "' is not a valid key");
 
   bool result = false;
-  if (saved_values.count(key) > 0) {
-    const SavedValue& value = saved_values[key];
+  std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
+  if (it != saved_values.end()) {
+    const SavedValue& value = it->second;
     Debug::check_assertion(value.type == SavedValue::VALUE_BOOLEAN, StringConcat() <<
         "Value '" << key << "' is not a boolean");
     result = value.int_data != 0;

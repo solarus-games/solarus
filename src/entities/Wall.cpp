@@ -71,7 +71,7 @@ EntityType Wall::get_type() const {
  * \brief Returns whether entities of this type can be drawn.
  * \return true if this type of entity can be drawn
  */
-bool Wall::can_be_drawn() {
+bool Wall::can_be_drawn() const {
   return false;
 }
 
@@ -81,7 +81,10 @@ bool Wall::can_be_drawn() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Wall::is_obstacle_for(MapEntity &other) {
-  return entity_types_stopped[other.get_type()];
+bool Wall::is_obstacle_for(const MapEntity& other) const {
+
+  std::map<EntityType, bool>::const_iterator it =
+      entity_types_stopped.find(other.get_type());
+  return it != entity_types_stopped.end() && it->second;
 }
 

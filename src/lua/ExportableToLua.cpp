@@ -22,7 +22,9 @@
  * \brief Creates an object exportable to Lua.
  */
 ExportableToLua::ExportableToLua():
-  refcount(0) {
+  refcount(0),
+  known_to_lua(false),
+  with_lua_table(false) {
 
 }
 
@@ -33,6 +35,47 @@ ExportableToLua::~ExportableToLua() {
 
   Debug::check_assertion(refcount == 0, StringConcat()
       << "This object is still used somewhere else: refcount is " << refcount);
+}
+
+/**
+ * \brief Returns whether this object was exported in the Lua side.
+ *
+ * This stays \c true even if the object was collected from Lua.
+ *
+ * \param known_to_lua \c true if this object was exported in the Lua side
+ * at least once.
+ */
+bool ExportableToLua::is_known_to_lua() const {
+  return known_to_lua;
+}
+
+/**
+ * \brief Sets whether this object was exported in the Lua side.
+ * \param known_to_lua \c true if this object was exported in the Lua side
+ * at least once.
+ */
+void ExportableToLua::set_known_to_lua(bool known_to_lua) {
+  this->known_to_lua = known_to_lua;
+}
+
+/**
+ * \brief Returns whether this userdata has an associated table in Lua.
+ *
+ * This is the case if __newindex was called at least once for the userdata.
+ * It might be \c true even if the userdata does not exist anymore in Lua.
+ *
+ * \return \c true if there is a Lua table for this userdata.
+ */
+bool ExportableToLua::is_with_lua_table() const {
+  return with_lua_table;
+}
+
+/**
+ * \brief Sets whether this userdata has an associated table in Lua.
+ * \param with_lua_table \c true if there is a Lua table for this userdata.
+ */
+void ExportableToLua::set_with_lua_table(bool with_lua_table) {
+  this->with_lua_table = with_lua_table;
 }
 
 /**

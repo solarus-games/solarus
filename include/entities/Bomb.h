@@ -32,15 +32,15 @@ class Bomb: public Detector {
 
     EntityType get_type() const;
 
-    bool can_be_obstacle();
-    bool is_drawn_in_y_order();
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_deep_water_obstacle();
-    bool is_hole_obstacle();
-    bool is_lava_obstacle();
-    bool is_prickle_obstacle();
-    bool is_ladder_obstacle();
+    bool can_be_obstacle() const;
+    bool is_drawn_in_y_order() const;
+    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    bool is_deep_water_obstacle() const;
+    bool is_hole_obstacle() const;
+    bool is_lava_obstacle() const;
+    bool is_prickle_obstacle() const;
+    bool is_ladder_obstacle() const;
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);

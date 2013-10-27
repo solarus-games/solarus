@@ -83,7 +83,7 @@ EntityType Hookshot::get_type() const {
  *
  * \return true if this type of entity can be obstacle for other entities
  */
-bool Hookshot::can_be_obstacle() {
+bool Hookshot::can_be_obstacle() const {
   return false;
 }
 
@@ -91,7 +91,7 @@ bool Hookshot::can_be_obstacle() {
  * \brief Returns whether this entity has to be drawn in y order.
  * \return true if this type of entity is drawn at the same level as the hero
  */
-bool Hookshot::is_drawn_in_y_order() {
+bool Hookshot::is_drawn_in_y_order() const {
   return true;
 }
 
@@ -100,7 +100,8 @@ bool Hookshot::is_drawn_in_y_order() {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Hookshot::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Hookshot::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
   return false;
 }
 
@@ -109,7 +110,8 @@ bool Hookshot::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Hookshot::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool Hookshot::is_conveyor_belt_obstacle(
+    const ConveyorBelt& conveyor_belt) const {
   return false;
 }
 
@@ -118,7 +120,7 @@ bool Hookshot::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool Hookshot::is_stairs_obstacle(Stairs& stairs) {
+bool Hookshot::is_stairs_obstacle(const Stairs& stairs) const {
   return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
@@ -126,7 +128,7 @@ bool Hookshot::is_stairs_obstacle(Stairs& stairs) {
  * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
  * \return true if the deep water tiles are currently an obstacle for this entity
  */
-bool Hookshot::is_deep_water_obstacle() {
+bool Hookshot::is_deep_water_obstacle() const {
   return false;
 }
 
@@ -134,7 +136,7 @@ bool Hookshot::is_deep_water_obstacle() {
  * \brief Returns whether a hole is currently considered as an obstacle for this entity.
  * \return true if the holes are currently an obstacle for this entity
  */
-bool Hookshot::is_hole_obstacle() {
+bool Hookshot::is_hole_obstacle() const {
   return false;
 }
 
@@ -142,7 +144,7 @@ bool Hookshot::is_hole_obstacle() {
  * \brief Returns whether lava is currently considered as an obstacle for this entity.
  * \return true if lava is currently an obstacle for this entity
  */
-bool Hookshot::is_lava_obstacle() {
+bool Hookshot::is_lava_obstacle() const {
   return false;
 }
 
@@ -150,7 +152,7 @@ bool Hookshot::is_lava_obstacle() {
  * \brief Returns whether prickles are currently considered as an obstacle for this entity.
  * \return true if prickles are currently an obstacle for this entity
  */
-bool Hookshot::is_prickle_obstacle() {
+bool Hookshot::is_prickle_obstacle() const {
   return false;
 }
 
@@ -158,7 +160,7 @@ bool Hookshot::is_prickle_obstacle() {
  * \brief Returns whether a ladder is currently considered as an obstacle for this entity.
  * \return true if the ladders are currently an obstacle for this entity
  */
-bool Hookshot::is_ladder_obstacle() {
+bool Hookshot::is_ladder_obstacle() const {
   return false;
 }
 
@@ -167,7 +169,7 @@ bool Hookshot::is_ladder_obstacle() {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool Hookshot::is_switch_obstacle(Switch& sw) {
+bool Hookshot::is_switch_obstacle(const Switch& sw) const {
   return false;
 }
 
@@ -176,7 +178,7 @@ bool Hookshot::is_switch_obstacle(Switch& sw) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool Hookshot::is_crystal_obstacle(Crystal& crystal) {
+bool Hookshot::is_crystal_obstacle(const Crystal& crystal) const {
   return false;
 }
 
@@ -185,7 +187,7 @@ bool Hookshot::is_crystal_obstacle(Crystal& crystal) {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool Hookshot::is_jumper_obstacle(Jumper& jumper) {
+bool Hookshot::is_jumper_obstacle(const Jumper& jumper) const {
   return false;
 }
 
@@ -303,7 +305,7 @@ void Hookshot::draw_on_map() {
  * \brief Returns whether the hookshot is currently flying.
  * \return true if the hookshot was shot, is not going back and has not reached any target yet
  */
-bool Hookshot::is_flying() {
+bool Hookshot::is_flying() const {
   return !is_going_back() && entity_reached == NULL;
 }
 
@@ -311,7 +313,7 @@ bool Hookshot::is_flying() {
  * \brief Returns whether the hookshot is going back towards the hero, i.e. if go_back() has been called.
  * \return true if the hookshot is going back
  */
-bool Hookshot::is_going_back() {
+bool Hookshot::is_going_back() const {
   return has_to_go_back || going_back;
 }
 

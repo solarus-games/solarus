@@ -110,7 +110,15 @@ GameCommands::~GameCommands() {
  * \brief Returns the savegame.
  * \return The savegame.
  */
-Savegame& GameCommands::get_savegame() const {
+Savegame& GameCommands::get_savegame() {
+  return game.get_savegame();
+}
+
+/**
+ * \brief Returns the savegame.
+ * \return The savegame.
+ */
+const Savegame& GameCommands::get_savegame() const {
   return game.get_savegame();
 }
 

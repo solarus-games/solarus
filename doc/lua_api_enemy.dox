@@ -283,7 +283,7 @@ unless the ones that you override with
   - \c "ignored": Nothing happens. The weapon (if any) traverses the enemy.
   - \c "protected": The enemy stops the attack. A attack failure sound is
     played.
-  - \c "immobilize": The enemy is immobilized for a few seconds.
+  - \c "immobilized": The enemy is immobilized for a few seconds.
   - \c "custom": Event \ref lua_api_enemy_on_custom_attack_received
     "enemy:on_custom_attack_received()" is called.
 

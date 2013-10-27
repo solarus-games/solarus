@@ -92,7 +92,7 @@ class Enemy: public Detector {
         const Treasure& treasure);
 
     EntityType get_type() const;
-    bool is_drawn_in_y_order();
+    bool is_drawn_in_y_order() const;
     bool is_ground_observer() const;
 
     void set_map(Map& map);

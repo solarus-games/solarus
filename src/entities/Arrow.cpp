@@ -81,7 +81,7 @@ EntityType Arrow::get_type() const {
  *
  * \return true if this type of entity can be obstacle for other entities
  */
-bool Arrow::can_be_obstacle() {
+bool Arrow::can_be_obstacle() const {
   return false;
 }
 
@@ -89,7 +89,7 @@ bool Arrow::can_be_obstacle() {
  * \brief Returns whether this entity has to be drawn in y order.
  * \return true if this type of entity is drawn at the same level as the hero
  */
-bool Arrow::is_drawn_in_y_order() {
+bool Arrow::is_drawn_in_y_order() const {
   return true;
 }
 

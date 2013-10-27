@@ -202,7 +202,7 @@ bool MapEntity::is_hero() const {
  *
  * \return \c true if this type of entity can detect other entities.
  */
-bool MapEntity::is_detector() {
+bool MapEntity::is_detector() const {
   return false;
 }
 
@@ -217,7 +217,7 @@ bool MapEntity::is_detector() {
  *
  * \return \c true if this type of entity can be obstacle for other entities.
  */
-bool MapEntity::can_be_obstacle() {
+bool MapEntity::can_be_obstacle() const {
   return true;
 }
 
@@ -337,7 +337,7 @@ void MapEntity::update_ground_below() {
  *
  * \return true if this type of entity can be drawn
  */
-bool MapEntity::can_be_drawn() {
+bool MapEntity::can_be_drawn() const {
   return true;
 }
 
@@ -356,7 +356,7 @@ bool MapEntity::can_be_drawn() {
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
-bool MapEntity::is_drawn_in_y_order() {
+bool MapEntity::is_drawn_in_y_order() const {
   return false;
 }
 

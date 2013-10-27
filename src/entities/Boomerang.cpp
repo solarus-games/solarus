@@ -103,7 +103,7 @@ EntityType Boomerang::get_type() const {
  * \brief Returns whether entities of this type can be obstacles for other entities.
  * \return true if this type of entity can be obstacle for other entities
  */
-bool Boomerang::can_be_obstacle() {
+bool Boomerang::can_be_obstacle() const {
   return false;
 }
 
@@ -111,7 +111,7 @@ bool Boomerang::can_be_obstacle() {
  * \brief Returns whether entities of this type can be drawn.
  * \return true if this type of entity can be drawn
  */
-bool Boomerang::can_be_drawn() {
+bool Boomerang::can_be_drawn() const {
   return true;
 }
 

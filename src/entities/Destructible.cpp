@@ -113,7 +113,7 @@ EntityType Destructible::get_type() const {
  *
  * \return true if this entity is drawn at the same level as the hero
  */
-bool Destructible::is_drawn_in_y_order() {
+bool Destructible::is_drawn_in_y_order() const {
   return false;
 }
 

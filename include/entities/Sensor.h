@@ -35,7 +35,7 @@ class Sensor: public Detector {
     ~Sensor();
 
     EntityType get_type() const;
-    bool can_be_drawn();
+    bool can_be_drawn() const;
 
     bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);

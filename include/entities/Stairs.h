@@ -72,7 +72,7 @@ class Stairs: public Detector {
     ~Stairs();
 
     EntityType get_type() const;
-    bool can_be_drawn();
+    bool can_be_drawn() const;
     bool can_change_ground() const;
     Ground get_ground() const;
 

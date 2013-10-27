@@ -47,8 +47,8 @@ class Boomerang: public MapEntity {
     ~Boomerang();
 
     EntityType get_type() const;
-    bool can_be_obstacle();
-    bool can_be_drawn();
+    bool can_be_obstacle() const;
+    bool can_be_drawn() const;
 
     // obstacles
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);

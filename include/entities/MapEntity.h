@@ -58,14 +58,14 @@ class MapEntity: public ExportableToLua {
     virtual EntityType get_type() const = 0;
     const std::string& get_type_name() const;
     bool is_hero() const;
-    virtual bool is_detector();
-    virtual bool can_be_obstacle();
+    virtual bool is_detector() const;
+    virtual bool can_be_obstacle() const;
     virtual bool is_ground_observer() const;
     virtual const Rectangle get_ground_point() const;
     virtual bool is_ground_modifier() const;
     virtual Ground get_modified_ground() const;
-    virtual bool can_be_drawn();
-    virtual bool is_drawn_in_y_order();
+    virtual bool can_be_drawn() const;
+    virtual bool is_drawn_in_y_order() const;
     virtual bool is_drawn_at_its_position() const;
     bool is_drawn() const;
 

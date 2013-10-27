@@ -175,7 +175,7 @@ EntityType Enemy::get_type() const {
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
-bool Enemy::is_drawn_in_y_order() {
+bool Enemy::is_drawn_in_y_order() const {
   return drawn_in_y_order;
 }
 

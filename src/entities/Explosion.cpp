@@ -67,7 +67,7 @@ EntityType Explosion::get_type() const {
  *
  * \return true if this type of entity can be obstacle for other entities
  */
-bool Explosion::can_be_obstacle() {
+bool Explosion::can_be_obstacle() const {
   return false;
 }
 

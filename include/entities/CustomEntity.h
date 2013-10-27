@@ -47,13 +47,13 @@ class CustomEntity: public Detector {
     const std::string& get_model() const;
 
     /* TODO
-    bool can_be_obstacle();
+    bool can_be_obstacle() const;
     bool is_ground_observer() const;
     const Rectangle get_ground_point() const;
     bool is_ground_modifier() const;
     Ground get_modified_ground() const;
-    bool can_be_drawn();
-    bool is_drawn_in_y_order();
+    bool can_be_drawn() const;
+    bool is_drawn_in_y_order() const;
     bool is_drawn_at_its_position() const;
     const Rectangle get_facing_point() const;
     const Rectangle get_facing_point(int direction) const;

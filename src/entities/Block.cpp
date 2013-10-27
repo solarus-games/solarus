@@ -85,7 +85,7 @@ EntityType Block::get_type() const {
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
-bool Block::is_drawn_in_y_order() {
+bool Block::is_drawn_in_y_order() const {
   return get_sprite().get_size().get_height() > 16;
 }
 

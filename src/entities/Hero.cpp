@@ -123,7 +123,7 @@ EntityType Hero::get_type() const {
  * and before the entities with the feature.
  * \return true if this type of entity is drawn at the same level as the hero
  */
-bool Hero::is_drawn_in_y_order() {
+bool Hero::is_drawn_in_y_order() const {
   return true;
 }
 

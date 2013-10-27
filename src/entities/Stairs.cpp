@@ -75,7 +75,7 @@ EntityType Stairs::get_type() const {
  * \brief Returns whether entities of this type can be drawn.
  * \return \c true if this type of entity can be drawn.
  */
-bool Stairs::can_be_drawn() {
+bool Stairs::can_be_drawn() const {
   return false;
 }
 

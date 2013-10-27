@@ -71,7 +71,7 @@ EntityType Wall::get_type() const {
  * \brief Returns whether entities of this type can be drawn.
  * \return true if this type of entity can be drawn
  */
-bool Wall::can_be_drawn() {
+bool Wall::can_be_drawn() const {
   return false;
 }
 

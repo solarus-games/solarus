@@ -71,7 +71,7 @@ EntityType Bomb::get_type() const {
  *
  * \return true if this type of entity can be obstacle for other entities
  */
-bool Bomb::can_be_obstacle() {
+bool Bomb::can_be_obstacle() const {
   return false;
 }
 
@@ -79,7 +79,7 @@ bool Bomb::can_be_obstacle() {
  * \brief Returns whether this entity has to be drawn in y order.
  * \return true if this type of entity is drawn at the same level as the hero
  */
-bool Bomb::is_drawn_in_y_order() {
+bool Bomb::is_drawn_in_y_order() const {
   return true;
 }
 

@@ -91,7 +91,7 @@ EntityType Chest::get_type() const {
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
-bool Chest::is_drawn_in_y_order() {
+bool Chest::is_drawn_in_y_order() const {
   return get_sprite().get_max_size().get_height() > get_height();
 }
 

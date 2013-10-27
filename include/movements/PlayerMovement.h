@@ -29,14 +29,6 @@
  */
 class PlayerMovement: public StraightMovement {
 
-  protected:
-
-    int moving_speed;        /**< speed of the entity when it is moving */
-    int direction8;          /**< current direction of the movement (0 to 7), as defined by the directional keys
-                              * currently pressed by the player (when the movement allows them) or -1 */
-
-    void set_wanted_direction();
-
   public:
 
     // creation and destruction
@@ -45,10 +37,19 @@ class PlayerMovement: public StraightMovement {
 
     void update();
 
-    int get_moving_speed();
+    int get_moving_speed() const;
     void set_moving_speed(int moving_speed);
-    int get_wanted_direction8();
+    int get_wanted_direction8() const;
     void compute_movement();
+
+  protected:
+
+    void set_wanted_direction();
+
+    int moving_speed;        /**< speed of the entity when it is moving */
+    int direction8;          /**< current direction of the movement (0 to 7), as defined by the directional keys
+                              * currently pressed by the player (when the movement allows them) or -1 */
+
 };
 
 #endif

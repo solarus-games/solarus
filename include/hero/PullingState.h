@@ -42,18 +42,19 @@ class Hero::PullingState: public Hero::State {
     void notify_movement_finished();
     void notify_position_changed();
     void notify_obstacle_reached();
-    bool is_grabbing_or_pulling();
-    bool is_moving_grabbed_entity();
-    bool is_shallow_water_obstacle();
-    bool is_deep_water_obstacle();
-    bool is_hole_obstacle();
-    bool is_lava_obstacle();
-    bool is_prickle_obstacle();
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_separator_obstacle(Separator& separator);
+    bool is_grabbing_or_pulling() const;
+    bool is_moving_grabbed_entity() const;
+    bool is_shallow_water_obstacle() const;
+    bool is_deep_water_obstacle() const;
+    bool is_hole_obstacle() const;
+    bool is_lava_obstacle() const;
+    bool is_prickle_obstacle() const;
+    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    bool is_separator_obstacle(const Separator& separator) const;
 
-    bool can_be_hurt(Enemy* attacker);
-    bool can_pick_treasure(EquipmentItem& item);
+    bool can_be_hurt(Enemy* attacker) const;
+    bool can_pick_treasure(EquipmentItem& item) const;
+
 };
 
 #endif

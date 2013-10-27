@@ -1547,7 +1547,7 @@ If you want the corresponding higher-level game command (if any), see
 
 \subsection lua_api_map_on_character_pressed map:on_character_pressed(character)
 
-Called when the user presses a keyboard key mapped to a character
+Called when the user enters text
 while your map is active.
 - \c character (string): A utf-8 string representing the character that was
   pressed.

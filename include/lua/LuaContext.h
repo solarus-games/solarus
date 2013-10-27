@@ -260,7 +260,7 @@ class LuaContext {
     void item_on_pickable_created(EquipmentItem& item, Pickable& pickable);
     void item_on_pickable_movement_changed(EquipmentItem& item, Pickable& pickable, Movement& movement);  // TODO remove this, use movement:on_changed instead
     void item_on_obtaining(EquipmentItem& item, const Treasure& treasure);
-    void item_on_obtained(EquipmentItem& item, const Treasure& treasure);  // FIXME call from picked items too
+    void item_on_obtained(EquipmentItem& item, const Treasure& treasure);
     void item_on_variant_changed(EquipmentItem& item, int variant);
     void item_on_amount_changed(EquipmentItem& item, int amount);
     void item_on_using(EquipmentItem& item);

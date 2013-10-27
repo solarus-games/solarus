@@ -156,7 +156,7 @@ void Hero::SwimmingState::try_swim_faster() {
  * \brief Returns the normal swimming speed.
  * \return the swimming speed in pixels per second
  */
-int Hero::SwimmingState::get_slow_swimming_speed() {
+int Hero::SwimmingState::get_slow_swimming_speed() const {
   return hero.get_normal_walking_speed() / 2;
 }
 
@@ -164,7 +164,7 @@ int Hero::SwimmingState::get_slow_swimming_speed() {
  * \brief Returns the faster swimming speed.
  * \return the faster swimming speed in pixels per second
  */
-int Hero::SwimmingState::get_fast_swimming_speed() {
+int Hero::SwimmingState::get_fast_swimming_speed() const {
   return hero.get_normal_walking_speed();
 }
 
@@ -173,7 +173,7 @@ int Hero::SwimmingState::get_fast_swimming_speed() {
  * \param stairs some stairs
  * \return true if the stairs are obstacle in this state
  */
-bool Hero::SwimmingState::is_stairs_obstacle(Stairs& stairs) {
+bool Hero::SwimmingState::is_stairs_obstacle(const Stairs& stairs) const {
   return false;
 }
 
@@ -182,7 +182,7 @@ bool Hero::SwimmingState::is_stairs_obstacle(Stairs& stairs) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwimmingState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::SwimmingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 

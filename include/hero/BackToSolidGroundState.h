@@ -37,19 +37,21 @@ class Hero::BackToSolidGroundState: public Hero::State {
     void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
-    bool can_start_gameover_sequence();
-    bool is_hero_visible();
-    bool are_collisions_ignored();
-    bool can_avoid_deep_water();
-    bool can_avoid_hole();
-    bool can_avoid_ice();
-    bool can_avoid_lava();
-    bool can_avoid_prickle();
-    bool is_touching_ground();
-    bool can_avoid_conveyor_belt();
-    bool can_avoid_sensor();
-    bool can_avoid_switch();
-    bool can_avoid_explosion();
+
+    bool can_start_gameover_sequence() const;
+    bool is_hero_visible() const;
+    bool are_collisions_ignored() const;
+    bool can_avoid_deep_water() const;
+    bool can_avoid_hole() const;
+    bool can_avoid_ice() const;
+    bool can_avoid_lava() const;
+    bool can_avoid_prickle() const;
+    bool is_touching_ground() const;
+    bool can_avoid_teletransporter() const;
+    bool can_avoid_conveyor_belt() const;
+    bool can_avoid_sensor() const;
+    bool can_avoid_switch() const;
+    bool can_avoid_explosion() const;
 
   private:
 

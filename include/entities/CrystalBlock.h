@@ -55,13 +55,13 @@ class CrystalBlock: public Detector {
 
     EntityType get_type() const;
 
-    bool is_obstacle_for(MapEntity& other);
+    bool is_obstacle_for(const MapEntity& other) const;
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
 
     void update();
     void draw_on_map();
 
-    bool is_raised();
+    bool is_raised() const;
 };
 
 #endif

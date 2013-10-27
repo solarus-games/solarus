@@ -32,20 +32,20 @@ class Hero::HookshotState: public Hero::State {
     void start(State* previous_state);
     void stop(State* next_state);
 
-    bool is_touching_ground();
-    bool can_avoid_deep_water();
-    bool can_avoid_hole();
-    bool can_avoid_ice();
-    bool can_avoid_lava();
-    bool can_avoid_prickle();
-    bool can_avoid_teletransporter();
-    bool can_avoid_conveyor_belt();
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_sensor_obstacle(Sensor& sensor);
-    bool is_jumper_obstacle(Jumper& jumper);
-    bool can_avoid_switch();
-    bool can_be_hurt(Enemy* attacker);
-    bool can_pick_treasure(EquipmentItem& item);
+    bool is_touching_ground() const;
+    bool can_avoid_deep_water() const;
+    bool can_avoid_hole() const;
+    bool can_avoid_ice() const;
+    bool can_avoid_lava() const;
+    bool can_avoid_prickle() const;
+    bool can_avoid_teletransporter() const;
+    bool can_avoid_conveyor_belt() const;
+    bool is_stairs_obstacle(const Stairs& stairs) const;
+    bool is_sensor_obstacle(const Sensor& sensor) const;
+    bool is_jumper_obstacle(const Jumper& jumper) const;
+    bool can_avoid_switch() const;
+    bool can_be_hurt(Enemy* attacker) const;
+    bool can_pick_treasure(EquipmentItem& item) const;
     void notify_obstacle_reached();
 
   private:

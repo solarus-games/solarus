@@ -135,7 +135,7 @@ void Movement::notify_object_controlled() {
  * \brief Returns the x position of the object controlled by this movement.
  * \return the x position of the object controlled by this movement
  */
-int Movement::get_x() {
+int Movement::get_x() const {
 
   return get_xy().get_x();
 }
@@ -144,7 +144,7 @@ int Movement::get_x() {
  * \brief Returns the y position of the object controlled by this movement.
  * \return the y position of the object controlled by this movement
  */
-int Movement::get_y() {
+int Movement::get_y() const {
 
   return get_xy().get_y();
 }
@@ -153,7 +153,7 @@ int Movement::get_y() {
  * \brief Returns the coordinates of the object controlled by this movement.
  * \return The coordinates of the object controlled by this movement.
  */
-const Rectangle Movement::get_xy() {
+const Rectangle Movement::get_xy() const {
 
   if (entity != NULL) {
     // The object controlled is a map entity.
@@ -324,7 +324,7 @@ void Movement::notify_movement_finished() {
  * \brief Returns whether the movement is stopped.
  * \return true if the object is stopped, false otherwise
  */
-bool Movement::is_stopped() {
+bool Movement::is_stopped() const {
   return !is_started();
 }
 
@@ -336,7 +336,7 @@ bool Movement::is_stopped() {
  *
  * \return true if the object is moving, false otherwise
  */
-bool Movement::is_started() {
+bool Movement::is_started() const {
   return false;
 }
 
@@ -356,7 +356,7 @@ void Movement::stop() {
  *
  * \return true if this movement is finished
  */
-bool Movement::is_finished() {
+bool Movement::is_finished() const {
   return false;
 }
 
@@ -364,7 +364,7 @@ bool Movement::is_finished() {
  * \brief Returns whether the movement is suspended.
  * \return true if the movement is suspended
  */
-bool Movement::is_suspended() {
+bool Movement::is_suspended() const {
   return suspended;
 }
 
@@ -396,7 +396,7 @@ void Movement::set_suspended(bool suspended) {
  *
  * \return the date when this movement started to be suspended
  */
-uint32_t Movement::get_when_suspended() {
+uint32_t Movement::get_when_suspended() const {
   return when_suspended;
 }
 
@@ -428,7 +428,7 @@ void Movement::update() {
  * \param dy y distance between the current position and the position to check
  * \return true if the entity would overlap the map obstacles in this position
  */
-bool Movement::test_collision_with_obstacles(int dx, int dy) {
+bool Movement::test_collision_with_obstacles(int dx, int dy) const {
 
   if (entity == NULL || current_ignore_obstacles) {
     return false;
@@ -459,7 +459,7 @@ bool Movement::test_collision_with_obstacles(int dx, int dy) {
  * \param dxy distance between the current position and the position to check
  * \return true if the entity would overlap the map obstacles in this position
  */
-bool Movement::test_collision_with_obstacles(const Rectangle& dxy) {
+bool Movement::test_collision_with_obstacles(const Rectangle& dxy) const {
   return test_collision_with_obstacles(dxy.get_x(), dxy.get_y());
 }
 
@@ -467,7 +467,7 @@ bool Movement::test_collision_with_obstacles(const Rectangle& dxy) {
  * \brief Returns the collision box of the last collision check that detected an obstacle.
  * \return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
  */
-const Rectangle& Movement::get_last_collision_box_on_obstacle() {
+const Rectangle& Movement::get_last_collision_box_on_obstacle() const {
 
   return last_collision_box_on_obstacle;
 }
@@ -476,7 +476,7 @@ const Rectangle& Movement::get_last_collision_box_on_obstacle() {
  * \brief Returns whether this movement currently ignores obstacles.
  * \return true if the obstacles are ignored
  */
-bool Movement::are_obstacles_ignored() {
+bool Movement::are_obstacles_ignored() const {
 
   return current_ignore_obstacles;
 }
@@ -515,7 +515,7 @@ void Movement::restore_default_ignore_obstacles() {
  * \brief Returns the direction a sprite controlled by this movement should take.
  * \return the direction to use to display the object controlled by this movement (0 to 3)
  */
-int Movement::get_displayed_direction4() {
+int Movement::get_displayed_direction4() const {
   return 3; // by default, look down
 }
 
@@ -528,7 +528,7 @@ int Movement::get_displayed_direction4() {
  *
  * \return the coordinates to use to display the object controlled by this movement
  */
-const Rectangle Movement::get_displayed_xy() {
+const Rectangle Movement::get_displayed_xy() const {
   return get_xy();
 }
 
@@ -536,7 +536,7 @@ const Rectangle Movement::get_displayed_xy() {
  * \brief Returns the Solarus Lua API.
  * \return The Lua context, or NULL if Lua callbacks are not enabled for this movement.
  */
-LuaContext* Movement::get_lua_context() const {
+LuaContext* Movement::get_lua_context() {
   return lua_context;
 }
 

@@ -66,7 +66,7 @@ EntityType Sensor::get_type() const {
  * \brief Returns whether entities of this type can be drawn.
  * \return true if this type of entity can be drawn
  */
-bool Sensor::can_be_drawn() {
+bool Sensor::can_be_drawn() const {
   return false;
 }
 
@@ -75,7 +75,7 @@ bool Sensor::can_be_drawn() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Sensor::is_obstacle_for(MapEntity& other) {
+bool Sensor::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_sensor_obstacle(*this);
 }

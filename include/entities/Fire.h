@@ -34,7 +34,7 @@ class Fire: public Detector {
     ~Fire();
 
     EntityType get_type() const;
-    bool can_be_obstacle();
+    bool can_be_obstacle() const;
 
     // state
     void update();

@@ -55,7 +55,7 @@ PixelMovement::~PixelMovement() {
  * \brief Returns the trajectory of this movement.
  * \return the succession of translations that compose this movement
  */
-const std::list<Rectangle>& PixelMovement::get_trajectory() {
+const std::list<Rectangle>& PixelMovement::get_trajectory() const {
   return trajectory;
 }
 
@@ -109,8 +109,7 @@ void PixelMovement::set_trajectory(const std::string& trajectory_string) {
  * \brief Returns the delay between two moves.
  * \return the delay between two moves, in milliseconds
  */
-uint32_t PixelMovement::get_delay() {
-
+uint32_t PixelMovement::get_delay() const {
   return delay;
 }
 
@@ -119,7 +118,6 @@ uint32_t PixelMovement::get_delay() {
  * \param delay the new delay, in milliseconds
  */
 void PixelMovement::set_delay(uint32_t delay) {
-
   this->delay = delay;
 }
 
@@ -127,8 +125,7 @@ void PixelMovement::set_delay(uint32_t delay) {
  * \brief Returns whether this movement loops when the end of the trajectory is reached.
  * \return true if the movement loops
  */
-bool PixelMovement::get_loop() {
-
+bool PixelMovement::get_loop() const {
   return loop;
 }
 
@@ -259,7 +256,7 @@ void PixelMovement::notify_step_done(int step_index, bool success) {
  * \brief Returns the total number of moves in this trajectory.
  * \return the total number of moves in this trajectory
  */
-int PixelMovement::get_length() {
+int PixelMovement::get_length() const {
   return int(trajectory.size());
 }
 
@@ -267,7 +264,7 @@ int PixelMovement::get_length() {
  * \brief Returns whether the entity controlled by this movement is moving.
  * \return true if the entity is moving, false otherwise
  */
-bool PixelMovement::is_started() {
+bool PixelMovement::is_started() const {
   return !finished;
 }
 
@@ -276,7 +273,7 @@ bool PixelMovement::is_started() {
  * whether the end of the trajectory was reached.
  * \return true if the end of the trajectory was reached
  */
-bool PixelMovement::is_finished() {
+bool PixelMovement::is_finished() const {
   return finished;
 }
 

@@ -79,7 +79,7 @@ void Hero::UsingItemState::update() {
  * \brief Returns whether the hero is using an equipment item in this state.
  * \return true if the hero is using an equipment item.
  */
-bool Hero::UsingItemState::is_using_item() {
+bool Hero::UsingItemState::is_using_item() const {
   return true;
 }
 

@@ -123,7 +123,7 @@ EntityType Hero::get_type() const {
  * and before the entities with the feature.
  * \return true if this type of entity is drawn at the same level as the hero
  */
-bool Hero::is_drawn_in_y_order() {
+bool Hero::is_drawn_in_y_order() const {
   return true;
 }
 
@@ -495,7 +495,7 @@ void Hero::set_animation_direction(int direction4) {
  * \brief Returns whether the sprites animations are finished.
  * \return true if the animation is finished
  */
-bool Hero::is_animation_finished() {
+bool Hero::is_animation_finished() const {
   return sprites->is_animation_finished();
 }
 
@@ -515,7 +515,7 @@ void Hero::rebuild_equipment() {
  * \brief Returns whether the shadow should be currently displayed, separate from the tunic sprite.
  * \return true if the shadow should be currently displayed.
  */
-bool Hero::is_shadow_visible() {
+bool Hero::is_shadow_visible() const {
   return get_displayed_xy().get_y() != get_y();
 }
 
@@ -557,7 +557,7 @@ void Hero::notify_map_started() {
  * \param initial_direction the direction of the hero (0 to 3)
  * or -1 to let the direction unchanged
  */
-void Hero::set_map(Map &map, int initial_direction) {
+void Hero::set_map(Map& map, int initial_direction) {
 
   // take the specified direction
   if (initial_direction != -1) {
@@ -779,7 +779,7 @@ void Hero::notify_facing_entity_changed(Detector* facing_entity) {
  *
  * \return true if the hero is facing an obstacle
  */
-bool Hero::is_facing_obstacle() {
+bool Hero::is_facing_obstacle() const {
 
   Rectangle collision_box = get_bounding_box();
   switch (sprites->get_animation_direction()) {
@@ -816,10 +816,11 @@ bool Hero::is_facing_obstacle() {
  *
  * \return true if the facing point is overlapping an obstacle
  */
-bool Hero::is_facing_point_on_obstacle() {
+bool Hero::is_facing_point_on_obstacle() const {
 
   const Rectangle &facing_point = get_facing_point();
-  return get_map().test_collision_with_obstacles(get_layer(), facing_point.get_x(), facing_point.get_y(), *this);
+  return get_map().test_collision_with_obstacles(
+      get_layer(), facing_point.get_x(), facing_point.get_y(), *this);
 }
 
 /**
@@ -827,7 +828,7 @@ bool Hero::is_facing_point_on_obstacle() {
  * \param direction4 a direction (0 to 3)
  * \return true if the hero is looking towards the specified direction
  */
-bool Hero::is_facing_direction4(int direction4) {
+bool Hero::is_facing_direction4(int direction4) const {
   return get_animation_direction() == direction4;
 }
 
@@ -837,7 +838,7 @@ bool Hero::is_facing_direction4(int direction4) {
  * \return true if the hero is looking towards the specified direction
  * (always false for diagonal directions)
  */
-bool Hero::is_facing_direction8(int direction8) {
+bool Hero::is_facing_direction8(int direction8) const {
   return get_animation_direction() * 2 == direction8;
 }
 
@@ -845,7 +846,7 @@ bool Hero::is_facing_direction8(int direction8) {
  * \brief Returns whether the hero is currently on raised crystal blocks.
  * \return true if the hero is currently on raised crystal blocks
  */
-bool Hero::is_on_raised_blocks() {
+bool Hero::is_on_raised_blocks() const {
   return on_raised_blocks;
 }
 
@@ -863,7 +864,7 @@ Stairs* Hero::get_stairs_overlapping() {
   std::list<Stairs*>::iterator it;
   for (it = all_stairs.begin(); it != all_stairs.end(); it++) {
 
-    Stairs *stairs = *it;
+    Stairs* stairs = *it;
 
     if (overlaps(*stairs)) {
       return stairs;
@@ -877,7 +878,7 @@ Stairs* Hero::get_stairs_overlapping() {
  * \brief Returns whether the player can control his movements in the current state.
  * \return true if the player can control his movements
  */
-bool Hero::can_control_movement() {
+bool Hero::can_control_movement() const {
   return state->can_control_movement();
 }
 
@@ -885,7 +886,7 @@ bool Hero::can_control_movement() {
  * \brief Returns the speed applied to the walking movement on normal ground.
  * \return The normal walking speed in pixels per second.
  */
-int Hero::get_normal_walking_speed() {
+int Hero::get_normal_walking_speed() const {
   return normal_walking_speed;
 }
 
@@ -906,7 +907,7 @@ void Hero::set_normal_walking_speed(int normal_walking_speed) {
  * \brief Returns the current speed applied to the hero's movements when he is walking.
  * \return The current walking speed.
  */
-int Hero::get_walking_speed() {
+int Hero::get_walking_speed() const {
   return walking_speed;
 }
 
@@ -930,7 +931,7 @@ void Hero::set_walking_speed(int walking_speed) {
  *
  * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::get_wanted_movement_direction8() {
+int Hero::get_wanted_movement_direction8() const {
   return state->get_wanted_movement_direction8();
 }
 
@@ -946,7 +947,7 @@ int Hero::get_wanted_movement_direction8() {
  *
  * \return the hero's actual direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::get_real_movement_direction8() {
+int Hero::get_real_movement_direction8() const {
 
   int result;
 
@@ -1006,9 +1007,9 @@ int Hero::get_real_movement_direction8() {
  * \param direction4 one of the four main directions (0 to 3)
  * \return true if the hero is moving in that direction, even if he is actually doing a diagonal move
  */
-bool Hero::is_moving_towards(int direction4) {
+bool Hero::is_moving_towards(int direction4) const {
 
-  Movement *movement = get_movement();
+  const Movement* movement = get_movement();
   if (movement == NULL || movement->is_stopped()) {
     return false;
   }
@@ -1033,7 +1034,7 @@ bool Hero::is_moving_towards(int direction4) {
  *
  * \return true if the animation direction is locked
  */
-bool Hero::is_direction_locked() {
+bool Hero::is_direction_locked() const {
   return state->is_direction_locked();
 }
 
@@ -1293,7 +1294,7 @@ void Hero::notify_ground_below_changed() {
  * \brief Returns whether the hero is in a state such that
  * a ground can be displayed under him.
  */
-bool Hero::is_ground_visible() {
+bool Hero::is_ground_visible() const {
 
   Ground ground = get_ground_below();
   return (ground == GROUND_GRASS || ground == GROUND_SHALLOW_WATER)
@@ -1350,7 +1351,7 @@ void Hero::reset_target_solid_ground_coords() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Hero::is_obstacle_for(MapEntity &other) {
+bool Hero::is_obstacle_for(const MapEntity& other) const {
   return other.is_hero_obstacle(*this);
 }
 
@@ -1358,7 +1359,7 @@ bool Hero::is_obstacle_for(MapEntity &other) {
  * \brief Returns whether shallow water is currently considered as an obstacle for the hero.
  * \return true if shallow water is currently an obstacle for the hero
  */
-bool Hero::is_shallow_water_obstacle() {
+bool Hero::is_shallow_water_obstacle() const {
   return state->is_shallow_water_obstacle();
 }
 
@@ -1366,7 +1367,7 @@ bool Hero::is_shallow_water_obstacle() {
  * \brief Returns whether deep water is currently considered as an obstacle for the hero.
  * \return true if deep water is currently an obstacle for the hero
  */
-bool Hero::is_deep_water_obstacle() {
+bool Hero::is_deep_water_obstacle() const {
   return state->is_deep_water_obstacle();
 }
 
@@ -1374,7 +1375,7 @@ bool Hero::is_deep_water_obstacle() {
  * \brief Returns whether a hole is currently considered as an obstacle for the hero.
  * \return true if the holes are currently an obstacle for the hero
  */
-bool Hero::is_hole_obstacle() {
+bool Hero::is_hole_obstacle() const {
   return state->is_hole_obstacle();
 }
 
@@ -1382,7 +1383,7 @@ bool Hero::is_hole_obstacle() {
  * \brief Returns whether lava is currently considered as an obstacle for the hero.
  * \return true if lava is currently an obstacle for the hero
  */
-bool Hero::is_lava_obstacle() {
+bool Hero::is_lava_obstacle() const {
   return state->is_lava_obstacle();
 }
 
@@ -1390,7 +1391,7 @@ bool Hero::is_lava_obstacle() {
  * \brief Returns whether prickles are currently considered as an obstacle for the hero.
  * \return true if prickles are currently an obstacle for the hero
  */
-bool Hero::is_prickle_obstacle() {
+bool Hero::is_prickle_obstacle() const {
   return state->is_prickle_obstacle();
 }
 
@@ -1398,7 +1399,7 @@ bool Hero::is_prickle_obstacle() {
  * \brief Returns whether a ladder is currently considered as an obstacle for the hero.
  * \return true if the ladders are currently an obstacle for the hero
  */
-bool Hero::is_ladder_obstacle() {
+bool Hero::is_ladder_obstacle() const {
   return state->is_ladder_obstacle();
 }
 
@@ -1407,7 +1408,7 @@ bool Hero::is_ladder_obstacle() {
  * \param block a block
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Hero::is_block_obstacle(Block& block) {
+bool Hero::is_block_obstacle(const Block& block) const {
   return block.is_hero_obstacle(*this);
 }
 
@@ -1419,7 +1420,8 @@ bool Hero::is_block_obstacle(Block& block) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for the hero
  */
-bool Hero::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Hero::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
   return state->is_teletransporter_obstacle(teletransporter);
 }
 
@@ -1431,7 +1433,7 @@ bool Hero::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Hero::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool Hero::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
   return state->is_conveyor_belt_obstacle(conveyor_belt);
 }
 
@@ -1440,7 +1442,7 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool Hero::is_stairs_obstacle(Stairs& stairs) {
+bool Hero::is_stairs_obstacle(const Stairs& stairs) const {
   return state->is_stairs_obstacle(stairs);
 }
 
@@ -1449,7 +1451,7 @@ bool Hero::is_stairs_obstacle(Stairs& stairs) {
  * \param sensor a sensor (not used here)
  * \return true if this sensor is currently an obstacle for the hero
  */
-bool Hero::is_sensor_obstacle(Sensor& sensor) {
+bool Hero::is_sensor_obstacle(const Sensor& sensor) const {
   return state->is_sensor_obstacle(sensor);
 }
 
@@ -1458,7 +1460,7 @@ bool Hero::is_sensor_obstacle(Sensor& sensor) {
  * \param raised_block a crystal block raised
  * \return true if the raised block is currently an obstacle for this entity
  */
-bool Hero::is_raised_block_obstacle(CrystalBlock& raised_block) {
+bool Hero::is_raised_block_obstacle(const CrystalBlock& raised_block) const {
   return !is_on_raised_blocks();
 }
 
@@ -1467,14 +1469,14 @@ bool Hero::is_raised_block_obstacle(CrystalBlock& raised_block) {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool Hero::is_jumper_obstacle(Jumper& jumper) {
+bool Hero::is_jumper_obstacle(const Jumper& jumper) const {
   return state->is_jumper_obstacle(jumper);
 }
 
 /**
  * \copydoc MapEntity::is_separator_obstacle
  */
-bool Hero::is_separator_obstacle(Separator& separator) {
+bool Hero::is_separator_obstacle(const Separator& separator) const {
   return state->is_separator_obstacle(separator);
 }
 
@@ -1559,7 +1561,8 @@ Teletransporter* Hero::get_delayed_teletransporter() {
  * \param dx direction of the x move in pixels (0, 1 or -1)
  * \param dy direction of the y move in pixels (0, 1 or -1)
  */
-void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy) {
+void Hero::notify_collision_with_conveyor_belt(
+    ConveyorBelt& conveyor_belt, int dx, int dy) {
 
   on_conveyor_belt = true;
 
@@ -1862,7 +1865,7 @@ void Hero::notify_grabbed_entity_collision() {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::is_striking_with_sword(Detector& detector) {
+bool Hero::is_striking_with_sword(Detector& detector) const {
   return state->is_cutting_with_sword(detector);
 }
 
@@ -1917,7 +1920,7 @@ void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
  *
  * \return the current damage factor of the sword
  */
-int Hero::get_sword_damage_factor() {
+int Hero::get_sword_damage_factor() const {
 
   return state->get_sword_damage_factor();
 }
@@ -2117,7 +2120,7 @@ void Hero::start_prickle(uint32_t delay) {
  * \brief Returns whether the hero can walk normally and interact with entities.
  * \return true if the hero can walk normally
  */
-bool Hero::is_free() {
+bool Hero::is_free() const {
 
   return state->is_free();
 }
@@ -2126,7 +2129,7 @@ bool Hero::is_free() {
  * \brief Returns whether the hero is currently using an equipment item.
  * \return true if the hero is using an equipment item.
  */
-bool Hero::is_using_item() {
+bool Hero::is_using_item() const {
 
   return state->is_using_item();
 }
@@ -2147,7 +2150,7 @@ EquipmentItemUsage& Hero::get_item_being_used() {
  *
  * \return true if the hero is grabbing and moving an entity
  */
-bool Hero::is_moving_grabbed_entity() {
+bool Hero::is_moving_grabbed_entity() const {
  
   return state->is_moving_grabbed_entity();
 }
@@ -2156,7 +2159,7 @@ bool Hero::is_moving_grabbed_entity() {
  * \brief Returns whether the hero is brandishing a treasure.
  * \return \c true if the hero is brandishing a treasure.
  */
-bool Hero::is_brandishing_treasure() {
+bool Hero::is_brandishing_treasure() const {
 
   return state->is_brandishing_treasure();
 }
@@ -2165,7 +2168,7 @@ bool Hero::is_brandishing_treasure() {
  * \brief Returns whether the hero is grabbing or pulling an entity.
  * \return true if the hero is grabbing or pulling an entity
  */
-bool Hero::is_grabbing_or_pulling() {
+bool Hero::is_grabbing_or_pulling() const {
 
   return state->is_grabbing_or_pulling();
 }

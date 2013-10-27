@@ -30,9 +30,9 @@ class Hero::RunningState: public Hero::State {
     int phase;                      /**< current phase of the run */
     uint32_t next_phase_date;       /**< date of the next phase */
     uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
-    GameCommands::Command command;      /**< the command pressed to make the hero run */
+    GameCommands::Command command;  /**< the command pressed to make the hero run */
 
-    bool is_bouncing();
+    bool is_bouncing() const;
 
   public:
 
@@ -43,27 +43,27 @@ class Hero::RunningState: public Hero::State {
     void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
-    bool is_pressing_running_key();
+    bool is_pressing_running_key() const;
     void notify_direction_command_pressed(int direction4);
     void notify_obstacle_reached();
-    int get_wanted_movement_direction8();
+    int get_wanted_movement_direction8() const;
 
-    bool can_take_jumper();
+    bool can_take_jumper() const;
     void notify_jumper_activated(Jumper& jumper);
-    bool can_take_stairs();
-    bool can_be_hurt(Enemy* attacker);
-    bool can_pick_treasure(EquipmentItem& item);
-    bool can_start_gameover_sequence();
-    bool is_touching_ground();
-    bool can_avoid_deep_water();
-    bool can_avoid_hole();
-    bool can_avoid_lava();
-    bool can_avoid_prickle();
-    bool can_avoid_teletransporter();
-    bool can_avoid_conveyor_belt();
-    bool is_sensor_obstacle(Sensor &sensor);
-    bool is_cutting_with_sword(Detector &detector);
-    int get_sword_damage_factor();
+    bool can_take_stairs() const;
+    bool can_be_hurt(Enemy* attacker) const;
+    bool can_pick_treasure(EquipmentItem& item) const;
+    bool can_start_gameover_sequence() const;
+    bool is_touching_ground() const;
+    bool can_avoid_deep_water() const;
+    bool can_avoid_hole() const;
+    bool can_avoid_lava() const;
+    bool can_avoid_prickle() const;
+    bool can_avoid_teletransporter() const;
+    bool can_avoid_conveyor_belt() const;
+    bool is_sensor_obstacle(const Sensor& sensor) const;
+    bool is_cutting_with_sword(Detector& detector) const;
+    int get_sword_damage_factor() const;
 };
 
 #endif

@@ -44,34 +44,34 @@ class Map: public ExportableToLua {
     ~Map();
 
     // map properties
-    const std::string& get_id();
+    const std::string& get_id() const;
     Tileset& get_tileset();
-    const std::string& get_tileset_id();
+    const std::string& get_tileset_id() const;
     void set_tileset(const std::string& tileset_id);
     const std::string& get_music_id() const;
-    const std::string& get_world();
+    const std::string& get_world() const;
     void set_world(const std::string& world);
-    bool has_floor();
-    int get_floor();
+    bool has_floor() const;
+    int get_floor() const;
     void set_floor(int floor);
-    const Rectangle& get_location();
+    const Rectangle& get_location() const;
 
-    int get_width();
-    int get_height();
-    int get_width8();
-    int get_height8();
+    int get_width() const;
+    int get_height() const;
+    int get_width8() const;
+    int get_height8() const;
 
     // camera
     Surface& get_visible_surface();
-    const Rectangle& get_camera_position();
+    const Rectangle& get_camera_position() const;
     void move_camera(int x, int y, int speed);
     void restore_camera();
-    bool is_camera_moving();
+    bool is_camera_moving() const;
     void traverse_separator(Separator* separator);
     void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
 
     // loading
-    bool is_loaded();
+    bool is_loaded() const;
     void load(Game& game);
     void unload();
     Game& get_game();
@@ -82,34 +82,44 @@ class Map: public ExportableToLua {
 
     // entities
     MapEntities& get_entities();
+    const MapEntities& get_entities() const;
 
     // presence of the hero
-    bool is_started();
+    bool is_started() const;
     void start();
     void leave();
 
     // current destination point
     void set_destination(const std::string& destination_name);
-    const std::string& get_destination_name();
+    const std::string& get_destination_name() const;
     Destination* get_destination();
-    int get_destination_side();
+    int get_destination_side() const;
 
     // collisions with obstacles (checked before a move)
-    bool test_collision_with_border(int x, int y);
-    bool test_collision_with_border(const Rectangle& collision_box);
+    bool test_collision_with_border(int x, int y) const;
+    bool test_collision_with_border(const Rectangle& collision_box) const;
     bool test_collision_with_ground(
         Layer layer,
         int x,
         int y,
-        MapEntity& entity_to_check,
-        bool& found_diagonal_wall);
-    bool test_collision_with_entities(Layer layer,
-        const Rectangle& collision_box, MapEntity& entity_to_check);
-    bool test_collision_with_obstacles(Layer layer,
-        const Rectangle& collision_box, MapEntity& entity_to_check);
-    bool test_collision_with_obstacles(Layer layer, int x, int y,
-        MapEntity& entity_to_check);
-    bool has_empty_ground(Layer layer, const Rectangle& collision_box);
+        const MapEntity& entity_to_check,
+        bool& found_diagonal_wall) const;
+    bool test_collision_with_entities(
+        Layer layer,
+        const Rectangle& collision_box,
+        const MapEntity& entity_to_check) const;
+    bool test_collision_with_obstacles(
+        Layer layer,
+        const Rectangle& collision_box,
+        const MapEntity& entity_to_check) const;
+    bool test_collision_with_obstacles(
+        Layer layer,
+        int x,
+        int y,
+        const MapEntity& entity_to_check) const;
+    bool has_empty_ground(
+        Layer layer,
+        const Rectangle& collision_box) const;
 
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity& entity);
@@ -118,7 +128,7 @@ class Map: public ExportableToLua {
     // main loop
     bool notify_input(InputEvent& event);
     void update();
-    bool is_suspended();
+    bool is_suspended() const;
     void check_suspended();
     void draw();
     void draw_sprite(Sprite& sprite, const Rectangle& xy);
@@ -191,7 +201,7 @@ class Map: public ExportableToLua {
  * \param y y of the point to check
  * \return true if this point is outside the map area
  */
-inline bool Map::test_collision_with_border(int x, int y) {
+inline bool Map::test_collision_with_border(int x, int y) const {
 
   return (x < 0 || y < 0 || x >= location.get_width() || y >= location.get_height());
 }

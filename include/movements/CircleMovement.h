@@ -28,10 +28,48 @@
  */
 class CircleMovement: public Movement {
 
+  public:
+
+    // creation and destruction
+    CircleMovement(bool ignore_obstacles);
+    ~CircleMovement();
+
+    // state
+    void update();
+    void set_suspended(bool suspended);
+    void start();
+    void stop();
+    bool is_started() const;
+    bool is_finished() const;
+
+    // properties
+    void set_center(const Rectangle& center_point);
+    void set_center(MapEntity& center_entity, int x = 0, int y = 0);
+    int get_radius() const;
+    void set_radius(int radius);
+    int get_radius_speed() const;
+    void set_radius_speed(int radius_speed);
+    int get_angle_speed() const;
+    void set_angle_speed(int angle_speed);
+    double get_initial_angle() const;
+    void set_initial_angle(double initial_angle);
+    bool is_clockwise() const;
+    void set_clockwise(bool clockwise);
+    uint32_t get_duration() const;
+    void set_duration(uint32_t duration);
+    int get_max_rotations() const;
+    void set_max_rotations(int max_rotations);
+    uint32_t get_loop() const;
+    void set_loop(uint32_t delay);
+
+    virtual const std::string& get_lua_type_name() const;
+
   private:
 
+    void recompute_position();
+
     // center of the circle
-    MapEntity* center_entity;                       /**< the entity to make circles around (NULL if only a point is used) */
+    MapEntity* center_entity;                 /**< the entity to make circles around (NULL if only a point is used) */
     Rectangle center_point;                         /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */
 
@@ -62,43 +100,6 @@ class CircleMovement: public Movement {
     uint32_t loop_delay;                            /**< if not zero, when the movement finishes, it will start again after this delay */
     uint32_t restart_date;                          /**< date when the movement restarts */
 
-    void recompute_position();
-
-  public:
-
-    // creation and destruction
-    CircleMovement(bool ignore_obstacles);
-    ~CircleMovement();
-
-    // state
-    void update();
-    void set_suspended(bool suspended);
-    void start();
-    void stop();
-    bool is_started();
-    bool is_finished();
-
-    // properties
-    void set_center(const Rectangle &center_point);
-    void set_center(MapEntity& center_entity, int x = 0, int y = 0);
-    int get_radius();
-    void set_radius(int radius);
-    int get_radius_speed();
-    void set_radius_speed(int radius_speed);
-    int get_angle_speed();
-    void set_angle_speed(int angle_speed);
-    double get_initial_angle();
-    void set_initial_angle(double initial_angle);
-    bool is_clockwise();
-    void set_clockwise(bool clockwise);
-    uint32_t get_duration();
-    void set_duration(uint32_t duration);
-    int get_max_rotations();
-    void set_max_rotations(int max_rotations);
-    uint32_t get_loop();
-    void set_loop(uint32_t delay);
-
-    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

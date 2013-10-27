@@ -54,7 +54,7 @@ Camera::~Camera() {
  * \brief Returns the width of the visible area shown by the camera.
  * \return The width of the quest screen.
  */
-int Camera::get_width() {
+int Camera::get_width() const {
   return position.get_width();
 }
 
@@ -62,7 +62,7 @@ int Camera::get_width() {
  * \brief Returns the height of the visible area shown by the camera.
  * \return The height of the quest screen.
  */
-int Camera::get_height() {
+int Camera::get_height() const {
   return position.get_height();
 }
 
@@ -288,7 +288,7 @@ void Camera::update_moving() {
  *
  * \return The visible area.
  */
-const Rectangle& Camera::get_position() {
+const Rectangle& Camera::get_position() const {
   return position;
 }
 
@@ -300,7 +300,7 @@ const Rectangle& Camera::get_position() {
  *
  * \return \c true if the camera is moving.
  */
-bool Camera::is_moving() {
+bool Camera::is_moving() const {
   return !fixed_on_hero                      // Moving to a point.
       || separator_next_scrolling_date != 0;  // Traversing a separator.
 }
@@ -387,7 +387,7 @@ void Camera::restore() {
  */
 void Camera::traverse_separator(Separator* separator) {
 
-  Debug::check_assertion(separator != NULL);
+  Debug::check_assertion(separator != NULL, "Missing parameter separator");
 
   // Save the current position of the camera.
   separator_scrolling_position = position;

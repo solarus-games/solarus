@@ -34,10 +34,11 @@ class EquipmentItem: public ExportableToLua {
     EquipmentItem(Equipment& equipment);
     ~EquipmentItem();
 
-    Equipment& get_equipment() const;
-    Game* get_game() const;
-    Savegame& get_savegame() const;
-    LuaContext& get_lua_context() const;
+    Equipment& get_equipment();
+    Game* get_game();
+    Savegame& get_savegame();
+    const Savegame& get_savegame() const;
+    LuaContext& get_lua_context();
 
     // Properties.
     const std::string& get_name() const;

@@ -134,7 +134,7 @@ void Hero::SwordTappingState::set_suspended(bool suspended) {
  * \brief Returns whether crystals can be activated by the sword in this state.
  * \return true if crystals can be activated by the sword in this state
  */
-bool Hero::SwordTappingState::can_sword_hit_crystal() {
+bool Hero::SwordTappingState::can_sword_hit_crystal() const {
   return true;
 }
 
@@ -143,7 +143,7 @@ bool Hero::SwordTappingState::can_sword_hit_crystal() {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 
@@ -153,7 +153,7 @@ bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& item) {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) {
+bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) const {
 
   return detector.is_obstacle_for(hero)         // only obstacle entities can be cut
     && hero.get_facing_entity() == &detector    // only one entity at a time
@@ -165,7 +165,8 @@ bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is an obstacle in this state
  */
-bool Hero::SwordTappingState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Hero::SwordTappingState::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
 
   // if the hero was pushed by an enemy, don't go on a teletransporter
   return hero.get_movement() != NULL;

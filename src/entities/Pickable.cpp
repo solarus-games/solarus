@@ -124,7 +124,7 @@ Pickable* Pickable::create(
  * \brief Returns whether entities of this type can be obstacles for other entities.
  * \return \c true if this type of entity can be obstacle for other entities.
  */
-bool Pickable::can_be_obstacle() {
+bool Pickable::can_be_obstacle() const {
   return false;
 }
 

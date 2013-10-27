@@ -124,7 +124,7 @@ EntityType Teletransporter::get_type() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Teletransporter::is_obstacle_for(MapEntity& other) {
+bool Teletransporter::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_teletransporter_obstacle(*this);
 }
@@ -253,7 +253,7 @@ void Teletransporter::transport_hero(Hero& hero) {
  *
  * \return true if this teletransporter is on the side of the map
  */
-bool Teletransporter::is_on_map_side() {
+bool Teletransporter::is_on_map_side() const {
   return destination_side >= 0;
 }
 

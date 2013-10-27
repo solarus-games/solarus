@@ -48,7 +48,7 @@ class Hero: public MapEntity {
      * the main properties of this type of entity.
      */
     EntityType get_type() const;
-    bool is_drawn_in_y_order();
+    bool is_drawn_in_y_order() const;
 
     /**
      * \name Game loop.
@@ -70,17 +70,17 @@ class Hero: public MapEntity {
     HeroSprites& get_sprites();
     int get_animation_direction() const;
     void set_animation_direction(int direction);
-    bool is_animation_finished();
+    bool is_animation_finished() const;
     void rebuild_equipment();
-    bool is_shadow_visible();
+    bool is_shadow_visible() const;
 
     /**
      * \name Changing map.
      *
      * Functions called when the player goes to another map.
      */
-    void set_map(Map &map);
-    void set_map(Map &map, int initial_direction);
+    void set_map(Map& map);
+    void set_map(Map& map, int initial_direction);
     void notify_map_started();
     void place_on_destination(Map& map, const Rectangle& previous_map_location);
     void notify_map_opening_transition_finished();
@@ -95,11 +95,11 @@ class Hero: public MapEntity {
     const Rectangle get_facing_point() const;
     const Rectangle get_facing_point(int direction4) const;
     void notify_facing_entity_changed(Detector* facing_entity);
-    bool is_facing_obstacle();
-    bool is_facing_point_on_obstacle();
-    bool is_facing_direction4(int direction4);
-    bool is_facing_direction8(int direction8);
-    bool is_on_raised_blocks();
+    bool is_facing_obstacle() const;
+    bool is_facing_point_on_obstacle() const;
+    bool is_facing_direction4(int direction4) const;
+    bool is_facing_direction8(int direction8) const;
+    bool is_on_raised_blocks() const;
     Stairs* get_stairs_overlapping();
 
     /**
@@ -110,16 +110,16 @@ class Hero: public MapEntity {
      * and sometimes he is controlled automatically or he
      * cannot move.
      */
-    bool can_control_movement();
-    bool can_control_direction();
-    int get_normal_walking_speed();
+    bool can_control_movement() const;
+    bool can_control_direction() const;
+    int get_normal_walking_speed() const;
     void set_normal_walking_speed(int normal_walking_speed);
-    int get_walking_speed();
+    int get_walking_speed() const;
     void set_walking_speed(int walking_speed);
-    int get_wanted_movement_direction8();
-    int get_real_movement_direction8();
-    bool is_moving_towards(int direction4);
-    bool is_direction_locked();
+    int get_wanted_movement_direction8() const;
+    int get_real_movement_direction8() const;
+    bool is_moving_towards(int direction4) const;
+    bool is_direction_locked() const;
     void notify_obstacle_reached();
     void notify_position_changed();
     void notify_layer_changed();
@@ -134,7 +134,7 @@ class Hero: public MapEntity {
      * Depending on the kind of ground, a special sprite may be displayed under him (grass, shallow water)
      * or something bad can happen (deep water, holes).
      */
-    bool is_ground_visible();
+    bool is_ground_visible() const;
     bool is_ground_observer() const;
     const Rectangle get_ground_point() const;
     void notify_ground_below_changed();
@@ -146,21 +146,21 @@ class Hero: public MapEntity {
      *
      * Information about what is considered as an obstacle for the hero.
      */
-    bool is_obstacle_for(MapEntity& other);
-    bool is_shallow_water_obstacle();
-    bool is_deep_water_obstacle();
-    bool is_hole_obstacle();
-    bool is_lava_obstacle();
-    bool is_prickle_obstacle();
-    bool is_ladder_obstacle();
-    bool is_block_obstacle(Block& block);
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_sensor_obstacle(Sensor& sensor);
-    bool is_raised_block_obstacle(CrystalBlock& raised_block);
-    bool is_jumper_obstacle(Jumper& jumper);
-    bool is_separator_obstacle(Separator& separator);
+    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_shallow_water_obstacle() const;
+    bool is_deep_water_obstacle() const;
+    bool is_hole_obstacle() const;
+    bool is_lava_obstacle() const;
+    bool is_prickle_obstacle() const;
+    bool is_ladder_obstacle() const;
+    bool is_block_obstacle(const Block& block) const;
+    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    bool is_stairs_obstacle(const Stairs& stairs) const;
+    bool is_sensor_obstacle(const Sensor& sensor) const;
+    bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
+    bool is_jumper_obstacle(const Jumper& jumper) const;
+    bool is_separator_obstacle(const Separator& separator) const;
 
     /**
      * \name Collisions.
@@ -186,15 +186,19 @@ class Hero: public MapEntity {
     void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
     void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     void avoid_collision(MapEntity& entity, int direction);
-    bool is_striking_with_sword(Detector& detector);
+    bool is_striking_with_sword(Detector& detector) const;
 
     /**
      * \name Enemies.
      *
      * Attacking enemies or getting hurt by them.
      */
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
-    int get_sword_damage_factor();
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        EnemyReaction::Reaction& result,
+        bool killed);
+    int get_sword_damage_factor() const;
     bool can_be_hurt(Enemy* attacker);
     void hurt(MapEntity& source, int life_points, int magic_points);
     void hurt(const Rectangle& source_xy, int life_points, int magic_points);
@@ -208,12 +212,12 @@ class Hero: public MapEntity {
      * Actions can be triggered by equipment items, entities or scripts.
      */
     const std::string& get_state_name() const;
-    bool is_free();
-    bool is_using_item();
+    bool is_free() const;
+    bool is_using_item() const;
     EquipmentItemUsage& get_item_being_used();
-    bool is_brandishing_treasure();
-    bool is_grabbing_or_pulling();
-    bool is_moving_grabbed_entity();
+    bool is_brandishing_treasure() const;
+    bool is_grabbing_or_pulling() const;
+    bool is_moving_grabbed_entity() const;
     void notify_grabbed_entity_collision();
 
     void start_grass();

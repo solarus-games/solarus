@@ -47,27 +47,27 @@ class Boomerang: public MapEntity {
     ~Boomerang();
 
     EntityType get_type() const;
-    bool can_be_obstacle();
-    bool can_be_drawn();
+    bool can_be_obstacle() const;
+    bool can_be_drawn() const;
 
     // obstacles
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_low_wall_obstacle();
-    bool is_deep_water_obstacle();
-    bool is_hole_obstacle();
-    bool is_lava_obstacle();
-    bool is_prickle_obstacle();
-    bool is_ladder_obstacle();
-    bool is_switch_obstacle(Switch& sw);
-    bool is_raised_block_obstacle(CrystalBlock& raised_block);
-    bool is_crystal_obstacle(Crystal& crystal);
-    bool is_npc_obstacle(NPC& npc);
-    bool is_jumper_obstacle(Jumper& jumper);
+    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    bool is_stairs_obstacle(const Stairs& stairs) const;
+    bool is_low_wall_obstacle() const;
+    bool is_deep_water_obstacle() const;
+    bool is_hole_obstacle() const;
+    bool is_lava_obstacle() const;
+    bool is_prickle_obstacle() const;
+    bool is_ladder_obstacle() const;
+    bool is_switch_obstacle(const Switch& sw) const;
+    bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
+    bool is_crystal_obstacle(const Crystal& crystal) const;
+    bool is_npc_obstacle(const NPC& npc) const;
+    bool is_jumper_obstacle(const Jumper& jumper) const;
 
     // state
-    bool is_going_back();
+    bool is_going_back() const;
     void go_back();
     void update();
 

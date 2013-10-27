@@ -82,7 +82,8 @@ class GameCommands {
 
   private:
 
-    Savegame& get_savegame() const;  // TODO return const Savegame&
+    Savegame& get_savegame();
+    const Savegame& get_savegame() const;
 
     // High-level resulting commands.
     void game_command_pressed(Command command);

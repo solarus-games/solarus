@@ -72,7 +72,7 @@ void PlayerMovement::update() {
  * \return the direction (0 to 7), or -1 if the player is not trying to go
  * to a direction or the movement is disabled
  */
-int PlayerMovement::get_wanted_direction8() {
+int PlayerMovement::get_wanted_direction8() const {
   return direction8;
 }
 
@@ -80,7 +80,7 @@ int PlayerMovement::get_wanted_direction8() {
  * \brief Returns the moving speed of the entity.
  * \return the moving speed of the entity
  */
-int PlayerMovement::get_moving_speed() {
+int PlayerMovement::get_moving_speed() const {
   return moving_speed;
 }
 

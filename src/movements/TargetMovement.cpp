@@ -117,7 +117,7 @@ void TargetMovement::set_target(MapEntity* target_entity, int x, int y) {
  * \brief Returns the speed of this movement when it is not stopped.
  * \return the speed when moving, in pixels per second
  */
-int TargetMovement::get_moving_speed() {
+int TargetMovement::get_moving_speed() const {
   return moving_speed;
 }
 
@@ -195,7 +195,7 @@ void TargetMovement::recompute_movement() {
  * \brief Returns whether the movement is finished, i.e.
  * whether the target was reached.
  */
-bool TargetMovement::is_finished() {
+bool TargetMovement::is_finished() const {
   return finished;
 }
 

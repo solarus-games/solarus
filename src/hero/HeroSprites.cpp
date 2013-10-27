@@ -201,31 +201,37 @@ void HeroSprites::rebuild_equipment() {
  * \brief Returns whether the sword is currently displayed on the screen.
  * \return true if the sword is currently displayed on the screen
  */
-bool HeroSprites::is_sword_visible() {
-  return equipment.has_ability("sword") && sword_sprite != NULL && sword_sprite->is_animation_started();
+bool HeroSprites::is_sword_visible() const {
+  return equipment.has_ability("sword")
+      && sword_sprite != NULL
+      && sword_sprite->is_animation_started();
 }
 
 /**
  * \brief Returns whether the stars of the sword are currently displayed on the screen.
  * \return true if the stars of the sword are currently displayed on the screen
  */
-bool HeroSprites::is_sword_stars_visible() {
-  return equipment.has_ability("sword") && sword_stars_sprite != NULL && sword_stars_sprite->is_animation_started();
+bool HeroSprites::is_sword_stars_visible() const {
+  return equipment.has_ability("sword")
+      && sword_stars_sprite != NULL
+      && sword_stars_sprite->is_animation_started();
 }
 
 /**
  * \brief Returns whether the shield is currently displayed on the screen.
  * \return true if the shield is currently displayed on the screen
  */
-bool HeroSprites::is_shield_visible() {
-  return equipment.has_ability("shield") && shield_sprite != NULL && shield_sprite->is_animation_started();
+bool HeroSprites::is_shield_visible() const {
+  return equipment.has_ability("shield")
+      && shield_sprite != NULL
+      && shield_sprite->is_animation_started();
 }
 
 /**
  * \brief Returns whether the trail of dust is currently displayed.
  * \return true if the trail of dust is currently displayed
  */
-bool HeroSprites::is_trail_visible() {
+bool HeroSprites::is_trail_visible() const {
   return trail_sprite->is_animation_started();
 }
 
@@ -233,8 +239,9 @@ bool HeroSprites::is_trail_visible() {
  * \brief Returns whether a special ground is displayed under the hero.
  * \return true if a ground is currently visible under the hero
  */
-bool HeroSprites::is_ground_visible() {
-  return hero.is_ground_visible() && ground_sprite != NULL;
+bool HeroSprites::is_ground_visible() const {
+  return hero.is_ground_visible()
+      && ground_sprite != NULL;
 }
 
 /**
@@ -314,7 +321,7 @@ void HeroSprites::stop_blinking() {
  * \brief Returns whether the hero's sprites are currently blinking.
  * \return true if the hero's sprites are currently blinking
  */
-bool HeroSprites::is_blinking() {
+bool HeroSprites::is_blinking() const {
   return tunic_sprite->is_blinking();
 }
 
@@ -325,7 +332,7 @@ bool HeroSprites::is_blinking() {
  *
  * \param clipping_rectangle a subarea of the map to restrict the drawing to
  */
-void HeroSprites::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
+void HeroSprites::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
   this->clipping_rectangle = clipping_rectangle;
 }
 
@@ -333,7 +340,7 @@ void HeroSprites::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
  * \brief Returns whether the sprites have currently a walking animation.
  * \return true if the sprites are walking
  */
-bool HeroSprites::is_walking() {
+bool HeroSprites::is_walking() const {
   return walking;
 }
 
@@ -344,7 +351,7 @@ bool HeroSprites::is_walking() {
  *
  * \return the direction of the sprites (0 to 3)
  */
-int HeroSprites::get_animation_direction() {
+int HeroSprites::get_animation_direction() const {
   return tunic_sprite->get_current_direction();
 }
 
@@ -355,7 +362,7 @@ int HeroSprites::get_animation_direction() {
  *
  * \return the direction of the sprites (0 to 7, except diagonal directions)
  */
-int HeroSprites::get_animation_direction8() {
+int HeroSprites::get_animation_direction8() const {
   return get_animation_direction() * 2;
 }
 
@@ -373,7 +380,8 @@ int HeroSprites::get_animation_direction8() {
  * \return the direction of the sprites corresponding to these arrows (0 to 3),
  * or -1 if the directional keys combination is illegal
  */
-int HeroSprites::get_animation_direction(int keys_direction, int real_movement_direction) {
+int HeroSprites::get_animation_direction(
+    int keys_direction, int real_movement_direction) const {
 
   int result;
 
@@ -452,7 +460,7 @@ void HeroSprites::set_animation_direction8(int direction) {
  * \brief Returns whether the sprites animations are finished.
  * \return true if the animation is finished
  */
-bool HeroSprites::is_animation_finished() {
+bool HeroSprites::is_animation_finished() const {
   return tunic_sprite->is_animation_finished();
 }
 
@@ -460,7 +468,7 @@ bool HeroSprites::is_animation_finished() {
  * \brief Returns the current frame of the tunic sprite.
  * \return the current frame
  */
-int HeroSprites::get_current_frame() {
+int HeroSprites::get_current_frame() const {
   return tunic_sprite->get_current_frame();
 }
 

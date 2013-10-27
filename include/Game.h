@@ -31,6 +31,71 @@
  */
 class Game {
 
+  public:
+
+    // creation and destruction
+    Game(MainLoop& main_loop, Savegame* savegame);
+    ~Game();
+
+    void start();
+    void stop();
+    void restart();
+
+    // global objects
+    MainLoop& get_main_loop();
+    LuaContext& get_lua_context();
+    Hero& get_hero();
+    const Rectangle& get_hero_xy();
+    GameCommands& get_commands();
+    const GameCommands& get_commands() const;
+    KeysEffect& get_keys_effect();
+    Savegame& get_savegame();
+    const Savegame& get_savegame() const;
+    Equipment& get_equipment();
+    const Equipment& get_equipment() const;
+
+    // functions called by the main loop
+    bool notify_input(InputEvent& event);
+    void update();
+    void draw(Surface& dst_surface);
+
+    // game controls
+    void notify_command_pressed(GameCommands::Command command);
+    void notify_command_released(GameCommands::Command command);
+
+    // map
+    bool has_current_map() const;
+    Map& get_current_map();
+    void set_current_map(const std::string& map_id, const std::string& destination_name,
+        Transition::Style transition_style);
+
+    // world
+    bool get_crystal_state() const;
+    void change_crystal_state();
+
+    // current game state
+    bool is_paused() const;
+    bool is_dialog_enabled() const;
+    bool is_playing_transition() const;
+    bool is_showing_game_over() const;
+    bool is_suspended() const; // true if at least one of the 4 functions above returns true
+
+    // pause
+    bool can_pause() const;
+    bool can_unpause() const;
+    bool is_pause_allowed() const;
+    void set_pause_allowed(bool pause_allowed);
+    void set_paused(bool paused);
+
+    // dialogs
+    void start_dialog(const std::string& dialog_id,
+        int info_ref = LUA_REFNIL, int callback_ref = LUA_REFNIL);
+    void stop_dialog(int status_ref = LUA_REFNIL);
+
+    // game over
+    void start_game_over();
+    void stop_game_over();
+
   private:
 
     // main objects
@@ -69,67 +134,6 @@ class Game {
     void update_gameover_sequence();
     void notify_map_changed();
 
-  public:
-
-    // creation and destruction
-    Game(MainLoop& main_loop, Savegame* savegame);
-    ~Game();
-
-    void start();
-    void stop();
-    void restart();
-
-    // global objects
-    MainLoop& get_main_loop();
-    LuaContext& get_lua_context();
-    Hero& get_hero();
-    const Rectangle& get_hero_xy();
-    GameCommands& get_commands();
-    KeysEffect& get_keys_effect();
-    Savegame& get_savegame();
-    Equipment& get_equipment();
-
-    // functions called by the main loop
-    bool notify_input(InputEvent &event);
-    void update();
-    void draw(Surface& dst_surface);
-
-    // game controls
-    void notify_command_pressed(GameCommands::Command command);
-    void notify_command_released(GameCommands::Command command);
-
-    // map
-    bool has_current_map();
-    Map& get_current_map();
-    void set_current_map(const std::string& map_id, const std::string& destination_name,
-        Transition::Style transition_style);
-
-    // world
-    bool get_crystal_state();
-    void change_crystal_state();
-
-    // current game state
-    bool is_paused();
-    bool is_dialog_enabled();
-    bool is_playing_transition();
-    bool is_showing_game_over();
-    bool is_suspended(); // true if at least one of the three functions above returns true
-
-    // pause
-    bool can_pause();
-    bool can_unpause();
-    bool is_pause_allowed();
-    void set_pause_allowed(bool pause_allowed);
-    void set_paused(bool paused);
-
-    // dialogs
-    void start_dialog(const std::string& dialog_id,
-        int info_ref = LUA_REFNIL, int callback_ref = LUA_REFNIL);
-    void stop_dialog(int status_ref = LUA_REFNIL);
-
-    // game over
-    void start_game_over();
-    void stop_game_over();
 };
 
 #endif

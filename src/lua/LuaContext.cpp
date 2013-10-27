@@ -1217,6 +1217,12 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
   }
   else {
     // Create a new userdata.
+
+    if (!userdata.is_known_to_lua()) {
+      // This is the first time we create a Lua userdata for this object.
+      userdata.set_known_to_lua(true);
+    }
+
                                   // ... all_udata nil
     lua_pop(l, 1);
                                   // ... all_udata
@@ -1384,10 +1390,10 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   ExportableToLua* userdata =
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
 
-  // Note that the userdata disappears from Lua but it may come back later!
+  // Note that the full userdata disappears from Lua but it may come back later!
   // So we need to keep its table if the refcount is not zero.
   // The full userdata is destroyed, but if the refcount is zero, the light
-  // userdata and its table persists.
+  // userdata and its table persist.
 
   // We don't need to remove the entry from sol.all_userdata
   // because it is already done: that table is weak on its values and the
@@ -1396,20 +1402,22 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   userdata->decrement_refcount();
   if (userdata->get_refcount() == 0) {
 
-    // Remove the userdata from the list of userdata tables.
-    // Otherwise, if the same pointer gets reallocated, the userdata will get
-    // its table from this deleted one!
+    if (userdata->is_with_lua_table()) {
+      // Remove the table associated to this userdata.
+      // Otherwise, if the same pointer gets reallocated, a new userdata will get
+      // its table from this deleted one!
                                     // udata
-    lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
-                                    // udata all_udata
-    lua_pushlightuserdata(l, userdata);
-                                    // udata all_udata lightudata
-    lua_pushnil(l);
-                                    // udata all_udata lightudata nil
-    lua_settable(l, -3);
-                                    // udata all_udata
-    lua_pop(l, 1);
+      lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
+                                    // udata udata_tables
+      lua_pushlightuserdata(l, userdata);
+                                    // udata udata_tables lightudata
+      lua_pushnil(l);
+                                    // udata udata_tables lightudata nil
+      lua_settable(l, -3);
+                                    // udata udata_tables
+      lua_pop(l, 1);
                                     // udata
+    }
     delete userdata;
   }
 
@@ -1437,10 +1445,9 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
   ExportableToLua* userdata =
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
 
-  /* The user wants to make udata[key] = value but udata is a userdata.
-   * So what we make instead is udata_tables[udata][key] = value.
-   * This redirection is totally transparent from the Lua side.
-   */
+  // The user wants to make udata[key] = value but udata is a userdata.
+  // So what we make instead is udata_tables[udata][key] = value.
+  // This redirection is totally transparent from the Lua side.
 
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
@@ -1450,6 +1457,7 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
                                   // ... udata_tables udata_table/nil
   if (lua_isnil(l, -1)) {
     // Create the userdata table if it does not exist yet.
+    userdata->set_with_lua_table(true);
                                   // ... udata_tables nil
     lua_pop(l, 1);
                                   // ... udata_tables
@@ -1500,13 +1508,14 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
 
   bool found = false;
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
+  if (userdata->is_with_lua_table()) {
+    lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
-  lua_pushlightuserdata(l, userdata);
+    lua_pushlightuserdata(l, userdata);
                                   // ... udata_tables lightudata
-  lua_gettable(l, -2);
+    lua_gettable(l, -2);
                                   // ... udata_tables udata_table/nil
-  if (!lua_isnil(l, -1)) {
+    Debug::check_assertion(!lua_isnil(l, -1), "Missing userdata table");
     lua_pushvalue(l, 2);
                                   // ... udata_tables udata_table key
     lua_gettable(l, -2);

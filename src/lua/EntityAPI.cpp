@@ -2610,25 +2610,41 @@ int LuaContext::custom_entity_api_get_model(lua_State* l) {
 }
 
 /**
- * \brief Calls the on_removed() method of a Lua map entity.
+ * \brief Calls the on_removed() method of a Lua map entity if it is defined.
+ *
+ * Also stops timers associated to the entity.
+ *
  * \param entity A map entity.
  */
 void LuaContext::entity_on_removed(MapEntity& entity) {
 
+  if (!entity.is_known_to_lua()) {
+    return;
+  }
+
   push_entity(l, entity);
-  on_removed();
+  if (entity.is_with_lua_table()) {
+    on_removed();
+  }
   remove_timers(-1);  // Stop timers associated to this entity.
   lua_pop(l, 1);
 }
 
 /**
  * \brief Calls the on_position_changed() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param entity A map entity.
  * \param xy The new coordinates.
  * \param layer The new layer.
  */
 void LuaContext::entity_on_position_changed(
     MapEntity& entity, const Rectangle& xy, Layer layer) {
+
+  if (!entity.is_with_lua_table()) {
+    return;
+  }
 
   push_entity(l, entity);
   on_position_changed(xy, layer);
@@ -2637,11 +2653,18 @@ void LuaContext::entity_on_position_changed(
 
 /**
  * \brief Calls the on_obstacle_reached() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param entity A map entity.
  * \param movement The movement that reached an obstacle.
  */
 void LuaContext::entity_on_obstacle_reached(
     MapEntity& entity, Movement& movement) {
+
+  if (!entity.is_with_lua_table()) {
+    return;
+  }
 
   push_entity(l, entity);
   on_obstacle_reached(movement);
@@ -2650,11 +2673,18 @@ void LuaContext::entity_on_obstacle_reached(
 
 /**
  * \brief Calls the on_movement_changed() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param entity A map entity.
  * \param movement Its movement.
  */
 void LuaContext::entity_on_movement_changed(
     MapEntity& entity, Movement& movement) {
+
+  if (!entity.is_with_lua_table()) {
+    return;
+  }
 
   push_entity(l, entity);
   on_movement_changed(movement);
@@ -2663,9 +2693,16 @@ void LuaContext::entity_on_movement_changed(
 
 /**
  * \brief Calls the on_movement_finished() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param entity A map entity.
  */
 void LuaContext::entity_on_movement_finished(MapEntity& entity) {
+
+  if (!entity.is_with_lua_table()) {
+    return;
+  }
 
   push_entity(l, entity);
   on_movement_finished();
@@ -2674,11 +2711,18 @@ void LuaContext::entity_on_movement_finished(MapEntity& entity) {
 
 /**
  * \brief Calls the on_state_changed() method of a Lua hero.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param hero The hero.
  * \param state_name A name describing the new state.
  */
 void LuaContext::hero_on_state_changed(
     Hero& hero, const std::string& state_name) {
+
+  if (!hero.is_with_lua_table()) {
+    return;
+  }
 
   push_hero(l, hero);
   on_state_changed(state_name);
@@ -2687,9 +2731,16 @@ void LuaContext::hero_on_state_changed(
 
 /**
  * \brief Calls the on_interaction() method of a Lua NPC.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param npc An NPC.
  */
 void LuaContext::npc_on_interaction(NPC& npc) {
+
+  if (!npc.is_with_lua_table()) {
+    return;
+  }
 
   push_npc(l, npc);
   on_interaction();
@@ -2698,11 +2749,18 @@ void LuaContext::npc_on_interaction(NPC& npc) {
 
 /**
  * \brief Calls the on_interaction_item() method of a Lua NPC.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param npc An NPC.
  * \param item_used The equipment item used.
  * \return \c true if an interaction occurred.
  */
 bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
+
+  if (!npc.is_with_lua_table()) {
+    return false;
+  }
 
   push_npc(l, npc);
   bool result = on_interaction_item(item_used);
@@ -2712,9 +2770,16 @@ bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
 
 /**
  * \brief Calls the on_collision_fire() method of a Lua NPC.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param npc An NPC.
  */
 void LuaContext::npc_on_collision_fire(NPC& npc) {
+
+  if (!npc.is_with_lua_table()) {
+    return;
+  }
 
   push_npc(l, npc);
   on_collision_fire();
@@ -2723,9 +2788,16 @@ void LuaContext::npc_on_collision_fire(NPC& npc) {
 
 /**
  * \brief Calls the on_moved() method of a Lua block.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param block a block.
  */
 void LuaContext::block_on_moved(Block& block) {
+
+  if (!block.is_with_lua_table()) {
+    return;
+  }
 
   push_block(l, block);
   on_moved();
@@ -2734,10 +2806,17 @@ void LuaContext::block_on_moved(Block& block) {
 
 /**
  * \brief Calls the on_empty() method of a Lua chest.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param chest A chest.
  * \return \c true if the on_empty() method is defined.
  */
 bool LuaContext::chest_on_empty(Chest& chest) {
+
+  if (!chest.is_with_lua_table()) {
+    return false;
+  }
 
   push_chest(l, chest);
   bool exists = on_empty();
@@ -2747,9 +2826,16 @@ bool LuaContext::chest_on_empty(Chest& chest) {
 
 /**
  * \brief Calls the on_activated() method of a Lua switch.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param sw A switch.
  */
 void LuaContext::switch_on_activated(Switch& sw) {
+
+  if (!sw.is_with_lua_table()) {
+    return;
+  }
 
   push_switch(l, sw);
   on_activated();
@@ -2758,9 +2844,16 @@ void LuaContext::switch_on_activated(Switch& sw) {
 
 /**
  * \brief Calls the on_inactivated() method of a Lua switch.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param sw A switch.
  */
 void LuaContext::switch_on_inactivated(Switch& sw) {
+
+  if (!sw.is_with_lua_table()) {
+    return;
+  }
 
   push_switch(l, sw);
   on_inactivated();
@@ -2769,9 +2862,16 @@ void LuaContext::switch_on_inactivated(Switch& sw) {
 
 /**
  * \brief Calls the on_left() method of a Lua switch.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param sw A switch.
  */
 void LuaContext::switch_on_left(Switch& sw) {
+
+  if (!sw.is_with_lua_table()) {
+    return;
+  }
 
   push_switch(l, sw);
   on_left();
@@ -2780,9 +2880,16 @@ void LuaContext::switch_on_left(Switch& sw) {
 
 /**
  * \brief Calls the on_activated() method of a Lua sensor.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param sensor A sensor.
  */
 void LuaContext::sensor_on_activated(Sensor& sensor) {
+
+  if (!sensor.is_with_lua_table()) {
+    return;
+  }
 
   push_entity(l, sensor);
   on_activated();
@@ -2791,9 +2898,16 @@ void LuaContext::sensor_on_activated(Sensor& sensor) {
 
 /**
  * \brief Calls the on_activated_repeat() method of a Lua sensor.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param sensor A sensor.
  */
 void LuaContext::sensor_on_activated_repeat(Sensor& sensor) {
+
+  if (!sensor.is_with_lua_table()) {
+    return;
+  }
 
   push_entity(l, sensor);
   on_activated_repeat();
@@ -2802,9 +2916,16 @@ void LuaContext::sensor_on_activated_repeat(Sensor& sensor) {
 
 /**
  * \brief Calls the on_collision_explosion() method of a Lua sensor.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param sensor A sensor.
  */
 void LuaContext::sensor_on_collision_explosion(Sensor& sensor) {
+
+  if (!sensor.is_with_lua_table()) {
+    return;
+  }
 
   push_entity(l, sensor);
   on_collision_explosion();
@@ -2813,10 +2934,17 @@ void LuaContext::sensor_on_collision_explosion(Sensor& sensor) {
 
 /**
  * \brief Calls the on_activating() method of a Lua separator.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param separator A separator.
  * \param direction4 Direction of the traversal.
  */
 void LuaContext::separator_on_activating(Separator& separator, int direction4) {
+
+  if (!separator.is_with_lua_table()) {
+    return;
+  }
 
   push_entity(l, separator);
   on_activating(direction4);
@@ -2825,10 +2953,17 @@ void LuaContext::separator_on_activating(Separator& separator, int direction4) {
 
 /**
  * \brief Calls the on_activated() method of a Lua separator.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param separator A separator.
  * \param direction4 Direction of the traversal.
  */
 void LuaContext::separator_on_activated(Separator& separator, int direction4) {
+
+  if (!separator.is_with_lua_table()) {
+    return;
+  }
 
   push_entity(l, separator);
   on_activated(direction4);
@@ -2837,9 +2972,16 @@ void LuaContext::separator_on_activated(Separator& separator, int direction4) {
 
 /**
  * \brief Calls the on_opened() method of a Lua door.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param door A door.
  */
 void LuaContext::door_on_opened(Door& door) {
+
+  if (!door.is_with_lua_table()) {
+    return;
+  }
 
   push_door(l, door);
   on_opened();
@@ -2848,9 +2990,16 @@ void LuaContext::door_on_opened(Door& door) {
 
 /**
  * \brief Calls the on_closed() method of a Lua door.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param door A door.
  */
 void LuaContext::door_on_closed(Door& door) {
+
+  if (!door.is_with_lua_table()) {
+    return;
+  }
 
   push_door(l, door);
   on_closed();
@@ -2859,10 +3008,17 @@ void LuaContext::door_on_closed(Door& door) {
 
 /**
  * \brief Calls the on_buying() method of a Lua shop treasure.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param shop_treasure A shop treasure.
  * \return \c true if the player is allowed to buy the treasure.
  */
 bool LuaContext::shop_treasure_on_buying(ShopTreasure& shop_treasure) {
+
+  if (!shop_treasure.is_with_lua_table()) {
+    return true;
+  }
 
   push_shop_treasure(l, shop_treasure);
   bool result = on_buying();
@@ -2872,9 +3028,16 @@ bool LuaContext::shop_treasure_on_buying(ShopTreasure& shop_treasure) {
 
 /**
  * \brief Calls the on_bought() method of a Lua shop treasure.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param shop_treasure A shop treasure.
  */
 void LuaContext::shop_treasure_on_bought(ShopTreasure& shop_treasure) {
+
+  if (!shop_treasure.is_with_lua_table()) {
+    return;
+  }
 
   push_shop_treasure(l, shop_treasure);
   on_bought();
@@ -2883,9 +3046,16 @@ void LuaContext::shop_treasure_on_bought(ShopTreasure& shop_treasure) {
 
 /**
  * \brief Calls the on_update() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_update(Enemy& enemy) {
+
+  if (!enemy.is_with_lua_table()) {
+    return;
+  }
 
   push_enemy(l, enemy);
   on_update();
@@ -2894,10 +3064,17 @@ void LuaContext::enemy_on_update(Enemy& enemy) {
 
 /**
  * \brief Calls the on_suspended() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  * \param suspended true if the enemy is suspended.
  */
 void LuaContext::enemy_on_suspended(Enemy& enemy, bool suspended) {
+
+  if (!enemy.is_with_lua_table()) {
+    return;
+  }
 
   push_enemy(l, enemy);
   on_suspended(suspended);
@@ -2906,9 +3083,16 @@ void LuaContext::enemy_on_suspended(Enemy& enemy, bool suspended) {
 
 /**
  * \brief Calls the on_created() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_created(Enemy& enemy) {
+
+  if (!enemy.is_with_lua_table()) {
+    return;
+  }
 
   push_enemy(l, enemy);
   on_created();
@@ -2917,9 +3101,16 @@ void LuaContext::enemy_on_created(Enemy& enemy) {
 
 /**
  * \brief Calls the on_enabled() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_enabled(Enemy& enemy) {
+
+  if (!enemy.is_with_lua_table()) {
+    return;
+  }
 
   push_enemy(l, enemy);
   on_enabled();
@@ -2928,9 +3119,16 @@ void LuaContext::enemy_on_enabled(Enemy& enemy) {
 
 /**
  * \brief Calls the on_disabled() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_disabled(Enemy& enemy) {
+
+  if (!enemy.is_with_lua_table()) {
+    return;
+  }
 
   push_enemy(l, enemy);
   on_disabled();
@@ -2938,22 +3136,38 @@ void LuaContext::enemy_on_disabled(Enemy& enemy) {
 }
 
 /**
- * \brief Calls the on_restarted() method of a Lua enemy.
+ * \brief Calls the on_restarted() method of a Lua enemy if it is defined.
+ *
+ * Also stops timers associated to the entity.
+ *
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_restarted(Enemy& enemy) {
 
+  if (!enemy.is_known_to_lua()) {
+    return;
+  }
+
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
-  on_restarted();
+  if (enemy.is_with_lua_table()) {
+    on_restarted();
+  }
   lua_pop(l, 1);
 }
 
 /**
  * \brief Calls the on_pre_draw() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_pre_draw(Enemy& enemy) {
+
+  if (!enemy.is_with_lua_table()) {
+    return;
+  }
 
   push_enemy(l, enemy);
   on_pre_draw();
@@ -2962,9 +3176,16 @@ void LuaContext::enemy_on_pre_draw(Enemy& enemy) {
 
 /**
  * \brief Calls the on_post_draw() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_post_draw(Enemy& enemy) {
+
+  if (!enemy.is_with_lua_table()) {
+    return;
+  }
 
   push_enemy(l, enemy);
   on_post_draw();
@@ -2973,6 +3194,9 @@ void LuaContext::enemy_on_post_draw(Enemy& enemy) {
 
 /**
  * \brief Calls the on_collision_enemy() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  * \param other_enemy Another enemy colliding with the first one.
  * \param other_sprite Colliding sprite of the other enemy.
@@ -2981,6 +3205,10 @@ void LuaContext::enemy_on_post_draw(Enemy& enemy) {
 void LuaContext::enemy_on_collision_enemy(Enemy& enemy,
     Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite) {
 
+  if (!enemy.is_with_lua_table()) {
+    return;
+  }
+
   push_enemy(l, enemy);
   on_collision_enemy(other_enemy, other_sprite, this_sprite);
   lua_pop(l, 1);
@@ -2988,6 +3216,9 @@ void LuaContext::enemy_on_collision_enemy(Enemy& enemy,
 
 /**
  * \brief Calls the on_custom_attack_received() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  * \param attack The attack received.
  * \param sprite The sprite that receives the attack if any.
@@ -2995,42 +3226,71 @@ void LuaContext::enemy_on_collision_enemy(Enemy& enemy,
 void LuaContext::enemy_on_custom_attack_received(Enemy& enemy,
     EnemyAttack attack, Sprite* sprite) {
 
+  if (!enemy.is_with_lua_table()) {
+    return;
+  }
+
   push_enemy(l, enemy);
   on_custom_attack_received(attack, sprite);
   lua_pop(l, 1);
 }
 
 /**
- * \brief Calls the on_hurt() method of a Lua enemy.
+ * \brief Calls the on_hurt() method of a Lua enemy if it is defined.
+ *
+ * Also stops timers associated to the enemy.
+ *
  * \param enemy An enemy.
  * \param attack The attack received.
  * \param life_lost Number of life points just lost.
  */
 void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) {
 
+  if (!enemy.is_known_to_lua()) {
+    return;
+  }
+
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
-  on_hurt(attack, life_lost);
+  if (enemy.is_with_lua_table()) {
+    on_hurt(attack, life_lost);
+  }
   lua_pop(l, 1);
 }
 
 /**
- * \brief Calls the on_dying() method of a Lua enemy.
+ * \brief Calls the on_dying() method of a Lua enemy if it is defined.
+ *
+ * Also stops timers associated to the enemy.
+ *
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_dying(Enemy& enemy) {
 
+  if (!enemy.is_known_to_lua()) {
+    return;
+  }
+
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
-  on_dying();
+  if (enemy.is_with_lua_table()) {
+    on_dying();
+  }
   lua_pop(l, 1);
 }
 
 /**
  * \brief Calls the on_dead() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_dead(Enemy& enemy) {
+
+  if (!enemy.is_with_lua_table()) {
+    return;
+  }
 
   push_enemy(l, enemy);
   on_dead();
@@ -3038,14 +3298,23 @@ void LuaContext::enemy_on_dead(Enemy& enemy) {
 }
 
 /**
- * \brief Calls the on_immobilized() method of a Lua enemy.
+ * \brief Calls the on_immobilized() method of a Lua enemy if it is defined.
+ *
+ * Also stops timers associated to the enemy.
+ *
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_immobilized(Enemy& enemy) {
 
+  if (!enemy.is_known_to_lua()) {
+    return;
+  }
+
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
-  on_immobilized();
+  if (enemy.is_with_lua_table()) {
+    on_immobilized();
+  }
   lua_pop(l, 1);
 }
 

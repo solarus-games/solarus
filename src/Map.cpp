@@ -71,7 +71,7 @@ Map::~Map() {
  * \brief Returns the id of the map.
  * \return the map id
  */
-const std::string& Map::get_id() {
+const std::string& Map::get_id() const {
   return id;
 }
 
@@ -87,7 +87,7 @@ Tileset& Map::get_tileset() {
  * \brief Returns the id of the tileset associated to this map.
  * \return the id of the tileset
  */
-const std::string& Map::get_tileset_id() {
+const std::string& Map::get_tileset_id() const {
   // note that if set_tileset() has been called, tileset_id != tileset->get_id()
   return tileset_id;
 }
@@ -125,7 +125,7 @@ const std::string& Map::get_music_id() const {
  * \brief Returns the world where this map is.
  * \return The world name.
  */
-const std::string& Map::get_world() {
+const std::string& Map::get_world() const {
   return world;
 }
 
@@ -144,7 +144,7 @@ void Map::set_world(const std::string& world) {
  *
  * \return true if there is a floor.
  */
-bool Map::has_floor() {
+bool Map::has_floor() const {
   return get_floor() != NO_FLOOR;
 }
 
@@ -152,7 +152,7 @@ bool Map::has_floor() {
  * \brief Returns the floor where this map is.
  * \return The floor or FLOOR_NIL.
  */
-int Map::get_floor() {
+int Map::get_floor() const {
   return floor;
 }
 
@@ -173,7 +173,7 @@ void Map::set_floor(int floor) {
  *
  * \return The location of this map in its context.
  */
-const Rectangle& Map::get_location() {
+const Rectangle& Map::get_location() const {
   return location;
 }
 
@@ -181,7 +181,7 @@ const Rectangle& Map::get_location() {
  * \brief Returns the map width in pixels.
  * \return the map width
  */
-int Map::get_width() {
+int Map::get_width() const {
   return location.get_width();
 }
 
@@ -189,7 +189,7 @@ int Map::get_width() {
  * \brief Returns the map height in pixels.
  * \return the map height
  */
-int Map::get_height() {
+int Map::get_height() const {
   return location.get_height();
 }
 
@@ -200,7 +200,7 @@ int Map::get_height() {
  *
  * \return the map width in number of 8*8 squares
  */
-int Map::get_width8() {
+int Map::get_width8() const {
   return width8;
 }
 
@@ -211,7 +211,7 @@ int Map::get_width8() {
  *
  * \return the map height in number of 8*8 squares
  */
-int Map::get_height8() {
+int Map::get_height8() const {
   return height8;
 }
 
@@ -219,7 +219,7 @@ int Map::get_height8() {
  * \brief Returns whether the map is loaded.
  * \return true if the map is loaded, false otherwise
  */
-bool Map::is_loaded() {
+bool Map::is_loaded() const {
   return loaded;
 }
 
@@ -302,6 +302,17 @@ MapEntities& Map::get_entities() {
 }
 
 /**
+ * \brief Returns the entities of the map.
+ *
+ * This function should not be called before the map is loaded into a game.
+ *
+ * \return the entities of the map
+ */
+const MapEntities& Map::get_entities() const {
+  return *entities;
+}
+
+/**
  * \brief Sets the current destination point of the map.
  * \param destination_name Name of the destination point you want to use.
  * An empty string means the default one.
@@ -320,7 +331,7 @@ void Map::set_destination(const std::string& destination_name) {
  * \return The name of the destination point previously set,
  * possibly an empty string (meaning the default one).
  */
-const std::string& Map::get_destination_name() {
+const std::string& Map::get_destination_name() const {
   return destination_name;
 }
 
@@ -370,7 +381,7 @@ Destination* Map::get_destination() {
  * returns this side.
  * \return the destination side (0 to 3), or -1 if the destination point is not a side
  */
-int Map::get_destination_side() {
+int Map::get_destination_side() const {
 
   if (destination_name.substr(0,5) == "_side") {
     int destination_side = destination_name[5] - '0';
@@ -397,7 +408,7 @@ Surface& Map::get_visible_surface() {
  * top-left corner.
  * \return The rectangle of the visible area.
  */
-const Rectangle& Map::get_camera_position() {
+const Rectangle& Map::get_camera_position() const {
   return camera->get_position();
 }
 
@@ -427,7 +438,7 @@ void Map::restore_camera() {
  *
  * \return \c true if the camera is moving.
  */
-bool Map::is_camera_moving() {
+bool Map::is_camera_moving() const {
   return camera->is_moving();
 }
 
@@ -505,7 +516,7 @@ void Map::update() {
  * \brief Returns whether the map is currently suspended.
  * \return true if the map is suspended.
  */
-bool Map::is_suspended() {
+bool Map::is_suspended() const {
   return suspended;
 }
 
@@ -586,7 +597,7 @@ void Map::draw_foreground() {
  * \param xy coordinates of the sprite's origin point in the map
  * (the size of the rectangle is ignored)
  */
-void Map::draw_sprite(Sprite &sprite, const Rectangle &xy) {
+void Map::draw_sprite(Sprite& sprite, const Rectangle &xy) {
 
   draw_sprite(sprite, xy.get_x(), xy.get_y());
 }
@@ -641,7 +652,7 @@ void Map::leave() {
  *
  * \return true if the map is started
  */
-bool Map::is_started() {
+bool Map::is_started() const {
   return started;
 }
 
@@ -662,7 +673,7 @@ void Map::notify_opening_transition_finished() {
  * \param collision_box the rectangle to check
  * \return true if a point of the rectangle is outside the map area
  */
-bool Map::test_collision_with_border(const Rectangle &collision_box) {
+bool Map::test_collision_with_border(const Rectangle& collision_box) const {
 
   return collision_box.get_x() < 0 || collision_box.get_x() + collision_box.get_width() >= get_width()
     || collision_box.get_y() < 0 || collision_box.get_y() + collision_box.get_height() >= get_height();
@@ -691,8 +702,8 @@ bool Map::test_collision_with_ground(
     Layer layer,
     int x,
     int y,
-    MapEntity& entity_to_check,
-    bool& found_diagonal_wall) {
+    const MapEntity& entity_to_check,
+    bool& found_diagonal_wall) const {
 
   bool on_obstacle = false;
   int x_in_tile, y_in_tile;
@@ -794,8 +805,10 @@ bool Map::test_collision_with_ground(
  * considered as obstacle).
  * \return \c true if there is an obstacle entity at this point.
  */
-bool Map::test_collision_with_entities(Layer layer,
-    const Rectangle& collision_box, MapEntity& entity_to_check) {
+bool Map::test_collision_with_entities(
+    Layer layer,
+    const Rectangle& collision_box,
+    const MapEntity& entity_to_check) const {
 
   const std::list<MapEntity*>& obstacle_entities =
       entities->get_obstacle_entities(layer);
@@ -825,9 +838,10 @@ bool Map::test_collision_with_entities(Layer layer,
  * considered as obstacle).
  * \return \c true if the rectangle is overlapping an obstacle.
  */
-bool Map::test_collision_with_obstacles(Layer layer,
+bool Map::test_collision_with_obstacles(
+    Layer layer,
     const Rectangle& collision_box,
-    MapEntity& entity_to_check) {
+    const MapEntity& entity_to_check) const {
 
   // This function is called very often.
   // For performance reasons, we only check the border of the of the collision box.
@@ -898,8 +912,11 @@ bool Map::test_collision_with_obstacles(Layer layer,
  * considered as obstacle)
  * \return \c true if the point is overlapping an obstacle.
  */
-bool Map::test_collision_with_obstacles(Layer layer, int x, int y,
-    MapEntity& entity_to_check) {
+bool Map::test_collision_with_obstacles(
+    Layer layer,
+    int x,
+    int y,
+    const MapEntity& entity_to_check) const {
 
   bool collision;
   bool is_diagonal_wall;
@@ -925,7 +942,7 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y,
  * \param collision_box The rectangle to test.
  * \return \c true if there is at least one empty tile in this rectangle.
  */
-bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) {
+bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) const {
 
   bool empty_tile = false;
 

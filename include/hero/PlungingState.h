@@ -31,8 +31,9 @@ class Hero::PlungingState: public Hero::State {
 
     void start(State* previous_state);
     void update();
-    bool can_start_gameover_sequence();
-    bool is_touching_ground();
+    bool can_start_gameover_sequence() const;
+    bool is_touching_ground() const;
+
 };
 
 #endif

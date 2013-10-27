@@ -144,7 +144,7 @@ Hero& MapEntities::get_hero() {
  *
  * TODO move to the Map class (the ground is the terrain of the map)
  */
-Ground MapEntities::get_ground(Layer layer, int x, int y) {
+Ground MapEntities::get_ground(Layer layer, int x, int y) const {
 
   // See if a dynamic entity changes the ground.
   // TODO store ground modifiers in a quad tree for performance.
@@ -175,7 +175,7 @@ Ground MapEntities::get_ground(Layer layer, int x, int y) {
  * \return The ground at this place.
  */
 
-Ground MapEntities::get_ground(Layer layer, const Rectangle& xy) {
+Ground MapEntities::get_ground(Layer layer, const Rectangle& xy) const {
   return get_ground(layer, xy.get_x(), xy.get_y());
 }
 
@@ -233,11 +233,25 @@ const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
 }
 
 /**
- * \brief Returns all separators of the map..
+ * \brief Returns all separators of the map.
  * \return The separators.
  */
 const list<Separator*>& MapEntities::get_separators() {
   return separators;
+}
+
+/**
+ * \brief Returns all separators of the map.
+ * \return The separators.
+ */
+list<const Separator*> MapEntities::get_separators() const {
+
+  list<const Separator*> result;
+  list<Separator*>::const_iterator it;
+  for (it = separators.begin(); it != separators.end(); ++it) {
+    result.push_back(*it);
+  }
+  return result;
 }
 
 /**

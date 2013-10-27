@@ -56,7 +56,7 @@ Detector::~Detector() {
  *
  * \return \c true if this type of entity can detect other entities.
  */
-bool Detector::is_detector() {
+bool Detector::is_detector() const {
   return true;
 }
 

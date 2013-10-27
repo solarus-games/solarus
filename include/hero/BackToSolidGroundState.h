@@ -37,6 +37,7 @@ class Hero::BackToSolidGroundState: public Hero::State {
     void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
+
     bool can_start_gameover_sequence() const;
     bool is_hero_visible() const;
     bool are_collisions_ignored() const;

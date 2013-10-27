@@ -30,16 +30,6 @@
  */
 class PathFindingMovement: public PathMovement {
 
-  private:
-
-    MapEntity* target;              /**< the entity targeted by this movement (usually the hero) */
-    uint32_t next_recomputation_date;
-
-  protected:
-
-    void update();
-    void recompute_movement();
-
   public:
 
     PathFindingMovement(int speed);
@@ -49,6 +39,17 @@ class PathFindingMovement: public PathMovement {
     bool is_finished() const;
 
     virtual const std::string& get_lua_type_name() const;
+
+  protected:
+
+    void update();
+    void recompute_movement();
+
+  private:
+
+    MapEntity* target;              /**< the entity targeted by this movement (usually the hero) */
+    uint32_t next_recomputation_date;
+
 };
 
 #endif

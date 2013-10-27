@@ -248,11 +248,13 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
  */
 MapEntity* MapEntities::find_entity(const std::string& name) {
 
-  if (named_entities.find(name) == named_entities.end()) {
+  std::map<std::string, MapEntity*>::const_iterator it =
+      named_entities.find(name);
+  if (it == named_entities.end()) {
     return NULL;
   }
 
-  MapEntity* entity = named_entities[name];
+  MapEntity* entity = it->second;
 
   if (entity->is_being_removed()) {
     return NULL;

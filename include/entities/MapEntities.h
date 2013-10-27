@@ -60,7 +60,7 @@ class MapEntities {
     MapEntity* find_entity(const std::string& name);
     std::list<MapEntity*> get_entities_with_prefix(const std::string& prefix);
     std::list<MapEntity*> get_entities_with_prefix(EntityType type, const std::string& prefix);
-    bool has_entity_with_prefix(const std::string& prefix);
+    bool has_entity_with_prefix(const std::string& prefix) const;
 
     // handle entities
     void add_entity(MapEntity* entity);

@@ -364,12 +364,12 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(
  * \param prefix Prefix of the name.
  * \return \c true if there exists an entity with this prefix.
  */
-bool MapEntities::has_entity_with_prefix(const std::string& prefix) {
+bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 
-  list<MapEntity*>::iterator i;
+  list<MapEntity*>::const_iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
-    MapEntity* entity = *i;
+    const MapEntity* entity = *i;
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
       return true;
     }

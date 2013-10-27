@@ -121,6 +121,9 @@ class Map: public ExportableToLua {
         Layer layer,
         const Rectangle& collision_box) const;
 
+    Ground get_ground(Layer layer, int x, int y) const;
+    Ground get_ground(Layer layer, const Rectangle& xy) const;
+
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity& entity);
     void check_collision_with_detectors(MapEntity& entity, Sprite& sprite);

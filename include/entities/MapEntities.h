@@ -45,10 +45,9 @@ class MapEntities {
     // entities
     Hero& get_hero();
     Ground get_tile_ground(Layer layer, int x, int y) const;
-    Ground get_ground(Layer layer, int x, int y) const;
-    Ground get_ground(Layer layer, const Rectangle& xy) const;
     const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
     const std::list<MapEntity*>& get_ground_observers(Layer layer);
+    const std::list<MapEntity*>& get_ground_modifiers(Layer layer);
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);

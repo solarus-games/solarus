@@ -133,53 +133,6 @@ Hero& MapEntities::get_hero() {
 }
 
 /**
- * \brief Returns the ground at the specified point.
- *
- * Static tiles and dynamic entities are all taken into account here.
- *
- * \param layer Layer of the point.
- * \param x X coordinate of the point.
- * \param y Y coordinate of the point.
- * \return The ground at this place.
- *
- * TODO move to the Map class (the ground is the terrain of the map)
- */
-Ground MapEntities::get_ground(Layer layer, int x, int y) const {
-
-  // See if a dynamic entity changes the ground.
-  // TODO store ground modifiers in a quad tree for performance.
-  std::list<MapEntity*>::const_reverse_iterator it;
-  const std::list<MapEntity*>::const_reverse_iterator rend =
-      ground_modifiers[layer].rend();
-  for (it = ground_modifiers[layer].rbegin(); it != rend; ++it) {
-    const MapEntity& ground_modifier = *(*it);
-    if (ground_modifier.overlaps(x, y)
-        && ground_modifier.get_modified_ground() != GROUND_EMPTY
-        && ground_modifier.is_enabled()
-        && !ground_modifier.is_being_removed()) {
-      return ground_modifier.get_modified_ground();
-    }
-  }
-
-  // Otherwise, return the ground defined by static tiles (this is very fast).
-  return get_tile_ground(layer, x, y);
-}
-
-/**
- * \brief Returns the ground at the specified point.
- *
- * Static tiles and dynamic entities are all taken into account here.
- *
- * \param layer Layer of the point.
- * \param xy Coordinate of the point.
- * \return The ground at this place.
- */
-
-Ground MapEntities::get_ground(Layer layer, const Rectangle& xy) const {
-  return get_ground(layer, xy.get_x(), xy.get_y());
-}
-
-/**
  * \brief Returns the entities (other that tiles) such that the hero cannot walk on them.
  * \param layer The layer.
  * \return The obstacle entities on that layer.
@@ -195,6 +148,15 @@ const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
  */
 const list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
   return ground_observers[layer];
+}
+
+/**
+ * \brief Returns the entities that are sensible to the ground below them.
+ * \param layer The layer.
+ * \return The ground observers on that layer.
+ */
+const list<MapEntity*>& MapEntities::get_ground_modifiers(Layer layer) {
+  return ground_modifiers[layer];
 }
 
 /**

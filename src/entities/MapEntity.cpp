@@ -322,7 +322,7 @@ void MapEntity::update_ground_below() {
   }
 
   Ground previous_ground = this->ground_below;
-  this->ground_below = get_entities().get_ground(
+  this->ground_below = get_map().get_ground(
       get_layer(), get_ground_point());
   if (this->ground_below != previous_ground) {
     notify_ground_below_changed();

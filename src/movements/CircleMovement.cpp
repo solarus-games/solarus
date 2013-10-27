@@ -113,7 +113,7 @@ void CircleMovement::set_center(MapEntity& center_entity, int x, int y) {
  * \brief Returns the radius of the circles.
  * \return the radius in pixels
  */
-int CircleMovement::get_radius() {
+int CircleMovement::get_radius() const {
   return wanted_radius;
 }
 
@@ -144,7 +144,7 @@ void CircleMovement::set_radius(int radius) {
  * \brief Returns the speed of the radius variations.
  * \return the speed in pixels per second, or 0 if radius variations are immediate
  */
-int CircleMovement::get_radius_speed() {
+int CircleMovement::get_radius_speed() const {
 
   return radius_change_delay == 0 ? 0 : 1000 / radius_change_delay;
 }
@@ -175,7 +175,7 @@ void CircleMovement::set_radius_speed(int radius_speed) {
  * \brief Returns the speed of the angle variation.
  * \return the number of degrees made per second
  */
-int CircleMovement::get_angle_speed() {
+int CircleMovement::get_angle_speed() const {
   return 1000 / angle_change_delay;
 }
 
@@ -196,7 +196,7 @@ void CircleMovement::set_angle_speed(int angle_speed) {
  * \brief Returns the angle from where the first circle starts.
  * \return the angle in radians
  */
-double CircleMovement::get_initial_angle() {
+double CircleMovement::get_initial_angle() const {
 
   return Geometry::degrees_to_radians(initial_angle);
 }
@@ -218,7 +218,7 @@ void CircleMovement::set_initial_angle(double initial_angle) {
  * \brief Returns the direction of the circles.
  * \return true if circles are clockwise
  */
-bool CircleMovement::is_clockwise() {
+bool CircleMovement::is_clockwise() const {
 
   return angle_increment < 0;
 }
@@ -241,7 +241,7 @@ void CircleMovement::set_clockwise(bool clockwise) {
  *
  * \return duration of the movement in milliseconds, (0 means infinite)
  */
-uint32_t CircleMovement::get_duration() {
+uint32_t CircleMovement::get_duration() const {
 
   return duration;
 }
@@ -272,7 +272,7 @@ void CircleMovement::set_duration(uint32_t duration) {
  *
  * \return the number of rotations to make (0 means infinite rotations)
  */
-int CircleMovement::get_max_rotations() {
+int CircleMovement::get_max_rotations() const {
 
   return max_rotations;
 }
@@ -298,7 +298,7 @@ void CircleMovement::set_max_rotations(int max_rotations) {
  * \return Returns the delay after which the movement restarts.
  * \return the delay in milliseconds (0 means no restart)
  */
-uint32_t CircleMovement::get_loop() {
+uint32_t CircleMovement::get_loop() const {
 
   return loop_delay;
 }

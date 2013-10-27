@@ -44,6 +44,8 @@ Surface::Surface(int width, int height):
     SDL_PIXELFORMAT_ARGB8888,
     SDL_TEXTUREACCESS_STATIC,
     width, height);
+    
+  fill_with_color(Color::get_transparent());
 }
 
 /**
@@ -63,6 +65,8 @@ Surface::Surface(const Rectangle& size):
     SDL_PIXELFORMAT_ARGB8888,
     SDL_TEXTUREACCESS_STATIC,
     size.get_width(), size.get_height());
+    
+  fill_with_color(Color::get_transparent());
 }
 
 /**

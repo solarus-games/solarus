@@ -65,7 +65,7 @@ void StraightMovement::notify_object_controlled() {
  * \brief Returns the x speed of the object.
  * \return the x speed of the entity, between -100 and 100
  */
-double StraightMovement::get_x_speed() {
+double StraightMovement::get_x_speed() const {
   return x_speed;
 }
 
@@ -73,7 +73,7 @@ double StraightMovement::get_x_speed() {
  * \brief Returns the y speed of the object.
  * \return the y speed of the entity, between -100 and 100
  */
-double StraightMovement::get_y_speed() {
+double StraightMovement::get_y_speed() const {
   return y_speed;
 }
 
@@ -84,7 +84,7 @@ double StraightMovement::get_y_speed() {
  *
  * \return the speed in pixels per second
  */
-double StraightMovement::get_speed() {
+double StraightMovement::get_speed() const {
   return std::sqrt(x_speed * x_speed + y_speed * y_speed);
 }
 
@@ -237,8 +237,7 @@ void StraightMovement::set_next_move_date_y(uint32_t next_move_date_y) {
  * \brief Computes and returns the direction of the speed vector.
  * \return the current angle of the speed vector in degrees
  */
-double StraightMovement::get_angle() {
-
+double StraightMovement::get_angle() const {
   return angle;
 }
 
@@ -267,8 +266,7 @@ void StraightMovement::set_angle(double angle) {
  * \brief Returns the distance after which the movement stops.
  * \return the maximum distance in pixels (0 means no limit)
  */
-int StraightMovement::get_max_distance() {
-
+int StraightMovement::get_max_distance() const {
   return max_distance;
 }
 
@@ -277,7 +275,6 @@ int StraightMovement::get_max_distance() {
  * \param max_distance the maximum distance in pixels (0 means no limit)
  */
 void StraightMovement::set_max_distance(int max_distance) {
-
   this->max_distance = max_distance;
 }
 
@@ -319,7 +316,7 @@ int StraightMovement::get_displayed_direction4() const {
  *
  * \return true if the entity is about to try to move
  */
-bool StraightMovement::has_to_move_now() {
+bool StraightMovement::has_to_move_now() const {
 
   uint32_t now = System::now();
 
@@ -354,7 +351,7 @@ void StraightMovement::set_suspended(bool suspended) {
  * an obstacle is reached.
  * \return true if the movement is smooth
  */
-bool StraightMovement::is_smooth() {
+bool StraightMovement::is_smooth() const {
   return this->smooth;
 }
 

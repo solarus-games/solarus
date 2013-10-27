@@ -38,6 +38,7 @@ class RandomPathMovement: public PathMovement {
     bool is_finished() const;
 
     virtual const std::string& get_lua_type_name() const;
+
 };
 
 #endif

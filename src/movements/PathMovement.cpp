@@ -76,7 +76,7 @@ PathMovement::~PathMovement() {
  * \brief Returns the path of this movement.
  * \return the path
  */
-const std::string& PathMovement::get_path() {
+const std::string& PathMovement::get_path() const {
 
   return initial_path;
 }
@@ -97,7 +97,7 @@ void PathMovement::set_path(const std::string& path) {
  * \brief Returns the speed of this movement.
  * \return the speed in pixels per second
  */
-int PathMovement::get_speed() {
+int PathMovement::get_speed() const {
   return speed;
 }
 
@@ -113,8 +113,7 @@ void PathMovement::set_speed(int speed) {
  * \brief Returns whether this movement loops when the end of the path is reached.
  * \return true if the movement loops
  */
-bool PathMovement::get_loop() {
-
+bool PathMovement::get_loop() const {
   return loop;
 }
 
@@ -139,8 +138,7 @@ void PathMovement::set_loop(bool loop) {
  * path starts.
  * \return true if the entity is made aligned to the grid
  */
-bool PathMovement::get_snap_to_grid() {
-
+bool PathMovement::get_snap_to_grid() const {
   return snap_to_grid;
 }
 
@@ -149,7 +147,6 @@ bool PathMovement::get_snap_to_grid() {
  * \param snap_to_grid true to make the entity aligned to the grid
  */
 void PathMovement::set_snap_to_grid(bool snap_to_grid) {
-
   this->snap_to_grid = snap_to_grid;
 }
 
@@ -240,7 +237,7 @@ void PathMovement::notify_step_done(int step_index, bool success) {
  * \brief Returns whether the current move of the path is finished.
  * \return true if the current move is finished
  */
-bool PathMovement::is_current_elementary_move_finished() {
+bool PathMovement::is_current_elementary_move_finished() const {
 
   return PixelMovement::is_finished();
 }
@@ -318,7 +315,7 @@ uint32_t PathMovement::speed_to_delay(int speed, int direction) {
  * \brief Returns an xy value representing the total distance of this movement.
  * \return the total x and y distance of this movement
  */
-Rectangle PathMovement::get_xy_change() {
+Rectangle PathMovement::get_xy_change() const {
 
   Rectangle xy;
 
@@ -339,7 +336,7 @@ Rectangle PathMovement::get_xy_change() {
  *
  * \return the current direction (0 to 7)
  */
-int PathMovement::get_current_direction() {
+int PathMovement::get_current_direction() const {
 
   return current_direction;
 }
@@ -349,7 +346,7 @@ int PathMovement::get_current_direction() {
  * \return the total distance in pixels (diagonal moves count for the same distance as non-diagonal moves),
  * not including the possible initial snapping phase
  */
-int PathMovement::get_total_distance_covered() {
+int PathMovement::get_total_distance_covered() const {
   return total_distance_covered;
 }
 

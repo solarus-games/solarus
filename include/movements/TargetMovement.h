@@ -43,7 +43,7 @@ class TargetMovement: public StraightMovement {
     void set_moving_speed(int moving_speed);
 
     virtual void notify_object_controlled();
-    bool is_finished();
+    bool is_finished() const;
     void update();
 
     virtual const std::string& get_lua_type_name() const;

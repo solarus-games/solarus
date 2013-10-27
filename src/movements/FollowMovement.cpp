@@ -47,7 +47,7 @@ FollowMovement::~FollowMovement() {
  * \brief Returns whether the movement is finished.
  * \return true if there was a collision or the entity followed disappeared
  */
-bool FollowMovement::is_finished() {
+bool FollowMovement::is_finished() const {
   return finished;
 }
 

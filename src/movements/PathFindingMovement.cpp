@@ -127,7 +127,7 @@ void PathFindingMovement::recompute_movement() {
  * \return always false because the movement is restarted as soon as the path is finished
  * or an obstacle is reached
  */
-bool PathFindingMovement::is_finished() {
+bool PathFindingMovement::is_finished() const {
   return false;
 }
 

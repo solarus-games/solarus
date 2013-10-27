@@ -184,7 +184,7 @@ void StraightMovement::set_speed(double speed) {
  * \brief Returns whether the speed is not zero.
  * \return true if the object is moving, false otherwise
  */
-bool StraightMovement::is_started() {
+bool StraightMovement::is_started() const {
   return x_speed != 0 || y_speed != 0;
 }
 
@@ -288,8 +288,7 @@ void StraightMovement::set_max_distance(int max_distance) {
  *
  * \return true if the movement is finished
  */
-bool StraightMovement::is_finished() {
-
+bool StraightMovement::is_finished() const {
   return finished;
 }
 
@@ -306,7 +305,7 @@ void StraightMovement::set_finished() {
  * \brief Returns the direction a sprite controlled by this movement should take.
  * \return the direction to use to display the object controlled by this movement (0 to 3)
  */
-int StraightMovement::get_displayed_direction4() {
+int StraightMovement::get_displayed_direction4() const {
 
   int direction = (Geometry::radians_to_degrees(angle) + 45 + 360) / 90;
   return direction % 4;

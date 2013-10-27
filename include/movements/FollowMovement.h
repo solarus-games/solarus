@@ -46,10 +46,10 @@ class FollowMovement: public Movement {
 
   public:
 
-    FollowMovement(MapEntity *entity_followed, int x, int y, bool ignore_obstacles);
+    FollowMovement(MapEntity* entity_followed, int x, int y, bool ignore_obstacles);
     ~FollowMovement();
 
-    bool is_finished();
+    bool is_finished() const;
     const Rectangle get_displayed_xy() const;
 };
 

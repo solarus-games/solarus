@@ -200,7 +200,7 @@ void PathMovement::set_suspended(bool suspended) {
  * \return true if the end of the path was reached or the entity
  * was stopped by an obstacle
  */
-bool PathMovement::is_finished() {
+bool PathMovement::is_finished() const {
 
   return (PixelMovement::is_finished() && remaining_path.empty() && !loop)
       || stopped_by_obstacle;
@@ -357,7 +357,7 @@ int PathMovement::get_total_distance_covered() {
  * \brief Returns the direction a sprite controlled by this movement should take.
  * \return the direction to use to display the object controlled by this movement (0 to 3)
  */
-int PathMovement::get_displayed_direction4() {
+int PathMovement::get_displayed_direction4() const {
 
   static const int displayed_directions[] = {0, 0, 1, 2, 2, 2, 3, 0};
   return displayed_directions[current_direction];

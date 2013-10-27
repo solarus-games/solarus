@@ -95,11 +95,11 @@ class StraightMovement: public Movement {
     void set_max_distance(int max_distance);
     bool is_smooth();
     void set_smooth(bool smooth);
-    int get_displayed_direction4();
+    int get_displayed_direction4() const;
 
     // movement
-    virtual bool is_started();
-    bool is_finished();
+    virtual bool is_started() const;
+    bool is_finished() const;
     void set_finished();
     void stop();
 

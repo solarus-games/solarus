@@ -75,8 +75,8 @@ class CircleMovement: public Movement {
     void set_suspended(bool suspended);
     void start();
     void stop();
-    bool is_started();
-    bool is_finished();
+    bool is_started() const;
+    bool is_finished() const;
 
     // properties
     void set_center(const Rectangle &center_point);

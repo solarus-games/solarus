@@ -48,7 +48,7 @@ class PathMovement: public PixelMovement {
     void notify_object_controlled();
     virtual void update();
     virtual void set_suspended(bool suspended);
-    virtual bool is_finished();
+    virtual bool is_finished() const;
     void restart();
 
     const std::string& get_path();
@@ -63,7 +63,7 @@ class PathMovement: public PixelMovement {
     Rectangle get_xy_change();
     int get_current_direction();
     int get_total_distance_covered();
-    int get_displayed_direction4();
+    int get_displayed_direction4() const;
 
     static const std::string create_random_path();
 

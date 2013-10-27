@@ -68,8 +68,8 @@ class PixelMovement: public Movement {
     void set_loop(bool loop);
 
     // state
-    bool is_started();
-    virtual bool is_finished();
+    bool is_started() const;
+    virtual bool is_finished() const;
     int get_length();
     void restart();
 

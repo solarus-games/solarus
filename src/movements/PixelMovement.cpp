@@ -267,7 +267,7 @@ int PixelMovement::get_length() {
  * \brief Returns whether the entity controlled by this movement is moving.
  * \return true if the entity is moving, false otherwise
  */
-bool PixelMovement::is_started() {
+bool PixelMovement::is_started() const {
   return !finished;
 }
 
@@ -276,7 +276,7 @@ bool PixelMovement::is_started() {
  * whether the end of the trajectory was reached.
  * \return true if the end of the trajectory was reached
  */
-bool PixelMovement::is_finished() {
+bool PixelMovement::is_finished() const {
   return finished;
 }
 

@@ -195,7 +195,7 @@ void TargetMovement::recompute_movement() {
  * \brief Returns whether the movement is finished, i.e.
  * whether the target was reached.
  */
-bool TargetMovement::is_finished() {
+bool TargetMovement::is_finished() const {
   return finished;
 }
 

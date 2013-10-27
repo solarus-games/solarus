@@ -449,7 +449,7 @@ void CircleMovement::start() {
  * \brief Returns whether this movement is running.
  * \return true if the movement is started
  */
-bool CircleMovement::is_started() {
+bool CircleMovement::is_started() const {
   return current_radius != 0 || wanted_radius != 0;
 }
 
@@ -457,7 +457,7 @@ bool CircleMovement::is_started() {
  * \brief Returns whether this movement is finished.
  * \return true if this movement is finished
  */
-bool CircleMovement::is_finished() {
+bool CircleMovement::is_finished() const {
   return is_stopped();
 }
 

@@ -71,7 +71,7 @@ class MapEntity: public ExportableToLua {
 
     // adding to a map
     bool is_on_map() const;
-    virtual void set_map(Map &map);
+    virtual void set_map(Map& map);
     Map& get_map() const;
     virtual void notify_map_started();
     virtual void notify_map_opening_transition_finished();
@@ -164,7 +164,7 @@ class MapEntity: public ExportableToLua {
     virtual void notify_movement_finished();
     virtual void notify_moved_by(MapEntity& entity);
 
-    Detector* get_facing_entity() const;
+    Detector* get_facing_entity();
     void set_facing_entity(Detector* facing_entity);
     virtual void notify_facing_entity_changed(Detector* facing_entity);
     static const Rectangle& direction_to_xy_move(int direction8);

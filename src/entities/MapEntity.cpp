@@ -939,7 +939,7 @@ const Rectangle MapEntity::get_facing_point(int direction) const {
  * \brief Returns the detector in front of this entity.
  * \return the detector this entity is touching, or NULL if there is no detector in front of him
  */
-Detector* MapEntity::get_facing_entity() const {
+Detector* MapEntity::get_facing_entity() {
   return facing_entity;
 }
 

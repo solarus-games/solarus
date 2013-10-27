@@ -38,9 +38,9 @@ class Camera {
     ~Camera();
 
     void update();
-    const Rectangle& get_position();
+    const Rectangle& get_position() const;
 
-    bool is_moving();
+    bool is_moving() const;
     void set_speed(int speed);
     void move(int target_x, int target_y);
     void move(MapEntity& entity);
@@ -49,8 +49,8 @@ class Camera {
 
   private:
 
-    int get_width();
-    int get_height();
+    int get_width() const;
+    int get_height() const;
 
     void update_fixed_on_hero();
     void update_moving();

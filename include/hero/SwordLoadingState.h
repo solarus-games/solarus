@@ -43,9 +43,9 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
 
-    bool is_direction_locked();
-    bool can_take_stairs();
-    bool can_pick_treasure(EquipmentItem& item);
+    bool is_direction_locked() const;
+    bool can_take_stairs() const;
+    bool can_pick_treasure(EquipmentItem& item) const;
     void set_animation_stopped();
     void set_animation_walking();
 };

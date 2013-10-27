@@ -318,9 +318,17 @@ LuaContext& Savegame::get_lua_context() {
 
 /**
  * \brief Returns the player's equipment corresponding to this savegame.
- * \return the equipment
+ * \return The equipment.
  */
 Equipment& Savegame::get_equipment() {
+  return equipment;
+}
+
+/**
+ * \brief Returns the player's equipment corresponding to this savegame.
+ * \return The equipment.
+ */
+const Equipment& Savegame::get_equipment() const {
   return equipment;
 }
 

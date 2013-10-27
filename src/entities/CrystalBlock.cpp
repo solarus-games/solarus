@@ -78,7 +78,7 @@ EntityType CrystalBlock::get_type() const {
  * \brief Returns whether this block is raised.
  * \return true if this block is raised
  */
-bool CrystalBlock::is_raised() {
+bool CrystalBlock::is_raised() const {
 
   return (subtype == ORANGE && orange_raised) ||
     (subtype == BLUE && !orange_raised);
@@ -89,7 +89,7 @@ bool CrystalBlock::is_raised() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool CrystalBlock::is_obstacle_for(MapEntity& other) {
+bool CrystalBlock::is_obstacle_for(const MapEntity& other) const {
 
   // if this block is lowered, it is obviously not an obstacle
   if (!is_raised()) {

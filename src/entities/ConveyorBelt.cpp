@@ -57,7 +57,7 @@ EntityType ConveyorBelt::get_type() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool ConveyorBelt::is_obstacle_for(MapEntity& other) {
+bool ConveyorBelt::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_conveyor_belt_obstacle(*this);
 }
@@ -69,7 +69,7 @@ bool ConveyorBelt::is_obstacle_for(MapEntity& other) {
  */
 void ConveyorBelt::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
-  const Rectangle &xy_move = direction_to_xy_move(get_direction());
+  const Rectangle& xy_move = direction_to_xy_move(get_direction());
   entity_overlapping.notify_collision_with_conveyor_belt(*this, xy_move.get_x(), xy_move.get_y());
 }
 

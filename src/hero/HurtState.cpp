@@ -136,7 +136,7 @@ void Hero::HurtState::set_suspended(bool suspended) {
  * \brief Returns whether the game over sequence can start in the current state.
  * \return true if the game over sequence can start in the current state
  */
-bool Hero::HurtState::can_start_gameover_sequence() {
+bool Hero::HurtState::can_start_gameover_sequence() const {
   return false;
 }
 
@@ -144,7 +144,7 @@ bool Hero::HurtState::can_start_gameover_sequence() {
  * \brief Returns whether the hero is touching the ground in the current state.
  * \return true if the hero is touching the ground in the current state
  */
-bool Hero::HurtState::is_touching_ground() {
+bool Hero::HurtState::is_touching_ground() const {
   return false;
 }
 
@@ -153,7 +153,8 @@ bool Hero::HurtState::is_touching_ground() {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is an obstacle in this state
  */
-bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Hero::HurtState::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
   return true;
 }
 
@@ -162,7 +163,8 @@ bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter& teletransport
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is an obstacle in this state
  */
-bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool Hero::HurtState::is_conveyor_belt_obstacle(
+    const ConveyorBelt& conveyor_belt) const {
   return true;
 }
 
@@ -171,14 +173,14 @@ bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::HurtState::is_sensor_obstacle(Sensor& sensor) {
+bool Hero::HurtState::is_sensor_obstacle(const Sensor& sensor) const {
   return true;
 }
 
 /**
  * \copydoc Hero::State::is_separator_obstacle
  */
-bool Hero::HurtState::is_separator_obstacle(Separator& separator) {
+bool Hero::HurtState::is_separator_obstacle(const Separator& separator) const {
   return true;
 }
 
@@ -188,7 +190,7 @@ bool Hero::HurtState::is_separator_obstacle(Separator& separator) {
  * (or NULL if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::HurtState::can_be_hurt(Enemy* attacker) {
+bool Hero::HurtState::can_be_hurt(Enemy* attacker) const {
   return false;
 }
 
@@ -196,7 +198,7 @@ bool Hero::HurtState::can_be_hurt(Enemy* attacker) {
  * \brief Returns whether the hero ignores the effect of switches in this state.
  * \return true if the hero ignores the effect of switches in this state
  */
-bool Hero::HurtState::can_avoid_switch() {
+bool Hero::HurtState::can_avoid_switch() const {
   return true;
 }
 
@@ -204,7 +206,7 @@ bool Hero::HurtState::can_avoid_switch() {
  * \brief Returns whether the hero ignores the effect of ice in this state.
  * \return \c true if the hero ignores the effect of ice in the current state.
  */
-bool Hero::HurtState::can_avoid_ice() {
+bool Hero::HurtState::can_avoid_ice() const {
   return true;
 }
 

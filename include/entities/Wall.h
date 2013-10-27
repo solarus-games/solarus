@@ -39,13 +39,13 @@ class Wall: public MapEntity {
 
   public:
 
-    Wall(const std::string &name, Layer layer, int x, int y, int width, int height,
+    Wall(const std::string& name, Layer layer, int x, int y, int width, int height,
         bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks);
     ~Wall();
 
     EntityType get_type() const;
     bool can_be_drawn() const;
-    bool is_obstacle_for(MapEntity &other);
+    bool is_obstacle_for(const MapEntity& other) const;
 };
 
 #endif

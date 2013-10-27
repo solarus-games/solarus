@@ -27,41 +27,42 @@ class Arrow: public MapEntity {
 
   private:
 
-    Hero& hero;                /**< the hero */
+    const Hero& hero;          /**< the hero */
     uint32_t disappear_date;   /**< date when the arrow disappears */
     bool stop_now;             /**< true to make the arrow stop now */
-    MapEntity* entity_reached; /**< a dynamic entity reached by the arrow (i.e. an enemy or a crystal, not a usual wall) */
+    MapEntity* entity_reached; /**< a dynamic entity reached by the arrow
+                                * (i.e. an enemy or a crystal, not a usual wall) */
 
   public:
 
-    Arrow(Hero& hero);
+    Arrow(const Hero& hero);
     ~Arrow();
 
     EntityType get_type() const;
     bool can_be_obstacle() const;
     bool is_drawn_in_y_order() const;
 
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_low_wall_obstacle();
-    bool is_deep_water_obstacle();
-    bool is_hole_obstacle();
-    bool is_lava_obstacle();
-    bool is_prickle_obstacle();
-    bool is_ladder_obstacle();
-    bool is_switch_obstacle(Switch& sw);
-    bool is_raised_block_obstacle(CrystalBlock& raised_block);
-    bool is_crystal_obstacle(Crystal& crystal);
-    bool is_npc_obstacle(NPC& npc);
-    bool is_jumper_obstacle(Jumper& jumper);
+    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    bool is_stairs_obstacle(const Stairs& stairs) const;
+    bool is_low_wall_obstacle() const;
+    bool is_deep_water_obstacle() const;
+    bool is_hole_obstacle() const;
+    bool is_lava_obstacle() const;
+    bool is_prickle_obstacle() const;
+    bool is_ladder_obstacle() const;
+    bool is_switch_obstacle(const Switch& sw) const;
+    bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
+    bool is_crystal_obstacle(const Crystal& crystal) const;
+    bool is_npc_obstacle(const NPC& npc) const;
+    bool is_jumper_obstacle(const Jumper& jumper) const;
 
     // state
     void update();
     void set_suspended(bool suspended);
     void stop();
-    bool is_stopped();
-    bool is_flying();
+    bool is_stopped() const;
+    bool is_flying() const;
     void attach_to(MapEntity &entity_reached);
     const Rectangle get_facing_point() const;
 
@@ -72,7 +73,7 @@ class Arrow: public MapEntity {
     void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
-    bool has_reached_map_border();
+    bool has_reached_map_border() const;
 };
 
 #endif

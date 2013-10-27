@@ -85,12 +85,15 @@ class Game {
     Hero& get_hero();
     const Rectangle& get_hero_xy();
     GameCommands& get_commands();
+    const GameCommands& get_commands() const;
     KeysEffect& get_keys_effect();
     Savegame& get_savegame();
+    const Savegame& get_savegame() const;
     Equipment& get_equipment();
+    const Equipment& get_equipment() const;
 
     // functions called by the main loop
-    bool notify_input(InputEvent &event);
+    bool notify_input(InputEvent& event);
     void update();
     void draw(Surface& dst_surface);
 

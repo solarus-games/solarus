@@ -110,7 +110,7 @@ void Hero::SpinAttackState::update() {
  * \brief Returns whether crystals can be activated by the sword in this state.
  * \return true if crystals can be activated by the sword in this state
  */
-bool Hero::SpinAttackState::can_sword_hit_crystal() {
+bool Hero::SpinAttackState::can_sword_hit_crystal() const {
   return true;
 }
 
@@ -119,7 +119,7 @@ bool Hero::SpinAttackState::can_sword_hit_crystal() {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 
@@ -129,7 +129,7 @@ bool Hero::SpinAttackState::can_pick_treasure(EquipmentItem& item) {
  * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
-bool Hero::SpinAttackState::can_be_hurt(Enemy* attacker) {
+bool Hero::SpinAttackState::can_be_hurt(Enemy* attacker) const {
   return false;
 }
 
@@ -139,7 +139,7 @@ bool Hero::SpinAttackState::can_be_hurt(Enemy* attacker) {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::SpinAttackState::is_cutting_with_sword(Detector& detector) {
+bool Hero::SpinAttackState::is_cutting_with_sword(Detector& detector) const {
 
   // during a spin attack, any sprite collision can cut things
   return true;
@@ -149,7 +149,7 @@ bool Hero::SpinAttackState::is_cutting_with_sword(Detector& detector) {
  * \brief Returns the damage power of the sword for the current attack.
  * \return the current damage factor of the sword
  */
-int Hero::SpinAttackState::get_sword_damage_factor() {
+int Hero::SpinAttackState::get_sword_damage_factor() const {
 
   // the damage are multiplied by 2
   return State::get_sword_damage_factor() * 2;
@@ -175,7 +175,7 @@ void Hero::SpinAttackState::play_spin_attack_sound() {
  * \brief Returns whether a deep water tile is considered as an obstacle in this state.
  * \return true if the deep water tiles are considered as obstacles in this state
  */
-bool Hero::SpinAttackState::is_deep_water_obstacle() {
+bool Hero::SpinAttackState::is_deep_water_obstacle() const {
   return !being_pushed;
 }
 
@@ -183,7 +183,7 @@ bool Hero::SpinAttackState::is_deep_water_obstacle() {
  * \brief Returns whether a hole is considered as an obstacle in this state.
  * \return true if the holes are considered as obstacles in this state
  */
-bool Hero::SpinAttackState::is_hole_obstacle() {
+bool Hero::SpinAttackState::is_hole_obstacle() const {
   return !being_pushed;
 }
 
@@ -191,7 +191,7 @@ bool Hero::SpinAttackState::is_hole_obstacle() {
  * \brief Returns whether lava is considered as an obstacle in this state.
  * \return true if lava is considered as obstacles in this state
  */
-bool Hero::SpinAttackState::is_lava_obstacle() {
+bool Hero::SpinAttackState::is_lava_obstacle() const {
   return !being_pushed;
 }
 
@@ -199,7 +199,7 @@ bool Hero::SpinAttackState::is_lava_obstacle() {
  * \brief Returns whether prickles are considered as an obstacle in this state.
  * \return true if prickles are considered as obstacles in this state
  */
-bool Hero::SpinAttackState::is_prickle_obstacle() {
+bool Hero::SpinAttackState::is_prickle_obstacle() const {
   return !being_pushed;
 }
 
@@ -208,7 +208,8 @@ bool Hero::SpinAttackState::is_prickle_obstacle() {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is an obstacle in this state
  */
-bool Hero::SpinAttackState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Hero::SpinAttackState::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
 
   // if the hero is pushed by an enemy or making a super spin attack,
   // don't go on a teletransporter
@@ -218,7 +219,8 @@ bool Hero::SpinAttackState::is_teletransporter_obstacle(Teletransporter& teletra
 /**
  * \copydoc Hero::State::is_separator_obstacle
  */
-bool Hero::SpinAttackState::is_separator_obstacle(Separator& separator) {
+bool Hero::SpinAttackState::is_separator_obstacle(
+    const Separator& separator) const {
   return true;
 }
 
@@ -245,8 +247,11 @@ void Hero::SpinAttackState::notify_obstacle_reached() {
  * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
  * \param killed indicates that the attack has just killed the enemy
  */
-void Hero::SpinAttackState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::SpinAttackState::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
 

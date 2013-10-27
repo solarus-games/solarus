@@ -50,7 +50,7 @@ Hero::RunningState::~RunningState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::RunningState::start(State *previous_state) {
+void Hero::RunningState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -66,7 +66,7 @@ void Hero::RunningState::start(State *previous_state) {
 /**
  * \brief Stops this state.
  */
-void Hero::RunningState::stop(State *next_state) {
+void Hero::RunningState::stop(State* next_state) {
 
   State::stop(next_state);
 
@@ -136,7 +136,7 @@ void Hero::RunningState::set_suspended(bool suspended) {
  * \brief Returns whether the hero is bouncing after he reached an obstacle during the run.
  * \return true if the hero is bouncing
  */
-bool Hero::RunningState::is_bouncing() {
+bool Hero::RunningState::is_bouncing() const {
   return phase == 2;
 }
 
@@ -145,7 +145,7 @@ bool Hero::RunningState::is_bouncing() {
  * start running.
  * \return true if the hero is still pressing the running key
  */
-bool Hero::RunningState::is_pressing_running_key() {
+bool Hero::RunningState::is_pressing_running_key() const {
 
   return get_commands().is_command_pressed(command);
 }
@@ -188,7 +188,7 @@ void Hero::RunningState::notify_obstacle_reached() {
  *
  * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::RunningState::get_wanted_movement_direction8() {
+int Hero::RunningState::get_wanted_movement_direction8() const {
   return get_sprites().get_animation_direction8();
 }
 
@@ -197,7 +197,7 @@ int Hero::RunningState::get_wanted_movement_direction8() {
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  * \return true if the hero ignores the effect of stairs in this state
  */
-bool Hero::RunningState::can_take_stairs() {
+bool Hero::RunningState::can_take_stairs() const {
   return !is_bouncing();
 }
 
@@ -209,7 +209,7 @@ bool Hero::RunningState::can_take_stairs() {
  *
  * \return true if the hero can use jumpers in this state
  */
-bool Hero::RunningState::can_take_jumper() {
+bool Hero::RunningState::can_take_jumper() const {
   return !is_bouncing();
 }
 
@@ -230,7 +230,8 @@ void Hero::RunningState::notify_jumper_activated(Jumper& jumper) {
  * (or NULL if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::RunningState::can_be_hurt(Enemy* attacker) {
+bool Hero::RunningState::can_be_hurt(Enemy* attacker) const {
+
   return phase == 0 ||
       (attacker != NULL && attacker->get_can_hurt_hero_running());
 }
@@ -240,7 +241,7 @@ bool Hero::RunningState::can_be_hurt(Enemy* attacker) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::RunningState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::RunningState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 
@@ -248,7 +249,7 @@ bool Hero::RunningState::can_pick_treasure(EquipmentItem& item) {
  * \brief Returns whether the game over sequence can start in the current state.
  * \return true if the game over sequence can start in the current state
  */
-bool Hero::RunningState::can_start_gameover_sequence() {
+bool Hero::RunningState::can_start_gameover_sequence() const {
   return !is_bouncing();
 }
 
@@ -256,7 +257,7 @@ bool Hero::RunningState::can_start_gameover_sequence() {
  * \brief Returns whether the hero is touching the ground in the current state.
  * \return true if the hero is touching the ground in the current state
  */
-bool Hero::RunningState::is_touching_ground() {
+bool Hero::RunningState::is_touching_ground() const {
   return !is_bouncing();
 }
 
@@ -264,7 +265,7 @@ bool Hero::RunningState::is_touching_ground() {
  * \brief Returns whether the hero ignores the effect of deep water in this state.
  * \return true if the hero ignores the effect of deep water in the current state
  */
-bool Hero::RunningState::can_avoid_deep_water() {
+bool Hero::RunningState::can_avoid_deep_water() const {
   return is_bouncing();
 }
 
@@ -272,7 +273,7 @@ bool Hero::RunningState::can_avoid_deep_water() {
  * \brief Returns whether the hero ignores the effect of holes in this state.
  * \return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::RunningState::can_avoid_hole() {
+bool Hero::RunningState::can_avoid_hole() const {
   return is_bouncing();
 }
 
@@ -280,7 +281,7 @@ bool Hero::RunningState::can_avoid_hole() {
  * \brief Returns whether the hero ignores the effect of lava in this state.
  * \return true if the hero ignores the effect of lava in the current state
  */
-bool Hero::RunningState::can_avoid_lava() {
+bool Hero::RunningState::can_avoid_lava() const {
   return is_bouncing();
 }
 
@@ -288,7 +289,7 @@ bool Hero::RunningState::can_avoid_lava() {
  * \brief Returns whether the hero ignores the effect of prickles in this state.
  * \return true if the hero ignores the effect of prickles in the current state
  */
-bool Hero::RunningState::can_avoid_prickle() {
+bool Hero::RunningState::can_avoid_prickle() const {
   return is_bouncing();
 }
 
@@ -296,7 +297,7 @@ bool Hero::RunningState::can_avoid_prickle() {
  * \brief Returns whether the hero ignores the effect of teletransporters in this state.
  * \return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::RunningState::can_avoid_teletransporter() {
+bool Hero::RunningState::can_avoid_teletransporter() const {
   return is_bouncing();
 }
 
@@ -304,7 +305,7 @@ bool Hero::RunningState::can_avoid_teletransporter() {
  * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * \return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::RunningState::can_avoid_conveyor_belt() {
+bool Hero::RunningState::can_avoid_conveyor_belt() const {
   return is_bouncing();
 }
 
@@ -313,7 +314,7 @@ bool Hero::RunningState::can_avoid_conveyor_belt() {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::RunningState::is_sensor_obstacle(Sensor &sensor) {
+bool Hero::RunningState::is_sensor_obstacle(const Sensor& sensor) const {
   return is_bouncing();
 }
 
@@ -323,7 +324,7 @@ bool Hero::RunningState::is_sensor_obstacle(Sensor &sensor) {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::RunningState::is_cutting_with_sword(Detector &detector) {
+bool Hero::RunningState::is_cutting_with_sword(Detector& detector) const {
 
   // check the distance to the detector
   int distance = 8;
@@ -355,7 +356,7 @@ bool Hero::RunningState::is_cutting_with_sword(Detector &detector) {
  * \brief Returns the damage power of the sword for the current attack.
  * \return the current damage factor of the sword
  */
-int Hero::RunningState::get_sword_damage_factor() {
+int Hero::RunningState::get_sword_damage_factor() const {
 
   // the damage are multiplied by 2
   return State::get_sword_damage_factor() * 2;

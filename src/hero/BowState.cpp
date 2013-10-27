@@ -39,7 +39,7 @@ Hero::BowState::~BowState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::BowState::start(State *previous_state) {
+void Hero::BowState::start(State* previous_state) {
 
   State::start(previous_state);
   get_sprites().set_animation("bow", "");

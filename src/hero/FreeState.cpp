@@ -139,7 +139,7 @@ void Hero::FreeState::notify_obstacle_reached() {
  * in this state.
  * \return true
  */
-bool Hero::FreeState::is_free() {
+bool Hero::FreeState::is_free() const {
   return true;
 }
 
@@ -147,7 +147,7 @@ bool Hero::FreeState::is_free() {
  * \brief Returns whether the hero can swing his sword in this state.
  * \return true if the hero can swing his sword in this state
  */
-bool Hero::FreeState::can_start_sword() {
+bool Hero::FreeState::can_start_sword() const {
   return true;
 }
 
@@ -156,7 +156,7 @@ bool Hero::FreeState::can_start_sword() {
  * \param item The equipment item to check.
  * \return true if the hero can use this equipment item in this state.
  */
-bool Hero::FreeState::can_start_item(EquipmentItem& item) {
+bool Hero::FreeState::can_start_item(EquipmentItem& item) const {
   return hero.get_ground_below() != GROUND_HOLE;
 }
 
@@ -165,7 +165,7 @@ bool Hero::FreeState::can_start_item(EquipmentItem& item) {
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  * \return true if the hero ignores the effect of stairs in this state
  */
-bool Hero::FreeState::can_take_stairs() {
+bool Hero::FreeState::can_take_stairs() const {
   return true;
 }
 
@@ -174,7 +174,8 @@ bool Hero::FreeState::can_take_stairs() {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::FreeState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::FreeState::get_previous_carried_item_behavior(
+    CarriedItem& carried_item) {
   return CarriedItem::BEHAVIOR_DESTROY;
 }
 

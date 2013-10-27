@@ -89,6 +89,14 @@ HeroSprites& Hero::State::get_sprites() {
 }
 
 /**
+ * \brief Returns the hero's sprites.
+ * \return the sprites
+ */
+const HeroSprites& Hero::State::get_sprites() const {
+  return hero.get_sprites();
+}
+
+/**
  * \brief Returns the current map.
  * \return the map
  */
@@ -121,10 +129,26 @@ Game& Hero::State::get_game() {
 }
 
 /**
+ * \brief Returns the current game.
+ * \return the game
+ */
+const Game& Hero::State::get_game() const {
+  return map->get_game();
+}
+
+/**
  * \brief Returns the current equipment.
  * \return the equipment
  */
 Equipment& Hero::State::get_equipment() {
+  return get_game().get_equipment();
+}
+
+/**
+ * \brief Returns the current equipment.
+ * \return the equipment
+ */
+const Equipment& Hero::State::get_equipment() const {
   return get_game().get_equipment();
 }
 
@@ -141,6 +165,14 @@ KeysEffect& Hero::State::get_keys_effect() {
  * \return The commands.
  */
 GameCommands& Hero::State::get_commands() {
+  return get_game().get_commands();
+}
+
+/**
+ * \brief Returns the game commands.
+ * \return The commands.
+ */
+const GameCommands& Hero::State::get_commands() const {
   return get_game().get_commands();
 }
 
@@ -395,7 +427,7 @@ void Hero::State::set_map(Map &map) {
  * \brief Returns whether the game over sequence can start in the current state.
  * \return true if the game over sequence can start in the current state
  */
-bool Hero::State::can_start_gameover_sequence() {
+bool Hero::State::can_start_gameover_sequence() const {
   return true;
 }
 
@@ -403,7 +435,7 @@ bool Hero::State::can_start_gameover_sequence() {
  * \brief Returns whether the hero is visible in the current state.
  * \return true if the hero is displayed in the current state
  */
-bool Hero::State::is_hero_visible() {
+bool Hero::State::is_hero_visible() const {
   return true;
 }
 
@@ -418,7 +450,7 @@ bool Hero::State::is_hero_visible() {
  *
  * \return true if the animation direction is locked
  */
-bool Hero::State::is_direction_locked() {
+bool Hero::State::is_direction_locked() const {
   return false;
 }
 
@@ -430,7 +462,7 @@ bool Hero::State::is_direction_locked() {
  *
  * \return true if the player can control his movements
  */
-bool Hero::State::can_control_movement() {
+bool Hero::State::can_control_movement() const {
   return false;
 }
 
@@ -443,7 +475,7 @@ bool Hero::State::can_control_movement() {
  *
  * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::State::get_wanted_movement_direction8() {
+int Hero::State::get_wanted_movement_direction8() const {
   return -1;
 }
 
@@ -499,7 +531,7 @@ void Hero::State::notify_position_changed() {
  *
  * \return true if the hero ignores the effect of deep water in the current state
  */
-bool Hero::State::can_avoid_deep_water() {
+bool Hero::State::can_avoid_deep_water() const {
   return false;
 }
 
@@ -510,7 +542,7 @@ bool Hero::State::can_avoid_deep_water() {
  *
  * \return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::State::can_avoid_hole() {
+bool Hero::State::can_avoid_hole() const {
   return false;
 }
 
@@ -521,7 +553,7 @@ bool Hero::State::can_avoid_hole() {
  *
  * \return \c true if the hero ignores the effect of ice in the current state.
  */
-bool Hero::State::can_avoid_ice() {
+bool Hero::State::can_avoid_ice() const {
   return false;
 }
 
@@ -532,7 +564,7 @@ bool Hero::State::can_avoid_ice() {
  *
  * \return true if the hero ignores the effect of lava in the current state
  */
-bool Hero::State::can_avoid_lava() {
+bool Hero::State::can_avoid_lava() const {
   return false;
 }
 
@@ -543,7 +575,7 @@ bool Hero::State::can_avoid_lava() {
  *
  * \return true if the hero ignores the effect of prickles in the current state
  */
-bool Hero::State::can_avoid_prickle() {
+bool Hero::State::can_avoid_prickle() const {
   return false;
 }
 
@@ -554,7 +586,7 @@ bool Hero::State::can_avoid_prickle() {
  *
  * \return true if the hero is touching the ground in the current state
  */
-bool Hero::State::is_touching_ground() {
+bool Hero::State::is_touching_ground() const {
   return true;
 }
 
@@ -566,7 +598,7 @@ bool Hero::State::is_touching_ground() {
  *
  * \return true if the hero can come back here
  */
-bool Hero::State::can_come_from_bad_ground() {
+bool Hero::State::can_come_from_bad_ground() const {
   return is_touching_ground();
 }
 
@@ -580,7 +612,7 @@ void Hero::State::notify_ground_changed() {
  * \brief Returns whether this state ignores the collisions with the detectors and the ground.
  * \return true if the collisions are ignored
  */
-bool Hero::State::are_collisions_ignored() {
+bool Hero::State::are_collisions_ignored() const {
   return false;
 }
 
@@ -591,7 +623,7 @@ bool Hero::State::are_collisions_ignored() {
  *
  * \return true if shallow water is considered as an obstacle in this state
  */
-bool Hero::State::is_shallow_water_obstacle() {
+bool Hero::State::is_shallow_water_obstacle() const {
   return false;
 }
 
@@ -602,7 +634,7 @@ bool Hero::State::is_shallow_water_obstacle() {
  *
  * \return true if deep water is considered as an obstacle in this state
  */
-bool Hero::State::is_deep_water_obstacle() {
+bool Hero::State::is_deep_water_obstacle() const {
   return false;
 }
 
@@ -613,7 +645,7 @@ bool Hero::State::is_deep_water_obstacle() {
  *
  * \return true if the holes are considered as obstacles in this state
  */
-bool Hero::State::is_hole_obstacle() {
+bool Hero::State::is_hole_obstacle() const {
   return false;
 }
 
@@ -624,7 +656,7 @@ bool Hero::State::is_hole_obstacle() {
  *
  * \return true if lava is considered as obstacles in this state
  */
-bool Hero::State::is_lava_obstacle() {
+bool Hero::State::is_lava_obstacle() const {
   return false;
 }
 
@@ -635,7 +667,7 @@ bool Hero::State::is_lava_obstacle() {
  *
  * \return true if prickles are considered as obstacles in this state
  */
-bool Hero::State::is_prickle_obstacle() {
+bool Hero::State::is_prickle_obstacle() const {
   return false;
 }
 
@@ -646,7 +678,7 @@ bool Hero::State::is_prickle_obstacle() {
  *
  * \return true if the ladders are considered as obstacles in this state
  */
-bool Hero::State::is_ladder_obstacle() {
+bool Hero::State::is_ladder_obstacle() const {
   return false;
 }
 
@@ -658,7 +690,8 @@ bool Hero::State::is_ladder_obstacle() {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is an obstacle in this state
  */
-bool Hero::State::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Hero::State::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
   return false;
 }
 
@@ -669,7 +702,7 @@ bool Hero::State::is_teletransporter_obstacle(Teletransporter& teletransporter) 
  *
  * \return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::State::can_avoid_teletransporter() {
+bool Hero::State::can_avoid_teletransporter() const {
   return false;
 }
 
@@ -682,7 +715,7 @@ bool Hero::State::can_avoid_teletransporter() {
  *
  * \return true if the effect of teletransporters is delayed in this state
  */
-bool Hero::State::is_teletransporter_delayed() {
+bool Hero::State::is_teletransporter_delayed() const {
   return false;
 }
 
@@ -694,7 +727,8 @@ bool Hero::State::is_teletransporter_delayed() {
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is an obstacle in this state
  */
-bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool Hero::State::is_conveyor_belt_obstacle(
+    const ConveyorBelt& conveyor_belt) const {
   return false;
 }
 
@@ -705,7 +739,7 @@ bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
  *
  * \return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::State::can_avoid_conveyor_belt() {
+bool Hero::State::can_avoid_conveyor_belt() const {
   return false;
 }
 
@@ -717,7 +751,7 @@ bool Hero::State::can_avoid_conveyor_belt() {
  *
  * \return true if the hero can take stairs in this state
  */
-bool Hero::State::can_take_stairs() {
+bool Hero::State::can_take_stairs() const {
   return false;
 }
 
@@ -726,7 +760,7 @@ bool Hero::State::can_take_stairs() {
  * \param stairs Some stairs.
  * \return \c true if the stairs are obstacle in this state.
  */
-bool Hero::State::is_stairs_obstacle(Stairs& stairs) {
+bool Hero::State::is_stairs_obstacle(const Stairs& stairs) const {
 
   // The hero may overlap stairs in rare cases,
   // for example if he arrived by swimming over them
@@ -747,7 +781,7 @@ bool Hero::State::is_stairs_obstacle(Stairs& stairs) {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::State::is_sensor_obstacle(Sensor& sensor) {
+bool Hero::State::is_sensor_obstacle(const Sensor& sensor) const {
   return false;
 }
 
@@ -756,7 +790,7 @@ bool Hero::State::is_sensor_obstacle(Sensor& sensor) {
  * \param jumper a jumper
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::State::is_jumper_obstacle(Jumper& jumper) {
+bool Hero::State::is_jumper_obstacle(const Jumper& jumper) const {
 
   if (hero.overlaps(jumper)) {
     // The hero may overlap the jumper if he arrived by another direction
@@ -795,7 +829,7 @@ bool Hero::State::is_jumper_obstacle(Jumper& jumper) {
  * \param separator A separator.
  * \return \c true if the separator is an obstacle in this state.
  */
-bool Hero::State::is_separator_obstacle(Separator& separator) {
+bool Hero::State::is_separator_obstacle(const Separator& separator) const {
   return false;
 }
 
@@ -806,7 +840,7 @@ bool Hero::State::is_separator_obstacle(Separator& separator) {
  *
  * \return true if the hero ignores the effect of sensors in this state
  */
-bool Hero::State::can_avoid_sensor() {
+bool Hero::State::can_avoid_sensor() const {
   return false;
 }
 
@@ -817,7 +851,7 @@ bool Hero::State::can_avoid_sensor() {
  *
  * \return true if the hero ignores the effect of switches in this state
  */
-bool Hero::State::can_avoid_switch() {
+bool Hero::State::can_avoid_switch() const {
   return false;
 }
 
@@ -828,7 +862,7 @@ bool Hero::State::can_avoid_switch() {
  *
  * \return true if crystals can be activated by the sword in this state
  */
-bool Hero::State::can_sword_hit_crystal() {
+bool Hero::State::can_sword_hit_crystal() const {
   return false;
 }
 
@@ -839,7 +873,7 @@ bool Hero::State::can_sword_hit_crystal() {
  *
  * \return true if the hero ignores the effect of explosions in this state
  */
-bool Hero::State::can_avoid_explosion() {
+bool Hero::State::can_avoid_explosion() const {
   return false;
 }
 
@@ -853,7 +887,7 @@ bool Hero::State::can_avoid_explosion() {
  *
  * \return \c true if the hero can use jumpers in this state.
  */
-bool Hero::State::can_take_jumper() {
+bool Hero::State::can_take_jumper() const {
   return false;
 }
 
@@ -890,7 +924,7 @@ void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
  *
  * \return the current damage factor of the sword
  */
-int Hero::State::get_sword_damage_factor() {
+int Hero::State::get_sword_damage_factor() const {
 
   static const int sword_factors[] = {0, 1, 2, 4, 8};
   int sword = get_equipment().get_ability("sword");
@@ -906,7 +940,7 @@ int Hero::State::get_sword_damage_factor() {
  * (or NULL if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::State::can_be_hurt(Enemy* attacker) {
+bool Hero::State::can_be_hurt(Enemy* attacker) const {
   return false;
 }
 
@@ -918,7 +952,7 @@ bool Hero::State::can_be_hurt(Enemy* attacker) {
  *
  * \return true if the hero can walk normally
  */
-bool Hero::State::is_free() {
+bool Hero::State::is_free() const {
   return false;
 }
 
@@ -929,7 +963,7 @@ bool Hero::State::is_free() {
  *
  * \return true if the hero is using an equipment item.
  */
-bool Hero::State::is_using_item() {
+bool Hero::State::is_using_item() const {
   return false;
 }
 
@@ -950,7 +984,7 @@ EquipmentItemUsage& Hero::State::get_item_being_used() {
  *
  * \return \c true if the hero is brandishing a treasure.
  */
-bool Hero::State::is_brandishing_treasure() {
+bool Hero::State::is_brandishing_treasure() const {
   return false;
 }
 
@@ -961,7 +995,7 @@ bool Hero::State::is_brandishing_treasure() {
  *
  * \return true if the hero is grabbing or pulling an entity
  */
-bool Hero::State::is_grabbing_or_pulling() {
+bool Hero::State::is_grabbing_or_pulling() const {
   return false;
 }
 
@@ -973,7 +1007,7 @@ bool Hero::State::is_grabbing_or_pulling() {
  *
  * \return true if the hero is grabbing and moving an entity
  */
-bool Hero::State::is_moving_grabbed_entity() {
+bool Hero::State::is_moving_grabbed_entity() const {
   return false;
 }
 
@@ -1002,7 +1036,7 @@ void Hero::State::notify_grabbed_entity_collision() {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::State::is_cutting_with_sword(Detector &detector) {
+bool Hero::State::is_cutting_with_sword(Detector& detector) const {
   return false;
 }
 
@@ -1013,7 +1047,7 @@ bool Hero::State::is_cutting_with_sword(Detector &detector) {
  *
  * \return true if the hero can swing his sword in this state
  */
-bool Hero::State::can_start_sword() {
+bool Hero::State::can_start_sword() const {
   return false;
 }
 
@@ -1025,7 +1059,7 @@ bool Hero::State::can_start_sword() {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::State::can_pick_treasure(EquipmentItem& item) {
+bool Hero::State::can_pick_treasure(EquipmentItem& item) const {
   return false;
 }
 
@@ -1037,7 +1071,7 @@ bool Hero::State::can_pick_treasure(EquipmentItem& item) {
  * \param item The equipment item to check.
  * \return true if the hero can use an equipment item in this state.
  */
-bool Hero::State::can_start_item(EquipmentItem& item) {
+bool Hero::State::can_start_item(EquipmentItem& item) const {
   return false;
 }
 
@@ -1072,7 +1106,8 @@ CarriedItem* Hero::State::get_carried_item() {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::State::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::State::get_previous_carried_item_behavior(
+    CarriedItem& carried_item) {
   return CarriedItem::BEHAVIOR_THROW;
 }
 

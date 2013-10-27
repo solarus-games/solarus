@@ -432,18 +432,36 @@ Map& MapEntity::get_map() const {
 
 /**
  * \brief Returns the game that is running the map where this entity is.
- * \return the game
+ * \return The game.
  */
-Game& MapEntity::get_game() const {
+Game& MapEntity::get_game() {
+  Debug::check_assertion(map != NULL, "No map was set");
+  return map->get_game();
+}
+
+/**
+ * \brief Returns the game that is running the map where this entity is.
+ * \return The game.
+ */
+const Game& MapEntity::get_game() const {
   Debug::check_assertion(map != NULL, "No map was set");
   return map->get_game();
 }
 
 /**
  * \brief Returns the entities of the current map.
- * \return the entities
+ * \return The entities.
  */
-MapEntities& MapEntity::get_entities() const {
+MapEntities& MapEntity::get_entities() {
+  Debug::check_assertion(map != NULL, "No map was set");
+  return map->get_entities();
+}
+
+/**
+ * \brief Returns the entities of the current map.
+ * \return The entities.
+ */
+const MapEntities& MapEntity::get_entities() const {
   Debug::check_assertion(map != NULL, "No map was set");
   return map->get_entities();
 }
@@ -452,7 +470,7 @@ MapEntities& MapEntity::get_entities() const {
  * \brief Returns the shared Lua context.
  * \return The Lua context where all scripts are run.
  */
-LuaContext& MapEntity::get_lua_context() const {
+LuaContext& MapEntity::get_lua_context() {
 
   Debug::check_assertion(main_loop != NULL,
       "This entity is not fully constructed yet");
@@ -461,9 +479,17 @@ LuaContext& MapEntity::get_lua_context() const {
 
 /**
  * \brief Returns the current equipment.
- * \return the equipment
+ * \return The equipment.
  */
-Equipment& MapEntity::get_equipment() const {
+Equipment& MapEntity::get_equipment() {
+  return get_game().get_equipment();
+}
+
+/**
+ * \brief Returns the current equipment.
+ * \return The equipment.
+ */
+const Equipment& MapEntity::get_equipment() const {
   return get_game().get_equipment();
 }
 
@@ -471,7 +497,7 @@ Equipment& MapEntity::get_equipment() const {
  * \brief Returns the keys effect manager.
  * \return the keys effect
  */
-KeysEffect& MapEntity::get_keys_effect() const {
+KeysEffect& MapEntity::get_keys_effect() {
   return get_game().get_keys_effect();
 }
 
@@ -479,24 +505,31 @@ KeysEffect& MapEntity::get_keys_effect() const {
  * \brief Returns the game commands.
  * \return The commands.
  */
-GameCommands& MapEntity::get_commands() const {
+GameCommands& MapEntity::get_commands() {
   return get_game().get_commands();
 }
 
 /**
  * \brief Returns the savegame.
- * \return the savegame
+ * \return The savegame.
  */
-Savegame& MapEntity::get_savegame() const {
+Savegame& MapEntity::get_savegame() {
   return get_game().get_savegame();
 }
 
+/**
+ * \brief Returns the savegame.
+ * \return The savegame.
+ */
+const Savegame& MapEntity::get_savegame() const {
+  return get_game().get_savegame();
+}
 
 /**
  * \brief Returns the hero
  * \return the hero
  */
-Hero& MapEntity::get_hero() const {
+Hero& MapEntity::get_hero() {
   return get_entities().get_hero();
 }
 
@@ -1429,7 +1462,7 @@ void MapEntity::notify_enabled(bool enabled) {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool MapEntity::is_obstacle_for(MapEntity& other) {
+bool MapEntity::is_obstacle_for(const MapEntity& other) const {
   return false;
 }
 
@@ -1453,7 +1486,7 @@ bool MapEntity::has_layer_independent_collisions() const {
  *
  * \return \c true if low walls are currently obstacle for this entity.
  */
-bool MapEntity::is_low_wall_obstacle() {
+bool MapEntity::is_low_wall_obstacle() const {
   return true;
 }
 
@@ -1464,7 +1497,7 @@ bool MapEntity::is_low_wall_obstacle() {
  *
  * \return true if shallow water is currently an obstacle for this entity
  */
-bool MapEntity::is_shallow_water_obstacle() {
+bool MapEntity::is_shallow_water_obstacle() const {
   return is_deep_water_obstacle();
 }
 
@@ -1475,7 +1508,7 @@ bool MapEntity::is_shallow_water_obstacle() {
  *
  * \return true if deep water is currently an obstacle for this entity
  */
-bool MapEntity::is_deep_water_obstacle() {
+bool MapEntity::is_deep_water_obstacle() const {
   return true;
 }
 
@@ -1486,7 +1519,7 @@ bool MapEntity::is_deep_water_obstacle() {
  *
  * \return true if the holes are currently an obstacle for this entity
  */
-bool MapEntity::is_hole_obstacle() {
+bool MapEntity::is_hole_obstacle() const {
   return true;
 }
 
@@ -1497,7 +1530,7 @@ bool MapEntity::is_hole_obstacle() {
  *
  * \return true if lava is currently an obstacle for this entity
  */
-bool MapEntity::is_lava_obstacle() {
+bool MapEntity::is_lava_obstacle() const {
   return true;
 }
 
@@ -1508,7 +1541,7 @@ bool MapEntity::is_lava_obstacle() {
  *
  * \return true if prickles are currently an obstacle for this entity
  */
-bool MapEntity::is_prickle_obstacle() {
+bool MapEntity::is_prickle_obstacle() const {
   return true;
 }
 
@@ -1519,7 +1552,7 @@ bool MapEntity::is_prickle_obstacle() {
  *
  * \return true if the ladders are currently an obstacle for this entity
  */
-bool MapEntity::is_ladder_obstacle() {
+bool MapEntity::is_ladder_obstacle() const {
   return true;
 }
 
@@ -1531,7 +1564,7 @@ bool MapEntity::is_ladder_obstacle() {
  * \param hero the hero
  * \return true if the hero is currently an obstacle for this entity
  */
-bool MapEntity::is_hero_obstacle(Hero& hero) {
+bool MapEntity::is_hero_obstacle(const Hero& hero) const {
   return false;
 }
 
@@ -1543,7 +1576,7 @@ bool MapEntity::is_hero_obstacle(Hero& hero) {
  * \param block a block
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool MapEntity::is_block_obstacle(Block& block) {
+bool MapEntity::is_block_obstacle(const Block& block) const {
   return true;
 }
 
@@ -1555,7 +1588,8 @@ bool MapEntity::is_block_obstacle(Block& block) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool MapEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool MapEntity::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
   return true;
 }
 
@@ -1567,7 +1601,8 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool MapEntity::is_conveyor_belt_obstacle(
+    const ConveyorBelt& conveyor_belt) const {
   return true;
 }
 
@@ -1579,7 +1614,7 @@ bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool MapEntity::is_stairs_obstacle(Stairs& stairs) {
+bool MapEntity::is_stairs_obstacle(const Stairs& stairs) const {
   return true;
 }
 
@@ -1591,7 +1626,7 @@ bool MapEntity::is_stairs_obstacle(Stairs& stairs) {
  * \param sensor a sensor
  * \return true if the sensor is currently an obstacle for this entity
  */
-bool MapEntity::is_sensor_obstacle(Sensor& sensor) {
+bool MapEntity::is_sensor_obstacle(const Sensor& sensor) const {
   return false;
 }
 
@@ -1603,7 +1638,7 @@ bool MapEntity::is_sensor_obstacle(Sensor& sensor) {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool MapEntity::is_switch_obstacle(Switch& sw) {
+bool MapEntity::is_switch_obstacle(const Switch& sw) const {
   return sw.is_solid();
 }
 
@@ -1615,7 +1650,8 @@ bool MapEntity::is_switch_obstacle(Switch& sw) {
  * \param raised_block a crystal block raised
  * \return true if the raised block is currently an obstacle for this entity
  */
-bool MapEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
+bool MapEntity::is_raised_block_obstacle(
+    const CrystalBlock& raised_block) const {
   return true;
 }
 
@@ -1628,7 +1664,7 @@ bool MapEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool MapEntity::is_crystal_obstacle(Crystal& crystal) {
+bool MapEntity::is_crystal_obstacle(const Crystal& crystal) const {
   return true;
 }
 
@@ -1640,7 +1676,7 @@ bool MapEntity::is_crystal_obstacle(Crystal& crystal) {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool MapEntity::is_npc_obstacle(NPC& npc) {
+bool MapEntity::is_npc_obstacle(const NPC& npc) const {
   return true;
 }
 
@@ -1652,7 +1688,7 @@ bool MapEntity::is_npc_obstacle(NPC& npc) {
  * \param enemy an enemy
  * \return true if the enemy is currently an obstacle for this entity
  */
-bool MapEntity::is_enemy_obstacle(Enemy& enemy) {
+bool MapEntity::is_enemy_obstacle(const Enemy& enemy) const {
   return false;
 }
 
@@ -1664,7 +1700,7 @@ bool MapEntity::is_enemy_obstacle(Enemy& enemy) {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool MapEntity::is_jumper_obstacle(Jumper& jumper) {
+bool MapEntity::is_jumper_obstacle(const Jumper& jumper) const {
   return true;
 }
 
@@ -1677,7 +1713,8 @@ bool MapEntity::is_jumper_obstacle(Jumper& jumper) {
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle for this entity
  */
-bool MapEntity::is_destructible_obstacle(Destructible& destructible) {
+bool MapEntity::is_destructible_obstacle(
+    const Destructible& destructible) const {
 
   return !destructible.is_disabled();
 }
@@ -1691,7 +1728,7 @@ bool MapEntity::is_destructible_obstacle(Destructible& destructible) {
  * \param separator A separator.
  * \return \c true if the separator is currently an obstacle for this entity.
  */
-bool MapEntity::is_separator_obstacle(Separator& separator) {
+bool MapEntity::is_separator_obstacle(const Separator& separator) const {
 
   return true;
 }
@@ -1703,7 +1740,7 @@ bool MapEntity::is_separator_obstacle(Separator& separator) {
  *
  * \return true if the sword is ignored
  */
-bool MapEntity::is_sword_ignored() {
+bool MapEntity::is_sword_ignored() const {
   return false;
 }
 
@@ -1842,9 +1879,9 @@ int MapEntity::get_distance_to_camera() const {
  */
 bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
-  const std::list<Separator*>& separators =
+  const std::list<const Separator*>& separators =
       get_entities().get_separators();
-  std::list<Separator*>::const_iterator it;
+  std::list<const Separator*>::const_iterator it;
   for (it = separators.begin(); it != separators.end(); ++it) {
 
     const Separator& separator = *(*it);

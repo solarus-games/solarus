@@ -75,7 +75,7 @@ bool Sensor::can_be_drawn() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Sensor::is_obstacle_for(MapEntity& other) {
+bool Sensor::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_sensor_obstacle(*this);
 }

@@ -43,15 +43,16 @@ class Hero::HurtState: public Hero::State {
     void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
-    bool can_start_gameover_sequence();
-    bool is_touching_ground();
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_sensor_obstacle(Sensor& sensor);
-    bool is_separator_obstacle(Separator& separator);
-    bool can_be_hurt(Enemy* attacker);
-    bool can_avoid_switch();
-    bool can_avoid_ice();
+    bool can_start_gameover_sequence() const;
+    bool is_touching_ground() const;
+    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    bool is_sensor_obstacle(const Sensor& sensor) const;
+    bool is_separator_obstacle(const Separator& separator) const;
+    bool can_be_hurt(Enemy* attacker) const;
+    bool can_avoid_switch() const;
+    bool can_avoid_ice() const;
+
 };
 
 #endif

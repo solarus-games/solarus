@@ -51,7 +51,7 @@ class Chest: public Detector {
     EntityType get_type() const;
     bool is_drawn_in_y_order() const;
 
-    bool is_open();
+    bool is_open() const;
     void set_open(bool open);
     bool can_open();
 
@@ -64,7 +64,7 @@ class Chest: public Detector {
     const std::string& get_cannot_open_dialog_id() const;
     void set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id);
 
-    bool is_obstacle_for(MapEntity& other);
+    bool is_obstacle_for(const MapEntity& other) const;
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_enabled(bool enabled);
     void update();

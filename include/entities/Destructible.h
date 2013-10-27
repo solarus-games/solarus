@@ -106,8 +106,8 @@ class Destructible: public Detector {
     bool is_disabled() const;
     void set_destruction_callback(int destroy_callback_ref);
 
-    bool is_obstacle_for(MapEntity &other);
-    bool test_collision_custom(MapEntity &entity);
+    bool is_obstacle_for(const MapEntity& other) const;
+    bool test_collision_custom(MapEntity& entity);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
     void notify_collision_with_hero(Hero& hero, CollisionMode collision_mode);

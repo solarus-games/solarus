@@ -44,15 +44,16 @@ class MapEntities {
 
     // entities
     Hero& get_hero();
-    Ground get_tile_ground(Layer layer, int x, int y);
-    Ground get_ground(Layer layer, int x, int y);
-    Ground get_ground(Layer layer, const Rectangle& xy);
+    Ground get_tile_ground(Layer layer, int x, int y) const;
+    Ground get_ground(Layer layer, int x, int y) const;
+    Ground get_ground(Layer layer, const Rectangle& xy) const;
     const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
     const std::list<MapEntity*>& get_ground_observers(Layer layer);
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
     const std::list<Separator*>& get_separators();
+    std::list<const Separator*> get_separators() const;
     Destination* get_default_destination();
 
     MapEntity* get_entity(const std::string& name);
@@ -175,7 +176,7 @@ class MapEntities {
  * \param y Y coordinate of the point.
  * \return The ground of the highest tile at this place.
  */
-inline Ground MapEntities::get_tile_ground(Layer layer, int x, int y) {
+inline Ground MapEntities::get_tile_ground(Layer layer, int x, int y) const {
 
   // Warning: this function is called very often so it has been optimized and
   // should remain so.

@@ -113,7 +113,7 @@ void Chest::notify_enabled(bool enabled) {
  * \brief Returns whether the player has found the treasure in this chest.
  * \return true if the chest is open
  */
-bool Chest::is_open() {
+bool Chest::is_open() const {
   return open;
 }
 
@@ -334,7 +334,7 @@ void Chest::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) 
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Chest::is_obstacle_for(MapEntity& other) {
+bool Chest::is_obstacle_for(const MapEntity& other) const {
   return true;
 }
 

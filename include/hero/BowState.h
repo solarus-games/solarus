@@ -26,10 +26,10 @@ class Hero::BowState: public Hero::State {
 
   public:
 
-    BowState(Hero &hero);
+    BowState(Hero& hero);
     ~BowState();
 
-    void start(State *previous_state);
+    void start(State* previous_state);
     void update();
 };
 

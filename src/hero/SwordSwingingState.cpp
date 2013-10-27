@@ -110,7 +110,7 @@ void Hero::SwordSwingingState::update() {
  * \brief Returns whether the hero can swing his sword in this state.
  * \return true if the hero can swing his sword in this state
  */
-bool Hero::SwordSwingingState::can_start_sword() {
+bool Hero::SwordSwingingState::can_start_sword() const {
   return hero.get_movement() == NULL;
 }
 
@@ -120,7 +120,7 @@ bool Hero::SwordSwingingState::can_start_sword() {
  * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
-bool Hero::SwordSwingingState::can_be_hurt(Enemy* attacker) {
+bool Hero::SwordSwingingState::can_be_hurt(Enemy* attacker) const {
   return true;
 }
 
@@ -129,7 +129,7 @@ bool Hero::SwordSwingingState::can_be_hurt(Enemy* attacker) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 
@@ -137,7 +137,7 @@ bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) {
  * \brief Returns whether crystals can be activated by the sword in this state.
  * \return true if crystals can be activated by the sword in this state
  */
-bool Hero::SwordSwingingState::can_sword_hit_crystal() {
+bool Hero::SwordSwingingState::can_sword_hit_crystal() const {
   return true;
 }
 
@@ -147,7 +147,8 @@ bool Hero::SwordSwingingState::can_sword_hit_crystal() {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::SwordSwingingState::is_cutting_with_sword(Detector &detector) {
+bool Hero::SwordSwingingState::is_cutting_with_sword(
+    Detector& detector) const {
 
   if (hero.get_movement() != NULL) {
     return false;
@@ -184,7 +185,8 @@ bool Hero::SwordSwingingState::is_cutting_with_sword(Detector &detector) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is an obstacle in this state
  */
-bool Hero::SwordSwingingState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Hero::SwordSwingingState::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
 
   // if the hero was pushed by an enemy, don't go on a teletransporter
   return hero.get_movement() != NULL;
@@ -211,8 +213,11 @@ void Hero::SwordSwingingState::notify_obstacle_reached() {
  * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
  * \param killed indicates that the attack has just killed the enemy
  */
-void Hero::SwordSwingingState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::SwordSwingingState::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
     attacked = true;

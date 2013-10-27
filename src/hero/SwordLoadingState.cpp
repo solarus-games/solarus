@@ -150,7 +150,7 @@ void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
  * \brief Returns whether the animation direction is locked.
  * \return true if the animation direction is locked
  */
-bool Hero::SwordLoadingState::is_direction_locked() {
+bool Hero::SwordLoadingState::is_direction_locked() const {
   return true;
 }
 
@@ -159,7 +159,7 @@ bool Hero::SwordLoadingState::is_direction_locked() {
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  * \return true if the hero ignores the effect of stairs in this state
  */
-bool Hero::SwordLoadingState::can_take_stairs() {
+bool Hero::SwordLoadingState::can_take_stairs() const {
   return true;
 }
 
@@ -168,7 +168,7 @@ bool Hero::SwordLoadingState::can_take_stairs() {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 

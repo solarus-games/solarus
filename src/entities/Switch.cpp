@@ -94,7 +94,7 @@ EntityType Switch::get_type() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Switch::is_obstacle_for(MapEntity& other) {
+bool Switch::is_obstacle_for(const MapEntity& other) const {
   return other.is_switch_obstacle(*this);
 }
 
@@ -102,7 +102,7 @@ bool Switch::is_obstacle_for(MapEntity& other) {
  * \brief Returns whether this switch is a walkable switch.
  * \return true if the subtype of this switch is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
  */
-bool Switch::is_walkable() {
+bool Switch::is_walkable() const {
   return subtype == WALKABLE_INVISIBLE || subtype == WALKABLE_VISIBLE;
 }
 
@@ -110,7 +110,7 @@ bool Switch::is_walkable() {
  * \brief Returns whether this switch is an arrow target.
  * \return true if the subtype of this switch is ARROW_TARGET
  */
-bool Switch::is_arrow_target() {
+bool Switch::is_arrow_target() const {
   return subtype == ARROW_TARGET;
 }
 
@@ -118,7 +118,7 @@ bool Switch::is_arrow_target() {
  * \brief Returns whether this switch is a solid switch.
  * \return true if the subtype of this switch is SOLID
  */
-bool Switch::is_solid() {
+bool Switch::is_solid() const {
   return subtype == SOLID;
 }
 
@@ -127,7 +127,7 @@ bool Switch::is_solid() {
  *
  * \return true if the switch is activated
  */
-bool Switch::is_activated() {
+bool Switch::is_activated() const {
   return activated;
 }
 

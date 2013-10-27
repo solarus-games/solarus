@@ -45,9 +45,9 @@ class PlayerMovement: public StraightMovement {
 
     void update();
 
-    int get_moving_speed();
+    int get_moving_speed() const;
     void set_moving_speed(int moving_speed);
-    int get_wanted_direction8();
+    int get_wanted_direction8() const;
     void compute_movement();
 };
 

@@ -88,7 +88,7 @@ bool Jumper::can_be_drawn() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Jumper::is_obstacle_for(MapEntity& other) {
+bool Jumper::is_obstacle_for(const MapEntity& other) const {
 
   if (get_direction() % 2 != 0) {
     return false; // diagonal jumper: never obstacle (the tiles below the jumper should block entities)
@@ -255,7 +255,7 @@ void Jumper::notify_collision(MapEntity& entity_overlapping,
  *
  * \return \c true if the sword is ignored
  */
-bool Jumper::is_sword_ignored() {
+bool Jumper::is_sword_ignored() const {
 
   // We don't want a sword tapping animation.
   return true;

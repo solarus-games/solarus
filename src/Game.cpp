@@ -547,7 +547,7 @@ void Game::draw(Surface& dst_surface) {
  *
  * \return true if there is a map
  */
-bool Game::has_current_map() {
+bool Game::has_current_map() const {
   return current_map != NULL;
 }
 
@@ -619,7 +619,7 @@ void Game::notify_map_changed() {
  *
  * \return the state of the crystals or this world
  */
-bool Game::get_crystal_state() {
+bool Game::get_crystal_state() const {
   return crystal_state;
 }
 
@@ -634,7 +634,7 @@ void Game::change_crystal_state() {
  * \brief Returns whether the game is paused.
  * \return true if the game is paused
  */
-bool Game::is_paused() {
+bool Game::is_paused() const {
   return paused;
 }
 
@@ -642,7 +642,7 @@ bool Game::is_paused() {
  * \brief Returns whether we are playing a transition between two maps.
  * \return true if there is a transition
  */
-bool Game::is_playing_transition() {
+bool Game::is_playing_transition() const {
   return transition != NULL || next_map != NULL;
 }
 
@@ -658,7 +658,7 @@ bool Game::is_playing_transition() {
  *
  * \return true if the game is suspended
  */
-bool Game::is_suspended() {
+bool Game::is_suspended() const {
 
   return current_map == NULL
       || is_paused()
@@ -672,7 +672,7 @@ bool Game::is_suspended() {
  * \brief Returns whether a dialog is currently active.
  * \return true if a dialog box is being shown
  */
-bool Game::is_dialog_enabled() {
+bool Game::is_dialog_enabled() const {
   return dialog_box.is_enabled();
 }
 
@@ -712,7 +712,7 @@ void Game::stop_dialog(int status_ref) {
  *
  * \return \c true if the player can currently pause the game.
  */
-bool Game::can_pause() {
+bool Game::can_pause() const {
   return !is_suspended()
       && is_pause_allowed()               // see if the map currently allows the pause command
       && get_equipment().get_life() > 0;  // don't allow to pause the game if the gameover sequence is about to start
@@ -722,7 +722,7 @@ bool Game::can_pause() {
  * \brief Returns whether the player can currently unpause the game.
  * \return \c true if the player can currently unpause the game.
  */
-bool Game::can_unpause() {
+bool Game::can_unpause() const {
   return is_paused()
       && is_pause_allowed()
       && !is_dialog_enabled();
@@ -736,7 +736,7 @@ bool Game::can_unpause() {
  *
  * \return \c true if the pause command is available.
  */
-bool Game::is_pause_allowed() {
+bool Game::is_pause_allowed() const {
   return pause_allowed;
 }
 
@@ -798,7 +798,7 @@ void Game::restart() {
  * \brief Returns whether the gameover sequence is being shown.
  * \return true if the gameover sequence is being shown
  */
-bool Game::is_showing_game_over() {
+bool Game::is_showing_game_over() const {
   return showing_game_over;
 }
 

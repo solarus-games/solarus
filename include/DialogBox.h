@@ -38,18 +38,18 @@ class DialogBox {
     ~DialogBox();
 
     Game& get_game();
-    bool is_enabled();
+    bool is_enabled() const;
 
     void open(const std::string& dialog_id, int info_ref, int callback_ref);
     void close(int status_ref);
     bool notify_command_pressed(GameCommands::Command command);
-    const std::string& get_dialog_id();
+    const std::string& get_dialog_id() const;
 
     void draw(Surface& dst_surface);
 
   private:
 
-    bool has_more_lines();
+    bool has_more_lines() const;
     void show_more_lines();
 
     Game& game;                                     /**< The game this dialog box belongs to. */

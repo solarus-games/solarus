@@ -1887,8 +1887,7 @@ int MapEntity::get_distance_to_camera() const {
  */
 bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
-  const std::list<const Separator*>& separators =
-      get_entities().get_separators();
+  const std::list<const Separator*>& separators = get_entities().get_separators();
   std::list<const Separator*>::const_iterator it;
   for (it = separators.begin(); it != separators.end(); ++it) {
 

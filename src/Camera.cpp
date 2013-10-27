@@ -107,12 +107,12 @@ void Camera::update_fixed_on_hero() {
     // TODO simplify: treat horizontal separators first and then all vertical ones.
     int adjusted_x = x;  // Updated coordinates after applying separators.
     int adjusted_y = y;
-    std::list<Separator*> applied_separators;
-    const std::list<Separator*>& separators =
+    std::list<const Separator*> applied_separators;
+    const std::list<const Separator*>& separators =
         map.get_entities().get_separators();
-    std::list<Separator*>::const_iterator it;
+    std::list<const Separator*>::const_iterator it;
     for (it = separators.begin(); it != separators.end(); ++it) {
-      Separator& separator = *(*it);
+      const Separator& separator = *(*it);
 
       if (separator.is_vertical()) {
         // Vertical separator.
@@ -161,9 +161,9 @@ void Camera::update_fixed_on_hero() {
 
       must_adjust_x = false;
       must_adjust_y = false;
-      std::list<Separator*>::const_iterator it;
+      std::list<const Separator*>::const_iterator it;
       for (it = applied_separators.begin(); it != applied_separators.end(); ++it) {
-        Separator& separator = *(*it);
+        const Separator& separator = *(*it);
 
         if (separator.is_vertical()) {
           // Vertical separator.

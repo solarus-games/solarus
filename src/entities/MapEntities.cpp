@@ -198,22 +198,8 @@ const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
  * \brief Returns all separators of the map.
  * \return The separators.
  */
-const list<Separator*>& MapEntities::get_separators() {
+const list<const Separator*>& MapEntities::get_separators() const {
   return separators;
-}
-
-/**
- * \brief Returns all separators of the map.
- * \return The separators.
- */
-list<const Separator*> MapEntities::get_separators() const {
-
-  list<const Separator*> result;
-  list<Separator*>::const_iterator it;
-  for (it = separators.begin(); it != separators.end(); ++it) {
-    result.push_back(*it);
-  }
-  return result;
 }
 
 /**

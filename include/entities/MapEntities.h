@@ -51,8 +51,7 @@ class MapEntities {
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
-    const std::list<Separator*>& get_separators();
-    std::list<const Separator*> get_separators() const;
+    const std::list<const Separator*>& get_separators() const;
     Destination* get_default_destination();
 
     MapEntity* get_entity(const std::string& name);
@@ -154,7 +153,7 @@ class MapEntities {
     std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
     std::list<CrystalBlock*>
       crystal_blocks[LAYER_NB];                     /**< all crystal blocks of the map */
-    std::list<Separator*> separators;               /**< all separators of the map */
+    std::list<const Separator*> separators;         /**< all separators of the map */
 
     Boomerang* boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
     std::string music_before_miniboss;              /**< the music that was played before starting a miniboss fight */

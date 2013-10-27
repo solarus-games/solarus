@@ -85,9 +85,9 @@ class Movement: public ExportableToLua {
     virtual void set_suspended(bool suspended);
 
     // position
-    int get_x();
-    int get_y();
-    const Rectangle get_xy();
+    int get_x() const;
+    int get_y() const;
+    const Rectangle get_xy() const;
     void set_x(int x);
     void set_y(int y);
     void set_xy(int x, int y);
@@ -117,7 +117,7 @@ class Movement: public ExportableToLua {
 
     // displaying moving objects
     virtual int get_displayed_direction4();
-    virtual const Rectangle get_displayed_xy();
+    virtual const Rectangle get_displayed_xy() const;
 
     // Lua
     LuaContext* get_lua_context() const;

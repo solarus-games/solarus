@@ -135,7 +135,7 @@ void Movement::notify_object_controlled() {
  * \brief Returns the x position of the object controlled by this movement.
  * \return the x position of the object controlled by this movement
  */
-int Movement::get_x() {
+int Movement::get_x() const {
 
   return get_xy().get_x();
 }
@@ -144,7 +144,7 @@ int Movement::get_x() {
  * \brief Returns the y position of the object controlled by this movement.
  * \return the y position of the object controlled by this movement
  */
-int Movement::get_y() {
+int Movement::get_y() const {
 
   return get_xy().get_y();
 }
@@ -153,7 +153,7 @@ int Movement::get_y() {
  * \brief Returns the coordinates of the object controlled by this movement.
  * \return The coordinates of the object controlled by this movement.
  */
-const Rectangle Movement::get_xy() {
+const Rectangle Movement::get_xy() const {
 
   if (entity != NULL) {
     // The object controlled is a map entity.
@@ -528,7 +528,7 @@ int Movement::get_displayed_direction4() {
  *
  * \return the coordinates to use to display the object controlled by this movement
  */
-const Rectangle Movement::get_displayed_xy() {
+const Rectangle Movement::get_displayed_xy() const {
   return get_xy();
 }
 

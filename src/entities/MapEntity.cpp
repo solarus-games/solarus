@@ -725,7 +725,7 @@ void MapEntity::set_top_left_xy(int x, int y) {
  *
  * \return the coordinates of the entity on the map
  */
-const Rectangle MapEntity::get_displayed_xy() {
+const Rectangle MapEntity::get_displayed_xy() const {
 
   if (get_movement() == NULL) {
     return get_xy();
@@ -906,7 +906,7 @@ const Rectangle MapEntity::get_facing_point(int direction) const {
  * \brief Returns the detector in front of this entity.
  * \return the detector this entity is touching, or NULL if there is no detector in front of him
  */
-Detector* MapEntity::get_facing_entity() {
+Detector* MapEntity::get_facing_entity() const {
   return facing_entity;
 }
 
@@ -1165,6 +1165,14 @@ void MapEntity::set_visible(bool visible) {
  * \return the entity's movement, or NULL if there is no movement
  */
 Movement* MapEntity::get_movement() {
+  return movement;
+}
+
+/**
+ * \brief Returns the current movement of the entity.
+ * \return the entity's movement, or NULL if there is no movement
+ */
+const Movement* MapEntity::get_movement() const {
   return movement;
 }
 

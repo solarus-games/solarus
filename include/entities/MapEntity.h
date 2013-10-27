@@ -90,7 +90,7 @@ class MapEntity: public ExportableToLua {
     const Rectangle get_xy() const;
     void set_xy(const Rectangle& xy);
     void set_xy(int x, int y);
-    const Rectangle get_displayed_xy();
+    const Rectangle get_displayed_xy() const;
 
     int get_width() const;
     int get_height() const;
@@ -149,6 +149,7 @@ class MapEntity: public ExportableToLua {
 
     // Movement.
     Movement* get_movement();
+    const Movement* get_movement() const;
     void set_movement(Movement* movement);
     void clear_movement();
     bool are_movement_notifications_enabled() const;
@@ -161,7 +162,7 @@ class MapEntity: public ExportableToLua {
     virtual void notify_movement_changed();
     virtual void notify_movement_finished();
     virtual void notify_moved_by(MapEntity& entity);
-    Detector* get_facing_entity();
+    Detector* get_facing_entity() const;
     void set_facing_entity(Detector* facing_entity);
     virtual void notify_facing_entity_changed(Detector* facing_entity);
     static const Rectangle& direction_to_xy_move(int direction8);

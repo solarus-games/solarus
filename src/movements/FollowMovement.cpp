@@ -99,7 +99,7 @@ void FollowMovement::update() {
  * should be displayed.
  * \return the coordinates to use to display the object controlled by this movement
  */
-const Rectangle FollowMovement::get_displayed_xy() {
+const Rectangle FollowMovement::get_displayed_xy() const {
 
   if (entity_followed == NULL) {
     return get_xy();

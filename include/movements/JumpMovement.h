@@ -40,7 +40,7 @@ class JumpMovement: public PixelMovement {
     void set_speed(int speed);
 
     int get_displayed_direction4();
-    const Rectangle get_displayed_xy();
+    const Rectangle get_displayed_xy() const;
 
     virtual const std::string& get_lua_type_name() const;
 

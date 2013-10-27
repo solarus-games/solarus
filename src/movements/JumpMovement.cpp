@@ -158,7 +158,7 @@ int JumpMovement::get_displayed_direction4() {
  *
  * \return the coordinates to use to display the object controlled by this movement
  */
-const Rectangle JumpMovement::get_displayed_xy() {
+const Rectangle JumpMovement::get_displayed_xy() const {
 
   Rectangle displayed_xy = get_xy();
   displayed_xy.add_y(-jump_height); // display the entity over its shadow

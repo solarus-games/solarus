@@ -30,27 +30,32 @@
  */
 class FollowMovement: public Movement {
 
-  private:
+  public:
 
-    MapEntity *entity_followed;     /**< the entity followed by this movement */
-    const int x;                    /**< x coordinate of where this entity should be placed,
-                                     * relative to the entity followed */
-    const int y;                    /**< y coordinate of where this entity should be placed,
-                                     * relative to the entity followed */
+    FollowMovement(
+        const MapEntity* entity_followed,
+        int x,
+        int y,
+        bool ignore_obstacles);
+    ~FollowMovement();
 
-    bool finished;                  /**< indicates that the movement is stopped because of obstacles */
+    bool is_finished() const;
+    const Rectangle get_displayed_xy() const;
 
   protected:
 
     void update();
 
-  public:
+  private:
 
-    FollowMovement(MapEntity* entity_followed, int x, int y, bool ignore_obstacles);
-    ~FollowMovement();
+    const MapEntity* entity_followed;  /**< The entity followed by this movement or NULL. */
+    const int x;                       /**< x coordinate of where this entity should be placed,
+                                        * relative to the entity followed */
+    const int y;                       /**< y coordinate of where this entity should be placed,
+                                        * relative to the entity followed */
 
-    bool is_finished() const;
-    const Rectangle get_displayed_xy() const;
+    bool finished;                     /**< indicates that the movement is stopped because of obstacles */
+
 };
 
 #endif

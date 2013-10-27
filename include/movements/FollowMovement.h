@@ -33,7 +33,7 @@ class FollowMovement: public Movement {
   public:
 
     FollowMovement(
-        const MapEntity* entity_followed,
+        MapEntity* entity_followed,
         int x,
         int y,
         bool ignore_obstacles);
@@ -48,7 +48,7 @@ class FollowMovement: public Movement {
 
   private:
 
-    const MapEntity* entity_followed;  /**< The entity followed by this movement or NULL. */
+    MapEntity* entity_followed;        /**< The entity followed by this movement or NULL. */
     const int x;                       /**< x coordinate of where this entity should be placed,
                                         * relative to the entity followed */
     const int y;                       /**< y coordinate of where this entity should be placed,

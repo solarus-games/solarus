@@ -26,7 +26,7 @@
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
 FollowMovement::FollowMovement(
-    const MapEntity* entity_followed,
+    MapEntity* entity_followed,
     int x,
     int y,
     bool ignore_obstacles):
@@ -36,6 +36,9 @@ FollowMovement::FollowMovement(
   y(y),
   finished(false) {
 
+  if (entity_followed != NULL) {
+    entity_followed->increment_refcount();
+  }
 }
 
 /**
@@ -64,6 +67,10 @@ void FollowMovement::update() {
 
   if (entity_followed->is_being_removed()) {
     finished = true;
+    entity_followed->decrement_refcount();
+    if (entity_followed->get_refcount() == 0) {
+      delete entity_followed;
+    }
     entity_followed = NULL;
   }
   else {

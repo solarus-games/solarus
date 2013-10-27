@@ -77,7 +77,7 @@ void JumpMovement::restart() {
  * \brief Returns the direction of this movement.
  * \return the direction (0 to 7)
  */
-int JumpMovement::get_direction8() {
+int JumpMovement::get_direction8() const {
   return direction8;
 }
 
@@ -98,7 +98,7 @@ void JumpMovement::set_direction8(int direction8) {
  * \brief Returns the distance of the jump.
  * \return the distance in pixels
  */
-int JumpMovement::get_distance() {
+int JumpMovement::get_distance() const {
   return distance;
 }
 
@@ -119,7 +119,7 @@ void JumpMovement::set_distance(int distance) {
  * \brief Returns the speed of the movement.
  * \return the speed in pixels per second
  */
-int JumpMovement::get_speed() {
+int JumpMovement::get_speed() const {
   return speed;
 }
 

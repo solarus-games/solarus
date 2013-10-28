@@ -322,7 +322,7 @@ void MapEntity::update_ground_below() {
   }
 
   Ground previous_ground = this->ground_below;
-  this->ground_below = get_map().get_ground(
+  this->ground_below = get_entities().get_ground(
       get_layer(), get_ground_point());
   if (this->ground_below != previous_ground) {
     notify_ground_below_changed();
@@ -480,7 +480,6 @@ LuaContext& MapEntity::get_lua_context() {
 /**
  * \brief Returns the current equipment.
  * \return The equipment.
-<<<<<<< .merge_file_jWvPtR
  */
 Equipment& MapEntity::get_equipment() {
   return get_game().get_equipment();
@@ -490,17 +489,6 @@ Equipment& MapEntity::get_equipment() {
  * \brief Returns the current equipment.
  * \return The equipment.
  */
-=======
- */
-Equipment& MapEntity::get_equipment() {
-  return get_game().get_equipment();
-}
-
-/**
- * \brief Returns the current equipment.
- * \return The equipment.
- */
->>>>>>> .merge_file_iZbJn6
 const Equipment& MapEntity::get_equipment() const {
   return get_game().get_equipment();
 }
@@ -952,14 +940,6 @@ const Rectangle MapEntity::get_facing_point(int direction) const {
  * \return the detector this entity is touching, or NULL if there is no detector in front of him
  */
 Detector* MapEntity::get_facing_entity() {
-  return facing_entity;
-}
-
-/**
- * \brief Returns the detector in front of this entity.
- * \return the detector this entity is touching, or NULL if there is no detector in front of him
- */
-const Detector* MapEntity::get_facing_entity() const {
   return facing_entity;
 }
 
@@ -1899,12 +1879,8 @@ int MapEntity::get_distance_to_camera() const {
  */
 bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
-<<<<<<< .merge_file_jWvPtR
   const std::list<const Separator*>& separators =
       get_entities().get_separators();
-=======
-  const std::list<const Separator*>& separators = get_entities().get_separators();
->>>>>>> .merge_file_iZbJn6
   std::list<const Separator*>::const_iterator it;
   for (it = separators.begin(); it != separators.end(); ++it) {
 

@@ -530,7 +530,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
     error(l, StringConcat() << "Invalid layer: " << layer);
   }
 
-  Ground ground = map.get_ground(Layer(layer), x, y);
+  Ground ground = map.get_entities().get_ground(Layer(layer), x, y);
 
   push_string(l, Tileset::ground_names[ground]);
   return 1;

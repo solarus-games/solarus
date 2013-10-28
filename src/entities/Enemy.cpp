@@ -340,10 +340,10 @@ bool Enemy::is_deep_water_obstacle() const {
   const Layer layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == GROUND_DEEP_WATER
-      || get_map().get_ground(layer, x + get_width() - 1, y) == GROUND_DEEP_WATER
-      || get_map().get_ground(layer, x, y + get_height() - 1) == GROUND_DEEP_WATER
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_DEEP_WATER) {
+  if (get_entities().get_ground(layer, x, y) == GROUND_DEEP_WATER
+      || get_entities().get_ground(layer, x + get_width() - 1, y) == GROUND_DEEP_WATER
+      || get_entities().get_ground(layer, x, y + get_height() - 1) == GROUND_DEEP_WATER
+      || get_entities().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_DEEP_WATER) {
     return false;
   }
 
@@ -375,10 +375,10 @@ bool Enemy::is_hole_obstacle() const {
   const Layer layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == GROUND_HOLE
-      || get_map().get_ground(layer, x + get_width() - 1, y) == GROUND_HOLE
-      || get_map().get_ground(layer, x, y + get_height() - 1) == GROUND_HOLE
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_HOLE) {
+  if (get_entities().get_ground(layer, x, y) == GROUND_HOLE
+      || get_entities().get_ground(layer, x + get_width() - 1, y) == GROUND_HOLE
+      || get_entities().get_ground(layer, x, y + get_height() - 1) == GROUND_HOLE
+      || get_entities().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_HOLE) {
     return false;
   }
 
@@ -410,10 +410,10 @@ bool Enemy::is_lava_obstacle() const {
   const Layer layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_map().get_ground(layer, x, y) == GROUND_LAVA
-      || get_map().get_ground(layer, x + get_width() - 1, y) == GROUND_LAVA
-      || get_map().get_ground(layer, x, y + get_height() - 1) == GROUND_LAVA
-      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_LAVA) {
+  if (get_entities().get_ground(layer, x, y) == GROUND_LAVA
+      || get_entities().get_ground(layer, x + get_width() - 1, y) == GROUND_LAVA
+      || get_entities().get_ground(layer, x, y + get_height() - 1) == GROUND_LAVA
+      || get_entities().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_LAVA) {
     return false;
   }
 

@@ -49,7 +49,7 @@ void Hero::SwimmingState::start(State* previous_state) {
   PlayerMovementState::start(previous_state);
 
   get_equipment().notify_ability_used("swim");
-  get_hero().set_walking_speed(get_slow_swimming_speed());
+  hero.set_walking_speed(get_slow_swimming_speed());
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_SWIM);
 }
 
@@ -61,7 +61,6 @@ void Hero::SwimmingState::stop(State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
-  Hero& hero = get_hero();
   hero.set_walking_speed(hero.get_normal_walking_speed());
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 }
@@ -73,11 +72,10 @@ void Hero::SwimmingState::update() {
 
   PlayerMovementState::update();
 
-  if (is_suspended() || !is_current_state()) {
+  if (suspended || !is_current_state()) {
     return;
   }
 
-  Hero& hero = get_hero();
   if (hero.get_ground_below() != GROUND_DEEP_WATER) {
     hero.set_state(new FreeState(hero));
   }
@@ -102,8 +100,8 @@ void Hero::SwimmingState::set_suspended(bool suspended) {
 
   PlayerMovementState::set_suspended(suspended);
 
-  if (!is_suspended() && fast_swimming) {
-    end_fast_swim_date += System::now() - get_when_suspended();
+  if (!suspended && fast_swimming) {
+    end_fast_swim_date += System::now() - when_suspended;
   }
 }
 
@@ -147,7 +145,7 @@ void Hero::SwimmingState::try_swim_faster() {
 
   if (!fast_swimming) {
     fast_swimming = true;
-    get_hero().set_walking_speed(get_fast_swimming_speed());
+    hero.set_walking_speed(get_fast_swimming_speed());
     get_sprites().set_animation_swimming_fast();
     Sound::play("swim");
     end_fast_swim_date = System::now() + 600;
@@ -159,11 +157,7 @@ void Hero::SwimmingState::try_swim_faster() {
  * \return the swimming speed in pixels per second
  */
 int Hero::SwimmingState::get_slow_swimming_speed() const {
-<<<<<<< .merge_file_J602Tp
   return hero.get_normal_walking_speed() / 2;
-=======
-  return get_hero().get_normal_walking_speed() / 2;
->>>>>>> .merge_file_dmQUkt
 }
 
 /**
@@ -171,11 +165,7 @@ int Hero::SwimmingState::get_slow_swimming_speed() const {
  * \return the faster swimming speed in pixels per second
  */
 int Hero::SwimmingState::get_fast_swimming_speed() const {
-<<<<<<< .merge_file_J602Tp
   return hero.get_normal_walking_speed();
-=======
-  return get_hero().get_normal_walking_speed();
->>>>>>> .merge_file_dmQUkt
 }
 
 /**

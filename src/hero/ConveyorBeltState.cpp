@@ -54,7 +54,6 @@ void Hero::ConveyorBeltState::start(State* previous_state) {
 
   // first, snap the hero to the center of the conveyor belt
   snapping = true;
-  Hero& hero = get_hero();
   hero.set_movement(new TargetMovement(
       &conveyor_belt, 0, 0, hero.get_walking_speed() * 2 / 3, true));
 }
@@ -67,7 +66,7 @@ void Hero::ConveyorBeltState::stop(State* next_state) {
 
   State::stop(next_state);
 
-  get_hero().clear_movement();
+  hero.clear_movement();
 }
 
 /**
@@ -77,11 +76,10 @@ void Hero::ConveyorBeltState::update() {
 
   State::update();
 
-  if (is_suspended()) {
+  if (suspended) {
     return;
   }
 
-  Hero& hero = get_hero();
   if (snapping && hero.get_movement()->is_finished()) {
 
     // the hero is now exactly placed on the conveyor belt: start the conveyor belt's movement

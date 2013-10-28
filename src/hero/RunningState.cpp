@@ -71,7 +71,7 @@ void Hero::RunningState::stop(State* next_state) {
   State::stop(next_state);
 
   if (phase != 0) {
-    get_hero().clear_movement();
+    hero.clear_movement();
   }
 }
 
@@ -82,7 +82,7 @@ void Hero::RunningState::update() {
 
   State::update();
 
-  if (is_suspended()) {
+  if (suspended) {
     return;
   }
 
@@ -93,7 +93,6 @@ void Hero::RunningState::update() {
     next_sound_date = now + 170;
   }
 
-  Hero& hero = get_hero();
   if (phase == 0) {
 
     if (now >= next_phase_date) {
@@ -127,7 +126,7 @@ void Hero::RunningState::set_suspended(bool suspended) {
   State::set_suspended(suspended);
 
   if (!suspended) {
-    uint32_t diff = System::now() - get_when_suspended();
+    uint32_t diff = System::now() - when_suspended;
     next_phase_date += diff;
     next_sound_date += diff;
   }
@@ -159,7 +158,6 @@ void Hero::RunningState::notify_direction_command_pressed(int direction4) {
 
   if (!is_bouncing()
       && direction4 != get_sprites().get_animation_direction()) {
-    Hero& hero = get_hero();
     hero.set_state(new FreeState(hero));
   }
 }
@@ -174,7 +172,7 @@ void Hero::RunningState::notify_obstacle_reached() {
 
   if (phase == 1) {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
-    get_hero().set_movement(new JumpMovement(opposite_direction, 32, 64, false));
+    hero.set_movement(new JumpMovement(opposite_direction, 32, 64, false));
     get_sprites().set_animation_hurt();
     Sound::play("explosion");
     phase++;
@@ -222,12 +220,8 @@ bool Hero::RunningState::can_take_jumper() const {
 void Hero::RunningState::notify_jumper_activated(Jumper& jumper) {
 
   // Jump immediately.
-  get_hero().start_jumping(
-      jumper.get_direction(),
-      jumper.get_jump_length(),
-      true,
-      true,
-      0);
+  hero.start_jumping(jumper.get_direction(), jumper.get_jump_length(),
+      true, true, 0);
 }
 
 /**
@@ -333,8 +327,8 @@ bool Hero::RunningState::is_sensor_obstacle(const Sensor& sensor) const {
 bool Hero::RunningState::is_cutting_with_sword(Detector& detector) const {
 
   // check the distance to the detector
-  const int distance = 8;
-  Rectangle tested_point = get_hero().get_facing_point();
+  int distance = 8;
+  Rectangle tested_point = hero.get_facing_point();
 
   switch (get_sprites().get_animation_direction()) {
 

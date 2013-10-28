@@ -42,9 +42,7 @@ class Hero::State {
     // game loop
     virtual void update();
     virtual void draw_on_map();
-    bool is_suspended() const;
     virtual void set_suspended(bool suspended);
-    uint32_t get_when_suspended() const;
     void notify_command_pressed(GameCommands::Command command);
     void notify_command_released(GameCommands::Command command);
     virtual void notify_action_command_pressed();
@@ -150,22 +148,16 @@ class Hero::State {
     KeysEffect& get_keys_effect();
     GameCommands& get_commands();
     const GameCommands& get_commands() const;
-<<<<<<< .merge_file_AhxgJB
     HeroSprites& get_sprites();
     const HeroSprites& get_sprites() const;
-=======
-    Hero& get_hero();
-    const Hero& get_hero() const;
-    HeroSprites& get_sprites();
-    const HeroSprites& get_sprites() const;
-
-  private:
->>>>>>> .merge_file_xQaaTS
 
     // TODO make private
     Hero& hero;               /**< The hero controlled by this state. */
     bool suspended;           /**< Whether this state is suspended. */
     uint32_t when_suspended;  /**< When this state was suspended. */
+
+  private:
+
     Map* map;                 /**< The current map (it may change during this state). */
     const std::string name;   /**< Name describing this state. */
     bool stopping;            /**< Indicates that this state is being stopped. */

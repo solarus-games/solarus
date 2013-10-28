@@ -81,7 +81,6 @@ void Hero::HurtState::start(State* previous_state) {
   get_sprites().set_animation_hurt();
   get_sprites().blink();
 
-  Hero& hero = get_hero();
   double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(),
       hero.get_x(), hero.get_y());
   StraightMovement* movement = new StraightMovement(false, true);
@@ -100,7 +99,7 @@ void Hero::HurtState::stop(State* next_state) {
 
   State::stop(next_state);
 
-  get_hero().clear_movement();
+  hero.clear_movement();
 }
 
 /**
@@ -110,7 +109,6 @@ void Hero::HurtState::update() {
 
   State::update();
 
-  Hero& hero = get_hero();
   if (hero.get_movement()->is_finished()
       || System::now() >= end_hurt_date) {
     // we have end_hurt_date because the movement may never finish if there is an obstacle
@@ -129,7 +127,7 @@ void Hero::HurtState::set_suspended(bool suspended) {
   State::set_suspended(suspended);
 
   if (!suspended) {
-    uint32_t diff = System::now() - get_when_suspended();
+    uint32_t diff = System::now() - when_suspended;
     end_hurt_date += diff;
   }
 }

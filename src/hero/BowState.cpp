@@ -52,7 +52,6 @@ void Hero::BowState::update() {
 
   State::update();
 
-  Hero& hero = get_hero();
   if (get_sprites().is_animation_finished()) {
     Sound::play("bow");
     get_entities().add_entity(new Arrow(hero));

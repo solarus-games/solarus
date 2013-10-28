@@ -27,12 +27,12 @@
 /**
  * \brief Constructor.
  * \param speed speed of the movement in pixels per seconds
- * \param max_radius if the object goes further than this distance, it will come back
+ * \param max_distance if the object goes further than this distance, it will come back
  */
-RandomMovement::RandomMovement(int speed, int max_radius):
+RandomMovement::RandomMovement(int speed, int max_distance):
   StraightMovement(false, false),
   normal_speed(speed),
-  max_radius(max_radius),
+  max_distance(max_distance),
   next_direction_change_date(0) {
 
   set_next_direction();
@@ -51,32 +51,22 @@ RandomMovement::~RandomMovement() {
 void RandomMovement::notify_object_controlled() {
 
   StraightMovement::notify_object_controlled();
-  set_max_radius(max_radius);
+  set_max_distance(max_distance);
 }
 
 /**
- * \brief Returns the maximum radius.
- * \return The distance above which the object comes back.
+ * \brief Sets the maximum distance of the movement.
+ * \param max_distance if the object goes further than this distance, it will come back (0 means no limit)
  */
-int RandomMovement::get_max_radius() const {
-  return max_radius;
-}
+void RandomMovement::set_max_distance(int max_distance) {
 
-/**
- * \brief Sets the maximum radius.
- * \param max_radius If the object goes further than this distance,
- * it will come back (0 means no limit).
- */
-void RandomMovement::set_max_radius(int max_radius) {
-
-  Debug::check_assertion(max_radius >= 0, StringConcat()
-      << "Invalid value of max_radius: " << max_radius);
-  this->max_radius = max_radius;
+  Debug::check_assertion(max_distance >= 0, StringConcat() << "Invalid value of max_distance: " << max_distance);
+  this->max_distance = max_distance;
 
   // restrict the movement in a rectangle
   bounds.set_xy(get_xy());
-  bounds.add_xy(-max_radius, -max_radius);
-  bounds.set_size(max_radius * 2, max_radius * 2);
+  bounds.add_xy(-max_distance, -max_distance);
+  bounds.set_size(max_distance * 2, max_distance * 2);
 }
 
 /**
@@ -88,7 +78,7 @@ void RandomMovement::set_next_direction() {
 
   double angle;
   if (get_entity() == NULL
-      || max_radius == 0 // means no limit
+      || max_distance == 0 // means no limit
       || bounds.contains(get_x(), get_y())) {
 
     // we are inside the bounds (or there is no bound): pick a random direction

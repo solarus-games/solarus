@@ -81,22 +81,6 @@ bool Hero::State::is_stopping() const {
 }
 
 /**
- * \brief Returns the hero.
- * \return The hero.
- */
-Hero& Hero::State::get_hero() {
-  return hero;
-}
-
-/**
- * \brief Returns the hero.
- * \return The hero.
- */
-const Hero& Hero::State::get_hero() const {
-  return hero;
-}
-
-/**
  * \brief Returns the hero's sprites.
  * \return the sprites
  */
@@ -251,14 +235,6 @@ void Hero::State::draw_on_map() {
 }
 
 /**
- * \brief Returns whether this state is suspended.
- * \return \c true if this state is suspended.
- */
-bool Hero::State::is_suspended() const {
-  return suspended;
-}
-
-/**
  * \brief Notifies this state that the game was just suspended or resumed.
  * \param suspended true if the game is suspended
  */
@@ -273,14 +249,6 @@ void Hero::State::set_suspended(bool suspended) {
       when_suspended = System::now();
     }
   }
-}
-
-/**
- * \brief Returns the date when this state was suspended.
- * \return The date when this state was suspended.
- */
-uint32_t Hero::State::get_when_suspended() const {
-  return when_suspended;
 }
 
 /**

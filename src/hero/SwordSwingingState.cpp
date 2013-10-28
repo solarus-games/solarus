@@ -63,7 +63,6 @@ void Hero::SwordSwingingState::stop(State* next_state) {
 
   State::stop(next_state);
 
-  Hero& hero = get_hero();
   if (hero.get_movement() != NULL) {
     // stop the movement of being pushed by an enemy after hitting him
     hero.clear_movement();
@@ -78,7 +77,6 @@ void Hero::SwordSwingingState::update() {
   State::update();
 
   // check the animation
-  Hero& hero = get_hero();
   if (get_sprites().is_animation_finished()) {
 
     sword_finished = true;
@@ -113,11 +111,7 @@ void Hero::SwordSwingingState::update() {
  * \return true if the hero can swing his sword in this state
  */
 bool Hero::SwordSwingingState::can_start_sword() const {
-<<<<<<< .merge_file_4wq9kN
   return hero.get_movement() == NULL;
-=======
-  return get_hero().get_movement() == NULL;
->>>>>>> .merge_file_VKXcJ9
 }
 
 /**
@@ -156,7 +150,6 @@ bool Hero::SwordSwingingState::can_sword_hit_crystal() const {
 bool Hero::SwordSwingingState::is_cutting_with_sword(
     Detector& detector) const {
 
-  const Hero& hero = get_hero();
   if (hero.get_movement() != NULL) {
     return false;
   }
@@ -196,7 +189,7 @@ bool Hero::SwordSwingingState::is_teletransporter_obstacle(
     const Teletransporter& teletransporter) const {
 
   // if the hero was pushed by an enemy, don't go on a teletransporter
-  return get_hero().get_movement() != NULL;
+  return hero.get_movement() != NULL;
 }
 
 /**
@@ -206,7 +199,6 @@ bool Hero::SwordSwingingState::is_teletransporter_obstacle(
 void Hero::SwordSwingingState::notify_obstacle_reached() {
 
   // the hero reached an obstacle while being pushed after hitting an enemy
-  Hero& hero = get_hero();
   hero.clear_movement();
 
   if (sword_finished) {
@@ -232,7 +224,6 @@ void Hero::SwordSwingingState::notify_attacked_enemy(
 
     if (victim.get_push_hero_on_sword()) {
 
-      Hero& hero = get_hero();
       double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
           hero.get_x(), hero.get_y());
       StraightMovement* movement = new StraightMovement(false, true);

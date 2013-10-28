@@ -59,7 +59,7 @@ void Hero::ForcedWalkingState::start(State* previous_state) {
   sprites.set_animation_walking_normal();
 
   // walk
-  get_hero().set_movement(movement);
+  hero.set_movement(movement);
 }
 
 /**
@@ -70,7 +70,7 @@ void Hero::ForcedWalkingState::stop(State* next_state) {
 
   State::stop(next_state);
 
-  get_hero().clear_movement();
+  hero.clear_movement();
 }
 
 /**
@@ -80,10 +80,11 @@ void Hero::ForcedWalkingState::update() {
 
   State::update();
 
-  get_sprites().set_animation_direction(movement->get_displayed_direction4());
+  HeroSprites &sprites = hero.get_sprites();
+  sprites.set_animation_direction(movement->get_displayed_direction4());
 
   if (movement->is_finished()) {
-    get_hero().start_state_from_ground();
+    hero.start_state_from_ground();
   }
 }
 

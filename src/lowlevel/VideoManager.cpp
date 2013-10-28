@@ -413,7 +413,7 @@ void VideoManager::draw(Surface& quest_surface) {
   if (disable_window) {
     return;
   }
-  
+
   SDL_RenderClear(main_renderer);
   quest_surface.render(main_renderer, quest_size, quest_size);
   SDL_RenderPresent(main_renderer);

@@ -159,12 +159,17 @@ bool Hero::FreeState::can_start_sword() const {
  * \return true if the hero can use this equipment item in this state.
  */
 bool Hero::FreeState::can_start_item(EquipmentItem& item) const {
+<<<<<<< .merge_file_JeKCx2
 <<<<<<< .merge_file_egUG0C
   return hero.get_ground_below() != GROUND_HOLE;
 =======
 
   return get_hero().get_ground_below() != GROUND_HOLE;
 >>>>>>> .merge_file_PH3kjQ
+=======
+
+  return get_hero().get_ground_below() != GROUND_HOLE;
+>>>>>>> .merge_file_s8uFV0
 }
 
 /**

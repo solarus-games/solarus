@@ -96,7 +96,7 @@ class LuaContext {
     void initialize();
     void exit();
     void update();
-    bool notify_input(InputEvent& event);
+    bool notify_input(const InputEvent& event);
     void notify_map_suspended(Map& map, bool suspended);
     void notify_camera_reached_target(Map& map);
     void notify_shop_treasure_interaction(ShopTreasure& shop_treasure);
@@ -218,19 +218,19 @@ class LuaContext {
     void main_on_finished();
     void main_on_update();
     void main_on_draw(Surface& dst_surface);
-    bool main_on_input(InputEvent& event);
+    bool main_on_input(const InputEvent& event);
 
     // Menu events.
     void menu_on_started(int menu_ref);
     void menu_on_finished(int menu_ref);
     void menu_on_update(int menu_ref);
     void menu_on_draw(int menu_ref, Surface& dst_surface);
-    bool menu_on_input(int menu_ref, InputEvent& event);
+    bool menu_on_input(int menu_ref, const InputEvent& event);
     bool menu_on_command_pressed(int menu_ref, GameCommands::Command command);
     bool menu_on_command_released(int menu_ref, GameCommands::Command command);
     void menus_on_update(int context_index);
     void menus_on_draw(int context_index, Surface& dst_surface);
-    bool menus_on_input(int context_index, InputEvent& event);
+    bool menus_on_input(int context_index, const InputEvent& event);
     bool menus_on_command_pressed(int context_index, GameCommands::Command command);
     bool menus_on_command_released(int context_index, GameCommands::Command command);
 
@@ -283,7 +283,7 @@ class LuaContext {
     void game_on_dialog_finished(Game& game, const Dialog& dialog);
     bool game_on_game_over_started(Game& game);
     void game_on_game_over_finished(Game& game);
-    bool game_on_input(Game& game, InputEvent& event);
+    bool game_on_input(Game& game, const InputEvent& event);
     bool game_on_command_pressed(Game& game, GameCommands::Command command);
     bool game_on_command_released(Game& game, GameCommands::Command command);
 
@@ -298,7 +298,7 @@ class LuaContext {
     void map_on_camera_back(Map& map);
     void map_on_obtaining_treasure(Map& map, const Treasure& treasure);
     void map_on_obtained_treasure(Map& map, const Treasure& treasure);
-    bool map_on_input(Map& map, InputEvent& event);
+    bool map_on_input(Map& map, const InputEvent& event);
     bool map_on_command_pressed(Map& map, GameCommands::Command command);
     bool map_on_command_released(Map& map, GameCommands::Command command);
 
@@ -984,14 +984,14 @@ class LuaContext {
     void on_dialog_finished(const Dialog& dialog);
     bool on_game_over_started();
     void on_game_over_finished();
-    bool on_input(InputEvent& event);
-    bool on_key_pressed(InputEvent& event);
-    bool on_key_released(InputEvent& event);
-    bool on_character_pressed(InputEvent& event);
-    bool on_joypad_button_pressed(InputEvent& event);
-    bool on_joypad_button_released(InputEvent& event);
-    bool on_joypad_axis_moved(InputEvent& event);
-    bool on_joypad_hat_moved(InputEvent& event);
+    bool on_input(const InputEvent& event);
+    bool on_key_pressed(const InputEvent& event);
+    bool on_key_released(const InputEvent& event);
+    bool on_character_pressed(const InputEvent& event);
+    bool on_joypad_button_pressed(const InputEvent& event);
+    bool on_joypad_button_released(const InputEvent& event);
+    bool on_joypad_axis_moved(const InputEvent& event);
+    bool on_joypad_hat_moved(const InputEvent& event);
     bool on_command_pressed(GameCommands::Command command);
     bool on_command_released(GameCommands::Command command);
     void on_animation_finished(const std::string& animation);

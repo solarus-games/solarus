@@ -66,7 +66,7 @@ class GameCommands {
     const std::string& get_joypad_binding(Command command) const;
     void set_joypad_binding(Command command, const std::string& joypad_string);
 
-    void notify_input(InputEvent& event);
+    void notify_input(const InputEvent& event);
     bool is_command_pressed(Command command) const;
     int get_wanted_direction8() const;
 

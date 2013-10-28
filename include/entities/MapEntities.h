@@ -45,23 +45,30 @@ class MapEntities {
     // entities
     Hero& get_hero();
     Ground get_tile_ground(Layer layer, int x, int y) const;
+<<<<<<< .merge_file_lQlxRa
 <<<<<<< .merge_file_LjZsPL
     Ground get_ground(Layer layer, int x, int y) const;
     Ground get_ground(Layer layer, const Rectangle& xy) const;
 =======
 >>>>>>> .merge_file_o5kemD
+=======
+>>>>>>> .merge_file_G4wTIY
     const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
     const std::list<MapEntity*>& get_ground_observers(Layer layer);
     const std::list<MapEntity*>& get_ground_modifiers(Layer layer);
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
+<<<<<<< .merge_file_lQlxRa
 <<<<<<< .merge_file_LjZsPL
     const std::list<Separator*>& get_separators();
     std::list<const Separator*> get_separators() const;
 =======
     const std::list<const Separator*>& get_separators() const;
 >>>>>>> .merge_file_o5kemD
+=======
+    const std::list<const Separator*>& get_separators() const;
+>>>>>>> .merge_file_G4wTIY
     Destination* get_default_destination();
 
     MapEntity* get_entity(const std::string& name);

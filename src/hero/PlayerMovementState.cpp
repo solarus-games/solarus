@@ -61,6 +61,7 @@ PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
  */
 const PlayerMovement* Hero::PlayerMovementState::get_player_movement() const {
   return static_cast<const PlayerMovement*>(get_hero().get_movement());
+<<<<<<< .merge_file_IAK2pt
 }
 
 /**
@@ -73,6 +74,8 @@ const PlayerMovement* Hero::PlayerMovementState::get_player_movement() const {
  */
 const PlayerMovement* Hero::PlayerMovementState::get_player_movement() const {
   return static_cast<const PlayerMovement*>(hero.get_movement());
+=======
+>>>>>>> .merge_file_wWsD2b
 }
 
 /**

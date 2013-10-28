@@ -36,12 +36,17 @@ class RandomMovement: public StraightMovement {
     void update();
     void set_suspended(bool suspended);
 
+<<<<<<< .merge_file_AOIU9K
 <<<<<<< .merge_file_VyNCbJ
     void set_max_distance(int max_distance);  // TODO rename to avoid to hide the parent
 =======
     int get_max_radius() const;
     void set_max_radius(int max_radius);
 >>>>>>> .merge_file_n0kcVf
+=======
+    int get_max_radius() const;
+    void set_max_radius(int max_radius);
+>>>>>>> .merge_file_WqdvvR
 
     virtual const std::string& get_lua_type_name() const;
 
@@ -52,11 +57,15 @@ class RandomMovement: public StraightMovement {
   private:
 
     int normal_speed;                                   /**< speed of this movement */
+<<<<<<< .merge_file_AOIU9K
 <<<<<<< .merge_file_VyNCbJ
     int max_distance;                                   /**< if the object goes further than this distance in x or y, it will come back
 =======
     int max_radius;                                     /**< if the object goes further than this distance in x or y, it will come back
 >>>>>>> .merge_file_n0kcVf
+=======
+    int max_radius;                                     /**< if the object goes further than this distance in x or y, it will come back
+>>>>>>> .merge_file_WqdvvR
                                                          * (this is not a hard limit, there is no guarantee) */
     Rectangle bounds;                                   /**< a rectangle the object should not escape from */
     uint32_t next_direction_change_date;                /**< date of the next direction change */

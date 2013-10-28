@@ -255,7 +255,7 @@ const Equipment& Game::get_equipment() const {
  * \param event the event to handle
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool Game::notify_input(InputEvent& event) {
+bool Game::notify_input(const InputEvent& event) {
 
   bool handled = false;
 

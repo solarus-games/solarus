@@ -137,10 +137,14 @@ bool Hero::HookshotState::can_avoid_conveyor_belt() const {
  * \return true if the stairs are obstacle in this state
  */
 bool Hero::HookshotState::is_stairs_obstacle(const Stairs& stairs) const {
+<<<<<<< .merge_file_64dANO
 <<<<<<< .merge_file_KxSztI
 =======
 
 >>>>>>> .merge_file_n0Fctj
+=======
+
+>>>>>>> .merge_file_CK4pUg
   // allow to fly over stairs covered by water
   return get_hero().get_ground_below() != GROUND_DEEP_WATER;
 }

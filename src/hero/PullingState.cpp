@@ -59,7 +59,7 @@ void Hero::PullingState::stop(State* next_state) {
   State::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
-    hero.clear_movement();
+    get_hero().clear_movement();
     pulled_entity->update();
     stop_moving_pulled_entity();
   }
@@ -72,6 +72,7 @@ void Hero::PullingState::update() {
 
   State::update();
 
+  Hero& hero = get_hero();
   if (!is_moving_grabbed_entity()) {
 
     int wanted_direction8 = get_commands().get_wanted_direction8();
@@ -170,7 +171,7 @@ void Hero::PullingState::notify_position_changed() {
     // if the entity has made more than 8 pixels and is aligned on the grid,
     // we stop the movement
 
-    PathMovement* movement = static_cast<PathMovement*>(hero.get_movement());
+    PathMovement* movement = static_cast<PathMovement*>(get_hero().get_movement());
 
     bool horizontal = get_sprites().get_animation_direction() % 2 == 0;
     bool has_reached_grid = movement->get_total_distance_covered() >= 16
@@ -193,6 +194,7 @@ void Hero::PullingState::notify_position_changed() {
  */
 void Hero::PullingState::stop_moving_pulled_entity() {
 
+  Hero& hero = get_hero();
   if (pulled_entity != NULL) {
     pulled_entity->stop_movement_by_hero();
 

@@ -583,7 +583,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     // but we may have to change the layer.
 
     Layer layer = LAYER_INTERMEDIATE;
-    if (map.get_entities().get_ground(LAYER_INTERMEDIATE, get_x(), get_y()) == GROUND_EMPTY) {
+    if (map.get_ground(LAYER_INTERMEDIATE, get_x(), get_y()) == GROUND_EMPTY) {
       layer = LAYER_LOW;
     }
     set_map(map);
@@ -1126,16 +1126,15 @@ void Hero::check_position() {
     int x = get_top_left_x();
     int y = get_top_left_y();
     Layer layer = get_layer();
-    MapEntities& entities = get_entities();
 
     if (layer > LAYER_LOW
-        && entities.get_ground(layer, x, y) == GROUND_EMPTY
-        && entities.get_ground(layer, x + 15, y) == GROUND_EMPTY
-        && entities.get_ground(layer, x, y + 15) == GROUND_EMPTY
-        && entities.get_ground(layer, x + 15, y + 15) == GROUND_EMPTY) {
+        && get_map().get_ground(layer, x, y) == GROUND_EMPTY
+        && get_map().get_ground(layer, x + 15, y) == GROUND_EMPTY
+        && get_map().get_ground(layer, x, y + 15) == GROUND_EMPTY
+        && get_map().get_ground(layer, x + 15, y + 15) == GROUND_EMPTY) {
 
       get_entities().set_entity_layer(*this, Layer(layer - 1));
-      Ground new_ground = entities.get_ground(get_layer(), x, y);
+      Ground new_ground = get_map().get_ground(get_layer(), x, y);
       if (state->is_free() && 
           (new_ground == GROUND_TRAVERSABLE
            || new_ground == GROUND_GRASS
@@ -1877,7 +1876,7 @@ bool Hero::is_striking_with_sword(Detector& detector) const {
 void Hero::try_snap_to_facing_entity() {
 
   Rectangle collision_box = get_bounding_box();
-  Detector* facing_entity = get_facing_entity();
+  const Detector* facing_entity = get_facing_entity();
 
   if (get_animation_direction() % 2 == 0) {
     if (abs(collision_box.get_y() - facing_entity->get_top_left_y()) <= 5) {

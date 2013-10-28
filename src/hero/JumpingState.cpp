@@ -79,7 +79,7 @@ void Hero::JumpingState::start(State* previous_state) {
   }
 
   // jump
-  hero.set_movement(movement);
+  get_hero().set_movement(movement);
 
   if (with_sound) {
     Sound::play("jump");
@@ -94,7 +94,7 @@ void Hero::JumpingState::stop(State* next_state) {
 
   State::stop(next_state);
 
-  hero.clear_movement();
+  get_hero().clear_movement();
 
   if (carried_item != NULL) {
 
@@ -148,13 +148,13 @@ void Hero::JumpingState::update() {
   }
 
   if (movement->is_finished()) {
-    hero.start_state_from_ground();
+    get_hero().start_state_from_ground();
   }
 }
 
 /**
  * \brief Notifies this state that the game was just suspended or resumed.
- * \param suspended true if the game is suspended
+ * \param su1spended true if the game is suspended
  */
 void Hero::JumpingState::set_suspended(bool suspended) {
 
@@ -171,7 +171,7 @@ void Hero::JumpingState::set_suspended(bool suspended) {
 void Hero::JumpingState::notify_layer_changed() {
 
   if (carried_item != NULL) {
-    carried_item->set_layer(hero.get_layer());
+    carried_item->set_layer(get_hero().get_layer());
   }
 }
 
@@ -267,7 +267,7 @@ bool Hero::JumpingState::can_avoid_conveyor_belt() const {
  */
 bool Hero::JumpingState::is_stairs_obstacle(const Stairs& stairs) const {
   // allow to jump over stairs covered by water
-  return hero.get_ground_below() != GROUND_DEEP_WATER;
+  return get_hero().get_ground_below() != GROUND_DEEP_WATER;
 }
 
 /**

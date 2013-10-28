@@ -61,7 +61,7 @@ void Hero::PushingState::stop(State* next_state) {
   State::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
-    hero.clear_movement();
+    get_hero().clear_movement();
     pushed_entity->update();
     stop_moving_pushed_entity();
   }
@@ -74,6 +74,7 @@ void Hero::PushingState::update() {
 
   State::update();
 
+  Hero& hero = get_hero();
   if (!is_moving_grabbed_entity()) { // the hero is pushing a fixed obstacle
 
     // stop pushing if there is no more obstacle
@@ -182,7 +183,7 @@ void Hero::PushingState::notify_position_changed() {
     // if the entity has made more than 8 pixels and is aligned on the grid,
     // we stop the movement
 
-    PathMovement* movement = static_cast<PathMovement*>(hero.get_movement());
+    PathMovement* movement = static_cast<PathMovement*>(get_hero().get_movement());
 
     bool horizontal = pushing_direction4 % 2 == 0;
     bool has_reached_grid = movement->get_total_distance_covered() >= 16
@@ -201,6 +202,7 @@ void Hero::PushingState::notify_position_changed() {
  */
 void Hero::PushingState::stop_moving_pushed_entity() {
 
+  Hero& hero = get_hero();
   if (pushed_entity != NULL) {
     pushed_entity->stop_movement_by_hero();
 

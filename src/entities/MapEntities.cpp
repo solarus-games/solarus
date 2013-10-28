@@ -133,53 +133,6 @@ Hero& MapEntities::get_hero() {
 }
 
 /**
- * \brief Returns the ground at the specified point.
- *
- * Static tiles and dynamic entities are all taken into account here.
- *
- * \param layer Layer of the point.
- * \param x X coordinate of the point.
- * \param y Y coordinate of the point.
- * \return The ground at this place.
- *
- * TODO move to the Map class (the ground is the terrain of the map)
- */
-Ground MapEntities::get_ground(Layer layer, int x, int y) const {
-
-  // See if a dynamic entity changes the ground.
-  // TODO store ground modifiers in a quad tree for performance.
-  std::list<MapEntity*>::const_reverse_iterator it;
-  const std::list<MapEntity*>::const_reverse_iterator rend =
-      ground_modifiers[layer].rend();
-  for (it = ground_modifiers[layer].rbegin(); it != rend; ++it) {
-    const MapEntity& ground_modifier = *(*it);
-    if (ground_modifier.overlaps(x, y)
-        && ground_modifier.get_modified_ground() != GROUND_EMPTY
-        && ground_modifier.is_enabled()
-        && !ground_modifier.is_being_removed()) {
-      return ground_modifier.get_modified_ground();
-    }
-  }
-
-  // Otherwise, return the ground defined by static tiles (this is very fast).
-  return get_tile_ground(layer, x, y);
-}
-
-/**
- * \brief Returns the ground at the specified point.
- *
- * Static tiles and dynamic entities are all taken into account here.
- *
- * \param layer Layer of the point.
- * \param xy Coordinate of the point.
- * \return The ground at this place.
- */
-
-Ground MapEntities::get_ground(Layer layer, const Rectangle& xy) const {
-  return get_ground(layer, xy.get_x(), xy.get_y());
-}
-
-/**
  * \brief Returns the entities (other that tiles) such that the hero cannot walk on them.
  * \param layer The layer.
  * \return The obstacle entities on that layer.
@@ -195,6 +148,15 @@ const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
  */
 const list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
   return ground_observers[layer];
+}
+
+/**
+ * \brief Returns the entities that are sensible to the ground below them.
+ * \param layer The layer.
+ * \return The ground observers on that layer.
+ */
+const list<MapEntity*>& MapEntities::get_ground_modifiers(Layer layer) {
+  return ground_modifiers[layer];
 }
 
 /**
@@ -236,22 +198,8 @@ const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
  * \brief Returns all separators of the map.
  * \return The separators.
  */
-const list<Separator*>& MapEntities::get_separators() {
+const list<const Separator*>& MapEntities::get_separators() const {
   return separators;
-}
-
-/**
- * \brief Returns all separators of the map.
- * \return The separators.
- */
-list<const Separator*> MapEntities::get_separators() const {
-
-  list<const Separator*> result;
-  list<Separator*>::const_iterator it;
-  for (it = separators.begin(); it != separators.end(); ++it) {
-    result.push_back(*it);
-  }
-  return result;
 }
 
 /**
@@ -300,11 +248,13 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
  */
 MapEntity* MapEntities::find_entity(const std::string& name) {
 
-  if (named_entities.find(name) == named_entities.end()) {
+  std::map<std::string, MapEntity*>::const_iterator it =
+      named_entities.find(name);
+  if (it == named_entities.end()) {
     return NULL;
   }
 
-  MapEntity* entity = named_entities[name];
+  MapEntity* entity = it->second;
 
   if (entity->is_being_removed()) {
     return NULL;
@@ -364,12 +314,12 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(
  * \param prefix Prefix of the name.
  * \return \c true if there exists an entity with this prefix.
  */
-bool MapEntities::has_entity_with_prefix(const std::string& prefix) {
+bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 
-  list<MapEntity*>::iterator i;
+  list<MapEntity*>::const_iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
-    MapEntity* entity = *i;
+    const MapEntity* entity = *i;
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
       return true;
     }

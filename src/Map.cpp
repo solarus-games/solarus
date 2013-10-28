@@ -714,7 +714,7 @@ bool Map::test_collision_with_ground(
   }
 
   // Get the ground property under this point.
-  Ground ground = entities->get_ground(layer, x, y);
+  Ground ground = get_ground(layer, x, y);
   switch (ground) {
 
   case GROUND_EMPTY:
@@ -953,16 +953,64 @@ bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) const {
   int x2 = x1 + collision_box.get_width() - 1;
 
   for (int x = x1; x <= x2 && !empty_tile; x++) {
-    empty_tile = entities->get_ground(layer, x, y1) == GROUND_EMPTY
-        || entities->get_ground(layer, x, y2) == GROUND_EMPTY;
+    empty_tile = get_ground(layer, x, y1) == GROUND_EMPTY
+        || get_ground(layer, x, y2) == GROUND_EMPTY;
   }
 
   for (int y = y1; y <= y2 && !empty_tile; y++) {
-    empty_tile = entities->get_ground(layer, x1, y) == GROUND_EMPTY
-        || entities->get_ground(layer, x2, y) == GROUND_EMPTY;
+    empty_tile = get_ground(layer, x1, y) == GROUND_EMPTY
+        || get_ground(layer, x2, y) == GROUND_EMPTY;
   }
 
   return empty_tile;
+}
+
+
+/**
+ * \brief Returns the ground at the specified point.
+ *
+ * Static tiles and dynamic entities are all taken into account here.
+ *
+ * \param layer Layer of the point.
+ * \param x X coordinate of the point.
+ * \param y Y coordinate of the point.
+ * \return The ground at this place.
+ */
+Ground Map::get_ground(Layer layer, int x, int y) const {
+
+  // See if a dynamic entity changes the ground.
+  // TODO store ground modifiers in a quad tree for performance.
+
+  const std::list<MapEntity*> ground_modifiers =
+      entities->get_ground_modifiers(layer);
+  std::list<MapEntity*>::const_reverse_iterator it;
+  const std::list<MapEntity*>::const_reverse_iterator rend =
+      ground_modifiers.rend();
+  for (it = ground_modifiers.rbegin(); it != rend; ++it) {
+    const MapEntity& ground_modifier = *(*it);
+    if (ground_modifier.overlaps(x, y)
+        && ground_modifier.get_modified_ground() != GROUND_EMPTY
+        && ground_modifier.is_enabled()
+        && !ground_modifier.is_being_removed()) {
+      return ground_modifier.get_modified_ground();
+    }
+  }
+
+  // Otherwise, return the ground defined by static tiles (this is very fast).
+  return entities->get_tile_ground(layer, x, y);
+}
+
+/**
+ * \brief Returns the ground at the specified point.
+ *
+ * Static tiles and dynamic entities are all taken into account here.
+ *
+ * \param layer Layer of the point.
+ * \param xy Coordinate of the point.
+ * \return The ground at this place.
+ */
+Ground Map::get_ground(Layer layer, const Rectangle& xy) const {
+  return get_ground(layer, xy.get_x(), xy.get_y());
 }
 
 /**

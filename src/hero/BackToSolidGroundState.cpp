@@ -66,6 +66,7 @@ void Hero::BackToSolidGroundState::start(State* previous_state) {
 
   State::start(previous_state);
 
+  Hero& hero = get_hero();
   hero.set_movement(new TargetMovement(NULL, target_xy.get_x(), target_xy.get_y(), 144, true));
   get_entities().set_entity_layer(hero, target_layer);
   get_entities().remove_boomerang();
@@ -79,7 +80,7 @@ void Hero::BackToSolidGroundState::stop(State* next_state) {
 
   State::stop(next_state);
 
-  hero.clear_movement();
+  get_hero().clear_movement();
 }
 
 /**
@@ -90,6 +91,7 @@ void Hero::BackToSolidGroundState::update() {
   State::update();
 
   // the current movement is an instance of TargetMovement
+  Hero& hero = get_hero();
   if (hero.get_movement()->is_finished()) {
 
     uint32_t now = System::now();
@@ -114,7 +116,7 @@ void Hero::BackToSolidGroundState::set_suspended(bool suspended) {
   State::set_suspended(suspended);
 
   if (!suspended && end_date != 0) {
-    end_date += System::now() - when_suspended;
+    end_date += System::now() - get_when_suspended();
   }
 }
 

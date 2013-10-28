@@ -120,6 +120,12 @@ class Map: public ExportableToLua {
     bool has_empty_ground(
         Layer layer,
         const Rectangle& collision_box) const;
+<<<<<<< .merge_file_g2jM8s
+=======
+
+    Ground get_ground(Layer layer, int x, int y) const;
+    Ground get_ground(Layer layer, const Rectangle& xy) const;
+>>>>>>> .merge_file_suintg
 
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity& entity);

@@ -45,22 +45,30 @@ class MapEntities {
     // entities
     Hero& get_hero();
     Ground get_tile_ground(Layer layer, int x, int y) const;
+<<<<<<< .merge_file_LjZsPL
     Ground get_ground(Layer layer, int x, int y) const;
     Ground get_ground(Layer layer, const Rectangle& xy) const;
+=======
+>>>>>>> .merge_file_o5kemD
     const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
     const std::list<MapEntity*>& get_ground_observers(Layer layer);
+    const std::list<MapEntity*>& get_ground_modifiers(Layer layer);
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
+<<<<<<< .merge_file_LjZsPL
     const std::list<Separator*>& get_separators();
     std::list<const Separator*> get_separators() const;
+=======
+    const std::list<const Separator*>& get_separators() const;
+>>>>>>> .merge_file_o5kemD
     Destination* get_default_destination();
 
     MapEntity* get_entity(const std::string& name);
     MapEntity* find_entity(const std::string& name);
     std::list<MapEntity*> get_entities_with_prefix(const std::string& prefix);
     std::list<MapEntity*> get_entities_with_prefix(EntityType type, const std::string& prefix);
-    bool has_entity_with_prefix(const std::string& prefix);
+    bool has_entity_with_prefix(const std::string& prefix) const;
 
     // handle entities
     void add_entity(MapEntity* entity);
@@ -155,7 +163,7 @@ class MapEntities {
     std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
     std::list<CrystalBlock*>
       crystal_blocks[LAYER_NB];                     /**< all crystal blocks of the map */
-    std::list<Separator*> separators;               /**< all separators of the map */
+    std::list<const Separator*> separators;         /**< all separators of the map */
 
     Boomerang* boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
     std::string music_before_miniboss;              /**< the music that was played before starting a miniboss fight */

@@ -165,6 +165,7 @@ class MapEntity: public ExportableToLua {
     virtual void notify_moved_by(MapEntity& entity);
 
     Detector* get_facing_entity();
+    const Detector* get_facing_entity() const;
     void set_facing_entity(Detector* facing_entity);
     virtual void notify_facing_entity_changed(Detector* facing_entity);
     static const Rectangle& direction_to_xy_move(int direction8);

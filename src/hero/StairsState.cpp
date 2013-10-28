@@ -91,6 +91,7 @@ void Hero::StairsState::start(State* previous_state) {
   sprites.set_animation_direction((path[0] - '0') / 2);
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
+  Hero& hero = get_hero();
   if (stairs.is_inside_floor()) {
     if (way == Stairs::NORMAL_WAY) {
       // Towards an upper layer: change the layer now
@@ -154,7 +155,7 @@ void Hero::StairsState::update() {
 
   State::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 
@@ -170,6 +171,7 @@ void Hero::StairsState::update() {
     carried_item->update();
   }
 
+  Hero& hero = get_hero();
   if (stairs.is_inside_floor()) {
 
     // inside a single floor: return to normal state as soon as the movement is finished
@@ -266,7 +268,7 @@ void Hero::StairsState::set_suspended(bool suspended) {
   }
 
   if (!suspended) {
-    next_phase_date += System::now() - when_suspended;
+    next_phase_date += System::now() - get_when_suspended();
   }
 }
 
@@ -357,7 +359,7 @@ CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior(
 void Hero::StairsState::notify_layer_changed() {
 
   if (carried_item != NULL) {
-    carried_item->set_layer(hero.get_layer());
+    carried_item->set_layer(get_hero().get_layer());
   }
 }
 

@@ -46,7 +46,7 @@ void Hero::FallingState::start(State* previous_state) {
 
   State::start(previous_state);
 
-  hero.delayed_teletransporter = NULL;
+  get_hero().delayed_teletransporter = NULL;
   get_sprites().save_animation_direction();
   get_sprites().set_animation_falling();
   Sound::play("hero_falls");
@@ -71,7 +71,8 @@ void Hero::FallingState::update() {
 
   State::update();
 
-  if (!suspended && get_sprites().is_animation_finished()) {
+  Hero& hero = get_hero();
+  if (!is_suspended() && get_sprites().is_animation_finished()) {
 
     // the hero has just finished falling
     Teletransporter* teletransporter = hero.get_delayed_teletransporter();

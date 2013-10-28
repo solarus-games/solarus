@@ -71,7 +71,8 @@ Color::Color() {
  * \param other another color
  */
 Color::Color(const Color& other):
-  internal_value(other.internal_value), internal_color(other.internal_color) {
+    internal_color(other.internal_color),
+    internal_value(other.internal_value) {
 
 }
 

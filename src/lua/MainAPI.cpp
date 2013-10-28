@@ -282,7 +282,7 @@ void LuaContext::main_on_draw(Surface& dst_surface) {
  * \param event The input event to handle.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::main_on_input(InputEvent& event) {
+bool LuaContext::main_on_input(const InputEvent& event) {
 
   bool handled = false;
   push_main(l);

@@ -1567,7 +1567,7 @@ void LuaContext::game_on_game_over_finished(Game& game) {
  * \param event The input event to handle.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::game_on_input(Game& game, InputEvent& event) {
+bool LuaContext::game_on_input(Game& game, const InputEvent& event) {
 
   if (!game.get_savegame().is_known_to_lua()) {
     return false;

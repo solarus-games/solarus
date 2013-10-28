@@ -129,7 +129,7 @@ class Map: public ExportableToLua {
     void check_collision_with_detectors(MapEntity& entity, Sprite& sprite);
 
     // main loop
-    bool notify_input(InputEvent& event);
+    bool notify_input(const InputEvent& event);
     void update();
     bool is_suspended() const;
     void check_suspended();

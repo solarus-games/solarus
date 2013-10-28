@@ -79,7 +79,6 @@ class Surface: public Drawable {
   protected:
 
     // Implementation from Drawable.
-    void add_subsurface(SubSurface* subsurface);
     void raw_draw(
         Surface& dst_surface,
         const Rectangle& dst_position);
@@ -95,6 +94,8 @@ class Surface: public Drawable {
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
   
+    void create_streaming_texture();
+    void add_subsurface(SubSurface* subsurface);
     void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect);
   
     SDL_Texture* get_internal_texture();

@@ -32,20 +32,14 @@
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  owns_internal_texture(true),
+  internal_texture(NULL),
+  owns_internal_texture(false),
   width(width),
   height(height),
   clipping_rect(Rectangle(0, 0, width, height)) {
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
-
-  this->internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
-    SDL_PIXELFORMAT_ARGB8888,
-    SDL_TEXTUREACCESS_STATIC,
-    width, height);
-    
-  fill_with_color(Color::get_transparent());
 }
 
 /**
@@ -53,20 +47,14 @@ Surface::Surface(int width, int height):
  * \param size The size in pixels.
  */
 Surface::Surface(const Rectangle& size):
-  Drawable(),
-  owns_internal_texture(true),
+Drawable(),
+  internal_texture(NULL),
+  owns_internal_texture(false),
   width(size.get_width()),
   height(size.get_height()),
   clipping_rect(Rectangle(0, 0, width, height))  {
 
   Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
-
-  this->internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
-    SDL_PIXELFORMAT_ARGB8888,
-    SDL_TEXTUREACCESS_STATIC,
-    size.get_width(), size.get_height());
-    
-  fill_with_color(Color::get_transparent());
 }
 
 /**
@@ -245,6 +233,9 @@ const Rectangle Surface::get_size() const {
  */
 void Surface::set_opacity(int opacity) {
 
+  if(!internal_texture)
+    create_streaming_texture();
+    
   SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
   SDL_SetTextureAlphaMod(internal_texture, opacity);
 }
@@ -292,7 +283,23 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
   for(int i=0 ; i<array_size ; i++)
     pixels[i] = color.get_internal_value();
   
+  if(!internal_texture)
+    create_streaming_texture();
+  
   SDL_UpdateTexture(internal_texture, static_cast<Rectangle>(where).get_internal_rect(), pixels, width * sizeof (Uint32));
+}
+
+/**
+ * \brief Create the internal texture optimized for streaming access.
+ */
+void Surface::create_streaming_texture()
+{
+  internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
+                                       SDL_PIXELFORMAT_ARGB8888,
+                                       SDL_TEXTUREACCESS_STREAMING,
+                                       width, height);
+  
+  owns_internal_texture = true;
 }
 
 /**

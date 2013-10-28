@@ -20,7 +20,7 @@
  */
 #include "lowlevel/Color.h"
 
-SDL_PixelFormat* Color::pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
+SDL_PixelFormat* Color::pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888); // Choose an arbitrary format.
 
 Color Color::transparent;
 Color Color::black;

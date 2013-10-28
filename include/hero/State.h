@@ -150,7 +150,6 @@ class Hero::State {
     KeysEffect& get_keys_effect();
     GameCommands& get_commands();
     const GameCommands& get_commands() const;
-<<<<<<< .merge_file_yQkIla
 <<<<<<< .merge_file_AhxgJB
     HeroSprites& get_sprites();
     const HeroSprites& get_sprites() const;
@@ -162,14 +161,6 @@ class Hero::State {
 
   private:
 >>>>>>> .merge_file_xQaaTS
-=======
-    Hero& get_hero();
-    const Hero& get_hero() const;
-    HeroSprites& get_sprites();
-    const HeroSprites& get_sprites() const;
-
-  private:
->>>>>>> .merge_file_qLpG6b
 
     // TODO make private
     Hero& hero;               /**< The hero controlled by this state. */

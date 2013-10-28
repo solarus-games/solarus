@@ -489,7 +489,7 @@ void Map::set_suspended(bool suspended) {
  * \param event the event to handle
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool Map::notify_input(const InputEvent& event) {
+bool Map::notify_input(InputEvent& event) {
 
   bool handled = get_lua_context().map_on_input(*this, event);
   return handled;

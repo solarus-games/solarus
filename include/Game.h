@@ -55,11 +55,7 @@ class Game {
     const Equipment& get_equipment() const;
 
     // functions called by the main loop
-<<<<<<< .merge_file_WpX9bQ
     bool notify_input(InputEvent& event);
-=======
-    bool notify_input(const InputEvent& event);
->>>>>>> .merge_file_4UtQfG
     void update();
     void draw(Surface& dst_surface);
 

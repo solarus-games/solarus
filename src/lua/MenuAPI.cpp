@@ -300,7 +300,7 @@ void LuaContext::menu_on_draw(int menu_ref, Surface& dst_surface) {
  * \param event The input event to forward.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::menu_on_input(int menu_ref, const InputEvent& event) {
+bool LuaContext::menu_on_input(int menu_ref, InputEvent& event) {
 
   // Get the Lua menu.
   push_ref(l, menu_ref);
@@ -401,7 +401,7 @@ void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
  * \param event The input event to handle.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::menus_on_input(int context_index, const InputEvent& event) {
+bool LuaContext::menus_on_input(int context_index, InputEvent& event) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {

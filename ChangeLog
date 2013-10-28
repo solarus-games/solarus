@@ -34,14 +34,10 @@ Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
 * sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
-<<<<<<< .merge_file_0mQSo9
 <<<<<<< .merge_file_ZWLFZn
 =======
 * Fix random_movement:get_max_radius() that was now working.
 >>>>>>> .merge_file_wvBKRb
-=======
-* Fix random_movement:get_max_radius() that was now working.
->>>>>>> .merge_file_zovY2G
 
 Solarus Quest Editor changes
 ----------------------------

@@ -381,7 +381,7 @@ int InputEvent::get_joypad_hat_direction(int hat) {
  * \brief Returns whether this event is a keyboard event.
  * \return true if this is a keyboard event
  */
-bool InputEvent::is_keyboard_event() const {
+bool InputEvent::is_keyboard_event() {
 
   return (internal_event.type == SDL_KEYDOWN || internal_event.type == SDL_KEYUP) 
     && (!internal_event.key.repeat || repeat_keyboard);
@@ -391,7 +391,7 @@ bool InputEvent::is_keyboard_event() const {
  * \brief Returns whether this event is a joypad event.
  * \return true if this is a joypad event
  */
-bool InputEvent::is_joypad_event() const {
+bool InputEvent::is_joypad_event() {
 
   return internal_event.type == SDL_JOYAXISMOTION
     || internal_event.type == SDL_JOYHATMOTION
@@ -403,7 +403,7 @@ bool InputEvent::is_joypad_event() const {
  * \brief Returns whether this event is a window event.
  * \return true if this is a window event
  */
-bool InputEvent::is_window_event() const {
+bool InputEvent::is_window_event() {
 
   return internal_event.type == SDL_QUIT; // other SDL window events are ignored
 }
@@ -415,7 +415,7 @@ bool InputEvent::is_window_event() const {
  * corresponding to pressing a key.
  * \return true if this is a key pressed event
  */
-bool InputEvent::is_keyboard_key_pressed() const {
+bool InputEvent::is_keyboard_key_pressed() {
 
   return internal_event.type == SDL_KEYDOWN 
     && (!internal_event.key.repeat || repeat_keyboard);
@@ -427,7 +427,7 @@ bool InputEvent::is_keyboard_key_pressed() const {
  * \param key the key to test
  * \return true if this event corresponds to pressing that key
  */
-bool InputEvent::is_keyboard_key_pressed(KeyboardKey key) const {
+bool InputEvent::is_keyboard_key_pressed(KeyboardKey key) {
 
   return is_keyboard_key_pressed()
     && get_keyboard_key() == key;
@@ -439,7 +439,7 @@ bool InputEvent::is_keyboard_key_pressed(KeyboardKey key) const {
  * \param keys an array of the keys to test, terminated by KEY_NONE
  * \return true if this event corresponds to pressing one of those keys
  */
-bool InputEvent::is_keyboard_key_pressed(const KeyboardKey* keys) const {
+bool InputEvent::is_keyboard_key_pressed(const KeyboardKey *keys) {
 
   while (*keys != KEY_NONE) {
 
@@ -457,7 +457,7 @@ bool InputEvent::is_keyboard_key_pressed(const KeyboardKey* keys) const {
  * corresponding to pressing one of the four directional keys.
  * \return true if this event corresponds to pressing one of the four directional keys
  */
-bool InputEvent::is_keyboard_direction_key_pressed() const {
+bool InputEvent::is_keyboard_direction_key_pressed() {
 
   return is_keyboard_key_pressed(directional_keys);
 }
@@ -467,7 +467,7 @@ bool InputEvent::is_keyboard_direction_key_pressed() const {
  * corresponding to pressing a key other than the four directional keys.
  * \return true if this event corresponds to pressing a key other than the four directional keys
  */
-bool InputEvent::is_keyboard_non_direction_key_pressed() const {
+bool InputEvent::is_keyboard_non_direction_key_pressed() {
 
   return is_keyboard_key_pressed()
     && !is_keyboard_direction_key_pressed();
@@ -478,7 +478,7 @@ bool InputEvent::is_keyboard_non_direction_key_pressed() const {
  * corresponding to releasing a key.
  * \return true if this is a key released event
  */
-bool InputEvent::is_keyboard_key_released() const {
+bool InputEvent::is_keyboard_key_released() {
 
   return internal_event.type == SDL_KEYUP 
     && (!internal_event.key.repeat || repeat_keyboard);
@@ -490,7 +490,7 @@ bool InputEvent::is_keyboard_key_released() const {
  * \param key the key to test
  * \return true if this event corresponds to releasing that key
  */
-bool InputEvent::is_keyboard_key_released(KeyboardKey key) const {
+bool InputEvent::is_keyboard_key_released(KeyboardKey key) {
 
   return is_keyboard_key_released()
     && get_keyboard_key() == key;
@@ -502,7 +502,7 @@ bool InputEvent::is_keyboard_key_released(KeyboardKey key) const {
  * \param keys an array of the keys to test, terminated by KEY_NONE
  * \return true if this event corresponds to releasing one of those keys
  */
-bool InputEvent::is_keyboard_key_released(const KeyboardKey* keys) const {
+bool InputEvent::is_keyboard_key_released(const KeyboardKey *keys) {
 
   while (*keys != KEY_NONE) {
 
@@ -520,7 +520,7 @@ bool InputEvent::is_keyboard_key_released(const KeyboardKey* keys) const {
  * corresponding to releasing one of the four directional keys.
  * \return true if this event corresponds to releasing one of the four directional keys
  */
-bool InputEvent::is_keyboard_direction_key_released() const {
+bool InputEvent::is_keyboard_direction_key_released() {
 
   return is_keyboard_key_released(directional_keys);
 }
@@ -530,7 +530,7 @@ bool InputEvent::is_keyboard_direction_key_released() const {
  * corresponding to releasing a key other than the four directional keys.
  * \return true if this event corresponds to releasing a key other than the four directional keys
  */
-bool InputEvent::is_keyboard_non_direction_key_released() const {
+bool InputEvent::is_keyboard_non_direction_key_released() {
 
   return is_keyboard_key_released()
     && !is_keyboard_direction_key_released();
@@ -544,7 +544,7 @@ bool InputEvent::is_keyboard_non_direction_key_released() const {
  *
  * \return true if SHIFT was pressed during this keyboard event
  */
-bool InputEvent::is_with_shift() const {
+bool InputEvent::is_with_shift() {
 
   return is_keyboard_event()
     && (internal_event.key.keysym.mod & KMOD_SHIFT);
@@ -558,7 +558,7 @@ bool InputEvent::is_with_shift() const {
  *
  * \return true if CTRL was pressed during this keyboard event
  */
-bool InputEvent::is_with_control() const {
+bool InputEvent::is_with_control() {
 
   return is_keyboard_event()
     && (internal_event.key.keysym.mod & KMOD_CTRL);
@@ -572,7 +572,7 @@ bool InputEvent::is_with_control() const {
  *
  * \return true if ALT was pressed during this keyboard event
  */
-bool InputEvent::is_with_alt() const {
+bool InputEvent::is_with_alt() {
 
   return is_keyboard_event()
     && (internal_event.key.keysym.mod & KMOD_ALT);
@@ -588,7 +588,7 @@ bool InputEvent::is_with_alt() const {
  *
  * \return The key of this keyboard event.
  */
-InputEvent::KeyboardKey InputEvent::get_keyboard_key() const {
+InputEvent::KeyboardKey InputEvent::get_keyboard_key() {
 
   if (!is_keyboard_event()) {
     return KEY_NONE;
@@ -627,7 +627,7 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& 
  * \brief Returns whether this event is a text event.
  * \return true if this event corresponds to entered text.
  */
-bool InputEvent::is_character_pressed() const {
+bool InputEvent::is_character_pressed() {
 
   return internal_event.type == SDL_TEXTINPUT;
 }
@@ -636,7 +636,7 @@ bool InputEvent::is_character_pressed() const {
  * \brief Returns a UTF-8 representation of the character that was pressed during this text event.
  * \return The UTF-8 string corresponding to the entered character, or an empty string if this is not a text event.
  */
-const std::string InputEvent::get_character() const {
+const std::string InputEvent::get_character() {
 
   return internal_event.text.text;
 }
@@ -689,7 +689,7 @@ void InputEvent::set_joypad_enabled(bool joypad_enabled) {
  * corresponding to pressing a joypad button.
  * \return true if this is a joypad button pressed event.
  */
-bool InputEvent::is_joypad_button_pressed() const {
+bool InputEvent::is_joypad_button_pressed() {
 
   return internal_event.type == SDL_JOYBUTTONDOWN;
 }
@@ -699,7 +699,7 @@ bool InputEvent::is_joypad_button_pressed() const {
  * corresponding to releasing a joypad button.
  * \return true if this is a joypad button released event.
  */
-bool InputEvent::is_joypad_button_released() const {
+bool InputEvent::is_joypad_button_released() {
 
   return internal_event.type == SDL_JOYBUTTONUP;
 }
@@ -712,7 +712,7 @@ bool InputEvent::is_joypad_button_released() const {
  *
  * \return the button number of this joypad button event
  */
-int InputEvent::get_joypad_button() const {
+int InputEvent::get_joypad_button() {
 
   if (!is_joypad_button_pressed() && !is_joypad_button_released()) {
     return -1;
@@ -726,7 +726,7 @@ int InputEvent::get_joypad_button() const {
  * corresponding to moving a joypad axis.
  * \return true if this is a joypad axis event
  */
-bool InputEvent::is_joypad_axis_moved() const {
+bool InputEvent::is_joypad_axis_moved() {
 
   return internal_event.type == SDL_JOYAXISMOTION;
 }
@@ -740,7 +740,7 @@ bool InputEvent::is_joypad_axis_moved() const {
  *
  * \return the axis index of this joypad axis event
  */
-int InputEvent::get_joypad_axis() const {
+int InputEvent::get_joypad_axis() {
 
   if (!is_joypad_axis_moved()) {
     return -1;
@@ -758,7 +758,7 @@ int InputEvent::get_joypad_axis() const {
  * \return the new state of the axis moved during this joypad axis event:
  * -1 (left or up), 0 (centered) or 1 (right or down)
  */
-int InputEvent::get_joypad_axis_state() const {
+int InputEvent::get_joypad_axis_state() {
 
   if (!is_joypad_axis_moved()) {
     return 0;
@@ -785,7 +785,7 @@ int InputEvent::get_joypad_axis_state() const {
  *
  * \return true if the axis is back to its initial position
  */
-bool InputEvent::is_joypad_axis_centered() const {
+bool InputEvent::is_joypad_axis_centered() {
 
   return is_joypad_axis_moved()
     && get_joypad_axis_state() == 0;
@@ -796,7 +796,7 @@ bool InputEvent::is_joypad_axis_centered() const {
  * corresponding to moving a joypad hat.
  * \return true if this is a joypad hat event
  */
-bool InputEvent::is_joypad_hat_moved() const {
+bool InputEvent::is_joypad_hat_moved() {
 
   return internal_event.type == SDL_JOYHATMOTION;
 }
@@ -809,7 +809,7 @@ bool InputEvent::is_joypad_hat_moved() const {
  *
  * \return the hat index of this joypad hat event
  */
-int InputEvent::get_joypad_hat() const {
+int InputEvent::get_joypad_hat() {
 
   if (!is_joypad_hat_moved()) {
     return -1;
@@ -828,7 +828,7 @@ int InputEvent::get_joypad_hat() const {
  *
  * \return the new direction of the hat moved during this joypad hat event
  */
-int InputEvent::get_joypad_hat_direction() const {
+int InputEvent::get_joypad_hat_direction() {
 
   if (!is_joypad_hat_moved()) {
     return -1;
@@ -884,7 +884,7 @@ int InputEvent::get_joypad_hat_direction() const {
  *
  * \return true if the hat is back to its initial position
  */
-bool InputEvent::is_joypad_hat_centered() const {
+bool InputEvent::is_joypad_hat_centered() {
 
   return is_joypad_hat_moved()
     && get_joypad_hat_direction() == -1;
@@ -902,7 +902,7 @@ bool InputEvent::is_joypad_hat_centered() const {
  *
  * \return the direction (0 to 7) or -1 if there is no direction
  */
-int InputEvent::get_direction() const {
+int InputEvent::get_direction() {
 
   int result = -1;
 
@@ -957,7 +957,7 @@ int InputEvent::get_direction() const {
  *
  * \return true if something was pressed
  */
-bool InputEvent::is_pressed() const {
+bool InputEvent::is_pressed() {
 
   return is_keyboard_key_pressed()
     || is_direction_pressed()
@@ -972,7 +972,7 @@ bool InputEvent::is_pressed() const {
  *
  * \return true if a direction was pressed
  */
-bool InputEvent::is_direction_pressed() const {
+bool InputEvent::is_direction_pressed() {
 
   return is_keyboard_direction_key_pressed()
     || (is_joypad_axis_moved() && !is_joypad_axis_centered())
@@ -987,7 +987,7 @@ bool InputEvent::is_direction_pressed() const {
  *
  * \return true if something other that a direction was pressed
  */
-bool InputEvent::is_non_direction_pressed() const {
+bool InputEvent::is_non_direction_pressed() {
 
   return is_pressed()
     && !is_direction_pressed();
@@ -1002,7 +1002,7 @@ bool InputEvent::is_non_direction_pressed() const {
  *
  * \return true if something was released
  */
-bool InputEvent::is_released() const {
+bool InputEvent::is_released() {
 
   return is_keyboard_key_released()
     || is_joypad_button_released()
@@ -1017,7 +1017,7 @@ bool InputEvent::is_released() const {
  * the user closing the window.
  * \return true if this is a window closing event
  */
-bool InputEvent::is_window_closing() const {
+bool InputEvent::is_window_closing() {
 
   return internal_event.type == SDL_QUIT;
 }

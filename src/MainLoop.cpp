@@ -150,7 +150,7 @@ void MainLoop::set_game(Game* game) {
 void MainLoop::run() {
 
   // main loop
-  InputEvent* event;
+  InputEvent *event;
   uint32_t now;
   uint32_t next_frame_date = System::now();
   uint32_t frame_interval = 25; // time interval between two drawings
@@ -234,7 +234,7 @@ void MainLoop::run() {
  * The notify_input() method of the current screen
  * is then called.
  */
-void MainLoop::notify_input(const InputEvent& event) {
+void MainLoop::notify_input(InputEvent& event) {
 
   if (event.is_window_closing()) {
     exiting = true;

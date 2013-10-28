@@ -2036,11 +2036,7 @@ void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
  * \param map A map.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::map_on_input(Map& map, const InputEvent& event) {
-
-  if (!map.is_known_to_lua()) {
-    return false;
-  }
+bool LuaContext::map_on_input(Map& map, InputEvent& event) {
 
   if (!map.is_known_to_lua()) {
     return false;

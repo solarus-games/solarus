@@ -435,18 +435,6 @@ Map& MapEntity::get_map() const {
  * \return The game.
  */
 Game& MapEntity::get_game() {
-<<<<<<< .merge_file_anFkjw
-  Debug::check_assertion(map != NULL, "No map was set");
-  return map->get_game();
-}
-
-/**
- * \brief Returns the game that is running the map where this entity is.
- * \return The game.
- */
-const Game& MapEntity::get_game() const {
-=======
->>>>>>> .merge_file_jxRrIZ
   Debug::check_assertion(map != NULL, "No map was set");
   return map->get_game();
 }
@@ -473,18 +461,6 @@ MapEntities& MapEntity::get_entities() {
  * \brief Returns the entities of the current map.
  * \return The entities.
  */
-<<<<<<< .merge_file_anFkjw
-MapEntities& MapEntity::get_entities() {
-  Debug::check_assertion(map != NULL, "No map was set");
-  return map->get_entities();
-}
-
-/**
- * \brief Returns the entities of the current map.
- * \return The entities.
- */
-=======
->>>>>>> .merge_file_jxRrIZ
 const MapEntities& MapEntity::get_entities() const {
   Debug::check_assertion(map != NULL, "No map was set");
   return map->get_entities();
@@ -504,7 +480,6 @@ LuaContext& MapEntity::get_lua_context() {
 /**
  * \brief Returns the current equipment.
  * \return The equipment.
-<<<<<<< .merge_file_anFkjw
 <<<<<<< .merge_file_jWvPtR
  */
 Equipment& MapEntity::get_equipment() {
@@ -526,17 +501,6 @@ Equipment& MapEntity::get_equipment() {
  * \return The equipment.
  */
 >>>>>>> .merge_file_iZbJn6
-=======
- */
-Equipment& MapEntity::get_equipment() {
-  return get_game().get_equipment();
-}
-
-/**
- * \brief Returns the current equipment.
- * \return The equipment.
- */
->>>>>>> .merge_file_jxRrIZ
 const Equipment& MapEntity::get_equipment() const {
   return get_game().get_equipment();
 }
@@ -1935,16 +1899,12 @@ int MapEntity::get_distance_to_camera() const {
  */
 bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
-<<<<<<< .merge_file_anFkjw
 <<<<<<< .merge_file_jWvPtR
   const std::list<const Separator*>& separators =
       get_entities().get_separators();
 =======
   const std::list<const Separator*>& separators = get_entities().get_separators();
 >>>>>>> .merge_file_iZbJn6
-=======
-  const std::list<const Separator*>& separators = get_entities().get_separators();
->>>>>>> .merge_file_jxRrIZ
   std::list<const Separator*>::const_iterator it;
   for (it = separators.begin(); it != separators.end(); ++it) {
 

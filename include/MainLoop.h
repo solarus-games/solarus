@@ -50,7 +50,7 @@ class MainLoop {
     Game* game;                 /**< The current game if any, NULL otherwise. */
     Game* next_game;            /**< The game to start at next cycle (NULL means resetting the game). */
 
-    void notify_input(const InputEvent& event);
+    void notify_input(InputEvent& event);
     void draw();
     void update();
 };

@@ -159,15 +159,11 @@ void Hero::SwimmingState::try_swim_faster() {
  * \return the swimming speed in pixels per second
  */
 int Hero::SwimmingState::get_slow_swimming_speed() const {
-<<<<<<< .merge_file_IUc7bT
 <<<<<<< .merge_file_J602Tp
   return hero.get_normal_walking_speed() / 2;
 =======
   return get_hero().get_normal_walking_speed() / 2;
 >>>>>>> .merge_file_dmQUkt
-=======
-  return get_hero().get_normal_walking_speed() / 2;
->>>>>>> .merge_file_bNR9Wj
 }
 
 /**
@@ -175,15 +171,11 @@ int Hero::SwimmingState::get_slow_swimming_speed() const {
  * \return the faster swimming speed in pixels per second
  */
 int Hero::SwimmingState::get_fast_swimming_speed() const {
-<<<<<<< .merge_file_IUc7bT
 <<<<<<< .merge_file_J602Tp
   return hero.get_normal_walking_speed();
 =======
   return get_hero().get_normal_walking_speed();
 >>>>>>> .merge_file_dmQUkt
-=======
-  return get_hero().get_normal_walking_speed();
->>>>>>> .merge_file_bNR9Wj
 }
 
 /**

@@ -149,6 +149,8 @@ Surface::~Surface() {
   if (owns_internal_texture) {
     SDL_DestroyTexture(internal_texture);
   }
+  for(int i=0 ; i<subsurfaces.size() ; i++)
+    delete subsurfaces.at(i);
 }
 
 /**
@@ -286,7 +288,9 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
   if(!internal_texture)
     create_streaming_texture();
   
+  SDL_LockTexture(internal_texture);
   SDL_UpdateTexture(internal_texture, static_cast<Rectangle>(where).get_internal_rect(), pixels, width * sizeof (Uint32));
+  SDL_UnlockTexture(internal_texture);
 }
 
 /**

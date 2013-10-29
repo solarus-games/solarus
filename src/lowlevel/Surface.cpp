@@ -280,16 +280,23 @@ void Surface::fill_with_color(Color& color) {
  */
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
-  int array_size = where.get_width() * where.get_height();
-  uint32_t pixels[array_size];
-  for(int i=0 ; i<array_size ; i++)
-    pixels[i] = color.get_internal_value();
-  
-  if(!internal_texture)
+  const int array_size = where.get_width() * where.get_height();
+  std::vector<uint32_t> pixels(array_size);  // TODO keep an array of pixels as a field?
+
+  const uint32_t color_value = color.get_internal_value();
+  for (int i = 0; i < array_size; ++i) {
+    pixels[i] = color_value;
+  }
+
+  if (internal_texture == NULL) {
     create_streaming_texture();
-  
+  }
+
   SDL_LockTexture(internal_texture);
-  SDL_UpdateTexture(internal_texture, static_cast<Rectangle>(where).get_internal_rect(), pixels, width * sizeof (Uint32));
+  SDL_UpdateTexture(internal_texture,
+      where.get_internal_rect(),
+      &pixels[0],
+      where.get_width() * sizeof(uint32_t));
   SDL_UnlockTexture(internal_texture);
 }
 

@@ -76,6 +76,7 @@ class Rectangle {
   private:
 
     SDL_Rect* get_internal_rect();
+    const SDL_Rect* get_internal_rect() const;
 
     SDL_Rect rect;      /**< the SDL_Rect encapsulated */
 };
@@ -360,14 +361,26 @@ inline bool Rectangle::overlaps(const Rectangle& other) const {
 }
 
 /**
- * \brief Returns the SDL rectangle encapsulated by this object.
+ * \brief returns the sdl rectangle encapsulated by this object.
  *
- * This function must be used only by other low-level classes (typically Surface)
- * as it is library dependent.
+ * This function must be used only by other low-level classes
+ * (typically surface) as it is library dependent.
  *
  * \return the internal rectangle encapsulated
  */
 inline SDL_Rect* Rectangle::get_internal_rect() {
+  return &rect;
+}
+
+/**
+ * \brief returns the sdl rectangle encapsulated by this object.
+ *
+ * This function must be used only by other low-level classes
+ * (typically surface) as it is library dependent.
+ *
+ * \return the internal rectangle encapsulated
+ */
+inline const SDL_Rect* Rectangle::get_internal_rect() const {
   return &rect;
 }
 

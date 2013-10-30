@@ -292,12 +292,10 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
     create_streaming_texture();
   }
 
-  SDL_LockTexture(internal_texture);
   SDL_UpdateTexture(internal_texture,
       where.get_internal_rect(),
       &pixels[0],
       where.get_width() * sizeof(uint32_t));
-  SDL_UnlockTexture(internal_texture);
 }
 
 /**

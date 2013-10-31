@@ -732,7 +732,6 @@ void Sprite::raw_draw_region(
  */
 void Sprite::draw_transition(Transition& transition) {
 
-  get_intermediate_surface().fill_with_color(Color::get_black());
   transition.draw(get_intermediate_surface());
 }
 

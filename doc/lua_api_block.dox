@@ -10,7 +10,7 @@ that may be pushed or pulled by the
 This type of \ref lua_api_entity "map entity" can be declared in the
 \ref lua_api_map_overview_files "map data file".
 It can also be created dynamically with
-\ref lua_api_map_create_npc "map:create_block()".
+\ref lua_api_map_create_block "map:create_block()".
 
 \section lua_api_block_overview Overview
 

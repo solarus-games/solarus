@@ -34,6 +34,7 @@ Surface::Surface(int width, int height):
   Drawable(),
   internal_texture(NULL),
   owns_internal_texture(false),
+  internal_opacity(255),
   width(width),
   height(height),
   clipping_rect(Rectangle(0, 0, width, height)) {
@@ -50,6 +51,7 @@ Surface::Surface(const Rectangle& size):
 Drawable(),
   internal_texture(NULL),
   owns_internal_texture(false),
+  internal_opacity(255),
   width(size.get_width()),
   height(size.get_height()),
   clipping_rect(Rectangle(0, 0, width, height))  {
@@ -67,7 +69,8 @@ Drawable(),
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
-  owns_internal_texture(true) {
+  owns_internal_texture(true),
+  internal_opacity(255) {
 
   std::string prefix = "";
   bool language_specific = false;
@@ -87,7 +90,10 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
     
   SDL_Surface* internal_surface = IMG_Load_RW(rw, 0);
+  //if(colorkey)
+  //  SDL_SetColorKey(internal_surface, SDL_TRUE, *colorkey);
   this->internal_texture = SDL_CreateTextureFromSurface(VideoManager::get_instance()->get_renderer(), internal_surface);
+    SDL_SetTextureBlendMode(this->internal_texture, SDL_BLENDMODE_BLEND);
   this->width = internal_surface->w;
   this->height = internal_surface->h;
   clipping_rect = Rectangle(0, 0, width, height);
@@ -112,7 +118,8 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
 Surface::Surface(SDL_Texture* internal_texture):
   Drawable(),
   internal_texture(internal_texture),
-  owns_internal_texture(false)
+  owns_internal_texture(false),
+  internal_opacity(255)
 {
   Uint32 format;
   int access;
@@ -134,6 +141,7 @@ Surface::Surface(Surface& other):
   Drawable(),
   internal_texture(other.internal_texture),
   owns_internal_texture(other.owns_internal_texture),
+  internal_opacity(255),
   width(other.get_width()),
   height(other.get_height()),
   clipping_rect(other.clipping_rect){
@@ -150,7 +158,10 @@ Surface::~Surface() {
     SDL_DestroyTexture(internal_texture);
   }
   for(int i=0 ; i<subsurfaces.size() ; i++)
+  {
+    subsurfaces.at(i)->surface->decrement_refcount();
     delete subsurfaces.at(i);
+  }
 }
 
 /**
@@ -189,7 +200,11 @@ Surface* Surface::create_from_file(const std::string& file_name,
   SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
   
   SDL_Surface* internal_surface = IMG_Load_RW(rw, 0);
-  SDL_Texture* internal_texture = SDL_CreateTextureFromSurface(VideoManager::get_instance()->get_renderer(), internal_surface);
+  //if(colorkey)
+  //  SDL_SetColorKey(internal_surface, SDL_TRUE, *colorkey);
+  SDL_Texture* internal_texture = SDL_CreateTextureFromSurface(
+    VideoManager::get_instance()->get_renderer(), internal_surface);
+  SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
   
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
@@ -235,11 +250,7 @@ const Rectangle Surface::get_size() const {
  */
 void Surface::set_opacity(int opacity) {
 
-  if(!internal_texture)
-    create_streaming_texture();
-    
-  SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
-  SDL_SetTextureAlphaMod(internal_texture, opacity);
+  internal_opacity = opacity;
 }
 
 /**
@@ -304,9 +315,10 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 void Surface::create_streaming_texture()
 {
   internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
-                                       SDL_PIXELFORMAT_ARGB8888,
-                                       SDL_TEXTUREACCESS_STREAMING,
-                                       width, height);
+    SDL_PIXELFORMAT_ARGB8888,
+    SDL_TEXTUREACCESS_STREAMING,
+    width, height);
+  SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
   
   owns_internal_texture = true;
 }
@@ -315,9 +327,10 @@ void Surface::create_streaming_texture()
  * \brief Add a SubSurface to draw on the vector buffer.
  * \param subsurface The SubSurface to add on the buffer queue.
  */
-void Surface::add_subsurface(SubSurface* subsurface) {
+void Surface::add_subsurface(SubSurface& subsurface) {
   
-  subsurfaces.push_back(subsurface);
+  subsurfaces.push_back(&subsurface);
+  subsurface.surface->increment_refcount();
 }
 
 /**
@@ -353,7 +366,7 @@ void Surface::raw_draw_region(
     subsurface->dst_rect.set_height(height);
   }
   
-  dst_surface.add_subsurface(subsurface);
+  dst_surface.add_subsurface(*subsurface);
 }
 
 /**
@@ -372,7 +385,9 @@ void Surface::draw_transition(Transition& transition) {
  * \param src_rect The subrectangle of the texture to draw.
  * \param dst_rect The portion of renderer where to draw.
  */
-void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect) {
+void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, int opacity) {
+  
+  int current_opacity = std::min(internal_opacity, opacity);
   
   // Draw the internal texture.
   if(internal_texture)
@@ -384,6 +399,7 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
       clipping_rect.get_width(),
       clipping_rect.get_height());
     
+    SDL_SetTextureAlphaMod(internal_texture, current_opacity);
     SDL_RenderSetClipRect(renderer, final_clipping_rect.get_internal_rect());
     SDL_RenderCopy(renderer, internal_texture, src_rect.get_internal_rect(), dst_rect.get_internal_rect());
   }
@@ -398,7 +414,8 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
       subsurfaces.at(i)->dst_rect.get_width(),
       subsurfaces.at(i)->dst_rect.get_height());
       
-    subsurfaces.at(i)->surface->render(renderer, subsurfaces.at(i)->src_rect, dst_subrect);
+    subsurfaces.at(i)->surface->render(renderer, subsurfaces.at(i)->src_rect, dst_subrect, current_opacity);
+    subsurfaces.at(i)->surface->decrement_refcount();
     delete subsurfaces.at(i);
   }
   

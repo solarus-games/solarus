@@ -158,10 +158,7 @@ Surface::~Surface() {
     SDL_DestroyTexture(internal_texture);
   }
   for(int i=0 ; i<subsurfaces.size() ; i++)
-  {
-    subsurfaces.at(i)->surface->decrement_refcount();
-    delete subsurfaces.at(i);
-  }
+    delete_subsurface(*subsurfaces.at(i));
 }
 
 /**
@@ -330,7 +327,15 @@ void Surface::create_streaming_texture()
 void Surface::add_subsurface(SubSurface& subsurface) {
   
   subsurfaces.push_back(&subsurface);
-  subsurface.surface->increment_refcount();
+}
+
+/**
+ * \brief Delete a SubSurface.
+ * \param subsurface The SubSurface to delete.
+ */
+void Surface::delete_subsurface(SubSurface& subsurface)
+{
+  delete &subsurface;
 }
 
 /**
@@ -415,8 +420,7 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
       subsurfaces.at(i)->dst_rect.get_height());
       
     subsurfaces.at(i)->surface->render(renderer, subsurfaces.at(i)->src_rect, dst_subrect, current_opacity);
-    subsurfaces.at(i)->surface->decrement_refcount();
-    delete subsurfaces.at(i);
+    delete_subsurface(*subsurfaces.at(i));
   }
   
   subsurfaces.clear();

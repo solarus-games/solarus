@@ -96,6 +96,7 @@ class Surface: public Drawable {
   
     void create_streaming_texture();
     void add_subsurface(SubSurface& subsurface);
+    void delete_subsurface(SubSurface& subsurface);
     void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, int opacity);
   
     SDL_Texture* get_internal_texture();

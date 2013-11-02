@@ -437,22 +437,23 @@ void Surface::draw_transition(Transition& transition) {
  * \param dst_rect The portion of renderer where to draw.
  * \param opacity The opacity of the parent surface.
  */
-void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, int opacity) {
+void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, Rectangle& clip_rect, int opacity) {
   
   int current_opacity = std::min(internal_opacity, opacity);
+  
+  // Calculate absolute clipping rectangle position.
+  Rectangle absolute_clip_rect = Rectangle(
+    dst_rect.get_x() + clipping_rect.get_x(),
+    dst_rect.get_y() + clipping_rect.get_y(),
+    clipping_rect.get_width(),
+    clipping_rect.get_height());
+  SDL_IntersectRect(absolute_clip_rect.get_internal_rect(), clip_rect.get_internal_rect(), absolute_clip_rect.get_internal_rect());
   
   // Draw the internal texture.
   if(internal_texture)
   {
-    // Calculate absolute clipping rectangle position.
-    Rectangle final_clipping_rect = Rectangle(
-      dst_rect.get_x() + clipping_rect.get_x(),
-      dst_rect.get_y() + clipping_rect.get_y(),
-      clipping_rect.get_width(),
-      clipping_rect.get_height());
-    
     SDL_SetTextureAlphaMod(internal_texture, current_opacity);
-    SDL_RenderSetClipRect(renderer, final_clipping_rect.get_internal_rect());
+    SDL_RenderSetClipRect(renderer, absolute_clip_rect.get_internal_rect());
     SDL_RenderCopy(renderer, internal_texture, src_rect.get_internal_rect(), dst_rect.get_internal_rect());
   }
   
@@ -460,13 +461,13 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
   for(int i=0 ; i<subsurfaces.size() ; i++)
   {
     // Calculate absolute destination subrectangle position.
-    Rectangle dst_subrect = Rectangle(
+    Rectangle absolute_dst_rect = Rectangle(
       dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
       dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
       subsurfaces.at(i)->dst_rect.get_width(),
       subsurfaces.at(i)->dst_rect.get_height());
       
-    subsurfaces.at(i)->surface->render(renderer, subsurfaces.at(i)->src_rect, dst_subrect, current_opacity);
+    subsurfaces.at(i)->surface->render(renderer, subsurfaces.at(i)->src_rect, absolute_dst_rect, absolute_clip_rect, current_opacity);
     delete_subsurface(*subsurfaces.at(i));
   }
   

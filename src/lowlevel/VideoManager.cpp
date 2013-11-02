@@ -415,7 +415,7 @@ void VideoManager::draw(Surface& quest_surface) {
   }
 
   SDL_RenderClear(main_renderer);
-  quest_surface.render(main_renderer, quest_size, quest_size, 255);
+  quest_surface.render(main_renderer, quest_size, quest_size, quest_size, 255);
   SDL_RenderPresent(main_renderer);
 }
 

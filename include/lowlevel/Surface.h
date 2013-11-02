@@ -67,7 +67,7 @@ class Surface: public Drawable {
         ImageDirectory base_directory = DIR_SPRITES);
     static Surface* create_from_file(const std::string& file_name, 
         PixelBits** pixel_mask,
-        ImageDirectory base_directory);
+        ImageDirectory base_directory = DIR_SPRITES);
 
     int get_width() const;
     int get_height() const;
@@ -104,7 +104,7 @@ class Surface: public Drawable {
     void create_streaming_texture();
     void add_subsurface(SubSurface& subsurface);
     void delete_subsurface(SubSurface& subsurface);
-    void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, int opacity);
+    void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, Rectangle& clip_rect, int opacity);
   
     SDL_Texture* get_internal_texture();
   

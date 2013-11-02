@@ -358,8 +358,11 @@ void Surface::create_streaming_texture()
     SDL_PIXELFORMAT_ARGB8888,
     SDL_TEXTUREACCESS_STATIC,
     width, height);
-  SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
   
+  Debug::check_assertion(internal_texture != NULL, StringConcat() <<
+    "Cannot create internal streaming texture");
+  
+  SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
   owns_internal_texture = true;
 }
 

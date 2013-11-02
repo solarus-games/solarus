@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "Drawable.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/PixelBits.h"
 #include <vector>
 #include <SDL.h>
 
@@ -64,6 +65,9 @@ class Surface: public Drawable {
 
     static Surface* create_from_file(const std::string& file_name,
         ImageDirectory base_directory = DIR_SPRITES);
+    static Surface* create_from_file(const std::string& file_name, 
+        PixelBits** pixel_mask,
+        ImageDirectory base_directory);
 
     int get_width() const;
     int get_height() const;
@@ -94,6 +98,9 @@ class Surface: public Drawable {
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
   
+    static SDL_Surface* get_surface_from_file(const std::string& file_name, ImageDirectory base_directory);
+    static SDL_Texture* get_texture_from_surface(SDL_Surface* software_surface);
+    static SDL_Texture* get_texture_from_file(const std::string& file_name, ImageDirectory base_directory);
     void create_streaming_texture();
     void add_subsurface(SubSurface& subsurface);
     void delete_subsurface(SubSurface& subsurface);

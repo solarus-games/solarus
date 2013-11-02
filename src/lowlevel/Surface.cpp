@@ -72,37 +72,11 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   owns_internal_texture(true),
   internal_opacity(255) {
 
-  std::string prefix = "";
-  bool language_specific = false;
-
-  if (base_directory == DIR_SPRITES) {
-    prefix = "sprites/";
-  }
-  else if (base_directory == DIR_LANGUAGE) {
-    language_specific = true;
-    prefix = "images/";
-  }
-  std::string prefixed_file_name = prefix + file_name;
-
-  size_t size;
-  char* buffer;
-  FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
-  SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
-    
-  SDL_Surface* internal_surface = IMG_Load_RW(rw, 0);
-  //if(colorkey)
-  //  SDL_SetColorKey(internal_surface, SDL_TRUE, *colorkey);
-  this->internal_texture = SDL_CreateTextureFromSurface(VideoManager::get_instance()->get_renderer(), internal_surface);
-    SDL_SetTextureBlendMode(this->internal_texture, SDL_BLENDMODE_BLEND);
-  this->width = internal_surface->w;
-  this->height = internal_surface->h;
+  SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
+  width = software_surface->w;
+  height = software_surface->h;
   clipping_rect = Rectangle(0, 0, width, height);
-    
-  SDL_RWclose(rw);
-  FileTools::data_file_close_buffer(buffer);
-
-  Debug::check_assertion(internal_surface != NULL, StringConcat() <<
-      "Cannot load image '" << prefixed_file_name << "'");
+  internal_texture = get_texture_from_surface(software_surface);
 }
 
 /**
@@ -174,9 +148,51 @@ Surface::~Surface() {
 Surface* Surface::create_from_file(const std::string& file_name,
     ImageDirectory base_directory) {
 
+  SDL_Texture* hardware_surface = get_texture_from_file(file_name, base_directory);
+
+  Surface* surface = new Surface(hardware_surface);
+  surface->owns_internal_texture = true;
+  return surface;
+}
+
+/**
+ * \brief Creates a surface from the specified image file name and fill a pixel mask.
+ *
+ * This function acts like a constructor excepts that it returns NULL if the
+ * file does not exist or is not a valid image.
+ *
+ * \param file_name Name of the image file to load, relative to the base directory specified.
+ * \param pixel_mask The pointer to the pointer of the pixel mask to fill.
+ * \param base_directory The base directory to use.
+ * \return The surface created, or NULL if the file could not be loaded.
+ */
+Surface* Surface::create_from_file(const std::string& file_name, 
+  PixelBits** pixel_mask, ImageDirectory base_directory) {
+  
+  SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
+  //*pixel_mask = new PixelBits(software_surface);
+  SDL_Texture* hardware_surface = get_texture_from_surface(software_surface);
+  
+  Surface* surface = new Surface(hardware_surface);
+  surface->owns_internal_texture = true;
+  return surface;
+}
+
+/**
+ * \brief Return the SDL_Surface corresponding to the requested file.
+ *
+ * The returned SDL_Surface have to manually delete.
+ *
+ * \param file_name Name of the image file to load, relative to the base directory specified.
+ * \param base_directory The base directory to use.
+ * \return The SDL_Surface.
+ */
+SDL_Surface* Surface::get_surface_from_file(const std::string& file_name,
+                                            ImageDirectory base_directory)
+{
   std::string prefix;
   bool language_specific = false;
-
+  
   if (base_directory == DIR_SPRITES) {
     prefix = "sprites/";
   }
@@ -185,35 +201,62 @@ Surface* Surface::create_from_file(const std::string& file_name,
     prefix = "images/";
   }
   std::string prefixed_file_name = prefix + file_name;
-
+  
   if (!FileTools::data_file_exists(prefixed_file_name, language_specific)) {
     // File not found.
     return NULL;
   }
-
+  
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
   SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
   
-  SDL_Surface* internal_surface = IMG_Load_RW(rw, 0);
-  //if(colorkey)
-  //  SDL_SetColorKey(internal_surface, SDL_TRUE, *colorkey);
-  SDL_Texture* internal_texture = SDL_CreateTextureFromSurface(
-    VideoManager::get_instance()->get_renderer(), internal_surface);
-  SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
+  SDL_Surface* software_surface = IMG_Load_RW(rw, 0);
   
-  FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
+  FileTools::data_file_close_buffer(buffer);
+  
+  Debug::check_assertion(software_surface != NULL, StringConcat() <<
+    "Cannot load image '" << prefixed_file_name << "'");
+  
+  return software_surface;
+}
 
-  if (internal_surface == NULL) {
-    // Not a valid image.
-    return NULL;
-  }
+/**
+ * \brief Return the given SDL_Surface converted to a SDL_Texture.
+ *
+ * Free the given SDL_Surface.
+ *
+ * \param software_surface The software surface to convert.
+ * \return The SDL_Texture.
+ */
+SDL_Texture* Surface::get_texture_from_surface(SDL_Surface* software_surface)
+{  
+  SDL_Texture* hardware_surface = SDL_CreateTextureFromSurface(
+    VideoManager::get_instance()->get_renderer(), software_surface);
+  SDL_SetTextureBlendMode(hardware_surface, SDL_BLENDMODE_BLEND);
+  
+  SDL_FreeSurface(software_surface);
+  
+  return hardware_surface;
+}
 
-  Surface* surface = new Surface(internal_texture);
-  surface->owns_internal_texture = true;
-  return surface;
+/**
+ * \brief Return the SDL_Texture corresponding to the requested file.
+ *
+ * The returned SDL_Texture have to manually delete.
+ *
+ * \param file_name Name of the image file to load, relative to the base directory specified.
+ * \param base_directory The base directory to use.
+ * \return The SDL_Texture.
+ */
+SDL_Texture* Surface::get_texture_from_file(const std::string& file_name,
+  ImageDirectory base_directory)
+{
+  SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
+  
+  return get_texture_from_surface(software_surface);
 }
 
 /**
@@ -313,7 +356,7 @@ void Surface::create_streaming_texture()
 {
   internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
     SDL_PIXELFORMAT_ARGB8888,
-    SDL_TEXTUREACCESS_STREAMING,
+    SDL_TEXTUREACCESS_STATIC,
     width, height);
   SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
   
@@ -367,8 +410,8 @@ void Surface::raw_draw_region(
   
   if(subsurface->dst_rect.is_flat())
   {
-    subsurface->dst_rect.set_width(width);
-    subsurface->dst_rect.set_height(height);
+    subsurface->dst_rect.set_width(region.get_width());
+    subsurface->dst_rect.set_height(region.get_height());
   }
   
   dst_surface.add_subsurface(*subsurface);
@@ -389,6 +432,7 @@ void Surface::draw_transition(Transition& transition) {
  * \param renderer The renderer where to draw.
  * \param src_rect The subrectangle of the texture to draw.
  * \param dst_rect The portion of renderer where to draw.
+ * \param opacity The opacity of the parent surface.
  */
 void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, int opacity) {
   

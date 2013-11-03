@@ -156,29 +156,6 @@ Surface* Surface::create_from_file(const std::string& file_name,
 }
 
 /**
- * \brief Creates a surface from the specified image file name and fill a pixel mask.
- *
- * This function acts like a constructor excepts that it returns NULL if the
- * file does not exist or is not a valid image.
- *
- * \param file_name Name of the image file to load, relative to the base directory specified.
- * \param pixel_mask The pointer to the pointer of the pixel mask to fill.
- * \param base_directory The base directory to use.
- * \return The surface created, or NULL if the file could not be loaded.
- */
-Surface* Surface::create_from_file(const std::string& file_name, 
-  PixelBits** pixel_mask, ImageDirectory base_directory) {
-  
-  SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
-  //*pixel_mask = new PixelBits(software_surface);
-  SDL_Texture* hardware_surface = get_texture_from_surface(software_surface);
-  
-  Surface* surface = new Surface(hardware_surface);
-  surface->owns_internal_texture = true;
-  return surface;
-}
-
-/**
  * \brief Return the SDL_Surface corresponding to the requested file.
  *
  * The returned SDL_Surface have to manually delete.

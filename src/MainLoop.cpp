@@ -49,18 +49,17 @@ MainLoop::MainLoop(int argc, char** argv):
   QuestProperties quest_properties(*this);
   quest_properties.load();
 
-  // Read the quest resource list from data and then from savegame if present.
+  // Read the quest resource list from data.
   QuestResourceList::initialize();
-  Settings::load("settings.dat");
-
-  // Create the window now that we know the final outset size.
-  VideoManager::get_instance()->create_window();
     
   // Load the lua quest stuff now that the window is created.
   root_surface = new Surface(VideoManager::get_instance()->get_quest_size());
   root_surface->increment_refcount();
   lua_context = new LuaContext(*this);
   lua_context->initialize();
+    
+  // Create the window now that we know the final outset size.
+  VideoManager::get_instance()->create_window();
 }
 
 /**

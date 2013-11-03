@@ -80,7 +80,7 @@ class VideoManager {
         const Rectangle& min_quest_size,
         const Rectangle& max_quest_size);
 
-    void draw(Surface& quest_surface);
+    void render(Surface& quest_surface);
 
     static const std::string video_mode_names[];
 

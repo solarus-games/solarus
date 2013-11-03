@@ -406,14 +406,15 @@ VideoManager::VideoMode VideoManager::get_video_mode_by_name(const std::string& 
 
 /**
  * \brief Draws the quest surface on the screen with the current video mode.
- * \param quest_surface The quest surface to draw on the screen.
+ * \param quest_surface The quest surface to render on the screen.
  */
-void VideoManager::draw(Surface& quest_surface) {
+void VideoManager::render(Surface& quest_surface) {
 
   if (disable_window) {
     return;
   }
 
+  SDL_RenderSetClipRect(main_renderer, NULL);
   SDL_RenderClear(main_renderer);
   quest_surface.render(main_renderer, quest_size, quest_size, quest_size, 255);
   SDL_RenderPresent(main_renderer);

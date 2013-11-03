@@ -284,6 +284,6 @@ void MainLoop::draw() {
     game->draw(*root_surface);
   }
   lua_context->main_on_draw(*root_surface);
-  VideoManager::get_instance()->draw(*root_surface);
+  VideoManager::get_instance()->render(*root_surface);
 }
 

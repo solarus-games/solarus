@@ -34,8 +34,15 @@
  * \param tile_pattern_id id of the tile pattern in the tileset
  * \param enabled true to make the tile active on the map
  */
-DynamicTile::DynamicTile(const std::string& name, Layer layer, int x, int y,
-			 int width, int height, int tile_pattern_id, bool enabled):
+DynamicTile::DynamicTile(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    int width,
+    int height,
+    int tile_pattern_id,
+    bool enabled):
   MapEntity(name, 0, layer, x, y, width, height),
   tile_pattern_id(tile_pattern_id),
   tile_pattern(NULL) {

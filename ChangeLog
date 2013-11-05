@@ -54,6 +54,7 @@ Engine changes
 * Fix a libmodplug compilation problem due to wrong sndfile.h (#324).
 * Fix teletransporters activated while coming back from falling (#346).
 * Fix a crash when changing the hero state in block:on_moved (#340).
+* Fix enemy death detection when falling into hole, lava or water (#350).
 
 _______________________________
 

@@ -202,7 +202,7 @@ const GameCommands& Hero::State::get_commands() const {
  * \param previous_state The previous state or NULL if this is the first state
  * (for information).
  */
-void Hero::State::start(State* previous_state) {
+void Hero::State::start(const State* previous_state) {
 
   set_suspended(hero.is_suspended());
 
@@ -222,7 +222,7 @@ void Hero::State::start(State* previous_state) {
  *
  * \param next_state The next state (for information).
  */
-void Hero::State::stop(State* next_state) {
+void Hero::State::stop(const State* next_state) {
 
   Debug::check_assertion(!is_stopping(),
       std::string("This state is already stopping: ") + get_name());
@@ -1115,7 +1115,7 @@ bool Hero::State::can_start_item(EquipmentItem& item) const {
  *
  * \return true if the hero is currently carrying an item in this state
  */
-bool Hero::State::is_carrying_item() {
+bool Hero::State::is_carrying_item() const {
   return get_carried_item() != NULL;
 }
 
@@ -1126,7 +1126,7 @@ bool Hero::State::is_carrying_item() {
  *
  * \return the item carried by the hero, or NULL
  */
-CarriedItem* Hero::State::get_carried_item() {
+CarriedItem* Hero::State::get_carried_item() const {
   return NULL;
 }
 
@@ -1135,11 +1135,9 @@ CarriedItem* Hero::State::get_carried_item() {
  * 
  * Returns CarriedItem::BEHAVIOR_THROW by default.
  *
- * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::State::get_previous_carried_item_behavior(
-    CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::State::get_previous_carried_item_behavior() const {
   return CarriedItem::BEHAVIOR_THROW;
 }
 

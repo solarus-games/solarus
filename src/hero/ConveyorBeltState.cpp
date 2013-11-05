@@ -46,7 +46,7 @@ Hero::ConveyorBeltState::~ConveyorBeltState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::ConveyorBeltState::start(State* previous_state) {
+void Hero::ConveyorBeltState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -63,7 +63,7 @@ void Hero::ConveyorBeltState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::ConveyorBeltState::stop(State* next_state) {
+void Hero::ConveyorBeltState::stop(const State* next_state) {
 
   State::stop(next_state);
 

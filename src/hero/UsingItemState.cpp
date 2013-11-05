@@ -43,7 +43,7 @@ Hero::UsingItemState::~UsingItemState() {
  * \brief Starts this state.
  * \param previous_state The previous state.
  */
-void Hero::UsingItemState::start(State* previous_state) {
+void Hero::UsingItemState::start(const State* previous_state) {
 
   State::start(previous_state);
 

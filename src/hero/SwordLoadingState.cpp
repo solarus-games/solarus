@@ -48,7 +48,7 @@ Hero::SwordLoadingState::~SwordLoadingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SwordLoadingState::start(State* previous_state) {
+void Hero::SwordLoadingState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 

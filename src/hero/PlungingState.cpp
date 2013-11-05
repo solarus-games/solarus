@@ -43,7 +43,7 @@ Hero::PlungingState::~PlungingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::PlungingState::start(State* previous_state) {
+void Hero::PlungingState::start(const State* previous_state) {
 
   State::start(previous_state);
 

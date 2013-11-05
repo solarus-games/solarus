@@ -29,7 +29,7 @@ class Hero::BowState: public Hero::State {
     BowState(Hero& hero);
     ~BowState();
 
-    void start(State* previous_state);
+    void start(const State* previous_state);
     void update();
 };
 

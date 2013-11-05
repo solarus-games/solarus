@@ -50,7 +50,7 @@ Hero::RunningState::~RunningState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::RunningState::start(State* previous_state) {
+void Hero::RunningState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -66,7 +66,7 @@ void Hero::RunningState::start(State* previous_state) {
 /**
  * \brief Stops this state.
  */
-void Hero::RunningState::stop(State* next_state) {
+void Hero::RunningState::stop(const State* next_state) {
 
   State::stop(next_state);
 

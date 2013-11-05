@@ -62,7 +62,7 @@ Hero::BackToSolidGroundState::~BackToSolidGroundState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::BackToSolidGroundState::start(State* previous_state) {
+void Hero::BackToSolidGroundState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -76,7 +76,7 @@ void Hero::BackToSolidGroundState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::BackToSolidGroundState::stop(State* next_state) {
+void Hero::BackToSolidGroundState::stop(const State* next_state) {
 
   State::stop(next_state);
 

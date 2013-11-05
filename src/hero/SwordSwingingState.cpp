@@ -46,7 +46,7 @@ Hero::SwordSwingingState::~SwordSwingingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SwordSwingingState::start(State* previous_state) {
+void Hero::SwordSwingingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -59,7 +59,7 @@ void Hero::SwordSwingingState::start(State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state
  */
-void Hero::SwordSwingingState::stop(State* next_state) {
+void Hero::SwordSwingingState::stop(const State* next_state) {
 
   State::stop(next_state);
 

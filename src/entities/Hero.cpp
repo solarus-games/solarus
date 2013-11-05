@@ -184,6 +184,22 @@ void Hero::set_state(State* new_state) {
 }
 
 /**
+ * \brief Returns the item currently carried by the hero, if any.
+ *
+ * This function is used internally to allow this item to be preserved between
+ * different hero states.
+ *
+ * \return The carried item or NULL.
+ */
+CarriedItem* Hero::get_carried_item() {
+
+  if (state == NULL) {
+    return NULL;
+  }
+  return state->get_carried_item();
+}
+
+/**
  * \brief Suspends or resumes the animation and the movements of the hero.
  *
  * This function is called by the map when the game is suspended or resumed.
@@ -2218,7 +2234,7 @@ void Hero::start_treasure(const Treasure& treasure, int callback_ref) {
  * once finished
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
-void Hero::start_forced_walking(const std::string &path, bool loop, bool ignore_obstacles) {
+void Hero::start_forced_walking(const std::string& path, bool loop, bool ignore_obstacles) {
   set_state(new ForcedWalkingState(*this, path, loop, ignore_obstacles));
 }
 
@@ -2233,10 +2249,20 @@ void Hero::start_forced_walking(const std::string &path, bool loop, bool ignore_
  * \param with_sound true to play the "jump" sound
  * \param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  */
-void Hero::start_jumping(int direction8, int distance, bool ignore_obstacles,
-    bool with_sound, uint32_t movement_delay) {
+void Hero::start_jumping(
+    int direction8,
+    int distance,
+    bool ignore_obstacles,
+    bool with_sound,
+    uint32_t movement_delay) {
 
-  JumpingState* state = new JumpingState(*this, direction8, distance, ignore_obstacles, with_sound, movement_delay);
+  JumpingState* state = new JumpingState(
+      *this,
+      direction8,
+      distance,
+      ignore_obstacles,
+      with_sound,
+      movement_delay);
   set_state(state);
 }
 

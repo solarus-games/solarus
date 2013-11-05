@@ -36,8 +36,8 @@ class Hero::State {
     // creation and destruction
     virtual ~State();
     const std::string& get_name() const;
-    virtual void start(State* previous_state);
-    virtual void stop(State* next_state);
+    virtual void start(const State* previous_state);
+    virtual void stop(const State* next_state);
 
     // game loop
     virtual void update();
@@ -127,10 +127,9 @@ class Hero::State {
     virtual bool can_sword_hit_crystal() const;
     virtual bool can_take_jumper() const;
     virtual void notify_jumper_activated(Jumper& jumper);
-    bool is_carrying_item();
-    virtual CarriedItem* get_carried_item();
-    virtual CarriedItem::Behavior get_previous_carried_item_behavior(
-        CarriedItem& carried_item);
+    bool is_carrying_item() const;
+    virtual CarriedItem* get_carried_item() const;
+    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const;
 
   protected:
 

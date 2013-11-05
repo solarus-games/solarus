@@ -28,8 +28,8 @@ class Hero::FallingState: public Hero::State {
 
     FallingState(Hero& hero);
     ~FallingState();
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     bool can_avoid_hole() const;
     bool can_avoid_lava() const;

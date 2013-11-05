@@ -38,8 +38,8 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
     SwimmingState(Hero& hero);
     ~SwimmingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     void set_suspended(bool suspended);
 

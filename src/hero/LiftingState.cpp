@@ -19,6 +19,7 @@
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
+#include "lowlevel/Debug.h"
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
@@ -32,6 +33,7 @@ Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
   State(hero, "lifting"),
   lifted_item(lifted_item) {
 
+  Debug::check_assertion(lifted_item != NULL, "Missing lifted item");
   lifted_item->increment_refcount();
 }
 
@@ -47,7 +49,7 @@ Hero::LiftingState::~LiftingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::LiftingState::start(State* previous_state) {
+void Hero::LiftingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -66,7 +68,7 @@ void Hero::LiftingState::start(State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state
  */
-void Hero::LiftingState::stop(State* next_state) {
+void Hero::LiftingState::stop(const State* next_state) {
 
   State::stop(next_state);
 
@@ -75,7 +77,7 @@ void Hero::LiftingState::stop(State* next_state) {
     get_sprites().set_lifted_item(NULL);
 
     // the lifted item is still managed by this state
-    switch (next_state->get_previous_carried_item_behavior(*lifted_item)) {
+    switch (next_state->get_previous_carried_item_behavior()) {
 
     case CarriedItem::BEHAVIOR_THROW:
       throw_item();
@@ -86,6 +88,10 @@ void Hero::LiftingState::stop(State* next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
+      // The next state is now the owner and has incremented the refcount.
+      lifted_item->decrement_refcount();
+      Debug::check_assertion(lifted_item->get_refcount() > 0,
+          "Invalid carried item refcount");
       lifted_item = NULL;
       break;
     }

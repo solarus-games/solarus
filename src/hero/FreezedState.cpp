@@ -39,7 +39,7 @@ Hero::FreezedState::~FreezedState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::FreezedState::start(State* previous_state) {
+void Hero::FreezedState::start(const State* previous_state) {
 
   State::start(previous_state);
 

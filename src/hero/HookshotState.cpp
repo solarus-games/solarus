@@ -43,7 +43,7 @@ Hero::HookshotState::~HookshotState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::HookshotState::start(State* previous_state) {
+void Hero::HookshotState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -56,7 +56,7 @@ void Hero::HookshotState::start(State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state (for information)
  */
-void Hero::HookshotState::stop(State* next_state) {
+void Hero::HookshotState::stop(const State* next_state) {
 
   State::stop(next_state);
 

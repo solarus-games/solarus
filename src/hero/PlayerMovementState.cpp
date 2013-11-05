@@ -70,7 +70,7 @@ const PlayerMovement* Hero::PlayerMovementState::get_player_movement() const {
  *
  * \param previous_state the previous state
  */
-void Hero::PlayerMovementState::start(State* previous_state) {
+void Hero::PlayerMovementState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -98,7 +98,9 @@ void Hero::PlayerMovementState::start(State* previous_state) {
  *
  * \param next_state the next state (for information)
  */
-void Hero::PlayerMovementState::stop(State* next_state) {
+void Hero::PlayerMovementState::stop(const State* next_state) {
+
+  State::stop(next_state);
 
   get_hero().clear_movement();
   get_sprites().set_animation_stopped_normal();

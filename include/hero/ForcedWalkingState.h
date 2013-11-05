@@ -35,8 +35,8 @@ class Hero::ForcedWalkingState: public Hero::State {
         bool ignore_obstacles);
     ~ForcedWalkingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     bool can_start_gameover_sequence() const;
     bool is_touching_ground() const;

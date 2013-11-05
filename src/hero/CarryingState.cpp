@@ -33,6 +33,8 @@ Hero::CarryingState::CarryingState(Hero& hero, CarriedItem* carried_item):
   PlayerMovementState(hero, "carrying"),
   carried_item(carried_item) {
 
+  Debug::check_assertion(carried_item != NULL, "Missing carried item");
+  carried_item->increment_refcount();
 }
 
 /**
@@ -47,7 +49,7 @@ Hero::CarryingState::~CarryingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::CarryingState::start(State* previous_state) {
+void Hero::CarryingState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
@@ -63,7 +65,7 @@ void Hero::CarryingState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::CarryingState::stop(State* next_state) {
+void Hero::CarryingState::stop(const State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
@@ -72,7 +74,7 @@ void Hero::CarryingState::stop(State* next_state) {
 
   if (carried_item != NULL) {
 
-    switch (next_state->get_previous_carried_item_behavior(*carried_item)) {
+    switch (next_state->get_previous_carried_item_behavior()) {
 
     case CarriedItem::BEHAVIOR_THROW:
       throw_item();
@@ -83,6 +85,10 @@ void Hero::CarryingState::stop(State* next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
+      // The next state is now the owner and has incremented the refcount.
+      carried_item->decrement_refcount();
+      Debug::check_assertion(carried_item->get_refcount() > 0,
+          "Invalid carried item refcount");
       carried_item = NULL;
       break;
 
@@ -213,7 +219,7 @@ void Hero::CarryingState::set_animation_walking() {
  * \brief Returns the item currently carried by the hero in this state, if any.
  * \return the item carried by the hero, or NULL
  */
-CarriedItem* Hero::CarryingState::get_carried_item() {
+CarriedItem* Hero::CarryingState::get_carried_item() const {
   return carried_item;
 }
 
@@ -236,8 +242,7 @@ void Hero::CarryingState::destroy_carried_item() {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior(
-    CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior() const {
 
   return CarriedItem::BEHAVIOR_KEEP;
 }

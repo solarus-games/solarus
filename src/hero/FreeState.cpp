@@ -43,7 +43,7 @@ Hero::FreeState::~FreeState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::FreeState::start(State* previous_state) {
+void Hero::FreeState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
@@ -55,7 +55,7 @@ void Hero::FreeState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::FreeState::stop(State* next_state) {
+void Hero::FreeState::stop(const State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
@@ -177,8 +177,7 @@ bool Hero::FreeState::can_take_stairs() const {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::FreeState::get_previous_carried_item_behavior(
-    CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::FreeState::get_previous_carried_item_behavior() const {
   return CarriedItem::BEHAVIOR_DESTROY;
 }
 

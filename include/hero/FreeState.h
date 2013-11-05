@@ -30,8 +30,8 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     FreeState(Hero& hero);
     ~FreeState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     void set_suspended(bool suspended);
     void notify_action_command_pressed();
@@ -41,8 +41,7 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     bool can_start_sword() const;
     bool can_start_item(EquipmentItem& item) const;
     bool can_take_stairs() const;
-    CarriedItem::Behavior get_previous_carried_item_behavior(
-        CarriedItem& carried_item);
+    CarriedItem::Behavior get_previous_carried_item_behavior() const;
     void set_animation_stopped();
     void set_animation_walking();
 

@@ -48,7 +48,7 @@ Hero::VictoryState::~VictoryState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::VictoryState::start(State* previous_state) {
+void Hero::VictoryState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -67,7 +67,7 @@ void Hero::VictoryState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::VictoryState::stop(State* next_state) {
+void Hero::VictoryState::stop(const State* next_state) {
 
   State::stop(next_state);
   get_sprites().set_ignore_suspend(false);

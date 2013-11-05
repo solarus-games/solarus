@@ -32,11 +32,11 @@ class Hero::JumpingState: public Hero::State {
         int distance,
         bool ignore_obstacles,
         bool with_sound,
-	uint32_t movement_delay = 0);
+        uint32_t movement_delay);
     ~JumpingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void set_map(Map& map);
     void update();
     void set_suspended(bool suspended);
@@ -57,9 +57,8 @@ class Hero::JumpingState: public Hero::State {
     bool can_avoid_sensor() const;
     bool can_avoid_switch() const;
     bool can_be_hurt(Enemy* attacker) const;
-    CarriedItem* get_carried_item();
-    CarriedItem::Behavior get_previous_carried_item_behavior(
-        CarriedItem& carried_item);
+    CarriedItem* get_carried_item() const;
+    CarriedItem::Behavior get_previous_carried_item_behavior() const;
 
   private:
 

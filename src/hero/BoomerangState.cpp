@@ -57,7 +57,7 @@ Hero::BoomerangState::~BoomerangState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::BoomerangState::start(State* previous_state) {
+void Hero::BoomerangState::start(const State* previous_state) {
 
   State::start(previous_state);
 

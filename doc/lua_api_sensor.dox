@@ -73,6 +73,12 @@ to perform.
 
 Called continuously while the \ref lua_api_hero "hero" overlaps this sensor.
 
+\subsection lua_api_sensor_on_left sensor:on_left()
+
+Called when the
+\ref lua_api_hero "hero"
+stops overlapping this sensor.
+
 \subsection lua_api_sensor_on_collision_explosion sensor:on_collision_explosion()
 
 Called when an \ref lua_api_explosion "explosion"

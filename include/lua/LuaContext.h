@@ -321,6 +321,7 @@ class LuaContext {
     void switch_on_left(Switch& sw);
     void sensor_on_activated(Sensor& sensor);
     void sensor_on_activated_repeat(Sensor& sensor);
+    void sensor_on_left(Sensor& sensor);
     void sensor_on_collision_explosion(Sensor& sensor);
     void separator_on_activating(Separator& separator, int direction4);
     void separator_on_activated(Separator& separator, int direction4);

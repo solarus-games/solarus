@@ -2906,6 +2906,21 @@ void LuaContext::sensor_on_activated_repeat(Sensor& sensor) {
 }
 
 /**
+ * \brief Calls the on_left() method of a Lua sensor.
+ * \param sensor A sensor.
+ */
+void LuaContext::sensor_on_left(Sensor& sensor) {
+
+  if (!sensor.is_with_lua_table()) {
+    return;
+  }
+
+  push_entity(l, sensor);
+  on_left();
+  lua_pop(l, 1);
+}
+
+/**
  * \brief Calls the on_collision_explosion() method of a Lua sensor.
  *
  * Does nothing if the method is not defined.

@@ -1340,15 +1340,23 @@ bool Enemy::is_killed() {
  */
 bool Enemy::is_dying_animation_finished() {
 
-  if (nb_explosions > 0 && !exploding) {
-    return true;
+  if (!is_dying()) {
+    // The enemy is still alive.
+    return false;
+  }
+
+  if (nb_explosions > 0) {
+    // The dying animation is some explosions.
+    return !exploding;
   }
 
   if (has_sprite()) {
+    // The dying animation is the usual "enemy_killed" sprite.
     return get_sprite().is_animation_finished();
   }
 
-  return false;
+  // There is no dying animation (case of holes, water and lava for now).
+  return true;
 }
 
 /**

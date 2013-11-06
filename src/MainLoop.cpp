@@ -156,47 +156,37 @@ void MainLoop::set_game(Game* game) {
 void MainLoop::run() {
 
   // Main loop.
-  uint32_t now;
-  uint32_t next_frame_date = System::now();
-  uint32_t frame_interval = 25; // time interval between two drawings
-  int delay;
-  bool just_redrawn = false; // to detect when the FPS number needs to be decreased
+  uint32_t last_frame_date = System::get_real_time();
+  uint32_t lag = 0;  // Lose time of the simulation.
 
   while (!is_exiting()) {
+
+    // Check the time.
+    uint32_t now = System::get_real_time();
+    uint32_t last_frame_duration = now - last_frame_date;
+    last_frame_date = now;
+    lag += last_frame_duration;
 
     // Detect and handle input events.
     check_input();
 
-    // Update the current frame.
-    update();
-
-    now = System::now();
-    delay = next_frame_date - now;
-    // Delay is the time remaining before the next drawing.
-
-    if (delay <= 0) { // It's time to redraw.
-
-      // See if the FPS number is too high.
-      if (just_redrawn && frame_interval <= 30) {
-        frame_interval += 5; // Redraw the screen less often.
-        //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
-      }
-
-      next_frame_date = now + frame_interval;
-      just_redrawn = true;
-      draw();
+    // Update the world once, or several times skipping some draws
+    // if the system is slow.
+    int num_updates = 0;
+    while (lag >= System::timestep
+        && num_updates < 10  // To draw sometimes anyway on very slow systems.
+        && !is_exiting()) {
+      update();
+      lag -= System::timestep;
+      ++num_updates;
     }
-    else {
-      just_redrawn = false;
 
-      // If we have time, let's sleep to avoid using all the processor.
+    // Redraw the screen.
+    draw();
+
+    // Sleep if we have time.
+    if (System::get_real_time() - last_frame_date < System::timestep) {
       System::sleep(1);
-
-      if (delay >= 15) {
-        // If we have much time, increase the FPS number.
-        frame_interval--;
-        //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
-      }
     }
   }
 }

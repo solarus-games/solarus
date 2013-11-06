@@ -8,6 +8,7 @@ Engine changes
 
 * Upgrade to SDL 2 (#262). Thanks Vlag.
 * New map entity type: custom entities, fully scripted (#323).
+* Rewrite the main loop with a constant timestep (#351).
 * Show a dialog box in case of fatal error.
 * The "wide" video modes do not exist anymore. SDL2 does the job now.
 * Add the hq4x pixel filter algorithm as a new video mode.

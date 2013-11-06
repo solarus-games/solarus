@@ -35,6 +35,7 @@ Surface::Surface(int width, int height):
   internal_surface(NULL),
   internal_texture(NULL),
   owns_internal_surfaces(false),
+  is_rendered(false),
   internal_opacity(255),
   width(width),
   height(height),
@@ -53,6 +54,7 @@ Surface::Surface(const Rectangle& size):
   internal_surface(NULL),
   internal_texture(NULL),
   owns_internal_surfaces(false),
+  is_rendered(false),
   internal_opacity(255),
   width(size.get_width()),
   height(size.get_height()),
@@ -72,6 +74,7 @@ Surface::Surface(const Rectangle& size):
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
   owns_internal_surfaces(true),
+  is_rendered(false),
   internal_opacity(255) {
 
   internal_surface = get_surface_from_file(file_name, base_directory);
@@ -96,6 +99,7 @@ Surface::Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface):
   internal_surface(internal_surface),
   internal_texture(internal_texture),
   owns_internal_surfaces(false),
+  is_rendered(false),
   internal_opacity(255)
 {
   Uint32 format;
@@ -119,6 +123,7 @@ Surface::Surface(Surface& other):
   internal_surface(other.internal_surface),
   internal_texture(other.internal_texture),
   owns_internal_surfaces(other.owns_internal_surfaces),
+  is_rendered(false),
   internal_opacity(255),
   width(other.get_width()),
   height(other.get_height()),
@@ -138,8 +143,7 @@ Surface::~Surface() {
     if(internal_surface)
       SDL_FreeSurface(internal_surface);
   }
-  for(int i=0 ; i<subsurfaces.size() ; i++)
-    delete_subsurface(*subsurfaces.at(i));
+  clear_subsurfaces();
 }
 
 /**
@@ -246,9 +250,6 @@ void Surface::create_internal_surface()
       SDL_TEXTUREACCESS_STATIC,
       width, height);
   
-    Debug::check_assertion(internal_texture != NULL, StringConcat() <<
-      "Cannot create internal streaming texture");
-  
     SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
     owns_internal_surfaces = true;
   }
@@ -257,6 +258,9 @@ void Surface::create_internal_surface()
     internal_surface = SDL_CreateRGBSurface(
       SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
   }
+  
+  Debug::check_assertion(internal_texture != NULL || internal_surface != NULL, StringConcat() <<
+    "Cannot create internal texture or surface");
 }
 
 /**
@@ -331,25 +335,25 @@ void Surface::fill_with_color(Color& color) {
  */
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
-  const int array_size = where.get_width() * where.get_height();
-  std::vector<uint32_t> pixels(array_size);  // TODO keep an array of pixels as a field?
-
-  const uint32_t color_value = color.get_internal_value();
-  for (int i = 0; i < array_size; ++i) {
-    pixels[i] = color_value;
-  }
-
   if (internal_texture == NULL && internal_surface == NULL) {
     create_internal_surface();
   }
 
-  if(internal_texture)
+  if(internal_texture) {
+    const int array_size = where.get_width() * where.get_height();
+    std::vector<uint32_t> pixels(array_size);  // TODO keep an array of pixels as a field?
+    
+    const uint32_t color_value = color.get_internal_value();
+    for (int i = 0; i < array_size; ++i) {
+      pixels[i] = color_value;
+    }
+    
     SDL_UpdateTexture(internal_texture,
       where.get_internal_rect(),
       &pixels[0],
       where.get_width() * sizeof(uint32_t));
-  else
-  {
+  }
+  else {
     Rectangle where2 = where;
     SDL_FillRect(internal_surface, where2.get_internal_rect(), color.get_internal_value());
   }
@@ -362,15 +366,19 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 void Surface::add_subsurface(SubSurface& subsurface) {
   
   subsurfaces.push_back(&subsurface);
+  //TODO handle refcount of subsurface.surface
 }
 
 /**
- * \brief Delete a SubSurface.
- * \param subsurface The SubSurface to delete.
+ * \brief clear the internal SubSurface queue.
  */
-void Surface::delete_subsurface(SubSurface& subsurface)
+void Surface::clear_subsurfaces()
 {
-  delete &subsurface;
+  for(int i=0 ; i<subsurfaces.size() ; i++) {
+    delete subsurfaces.at(i);
+  }
+  subsurfaces.clear();
+  is_rendered = false;
 }
 
 /**
@@ -406,6 +414,11 @@ void Surface::raw_draw_region(
     subsurface->dst_rect.set_height(region.get_height());
   }
   
+  // Clear the subsurface queue if the current dst_surface already has been rendered.
+  if(dst_surface.is_rendered) {
+    dst_surface.clear_subsurfaces();
+  }
+  
   dst_surface.add_subsurface(*subsurface);
 }
 
@@ -438,6 +451,8 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
     clipping_rect.get_height());
   SDL_IntersectRect(absolute_clip_rect.get_internal_rect(), clip_rect.get_internal_rect(), absolute_clip_rect.get_internal_rect());
   
+  is_rendered = true;
+  
   // Destroy the internal buffer of pixel, if any.
   if(internal_surface)
   {
@@ -466,10 +481,7 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
       subsurfaces.at(i)->dst_rect.get_height());
       
     subsurfaces.at(i)->surface->render(renderer, subsurfaces.at(i)->src_rect, absolute_dst_rect, absolute_clip_rect, current_opacity);
-    delete_subsurface(*subsurfaces.at(i));
   }
-  
-  subsurfaces.clear();
 }
 
 /**
@@ -551,9 +563,6 @@ uint32_t Surface::get_pixel(int index) const {
  * \return \c true if the pixel is transparent.
  */
 bool Surface::is_pixel_transparent(int index) const {
-  
-  Debug::check_assertion(internal_surface != NULL, StringConcat() <<
-    "Attempt to read a pixel on a hardware or a buffer surface.");
   
   uint32_t pixel = get_pixel(index);
   uint32_t colorkey;

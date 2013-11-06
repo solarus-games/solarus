@@ -99,7 +99,7 @@ class Surface: public Drawable {
     static SDL_Texture* get_texture_from_surface(SDL_Surface* software_surface);
     void create_internal_surface();
     void add_subsurface(SubSurface& subsurface);
-    void delete_subsurface(SubSurface& subsurface);
+    void clear_subsurfaces();
     void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, Rectangle& clip_rect, int opacity);
   
     SDL_Texture* get_internal_texture();
@@ -107,8 +107,9 @@ class Surface: public Drawable {
     std::vector<SubSurface*> subsurfaces; /**< buffer queue of every sub Surface with their drawing source and destination. */
 
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
-    SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. */
+    SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. Useful if loading texture when windows isn't created and for pixel mask. */
     bool owns_internal_surfaces;          /**< indicates that internal texture and/or surface belongs to this object. */
+    bool is_rendered;                     /**< indicated if the surface has been rendered. If true, the next draw on it will clear the subsurfaces queue. */
     int internal_opacity;                 /**< opacity to apply to all subtexture. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
     Rectangle clipping_rect;              /**< clipping rectangle to apply when drawing to this surface. */

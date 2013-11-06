@@ -522,6 +522,11 @@ void Game::update_keys_effect() {
  */
 void Game::draw(Surface& dst_surface) {
 
+  if (current_map == NULL) {
+    // Nothing to do. The game is not fully initialized yet.
+    return;
+  }
+
   // Draw the map.
   if (current_map->is_loaded()) {
     current_map->draw();

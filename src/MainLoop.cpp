@@ -65,6 +65,12 @@ MainLoop::MainLoop(int argc, char** argv):
  */
 MainLoop::~MainLoop() {
 
+  if (game != NULL) {
+    game->stop();
+    delete game;
+    game = NULL;
+  }
+
   delete lua_context;
   root_surface->decrement_refcount();
   delete root_surface;
@@ -149,8 +155,7 @@ void MainLoop::set_game(Game* game) {
  */
 void MainLoop::run() {
 
-  // main loop
-  InputEvent* event;
+  // Main loop.
   uint32_t now;
   uint32_t next_frame_date = System::now();
   uint32_t frame_interval = 25; // time interval between two drawings
@@ -159,70 +164,52 @@ void MainLoop::run() {
 
   while (!is_exiting()) {
 
-    // handle the input events
-    event = InputEvent::get_event();
-    if (event != NULL) {
-      notify_input(*event);
-      delete event;
-    }
+    // Detect and handle input events.
+    check_input();
 
-    // update the current screen
+    // Update the current frame.
     update();
 
-    // go to another game?
-    if (next_game != game) {
-      if (game != NULL) {
-        delete game;
+    now = System::now();
+    delay = next_frame_date - now;
+    // Delay is the time remaining before the next drawing.
+
+    if (delay <= 0) { // It's time to redraw.
+
+      // See if the FPS number is too high.
+      if (just_redrawn && frame_interval <= 30) {
+        frame_interval += 5; // Redraw the screen less often.
+        //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
       }
 
-      game = next_game;
-
-      if (game != NULL) {
-        game->start();
-      }
-      else {
-        lua_context->exit();
-        lua_context->initialize();
-        Music::play(Music::none);
-      }
+      next_frame_date = now + frame_interval;
+      just_redrawn = true;
+      draw();
     }
     else {
+      just_redrawn = false;
 
-      now = System::now();
-      delay = next_frame_date - now;
-      // delay is the time remaining before the next drawing
+      // If we have time, let's sleep to avoid using all the processor.
+      System::sleep(1);
 
-      if (delay <= 0) { // it's time to redraw
-
-        // see if the FPS number is too high
-        if (just_redrawn && frame_interval <= 30) {
-          frame_interval += 5; // redraw the screen less often
-          //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
-        }
-
-        next_frame_date = now + frame_interval;
-        just_redrawn = true;
-        draw();
-      }
-      else {
-        just_redrawn = false;
-
-        // if we have time, let's sleep to avoid using all the processor
-        System::sleep(1);
-
-        if (delay >= 15) {
-          // if we have much time, increase the FPS number
-          frame_interval--;
-          //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
-        }
+      if (delay >= 15) {
+        // If we have much time, increase the FPS number.
+        frame_interval--;
+        //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
       }
     }
   }
+}
 
-  if (game != NULL) {
-    game->stop();
-    delete game;
-    game = NULL;
+/**
+ * \brief Detects whether there was an input event and if yes, handles it.
+ */
+void MainLoop::check_input() {
+
+  InputEvent* event = InputEvent::get_event();
+  if (event != NULL) {
+    notify_input(*event);
+    delete event;
   }
 }
 
@@ -268,6 +255,22 @@ void MainLoop::update() {
   }
   lua_context->update();
   System::update();
+
+  // go to another game?
+  if (next_game != game) {
+
+    delete game;
+    game = next_game;
+
+    if (game != NULL) {
+      game->start();
+    }
+    else {
+      lua_context->exit();
+      lua_context->initialize();
+      Music::play(Music::none);
+    }
+  }
 }
 
 /**

@@ -205,8 +205,10 @@ TextSurface::TextSurface(int x, int y,
  */
 TextSurface::~TextSurface() {
 
-  if(surface)
-    delete surface;
+  if (surface != NULL && !surface->owns_internal_texture) {
+    SDL_DestroyTexture(surface->get_internal_texture());
+  }
+  delete surface;
 }
 
 /**
@@ -474,6 +476,10 @@ void TextSurface::rebuild() {
   }
 
   if (surface != NULL) {
+    // another text was previously set: delete it
+    if (!surface->owns_internal_texture) {
+      SDL_DestroyTexture(surface->get_internal_texture());
+    }
     delete surface;
     surface = NULL;
   }

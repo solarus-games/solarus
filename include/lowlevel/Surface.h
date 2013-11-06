@@ -108,7 +108,7 @@ class Surface: public Drawable {
 
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. */
-    bool owns_internal_surfaces;          /**< indicates that internal texture and/or surface belongs to this object. */
+    bool owns_internal_texture;           /**< indicates that internal_surface belongs to this object. */
     int internal_opacity;                 /**< opacity to apply to all subtexture. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
     Rectangle clipping_rect;              /**< clipping rectangle to apply when drawing to this surface. */

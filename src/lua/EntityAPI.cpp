@@ -2778,6 +2778,24 @@ void LuaContext::npc_on_collision_fire(NPC& npc) {
 }
 
 /**
+ * \brief Calls the on_moving() method of a Lua block.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param block a block.
+ */
+void LuaContext::block_on_moving(Block& block) {
+
+  if (!block.is_with_lua_table()) {
+    return;
+  }
+
+  push_block(l, block);
+  on_moving();
+  lua_pop(l, 1);
+}
+
+/**
  * \brief Calls the on_moved() method of a Lua block.
  *
  * Does nothing if the method is not defined.

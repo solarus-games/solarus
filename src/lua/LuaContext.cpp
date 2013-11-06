@@ -2403,6 +2403,16 @@ void LuaContext::on_closed() {
 }
 
 /**
+ * \brief Calls the on_moving() method of the object on top of the stack.
+ */
+void LuaContext::on_moving() {
+
+  if (find_method("on_moving")) {
+    call_function(1, 0, "on_moving");
+  }
+}
+
+/**
  * \brief Calls the on_moved() method of the object on top of the stack.
  */
 void LuaContext::on_moved() {

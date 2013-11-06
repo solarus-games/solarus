@@ -106,6 +106,7 @@ void Hero::PullingState::update() {
 
           hero.set_movement(new PathMovement(path, 40, false, false, false));
           pulled_entity = facing_entity;
+          pulled_entity->notify_moving_by(hero);
         }
       }
     }

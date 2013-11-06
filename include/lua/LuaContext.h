@@ -315,6 +315,7 @@ class LuaContext {
     bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(NPC& npc);
     bool chest_on_empty(Chest& chest);
+    void block_on_moving(Block& block);
     void block_on_moved(Block& block);
     void switch_on_activated(Switch& sw);
     void switch_on_inactivated(Switch& sw);
@@ -1030,6 +1031,7 @@ class LuaContext {
     void on_bought();
     void on_opened();
     void on_closed();
+    void on_moving();
     void on_moved();
     void on_map_changed(Map& map);
     void on_pickable_created(Pickable& pickable);

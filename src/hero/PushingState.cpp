@@ -110,6 +110,7 @@ void Hero::PushingState::update() {
 
           hero.set_movement(new PathMovement(path, 40, false, false, false));
           pushed_entity = facing_entity;
+          pushed_entity->notify_moving_by(hero);
         }
       }
     }

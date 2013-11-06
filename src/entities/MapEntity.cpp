@@ -1404,6 +1404,14 @@ void MapEntity::notify_movement_finished() {
 }
 
 /**
+ * \brief This function is called when this entity starts being moved by
+ * another one.
+ */
+void MapEntity::notify_moving_by(MapEntity& entity) {
+  // Do nothing by default.
+}
+
+/**
  * \brief This function is called when this entity has just finished to get
  * moved by another one.
  */

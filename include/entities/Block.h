@@ -57,6 +57,7 @@ class Block: public Detector {
     void notify_action_command_pressed();
     bool start_movement_by_hero();
     void stop_movement_by_hero();
+    void notify_moving_by(MapEntity& entity);
     void notify_moved_by(MapEntity& entity);
     void notify_position_changed();
     void notify_obstacle_reached();

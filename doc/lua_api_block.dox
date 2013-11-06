@@ -70,6 +70,10 @@ See \ref lua_api_entity_events to know these events.
 
 The following events are specific to blocks.
 
+\subsection lua_api_block_on_moving block:on_moving()
+
+Called when the \ref lua_api_hero "hero" starts moving the block of a step.
+
 \subsection lua_api_block_on_moved block:on_moved()
 
 Called when the \ref lua_api_hero "hero" has just moved this block

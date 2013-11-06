@@ -12,6 +12,7 @@ Engine changes
 * Show a dialog box in case of fatal error.
 * The "wide" video modes do not exist anymore. SDL2 does the job now.
 * Add the hq4x pixel filter algorithm as a new video mode.
+* Call enemy:on_hurt() before enemy:on_dying() (#325).
 
 Data files format changes
 -------------------------

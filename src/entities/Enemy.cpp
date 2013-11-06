@@ -1240,10 +1240,10 @@ void Enemy::hurt(MapEntity& source) {
  */
 void Enemy::notify_hurt(MapEntity& source, EnemyAttack attack, int life_points) {
 
+  get_lua_context().enemy_on_hurt(*this, attack, life_points);
   if (get_life() <= 0) {
     get_lua_context().enemy_on_dying(*this);
   }
-  get_lua_context().enemy_on_hurt(*this, attack, life_points);
 }
 
 /**

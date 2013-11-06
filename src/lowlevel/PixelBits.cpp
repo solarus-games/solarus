@@ -32,6 +32,8 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position) {
   // Create a list of boolean values representing the transparency of each pixel.
   // This list is implemented as bit fields.
 
+  Debug::check_assertion(surface.internal_surface != NULL, "Attempt to read a surface that dont't have pixel buffer in RAM.");
+  
   width = image_position.get_width();
   height = image_position.get_height();
 

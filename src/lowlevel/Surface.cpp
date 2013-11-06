@@ -240,6 +240,7 @@ void Surface::create_internal_surface()
     0x0000FF00,
     0x000000FF,
     0xFF000000);
+  SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
   owns_internal_surface = true;
 }
 
@@ -263,7 +264,6 @@ void Surface::create_internal_texture()
     
   SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
   owns_internal_surface = true;
-  
 }
 
 /**
@@ -435,10 +435,10 @@ void Surface::raw_draw_region(
       }
       SDL_SetClipRect(internal_surface, clipping_rect.get_internal_rect());
       
-      // Create a surface with the requested subrectangle on source surface.
+      // Create a buffer with the requested subrectangle's pixels.
       int buffer_pixels_size = region.get_width() * region.get_height();
       int buffer_src_position = 0;
-      Uint32* buffer_dst_position = static_cast<uint32_t*>(internal_surface->pixels)+region.get_x()+region.get_y()*width;
+      Uint32* buffer_dst_position = static_cast<uint32_t*>(internal_surface->pixels) + region.get_x() + region.get_y() * width;
       Uint32 buffer_pixels[buffer_pixels_size];
       for(int i=0 ; i<region.get_height() ; i++)
       {
@@ -448,10 +448,11 @@ void Surface::raw_draw_region(
           buffer_src_position++;
           buffer_dst_position++;
         }
-        buffer_dst_position+=width-region.get_width();
+        buffer_dst_position += width - region.get_width();
       }
     
       SDL_UpdateTexture(dst_surface.internal_texture, dst_region.get_internal_rect(), buffer_pixels, region.get_width() * sizeof(Uint32));
+      dst_surface.internal_opacity = std::min(dst_surface.internal_opacity, internal_opacity);
     }
     // And copy onto sofware surface if there is already one.
     else

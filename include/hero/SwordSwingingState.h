@@ -34,8 +34,8 @@ class Hero::SwordSwingingState: public Hero::State {
     SwordSwingingState(Hero& hero);
     ~SwordSwingingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     bool can_start_sword() const;
     bool can_be_hurt(Enemy* attacker) const;

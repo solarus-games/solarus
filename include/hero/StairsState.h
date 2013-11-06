@@ -27,11 +27,14 @@ class Hero::StairsState: public Hero::State {
 
   public:
 
-    StairsState(Hero& hero, Stairs& stairs, Stairs::Way way);
+    StairsState(
+        Hero& hero,
+        Stairs& stairs,
+        Stairs::Way way);
     ~StairsState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void set_map(Map& map);
     void update();
     void set_suspended(bool suspended);
@@ -40,9 +43,8 @@ class Hero::StairsState: public Hero::State {
     bool can_come_from_bad_ground() const;
     bool is_teletransporter_delayed() const;
     int get_wanted_movement_direction8() const;
-    CarriedItem* get_carried_item();
-    CarriedItem::Behavior get_previous_carried_item_behavior(
-        CarriedItem& carried_item);
+    CarriedItem* get_carried_item() const;
+    CarriedItem::Behavior get_previous_carried_item_behavior() const;
     void notify_layer_changed();
 
   private:

@@ -35,8 +35,8 @@ class Hero::ConveyorBeltState: public Hero::State {
     ConveyorBeltState(Hero& hero, ConveyorBelt& conveyor_belt);
     ~ConveyorBeltState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
 
     bool can_avoid_teletransporter() const;

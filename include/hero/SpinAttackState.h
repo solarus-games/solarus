@@ -34,8 +34,8 @@ class Hero::SpinAttackState: public Hero::State {
     SpinAttackState(Hero& hero);
     ~SpinAttackState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     bool can_sword_hit_crystal() const;
     bool can_be_hurt(Enemy* attacker) const;

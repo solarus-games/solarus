@@ -33,8 +33,8 @@ class Hero::BackToSolidGroundState: public Hero::State {
         bool with_sound = true);
     ~BackToSolidGroundState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     void set_suspended(bool suspended);
 

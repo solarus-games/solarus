@@ -35,8 +35,8 @@ class Hero::PullingState: public Hero::State {
     PullingState(Hero& hero);
     ~PullingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     void notify_grabbed_entity_collision();
     void notify_movement_finished();

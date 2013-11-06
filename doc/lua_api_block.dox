@@ -10,7 +10,7 @@ that may be pushed or pulled by the
 This type of \ref lua_api_entity "map entity" can be declared in the
 \ref lua_api_map_overview_files "map data file".
 It can also be created dynamically with
-\ref lua_api_map_create_npc "map:create_block()".
+\ref lua_api_map_create_block "map:create_block()".
 
 \section lua_api_block_overview Overview
 
@@ -69,6 +69,10 @@ See \ref lua_api_entity_events to know these events.
 \section lua_api_block_events Events of the type block
 
 The following events are specific to blocks.
+
+\subsection lua_api_block_on_moving block:on_moving()
+
+Called when the \ref lua_api_hero "hero" starts moving the block of a step.
 
 \subsection lua_api_block_on_moved block:on_moved()
 

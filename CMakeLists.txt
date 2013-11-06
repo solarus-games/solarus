@@ -78,7 +78,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif()
 
 # build the executable
-set(main_source_file src/lowlevel/Main.cc)
+set(main_source_file src/main/Main.cpp)
 add_library(solarus_static
   STATIC
   ${source_files}

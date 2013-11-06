@@ -97,16 +97,36 @@ void System::quit() {
  */
 void System::update() {
 
-  ticks = SDL_GetTicks();
+  // Use a constant timestep here to have deterministic updates.
+  ticks += timestep;
   Sound::update();
 }
 
 /**
- * \brief Returns the number of milliseconds elapsed since the beginning of the program.
- * \return the number of milliseconds elapsed since the beginning of the program
+ * \brief Returns the number of simulated milliseconds elapsed since the
+ * beginning of the program.
+ *
+ * Corresponds to the real time unless the system is too slow to play at
+ * normal speed.
+ *
+ * \return The number of simulated milliseconds elapsed since the beginning
+ * of the program.
  */
 uint32_t System::now() {
   return ticks;
+}
+
+/**
+ * \brief Returns the number of real milliseconds elapsed since the beginning of
+ * the program.
+ *
+ * This function is not deterministic, so use it at your own risks.
+ *
+ * \return The number of milliseconds elapsed since the beginning of the
+ * program.
+ */
+uint32_t System::get_real_time() {
+  return SDL_GetTicks();
 }
 
 /**

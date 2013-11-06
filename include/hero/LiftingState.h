@@ -29,8 +29,8 @@ class Hero::LiftingState: public Hero::State {
     LiftingState(Hero& hero, CarriedItem* lifted_item);
     ~LiftingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     void set_suspended(bool suspended);
     bool can_be_hurt(Enemy* attacker) const;

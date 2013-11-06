@@ -52,7 +52,7 @@ Hero::TreasureState::~TreasureState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::TreasureState::start(State* previous_state) {
+void Hero::TreasureState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -79,7 +79,7 @@ void Hero::TreasureState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::TreasureState::stop(State* next_state) {
+void Hero::TreasureState::stop(const State* next_state) {
 
   State::stop(next_state);
 
@@ -96,6 +96,7 @@ void Hero::TreasureState::draw_on_map() {
 
   State::draw_on_map();
 
+  const Hero& hero = get_hero();
   int x = hero.get_x();
   int y = hero.get_y();
 
@@ -110,8 +111,7 @@ void Hero::TreasureState::draw_on_map() {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior(
-    CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior() const {
   return CarriedItem::BEHAVIOR_DESTROY;
 }
 

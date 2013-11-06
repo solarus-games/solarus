@@ -121,12 +121,15 @@ class Map: public ExportableToLua {
         Layer layer,
         const Rectangle& collision_box) const;
 
+    Ground get_ground(Layer layer, int x, int y) const;
+    Ground get_ground(Layer layer, const Rectangle& xy) const;
+
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity& entity);
     void check_collision_with_detectors(MapEntity& entity, Sprite& sprite);
 
     // main loop
-    bool notify_input(InputEvent& event);
+    bool notify_input(const InputEvent& event);
     void update();
     bool is_suspended() const;
     void check_suspended();
@@ -141,6 +144,7 @@ class Map: public ExportableToLua {
     friend class MapLoader; // the map loader modifies the private fields of Map
 
     void set_suspended(bool suspended);
+    void rebuild_background_surface();
     void draw_background();
     void draw_foreground();
 
@@ -179,6 +183,7 @@ class Map: public ExportableToLua {
     Surface* visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map */
+    Surface* background_surface;  /**< a surface filled with the background color of the tileset */
     Rectangle clipping_rectangle; /**< when drawing the map, indicates an area of the surface to be restricted to
                                    * (usually, the whole map is considered and this rectangle's values are all 0) */
 

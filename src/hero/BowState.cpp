@@ -39,7 +39,7 @@ Hero::BowState::~BowState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::BowState::start(State* previous_state) {
+void Hero::BowState::start(const State* previous_state) {
 
   State::start(previous_state);
   get_sprites().set_animation("bow", "");
@@ -52,6 +52,7 @@ void Hero::BowState::update() {
 
   State::update();
 
+  Hero& hero = get_hero();
   if (get_sprites().is_animation_finished()) {
     Sound::play("bow");
     get_entities().add_entity(new Arrow(hero));

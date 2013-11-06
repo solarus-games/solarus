@@ -36,8 +36,8 @@ class Hero::PushingState: public Hero::State {
     PushingState(Hero& hero);
     ~PushingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     bool can_avoid_conveyor_belt() const;
     bool can_start_sword() const;

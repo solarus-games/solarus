@@ -255,7 +255,7 @@ const Equipment& Game::get_equipment() const {
  * \param event the event to handle
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool Game::notify_input(InputEvent& event) {
+bool Game::notify_input(const InputEvent& event) {
 
   bool handled = false;
 
@@ -521,6 +521,11 @@ void Game::update_keys_effect() {
  * \param dst_surface The surface where the game will be drawn.
  */
 void Game::draw(Surface& dst_surface) {
+
+  if (current_map == NULL) {
+    // Nothing to do. The game is not fully initialized yet.
+    return;
+  }
 
   // Draw the map.
   if (current_map->is_loaded()) {

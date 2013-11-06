@@ -29,7 +29,7 @@ class Hero::FreezedState: public Hero::State {
     FreezedState(Hero& hero);
     ~FreezedState();
 
-    void start(State* previous_state);
+    void start(const State* previous_state);
 };
 
 #endif

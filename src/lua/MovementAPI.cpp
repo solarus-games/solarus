@@ -788,7 +788,7 @@ int LuaContext::random_movement_api_get_angle(lua_State* l) {
 int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
-  lua_pushinteger(l, movement.get_max_distance());
+  lua_pushinteger(l, movement.get_max_radius());
   return 1;
 }
 
@@ -800,8 +800,8 @@ int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
-  int max_distance = luaL_checkint(l, 2);
-  movement.set_max_distance(max_distance);
+  int max_radius = luaL_checkint(l, 2);
+  movement.set_max_radius(max_radius);
   return 0;
 }
 

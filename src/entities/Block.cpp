@@ -49,7 +49,9 @@ Block::Block(
     int y,
     int direction,
     const std::string& sprite_name,
-    bool can_be_pushed, bool can_be_pulled, int maximum_moves):
+    bool can_be_pushed,
+    bool can_be_pulled,
+    int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   maximum_moves(maximum_moves),
   sound_played(false),
@@ -317,8 +319,15 @@ void Block::stop_movement_by_hero() {
 }
 
 /**
- * \brief This function is called when this entity has just finished to get
- * moved by another one.
+ * \copydoc MapEntity::notify_moving_by
+ */
+void Block::notify_moving_by(MapEntity& entity) {
+
+  get_lua_context().block_on_moving(*this);
+}
+
+/**
+ * \copydoc MapEntity::notify_moved_by
  */
 void Block::notify_moved_by(MapEntity& entity) {
 

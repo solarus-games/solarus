@@ -530,7 +530,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
     error(l, StringConcat() << "Invalid layer: " << layer);
   }
 
-  Ground ground = map.get_entities().get_ground(Layer(layer), x, y);
+  Ground ground = map.get_ground(Layer(layer), x, y);
 
   push_string(l, Tileset::ground_names[ground]);
   return 1;
@@ -2036,7 +2036,7 @@ void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
  * \param map A map.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::map_on_input(Map& map, InputEvent& event) {
+bool LuaContext::map_on_input(Map& map, const InputEvent& event) {
 
   if (!map.is_known_to_lua()) {
     return false;

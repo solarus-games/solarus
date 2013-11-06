@@ -322,7 +322,7 @@ void MapEntity::update_ground_below() {
   }
 
   Ground previous_ground = this->ground_below;
-  this->ground_below = get_entities().get_ground(
+  this->ground_below = get_map().get_ground(
       get_layer(), get_ground_point());
   if (this->ground_below != previous_ground) {
     notify_ground_below_changed();
@@ -944,6 +944,14 @@ Detector* MapEntity::get_facing_entity() {
 }
 
 /**
+ * \brief Returns the detector in front of this entity.
+ * \return the detector this entity is touching, or NULL if there is no detector in front of him
+ */
+const Detector* MapEntity::get_facing_entity() const {
+  return facing_entity;
+}
+
+/**
  * \brief Sets the entity this entity is currently facing.
  *
  * This function is called when this entity is facing a new detector.
@@ -1393,6 +1401,14 @@ void MapEntity::notify_movement_finished() {
   if (are_movement_notifications_enabled()) {
     get_lua_context().entity_on_movement_finished(*this);
   }
+}
+
+/**
+ * \brief This function is called when this entity starts being moved by
+ * another one.
+ */
+void MapEntity::notify_moving_by(MapEntity& entity) {
+  // Do nothing by default.
 }
 
 /**
@@ -1879,8 +1895,7 @@ int MapEntity::get_distance_to_camera() const {
  */
 bool MapEntity::is_in_same_region(const MapEntity& other) const {
 
-  const std::list<const Separator*>& separators =
-      get_entities().get_separators();
+  const std::list<const Separator*>& separators = get_entities().get_separators();
   std::list<const Separator*>::const_iterator it;
   for (it = separators.begin(); it != separators.end(); ++it) {
 

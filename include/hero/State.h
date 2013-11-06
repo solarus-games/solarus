@@ -36,13 +36,15 @@ class Hero::State {
     // creation and destruction
     virtual ~State();
     const std::string& get_name() const;
-    virtual void start(State* previous_state);
-    virtual void stop(State* next_state);
+    virtual void start(const State* previous_state);
+    virtual void stop(const State* next_state);
 
     // game loop
     virtual void update();
     virtual void draw_on_map();
+    bool is_suspended() const;
     virtual void set_suspended(bool suspended);
+    uint32_t get_when_suspended() const;
     void notify_command_pressed(GameCommands::Command command);
     void notify_command_released(GameCommands::Command command);
     virtual void notify_action_command_pressed();
@@ -125,10 +127,9 @@ class Hero::State {
     virtual bool can_sword_hit_crystal() const;
     virtual bool can_take_jumper() const;
     virtual void notify_jumper_activated(Jumper& jumper);
-    bool is_carrying_item();
-    virtual CarriedItem* get_carried_item();
-    virtual CarriedItem::Behavior get_previous_carried_item_behavior(
-        CarriedItem& carried_item);
+    bool is_carrying_item() const;
+    virtual CarriedItem* get_carried_item() const;
+    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const;
 
   protected:
 
@@ -148,16 +149,16 @@ class Hero::State {
     KeysEffect& get_keys_effect();
     GameCommands& get_commands();
     const GameCommands& get_commands() const;
+    Hero& get_hero();
+    const Hero& get_hero() const;
     HeroSprites& get_sprites();
     const HeroSprites& get_sprites() const;
 
-    // TODO make private
+  private:
+
     Hero& hero;               /**< The hero controlled by this state. */
     bool suspended;           /**< Whether this state is suspended. */
     uint32_t when_suspended;  /**< When this state was suspended. */
-
-  private:
-
     Map* map;                 /**< The current map (it may change during this state). */
     const std::string name;   /**< Name describing this state. */
     bool stopping;            /**< Indicates that this state is being stopped. */

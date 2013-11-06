@@ -43,11 +43,11 @@ Hero::PlungingState::~PlungingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::PlungingState::start(State* previous_state) {
+void Hero::PlungingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  if (hero.get_ground_below() == GROUND_DEEP_WATER) {
+  if (get_hero().get_ground_below() == GROUND_DEEP_WATER) {
     get_sprites().set_animation("plunging_water", "");
   }
   else {
@@ -65,6 +65,7 @@ void Hero::PlungingState::update() {
 
   if (get_sprites().is_animation_finished()) {
 
+    Hero& hero = get_hero();
     int drown = 0;
     if (hero.get_ground_below() == GROUND_DEEP_WATER) {
 

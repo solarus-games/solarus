@@ -43,12 +43,12 @@ Hero::HookshotState::~HookshotState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::HookshotState::start(State* previous_state) {
+void Hero::HookshotState::start(const State* previous_state) {
 
   State::start(previous_state);
 
   get_sprites().set_animation("hookshot", "hookshot");
-  hookshot = new Hookshot(hero);
+  hookshot = new Hookshot(get_hero());
   get_entities().add_entity(hookshot);
 }
 
@@ -56,14 +56,14 @@ void Hero::HookshotState::start(State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state (for information)
  */
-void Hero::HookshotState::stop(State* next_state) {
+void Hero::HookshotState::stop(const State* next_state) {
 
   State::stop(next_state);
 
   if (!hookshot->is_being_removed()) {
     // the hookshot state was stopped by something other than the hookshot (e.g. an enemy)
     hookshot->remove_from_map();
-    hero.clear_movement();
+    get_hero().clear_movement();
   }
 }
 
@@ -137,8 +137,9 @@ bool Hero::HookshotState::can_avoid_conveyor_belt() const {
  * \return true if the stairs are obstacle in this state
  */
 bool Hero::HookshotState::is_stairs_obstacle(const Stairs& stairs) const {
+
   // allow to fly over stairs covered by water
-  return hero.get_ground_below() != GROUND_DEEP_WATER;
+  return get_hero().get_ground_below() != GROUND_DEEP_WATER;
 }
 
 /**
@@ -205,6 +206,7 @@ void Hero::HookshotState::notify_obstacle_reached() {
  */
 void Hero::HookshotState::finish_movement() {
 
+  Hero& hero = get_hero();
   const Rectangle& hero_position = hero.get_bounding_box();
   Layer layer = hero.get_layer();
   Map& map = get_map();

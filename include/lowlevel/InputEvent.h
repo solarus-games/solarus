@@ -174,27 +174,8 @@ class InputEvent {
       KEY_LEFT_META                = SDLK_LGUI
     };
 
-  private:
-
-    static const KeyboardKey directional_keys[];  /**< array of the keyboard directional keys */
-    static bool joypad_enabled;                   /**< true if joypad support is enabled
-                                                   * (may be true even without joypad plugged) */
-    static SDL_Joystick* joystick;                /**< the joystick object if enabled and plugged */
-    SDL_Event internal_event;                     /**< the internal event encapsulated */
-    static std::map<KeyboardKey, std::string>
-      keyboard_key_names;                         /**< Names of all existing keyboard keys. */
-    static bool repeat_keyboard;                  /**< True to handle repeat KEYDOWN and KEYUP events. */
-
-  public:
-
     static void initialize();
     static void quit();
-
-  private:
-
-    InputEvent(const SDL_Event& event);
-
-  public:
 
     ~InputEvent();
 
@@ -212,59 +193,73 @@ class InputEvent {
     static int get_joypad_hat_direction(int hat);
 
     // event type
-    bool is_keyboard_event();
-    bool is_joypad_event();
-    bool is_window_event();
+    bool is_keyboard_event() const;
+    bool is_joypad_event() const;
+    bool is_window_event() const;
 
     // keyboard
-    bool is_keyboard_key_pressed();
-    bool is_keyboard_key_pressed(KeyboardKey key);
-    bool is_keyboard_key_pressed(const KeyboardKey* keys);
-    bool is_keyboard_direction_key_pressed();
-    bool is_keyboard_non_direction_key_pressed();
+    bool is_keyboard_key_pressed() const;
+    bool is_keyboard_key_pressed(KeyboardKey key) const;
+    bool is_keyboard_key_pressed(const KeyboardKey* keys) const;
+    bool is_keyboard_direction_key_pressed() const;
+    bool is_keyboard_non_direction_key_pressed() const;
 
-    bool is_keyboard_key_released();
-    bool is_keyboard_key_released(KeyboardKey key);
-    bool is_keyboard_key_released(const KeyboardKey* keys);
-    bool is_keyboard_direction_key_released();
-    bool is_keyboard_non_direction_key_released();
+    bool is_keyboard_key_released() const;
+    bool is_keyboard_key_released(KeyboardKey key) const;
+    bool is_keyboard_key_released(const KeyboardKey* keys) const;
+    bool is_keyboard_direction_key_released() const;
+    bool is_keyboard_non_direction_key_released() const;
 
-    bool is_with_shift();
-    bool is_with_control();
-    bool is_with_alt();
+    bool is_with_shift() const;
+    bool is_with_control() const;
+    bool is_with_alt() const;
 
-    KeyboardKey get_keyboard_key();
+    KeyboardKey get_keyboard_key() const;
     static const std::string& get_keyboard_key_name(InputEvent::KeyboardKey key);
     static InputEvent::KeyboardKey get_keyboard_key_by_name(const std::string& keyboard_key_name);
 
-    bool is_character_pressed();
-    const std::string get_character();
+    bool is_character_pressed() const;
+    const std::string get_character() const;
 
     // joypad
     static bool is_joypad_enabled();
     static void set_joypad_enabled(bool joypad_enabled);
 
-    bool is_joypad_button_pressed();
-    bool is_joypad_button_released();
-    int get_joypad_button();
-    bool is_joypad_axis_moved();
-    int get_joypad_axis();
-    int get_joypad_axis_state();
-    bool is_joypad_axis_centered();
-    bool is_joypad_hat_moved();
-    int get_joypad_hat();
-    int get_joypad_hat_direction();
-    bool is_joypad_hat_centered();
+    bool is_joypad_button_pressed() const;
+    bool is_joypad_button_released() const;
+    int get_joypad_button() const;
+    bool is_joypad_axis_moved() const;
+    int get_joypad_axis() const;
+    int get_joypad_axis_state() const;
+    bool is_joypad_axis_centered() const;
+    bool is_joypad_hat_moved() const;
+    int get_joypad_hat() const;
+    int get_joypad_hat_direction() const;
+    bool is_joypad_hat_centered() const;
 
     // functions common to keyboard and joypad
-    int get_direction();
-    bool is_pressed();
-    bool is_direction_pressed();
-    bool is_non_direction_pressed();
-    bool is_released();
+    int get_direction() const;
+    bool is_pressed() const;
+    bool is_direction_pressed() const;
+    bool is_non_direction_pressed() const;
+    bool is_released() const;
 
     // window event
-    bool is_window_closing();
+    bool is_window_closing() const;
+
+  private:
+
+    InputEvent(const SDL_Event& event);
+
+    static const KeyboardKey directional_keys[];  /**< array of the keyboard directional keys */
+    static bool joypad_enabled;                   /**< true if joypad support is enabled
+                                                   * (may be true even without joypad plugged) */
+    static SDL_Joystick* joystick;                /**< the joystick object if enabled and plugged */
+    static std::map<KeyboardKey, std::string>
+      keyboard_key_names;                         /**< Names of all existing keyboard keys. */
+    static bool repeat_keyboard;                  /**< True to handle repeat KEYDOWN and KEYUP events. */
+
+    const SDL_Event internal_event;               /**< the internal event encapsulated */
 };
 
 #endif

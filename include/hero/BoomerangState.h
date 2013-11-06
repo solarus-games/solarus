@@ -31,7 +31,7 @@ class Hero::BoomerangState: public Hero::State {
         const std::string& sprite_name);
     ~BoomerangState();
 
-    void start(State* previous_state);
+    void start(const State* previous_state);
     void update();
 
   private:

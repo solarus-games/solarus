@@ -140,6 +140,11 @@ void Sensor::update() {
     // check whether the hero is still present
     if (!test_collision_inside(get_hero())) {
       activated_by_hero = false;
+
+      // Notify Lua.
+      notifying_script = true;
+      get_lua_context().sensor_on_left(*this);
+      notifying_script = false;
     }
   }
 }

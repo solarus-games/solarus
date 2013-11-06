@@ -250,14 +250,14 @@ void Surface::create_internal_surface()
   {
     internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
       SDL_PIXELFORMAT_ARGB8888,
-      SDL_TEXTUREACCESS_STATIC,
+      SDL_TEXTUREACCESS_STREAMING,
       width, height);
     SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
   }
   else
   {
     internal_surface = SDL_CreateRGBSurface(
-      SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+      0, width, height, SOLARUS_COLOR_DEPTH, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
     SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
   }
   owns_internal_surfaces = true;
@@ -341,7 +341,13 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
   if (internal_texture == NULL && internal_surface == NULL) {
     create_internal_surface();
   }
+  
+  /* TODO If we fill the entire Surface and with opaque color, clear the subsurface queue.
+  if (color.internal_color.a == 255) {
+    clear_subsurfaces();
+  }*/
 
+  // Fill the internal texture or surface
   if(internal_texture) {
     const int array_size = where.get_width() * where.get_height();
     std::vector<uint32_t> pixels(array_size);  // TODO keep an array of pixels as a field?
@@ -369,7 +375,7 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 void Surface::add_subsurface(SubSurface& subsurface) {
   
   subsurfaces.push_back(&subsurface);
-  //TODO handle refcount of subsurface.surface
+  //TODO handle refcount of subsurface.surface , to be able to remove leaf surfaces safely.
 }
 
 /**

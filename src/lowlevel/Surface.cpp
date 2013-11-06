@@ -32,6 +32,7 @@
  */
 Surface::Surface(int width, int height):
   Drawable(),
+  internal_surface(NULL),
   internal_texture(NULL),
   owns_internal_texture(false),
   internal_opacity(255),
@@ -48,7 +49,8 @@ Surface::Surface(int width, int height):
  * \param size The size in pixels.
  */
 Surface::Surface(const Rectangle& size):
-Drawable(),
+  Drawable(),
+  internal_surface(NULL),
   internal_texture(NULL),
   owns_internal_texture(false),
   internal_opacity(255),
@@ -72,11 +74,11 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   owns_internal_texture(true),
   internal_opacity(255) {
 
-  SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
-  width = software_surface->w;
-  height = software_surface->h;
+  internal_surface = get_surface_from_file(file_name, base_directory);
+  width = internal_surface->w;
+  height = internal_surface->h;
   clipping_rect = Rectangle(0, 0, width, height);
-  internal_texture = get_texture_from_surface(software_surface);
+  internal_texture = get_texture_from_surface(internal_surface);
 }
 
 /**
@@ -89,8 +91,9 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * It must remain valid during the lifetime of this surface.
  * The destructor will not free it.
  */
-Surface::Surface(SDL_Texture* internal_texture):
+Surface::Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface):
   Drawable(),
+  internal_surface(internal_surface),
   internal_texture(internal_texture),
   owns_internal_texture(false),
   internal_opacity(255)
@@ -113,6 +116,7 @@ Surface::Surface(SDL_Texture* internal_texture):
  */
 Surface::Surface(Surface& other):
   Drawable(),
+  internal_surface(other.internal_surface),
   internal_texture(other.internal_texture),
   owns_internal_texture(other.owns_internal_texture),
   internal_opacity(255),
@@ -147,10 +151,11 @@ Surface::~Surface() {
  */
 Surface* Surface::create_from_file(const std::string& file_name,
     ImageDirectory base_directory) {
+  
+  SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
+  SDL_Texture* hardware_surface = get_texture_from_surface(software_surface);
 
-  SDL_Texture* hardware_surface = get_texture_from_file(file_name, base_directory);
-
-  Surface* surface = new Surface(hardware_surface);
+  Surface* surface = new Surface(hardware_surface, software_surface);
   surface->owns_internal_texture = true;
   return surface;
 }
@@ -210,30 +215,45 @@ SDL_Surface* Surface::get_surface_from_file(const std::string& file_name,
  */
 SDL_Texture* Surface::get_texture_from_surface(SDL_Surface* software_surface)
 {  
-  SDL_Texture* hardware_surface = SDL_CreateTextureFromSurface(
-    VideoManager::get_instance()->get_renderer(), software_surface);
-  SDL_SetTextureBlendMode(hardware_surface, SDL_BLENDMODE_BLEND);
+  SDL_Renderer* main_renderer = VideoManager::get_instance()->get_renderer();
   
-  SDL_FreeSurface(software_surface);
+  if(main_renderer)
+  {
+    SDL_Texture* hardware_surface = SDL_CreateTextureFromSurface(main_renderer, software_surface);
+    SDL_SetTextureBlendMode(hardware_surface, SDL_BLENDMODE_BLEND);
+    
+    return hardware_surface;
+  }
   
-  return hardware_surface;
+  return NULL;
 }
 
 /**
- * \brief Return the SDL_Texture corresponding to the requested file.
- *
- * The returned SDL_Texture have to manually delete.
- *
- * \param file_name Name of the image file to load, relative to the base directory specified.
- * \param base_directory The base directory to use.
- * \return The SDL_Texture.
+ * \brief Create the internal texture optimized for streaming access.
+ * or a software surface equivalent if no renderer
  */
-SDL_Texture* Surface::get_texture_from_file(const std::string& file_name,
-  ImageDirectory base_directory)
+void Surface::create_internal_surface()
 {
-  SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
+  SDL_Renderer* main_renderer = VideoManager::get_instance()->get_renderer();
   
-  return get_texture_from_surface(software_surface);
+  if(main_renderer)
+  {
+    internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
+      SDL_PIXELFORMAT_ARGB8888,
+      SDL_TEXTUREACCESS_STATIC,
+      width, height);
+  
+    Debug::check_assertion(internal_texture != NULL, StringConcat() <<
+      "Cannot create internal streaming texture");
+  
+    SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
+    owns_internal_texture = true;
+  }
+  else
+  {
+    internal_surface = SDL_CreateRGBSurface(
+      SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+  }
 }
 
 /**
@@ -316,31 +336,20 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
     pixels[i] = color_value;
   }
 
-  if (internal_texture == NULL) {
-    create_streaming_texture();
+  if (internal_texture == NULL && internal_surface == NULL) {
+    create_internal_surface();
   }
 
-  SDL_UpdateTexture(internal_texture,
+  if(internal_texture)
+    SDL_UpdateTexture(internal_texture,
       where.get_internal_rect(),
       &pixels[0],
       where.get_width() * sizeof(uint32_t));
-}
-
-/**
- * \brief Create the internal texture optimized for streaming access.
- */
-void Surface::create_streaming_texture()
-{
-  internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
-    SDL_PIXELFORMAT_ARGB8888,
-    SDL_TEXTUREACCESS_STATIC,
-    width, height);
-  
-  Debug::check_assertion(internal_texture != NULL, StringConcat() <<
-    "Cannot create internal streaming texture");
-  
-  SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
-  owns_internal_texture = true;
+  else
+  {
+    Rectangle where2 = where;
+    SDL_FillRect(internal_surface, where2.get_internal_rect(), color.get_internal_value());
+  }
 }
 
 /**
@@ -425,6 +434,15 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
     clipping_rect.get_width(),
     clipping_rect.get_height());
   SDL_IntersectRect(absolute_clip_rect.get_internal_rect(), clip_rect.get_internal_rect(), absolute_clip_rect.get_internal_rect());
+  
+  // Destroy the internal buffer of pixel, if any.
+  if(internal_surface)
+  {
+    if(!internal_texture)
+      internal_texture = get_texture_from_surface(internal_surface);
+    SDL_FreeSurface(internal_surface);
+    internal_surface = NULL;
+  }
   
   // Draw the internal texture.
   if(internal_texture)

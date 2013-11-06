@@ -59,7 +59,7 @@ class Surface: public Drawable {
     Surface(int width, int height);
     explicit Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
-    explicit Surface(SDL_Texture* internal_texture);
+    explicit Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface);
     explicit Surface(Surface& other);
     ~Surface();
 
@@ -97,8 +97,7 @@ class Surface: public Drawable {
   
     static SDL_Surface* get_surface_from_file(const std::string& file_name, ImageDirectory base_directory);
     static SDL_Texture* get_texture_from_surface(SDL_Surface* software_surface);
-    static SDL_Texture* get_texture_from_file(const std::string& file_name, ImageDirectory base_directory);
-    void create_streaming_texture();
+    void create_internal_surface();
     void add_subsurface(SubSurface& subsurface);
     void delete_subsurface(SubSurface& subsurface);
     void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, Rectangle& clip_rect, int opacity);
@@ -108,6 +107,7 @@ class Surface: public Drawable {
     std::vector<SubSurface*> subsurfaces; /**< buffer queue of every sub Surface with their drawing source and destination. */
 
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
+    SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. */
     bool owns_internal_texture;           /**< indicates that internal_surface belongs to this object. */
     int internal_opacity;                 /**< opacity to apply to all subtexture. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */

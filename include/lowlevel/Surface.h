@@ -59,7 +59,7 @@ class Surface: public Drawable {
     Surface(int width, int height);
     explicit Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
-    explicit Surface(SDL_Surface* internal_surface);
+    explicit Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface);
     explicit Surface(Surface& other);
     ~Surface();
 
@@ -98,7 +98,6 @@ class Surface: public Drawable {
     static SDL_Surface* get_surface_from_file(const std::string& file_name, ImageDirectory base_directory);
     static SDL_Texture* get_texture_from_surface(SDL_Surface* software_surface);
     void create_internal_surface();
-    void create_internal_texture();
     void add_subsurface(SubSurface& subsurface);
     void delete_subsurface(SubSurface& subsurface);
     void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, Rectangle& clip_rect, int opacity);
@@ -109,7 +108,7 @@ class Surface: public Drawable {
 
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. */
-    bool owns_internal_surface;          /**< indicates that internal texture or surface belongs to this object. */
+    bool owns_internal_surfaces;          /**< indicates that internal texture and/or surface belongs to this object. */
     int internal_opacity;                 /**< opacity to apply to all subtexture. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
     Rectangle clipping_rect;              /**< clipping rectangle to apply when drawing to this surface. */

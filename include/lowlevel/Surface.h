@@ -100,7 +100,12 @@ class Surface: public Drawable {
     void create_internal_surface();
     void add_subsurface(SubSurface& subsurface);
     void clear_subsurfaces();
-    void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, Rectangle& clip_rect, int opacity);
+    void render(
+        SDL_Renderer* renderer,
+        const Rectangle& src_rect,
+        const Rectangle& dst_rect,
+        const Rectangle& clip_rect,
+        int opacity);
   
     SDL_Texture* get_internal_texture();
   

@@ -467,7 +467,7 @@ void Map::traverse_separator(Separator* separator) {
  *
  * \param clipping_rectangle a subarea of the map to restrict the display to
  */
-void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
+void Map::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
 
   this->clipping_rectangle = clipping_rectangle;
 

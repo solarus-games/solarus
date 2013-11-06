@@ -440,62 +440,73 @@ void Surface::draw_transition(Transition& transition) {
 }
 
 /**
- * \brief Draw the internal texture if any, and all subtextures on the renderer.
+ * \brief Draws the internal texture if any, and all subtextures on the
+ * renderer.
  *
  * Empty the subsurfaces vector at the end of the method.
  * \param renderer The renderer where to draw.
  * \param src_rect The subrectangle of the texture to draw.
  * \param dst_rect The portion of renderer where to draw.
+ * \param clip_rect The clip area, relative to dst_rect,
+ * or NULL to disable clipping.
  * \param opacity The opacity of the parent surface.
  */
-void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, Rectangle& clip_rect, int opacity) {
-  
+void Surface::render(
+    SDL_Renderer* renderer,
+    const Rectangle& src_rect,
+    const Rectangle& dst_rect,
+    const Rectangle& clip_rect,
+    int opacity) {
+
   int current_opacity = std::min(internal_opacity, opacity);
-  
+
   // Calculate absolute clipping rectangle position.
-  Rectangle absolute_clip_rect = Rectangle(
-    dst_rect.get_x() + clipping_rect.get_x(),
-    dst_rect.get_y() + clipping_rect.get_y(),
-    clipping_rect.get_width(),
-    clipping_rect.get_height());
+  Rectangle absolute_clip_rect(
+      dst_rect.get_x() + clipping_rect.get_x(),
+      dst_rect.get_y() + clipping_rect.get_y(),
+      clipping_rect.get_width(),
+      clipping_rect.get_height()
+  );
   SDL_IntersectRect(absolute_clip_rect.get_internal_rect(),
-    clip_rect.get_internal_rect(),
-    absolute_clip_rect.get_internal_rect());
-  
+      clip_rect.get_internal_rect(),
+      absolute_clip_rect.get_internal_rect());
+
   is_rendered = true;
-  
+
   // Destroy the internal buffer of pixel, if any.
-  if(internal_surface)
-  {
-    if(!internal_texture)
+  if (internal_surface != NULL) {
+    if (internal_texture == NULL) {
       internal_texture = get_texture_from_surface(internal_surface);
+    }
     SDL_FreeSurface(internal_surface);
     internal_surface = NULL;
   }
   
   // Draw the internal texture.
-  if(internal_texture)
-  {
+  if (internal_texture != NULL) {
     SDL_SetTextureAlphaMod(internal_texture, current_opacity);
     SDL_RenderSetClipRect(renderer, absolute_clip_rect.get_internal_rect());
-    SDL_RenderCopy(renderer, internal_texture, src_rect.get_internal_rect(), dst_rect.get_internal_rect());
+    SDL_RenderCopy(
+        renderer,
+        internal_texture,
+        src_rect.get_internal_rect(),
+        dst_rect.get_internal_rect());
   }
   
   // Draw all subtextures.
-  for(int i=0 ; i<subsurfaces.size() ; i++)
-  {
+  for (int i=0; i < subsurfaces.size(); ++i) {
     // Calculate absolute destination subrectangle position.
-    Rectangle absolute_dst_rect = Rectangle(
-      dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
-      dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
-      subsurfaces.at(i)->dst_rect.get_width(),
-      subsurfaces.at(i)->dst_rect.get_height());
-      
+    Rectangle absolute_dst_rect(
+        dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
+        dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
+        subsurfaces.at(i)->dst_rect.get_width(),
+        subsurfaces.at(i)->dst_rect.get_height());
+
     subsurfaces.at(i)->surface->render(renderer,
-      subsurfaces.at(i)->src_rect,
-      absolute_dst_rect,
-      absolute_clip_rect,
-      current_opacity);
+        subsurfaces.at(i)->src_rect,
+        absolute_dst_rect,
+        absolute_clip_rect,
+        current_opacity);
   }
 }
 

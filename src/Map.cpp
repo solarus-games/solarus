@@ -46,6 +46,9 @@ Map::Map(const std::string& id):
   id(id),
   tileset(NULL),
   floor(NO_FLOOR),
+  camera(NULL),
+  visible_surface(NULL),
+  background_surface(NULL),
   loaded(false),
   started(false),
   destination_name(""),
@@ -110,6 +113,7 @@ void Map::set_tileset(const std::string& tileset_id) {
   tileset->set_images(new_tileset);
   get_entities().notify_tileset_changed();
   this->tileset_id = tileset_id;
+  rebuild_background_surface();
 }
 
 /**
@@ -240,6 +244,7 @@ void Map::unload() {
       delete visible_surface;
     }
     visible_surface = NULL;
+    delete background_surface;
     delete entities;
     entities = NULL;
     delete camera;
@@ -258,12 +263,17 @@ void Map::unload() {
  */
 void Map::load(Game& game) {
 
-  this->visible_surface = new Surface(VideoManager::get_instance()->get_quest_size());
+  this->visible_surface = new Surface(
+      VideoManager::get_instance()->get_quest_size());
   this->visible_surface->increment_refcount();
+  this->background_surface = new Surface(
+      VideoManager::get_instance()->get_quest_size());
   entities = new MapEntities(game, *this);
 
   // read the map file
   map_loader.load_map(game, *this);
+
+  rebuild_background_surface();
 
   loaded = true;
 }
@@ -556,11 +566,22 @@ void Map::draw() {
 }
 
 /**
+ * \brief Builds or rebuilds the surface corresponding to the background of
+ * the tileset.
+ */
+void Map::rebuild_background_surface() {
+
+  if (tileset != NULL) {
+    background_surface->fill_with_color(tileset->get_background_color());
+  }
+}
+
+/**
  * \brief Draws the background of the map.
  */
 void Map::draw_background() {
 
-  visible_surface->fill_with_color(tileset->get_background_color());
+  background_surface->draw(*visible_surface);
 }
 
 /**
@@ -572,6 +593,7 @@ void Map::draw_foreground() {
   const int screen_height = visible_surface->get_height();
 
   // If the map is too small for the screen, add black bars outside the map.
+  // TODO make the same optimization as for the background (avoid fill_with_color)
   const int map_width = get_width();
   if (map_width < screen_width) {
     int bar_width = (screen_width - map_width) / 2;

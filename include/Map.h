@@ -144,6 +144,7 @@ class Map: public ExportableToLua {
     friend class MapLoader; // the map loader modifies the private fields of Map
 
     void set_suspended(bool suspended);
+    void rebuild_background_surface();
     void draw_background();
     void draw_foreground();
 
@@ -182,6 +183,7 @@ class Map: public ExportableToLua {
     Surface* visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map */
+    Surface* background_surface;  /**< a surface filled with the background color of the tileset */
     Rectangle clipping_rectangle; /**< when drawing the map, indicates an area of the surface to be restricted to
                                    * (usually, the whole map is considered and this rectangle's values are all 0) */
 

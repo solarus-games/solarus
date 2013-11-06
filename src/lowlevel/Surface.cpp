@@ -34,7 +34,7 @@ Surface::Surface(int width, int height):
   Drawable(),
   internal_surface(NULL),
   internal_texture(NULL),
-  owns_internal_texture(false),
+  owns_internal_surfaces(false),
   internal_opacity(255),
   width(width),
   height(height),
@@ -52,7 +52,7 @@ Surface::Surface(const Rectangle& size):
   Drawable(),
   internal_surface(NULL),
   internal_texture(NULL),
-  owns_internal_texture(false),
+  owns_internal_surfaces(false),
   internal_opacity(255),
   width(size.get_width()),
   height(size.get_height()),
@@ -71,7 +71,7 @@ Surface::Surface(const Rectangle& size):
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
-  owns_internal_texture(true),
+  owns_internal_surfaces(true),
   internal_opacity(255) {
 
   internal_surface = get_surface_from_file(file_name, base_directory);
@@ -95,7 +95,7 @@ Surface::Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface):
   Drawable(),
   internal_surface(internal_surface),
   internal_texture(internal_texture),
-  owns_internal_texture(false),
+  owns_internal_surfaces(false),
   internal_opacity(255)
 {
   Uint32 format;
@@ -118,13 +118,13 @@ Surface::Surface(Surface& other):
   Drawable(),
   internal_surface(other.internal_surface),
   internal_texture(other.internal_texture),
-  owns_internal_texture(other.owns_internal_texture),
+  owns_internal_surfaces(other.owns_internal_surfaces),
   internal_opacity(255),
   width(other.get_width()),
   height(other.get_height()),
   clipping_rect(other.clipping_rect){
 
-  other.owns_internal_texture = false;
+  other.owns_internal_surfaces = false;
 }
 
 /**
@@ -132,8 +132,11 @@ Surface::Surface(Surface& other):
  */
 Surface::~Surface() {
 
-  if (owns_internal_texture) {
-    SDL_DestroyTexture(internal_texture);
+  if (owns_internal_surfaces) {
+    if(internal_texture)
+      SDL_DestroyTexture(internal_texture);
+    if(internal_surface)
+      SDL_FreeSurface(internal_surface);
   }
   for(int i=0 ; i<subsurfaces.size() ; i++)
     delete_subsurface(*subsurfaces.at(i));
@@ -156,7 +159,7 @@ Surface* Surface::create_from_file(const std::string& file_name,
   SDL_Texture* hardware_surface = get_texture_from_surface(software_surface);
 
   Surface* surface = new Surface(hardware_surface, software_surface);
-  surface->owns_internal_texture = true;
+  surface->owns_internal_surfaces = true;
   return surface;
 }
 
@@ -247,7 +250,7 @@ void Surface::create_internal_surface()
       "Cannot create internal streaming texture");
   
     SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
-    owns_internal_texture = true;
+    owns_internal_surfaces = true;
   }
   else
   {
@@ -500,7 +503,10 @@ SDL_Texture* Surface::get_internal_texture() {
  */
 uint32_t Surface::get_pixel(int index) const {
 
-  /*SDL_PixelFormat* format = internal_surface->format;
+  Debug::check_assertion(internal_surface != NULL, StringConcat() <<
+    "Attempt to read a pixel on a hardware or a buffer surface.");
+  
+  SDL_PixelFormat* format = internal_surface->format;
 
   // Test from the most common to the most exotic.
   switch (format->BytesPerPixel) {
@@ -531,7 +537,7 @@ uint32_t Surface::get_pixel(int index) const {
       }
   }
 
-  Debug::die(StringConcat() << "Unknown pixel depth: " << format->BitsPerPixel);*/
+  Debug::die(StringConcat() << "Unknown pixel depth: " << format->BitsPerPixel);
   return 0;
 }
 
@@ -546,10 +552,12 @@ uint32_t Surface::get_pixel(int index) const {
  */
 bool Surface::is_pixel_transparent(int index) const {
   
-  /*uint32_t pixel = get_pixel(index);
+  Debug::check_assertion(internal_surface != NULL, StringConcat() <<
+    "Attempt to read a pixel on a hardware or a buffer surface.");
+  
+  uint32_t pixel = get_pixel(index);
   uint32_t colorkey;
-  bool with_colorkey = false;
-  // TODO with_colorkey = SDL_GetColorKey() == 0;
+  bool with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
   
   if (with_colorkey && pixel == colorkey) {
     // The pixel has the transparency color.
@@ -560,7 +568,7 @@ bool Surface::is_pixel_transparent(int index) const {
       && (pixel & internal_surface->format->Amask) == 0  // The pixel is fully transparent.
       ) {
     return true;
-  }*/
+  }
   
   return false;
 }

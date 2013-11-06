@@ -981,7 +981,7 @@ Ground Map::get_ground(Layer layer, int x, int y) const {
   // See if a dynamic entity changes the ground.
   // TODO store ground modifiers in a quad tree for performance.
 
-  const std::list<MapEntity*> ground_modifiers =
+  const std::list<MapEntity*>& ground_modifiers =
       entities->get_ground_modifiers(layer);
   std::list<MapEntity*>::const_reverse_iterator it;
   const std::list<MapEntity*>::const_reverse_iterator rend =

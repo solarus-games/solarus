@@ -102,9 +102,12 @@ Surface::Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface):
   is_rendered(false),
   internal_opacity(255)
 {
-  Uint32 format;
-  int access;
-  SDL_QueryTexture(internal_texture, &format, &access, &width, &height);
+  if(internal_texture)
+    SDL_QueryTexture(internal_texture, NULL, NULL, &width, &height);
+  else {
+    width = internal_surface->w;
+    height = internal_surface->h;
+  }
   clipping_rect = Rectangle(0, 0, width, height);
 }
 
@@ -249,15 +252,15 @@ void Surface::create_internal_surface()
       SDL_PIXELFORMAT_ARGB8888,
       SDL_TEXTUREACCESS_STATIC,
       width, height);
-  
     SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
-    owns_internal_surfaces = true;
   }
   else
   {
     internal_surface = SDL_CreateRGBSurface(
       SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+    SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
   }
+  owns_internal_surfaces = true;
   
   Debug::check_assertion(internal_texture != NULL || internal_surface != NULL, StringConcat() <<
     "Cannot create internal texture or surface");
@@ -449,7 +452,9 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
     dst_rect.get_y() + clipping_rect.get_y(),
     clipping_rect.get_width(),
     clipping_rect.get_height());
-  SDL_IntersectRect(absolute_clip_rect.get_internal_rect(), clip_rect.get_internal_rect(), absolute_clip_rect.get_internal_rect());
+  SDL_IntersectRect(absolute_clip_rect.get_internal_rect(),
+    clip_rect.get_internal_rect(),
+    absolute_clip_rect.get_internal_rect());
   
   is_rendered = true;
   
@@ -480,7 +485,11 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
       subsurfaces.at(i)->dst_rect.get_width(),
       subsurfaces.at(i)->dst_rect.get_height());
       
-    subsurfaces.at(i)->surface->render(renderer, subsurfaces.at(i)->src_rect, absolute_dst_rect, absolute_clip_rect, current_opacity);
+    subsurfaces.at(i)->surface->render(renderer,
+      subsurfaces.at(i)->src_rect,
+      absolute_dst_rect,
+      absolute_clip_rect,
+      current_opacity);
   }
 }
 

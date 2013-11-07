@@ -42,9 +42,16 @@ Hero::JumpingState::JumpingState(
     bool ignore_obstacles,
     bool with_sound,
     uint32_t movement_delay):
-
   State(hero, "jumping"),
   carried_item(NULL) {
+
+  if (get_previous_carried_item_behavior() == CarriedItem::BEHAVIOR_KEEP) {
+    // Keep the carried item of the previous state.
+    carried_item = hero.get_carried_item();
+    if (carried_item != NULL) {
+      carried_item->increment_refcount();
+    }
+  }
 
   this->movement = new JumpMovement(direction8, distance, 0, ignore_obstacles);
   this->direction8 = direction8;
@@ -62,7 +69,7 @@ Hero::JumpingState::~JumpingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::JumpingState::start(State* previous_state) {
+void Hero::JumpingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -79,7 +86,7 @@ void Hero::JumpingState::start(State* previous_state) {
   }
 
   // jump
-  hero.set_movement(movement);
+  get_hero().set_movement(movement);
 
   if (with_sound) {
     Sound::play("jump");
@@ -90,15 +97,15 @@ void Hero::JumpingState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::JumpingState::stop(State* next_state) {
+void Hero::JumpingState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  hero.clear_movement();
+  get_hero().clear_movement();
 
   if (carried_item != NULL) {
 
-    switch (next_state->get_previous_carried_item_behavior(*carried_item)) {
+    switch (next_state->get_previous_carried_item_behavior()) {
 
     case CarriedItem::BEHAVIOR_THROW:
       carried_item->throw_item(get_sprites().get_animation_direction());
@@ -113,6 +120,10 @@ void Hero::JumpingState::stop(State* next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
+      // The next state is now the owner and has incremented the refcount.
+      carried_item->decrement_refcount();
+      Debug::check_assertion(carried_item->get_refcount() > 0,
+          "Invalid carried item refcount");
       carried_item = NULL;
       break;
 
@@ -148,13 +159,13 @@ void Hero::JumpingState::update() {
   }
 
   if (movement->is_finished()) {
-    hero.start_state_from_ground();
+    get_hero().start_state_from_ground();
   }
 }
 
 /**
  * \brief Notifies this state that the game was just suspended or resumed.
- * \param suspended true if the game is suspended
+ * \param su1spended true if the game is suspended
  */
 void Hero::JumpingState::set_suspended(bool suspended) {
 
@@ -171,7 +182,7 @@ void Hero::JumpingState::set_suspended(bool suspended) {
 void Hero::JumpingState::notify_layer_changed() {
 
   if (carried_item != NULL) {
-    carried_item->set_layer(hero.get_layer());
+    carried_item->set_layer(get_hero().get_layer());
   }
 }
 
@@ -267,7 +278,7 @@ bool Hero::JumpingState::can_avoid_conveyor_belt() const {
  */
 bool Hero::JumpingState::is_stairs_obstacle(const Stairs& stairs) const {
   // allow to jump over stairs covered by water
-  return hero.get_ground_below() != GROUND_DEEP_WATER;
+  return get_hero().get_ground_below() != GROUND_DEEP_WATER;
 }
 
 /**
@@ -318,7 +329,7 @@ bool Hero::JumpingState::can_be_hurt(Enemy* attacker) const {
  * \brief Returns the item currently carried by the hero in this state, if any.
  * \return the item carried by the hero, or NULL
  */
-CarriedItem* Hero::JumpingState::get_carried_item() {
+CarriedItem* Hero::JumpingState::get_carried_item() const {
   return carried_item;
 }
 
@@ -338,13 +349,10 @@ void Hero::JumpingState::destroy_carried_item() {
 
 /**
  * \brief Returns the action to do with an item previously carried by the hero when this state starts.
- * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::JumpingState::get_previous_carried_item_behavior(
-    CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::JumpingState::get_previous_carried_item_behavior() const {
 
-  this->carried_item = &carried_item;
   return CarriedItem::BEHAVIOR_KEEP;
 }
 

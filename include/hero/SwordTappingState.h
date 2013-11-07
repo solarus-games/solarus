@@ -33,8 +33,8 @@ class Hero::SwordTappingState: public Hero::State {
     SwordTappingState(Hero& hero);
     ~SwordTappingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     void set_suspended(bool suspended);
     bool can_sword_hit_crystal() const;

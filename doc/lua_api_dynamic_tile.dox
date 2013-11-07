@@ -9,7 +9,7 @@ created and deleted at runtime.
 This type of \ref lua_api_entity "map entity" can be declared in the
 \ref lua_api_map_overview_files "map data file".
 It can also be created dynamically with
-\ref lua_api_map_create_npc "map:create_dynamic_tile()".
+\ref lua_api_map_create_dynamic_tile "map:create_dynamic_tile()".
 
 \section lua_api_dynamic_tile_overview Overview
 

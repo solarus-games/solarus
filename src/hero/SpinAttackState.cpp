@@ -47,7 +47,7 @@ Hero::SpinAttackState::~SpinAttackState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SpinAttackState::start(State* previous_state) {
+void Hero::SpinAttackState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -55,6 +55,7 @@ void Hero::SpinAttackState::start(State* previous_state) {
   play_spin_attack_sound();
 
   // start the animation
+  Hero& hero = get_hero();
   if (get_equipment().has_ability("sword_knowledge")) {
     get_sprites().set_animation_super_spin_attack();
     CircleMovement* movement = new CircleMovement(false);
@@ -75,10 +76,11 @@ void Hero::SpinAttackState::start(State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state
  */
-void Hero::SpinAttackState::stop(State* next_state) {
+void Hero::SpinAttackState::stop(const State* next_state) {
 
   State::stop(next_state);
 
+  Hero& hero = get_hero();
   if (hero.get_movement() != NULL) {
     // stop the movement of being pushed by an enemy after hitting him
     hero.clear_movement();
@@ -91,6 +93,7 @@ void Hero::SpinAttackState::stop(State* next_state) {
 void Hero::SpinAttackState::update() {
 
   // check the animation
+  Hero& hero = get_hero();
   if (get_sprites().is_animation_finished()) {
     hero.set_state(new FreeState(hero));
   }
@@ -213,7 +216,7 @@ bool Hero::SpinAttackState::is_teletransporter_obstacle(
 
   // if the hero is pushed by an enemy or making a super spin attack,
   // don't go on a teletransporter
-  return hero.get_movement() != NULL;
+  return get_hero().get_movement() != NULL;
 }
 
 /**
@@ -232,7 +235,7 @@ void Hero::SpinAttackState::notify_obstacle_reached() {
 
   // the hero reached an obstacle while being pushed after hitting an enemy
   // or making a super spin attack
-  hero.clear_movement();
+  get_hero().clear_movement();
 
   if (!being_pushed) {
     // obstacle while making a super spin attack: finish with a normal spin attack
@@ -253,6 +256,7 @@ void Hero::SpinAttackState::notify_attacked_enemy(
     EnemyReaction::Reaction& result,
     bool killed) {
 
+  Hero& hero = get_hero();
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
 
     if (victim.get_push_hero_on_sword()) {

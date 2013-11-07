@@ -29,8 +29,8 @@ class Hero::HookshotState: public Hero::State {
     HookshotState(Hero& hero);
     ~HookshotState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
 
     bool is_touching_ground() const;
     bool can_avoid_deep_water() const;

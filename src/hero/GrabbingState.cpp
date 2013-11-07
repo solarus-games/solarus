@@ -42,7 +42,7 @@ Hero::GrabbingState::~GrabbingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::GrabbingState::start(State* previous_state) {
+void Hero::GrabbingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -60,6 +60,7 @@ void Hero::GrabbingState::update() {
   int sprite_direction8 = get_sprites().get_animation_direction8();
 
   // release the obstacle
+  Hero& hero = get_hero();
   if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
     hero.set_state(new FreeState(hero));
   }

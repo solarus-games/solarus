@@ -57,11 +57,12 @@ Hero::BoomerangState::~BoomerangState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::BoomerangState::start(State* previous_state) {
+void Hero::BoomerangState::start(const State* previous_state) {
 
   State::start(previous_state);
 
   if (get_map().get_entities().is_boomerang_present()) {
+    Hero& hero = get_hero();
     hero.set_state(new FreeState(hero));
   }
   else {
@@ -77,6 +78,7 @@ void Hero::BoomerangState::update() {
 
   State::update();
 
+  Hero& hero = get_hero();
   if (hero.is_animation_finished()) {
 
     if (direction_pressed8 == -1) {

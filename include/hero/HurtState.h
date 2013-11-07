@@ -39,8 +39,8 @@ class Hero::HurtState: public Hero::State {
         int magic_points);
     ~HurtState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     void set_suspended(bool suspended);
     bool can_start_gameover_sequence() const;

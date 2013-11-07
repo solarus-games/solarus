@@ -36,7 +36,7 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
     SwordLoadingState(Hero& hero);
     ~SwordLoadingState();
 
-    void start(State* previous_state);
+    void start(const State* previous_state);
     void update();
     void set_suspended(bool suspended);
     void notify_obstacle_reached();

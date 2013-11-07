@@ -34,7 +34,10 @@
  * \param stairs The stairs to take.
  * \param way The way you are taking the stairs.
  */
-Hero::StairsState::StairsState(Hero& hero, Stairs& stairs, Stairs::Way way):
+Hero::StairsState::StairsState(
+    Hero& hero,
+    Stairs& stairs,
+    Stairs::Way way):
   State(hero, "stairs"),
   stairs(stairs),
   way(way),
@@ -42,6 +45,13 @@ Hero::StairsState::StairsState(Hero& hero, Stairs& stairs, Stairs::Way way):
   next_phase_date(0),
   carried_item(NULL) {
 
+  if (get_previous_carried_item_behavior() == CarriedItem::BEHAVIOR_KEEP) {
+    // Keep the carried item of the previous state.
+    carried_item = hero.get_carried_item();
+    if (carried_item != NULL) {
+      carried_item->increment_refcount();
+    }
+  }
 }
 
 /**
@@ -70,7 +80,7 @@ void Hero::StairsState::set_map(Map& map) {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::StairsState::start(State* previous_state) {
+void Hero::StairsState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -91,6 +101,7 @@ void Hero::StairsState::start(State* previous_state) {
   sprites.set_animation_direction((path[0] - '0') / 2);
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
+  Hero& hero = get_hero();
   if (stairs.is_inside_floor()) {
     if (way == Stairs::NORMAL_WAY) {
       // Towards an upper layer: change the layer now
@@ -117,13 +128,13 @@ void Hero::StairsState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::StairsState::stop(State* next_state) {
+void Hero::StairsState::stop(const State* next_state) {
 
   State::stop(next_state);
 
   if (carried_item != NULL) {
 
-    switch (next_state->get_previous_carried_item_behavior(*carried_item)) {
+    switch (next_state->get_previous_carried_item_behavior()) {
 
     case CarriedItem::BEHAVIOR_THROW:
       carried_item->throw_item(get_sprites().get_animation_direction());
@@ -138,6 +149,10 @@ void Hero::StairsState::stop(State* next_state) {
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
+      // The next state is now the owner and has incremented the refcount.
+      carried_item->decrement_refcount();
+      Debug::check_assertion(carried_item->get_refcount() > 0,
+          "Invalid carried item refcount");
       carried_item = NULL;
       break;
 
@@ -154,7 +169,7 @@ void Hero::StairsState::update() {
 
   State::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 
@@ -170,6 +185,7 @@ void Hero::StairsState::update() {
     carried_item->update();
   }
 
+  Hero& hero = get_hero();
   if (stairs.is_inside_floor()) {
 
     // inside a single floor: return to normal state as soon as the movement is finished
@@ -266,7 +282,7 @@ void Hero::StairsState::set_suspended(bool suspended) {
   }
 
   if (!suspended) {
-    next_phase_date += System::now() - when_suspended;
+    next_phase_date += System::now() - get_when_suspended();
   }
 }
 
@@ -318,7 +334,7 @@ int Hero::StairsState::get_wanted_movement_direction8() const {
  * \brief Returns the item currently carried by the hero in this state, if any.
  * \return the item carried by the hero, or NULL
  */
-CarriedItem* Hero::StairsState::get_carried_item() {
+CarriedItem* Hero::StairsState::get_carried_item() const {
   return carried_item;
 }
 
@@ -341,11 +357,9 @@ void Hero::StairsState::destroy_carried_item() {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior(
-    CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior() const {
 
   if (stairs.is_inside_floor()) {
-    this->carried_item = &carried_item;
     return CarriedItem::BEHAVIOR_KEEP;
   }
   return CarriedItem::BEHAVIOR_DESTROY;
@@ -357,7 +371,7 @@ CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior(
 void Hero::StairsState::notify_layer_changed() {
 
   if (carried_item != NULL) {
-    carried_item->set_layer(hero.get_layer());
+    carried_item->set_layer(get_hero().get_layer());
   }
 }
 

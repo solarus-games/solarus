@@ -8,9 +8,11 @@ Engine changes
 
 * Upgrade to SDL 2 (#262). Thanks Vlag.
 * New map entity type: custom entities, fully scripted (#323).
+* Rewrite the main loop with a constant timestep (#351).
 * Show a dialog box in case of fatal error.
 * The "wide" video modes do not exist anymore. SDL2 does the job now.
 * Add the hq4x pixel filter algorithm as a new video mode.
+* Call enemy:on_hurt() before enemy:on_dying() (#325).
 
 Data files format changes
 -------------------------
@@ -34,6 +36,9 @@ Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
 * sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
+* Fix random_movement:get_max_radius() that was not working.
+* Add an event sensor:on_left() (#339).
+* Add an event block:on_moving() (#334).
 
 Solarus Quest Editor changes
 ----------------------------
@@ -53,6 +58,7 @@ Engine changes
 * Fix a libmodplug compilation problem due to wrong sndfile.h (#324).
 * Fix teletransporters activated while coming back from falling (#346).
 * Fix a crash when changing the hero state in block:on_moved (#340).
+* Fix enemy death detection when falling into hole, lava or water (#350).
 
 _______________________________
 

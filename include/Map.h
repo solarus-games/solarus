@@ -68,7 +68,6 @@ class Map: public ExportableToLua {
     void restore_camera();
     bool is_camera_moving() const;
     void traverse_separator(Separator* separator);
-    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
 
     // loading
     bool is_loaded() const;
@@ -121,18 +120,23 @@ class Map: public ExportableToLua {
         Layer layer,
         const Rectangle& collision_box) const;
 
+    Ground get_ground(Layer layer, int x, int y) const;
+    Ground get_ground(Layer layer, const Rectangle& xy) const;
+
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity& entity);
     void check_collision_with_detectors(MapEntity& entity, Sprite& sprite);
 
     // main loop
-    bool notify_input(InputEvent& event);
+    bool notify_input(const InputEvent& event);
     void update();
     bool is_suspended() const;
     void check_suspended();
     void draw();
     void draw_sprite(Sprite& sprite, const Rectangle& xy);
     void draw_sprite(Sprite& sprite, int x, int y);
+    void draw_sprite(Sprite& sprite, int x, int y,
+        const Rectangle& clipping_area);
 
     static const int NO_FLOOR = -9999;  /**< Represents a non-existent floor (nil in data files). */
 
@@ -141,6 +145,7 @@ class Map: public ExportableToLua {
     friend class MapLoader; // the map loader modifies the private fields of Map
 
     void set_suspended(bool suspended);
+    void rebuild_background_surface();
     void draw_background();
     void draw_foreground();
 
@@ -179,8 +184,7 @@ class Map: public ExportableToLua {
     Surface* visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map */
-    Rectangle clipping_rectangle; /**< when drawing the map, indicates an area of the surface to be restricted to
-                                   * (usually, the whole map is considered and this rectangle's values are all 0) */
+    Surface* background_surface;  /**< a surface filled with the background color of the tileset */
 
     // map state
     bool loaded;                  /**< true if the loading phase is finished */

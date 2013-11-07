@@ -232,7 +232,7 @@ class Hero: public MapEntity {
     void start_free();
     void start_free_or_carrying();
     void start_treasure(const Treasure& treasure, int callback_ref);
-    void start_forced_walking(const std::string &path, bool loop, bool ignore_obstacles);
+    void start_forced_walking(const std::string& path, bool loop, bool ignore_obstacles);
     void start_jumping(int direction8, int distance, bool ignore_obstacles,
         bool with_sound, uint32_t movement_delay = 0);
     void start_freezed();
@@ -298,6 +298,7 @@ class Hero: public MapEntity {
     void try_snap_to_facing_entity();
     void apply_additional_ground_movement();
     Teletransporter* get_delayed_teletransporter();
+    CarriedItem* get_carried_item();
 
     // ground
     void update_ground_effects();

@@ -55,7 +55,7 @@ class Game {
     const Equipment& get_equipment() const;
 
     // functions called by the main loop
-    bool notify_input(InputEvent& event);
+    bool notify_input(const InputEvent& event);
     void update();
     void draw(Surface& dst_surface);
 

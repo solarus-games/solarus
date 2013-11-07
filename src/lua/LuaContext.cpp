@@ -196,7 +196,7 @@ void LuaContext::update() {
  * \param event The input event to handle.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::notify_input(InputEvent& event) {
+bool LuaContext::notify_input(const InputEvent& event) {
 
   // Call the appropriate callback in sol.main (if it exists).
   return main_on_input(event);
@@ -1700,7 +1700,7 @@ void LuaContext::on_game_over_finished() {
  * \param event The input event to forward.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_input(InputEvent& event) {
+bool LuaContext::on_input(const InputEvent& event) {
 
   // Call the Lua function(s) corresponding to this input event.
   bool handled = false;
@@ -1742,7 +1742,7 @@ bool LuaContext::on_input(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_key_pressed(InputEvent& event) {
+bool LuaContext::on_key_pressed(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_key_pressed")) {
@@ -1791,7 +1791,7 @@ bool LuaContext::on_key_pressed(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_character_pressed(InputEvent& event) {
+bool LuaContext::on_character_pressed(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_character_pressed")) {
@@ -1818,7 +1818,7 @@ bool LuaContext::on_character_pressed(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_key_released(InputEvent& event) {
+bool LuaContext::on_key_released(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_key_released")) {
@@ -1850,7 +1850,7 @@ bool LuaContext::on_key_released(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_joypad_button_pressed(InputEvent& event) {
+bool LuaContext::on_joypad_button_pressed(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_joyad_button_pressed")) {
@@ -1876,7 +1876,7 @@ bool LuaContext::on_joypad_button_pressed(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_joypad_button_released(InputEvent& event) {
+bool LuaContext::on_joypad_button_released(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_joyad_button_released")) {
@@ -1902,7 +1902,7 @@ bool LuaContext::on_joypad_button_released(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_joypad_axis_moved(InputEvent& event) {
+bool LuaContext::on_joypad_axis_moved(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_joyad_axis_moved")) {
@@ -1930,7 +1930,7 @@ bool LuaContext::on_joypad_axis_moved(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_joypad_hat_moved(InputEvent& event) {
+bool LuaContext::on_joypad_hat_moved(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_joyad_hat_moved")) {
@@ -2410,6 +2410,16 @@ void LuaContext::on_closed() {
 
   if (find_method("on_closed")) {
     call_function(1, 0, "on_closed");
+  }
+}
+
+/**
+ * \brief Calls the on_moving() method of the object on top of the stack.
+ */
+void LuaContext::on_moving() {
+
+  if (find_method("on_moving")) {
+    call_function(1, 0, "on_moving");
   }
 }
 

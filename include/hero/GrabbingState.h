@@ -29,7 +29,7 @@ class Hero::GrabbingState: public Hero::State {
     GrabbingState(Hero& hero);
     ~GrabbingState();
 
-    void start(State* previous_state);
+    void start(const State* previous_state);
     void update();
     bool is_grabbing_or_pulling() const;
     bool can_be_hurt(Enemy* attacker) const;

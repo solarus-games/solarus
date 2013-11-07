@@ -26,18 +26,21 @@
  */
 class System {
 
-  private:
-
-    static uint32_t ticks;
-
   public:
 
-    static void initialize(int argc, char **argv);
+    static void initialize(int argc, char** argv);
     static void quit();
     static void update();
 
     static uint32_t now();
+    static uint32_t get_real_time();
     static void sleep(uint32_t duration);
+
+    static const uint32_t timestep = 10;  // Timestep added to the simulated time at each update.
+
+  private:
+
+    static uint32_t ticks;  // Simulated time in milliseconds.
 };
 
 #endif

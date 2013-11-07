@@ -48,7 +48,7 @@ Hero::SwordLoadingState::~SwordLoadingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SwordLoadingState::start(State* previous_state) {
+void Hero::SwordLoadingState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
@@ -63,7 +63,7 @@ void Hero::SwordLoadingState::update() {
 
   PlayerMovementState::update();
 
-  if (suspended || !is_current_state()) {
+  if (is_suspended() || !is_current_state()) {
     return;
   }
 
@@ -79,6 +79,7 @@ void Hero::SwordLoadingState::update() {
     // the player has just released the sword key
 
     // stop loading the sword, go to the normal state or make a spin attack
+    Hero& hero = get_hero();
     if (!sword_loaded) {
       // the sword was not loaded yet: go to the normal state
       hero.set_state(new FreeState(hero));
@@ -99,7 +100,7 @@ void Hero::SwordLoadingState::set_suspended(bool suspended) {
   PlayerMovementState::set_suspended(suspended);
 
   if (!suspended) {
-    sword_loaded_date += System::now() - when_suspended;
+    sword_loaded_date += System::now() - get_when_suspended();
   }
 }
 
@@ -111,6 +112,7 @@ void Hero::SwordLoadingState::notify_obstacle_reached() {
 
   PlayerMovementState::notify_obstacle_reached();
 
+  Hero& hero = get_hero();
   Detector* facing_entity = hero.get_facing_entity();
 
   if (hero.is_facing_point_on_obstacle()     // he is really facing an obstacle
@@ -133,6 +135,7 @@ void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
 
+    Hero& hero = get_hero();
     if (victim.get_push_hero_on_sword()) {
       // let SwordTappingState do the job so that no player movement interferes
       State* state = new SwordTappingState(hero);

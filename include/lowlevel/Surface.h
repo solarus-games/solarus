@@ -71,7 +71,6 @@ class Surface: public Drawable {
     const Rectangle get_size() const;
 
     void set_opacity(int opacity);
-    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
 
@@ -99,7 +98,12 @@ class Surface: public Drawable {
     static SDL_Texture* get_texture_from_surface(SDL_Surface* software_surface);
     void add_subsurface(Surface& src_surface, const Rectangle& region, const Rectangle& dst_position);
     void clear_subsurfaces();
-    void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, Rectangle& clip_rect, int opacity);
+    void render(
+        SDL_Renderer* renderer,
+        const Rectangle& src_rect,
+        const Rectangle& dst_rect,
+        const Rectangle& clip_rect,
+        int opacity);
   
     SDL_Texture* get_internal_texture();
   
@@ -112,7 +116,6 @@ class Surface: public Drawable {
     bool is_rendered;                     /**< indicated if the surface has been rendered. If true, the next draw on it will clear the subsurfaces queue. */
     int internal_opacity;                 /**< opacity to apply to all subtexture. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
-    Rectangle clipping_rect;              /**< clipping rectangle to apply when drawing to this surface. */
 };
 
 #endif

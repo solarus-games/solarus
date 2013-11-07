@@ -1349,15 +1349,6 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
   Hero& hero = game.get_hero();
   const Treasure treasure(game, item.get_name(), treasure_variant, treasure_savegame_variable);
 
-  // If the treasure was a tunic,
-  // a sword or a shield, we have to reload the hero's sprites now.
-  // FIXME do this in scripts (item names are no longer hardcoded)
-  // and also do it when giving the ability without treasure.
-  const std::string& item_name = item.get_name();
-  if (item_name == "tunic" || item_name == "sword" || item_name == "shield") {
-    hero.rebuild_equipment();
-  }
-
   // Notify the Lua item and the Lua map.
   if (!lua_isnil(l, -1)) {
     // There is a user callback for this treasure.
@@ -2787,6 +2778,24 @@ void LuaContext::npc_on_collision_fire(NPC& npc) {
 }
 
 /**
+ * \brief Calls the on_moving() method of a Lua block.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param block a block.
+ */
+void LuaContext::block_on_moving(Block& block) {
+
+  if (!block.is_with_lua_table()) {
+    return;
+  }
+
+  push_block(l, block);
+  on_moving();
+  lua_pop(l, 1);
+}
+
+/**
  * \brief Calls the on_moved() method of a Lua block.
  *
  * Does nothing if the method is not defined.
@@ -2911,6 +2920,21 @@ void LuaContext::sensor_on_activated_repeat(Sensor& sensor) {
 
   push_entity(l, sensor);
   on_activated_repeat();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_left() method of a Lua sensor.
+ * \param sensor A sensor.
+ */
+void LuaContext::sensor_on_left(Sensor& sensor) {
+
+  if (!sensor.is_with_lua_table()) {
+    return;
+  }
+
+  push_entity(l, sensor);
+  on_left();
   lua_pop(l, 1);
 }
 

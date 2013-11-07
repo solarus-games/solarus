@@ -184,6 +184,22 @@ void Hero::set_state(State* new_state) {
 }
 
 /**
+ * \brief Returns the item currently carried by the hero, if any.
+ *
+ * This function is used internally to allow this item to be preserved between
+ * different hero states.
+ *
+ * \return The carried item or NULL.
+ */
+CarriedItem* Hero::get_carried_item() {
+
+  if (state == NULL) {
+    return NULL;
+  }
+  return state->get_carried_item();
+}
+
+/**
  * \brief Suspends or resumes the animation and the movements of the hero.
  *
  * This function is called by the map when the game is suspended or resumed.
@@ -583,7 +599,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     // but we may have to change the layer.
 
     Layer layer = LAYER_INTERMEDIATE;
-    if (map.get_entities().get_ground(LAYER_INTERMEDIATE, get_x(), get_y()) == GROUND_EMPTY) {
+    if (map.get_ground(LAYER_INTERMEDIATE, get_x(), get_y()) == GROUND_EMPTY) {
       layer = LAYER_LOW;
     }
     set_map(map);
@@ -1126,16 +1142,15 @@ void Hero::check_position() {
     int x = get_top_left_x();
     int y = get_top_left_y();
     Layer layer = get_layer();
-    MapEntities& entities = get_entities();
 
     if (layer > LAYER_LOW
-        && entities.get_ground(layer, x, y) == GROUND_EMPTY
-        && entities.get_ground(layer, x + 15, y) == GROUND_EMPTY
-        && entities.get_ground(layer, x, y + 15) == GROUND_EMPTY
-        && entities.get_ground(layer, x + 15, y + 15) == GROUND_EMPTY) {
+        && get_map().get_ground(layer, x, y) == GROUND_EMPTY
+        && get_map().get_ground(layer, x + 15, y) == GROUND_EMPTY
+        && get_map().get_ground(layer, x, y + 15) == GROUND_EMPTY
+        && get_map().get_ground(layer, x + 15, y + 15) == GROUND_EMPTY) {
 
       get_entities().set_entity_layer(*this, Layer(layer - 1));
-      Ground new_ground = entities.get_ground(get_layer(), x, y);
+      Ground new_ground = get_map().get_ground(get_layer(), x, y);
       if (state->is_free() && 
           (new_ground == GROUND_TRAVERSABLE
            || new_ground == GROUND_GRASS
@@ -1877,7 +1892,7 @@ bool Hero::is_striking_with_sword(Detector& detector) const {
 void Hero::try_snap_to_facing_entity() {
 
   Rectangle collision_box = get_bounding_box();
-  Detector* facing_entity = get_facing_entity();
+  const Detector* facing_entity = get_facing_entity();
 
   if (get_animation_direction() % 2 == 0) {
     if (abs(collision_box.get_y() - facing_entity->get_top_left_y()) <= 5) {
@@ -2219,7 +2234,7 @@ void Hero::start_treasure(const Treasure& treasure, int callback_ref) {
  * once finished
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
-void Hero::start_forced_walking(const std::string &path, bool loop, bool ignore_obstacles) {
+void Hero::start_forced_walking(const std::string& path, bool loop, bool ignore_obstacles) {
   set_state(new ForcedWalkingState(*this, path, loop, ignore_obstacles));
 }
 
@@ -2234,10 +2249,20 @@ void Hero::start_forced_walking(const std::string &path, bool loop, bool ignore_
  * \param with_sound true to play the "jump" sound
  * \param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  */
-void Hero::start_jumping(int direction8, int distance, bool ignore_obstacles,
-    bool with_sound, uint32_t movement_delay) {
+void Hero::start_jumping(
+    int direction8,
+    int distance,
+    bool ignore_obstacles,
+    bool with_sound,
+    uint32_t movement_delay) {
 
-  JumpingState* state = new JumpingState(*this, direction8, distance, ignore_obstacles, with_sound, movement_delay);
+  JumpingState* state = new JumpingState(
+      *this,
+      direction8,
+      distance,
+      ignore_obstacles,
+      with_sound,
+      movement_delay);
   set_state(state);
 }
 

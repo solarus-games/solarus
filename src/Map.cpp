@@ -46,6 +46,9 @@ Map::Map(const std::string& id):
   id(id),
   tileset(NULL),
   floor(NO_FLOOR),
+  camera(NULL),
+  visible_surface(NULL),
+  background_surface(NULL),
   loaded(false),
   started(false),
   destination_name(""),
@@ -110,6 +113,7 @@ void Map::set_tileset(const std::string& tileset_id) {
   tileset->set_images(new_tileset);
   get_entities().notify_tileset_changed();
   this->tileset_id = tileset_id;
+  rebuild_background_surface();
 }
 
 /**
@@ -240,6 +244,7 @@ void Map::unload() {
       delete visible_surface;
     }
     visible_surface = NULL;
+    delete background_surface;
     delete entities;
     entities = NULL;
     delete camera;
@@ -258,12 +263,17 @@ void Map::unload() {
  */
 void Map::load(Game& game) {
 
-  this->visible_surface = new Surface(VideoManager::get_instance()->get_quest_size());
+  this->visible_surface = new Surface(
+      VideoManager::get_instance()->get_quest_size());
   this->visible_surface->increment_refcount();
+  this->background_surface = new Surface(
+      VideoManager::get_instance()->get_quest_size());
   entities = new MapEntities(game, *this);
 
   // read the map file
   map_loader.load_map(game, *this);
+
+  rebuild_background_surface();
 
   loaded = true;
 }
@@ -451,23 +461,6 @@ void Map::traverse_separator(Separator* separator) {
 }
 
 /**
- * \brief Sets a subarea of the map where the next drawings will be restricted to.
- *
- * A zero-sized rectangle means that drawings are not restricted to a subarea of the map.
- *
- * \param clipping_rectangle a subarea of the map to restrict the display to
- */
-void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
-
-  this->clipping_rectangle = clipping_rectangle;
-
-  const Rectangle &camera_position = camera->get_position();
-  Rectangle surface_clipping_rectangle(clipping_rectangle);
-  surface_clipping_rectangle.add_xy(-camera_position.get_x(), -camera_position.get_y());
-  visible_surface->set_clipping_rectangle(surface_clipping_rectangle);
-}
-
-/**
  * \brief Suspends or resumes the movement and animations of the entities.
  *
  * This function is called when the game is being suspended
@@ -489,7 +482,7 @@ void Map::set_suspended(bool suspended) {
  * \param event the event to handle
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool Map::notify_input(InputEvent& event) {
+bool Map::notify_input(const InputEvent& event) {
 
   bool handled = get_lua_context().map_on_input(*this, event);
   return handled;
@@ -509,7 +502,6 @@ void Map::update() {
   get_lua_context().map_on_update(*this);
   camera->update();  // update the camera after the entities since this might
                      // be the last update() call for this map */
-  set_clipping_rectangle(clipping_rectangle);
 }
 
 /**
@@ -556,11 +548,22 @@ void Map::draw() {
 }
 
 /**
+ * \brief Builds or rebuilds the surface corresponding to the background of
+ * the tileset.
+ */
+void Map::rebuild_background_surface() {
+
+  if (tileset != NULL) {
+    background_surface->fill_with_color(tileset->get_background_color());
+  }
+}
+
+/**
  * \brief Draws the background of the map.
  */
 void Map::draw_background() {
 
-  visible_surface->fill_with_color(tileset->get_background_color());
+  background_surface->draw(*visible_surface);
 }
 
 /**
@@ -572,6 +575,7 @@ void Map::draw_foreground() {
   const int screen_height = visible_surface->get_height();
 
   // If the map is too small for the screen, add black bars outside the map.
+  // TODO make the same optimization as for the background (avoid fill_with_color)
   const int map_width = get_width();
   if (map_width < screen_width) {
     int bar_width = (screen_width - map_width) / 2;
@@ -616,6 +620,41 @@ void Map::draw_sprite(Sprite& sprite, int x, int y) {
   sprite.draw(*visible_surface,
       x - camera_position.get_x(),
       y - camera_position.get_y()
+  );
+}
+
+/**
+ * \brief Draws a sprite on a restricted area of the map surface.
+ * \param sprite The sprite to draw.
+ * \param x X coordinate of the sprite's origin point in the map.
+ * \param y Y coordinate of the sprite's origin point in the map.
+ * \param clipping_area Rectangle of the map where the drawing will be
+ * restricted. A flat rectangle means no restriction.
+ */
+void Map::draw_sprite(Sprite& sprite, int x, int y,
+    const Rectangle& clipping_area) {
+
+  if (clipping_area.is_flat()) {
+    // No clipping area.
+    draw_sprite(sprite, x, y);
+    return;
+  }
+
+  const Rectangle& camera_position = get_camera_position();
+  const Rectangle region_in_frame(
+      clipping_area.get_x() - x + sprite.get_origin().get_x(),
+      clipping_area.get_y() - y + sprite.get_origin().get_y(),
+      clipping_area.get_width(),
+      clipping_area.get_height()
+  );
+  const Rectangle dst_position(
+      x - camera_position.get_x(),
+      y - camera_position.get_y()
+  );
+  sprite.draw_region(
+      region_in_frame,
+      *visible_surface,
+      dst_position
   );
 }
 
@@ -714,7 +753,7 @@ bool Map::test_collision_with_ground(
   }
 
   // Get the ground property under this point.
-  Ground ground = entities->get_ground(layer, x, y);
+  Ground ground = get_ground(layer, x, y);
   switch (ground) {
 
   case GROUND_EMPTY:
@@ -953,16 +992,64 @@ bool Map::has_empty_ground(Layer layer, const Rectangle& collision_box) const {
   int x2 = x1 + collision_box.get_width() - 1;
 
   for (int x = x1; x <= x2 && !empty_tile; x++) {
-    empty_tile = entities->get_ground(layer, x, y1) == GROUND_EMPTY
-        || entities->get_ground(layer, x, y2) == GROUND_EMPTY;
+    empty_tile = get_ground(layer, x, y1) == GROUND_EMPTY
+        || get_ground(layer, x, y2) == GROUND_EMPTY;
   }
 
   for (int y = y1; y <= y2 && !empty_tile; y++) {
-    empty_tile = entities->get_ground(layer, x1, y) == GROUND_EMPTY
-        || entities->get_ground(layer, x2, y) == GROUND_EMPTY;
+    empty_tile = get_ground(layer, x1, y) == GROUND_EMPTY
+        || get_ground(layer, x2, y) == GROUND_EMPTY;
   }
 
   return empty_tile;
+}
+
+
+/**
+ * \brief Returns the ground at the specified point.
+ *
+ * Static tiles and dynamic entities are all taken into account here.
+ *
+ * \param layer Layer of the point.
+ * \param x X coordinate of the point.
+ * \param y Y coordinate of the point.
+ * \return The ground at this place.
+ */
+Ground Map::get_ground(Layer layer, int x, int y) const {
+
+  // See if a dynamic entity changes the ground.
+  // TODO store ground modifiers in a quad tree for performance.
+
+  const std::list<MapEntity*>& ground_modifiers =
+      entities->get_ground_modifiers(layer);
+  std::list<MapEntity*>::const_reverse_iterator it;
+  const std::list<MapEntity*>::const_reverse_iterator rend =
+      ground_modifiers.rend();
+  for (it = ground_modifiers.rbegin(); it != rend; ++it) {
+    const MapEntity& ground_modifier = *(*it);
+    if (ground_modifier.overlaps(x, y)
+        && ground_modifier.get_modified_ground() != GROUND_EMPTY
+        && ground_modifier.is_enabled()
+        && !ground_modifier.is_being_removed()) {
+      return ground_modifier.get_modified_ground();
+    }
+  }
+
+  // Otherwise, return the ground defined by static tiles (this is very fast).
+  return entities->get_tile_ground(layer, x, y);
+}
+
+/**
+ * \brief Returns the ground at the specified point.
+ *
+ * Static tiles and dynamic entities are all taken into account here.
+ *
+ * \param layer Layer of the point.
+ * \param xy Coordinate of the point.
+ * \return The ground at this place.
+ */
+Ground Map::get_ground(Layer layer, const Rectangle& xy) const {
+  return get_ground(layer, xy.get_x(), xy.get_y());
 }
 
 /**

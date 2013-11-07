@@ -29,7 +29,7 @@ class Hero::PlungingState: public Hero::State {
     PlungingState(Hero& hero);
     ~PlungingState();
 
-    void start(State* previous_state);
+    void start(const State* previous_state);
     void update();
     bool can_start_gameover_sequence() const;
     bool is_touching_ground() const;

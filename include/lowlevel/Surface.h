@@ -64,7 +64,6 @@ class Surface: public Drawable {
     Color get_transparency_color() const;
     void set_transparency_color(const Color& color);
     void set_opacity(int opacity);
-    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
 

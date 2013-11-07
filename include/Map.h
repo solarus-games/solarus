@@ -68,7 +68,6 @@ class Map: public ExportableToLua {
     void restore_camera();
     bool is_camera_moving() const;
     void traverse_separator(Separator* separator);
-    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
 
     // loading
     bool is_loaded() const;
@@ -136,6 +135,8 @@ class Map: public ExportableToLua {
     void draw();
     void draw_sprite(Sprite& sprite, const Rectangle& xy);
     void draw_sprite(Sprite& sprite, int x, int y);
+    void draw_sprite(Sprite& sprite, int x, int y,
+        const Rectangle& clipping_area);
 
     static const int NO_FLOOR = -9999;  /**< Represents a non-existent floor (nil in data files). */
 
@@ -184,8 +185,6 @@ class Map: public ExportableToLua {
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map */
     Surface* background_surface;  /**< a surface filled with the background color of the tileset */
-    Rectangle clipping_rectangle; /**< when drawing the map, indicates an area of the surface to be restricted to
-                                   * (usually, the whole map is considered and this rectangle's values are all 0) */
 
     // map state
     bool loaded;                  /**< true if the loading phase is finished */

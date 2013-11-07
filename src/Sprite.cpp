@@ -706,9 +706,11 @@ void Sprite::raw_draw(
 /**
  * \brief Draws a subrectangle of the current frame of this sprite.
  * \param region The subrectangle to draw, relative to the top-left corner
- * of the current frame.
+ * of the current frame. It may be bigger than the frame: in this case it
+ * will be clipped.
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
+ * The origin point of the sprite will appear at these coordinates.
  */
 void Sprite::raw_draw_region(
     const Rectangle& region,
@@ -718,11 +720,43 @@ void Sprite::raw_draw_region(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    current_animation->draw(get_intermediate_surface(), get_origin(),
-        current_direction, current_frame);
+    get_intermediate_surface().fill_with_color(Color::get_black());
+    const Rectangle& origin = get_origin();
+    current_animation->draw(
+        get_intermediate_surface(),
+        origin,
+        current_direction,
+        current_frame);
+
+    // If the region is bigger than the current frame, clip it.
+    // Otherwise, more than the current frame could be visible.
+    Rectangle src_position(region);
+    const Rectangle& frame_size = get_size();
+    if (src_position.get_x() < 0) {
+      src_position.set_width(src_position.get_width() + src_position.get_x());
+      src_position.set_x(0);
+    }
+    if (src_position.get_x() + src_position.get_width() > frame_size.get_width()) {
+      src_position.set_width(frame_size.get_width() - src_position.get_x());
+    }
+    if (src_position.get_y() < 0) {
+      src_position.set_height(src_position.get_height() + src_position.get_y());
+      src_position.set_y(0);
+    }
+    if (src_position.get_y() + src_position.get_height() > frame_size.get_height()) {
+      src_position.set_height(frame_size.get_height() - src_position.get_y());
+    }
+
+    if (src_position.get_width() <= 0 || src_position.get_height() <= 0) {
+      // Nothing remains visible.
+      return;
+    }
+
+    // Calculate the destination coordinates.
     Rectangle dst_position2(dst_position);
-    dst_position2.add_xy(-get_origin().get_x(), -get_origin().get_y());
-    get_intermediate_surface().draw_region(region, dst_surface, dst_position2);
+    dst_position2.add_xy(src_position.get_x(), src_position.get_y());  // Let a space for the part outside the region.
+    dst_position2.add_xy(-origin.get_x(), -origin.get_y());  // Input coordinates were relative to the origin.
+    get_intermediate_surface().draw_region(src_position, dst_surface, dst_position2);
   }
 }
 

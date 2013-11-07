@@ -71,7 +71,6 @@ class Surface: public Drawable {
     const Rectangle get_size() const;
 
     void set_opacity(int opacity);
-    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
 
@@ -111,13 +110,12 @@ class Surface: public Drawable {
   
     std::vector<SubSurface*> subsurfaces; /**< buffer queue of every sub Surface with their drawing source and destination. */
 
-    SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. Useful if loading texture when windows isn't created and for pixel mask. */
+    SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     bool owns_internal_surfaces;          /**< indicates that internal texture and/or surface belongs to this object. */
     bool is_rendered;                     /**< indicated if the surface has been rendered. If true, the next draw on it will clear the subsurfaces queue. */
     int internal_opacity;                 /**< opacity to apply to all subtexture. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
-    Rectangle clipping_rect;              /**< clipping rectangle to apply when drawing to this surface. */
 };
 
 #endif

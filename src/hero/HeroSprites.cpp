@@ -544,48 +544,38 @@ void HeroSprites::draw_on_map() {
 
   Map& map = hero.get_map();
 
-  if (clipping_rectangle.get_width() > 0) {
-    // restrict the map drawing to the clipping rectangle specified (just for the hero's sprites)
-    map.set_clipping_rectangle(clipping_rectangle);
-  }
-
   if (hero.is_shadow_visible()) {
-    map.draw_sprite(*shadow_sprite, x, y);
+    map.draw_sprite(*shadow_sprite, x, y, clipping_rectangle);
   }
 
   const Rectangle& displayed_xy = hero.get_displayed_xy();
   x = displayed_xy.get_x();
   y = displayed_xy.get_y();
 
-  map.draw_sprite(*tunic_sprite, x, y);
+  map.draw_sprite(*tunic_sprite, x, y, clipping_rectangle);
 
   if (is_trail_visible()) {
-    map.draw_sprite(*trail_sprite, x, y);
+    map.draw_sprite(*trail_sprite, x, y, clipping_rectangle);
   }
 
   if (is_ground_visible()) {
-    map.draw_sprite(*ground_sprite, x, y);
+    map.draw_sprite(*ground_sprite, x, y, clipping_rectangle);
   }
 
   if (is_sword_visible()) {
-    map.draw_sprite(*sword_sprite, x, y);
+    map.draw_sprite(*sword_sprite, x, y, clipping_rectangle);
   }
 
   if (is_sword_stars_visible()) {
-    map.draw_sprite(*sword_stars_sprite, x, y);
+    map.draw_sprite(*sword_stars_sprite, x, y, clipping_rectangle);
   }
 
   if (is_shield_visible()) {
-    map.draw_sprite(*shield_sprite, x, y);
+    map.draw_sprite(*shield_sprite, x, y, clipping_rectangle);
   }
 
   if (lifted_item != NULL) {
     lifted_item->draw_on_map();
-  }
-
-  if (clipping_rectangle.get_width() > 0) {
-    // restore the normal map drawing
-    map.set_clipping_rectangle();
   }
 }
 

@@ -461,23 +461,6 @@ void Map::traverse_separator(Separator* separator) {
 }
 
 /**
- * \brief Sets a subarea of the map where the next drawings will be restricted to.
- *
- * A zero-sized rectangle means that drawings are not restricted to a subarea of the map.
- *
- * \param clipping_rectangle a subarea of the map to restrict the display to
- */
-void Map::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
-
-  this->clipping_rectangle = clipping_rectangle;
-
-  const Rectangle &camera_position = camera->get_position();
-  Rectangle surface_clipping_rectangle(clipping_rectangle);
-  surface_clipping_rectangle.add_xy(-camera_position.get_x(), -camera_position.get_y());
-  visible_surface->set_clipping_rectangle(surface_clipping_rectangle);
-}
-
-/**
  * \brief Suspends or resumes the movement and animations of the entities.
  *
  * This function is called when the game is being suspended
@@ -519,7 +502,6 @@ void Map::update() {
   get_lua_context().map_on_update(*this);
   camera->update();  // update the camera after the entities since this might
                      // be the last update() call for this map */
-  set_clipping_rectangle(clipping_rectangle);
 }
 
 /**
@@ -638,6 +620,41 @@ void Map::draw_sprite(Sprite& sprite, int x, int y) {
   sprite.draw(*visible_surface,
       x - camera_position.get_x(),
       y - camera_position.get_y()
+  );
+}
+
+/**
+ * \brief Draws a sprite on a restricted area of the map surface.
+ * \param sprite The sprite to draw.
+ * \param x X coordinate of the sprite's origin point in the map.
+ * \param y Y coordinate of the sprite's origin point in the map.
+ * \param clipping_area Rectangle of the map where the drawing will be
+ * restricted. A flat rectangle means no restriction.
+ */
+void Map::draw_sprite(Sprite& sprite, int x, int y,
+    const Rectangle& clipping_area) {
+
+  if (clipping_area.is_flat()) {
+    // No clipping area.
+    draw_sprite(sprite, x, y);
+    return;
+  }
+
+  const Rectangle& camera_position = get_camera_position();
+  const Rectangle region_in_frame(
+      clipping_area.get_x() - x + sprite.get_origin().get_x(),
+      clipping_area.get_y() - y + sprite.get_origin().get_y(),
+      clipping_area.get_width(),
+      clipping_area.get_height()
+  );
+  const Rectangle dst_position(
+      x - camera_position.get_x(),
+      y - camera_position.get_y()
+  );
+  sprite.draw_region(
+      region_in_frame,
+      *visible_surface,
+      dst_position
   );
 }
 

@@ -38,8 +38,7 @@ Surface::Surface(int width, int height):
   is_rendered(false),
   internal_opacity(255),
   width(width),
-  height(height),
-  clipping_rect(Rectangle(0, 0, width, height)) {
+  height(height) {
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
@@ -57,8 +56,7 @@ Surface::Surface(const Rectangle& size):
   is_rendered(false),
   internal_opacity(255),
   width(size.get_width()),
-  height(size.get_height()),
-  clipping_rect(Rectangle(0, 0, width, height))  {
+  height(size.get_height()) {
 
   Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
 }
@@ -80,7 +78,6 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   internal_surface = get_surface_from_file(file_name, base_directory);
   width = internal_surface->w;
   height = internal_surface->h;
-  clipping_rect = Rectangle(0, 0, width, height);
   internal_texture = get_texture_from_surface(internal_surface);
 }
 
@@ -108,7 +105,6 @@ Surface::Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface):
     width = internal_surface->w;
     height = internal_surface->h;
   }
-  clipping_rect = Rectangle(0, 0, width, height);
 }
 
 /**
@@ -129,8 +125,7 @@ Surface::Surface(Surface& other):
   is_rendered(false),
   internal_opacity(255),
   width(other.get_width()),
-  height(other.get_height()),
-  clipping_rect(other.clipping_rect){
+  height(other.get_height()) {
 
   other.owns_internal_surfaces = false;
 }
@@ -301,27 +296,6 @@ void Surface::set_opacity(int opacity) {
 }
 
 /**
- * \brief Restricts drawing on this surface to a subarea.
- *
- * Sets a subarea of the surface where the next drawings will be restricted to
- * when this surface is used as the destination of blitting.
- * A zero-sized rectangle means that drawings are not restricted to a subarea of the surface.
- * The rectangle specified may be partially outside this rectangle
- * (then it will be resized to fit inside).
- *
- * \param clipping_rectangle a subarea of the rectangle to restrict the drawing to
- */
-void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
-
-  if (clipping_rectangle.is_flat()) {
-    clipping_rect = Rectangle(0, 0, width, height);
-  }
-  else {
-    clipping_rect = clipping_rectangle;
-  }
-}
-
-/**
  * \brief Fills the entire surface with the specified color.
  * \param color a color
  */
@@ -462,10 +436,10 @@ void Surface::render(
 
   // Calculate absolute clipping rectangle position.
   Rectangle absolute_clip_rect(
-      dst_rect.get_x() + clipping_rect.get_x(),
-      dst_rect.get_y() + clipping_rect.get_y(),
-      clipping_rect.get_width(),
-      clipping_rect.get_height()
+      dst_rect.get_x(),
+      dst_rect.get_y(),
+      get_width(),
+      get_height()
   );
   SDL_IntersectRect(absolute_clip_rect.get_internal_rect(),
       clip_rect.get_internal_rect(),

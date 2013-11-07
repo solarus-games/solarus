@@ -32,6 +32,7 @@
  */
 Surface::Surface(int width, int height):
   Drawable(),
+  internal_color(NULL),
   internal_surface(NULL),
   internal_texture(NULL),
   owns_internal_surfaces(false),
@@ -51,6 +52,7 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(const Rectangle& size):
   Drawable(),
+  internal_color(NULL),
   internal_surface(NULL),
   internal_texture(NULL),
   owns_internal_surfaces(false),
@@ -73,6 +75,7 @@ Surface::Surface(const Rectangle& size):
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
+  internal_color(NULL),
   owns_internal_surfaces(true),
   is_rendered(false),
   internal_opacity(255) {
@@ -96,6 +99,7 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  */
 Surface::Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface):
   Drawable(),
+  internal_color(NULL),
   internal_surface(internal_surface),
   internal_texture(internal_texture),
   owns_internal_surfaces(false),
@@ -123,6 +127,7 @@ Surface::Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface):
  */
 Surface::Surface(Surface& other):
   Drawable(),
+  internal_color(NULL),
   internal_surface(other.internal_surface),
   internal_texture(other.internal_texture),
   owns_internal_surfaces(other.owns_internal_surfaces),
@@ -146,6 +151,8 @@ Surface::~Surface() {
     if(internal_surface)
       SDL_FreeSurface(internal_surface);
   }
+  if(internal_color)
+    delete internal_color;
   clear_subsurfaces();
 }
 
@@ -239,34 +246,6 @@ SDL_Texture* Surface::get_texture_from_surface(SDL_Surface* software_surface)
 }
 
 /**
- * \brief Create the internal texture optimized for streaming access.
- * or a software surface equivalent if no renderer
- */
-void Surface::create_internal_surface()
-{
-  SDL_Renderer* main_renderer = VideoManager::get_instance()->get_renderer();
-  
-  if(main_renderer)
-  {
-    internal_texture = SDL_CreateTexture(VideoManager::get_instance()->get_renderer(),
-      SDL_PIXELFORMAT_ARGB8888,
-      SDL_TEXTUREACCESS_STREAMING,
-      width, height);
-    SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
-  }
-  else
-  {
-    internal_surface = SDL_CreateRGBSurface(
-      0, width, height, SOLARUS_COLOR_DEPTH, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
-    SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
-  }
-  owns_internal_surfaces = true;
-  
-  Debug::check_assertion(internal_texture != NULL || internal_surface != NULL, StringConcat() <<
-    "Cannot create internal texture or surface");
-}
-
-/**
  * \brief Returns the width of the surface.
  * \return the width in pixels
  */
@@ -332,50 +311,49 @@ void Surface::fill_with_color(Color& color) {
 }
 
 /**
- * \brief Fills a rectangle of this surface with the specified color.
+ * \brief Create a Surface with the requested size and color, and add it to the subsurface queue.
  * \param color a color
  * \param where the rectangle to fill
  */
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
-  if (internal_texture == NULL && internal_surface == NULL) {
-    create_internal_surface();
-  }
-  
-  /* TODO If we fill the entire Surface and with opaque color, clear the subsurface queue.
-  if (color.internal_color.a == 255) {
-    clear_subsurfaces();
-  }*/
-
-  // Fill the internal texture or surface
-  if(internal_texture) {
-    const int array_size = where.get_width() * where.get_height();
-    std::vector<uint32_t> pixels(array_size);  // TODO keep an array of pixels as a field?
-    
-    const uint32_t color_value = color.get_internal_value();
-    for (int i = 0; i < array_size; ++i) {
-      pixels[i] = color_value;
-    }
-    
-    SDL_UpdateTexture(internal_texture,
-      where.get_internal_rect(),
-      &pixels[0],
-      where.get_width() * sizeof(uint32_t));
-  }
-  else {
-    Rectangle where2 = where;
-    SDL_FillRect(internal_surface, where2.get_internal_rect(), color.get_internal_value());
-  }
+  Rectangle subsurface_size(0, 0, where.get_width(), where.get_height());
+  Surface subsurface(where);
+  subsurface.internal_color = new Color(color);
+  add_subsurface(subsurface, subsurface_size, where);
 }
 
 /**
  * \brief Add a SubSurface to draw on the vector buffer.
- * \param subsurface The SubSurface to add on the buffer queue.
+ * \param src_surface The Surface to draw.
+ * \param region The subrectangle to draw in the source surface.
+ * \param dst_position Coordinates on this surface.
  */
-void Surface::add_subsurface(SubSurface& subsurface) {
+void Surface::add_subsurface(Surface& src_surface,
+    const Rectangle& region,
+    const Rectangle& dst_position) {
   
-  subsurfaces.push_back(&subsurface);
-  //TODO handle refcount of subsurface.surface , to be able to remove leaf surfaces safely.
+  SubSurface* subsurface = new SubSurface();
+  subsurface->surface = &src_surface;
+  subsurface->src_rect = region;
+  subsurface->dst_rect = dst_position;
+  
+  if(subsurface->dst_rect.is_flat())
+  {
+    subsurface->dst_rect.set_width(region.get_width());
+    subsurface->dst_rect.set_height(region.get_height());
+  }
+  
+  //TODO handle refcount of src_surface , to be able to remove leaf surfaces safely.
+  //src_surface.increment_refcount();
+  
+  // Clear the subsurface queue if the current dst_surface already has been rendered.
+  if(is_rendered) {
+    clear_subsurfaces();
+    is_rendered = false;
+  }
+  
+  subsurfaces.push_back(subsurface);
 }
 
 /**
@@ -384,10 +362,10 @@ void Surface::add_subsurface(SubSurface& subsurface) {
 void Surface::clear_subsurfaces()
 {
   for(int i=0 ; i<subsurfaces.size() ; i++) {
+    //subsurfaces.at(i)->surface->decrement_refcount();
     delete subsurfaces.at(i);
   }
   subsurfaces.clear();
-  is_rendered = false;
 }
 
 /**
@@ -411,24 +389,8 @@ void Surface::raw_draw_region(
     const Rectangle& region,
     Surface& dst_surface,
     const Rectangle& dst_position) {
-
-  SubSurface* subsurface = new SubSurface();
-  subsurface->surface = this;
-  subsurface->src_rect = region;
-  subsurface->dst_rect = dst_position;
   
-  if(subsurface->dst_rect.is_flat())
-  {
-    subsurface->dst_rect.set_width(region.get_width());
-    subsurface->dst_rect.set_height(region.get_height());
-  }
-  
-  // Clear the subsurface queue if the current dst_surface already has been rendered.
-  if(dst_surface.is_rendered) {
-    dst_surface.clear_subsurfaces();
-  }
-  
-  dst_surface.add_subsurface(*subsurface);
+  dst_surface.add_subsurface(*this, region, dst_position);
 }
 
 /**
@@ -452,7 +414,7 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
   
   int current_opacity = std::min(internal_opacity, opacity);
   
-  // Calculate absolute clipping rectangle position.
+  // Calculate absolute clipping rectangle position on screen.
   Rectangle absolute_clip_rect = Rectangle(
     dst_rect.get_x() + clipping_rect.get_x(),
     dst_rect.get_y() + clipping_rect.get_y(),
@@ -464,13 +426,23 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
   
   is_rendered = true;
   
-  // Destroy the internal buffer of pixel, if any.
+  // Destroy the internal buffer of pixel.
   if(internal_surface)
   {
     if(!internal_texture)
       internal_texture = get_texture_from_surface(internal_surface);
     SDL_FreeSurface(internal_surface);
     internal_surface = NULL;
+  }
+  
+  // Draw the internal color as background color.
+  if(internal_color)
+  {
+    int r, g, b, a;
+    internal_color->get_components(r, g, b, a);
+    SDL_RenderSetClipRect(renderer, absolute_clip_rect.get_internal_rect());
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
   }
   
   // Draw the internal texture.
@@ -484,7 +456,7 @@ void Surface::render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst
   // Draw all subtextures.
   for(int i=0 ; i<subsurfaces.size() ; i++)
   {
-    // Calculate absolute destination subrectangle position.
+    // Calculate absolute destination subrectangle position on screen.
     Rectangle absolute_dst_rect = Rectangle(
       dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
       dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),

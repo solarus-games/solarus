@@ -97,8 +97,7 @@ class Surface: public Drawable {
   
     static SDL_Surface* get_surface_from_file(const std::string& file_name, ImageDirectory base_directory);
     static SDL_Texture* get_texture_from_surface(SDL_Surface* software_surface);
-    void create_internal_surface();
-    void add_subsurface(SubSurface& subsurface);
+    void add_subsurface(Surface& src_surface, const Rectangle& region, const Rectangle& dst_position);
     void clear_subsurfaces();
     void render(SDL_Renderer* renderer, Rectangle& src_rect, Rectangle& dst_rect, Rectangle& clip_rect, int opacity);
   
@@ -106,6 +105,7 @@ class Surface: public Drawable {
   
     std::vector<SubSurface*> subsurfaces; /**< buffer queue of every sub Surface with their drawing source and destination. */
 
+    Color* internal_color;                /**< the background color to use, if any. */
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. Useful if loading texture when windows isn't created and for pixel mask. */
     bool owns_internal_surfaces;          /**< indicates that internal texture and/or surface belongs to this object. */

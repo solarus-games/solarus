@@ -93,8 +93,9 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * \param internal_texture The internal texture data. It won't be copied.
  * It must remain valid during the lifetime of this surface.
  * The destructor will not free it.
+ * \param internal_surface The internal software surface data.
  */
-Surface::Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface):
+Surface::Surface(SDL_Surface* internal_surface, SDL_Texture* internal_texture):
   Drawable(),
   internal_color(NULL),
   internal_surface(internal_surface),
@@ -167,7 +168,7 @@ Surface* Surface::create_from_file(const std::string& file_name,
   SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
   SDL_Texture* hardware_surface = get_texture_from_surface(software_surface);
 
-  Surface* surface = new Surface(hardware_surface, software_surface);
+  Surface* surface = new Surface(software_surface, hardware_surface);
   surface->owns_internal_surfaces = true;
   return surface;
 }
@@ -396,7 +397,7 @@ void Surface::render(
 
   int current_opacity = std::min(internal_opacity, opacity);
 
-  // Calculate absolute clipping rectangle position.
+  // Calculate absolute clipping rectangle position on screen.
   Rectangle absolute_clip_rect(
       dst_rect.get_x(),
       dst_rect.get_y(),
@@ -441,7 +442,7 @@ void Surface::render(
   
   // Draw all subtextures.
   for (int i=0; i < subsurfaces.size(); ++i) {
-    // Calculate absolute destination subrectangle position.
+    // Calculate absolute destination subrectangle position on screen.
     Rectangle absolute_dst_rect(
         dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
         dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),

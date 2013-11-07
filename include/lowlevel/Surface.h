@@ -59,7 +59,7 @@ class Surface: public Drawable {
     Surface(int width, int height);
     explicit Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
-    explicit Surface(SDL_Texture* internal_texture, SDL_Surface* internal_surface);
+    explicit Surface(SDL_Surface* internal_surface, SDL_Texture* internal_texture);
     explicit Surface(Surface& other);
     ~Surface();
 

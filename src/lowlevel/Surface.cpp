@@ -412,7 +412,7 @@ void Surface::render(
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
     SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect()); //SDL_RenderSetViewport ?
-    SDL_SetRenderDrawColor(renderer, r, g, b, std::min(a, internal_opacity));
+    SDL_SetRenderDrawColor(renderer, r, g, b, std::min(a, current_opacity));
     SDL_RenderClear(renderer);
   }
   
@@ -430,7 +430,7 @@ void Surface::render(
   // Draw all subtextures.
   for (int i=0; i < subsurfaces.size(); ++i) {
     // Calculate absolute destination subrectangle position on screen.
-    Rectangle absolute_dst_rect(
+    Rectangle subsurface_dst_rect(
         dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
         dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
         subsurfaces.at(i)->dst_rect.get_width(),
@@ -438,7 +438,7 @@ void Surface::render(
 
     subsurfaces.at(i)->surface->render(renderer,
         subsurfaces.at(i)->src_rect,
-        absolute_dst_rect,
+        subsurface_dst_rect,
         dst_rect,
         current_opacity);
   }

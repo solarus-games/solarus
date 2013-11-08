@@ -241,8 +241,7 @@ SDL_Texture* Surface::get_texture_from_surface(SDL_Surface* software_surface)
 {  
   SDL_Renderer* main_renderer = VideoManager::get_instance()->get_renderer();
   
-  if(main_renderer)
-  {
+  if (main_renderer != NULL) {
     SDL_Texture* hardware_surface = SDL_CreateTextureFromSurface(main_renderer, software_surface);
     SDL_SetTextureBlendMode(hardware_surface, SDL_BLENDMODE_BLEND);
     
@@ -433,6 +432,16 @@ void Surface::raw_draw_region(
         dst_surface.internal_surface,
         Rectangle(dst_position).get_internal_rect()
     );
+
+    if (dst_surface.internal_texture != NULL) {
+      // The software surface has changed. Update the hardware texture if any.
+      SDL_UpdateTexture(
+          dst_surface.internal_texture,
+          NULL,
+          dst_surface.internal_surface->pixels,
+          dst_surface.internal_surface->pitch
+      );
+    }
   }
   else {
     dst_surface.add_subsurface(*this, region, dst_position);

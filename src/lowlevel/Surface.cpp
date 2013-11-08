@@ -384,8 +384,7 @@ void Surface::draw_transition(Transition& transition) {
  * \param renderer The renderer where to draw.
  * \param src_rect The subrectangle of the texture to draw.
  * \param dst_rect The portion of renderer where to draw.
- * \param clip_rect The clip area, relative to dst_rect,
- * or NULL to disable clipping.
+ * \param clip_rect The clip area, correspond to the parent dst_rect.
  * \param opacity The opacity of the parent surface.
  */
 void Surface::render(
@@ -396,18 +395,6 @@ void Surface::render(
     int opacity) {
 
   int current_opacity = std::min(internal_opacity, opacity);
-
-  // Calculate absolute clipping rectangle position on screen.
-  Rectangle absolute_clip_rect(
-      dst_rect.get_x(),
-      dst_rect.get_y(),
-      get_width(),
-      get_height()
-  );
-  SDL_IntersectRect(absolute_clip_rect.get_internal_rect(),
-      clip_rect.get_internal_rect(),
-      absolute_clip_rect.get_internal_rect());
-
   is_rendered = true;
 
   // Destroy the internal buffer of pixel, if any.
@@ -424,15 +411,15 @@ void Surface::render(
   {
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
-    SDL_RenderSetClipRect(renderer, absolute_clip_rect.get_internal_rect());
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect()); //SDL_RenderSetViewport ?
+    SDL_SetRenderDrawColor(renderer, r, g, b, std::min(a, internal_opacity));
     SDL_RenderClear(renderer);
   }
   
   // Draw the internal texture.
   if (internal_texture != NULL) {
     SDL_SetTextureAlphaMod(internal_texture, current_opacity);
-    SDL_RenderSetClipRect(renderer, absolute_clip_rect.get_internal_rect());
+    SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
     SDL_RenderCopy(
         renderer,
         internal_texture,
@@ -452,7 +439,7 @@ void Surface::render(
     subsurfaces.at(i)->surface->render(renderer,
         subsurfaces.at(i)->src_rect,
         absolute_dst_rect,
-        absolute_clip_rect,
+        dst_rect,
         current_opacity);
   }
 }

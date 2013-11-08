@@ -381,7 +381,6 @@ void Surface::add_subsurface(Surface& src_surface,
   // Clear the subsurface queue if the current dst_surface already has been rendered.
   if(is_rendered) {
     clear_subsurfaces();
-    is_rendered = false;
   }
   
   subsurfaces.push_back(subsurface);
@@ -432,12 +431,12 @@ void Surface::raw_draw_region(
         dst_surface.internal_surface,
         Rectangle(dst_position).get_internal_rect()
     );
-
-    is_rendered = false;
   }
   else {
     dst_surface.add_subsurface(*this, region, dst_position);
   }
+  
+  dst_surface.is_rendered = false;
 }
 
 /**

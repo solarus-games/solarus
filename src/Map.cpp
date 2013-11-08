@@ -642,8 +642,8 @@ void Map::draw_sprite(Sprite& sprite, int x, int y,
 
   const Rectangle& camera_position = get_camera_position();
   const Rectangle region_in_frame(
-      clipping_area.get_x() - x + sprite.get_origin().get_x(),
-      clipping_area.get_y() - y + sprite.get_origin().get_y(),
+      clipping_area.get_x() - x,
+      clipping_area.get_y() - y,
       clipping_area.get_width(),
       clipping_area.get_height()
   );

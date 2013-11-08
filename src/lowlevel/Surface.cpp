@@ -95,12 +95,11 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * This constructor must be used only by lowlevel classes that manipulate directly
  * SDL dependent surfaces.
  *
- * \param internal_texture The internal texture data. It won't be copied.
+ * \param internal_surface The internal surface data. It won't be copied.
  * It must remain valid during the lifetime of this surface.
  * The destructor will not free it.
- * \param internal_surface The internal software surface data.
  */
-Surface::Surface(SDL_Surface* internal_surface, SDL_Texture* internal_texture):
+Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
   internal_color(NULL),
   software_destination(false),
@@ -110,13 +109,8 @@ Surface::Surface(SDL_Surface* internal_surface, SDL_Texture* internal_texture):
   is_rendered(false),
   internal_opacity(255) {
 
-  if (internal_texture != NULL) {
-    SDL_QueryTexture(internal_texture, NULL, NULL, &width, &height);
-  }
-  else {
-    width = internal_surface->w;
-    height = internal_surface->h;
-  }
+  width = internal_surface->w;
+  height = internal_surface->h;
 }
 
 /**
@@ -177,9 +171,8 @@ Surface* Surface::create_from_file(const std::string& file_name,
     ImageDirectory base_directory) {
   
   SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
-  SDL_Texture* hardware_surface = get_texture_from_surface(software_surface);
 
-  Surface* surface = new Surface(software_surface, hardware_surface);
+  Surface* surface = new Surface(software_surface);
   surface->owns_internal_surfaces = true;
   return surface;
 }

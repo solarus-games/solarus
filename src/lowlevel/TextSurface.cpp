@@ -604,7 +604,7 @@ void TextSurface::rebuild_ttf() {
       << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
   
   internal_texture = SDL_CreateTextureFromSurface(VideoManager::get_instance()->get_renderer(), internal_surface);
-  surface = new Surface(internal_surface, internal_texture);
+  surface = new Surface(internal_surface);
 }
 
 /**

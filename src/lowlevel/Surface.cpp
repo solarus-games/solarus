@@ -485,7 +485,7 @@ SDL_Texture* Surface::get_internal_texture() {
  */
 uint32_t Surface::get_pixel(int index) const {
 
-  Debug::check_assertion(internal_surface != NULL, StringConcat() <<
+  Debug::check_assertion(internal_surface != NULL,
     "Attempt to read a pixel on a hardware or a buffer surface.");
   
   SDL_PixelFormat* format = internal_surface->format;

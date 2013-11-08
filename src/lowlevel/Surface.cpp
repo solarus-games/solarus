@@ -144,13 +144,16 @@ Surface::Surface(Surface& other):
 Surface::~Surface() {
 
   if (owns_internal_surfaces) {
-    if(internal_texture)
+    if (internal_texture != NULL) {
       SDL_DestroyTexture(internal_texture);
-    if(internal_surface)
+    }
+    if (internal_surface != NULL) {
       SDL_FreeSurface(internal_surface);
+    }
   }
-  if(internal_color)
+  if (internal_color != NULL) {
     delete internal_color;
+  }
   clear_subsurfaces();
 }
 
@@ -409,8 +412,7 @@ void Surface::render(
   }
   
   // Draw the internal color as background color.
-  if(internal_color)
-  {
+  if (internal_color != NULL) {
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
     SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect()); //SDL_RenderSetViewport ?
@@ -430,7 +432,7 @@ void Surface::render(
   }
   
   // Draw all subtextures.
-  for (int i=0; i < subsurfaces.size(); ++i) {
+  for (int i = 0; i < subsurfaces.size(); ++i) {
     // Calculate absolute destination subrectangle position on screen.
     Rectangle subsurface_dst_rect(
         dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),

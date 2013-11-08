@@ -194,11 +194,10 @@ Surface* Surface::create_from_file(const std::string& file_name,
  * \return The SDL_Surface.
  */
 SDL_Surface* Surface::get_surface_from_file(const std::string& file_name,
-                                            ImageDirectory base_directory)
-{
+                                            ImageDirectory base_directory) {
   std::string prefix;
   bool language_specific = false;
-  
+
   if (base_directory == DIR_SPRITES) {
     prefix = "sprites/";
   }
@@ -212,20 +211,20 @@ SDL_Surface* Surface::get_surface_from_file(const std::string& file_name,
     // File not found.
     return NULL;
   }
-  
+
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
   SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
-  
+
   SDL_Surface* software_surface = IMG_Load_RW(rw, 0);
-  
+
   SDL_RWclose(rw);
   FileTools::data_file_close_buffer(buffer);
-  
+
   Debug::check_assertion(software_surface != NULL, StringConcat() <<
     "Cannot load image '" << prefixed_file_name << "'");
-  
+
   return software_surface;
 }
 
@@ -237,17 +236,16 @@ SDL_Surface* Surface::get_surface_from_file(const std::string& file_name,
  * \param software_surface The software surface to convert.
  * \return The SDL_Texture.
  */
-SDL_Texture* Surface::get_texture_from_surface(SDL_Surface* software_surface)
-{  
+SDL_Texture* Surface::get_texture_from_surface(SDL_Surface* software_surface) {
   SDL_Renderer* main_renderer = VideoManager::get_instance()->get_renderer();
-  
+
   if (main_renderer != NULL) {
     SDL_Texture* hardware_surface = SDL_CreateTextureFromSurface(main_renderer, software_surface);
     SDL_SetTextureBlendMode(hardware_surface, SDL_BLENDMODE_BLEND);
-    
+
     return hardware_surface;
   }
-  
+
   return NULL;
 }
 
@@ -330,13 +328,12 @@ void Surface::set_software_destination(bool software_destination) {
   }
 }
 
-
 /**
  * \brief Fills the entire surface with the specified color.
  * \param color a color
  */
 void Surface::fill_with_color(Color& color) {
-  
+
   const Rectangle& size = Rectangle(0, 0, width, height);
   fill_with_color(color, size);
 }
@@ -363,35 +360,33 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 void Surface::add_subsurface(Surface& src_surface,
     const Rectangle& region,
     const Rectangle& dst_position) {
-  
+
   SubSurface* subsurface = new SubSurface();
   subsurface->surface = &src_surface;
   subsurface->src_rect = region;
   subsurface->dst_rect = dst_position;
-  
-  if(subsurface->dst_rect.is_flat())
-  {
+
+  if (subsurface->dst_rect.is_flat()) {
     subsurface->dst_rect.set_width(region.get_width());
     subsurface->dst_rect.set_height(region.get_height());
   }
-  
+
   //TODO handle refcount of src_surface , to be able to remove leaf surfaces safely.
   //src_surface.increment_refcount();
-  
+
   // Clear the subsurface queue if the current dst_surface already has been rendered.
-  if(is_rendered) {
+  if (is_rendered) {
     clear_subsurfaces();
   }
-  
+
   subsurfaces.push_back(subsurface);
 }
 
 /**
  * \brief clear the internal SubSurface queue.
  */
-void Surface::clear_subsurfaces()
-{
-  for(int i=0 ; i<subsurfaces.size() ; i++) {
+void Surface::clear_subsurfaces() {
+  for (int i=0 ; i<subsurfaces.size() ; i++) {
     //subsurfaces.at(i)->surface->decrement_refcount();
     delete subsurfaces.at(i);
   }
@@ -405,7 +400,7 @@ void Surface::clear_subsurfaces()
  */
 void Surface::raw_draw(Surface& dst_surface, const Rectangle& dst_position) {
 
-  Rectangle region = Rectangle(0, 0, width, height);
+  Rectangle region(0, 0, width, height);
   raw_draw_region(region, dst_surface, dst_position);
 }
 
@@ -419,7 +414,7 @@ void Surface::raw_draw_region(
     const Rectangle& region,
     Surface& dst_surface,
     const Rectangle& dst_position) {
- 
+
   if (dst_surface.software_destination) {
     Debug::check_assertion(this->internal_surface != NULL,
         "Missing source internal surface");
@@ -435,7 +430,7 @@ void Surface::raw_draw_region(
   else {
     dst_surface.add_subsurface(*this, region, dst_position);
   }
-  
+
   dst_surface.is_rendered = false;
 }
 
@@ -469,7 +464,7 @@ void Surface::render(
 
   // Accelerate the internal software surface.
   if (internal_surface != NULL) {
-    
+
     if (internal_texture == NULL) {
       internal_texture = get_texture_from_surface(internal_surface);
     }
@@ -482,14 +477,14 @@ void Surface::render(
           internal_surface->pitch
       );
     }
-    
+
     // Destroy the internal surface if needed.
     if (!software_destination) {
       SDL_FreeSurface(internal_surface);
       internal_surface = NULL;
     }
   }
-  
+
   // Draw the internal color as background color.
   if (internal_color != NULL) {
     int r, g, b, a;
@@ -498,7 +493,7 @@ void Surface::render(
     SDL_SetRenderDrawColor(renderer, r, g, b, std::min(a, current_opacity));
     SDL_RenderClear(renderer);
   }
-  
+
   // Draw the internal texture.
   if (internal_texture != NULL) {
     SDL_SetTextureAlphaMod(internal_texture, current_opacity);
@@ -509,7 +504,7 @@ void Surface::render(
         src_rect.get_internal_rect(),
         dst_rect.get_internal_rect());
   }
-  
+
   // Draw all subtextures.
   std::vector<SubSurface*>::const_iterator it;
   for (it = subsurfaces.begin(); it != subsurfaces.end(); ++it) {
@@ -521,7 +516,7 @@ void Surface::render(
         dst_rect.get_y() + subsurface->dst_rect.get_y(),
         subsurface->dst_rect.get_width(),
         subsurface->dst_rect.get_height());
-    
+
     // Set the intersection of the subsurface destination and this surface's clip as clipping rectangle.
     Rectangle superimposed_clip_rect(subsurface_dst_rect);
     SDL_IntersectRect(superimposed_clip_rect.get_internal_rect(),
@@ -534,7 +529,7 @@ void Surface::render(
         superimposed_clip_rect,
         current_opacity);
   }
-  
+
   is_rendered = true;
 }
 
@@ -571,7 +566,7 @@ uint32_t Surface::get_pixel(int index) const {
 
   Debug::check_assertion(internal_surface != NULL,
     "Attempt to read a pixel on a hardware or a buffer surface.");
-  
+
   SDL_PixelFormat* format = internal_surface->format;
 
   // Test from the most common to the most exotic.
@@ -617,11 +612,11 @@ uint32_t Surface::get_pixel(int index) const {
  * \return \c true if the pixel is transparent.
  */
 bool Surface::is_pixel_transparent(int index) const {
-  
+
   uint32_t pixel = get_pixel(index);
   uint32_t colorkey;
   bool with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
-  
+
   if (with_colorkey && pixel == colorkey) {
     // The pixel has the transparency color.
     return true;
@@ -629,10 +624,10 @@ bool Surface::is_pixel_transparent(int index) const {
 
   if (internal_surface->format->Amask != 0               // There exists an alpha channel.
       && (pixel & internal_surface->format->Amask) == 0  // The pixel is fully transparent.
-      ) {
+  ) {
     return true;
   }
-  
+
   return false;
 }
 

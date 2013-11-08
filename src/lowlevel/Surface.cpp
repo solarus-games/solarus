@@ -104,7 +104,7 @@ Surface::Surface(SDL_Surface* internal_surface):
   internal_color(NULL),
   software_destination(false),
   internal_surface(internal_surface),
-  internal_texture(internal_texture),
+  internal_texture(NULL),
   owns_internal_surfaces(false),
   is_rendered(false),
   internal_opacity(255) {

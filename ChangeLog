@@ -31,10 +31,12 @@ Changes that introduce incompatibilities:
 * map:create_shop_item() is replaced by map:create_shop_treasure().
 * In sol.video.get/set_mode(), "fullscreen_*_wide" modes no longer exist.
 * on_key_pressed() and on_character_pressed() are now both called (#344).
+* surface:set_transparency_color() no longer exists.
 
 Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
+* Colors now take an optional alpha value as fourth component.
 * sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
 * Fix random_movement:get_max_radius() that was not working.
 * Add an event sensor:on_left() (#339).

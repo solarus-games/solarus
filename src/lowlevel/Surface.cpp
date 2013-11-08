@@ -74,6 +74,8 @@ Surface::Surface(const Rectangle& size):
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
   internal_color(NULL),
+  internal_surface(NULL),
+  internal_texture(NULL),
   owns_internal_surfaces(true),
   is_rendered(false),
   internal_opacity(255) {

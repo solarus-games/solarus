@@ -118,7 +118,7 @@ class Surface: public Drawable {
     SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. Useful if loading texture when windows isn't created and for pixel mask. */
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     bool owns_internal_surfaces;          /**< indicates that internal texture and/or surface belongs to this object. */
-    bool is_rendered;                     /**< indicated if the surface has been rendered. If true, the next draw on it will clear the subsurfaces queue. */
+    bool is_rendered;                     /**< indicated if the current surface has been rendered. Set to false when drawing a surface on this one. */
     int internal_opacity;                 /**< opacity to apply to all subtexture. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
 };

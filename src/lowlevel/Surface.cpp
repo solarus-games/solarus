@@ -433,15 +433,7 @@ void Surface::raw_draw_region(
         Rectangle(dst_position).get_internal_rect()
     );
 
-    if (dst_surface.internal_texture != NULL) {
-      // The software surface has changed. Update the hardware texture if any.
-      SDL_UpdateTexture(
-          dst_surface.internal_texture,
-          NULL,
-          dst_surface.internal_surface->pixels,
-          dst_surface.internal_surface->pitch
-      );
-    }
+    is_rendered = false;
   }
   else {
     dst_surface.add_subsurface(*this, region, dst_position);
@@ -475,13 +467,24 @@ void Surface::render(
     int opacity) {
 
   int current_opacity = std::min(internal_opacity, opacity);
-  is_rendered = true;
 
-  // Destroy the internal buffer of pixel, if any.
+  // Accelerate the internal software surface.
   if (internal_surface != NULL) {
+    
     if (internal_texture == NULL) {
       internal_texture = get_texture_from_surface(internal_surface);
     }
+    // Else if the software surface has changed, update the hardware texture.
+    else if (!is_rendered) {
+      SDL_UpdateTexture(
+          internal_texture,
+          NULL,
+          internal_surface->pixels,
+          internal_surface->pitch
+      );
+    }
+    
+    // Destroy the internal surface if needed.
     if (!software_destination) {
       SDL_FreeSurface(internal_surface);
       internal_surface = NULL;
@@ -532,6 +535,8 @@ void Surface::render(
         superimposed_clip_rect,
         current_opacity);
   }
+  
+  is_rendered = true;
 }
 
 /**

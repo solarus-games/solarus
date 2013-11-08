@@ -432,13 +432,16 @@ void Surface::render(
   }
   
   // Draw all subtextures.
-  for (int i = 0; i < subsurfaces.size(); ++i) {
+  std::vector<SubSurface*>::const_iterator it;
+  for (it = subsurfaces.begin(); it != subsurfaces.end(); ++it) {
+    SubSurface* subsurface = *it;
+
     // Calculate absolute destination subrectangle position on screen.
     Rectangle subsurface_dst_rect(
-        dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
-        dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
-        subsurfaces.at(i)->dst_rect.get_width(),
-        subsurfaces.at(i)->dst_rect.get_height());
+        dst_rect.get_x() + subsurface->dst_rect.get_x(),
+        dst_rect.get_y() + subsurface->dst_rect.get_y(),
+        subsurface->dst_rect.get_width(),
+        subsurface->dst_rect.get_height());
     
     // Calculate the clipping rectangle for the subsurface.
     Rectangle parents_clip_rect(subsurface_dst_rect);
@@ -446,8 +449,8 @@ void Surface::render(
         dst_rect.get_internal_rect(),
         parents_clip_rect.get_internal_rect());
 
-    subsurfaces.at(i)->surface->render(renderer,
-        subsurfaces.at(i)->src_rect,
+    subsurface->surface->render(renderer,
+        subsurface->src_rect,
         subsurface_dst_rect,
         parents_clip_rect,
         current_opacity);

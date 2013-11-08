@@ -859,6 +859,10 @@ void MapEntities::build_non_animated_tiles() {
     delete non_animated_tiles_surfaces[layer];
     non_animated_tiles_surfaces[layer] = new Surface(map_size.get_width(), map_size.get_height());
 
+    // Set this surface as a software destination because it is built only
+    // once and never changes later.
+    non_animated_tiles_surfaces[layer]->set_software_destination(true);
+
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       Tile& tile = *tiles[layer][i];
       if (!tile.is_animated()) {

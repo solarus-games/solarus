@@ -70,6 +70,9 @@ class Surface: public Drawable {
     int get_height() const;
     const Rectangle get_size() const;
 
+    bool is_software_destination() const;
+    void set_software_destination(bool software_destination);
+
     void set_opacity(int opacity);
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
@@ -110,6 +113,8 @@ class Surface: public Drawable {
     std::vector<SubSurface*> subsurfaces; /**< buffer queue of every sub Surface with their drawing source and destination. */
 
     Color* internal_color;                /**< the background color to use, if any. */
+    bool software_destination;            /**< indicates that this surface is modified on software side
+                                           * (and therefore immediately) when used as a destination */
     SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. Useful if loading texture when windows isn't created and for pixel mask. */
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     bool owns_internal_surfaces;          /**< indicates that internal texture and/or surface belongs to this object. */

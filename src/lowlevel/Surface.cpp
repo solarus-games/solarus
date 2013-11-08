@@ -33,6 +33,7 @@
 Surface::Surface(int width, int height):
   Drawable(),
   internal_color(NULL),
+  software_destination(false),
   internal_surface(NULL),
   internal_texture(NULL),
   owns_internal_surfaces(false),
@@ -52,6 +53,7 @@ Surface::Surface(int width, int height):
 Surface::Surface(const Rectangle& size):
   Drawable(),
   internal_color(NULL),
+  software_destination(false),
   internal_surface(NULL),
   internal_texture(NULL),
   owns_internal_surfaces(false),
@@ -74,6 +76,7 @@ Surface::Surface(const Rectangle& size):
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
   internal_color(NULL),
+  software_destination(false),
   internal_surface(NULL),
   internal_texture(NULL),
   owns_internal_surfaces(true),
@@ -100,14 +103,16 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
 Surface::Surface(SDL_Surface* internal_surface, SDL_Texture* internal_texture):
   Drawable(),
   internal_color(NULL),
+  software_destination(false),
   internal_surface(internal_surface),
   internal_texture(internal_texture),
   owns_internal_surfaces(false),
   is_rendered(false),
-  internal_opacity(255)
-{
-  if(internal_texture)
+  internal_opacity(255) {
+
+  if (internal_texture != NULL) {
     SDL_QueryTexture(internal_texture, NULL, NULL, &width, &height);
+  }
   else {
     width = internal_surface->w;
     height = internal_surface->h;
@@ -127,6 +132,7 @@ Surface::Surface(SDL_Surface* internal_surface, SDL_Texture* internal_texture):
 Surface::Surface(Surface& other):
   Drawable(),
   internal_color(NULL),
+  software_destination(false),
   internal_surface(other.internal_surface),
   internal_texture(other.internal_texture),
   owns_internal_surfaces(other.owns_internal_surfaces),
@@ -281,6 +287,52 @@ void Surface::set_opacity(int opacity) {
 }
 
 /**
+ * When this surface is used as the destination of a drawing operation,
+ * return whether the drawing operation is performed in RAM or by the GPU
+ * at rendering time.
+ *
+ * By default, this setting is false and all drawing operations are
+ * performed by the GPU.
+ */
+bool Surface::is_software_destination() const {
+  return software_destination;
+}
+
+/**
+ * When this surface is used as the destination of a drawing operation,
+ * return whether the drawing operation is performed in RAM or by the GPU
+ * at rendering time.
+ *
+ * By default, this setting is false and all drawing operations are
+ * performed by the GPU.
+ *
+ * You should set this to \c true if your surface is built from lots of source
+ * surfaces that don't change often.
+ * If in doubt, leave it to \c false.
+ */
+void Surface::set_software_destination(bool software_destination) {
+
+  this->software_destination = software_destination;
+
+  if (software_destination) {
+
+    if (internal_surface == NULL) {
+      internal_surface = SDL_CreateRGBSurface(
+          0,
+          width,
+          height,
+          32,
+          0xff000000,
+          0x00ff0000,
+          0x0000ff00,
+          0x000000ff
+      );
+    }
+  }
+}
+
+
+/**
  * \brief Fills the entire surface with the specified color.
  * \param color a color
  */
@@ -369,8 +421,22 @@ void Surface::raw_draw_region(
     const Rectangle& region,
     Surface& dst_surface,
     const Rectangle& dst_position) {
-  
-  dst_surface.add_subsurface(*this, region, dst_position);
+ 
+  if (dst_surface.software_destination) {
+    Debug::check_assertion(this->internal_surface != NULL,
+        "Missing source internal surface");
+    Debug::check_assertion(dst_surface.internal_surface != NULL,
+        "Missing destination internal surface");
+    SDL_BlitSurface(
+        this->internal_surface,
+        region.get_internal_rect(),
+        dst_surface.internal_surface,
+        Rectangle(dst_position).get_internal_rect()
+    );
+  }
+  else {
+    dst_surface.add_subsurface(*this, region, dst_position);
+  }
 }
 
 /**
@@ -407,8 +473,10 @@ void Surface::render(
     if (internal_texture == NULL) {
       internal_texture = get_texture_from_surface(internal_surface);
     }
-    SDL_FreeSurface(internal_surface);
-    internal_surface = NULL;
+    if (!software_destination) {
+      SDL_FreeSurface(internal_surface);
+      internal_surface = NULL;
+    }
   }
   
   // Draw the internal color as background color.

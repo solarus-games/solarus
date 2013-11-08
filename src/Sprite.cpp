@@ -705,9 +705,8 @@ void Sprite::raw_draw(
 
 /**
  * \brief Draws a subrectangle of the current frame of this sprite.
- * \param region The subrectangle to draw, relative to the top-left corner
- * of the current frame. It may be bigger than the frame: in this case it
- * will be clipped.
+ * \param region The subrectangle to draw, relative to the origin point.
+ * It may be bigger than the frame: in this case it will be clipped.
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  * The origin point of the sprite will appear at these coordinates.
@@ -731,6 +730,7 @@ void Sprite::raw_draw_region(
     // If the region is bigger than the current frame, clip it.
     // Otherwise, more than the current frame could be visible.
     Rectangle src_position(region);
+    src_position.add_xy(origin.get_x(), origin.get_y());
     const Rectangle& frame_size = get_size();
     if (src_position.get_x() < 0) {
       src_position.set_width(src_position.get_width() + src_position.get_x());

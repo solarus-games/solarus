@@ -74,6 +74,8 @@ Surface::Surface(const Rectangle& size):
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
   internal_color(NULL),
+  internal_surface(NULL),
+  internal_texture(NULL),
   owns_internal_surfaces(true),
   is_rendered(false),
   internal_opacity(255) {
@@ -142,13 +144,16 @@ Surface::Surface(Surface& other):
 Surface::~Surface() {
 
   if (owns_internal_surfaces) {
-    if(internal_texture)
+    if (internal_texture != NULL) {
       SDL_DestroyTexture(internal_texture);
-    if(internal_surface)
+    }
+    if (internal_surface != NULL) {
       SDL_FreeSurface(internal_surface);
+    }
   }
-  if(internal_color)
+  if (internal_color != NULL) {
     delete internal_color;
+  }
   clear_subsurfaces();
 }
 
@@ -407,8 +412,7 @@ void Surface::render(
   }
   
   // Draw the internal color as background color.
-  if(internal_color != NULL)
-  {
+  if (internal_color != NULL) {
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
     SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect()); //SDL_RenderSetViewport ?
@@ -428,13 +432,16 @@ void Surface::render(
   }
   
   // Draw all subtextures.
-  for (int i=0; i < subsurfaces.size(); ++i) {
-    // Calculate the absolute subsurface position on screen.
+  std::vector<SubSurface*>::const_iterator it;
+  for (it = subsurfaces.begin(); it != subsurfaces.end(); ++it) {
+    SubSurface* subsurface = *it;
+
+    // Calculate absolute destination subrectangle position on screen.
     Rectangle subsurface_dst_rect(
-        dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
-        dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
-        subsurfaces.at(i)->dst_rect.get_width(),
-        subsurfaces.at(i)->dst_rect.get_height());
+        dst_rect.get_x() + subsurface->dst_rect.get_x(),
+        dst_rect.get_y() + subsurface->dst_rect.get_y(),
+        subsurface->dst_rect.get_width(),
+        subsurface->dst_rect.get_height());
     
     // Set the intersection of the subsurface destination and this surface's clip as clipping rectangle.
     Rectangle superimposed_clip_rect(subsurface_dst_rect);
@@ -442,8 +449,8 @@ void Surface::render(
         dst_rect.get_internal_rect(),
         superimposed_clip_rect.get_internal_rect());
 
-    subsurfaces.at(i)->surface->render(renderer,
-        subsurfaces.at(i)->src_rect,
+    subsurface->surface->render(renderer,
+        subsurface->src_rect,
         subsurface_dst_rect,
         superimposed_clip_rect,
         current_opacity);
@@ -481,7 +488,7 @@ SDL_Texture* Surface::get_internal_texture() {
  */
 uint32_t Surface::get_pixel(int index) const {
 
-  Debug::check_assertion(internal_surface != NULL, StringConcat() <<
+  Debug::check_assertion(internal_surface != NULL,
     "Attempt to read a pixel on a hardware or a buffer surface.");
   
   SDL_PixelFormat* format = internal_surface->format;

@@ -371,8 +371,8 @@ void Savegame::notify_game_finished() {
  */
 bool Savegame::is_string(const std::string& key) const {
 
-  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
-      "Savegame variable '" << key << "' is not a valid key");
+  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+      std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
   std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
@@ -390,8 +390,8 @@ bool Savegame::is_string(const std::string& key) const {
  */
 const std::string& Savegame::get_string(const std::string& key) const {
 
-  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
-      "Savegame variable '" << key << "' is not a valid key");
+  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+      std::string("Savegame variable '") + key + "' is not a valid key");
 
   std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
   if (it != saved_values.end()) {
@@ -426,8 +426,8 @@ void Savegame::set_string(const std::string& key, const std::string& value) {
  */
 bool Savegame::is_integer(const std::string& key) const {
 
-  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
-      "Savegame variable '" << key << "' is not a valid key");
+  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+      std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
   std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
@@ -445,8 +445,8 @@ bool Savegame::is_integer(const std::string& key) const {
  */
 int Savegame::get_integer(const std::string& key) const {
 
-  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
-      "Savegame variable '" << key << "' is not a valid key");
+  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+      std::string("Savegame variable '") + key + "' is not a valid key");
 
   int result = 0;
   std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
@@ -480,8 +480,8 @@ void Savegame::set_integer(const std::string& key, int value) {
  */
 bool Savegame::is_boolean(const std::string& key) const {
 
-  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
-      "Savegame variable '" << key << "' is not a valid key");
+  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+      std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
   std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
@@ -499,8 +499,8 @@ bool Savegame::is_boolean(const std::string& key) const {
  */
 bool Savegame::get_boolean(const std::string& key) const {
 
-  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
-      "Savegame variable '" << key << "' is not a valid key");
+  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+      std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
   std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);

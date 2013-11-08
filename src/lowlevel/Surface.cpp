@@ -469,7 +469,7 @@ void Surface::render(
       internal_texture = get_texture_from_surface(internal_surface);
     }
     // Else if the software surface has changed, update the hardware texture.
-    else if (!is_rendered) {
+    else if (software_destination && !is_rendered) {
       SDL_UpdateTexture(
           internal_texture,
           NULL,

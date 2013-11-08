@@ -384,7 +384,7 @@ void Surface::draw_transition(Transition& transition) {
  * \param renderer The renderer where to draw.
  * \param src_rect The subrectangle of the texture to draw.
  * \param dst_rect The portion of renderer where to draw.
- * \param clip_rect The clip area, correspond to the parent dst_rect.
+ * \param clip_rect The clip area, correspond to parents dst_rect.
  * \param opacity The opacity of the parent surface.
  */
 void Surface::render(
@@ -407,7 +407,7 @@ void Surface::render(
   }
   
   // Draw the internal color as background color.
-  if(internal_color)
+  if(internal_color != NULL)
   {
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
@@ -429,23 +429,23 @@ void Surface::render(
   
   // Draw all subtextures.
   for (int i=0; i < subsurfaces.size(); ++i) {
-    // Calculate absolute destination subrectangle position on screen.
+    // Calculate the absolute subsurface position on screen.
     Rectangle subsurface_dst_rect(
         dst_rect.get_x() + subsurfaces.at(i)->dst_rect.get_x(),
         dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
         subsurfaces.at(i)->dst_rect.get_width(),
         subsurfaces.at(i)->dst_rect.get_height());
     
-    // Calculate the clipping rectangle for the subsurface.
-    Rectangle parents_clip_rect(subsurface_dst_rect);
-    SDL_IntersectRect(parents_clip_rect.get_internal_rect(),
+    // Set the intersection of the subsurface destination and this surface's clip as clipping rectangle.
+    Rectangle superimposed_clip_rect(subsurface_dst_rect);
+    SDL_IntersectRect(superimposed_clip_rect.get_internal_rect(),
         dst_rect.get_internal_rect(),
-        parents_clip_rect.get_internal_rect());
+        superimposed_clip_rect.get_internal_rect());
 
     subsurfaces.at(i)->surface->render(renderer,
         subsurfaces.at(i)->src_rect,
         subsurface_dst_rect,
-        parents_clip_rect,
+        superimposed_clip_rect,
         current_opacity);
   }
 }

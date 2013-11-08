@@ -20,7 +20,8 @@
  */
 #include "lowlevel/Color.h"
 
-SDL_PixelFormat* Color::pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888); // Choose an arbitrary format.
+SDL_PixelFormat* Color::pixel_format =
+    SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888); // RGBA is the most common format.
 
 Color Color::transparent;
 Color Color::black;
@@ -97,21 +98,21 @@ Color::Color(int r, int g, int b, int a) {
  *
  * This constructor must be used only by low-level classes.
  *
- * \param internal_value The 32-bit value of the color to create.
+ * \param internal_value The 32-bit RGBA value of the color to create.
  */
 Color::Color(uint32_t internal_value):
   internal_value(internal_value) {
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  internal_color.a = (internal_value & 0xff000000) / 0x1000000;
-  internal_color.r = (internal_value & 0x00ff0000) / 0x10000;
-  internal_color.g = (internal_value & 0x0000ff00) / 0x100;
-  internal_color.b = (internal_value & 0x000000ff);
+  internal_color.r = (internal_value & 0xff000000) >> 24;
+  internal_color.g = (internal_value & 0x00ff0000) >> 16;
+  internal_color.b = (internal_value & 0x0000ff00) >> 8;
+  internal_color.a = (internal_value & 0x000000ff);
 #else
   internal_color.r = (internal_value & 0x000000ff);
-  internal_color.g = (internal_value & 0x0000ff00) / 0x100;
-  internal_color.b = (internal_value & 0x00ff0000) / 0x10000;
-  internal_color.a = (internal_value & 0xff000000) / 0x1000000;
+  internal_color.g = (internal_value & 0x0000ff00) >> 8;
+  internal_color.b = (internal_value & 0x00ff0000) >> 16;
+  internal_color.a = (internal_value & 0xff000000) >> 24;
 #endif
 }
 

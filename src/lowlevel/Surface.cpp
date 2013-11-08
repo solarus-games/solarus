@@ -435,11 +435,17 @@ void Surface::render(
         dst_rect.get_y() + subsurfaces.at(i)->dst_rect.get_y(),
         subsurfaces.at(i)->dst_rect.get_width(),
         subsurfaces.at(i)->dst_rect.get_height());
+    
+    // Calculate the clipping rectangle for the subsurface.
+    Rectangle parents_clip_rect(subsurface_dst_rect);
+    SDL_IntersectRect(parents_clip_rect.get_internal_rect(),
+        dst_rect.get_internal_rect(),
+        parents_clip_rect.get_internal_rect());
 
     subsurfaces.at(i)->surface->render(renderer,
         subsurfaces.at(i)->src_rect,
         subsurface_dst_rect,
-        dst_rect,
+        parents_clip_rect,
         current_opacity);
   }
 }

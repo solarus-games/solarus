@@ -22,14 +22,10 @@
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/PixelBits.h"
 #include <vector>
-#include <SDL.h>
 
+typedef struct SDL_Surface SDL_Surface;
+typedef struct SDL_Texture SDL_Texture;
 
-typedef struct _SubSurface {
-  Surface* surface;
-  Rectangle src_rect;
-  Rectangle dst_rect;
-} SubSurface;
 
 /**
  * \brief Represents a graphic surface.
@@ -60,7 +56,6 @@ class Surface: public Drawable {
     explicit Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
     explicit Surface(SDL_Surface* internal_surface);
-    explicit Surface(Surface& other);
     ~Surface();
 
     static Surface* create_from_file(const std::string& file_name,
@@ -94,6 +89,12 @@ class Surface: public Drawable {
 
   private:
 
+    struct SubSurface {
+      Surface* surface;
+      Rectangle src_rect;
+      Rectangle dst_rect;
+    };
+
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
   
@@ -107,9 +108,7 @@ class Surface: public Drawable {
         const Rectangle& dst_rect,
         const Rectangle& clip_rect,
         int opacity);
-  
-    SDL_Texture* get_internal_texture();
-  
+
     std::vector<SubSurface*> subsurfaces; /**< buffer queue of every sub Surface with their drawing source and destination. */
 
     Color* internal_color;                /**< the background color to use, if any. */
@@ -117,7 +116,6 @@ class Surface: public Drawable {
                                            * (and therefore immediately) when used as a destination */
     SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. Useful if loading texture when windows isn't created and for pixel mask. */
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
-    bool owns_internal_surfaces;          /**< indicates that internal texture and/or surface belongs to this object. */
     bool is_rendered;                     /**< indicated if the current surface has been rendered. Set to false when drawing a surface on this one. */
     int internal_opacity;                 /**< opacity to apply to all subtexture. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */

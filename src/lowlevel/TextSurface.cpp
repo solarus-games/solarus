@@ -588,7 +588,6 @@ void TextSurface::rebuild_ttf() {
   // create the text surface
 
   SDL_Surface* internal_surface = NULL;
-  SDL_Texture* internal_texture;
   switch (rendering_mode) {
 
   case TEXT_SOLID:
@@ -602,8 +601,7 @@ void TextSurface::rebuild_ttf() {
 
   Debug::check_assertion(internal_surface != NULL, StringConcat()
       << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
-  
-  internal_texture = SDL_CreateTextureFromSurface(VideoManager::get_instance()->get_renderer(), internal_surface);
+
   surface = new Surface(internal_surface);
 }
 

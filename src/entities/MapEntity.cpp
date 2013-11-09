@@ -435,7 +435,7 @@ Map& MapEntity::get_map() const {
  * \return The game.
  */
 Game& MapEntity::get_game() {
-  Debug::check_assertion(map != NULL, "No map was set");
+  SOLARUS_ASSERT(map != NULL, "No map was set");
   return map->get_game();
 }
 
@@ -444,7 +444,7 @@ Game& MapEntity::get_game() {
  * \return The game.
  */
 const Game& MapEntity::get_game() const {
-  Debug::check_assertion(map != NULL, "No map was set");
+  SOLARUS_ASSERT(map != NULL, "No map was set");
   return map->get_game();
 }
 

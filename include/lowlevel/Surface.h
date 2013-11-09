@@ -26,11 +26,6 @@
 typedef struct SDL_Surface SDL_Surface;
 typedef struct SDL_Texture SDL_Texture;
 
-typedef struct _SubSurface {
-  Surface* surface;
-  Rectangle src_rect;
-  Rectangle dst_rect;
-} SubSurface;
 
 /**
  * \brief Represents a graphic surface.
@@ -93,6 +88,12 @@ class Surface: public Drawable {
     Surface& get_transition_surface();
 
   private:
+
+    struct SubSurface {
+      Surface* surface;
+      Rectangle src_rect;
+      Rectangle dst_rect;
+    };
 
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;

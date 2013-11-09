@@ -24,12 +24,6 @@
  */
 class Hero::PullingState: public Hero::State {
 
-  private:
-
-    Detector* pulled_entity;			/**< the entity the hero is pulling (or NULL) */
-
-    void stop_moving_pulled_entity();
-
   public:
 
     PullingState(Hero& hero);
@@ -54,6 +48,12 @@ class Hero::PullingState: public Hero::State {
 
     bool can_be_hurt(Enemy* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
+
+  private:
+
+    Detector* pulled_entity;           /**< the entity the hero is pulling (or NULL) */
+
+    void stop_moving_pulled_entity();
 
 };
 

@@ -175,6 +175,7 @@ void VideoManager::create_window() {
   if (main_renderer == NULL) {
     Debug::die(std::string("Cannot create the renderer: ") + SDL_GetError());
   }
+  SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.
 
   set_video_mode(video_mode);
 }

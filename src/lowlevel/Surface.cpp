@@ -23,6 +23,7 @@
 #include "lowlevel/VideoManager.h"
 #include "lua/LuaContext.h"
 #include "Transition.h"
+#include <SDL.h>
 #include <SDL_image.h>
 
 /**

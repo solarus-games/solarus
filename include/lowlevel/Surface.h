@@ -22,8 +22,9 @@
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/PixelBits.h"
 #include <vector>
-#include <SDL.h>
 
+typedef struct SDL_Surface SDL_Surface;
+typedef struct SDL_Texture SDL_Texture;
 
 typedef struct _SubSurface {
   Surface* surface;

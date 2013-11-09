@@ -108,9 +108,7 @@ const std::string& Map::get_tileset_id() const {
  */
 void Map::set_tileset(const std::string& tileset_id) {
 
-  Tileset new_tileset(tileset_id);
-  new_tileset.load();
-  tileset->set_images(new_tileset);
+  tileset->set_images(tileset_id);
   get_entities().notify_tileset_changed();
   this->tileset_id = tileset_id;
   rebuild_background_surface();

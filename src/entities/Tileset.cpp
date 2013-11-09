@@ -130,9 +130,11 @@ void Tileset::load() {
   // load the tileset images
   file_name = std::string("tilesets/") + id + ".tiles.png";
   tiles_image = new Surface(file_name, Surface::DIR_DATA);
+  tiles_image->increment_refcount();
 
   file_name = std::string("tilesets/") + id + ".entities.png";
   entities_image = new Surface(file_name, Surface::DIR_DATA);
+  entities_image->increment_refcount();
 }
 
 /**
@@ -147,10 +149,16 @@ void Tileset::unload() {
   }
   tile_patterns.clear();
 
-  delete tiles_image;
+  tiles_image->decrement_refcount();
+  if (tiles_image->get_refcount() == 0) {
+    delete tiles_image;
+  }
   tiles_image = NULL;
 
-  delete entities_image;
+  entities_image->decrement_refcount();
+  if (entities_image->get_refcount() == 0) {
+    delete entities_image;
+  }
   entities_image = NULL;
 }
 
@@ -199,18 +207,32 @@ TilePattern& Tileset::get_tile_pattern(int id) {
 }
 
 /**
- * \brief Changes the tiles images, the entities images and the background color of
- * this tileset.
- * \param other another tileset whose images and background color will be copied
- * into this tileset
+ * \brief Changes the tiles images, the entities images and the background
+ * color of this tileset.
+ * \param other_id Id of another tileset whose images and background color
+ * will be copied into this tileset.
  */
-void Tileset::set_images(Tileset& other) {
+void Tileset::set_images(const std::string& other_id) {
 
-  delete tiles_image;
-  tiles_image = new Surface(other.get_tiles_image());
-  delete entities_image;
-  entities_image = new Surface(other.get_entities_image());
-  background_color = other.get_background_color();
+  // Load the new tileset to take its images.
+  Tileset tmp_tileset(other_id);
+  tmp_tileset.load();
+
+  tiles_image->decrement_refcount();
+  if (tiles_image->get_refcount() == 0) {
+    delete tiles_image;
+  }
+  tiles_image = &tmp_tileset.get_tiles_image();
+  tiles_image->increment_refcount();
+
+  entities_image->decrement_refcount();
+  if (entities_image->get_refcount() == 0) {
+    delete entities_image;
+  }
+  entities_image = &tmp_tileset.get_entities_image();
+  entities_image->increment_refcount();
+
+  background_color = tmp_tileset.get_background_color();
 }
 
 /**

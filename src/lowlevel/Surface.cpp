@@ -36,7 +36,6 @@ Surface::Surface(int width, int height):
   software_destination(false),
   internal_surface(NULL),
   internal_texture(NULL),
-  owns_internal_surfaces(false),
   is_rendered(false),
   internal_opacity(255),
   width(width),
@@ -56,7 +55,6 @@ Surface::Surface(const Rectangle& size):
   software_destination(false),
   internal_surface(NULL),
   internal_texture(NULL),
-  owns_internal_surfaces(false),
   is_rendered(false),
   internal_opacity(255),
   width(size.get_width()),
@@ -79,7 +77,6 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   software_destination(false),
   internal_surface(NULL),
   internal_texture(NULL),
-  owns_internal_surfaces(true),
   is_rendered(false),
   internal_opacity(255) {
 
@@ -95,9 +92,8 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * This constructor must be used only by lowlevel classes that manipulate directly
  * SDL dependent surfaces.
  *
- * \param internal_surface The internal surface data. It won't be copied.
- * It must remain valid during the lifetime of this surface.
- * The destructor will not free it.
+ * \param internal_surface The internal surface data.
+ * The destructor will free it.
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
@@ -105,7 +101,6 @@ Surface::Surface(SDL_Surface* internal_surface):
   software_destination(false),
   internal_surface(internal_surface),
   internal_texture(NULL),
-  owns_internal_surfaces(false),
   is_rendered(false),
   internal_opacity(255) {
 
@@ -114,43 +109,17 @@ Surface::Surface(SDL_Surface* internal_surface):
 }
 
 /**
- * \brief Creates a surface from an existing surface.
- *
- * The internal texture encapsulated is not copied: its ownership is
- * transferred to the new one.
- * Use with care!
- * Transitions and movements applied on the existing surface are not copied.
- *
- * \param other A surface to copy.
- */
-Surface::Surface(Surface& other):
-  Drawable(),
-  internal_color(NULL),
-  software_destination(false),
-  internal_surface(other.internal_surface),
-  internal_texture(other.internal_texture),
-  owns_internal_surfaces(other.owns_internal_surfaces),
-  is_rendered(false),
-  internal_opacity(255),
-  width(other.get_width()),
-  height(other.get_height()) {
-
-  other.owns_internal_surfaces = false;
-}
-
-/**
  * \brief Destructor.
  */
 Surface::~Surface() {
 
-  if (owns_internal_surfaces) {
-    if (internal_texture != NULL) {
-      SDL_DestroyTexture(internal_texture);
-    }
-    if (internal_surface != NULL) {
-      SDL_FreeSurface(internal_surface);
-    }
+  if (internal_texture != NULL) {
+    SDL_DestroyTexture(internal_texture);
   }
+  if (internal_surface != NULL) {
+    SDL_FreeSurface(internal_surface);
+  }
+
   if (internal_color != NULL) {
     delete internal_color;
   }
@@ -173,7 +142,6 @@ Surface* Surface::create_from_file(const std::string& file_name,
   SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
 
   Surface* surface = new Surface(software_surface);
-  surface->owns_internal_surfaces = true;
   return surface;
 }
 
@@ -534,17 +502,6 @@ void Surface::render(
  */
 Surface& Surface::get_transition_surface() {
   return *this;
-}
-
-/**
- * \brief Returns the SDL texture encapsulated by this object.
- *
- * This method should only be used by low-level classes.
- *
- * \return The SDL texture encapsulated.
- */
-SDL_Texture* Surface::get_internal_texture() {
-  return internal_texture;
 }
 
 /**

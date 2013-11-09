@@ -323,7 +323,7 @@ void Surface::set_software_destination(bool software_destination) {
 
 /**
  * \brief Fills the entire surface with the specified color.
- * \param color a color
+ * \param color a color.
  */
 void Surface::fill_with_color(Color& color) {
 
@@ -332,16 +332,24 @@ void Surface::fill_with_color(Color& color) {
 }
 
 /**
- * \brief Create a Surface with the requested size and color, and add it to the subsurface queue.
- * \param color a color
- * \param where the rectangle to fill
+ * \brief Fill the rectangle at given coords with the specified color.
+ * \param color a color.
+ * \param where the rectangle to fill.
  */
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
-  /*Rectangle subsurface_size(0, 0, where.get_width(), where.get_height());
-  Surface subsurface(where);
-  subsurface.internal_color = new Color(color);
-  add_subsurface(subsurface, subsurface_size, where);*/
+  // If we have to draw on a software surface, draw pixels directely.
+  if(software_destination) {
+    Rectangle where2 = where;
+    SDL_FillRect(internal_surface, where2.get_internal_rect(), color.get_internal_value());
+  }
+  // Else, create a Surface with the requested size and color, and add it to the subsurface queue.
+  else {
+    /*Rectangle subsurface_size(0, 0, where.get_width(), where.get_height());
+    Surface subsurface(where);
+    subsurface.internal_color = new Color(color);
+    add_subsurface(subsurface, subsurface_size, where);*/
+  }
 }
 
 /**
@@ -483,7 +491,7 @@ void Surface::render(
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
     SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect()); //SDL_RenderSetViewport ?
-    SDL_SetRenderDrawColor(renderer, r, g, b, std::min(a, current_opacity));
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
     SDL_RenderClear(renderer);
   }
 

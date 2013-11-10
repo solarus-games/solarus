@@ -440,6 +440,11 @@ void TextSurface::add_char(char c) {
  * \return the width in pixels
  */
 int TextSurface::get_width() const {
+
+  if (surface == NULL) {
+    return 0;
+  }
+
   return surface->get_width();
 }
 
@@ -448,6 +453,11 @@ int TextSurface::get_width() const {
  * \return the height in pixels
  */
 int TextSurface::get_height() const {
+
+  if (surface == NULL) {
+    return 0;
+  }
+
   return surface->get_height();
 }
 

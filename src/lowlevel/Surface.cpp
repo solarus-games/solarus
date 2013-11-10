@@ -419,7 +419,22 @@ void Surface::draw_transition(Transition& transition) {
  * \brief Draws the internal texture if any, and all subtextures on the
  * renderer.
  *
- * Empty the subsurfaces vector at the end of the method.
+ * Clears the subsurfaces vector at the end of the method.
+ *
+ * \param renderer The renderer where to draw.
+ */
+void Surface::render(SDL_Renderer* renderer) {
+
+  const Rectangle size(get_size());
+  render(renderer, size, size, size, 255);
+}
+
+/**
+ * \brief Draws the internal texture if any, and all subtextures on the
+ * renderer.
+ *
+ * Clears the subsurfaces vector at the end of the method.
+ *
  * \param renderer The renderer where to draw.
  * \param src_rect The subrectangle of the texture to draw.
  * \param dst_rect The portion of renderer where to draw.
@@ -495,7 +510,8 @@ void Surface::render(
         subsurface->src_rect,
         subsurface_dst_rect,
         superimposed_clip_rect,
-        current_opacity);
+        current_opacity
+    );
   }
 
   is_rendered = true;

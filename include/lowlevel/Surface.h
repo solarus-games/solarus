@@ -39,7 +39,6 @@ class Surface: public Drawable {
 
   // low-level classes allowed to manipulate directly the internal SDL surface encapsulated
   friend class TextSurface;
-  friend class VideoManager;
   friend class PixelBits;
 
   public:
@@ -72,6 +71,8 @@ class Surface: public Drawable {
     void set_opacity(int opacity);
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
+
+    void render(SDL_Renderer* renderer);
 
     const std::string& get_lua_type_name() const;
 
@@ -108,7 +109,8 @@ class Surface: public Drawable {
         const Rectangle& src_rect,
         const Rectangle& dst_rect,
         const Rectangle& clip_rect,
-        int opacity);
+        int opacity
+    );
 
     std::vector<SubSurface*> subsurfaces; /**< buffer queue of every sub Surface with their drawing source and destination. */
 

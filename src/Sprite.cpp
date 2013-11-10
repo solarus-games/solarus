@@ -789,7 +789,7 @@ Surface& Sprite::get_transition_surface() {
 Surface& Sprite::get_intermediate_surface() const {
 
   if (intermediate_surface == NULL) {
-    intermediate_surface = new Surface(get_max_size());
+    intermediate_surface = Surface::create(get_max_size());
   }
   return *intermediate_surface;
 }

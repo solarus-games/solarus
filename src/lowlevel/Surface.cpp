@@ -26,6 +26,34 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+// TODO comment this class
+struct SubSurface {
+    Surface* surface;
+    Rectangle src_rect;
+    Rectangle dst_rect;
+
+    SubSurface(
+        Surface* surface,
+        const Rectangle& src_rect,
+        const Rectangle& dst_rect
+    ):
+        surface(surface),
+        src_rect(src_rect),
+        dst_rect(dst_rect) {
+
+        //surface->increment_refcount();
+    }
+
+    ~SubSurface() {
+      /*
+        surface->decrement_refcount();
+        if (surface->get_refcount()) {
+            delete surface;
+        }
+        */
+    }
+};
+
 /**
  * \brief Creates a surface with the specified size.
  * \param width The width in pixels.
@@ -44,24 +72,6 @@ Surface::Surface(int width, int height):
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
-}
-
-/**
- * \brief Creates a surface with the specified size.
- * \param size The size in pixels.
- */
-Surface::Surface(const Rectangle& size):
-  Drawable(),
-  internal_color(NULL),
-  software_destination(false),
-  internal_surface(NULL),
-  internal_texture(NULL),
-  is_rendered(false),
-  internal_opacity(255),
-  width(size.get_width()),
-  height(size.get_height()) {
-
-  Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
 }
 
 /**
@@ -127,6 +137,24 @@ Surface::~Surface() {
 }
 
 /**
+ * \brief Creates a surface with the specified size.
+ * \param width The width in pixels.
+ * \param height The height in pixels.
+ */
+Surface* Surface::create(int width, int height) {
+  return new Surface(width, height);
+}
+
+/**
+ * \brief Creates a surface with the specified size.
+ * \param width The width in pixels.
+ * \param height The height in pixels.
+ */
+Surface* Surface::create(const Rectangle& size) {
+  return new Surface(size.get_width(), size.get_height());
+}
+
+/**
  * \brief Creates a surface from the specified image file name.
  *
  * This function acts like a constructor excepts that it returns NULL if the
@@ -136,7 +164,7 @@ Surface::~Surface() {
  * \param base_directory The base directory to use.
  * \return The surface created, or NULL if the file could not be loaded.
  */
-Surface* Surface::create_from_file(const std::string& file_name,
+Surface* Surface::create(const std::string& file_name,
     ImageDirectory base_directory) {
   
   SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
@@ -330,22 +358,17 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
  * \param region The subrectangle to draw in the source surface.
  * \param dst_position Coordinates on this surface.
  */
-void Surface::add_subsurface(Surface& src_surface,
+void Surface::add_subsurface(
+    Surface& src_surface,
     const Rectangle& region,
     const Rectangle& dst_position) {
 
-  SubSurface* subsurface = new SubSurface();
-  subsurface->surface = &src_surface;
-  subsurface->src_rect = region;
-  subsurface->dst_rect = dst_position;
+  SubSurface* subsurface = new SubSurface(&src_surface, region, dst_position);
 
   if (subsurface->dst_rect.is_flat()) {
     subsurface->dst_rect.set_width(region.get_width());
     subsurface->dst_rect.set_height(region.get_height());
   }
-
-  //TODO handle refcount of src_surface , to be able to remove leaf surfaces safely.
-  //src_surface.increment_refcount();
 
   // Clear the subsurface queue if the current dst_surface already has been rendered.
   if (is_rendered) {
@@ -359,9 +382,10 @@ void Surface::add_subsurface(Surface& src_surface,
  * \brief clear the internal SubSurface queue.
  */
 void Surface::clear_subsurfaces() {
-  for (int i=0 ; i<subsurfaces.size() ; i++) {
-    //subsurfaces.at(i)->surface->decrement_refcount();
-    delete subsurfaces.at(i);
+
+  for (int i = 0; i < subsurfaces.size() ; ++i) {
+    //SubSurface* subsurface = subsurfaces[i];
+    //delete subsurface;
   }
   subsurfaces.clear();
 }

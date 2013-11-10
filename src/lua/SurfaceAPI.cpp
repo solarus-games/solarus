@@ -92,19 +92,19 @@ int LuaContext::surface_api_create(lua_State* l) {
   Surface* surface = NULL;
   if (lua_gettop(l) == 0) {
     // create an empty surface with the screen size
-    surface = new Surface(VideoManager::get_instance()->get_quest_size());
+    surface = Surface::create(VideoManager::get_instance()->get_quest_size());
   }
   else if (lua_type(l, 1) == LUA_TNUMBER) {
     // create an empty surface with the specified size
     int width = luaL_checkint(l, 1);
     int height = luaL_checkint(l, 2);
-    surface = new Surface(width, height);
+    surface = Surface::create(width, height);
   }
   else if (lua_type(l, 1) == LUA_TSTRING) {
     // load from a file
     const std::string& file_name = lua_tostring(l, 1);
     bool language_specific = lua_toboolean(l, 2); // default is false
-    surface = Surface::create_from_file(file_name, language_specific ?
+    surface = Surface::create(file_name, language_specific ?
         Surface::DIR_LANGUAGE : Surface::DIR_SPRITES);
   }
   else {

@@ -26,6 +26,7 @@
 typedef struct SDL_Surface SDL_Surface;
 typedef struct SDL_Texture SDL_Texture;
 
+struct SubSurface;
 
 /**
  * \brief Represents a graphic surface.
@@ -51,14 +52,14 @@ class Surface: public Drawable {
       DIR_SPRITES,     /**< the sprites subdirectory of the data package (default) */
       DIR_LANGUAGE     /**< the language-specific image directory of the data package, for the current language */
     };
-  
-    Surface(int width, int height);
-    explicit Surface(const Rectangle& size);
-    Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
-    explicit Surface(SDL_Surface* internal_surface);
+
     ~Surface();
 
-    static Surface* create_from_file(const std::string& file_name,
+    // Constructors are private so that surfaces are only created on the heap.
+    // This is because they use the refcount system internally for drawing.
+    static Surface* create(int width, int height);
+    static Surface* create(const Rectangle& size);
+    static Surface* create(const std::string& file_name,
         ImageDirectory base_directory = DIR_SPRITES);
 
     int get_width() const;
@@ -89,17 +90,18 @@ class Surface: public Drawable {
 
   private:
 
-    struct SubSurface {
-      Surface* surface;
-      Rectangle src_rect;
-      Rectangle dst_rect;
-    };
+    Surface(int width, int height);
+    Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
+    explicit Surface(SDL_Surface* internal_surface);
 
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
   
-    static SDL_Surface* get_surface_from_file(const std::string& file_name, ImageDirectory base_directory);
+    static SDL_Surface* get_surface_from_file(
+        const std::string& file_name,
+        ImageDirectory base_directory);
     static SDL_Texture* get_texture_from_surface(SDL_Surface* software_surface);
+
     void add_subsurface(Surface& src_surface, const Rectangle& region, const Rectangle& dst_position);
     void clear_subsurfaces();
     void render(

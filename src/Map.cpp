@@ -261,11 +261,13 @@ void Map::unload() {
  */
 void Map::load(Game& game) {
 
-  this->visible_surface = new Surface(
-      VideoManager::get_instance()->get_quest_size());
+  this->visible_surface = Surface::create(
+      VideoManager::get_instance()->get_quest_size()
+  );
   this->visible_surface->increment_refcount();
-  this->background_surface = new Surface(
-      VideoManager::get_instance()->get_quest_size());
+  this->background_surface = Surface::create(
+      VideoManager::get_instance()->get_quest_size()
+  );
   entities = new MapEntities(game, *this);
 
   // read the map file

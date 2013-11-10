@@ -134,7 +134,7 @@ int TextSurface::l_font(lua_State* l) {
 
   if (extension == ".png" || extension == ".PNG") {
     // It's a bitmap font.
-    fonts[font_id].bitmap = new Surface(file_name, Surface::DIR_DATA);
+    fonts[font_id].bitmap = Surface::create(file_name, Surface::DIR_DATA);
   }
   else {
     // It's a normal font.
@@ -554,7 +554,7 @@ void TextSurface::rebuild_bitmap() {
   int char_width = bitmap_size.get_width() / 128;
   int char_height = bitmap_size.get_height() / 16;
 
-  surface = new Surface(char_width * num_chars, char_height);
+  surface = Surface::create(char_width * num_chars, char_height);
 
   // Traverse the string again to draw the characters.
   Rectangle dst_position(0, 0);

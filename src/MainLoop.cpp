@@ -53,7 +53,9 @@ MainLoop::MainLoop(int argc, char** argv):
   QuestResourceList::initialize();
     
   // Load the lua quest stuff now that the window is created.
-  root_surface = new Surface(VideoManager::get_instance()->get_quest_size());
+  root_surface = Surface::create(
+      VideoManager::get_instance()->get_quest_size()
+  );
   root_surface->increment_refcount();
   lua_context = new LuaContext(*this);
   lua_context->initialize();

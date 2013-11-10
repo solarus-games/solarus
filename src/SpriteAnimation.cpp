@@ -43,7 +43,7 @@ SpriteAnimation::SpriteAnimation(
   should_enable_pixel_collisions(false) {
 
   if (image_file_name != "tileset") {
-    src_image = new Surface(image_file_name);
+    src_image = Surface::create(image_file_name);
     src_image_loaded = true;
   }
 }

@@ -447,7 +447,9 @@ void Game::update_transitions() {
         // before closing the map, draw it on a backup surface for transition effects
         // that want to display both maps at the same time
         if (needs_previous_surface) {
-          previous_map_surface = new Surface(VideoManager::get_instance()->get_quest_size());
+          previous_map_surface = Surface::create(
+              VideoManager::get_instance()->get_quest_size()
+          );
           current_map->draw();
           current_map->get_visible_surface().draw(*previous_map_surface);
         }

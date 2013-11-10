@@ -337,7 +337,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     if (pixel_filter != NULL) {
       int factor = pixel_filter->get_scaling_factor();
       render_size.set_size(render_size.get_width() * factor, render_size.get_height() * factor);
-      scaled_surface = new Surface(render_size);
+      scaled_surface = Surface::create(render_size);
     }
 
     // Initialize the window.

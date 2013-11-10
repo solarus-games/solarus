@@ -129,11 +129,11 @@ void Tileset::load() {
 
   // load the tileset images
   file_name = std::string("tilesets/") + id + ".tiles.png";
-  tiles_image = new Surface(file_name, Surface::DIR_DATA);
+  tiles_image = Surface::create(file_name, Surface::DIR_DATA);
   tiles_image->increment_refcount();
 
   file_name = std::string("tilesets/") + id + ".entities.png";
-  entities_image = new Surface(file_name, Surface::DIR_DATA);
+  entities_image = Surface::create(file_name, Surface::DIR_DATA);
   entities_image->increment_refcount();
 }
 

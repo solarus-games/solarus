@@ -857,7 +857,9 @@ void MapEntities::build_non_animated_tiles() {
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     delete non_animated_tiles_surfaces[layer];
-    non_animated_tiles_surfaces[layer] = new Surface(map_size.get_width(), map_size.get_height());
+    non_animated_tiles_surfaces[layer] = Surface::create(
+        map_size.get_width(), map_size.get_height()
+    );
 
     // Set this surface as a software destination because it is built only
     // once and never changes later.

@@ -54,7 +54,7 @@ void Drawable::start_movement(Movement& movement) {
   stop_movement();
   this->movement = &movement;
   movement.set_drawable(this);
-  movement.increment_refcount();
+  RefCountable::ref(&movement);
 }
 
 /**
@@ -64,13 +64,7 @@ void Drawable::start_movement(Movement& movement) {
  */
 void Drawable::stop_movement() {
 
-  if (movement != NULL) {
-
-    movement->decrement_refcount();
-    if (movement->get_refcount() == 0) {
-      delete movement;
-    }
-  }
+  RefCountable::unref(movement);
   movement = NULL;
 }
 

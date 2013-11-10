@@ -144,12 +144,7 @@ VideoManager::~VideoManager() {
     SDL_SetWindowFullscreen(main_window, 0);
   }
 
-  if (scaled_surface != NULL) {
-    scaled_surface->decrement_refcount();
-    if (scaled_surface->get_refcount() == 0) {
-      delete scaled_surface;
-    }
-  }
+  RefCountable::unref(scaled_surface);
 
   if (main_renderer != NULL) {
     SDL_DestroyRenderer(main_renderer);
@@ -341,17 +336,14 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     }
 
     if (scaled_surface != NULL) {
-      scaled_surface->decrement_refcount();
-      if (scaled_surface->get_refcount() == 0) {
-        delete scaled_surface;
-      }
+      RefCountable::unref(scaled_surface);
       scaled_surface = NULL;
     }
     if (pixel_filter != NULL) {
       int factor = pixel_filter->get_scaling_factor();
       render_size.set_size(render_size.get_width() * factor, render_size.get_height() * factor);
       scaled_surface = Surface::create(render_size);
-      scaled_surface->increment_refcount();
+      RefCountable::ref(scaled_surface);
     }
 
     // Initialize the window.

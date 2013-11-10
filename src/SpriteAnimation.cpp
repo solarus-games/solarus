@@ -44,7 +44,7 @@ SpriteAnimation::SpriteAnimation(
 
   if (!src_image_is_tileset) {
     src_image = Surface::create(image_file_name);
-    src_image->increment_refcount();
+    RefCountable::ref(src_image);
   }
 }
 
@@ -58,12 +58,7 @@ SpriteAnimation::~SpriteAnimation() {
     delete *it;
   }
 
-  if (src_image != NULL) {
-    src_image->decrement_refcount();
-    if (src_image->get_refcount() == 0) {
-      delete src_image;
-    }
-  }
+  RefCountable::unref(src_image);
 }
 
 /**
@@ -80,15 +75,10 @@ void SpriteAnimation::set_tileset(Tileset& tileset) {
     return;
   }
 
-  if (src_image != NULL) {
-    src_image->decrement_refcount();
-    if (src_image->get_refcount() == 0) {
-      delete src_image;
-    }
-  }
+  RefCountable::unref(src_image);
 
   src_image = &tileset.get_entities_image();
-  src_image->increment_refcount();
+  RefCountable::ref(src_image);
   if (should_enable_pixel_collisions) {
     disable_pixel_collisions(); // to force creating the images again
     do_enable_pixel_collisions();

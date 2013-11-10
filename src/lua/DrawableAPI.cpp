@@ -76,7 +76,7 @@ void LuaContext::add_drawable(Drawable* drawable) {
   Debug::check_assertion(!has_drawable(drawable),
       "This drawable object is already registered");
 
-  drawable->increment_refcount();
+  RefCountable::ref(drawable);
   drawables.insert(drawable);
 }
 
@@ -101,10 +101,7 @@ void LuaContext::destroy_drawables() {
   std::set<Drawable*>::iterator it;
   for (it = drawables.begin(); it != drawables.end(); ++it) {
     Drawable* drawable = *it;
-    drawable->decrement_refcount();
-    if (drawable->get_refcount() == 0) {
-      delete drawable;
-    }
+    RefCountable::unref(drawable);
   }
   drawables.clear();
   drawables_to_remove.clear();
@@ -128,10 +125,7 @@ void LuaContext::update_drawables() {
   for (it = drawables_to_remove.begin(); it != drawables_to_remove.end(); ++it) {
     Drawable* drawable = *it;
     drawables.erase(drawable);
-    drawable->decrement_refcount();
-    if (drawable->get_refcount() == 0) {
-      delete drawable;
-    }
+    RefCountable::unref(drawable);
   }
   drawables_to_remove.clear();
 }

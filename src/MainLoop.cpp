@@ -56,7 +56,7 @@ MainLoop::MainLoop(int argc, char** argv):
   root_surface = Surface::create(
       VideoManager::get_instance()->get_quest_size()
   );
-  root_surface->increment_refcount();
+  RefCountable::ref(root_surface);
   lua_context = new LuaContext(*this);
   lua_context->initialize();
     
@@ -77,8 +77,7 @@ MainLoop::~MainLoop() {
   }
 
   delete lua_context;
-  root_surface->decrement_refcount();
-  delete root_surface;
+  RefCountable::unref(root_surface);
   QuestResourceList::quit();
   System::quit();
 }

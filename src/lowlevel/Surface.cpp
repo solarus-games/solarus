@@ -41,14 +41,11 @@ struct SubSurface {
       src_rect(src_rect),
       dst_rect(dst_rect) {
 
-      surface->increment_refcount();
+      RefCountable::ref(surface);
     }
 
     ~SubSurface() {
-      surface->decrement_refcount();
-      if (surface->get_refcount() == 0) {
-        delete surface;
-      }
+      RefCountable::unref(surface);
     }
 };
 

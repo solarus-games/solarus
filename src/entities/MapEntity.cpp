@@ -1105,7 +1105,7 @@ Sprite& MapEntity::create_sprite(const std::string& animation_set_id,
     bool enable_pixel_collisions) {
 
   Sprite* sprite = new Sprite(animation_set_id);
-  sprite->increment_refcount();
+  RefCountable::ref(sprite);
 
   if (enable_pixel_collisions) {
     sprite->enable_pixel_collisions();
@@ -1152,11 +1152,7 @@ void MapEntity::clear_old_sprites() {
   for (it = old_sprites.begin(); it != old_sprites.end(); it++) {
     Sprite* sprite = *it;
     sprites.remove(sprite);
-
-    sprite->decrement_refcount();
-    if (sprite->get_refcount() == 0) {
-      delete sprite;
-    }
+    RefCountable::unref(sprite);
   }
   old_sprites.clear();
 }
@@ -1232,7 +1228,7 @@ const Movement* MapEntity::get_movement() const {
 void MapEntity::set_movement(Movement* movement) {
 
   this->movement = movement;
-  movement->increment_refcount();
+  RefCountable::ref(movement);
 
   if (movement != NULL) {
     movement->set_entity(this);
@@ -1268,10 +1264,7 @@ void MapEntity::clear_old_movements() {
   std::list<Movement*>::iterator it;
   for (it = old_movements.begin(); it != old_movements.end(); it++) {
     Movement* movement = *it;
-    movement->decrement_refcount();
-    if (movement->get_refcount() == 0) {
-      delete movement;
-    }
+    RefCountable::unref(movement);
   }
   old_movements.clear();
 }

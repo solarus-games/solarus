@@ -54,7 +54,7 @@ TargetMovement::TargetMovement(
   finished(false) {
 
   if (this->target_entity != NULL) {
-    this->target_entity->increment_refcount();
+    RefCountable::ref(this->target_entity);
   }
 }
 
@@ -63,12 +63,7 @@ TargetMovement::TargetMovement(
  */
 TargetMovement::~TargetMovement() {
 
-  if (this->target_entity != NULL) {
-    this->target_entity->decrement_refcount();
-    if (this->target_entity->get_refcount() == 0) {
-      delete this->target_entity;
-    }
-  }
+  RefCountable::unref(target_entity);
 }
 
 /**
@@ -90,17 +85,12 @@ void TargetMovement::notify_object_controlled() {
  */
 void TargetMovement::set_target(MapEntity* target_entity, int x, int y) {
 
-  if (this->target_entity != NULL) {
-    this->target_entity->decrement_refcount();
-    if (this->target_entity->get_refcount() == 0) {
-      delete this->target_entity;
-    }
-  }
+  RefCountable::unref(this->target_entity);
 
   this->target_entity = target_entity;
 
   if (this->target_entity != NULL) {
-    this->target_entity->increment_refcount();
+    RefCountable::ref(this->target_entity);
     this->entity_offset_x = x;
     this->entity_offset_y = y;
   }

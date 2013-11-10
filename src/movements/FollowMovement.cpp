@@ -37,7 +37,7 @@ FollowMovement::FollowMovement(
   finished(false) {
 
   if (entity_followed != NULL) {
-    entity_followed->increment_refcount();
+    RefCountable::ref(entity_followed);
   }
 }
 
@@ -67,10 +67,7 @@ void FollowMovement::update() {
 
   if (entity_followed->is_being_removed()) {
     finished = true;
-    entity_followed->decrement_refcount();
-    if (entity_followed->get_refcount() == 0) {
-      delete entity_followed;
-    }
+    RefCountable::unref(entity_followed);
     entity_followed = NULL;
   }
   else {

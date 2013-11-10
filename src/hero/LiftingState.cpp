@@ -34,7 +34,7 @@ Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
   lifted_item(lifted_item) {
 
   Debug::check_assertion(lifted_item != NULL, "Missing lifted item");
-  lifted_item->increment_refcount();
+  RefCountable::ref(lifted_item);
 }
 
 /**
@@ -89,9 +89,9 @@ void Hero::LiftingState::stop(const State* next_state) {
 
     case CarriedItem::BEHAVIOR_KEEP:
       // The next state is now the owner and has incremented the refcount.
-      lifted_item->decrement_refcount();
-      Debug::check_assertion(lifted_item->get_refcount() > 0,
+      Debug::check_assertion(lifted_item->get_refcount() > 1,
           "Invalid carried item refcount");
+      RefCountable::unref(lifted_item);
       lifted_item = NULL;
       break;
     }
@@ -158,12 +158,7 @@ void Hero::LiftingState::throw_item() {
  */
 void Hero::LiftingState::destroy_lifted_item() {
 
-  if (lifted_item != NULL) {
-    lifted_item->decrement_refcount();
-    if (lifted_item->get_refcount() == 0) {
-      delete lifted_item;
-    }
-    lifted_item = NULL;
-  }
+  RefCountable::unref(lifted_item);
+  lifted_item = NULL;
 }
 

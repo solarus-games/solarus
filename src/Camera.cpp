@@ -217,10 +217,7 @@ void Camera::update_fixed_on_hero() {
     if (finished) {
         separator_next_scrolling_date = 0;
         separator_traversed->notify_activated(separator_scrolling_direction4);
-        separator_traversed->decrement_refcount();
-        if (separator_traversed->get_refcount() == 0) {
-          delete separator_traversed;
-        }
+        RefCountable::unref(separator_traversed);
         separator_traversed = NULL;
         separator_scrolling_direction4 = 0;
     }
@@ -394,7 +391,7 @@ void Camera::traverse_separator(Separator* separator) {
 
   // Start scrolling.
   separator_traversed = separator;
-  separator->increment_refcount();
+  RefCountable::ref(separator);
   separator_scrolling_dx = 0;
   separator_scrolling_dy = 0;
   separator_target_position = position;

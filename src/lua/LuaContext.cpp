@@ -1228,7 +1228,7 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata
     lua_pushlightuserdata(l, &userdata);
                                   // ... all_udata lightudata
-    userdata.increment_refcount();
+    RefCountable::ref(&userdata);
     ExportableToLua** block_address = static_cast<ExportableToLua**>(
         lua_newuserdata(l, sizeof(ExportableToLua*)));
     *block_address = &userdata;
@@ -1641,7 +1641,7 @@ void LuaContext::on_unpaused() {
  * \brief Calls the on_dialog_started() method of the object on top of the stack.
  * \param dialog The dialog that just started.
  * \param info_ref Lua ref to the info parameter to pass to the method,
- * or LUA_REFNIL. Will be unref'd if the method exists.
+ * or LUA_REFNIL. Will be decrement_refcount'd if the method exists.
  * \return true if the on_dialog_started() method is defined.
  */
 bool LuaContext::on_dialog_started(const Dialog& dialog, int info_ref) {

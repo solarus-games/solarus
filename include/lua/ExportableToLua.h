@@ -18,6 +18,7 @@
 #define SOLARUS_EXPORTABLE_TO_LUA_H
 
 #include "Common.h"
+#include "RefCountable.h"
 #include <string>
 
 /**
@@ -38,7 +39,7 @@
  * dynamically or if you don't share pointers.
  * If you export your object to Lua, refcounts will be very helpful.
  */
-class ExportableToLua {
+class ExportableToLua: public RefCountable {
 
   public:
 
@@ -50,11 +51,6 @@ class ExportableToLua {
     bool is_with_lua_table() const;
     void set_with_lua_table(bool with_lua_table);
 
-    // Reference counting.
-    int get_refcount() const;
-    void increment_refcount();
-    void decrement_refcount();
-
     /**
      * \brief Returns the name identifying this type in Lua.
      * \return the name identifying this type in Lua
@@ -63,13 +59,11 @@ class ExportableToLua {
 
   private:
 
-    int refcount;                /**< Number of pointers to the object
-                                  * including the Lua ones
-                                  * (0 means that it can be deleted). */
     bool known_to_lua;           /**< Whether this object was exported to Lua
                                   * at least once. */
     bool with_lua_table;         /**< Whether a Lua table was created to make
                                   * this userdata indexable like a table. */
+
 };
 
 #endif

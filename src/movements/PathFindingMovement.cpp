@@ -39,12 +39,7 @@ PathFindingMovement::PathFindingMovement(int speed):
  */
 PathFindingMovement::~PathFindingMovement() {
 
-  if (target != NULL) {
-    target->decrement_refcount();
-    if (target->get_refcount() == 0) {
-      delete target;
-    }
-  }
+  RefCountable::unref(target);
 }
 
 /**
@@ -53,7 +48,7 @@ PathFindingMovement::~PathFindingMovement() {
 void PathFindingMovement::set_target(MapEntity& target) {
 
   this->target = &target;
-  target.increment_refcount();
+  RefCountable::ref(&target);
   next_recomputation_date = System::now() + 100;
 }
 
@@ -65,10 +60,7 @@ void PathFindingMovement::update() {
   PathMovement::update();
 
   if (target != NULL && target->is_being_removed()) {
-    target->decrement_refcount();
-    if (target->get_refcount() == 0) {
-      delete target;
-    }
+    RefCountable::unref(target);
     target = NULL;
   }
 

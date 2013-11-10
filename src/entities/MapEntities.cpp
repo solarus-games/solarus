@@ -83,12 +83,7 @@ void MapEntities::destroy_all_entities() {
     delete[] tiles_ground[layer];
     delete[] animated_tiles[layer];
 
-    if (non_animated_tiles_surfaces[layer] != NULL) {
-      non_animated_tiles_surfaces[layer]->decrement_refcount();
-      if (non_animated_tiles_surfaces[layer]->get_refcount() == 0) {
-        delete non_animated_tiles_surfaces[layer];
-      }
-    }
+    RefCountable::unref(non_animated_tiles_surfaces[layer]);
 
     entities_drawn_first[layer].clear();
     entities_drawn_y_order[layer].clear();
@@ -124,10 +119,7 @@ void MapEntities::destroy_entity(MapEntity* entity) {
     entity->notify_being_removed();
   }
 
-  entity->decrement_refcount();
-  if (entity->get_refcount() == 0) {
-    delete entity;
-  }
+  RefCountable::unref(entity);
 }
 
 /**
@@ -658,7 +650,7 @@ void MapEntities::add_entity(MapEntity* entity) {
         << "An entity with name '" << name << "' already exists.");
     named_entities[name] = entity;
   }
-  entity->increment_refcount();
+  RefCountable::ref(entity);
 
   // notify the entity
   entity->set_map(map);
@@ -864,17 +856,12 @@ void MapEntities::build_non_animated_tiles() {
 
     Surface* non_animated_tiles_surface = non_animated_tiles_surfaces[layer];
 
-    if (non_animated_tiles_surface != NULL) {
-      non_animated_tiles_surface->decrement_refcount();
-      if (non_animated_tiles_surface->get_refcount() == 0) {
-        delete non_animated_tiles_surface;
-      }
-    }
+    RefCountable::unref(non_animated_tiles_surface);
     non_animated_tiles_surface = Surface::create(
         map_size.get_width(), map_size.get_height()
     );
     non_animated_tiles_surfaces[layer] = non_animated_tiles_surface;
-    non_animated_tiles_surface->increment_refcount();
+    RefCountable::ref(non_animated_tiles_surface);
 
     // Set this surface as a software destination because it is built only
     // once and never changes later.

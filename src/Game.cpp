@@ -58,13 +58,13 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   crystal_state(false) {
 
   // notify objects
-  savegame->increment_refcount();
+  RefCountable::ref(savegame);
   savegame->set_game(this);
 
   // initialize members
   commands = new GameCommands(*this);
   hero = new Hero(get_equipment());
-  hero->increment_refcount();
+  RefCountable::ref(hero);
   keys_effect = new KeysEffect();
   update_keys_effect();
 
@@ -98,35 +98,20 @@ Game::~Game() {
 
   if (savegame != NULL) {
     savegame->set_game(NULL);
-    savegame->decrement_refcount();
-    if (savegame->get_refcount() == 0) {
-      // No one is using the savegame anymore (especially not Lua).
-      delete savegame;
-    }
+    RefCountable::unref(savegame);
   }
 
   current_map->unload();
-  current_map->decrement_refcount();
-  if (current_map->get_refcount() == 0) {
-    delete current_map;
-  }
+  RefCountable::unref(current_map);
 
   Music::play(Music::none);
 
   delete transition;
   delete keys_effect;
-  hero->decrement_refcount();
-  if (hero->get_refcount() == 0) {
-    delete hero;
-  }
+  RefCountable::unref(hero);
   delete commands;
 
-  if (previous_map_surface != NULL) {
-    previous_map_surface->decrement_refcount();
-    if (previous_map_surface->get_refcount() == 0) {
-      delete previous_map_surface;
-    }
-  }
+  RefCountable::unref(previous_map_surface);
 }
 
 /**
@@ -414,7 +399,7 @@ void Game::update_transitions() {
     if (restarting) {
       current_map->unload();
       main_loop.set_game(new Game(main_loop, savegame));
-      savegame->decrement_refcount();
+      RefCountable::unref(savegame);
       savegame = NULL;  // The new game is the owner.
     }
     else if (transition_direction == Transition::OUT) {
@@ -453,17 +438,14 @@ void Game::update_transitions() {
           previous_map_surface = Surface::create(
               VideoManager::get_instance()->get_quest_size()
           );
-          previous_map_surface->increment_refcount();
+          RefCountable::ref(previous_map_surface);
           current_map->draw();
           current_map->get_visible_surface().draw(*previous_map_surface);
         }
 
         // set the next map
         current_map->unload();
-        current_map->decrement_refcount();
-        if (current_map->get_refcount() == 0) {
-          delete current_map;
-        }
+        RefCountable::unref(current_map);
 
         current_map = next_map;
         next_map = NULL;
@@ -472,13 +454,8 @@ void Game::update_transitions() {
     else {
       current_map->notify_opening_transition_finished();
 
-      if (previous_map_surface != NULL) {
-        previous_map_surface->decrement_refcount();
-        if (previous_map_surface->get_refcount() == 0) {
-          delete previous_map_surface;
-        }
-        previous_map_surface = NULL;
-      }
+      RefCountable::unref(previous_map_surface);
+      previous_map_surface = NULL;
     }
   }
 
@@ -597,7 +574,7 @@ void Game::set_current_map(
   if (current_map == NULL || map_id != current_map->get_id()) {
     // another map
     next_map = new Map(map_id);
-    next_map->increment_refcount();
+    RefCountable::ref(next_map);
     next_map->load(*this);
     next_map->check_suspended();
   }

@@ -237,15 +237,10 @@ void Map::unload() {
   if (is_loaded()) {
     delete tileset;
     tileset = NULL;
-    visible_surface->decrement_refcount();
-    if (visible_surface->get_refcount() == 0) {
-      delete visible_surface;
-    }
+    RefCountable::unref(visible_surface);
     visible_surface = NULL;
-    background_surface->decrement_refcount();
-    if (background_surface->get_refcount() == 0) {
-      delete background_surface;
-    }
+    RefCountable::unref(background_surface);
+    background_surface = NULL;
     delete entities;
     entities = NULL;
     delete camera;
@@ -264,14 +259,14 @@ void Map::unload() {
  */
 void Map::load(Game& game) {
 
-  this->visible_surface = Surface::create(
+  visible_surface = Surface::create(
       VideoManager::get_instance()->get_quest_size()
   );
-  this->visible_surface->increment_refcount();
-  this->background_surface = Surface::create(
+  RefCountable::ref(visible_surface);
+  background_surface = Surface::create(
       VideoManager::get_instance()->get_quest_size()
   );
-  this->background_surface->increment_refcount();
+  RefCountable::ref(background_surface);
   entities = new MapEntities(game, *this);
 
   // read the map file

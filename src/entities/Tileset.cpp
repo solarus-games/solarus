@@ -130,11 +130,11 @@ void Tileset::load() {
   // load the tileset images
   file_name = std::string("tilesets/") + id + ".tiles.png";
   tiles_image = Surface::create(file_name, Surface::DIR_DATA);
-  tiles_image->increment_refcount();
+  RefCountable::ref(tiles_image);
 
   file_name = std::string("tilesets/") + id + ".entities.png";
   entities_image = Surface::create(file_name, Surface::DIR_DATA);
-  entities_image->increment_refcount();
+  RefCountable::ref(entities_image);
 }
 
 /**
@@ -149,16 +149,10 @@ void Tileset::unload() {
   }
   tile_patterns.clear();
 
-  tiles_image->decrement_refcount();
-  if (tiles_image->get_refcount() == 0) {
-    delete tiles_image;
-  }
+  RefCountable::unref(tiles_image);
   tiles_image = NULL;
 
-  entities_image->decrement_refcount();
-  if (entities_image->get_refcount() == 0) {
-    delete entities_image;
-  }
+  RefCountable::unref(entities_image);
   entities_image = NULL;
 }
 
@@ -218,19 +212,13 @@ void Tileset::set_images(const std::string& other_id) {
   Tileset tmp_tileset(other_id);
   tmp_tileset.load();
 
-  tiles_image->decrement_refcount();
-  if (tiles_image->get_refcount() == 0) {
-    delete tiles_image;
-  }
+  RefCountable::unref(tiles_image);
   tiles_image = &tmp_tileset.get_tiles_image();
-  tiles_image->increment_refcount();
+  RefCountable::ref(tiles_image);
 
-  entities_image->decrement_refcount();
-  if (entities_image->get_refcount() == 0) {
-    delete entities_image;
-  }
+  RefCountable::unref(entities_image);
   entities_image = &tmp_tileset.get_entities_image();
-  entities_image->increment_refcount();
+  RefCountable::ref(entities_image);
 
   background_color = tmp_tileset.get_background_color();
 }

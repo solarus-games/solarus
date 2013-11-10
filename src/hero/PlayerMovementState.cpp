@@ -141,10 +141,7 @@ void Hero::PlayerMovementState::update() {
           || !current_jumper->is_in_jump_position(get_hero())) {
 
         // Cancel the jumper preparation.
-        current_jumper->decrement_refcount();
-        if (current_jumper->get_refcount() == 0) {
-          delete current_jumper;
-        }
+        RefCountable::unref(current_jumper);
         current_jumper = NULL;
         jumper_start_date = 0;
       }
@@ -301,7 +298,7 @@ void Hero::PlayerMovementState::notify_jumper_activated(Jumper& jumper) {
 
   // Add a small delay before jumping.
   current_jumper = &jumper;
-  current_jumper->increment_refcount();
+  RefCountable::ref(current_jumper);
   jumper_start_date = System::now() + 200;
 }
 
@@ -311,10 +308,7 @@ void Hero::PlayerMovementState::notify_jumper_activated(Jumper& jumper) {
 void Hero::PlayerMovementState::cancel_jumper() {
 
   if (current_jumper != NULL) {
-    current_jumper->decrement_refcount();
-    if (current_jumper->get_refcount() == 0) {
-      delete current_jumper;
-    }
+    RefCountable::unref(current_jumper);
     current_jumper = NULL;
     jumper_start_date = 0;
   }

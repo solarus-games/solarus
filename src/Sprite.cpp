@@ -105,12 +105,7 @@ Sprite::Sprite(const std::string& id):
  */
 Sprite::~Sprite() {
 
-  if (intermediate_surface != NULL) {
-    intermediate_surface->decrement_refcount();
-    if (intermediate_surface->get_refcount() == 0) {
-      delete intermediate_surface;
-    }
-  }
+  RefCountable::unref(intermediate_surface);
 }
 
 /**
@@ -795,7 +790,7 @@ Surface& Sprite::get_intermediate_surface() const {
 
   if (intermediate_surface == NULL) {
     intermediate_surface = Surface::create(get_max_size());
-    intermediate_surface->increment_refcount();
+    RefCountable::ref(intermediate_surface);
   }
   return *intermediate_surface;
 }

@@ -22,7 +22,7 @@
  * \brief Creates an object exportable to Lua.
  */
 ExportableToLua::ExportableToLua():
-  refcount(0),
+  RefCountable(),
   known_to_lua(false),
   with_lua_table(false) {
 
@@ -32,9 +32,6 @@ ExportableToLua::ExportableToLua():
  * \brief Destroys this exportable object.
  */
 ExportableToLua::~ExportableToLua() {
-
-  Debug::check_assertion(refcount == 0, StringConcat()
-      << "This object is still used somewhere else: refcount is " << refcount);
 }
 
 /**
@@ -76,33 +73,5 @@ bool ExportableToLua::is_with_lua_table() const {
  */
 void ExportableToLua::set_with_lua_table(bool with_lua_table) {
   this->with_lua_table = with_lua_table;
-}
-
-/**
- * \brief Returns the current refcount of this object.
- *
- * You must not delete this object if its refcount is not zero.
- *
- * \return the current refcount of this object
- */
-int ExportableToLua::get_refcount() const {
-  return refcount;
-}
-
-/**
- * \brief Increments the refcount of this object.
- */
-void ExportableToLua::increment_refcount() {
-
-  refcount++;
-}
-
-/**
- * \brief Decrements the refcount of this object.
- */
-void ExportableToLua::decrement_refcount() {
-
-  Debug::check_assertion(refcount > 0, "The refcount is already 0");
-  refcount--;
 }
 

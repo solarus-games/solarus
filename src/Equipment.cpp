@@ -46,10 +46,7 @@ Equipment::~Equipment() {
   std::map<std::string, EquipmentItem*>::const_iterator it;
   for (it = items.begin(); it != items.end(); it++) {
     EquipmentItem* item = it->second;
-    item->decrement_refcount();
-    if (item->get_refcount() == 0) {
-      delete item;
-    }
+    RefCountable::unref(item);
   }
 }
 
@@ -386,7 +383,7 @@ void Equipment::load_items() {
     for (it = item_elements.begin(); it != item_elements.end(); ++it) {
       const std::string& item_id = it->first;
       EquipmentItem* item = new EquipmentItem(*this);
-      item->increment_refcount();
+      RefCountable::ref(item);
       item->set_name(item_id);
       items[item_id] = item;
     }

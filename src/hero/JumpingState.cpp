@@ -49,7 +49,7 @@ Hero::JumpingState::JumpingState(
     // Keep the carried item of the previous state.
     carried_item = hero.get_carried_item();
     if (carried_item != NULL) {
-      carried_item->increment_refcount();
+      RefCountable::ref(carried_item);
     }
   }
 
@@ -121,9 +121,9 @@ void Hero::JumpingState::stop(const State* next_state) {
 
     case CarriedItem::BEHAVIOR_KEEP:
       // The next state is now the owner and has incremented the refcount.
-      carried_item->decrement_refcount();
-      Debug::check_assertion(carried_item->get_refcount() > 0,
+      Debug::check_assertion(carried_item->get_refcount() > 1,
           "Invalid carried item refcount");
+      RefCountable::unref(carried_item);
       carried_item = NULL;
       break;
 
@@ -338,13 +338,8 @@ CarriedItem* Hero::JumpingState::get_carried_item() const {
  */
 void Hero::JumpingState::destroy_carried_item() {
 
-  if (carried_item != NULL) {
-    carried_item->decrement_refcount();
-    if (carried_item->get_refcount() == 0) {
-      delete carried_item;
-    }
-    carried_item = NULL;
-  }
+  RefCountable::unref(carried_item);
+  carried_item = NULL;
 }
 
 /**

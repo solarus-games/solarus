@@ -40,10 +40,7 @@ TransitionScrolling::TransitionScrolling(Transition::Direction direction):
 TransitionScrolling::~TransitionScrolling() {
 
   if (get_direction() == IN) {
-    both_maps_surface->decrement_refcount();
-    if (both_maps_surface->get_refcount() == 0) {
-      delete both_maps_surface;
-    }
+    RefCountable::unref(both_maps_surface);
   }
 }
 
@@ -97,7 +94,7 @@ void TransitionScrolling::start() {
 
   // create a surface with the two maps
   both_maps_surface = Surface::create(width, height);
-  both_maps_surface->increment_refcount();
+  RefCountable::ref(both_maps_surface);
 
   // set the blitting rectangles
 

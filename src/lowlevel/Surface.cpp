@@ -324,10 +324,10 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
   }
   // Else, create a Surface with the requested size and color, and add it to the subsurface queue.
   else {
-    /*Rectangle subsurface_size(0, 0, where.get_width(), where.get_height());
-    Surface subsurface(where);
-    subsurface.internal_color = new Color(color);
-    add_subsurface(subsurface, subsurface_size, where);*/
+    Rectangle subsurface_size(0, 0, where.get_width(), where.get_height());
+    Surface* subsurface = Surface::create(subsurface_size);
+    subsurface->internal_color = new Color(color);
+    add_subsurface(*subsurface, subsurface_size, where);
   }
 }
 

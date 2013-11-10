@@ -312,18 +312,17 @@ void Surface::set_software_destination(bool software_destination) {
 
 /**
  * \brief Fills the entire surface with the specified color.
- * \param color a color.
+ * \param color A color.
  */
 void Surface::fill_with_color(Color& color) {
 
-  const Rectangle& size = Rectangle(0, 0, width, height);
-  fill_with_color(color, size);
+  fill_with_color(color, Rectangle(0, 0, width, height));
 }
 
 /**
  * \brief Fill the rectangle at given coords with the specified color.
- * \param color a color.
- * \param where the rectangle to fill.
+ * \param color A color.
+ * \param where The rectangle to fill.
  */
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 

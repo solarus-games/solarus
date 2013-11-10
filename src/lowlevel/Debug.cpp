@@ -93,6 +93,6 @@ void Debug::die(const std::string& error_message) {
       error_message.c_str(),
       NULL);
 
-  std::exit(EXIT_FAILURE);
+  std::abort();
 }
 

@@ -41,16 +41,14 @@ struct SubSurface {
         src_rect(src_rect),
         dst_rect(dst_rect) {
 
-        //surface->increment_refcount();
+        surface->increment_refcount();
     }
 
     ~SubSurface() {
-      /*
         surface->decrement_refcount();
         if (surface->get_refcount()) {
             delete surface;
         }
-        */
     }
 };
 
@@ -72,28 +70,6 @@ Surface::Surface(int width, int height):
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
-}
-
-/**
- * \brief Creates a surface from the specified image file name.
- *
- * An assertion error occurs if the file cannot be loaded.
- *
- * \param file_name Name of the image file to load, relative to the base directory specified.
- * \param base_directory The base directory to use.
- */
-Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
-  Drawable(),
-  internal_color(NULL),
-  software_destination(false),
-  internal_surface(NULL),
-  internal_texture(NULL),
-  is_rendered(false),
-  internal_opacity(255) {
-
-  internal_surface = get_surface_from_file(file_name, base_directory);
-  width = internal_surface->w;
-  height = internal_surface->h;
 }
 
 /**
@@ -166,15 +142,18 @@ Surface* Surface::create(const Rectangle& size) {
  */
 Surface* Surface::create(const std::string& file_name,
     ImageDirectory base_directory) {
-  
+
   SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
 
-  Surface* surface = new Surface(software_surface);
-  return surface;
+  if (software_surface == NULL) {
+    return NULL;
+  }
+
+  return new Surface(software_surface);
 }
 
 /**
- * \brief Return the SDL_Surface corresponding to the requested file.
+ * \brief Returns the SDL_Surface corresponding to the requested file.
  *
  * The returned SDL_Surface has to be manually deleted.
  *
@@ -384,8 +363,8 @@ void Surface::add_subsurface(
 void Surface::clear_subsurfaces() {
 
   for (int i = 0; i < subsurfaces.size() ; ++i) {
-    //SubSurface* subsurface = subsurfaces[i];
-    //delete subsurface;
+    SubSurface* subsurface = subsurfaces[i];
+    delete subsurface;
   }
   subsurfaces.clear();
 }

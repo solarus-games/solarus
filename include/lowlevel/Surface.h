@@ -91,7 +91,6 @@ class Surface: public Drawable {
   private:
 
     Surface(int width, int height);
-    Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
     explicit Surface(SDL_Surface* internal_surface);
 
     uint32_t get_pixel(int index) const;

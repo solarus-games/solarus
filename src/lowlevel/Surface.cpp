@@ -84,7 +84,6 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   internal_surface = get_surface_from_file(file_name, base_directory);
   width = internal_surface->w;
   height = internal_surface->h;
-  internal_texture = get_texture_from_surface(internal_surface);
 }
 
 /**

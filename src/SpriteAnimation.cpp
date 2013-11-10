@@ -36,15 +36,15 @@ SpriteAnimation::SpriteAnimation(
     int loop_on_frame):
 
   src_image(NULL),
-  src_image_loaded(false),
+  src_image_is_tileset(image_file_name == "tileset"),
   directions(directions),
   frame_delay(frame_delay),
   loop_on_frame(loop_on_frame),
   should_enable_pixel_collisions(false) {
 
-  if (image_file_name != "tileset") {
+  if (!src_image_is_tileset) {
     src_image = Surface::create(image_file_name);
-    src_image_loaded = true;
+    src_image->increment_refcount();
   }
 }
 
@@ -58,8 +58,11 @@ SpriteAnimation::~SpriteAnimation() {
     delete *it;
   }
 
-  if (src_image_loaded) {
-    delete src_image;
+  if (src_image != NULL) {
+    src_image->decrement_refcount();
+    if (src_image->get_refcount() == 0) {
+      delete src_image;
+    }
   }
 }
 
@@ -72,12 +75,23 @@ SpriteAnimation::~SpriteAnimation() {
  */
 void SpriteAnimation::set_tileset(Tileset& tileset) {
 
-  if (!src_image_loaded) {
-    this->src_image = &tileset.get_entities_image();
-    if (should_enable_pixel_collisions) {
-      disable_pixel_collisions(); // to force creating the images again
-      do_enable_pixel_collisions();
+  if (!src_image_is_tileset) {
+    // Nothing to do when the tileset changes.
+    return;
+  }
+
+  if (src_image != NULL) {
+    src_image->decrement_refcount();
+    if (src_image->get_refcount() == 0) {
+      delete src_image;
     }
+  }
+
+  src_image = &tileset.get_entities_image();
+  src_image->increment_refcount();
+  if (should_enable_pixel_collisions) {
+    disable_pixel_collisions(); // to force creating the images again
+    do_enable_pixel_collisions();
   }
 }
 
@@ -160,7 +174,7 @@ void SpriteAnimation::draw(Surface& dst_surface,
  */
 void SpriteAnimation::enable_pixel_collisions() {
 
-  if (src_image_loaded) {
+  if (src_image != NULL) {
     do_enable_pixel_collisions();
   }
   else {

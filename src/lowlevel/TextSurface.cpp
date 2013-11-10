@@ -86,7 +86,10 @@ void TextSurface::quit() {
 
     if (font->bitmap != NULL) {
       // It's a bitmap font.
-      delete font->bitmap;
+      font->bitmap->decrement_refcount();
+      if (font->bitmap->get_refcount() == 0) {
+        delete font->bitmap;
+      }
       font->bitmap = NULL;
     }
     else {
@@ -135,6 +138,7 @@ int TextSurface::l_font(lua_State* l) {
   if (extension == ".png" || extension == ".PNG") {
     // It's a bitmap font.
     fonts[font_id].bitmap = Surface::create(file_name, Surface::DIR_DATA);
+    fonts[font_id].bitmap->increment_refcount();
   }
   else {
     // It's a normal font.
@@ -205,8 +209,12 @@ TextSurface::TextSurface(int x, int y,
  */
 TextSurface::~TextSurface() {
 
-  if(surface)
-    delete surface;
+  if (surface != NULL) {
+    surface->decrement_refcount();
+    if (surface->get_refcount() == 0) {
+      delete surface;
+    }
+  }
 }
 
 /**
@@ -474,7 +482,10 @@ void TextSurface::rebuild() {
   }
 
   if (surface != NULL) {
-    delete surface;
+    surface->decrement_refcount();
+    if (surface->get_refcount() == 0) {
+      delete surface;
+    }
     surface = NULL;
   }
 
@@ -555,6 +566,7 @@ void TextSurface::rebuild_bitmap() {
   int char_height = bitmap_size.get_height() / 16;
 
   surface = Surface::create(char_width * num_chars, char_height);
+  surface->increment_refcount();
 
   // Traverse the string again to draw the characters.
   Rectangle dst_position(0, 0);
@@ -603,6 +615,7 @@ void TextSurface::rebuild_ttf() {
       << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
 
   surface = new Surface(internal_surface);
+  surface->increment_refcount();
 }
 
 /**

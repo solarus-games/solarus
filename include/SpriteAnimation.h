@@ -60,7 +60,8 @@ class SpriteAnimation {
     Surface* src_image;          /**< image from which the frames are extracted;
                                   * this image is the same for
                                   * all directions of the sprite's animation */
-    bool src_image_loaded;       /**< indicates that src_image was loaded from this instance */
+    const bool
+        src_image_is_tileset;   /**< indicates that the image comes from the tileset */
     std::vector<SpriteAnimationDirection*>
         directions;               /**< list of directions:
                                    * each direction is a sequence of images */

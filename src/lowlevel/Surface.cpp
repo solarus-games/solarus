@@ -37,18 +37,18 @@ struct SubSurface {
         const Rectangle& src_rect,
         const Rectangle& dst_rect
     ):
-        surface(surface),
-        src_rect(src_rect),
-        dst_rect(dst_rect) {
+      surface(surface),
+      src_rect(src_rect),
+      dst_rect(dst_rect) {
 
-        surface->increment_refcount();
+      surface->increment_refcount();
     }
 
     ~SubSurface() {
-        surface->decrement_refcount();
-        if (surface->get_refcount()) {
-            delete surface;
-        }
+      surface->decrement_refcount();
+      if (surface->get_refcount() == 0) {
+        delete surface;
+      }
     }
 };
 

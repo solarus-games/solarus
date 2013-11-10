@@ -242,7 +242,10 @@ void Map::unload() {
       delete visible_surface;
     }
     visible_surface = NULL;
-    delete background_surface;
+    background_surface->decrement_refcount();
+    if (background_surface->get_refcount() == 0) {
+      delete background_surface;
+    }
     delete entities;
     entities = NULL;
     delete camera;
@@ -268,6 +271,7 @@ void Map::load(Game& game) {
   this->background_surface = Surface::create(
       VideoManager::get_instance()->get_quest_size()
   );
+  this->background_surface->increment_refcount();
   entities = new MapEntities(game, *this);
 
   // read the map file

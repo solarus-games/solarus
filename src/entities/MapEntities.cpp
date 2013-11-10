@@ -82,7 +82,13 @@ void MapEntities::destroy_all_entities() {
     tiles[layer].clear();
     delete[] tiles_ground[layer];
     delete[] animated_tiles[layer];
-    delete non_animated_tiles_surfaces[layer];
+
+    if (non_animated_tiles_surfaces[layer] != NULL) {
+      non_animated_tiles_surfaces[layer]->decrement_refcount();
+      if (non_animated_tiles_surfaces[layer]->get_refcount() == 0) {
+        delete non_animated_tiles_surfaces[layer];
+      }
+    }
 
     entities_drawn_first[layer].clear();
     entities_drawn_y_order[layer].clear();
@@ -856,20 +862,29 @@ void MapEntities::build_non_animated_tiles() {
   const Rectangle map_size(0, 0, map.get_width(), map.get_height());
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    delete non_animated_tiles_surfaces[layer];
-    non_animated_tiles_surfaces[layer] = Surface::create(
+    Surface* non_animated_tiles_surface = non_animated_tiles_surfaces[layer];
+
+    if (non_animated_tiles_surface != NULL) {
+      non_animated_tiles_surface->decrement_refcount();
+      if (non_animated_tiles_surface->get_refcount() == 0) {
+        delete non_animated_tiles_surface;
+      }
+    }
+    non_animated_tiles_surface = Surface::create(
         map_size.get_width(), map_size.get_height()
     );
+    non_animated_tiles_surfaces[layer] = non_animated_tiles_surface;
+    non_animated_tiles_surface->increment_refcount();
 
     // Set this surface as a software destination because it is built only
     // once and never changes later.
-    non_animated_tiles_surfaces[layer]->set_software_destination(true);
+    non_animated_tiles_surface->set_software_destination(true);
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       Tile& tile = *tiles[layer][i];
       if (!tile.is_animated()) {
         // non-animated tile: optimize its displaying
-        tile.draw(*non_animated_tiles_surfaces[layer], map_size);
+        tile.draw(*non_animated_tiles_surface, map_size);
       }
       else {
         // animated tile: mark its region as non-optimizable
@@ -901,7 +916,7 @@ void MapEntities::build_non_animated_tiles() {
 
         if (animated_tiles[layer][index]) {
           Rectangle animated_square(x, y, 8, 8);
-          non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_transparent(), animated_square);
+          non_animated_tiles_surface->fill_with_color(Color::get_transparent(), animated_square);
         }
         index++;
       }

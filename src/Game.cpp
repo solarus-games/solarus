@@ -122,7 +122,10 @@ Game::~Game() {
   delete commands;
 
   if (previous_map_surface != NULL) {
-    delete previous_map_surface;
+    previous_map_surface->decrement_refcount();
+    if (previous_map_surface->get_refcount() == 0) {
+      delete previous_map_surface;
+    }
   }
 }
 
@@ -450,6 +453,7 @@ void Game::update_transitions() {
           previous_map_surface = Surface::create(
               VideoManager::get_instance()->get_quest_size()
           );
+          previous_map_surface->increment_refcount();
           current_map->draw();
           current_map->get_visible_surface().draw(*previous_map_surface);
         }
@@ -469,7 +473,10 @@ void Game::update_transitions() {
       current_map->notify_opening_transition_finished();
 
       if (previous_map_surface != NULL) {
-        delete previous_map_surface;
+        previous_map_surface->decrement_refcount();
+        if (previous_map_surface->get_refcount() == 0) {
+          delete previous_map_surface;
+        }
         previous_map_surface = NULL;
       }
     }

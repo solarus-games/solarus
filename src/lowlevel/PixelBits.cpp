@@ -33,7 +33,7 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position) {
   // This list is implemented as bit fields.
 
   Debug::check_assertion(surface.internal_surface != NULL, 
-    "Attempt to read a surface that dont't have pixel buffer in RAM.");
+    "Attempt to read a surface that doesn't have pixel buffer in RAM.");
   
   width = image_position.get_width();
   height = image_position.get_height();

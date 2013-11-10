@@ -22,11 +22,10 @@
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/PixelBits.h"
 #include <vector>
+#include <map>
 
 typedef struct SDL_Surface SDL_Surface;
 typedef struct SDL_Texture SDL_Texture;
-
-struct SubSurface;
 
 /**
  * \brief Represents a graphic surface.
@@ -91,6 +90,8 @@ class Surface: public Drawable {
 
   private:
 
+    class SubSurfaceNode;
+
     Surface(int width, int height);
     explicit Surface(SDL_Surface* internal_surface);
 
@@ -109,10 +110,11 @@ class Surface: public Drawable {
         const Rectangle& src_rect,
         const Rectangle& dst_rect,
         const Rectangle& clip_rect,
-        int opacity
+        int opacity,
+        const std::vector<SubSurfaceNode*>& subsurfaces
     );
 
-    std::vector<SubSurface*> subsurfaces; /**< buffer queue of every sub Surface with their drawing source and destination. */
+    std::vector<SubSurfaceNode*> subsurfaces;      /**< Source Subsurfaces not in the tree yet */
 
     Color* internal_color;                /**< the background color to use, if any. */
     bool software_destination;            /**< indicates that this surface is modified on software side

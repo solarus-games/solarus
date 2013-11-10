@@ -27,26 +27,40 @@
 #include <SDL_image.h>
 
 // TODO comment this class
-struct SubSurface {
-    Surface* surface;
+class Surface::SubSurfaceNode: public RefCountable {
+
+  public:
+
+    SubSurfaceNode(
+        Surface* src_surface,
+        const Rectangle& src_rect,
+        const Rectangle& dst_rect,
+        const std::vector<SubSurfaceNode*> subsurfaces
+    ):
+      src_surface(src_surface),
+      src_rect(src_rect),
+      dst_rect(dst_rect),
+      subsurfaces(subsurfaces) {
+
+      RefCountable::ref(src_surface);
+      for (unsigned i = 0; i < subsurfaces.size(); ++i) {
+        RefCountable::ref(subsurfaces[i]);
+      }
+    }
+
+    ~SubSurfaceNode() {
+
+      RefCountable::unref(src_surface);
+
+      for (unsigned i = 0; i < subsurfaces.size(); ++i) {
+        RefCountable::unref(subsurfaces[i]);
+      }
+    }
+
+    Surface* src_surface;
     Rectangle src_rect;
     Rectangle dst_rect;
-
-    SubSurface(
-        Surface* surface,
-        const Rectangle& src_rect,
-        const Rectangle& dst_rect
-    ):
-      surface(surface),
-      src_rect(src_rect),
-      dst_rect(dst_rect) {
-
-      RefCountable::ref(surface);
-    }
-
-    ~SubSurface() {
-      RefCountable::unref(surface);
-    }
+    std::vector<SubSurfaceNode*> subsurfaces;
 };
 
 /**
@@ -106,6 +120,7 @@ Surface::~Surface() {
   if (internal_color != NULL) {
     delete internal_color;
   }
+
   clear_subsurfaces();
 }
 
@@ -312,7 +327,7 @@ void Surface::fill_with_color(Color& color) {
  */
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
-  // If we have to draw on a software surface, draw pixels directely.
+  // If we have to draw on a software surface, draw pixels directly.
   if (software_destination) {
     Debug::check_assertion(internal_surface != NULL,
         "Missing software surface for fill color");
@@ -323,6 +338,7 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
   else {
     Rectangle subsurface_size(0, 0, where.get_width(), where.get_height());
     Surface* subsurface = Surface::create(subsurface_size);
+    subsurface->increment_refcount();
     subsurface->internal_color = new Color(color);
     add_subsurface(*subsurface, subsurface_size, where);
   }
@@ -339,19 +355,26 @@ void Surface::add_subsurface(
     const Rectangle& region,
     const Rectangle& dst_position) {
 
-  SubSurface* subsurface = new SubSurface(&src_surface, region, dst_position);
+  SubSurfaceNode* node = new SubSurfaceNode(
+      &src_surface,
+      region,
+      dst_position,
+      src_surface.subsurfaces
+  );
+  RefCountable::ref(node);
 
-  if (subsurface->dst_rect.is_flat()) {
-    subsurface->dst_rect.set_width(region.get_width());
-    subsurface->dst_rect.set_height(region.get_height());
+  if (node->dst_rect.is_flat()) {
+    node->dst_rect.set_width(region.get_width());
+    node->dst_rect.set_height(region.get_height());
   }
 
   // Clear the subsurface queue if the current dst_surface already has been rendered.
   if (is_rendered) {
+    // TODO instead of clearing, just check that equivalent subsurface is not already present
     clear_subsurfaces();
   }
 
-  subsurfaces.push_back(subsurface);
+  subsurfaces.push_back(node);
 }
 
 /**
@@ -359,9 +382,8 @@ void Surface::add_subsurface(
  */
 void Surface::clear_subsurfaces() {
 
-  for (int i = 0; i < subsurfaces.size() ; ++i) {
-    SubSurface* subsurface = subsurfaces[i];
-    delete subsurface;
+  for (unsigned i = 0; i < subsurfaces.size() ; ++i) {
+    RefCountable::unref(subsurfaces[i]);
   }
   subsurfaces.clear();
 }
@@ -426,7 +448,7 @@ void Surface::draw_transition(Transition& transition) {
 void Surface::render(SDL_Renderer* renderer) {
 
   const Rectangle size(get_size());
-  render(renderer, size, size, size, 255);
+  render(renderer, size, size, size, 255, subsurfaces);
 }
 
 /**
@@ -446,7 +468,8 @@ void Surface::render(
     const Rectangle& src_rect,
     const Rectangle& dst_rect,
     const Rectangle& clip_rect,
-    int opacity) {
+    int opacity,
+    const std::vector<SubSurfaceNode*>& subsurfaces) {
 
   const int current_opacity = std::min(internal_opacity, opacity);
 
@@ -458,6 +481,7 @@ void Surface::render(
     }
     // Else if the software surface has changed, update the hardware texture.
     else if (software_destination && !is_rendered) {
+      // TODO do this only when the software surface has changed.
       SDL_UpdateTexture(
           internal_texture,
           NULL,
@@ -488,10 +512,10 @@ void Surface::render(
   }
 
   // Draw all subtextures.
-  std::vector<SubSurface*>::const_iterator it;
-  const std::vector<SubSurface*>::const_iterator end = subsurfaces.end();
+  std::vector<SubSurfaceNode*>::const_iterator it;
+  const std::vector<SubSurfaceNode*>::const_iterator end = subsurfaces.end();
   for (it = subsurfaces.begin(); it != end; ++it) {
-    SubSurface* subsurface = *it;
+    SubSurfaceNode* subsurface = *it;
 
     // Calculate absolute destination subrectangle position on screen.
     Rectangle subsurface_dst_rect(
@@ -506,11 +530,13 @@ void Surface::render(
         dst_rect.get_internal_rect(),
         superimposed_clip_rect.get_internal_rect());
 
-    subsurface->surface->render(renderer,
+    subsurface->src_surface->render(
+        renderer,
         subsurface->src_rect,
         subsurface_dst_rect,
         superimposed_clip_rect,
-        current_opacity
+        current_opacity,
+        subsurface->subsurfaces
     );
   }
 

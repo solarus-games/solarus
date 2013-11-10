@@ -38,6 +38,7 @@ class Settings;
 class KeysEffect;
 class StringResource;
 class Timer;
+class RefCountable;
 
 // low level
 class System;

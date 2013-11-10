@@ -308,6 +308,8 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
   // If we have to draw on a software surface, draw pixels directely.
   if (software_destination) {
+    Debug::check_assertion(internal_surface != NULL,
+        "Missing software surface for fill color");
     SDL_FillRect(internal_surface, Rectangle(where).get_internal_rect(),
         color.get_internal_value());
   }

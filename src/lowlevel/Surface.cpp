@@ -308,9 +308,9 @@ void Surface::fill_with_color(Color& color) {
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
   // If we have to draw on a software surface, draw pixels directely.
-  if(software_destination) {
-    Rectangle where2 = where;
-    SDL_FillRect(internal_surface, where2.get_internal_rect(), color.get_internal_value());
+  if (software_destination) {
+    SDL_FillRect(internal_surface, Rectangle(where).get_internal_rect(),
+        color.get_internal_value());
   }
   // Else, create a Surface with the requested size and color, and add it to the subsurface queue.
   else {

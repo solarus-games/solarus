@@ -148,14 +148,16 @@ Surface* Surface::create_from_file(const std::string& file_name,
 /**
  * \brief Return the SDL_Surface corresponding to the requested file.
  *
- * The returned SDL_Surface have to manually delete.
+ * The returned SDL_Surface has to be manually deleted.
  *
  * \param file_name Name of the image file to load, relative to the base directory specified.
  * \param base_directory The base directory to use.
  * \return The SDL_Surface.
  */
-SDL_Surface* Surface::get_surface_from_file(const std::string& file_name,
-                                            ImageDirectory base_directory) {
+SDL_Surface* Surface::get_surface_from_file(
+    const std::string& file_name,
+    ImageDirectory base_directory) {
+
   std::string prefix;
   bool language_specific = false;
 
@@ -431,7 +433,7 @@ void Surface::render(
     const Rectangle& clip_rect,
     int opacity) {
 
-  int current_opacity = std::min(internal_opacity, opacity);
+  const int current_opacity = std::min(internal_opacity, opacity);
 
   // Accelerate the internal software surface.
   if (internal_surface != NULL) {

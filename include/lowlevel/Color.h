@@ -71,7 +71,7 @@ class Color {
 
     Color();
     Color(const Color& other);
-    Color(int r, int g, int b, int a=255);
+    Color(int r, int g, int b, int a = 255);
 
     void get_components(int& r, int& g, int& b, int& a) const;
 };

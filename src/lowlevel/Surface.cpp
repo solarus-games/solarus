@@ -488,6 +488,12 @@ void Surface::render(
           internal_surface->pitch
       );
     }
+
+    // Destroy the internal surface if needed.
+    if (!software_destination) {
+      SDL_FreeSurface(internal_surface);
+      internal_surface = NULL;
+    }
   }
 
   // Draw the internal color as background color.

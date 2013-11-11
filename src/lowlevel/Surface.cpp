@@ -26,16 +26,15 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-// TODO comment this class
 class Surface::SubSurfaceNode: public RefCountable {
 
   public:
 
     SubSurfaceNode(
-        Surface* src_surface,
-        const Rectangle& src_rect,
-        const Rectangle& dst_rect,
-        const std::vector<SubSurfaceNode*> subsurfaces
+        Surface* src_surface,                           /**< Surface to draw. */
+        const Rectangle& src_rect,                      /**< Region of the Subsurface to draw. */
+        const Rectangle& dst_rect,                      /**< The rectangle where to draw the Subsurface, relative to parent Surface. */
+        const std::vector<SubSurfaceNode*> subsurfaces  /**< Source Subsurfaces not in the tree yet. */
     ):
       src_surface(src_surface),
       src_rect(src_rect),
@@ -369,7 +368,6 @@ void Surface::add_subsurface(
 
   // Clear the subsurface queue if the current dst_surface already has been rendered.
   if (is_rendered) {
-    // TODO instead of clearing, just check that equivalent subsurface is not already present
     clear_subsurfaces();
   }
 
@@ -480,7 +478,6 @@ void Surface::render(
     }
     // Else if the software surface has changed, update the hardware texture.
     else if (software_destination && !is_rendered) {
-      // TODO do this only when the software surface has changed.
       SDL_UpdateTexture(
           internal_texture,
           NULL,
@@ -500,7 +497,7 @@ void Surface::render(
   if (internal_color != NULL) {
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
-    SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect()); //SDL_RenderSetViewport ?
+    SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
     SDL_RenderClear(renderer);
   }

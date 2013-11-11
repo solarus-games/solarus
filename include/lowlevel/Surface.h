@@ -116,9 +116,10 @@ class Surface: public Drawable {
 
     std::vector<SubSurfaceNode*> subsurfaces;      /**< Source Subsurfaces not in the tree yet */
 
-    Color* internal_color;                /**< the background color to use, if any. */
     bool software_destination;            /**< indicates that this surface is modified on software side
                                            * (and therefore immediately) when used as a destination */
+    SDL_Color* internal_color;            /**< the background color to use, if any. */
+//TODO systematically store a PixelBits mask when creating a surface with an image. I wish to just use internal_surface when it's explicitly asked by set_software_destination or if the renderer is not created. 
     SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. Useful if loading texture when windows isn't created and for pixel mask. */
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     bool is_rendered;                     /**< indicated if the current surface has been rendered. Set to false when drawing a surface on this one. */

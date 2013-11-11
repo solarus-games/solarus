@@ -116,6 +116,7 @@ class Surface: public Drawable {
 
     std::vector<SubSurfaceNode*> subsurfaces;      /**< Source Subsurfaces not in the tree yet */
 
+    Color* internal_color;                /**< the background color to use, if any. */
     bool software_destination;            /**< indicates that this surface is modified on software side
                                            * (and therefore immediately) when used as a destination */
     SDL_Surface* internal_surface;        /**< the buffer of pixels encapsulated, if any. Useful if loading texture when windows isn't created and for pixel mask. */

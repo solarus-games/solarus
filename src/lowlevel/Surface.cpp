@@ -70,6 +70,7 @@ class Surface::SubSurfaceNode: public RefCountable {
  */
 Surface::Surface(int width, int height):
   Drawable(),
+  internal_color(NULL),
   software_destination(false),
   internal_surface(NULL),
   internal_texture(NULL),
@@ -93,6 +94,7 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
+  internal_color(NULL),
   software_destination(false),
   internal_surface(internal_surface),
   internal_texture(NULL),
@@ -113,6 +115,10 @@ Surface::~Surface() {
   }
   if (internal_surface != NULL) {
     SDL_FreeSurface(internal_surface);
+  }
+
+  if (internal_color != NULL) {
+    delete internal_color;
   }
 
   clear_subsurfaces();
@@ -315,41 +321,26 @@ void Surface::fill_with_color(Color& color) {
 
 /**
  * \brief Fill the rectangle at given coords with the specified color.
- * \param color A color. It may be opaque, partially or entirely transparent.
- *
- * Pixels in this rectangle will be replaced by the specified color.
- *
+ * \param color A color.
  * \param where The rectangle to fill.
  */
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
-  if (internal_surface == NULL) {
-    internal_surface = SDL_CreateRGBSurface(
-        0,
-        get_width(),
-        get_height(),
-        32,
-        0xff000000,
-        0x00ff0000,
-        0x0000ff00,
-        0x000000ff
-    );
+  // If we have to draw on a software surface, draw pixels directly.
+  if (software_destination) {
+    Debug::check_assertion(internal_surface != NULL,
+        "Missing software surface for fill color");
+    SDL_FillRect(internal_surface, Rectangle(where).get_internal_rect(),
+        color.get_internal_value());
   }
-
-  SDL_FillRect(
-      internal_surface,
-      Rectangle(where).get_internal_rect(),
-      color.get_internal_value()
-  );
-
-  if (!software_destination
-      && where.get_width() == get_width()
-      && where.get_height() == get_height()) {
-    // This fill_with_color operation actually cleans the surface.
-    clear_subsurfaces();
+  // Else, create a Surface with the requested size and color, and add it to the subsurface queue.
+  else {
+    Rectangle subsurface_size(0, 0, where.get_width(), where.get_height());
+    Surface* subsurface = Surface::create(subsurface_size);
+    RefCountable::ref(subsurface);
+    subsurface->internal_color = new Color(color);
+    add_subsurface(*subsurface, subsurface_size, where);
   }
-
-  is_rendered = false;
 }
 
 /**
@@ -376,7 +367,7 @@ void Surface::add_subsurface(
     node->dst_rect.set_height(region.get_height());
   }
 
-  // Clear the subsurface queue if the current dst_surface has already been rendered.
+  // Clear the subsurface queue if the current dst_surface already has been rendered.
   if (is_rendered) {
     // TODO instead of clearing, just check that equivalent subsurface is not already present
     clear_subsurfaces();
@@ -386,7 +377,7 @@ void Surface::add_subsurface(
 }
 
 /**
- * \brief Clear the internal SubSurface queue.
+ * \brief clear the internal SubSurface queue.
  */
 void Surface::clear_subsurfaces() {
 
@@ -497,6 +488,15 @@ void Surface::render(
           internal_surface->pitch
       );
     }
+  }
+
+  // Draw the internal color as background color.
+  if (internal_color != NULL) {
+    int r, g, b, a;
+    internal_color->get_components(r, g, b, a);
+    SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect()); //SDL_RenderSetViewport ?
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_RenderClear(renderer);
   }
 
   // Draw the internal texture.

@@ -946,7 +946,6 @@ void MapEntities::redraw_non_animated_tiles() {
 
         if (animated_tiles[layer][index]) {
           Rectangle animated_square(x, y, 8, 8);
-          non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta(), animated_square);
         }
         index++;
       }

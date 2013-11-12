@@ -903,7 +903,6 @@ void MapEntities::build_non_animated_tiles() {
 
         if (animated_tiles[layer][index]) {
           Rectangle animated_square(x, y, 8, 8);
-          non_animated_tiles_surface->fill_with_color(Color::get_transparent(), animated_square);
         }
         index++;
       }
@@ -931,8 +930,6 @@ void MapEntities::redraw_non_animated_tiles() {
 
   const Rectangle map_size(0, 0, map.get_width(), map.get_height());
   for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta());
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       Tile& tile = *tiles[layer][i];

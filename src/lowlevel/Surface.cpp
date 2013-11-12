@@ -33,7 +33,7 @@ class Surface::SubSurfaceNode: public RefCountable {
     SubSurfaceNode(
         Surface* src_surface,                           /**< Surface to draw. */
         const Rectangle& src_rect,                      /**< Region of the Subsurface to draw. */
-        const Rectangle& dst_rect,                      /**< The rectangle where to draw the Subsurface, relative to parent Surface. */
+        const Rectangle& dst_rect,                      /**< The rectangle where to draw the Subsurface, relative to the parent Surface. */
         const std::vector<SubSurfaceNode*> subsurfaces  /**< Source Subsurfaces not in the tree yet. */
     ):
       src_surface(src_surface),

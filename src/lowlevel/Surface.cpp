@@ -338,7 +338,8 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
     Surface* subsurface = Surface::create(subsurface_size);
     RefCountable::ref(subsurface);
     subsurface->internal_color = new Color(color);
-    add_subsurface(*subsurface, subsurface_size, where);
+    
+    subsurface->raw_draw_region(subsurface_size, *this, where);
   }
 }
 

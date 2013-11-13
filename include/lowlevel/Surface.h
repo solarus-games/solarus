@@ -118,8 +118,7 @@ class Surface: public Drawable {
 
     bool software_destination;            /**< indicates that this surface is modified on software side
                                            * (and therefore immediately) when used as a destination */
-//TODO systematically store a PixelBits mask when creating a surface with an image, and don't use internal_surface for that.
-    SDL_Surface* internal_surface;        /**< the SDL_Surface encapsulated, if any. Used if explicitely asked or if the renderer was not created before creating a Surface. */
+    SDL_Surface* internal_surface;        /**< the SDL_Surface encapsulated, if any. */
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     Color* internal_color;                /**< the background color to use, if any. */
     bool is_rendered;                     /**< indicated if the current surface has been rendered. Set to false when drawing a surface on this one. */

@@ -481,7 +481,7 @@ void Surface::render(
     if (internal_texture == NULL) {
       internal_texture = get_texture_from_surface(internal_surface);
     }
-    // Else if the software surface has changed, update the hardware texture.
+    // If the software surface has changed, update the hardware texture.
     else if (software_destination && !is_rendered) {
       SDL_UpdateTexture(
           internal_texture,
@@ -525,19 +525,21 @@ void Surface::render(
         subsurface->dst_rect.get_height());
 
     // Set the intersection of the subsurface destination and this surface's clip as clipping rectangle.
-    Rectangle superimposed_clip_rect(subsurface_dst_rect);
-    SDL_IntersectRect(superimposed_clip_rect.get_internal_rect(),
+    Rectangle superimposed_clip_rect;
+    if(SDL_IntersectRect(subsurface_dst_rect.get_internal_rect(),
         dst_rect.get_internal_rect(),
-        superimposed_clip_rect.get_internal_rect());
+        superimposed_clip_rect.get_internal_rect())) {
 
-    subsurface->src_surface->render(
-        renderer,
-        subsurface->src_rect,
-        subsurface_dst_rect,
-        superimposed_clip_rect,
-        current_opacity,
-        subsurface->subsurfaces
-    );
+      // If there is intersection, render the subsurface.
+      subsurface->src_surface->render(
+          renderer,
+          subsurface->src_rect,
+          subsurface_dst_rect,
+          superimposed_clip_rect,
+          current_opacity,
+          subsurface->subsurfaces
+      );
+    }
   }
 
   is_rendered = true;

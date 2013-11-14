@@ -693,7 +693,6 @@ void Sprite::raw_draw(
           current_direction, current_frame);
     }
     else {
-      intermediate_surface->fill_with_color(Color::get_black());
       current_animation->draw(*intermediate_surface, get_origin(),
           current_direction, current_frame);
       Rectangle dst_position2(dst_position);
@@ -719,7 +718,6 @@ void Sprite::raw_draw_region(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    get_intermediate_surface().fill_with_color(Color::get_black());
     const Rectangle& origin = get_origin();
     current_animation->draw(
         get_intermediate_surface(),

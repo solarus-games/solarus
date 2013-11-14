@@ -693,6 +693,7 @@ void Sprite::raw_draw(
           current_direction, current_frame);
     }
     else {
+      intermediate_surface->fill_with_color(Color::get_transparent());
       current_animation->draw(*intermediate_surface, get_origin(),
           current_direction, current_frame);
       Rectangle dst_position2(dst_position);
@@ -718,6 +719,7 @@ void Sprite::raw_draw_region(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
+    get_intermediate_surface().fill_with_color(Color::get_transparent());
     const Rectangle& origin = get_origin();
     current_animation->draw(
         get_intermediate_surface(),
@@ -788,6 +790,7 @@ Surface& Sprite::get_intermediate_surface() const {
 
   if (intermediate_surface == NULL) {
     intermediate_surface = Surface::create(get_max_size());
+    intermediate_surface->set_software_destination(true);
     RefCountable::ref(intermediate_surface);
   }
   return *intermediate_surface;

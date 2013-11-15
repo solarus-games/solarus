@@ -516,8 +516,8 @@ void Surface::render(
 
     // Calculate absolute destination subrectangle position on screen.
     Rectangle subsurface_dst_rect(
-        dst_rect.get_x() + subsurface->dst_rect.get_x(),
-        dst_rect.get_y() + subsurface->dst_rect.get_y(),
+        dst_rect.get_x() + subsurface->dst_rect.get_x() - src_rect.get_x(),
+        dst_rect.get_y() + subsurface->dst_rect.get_y() - src_rect.get_y(),
         subsurface->dst_rect.get_width(),
         subsurface->dst_rect.get_height());
 

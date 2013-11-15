@@ -264,9 +264,8 @@ void Surface::set_opacity(int opacity) {
   internal_opacity = opacity;
   
   // We can't set an opacity for a direct drawing, so we directly use the alpha channel.
-  if (internal_color != NULL) {
+  if(internal_color)
     internal_color->internal_color.a = internal_opacity;
-  }
 }
 
 /**
@@ -300,16 +299,15 @@ void Surface::set_software_destination(bool software_destination) {
   if (software_destination) {
 
     if (internal_surface == NULL) {
-      // Create a surface with ARGB format.
       internal_surface = SDL_CreateRGBSurface(
           0,
           width,
           height,
           32,
+          0xff000000,
           0x00ff0000,
           0x0000ff00,
-          0x000000ff,
-          0xff000000
+          0x000000ff
       );
     }
   }

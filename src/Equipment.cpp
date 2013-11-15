@@ -163,6 +163,12 @@ void Equipment::set_max_money(int max_money) {
       << "Illegal maximum amount of money: " << max_money);
 
   savegame.set_integer(Savegame::KEY_MAX_MONEY, max_money);
+
+  // If the max money is reduced, make sure the current money does not exceed
+  // the new maximum.
+  if (get_money() > get_max_money()) {
+    set_money(max_money);
+  }
 }
 
 /**
@@ -235,6 +241,12 @@ void Equipment::set_max_life(int max_life) {
       << "Illegal maximum life: " << max_life);
 
   savegame.set_integer(Savegame::KEY_MAX_LIFE, max_life);
+
+  // If the max life is reduced, make sure the current life does not exceed
+  // the new maximum.
+  if (get_life() > get_max_life()) {
+    set_life(max_life);
+  }
 }
 
 /**

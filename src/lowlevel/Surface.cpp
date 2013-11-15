@@ -366,11 +366,6 @@ void Surface::add_subsurface(
   );
   RefCountable::ref(node);
 
-  if (node->dst_rect.is_flat()) {
-    node->dst_rect.set_width(region.get_width());
-    node->dst_rect.set_height(region.get_height());
-  }
-
   // Clear the subsurface queue if the current dst_surface already has been rendered.
   if (is_rendered) {
     clear_subsurfaces();
@@ -518,8 +513,8 @@ void Surface::render(
     Rectangle subsurface_dst_rect(
         dst_rect.get_x() + subsurface->dst_rect.get_x() - src_rect.get_x(),
         dst_rect.get_y() + subsurface->dst_rect.get_y() - src_rect.get_y(),
-        subsurface->dst_rect.get_width(),
-        subsurface->dst_rect.get_height());
+        subsurface->src_rect.get_width(),
+        subsurface->src_rect.get_height());
 
     // Set the intersection of the subsurface destination and this surface's clip as clipping rectangle.
     Rectangle superimposed_clip_rect;

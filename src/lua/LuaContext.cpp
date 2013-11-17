@@ -1183,18 +1183,22 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata lightudata udata
     luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
                                   // ... all_udata lightudata udata mt
-    Debug::check_assertion(!lua_isnil(l, -1), StringConcat() <<
-        "Userdata of type '" << userdata.get_lua_type_name()
-        << "' has no metatable, this is a memory leak");
+
+#ifndef NDEBUG
+    Debug::check_assertion(!lua_isnil(l, -1),
+        std::string("Userdata of type '" + userdata.get_lua_type_name()
+        + "' has no metatable, this is a memory leak"));
 
     lua_getfield(l, -1, "__gc");
                                   // ... all_udata lightudata udata mt gc
-    Debug::check_assertion(lua_isfunction(l, -1), StringConcat() <<
-        "Userdata of type '" << userdata.get_lua_type_name()
-        << "' must have the __gc function LuaContext::userdata_meta_gc");
+    Debug::check_assertion(lua_isfunction(l, -1),
+        std::string("Userdata of type '") + userdata.get_lua_type_name()
+        + "' must have the __gc function LuaContext::userdata_meta_gc");
                                   // ... all_udata lightudata udata mt gc
     lua_pop(l, 1);
                                   // ... all_udata lightudata udata mt
+#endif
+
     lua_setmetatable(l, -2);
                                   // ... all_udata lightudata udata
     // Keep track of our new userdata.

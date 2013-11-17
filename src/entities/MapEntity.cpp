@@ -1888,8 +1888,8 @@ int MapEntity::get_distance_to_camera() const {
   return (int) Geometry::get_distance(
       get_x(),
       get_y(),
-      camera.get_x() + 160,
-      camera.get_y() + 120
+      camera.get_x() + camera.get_width() / 2,
+      camera.get_y() + camera.get_height() / 2
   );
 }
 
@@ -1904,8 +1904,8 @@ int MapEntity::get_distance_to_camera2() const {
   return Geometry::get_distance2(
       get_x(),
       get_y(),
-      camera.get_x() + 160,
-      camera.get_y() + 120
+      camera.get_x() + camera.get_width() / 2,
+      camera.get_y() + camera.get_height() / 2
   );
 }
 

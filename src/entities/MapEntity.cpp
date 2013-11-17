@@ -97,7 +97,8 @@ MapEntity::MapEntity():
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
-  optimization_distance(default_optimization_distance) {
+  optimization_distance(default_optimization_distance),
+  optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
   bounding_box.set_xy(0, 0);
   origin.set_xy(0, 0);
@@ -132,7 +133,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
-  optimization_distance(default_optimization_distance) {
+  optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
   origin.set_xy(0, 0);
   set_size(width, height);
@@ -166,7 +167,7 @@ MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
-  optimization_distance(default_optimization_distance) {
+  optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
   origin.set_xy(0, 0);
   set_size(width, height);
@@ -2260,7 +2261,7 @@ bool MapEntity::is_drawn() const {
 
   return is_visible()
       && (overlaps_camera()
-          || get_distance_to_camera2() < get_optimization_distance2()
+          || get_distance_to_camera2() < optimization_distance2
           || !is_drawn_at_its_position()
       );
 }

@@ -133,6 +133,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
+  optimization_distance(default_optimization_distance),
   optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
   origin.set_xy(0, 0);
@@ -149,15 +150,22 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * \param width width of the entity
  * \param height height of the entity
  */
-MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
-    int x, int y, int width, int height):
+MapEntity::MapEntity(
+    const std::string& name,
+    int direction,
+    Layer layer,
+    int x,
+    int y,
+    int width,
+    int height):
   suspended(false),
   when_suspended(0),
   main_loop(NULL),
   map(NULL),
   layer(layer),
-  bounding_box(x, y),
+  bounding_box(x, y, width, height),
   ground_below(GROUND_EMPTY),
+  origin(0, 0),
   name(name),
   direction(direction),
   visible(true),
@@ -167,10 +175,9 @@ MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
+  optimization_distance(default_optimization_distance),
   optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
-  origin.set_xy(0, 0);
-  set_size(width, height);
 }
 
 /**

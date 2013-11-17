@@ -325,7 +325,7 @@ class MapEntity: public ExportableToLua {
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
                                                  * NULL indicates that the entity has no movement */
     std::list<Movement*> old_movements;         /**< old movements to destroy as soon as possible */
-    bool movement_events_enabled;         /**< Whether entity:on_position_changed() and friends should be called. */
+    bool movement_events_enabled;               /**< Whether entity:on_position_changed() and friends should be called. */
     Detector* facing_entity;                    /**< the detector in front of this entity (if any) */
 
     // entity state

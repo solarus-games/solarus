@@ -66,15 +66,12 @@ CarriedItem::CarriedItem(
     int damage_on_enemies,
     uint32_t explosion_date):
 
-  MapEntity(),
+  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   hero(hero),
   is_lifting(true),
   is_throwing(false),
   is_breaking(false),
   break_one_layer_above(false) {
-
-  // put the item on the hero's layer
-  set_layer(hero.get_layer());
 
   // align correctly the item with the hero
   int direction = hero.get_animation_direction();

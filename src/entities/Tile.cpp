@@ -31,7 +31,7 @@
  * \param tile_pattern_id id of the tile pattern
  */
 Tile::Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id):
-  MapEntity(layer, x, y, width, height),
+  MapEntity("", 0, layer, x, y, width, height),
   tile_pattern_id(tile_pattern_id),
   tile_pattern(NULL) {
 

@@ -37,6 +37,7 @@
  * \param hero the hero
  */
 Hookshot::Hookshot(Hero& hero):
+  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   next_sound_date(System::now()),
   has_to_go_back(false),
   going_back(false),
@@ -45,7 +46,6 @@ Hookshot::Hookshot(Hero& hero):
 
   // initialize the entity
   int direction = hero.get_animation_direction();
-  set_layer(hero.get_layer());
   create_sprite("entities/hookshot", true);
   get_sprite().set_current_direction(direction);
   link_sprite.set_current_animation("link");

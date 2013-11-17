@@ -37,11 +37,11 @@
  * \param hero The hero.
  */
 Arrow::Arrow(const Hero& hero):
+  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   hero(hero) {
 
   // initialize the entity
   int direction = hero.get_animation_direction();
-  set_layer(hero.get_layer());
   create_sprite("entities/arrow", true);
   get_sprite().set_current_direction(direction);
   set_bounding_box_from_sprite();

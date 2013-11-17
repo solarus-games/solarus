@@ -256,9 +256,15 @@ class MapEntity: public ExportableToLua {
   protected:
 
     // creation
-    MapEntity();
-    MapEntity(Layer layer, int x, int y, int width, int height);
-    MapEntity(const std::string& name, int direction, Layer layer, int x, int y, int width, int height);
+    MapEntity(
+        const std::string& name,
+        int direction,
+        Layer layer,
+        int x,
+        int y,
+        int width,
+        int height
+    );
 
     void clear_old_movements();
     void clear_old_sprites();
@@ -285,6 +291,10 @@ class MapEntity: public ExportableToLua {
     uint32_t when_suspended;                    /**< indicates when this entity was suspended */
 
   private:
+
+    // No copy constructor or assignment operator.
+    MapEntity(const MapEntity& other);
+    MapEntity& operator=(const MapEntity& other);
 
     MainLoop* main_loop;                        /**< The Solarus main loop. */
     Map* map;                                   /**< The map where this entity is, or NULL

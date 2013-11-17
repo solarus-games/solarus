@@ -38,16 +38,19 @@
  * \param angle the angle of the boomerang trajectory in radians
  * \param sprite_name animation set id representing the boomerang
  */
-Boomerang::Boomerang(Hero& hero, int max_distance, int speed, double angle,
+Boomerang::Boomerang(
+    Hero& hero,
+    int max_distance,
+    int speed,
+    double angle,
     const std::string& sprite_name):
-  MapEntity(),
+  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   hero(hero),
   has_to_go_back(false),
   going_back(false),
   speed(speed) {
 
   // initialize the entity
-  set_layer(hero.get_layer());
   create_sprite(sprite_name);
   set_bounding_box_from_sprite();
 

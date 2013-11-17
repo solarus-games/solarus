@@ -132,13 +132,17 @@ int LuaContext::audio_api_set_music_volume(lua_State* l) {
  */
 int LuaContext::audio_api_play_music(lua_State* l) {
 
-  const std::string& music_id = luaL_checkstring(l, 1);
+  const std::string& music_id = luaL_optstring(l, 1, "");
 
-  if (!Music::exists(music_id)) {
-    error(l, StringConcat() << "Cannot find music '" << music_id << "'");
+  if (music_id.empty()) {
+    Music::play(Music::none);
   }
-
-  Music::play(music_id);
+  else {
+    if (!Music::exists(music_id)) {
+      error(l, StringConcat() << "Cannot find music '" << music_id << "'");
+    }
+    Music::play(music_id);
+  }
 
   return 0;
 }

@@ -54,8 +54,8 @@ the new one.
 - \c music_id (string): Name of the music file to play, relative to the
   \c musics directory and without extension. The following extensions will be
   tried in this order: \c <tt>.ogg</tt>, \c <tt>.it</tt> and \c <tt>.spc</tt>.
-  You can also specify the special value \c "none" to stop playing any music,
-  or \c "same" to let the music unchanged.
+  \c nil stops playing any music.
+  You can also specify the special value \c "same" to let the music unchanged.
 - \c loop (boolean, optional): \c true to make the music restart when it
   finishes.
   By default, \c loop is \c true for \c .ogg musics,
@@ -72,7 +72,7 @@ the new one.
     is preserved.
 
 \remark Note that if the music loops, it never finishes and your callback will
-  never be called. If you set the music to \c "none", the \c loop and
+  never be called. If you set the music to \c nil, the \c loop and
   \c callback parameters have no effect.
 
 \subsection lua_api_audio_get_music sol.audio.get_music()

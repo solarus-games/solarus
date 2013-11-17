@@ -29,6 +29,7 @@ Lua API changes
 
 Changes that introduce incompatibilities:
 
+* sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
 * map:create_shop_item() is replaced by map:create_shop_treasure().
 * In sol.video.get/set_mode(), "fullscreen_*_wide" modes no longer exist.
 * on_key_pressed() and on_character_pressed() are now both called (#344).

@@ -359,7 +359,7 @@ void Chest::notify_collision(MapEntity& entity_overlapping, CollisionMode collis
  */
 void Chest::update() {
 
-  if (is_open() && !suspended) {
+  if (is_open() && !is_suspended()) {
 
     if (!treasure_given && treasure_date != 0 && System::now() >= treasure_date) {
 
@@ -435,7 +435,7 @@ void Chest::set_suspended(bool suspended) {
 
   if (!suspended && treasure_date != 0) {
     // restore the timer
-    treasure_date = System::now() + (treasure_date - when_suspended);
+    treasure_date = System::now() + (treasure_date - get_when_suspended());
   }
 }
 

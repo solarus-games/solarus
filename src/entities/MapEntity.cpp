@@ -96,8 +96,6 @@ MapEntity::MapEntity(
     int y,
     int width,
     int height):
-  suspended(false),
-  when_suspended(0),
   main_loop(NULL),
   map(NULL),
   layer(layer),
@@ -113,6 +111,8 @@ MapEntity::MapEntity(
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
+  suspended(false),
+  when_suspended(0),
   optimization_distance(default_optimization_distance),
   optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
@@ -2113,6 +2113,14 @@ void MapEntity::set_suspended(bool suspended) {
   if (movement != NULL) {
     movement->set_suspended(suspended || !is_enabled());
   }
+}
+
+/**
+ * \brief Returns the date when this entity was suspended.
+ * \return When this entity was suspended.
+ */
+uint32_t MapEntity::get_when_suspended() const {
+  return when_suspended;
 }
 
 /**

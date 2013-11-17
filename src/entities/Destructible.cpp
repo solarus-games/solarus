@@ -419,7 +419,7 @@ void Destructible::set_suspended(bool suspended) {
 
   if (!suspended && regeneration_date != 0) {
     // recalculate the timer
-    regeneration_date += System::now() - when_suspended;
+    regeneration_date += System::now() - get_when_suspended();
   }
 }
 
@@ -430,7 +430,7 @@ void Destructible::update() {
 
   MapEntity::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 

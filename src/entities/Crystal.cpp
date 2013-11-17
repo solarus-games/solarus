@@ -213,7 +213,7 @@ void Crystal::set_suspended(bool suspended) {
   MapEntity::set_suspended(suspended);
 
   if (!suspended) {
-    next_possible_hit_date += System::now() - when_suspended;
+    next_possible_hit_date += System::now() - get_when_suspended();
   }
 }
 

@@ -837,6 +837,7 @@ void Game::stop_game_over() {
   showing_game_over = false;
   if (!restarting && !get_main_loop().is_resetting()) {
     // The hero gets back to life.
+    current_map->check_suspended();  // To unsuspend the hero before making him blink.
     hero->notify_game_over_finished();
   }
 }

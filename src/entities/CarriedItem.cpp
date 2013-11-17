@@ -330,9 +330,9 @@ void CarriedItem::set_suspended(bool suspended) {
     shadow_sprite->set_suspended(suspended);
   }
 
-  if (!suspended && when_suspended != 0) {
+  if (!suspended && get_when_suspended() != 0) {
     // recalculate the timers
-    uint32_t diff = System::now() - when_suspended;
+    uint32_t diff = System::now() - get_when_suspended();
     if (is_throwing) {
       next_down_date += diff;
     }
@@ -350,7 +350,7 @@ void CarriedItem::update() {
   // update the sprite and the position
   MapEntity::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 

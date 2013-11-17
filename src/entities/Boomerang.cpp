@@ -266,7 +266,7 @@ void Boomerang::update() {
 
   MapEntity::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 

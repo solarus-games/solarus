@@ -266,6 +266,8 @@ class MapEntity: public ExportableToLua {
         int height
     );
 
+    uint32_t get_when_suspended() const;
+
     void clear_old_movements();
     void clear_old_sprites();
 
@@ -285,10 +287,6 @@ class MapEntity: public ExportableToLua {
     Savegame& get_savegame();
     const Savegame& get_savegame() const;
     Hero& get_hero();
-
-    // TODO make private
-    bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
-    uint32_t when_suspended;                    /**< indicates when this entity was suspended */
 
   private:
 
@@ -343,6 +341,9 @@ class MapEntity: public ExportableToLua {
     bool enabled;                               /**< indicates that the entity is enabled
                                                  * (if not, it will not be displayed and collisions will not be notified) */
     bool waiting_enabled;                       /**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
+
+    bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
+    uint32_t when_suspended;                    /**< indicates when this entity was suspended */
 
     int optimization_distance;                  /**< above this distance from the visible area,
                                                  * the entity is suspended (0 means infinite) */

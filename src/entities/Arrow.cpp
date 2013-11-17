@@ -262,7 +262,7 @@ void Arrow::update() {
 
   MapEntity::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 
@@ -346,7 +346,7 @@ void Arrow::set_suspended(bool suspended) {
 
   if (!suspended) {
     // recalculate the timer
-    disappear_date += System::now() - when_suspended;
+    disappear_date += System::now() - get_when_suspended();
   }
 }
 

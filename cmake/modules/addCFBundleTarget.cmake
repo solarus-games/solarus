@@ -1,7 +1,7 @@
 ####
 # This module can be included inside the main CMakeList.txt to add a
 # target which generate the CFBundle when building the engine. 
-# The bundle is build as 'solarus' target and from ${main_source_file}. 
+# The bundle is build as 'solarus' target and from ${source_files}. 
 # The quest, icon and an info.plist template file can be added to the project.
 #
 # You can edit the Bundle configuration by passing some flags.
@@ -71,7 +71,7 @@ endif()
 
 # Add executable target into CFBundle form and rename it as requested
 add_executable(${SOLARUS_BUNDLE_TARGET_NAME} MACOSX_BUNDLE
-  ${main_source_file}
+  ${source_files}
   ${SOLARUS_BUNDLE_QUEST}
   ${SOLARUS_BUNDLE_ICON} 
   ${SOLARUS_BUNDLE_COPIED_LIBRARIES}

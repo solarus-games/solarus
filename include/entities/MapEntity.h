@@ -122,6 +122,7 @@ class MapEntity: public ExportableToLua {
     void set_aligned_to_grid_y();
 
     int get_optimization_distance() const;
+    int get_optimization_distance2() const;
     void set_optimization_distance(int distance);
 
     bool is_enabled() const;
@@ -186,6 +187,7 @@ class MapEntity: public ExportableToLua {
     int get_distance(int x, int y) const;
     int get_distance(const MapEntity& other) const;
     int get_distance_to_camera() const;
+    int get_distance_to_camera2() const;
     bool is_in_same_region(const MapEntity& other) const;
 
     // collisions
@@ -334,6 +336,7 @@ class MapEntity: public ExportableToLua {
 
     int optimization_distance;                  /**< above this distance from the visible area,
                                                  * the entity is suspended (0 means infinite) */
+    int optimization_distance2;                 /**< Square of optimization_distance. */
     static const int
         default_optimization_distance = 400;    /**< default value */
 

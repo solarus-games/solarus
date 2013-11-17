@@ -76,9 +76,24 @@ const double Geometry::degrees_to_radians(double degrees) {
  */
 double Geometry::get_distance(int x1, int y1, int x2, int y2) {
 
-  int dx = x2 - x1;
-  int dy = y2 - y1;
+  const int dx = x2 - x1;
+  const int dy = y2 - y1;
   return std::sqrt((float) (dx * dx + dy * dy));
+}
+
+/**
+ * \brief Returns the square of the distance between two points.
+ * \param x1 X coordinate of the first point.
+ * \param y1 Y coordinate of the first point.
+ * \param x2 X coordinate of the second point.
+ * \param y2 Y coordinate of the second point.
+ * \return Square of the distance.
+ */
+int Geometry::get_distance2(int x1, int y1, int x2, int y2) {
+
+  const int dx = x2 - x1;
+  const int dy = y2 - y1;
+  return dx * dx + dy * dy;
 }
 
 /**

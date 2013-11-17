@@ -212,7 +212,7 @@ void Hero::set_suspended(bool suspended) {
 
   if (!suspended) {
 
-    uint32_t diff = System::now() - when_suspended;
+    uint32_t diff = System::now() - get_when_suspended();
     next_ground_date += diff;
   }
 
@@ -2020,7 +2020,6 @@ void Hero::notify_game_over_finished() {
   if (is_on_map()) {
     sprites->blink();
     start_state_from_ground();
-    when_suspended = System::now();
   }
 }
 

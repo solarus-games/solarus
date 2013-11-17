@@ -502,7 +502,7 @@ void Door::set_suspended(bool suspended) {
   Detector::set_suspended(suspended);
 
   if (!suspended && next_hint_sound_date > 0) {
-    next_hint_sound_date += System::now() - when_suspended;
+    next_hint_sound_date += System::now() - get_when_suspended();
   }
 }
 

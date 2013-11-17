@@ -256,9 +256,17 @@ class MapEntity: public ExportableToLua {
   protected:
 
     // creation
-    MapEntity();
-    MapEntity(Layer layer, int x, int y, int width, int height);
-    MapEntity(const std::string& name, int direction, Layer layer, int x, int y, int width, int height);
+    MapEntity(
+        const std::string& name,
+        int direction,
+        Layer layer,
+        int x,
+        int y,
+        int width,
+        int height
+    );
+
+    uint32_t get_when_suspended() const;
 
     void clear_old_movements();
     void clear_old_sprites();
@@ -280,11 +288,11 @@ class MapEntity: public ExportableToLua {
     const Savegame& get_savegame() const;
     Hero& get_hero();
 
-    // TODO make private
-    bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
-    uint32_t when_suspended;                    /**< indicates when this entity was suspended */
-
   private:
+
+    // No copy constructor or assignment operator.
+    MapEntity(const MapEntity& other);
+    MapEntity& operator=(const MapEntity& other);
 
     MainLoop* main_loop;                        /**< The Solarus main loop. */
     Map* map;                                   /**< The map where this entity is, or NULL
@@ -325,7 +333,7 @@ class MapEntity: public ExportableToLua {
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
                                                  * NULL indicates that the entity has no movement */
     std::list<Movement*> old_movements;         /**< old movements to destroy as soon as possible */
-    bool movement_events_enabled;         /**< Whether entity:on_position_changed() and friends should be called. */
+    bool movement_events_enabled;               /**< Whether entity:on_position_changed() and friends should be called. */
     Detector* facing_entity;                    /**< the detector in front of this entity (if any) */
 
     // entity state
@@ -333,6 +341,9 @@ class MapEntity: public ExportableToLua {
     bool enabled;                               /**< indicates that the entity is enabled
                                                  * (if not, it will not be displayed and collisions will not be notified) */
     bool waiting_enabled;                       /**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
+
+    bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
+    uint32_t when_suspended;                    /**< indicates when this entity was suspended */
 
     int optimization_distance;                  /**< above this distance from the visible area,
                                                  * the entity is suspended (0 means infinite) */

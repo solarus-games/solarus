@@ -79,67 +79,6 @@ const std::string MapEntity::entity_type_names[ENTITY_NUMBER + 1] = {
 };
 
 /**
- * \brief Creates a map entity without specifying its properties now.
- */
-MapEntity::MapEntity():
-  suspended(false),
-  when_suspended(0),
-  main_loop(NULL),
-  map(NULL),
-  layer(LAYER_LOW),
-  ground_below(GROUND_EMPTY),
-  name(""),
-  direction(0),
-  visible(true),
-  movement(NULL),
-  movement_events_enabled(true),
-  facing_entity(NULL),
-  being_removed(false),
-  enabled(true),
-  waiting_enabled(false),
-  optimization_distance(default_optimization_distance),
-  optimization_distance2(default_optimization_distance * default_optimization_distance) {
-
-  bounding_box.set_xy(0, 0);
-  origin.set_xy(0, 0);
-  set_size(0, 0);
-}
-
-/**
- * \brief Creates a map entity, specifying its position.
- *
- * The entity has no name and no direction.
- *
- * \param layer layer of the entity
- * \param x x position of the entity
- * \param y y position of the entity
- * \param width width of the entity
- * \param height height of the entity
- */
-MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  suspended(false),
-  when_suspended(0),
-  main_loop(NULL),
-  map(NULL),
-  layer(layer),
-  bounding_box(x, y),
-  ground_below(GROUND_EMPTY),
-  name(""),
-  direction(0),
-  visible(true),
-  movement(NULL),
-  movement_events_enabled(true),
-  facing_entity(NULL),
-  being_removed(false),
-  enabled(true),
-  waiting_enabled(false),
-  optimization_distance2(default_optimization_distance * default_optimization_distance) {
-
-  origin.set_xy(0, 0);
-  set_size(width, height);
-}
-
-/**
  * \brief Creates an entity, specifying its position, its name and its direction.
  * \param name Unique name identifying the entity on the map or an empty string.
  * \param direction direction of the entity
@@ -149,15 +88,20 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  * \param width width of the entity
  * \param height height of the entity
  */
-MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
-    int x, int y, int width, int height):
-  suspended(false),
-  when_suspended(0),
+MapEntity::MapEntity(
+    const std::string& name,
+    int direction,
+    Layer layer,
+    int x,
+    int y,
+    int width,
+    int height):
   main_loop(NULL),
   map(NULL),
   layer(layer),
-  bounding_box(x, y),
+  bounding_box(x, y, width, height),
   ground_below(GROUND_EMPTY),
+  origin(0, 0),
   name(name),
   direction(direction),
   visible(true),
@@ -167,10 +111,11 @@ MapEntity::MapEntity(const std::string& name, int direction, Layer layer,
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
+  suspended(false),
+  when_suspended(0),
+  optimization_distance(default_optimization_distance),
   optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
-  origin.set_xy(0, 0);
-  set_size(width, height);
 }
 
 /**
@@ -2161,6 +2106,14 @@ void MapEntity::set_suspended(bool suspended) {
   if (movement != NULL) {
     movement->set_suspended(suspended || !is_enabled());
   }
+}
+
+/**
+ * \brief Returns the date when this entity was suspended.
+ * \return When this entity was suspended.
+ */
+uint32_t MapEntity::get_when_suspended() const {
+  return when_suspended;
 }
 
 /**

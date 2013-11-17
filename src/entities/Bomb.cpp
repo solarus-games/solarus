@@ -243,9 +243,9 @@ void Bomb::set_suspended(bool suspended) {
 
   Detector::set_suspended(suspended); // suspend the animation and the movement
 
-  if (!suspended && when_suspended != 0) {
+  if (!suspended && get_when_suspended() != 0) {
     // recalculate the timer
-    uint32_t diff = System::now() - when_suspended;
+    uint32_t diff = System::now() - get_when_suspended();
     explosion_date += diff;
   }
 }
@@ -257,7 +257,7 @@ void Bomb::update() {
 
   Detector::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 

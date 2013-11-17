@@ -753,7 +753,7 @@ void Enemy::update() {
 
   MapEntity::update();
 
-  if (suspended || !is_enabled()) {
+  if (is_suspended() || !is_enabled()) {
     return;
   }
 
@@ -851,7 +851,7 @@ void Enemy::set_suspended(bool suspended) {
   Detector::set_suspended(suspended);
 
   if (!suspended) {
-    uint32_t diff = System::now() - when_suspended;
+    uint32_t diff = System::now() - get_when_suspended();
     stop_hurt_date += diff;
     vulnerable_again_date += diff;
     if (can_attack_again_date != 0) {

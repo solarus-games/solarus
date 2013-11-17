@@ -37,11 +37,11 @@
  * \param hero The hero.
  */
 Arrow::Arrow(const Hero& hero):
+  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   hero(hero) {
 
   // initialize the entity
   int direction = hero.get_animation_direction();
-  set_layer(hero.get_layer());
   create_sprite("entities/arrow", true);
   get_sprite().set_current_direction(direction);
   set_bounding_box_from_sprite();
@@ -262,7 +262,7 @@ void Arrow::update() {
 
   MapEntity::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 
@@ -346,7 +346,7 @@ void Arrow::set_suspended(bool suspended) {
 
   if (!suspended) {
     // recalculate the timer
-    disappear_date += System::now() - when_suspended;
+    disappear_date += System::now() - get_when_suspended();
   }
 }
 

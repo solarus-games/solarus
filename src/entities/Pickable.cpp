@@ -409,17 +409,17 @@ void Pickable::set_suspended(bool suspended) {
 
     uint32_t now = System::now();
 
-    if (!can_be_picked && when_suspended != 0) { // TODO make a better implementation of the when_suspended stuff
-      allow_pick_date = now + (allow_pick_date - when_suspended);
+    if (!can_be_picked && get_when_suspended() != 0) {
+      allow_pick_date = now + (allow_pick_date - get_when_suspended());
     }
 
     if (will_disappear) {
 
       // the game is being resumed
       // recalculate the blinking date and the disappearing date
-      if (when_suspended != 0) {
-        blink_date = now + (blink_date - when_suspended);
-        disappear_date = now + (disappear_date - when_suspended);
+      if (get_when_suspended() != 0) {
+        blink_date = now + (blink_date - get_when_suspended());
+        disappear_date = now + (disappear_date - get_when_suspended());
       }
     }
   }

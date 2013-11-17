@@ -66,15 +66,12 @@ CarriedItem::CarriedItem(
     int damage_on_enemies,
     uint32_t explosion_date):
 
-  MapEntity(),
+  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   hero(hero),
   is_lifting(true),
   is_throwing(false),
   is_breaking(false),
   break_one_layer_above(false) {
-
-  // put the item on the hero's layer
-  set_layer(hero.get_layer());
 
   // align correctly the item with the hero
   int direction = hero.get_animation_direction();
@@ -333,9 +330,9 @@ void CarriedItem::set_suspended(bool suspended) {
     shadow_sprite->set_suspended(suspended);
   }
 
-  if (!suspended && when_suspended != 0) {
+  if (!suspended && get_when_suspended() != 0) {
     // recalculate the timers
-    uint32_t diff = System::now() - when_suspended;
+    uint32_t diff = System::now() - get_when_suspended();
     if (is_throwing) {
       next_down_date += diff;
     }
@@ -353,7 +350,7 @@ void CarriedItem::update() {
   // update the sprite and the position
   MapEntity::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 

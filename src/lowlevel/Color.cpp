@@ -19,9 +19,7 @@
  * color related functions.
  */
 #include "lowlevel/Color.h"
-
-SDL_PixelFormat* Color::pixel_format =
-    SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
+#include "lowlevel/VideoManager.h"
 
 Color Color::transparent;
 Color Color::black;
@@ -53,7 +51,6 @@ void Color::initialize() {
  * \brief Uninitializes the color system.
  */
 void Color::quit() {
-  SDL_FreeFormat(pixel_format);
 }
 
 /**
@@ -90,7 +87,7 @@ Color::Color(int r, int g, int b, int a) {
   internal_color.b = b;
   internal_color.a = a;
 
-  internal_value = SDL_MapRGBA(pixel_format, r, g, b, a);
+  internal_value = SDL_MapRGBA(VideoManager::get_pixel_format(), r, g, b, a);
 }
 
 /**

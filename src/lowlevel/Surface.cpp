@@ -301,15 +301,22 @@ void Surface::set_software_destination(bool software_destination) {
 
     if (internal_surface == NULL) {
       // Create a surface with ARGB format.
-      internal_surface = SDL_CreateRGBSurface(
+      internal_surface = SDL_CreateRGBSurface (
           0,
           width,
           height,
           32,
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
           0x00ff0000,
           0x0000ff00,
           0x000000ff,
           0xff000000
+#else
+          0x0000ff00,
+          0x00ff0000,
+          0xff000000,
+          0x000000ff     
+#endif
       );
     }
   }
@@ -475,14 +482,18 @@ void Surface::render(
   // Accelerate the internal software surface.
   if (internal_surface != NULL) {
     
-    // If the software surface has changed, prepare to reload the hardware texture.
-    if (internal_texture != NULL && software_destination && !is_rendered) {
-      SDL_DestroyTexture(internal_texture);
-      internal_texture = NULL;
-    }
-    
     if (internal_texture == NULL) {
       internal_texture = get_texture_from_surface(internal_surface);
+    }
+    // Else if the software surface has changed, update the hardware texture.
+    else if (software_destination && !is_rendered) {
+      // TODO do this only when the software surface has changed.
+      SDL_UpdateTexture(
+          internal_texture,
+          NULL,
+          internal_surface->pixels,
+          internal_surface->pitch
+      );
     }
   }
 

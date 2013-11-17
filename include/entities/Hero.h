@@ -17,12 +17,12 @@
 #ifndef SOLARUS_HERO_H
 #define SOLARUS_HERO_H
 
-#include "Common.h"
 #include "entities/MapEntity.h"
 #include "entities/EnemyAttack.h"
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
 #include "GameCommands.h"
+#include <list>
 
 /**
  * \brief The hero's entity.

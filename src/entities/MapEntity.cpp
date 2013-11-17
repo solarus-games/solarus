@@ -360,7 +360,7 @@ void MapEntity::notify_map_opening_transition_finished() {
  */
 void MapEntity::notify_tileset_changed() {
 
-  std::list<Sprite*>::iterator it;
+  std::vector<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
     Sprite& sprite = *(*it);
@@ -1046,7 +1046,7 @@ const Sprite& MapEntity::get_sprite() const {
  * \brief Returns all sprites of this entity.
  * \return The sprites.
  */
-const std::list<Sprite*>& MapEntity::get_sprites() {
+const std::vector<Sprite*>& MapEntity::get_sprites() {
   return sprites;
 }
 
@@ -1076,7 +1076,7 @@ Sprite& MapEntity::create_sprite(const std::string& animation_set_id,
 void MapEntity::remove_sprite(Sprite& sprite) {
 
   bool found = false;
-  std::list<Sprite*>::iterator it;
+  std::vector<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end() && !found; it++) {
     if (*it == &sprite) {
       old_sprites.push_back(&sprite);
@@ -1094,7 +1094,10 @@ void MapEntity::remove_sprite(Sprite& sprite) {
  */
 void MapEntity::clear_sprites() {
 
-  old_sprites = sprites;
+  std::vector<Sprite*>::const_iterator it;
+  for (it = sprites.begin(); it != sprites.end(); ++it) {
+    old_sprites.push_back(*it);
+  }
   sprites.clear();
 }
 
@@ -1103,10 +1106,16 @@ void MapEntity::clear_sprites() {
  */
 void MapEntity::clear_old_sprites() {
 
-  std::list<Sprite*>::iterator it;
-  for (it = old_sprites.begin(); it != old_sprites.end(); it++) {
+  std::vector<Sprite*>::const_iterator it;
+  for (it = old_sprites.begin(); it != old_sprites.end(); ++it) {
     Sprite* sprite = *it;
-    sprites.remove(sprite);
+    std::vector<Sprite*>::iterator it2;
+    for (it2 = sprites.begin(); it2 != sprites.end(); ++it2) {
+      if (*it2 == sprite) {
+        sprites.erase(it2);
+        break;
+      }
+    }
 
     sprite->decrement_refcount();
     if (sprite->get_refcount() == 0) {
@@ -1220,7 +1229,7 @@ void MapEntity::clear_movement() {
  */
 void MapEntity::clear_old_movements() {
 
-  std::list<Movement*>::iterator it;
+  std::vector<Movement*>::iterator it;
   for (it = old_movements.begin(); it != old_movements.end(); it++) {
     Movement* movement = *it;
     movement->decrement_refcount();
@@ -1310,7 +1319,7 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
   get_map().check_collision_with_detectors(*this);
 
   // Detect pixel-precise collisions.
-  std::list<Sprite*>::iterator it;
+  std::vector<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
     Sprite& sprite = *(*it);
@@ -1403,7 +1412,7 @@ void MapEntity::set_enabled(bool enabled) {
       get_movement()->set_suspended(suspended || !enabled);
     }
 
-    std::list<Sprite*>::iterator it;
+    std::vector<Sprite*>::iterator it;
     for (it = sprites.begin(); it != sprites.end(); it++) {
 
       Sprite& sprite = *(*it);
@@ -1729,7 +1738,7 @@ bool MapEntity::overlaps_camera() const {
   }
 
   bool found = false;
-  std::list<Sprite*>::const_iterator it;
+  std::vector<Sprite*>::const_iterator it;
   for (it = sprites.begin(); it != sprites.end() && !found; it++) {
     const Sprite* sprite = *it;
     const Rectangle& sprite_origin = sprite->get_origin();
@@ -2102,7 +2111,7 @@ void MapEntity::set_suspended(bool suspended) {
   }
 
   // suspend/unsuspend the sprites animations
-  std::list<Sprite*>::iterator it;
+  std::vector<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
     Sprite& sprite = *(*it);
@@ -2129,7 +2138,7 @@ uint32_t MapEntity::get_when_suspended() const {
  */
 void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 
-  std::list<Sprite*>::iterator it;
+  std::vector<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
     Sprite& sprite = *(*it);
@@ -2161,7 +2170,7 @@ void MapEntity::update() {
         get_movement()->set_suspended(suspended || !enabled);
       }
 
-      std::list<Sprite*>::iterator it;
+      std::vector<Sprite*>::iterator it;
       for (it = sprites.begin(); it != sprites.end(); it++) {
 
         Sprite& sprite = *(*it);
@@ -2176,7 +2185,7 @@ void MapEntity::update() {
   }
 
   // update the sprites
-  std::list<Sprite*>::iterator it;
+  std::vector<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
     Sprite& sprite = *(*it);
@@ -2256,7 +2265,7 @@ void MapEntity::draw_on_map() {
   }
 
   // Draw the sprites.
-  std::list<Sprite*>::iterator it;
+  std::vector<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); ++it) {
     Sprite& sprite = *(*it);
     get_map().draw_sprite(sprite, get_displayed_xy());

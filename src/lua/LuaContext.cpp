@@ -733,15 +733,21 @@ void LuaContext::push_callback(int callback_ref) {
 void LuaContext::cancel_callback(int callback_ref) {
 
   if (callback_ref != LUA_REFNIL) {
+
+#ifndef NDEBUG
     // Check that the callback is canceled only once.
     // Otherwise, a duplicate call to luaL_unref() silently breaks the
     // uniqueness of Lua refs.
     push_ref(l, callback_ref);
-    Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
-        << "There is no callback with ref " << callback_ref
-        << " (function expected, got " << luaL_typename(l, -1)
-        << "). Did you already invoke or cancel it?");
-    lua_pop(l, 1);
+    if (!lua_isfunction(l, -1)) {
+      Debug::die(StringConcat()
+          << "There is no callback with ref " << callback_ref
+          << " (function expected, got " << luaL_typename(l, -1)
+          << "). Did you already invoke or cancel it?");
+      lua_pop(l, 1);
+    }
+#endif
+
     destroy_ref(callback_ref);
   }
 }

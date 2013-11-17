@@ -249,7 +249,7 @@ const Rectangle Arrow::get_facing_point() const {
 
     default:
       Debug::die(StringConcat() << "Invalid direction for Arrow::get_facing_point(): "
-	  << get_sprite().get_current_direction());
+          << get_sprite().get_current_direction());
   }
 
   return facing_point;
@@ -309,11 +309,11 @@ void Arrow::update() {
 
       if (has_reached_map_border()) {
         // the map border was reached: destroy the arrow
-	disappear_date = now;
+        disappear_date = now;
       }
       else {
-	// the arrow has just hit another obstacle
-	reached_obstacle = true;
+        // the arrow has just hit another obstacle
+        reached_obstacle = true;
       }
     }
   }

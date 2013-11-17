@@ -16,7 +16,6 @@
  */
 
 #include "lowlevel/Geometry.h"
-#include <cmath>
 
 /**
  * \brief The pi constant.
@@ -64,47 +63,6 @@ const int Geometry::radians_to_degrees(double radians) {
  */
 const double Geometry::degrees_to_radians(double degrees) {
   return degrees * TWO_PI / 360.0;
-}
-
-/**
- * \brief Returns the distance between two points.
- * \param x1 x coordinate of the first point
- * \param y1 y coordinate of the first point
- * \param x2 x coordinate of the second point
- * \param y2 y coordinate of the second point
- * \return the distance in pixels
- */
-double Geometry::get_distance(int x1, int y1, int x2, int y2) {
-
-  const int dx = x2 - x1;
-  const int dy = y2 - y1;
-  return std::sqrt((double) (dx * dx + dy * dy));
-}
-
-/**
- * \brief Returns the square of the distance between two points.
- * \param x1 X coordinate of the first point.
- * \param y1 Y coordinate of the first point.
- * \param x2 X coordinate of the second point.
- * \param y2 Y coordinate of the second point.
- * \return Square of the distance.
- */
-int Geometry::get_distance2(int x1, int y1, int x2, int y2) {
-
-  const int dx = x2 - x1;
-  const int dy = y2 - y1;
-  return dx * dx + dy * dy;
-}
-
-/**
- * \brief Returns the distance between two points.
- * \param xy1 coordinates of the first point
- * \param xy2 coordinates of the second point
- * \return the distance in pixels
- */
-double Geometry::get_distance(const Rectangle& xy1, const Rectangle& xy2) {
-
-  return get_distance(xy1.get_x(), xy1.get_y(), xy2.get_x(), xy2.get_y());
 }
 
 /**
@@ -159,7 +117,7 @@ const Rectangle Geometry::get_xy(double angle, int distance) {
  * \param distance length of the vector in pixels
  * \return the coordinates of the second point
  */
-const Rectangle Geometry::get_xy(const Rectangle &xy1, double angle, int distance) {
+const Rectangle Geometry::get_xy(const Rectangle& xy1, double angle, int distance) {
 
   Rectangle xy = get_xy(angle, distance);
   xy.add_xy(xy1.get_x(), xy1.get_y());

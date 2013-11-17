@@ -17,6 +17,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
 #include "entities/Tile.h"
+#include "entities/Tileset.h"
 #include "entities/TilePattern.h"
 #include "entities/Layer.h"
 #include "entities/CrystalBlock.h"
@@ -352,7 +353,7 @@ void MapEntities::notify_map_started() {
 
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
-    MapEntity *entity = *i;
+    MapEntity* entity = *i;
     entity->notify_map_started();
     entity->notify_tileset_changed();
   }
@@ -403,6 +404,13 @@ void MapEntities::notify_tileset_changed() {
  * \param tile the tile to add
  */
 void MapEntities::add_tile(Tile* tile) {
+
+  TilePattern& pattern = map.get_tileset().get_tile_pattern(tile->get_tile_pattern_id());
+
+  Debug::check_assertion(
+      tile->get_width() == pattern.get_width()
+      && tile->get_height() == pattern.get_height(),
+      "Static tile size must match tile pattern size");
 
   Layer layer = tile->get_layer();
 

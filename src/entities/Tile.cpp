@@ -113,6 +113,14 @@ TilePattern& Tile::get_tile_pattern() {
 }
 
 /**
+ * \brief Returns the id of the pattern of this tile.
+ * \return The tile pattern id.
+ */
+int Tile::get_tile_pattern_id() const {
+  return tile_pattern_id;
+}
+
+/**
  * \brief Returns whether the pattern is animated.
  *
  * Non-animated tiles may be rendered faster by using intermediate surfaces

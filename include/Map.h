@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Transition.h"
+#include "Camera.h"
 #include "entities/Layer.h"
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
@@ -208,6 +209,15 @@ class Map: public ExportableToLua {
 inline bool Map::test_collision_with_border(int x, int y) const {
 
   return (x < 0 || y < 0 || x >= location.get_width() || y >= location.get_height());
+}
+
+/**
+ * \brief Returns the position of the visible area, relative to the map
+ * top-left corner.
+ * \return The rectangle of the visible area.
+ */
+inline const Rectangle& Map::get_camera_position() const {
+  return camera->get_position();
 }
 
 #endif

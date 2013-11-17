@@ -279,17 +279,6 @@ void Camera::update_moving() {
 }
 
 /**
- * \brief Returns the current position of the camera.
- *
- * This function returns the rectangle of the visible area of this camera.
- *
- * \return The visible area.
- */
-const Rectangle& Camera::get_position() const {
-  return position;
-}
-
-/**
  * \brief Returns whether there is a camera movement.
  *
  * It may be a movement towards a point or a scrolling movement due to a

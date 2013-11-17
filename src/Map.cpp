@@ -19,7 +19,6 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Sprite.h"
-#include "Camera.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
@@ -410,15 +409,6 @@ int Map::get_destination_side() const {
  */
 Surface& Map::get_visible_surface() {
   return *visible_surface;
-}
-
-/**
- * \brief Returns the position of the visible area, relative to the map
- * top-left corner.
- * \return The rectangle of the visible area.
- */
-const Rectangle& Map::get_camera_position() const {
-  return camera->get_position();
 }
 
 /**

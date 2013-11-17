@@ -98,7 +98,7 @@ Color::Color(int r, int g, int b, int a) {
  *
  * This constructor must be used only by low-level classes.
  *
- * \param internal_value The 32-bit RGBA value of the color to create.
+ * \param internal_value The 32-bit ARGB value of the color to create.
  */
 Color::Color(uint32_t internal_value):
   internal_value(internal_value) {

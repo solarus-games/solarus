@@ -37,10 +37,12 @@ const VideoManager::VideoMode forced_mode =
 // Make all modes available.
 const VideoManager::VideoMode forced_mode = VideoManager::NO_MODE;
 #endif
-
+  
 Scale2xFilter scale2x_filter;
 Hq4xFilter hq4x_filter;
 };
+
+SDL_PixelFormat* VideoManager::pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
 
 /**
  * \brief Lua name of each value of the VideoMode enum.
@@ -98,6 +100,7 @@ void VideoManager::initialize(int argc, char **argv) {
  */
 void VideoManager::quit() {
   delete instance;
+  SDL_FreeFormat(pixel_format);
 }
 
 /**
@@ -106,6 +109,14 @@ void VideoManager::quit() {
  */
 VideoManager* VideoManager::get_instance() {
   return instance;
+}
+
+/**
+ * \brief Returns the pixel format to use.
+ * \return the pixel format to use.
+ */
+SDL_PixelFormat* VideoManager::get_pixel_format() {
+  return pixel_format;
 }
 
 /**

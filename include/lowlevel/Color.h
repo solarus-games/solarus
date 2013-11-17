@@ -34,8 +34,6 @@ class Color {
 
   private:
   
-    static SDL_PixelFormat* pixel_format; /**< the internal color format. */
-  
     SDL_Color internal_color;             /**< the SDL color encapsulated. */
     uint32_t internal_value;              /**< the SDL 32-bit value representing this color. */
 

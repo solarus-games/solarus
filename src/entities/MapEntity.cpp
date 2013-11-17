@@ -1107,9 +1107,9 @@ void MapEntity::clear_sprites() {
 void MapEntity::clear_old_sprites() {
 
   std::vector<Sprite*>::const_iterator it;
-  for (it = old_sprites.begin(); it != old_sprites.end(); ++it) {
+  const std::vector<Sprite*>::const_iterator end = old_sprites.end();
+  for (it = old_sprites.begin(); it != end; ++it) {
     Sprite* sprite = *it;
-
     std::vector<Sprite*>::iterator it2;
     for (it2 = sprites.begin(); it2 != sprites.end(); ++it2) {
       if (*it2 == sprite) {
@@ -1226,8 +1226,9 @@ void MapEntity::clear_movement() {
  */
 void MapEntity::clear_old_movements() {
 
-  std::vector<Movement*>::iterator it;
-  for (it = old_movements.begin(); it != old_movements.end(); it++) {
+  std::vector<Movement*>::const_iterator it;
+  const std::vector<Movement*>::const_iterator end = old_movements.end();
+  for (it = old_movements.begin(); it != end; ++it) {
     Movement* movement = *it;
     RefCountable::unref(movement);
   }
@@ -2152,6 +2153,11 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
  */
 void MapEntity::update() {
 
+  // Static tiles are optimized and should never be used individually
+  // once the map is created.
+  SOLARUS_ASSERT(get_type() != ENTITY_TILE,
+      "Attempt to update a static tile");
+
   // enable if necessary
   if (waiting_enabled) {
     Hero& hero = get_hero();
@@ -2179,8 +2185,9 @@ void MapEntity::update() {
   }
 
   // update the sprites
-  std::vector<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  std::vector<Sprite*>::const_iterator it;
+  const std::vector<Sprite*>::const_iterator sprites_end = sprites.end();
+  for (it = sprites.begin(); it != sprites_end; ++it) {
 
     Sprite& sprite = *(*it);
     sprite.update();

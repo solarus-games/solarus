@@ -1107,7 +1107,8 @@ void MapEntity::clear_sprites() {
 void MapEntity::clear_old_sprites() {
 
   std::vector<Sprite*>::const_iterator it;
-  for (it = old_sprites.begin(); it != old_sprites.end(); ++it) {
+  const std::vector<Sprite*>::const_iterator end = old_sprites.end();
+  for (it = old_sprites.begin(); it != end; ++it) {
     Sprite* sprite = *it;
     std::vector<Sprite*>::iterator it2;
     for (it2 = sprites.begin(); it2 != sprites.end(); ++it2) {
@@ -1229,8 +1230,9 @@ void MapEntity::clear_movement() {
  */
 void MapEntity::clear_old_movements() {
 
-  std::vector<Movement*>::iterator it;
-  for (it = old_movements.begin(); it != old_movements.end(); it++) {
+  std::vector<Movement*>::const_iterator it;
+  const std::vector<Movement*>::const_iterator end = old_movements.end();
+  for (it = old_movements.begin(); it != end; ++it) {
     Movement* movement = *it;
     movement->decrement_refcount();
     if (movement->get_refcount() == 0) {
@@ -2185,8 +2187,9 @@ void MapEntity::update() {
   }
 
   // update the sprites
-  std::vector<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  std::vector<Sprite*>::const_iterator it;
+  const std::vector<Sprite*>::const_iterator sprites_end = sprites.end();
+  for (it = sprites.begin(); it != sprites_end; ++it) {
 
     Sprite& sprite = *(*it);
     sprite.update();

@@ -38,6 +38,8 @@ file(
   GLOB
   source_files
   src/*.cpp
+  src/third_party/snes_spc/*.cpp
+  src/third_party/hqx/*.c
   src/entities/*.cpp
   src/hero/*.cpp
   src/hud/*.cpp
@@ -45,8 +47,6 @@ file(
   src/lua/*.cpp
   src/menus/*.cpp
   src/movements/*.cpp
-  src/third_party/snes_spc/*.cpp
-  src/third_party/hqx/*.c
   include/*.h
   include/entities/*.h
   include/hero/*.h

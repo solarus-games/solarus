@@ -23,6 +23,7 @@
 #include "Timer.h"
 #include "entities/MapEntities.h"
 #include "entities/Tile.h"
+#include "entities/TilePattern.h"
 #include "entities/Tileset.h"
 #include "entities/Destination.h"
 #include "entities/Teletransporter.h"
@@ -837,25 +838,38 @@ int LuaContext::map_api_create_tile(lua_State* l) {
       "Cannot create a tile when the map is already started");
 
   luaL_checktype(l, 1, LUA_TTABLE);
-  int layer = check_int_field(l, 1, "layer");
-  int x = check_int_field(l, 1, "x");
-  int y = check_int_field(l, 1, "y");
-  int width = check_int_field(l, 1, "width");
-  int height = check_int_field(l, 1, "height");
-  int tile_pattern_id = check_int_field(l, 1, "pattern");
+  const int layer = check_int_field(l, 1, "layer");
+  const int x = check_int_field(l, 1, "x");
+  const int y = check_int_field(l, 1, "y");
+  const int width = check_int_field(l, 1, "width");
+  const int height = check_int_field(l, 1, "height");
+  const int tile_pattern_id = check_int_field(l, 1, "pattern");
 
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
 
-  MapEntity* entity = new Tile(
-      Layer(layer),
-      x,
-      y,
-      width,
-      height,
-      tile_pattern_id);
-  map.get_entities().add_entity(entity);
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() << "Invalid width: " << width);
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() << "Invalid height: " << height);
+  }
+
+  TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
+
+  for (int current_y = y; current_y < y + height; current_y += pattern.get_height()) {
+    for (int current_x = x; current_x < x + width; current_x += pattern.get_width()) {
+      MapEntity* entity = new Tile(
+          Layer(layer),
+          current_x,
+          current_y,
+          pattern.get_width(),
+          pattern.get_height(),
+          tile_pattern_id);
+      map.get_entities().add_entity(entity);
+    }
+  }
 
   return 0;
 }

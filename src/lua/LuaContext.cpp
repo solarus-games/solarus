@@ -238,7 +238,7 @@ void LuaContext::run_map(Map& map, Destination* destination) {
 
   // Run the map's code with the map userdata as parameter.
   push_map(l, map);
-  call_function(1, 0, file_name);
+  call_function(1, 0, file_name.c_str());
 
   // Call the map:on_started() callback.
   map_on_started(map, destination);
@@ -272,7 +272,7 @@ void LuaContext::run_item(EquipmentItem& item) {
 
     // Run it with the item userdata as parameter.
     push_item(l, item);
-    call_function(1, 0, file_name);
+    call_function(1, 0, file_name.c_str());
 
     // Call the item:on_created() callback.
     item_on_created(item);
@@ -296,7 +296,7 @@ void LuaContext::run_enemy(Enemy& enemy) {
 
     // Run it with the enemy userdata as parameter.
     push_enemy(l, enemy);
-    call_function(1, 0, file_name);
+    call_function(1, 0, file_name.c_str());
 
     enemy_on_suspended(enemy, enemy.is_suspended());
     enemy_on_created(enemy);
@@ -830,9 +830,11 @@ bool LuaContext::find_local_function(int index, const std::string& function_name
  * This is equivalent to find_method(-1, function_name).
  *
  * \param function_name Name of the function to find in the object.
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
  * \return true if the function was found.
  */
-bool LuaContext::find_method(const std::string& function_name) {
+bool LuaContext::find_method(const char* function_name) {
 
   return find_method(-1, function_name);
 }
@@ -846,13 +848,16 @@ bool LuaContext::find_method(const std::string& function_name) {
  *
  * \param index Index of the object in the stack.
  * \param function_name Name of the function to find in the object.
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
+ *
  * \return true if the function was found.
  */
-bool LuaContext::find_method(int index, const std::string& function_name) {
+bool LuaContext::find_method(int index, const char* function_name) {
 
   index = get_positive_index(l, index);
                                   // ... object ...
-  lua_getfield(l, index, function_name.c_str());
+  lua_getfield(l, index, function_name);
                                   // ... object ... method/?
 
   bool exists = lua_isfunction(l, -1);
@@ -882,12 +887,16 @@ bool LuaContext::find_method(int index, const std::string& function_name) {
  * function to call
  * \param nb_results number of results expected (you get them on the stack if
  * there is no error)
- * \param function_name a name describing the Lua function (only used to print
- * the error message if any)
+ * \param function_name A name describing the Lua function (only used to print
+ * the error message if any).
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
  * \return true in case of success
  */
-bool LuaContext::call_function(int nb_arguments, int nb_results,
-    const std::string& function_name) {
+bool LuaContext::call_function(
+    int nb_arguments,
+    int nb_results,
+    const char* function_name) {
 
   return call_function(l, nb_arguments, nb_results, function_name);
 }
@@ -907,10 +916,15 @@ bool LuaContext::call_function(int nb_arguments, int nb_results,
  * there is no error).
  * \param function_name A name describing the Lua function (only used to print
  * the error message if any).
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
  * \return true in case of success.
  */
-bool LuaContext::call_function(lua_State* l, int nb_arguments, int nb_results,
-    const std::string& function_name) {
+bool LuaContext::call_function(
+    lua_State* l,
+    int nb_arguments,
+    int nb_results,
+    const char* function_name) {
 
   if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
     Debug::error(StringConcat() << "In " << function_name << "(): "
@@ -988,7 +1002,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
 void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 
   load_file(l, script_name);
-  call_function(l, 0, 0, script_name);
+  call_function(l, 0, 0, script_name.c_str());
 }
 
 /**
@@ -1005,7 +1019,7 @@ void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
   if (load_file_if_exists(l, script_name)) {
-    call_function(l, 0, 0, script_name);
+    call_function(l, 0, 0, script_name.c_str());
     return true;
   }
   return false;

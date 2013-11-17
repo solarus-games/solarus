@@ -37,7 +37,7 @@ const VideoManager::VideoMode forced_mode =
 // Make all modes available.
 const VideoManager::VideoMode forced_mode = VideoManager::NO_MODE;
 #endif
-  
+
 Scale2xFilter scale2x_filter;
 Hq4xFilter hq4x_filter;
 };

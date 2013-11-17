@@ -47,7 +47,7 @@ class VideoManager {
     static void initialize(int argc, char** argv);
     static void quit();
     static VideoManager* get_instance();
-  
+
     static SDL_PixelFormat* get_pixel_format();
     SDL_Renderer* get_renderer();
     void create_window();
@@ -99,7 +99,7 @@ class VideoManager {
     std::map<VideoMode, Rectangle>
         mode_sizes;                         /**< Size of the screen surface for each supported
                                              * video mode with the current quest size. */
-  
+
     static SDL_PixelFormat* pixel_format;   /**< The pixel color format to use. */
     SDL_Window* main_window;                /**< The window. */
     SDL_Renderer* main_renderer;            /**< The screen renderer. */

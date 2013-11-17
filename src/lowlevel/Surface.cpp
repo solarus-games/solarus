@@ -301,7 +301,7 @@ void Surface::set_software_destination(bool software_destination) {
 
     if (internal_surface == NULL) {
       // Create a surface with ARGB format.
-      internal_surface = SDL_CreateRGBSurface (
+      internal_surface = SDL_CreateRGBSurface(
           0,
           width,
           height,
@@ -315,7 +315,7 @@ void Surface::set_software_destination(bool software_destination) {
           0x0000ff00,
           0x00ff0000,
           0xff000000,
-          0x000000ff     
+          0x000000ff
 #endif
       );
     }

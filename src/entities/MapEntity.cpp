@@ -1051,6 +1051,14 @@ int MapEntity::get_optimization_distance() const {
 }
 
 /**
+ * \brief Returns the square of the optimization distance of this entity.
+ * \return Square of the optimization distance (0 means infinite).
+ */
+int MapEntity::get_optimization_distance2() const {
+  return optimization_distance2;
+}
+
+/**
  * \brief Sets the optimization distance of this entity.
  *
  * Above this distance from the visible area, the entity is suspended.
@@ -1059,6 +1067,7 @@ int MapEntity::get_optimization_distance() const {
  */
 void MapEntity::set_optimization_distance(int distance) {
   this->optimization_distance = distance;
+  this->optimization_distance2 = distance * distance;
 }
 
 /**
@@ -1338,7 +1347,8 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
     return;
   }
 
-  if (get_distance_to_camera() > optimization_distance && optimization_distance > 0) {
+  if (get_distance_to_camera2() > optimization_distance2
+      && optimization_distance > 0) {
     // Don't check entities far for the visible area.
     return;
   }
@@ -1364,7 +1374,8 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
  */
 void MapEntity::check_collision_with_detectors(Sprite& sprite) {
 
-  if (get_distance_to_camera() > optimization_distance && optimization_distance > 0) {
+  if (get_distance_to_camera2() > optimization_distance2
+      && optimization_distance > 0) {
     // Don't check entities far for the visible area.
     return;
   }
@@ -1874,8 +1885,28 @@ int MapEntity::get_distance(const MapEntity& other) const {
 int MapEntity::get_distance_to_camera() const {
 
   const Rectangle& camera = get_map().get_camera_position();
-  return (int) Geometry::get_distance(get_x(), get_y(),
-      camera.get_x() + 160, camera.get_y() + 120);
+  return (int) Geometry::get_distance(
+      get_x(),
+      get_y(),
+      camera.get_x() + 160,
+      camera.get_y() + 120
+  );
+}
+
+/**
+ * \brief Returns the square of the distance between the origin of this entity
+ * and the center point of the visible part of the map.
+ * \return Square of the distance.
+ */
+int MapEntity::get_distance_to_camera2() const {
+
+  const Rectangle& camera = get_map().get_camera_position();
+  return Geometry::get_distance2(
+      get_x(),
+      get_y(),
+      camera.get_x() + 160,
+      camera.get_y() + 120
+  );
 }
 
 /**
@@ -2210,7 +2241,7 @@ void MapEntity::update() {
   clear_old_movements();
 
   // suspend the entity if far from the camera
-  bool far = get_distance_to_camera() > optimization_distance
+  bool far = get_distance_to_camera2() > optimization_distance2
       && optimization_distance > 0;
   if (far && !is_suspended()) {
     set_suspended(true);
@@ -2229,7 +2260,7 @@ bool MapEntity::is_drawn() const {
 
   return is_visible()
       && (overlaps_camera()
-          || get_distance_to_camera() < get_optimization_distance()
+          || get_distance_to_camera2() < get_optimization_distance2()
           || !is_drawn_at_its_position()
       );
 }

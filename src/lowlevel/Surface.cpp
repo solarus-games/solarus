@@ -475,14 +475,18 @@ void Surface::render(
   // Accelerate the internal software surface.
   if (internal_surface != NULL) {
     
-    // If the software surface has changed, prepare to reload the hardware texture.
-    if (internal_texture != NULL && software_destination && !is_rendered) {
-      SDL_DestroyTexture(internal_texture);
-      internal_texture = NULL;
-    }
-    
     if (internal_texture == NULL) {
       internal_texture = get_texture_from_surface(internal_surface);
+    }
+    // Else if the software surface has changed, update the hardware texture.
+    else if (software_destination && !is_rendered) {
+      // TODO do this only when the software surface has changed.
+      SDL_UpdateTexture(
+          internal_texture,
+          NULL,
+          internal_surface->pixels,
+          internal_surface->pitch
+      );
     }
   }
 

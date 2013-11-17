@@ -753,78 +753,6 @@ void LuaContext::cancel_callback(int callback_ref) {
 }
 
 /**
- * \brief Looks up the specified global Lua function and places it onto the stack if it exists.
- *
- * If the function is not found, the stack is left unchanged.
- *
- * \param function_name Name of the function to find.
- * \return true if the function was found.
- */
-bool LuaContext::find_global_function(const std::string& function_name) {
-
-  if (l == NULL) {
-    return false;
-  }
-
-  lua_getglobal(l, function_name.c_str());
-
-  bool exists = lua_isfunction(l, -1);
-  if (!exists) {  // Restore the stack.
-    lua_pop(l, 1);
-  }
-
-  return exists;
-}
-
-/**
- * \brief Gets a local Lua function from the environment of another one
- * on top of the stack.
- *
- * This is equivalent to find_local_function(-1, function_name).
- *
- * \param function_name Name of the function to find in the environment of the
- * first one.
- * \return true if the function was found.
- */
-bool LuaContext::find_local_function(const std::string& function_name) {
-
-  return find_local_function(-1, function_name);
-}
-
-/**
- * \brief Gets a local Lua function from the environment of another one.
- *
- * The function found is placed on top the stack if it exists.
- * If the function is not found, the stack is left unchanged.
- *
- * \param index Index of an existing function in the stack.
- * \param function_name Name of the function to find in the environment of the
- * first one.
- * \return true if the function was found.
- */
-bool LuaContext::find_local_function(int index, const std::string& function_name) {
-
-                                  // ... f1 ...
-  lua_getfenv(l, index);
-                                  // ... f1 ... env
-  lua_getfield(l, -1, function_name.c_str());
-                                  // ... f1 ... env f2/?
-  bool exists = lua_isfunction(l, -1);
-
-  // Restore the stack.
-  if (exists) {
-    lua_remove(l, -2);
-                                  // ... f1 ... f2
-  }
-  else {
-    lua_pop(l, 2);
-                                  // ... f1 ...
-  }
-
-  return exists;
-}
-
-/**
  * \brief Gets a method of the object on top of the stack.
  *
  * This is equivalent to find_method(-1, function_name).
@@ -1255,18 +1183,22 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata lightudata udata
     luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
                                   // ... all_udata lightudata udata mt
-    Debug::check_assertion(!lua_isnil(l, -1), StringConcat() <<
-        "Userdata of type '" << userdata.get_lua_type_name()
-        << "' has no metatable, this is a memory leak");
+
+#ifndef NDEBUG
+    Debug::check_assertion(!lua_isnil(l, -1),
+        std::string("Userdata of type '" + userdata.get_lua_type_name()
+        + "' has no metatable, this is a memory leak"));
 
     lua_getfield(l, -1, "__gc");
                                   // ... all_udata lightudata udata mt gc
-    Debug::check_assertion(lua_isfunction(l, -1), StringConcat() <<
-        "Userdata of type '" << userdata.get_lua_type_name()
-        << "' must have the __gc function LuaContext::userdata_meta_gc");
+    Debug::check_assertion(lua_isfunction(l, -1),
+        std::string("Userdata of type '") + userdata.get_lua_type_name()
+        + "' must have the __gc function LuaContext::userdata_meta_gc");
                                   // ... all_udata lightudata udata mt gc
     lua_pop(l, 1);
                                   // ... all_udata lightudata udata mt
+#endif
+
     lua_setmetatable(l, -2);
                                   // ... all_udata lightudata udata
     // Keep track of our new userdata.

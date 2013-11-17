@@ -845,9 +845,6 @@ class LuaContext {
     };
 
     // Executing Lua code.
-    bool find_global_function(const std::string& function_name);  // TODO remove these 3 unused functions
-    bool find_local_function(int index, const std::string& function_name);
-    bool find_local_function(const std::string& function_name);
     bool find_method(int index, const char* function_name);
     bool find_method(const char* function_name);
     bool call_function(

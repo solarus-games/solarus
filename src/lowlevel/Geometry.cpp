@@ -78,7 +78,7 @@ double Geometry::get_distance(int x1, int y1, int x2, int y2) {
 
   const int dx = x2 - x1;
   const int dy = y2 - y1;
-  return std::sqrt((float) (dx * dx + dy * dy));
+  return std::sqrt((double) (dx * dx + dy * dy));
 }
 
 /**

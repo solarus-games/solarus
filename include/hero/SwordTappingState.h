@@ -24,10 +24,6 @@
  */
 class Hero::SwordTappingState: public Hero::State {
 
-  private:
-
-    uint32_t next_sound_date;		/**< date when the sword tapping sound should be played */
-
   public:
 
     SwordTappingState(Hero& hero);
@@ -44,6 +40,10 @@ class Hero::SwordTappingState: public Hero::State {
     void notify_obstacle_reached();
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
+
+  private:
+
+    uint32_t next_sound_date;     /**< date when the sword tapping sound should be played */
 
 };
 

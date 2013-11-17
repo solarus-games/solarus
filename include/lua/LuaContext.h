@@ -845,15 +845,17 @@ class LuaContext {
     };
 
     // Executing Lua code.
-    bool find_global_function(const std::string& function_name);
-    bool find_local_function(int index, const std::string& function_name);
-    bool find_local_function(const std::string& function_name);
-    bool find_method(int index, const std::string& function_name);
-    bool find_method(const std::string& function_name);
-    bool call_function(int nb_arguments, int nb_results,
-        const std::string& function_name);
-    static bool call_function(lua_State* l, int nb_arguments, int nb_results,
-        const std::string& function_name);
+    bool find_method(int index, const char* function_name);
+    bool find_method(const char* function_name);
+    bool call_function(
+        int nb_arguments,
+        int nb_results,
+        const char* function_name);
+    static bool call_function(
+        lua_State* l,
+        int nb_arguments,
+        int nb_results,
+        const char* function_name);
     static void load_file(lua_State* l, const std::string& script_name);
     static bool load_file_if_exists(lua_State* l, const std::string& script_name);
     static void do_file(lua_State* l, const std::string& script_name);

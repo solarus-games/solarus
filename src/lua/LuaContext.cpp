@@ -238,7 +238,7 @@ void LuaContext::run_map(Map& map, Destination* destination) {
 
   // Run the map's code with the map userdata as parameter.
   push_map(l, map);
-  call_function(1, 0, file_name);
+  call_function(1, 0, file_name.c_str());
 
   // Call the map:on_started() callback.
   map_on_started(map, destination);
@@ -272,7 +272,7 @@ void LuaContext::run_item(EquipmentItem& item) {
 
     // Run it with the item userdata as parameter.
     push_item(l, item);
-    call_function(1, 0, file_name);
+    call_function(1, 0, file_name.c_str());
 
     // Call the item:on_created() callback.
     item_on_created(item);
@@ -296,7 +296,7 @@ void LuaContext::run_enemy(Enemy& enemy) {
 
     // Run it with the enemy userdata as parameter.
     push_enemy(l, enemy);
-    call_function(1, 0, file_name);
+    call_function(1, 0, file_name.c_str());
 
     enemy_on_suspended(enemy, enemy.is_suspended());
     enemy_on_created(enemy);
@@ -733,89 +733,23 @@ void LuaContext::push_callback(int callback_ref) {
 void LuaContext::cancel_callback(int callback_ref) {
 
   if (callback_ref != LUA_REFNIL) {
+
+#ifndef NDEBUG
     // Check that the callback is canceled only once.
     // Otherwise, a duplicate call to luaL_unref() silently breaks the
     // uniqueness of Lua refs.
     push_ref(l, callback_ref);
-    Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
-        << "There is no callback with ref " << callback_ref
-        << " (function expected, got " << luaL_typename(l, -1)
-        << "). Did you already invoke or cancel it?");
-    lua_pop(l, 1);
+    if (!lua_isfunction(l, -1)) {
+      Debug::die(StringConcat()
+          << "There is no callback with ref " << callback_ref
+          << " (function expected, got " << luaL_typename(l, -1)
+          << "). Did you already invoke or cancel it?");
+      lua_pop(l, 1);
+    }
+#endif
+
     destroy_ref(callback_ref);
   }
-}
-
-/**
- * \brief Looks up the specified global Lua function and places it onto the stack if it exists.
- *
- * If the function is not found, the stack is left unchanged.
- *
- * \param function_name Name of the function to find.
- * \return true if the function was found.
- */
-bool LuaContext::find_global_function(const std::string& function_name) {
-
-  if (l == NULL) {
-    return false;
-  }
-
-  lua_getglobal(l, function_name.c_str());
-
-  bool exists = lua_isfunction(l, -1);
-  if (!exists) {  // Restore the stack.
-    lua_pop(l, 1);
-  }
-
-  return exists;
-}
-
-/**
- * \brief Gets a local Lua function from the environment of another one
- * on top of the stack.
- *
- * This is equivalent to find_local_function(-1, function_name).
- *
- * \param function_name Name of the function to find in the environment of the
- * first one.
- * \return true if the function was found.
- */
-bool LuaContext::find_local_function(const std::string& function_name) {
-
-  return find_local_function(-1, function_name);
-}
-
-/**
- * \brief Gets a local Lua function from the environment of another one.
- *
- * The function found is placed on top the stack if it exists.
- * If the function is not found, the stack is left unchanged.
- *
- * \param index Index of an existing function in the stack.
- * \param function_name Name of the function to find in the environment of the
- * first one.
- * \return true if the function was found.
- */
-bool LuaContext::find_local_function(int index, const std::string& function_name) {
-
-                                  // ... f1 ...
-  lua_getfenv(l, index);
-                                  // ... f1 ... env
-  lua_getfield(l, -1, function_name.c_str());
-                                  // ... f1 ... env f2/?
-  bool exists = lua_isfunction(l, -1);
-
-  // Restore the stack.
-  if (exists) {
-    lua_remove(l, -2);
-                                  // ... f1 ... f2
-  }
-  else {
-    lua_pop(l, 2);
-                                  // ... f1 ...
-  }
-
-  return exists;
 }
 
 /**
@@ -824,9 +758,11 @@ bool LuaContext::find_local_function(int index, const std::string& function_name
  * This is equivalent to find_method(-1, function_name).
  *
  * \param function_name Name of the function to find in the object.
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
  * \return true if the function was found.
  */
-bool LuaContext::find_method(const std::string& function_name) {
+bool LuaContext::find_method(const char* function_name) {
 
   return find_method(-1, function_name);
 }
@@ -840,13 +776,16 @@ bool LuaContext::find_method(const std::string& function_name) {
  *
  * \param index Index of the object in the stack.
  * \param function_name Name of the function to find in the object.
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
+ *
  * \return true if the function was found.
  */
-bool LuaContext::find_method(int index, const std::string& function_name) {
+bool LuaContext::find_method(int index, const char* function_name) {
 
   index = get_positive_index(l, index);
                                   // ... object ...
-  lua_getfield(l, index, function_name.c_str());
+  lua_getfield(l, index, function_name);
                                   // ... object ... method/?
 
   bool exists = lua_isfunction(l, -1);
@@ -876,12 +815,16 @@ bool LuaContext::find_method(int index, const std::string& function_name) {
  * function to call
  * \param nb_results number of results expected (you get them on the stack if
  * there is no error)
- * \param function_name a name describing the Lua function (only used to print
- * the error message if any)
+ * \param function_name A name describing the Lua function (only used to print
+ * the error message if any).
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
  * \return true in case of success
  */
-bool LuaContext::call_function(int nb_arguments, int nb_results,
-    const std::string& function_name) {
+bool LuaContext::call_function(
+    int nb_arguments,
+    int nb_results,
+    const char* function_name) {
 
   return call_function(l, nb_arguments, nb_results, function_name);
 }
@@ -901,10 +844,15 @@ bool LuaContext::call_function(int nb_arguments, int nb_results,
  * there is no error).
  * \param function_name A name describing the Lua function (only used to print
  * the error message if any).
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
  * \return true in case of success.
  */
-bool LuaContext::call_function(lua_State* l, int nb_arguments, int nb_results,
-    const std::string& function_name) {
+bool LuaContext::call_function(
+    lua_State* l,
+    int nb_arguments,
+    int nb_results,
+    const char* function_name) {
 
   if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
     Debug::error(StringConcat() << "In " << function_name << "(): "
@@ -982,7 +930,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
 void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 
   load_file(l, script_name);
-  call_function(l, 0, 0, script_name);
+  call_function(l, 0, 0, script_name.c_str());
 }
 
 /**
@@ -999,7 +947,7 @@ void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
   if (load_file_if_exists(l, script_name)) {
-    call_function(l, 0, 0, script_name);
+    call_function(l, 0, 0, script_name.c_str());
     return true;
   }
   return false;
@@ -1235,18 +1183,22 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata lightudata udata
     luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
                                   // ... all_udata lightudata udata mt
-    Debug::check_assertion(!lua_isnil(l, -1), StringConcat() <<
-        "Userdata of type '" << userdata.get_lua_type_name()
-        << "' has no metatable, this is a memory leak");
+
+#ifndef NDEBUG
+    Debug::check_assertion(!lua_isnil(l, -1),
+        std::string("Userdata of type '" + userdata.get_lua_type_name()
+        + "' has no metatable, this is a memory leak"));
 
     lua_getfield(l, -1, "__gc");
                                   // ... all_udata lightudata udata mt gc
-    Debug::check_assertion(lua_isfunction(l, -1), StringConcat() <<
-        "Userdata of type '" << userdata.get_lua_type_name()
-        << "' must have the __gc function LuaContext::userdata_meta_gc");
+    Debug::check_assertion(lua_isfunction(l, -1),
+        std::string("Userdata of type '") + userdata.get_lua_type_name()
+        + "' must have the __gc function LuaContext::userdata_meta_gc");
                                   // ... all_udata lightudata udata mt gc
     lua_pop(l, 1);
                                   // ... all_udata lightudata udata mt
+#endif
+
     lua_setmetatable(l, -2);
                                   // ... all_udata lightudata udata
     // Keep track of our new userdata.

@@ -150,8 +150,6 @@ void MainLoop::set_game(Game* game) {
  * \brief The main function.
  *
  * The main loop is executed here.
- * The input events are forwarded to the current screen.
- * The current screen is redrawn when necessary.
  */
 void MainLoop::run() {
 
@@ -159,18 +157,30 @@ void MainLoop::run() {
   uint32_t last_frame_date = System::get_real_time();
   uint32_t lag = 0;  // Lose time of the simulation.
 
+  // The main loop basically repeats
+  // check_input(), update(), draw() and sleep().
+  // Each call to update() makes the simulated time advance one fixed step.
   while (!is_exiting()) {
 
-    // Check the time.
-    uint32_t now = System::get_real_time();
-    uint32_t last_frame_duration = now - last_frame_date;
-    last_frame_date = now;
-    lag += last_frame_duration;
+    // Measure the time of the last iteration without the check_input() phase.
+    // Some check_input() calls are much slower than other, for example when
+    // they involve loading a map. However, these long check_input() calls do
+    // not mean that the system is slow and that we should skip drawings,
+    // unlike long updates and long drawings.
+    // That is is why to compute the lag, we ignore the time spent in
+    // check_input().
+    uint32_t current_frame_date = System::get_real_time();
+    uint32_t last_frame_duration = current_frame_date - last_frame_date;
 
-    // Detect and handle input events.
+    // 1. Detect and handle input events.
     check_input();
 
-    // Update the world once, or several times skipping some draws
+    last_frame_date = System::get_real_time();
+    lag += last_frame_duration;
+    // At this point, lag represents how much late the simulated time with
+    // compared to the real time.
+
+    // 2. Update the world once, or several times (skipping some draws)
     // if the system is slow.
     int num_updates = 0;
     while (lag >= System::timestep
@@ -181,10 +191,10 @@ void MainLoop::run() {
       ++num_updates;
     }
 
-    // Redraw the screen.
+    // 3. Redraw the screen.
     draw();
 
-    // Sleep if we have time.
+    // 4. Sleep if we have time, to save CPU cycles.
     if (System::get_real_time() - last_frame_date < System::timestep) {
       System::sleep(1);
     }

@@ -50,7 +50,6 @@ class Color {
     static Color magenta;
     static Color cyan;
 
-    Color(uint32_t internal_value);
     uint32_t get_internal_value() const;
     SDL_Color* get_internal_color();
 

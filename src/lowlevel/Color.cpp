@@ -21,7 +21,7 @@
 #include "lowlevel/Color.h"
 
 SDL_PixelFormat* Color::pixel_format =
-    SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888); // RGBA is the most common format.
+    SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
 
 Color Color::transparent;
 Color Color::black;
@@ -104,15 +104,15 @@ Color::Color(uint32_t internal_value):
   internal_value(internal_value) {
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  internal_color.r = (internal_value & 0xff000000) >> 24;
-  internal_color.g = (internal_value & 0x00ff0000) >> 16;
-  internal_color.b = (internal_value & 0x0000ff00) >> 8;
-  internal_color.a = (internal_value & 0x000000ff);
-#else
-  internal_color.r = (internal_value & 0x000000ff);
+  internal_color.r = (internal_value & 0x00ff0000) >> 16;
   internal_color.g = (internal_value & 0x0000ff00) >> 8;
-  internal_color.b = (internal_value & 0x00ff0000) >> 16;
+  internal_color.b = (internal_value & 0x000000ff);
   internal_color.a = (internal_value & 0xff000000) >> 24;
+#else
+  internal_color.r = (internal_value & 0x0000ff00) >> 8;
+  internal_color.g = (internal_value & 0x00ff0000) >> 16;
+  internal_color.b = (internal_value & 0xff000000) >> 24;
+  internal_color.a = (internal_value & 0x000000ff);
 #endif
 }
 

@@ -55,8 +55,8 @@ class Camera {
     void update_fixed_on_hero();
     void update_moving();
 
-    Map& map;                     /**< The map. */
     Rectangle position;           /**< Visible area of the camera on the map. */
+    Map& map;                     /**< The map. */
 
     // Camera centered on the hero.
     bool fixed_on_hero;                     /**< \c true if the camera is fixed on the hero. */
@@ -73,6 +73,17 @@ class Camera {
     int speed;                    /**< Speed of the next movement. */
     TargetMovement* movement;     /**< Movement of the camera, or NULL for no movement. */
 };
+
+/**
+ * \brief Returns the current position of the camera.
+ *
+ * This function returns the rectangle of the visible area of this camera.
+ *
+ * \return The visible area.
+ */
+inline const Rectangle& Camera::get_position() const {
+  return position;
+}
 
 #endif
 

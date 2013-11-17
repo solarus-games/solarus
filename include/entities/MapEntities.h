@@ -106,7 +106,10 @@ class MapEntities {
     int map_height8;                                /**< number of 8x8 squares on a column of the map grid */
 
     // tiles
-    std::vector<Tile*> tiles[LAYER_NB];             /**< all tiles of the map (a vector for each layer) */
+    std::vector<Tile*> tiles[LAYER_NB];             /**< All tiles of the map (a vector for each layer).
+                                                     * Note: the only reason why we keep them at runtime
+                                                     * is in case the tileset changes. Otherwise, they are
+                                                     * optimized and never used individually.*/
     int tiles_grid_size;                            /**< number of 8x8 squares in the map
                                                      * (tiles_grid_size = map_width8 * map_height8) */
     Ground* tiles_ground[LAYER_NB];                 /**< array of size tiles_grid_size representing the ground property

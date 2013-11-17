@@ -2160,6 +2160,11 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
  */
 void MapEntity::update() {
 
+  // Static tiles are optimized and should never be used individually
+  // once the map is created.
+  SOLARUS_ASSERT(get_type() != ENTITY_TILE,
+      "Attempt to update a static tile");
+
   // enable if necessary
   if (waiting_enabled) {
     Hero& hero = get_hero();

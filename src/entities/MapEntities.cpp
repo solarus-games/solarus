@@ -827,18 +827,14 @@ void MapEntities::update() {
 
   Debug::check_assertion(map.is_started(), "The map is not started");
 
-  // first update the hero
+  // First update the hero.
   hero.update();
 
-  // update the tiles and the dynamic entities
+  // Update the dynamic entities.
   list<MapEntity*>::iterator it;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      tiles[layer][i]->update();
-    }
-
-    // sort the entities drawn in y order
+    // Sort the entities drawn in y order.
     entities_drawn_y_order[layer].sort(compare_y);
   }
 

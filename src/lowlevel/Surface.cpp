@@ -487,7 +487,6 @@ void Surface::render(
     }
     // Else if the software surface has changed, update the hardware texture.
     else if (software_destination && !is_rendered) {
-      // TODO do this only when the software surface has changed.
       SDL_UpdateTexture(
           internal_texture,
           NULL,

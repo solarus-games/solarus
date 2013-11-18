@@ -716,10 +716,14 @@ void LuaContext::do_callback(int callback_ref) {
 void LuaContext::push_callback(int callback_ref) {
 
   push_ref(l, callback_ref);
-  Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
-      << "There is no callback with ref " << callback_ref
-      << " (function expected, got " << luaL_typename(l, -1)
-      << "). Did you already invoke or cancel it?");
+#ifndef NDEBUG
+  if (!lua_isfunction(l, -1)) {
+    Debug::die(StringConcat()
+        << "There is no callback with ref " << callback_ref
+        << " (function expected, got " << luaL_typename(l, -1)
+        << "). Did you already invoke or cancel it?"
+    );
+#endif
 }
 
 /**
@@ -743,7 +747,8 @@ void LuaContext::cancel_callback(int callback_ref) {
       Debug::die(StringConcat()
           << "There is no callback with ref " << callback_ref
           << " (function expected, got " << luaL_typename(l, -1)
-          << "). Did you already invoke or cancel it?");
+          << "). Did you already invoke or cancel it?"
+      );
       lua_pop(l, 1);
     }
 #endif

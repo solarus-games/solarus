@@ -461,12 +461,12 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
 
   // TODO don't hardcode item slots
 
-  Debug::check_assertion(slot >= 1 && slot <= 2, StringConcat() <<
-      "Invalid item slot '" << slot << "'");
+  Debug::check_assertion(slot >= 1 && slot <= 2,
+      "Invalid item slot");
 
-  std::ostringstream oss;
-  oss << "_item_slot_" << slot;
-  const std::string& item_name = savegame.get_string(oss.str());
+  char savegame_variable[] = "_item_slot_0";
+  savegame_variable[11] = '0' + slot;
+  const std::string& item_name = savegame.get_string(savegame_variable);
 
   EquipmentItem* item = NULL;
   if (!item_name.empty()) {

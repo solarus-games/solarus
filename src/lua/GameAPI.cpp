@@ -1343,7 +1343,7 @@ int LuaContext::game_api_get_commands_direction(lua_State* l) {
  */
 void LuaContext::game_on_started(Game& game) {
 
-  if (!game.get_savegame().is_with_lua_table()) {
+  if (!userdata_has_field(game.get_savegame(), "on_started")) {
     return;
   }
 
@@ -1366,7 +1366,7 @@ void LuaContext::game_on_finished(Game& game) {
   }
 
   push_game(l, game.get_savegame());
-  if (game.get_savegame().is_with_lua_table()) {
+  if (userdata_has_field(game.get_savegame(), "on_finished")) {
     on_finished();
   }
   remove_timers(-1);  // Stop timers and menus associated to this game.
@@ -1388,7 +1388,7 @@ void LuaContext::game_on_update(Game& game) {
   }
 
   push_game(l, game.get_savegame());
-  if (game.get_savegame().is_with_lua_table()) {
+  if (userdata_has_field(game.get_savegame(), "on_update")) {
     on_update();
   }
   menus_on_update(-1);
@@ -1410,7 +1410,7 @@ void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
   }
 
   push_game(l, game.get_savegame());
-  if (game.get_savegame().is_with_lua_table()) {
+  if (userdata_has_field(game.get_savegame(), "on_draw")) {
     on_draw(dst_surface);
   }
   menus_on_draw(-1, dst_surface);
@@ -1427,7 +1427,7 @@ void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
  */
 void LuaContext::game_on_map_changed(Game& game, Map& map) {
 
-  if (!game.get_savegame().is_with_lua_table()) {
+  if (!userdata_has_field(game.get_savegame(), "on_map_changed")) {
     return;
   }
 
@@ -1445,7 +1445,7 @@ void LuaContext::game_on_map_changed(Game& game, Map& map) {
  */
 void LuaContext::game_on_paused(Game& game) {
 
-  if (!game.get_savegame().is_with_lua_table()) {
+  if (!userdata_has_field(game.get_savegame(), "on_paused")) {
     return;
   }
 
@@ -1463,7 +1463,7 @@ void LuaContext::game_on_paused(Game& game) {
  */
 void LuaContext::game_on_unpaused(Game& game) {
 
-  if (!game.get_savegame().is_with_lua_table()) {
+  if (!userdata_has_field(game.get_savegame(), "on_unpaused")) {
     return;
   }
 
@@ -1486,7 +1486,7 @@ void LuaContext::game_on_unpaused(Game& game) {
 bool LuaContext::game_on_dialog_started(Game& game,
     const Dialog& dialog, int info_ref) {
 
-  if (!game.get_savegame().is_with_lua_table()) {
+  if (!userdata_has_field(game.get_savegame(), "on_dialog_started")) {
     return false;
   }
 
@@ -1508,7 +1508,7 @@ bool LuaContext::game_on_dialog_started(Game& game,
 void LuaContext::game_on_dialog_finished(Game& game,
     const Dialog& dialog) {
 
-  if (!game.get_savegame().is_with_lua_table()) {
+  if (!userdata_has_field(game.get_savegame(), "on_dialog_finished")) {
     return;
   }
 
@@ -1527,7 +1527,7 @@ void LuaContext::game_on_dialog_finished(Game& game,
  */
 bool LuaContext::game_on_game_over_started(Game& game) {
 
-  if (!game.get_savegame().is_with_lua_table()) {
+  if (!userdata_has_field(game.get_savegame(), "on_game_over_started")) {
     return false;
   }
 
@@ -1547,7 +1547,7 @@ bool LuaContext::game_on_game_over_started(Game& game) {
  */
 void LuaContext::game_on_game_over_finished(Game& game) {
 
-  if (!game.get_savegame().is_with_lua_table()) {
+  if (!userdata_has_field(game.get_savegame(), "on_game_over_finished")) {
     return;
   }
 
@@ -1603,7 +1603,7 @@ bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command comma
 
   bool handled = false;
   push_game(l, game.get_savegame());
-  if (game.get_savegame().is_with_lua_table()) {
+  if (userdata_has_field(game.get_savegame(), "on_command_pressed")) {
     handled = on_command_pressed(command);
   }
   if (!handled) {
@@ -1631,7 +1631,7 @@ bool LuaContext::game_on_command_released(Game& game, GameCommands::Command comm
 
   bool handled = false;
   push_game(l, game.get_savegame());
-  if (game.get_savegame().is_with_lua_table()) {
+  if (userdata_has_field(game.get_savegame(), "on_command_released")) {
     handled = on_command_released(command);
   }
   if (!handled) {

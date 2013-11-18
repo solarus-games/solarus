@@ -1457,8 +1457,14 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
                                   // ... udata_tables udata_table
 
   if (lua_isstring(l, 2)) {
-    // Add the key to the list of existing strings keys on this userdata.
-    get_lua_context(l).userdata_fields[userdata].insert(lua_tostring(l, 2));
+    if (!lua_isnil(l, 3)) {
+      // Add the key to the list of existing strings keys on this userdata.
+      get_lua_context(l).userdata_fields[userdata].insert(lua_tostring(l, 2));
+    }
+    else {
+      // Assigning nil: remove the key from the list.
+      get_lua_context(l).userdata_fields[userdata].erase(lua_tostring(l, 2));
+    }
   }
 
   return 0;

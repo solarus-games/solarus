@@ -332,7 +332,7 @@ int LuaContext::sprite_api_synchronize(lua_State *l) {
 void LuaContext::sprite_on_animation_finished(Sprite& sprite,
     const std::string& animation) {
 
-  if (!sprite.is_with_lua_table()) {
+  if (!userdata_has_field(sprite, "on_animation_finished")) {
     return;
   }
 
@@ -352,7 +352,7 @@ void LuaContext::sprite_on_animation_finished(Sprite& sprite,
 void LuaContext::sprite_on_animation_changed(
     Sprite& sprite, const std::string& animation) {
 
-  if (!sprite.is_with_lua_table()) {
+  if (!userdata_has_field(sprite, "on_animation_changed")) {
     return;
   }
 
@@ -373,7 +373,7 @@ void LuaContext::sprite_on_animation_changed(
 void LuaContext::sprite_on_direction_changed(Sprite& sprite,
     const std::string& animation, int direction) {
 
-  if (!sprite.is_with_lua_table()) {
+  if (!userdata_has_field(sprite, "on_direction_changed")) {
     return;
   }
 
@@ -394,7 +394,7 @@ void LuaContext::sprite_on_direction_changed(Sprite& sprite,
 void LuaContext::sprite_on_frame_changed(Sprite& sprite,
     const std::string& animation, int frame) {
 
-  if (!sprite.is_with_lua_table()) {
+  if (!userdata_has_field(sprite, "on_frame_changed")) {
     return;
   }
 

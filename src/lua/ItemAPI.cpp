@@ -696,7 +696,7 @@ int LuaContext::item_api_set_finished(lua_State* l) {
  */
 void LuaContext::item_on_started(EquipmentItem& item) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_started")) {
     return;
   }
 
@@ -714,12 +714,14 @@ void LuaContext::item_on_started(EquipmentItem& item) {
  */
 void LuaContext::item_on_finished(EquipmentItem& item) {
 
-  if (!item.is_with_lua_table()) {
+  if (!item.is_known_to_lua()) {
     return;
   }
 
   push_item(l, item);
-  on_finished();
+  if (userdata_has_field(item, "on_finished")) {
+    on_finished();
+  }
   remove_timers(-1);  // Stop timers and menus associated to this item.
   remove_menus(-1);
   lua_pop(l, 1);
@@ -734,7 +736,7 @@ void LuaContext::item_on_finished(EquipmentItem& item) {
  */
 void LuaContext::item_on_update(EquipmentItem& item) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_update")) {
     return;
   }
 
@@ -753,7 +755,7 @@ void LuaContext::item_on_update(EquipmentItem& item) {
  */
 void LuaContext::item_on_suspended(EquipmentItem& item, bool suspended) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_suspended")) {
     return;
   }
 
@@ -771,7 +773,7 @@ void LuaContext::item_on_suspended(EquipmentItem& item, bool suspended) {
  */
 void LuaContext::item_on_created(EquipmentItem& item) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_created")) {
     return;
   }
 
@@ -790,7 +792,7 @@ void LuaContext::item_on_created(EquipmentItem& item) {
  */
 void LuaContext::item_on_map_changed(EquipmentItem& item, Map& map) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_map_changed")) {
     return;
   }
 
@@ -810,7 +812,7 @@ void LuaContext::item_on_map_changed(EquipmentItem& item, Map& map) {
 void LuaContext::item_on_pickable_created(EquipmentItem& item,
     Pickable& pickable) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_pickable_created")) {
     return;
   }
 
@@ -831,7 +833,7 @@ void LuaContext::item_on_pickable_created(EquipmentItem& item,
 void LuaContext::item_on_pickable_movement_changed(EquipmentItem& item,
     Pickable& pickable, Movement& movement) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_pickable_movement_changed")) {
     return;
   }
 
@@ -850,7 +852,7 @@ void LuaContext::item_on_pickable_movement_changed(EquipmentItem& item,
  */
 void LuaContext::item_on_obtaining(EquipmentItem& item, const Treasure& treasure) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_obtaining")) {
     return;
   }
 
@@ -869,7 +871,7 @@ void LuaContext::item_on_obtaining(EquipmentItem& item, const Treasure& treasure
  */
 void LuaContext::item_on_obtained(EquipmentItem& item, const Treasure& treasure) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_obtained")) {
     return;
   }
 
@@ -888,7 +890,7 @@ void LuaContext::item_on_obtained(EquipmentItem& item, const Treasure& treasure)
  */
 void LuaContext::item_on_variant_changed(EquipmentItem& item, int variant) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_variant_changed")) {
     return;
   }
 
@@ -907,7 +909,7 @@ void LuaContext::item_on_variant_changed(EquipmentItem& item, int variant) {
  */
 void LuaContext::item_on_amount_changed(EquipmentItem& item, int amount) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_amount_changed")) {
     return;
   }
 
@@ -925,7 +927,7 @@ void LuaContext::item_on_amount_changed(EquipmentItem& item, int amount) {
  */
 void LuaContext::item_on_using(EquipmentItem& item) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_using")) {
     return;
   }
 
@@ -944,7 +946,7 @@ void LuaContext::item_on_using(EquipmentItem& item) {
  */
 void LuaContext::item_on_ability_used(EquipmentItem& item, const std::string& ability_name) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_ability_used")) {
     return;
   }
 
@@ -963,7 +965,7 @@ void LuaContext::item_on_ability_used(EquipmentItem& item, const std::string& ab
  */
 void LuaContext::item_on_npc_interaction(EquipmentItem& item, NPC& npc) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_npc_interaction")) {
     return;
   }
 
@@ -985,7 +987,7 @@ void LuaContext::item_on_npc_interaction(EquipmentItem& item, NPC& npc) {
 bool LuaContext::item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
     EquipmentItem& item_used) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_npc_interaction_item")) {
     return false;
   }
 
@@ -1005,7 +1007,7 @@ bool LuaContext::item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
  */
 void LuaContext::item_on_npc_collision_fire(EquipmentItem& item, NPC& npc) {
 
-  if (!item.is_with_lua_table()) {
+  if (!userdata_has_field(item, "on_npc_collision_fire")) {
     return;
   }
 

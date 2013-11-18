@@ -1701,7 +1701,7 @@ int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
  */
 void LuaContext::movement_on_position_changed(Movement& movement) {
 
-  if (!movement.is_with_lua_table()) {
+  if (!movement.is_known_to_lua()) {
     return;
   }
 
@@ -1728,7 +1728,9 @@ void LuaContext::movement_on_position_changed(Movement& movement) {
   }
   lua_pop(l, 2);
                                   // ... movement
-  on_position_changed();
+  if (userdata_has_field(movement, "on_position_changed")) {
+    on_position_changed();
+  }
   lua_pop(l, 1);
 }
 
@@ -1741,7 +1743,7 @@ void LuaContext::movement_on_position_changed(Movement& movement) {
  */
 void LuaContext::movement_on_obstacle_reached(Movement& movement) {
 
-  if (!movement.is_with_lua_table()) {
+  if (!userdata_has_field(movement, "on_obstacle_reached")) {
     return;
   }
 
@@ -1759,7 +1761,7 @@ void LuaContext::movement_on_obstacle_reached(Movement& movement) {
  */
 void LuaContext::movement_on_changed(Movement& movement) {
 
-  if (!movement.is_with_lua_table()) {
+  if (!userdata_has_field(movement, "on_changed")) {
     return;
   }
 
@@ -1777,7 +1779,7 @@ void LuaContext::movement_on_changed(Movement& movement) {
  */
 void LuaContext::movement_on_finished(Movement& movement) {
 
-  if (!movement.is_with_lua_table()) {
+  if (!userdata_has_field(movement, "on_finished")) {
     return;
   }
 

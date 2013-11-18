@@ -7,6 +7,7 @@ Engine changes
 --------------
 
 * Upgrade to SDL 2 (#262). Thanks Vlag.
+* Use LuaJIT instead of vanilla Lua for better performance.
 * New map entity type: custom entities, fully scripted (#323).
 * Rewrite the main loop with a constant timestep (#351).
 * Show a dialog box in case of fatal error.

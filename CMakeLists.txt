@@ -16,7 +16,7 @@ find_package(OpenAL REQUIRED)
 find_package(VorbisFile REQUIRED)
 find_package(Ogg REQUIRED)
 find_package(ModPlug REQUIRED)
-find_package(Lua51 REQUIRED)
+find_package(LuaJit REQUIRED)
 find_package(PhysFS REQUIRED)
 
 # Explicit link to libdl is needed for Lua on some systems.

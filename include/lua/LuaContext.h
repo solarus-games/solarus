@@ -846,6 +846,7 @@ class LuaContext {
 
     // Executing Lua code.
     bool userdata_has_field(ExportableToLua& userdata, const char* key) const;
+    bool userdata_has_field(ExportableToLua& userdata, const std::string& key) const;
     bool find_method(int index, const char* function_name);
     bool find_method(const char* function_name);
     bool call_function(

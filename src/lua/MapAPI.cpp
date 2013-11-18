@@ -1966,7 +1966,7 @@ int LuaContext::map_api_create_fire(lua_State* l) {
  */
 void LuaContext::map_on_started(Map& map, Destination* destination) {
 
-  if (!map.is_with_lua_table()) {
+  if (!userdata_has_field(map, "on_started")) {
     return;
   }
 
@@ -1989,7 +1989,7 @@ void LuaContext::map_on_finished(Map& map) {
   }
 
   push_map(l, map);
-  if (map.is_with_lua_table()) {
+  if (userdata_has_field(map, "on_finished")) {
     on_finished();
   }
   remove_timers(-1);  // Stop timers and menus associated to this map.
@@ -2011,7 +2011,7 @@ void LuaContext::map_on_update(Map& map) {
   }
 
   push_map(l, map);
-  if (map.is_with_lua_table()) {
+  if (userdata_has_field(map, "on_update")) {
     on_update();
   }
   menus_on_update(-1);
@@ -2032,7 +2032,7 @@ void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
     return;
   }
   push_map(l, map);
-  if (map.is_with_lua_table()) {
+  if (userdata_has_field(map, "on_draw")) {
     on_draw(dst_surface);
   }
   menus_on_draw(-1, dst_surface);
@@ -2086,7 +2086,7 @@ bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command)
 
   bool handled = false;
   push_map(l, map);
-  if (map.is_with_lua_table()) {
+  if (userdata_has_field(map, "on_command_pressed")) {
     handled = on_command_pressed(command);
   }
   if (!handled) {
@@ -2114,7 +2114,7 @@ bool LuaContext::map_on_command_released(Map& map, GameCommands::Command command
 
   bool handled = false;
   push_map(l, map);
-  if (map.is_with_lua_table()) {
+  if (userdata_has_field(map, "on_command_released")) {
     handled = on_command_released(command);
   }
   if (!handled) {
@@ -2134,7 +2134,7 @@ bool LuaContext::map_on_command_released(Map& map, GameCommands::Command command
  */
 void LuaContext::map_on_suspended(Map& map, bool suspended) {
 
-  if (!map.is_with_lua_table()) {
+  if (!userdata_has_field(map, "on_suspended")) {
     return;
   }
 
@@ -2154,7 +2154,7 @@ void LuaContext::map_on_suspended(Map& map, bool suspended) {
 void LuaContext::map_on_opening_transition_finished(Map& map,
     Destination* destination) {
 
-  if (!map.is_with_lua_table()) {
+  if (!userdata_has_field(map, "on_opening_transition_finished")) {
     return;
   }
 
@@ -2172,7 +2172,7 @@ void LuaContext::map_on_opening_transition_finished(Map& map,
  */
 void LuaContext::map_on_camera_back(Map& map) {
 
-  if (!map.is_with_lua_table()) {
+  if (!userdata_has_field(map, "on_camera_back")) {
     return;
   }
 
@@ -2191,7 +2191,7 @@ void LuaContext::map_on_camera_back(Map& map) {
  */
 void LuaContext::map_on_obtaining_treasure(Map& map, const Treasure& treasure) {
 
-  if (!map.is_with_lua_table()) {
+  if (!userdata_has_field(map, "on_obtaining_treasure")) {
     return;
   }
 
@@ -2210,7 +2210,7 @@ void LuaContext::map_on_obtaining_treasure(Map& map, const Treasure& treasure) {
  */
 void LuaContext::map_on_obtained_treasure(Map& map, const Treasure& treasure) {
 
-  if (!map.is_with_lua_table()) {
+  if (!userdata_has_field(map, "on_obtained_treasure")) {
     return;
   }
 

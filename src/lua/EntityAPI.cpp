@@ -2614,7 +2614,7 @@ void LuaContext::entity_on_removed(MapEntity& entity) {
   }
 
   push_entity(l, entity);
-  if (entity.is_with_lua_table()) {
+  if (userdata_has_field(entity, "on_removed")) {
     on_removed();
   }
   remove_timers(-1);  // Stop timers associated to this entity.
@@ -2633,7 +2633,7 @@ void LuaContext::entity_on_removed(MapEntity& entity) {
 void LuaContext::entity_on_position_changed(
     MapEntity& entity, const Rectangle& xy, Layer layer) {
 
-  if (!entity.is_with_lua_table()) {
+  if (!userdata_has_field(entity, "on_position_changed")) {
     return;
   }
 
@@ -2653,7 +2653,7 @@ void LuaContext::entity_on_position_changed(
 void LuaContext::entity_on_obstacle_reached(
     MapEntity& entity, Movement& movement) {
 
-  if (!entity.is_with_lua_table()) {
+  if (!userdata_has_field(entity, "on_obstacle_reached")) {
     return;
   }
 
@@ -2673,7 +2673,7 @@ void LuaContext::entity_on_obstacle_reached(
 void LuaContext::entity_on_movement_changed(
     MapEntity& entity, Movement& movement) {
 
-  if (!entity.is_with_lua_table()) {
+  if (!userdata_has_field(entity, "on_movement_changed")) {
     return;
   }
 
@@ -2691,7 +2691,7 @@ void LuaContext::entity_on_movement_changed(
  */
 void LuaContext::entity_on_movement_finished(MapEntity& entity) {
 
-  if (!entity.is_with_lua_table()) {
+  if (!userdata_has_field(entity, "on_movement_finished")) {
     return;
   }
 
@@ -2711,7 +2711,7 @@ void LuaContext::entity_on_movement_finished(MapEntity& entity) {
 void LuaContext::hero_on_state_changed(
     Hero& hero, const std::string& state_name) {
 
-  if (!hero.is_with_lua_table()) {
+  if (!userdata_has_field(hero, "on_state_changed")) {
     return;
   }
 
@@ -2729,7 +2729,7 @@ void LuaContext::hero_on_state_changed(
  */
 void LuaContext::npc_on_interaction(NPC& npc) {
 
-  if (!npc.is_with_lua_table()) {
+  if (!userdata_has_field(npc, "on_interaction")) {
     return;
   }
 
@@ -2749,7 +2749,7 @@ void LuaContext::npc_on_interaction(NPC& npc) {
  */
 bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
 
-  if (!npc.is_with_lua_table()) {
+  if (!userdata_has_field(npc, "on_interaction_item")) {
     return false;
   }
 
@@ -2768,7 +2768,7 @@ bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
  */
 void LuaContext::npc_on_collision_fire(NPC& npc) {
 
-  if (!npc.is_with_lua_table()) {
+  if (!userdata_has_field(npc, "on_collision_fire")) {
     return;
   }
 
@@ -2786,7 +2786,7 @@ void LuaContext::npc_on_collision_fire(NPC& npc) {
  */
 void LuaContext::block_on_moving(Block& block) {
 
-  if (!block.is_with_lua_table()) {
+  if (!userdata_has_field(block, "on_moving")) {
     return;
   }
 
@@ -2804,7 +2804,7 @@ void LuaContext::block_on_moving(Block& block) {
  */
 void LuaContext::block_on_moved(Block& block) {
 
-  if (!block.is_with_lua_table()) {
+  if (!userdata_has_field(block, "on_moved")) {
     return;
   }
 
@@ -2823,7 +2823,7 @@ void LuaContext::block_on_moved(Block& block) {
  */
 bool LuaContext::chest_on_empty(Chest& chest) {
 
-  if (!chest.is_with_lua_table()) {
+  if (!userdata_has_field(chest, "on_empty")) {
     return false;
   }
 
@@ -2842,7 +2842,7 @@ bool LuaContext::chest_on_empty(Chest& chest) {
  */
 void LuaContext::switch_on_activated(Switch& sw) {
 
-  if (!sw.is_with_lua_table()) {
+  if (!userdata_has_field(sw, "on_activated")) {
     return;
   }
 
@@ -2860,7 +2860,7 @@ void LuaContext::switch_on_activated(Switch& sw) {
  */
 void LuaContext::switch_on_inactivated(Switch& sw) {
 
-  if (!sw.is_with_lua_table()) {
+  if (!userdata_has_field(sw, "on_inactivated")) {
     return;
   }
 
@@ -2878,7 +2878,7 @@ void LuaContext::switch_on_inactivated(Switch& sw) {
  */
 void LuaContext::switch_on_left(Switch& sw) {
 
-  if (!sw.is_with_lua_table()) {
+  if (!userdata_has_field(sw, "on_left")) {
     return;
   }
 
@@ -2896,7 +2896,7 @@ void LuaContext::switch_on_left(Switch& sw) {
  */
 void LuaContext::sensor_on_activated(Sensor& sensor) {
 
-  if (!sensor.is_with_lua_table()) {
+  if (!userdata_has_field(sensor, "on_activated")) {
     return;
   }
 
@@ -2914,7 +2914,7 @@ void LuaContext::sensor_on_activated(Sensor& sensor) {
  */
 void LuaContext::sensor_on_activated_repeat(Sensor& sensor) {
 
-  if (!sensor.is_with_lua_table()) {
+  if (!userdata_has_field(sensor, "on_activated_repeat")) {
     return;
   }
 
@@ -2929,7 +2929,7 @@ void LuaContext::sensor_on_activated_repeat(Sensor& sensor) {
  */
 void LuaContext::sensor_on_left(Sensor& sensor) {
 
-  if (!sensor.is_with_lua_table()) {
+  if (!userdata_has_field(sensor, "on_left")) {
     return;
   }
 
@@ -2947,7 +2947,7 @@ void LuaContext::sensor_on_left(Sensor& sensor) {
  */
 void LuaContext::sensor_on_collision_explosion(Sensor& sensor) {
 
-  if (!sensor.is_with_lua_table()) {
+  if (!userdata_has_field(sensor, "on_collision_explosion")) {
     return;
   }
 
@@ -2966,7 +2966,7 @@ void LuaContext::sensor_on_collision_explosion(Sensor& sensor) {
  */
 void LuaContext::separator_on_activating(Separator& separator, int direction4) {
 
-  if (!separator.is_with_lua_table()) {
+  if (!userdata_has_field(separator, "on_activating")) {
     return;
   }
 
@@ -2985,7 +2985,7 @@ void LuaContext::separator_on_activating(Separator& separator, int direction4) {
  */
 void LuaContext::separator_on_activated(Separator& separator, int direction4) {
 
-  if (!separator.is_with_lua_table()) {
+  if (!userdata_has_field(separator, "on_activated")) {
     return;
   }
 
@@ -3003,7 +3003,7 @@ void LuaContext::separator_on_activated(Separator& separator, int direction4) {
  */
 void LuaContext::door_on_opened(Door& door) {
 
-  if (!door.is_with_lua_table()) {
+  if (!userdata_has_field(door, "on_opened")) {
     return;
   }
 
@@ -3021,7 +3021,7 @@ void LuaContext::door_on_opened(Door& door) {
  */
 void LuaContext::door_on_closed(Door& door) {
 
-  if (!door.is_with_lua_table()) {
+  if (!userdata_has_field(door, "on_closed")) {
     return;
   }
 
@@ -3040,7 +3040,7 @@ void LuaContext::door_on_closed(Door& door) {
  */
 bool LuaContext::shop_treasure_on_buying(ShopTreasure& shop_treasure) {
 
-  if (!shop_treasure.is_with_lua_table()) {
+  if (!userdata_has_field(shop_treasure, "on_buying")) {
     return true;
   }
 
@@ -3059,7 +3059,7 @@ bool LuaContext::shop_treasure_on_buying(ShopTreasure& shop_treasure) {
  */
 void LuaContext::shop_treasure_on_bought(ShopTreasure& shop_treasure) {
 
-  if (!shop_treasure.is_with_lua_table()) {
+  if (!userdata_has_field(shop_treasure, "on_bought")) {
     return;
   }
 
@@ -3077,7 +3077,7 @@ void LuaContext::shop_treasure_on_bought(ShopTreasure& shop_treasure) {
  */
 void LuaContext::enemy_on_update(Enemy& enemy) {
 
-  if (!enemy.is_with_lua_table()) {
+  if (!userdata_has_field(enemy, "on_update")) {
     return;
   }
 
@@ -3096,7 +3096,7 @@ void LuaContext::enemy_on_update(Enemy& enemy) {
  */
 void LuaContext::enemy_on_suspended(Enemy& enemy, bool suspended) {
 
-  if (!enemy.is_with_lua_table()) {
+  if (!userdata_has_field(enemy, "on_suspended")) {
     return;
   }
 
@@ -3114,7 +3114,7 @@ void LuaContext::enemy_on_suspended(Enemy& enemy, bool suspended) {
  */
 void LuaContext::enemy_on_created(Enemy& enemy) {
 
-  if (!enemy.is_with_lua_table()) {
+  if (!userdata_has_field(enemy, "on_created")) {
     return;
   }
 
@@ -3132,7 +3132,7 @@ void LuaContext::enemy_on_created(Enemy& enemy) {
  */
 void LuaContext::enemy_on_enabled(Enemy& enemy) {
 
-  if (!enemy.is_with_lua_table()) {
+  if (!userdata_has_field(enemy, "on_enabled")) {
     return;
   }
 
@@ -3150,7 +3150,7 @@ void LuaContext::enemy_on_enabled(Enemy& enemy) {
  */
 void LuaContext::enemy_on_disabled(Enemy& enemy) {
 
-  if (!enemy.is_with_lua_table()) {
+  if (!userdata_has_field(enemy, "on_disabled")) {
     return;
   }
 
@@ -3174,7 +3174,7 @@ void LuaContext::enemy_on_restarted(Enemy& enemy) {
 
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
-  if (enemy.is_with_lua_table()) {
+  if (userdata_has_field(enemy, "on_restarted")) {
     on_restarted();
   }
   lua_pop(l, 1);
@@ -3189,7 +3189,7 @@ void LuaContext::enemy_on_restarted(Enemy& enemy) {
  */
 void LuaContext::enemy_on_pre_draw(Enemy& enemy) {
 
-  if (!enemy.is_with_lua_table()) {
+  if (!userdata_has_field(enemy, "on_pre_draw")) {
     return;
   }
 
@@ -3207,7 +3207,7 @@ void LuaContext::enemy_on_pre_draw(Enemy& enemy) {
  */
 void LuaContext::enemy_on_post_draw(Enemy& enemy) {
 
-  if (!enemy.is_with_lua_table()) {
+  if (!userdata_has_field(enemy, "on_post_draw")) {
     return;
   }
 
@@ -3229,7 +3229,7 @@ void LuaContext::enemy_on_post_draw(Enemy& enemy) {
 void LuaContext::enemy_on_collision_enemy(Enemy& enemy,
     Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite) {
 
-  if (!enemy.is_with_lua_table()) {
+  if (!userdata_has_field(enemy, "on_collision_enemy")) {
     return;
   }
 
@@ -3250,7 +3250,7 @@ void LuaContext::enemy_on_collision_enemy(Enemy& enemy,
 void LuaContext::enemy_on_custom_attack_received(Enemy& enemy,
     EnemyAttack attack, Sprite* sprite) {
 
-  if (!enemy.is_with_lua_table()) {
+  if (!userdata_has_field(enemy, "on_custom_attack_received")) {
     return;
   }
 
@@ -3276,7 +3276,7 @@ void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) 
 
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
-  if (enemy.is_with_lua_table()) {
+  if (userdata_has_field(enemy, "on_hurt")) {
     on_hurt(attack, life_lost);
   }
   lua_pop(l, 1);
@@ -3297,7 +3297,7 @@ void LuaContext::enemy_on_dying(Enemy& enemy) {
 
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
-  if (enemy.is_with_lua_table()) {
+  if (userdata_has_field(enemy, "on_dying")) {
     on_dying();
   }
   lua_pop(l, 1);
@@ -3312,7 +3312,7 @@ void LuaContext::enemy_on_dying(Enemy& enemy) {
  */
 void LuaContext::enemy_on_dead(Enemy& enemy) {
 
-  if (!enemy.is_with_lua_table()) {
+  if (!userdata_has_field(enemy, "on_dead")) {
     return;
   }
 
@@ -3336,7 +3336,7 @@ void LuaContext::enemy_on_immobilized(Enemy& enemy) {
 
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
-  if (enemy.is_with_lua_table()) {
+  if (userdata_has_field(enemy, "on_immobilized")) {
     on_immobilized();
   }
   lua_pop(l, 1);

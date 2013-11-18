@@ -2011,7 +2011,10 @@ void LuaContext::map_on_update(Map& map) {
   }
 
   push_map(l, map);
-  if (userdata_has_field(map, "on_update")) {
+  // This particular method is tried so often that we want to save optimize
+  // the std::string construction.
+  static const std::string method_name = "on_update";
+  if (userdata_has_field(map, method_name)) {
     on_update();
   }
   menus_on_update(-1);

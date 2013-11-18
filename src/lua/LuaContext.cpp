@@ -716,10 +716,14 @@ void LuaContext::do_callback(int callback_ref) {
 void LuaContext::push_callback(int callback_ref) {
 
   push_ref(l, callback_ref);
-  Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
-      << "There is no callback with ref " << callback_ref
-      << " (function expected, got " << luaL_typename(l, -1)
-      << "). Did you already invoke or cancel it?");
+#ifndef NDEBUG
+  if (!lua_isfunction(l, -1)) {
+    Debug::die(StringConcat()
+        << "There is no callback with ref " << callback_ref
+        << " (function expected, got " << luaL_typename(l, -1)
+        << "). Did you already invoke or cancel it?"
+    );
+#endif
 }
 
 /**
@@ -743,7 +747,8 @@ void LuaContext::cancel_callback(int callback_ref) {
       Debug::die(StringConcat()
           << "There is no callback with ref " << callback_ref
           << " (function expected, got " << luaL_typename(l, -1)
-          << "). Did you already invoke or cancel it?");
+          << "). Did you already invoke or cancel it?"
+      );
       lua_pop(l, 1);
     }
 #endif
@@ -758,12 +763,44 @@ void LuaContext::cancel_callback(int callback_ref) {
  * Userdata can have entries like tables thanks to special __index and
  * __newindex metamethods.
  *
+ * Version with const char*, better for performance if you don't have an
+ * std::string representation of the key.
+ *
  * \param userdata A userdata.
  * \param key String key to test.
  * \return \c true if this key exists on the userdata.
  */
 bool LuaContext::userdata_has_field(ExportableToLua& userdata,
     const char* key) const {
+
+  if (!userdata.is_with_lua_table()) {
+    return false;
+  }
+
+  const std::map<ExportableToLua*, std::set<std::string> >::const_iterator it =
+      userdata_fields.find(&userdata);
+  if (it == userdata_fields.end()) {
+    return false;
+  }
+
+  return it->second.find(key) != it->second.end();
+}
+
+/**
+ * \brief Returns whether a userdata has an entry with the specified key.
+ *
+ * Userdata can have entries like tables thanks to special __index and
+ * __newindex metamethods.
+ *
+ * Version with std::string, better for performance if you already have an
+ * std::string representation of the key.
+ *
+ * \param userdata A userdata.
+ * \param key String key to test.
+ * \return \c true if this key exists on the userdata.
+ */
+bool LuaContext::userdata_has_field(ExportableToLua& userdata,
+    const std::string& key) const {
 
   if (!userdata.is_with_lua_table()) {
     return false;

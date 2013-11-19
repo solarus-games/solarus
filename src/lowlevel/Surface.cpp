@@ -307,10 +307,17 @@ void Surface::set_software_destination(bool software_destination) {
           width,
           height,
           32,
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+          format->Rmask,
+          format->Gmask,
+          format->Bmask,
+          format->Amask
+#else
           SDL_Swap32(format->Rmask),
           SDL_Swap32(format->Gmask),
           SDL_Swap32(format->Bmask),
           SDL_Swap32(format->Amask)
+#endif
       );
     }
   }

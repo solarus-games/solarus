@@ -307,10 +307,10 @@ void Surface::set_software_destination(bool software_destination) {
           width,
           height,
           32,
-          SDL_Swap32(format->Rmask),
-          SDL_Swap32(format->Gmask),
-          SDL_Swap32(format->Bmask),
-          SDL_Swap32(format->Amask)
+          SDL_SwapBE32(format->Rmask),
+          SDL_SwapBE32(format->Gmask),
+          SDL_SwapBE32(format->Bmask),
+          SDL_SwapBE32(format->Amask)
       );
     }
   }

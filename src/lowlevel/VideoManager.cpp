@@ -94,7 +94,7 @@ void VideoManager::initialize(int argc, char **argv) {
     }
   }
   
-  SDL_GetCurrentDisplayMode(0, &display_mode); // Get the display mode of the first screen.
+  SDL_GetDesktopDisplayMode(0, &display_mode); // Get the desktop mode of the first screen.
   pixel_format = SDL_AllocFormat(display_mode.format);
   
   instance = new VideoManager(disable, wanted_quest_size);

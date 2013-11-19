@@ -15,7 +15,7 @@ It can also be created dynamically with
 
 Enemies can exist in various breeds.
 Each breed corresponds to a model of enemy with
-its the behavior, its
+its behavior, its
 \ref lua_api_sprite "sprites" and its
 \ref lua_api_movement "movements".
 

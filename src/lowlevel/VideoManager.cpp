@@ -42,7 +42,7 @@ Scale2xFilter scale2x_filter;
 Hq4xFilter hq4x_filter;
 };
 
-SDL_PixelFormat* VideoManager::pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
+SDL_PixelFormat* VideoManager::pixel_format = NULL;
 
 /**
  * \brief Lua name of each value of the VideoMode enum.
@@ -69,7 +69,9 @@ const std::string VideoManager::video_mode_names[] = {
  */
 void VideoManager::initialize(int argc, char **argv) {
   // TODO pass options as an std::set<string> instead.
-
+  
+  SDL_DisplayMode display_mode;
+  
   // check the -no-video and the -quest-size options.
   bool disable = false;
   std::string quest_size_string;
@@ -91,6 +93,9 @@ void VideoManager::initialize(int argc, char **argv) {
       Debug::error(std::string("Invalid quest size: '") + quest_size_string + "'");
     }
   }
+  
+  SDL_GetCurrentDisplayMode(0, &display_mode); // Get the display mode of the first screen.
+  pixel_format = SDL_AllocFormat(display_mode.format);
   
   instance = new VideoManager(disable, wanted_quest_size);
 }

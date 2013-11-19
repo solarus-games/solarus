@@ -3077,7 +3077,10 @@ void LuaContext::shop_treasure_on_bought(ShopTreasure& shop_treasure) {
  */
 void LuaContext::enemy_on_update(Enemy& enemy) {
 
-  if (!userdata_has_field(enemy, "on_update")) {
+  // This particular method is tried so often that we want to save optimize
+  // the std::string construction.
+  static const std::string method_name = "on_update";
+  if (!userdata_has_field(enemy, method_name)) {
     return;
   }
 

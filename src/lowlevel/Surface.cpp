@@ -301,22 +301,16 @@ void Surface::set_software_destination(bool software_destination) {
 
     if (internal_surface == NULL) {
       // Create a surface with ARGB format.
+      SDL_PixelFormat* format = VideoManager::get_pixel_format();
       internal_surface = SDL_CreateRGBSurface(
           0,
           width,
           height,
           32,
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-          0x00ff0000,
-          0x0000ff00,
-          0x000000ff,
-          0xff000000
-#else
-          0x0000ff00,
-          0x00ff0000,
-          0xff000000,
-          0x000000ff
-#endif
+          SDL_Swap32(format->Rmask),
+          SDL_Swap32(format->Gmask),
+          SDL_Swap32(format->Bmask),
+          SDL_Swap32(format->Amask)
       );
     }
   }
@@ -487,7 +481,6 @@ void Surface::render(
     }
     // Else if the software surface has changed, update the hardware texture.
     else if (software_destination && !is_rendered) {
-      // TODO do this only when the software surface has changed.
       SDL_UpdateTexture(
           internal_texture,
           NULL,

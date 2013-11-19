@@ -736,7 +736,10 @@ void LuaContext::item_on_finished(EquipmentItem& item) {
  */
 void LuaContext::item_on_update(EquipmentItem& item) {
 
-  if (!userdata_has_field(item, "on_update")) {
+  // This particular method is tried so often that we want to save optimize
+  // the std::string construction.
+  static const std::string method_name = "on_update";
+  if (!userdata_has_field(item, method_name)) {
     return;
   }
 

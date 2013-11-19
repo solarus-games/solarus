@@ -1728,19 +1728,25 @@ bool MapEntity::is_sword_ignored() const {
  */
 bool MapEntity::overlaps_camera() const {
 
-  if (bounding_box.overlaps(get_map().get_camera_position())) {
+  const Rectangle& camera_position = get_map().get_camera_position();
+  if (bounding_box.overlaps(camera_position)) {
     return true;
   }
 
   bool found = false;
   std::vector<Sprite*>::const_iterator it;
-  for (it = sprites.begin(); it != sprites.end() && !found; it++) {
-    const Sprite* sprite = *it;
-    const Rectangle& sprite_origin = sprite->get_origin();
-    Rectangle sprite_bounding_box = sprite->get_size();
-    sprite_bounding_box.set_xy(get_xy());
-    sprite_bounding_box.add_xy(-sprite_origin.get_x(), -sprite_origin.get_y());
-    found = sprite_bounding_box.overlaps(get_map().get_camera_position());
+  const std::vector<Sprite*>::const_iterator end = sprites.end();
+  for (it = sprites.begin(); it != end && !found; ++it) {
+    const Sprite& sprite = *(*it);
+    const Rectangle& sprite_size = sprite.get_size();
+    const Rectangle& sprite_origin = sprite.get_origin();
+    const Rectangle sprite_bounding_box(
+        get_x() - sprite_origin.get_x(),
+        get_y() - sprite_origin.get_y(),
+        sprite_size.get_width(),
+        sprite_size.get_height()
+    );
+    found = sprite_bounding_box.overlaps(camera_position);
   }
   return found;
 }

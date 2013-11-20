@@ -367,6 +367,9 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     SDL_SetWindowSize(main_window, window_size.get_width(), window_size.get_height());
     SDL_RenderSetLogicalSize(main_renderer, render_size.get_width(), render_size.get_height());
     SDL_ShowCursor(show_cursor);
+    if(!fullscreen_flag) {
+      SDL_SetWindowPosition(main_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+    }
   }
   this->video_mode = mode;
 

@@ -188,8 +188,7 @@ void VideoManager::create_window() {
     Debug::die(std::string("Cannot create the window: ") + SDL_GetError());
   }
   
-  main_renderer = SDL_CreateRenderer(main_window, -1,
-      SDL_RENDERER_ACCELERATED);
+  main_renderer = SDL_CreateRenderer(main_window, -1, 0);
   if (main_renderer == NULL) {
     Debug::die(std::string("Cannot create the renderer: ") + SDL_GetError());
   }

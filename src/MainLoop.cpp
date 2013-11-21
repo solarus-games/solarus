@@ -60,8 +60,7 @@ MainLoop::MainLoop(int argc, char** argv):
   lua_context = new LuaContext(*this);
   lua_context->initialize();
     
-  // Create the window now that we know the final outset size.
-  // If there were surfaces created before this, they are stored in RAM until the next render().
+  // Create the window now that we know the actual outset size, to avoid blinking.
   VideoManager::get_instance()->create_window();
 }
 

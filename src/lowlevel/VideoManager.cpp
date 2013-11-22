@@ -69,9 +69,9 @@ const std::string VideoManager::video_mode_names[] = {
  */
 void VideoManager::initialize(int argc, char **argv) {
   // TODO pass options as an std::set<string> instead.
-  
+
   SDL_DisplayMode display_mode;
-  
+
   // check the -no-video and the -quest-size options.
   bool disable = false;
   std::string quest_size_string;
@@ -95,7 +95,7 @@ void VideoManager::initialize(int argc, char **argv) {
   }
   
   pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
-  
+
   instance = new VideoManager(disable, wanted_quest_size);
 }
 

@@ -44,15 +44,13 @@ MainLoop::MainLoop(int argc, char** argv):
 
   // Initialize low-level features (audio, video, files...).
   System::initialize(argc, argv);
-    
+
   // Read the quest general properties.
   QuestProperties quest_properties(*this);
   quest_properties.load();
 
   // Read the quest resource list from data.
   QuestResourceList::initialize();
-    
-  VideoManager::get_instance()->create_window();
     
   // Load the lua quest stuff now that the window is created.
   root_surface = Surface::create(

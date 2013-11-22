@@ -94,8 +94,7 @@ void VideoManager::initialize(int argc, char **argv) {
     }
   }
   
-  SDL_GetDesktopDisplayMode(0, &display_mode); // Get the desktop mode of the first screen.
-  pixel_format = SDL_AllocFormat(display_mode.format);
+  pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
   
   instance = new VideoManager(disable, wanted_quest_size);
 }
@@ -188,8 +187,7 @@ void VideoManager::create_window() {
     Debug::die(std::string("Cannot create the window: ") + SDL_GetError());
   }
   
-  main_renderer = SDL_CreateRenderer(main_window, -1,
-      SDL_RENDERER_ACCELERATED);
+  main_renderer = SDL_CreateRenderer(main_window, -1, 0);
   if (main_renderer == NULL) {
     Debug::die(std::string("Cannot create the renderer: ") + SDL_GetError());
   }
@@ -368,6 +366,9 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     SDL_SetWindowSize(main_window, window_size.get_width(), window_size.get_height());
     SDL_RenderSetLogicalSize(main_renderer, render_size.get_width(), render_size.get_height());
     SDL_ShowCursor(show_cursor);
+    if(!fullscreen_flag) {
+      SDL_SetWindowPosition(main_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+    }
   }
   this->video_mode = mode;
 

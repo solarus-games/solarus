@@ -140,7 +140,6 @@ VideoManager::VideoManager(
   main_renderer(NULL),
   pixel_filter(NULL),
   scaled_surface(NULL),
-  outset_title(std::string("Solarus ") + SOLARUS_VERSION),
   video_mode(NO_MODE),
   wanted_quest_size(wanted_quest_size) {
     
@@ -172,15 +171,13 @@ VideoManager::~VideoManager() {
  */
 void VideoManager::create_window() {
   
-  // Initialize the window.
-  const Rectangle& window_size = mode_sizes[video_mode];
   main_window = SDL_CreateWindow(
-      outset_title.c_str(),
+      (std::string("Solarus ") + SOLARUS_VERSION).c_str(),
       SDL_WINDOWPOS_CENTERED,
       SDL_WINDOWPOS_CENTERED,
-      window_size.get_width(),
-      window_size.get_height(),
-      SDL_WINDOW_SHOWN);
+      wanted_quest_size.get_width(),
+      wanted_quest_size.get_height(),
+      SDL_WINDOW_HIDDEN);
   if (main_window == NULL) {
     Debug::die(std::string("Cannot create the window: ") + SDL_GetError());
   }
@@ -189,10 +186,16 @@ void VideoManager::create_window() {
   if (main_renderer == NULL) {
     Debug::die(std::string("Cannot create the renderer: ") + SDL_GetError());
   }
+  
   SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.
   pixel_format = SDL_AllocFormat(SDL_GetWindowPixelFormat(main_window));
+}
 
-  set_video_mode(video_mode);
+/**
+ * \brief Show the window.
+ */
+void VideoManager::show_window() {
+  SDL_ShowWindow(main_window);
 }
 
 /**
@@ -296,12 +299,15 @@ void VideoManager::switch_video_mode() {
  */
 void VideoManager::set_default_video_mode() {
 
+  VideoMode mode;
   if (forced_mode != NO_MODE) {
-    video_mode = forced_mode;
+    mode = forced_mode;
   }
   else {
-    video_mode = WINDOWED_STRETCHED;
+    mode = WINDOWED_STRETCHED;
   }
+  
+  set_video_mode(mode);
 }
 
 /**
@@ -313,12 +319,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
 
   if (!is_mode_supported(mode)) {
     return false;
-  }
-  
-  if (main_window == NULL) {
-    // If the window isn't created yet, just store the video mode.
-    this->video_mode = mode;
-    return true;
   }
 
   int show_cursor;
@@ -482,11 +482,7 @@ void VideoManager::apply_pixel_filter(
  */
 const std::string VideoManager::get_window_title() const {
 
-  if (main_window != NULL) {
-    return SDL_GetWindowTitle(main_window);
-  }
-  
-  return outset_title;
+  return SDL_GetWindowTitle(main_window);
 }
 
 /**
@@ -495,13 +491,7 @@ const std::string VideoManager::get_window_title() const {
  */
 void VideoManager::set_window_title(const std::string& window_title) {
 
-  if (main_window != NULL) {
-    SDL_SetWindowTitle(main_window, window_title.c_str());
-  }
-  else {
-    // If the window isn't created yet, just store the title.
-    outset_title = window_title;
-  }
+  SDL_SetWindowTitle(main_window, window_title.c_str());
 }
 
 /**

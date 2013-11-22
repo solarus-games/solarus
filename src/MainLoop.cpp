@@ -59,6 +59,9 @@ MainLoop::MainLoop(int argc, char** argv):
   RefCountable::ref(root_surface);
   lua_context = new LuaContext(*this);
   lua_context->initialize();
+    
+  // Show the window now that we know the actual outset size, to avoid blinking.
+  VideoManager::get_instance()->show_window();
 }
 
 /**

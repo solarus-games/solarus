@@ -51,6 +51,7 @@ class VideoManager {
     static SDL_PixelFormat* get_pixel_format();
     SDL_Renderer* get_renderer();
     void create_window();
+    void show_window();
     VideoMode get_video_mode() const;
     bool set_video_mode(VideoMode mode);
     void switch_video_mode();
@@ -107,7 +108,6 @@ class VideoManager {
                                              * the current video mode. */
     Surface* scaled_surface;                /**< The screen surface used with scaled modes. */
   
-    std::string outset_title;               /**< Title used when creating the window. */
     VideoMode video_mode;                   /**< Current display mode. */
 
     Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */

@@ -178,25 +178,26 @@ void VideoManager::create_window() {
       wanted_quest_size.get_width(),
       wanted_quest_size.get_height(),
       SDL_WINDOW_HIDDEN);
-  if (main_window == NULL) {
-    Debug::die(std::string("Cannot create the window: ") + SDL_GetError());
-  }
+  Debug::check_assertion(main_window != NULL,
+      std::string("Cannot create the window: ") + SDL_GetError());
   
   main_renderer = SDL_CreateRenderer(main_window, -1, 0);
-  if (main_renderer == NULL) {
-    Debug::die(std::string("Cannot create the renderer: ") + SDL_GetError());
-  }
+  Debug::check_assertion(main_renderer != NULL,
+      std::string("Cannot create the renderer: ") + SDL_GetError());
   SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.
 
   // Get the first renderer format which support alpha channel
   SDL_RendererInfo renderer_info;
   SDL_GetRendererInfo(main_renderer, &renderer_info);
   for(int i = 0; i < renderer_info.num_texture_formats; ++i) {
-    if(SDL_ISPIXELFORMAT_ALPHA(renderer_info.texture_formats[i])) {
+    if(SDL_PIXELTYPE(renderer_info.texture_formats[i]) == SDL_PIXELTYPE_PACKED32
+        && SDL_ISPIXELFORMAT_ALPHA(renderer_info.texture_formats[i])) {
       pixel_format = SDL_AllocFormat(renderer_info.texture_formats[i]);
       break;
     }
   }
+  
+  Debug::check_assertion(pixel_format != NULL, "No compatible pixel format");
 }
 
 /**

@@ -44,13 +44,15 @@ MainLoop::MainLoop(int argc, char** argv):
 
   // Initialize low-level features (audio, video, files...).
   System::initialize(argc, argv);
-
+    
   // Read the quest general properties.
   QuestProperties quest_properties(*this);
   quest_properties.load();
 
   // Read the quest resource list from data.
   QuestResourceList::initialize();
+    
+  VideoManager::get_instance()->create_window();
     
   // Load the lua quest stuff now that the window is created.
   root_surface = Surface::create(
@@ -59,9 +61,6 @@ MainLoop::MainLoop(int argc, char** argv):
   RefCountable::ref(root_surface);
   lua_context = new LuaContext(*this);
   lua_context->initialize();
-    
-  // Create the window now that we know the actual outset size, to avoid blinking.
-  VideoManager::get_instance()->create_window();
 }
 
 /**

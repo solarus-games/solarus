@@ -70,8 +70,6 @@ const std::string VideoManager::video_mode_names[] = {
 void VideoManager::initialize(int argc, char **argv) {
   // TODO pass options as an std::set<string> instead.
   
-  SDL_DisplayMode display_mode;
-  
   // check the -no-video and the -quest-size options.
   bool disable = false;
   std::string quest_size_string;
@@ -93,8 +91,6 @@ void VideoManager::initialize(int argc, char **argv) {
       Debug::error(std::string("Invalid quest size: '") + quest_size_string + "'");
     }
   }
-  
-  pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
   
   instance = new VideoManager(disable, wanted_quest_size);
 }
@@ -147,6 +143,8 @@ VideoManager::VideoManager(
   outset_title(std::string("Solarus ") + SOLARUS_VERSION),
   video_mode(NO_MODE),
   wanted_quest_size(wanted_quest_size) {
+    
+    create_window();
 }
 
 /**
@@ -192,6 +190,7 @@ void VideoManager::create_window() {
     Debug::die(std::string("Cannot create the renderer: ") + SDL_GetError());
   }
   SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.
+  pixel_format = SDL_AllocFormat(SDL_GetWindowPixelFormat(main_window));
 
   set_video_mode(video_mode);
 }
@@ -576,9 +575,6 @@ void VideoManager::set_quest_size_range(
     const Rectangle& normal_quest_size,
     const Rectangle& min_quest_size,
     const Rectangle& max_quest_size) {
-
-  Debug::check_assertion(main_renderer == NULL,
-      "The screen is already created");
 
   Debug::check_assertion(
       normal_quest_size.get_width() >= min_quest_size.get_width()

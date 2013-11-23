@@ -22,6 +22,7 @@
 #include "Equipment.h"
 #include "Treasure.h"
 #include "QuestResourceList.h"
+#include "TransitionFade.h"
 #include "lua/LuaContext.h"
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
@@ -381,6 +382,9 @@ void Game::update_transitions() {
           Transition::OUT,
           current_map->get_visible_surface(),
           this);
+      if(transition_style == Transition::FADE) {
+        static_cast<TransitionFade*>(transition)->set_color(&Color::get_black());
+      }
       transition->start();
     }
   }
@@ -412,6 +416,9 @@ void Game::update_transitions() {
             Transition::IN,
             current_map->get_visible_surface(),
             this);
+        if(transition_style == Transition::FADE) {
+          static_cast<TransitionFade*>(transition)->set_color(&Color::get_black());
+        }
         transition->start();
         next_map = NULL;
       }
@@ -466,7 +473,10 @@ void Game::update_transitions() {
         Transition::IN,
         current_map->get_visible_surface(),
         this);
-
+    if(transition_style == Transition::FADE) {
+      static_cast<TransitionFade*>(transition)->set_color(&Color::get_black());
+    }
+    
     if (previous_map_surface != NULL) {
       // some transition effects need to display both maps simultaneously
       transition->set_previous_surface(previous_map_surface);
@@ -781,6 +791,7 @@ void Game::restart() {
       Transition::OUT,
       current_map->get_visible_surface(),
       this);
+  static_cast<TransitionFade*>(transition)->set_color(&Color::get_black());
   transition->start();
   restarting = true;
 }

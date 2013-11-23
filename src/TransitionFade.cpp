@@ -150,15 +150,18 @@ void TransitionFade::draw(Surface& dst_surface) {
   int alpha_impl = std::min(alpha, 255);
   
   if(transition_color == NULL) {
-    // Set opacity to all subsurfaces.
+    // Directly set the opacity on the surface.
     dst_surface.set_opacity(alpha_impl);
   }
   else {
-    // Add a foreground surface to fade.
-    Color fade_color(0, 0, 0, 255-alpha_impl);
+    // Add a colored foreground surface, and only add the fade effect on it.
+    int r, g, b, a;
+    transition_color->get_components(r, g, b, a);
+    Color fade_color(r, g, b, 255-alpha_impl);
     dst_surface.set_opacity(255);
     dst_surface.fill_with_color(fade_color);
-    this->dst_surface = &dst_surface;
   }
+  
+  this->dst_surface = &dst_surface;
 }
 

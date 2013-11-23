@@ -21,10 +21,13 @@ import java.awt.event.*;
 import java.io.*;
 import java.nio.file.NoSuchFileException;
 import java.util.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
+
 import org.solarus.editor.*;
 import org.solarus.editor.Map;
+import org.solarus.editor.gui.tree.QuestTree;
 
 /**
  * Main window of the editor.

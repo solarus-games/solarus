@@ -16,8 +16,10 @@
  */
 package org.solarus.editor;
 
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Observable;
 
 /**
  * This class lists all elements of a certain resource.
@@ -28,14 +30,17 @@ public class Resource extends Observable {
     /**
      * Id and human-readable name of each element.
      */
-    private LinkedHashMap<String, String> elements;
+    private HashMap<String, String> elements;
 
+    private ArrayList<String> elementsIndexes;
+    
     /**
      * Creates the resource.
      */
     public Resource() {
 
-        this.elements = new LinkedHashMap<String, String>();
+        this.elements = new HashMap<String, String>();
+        this.elementsIndexes = new ArrayList<String>();
     }
 
     /**
@@ -43,7 +48,7 @@ public class Resource extends Observable {
      * @return an iterator over the ids
      */
     public Iterator<String> iterator() {
-        return elements.keySet().iterator();
+        return elementsIndexes.iterator();
     }
 
     /**
@@ -51,15 +56,7 @@ public class Resource extends Observable {
      * @return an array with the id of all elements.
      */
     public String[] getIds() {
-
-        String[] ids = new String[elements.size()];
-        int i = 0;
-
-        for (String id: elements.keySet()) {
-            ids[i++] = id;
-        }
-
-        return ids;
+        return elementsIndexes.toArray(new String[elementsIndexes.size()]);
     }
 
     /**
@@ -103,9 +100,13 @@ public class Resource extends Observable {
 
         String oldName = elements.get(id);
         if (oldName == null || !name.equals(oldName)) {
-
             // the element doesn't exist yet, or its name has just been changed
             elements.put(id, name);
+            // if the element didn't exists, we add it to the keys
+            if (oldName == null) {
+            	elementsIndexes.add(id);
+            }
+            
             setChanged();
             notifyObservers();
         }
@@ -129,6 +130,7 @@ public class Resource extends Observable {
 
         if (elements.get(id) == null) {
             elements.put(id, name);
+            elementsIndexes.add(id);
             setChanged();
             notifyObservers();
         }
@@ -147,6 +149,7 @@ public class Resource extends Observable {
             throw new QuestEditorException(
                     "Element '" + id + "' doesn't exist in the resource.");
         }
+        elementsIndexes.remove(id);
         elements.remove(id);
         setChanged();
         notifyObservers();
@@ -159,36 +162,36 @@ public class Resource extends Observable {
      */
     public void moveElement(String oldId, String newId)
             throws QuestEditorException {
-
-        boolean found = false;
-
-        // We need to recreate the data structure.
-        LinkedHashMap<String, String> newElements = new
-                LinkedHashMap<String, String>();
-        for (Entry<String, String> entry: elements.entrySet()) {
-            if (entry.getKey().equals(oldId)) {
-                // Change the id for this element.
-                newElements.put(newId, entry.getValue());
-                found = true;
-            }
-            else {
-                // Keep the element unchanged.
-                newElements.put(entry.getKey(), entry.getValue());
-            }
+        
+    	String value = elements.get(oldId);
+        if (value == null) {
+	        throw new QuestEditorException(
+	                "Element '" + oldId + "' doesn't exist in the resource.");
         }
+    	elements.remove(oldId);
+    	int index = elementsIndexes.indexOf(oldId);
+    	elementsIndexes.set(index, newId);
+        
+        elements.put(newId, value);
 
-        if (!found) {
-            throw new QuestEditorException(
-                    "Element '" + oldId + "' doesn't exist in the resource.");
-        }
-
-        elements = newElements;
+        setChanged();
+        notifyObservers();
     }
 
+    
+    public void setElementIndex(String id, int newIndex) {
+    	int oldIndex = elementsIndexes.indexOf(id);
+    	if (oldIndex != newIndex) {
+    		elementsIndexes.remove(oldIndex);
+    		elementsIndexes.add(newIndex, id);
+    	}
+    }
+    
     /**
      * Removes all elements from the resource.
      */
     public void clear() {
         elements.clear();
+        elementsIndexes.clear();
     }
 }

@@ -14,20 +14,45 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.solarus.editor.gui;
+package org.solarus.editor.gui.tree;
 
-import imagej.util.swing.tree.*;
-import java.awt.event.*;
+import imagej.util.swing.tree.CheckBoxNodeData;
+import imagej.util.swing.tree.CheckBoxNodeEditor;
+import imagej.util.swing.tree.CheckBoxNodeRenderer;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import java.lang.reflect.*;
-import org.solarus.editor.*;
-import org.solarus.editor.entities.EntityType;
+
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JTree;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+
+import org.solarus.editor.Map;
+import org.solarus.editor.MapViewSettings;
+import org.solarus.editor.Project;
+import org.solarus.editor.ProjectObserver;
+import org.solarus.editor.QuestEditorException;
+import org.solarus.editor.Resource;
+import org.solarus.editor.ResourceElement;
+import org.solarus.editor.ResourceType;
 import org.solarus.editor.entities.EntitySubtype;
+import org.solarus.editor.entities.EntityType;
+import org.solarus.editor.gui.EditorWindow;
+import org.solarus.editor.gui.GuiTools;
+import org.solarus.editor.gui.MapEditorPanel;
 
 /**
  * A tree that shows the whole resource list of the game:
@@ -74,10 +99,13 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
         final CheckBoxNodeEditor editor = new CheckBoxNodeEditor(this);
         setCellEditor(editor);
         setEditable(true);
-
+        setDragEnabled(true);
+        
         addMouseListener(new QuestTreeMouseAdapter());
 
         Project.addProjectObserver(this);
+        
+        setTransferHandler(new QuestTreeTransferHandler());
     }
 
     /**

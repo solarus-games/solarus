@@ -400,10 +400,6 @@ public class DialogsEditorPanel extends AbstractEditorPanel implements ListSelec
             return filteredElements.get(index);
         }
 
-//        public void update(Observable o, Object arg) {
-//            System.out.println("Update du modèle");
-//            fireContentsChanged(this, 0, getSize() - 1);
-//        }
         protected void setItems(ArrayList<DialogSection> sections) {
             this.elements = sections;
             filterList("");

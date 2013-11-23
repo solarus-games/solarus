@@ -585,9 +585,9 @@ void Hero::set_map(Map& map, int initial_direction) {
 
 /**
  * \brief Places the hero on the map specified and at its destination point selected.
- * \param map the new map
- * \param previous_map_location position of the previous map in its world
- * (may be needed for scrolling transitions, but the previous map is already destroyed)
+ * \param map The new map.
+ * \param previous_map_location Position of the previous map in its world
+ * (because the previous map is already destroyed).
  */
 void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location) {
 
@@ -596,14 +596,20 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
   if (destination_name == "_same") {
 
     // The hero's coordinates are the same as on the previous map
-    // but we may have to change the layer.
+    // but 1) we need to take into account the location of both maps
+    // and 2) we may have to change the layer.
+
+    const Rectangle& next_map_location = map.get_location();
+    int x = get_x() - next_map_location.get_x() + previous_map_location.get_x();
+    int y = get_y() - next_map_location.get_y() + previous_map_location.get_y();
 
     Layer layer = LAYER_INTERMEDIATE;
-    if (map.get_ground(LAYER_INTERMEDIATE, get_x(), get_y()) == GROUND_EMPTY) {
+    if (map.get_ground(LAYER_INTERMEDIATE, x, y) == GROUND_EMPTY) {
       layer = LAYER_LOW;
     }
     set_map(map);
-    last_solid_ground_coords = get_xy();
+    last_solid_ground_coords.set_xy(x, y);
+    set_xy(x, y);
     map.get_entities().set_entity_layer(*this, layer);
 
     start_free();

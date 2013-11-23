@@ -18,7 +18,9 @@ doc/1.*
 developer_doc/1.*
 tools/javadoc/
 tools/solaruskeystore
-tools/initial_quest/data.solarus.zip
+tools/editor/resources/data.solarus.zip
+tools/editor/dependency-reduced-pom.xml
+tools/editor/target
 tools/update_quest.log
 tools/solarus-editor.jar
 work/unversioned/

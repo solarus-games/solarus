@@ -194,7 +194,6 @@ void TransitionScrolling::draw(Surface& dst_surface) {
   dst_surface.draw(*both_maps_surface, current_map_dst_position);
 
   // blit both surfaces
-  dst_surface.fill_with_color(Color::get_black());
   both_maps_surface->draw_region(current_scrolling_position, dst_surface);
 }
 

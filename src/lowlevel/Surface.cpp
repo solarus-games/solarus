@@ -262,11 +262,6 @@ const Rectangle Surface::get_size() const {
 void Surface::set_opacity(int opacity) {
 
   internal_opacity = opacity;
-  
-  // We can't set an opacity for a direct drawing, so we directly use the alpha channel.
-  if (internal_color != NULL) {
-    internal_color->internal_color.a = internal_opacity;
-  }
 }
 
 /**
@@ -494,7 +489,7 @@ void Surface::render(
   if (internal_color != NULL) {
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_SetRenderDrawColor(renderer, r, g, b, std::min(a, current_opacity));
     SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
     SDL_RenderFillRect(renderer, clip_rect.get_internal_rect());
   }

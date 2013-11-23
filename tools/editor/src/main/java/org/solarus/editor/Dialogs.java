@@ -179,10 +179,8 @@ public class Dialogs extends Observable {
             sections.add(currentSection);
             setSaved(true);
             filterList("");
-            //System.out.println("We have " + getSections().size() + " sections interface this file");
 
         } catch (IOException ioe) {
-            //System.out.println(line);
             throw new QuestEditorException(ioe.getMessage());
         }
 

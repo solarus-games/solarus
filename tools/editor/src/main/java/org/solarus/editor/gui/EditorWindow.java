@@ -629,33 +629,18 @@ public class EditorWindow extends JFrame
     public void createResourceElement(ResourceType resourceType) {
 
         String resourceName = resourceType.getName();
-        String resourceNameLower = resourceName.toLowerCase();
         try {
-            // TODO ask both the id and the name in the same dialog.
-            String id = JOptionPane.showInputDialog(
-                    null,
-                    "Please enter the id of your new " + resourceNameLower + "\n" +
-                    "Its file name will depend on it.",
-                    resourceName + " id",
-                    JOptionPane.QUESTION_MESSAGE);
+        	ResourceBuilderDialog dialog = new ResourceBuilderDialog(resourceType);
+        	if (dialog.display()) {
+        		String id = dialog.getId();
+        		String friendlyName = dialog.getFriendlyName();
 
-            if (id != null) {
-                if (Project.getResource(resourceType).exists(id)) {
+        		if (Project.getResource(resourceType).exists(id)) {
                     throw new QuestEditorException(
                             resourceName + " '" + id + "' already exists");
                 }
-
-                String name = JOptionPane.showInputDialog(
-                        null,
-                        "Choose a friendly name for your " + resourceNameLower + "\n" +
-                        "It may contain spaces.",
-                        "User-friendly name",
-                        JOptionPane.QUESTION_MESSAGE);
-
-                if (name != null) {
-                    Project.newResourceElement(resourceType, id, name);
-                }
-            }
+                Project.newResourceElement(resourceType, id, friendlyName);
+        	}
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create " + resourceName + ": " + ex.getMessage());
         }

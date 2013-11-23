@@ -933,7 +933,6 @@ public class Tileset extends Observable {
                     ));
                 }
             catch (Exception ex) {
-                System.out.println("exception");
                 String message = "";
                 if (id != -1) {
                     message += "Failed to load tile '" + id + "': ";

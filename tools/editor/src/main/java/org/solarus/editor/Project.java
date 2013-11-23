@@ -704,7 +704,7 @@ public class Project {
             }
 
             // Create the various initial files.
-            FileTools.extractZipFile("initial_quest/data.solarus.zip", dataPath);
+            FileTools.extractZipFile("data.solarus.zip", dataPath);
         }
         catch (IOException ex) {
             ex.printStackTrace();

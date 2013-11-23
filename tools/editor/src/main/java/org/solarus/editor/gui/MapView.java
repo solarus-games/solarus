@@ -1402,7 +1402,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
             MapEntitySelection selectedEntities = map.getEntitySelection();
 
             int key = keyEvent.getKeyCode();
-            //System.out.println(keyEvent.getKeyChar() + " " + key);
             switch (key) {
 
                 case KeyEvent.VK_DELETE:

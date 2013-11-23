@@ -17,5 +17,5 @@ else
   fi
 fi
 
-java -cp ${tools_path}:${tools_path}/luaj-jse-3.0-beta1.jar org.solarus.editor.Editor $quest_path
+java -jar editor/solarus-editor.jar $quest_path
 

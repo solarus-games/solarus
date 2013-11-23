@@ -33,6 +33,7 @@ class TransitionFade: public Transition {
     void set_delay(uint32_t delay);
 
     void start();
+    void set_color(Color* color);
     bool is_started() const;
     bool is_finished() const;
     void notify_suspended(bool suspended);
@@ -51,6 +52,7 @@ class TransitionFade: public Transition {
     uint32_t delay;
 
     Surface* dst_surface;
+    Color* transition_color;
 
 };
 

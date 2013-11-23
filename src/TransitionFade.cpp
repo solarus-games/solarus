@@ -18,6 +18,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Color.h"
 
 /**
  * \brief Creates a fade-in or fade-out transition effect.
@@ -29,6 +30,7 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
   Transition(direction),
   finished(false),
   alpha(-1),
+  transition_color(NULL),
   dst_surface(&dst_surface) {
 
   if (direction == OUT) {
@@ -68,6 +70,16 @@ void TransitionFade::set_delay(uint32_t delay) {
 void TransitionFade::start() {
   alpha = alpha_start;
   next_frame_date = System::now();
+}
+
+/**
+ * \brief Set the foreground color of this fade transition.
+ * \param color The color of the transition, or NULL to directly set the opacity
+ * on the destination surface.
+ */
+void TransitionFade::set_color(Color* color) {
+  
+  transition_color = color;
 }
 
 /**
@@ -136,7 +148,17 @@ void TransitionFade::draw(Surface& dst_surface) {
 
   // draw the transition effect on the surface
   int alpha_impl = std::min(alpha, 255);
-  dst_surface.set_opacity(alpha_impl);
-  this->dst_surface = &dst_surface;
+  
+  if(transition_color == NULL) {
+    // Set opacity to all subsurfaces.
+    dst_surface.set_opacity(alpha_impl);
+  }
+  else {
+    // Add a foreground surface to fade.
+    Color fade_color(0, 0, 0, 255-alpha_impl);
+    dst_surface.set_opacity(255);
+    dst_surface.fill_with_color(fade_color);
+    this->dst_surface = &dst_surface;
+  }
 }
 

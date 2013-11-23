@@ -1331,6 +1331,9 @@ int LuaContext::map_api_create_block(lua_State* l) {
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
+  if (maximum_moves < 0 || maximum_moves > 2) {
+    arg_error(l, 1, StringConcat() << "Invalid maximum_moves: " << maximum_moves);
+  }
 
   Block* entity = new Block(
       name,

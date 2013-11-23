@@ -64,6 +64,12 @@ class Block: public Detector {
     void notify_ground_below_changed();
 
     void reset();
+    bool is_pushable() const;
+    void set_pushable(bool pushable);
+    bool is_pullable() const;
+    void set_pullable(bool pullable);
+    int get_maximum_moves() const;
+    void set_maximum_moves(int maximum_moves);
 
     virtual const std::string& get_lua_type_name() const;
 

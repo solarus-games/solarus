@@ -17,5 +17,5 @@ else
   fi
 fi
 
-java -jar editor/solarus-editor.jar $quest_path
+java -jar editor/package/solarus-editor.jar $quest_path
 

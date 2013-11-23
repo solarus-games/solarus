@@ -1,2 +1,2 @@
-java -jar editor/package/solarus-editor.jar
+java -jar editor/target/solarus-editor.jar
 pause

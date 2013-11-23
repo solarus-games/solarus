@@ -41,6 +41,7 @@ Changes that do not introduce incompatibilities:
 * Fix random_movement:get_max_radius() that was not working.
 * Add an event sensor:on_left() (#339).
 * Add an event block:on_moving() (#334).
+* Add functions to get/set the properties of blocks.
 
 Solarus Quest Editor changes
 ----------------------------

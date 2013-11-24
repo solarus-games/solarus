@@ -395,7 +395,7 @@ void CircleMovement::recompute_position() {
     center.add_xy(center_entity->get_xy());
   }
 
-  const Rectangle &xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
+  const Rectangle& xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
   if (get_entity() == NULL
       || !test_collision_with_obstacles(xy.get_x() - get_entity()->get_x(), xy.get_y() - get_entity()->get_y())) {
     set_xy(xy);

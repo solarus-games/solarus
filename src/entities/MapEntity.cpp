@@ -228,7 +228,11 @@ void MapEntity::update_ground_observers() {
       get_entities().get_ground_observers(get_layer());
   for (it = ground_observers.begin(); it != ground_observers.end(); ++it) {
     MapEntity& ground_observer = *(*it);
-    if (overlaps(ground_observer.get_ground_point())) {
+    // Update the ground of entities that overlap or were just overlapping this one.
+
+    if (overlaps(ground_observer.get_ground_point())
+        || overlaps(ground_observer)  // FIXME this is not precise and does not work for entities that disappear.
+    ) {
       ground_observer.update_ground_below();
     }
   }

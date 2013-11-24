@@ -51,6 +51,9 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
  * \brief Destructor.
  */
 TransitionFade::~TransitionFade() {
+  if(transition_color != NULL) {
+    delete transition_color;
+  }
 }
 
 /**
@@ -140,7 +143,7 @@ void TransitionFade::update() {
  */
 void TransitionFade::draw(Surface& dst_surface) {
 
-  // draw the transition effect on the surface
+  // Draw the transition effect on the surface.
   int alpha_impl = std::min(alpha, 255);
   
   if(transition_color == NULL) {
@@ -148,7 +151,7 @@ void TransitionFade::draw(Surface& dst_surface) {
     dst_surface.set_opacity(alpha_impl);
   }
   else {
-    // Add a colored foreground surface, and only add the fade effect on it.
+    // Add a colored foreground surface, and only set the fade effect on it.
     int r, g, b, a;
     transition_color->get_components(r, g, b, a);
     Color fade_color(r, g, b, 255 - std::min(alpha_impl, a)); // A full opaque transition correspond to a foreground with full alpha.

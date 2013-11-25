@@ -1,0 +1,54 @@
+uniform sampler2D mmTexture;
+uniform vec4 mmTextureSize;
+
+varying vec4 vTexCoord; // supplied from vertex processor
+varying vec4 B;
+varying vec4 D;
+varying vec4 F;
+varying vec4 H;
+
+void main(void)
+
+{
+	vec4 fragmentLocation;
+
+	vec4 eColour;
+	vec4 bColour;
+	vec4 dColour;
+	vec4 fColour;
+	vec4 hColour;
+
+	vec4 E0;
+	vec4 E1;
+	vec4 E2;
+	vec4 E3;
+
+	vec4 outRow1;
+	vec4 outRow2;
+
+	eColour = texture2DProj(mmTexture, vTexCoord);
+	bColour = texture2DProj(mmTexture, B);
+	dColour = texture2DProj(mmTexture, D);
+	fColour = texture2DProj(mmTexture, F);
+	hColour = texture2DProj(mmTexture, H);
+
+	if (bColour != hColour && dColour != fColour) {
+		E0 = dColour == bColour ? dColour : eColour;
+		E1 = bColour == fColour ? fColour : eColour;
+		E2 = dColour == hColour ? dColour : eColour;
+		E3 = hColour == fColour ? fColour : eColour;
+	} else {
+		E0 = eColour;
+		E1 = eColour;
+		E2 = eColour;
+		E3 = eColour;
+	}
+
+	// Is this pixel E0,E1,E2 or E3, or somewhere in between ?
+	// Bi-linear interpolate (may not be exact x2 scale)
+	fragmentLocation = fract(vTexCoord * mmTextureSize);
+
+	outRow1 = mix(E0, E1, fragmentLocation.x);
+	outRow2 = mix(E2, E3, fragmentLocation.x);
+	gl_FragColor = mix(outRow1, outRow2, fragmentLocation.y);
+}

@@ -296,7 +296,7 @@ void Surface::set_software_destination(bool software_destination) {
 
     if (internal_surface == NULL) {
       // Create a surface with ARGB format.
-      SDL_PixelFormat* format = VideoManager::get_pixel_format();
+      SDL_PixelFormat* format = VideoManager::get_instance()->get_pixel_format();
       internal_surface = SDL_CreateRGBSurface(
           0,
           width,

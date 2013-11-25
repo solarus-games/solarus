@@ -48,8 +48,8 @@ class VideoManager {
     static void quit();
     static VideoManager* get_instance();
 
-    static SDL_PixelFormat* get_pixel_format();
     SDL_Renderer* get_renderer();
+    SDL_PixelFormat* get_pixel_format();
     void create_window();
     void show_window();
     VideoMode get_video_mode() const;

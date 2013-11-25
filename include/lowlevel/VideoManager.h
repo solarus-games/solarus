@@ -101,9 +101,9 @@ class VideoManager {
         mode_sizes;                         /**< Size of the screen surface for each supported
                                              * video mode with the current quest size. */
 
-    static SDL_PixelFormat* pixel_format;   /**< The pixel color format to use. */
     SDL_Window* main_window;                /**< The window. */
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
+    SDL_PixelFormat* pixel_format;          /**< The pixel color format to use. */
     const PixelFilter* pixel_filter;        /**< The pixel filtering algorithm (if any) applied with
                                              * the current video mode. */
     Surface* scaled_surface;                /**< The screen surface used with scaled modes. */

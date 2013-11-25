@@ -42,8 +42,6 @@ Scale2xFilter scale2x_filter;
 Hq4xFilter hq4x_filter;
 };
 
-SDL_PixelFormat* VideoManager::pixel_format = NULL;
-
 /**
  * \brief Lua name of each value of the VideoMode enum.
  */
@@ -100,7 +98,6 @@ void VideoManager::initialize(int argc, char **argv) {
  */
 void VideoManager::quit() {
   delete instance;
-  SDL_FreeFormat(pixel_format);
 }
 
 /**
@@ -112,19 +109,19 @@ VideoManager* VideoManager::get_instance() {
 }
 
 /**
- * \brief Returns the pixel format to use.
- * \return the pixel format to use.
- */
-SDL_PixelFormat* VideoManager::get_pixel_format() {
-  return pixel_format;
-}
-
-/**
  * \brief Returns the main renderer.
  * \return the main renderer.
  */
 SDL_Renderer* VideoManager::get_renderer() {
   return main_renderer;
+}
+
+/**
+ * \brief Returns the pixel format to use.
+ * \return the pixel format to use.
+ */
+SDL_PixelFormat* VideoManager::get_pixel_format() {
+  return pixel_format;
 }
 
 /**
@@ -138,6 +135,7 @@ VideoManager::VideoManager(
   disable_window(disable_window),
   main_window(NULL),
   main_renderer(NULL),
+  pixel_format(NULL),
   pixel_filter(NULL),
   scaled_surface(NULL),
   video_mode(NO_MODE),
@@ -158,6 +156,9 @@ VideoManager::~VideoManager() {
 
   RefCountable::unref(scaled_surface);
 
+  if (pixel_format != NULL) {
+    SDL_FreeFormat(pixel_format);
+  }
   if (main_renderer != NULL) {
     SDL_DestroyRenderer(main_renderer);
   }

@@ -62,6 +62,9 @@ class Shader {
     GLhandleARB fragment_shader;
     const char* vertex_source;
     const char* fragment_source;
+  
+    int logical_scale;                        /**< Logical scale of the renderer when the shader is active,
+                                                   compare to the normal quest size. */
 };
 
 #endif

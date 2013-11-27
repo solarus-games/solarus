@@ -23,7 +23,7 @@
 
 
 /**
- * \brief Represents an GLSL shader.
+ * \brief Represents a GLSL shader.
  *
  * This class represents a shader which can be applied before render to the window.
  * This class basically encapsulates a GLSL vertex and fragment shader.
@@ -38,6 +38,8 @@ class Shader {
   
     Shader(std::string filename);
     ~Shader();
+  
+    double get_logical_scale();
   
     void apply_shader();
 
@@ -63,8 +65,8 @@ class Shader {
     const char* vertex_source;
     const char* fragment_source;
   
-    int logical_scale;                        /**< Logical scale of the renderer when the shader is active,
-                                                   compare to the normal quest size. */
+    double logical_scale;                        /**< Logical scale of the renderer when the shader is active,
+                                                   compared to the normal quest size. */
 };
 
 #endif

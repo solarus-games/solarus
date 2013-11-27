@@ -109,6 +109,14 @@ VideoManager* VideoManager::get_instance() {
 }
 
 /**
+ * \brief Returns the main window.
+ * \return the main window.
+ */
+SDL_Window* VideoManager::get_window() {
+  return main_window;
+}
+
+/**
  * \brief Returns the main renderer.
  * \return the main renderer.
  */

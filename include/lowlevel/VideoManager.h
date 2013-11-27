@@ -47,7 +47,8 @@ class VideoManager {
     static void initialize(int argc, char** argv);
     static void quit();
     static VideoManager* get_instance();
-
+  
+    SDL_Window* get_window();
     SDL_Renderer* get_renderer();
     SDL_PixelFormat* get_pixel_format();
     void create_window();

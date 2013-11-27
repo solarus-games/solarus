@@ -723,6 +723,7 @@ void LuaContext::push_callback(int callback_ref) {
         << " (function expected, got " << luaL_typename(l, -1)
         << "). Did you already invoke or cancel it?"
     );
+  }
 #endif
 }
 

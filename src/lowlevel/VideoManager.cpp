@@ -178,7 +178,7 @@ void VideoManager::create_window() {
       SDL_WINDOWPOS_CENTERED,
       wanted_quest_size.get_width(),
       wanted_quest_size.get_height(),
-      SDL_WINDOW_HIDDEN);
+      SDL_WINDOW_HIDDEN | SDL_WINDOW_OPENGL);
   Debug::check_assertion(main_window != NULL,
       std::string("Cannot create the window: ") + SDL_GetError());
   

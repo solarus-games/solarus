@@ -47,6 +47,7 @@ class VideoManager;
 class Surface;
 class TextSurface;
 class Color;
+class Shader;
 class PixelFilter;
 class Scale2xFilter;
 class Hq4xFilter;

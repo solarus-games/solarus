@@ -68,7 +68,7 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-FIND_PATH(SDL2_INCLUDE_DIR SDL.h
+FIND_PATH(SDL2_INCLUDE_DIR SDL_opengles2.h // Make sure it is SDL2
   HINTS
   $ENV{SDL2DIR}
   PATH_SUFFIXES include/SDL2 include

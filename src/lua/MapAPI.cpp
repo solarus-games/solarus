@@ -90,6 +90,7 @@ void LuaContext::register_map_module() {
       { "get_entities", map_api_get_entities },
       { "get_entities_count", map_api_get_entities_count },
       { "has_entities", map_api_has_entities },
+      { "get_hero", map_api_get_hero },
       { "set_entities_enabled", map_api_set_entities_enabled },
       { "remove_entities", map_api_remove_entities },
       { "create_destination", map_api_create_destination },
@@ -779,6 +780,20 @@ int LuaContext::map_api_has_entities(lua_State* l) {
   const std::string& prefix = luaL_checkstring(l, 2);
 
   lua_pushboolean(l, map.get_entities().has_entity_with_prefix(prefix));
+  return 1;
+}
+
+/**
+ * \brief Implementation of map:get_hero().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_hero(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  // Return the hero even if he is no longer on this map.
+  push_hero(l, map.get_game().get_hero());
   return 1;
 }
 

@@ -94,6 +94,7 @@ void LuaContext::register_entity_module() {
   static const luaL_Reg common_methods[] = {
       { "get_type", entity_api_get_type },
       { "get_map", entity_api_get_map },
+      { "get_game", entity_api_get_game },
       { "get_name", entity_api_get_name },
       { "exists", entity_api_exists },
       { "remove", entity_api_remove },
@@ -374,6 +375,19 @@ int LuaContext::entity_api_get_map(lua_State* l) {
   MapEntity& entity = check_entity(l, 1);
 
   push_map(l, entity.get_map());
+  return 1;
+}
+
+/**
+ * \brief Implementation of entity:get_game().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_game(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  push_game(l, entity.get_game().get_savegame());
   return 1;
 }
 

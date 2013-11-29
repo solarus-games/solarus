@@ -32,16 +32,14 @@ class Shader {
 
   public:
     static void initialize();
-    static void quit();
     static SDL_bool compile_shader(GLhandleARB shader, const char* source);
-    static void restore_active_shader();
   
     Shader(std::string filename);
     ~Shader();
   
     double get_logical_scale();
   
-    void apply_shader();
+    void render_present_shaded();
 
   private:
     static SDL_bool shaders_supported;

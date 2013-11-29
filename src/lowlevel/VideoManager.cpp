@@ -144,8 +144,7 @@ VideoManager::VideoManager(
   main_window(NULL),
   main_renderer(NULL),
   pixel_format(NULL),
-  pixel_filter(NULL),
-  scaled_surface(NULL),
+  current_shader(NULL),
   video_mode(NO_MODE),
   wanted_quest_size(wanted_quest_size) {
     
@@ -162,8 +161,6 @@ VideoManager::~VideoManager() {
     SDL_SetWindowFullscreen(main_window, 0);
   }
 
-  RefCountable::unref(scaled_surface);
-
   if (pixel_format != NULL) {
     SDL_FreeFormat(pixel_format);
   }
@@ -172,6 +169,9 @@ VideoManager::~VideoManager() {
   }
   if (main_window != NULL) {
     SDL_DestroyWindow(main_window);
+  }
+  for(int i=0 ; i<supported_shaders.size() ; ++i) {
+    delete supported_shaders.at(i);
   }
 }
 
@@ -356,28 +356,6 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     const Rectangle& window_size = mode_sizes[mode];
     Rectangle render_size = quest_size;
 
-    // Initalize the scaling mode.
-    if (mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X) {
-      pixel_filter = &scale2x_filter;
-    }
-    else if (mode == WINDOWED_HQ4X || mode == FULLSCREEN_HQ4X) {
-      pixel_filter = &hq4x_filter;
-    }
-    else {
-      pixel_filter = NULL;
-    }
-
-    if (scaled_surface != NULL) {
-      RefCountable::unref(scaled_surface);
-      scaled_surface = NULL;
-    }
-    if (pixel_filter != NULL) {
-      int factor = pixel_filter->get_scaling_factor();
-      render_size.set_size(render_size.get_width() * factor, render_size.get_height() * factor);
-      scaled_surface = Surface::create(render_size);
-      RefCountable::ref(scaled_surface);
-    }
-
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
@@ -460,39 +438,12 @@ void VideoManager::render(Surface& quest_surface) {
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
   SDL_RenderClear(main_renderer);
   quest_surface.render(main_renderer);
-  SDL_RenderPresent(main_renderer);
-}
-
-/**
- * \brief Applies to current pixel filter on a surface.
- * \param src_surface The source surface.
- * \param dst_surface The destination surface. It must have the size of the
- * source surface multiplied by the scaling factor of the filter.
- */
-void VideoManager::apply_pixel_filter(
-    Surface& src_surface, Surface& dst_surface) {
-
-  /*Debug::check_assertion(pixel_filter != NULL, "Missing pixel filter");
-
-  int factor = pixel_filter->get_scaling_factor();
-  Debug::check_assertion(dst_surface.get_width() == src_surface.get_width() * factor,
-      "Wrong destination surface size");
-  Debug::check_assertion(dst_surface.get_height() == src_surface.get_height() * factor,
-      "Wrong destination surface size");
-
-  SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
-  SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
-
-  SDL_LockSurface(src_internal_surface);
-  SDL_LockSurface(dst_internal_surface);
-
-  uint32_t* src = static_cast<uint32_t*>(src_internal_surface->pixels);
-  uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
-
-  pixel_filter->filter(src, src_surface.get_width(), src_surface.get_height(), dst);
-
-  SDL_UnlockSurface(dst_internal_surface);
-  SDL_UnlockSurface(src_internal_surface);*/
+  
+  // Render to the window, and apply a shader if we have to.
+  if (current_shader != NULL)
+    current_shader->render_present_shaded(main_renderer);
+  else 
+    SDL_RenderPresent(main_renderer);
 }
 
 /**
@@ -640,5 +591,23 @@ void VideoManager::initialize_video_modes() {
   mode_sizes[FULLSCREEN_SCALE2X] = quest_size_2;
   mode_sizes[FULLSCREEN_HQ4X] = quest_size_4;
   mode_sizes[FULLSCREEN_NORMAL] = quest_size;
+}
+
+/**
+ * \brief Detects the available shaders and initialize them.
+ */
+void VideoManager::initialize_quest_shaders() {
+  
+  //TODO remove the following, get all shaders of the quest's shader folder and initialize them.
+  add_shader(*(new Shader("scale2x")));
+  current_shader = supported_shaders.at(0);
+}
+
+/**
+ * \brief Add a Shader instance to the vector of supported shaders.
+ * \param shader a Shader instance.
+ */
+void VideoManager::add_shader(Shader& shader) {
+  supported_shaders.push_back(&shader);
 }
 

@@ -17,6 +17,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/VideoManager.h"
+#include "lowlevel/Shader.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
@@ -54,6 +55,7 @@ void System::initialize(int argc, char** argv) {
 
   // video
   VideoManager::initialize(argc, argv);
+  Shader::initialize();
   Color::initialize();
   TextSurface::initialize();
   Sprite::initialize();

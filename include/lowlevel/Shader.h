@@ -39,7 +39,7 @@ class Shader {
   
     double get_logical_scale();
   
-    void render_present_shaded();
+    void render_present_shaded(SDL_Renderer* renderer);
 
   private:
     static SDL_bool shaders_supported;

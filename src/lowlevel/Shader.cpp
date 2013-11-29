@@ -35,12 +35,14 @@ SDL_bool Shader::shaders_supported = SDL_FALSE;
 
 void Shader::initialize() {
   
-  if (!SDL_GL_CreateContext(VideoManager::get_instance()->get_window())) {
+  VideoManager* videomanager = VideoManager::get_instance();
+  
+  if (!SDL_GL_CreateContext(videomanager->get_window())) {
     Debug::die("Unable to create OpenGL context: " + std::string(SDL_GetError()));
   }
-  
-  Rectangle quest_size = VideoManager::get_instance()->get_quest_size();
+
   GLdouble aspect;
+  Rectangle quest_size = videomanager->get_quest_size();
   
   glViewport(0, 0, quest_size.get_width(), quest_size.get_height());
   //glDepthFunc(GL_LESS);                        // The Type Of Depth Test To Do
@@ -95,6 +97,8 @@ void Shader::initialize() {
     // TODO just authorize non-shaded modes, or implement a software alternative instead of dying
     Debug::die("OpenGL shaders not supported.");
   }
+  
+  videomanager->initialize_quest_shaders();
 }
 
 SDL_bool Shader::compile_shader(GLhandleARB shader, const char* source) {
@@ -199,12 +203,12 @@ double Shader::get_logical_scale() {
   return logical_scale;
 }
 
-void Shader::render_present_shaded()
+void Shader::render_present_shaded(SDL_Renderer* renderer)
 {
   if (shaders_supported) {
     // Apply our shader
     glUseProgramObjectARB(program);
-    SDL_RenderPresent(VideoManager::get_instance()->get_renderer());
+    SDL_RenderPresent(renderer);
     
     // Restore the active shader
     glUseProgramObjectARB(0);

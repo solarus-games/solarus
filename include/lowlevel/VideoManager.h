@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/Shader.h"
+#include <vector>
 #include <list>
 #include <map>
 
@@ -53,6 +55,8 @@ class VideoManager {
     SDL_PixelFormat* get_pixel_format();
     void create_window();
     void show_window();
+  
+    void initialize_quest_shaders();
     VideoMode get_video_mode() const;
     bool set_video_mode(VideoMode mode);
     void switch_video_mode();
@@ -93,7 +97,7 @@ class VideoManager {
     ~VideoManager();
 
     void initialize_video_modes();
-    void apply_pixel_filter(Surface& src_surface, Surface& dst_surface);
+    void add_shader(Shader& shader);
 
     static VideoManager* instance;          /**< The only instance. */
 
@@ -105,11 +109,10 @@ class VideoManager {
     SDL_Window* main_window;                /**< The window. */
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
     SDL_PixelFormat* pixel_format;          /**< The pixel color format to use. */
-    const PixelFilter* pixel_filter;        /**< The pixel filtering algorithm (if any) applied with
-                                             * the current video mode. */
-    Surface* scaled_surface;                /**< The screen surface used with scaled modes. */
   
     VideoMode video_mode;                   /**< Current display mode. */
+    std::vector<Shader*> supported_shaders; /**< Shaders that can be applied when rendering. */
+    Shader* current_shader;                 /**< Shader to use. NULL or a pointer to one of the supported shaders. */
 
     Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */
     Rectangle min_quest_size;               /**< Minimum value of quest_size (depends on the quest). */

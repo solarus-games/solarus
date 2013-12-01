@@ -98,7 +98,7 @@ void Shader::initialize() {
     Debug::die("OpenGL shaders not supported.");
   }
   
-  videomanager->initialize_quest_shaders();
+  videomanager->initialize_video_modes();
 }
 
 SDL_bool Shader::compile_shader(GLhandleARB shader, const char* source) {
@@ -128,9 +128,11 @@ Shader::Shader(std::string filename) :
   logical_scale(1.0),
   program(0),
   vertex_shader(0),
-  fragment_shader(0) {
+  fragment_shader(0),
+  name(filename) {
     
   if (shaders_supported) {
+    
     const int num_tmus_bound = 4;
     int i;
     GLint location;
@@ -197,6 +199,10 @@ Shader::~Shader()
     glDeleteObjectARB(fragment_shader);
     glDeleteObjectARB(program);
   }
+}
+
+const std::string Shader::get_name() {
+  return name;
 }
 
 double Shader::get_logical_scale() {

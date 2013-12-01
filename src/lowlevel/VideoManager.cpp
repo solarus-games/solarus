@@ -17,8 +17,6 @@
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/Scale2xFilter.h"
-#include "lowlevel/Hq4xFilter.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -31,29 +29,11 @@ namespace {
 // Forcing a video mode at compilation time.
 #if defined(SOLARUS_SCREEN_FORCE_MODE) && SOLARUS_SCREEN_FORCE_MODE != -1
 // Force a unique video mode at compilation time.
-const VideoManager::VideoMode forced_mode =
-  VideoManager::VideoMode(SOLARUS_SCREEN_FORCE_MODE);
+  const std::string forced_mode_name = SOLARUS_SCREEN_FORCE_MODE;
 #else
 // Make all modes available.
-const VideoManager::VideoMode forced_mode = VideoManager::NO_MODE;
+  const std::string forced_mode_name = "";
 #endif
-
-Scale2xFilter scale2x_filter;
-Hq4xFilter hq4x_filter;
-};
-
-/**
- * \brief Lua name of each value of the VideoMode enum.
- */
-const std::string VideoManager::video_mode_names[] = {
-  "windowed_stretched",
-  "windowed_scale2x",
-  "windowed_hq4x",
-  "windowed_normal",
-  "fullscreen_normal",
-  "fullscreen_scale2x",
-  "fullscreen_hq4x",
-  ""  // Sentinel.
 };
 
 /**
@@ -144,8 +124,7 @@ VideoManager::VideoManager(
   main_window(NULL),
   main_renderer(NULL),
   pixel_format(NULL),
-  current_shader(NULL),
-  video_mode(NO_MODE),
+  video_mode(NULL),
   wanted_quest_size(wanted_quest_size) {
     
     create_window();
@@ -172,6 +151,9 @@ VideoManager::~VideoManager() {
   }
   for(int i=0 ; i<supported_shaders.size() ; ++i) {
     delete supported_shaders.at(i);
+  }
+  for(int i=0 ; i<all_video_modes.size() ; ++i) {
+    delete all_video_modes.at(i);
   }
 }
 
@@ -222,27 +204,29 @@ void VideoManager::show_window() {
  * \param mode a video mode
  * \return true if this mode is supported
  */
-bool VideoManager::is_mode_supported(VideoMode mode) const {
+bool VideoManager::is_mode_supported(VideoMode* mode) const {
 
-  if (mode == NO_MODE) {
+  if (mode == NULL) {
     return false;
   }
 
-  if (forced_mode != NO_MODE && mode != forced_mode) {
+  if (forced_mode_name != "" && mode->name != forced_mode_name) {
     return false;
   }
 
-  std::map<VideoMode, Rectangle>::const_iterator it = mode_sizes.find(mode);
-  if (it == mode_sizes.end()) {
+  std::vector<VideoMode*>::const_iterator it = all_video_modes.begin();
+  for(; it != all_video_modes.end(); ++it) {
+    if((*it)->name == mode->name) {
+      if ((*it)->window_size.is_flat()) {
+        Debug::die(StringConcat() <<
+            "Uninitialized size for video mode " << mode->name);
+      }
+      break;
+    }
+  }
+  if (it == all_video_modes.end()) {
     // The initial detection of this mode failed.
     return false;
-  }
-
-  const Rectangle& size = it->second;
-
-  if (size.is_flat()) {
-    Debug::die(StringConcat() <<
-        "Uninitialized size for video mode " << get_video_mode_name(video_mode));
   }
 
   return true;
@@ -253,10 +237,8 @@ bool VideoManager::is_mode_supported(VideoMode mode) const {
  * \param mode A video mode.
  * \return true if this video mode is in fullscreen.
  */
-bool VideoManager::is_fullscreen(VideoMode mode) const {
-  return mode == FULLSCREEN_NORMAL
-      || mode == FULLSCREEN_SCALE2X
-      || mode == FULLSCREEN_HQ4X;
+bool VideoManager::is_fullscreen(VideoMode& mode) const {
+  return mode.is_fullscreen;
 }
 
 /**
@@ -264,7 +246,10 @@ bool VideoManager::is_fullscreen(VideoMode mode) const {
  * \return true if the current video mode is in fullscreen.
  */
 bool VideoManager::is_fullscreen() const {
-  return is_fullscreen(get_video_mode());
+  if(video_mode)
+    return is_fullscreen(*get_video_mode());
+  
+  return false;
 }
 
 /**
@@ -285,17 +270,8 @@ void VideoManager::set_fullscreen(bool fullscreen) {
  */
 void VideoManager::switch_fullscreen() {
 
-  static const VideoMode next_modes[] = {
-      FULLSCREEN_NORMAL,      // WINDOWED_STRETCHED
-      FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
-      FULLSCREEN_HQ4X,        // WINDOWED_HQ4X
-      FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
-      WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
-      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
-      WINDOWED_HQ4X,          // FULLSCREEN_HQ4X
-  };
-
-  VideoMode mode = next_modes[get_video_mode()];
+  VideoMode* mode = video_mode->switch_mode;
+  
   if (is_mode_supported(mode)) {
     set_video_mode(mode);
   }
@@ -306,9 +282,12 @@ void VideoManager::switch_fullscreen() {
  */
 void VideoManager::switch_video_mode() {
 
-  VideoMode mode = video_mode;
+  std::vector<VideoMode*>::const_iterator it = find(all_video_modes.begin(), all_video_modes.end(), video_mode);
+  VideoMode* mode;
   do {
-    mode = (VideoMode) ((mode + 1) % NB_MODES);
+    if (it == all_video_modes.end())
+      it = all_video_modes.begin();
+    mode = *(++it);
   } while (!is_mode_supported(mode));
   set_video_mode(mode);
 }
@@ -318,12 +297,12 @@ void VideoManager::switch_video_mode() {
  */
 void VideoManager::set_default_video_mode() {
 
-  VideoMode mode;
-  if (forced_mode != NO_MODE) {
-    mode = forced_mode;
+  VideoMode* mode;
+  if (forced_mode_name != "") {
+    mode = get_video_mode_by_name(forced_mode_name);
   }
   else {
-    mode = WINDOWED_STRETCHED;
+    mode = get_video_mode_by_name("windowed_stretched");
   }
   
   set_video_mode(mode);
@@ -334,7 +313,7 @@ void VideoManager::set_default_video_mode() {
  * \param mode The video mode to set.
  * \return true in case of success, false if this mode is not supported.
  */
-bool VideoManager::set_video_mode(VideoMode mode) {
+bool VideoManager::set_video_mode(VideoMode* mode) {
 
   if (!is_mode_supported(mode)) {
     return false;
@@ -342,7 +321,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
 
   int show_cursor;
   Uint32 fullscreen_flag;
-  if (is_fullscreen(mode)) {
+  if (is_fullscreen(*mode)) {
     fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
     show_cursor = SDL_DISABLE;
   }
@@ -353,7 +332,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
 
   if (!disable_window) {
 
-    const Rectangle& window_size = mode_sizes[mode];
+    const Rectangle& window_size = mode->window_size;
     Rectangle render_size = quest_size;
 
     // Initialize the window.
@@ -375,7 +354,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
  * \brief Returns the current video mode.
  * \return The video mode.
  */
-VideoManager::VideoMode VideoManager::get_video_mode() const {
+VideoManager::VideoMode* VideoManager::get_video_mode() const {
   return video_mode;
 }
 
@@ -383,16 +362,9 @@ VideoManager::VideoMode VideoManager::get_video_mode() const {
  * \brief Returns a list of all supported video modes.
  * \return The list of supported video modes.
  */
-const std::list<VideoManager::VideoMode> VideoManager::get_video_modes() const {
-
-  std::list<VideoManager::VideoMode> modes;
-  for (int i = 0; i < NB_MODES; i++) {
-    VideoMode mode = VideoMode(i);
-    if (is_mode_supported(mode)) {
-      modes.push_back(mode);
-    }
-  }
-  return modes;
+const std::vector<VideoManager::VideoMode*>& VideoManager::get_video_modes() const {
+  
+  return all_video_modes;
 }
 
 /**
@@ -400,13 +372,12 @@ const std::list<VideoManager::VideoMode> VideoManager::get_video_modes() const {
  * \param mode A video mode.
  * \return The name of this mode, or an empty string if the mode is NO_MODE.
  */
-std::string VideoManager::get_video_mode_name(VideoMode mode) {
+std::string VideoManager::get_video_mode_name(VideoMode* mode) {
 
-  if (mode == NO_MODE) {
-    return "";
-  }
-
-  return video_mode_names[mode];
+  if (mode)
+    return mode->name;
+  
+  return "";
 }
 
 /**
@@ -414,14 +385,15 @@ std::string VideoManager::get_video_mode_name(VideoMode mode) {
  * \param mode_name Lua name of a video mode.
  * \return The corresponding video mode, or NO_MODE if the name is invalid.
  */
-VideoManager::VideoMode VideoManager::get_video_mode_by_name(const std::string& mode_name) {
+VideoManager::VideoMode* VideoManager::get_video_mode_by_name(const std::string& mode_name) {
 
-  for (int i = 0; i < NB_MODES; i++) {
-    if (video_mode_names[i] == mode_name) {
-      return VideoMode(i);
+  std::vector<VideoMode*> all_video_modes = get_instance()->all_video_modes;
+  for (int i = 0; i < all_video_modes.size(); ++i) {
+    if (all_video_modes.at(i)->name == mode_name) {
+      return all_video_modes.at(i);
     }
   }
-  return NO_MODE;
+  return NULL;
 }
 
 /**
@@ -440,8 +412,9 @@ void VideoManager::render(Surface& quest_surface) {
   quest_surface.render(main_renderer);
   
   // Render to the window, and apply a shader if we have to.
-  if (current_shader != NULL)
-    current_shader->render_present_shaded(main_renderer);
+  VideoMode* video_mode = get_instance()->video_mode;
+  if (video_mode->shader != NULL)
+    video_mode->shader->render_present_shaded(main_renderer);
   else 
     SDL_RenderPresent(main_renderer);
 }
@@ -566,41 +539,60 @@ void VideoManager::set_quest_size_range(
   else {
     quest_size = wanted_quest_size;
   }
-
-  // Everything is ready now.
-  initialize_video_modes();
-  set_default_video_mode();
 }
 
 /**
- * \brief Detects the available resolutions and initializes the properties
- * of video modes.
+ * \brief Detects the available shaders and initialize all needed video modes.
  */
 void VideoManager::initialize_video_modes() {
-
-  const Rectangle quest_size_2(
-      0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
-  const Rectangle quest_size_4(
-      0, 0, quest_size.get_width() * 4, quest_size.get_height() * 4);
-
-  mode_sizes[WINDOWED_STRETCHED] = quest_size_2;
-  mode_sizes[WINDOWED_SCALE2X] = quest_size_2;
-  mode_sizes[WINDOWED_HQ4X] = quest_size_4;
-  mode_sizes[WINDOWED_NORMAL] = quest_size;
-
-  mode_sizes[FULLSCREEN_SCALE2X] = quest_size_2;
-  mode_sizes[FULLSCREEN_HQ4X] = quest_size_4;
-  mode_sizes[FULLSCREEN_NORMAL] = quest_size;
-}
-
-/**
- * \brief Detects the available shaders and initialize them.
- */
-void VideoManager::initialize_quest_shaders() {
+  
+  const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
+  VideoMode* fullscreen_normal = new VideoMode("windowed_stretched", quest_size_2, NULL, NULL, false);
+  VideoMode* windowed_normal = new VideoMode("windowed_normal", quest_size, NULL, fullscreen_normal, false);
+  VideoMode* windowed_stretched = new VideoMode("windowed_stretched", quest_size_2, NULL, fullscreen_normal, false);
+  fullscreen_normal->switch_mode = windowed_stretched;
+  
+  // Initialize non-shaded windowed video modes.
+  all_video_modes.push_back(windowed_normal);
+  all_video_modes.push_back(windowed_stretched);
   
   //TODO remove the following, get all shaders of the quest's shader folder and initialize them.
-  add_shader(*(new Shader("scale2x")));
-  current_shader = supported_shaders.at(0);
+  Shader* video_mode_shader = new Shader("scale2x");
+  add_shader(*video_mode_shader);
+  
+  int start_shaded = all_video_modes.size();
+  
+  // Add supported shaders's corresponding windowed modes.
+  for(int i=0 ; i<supported_shaders.size() ; ++i) {
+    const Rectangle scaled_quest_size(0, 0, 
+        double(quest_size.get_width()) * supported_shaders.at(i)->get_logical_scale(),
+        double(quest_size.get_height()) * supported_shaders.at(i)->get_logical_scale());
+    all_video_modes.push_back(new VideoMode("windowed_" + supported_shaders.at(i)->get_name(),
+      scaled_quest_size,
+      supported_shaders.at(i),
+      NULL,
+      false));
+  }
+  
+  int end_shaded = all_video_modes.size();
+  
+  // Initialize non-shaded fullscreen video modes.
+  all_video_modes.push_back(fullscreen_normal);
+  
+  // And finally add fullscreen shaded modes and all switch modes.
+  for(int i=start_shaded ; i<end_shaded ; ++i) {
+    VideoMode* fullscreen_shaded = new VideoMode("fullscreen_" + all_video_modes.at(i)->name,
+        all_video_modes.at(i)->window_size,
+        all_video_modes.at(i)->shader,
+        all_video_modes.at(i),
+        true);
+    all_video_modes.push_back(fullscreen_shaded);
+    
+    all_video_modes.at(i)->switch_mode = fullscreen_shaded;
+  }
+  
+  // Everything is ready now.
+  set_default_video_mode();
 }
 
 /**

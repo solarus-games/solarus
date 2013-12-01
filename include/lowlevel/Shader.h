@@ -37,6 +37,7 @@ class Shader {
     Shader(std::string filename);
     ~Shader();
   
+    const std::string get_name();
     double get_logical_scale();
   
     void render_present_shaded(SDL_Renderer* renderer);
@@ -63,6 +64,7 @@ class Shader {
     const char* vertex_source;
     const char* fragment_source;
   
+    std::string name;                            /**< Name of the shader and of the video mode's suffixe associated. */
     double logical_scale;                        /**< Logical scale of the renderer when the shader is active,
                                                    compared to the normal quest size. */
 };

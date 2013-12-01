@@ -216,7 +216,7 @@ bool VideoManager::is_mode_supported(VideoMode* mode) const {
 
   std::vector<VideoMode*>::const_iterator it = all_video_modes.begin();
   for(; it != all_video_modes.end(); ++it) {
-    if((*it)->name == mode->name) {
+    if(*it == mode) {
       if ((*it)->window_size.is_flat()) {
         Debug::die(StringConcat() <<
             "Uninitialized size for video mode " << mode->name);
@@ -543,6 +543,7 @@ void VideoManager::set_quest_size_range(
 
 /**
  * \brief Detects the available shaders and initialize all needed video modes.
+ * Fullscreen modes all are at the top of the list.
  */
 void VideoManager::initialize_video_modes() {
   

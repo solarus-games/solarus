@@ -55,7 +55,6 @@ void System::initialize(int argc, char** argv) {
 
   // video
   VideoManager::initialize(argc, argv);
-  Shader::initialize();
   Color::initialize();
   TextSurface::initialize();
   Sprite::initialize();

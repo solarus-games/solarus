@@ -36,14 +36,6 @@ SDL_bool Shader::shaders_supported = SDL_FALSE;
 void Shader::initialize() {
   
   VideoManager* videomanager = VideoManager::get_instance();
-  shaders_supported = SDL_FALSE;
-  
-  if (SDL_GetCurrentVideoDriver() != "opengl"
-      && SDL_GetCurrentVideoDriver() != "opengles2") {
-    Debug::warning("The video driver should be OpenGL or OpenGL ES2. It is currently : "
-        + std::string(SDL_GetCurrentVideoDriver()));
-    return;
-  }
   
   if (!SDL_GL_CreateContext(videomanager->get_window())) {
     Debug::die("Unable to create OpenGL context : " + std::string(SDL_GetError()));

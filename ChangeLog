@@ -15,6 +15,7 @@ Engine changes
 * Call enemy:on_hurt() before enemy:on_dying() (#325).
 * Fix life and money exceeding the max when the max changes (#355).
 * Make stairs sounds optional (#364).
+* Make more checks in sprite files to avoid crashes (#357).
 
 Data files format changes
 -------------------------

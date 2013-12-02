@@ -90,6 +90,8 @@ Enemy::Enemy(
   nb_explosions(0),
   next_explosion_date(0) {
 
+  set_size(16, 16);
+  set_origin(8, 13);
 }
 
 /**

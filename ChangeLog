@@ -35,6 +35,7 @@ Changes that introduce incompatibilities:
 * map:create_shop_item() is replaced by map:create_shop_treasure().
 * In sol.video.get/set_mode(), "fullscreen_*_wide" modes no longer exist.
 * on_key_pressed() and on_character_pressed() are now both called (#344).
+* Enemies have now a default size of 16x16 and origin of 8,13 (#354).
 
 Changes that do not introduce incompatibilities:
 

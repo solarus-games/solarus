@@ -402,12 +402,18 @@ The default value is \c "normal".
 
 Sets the size of the bounding box of this enemy.
 
-The default value is 16x16 pixels.
+The default value is \c 16x16 pixels.
 This is the effective size used to detect obstacles when moving,
 but the \ref lua_api_sprite "sprite"
 of the enemy may be larger, especially for a boss.
 - \c width (number): Width of the enemy in pixels.
 - \c height (number): Height of the enemy in pixels.
+
+\remark Collisions with the
+  \ref lua_api_hero "hero" are pixel-precise and use the sprite of the enemy,
+  not his bounding box.
+  Therefore, this function has no influence on collisions with the hero, but
+  only on the detection of obstacles of the map when the enemy moves.
 
 \subsection lua_api_enemy_set_origin enemy:set_origin(origin_x, origin_y)
 
@@ -428,7 +434,8 @@ The origin point is also the point of synchronization of an entity with its
 \ref lua_api_sprite "sprites" (because again, an entity that has a given
 size may have sprites with different sizes).
 
-The default values is \c 0x0 and should be changed for most enemies.
+The default values is <tt>8,13</tt> and is usually okay for enemies of size
+\c 16x16.
 See \ref lua_api_entity_get_origin "entity:get_origin()" for more explanations
 about the origin point.
 - \c origin_x (number): X coordinate of the origin point in pixels,

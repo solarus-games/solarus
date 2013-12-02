@@ -14,6 +14,7 @@ Engine changes
 * Add the hq4x pixel filter algorithm as a new video mode.
 * Call enemy:on_hurt() before enemy:on_dying() (#325).
 * Fix life and money exceeding the max when the max changes (#355).
+* Make stairs sounds optional (#364).
 
 Data files format changes
 -------------------------

@@ -44,7 +44,18 @@ Arrow::Arrow(const Hero& hero):
   int direction = hero.get_animation_direction();
   create_sprite("entities/arrow", true);
   get_sprite().set_current_direction(direction);
-  set_bounding_box_from_sprite();
+
+  if (direction % 2 == 0) {
+    // Horizontal.
+    set_size(16, 8);
+    set_origin(8, 4);
+  }
+  else {
+    // Vertical.
+    set_size(8, 16);
+    set_origin(4, 8);
+  }
+
   set_xy(hero.get_center_point());
   set_optimization_distance(0); // Make the arrow continue outside the screen until disappear_date.
 

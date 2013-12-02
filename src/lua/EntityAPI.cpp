@@ -493,6 +493,15 @@ int LuaContext::entity_api_set_size(lua_State* l) {
   int width = luaL_checkint(l, 2);
   int height = luaL_checkint(l, 3);
 
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 2, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 3, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
+
   entity.set_size(width, height);
 
   return 0;

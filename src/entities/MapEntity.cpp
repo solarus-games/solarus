@@ -116,6 +116,8 @@ MapEntity::MapEntity(
   optimization_distance(default_optimization_distance),
   optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
+  Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
+      "Invalid entity size: width and height must be multiple of 8");
 }
 
 /**
@@ -748,6 +750,9 @@ const Rectangle& MapEntity::get_size() const {
  * \param height the entity's height
  */
 void MapEntity::set_size(int width, int height) {
+
+  Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
+      "Invalid entity size: width and height must be multiple of 8");
   bounding_box.set_size(width, height);
 }
 
@@ -755,8 +760,9 @@ void MapEntity::set_size(int width, int height) {
  * \brief Sets the size of the entity.
  * \param size a rectangle having the width and height to set to the entity
  */
-void MapEntity::set_size(const Rectangle &size) {
-  bounding_box.set_size(size);
+void MapEntity::set_size(const Rectangle& size) {
+
+  set_size(size.get_width(), size.get_height());
 }
 
 /**
@@ -781,21 +787,6 @@ const Rectangle& MapEntity::get_bounding_box() const {
  */
 void MapEntity::set_bounding_box(const Rectangle &bounding_box) {
   this->bounding_box = bounding_box;
-}
-
-/**
- * \brief Sets the origin point and the size of the entity like its sprite.
- *
- * You may call this function only if the entity's bounding box
- * is the same as the sprite's rectangle.
- * Otherwise, you have to call set_size() and set_origin()
- * explicitely.
- */
-void MapEntity::set_bounding_box_from_sprite() {
-
-  Sprite &sprite = get_sprite();
-  set_size(sprite.get_size());
-  set_origin(sprite.get_origin());
 }
 
 /**

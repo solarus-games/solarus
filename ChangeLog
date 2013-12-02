@@ -17,6 +17,7 @@ Engine changes
 * Make stairs sounds optional (#364).
 * Make more checks in sprite files to avoid crashes (#357).
 * Fix RandomMovement speed that was not taken into account (#361).
+* The size of all map entities must be a multiple of 8 (#358).
 
 Data files format changes
 -------------------------
@@ -37,6 +38,7 @@ Changes that introduce incompatibilities:
 * In sol.video.get/set_mode(), "fullscreen_*_wide" modes no longer exist.
 * on_key_pressed() and on_character_pressed() are now both called (#344).
 * Enemies have now a default size of 16x16 and origin of 8,13 (#354).
+* The size of enemies must be a multiple of 8 (#358).
 
 Changes that do not introduce incompatibilities:
 

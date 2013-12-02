@@ -99,7 +99,6 @@ class MapEntity: public ExportableToLua {
     void set_size(int width, int height);
     void set_size(const Rectangle& size);
     const Rectangle& get_bounding_box() const;
-    void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle& bounding_box);
     const Rectangle& get_origin() const;
     void set_origin(int x, int y);

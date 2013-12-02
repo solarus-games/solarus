@@ -356,7 +356,7 @@ inline bool Rectangle::overlaps(const Rectangle& other) const {
 
   bool overlap_y = (y3 < y2 && y1 < y4);
 
-  return overlap_x && overlap_y;
+  return overlap_x && overlap_y && !is_flat() && !other.is_flat();
 }
 
 /**

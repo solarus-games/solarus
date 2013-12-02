@@ -863,12 +863,13 @@ int LuaContext::map_api_create_tile(lua_State* l) {
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
-
   if (width < 0 || width % 8 != 0) {
-    arg_error(l, 1, StringConcat() << "Invalid width: " << width);
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
   }
   if (height < 0 || height % 8 != 0) {
-    arg_error(l, 1, StringConcat() << "Invalid height: " << height);
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
   }
 
   TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
@@ -950,6 +951,14 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
 
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
   }
 
   MapEntity* entity = new Teletransporter(
@@ -1196,6 +1205,14 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
 
   MapEntity* entity = new Jumper(
       name,
@@ -1390,6 +1407,14 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
 
   MapEntity* entity = new DynamicTile(
       name,
@@ -1474,6 +1499,14 @@ int LuaContext::map_api_create_wall(lua_State* l) {
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
 
   MapEntity* entity = new Wall(
       name,
@@ -1513,6 +1546,14 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
 
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
   }
 
   MapEntity* entity = new Sensor(
@@ -1582,6 +1623,14 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
 
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
   }
 
   int subtype;
@@ -1822,6 +1871,18 @@ int LuaContext::map_api_create_separator(lua_State* l) {
   int width = check_int_field(l, 1, "width");
   int height = check_int_field(l, 1, "height");
 
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
+    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
+
   MapEntity* entity = new Separator(
       name,
       Layer(layer),
@@ -1858,6 +1919,14 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
 
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
   }
 
   Game& game = map.get_game();

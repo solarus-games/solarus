@@ -26,15 +26,15 @@
 
 /**
  * \brief Constructor.
- * \param speed speed of the movement in pixels per seconds
+ * \param speed Speed of the movement in pixels per seconds.
  * \param max_radius if the object goes further than this distance, it will come back
  */
 RandomMovement::RandomMovement(int speed, int max_radius):
   StraightMovement(false, false),
-  normal_speed(speed),
   max_radius(max_radius),
   next_direction_change_date(0) {
 
+  set_speed(speed);
   set_next_direction();
 }
 
@@ -83,8 +83,6 @@ void RandomMovement::set_max_radius(int max_radius) {
  * \brief Chooses a new direction for the movement.
  */
 void RandomMovement::set_next_direction() {
-
-  set_speed(normal_speed);
 
   double angle;
   if (get_entity() == NULL

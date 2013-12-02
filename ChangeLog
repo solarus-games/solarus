@@ -16,6 +16,7 @@ Engine changes
 * Fix life and money exceeding the max when the max changes (#355).
 * Make stairs sounds optional (#364).
 * Make more checks in sprite files to avoid crashes (#357).
+* Fix RandomMovement speed that was not taken into account (#361).
 
 Data files format changes
 -------------------------

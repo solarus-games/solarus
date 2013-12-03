@@ -560,7 +560,7 @@ void VideoManager::initialize_video_modes() {
   all_video_modes.push_back(windowed_normal);
   all_video_modes.push_back(windowed_stretched);
   
-  //TODO remove the following, get all shaders of the quest's driver/shader folder and initialize them.
+  //TODO remove the following, get all shaders of the quest's shader/driver folder and initialize them.
   Shader* video_mode_shader = new Shader("scale2x");
   add_shader(*video_mode_shader);
   

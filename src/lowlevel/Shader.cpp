@@ -92,10 +92,14 @@ void Shader::initialize() {
   }
   
   if(!shaders_supported) {
+    
     SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
-
-    // TODO authorize shaded modes to not use shaders, or implement a software alternative.
     Debug::warning("OpenGL shaders not supported.");
+    
+    // TODO Only authorize default modes.
+    //videomanager->initialize_default_video_modes();
+    
+    return;
   }
   
   // Get the deault shader program
@@ -143,8 +147,10 @@ Shader::Shader(std::string filename) :
     
     glGetError();
     
+    //TODO Parse the lua file
+    
     // Get the vertex and fragment shader sources.
-    //TODO remove color shader and get from file.
+    //TODO remove color shader and get sources from the corresponding driver/shader file.
     vertex_source = "varying vec4 v_color;\n"
     "\n"
     "void main()\n"
@@ -160,7 +166,7 @@ Shader::Shader(std::string filename) :
     "    gl_FragColor = v_color;\n"
     "}";
     
-    // Create one program object to rule them all
+    // Create one program object to rule them all ...
     program = glCreateProgramObjectARB();
     
     // Create the vertex shader
@@ -190,7 +196,7 @@ Shader::Shader(std::string filename) :
         glUniform1iARB(location, i);
       }
     }
-    glUseProgramObjectARB(0);
+    glUseProgram(default_shader_program);
     
     Debug::check_assertion(glGetError() == GL_NO_ERROR, "Cannot compile the shader : " + filename);
   }

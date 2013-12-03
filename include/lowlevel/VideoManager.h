@@ -41,7 +41,7 @@ class VideoManager {
       bool is_fullscreen;               /**< True if the mode is displayed fullscreen. */
       
       _VideoMode(std::string name, Rectangle window_size, Shader* shader, struct _VideoMode* switch_mode, bool is_fullscreen)
-      :name(name),window_size(window_size),shader(shader),switch_mode(switch_mode),is_fullscreen(is_fullscreen) {};
+          :name(name),window_size(window_size),shader(shader),switch_mode(switch_mode),is_fullscreen(is_fullscreen) {};
     } VideoMode;
 
     static void initialize(int argc, char** argv);

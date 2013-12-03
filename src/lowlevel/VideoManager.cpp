@@ -70,7 +70,7 @@ void VideoManager::initialize(int argc, char **argv) {
     }
   }
   
-  // Set OpenGL as default renderer driver, to avoid to use direct3d.
+  // Set OpenGL as default renderer driver when available, to avoid to use direct3d.
   SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
   
   instance = new VideoManager(disable, wanted_quest_size);

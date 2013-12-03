@@ -94,7 +94,7 @@ void Shader::initialize() {
   if(!shaders_supported) {
     SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
 
-    // TODO authorize shaded modes o not use shaders, or implement a software alternative.
+    // TODO authorize shaded modes to not use shaders, or implement a software alternative.
     Debug::warning("OpenGL shaders not supported.");
   }
   

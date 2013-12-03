@@ -551,7 +551,7 @@ void VideoManager::set_quest_size_range(
 void VideoManager::initialize_video_modes() {
   
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
-  VideoMode* fullscreen_normal = new VideoMode("windowed_stretched", quest_size_2, NULL, NULL, false);
+  VideoMode* fullscreen_normal = new VideoMode("fullscreen_normal", quest_size, NULL, NULL, true);
   VideoMode* windowed_normal = new VideoMode("windowed_normal", quest_size, NULL, fullscreen_normal, false);
   VideoMode* windowed_stretched = new VideoMode("windowed_stretched", quest_size_2, NULL, fullscreen_normal, false);
   fullscreen_normal->switch_mode = windowed_stretched;
@@ -585,7 +585,8 @@ void VideoManager::initialize_video_modes() {
   
   // And finally add fullscreen shaded modes and all switch modes.
   for(int i=start_shaded ; i<end_shaded ; ++i) {
-    VideoMode* fullscreen_shaded = new VideoMode("fullscreen_" + all_video_modes.at(i)->name,
+    VideoMode* fullscreen_shaded = new VideoMode(
+        "fullscreen_" + all_video_modes.at(i)->shader->get_name(),
         all_video_modes.at(i)->window_size,
         all_video_modes.at(i)->shader,
         all_video_modes.at(i),

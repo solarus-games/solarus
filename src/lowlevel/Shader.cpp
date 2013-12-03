@@ -46,9 +46,9 @@ void Shader::initialize() {
   Rectangle quest_size = videomanager->get_quest_size();
   
   glViewport(0, 0, quest_size.get_width(), quest_size.get_height());
-  //glDepthFunc(GL_LESS);                        // The Type Of Depth Test To Do
-  //glEnable(GL_DEPTH_TEST);                     // Enables Depth Testing
-  //glShadeModel(GL_SMOOTH);                     // Enables Smooth Color Shading
+  glDepthFunc(GL_LESS);                        // The Type Of Depth Test To Do
+  glEnable(GL_DEPTH_TEST);                     // Enables Depth Testing
+  glShadeModel(GL_SMOOTH);                     // Enables Smooth Color Shading
   
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();                            // Reset The Projection Matrix

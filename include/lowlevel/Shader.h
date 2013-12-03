@@ -43,7 +43,8 @@ class Shader {
     void render_present_shaded(SDL_Renderer* renderer);
 
   private:
-    static SDL_bool shaders_supported;
+    static SDL_bool shaders_supported;           /**< True if GLSL shaders are supported. */
+    static GLint default_shader_program;         /**< Default shader program to restore once a shaded render is done. */
   
     static PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
     static PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
@@ -57,7 +58,7 @@ class Shader {
     static PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
     static PFNGLUNIFORM1IARBPROC glUniform1iARB;
     static PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
-
+  
     GLhandleARB program;
     GLhandleARB vertex_shader;
     GLhandleARB fragment_shader;

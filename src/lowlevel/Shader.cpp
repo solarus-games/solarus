@@ -32,6 +32,7 @@ PFNGLUNIFORM1IARBPROC Shader::glUniform1iARB;
 PFNGLUSEPROGRAMOBJECTARBPROC Shader::glUseProgramObjectARB;
 
 SDL_bool Shader::shaders_supported = SDL_FALSE;
+GLint Shader::default_shader_program;
 
 void Shader::initialize() {
   
@@ -93,10 +94,14 @@ void Shader::initialize() {
   if(!shaders_supported) {
     SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
 
-    // TODO just authorize non-shaded modes, or implement a software alternative instead of dying
-    Debug::die("OpenGL shaders not supported.");
+    // TODO authorize shaded modes o not use shaders, or implement a software alternative.
+    Debug::warning("OpenGL shaders not supported.");
   }
   
+  // Get the deault shader program
+  glGetIntegerv(GL_CURRENT_PROGRAM, &default_shader_program);
+
+  // Initialize default and shaded video modes.
   videomanager->initialize_video_modes();
 }
 
@@ -215,10 +220,10 @@ void Shader::render_present_shaded(SDL_Renderer* renderer)
     glUseProgramObjectARB(program);
     SDL_RenderPresent(renderer);
     
-    // Restore the active shader
-    glUseProgramObjectARB(0);
+    // Restore the default shader
+    glUseProgram(default_shader_program);
   }
   else {
-    
+    SDL_RenderPresent(renderer);
   }
 }

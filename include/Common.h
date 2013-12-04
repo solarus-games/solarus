@@ -172,11 +172,11 @@
  */
 #ifndef SOLARUS_SCREEN_FORCE_MODE
 #  if defined(SOLARUS_IOS)
-#    define SOLARUS_SCREEN_FORCE_MODE "normal"
+#    define SOLARUS_SCREEN_FORCE_MODE "scale2x"
 #  elif defined(CAANOO)
 #    define SOLARUS_SCREEN_FORCE_MODE "normal"
 #  elif defined(PANDORA)
-#    define SOLARUS_SCREEN_FORCE_MODE "scale2x"
+#    define SOLARUS_SCREEN_FORCE_MODE "normal"
 #  else
 #    define SOLARUS_SCREEN_FORCE_MODE ""
 #  endif

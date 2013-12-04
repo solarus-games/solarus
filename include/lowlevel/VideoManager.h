@@ -53,6 +53,7 @@ class VideoManager {
     SDL_PixelFormat* get_pixel_format();
     void create_window();
     void show_window();
+    void update_viewport();
   
     void initialize_video_modes(bool skip_shaded_modes = false);
     VideoMode* get_video_mode() const;
@@ -73,6 +74,7 @@ class VideoManager {
     void set_window_title(const std::string& window_title);
 
     static bool parse_size(const std::string& size_string, Rectangle& size);
+    static void set_absolute_position(Rectangle& rect);
 
     const Rectangle& get_quest_size() const;
     void get_quest_size_range(
@@ -98,6 +100,7 @@ class VideoManager {
     SDL_Window* main_window;                 /**< The window. */
     SDL_Renderer* main_renderer;             /**< The screen renderer. */
     SDL_PixelFormat* pixel_format;           /**< The pixel color format to use. */
+    Rectangle viewport;                      /**< The position of the drawable area on the window. */
   
     bool disable_window;                     /**< Indicates that no window is displayed (used for unit tests). */
     bool fullscreen;                         /**< True if fullscreen display. */

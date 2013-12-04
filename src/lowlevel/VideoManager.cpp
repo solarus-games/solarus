@@ -17,6 +17,8 @@
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Scale2xFilter.h"
+#include "lowlevel/Hq4xFilter.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -36,70 +38,9 @@ const VideoManager::VideoMode forced_mode =
 const VideoManager::VideoMode forced_mode = VideoManager::NO_MODE;
 #endif
 
-// List of fullscreen resolutions available on the system.
-std::vector<Rectangle> available_fullscreen_resolutions;
-
-/**
- * \brief Returns the lowest fullscreen resolution greater than or equal to
- * the specified size.
- * \param surface_size The size of the surface to fit.
- * \return The lowest fullscreen resolution that can contain this surface, or
- * an rectangle of size 0.
- */
-Rectangle find_lowest_fullscreen_resolution(const Rectangle& surface_size) {
-
-  // Find the lowest fullscreen resolution that can contain the requested size.
-  std::vector<Rectangle>::reverse_iterator it;
-  for (it = available_fullscreen_resolutions.rbegin();
-      it != available_fullscreen_resolutions.rend();
-      ++it) {
-    // Reverse iterator because SDL_ListModes gives resolutions sorted from
-    // the highest one to the lowest one.
-    const Rectangle& resolution = *it;
-    if (resolution.get_width() >= surface_size.get_width()
-        && resolution.get_height() >= surface_size.get_height()) {
-      // Found one.
-      return resolution;
-    }
-  }
-
-  return Rectangle();
-}
-
-/**
- * \brief Returns a fullscreen resolution whose width is larger than the
- * specified width and whose height is minimal.
- * \param surface_size The size of the surface to fit.
- * \return The lowest wide fullscreen resolution that can contain this surface,
- * or a rectangle of size 0.
- */
-Rectangle find_wide_fullscreen_resolution(const Rectangle& surface_size) {
-
-  int best_height = 1e6;
-  Rectangle best_resolution;
-
-  std::vector<Rectangle>::iterator it;
-  for (it = available_fullscreen_resolutions.begin();
-      it != available_fullscreen_resolutions.end();
-      ++it) {
-    const Rectangle& resolution = *it;
-    const double ratio =
-        (double) resolution.get_width() / resolution.get_height();
-
-    if (ratio > 1.34  // Wider than 4:3.
-        && resolution.get_width() > surface_size.get_width()
-        && resolution.get_height() >= surface_size.get_height()
-        && resolution.get_height() < best_height) {
-      // Found a better one.
-      best_height = resolution.get_height();
-      best_resolution = resolution;
-    }
-  }
-
-  return best_resolution;
-}
-
-}
+Scale2xFilter scale2x_filter;
+Hq4xFilter hq4x_filter;
+};
 
 /**
  * \brief Lua name of each value of the VideoMode enum.
@@ -107,11 +48,11 @@ Rectangle find_wide_fullscreen_resolution(const Rectangle& surface_size) {
 const std::string VideoManager::video_mode_names[] = {
   "windowed_stretched",
   "windowed_scale2x",
+  "windowed_hq4x",
   "windowed_normal",
   "fullscreen_normal",
-  "fullscreen_wide",
   "fullscreen_scale2x",
-  "fullscreen_scale2x_wide",
+  "fullscreen_hq4x",
   ""  // Sentinel.
 };
 
@@ -148,7 +89,7 @@ void VideoManager::initialize(int argc, char **argv) {
       Debug::error(std::string("Invalid quest size: '") + quest_size_string + "'");
     }
   }
-
+  
   instance = new VideoManager(disable, wanted_quest_size);
 }
 
@@ -168,27 +109,6 @@ VideoManager* VideoManager::get_instance() {
 }
 
 /**
- * \brief Returns the appropriate SDL_Surface flag depending on the requested
- * display mode and what OS is running.
- * \param the display mode which you wanted to know the SDL_Surface flag to use with.
- * \return the better SDL_Surface flag to use
- */
-uint32_t VideoManager::get_surface_flag(const VideoMode mode) const {
-
-  uint32_t flag = SDL_SWSURFACE;
-
-  if (is_fullscreen(mode)) {
-    flag |= SDL_FULLSCREEN;
-  }
-
-#if defined(SOLARUS_SCREEN_DOUBLEBUF) && SOLARUS_SCREEN_DOUBLEBUF == 1
-  flag |= SDL_DOUBLEBUF;
-#endif
-
-  return flag;
-}
-
-/**
  * \brief Constructor.
  * \brief disable_window true to entirely disable the displaying.
  * \param wanted_quest_size Size of the quest as requested by the user.
@@ -197,18 +117,14 @@ VideoManager::VideoManager(
     bool disable_window,
     const Rectangle& wanted_quest_size):
   disable_window(disable_window),
+  main_window(NULL),
+  main_renderer(NULL),
+  screen_texture(NULL),
+  pixel_filter(NULL),
+  scaled_surface(NULL),
+  outset_title(std::string("Solarus ") + SOLARUS_VERSION),
   video_mode(NO_MODE),
-  screen_surface(NULL),
-  enlargment_factor(1),
-  offset_x(0),
-  offset_y(0),
   wanted_quest_size(wanted_quest_size) {
-
-  // Initialize the window.
-  const std::string& window_title = std::string("Solarus ") + SOLARUS_VERSION;
-  set_window_title(window_title);
-  putenv((char*) "SDL_VIDEO_CENTERED=center");
-  putenv((char*) "SDL_NOMOUSE");
 }
 
 /**
@@ -216,7 +132,47 @@ VideoManager::VideoManager(
  */
 VideoManager::~VideoManager() {
 
-  delete screen_surface;
+  if (is_fullscreen()) {
+    // Get back on desktop before destroy the window.
+    SDL_SetWindowFullscreen(main_window, 0);
+  }
+  delete scaled_surface;
+  if (screen_texture != NULL) {
+    SDL_DestroyTexture(screen_texture);
+  }
+  if (main_renderer != NULL) {
+    SDL_DestroyRenderer(main_renderer);
+  }
+  if (main_window != NULL) {
+    SDL_DestroyWindow(main_window);
+  }
+}
+
+/**
+ * \brief Create the window.
+ */
+void VideoManager::create_window() {
+  
+  // Initialize the window.
+  const Rectangle& window_size = mode_sizes[video_mode];
+  main_window = SDL_CreateWindow(
+      outset_title.c_str(),
+      SDL_WINDOWPOS_CENTERED,
+      SDL_WINDOWPOS_CENTERED,
+      window_size.get_width(),
+      window_size.get_height(),
+      SDL_WINDOW_SHOWN);
+  if (main_window == NULL) {
+    Debug::die(std::string("Cannot create the window: ") + SDL_GetError());
+  }
+  
+  main_renderer = SDL_CreateRenderer(main_window, -1,
+      SDL_RENDERER_ACCELERATED);
+  if (main_renderer == NULL) {
+    Debug::die(std::string("Cannot create the renderer: ") + SDL_GetError());
+  }
+
+  set_video_mode(video_mode);
 }
 
 /**
@@ -247,8 +203,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) const {
         "Uninitialized size for video mode " << get_video_mode_name(video_mode));
   }
 
-  int flags = get_surface_flag(mode);
-  return SDL_VideoModeOK(size.get_width(), size.get_height(), 32, flags) != 0;
+  return true;
 }
 
 /**
@@ -257,7 +212,9 @@ bool VideoManager::is_mode_supported(VideoMode mode) const {
  * \return true if this video mode is in fullscreen.
  */
 bool VideoManager::is_fullscreen(VideoMode mode) const {
-  return mode >= FULLSCREEN_NORMAL;
+  return mode == FULLSCREEN_NORMAL
+      || mode == FULLSCREEN_SCALE2X
+      || mode == FULLSCREEN_HQ4X;
 }
 
 /**
@@ -289,11 +246,11 @@ void VideoManager::switch_fullscreen() {
   static const VideoMode next_modes[] = {
       FULLSCREEN_NORMAL,      // WINDOWED_STRETCHED
       FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
+      FULLSCREEN_HQ4X,        // WINDOWED_HQ4X
       FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
       WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
-      WINDOWED_STRETCHED,     // FULLSCREEN_WIDE
       WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
-      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X_WIDE
+      WINDOWED_HQ4X,          // FULLSCREEN_HQ4X
   };
 
   VideoMode mode = next_modes[get_video_mode()];
@@ -319,15 +276,12 @@ void VideoManager::switch_video_mode() {
  */
 void VideoManager::set_default_video_mode() {
 
-  VideoMode mode;
   if (forced_mode != NO_MODE) {
-    mode = forced_mode;
+    video_mode = forced_mode;
   }
   else {
-    mode = WINDOWED_STRETCHED;
+    video_mode = WINDOWED_STRETCHED;
   }
-
-  set_video_mode(mode);
 }
 
 /**
@@ -340,54 +294,65 @@ bool VideoManager::set_video_mode(VideoMode mode) {
   if (!is_mode_supported(mode)) {
     return false;
   }
+  
+  if (main_window == NULL) {
+    // If the window isn't created yet, just store the video mode.
+    this->video_mode = mode;
+    return true;
+  }
 
-  int flags = get_surface_flag(mode);
   int show_cursor;
+  Uint32 fullscreen_flag;
   if (is_fullscreen(mode)) {
+    fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
     show_cursor = SDL_DISABLE;
   }
   else {
+    fullscreen_flag = 0;
     show_cursor = SDL_ENABLE;
   }
 
-  const Rectangle& mode_size = mode_sizes[mode];
-
-  if (mode_size.get_width() < 2 * quest_size.get_width()
-      || mode_size.get_height() < 2 * quest_size.get_height()) {
-    // The quest surface will be rendered directly.
-    enlargment_factor = 1;
-  }
-  else {
-    // The quest surface will be rendered stretched or scaled.
-    enlargment_factor = 2;
-  }
-
-  Rectangle scaled_quest_size(0, 0,
-      quest_size.get_width() * enlargment_factor,
-      quest_size.get_height() * enlargment_factor);
-
-  // Add black bars if needed.
-  offset_x = (mode_size.get_width() - scaled_quest_size.get_width()) / 2;
-  offset_y = (mode_size.get_height() - scaled_quest_size.get_height()) / 2;
-
   if (!disable_window) {
-    SDL_Surface* screen_internal_surface = SDL_SetVideoMode(
-        mode_size.get_width(),
-        mode_size.get_height(),
-        SOLARUS_COLOR_DEPTH,
-        flags);
 
-    Debug::check_assertion(screen_internal_surface != NULL, StringConcat() <<
-        "Cannot create the video surface for mode " << get_video_mode_name(mode));
+    const Rectangle& window_size = mode_sizes[mode];
+    Rectangle render_size = quest_size;
 
+    // Initalize the scaling mode.
+    if (mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X) {
+      pixel_filter = &scale2x_filter;
+    }
+    else if (mode == WINDOWED_HQ4X || mode == FULLSCREEN_HQ4X) {
+      pixel_filter = &hq4x_filter;
+    }
+    else {
+      pixel_filter = NULL;
+    }
+    delete scaled_surface;
+    scaled_surface = NULL;
+    if (pixel_filter != NULL) {
+      int factor = pixel_filter->get_scaling_factor();
+      render_size.set_size(render_size.get_width() * factor, render_size.get_height() * factor);
+      scaled_surface = new Surface(render_size);
+    }
+
+    // Create intermediate rending surfaces.
+    if (screen_texture != NULL) {
+      SDL_DestroyTexture(screen_texture);
+    }
+    screen_texture = SDL_CreateTexture(main_renderer,
+      SDL_PIXELFORMAT_ARGB8888,
+      SDL_TEXTUREACCESS_STREAMING,
+      render_size.get_width(),
+      render_size.get_height());
+
+    // Initialize the window.
+    // Set fullscreen flag first to set the size on the right mode.
+    SDL_SetWindowFullscreen(main_window, fullscreen_flag);
+    SDL_SetWindowSize(main_window, window_size.get_width(), window_size.get_height());
+    SDL_RenderSetLogicalSize(main_renderer, render_size.get_width(), render_size.get_height());
     SDL_ShowCursor(show_cursor);
-    delete this->screen_surface;
-    this->screen_surface = new Surface(screen_internal_surface);
   }
   this->video_mode = mode;
-
-  //std::cout << "Set mode " << get_video_mode_name(mode) << ": offset = "
-  //  << offset_x << "," << offset_y << ", factor: " << enlargment_factor << std::endl;
 
   return true;
 }
@@ -454,147 +419,55 @@ void VideoManager::draw(Surface& quest_surface) {
   if (disable_window) {
     return;
   }
-
-  if (enlargment_factor == 1) {
-    draw_unscaled(quest_surface);
-  }
-  else if (video_mode == WINDOWED_SCALE2X
-      || video_mode == FULLSCREEN_SCALE2X
-      || video_mode == FULLSCREEN_SCALE2X_WIDE) {
-    draw_scale2x(quest_surface);
-  }
-  else {
-    draw_stretched(quest_surface);
-  }
-
-  SDL_Flip(screen_surface->get_internal_surface());
-}
-
-/**
- * \brief Draws the quest surface on the screen at its size.
- *
- * Black bars are added if the screen is bigger than the quest size.
- *
- * \param quest_surface The quest surface to draw.
- */
-void VideoManager::draw_unscaled(Surface& quest_surface) {
-
-  if (offset_x == 0 && offset_y == 0) {
-    quest_surface.draw(*screen_surface);
+  
+  SDL_Surface* screen_sdl_surface;
+  if (pixel_filter != NULL) {
+    Debug::check_assertion(scaled_surface != NULL,
+        "Missing destination surface for scaling");
+    apply_pixel_filter(quest_surface, *scaled_surface);
+    screen_sdl_surface = scaled_surface->get_internal_surface();
   }
   else {
-    quest_surface.draw(*screen_surface, Rectangle(offset_x, offset_y));
+    screen_sdl_surface = quest_surface.get_internal_surface();
   }
+  
+  // Update the internal texture with the internal surface, and render it.
+  SDL_UpdateTexture(screen_texture, NULL, screen_sdl_surface->pixels, screen_sdl_surface->pitch);
+  SDL_RenderClear(main_renderer);
+  SDL_RenderCopy(main_renderer, screen_texture, NULL, NULL);
+  SDL_RenderPresent(main_renderer);
 }
 
 /**
- * \brief Draws the quest surface on the screen, stretching the image by
- * a factor of 2.
- *
- * Black bars are added if the screen is bigger than twice the quest size.
- *
- * \param quest_surface The quest surface to draw.
+ * \brief Applies to current pixel filter on a surface.
+ * \param src_surface The source surface.
+ * \param dst_surface The destination surface. It must have the size of the
+ * source surface multiplied by the scaling factor of the filter.
  */
-void VideoManager::draw_stretched(Surface& quest_surface) {
+void VideoManager::apply_pixel_filter(
+    Surface& src_surface, Surface& dst_surface) {
 
-    SDL_Surface* src_internal_surface = quest_surface.get_internal_surface();
-    SDL_Surface* dst_internal_surface = screen_surface->get_internal_surface();
+  Debug::check_assertion(pixel_filter != NULL, "Missing pixel filter");
 
-    SDL_LockSurface(src_internal_surface);
-    SDL_LockSurface(dst_internal_surface);
+  int factor = pixel_filter->get_scaling_factor();
+  Debug::check_assertion(dst_surface.get_width() == src_surface.get_width() * factor,
+      "Wrong destination surface size");
+  Debug::check_assertion(dst_surface.get_height() == src_surface.get_height() * factor,
+      "Wrong destination surface size");
 
-    int idx_src = 0;
-    uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
+  SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
+  SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
 
-    const int width = dst_internal_surface->w;
-    const int end_row_increment = 2 * offset_x + width;
-    int p = width * offset_y + offset_x;
-    for (int i = 0; i < quest_size.get_height(); i++) {
-        for (int j = 0; j < quest_size.get_width(); j++) {
-            dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] 
-                   = quest_surface.get_mapped_pixel(idx_src, dst_internal_surface->format);
-            p += 2;
-            idx_src++;
-        }
+  SDL_LockSurface(src_internal_surface);
+  SDL_LockSurface(dst_internal_surface);
 
-        p += end_row_increment;
-    }
+  uint32_t* src = static_cast<uint32_t*>(src_internal_surface->pixels);
+  uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
 
-    SDL_UnlockSurface(dst_internal_surface);
-    SDL_UnlockSurface(src_internal_surface);
-}
+  pixel_filter->filter(src, src_surface.get_width(), src_surface.get_height(), dst);
 
-/**
- * \brief Draws the quest surface on the screen, scaled the image by
- * a factor of 2 with the Scale2x algorithm.
- *
- * Black bars are added if the screen is bigger than twice the quest size.
- *
- * \param quest_surface The quest surface to draw.
- */
-void VideoManager::draw_scale2x(Surface& quest_surface) {
-
-    SDL_Surface* src_internal_surface = quest_surface.get_internal_surface();
-    SDL_Surface* dst_internal_surface = screen_surface->get_internal_surface();
-
-    SDL_LockSurface(src_internal_surface);
-    SDL_LockSurface(dst_internal_surface);
-
-    uint32_t* src = (uint32_t*) src_internal_surface->pixels;
-    uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
-
-    const int end_row_increment = 2 * offset_x + dst_internal_surface->w;
-
-    int e1 = dst_internal_surface->w * offset_y + offset_x;
-    int e2, e3, e4;
-    int b, d, e = 0, f,  h;
-    for (int row = 0; row < quest_size.get_height(); row++) {
-        for (int col = 0; col < quest_size.get_width(); col++) {
-
-            // compute a to i
-
-            b = e - quest_size.get_width();
-            d = e - 1;
-            f = e + 1;
-            h = e + quest_size.get_width();
-
-            if (row == 0) {
-              b = e;
-            }
-            if (row == quest_size.get_height() - 1) {
-              h = e;
-            }
-            if (col == 0) {
-              d = e;
-            }
-            if (col == quest_size.get_width() - 1) {
-              f = e;
-            }
-
-            // compute e1 to e4
-            e2 = e1 + 1;
-            e3 = e1 + dst_internal_surface->w;
-            e4 = e3 + 1;
-
-            // compute the color
-
-            if (src[b] != src[h] && src[d] != src[f]) {
-                dst[e1] = quest_surface.get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
-                dst[e2] = quest_surface.get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
-                dst[e3] = quest_surface.get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
-                dst[e4] = quest_surface.get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
-            }
-            else {
-                dst[e1] = dst[e2] = dst[e3] = dst[e4] = quest_surface.get_mapped_pixel(e, dst_internal_surface->format);
-            }
-            e1 += 2;
-            e++;
-        }
-        e1 += end_row_increment;
-    }
-
-    SDL_UnlockSurface(dst_internal_surface);
-    SDL_UnlockSurface(src_internal_surface);
+  SDL_UnlockSurface(dst_internal_surface);
+  SDL_UnlockSurface(src_internal_surface);
 }
 
 /**
@@ -603,10 +476,11 @@ void VideoManager::draw_scale2x(Surface& quest_surface) {
  */
 const std::string VideoManager::get_window_title() const {
 
-  char* window_title;
-  char* icon;
-  SDL_WM_GetCaption(&window_title, &icon);
-  return window_title;
+  if (main_window != NULL) {
+    return SDL_GetWindowTitle(main_window);
+  }
+  
+  return outset_title;
 }
 
 /**
@@ -615,7 +489,13 @@ const std::string VideoManager::get_window_title() const {
  */
 void VideoManager::set_window_title(const std::string& window_title) {
 
-  SDL_WM_SetCaption(window_title.c_str(), NULL);
+  if (main_window != NULL) {
+    SDL_SetWindowTitle(main_window, window_title.c_str());
+  }
+  else {
+    // If the window isn't created yet, just store the title.
+    outset_title = window_title;
+  }
 }
 
 /**
@@ -690,7 +570,7 @@ void VideoManager::set_quest_size_range(
     const Rectangle& min_quest_size,
     const Rectangle& max_quest_size) {
 
-  Debug::check_assertion(screen_surface == NULL,
+  Debug::check_assertion(screen_texture == NULL,
       "The screen is already created");
 
   Debug::check_assertion(
@@ -735,112 +615,18 @@ void VideoManager::set_quest_size_range(
  */
 void VideoManager::initialize_video_modes() {
 
-  const Rectangle twice_quest_size(
+  const Rectangle quest_size_2(
       0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
+  const Rectangle quest_size_4(
+      0, 0, quest_size.get_width() * 4, quest_size.get_height() * 4);
 
-  mode_sizes[WINDOWED_STRETCHED] = twice_quest_size;
-  mode_sizes[WINDOWED_SCALE2X] = twice_quest_size;
+  mode_sizes[WINDOWED_STRETCHED] = quest_size_2;
+  mode_sizes[WINDOWED_SCALE2X] = quest_size_2;
+  mode_sizes[WINDOWED_HQ4X] = quest_size_4;
   mode_sizes[WINDOWED_NORMAL] = quest_size;
 
-  // Get the fullscreen video modes supported by the system.
-  int fullscreen_flags = get_surface_flag(FULLSCREEN_NORMAL);
-  SDL_Rect** rects = SDL_ListModes(NULL, fullscreen_flags);
-  while (*rects != NULL) {
-    //std::cout << "Detected fullscreen resolution " << (*rects)->w << "x" << (*rects)->h << std::endl;
-    available_fullscreen_resolutions.push_back(
-        Rectangle(0, 0, (*rects)->w, (*rects)->h));
-    rects++;
-  }
-
-  // Find a fullscreen resolution well suited for our quest size.
-  Rectangle non_wide_resolution;
-  Rectangle twice_non_wide_resolution;
-  if (SDL_VideoModeOK(quest_size.get_width(), quest_size.get_height(),
-      32, fullscreen_flags)) {
-    // First try directly the resolution of the quest size.
-    non_wide_resolution.set_size(quest_size);
-  }
-
-  // This resolution may be okay but not listed by SDL.
-  // In the non-stretched case, we want to know if it is really listed.
-  // Because if SDL intends to center it inside a bigger screen,
-  // we will rather stretch the image.
-  bool is_non_wide_resolution_listed = false;
-  std::vector<Rectangle>::const_iterator it;
-  for (it = available_fullscreen_resolutions.begin();
-      it != available_fullscreen_resolutions.end();
-      ++it) {
-    if (it->equals(non_wide_resolution)) {
-      is_non_wide_resolution_listed = true;
-      break;
-    }
-  }
-
-  if (SDL_VideoModeOK(twice_quest_size.get_width(), twice_quest_size.get_height(),
-      32, fullscreen_flags)) {
-    // The resolution of twice the quest size will be used by the scaled
-    // video mode.
-    twice_non_wide_resolution.set_size(twice_quest_size);
-
-    if (non_wide_resolution.is_flat()
-        || !is_non_wide_resolution_listed) {
-      // Use twice the size also for the non-scaled mode because many systems
-      // accept 640x480 but not 320x240.
-      // The image will be stretched by a factor of two and the user
-      // won't see a difference.
-      non_wide_resolution = twice_non_wide_resolution;
-    }
-  }
-
-  if (non_wide_resolution.is_flat()) {
-    // Find the lowest fullscreen resolution that can contain the quest size.
-    // The image will be centered on a black background.
-    non_wide_resolution = find_lowest_fullscreen_resolution(quest_size);
-    if (non_wide_resolution.is_flat()) {
-      // No fullscreen resolution was detected. This is weird.
-      // Never mind: the user will play with a window. But there might be
-      // something wrong with our detection of fullscreen resolutions.
-      Debug::error("No available fullscreen resolution was detected.");
-    }
-  }
-  if (!non_wide_resolution.is_flat()) {
-    mode_sizes[FULLSCREEN_NORMAL] = non_wide_resolution;
-  }
-
-  if (twice_non_wide_resolution.is_flat()) {
-    twice_non_wide_resolution = find_lowest_fullscreen_resolution(twice_quest_size);
-  }
-  if (!twice_non_wide_resolution.is_flat()) {
-    mode_sizes[FULLSCREEN_SCALE2X] = twice_non_wide_resolution;
-  }
-
-  // Now let's find a wider resolution that can also contain the quest.
-  // This will look better on wide screens if the quest size is 4:3.
-  Rectangle wide_resolution = find_wide_fullscreen_resolution(quest_size);
-  Rectangle twice_wide_resolution = find_wide_fullscreen_resolution(twice_quest_size);
-  if (!wide_resolution.is_flat()) {
-    // Maybe there is a better resolution when we show twice the size
-    // (same reason as above).
-    if (!twice_wide_resolution.is_flat()
-        && twice_wide_resolution.get_height() / 2 < wide_resolution.get_height()) {
-      // Twice the size is better because we will have less horizontal
-      // black bars (or none).
-      wide_resolution = twice_wide_resolution;
-    }
-  }
-
-  if (!wide_resolution.is_flat()) {
-    mode_sizes[FULLSCREEN_WIDE] = wide_resolution;
-  }
-  if (!twice_wide_resolution.is_flat()) {
-    mode_sizes[FULLSCREEN_SCALE2X_WIDE] = twice_wide_resolution;
-  }
-
-  /*
-  for (int i = 0; i < NB_MODES; i++) {
-    VideoMode mode = VideoMode(i);
-    //std::cout << "Screen size for mode " << get_video_mode_name(mode) << ": " << mode_sizes[mode] << std::endl;
-  }
-  */
+  mode_sizes[FULLSCREEN_SCALE2X] = quest_size_2;
+  mode_sizes[FULLSCREEN_HQ4X] = quest_size_4;
+  mode_sizes[FULLSCREEN_NORMAL] = quest_size;
 }
 

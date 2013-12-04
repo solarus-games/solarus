@@ -29,8 +29,8 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
     bool fast_swimming;            /**< indicates that the hero is currently swimming faster */
     uint32_t end_fast_swim_date;   /**< date when the fast swimming stops */
 
-    int get_slow_swimming_speed();
-    int get_fast_swimming_speed();
+    int get_slow_swimming_speed() const;
+    int get_fast_swimming_speed() const;
     void try_swim_faster();
 
   public:
@@ -38,8 +38,8 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
     SwimmingState(Hero& hero);
     ~SwimmingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
     void set_suspended(bool suspended);
 
@@ -49,8 +49,8 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
     void notify_action_command_pressed();
     void notify_attack_command_pressed();
 
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool can_pick_treasure(EquipmentItem& item);
+    bool is_stairs_obstacle(const Stairs& stairs) const;
+    bool can_pick_treasure(EquipmentItem& item) const;
 };
 
 #endif

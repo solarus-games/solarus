@@ -25,7 +25,7 @@
 #include "entities/Explosion.h"
 
 /**
- * \brief Abstract class representing an enemy.
+ * \brief Represents an enemy.
  *
  * This class stores the attack and defense properties of the enemy.
  * Every enemy sprite must have at least the following animations
@@ -79,67 +79,82 @@ class Enemy: public Detector {
     // creation and destruction
     ~Enemy();
 
-    static MapEntity* create(Game& game,
-        const std::string& breed, Rank rank, const std::string& savegame_variable,
-        const std::string& name, Layer layer, int x, int y, int direction,
+    static MapEntity* create(
+        Game& game,
+        const std::string& breed,
+        Rank rank,
+        const std::string& savegame_variable,
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        int direction,
         const Treasure& treasure);
 
     EntityType get_type() const;
-    bool is_drawn_in_y_order();
+    bool is_drawn_in_y_order() const;
     bool is_ground_observer() const;
 
-    void set_map(Map &map);
+    void set_map(Map& map);
     void notify_map_started();
     void notify_map_opening_transition_finished();
-    Rank get_rank();
+    Rank get_rank() const;
 
     // Enemy properties.
-    const std::string& get_breed();
-    int get_damage();
+    const std::string& get_breed() const;
+    int get_damage() const;
     void set_damage(int damage_on_hero);
-    int get_magic_damage();
+    int get_magic_damage() const;
     void set_magic_damage(int magic_damage_on_hero);
-    int get_life();
+    int get_life() const;
     void set_life(int life);
-    HurtStyle get_hurt_style();
+    HurtStyle get_hurt_style() const;
     void set_hurt_style(HurtStyle hurt_style);
-    bool get_can_attack();
+    bool get_can_attack() const;
     void set_can_attack(bool can_attack);
     bool is_traversable() const;
     void set_traversable(bool traversable);
-    ObstacleBehavior get_obstacle_behavior();
+    ObstacleBehavior get_obstacle_behavior() const;
     void set_obstacle_behavior(ObstacleBehavior obstacle_behavior);
-    bool get_pushed_back_when_hurt();
+    bool get_pushed_back_when_hurt() const;
     void set_pushed_back_when_hurt(bool pushed_back_when_hurt);
-    bool get_push_hero_on_sword();
+    bool get_push_hero_on_sword() const;
     void set_push_hero_on_sword(bool push_hero_on_sword);
-    bool get_can_hurt_hero_running();
+    bool get_can_hurt_hero_running() const;
     void set_can_hurt_hero_running(bool can_hurt_hero_running);
-    int get_minimum_shield_needed();
+    int get_minimum_shield_needed() const;
     void set_minimum_shield_needed(int minimum_shield_needed);
-    const EnemyReaction::Reaction& get_attack_consequence(EnemyAttack attack, Sprite* this_sprite);
-    void set_attack_consequence(EnemyAttack attack, EnemyReaction::ReactionType reaction, int life_lost = 0);
-    void set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
-        EnemyReaction::ReactionType reaction, int life_lost = 0);
+    const EnemyReaction::Reaction& get_attack_consequence(
+        EnemyAttack attack,
+        const Sprite* this_sprite) const;
+    void set_attack_consequence(
+        EnemyAttack attack,
+        EnemyReaction::ReactionType reaction,
+        int life_lost = 0);
+    void set_attack_consequence_sprite(
+        const Sprite& sprite,
+        EnemyAttack attack,
+        EnemyReaction::ReactionType reaction,
+        int life_lost = 0);
     void set_no_attack_consequences();
-    void set_no_attack_consequences_sprite(Sprite& sprite);
+    void set_no_attack_consequences_sprite(const Sprite& sprite);
     void set_default_attack_consequences();
-    void set_default_attack_consequences_sprite(Sprite& sprite);
+    void set_default_attack_consequences_sprite(const Sprite& sprite);
 
     // sprites
-    const std::string& get_animation();
-    void set_animation(const std::string &animation);
+    const std::string& get_animation() const;
+    void set_animation(const std::string& animation);
 
     // obstacles
-    bool is_obstacle_for(MapEntity& other);
-    bool is_destructible_obstacle(Destructible& destructible);
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_low_wall_obstacle();
-    bool is_deep_water_obstacle();
-    bool is_shallow_water_obstacle();
-    bool is_hole_obstacle();
-    bool is_prickle_obstacle();
-    bool is_lava_obstacle();
+    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_destructible_obstacle(const Destructible& destructible) const;
+    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    bool is_low_wall_obstacle() const;
+    bool is_deep_water_obstacle() const;
+    bool is_shallow_water_obstacle() const;
+    bool is_hole_obstacle() const;
+    bool is_prickle_obstacle() const;
+    bool is_lava_obstacle() const;
 
     // enemy state
     void update();
@@ -147,12 +162,7 @@ class Enemy: public Detector {
     void draw_on_map();
 
     void notify_enabled(bool enabled);
-    void notify_obstacle_reached();
-    void notify_position_changed();
-    void notify_layer_changed();
     void notify_ground_below_changed();
-    void notify_movement_changed();
-    void notify_movement_finished();
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
     void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
@@ -160,21 +170,21 @@ class Enemy: public Detector {
     void notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite);
 
     // attack the hero
-    void attack_hero(Hero &hero, Sprite *this_sprite);
+    void attack_hero(Hero& hero, Sprite* this_sprite);
     void attack_stopped_by_hero_shield();
 
     // receive an attack
     void restart();
-    bool is_in_normal_state();
-    bool is_invulnerable();
-    bool is_being_hurt();
-    bool is_immobilized();
-    bool is_killed();
-    bool is_dying_animation_finished();
-    void try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite);
+    bool is_in_normal_state() const;
+    bool is_invulnerable() const;
+    bool is_being_hurt() const;
+    bool is_immobilized() const;
+    bool is_killed() const;
+    bool is_dying_animation_finished() const;
+    void try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite);
     void hurt(MapEntity& source);
     void kill();
-    bool is_dying();
+    bool is_dying() const;
     void set_treasure(const Treasure& treasure);
 
     virtual const std::string& get_lua_type_name() const;
@@ -182,20 +192,26 @@ class Enemy: public Detector {
   private:
 
     // creation
-    Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
-        const std::string& breed, const Treasure& treasure);
+    Enemy(
+        Game& game,
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        const std::string& breed,
+        const Treasure& treasure);
     void initialize();
 
     // hurt the enemy
     void play_hurt_sound();
-    bool is_sprite_finished_or_looping();
+    bool is_sprite_finished_or_looping() const;
     void immobilize();
     void stop_immobilized();
     void custom_attack(EnemyAttack attack, Sprite* this_sprite);
     void notify_hurt(MapEntity& source, EnemyAttack attack, int life_points);
     void notify_dead();
     void notify_immobilized();
-    bool is_saved();
+    bool is_saved() const;
 
     // enemy characteristics
     std::string breed;                  /**< breed of the enemy (determines its sprites and behavior) */

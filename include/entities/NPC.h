@@ -82,23 +82,24 @@ class NPC: public Detector {
 
     EntityType get_type() const;
 
-    bool is_solid();
+    bool is_solid() const;
 
-    bool is_drawn_in_y_order();
-    bool is_obstacle_for(MapEntity& other);
-    bool is_hero_obstacle(Hero& hero);
-    bool is_npc_obstacle(NPC& npc);
-    bool is_enemy_obstacle(Enemy& enemy);
-    bool is_sword_ignored();
+    bool is_drawn_in_y_order() const;
+    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_hero_obstacle(const Hero& hero) const;
+    bool is_npc_obstacle(const NPC& npc) const;
+    bool is_enemy_obstacle(const Enemy& enemy) const;
+    bool is_sword_ignored() const;
 
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_action_command_pressed();
     bool interaction_with_item(EquipmentItem& item);
     void notify_position_changed();
     void notify_movement_finished();
-    bool can_be_lifted();
+    bool can_be_lifted() const;
 
     virtual const std::string& get_lua_type_name() const;
+
 };
 
 #endif

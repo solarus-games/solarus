@@ -48,7 +48,7 @@ Hero::VictoryState::~VictoryState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::VictoryState::start(State* previous_state) {
+void Hero::VictoryState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -58,7 +58,8 @@ void Hero::VictoryState::start(State* previous_state) {
 
   // compute the date when the victory state is considered as finished,
   // but the game may be currently suspended
-  uint32_t start_victory_date = suspended ? when_suspended : System::now();
+  uint32_t start_victory_date = is_suspended() ?
+      get_when_suspended() : System::now();
   end_victory_date = start_victory_date + 1500;
 }
 
@@ -66,7 +67,7 @@ void Hero::VictoryState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::VictoryState::stop(State* next_state) {
+void Hero::VictoryState::stop(const State* next_state) {
 
   State::stop(next_state);
   get_sprites().set_ignore_suspend(false);
@@ -91,6 +92,7 @@ void Hero::VictoryState::update() {
     }
     else {
       // By default, get back to the normal state.
+      Hero& hero = get_hero();
       hero.set_state(new FreeState(hero));
     }
   }
@@ -105,7 +107,7 @@ void Hero::VictoryState::set_suspended(bool suspended) {
   State::set_suspended(suspended);
 
   if (!suspended) {
-    end_victory_date += System::now() - when_suspended;
+    end_victory_date += System::now() - get_when_suspended();
   }
 }
 

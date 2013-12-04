@@ -56,7 +56,7 @@ void RandomPathMovement::update() {
  * \return always false because the movement is restarted as soon as the path is finished
  * or an obstacle is reached
  */
-bool RandomPathMovement::is_finished() {
+bool RandomPathMovement::is_finished() const {
   return false;
 }
 

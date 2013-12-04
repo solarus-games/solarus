@@ -45,8 +45,12 @@ const std::string PathMovement::elementary_moves[] = {
  * \param ignore_obstacles true to make the movement ignore obstacles
  * \param must_be_aligned true to snap the entity to the map grid before moving it
  */
-PathMovement::PathMovement(const std::string& path, int speed,
-    bool loop, bool ignore_obstacles, bool must_be_aligned):
+PathMovement::PathMovement(
+    const std::string& path,
+    int speed,
+    bool loop,
+    bool ignore_obstacles,
+    bool must_be_aligned):
 
   PixelMovement("", 0, false, ignore_obstacles),
   current_direction(6),
@@ -72,7 +76,7 @@ PathMovement::~PathMovement() {
  * \brief Returns the path of this movement.
  * \return the path
  */
-const std::string& PathMovement::get_path() {
+const std::string& PathMovement::get_path() const {
 
   return initial_path;
 }
@@ -93,7 +97,7 @@ void PathMovement::set_path(const std::string& path) {
  * \brief Returns the speed of this movement.
  * \return the speed in pixels per second
  */
-int PathMovement::get_speed() {
+int PathMovement::get_speed() const {
   return speed;
 }
 
@@ -109,8 +113,7 @@ void PathMovement::set_speed(int speed) {
  * \brief Returns whether this movement loops when the end of the path is reached.
  * \return true if the movement loops
  */
-bool PathMovement::get_loop() {
-
+bool PathMovement::get_loop() const {
   return loop;
 }
 
@@ -135,8 +138,7 @@ void PathMovement::set_loop(bool loop) {
  * path starts.
  * \return true if the entity is made aligned to the grid
  */
-bool PathMovement::get_snap_to_grid() {
-
+bool PathMovement::get_snap_to_grid() const {
   return snap_to_grid;
 }
 
@@ -145,7 +147,6 @@ bool PathMovement::get_snap_to_grid() {
  * \param snap_to_grid true to make the entity aligned to the grid
  */
 void PathMovement::set_snap_to_grid(bool snap_to_grid) {
-
   this->snap_to_grid = snap_to_grid;
 }
 
@@ -164,8 +165,12 @@ void PathMovement::notify_object_controlled() {
  */
 void PathMovement::update() {
 
-  if (!is_suspended() && is_current_elementary_move_finished()) {
+  while (!is_suspended()
+      && is_current_elementary_move_finished()
+      && !PathMovement::is_finished()
+      && get_entity() != NULL) {
     start_next_elementary_move();
+    PixelMovement::update();
   }
 
   // Do this at last so that Movement::update() knows whether we are finished.
@@ -180,7 +185,9 @@ void PathMovement::set_suspended(bool suspended) {
 
   PixelMovement::set_suspended(suspended);
 
-  if (!suspended) {
+  if (!suspended
+      && get_when_suspended() != 0
+      && stop_snapping_date != 0) {
     stop_snapping_date += System::now() - get_when_suspended();
   }
 }
@@ -190,9 +197,9 @@ void PathMovement::set_suspended(bool suspended) {
  * \return true if the end of the path was reached or the entity
  * was stopped by an obstacle
  */
-bool PathMovement::is_finished() {
+bool PathMovement::is_finished() const {
 
-  return (PixelMovement::is_finished() && remaining_path.size() == 0 && !loop)
+  return (PixelMovement::is_finished() && remaining_path.empty() && !loop)
       || stopped_by_obstacle;
 }
 
@@ -230,7 +237,7 @@ void PathMovement::notify_step_done(int step_index, bool success) {
  * \brief Returns whether the current move of the path is finished.
  * \return true if the current move is finished
  */
-bool PathMovement::is_current_elementary_move_finished() {
+bool PathMovement::is_current_elementary_move_finished() const {
 
   return PixelMovement::is_finished();
 }
@@ -254,7 +261,7 @@ void PathMovement::start_next_elementary_move() {
 
   // before starting the move, check that the entity is aligned with the 8*8 squares grid if necessary
   if (snap_to_grid && !entity->is_aligned_to_grid()) {
- 
+
     // the entity has to be aligned but is not
     snap();
   }
@@ -264,7 +271,7 @@ void PathMovement::start_next_elementary_move() {
 
     snapping = false;
 
-    if (remaining_path.size() == 0) {
+    if (remaining_path.empty()) {
       // the path is finished
       if (loop) {
         // if the property 'loop' is true, repeat the same path again
@@ -276,7 +283,7 @@ void PathMovement::start_next_elementary_move() {
       }
     }
 
-    if (remaining_path.size() != 0) {
+    if (!remaining_path.empty()) {
       // normal case: there is a next trajectory to do
 
       current_direction = remaining_path[0] - '0';
@@ -308,14 +315,14 @@ uint32_t PathMovement::speed_to_delay(int speed, int direction) {
  * \brief Returns an xy value representing the total distance of this movement.
  * \return the total x and y distance of this movement
  */
-Rectangle PathMovement::get_xy_change() {
+Rectangle PathMovement::get_xy_change() const {
 
   Rectangle xy;
 
   std::string::const_iterator it;
   for (it = initial_path.begin(); it != initial_path.end(); it++) {
     int direction = *it - '0';
-    const Rectangle &xy_move = MapEntity::direction_to_xy_move(direction);
+    const Rectangle& xy_move = MapEntity::direction_to_xy_move(direction);
     xy.add_xy(xy_move.get_x() * 8, xy_move.get_y() * 8);
   }
 
@@ -329,7 +336,7 @@ Rectangle PathMovement::get_xy_change() {
  *
  * \return the current direction (0 to 7)
  */
-int PathMovement::get_current_direction() {
+int PathMovement::get_current_direction() const {
 
   return current_direction;
 }
@@ -339,7 +346,7 @@ int PathMovement::get_current_direction() {
  * \return the total distance in pixels (diagonal moves count for the same distance as non-diagonal moves),
  * not including the possible initial snapping phase
  */
-int PathMovement::get_total_distance_covered() {
+int PathMovement::get_total_distance_covered() const {
   return total_distance_covered;
 }
 
@@ -347,7 +354,7 @@ int PathMovement::get_total_distance_covered() {
  * \brief Returns the direction a sprite controlled by this movement should take.
  * \return the direction to use to display the object controlled by this movement (0 to 3)
  */
-int PathMovement::get_displayed_direction4() {
+int PathMovement::get_displayed_direction4() const {
 
   static const int displayed_directions[] = {0, 0, 1, 2, 2, 2, 3, 0};
   return displayed_directions[current_direction];
@@ -401,7 +408,7 @@ void PathMovement::snap() {
  * \param src current position of the entity
  * \param dst snapped position
  */
-void PathMovement::set_snapping_trajectory(const Rectangle &src, const Rectangle &dst) {
+void PathMovement::set_snapping_trajectory(const Rectangle& src, const Rectangle& dst) {
 
   std::list<Rectangle> trajectory;
   Rectangle xy = src;
@@ -427,9 +434,9 @@ void PathMovement::set_snapping_trajectory(const Rectangle &src, const Rectangle
     trajectory.push_back(Rectangle(dx, dy));
     xy.add_xy(dx, dy);
   }
-  PixelMovement::set_trajectory(trajectory);
   PixelMovement::set_delay(speed_to_delay(speed, 0)); // don't bother adjusting the speed of diagonal moves
   PixelMovement::set_loop(false);
+  PixelMovement::set_trajectory(trajectory);
 }
 
 

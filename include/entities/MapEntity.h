@@ -26,7 +26,7 @@
 #include "entities/EnemyAttack.h"
 #include "entities/EnemyReaction.h"
 #include "lowlevel/Rectangle.h"
-#include <list>
+#include <vector>
 
 struct lua_State;
 
@@ -56,26 +56,28 @@ class MapEntity: public ExportableToLua {
      * \return the type of entity
      */
     virtual EntityType get_type() const = 0;
+    const std::string& get_type_name() const;
     bool is_hero() const;
-    virtual bool is_detector();
-    virtual bool can_be_obstacle();
+    virtual bool is_detector() const;
+    virtual bool can_be_obstacle() const;
     virtual bool is_ground_observer() const;
     virtual const Rectangle get_ground_point() const;
     virtual bool is_ground_modifier() const;
     virtual Ground get_modified_ground() const;
-    virtual bool can_be_drawn();
-    virtual bool is_drawn_in_y_order();
+    virtual bool can_be_drawn() const;
+    virtual bool is_drawn_in_y_order() const;
     virtual bool is_drawn_at_its_position() const;
     bool is_drawn() const;
 
     // adding to a map
     bool is_on_map() const;
-    virtual void set_map(Map &map);
+    virtual void set_map(Map& map);
     Map& get_map() const;
     virtual void notify_map_started();
     virtual void notify_map_opening_transition_finished();
     virtual void notify_tileset_changed();
-    Game& get_game() const;
+    Game& get_game();
+    const Game& get_game() const;
 
     // position in the map
     Layer get_layer() const;
@@ -89,7 +91,7 @@ class MapEntity: public ExportableToLua {
     const Rectangle get_xy() const;
     void set_xy(const Rectangle& xy);
     void set_xy(int x, int y);
-    const Rectangle get_displayed_xy();
+    const Rectangle get_displayed_xy() const;
 
     int get_width() const;
     int get_height() const;
@@ -97,7 +99,6 @@ class MapEntity: public ExportableToLua {
     void set_size(int width, int height);
     void set_size(const Rectangle& size);
     const Rectangle& get_bounding_box() const;
-    void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle& bounding_box);
     const Rectangle& get_origin() const;
     void set_origin(int x, int y);
@@ -120,6 +121,7 @@ class MapEntity: public ExportableToLua {
     void set_aligned_to_grid_y();
 
     int get_optimization_distance() const;
+    int get_optimization_distance2() const;
     void set_optimization_distance(int distance);
 
     bool is_enabled() const;
@@ -135,7 +137,7 @@ class MapEntity: public ExportableToLua {
     bool has_sprite() const;
     Sprite& get_sprite();
     const Sprite& get_sprite() const;
-    const std::list<Sprite*>& get_sprites();
+    const std::vector<Sprite*>& get_sprites();
     Sprite& create_sprite(const std::string& animation_set_id,
         bool enable_pixel_collisions = false);
     void remove_sprite(Sprite& sprite);
@@ -146,10 +148,13 @@ class MapEntity: public ExportableToLua {
     void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
 
-    // movement
+    // Movement.
     Movement* get_movement();
-    void set_movement(Movement *movement);
+    const Movement* get_movement() const;
+    void set_movement(Movement* movement);
     void clear_movement();
+    bool are_movement_notifications_enabled() const;
+    void set_movement_events_enabled(bool notify);
 
     virtual void notify_obstacle_reached();
     virtual void notify_position_changed();
@@ -157,7 +162,11 @@ class MapEntity: public ExportableToLua {
     virtual void notify_ground_below_changed();
     virtual void notify_movement_changed();
     virtual void notify_movement_finished();
+    virtual void notify_moving_by(MapEntity& entity);
+    virtual void notify_moved_by(MapEntity& entity);
+
     Detector* get_facing_entity();
+    const Detector* get_facing_entity() const;
     void set_facing_entity(Detector* facing_entity);
     virtual void notify_facing_entity_changed(Detector* facing_entity);
     static const Rectangle& direction_to_xy_move(int direction8);
@@ -177,6 +186,7 @@ class MapEntity: public ExportableToLua {
     int get_distance(int x, int y) const;
     int get_distance(const MapEntity& other) const;
     int get_distance_to_camera() const;
+    int get_distance_to_camera2() const;
     bool is_in_same_region(const MapEntity& other) const;
 
     // collisions
@@ -207,29 +217,29 @@ class MapEntity: public ExportableToLua {
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
 
-    virtual bool is_obstacle_for(MapEntity& other);
-    virtual bool is_low_wall_obstacle();
-    virtual bool is_shallow_water_obstacle();
-    virtual bool is_deep_water_obstacle();
-    virtual bool is_hole_obstacle();
-    virtual bool is_lava_obstacle();
-    virtual bool is_prickle_obstacle();
-    virtual bool is_ladder_obstacle();
-    virtual bool is_hero_obstacle(Hero& hero);
-    virtual bool is_block_obstacle(Block& block);
-    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    virtual bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    virtual bool is_stairs_obstacle(Stairs& stairs);
-    virtual bool is_sensor_obstacle(Sensor& sensor);
-    virtual bool is_switch_obstacle(Switch& sw);
-    virtual bool is_raised_block_obstacle(CrystalBlock& raised_block);
-    virtual bool is_crystal_obstacle(Crystal& crystal);
-    virtual bool is_npc_obstacle(NPC& npc);
-    virtual bool is_enemy_obstacle(Enemy& enemy);
-    virtual bool is_jumper_obstacle(Jumper& jumper);
-    virtual bool is_destructible_obstacle(Destructible& destructible);
-    virtual bool is_separator_obstacle(Separator& separator);
-    virtual bool is_sword_ignored();
+    virtual bool is_obstacle_for(const MapEntity& other) const;
+    virtual bool is_low_wall_obstacle() const;
+    virtual bool is_shallow_water_obstacle() const;
+    virtual bool is_deep_water_obstacle() const;
+    virtual bool is_hole_obstacle() const;
+    virtual bool is_lava_obstacle() const;
+    virtual bool is_prickle_obstacle() const;
+    virtual bool is_ladder_obstacle() const;
+    virtual bool is_hero_obstacle(const Hero& hero) const;
+    virtual bool is_block_obstacle(const Block& block) const;
+    virtual bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    virtual bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    virtual bool is_stairs_obstacle(const Stairs& stairs) const;
+    virtual bool is_sensor_obstacle(const Sensor& sensor) const;
+    virtual bool is_switch_obstacle(const Switch& sw) const;
+    virtual bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
+    virtual bool is_crystal_obstacle(const Crystal& crystal) const;
+    virtual bool is_npc_obstacle(const NPC& npc) const;
+    virtual bool is_enemy_obstacle(const Enemy& enemy) const;
+    virtual bool is_jumper_obstacle(const Jumper& jumper) const;
+    virtual bool is_destructible_obstacle(const Destructible& destructible) const;
+    virtual bool is_separator_obstacle(const Separator& separator) const;
+    virtual bool is_sword_ignored() const;
 
     // game loop
     bool is_suspended() const;
@@ -240,13 +250,22 @@ class MapEntity: public ExportableToLua {
     virtual const std::string& get_lua_type_name() const;
 
     static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
+    static const std::string entity_type_names[ENTITY_NUMBER + 1];  /** Lua name of each entity type. */
 
   protected:
 
     // creation
-    MapEntity();
-    MapEntity(Layer layer, int x, int y, int width, int height);
-    MapEntity(const std::string& name, int direction, Layer layer, int x, int y, int width, int height);
+    MapEntity(
+        const std::string& name,
+        int direction,
+        Layer layer,
+        int x,
+        int y,
+        int width,
+        int height
+    );
+
+    uint32_t get_when_suspended() const;
 
     void clear_old_movements();
     void clear_old_sprites();
@@ -257,19 +276,22 @@ class MapEntity: public ExportableToLua {
     void update_ground_below();
 
     // easy access to various game objects
-    LuaContext& get_lua_context() const;
-    MapEntities& get_entities() const;
-    Equipment& get_equipment() const;
-    KeysEffect& get_keys_effect() const;
-    GameCommands& get_commands() const;
-    Savegame& get_savegame() const;
-    Hero& get_hero() const;
-
-    // TODO make private
-    bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
-    uint32_t when_suspended;                    /**< indicates when this entity was suspended */
+    LuaContext& get_lua_context();
+    MapEntities& get_entities();
+    const MapEntities& get_entities() const;
+    Equipment& get_equipment();
+    const Equipment& get_equipment() const;
+    KeysEffect& get_keys_effect();
+    GameCommands& get_commands();
+    Savegame& get_savegame();
+    const Savegame& get_savegame() const;
+    Hero& get_hero();
 
   private:
+
+    // No copy constructor or assignment operator.
+    MapEntity(const MapEntity& other);
+    MapEntity& operator=(const MapEntity& other);
 
     MainLoop* main_loop;                        /**< The Solarus main loop. */
     Map* map;                                   /**< The map where this entity is, or NULL
@@ -303,13 +325,14 @@ class MapEntity: public ExportableToLua {
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
-    std::list<Sprite*> sprites;                 /**< sprites representing the entity;
+    std::vector<Sprite*> sprites;               /**< sprites representing the entity;
                                                  * note that some entities manage their sprites themselves rather than using this field */
-    std::list<Sprite*> old_sprites;             /**< sprites to remove and destroy as soon as possible */
+    std::vector<Sprite*> old_sprites;           /**< sprites to remove and destroy as soon as possible */
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
                                                  * NULL indicates that the entity has no movement */
-    std::list<Movement*> old_movements;         /**< old movements to destroy as soon as possible */
+    std::vector<Movement*> old_movements;       /**< old movements to destroy as soon as possible */
+    bool movement_events_enabled;               /**< Whether entity:on_position_changed() and friends should be called. */
     Detector* facing_entity;                    /**< the detector in front of this entity (if any) */
 
     // entity state
@@ -318,8 +341,12 @@ class MapEntity: public ExportableToLua {
                                                  * (if not, it will not be displayed and collisions will not be notified) */
     bool waiting_enabled;                       /**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
 
+    bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
+    uint32_t when_suspended;                    /**< indicates when this entity was suspended */
+
     int optimization_distance;                  /**< above this distance from the visible area,
                                                  * the entity is suspended (0 means infinite) */
+    int optimization_distance2;                 /**< Square of optimization_distance. */
     static const int
         default_optimization_distance = 400;    /**< default value */
 

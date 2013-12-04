@@ -33,8 +33,13 @@
  * \param width width of the entity's rectangle
  * \param height height of the entity's rectangle
  */
-Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
-	       int width, int height):
+Sensor::Sensor(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    int width,
+    int height):
   Detector(COLLISION_INSIDE | COLLISION_RECTANGLE, name, layer, x, y, width, height),
   activated_by_hero(false),
   notifying_script(false) {
@@ -54,14 +59,14 @@ Sensor::~Sensor() {
  * \return the type of entity
  */
 EntityType Sensor::get_type() const {
-  return SENSOR;
+  return ENTITY_SENSOR;
 }
 
 /**
  * \brief Returns whether entities of this type can be drawn.
  * \return true if this type of entity can be drawn
  */
-bool Sensor::can_be_drawn() {
+bool Sensor::can_be_drawn() const {
   return false;
 }
 
@@ -70,7 +75,7 @@ bool Sensor::can_be_drawn() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Sensor::is_obstacle_for(MapEntity &other) {
+bool Sensor::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_sensor_obstacle(*this);
 }
@@ -80,7 +85,7 @@ bool Sensor::is_obstacle_for(MapEntity &other) {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Sensor::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_sensor(*this, collision_mode);
 }
@@ -114,7 +119,6 @@ void Sensor::activate(Hero& hero) {
     notifying_script = true;
     get_lua_context().sensor_on_activated(*this);
     notifying_script = false;
-    get_hero().reset_movement();
   }
   else {
     if (!notifying_script && !get_game().is_suspended()) {
@@ -136,6 +140,12 @@ void Sensor::update() {
     // check whether the hero is still present
     if (!test_collision_inside(get_hero())) {
       activated_by_hero = false;
+
+      // Notify Lua.
+      notifying_script = true;
+      get_lua_context().sensor_on_left(*this);
+      notifying_script = false;
     }
   }
 }
+

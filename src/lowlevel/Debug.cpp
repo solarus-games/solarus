@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Debug.h"
+#include <SDL_messagebox.h>
 
 namespace {
 
@@ -52,16 +53,18 @@ void Debug::error(const std::string& message) {
 }
 
 /**
- * \brief Throws an exception if the specified assertion fails.
- *
- * If the assertion fails, shows an error message and aborts.
- * The error message is saved in error.txt.
- * This function should be used to detect fatal errors only, that is,
- * internal errors in the C++ code that require to stop the program.
- *
- * \param assertion The boolean condition to check.
- * \param error_message The error message to attach to print when the
- * assertion fails.
+ * \brief Like Debug::check_assertion(bool, const std::string&), but avoids
+ * a useless conversion to std::string when the assertion is true.
+ */
+void Debug::check_assertion(bool assertion, const char* error_message) {
+
+  if (!assertion) {
+    die(error_message);
+  }
+}
+
+/**
+ * \overload
  */
 void Debug::check_assertion(bool assertion, const std::string& error_message) {
 
@@ -85,6 +88,13 @@ void Debug::die(const std::string& error_message) {
   }
   error_output_file << "Fatal: " << error_message << std::endl << std::flush;
   std::cerr << "Fatal: " << error_message << std::endl;
+
+  SDL_ShowSimpleMessageBox(
+      SDL_MESSAGEBOX_ERROR,
+      "Error",
+      error_message.c_str(),
+      NULL);
+
   std::abort();
 }
 

@@ -63,16 +63,16 @@ Game& DialogBox::get_game() {
  * \brief Returns whether the dialog box is currently active.
  * \return true if the dialog box is enabled
  */
-bool DialogBox::is_enabled() {
+bool DialogBox::is_enabled() const {
 
-  return dialog_id.size() > 0;
+  return !dialog_id.empty();
 }
 
 /**
  * \brief Returns the id of the current dialog.
  * \return the id of the dialog currently shown
  */
-const std::string& DialogBox::get_dialog_id() {
+const std::string& DialogBox::get_dialog_id() const {
   return dialog_id;
 }
 
@@ -189,7 +189,7 @@ void DialogBox::close(int status_ref) {
  * current 3 lines in the built-in dialog box.
  * \return \c true if there are more lines.
  */
-bool DialogBox::has_more_lines() {
+bool DialogBox::has_more_lines() const {
   return !remaining_lines.empty();
 }
 

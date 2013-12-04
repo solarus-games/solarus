@@ -15,7 +15,7 @@ It can also be created dynamically with
 
 Enemies can exist in various breeds.
 Each breed corresponds to a model of enemy with
-its the behavior, its
+its behavior, its
 \ref lua_api_sprite "sprites" and its
 \ref lua_api_movement "movements".
 
@@ -283,7 +283,7 @@ unless the ones that you override with
   - \c "ignored": Nothing happens. The weapon (if any) traverses the enemy.
   - \c "protected": The enemy stops the attack. A attack failure sound is
     played.
-  - \c "immobilize": The enemy is immobilized for a few seconds.
+  - \c "immobilized": The enemy is immobilized for a few seconds.
   - \c "custom": Event \ref lua_api_enemy_on_custom_attack_received
     "enemy:on_custom_attack_received()" is called.
 
@@ -402,12 +402,18 @@ The default value is \c "normal".
 
 Sets the size of the bounding box of this enemy.
 
-The default value is 16x16 pixels.
+The default value is \c 16x16 pixels.
 This is the effective size used to detect obstacles when moving,
 but the \ref lua_api_sprite "sprite"
 of the enemy may be larger, especially for a boss.
 - \c width (number): Width of the enemy in pixels.
 - \c height (number): Height of the enemy in pixels.
+
+\remark Collisions with the
+  \ref lua_api_hero "hero" are pixel-precise and use the sprite of the enemy,
+  not his bounding box.
+  Therefore, this function has no influence on collisions with the hero, but
+  only on the detection of obstacles of the map when the enemy moves.
 
 \subsection lua_api_enemy_set_origin enemy:set_origin(origin_x, origin_y)
 
@@ -428,7 +434,8 @@ The origin point is also the point of synchronization of an entity with its
 \ref lua_api_sprite "sprites" (because again, an entity that has a given
 size may have sprites with different sizes).
 
-The default values is \c 0x0 and should be changed for most enemies.
+The default values is <tt>8,13</tt> and is usually okay for enemies of size
+\c 16x16.
 See \ref lua_api_entity_get_origin "entity:get_origin()" for more explanations
 about the origin point.
 - \c origin_x (number): X coordinate of the origin point in pixels,
@@ -621,35 +628,6 @@ You may display additional things below the enemy.
 Called just after the enemy is drawn on the map.
 You may display additional things above the enemy.
 
-\subsection lua_api_enemy_on_position_changed enemy:on_position_changed(x, y, layer)
-
-Called when the coordinates of this enemy have just changed.
-- \c x (number): The new X coordinate of the enemy.
-- \c y (number): The new Y coordinate of the enemy.
-- \c layer (number): The new layer of the enemy.
-
-\subsection lua_api_enemy_on_obstacle_reached enemy:on_obstacle_reached(movement)
-
-Called when the \ref lua_api_movement "movement"
-of this enemy was stopped because of an obstacle.
-
-When an obstacle is reached, this event is called instead of
-\ref lua_api_enemy_on_position_changed "enemy:on_position_changed()".
-- \c movement (\ref lua_api_movement "movement"): The movement of the enemy.
-
-\subsection lua_api_enemy_on_movement_changed enemy:on_movement_changed(movement)
-
-Called when some characteristics of this enemy's
-\ref lua_api_movement "movement"
-(like the speed or the angle) have just changed.
-- \c movement (\ref lua_api_movement "movement"): The movement of the enemy.
-
-\subsection lua_api_enemy_on_movement_finished enemy:on_movement_finished()
-
-Called when the
-\ref lua_api_movement "movement"
-of the enemy is finished (if there is an end).
-
 \subsection lua_api_enemy_on_collision_enemy enemy:on_collision_enemy(other_enemy, other_sprite, my_sprite)
 
 Called when a \ref lua_api_sprite "sprite"
@@ -677,7 +655,7 @@ special reaction, etc.
 \subsection lua_api_enemy_on_hurt enemy:on_hurt(attack, life_lost)
 
 Called when this enemy was just hurt.
-- \c The attack that was received:
+- \c attack (string): The attack that was received:
   \c "sword", \c "thrown_item", \c "explosion",
   \c "arrow", \c "hookshot", \c "boomerang" or \c "fire".
 - \c life_lost (number): The number of life points just lost by the enemy.

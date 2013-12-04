@@ -42,7 +42,7 @@ Hero::GrabbingState::~GrabbingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::GrabbingState::start(State *previous_state) {
+void Hero::GrabbingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -60,6 +60,7 @@ void Hero::GrabbingState::update() {
   int sprite_direction8 = get_sprites().get_animation_direction8();
 
   // release the obstacle
+  Hero& hero = get_hero();
   if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
     hero.set_state(new FreeState(hero));
   }
@@ -79,7 +80,7 @@ void Hero::GrabbingState::update() {
  * \brief Returns whether the hero is grabbing or pulling an entity in this state.
  * \return true if the hero is grabbing or pulling an entity
  */
-bool Hero::GrabbingState::is_grabbing_or_pulling() {
+bool Hero::GrabbingState::is_grabbing_or_pulling() const {
   return true;
 }
 
@@ -89,7 +90,7 @@ bool Hero::GrabbingState::is_grabbing_or_pulling() {
  * (or NULL if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::GrabbingState::can_be_hurt(Enemy* attacker) {
+bool Hero::GrabbingState::can_be_hurt(Enemy* attacker) const {
   return true;
 }
 
@@ -98,7 +99,7 @@ bool Hero::GrabbingState::can_be_hurt(Enemy* attacker) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::GrabbingState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::GrabbingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 

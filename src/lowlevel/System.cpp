@@ -24,6 +24,9 @@
 #include "lowlevel/InputEvent.h"
 #include "Sprite.h"
 #include <SDL.h>
+#ifdef SOLARUS_USE_APPLE_POOL 
+#  include "lowlevel/apple/AppleInterface.h"
+#endif
 
 uint32_t System::ticks = 0;
 
@@ -38,6 +41,11 @@ uint32_t System::ticks = 0;
  */
 void System::initialize(int argc, char** argv) {
 
+#ifdef SOLARUS_USE_APPLE_POOL 
+  // initialize pool if any
+  initPool();
+#endif
+  
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
 
@@ -77,6 +85,9 @@ void System::quit() {
   FileTools::quit();
 
   SDL_Quit();
+#ifdef SOLARUS_USE_APPLE_POOL 
+  drainPool();
+#endif
 }
 
 /**
@@ -86,16 +97,36 @@ void System::quit() {
  */
 void System::update() {
 
-  ticks = SDL_GetTicks();
+  // Use a constant timestep here to have deterministic updates.
+  ticks += timestep;
   Sound::update();
 }
 
 /**
- * \brief Returns the number of milliseconds elapsed since the beginning of the program.
- * \return the number of milliseconds elapsed since the beginning of the program
+ * \brief Returns the number of simulated milliseconds elapsed since the
+ * beginning of the program.
+ *
+ * Corresponds to the real time unless the system is too slow to play at
+ * normal speed.
+ *
+ * \return The number of simulated milliseconds elapsed since the beginning
+ * of the program.
  */
 uint32_t System::now() {
   return ticks;
+}
+
+/**
+ * \brief Returns the number of real milliseconds elapsed since the beginning of
+ * the program.
+ *
+ * This function is not deterministic, so use it at your own risks.
+ *
+ * \return The number of milliseconds elapsed since the beginning of the
+ * program.
+ */
+uint32_t System::get_real_time() {
+  return SDL_GetTicks();
 }
 
 /**

@@ -46,14 +46,12 @@ class Surface: public Drawable {
       DIR_SPRITES,     /**< the sprites subdirectory of the data package (default) */
       DIR_LANGUAGE     /**< the language-specific image directory of the data package, for the current language */
     };
-
-  public:
-
+  
     Surface(int width, int height);
-    Surface(const Rectangle& size);
+    explicit Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
-    Surface(SDL_Surface* internal_surface);
-    Surface(const Surface& other);
+    explicit Surface(SDL_Surface* internal_surface);
+    explicit Surface(Surface& other);
     ~Surface();
 
     static Surface* create_from_file(const std::string& file_name,
@@ -63,34 +61,38 @@ class Surface: public Drawable {
     int get_height() const;
     const Rectangle get_size() const;
 
-    Color get_transparency_color();
+    Color get_transparency_color() const;
     void set_transparency_color(const Color& color);
     void set_opacity(int opacity);
-    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
-
-    void draw_region(const Rectangle& src_position, Surface& dst_surface);
-    void draw_region(const Rectangle& src_position, Surface& dst_surface, const Rectangle& dst_position);
 
     const std::string& get_lua_type_name() const;
 
   protected:
 
-    // implementation from Drawable
-    void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
-    void raw_draw_region(const Rectangle& region,
-        Surface& dst_surface, const Rectangle& dst_position);
+    // Implementation from Drawable.
+    void raw_draw(
+        Surface& dst_surface,
+        const Rectangle& dst_position);
+    void raw_draw_region(
+        const Rectangle& region,
+        Surface& dst_surface,
+        const Rectangle& dst_position);
     void draw_transition(Transition& transition);
+    Surface& get_transition_surface();
 
   private:
 
-    SDL_Surface* internal_surface;               /**< the SDL_Surface encapsulated */
-    bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
-
-    uint32_t get_pixel32(int idx_pixel);
-    uint32_t get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format);
+    uint32_t get_pixel(int index) const;
+    bool is_pixel_transparent(int index) const;
+  
     SDL_Surface* get_internal_surface();
+
+    SDL_Surface* internal_surface;     /**< the SDL_Surface encapsulated */
+    bool owns_internal_surface;        /**< indicates that internal_surface belongs to this object */
+    bool with_colorkey;
+    uint32_t colorkey;
 };
 
 #endif

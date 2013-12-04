@@ -44,22 +44,21 @@ class MapEntities {
 
     // entities
     Hero& get_hero();
-    Ground get_tile_ground(Layer layer, int x, int y);
-    Ground get_ground(Layer layer, int x, int y);
-    Ground get_ground(Layer layer, const Rectangle& xy);
+    Ground get_tile_ground(Layer layer, int x, int y) const;
     const std::list<MapEntity*>& get_obstacle_entities(Layer layer);
     const std::list<MapEntity*>& get_ground_observers(Layer layer);
+    const std::list<MapEntity*>& get_ground_modifiers(Layer layer);
     const std::list<Detector*>& get_detectors();
     const std::list<Stairs*>& get_stairs(Layer layer);
     const std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
-    const std::list<Separator*>& get_separators();
+    const std::list<const Separator*>& get_separators() const;
     Destination* get_default_destination();
 
     MapEntity* get_entity(const std::string& name);
     MapEntity* find_entity(const std::string& name);
     std::list<MapEntity*> get_entities_with_prefix(const std::string& prefix);
     std::list<MapEntity*> get_entities_with_prefix(EntityType type, const std::string& prefix);
-    bool has_entity_with_prefix(const std::string& prefix);
+    bool has_entity_with_prefix(const std::string& prefix) const;
 
     // handle entities
     void add_entity(MapEntity* entity);
@@ -107,7 +106,10 @@ class MapEntities {
     int map_height8;                                /**< number of 8x8 squares on a column of the map grid */
 
     // tiles
-    std::vector<Tile*> tiles[LAYER_NB];             /**< all tiles of the map (a vector for each layer) */
+    std::vector<Tile*> tiles[LAYER_NB];             /**< All tiles of the map (a vector for each layer).
+                                                     * Note: the only reason why we keep them at runtime
+                                                     * is in case the tileset changes. Otherwise, they are
+                                                     * optimized and never used individually.*/
     int tiles_grid_size;                            /**< number of 8x8 squares in the map
                                                      * (tiles_grid_size = map_width8 * map_height8) */
     Ground* tiles_ground[LAYER_NB];                 /**< array of size tiles_grid_size representing the ground property
@@ -154,7 +156,7 @@ class MapEntities {
     std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
     std::list<CrystalBlock*>
       crystal_blocks[LAYER_NB];                     /**< all crystal blocks of the map */
-    std::list<Separator*> separators;               /**< all separators of the map */
+    std::list<const Separator*> separators;         /**< all separators of the map */
 
     Boomerang* boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
     std::string music_before_miniboss;              /**< the music that was played before starting a miniboss fight */
@@ -175,7 +177,7 @@ class MapEntities {
  * \param y Y coordinate of the point.
  * \return The ground of the highest tile at this place.
  */
-inline Ground MapEntities::get_tile_ground(Layer layer, int x, int y) {
+inline Ground MapEntities::get_tile_ground(Layer layer, int x, int y) const {
 
   // Warning: this function is called very often so it has been optimized and
   // should remain so.

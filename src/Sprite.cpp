@@ -72,7 +72,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string& id) {
     all_animation_sets[id] = animation_set;
   }
 
-  Debug::check_assertion(animation_set != NULL);
+  Debug::check_assertion(animation_set != NULL, "No animation set");
 
   return *animation_set;
 }
@@ -681,7 +681,8 @@ void Sprite::update() {
  * \param dst_position Coordinates on the destination surface
  * (the origin will be placed at this position).
  */
-void Sprite::raw_draw(Surface& dst_surface,
+void Sprite::raw_draw(
+    Surface& dst_surface,
     const Rectangle& dst_position) {
 
   if (!is_animation_finished()
@@ -704,22 +705,58 @@ void Sprite::raw_draw(Surface& dst_surface,
 
 /**
  * \brief Draws a subrectangle of the current frame of this sprite.
- * \param region The subrectangle to draw, relative to the top-left corner
- * of the current frame.
+ * \param region The subrectangle to draw, relative to the origin point.
+ * It may be bigger than the frame: in this case it will be clipped.
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
+ * The origin point of the sprite will appear at these coordinates.
  */
-void Sprite::raw_draw_region(const Rectangle& region,
-    Surface& dst_surface, const Rectangle& dst_position) {
+void Sprite::raw_draw_region(
+    const Rectangle& region,
+    Surface& dst_surface,
+    const Rectangle& dst_position) {
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    current_animation->draw(get_intermediate_surface(), get_origin(),
-        current_direction, current_frame);
+    get_intermediate_surface().fill_with_color(Color::get_black());
+    const Rectangle& origin = get_origin();
+    current_animation->draw(
+        get_intermediate_surface(),
+        origin,
+        current_direction,
+        current_frame);
+
+    // If the region is bigger than the current frame, clip it.
+    // Otherwise, more than the current frame could be visible.
+    Rectangle src_position(region);
+    src_position.add_xy(origin.get_x(), origin.get_y());
+    const Rectangle& frame_size = get_size();
+    if (src_position.get_x() < 0) {
+      src_position.set_width(src_position.get_width() + src_position.get_x());
+      src_position.set_x(0);
+    }
+    if (src_position.get_x() + src_position.get_width() > frame_size.get_width()) {
+      src_position.set_width(frame_size.get_width() - src_position.get_x());
+    }
+    if (src_position.get_y() < 0) {
+      src_position.set_height(src_position.get_height() + src_position.get_y());
+      src_position.set_y(0);
+    }
+    if (src_position.get_y() + src_position.get_height() > frame_size.get_height()) {
+      src_position.set_height(frame_size.get_height() - src_position.get_y());
+    }
+
+    if (src_position.get_width() <= 0 || src_position.get_height() <= 0) {
+      // Nothing remains visible.
+      return;
+    }
+
+    // Calculate the destination coordinates.
     Rectangle dst_position2(dst_position);
-    dst_position2.add_xy(-get_origin().get_x(), -get_origin().get_y());
-    get_intermediate_surface().draw_region(region, dst_surface, dst_position2);
+    dst_position2.add_xy(src_position.get_x(), src_position.get_y());  // Let a space for the part outside the region.
+    dst_position2.add_xy(-origin.get_x(), -origin.get_y());  // Input coordinates were relative to the origin.
+    get_intermediate_surface().draw_region(src_position, dst_surface, dst_position2);
   }
 }
 
@@ -734,6 +771,15 @@ void Sprite::draw_transition(Transition& transition) {
 }
 
 /**
+ * \brief Returns the surface where transitions on this drawable object
+ * are applied.
+ * \return The surface for transitions.
+ */
+Surface& Sprite::get_transition_surface() {
+  return get_intermediate_surface();
+}
+
+/**
  * \brief Returns the intermediate surface used for transitions and other
  * effects for this sprite.
  *
@@ -741,7 +787,7 @@ void Sprite::draw_transition(Transition& transition) {
  *
  * \return The intermediate surface of this sprite.
  */
-Surface& Sprite::get_intermediate_surface() {
+Surface& Sprite::get_intermediate_surface() const {
 
   if (intermediate_surface == NULL) {
     intermediate_surface = new Surface(get_max_size());

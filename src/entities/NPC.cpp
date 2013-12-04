@@ -88,7 +88,7 @@ NPC::~NPC() {
  * \return the type of entity
  */
 EntityType NPC::get_type() const {
-  return NON_PLAYING_CHARACTER;
+  return ENTITY_NPC;
 }
 
 /**
@@ -96,7 +96,7 @@ EntityType NPC::get_type() const {
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
-bool NPC::is_drawn_in_y_order() {
+bool NPC::is_drawn_in_y_order() const {
   // usual NPCs are displayed like the hero whereas generalized NPCs are
   // not necessarily people
   return subtype == USUAL_NPC;
@@ -127,7 +127,7 @@ void NPC::initialize_sprite(const std::string& sprite_name, int initial_directio
  *
  * \return true if the NPC is a solid object
  */
-bool NPC::is_solid() {
+bool NPC::is_solid() const {
 
   return subtype != USUAL_NPC;
 }
@@ -137,7 +137,7 @@ bool NPC::is_solid() {
  * \param other another entity
  * \return true
  */
-bool NPC::is_obstacle_for(MapEntity& other) {
+bool NPC::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_npc_obstacle(*this);
 }
@@ -147,7 +147,7 @@ bool NPC::is_obstacle_for(MapEntity& other) {
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity
  */
-bool NPC::is_hero_obstacle(Hero& hero) {
+bool NPC::is_hero_obstacle(const Hero& hero) const {
   return true;
 }
 
@@ -156,7 +156,7 @@ bool NPC::is_hero_obstacle(Hero& hero) {
  * \param npc an NPC
  * \return true if this NPC is currently considered as an obstacle by this entity
  */
-bool NPC::is_npc_obstacle(NPC& npc) {
+bool NPC::is_npc_obstacle(const NPC& npc) const {
   // usual NPCs can traverse each other
   return subtype != USUAL_NPC || npc.subtype != USUAL_NPC;
 }
@@ -166,7 +166,7 @@ bool NPC::is_npc_obstacle(NPC& npc) {
  * \param enemy an enemy
  * \return true if this enemy is currently considered as an obstacle by this entity
  */
-bool NPC::is_enemy_obstacle(Enemy& enemy) {
+bool NPC::is_enemy_obstacle(const Enemy& enemy) const {
 
   // usual NPCs can traverse enemies
   return subtype != USUAL_NPC;
@@ -179,7 +179,7 @@ bool NPC::is_enemy_obstacle(Enemy& enemy) {
  *
  * \return true if the sword is ignored
  */
-bool NPC::is_sword_ignored() {
+bool NPC::is_sword_ignored() const {
 
   // usual NPCs ignore the sword (we don't want a sword tapping sound with them)
   return subtype == USUAL_NPC;
@@ -215,7 +215,7 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
       }
     }
   }
-  else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == FIRE) {
+  else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == ENTITY_FIRE) {
 
     if (behavior == BEHAVIOR_ITEM_SCRIPT) {
       EquipmentItem& item = get_equipment().get_item(item_name);
@@ -262,8 +262,14 @@ void NPC::notify_action_command_pressed() {
       // lift the entity
       if (get_equipment().has_ability("lift")) {
 
-        hero.start_lifting(new CarriedItem(hero, *this,
-            get_sprite().get_animation_set_id(), "stone", 2, 0));
+        hero.start_lifting(new CarriedItem(
+            hero,
+            *this,
+            get_sprite().get_animation_set_id(),
+            "stone",
+            2,
+            0)
+        );
         Sound::play("lift");
         remove_from_map();
       }
@@ -344,9 +350,7 @@ void NPC::notify_movement_finished() {
   Detector::notify_movement_finished();
 
   if (subtype == USUAL_NPC) {
-
     get_sprite().set_current_animation("stopped");
-    get_lua_context().npc_on_movement_finished(*this);
   }
 }
 
@@ -354,7 +358,7 @@ void NPC::notify_movement_finished() {
 /**
  * \brief Returns whether this interactive entity can be lifted.
  */
-bool NPC::can_be_lifted() {
+bool NPC::can_be_lifted() const {
 
   // there is currently no way to specify from the data file of the map
   // that an interactive entity can be lifted (nor its weight, damage, sound, etc) so this is hardcoded

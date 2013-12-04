@@ -76,7 +76,7 @@ int LuaContext::file_api_open(lua_State* l) {
         // Not found.
         lua_pushnil(l);
         push_string(l, std::string("Cannot find file '") + file_name
-            + "' in the quest write directory, in data or in data.solarus");
+            + "' in the quest write directory, in data/, data.solarus or in data.solarus.zip");
         return 2;
 
       case FileTools::LOCATION_WRITE_DIRECTORY:

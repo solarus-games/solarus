@@ -31,7 +31,10 @@
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  internal_surface_created(true) {
+  internal_surface(NULL),
+  owns_internal_surface(true),
+  with_colorkey(false),
+  colorkey(0) {
 
   Debug::check_assertion(width > 0 && height > 0,
       "Attempt to create a surface with an empty size");
@@ -46,12 +49,15 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(const Rectangle& size):
   Drawable(),
-  internal_surface_created(true) {
+  internal_surface(NULL),
+  owns_internal_surface(true),
+  with_colorkey(false),
+  colorkey(0) {
 
   Debug::check_assertion(size.get_width() > 0 && size.get_height() > 0, "Empty surface");
 
   this->internal_surface = SDL_CreateRGBSurface(
-      SDL_HWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+      SDL_SWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
 }
 
 /**
@@ -64,7 +70,10 @@ Surface::Surface(const Rectangle& size):
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   Drawable(),
-  internal_surface_created(true) {
+  internal_surface(NULL),
+  owns_internal_surface(true),
+  with_colorkey(false),
+  colorkey(0) {
 
   std::string prefix = "";
   bool language_specific = false;
@@ -88,6 +97,8 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
 
   Debug::check_assertion(internal_surface != NULL, StringConcat() <<
       "Cannot load image '" << prefixed_file_name << "'");
+    
+  with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
 }
 
 /**
@@ -96,25 +107,38 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * This constructor must be used only by lowlevel classes that manipulate directly
  * SDL dependent surfaces.
  *
- * \param internal_surface the internal surface data (the destructor will not free it)
+ * \param internal_surface The internal surface data. It won't be copied.
+ * It must remain valid during the lifetime of this surface.
+ * The destructor will not free it.
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
   internal_surface(internal_surface),
-  internal_surface_created(false) {
+  owns_internal_surface(false),
+  with_colorkey(false),
+  colorkey(0) {
 
+  with_colorkey = SDL_GetColorKey(internal_surface, &colorkey) == 0;
 }
 
 /**
- * \brief Copy constructor.
- * \param other a surface to copy
+ * \brief Creates a surface from an existing surface.
+ *
+ * The internal surface encapsulated is not copied: its ownership is
+ * transferred to the new one.
+ * Use with care!
+ * Transitions and movements applied on the existing surface are not copied.
+ *
+ * \param other A surface to copy.
  */
-Surface::Surface(const Surface& other):
+Surface::Surface(Surface& other):
   Drawable(),
-  internal_surface(SDL_ConvertSurface(other.internal_surface,
-      other.internal_surface->format, other.internal_surface->flags)),
-  internal_surface_created(true) {
+  internal_surface(other.internal_surface),
+  owns_internal_surface(other.owns_internal_surface),
+  with_colorkey(other.with_colorkey),
+  colorkey(other.colorkey) {
 
+  other.owns_internal_surface = false;
 }
 
 /**
@@ -122,7 +146,7 @@ Surface::Surface(const Surface& other):
  */
 Surface::~Surface() {
 
-  if (internal_surface_created) {
+  if (owns_internal_surface) {
     SDL_FreeSurface(internal_surface);
   }
 }
@@ -171,7 +195,7 @@ Surface* Surface::create_from_file(const std::string& file_name,
   }
 
   Surface* surface = new Surface(internal_surface);
-  surface->internal_surface_created = true;
+  surface->owns_internal_surface = true;
   return surface;
 }
 
@@ -204,12 +228,17 @@ const Rectangle Surface::get_size() const {
  * \brief Returns the transparency color of this surface.
  *
  * Pixels in that color will not be drawn.
+ * Return black if no colorkey is found.
  *
  * \return The transparency color.
  */
-Color Surface::get_transparency_color() {
+Color Surface::get_transparency_color() const {
 
-  return Color(internal_surface->format->colorkey);
+  if (with_colorkey) {
+    return Color(colorkey);
+  }
+  
+  return Color();
 }
 
 /**
@@ -221,44 +250,19 @@ Color Surface::get_transparency_color() {
  */
 void Surface::set_transparency_color(const Color& color) {
 
-  SDL_SetColorKey(internal_surface, SDL_SRCCOLORKEY, color.get_internal_value());
+  with_colorkey = true;
+  colorkey = color.get_internal_value();
+  SDL_SetColorKey(internal_surface, SDL_TRUE, colorkey);
 }
 
 /**
  * \brief Sets the opacity of this surface.
- * \param opacity the opacity (0 to 255)
+ * \param opacity the opacity (0 to 255).
  */
 void Surface::set_opacity(int opacity) {
 
-  // SDL has a special handling of the alpha value 128
-  // which doesn't work well with my computer
-  if (opacity == 128) {
-    opacity = 127;
-  }
-
-  SDL_SetAlpha(internal_surface, SDL_SRCALPHA, opacity);
-}
-
-/**
- * \brief Restricts drawing on this surface to a subarea.
- *
- * Sets a subarea of the surface where the next drawings will be restricted to
- * when this surface is used as the destination of blitting.
- * A zero-sized rectangle means that drawings are not restricted to a subarea of the surface.
- * The rectangle specified may be partially outside this rectangle
- * (then it will be resized to fit inside).
- *
- * \param clipping_rectangle a subarea of the rectangle to restrict the drawing to
- */
-void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
-
-  if (clipping_rectangle.get_width() == 0) {
-    SDL_SetClipRect(internal_surface, NULL);
-  }
-  else {
-    Rectangle copy = clipping_rectangle;
-    SDL_SetClipRect(internal_surface, copy.get_internal_rect());
-  }
+  SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
+  SDL_SetSurfaceAlphaMod(internal_surface, opacity);
 }
 
 /**
@@ -284,8 +288,7 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void Surface::raw_draw(Surface& dst_surface,
-    const Rectangle& dst_position) {
+void Surface::raw_draw(Surface& dst_surface, const Rectangle& dst_position) {
 
   // Make a copy of the rectangle because SDL_BlitSurface modifies it.
   Rectangle dst_position2(dst_position);
@@ -299,8 +302,10 @@ void Surface::raw_draw(Surface& dst_surface,
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
  */
-void Surface::raw_draw_region(const Rectangle& region,
-    Surface& dst_surface, const Rectangle& dst_position) {
+void Surface::raw_draw_region(
+    const Rectangle& region,
+    Surface& dst_surface,
+    const Rectangle& dst_position) {
 
   // Make a copy of the rectangle because SDL_BlitSurface modifies it.
   Rectangle region2(region);
@@ -318,96 +323,96 @@ void Surface::draw_transition(Transition& transition) {
 }
 
 /**
- * \brief Blits a region of this surface on another surface.
- *
- * The top-left corner of the source subarea will be blitted on the other's surface top-left corner.
- *
- * \param src_position the subrectangle of this surface to pick
- * \param dst_surface the destination surface
+ * \brief Returns the surface where transitions on this drawable object
+ * are applied.
+ * \return The surface for transitions.
  */
-void Surface::draw_region(const Rectangle& src_position, Surface& dst_surface) {
-
-  Rectangle src_position2(src_position);
-  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(),
-      dst_surface.internal_surface, NULL);
-}
-
-/**
- * \brief Blits a region of this surface on a specified location of another surface.
- * \param src_position the subrectangle of this surface to pick
- * \param dst_surface the destination surface
- * \param dst_position the destination position where the current surface will be blitted on dst
- */
-void Surface::draw_region(const Rectangle &src_position, Surface& dst_surface,
-    const Rectangle &dst_position) {
-
-  Rectangle src_position2(src_position);
-  Rectangle dst_position2(dst_position);
-  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(),
-      dst_surface.internal_surface, dst_position2.get_internal_rect());
+Surface& Surface::get_transition_surface() {
+  return *this;
 }
 
 /**
  * \brief Returns the SDL surface encapsulated by this object.
  *
- * This method should be used only by low-level classes.
+ * This method should only be used by low-level classes.
  *
- * \return the SDL surface encapsulated
+ * \return The SDL surface encapsulated.
  */
 SDL_Surface* Surface::get_internal_surface() {
   return internal_surface;
 }
 
 /**
- * \brief Return the 32bits pixel
- * \param idx_pixel The index of the pixel to cast, can be any depth between 1 and 32 bits
- * \return The casted 32bits pixel.
+ * \brief Returns a pixel value of this surface.
+ *
+ * The pixel format is preserved: if it is lower than 32 bpp, then the unused
+ * upper bits of the value are is padded with zeros.
+ *
+ * \param index Index of the pixel to get.
+ * \return The value of this pixel.
  */
-uint32_t Surface::get_pixel32(int idx_pixel) {
+uint32_t Surface::get_pixel(int index) const {
 
-  uint32_t pixel = 0;
   SDL_PixelFormat* format = internal_surface->format;
 
-  // In order from the most used to the most exotic
+  // Test from the most common to the most exotic.
   switch (format->BytesPerPixel) {
+
     case 1:
-      pixel = ((uint8_t*) internal_surface->pixels)[idx_pixel];
-      break;
+      {
+        uint8_t* pixels = static_cast<uint8_t*>(internal_surface->pixels);
+        return pixels[index];
+      }
+
     case 4:
-      pixel = ((uint32_t*) internal_surface->pixels)[idx_pixel];
-      break;
+      {
+        uint32_t* pixels = static_cast<uint32_t*>(internal_surface->pixels);
+        return pixels[index];
+      }
+
     case 2:
-      pixel = ((uint16_t*) internal_surface->pixels)[idx_pixel];
-      break;
+      {
+        uint16_t* pixels = static_cast<uint16_t*>(internal_surface->pixels);
+        return pixels[index];
+      }
+
     case 3:
-      // Manual cast of the pixel into uint32_t
-      pixel = *(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * 3) & 0xffffff00;
-      break;
-    default:
-      Debug::error("Surface should all have a depth between 1 and 32bits per pixel");
+      {
+        // Manual cast of the pixel into uint32_t.
+        uint8_t* bytes = static_cast<uint8_t*>(internal_surface->pixels);
+        return *reinterpret_cast<uint32_t*>(&bytes[index * 3]) & 0xffffff00 >> 8;
+      }
   }
 
-  return pixel;
+  Debug::die(StringConcat() << "Unknown pixel depth: " << format->BitsPerPixel);
+  return 0;
 }
 
 /**
- * \brief Returns the 32bits pixel, color-mapped from internal SDL_PixelFormat to dst_format.
+ * \brief Returns whether a pixel is transparent.
  *
- * The source pixel depth format can be any size between 1 and 32bits.
- * If the destination pixel depth format is less than 32-bpp then the unused upper bits of the return value can safely be ignored.
- * This method should be used only by low-level classes, and after lock source internal_surface.
+ * A pixel is transparent if it corresponds to the colorkey
+ * or if its alpha channel is equal to 0.
  *
- * It's the SDL_ConvertSurface() function equivalent for a pixel by pixel uses.
- *
- * \param idx_pixel the index of the pixel to convert
- * \param dst_format the destination format
- * \return the mapped 32bits pixel
+ * \param index The index of the pixel to test.
+ * \return \c true if the pixel is transparent.
  */
-uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
+bool Surface::is_pixel_transparent(int index) const {
+  
+  uint32_t pixel = get_pixel(index);
+  
+  if (with_colorkey && pixel == colorkey) {
+    // The pixel has the transparency color.
+    return true;
+  }
 
-  uint8_t r, g, b, a;
-  SDL_GetRGBA(get_pixel32(idx_pixel), internal_surface->format, &r, &g, &b, &a);
-  return SDL_MapRGBA(dst_format, r, g, b, a);
+  if (internal_surface->format->Amask != 0               // There exists an alpha channel.
+      && (pixel & internal_surface->format->Amask) == 0  // The pixel is fully transparent.
+      ) {
+    return true;
+  }
+  
+  return false;
 }
 
 /**

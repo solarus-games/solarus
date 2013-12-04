@@ -27,6 +27,36 @@
  */
 class PixelMovement: public Movement {
 
+  public:
+
+    // creation and destruction
+    PixelMovement(const std::string& trajectory_string, uint32_t delay, bool loop, bool ignore_obstacles);
+    virtual ~PixelMovement();
+
+    // properties
+    const std::list<Rectangle>& get_trajectory() const;
+    void set_trajectory(const std::list<Rectangle>& trajectory);
+    void set_trajectory(const std::string &trajectory_string);
+    uint32_t get_delay() const;
+    void set_delay(uint32_t delay);
+    bool get_loop() const;
+    void set_loop(bool loop);
+
+    // state
+    bool is_started() const;
+    virtual bool is_finished() const;
+    int get_length() const;
+    void restart();
+
+    virtual void update();
+    virtual void set_suspended(bool suspended);
+
+    virtual const std::string& get_lua_type_name() const;
+
+  protected:
+
+    virtual void notify_step_done(int step_index, bool success);
+
   private:
 
     // movement properties
@@ -48,35 +78,6 @@ class PixelMovement: public Movement {
 
     void make_next_step();
 
-  protected:
-
-    virtual void notify_step_done(int step_index, bool success);
-
-  public:
-
-    // creation and destruction
-    PixelMovement(const std::string& trajectory_string, uint32_t delay, bool loop, bool ignore_obstacles);
-    virtual ~PixelMovement();
-
-    // properties
-    const std::list<Rectangle>& get_trajectory();
-    void set_trajectory(const std::list<Rectangle>& trajectory);
-    void set_trajectory(const std::string &trajectory_string);
-    uint32_t get_delay();
-    void set_delay(uint32_t delay);
-    bool get_loop();
-    void set_loop(bool loop);
-
-    // state
-    bool is_started();
-    virtual bool is_finished();
-    int get_length();
-    void restart();
-
-    virtual void update();
-    virtual void set_suspended(bool suspended);
-
-    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

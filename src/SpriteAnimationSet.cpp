@@ -65,8 +65,8 @@ void SpriteAnimationSet::load() {
   FileTools::data_file_close_buffer(buffer);
 
   if (load_result != 0) {
-    Debug::error(StringConcat() << "Failed to load sprite file '" << file_name
-        << "': " << lua_tostring(l, -1));
+    Debug::error(std::string("Failed to load sprite file '") + file_name
+        + "': " + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
   else {
@@ -74,8 +74,8 @@ void SpriteAnimationSet::load() {
     lua_setfield(l, LUA_REGISTRYINDEX, "animation_set");
     lua_register(l, "animation", l_animation);
     if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::error(StringConcat() << "Failed to load sprite file '" << file_name
-          << "': " << lua_tostring(l, -1));
+      Debug::error(std::string("Failed to load sprite file '") + file_name
+          + "': " + lua_tostring(l, -1));
       lua_pop(l, 1);
     }
   }
@@ -102,15 +102,20 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
 
   std::string animation_name = LuaContext::check_string_field(l, 1, "name");
   std::string src_image = LuaContext::check_string_field(l, 1, "src_image");
-  uint32_t frame_delay = uint32_t(LuaContext::opt_int_field(l, 1, "frame_delay", 0));
+  uint32_t frame_delay = (uint32_t) LuaContext::opt_int_field(l, 1, "frame_delay", 0);
   int frame_to_loop_on = LuaContext::opt_int_field(l, 1, "frame_to_loop_on", -1);
+
+  if (frame_to_loop_on < -1) {
+    LuaContext::arg_error(l, 1, StringConcat() <<
+          "Bad field 'frame_to_loop_on' (must be a positive number or -1)");
+  }
 
   lua_settop(l, 1);
   lua_getfield(l, 1, "directions");
   if (lua_type(l, 2) != LUA_TTABLE) {
-    LuaContext::arg_error(l, 1, StringConcat() <<
-          "Bad field 'directions' (table expected, got " <<
-          luaL_typename(l, -1) << ")");
+    LuaContext::arg_error(l, 1,
+        std::string("Bad field 'directions' (table expected, got ")
+        + luaL_typename(l, -1) + ")");
   }
 
   // Traverse the directions table.
@@ -134,6 +139,16 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
     int origin_y = LuaContext::opt_int_field(l, -1, "origin_y", 0);
     int num_frames = LuaContext::opt_int_field(l, -1, "num_frames", 1);
     int num_columns = LuaContext::opt_int_field(l, -1, "num_columns", num_frames);
+
+    if (num_columns < 1 || num_columns > num_frames) {
+      LuaContext::arg_error(l, 1,
+          "Bad field 'num_columns': must be between 1 and the number of frames");
+    }
+
+    if (frame_to_loop_on >= num_frames) {
+      LuaContext::arg_error(l, 1,
+          "Bad field 'frame_to_loop_on': exceeds the number of frames");
+    }
 
     lua_pop(l, 1);
     lua_rawgeti(l, -1, i);

@@ -66,7 +66,7 @@ Pickable::~Pickable() {
  * \return the type of entity
  */
 EntityType Pickable::get_type() const {
-  return PICKABLE;
+  return ENTITY_PICKABLE;
 }
 
 /**
@@ -124,7 +124,7 @@ Pickable* Pickable::create(
  * \brief Returns whether entities of this type can be obstacles for other entities.
  * \return \c true if this type of entity can be obstacle for other entities.
  */
-bool Pickable::can_be_obstacle() {
+bool Pickable::can_be_obstacle() const {
   return false;
 }
 
@@ -175,7 +175,8 @@ void Pickable::initialize_sprites() {
   item_sprite.enable_pixel_collisions();
 
   // Set the origin point and the size of the entity.
-  set_bounding_box_from_sprite();
+  set_size(16, 16);
+  set_origin(8, 13);
 
   uint32_t now = System::now();
 
@@ -289,14 +290,14 @@ void Pickable::notify_collision(MapEntity& entity_overlapping, CollisionMode col
   }
   else if (entity_followed == NULL) {
 
-    if (entity_overlapping.get_type() == BOOMERANG) {
+    if (entity_overlapping.get_type() == ENTITY_BOOMERANG) {
       Boomerang& boomerang = static_cast<Boomerang&>(entity_overlapping);
       if (!boomerang.is_going_back()) {
         boomerang.go_back();
       }
       entity_followed = &boomerang;
     }
-    else if (entity_overlapping.get_type() == HOOKSHOT) {
+    else if (entity_overlapping.get_type() == ENTITY_HOOKSHOT) {
       Hookshot& hookshot = static_cast<Hookshot&>(entity_overlapping);
       if (!hookshot.is_going_back()) {
         hookshot.go_back();
@@ -360,15 +361,21 @@ void Pickable::try_give_item_to_player() {
 
   // give the item
   if (item.get_brandish_when_picked()) {
+    // The treasure is brandished.
+    // on_obtained() will be called after the dialog.
     get_hero().start_treasure(treasure, LUA_REFNIL);
   }
   else {
     treasure.give_to_player();
+
+    // Call on_obtained() immediately since the treasure is not brandished.
+    get_lua_context().item_on_obtained(item, treasure);
+    get_lua_context().map_on_obtained_treasure(get_map(), treasure);
   }
 }
 
 /**
- * \brief Sets whether the pickable item is blinking.
+ * \brief Sets whether the pickable treasure is blinking.
  * \param blinking true to make it blink, false to make it stop blinking
  */
 void Pickable::set_blinking(bool blinking) {
@@ -403,17 +410,17 @@ void Pickable::set_suspended(bool suspended) {
 
     uint32_t now = System::now();
 
-    if (!can_be_picked && when_suspended != 0) { // TODO make a better implementation of the when_suspended stuff
-      allow_pick_date = now + (allow_pick_date - when_suspended);
+    if (!can_be_picked && get_when_suspended() != 0) {
+      allow_pick_date = now + (allow_pick_date - get_when_suspended());
     }
 
     if (will_disappear) {
 
       // the game is being resumed
       // recalculate the blinking date and the disappearing date
-      if (when_suspended != 0) {
-        blink_date = now + (blink_date - when_suspended);
-        disappear_date = now + (disappear_date - when_suspended);
+      if (get_when_suspended() != 0) {
+        blink_date = now + (blink_date - get_when_suspended());
+        disappear_date = now + (disappear_date - get_when_suspended());
       }
     }
   }
@@ -443,8 +450,8 @@ void Pickable::update() {
 
   if (entity_followed != NULL && entity_followed->is_being_removed()) {
 
-    if (entity_followed->get_type() == BOOMERANG ||
-        entity_followed->get_type() == HOOKSHOT) {
+    if (entity_followed->get_type() == ENTITY_BOOMERANG ||
+        entity_followed->get_type() == ENTITY_HOOKSHOT) {
       // The pickable may have been dropped by the boomerang/hookshot
       // not exactly on the hero so let's fix this.
       if (get_distance(get_hero()) < 16) {

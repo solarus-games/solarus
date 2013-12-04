@@ -33,49 +33,6 @@
  */
 class HeroSprites {
 
-  private:
-
-    Hero& hero;				/**< the hero */
-    Equipment& equipment;		/**< equipment of the player */
-
-    Sprite* tunic_sprite;		/**< sprite of the current tunic */
-    Sprite* sword_sprite;		/**< current sword sprite */
-    Sprite* sword_stars_sprite;		/**< stars running along the sword when the sword is loading */
-    Sprite* shield_sprite;		/**< current shield sprite */
-    Sprite* shadow_sprite;		/**< shadow of the hero, only in specific states (most of the time
-					 * the shadow is with the tunic sprite) */
-    Sprite* ground_sprite;		/**< ground displayed under the hero (e.g. grass or shallow water) */
-    Sprite* trail_sprite;		/**< trail of dust that the hero lets behind him (e.g. when running) */
-
-    std::string sword_sound_id;          /**< sound id of the current sword */
-    std::string ground_sound_id;         /**< sound id of the current ground displayed under the hero */
-
-    static const int animation_directions[8][2];		/**< possible directions of the animation for each movement direction */
-
-    int animation_direction_saved;	/**< direction of the hero's sprites, saved before
-					 * showing a sprite animation having only one direction */
-    uint32_t when_suspended;		/**< date when the game was suspended */
-    uint32_t end_blink_date;		/**< when the hero's sprites stop blinking */
-
-    bool walking;			/**< stopped or walking? */
-
-    Rectangle clipping_rectangle;	/**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
-					 * (usually, the whole map is considered and this rectangle's values are all 0) */
-
-    CarriedItem* lifted_item;		/**< if not NULL, an item to display above the hero */
-
-    bool is_visible();
-    bool is_sword_visible();
-    bool is_sword_stars_visible();
-    bool is_shield_visible();
-    bool is_trail_visible();
-    bool is_ground_visible();
-
-    void stop_displaying_sword();
-    void stop_displaying_sword_stars();
-    void stop_displaying_shield();
-    void stop_displaying_trail();
-
   public:
 
     HeroSprites(Hero& hero, Equipment& equipment);
@@ -89,18 +46,20 @@ class HeroSprites {
 
     void blink();
     void stop_blinking();
-    bool is_blinking();
-    bool is_walking();
-    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
+    bool is_blinking() const;
+    bool is_walking() const;
+    void set_clipping_rectangle(
+        const Rectangle& clipping_rectangle = Rectangle());
 
-    int get_animation_direction(int keys_direction, int real_movement_direction);
-    int get_animation_direction();
-    int get_animation_direction8();
+    int get_animation_direction(
+        int keys_direction, int real_movement_direction) const;
+    int get_animation_direction() const;
+    int get_animation_direction8() const;
     void set_animation_direction(int direction);
     void set_animation_direction8(int direction);
     void restart_animation();
-    bool is_animation_finished();
-    int get_current_frame();
+    bool is_animation_finished() const;
+    int get_current_frame() const;
     void save_animation_direction();
     void restore_animation_direction();
     void set_ignore_suspend(bool ignore_suspend);
@@ -141,6 +100,51 @@ class HeroSprites {
     void play_ground_sound();
 
     void set_lifted_item(CarriedItem* lifted_item);
+
+  private:
+
+    Hero& hero;                        /**< the hero */
+    Equipment& equipment;              /**< equipment of the player */
+
+    Sprite* tunic_sprite;              /**< sprite of the current tunic */
+    Sprite* sword_sprite;              /**< current sword sprite */
+    Sprite* sword_stars_sprite;        /**< stars running along the sword when the sword is loading */
+    Sprite* shield_sprite;             /**< current shield sprite */
+    Sprite* shadow_sprite;             /**< shadow of the hero, only in specific states (most of the time
+                                        * the shadow is with the tunic sprite) */
+    Sprite* ground_sprite;             /**< ground displayed under the hero (e.g. grass or shallow water) */
+    Sprite* trail_sprite;              /**< trail of dust that the hero lets behind him (e.g. when running) */
+
+    std::string sword_sound_id;        /**< sound id of the current sword */
+    std::string ground_sound_id;       /**< sound id of the current ground displayed under the hero */
+
+    static const int
+        animation_directions[8][2];    /**< possible directions of the animation for each movement direction */
+
+    int animation_direction_saved;     /**< direction of the hero's sprites, saved before
+                                         * showing a sprite animation having only one direction */
+    uint32_t when_suspended;           /**< date when the game was suspended */
+    uint32_t end_blink_date;           /**< when the hero's sprites stop blinking */
+
+    bool walking;                      /**< stopped or walking? */
+
+    Rectangle clipping_rectangle;      /**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
+                                        * (usually, the whole map is considered and this rectangle's values are all 0) */
+
+    CarriedItem* lifted_item;          /**< if not NULL, an item to display above the hero */
+
+    bool is_visible() const;
+    bool is_sword_visible() const;
+    bool is_sword_stars_visible() const;
+    bool is_shield_visible() const;
+    bool is_trail_visible() const;
+    bool is_ground_visible() const;
+
+    void stop_displaying_sword();
+    void stop_displaying_sword_stars();
+    void stop_displaying_shield();
+    void stop_displaying_trail();
+
 };
 
 #endif

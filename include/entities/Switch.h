@@ -63,12 +63,12 @@ class Switch: public Detector {
     ~Switch();
 
     EntityType get_type() const;
-    bool is_obstacle_for(MapEntity& other);
+    bool is_obstacle_for(const MapEntity& other) const;
 
-    bool is_walkable();
-    bool is_arrow_target();
-    bool is_solid();
-    bool is_activated();
+    bool is_walkable() const;
+    bool is_arrow_target() const;
+    bool is_solid() const;
+    bool is_activated() const;
     void activate();
     void set_activated(bool enabled);
     void set_locked(bool locked);

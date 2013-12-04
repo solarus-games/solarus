@@ -36,16 +36,16 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
     SwordLoadingState(Hero& hero);
     ~SwordLoadingState();
 
-    void start(State* previous_state);
+    void start(const State* previous_state);
     void update();
     void set_suspended(bool suspended);
     void notify_obstacle_reached();
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
 
-    bool is_direction_locked();
-    bool can_take_stairs();
-    bool can_pick_treasure(EquipmentItem& item);
+    bool is_direction_locked() const;
+    bool can_take_stairs() const;
+    bool can_pick_treasure(EquipmentItem& item) const;
     void set_animation_stopped();
     void set_animation_walking();
 };

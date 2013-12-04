@@ -197,7 +197,7 @@ bool Sound::exists(const std::string& sound_id) {
  */
 void Sound::play(const std::string& sound_id) {
 
-  if (all_sounds.count(sound_id) == 0) {
+  if (all_sounds.find(sound_id) == all_sounds.end()) {
     all_sounds[sound_id] = Sound(sound_id);
   }
 

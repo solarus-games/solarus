@@ -44,11 +44,16 @@ Transition::~Transition() {
  * \brief Creates a transition effect with the specified type and direction.
  * \param style style of the transition: Transition::IMMEDIATE, Transition::FADE, etc.
  * \param direction Transition::IN or Transition::OUT
- * \param game the current game if any (used by some kinds of transitions)
+ * \param dst_surface The surface that will receive the transition
+ * (used by some kinds of transitions).
+ * \param game The current game if any (used by some kinds of transitions).
  * \return the transition created
  */
-Transition* Transition::create(Transition::Style style,
-    Transition::Direction direction, Game* game) {
+Transition* Transition::create(
+    Transition::Style style,
+    Transition::Direction direction,
+    Surface& dst_surface,
+    Game* game) {
 
   Transition* transition = NULL;
 
@@ -59,7 +64,7 @@ Transition* Transition::create(Transition::Style style,
     break;
 
   case Transition::FADE:
-    transition = new TransitionFade(direction);
+    transition = new TransitionFade(direction, dst_surface);
     break;
 
   case Transition::SCROLLING:

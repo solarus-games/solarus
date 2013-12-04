@@ -38,43 +38,44 @@ class Hookshot: public MapEntity {
 
   public:
 
-    Hookshot(Hero &hero);
+    Hookshot(Hero& hero);
     ~Hookshot();
 
     EntityType get_type() const;
-    bool can_be_obstacle();
-    bool is_drawn_in_y_order();
+    bool can_be_obstacle() const;
+    bool is_drawn_in_y_order() const;
 
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_deep_water_obstacle();
-    bool is_hole_obstacle();
-    bool is_lava_obstacle();
-    bool is_prickle_obstacle();
-    bool is_ladder_obstacle();
-    bool is_switch_obstacle(Switch& sw);
-    bool is_crystal_obstacle(Crystal& crystal);
-    bool is_jumper_obstacle(Jumper& jumper);
+    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    bool is_stairs_obstacle(const Stairs& stairs) const;
+    bool is_deep_water_obstacle() const;
+    bool is_hole_obstacle() const;
+    bool is_lava_obstacle() const;
+    bool is_prickle_obstacle() const;
+    bool is_ladder_obstacle() const;
+    bool is_switch_obstacle(const Switch& sw) const;
+    bool is_crystal_obstacle(const Crystal& crystal) const;
+    bool is_jumper_obstacle(const Jumper& jumper) const;
 
     // state
     void update();
     virtual void draw_on_map();
     const Rectangle get_facing_point() const;
-    bool is_flying();
-    bool is_going_back();
+    bool is_flying() const;
+    bool is_going_back() const;
     void go_back();
     void attach_to(MapEntity& entity_reached);
 
     // collisions
     void notify_obstacle_reached();
-    void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
+    void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
     void notify_collision_with_chest(Chest& chest);
     void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
     void notify_collision_with_block(Block& block);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
+
 };
 
 #endif

@@ -54,7 +54,7 @@ Camera::~Camera() {
  * \brief Returns the width of the visible area shown by the camera.
  * \return The width of the quest screen.
  */
-int Camera::get_width() {
+int Camera::get_width() const {
   return position.get_width();
 }
 
@@ -62,7 +62,7 @@ int Camera::get_width() {
  * \brief Returns the height of the visible area shown by the camera.
  * \return The height of the quest screen.
  */
-int Camera::get_height() {
+int Camera::get_height() const {
   return position.get_height();
 }
 
@@ -107,12 +107,12 @@ void Camera::update_fixed_on_hero() {
     // TODO simplify: treat horizontal separators first and then all vertical ones.
     int adjusted_x = x;  // Updated coordinates after applying separators.
     int adjusted_y = y;
-    std::list<Separator*> applied_separators;
-    const std::list<Separator*>& separators =
+    std::list<const Separator*> applied_separators;
+    const std::list<const Separator*>& separators =
         map.get_entities().get_separators();
-    std::list<Separator*>::const_iterator it;
+    std::list<const Separator*>::const_iterator it;
     for (it = separators.begin(); it != separators.end(); ++it) {
-      Separator& separator = *(*it);
+      const Separator& separator = *(*it);
 
       if (separator.is_vertical()) {
         // Vertical separator.
@@ -161,9 +161,9 @@ void Camera::update_fixed_on_hero() {
 
       must_adjust_x = false;
       must_adjust_y = false;
-      std::list<Separator*>::const_iterator it;
+      std::list<const Separator*>::const_iterator it;
       for (it = applied_separators.begin(); it != applied_separators.end(); ++it) {
-        Separator& separator = *(*it);
+        const Separator& separator = *(*it);
 
         if (separator.is_vertical()) {
           // Vertical separator.
@@ -254,7 +254,7 @@ void Camera::update_fixed_on_hero() {
 void Camera::update_moving() {
 
   Debug::check_assertion(!fixed_on_hero,
-      "Illegal call to Camera::update_fixed_on_hero()");
+      "Illegal call to Camera::update_moving()");
 
   if (movement == NULL) {
     return;
@@ -282,17 +282,6 @@ void Camera::update_moving() {
 }
 
 /**
- * \brief Returns the current position of the camera.
- *
- * This function returns the rectangle of the visible area of this camera.
- *
- * \return The visible area.
- */
-const Rectangle& Camera::get_position() {
-  return position;
-}
-
-/**
  * \brief Returns whether there is a camera movement.
  *
  * It may be a movement towards a point or a scrolling movement due to a
@@ -300,7 +289,7 @@ const Rectangle& Camera::get_position() {
  *
  * \return \c true if the camera is moving.
  */
-bool Camera::is_moving() {
+bool Camera::is_moving() const {
   return !fixed_on_hero                      // Moving to a point.
       || separator_next_scrolling_date != 0;  // Traversing a separator.
 }
@@ -324,15 +313,26 @@ void Camera::set_speed(int speed) {
  */
 void Camera::move(int target_x, int target_y) {
 
-  if (movement != NULL) {
-    delete movement;
+  delete movement;
+
+  // Take care of the limits of the map.
+  // TODO Also take care of separators.
+  const Rectangle& map_location = map.get_location();
+  if (map_location.get_width() < get_width()) {
+    target_x = map_location.get_width() / 2;
+  }
+  else {
+    target_x = std::min(std::max(target_x, get_width() / 2),
+        map_location.get_width() - get_width() / 2);
   }
 
-  const Rectangle& map_location = map.get_location();
-  target_x = std::min(std::max(target_x, get_width() / 2),
-      map_location.get_width() - get_width() / 2);
-  target_y = std::min(std::max(target_y, get_height() / 2),
-      map_location.get_height() - get_height() / 2);
+  if (map_location.get_height() < get_height()) {
+    target_y = map_location.get_height() / 2;
+  }
+  else {
+    target_y = std::min(std::max(target_y, get_height() / 2),
+        map_location.get_height() - get_height() / 2);
+  }
 
   movement = new TargetMovement(NULL, target_x, target_y, speed, true);
   movement->set_xy(position.get_x() + get_width() / 2, position.get_y() + get_height() / 2);
@@ -376,7 +376,7 @@ void Camera::restore() {
  */
 void Camera::traverse_separator(Separator* separator) {
 
-  Debug::check_assertion(separator != NULL);
+  Debug::check_assertion(separator != NULL, "Missing parameter separator");
 
   // Save the current position of the camera.
   separator_scrolling_position = position;

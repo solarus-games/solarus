@@ -31,16 +31,25 @@
  * \param stops_npcs true to make this entity an obstacle for the NPCs
  * \param stops_blocks true to make this entity an obstacle for the blocks and statues
  */
-Wall::Wall(const std::string &name, Layer layer, int x, int y, int width, int height,
-			       bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks):
+Wall::Wall(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    int width,
+    int height,
+    bool stops_hero,
+    bool stops_enemies,
+    bool stops_npcs,
+    bool stops_blocks):
   MapEntity(name, 0, layer, x, y, width, height),
   enabled(true),
   waiting_enabled(false) {
 
-  entity_types_stopped[HERO] = stops_hero;
-  entity_types_stopped[ENEMY] = stops_enemies;
-  entity_types_stopped[NON_PLAYING_CHARACTER] = stops_npcs;
-  entity_types_stopped[BLOCK] = stops_blocks;
+  entity_types_stopped[ENTITY_HERO] = stops_hero;
+  entity_types_stopped[ENTITY_ENEMY] = stops_enemies;
+  entity_types_stopped[ENTITY_NPC] = stops_npcs;
+  entity_types_stopped[ENTITY_BLOCK] = stops_blocks;
 }
 
 /**
@@ -55,14 +64,14 @@ Wall::~Wall() {
  * \return the type of entity
  */
 EntityType Wall::get_type() const {
-  return WALL;
+  return ENTITY_WALL;
 }
 
 /**
  * \brief Returns whether entities of this type can be drawn.
  * \return true if this type of entity can be drawn
  */
-bool Wall::can_be_drawn() {
+bool Wall::can_be_drawn() const {
   return false;
 }
 
@@ -72,7 +81,10 @@ bool Wall::can_be_drawn() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Wall::is_obstacle_for(MapEntity &other) {
-  return entity_types_stopped[other.get_type()];
+bool Wall::is_obstacle_for(const MapEntity& other) const {
+
+  std::map<EntityType, bool>::const_iterator it =
+      entity_types_stopped.find(other.get_type());
+  return it != entity_types_stopped.end() && it->second;
 }
 

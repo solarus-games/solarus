@@ -46,7 +46,7 @@ Hero::ConveyorBeltState::~ConveyorBeltState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::ConveyorBeltState::start(State *previous_state) {
+void Hero::ConveyorBeltState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -54,6 +54,7 @@ void Hero::ConveyorBeltState::start(State *previous_state) {
 
   // first, snap the hero to the center of the conveyor belt
   snapping = true;
+  Hero& hero = get_hero();
   hero.set_movement(new TargetMovement(
       &conveyor_belt, 0, 0, hero.get_walking_speed() * 2 / 3, true));
 }
@@ -62,11 +63,11 @@ void Hero::ConveyorBeltState::start(State *previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::ConveyorBeltState::stop(State *next_state) {
+void Hero::ConveyorBeltState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  hero.clear_movement();
+  get_hero().clear_movement();
 }
 
 /**
@@ -76,10 +77,11 @@ void Hero::ConveyorBeltState::update() {
 
   State::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 
+  Hero& hero = get_hero();
   if (snapping && hero.get_movement()->is_finished()) {
 
     // the hero is now exactly placed on the conveyor belt: start the conveyor belt's movement
@@ -116,7 +118,7 @@ void Hero::ConveyorBeltState::update() {
  * \brief Returns whether the hero ignores the effect of teletransporters in this state.
  * \return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::ConveyorBeltState::can_avoid_teletransporter() {
+bool Hero::ConveyorBeltState::can_avoid_teletransporter() const {
   return true; // ignore the teletransporter until the conveyor belt is finished
 }
 
@@ -124,7 +126,7 @@ bool Hero::ConveyorBeltState::can_avoid_teletransporter() {
  * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * \return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::ConveyorBeltState::can_avoid_conveyor_belt() {
+bool Hero::ConveyorBeltState::can_avoid_conveyor_belt() const {
   return true;
 }
 

@@ -35,7 +35,11 @@ PixelMovement::PixelMovement(
     bool loop,
     bool ignore_obstacles):
   Movement(ignore_obstacles),
-  next_move_date(0), delay(delay), loop(loop), nb_steps_done(0), finished(false) {
+  next_move_date(0),
+  delay(delay),
+  loop(loop),
+  nb_steps_done(0),
+  finished(false) {
 
   set_trajectory(trajectory_string);
 }
@@ -51,7 +55,7 @@ PixelMovement::~PixelMovement() {
  * \brief Returns the trajectory of this movement.
  * \return the succession of translations that compose this movement
  */
-const std::list<Rectangle>& PixelMovement::get_trajectory() {
+const std::list<Rectangle>& PixelMovement::get_trajectory() const {
   return trajectory;
 }
 
@@ -65,7 +69,7 @@ const std::list<Rectangle>& PixelMovement::get_trajectory() {
  * \param trajectory a list of rectangles describing the succession of translations that compose this movement,
  * where each rectangle is an xy value representing a translation (the size is ignored)
  */
-void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
+void PixelMovement::set_trajectory(const std::list<Rectangle>& trajectory) {
 
   this->trajectory = trajectory;
   this->trajectory_string = ""; // will be computed only on demand
@@ -83,7 +87,7 @@ void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
  * \param trajectory_string a string describing the succession of translations that compose this movement,
  * with the syntax "dx1 dy1  dx2 dy2  dx3 dy3 ..." (the number of spaces between values does not matter)
  */
-void PixelMovement::set_trajectory(const std::string &trajectory_string) {
+void PixelMovement::set_trajectory(const std::string& trajectory_string) {
 
   int dx = 0;
   int dy = 0;
@@ -105,8 +109,7 @@ void PixelMovement::set_trajectory(const std::string &trajectory_string) {
  * \brief Returns the delay between two moves.
  * \return the delay between two moves, in milliseconds
  */
-uint32_t PixelMovement::get_delay() {
-
+uint32_t PixelMovement::get_delay() const {
   return delay;
 }
 
@@ -115,7 +118,6 @@ uint32_t PixelMovement::get_delay() {
  * \param delay the new delay, in milliseconds
  */
 void PixelMovement::set_delay(uint32_t delay) {
-
   this->delay = delay;
 }
 
@@ -123,8 +125,7 @@ void PixelMovement::set_delay(uint32_t delay) {
  * \brief Returns whether this movement loops when the end of the trajectory is reached.
  * \return true if the movement loops
  */
-bool PixelMovement::get_loop() {
-
+bool PixelMovement::get_loop() const {
   return loop;
 }
 
@@ -156,7 +157,12 @@ void PixelMovement::restart() {
     nb_steps_done = 0;
     finished = false;
     trajectory_iterator = trajectory.begin();
-    next_move_date = System::now() + delay;
+
+    if (next_move_date == 0) {
+      // Keep the previous date if we just looped.
+      next_move_date = System::now();
+    }
+    next_move_date += delay;
 
     notify_movement_changed();
   }
@@ -195,15 +201,17 @@ void PixelMovement::set_suspended(bool suspended) {
 
   Movement::set_suspended(suspended);
 
-  if (!suspended && get_when_suspended() != 0) {
+  if (!suspended
+      && get_when_suspended() != 0
+      && next_move_date != 0) {
     next_move_date += System::now() - get_when_suspended();
   }
 }
 
 /**
- * \brief Makes a move in the path.
+ * \brief Makes a move in the trajectory.
  *
- * This function must be called only when the path is not finished yet.
+ * This function must be called only when the trajectory is not finished yet.
  */
 void PixelMovement::make_next_step() {
 
@@ -215,7 +223,6 @@ void PixelMovement::make_next_step() {
     success = true;
   }
 
-  next_move_date += delay;
   trajectory_iterator++;
 
   if (trajectory_iterator == trajectory.end()) {
@@ -225,6 +232,11 @@ void PixelMovement::make_next_step() {
     else {
       finished = true;
     }
+  }
+
+  if (!finished) {
+    // Add the delay unless we are finished, because we may be looping.
+    next_move_date += delay;
   }
 
   int step_index = nb_steps_done;
@@ -244,7 +256,7 @@ void PixelMovement::notify_step_done(int step_index, bool success) {
  * \brief Returns the total number of moves in this trajectory.
  * \return the total number of moves in this trajectory
  */
-int PixelMovement::get_length() {
+int PixelMovement::get_length() const {
   return int(trajectory.size());
 }
 
@@ -252,7 +264,7 @@ int PixelMovement::get_length() {
  * \brief Returns whether the entity controlled by this movement is moving.
  * \return true if the entity is moving, false otherwise
  */
-bool PixelMovement::is_started() {
+bool PixelMovement::is_started() const {
   return !finished;
 }
 
@@ -261,7 +273,7 @@ bool PixelMovement::is_started() {
  * whether the end of the trajectory was reached.
  * \return true if the end of the trajectory was reached
  */
-bool PixelMovement::is_finished() {
+bool PixelMovement::is_finished() const {
   return finished;
 }
 

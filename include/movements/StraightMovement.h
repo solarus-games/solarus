@@ -26,6 +26,51 @@
  */
 class StraightMovement: public Movement {
 
+  public:
+
+    StraightMovement(bool ignore_obstacles, bool smooth);
+    virtual ~StraightMovement();
+
+    virtual void notify_object_controlled();
+    virtual void update();
+    virtual void set_suspended(bool suspended);
+    bool has_to_move_now() const;
+
+    // speed vector
+    double get_x_speed() const;
+    double get_y_speed() const;
+    double get_speed() const;
+    void set_x_speed(double x_speed);
+    void set_y_speed(double y_speed);
+    void set_speed(double speed);
+    double get_angle() const;
+    void set_angle(double angle);
+    int get_max_distance() const;
+    void set_max_distance(int max_distance);
+    bool is_smooth() const;
+    void set_smooth(bool smooth);
+    int get_displayed_direction4() const;
+
+    // movement
+    virtual bool is_started() const;
+    bool is_finished() const;
+    void set_finished();
+    void stop();
+
+    virtual const std::string& get_lua_type_name() const;
+
+  protected:
+
+    void set_next_move_date_x(uint32_t next_move_date_x);
+    void set_next_move_date_y(uint32_t next_move_date_y);
+
+    void update_x();
+    void update_smooth_x();
+    void update_non_smooth_x();
+    void update_y();
+    void update_smooth_y();
+    void update_non_smooth_y();
+
   private:
 
     // speed vector
@@ -60,50 +105,6 @@ class StraightMovement: public Movement {
     bool smooth;                 /**< Makes the movement adjust its trajectory
                                   * when an obstacle is close */
 
-  protected:
-
-    void set_next_move_date_x(uint32_t next_move_date_x);
-    void set_next_move_date_y(uint32_t next_move_date_y);
-
-    void update_x();
-    void update_smooth_x();
-    void update_non_smooth_x();
-    void update_y();
-    void update_smooth_y();
-    void update_non_smooth_y();
-
-  public:
-
-    StraightMovement(bool ignore_obstacles, bool smooth);
-    virtual ~StraightMovement();
-
-    virtual void notify_object_controlled();
-    virtual void update();
-    virtual void set_suspended(bool suspended);
-    bool has_to_move_now();
-
-    // speed vector
-    double get_x_speed();
-    double get_y_speed();
-    double get_speed();
-    void set_x_speed(double x_speed);
-    void set_y_speed(double y_speed);
-    void set_speed(double speed);
-    double get_angle();
-    void set_angle(double angle);
-    int get_max_distance();
-    void set_max_distance(int max_distance);
-    bool is_smooth();
-    void set_smooth(bool smooth);
-    int get_displayed_direction4();
-
-    // movement
-    virtual bool is_started();
-    bool is_finished();
-    void set_finished();
-    void stop();
-
-    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

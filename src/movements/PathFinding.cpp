@@ -48,8 +48,13 @@ const Rectangle PathFinding::transition_collision_boxes[] = {
  * (its position must be aligned on the map grid)
  * \param target_entity the target entity (its size must be 16*16)
  */
-PathFinding::PathFinding(Map &map, MapEntity &source_entity, MapEntity &target_entity):
-  map(map), source_entity(source_entity), target_entity(target_entity) {
+PathFinding::PathFinding(
+    const Map& map,
+    const MapEntity& source_entity,
+    const MapEntity& target_entity):
+  map(map),
+  source_entity(source_entity),
+  target_entity(target_entity) {
 
   Debug::check_assertion(source_entity.is_aligned_to_grid(),
       "The source must be aligned on the map grid");
@@ -72,7 +77,7 @@ std::string PathFinding::compute_path() {
   //  << source_entity.get_top_left_y() << " to " << target_entity.get_top_left_x() << ","
   //  << target_entity.get_top_left_y() << std::endl;
 
-  Rectangle source = source_entity.get_bounding_box();
+  const Rectangle& source = source_entity.get_bounding_box();
   Rectangle target = target_entity.get_bounding_box();
 
   target.add_x(4);
@@ -110,7 +115,7 @@ std::string PathFinding::compute_path() {
 
     // pick the node with the lowest total cost in the open list
     int index = open_list_indices.front();
-    Node *current_node = &open_list[index];
+    Node* current_node = &open_list[index];
     open_list_indices.pop_front();
     closed_list[index] = *current_node;
     open_list.erase(index);
@@ -162,7 +167,7 @@ std::string PathFinding::compute_path() {
           }
           else {
             //std::cout << "  node in direction " << i << " is already in the open list\n";
-            Node *existing_node = &open_list[new_node.index];
+            Node* existing_node = &open_list[new_node.index];
             // already in the open list: see if the current path is better
             if (new_node.previous_cost < existing_node->previous_cost) {
               existing_node->previous_cost = new_node.previous_cost;
@@ -195,7 +200,7 @@ std::string PathFinding::compute_path() {
  * \param location location of a node on the map
  * \return index of the square corresponding to the top-left part of the location
  */
-int PathFinding::get_square_index(const Rectangle &location) {
+int PathFinding::get_square_index(const Rectangle& location) const {
 
   int x8 = location.get_x() / 8;
   int y8 = location.get_y() / 8;
@@ -208,7 +213,8 @@ int PathFinding::get_square_index(const Rectangle &location) {
  * \param point2 a second point
  * \return the Manhattan distance between these points
  */
-int PathFinding::get_manhattan_distance(const Rectangle &point1, const Rectangle &point2) {
+int PathFinding::get_manhattan_distance(
+    const Rectangle& point1, const Rectangle& point2) const {
 
   int distance = abs(point2.get_x() - point1.get_x()) + abs(point2.get_y() - point1.get_y());
   return distance;
@@ -219,21 +225,24 @@ int PathFinding::get_manhattan_distance(const Rectangle &point1, const Rectangle
  * \brief Compares two nodes according to their total estimated cost.
  * \param other the other node
  */
-bool PathFinding::Node::operator<(const Node &other) {
+bool PathFinding::Node::operator<(const Node& other) const {
   return total_cost < other.total_cost;
 }
 
 /**
- * \brief Adds the index of a node to the sorted list of indices of the open list, making sure the list remains sorted.
- * \param node the node
+ * \brief Adds the index of a node to the sorted list of indices of the open
+ * list, making sure the list remains sorted.
+ * \param node The node.
  */
-void PathFinding::add_index_sorted(Node *node) {
+void PathFinding::add_index_sorted(Node* node) {
 
   bool inserted = false;
   std::list<int>::iterator i;
-  for (i = open_list_indices.begin(); i != open_list_indices.end() && !inserted; i++) {
+  for (i = open_list_indices.begin();
+      i != open_list_indices.end() && !inserted;
+      ++i) {
     int index = *i;
-    Node *current_node = &open_list[index];
+    Node* current_node = &open_list[index];
     if (current_node->total_cost >= node->total_cost) {
       open_list_indices.insert(i, node->index);
       inserted = true;
@@ -247,12 +256,12 @@ void PathFinding::add_index_sorted(Node *node) {
 
 /**
  * \brief Builds the string representation of the path found by the algorithm.
- * \param closed_list the closed list of A*
- * \return final_node the final node of the path
+ * \param closed_list The closed list of A*.
+ * \return final_node The final node of the path.
  */
-std::string PathFinding::rebuild_path(const Node *final_node) {
+std::string PathFinding::rebuild_path(const Node* final_node) {
 
-  const Node *current_node = final_node;
+  const Node* current_node = final_node;
   std::string path = "";
   while (current_node->direction != ' ') {
     path = current_node->direction + path;
@@ -263,12 +272,14 @@ std::string PathFinding::rebuild_path(const Node *final_node) {
 }
 
 /**
- * \brief Returns whether a transition between two nodes is valid, i.e. whether there is no collision with the map.
+ * \brief Returns whether a transition between two nodes is valid, i.e.
+ * whether there is no collision with the map.
  * \param initial_node the first node
  * \param direction the direction to take (0 to 7)
  * \return true if there is no collision for this transition
  */
-bool PathFinding::is_node_transition_valid(const Node &initial_node, int direction) {
+bool PathFinding::is_node_transition_valid(
+    const Node& initial_node, int direction) const {
 
   Rectangle collision_box = transition_collision_boxes[direction];
   collision_box.add_xy(initial_node.location);

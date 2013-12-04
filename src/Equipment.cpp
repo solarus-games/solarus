@@ -149,7 +149,7 @@ void Equipment::set_suspended(bool suspended) {
  * \brief Returns the maximum amount of money of the player.
  * \return the player's maximum number of money
  */
-int Equipment::get_max_money() {
+int Equipment::get_max_money() const {
   return savegame.get_integer(Savegame::KEY_MAX_MONEY);
 }
 
@@ -163,16 +163,21 @@ void Equipment::set_max_money(int max_money) {
       << "Illegal maximum amount of money: " << max_money);
 
   savegame.set_integer(Savegame::KEY_MAX_MONEY, max_money);
+
+  // If the max money is reduced, make sure the current money does not exceed
+  // the new maximum.
+  if (get_money() > get_max_money()) {
+    set_money(max_money);
+  }
 }
 
 /**
  * \brief Returns the player's current amount of money
  * \return the player's current amount of money
  */
-int Equipment::get_money() {
+int Equipment::get_money() const {
   return savegame.get_integer(Savegame::KEY_CURRENT_MONEY);
 }
-
 
 /**
  * \brief Sets the player's current amount of money.
@@ -218,7 +223,7 @@ void Equipment::remove_money(int money_to_remove) {
  * \brief Returns the maximum level of life of the player.
  * \return the player's maximum level of life
  */
-int Equipment::get_max_life() {
+int Equipment::get_max_life() const {
   return savegame.get_integer(Savegame::KEY_MAX_LIFE);
 }
 
@@ -236,13 +241,19 @@ void Equipment::set_max_life(int max_life) {
       << "Illegal maximum life: " << max_life);
 
   savegame.set_integer(Savegame::KEY_MAX_LIFE, max_life);
+
+  // If the max life is reduced, make sure the current life does not exceed
+  // the new maximum.
+  if (get_life() > get_max_life()) {
+    set_life(max_life);
+  }
 }
 
 /**
  * \brief Returns the current level of life of the player.
  * \return the player's current life
  */
-int Equipment::get_life() {
+int Equipment::get_life() const {
   return savegame.get_integer(Savegame::KEY_CURRENT_LIFE);
 }
 
@@ -295,7 +306,7 @@ void Equipment::restore_all_life() {
  * \brief Returns the maximum number of magic points.
  * \return the maximum level of magic
  */
-int Equipment::get_max_magic() {
+int Equipment::get_max_magic() const {
   return savegame.get_integer(Savegame::KEY_MAX_MAGIC);
 }
 
@@ -321,7 +332,7 @@ void Equipment::set_max_magic(int max_magic) {
  * \brief Returns the current number of magic points of the player.
  * \return the player's current number of magic points
  */
-int Equipment::get_magic() {
+int Equipment::get_magic() const {
   return savegame.get_integer(Savegame::KEY_CURRENT_MAGIC);
 }
 
@@ -410,22 +421,35 @@ void Equipment::load_items() {
  * \param item_name Name of the item to check.
  * \return \c true if such an item exists.
  */
-bool Equipment::item_exists(const std::string& item_name) {
+bool Equipment::item_exists(const std::string& item_name) const {
   return items.find(item_name) != items.end();
 }
 
 
 /**
  * \brief Returns an equipment item.
- * \param item_name name of the item to get
- * \return the corresponding item
+ * \param item_name Name of the item to get.
+ * \return The corresponding item.
  */
 EquipmentItem& Equipment::get_item(const std::string& item_name) {
 
   Debug::check_assertion(item_exists(item_name),
       StringConcat() << "Cannot find item with name '" << item_name << "'");
 
-  return *items[item_name];
+  return *items.find(item_name)->second;
+}
+
+/**
+ * \brief Returns an equipment item.
+ * \param item_name Name of the item to get.
+ * \return The corresponding item.
+ */
+const EquipmentItem& Equipment::get_item(const std::string& item_name) const {
+
+  Debug::check_assertion(item_exists(item_name),
+      StringConcat() << "Cannot find item with name '" << item_name << "'");
+
+  return *items.find(item_name)->second;
 }
 
 /**
@@ -437,6 +461,27 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
 
   // TODO don't hardcode item slots
 
+  Debug::check_assertion(slot >= 1 && slot <= 2,
+      "Invalid item slot");
+
+  char savegame_variable[] = "_item_slot_0";
+  savegame_variable[11] = '0' + slot;
+  const std::string& item_name = savegame.get_string(savegame_variable);
+
+  EquipmentItem* item = NULL;
+  if (!item_name.empty()) {
+    item = &get_item(item_name);
+  }
+  return item;
+}
+
+/**
+ * \brief Returns the item currently assigned to a slot.
+ * \param slot Slot of the item to get (1 or 2).
+ * \return The item currently assigned to this slot or NULL.
+ */
+const EquipmentItem* Equipment::get_item_assigned(int slot) const {
+
   Debug::check_assertion(slot >= 1 && slot <= 2, StringConcat() <<
       "Invalid item slot '" << slot << "'");
 
@@ -444,7 +489,7 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
   oss << "_item_slot_" << slot;
   const std::string& item_name = savegame.get_string(oss.str());
 
-  EquipmentItem* item = NULL;
+  const EquipmentItem* item = NULL;
   if (!item_name.empty()) {
     item = &get_item(item_name);
   }
@@ -485,10 +530,10 @@ void Equipment::set_item_assigned(int slot, EquipmentItem* item) {
  * \param item The item to find.
  * \return The slot of this item, or 0 if this item is not assigned
  */
-int Equipment::get_item_slot(EquipmentItem& item) {
+int Equipment::get_item_slot(const EquipmentItem& item) const {
 
   for (int i = 1; i <= 2; ++i) {
-    EquipmentItem* assigned_item = get_item_assigned(i);
+    const EquipmentItem* assigned_item = get_item_assigned(i);
     if (assigned_item != NULL && assigned_item->get_name() == item.get_name()) {
       return i;
     }
@@ -504,8 +549,8 @@ int Equipment::get_item_slot(EquipmentItem& item) {
  * \param ability_name Name of the ability.
  * \return Name of the boolean savegame variable that stores this ability.
  */
-const std::string Equipment::get_ability_savegame_variable(
-    const std::string& ability_name) {
+std::string Equipment::get_ability_savegame_variable(
+    const std::string& ability_name) const {
 
   std::string savegame_variable;
 
@@ -546,7 +591,7 @@ const std::string Equipment::get_ability_savegame_variable(
  * \param level the minimum level to check
  * \return true if the player has at least this level of the ability
  */
-bool Equipment::has_ability(const std::string& ability_name, int level) {
+bool Equipment::has_ability(const std::string& ability_name, int level) const {
   return get_ability(ability_name) >= level;
 }
 
@@ -555,7 +600,7 @@ bool Equipment::has_ability(const std::string& ability_name, int level) {
  * \param ability_name the ability to get
  * \return the level of this ability
  */
-int Equipment::get_ability(const std::string& ability_name) {
+int Equipment::get_ability(const std::string& ability_name) const {
   return savegame.get_integer(get_ability_savegame_variable(ability_name));
 }
 

@@ -79,9 +79,10 @@ class LuaContext {
     static const std::string entity_block_module_name;           /**< sol.entity.block */
     static const std::string entity_switch_module_name;          /**< sol.entity.switch */
     static const std::string entity_door_module_name;            /**< sol.entity.door */
-    static const std::string entity_shop_item_module_name;       /**< sol.entity.shop_item */
+    static const std::string entity_shop_treasure_module_name;   /**< sol.entity.shop_treasure */
     static const std::string entity_pickable_module_name;        /**< sol.entity.pickable */
     static const std::string entity_enemy_module_name;           /**< sol.entity.enemy */
+    static const std::string entity_custom_module_name;          /**< sol.entity.custom */
 
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
@@ -95,10 +96,10 @@ class LuaContext {
     void initialize();
     void exit();
     void update();
-    bool notify_input(InputEvent& event);
+    bool notify_input(const InputEvent& event);
     void notify_map_suspended(Map& map, bool suspended);
     void notify_camera_reached_target(Map& map);
-    void notify_shop_item_interaction(ShopItem& shop_item);
+    void notify_shop_treasure_interaction(ShopTreasure& shop_treasure);
     void notify_hero_brandish_treasure(
         const Treasure& treasure, int callback_ref);
     bool notify_dialog_started(Game& game, const Dialog& dialog,
@@ -217,19 +218,19 @@ class LuaContext {
     void main_on_finished();
     void main_on_update();
     void main_on_draw(Surface& dst_surface);
-    bool main_on_input(InputEvent& event);
+    bool main_on_input(const InputEvent& event);
 
     // Menu events.
     void menu_on_started(int menu_ref);
     void menu_on_finished(int menu_ref);
     void menu_on_update(int menu_ref);
     void menu_on_draw(int menu_ref, Surface& dst_surface);
-    bool menu_on_input(int menu_ref, InputEvent& event);
+    bool menu_on_input(int menu_ref, const InputEvent& event);
     bool menu_on_command_pressed(int menu_ref, GameCommands::Command command);
     bool menu_on_command_released(int menu_ref, GameCommands::Command command);
     void menus_on_update(int context_index);
     void menus_on_draw(int context_index, Surface& dst_surface);
-    bool menus_on_input(int context_index, InputEvent& event);
+    bool menus_on_input(int context_index, const InputEvent& event);
     bool menus_on_command_pressed(int context_index, GameCommands::Command command);
     bool menus_on_command_released(int context_index, GameCommands::Command command);
 
@@ -259,7 +260,7 @@ class LuaContext {
     void item_on_pickable_created(EquipmentItem& item, Pickable& pickable);
     void item_on_pickable_movement_changed(EquipmentItem& item, Pickable& pickable, Movement& movement);  // TODO remove this, use movement:on_changed instead
     void item_on_obtaining(EquipmentItem& item, const Treasure& treasure);
-    void item_on_obtained(EquipmentItem& item, const Treasure& treasure);  // FIXME call from picked items too
+    void item_on_obtained(EquipmentItem& item, const Treasure& treasure);
     void item_on_variant_changed(EquipmentItem& item, int variant);
     void item_on_amount_changed(EquipmentItem& item, int amount);
     void item_on_using(EquipmentItem& item);
@@ -282,7 +283,7 @@ class LuaContext {
     void game_on_dialog_finished(Game& game, const Dialog& dialog);
     bool game_on_game_over_started(Game& game);
     void game_on_game_over_finished(Game& game);
-    bool game_on_input(Game& game, InputEvent& event);
+    bool game_on_input(Game& game, const InputEvent& event);
     bool game_on_command_pressed(Game& game, GameCommands::Command command);
     bool game_on_command_released(Game& game, GameCommands::Command command);
 
@@ -297,33 +298,38 @@ class LuaContext {
     void map_on_camera_back(Map& map);
     void map_on_obtaining_treasure(Map& map, const Treasure& treasure);
     void map_on_obtained_treasure(Map& map, const Treasure& treasure);
-    bool map_on_input(Map& map, InputEvent& event);
+    bool map_on_input(Map& map, const InputEvent& event);
     bool map_on_command_pressed(Map& map, GameCommands::Command command);
     bool map_on_command_released(Map& map, GameCommands::Command command);
 
     // Map entity events.
     // TODO entity_on_created
     void entity_on_removed(MapEntity& entity);
+    void entity_on_position_changed(MapEntity& entity, const Rectangle& xy, Layer layer);
+    void entity_on_obstacle_reached(MapEntity& entity, Movement& movement);
+    void entity_on_movement_changed(MapEntity& entity, Movement& movement);
+    void entity_on_movement_finished(MapEntity& entity);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
     // TODO add destination_on_activated
-    void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now)
     void npc_on_interaction(NPC& npc);
     bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(NPC& npc);
     bool chest_on_empty(Chest& chest);
+    void block_on_moving(Block& block);
     void block_on_moved(Block& block);
     void switch_on_activated(Switch& sw);
     void switch_on_inactivated(Switch& sw);
     void switch_on_left(Switch& sw);
     void sensor_on_activated(Sensor& sensor);
     void sensor_on_activated_repeat(Sensor& sensor);
+    void sensor_on_left(Sensor& sensor);
     void sensor_on_collision_explosion(Sensor& sensor);
     void separator_on_activating(Separator& separator, int direction4);
     void separator_on_activated(Separator& separator, int direction4);
     void door_on_opened(Door& door);
     void door_on_closed(Door& door);
-    bool shop_item_on_buying(ShopItem& shop_item);
-    void shop_item_on_bought(ShopItem& shop_item);
+    bool shop_treasure_on_buying(ShopTreasure& shop_treasure);
+    void shop_treasure_on_bought(ShopTreasure& shop_treasure);
     void enemy_on_update(Enemy& enemy);
     void enemy_on_suspended(Enemy& enemy, bool suspended);
     void enemy_on_created(Enemy& enemy);  // TODO remove?
@@ -332,10 +338,6 @@ class LuaContext {
     void enemy_on_restarted(Enemy& enemy);
     void enemy_on_pre_draw(Enemy& enemy);
     void enemy_on_post_draw(Enemy& enemy);
-    void enemy_on_position_changed(Enemy& enemy, const Rectangle& xy, Layer layer);
-    void enemy_on_obstacle_reached(Enemy& enemy, Movement& movement);
-    void enemy_on_movement_changed(Enemy& enemy, Movement& movement);
-    void enemy_on_movement_finished(Enemy& enemy);
     void enemy_on_collision_enemy(Enemy& enemy,
         Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void enemy_on_custom_attack_received(Enemy& enemy,
@@ -665,6 +667,7 @@ class LuaContext {
       map_api_get_location,
       map_api_get_tileset,
       map_api_set_tileset,
+      map_api_get_music,
       map_api_get_camera_position,
       map_api_move_camera,  // TODO set any movement to the camera instead
       map_api_get_ground,
@@ -680,6 +683,7 @@ class LuaContext {
       map_api_get_entities,
       map_api_get_entities_count,
       map_api_has_entities,
+      map_api_get_hero,
       map_api_set_entities_enabled,
       map_api_remove_entities,
       map_api_create_tile,
@@ -698,18 +702,20 @@ class LuaContext {
       map_api_create_sensor,
       map_api_create_crystal,
       map_api_create_crystal_block,
-      map_api_create_shop_item,  // TODO rename to shop treasure
+      map_api_create_shop_treasure,  // TODO rename to shop treasure
       map_api_create_conveyor_belt,
       map_api_create_door,
       map_api_create_stairs,
+      map_api_create_separator,
+      map_api_create_custom_entity,
       map_api_create_bomb,
       map_api_create_explosion,
       map_api_create_fire,
-      map_api_create_separator,
 
       // Map entity API.
-      // TODO entity:get_type()
+      entity_api_get_type,
       entity_api_get_map,
+      entity_api_get_game,
       entity_api_get_name,
       entity_api_exists,
       entity_api_remove,
@@ -763,6 +769,12 @@ class LuaContext {
       chest_api_is_open,
       chest_api_set_open,
       block_api_reset,
+      block_api_is_pushable,
+      block_api_set_pushable,
+      block_api_is_pullable,
+      block_api_set_pullable,
+      block_api_get_maximum_moves,
+      block_api_set_maximum_moves,
       switch_api_is_activated,
       switch_api_set_activated,
       switch_api_set_locked,
@@ -809,6 +821,7 @@ class LuaContext {
       enemy_api_hurt,
       enemy_api_immobilize,
       enemy_api_create_enemy,
+      custom_entity_api_get_model,
 
       // available to all userdata types
       userdata_meta_gc,
@@ -842,15 +855,19 @@ class LuaContext {
     };
 
     // Executing Lua code.
-    bool find_global_function(const std::string& function_name);
-    bool find_local_function(int index, const std::string& function_name);
-    bool find_local_function(const std::string& function_name);
-    bool find_method(int index, const std::string& function_name);
-    bool find_method(const std::string& function_name);
-    bool call_function(int nb_arguments, int nb_results,
-        const std::string& function_name);
-    static bool call_function(lua_State* l, int nb_arguments, int nb_results,
-        const std::string& function_name);
+    bool userdata_has_field(ExportableToLua& userdata, const char* key) const;
+    bool userdata_has_field(ExportableToLua& userdata, const std::string& key) const;
+    bool find_method(int index, const char* function_name);
+    bool find_method(const char* function_name);
+    bool call_function(
+        int nb_arguments,
+        int nb_results,
+        const char* function_name);
+    static bool call_function(
+        lua_State* l,
+        int nb_arguments,
+        int nb_results,
+        const char* function_name);
     static void load_file(lua_State* l, const std::string& script_name);
     static bool load_file_if_exists(lua_State* l, const std::string& script_name);
     static void do_file(lua_State* l, const std::string& script_name);
@@ -900,9 +917,10 @@ class LuaContext {
     static void push_block(lua_State* l, Block& block);
     static void push_switch(lua_State* l, Switch& sw);
     static void push_door(lua_State* l, Door& door);
-    static void push_shop_item(lua_State* l, ShopItem& shop_item);
+    static void push_shop_treasure(lua_State* l, ShopTreasure& shop_treasure);
     static void push_pickable(lua_State* l, Pickable& pickable);
     static void push_enemy(lua_State* l, Enemy& enemy);
+    static void push_custom_entity(lua_State* l, CustomEntity& entity);
 
     // Getting userdata objects from Lua.
     static bool is_userdata(lua_State* l, int index,
@@ -959,12 +977,14 @@ class LuaContext {
     static Switch& check_switch(lua_State* l, int index);
     static bool is_door(lua_State* l, int index);
     static Door& check_door(lua_State* l, int index);
-    static bool is_shop_item(lua_State* l, int index);
-    static ShopItem& check_shop_item(lua_State* l, int index);
+    static bool is_shop_treasure(lua_State* l, int index);
+    static ShopTreasure& check_shop_treasure(lua_State* l, int index);
     static bool is_pickable(lua_State* l, int index);
     static Pickable& check_pickable(lua_State* l, int index);
     static bool is_enemy(lua_State* l, int index);
     static Enemy& check_enemy(lua_State* l, int index);
+    static bool is_custom_entity(lua_State* l, int index);
+    static CustomEntity& check_custom_entity(lua_State* l, int index);
 
     // Events.
     void on_started();
@@ -980,14 +1000,14 @@ class LuaContext {
     void on_dialog_finished(const Dialog& dialog);
     bool on_game_over_started();
     void on_game_over_finished();
-    bool on_input(InputEvent& event);
-    bool on_key_pressed(InputEvent& event);
-    bool on_key_released(InputEvent& event);
-    bool on_character_pressed(InputEvent& event);
-    bool on_joypad_button_pressed(InputEvent& event);
-    bool on_joypad_button_released(InputEvent& event);
-    bool on_joypad_axis_moved(InputEvent& event);
-    bool on_joypad_hat_moved(InputEvent& event);
+    bool on_input(const InputEvent& event);
+    bool on_key_pressed(const InputEvent& event);
+    bool on_key_released(const InputEvent& event);
+    bool on_character_pressed(const InputEvent& event);
+    bool on_joypad_button_pressed(const InputEvent& event);
+    bool on_joypad_button_released(const InputEvent& event);
+    bool on_joypad_axis_moved(const InputEvent& event);
+    bool on_joypad_hat_moved(const InputEvent& event);
     bool on_command_pressed(GameCommands::Command command);
     bool on_command_released(GameCommands::Command command);
     void on_animation_finished(const std::string& animation);
@@ -1023,6 +1043,7 @@ class LuaContext {
     void on_bought();
     void on_opened();
     void on_closed();
+    void on_moving();
     void on_moved();
     void on_map_changed(Map& map);
     void on_pickable_created(Pickable& pickable);
@@ -1058,8 +1079,8 @@ class LuaContext {
       l_camera_do_callback,
       l_camera_restore,
       l_treasure_dialog_finished,
-      l_shop_item_description_dialog_finished,
-      l_shop_item_question_dialog_finished;
+      l_shop_treasure_description_dialog_finished,
+      l_shop_treasure_question_dialog_finished;
 
 
     // Script data.
@@ -1079,6 +1100,11 @@ class LuaContext {
     std::set<Drawable*>
         drawables_to_remove;        /**< Drawable objects to be removed at the
                                      * next cycle. */
+    std::map<ExportableToLua*, std::set<std::string> >
+        userdata_fields;            /**< Existing string keys created on each
+                                     * userdata with our __newindex. This is
+                                     * only for performance, to avoid Lua
+                                     * lookups for callbacks like on_update. */
 
     static std::map<lua_State*, LuaContext*>
         lua_contexts;               /**< Mapping to get the encapsulating object

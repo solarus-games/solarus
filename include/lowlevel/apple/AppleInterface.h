@@ -21,6 +21,8 @@
 
 // This are C "trampoline" function that will be used
 // to invoke a specific Objective-C method FROM C++
+void initPool();
+void drainPool();
 const char * getUserApplicationSupportDirectory();
 
 #endif

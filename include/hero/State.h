@@ -36,13 +36,15 @@ class Hero::State {
     // creation and destruction
     virtual ~State();
     const std::string& get_name() const;
-    virtual void start(State* previous_state);
-    virtual void stop(State* next_state);
+    virtual void start(const State* previous_state);
+    virtual void stop(const State* next_state);
 
     // game loop
     virtual void update();
     virtual void draw_on_map();
+    bool is_suspended() const;
     virtual void set_suspended(bool suspended);
+    uint32_t get_when_suspended() const;
     void notify_command_pressed(GameCommands::Command command);
     void notify_command_released(GameCommands::Command command);
     virtual void notify_action_command_pressed();
@@ -56,15 +58,15 @@ class Hero::State {
 
     // game
     virtual void set_map(Map& map);
-    virtual bool can_start_gameover_sequence();
+    virtual bool can_start_gameover_sequence() const;
 
     // sprites
-    virtual bool is_hero_visible();
-    virtual bool is_direction_locked();
+    virtual bool is_hero_visible() const;
+    virtual bool is_direction_locked() const;
 
     // movement
-    virtual bool can_control_movement();
-    virtual int get_wanted_movement_direction8();
+    virtual bool can_control_movement() const;
+    virtual int get_wanted_movement_direction8() const;
     virtual void notify_walking_speed_changed();
     virtual void notify_layer_changed();
     virtual void notify_movement_changed();
@@ -73,86 +75,93 @@ class Hero::State {
     virtual void notify_position_changed();
 
     // ground
-    virtual bool can_avoid_deep_water();
-    virtual bool can_avoid_hole();
-    virtual bool can_avoid_ice();
-    virtual bool can_avoid_lava();
-    virtual bool can_avoid_prickle();
-    virtual bool is_touching_ground();
-    virtual bool can_come_from_bad_ground();
+    virtual bool can_avoid_deep_water() const;
+    virtual bool can_avoid_hole() const;
+    virtual bool can_avoid_ice() const;
+    virtual bool can_avoid_lava() const;
+    virtual bool can_avoid_prickle() const;
+    virtual bool is_touching_ground() const;
+    virtual bool can_come_from_bad_ground() const;
     virtual void notify_ground_changed();
 
     // obstacles and collisions
-    virtual bool are_collisions_ignored();
-    virtual bool is_shallow_water_obstacle();
-    virtual bool is_deep_water_obstacle();
-    virtual bool is_hole_obstacle();
-    virtual bool is_lava_obstacle();
-    virtual bool is_prickle_obstacle();
-    virtual bool is_ladder_obstacle();
-    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    virtual bool can_avoid_teletransporter();
-    virtual bool is_teletransporter_delayed();
-    virtual bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    virtual bool can_avoid_conveyor_belt();
-    virtual bool is_stairs_obstacle(Stairs& stairs);
-    virtual bool is_sensor_obstacle(Sensor& sensor);
-    virtual bool is_jumper_obstacle(Jumper& jumper);
-    virtual bool is_separator_obstacle(Separator& separator);
-    virtual bool can_avoid_sensor();
-    virtual bool can_avoid_explosion();
-    virtual bool can_avoid_switch();
+    virtual bool are_collisions_ignored() const;
+    virtual bool is_shallow_water_obstacle() const;
+    virtual bool is_deep_water_obstacle() const;
+    virtual bool is_hole_obstacle() const;
+    virtual bool is_lava_obstacle() const;
+    virtual bool is_prickle_obstacle() const;
+    virtual bool is_ladder_obstacle() const;
+    virtual bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    virtual bool can_avoid_teletransporter() const;
+    virtual bool is_teletransporter_delayed() const;
+    virtual bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    virtual bool can_avoid_conveyor_belt() const;
+    virtual bool is_stairs_obstacle(const Stairs& stairs) const;
+    virtual bool is_sensor_obstacle(const Sensor& sensor) const;
+    virtual bool is_jumper_obstacle(const Jumper& jumper) const;
+    virtual bool is_separator_obstacle(const Separator& separator) const;
+    virtual bool can_avoid_sensor() const;
+    virtual bool can_avoid_explosion() const;
+    virtual bool can_avoid_switch() const;
 
     // enemies
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
-    virtual int get_sword_damage_factor();
-    virtual bool can_be_hurt(Enemy* attacker);
+    virtual int get_sword_damage_factor() const;
+    virtual bool can_be_hurt(Enemy* attacker) const;
 
     // state specific
-    virtual bool is_free();
-    virtual bool is_using_item();
+    virtual bool is_free() const;
+    virtual bool is_using_item() const;
     virtual EquipmentItemUsage& get_item_being_used();
-    virtual bool is_brandishing_treasure();
-    virtual bool is_grabbing_or_pulling();
-    virtual bool is_moving_grabbed_entity();
+    virtual bool is_brandishing_treasure() const;
+    virtual bool is_grabbing_or_pulling() const;
+    virtual bool is_moving_grabbed_entity() const;
     virtual void notify_grabbed_entity_collision();
-    virtual bool is_cutting_with_sword(Detector& detector);
-    virtual bool can_start_sword();
-    virtual bool can_pick_treasure(EquipmentItem& item);
-    virtual bool can_start_item(EquipmentItem& item);
-    virtual bool can_take_stairs();
-    virtual bool can_sword_hit_crystal();
-    virtual bool can_take_jumper();
+    virtual bool is_cutting_with_sword(Detector& detector) const;
+    virtual bool can_start_sword() const;
+    virtual bool can_pick_treasure(EquipmentItem& item) const;
+    virtual bool can_start_item(EquipmentItem& item) const;
+    virtual bool can_take_stairs() const;
+    virtual bool can_sword_hit_crystal() const;
+    virtual bool can_take_jumper() const;
     virtual void notify_jumper_activated(Jumper& jumper);
-    bool is_carrying_item();
-    virtual CarriedItem* get_carried_item();
-    virtual CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
+    bool is_carrying_item() const;
+    virtual CarriedItem* get_carried_item() const;
+    virtual CarriedItem::Behavior get_previous_carried_item_behavior() const;
 
   protected:
 
     State(Hero& hero, const std::string& state_name);
 
-    bool is_current_state();
+    bool is_current_state() const;
+    bool is_stopping() const;
 
     // access to various game objects
     LuaContext& get_lua_context();
     MapEntities& get_entities();
     Game& get_game();
+    const Game& get_game() const;
     Map& get_map();
     Equipment& get_equipment();
+    const Equipment& get_equipment() const;
     KeysEffect& get_keys_effect();
     GameCommands& get_commands();
+    const GameCommands& get_commands() const;
+    Hero& get_hero();
+    const Hero& get_hero() const;
     HeroSprites& get_sprites();
+    const HeroSprites& get_sprites() const;
+
+  private:
 
     Hero& hero;               /**< The hero controlled by this state. */
     bool suspended;           /**< Whether this state is suspended. */
     uint32_t when_suspended;  /**< When this state was suspended. */
-
-  private:
-
     Map* map;                 /**< The current map (it may change during this state). */
     const std::string name;   /**< Name describing this state. */
+    bool stopping;            /**< Indicates that this state is being stopped. */
 
 };
 

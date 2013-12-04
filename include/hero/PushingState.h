@@ -36,24 +36,25 @@ class Hero::PushingState: public Hero::State {
     PushingState(Hero& hero);
     ~PushingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
-    bool can_avoid_conveyor_belt();
-    bool can_start_sword();
-    bool is_moving_grabbed_entity();
+    bool can_avoid_conveyor_belt() const;
+    bool can_start_sword() const;
+    bool is_moving_grabbed_entity() const;
     void notify_grabbed_entity_collision();
     void notify_movement_finished();
     void notify_obstacle_reached();
     void notify_position_changed();
 
-    bool can_be_hurt(Enemy* attacker);
-    bool can_pick_treasure(EquipmentItem& item);
-    bool is_shallow_water_obstacle();
-    bool is_deep_water_obstacle();
-    bool is_hole_obstacle();
-    bool is_lava_obstacle();
-    bool is_prickle_obstacle();
+    bool can_be_hurt(Enemy* attacker) const;
+    bool can_pick_treasure(EquipmentItem& item) const;
+    bool is_shallow_water_obstacle() const;
+    bool is_deep_water_obstacle() const;
+    bool is_hole_obstacle() const;
+    bool is_lava_obstacle() const;
+    bool is_prickle_obstacle() const;
+
 };
 
 #endif

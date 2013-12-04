@@ -1,16 +1,3 @@
 #!/bin/bash
-
-mkdir export
-git archive -o export/tools.tar HEAD .
-cd export
-tar xvf tools.tar
-rm tools.tar
-./compile
-jar cvmf manifest.mf solarus-editor.jar org imagej data_files_conversion update_quest.lua
-#keytool -genkey -keystore ../solaruskeystore -alias solaruskey
-jarsigner -keystore ../solaruskeystore luaj-jse-3.0-beta1.jar solaruskey
-jarsigner -keystore ../solaruskeystore solarus-editor.jar solaruskey
+./make_editor_jar
 scp solarus-editor.jar solarus@solarus-games.org:www/editor/
-scp luaj-jse-3.0-beta1.jar solarus@solarus-games.org:www/editor/
-cd ..
-rm -rf export

@@ -40,7 +40,8 @@ Explosion::Explosion(const std::string& name, Layer layer,
   set_optimization_distance(2000); // because of placing a bomb on a switch
   get_sprite().enable_pixel_collisions();
   if (with_damages) {
-    set_bounding_box_from_sprite();
+    set_size(48, 48);
+    set_origin(24, 24);
   }
 }
 
@@ -56,7 +57,7 @@ Explosion::~Explosion() {
  * \return the type of entity
  */
 EntityType Explosion::get_type() const {
-  return EXPLOSION;
+  return ENTITY_EXPLOSION;
 }
 
 /**
@@ -67,7 +68,7 @@ EntityType Explosion::get_type() const {
  *
  * \return true if this type of entity can be obstacle for other entities
  */
-bool Explosion::can_be_obstacle() {
+bool Explosion::can_be_obstacle() const {
   return false;
 }
 

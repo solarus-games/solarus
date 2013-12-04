@@ -30,10 +30,10 @@ class Hero::UsingItemState: public Hero::State {
     UsingItemState(Hero& hero, EquipmentItem& item);
     ~UsingItemState();
 
-    void start(State* previous_state);
+    void start(const State* previous_state);
     void update();
 
-    virtual bool is_using_item();
+    virtual bool is_using_item() const;
     virtual EquipmentItemUsage& get_item_being_used();
 
   private:

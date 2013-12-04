@@ -20,8 +20,10 @@
 #include "Map.h"
 #include "Treasure.h"
 #include "EquipmentItem.h"
+#include "Timer.h"
 #include "entities/MapEntities.h"
 #include "entities/Tile.h"
+#include "entities/TilePattern.h"
 #include "entities/Tileset.h"
 #include "entities/Destination.h"
 #include "entities/Teletransporter.h"
@@ -38,17 +40,19 @@
 #include "entities/Sensor.h"
 #include "entities/Crystal.h"
 #include "entities/CrystalBlock.h"
-#include "entities/ShopItem.h"
+#include "entities/ShopTreasure.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/Door.h"
 #include "entities/Stairs.h"
+#include "entities/Separator.h"
+#include "entities/CustomEntity.h"
 #include "entities/Bomb.h"
 #include "entities/Explosion.h"
 #include "entities/Fire.h"
-#include "entities/Separator.h"
 #include "entities/Hero.h"
 #include "movements/Movement.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
@@ -70,6 +74,7 @@ void LuaContext::register_map_module() {
       { "get_floor", map_api_get_floor },
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
+      { "get_music", map_api_get_music },
       { "get_camera_position", map_api_get_camera_position },
       { "move_camera", map_api_move_camera },
       { "get_ground", map_api_get_ground },
@@ -85,6 +90,7 @@ void LuaContext::register_map_module() {
       { "get_entities", map_api_get_entities },
       { "get_entities_count", map_api_get_entities_count },
       { "has_entities", map_api_has_entities },
+      { "get_hero", map_api_get_hero },
       { "set_entities_enabled", map_api_set_entities_enabled },
       { "remove_entities", map_api_remove_entities },
       { "create_destination", map_api_create_destination },
@@ -102,7 +108,7 @@ void LuaContext::register_map_module() {
       { "create_sensor", map_api_create_sensor },
       { "create_crystal", map_api_create_crystal },
       { "create_crystal_block", map_api_create_crystal_block },
-      { "create_shop_item", map_api_create_shop_item },
+      { "create_shop_treasure", map_api_create_shop_treasure },
       { "create_conveyor_belt", map_api_create_conveyor_belt },
       { "create_door", map_api_create_door },
       { "create_stairs", map_api_create_stairs },
@@ -296,6 +302,8 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
   lua_pushcfunction(l, l_camera_restore);
   timer_api_start(l);
+  Timer& timer = check_timer(l, -1);
+  timer.set_suspended_with_map(false);
 
   return 0;
 }
@@ -415,6 +423,30 @@ int LuaContext::map_api_get_tileset(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of map:get_music().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_music(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  const std::string& music_id = map.get_music_id();
+  if (music_id == Music::none) {
+    // Special id to stop any music.
+    lua_pushnil(l);
+  }
+  else if (music_id == Music::unchanged) {
+    // Special id to keep the music unchanged.
+    push_string(l, "same");
+  }
+  else {
+    push_string(l, music_id);
+  }
+  return 1;
+}
+
+/**
  * \brief Implementation of map:set_tileset().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -500,7 +532,7 @@ int LuaContext::map_api_get_ground(lua_State* l) {
     error(l, StringConcat() << "Invalid layer: " << layer);
   }
 
-  Ground ground = map.get_entities().get_ground(Layer(layer), x, y);
+  Ground ground = map.get_ground(Layer(layer), x, y);
 
   push_string(l, Tileset::ground_names[ground]);
   return 1;
@@ -580,7 +612,7 @@ int LuaContext::map_api_open_doors(lua_State* l) {
 
   bool done = false;
   MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
+  std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door* door = static_cast<Door*>(*it);
@@ -611,7 +643,7 @@ int LuaContext::map_api_close_doors(lua_State* l) {
 
   bool done = false;
   MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
+  std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door* door = static_cast<Door*>(*it);
@@ -645,7 +677,7 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
   }
 
   MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
+  std::list<MapEntity*> doors = entities.get_entities_with_prefix(ENTITY_DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door* door = static_cast<Door*>(*it);
@@ -752,6 +784,20 @@ int LuaContext::map_api_has_entities(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of map:get_hero().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_hero(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  // Return the hero even if he is no longer on this map.
+  push_hero(l, map.get_game().get_hero());
+  return 1;
+}
+
+/**
  * \brief Implementation of map:set_entities_enabled().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -807,25 +853,39 @@ int LuaContext::map_api_create_tile(lua_State* l) {
       "Cannot create a tile when the map is already started");
 
   luaL_checktype(l, 1, LUA_TTABLE);
-  int layer = check_int_field(l, 1, "layer");
-  int x = check_int_field(l, 1, "x");
-  int y = check_int_field(l, 1, "y");
-  int width = check_int_field(l, 1, "width");
-  int height = check_int_field(l, 1, "height");
-  int tile_pattern_id = check_int_field(l, 1, "pattern");
+  const int layer = check_int_field(l, 1, "layer");
+  const int x = check_int_field(l, 1, "x");
+  const int y = check_int_field(l, 1, "y");
+  const int width = check_int_field(l, 1, "width");
+  const int height = check_int_field(l, 1, "height");
+  const int tile_pattern_id = check_int_field(l, 1, "pattern");
 
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
 
-  MapEntity* entity = new Tile(
-      Layer(layer),
-      x,
-      y,
-      width,
-      height,
-      tile_pattern_id);
-  map.get_entities().add_entity(entity);
+  TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
+
+  for (int current_y = y; current_y < y + height; current_y += pattern.get_height()) {
+    for (int current_x = x; current_x < x + width; current_x += pattern.get_width()) {
+      MapEntity* entity = new Tile(
+          Layer(layer),
+          current_x,
+          current_y,
+          pattern.get_width(),
+          pattern.get_height(),
+          tile_pattern_id);
+      map.get_entities().add_entity(entity);
+    }
+  }
 
   return 0;
 }
@@ -891,6 +951,14 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
 
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
   }
 
   MapEntity* entity = new Teletransporter(
@@ -1137,6 +1205,14 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
 
   MapEntity* entity = new Jumper(
       name,
@@ -1287,6 +1363,9 @@ int LuaContext::map_api_create_block(lua_State* l) {
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
+  if (maximum_moves < 0 || maximum_moves > 2) {
+    arg_error(l, 1, StringConcat() << "Invalid maximum_moves: " << maximum_moves);
+  }
 
   Block* entity = new Block(
       name,
@@ -1327,6 +1406,14 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
 
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
   }
 
   MapEntity* entity = new DynamicTile(
@@ -1412,6 +1499,14 @@ int LuaContext::map_api_create_wall(lua_State* l) {
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
 
   MapEntity* entity = new Wall(
       name,
@@ -1451,6 +1546,14 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
 
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
   }
 
   MapEntity* entity = new Sensor(
@@ -1521,6 +1624,14 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
   if (layer < LAYER_LOW || layer >= LAYER_NB) {
     arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
   }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
 
   int subtype;
   std::istringstream iss(subtype_name);
@@ -1550,7 +1661,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
-int LuaContext::map_api_create_shop_item(lua_State* l) {
+int LuaContext::map_api_create_shop_treasure(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
@@ -1575,7 +1686,7 @@ int LuaContext::map_api_create_shop_item(lua_State* l) {
   }
 
   Game& game = map.get_game();
-  MapEntity* entity = ShopItem::create(
+  MapEntity* entity = ShopTreasure::create(
       game,
       name,
       Layer(layer),
@@ -1760,6 +1871,18 @@ int LuaContext::map_api_create_separator(lua_State* l) {
   int width = check_int_field(l, 1, "width");
   int height = check_int_field(l, 1, "height");
 
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
+    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
+
   MapEntity* entity = new Separator(
       name,
       Layer(layer),
@@ -1772,6 +1895,54 @@ int LuaContext::map_api_create_separator(lua_State* l) {
 
   if (map.is_started()) {
     push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * \brief Implementation of map:create_custom_entity().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_custom_entity(lua_State* l) {
+
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  const std::string& name = opt_string_field(l, 1, "name", "");
+  int layer = check_int_field(l, 1, "layer");
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = opt_int_field(l, 1, "width", 16);
+  int height = opt_int_field(l, 1, "height", 16);
+  const std::string& model = opt_string_field(l, 1, "model", "");
+
+  if (layer < LAYER_LOW || layer >= LAYER_NB) {
+    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
+  }
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 1, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
+
+  Game& game = map.get_game();
+  CustomEntity* entity = new CustomEntity(
+      game,
+      name,
+      Layer(layer),
+      x,
+      y,
+      width,
+      height,
+      model);
+
+  map.get_entities().add_entity(entity);
+  if (map.is_started()) {
+    push_custom_entity(l, *entity);
     return 1;
   }
   return 0;
@@ -1874,10 +2045,17 @@ int LuaContext::map_api_create_fire(lua_State* l) {
 
 /**
  * \brief Calls the on_started() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  * \param destination The destination point used (NULL if it's a special one).
  */
 void LuaContext::map_on_started(Map& map, Destination* destination) {
+
+  if (!userdata_has_field(map, "on_started")) {
+    return;
+  }
 
   push_map(l, map);
   on_started(destination);
@@ -1885,13 +2063,22 @@ void LuaContext::map_on_started(Map& map, Destination* destination) {
 }
 
 /**
- * \brief Calls the on_finished() method of a Lua map.
+ * \brief Calls the on_finished() method of a Lua map if it is defined.
+ *
+ * Also stops timers and menus associated to the map.
+ *
  * \param map A map.
  */
 void LuaContext::map_on_finished(Map& map) {
 
+  if (!map.is_known_to_lua()) {
+    return;
+  }
+
   push_map(l, map);
-  on_finished();
+  if (userdata_has_field(map, "on_finished")) {
+    on_finished();
+  }
   remove_timers(-1);  // Stop timers and menus associated to this map.
   remove_menus(-1);
   lua_pop(l, 1);
@@ -1899,25 +2086,45 @@ void LuaContext::map_on_finished(Map& map) {
 
 /**
  * \brief Calls the on_update() method of a Lua map.
+ *
+ * Also calls the method on its menus.
+ *
  * \param map A map.
  */
 void LuaContext::map_on_update(Map& map) {
 
+  if (!map.is_known_to_lua()) {
+    return;
+  }
+
   push_map(l, map);
-  on_update();
+  // This particular method is tried so often that we want to save optimize
+  // the std::string construction.
+  static const std::string method_name = "on_update";
+  if (userdata_has_field(map, method_name)) {
+    on_update();
+  }
   menus_on_update(-1);
   lua_pop(l, 1);
 }
 
 /**
- * \brief Calls the on_draw() method of a Lua map.
+ * \brief Calls the on_draw() method of a Lua map if it is defined.
+ *
+ * Also calls the method on its menus.
+ *
  * \param map A map.
  * \param dst_surface The destination surface.
  */
 void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
 
+  if (!map.is_known_to_lua()) {
+    return;
+  }
   push_map(l, map);
-  on_draw(dst_surface);
+  if (userdata_has_field(map, "on_draw")) {
+    on_draw(dst_surface);
+  }
   menus_on_draw(-1, dst_surface);
   lua_pop(l, 1);
 }
@@ -1926,16 +2133,24 @@ void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
  * \brief Notifies a Lua map that an input event has just occurred.
  *
  * The appropriate callback in the map is triggered if it exists.
+ * Also notifies the menus of the game if the game itself does not handle the
+ * event.
  *
  * \param event The input event to handle.
  * \param map A map.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::map_on_input(Map& map, InputEvent& event) {
+bool LuaContext::map_on_input(Map& map, const InputEvent& event) {
+
+  if (!map.is_known_to_lua()) {
+    return false;
+  }
 
   bool handled = false;
   push_map(l, map);
-  handled = on_input(event);
+  if (map.is_with_lua_table()) {
+    handled = on_input(event);
+  }
   if (!handled) {
     handled = menus_on_input(-1, event);
   }
@@ -1945,15 +2160,25 @@ bool LuaContext::map_on_input(Map& map, InputEvent& event) {
 
 /**
  * \brief Calls the on_command_pressed() method of a Lua map.
+ *
+ * Also notifies the menus of the game if the game itself does not handle the
+ * event.
+ *
  * \param map A map.
  * \param command The command pressed.
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command) {
 
+  if (!map.is_known_to_lua()) {
+    return false;
+  }
+
   bool handled = false;
   push_map(l, map);
-  handled = on_command_pressed(command);
+  if (userdata_has_field(map, "on_command_pressed")) {
+    handled = on_command_pressed(command);
+  }
   if (!handled) {
     handled = menus_on_command_pressed(-1, command);
   }
@@ -1963,15 +2188,25 @@ bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command)
 
 /**
  * \brief Calls the on_command_released() method of a Lua map.
+ *
+ * Also notifies the menus of the game if the game itself does not handle the
+ * event.
+ *
  * \param map A map.
  * \param command The command released.
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::map_on_command_released(Map& map, GameCommands::Command command) {
 
+  if (!map.is_known_to_lua()) {
+    return false;
+  }
+
   bool handled = false;
   push_map(l, map);
-  handled = on_command_released(command);
+  if (userdata_has_field(map, "on_command_released")) {
+    handled = on_command_released(command);
+  }
   if (!handled) {
     handled = menus_on_command_released(-1, command);
   }
@@ -1981,10 +2216,17 @@ bool LuaContext::map_on_command_released(Map& map, GameCommands::Command command
 
 /**
  * \brief Calls the on_suspended() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  * \param suspended true if the map is suspended.
  */
 void LuaContext::map_on_suspended(Map& map, bool suspended) {
+
+  if (!userdata_has_field(map, "on_suspended")) {
+    return;
+  }
 
   push_map(l, map);
   on_suspended(suspended);
@@ -1993,11 +2235,18 @@ void LuaContext::map_on_suspended(Map& map, bool suspended) {
 
 /**
  * \brief Calls the on_opening_transition_finished() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  * \param destination The destination point used (NULL if it's a special one).
  */
 void LuaContext::map_on_opening_transition_finished(Map& map,
     Destination* destination) {
+
+  if (!userdata_has_field(map, "on_opening_transition_finished")) {
+    return;
+  }
 
   push_map(l, map);
   on_opening_transition_finished(destination);
@@ -2006,9 +2255,16 @@ void LuaContext::map_on_opening_transition_finished(Map& map,
 
 /**
  * \brief Calls the on_camera_back() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  */
 void LuaContext::map_on_camera_back(Map& map) {
+
+  if (!userdata_has_field(map, "on_camera_back")) {
+    return;
+  }
 
   push_map(l, map);
   on_camera_back();
@@ -2017,10 +2273,17 @@ void LuaContext::map_on_camera_back(Map& map) {
 
 /**
  * \brief Calls the on_obtaining_treasure() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  * \param treasure A treasure the hero is about to obtain on that map.
  */
 void LuaContext::map_on_obtaining_treasure(Map& map, const Treasure& treasure) {
+
+  if (!userdata_has_field(map, "on_obtaining_treasure")) {
+    return;
+  }
 
   push_map(l, map);
   on_obtaining_treasure(treasure);
@@ -2029,10 +2292,17 @@ void LuaContext::map_on_obtaining_treasure(Map& map, const Treasure& treasure) {
 
 /**
  * \brief Calls the on_obtained_treasure() method of a Lua map.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param map A map.
  * \param treasure The treasure just obtained.
  */
 void LuaContext::map_on_obtained_treasure(Map& map, const Treasure& treasure) {
+
+  if (!userdata_has_field(map, "on_obtained_treasure")) {
+    return;
+  }
 
   push_map(l, map);
   on_obtained_treasure(treasure);

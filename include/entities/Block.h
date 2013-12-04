@@ -41,26 +41,35 @@ class Block: public Detector {
     ~Block();
 
     EntityType get_type() const;
-    bool is_drawn_in_y_order();
+    bool is_drawn_in_y_order() const;
     bool is_ground_observer() const;
 
-    bool is_obstacle_for(MapEntity& other);
-    bool is_hole_obstacle();
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_hero_obstacle(Hero& hero);
-    bool is_enemy_obstacle(Enemy& enemy);
-    bool is_destructible_obstacle(Destructible& destructible);
+    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_hole_obstacle() const;
+    bool is_teletransporter_obstacle(
+        const Teletransporter& teletransporter) const;
+    bool is_hero_obstacle(const Hero& hero) const;
+    bool is_enemy_obstacle(const Enemy& enemy) const;
+    bool is_destructible_obstacle(const Destructible& destructible) const;
     void set_map(Map& map);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_action_command_pressed();
     bool start_movement_by_hero();
     void stop_movement_by_hero();
+    void notify_moving_by(MapEntity& entity);
+    void notify_moved_by(MapEntity& entity);
     void notify_position_changed();
     void notify_obstacle_reached();
     void notify_ground_below_changed();
 
     void reset();
+    bool is_pushable() const;
+    void set_pushable(bool pushable);
+    bool is_pullable() const;
+    void set_pullable(bool pullable);
+    int get_maximum_moves() const;
+    void set_maximum_moves(int maximum_moves);
 
     virtual const std::string& get_lua_type_name() const;
 

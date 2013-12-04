@@ -43,11 +43,11 @@ Hero::PlungingState::~PlungingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::PlungingState::start(State* previous_state) {
+void Hero::PlungingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  if (hero.get_ground_below() == GROUND_DEEP_WATER) {
+  if (get_hero().get_ground_below() == GROUND_DEEP_WATER) {
     get_sprites().set_animation("plunging_water", "");
   }
   else {
@@ -65,6 +65,7 @@ void Hero::PlungingState::update() {
 
   if (get_sprites().is_animation_finished()) {
 
+    Hero& hero = get_hero();
     int drown = 0;
     if (hero.get_ground_below() == GROUND_DEEP_WATER) {
 
@@ -93,7 +94,7 @@ void Hero::PlungingState::update() {
  * \brief Returns whether the game over sequence can start in the current state.
  * \return true if the game over sequence can start in the current state
  */
-bool Hero::PlungingState::can_start_gameover_sequence() {
+bool Hero::PlungingState::can_start_gameover_sequence() const {
   return false;
 }
 
@@ -101,7 +102,7 @@ bool Hero::PlungingState::can_start_gameover_sequence() {
  * \brief Returns whether the hero is touching the ground in the current state.
  * \return true if the hero is touching the ground in the current state
  */
-bool Hero::PlungingState::is_touching_ground() {
+bool Hero::PlungingState::is_touching_ground() const {
   return false;
 }
 

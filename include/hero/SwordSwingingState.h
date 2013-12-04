@@ -34,15 +34,15 @@ class Hero::SwordSwingingState: public Hero::State {
     SwordSwingingState(Hero& hero);
     ~SwordSwingingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
-    bool can_start_sword();
-    bool can_be_hurt(Enemy* attacker);
-    bool can_pick_treasure(EquipmentItem& item);
-    bool can_sword_hit_crystal();
-    bool is_cutting_with_sword(Detector& detector);
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool can_start_sword() const;
+    bool can_be_hurt(Enemy* attacker) const;
+    bool can_pick_treasure(EquipmentItem& item) const;
+    bool can_sword_hit_crystal() const;
+    bool is_cutting_with_sword(Detector& detector) const;
+    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
     void notify_obstacle_reached();
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);

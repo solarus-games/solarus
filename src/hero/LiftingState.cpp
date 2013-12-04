@@ -19,6 +19,7 @@
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
+#include "lowlevel/Debug.h"
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
@@ -32,6 +33,8 @@ Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
   State(hero, "lifting"),
   lifted_item(lifted_item) {
 
+  Debug::check_assertion(lifted_item != NULL, "Missing lifted item");
+  lifted_item->increment_refcount();
 }
 
 /**
@@ -39,14 +42,14 @@ Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
  */
 Hero::LiftingState::~LiftingState() {
 
-  delete lifted_item;
+  destroy_lifted_item();
 }
 
 /**
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::LiftingState::start(State* previous_state) {
+void Hero::LiftingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -56,7 +59,7 @@ void Hero::LiftingState::start(State* previous_state) {
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
   get_sprites().set_animation_lifting();
   get_sprites().set_lifted_item(lifted_item);
-  hero.set_facing_entity(NULL);
+  get_hero().set_facing_entity(NULL);
 
   get_equipment().notify_ability_used("lift");
 }
@@ -65,7 +68,7 @@ void Hero::LiftingState::start(State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state
  */
-void Hero::LiftingState::stop(State* next_state) {
+void Hero::LiftingState::stop(const State* next_state) {
 
   State::stop(next_state);
 
@@ -74,18 +77,21 @@ void Hero::LiftingState::stop(State* next_state) {
     get_sprites().set_lifted_item(NULL);
 
     // the lifted item is still managed by this state
-    switch (next_state->get_previous_carried_item_behavior(*lifted_item)) {
+    switch (next_state->get_previous_carried_item_behavior()) {
 
     case CarriedItem::BEHAVIOR_THROW:
       throw_item();
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
-      delete lifted_item;
-      lifted_item = NULL;
+      destroy_lifted_item();
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
+      // The next state is now the owner and has incremented the refcount.
+      lifted_item->decrement_refcount();
+      Debug::check_assertion(lifted_item->get_refcount() > 0,
+          "Invalid carried item refcount");
       lifted_item = NULL;
       break;
     }
@@ -102,8 +108,9 @@ void Hero::LiftingState::update() {
 
   lifted_item->update();
 
-  if (!suspended && !lifted_item->is_being_lifted()) { // the item has finished being lifted
+  if (!is_suspended() && !lifted_item->is_being_lifted()) { // the item has finished being lifted
 
+    Hero& hero = get_hero();
     CarriedItem *carried_item = lifted_item;
     lifted_item = NULL; // we do not take care of the carried item from this state anymore
     hero.set_state(new CarryingState(hero, carried_item));
@@ -129,7 +136,7 @@ void Hero::LiftingState::set_suspended(bool suspended) {
  * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
-bool Hero::LiftingState::can_be_hurt(Enemy* attacker) {
+bool Hero::LiftingState::can_be_hurt(Enemy* attacker) const {
   return true;
 }
 
@@ -144,5 +151,19 @@ void Hero::LiftingState::throw_item() {
   lifted_item->throw_item(get_sprites().get_animation_direction());
   get_entities().add_entity(lifted_item);
   lifted_item = NULL;
+}
+
+/**
+ * \brief Destroys the item being lifted if any and sets it to NULL.
+ */
+void Hero::LiftingState::destroy_lifted_item() {
+
+  if (lifted_item != NULL) {
+    lifted_item->decrement_refcount();
+    if (lifted_item->get_refcount() == 0) {
+      delete lifted_item;
+    }
+    lifted_item = NULL;
+  }
 }
 

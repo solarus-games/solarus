@@ -78,38 +78,39 @@ class TextSurface: public Drawable {
     ~TextSurface();
 
     static bool has_font(const std::string& font_id);
-    const std::string& get_font();
+    const std::string& get_font() const;
     void set_font(const std::string& font_id);
-    HorizontalAlignment get_horizontal_alignment();
+    HorizontalAlignment get_horizontal_alignment() const;
     void set_horizontal_alignment(HorizontalAlignment horizontal_alignment);
-    VerticalAlignment get_vertical_alignment();
+    VerticalAlignment get_vertical_alignment() const;
     void set_vertical_alignment(VerticalAlignment vertical_alignment);
     void set_alignment(HorizontalAlignment horizontal_alignment,
         VerticalAlignment vertical_alignment);
-    RenderingMode get_rendering_mode();
+    RenderingMode get_rendering_mode() const;
     void set_rendering_mode(RenderingMode rendering_mode);
-    const Color& get_text_color();
+    const Color& get_text_color() const;
     void set_text_color(const Color& color);
     void set_text_color(int r, int g, int b);
 
     void set_position(int x, int y);
-    int get_x();
+    int get_x() const;
     void set_x(int x);
-    int get_y();
+    int get_y() const;
     void set_y(int y);
-    const std::string& get_text();
+    const std::string& get_text() const;
     void set_text(const std::string& text);
-    bool is_empty();
+    bool is_empty() const;
     void add_char(char c);
 
-    int get_width();
-    int get_height();
-    const Rectangle get_size();
+    int get_width() const;
+    int get_height() const;
+    const Rectangle get_size() const;
 
     void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
     void raw_draw_region(const Rectangle& region,
         Surface& dst_surface, const Rectangle& dst_position);
     void draw_transition(Transition& transition);
+    Surface& get_transition_surface();
 
     const std::string& get_lua_type_name() const;
 

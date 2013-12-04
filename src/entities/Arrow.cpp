@@ -34,23 +34,34 @@
 
 /**
  * \brief Creates an arrow.
- * \param hero the hero
+ * \param hero The hero.
  */
-Arrow::Arrow(Hero& hero):
+Arrow::Arrow(const Hero& hero):
+  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   hero(hero) {
 
   // initialize the entity
   int direction = hero.get_animation_direction();
-  set_layer(hero.get_layer());
   create_sprite("entities/arrow", true);
   get_sprite().set_current_direction(direction);
-  set_bounding_box_from_sprite();
+
+  if (direction % 2 == 0) {
+    // Horizontal.
+    set_size(16, 8);
+    set_origin(8, 4);
+  }
+  else {
+    // Vertical.
+    set_size(8, 16);
+    set_origin(4, 8);
+  }
+
   set_xy(hero.get_center_point());
   set_optimization_distance(0); // Make the arrow continue outside the screen until disappear_date.
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
-  Movement *movement = new PathMovement(path, 192, true, false, false);
+  Movement* movement = new PathMovement(path, 192, true, false, false);
   set_movement(movement);
 
   disappear_date = System::now() + 10000;
@@ -70,7 +81,7 @@ Arrow::~Arrow() {
  * \return the type of entity
  */
 EntityType Arrow::get_type() const {
-  return ARROW;
+  return ENTITY_ARROW;
 }
 
 /**
@@ -81,7 +92,7 @@ EntityType Arrow::get_type() const {
  *
  * \return true if this type of entity can be obstacle for other entities
  */
-bool Arrow::can_be_obstacle() {
+bool Arrow::can_be_obstacle() const {
   return false;
 }
 
@@ -89,7 +100,7 @@ bool Arrow::can_be_obstacle() {
  * \brief Returns whether this entity has to be drawn in y order.
  * \return true if this type of entity is drawn at the same level as the hero
  */
-bool Arrow::is_drawn_in_y_order() {
+bool Arrow::is_drawn_in_y_order() const {
   return true;
 }
 
@@ -98,7 +109,8 @@ bool Arrow::is_drawn_in_y_order() {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Arrow::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Arrow::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
   return false;
 }
 
@@ -107,7 +119,8 @@ bool Arrow::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool Arrow::is_conveyor_belt_obstacle(
+    const ConveyorBelt& conveyor_belt) const {
   return false;
 }
 
@@ -116,7 +129,7 @@ bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool Arrow::is_stairs_obstacle(Stairs& stairs) {
+bool Arrow::is_stairs_obstacle(const Stairs& stairs) const {
   return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
@@ -125,7 +138,7 @@ bool Arrow::is_stairs_obstacle(Stairs& stairs) {
  * by this entity.
  * \return \c true if low walls are currently obstacle for this entity.
  */
-bool Arrow::is_low_wall_obstacle() {
+bool Arrow::is_low_wall_obstacle() const {
   return false;
 }
 
@@ -133,7 +146,7 @@ bool Arrow::is_low_wall_obstacle() {
  * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
  * \return true if the deep water tiles are currently an obstacle for this entity
  */
-bool Arrow::is_deep_water_obstacle() {
+bool Arrow::is_deep_water_obstacle() const {
   return false;
 }
 
@@ -141,7 +154,7 @@ bool Arrow::is_deep_water_obstacle() {
  * \brief Returns whether a hole is currently considered as an obstacle for this entity.
  * \return true if the holes are currently an obstacle for this entity
  */
-bool Arrow::is_hole_obstacle() {
+bool Arrow::is_hole_obstacle() const {
   return false;
 }
 
@@ -149,7 +162,7 @@ bool Arrow::is_hole_obstacle() {
  * \brief Returns whether lava is currently considered as an obstacle for this entity.
  * \return true if lava is currently an obstacle for this entity
  */
-bool Arrow::is_lava_obstacle() {
+bool Arrow::is_lava_obstacle() const {
   return false;
 }
 
@@ -157,7 +170,7 @@ bool Arrow::is_lava_obstacle() {
  * \brief Returns whether prickles are currently considered as an obstacle for this entity.
  * \return true if prickles are currently an obstacle for this entity
  */
-bool Arrow::is_prickle_obstacle() {
+bool Arrow::is_prickle_obstacle() const {
   return false;
 }
 
@@ -165,7 +178,7 @@ bool Arrow::is_prickle_obstacle() {
  * \brief Returns whether a ladder is currently considered as an obstacle for this entity.
  * \return true if the ladders are currently an obstacle for this entity
  */
-bool Arrow::is_ladder_obstacle() {
+bool Arrow::is_ladder_obstacle() const {
   return false;
 }
 
@@ -174,7 +187,7 @@ bool Arrow::is_ladder_obstacle() {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool Arrow::is_switch_obstacle(Switch& sw) {
+bool Arrow::is_switch_obstacle(const Switch& sw) const {
   return false;
 }
 
@@ -183,7 +196,7 @@ bool Arrow::is_switch_obstacle(Switch& sw) {
  * \param raised_block a crystal block raised
  * \return false
  */
-bool Arrow::is_raised_block_obstacle(CrystalBlock& raised_block) {
+bool Arrow::is_raised_block_obstacle(const CrystalBlock& raised_block) const {
   // arrows can traverse the crystal blocks
   return false;
 }
@@ -193,7 +206,7 @@ bool Arrow::is_raised_block_obstacle(CrystalBlock& raised_block) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool Arrow::is_crystal_obstacle(Crystal& crystal) {
+bool Arrow::is_crystal_obstacle(const Crystal& crystal) const {
   return false;
 }
 
@@ -202,7 +215,7 @@ bool Arrow::is_crystal_obstacle(Crystal& crystal) {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool Arrow::is_npc_obstacle(NPC& npc) {
+bool Arrow::is_npc_obstacle(const NPC& npc) const {
   return npc.is_solid();
 }
 
@@ -211,7 +224,7 @@ bool Arrow::is_npc_obstacle(NPC& npc) {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool Arrow::is_jumper_obstacle(Jumper& jumper) {
+bool Arrow::is_jumper_obstacle(const Jumper& jumper) const {
   return false;
 }
 
@@ -247,7 +260,7 @@ const Rectangle Arrow::get_facing_point() const {
 
     default:
       Debug::die(StringConcat() << "Invalid direction for Arrow::get_facing_point(): "
-	  << get_sprite().get_current_direction());
+          << get_sprite().get_current_direction());
   }
 
   return facing_point;
@@ -260,7 +273,7 @@ void Arrow::update() {
 
   MapEntity::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 
@@ -285,10 +298,10 @@ void Arrow::update() {
       // the arrow is stopped because the entity that was reached just disappeared
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
+    else if (entity_reached->get_type() == ENTITY_DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == ENEMY && ((Enemy*) entity_reached)->is_dying()) {
+    else if (entity_reached->get_type() == ENTITY_ENEMY && ((Enemy*) entity_reached)->is_dying()) {
       // the enemy is dying
       disappear_date = now;
     }
@@ -307,11 +320,11 @@ void Arrow::update() {
 
       if (has_reached_map_border()) {
         // the map border was reached: destroy the arrow
-	disappear_date = now;
+        disappear_date = now;
       }
       else {
-	// the arrow has just hit another obstacle
-	reached_obstacle = true;
+        // the arrow has just hit another obstacle
+        reached_obstacle = true;
       }
     }
   }
@@ -344,7 +357,7 @@ void Arrow::set_suspended(bool suspended) {
 
   if (!suspended) {
     // recalculate the timer
-    disappear_date += System::now() - when_suspended;
+    disappear_date += System::now() - get_when_suspended();
   }
 }
 
@@ -359,7 +372,7 @@ void Arrow::stop() {
  * \brief Returns whether the arrow is stopped.
  * \return true if the arrow is stopped
  */
-bool Arrow::is_stopped() {
+bool Arrow::is_stopped() const {
   return get_movement() == NULL || get_movement()->is_finished();
 }
 
@@ -367,7 +380,7 @@ bool Arrow::is_stopped() {
  * \brief Returns whether the arrow is currently flying.
  * \return true if the arrow was shot and has not reached a target yet
  */
-bool Arrow::is_flying() {
+bool Arrow::is_flying() const {
   return !is_stopped() && entity_reached == NULL;
 }
 
@@ -478,7 +491,7 @@ void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
  * \brief Returns whether the arrow has just hit the map border.
  * \return true if the arrow has just hit the map border
  */
-bool Arrow::has_reached_map_border() {
+bool Arrow::has_reached_map_border() const {
 
   if (get_sprite().get_current_animation() != "flying" || get_movement() == NULL) {
     return false;

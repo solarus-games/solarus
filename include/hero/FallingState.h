@@ -26,15 +26,16 @@ class Hero::FallingState: public Hero::State {
 
   public:
 
-    FallingState(Hero &hero);
+    FallingState(Hero& hero);
     ~FallingState();
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
-    bool can_avoid_hole();
-    bool can_avoid_lava();
-    bool can_avoid_prickle();
-    bool can_start_gameover_sequence();
+    bool can_avoid_hole() const;
+    bool can_avoid_lava() const;
+    bool can_avoid_prickle() const;
+    bool can_start_gameover_sequence() const;
+
 };
 
 #endif

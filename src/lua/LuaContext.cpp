@@ -20,7 +20,7 @@
 #include "entities/Sensor.h"
 #include "entities/NPC.h"
 #include "entities/Chest.h"
-#include "entities/ShopItem.h"
+#include "entities/ShopTreasure.h"
 #include "entities/Door.h"
 #include "entities/Block.h"
 #include "entities/Enemy.h"
@@ -31,6 +31,7 @@
 #include "EquipmentItem.h"
 #include "Treasure.h"
 #include "Map.h"
+#include "Timer.h"
 #include <sstream>
 #include <iomanip>
 
@@ -126,7 +127,8 @@ void LuaContext::initialize() {
   // Register the C++ functions and types accessible by Lua.
   register_modules();
 
-  // Make require() able to load Lua files even from the data.solarus archive.
+  // Make require() able to load Lua files even from the
+  // data.solarus or data.solarus.zip archive.
                                   // --
   lua_getglobal(l, "sol");
                                   // -- sol
@@ -194,7 +196,7 @@ void LuaContext::update() {
  * \param event The input event to handle.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::notify_input(InputEvent& event) {
+bool LuaContext::notify_input(const InputEvent& event) {
 
   // Call the appropriate callback in sol.main (if it exists).
   return main_on_input(event);
@@ -236,7 +238,7 @@ void LuaContext::run_map(Map& map, Destination* destination) {
 
   // Run the map's code with the map userdata as parameter.
   push_map(l, map);
-  call_function(1, 0, file_name);
+  call_function(1, 0, file_name.c_str());
 
   // Call the map:on_started() callback.
   map_on_started(map, destination);
@@ -270,7 +272,7 @@ void LuaContext::run_item(EquipmentItem& item) {
 
     // Run it with the item userdata as parameter.
     push_item(l, item);
-    call_function(1, 0, file_name);
+    call_function(1, 0, file_name.c_str());
 
     // Call the item:on_created() callback.
     item_on_created(item);
@@ -294,7 +296,7 @@ void LuaContext::run_enemy(Enemy& enemy) {
 
     // Run it with the enemy userdata as parameter.
     push_enemy(l, enemy);
-    call_function(1, 0, file_name);
+    call_function(1, 0, file_name.c_str());
 
     enemy_on_suspended(enemy, enemy.is_suspended());
     enemy_on_created(enemy);
@@ -314,7 +316,9 @@ void LuaContext::notify_camera_reached_target(Map& map) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
   lua_pushcfunction(l, l_camera_do_callback);
   timer_api_start(l);
-  lua_pop(l, 1);
+  Timer& timer = check_timer(l, -1);
+  timer.set_suspended_with_map(false);
+  lua_settop(l, 0);
 }
 
 /**
@@ -712,10 +716,15 @@ void LuaContext::do_callback(int callback_ref) {
 void LuaContext::push_callback(int callback_ref) {
 
   push_ref(l, callback_ref);
-  Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
-      << "There is no callback with ref " << callback_ref
-      << " (function expected, got " << luaL_typename(l, -1)
-      << "). Did you already invoke or cancel it?");
+#ifndef NDEBUG
+  if (!lua_isfunction(l, -1)) {
+    Debug::die(StringConcat()
+        << "There is no callback with ref " << callback_ref
+        << " (function expected, got " << luaL_typename(l, -1)
+        << "). Did you already invoke or cancel it?"
+    );
+  }
+#endif
 }
 
 /**
@@ -729,89 +738,82 @@ void LuaContext::push_callback(int callback_ref) {
 void LuaContext::cancel_callback(int callback_ref) {
 
   if (callback_ref != LUA_REFNIL) {
+
+#ifndef NDEBUG
     // Check that the callback is canceled only once.
     // Otherwise, a duplicate call to luaL_unref() silently breaks the
     // uniqueness of Lua refs.
     push_ref(l, callback_ref);
-    Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
-        << "There is no callback with ref " << callback_ref
-        << " (function expected, got " << luaL_typename(l, -1)
-        << "). Did you already invoke or cancel it?");
-    lua_pop(l, 1);
+    if (!lua_isfunction(l, -1)) {
+      Debug::die(StringConcat()
+          << "There is no callback with ref " << callback_ref
+          << " (function expected, got " << luaL_typename(l, -1)
+          << "). Did you already invoke or cancel it?"
+      );
+      lua_pop(l, 1);
+    }
+#endif
+
     destroy_ref(callback_ref);
   }
 }
 
 /**
- * \brief Looks up the specified global Lua function and places it onto the stack if it exists.
+ * \brief Returns whether a userdata has an entry with the specified key.
  *
- * If the function is not found, the stack is left unchanged.
+ * Userdata can have entries like tables thanks to special __index and
+ * __newindex metamethods.
  *
- * \param function_name Name of the function to find.
- * \return true if the function was found.
+ * Version with const char*, better for performance if you don't have an
+ * std::string representation of the key.
+ *
+ * \param userdata A userdata.
+ * \param key String key to test.
+ * \return \c true if this key exists on the userdata.
  */
-bool LuaContext::find_global_function(const std::string& function_name) {
+bool LuaContext::userdata_has_field(ExportableToLua& userdata,
+    const char* key) const {
 
-  if (l == NULL) {
+  if (!userdata.is_with_lua_table()) {
     return false;
   }
 
-  lua_getglobal(l, function_name.c_str());
-
-  bool exists = lua_isfunction(l, -1);
-  if (!exists) {  // Restore the stack.
-    lua_pop(l, 1);
+  const std::map<ExportableToLua*, std::set<std::string> >::const_iterator it =
+      userdata_fields.find(&userdata);
+  if (it == userdata_fields.end()) {
+    return false;
   }
 
-  return exists;
+  return it->second.find(key) != it->second.end();
 }
 
 /**
- * \brief Gets a local Lua function from the environment of another one
- * on top of the stack.
+ * \brief Returns whether a userdata has an entry with the specified key.
  *
- * This is equivalent to find_local_function(-1, function_name).
+ * Userdata can have entries like tables thanks to special __index and
+ * __newindex metamethods.
  *
- * \param function_name Name of the function to find in the environment of the
- * first one.
- * \return true if the function was found.
+ * Version with std::string, better for performance if you already have an
+ * std::string representation of the key.
+ *
+ * \param userdata A userdata.
+ * \param key String key to test.
+ * \return \c true if this key exists on the userdata.
  */
-bool LuaContext::find_local_function(const std::string& function_name) {
+bool LuaContext::userdata_has_field(ExportableToLua& userdata,
+    const std::string& key) const {
 
-  return find_local_function(-1, function_name);
-}
-
-/**
- * \brief Gets a local Lua function from the environment of another one.
- *
- * The function found is placed on top the stack if it exists.
- * If the function is not found, the stack is left unchanged.
- *
- * \param index Index of an existing function in the stack.
- * \param function_name Name of the function to find in the environment of the
- * first one.
- * \return true if the function was found.
- */
-bool LuaContext::find_local_function(int index, const std::string& function_name) {
-
-                                  // ... f1 ...
-  lua_getfenv(l, index);
-                                  // ... f1 ... env
-  lua_getfield(l, -1, function_name.c_str());
-                                  // ... f1 ... env f2/?
-  bool exists = lua_isfunction(l, -1);
-
-  // Restore the stack.
-  if (exists) {
-    lua_remove(l, -2);
-                                  // ... f1 ... f2
-  }
-  else {
-    lua_pop(l, 2);
-                                  // ... f1 ...
+  if (!userdata.is_with_lua_table()) {
+    return false;
   }
 
-  return exists;
+  const std::map<ExportableToLua*, std::set<std::string> >::const_iterator it =
+      userdata_fields.find(&userdata);
+  if (it == userdata_fields.end()) {
+    return false;
+  }
+
+  return it->second.find(key) != it->second.end();
 }
 
 /**
@@ -820,9 +822,11 @@ bool LuaContext::find_local_function(int index, const std::string& function_name
  * This is equivalent to find_method(-1, function_name).
  *
  * \param function_name Name of the function to find in the object.
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
  * \return true if the function was found.
  */
-bool LuaContext::find_method(const std::string& function_name) {
+bool LuaContext::find_method(const char* function_name) {
 
   return find_method(-1, function_name);
 }
@@ -836,13 +840,16 @@ bool LuaContext::find_method(const std::string& function_name) {
  *
  * \param index Index of the object in the stack.
  * \param function_name Name of the function to find in the object.
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
+ *
  * \return true if the function was found.
  */
-bool LuaContext::find_method(int index, const std::string& function_name) {
+bool LuaContext::find_method(int index, const char* function_name) {
 
   index = get_positive_index(l, index);
                                   // ... object ...
-  lua_getfield(l, index, function_name.c_str());
+  lua_getfield(l, index, function_name);
                                   // ... object ... method/?
 
   bool exists = lua_isfunction(l, -1);
@@ -872,12 +879,16 @@ bool LuaContext::find_method(int index, const std::string& function_name) {
  * function to call
  * \param nb_results number of results expected (you get them on the stack if
  * there is no error)
- * \param function_name a name describing the Lua function (only used to print
- * the error message if any)
+ * \param function_name A name describing the Lua function (only used to print
+ * the error message if any).
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
  * \return true in case of success
  */
-bool LuaContext::call_function(int nb_arguments, int nb_results,
-    const std::string& function_name) {
+bool LuaContext::call_function(
+    int nb_arguments,
+    int nb_results,
+    const char* function_name) {
 
   return call_function(l, nb_arguments, nb_results, function_name);
 }
@@ -897,10 +908,15 @@ bool LuaContext::call_function(int nb_arguments, int nb_results,
  * there is no error).
  * \param function_name A name describing the Lua function (only used to print
  * the error message if any).
+ * This is not an const std::string& but a const char* on purpose to avoid
+ * costly conversions as this function is called very often.
  * \return true in case of success.
  */
-bool LuaContext::call_function(lua_State* l, int nb_arguments, int nb_results,
-    const std::string& function_name) {
+bool LuaContext::call_function(
+    lua_State* l,
+    int nb_arguments,
+    int nb_results,
+    const char* function_name) {
 
   if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
     Debug::error(StringConcat() << "In " << function_name << "(): "
@@ -978,7 +994,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
 void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 
   load_file(l, script_name);
-  call_function(l, 0, 0, script_name);
+  call_function(l, 0, 0, script_name.c_str());
 }
 
 /**
@@ -995,7 +1011,7 @@ void LuaContext::do_file(lua_State* l, const std::string& script_name) {
 bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
   if (load_file_if_exists(l, script_name)) {
-    call_function(l, 0, 0, script_name);
+    call_function(l, 0, 0, script_name.c_str());
     return true;
   }
   return false;
@@ -1213,6 +1229,12 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
   }
   else {
     // Create a new userdata.
+
+    if (!userdata.is_known_to_lua()) {
+      // This is the first time we create a Lua userdata for this object.
+      userdata.set_known_to_lua(true);
+    }
+
                                   // ... all_udata nil
     lua_pop(l, 1);
                                   // ... all_udata
@@ -1225,18 +1247,22 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... all_udata lightudata udata
     luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
                                   // ... all_udata lightudata udata mt
-    Debug::check_assertion(!lua_isnil(l, -1), StringConcat() <<
-        "Userdata of type '" << userdata.get_lua_type_name()
-        << "' has no metatable, this is a memory leak");
+
+#ifndef NDEBUG
+    Debug::check_assertion(!lua_isnil(l, -1),
+        std::string("Userdata of type '" + userdata.get_lua_type_name()
+        + "' has no metatable, this is a memory leak"));
 
     lua_getfield(l, -1, "__gc");
                                   // ... all_udata lightudata udata mt gc
-    Debug::check_assertion(lua_isfunction(l, -1), StringConcat() <<
-        "Userdata of type '" << userdata.get_lua_type_name()
-        << "' must have the __gc function LuaContext::userdata_meta_gc");
+    Debug::check_assertion(lua_isfunction(l, -1),
+        std::string("Userdata of type '") + userdata.get_lua_type_name()
+        + "' must have the __gc function LuaContext::userdata_meta_gc");
                                   // ... all_udata lightudata udata mt gc
     lua_pop(l, 1);
                                   // ... all_udata lightudata udata mt
+#endif
+
     lua_setmetatable(l, -2);
                                   // ... all_udata lightudata udata
     // Keep track of our new userdata.
@@ -1369,10 +1395,10 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   ExportableToLua* userdata =
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
 
-  // Note that the userdata disappears from Lua but it may come back later!
+  // Note that the full userdata disappears from Lua but it may come back later!
   // So we need to keep its table if the refcount is not zero.
   // The full userdata is destroyed, but if the refcount is zero, the light
-  // userdata and its table persists.
+  // userdata and its table persist.
 
   // We don't need to remove the entry from sol.all_userdata
   // because it is already done: that table is weak on its values and the
@@ -1381,20 +1407,23 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
   userdata->decrement_refcount();
   if (userdata->get_refcount() == 0) {
 
-    // Remove the userdata from the list of userdata tables.
-    // Otherwise, if the same pointer gets reallocated, the userdata will get
-    // its table from this deleted one!
+    if (userdata->is_with_lua_table()) {
+      // Remove the table associated to this userdata.
+      // Otherwise, if the same pointer gets reallocated, a new userdata will get
+      // its table from this deleted one!
                                     // udata
-    lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
-                                    // udata all_udata
-    lua_pushlightuserdata(l, userdata);
-                                    // udata all_udata lightudata
-    lua_pushnil(l);
-                                    // udata all_udata lightudata nil
-    lua_settable(l, -3);
-                                    // udata all_udata
-    lua_pop(l, 1);
+      lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
+                                    // udata udata_tables
+      lua_pushlightuserdata(l, userdata);
+                                    // udata udata_tables lightudata
+      lua_pushnil(l);
+                                    // udata udata_tables lightudata nil
+      lua_settable(l, -3);
+                                    // udata udata_tables
+      lua_pop(l, 1);
                                     // udata
+      get_lua_context(l).userdata_fields.erase(userdata);
+    }
     delete userdata;
   }
 
@@ -1422,10 +1451,9 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
   ExportableToLua* userdata =
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
 
-  /* The user wants to make udata[key] = value but udata is a userdata.
-   * So what we make instead is udata_tables[udata][key] = value.
-   * This redirection is totally transparent from the Lua side.
-   */
+  // The user wants to make udata[key] = value but udata is a userdata.
+  // So what we make instead is udata_tables[udata][key] = value.
+  // This redirection is totally transparent from the Lua side.
 
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
@@ -1435,6 +1463,7 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
                                   // ... udata_tables udata_table/nil
   if (lua_isnil(l, -1)) {
     // Create the userdata table if it does not exist yet.
+    userdata->set_with_lua_table(true);
                                   // ... udata_tables nil
     lua_pop(l, 1);
                                   // ... udata_tables
@@ -1453,6 +1482,18 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
                                   // ... udata_tables udata_table key value
   lua_settable(l, -3);
                                   // ... udata_tables udata_table
+
+  if (lua_isstring(l, 2)) {
+    if (!lua_isnil(l, 3)) {
+      // Add the key to the list of existing strings keys on this userdata.
+      get_lua_context(l).userdata_fields[userdata].insert(lua_tostring(l, 2));
+    }
+    else {
+      // Assigning nil: remove the key from the list.
+      get_lua_context(l).userdata_fields[userdata].erase(lua_tostring(l, 2));
+    }
+  }
+
   return 0;
 }
 
@@ -1483,15 +1524,21 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
 
   ExportableToLua* userdata =
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
+  LuaContext& lua_context = get_lua_context(l);
 
   bool found = false;
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
+  // If the userdata actually has a table, lookup this table, unless we already
+  // know that we won't find it (because we know all the existing string keys).
+  if (userdata->is_with_lua_table() &&
+      (!lua_isstring(l, 2) || lua_context.userdata_has_field(*userdata, lua_tostring(l, 2)))) {
+
+    lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
-  lua_pushlightuserdata(l, userdata);
+    lua_pushlightuserdata(l, userdata);
                                   // ... udata_tables lightudata
-  lua_gettable(l, -2);
+    lua_gettable(l, -2);
                                   // ... udata_tables udata_table/nil
-  if (!lua_isnil(l, -1)) {
+    Debug::check_assertion(!lua_isnil(l, -1), "Missing userdata table");
     lua_pushvalue(l, 2);
                                   // ... udata_tables udata_table key
     lua_gettable(l, -2);
@@ -1676,7 +1723,7 @@ void LuaContext::on_game_over_finished() {
  * \param event The input event to forward.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_input(InputEvent& event) {
+bool LuaContext::on_input(const InputEvent& event) {
 
   // Call the Lua function(s) corresponding to this input event.
   bool handled = false;
@@ -1684,13 +1731,13 @@ bool LuaContext::on_input(InputEvent& event) {
     // Keyboard.
     if (event.is_keyboard_key_pressed()) {
       handled = on_key_pressed(event) || handled;
-      if (event.is_character_pressed()) {
-        handled = on_character_pressed(event) || handled;
-      }
     }
     else if (event.is_keyboard_key_released()) {
       handled = on_key_released(event) || handled;
     }
+  }
+  else if (event.is_character_pressed()) {
+    handled = on_character_pressed(event) || handled;
   }
   else if (event.is_joypad_event()) {
     // Joypad.
@@ -1718,7 +1765,7 @@ bool LuaContext::on_input(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_key_pressed(InputEvent& event) {
+bool LuaContext::on_key_pressed(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_key_pressed")) {
@@ -1767,7 +1814,7 @@ bool LuaContext::on_key_pressed(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_character_pressed(InputEvent& event) {
+bool LuaContext::on_character_pressed(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_character_pressed")) {
@@ -1794,7 +1841,7 @@ bool LuaContext::on_character_pressed(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_key_released(InputEvent& event) {
+bool LuaContext::on_key_released(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_key_released")) {
@@ -1826,7 +1873,7 @@ bool LuaContext::on_key_released(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_joypad_button_pressed(InputEvent& event) {
+bool LuaContext::on_joypad_button_pressed(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_joyad_button_pressed")) {
@@ -1852,7 +1899,7 @@ bool LuaContext::on_joypad_button_pressed(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_joypad_button_released(InputEvent& event) {
+bool LuaContext::on_joypad_button_released(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_joyad_button_released")) {
@@ -1878,7 +1925,7 @@ bool LuaContext::on_joypad_button_released(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_joypad_axis_moved(InputEvent& event) {
+bool LuaContext::on_joypad_axis_moved(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_joyad_axis_moved")) {
@@ -1906,7 +1953,7 @@ bool LuaContext::on_joypad_axis_moved(InputEvent& event) {
  * \param event The corresponding input event.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::on_joypad_hat_moved(InputEvent& event) {
+bool LuaContext::on_joypad_hat_moved(const InputEvent& event) {
 
   bool handled = false;
   if (find_method("on_joyad_hat_moved")) {
@@ -2390,6 +2437,16 @@ void LuaContext::on_closed() {
 }
 
 /**
+ * \brief Calls the on_moving() method of the object on top of the stack.
+ */
+void LuaContext::on_moving() {
+
+  if (find_method("on_moving")) {
+    call_function(1, 0, "on_moving");
+  }
+}
+
+/**
  * \brief Calls the on_moved() method of the object on top of the stack.
  */
 void LuaContext::on_moved() {
@@ -2746,7 +2803,7 @@ int LuaContext::l_loader(lua_State* l) {
   if (!exists) {
     std::ostringstream oss;
     oss << std::endl << "\tno quest file '" << script_name
-      << ".lua' in 'data' or 'data.solarus'";
+      << ".lua' in 'data/', 'data.solarus' or 'data.solarus.zip'";
     push_string(l, oss.str());
   }
   return 1;

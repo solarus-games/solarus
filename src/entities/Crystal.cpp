@@ -35,7 +35,7 @@
  */
 Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
   Detector(COLLISION_SPRITE | COLLISION_RECTANGLE | COLLISION_FACING_POINT,
-	   name, layer, x, y, 16, 16),
+      name, layer, x, y, 16, 16),
   state(false),
   next_possible_hit_date(System::now()) {
 
@@ -58,7 +58,7 @@ Crystal::~Crystal() {
  * \return the type of entity
  */
 EntityType Crystal::get_type() const {
-  return CRYSTAL;
+  return ENTITY_CRYSTAL;
 }
 
 /**
@@ -81,7 +81,7 @@ void Crystal::notify_map_started() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Crystal::is_obstacle_for(MapEntity& other) {
+bool Crystal::is_obstacle_for(const MapEntity& other) const {
   return other.is_crystal_obstacle(*this);
 }
 
@@ -213,7 +213,7 @@ void Crystal::set_suspended(bool suspended) {
   MapEntity::set_suspended(suspended);
 
   if (!suspended) {
-    next_possible_hit_date += System::now() - when_suspended;
+    next_possible_hit_date += System::now() - get_when_suspended();
   }
 }
 

@@ -24,30 +24,32 @@
  */
 class Hero::CarryingState: public Hero::PlayerMovementState {
 
-  private:
-
-    CarriedItem *carried_item;		/**< the item to carry */
-
-    void throw_item();
-
   public:
 
     CarryingState(Hero& hero, CarriedItem* carried_item);
     ~CarryingState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
-    void set_map(Map &map);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
+    void set_map(Map& map);
     void notify_layer_changed();
     void set_suspended(bool suspended);
     void update();
     void notify_action_command_pressed();
-    bool can_start_sword();
-    bool can_take_stairs();
+    bool can_start_sword() const;
+    bool can_take_stairs() const;
     void set_animation_stopped();
     void set_animation_walking();
-    CarriedItem* get_carried_item();
-    CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
+    CarriedItem* get_carried_item() const;
+    CarriedItem::Behavior get_previous_carried_item_behavior() const;
+
+  private:
+
+    CarriedItem* carried_item;		/**< the item to carry */
+
+    void throw_item();
+    void destroy_carried_item();
+
 };
 
 #endif

@@ -116,7 +116,7 @@ void Teletransporter::set_map(Map& map) {
  * \return the type of entity
  */
 EntityType Teletransporter::get_type() const {
-  return TELETRANSPORTER;
+  return ENTITY_TELETRANSPORTER;
 }
 
 /**
@@ -124,7 +124,7 @@ EntityType Teletransporter::get_type() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Teletransporter::is_obstacle_for(MapEntity& other) {
+bool Teletransporter::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_teletransporter_obstacle(*this);
 }
@@ -147,7 +147,7 @@ bool Teletransporter::test_collision_custom(MapEntity& entity) {
       // scrolling towards an adjacent map
       Rectangle facing_point = hero.get_facing_point(transition_direction);
       collision = hero.is_moving_towards(transition_direction)
-	    && overlaps(facing_point.get_x(), facing_point.get_y());
+          && overlaps(facing_point.get_x(), facing_point.get_y());
       normal_case = false;
     }
 
@@ -253,7 +253,7 @@ void Teletransporter::transport_hero(Hero& hero) {
  *
  * \return true if this teletransporter is on the side of the map
  */
-bool Teletransporter::is_on_map_side() {
+bool Teletransporter::is_on_map_side() const {
   return destination_side >= 0;
 }
 

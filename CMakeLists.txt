@@ -9,9 +9,9 @@ set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 set(SOLARUS_INSTALL_DESTINATION "bin")
 
 # find the headers and the libraries of dependencies
-find_package(SDL REQUIRED)
-find_package(SDL_image REQUIRED)
-find_package(SDL_ttf REQUIRED)
+find_package(SDL2 "2" REQUIRED)
+find_package(SDL2_image "2" REQUIRED)
+find_package(SDL2_ttf "2.0.12" REQUIRED)
 find_package(OpenAL REQUIRED)
 find_package(VorbisFile REQUIRED)
 find_package(Ogg REQUIRED)
@@ -19,11 +19,28 @@ find_package(ModPlug REQUIRED)
 find_package(Lua51 REQUIRED)
 find_package(PhysFS REQUIRED)
 
+# Explicit link to libdl is needed for Lua on some systems.
+find_library(DL_LIBRARY dl)
+if(${DL_LIBRARY} MATCHES DL_LIBRARY-NOTFOUND)
+  set(DL_LIBRARY "")
+endif()
+
+include(CheckFunctionExists)
+check_function_exists(mkstemp HAVE_MKSTEMP)
+configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
+
+include(CheckIncludeFiles)
+check_include_files(unistd.h HAVE_UNISTD_H)
+configure_file(${CMAKE_SOURCE_DIR}/include/config.h.in ${CMAKE_BINARY_DIR}/include/config.h)
+
 # source files
 file(
   GLOB
   source_files
   src/*.cpp
+  src/third_party/snes_spc/*.cpp
+  src/third_party/hqx/*.c
+  src/main/*.cpp
   src/entities/*.cpp
   src/hero/*.cpp
   src/hud/*.cpp
@@ -31,7 +48,6 @@ file(
   src/lua/*.cpp
   src/menus/*.cpp
   src/movements/*.cpp
-  src/snes_spc/*.cpp
   include/*.h
   include/entities/*.h
   include/hero/*.h
@@ -40,7 +56,8 @@ file(
   include/lua/*.h
   include/menus/*.h
   include/movements/*.h
-  include/snes_spc/*.h
+  include/third_party/snes_spc/*.h
+  include/third_party/hqx/*.h
 )
 
 # Configuration for OSX and iOS build and deployment
@@ -59,55 +76,44 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     src/lowlevel/apple/AppleInterface.mm
     include/lowlevel/apple/AppleInterface.h
   )
-  # SDL 1.3 avoid to link SDLMain
-  if(SDL_VERSION VERSION_LESS "1.3")
-    set(source_files
-      ${source_files}
-      src/lowlevel/apple/SDLMain.m
-      include/lowlevel/apple/SDLMain.h
-    )
-  endif()
 endif()
 
 # build the executable
-set(main_source_file src/lowlevel/Main.cc)
-add_library(solarus_static
-  STATIC
-  ${source_files}
-)
 
-#Add executable target, into CFBundle form if requested or iOS build
+# Add executable target, into CFBundle form if requested or iOS build
 if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
   include(addCFBundleTarget)
 else()
   add_executable(solarus
-    ${main_source_file}
+    ${source_files}
   )
 endif()
 
 # generate -I flags
 include_directories(
+  ${CMAKE_BINARY_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
-  ${SOLARUS_ENGINE_SOURCE_DIR}/include/snes_spc
-  ${SDL_INCLUDE_DIR}
-  ${SDLTTF_INCLUDE_DIR}
-  ${SDLIMAGE_INCLUDE_DIR}
+  ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party
+  ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party/snes_spc
+  ${MODPLUG_INCLUDE_DIR}  # Before SDL because we want the sndfile.h of ModPlug.
+  ${SDL2_INCLUDE_DIR}
+  ${SDL2_TTF_INCLUDE_DIR}
+  ${SDL2_IMAGE_INCLUDE_DIR}
   ${OPENAL_INCLUDE_DIR}
   ${VORBISFILE_INCLUDE_DIR}
   ${OGG_INCLUDE_DIR}
-  ${MODPLUG_INCLUDE_DIR}
   ${LUA_INCLUDE_DIR}
   ${PHYSFS_INCLUDE_DIR}
 )
 
 # generate -l flags
 target_link_libraries(solarus
-  solarus_static
-  ${SDL_LIBRARY}
-  ${SDLIMAGE_LIBRARY}
-  ${SDLTTF_LIBRARY}
+  ${SDL2_LIBRARY}
+  ${SDL2_IMAGE_LIBRARY}
+  ${SDL2_TTF_LIBRARY}
   ${OPENAL_LIBRARY}
   ${LUA_LIBRARY}
+  ${DL_LIBRARY}
   ${PHYSFS_LIBRARY}
   ${VORBISFILE_LIBRARY}
   ${OGG_LIBRARY}
@@ -122,7 +128,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   # Force to be the less pedantic possible with the Release build
-  set(CMAKE_CXX_FLAGS "-Wno-error -Wno-all -Wno-unknown-pragmas")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-all -Wno-unknown-pragmas")
 
   # Some "no-warning" flags are not supported with gcc < 4.0
   if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
@@ -168,7 +174,11 @@ if(DEFAULT_QUEST_HEIGHT)
   add_definitions(-DSOLARUS_DEFAULT_QUEST_HEIGHT=${DEFAULT_QUEST_HEIGHT})
 endif()
 
-if(PANDORA OR CAANOO)
+if(GCWZERO)
+  add_definitions(-DGCWZERO)
+endif()
+
+if(CAANOO OR GCWZERO)
   set(INITIAL_COLOR_DEPTH 16)
 else()
   set(INITIAL_COLOR_DEPTH 32)
@@ -178,10 +188,10 @@ if(COLOR_DEPTH)
   add_definitions(-DSOLARUS_COLOR_DEPTH=${COLOR_DEPTH})
 endif()
 
-if(CAANOO)
-  set(INITIAL_SCREEN_FORCE_MODE 2)
+if(CAANOO OR GCWZERO)
+  set(INITIAL_SCREEN_FORCE_MODE 2)  # Windowed normal.
 elseif(PANDORA)
-  set(INITIAL_SCREEN_FORCE_MODE 5)
+  set(INITIAL_SCREEN_FORCE_MODE 3)  # Fullscreen normal.
 else()
   set(INITIAL_SCREEN_FORCE_MODE -1)
 endif()

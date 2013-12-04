@@ -51,7 +51,7 @@
  * Lua API changes may sometimes break compatibility, so check the ChangeLog
  * before upgrading.
  */
-#define SOLARUS_MINOR_VERSION 1
+#define SOLARUS_MINOR_VERSION 2
 
 /**
  * \brief Solarus patch version.
@@ -88,6 +88,16 @@
 /**
  * \endcond
  */
+
+/**
+ * \def SOLARUS_USE_APPLE_POOL
+ * \brief Set if Obj-C pool have to be in place.
+ */
+#ifndef SOLARUS_USE_APPLE_POOL
+#  if defined(__APPLE__)
+#    define SOLARUS_USE_APPLE_POOL
+#  endif
+#endif
 
 /**
  * \def SOLARUS_DEFAULT_QUEST
@@ -133,12 +143,13 @@
 #  define SOLARUS_DEFAULT_QUEST_HEIGHT 240
 #endif
 
+// TODO see if this flag still works/is needed with 16bpp surface on Caanoo.
 /**
  * \def SOLARUS_COLOR_DEPTH
  * \brief Number of bits per pixel for surfaces.
  */
 #ifndef SOLARUS_COLOR_DEPTH
-#  if defined(CAANOO) || defined(PANDORA)
+#  if defined(CAANOO)
 #    define SOLARUS_COLOR_DEPTH 16
 #  else
 #    define SOLARUS_COLOR_DEPTH 32
@@ -150,27 +161,18 @@
  * \brief Forces a unique video mode.
  */
 #ifndef SOLARUS_SCREEN_FORCE_MODE
-#  if defined(CAANOO)
+#  if defined(SOLARUS_IOS)
+#    define SOLARUS_SCREEN_FORCE_MODE 4
+#  elif defined(CAANOO)
 #    define SOLARUS_SCREEN_FORCE_MODE 2
 #  elif defined(PANDORA)
-#    define SOLARUS_SCREEN_FORCE_MODE 5
+#    define SOLARUS_SCREEN_FORCE_MODE 3
 #  else
 #    define SOLARUS_SCREEN_FORCE_MODE -1
 #  endif
 #endif
 
-/**
- * \def SOLARUS_SCREEN_DOUBLEBUF
- * \brief Define if the current platform supports double buffering.
- */
-#ifndef SOLARUS_SCREEN_DOUBLEBUF
-#  if defined(SOLARUS_OSX)
-#    define SOLARUS_SCREEN_DOUBLEBUF 0
-#  else
-#    define SOLARUS_SCREEN_DOUBLEBUF 1
-#  endif
-#endif
-
+#include "config.h"
 #include "Types.h"
 
 #endif

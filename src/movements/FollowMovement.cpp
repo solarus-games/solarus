@@ -25,7 +25,8 @@
  * \param y y coordinate of where this entity should be placed (relative to the entity followed)
  * \param ignore_obstacles true to make the movement ignore obstacles
  */
-FollowMovement::FollowMovement(MapEntity* entity_followed,
+FollowMovement::FollowMovement(
+    MapEntity* entity_followed,
     int x,
     int y,
     bool ignore_obstacles):
@@ -35,6 +36,9 @@ FollowMovement::FollowMovement(MapEntity* entity_followed,
   y(y),
   finished(false) {
 
+  if (entity_followed != NULL) {
+    entity_followed->increment_refcount();
+  }
 }
 
 /**
@@ -47,7 +51,7 @@ FollowMovement::~FollowMovement() {
  * \brief Returns whether the movement is finished.
  * \return true if there was a collision or the entity followed disappeared
  */
-bool FollowMovement::is_finished() {
+bool FollowMovement::is_finished() const {
   return finished;
 }
 
@@ -63,6 +67,10 @@ void FollowMovement::update() {
 
   if (entity_followed->is_being_removed()) {
     finished = true;
+    entity_followed->decrement_refcount();
+    if (entity_followed->get_refcount() == 0) {
+      delete entity_followed;
+    }
     entity_followed = NULL;
   }
   else {
@@ -99,7 +107,7 @@ void FollowMovement::update() {
  * should be displayed.
  * \return the coordinates to use to display the object controlled by this movement
  */
-const Rectangle FollowMovement::get_displayed_xy() {
+const Rectangle FollowMovement::get_displayed_xy() const {
 
   if (entity_followed == NULL) {
     return get_xy();

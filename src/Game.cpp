@@ -197,6 +197,14 @@ GameCommands& Game::get_commands() {
 }
 
 /**
+ * \brief Returns the game commands mapped to the keyboard and the joypad.
+ * \return The game commands.
+ */
+const GameCommands& Game::get_commands() const {
+  return *commands;
+}
+
+/**
  * \brief Returns the current effect of the main keys (action, sword, pause, etc.).
  * \return the current effect of the main keys
  */
@@ -206,9 +214,17 @@ KeysEffect& Game::get_keys_effect() {
 
 /**
  * \brief Returns the saved data associated to this game.
- * \return the saved data
+ * \return The saved data.
  */
 Savegame& Game::get_savegame() {
+  return *savegame;
+}
+
+/**
+ * \brief Returns the saved data associated to this game.
+ * \return The saved data.
+ */
+const Savegame& Game::get_savegame() const {
   return *savegame;
 }
 
@@ -217,9 +233,20 @@ Savegame& Game::get_savegame() {
  *
  * It is equivalent to get_savegame().get_equipment().
  *
- * \return the equipment
+ * \return The equipment.
  */
 Equipment& Game::get_equipment() {
+  return get_savegame().get_equipment();
+}
+
+/**
+ * \brief Returns the equipment of the player.
+ *
+ * It is equivalent to get_savegame().get_equipment().
+ *
+ * \return The equipment.
+ */
+const Equipment& Game::get_equipment() const {
   return get_savegame().get_equipment();
 }
 
@@ -228,7 +255,7 @@ Equipment& Game::get_equipment() {
  * \param event the event to handle
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool Game::notify_input(InputEvent& event) {
+bool Game::notify_input(const InputEvent& event) {
 
   bool handled = false;
 
@@ -361,7 +388,11 @@ void Game::update_transitions() {
       next_map = NULL;
     }
     else { // normal case: stop the control and play an out transition before leaving the current map
-      transition = Transition::create(transition_style, Transition::OUT, this);
+      transition = Transition::create(
+          transition_style,
+          Transition::OUT,
+          current_map->get_visible_surface(),
+          this);
       transition->start();
     }
   }
@@ -388,7 +419,11 @@ void Game::update_transitions() {
       if (next_map == current_map) {
         // same map
         hero->place_on_destination(*current_map, previous_map_location);
-        transition = Transition::create(transition_style, Transition::IN, this);
+        transition = Transition::create(
+            transition_style,
+            Transition::IN,
+            current_map->get_visible_surface(),
+            this);
         transition->start();
         next_map = NULL;
       }
@@ -440,7 +475,11 @@ void Game::update_transitions() {
 
   // if a map has just been set as the current map, start it and play the in transition
   if (started && !current_map->is_started()) {
-    transition = Transition::create(transition_style, Transition::IN, this);
+    transition = Transition::create(
+        transition_style,
+        Transition::IN,
+        current_map->get_visible_surface(),
+        this);
 
     if (previous_map_surface != NULL) {
       // some transition effects need to display both maps simultaneously
@@ -483,6 +522,11 @@ void Game::update_keys_effect() {
  */
 void Game::draw(Surface& dst_surface) {
 
+  if (current_map == NULL) {
+    // Nothing to do. The game is not fully initialized yet.
+    return;
+  }
+
   // Draw the map.
   if (current_map->is_loaded()) {
     current_map->draw();
@@ -508,7 +552,7 @@ void Game::draw(Surface& dst_surface) {
  *
  * \return true if there is a map
  */
-bool Game::has_current_map() {
+bool Game::has_current_map() const {
   return current_map != NULL;
 }
 
@@ -580,7 +624,7 @@ void Game::notify_map_changed() {
  *
  * \return the state of the crystals or this world
  */
-bool Game::get_crystal_state() {
+bool Game::get_crystal_state() const {
   return crystal_state;
 }
 
@@ -595,7 +639,7 @@ void Game::change_crystal_state() {
  * \brief Returns whether the game is paused.
  * \return true if the game is paused
  */
-bool Game::is_paused() {
+bool Game::is_paused() const {
   return paused;
 }
 
@@ -603,7 +647,7 @@ bool Game::is_paused() {
  * \brief Returns whether we are playing a transition between two maps.
  * \return true if there is a transition
  */
-bool Game::is_playing_transition() {
+bool Game::is_playing_transition() const {
   return transition != NULL || next_map != NULL;
 }
 
@@ -619,7 +663,7 @@ bool Game::is_playing_transition() {
  *
  * \return true if the game is suspended
  */
-bool Game::is_suspended() {
+bool Game::is_suspended() const {
 
   return current_map == NULL
       || is_paused()
@@ -633,7 +677,7 @@ bool Game::is_suspended() {
  * \brief Returns whether a dialog is currently active.
  * \return true if a dialog box is being shown
  */
-bool Game::is_dialog_enabled() {
+bool Game::is_dialog_enabled() const {
   return dialog_box.is_enabled();
 }
 
@@ -673,7 +717,7 @@ void Game::stop_dialog(int status_ref) {
  *
  * \return \c true if the player can currently pause the game.
  */
-bool Game::can_pause() {
+bool Game::can_pause() const {
   return !is_suspended()
       && is_pause_allowed()               // see if the map currently allows the pause command
       && get_equipment().get_life() > 0;  // don't allow to pause the game if the gameover sequence is about to start
@@ -683,7 +727,7 @@ bool Game::can_pause() {
  * \brief Returns whether the player can currently unpause the game.
  * \return \c true if the player can currently unpause the game.
  */
-bool Game::can_unpause() {
+bool Game::can_unpause() const {
   return is_paused()
       && is_pause_allowed()
       && !is_dialog_enabled();
@@ -697,7 +741,7 @@ bool Game::can_unpause() {
  *
  * \return \c true if the pause command is available.
  */
-bool Game::is_pause_allowed() {
+bool Game::is_pause_allowed() const {
   return pause_allowed;
 }
 
@@ -746,7 +790,11 @@ void Game::set_paused(bool paused) {
  */
 void Game::restart() {
 
-  transition = Transition::create(Transition::FADE, Transition::OUT, this);
+  transition = Transition::create(
+      Transition::FADE,
+      Transition::OUT,
+      current_map->get_visible_surface(),
+      this);
   transition->start();
   restarting = true;
 }
@@ -755,7 +803,7 @@ void Game::restart() {
  * \brief Returns whether the gameover sequence is being shown.
  * \return true if the gameover sequence is being shown
  */
-bool Game::is_showing_game_over() {
+bool Game::is_showing_game_over() const {
   return showing_game_over;
 }
 
@@ -789,6 +837,7 @@ void Game::stop_game_over() {
   showing_game_over = false;
   if (!restarting && !get_main_loop().is_resetting()) {
     // The hero gets back to life.
+    current_map->check_suspended();  // To unsuspend the hero before making him blink.
     hero->notify_game_over_finished();
   }
 }

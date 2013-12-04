@@ -79,19 +79,19 @@ class Savegame: public ExportableToLua {
     ~Savegame();
 
     // file state
-    bool is_empty();
+    bool is_empty() const;
     void save();
-    const std::string& get_file_name();
+    const std::string& get_file_name() const;
 
     // data
-    bool is_string(const std::string& key);
-    const std::string& get_string(const std::string& key);
+    bool is_string(const std::string& key) const;
+    const std::string& get_string(const std::string& key) const;
     void set_string(const std::string& key, const std::string& value);
-    bool is_integer(const std::string& key);
-    int get_integer(const std::string& key);
+    bool is_integer(const std::string& key) const;
+    int get_integer(const std::string& key) const;
     void set_integer(const std::string& key, int value);
-    bool is_boolean(const std::string& key);
-    bool get_boolean(const std::string& key);
+    bool is_boolean(const std::string& key) const;
+    bool get_boolean(const std::string& key) const;
     void set_boolean(const std::string& key, bool value);
     void unset(const std::string& key);
 
@@ -99,6 +99,7 @@ class Savegame: public ExportableToLua {
     MainLoop& get_main_loop();
     LuaContext& get_lua_context();
     Equipment& get_equipment();
+    const Equipment& get_equipment() const;
     Game* get_game();
     void set_game(Game* game);
     void notify_game_started();

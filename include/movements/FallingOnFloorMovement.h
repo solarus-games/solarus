@@ -26,20 +26,21 @@
  *
  * Movement of an item that falls on the floor and
  * bounces one or several times before it stops.
- * This movement is typically used by the pickable items
- * (rupees, hearts...) that appear when the player kills an enemy.
+ * This movement is typically used by the pickable treasures
+ * that appear when the player kills an enemy.
  */
 class FallingOnFloorMovement: public PixelMovement {
-
-  private:
-
-    static const std::string trajectories[];
 
   public:
 
     // construction and destruction
     FallingOnFloorMovement(FallingHeight height);
     ~FallingOnFloorMovement();
+
+  private:
+
+    static const std::string trajectories[];
+
 };
 
 #endif

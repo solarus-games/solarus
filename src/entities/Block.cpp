@@ -40,7 +40,7 @@
  * \param can_be_pushed true to allow the hero to push this block
  * \param can_be_pulled true to allow the hero to pull this block
  * \param maximum_moves indicates how many times the block can
- * be moved (0: none, 1: once: 2: infinite)
+ * be moved (0: none, 1: once, 2: infinite)
  */
 Block::Block(
     const std::string& name,
@@ -49,7 +49,9 @@ Block::Block(
     int y,
     int direction,
     const std::string& sprite_name,
-    bool can_be_pushed, bool can_be_pulled, int maximum_moves):
+    bool can_be_pushed,
+    bool can_be_pulled,
+    int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   maximum_moves(maximum_moves),
   sound_played(false),
@@ -60,6 +62,8 @@ Block::Block(
   can_be_pushed(can_be_pushed),
   can_be_pulled(can_be_pulled) {
 
+  Debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
+      "maximum_moves must be between 0 and 2");
   set_origin(8, 13);
   set_direction(direction);
   create_sprite(sprite_name);
@@ -77,7 +81,7 @@ Block::~Block() {
  * \return the type of entity
  */
 EntityType Block::get_type() const {
-  return BLOCK;
+  return ENTITY_BLOCK;
 }
 
 /**
@@ -85,7 +89,7 @@ EntityType Block::get_type() const {
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
-bool Block::is_drawn_in_y_order() {
+bool Block::is_drawn_in_y_order() const {
   return get_sprite().get_size().get_height() > 16;
 }
 
@@ -102,7 +106,7 @@ bool Block::is_ground_observer() const {
  * \param other another entity
  * \return true
  */
-bool Block::is_obstacle_for(MapEntity& other) {
+bool Block::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_block_obstacle(*this);
 }
@@ -111,7 +115,7 @@ bool Block::is_obstacle_for(MapEntity& other) {
  * \brief Returns whether a hole is currently considered as an obstacle for this entity.
  * \return true if the holes are currently an obstacle for this entity
  */
-bool Block::is_hole_obstacle() {
+bool Block::is_hole_obstacle() const {
   return false;
 }
 
@@ -120,7 +124,8 @@ bool Block::is_hole_obstacle() {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Block::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
   // necessary to push a block into a hole having a teletransporter
   return false;
 }
@@ -130,7 +135,7 @@ bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity.
  */
-bool Block::is_hero_obstacle(Hero& hero) {
+bool Block::is_hero_obstacle(const Hero& hero) const {
   return get_movement() == NULL;
 }
 
@@ -139,7 +144,7 @@ bool Block::is_hero_obstacle(Hero& hero) {
  * \param enemy an enemy
  * \return true if this enemy is currently considered as an obstacle by this entity.
  */
-bool Block::is_enemy_obstacle(Enemy& enemy) {
+bool Block::is_enemy_obstacle(const Enemy& enemy) const {
   return true;
 }
 
@@ -148,7 +153,7 @@ bool Block::is_enemy_obstacle(Enemy& enemy) {
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle by this entity
  */
-bool Block::is_destructible_obstacle(Destructible& destructible) {
+bool Block::is_destructible_obstacle(const Destructible& destructible) const {
   return true;
 }
 
@@ -166,6 +171,7 @@ void Block::set_map(Map& map) {
   if (map.is_loaded()) {
     // We are not during the map initialization phase.
     check_collision_with_detectors(false);
+    update_ground_below();
   }
 }
 
@@ -244,13 +250,17 @@ void Block::notify_position_changed() {
 
   // now we know that the block moves at least of 1 pixel:
   // we can play the sound
-  if (!sound_played) {
+  if (get_movement() != NULL && !sound_played) {
     Sound::play("hero_pushes");
     sound_played = true;
   }
 
   check_collision_with_detectors(false);
   update_ground_below();
+
+  if (are_movement_notifications_enabled()) {
+    get_lua_context().entity_on_position_changed(*this, get_xy(), get_layer());
+  }
 }
 
 /**
@@ -261,6 +271,8 @@ void Block::notify_obstacle_reached() {
 
   // the block is stopped by an obstacle while being pushed or pulled
   get_hero().notify_grabbed_entity_collision();
+
+  Detector::notify_obstacle_reached();
 }
 
 /**
@@ -306,8 +318,21 @@ void Block::stop_movement_by_hero() {
       maximum_moves = 0;      // then it cannot move anymore
     }
   }
+}
 
-  // notify the script
+/**
+ * \copydoc MapEntity::notify_moving_by
+ */
+void Block::notify_moving_by(MapEntity& entity) {
+
+  get_lua_context().block_on_moving(*this);
+}
+
+/**
+ * \copydoc MapEntity::notify_moved_by
+ */
+void Block::notify_moved_by(MapEntity& entity) {
+
   get_lua_context().block_on_moved(*this);
 }
 
@@ -326,6 +351,70 @@ void Block::reset() {
   last_position.set_xy(initial_position);
   this->maximum_moves = initial_maximum_moves;
 }
+
+/**
+ * \brief Returns whether this block can be pushed.
+ * \return \c true if it can be pushed, independently of the maximum moves.
+ */
+bool Block::is_pushable() const {
+  return can_be_pushed;
+}
+
+/**
+ * \brief Returns whether this block can be pushed.
+ * \return \c true if it can be pushed, independently of the maximum moves.
+ */
+void Block::set_pushable(bool pushable) {
+  this->can_be_pushed = pushable;
+}
+
+/**
+ * \brief Returns whether this block can be pulled.
+ * \return \c true if it can be pulled, independently of the maximum moves.
+ */
+bool Block::is_pullable() const {
+  return can_be_pulled;
+}
+
+/**
+ * \brief Sets whether this block can be pulled.
+ * \param pullable \c true to make the block pullable, independently of the
+ * maximum moves.
+ */
+void Block::set_pullable(bool pullable) {
+  this->can_be_pulled = pullable;
+}
+
+/**
+ * \brief Returns the initial maximum moves of this block.
+ *
+ * This value is the one passed to the constructor or to set_maximum_moves,
+ * no matter if the block was already moved or not.
+ *
+ * \return How many times the block can be moved
+ * (0: none, 1: once, 2: infinite).
+ */
+int Block::get_maximum_moves() const {
+  return initial_maximum_moves;
+}
+
+/**
+ * \brief Sets the maximum moves of this block.
+ *
+ * This resets the remaining allowed moves.
+ *
+ * \return How many times the block can be moved
+ * (0: none, 1: once, 2: infinite).
+ */
+void Block::set_maximum_moves(int maximum_moves) {
+
+  Debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
+        "maximum_moves must be between 0 and 2");
+
+  this->initial_maximum_moves = maximum_moves;
+  this->maximum_moves = maximum_moves;
+}
+
 
 /**
  * \brief Returns the name identifying this type in Lua.

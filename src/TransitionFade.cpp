@@ -22,12 +22,14 @@
 /**
  * \brief Creates a fade-in or fade-out transition effect.
  * \param direction direction of the transition effect (in or out)
+ * \param dst_surface The destination surface that will receive this
+ * transition.
  */
-TransitionFade::TransitionFade(Transition::Direction direction):
+TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
   Transition(direction),
   finished(false),
   alpha(-1),
-  dst_surface(NULL) {
+  dst_surface(&dst_surface) {
 
   if (direction == OUT) {
     alpha_start = 256;
@@ -131,10 +133,6 @@ void TransitionFade::update() {
  * \param dst_surface the destination surface
  */
 void TransitionFade::draw(Surface& dst_surface) {
-
-  Debug::check_assertion(
-      this->dst_surface == NULL || this->dst_surface == &dst_surface,
-      "Unexpected surface for transition");
 
   // draw the transition effect on the surface
   int alpha_impl = std::min(alpha, 255);

@@ -27,22 +27,24 @@ class Hero::StairsState: public Hero::State {
 
   public:
 
-    StairsState(Hero& hero, Stairs& stairs, Stairs::Way way);
+    StairsState(
+        Hero& hero,
+        Stairs& stairs,
+        Stairs::Way way);
     ~StairsState();
 
-    void start(State* previous_state);
-    void stop(State* next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void set_map(Map& map);
     void update();
     void set_suspended(bool suspended);
 
-    bool is_touching_ground();
-    bool can_come_from_bad_ground();
-    bool is_teletransporter_delayed();
-    int get_wanted_movement_direction8();
-    CarriedItem* get_carried_item();
-    CarriedItem::Behavior get_previous_carried_item_behavior(
-        CarriedItem& carried_item);
+    bool is_touching_ground() const;
+    bool can_come_from_bad_ground() const;
+    bool is_teletransporter_delayed() const;
+    int get_wanted_movement_direction8() const;
+    CarriedItem* get_carried_item() const;
+    CarriedItem::Behavior get_previous_carried_item_behavior() const;
     void notify_layer_changed();
 
   private:
@@ -59,6 +61,7 @@ class Hero::StairsState: public Hero::State {
     uint32_t next_phase_date;	 	/**< date when the stairs phase changes */
     CarriedItem* carried_item;		/**< an item carried by the hero while taking the stairs, or NULL */
 
+    void destroy_carried_item();
 };
 
 #endif

@@ -110,7 +110,15 @@ GameCommands::~GameCommands() {
  * \brief Returns the savegame.
  * \return The savegame.
  */
-Savegame& GameCommands::get_savegame() const {
+Savegame& GameCommands::get_savegame() {
+  return game.get_savegame();
+}
+
+/**
+ * \brief Returns the savegame.
+ * \return The savegame.
+ */
+const Savegame& GameCommands::get_savegame() const {
   return game.get_savegame();
 }
 
@@ -155,7 +163,7 @@ int GameCommands::get_wanted_direction8() const {
  * \brief This function is called by the game when a low-level event occurs.
  * \param event An input event.
  */
-void GameCommands::notify_input(InputEvent& event) {
+void GameCommands::notify_input(const InputEvent& event) {
 
   // If no game command is being customized, we look for a binding
   // for this input event and we ignore the event if no binding is found.

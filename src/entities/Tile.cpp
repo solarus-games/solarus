@@ -31,7 +31,7 @@
  * \param tile_pattern_id id of the tile pattern
  */
 Tile::Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id):
-  MapEntity(layer, x, y, width, height),
+  MapEntity("", 0, layer, x, y, width, height),
   tile_pattern_id(tile_pattern_id),
   tile_pattern(NULL) {
 
@@ -49,7 +49,7 @@ Tile::~Tile() {
  * \return the type of entity
  */
 EntityType Tile::get_type() const {
-  return TILE;
+  return ENTITY_TILE;
 }
 
 /**
@@ -110,6 +110,14 @@ void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
  */
 TilePattern& Tile::get_tile_pattern() {
   return *tile_pattern;
+}
+
+/**
+ * \brief Returns the id of the pattern of this tile.
+ * \return The tile pattern id.
+ */
+int Tile::get_tile_pattern_id() const {
+  return tile_pattern_id;
 }
 
 /**

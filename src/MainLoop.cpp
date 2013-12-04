@@ -55,12 +55,21 @@ MainLoop::MainLoop(int argc, char** argv):
   root_surface->increment_refcount();
   lua_context = new LuaContext(*this);
   lua_context->initialize();
+    
+  // Create the window now that we know the final outset size.
+  VideoManager::get_instance()->create_window();
 }
 
 /**
  * \brief Cleans everything.
  */
 MainLoop::~MainLoop() {
+
+  if (game != NULL) {
+    game->stop();
+    delete game;
+    game = NULL;
+  }
 
   delete lua_context;
   root_surface->decrement_refcount();
@@ -141,85 +150,66 @@ void MainLoop::set_game(Game* game) {
  * \brief The main function.
  *
  * The main loop is executed here.
- * The input events are forwarded to the current screen.
- * The current screen is redrawn when necessary.
  */
 void MainLoop::run() {
 
-  // main loop
-  InputEvent *event;
-  uint32_t now;
-  uint32_t next_frame_date = System::now();
-  uint32_t frame_interval = 25; // time interval between two drawings
-  int delay;
-  bool just_redrawn = false; // to detect when the FPS number needs to be decreased
+  // Main loop.
+  uint32_t last_frame_date = System::get_real_time();
+  uint32_t lag = 0;  // Lose time of the simulation.
 
+  // The main loop basically repeats
+  // check_input(), update(), draw() and sleep().
+  // Each call to update() makes the simulated time advance one fixed step.
   while (!is_exiting()) {
 
-    // handle the input events
-    event = InputEvent::get_event();
-    if (event != NULL) {
-      notify_input(*event);
-      delete event;
+    // Measure the time of the last iteration without the check_input() phase.
+    // Some check_input() calls are much slower than other, for example when
+    // they involve loading a map. However, these long check_input() calls do
+    // not mean that the system is slow and that we should skip drawings,
+    // unlike long updates and long drawings.
+    // That is is why to compute the lag, we ignore the time spent in
+    // check_input().
+    uint32_t current_frame_date = System::get_real_time();
+    uint32_t last_frame_duration = current_frame_date - last_frame_date;
+
+    // 1. Detect and handle input events.
+    check_input();
+
+    last_frame_date = System::get_real_time();
+    lag += last_frame_duration;
+    // At this point, lag represents how much late the simulated time with
+    // compared to the real time.
+
+    // 2. Update the world once, or several times (skipping some draws)
+    // if the system is slow.
+    int num_updates = 0;
+    while (lag >= System::timestep
+        && num_updates < 10  // To draw sometimes anyway on very slow systems.
+        && !is_exiting()) {
+      update();
+      lag -= System::timestep;
+      ++num_updates;
     }
 
-    // update the current screen
-    update();
+    // 3. Redraw the screen.
+    draw();
 
-    // go to another game?
-    if (next_game != game) {
-      if (game != NULL) {
-        delete game;
-      }
-
-      game = next_game;
-
-      if (game != NULL) {
-        game->start();
-      }
-      else {
-        lua_context->exit();
-        lua_context->initialize();
-        Music::play(Music::none);
-      }
-    }
-    else {
-
-      now = System::now();
-      delay = next_frame_date - now;
-      // delay is the time remaining before the next drawing
-
-      if (delay <= 0) { // it's time to redraw
-
-        // see if the FPS number is too high
-        if (just_redrawn && frame_interval <= 30) {
-          frame_interval += 5; // redraw the screen less often
-          //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
-        }
-
-        next_frame_date = now + frame_interval;
-        just_redrawn = true;
-        draw();
-      }
-      else {
-        just_redrawn = false;
-
-        // if we have time, let's sleep to avoid using all the processor
-        System::sleep(1);
-
-        if (delay >= 15) {
-          // if we have much time, increase the FPS number
-          frame_interval--;
-          //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
-        }
-      }
+    // 4. Sleep if we have time, to save CPU cycles.
+    if (System::get_real_time() - last_frame_date < System::timestep) {
+      System::sleep(1);
     }
   }
+}
 
-  if (game != NULL) {
-    game->stop();
-    delete game;
-    game = NULL;
+/**
+ * \brief Detects whether there was an input event and if yes, handles it.
+ */
+void MainLoop::check_input() {
+
+  InputEvent* event = InputEvent::get_event();
+  if (event != NULL) {
+    notify_input(*event);
+    delete event;
   }
 }
 
@@ -231,7 +221,7 @@ void MainLoop::run() {
  * The notify_input() method of the current screen
  * is then called.
  */
-void MainLoop::notify_input(InputEvent& event) {
+void MainLoop::notify_input(const InputEvent& event) {
 
   if (event.is_window_closing()) {
     exiting = true;
@@ -265,6 +255,22 @@ void MainLoop::update() {
   }
   lua_context->update();
   System::update();
+
+  // go to another game?
+  if (next_game != game) {
+
+    delete game;
+    game = next_game;
+
+    if (game != NULL) {
+      game->start();
+    }
+    else {
+      lua_context->exit();
+      lua_context->initialize();
+      Music::play(Music::none);
+    }
+  }
 }
 
 /**

@@ -9,7 +9,7 @@ quest data directory and from quest write directory.
 \section lua_api_file_intro Overview
 
 Data files of the quest are located either in a
-\c data directory or in a \c data.solarus archive.
+\c data/ directory or in a \c data.solarus or \c data.solarus.zip archive.
 Files that you write are in the
 \ref lua_api_main_set_quest_write_dir "write directory" of the quest.
 

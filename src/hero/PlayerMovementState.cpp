@@ -45,10 +45,22 @@ Hero::PlayerMovementState::~PlayerMovementState() {
  * This function should be called only when the movement of the hero is
  * an instance of PlayerMovement.
  *
- * \return the movement
+ * \return The movement.
  */
 PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
-  return static_cast<PlayerMovement*>(hero.get_movement());
+  return static_cast<PlayerMovement*>(get_hero().get_movement());
+}
+
+/**
+ * \brief Returns the movement of the hero controlled by the player.
+ *
+ * This function should be called only when the movement of the hero is
+ * an instance of PlayerMovement.
+ *
+ * \return The movement.
+ */
+const PlayerMovement* Hero::PlayerMovementState::get_player_movement() const {
+  return static_cast<const PlayerMovement*>(get_hero().get_movement());
 }
 
 /**
@@ -58,11 +70,11 @@ PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
  *
  * \param previous_state the previous state
  */
-void Hero::PlayerMovementState::start(State* previous_state) {
+void Hero::PlayerMovementState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  hero.set_movement(new PlayerMovement(hero.get_walking_speed()));
+  get_hero().set_movement(new PlayerMovement(get_hero().get_walking_speed()));
 
   if (is_current_state()) { // yes, the state may have already changed
     get_player_movement()->compute_movement();
@@ -86,9 +98,11 @@ void Hero::PlayerMovementState::start(State* previous_state) {
  *
  * \param next_state the next state (for information)
  */
-void Hero::PlayerMovementState::stop(State* next_state) {
+void Hero::PlayerMovementState::stop(const State* next_state) {
 
-  hero.clear_movement();
+  State::stop(next_state);
+
+  get_hero().clear_movement();
   get_sprites().set_animation_stopped_normal();
   cancel_jumper();
 }
@@ -116,15 +130,15 @@ void Hero::PlayerMovementState::update() {
 
   State::update();
 
-  if (!suspended) {
+  if (!is_suspended()) {
 
     if (current_jumper != NULL) {
 
       const int jump_direction8 = current_jumper->get_direction();
       if (!current_jumper->is_enabled()
           || current_jumper->is_being_removed()
-          || !hero.is_moving_towards(jump_direction8 / 2)
-          || !current_jumper->is_in_jump_position(hero)) {
+          || !get_hero().is_moving_towards(jump_direction8 / 2)
+          || !current_jumper->is_in_jump_position(get_hero())) {
 
         // Cancel the jumper preparation.
         current_jumper->decrement_refcount();
@@ -136,7 +150,7 @@ void Hero::PlayerMovementState::update() {
       }
       else if (System::now() >= jumper_start_date) {
         // Time to make the jump and everything is okay.
-        hero.start_jumping(
+        get_hero().start_jumping(
             jump_direction8, current_jumper->get_jump_length(), true, true, 0);
       }
     }
@@ -153,7 +167,7 @@ void Hero::PlayerMovementState::set_suspended(bool suspended) {
 
   if (!suspended) {
     if (jumper_start_date != 0) {
-      jumper_start_date += System::now() - when_suspended;
+      jumper_start_date += System::now() - get_when_suspended();
     }
   }
 }
@@ -174,7 +188,7 @@ void Hero::PlayerMovementState::set_animation_walking() {
  * \brief Returns whether the player can control his movements in the current state.
  * \return true if the player can control his movements
  */
-bool Hero::PlayerMovementState::can_control_movement() {
+bool Hero::PlayerMovementState::can_control_movement() const {
   return true;
 }
 
@@ -187,7 +201,7 @@ bool Hero::PlayerMovementState::can_control_movement() {
  *
  * \return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::PlayerMovementState::get_wanted_movement_direction8() {
+int Hero::PlayerMovementState::get_wanted_movement_direction8() const {
   return get_player_movement()->get_wanted_direction8();
 }
 
@@ -200,7 +214,7 @@ int Hero::PlayerMovementState::get_wanted_movement_direction8() {
 void Hero::PlayerMovementState::notify_walking_speed_changed() {
 
   if (get_player_movement() != NULL) {
-    get_player_movement()->set_moving_speed(hero.get_walking_speed());
+    get_player_movement()->set_moving_speed(get_hero().get_walking_speed());
   }
 }
 
@@ -240,7 +254,7 @@ void Hero::PlayerMovementState::notify_position_changed() {
  * \brief Notifies this state that the layer has changed.
  */
 void Hero::PlayerMovementState::notify_layer_changed() {
-  hero.update_movement();
+  get_hero().update_movement();
 }
 
 /**
@@ -249,7 +263,7 @@ void Hero::PlayerMovementState::notify_layer_changed() {
  * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
-bool Hero::PlayerMovementState::can_be_hurt(Enemy* attacker) {
+bool Hero::PlayerMovementState::can_be_hurt(Enemy* attacker) const {
   return true;
 }
 
@@ -258,7 +272,7 @@ bool Hero::PlayerMovementState::can_be_hurt(Enemy* attacker) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 
@@ -270,7 +284,7 @@ bool Hero::PlayerMovementState::can_pick_treasure(EquipmentItem& item) {
  *
  * \return \c true if the hero can use jumpers in this state.
  */
-bool Hero::PlayerMovementState::can_take_jumper() {
+bool Hero::PlayerMovementState::can_take_jumper() const {
   return true;
 }
 

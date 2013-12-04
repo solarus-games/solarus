@@ -33,15 +33,23 @@ class DynamicTile: public MapEntity {
 
   public:
 
-    DynamicTile(const std::string& name, Layer layer, int x, int y,
-	int width, int height, int tile_pattern_id, bool visible);
+    DynamicTile(
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        int width,
+        int height,
+        int tile_pattern_id,
+        bool visible
+    );
     ~DynamicTile();
 
     EntityType get_type() const;
     void set_map(Map& map);
     bool is_ground_modifier() const;
     Ground get_modified_ground() const;
-    bool is_obstacle_for(MapEntity& other);
+    bool is_obstacle_for(const MapEntity& other) const;
     void draw_on_map();
 
   private:

@@ -38,7 +38,8 @@ class Debug {
 
     static void warning(const std::string& message);
     static void error(const std::string& message);
-    static void check_assertion(bool assertion, const std::string& error_message = "");
+    static void check_assertion(bool assertion, const char* error_message);
+    static void check_assertion(bool assertion, const std::string& error_message);
     static void die(const std::string& error_message);
 
   private:

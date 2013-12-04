@@ -361,6 +361,20 @@ and only loads the image of the new tileset.
 \remark If the new tileset is not compatible with the previous one,
   tiles will be displayed with wrong graphics.
 
+\subsection lua_api_map_get_music map:get_music()
+
+Returns the name of the music associated to this map.
+
+This is the music to play when the map starts, as specified in the map file.
+It may be different from the music currently being played.
+To get the music currently being played, see
+\ref lua_api_audio_get_music "sol.audio.get_music()".
+- Return value (string): Name of the music of this map, relative to
+  the \c musics directory and without extension.
+  It can also be the special value \c "same" if the map specifies to keep the
+  music unchanged,
+  or \c nil if the map specifies to play no music.
+
 \subsection lua_api_map_get_camera_position map:get_camera_position()
 
 Returns the currently visible area of the map.
@@ -642,6 +656,15 @@ This function can be used for example to checker whether a group of
 \remark Equivalent to <tt>map:get_entities_count(prefix) > 0</tt> but faster
   when there are a lot of entities
   (because it stops searching as soon as there is a match).
+
+\subsection lua_api_map_get_hero map:get_hero()
+
+Returns the \ref lua_api_hero "hero".
+- Return value (\ref lua_api_hero "hero"): The hero.
+
+\remark Equivalent to <tt>map:get_entity("hero")</tt> but shorter to write.
+  This function is provided for convenience as getting the hero is often
+  needed.
 
 \subsection lua_api_map_set_entities_enabled map:set_entities_enabled(prefix, [enabled])
 
@@ -1150,7 +1173,7 @@ on the map.
 - Return value (\ref lua_api_crystal_block "crystal block"): the crystal block
   created.
 
-\subsection lua_api_map_create_shop_item map:create_shop_item(properties)
+\subsection lua_api_map_create_shop_treasure map:create_shop_treasure(properties)
 
 Creates an entity of type
 \ref lua_api_shop_treasure "shop treasure"
@@ -1373,6 +1396,33 @@ on the map.
 - Return value (\ref lua_api_separator "separator"): The
   separator created.
 
+\subsection lua_api_map_create_custom_entity map:create_custom_entity(properties)
+
+Creates an entity of type
+\ref lua_api_custom_entity "custom entity"
+on the map.
+- \c properties (table): A table that describles all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string, optional): Name identifying the entity or \c nil.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c width (number, optional): Width of the entity in pixels
+    (default \c 16).
+  - \c height (number, optional): Height of the entity in pixels
+    (default \c 16).
+  - \c model (string, optional): Model of custom entity or \c nil.
+    The model is the name of a Lua script in the \c "entities" directory
+    that will define the behavior of your entity.
+    This script will be called with the entity as parameter.
+    Models are useful when you need to create lots of similar entities,
+    especially in different maps.
+    \c nil means no model: in this case, no particular script will be called
+    and your entity will be blank.
+- Return value (\ref lua_api_custom_entity "custom entity"): The
+  custom entity created and initialized with its model if any.
+
 \section lua_api_map_events Events of a map
 
 Events are callback methods automatically called by the engine if you define
@@ -1453,8 +1503,12 @@ before the treasure's dialog (if any).
 
 \subsection lua_api_map_on_obtained_treasure map:on_obtained_treasure(treasure_item, treasure_variant, treasure_savegame_variable)
 
-Called after the \ref lua_api_hero "hero" has obtained a treasure on this map,
-when the treasure's dialog (if any) finishes.
+Called after the \ref lua_api_hero "hero" has obtained a treasure on this map.
+
+In the case of a brandished treasure, this event is called once the
+treasure's dialog is finished.
+Otherwise, it is called immediately after
+\ref lua_api_map_on_obtaining_treasure "map:on_obtaining_treasure()".
 - \c treasure_item (\ref lua_api_item "item"): Equipment item being obtained.
 - \c treasure_variant (number): Variant of the treasure
   (because some \ref lua_api_item "equipment items"
@@ -1502,7 +1556,7 @@ If you want the corresponding higher-level game command (if any), see
 
 \subsection lua_api_map_on_character_pressed map:on_character_pressed(character)
 
-Called when the user presses a keyboard key mapped to a character
+Called when the user enters text
 while your map is active.
 - \c character (string): A utf-8 string representing the character that was
   pressed.

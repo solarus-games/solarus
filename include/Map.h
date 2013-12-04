@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Transition.h"
+#include "Camera.h"
 #include "entities/Layer.h"
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
@@ -44,33 +45,33 @@ class Map: public ExportableToLua {
     ~Map();
 
     // map properties
-    const std::string& get_id();
+    const std::string& get_id() const;
     Tileset& get_tileset();
-    const std::string& get_tileset_id();
+    const std::string& get_tileset_id() const;
     void set_tileset(const std::string& tileset_id);
-    const std::string& get_world();
+    const std::string& get_music_id() const;
+    const std::string& get_world() const;
     void set_world(const std::string& world);
-    bool has_floor();
-    int get_floor();
+    bool has_floor() const;
+    int get_floor() const;
     void set_floor(int floor);
-    const Rectangle& get_location();
+    const Rectangle& get_location() const;
 
-    int get_width();
-    int get_height();
-    int get_width8();
-    int get_height8();
+    int get_width() const;
+    int get_height() const;
+    int get_width8() const;
+    int get_height8() const;
 
     // camera
     Surface& get_visible_surface();
-    const Rectangle& get_camera_position();
+    const Rectangle& get_camera_position() const;
     void move_camera(int x, int y, int speed);
     void restore_camera();
-    bool is_camera_moving();
+    bool is_camera_moving() const;
     void traverse_separator(Separator* separator);
-    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
 
     // loading
-    bool is_loaded();
+    bool is_loaded() const;
     void load(Game& game);
     void unload();
     Game& get_game();
@@ -81,47 +82,62 @@ class Map: public ExportableToLua {
 
     // entities
     MapEntities& get_entities();
+    const MapEntities& get_entities() const;
 
     // presence of the hero
-    bool is_started();
+    bool is_started() const;
     void start();
     void leave();
 
     // current destination point
     void set_destination(const std::string& destination_name);
-    const std::string& get_destination_name();
+    const std::string& get_destination_name() const;
     Destination* get_destination();
-    int get_destination_side();
+    int get_destination_side() const;
 
     // collisions with obstacles (checked before a move)
-    bool test_collision_with_border(int x, int y);
-    bool test_collision_with_border(const Rectangle& collision_box);
+    bool test_collision_with_border(int x, int y) const;
+    bool test_collision_with_border(const Rectangle& collision_box) const;
     bool test_collision_with_ground(
         Layer layer,
         int x,
         int y,
-        MapEntity& entity_to_check,
-        bool& found_diagonal_wall);
-    bool test_collision_with_entities(Layer layer,
-        const Rectangle& collision_box, MapEntity& entity_to_check);
-    bool test_collision_with_obstacles(Layer layer,
-        const Rectangle& collision_box, MapEntity& entity_to_check);
-    bool test_collision_with_obstacles(Layer layer, int x, int y,
-        MapEntity& entity_to_check);
-    bool has_empty_ground(Layer layer, const Rectangle& collision_box);
+        const MapEntity& entity_to_check,
+        bool& found_diagonal_wall) const;
+    bool test_collision_with_entities(
+        Layer layer,
+        const Rectangle& collision_box,
+        const MapEntity& entity_to_check) const;
+    bool test_collision_with_obstacles(
+        Layer layer,
+        const Rectangle& collision_box,
+        const MapEntity& entity_to_check) const;
+    bool test_collision_with_obstacles(
+        Layer layer,
+        int x,
+        int y,
+        const MapEntity& entity_to_check) const;
+    bool has_empty_ground(
+        Layer layer,
+        const Rectangle& collision_box) const;
+
+    Ground get_ground(Layer layer, int x, int y) const;
+    Ground get_ground(Layer layer, const Rectangle& xy) const;
 
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity& entity);
     void check_collision_with_detectors(MapEntity& entity, Sprite& sprite);
 
     // main loop
-    bool notify_input(InputEvent& event);
+    bool notify_input(const InputEvent& event);
     void update();
-    bool is_suspended();
+    bool is_suspended() const;
     void check_suspended();
     void draw();
     void draw_sprite(Sprite& sprite, const Rectangle& xy);
     void draw_sprite(Sprite& sprite, int x, int y);
+    void draw_sprite(Sprite& sprite, int x, int y,
+        const Rectangle& clipping_area);
 
     static const int NO_FLOOR = -9999;  /**< Represents a non-existent floor (nil in data files). */
 
@@ -130,6 +146,7 @@ class Map: public ExportableToLua {
     friend class MapLoader; // the map loader modifies the private fields of Map
 
     void set_suspended(bool suspended);
+    void rebuild_background_surface();
     void draw_background();
     void draw_foreground();
 
@@ -168,8 +185,7 @@ class Map: public ExportableToLua {
     Surface* visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map */
-    Rectangle clipping_rectangle; /**< when drawing the map, indicates an area of the surface to be restricted to
-                                   * (usually, the whole map is considered and this rectangle's values are all 0) */
+    Surface* background_surface;  /**< a surface filled with the background color of the tileset */
 
     // map state
     bool loaded;                  /**< true if the loading phase is finished */
@@ -190,9 +206,18 @@ class Map: public ExportableToLua {
  * \param y y of the point to check
  * \return true if this point is outside the map area
  */
-inline bool Map::test_collision_with_border(int x, int y) {
+inline bool Map::test_collision_with_border(int x, int y) const {
 
   return (x < 0 || y < 0 || x >= location.get_width() || y >= location.get_height());
+}
+
+/**
+ * \brief Returns the position of the visible area, relative to the map
+ * top-left corner.
+ * \return The rectangle of the visible area.
+ */
+inline const Rectangle& Map::get_camera_position() const {
+  return camera->get_position();
 }
 
 #endif

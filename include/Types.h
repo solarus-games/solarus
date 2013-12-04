@@ -46,6 +46,9 @@ class VideoManager;
 class Surface;
 class TextSurface;
 class Color;
+class PixelFilter;
+class Scale2xFilter;
+class Hq4xFilter;
 class Sound;
 class Music;
 class SpcDecoder;
@@ -113,7 +116,9 @@ class Wall;
 class Sensor;
 class Crystal;
 class CrystalBlock;
-class ShopItem;
+class ShopTreasure;
+class Separator;
+class CustomEntity;
 class Boomerang;
 class Arrow;
 class ConveyorBelt;
@@ -123,7 +128,6 @@ class Explosion;
 class Bomb;
 class Fire;
 class Hookshot;
-class Separator;
 
 // tile patterns
 class Tileset;

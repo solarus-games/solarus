@@ -26,21 +26,22 @@ class Hero::ConveyorBeltState: public Hero::State {
 
   private:
 
-    ConveyorBelt &conveyor_belt;	/**< the conveyor belt to take */
+    ConveyorBelt& conveyor_belt;	/**< the conveyor belt to take */
     bool snapping;                  /**< indicates that the hero is currently moving towards the
                                      * center of the conveyor belt, before following its real direction */
 
   public:
 
-    ConveyorBeltState(Hero &hero, ConveyorBelt &conveyor_belt);
+    ConveyorBeltState(Hero& hero, ConveyorBelt& conveyor_belt);
     ~ConveyorBeltState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(const State* previous_state);
+    void stop(const State* next_state);
     void update();
 
-    bool can_avoid_teletransporter();
-    bool can_avoid_conveyor_belt();
+    bool can_avoid_teletransporter() const;
+    bool can_avoid_conveyor_belt() const;
+
 };
 
 #endif

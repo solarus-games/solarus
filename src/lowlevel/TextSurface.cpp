@@ -185,8 +185,8 @@ TextSurface::TextSurface(int x, int y):
  * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
 TextSurface::TextSurface(int x, int y,
-			 TextSurface::HorizontalAlignment horizontal_alignment,
-			 TextSurface::VerticalAlignment vertical_alignment):
+    TextSurface::HorizontalAlignment horizontal_alignment,
+    TextSurface::VerticalAlignment vertical_alignment):
   Drawable(),
   font_id(default_font_id),
   horizontal_alignment(horizontal_alignment),
@@ -204,7 +204,7 @@ TextSurface::TextSurface(int x, int y,
  */
 TextSurface::~TextSurface() {
 
-  if (surface != NULL && !surface->internal_surface_created) {
+  if (surface != NULL && !surface->owns_internal_surface) {
     SDL_FreeSurface(surface->get_internal_surface());
   }
   delete surface;
@@ -224,7 +224,7 @@ bool TextSurface::has_font(const std::string& font_id) {
  * \brief Returns the font used to draw this text.
  * \return Id of a font.
  */
-const std::string& TextSurface::get_font() {
+const std::string& TextSurface::get_font() const {
   return font_id;
 }
 
@@ -243,7 +243,7 @@ void TextSurface::set_font(const std::string& font_id) {
  * \return Horizontal alignment of the text: ALIGN_LEFT,
  * ALIGN_CENTER or ALIGN_RIGHT.
  */
-TextSurface::HorizontalAlignment TextSurface::get_horizontal_alignment() {
+TextSurface::HorizontalAlignment TextSurface::get_horizontal_alignment() const {
   return horizontal_alignment;
 }
 
@@ -264,7 +264,7 @@ void TextSurface::set_horizontal_alignment(HorizontalAlignment horizontal_alignm
  * \return Vertical alignment of the text: ALIGN_TOP,
  * ALIGN_MIDDLE or ALIGN_BOTTOM.
  */
-TextSurface::VerticalAlignment TextSurface::get_vertical_alignment() {
+TextSurface::VerticalAlignment TextSurface::get_vertical_alignment() const {
   return vertical_alignment;
 }
 
@@ -288,7 +288,7 @@ void TextSurface::set_vertical_alignment(VerticalAlignment vertical_alignment) {
  * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
 void TextSurface::set_alignment(HorizontalAlignment horizontal_alignment,
-				  VerticalAlignment vertical_alignment) {
+    VerticalAlignment vertical_alignment) {
   this->horizontal_alignment = horizontal_alignment;
   this->vertical_alignment = vertical_alignment;
 
@@ -299,7 +299,7 @@ void TextSurface::set_alignment(HorizontalAlignment horizontal_alignment,
  * \brief Returns the rendering mode of the text.
  * \return The rendering mode: TEXT_SOLID or TEXT_ANTIALIASING.
  */
-TextSurface::RenderingMode TextSurface::get_rendering_mode() {
+TextSurface::RenderingMode TextSurface::get_rendering_mode() const {
   return rendering_mode;
 }
 
@@ -317,7 +317,7 @@ void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) 
  * \brief Returns the color of the text.
  * \return The text color.
  */
-const Color& TextSurface::get_text_color() {
+const Color& TextSurface::get_text_color() const {
   return text_color;
 }
 
@@ -356,7 +356,7 @@ void TextSurface::set_position(int x, int y) {
  * \brief Returns the x position of the text on the destination surface.
  * \return X position of the text.
  */
-int TextSurface::get_x() {
+int TextSurface::get_x() const {
   return x;
 }
 
@@ -373,7 +373,7 @@ void TextSurface::set_x(int x) {
  * \brief Returns the y position of the text on the destination surface.
  * \return y position of the text.
  */
-int TextSurface::get_y() {
+int TextSurface::get_y() const {
   return y;
 }
 
@@ -393,7 +393,7 @@ void TextSurface::set_y(int y) {
  *
  * \return \c true if there is no text.
  */
-bool TextSurface::is_empty() {
+bool TextSurface::is_empty() const {
 
   std::string whitespaces = " \t\n\r";
   return text.find_first_not_of(whitespaces) == std::string::npos;
@@ -403,7 +403,7 @@ bool TextSurface::is_empty() {
  * \brief Returns the text currently displayed.
  * \return the text currently displayed, or NULL if there is no text
  */
-const std::string& TextSurface::get_text() {
+const std::string& TextSurface::get_text() const {
   return text;
 }
 
@@ -439,7 +439,12 @@ void TextSurface::add_char(char c) {
  * \brief Returns the width of the surface containing the text.
  * \return the width in pixels
  */
-int TextSurface::get_width() {
+int TextSurface::get_width() const {
+
+  if (surface == NULL) {
+    return 0;
+  }
+
   return surface->get_width();
 }
 
@@ -447,16 +452,20 @@ int TextSurface::get_width() {
  * \brief Returns the height of the surface containing the text.
  * \return the height in pixels
  */
-int TextSurface::get_height() {
+int TextSurface::get_height() const {
+
+  if (surface == NULL) {
+    return 0;
+  }
+
   return surface->get_height();
 }
-
 
 /**
  * \brief Returns the size of the surface containing the text.
  * \return the size of the surface
  */
-const Rectangle TextSurface::get_size() {
+const Rectangle TextSurface::get_size() const {
   return Rectangle(0, 0, get_width(), get_height());
 }
 
@@ -477,7 +486,7 @@ void TextSurface::rebuild() {
 
   if (surface != NULL) {
     // another text was previously set: delete it
-    if (!surface->internal_surface_created) {
+    if (!surface->owns_internal_surface) {
       SDL_FreeSurface(surface->get_internal_surface());
     }
     delete surface;
@@ -655,6 +664,15 @@ void TextSurface::raw_draw_region(const Rectangle& region,
  */
 void TextSurface::draw_transition(Transition& transition) {
   transition.draw(*surface);
+}
+
+/**
+ * \brief Returns the surface where transitions on this drawable object
+ * are applied.
+ * \return The surface for transitions.
+ */
+Surface& TextSurface::get_transition_surface() {
+  return *surface;
 }
 
 /**

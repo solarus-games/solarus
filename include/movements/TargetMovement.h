@@ -39,11 +39,11 @@ class TargetMovement: public StraightMovement {
 
     void set_target(MapEntity* target_entity, int x, int y);
 
-    int get_moving_speed();
+    int get_moving_speed() const;
     void set_moving_speed(int moving_speed);
 
     virtual void notify_object_controlled();
-    bool is_finished();
+    bool is_finished() const;
     void update();
 
     virtual const std::string& get_lua_type_name() const;
@@ -63,7 +63,8 @@ class TargetMovement: public StraightMovement {
     int sign_y;                        /**< Sign of the y movement (1: down, -1: up) */
     int moving_speed;                  /**< Speed when moving */
 
-    static const uint32_t recomputation_delay; /**< Delay between two recomputations. */
+    static const uint32_t
+        recomputation_delay;           /**< Delay between two recomputations. */
     uint32_t next_recomputation_date;  /**< Date when the movement is recalculated. */
     bool finished;                     /**< \c true if the target is reached. */
 

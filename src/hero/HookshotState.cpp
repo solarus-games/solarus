@@ -43,12 +43,12 @@ Hero::HookshotState::~HookshotState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::HookshotState::start(State* previous_state) {
+void Hero::HookshotState::start(const State* previous_state) {
 
   State::start(previous_state);
 
   get_sprites().set_animation("hookshot", "hookshot");
-  hookshot = new Hookshot(hero);
+  hookshot = new Hookshot(get_hero());
   get_entities().add_entity(hookshot);
 }
 
@@ -56,14 +56,14 @@ void Hero::HookshotState::start(State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state (for information)
  */
-void Hero::HookshotState::stop(State* next_state) {
+void Hero::HookshotState::stop(const State* next_state) {
 
   State::stop(next_state);
 
   if (!hookshot->is_being_removed()) {
     // the hookshot state was stopped by something other than the hookshot (e.g. an enemy)
     hookshot->remove_from_map();
-    hero.clear_movement();
+    get_hero().clear_movement();
   }
 }
 
@@ -71,7 +71,7 @@ void Hero::HookshotState::stop(State* next_state) {
  * \brief Returns whether the hero is touching the ground in the current state.
  * \return true if the hero is touching the ground in the current state
  */
-bool Hero::HookshotState::is_touching_ground() {
+bool Hero::HookshotState::is_touching_ground() const {
   return false;
 }
 
@@ -79,7 +79,7 @@ bool Hero::HookshotState::is_touching_ground() {
  * \brief Returns whether the hero ignores the effect of deep water in this state.
  * \return true if the hero ignores the effect of deep water in the current state
  */
-bool Hero::HookshotState::can_avoid_deep_water() {
+bool Hero::HookshotState::can_avoid_deep_water() const {
   return true;
 }
 
@@ -87,7 +87,7 @@ bool Hero::HookshotState::can_avoid_deep_water() {
  * \brief Returns whether the hero ignores the effect of holes in this state.
  * \return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::HookshotState::can_avoid_hole() {
+bool Hero::HookshotState::can_avoid_hole() const {
   return true;
 }
 
@@ -95,7 +95,7 @@ bool Hero::HookshotState::can_avoid_hole() {
  * \brief Returns whether the hero ignores the effect of ice in this state.
  * \return \c true if the hero ignores the effect of ice in the current state.
  */
-bool Hero::HookshotState::can_avoid_ice() {
+bool Hero::HookshotState::can_avoid_ice() const {
   return true;
 }
 
@@ -103,7 +103,7 @@ bool Hero::HookshotState::can_avoid_ice() {
  * \brief Returns whether the hero ignores the effect of lava in this state.
  * \return true if the hero ignores the effect of lava in the current state
  */
-bool Hero::HookshotState::can_avoid_lava() {
+bool Hero::HookshotState::can_avoid_lava() const {
   return true;
 }
 
@@ -111,7 +111,7 @@ bool Hero::HookshotState::can_avoid_lava() {
  * \brief Returns whether the hero ignores the effect of prickles in this state.
  * \return true if the hero ignores the effect of prickles in the current state
  */
-bool Hero::HookshotState::can_avoid_prickle() {
+bool Hero::HookshotState::can_avoid_prickle() const {
   return true;
 }
 
@@ -119,7 +119,7 @@ bool Hero::HookshotState::can_avoid_prickle() {
  * \brief Returns whether the hero ignores the effect of teletransporters in this state.
  * \return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::HookshotState::can_avoid_teletransporter() {
+bool Hero::HookshotState::can_avoid_teletransporter() const {
   return true;
 }
 
@@ -127,7 +127,7 @@ bool Hero::HookshotState::can_avoid_teletransporter() {
  * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * \return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::HookshotState::can_avoid_conveyor_belt() {
+bool Hero::HookshotState::can_avoid_conveyor_belt() const {
   return true;
 }
 
@@ -136,9 +136,10 @@ bool Hero::HookshotState::can_avoid_conveyor_belt() {
  * \param stairs some stairs
  * \return true if the stairs are obstacle in this state
  */
-bool Hero::HookshotState::is_stairs_obstacle(Stairs& stairs) {
+bool Hero::HookshotState::is_stairs_obstacle(const Stairs& stairs) const {
+
   // allow to fly over stairs covered by water
-  return hero.get_ground_below() != GROUND_DEEP_WATER;
+  return get_hero().get_ground_below() != GROUND_DEEP_WATER;
 }
 
 /**
@@ -146,7 +147,7 @@ bool Hero::HookshotState::is_stairs_obstacle(Stairs& stairs) {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::HookshotState::is_sensor_obstacle(Sensor& sensor) {
+bool Hero::HookshotState::is_sensor_obstacle(const Sensor& sensor) const {
   return false;
 }
 
@@ -155,7 +156,7 @@ bool Hero::HookshotState::is_sensor_obstacle(Sensor& sensor) {
  * \param jumper a jumper
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::HookshotState::is_jumper_obstacle(Jumper& jumper) {
+bool Hero::HookshotState::is_jumper_obstacle(const Jumper& jumper) const {
   return false;
 }
 
@@ -163,7 +164,7 @@ bool Hero::HookshotState::is_jumper_obstacle(Jumper& jumper) {
  * \brief Returns whether the hero ignores the effect of switches in this state.
  * \return true if the hero ignores the effect of switches in this state
  */
-bool Hero::HookshotState::can_avoid_switch() {
+bool Hero::HookshotState::can_avoid_switch() const {
   return true;
 }
 
@@ -173,7 +174,7 @@ bool Hero::HookshotState::can_avoid_switch() {
  * (or NULL if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::HookshotState::can_be_hurt(Enemy* attacker) {
+bool Hero::HookshotState::can_be_hurt(Enemy* attacker) const {
   return false;
 }
 
@@ -182,7 +183,7 @@ bool Hero::HookshotState::can_be_hurt(Enemy* attacker) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::HookshotState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::HookshotState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 
@@ -205,6 +206,7 @@ void Hero::HookshotState::notify_obstacle_reached() {
  */
 void Hero::HookshotState::finish_movement() {
 
+  Hero& hero = get_hero();
   const Rectangle& hero_position = hero.get_bounding_box();
   Layer layer = hero.get_layer();
   Map& map = get_map();

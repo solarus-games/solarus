@@ -88,7 +88,8 @@ class FileTools {
 
     static void set_solarus_write_dir(const std::string& solarus_write_dir);
 
-    static std::string quest_path;                       /**< Path of the data directory or the data.solarus archive,
+    static std::string quest_path;                       /**< Path of the data/ directory, the data.solarus archive
+                                                          * or the data.solarus.zip archive,
                                                           * relative to the current directory. */
     static std::string solarus_write_dir;                /**< Directory where the engine can write files, relative to the user's home. */
     static std::string quest_write_dir;                  /**< Write directory of the current quest, relative to solarus_write_dir. */

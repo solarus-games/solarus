@@ -56,7 +56,7 @@ Hero::HurtState::~HurtState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::HurtState::start(State* previous_state) {
+void Hero::HurtState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -81,6 +81,7 @@ void Hero::HurtState::start(State* previous_state) {
   get_sprites().set_animation_hurt();
   get_sprites().blink();
 
+  Hero& hero = get_hero();
   double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(),
       hero.get_x(), hero.get_y());
   StraightMovement* movement = new StraightMovement(false, true);
@@ -95,11 +96,11 @@ void Hero::HurtState::start(State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state
  */
-void Hero::HurtState::stop(State* next_state) {
+void Hero::HurtState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  hero.clear_movement();
+  get_hero().clear_movement();
 }
 
 /**
@@ -109,6 +110,7 @@ void Hero::HurtState::update() {
 
   State::update();
 
+  Hero& hero = get_hero();
   if (hero.get_movement()->is_finished()
       || System::now() >= end_hurt_date) {
     // we have end_hurt_date because the movement may never finish if there is an obstacle
@@ -127,7 +129,7 @@ void Hero::HurtState::set_suspended(bool suspended) {
   State::set_suspended(suspended);
 
   if (!suspended) {
-    uint32_t diff = System::now() - when_suspended;
+    uint32_t diff = System::now() - get_when_suspended();
     end_hurt_date += diff;
   }
 }
@@ -136,7 +138,7 @@ void Hero::HurtState::set_suspended(bool suspended) {
  * \brief Returns whether the game over sequence can start in the current state.
  * \return true if the game over sequence can start in the current state
  */
-bool Hero::HurtState::can_start_gameover_sequence() {
+bool Hero::HurtState::can_start_gameover_sequence() const {
   return false;
 }
 
@@ -144,7 +146,7 @@ bool Hero::HurtState::can_start_gameover_sequence() {
  * \brief Returns whether the hero is touching the ground in the current state.
  * \return true if the hero is touching the ground in the current state
  */
-bool Hero::HurtState::is_touching_ground() {
+bool Hero::HurtState::is_touching_ground() const {
   return false;
 }
 
@@ -153,7 +155,8 @@ bool Hero::HurtState::is_touching_ground() {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is an obstacle in this state
  */
-bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Hero::HurtState::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
   return true;
 }
 
@@ -162,7 +165,8 @@ bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter& teletransport
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is an obstacle in this state
  */
-bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool Hero::HurtState::is_conveyor_belt_obstacle(
+    const ConveyorBelt& conveyor_belt) const {
   return true;
 }
 
@@ -171,14 +175,14 @@ bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
  * \param sensor a sensor
  * \return true if the sensor is an obstacle in this state
  */
-bool Hero::HurtState::is_sensor_obstacle(Sensor& sensor) {
+bool Hero::HurtState::is_sensor_obstacle(const Sensor& sensor) const {
   return true;
 }
 
 /**
  * \copydoc Hero::State::is_separator_obstacle
  */
-bool Hero::HurtState::is_separator_obstacle(Separator& separator) {
+bool Hero::HurtState::is_separator_obstacle(const Separator& separator) const {
   return true;
 }
 
@@ -188,7 +192,7 @@ bool Hero::HurtState::is_separator_obstacle(Separator& separator) {
  * (or NULL if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::HurtState::can_be_hurt(Enemy* attacker) {
+bool Hero::HurtState::can_be_hurt(Enemy* attacker) const {
   return false;
 }
 
@@ -196,7 +200,7 @@ bool Hero::HurtState::can_be_hurt(Enemy* attacker) {
  * \brief Returns whether the hero ignores the effect of switches in this state.
  * \return true if the hero ignores the effect of switches in this state
  */
-bool Hero::HurtState::can_avoid_switch() {
+bool Hero::HurtState::can_avoid_switch() const {
   return true;
 }
 
@@ -204,7 +208,7 @@ bool Hero::HurtState::can_avoid_switch() {
  * \brief Returns whether the hero ignores the effect of ice in this state.
  * \return \c true if the hero ignores the effect of ice in the current state.
  */
-bool Hero::HurtState::can_avoid_ice() {
+bool Hero::HurtState::can_avoid_ice() const {
   return true;
 }
 

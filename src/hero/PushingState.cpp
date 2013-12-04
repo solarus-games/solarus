@@ -45,7 +45,7 @@ Hero::PushingState::~PushingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::PushingState::start(State* previous_state) {
+void Hero::PushingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -56,12 +56,12 @@ void Hero::PushingState::start(State* previous_state) {
 /**
  * \brief Stops this state.
  */
-void Hero::PushingState::stop(State* next_state) {
+void Hero::PushingState::stop(const State* next_state) {
 
   State::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
-    hero.clear_movement();
+    get_hero().clear_movement();
     pushed_entity->update();
     stop_moving_pushed_entity();
   }
@@ -74,6 +74,7 @@ void Hero::PushingState::update() {
 
   State::update();
 
+  Hero& hero = get_hero();
   if (!is_moving_grabbed_entity()) { // the hero is pushing a fixed obstacle
 
     // stop pushing if there is no more obstacle
@@ -98,7 +99,7 @@ void Hero::PushingState::update() {
       Detector* facing_entity = hero.get_facing_entity();
       if (facing_entity != NULL) { // the obstacle pushed is an entity
 
-        if (facing_entity->get_type() == BLOCK) { // it can be moved by the hero (TODO dynamic binding)
+        if (facing_entity->get_type() == ENTITY_BLOCK) { // it can be moved by the hero (TODO dynamic binding)
           hero.try_snap_to_facing_entity();
         }
 
@@ -109,6 +110,7 @@ void Hero::PushingState::update() {
 
           hero.set_movement(new PathMovement(path, 40, false, false, false));
           pushed_entity = facing_entity;
+          pushed_entity->notify_moving_by(hero);
         }
       }
     }
@@ -119,7 +121,7 @@ void Hero::PushingState::update() {
  * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * \return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::PushingState::can_avoid_conveyor_belt() {
+bool Hero::PushingState::can_avoid_conveyor_belt() const {
   return true;
 }
 
@@ -127,7 +129,7 @@ bool Hero::PushingState::can_avoid_conveyor_belt() {
  * \brief Returns whether the hero can swing his sword in this state.
  * \return true if the hero can swing his sword in this state
  */
-bool Hero::PushingState::can_start_sword() {
+bool Hero::PushingState::can_start_sword() const {
   return !is_moving_grabbed_entity();
 }
 
@@ -135,7 +137,7 @@ bool Hero::PushingState::can_start_sword() {
  * \brief Returns whether the hero is grabbing and moving an entity in this state.
  * \return true if the hero is grabbing and moving an entity
  */
-bool Hero::PushingState::is_moving_grabbed_entity() {
+bool Hero::PushingState::is_moving_grabbed_entity() const {
   return pushed_entity != NULL;
 }
 
@@ -182,7 +184,7 @@ void Hero::PushingState::notify_position_changed() {
     // if the entity has made more than 8 pixels and is aligned on the grid,
     // we stop the movement
 
-    PathMovement* movement = static_cast<PathMovement*>(hero.get_movement());
+    PathMovement* movement = static_cast<PathMovement*>(get_hero().get_movement());
 
     bool horizontal = pushing_direction4 % 2 == 0;
     bool has_reached_grid = movement->get_total_distance_covered() >= 16
@@ -201,6 +203,7 @@ void Hero::PushingState::notify_position_changed() {
  */
 void Hero::PushingState::stop_moving_pushed_entity() {
 
+  Hero& hero = get_hero();
   if (pushed_entity != NULL) {
     pushed_entity->stop_movement_by_hero();
 
@@ -229,20 +232,29 @@ void Hero::PushingState::stop_moving_pushed_entity() {
         hero.set_y(pushed_entity->get_y() - 16);
         break;
     }
+
+    hero.clear_movement();
+    MapEntity* entity_just_moved = pushed_entity;
     pushed_entity = NULL;
+    entity_just_moved->notify_moved_by(hero);
   }
 
-  hero.clear_movement();
+  if (!is_current_state()) {
+    // Another state is already starting (for example TreasureState).
+    // In this case, don't overwrite it.
+    return;
+  }
 
   if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
-    // the hero was pushing an entity without grabbing it
+    // The hero was pushing an entity without grabbing it.
 
-    // stop the animation pushing if his direction changed
+    // Stop the animation pushing if his direction changed.
     if (get_commands().get_wanted_direction8() != pushing_direction4 * 2) {
       hero.set_state(new FreeState(hero));
     }
   }
   else {
+    // The hero was pushing an entity and grabbing it.
     hero.set_state(new GrabbingState(hero));
   }
 }
@@ -253,7 +265,7 @@ void Hero::PushingState::stop_moving_pushed_entity() {
  * (or NULL if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::PushingState::can_be_hurt(Enemy* attacker) {
+bool Hero::PushingState::can_be_hurt(Enemy* attacker) const {
   return !is_moving_grabbed_entity();
 }
 
@@ -262,7 +274,7 @@ bool Hero::PushingState::can_be_hurt(Enemy* attacker) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::PushingState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::PushingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 
@@ -270,7 +282,7 @@ bool Hero::PushingState::can_pick_treasure(EquipmentItem& item) {
  * \brief Returns whether shallow water is considered as an obstacle in this state.
  * \return true if shallow water is considered as an obstacle in this state
  */
-bool Hero::PushingState::is_shallow_water_obstacle() {
+bool Hero::PushingState::is_shallow_water_obstacle() const {
   return true;
 }
 
@@ -278,7 +290,7 @@ bool Hero::PushingState::is_shallow_water_obstacle() {
  * \brief Returns whether deep water is considered as an obstacle in this state.
  * \return true if deep water is considered as an obstacle in this state
  */
-bool Hero::PushingState::is_deep_water_obstacle() {
+bool Hero::PushingState::is_deep_water_obstacle() const {
   return true;
 }
 
@@ -286,7 +298,7 @@ bool Hero::PushingState::is_deep_water_obstacle() {
  * \brief Returns whether a hole is considered as an obstacle in this state.
  * \return true if the holes are considered as obstacles in this state
  */
-bool Hero::PushingState::is_hole_obstacle() {
+bool Hero::PushingState::is_hole_obstacle() const {
   return true;
 }
 
@@ -294,7 +306,7 @@ bool Hero::PushingState::is_hole_obstacle() {
  * \brief Returns whether lava is considered as an obstacle in this state.
  * \return true if lava is considered as obstacles in this state
  */
-bool Hero::PushingState::is_lava_obstacle() {
+bool Hero::PushingState::is_lava_obstacle() const {
   return true;
 }
 
@@ -302,7 +314,7 @@ bool Hero::PushingState::is_lava_obstacle() {
  * \brief Returns whether prickles are considered as an obstacle in this state.
  * \return true if prickles are considered as obstacles in this state
  */
-bool Hero::PushingState::is_prickle_obstacle() {
+bool Hero::PushingState::is_prickle_obstacle() const {
   return true;
 }
 

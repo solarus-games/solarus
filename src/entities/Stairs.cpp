@@ -60,7 +60,6 @@ Stairs::Stairs(
  * \brief Destructor.
  */
 Stairs::~Stairs() {
-
 }
 
 /**
@@ -68,14 +67,14 @@ Stairs::~Stairs() {
  * \return the type of entity
  */
 EntityType Stairs::get_type() const {
-  return STAIRS;
+  return ENTITY_STAIRS;
 }
 
 /**
  * \brief Returns whether entities of this type can be drawn.
  * \return \c true if this type of entity can be drawn.
  */
-bool Stairs::can_be_drawn() {
+bool Stairs::can_be_drawn() const {
   return false;
 }
 
@@ -136,7 +135,7 @@ bool Stairs::has_layer_independent_collisions() const {
  *
  * \return \c true if the sword is ignored.
  */
-bool Stairs::is_sword_ignored() {
+bool Stairs::is_sword_ignored() const {
   return true;
 }
 
@@ -146,7 +145,7 @@ bool Stairs::is_sword_ignored() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Stairs::is_obstacle_for(MapEntity& other) {
+bool Stairs::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_stairs_obstacle(*this);
 }
@@ -235,7 +234,10 @@ void Stairs::play_sound(Way way) {
       sound_id = (way == NORMAL_WAY) ? "stairs_down_start" : "stairs_up_end";
     }
   }
-  Sound::play(sound_id);
+
+  if (Sound::exists(sound_id)) {
+    Sound::play(sound_id);
+  }
 }
 
 /**
@@ -314,26 +316,28 @@ Rectangle Stairs::get_clipping_rectangle(Way way) {
   Rectangle clipping_rectangle(0, 0, get_map().get_width(), get_map().get_height());
   bool north = get_direction() == 1; // north or south
 
+  // Hide the hero after the north of south edge.
   if (north) {
     clipping_rectangle.set_y(get_top_left_y() - 8);
     clipping_rectangle.set_height(48);
   }
   else { // south
-    clipping_rectangle.set_y(0);
-    clipping_rectangle.set_height(get_top_left_y() + 16);
+    clipping_rectangle.set_y(get_top_left_y() - 32);
+    clipping_rectangle.set_height(48);
   }
 
-  // spiral staircase: hide a side
+  // Spiral staircase: also hide a side.
   if ((subtype == SPIRAL_DOWNSTAIRS && north)
       || (subtype == SPIRAL_UPSTAIRS && !north)) {
      // north downstairs or south upstairs: hide the west side
     clipping_rectangle.set_x(get_top_left_x());
-    clipping_rectangle.set_width(16);
+    clipping_rectangle.set_width(32);
   }
   else if ((subtype == SPIRAL_UPSTAIRS && north)
       || (subtype == SPIRAL_DOWNSTAIRS && !north)) {
      // north downstairs or south upstairs: hide the east side
-    clipping_rectangle.set_width(get_top_left_x() + 16);
+    clipping_rectangle.set_x(get_top_left_x() - 16);
+    clipping_rectangle.set_width(32);
   }
 
   return clipping_rectangle;
@@ -364,7 +368,7 @@ void Stairs::notify_enabled(bool enabled) {
 void Stairs::update_dynamic_tiles() {
 
   std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(
-      DYNAMIC_TILE, get_name() + "_enabled");
+      ENTITY_DYNAMIC_TILE, get_name() + "_enabled");
   std::list<MapEntity*>::iterator it;
   for (it = tiles.begin(); it != tiles.end(); ++it) {
     DynamicTile* tile = static_cast<DynamicTile*>(*it);
@@ -372,7 +376,7 @@ void Stairs::update_dynamic_tiles() {
   }
 
   tiles = get_entities().get_entities_with_prefix(
-      DYNAMIC_TILE, get_name() + "_disabled");
+      ENTITY_DYNAMIC_TILE, get_name() + "_disabled");
   for (it = tiles.begin(); it != tiles.end(); ++it) {
     DynamicTile* tile = static_cast<DynamicTile*>(*it);
     tile->set_enabled(!is_enabled());

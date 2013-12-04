@@ -47,6 +47,7 @@ class QuestResourceList {
       RESOURCE_SOUND,
       RESOURCE_ITEM,
       RESOURCE_ENEMY,
+      RESOURCE_ENTITY,
       RESOURCE_LANGUAGE,
       RESOURCE_NB
     };

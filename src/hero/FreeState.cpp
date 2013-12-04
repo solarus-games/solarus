@@ -43,7 +43,7 @@ Hero::FreeState::~FreeState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::FreeState::start(State* previous_state) {
+void Hero::FreeState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
@@ -55,7 +55,7 @@ void Hero::FreeState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::FreeState::stop(State* next_state) {
+void Hero::FreeState::stop(const State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
@@ -69,7 +69,7 @@ void Hero::FreeState::update() {
 
   PlayerMovementState::update();
 
-  if (!suspended
+  if (!is_suspended()
       && is_current_state()
       && pushing_direction4 != -1                                       // The hero is trying to push
       && get_wanted_movement_direction8() != pushing_direction4 * 2) {  // but his movement direction has changed.
@@ -87,7 +87,7 @@ void Hero::FreeState::set_suspended(bool suspended) {
   PlayerMovementState::set_suspended(suspended);
 
   if (!suspended) {
-    start_pushing_date += System::now() - when_suspended;
+    start_pushing_date += System::now() - get_when_suspended();
   }
 }
 
@@ -96,6 +96,7 @@ void Hero::FreeState::set_suspended(bool suspended) {
  */
 void Hero::FreeState::notify_action_command_pressed() {
 
+  Hero& hero = get_hero();
   if (get_keys_effect().is_action_key_acting_on_facing_entity()) {
 
     // action on the facing entity
@@ -121,6 +122,7 @@ void Hero::FreeState::notify_obstacle_reached() {
 
   PlayerMovementState::notify_obstacle_reached();
 
+  Hero& hero = get_hero();
   if (hero.is_facing_point_on_obstacle()) { // he is really facing an obstacle
 
     uint32_t now = System::now();
@@ -139,7 +141,7 @@ void Hero::FreeState::notify_obstacle_reached() {
  * in this state.
  * \return true
  */
-bool Hero::FreeState::is_free() {
+bool Hero::FreeState::is_free() const {
   return true;
 }
 
@@ -147,7 +149,7 @@ bool Hero::FreeState::is_free() {
  * \brief Returns whether the hero can swing his sword in this state.
  * \return true if the hero can swing his sword in this state
  */
-bool Hero::FreeState::can_start_sword() {
+bool Hero::FreeState::can_start_sword() const {
   return true;
 }
 
@@ -156,8 +158,9 @@ bool Hero::FreeState::can_start_sword() {
  * \param item The equipment item to check.
  * \return true if the hero can use this equipment item in this state.
  */
-bool Hero::FreeState::can_start_item(EquipmentItem& item) {
-  return hero.get_ground_below() != GROUND_HOLE;
+bool Hero::FreeState::can_start_item(EquipmentItem& item) const {
+
+  return get_hero().get_ground_below() != GROUND_HOLE;
 }
 
 /**
@@ -165,7 +168,7 @@ bool Hero::FreeState::can_start_item(EquipmentItem& item) {
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  * \return true if the hero ignores the effect of stairs in this state
  */
-bool Hero::FreeState::can_take_stairs() {
+bool Hero::FreeState::can_take_stairs() const {
   return true;
 }
 
@@ -174,7 +177,7 @@ bool Hero::FreeState::can_take_stairs() {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::FreeState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::FreeState::get_previous_carried_item_behavior() const {
   return CarriedItem::BEHAVIOR_DESTROY;
 }
 

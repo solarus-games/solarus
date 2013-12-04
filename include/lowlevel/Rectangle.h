@@ -34,6 +34,7 @@ class Rectangle {
 
   // low-level classes allowed to manipulate directly the internal SDL rectangle encapsulated
   friend class Surface;
+  friend class VideoManager;
 
   public:
 
@@ -355,7 +356,7 @@ inline bool Rectangle::overlaps(const Rectangle& other) const {
 
   bool overlap_y = (y3 < y2 && y1 < y4);
 
-  return overlap_x && overlap_y;
+  return overlap_x && overlap_y && !is_flat() && !other.is_flat();
 }
 
 /**

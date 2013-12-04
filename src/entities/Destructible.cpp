@@ -102,7 +102,7 @@ Destructible::~Destructible() {
  * \return the type of entity
  */
 EntityType Destructible::get_type() const {
-  return DESTRUCTIBLE;
+  return ENTITY_DESTRUCTIBLE;
 }
 
 /**
@@ -113,7 +113,7 @@ EntityType Destructible::get_type() const {
  *
  * \return true if this entity is drawn at the same level as the hero
  */
-bool Destructible::is_drawn_in_y_order() {
+bool Destructible::is_drawn_in_y_order() const {
   return false;
 }
 
@@ -170,7 +170,7 @@ const std::string& Destructible::get_destruction_sound_id() {
  * \param other another entity
  * \return true if this entity is an obstacle for others
  */
-bool Destructible::is_obstacle_for(MapEntity& other) {
+bool Destructible::is_obstacle_for(const MapEntity& other) const {
   return features[subtype].can_be_lifted && !is_being_cut && other.is_destructible_obstacle(*this);
 }
 
@@ -267,7 +267,7 @@ void Destructible::notify_collision(MapEntity& other_entity,
   }
 
   // TODO use dynamic dispatch
-  if (other_entity.get_type() == EXPLOSION
+  if (other_entity.get_type() == ENTITY_EXPLOSION
       && can_explode()
       && !is_being_cut
       && !is_disabled()
@@ -302,8 +302,14 @@ void Destructible::notify_action_command_pressed() {
     if (get_equipment().has_ability("lift", weight)) {
 
       uint32_t explosion_date = can_explode() ? System::now() + 6000 : 0;
-      get_hero().start_lifting(new CarriedItem(get_hero(), *this,
-	  get_animation_set_id(), get_destruction_sound_id(), get_damage_on_enemies(), explosion_date));
+      get_hero().start_lifting(new CarriedItem(
+          get_hero(),
+          *this,
+          get_animation_set_id(),
+          get_destruction_sound_id(),
+          get_damage_on_enemies(),
+          explosion_date)
+      );
 
       // play the sound
       Sound::play("lift");
@@ -413,7 +419,7 @@ void Destructible::set_suspended(bool suspended) {
 
   if (!suspended && regeneration_date != 0) {
     // recalculate the timer
-    regeneration_date += System::now() - when_suspended;
+    regeneration_date += System::now() - get_when_suspended();
   }
 }
 
@@ -424,7 +430,7 @@ void Destructible::update() {
 
   MapEntity::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 

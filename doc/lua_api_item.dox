@@ -505,9 +505,13 @@ Only possible when the \ref lua_api_game "game" is running.
 \subsection lua_api_item_on_obtained item:on_obtained(variant, savegame_variable).
 
 Like \ref lua_api_item_on_obtaining "item:on_obtaining()",
-but in the case of a brandished treasure, this event is called after the
-treasure's dialog.
+but called right after the treasure is obtained.
 Only possible when the \ref lua_api_game "game" is running.
+
+In the case of a brandished treasure, this event is called once the
+treasure's dialog is finished.
+Otherwise, it is called immediately after
+\ref lua_api_item_on_obtaining "item:on_obtaining()".
 - \c variant (number): The variant of item (because some items may have several
   variants). \c 1 is the first variant, \c 2 is the second variant, etc.
 - \c savegame_variable (string): Name of the boolean saved value that stores

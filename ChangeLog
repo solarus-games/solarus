@@ -1,12 +1,85 @@
 _______________________________
 
-Solarus 1.1 (under development)
+Solarus 1.2.0 (under development)
 _______________________________
 
 Engine changes
 --------------
 
-* Add a very short sample quest with free graphics (#232).
+* Upgrade to SDL 2 (#262). Thanks Vlag.
+* New map entity type: custom entities, fully scripted (#323).
+* Rewrite the main loop with a constant timestep (#351).
+* Show a dialog box in case of fatal error.
+* The "wide" video modes do not exist anymore. SDL2 does the job now.
+* Add the hq4x pixel filter algorithm as a new video mode.
+* Call enemy:on_hurt() before enemy:on_dying() (#325).
+* Fix life and money exceeding the max when the max changes (#355).
+* Make stairs sounds optional (#364).
+* Make more checks in sprite files to avoid crashes (#357).
+* Fix RandomMovement speed that was not taken into account (#361).
+* The size of all map entities must be a multiple of 8 (#358).
+
+Data files format changes
+-------------------------
+
+You can use the script tools/data_files_conversion/1.1_to_1.2/update_quest.lua
+to automatically update your data files.
+Don't forget to make a backup first.
+
+* Maps: Rename entity shop_item to shop_treasure.
+
+Lua API changes
+---------------
+
+Changes that introduce incompatibilities:
+
+* sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
+* map:create_shop_item() is replaced by map:create_shop_treasure().
+* In sol.video.get/set_mode(), "fullscreen_*_wide" modes no longer exist.
+* on_key_pressed() and on_character_pressed() are now both called (#344).
+* Enemies have now a default size of 16x16 and origin of 8,13 (#354).
+* The size of enemies must be a multiple of 8 (#358).
+
+Changes that do not introduce incompatibilities:
+
+* New Lua type and methods for custom map entities.
+* sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
+* Fix random_movement:get_max_radius() that was not working.
+* Add a method map:get_hero() (#362).
+* Add a method entity:get_game() (#363).
+* Add an event sensor:on_left() (#339).
+* Add an event block:on_moving() (#334).
+* Add functions to get/set the properties of blocks.
+
+Solarus Quest Editor changes
+----------------------------
+
+* Fix NullPointerException when canceling the Open Project dialog.
+
+_________________________________
+
+Solarus 1.1.1 (2013-12-01)
+_________________________________
+
+Bug fixes for the 1.1 release.
+
+Engine changes
+--------------
+
+* Fix a libmodplug compilation problem due to wrong sndfile.h (#324).
+* Fix teletransporters activated while coming back from falling (#346).
+* Fix a crash when changing the hero state in block:on_moved (#340).
+* Fix enemy death detection when falling into hole, lava or water (#350).
+
+_______________________________
+
+Solarus 1.1.0 (2013-10-13)
+_______________________________
+
+Engine changes
+--------------
+
+* Add a very short sample quest with free graphics and musics (#232, #318).
 * Allow scripted dialog boxes (#184).
 * Allow a scripted game-over menu (#261).
 * Replace the old built-in dialog box by a very minimal one.
@@ -22,12 +95,16 @@ Engine changes
 * A game can now start without specifying an initial map and destination.
 * Stairs inside a single floor can now go from any layer to a next one (#178).
 * Fix map menus not receiving on_command_pressed/released() events.
+* Fix camera callbacks never called when already on the target (#308).
 * Fix a crash when adding a new menu during a menu:on_finished() event.
+* Fix a crash when calling hero:start_victory() without sword.
 * Fix an error when loading sounds (#236). Sounds were working anyway.
 * Fix a possible memory error when playing sounds.
 * Fix blocks that continue to follow the hero after picking a treasure (#284).
+* Fix on_obtained() that was not called for non-brandished treasures (#295).
 * Jumpers can no longer be activated the opposite way when in water.
 * Jumpers are now activated after a slight delay (#253).
+* Sensors no longer automatically reset the hero's movement (#292).
 * Correctly detect the ground below the hero or any point.
 * Don't die if there is a syntax error in dialogs.dat.
 * Show a better error message if trying to play a Solarus 0.9 quest (#260).
@@ -36,6 +113,7 @@ Engine changes
 * Call on_draw() before drawing menus.
 * Fix .it musics looping when they should not.
 * Log all errors in error.txt (#287).
+* The quest archive can now also be named data.solarus.zip (#293).
 
 Data files format changes
 -------------------------
@@ -92,9 +170,14 @@ Changes that do not introduce incompatibilities:
 * Add events separator:on_activating() and separator:on_activated() (#272).
 * Add methods enemy:is/set_traversable() (#147).
 * Add a method enemy:immobilize() (#160).
+* Add on_position_changed() to all entities, not only enemies (#298).
+* Add on_obstacle_reached() to all entities, not only enemies (#298).
+* Add on_movement_changed() to all entities, not only enemies (#298).
+* Add on_movement_finished() to all entities, not only enemies/NPCs (#298).
 * target_movement:set_target(entity) now accepts an x,y offset (#154).
 * Add a method game:is_pause_allowed().
 * Add a method map:get_ground() (#141).
+* Add a method map:get_music() (#306).
 * Add an optional parameter on_top to sol.menu.start.
 * Add sprite:on_animation_changed() and sprite:on_direction_changed() (#153).
 
@@ -130,9 +213,10 @@ Solarus Quest Editor changes
 * Add tooltips to the add entity toolbar.
 * Simplify the add entity toolbar by showing only one icon per entity type.
 * Survive when images cannot be found (#256).
-* Create more initial directories when creating a new quest (#258).
+* Create more content when creating a new quest (#258, #279).
 * Improve error messages.
 * Fix a crash when creating a destructible without tileset selected (#283).
+* Fix the sprite field disabled in the NPC properties dialog (#303).
 
 __________________________
 

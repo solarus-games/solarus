@@ -42,11 +42,11 @@ Hero::FallingState::~FallingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::FallingState::start(State *previous_state) {
+void Hero::FallingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  hero.delayed_teletransporter = NULL;
+  get_hero().delayed_teletransporter = NULL;
   get_sprites().save_animation_direction();
   get_sprites().set_animation_falling();
   Sound::play("hero_falls");
@@ -56,7 +56,7 @@ void Hero::FallingState::start(State *previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::FallingState::stop(State *next_state) {
+void Hero::FallingState::stop(const State* next_state) {
 
   State::stop(next_state);
 
@@ -71,10 +71,11 @@ void Hero::FallingState::update() {
 
   State::update();
 
-  if (!suspended && get_sprites().is_animation_finished()) {
+  Hero& hero = get_hero();
+  if (!is_suspended() && get_sprites().is_animation_finished()) {
 
     // the hero has just finished falling
-    Teletransporter *teletransporter = hero.get_delayed_teletransporter();
+    Teletransporter* teletransporter = hero.get_delayed_teletransporter();
     if (teletransporter != NULL) {
       // special hole with a teletransporter
       teletransporter->transport_hero(hero);
@@ -91,7 +92,7 @@ void Hero::FallingState::update() {
  * \brief Returns whether the hero ignores the effect of holes in this state.
  * \return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::FallingState::can_avoid_hole() {
+bool Hero::FallingState::can_avoid_hole() const {
   return true;
 }
 
@@ -99,7 +100,7 @@ bool Hero::FallingState::can_avoid_hole() {
  * \brief Returns whether the hero ignores the effect of lava in this state.
  * \return true if the hero ignores the effect of lava in the current state
  */
-bool Hero::FallingState::can_avoid_lava() {
+bool Hero::FallingState::can_avoid_lava() const {
   return true;
 }
 
@@ -107,7 +108,7 @@ bool Hero::FallingState::can_avoid_lava() {
  * \brief Returns whether the hero ignores the effect of prickles in this state.
  * \return true if the hero ignores the effect of prickles in the current state
  */
-bool Hero::FallingState::can_avoid_prickle() {
+bool Hero::FallingState::can_avoid_prickle() const {
   return true;
 }
 
@@ -115,7 +116,7 @@ bool Hero::FallingState::can_avoid_prickle() {
  * \brief Returns whether the game over sequence can start in the current state.
  * \return true if the game over sequence can start in the current state
  */
-bool Hero::FallingState::can_start_gameover_sequence() {
+bool Hero::FallingState::can_start_gameover_sequence() const {
   return false;
 }
 

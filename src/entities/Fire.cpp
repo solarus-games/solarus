@@ -46,7 +46,7 @@ Fire::~Fire() {
  * \return the type of entity
  */
 EntityType Fire::get_type() const {
-  return FIRE;
+  return ENTITY_FIRE;
 }
 
 /**
@@ -57,7 +57,7 @@ EntityType Fire::get_type() const {
  *
  * \return true if this type of entity can be obstacle for other entities
  */
-bool Fire::can_be_obstacle() {
+bool Fire::can_be_obstacle() const {
   return false;
 }
 

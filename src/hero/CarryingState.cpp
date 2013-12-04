@@ -33,6 +33,8 @@ Hero::CarryingState::CarryingState(Hero& hero, CarriedItem* carried_item):
   PlayerMovementState(hero, "carrying"),
   carried_item(carried_item) {
 
+  Debug::check_assertion(carried_item != NULL, "Missing carried item");
+  carried_item->increment_refcount();
 }
 
 /**
@@ -40,14 +42,14 @@ Hero::CarryingState::CarryingState(Hero& hero, CarriedItem* carried_item):
  */
 Hero::CarryingState::~CarryingState() {
 
-  delete carried_item;
+  destroy_carried_item();
 }
 
 /**
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::CarryingState::start(State *previous_state) {
+void Hero::CarryingState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
@@ -63,7 +65,7 @@ void Hero::CarryingState::start(State *previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::CarryingState::stop(State *next_state) {
+void Hero::CarryingState::stop(const State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
@@ -72,18 +74,21 @@ void Hero::CarryingState::stop(State *next_state) {
 
   if (carried_item != NULL) {
 
-    switch (next_state->get_previous_carried_item_behavior(*carried_item)) {
+    switch (next_state->get_previous_carried_item_behavior()) {
 
     case CarriedItem::BEHAVIOR_THROW:
       throw_item();
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
-      delete carried_item;
-      carried_item = NULL;
+      destroy_carried_item();
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:
+      // The next state is now the owner and has incremented the refcount.
+      carried_item->decrement_refcount();
+      Debug::check_assertion(carried_item->get_refcount() > 0,
+          "Invalid carried item refcount");
       carried_item = NULL;
       break;
 
@@ -97,12 +102,14 @@ void Hero::CarryingState::stop(State *next_state) {
  * \brief Changes the map.
  * \param map the new map
  */
-void Hero::CarryingState::set_map(Map &map) {
+void Hero::CarryingState::set_map(Map& map) {
 
   PlayerMovementState::set_map(map);
 
   // the hero may go to another map while carrying an item
-  carried_item->set_map(map);
+  if (carried_item != NULL) {
+    carried_item->set_map(map);
+  }
 }
 
 /**
@@ -111,7 +118,10 @@ void Hero::CarryingState::set_map(Map &map) {
 void Hero::CarryingState::notify_layer_changed() {
 
   PlayerMovementState::notify_layer_changed();
-  carried_item->set_layer(hero.get_layer());
+
+  if (carried_item != NULL) {
+    carried_item->set_layer(get_hero().get_layer());
+  }
 }
 
 /**
@@ -121,7 +131,10 @@ void Hero::CarryingState::notify_layer_changed() {
 void Hero::CarryingState::set_suspended(bool suspended) {
 
   PlayerMovementState::set_suspended(suspended);
-  carried_item->set_suspended(suspended);
+
+  if (carried_item != NULL) {
+    carried_item->set_suspended(suspended);
+  }
 }
 
 /**
@@ -135,11 +148,11 @@ void Hero::CarryingState::update() {
   if (is_current_state()) { 
     carried_item->update();
 
-    if (!suspended) {
+    if (!is_suspended()) {
 
       if (carried_item->is_broken()) {
-        delete carried_item;
-        carried_item = NULL;
+        destroy_carried_item();
+        Hero& hero = get_hero();
         hero.set_state(new FreeState(hero));
       }
     }
@@ -153,6 +166,7 @@ void Hero::CarryingState::notify_action_command_pressed() {
 
   if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
     throw_item();
+    Hero& hero = get_hero();
     hero.set_state(new FreeState(hero));
   }
 }
@@ -174,7 +188,7 @@ void Hero::CarryingState::throw_item() {
  * \brief Returns whether the hero can swing his sword in this state.
  * \return true if the hero can swing his sword in this state
  */
-bool Hero::CarryingState::can_start_sword() {
+bool Hero::CarryingState::can_start_sword() const {
   return true;
 }
 
@@ -183,7 +197,7 @@ bool Hero::CarryingState::can_start_sword() {
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  * \return true if the hero ignores the effect of stairs in this state
  */
-bool Hero::CarryingState::can_take_stairs() {
+bool Hero::CarryingState::can_take_stairs() const {
   return true;
 }
 
@@ -205,8 +219,22 @@ void Hero::CarryingState::set_animation_walking() {
  * \brief Returns the item currently carried by the hero in this state, if any.
  * \return the item carried by the hero, or NULL
  */
-CarriedItem* Hero::CarryingState::get_carried_item() {
+CarriedItem* Hero::CarryingState::get_carried_item() const {
   return carried_item;
+}
+
+/**
+ * \brief Destroys the item carried if any and sets it to NULL.
+ */
+void Hero::CarryingState::destroy_carried_item() {
+
+  if (carried_item != NULL) {
+    carried_item->decrement_refcount();
+    if (carried_item->get_refcount() == 0) {
+      delete carried_item;
+    }
+    carried_item = NULL;
+  }
 }
 
 /**
@@ -214,7 +242,7 @@ CarriedItem* Hero::CarryingState::get_carried_item() {
  * \param carried_item the item carried in the previous state
  * \return the action to do with a previous carried item when this state starts
  */
-CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior() const {
 
   return CarriedItem::BEHAVIOR_KEEP;
 }

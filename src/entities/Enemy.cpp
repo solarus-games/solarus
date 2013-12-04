@@ -90,6 +90,8 @@ Enemy::Enemy(
   nb_explosions(0),
   next_explosion_date(0) {
 
+  set_size(16, 16);
+  set_origin(8, 13);
 }
 
 /**
@@ -167,7 +169,7 @@ MapEntity* Enemy::create(
  * \return the type of entity
  */
 EntityType Enemy::get_type() const {
-  return ENEMY;
+  return ENTITY_ENEMY;
 }
 
 /**
@@ -175,7 +177,7 @@ EntityType Enemy::get_type() const {
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
-bool Enemy::is_drawn_in_y_order() {
+bool Enemy::is_drawn_in_y_order() const {
   return drawn_in_y_order;
 }
 
@@ -230,7 +232,7 @@ void Enemy::notify_map_started() {
 
   // give the sprite their initial direction
   int initial_direction = get_direction();
-  std::list<Sprite*>::const_iterator it;
+  std::vector<Sprite*>::const_iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     (*it)->set_current_direction(initial_direction);
   }
@@ -252,7 +254,7 @@ void Enemy::notify_map_opening_transition_finished() {
  * \brief Returns the breed of this enemy.
  * \return The breed.
  */
-const std::string& Enemy::get_breed() {
+const std::string& Enemy::get_breed() const {
   return breed;
 }
 
@@ -260,7 +262,7 @@ const std::string& Enemy::get_breed() {
  * \brief Returns the rank of the enemy.
  * \return the enemy rank
  */
-Enemy::Rank Enemy::get_rank() {
+Enemy::Rank Enemy::get_rank() const {
   return rank;
 }
 
@@ -268,7 +270,7 @@ Enemy::Rank Enemy::get_rank() {
  * \brief Returns whether the state of this enemy is saved.
  * \return true if this enemy is saved.
  */
-bool Enemy::is_saved() {
+bool Enemy::is_saved() const {
   return !savegame_variable.empty();
 }
 
@@ -277,7 +279,7 @@ bool Enemy::is_saved() {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Enemy::is_obstacle_for(MapEntity& other) {
+bool Enemy::is_obstacle_for(const MapEntity& other) const {
 
   if (!is_enabled()) {
     return false;
@@ -291,7 +293,7 @@ bool Enemy::is_obstacle_for(MapEntity& other) {
  * by this entity.
  * \return \c true if low walls are currently obstacle for this entity.
  */
-bool Enemy::is_low_wall_obstacle() {
+bool Enemy::is_low_wall_obstacle() const {
 
   // Flying enemies can traverse low walls.
   return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
@@ -302,7 +304,7 @@ bool Enemy::is_low_wall_obstacle() {
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle this entity
  */
-bool Enemy::is_destructible_obstacle(Destructible& destructible) {
+bool Enemy::is_destructible_obstacle(const Destructible& destructible) const {
 
   // the destructible item is an obstacle unless the enemy is already overlapping it,
   // which is possible with bomb flowers
@@ -317,7 +319,8 @@ bool Enemy::is_destructible_obstacle(Destructible& destructible) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Enemy::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Enemy::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
   return false;
 }
 
@@ -325,7 +328,7 @@ bool Enemy::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * \brief Returns whether a deep water tile is currently considered as an obstacle by this entity.
  * \return true if the deep water tiles are currently an obstacle for this entity
  */
-bool Enemy::is_deep_water_obstacle() {
+bool Enemy::is_deep_water_obstacle() const {
 
   if (obstacle_behavior == OBSTACLE_BEHAVIOR_FLYING
       || obstacle_behavior == OBSTACLE_BEHAVIOR_SWIMMING) {
@@ -339,10 +342,10 @@ bool Enemy::is_deep_water_obstacle() {
   const Layer layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_entities().get_ground(layer, x, y) == GROUND_DEEP_WATER
-      || get_entities().get_ground(layer, x + get_width() - 1, y) == GROUND_DEEP_WATER
-      || get_entities().get_ground(layer, x, y + get_height() - 1) == GROUND_DEEP_WATER
-      || get_entities().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_DEEP_WATER) {
+  if (get_map().get_ground(layer, x, y) == GROUND_DEEP_WATER
+      || get_map().get_ground(layer, x + get_width() - 1, y) == GROUND_DEEP_WATER
+      || get_map().get_ground(layer, x, y + get_height() - 1) == GROUND_DEEP_WATER
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_DEEP_WATER) {
     return false;
   }
 
@@ -353,7 +356,7 @@ bool Enemy::is_deep_water_obstacle() {
  * \brief Returns whether a shallow water tile is currently considered as an obstacle by this entity.
  * \return true if the shallow water tiles are currently an obstacle for this entity
  */
-bool Enemy::is_shallow_water_obstacle() {
+bool Enemy::is_shallow_water_obstacle() const {
   return false;
 }
 
@@ -361,7 +364,7 @@ bool Enemy::is_shallow_water_obstacle() {
  * \brief Returns whether a hole is currently considered as an obstacle by this entity.
  * \return true if the holes are currently an obstacle for this entity
  */
-bool Enemy::is_hole_obstacle() {
+bool Enemy::is_hole_obstacle() const {
 
   if (obstacle_behavior == OBSTACLE_BEHAVIOR_FLYING) {
     return false;
@@ -374,10 +377,10 @@ bool Enemy::is_hole_obstacle() {
   const Layer layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_entities().get_ground(layer, x, y) == GROUND_HOLE
-      || get_entities().get_ground(layer, x + get_width() - 1, y) == GROUND_HOLE
-      || get_entities().get_ground(layer, x, y + get_height() - 1) == GROUND_HOLE
-      || get_entities().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_HOLE) {
+  if (get_map().get_ground(layer, x, y) == GROUND_HOLE
+      || get_map().get_ground(layer, x + get_width() - 1, y) == GROUND_HOLE
+      || get_map().get_ground(layer, x, y + get_height() - 1) == GROUND_HOLE
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_HOLE) {
     return false;
   }
 
@@ -388,7 +391,7 @@ bool Enemy::is_hole_obstacle() {
  * \brief Returns whether prickles are currently considered as obstacle by this entity.
  * \return true if prickles are currently obstacle for this entity
  */
-bool Enemy::is_prickle_obstacle() {
+bool Enemy::is_prickle_obstacle() const {
   return false;
 }
 
@@ -396,7 +399,7 @@ bool Enemy::is_prickle_obstacle() {
  * \brief Returns whether lava is currently considered as obstacle by this entity.
  * \return true if lava is currently obstacle for this entity
  */
-bool Enemy::is_lava_obstacle() {
+bool Enemy::is_lava_obstacle() const {
 
   if (obstacle_behavior == OBSTACLE_BEHAVIOR_FLYING) {
     return false;
@@ -409,10 +412,10 @@ bool Enemy::is_lava_obstacle() {
   const Layer layer = get_layer();
   const int x = get_top_left_x();
   const int y = get_top_left_y();
-  if (get_entities().get_ground(layer, x, y) == GROUND_LAVA
-      || get_entities().get_ground(layer, x + get_width() - 1, y) == GROUND_LAVA
-      || get_entities().get_ground(layer, x, y + get_height() - 1) == GROUND_LAVA
-      || get_entities().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_LAVA) {
+  if (get_map().get_ground(layer, x, y) == GROUND_LAVA
+      || get_map().get_ground(layer, x + get_width() - 1, y) == GROUND_LAVA
+      || get_map().get_ground(layer, x, y + get_height() - 1) == GROUND_LAVA
+      || get_map().get_ground(layer, x + get_width() - 1, y + get_height() - 1) == GROUND_LAVA) {
     return false;
   }
 
@@ -423,7 +426,7 @@ bool Enemy::is_lava_obstacle() {
  * \brief Returns the amount of damage this kind of enemy can make to the hero.
  * \return Number of life points the player loses.
  */
-int Enemy::get_damage() {
+int Enemy::get_damage() const {
   return damage_on_hero;
 }
 
@@ -439,7 +442,7 @@ void Enemy::set_damage(int damage_on_hero) {
  * \brief Returns the amount of magic damage this kind of enemy can make to the hero.
  * \return Number of magic points the player loses.
  */
-int Enemy::get_magic_damage() {
+int Enemy::get_magic_damage() const {
   return magic_damage_on_hero;
 }
 
@@ -455,7 +458,7 @@ void Enemy::set_magic_damage(int magic_damage_on_hero) {
  * \brief Returns the number of health points of the enemy.
  * \return number of health points of the enemy
  */
-int Enemy::get_life() {
+int Enemy::get_life() const {
   return life;
 }
 
@@ -475,7 +478,7 @@ void Enemy::set_life(int life) {
  * \brief Returns the style of sounds and animations when this enemy is hurt.
  * \return The style when hurt.
  */
-Enemy::HurtStyle Enemy::get_hurt_style() {
+Enemy::HurtStyle Enemy::get_hurt_style() const {
   return hurt_style;
 }
 
@@ -491,7 +494,7 @@ void Enemy::set_hurt_style(HurtStyle hurt_style) {
  * \brief Returns whether this enemy can currently attack the hero.
  * \return true if this enemy can currently attack the hero
  */
-bool Enemy::get_can_attack() {
+bool Enemy::get_can_attack() const {
   return can_attack;
 }
 
@@ -511,7 +514,7 @@ void Enemy::set_can_attack(bool can_attack) {
  * \brief Returns the current behavior with obstacles for this enemy.
  * \return the behavior with obstacles
  */
-Enemy::ObstacleBehavior Enemy::get_obstacle_behavior() {
+Enemy::ObstacleBehavior Enemy::get_obstacle_behavior() const {
   return obstacle_behavior;
 }
 
@@ -555,7 +558,7 @@ void Enemy::set_traversable(bool traversable) {
  * \brief Returns whether the enemy is pushed back when it gets hurt by the hero.
  * \return \c true if the enemy is pushed back when it gets hurt.
  */
-bool Enemy::get_pushed_back_when_hurt() {
+bool Enemy::get_pushed_back_when_hurt() const {
   return pushed_back_when_hurt;
 }
 
@@ -571,7 +574,7 @@ void Enemy::set_pushed_back_when_hurt(bool pushed_back_when_hurt) {
  * \brief Returns whether the hero is pushed when he strikes the enemy with his sword.
  * \return true if the hero is pushed away when he strkes the enemy with his sword
  */
-bool Enemy::get_push_hero_on_sword() {
+bool Enemy::get_push_hero_on_sword() const {
   return push_hero_on_sword;
 }
 
@@ -587,7 +590,7 @@ void Enemy::set_push_hero_on_sword(bool push_hero_on_sword) {
  * \brief Returns whether this enemy can hurt the hero even if the hero is running.
  * \return true if this enemy can attack the hero while he is running
  */
-bool Enemy::get_can_hurt_hero_running() {
+bool Enemy::get_can_hurt_hero_running() const {
   return can_hurt_hero_running;
 }
 
@@ -603,7 +606,7 @@ void Enemy::set_can_hurt_hero_running(bool can_hurt_hero_running) {
  * \brief Returns the shield level required to avoid attacks of this enemy.
  * \return The minimum shield needed (\c 0 means unavoidable attacks).
  */
-int Enemy::get_minimum_shield_needed() {
+int Enemy::get_minimum_shield_needed() const {
   return minimum_shield_needed;
 }
 
@@ -622,7 +625,9 @@ void Enemy::set_minimum_shield_needed(int minimum_shield_needed) {
  * a pixel-precise collision test
  * \return the corresponding reaction
  */
-const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
+const EnemyReaction::Reaction& Enemy::get_attack_consequence(
+    EnemyAttack attack,
+    const Sprite* this_sprite) const {
 
   return attack_reactions[attack].get_reaction(this_sprite);
 }
@@ -637,8 +642,10 @@ const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack,
  * \param reaction how the enemy will react
  * \param life_lost number of life points lost with this attack (possibly zero)
  */
-void Enemy::set_attack_consequence(EnemyAttack attack,
-    EnemyReaction::ReactionType reaction, int life_lost) {
+void Enemy::set_attack_consequence(
+    EnemyAttack attack,
+    EnemyReaction::ReactionType reaction,
+    int life_lost) {
 
   Debug::check_assertion(life_lost >= 0, StringConcat() << "Invalid amount of life: " << life_lost);
   attack_reactions[attack].set_general_reaction(reaction, life_lost);
@@ -651,8 +658,11 @@ void Enemy::set_attack_consequence(EnemyAttack attack,
  * \param reaction how the enemy will react
  * \param life_lost number of life points lost with this attack (possibly zero)
  */
-void Enemy::set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
-    EnemyReaction::ReactionType reaction, int life_lost) {
+void Enemy::set_attack_consequence_sprite(
+    const Sprite& sprite,
+    EnemyAttack attack,
+    EnemyReaction::ReactionType reaction,
+    int life_lost) {
 
   Debug::check_assertion(life_lost >= 0, StringConcat() << "Invalid amount of life: " << life_lost);
   attack_reactions[attack].set_sprite_reaction(&sprite, reaction, life_lost);
@@ -672,7 +682,7 @@ void Enemy::set_no_attack_consequences() {
  * \brief Sets a particular sprite of the enemy insensible to all attacks.
  * \param sprite a sprite of this enemy
  */
-void Enemy::set_no_attack_consequences_sprite(Sprite& sprite) {
+void Enemy::set_no_attack_consequences_sprite(const Sprite& sprite) {
 
   for (int i = 0; i < ATTACK_NUMBER; i++) {
     set_attack_consequence_sprite(sprite, EnemyAttack(i), EnemyReaction::IGNORED);
@@ -701,7 +711,7 @@ void Enemy::set_default_attack_consequences() {
  * on a particular sprite of this enemy.
  * \param sprite a sprite of this enemy
  */
-void Enemy::set_default_attack_consequences_sprite(Sprite& sprite) {
+void Enemy::set_default_attack_consequences_sprite(const Sprite& sprite) {
 
   for (int i = 0; i < ATTACK_NUMBER; i++) {
     set_attack_consequence_sprite(sprite, EnemyAttack(i), EnemyReaction::HURT, 1);
@@ -718,7 +728,7 @@ void Enemy::set_default_attack_consequences_sprite(Sprite& sprite) {
  *
  * \return name of the current animation of the first sprite
  */
-const std::string& Enemy::get_animation() {
+const std::string& Enemy::get_animation() const {
 
   return get_sprite().get_current_animation();
 }
@@ -732,7 +742,7 @@ const std::string& Enemy::get_animation() {
  */
 void Enemy::set_animation(const std::string& animation) {
 
-  std::list<Sprite*>::const_iterator it;
+  std::vector<Sprite*>::const_iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     (*it)->set_current_animation(animation);
   }
@@ -745,7 +755,7 @@ void Enemy::update() {
 
   MapEntity::update();
 
-  if (suspended || !is_enabled()) {
+  if (is_suspended() || !is_enabled()) {
     return;
   }
 
@@ -756,6 +766,7 @@ void Enemy::update() {
     // see if we should stop the animation "hurt"
     if (now >= stop_hurt_date) {
       being_hurt = false;
+      set_movement_events_enabled(true);
 
       if (life <= 0) {
         kill();
@@ -842,7 +853,7 @@ void Enemy::set_suspended(bool suspended) {
   Detector::set_suspended(suspended);
 
   if (!suspended) {
-    uint32_t diff = System::now() - when_suspended;
+    uint32_t diff = System::now() - get_when_suspended();
     stop_hurt_date += diff;
     vulnerable_again_date += diff;
     if (can_attack_again_date != 0) {
@@ -890,43 +901,6 @@ void Enemy::notify_enabled(bool enabled) {
 }
 
 /**
- * \brief Notifies this entity that it has just failed to change its position
- * because of obstacles.
- */
-void Enemy::notify_obstacle_reached() {
-
-  Detector::notify_obstacle_reached();
-
-  if (!is_being_hurt()) {
-    get_lua_context().enemy_on_obstacle_reached(*this, *get_movement());
-  }
-}
-
-/**
- * \brief This function is called when the entity has just moved.
- */
-void Enemy::notify_position_changed() {
-
-  Detector::notify_position_changed();
-
-  if (!is_being_hurt()) {
-    get_lua_context().enemy_on_position_changed(*this, get_xy(), get_layer());
-  }
-}
-
-/**
- * \brief This function is called when the layer of this entity has just changed.
- */
-void Enemy::notify_layer_changed() {
-
-  Detector::notify_layer_changed();
-
-  if (!is_being_hurt()) {
-    get_lua_context().enemy_on_position_changed(*this, get_xy(), get_layer());
-  }
-}
-
-/**
  * \copydoc MapEntity::notify_ground_below_changed
  */
 void Enemy::notify_ground_below_changed() {
@@ -948,32 +922,6 @@ void Enemy::notify_ground_below_changed() {
 
     default:
       break;
-  }
-}
-
-/**
- * \brief This function can be called by the movement object
- * to notify the entity when the movement has just changed
- * (e.g. the speed, the angle or the trajectory).
- */
-void Enemy::notify_movement_changed() {
-
-  Detector::notify_movement_changed();
-
-  if (!is_being_hurt()) {
-    get_lua_context().enemy_on_movement_changed(*this, *get_movement());
-  }
-}
-
-/**
- * \brief This function is called when the movement of the entity is finished.
- */
-void Enemy::notify_movement_finished() {
-
-  Detector::notify_movement_finished();
-
-  if (!is_being_hurt()) {
-    get_lua_context().enemy_on_movement_finished(*this);
   }
 }
 
@@ -1152,7 +1100,7 @@ void Enemy::restart() {
  *
  * \return true if this enemy is in a normal state
  */
-bool Enemy::is_in_normal_state() {
+bool Enemy::is_in_normal_state() const {
   return is_enabled()
     && !is_being_hurt()
     && get_life() > 0
@@ -1164,7 +1112,7 @@ bool Enemy::is_in_normal_state() {
  * \brief Returns whether this enemy is currently invulnerable.
  * \return \c true if this enemy cannot be hurt for now.
  */
-bool Enemy::is_invulnerable() {
+bool Enemy::is_invulnerable() const {
   return invulnerable;
 }
 
@@ -1255,12 +1203,13 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
  *
  * \param source the entity attacking the enemy (often the hero)
  */
-void Enemy::hurt(MapEntity &source) {
+void Enemy::hurt(MapEntity& source) {
 
   uint32_t now = System::now();
 
   // update the enemy state
   being_hurt = true;
+  set_movement_events_enabled(false);
 
   can_attack = false;
   can_attack_again_date = now + 300;
@@ -1291,12 +1240,12 @@ void Enemy::hurt(MapEntity &source) {
  * \param attack the attack that was just successful
  * \param life_points the number of life points lost by this enemy
  */
-void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
+void Enemy::notify_hurt(MapEntity& source, EnemyAttack attack, int life_points) {
 
+  get_lua_context().enemy_on_hurt(*this, attack, life_points);
   if (get_life() <= 0) {
     get_lua_context().enemy_on_dying(*this);
   }
-  get_lua_context().enemy_on_hurt(*this, attack, life_points);
 }
 
 /**
@@ -1379,7 +1328,7 @@ void Enemy::kill() {
  * \brief Returns whether the enemy is being hurt.
  * \return true if the enemy is being hurt
  */
-bool Enemy::is_being_hurt() {
+bool Enemy::is_being_hurt() const {
   return being_hurt;
 }
 
@@ -1391,7 +1340,7 @@ bool Enemy::is_being_hurt() {
  *
  * \return true if the enemy is killed
  */
-bool Enemy::is_killed() {
+bool Enemy::is_killed() const {
   return life <= 0 && dying_animation_started;
 }
 
@@ -1399,24 +1348,32 @@ bool Enemy::is_killed() {
  * \brief When the enemy is killed, returns whether the dying animation is finished.
  * \return true if the dying animation is finished
  */
-bool Enemy::is_dying_animation_finished() {
+bool Enemy::is_dying_animation_finished() const {
 
-  if (nb_explosions > 0 && !exploding) {
-    return true;
+  if (!is_dying()) {
+    // The enemy is still alive.
+    return false;
+  }
+
+  if (nb_explosions > 0) {
+    // The dying animation is some explosions.
+    return !exploding;
   }
 
   if (has_sprite()) {
+    // The dying animation is the usual "enemy_killed" sprite.
     return get_sprite().is_animation_finished();
   }
 
-  return false;
+  // There is no dying animation (case of holes, water and lava for now).
+  return true;
 }
 
 /**
  * \brief Returns whether the enemy is dying, i.e. his life has reached zero and the dying animation is playing.
  * \return true if the enemy is dying
  */
-bool Enemy::is_dying() {
+bool Enemy::is_dying() const {
 
   return get_life() <= 0;
 }
@@ -1433,9 +1390,9 @@ void Enemy::set_treasure(const Treasure& treasure) {
  * \brief Returns true if the current sprite animation is finished or is looping.
  * \return true if the current sprite animation is finished or is looping
  */
-bool Enemy::is_sprite_finished_or_looping() {
+bool Enemy::is_sprite_finished_or_looping() const {
 
-  Sprite& sprite = get_sprite();
+  const Sprite& sprite = get_sprite();
   return sprite.is_animation_finished() || sprite.is_animation_looping();
 }
 
@@ -1461,7 +1418,7 @@ void Enemy::stop_immobilized() {
  * \brief Returns whether this enemy is immobilized.
  * \return true if this enemy is immobilized
  */
-bool Enemy::is_immobilized() {
+bool Enemy::is_immobilized() const {
 
   return immobilized;
 }

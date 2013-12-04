@@ -1,5 +1,5 @@
 /**
-\page quest Solarus 1.1 - Quest data files specification
+\page quest Solarus 1.2 - Quest data files specification
 
 We explain here how a quest is built.
 
@@ -14,7 +14,8 @@ If the quest path is not specified, the current directory is considered by
 default, unless you compiled Solarus with another default quest path.
 
 The quest in this path may have one of the following two forms:
-- A zip archive called \c data.solarus and containing all data of your quest.
+- A zip archive called \c data.solarus or \c data.solarus.zip
+  and containing all data of your quest.
   This archive form is useful when your quest is finished and you distribute it
   to people.
 - A directory called \c data and containing all data of your quest.
@@ -27,8 +28,9 @@ The data files represent all resources used by both the engine and the quest,
 such as sounds, musics, images, sprites, dialogs, maps and Lua scripts.
 We specify here the details for all those files.
 
-Here is the full structure of the \c data directory / \c data.solarus
-archive of a quest and the syntax of each file.
+Here is the full structure of the \c data directory / \c data.solarus archive
+/ \c data.solarus.zip archive
+of a quest and the syntax of each file.
 
 - \subpage quest_properties_file "quest.dat": global properties of your quest.
 - \subpage quest_resource_file "project_db.dat": list of all resources

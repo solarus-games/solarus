@@ -51,42 +51,42 @@ class CarriedItem: public MapEntity {
     ~CarriedItem();
 
     EntityType get_type() const;
-    bool can_be_obstacle();
-    bool is_drawn_in_y_order();
+    bool can_be_obstacle() const;
+    bool is_drawn_in_y_order() const;
     bool is_ground_observer() const;
 
-    int get_damage_on_enemies();
+    int get_damage_on_enemies() const;
 
     void set_animation_stopped();
     void set_animation_walking();
     void throw_item(int direction);
-    bool is_being_lifted();
-    bool is_being_thrown();
+    bool is_being_lifted() const;
+    bool is_being_thrown() const;
     void break_item();
     void break_item_on_ground();
-    bool is_broken();
-    bool can_explode();
+    bool is_broken() const;
+    bool can_explode() const;
 
     void set_suspended(bool suspended);
     void update();
     void draw_on_map();
 
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_low_wall_obstacle();
-    bool is_deep_water_obstacle();
-    bool is_hole_obstacle();
-    bool is_lava_obstacle();
-    bool is_prickle_obstacle();
-    bool is_ladder_obstacle();
-    bool is_switch_obstacle(Switch& sw);
-    bool is_raised_block_obstacle(CrystalBlock& raised_block);
-    bool is_crystal_obstacle(Crystal& crystal);
-    bool is_sensor_obstacle(Sensor& sensor);
-    bool is_npc_obstacle(NPC& npc);
-    bool is_jumper_obstacle(Jumper& jumper);
-    bool is_enemy_obstacle(Enemy& enemy);
+    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
+    bool is_stairs_obstacle(const Stairs& stairs) const;
+    bool is_low_wall_obstacle() const;
+    bool is_deep_water_obstacle() const;
+    bool is_hole_obstacle() const;
+    bool is_lava_obstacle() const;
+    bool is_prickle_obstacle() const;
+    bool is_ladder_obstacle() const;
+    bool is_switch_obstacle(const Switch& sw) const;
+    bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
+    bool is_crystal_obstacle(const Crystal& crystal) const;
+    bool is_sensor_obstacle(const Sensor& sensor) const;
+    bool is_npc_obstacle(const NPC& npc) const;
+    bool is_jumper_obstacle(const Jumper& jumper) const;
+    bool is_enemy_obstacle(const Enemy& enemy) const;
     void notify_obstacle_reached();
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
@@ -130,7 +130,7 @@ class CarriedItem: public MapEntity {
         int damage_on_enemies,
         uint32_t explosion_date);
 
-    bool will_explode_soon();
+    bool will_explode_soon() const;
 
 };
 

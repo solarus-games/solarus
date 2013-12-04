@@ -62,10 +62,11 @@ Hero::BackToSolidGroundState::~BackToSolidGroundState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::BackToSolidGroundState::start(State* previous_state) {
+void Hero::BackToSolidGroundState::start(const State* previous_state) {
 
   State::start(previous_state);
 
+  Hero& hero = get_hero();
   hero.set_movement(new TargetMovement(NULL, target_xy.get_x(), target_xy.get_y(), 144, true));
   get_entities().set_entity_layer(hero, target_layer);
   get_entities().remove_boomerang();
@@ -75,11 +76,11 @@ void Hero::BackToSolidGroundState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::BackToSolidGroundState::stop(State* next_state) {
+void Hero::BackToSolidGroundState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  hero.clear_movement();
+  get_hero().clear_movement();
 }
 
 /**
@@ -90,6 +91,7 @@ void Hero::BackToSolidGroundState::update() {
   State::update();
 
   // the current movement is an instance of TargetMovement
+  Hero& hero = get_hero();
   if (hero.get_movement()->is_finished()) {
 
     uint32_t now = System::now();
@@ -114,7 +116,7 @@ void Hero::BackToSolidGroundState::set_suspended(bool suspended) {
   State::set_suspended(suspended);
 
   if (!suspended && end_date != 0) {
-    end_date += System::now() - when_suspended;
+    end_date += System::now() - get_when_suspended();
   }
 }
 
@@ -122,7 +124,7 @@ void Hero::BackToSolidGroundState::set_suspended(bool suspended) {
  * \brief Returns whether the game over sequence can start in the current state.
  * \return true if the game over sequence can start in the current state
  */
-bool Hero::BackToSolidGroundState::can_start_gameover_sequence() {
+bool Hero::BackToSolidGroundState::can_start_gameover_sequence() const {
   return false;
 }
 
@@ -130,7 +132,7 @@ bool Hero::BackToSolidGroundState::can_start_gameover_sequence() {
  * \brief Returns whether the hero is visible in the current state.
  * \return true if the hero is displayed in the current state
  */
-bool Hero::BackToSolidGroundState::is_hero_visible() {
+bool Hero::BackToSolidGroundState::is_hero_visible() const {
   return end_date != 0;
 }
 
@@ -138,7 +140,7 @@ bool Hero::BackToSolidGroundState::is_hero_visible() {
  * \brief Returns whether the hero ignores the effect of deep water in this state.
  * \return true if the hero ignores the effect of deep water in the current state
  */
-bool Hero::BackToSolidGroundState::can_avoid_deep_water() {
+bool Hero::BackToSolidGroundState::can_avoid_deep_water() const {
   return true;
 }
 
@@ -146,7 +148,7 @@ bool Hero::BackToSolidGroundState::can_avoid_deep_water() {
  * \brief Returns whether the hero ignores the effect of holes in this state.
  * \return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::BackToSolidGroundState::can_avoid_hole() {
+bool Hero::BackToSolidGroundState::can_avoid_hole() const {
   return true;
 }
 
@@ -154,7 +156,7 @@ bool Hero::BackToSolidGroundState::can_avoid_hole() {
  * \brief Returns whether the hero ignores the effect of ice in this state.
  * \return \c true if the hero ignores the effect of ice in the current state.
  */
-bool Hero::BackToSolidGroundState::can_avoid_ice() {
+bool Hero::BackToSolidGroundState::can_avoid_ice() const {
   return true;
 }
 
@@ -162,7 +164,7 @@ bool Hero::BackToSolidGroundState::can_avoid_ice() {
  * \brief Returns whether the hero ignores the effect of lava in this state.
  * \return true if the hero ignores the effect of lava in the current state
  */
-bool Hero::BackToSolidGroundState::can_avoid_lava() {
+bool Hero::BackToSolidGroundState::can_avoid_lava() const {
   return true;
 }
 
@@ -170,7 +172,7 @@ bool Hero::BackToSolidGroundState::can_avoid_lava() {
  * \brief Returns whether the hero ignores the effect of prickles in this state.
  * \return true if the hero ignores the effect of prickles in the current state
  */
-bool Hero::BackToSolidGroundState::can_avoid_prickle() {
+bool Hero::BackToSolidGroundState::can_avoid_prickle() const {
   return true;
 }
 
@@ -178,7 +180,7 @@ bool Hero::BackToSolidGroundState::can_avoid_prickle() {
  * \brief Returns whether the hero is touching the ground in the current state.
  * \return true if the hero is touching the ground in the current state
  */
-bool Hero::BackToSolidGroundState::is_touching_ground() {
+bool Hero::BackToSolidGroundState::is_touching_ground() const {
   return false;
 }
 
@@ -186,7 +188,15 @@ bool Hero::BackToSolidGroundState::is_touching_ground() {
  * \brief Returns whether this state ignores the collisions with the detectors and the ground.
  * \return true if the collisions are ignored
  */
-bool Hero::BackToSolidGroundState::are_collisions_ignored() {
+bool Hero::BackToSolidGroundState::are_collisions_ignored() const {
+  return true;
+}
+
+/**
+ * \brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * \return true if the hero ignores the effect of conveyor belts in this state
+ */
+bool Hero::BackToSolidGroundState::can_avoid_teletransporter() const {
   return true;
 }
 
@@ -194,7 +204,7 @@ bool Hero::BackToSolidGroundState::are_collisions_ignored() {
  * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * \return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::BackToSolidGroundState::can_avoid_conveyor_belt() {
+bool Hero::BackToSolidGroundState::can_avoid_conveyor_belt() const {
   return true;
 }
 
@@ -202,7 +212,7 @@ bool Hero::BackToSolidGroundState::can_avoid_conveyor_belt() {
  * \brief Returns whether the hero ignores the effect of sensors in this state.
  * \return true if the hero ignores the effect of sensors in this state
  */
-bool Hero::BackToSolidGroundState::can_avoid_sensor() {
+bool Hero::BackToSolidGroundState::can_avoid_sensor() const {
   return true;
 }
 
@@ -210,7 +220,7 @@ bool Hero::BackToSolidGroundState::can_avoid_sensor() {
  * \brief Returns whether the hero ignores the effect of switches in this state.
  * \return true if the hero ignores the effect of switches in this state
  */
-bool Hero::BackToSolidGroundState::can_avoid_switch() {
+bool Hero::BackToSolidGroundState::can_avoid_switch() const {
   return true;
 }
 
@@ -218,7 +228,7 @@ bool Hero::BackToSolidGroundState::can_avoid_switch() {
  * \brief Returns whether the hero ignores the effect of explosions in this state.
  * \return true if the hero ignores the effect of explosions in this state
  */
-bool Hero::BackToSolidGroundState::can_avoid_explosion() {
+bool Hero::BackToSolidGroundState::can_avoid_explosion() const {
   return true;
 }
 

@@ -50,7 +50,7 @@ Hero::ForcedWalkingState::~ForcedWalkingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::ForcedWalkingState::start(State* previous_state) {
+void Hero::ForcedWalkingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -59,18 +59,18 @@ void Hero::ForcedWalkingState::start(State* previous_state) {
   sprites.set_animation_walking_normal();
 
   // walk
-  hero.set_movement(movement);
+  get_hero().set_movement(movement);
 }
 
 /**
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::ForcedWalkingState::stop(State* next_state) {
+void Hero::ForcedWalkingState::stop(const State* next_state) {
 
   State::stop(next_state);
 
-  hero.clear_movement();
+  get_hero().clear_movement();
 }
 
 /**
@@ -80,11 +80,10 @@ void Hero::ForcedWalkingState::update() {
 
   State::update();
 
-  HeroSprites &sprites = hero.get_sprites();
-  sprites.set_animation_direction(movement->get_displayed_direction4());
+  get_sprites().set_animation_direction(movement->get_displayed_direction4());
 
   if (movement->is_finished()) {
-    hero.start_state_from_ground();
+    get_hero().start_state_from_ground();
   }
 }
 
@@ -92,7 +91,7 @@ void Hero::ForcedWalkingState::update() {
  * \brief Returns whether the game over sequence can start in the current state.
  * \return true if the game over sequence can start in the current state
  */
-bool Hero::ForcedWalkingState::can_start_gameover_sequence() {
+bool Hero::ForcedWalkingState::can_start_gameover_sequence() const {
   return false;
 }
 
@@ -100,7 +99,7 @@ bool Hero::ForcedWalkingState::can_start_gameover_sequence() {
  * \brief Returns whether the hero is touching the ground in the current state.
  * \return true if the hero is touching the ground in the current state
  */
-bool Hero::ForcedWalkingState::is_touching_ground() {
+bool Hero::ForcedWalkingState::is_touching_ground() const {
   return false;
 }
 
@@ -108,7 +107,7 @@ bool Hero::ForcedWalkingState::is_touching_ground() {
  * \brief Returns whether the hero ignores the effect of deep water in this state.
  * \return true if the hero ignores the effect of deep water in the current state
  */
-bool Hero::ForcedWalkingState::can_avoid_deep_water() {
+bool Hero::ForcedWalkingState::can_avoid_deep_water() const {
   return true;
 }
 
@@ -116,7 +115,7 @@ bool Hero::ForcedWalkingState::can_avoid_deep_water() {
  * \brief Returns whether the hero ignores the effect of holes in this state.
  * \return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::ForcedWalkingState::can_avoid_hole() {
+bool Hero::ForcedWalkingState::can_avoid_hole() const {
   return true;
 }
 
@@ -124,7 +123,7 @@ bool Hero::ForcedWalkingState::can_avoid_hole() {
  * \brief Returns whether the hero ignores the effect of ice in this state.
  * \return \c true if the hero ignores the effect of ice in the current state.
  */
-bool Hero::ForcedWalkingState::can_avoid_ice() {
+bool Hero::ForcedWalkingState::can_avoid_ice() const {
   return true;
 }
 
@@ -132,7 +131,7 @@ bool Hero::ForcedWalkingState::can_avoid_ice() {
  * \brief Returns whether the hero ignores the effect of lava in this state.
  * \return true if the hero ignores the effect of lava in the current state
  */
-bool Hero::ForcedWalkingState::can_avoid_lava() {
+bool Hero::ForcedWalkingState::can_avoid_lava() const {
   return true;
 }
 
@@ -140,7 +139,7 @@ bool Hero::ForcedWalkingState::can_avoid_lava() {
  * \brief Returns whether the hero ignores the effect of prickles in this state.
  * \return true if the hero ignores the effect of prickles in the current state
  */
-bool Hero::ForcedWalkingState::can_avoid_prickle() {
+bool Hero::ForcedWalkingState::can_avoid_prickle() const {
   return true;
 }
 
@@ -148,7 +147,7 @@ bool Hero::ForcedWalkingState::can_avoid_prickle() {
  * \brief Returns whether the hero ignores the effect of teletransporters in this state.
  * \return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::ForcedWalkingState::can_avoid_teletransporter() {
+bool Hero::ForcedWalkingState::can_avoid_teletransporter() const {
   return true;
 }
 
@@ -156,7 +155,7 @@ bool Hero::ForcedWalkingState::can_avoid_teletransporter() {
  * \brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * \return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::ForcedWalkingState::can_avoid_conveyor_belt() {
+bool Hero::ForcedWalkingState::can_avoid_conveyor_belt() const {
   return true;
 }
 
@@ -164,7 +163,7 @@ bool Hero::ForcedWalkingState::can_avoid_conveyor_belt() {
  * \brief Returns whether the hero ignores the effect of sensors in this state.
  * \return true if the hero ignores the effect of sensors in this state
  */
-bool Hero::ForcedWalkingState::can_avoid_sensor() {
+bool Hero::ForcedWalkingState::can_avoid_sensor() const {
   return true;
 }
 
@@ -172,7 +171,7 @@ bool Hero::ForcedWalkingState::can_avoid_sensor() {
  * \brief Returns whether the hero ignores the effect of switches in this state.
  * \return true if the hero ignores the effect of switches in this state
  */
-bool Hero::ForcedWalkingState::can_avoid_switch() {
+bool Hero::ForcedWalkingState::can_avoid_switch() const {
   return true;
 }
 
@@ -182,7 +181,7 @@ bool Hero::ForcedWalkingState::can_avoid_switch() {
  * (or NULL if the source of the attack is not an enemy).
  * \return true if the hero can be hurt in this state
  */
-bool Hero::ForcedWalkingState::can_be_hurt(Enemy* attacker) {
+bool Hero::ForcedWalkingState::can_be_hurt(Enemy* attacker) const {
   return false;
 }
 

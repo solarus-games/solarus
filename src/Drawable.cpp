@@ -87,7 +87,7 @@ Movement* Drawable::get_movement() {
  * movement.
  * \return The coordinates of this drawable object.
  */
-const Rectangle& Drawable::get_xy() {
+const Rectangle& Drawable::get_xy() const {
   return xy;
 }
 
@@ -110,8 +110,10 @@ void Drawable::set_xy(const Rectangle& xy) {
  * the transition finishes, or LUA_REFNIL.
  * \param lua_context The Lua world for the callback (or NULL).
  */
-void Drawable::start_transition(Transition& transition,
-    int callback_ref, LuaContext* lua_context) {
+void Drawable::start_transition(
+    Transition& transition,
+    int callback_ref,
+    LuaContext* lua_context) {
 
   stop_transition();
 
@@ -157,16 +159,16 @@ void Drawable::update() {
     transition->update();
     if (transition->is_finished()) {
 
-        delete transition;
-        transition = NULL;
+      delete transition;
+      transition = NULL;
 
-        int ref = transition_callback_ref;
-        transition_callback_ref = LUA_REFNIL;
+      int ref = transition_callback_ref;
+      transition_callback_ref = LUA_REFNIL;
 
-        if (lua_context != NULL) {
-          // Note that this callback may create a new transition right now.
-          lua_context->do_callback(ref);
-        }
+      if (lua_context != NULL) {
+        // Note that this callback may create a new transition right now.
+        lua_context->do_callback(ref);
+      }
     }
   }
 
@@ -220,12 +222,26 @@ void Drawable::draw(Surface& dst_surface,
 /**
  * \brief Draws a subrectangle of this object, applying dynamic effects.
  * \param region The rectangle to draw in this object.
+ * \param dst_surface The destination surface.
+ */
+void Drawable::draw_region(
+    const Rectangle& region,
+    Surface& dst_surface) {
+
+  draw_region(region, dst_surface, Rectangle(0, 0));
+}
+
+/**
+ * \brief Draws a subrectangle of this object, applying dynamic effects.
+ * \param region The rectangle to draw in this object.
  * \param dst_surface The destination surface
  * \param dst_position Position on this surface
  * (will be added to the position obtained by previous movements).
  */
-void Drawable::draw_region(const Rectangle& region,
-    Surface& dst_surface, const Rectangle& dst_position) {
+void Drawable::draw_region(
+    const Rectangle& region,
+    Surface& dst_surface,
+    const Rectangle& dst_position) {
 
   Rectangle dst_position2(dst_position);
   dst_position2.add_xy(xy);

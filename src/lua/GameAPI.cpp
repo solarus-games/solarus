@@ -525,7 +525,7 @@ int LuaContext::game_api_get_hero(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  if (game == NULL || !game->has_current_map()) {
+  if (game == NULL) {
     lua_pushnil(l);
   }
   else {
@@ -1336,9 +1336,16 @@ int LuaContext::game_api_get_commands_direction(lua_State* l) {
 
 /**
  * \brief Calls the on_started() method of a Lua game.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param game A game.
  */
 void LuaContext::game_on_started(Game& game) {
+
+  if (!userdata_has_field(game.get_savegame(), "on_started")) {
+    return;
+  }
 
   push_game(l, game.get_savegame());
   on_started();
@@ -1346,49 +1353,86 @@ void LuaContext::game_on_started(Game& game) {
 }
 
 /**
- * \brief Calls the on_finished() method of a Lua game.
+ * \brief Calls the on_finished() method of a Lua game if it is defined.
+ *
+ * Also stops timers and menus associated to the game.
+ *
  * \param game A game.
  */
 void LuaContext::game_on_finished(Game& game) {
 
+  if (!game.get_savegame().is_known_to_lua()) {
+    return;
+  }
+
   push_game(l, game.get_savegame());
-  on_finished();
+  if (userdata_has_field(game.get_savegame(), "on_finished")) {
+    on_finished();
+  }
   remove_timers(-1);  // Stop timers and menus associated to this game.
   remove_menus(-1);
   lua_pop(l, 1);
 }
 
 /**
- * \brief Calls the on_update() method of a Lua game.
+ * \brief Calls the on_update() method of a Lua game if it is defined.
+ *
+ * Also calls the method on its menus.
+ *
  * \param game A game.
  */
 void LuaContext::game_on_update(Game& game) {
 
+  if (!game.get_savegame().is_known_to_lua()) {
+    return;
+  }
+
   push_game(l, game.get_savegame());
-  on_update();
+  // This particular method is tried so often that we want to save optimize
+  // the std::string construction.
+  static const std::string method_name = "on_update";
+  if (userdata_has_field(game.get_savegame(), method_name)) {
+    on_update();
+  }
   menus_on_update(-1);
   lua_pop(l, 1);
 }
 
 /**
- * \brief Calls the on_draw() method of a Lua game.
+ * \brief Calls the on_draw() method of a Lua game if it is defined.
+ *
+ * Also calls the method on its menus.
+ *
  * \param game A game.
  * \param dst_surface The destination surface.
  */
 void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
 
+  if (!game.get_savegame().is_known_to_lua()) {
+    return;
+  }
+
   push_game(l, game.get_savegame());
-  on_draw(dst_surface);
+  if (userdata_has_field(game.get_savegame(), "on_draw")) {
+    on_draw(dst_surface);
+  }
   menus_on_draw(-1, dst_surface);
   lua_pop(l, 1);
 }
 
 /**
  * \brief Calls the on_changed() method of a Lua game.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param game A game.
  * \param map The new active map.
  */
 void LuaContext::game_on_map_changed(Game& game, Map& map) {
+
+  if (!userdata_has_field(game.get_savegame(), "on_map_changed")) {
+    return;
+  }
 
   push_game(l, game.get_savegame());
   on_map_changed(map);
@@ -1397,9 +1441,16 @@ void LuaContext::game_on_map_changed(Game& game, Map& map) {
 
 /**
  * \brief Calls the on_paused() method of a Lua game.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param game A game.
  */
 void LuaContext::game_on_paused(Game& game) {
+
+  if (!userdata_has_field(game.get_savegame(), "on_paused")) {
+    return;
+  }
 
   push_game(l, game.get_savegame());
   on_paused();
@@ -1408,9 +1459,16 @@ void LuaContext::game_on_paused(Game& game) {
 
 /**
  * \brief Calls the on_unpaused() method of a Lua game.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param game A game.
  */
 void LuaContext::game_on_unpaused(Game& game) {
+
+  if (!userdata_has_field(game.get_savegame(), "on_unpaused")) {
+    return;
+  }
 
   push_game(l, game.get_savegame());
   on_unpaused();
@@ -1419,6 +1477,9 @@ void LuaContext::game_on_unpaused(Game& game) {
 
 /**
  * \brief Calls the on_dialog_started() method of a Lua game.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param game A game.
  * \param dialog The dialog just started.
  * \param info_ref Lua ref to the info parameter to pass to the method,
@@ -1427,6 +1488,10 @@ void LuaContext::game_on_unpaused(Game& game) {
  */
 bool LuaContext::game_on_dialog_started(Game& game,
     const Dialog& dialog, int info_ref) {
+
+  if (!userdata_has_field(game.get_savegame(), "on_dialog_started")) {
+    return false;
+  }
 
   push_game(l, game.get_savegame());
   bool exists = on_dialog_started(dialog, info_ref);
@@ -1437,11 +1502,18 @@ bool LuaContext::game_on_dialog_started(Game& game,
 
 /**
  * \brief Calls the on_dialog_finished() method of a Lua game.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param game A game.
  * \param dialog The dialog just finished.
  */
 void LuaContext::game_on_dialog_finished(Game& game,
     const Dialog& dialog) {
+
+  if (!userdata_has_field(game.get_savegame(), "on_dialog_finished")) {
+    return;
+  }
 
   push_game(l, game.get_savegame());
   on_dialog_finished(dialog);
@@ -1450,10 +1522,17 @@ void LuaContext::game_on_dialog_finished(Game& game,
 
 /**
  * \brief Calls the on_game_over_started() method of a Lua game.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param game A game.
  * \return true if the game:on_game_over_started() method is defined.
  */
 bool LuaContext::game_on_game_over_started(Game& game) {
+
+  if (!userdata_has_field(game.get_savegame(), "on_game_over_started")) {
+    return false;
+  }
 
   push_game(l, game.get_savegame());
   bool exists = on_game_over_started();
@@ -1464,9 +1543,16 @@ bool LuaContext::game_on_game_over_started(Game& game) {
 
 /**
  * \brief Calls the on_game_over_finished() method of a Lua game.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param game A game.
  */
 void LuaContext::game_on_game_over_finished(Game& game) {
+
+  if (!userdata_has_field(game.get_savegame(), "on_game_over_finished")) {
+    return;
+  }
 
   push_game(l, game.get_savegame());
   on_game_over_finished();
@@ -1477,16 +1563,24 @@ void LuaContext::game_on_game_over_finished(Game& game) {
  * \brief Notifies a Lua game that an input event has just occurred.
  *
  * The appropriate callback in the game is triggered if it exists.
+ * Also notifies the menus of the game if the game itself does not handle the
+ * event.
  *
  * \param game A game.
  * \param event The input event to handle.
  * \return \c true if the event was handled and should stop being propagated.
  */
-bool LuaContext::game_on_input(Game& game, InputEvent& event) {
+bool LuaContext::game_on_input(Game& game, const InputEvent& event) {
+
+  if (!game.get_savegame().is_known_to_lua()) {
+    return false;
+  }
 
   bool handled = false;
   push_game(l, game.get_savegame());
-  handled = on_input(event);
+  if (game.get_savegame().is_with_lua_table()) {
+    handled = on_input(event);
+  }
   if (!handled) {
     handled = menus_on_input(-1, event);
   }
@@ -1495,16 +1589,26 @@ bool LuaContext::game_on_input(Game& game, InputEvent& event) {
 }
 
 /**
- * \brief Calls the on_command_pressed() method of a Lua game.
+ * \brief Calls the on_command_pressed() method of a Lua game if it exists.
+ *
+ * Also notifies the menus of the game if the game itself does not handle the
+ * event.
+ *
  * \param game A game.
  * \param command The command pressed.
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command command) {
 
+  if (!game.get_savegame().is_known_to_lua()) {
+    return false;
+  }
+
   bool handled = false;
   push_game(l, game.get_savegame());
-  handled = on_command_pressed(command);
+  if (userdata_has_field(game.get_savegame(), "on_command_pressed")) {
+    handled = on_command_pressed(command);
+  }
   if (!handled) {
     handled = menus_on_command_pressed(-1, command);
   }
@@ -1513,16 +1617,26 @@ bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command comma
 }
 
 /**
- * \brief Calls the on_command_released() method of a Lua game.
+ * \brief Calls the on_command_released() method of a Lua game if it exists.
+ *
+ * Also notifies the menus of the game if the game itself does not handle the
+ * event.
+ *
  * \param game A game.
  * \param command The command released.
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::game_on_command_released(Game& game, GameCommands::Command command) {
 
+  if (!game.get_savegame().is_known_to_lua()) {
+    return false;
+  }
+
   bool handled = false;
   push_game(l, game.get_savegame());
-  handled = on_command_released(command);
+  if (userdata_has_field(game.get_savegame(), "on_command_released")) {
+    handled = on_command_released(command);
+  }
   if (!handled) {
     handled = menus_on_command_released(-1, command);
   }

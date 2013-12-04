@@ -66,15 +66,12 @@ CarriedItem::CarriedItem(
     int damage_on_enemies,
     uint32_t explosion_date):
 
-  MapEntity(),
+  MapEntity("", 0, hero.get_layer(), 0, 0, 0, 0),
   hero(hero),
   is_lifting(true),
   is_throwing(false),
   is_breaking(false),
   break_one_layer_above(false) {
-
-  // put the item on the hero's layer
-  set_layer(hero.get_layer());
 
   // align correctly the item with the hero
   int direction = hero.get_animation_direction();
@@ -119,14 +116,14 @@ CarriedItem::~CarriedItem() {
  * \return the type of entity
  */
 EntityType CarriedItem::get_type() const {
-  return CARRIED_ITEM;
+  return ENTITY_CARRIED_ITEM;
 }
 
 /**
  * \brief Returns whether entities of this type can be obstacles for other entities.
  * \return true if this type of entity can be obstacle for other entities
  */
-bool CarriedItem::can_be_obstacle() {
+bool CarriedItem::can_be_obstacle() const {
   return false;
 }
 
@@ -135,7 +132,7 @@ bool CarriedItem::can_be_obstacle() {
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
-bool CarriedItem::is_drawn_in_y_order() {
+bool CarriedItem::is_drawn_in_y_order() const {
   return true;
 }
 
@@ -151,7 +148,7 @@ bool CarriedItem::is_ground_observer() const {
  * \brief Returns the damage this item can cause to ennemies.
  * \return the damage on enemies
  */
-int CarriedItem::get_damage_on_enemies() {
+int CarriedItem::get_damage_on_enemies() const {
   return damage_on_enemies;
 }
 
@@ -217,7 +214,7 @@ void CarriedItem::throw_item(int direction) {
  * \brief Returns whether the item is being lifted.
  * \return true if the item is being lifted
  */
-bool CarriedItem::is_being_lifted() {
+bool CarriedItem::is_being_lifted() const {
   return is_lifting;
 }
 
@@ -225,7 +222,7 @@ bool CarriedItem::is_being_lifted() {
  * \brief Returns whether the item is being thrown.
  * \return true if the item is being thrown
  */
-bool CarriedItem::is_being_thrown() {
+bool CarriedItem::is_being_thrown() const {
   return is_throwing;
 }
  
@@ -233,7 +230,7 @@ bool CarriedItem::is_being_thrown() {
  * \brief Returns whether the item is about to explode.
  * \return true if the item is about to explode
  */
-bool CarriedItem::will_explode_soon() {
+bool CarriedItem::will_explode_soon()  const{
   return can_explode() && System::now() >= explosion_date - 1500;
 }
 
@@ -308,7 +305,7 @@ void CarriedItem::break_item_on_ground() {
  *
  * \return true if the item is broken
  */
-bool CarriedItem::is_broken() {
+bool CarriedItem::is_broken() const {
   return is_breaking && (get_sprite().is_animation_finished() || can_explode());
 }
 
@@ -316,7 +313,7 @@ bool CarriedItem::is_broken() {
  * \brief Returns whether the item can explode.
  * \return true if the item will explode
  */
-bool CarriedItem::can_explode() {
+bool CarriedItem::can_explode() const {
   return explosion_date != 0;
 }
 
@@ -333,9 +330,9 @@ void CarriedItem::set_suspended(bool suspended) {
     shadow_sprite->set_suspended(suspended);
   }
 
-  if (!suspended && when_suspended != 0) {
+  if (!suspended && get_when_suspended() != 0) {
     // recalculate the timers
-    uint32_t diff = System::now() - when_suspended;
+    uint32_t diff = System::now() - get_when_suspended();
     if (is_throwing) {
       next_down_date += diff;
     }
@@ -353,7 +350,7 @@ void CarriedItem::update() {
   // update the sprite and the position
   MapEntity::update();
 
-  if (suspended) {
+  if (is_suspended()) {
     return;
   }
 
@@ -489,7 +486,8 @@ void CarriedItem::notify_attacked_enemy(
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool CarriedItem::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool CarriedItem::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
   return false;
 }
 
@@ -498,7 +496,8 @@ bool CarriedItem::is_teletransporter_obstacle(Teletransporter& teletransporter) 
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+bool CarriedItem::is_conveyor_belt_obstacle(
+    const ConveyorBelt& conveyor_belt) const {
   return false;
 }
 
@@ -507,7 +506,7 @@ bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool CarriedItem::is_stairs_obstacle(Stairs& stairs) {
+bool CarriedItem::is_stairs_obstacle(const Stairs& stairs) const {
   return false;
 }
 
@@ -516,7 +515,7 @@ bool CarriedItem::is_stairs_obstacle(Stairs& stairs) {
  * by this entity.
  * \return \c true if low walls are currently obstacle for this entity.
  */
-bool CarriedItem::is_low_wall_obstacle() {
+bool CarriedItem::is_low_wall_obstacle() const {
   return false;
 }
 
@@ -524,7 +523,7 @@ bool CarriedItem::is_low_wall_obstacle() {
  * \brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
  * \return true if the deep water tiles are currently an obstacle for this entity
  */
-bool CarriedItem::is_deep_water_obstacle() {
+bool CarriedItem::is_deep_water_obstacle() const {
   return false;
 }
 
@@ -532,7 +531,7 @@ bool CarriedItem::is_deep_water_obstacle() {
  * \brief Returns whether a hole is currently considered as an obstacle for this entity.
  * \return true if the holes are currently an obstacle for this entity
  */
-bool CarriedItem::is_hole_obstacle() {
+bool CarriedItem::is_hole_obstacle() const {
   return false;
 }
 
@@ -540,7 +539,7 @@ bool CarriedItem::is_hole_obstacle() {
  * \brief Returns whether lava is currently considered as an obstacle for this entity.
  * \return true if lava is currently an obstacle for this entity
  */
-bool CarriedItem::is_lava_obstacle() {
+bool CarriedItem::is_lava_obstacle() const {
   return false;
 }
 
@@ -548,7 +547,7 @@ bool CarriedItem::is_lava_obstacle() {
  * \brief Returns whether prickles are currently considered as an obstacle for this entity.
  * \return true if prickles are currently an obstacle for this entity
  */
-bool CarriedItem::is_prickle_obstacle() {
+bool CarriedItem::is_prickle_obstacle() const {
   return false;
 }
 
@@ -556,7 +555,7 @@ bool CarriedItem::is_prickle_obstacle() {
  * \brief Returns whether a ladder is currently considered as an obstacle for this entity.
  * \return true if the ladders are currently an obstacle for this entity
  */
-bool CarriedItem::is_ladder_obstacle() {
+bool CarriedItem::is_ladder_obstacle() const {
   return false;
 }
 
@@ -565,7 +564,7 @@ bool CarriedItem::is_ladder_obstacle() {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool CarriedItem::is_switch_obstacle(Switch& sw) {
+bool CarriedItem::is_switch_obstacle(const Switch& sw) const {
   return !is_being_thrown();
 }
 
@@ -574,7 +573,8 @@ bool CarriedItem::is_switch_obstacle(Switch& sw) {
  * \param raised_block a crystal block raised
  * \return false
  */
-bool CarriedItem::is_raised_block_obstacle(CrystalBlock& raised_block) {
+bool CarriedItem::is_raised_block_obstacle(
+    const CrystalBlock& raised_block) const {
   // the thrown items can traverse the crystal blocks
   return false;
 }
@@ -584,7 +584,7 @@ bool CarriedItem::is_raised_block_obstacle(CrystalBlock& raised_block) {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool CarriedItem::is_crystal_obstacle(Crystal& crystal) {
+bool CarriedItem::is_crystal_obstacle(const Crystal& crystal) const {
   return !is_being_thrown();
 }
 
@@ -593,7 +593,7 @@ bool CarriedItem::is_crystal_obstacle(Crystal& crystal) {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool CarriedItem::is_npc_obstacle(NPC& npc) {
+bool CarriedItem::is_npc_obstacle(const NPC& npc) const {
   return npc.is_solid();
 }
 
@@ -602,7 +602,7 @@ bool CarriedItem::is_npc_obstacle(NPC& npc) {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool CarriedItem::is_jumper_obstacle(Jumper& jumper) {
+bool CarriedItem::is_jumper_obstacle(const Jumper& jumper) const {
   return false;
 }
 
@@ -611,7 +611,7 @@ bool CarriedItem::is_jumper_obstacle(Jumper& jumper) {
  * \param sensor a sensor
  * \return true if this sensor is currently an obstacle for this entity.
  */
-bool CarriedItem::is_sensor_obstacle(Sensor& sensor) {
+bool CarriedItem::is_sensor_obstacle(const Sensor& sensor) const {
   return false;
 }
 
@@ -620,7 +620,7 @@ bool CarriedItem::is_sensor_obstacle(Sensor& sensor) {
  * \param enemy an enemy
  * \return true if this enemy is considered as an obstacle for this entity.
  */
-bool CarriedItem::is_enemy_obstacle(Enemy& enemy) {
+bool CarriedItem::is_enemy_obstacle(const Enemy& enemy) const {
   // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
   return can_explode();
 }

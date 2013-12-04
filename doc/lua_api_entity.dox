@@ -89,6 +89,8 @@ Here are the existing types of entities.
   \ref lua_api_hero "hero".
 - \subpage lua_api_boomerang "Boomerang": A boomerang shot by the
   \ref lua_api_hero "hero".
+- \subpage lua_api_custom_entity "Custom entity": An entity fully controlled
+  by your Lua scripts.
 
 \remark Note that \ref lua_api_sprite "sprites" and \ref lua_api_movement
 "movements" are not map entities, but they can be attached to map entities
@@ -101,10 +103,53 @@ Sprites and movements can also be used outside a
 
 These methods exist in all entity types.
 
+\subsection lua_api_entity_get_type entity:get_type()
+
+Returns the type of entity.
+- Return value (string): The type of this entity. Can be one of:
+  \c "hero",
+  \c "dynamic_tile",
+  \c "teletransporter",
+  \c "destination",
+  \c "pickable",
+  \c "destructible",
+  \c "carried_object",
+  \c "chest",
+  \c "shop_treasure",
+  \c "enemy",
+  \c "npc",
+  \c "block",
+  \c "jumper",
+  \c "switch",
+  \c "sensor",
+  \c "separator",
+  \c "wall",
+  \c "crystal",
+  \c "crystal_block",
+  \c "conveyor_belt",
+  \c "door",
+  \c "stairs",
+  \c "bomb",
+  \c "explosion",
+  \c "fire",
+  \c "arrow",
+  \c "hookshot",
+  \c "boomerang" or
+  \c "custom",
+
+\remark The type \c "tile" is not is this list because
+  \ref lua_api_tile "tiles" don't exist at
+  runtime for optimization reasons.
+
 \subsection lua_api_entity_get_map entity:get_map()
 
 Returns the map this entity belongs to.
 - Return value (\ref lua_api_map "map"): The map that contains this entity.
+
+\subsection lua_api_entity_get_map entity:get_game()
+
+Returns the game that is running the map this entity belongs to.
+- Return value (\ref lua_api_game "game"): The current game.
 
 \subsection lua_api_entity_get_name entity:get_name()
 
@@ -410,6 +455,35 @@ them.
 
 Called when this entity is about to be removed from the map
 (and therefore destroyed).
+
+\subsection lua_api_entity_on_position_changed entity:on_position_changed(x, y, layer)
+
+Called when the coordinates of this entity have just changed.
+- \c x (number): The new X coordinate of the entity.
+- \c y (number): The new Y coordinate of the entity.
+- \c layer (number): The new layer of the entity.
+
+\subsection lua_api_entity_on_obstacle_reached entity:on_obstacle_reached(movement)
+
+Called when the \ref lua_api_movement "movement"
+of this entity was stopped because of an obstacle.
+
+When an obstacle is reached, this event is called instead of
+\ref lua_api_entity_on_position_changed "entity:on_position_changed()".
+- \c movement (\ref lua_api_movement "movement"): The movement of the entity.
+
+\subsection lua_api_entity_on_movement_changed entity:on_movement_changed(movement)
+
+Called when some characteristics of this entity's
+\ref lua_api_movement "movement"
+(like the speed or the angle) have just changed.
+- \c movement (\ref lua_api_movement "movement"): The movement of the entity.
+
+\subsection lua_api_entity_on_movement_finished entity:on_movement_finished()
+
+Called when the
+\ref lua_api_movement "movement"
+of the entity is finished (if there is an end).
 
 */
 

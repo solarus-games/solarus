@@ -55,7 +55,7 @@ If no region is specified, the entire surface is filled.
 - \c width (number, optional): Width of the region to fill on this surface.
 - \c height (number, optional): Height of the region to fill on this surface.
 
-\subsection lua_api_surface_get_transparency_color surface:set_transparency_color()
+\subsection lua_api_surface_get_transparency_color surface:get_transparency_color()
 
 Returns the transparency color to this surface. Pixels in that color are not
 displayed when this surface is drawn.

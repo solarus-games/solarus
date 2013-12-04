@@ -46,7 +46,7 @@ Hero::SwordSwingingState::~SwordSwingingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SwordSwingingState::start(State* previous_state) {
+void Hero::SwordSwingingState::start(const State* previous_state) {
 
   State::start(previous_state);
 
@@ -59,10 +59,11 @@ void Hero::SwordSwingingState::start(State* previous_state) {
  * \brief Ends this state.
  * \param next_state the next state
  */
-void Hero::SwordSwingingState::stop(State* next_state) {
+void Hero::SwordSwingingState::stop(const State* next_state) {
 
   State::stop(next_state);
 
+  Hero& hero = get_hero();
   if (hero.get_movement() != NULL) {
     // stop the movement of being pushed by an enemy after hitting him
     hero.clear_movement();
@@ -77,6 +78,7 @@ void Hero::SwordSwingingState::update() {
   State::update();
 
   // check the animation
+  Hero& hero = get_hero();
   if (get_sprites().is_animation_finished()) {
 
     sword_finished = true;
@@ -110,8 +112,8 @@ void Hero::SwordSwingingState::update() {
  * \brief Returns whether the hero can swing his sword in this state.
  * \return true if the hero can swing his sword in this state
  */
-bool Hero::SwordSwingingState::can_start_sword() {
-  return hero.get_movement() == NULL;
+bool Hero::SwordSwingingState::can_start_sword() const {
+  return get_hero().get_movement() == NULL;
 }
 
 /**
@@ -120,7 +122,7 @@ bool Hero::SwordSwingingState::can_start_sword() {
  * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
-bool Hero::SwordSwingingState::can_be_hurt(Enemy* attacker) {
+bool Hero::SwordSwingingState::can_be_hurt(Enemy* attacker) const {
   return true;
 }
 
@@ -129,7 +131,7 @@ bool Hero::SwordSwingingState::can_be_hurt(Enemy* attacker) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 
@@ -137,7 +139,7 @@ bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) {
  * \brief Returns whether crystals can be activated by the sword in this state.
  * \return true if crystals can be activated by the sword in this state
  */
-bool Hero::SwordSwingingState::can_sword_hit_crystal() {
+bool Hero::SwordSwingingState::can_sword_hit_crystal() const {
   return true;
 }
 
@@ -147,8 +149,10 @@ bool Hero::SwordSwingingState::can_sword_hit_crystal() {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::SwordSwingingState::is_cutting_with_sword(Detector &detector) {
+bool Hero::SwordSwingingState::is_cutting_with_sword(
+    Detector& detector) const {
 
+  const Hero& hero = get_hero();
   if (hero.get_movement() != NULL) {
     return false;
   }
@@ -184,10 +188,11 @@ bool Hero::SwordSwingingState::is_cutting_with_sword(Detector &detector) {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is an obstacle in this state
  */
-bool Hero::SwordSwingingState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+bool Hero::SwordSwingingState::is_teletransporter_obstacle(
+    const Teletransporter& teletransporter) const {
 
   // if the hero was pushed by an enemy, don't go on a teletransporter
-  return hero.get_movement() != NULL;
+  return get_hero().get_movement() != NULL;
 }
 
 /**
@@ -197,6 +202,7 @@ bool Hero::SwordSwingingState::is_teletransporter_obstacle(Teletransporter& tele
 void Hero::SwordSwingingState::notify_obstacle_reached() {
 
   // the hero reached an obstacle while being pushed after hitting an enemy
+  Hero& hero = get_hero();
   hero.clear_movement();
 
   if (sword_finished) {
@@ -211,14 +217,18 @@ void Hero::SwordSwingingState::notify_obstacle_reached() {
  * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
  * \param killed indicates that the attack has just killed the enemy
  */
-void Hero::SwordSwingingState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::SwordSwingingState::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
     attacked = true;
 
     if (victim.get_push_hero_on_sword()) {
 
+      Hero& hero = get_hero();
       double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
           hero.get_x(), hero.get_y());
       StraightMovement* movement = new StraightMovement(false, true);

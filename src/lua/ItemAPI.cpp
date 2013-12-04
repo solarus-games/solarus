@@ -676,7 +676,7 @@ int LuaContext::item_api_set_finished(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
-  // Retrieve the equipment item from the hero
+  // Retrieve the equipment item from the hero.
   Hero& hero = item.get_game()->get_hero();
   if (hero.is_using_item()) {  // Do nothing if the script has already changed the hero's state.
 
@@ -689,9 +689,16 @@ int LuaContext::item_api_set_finished(lua_State* l) {
 
 /**
  * \brief Calls the on_started() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  */
 void LuaContext::item_on_started(EquipmentItem& item) {
+
+  if (!userdata_has_field(item, "on_started")) {
+    return;
+  }
 
   push_item(l, item);
   on_started();
@@ -700,12 +707,21 @@ void LuaContext::item_on_started(EquipmentItem& item) {
 
 /**
  * \brief Calls the on_finished() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  */
 void LuaContext::item_on_finished(EquipmentItem& item) {
 
+  if (!item.is_known_to_lua()) {
+    return;
+  }
+
   push_item(l, item);
-  on_finished();
+  if (userdata_has_field(item, "on_finished")) {
+    on_finished();
+  }
   remove_timers(-1);  // Stop timers and menus associated to this item.
   remove_menus(-1);
   lua_pop(l, 1);
@@ -713,9 +729,19 @@ void LuaContext::item_on_finished(EquipmentItem& item) {
 
 /**
  * \brief Calls the on_update() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  */
 void LuaContext::item_on_update(EquipmentItem& item) {
+
+  // This particular method is tried so often that we want to save optimize
+  // the std::string construction.
+  static const std::string method_name = "on_update";
+  if (!userdata_has_field(item, method_name)) {
+    return;
+  }
 
   push_item(l, item);
   on_update();
@@ -724,10 +750,17 @@ void LuaContext::item_on_update(EquipmentItem& item) {
 
 /**
  * \brief Calls the on_suspended() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param suspended true if the game is suspended.
  */
 void LuaContext::item_on_suspended(EquipmentItem& item, bool suspended) {
+
+  if (!userdata_has_field(item, "on_suspended")) {
+    return;
+  }
 
   push_item(l, item);
   on_suspended(suspended);
@@ -736,9 +769,16 @@ void LuaContext::item_on_suspended(EquipmentItem& item, bool suspended) {
 
 /**
  * \brief Calls the on_created() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  */
 void LuaContext::item_on_created(EquipmentItem& item) {
+
+  if (!userdata_has_field(item, "on_created")) {
+    return;
+  }
 
   push_item(l, item);
   on_created();
@@ -747,10 +787,17 @@ void LuaContext::item_on_created(EquipmentItem& item) {
 
 /**
  * \brief Calls the on_map_changed() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param map A map.
  */
 void LuaContext::item_on_map_changed(EquipmentItem& item, Map& map) {
+
+  if (!userdata_has_field(item, "on_map_changed")) {
+    return;
+  }
 
   push_item(l, item);
   on_map_changed(map);
@@ -759,11 +806,18 @@ void LuaContext::item_on_map_changed(EquipmentItem& item, Map& map) {
 
 /**
  * \brief Calls the on_pickable_created() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param pickable The instance of pickable item that has just appeared.
  */
 void LuaContext::item_on_pickable_created(EquipmentItem& item,
     Pickable& pickable) {
+
+  if (!userdata_has_field(item, "on_pickable_created")) {
+    return;
+  }
 
   push_item(l, item);
   on_pickable_created(pickable);
@@ -772,12 +826,19 @@ void LuaContext::item_on_pickable_created(EquipmentItem& item,
 
 /**
  * \brief Calls the on_pickable_movement_changed() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param pickable The instance of pickable item whose movement has changed.
  * \param movement The movement.
  */
 void LuaContext::item_on_pickable_movement_changed(EquipmentItem& item,
     Pickable& pickable, Movement& movement) {
+
+  if (!userdata_has_field(item, "on_pickable_movement_changed")) {
+    return;
+  }
 
   push_item(l, item);
   on_pickable_movement_changed(pickable, movement);
@@ -786,10 +847,17 @@ void LuaContext::item_on_pickable_movement_changed(EquipmentItem& item,
 
 /**
  * \brief Calls the on_obtaining() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param treasure The treasure being obtained.
  */
 void LuaContext::item_on_obtaining(EquipmentItem& item, const Treasure& treasure) {
+
+  if (!userdata_has_field(item, "on_obtaining")) {
+    return;
+  }
 
   push_item(l, item);
   on_obtaining(treasure);
@@ -798,10 +866,17 @@ void LuaContext::item_on_obtaining(EquipmentItem& item, const Treasure& treasure
 
 /**
  * \brief Calls the on_obtained() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param treasure The treasure just obtained.
  */
 void LuaContext::item_on_obtained(EquipmentItem& item, const Treasure& treasure) {
+
+  if (!userdata_has_field(item, "on_obtained")) {
+    return;
+  }
 
   push_item(l, item);
   on_obtained(treasure);
@@ -810,10 +885,17 @@ void LuaContext::item_on_obtained(EquipmentItem& item, const Treasure& treasure)
 
 /**
  * \brief Calls the on_variant_changed() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param variant The possession state.
  */
 void LuaContext::item_on_variant_changed(EquipmentItem& item, int variant) {
+
+  if (!userdata_has_field(item, "on_variant_changed")) {
+    return;
+  }
 
   push_item(l, item);
   on_variant_changed(variant);
@@ -822,10 +904,17 @@ void LuaContext::item_on_variant_changed(EquipmentItem& item, int variant) {
 
 /**
  * \brief Calls the on_amount_changed() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param amount The amount of this item.
  */
 void LuaContext::item_on_amount_changed(EquipmentItem& item, int amount) {
+
+  if (!userdata_has_field(item, "on_amount_changed")) {
+    return;
+  }
 
   push_item(l, item);
   on_amount_changed(amount);
@@ -834,9 +923,16 @@ void LuaContext::item_on_amount_changed(EquipmentItem& item, int amount) {
 
 /**
  * \brief Calls the on_using() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  */
 void LuaContext::item_on_using(EquipmentItem& item) {
+
+  if (!userdata_has_field(item, "on_using")) {
+    return;
+  }
 
   push_item(l, item);
   on_using();
@@ -845,10 +941,17 @@ void LuaContext::item_on_using(EquipmentItem& item) {
 
 /**
  * \brief Calls the on_ability_used() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param ability_name The ability just used.
  */
 void LuaContext::item_on_ability_used(EquipmentItem& item, const std::string& ability_name) {
+
+  if (!userdata_has_field(item, "on_ability_used")) {
+    return;
+  }
 
   push_item(l, item);
   on_ability_used(ability_name);
@@ -857,10 +960,17 @@ void LuaContext::item_on_ability_used(EquipmentItem& item, const std::string& ab
 
 /**
  * \brief Calls the on_npc_interaction() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param npc An NPC.
  */
 void LuaContext::item_on_npc_interaction(EquipmentItem& item, NPC& npc) {
+
+  if (!userdata_has_field(item, "on_npc_interaction")) {
+    return;
+  }
 
   push_item(l, item);
   on_npc_interaction(npc);
@@ -869,6 +979,9 @@ void LuaContext::item_on_npc_interaction(EquipmentItem& item, NPC& npc) {
 
 /**
  * \brief Calls the on_npc_interaction_item() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item The equipment item linked to the NPC.
  * \param npc An NPC.
  * \param item_used The equipment item used.
@@ -876,6 +989,10 @@ void LuaContext::item_on_npc_interaction(EquipmentItem& item, NPC& npc) {
  */
 bool LuaContext::item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
     EquipmentItem& item_used) {
+
+  if (!userdata_has_field(item, "on_npc_interaction_item")) {
+    return false;
+  }
 
   push_item(l, item);
   bool result = on_npc_interaction_item(npc, item_used);
@@ -885,10 +1002,17 @@ bool LuaContext::item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
 
 /**
  * \brief Calls the on_npc_collision_fire() method of a Lua equipment item.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param item An equipment item.
  * \param npc An NPC.
  */
 void LuaContext::item_on_npc_collision_fire(EquipmentItem& item, NPC& npc) {
+
+  if (!userdata_has_field(item, "on_npc_collision_fire")) {
+    return;
+  }
 
   push_item(l, item);
   on_npc_collision_fire(npc);

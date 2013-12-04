@@ -219,9 +219,10 @@ Called when the user presses a keyboard key.
   \c "alt". Table values don't matter.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
-  (like the game) and
+  (like the game).
+  However, if the key corresponds to a character, another event
   \ref lua_api_main_on_character_pressed "sol.main:on_character_pressed()"
-  won't be called either.
+  will also be called.
 
 \remark This event indicates the raw key pressed. If you want to know the
 corresponding character instead (if any), see
@@ -240,10 +241,10 @@ Called when the user releases a keyboard key.
 
 \subsection lua_api_main_on_character_pressed sol.main:on_character_pressed(character)
 
-Called when the user presses a keyboard key mapped to a character.
+Called when the user enters text.
 
 - \c character (string): A utf-8 string representing the character that was
-  pressed.
+  entered.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (like the game).

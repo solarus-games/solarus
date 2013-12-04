@@ -788,7 +788,7 @@ int LuaContext::random_movement_api_get_angle(lua_State* l) {
 int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
-  lua_pushinteger(l, movement.get_max_distance());
+  lua_pushinteger(l, movement.get_max_radius());
   return 1;
 }
 
@@ -800,8 +800,8 @@ int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
-  int max_distance = luaL_checkint(l, 2);
-  movement.set_max_distance(max_distance);
+  int max_radius = luaL_checkint(l, 2);
+  movement.set_max_radius(max_radius);
   return 0;
 }
 
@@ -1694,9 +1694,16 @@ int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
 
 /**
  * \brief Calls the on_position_changed() method of a Lua movement.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param movement A movement.
  */
 void LuaContext::movement_on_position_changed(Movement& movement) {
+
+  if (!movement.is_known_to_lua()) {
+    return;
+  }
 
                                   // ...
   push_movement(l, movement);
@@ -1721,15 +1728,24 @@ void LuaContext::movement_on_position_changed(Movement& movement) {
   }
   lua_pop(l, 2);
                                   // ... movement
-  on_position_changed();
+  if (userdata_has_field(movement, "on_position_changed")) {
+    on_position_changed();
+  }
   lua_pop(l, 1);
 }
 
 /**
  * \brief Calls the on_obstacle_reached() method of a Lua movement.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param movement A movement.
  */
 void LuaContext::movement_on_obstacle_reached(Movement& movement) {
+
+  if (!userdata_has_field(movement, "on_obstacle_reached")) {
+    return;
+  }
 
   push_movement(l, movement);
   on_obstacle_reached();
@@ -1738,9 +1754,16 @@ void LuaContext::movement_on_obstacle_reached(Movement& movement) {
 
 /**
  * \brief Calls the on_changed() method of a Lua movement.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param movement A movement.
  */
 void LuaContext::movement_on_changed(Movement& movement) {
+
+  if (!userdata_has_field(movement, "on_changed")) {
+    return;
+  }
 
   push_movement(l, movement);
   on_changed();
@@ -1749,9 +1772,16 @@ void LuaContext::movement_on_changed(Movement& movement) {
 
 /**
  * \brief Calls the on_finished() method of a Lua movement.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param movement A movement.
  */
 void LuaContext::movement_on_finished(Movement& movement) {
+
+  if (!userdata_has_field(movement, "on_finished")) {
+    return;
+  }
 
   push_movement(l, movement);
   on_finished();

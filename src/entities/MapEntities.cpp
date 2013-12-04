@@ -17,6 +17,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
 #include "entities/Tile.h"
+#include "entities/Tileset.h"
 #include "entities/TilePattern.h"
 #include "entities/Layer.h"
 #include "entities/CrystalBlock.h"
@@ -49,6 +50,7 @@ MapEntities::MapEntities(Game& game, Map& map):
   Layer layer = hero.get_layer();
   this->obstacle_entities[layer].push_back(&hero);
   this->entities_drawn_y_order[layer].push_back(&hero);
+  this->ground_observers[layer].push_back(&hero);
   this->named_entities[hero.get_name()] = &hero;
 
   // surfaces to pre-render static tiles
@@ -133,53 +135,6 @@ Hero& MapEntities::get_hero() {
 }
 
 /**
- * \brief Returns the ground at the specified point.
- *
- * Static tiles and dynamic entities are all taken into account here.
- *
- * \param layer Layer of the point.
- * \param x X coordinate of the point.
- * \param y Y coordinate of the point.
- * \return The ground at this place.
- *
- * TODO move to the Map class (the ground is the terrain of the map)
- */
-Ground MapEntities::get_ground(Layer layer, int x, int y) {
-
-  // See if a dynamic entity changes the ground.
-  // TODO store ground modifiers in a quad tree for performance.
-  std::list<MapEntity*>::const_reverse_iterator it;
-  const std::list<MapEntity*>::const_reverse_iterator rend =
-      ground_modifiers[layer].rend();
-  for (it = ground_modifiers[layer].rbegin(); it != rend; ++it) {
-    const MapEntity& ground_modifier = *(*it);
-    if (ground_modifier.overlaps(x, y)
-        && ground_modifier.get_modified_ground() != GROUND_EMPTY
-        && ground_modifier.is_enabled()
-        && !ground_modifier.is_being_removed()) {
-      return ground_modifier.get_modified_ground();
-    }
-  }
-
-  // Otherwise, return the ground defined by static tiles (this is very fast).
-  return get_tile_ground(layer, x, y);
-}
-
-/**
- * \brief Returns the ground at the specified point.
- *
- * Static tiles and dynamic entities are all taken into account here.
- *
- * \param layer Layer of the point.
- * \param xy Coordinate of the point.
- * \return The ground at this place.
- */
-
-Ground MapEntities::get_ground(Layer layer, const Rectangle& xy) {
-  return get_ground(layer, xy.get_x(), xy.get_y());
-}
-
-/**
  * \brief Returns the entities (other that tiles) such that the hero cannot walk on them.
  * \param layer The layer.
  * \return The obstacle entities on that layer.
@@ -195,6 +150,15 @@ const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
  */
 const list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
   return ground_observers[layer];
+}
+
+/**
+ * \brief Returns the entities that are sensible to the ground below them.
+ * \param layer The layer.
+ * \return The ground observers on that layer.
+ */
+const list<MapEntity*>& MapEntities::get_ground_modifiers(Layer layer) {
+  return ground_modifiers[layer];
 }
 
 /**
@@ -233,10 +197,10 @@ const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
 }
 
 /**
- * \brief Returns all separators of the map..
+ * \brief Returns all separators of the map.
  * \return The separators.
  */
-const list<Separator*>& MapEntities::get_separators() {
+const list<const Separator*>& MapEntities::get_separators() const {
   return separators;
 }
 
@@ -286,11 +250,13 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
  */
 MapEntity* MapEntities::find_entity(const std::string& name) {
 
-  if (named_entities.find(name) == named_entities.end()) {
+  std::map<std::string, MapEntity*>::const_iterator it =
+      named_entities.find(name);
+  if (it == named_entities.end()) {
     return NULL;
   }
 
-  MapEntity* entity = named_entities[name];
+  MapEntity* entity = it->second;
 
   if (entity->is_being_removed()) {
     return NULL;
@@ -350,12 +316,12 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(
  * \param prefix Prefix of the name.
  * \return \c true if there exists an entity with this prefix.
  */
-bool MapEntities::has_entity_with_prefix(const std::string& prefix) {
+bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 
-  list<MapEntity*>::iterator i;
+  list<MapEntity*>::const_iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
-    MapEntity* entity = *i;
+    const MapEntity* entity = *i;
     if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
       return true;
     }
@@ -388,7 +354,7 @@ void MapEntities::notify_map_started() {
 
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
-    MapEntity *entity = *i;
+    MapEntity* entity = *i;
     entity->notify_map_started();
     entity->notify_tileset_changed();
   }
@@ -439,6 +405,13 @@ void MapEntities::notify_tileset_changed() {
  * \param tile the tile to add
  */
 void MapEntities::add_tile(Tile* tile) {
+
+  TilePattern& pattern = map.get_tileset().get_tile_pattern(tile->get_tile_pattern_id());
+
+  Debug::check_assertion(
+      tile->get_width() == pattern.get_width()
+      && tile->get_height() == pattern.get_height(),
+      "Static tile size must match tile pattern size");
 
   Layer layer = tile->get_layer();
 
@@ -600,7 +573,7 @@ void MapEntities::add_entity(MapEntity* entity) {
     return;
   }
 
-  if (entity->get_type() == TILE) {
+  if (entity->get_type() == ENTITY_TILE) {
     // Tiles are optimized specifically for obstacle checks and rendering.
     add_tile(static_cast<Tile*>(entity));
   }
@@ -648,23 +621,23 @@ void MapEntities::add_entity(MapEntity* entity) {
     // update the specific entities lists
     switch (entity->get_type()) {
 
-      case STAIRS:
+      case ENTITY_STAIRS:
         stairs[layer].push_back(static_cast<Stairs*>(entity));
         break;
 
-      case CRYSTAL_BLOCK:
+      case ENTITY_CRYSTAL_BLOCK:
         crystal_blocks[layer].push_back(static_cast<CrystalBlock*>(entity));
         break;
 
-      case SEPARATOR:
+      case ENTITY_SEPARATOR:
         separators.push_back(static_cast<Separator*>(entity));
         break;
 
-      case BOOMERANG:
+      case ENTITY_BOOMERANG:
         this->boomerang = static_cast<Boomerang*>(entity);
         break;
 
-      case DESTINATION:
+      case ENTITY_DESTINATION:
         {
           Destination* destination = static_cast<Destination*>(entity);
           if (this->default_destination == NULL || destination->is_default()) {
@@ -796,19 +769,19 @@ void MapEntities::remove_marked_entities() {
     // update the specific entities lists
     switch (entity->get_type()) {
 
-      case STAIRS:
+      case ENTITY_STAIRS:
         stairs[layer].remove(static_cast<Stairs*>(entity));
         break;
 
-      case CRYSTAL_BLOCK:
+      case ENTITY_CRYSTAL_BLOCK:
         crystal_blocks[layer].remove(static_cast<CrystalBlock*>(entity));
         break;
 
-      case SEPARATOR:
+      case ENTITY_SEPARATOR:
         separators.remove(static_cast<Separator*>(entity));
         break;
 
-      case BOOMERANG:
+      case ENTITY_BOOMERANG:
         this->boomerang = NULL;
         break;
 
@@ -855,18 +828,14 @@ void MapEntities::update() {
 
   Debug::check_assertion(map.is_started(), "The map is not started");
 
-  // first update the hero
+  // First update the hero.
   hero.update();
 
-  // update the tiles and the dynamic entities
+  // Update the dynamic entities.
   list<MapEntity*>::iterator it;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      tiles[layer][i]->update();
-    }
-
-    // sort the entities drawn in y order
+    // Sort the entities drawn in y order.
     entities_drawn_y_order[layer].sort(compare_y);
   }
 
@@ -1171,7 +1140,7 @@ void MapEntities::remove_arrows() {
   std::list<MapEntity*>::iterator it;
   for (it = all_entities.begin(); it != all_entities.end(); it++) {
     MapEntity* entity = *it;
-    if (entity->get_type() == ARROW) {
+    if (entity->get_type() == ENTITY_ARROW) {
       remove_entity(entity);
     }
   }

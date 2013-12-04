@@ -44,12 +44,12 @@ Hero::SwimmingState::~SwimmingState() {
  * \brief Starts this state.
  * \param previous_state the previous state
  */
-void Hero::SwimmingState::start(State* previous_state) {
+void Hero::SwimmingState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
   get_equipment().notify_ability_used("swim");
-  hero.set_walking_speed(get_slow_swimming_speed());
+  get_hero().set_walking_speed(get_slow_swimming_speed());
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_SWIM);
 }
 
@@ -57,10 +57,11 @@ void Hero::SwimmingState::start(State* previous_state) {
  * \brief Stops this state.
  * \param next_state the next state
  */
-void Hero::SwimmingState::stop(State* next_state) {
+void Hero::SwimmingState::stop(const State* next_state) {
 
   PlayerMovementState::stop(next_state);
 
+  Hero& hero = get_hero();
   hero.set_walking_speed(hero.get_normal_walking_speed());
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 }
@@ -72,10 +73,11 @@ void Hero::SwimmingState::update() {
 
   PlayerMovementState::update();
 
-  if (suspended || !is_current_state()) {
+  if (is_suspended() || !is_current_state()) {
     return;
   }
 
+  Hero& hero = get_hero();
   if (hero.get_ground_below() != GROUND_DEEP_WATER) {
     hero.set_state(new FreeState(hero));
   }
@@ -100,8 +102,8 @@ void Hero::SwimmingState::set_suspended(bool suspended) {
 
   PlayerMovementState::set_suspended(suspended);
 
-  if (!suspended && fast_swimming) {
-    end_fast_swim_date += System::now() - when_suspended;
+  if (!is_suspended() && fast_swimming) {
+    end_fast_swim_date += System::now() - get_when_suspended();
   }
 }
 
@@ -145,7 +147,7 @@ void Hero::SwimmingState::try_swim_faster() {
 
   if (!fast_swimming) {
     fast_swimming = true;
-    hero.set_walking_speed(get_fast_swimming_speed());
+    get_hero().set_walking_speed(get_fast_swimming_speed());
     get_sprites().set_animation_swimming_fast();
     Sound::play("swim");
     end_fast_swim_date = System::now() + 600;
@@ -156,16 +158,16 @@ void Hero::SwimmingState::try_swim_faster() {
  * \brief Returns the normal swimming speed.
  * \return the swimming speed in pixels per second
  */
-int Hero::SwimmingState::get_slow_swimming_speed() {
-  return hero.get_normal_walking_speed() / 2;
+int Hero::SwimmingState::get_slow_swimming_speed() const {
+  return get_hero().get_normal_walking_speed() / 2;
 }
 
 /**
  * \brief Returns the faster swimming speed.
  * \return the faster swimming speed in pixels per second
  */
-int Hero::SwimmingState::get_fast_swimming_speed() {
-  return hero.get_normal_walking_speed();
+int Hero::SwimmingState::get_fast_swimming_speed() const {
+  return get_hero().get_normal_walking_speed();
 }
 
 /**
@@ -173,7 +175,7 @@ int Hero::SwimmingState::get_fast_swimming_speed() {
  * \param stairs some stairs
  * \return true if the stairs are obstacle in this state
  */
-bool Hero::SwimmingState::is_stairs_obstacle(Stairs& stairs) {
+bool Hero::SwimmingState::is_stairs_obstacle(const Stairs& stairs) const {
   return false;
 }
 
@@ -182,7 +184,7 @@ bool Hero::SwimmingState::is_stairs_obstacle(Stairs& stairs) {
  * \param item The equipment item to obtain.
  * \return true if the hero can pick that treasure in this state.
  */
-bool Hero::SwimmingState::can_pick_treasure(EquipmentItem& item) {
+bool Hero::SwimmingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
 }
 

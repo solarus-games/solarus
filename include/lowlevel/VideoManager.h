@@ -53,8 +53,11 @@ class VideoManager {
     bool is_acceleration_enabled() const;
     void create_window();
     void show_window();
+
     VideoMode get_video_mode() const;
     bool set_video_mode(VideoMode mode);
+    void update_viewport();
+  
     void switch_video_mode();
     void set_default_video_mode();
     bool is_mode_supported(VideoMode mode) const;
@@ -72,6 +75,7 @@ class VideoManager {
     void set_window_title(const std::string& window_title);
 
     static bool parse_size(const std::string& size_string, Rectangle& size);
+    static void set_absolute_position(Rectangle& rect);
 
     const Rectangle& get_quest_size() const;
     void get_quest_size_range(
@@ -101,10 +105,11 @@ class VideoManager {
         mode_sizes;                         /**< Size of the screen surface for each supported
                                              * video mode with the current quest size. */
 
-    static SDL_PixelFormat* pixel_format;   /**< The pixel color format to use. */
     SDL_Window* main_window;                /**< The window. */
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
+    SDL_PixelFormat* pixel_format;   /**< The pixel color format to use. */
     bool renderer_accelerated;              /**< \c true if 2D GPU acceleration is available. */
+    Rectangle viewport;                      /**< The position of the drawable area on the window. */
     const PixelFilter* pixel_filter;        /**< The pixel filtering algorithm (if any) applied with
                                              * the current video mode. */
     Surface* scaled_surface;                /**< The screen surface used with scaled modes. */

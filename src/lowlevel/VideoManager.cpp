@@ -203,12 +203,15 @@ void VideoManager::create_window() {
   renderer_accelerated = (renderer_info.flags & SDL_RENDERER_ACCELERATED) != 0;
   
   Debug::check_assertion(pixel_format != NULL, "No compatible pixel format");
+  
+  update_viewport();
 }
 
 /**
  * \brief Show the window.
  */
 void VideoManager::show_window() {
+  
   SDL_ShowWindow(main_window);
 }
 
@@ -225,6 +228,14 @@ bool VideoManager::is_acceleration_enabled() const {
 
   return renderer_accelerated  // 2D acceleration must be available on the system.
       && pixel_filter == NULL;  // For now pixel filters are all implemented in software.
+}
+
+/*
+* \brief Updates the viewport coordinates.
+*/
+void VideoManager::update_viewport() {
+
+  SDL_RenderGetViewport(main_renderer, viewport.get_internal_rect());
 }
 
 /**
@@ -536,6 +547,20 @@ bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
 
   size.set_size(width, height);
   return true;
+}
+
+/**
+ * \brief Return a rectangle with absolute value (eq. relative to the point 0,0 of the window).
+ * This is a workaround function. Some SDL context functions are relative to the window instead
+ * of the viewport (SDL_RenderSetClipRect).
+ * Use this function to get the expected behavior.
+ * \param rect A rectangle with a position relative to the viewport.
+ */
+void VideoManager::set_absolute_position(Rectangle& rect) {
+  
+  Rectangle& viewport = get_instance()->viewport;
+  rect.set_xy(rect.get_x() + viewport.get_x(),
+      rect.get_y() + viewport.get_y());
 }
 
 /**

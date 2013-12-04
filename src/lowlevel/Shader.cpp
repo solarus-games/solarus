@@ -151,6 +151,9 @@ Shader::Shader(std::string filename) :
     
     // Get the vertex and fragment shader sources.
     //TODO remove color shader and get sources from the corresponding driver/shader file.
+#if defined(SOLARUS_HAVE_GLES)
+    
+#else
     const char* vertex_source = "varying vec4 v_color;\n"
     "\n"
     "void main()\n"
@@ -164,6 +167,7 @@ Shader::Shader(std::string filename) :
     "{\n"
     "    gl_FragColor = v_color;\n"
     "}";
+#endif
     
     // Create one program object to rule them all ...
     program = glCreateProgramObjectARB();

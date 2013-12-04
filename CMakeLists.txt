@@ -192,13 +192,13 @@ if(COLOR_DEPTH)
 endif()
 
 if(CAANOO OR GCWZERO)
-  set(INITIAL_SCREEN_FORCE_MODE 2)  # Windowed normal.
+  set(INITIAL_SCREEN_FORCE_MODE "normal")
 elseif(PANDORA)
-  set(INITIAL_SCREEN_FORCE_MODE 3)  # Fullscreen normal.
+  set(INITIAL_SCREEN_FORCE_MODE "normal")
 else()
-  set(INITIAL_SCREEN_FORCE_MODE -1)
+  set(INITIAL_SCREEN_FORCE_MODE "")
 endif()
-set(SCREEN_FORCE_MODE ${INITIAL_SCREEN_FORCE_MODE} CACHE INTEGER "Video mode to force (-1 means no restriction).")
+set(SCREEN_FORCE_MODE ${INITIAL_SCREEN_FORCE_MODE} CACHE STRING "Video mode to force (empty means no restriction).")
 if(SCREEN_FORCE_MODE)
   add_definitions(-DSOLARUS_SCREEN_FORCE_MODE=${SCREEN_FORCE_MODE})
 endif()

@@ -26,14 +26,8 @@ VideoManager* VideoManager::instance = NULL;
 
 namespace {
 
-// Forcing a video mode at compilation time.
-#if defined(SOLARUS_SCREEN_FORCE_MODE) && SOLARUS_SCREEN_FORCE_MODE != -1
-// Force a unique video mode at compilation time.
-  const std::string forced_mode_name = SOLARUS_SCREEN_FORCE_MODE;
-#else
-// Make all modes available.
-  const std::string forced_mode_name = "";
-#endif
+// Forcing a video mode at compilation time, or make all modes available with an empty string.
+const std::string forced_mode_name = SOLARUS_SCREEN_FORCE_MODE;
 };
 
 /**

@@ -124,6 +124,7 @@ VideoManager::VideoManager(
     bool disable_window,
     const Rectangle& wanted_quest_size):
   disable_window(disable_window),
+  fullscreen(false),
   main_window(NULL),
   main_renderer(NULL),
   pixel_format(NULL),
@@ -203,56 +204,12 @@ void VideoManager::show_window() {
 }
 
 /**
- * \brief Returns whether a video mode is supported.
- * \param mode a video mode
- * \return true if this mode is supported
- */
-bool VideoManager::is_mode_supported(VideoMode* mode) const {
-
-  if (mode == NULL) {
-    return false;
-  }
-
-  if (forced_mode_name != "" && mode->name != forced_mode_name) {
-    return false;
-  }
-
-  std::vector<VideoMode*>::const_iterator it = all_video_modes.begin();
-  for(; it != all_video_modes.end(); ++it) {
-    if(*it == mode) {
-      if ((*it)->window_size.is_flat()) {
-        Debug::die(StringConcat() <<
-            "Uninitialized size for video mode " << mode->name);
-      }
-      break;
-    }
-  }
-  if (it == all_video_modes.end()) {
-    // The initial detection of this mode failed.
-    return false;
-  }
-
-  return true;
-}
-
-/**
- * \brief Returns whether a video mode is in fullscreen.
- * \param mode A video mode.
- * \return true if this video mode is in fullscreen.
- */
-bool VideoManager::is_fullscreen(VideoMode& mode) const {
-  return mode.is_fullscreen;
-}
-
-/**
  * \brief Returns whether the current video mode is in fullscreen.
  * \return true if the current video mode is in fullscreen.
  */
 bool VideoManager::is_fullscreen() const {
-  if(video_mode)
-    return is_fullscreen(*get_video_mode());
   
-  return false;
+  return fullscreen;
 }
 
 /**
@@ -273,26 +230,11 @@ void VideoManager::set_fullscreen(bool fullscreen) {
  */
 void VideoManager::switch_fullscreen() {
 
-  VideoMode* mode = video_mode->switch_mode;
+  fullscreen = !fullscreen;
   
-  if (is_mode_supported(mode)) {
-    set_video_mode(mode);
+  if (is_mode_supported(video_mode)) {
+    set_video_mode(video_mode);
   }
-}
-
-/**
- * \brief Sets the next video mode.
- */
-void VideoManager::switch_video_mode() {
-
-  std::vector<VideoMode*>::const_iterator it = find(all_video_modes.begin(), all_video_modes.end(), video_mode);
-  VideoMode* mode;
-  do {
-    if (it == all_video_modes.end())
-      it = all_video_modes.begin();
-    mode = *(++it);
-  } while (!is_mode_supported(mode));
-  set_video_mode(mode);
 }
 
 /**
@@ -305,10 +247,58 @@ void VideoManager::set_default_video_mode() {
     mode = get_video_mode_by_name(forced_mode_name);
   }
   else {
-    mode = get_video_mode_by_name("windowed_stretched");
+    mode = get_video_mode_by_name("normal");
   }
   
   set_video_mode(mode);
+}
+
+/**
+ * \brief Sets the next video mode.
+ */
+void VideoManager::switch_video_mode() {
+  
+  std::vector<VideoMode*>::const_iterator it = find(all_video_modes.begin(), all_video_modes.end(), video_mode);
+  VideoMode* mode;
+  do {
+    if (it == all_video_modes.end())
+      it = all_video_modes.begin();
+    mode = *(++it);
+  } while (!is_mode_supported(mode));
+  set_video_mode(mode);
+}
+
+/**
+ * \brief Returns whether a video mode is supported.
+ * \param mode a video mode
+ * \return true if this mode is supported
+ */
+bool VideoManager::is_mode_supported(VideoMode* mode) const {
+  
+  if (mode == NULL) {
+    return false;
+  }
+  
+  if (forced_mode_name != "" && mode->name != forced_mode_name) {
+    return false;
+  }
+  
+  std::vector<VideoMode*>::const_iterator it = all_video_modes.begin();
+  for(; it != all_video_modes.end(); ++it) {
+    if(*it == mode) {
+      if ((*it)->window_size.is_flat()) {
+        Debug::die(StringConcat() <<
+            "Uninitialized size for video mode " << mode->name);
+      }
+      break;
+    }
+  }
+  if (it == all_video_modes.end()) {
+    // The initial detection of this mode failed.
+    return false;
+  }
+  
+  return true;
 }
 
 /**
@@ -324,7 +314,7 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
 
   int show_cursor;
   Uint32 fullscreen_flag;
-  if (is_fullscreen(*mode)) {
+  if (is_fullscreen()) {
     fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
     show_cursor = SDL_DISABLE;
   }
@@ -549,51 +539,23 @@ void VideoManager::set_quest_size_range(
  * Fullscreen modes all are at the top of the list.
  */
 void VideoManager::initialize_video_modes() {
-  
-  const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
-  VideoMode* fullscreen_normal = new VideoMode("fullscreen_normal", quest_size, NULL, NULL, true);
-  VideoMode* windowed_normal = new VideoMode("windowed_normal", quest_size, NULL, fullscreen_normal, false);
-  VideoMode* windowed_stretched = new VideoMode("windowed_stretched", quest_size_2, NULL, fullscreen_normal, false);
-  fullscreen_normal->switch_mode = windowed_stretched;
-  
+
   // Initialize non-shaded windowed video modes.
-  all_video_modes.push_back(windowed_normal);
-  all_video_modes.push_back(windowed_stretched);
+  const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
+  all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL));
   
   //TODO remove the following, get all shaders of the quest's shader/driver folder and initialize them.
   Shader* video_mode_shader = new Shader("scale2x");
   add_shader(*video_mode_shader);
   
-  int start_shaded = all_video_modes.size();
-  
-  // Add supported shaders's corresponding windowed modes.
+  // Add a mode for each shader.
   for(int i=0 ; i<supported_shaders.size() ; ++i) {
     const Rectangle scaled_quest_size(0, 0, 
         double(quest_size.get_width()) * supported_shaders.at(i)->get_logical_scale(),
         double(quest_size.get_height()) * supported_shaders.at(i)->get_logical_scale());
-    all_video_modes.push_back(new VideoMode("windowed_" + supported_shaders.at(i)->get_name(),
+    all_video_modes.push_back(new VideoMode(supported_shaders.at(i)->get_name(),
       scaled_quest_size,
-      supported_shaders.at(i),
-      NULL,
-      false));
-  }
-  
-  int end_shaded = all_video_modes.size();
-  
-  // Initialize non-shaded fullscreen video modes.
-  all_video_modes.push_back(fullscreen_normal);
-  
-  // And finally add fullscreen shaded modes and all switch modes.
-  for(int i=start_shaded ; i<end_shaded ; ++i) {
-    VideoMode* fullscreen_shaded = new VideoMode(
-        "fullscreen_" + all_video_modes.at(i)->shader->get_name(),
-        all_video_modes.at(i)->window_size,
-        all_video_modes.at(i)->shader,
-        all_video_modes.at(i),
-        true);
-    all_video_modes.push_back(fullscreen_shaded);
-    
-    all_video_modes.at(i)->switch_mode = fullscreen_shaded;
+      supported_shaders.at(i)));
   }
   
   // Everything is ready now.

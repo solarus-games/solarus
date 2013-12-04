@@ -37,11 +37,11 @@ class VideoManager {
       std::string name;                 /**< Name of the video mode. */
       Rectangle window_size;            /**< Final size of the window when selecting this video mode. */
       Shader* shader;                   /**< Shader to use. NULL or a pointer to one of the supported shaders. */
-      struct _VideoMode* switch_mode;   /**< The next mode when switch requested. */
-      bool is_fullscreen;               /**< True if the mode is displayed fullscreen. */
       
-      _VideoMode(std::string name, Rectangle window_size, Shader* shader, struct _VideoMode* switch_mode, bool is_fullscreen)
-          :name(name),window_size(window_size),shader(shader),switch_mode(switch_mode),is_fullscreen(is_fullscreen) {};
+      _VideoMode(std::string name, Rectangle window_size, Shader* shader) :
+          name(name),
+          window_size(window_size),
+          shader(shader) {};
     } VideoMode;
 
     static void initialize(int argc, char** argv);
@@ -57,15 +57,14 @@ class VideoManager {
     void initialize_video_modes();
     VideoMode* get_video_mode() const;
     const std::vector<VideoMode*>& get_video_modes() const;
-    bool set_video_mode(VideoMode* mode);
-    void switch_video_mode();
-    void set_default_video_mode();
     bool is_mode_supported(VideoMode* mode) const;
+    bool set_video_mode(VideoMode* mode);
+    void set_default_video_mode();
+    void switch_video_mode();
 
     static std::string get_video_mode_name(VideoMode* mode);
     static VideoMode* get_video_mode_by_name(const std::string& mode_name);
 
-    bool is_fullscreen(VideoMode& mode) const;
     bool is_fullscreen() const;
     void set_fullscreen(bool fullscreen);
     void switch_fullscreen();
@@ -101,6 +100,7 @@ class VideoManager {
     SDL_PixelFormat* pixel_format;           /**< The pixel color format to use. */
   
     bool disable_window;                     /**< Indicates that no window is displayed (used for unit tests). */
+    bool fullscreen;                         /**< True if fullscreen display. */
     std::vector<Shader*> supported_shaders;  /**< Shaders that can be applied when rendering. */
     std::vector<VideoMode*> all_video_modes; /**< Display informations for each supported video mode. */
     VideoMode* video_mode;                   /**< Current display mode, pointer to an element of all_video_modes. */

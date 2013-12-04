@@ -559,8 +559,7 @@ bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
 void VideoManager::set_absolute_position(Rectangle& rect) {
   
   Rectangle& viewport = get_instance()->viewport;
-  rect.set_xy(rect.get_x() + viewport.get_x(),
-      rect.get_y() + viewport.get_y());
+  rect.add_xy(viewport.get_x(), -viewport.get_y());
 }
 
 /**

@@ -18,19 +18,17 @@
 
 #include <string>
 
-using std::string;
-
 class Language {
 
   public:
     // Languages.
-    static bool has_language(const string& language_code);
-    static void set_language(const string& language_code);
-    static const string& get_language();
-    static const string& get_language_name(const string& language_code);
+    static bool has_language(const std::string& language_code);
+    static void set_language(const std::string& language_code);
+    static const std::string& get_language();
+    static const std::string& get_language_name(const std::string& language_code);
 
   private:
-    static string language_code;                    /**< Code of the current language (e.g. "en", "fr", etc.). */
+    static std::string language_code;                    /**< Code of the current language (e.g. "en", "fr", etc.). */
 };
 
 #endif

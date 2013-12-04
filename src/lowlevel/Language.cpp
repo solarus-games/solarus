@@ -23,22 +23,19 @@
 #include "QuestResourceList.h"
 #include <vector>
 
-using std::string;
-using std::vector;
-
-string Language::language_code;
+std::string Language::language_code;
 
 /**
  * \brief Returns whether a language exists for this quest.
  * \param language_code Code of the language to test.
  * \return \c true if this language exists.
  */
-bool Language::has_language(const string& language_code) {
+bool Language::has_language(const std::string& language_code) {
 
-  const vector<QuestResourceList::Element>& languages =
+  const std::vector<QuestResourceList::Element>& languages =
     QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
 
-  vector<QuestResourceList::Element>::const_iterator it;
+  std::vector<QuestResourceList::Element>::const_iterator it;
   for (it = languages.begin(); it != languages.end(); ++it) {
     if (it->first == language_code) {
       return true;
@@ -55,7 +52,7 @@ bool Language::has_language(const string& language_code) {
  *
  * \param language_code Code of the language to set.
  */
-void Language::set_language(const string& language_code) {
+void Language::set_language(const std::string& language_code) {
 
   Debug::check_assertion(has_language(language_code),
       StringConcat() << "Unknown language '" << language_code << "'");
@@ -72,7 +69,7 @@ void Language::set_language(const string& language_code) {
  *
  * \return code of the language, or an empty string if no language is set
  */
-const string& Language::get_language() {
+const std::string& Language::get_language() {
   return language_code;
 }
 
@@ -81,19 +78,19 @@ const string& Language::get_language() {
  * \param language_code Code of a language.
  * \return Name of this language of an empty string.
  */
-const string& Language::get_language_name(
-    const string& language_code) {
+const std::string& Language::get_language_name(
+    const std::string& language_code) {
 
-  const vector<QuestResourceList::Element>& languages =
+  const std::vector<QuestResourceList::Element>& languages =
     QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
 
-  vector<QuestResourceList::Element>::const_iterator it;
+  std::vector<QuestResourceList::Element>::const_iterator it;
   for (it = languages.begin(); it != languages.end(); ++it) {
     if (it->first == language_code) {
       return it->second;
     }
   }
 
-  static string empty_string("");
+  static std::string empty_string("");
   return empty_string;
 }

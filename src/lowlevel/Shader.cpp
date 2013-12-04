@@ -109,7 +109,7 @@ void Shader::initialize() {
   videomanager->initialize_video_modes();
 }
 
-SDL_bool Shader::compile_shader(GLhandleARB shader, const char* source) {
+SDL_bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
   
   GLint status;
   
@@ -142,16 +142,16 @@ Shader::Shader(std::string filename) :
   if (shaders_supported) {
     
     const int num_tmus_bound = 4;
-    int i;
     GLint location;
     
     glGetError();
     
     //TODO Parse the lua file
+    logical_scale = 2.0;
     
     // Get the vertex and fragment shader sources.
     //TODO remove color shader and get sources from the corresponding driver/shader file.
-    vertex_source = "varying vec4 v_color;\n"
+    const char* vertex_source = "varying vec4 v_color;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -159,7 +159,7 @@ Shader::Shader(std::string filename) :
     "    v_color = gl_Color;\n"
       "}";
     /* fragment shader */
-    fragment_source = "varying vec4 v_color;\n"
+    const char* fragment_source = "varying vec4 v_color;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -188,7 +188,7 @@ Shader::Shader(std::string filename) :
     
     // Set up some uniform variables
     glUseProgramObjectARB(program);
-    for (i = 0; i < num_tmus_bound; ++i) {
+    for (int i = 0; i < num_tmus_bound; ++i) {
       char tex_name[5];
       SDL_snprintf(tex_name, SDL_arraysize(tex_name), "tex%d", i);
       location = glGetUniformLocationARB(program, tex_name);
@@ -217,6 +217,10 @@ const std::string Shader::get_name() {
 
 double Shader::get_logical_scale() {
   return logical_scale;
+}
+
+void Shader::load_files() {
+  
 }
 
 void Shader::render_present_shaded(SDL_Renderer* renderer)

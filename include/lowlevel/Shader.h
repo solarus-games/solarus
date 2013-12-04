@@ -32,7 +32,7 @@ class Shader {
 
   public:
     static void initialize();
-    static SDL_bool compile_shader(GLhandleARB shader, const char* source);
+    static SDL_bool compile_shader(GLhandleARB& shader, const char* source);
   
     Shader(std::string filename);
     ~Shader();
@@ -43,6 +43,8 @@ class Shader {
     void render_present_shaded(SDL_Renderer* renderer);
 
   private:
+    void load_files();
+  
     static SDL_bool shaders_supported;           /**< True if GLSL shaders are supported. */
     static GLint default_shader_program;         /**< Default shader program to restore once a shaded render is done. */
   
@@ -59,12 +61,9 @@ class Shader {
     static PFNGLUNIFORM1IARBPROC glUniform1iARB;
     static PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
   
-    GLhandleARB program;
-    GLhandleARB vertex_shader;
-    GLhandleARB fragment_shader;
-    const char* vertex_source;
-    const char* fragment_source;
-  
+    GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
+    GLhandleARB vertex_shader;                   /**< The vertex shader. */
+    GLhandleARB fragment_shader;                 /**< The fragment shader. */
     std::string name;                            /**< Name of the shader and of the video mode's suffixe associated. */
     double logical_scale;                        /**< Logical scale of the renderer when the shader is active,
                                                    compared to the normal quest size. */

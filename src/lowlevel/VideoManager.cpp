@@ -537,25 +537,28 @@ void VideoManager::set_quest_size_range(
 /**
  * \brief Detects the available shaders and initialize all needed video modes.
  * Fullscreen modes all are at the top of the list.
+ * \param skip_shaded_modes true to skip shaded modes loading.
  */
-void VideoManager::initialize_video_modes() {
+void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
 
-  // Initialize non-shaded windowed video modes.
+  // Initialize non-shaded video modes.
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
   all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL));
   
-  //TODO remove the following, get all shaders of the quest's shader/driver folder and initialize them.
-  Shader* video_mode_shader = new Shader("scale2x");
-  add_shader(*video_mode_shader);
+  if (!skip_shaded_modes) {
+    //TODO remove the following, get all shaders of the quest's shader/driver folder and initialize them.
+    Shader* video_mode_shader = new Shader("scale2x");
+    add_shader(*video_mode_shader);
   
-  // Add a mode for each shader.
-  for(int i=0 ; i<supported_shaders.size() ; ++i) {
-    const Rectangle scaled_quest_size(0, 0, 
-        double(quest_size.get_width()) * supported_shaders.at(i)->get_logical_scale(),
-        double(quest_size.get_height()) * supported_shaders.at(i)->get_logical_scale());
-    all_video_modes.push_back(new VideoMode(supported_shaders.at(i)->get_name(),
-      scaled_quest_size,
-      supported_shaders.at(i)));
+    // Add a mode for each shader.
+    for(int i=0 ; i<supported_shaders.size() ; ++i) {
+      const Rectangle scaled_quest_size(0, 0, 
+          double(quest_size.get_width()) * supported_shaders.at(i)->get_logical_scale(),
+          double(quest_size.get_height()) * supported_shaders.at(i)->get_logical_scale());
+      all_video_modes.push_back(new VideoMode(supported_shaders.at(i)->get_name(),
+        scaled_quest_size,
+        supported_shaders.at(i)));
+    }
   }
   
   // Everything is ready now.

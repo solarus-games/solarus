@@ -96,8 +96,8 @@ void Shader::initialize() {
     SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
     Debug::warning("OpenGL shaders not supported.");
     
-    // TODO Only authorize default modes.
-    //videomanager->initialize_default_video_modes();
+    // Only authorize default modes.
+    videomanager->initialize_video_modes(true);
     
     return;
   }

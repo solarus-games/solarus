@@ -54,7 +54,7 @@ class VideoManager {
     void create_window();
     void show_window();
   
-    void initialize_video_modes();
+    void initialize_video_modes(bool skip_shaded_modes = false);
     VideoMode* get_video_mode() const;
     const std::vector<VideoMode*>& get_video_modes() const;
     bool is_mode_supported(VideoMode* mode) const;

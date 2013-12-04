@@ -158,7 +158,6 @@ Shader::Shader(std::string filename) :
     "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
     "    v_color = gl_Color;\n"
       "}";
-    /* fragment shader */
     const char* fragment_source = "varying vec4 v_color;\n"
     "\n"
     "void main()\n"

@@ -172,7 +172,7 @@ void VideoManager::create_window() {
       SDL_WINDOWPOS_CENTERED,
       wanted_quest_size.get_width(),
       wanted_quest_size.get_height(),
-      SDL_WINDOW_HIDDEN | SDL_WINDOW_OPENGL);
+      SDL_WINDOW_HIDDEN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
   Debug::check_assertion(main_window != NULL,
       std::string("Cannot create the window: ") + SDL_GetError());
   
@@ -546,6 +546,7 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
   all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL));
   
   if (!skip_shaded_modes) {
+    
     //TODO remove the following, get all shaders of the quest's shader/driver folder and initialize them.
     Shader* video_mode_shader = new Shader("scale2x");
     add_shader(*video_mode_shader);
@@ -555,9 +556,11 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
       const Rectangle scaled_quest_size(0, 0, 
           double(quest_size.get_width()) * supported_shaders.at(i)->get_logical_scale(),
           double(quest_size.get_height()) * supported_shaders.at(i)->get_logical_scale());
-      all_video_modes.push_back(new VideoMode(supported_shaders.at(i)->get_name(),
-        scaled_quest_size,
-        supported_shaders.at(i)));
+      all_video_modes.push_back( new VideoMode(
+          supported_shaders.at(i)->get_name(),
+          scaled_quest_size,
+          supported_shaders.at(i) )
+      );
     }
   }
   

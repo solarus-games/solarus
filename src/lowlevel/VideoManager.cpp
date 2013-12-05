@@ -64,8 +64,11 @@ void VideoManager::initialize(int argc, char **argv) {
     }
   }
   
-  // Set OpenGL as default renderer driver when available, to avoid to use direct3d.
+  // Set OpenGL as the default renderer driver when available, to avoid to use direct3d.
   SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
+  
+  // Set the default OpenGL built-in shader (linear)
+  SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
   
   instance = new VideoManager(disable, wanted_quest_size);
 }
@@ -111,7 +114,7 @@ SDL_PixelFormat* VideoManager::get_pixel_format() {
 
 /**
  * \brief Constructor.
- * \brief disable_window true to entirely disable the displaying.
+ * \param disable_window true to entirely disable the displaying.
  * \param wanted_quest_size Size of the quest as requested by the user.
  */
 VideoManager::VideoManager(

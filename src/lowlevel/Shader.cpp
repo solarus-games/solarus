@@ -34,6 +34,9 @@ PFNGLUSEPROGRAMOBJECTARBPROC Shader::glUseProgramObjectARB;
 SDL_bool Shader::shaders_supported = SDL_FALSE;
 GLint Shader::default_shader_program;
 
+/**
+ * \brief Initialize the OpenGL shader system.
+ */
 void Shader::initialize() {
   
   VideoManager* videomanager = VideoManager::get_instance();
@@ -93,22 +96,24 @@ void Shader::initialize() {
   
   if(!shaders_supported) {
     
-    SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
-    Debug::warning("OpenGL shaders not supported.");
-    
     // Only authorize default modes.
     videomanager->initialize_video_modes(true);
+    Debug::warning("OpenGL shaders not supported.");
     
     return;
   }
   
-  // Get the deault shader program
+  // Get the default shader program
   glGetIntegerv(GL_CURRENT_PROGRAM, &default_shader_program);
 
   // Initialize default and shaded video modes.
   videomanager->initialize_video_modes();
 }
 
+/**
+ * \brief Compile a shader from source.
+ * \return true if success.
+ */
 SDL_bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
   
   GLint status;
@@ -132,12 +137,16 @@ SDL_bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
   }
 }
 
-Shader::Shader(std::string filename) :
+/**
+ * \brief Constructor.
+ * \param shadername The name of the shader to load.
+ */
+Shader::Shader(std::string shadername) :
   logical_scale(1.0),
   program(0),
   vertex_shader(0),
   fragment_shader(0),
-  name(filename) {
+  name(shadername) {
     
   if (shaders_supported) {
     
@@ -146,48 +155,8 @@ Shader::Shader(std::string filename) :
     
     glGetError();
     
-    //TODO Parse the lua file
-    logical_scale = 2.0;
-    
-    // Get the vertex and fragment shader sources.
-    //TODO remove color shader and get sources from the corresponding driver/shader file.
-#if defined(SOLARUS_HAVE_GLES)
-    
-#else
-    const char* vertex_source = "varying vec4 v_color;\n"
-    "\n"
-    "void main()\n"
-    "{\n"
-    "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
-    "    v_color = gl_Color;\n"
-      "}";
-    const char* fragment_source = "varying vec4 v_color;\n"
-    "\n"
-    "void main()\n"
-    "{\n"
-    "    gl_FragColor = v_color;\n"
-    "}";
-#endif
-    
-    // Create one program object to rule them all ...
-    program = glCreateProgramObjectARB();
-    
-    // Create the vertex shader
-    vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-    if (!compile_shader(vertex_shader, vertex_source)) {
-      Debug::die("Cannot compile the vertex shader for : " + filename);
-    }
-    
-    // Create the fragment shader
-    fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-    if (!compile_shader(fragment_shader, fragment_source)) {
-      Debug::die("Cannot compile the fragment shader for : " + filename);
-    }
-    
-    // ... and in the darkness bind them
-    glAttachObjectARB(program, vertex_shader);
-    glAttachObjectARB(program, fragment_shader);
-    glLinkProgramARB(program);
+    // Load the shader.
+    load_shader();
     
     // Set up some uniform variables
     glUseProgramObjectARB(program);
@@ -199,12 +168,15 @@ Shader::Shader(std::string filename) :
         glUniform1iARB(location, i);
       }
     }
-    glUseProgram(default_shader_program);
+    glUseProgramObjectARB((void*)default_shader_program);
     
-    Debug::check_assertion(glGetError() == GL_NO_ERROR, "Cannot compile the shader : " + filename);
+    Debug::check_assertion(glGetError() == GL_NO_ERROR, "Cannot compile the shader : " + name);
   }
 }
 
+/**
+ * \brief Destructor.
+ */
 Shader::~Shader()
 {
   if (shaders_supported) {
@@ -214,18 +186,75 @@ Shader::~Shader()
   }
 }
 
+/**
+ * \brief Get the name of the shader.
+ * \return The name.
+ */
 const std::string Shader::get_name() {
   return name;
 }
 
+/**
+ * \brief Get the scale to apply on the quest size to get the final window size of this shader.
+ * \return The logical scale.
+ */
 double Shader::get_logical_scale() {
   return logical_scale;
 }
 
-void Shader::load_files() {
+/**
+ * \brief Load all shader files, parse the Lua one and compile GLSL others.
+ */
+void Shader::load_shader() {
   
+  //TODO Parse the lua file
+  logical_scale = 2.0;
+  
+  // Get the vertex and fragment shader sources.
+  //TODO remove color shader and get sources from the corresponding driver/shader file.
+#if defined(SOLARUS_HAVE_GLES)
+  
+#else
+  const char* vertex_source = "varying vec4 v_color;\n"
+  "\n"
+  "void main()\n"
+  "{\n"
+  "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
+  "    v_color = gl_Color;\n"
+  "}";
+  const char* fragment_source = "varying vec4 v_color;\n"
+  "\n"
+  "void main()\n"
+  "{\n"
+  "    gl_FragColor = v_color;\n"
+  "}";
+#endif
+  
+  // Create one program object to rule them all ...
+  program = glCreateProgramObjectARB();
+  
+  // Create the vertex shader
+  vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+  if (!compile_shader(vertex_shader, vertex_source)) {
+    Debug::die("Cannot compile the vertex shader for : " + name);
+  }
+  
+  // Create the fragment shader
+  fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+  if (!compile_shader(fragment_shader, fragment_source)) {
+    Debug::die("Cannot compile the fragment shader for : " + name);
+  }
+  
+  // ... and in the darkness bind them
+  glAttachObjectARB(program, vertex_shader);
+  glAttachObjectARB(program, fragment_shader);
+  glLinkProgramARB(program);
 }
 
+/**
+ * \brief Apply the current shader if supported, and render to the window.
+ * \param renderer The renderer.
+ */
 void Shader::render_present_shaded(SDL_Renderer* renderer)
 {
   if (shaders_supported) {
@@ -234,7 +263,7 @@ void Shader::render_present_shaded(SDL_Renderer* renderer)
     SDL_RenderPresent(renderer);
     
     // Restore the default shader
-    glUseProgram(default_shader_program);
+    glUseProgramObjectARB((void*)default_shader_program);
   }
   else {
     SDL_RenderPresent(renderer);

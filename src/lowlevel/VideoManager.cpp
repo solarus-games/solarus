@@ -422,6 +422,12 @@ void VideoManager::render(Surface& quest_surface) {
   SDL_RenderSetClipRect(main_renderer, NULL);
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
   SDL_RenderClear(main_renderer);
+    
+  // TODO profile what is the fastest way : 
+  // * apply the shader like this
+  // * apply and restore it at each call to SDL_RenderCopy()
+  // * rendering on a texture buffer and apply the shader on it (minimum requirement : OpenGL 2.0 capable hardware)
+  // TODO2 if keeping things like this : be sure that let the shader active during all the rendering phase has no drawing side effect.
   
   // Apply a shader if we have to, and copy textures onto the renderer.
   VideoMode* video_mode = get_instance()->video_mode;
@@ -580,7 +586,7 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
   all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL));
   
-  // ... and shaded ones if needed.
+  // ... and shaded ones if supported.
   if (!skip_shaded_modes) {
     
     //TODO remove the following, get all shaders of the quest's shader/driver folder and initialize them.

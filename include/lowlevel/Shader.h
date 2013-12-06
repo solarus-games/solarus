@@ -17,9 +17,10 @@
 #ifndef SOLARUS_SHADER_H
 #define SOLARUS_SHADER_H
 
-#include "SDL.h"
-#include "SDL_opengl.h"
+#include "lua/LuaContext.h"
 #include "Debug.h"
+#include <SDL.h>
+#include <SDL_opengl.h>
 
 
 /**
@@ -43,8 +44,13 @@ class Shader {
     void apply();
 
   private:
-    void load_shader(std::string shader_name);
+    void load(std::string& shader_name);
+    void load_lua_file(std::string& shader_name);
+    const std::string get_rendering_driver();
   
+    static int l_shader(lua_State* l);
+  
+    static Shader* current_loaded_shader;        /**< Shader to fill by l_shader(). TODO : remove if possible. */
     static SDL_bool shaders_supported;           /**< True if GLSL shaders are supported. */
     static GLint default_shader_program;         /**< Default shader program to restore once a shaded render is done. */
   

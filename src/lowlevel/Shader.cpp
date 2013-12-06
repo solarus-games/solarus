@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Shader.h"
+#include "lowlevel/FileTools.h"
 #include "lowlevel/VideoManager.h"
 
 
@@ -31,6 +32,7 @@ PFNGLSHADERSOURCEARBPROC Shader::glShaderSourceARB;
 PFNGLUNIFORM1IARBPROC Shader::glUniform1iARB;
 PFNGLUSEPROGRAMOBJECTARBPROC Shader::glUseProgramObjectARB;
 
+Shader* Shader::current_loaded_shader = NULL;
 SDL_bool Shader::shaders_supported = SDL_FALSE;
 GLint Shader::default_shader_program;
 
@@ -156,7 +158,7 @@ Shader::Shader(std::string shader_name) :
     glGetError();
     
     // Load the shader.
-    load_shader(shader_name);
+    load(shader_name);
     
     // Set up some uniform variables
     glUseProgramObjectARB(program);
@@ -197,10 +199,10 @@ double Shader::get_logical_scale() {
 /**
  * \brief Load all shader files, parse the Lua one and compile GLSL others.
  */
-void Shader::load_shader(std::string shader_name) {
+void Shader::load(std::string& shader_name) {
   
-  //TODO Parse the lua file
-  logical_scale = 2.0;
+  // Parse the lua file
+  load_lua_file(shader_name);
   
   // Get the vertex and fragment shader sources.
   //TODO remove color shader and get sources from the corresponding driver/shader file.
@@ -241,6 +243,77 @@ void Shader::load_shader(std::string shader_name) {
   glAttachObjectARB(program, vertex_shader);
   glAttachObjectARB(program, fragment_shader);
   glLinkProgramARB(program);
+}
+
+/**
+ * \brief Load and parse the Lua file of the requested shader.
+ */
+void Shader::load_lua_file(std::string& shader_name) {
+  
+  lua_State* l = luaL_newstate();
+  size_t size;
+  char* buffer;  
+  const std::string& file_path = 
+      "shaders/" + get_rendering_driver() + "/" + shader_name + "/" + shader_name + ".lua";
+  FileTools::data_file_open_buffer(file_path, &buffer, &size);
+  int load_result = luaL_loadbuffer(l, buffer, size, file_path.c_str());
+  current_loaded_shader = this;
+  
+  if (load_result != 0) {
+    // Syntax error in quest.dat.
+    Debug::die(std::string("Failed to load : ") + file_path);
+  }
+  else {
+    
+    lua_register(l, "shader", l_shader);
+    if (lua_pcall(l, 0, 0, 0) != 0) {
+      // Loading the lua file failed.
+      // There may be a syntax error, or this is a quest for Solarus 0.9.
+      // There was no version number at that time.
+      
+      if (std::string(buffer).find("[info]")) {
+        // Quest format of Solarus 0.9.
+        Debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
+            + SOLARUS_VERSION);
+      }
+      else {
+        // Runtime error.
+        Debug::die(std::string("Failed to parse: ") + file_path);
+      }
+      lua_pop(l, 1);
+    }
+  }
+  
+  current_loaded_shader = NULL;
+  FileTools::data_file_close_buffer(buffer);
+  lua_close(l);
+}
+
+int Shader::l_shader(lua_State* l) {
+  
+  // Retrieve the shader properties from the table parameter.
+  luaL_checktype(l, 1, LUA_TTABLE);
+  
+  const double& window_scale =
+      LuaContext::opt_number_field(l, 1, "logical_scale", 1.0);
+  
+  current_loaded_shader->logical_scale = window_scale;
+  
+  return 0;
+}
+
+// Move to VideoManager ?
+/**
+ * \brief Get the current rendering driver (OpenGL ES2 or OpenGL).
+ * \return a string containing the rendering driver name.
+ */
+const std::string Shader::get_rendering_driver() {
+
+#if defined(SOLARUS_HAVE_GLES)
+  return "opengles2";
+#else
+  return "opengl";
+#endif
 }
 
 /**

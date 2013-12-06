@@ -1,1 +1,3 @@
-logical_scale = 2
+shader {
+	logical_scale = 2
+}

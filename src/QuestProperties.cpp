@@ -117,11 +117,11 @@ void QuestProperties::load() {
       if (std::string(buffer).find("[info]")) {
         // Quest format of Solarus 0.9.
         Debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
-        + SOLARUS_VERSION);
+            + SOLARUS_VERSION);
       }
       else {
         // Runtime error in quest.dat.
-        Debug::die(std::string("Failed to load quest.dat: ") + lua_tostring(l, -1));
+        Debug::die(std::string("Failed to parse quest.dat: ") + lua_tostring(l, -1));
       }
       lua_pop(l, 1);
     }

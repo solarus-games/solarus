@@ -41,6 +41,8 @@ void Shader::initialize() {
   
   VideoManager* videomanager = VideoManager::get_instance();
   
+  SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
+  
   if (!SDL_GL_CreateContext(videomanager->get_window())) {
     Debug::die("Unable to create OpenGL context : " + std::string(SDL_GetError()));
   }
@@ -48,18 +50,9 @@ void Shader::initialize() {
   GLdouble aspect;
   Rectangle quest_size = videomanager->get_quest_size();
   
-  glViewport(0, 0, quest_size.get_width(), quest_size.get_height());
   glDepthFunc(GL_LESS);                        // The Type Of Depth Test To Do
   glEnable(GL_DEPTH_TEST);                     // Enables Depth Testing
   glShadeModel(GL_SMOOTH);                     // Enables Smooth Color Shading
-  
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();                            // Reset The Projection Matrix
-  
-  aspect = (GLdouble)quest_size.get_width() / quest_size.get_height();
-  glOrtho(-3.0, 3.0, -3.0 / aspect, 3.0 / aspect, 0.0, 1.0);
-  
-  glMatrixMode(GL_MODELVIEW);
   
   // Check for shader support
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
@@ -223,30 +216,18 @@ void Shader::load_shader() {
 #if defined(SOLARUS_HAVE_GLES)
   
 #else
-  const char* vertex_source = "varying vec2 v_texCoord;\n"
+  const char* vertex_source = "varying vec4 v_color;\n"
   "\n"
   "void main()\n"
   "{\n"
   "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
-  "    v_texCoord = vec2(gl_MultiTexCoord0);\n"
-  "}"
-  ;
-  const char* fragment_source = "varying vec2 v_texCoord;\n"
+  "    v_color = gl_Color;\n"
+  "}";
+  const char* fragment_source = "varying vec4 v_color;\n"
   "\n"
   "void main()\n"
   "{\n"
-  "    vec4 color;\n"
-  "    vec2 delta;\n"
-  "    float dist;\n"
-  "\n"
-  "    delta = vec2(0.5, 0.5) - v_texCoord;\n"
-  "    dist = dot(delta, delta);\n"
-  "\n"
-  "    color.r = v_texCoord.x;\n"
-  "    color.g = v_texCoord.x * v_texCoord.y;\n"
-  "    color.b = v_texCoord.y;\n"
-  "    color.a = 1.0 - (dist * 4.0);\n"
-  "    gl_FragColor = color;\n"
+  "    gl_FragColor = v_color;\n"
   "}";
 #endif
   

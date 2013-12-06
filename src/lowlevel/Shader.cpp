@@ -32,7 +32,7 @@ PFNGLSHADERSOURCEARBPROC Shader::glShaderSourceARB;
 PFNGLUNIFORM1IARBPROC Shader::glUniform1iARB;
 PFNGLUSEPROGRAMOBJECTARBPROC Shader::glUseProgramObjectARB;
 
-Shader* Shader::current_loaded_shader = NULL;
+Shader* Shader::loading_shader = NULL;
 SDL_bool Shader::shaders_supported = SDL_FALSE;
 GLint Shader::default_shader_program;
 
@@ -215,7 +215,7 @@ void Shader::load(const std::string& shader_name) {
   // Create the vertex and fragment shaders.
   const std::string vertex_file = base_shader_path + ".slv";
   FileTools::data_file_open_buffer(vertex_file, &vertex_buffer, &vertex_size);
-  vertex_source = std::string(vertex_buffer, vertex_size); // Make sure the buffer is a \0 terminated string.
+  vertex_source = std::string(vertex_buffer, vertex_size); // Make sure the buffer is a valid string.
   vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
   if (!compile_shader(vertex_shader, vertex_source.c_str())) {
     Debug::die("Cannot compile the vertex shader for : " + shader_name);
@@ -224,7 +224,7 @@ void Shader::load(const std::string& shader_name) {
   
   const std::string fragment_file = base_shader_path + ".slf";
   FileTools::data_file_open_buffer(fragment_file, &fragment_buffer, &fragment_size);
-  fragment_source = std::string(fragment_buffer, fragment_size); // Make sure the buffer is a \0 terminated string.
+  fragment_source = std::string(fragment_buffer, fragment_size); // Make sure the buffer is a valid string.
   fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
   if (!compile_shader(fragment_shader, fragment_source.c_str())) {
     Debug::die("Cannot compile the fragment shader for : " + shader_name);
@@ -243,42 +243,32 @@ void Shader::load(const std::string& shader_name) {
 /**
  * \brief Load and parse the Lua file of the requested shader.
  */
-void Shader::load_lua_file(const std::string& shader_path) {
+void Shader::load_lua_file(const std::string& path) {
   
   lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;  
   
-  FileTools::data_file_open_buffer(shader_path, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, shader_path.c_str());
-  current_loaded_shader = this;
+  FileTools::data_file_open_buffer(path, &buffer, &size);
+  int load_result = luaL_loadbuffer(l, buffer, size, path.c_str());
+  loading_shader = this;
   
   if (load_result != 0) {
-    // Syntax error in quest.dat.
-    Debug::die(std::string("Failed to load : ") + shader_path);
+    // Syntax error in the lua file.
+    Debug::die(std::string("Failed to load : ") + path);
   }
   else {
     
     lua_register(l, "shader", l_shader);
     if (lua_pcall(l, 0, 0, 0) != 0) {
-      // Loading the lua file failed.
-      // There may be a syntax error, or this is a quest for Solarus 0.9.
-      // There was no version number at that time.
-      
-      if (std::string(buffer).find("[info]")) {
-        // Quest format of Solarus 0.9.
-        Debug::die(std::string("This quest is made for Solarus 0.9 but you are running Solarus ")
-            + SOLARUS_VERSION);
-      }
-      else {
-        // Runtime error.
-        Debug::die(std::string("Failed to parse: ") + shader_path);
-      }
+
+      // Runtime error.
+      Debug::die(std::string("Failed to parse: ") + path);
       lua_pop(l, 1);
     }
   }
   
-  current_loaded_shader = NULL;
+  loading_shader = NULL;
   FileTools::data_file_close_buffer(buffer);
   lua_close(l);
 }
@@ -291,8 +281,10 @@ int Shader::l_shader(lua_State* l) {
   const double& window_scale =
       LuaContext::opt_number_field(l, 1, "logical_scale", 1.0);
   
-  current_loaded_shader->logical_scale = window_scale;
-  
+  if (loading_shader != NULL) {
+    loading_shader->logical_scale = window_scale;
+  }
+
   return 0;
 }
 

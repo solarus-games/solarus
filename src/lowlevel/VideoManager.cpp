@@ -585,6 +585,7 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
     
     //TODO remove the following, get all shaders of the quest's shader/driver folder and initialize them.
     std::vector<std::string> shader_names;
+    shader_names.push_back("white_sprites");
     shader_names.push_back("scale2x");
   
     for(int i=0 ; i<shader_names.size() ; ++i) {

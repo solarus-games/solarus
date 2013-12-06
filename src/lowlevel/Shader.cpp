@@ -138,6 +138,14 @@ SDL_bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
 }
 
 /**
+ * \brief Restore the default shader.
+ */
+void Shader::restore_default_shader_program() {
+
+  glUseProgramObjectARB((void*)default_shader_program);
+}
+
+/**
  * \brief Constructor.
  * \param shadername The name of the shader to load.
  */
@@ -215,18 +223,30 @@ void Shader::load_shader() {
 #if defined(SOLARUS_HAVE_GLES)
   
 #else
-  const char* vertex_source = "varying vec4 v_color;\n"
+  const char* vertex_source = "varying vec2 v_texCoord;\n"
   "\n"
   "void main()\n"
   "{\n"
   "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
-  "    v_color = gl_Color;\n"
-  "}";
-  const char* fragment_source = "varying vec4 v_color;\n"
+  "    v_texCoord = vec2(gl_MultiTexCoord0);\n"
+  "}"
+  ;
+  const char* fragment_source = "varying vec2 v_texCoord;\n"
   "\n"
   "void main()\n"
   "{\n"
-  "    gl_FragColor = v_color;\n"
+  "    vec4 color;\n"
+  "    vec2 delta;\n"
+  "    float dist;\n"
+  "\n"
+  "    delta = vec2(0.5, 0.5) - v_texCoord;\n"
+  "    dist = dot(delta, delta);\n"
+  "\n"
+  "    color.r = v_texCoord.x;\n"
+  "    color.g = v_texCoord.x * v_texCoord.y;\n"
+  "    color.b = v_texCoord.y;\n"
+  "    color.a = 1.0 - (dist * 4.0);\n"
+  "    gl_FragColor = color;\n"
   "}";
 #endif
   
@@ -255,17 +275,9 @@ void Shader::load_shader() {
  * \brief Apply the current shader if supported, and render to the window.
  * \param renderer The renderer.
  */
-void Shader::render_present_shaded(SDL_Renderer* renderer)
+void Shader::apply()
 {
   if (shaders_supported) {
-    // Apply our shader
     glUseProgramObjectARB(program);
-    SDL_RenderPresent(renderer);
-    
-    // Restore the default shader
-    glUseProgramObjectARB((void*)default_shader_program);
-  }
-  else {
-    SDL_RenderPresent(renderer);
   }
 }

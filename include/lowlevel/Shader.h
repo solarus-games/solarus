@@ -33,6 +33,7 @@ class Shader {
   public:
     static void initialize();
     static SDL_bool compile_shader(GLhandleARB& shader, const char* source);
+    static void restore_default_shader_program();
   
     Shader(std::string shadername);
     ~Shader();
@@ -40,7 +41,7 @@ class Shader {
     const std::string get_name();
     double get_logical_scale();
   
-    void render_present_shaded(SDL_Renderer* renderer);
+    void apply();
 
   private:
     void load_shader();

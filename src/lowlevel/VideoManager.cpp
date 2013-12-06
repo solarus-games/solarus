@@ -409,14 +409,16 @@ void VideoManager::render(Surface& quest_surface) {
   SDL_RenderSetClipRect(main_renderer, NULL);
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
   SDL_RenderClear(main_renderer);
-  quest_surface.render(main_renderer);
   
-  // Render to the window, and apply a shader if we have to.
+  // Apply a shader if we have to, and copy textures onto the renderer.
   VideoMode* video_mode = get_instance()->video_mode;
-  if (video_mode->shader != NULL)
-    video_mode->shader->render_present_shaded(main_renderer);
-  else 
-    SDL_RenderPresent(main_renderer);
+  if (video_mode->shader != NULL) {
+    video_mode->shader->apply();
+  }
+  quest_surface.render(main_renderer);
+  Shader::restore_default_shader_program();
+  
+  SDL_RenderPresent(main_renderer);
 }
 
 /**

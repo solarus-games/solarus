@@ -63,6 +63,7 @@ class VideoManager {
     void set_default_video_mode();
     void switch_video_mode();
 
+    static const std::string get_rendering_driver_name();
     static std::string get_video_mode_name(VideoMode* mode);
     static VideoMode* get_video_mode_by_name(const std::string& mode_name);
 

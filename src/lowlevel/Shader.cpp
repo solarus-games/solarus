@@ -199,45 +199,36 @@ double Shader::get_logical_scale() {
 /**
  * \brief Load all shader files, parse the Lua one and compile GLSL others.
  */
-void Shader::load(std::string& shader_name) {
+void Shader::load(const std::string& shader_name) {
+  
+  size_t vertex_size, fragment_size;
+  char* vertex_source, *fragment_source;
+  const std::string& base_shader_path = 
+      "shaders/" + VideoManager::get_rendering_driver_name() + "/" + shader_name + "/" + shader_name;
   
   // Parse the lua file
-  load_lua_file(shader_name);
+  const std::string lua_file = base_shader_path + ".lua";
+  load_lua_file(lua_file);
   
-  // Get the vertex and fragment shader sources.
-  //TODO remove color shader and get sources from the corresponding driver/shader file.
-#if defined(SOLARUS_HAVE_GLES)
-  
-#else
-  const char* vertex_source = "varying vec4 v_color;\n"
-  "\n"
-  "void main()\n"
-  "{\n"
-  "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
-  "    v_color = gl_Color;\n"
-  "}";
-  const char* fragment_source = "varying vec4 v_color;\n"
-  "\n"
-  "void main()\n"
-  "{\n"
-  "    gl_FragColor = v_color;\n"
-  "}";
-#endif
-  
-  // Create one program object to rule them all ...
-  program = glCreateProgramObjectARB();
-  
-  // Create the vertex shader
+  // Create the vertex and fragment shaders from the corresponding driver and sources.
+  const std::string vertex_file = base_shader_path + ".slv";
+  FileTools::data_file_open_buffer(vertex_file, &vertex_source, &vertex_size);
   vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
   if (!compile_shader(vertex_shader, vertex_source)) {
     Debug::die("Cannot compile the vertex shader for : " + shader_name);
   }
+  FileTools::data_file_close_buffer(vertex_source);
   
-  // Create the fragment shader
+  const std::string fragment_file = base_shader_path + ".slf";
+  FileTools::data_file_open_buffer(fragment_file, &fragment_source, &fragment_size);
   fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
   if (!compile_shader(fragment_shader, fragment_source)) {
     Debug::die("Cannot compile the fragment shader for : " + shader_name);
   }
+  FileTools::data_file_close_buffer(fragment_source);
+  
+  // Create one program object to rule them all ...
+  program = glCreateProgramObjectARB();
   
   // ... and in the darkness bind them
   glAttachObjectARB(program, vertex_shader);
@@ -248,20 +239,19 @@ void Shader::load(std::string& shader_name) {
 /**
  * \brief Load and parse the Lua file of the requested shader.
  */
-void Shader::load_lua_file(std::string& shader_name) {
+void Shader::load_lua_file(const std::string& shader_path) {
   
   lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;  
-  const std::string& file_path = 
-      "shaders/" + get_rendering_driver() + "/" + shader_name + "/" + shader_name + ".lua";
-  FileTools::data_file_open_buffer(file_path, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, file_path.c_str());
+  
+  FileTools::data_file_open_buffer(shader_path, &buffer, &size);
+  int load_result = luaL_loadbuffer(l, buffer, size, shader_path.c_str());
   current_loaded_shader = this;
   
   if (load_result != 0) {
     // Syntax error in quest.dat.
-    Debug::die(std::string("Failed to load : ") + file_path);
+    Debug::die(std::string("Failed to load : ") + shader_path);
   }
   else {
     
@@ -278,7 +268,7 @@ void Shader::load_lua_file(std::string& shader_name) {
       }
       else {
         // Runtime error.
-        Debug::die(std::string("Failed to parse: ") + file_path);
+        Debug::die(std::string("Failed to parse: ") + shader_path);
       }
       lua_pop(l, 1);
     }
@@ -300,20 +290,6 @@ int Shader::l_shader(lua_State* l) {
   current_loaded_shader->logical_scale = window_scale;
   
   return 0;
-}
-
-// Move to VideoManager ?
-/**
- * \brief Get the current rendering driver (OpenGL ES2 or OpenGL).
- * \return a string containing the rendering driver name.
- */
-const std::string Shader::get_rendering_driver() {
-
-#if defined(SOLARUS_HAVE_GLES)
-  return "opengles2";
-#else
-  return "opengl";
-#endif
 }
 
 /**

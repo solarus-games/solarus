@@ -351,6 +351,19 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
 }
 
 /**
+ * \brief Get the current rendering driver (OpenGL ES2 or OpenGL).
+ * \return a string containing the rendering driver name.
+ */
+const std::string VideoManager::get_rendering_driver_name() {
+  
+#if defined(SOLARUS_HAVE_GLES)
+  return "opengles2";
+#else
+  return "opengl";
+#endif
+}
+
+/**
  * \brief Returns the current video mode.
  * \return The video mode.
  */

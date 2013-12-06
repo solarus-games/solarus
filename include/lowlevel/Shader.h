@@ -44,8 +44,8 @@ class Shader {
     void apply();
 
   private:
-    void load(std::string& shader_name);
-    void load_lua_file(std::string& shader_name);
+    void load(const std::string& shader_name);
+    void load_lua_file(const std::string& shader_path);
     const std::string get_rendering_driver();
   
     static int l_shader(lua_State* l);

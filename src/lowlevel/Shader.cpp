@@ -197,35 +197,39 @@ double Shader::get_logical_scale() {
 }
 
 /**
- * \brief Load all shader files, parse the Lua one and compile GLSL others.
+ * \brief Load all shader files from the corresponding driver and sources.
+ * Parse the Lua file and compile GLSL others.
  */
 void Shader::load(const std::string& shader_name) {
   
   size_t vertex_size, fragment_size;
-  char* vertex_source, * fragment_source;
-  const std::string& base_shader_path = 
+  char* vertex_buffer, * fragment_buffer;
+  std::string vertex_source, fragment_source; 
+  const std::string base_shader_path = 
       "shaders/" + VideoManager::get_rendering_driver_name() + "/" + shader_name + "/" + shader_name;
   
   // Parse the lua file
   const std::string lua_file = base_shader_path + ".lua";
   load_lua_file(lua_file);
   
-  // Create the vertex and fragment shaders from the corresponding driver and sources.
+  // Create the vertex and fragment shaders.
   const std::string vertex_file = base_shader_path + ".slv";
-  FileTools::data_file_open_buffer(vertex_file, &vertex_source, &vertex_size);
+  FileTools::data_file_open_buffer(vertex_file, &vertex_buffer, &vertex_size);
+  vertex_source = std::string(vertex_buffer, vertex_size); // Make sure the buffer is a \0 terminated string.
   vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-  if (!compile_shader(vertex_shader, vertex_source)) {
+  if (!compile_shader(vertex_shader, vertex_source.c_str())) {
     Debug::die("Cannot compile the vertex shader for : " + shader_name);
   }
-  FileTools::data_file_close_buffer(vertex_source);
+  FileTools::data_file_close_buffer(vertex_buffer);
   
   const std::string fragment_file = base_shader_path + ".slf";
-  FileTools::data_file_open_buffer(fragment_file, &fragment_source, &fragment_size);
+  FileTools::data_file_open_buffer(fragment_file, &fragment_buffer, &fragment_size);
+  fragment_source = std::string(fragment_buffer, fragment_size); // Make sure the buffer is a \0 terminated string.
   fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-  if (!compile_shader(fragment_shader, fragment_source)) {
+  if (!compile_shader(fragment_shader, fragment_source.c_str())) {
     Debug::die("Cannot compile the fragment shader for : " + shader_name);
   }
-  FileTools::data_file_close_buffer(fragment_source);
+  FileTools::data_file_close_buffer(fragment_buffer);
   
   // Create one program object to rule them all ...
   program = glCreateProgramObjectARB();

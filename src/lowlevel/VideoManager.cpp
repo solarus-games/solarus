@@ -563,26 +563,28 @@ void VideoManager::set_quest_size_range(
  */
 void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
 
-  // Initialize non-shaded video modes.
+  // Initialize non-shaded video modes...
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
   all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL));
   
+  // ... and shaded ones if needed.
   if (!skip_shaded_modes) {
     
     //TODO remove the following, get all shaders of the quest's shader/driver folder and initialize them.
-    Shader* video_mode_shader = new Shader("scale2x");
-    add_shader(*video_mode_shader);
+    std::vector<std::string> shader_names;
+    shader_names.push_back("scale2x");
   
-    // Add a mode for each shader.
-    for(int i=0 ; i<supported_shaders.size() ; ++i) {
+    for(int i=0 ; i<shader_names.size() ; ++i) {
+      
+      // Load the shader.
+      Shader* video_mode_shader = new Shader(shader_names.at(i));
+      add_shader(*video_mode_shader);
+      
+      // And add the corresponding video mode.
       const Rectangle scaled_quest_size(0, 0, 
-          double(quest_size.get_width()) * supported_shaders.at(i)->get_logical_scale(),
-          double(quest_size.get_height()) * supported_shaders.at(i)->get_logical_scale());
-      all_video_modes.push_back( new VideoMode(
-          supported_shaders.at(i)->get_name(),
-          scaled_quest_size,
-          supported_shaders.at(i) )
-      );
+          double(quest_size.get_width()) * video_mode_shader->get_logical_scale(),
+          double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
+      all_video_modes.push_back( new VideoMode(shader_names.at(i), scaled_quest_size, video_mode_shader) );
     }
   }
   

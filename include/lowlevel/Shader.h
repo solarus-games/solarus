@@ -35,16 +35,15 @@ class Shader {
     static SDL_bool compile_shader(GLhandleARB& shader, const char* source);
     static void restore_default_shader_program();
   
-    Shader(std::string shadername);
+    Shader(std::string shader_name);
     ~Shader();
   
-    const std::string get_name();
     double get_logical_scale();
   
     void apply();
 
   private:
-    void load_shader();
+    void load_shader(std::string shader_name);
   
     static SDL_bool shaders_supported;           /**< True if GLSL shaders are supported. */
     static GLint default_shader_program;         /**< Default shader program to restore once a shaded render is done. */
@@ -65,7 +64,6 @@ class Shader {
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
-    const std::string name;                      /**< Name of the shader and of the video mode's suffixe associated. */
     double logical_scale;                        /**< Logical scale of the renderer when the shader is active,
                                                    compared to the normal quest size. */
 };

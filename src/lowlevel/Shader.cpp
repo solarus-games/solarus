@@ -142,12 +142,11 @@ void Shader::restore_default_shader_program() {
  * \brief Constructor.
  * \param shadername The name of the shader to load.
  */
-Shader::Shader(std::string shadername) :
+Shader::Shader(std::string shader_name) :
   logical_scale(1.0),
   program(0),
   vertex_shader(0),
-  fragment_shader(0),
-  name(shadername) {
+  fragment_shader(0) {
     
   if (shaders_supported) {
     
@@ -157,7 +156,7 @@ Shader::Shader(std::string shadername) :
     glGetError();
     
     // Load the shader.
-    load_shader();
+    load_shader(shader_name);
     
     // Set up some uniform variables
     glUseProgramObjectARB(program);
@@ -171,7 +170,7 @@ Shader::Shader(std::string shadername) :
     }
     glUseProgramObjectARB((void*)default_shader_program);
     
-    Debug::check_assertion(glGetError() == GL_NO_ERROR, "Cannot compile the shader : " + name);
+    Debug::check_assertion(glGetError() == GL_NO_ERROR, "Cannot compile the shader : " + shader_name);
   }
 }
 
@@ -188,14 +187,6 @@ Shader::~Shader()
 }
 
 /**
- * \brief Get the name of the shader.
- * \return The name.
- */
-const std::string Shader::get_name() {
-  return name;
-}
-
-/**
  * \brief Get the scale to apply on the quest size to get the final window size of this shader.
  * \return The logical scale.
  */
@@ -206,7 +197,7 @@ double Shader::get_logical_scale() {
 /**
  * \brief Load all shader files, parse the Lua one and compile GLSL others.
  */
-void Shader::load_shader() {
+void Shader::load_shader(std::string shader_name) {
   
   //TODO Parse the lua file
   logical_scale = 2.0;
@@ -237,13 +228,13 @@ void Shader::load_shader() {
   // Create the vertex shader
   vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
   if (!compile_shader(vertex_shader, vertex_source)) {
-    Debug::die("Cannot compile the vertex shader for : " + name);
+    Debug::die("Cannot compile the vertex shader for : " + shader_name);
   }
   
   // Create the fragment shader
   fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
   if (!compile_shader(fragment_shader, fragment_source)) {
-    Debug::die("Cannot compile the fragment shader for : " + name);
+    Debug::die("Cannot compile the fragment shader for : " + shader_name);
   }
   
   // ... and in the darkness bind them

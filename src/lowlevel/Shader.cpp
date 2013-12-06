@@ -202,7 +202,7 @@ double Shader::get_logical_scale() {
 void Shader::load(const std::string& shader_name) {
   
   size_t vertex_size, fragment_size;
-  char* vertex_source, *fragment_source;
+  char* vertex_source, * fragment_source;
   const std::string& base_shader_path = 
       "shaders/" + VideoManager::get_rendering_driver_name() + "/" + shader_name + "/" + shader_name;
   

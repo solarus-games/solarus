@@ -84,13 +84,6 @@ class FileTools {
     static std::string create_temporary_file(const char* buffer, size_t size);
     static bool remove_temporary_files();
 
-    // Languages.
-    // TODO move to a new class Language in lowlevel
-    static bool has_language(const std::string& language_code);
-    static void set_language(const std::string& language_code);
-    static const std::string& get_language();
-    static const std::string& get_language_name(const std::string& language_code);
-
   private:
 
     static void set_solarus_write_dir(const std::string& solarus_write_dir);
@@ -100,8 +93,6 @@ class FileTools {
                                                           * relative to the current directory. */
     static std::string solarus_write_dir;                /**< Directory where the engine can write files, relative to the user's home. */
     static std::string quest_write_dir;                  /**< Write directory of the current quest, relative to solarus_write_dir. */
-
-    static std::string language_code;                    /**< Code of the current language (e.g. "en", "fr", etc.). */
 
     static std::vector<std::string> temporary_files;     /**< Name of all temporary files created. */
 };

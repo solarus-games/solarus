@@ -16,6 +16,7 @@
  */
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Language.h"
 #include "StringResource.h"
 #include "DialogResource.h"
 #include "QuestResourceList.h"
@@ -74,7 +75,7 @@ void LuaContext::register_language_module() {
  */
 int LuaContext::language_api_get_language(lua_State* l) {
 
-  const std::string& language = FileTools::get_language();
+  const std::string& language = Language::get_language();
 
   if (language.empty()) {  // Return nil if no language is set.
     lua_pushnil(l);
@@ -94,10 +95,10 @@ int LuaContext::language_api_set_language(lua_State* l) {
 
   const std::string& language_code = luaL_checkstring(l, 1);
 
-  if (!FileTools::has_language(language_code)) {
+  if (!Language::has_language(language_code)) {
     arg_error(l, 1, std::string("No such language: '") + language_code + "'");
   }
-  FileTools::set_language(language_code);
+  Language::set_language(language_code);
 
   return 0;
 }
@@ -112,18 +113,18 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
   std::string language_code;
   if (lua_gettop(l) >= 1) {
     language_code = luaL_checkstring(l, 1);
-    if (!FileTools::has_language(language_code)) {
+    if (!Language::has_language(language_code)) {
       arg_error(l, 1, std::string("No such language: '") + language_code + "'");
     }
   }
   else {
-    language_code = FileTools::get_language();
+    language_code = Language::get_language();
     if (language_code.empty()) {
       error(l, "No language is set");
     }
   }
 
-  const std::string& name = FileTools::get_language_name(language_code);
+  const std::string& name = Language::get_language_name(language_code);
   push_string(l, name);
 
   return 1;

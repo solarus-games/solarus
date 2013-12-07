@@ -47,7 +47,7 @@ class Shader {
     void load(const std::string& shader_name);
     void load_lua_file(const std::string& path);
   
-    static void load_shader_file(GLhandleARB* shader, const std::string& path, GLenum shader_type);
+    static void load_shader_file(const std::string& path, GLenum shader_type, GLhandleARB* shader);
     static int l_shader(lua_State* l);
   
     static Shader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */

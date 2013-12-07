@@ -209,8 +209,8 @@ void Shader::load(const std::string& shader_name) {
   load_lua_file(base_shader_path + ".lua");
   
   // Create the vertex and fragment shaders.
-  load_shader_file(&vertex_shader, base_shader_path + ".slv", GL_VERTEX_SHADER_ARB);
-  load_shader_file(&fragment_shader, base_shader_path + ".slf", GL_FRAGMENT_SHADER_ARB);
+  load_shader_file(base_shader_path + ".slv", GL_VERTEX_SHADER_ARB, &vertex_shader);
+  load_shader_file(base_shader_path + ".slf", GL_FRAGMENT_SHADER_ARB, &fragment_shader);
   
   // Create one program object to rule them all ...
   program = glCreateProgramObjectARB();
@@ -255,10 +255,12 @@ void Shader::load_lua_file(const std::string& path) {
 }
 
 /**
- * \brief Load and compile a shader from a path.
- * The GLhandleARB pointer will be filled with the result.
+ * \brief Load and compile a shader from a vertex or shader file.
+ * \param path The path to the shader file source.
+ * \param shader_type The type of shader (vertex or fragment).
+ * \param shader The GLhandleARB pointer to fill with the result.
  */
-void Shader::load_shader_file(GLhandleARB* shader, const std::string& path, GLenum shader_type) {
+void Shader::load_shader_file(const std::string& path, GLenum shader_type, GLhandleARB* shader) {
   
   size_t size;
   char* buffer;
@@ -266,15 +268,19 @@ void Shader::load_shader_file(GLhandleARB* shader, const std::string& path, GLen
   
   FileTools::data_file_open_buffer(path, &buffer, &size);
   source = std::string(buffer, size); // Make sure the buffer is a valid string.
+  FileTools::data_file_close_buffer(buffer);
+  
   *shader = glCreateShaderObjectARB(shader_type);
   
   if (!compile_shader(*shader, source.c_str())) {
     Debug::die("Cannot compile the shader : " + path);
   }
-  
-  FileTools::data_file_close_buffer(buffer);
 }
 
+/**
+ * \brief Callback when parsing a shader lua file. Fill the loading shader with the result.
+ * \param l The lua state.
+ */
 int Shader::l_shader(lua_State* l) {
   
   // Retrieve the shader properties from the table parameter.

@@ -385,9 +385,8 @@ std::vector<std::string> FileTools::data_files_enumerate(const std::string& dir_
   
   if (data_file_exists(dir_path.c_str())) {
     char **rc = PHYSFS_enumerateFiles(dir_path.c_str());
-    char **i = rc;
   
-    for (; *i != NULL; i++) {
+    for (char **i = rc; *i != NULL; i++) {
       listed_files.push_back(std::string(*i));
     }
 

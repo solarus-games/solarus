@@ -584,14 +584,14 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
 
   // Initialize non-shaded video mode (without name, to authorize all names for shaders) ...
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
-  all_video_modes.push_back(new VideoMode("", quest_size_2, NULL));
+  all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL));
   
   // ... and shaded ones if supported.
   if (!skip_shaded_modes) {
     
     // Get all shaders of the quest's shader/driver folder.
     std::vector<std::string> shader_names = 
-        FileTools::data_files_enumerate("shaders/" + get_rendering_driver_name());
+        FileTools::data_files_enumerate("shaders/" + get_rendering_driver_name(), false, true);
   
     for(int i=0 ; i<shader_names.size() ; ++i) {
       

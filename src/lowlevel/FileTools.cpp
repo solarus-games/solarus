@@ -379,7 +379,7 @@ bool FileTools::data_file_mkdir(const std::string& dir_name) {
  * data directory.
  * \return a vector of string containing result names.
  */
-std::vector<std::string> FileTools::data_files_enumerate(const std::string& dir_path) {
+std::vector<std::string> FileTools::data_files_enumerate(const std::string& dir_path, bool list_files, bool list_folders) {
   
   std::vector<std::string> listed_files;
   
@@ -387,7 +387,12 @@ std::vector<std::string> FileTools::data_files_enumerate(const std::string& dir_
     char **rc = PHYSFS_enumerateFiles(dir_path.c_str());
   
     for (char **i = rc; *i != NULL; i++) {
-      listed_files.push_back(std::string(*i));
+      bool is_folder = PHYSFS_isDirectory(std::string(dir_path + "/" + *i).c_str());
+      
+      if (!PHYSFS_isSymbolicLink(*i)
+          && (list_files && !is_folder
+          || list_folders && is_folder))
+        listed_files.push_back(std::string(*i));
     }
 
     PHYSFS_freeList(rc);

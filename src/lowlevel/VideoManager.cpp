@@ -67,7 +67,7 @@ void VideoManager::initialize(int argc, char **argv) {
   // Set OpenGL as the default renderer driver when available, to avoid to use direct3d.
   SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
   
-  // Set the default OpenGL built-in shader (linear)
+  // Set the default OpenGL built-in shader (nearest)
   SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
   
   instance = new VideoManager(disable, wanted_quest_size);
@@ -589,10 +589,9 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
   // ... and shaded ones if supported.
   if (!skip_shaded_modes) {
     
-    //TODO remove the following, get all shaders of the quest's shader/driver folder and initialize them.
-    std::vector<std::string> shader_names;
-    shader_names.push_back("white_sprites");
-    shader_names.push_back("scale2x");
+    // Get all shaders of the quest's shader/driver folder.
+    std::vector<std::string> shader_names = 
+        FileTools::data_files_enumerate("shaders/" + get_rendering_driver_name());
   
     for(int i=0 ; i<shader_names.size() ; ++i) {
       

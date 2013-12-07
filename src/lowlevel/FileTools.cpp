@@ -374,6 +374,30 @@ bool FileTools::data_file_mkdir(const std::string& dir_name) {
 }
 
 /**
+ * \brief Enumerate files of a folder.
+ * \param dir_path Name of the directory to list, relative to the Solarus
+ * data directory.
+ * \return a vector of string containing result names.
+ */
+std::vector<std::string> FileTools::data_files_enumerate(const std::string& dir_path) {
+  
+  std::vector<std::string> listed_files;
+  
+  if (data_file_exists(dir_path.c_str())) {
+    char **rc = PHYSFS_enumerateFiles(dir_path.c_str());
+    char **i = rc;
+  
+    for (; *i != NULL; i++) {
+      listed_files.push_back(std::string(*i));
+    }
+
+    PHYSFS_freeList(rc);
+  }
+
+  return listed_files;
+}
+
+/**
  * \brief Reads an integer value from an input stream.
  *
  * Stops the program on an error message if the read fails.

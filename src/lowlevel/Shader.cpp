@@ -202,34 +202,15 @@ double Shader::get_logical_scale() {
  */
 void Shader::load(const std::string& shader_name) {
   
-  size_t vertex_size, fragment_size;
-  char* vertex_buffer, * fragment_buffer;
-  std::string vertex_source, fragment_source; 
   const std::string base_shader_path = 
       "shaders/" + VideoManager::get_rendering_driver_name() + "/" + shader_name + "/" + shader_name;
   
   // Parse the lua file
-  const std::string lua_file = base_shader_path + ".lua";
-  load_lua_file(lua_file);
+  load_lua_file(base_shader_path + ".lua");
   
   // Create the vertex and fragment shaders.
-  const std::string vertex_file = base_shader_path + ".slv";
-  FileTools::data_file_open_buffer(vertex_file, &vertex_buffer, &vertex_size);
-  vertex_source = std::string(vertex_buffer, vertex_size); // Make sure the buffer is a valid string.
-  vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-  if (!compile_shader(vertex_shader, vertex_source.c_str())) {
-    Debug::die("Cannot compile the vertex shader for : " + shader_name);
-  }
-  FileTools::data_file_close_buffer(vertex_buffer);
-  
-  const std::string fragment_file = base_shader_path + ".slf";
-  FileTools::data_file_open_buffer(fragment_file, &fragment_buffer, &fragment_size);
-  fragment_source = std::string(fragment_buffer, fragment_size); // Make sure the buffer is a valid string.
-  fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-  if (!compile_shader(fragment_shader, fragment_source.c_str())) {
-    Debug::die("Cannot compile the fragment shader for : " + shader_name);
-  }
-  FileTools::data_file_close_buffer(fragment_buffer);
+  load_shader_file(&vertex_shader, base_shader_path + ".slv", GL_VERTEX_SHADER_ARB);
+  load_shader_file(&fragment_shader, base_shader_path + ".slf", GL_FRAGMENT_SHADER_ARB);
   
   // Create one program object to rule them all ...
   program = glCreateProgramObjectARB();
@@ -271,6 +252,27 @@ void Shader::load_lua_file(const std::string& path) {
   loading_shader = NULL;
   FileTools::data_file_close_buffer(buffer);
   lua_close(l);
+}
+
+/**
+ * \brief Load and compile a shader from a path.
+ * The GLhandleARB pointer will be filled with the result.
+ */
+void Shader::load_shader_file(GLhandleARB* shader, const std::string& path, GLenum shader_type) {
+  
+  size_t size;
+  char* buffer;
+  std::string source; 
+  
+  FileTools::data_file_open_buffer(path, &buffer, &size);
+  source = std::string(buffer, size); // Make sure the buffer is a valid string.
+  *shader = glCreateShaderObjectARB(shader_type);
+  
+  if (!compile_shader(*shader, source.c_str())) {
+    Debug::die("Cannot compile the shader : " + path);
+  }
+  
+  FileTools::data_file_close_buffer(buffer);
 }
 
 int Shader::l_shader(lua_State* l) {

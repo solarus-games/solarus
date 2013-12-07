@@ -249,14 +249,7 @@ void VideoManager::switch_fullscreen() {
  */
 void VideoManager::set_default_video_mode() {
 
-  VideoMode* mode;
-  if (forced_mode_name != "") {
-    mode = get_video_mode_by_name(forced_mode_name);
-  }
-  else {
-    mode = get_video_mode_by_name("normal");
-  }
-  
+  VideoMode* mode = get_video_mode_by_name(forced_mode_name);
   set_video_mode(mode);
 }
 
@@ -582,9 +575,9 @@ void VideoManager::set_quest_size_range(
  */
 void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
 
-  // Initialize non-shaded video mode (without name, to authorize all names for shaders) ...
+  // Initialize non-shaded video mode ...
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
-  all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL));
+  all_video_modes.push_back(new VideoMode("", quest_size_2, NULL)); // Without name, to authorize all names for shader names.
   
   // ... and shaded ones if supported.
   if (!skip_shaded_modes) {

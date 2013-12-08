@@ -416,6 +416,7 @@ class LuaContext {
       menu_api_start,
       menu_api_stop,
       menu_api_stop_all,
+      menu_api_is_started,
 
       // Timer API.
       timer_api_start,

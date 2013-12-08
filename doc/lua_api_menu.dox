@@ -88,6 +88,12 @@ Stops all menus that are currently running in a context.
 This function is not often needed since menus are already automatically
 stopped when their context is closed.
 
+\subsection lua_api_menu_is_started sol.menu.is_started(menu)
+
+Returns whether a table is a currently active menu.
+- \c menu (\ref table): The menu to test.
+- Return value (boolean): \c true if this is an active menu.
+
 \section lua_api_menu_events Events of a menu
 
 Events are callback methods automatically called by the engine if you define

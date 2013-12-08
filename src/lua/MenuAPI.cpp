@@ -31,6 +31,7 @@ void LuaContext::register_menu_module() {
       { "start", menu_api_start },
       { "stop", menu_api_stop },
       { "stop_all", menu_api_stop_all },
+      { "is_started", menu_api_is_started },
       { NULL, NULL }
   };
   register_functions(menu_module_name, functions);
@@ -244,6 +245,34 @@ int LuaContext::menu_api_stop_all(lua_State* l) {
   }
 
   get_lua_context(l).remove_menus(1);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of sol.menu.is_started().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::menu_api_is_started(lua_State* l) {
+
+  LuaContext& lua_context = get_lua_context(l);
+
+  luaL_checktype(l, 1, LUA_TTABLE);
+
+  bool found = false;
+  std::list<LuaMenuData>& menus = lua_context.menus;
+  std::list<LuaMenuData>::iterator it;
+  for (it = menus.begin(); it != menus.end(); it++) {
+    int ref = it->ref;
+    push_ref(l, ref);
+    if (lua_equal(l, 1, -1)) {
+      found = true;
+      break;
+    }
+  }
+
+  lua_pushboolean(l, found);
 
   return 0;
 }

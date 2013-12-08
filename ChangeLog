@@ -46,6 +46,7 @@ Changes that do not introduce incompatibilities:
 * New Lua type and methods for custom map entities.
 * sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
 * Fix random_movement:get_max_radius() that was not working.
+* Add a method menu:is_started().
 * Add a method map:get_hero() (#362).
 * Add a method entity:get_game() (#363).
 * Add an event sensor:on_left() (#339).

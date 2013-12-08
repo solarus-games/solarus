@@ -108,6 +108,7 @@ class VideoManager {
     std::vector<Shader*> supported_shaders;  /**< Shaders that can be applied when rendering. */
     std::vector<VideoMode*> all_video_modes; /**< Display informations for each supported video mode. */
     VideoMode* video_mode;                   /**< Current display mode, pointer to an element of all_video_modes. */
+    const std::string normal_mode_name;      /**< Non-shaded mode name. It will be be forbidden for shaded ones. */
 
     Rectangle normal_quest_size;             /**< Default value of quest_size (depends on the quest). */
     Rectangle min_quest_size;                /**< Minimum value of quest_size (depends on the quest). */

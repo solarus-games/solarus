@@ -26,6 +26,8 @@ VideoManager* VideoManager::instance = NULL;
 
 namespace {
 
+const std::string normal_mode_name = "solarus_default";
+  
 // Forcing a video mode at compilation time, or make all modes available with an empty string.
 const std::string forced_mode_name = SOLARUS_SCREEN_FORCE_MODE;
 };
@@ -249,7 +251,14 @@ void VideoManager::switch_fullscreen() {
  */
 void VideoManager::set_default_video_mode() {
 
-  VideoMode* mode = get_video_mode_by_name(forced_mode_name);
+  VideoMode* mode;
+  if (forced_mode_name != "") {
+    mode = get_video_mode_by_name(forced_mode_name);
+  }
+  else {
+    mode = get_video_mode_by_name(normal_mode_name);
+  }
+  
   set_video_mode(mode);
 }
 
@@ -577,21 +586,21 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
 
   // Initialize non-shaded video mode ...
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
-  all_video_modes.push_back(new VideoMode("", quest_size_2, NULL)); // Without name, to authorize all names for shader names.
-  
+  all_video_modes.push_back(new VideoMode(normal_mode_name, quest_size_2, NULL));
+
   // ... and shaded ones if supported.
   if (!skip_shaded_modes) {
-    
+
     // Get all shaders of the quest's shader/driver folder.
     std::vector<std::string> shader_names = 
         FileTools::data_files_enumerate("shaders/" + get_rendering_driver_name(), false, true);
-  
+
     for(int i=0 ; i<shader_names.size() ; ++i) {
-      
+
       // Load the shader.
       Shader* video_mode_shader = new Shader(shader_names.at(i));
       add_shader(*video_mode_shader);
-      
+
       // And add the corresponding video mode.
       const Rectangle scaled_quest_size(0, 0, 
           double(quest_size.get_width()) * video_mode_shader->get_logical_scale(),
@@ -599,7 +608,7 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
       all_video_modes.push_back( new VideoMode(shader_names.at(i), scaled_quest_size, video_mode_shader) );
     }
   }
-  
+
   // Everything is ready now.
   set_default_video_mode();
 }

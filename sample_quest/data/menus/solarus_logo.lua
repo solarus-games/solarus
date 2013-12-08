@@ -76,7 +76,7 @@ function solarus_logo_menu:on_started()
   sun:set_xy(0, 0)
   sword:set_xy(0, 0)
   -- Start the animation.
-  self:start_animation()
+  solarus_logo_menu:start_animation()
   -- Update the surface.
   rebuild_surface()
 end
@@ -103,10 +103,10 @@ function solarus_logo_menu:step2()
   -- Update the surface.
   rebuild_surface()
   -- Start the final timer.
-  sol.timer.start(self, 500, function()
+  sol.timer.start(solarus_logo_menu, 500, function()
     surface:fade_out()
-    sol.timer.start(self, 700, function()
-      sol.menu.stop(self)
+    sol.timer.start(solarus_logo_menu, 700, function()
+      sol.menu.stop(solarus_logo_menu)
     end)
   end)
 end
@@ -136,18 +136,24 @@ function solarus_logo_menu:start_animation()
   -- Start the movements.
   sun_movement:start(sun, function()
     sword_movement:start(sword, function()
-          -- If the animation step is not greater than 0
+
+      if not sol.menu.is_started(solarus_logo_menu) then
+        -- The menu may have been stopped, but the movement continued.
+        return
+      end
+
+      -- If the animation step is not greater than 0
       -- (if no key was pressed).
       if animation_step <= 0 then
         -- Start step 1.
-        self:step1()
+        solarus_logo_menu:step1()
         -- Create the timer for step 2.
-        timer = sol.timer.start(self, 250, function()
+        timer = sol.timer.start(solarus_logo_menu, 250, function()
           -- If the animation step is not greater than 1
           -- (if no key was pressed).
           if animation_step <= 1 then
             -- Start step 2.
-            self:step2()
+            solarus_logo_menu:step2()
           end
         end)
       end
@@ -181,15 +187,15 @@ function solarus_logo_menu:on_key_pressed(key)
       -- (if the timer has not expired in the meantime).
       if animation_step <= 1 then
         -- Start step 2.
-        self:step2()
+        solarus_logo_menu:step2()
       end
 
     -- If the animation step is not greater than 0.
     elseif animation_step <= 0 then
       -- Start step 1.
-      self:step1()
+      solarus_logo_menu:step1()
       -- Start step 2.
-      self:step2()
+      solarus_logo_menu:step2()
     end
 
     -- Return true to indicate that the keyboard event was handled.

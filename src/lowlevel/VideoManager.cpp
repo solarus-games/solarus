@@ -576,7 +576,7 @@ void VideoManager::set_quest_size_range(
 /**
  * \brief Detects the available shaders and initialize all needed video modes.
  * Fullscreen modes all are at the top of the list.
- * \param grant_shaded_modes true to skip shaded modes loading.
+ * \param allow_shaded_modes true to skip shaded modes loading.
  */
 void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
 
@@ -607,9 +607,6 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
     }
   }
 
-  for(int i=0 ; i<all_video_modes.size() ; ++i) {
-    std::cout << all_video_modes.at(i)->name << std::endl;
-  }
   // Everything is ready now.
   set_default_video_mode();
 }

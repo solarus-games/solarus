@@ -596,6 +596,11 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
         FileTools::data_files_enumerate("shaders/" + get_rendering_driver_name(), false, true);
 
     for(int i=0 ; i<shader_names.size() ; ++i) {
+      
+      if (shader_names.at(i) == normal_mode_name) {
+        Debug::warning("Forbidden video mode name : " + shader_names.at(i));
+        continue;
+      }
 
       // Load the shader.
       Shader* video_mode_shader = new Shader(shader_names.at(i));

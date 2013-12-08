@@ -36,7 +36,7 @@ class VideoManager {
     typedef struct _VideoMode {
       std::string name;                 /**< Name of the video mode. */
       Rectangle window_size;            /**< Final size of the window when selecting this video mode. */
-      Shader* shader;                   /**< Shader to use. NULL or a pointer to one of the supported shaders. */
+      Shader* shader;                   /**< Shader to use or NULL. */
       
       _VideoMode(std::string name, Rectangle window_size, Shader* shader) :
           name(name),
@@ -94,8 +94,6 @@ class VideoManager {
     VideoManager(bool disable_window, const Rectangle& wanted_quest_size);
     ~VideoManager();
 
-    void add_shader(Shader& shader);
-
     static VideoManager* instance;           /**< The only instance. */
 
     SDL_Window* main_window;                 /**< The window. */
@@ -105,7 +103,6 @@ class VideoManager {
   
     bool disable_window;                     /**< Indicates that no window is displayed (used for unit tests). */
     bool fullscreen;                         /**< True if fullscreen display. */
-    std::vector<Shader*> supported_shaders;  /**< Shaders that can be applied when rendering. */
     std::vector<VideoMode*> all_video_modes; /**< Display informations for each supported video mode. */
     VideoMode* video_mode;                   /**< Current display mode, pointer to an element of all_video_modes. */
     const std::string normal_mode_name;      /**< Non-shaded mode name. It will be forbidden for shaded ones. */

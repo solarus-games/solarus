@@ -143,6 +143,13 @@ VideoManager::~VideoManager() {
     SDL_SetWindowFullscreen(main_window, 0);
   }
 
+  for(int i=0 ; i<all_video_modes.size() ; ++i) {
+    if (all_video_modes.at(i)->shader != NULL) {
+      delete all_video_modes.at(i)->shader;
+    }
+    delete all_video_modes.at(i);
+  }
+  
   if (pixel_format != NULL) {
     SDL_FreeFormat(pixel_format);
   }
@@ -151,12 +158,6 @@ VideoManager::~VideoManager() {
   }
   if (main_window != NULL) {
     SDL_DestroyWindow(main_window);
-  }
-  for(int i=0 ; i<supported_shaders.size() ; ++i) {
-    delete supported_shaders.at(i);
-  }
-  for(int i=0 ; i<all_video_modes.size() ; ++i) {
-    delete all_video_modes.at(i);
   }
 }
 
@@ -602,11 +603,8 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
         continue;
       }
 
-      // Load the shader.
+      // Load the shader and add the corresponding video mode.
       Shader* video_mode_shader = new Shader(shader_names.at(i));
-      add_shader(*video_mode_shader);
-
-      // And add the corresponding video mode.
       const Rectangle scaled_quest_size(0, 0, 
           double(quest_size.get_width()) * video_mode_shader->get_logical_scale(),
           double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
@@ -617,12 +615,3 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
   // Everything is ready now.
   set_default_video_mode();
 }
-
-/**
- * \brief Add a Shader instance to the vector of supported shaders.
- * \param shader a Shader instance.
- */
-void VideoManager::add_shader(Shader& shader) {
-  supported_shaders.push_back(&shader);
-}
-

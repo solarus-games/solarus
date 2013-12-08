@@ -24,13 +24,8 @@
 
 VideoManager* VideoManager::instance = NULL;
 
-namespace {
-
-const std::string normal_mode_name = "solarus_default";
-  
-// Forcing a video mode at compilation time, or make all modes available with an empty string.
-const std::string forced_mode_name = SOLARUS_SCREEN_FORCE_MODE;
-};
+const std::string VideoManager::normal_mode_name = "solarus_default";
+const std::string VideoManager::forced_mode_name = SOLARUS_SCREEN_FORCE_MODE;
 
 /**
  * \brief Initializes the video system and creates the window.
@@ -386,14 +381,11 @@ const std::vector<VideoManager::VideoMode*>& VideoManager::get_video_modes() con
 /**
  * \brief Returns the name of a video mode.
  * \param mode A video mode.
- * \return The name of this mode, or an empty string if the mode is NO_MODE.
+ * \return The name of this mode.
  */
-std::string VideoManager::get_video_mode_name(VideoMode* mode) {
+std::string VideoManager::get_video_mode_name(VideoMode& mode) {
 
-  if (mode)
-    return mode->name;
-  
-  return "";
+  return mode.name;
 }
 
 /**
@@ -404,11 +396,14 @@ std::string VideoManager::get_video_mode_name(VideoMode* mode) {
 VideoManager::VideoMode* VideoManager::get_video_mode_by_name(const std::string& mode_name) {
 
   std::vector<VideoMode*> all_video_modes = get_instance()->all_video_modes;
+  
   for (int i = 0; i < all_video_modes.size(); ++i) {
     if (all_video_modes.at(i)->name == mode_name) {
       return all_video_modes.at(i);
     }
   }
+  
+  Debug::warning("No video mode for name : " + mode_name);
   return NULL;
 }
 
@@ -581,23 +576,23 @@ void VideoManager::set_quest_size_range(
 /**
  * \brief Detects the available shaders and initialize all needed video modes.
  * Fullscreen modes all are at the top of the list.
- * \param skip_shaded_modes true to skip shaded modes loading.
+ * \param grant_shaded_modes true to skip shaded modes loading.
  */
-void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
+void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
 
   // Initialize non-shaded video mode ...
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
   all_video_modes.push_back(new VideoMode(normal_mode_name, quest_size_2, NULL));
 
   // ... and shaded ones if supported.
-  if (!skip_shaded_modes) {
+  if (allow_shaded_modes) {
 
     // Get all shaders of the quest's shader/driver folder.
     std::vector<std::string> shader_names = 
         FileTools::data_files_enumerate("shaders/" + get_rendering_driver_name(), false, true);
 
     for(int i=0 ; i<shader_names.size() ; ++i) {
-      
+
       if (shader_names.at(i) == normal_mode_name) {
         Debug::warning("Forbidden video mode name : " + shader_names.at(i));
         continue;
@@ -612,6 +607,9 @@ void VideoManager::initialize_video_modes(bool skip_shaded_modes) {
     }
   }
 
+  for(int i=0 ; i<all_video_modes.size() ; ++i) {
+    std::cout << all_video_modes.at(i)->name << std::endl;
+  }
   // Everything is ready now.
   set_default_video_mode();
 }

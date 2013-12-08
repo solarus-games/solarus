@@ -92,7 +92,7 @@ void Shader::initialize() {
   if(!shaders_supported) {
     
     // Only authorize default modes.
-    videomanager->initialize_video_modes(true);
+    videomanager->initialize_video_modes(false);
     Debug::warning("OpenGL shaders not supported.");
     
     return;

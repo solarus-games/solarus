@@ -263,18 +263,18 @@ int LuaContext::menu_api_is_started(lua_State* l) {
   bool found = false;
   std::list<LuaMenuData>& menus = lua_context.menus;
   std::list<LuaMenuData>::iterator it;
-  for (it = menus.begin(); it != menus.end(); it++) {
+  for (it = menus.begin();
+      it != menus.end() && !found;
+      ++it) {
     int ref = it->ref;
     push_ref(l, ref);
-    if (lua_equal(l, 1, -1)) {
-      found = true;
-      break;
-    }
+    found = lua_equal(l, 1, -1);
+    lua_pop(l, 1);
   }
 
   lua_pushboolean(l, found);
 
-  return 0;
+  return 1;
 }
 
 /**

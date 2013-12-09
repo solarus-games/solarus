@@ -104,10 +104,10 @@ class VideoManager {
     std::map<VideoMode, Rectangle>
         mode_sizes;                         /**< Size of the screen surface for each supported
                                              * video mode with the current quest size. */
+    static SDL_PixelFormat* pixel_format;   /**< The pixel color format to use. */
 
     SDL_Window* main_window;                /**< The window. */
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
-    SDL_PixelFormat* pixel_format;   /**< The pixel color format to use. */
     bool renderer_accelerated;              /**< \c true if 2D GPU acceleration is available. */
     Rectangle viewport;                      /**< The position of the drawable area on the window. */
     const PixelFilter* pixel_filter;        /**< The pixel filtering algorithm (if any) applied with

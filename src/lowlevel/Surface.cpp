@@ -322,6 +322,7 @@ void Surface::set_software_destination(bool software_destination) {
           format->Bmask,
           format->Amask
       );
+      is_rendered = false;
     }
   }
 }
@@ -348,6 +349,7 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
         "Missing software surface for fill color");
     SDL_FillRect(internal_surface, Rectangle(where).get_internal_rect(),
         color.get_internal_value());
+    is_rendered = false;  // The surface has changed.
   }
   // Else, create a Surface with the requested size and color, and add it to the subsurface queue.
   else {
@@ -379,7 +381,7 @@ void Surface::add_subsurface(
   );
   RefCountable::ref(node);
 
-  // Clear the subsurface queue if the current dst_surface already has been rendered.
+  // Clear the subsurface queue if the current dst_surface has already been rendered.
   if (is_rendered) {
     clear_subsurfaces();
   }

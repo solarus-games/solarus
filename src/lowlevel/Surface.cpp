@@ -507,14 +507,12 @@ void Surface::render(
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
     SDL_SetRenderDrawColor(renderer, r, g, b, std::min(a, current_opacity));
-    SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
     SDL_RenderFillRect(renderer, clip_rect.get_internal_rect());
   }
 
   // Draw the internal texture.
   if (internal_texture != NULL) {
     SDL_SetTextureAlphaMod(internal_texture, current_opacity);
-    SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
     SDL_RenderCopy(
         renderer,
         internal_texture,

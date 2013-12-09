@@ -115,11 +115,13 @@ bool SpriteAnimation::is_looping() const {
 int SpriteAnimation::get_next_frame(
     int current_direction, int current_frame) const {
 
-  Debug::check_assertion(current_direction >= 0 &&
-      current_direction < get_nb_directions(),
-    StringConcat() << "Invalid sprite direction '" << current_direction
-        << "': this sprite animation has only " << get_nb_directions()
+  if (current_direction < 0
+      || current_direction >= get_nb_directions()) {
+    Debug::die(StringConcat()
+        << "Invalid sprite direction '" << current_direction
+        << "': this sprite has " << get_nb_directions()
         << " direction(s)");
+  }
 
   int next_frame = current_frame + 1;
 
@@ -145,10 +147,11 @@ void SpriteAnimation::draw(Surface& dst_surface,
     const Rectangle& dst_position, int current_direction, int current_frame) {
 
   if (src_image != NULL) {
-    if (current_direction < 0 || current_direction >= get_nb_directions()) {
+    if (current_direction < 0
+        || current_direction >= get_nb_directions()) {
       Debug::die(StringConcat() << "Invalid sprite direction "
           << current_direction << ": this sprite has " << get_nb_directions()
-          << " directions");
+          << " direction(s)");
     }
     directions[current_direction]->draw(dst_surface, dst_position,
         current_frame, *src_image);

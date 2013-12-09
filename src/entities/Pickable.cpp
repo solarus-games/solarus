@@ -175,7 +175,8 @@ void Pickable::initialize_sprites() {
   item_sprite.enable_pixel_collisions();
 
   // Set the origin point and the size of the entity.
-  set_bounding_box_from_sprite();
+  set_size(16, 16);
+  set_origin(8, 13);
 
   uint32_t now = System::now();
 

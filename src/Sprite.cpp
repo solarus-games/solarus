@@ -573,22 +573,28 @@ void Sprite::set_blinking(uint32_t blink_delay) {
 /**
  * \brief Tests whether this sprite's pixels are overlapping another sprite.
  * \param other Another sprite.
- * \param x1 X coordinate of this sprite's origin point.
- * \param y1 Y coordinate of this sprite's origin point.
- * \param x2 X coordinate of the other sprite's origin point.
- * \param y2 Y coordinate of the other sprite's origin point.
+ * \param x1 X coordinate of this sprite's origin point on the map,
+ * before applying its current movement if any.
+ * \param y1 Y coordinate of this sprite's origin point on the map,
+ * before applying its current movement if any.
+ * \param x2 X coordinate of the other sprite's origin point on the map,
+ * before applying its current movement if any.
+ * \param y2 Y coordinate of the other sprite's origin point on the map,
+ * before applying its current movement if any.
  * \return \c true if the sprites are overlapping.
  */
 bool Sprite::test_collision(const Sprite& other, int x1, int y1, int x2, int y2) const {
 
   const SpriteAnimationDirection* direction1 = current_animation->get_direction(current_direction);
   const Rectangle& origin1 = direction1->get_origin();
-  const Rectangle location1(x1 - origin1.get_x(), y1 - origin1.get_y());
+  Rectangle location1(x1 - origin1.get_x(), y1 - origin1.get_y());
+  location1.add_xy(get_xy());
   const PixelBits& pixel_bits1 = direction1->get_pixel_bits(current_frame);
 
   const SpriteAnimationDirection* direction2 = other.current_animation->get_direction(other.current_direction);
   const Rectangle& origin2 = direction2->get_origin();
-  const Rectangle location2(x2 - origin2.get_x(), y2 - origin2.get_y());
+  Rectangle location2(x2 - origin2.get_x(), y2 - origin2.get_y());
+  location2.add_xy(other.get_xy());
   const PixelBits& pixel_bits2 = direction2->get_pixel_bits(other.current_frame);
 
   return pixel_bits1.test_collision(pixel_bits2, location1, location2);

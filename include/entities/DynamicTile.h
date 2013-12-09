@@ -33,8 +33,16 @@ class DynamicTile: public MapEntity {
 
   public:
 
-    DynamicTile(const std::string& name, Layer layer, int x, int y,
-	int width, int height, int tile_pattern_id, bool visible);
+    DynamicTile(
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        int width,
+        int height,
+        int tile_pattern_id,
+        bool visible
+    );
     ~DynamicTile();
 
     EntityType get_type() const;

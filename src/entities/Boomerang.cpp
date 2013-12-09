@@ -52,7 +52,8 @@ Boomerang::Boomerang(
 
   // initialize the entity
   create_sprite(sprite_name);
-  set_bounding_box_from_sprite();
+  set_size(16, 16);
+  set_origin(8, 8);
 
   int hero_x = hero.get_top_left_x();
   int hero_y = hero.get_top_left_y();

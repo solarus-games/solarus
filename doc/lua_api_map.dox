@@ -657,6 +657,15 @@ This function can be used for example to checker whether a group of
   when there are a lot of entities
   (because it stops searching as soon as there is a match).
 
+\subsection lua_api_map_get_hero map:get_hero()
+
+Returns the \ref lua_api_hero "hero".
+- Return value (\ref lua_api_hero "hero"): The hero.
+
+\remark Equivalent to <tt>map:get_entity("hero")</tt> but shorter to write.
+  This function is provided for convenience as getting the hero is often
+  needed.
+
 \subsection lua_api_map_set_entities_enabled map:set_entities_enabled(prefix, [enabled])
 
 Enables or disables all \ref lua_api_entity "map entities" having

@@ -164,16 +164,18 @@ Example of use:
 
 -- This function is called when the enemy should start or restart its movement.
 function enemy:on_restarted()
+
   -- Create a movement that makes random straight trajectories.
   local movement = sol.movement.create("random")
-  self:start_movement(movement)
-end
 
--- This function is called when the trajectory has changed.
-function enemy:on_movement_changed(movement)
-  -- The angle of the movement has changed: update the sprite accordingly.
-  local direction = movement:get_direction4()
-  self:get_sprite():set_direction(direction)
+  -- This function is called when the trajectory has changed.
+  function movement:on_movement_changed()
+    -- The angle of the movement has changed: update the sprite accordingly.
+    local direction = movement:get_direction4()
+    enemy:get_sprite():set_direction(direction)
+  end
+
+  movement:start(enemy)
 end
 \endverbatim
 

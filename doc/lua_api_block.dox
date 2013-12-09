@@ -56,6 +56,58 @@ its counter of moves.
 It means that the hero will be able to move again
 a block that could be moved only once and that already moved.
 
+\subsection lua_api_block_is_pushable block:is_pushable()
+
+Returns whether this block can be pushed.
+
+This property is independent of whether or not the block was already moved its
+maximum number of times.
+- Return value (boolean): \c true if this block can be pushed.
+
+\subsection lua_api_block_set_pushable block:set_pushable([pushable])
+
+Sets whether this block can be pushed.
+
+This property is independent of whether or not the block was already moved its
+maximum number of times.
+- \c pushable (boolean): \c true to make this block pushable.
+  No value means \c true.
+
+\subsection lua_api_block_is_pullable block:is_pullable()
+
+Returns whether this block can be pulled.
+
+This property is independent of whether or not the block was already moved its
+maximum number of times.
+- Return value (boolean): \c true if this block can be pulled.
+
+\subsection lua_api_block_set_pullable block:set_pullable([pullable])
+
+Sets whether this block can be pulled.
+
+This property is independent of whether or not the block was already moved its
+maximum number of times.
+- \c pullable (boolean): \c true to make this block pullable.
+  No value means \c true.
+
+\subsection lua_api_block_get_maximum_moves block:get_maximum_moves()
+
+Returns a value indicating the maximum number of times the block can be moved.
+
+This function returns the maximum moves value that was set at creation time
+or by \ref lua_api_block_set_maximum_moves "block:set_maximum_moves()",
+no matter if the block was moved then.
+- Return value (integer): How many times the block can be moved:
+  \c 0: none, \c 1: once, \c nil: infinite.
+
+\subsection lua_api_block_set_maximum_moves block:set_maximum_moves(maximum_moves)
+
+Sets the maximum number of times the block can be moved.
+
+This resets the remaining allowed moves.
+- \c maximum_moves (integer): How many times the block can be moved:
+  \c 0: none, \c 1: once, \c nil: infinite.
+
 \section lua_api_block_inherited_events Events inherited from map entity
 
 Events are callback methods automatically called by the engine if you define

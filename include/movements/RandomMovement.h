@@ -47,7 +47,6 @@ class RandomMovement: public StraightMovement {
 
   private:
 
-    int normal_speed;                                   /**< speed of this movement */
     int max_radius;                                     /**< if the object goes further than this distance in x or y, it will come back
                                                          * (this is not a hard limit, there is no guarantee) */
     Rectangle bounds;                                   /**< a rectangle the object should not escape from */

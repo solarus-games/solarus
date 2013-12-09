@@ -16,6 +16,7 @@
  */
 #include "Settings.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Language.h"
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
@@ -86,8 +87,8 @@ bool Settings::load(const std::string& file_name) {
   lua_getglobal(l, "language");
   if (lua_isstring(l, 1)) {
     const std::string& language = lua_tostring(l, 1);
-    if (FileTools::has_language(language)) {
-      FileTools::set_language(language);
+    if (Language::has_language(language)) {
+      Language::set_language(language);
     }
   }
   lua_pop(l, 1);
@@ -120,8 +121,8 @@ bool Settings::save(const std::string& file_name) {
   oss << "video_mode = \"" << VideoManager::video_mode_names[video_mode] << "\"\n";
   oss << "sound_volume = " << Sound::get_volume() << "\n";
   oss << "music_volume = " << Music::get_volume() << "\n";
-  if (!FileTools::get_language().empty()) {
-    oss << "language = \"" << FileTools::get_language() << "\"\n";
+  if (!Language::get_language().empty()) {
+    oss << "language = \"" << Language::get_language() << "\"\n";
   }
   oss << "joypad_enabled = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
 

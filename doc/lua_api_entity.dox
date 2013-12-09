@@ -146,6 +146,11 @@ Returns the type of entity.
 Returns the map this entity belongs to.
 - Return value (\ref lua_api_map "map"): The map that contains this entity.
 
+\subsection lua_api_entity_get_map entity:get_game()
+
+Returns the game that is running the map this entity belongs to.
+- Return value (\ref lua_api_game "game"): The current game.
+
 \subsection lua_api_entity_get_name entity:get_name()
 
 Returns the name of this map entity.

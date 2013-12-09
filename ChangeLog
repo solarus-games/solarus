@@ -14,6 +14,11 @@ Engine changes
 * Add the hq4x pixel filter algorithm as a new video mode.
 * Call enemy:on_hurt() before enemy:on_dying() (#325).
 * Fix life and money exceeding the max when the max changes (#355).
+* Make stairs sounds optional (#364).
+* Make more checks in sprite files to avoid crashes (#357).
+* Fix RandomMovement speed that was not taken into account (#361).
+* The size of all map entities must be a multiple of 8 (#358).
+* Fix pixel collisions coordinates when sprites move (#372).
 
 Data files format changes
 -------------------------
@@ -34,6 +39,8 @@ Changes that introduce incompatibilities:
 * In sol.video.get/set_mode(), "fullscreen_*_wide" modes no longer exist.
 * on_key_pressed() and on_character_pressed() are now both called (#344).
 * surface:set_transparency_color() no longer exists.
+* Enemies have now a default size of 16x16 and origin of 8,13 (#354).
+* The size of enemies must be a multiple of 8 (#358).
 
 Changes that do not introduce incompatibilities:
 
@@ -41,8 +48,12 @@ Changes that do not introduce incompatibilities:
 * Colors now take an optional alpha value as fourth component.
 * sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
 * Fix random_movement:get_max_radius() that was not working.
+* Add a method menu:is_started().
+* Add a method map:get_hero() (#362).
+* Add a method entity:get_game() (#363).
 * Add an event sensor:on_left() (#339).
 * Add an event block:on_moving() (#334).
+* Add functions to get/set the properties of blocks.
 
 Solarus Quest Editor changes
 ----------------------------
@@ -51,7 +62,7 @@ Solarus Quest Editor changes
 
 _________________________________
 
-Solarus 1.1.1 (under development)
+Solarus 1.1.1 (2013-12-01)
 _________________________________
 
 Bug fixes for the 1.1 release.

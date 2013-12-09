@@ -19,6 +19,7 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Language.h"
 #include "StringResource.h"
 
 const std::string LuaContext::text_surface_module_name = "sol.text_surface";
@@ -166,7 +167,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
           delete text_surface;
           error(l, StringConcat() << "No value with key '" << text_key
               << "' in strings.dat for language '"
-              << FileTools::get_language() << "'");
+              << Language::get_language() << "'");
         }
         text_surface->set_text(StringResource::get_string(text_key));
       }
@@ -386,7 +387,7 @@ int LuaContext::text_surface_api_set_text_key(lua_State* l) {
   if (!StringResource::exists(key)) {
     arg_error(l, 2, StringConcat() << "No value with key '" << key
         << "' in strings.dat for language '"
-        << FileTools::get_language() << "'");
+        << Language::get_language() << "'");
   }
 
   text_surface.set_text(StringResource::get_string(key));

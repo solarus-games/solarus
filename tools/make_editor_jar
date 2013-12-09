@@ -1,19 +1,10 @@
 #!/bin/bash
+cd editor
+mvn package
+cp target/solarus-editor.jar .
+keytool -genkey -keystore ../solaruskeystore -alias solaruskey
 
-mkdir export
-git archive -o export/tools.tar HEAD .
-cd export
-tar xvf tools.tar
-rm tools.tar
-./compile
-cd initial_quest/data
-zip -r ../data.solarus.zip *
-cd ../..
-jar cvmf manifest.mf solarus-editor.jar org imagej data_files_conversion initial_quest/data.solarus.zip update_quest.lua
-#keytool -genkey -keystore ../solaruskeystore -alias solaruskey
-jarsigner -keystore ../solaruskeystore luaj-jse-3.0-beta1.jar solaruskey
 jarsigner -keystore ../solaruskeystore solarus-editor.jar solaruskey
 mv solarus-editor.jar ..
 cd ..
-rm -rf export
 

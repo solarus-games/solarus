@@ -234,7 +234,10 @@ void Stairs::play_sound(Way way) {
       sound_id = (way == NORMAL_WAY) ? "stairs_down_start" : "stairs_up_end";
     }
   }
-  Sound::play(sound_id);
+
+  if (Sound::exists(sound_id)) {
+    Sound::play(sound_id);
+  }
 }
 
 /**

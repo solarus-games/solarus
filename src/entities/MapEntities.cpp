@@ -50,6 +50,7 @@ MapEntities::MapEntities(Game& game, Map& map):
   Layer layer = hero.get_layer();
   this->obstacle_entities[layer].push_back(&hero);
   this->entities_drawn_y_order[layer].push_back(&hero);
+  this->ground_observers[layer].push_back(&hero);
   this->named_entities[hero.get_name()] = &hero;
 
   // surfaces to pre-render static tiles

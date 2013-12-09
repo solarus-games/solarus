@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Language.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
@@ -35,7 +36,6 @@
 std::string FileTools::quest_path;
 std::string FileTools::solarus_write_dir;
 std::string FileTools::quest_write_dir;
-std::string FileTools::language_code;
 std::vector<std::string> FileTools::temporary_files;
 
 /**
@@ -99,76 +99,6 @@ void FileTools::quit() {
 }
 
 /**
- * \brief Returns whether a language exists for this quest.
- * \param language_code Code of the language to test.
- * \return \c true if this language exists.
- */
-bool FileTools::has_language(const std::string& language_code) {
-
-  const std::vector<QuestResourceList::Element>& languages =
-    QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
-
-  std::vector<QuestResourceList::Element>::const_iterator it;
-  for (it = languages.begin(); it != languages.end(); ++it) {
-    if (it->first == language_code) {
-      return true;
-    }
-  }
-  return false;
-}
-
-/**
- * \brief Sets the current language.
- *
- * The language-specific data will be loaded from the directory of this language.
- * This function must be called before the first language-specific file is loaded.
- *
- * \param language_code Code of the language to set.
- */
-void FileTools::set_language(const std::string& language_code) {
-
-  Debug::check_assertion(has_language(language_code),
-      StringConcat() << "Unknown language '" << language_code << "'");
-
-  FileTools::language_code = language_code;
-  StringResource::initialize();
-  DialogResource::initialize();
-}
-
-/**
- * \brief Returns the current language.
- *
- * The language-specific data are be loaded from the directory of this language.
- *
- * \return code of the language, or an empty string if no language is set
- */
-const std::string& FileTools::get_language() {
-  return language_code;
-}
-
-/**
- * \brief Returns the user-friendly name of a language for this quest.
- * \param language_code Code of a language.
- * \return Name of this language of an empty string.
- */
-const std::string& FileTools::get_language_name(
-    const std::string& language_code) {
-
-  const std::vector<QuestResourceList::Element>& languages =
-    QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
-
-  std::vector<QuestResourceList::Element>::const_iterator it;
-  for (it = languages.begin(); it != languages.end(); ++it) {
-    if (it->first == language_code) {
-      return it->second;
-    }
-  }
-
-  static std::string empty_string;
-  return empty_string;
-}
-
-/**
  * \brief Returns the path of the quest, relative to thecurrent directory.
  * \return Path of the data/ directory, the data.solarus archive or the
  * data.solarus.zip archive, relative to the current directory.
@@ -228,10 +158,10 @@ bool FileTools::data_file_exists(const std::string& file_name,
 
   std::string full_file_name;
   if (language_specific) {
-    if (language_code.empty()) {
+    if (Language::get_language().empty()) {
       return false;
     }
-    full_file_name = std::string("languages/") + language_code + "/" + file_name;
+    full_file_name = std::string("languages/") + Language::get_language() + "/" + file_name;
   }
   else {
     full_file_name = file_name;
@@ -284,9 +214,9 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
 
   std::string full_file_name;
   if (language_specific) {
-    Debug::check_assertion(!language_code.empty(), StringConcat() <<
+    Debug::check_assertion(!Language::get_language().empty(), StringConcat() <<
         "Cannot open language-specific file '" << file_name << "': no language was set");
-    full_file_name = std::string("languages/") + language_code + "/" + file_name;
+    full_file_name = std::string("languages/") + Language::get_language() + "/" + file_name;
   }
   else {
     full_file_name = file_name;

@@ -94,6 +94,7 @@ void LuaContext::register_entity_module() {
   static const luaL_Reg common_methods[] = {
       { "get_type", entity_api_get_type },
       { "get_map", entity_api_get_map },
+      { "get_game", entity_api_get_game },
       { "get_name", entity_api_get_name },
       { "exists", entity_api_exists },
       { "remove", entity_api_remove },
@@ -179,6 +180,12 @@ void LuaContext::register_entity_module() {
   // Block.
   static const luaL_Reg block_methods[] = {
       { "reset", block_api_reset },
+      { "is_pushable", block_api_is_pushable },
+      { "set_pushable", block_api_set_pushable },
+      { "is_pullable", block_api_is_pullable },
+      { "set_pullable", block_api_set_pullable },
+      { "get_maximum_moves", block_api_get_maximum_moves },
+      { "set_maximum_moves", block_api_set_maximum_moves },
       { NULL, NULL }
   };
   register_functions(entity_block_module_name, common_methods);
@@ -372,6 +379,19 @@ int LuaContext::entity_api_get_map(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of entity:get_game().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_game(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  push_game(l, entity.get_game().get_savegame());
+  return 1;
+}
+
+/**
  * \brief Implementation of entity:get_name().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -472,6 +492,15 @@ int LuaContext::entity_api_set_size(lua_State* l) {
   MapEntity& entity = check_entity(l, 1);
   int width = luaL_checkint(l, 2);
   int height = luaL_checkint(l, 3);
+
+  if (width < 0 || width % 8 != 0) {
+    arg_error(l, 2, StringConcat() <<
+        "Invalid width: " << width << ": should be a positive multiple of 8");
+  }
+  if (height < 0 || height % 8 != 0) {
+    arg_error(l, 3, StringConcat() <<
+        "Invalid height: " << height << ": should be a positive multiple of 8");
+  }
 
   entity.set_size(width, height);
 
@@ -1497,6 +1526,119 @@ int LuaContext::block_api_reset(lua_State* l) {
   Block& block = check_block(l, 1);
 
   block.reset();
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of block:is_pushable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::block_api_is_pushable(lua_State* l) {
+
+  const Block& block = check_block(l, 1);
+
+  lua_pushboolean(l, block.is_pushable());
+  return 1;
+}
+
+/**
+ * \brief Implementation of block:set_pushable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::block_api_set_pushable(lua_State* l) {
+
+  Block& block = check_block(l, 1);
+  bool pushable = true;
+  if (lua_gettop(l) >= 2) {
+    pushable = lua_toboolean(l, 2);
+  }
+
+  block.set_pushable(pushable);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of block:is_pullable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::block_api_is_pullable(lua_State* l) {
+
+  const Block& block = check_block(l, 1);
+
+  lua_pushboolean(l, block.is_pullable());
+  return 1;
+}
+
+/**
+ * \brief Implementation of block:set_pullable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::block_api_set_pullable(lua_State* l) {
+
+  Block& block = check_block(l, 1);
+  bool pullable = true;
+  if (lua_gettop(l) >= 2) {
+    pullable = lua_toboolean(l, 2);
+  }
+
+  block.set_pullable(pullable);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of block:get_maximum_moves().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::block_api_get_maximum_moves(lua_State* l) {
+
+  const Block& block = check_block(l, 1);
+
+  const int maximum_moves = block.get_maximum_moves();
+
+  if (maximum_moves == 2) {
+    // 2 means no maximum in the side C++ side (for now).
+    lua_pushnil(l);
+  }
+  else {
+    lua_pushinteger(l, maximum_moves);
+  }
+  return 1;
+}
+
+/**
+ * \brief Implementation of block:set_maximum_moves().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::block_api_set_maximum_moves(lua_State* l) {
+
+  Block& block = check_block(l, 1);
+  if (lua_type(l, 2) != LUA_TNUMBER && lua_type(l, 2) != LUA_TNIL) {
+    luaL_typerror(l, 2, "number or nil");
+  }
+
+
+  if (lua_isnumber(l, 2)) {
+    const int maximum_moves = luaL_checkint(l, 2);
+    if (maximum_moves < 0 || maximum_moves > 1) {
+      arg_error(l, 2, "maximum_moves should be 0, 1 or nil");
+    }
+    block.set_maximum_moves(maximum_moves);
+  }
+  else if (lua_isnil(l, 2)) {
+    // 2 means no maximum in C++.
+    block.set_maximum_moves(2);
+  }
+
+
 
   return 0;
 }

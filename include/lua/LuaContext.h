@@ -416,6 +416,7 @@ class LuaContext {
       menu_api_start,
       menu_api_stop,
       menu_api_stop_all,
+      menu_api_is_started,
 
       // Timer API.
       timer_api_start,
@@ -681,6 +682,7 @@ class LuaContext {
       map_api_get_entities,
       map_api_get_entities_count,
       map_api_has_entities,
+      map_api_get_hero,
       map_api_set_entities_enabled,
       map_api_remove_entities,
       map_api_create_tile,
@@ -712,6 +714,7 @@ class LuaContext {
       // Map entity API.
       entity_api_get_type,
       entity_api_get_map,
+      entity_api_get_game,
       entity_api_get_name,
       entity_api_exists,
       entity_api_remove,
@@ -765,6 +768,12 @@ class LuaContext {
       chest_api_is_open,
       chest_api_set_open,
       block_api_reset,
+      block_api_is_pushable,
+      block_api_set_pushable,
+      block_api_is_pullable,
+      block_api_set_pullable,
+      block_api_get_maximum_moves,
+      block_api_set_maximum_moves,
       switch_api_is_activated,
       switch_api_set_activated,
       switch_api_set_locked,

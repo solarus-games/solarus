@@ -26,15 +26,29 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+/**
+ * \brief Stores the tree of what surfaces have to be drawn on other surfaces.
+ *
+ * When a drawing is requested, if the destination surface is in GPU, no
+ * drawing actually occurs: instead, the information is stored into this tree.
+ * At rendering time, the tree is traverses to perform all drawings
+ * accelerated in GPU.
+ *
+ * The root node of the tree is the screen, and the children nodes are the
+ * surfaces drawn on it.
+ *
+ * Each node represents a source surface drawn somewhere, and the list of
+ * surfaces drawn on itself.
+ */
 class Surface::SubSurfaceNode: public RefCountable {
 
   public:
 
     SubSurfaceNode(
-        Surface* src_surface,                           /**< Surface to draw. */
-        const Rectangle& src_rect,                      /**< Region of the Subsurface to draw. */
-        const Rectangle& dst_rect,                      /**< The rectangle where to draw the Subsurface, relative to the parent Surface. */
-        const std::vector<SubSurfaceNode*> subsurfaces  /**< Source Subsurfaces not in the tree yet. */
+        Surface* src_surface,
+        const Rectangle& src_rect,
+        const Rectangle& dst_rect,
+        const std::vector<SubSurfaceNode*> subsurfaces
     ):
       src_surface(src_surface),
       src_rect(src_rect),
@@ -56,10 +70,11 @@ class Surface::SubSurfaceNode: public RefCountable {
       }
     }
 
-    Surface* src_surface;
-    Rectangle src_rect;
-    Rectangle dst_rect;
-    std::vector<SubSurfaceNode*> subsurfaces;
+    Surface* src_surface;                        /**< Surface to draw. */
+
+    Rectangle src_rect;                          /**< Region of the Subsurface to draw. */
+    Rectangle dst_rect;                          /**< The rectangle where to draw the Subsurface, relative to the parent Surface. */
+    std::vector<SubSurfaceNode*> subsurfaces;    /**< Subsurfaces drawn onto src_surface. */
 };
 
 /**
@@ -346,7 +361,7 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 }
 
 /**
- * \brief Add a SubSurface to draw on the vector buffer.
+ * \brief Add a SubSurface to draw on this surface.
  * \param src_surface The Surface to draw.
  * \param region The subrectangle to draw in the source surface.
  * \param dst_position Coordinates on this surface.

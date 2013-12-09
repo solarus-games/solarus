@@ -103,6 +103,7 @@ class Surface: public Drawable {
         ImageDirectory base_directory);
     static SDL_Texture* get_texture_from_surface(SDL_Surface* software_surface);
 
+    void create_software_surface();
     void add_subsurface(Surface& src_surface, const Rectangle& region, const Rectangle& dst_position);
     void clear_subsurfaces();
     void render(

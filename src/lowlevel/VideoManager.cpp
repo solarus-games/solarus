@@ -138,6 +138,7 @@ VideoManager::VideoManager(
   disable_window(disable_window),
   main_window(NULL),
   main_renderer(NULL),
+  renderer_accelerated(false),
   pixel_filter(NULL),
   scaled_surface(NULL),
   video_mode(NO_MODE),
@@ -199,6 +200,7 @@ void VideoManager::create_window() {
       break;
     }
   }
+  renderer_accelerated = (renderer_info.flags & SDL_RENDERER_ACCELERATED) != 0;
   
   Debug::check_assertion(pixel_format != NULL, "No compatible pixel format");
 }
@@ -208,6 +210,21 @@ void VideoManager::create_window() {
  */
 void VideoManager::show_window() {
   SDL_ShowWindow(main_window);
+}
+
+/**
+ * \brief Returns whether 2D hardware acceleration is currently enabled.
+ *
+ * 2D acceleration is enabled if the system supports it, except when the
+ * current video mode needs to work in software mode
+ * (typically because of a pixel filter implemented in software).
+ *
+ * \return \c true if GPU acceleration is active.
+ */
+bool VideoManager::is_acceleration_enabled() const {
+
+  return renderer_accelerated  // 2D acceleration must be available on the system.
+      && pixel_filter == NULL;  // For now pixel filters are all implemented in software.
 }
 
 /**

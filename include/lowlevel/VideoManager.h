@@ -50,6 +50,7 @@ class VideoManager {
 
     static SDL_PixelFormat* get_pixel_format();
     SDL_Renderer* get_renderer();
+    bool is_acceleration_enabled() const;
     void create_window();
     void show_window();
     VideoMode get_video_mode() const;
@@ -104,6 +105,7 @@ class VideoManager {
     static SDL_PixelFormat* pixel_format;   /**< The pixel color format to use. */
     SDL_Window* main_window;                /**< The window. */
     SDL_Renderer* main_renderer;            /**< The screen renderer. */
+    bool renderer_accelerated;              /**< \c true if 2D GPU acceleration is available. */
     const PixelFilter* pixel_filter;        /**< The pixel filtering algorithm (if any) applied with
                                              * the current video mode. */
     Surface* scaled_surface;                /**< The screen surface used with scaled modes. */

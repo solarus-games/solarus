@@ -285,7 +285,7 @@ void Surface::set_opacity(int opacity) {
  * at rendering time.
  *
  * By default, this setting is false and all drawing operations are
- * performed by the GPU.
+ * performed by the GPU when 2D acceleration is active.
  */
 bool Surface::is_software_destination() const {
   return software_destination;
@@ -297,7 +297,7 @@ bool Surface::is_software_destination() const {
  * at rendering time.
  *
  * By default, this setting is false and all drawing operations are
- * performed by the GPU.
+ * performed by the GPU when 2D acceleration is active.
  *
  * You should set this to \c true if your surface is built from lots of source
  * surfaces that don't change often.
@@ -306,25 +306,30 @@ bool Surface::is_software_destination() const {
 void Surface::set_software_destination(bool software_destination) {
 
   this->software_destination = software_destination;
+  // The software surface will be created lazily.
+}
 
-  if (software_destination) {
+/**
+ * \brief Creates an internal surface in software mode for this surface.
+ */
+void Surface::create_software_surface() {
 
-    if (internal_surface == NULL) {
-      // Create a surface with the appropriate pixel format.
-      SDL_PixelFormat* format = VideoManager::get_pixel_format();
-      internal_surface = SDL_CreateRGBSurface(
-          0,
-          width,
-          height,
-          32,
-          format->Rmask,
-          format->Gmask,
-          format->Bmask,
-          format->Amask
-      );
-      is_rendered = false;
-    }
-  }
+  Debug::check_assertion(internal_surface == NULL,
+      "Software surface already exists");
+
+  // Create a surface with the appropriate pixel format.
+  SDL_PixelFormat* format = VideoManager::get_pixel_format();
+  internal_surface = SDL_CreateRGBSurface(
+      0,
+      width,
+      height,
+      32,
+      format->Rmask,
+      format->Gmask,
+      format->Bmask,
+      format->Amask
+  );
+  is_rendered = false;
 }
 
 /**
@@ -343,10 +348,15 @@ void Surface::fill_with_color(Color& color) {
  */
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
-  // If we have to draw on a software surface, draw pixels directly.
-  if (software_destination) {
-    Debug::check_assertion(internal_surface != NULL,
-        "Missing software surface for fill color");
+  if (software_destination  // The destination surface is in RAM.
+      || !VideoManager::get_instance()->is_acceleration_enabled()  // The rendering is in RAM.
+  ) {
+
+    // We have to draw on a software surface: draw pixels directly.
+    if (internal_surface == NULL) {
+      create_software_surface();
+    }
+
     SDL_FillRect(internal_surface, Rectangle(where).get_internal_rect(),
         color.get_internal_value());
     is_rendered = false;  // The surface has changed.
@@ -422,7 +432,14 @@ void Surface::raw_draw_region(
     Surface& dst_surface,
     const Rectangle& dst_position) {
 
-  if (dst_surface.software_destination) {
+  if (dst_surface.software_destination  // The destination surface is in RAM.
+      || !VideoManager::get_instance()->is_acceleration_enabled()  // The rendering is in RAM.
+  ) {
+
+    if (dst_surface.internal_surface == NULL) {
+      dst_surface.create_software_surface();
+    }
+
     Debug::check_assertion(this->internal_surface != NULL,
         "Missing source internal surface");
     Debug::check_assertion(dst_surface.internal_surface != NULL,
@@ -487,7 +504,7 @@ void Surface::render(
 
   // Accelerate the internal software surface.
   if (internal_surface != NULL) {
-    
+
     if (internal_texture == NULL) {
       internal_texture = get_texture_from_surface(internal_surface);
     }

@@ -535,11 +535,11 @@ void Surface::render(
 
     // Set the intersection of the subsurface destination and this surface's clip as clipping rectangle.
     Rectangle superimposed_clip_rect;
-    if(SDL_IntersectRect(subsurface_dst_rect.get_internal_rect(),
+    if (SDL_IntersectRect(subsurface_dst_rect.get_internal_rect(),
         dst_rect.get_internal_rect(),
         superimposed_clip_rect.get_internal_rect())) {
 
-      // If there is intersection, render the subsurface.
+      // If there is an intersection, render the subsurface.
       subsurface->src_surface->render(
           renderer,
           subsurface->src_rect,

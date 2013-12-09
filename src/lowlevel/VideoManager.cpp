@@ -61,7 +61,7 @@ void VideoManager::initialize(int argc, char **argv) {
     }
   }
   
-  // Set OpenGL as the default renderer driver when available, to avoid to use direct3d.
+  // Set OpenGL as the default renderer driver when available, to avoid to use Direct3d.
   SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
   
   // Set the default OpenGL built-in shader (nearest)
@@ -350,7 +350,7 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
 }
 
 /**
- * \brief Get the current rendering driver (OpenGL ES2 or OpenGL).
+ * \brief Get the default rendering driver for the current platform (OpenGL ES2 or OpenGL).
  * \return a string containing the rendering driver name.
  */
 const std::string VideoManager::get_rendering_driver_name() {
@@ -426,6 +426,7 @@ void VideoManager::render(Surface& quest_surface) {
   // * apply the shader like this
   // * apply and restore it at each call to SDL_RenderCopy()
   // * rendering on a texture buffer and apply the shader on it (minimum requirement : OpenGL 2.0 capable hardware)
+  //   maybe the better way because it allow to apply a shader on GL primitives without take care of a geometry shader.
   // TODO2 if keeping things like this : be sure that let the shader active during all the rendering phase has no drawing side effect.
   
   // Apply a shader if we have to, and copy textures onto the renderer.
@@ -588,9 +589,9 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
   // ... and shaded ones if supported.
   if (allow_shaded_modes) {
 
-    // Get all shaders of the quest's shader/driver folder.
+    // Get all shaders of the quest's shader/filters/driver folder.
     std::vector<std::string> shader_names = 
-        FileTools::data_files_enumerate("shaders/" + get_rendering_driver_name(), false, true);
+        FileTools::data_files_enumerate("shaders/filters/" + get_rendering_driver_name(), false, true);
 
     for(int i=0 ; i<shader_names.size() ; ++i) {
 

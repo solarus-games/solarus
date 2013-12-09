@@ -197,13 +197,14 @@ double Shader::get_logical_scale() {
 }
 
 /**
- * \brief Load all shader files from the corresponding driver and sources.
+ * \brief Load all files from the corresponding shader, depending on the driver and shader names.
  * Parse the Lua file and compile GLSL others.
+ * \param shader_name The name of the shader to load.
  */
 void Shader::load(const std::string& shader_name) {
   
   const std::string base_shader_path = 
-      "shaders/" + VideoManager::get_rendering_driver_name() + "/" + shader_name + "/" + shader_name;
+      "shaders/filters/" + VideoManager::get_rendering_driver_name() + "/" + shader_name + "/" + shader_name;
   
   // Parse the lua file
   load_lua_file(base_shader_path + ".lua");

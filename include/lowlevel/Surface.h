@@ -71,6 +71,8 @@ class Surface: public Drawable {
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
 
+    void apply_pixel_filter(const PixelFilter& pixel_filter, Surface& dst_surface);
+
     void render(SDL_Renderer* renderer);
 
     const std::string& get_lua_type_name() const;

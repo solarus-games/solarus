@@ -385,6 +385,8 @@ bool VideoManager::set_video_mode(VideoMode mode) {
       int factor = pixel_filter->get_scaling_factor();
       render_size.set_size(render_size.get_width() * factor, render_size.get_height() * factor);
       scaled_surface = Surface::create(render_size);
+      scaled_surface->set_software_destination(true);
+      scaled_surface->fill_with_color(Color::get_black());  // To initialize the internal surface.
       RefCountable::ref(scaled_surface);
     }
 
@@ -466,43 +468,22 @@ void VideoManager::render(Surface& quest_surface) {
     return;
   }
 
+  Surface* surface_to_render = NULL;
+  if (pixel_filter != NULL) {
+      Debug::check_assertion(scaled_surface != NULL,
+          "Missing destination surface for scaling");
+      quest_surface.apply_pixel_filter(*pixel_filter, *scaled_surface);
+      surface_to_render = scaled_surface;
+    }
+    else {
+      surface_to_render = &quest_surface;
+    }
+
   SDL_RenderSetClipRect(main_renderer, NULL);
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
   SDL_RenderClear(main_renderer);
-  quest_surface.render(main_renderer);
+  surface_to_render->render(main_renderer);
   SDL_RenderPresent(main_renderer);
-}
-
-/**
- * \brief Applies to current pixel filter on a surface.
- * \param src_surface The source surface.
- * \param dst_surface The destination surface. It must have the size of the
- * source surface multiplied by the scaling factor of the filter.
- */
-void VideoManager::apply_pixel_filter(
-    Surface& src_surface, Surface& dst_surface) {
-
-  /*Debug::check_assertion(pixel_filter != NULL, "Missing pixel filter");
-
-  int factor = pixel_filter->get_scaling_factor();
-  Debug::check_assertion(dst_surface.get_width() == src_surface.get_width() * factor,
-      "Wrong destination surface size");
-  Debug::check_assertion(dst_surface.get_height() == src_surface.get_height() * factor,
-      "Wrong destination surface size");
-
-  SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
-  SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
-
-  SDL_LockSurface(src_internal_surface);
-  SDL_LockSurface(dst_internal_surface);
-
-  uint32_t* src = static_cast<uint32_t*>(src_internal_surface->pixels);
-  uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
-
-  pixel_filter->filter(src, src_surface.get_width(), src_surface.get_height(), dst);
-
-  SDL_UnlockSurface(dst_internal_surface);
-  SDL_UnlockSurface(src_internal_surface);*/
 }
 
 /**

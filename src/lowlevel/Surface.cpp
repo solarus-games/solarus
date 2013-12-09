@@ -21,6 +21,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/VideoManager.h"
+#include "lowlevel/PixelFilter.h"
 #include "lua/LuaContext.h"
 #include "Transition.h"
 #include <SDL.h>
@@ -131,9 +132,7 @@ Surface::~Surface() {
     SDL_FreeSurface(internal_surface);
   }
 
-  if (internal_color != NULL) {
-    delete internal_color;
-  }
+  delete internal_color;
 
   clear_subsurfaces();
 }
@@ -306,7 +305,12 @@ bool Surface::is_software_destination() const {
 void Surface::set_software_destination(bool software_destination) {
 
   this->software_destination = software_destination;
-  // The software surface will be created lazily.
+  // The software surface if any will be created lazily.
+
+  if (!software_destination && internal_surface != NULL) {
+    SDL_FreeSurface(internal_surface);
+    internal_surface = NULL;
+  }
 }
 
 /**
@@ -436,20 +440,20 @@ void Surface::raw_draw_region(
       || !VideoManager::get_instance()->is_acceleration_enabled()  // The rendering is in RAM.
   ) {
 
-    if (dst_surface.internal_surface == NULL) {
-      dst_surface.create_software_surface();
-    }
+    if (this->internal_surface != NULL) {
+      // The source surface is not empty: draw it onto the destination.
 
-    Debug::check_assertion(this->internal_surface != NULL,
-        "Missing source internal surface");
-    Debug::check_assertion(dst_surface.internal_surface != NULL,
-        "Missing destination internal surface");
-    SDL_BlitSurface(
-        this->internal_surface,
-        region.get_internal_rect(),
-        dst_surface.internal_surface,
-        Rectangle(dst_position).get_internal_rect()
-    );
+      if (dst_surface.internal_surface == NULL) {
+        dst_surface.create_software_surface();
+      }
+
+      SDL_BlitSurface(
+          this->internal_surface,
+          region.get_internal_rect(),
+          dst_surface.internal_surface,
+          Rectangle(dst_position).get_internal_rect()
+      );
+    }
   }
   else {
     dst_surface.add_subsurface(*this, region, dst_position);
@@ -464,6 +468,44 @@ void Surface::raw_draw_region(
  */
 void Surface::draw_transition(Transition& transition) {
   transition.draw(*this);
+}
+
+/**
+ * \brief Draws this surface with a pixel filter on another surface.
+ * \param filter The pixel filter to apply.
+ * \param dst_surface The destination surface. It must have the size of the
+ * this surface multiplied by the scaling factor of the filter.
+ */
+void Surface::apply_pixel_filter(
+    const PixelFilter& pixel_filter, Surface& dst_surface) {
+
+  const int factor = pixel_filter.get_scaling_factor();
+  Debug::check_assertion(dst_surface.get_width() == get_width() * factor,
+      "Wrong destination surface size");
+  Debug::check_assertion(dst_surface.get_height() == get_height() * factor,
+      "Wrong destination surface size");
+
+  SDL_Surface* src_internal_surface = this->internal_surface;
+  SDL_Surface* dst_internal_surface = dst_surface.internal_surface;
+
+  Debug::check_assertion(src_internal_surface != NULL,
+      "Missing software source surface for pixel filter");
+  Debug::check_assertion(dst_internal_surface != NULL,
+      "Missing software destination surface for pixel filter");
+
+  SDL_LockSurface(src_internal_surface);
+  SDL_LockSurface(dst_internal_surface);
+
+  uint32_t* src = static_cast<uint32_t*>(src_internal_surface->pixels);
+  uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
+
+  pixel_filter.filter(src, get_width(), get_height(), dst);
+
+  SDL_UnlockSurface(dst_internal_surface);
+  SDL_UnlockSurface(src_internal_surface);
+
+  // The destination surface has changed.
+  dst_surface.is_rendered = false;
 }
 
 /**

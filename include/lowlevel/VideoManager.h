@@ -93,7 +93,6 @@ class VideoManager {
     ~VideoManager();
 
     void initialize_video_modes();
-    void apply_pixel_filter(Surface& src_surface, Surface& dst_surface);
 
     static VideoManager* instance;          /**< The only instance. */
 

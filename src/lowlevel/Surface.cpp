@@ -295,17 +295,17 @@ void Surface::set_software_destination(bool software_destination) {
   if (software_destination) {
 
     if (internal_surface == NULL) {
-      // Create a surface with ARGB format.
+      // Create a surface with the appropriate pixel format.
       SDL_PixelFormat* format = VideoManager::get_pixel_format();
       internal_surface = SDL_CreateRGBSurface(
           0,
           width,
           height,
           32,
-          SDL_SwapBE32(format->Rmask),
-          SDL_SwapBE32(format->Gmask),
-          SDL_SwapBE32(format->Bmask),
-          SDL_SwapBE32(format->Amask)
+          format->Rmask,
+          format->Gmask,
+          format->Bmask,
+          format->Amask
       );
     }
   }

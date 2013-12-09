@@ -167,10 +167,12 @@ VideoManager::~VideoManager() {
 }
 
 /**
- * \brief Create the window.
+ * \brief Creates the window.
  */
 void VideoManager::create_window() {
   
+  Debug::check_assertion(main_window == NULL, "Window already exists");
+
   main_window = SDL_CreateWindow(
       (std::string("Solarus ") + SOLARUS_VERSION).c_str(),
       SDL_WINDOWPOS_CENTERED,
@@ -191,7 +193,7 @@ void VideoManager::create_window() {
   SDL_GetRendererInfo(main_renderer, &renderer_info);
   for (int i = 0; i < renderer_info.num_texture_formats; ++i) {
     
-    if(SDL_PIXELTYPE(renderer_info.texture_formats[i]) == SDL_PIXELTYPE_PACKED32
+    if (SDL_PIXELTYPE(renderer_info.texture_formats[i]) == SDL_PIXELTYPE_PACKED32
         && SDL_ISPIXELFORMAT_ALPHA(renderer_info.texture_formats[i])) {
       pixel_format = SDL_AllocFormat(renderer_info.texture_formats[i]);
       break;

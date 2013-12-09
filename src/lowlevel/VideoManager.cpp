@@ -186,10 +186,10 @@ void VideoManager::create_window() {
       std::string("Cannot create the renderer: ") + SDL_GetError());
   SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.
 
-  // Get the first renderer format which is a packed32 type and support alpha channel
+  // Get the first renderer format which is a packed32 type and supports alpha channel
   SDL_RendererInfo renderer_info;
   SDL_GetRendererInfo(main_renderer, &renderer_info);
-  for(int i = 0; i < renderer_info.num_texture_formats; ++i) {
+  for (int i = 0; i < renderer_info.num_texture_formats; ++i) {
     
     if(SDL_PIXELTYPE(renderer_info.texture_formats[i]) == SDL_PIXELTYPE_PACKED32
         && SDL_ISPIXELFORMAT_ALPHA(renderer_info.texture_formats[i])) {
@@ -375,7 +375,7 @@ bool VideoManager::set_video_mode(VideoMode mode) {
     SDL_SetWindowSize(main_window, window_size.get_width(), window_size.get_height());
     SDL_RenderSetLogicalSize(main_renderer, render_size.get_width(), render_size.get_height());
     SDL_ShowCursor(show_cursor);
-    if(!fullscreen_flag) {
+    if (!fullscreen_flag) {
       SDL_SetWindowPosition(main_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
   }

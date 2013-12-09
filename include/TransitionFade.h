@@ -33,6 +33,7 @@ class TransitionFade: public Transition {
     void set_delay(uint32_t delay);
 
     void start();
+    const Color* get_color();
     void set_color(Color* color);
     bool is_started() const;
     bool is_finished() const;

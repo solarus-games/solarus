@@ -51,9 +51,7 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
  * \brief Destructor.
  */
 TransitionFade::~TransitionFade() {
-  if(transition_color != NULL) {
-    delete transition_color;
-  }
+  delete transition_color;
 }
 
 /**
@@ -76,12 +74,22 @@ void TransitionFade::start() {
 }
 
 /**
- * \brief Set the foreground color of this fade transition.
- * \param color The color of the transition, or NULL to directly set the opacity
- * on the destination surface.
+ * \brief Returns the foreground color of this fade transition.
+ * \returnr The color of the transition, or NULL if the transition
+ * changes the opacity of the destination surface (only possible for
+ * sotware destination surfaces).
+ */
+const Color* TransitionFade::get_color() {
+  return transition_color;
+}
+
+/**
+ * \brief Sets the foreground color of this fade transition.
+ * \param color The color of the transition, or NULL to make the transition
+ * change the opacity of the destination surface (only possible for
+ * sotware destination surfaces).
  */
 void TransitionFade::set_color(Color* color) {
-  
   transition_color = color;
 }
 
@@ -145,21 +153,25 @@ void TransitionFade::draw(Surface& dst_surface) {
 
   // Draw the transition effect on the surface.
   int alpha_impl = std::min(alpha, 255);
-  
-  if(transition_color == NULL) {
+
+  if (transition_color == NULL) {
     // Directly set the opacity on the surface.
+    // Only possible for software destinations.
+    Debug::check_assertion(dst_surface.is_software_destination(),
+        "Cannot apply fade transition: this surface is in read-only mode");
     dst_surface.set_opacity(alpha_impl);
   }
   else {
-    // Add a colored foreground surface, and only set the fade effect on it.
+    // Add a colored foreground surface with the appropriate opacity.
     int r, g, b, a;
     transition_color->get_components(r, g, b, a);
-    Color fade_color(r, g, b, 255 - std::min(alpha_impl, a)); // A full opaque transition correspond to a foreground with full alpha.
-    
+    // A full opaque transition corresponds to a foreground with full alpha.
+    Color fade_color(r, g, b, 255 - std::min(alpha_impl, a));
+
     dst_surface.set_opacity(255);
     dst_surface.fill_with_color(fade_color);
   }
-  
+
   this->dst_surface = &dst_surface;
 }
 

@@ -195,11 +195,14 @@ void MainLoop::run() {
     }
 
     // 3. Redraw the screen.
-    draw();
+    if (num_updates > 0) {
+      draw();
+    }
 
-    // 4. Sleep if we have time, to save CPU cycles.
-    if (System::get_real_time() - last_frame_date < System::timestep) {
-      System::sleep(1);
+    // 4. Sleep if we have time, to save CPU and GPU cycles.
+    uint32_t frame_duration = System::get_real_time() - last_frame_date;
+    if (frame_duration < System::timestep) {
+      System::sleep(System::timestep - frame_duration);
     }
   }
 }

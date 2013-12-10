@@ -300,7 +300,14 @@ const Rectangle Surface::get_size() const {
  */
 void Surface::set_opacity(int opacity) {
 
-  internal_opacity = opacity;
+  if (software_destination  // The destination surface is in RAM.
+      || !VideoManager::get_instance()->is_acceleration_enabled()  // The rendering is in RAM.
+  ) {
+    SDL_SetSurfaceAlphaMod(internal_surface, opacity);
+  }
+  else {
+    internal_opacity = opacity;
+  }
 }
 
 /**

@@ -224,24 +224,47 @@ SDL_Surface* Surface::get_surface_from_file(
 }
 
 /**
- * \brief Return the given SDL_Surface converted to a SDL_Texture.
+ * \brief Creates a hardware texture from the software surface.
  *
- * Free the given SDL_Surface.
- *
- * \param software_surface The software surface to convert.
- * \return The SDL_Texture.
+ * Also converts the software surface to a preferred format if necessary.
  */
-SDL_Texture* Surface::get_texture_from_surface(SDL_Surface* software_surface) {
+void Surface::create_texture_from_surface() {
+
   SDL_Renderer* main_renderer = VideoManager::get_instance()->get_renderer();
+  SDL_PixelFormat* pixel_format = VideoManager::get_pixel_format();
 
   if (main_renderer != NULL) {
-    SDL_Texture* hardware_surface = SDL_CreateTextureFromSurface(main_renderer, software_surface);
-    SDL_SetTextureBlendMode(hardware_surface, SDL_BLENDMODE_BLEND);
 
-    return hardware_surface;
+    Debug::check_assertion(internal_surface != NULL,
+        "Missing software surface to create texture from");
+    
+    // Make sure the software surface has the same format as the texture.
+    // This is because SDL_UpdateTexture does not have a format parameter
+    // for performance reasons.
+    if (internal_surface->format->format != pixel_format->format) {
+      // Convert to the preferred pixel format.
+      SDL_Surface* converted_surface = SDL_ConvertSurface(
+          internal_surface,
+          pixel_format,
+          0
+      );
+      SDL_FreeSurface(internal_surface);
+      internal_surface = converted_surface;
+    }
+
+    // Create the texture.
+    internal_texture = SDL_CreateTexture(
+        main_renderer,
+        pixel_format->format,
+        SDL_TEXTUREACCESS_STATIC,
+        internal_surface->w,
+        internal_surface->h
+    );
+    SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
+
+    // Copy the pixels of the sofware surface to the GPU texture.
+    SDL_UpdateTexture(internal_texture, NULL, internal_surface->pixels, internal_surface->pitch);
   }
-
-  return NULL;
 }
 
 /**
@@ -361,8 +384,11 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
       create_software_surface();
     }
 
-    SDL_FillRect(internal_surface, Rectangle(where).get_internal_rect(),
-        color.get_internal_value());
+    SDL_FillRect(
+        internal_surface,
+        Rectangle(where).get_internal_rect(),
+        color.get_internal_value()  // FIXME this is wrong if the surface has a different pixel format than the color value.
+    );
     is_rendered = false;  // The surface has changed.
   }
   // Else, create a Surface with the requested size and color, and add it to the subsurface queue.
@@ -548,9 +574,10 @@ void Surface::render(
   if (internal_surface != NULL) {
 
     if (internal_texture == NULL) {
-      internal_texture = get_texture_from_surface(internal_surface);
+      create_texture_from_surface();
     }
-    // Else if the software surface has changed, update the hardware texture.
+
+    // If the software surface has changed, update the hardware texture.
     else if (software_destination && !is_rendered) {
       SDL_UpdateTexture(
           internal_texture,

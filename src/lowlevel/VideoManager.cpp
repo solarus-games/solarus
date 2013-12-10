@@ -200,10 +200,17 @@ void VideoManager::create_window() {
       break;
     }
   }
-  renderer_accelerated = (renderer_info.flags & SDL_RENDERER_ACCELERATED) != 0;
-  
+
   Debug::check_assertion(pixel_format != NULL, "No compatible pixel format");
-  
+
+  renderer_accelerated = (renderer_info.flags & SDL_RENDERER_ACCELERATED) != 0;
+  if (renderer_accelerated) {
+    std::cout << "2D acceleration: yes" << std::endl;
+  }
+  else {
+    std::cout << "2D acceleration: no" << std::endl;
+  }
+
   update_viewport();
 }
 

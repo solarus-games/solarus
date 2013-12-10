@@ -604,7 +604,7 @@ void Surface::render(
     int r, g, b, a;
     VideoManager::set_absolute_position(viewport);
     internal_color->get_components(r, g, b, a);
-    
+
     SDL_SetRenderDrawColor(renderer, r, g, b, std::min(a, current_opacity));
     SDL_RenderSetClipRect(renderer, viewport.get_internal_rect());
     SDL_RenderFillRect(renderer, clip_rect.get_internal_rect());
@@ -614,7 +614,7 @@ void Surface::render(
   if (internal_texture != NULL) {
     Rectangle viewport = clip_rect;
     VideoManager::set_absolute_position(viewport);
-    
+
     SDL_SetTextureAlphaMod(internal_texture, current_opacity);
     SDL_RenderSetClipRect(renderer, viewport.get_internal_rect());
     SDL_RenderCopy(

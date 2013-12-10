@@ -407,7 +407,6 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
     Surface* subsurface = Surface::create(subsurface_size);
     RefCountable::ref(subsurface);
     subsurface->internal_color = new Color(color);
-    
     subsurface->raw_draw_region(subsurface_size, *this, where);
   }
 }
@@ -476,6 +475,28 @@ void Surface::raw_draw_region(
       || !VideoManager::get_instance()->is_acceleration_enabled()  // The rendering is in RAM.
   ) {
 
+    // First, draw subsurfaces if any.
+    // They can exist if the video mode recently switched from an accelerated
+    // one to a software one.
+    if (!subsurfaces.empty()) {
+
+      if (this->internal_surface == NULL) {
+        create_software_surface();
+      }
+      std::vector<SubSurfaceNode*>::const_iterator it;
+      const std::vector<SubSurfaceNode*>::const_iterator end = subsurfaces.end();
+      for (it = subsurfaces.begin(); it != end; ++it) {
+        SubSurfaceNode* subsurface = *it;
+
+        subsurface->src_surface->raw_draw_region(
+            subsurface->src_rect,
+            *this,
+            subsurface->dst_rect
+        );
+      }
+      clear_subsurfaces();
+    }
+
     if (this->internal_surface != NULL) {
       // The source surface is not empty: draw it onto the destination.
 
@@ -490,8 +511,14 @@ void Surface::raw_draw_region(
           Rectangle(dst_position).get_internal_rect()
       );
     }
+    else if (internal_color != NULL) { // No internal surface to draw: this may be a color.
+      dst_surface.fill_with_color(*internal_color, dst_position);
+    }
   }
   else {
+    // The destination is a GPU surface (a texture).
+    // Do not draw anything, just store the operation in the tree instead.
+    // The actual drawing will be done at rendering time in GPU.
     dst_surface.add_subsurface(*this, region, dst_position);
   }
 

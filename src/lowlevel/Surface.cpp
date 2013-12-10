@@ -384,10 +384,18 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
       create_software_surface();
     }
 
+    uint32_t color_value = color.get_internal_value();
+    if (internal_surface->format->format != VideoManager::get_pixel_format()->format) {
+      // Get a color value in the pixel format of the destination surface.
+      int r, g, b, a;
+      color.get_components(r, g, b, a);
+      color_value = SDL_MapRGBA(internal_surface->format, r, g, b, a);
+    }
+
     SDL_FillRect(
         internal_surface,
         Rectangle(where).get_internal_rect(),
-        color.get_internal_value()  // FIXME this is wrong if the surface has a different pixel format than the color value.
+        color_value
     );
     is_rendered = false;  // The surface has changed.
   }

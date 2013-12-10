@@ -489,14 +489,14 @@ void VideoManager::render(Surface& quest_surface) {
 
   Surface* surface_to_render = NULL;
   if (pixel_filter != NULL) {
-      Debug::check_assertion(scaled_surface != NULL,
-          "Missing destination surface for scaling");
-      quest_surface.apply_pixel_filter(*pixel_filter, *scaled_surface);
-      surface_to_render = scaled_surface;
-    }
-    else {
-      surface_to_render = &quest_surface;
-    }
+    Debug::check_assertion(scaled_surface != NULL,
+        "Missing destination surface for scaling");
+    quest_surface.apply_pixel_filter(*pixel_filter, *scaled_surface);
+    surface_to_render = scaled_surface;
+  }
+  else {
+    surface_to_render = &quest_surface;
+  }
 
   SDL_RenderSetClipRect(main_renderer, NULL);
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);

@@ -19,6 +19,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/VideoManager.h"
 
 /**
  * \brief Creates a fade-in or fade-out transition effect.
@@ -154,10 +155,15 @@ void TransitionFade::draw(Surface& dst_surface) {
   // Draw the transition effect on the surface.
   int alpha_impl = std::min(alpha, 255);
 
-  if (transition_color == NULL) {
+  if (transition_color == NULL
+      || !VideoManager::get_instance()->is_acceleration_enabled()
+      // FIXME kill the two different behaviors of TransitionFade:
+      // remove colored transitions and only allow fading on software surfaces.
+  ) {
     // Directly set the opacity on the surface.
     // Only possible for software destinations.
-    Debug::check_assertion(dst_surface.is_software_destination(),
+    Debug::check_assertion(dst_surface.is_software_destination()
+        || !VideoManager::get_instance()->is_acceleration_enabled(),
         "Cannot apply fade transition: this surface is in read-only mode");
     dst_surface.set_opacity(alpha_impl);
   }

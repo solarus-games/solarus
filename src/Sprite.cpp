@@ -699,6 +699,7 @@ void Sprite::raw_draw(
           current_direction, current_frame);
     }
     else {
+      intermediate_surface->fill_with_color(Color::get_transparent());
       current_animation->draw(*intermediate_surface, get_origin(),
           current_direction, current_frame);
       Rectangle dst_position2(dst_position);

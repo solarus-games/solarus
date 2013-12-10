@@ -168,13 +168,15 @@ Surface* Surface::create(const Rectangle& size) {
 Surface* Surface::create(const std::string& file_name,
     ImageDirectory base_directory) {
 
-  SDL_Surface* software_surface = get_surface_from_file(file_name, base_directory);
+  SDL_Surface* sdl_surface = get_surface_from_file(file_name, base_directory);
 
-  if (software_surface == NULL) {
+  if (sdl_surface == NULL) {
     return NULL;
   }
 
-  return new Surface(software_surface);
+  Surface* surface = new Surface(sdl_surface);
+  surface->set_software_destination(true);
+  return surface;
 }
 
 /**

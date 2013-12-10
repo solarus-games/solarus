@@ -724,6 +724,10 @@ void Sprite::raw_draw_region(
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
+    // Clear the working surface.
+    get_intermediate_surface().fill_with_color(Color::get_transparent());
+
+    // Draw the current animation on the working surface.
     const Rectangle& origin = get_origin();
     current_animation->draw(
         get_intermediate_surface(),

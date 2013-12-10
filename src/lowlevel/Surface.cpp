@@ -574,9 +574,6 @@ void Surface::apply_pixel_filter(
 /**
  * \brief Draws the internal texture if any, and all subtextures on the
  * renderer.
- *
- * Clears the subsurfaces vector at the end of the method.
- *
  * \param renderer The renderer where to draw.
  */
 void Surface::render(SDL_Renderer* renderer) {

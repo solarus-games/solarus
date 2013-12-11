@@ -31,7 +31,7 @@
  */
 Camera::Camera(Map& map):
   map(map),
-  position(VideoManager::get_instance()->get_quest_size()),
+  position(VideoManager::get_quest_size()),
   fixed_on_hero(true),
   separator_scrolling_dx(0),
   separator_scrolling_dy(0),

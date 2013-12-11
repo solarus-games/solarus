@@ -443,7 +443,7 @@ void Game::update_transitions() {
         // that want to display both maps at the same time
         if (needs_previous_surface) {
           previous_map_surface = Surface::create(
-              VideoManager::get_instance()->get_quest_size()
+              VideoManager::get_quest_size()
           );
           RefCountable::ref(previous_map_surface);
           current_map->draw();

@@ -232,7 +232,7 @@ SDL_Surface* Surface::get_surface_from_file(
  */
 void Surface::create_texture_from_surface() {
 
-  SDL_Renderer* main_renderer = VideoManager::get_instance()->get_renderer();
+  SDL_Renderer* main_renderer = VideoManager::get_renderer();
   SDL_PixelFormat* pixel_format = VideoManager::get_pixel_format();
 
   if (main_renderer != NULL) {
@@ -301,7 +301,7 @@ const Rectangle Surface::get_size() const {
 void Surface::set_opacity(int opacity) {
 
   if (software_destination  // The destination surface is in RAM.
-      || !VideoManager::get_instance()->is_acceleration_enabled()  // The rendering is in RAM.
+      || !VideoManager::is_acceleration_enabled()  // The rendering is in RAM.
   ) {
     SDL_SetSurfaceAlphaMod(internal_surface, opacity);
   }
@@ -385,7 +385,7 @@ void Surface::fill_with_color(Color& color) {
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
   if (software_destination  // The destination surface is in RAM.
-      || !VideoManager::get_instance()->is_acceleration_enabled()  // The rendering is in RAM.
+      || !VideoManager::is_acceleration_enabled()  // The rendering is in RAM.
   ) {
 
     // We have to draw on a software surface: draw pixels directly.
@@ -479,7 +479,7 @@ void Surface::raw_draw_region(
     const Rectangle& dst_position) {
 
   if (dst_surface.software_destination  // The destination surface is in RAM.
-      || !VideoManager::get_instance()->is_acceleration_enabled()  // The rendering is in RAM.
+      || !VideoManager::is_acceleration_enabled()  // The rendering is in RAM.
   ) {
 
     // First, draw subsurfaces if any.

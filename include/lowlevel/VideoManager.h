@@ -18,9 +18,11 @@
 #define SOLARUS_VIDEO_MANAGER_H
 
 #include "Common.h"
-#include "lowlevel/Rectangle.h"
 #include <list>
-#include <map>
+#include <string>
+
+struct SDL_PixelFormat;
+struct SDL_Renderer;
 
 /**
  * \brief Draws the window and handles the video mode.
@@ -46,81 +48,50 @@ class VideoManager {
 
     static void initialize(int argc, char** argv);
     static void quit();
-    static VideoManager* get_instance();
 
     static SDL_PixelFormat* get_pixel_format();
-    SDL_Renderer* get_renderer();
-    bool is_acceleration_enabled() const;
-    void create_window();
-    void show_window();
+    static SDL_Renderer* get_renderer();
+    static bool is_acceleration_enabled();
+    static void create_window();
+    static void show_window();
 
-    VideoMode get_video_mode() const;
-    bool set_video_mode(VideoMode mode);
-    void update_viewport();
+    static VideoMode get_video_mode();
+    static bool set_video_mode(VideoMode mode);
+    static void update_viewport();
   
-    void switch_video_mode();
-    void set_default_video_mode();
-    bool is_mode_supported(VideoMode mode) const;
-    const std::list<VideoMode> get_video_modes() const;
+    static void switch_video_mode();
+    static void set_default_video_mode();
+    static bool is_mode_supported(VideoMode mode);
+    static const std::list<VideoMode> get_video_modes();
 
     static std::string get_video_mode_name(VideoMode mode);
     static VideoMode get_video_mode_by_name(const std::string& mode_name);
 
-    bool is_fullscreen(VideoMode mode) const;
-    bool is_fullscreen() const;
-    void set_fullscreen(bool fullscreen);
-    void switch_fullscreen();
+    static bool is_fullscreen(VideoMode mode);
+    static bool is_fullscreen();
+    static void set_fullscreen(bool fullscreen);
+    static void switch_fullscreen();
 
-    const std::string get_window_title() const;
-    void set_window_title(const std::string& window_title);
+    static const std::string get_window_title();
+    static void set_window_title(const std::string& window_title);
 
     static bool parse_size(const std::string& size_string, Rectangle& size);
     static void set_absolute_position(Rectangle& rect);
 
-    const Rectangle& get_quest_size() const;
-    void get_quest_size_range(
+    static const Rectangle& get_quest_size();
+    static void get_quest_size_range(
         Rectangle& normal_quest_size,
         Rectangle& min_quest_size,
-        Rectangle& max_quest_size) const;
-    void set_quest_size_range(
+        Rectangle& max_quest_size);
+    static void set_quest_size_range(
         const Rectangle& normal_quest_size,
         const Rectangle& min_quest_size,
         const Rectangle& max_quest_size);
 
-    void render(Surface& quest_surface);
+    static void render(Surface& quest_surface);
 
     static const std::string video_mode_names[];
 
-  private:
-
-    VideoManager(bool disable_window, const Rectangle& wanted_quest_size);
-    ~VideoManager();
-
-    void initialize_video_modes();
-
-    static VideoManager* instance;          /**< The only instance. */
-
-    bool disable_window;                    /**< Indicates that no window is displayed (used for unit tests). */
-    std::map<VideoMode, Rectangle>
-        mode_sizes;                         /**< Size of the screen surface for each supported
-                                             * video mode with the current quest size. */
-    static SDL_PixelFormat* pixel_format;   /**< The pixel color format to use. */
-
-    SDL_Window* main_window;                /**< The window. */
-    SDL_Renderer* main_renderer;            /**< The screen renderer. */
-    bool renderer_accelerated;              /**< \c true if 2D GPU acceleration is available. */
-    Rectangle viewport;                      /**< The position of the drawable area on the window. */
-    const PixelFilter* pixel_filter;        /**< The pixel filtering algorithm (if any) applied with
-                                             * the current video mode. */
-    Surface* scaled_surface;                /**< The screen surface used with scaled modes. */
-  
-    VideoMode video_mode;                   /**< Current display mode. */
-
-    Rectangle normal_quest_size;            /**< Default value of quest_size (depends on the quest). */
-    Rectangle min_quest_size;               /**< Minimum value of quest_size (depends on the quest). */
-    Rectangle max_quest_size;               /**< Maximum value of quest_size (depends on the quest). */
-    Rectangle quest_size;                   /**< Size of the quest surface to render. */
-    Rectangle wanted_quest_size;            /**< Size wanted by the user. */
 };
 
 #endif

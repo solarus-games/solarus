@@ -418,24 +418,26 @@ void VideoManager::render(Surface& quest_surface) {
     return;
   }
 
-  SDL_RenderSetClipRect(main_renderer, NULL);
-  SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
-  SDL_RenderClear(main_renderer);
+  // Perform accelerated render ...
+  if (shaders_supported) {
     
-  // TODO profile what is the fastest way : 
-  // * apply the shader like this
-  // * apply and restore it at each call to SDL_RenderCopy()
-  // * rendering on a texture buffer and apply the shader on it (minimum requirement : OpenGL 2.0 capable hardware)
-  //   maybe the better way because it allow to apply a shader on GL primitives without take care of a geometry shader.
-  // TODO2 if keeping things like this : be sure that let the shader active during all the rendering phase has no drawing side effect.
+    SDL_RenderSetClipRect(main_renderer, NULL);
+    SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
+    SDL_RenderClear(main_renderer);
   
-  // Apply a shader if we have to, and copy textures onto the renderer.
-  VideoMode* video_mode = get_instance()->video_mode;
-  if (video_mode->shader != NULL) {
-    video_mode->shader->apply();
+    // Apply a shader if we have to, and copy textures onto the renderer.
+    VideoMode* video_mode = get_instance()->video_mode;
+    if (video_mode->shader != NULL) {
+      video_mode->shader->apply();
+    }
+    quest_surface.render(main_renderer);
+    Shader::restore_default_shader_program();
   }
-  quest_surface.render(main_renderer);
-  Shader::restore_default_shader_program();
+  // ... or software one.
+  else
+  {
+    // Do the software render.
+  }
   
   SDL_RenderPresent(main_renderer);
 }
@@ -587,6 +589,7 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
   all_video_modes.push_back(new VideoMode(normal_mode_name, quest_size_2, NULL));
 
   // ... and shaded ones if supported.
+  shaders_supported = allow_shaded_modes;
   if (allow_shaded_modes) {
 
     // Get all shaders of the quest's shader/filters/driver folder.

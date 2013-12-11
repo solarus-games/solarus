@@ -51,7 +51,6 @@ class Shader {
     static int l_shader(lua_State* l);
   
     static Shader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */
-    static SDL_bool shaders_supported;           /**< True if GLSL shaders are supported. */
     static GLint default_shader_program;         /**< Default shader program to restore once a shaded render is done. */
   
     static PFNGLATTACHOBJECTARBPROC glAttachObjectARB;

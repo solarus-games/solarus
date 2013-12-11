@@ -33,7 +33,6 @@ PFNGLUNIFORM1IARBPROC Shader::glUniform1iARB;
 PFNGLUSEPROGRAMOBJECTARBPROC Shader::glUseProgramObjectARB;
 
 Shader* Shader::loading_shader = NULL;
-SDL_bool Shader::shaders_supported = SDL_FALSE;
 GLint Shader::default_shader_program;
 
 /**
@@ -41,6 +40,7 @@ GLint Shader::default_shader_program;
  */
 void Shader::initialize() {
   
+  SDL_bool shaders_supported = SDL_FALSE;
   VideoManager* videomanager = VideoManager::get_instance();
   
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
@@ -89,20 +89,16 @@ void Shader::initialize() {
     }
   }
   
-  if(!shaders_supported) {
-    
-    // Only authorize default modes.
-    videomanager->initialize_video_modes(false);
-    Debug::warning("OpenGL shaders not supported.");
-    
-    return;
-  }
-  
   // Get the default shader program
-  glGetIntegerv(GL_CURRENT_PROGRAM, &default_shader_program);
+  if(shaders_supported) {
+    glGetIntegerv(GL_CURRENT_PROGRAM, &default_shader_program);
+  }
+  else {
+    Debug::warning("OpenGL shaders not supported.");
+  }
 
-  // Initialize default and shaded video modes.
-  videomanager->initialize_video_modes();
+  // Initialize default and/or shaded video modes.
+  videomanager->initialize_video_modes(shaders_supported);
 }
 
 /**
@@ -150,30 +146,27 @@ Shader::Shader(std::string shader_name) :
   vertex_shader(0),
   fragment_shader(0) {
     
-  if (shaders_supported) {
+  const int num_tmus_bound = 4;
+  GLint location;
     
-    const int num_tmus_bound = 4;
-    GLint location;
+  glGetError();
     
-    glGetError();
+  // Load the shader.
+  load(shader_name);
     
-    // Load the shader.
-    load(shader_name);
-    
-    // Set up some uniform variables
-    glUseProgramObjectARB(program);
-    for (int i = 0; i < num_tmus_bound; ++i) {
-      char tex_name[5];
-      SDL_snprintf(tex_name, SDL_arraysize(tex_name), "tex%d", i);
-      location = glGetUniformLocationARB(program, tex_name);
-      if (location >= 0) {
-        glUniform1iARB(location, i);
-      }
+  // Set up some uniform variables
+  glUseProgramObjectARB(program);
+  for (int i = 0; i < num_tmus_bound; ++i) {
+    char tex_name[5];
+    SDL_snprintf(tex_name, SDL_arraysize(tex_name), "tex%d", i);
+    location = glGetUniformLocationARB(program, tex_name);
+    if (location >= 0) {
+      glUniform1iARB(location, i);
     }
-    glUseProgramObjectARB((void*)default_shader_program);
-    
-    Debug::check_assertion(glGetError() == GL_NO_ERROR, "Cannot compile the shader : " + shader_name);
   }
+  glUseProgramObjectARB((void*)default_shader_program);
+    
+  Debug::check_assertion(glGetError() == GL_NO_ERROR, "Cannot compile the shader : " + shader_name);
 }
 
 /**
@@ -181,11 +174,9 @@ Shader::Shader(std::string shader_name) :
  */
 Shader::~Shader()
 {
-  if (shaders_supported) {
-    glDeleteObjectARB(vertex_shader);
-    glDeleteObjectARB(fragment_shader);
-    glDeleteObjectARB(program);
-  }
+  glDeleteObjectARB(vertex_shader);
+  glDeleteObjectARB(fragment_shader);
+  glDeleteObjectARB(program);
 }
 
 /**
@@ -299,12 +290,10 @@ int Shader::l_shader(lua_State* l) {
 }
 
 /**
- * \brief Apply the current shader if supported, and render to the window.
+ * \brief Apply the current shader, and render to the window.
  * \param renderer The renderer.
  */
 void Shader::apply()
 {
-  if (shaders_supported) {
-    glUseProgramObjectARB(program);
-  }
+  glUseProgramObjectARB(program);
 }

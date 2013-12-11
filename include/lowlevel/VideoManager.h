@@ -101,11 +101,13 @@ class VideoManager {
 
     SDL_Window* main_window;                   /**< The window. */
     SDL_Renderer* main_renderer;               /**< The screen renderer. */
+    SDL_Texture* render_target;                /**< The render texture used when shader modes are supported. */
     SDL_PixelFormat* pixel_format;             /**< The pixel color format to use. */
     Rectangle viewport;                        /**< The position of the drawable area on the window. */
 
     bool disable_window;                       /**< Indicates that no window is displayed (used for unit tests). */
     bool fullscreen;                           /**< True if fullscreen display. */
+    bool shaders_supported;                    /**< True if shaded modes are supported. */
     std::vector<VideoMode*> all_video_modes;   /**< Display informations for each supported video mode. */
     VideoMode* video_mode;                     /**< Current display mode, pointer to an element of all_video_modes. */
 

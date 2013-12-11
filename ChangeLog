@@ -7,11 +7,13 @@ Engine changes
 --------------
 
 * Upgrade to SDL 2 (#262). Thanks Vlag.
+* Accelerate video operations in GPU if available. Expect huge speedups.
+* Add the hq4x pixel filter algorithm as a new video mode.
+* Make the window resizable (#338).
 * New map entity type: custom entities, fully scripted (#323).
 * Rewrite the main loop with a constant timestep (#351).
 * Show a dialog box in case of fatal error.
 * The "wide" video modes do not exist anymore. SDL2 does the job now.
-* Add the hq4x pixel filter algorithm as a new video mode.
 * Call enemy:on_hurt() before enemy:on_dying() (#325).
 * Fix life and money exceeding the max when the max changes (#355).
 * Make stairs sounds optional (#364).

@@ -476,7 +476,7 @@ void Game::update_transitions() {
     if(transition_style == Transition::FADE) {
       static_cast<TransitionFade*>(transition)->set_color(new Color(Color::get_black()));
     }
-    
+
     if (previous_map_surface != NULL) {
       // some transition effects need to display both maps simultaneously
       transition->set_previous_surface(previous_map_surface);

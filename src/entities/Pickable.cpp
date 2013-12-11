@@ -163,7 +163,7 @@ void Pickable::initialize_sprites() {
   item_sprite.set_current_animation(treasure.get_item_name());
   int direction = treasure.get_variant() - 1;
   if (direction < 0 || direction >= item_sprite.get_nb_directions()) {
-    Debug::error(StringConcat() << 
+    Debug::error(StringConcat() <<
         "Pickable treasure '" << treasure.get_item_name() << "' has variant "
         << treasure.get_variant()
         << " but sprite 'entities/items' has only "

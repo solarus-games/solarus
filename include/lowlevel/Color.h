@@ -33,7 +33,7 @@ class Color {
   friend class TextSurface;
 
   private:
-  
+
     SDL_Color internal_color;             /**< the SDL color encapsulated. */
     uint32_t internal_value;              /**< the SDL 32-bit value representing this color. */
 
@@ -55,7 +55,7 @@ class Color {
 
     static void initialize();
     static void quit();
-  
+
     static Color& get_transparent();
     static Color& get_black();
     static Color& get_white();

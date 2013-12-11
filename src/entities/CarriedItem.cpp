@@ -225,7 +225,7 @@ bool CarriedItem::is_being_lifted() const {
 bool CarriedItem::is_being_thrown() const {
   return is_throwing;
 }
- 
+
 /**
  * \brief Returns whether the item is about to explode.
  * \return true if the item is about to explode

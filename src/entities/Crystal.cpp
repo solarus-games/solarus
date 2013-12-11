@@ -179,7 +179,7 @@ void Crystal::update() {
       entities_activating.clear();
     }
   }
- 
+
   MapEntity::update();
 }
 

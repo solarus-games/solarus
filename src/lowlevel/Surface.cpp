@@ -203,7 +203,7 @@ SDL_Surface* Surface::get_surface_from_file(
     prefix = "images/";
   }
   std::string prefixed_file_name = prefix + file_name;
-  
+
   if (!FileTools::data_file_exists(prefixed_file_name, language_specific)) {
     // File not found.
     return NULL;
@@ -239,7 +239,7 @@ void Surface::create_texture_from_surface() {
 
     Debug::check_assertion(internal_surface != NULL,
         "Missing software surface to create texture from");
-    
+
     // Make sure the software surface has the same format as the texture.
     // This is because SDL_UpdateTexture does not have a format parameter
     // for performance reasons.

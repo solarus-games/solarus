@@ -209,7 +209,7 @@ void Block::notify_action_command_pressed() {
     get_hero().start_grabbing();
   }
 }
- 
+
 /**
  * \brief This function is called when the player tries to push or pull this block.
  * \return true if the player is allowed to move this block

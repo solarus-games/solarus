@@ -130,7 +130,7 @@ class TextSurface: public Drawable {
 
     static void load_fonts();
     static int l_font(lua_State* l);
- 
+
     void rebuild();
     void rebuild_bitmap();
     void rebuild_ttf();

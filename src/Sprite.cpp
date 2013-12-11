@@ -505,7 +505,7 @@ void Sprite::set_paused(bool paused) {
 
   if (paused != this->paused) {
     this->paused = paused;
- 
+
     // compte next_frame_date if the animation is being resumed
     if (!paused) {
       uint32_t now = System::now();

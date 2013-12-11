@@ -35,7 +35,7 @@ Color Color::cyan;
  * \brief Initializes the color static fields.
  */
 void Color::initialize() {
-  
+
   transparent = Color(  0,   0,   0,   0);
   black =       Color(  0,   0,   0);
   white =       Color(255, 255, 255);

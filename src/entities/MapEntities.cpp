@@ -427,7 +427,7 @@ void MapEntities::add_tile(Tile* tile) {
 
   int i, j;
   Ground non_obstacle_triangle;
- 
+
   switch (ground) {
 
     // If the obstacle property is the same for all points inside the tile

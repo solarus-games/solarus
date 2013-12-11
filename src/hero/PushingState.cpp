@@ -95,7 +95,7 @@ void Hero::PushingState::update() {
 
     // see if the obstacle pushed is an entity that the hero can move
     else {
- 
+
       Detector* facing_entity = hero.get_facing_entity();
       if (facing_entity != NULL) { // the obstacle pushed is an entity
 

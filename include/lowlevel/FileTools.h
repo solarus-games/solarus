@@ -79,7 +79,7 @@ class FileTools {
     static const std::string& get_quest_write_dir();
     static void set_quest_write_dir(const std::string& quest_write_dir);
     static const std::string get_full_quest_write_dir();
- 
+
     // Temporary files.
     static std::string create_temporary_file(const char* buffer, size_t size);
     static bool remove_temporary_files();

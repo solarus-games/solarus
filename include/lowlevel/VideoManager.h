@@ -58,7 +58,7 @@ class VideoManager {
     static VideoMode get_video_mode();
     static bool set_video_mode(VideoMode mode);
     static void update_viewport();
-  
+
     static void switch_video_mode();
     static void set_default_video_mode();
     static bool is_mode_supported(VideoMode mode);

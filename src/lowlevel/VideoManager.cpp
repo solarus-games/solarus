@@ -88,7 +88,7 @@ const std::string VideoManager::video_mode_names[] = {
  */
 void VideoManager::initialize(int argc, char **argv) {
   // TODO pass options as an std::set<string> instead.
-  
+
   // check the -no-video and the -quest-size options.
   std::string quest_size_string;
   for (argv++; argc > 1; argv++, argc--) {
@@ -109,7 +109,7 @@ void VideoManager::initialize(int argc, char **argv) {
       Debug::error(std::string("Invalid quest size: '") + quest_size_string + "'");
     }
   }
-  
+
   create_window();
 }
 
@@ -154,7 +154,7 @@ SDL_Renderer* VideoManager::get_renderer() {
  * \brief Creates the window.
  */
 void VideoManager::create_window() {
-  
+
   Debug::check_assertion(main_window == NULL, "Window already exists");
 
   main_window = SDL_CreateWindow(
@@ -166,7 +166,7 @@ void VideoManager::create_window() {
       SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE);
   Debug::check_assertion(main_window != NULL,
       std::string("Cannot create the window: ") + SDL_GetError());
-  
+
   main_renderer = SDL_CreateRenderer(main_window, -1, SDL_RENDERER_PRESENTVSYNC);
   Debug::check_assertion(main_renderer != NULL,
       std::string("Cannot create the renderer: ") + SDL_GetError());
@@ -176,7 +176,7 @@ void VideoManager::create_window() {
   SDL_RendererInfo renderer_info;
   SDL_GetRendererInfo(main_renderer, &renderer_info);
   for (int i = 0; i < renderer_info.num_texture_formats; ++i) {
-    
+
     if (SDL_PIXELTYPE(renderer_info.texture_formats[i]) == SDL_PIXELTYPE_PACKED32
         && SDL_ISPIXELFORMAT_ALPHA(renderer_info.texture_formats[i])) {
       pixel_format = SDL_AllocFormat(renderer_info.texture_formats[i]);
@@ -201,7 +201,7 @@ void VideoManager::create_window() {
  * \brief Show the window.
  */
 void VideoManager::show_window() {
-  
+
   SDL_ShowWindow(main_window);
 }
 
@@ -336,7 +336,7 @@ void VideoManager::set_default_video_mode() {
   else {
     mode = WINDOWED_STRETCHED;
   }
-  
+
   set_video_mode(mode);
 }
 

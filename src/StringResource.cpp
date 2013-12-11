@@ -57,7 +57,7 @@ void StringResource::initialize() {
     if (line.size() == 0 || line[0] == '\r' || line[0] == '#') {
       continue;
     }
- 
+
     // get the key
     size_t index = line.find_first_of(" \t");
     Debug::check_assertion(index != std::string::npos,

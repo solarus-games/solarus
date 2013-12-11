@@ -91,7 +91,7 @@ void Hero::PullingState::update() {
 
     // see if the obstacle is an entity that the hero can pull
     else {
- 
+
       Detector *facing_entity = hero.get_facing_entity();
       if (facing_entity != NULL) {
 

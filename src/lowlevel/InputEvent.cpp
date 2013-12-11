@@ -34,10 +34,10 @@ bool InputEvent::repeat_keyboard = false;
  * \brief Initializes the input event manager.
  */
 void InputEvent::initialize() {
-    
+
   // Initialize text events.
   SDL_StartTextInput();
-  
+
   // Initialize the joypad.
   set_joypad_enabled(true);
 
@@ -389,7 +389,7 @@ int InputEvent::get_joypad_hat_direction(int hat) {
  */
 bool InputEvent::is_keyboard_event() const {
 
-  return (internal_event.type == SDL_KEYDOWN || internal_event.type == SDL_KEYUP) 
+  return (internal_event.type == SDL_KEYDOWN || internal_event.type == SDL_KEYUP)
     && (!internal_event.key.repeat || repeat_keyboard);
 }
 
@@ -423,7 +423,7 @@ bool InputEvent::is_window_event() const {
  */
 bool InputEvent::is_keyboard_key_pressed() const {
 
-  return internal_event.type == SDL_KEYDOWN 
+  return internal_event.type == SDL_KEYDOWN
     && (!internal_event.key.repeat || repeat_keyboard);
 }
 
@@ -486,7 +486,7 @@ bool InputEvent::is_keyboard_non_direction_key_pressed() const {
  */
 bool InputEvent::is_keyboard_key_released() const {
 
-  return internal_event.type == SDL_KEYUP 
+  return internal_event.type == SDL_KEYUP
     && (!internal_event.key.repeat || repeat_keyboard);
 }
 
@@ -769,7 +769,7 @@ int InputEvent::get_joypad_axis_state() const {
   if (!is_joypad_axis_moved()) {
     return 0;
   }
- 
+
   int result;
   int value = internal_event.jaxis.value;
   if (std::abs(value) < 10000) {

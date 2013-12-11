@@ -145,7 +145,7 @@ void Hero::CarryingState::update() {
   PlayerMovementState::update();
 
   // The state may have just been changed for example by a jumper.
-  if (is_current_state()) { 
+  if (is_current_state()) {
     carried_item->update();
 
     if (!is_suspended()) {

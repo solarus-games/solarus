@@ -51,7 +51,7 @@ MainLoop::MainLoop(int argc, char** argv):
 
   // Read the quest resource list from data.
   QuestResourceList::initialize();
-    
+
   // Load the lua quest stuff now that the window is created.
   root_surface = Surface::create(
       VideoManager::get_quest_size()
@@ -59,7 +59,7 @@ MainLoop::MainLoop(int argc, char** argv):
   RefCountable::ref(root_surface);
   lua_context = new LuaContext(*this);
   lua_context->initialize();
-    
+
   // Show the window now that we know the actual outset size, to avoid blinking.
   VideoManager::show_window();
 }

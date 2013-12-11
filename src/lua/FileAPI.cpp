@@ -71,7 +71,7 @@ int LuaContext::file_api_open(lua_State* l) {
     FileTools::DataFileLocation location = FileTools::data_file_get_location(file_name);
 
     switch (location) {
- 
+
       case FileTools::LOCATION_NONE:
         // Not found.
         lua_pushnil(l);

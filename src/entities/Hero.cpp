@@ -81,7 +81,7 @@ Hero::Hero(Equipment& equipment):
   set_origin(8, 13);
   last_solid_ground_coords.set_xy(-1, -1);
   last_solid_ground_layer = LAYER_LOW;
- 
+
   // sprites
   sprites = new HeroSprites(*this, equipment);
   rebuild_equipment();
@@ -1157,7 +1157,7 @@ void Hero::check_position() {
 
       get_entities().set_entity_layer(*this, Layer(layer - 1));
       Ground new_ground = get_map().get_ground(get_layer(), x, y);
-      if (state->is_free() && 
+      if (state->is_free() &&
           (new_ground == GROUND_TRAVERSABLE
            || new_ground == GROUND_GRASS
            || new_ground == GROUND_LADDER)) {
@@ -2171,7 +2171,7 @@ EquipmentItemUsage& Hero::get_item_being_used() {
  * \return true if the hero is grabbing and moving an entity
  */
 bool Hero::is_moving_grabbed_entity() const {
- 
+
   return state->is_moving_grabbed_entity();
 }
 

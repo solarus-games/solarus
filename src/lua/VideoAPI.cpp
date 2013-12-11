@@ -16,6 +16,7 @@
  */
 #include "lua/LuaContext.h"
 #include "lowlevel/VideoManager.h"
+#include "lowlevel/Rectangle.h"
 #include <lua.hpp>
 
 const std::string LuaContext::video_module_name = "sol.video";
@@ -49,7 +50,7 @@ void LuaContext::register_video_module() {
 int LuaContext::video_api_get_window_title(lua_State *l) {
 
   const std::string& window_title =
-    VideoManager::get_instance()->get_window_title();
+    VideoManager::get_window_title();
 
   push_string(l, window_title);
   return 1;
@@ -64,7 +65,7 @@ int LuaContext::video_api_set_window_title(lua_State *l) {
 
   const std::string& window_title = luaL_checkstring(l, 1);
 
-  VideoManager::get_instance()->set_window_title(window_title);
+  VideoManager::set_window_title(window_title);
   return 1;
 }
 
@@ -75,8 +76,7 @@ int LuaContext::video_api_set_window_title(lua_State *l) {
  */
 int LuaContext::video_api_get_mode(lua_State *l) {
 
-  VideoManager::VideoMode* mode =
-    VideoManager::get_instance()->get_video_mode();
+  VideoManager::VideoMode* mode = VideoManager::get_video_mode();
 
   push_string(l, mode->name);
   return 1;
@@ -92,8 +92,8 @@ int LuaContext::video_api_set_mode(lua_State *l) {
   std::string mode_name = luaL_checkstring(l, 1);
   VideoManager::VideoMode* mode = VideoManager::get_video_mode_by_name(mode_name);
 
-  if (VideoManager::get_instance()->get_video_mode() != mode) {
-    VideoManager::get_instance()->set_video_mode(mode);
+  if (VideoManager::get_video_mode() != mode) {
+    VideoManager::set_video_mode(mode);
   }
 
   return 0;
@@ -106,7 +106,7 @@ int LuaContext::video_api_set_mode(lua_State *l) {
  */
 int LuaContext::video_api_switch_mode(lua_State *l) {
 
-  VideoManager::get_instance()->switch_video_mode();
+  VideoManager::switch_video_mode();
 
   return 0;
 }
@@ -119,7 +119,7 @@ int LuaContext::video_api_switch_mode(lua_State *l) {
 int LuaContext::video_api_get_modes(lua_State* l) {
 
   const std::vector<VideoManager::VideoMode*> modes =
-    VideoManager::get_instance()->get_video_modes();
+    VideoManager::get_video_modes();
 
   lua_newtable(l);
 
@@ -145,7 +145,7 @@ int LuaContext::video_api_is_mode_supported(lua_State *l) {
   std::string mode_name = luaL_checkstring(l, 1);
   VideoManager::VideoMode* mode = VideoManager::get_video_mode_by_name(mode_name);
 
-  bool supported = VideoManager::get_instance()->is_mode_supported(mode);
+  bool supported = VideoManager::is_mode_supported(mode);
 
   lua_pushboolean(l, supported);
   return 1;
@@ -158,7 +158,7 @@ int LuaContext::video_api_is_mode_supported(lua_State *l) {
  */
 int LuaContext::video_api_is_fullscreen(lua_State *l) {
 
-  bool fullscreen = VideoManager::get_instance()->is_fullscreen();
+  bool fullscreen = VideoManager::is_fullscreen();
 
   lua_pushboolean(l, fullscreen);
   return 1;
@@ -176,7 +176,7 @@ int LuaContext::video_api_set_fullscreen(lua_State *l) {
     fullscreen = lua_toboolean(l, 1);
   }
 
-  VideoManager::get_instance()->set_fullscreen(fullscreen);
+  VideoManager::set_fullscreen(fullscreen);
 
   return 0;
 }
@@ -188,7 +188,7 @@ int LuaContext::video_api_set_fullscreen(lua_State *l) {
  */
 int LuaContext::video_api_get_quest_size(lua_State* l) {
 
-  const Rectangle& quest_size = VideoManager::get_instance()->get_quest_size();
+  const Rectangle& quest_size = VideoManager::get_quest_size();
 
   lua_pushinteger(l, quest_size.get_width());
   lua_pushinteger(l, quest_size.get_height());

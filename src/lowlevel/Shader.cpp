@@ -40,18 +40,16 @@ GLint Shader::default_shader_program;
  * \brief Initialize OpenGL and the shader system.
  */
 bool Shader::initialize() {
-  
-  VideoManager* videomanager = VideoManager::get_instance();
-  
+
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-  
-  if (!(gl_context = SDL_GL_CreateContext(videomanager->get_window()))) {
+
+  if (!(gl_context = SDL_GL_CreateContext(VideoManager::get_window()))) {
     Debug::warning("Unable to create OpenGL context : " + std::string(SDL_GetError()));
     return false;
   }
 
-  Rectangle quest_size = videomanager->get_quest_size();
+  Rectangle quest_size = VideoManager::get_quest_size();
   GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
 
   // Set rendering settings
@@ -59,14 +57,14 @@ bool Shader::initialize() {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   glOrtho(-3.0, 3.0, -3.0 / aspect, 3.0 / aspect, 0.0, 1.0);
-  
+
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  
+
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
   glShadeModel(GL_SMOOTH);
-  
+
   // Check for shader support
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
@@ -100,7 +98,7 @@ bool Shader::initialize() {
       return true;
     }
   }
-  
+
   Debug::warning("OpenGL shaders not supported : " + std::string(SDL_GetError()));
   return false;
 }
@@ -200,7 +198,7 @@ double Shader::get_logical_scale() {
 void Shader::load(const std::string& shader_name) {
   
   const std::string base_shader_path = 
-      "shaders/filters/" + VideoManager::get_instance()->get_rendering_driver_name() +
+      "shaders/filters/" + VideoManager::get_rendering_driver_name() +
       "/" + shader_name + "/" + shader_name;
   
   // Parse the lua file

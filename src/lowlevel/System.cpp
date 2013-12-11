@@ -72,10 +72,10 @@ void System::initialize(int argc, char** argv) {
 /**
  * \brief Initialize the video mode system.
  */
-void System::initialize_video_modes() {
+void System::initialize_video_modes() {  // TODO call VideoManager directly, remove this function
   
   // Initialize quest's shaded video modes if supported, and engine's hardcoded ones else.
-  VideoManager::get_instance()->initialize_video_modes( Shader::initialize() );
+  VideoManager::initialize_video_modes( Shader::initialize() );
 }
 
 /**

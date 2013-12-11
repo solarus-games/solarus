@@ -87,7 +87,7 @@ Color::Color(int r, int g, int b, int a) {
   internal_color.b = b;
   internal_color.a = a;
 
-  internal_value = SDL_MapRGBA(VideoManager::get_instance()->get_pixel_format(), r, g, b, a);
+  internal_value = SDL_MapRGBA(VideoManager::get_pixel_format(), r, g, b, a);
 }
 
 /**

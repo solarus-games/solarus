@@ -412,38 +412,68 @@ void VideoManager::render(Surface& quest_surface) {
 
   // Perform accelerated render ...
   if (shaders_supported) {
-    
-    // Initialize the render.
-    VideoMode* video_mode = get_instance()->video_mode;
-    
-    SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
-    SDL_RenderClear(main_renderer); // Clear the window
-    
-    SDL_SetRenderTarget(main_renderer, render_target);
-    SDL_RenderSetClipRect(main_renderer, NULL);
-    SDL_RenderClear(main_renderer); // Clear the render target
-    
-    // Draw on the render target.
-    quest_surface.render(main_renderer);
-    
-    // Draw the render target on the window, and apply a shader if we have to.
-    SDL_SetRenderTarget(main_renderer, NULL);
-    SDL_RenderSetClipRect(main_renderer, NULL);
-    if (video_mode->shader != NULL) {
-      video_mode->shader->apply();
-    }
-    SDL_RenderCopy(main_renderer, render_target, NULL, NULL);
-    
-    // Restore default's state.
-    Shader::restore_default_shader_program();
+    shaded_render(quest_surface);
   }
   // ... or software one.
   else
   {
     // Do the software render.
+    //SDL_RenderPresent(main_renderer);
+  }
+}
+
+/**
+ * \brief Draws the quest surface on the screen in a shader-allowed context.
+ * It will perform an OpenGL render.
+ */
+void VideoManager::shaded_render(Surface& quest_surface) {
+  
+  // Initialize the render.
+  VideoMode* video_mode = get_instance()->video_mode;
+  
+  SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
+  SDL_RenderSetClipRect(main_renderer, NULL);
+  SDL_RenderClear(main_renderer);
+  
+  // Draw on the render target.
+  quest_surface.render(main_renderer);
+  
+  // Render on the window using OpenGL directly, to apply a shader if we have to. 
+  glClearColor(0.0, 0.0, 0.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity();
+  
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  
+  glEnable(GL_TEXTURE_2D);
+  float rendering_width, rendering_height;
+  SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
+  if (video_mode->shader != NULL) {
+    video_mode->shader->apply();
   }
   
-  SDL_RenderPresent(main_renderer);
+  glBegin(GL_QUADS);
+  glTexCoord2f(0.0f, 0.0f);
+  glVertex3f(-1.0f, 1.0f, 0.0f); // Top left
+  glTexCoord2f(rendering_width, 0.0f);
+  glVertex3f(1.0f, 1.0f, 0.0f); // Top right
+  glTexCoord2f(rendering_width, rendering_height);
+  glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
+  glTexCoord2f(0.0f, rendering_height);
+  glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
+  glEnd();
+  
+  // Restore default states.
+  if (video_mode->shader != NULL) {
+    Shader::restore_default_shader_program();
+  }
+  glDisable(GL_TEXTURE_2D);
+  SDL_GL_UnbindTexture(render_target);
+  
+  // And swap the window.
+  SDL_GL_SwapWindow(main_window);
 }
 
 /**
@@ -591,6 +621,7 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
         quest_size.get_width(),
         quest_size.get_height());
     SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderTarget(main_renderer, render_target);
     
     // Get all shaders of the quest's shader/filters/driver folder.
     std::vector<std::string> shader_names = 

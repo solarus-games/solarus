@@ -32,11 +32,12 @@ PFNGLSHADERSOURCEARBPROC Shader::glShaderSourceARB;
 PFNGLUNIFORM1IARBPROC Shader::glUniform1iARB;
 PFNGLUSEPROGRAMOBJECTARBPROC Shader::glUseProgramObjectARB;
 
+SDL_GLContext Shader::gl_context;
 Shader* Shader::loading_shader = NULL;
 GLint Shader::default_shader_program;
 
 /**
- * \brief Initialize the OpenGL shader system.
+ * \brief Initialize OpenGL and the shader system.
  */
 void Shader::initialize() {
   
@@ -46,16 +47,24 @@ void Shader::initialize() {
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
   
   // TODO SDL_GL_DeleteContext(main_context); ?
-  if (!SDL_GL_CreateContext(videomanager->get_window())) {
+  if (!(gl_context = SDL_GL_CreateContext(videomanager->get_window()))) {
     Debug::die("Unable to create OpenGL context : " + std::string(SDL_GetError()));
   }
 
-  GLdouble aspect;
   Rectangle quest_size = videomanager->get_quest_size();
+  GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
+
+  // Set rendering settings
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glOrtho(-3.0, 3.0, -3.0 / aspect, 3.0 / aspect, 0.0, 1.0);
   
-  glDepthFunc(GL_LESS);                        // The Type Of Depth Test To Do
-  glEnable(GL_DEPTH_TEST);                     // Enables Depth Testing
-  glShadeModel(GL_SMOOTH);                     // Enables Smooth Color Shading
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
+  glShadeModel(GL_SMOOTH);
   
   // Check for shader support
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
@@ -100,6 +109,14 @@ void Shader::initialize() {
 
   // Initialize default and/or shaded video modes.
   videomanager->initialize_video_modes(shaders_supported);
+}
+
+/**
+ * \brief Compile a shader from source.
+ * \return true if success.
+ */
+void Shader::quit() {
+  SDL_GL_DeleteContext(gl_context);
 }
 
 /**

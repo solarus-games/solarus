@@ -91,6 +91,8 @@ class VideoManager {
 
     VideoManager(bool disable_window, const Rectangle& wanted_quest_size);
     ~VideoManager();
+  
+    void shaded_render(Surface& quest_surface);
 
     static VideoManager* instance;             /**< The only instance. */
   

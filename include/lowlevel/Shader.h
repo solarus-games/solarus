@@ -33,6 +33,7 @@ class Shader {
 
   public:
     static void initialize();
+    static void quit();
     static SDL_bool compile_shader(GLhandleARB& shader, const char* source);
     static void restore_default_shader_program();
   
@@ -50,6 +51,7 @@ class Shader {
     static void load_shader_file(const std::string& path, GLenum shader_type, GLhandleARB* shader);
     static int l_shader(lua_State* l);
   
+    static SDL_GLContext gl_context;             /**< The OpenGL context. */
     static Shader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */
     static GLint default_shader_program;         /**< Default shader program to restore once a shaded render is done. */
   

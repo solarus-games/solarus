@@ -50,7 +50,7 @@ MainLoop::MainLoop(int argc, char** argv):
   quest_properties.load();
 
   // Initialize all video modes (default + quest dependent ones).
-  Shader::initialize();
+  System::initialize_video_modes();
     
   // Read the quest resource list from data.
   QuestResourceList::initialize();

@@ -70,6 +70,14 @@ void System::initialize(int argc, char** argv) {
 }
 
 /**
+ * \brief Initialize the video mode system.
+ */
+void System::initialize_video_modes() {
+  
+  Shader::initialize();
+}
+
+/**
  * \brief Closes the lowlevel system.
  *
  * This closes all initializations made in initialize().
@@ -82,6 +90,7 @@ void System::quit() {
   Sprite::quit();
   TextSurface::quit();
   Color::quit();
+  Shader::quit();
   VideoManager::quit();
   FileTools::quit();
 

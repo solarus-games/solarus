@@ -45,6 +45,7 @@ void Shader::initialize() {
   
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
   
+  // TODO SDL_GL_DeleteContext(main_context); ?
   if (!SDL_GL_CreateContext(videomanager->get_window())) {
     Debug::die("Unable to create OpenGL context : " + std::string(SDL_GetError()));
   }
@@ -146,23 +147,16 @@ Shader::Shader(std::string shader_name) :
   vertex_shader(0),
   fragment_shader(0) {
     
-  const int num_tmus_bound = 4;
-  GLint location;
-    
   glGetError();
     
   // Load the shader.
   load(shader_name);
     
-  // Set up some uniform variables
+  // Set up the sampler uniform variable.
   glUseProgramObjectARB(program);
-  for (int i = 0; i < num_tmus_bound; ++i) {
-    char tex_name[5];
-    SDL_snprintf(tex_name, SDL_arraysize(tex_name), "tex%d", i);
-    location = glGetUniformLocationARB(program, tex_name);
-    if (location >= 0) {
-      glUniform1iARB(location, i);
-    }
+    GLint location = glGetUniformLocationARB(program, std::string(shader_name + "_scene").c_str());
+  if (location >= 0) {
+    glUniform1iARB(location, 0);
   }
   glUseProgramObjectARB((void*)default_shader_program);
     

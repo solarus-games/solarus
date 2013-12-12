@@ -414,26 +414,27 @@ void VideoManager::render(Surface& quest_surface) {
   if (shaders_supported) {
     
     // Initialize the render.
+    VideoMode* video_mode = get_instance()->video_mode;
+    
     SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
     SDL_RenderClear(main_renderer); // Clear the window
+    
     SDL_SetRenderTarget(main_renderer, render_target);
+    SDL_RenderSetClipRect(main_renderer, NULL);
     SDL_RenderClear(main_renderer); // Clear the render target
     
     // Draw on the render target.
     quest_surface.render(main_renderer);
     
-    // Apply a shader if we have to.
-    VideoMode* video_mode = get_instance()->video_mode;
+    // Draw the render target on the window, and apply a shader if we have to.
+    SDL_SetRenderTarget(main_renderer, NULL);
+    SDL_RenderSetClipRect(main_renderer, NULL);
     if (video_mode->shader != NULL) {
       video_mode->shader->apply();
     }
-    
-    // Render on the window.
-    SDL_SetRenderTarget(main_renderer, NULL);
-    SDL_RenderSetClipRect(main_renderer, NULL);
     SDL_RenderCopy(main_renderer, render_target, NULL, NULL);
     
-    // And restore default's state.
+    // Restore default's state.
     Shader::restore_default_shader_program();
   }
   // ... or software one.

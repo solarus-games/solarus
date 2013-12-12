@@ -191,8 +191,6 @@ void VideoManager::create_window() {
   
   // Check renderer's flags
   rendertarget_supported = renderer_info.flags & SDL_RENDERER_TARGETTEXTURE != 0;
-  
-  update_viewport();
 }
 
 /**
@@ -201,14 +199,6 @@ void VideoManager::create_window() {
 void VideoManager::show_window() {
   
   SDL_ShowWindow(main_window);
-}
-
-/**
- * \brief Update the viewport coordinate.
- */
-void VideoManager::update_viewport() {
-  
-  SDL_RenderGetViewport(main_renderer, viewport.get_internal_rect());
 }
 
 /**
@@ -345,7 +335,6 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
     if(!fullscreen_flag) {
       SDL_SetWindowPosition(main_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
-    update_viewport();
   }
   this->video_mode = mode;
 
@@ -505,19 +494,6 @@ bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
 
   size.set_size(width, height);
   return true;
-}
-
-/**
- * \brief Return a rectangle with absolute value (eq. relative to the point 0,0 of the window).
- * This is a workaround function. Some SDL context functions are relative to the window instead
- * of the viewport (SDL_RenderSetClipRect).
- * Use this function to get the expected behavior.
- * \param rect A rectangle with a position relative to the viewport.
- */
-void VideoManager::set_absolute_position(Rectangle& rect) {
-  
-  Rectangle& viewport = get_instance()->viewport;
-  rect.add_xy(viewport.get_x(), -viewport.get_y());
 }
 
 /**

@@ -206,13 +206,8 @@ InputEvent* InputEvent::get_event() {
   SDL_Event internal_event;
   if (SDL_PollEvent(&internal_event)) {
 
-    // Notify the window manager that the viewport has changed.
-    if (internal_event.type == SDL_WINDOWEVENT
-        && internal_event.window.event == SDL_WINDOWEVENT_RESIZED) {
-      VideoManager::get_instance()->update_viewport();
-    }
     // ignore intermediate positions of joystick axis
-    else if (internal_event.type != SDL_JOYAXISMOTION
+    if (internal_event.type != SDL_JOYAXISMOTION
         || internal_event.jaxis.value <= 1000
         || internal_event.jaxis.value >= 10000) {
 

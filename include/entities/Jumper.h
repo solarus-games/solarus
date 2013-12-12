@@ -36,7 +36,7 @@ class Jumper: public Detector {
         int y,
         int width,
         int height,
-	int direction,
+        int direction,
         int jump_length);
     ~Jumper();
 

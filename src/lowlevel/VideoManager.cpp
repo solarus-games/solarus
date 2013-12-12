@@ -171,7 +171,7 @@ void VideoManager::create_window() {
   Debug::check_assertion(main_window != NULL,
       std::string("Cannot create the window: ") + SDL_GetError());
   
-  main_renderer = SDL_CreateRenderer(main_window, -1, 0);
+  main_renderer = SDL_CreateRenderer(main_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
   Debug::check_assertion(main_renderer != NULL,
       std::string("Cannot create the renderer: ") + SDL_GetError());
   SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.
@@ -190,7 +190,7 @@ void VideoManager::create_window() {
   Debug::check_assertion(pixel_format != NULL, "No compatible pixel format");
   
   // Check renderer's flags
-  rendertarget_supported = renderer_info.flags & SDL_RENDERER_TARGETTEXTURE != 0;
+  rendertarget_supported = (renderer_info.flags & SDL_RENDERER_TARGETTEXTURE) != 0;
 }
 
 /**
@@ -576,10 +576,10 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
   // Initialize non-shaded video mode...
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
   all_video_modes.push_back(new VideoMode(normal_mode_name, quest_size_2, NULL));
-
+  
   // ... and shaded ones if shaders and render target are supported.
   shaders_supported = allow_shaded_modes && rendertarget_supported;
-  if (allow_shaded_modes) {
+  if (shaders_supported) {
 
     // Initialize the render target
     render_target = SDL_CreateTexture(

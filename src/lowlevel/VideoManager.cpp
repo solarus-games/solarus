@@ -175,7 +175,7 @@ void VideoManager::create_window() {
   // Get the first renderer format which is a packed32 type and supports alpha channel
   SDL_RendererInfo renderer_info;
   SDL_GetRendererInfo(main_renderer, &renderer_info);
-  for (int i = 0; i < renderer_info.num_texture_formats; ++i) {
+  for (unsigned i = 0; i < renderer_info.num_texture_formats; ++i) {
 
     if (SDL_PIXELTYPE(renderer_info.texture_formats[i]) == SDL_PIXELTYPE_PACKED32
         && SDL_ISPIXELFORMAT_ALPHA(renderer_info.texture_formats[i])) {

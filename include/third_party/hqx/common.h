@@ -18,9 +18,6 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #ifndef __HQX_COMMON_H_
 #define __HQX_COMMON_H_
@@ -141,8 +138,4 @@ static inline uint32_t Interp10(uint32_t c1, uint32_t c2, uint32_t c3)
     return Interpolate_3(c1, 14, c2, 1, c3, 1, 4);
 }
 
-#endif
-
-#ifdef __cplusplus
-}
 #endif

@@ -15,7 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Hq4xFilter.h"
+
+extern "C" {
 #include "hqx/hqx.h"
+}
 
 /**
  * \brief Constructor.

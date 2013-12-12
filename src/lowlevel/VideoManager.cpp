@@ -414,10 +414,11 @@ void VideoManager::render(Surface& quest_surface) {
   if (shaders_supported) {
     
     // Initialize the render.
-    SDL_SetRenderTarget(main_renderer, render_target);
     SDL_RenderSetClipRect(main_renderer, NULL);
     SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
-    SDL_RenderClear(main_renderer);
+    SDL_RenderClear(main_renderer); // Clear the window
+    SDL_SetRenderTarget(main_renderer, render_target);
+    SDL_RenderClear(main_renderer); // Clear the render target
     
     // Draw on the render target.
     quest_surface.render(main_renderer);

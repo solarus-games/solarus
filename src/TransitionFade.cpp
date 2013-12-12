@@ -31,8 +31,8 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
   Transition(direction),
   finished(false),
   alpha(-1),
-  transition_color(NULL),
-  dst_surface(&dst_surface) {
+  dst_surface(&dst_surface),
+  transition_color(NULL) {
 
   if (direction == OUT) {
     alpha_start = 256;

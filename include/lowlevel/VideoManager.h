@@ -55,7 +55,7 @@ class VideoManager {
     void show_window();
     void update_viewport();
   
-    void initialize_video_modes(bool allow_shaded_modes = true);
+    void initialize_video_modes(bool allow_shaded_modes);
     VideoMode* get_video_mode() const;
     const std::vector<VideoMode*>& get_video_modes() const;
     bool is_mode_supported(VideoMode* mode) const;
@@ -107,7 +107,8 @@ class VideoManager {
 
     bool disable_window;                       /**< Indicates that no window is displayed (used for unit tests). */
     bool fullscreen;                           /**< True if fullscreen display. */
-    bool shaders_supported;                    /**< True if shaded modes are supported. */
+    bool rendertarget_supported;               /**< True if rendering on texture is supported. */
+    bool shaders_supported;                    /**< True if shaded modes and rendering on texture are supported. */
     std::vector<VideoMode*> all_video_modes;   /**< Display informations for each supported video mode. */
     VideoMode* video_mode;                     /**< Current display mode, pointer to an element of all_video_modes. */
 

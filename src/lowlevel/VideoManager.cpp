@@ -189,6 +189,9 @@ void VideoManager::create_window() {
   }
   Debug::check_assertion(pixel_format != NULL, "No compatible pixel format");
   
+  // Check renderer's flags
+  rendertarget_supported = renderer_info.flags & SDL_RENDERER_TARGETTEXTURE != 0;
+  
   update_viewport();
 }
 
@@ -421,16 +424,26 @@ void VideoManager::render(Surface& quest_surface) {
   // Perform accelerated render ...
   if (shaders_supported) {
     
+    // Initialize the render.
+    SDL_SetRenderTarget(main_renderer, render_target);
     SDL_RenderSetClipRect(main_renderer, NULL);
     SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
     SDL_RenderClear(main_renderer);
-  
-    // Apply a shader if we have to, and copy textures onto the renderer.
+    
+    // Draw on the render target.
+    quest_surface.render(main_renderer);
+    
+    // Apply a shader if we have to.
     VideoMode* video_mode = get_instance()->video_mode;
     if (video_mode->shader != NULL) {
       video_mode->shader->apply();
     }
-    quest_surface.render(main_renderer);
+    
+    // Render on the window.
+    SDL_SetRenderTarget(main_renderer, NULL);
+    SDL_RenderCopy(main_renderer, render_target, NULL, NULL);
+    
+    // And restore default's state.
     Shader::restore_default_shader_program();
   }
   // ... or software one.
@@ -584,14 +597,23 @@ void VideoManager::set_quest_size_range(
  */
 void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
 
-  // Initialize non-shaded video mode ...
+  // Initialize non-shaded video mode...
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
   all_video_modes.push_back(new VideoMode(normal_mode_name, quest_size_2, NULL));
 
-  // ... and shaded ones if supported.
-  shaders_supported = allow_shaded_modes;
+  // ... and shaded ones if shaders and render target are supported.
+  shaders_supported = allow_shaded_modes && rendertarget_supported;
   if (allow_shaded_modes) {
 
+    // Initialize the render target
+    render_target = SDL_CreateTexture(
+        main_renderer,
+        pixel_format->format,
+        SDL_TEXTUREACCESS_TARGET,
+        quest_size.get_width(),
+        quest_size.get_height());
+    SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
+    
     // Get all shaders of the quest's shader/filters/driver folder.
     std::vector<std::string> shader_names = 
         FileTools::data_files_enumerate("shaders/filters/" + get_rendering_driver_name(), false, true);

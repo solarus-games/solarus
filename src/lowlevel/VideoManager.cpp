@@ -168,6 +168,10 @@ void VideoManager::create_window() {
       std::string("Cannot create the window: ") + SDL_GetError());
 
   main_renderer = SDL_CreateRenderer(main_window, -1, SDL_RENDERER_PRESENTVSYNC);
+  if (main_renderer == NULL) {
+      // Try without vsync.
+      main_renderer = SDL_CreateRenderer(main_window, -1, 0);
+  }
   Debug::check_assertion(main_renderer != NULL,
       std::string("Cannot create the renderer: ") + SDL_GetError());
   SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.

@@ -85,10 +85,10 @@ class Surface::SubSurfaceNode: public RefCountable {
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  internal_color(NULL),
   software_destination(false),
   internal_surface(NULL),
   internal_texture(NULL),
+  internal_color(NULL),
   is_rendered(false),
   internal_opacity(255),
   width(width),

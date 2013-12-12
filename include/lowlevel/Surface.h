@@ -22,7 +22,6 @@
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/PixelBits.h"
 #include <vector>
-#include <map>
 
 typedef struct SDL_Surface SDL_Surface;
 typedef struct SDL_Texture SDL_Texture;

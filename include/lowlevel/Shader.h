@@ -17,10 +17,13 @@
 #ifndef SOLARUS_SHADER_H
 #define SOLARUS_SHADER_H
 
-#include "lua/LuaContext.h"
 #include "Debug.h"
-#include <SDL.h>
-#include <SDL_opengl.h>
+
+#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#  include "lua/LuaContext.h"
+#  include <SDL.h>
+#  include <SDL_opengl.h>
+#endif
 
 
 /**
@@ -34,6 +37,8 @@ class Shader {
   public:
     static bool initialize();
     static void quit();
+
+#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
     static bool compile_shader(GLhandleARB& shader, const char* source);
     static void restore_default_shader_program();
   
@@ -73,6 +78,7 @@ class Shader {
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
     double logical_scale;                        /**< Logical scale of the renderer when the shader is active,
                                                    compared to the normal quest size. */
+#endif
 };
 
 #endif

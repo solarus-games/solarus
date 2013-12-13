@@ -165,12 +165,14 @@ const std::string& VideoManager::get_rendering_driver_name() {
 void VideoManager::create_window() {
 
   Debug::check_assertion(main_window == NULL, "Window already exists");
-
+  
+#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
   SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
 
   // Set the default OpenGL built-in shader (nearest)
   SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
+#endif
 
   main_window = SDL_CreateWindow(
       (std::string("Solarus ") + SOLARUS_VERSION).c_str(),
@@ -178,7 +180,11 @@ void VideoManager::create_window() {
       SDL_WINDOWPOS_CENTERED,
       wanted_quest_size.get_width(),
       wanted_quest_size.get_height(),
-      SDL_WINDOW_HIDDEN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+      SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
+#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+      | SDL_WINDOW_OPENGL
+#endif
+  );
   Debug::check_assertion(main_window != NULL,
       std::string("Cannot create the window: ") + SDL_GetError());
 
@@ -467,25 +473,6 @@ void VideoManager::render(Surface& quest_surface) {
     return;
   }
 
-  /* TODO
-  Surface* surface_to_render = NULL;
-  if (pixel_filter != NULL) {
-    Debug::check_assertion(scaled_surface != NULL,
-        "Missing destination surface for scaling");
-    quest_surface.apply_pixel_filter(*pixel_filter, *scaled_surface);
-    surface_to_render = scaled_surface;
-  }
-  else {
-    surface_to_render = &quest_surface;
-  }
-
-  SDL_RenderSetClipRect(main_renderer, NULL);
-  SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
-  SDL_RenderClear(main_renderer);
-  surface_to_render->render(main_renderer);
-  SDL_RenderPresent(main_renderer);
-  */
-
   // Perform accelerated render ...
   if (shaders_supported) {
     shaded_render(quest_surface);
@@ -493,8 +480,24 @@ void VideoManager::render(Surface& quest_surface) {
   // ... or software one.
   else
   {
-    // Do the software render.
-    //SDL_RenderPresent(main_renderer);
+    /* TODO
+     Surface* surface_to_render = NULL;
+     if (pixel_filter != NULL) {
+     Debug::check_assertion(scaled_surface != NULL,
+     "Missing destination surface for scaling");
+     quest_surface.apply_pixel_filter(*pixel_filter, *scaled_surface);
+     surface_to_render = scaled_surface;
+     }
+     else {
+     surface_to_render = &quest_surface;
+     }
+     
+     SDL_RenderSetClipRect(main_renderer, NULL);
+     SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
+     SDL_RenderClear(main_renderer);
+     surface_to_render->render(main_renderer);
+     SDL_RenderPresent(main_renderer);
+     */
   }
 }
 
@@ -504,6 +507,7 @@ void VideoManager::render(Surface& quest_surface) {
  */
 void VideoManager::shaded_render(Surface& quest_surface) {
 
+#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
   // Initialize the render.
   float rendering_width, rendering_height;
 
@@ -548,6 +552,7 @@ void VideoManager::shaded_render(Surface& quest_surface) {
 
   // And swap the window.
   SDL_GL_SwapWindow(main_window);
+#endif
 }
 
 /**
@@ -735,6 +740,10 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
           double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
       all_video_modes.push_back( new VideoMode(shader_names.at(i), scaled_quest_size, video_mode_shader) );
     }
+  }
+  // TODO Initialize hardcoded video modes
+  else {
+    
   }
 
   // Everything is ready now.

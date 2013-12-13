@@ -19,6 +19,8 @@
 #include "lowlevel/VideoManager.h"
 
 
+#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+
 PFNGLATTACHOBJECTARBPROC Shader::glAttachObjectARB;
 PFNGLCOMPILESHADERARBPROC Shader::glCompileShaderARB;
 PFNGLCREATEPROGRAMOBJECTARBPROC Shader::glCreateProgramObjectARB;
@@ -36,11 +38,14 @@ SDL_GLContext Shader::gl_context;
 Shader* Shader::loading_shader = NULL;
 GLint Shader::default_shader_program;
 
+#endif
+
 /**
  * \brief Initialize OpenGL and the shader system.
  */
 bool Shader::initialize() {
 
+#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -98,6 +103,7 @@ bool Shader::initialize() {
       return true;
     }
   }
+#endif
 
   Debug::warning("OpenGL shaders not supported : " + std::string(SDL_GetError()));
   return false;
@@ -108,9 +114,13 @@ bool Shader::initialize() {
  * \return true if success.
  */
 void Shader::quit() {
+  
+#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
   SDL_GL_DeleteContext(gl_context);
+#endif
 }
 
+#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
 /**
  * \brief Compile a shader from source.
  * \return true if success.
@@ -301,3 +311,5 @@ void Shader::apply()
 {
   glUseProgramObjectARB(program);
 }
+
+#endif

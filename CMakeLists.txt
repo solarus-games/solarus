@@ -9,7 +9,7 @@ set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 set(SOLARUS_INSTALL_DESTINATION "bin")
 
 # find the headers and the libraries of dependencies
-find_package(OpenGL REQUIRED)
+find_package(OpenGL)
 find_package(SDL2 "2" REQUIRED)
 find_package(SDL2_image "2" REQUIRED)
 find_package(SDL2_ttf "2.0.12" REQUIRED)
@@ -91,13 +91,15 @@ else()
 endif()
 
 # generate -I flags
+if (OPENGL_FOUND)
+  include_directories(${OPENGL_INCLUDE_DIR})
+endif()
 include_directories(
   ${CMAKE_BINARY_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party/snes_spc
   ${MODPLUG_INCLUDE_DIR}  # Before SDL because we want the sndfile.h of ModPlug.
-  ${OPENGL_INCLUDE_DIR}
   ${SDL2_INCLUDE_DIR}
   ${SDL2_TTF_INCLUDE_DIR}
   ${SDL2_IMAGE_INCLUDE_DIR}
@@ -109,6 +111,11 @@ include_directories(
 )
 
 # generate -l flags
+if (OPENGL_FOUND)
+  target_link_libraries(solarus
+    ${OPENGL_gl_LIBRARY}
+  )
+endif()
 target_link_libraries(solarus
   ${OPENGL_gl_LIBRARY}
   ${SDL2_LIBRARY}
@@ -147,6 +154,14 @@ else()
   set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 endif()
+
+
+if(OPENGL_FOUND)
+  set(HAVE_OPENGL_OR_ES 1)
+else()
+  set(HAVE_OPENGL_OR_ES 0)
+endif()
+add_definitions(-DSOLARUS_HAVE_OPENGL_OR_ES=${HAVE_OPENGL_OR_ES})
 
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
 if(DEFAULT_QUEST)

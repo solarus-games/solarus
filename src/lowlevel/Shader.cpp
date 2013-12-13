@@ -276,19 +276,18 @@ void Shader::load_shader_file(const std::string& path, GLenum shader_type, GLhan
 }
 
 /**
- * \brief Callback when parsing the lua file. Fill the loading shader with the result.
+ * \brief Callback when parsing a shader lua file. Fill the loading shader with the result.
  * \param l The lua state.
  */
 int Shader::l_shader(lua_State* l) {
-
+  
+  // Retrieve the shader properties from the table parameter.
+  luaL_checktype(l, 1, LUA_TTABLE);
+  
+  const double& window_scale =
+      LuaContext::opt_number_field(l, 1, "logical_scale", 1.0);
+  
   if (loading_shader != NULL) {
-
-    // Retrieve the shader properties from the table parameter.
-    luaL_checktype(l, 1, LUA_TTABLE);
-  
-    const double& window_scale =
-        LuaContext::opt_number_field(l, 1, "logical_scale", 1.0);
-  
     loading_shader->logical_scale = window_scale;
   }
 

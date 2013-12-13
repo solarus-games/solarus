@@ -145,7 +145,7 @@ bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
  */
 void Shader::restore_default_shader_program() {
 
-  glUseProgramObjectARB(default_shader_program);
+  glUseProgramObjectARB((void*)default_shader_program);
 }
 
 /**
@@ -169,7 +169,7 @@ Shader::Shader(std::string shader_name) :
   if (location >= 0) {
     glUniform1iARB(location, 0);
   }
-  glUseProgramObjectARB(default_shader_program);
+  restore_default_shader_program();
     
   Debug::check_assertion(glGetError() == GL_NO_ERROR, "Cannot compile the shader : " + shader_name);
 }

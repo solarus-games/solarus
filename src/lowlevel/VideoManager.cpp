@@ -412,7 +412,6 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
     if (!fullscreen_flag) {
       SDL_SetWindowPosition(main_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
-    update_viewport();
   }
   this->video_mode = mode;
 

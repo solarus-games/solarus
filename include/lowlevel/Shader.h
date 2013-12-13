@@ -32,7 +32,7 @@
 class Shader {
 
   public:
-    static void initialize();
+    static bool initialize();
     static void quit();
     static SDL_bool compile_shader(GLhandleARB& shader, const char* source);
     static void restore_default_shader_program();

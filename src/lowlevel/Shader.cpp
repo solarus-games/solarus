@@ -39,16 +39,16 @@ GLint Shader::default_shader_program;
 /**
  * \brief Initialize OpenGL and the shader system.
  */
-void Shader::initialize() {
+bool Shader::initialize() {
   
-  SDL_bool shaders_supported = SDL_FALSE;
   VideoManager* videomanager = VideoManager::get_instance();
   
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   
-  // TODO SDL_GL_DeleteContext(main_context); ?
   if (!(gl_context = SDL_GL_CreateContext(videomanager->get_window()))) {
-    Debug::die("Unable to create OpenGL context : " + std::string(SDL_GetError()));
+    Debug::warning("Unable to create OpenGL context : " + std::string(SDL_GetError()));
+    return false;
   }
 
   Rectangle quest_size = videomanager->get_quest_size();
@@ -95,20 +95,13 @@ void Shader::initialize() {
         glShaderSourceARB &&
         glUniform1iARB &&
         glUseProgramObjectARB) {
-      shaders_supported = SDL_TRUE;
+      glGetIntegerv(GL_CURRENT_PROGRAM, &default_shader_program);
+      return true;
     }
   }
   
-  // Get the default shader program
-  if(shaders_supported) {
-    glGetIntegerv(GL_CURRENT_PROGRAM, &default_shader_program);
-  }
-  else {
-    Debug::warning("OpenGL shaders not supported.");
-  }
-
-  // Initialize default and/or shaded video modes.
-  videomanager->initialize_video_modes(shaders_supported);
+  Debug::warning("OpenGL shaders not supported : " + std::string(SDL_GetError()));
+  return false;
 }
 
 /**

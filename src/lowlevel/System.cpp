@@ -74,7 +74,8 @@ void System::initialize(int argc, char** argv) {
  */
 void System::initialize_video_modes() {
   
-  Shader::initialize();
+  // Initialize shaded video modes if supported, and hardcoded one else.
+  VideoManager::get_instance()->initialize_video_modes( Shader::initialize() );
 }
 
 /**

@@ -151,7 +151,7 @@ int QuestProperties::l_quest(lua_State* l) {
 
   FileTools::set_quest_write_dir(quest_write_dir);
   if (!title_bar.empty()) {
-    VideoManager::set_window_title(title_bar);
+    VideoManager::get_instance()->set_window_title(title_bar);
   }
 
   Rectangle normal_quest_size, min_quest_size, max_quest_size;
@@ -183,7 +183,7 @@ int QuestProperties::l_quest(lua_State* l) {
     LuaContext::arg_error(l, 1, "Invalid range of quest sizes");
   }
 
-  VideoManager::set_quest_size_range(
+  VideoManager::get_instance()->set_quest_size_range(
       normal_quest_size,
       min_quest_size,
       max_quest_size);

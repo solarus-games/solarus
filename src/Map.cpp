@@ -259,11 +259,11 @@ void Map::unload() {
 void Map::load(Game& game) {
 
   visible_surface = Surface::create(
-      VideoManager::get_quest_size()
+      VideoManager::get_instance()->get_quest_size()
   );
   RefCountable::ref(visible_surface);
   background_surface = Surface::create(
-      VideoManager::get_quest_size()
+      VideoManager::get_instance()->get_quest_size()
   );
   RefCountable::ref(background_surface);
   entities = new MapEntities(game, *this);

@@ -52,7 +52,7 @@ TransitionScrolling::~TransitionScrolling() {
 Rectangle TransitionScrolling::get_previous_map_dst_position(
     int scrolling_direction) {
 
-  const Rectangle& quest_size = VideoManager::get_quest_size();
+  const Rectangle& quest_size = VideoManager::get_instance()->get_quest_size();
 
   Rectangle dst_position(0, 0);
   if (scrolling_direction == 1) {
@@ -79,7 +79,7 @@ void TransitionScrolling::start() {
   scrolling_direction = (get_game()->get_current_map().get_destination_side() + 2) % 4;
 
   const int scrolling_step = 5;
-  const Rectangle& quest_size = VideoManager::get_quest_size();
+  const Rectangle& quest_size = VideoManager::get_instance()->get_quest_size();
   int width = quest_size.get_width();
   int height = quest_size.get_height();
   if (scrolling_direction % 2 == 0) {
@@ -101,7 +101,7 @@ void TransitionScrolling::start() {
   previous_map_dst_position = get_previous_map_dst_position(scrolling_direction);
   current_map_dst_position = get_previous_map_dst_position((scrolling_direction + 2) % 4);
   current_scrolling_position = previous_map_dst_position;
-  current_scrolling_position.set_size(VideoManager::get_quest_size());
+  current_scrolling_position.set_size(VideoManager::get_instance()->get_quest_size());
 
   next_scroll_date = System::now();
 }

@@ -92,7 +92,7 @@ int LuaContext::surface_api_create(lua_State* l) {
   Surface* surface = NULL;
   if (lua_gettop(l) == 0) {
     // create an empty surface with the screen size
-    surface = Surface::create(VideoManager::get_quest_size());
+    surface = Surface::create(VideoManager::get_instance()->get_quest_size());
   }
   else if (lua_type(l, 1) == LUA_TNUMBER) {
     // create an empty surface with the specified size

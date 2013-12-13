@@ -156,14 +156,14 @@ void TransitionFade::draw(Surface& dst_surface) {
   int alpha_impl = std::min(alpha, 255);
 
   if (transition_color == NULL
-      || !VideoManager::is_acceleration_enabled()
+      || !VideoManager::get_instance()->is_acceleration_enabled()
       // FIXME kill the two different behaviors of TransitionFade:
       // remove colored transitions and only allow fading on software surfaces.
   ) {
     // Directly set the opacity on the surface.
     // Only possible for software destinations.
     Debug::check_assertion(dst_surface.is_software_destination()
-        || !VideoManager::is_acceleration_enabled(),
+        || !VideoManager::get_instance()->is_acceleration_enabled(),
         "Cannot apply fade transition: this surface is in read-only mode");
     dst_surface.set_opacity(alpha_impl);
   }

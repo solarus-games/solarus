@@ -51,6 +51,7 @@ class VideoManager {
     SDL_Window* get_window();
     SDL_Renderer* get_renderer();
     SDL_PixelFormat* get_pixel_format();
+    std::string get_rendering_driver_name();
     void create_window();
     void show_window();
     void update_viewport();
@@ -63,7 +64,6 @@ class VideoManager {
     void set_default_video_mode();
     void switch_video_mode();
 
-    static const std::string get_rendering_driver_name();
     static std::string get_video_mode_name(VideoMode& mode);
     static VideoMode* get_video_mode_by_name(const std::string& mode_name);
 
@@ -104,6 +104,7 @@ class VideoManager {
     SDL_Renderer* main_renderer;               /**< The screen renderer. */
     SDL_Texture* render_target;                /**< The render texture used when shader modes are supported. */
     SDL_PixelFormat* pixel_format;             /**< The pixel color format to use. */
+    std::string rendering_driver_name;         /**< The name of the rendering driver. */
 
     bool disable_window;                       /**< Indicates that no window is displayed (used for unit tests). */
     bool fullscreen;                           /**< True if fullscreen display. */

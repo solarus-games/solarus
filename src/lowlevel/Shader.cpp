@@ -117,7 +117,7 @@ void Shader::quit() {
  * \brief Compile a shader from source.
  * \return true if success.
  */
-SDL_bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
+bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
   
   GLint status;
   
@@ -134,9 +134,9 @@ SDL_bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to compile shader:\n%s\n%s", source, info);
     SDL_stack_free(info);
     
-    return SDL_FALSE;
+    return false;
   } else {
-    return SDL_TRUE;
+    return true;
   }
 }
 
@@ -200,7 +200,8 @@ double Shader::get_logical_scale() {
 void Shader::load(const std::string& shader_name) {
   
   const std::string base_shader_path = 
-      "shaders/filters/" + VideoManager::get_rendering_driver_name() + "/" + shader_name + "/" + shader_name;
+      "shaders/filters/" + VideoManager::get_instance()->get_rendering_driver_name() +
+      "/" + shader_name + "/" + shader_name;
   
   // Parse the lua file
   load_lua_file(base_shader_path + ".lua");

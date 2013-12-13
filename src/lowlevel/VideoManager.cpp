@@ -61,12 +61,6 @@ void VideoManager::initialize(int argc, char **argv) {
     }
   }
   
-  // Set OpenGL as the default renderer driver when available, to avoid to use Direct3d.
-  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
-  
-  // Set the default OpenGL built-in shader (nearest)
-  SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
-  
   instance = new VideoManager(disable, wanted_quest_size);
 }
 
@@ -107,6 +101,15 @@ SDL_Renderer* VideoManager::get_renderer() {
  */
 SDL_PixelFormat* VideoManager::get_pixel_format() {
   return pixel_format;
+}
+
+/**
+ * \brief Get the default rendering driver for the current platform.
+ * \return a string containing the rendering driver name.
+ */
+std::string VideoManager::get_rendering_driver_name() {
+  
+  return rendering_driver_name;
 }
 
 /**
@@ -161,6 +164,12 @@ VideoManager::~VideoManager() {
  */
 void VideoManager::create_window() {
   
+  // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
+  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
+  
+  // Set the default OpenGL built-in shader (nearest)
+  SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
+  
   main_window = SDL_CreateWindow(
       (std::string("Solarus ") + SOLARUS_VERSION).c_str(),
       SDL_WINDOWPOS_CENTERED,
@@ -191,6 +200,7 @@ void VideoManager::create_window() {
   
   // Check renderer's flags
   rendertarget_supported = (renderer_info.flags & SDL_RENDERER_TARGETTEXTURE) != 0;
+  rendering_driver_name = renderer_info.name;
 }
 
 /**
@@ -342,19 +352,6 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
 }
 
 /**
- * \brief Get the default rendering driver for the current platform (OpenGL ES2 or OpenGL).
- * \return a string containing the rendering driver name.
- */
-const std::string VideoManager::get_rendering_driver_name() {
-  
-#if defined(SOLARUS_HAVE_GLES)
-  return "opengles2";
-#else
-  return "opengl";
-#endif
-}
-
-/**
  * \brief Returns the current video mode.
  * \return The video mode.
  */
@@ -432,24 +429,25 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   float rendering_width, rendering_height;
   VideoMode* video_mode = get_instance()->video_mode;
   
+  glClearColor(0.0, 0.0, 0.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity(); // Clear the window
+  
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
   SDL_RenderSetClipRect(main_renderer, NULL);
-  SDL_RenderClear(main_renderer);
+  SDL_RenderClear(main_renderer); // Clear the render target
   
   // Draw on the render target.
   quest_surface.render(main_renderer);
   
   // Render on the window using OpenGL, to apply a shader if we have to.
   glViewport(viewport.get_x(), viewport.get_y(), viewport.get_width(), viewport.get_height());
-  glClearColor(0.0, 0.0, 0.0, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
   
   glEnable(GL_TEXTURE_2D);
   glActiveTexture(GL_TEXTURE0);
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
   if (video_mode->shader != NULL) {
-    video_mode->shader->apply();
+    //video_mode->shader->apply();
   }
   
   glBegin(GL_QUADS);
@@ -465,7 +463,7 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   
   // Restore default states.
   if (video_mode->shader != NULL) {
-    Shader::restore_default_shader_program();
+    //Shader::restore_default_shader_program();
   }
   SDL_GL_UnbindTexture(render_target);
   glDisable(GL_TEXTURE_2D);

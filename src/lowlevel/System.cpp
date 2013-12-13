@@ -74,7 +74,7 @@ void System::initialize(int argc, char** argv) {
  */
 void System::initialize_video_modes() {
   
-  // Initialize shaded video modes if supported, and hardcoded one else.
+  // Initialize quest's shaded video modes if supported, and engine's hardcoded ones else.
   VideoManager::get_instance()->initialize_video_modes( Shader::initialize() );
 }
 

@@ -100,16 +100,6 @@
 #endif
 
 /**
- * \def SOLARUS_HAVE_GLES
- * \brief Set if we should use OpenGL ES2 when require a specific OpenGL code.
- */
-#ifndef SOLARUS_HAVE_GLES
-#  if defined(SOLARUS_IOS) || defined(__ANDROID__)
-#    define SOLARUS_HAVE_GLES
-#  endif
-#endif
-
-/**
  * \def SOLARUS_DEFAULT_QUEST
  * \brief Path of the quest to run is none is specified at runtime.
  */

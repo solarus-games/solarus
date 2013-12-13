@@ -34,7 +34,7 @@ class Shader {
   public:
     static bool initialize();
     static void quit();
-    static SDL_bool compile_shader(GLhandleARB& shader, const char* source);
+    static bool compile_shader(GLhandleARB& shader, const char* source);
     static void restore_default_shader_program();
   
     Shader(std::string shader_name);

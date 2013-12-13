@@ -104,6 +104,7 @@ class Surface: public Drawable {
         ImageDirectory base_directory);
 
     void create_software_surface();
+    void convert_software_surface();
     void create_texture_from_surface();
     void add_subsurface(Surface& src_surface, const Rectangle& region, const Rectangle& dst_position);
     void clear_subsurfaces();

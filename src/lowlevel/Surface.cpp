@@ -226,6 +226,31 @@ SDL_Surface* Surface::get_surface_from_file(
 }
 
 /**
+ * \brief Converts the software surface to the preferred pixel format
+ * (32-bit with alpha channel).
+ */
+void Surface::convert_software_surface() {
+
+  Debug::check_assertion(internal_surface != NULL,
+      "Missing software surface to convert");
+
+  SDL_PixelFormat* pixel_format = VideoManager::get_pixel_format();
+  if (internal_surface->format->format != pixel_format->format) {
+    // Convert to the preferred pixel format.
+    SDL_Surface* converted_surface = SDL_ConvertSurface(
+        internal_surface,
+        pixel_format,
+        0
+    );
+    Debug::check_assertion(converted_surface != NULL,
+        "Failed to convert software surface");
+
+    SDL_FreeSurface(internal_surface);
+    internal_surface = converted_surface;
+  }
+}
+
+/**
  * \brief Creates a hardware texture from the software surface.
  *
  * Also converts the software surface to a preferred format if necessary.
@@ -233,7 +258,6 @@ SDL_Surface* Surface::get_surface_from_file(
 void Surface::create_texture_from_surface() {
 
   SDL_Renderer* main_renderer = VideoManager::get_renderer();
-  SDL_PixelFormat* pixel_format = VideoManager::get_pixel_format();
 
   if (main_renderer != NULL) {
 
@@ -243,21 +267,12 @@ void Surface::create_texture_from_surface() {
     // Make sure the software surface has the same format as the texture.
     // This is because SDL_UpdateTexture does not have a format parameter
     // for performance reasons.
-    if (internal_surface->format->format != pixel_format->format) {
-      // Convert to the preferred pixel format.
-      SDL_Surface* converted_surface = SDL_ConvertSurface(
-          internal_surface,
-          pixel_format,
-          0
-      );
-      SDL_FreeSurface(internal_surface);
-      internal_surface = converted_surface;
-    }
+    convert_software_surface();
 
     // Create the texture.
     internal_texture = SDL_CreateTexture(
         main_renderer,
-        pixel_format->format,
+        VideoManager::get_pixel_format()->format,
         SDL_TEXTUREACCESS_STATIC,
         internal_surface->w,
         internal_surface->h
@@ -303,7 +318,18 @@ void Surface::set_opacity(int opacity) {
   if (software_destination  // The destination surface is in RAM.
       || !VideoManager::is_acceleration_enabled()  // The rendering is in RAM.
   ) {
-    SDL_SetSurfaceAlphaMod(internal_surface, opacity);
+    if (internal_surface == NULL) {
+      create_software_surface();
+    }
+
+    // The surface must be 32-bit with alpha value for this function to work.
+    convert_software_surface();
+
+    int error = SDL_SetSurfaceAlphaMod(internal_surface, opacity);
+    if (error != 0) {
+      Debug::error(SDL_GetError());
+    }
+    is_rendered = false;  // The surface has changed.
   }
   else {
     internal_opacity = opacity;
@@ -366,6 +392,9 @@ void Surface::create_software_surface() {
       format->Amask
   );
   is_rendered = false;
+
+  Debug::check_assertion(internal_surface != NULL,
+      "Failed to create software surface");
 }
 
 /**

@@ -364,11 +364,6 @@ void Surface::set_software_destination(bool software_destination) {
 
   this->software_destination = software_destination;
   // The software surface if any will be created lazily.
-
-  if (!software_destination && internal_surface != NULL) {
-    SDL_FreeSurface(internal_surface);
-    internal_surface = NULL;
-  }
 }
 
 /**

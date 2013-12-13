@@ -712,6 +712,7 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
   shaders_supported = allow_shaded_modes && rendertarget_supported;
   if (shaders_supported) {
 
+#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
     // Initialize the render target
     render_target = SDL_CreateTexture(
         main_renderer,
@@ -740,6 +741,7 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
           double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
       all_video_modes.push_back( new VideoMode(shader_names.at(i), scaled_quest_size, video_mode_shader) );
     }
+#endif
   }
   // TODO Initialize hardcoded video modes
   else {

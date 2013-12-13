@@ -39,17 +39,18 @@ class Shader {
     static void quit();
 
 #if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
-    static bool compile_shader(GLhandleARB& shader, const char* source);
     static void restore_default_shader_program();
   
     Shader(std::string shader_name);
     ~Shader();
-  
+
     double get_logical_scale();
   
     void apply();
 
   private:
+    static bool compile_shader(GLhandleARB& shader, const char* source);
+  
     void load(const std::string& shader_name);
     void load_lua_file(const std::string& path);
   

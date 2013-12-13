@@ -101,9 +101,9 @@
 
 /**
  * \def SOLARUS_HAVE_OPENGL_OR_ES
- * \brief Set to 1 if the application can make direct OpenGL / ES / 2 calls.
+ * \brief Set to 1 if the application will use OpenGL / ES / 2 as renderer driver.
  * Allow to use advanced display features.
- * Set 1 by default if no previous configuration was done
+ * Set to 1 by default if no previous configuration was done :
  * "These people deserve to go to hell anyway"
  */
 #ifndef SOLARUS_HAVE_OPENGL_OR_ES

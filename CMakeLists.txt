@@ -112,9 +112,7 @@ include_directories(
 
 # generate -l flags
 if (OPENGL_FOUND)
-  target_link_libraries(solarus
-    ${OPENGL_gl_LIBRARY}
-  )
+  target_link_libraries(solarus ${OPENGL_gl_LIBRARY})
 endif()
 target_link_libraries(solarus
   ${OPENGL_gl_LIBRARY}

@@ -24,10 +24,6 @@
 
 namespace {
 
-  std::map<VideoManager::VideoMode, Rectangle>  // FIXME video mode by value??
-    mode_sizes;                             /**< Size of the screen surface for each supported
-                                             * video mode with the current quest size. */
-
   SDL_Window* main_window = NULL;           /**< The window. */
   SDL_Renderer* main_renderer = NULL;       /**< The screen renderer. */
   SDL_Texture* render_target;               /**< The render texture used when shader modes are supported. */
@@ -48,7 +44,7 @@ namespace {
       SOLARUS_SCREEN_FORCE_MODE;            /**< Name of the forced mode, or empty string to allow all modes. */
 
   std::vector<VideoManager::VideoMode*>
-      all_video_modes;  /**< Display informations for each supported video mode. */
+      all_video_modes;                      /**< Display informations for each supported video mode. */
   VideoManager::VideoMode* video_mode;      /**< Current display mode, pointer to an element of all_video_modes. */
 
   Rectangle normal_quest_size;              /**< Default value of quest_size (depends on the quest). */
@@ -374,9 +370,6 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
 
   if (!disable_window) {
 
-    viewport = mode->window_size;
-    Rectangle render_size = quest_size;
-
 /* TODO
     // Initalize the scaling mode.
     if (mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X) {
@@ -406,12 +399,13 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
-    SDL_SetWindowSize(main_window, viewport.get_width(), viewport.get_height());
-    SDL_RenderSetLogicalSize(main_renderer, render_size.get_width(), render_size.get_height());
+    SDL_SetWindowSize(main_window, mode->window_size.get_width(), mode->window_size.get_height());
+    SDL_RenderSetLogicalSize(main_renderer, quest_size.get_width(), quest_size.get_height());
     SDL_ShowCursor(show_cursor);
     if (!fullscreen_flag) {
       SDL_SetWindowPosition(main_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
+    update_viewport();
   }
   video_mode = mode;
 

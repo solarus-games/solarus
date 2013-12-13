@@ -57,14 +57,14 @@ MainLoop::MainLoop(int argc, char** argv):
 
   // Load the lua quest stuff now that the window is created.
   root_surface = Surface::create(
-      VideoManager::get_instance()->get_quest_size()
+      VideoManager::get_quest_size()
   );
   RefCountable::ref(root_surface);
   lua_context = new LuaContext(*this);
   lua_context->initialize();
 
   // Show the window now that we know the actual outset size, to avoid blinking.
-  VideoManager::get_instance()->show_window();
+  VideoManager::show_window();
 }
 
 /**
@@ -290,13 +290,13 @@ void MainLoop::update() {
 void MainLoop::draw() {
 
   if (root_surface->is_software_destination()
-      || !VideoManager::get_instance()->is_acceleration_enabled()) {
+      || !VideoManager::is_acceleration_enabled()) {
     root_surface->fill_with_color(Color::get_transparent());
   }
   if (game != NULL) {
     game->draw(*root_surface);
   }
   lua_context->main_on_draw(*root_surface);
-  VideoManager::get_instance()->render(*root_surface);
+  VideoManager::render(*root_surface);
 }
 

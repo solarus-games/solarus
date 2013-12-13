@@ -20,12 +20,47 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include <vector>
+#include <map>
 
-VideoManager* VideoManager::instance = NULL;
+namespace {
 
-const std::string VideoManager::normal_mode_name = "solarus_default";
-const std::string VideoManager::forced_mode_name = SOLARUS_SCREEN_FORCE_MODE;  // TODO remove
+  std::map<VideoManager::VideoMode, Rectangle>  // FIXME video mode by value??
+    mode_sizes;                             /**< Size of the screen surface for each supported
+                                             * video mode with the current quest size. */
+
+  SDL_Window* main_window = NULL;           /**< The window. */
+  SDL_Renderer* main_renderer = NULL;       /**< The screen renderer. */
+  SDL_Texture* render_target;               /**< The render texture used when shader modes are supported. */
+  SDL_PixelFormat* pixel_format = NULL;     /**< The pixel color format to use. */
+  std::string rendering_driver_name;        /**< The name of the rendering driver. */
+  bool disable_window = false;             /**< Indicates that no window is displayed (used for unit tests). */
+  bool fullscreen;                          /**< True if fullscreen display. */
+  bool rendertarget_supported;              /**< True if rendering on texture is supported. */
+  bool shaders_supported;                   /**< True if shaded modes and rendering on texture are supported. */
+  bool renderer_accelerated = false;       /**< \c true if 2D GPU acceleration is available. */
+  Rectangle viewport;                       /**< The position of the drawable area on the window. */
+  // TODO const PixelFilter* pixel_filter = NULL;   /**< The pixel filtering algorithm (if any) applied with the current video mode. */
+  Surface* scaled_surface = NULL;           /**< The screen surface used with scaled modes. */
+
+  const std::string normal_mode_name =
+      "solarus_default";                    /**< Non-shaded mode name. It will be forbidden for shaded ones. */
+  const std::string forced_mode_name =  // TODO remove
+      SOLARUS_SCREEN_FORCE_MODE;            /**< Name of the forced mode, or empty string to allow all modes. */
+
+  std::vector<VideoManager::VideoMode*>
+      all_video_modes;  /**< Display informations for each supported video mode. */
+  VideoManager::VideoMode* video_mode;      /**< Current display mode, pointer to an element of all_video_modes. */
+
+  Rectangle normal_quest_size;              /**< Default value of quest_size (depends on the quest). */
+  Rectangle min_quest_size;                 /**< Minimum value of quest_size (depends on the quest). */
+  Rectangle max_quest_size;                 /**< Maximum value of quest_size (depends on the quest). */
+  Rectangle quest_size;                     /**< Size of the quest surface to render. */
+  Rectangle wanted_quest_size;              /**< Size wanted by the user. */
+
+  // TODO
+  // Scale2xFilter scale2x_filter;             /**< Scale2X pixel filter. */
+  //Hq4xFilter hq4x_filter;                   /**< hq4X pixel filter. */
+};
 
 /**
  * \brief Initializes the video system and creates the window.
@@ -40,19 +75,18 @@ void VideoManager::initialize(int argc, char **argv) {
   // TODO pass options as an std::set<string> instead.
 
   // check the -no-video and the -quest-size options.
-  bool disable = false;
   std::string quest_size_string;
   for (argv++; argc > 1; argv++, argc--) {
     const std::string arg = *argv;
     if (arg == "-no-video") {
-      disable = true;
+      disable_window = true;
     }
     else if (arg.find("-quest-size=") == 0) {
       quest_size_string = arg.substr(12);
     }
   }
 
-  Rectangle wanted_quest_size(0, 0,
+  wanted_quest_size = Rectangle(0, 0,
       SOLARUS_DEFAULT_QUEST_WIDTH, SOLARUS_DEFAULT_QUEST_HEIGHT);
 
   if (!quest_size_string.empty()) {
@@ -61,22 +95,35 @@ void VideoManager::initialize(int argc, char **argv) {
     }
   }
 
-  instance = new VideoManager(disable, wanted_quest_size);
+  create_window();
 }
 
 /**
  * \brief Closes the video system.
  */
 void VideoManager::quit() {
-  delete instance;
-}
 
-/**
- * \brief Returns the video manager.
- * \return the only video manager.
- */
-VideoManager* VideoManager::get_instance() {
-  return instance;
+  if (is_fullscreen()) {
+    // Get back on desktop before destroy the window.
+    SDL_SetWindowFullscreen(main_window, 0);
+  }
+
+  for (int i=0 ; i<all_video_modes.size() ; ++i) {
+    if (all_video_modes.at(i)->shader != NULL) {
+      delete all_video_modes.at(i)->shader;
+    }
+    delete all_video_modes.at(i);
+  }
+
+  if (pixel_format != NULL) {
+    SDL_FreeFormat(pixel_format);
+  }
+  if (main_renderer != NULL) {
+    SDL_DestroyRenderer(main_renderer);
+  }
+  if (main_window != NULL) {
+    SDL_DestroyWindow(main_window);
+  }
 }
 
 /**
@@ -107,61 +154,9 @@ SDL_PixelFormat* VideoManager::get_pixel_format() {
  * \brief Get the default rendering driver for the current platform.
  * \return a string containing the rendering driver name.
  */
-std::string VideoManager::get_rendering_driver_name() {
+const std::string& VideoManager::get_rendering_driver_name() {
   
   return rendering_driver_name;
-}
-
-/**
- * \brief Constructor.
- * \param disable_window true to entirely disable the displaying.
- * \param wanted_quest_size Size of the quest as requested by the user.
- */
-VideoManager::VideoManager(
-    bool disable_window,
-    const Rectangle& wanted_quest_size):
-  main_window(NULL),
-  main_renderer(NULL),
-  render_target(NULL),
-  pixel_format(NULL),
-  disable_window(disable_window),
-  fullscreen(false),
-  rendertarget_supported(false),
-  shaders_supported(false),
-  renderer_accelerated(false),
-  scaled_surface(NULL),
-  video_mode(NULL),
-  wanted_quest_size(wanted_quest_size) {
-    
-    create_window();
-}
-
-/**
- * \brief Destructor.
- */
-VideoManager::~VideoManager() {
-
-  if (is_fullscreen()) {
-    // Get back on desktop before destroy the window.
-    SDL_SetWindowFullscreen(main_window, 0);
-  }
-
-  for(int i=0 ; i<all_video_modes.size() ; ++i) {
-    if (all_video_modes.at(i)->shader != NULL) {
-      delete all_video_modes.at(i)->shader;
-    }
-    delete all_video_modes.at(i);
-  }
-  
-  if (pixel_format != NULL) {
-    SDL_FreeFormat(pixel_format);
-  }
-  if (main_renderer != NULL) {
-    SDL_DestroyRenderer(main_renderer);
-  }
-  if (main_window != NULL) {
-    SDL_DestroyWindow(main_window);
-  }
 }
 
 /**
@@ -235,7 +230,6 @@ void VideoManager::show_window() {
 }
 
 /**
-<<<<<<< HEAD
  * \brief Returns whether 2D hardware acceleration is currently enabled.
  *
  * 2D acceleration is enabled if the system supports it, except when the
@@ -244,7 +238,7 @@ void VideoManager::show_window() {
  *
  * \return \c true if GPU acceleration is active.
  */
-bool VideoManager::is_acceleration_enabled() const {
+bool VideoManager::is_acceleration_enabled() {
 
   void* pixel_filter = NULL;  // TODO
   return renderer_accelerated  // 2D acceleration must be available on the system.
@@ -252,10 +246,43 @@ bool VideoManager::is_acceleration_enabled() const {
 }
 
 /**
+ * \brief Returns whether a video mode is supported.
+ * \param mode a video mode
+ * \return true if this mode is supported
+ */
+bool VideoManager::is_mode_supported(VideoMode* mode) {
+
+  if (mode == NULL) {
+    return false;
+  }
+
+  if (forced_mode_name != "" && mode->name != forced_mode_name) {
+    return false;
+  }
+
+  std::vector<VideoMode*>::const_iterator it = all_video_modes.begin();
+  for(; it != all_video_modes.end(); ++it) {
+    if(*it == mode) {
+      if ((*it)->window_size.is_flat()) {
+        Debug::die(StringConcat() <<
+            "Uninitialized size for video mode " << mode->name);
+      }
+      break;
+    }
+  }
+  if (it == all_video_modes.end()) {
+    // The initial detection of this mode failed.
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * \brief Returns whether the current video mode is in fullscreen.
  * \return true if the current video mode is in fullscreen.
  */
-bool VideoManager::is_fullscreen() const {
+bool VideoManager::is_fullscreen() {
   return fullscreen;
 }
 
@@ -318,39 +345,6 @@ void VideoManager::switch_video_mode() {
 }
 
 /**
- * \brief Returns whether a video mode is supported.
- * \param mode a video mode
- * \return true if this mode is supported
- */
-bool VideoManager::is_mode_supported(VideoMode* mode) const {
-  
-  if (mode == NULL) {
-    return false;
-  }
-  
-  if (forced_mode_name != "" && mode->name != forced_mode_name) {
-    return false;
-  }
-
-  std::vector<VideoMode*>::const_iterator it = all_video_modes.begin();
-  for(; it != all_video_modes.end(); ++it) {
-    if(*it == mode) {
-      if ((*it)->window_size.is_flat()) {
-        Debug::die(StringConcat() <<
-            "Uninitialized size for video mode " << mode->name);
-      }
-      break;
-    }
-  }
-  if (it == all_video_modes.end()) {
-    // The initial detection of this mode failed.
-    return false;
-  }
-
-  return true;
-}
-
-/**
  * \brief Sets the video mode.
  * \param mode The video mode to set.
  * \return true in case of success, false if this mode is not supported.
@@ -377,7 +371,7 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
     viewport = mode->window_size;
     Rectangle render_size = quest_size;
 
-/*
+/* TODO
     // Initalize the scaling mode.
     if (mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X) {
       pixel_filter = &scale2x_filter;
@@ -413,7 +407,7 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
       SDL_SetWindowPosition(main_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
   }
-  this->video_mode = mode;
+  video_mode = mode;
 
   return true;
 }
@@ -422,7 +416,7 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
  * \brief Returns the current video mode.
  * \return The video mode.
  */
-VideoManager::VideoMode* VideoManager::get_video_mode() const {
+VideoManager::VideoMode* VideoManager::get_video_mode() {
   return video_mode;
 }
 
@@ -430,8 +424,7 @@ VideoManager::VideoMode* VideoManager::get_video_mode() const {
  * \brief Returns a list of all supported video modes.
  * \return The list of supported video modes.
  */
-const std::vector<VideoManager::VideoMode*>& VideoManager::get_video_modes() const {
-  
+const std::vector<VideoManager::VideoMode*>& VideoManager::get_video_modes() {
   return all_video_modes;
 }
 
@@ -442,6 +435,7 @@ const std::vector<VideoManager::VideoMode*>& VideoManager::get_video_modes() con
  */
 std::string VideoManager::get_video_mode_name(VideoMode& mode) {
 
+  // TODO this function should be in VideoMode
   return mode.name;
 }
 
@@ -452,8 +446,7 @@ std::string VideoManager::get_video_mode_name(VideoMode& mode) {
  */
 VideoManager::VideoMode* VideoManager::get_video_mode_by_name(const std::string& mode_name) {
 
-  std::vector<VideoMode*> all_video_modes = get_instance()->all_video_modes;
-  
+  // TODO restore the video_mode_names array
   for (int i = 0; i < all_video_modes.size(); ++i) {
     if (all_video_modes.at(i)->name == mode_name) {
       return all_video_modes.at(i);
@@ -513,7 +506,6 @@ void VideoManager::shaded_render(Surface& quest_surface) {
 
   // Initialize the render.
   float rendering_width, rendering_height;
-  VideoMode* video_mode = get_instance()->video_mode;
 
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -570,7 +562,7 @@ void VideoManager::update_viewport() {
  * \brief Returns the current text of the window title bar.
  * \return The window title.
  */
-const std::string VideoManager::get_window_title() const {
+const std::string VideoManager::get_window_title() {
 
   return SDL_GetWindowTitle(main_window);
 }
@@ -627,7 +619,6 @@ bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
  */
 void VideoManager::set_absolute_position(Rectangle& rect) {
 
-  const Rectangle& viewport = get_instance()->viewport;
   rect.add_xy(viewport.get_x(), viewport.get_y());
 }
 
@@ -635,7 +626,7 @@ void VideoManager::set_absolute_position(Rectangle& rect) {
  * \brief Returns the size of the quest surface to render on the screen.
  * \return The quest size.
  */
-const Rectangle& VideoManager::get_quest_size() const {
+const Rectangle& VideoManager::get_quest_size() {
   return quest_size;
 }
 
@@ -646,13 +637,13 @@ const Rectangle& VideoManager::get_quest_size() const {
  * \param max_quest_size Gets the maximum size for this quest.
  */
 void VideoManager::get_quest_size_range(
-    Rectangle& normal_quest_size,
-    Rectangle& min_quest_size,
-    Rectangle& max_quest_size) const {
+    Rectangle& normal_size,
+    Rectangle& min_size,
+    Rectangle& max_size) {
 
-  normal_quest_size = this->normal_quest_size;
-  min_quest_size = this->min_quest_size;
-  max_quest_size = this->max_quest_size;
+  normal_size = normal_quest_size;
+  min_size = min_quest_size;
+  max_size = max_quest_size;
 }
 
 /**
@@ -665,36 +656,36 @@ void VideoManager::get_quest_size_range(
  * \param max_quest_size Maximum size for this quest.
  */
 void VideoManager::set_quest_size_range(
-    const Rectangle& normal_quest_size,
-    const Rectangle& min_quest_size,
-    const Rectangle& max_quest_size) {
+    const Rectangle& normal_size,
+    const Rectangle& min_size,
+    const Rectangle& max_size) {
 
   Debug::check_assertion(
-      normal_quest_size.get_width() >= min_quest_size.get_width()
-      && normal_quest_size.get_height() >= min_quest_size.get_height()
-      && normal_quest_size.get_width() <= max_quest_size.get_width()
-      && normal_quest_size.get_height() <= max_quest_size.get_height(),
+      normal_size.get_width() >= min_size.get_width()
+      && normal_size.get_height() >= min_size.get_height()
+      && normal_size.get_width() <= max_size.get_width()
+      && normal_size.get_height() <= max_size.get_height(),
       "Invalid quest size range");
 
-  this->normal_quest_size = normal_quest_size;
-  this->min_quest_size = min_quest_size;
-  this->max_quest_size = max_quest_size;
+  normal_quest_size = normal_size;
+  min_quest_size = min_size;
+  max_quest_size = max_size;
 
-  if (wanted_quest_size.get_width() < min_quest_size.get_width()
-      || wanted_quest_size.get_height() < min_quest_size.get_height()
-      || wanted_quest_size.get_width() > max_quest_size.get_width()
-      || wanted_quest_size.get_height() > max_quest_size.get_height()) {
+  if (wanted_quest_size.get_width() < min_size.get_width()
+      || wanted_quest_size.get_height() < min_size.get_height()
+      || wanted_quest_size.get_width() > max_size.get_width()
+      || wanted_quest_size.get_height() > max_size.get_height()) {
     Debug::warning(StringConcat() <<
         "Cannot use quest size "
         << wanted_quest_size.get_width() << "x" << wanted_quest_size.get_height()
         << ": this quest only supports "
-        << min_quest_size.get_width() << "x" << min_quest_size.get_height()
+        << min_size.get_width() << "x" << min_size.get_height()
         << " to "
-        << max_quest_size.get_width() << "x" << max_quest_size.get_height()
+        << max_size.get_width() << "x" << max_size.get_height()
         << ". Using "
-        << normal_quest_size.get_width() << "x" << normal_quest_size.get_height()
+        << normal_size.get_width() << "x" << normal_size.get_height()
         << " instead.");
-    quest_size = normal_quest_size;
+    quest_size = normal_size;
   }
   else {
     quest_size = wanted_quest_size;

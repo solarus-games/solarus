@@ -30,7 +30,7 @@
  * \param map The map.
  */
 Camera::Camera(Map& map):
-  position(VideoManager::get_instance()->get_quest_size()),
+  position(VideoManager::get_quest_size()),
   map(map),
   fixed_on_hero(true),
   separator_scrolling_dx(0),

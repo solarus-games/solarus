@@ -55,6 +55,7 @@ bool Shader::initialize() {
   GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
 
   // Set rendering settings
+  glViewport(0, 0, quest_size.get_width(), quest_size.get_height());
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   glOrtho(-3.0, 3.0, -3.0 / aspect, 3.0 / aspect, 0.0, 1.0);

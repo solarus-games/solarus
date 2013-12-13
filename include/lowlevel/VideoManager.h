@@ -53,6 +53,7 @@ class VideoManager {
     SDL_PixelFormat* get_pixel_format();
     void create_window();
     void show_window();
+    void update_viewport();
   
     void initialize_video_modes(bool allow_shaded_modes);
     VideoMode* get_video_mode() const;
@@ -108,6 +109,7 @@ class VideoManager {
     bool fullscreen;                           /**< True if fullscreen display. */
     bool rendertarget_supported;               /**< True if rendering on texture is supported. */
     bool shaders_supported;                    /**< True if shaded modes and rendering on texture are supported. */
+    Rectangle viewport;                        /**< The area where to draw on the window. */
     std::vector<VideoMode*> all_video_modes;   /**< Display informations for each supported video mode. */
     VideoMode* video_mode;                     /**< Current display mode, pointer to an element of all_video_modes. */
 

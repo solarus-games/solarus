@@ -323,13 +323,13 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
 
   if (!disable_window) {
 
-    const Rectangle& window_size = mode->window_size;
+    viewport = mode->window_size;
     Rectangle render_size = quest_size;
 
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
-    SDL_SetWindowSize(main_window, window_size.get_width(), window_size.get_height());
+    SDL_SetWindowSize(main_window, viewport.get_width(), viewport.get_height());
     SDL_RenderSetLogicalSize(main_renderer, render_size.get_width(), render_size.get_height());
     SDL_ShowCursor(show_cursor);
     if(!fullscreen_flag) {
@@ -424,11 +424,12 @@ void VideoManager::render(Surface& quest_surface) {
 
 /**
  * \brief Draws the quest surface on the screen in a shader-allowed context.
- * It will perform an OpenGL render.
+ * It will perform the render using OpenGL API directly.
  */
 void VideoManager::shaded_render(Surface& quest_surface) {
   
   // Initialize the render.
+  float rendering_width, rendering_height;
   VideoMode* video_mode = get_instance()->video_mode;
   
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
@@ -438,17 +439,14 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   // Draw on the render target.
   quest_surface.render(main_renderer);
   
-  // Render on the window using OpenGL directly, to apply a shader if we have to. 
+  // Render on the window using OpenGL, to apply a shader if we have to.
+  glViewport(viewport.get_x(), viewport.get_y(), viewport.get_width(), viewport.get_height());
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  
   glEnable(GL_TEXTURE_2D);
-  float rendering_width, rendering_height;
+  glActiveTexture(GL_TEXTURE0);
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
   if (video_mode->shader != NULL) {
     video_mode->shader->apply();
@@ -469,11 +467,19 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   if (video_mode->shader != NULL) {
     Shader::restore_default_shader_program();
   }
-  glDisable(GL_TEXTURE_2D);
   SDL_GL_UnbindTexture(render_target);
+  glDisable(GL_TEXTURE_2D);
   
   // And swap the window.
   SDL_GL_SwapWindow(main_window);
+}
+
+/**
+ * \brief Update the internal viewport used with the better one.
+ */
+void VideoManager::update_viewport() {
+  
+  SDL_RenderGetViewport(main_renderer, viewport.get_internal_rect());
 }
 
 /**

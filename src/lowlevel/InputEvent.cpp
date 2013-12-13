@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/InputEvent.h"
+#include "lowlevel/VideoManager.h"
 #include <cstdlib>  // std::abs
 
 const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
@@ -205,8 +206,13 @@ InputEvent* InputEvent::get_event() {
   SDL_Event internal_event;
   if (SDL_PollEvent(&internal_event)) {
 
+    // Notify the window manager that the viewport has changed.
+    if (internal_event.type == SDL_WINDOWEVENT
+        && internal_event.window.event == SDL_WINDOWEVENT_RESIZED) {
+      VideoManager::get_instance()->update_viewport();
+    }
     // ignore intermediate positions of joystick axis
-    if (internal_event.type != SDL_JOYAXISMOTION
+    else if (internal_event.type != SDL_JOYAXISMOTION
         || internal_event.jaxis.value <= 1000
         || internal_event.jaxis.value >= 10000) {
 

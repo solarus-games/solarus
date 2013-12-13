@@ -21,7 +21,6 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/VideoManager.h"
-#include "lowlevel/PixelFilter.h"
 #include "lua/LuaContext.h"
 #include "Transition.h"
 #include <SDL.h>
@@ -234,7 +233,7 @@ void Surface::convert_software_surface() {
   Debug::check_assertion(internal_surface != NULL,
       "Missing software surface to convert");
 
-  SDL_PixelFormat* pixel_format = VideoManager::get_pixel_format();
+  SDL_PixelFormat* pixel_format = VideoManager::get_instance()->get_pixel_format();
   if (internal_surface->format->format != pixel_format->format) {
     // Convert to the preferred pixel format.
     SDL_Surface* converted_surface = SDL_ConvertSurface(
@@ -272,7 +271,7 @@ void Surface::create_texture_from_surface() {
     // Create the texture.
     internal_texture = SDL_CreateTexture(
         main_renderer,
-        VideoManager::get_pixel_format()->format,
+        VideoManager::VideoManager::get_instance()->get_pixel_format()->format,
         SDL_TEXTUREACCESS_STATIC,
         internal_surface->w,
         internal_surface->h
@@ -375,16 +374,16 @@ void Surface::create_software_surface() {
       "Software surface already exists");
 
   // Create a surface with the appropriate pixel format.
-  SDL_PixelFormat* format = VideoManager::get_pixel_format();
+  SDL_PixelFormat* format = VideoManager::VideoManager::get_instance()->get_pixel_format();
   internal_surface = SDL_CreateRGBSurface(
       0,
       width,
       height,
       32,
-      format->Rmask,
-      format->Gmask,
-      format->Bmask,
-      format->Amask
+      SDL_SwapBE32(format->Rmask),
+      SDL_SwapBE32(format->Gmask),
+      SDL_SwapBE32(format->Bmask),
+      SDL_SwapBE32(format->Amask)
   );
   is_rendered = false;
 
@@ -418,7 +417,7 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
     }
 
     uint32_t color_value = color.get_internal_value();
-    if (internal_surface->format->format != VideoManager::get_pixel_format()->format) {
+    if (internal_surface->format->format != VideoManager::get_instance()->get_pixel_format()->format) {
       // Get a color value in the pixel format of the destination surface.
       int r, g, b, a;
       color.get_components(r, g, b, a);
@@ -565,44 +564,6 @@ void Surface::draw_transition(Transition& transition) {
 }
 
 /**
- * \brief Draws this surface with a pixel filter on another surface.
- * \param filter The pixel filter to apply.
- * \param dst_surface The destination surface. It must have the size of the
- * this surface multiplied by the scaling factor of the filter.
- */
-void Surface::apply_pixel_filter(
-    const PixelFilter& pixel_filter, Surface& dst_surface) {
-
-  const int factor = pixel_filter.get_scaling_factor();
-  Debug::check_assertion(dst_surface.get_width() == get_width() * factor,
-      "Wrong destination surface size");
-  Debug::check_assertion(dst_surface.get_height() == get_height() * factor,
-      "Wrong destination surface size");
-
-  SDL_Surface* src_internal_surface = this->internal_surface;
-  SDL_Surface* dst_internal_surface = dst_surface.internal_surface;
-
-  Debug::check_assertion(src_internal_surface != NULL,
-      "Missing software source surface for pixel filter");
-  Debug::check_assertion(dst_internal_surface != NULL,
-      "Missing software destination surface for pixel filter");
-
-  SDL_LockSurface(src_internal_surface);
-  SDL_LockSurface(dst_internal_surface);
-
-  uint32_t* src = static_cast<uint32_t*>(src_internal_surface->pixels);
-  uint32_t* dst = static_cast<uint32_t*>(dst_internal_surface->pixels);
-
-  pixel_filter.filter(src, get_width(), get_height(), dst);
-
-  SDL_UnlockSurface(dst_internal_surface);
-  SDL_UnlockSurface(src_internal_surface);
-
-  // The destination surface has changed.
-  dst_surface.is_rendered = false;
-}
-
-/**
  * \brief Draws the internal texture if any, and all subtextures on the
  * renderer.
  * \param renderer The renderer where to draw.
@@ -661,10 +622,7 @@ void Surface::render(
     internal_color->get_components(r, g, b, a);
 
     SDL_SetRenderDrawColor(renderer, r, g, b, std::min(a, current_opacity));
-
-    // TODO kill the viewport notion if commenting this line really works
-    //SDL_RenderSetClipRect(renderer, viewport.get_internal_rect());
-
+    //SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
     SDL_RenderFillRect(renderer, clip_rect.get_internal_rect());
   }
 
@@ -674,7 +632,7 @@ void Surface::render(
     VideoManager::set_absolute_position(viewport);
 
     SDL_SetTextureAlphaMod(internal_texture, current_opacity);
-    //SDL_RenderSetClipRect(renderer, viewport.get_internal_rect());
+    //SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
     SDL_RenderCopy(
         renderer,
         internal_texture,

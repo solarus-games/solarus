@@ -17,6 +17,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/VideoManager.h"
+#include "lowlevel/Shader.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
@@ -69,6 +70,15 @@ void System::initialize(int argc, char** argv) {
 }
 
 /**
+ * \brief Initialize the video mode system.
+ */
+void System::initialize_video_modes() {
+  
+  // Initialize quest's shaded video modes if supported, and engine's hardcoded ones else.
+  VideoManager::get_instance()->initialize_video_modes( Shader::initialize() );
+}
+
+/**
  * \brief Closes the lowlevel system.
  *
  * This closes all initializations made in initialize().
@@ -81,6 +91,7 @@ void System::quit() {
   Sprite::quit();
   TextSurface::quit();
   Color::quit();
+  Shader::quit();
   VideoManager::quit();
   FileTools::quit();
 

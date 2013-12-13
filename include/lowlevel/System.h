@@ -29,6 +29,7 @@ class System {
   public:
 
     static void initialize(int argc, char** argv);
+    static void initialize_video_modes();
     static void quit();
     static void update();
 

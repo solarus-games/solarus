@@ -9,6 +9,7 @@ set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 set(SOLARUS_INSTALL_DESTINATION "bin")
 
 # find the headers and the libraries of dependencies
+find_package(OpenGL REQUIRED)
 find_package(SDL2 "2" REQUIRED)
 find_package(SDL2_image "2" REQUIRED)
 find_package(SDL2_ttf "2.0.12" REQUIRED)
@@ -96,6 +97,7 @@ include_directories(
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/third_party/snes_spc
   ${MODPLUG_INCLUDE_DIR}  # Before SDL because we want the sndfile.h of ModPlug.
+  ${OPENGL_INCLUDE_DIR}
   ${SDL2_INCLUDE_DIR}
   ${SDL2_TTF_INCLUDE_DIR}
   ${SDL2_IMAGE_INCLUDE_DIR}
@@ -108,6 +110,7 @@ include_directories(
 
 # generate -l flags
 target_link_libraries(solarus
+  ${OPENGL_gl_LIBRARY}
   ${SDL2_LIBRARY}
   ${SDL2_IMAGE_LIBRARY}
   ${SDL2_TTF_LIBRARY}
@@ -189,13 +192,13 @@ if(COLOR_DEPTH)
 endif()
 
 if(CAANOO OR GCWZERO)
-  set(INITIAL_SCREEN_FORCE_MODE 2)  # Windowed normal.
+  set(INITIAL_SCREEN_FORCE_MODE "normal")
 elseif(PANDORA)
-  set(INITIAL_SCREEN_FORCE_MODE 3)  # Fullscreen normal.
+  set(INITIAL_SCREEN_FORCE_MODE "normal")
 else()
-  set(INITIAL_SCREEN_FORCE_MODE -1)
+  set(INITIAL_SCREEN_FORCE_MODE "")
 endif()
-set(SCREEN_FORCE_MODE ${INITIAL_SCREEN_FORCE_MODE} CACHE INTEGER "Video mode to force (-1 means no restriction).")
+set(SCREEN_FORCE_MODE ${INITIAL_SCREEN_FORCE_MODE} CACHE STRING "Video mode to force (empty means no restriction).")
 if(SCREEN_FORCE_MODE)
   add_definitions(-DSOLARUS_SCREEN_FORCE_MODE=${SCREEN_FORCE_MODE})
 endif()

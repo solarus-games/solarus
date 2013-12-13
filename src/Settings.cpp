@@ -60,9 +60,9 @@ bool Settings::load(const std::string& file_name) {
   lua_getglobal(l, "video_mode");
   if (lua_isstring(l, 1)) {
     const std::string& mode_name = lua_tostring(l, 1);
-    VideoManager::VideoMode mode = VideoManager::get_video_mode_by_name(mode_name);
-    if (mode != VideoManager::NO_MODE && mode != VideoManager::get_instance()->get_video_mode()) {
-      VideoManager::get_instance()->set_video_mode(mode);
+    if (mode_name != "" && mode_name != VideoManager::get_instance()->get_video_mode()->name) {
+      VideoManager::get_instance()->set_video_mode(
+          VideoManager::get_video_mode_by_name(mode_name));
     }
   }
   lua_pop(l, 1);
@@ -117,8 +117,8 @@ bool Settings::save(const std::string& file_name) {
       "Cannot save settings: no quest write directory was specified in quest.dat");
 
   std::ostringstream oss;
-  VideoManager::VideoMode video_mode = VideoManager::get_instance()->get_video_mode();
-  oss << "video_mode = \"" << VideoManager::video_mode_names[video_mode] << "\"\n";
+  VideoManager::VideoMode* video_mode = VideoManager::get_instance()->get_video_mode();
+  oss << "video_mode = \"" << video_mode->name << "\"\n";
   oss << "sound_volume = " << Sound::get_volume() << "\n";
   oss << "music_volume = " << Music::get_volume() << "\n";
   if (!Language::get_language().empty()) {

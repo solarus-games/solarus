@@ -51,6 +51,7 @@ else()
   string(REPLACE "-framework Cocoa" "" SDL2_FRAMEWORK "${SDL2_LIBRARY}") 
 
   set(SOLARUS_BUNDLE_COPIED_LIBRARIES
+    ${OPENGL_gl_LIBRARY}
     ${SDL2_FRAMEWORK} 
     ${SDL2_IMAGE_LIBRARY} 
     ${SDL2_TTF_LIBRARY}

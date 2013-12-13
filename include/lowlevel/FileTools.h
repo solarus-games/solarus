@@ -68,6 +68,7 @@ class FileTools {
     static void data_file_close_buffer(char* buffer);
     static bool data_file_delete(const std::string& file_name);
     static bool data_file_mkdir(const std::string& dir_name);
+    static std::vector<std::string> data_files_enumerate(const std::string& dir_path, bool list_files = true, bool list_folders = true);
 
     static void read(std::istream& is, int& value);
     static void read(std::istream& is, uint32_t& value);

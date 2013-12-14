@@ -60,6 +60,8 @@ class VideoManager {
     static const std::string& get_rendering_driver_name();
     static void create_window();
     static void show_window();
+  
+    static Rectangle& get_viewport();
     static void update_viewport();
   
     static void initialize_video_modes(bool allow_shaded_modes);

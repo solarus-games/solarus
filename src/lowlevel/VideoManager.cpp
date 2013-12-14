@@ -400,7 +400,8 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
     if (!fullscreen_flag) {
       SDL_SetWindowPosition(main_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
-    update_viewport();
+    update_viewport(); 
+    viewport = mode->window_size; // TODO remove and make update_viewport() work
   }
   video_mode = mode;
 
@@ -520,13 +521,12 @@ void VideoManager::shaded_render(Surface& quest_surface) {
 
   // Render on the window using OpenGL, to apply a shader if we have to.
   SDL_SetRenderTarget(main_renderer, NULL);
-  glViewport(viewport.get_x(), viewport.get_y(), viewport.get_width(), viewport.get_height());
+  Shader::set_rendering_settings();
 
   glEnable(GL_TEXTURE_2D);
-  glActiveTexture(GL_TEXTURE0);
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
   if (video_mode->shader != NULL) {
-    //video_mode->shader->apply();
+    video_mode->shader->apply();
   }
 
   glBegin(GL_QUADS);
@@ -542,7 +542,7 @@ void VideoManager::shaded_render(Surface& quest_surface) {
 
   // Restore default states.
   if (video_mode->shader != NULL) {
-    //Shader::restore_default_shader_program();
+    Shader::restore_default_shader_program();
   }
   SDL_GL_UnbindTexture(render_target);
   glDisable(GL_TEXTURE_2D);
@@ -553,11 +553,22 @@ void VideoManager::shaded_render(Surface& quest_surface) {
 }
 
 /**
+ * \brief Get the current viewport.
+ * \return The rectangle viewport.
+ */
+Rectangle& VideoManager::get_viewport() {
+  
+  return viewport;
+}
+
+/**
  * \brief Update the internal viewport used with the better one.
+ * The use of SDL_SetRenderTarget seems to break the SDL viewport.
+ * So manually calculate it.
  */
 void VideoManager::update_viewport() {
   
-  SDL_RenderGetViewport(main_renderer, viewport.get_internal_rect());
+  // TODO 
 }
 
 /**

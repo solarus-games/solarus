@@ -19,7 +19,7 @@
 
 #include "Debug.h"
 
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
 #  include "lua/LuaContext.h"
 #  include <SDL.h>
 #  include <SDL_opengl.h>
@@ -38,7 +38,7 @@ class Shader {
     static bool initialize();
     static void quit();
 
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
     static void restore_default_shader_program();
     static void set_rendering_settings();
   

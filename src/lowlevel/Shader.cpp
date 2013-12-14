@@ -179,7 +179,7 @@ Shader::Shader(std::string shader_name) :
     
   // Set up the sampler uniform variable.
   glUseProgramObjectARB(program);
-    GLint location = glGetUniformLocationARB(program, std::string(shader_name + "_scene").c_str());
+  GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
   if (location >= 0) {
     glUniform1iARB(location, 0);
   }

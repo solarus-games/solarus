@@ -143,7 +143,7 @@ bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
  */
 void Shader::restore_default_shader_program() {
 
-  glUseProgramObjectARB((void*)default_shader_program);
+  glUseProgramObjectARB(default_shader_program);
 }
 
 /**

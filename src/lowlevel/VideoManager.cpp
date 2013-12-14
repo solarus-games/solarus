@@ -330,6 +330,7 @@ void VideoManager::set_default_video_mode() {
  */
 void VideoManager::switch_video_mode() {
 
+  /* FIXME compilation error: there is not find function in vector.
   std::vector<VideoMode*>::const_iterator it = find(all_video_modes.begin(), all_video_modes.end(), video_mode);
   VideoMode* mode;
   do {
@@ -338,6 +339,7 @@ void VideoManager::switch_video_mode() {
     mode = *(++it);
   } while (!is_mode_supported(mode));
   set_video_mode(mode);
+  */
 }
 
 /**

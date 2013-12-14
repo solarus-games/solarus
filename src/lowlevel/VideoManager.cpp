@@ -521,7 +521,7 @@ void VideoManager::shaded_render(Surface& quest_surface) {
 
   // Render on the window using OpenGL, to apply a shader if we have to.
   SDL_SetRenderTarget(main_renderer, NULL);
-  Shader::set_rendering_settings();
+  Shader::set_rendering_settings(); // Restore OpenGL settings after the rendering target switch.
 
   glEnable(GL_TEXTURE_2D);
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);

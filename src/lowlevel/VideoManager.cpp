@@ -334,8 +334,7 @@ void VideoManager::set_default_video_mode() {
  */
 void VideoManager::switch_video_mode() {
 
-  /* TODO remove
-  std::vector<VideoMode*>::const_iterator it = all_video_modes.find(video_mode);
+  std::vector<VideoMode*>::const_iterator it = find(all_video_modes.begin(), all_video_modes.end(), video_mode);
   VideoMode* mode;
   do {
     if (it == all_video_modes.end())
@@ -343,7 +342,6 @@ void VideoManager::switch_video_mode() {
     mode = *(++it);
   } while (!is_mode_supported(mode));
   set_video_mode(mode);
-  */
 }
 
 /**

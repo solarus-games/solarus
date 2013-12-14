@@ -205,22 +205,21 @@ void VideoManager::create_window() {
       break;
     }
   }
-
+  
   Debug::check_assertion(pixel_format != NULL, "No compatible pixel format");
 
+  // Check renderer's flags
+  rendering_driver_name = renderer_info.name;
+  rendertarget_supported = (renderer_info.flags & SDL_RENDERER_TARGETTEXTURE) != 0;
   renderer_accelerated = (renderer_info.flags & SDL_RENDERER_ACCELERATED) != 0;
   if (renderer_accelerated) {
     std::cout << "2D acceleration: yes" << std::endl;
   }
   else {
     std::cout << "2D acceleration: no" << std::endl;
-  }
-
-  update_viewport();
+  } 
   
-  // Check renderer's flags
-  rendertarget_supported = (renderer_info.flags & SDL_RENDERER_TARGETTEXTURE) != 0;
-  rendering_driver_name = renderer_info.name;
+  update_viewport();
 }
 
 /**
@@ -444,7 +443,6 @@ std::string VideoManager::get_video_mode_name(VideoMode& mode) {
  */
 VideoManager::VideoMode* VideoManager::get_video_mode_by_name(const std::string& mode_name) {
 
-  // TODO restore the video_mode_names array
   for (int i = 0; i < all_video_modes.size(); ++i) {
     if (all_video_modes.at(i)->name == mode_name) {
       return all_video_modes.at(i);

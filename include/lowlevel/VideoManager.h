@@ -83,7 +83,6 @@ class VideoManager {
     static void set_window_title(const std::string& window_title);
 
     static bool parse_size(const std::string& size_string, Rectangle& size);
-    static void set_absolute_position(Rectangle& rect);
 
     static const Rectangle& get_quest_size();
     static void get_quest_size_range(

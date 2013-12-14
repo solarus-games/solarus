@@ -34,7 +34,6 @@ namespace {
   bool rendertarget_supported;              /**< True if rendering on texture is supported. */
   bool shaders_supported;                   /**< True if shaded modes and rendering on texture are supported. */
   bool renderer_accelerated = false;       /**< \c true if 2D GPU acceleration is available. */
-  Rectangle viewport;                       /**< The position of the drawable area on the window. */
   // TODO const PixelFilter* pixel_filter = NULL;   /**< The pixel filtering algorithm (if any) applied with the current video mode. */
   Surface* scaled_surface = NULL;           /**< The screen surface used with scaled modes. */
 
@@ -400,8 +399,6 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
     if (!fullscreen_flag) {
       SDL_SetWindowPosition(main_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
-    update_viewport(); 
-    viewport = mode->window_size; // TODO remove and make update_viewport() work
   }
   video_mode = mode;
 
@@ -504,24 +501,25 @@ void VideoManager::render(Surface& quest_surface) {
 void VideoManager::shaded_render(Surface& quest_surface) {
 
 #if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
-  // Initialize the render.
   float rendering_width, rendering_height;
 
+  // Clear the window
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity(); // Clear the window
+  glLoadIdentity(); 
   
+  // Clear the render target
   SDL_SetRenderTarget(main_renderer, render_target);
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
   SDL_RenderSetClipRect(main_renderer, NULL);
-  SDL_RenderClear(main_renderer); // Clear the render target
+  SDL_RenderClear(main_renderer);
 
   // Draw on the render target.
   quest_surface.render(main_renderer);
 
   // Render on the window using OpenGL, to apply a shader if we have to.
   SDL_SetRenderTarget(main_renderer, NULL);
-  Shader::set_rendering_settings(); // Restore OpenGL settings after the rendering target switch.
+  Shader::set_rendering_settings();
 
   glEnable(GL_TEXTURE_2D);
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
@@ -550,25 +548,6 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   // And swap the window.
   SDL_GL_SwapWindow(main_window);
 #endif
-}
-
-/**
- * \brief Get the current viewport.
- * \return The rectangle viewport.
- */
-Rectangle& VideoManager::get_viewport() {
-  
-  return viewport;
-}
-
-/**
- * \brief Update the internal viewport used with the better one.
- * The use of SDL_SetRenderTarget seems to break the SDL viewport.
- * So manually calculate it.
- */
-void VideoManager::update_viewport() {
-  
-  // TODO 
 }
 
 /**
@@ -621,18 +600,6 @@ bool VideoManager::parse_size(const std::string& size_string, Rectangle& size) {
 
   size.set_size(width, height);
   return true;
-}
-
-/**
- * \brief Return a rectangle with absolute value (eq. relative to the point 0,0 of the window).
- * This is a workaround function. Some SDL context functions are relative to the window instead
- * of the viewport (SDL_RenderSetClipRect).
- * Use this function to get the expected behavior.
- * \param rect A rectangle with a position relative to the viewport.
- */
-void VideoManager::set_absolute_position(Rectangle& rect) {
-
-  rect.add_xy(viewport.get_x(), viewport.get_y());
 }
 
 /**

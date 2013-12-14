@@ -21,6 +21,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <map>
+#include <algorithm>
 
 namespace {
 
@@ -330,16 +331,22 @@ void VideoManager::set_default_video_mode() {
  */
 void VideoManager::switch_video_mode() {
 
-  /* FIXME compilation error: there is not find function in vector.
-  std::vector<VideoMode*>::const_iterator it = find(all_video_modes.begin(), all_video_modes.end(), video_mode);
-  VideoMode* mode;
+  if (all_video_modes.size() <= 1) {
+    return;
+  }
+
+  std::vector<VideoMode*>::const_iterator it = std::find(
+      all_video_modes.begin(), all_video_modes.end(), video_mode);
+  VideoMode* mode = NULL;
   do {
-    if (it == all_video_modes.end())
+    if (it == all_video_modes.end()) {
       it = all_video_modes.begin();
-    mode = *(++it);
+    }
+    ++it;
+    mode = *it;
+    std::cout << mode << std::endl;
   } while (!is_mode_supported(mode));
   set_video_mode(mode);
-  */
 }
 
 /**

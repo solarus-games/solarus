@@ -153,7 +153,7 @@ void Shader::restore_default_shader_program() {
 void Shader::set_rendering_settings() {
   
   Rectangle quest_size = VideoManager::get_quest_size();
-  GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
+  static const GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
   
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();

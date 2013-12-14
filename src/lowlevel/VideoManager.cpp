@@ -160,7 +160,7 @@ void VideoManager::create_window() {
 
   Debug::check_assertion(main_window == NULL, "Window already exists");
   
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
   SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
 
@@ -175,7 +175,7 @@ void VideoManager::create_window() {
       wanted_quest_size.get_width(),
       wanted_quest_size.get_height(),
       SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
       | SDL_WINDOW_OPENGL
 #endif
   );
@@ -496,7 +496,7 @@ void VideoManager::render(Surface& quest_surface) {
  */
 void VideoManager::shaded_render(Surface& quest_surface) {
 
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
   float rendering_width, rendering_height;
 
   // Clear the window
@@ -683,7 +683,7 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
   shaders_supported = allow_shaded_modes && rendertarget_supported;
   if (shaders_supported) {
 
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
     // Initialize the render target
     render_target = SDL_CreateTexture(
         main_renderer,

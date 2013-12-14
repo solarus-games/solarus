@@ -40,6 +40,7 @@ class Shader {
 
 #if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
     static void restore_default_shader_program();
+    static void set_rendering_settings();
   
     Shader(std::string shader_name);
     ~Shader();

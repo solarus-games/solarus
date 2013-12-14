@@ -40,8 +40,6 @@ namespace {
 
   const std::string normal_mode_name =
       "solarus_default";                    /**< Non-shaded mode name. It will be forbidden for shaded ones. */
-  const std::string forced_mode_name =  // TODO remove
-      SOLARUS_SCREEN_FORCE_MODE;            /**< Name of the forced mode, or empty string to allow all modes. */
 
   std::vector<VideoManager::VideoMode*>
       all_video_modes;                      /**< Display informations for each supported video mode. */
@@ -255,10 +253,6 @@ bool VideoManager::is_mode_supported(VideoMode* mode) {
     return false;
   }
 
-  if (forced_mode_name != "" && mode->name != forced_mode_name) {
-    return false;
-  }
-
   std::vector<VideoMode*>::const_iterator it = all_video_modes.begin();
   for(; it != all_video_modes.end(); ++it) {
     if(*it == mode) {
@@ -315,14 +309,7 @@ void VideoManager::switch_fullscreen() {
  */
 void VideoManager::set_default_video_mode() {
 
-  VideoMode* mode;
-  if (forced_mode_name != "") {
-    mode = get_video_mode_by_name(forced_mode_name);
-  }
-  else {
-    mode = get_video_mode_by_name(normal_mode_name);
-  }
-  
+  VideoMode* mode = get_video_mode_by_name(normal_mode_name);
   set_video_mode(mode);
 }
 

@@ -23,6 +23,8 @@
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
 
+#include "config.h"
+
 /**
  * \cond doxygen_ignore
  */
@@ -101,10 +103,9 @@
 
 /**
  * \def SOLARUS_HAVE_OPENGL_OR_ES
- * \brief Set to 1 if the application will use OpenGL / ES / 2 as renderer driver.
- * Allow to use advanced display features.
- * Set to 1 by default if no previous configuration was done :
- * "These people deserve to go to hell anyway"
+ * \brief Whether the system supports OpenGL / ES / 2 as renderer driver.
+ * This is optional, but allows to use advanced display features.
+ * Should be set by config.h, but if not, assume 1 by default.
  */
 #ifndef SOLARUS_HAVE_OPENGL_OR_ES
 #  define SOLARUS_HAVE_OPENGL_OR_ES 1
@@ -167,23 +168,6 @@
 #  endif
 #endif
 
-/**
- * \def SOLARUS_SCREEN_FORCE_MODE
- * \brief Forces a unique video mode.
- */
-#ifndef SOLARUS_SCREEN_FORCE_MODE
-#  if defined(SOLARUS_IOS)
-#    define SOLARUS_SCREEN_FORCE_MODE "scale2x"
-#  elif defined(CAANOO)
-#    define SOLARUS_SCREEN_FORCE_MODE "normal"
-#  elif defined(PANDORA)
-#    define SOLARUS_SCREEN_FORCE_MODE "normal"
-#  else
-#    define SOLARUS_SCREEN_FORCE_MODE ""
-#  endif
-#endif
-
-#include "config.h"
 #include "Types.h"
 
 #endif

@@ -217,9 +217,7 @@ void VideoManager::create_window() {
   }
   else {
     std::cout << "2D acceleration: no" << std::endl;
-  } 
-  
-  update_viewport();
+  }
 }
 
 /**
@@ -463,31 +461,38 @@ void VideoManager::render(Surface& quest_surface) {
     return;
   }
 
-  // Perform accelerated render ...
-  if (shaders_supported) {
-    shaded_render(quest_surface);
+  if (is_acceleration_enabled() && rendertarget_supported) {
+    
+    // Perform faster render if shaders supported
+    if (shaders_supported) {
+      shaded_render(quest_surface);
+    }
+    // Accelerated render with hardcoded video modes else
+    else
+    {
+      /* TODO
+       Surface* surface_to_render = NULL;
+       if (pixel_filter != NULL) {
+       Debug::check_assertion(scaled_surface != NULL,
+       "Missing destination surface for scaling");
+       quest_surface.apply_pixel_filter(*pixel_filter, *scaled_surface);
+       surface_to_render = scaled_surface;
+       }
+       else {
+       surface_to_render = &quest_surface;
+       }
+       
+       SDL_RenderSetClipRect(main_renderer, NULL);
+       SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
+       SDL_RenderClear(main_renderer);
+       surface_to_render->render(main_renderer);
+       SDL_RenderPresent(main_renderer);
+       */
+    }
   }
-  // ... or software one.
-  else
-  {
-    /* TODO
-     Surface* surface_to_render = NULL;
-     if (pixel_filter != NULL) {
-     Debug::check_assertion(scaled_surface != NULL,
-     "Missing destination surface for scaling");
-     quest_surface.apply_pixel_filter(*pixel_filter, *scaled_surface);
-     surface_to_render = scaled_surface;
-     }
-     else {
-     surface_to_render = &quest_surface;
-     }
-     
-     SDL_RenderSetClipRect(main_renderer, NULL);
-     SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
-     SDL_RenderClear(main_renderer);
-     surface_to_render->render(main_renderer);
-     SDL_RenderPresent(main_renderer);
-     */
+  // Software render
+  else {
+    // TODO
   }
 }
 
@@ -504,7 +509,8 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity(); // Clear the window
-
+  
+  SDL_SetRenderTarget(main_renderer, render_target);
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
   SDL_RenderSetClipRect(main_renderer, NULL);
   SDL_RenderClear(main_renderer); // Clear the render target
@@ -513,6 +519,7 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   quest_surface.render(main_renderer);
 
   // Render on the window using OpenGL, to apply a shader if we have to.
+  SDL_SetRenderTarget(main_renderer, NULL);
   glViewport(viewport.get_x(), viewport.get_y(), viewport.get_width(), viewport.get_height());
 
   glEnable(GL_TEXTURE_2D);
@@ -711,7 +718,6 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
         quest_size.get_width(),
         quest_size.get_height());
     SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderTarget(main_renderer, render_target);
     
     // Get all shaders of the quest's shader/filters/driver folder.
     std::vector<std::string> shader_names = 

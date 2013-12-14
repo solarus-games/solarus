@@ -19,7 +19,7 @@
 #include "lowlevel/VideoManager.h"
 
 
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
 
 PFNGLATTACHOBJECTARBPROC Shader::glAttachObjectARB;
 PFNGLCOMPILESHADERARBPROC Shader::glCompileShaderARB;
@@ -45,7 +45,7 @@ GLint Shader::default_shader_program;
  */
 bool Shader::initialize() {
 
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -105,12 +105,12 @@ bool Shader::initialize() {
  */
 void Shader::quit() {
   
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
   SDL_GL_DeleteContext(gl_context);
 #endif
 }
 
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
 /**
  * \brief Compile a shader from source.
  * \return true if success.
@@ -143,7 +143,7 @@ bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
  */
 void Shader::restore_default_shader_program() {
 
-  glUseProgramObjectARB((void*)default_shader_program);
+  glUseProgramObjectARB(default_shader_program);
 }
 
 /**

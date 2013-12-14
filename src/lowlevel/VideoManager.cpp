@@ -21,6 +21,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <map>
+#include <algorithm>
 
 namespace {
 
@@ -39,8 +40,6 @@ namespace {
 
   const std::string normal_mode_name =
       "solarus_default";                    /**< Non-shaded mode name. It will be forbidden for shaded ones. */
-  const std::string forced_mode_name =  // TODO remove
-      SOLARUS_SCREEN_FORCE_MODE;            /**< Name of the forced mode, or empty string to allow all modes. */
 
   std::vector<VideoManager::VideoMode*>
       all_video_modes;                      /**< Display informations for each supported video mode. */
@@ -161,7 +160,7 @@ void VideoManager::create_window() {
 
   Debug::check_assertion(main_window == NULL, "Window already exists");
   
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
   SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
 
@@ -176,7 +175,7 @@ void VideoManager::create_window() {
       wanted_quest_size.get_width(),
       wanted_quest_size.get_height(),
       SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
       | SDL_WINDOW_OPENGL
 #endif
   );
@@ -254,10 +253,6 @@ bool VideoManager::is_mode_supported(VideoMode* mode) {
     return false;
   }
 
-  if (forced_mode_name != "" && mode->name != forced_mode_name) {
-    return false;
-  }
-
   std::vector<VideoMode*>::const_iterator it = all_video_modes.begin();
   for(; it != all_video_modes.end(); ++it) {
     if(*it == mode) {
@@ -314,14 +309,7 @@ void VideoManager::switch_fullscreen() {
  */
 void VideoManager::set_default_video_mode() {
 
-  VideoMode* mode;
-  if (forced_mode_name != "") {
-    mode = get_video_mode_by_name(forced_mode_name);
-  }
-  else {
-    mode = get_video_mode_by_name(normal_mode_name);
-  }
-  
+  VideoMode* mode = get_video_mode_by_name(normal_mode_name);
   set_video_mode(mode);
 }
 
@@ -330,12 +318,20 @@ void VideoManager::set_default_video_mode() {
  */
 void VideoManager::switch_video_mode() {
 
-  std::vector<VideoMode*>::const_iterator it = find(all_video_modes.begin(), all_video_modes.end(), video_mode);
-  VideoMode* mode;
+  if (all_video_modes.size() <= 1) {
+    return;
+  }
+
+  std::vector<VideoMode*>::const_iterator it = std::find(
+      all_video_modes.begin(), all_video_modes.end(), video_mode);
+  VideoMode* mode = NULL;
   do {
-    if (it == all_video_modes.end())
+    if (it == all_video_modes.end()) {
       it = all_video_modes.begin();
-    mode = *(++it);
+    }
+    ++it;
+    mode = *it;
+    std::cout << mode << std::endl;
   } while (!is_mode_supported(mode));
   set_video_mode(mode);
 }
@@ -500,7 +496,7 @@ void VideoManager::render(Surface& quest_surface) {
  */
 void VideoManager::shaded_render(Surface& quest_surface) {
 
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
   float rendering_width, rendering_height;
 
   // Clear the window
@@ -687,7 +683,7 @@ void VideoManager::initialize_video_modes(bool allow_shaded_modes) {
   shaders_supported = allow_shaded_modes && rendertarget_supported;
   if (shaders_supported) {
 
-#if defined(SOLARUS_HAVE_OPENGL_OR_ES) && SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
     // Initialize the render target
     render_target = SDL_CreateTexture(
         main_renderer,

@@ -50,18 +50,6 @@ class Shader {
     void apply();
 
   private:
-    static bool compile_shader(GLhandleARB& shader, const char* source);
-  
-    void load(const std::string& shader_name);
-    void load_lua_file(const std::string& path);
-  
-    static void load_shader_file(const std::string& path, GLenum shader_type, GLhandleARB* shader);
-    static int l_shader(lua_State* l);
-  
-    static SDL_GLContext gl_context;             /**< The OpenGL context. */
-    static Shader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */
-    static GLint default_shader_program;         /**< Default shader program to restore once a shaded render is done. */
-  
     static PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
     static PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
     static PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
@@ -74,6 +62,18 @@ class Shader {
     static PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
     static PFNGLUNIFORM1IARBPROC glUniform1iARB;
     static PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
+    static PFNGLGETHANDLEARBPROC glGetHandleARB;
+  
+    static bool compile_shader(GLhandleARB& shader, const char* source);
+    static void load_shader_file(const std::string& path, GLenum shader_type, GLhandleARB* shader);
+    static int l_shader(lua_State* l);
+  
+    void load(const std::string& shader_name);
+    void load_lua_file(const std::string& path);
+  
+    static SDL_GLContext gl_context;             /**< The OpenGL context. */
+    static GLhandleARB default_shader_program;   /**< Default shader program to restore once a shaded render is done. */
+    static Shader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */
   
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */

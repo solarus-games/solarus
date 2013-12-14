@@ -33,10 +33,11 @@ PFNGLLINKPROGRAMARBPROC Shader::glLinkProgramARB;
 PFNGLSHADERSOURCEARBPROC Shader::glShaderSourceARB;
 PFNGLUNIFORM1IARBPROC Shader::glUniform1iARB;
 PFNGLUSEPROGRAMOBJECTARBPROC Shader::glUseProgramObjectARB;
+PFNGLGETHANDLEARBPROC Shader::glGetHandleARB;
 
 SDL_GLContext Shader::gl_context;
+GLhandleARB Shader::default_shader_program;
 Shader* Shader::loading_shader = NULL;
-GLint Shader::default_shader_program;
 
 #endif
 
@@ -77,6 +78,7 @@ bool Shader::initialize() {
     glShaderSourceARB = (PFNGLSHADERSOURCEARBPROC) SDL_GL_GetProcAddress("glShaderSourceARB");
     glUniform1iARB = (PFNGLUNIFORM1IARBPROC) SDL_GL_GetProcAddress("glUniform1iARB");
     glUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC) SDL_GL_GetProcAddress("glUseProgramObjectARB");
+    glGetHandleARB = (PFNGLGETHANDLEARBPROC) SDL_GL_GetProcAddress("glGetHandleARB");
     if (glAttachObjectARB &&
         glCompileShaderARB &&
         glCreateProgramObjectARB &&
@@ -88,8 +90,9 @@ bool Shader::initialize() {
         glLinkProgramARB &&
         glShaderSourceARB &&
         glUniform1iARB &&
-        glUseProgramObjectARB) {
-      glGetIntegerv(GL_CURRENT_PROGRAM, &default_shader_program);
+        glUseProgramObjectARB &&
+        glGetHandleARB) {
+      default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
       return true;
     }
   }

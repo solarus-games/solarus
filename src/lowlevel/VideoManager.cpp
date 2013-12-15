@@ -518,6 +518,7 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   Shader::set_rendering_settings();
 
   glEnable(GL_TEXTURE_2D);
+  glActiveTexture(GL_TEXTURE0_ARB); // Make sure to active the texture unit 0.
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
   if (video_mode->shader != NULL) {
     video_mode->shader->apply();

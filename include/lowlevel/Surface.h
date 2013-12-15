@@ -102,9 +102,9 @@ class Surface: public Drawable {
     static SDL_Surface* get_surface_from_file(
         const std::string& file_name,
         ImageDirectory base_directory);
-    static SDL_Surface* convert_software_surface(SDL_Surface* software_surface);
 
     void create_software_surface();
+    void convert_software_surface();
     void create_texture_from_surface();
     void add_subsurface(Surface& src_surface, const Rectangle& region, const Rectangle& dst_position);
     void clear_subsurfaces();

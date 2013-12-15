@@ -233,7 +233,7 @@ SDL_Surface* Surface::convert_software_surface(SDL_Surface* software_surface) {
   Debug::check_assertion(software_surface != NULL,
       "Missing software surface to convert");
 
-  SDL_PixelFormat* pixel_format = VideoManager::get_pixel_format();
+  SDL_PixelFormat* pixel_format = Video::get_pixel_format();
   if (software_surface->format->format != pixel_format->format) {
     // Convert to the preferred pixel format.
     SDL_Surface* converted_surface = SDL_ConvertSurface(
@@ -266,7 +266,7 @@ void Surface::create_texture_from_surface() {
     // Create the texture.
     internal_texture = SDL_CreateTexture(
         main_renderer,
-        Video::Video::get_pixel_format()->format,
+        Video::get_pixel_format()->format,
         SDL_TEXTUREACCESS_STATIC,
         internal_surface->w,
         internal_surface->h
@@ -366,7 +366,7 @@ void Surface::create_software_surface() {
       "Software surface already exists");
 
   // Create a surface with the appropriate pixel format.
-  SDL_PixelFormat* format = Video::Video::get_pixel_format();
+  SDL_PixelFormat* format = Video::get_pixel_format();
   internal_surface = SDL_CreateRGBSurface(
       0,
       width,

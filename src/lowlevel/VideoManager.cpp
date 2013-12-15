@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/VideoManager.h"
+#include "lowlevel/VideoMode.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
@@ -41,9 +42,9 @@ namespace {
   const std::string normal_mode_name =
       "solarus_default";                    /**< Non-shaded mode name. It will be forbidden for shaded ones. */
 
-  std::vector<VideoManager::VideoMode*>
-      all_video_modes;                      /**< Display informations for each supported video mode. */
-  VideoManager::VideoMode* video_mode;      /**< Current display mode, pointer to an element of all_video_modes. */
+  std::vector<VideoMode*>
+      all_video_modes;                      /**< Display information for each supported video mode. */
+  const VideoMode* video_mode;              /**< Current display mode, pointer to an element of all_video_modes. */
 
   Rectangle normal_quest_size;              /**< Default value of quest_size (depends on the quest). */
   Rectangle min_quest_size;                 /**< Minimum value of quest_size (depends on the quest). */
@@ -53,7 +54,7 @@ namespace {
 
   // TODO
   // Scale2xFilter scale2x_filter;             /**< Scale2X pixel filter. */
-  //Hq4xFilter hq4x_filter;                   /**< hq4X pixel filter. */
+  // Hq4xFilter hq4x_filter;                   /**< hq4X pixel filter. */
 };
 
 /**
@@ -102,12 +103,10 @@ void VideoManager::quit() {
     SDL_SetWindowFullscreen(main_window, 0);
   }
 
-  for (int i=0 ; i<all_video_modes.size() ; ++i) {
-    if (all_video_modes.at(i)->shader != NULL) {
-      delete all_video_modes.at(i)->shader;
-    }
-    delete all_video_modes.at(i);
+  for (int i = 0; i < all_video_modes.size(); ++i) {
+    delete all_video_modes[i];
   }
+  all_video_modes.clear();
 
   if (pixel_format != NULL) {
     SDL_FreeFormat(pixel_format);
@@ -247,25 +246,19 @@ bool VideoManager::is_acceleration_enabled() {
  * \param mode a video mode
  * \return true if this mode is supported
  */
-bool VideoManager::is_mode_supported(VideoMode* mode) {
+bool VideoManager::is_mode_supported(const VideoMode& mode) {
 
-  if (mode == NULL) {
-    return false;
-  }
+  std::vector<VideoMode*>::const_iterator it = std::find(
+      all_video_modes.begin(), all_video_modes.end(), &mode);
 
-  std::vector<VideoMode*>::const_iterator it = all_video_modes.begin();
-  for(; it != all_video_modes.end(); ++it) {
-    if(*it == mode) {
-      if ((*it)->window_size.is_flat()) {
-        Debug::die(StringConcat() <<
-            "Uninitialized size for video mode " << mode->name);
-      }
-      break;
-    }
-  }
   if (it == all_video_modes.end()) {
     // The initial detection of this mode failed.
     return false;
+  }
+
+  if ((*it)->get_window_size().is_flat()) {
+    Debug::die(std::string(
+        "Uninitialized size for video mode ") + mode.get_name());
   }
 
   return true;
@@ -297,10 +290,13 @@ void VideoManager::set_fullscreen(bool fullscreen) {
  */
 void VideoManager::switch_fullscreen() {
 
+  Debug::check_assertion(video_mode != NULL,
+      "No video mode selected");
+
   fullscreen = !fullscreen;
-  
-  if (is_mode_supported(video_mode)) {
-    set_video_mode(video_mode);
+
+  if (is_mode_supported(*video_mode)) {
+    set_video_mode(*video_mode);
   }
 }
 
@@ -309,8 +305,10 @@ void VideoManager::switch_fullscreen() {
  */
 void VideoManager::set_default_video_mode() {
 
-  VideoMode* mode = get_video_mode_by_name(normal_mode_name);
-  set_video_mode(mode);
+  const VideoMode* mode = get_video_mode_by_name(normal_mode_name);
+  Debug::check_assertion(mode != NULL, std::string(
+      "No video mode with default name '") + normal_mode_name + "'");
+  set_video_mode(*mode);
 }
 
 /**
@@ -332,8 +330,8 @@ void VideoManager::switch_video_mode() {
     ++it;
     mode = *it;
     std::cout << mode << std::endl;
-  } while (!is_mode_supported(mode));
-  set_video_mode(mode);
+  } while (!is_mode_supported(*mode));
+  set_video_mode(*mode);
 }
 
 /**
@@ -341,7 +339,7 @@ void VideoManager::switch_video_mode() {
  * \param mode The video mode to set.
  * \return true in case of success, false if this mode is not supported.
  */
-bool VideoManager::set_video_mode(VideoMode* mode) {
+bool VideoManager::set_video_mode(const VideoMode& mode) {
 
   if (!is_mode_supported(mode)) {
     return false;
@@ -389,14 +387,21 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
-    SDL_SetWindowSize(main_window, mode->window_size.get_width(), mode->window_size.get_height());
-    SDL_RenderSetLogicalSize(main_renderer, quest_size.get_width(), quest_size.get_height());
+    SDL_SetWindowSize(
+        main_window,
+        mode.get_window_size().get_width(),
+        mode.get_window_size().get_height());
+    SDL_RenderSetLogicalSize(
+        main_renderer,
+        quest_size.get_width(),
+        quest_size.get_height());
     SDL_ShowCursor(show_cursor);
     if (!fullscreen_flag) {
-      SDL_SetWindowPosition(main_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+      SDL_SetWindowPosition(main_window,
+          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
   }
-  video_mode = mode;
+  video_mode = &mode;
 
   return true;
 }
@@ -405,43 +410,44 @@ bool VideoManager::set_video_mode(VideoMode* mode) {
  * \brief Returns the current video mode.
  * \return The video mode.
  */
-VideoManager::VideoMode* VideoManager::get_video_mode() {
-  return video_mode;
+const VideoMode& VideoManager::get_video_mode() {
+
+  Debug::check_assertion(video_mode != NULL,
+      "Video mode not initialized");
+  return *video_mode;
 }
 
 /**
  * \brief Returns a list of all supported video modes.
  * \return The list of supported video modes.
  */
-const std::vector<VideoManager::VideoMode*>& VideoManager::get_video_modes() {
-  return all_video_modes;
-}
+std::vector<const VideoMode*> VideoManager::get_video_modes() {
 
-/**
- * \brief Returns the name of a video mode.
- * \param mode A video mode.
- * \return The name of this mode.
- */
-std::string VideoManager::get_video_mode_name(VideoMode& mode) {
-
-  // TODO this function should be in VideoMode
-  return mode.name;
+  // Return a copy of all_video_modes with const elements.
+  std::vector<const VideoMode*> result;
+  std::vector<VideoMode*>::const_iterator it;
+  for (it = all_video_modes.begin(); it != all_video_modes.end(); ++it) {
+    result.push_back(*it);
+  }
+  return result;
 }
 
 /**
  * \brief Returns a video mode given its Lua name.
  * \param mode_name Lua name of a video mode.
- * \return The corresponding video mode, or NO_MODE if the name is invalid.
+ * \return The corresponding supported video mode, or NULL if there is no
+ * known supported video mode with this name.
  */
-VideoManager::VideoMode* VideoManager::get_video_mode_by_name(const std::string& mode_name) {
+const VideoMode* VideoManager::get_video_mode_by_name(
+    const std::string& mode_name) {
 
   for (int i = 0; i < all_video_modes.size(); ++i) {
-    if (all_video_modes.at(i)->name == mode_name) {
+    if (all_video_modes.at(i)->get_name() == mode_name) {
       return all_video_modes.at(i);
     }
   }
   
-  Debug::warning("No video mode for name : " + mode_name);
+  Debug::warning("No video mode with name: " + mode_name);
   return NULL;
 }
 
@@ -520,8 +526,8 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   glEnable(GL_TEXTURE_2D);
   glActiveTexture(GL_TEXTURE0_ARB); // Make sure to active the texture unit 0.
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
-  if (video_mode->shader != NULL) {
-    video_mode->shader->apply();
+  if (video_mode->get_shader() != NULL) {
+    video_mode->get_shader()->apply();
   }
 
   glBegin(GL_QUADS);
@@ -536,7 +542,7 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   glEnd();
 
   // Restore default states.
-  if (video_mode->shader != NULL) {
+  if (video_mode->get_shader() != NULL) {
     Shader::restore_default_shader_program();
   }
   SDL_GL_UnbindTexture(render_target);

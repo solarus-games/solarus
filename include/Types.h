@@ -44,6 +44,7 @@ class RefCountable;
 class System;
 class FileTools;
 class VideoManager;
+class VideoMode;
 class Surface;
 class TextSurface;
 class Color;

@@ -16,6 +16,7 @@
  */
 #include "lua/LuaContext.h"
 #include "lowlevel/VideoManager.h"
+#include "lowlevel/VideoMode.h"
 #include "lowlevel/Rectangle.h"
 #include <lua.hpp>
 
@@ -76,9 +77,9 @@ int LuaContext::video_api_set_window_title(lua_State *l) {
  */
 int LuaContext::video_api_get_mode(lua_State *l) {
 
-  VideoManager::VideoMode* mode = VideoManager::get_video_mode();
+  const VideoMode& mode = VideoManager::get_video_mode();
 
-  push_string(l, mode->name);
+  push_string(l, mode.get_name());
   return 1;
 }
 
@@ -90,10 +91,10 @@ int LuaContext::video_api_get_mode(lua_State *l) {
 int LuaContext::video_api_set_mode(lua_State *l) {
 
   std::string mode_name = luaL_checkstring(l, 1);
-  VideoManager::VideoMode* mode = VideoManager::get_video_mode_by_name(mode_name);
+  const VideoMode* mode = VideoManager::get_video_mode_by_name(mode_name);
 
-  if (VideoManager::get_video_mode() != mode) {
-    VideoManager::set_video_mode(mode);
+  if (mode != NULL && VideoManager::get_video_mode().get_name() != mode_name) {
+    VideoManager::set_video_mode(*mode);
   }
 
   return 0;
@@ -118,16 +119,16 @@ int LuaContext::video_api_switch_mode(lua_State *l) {
  */
 int LuaContext::video_api_get_modes(lua_State* l) {
 
-  const std::vector<VideoManager::VideoMode*> modes =
+  const std::vector<const VideoMode*>& modes =
     VideoManager::get_video_modes();
 
   lua_newtable(l);
 
-  std::vector<VideoManager::VideoMode*>::const_iterator it;
+  std::vector<const VideoMode*>::const_iterator it;
   int i = 1;
   for (it = modes.begin(); it != modes.end(); ++it) {
-    VideoManager::VideoMode* mode = *it;
-    push_string(l, mode->name);
+    const VideoMode* mode = *it;
+    push_string(l, mode->get_name());
     lua_rawseti(l, -2, i);
     ++i;
   }
@@ -143,9 +144,9 @@ int LuaContext::video_api_get_modes(lua_State* l) {
 int LuaContext::video_api_is_mode_supported(lua_State *l) {
 
   std::string mode_name = luaL_checkstring(l, 1);
-  VideoManager::VideoMode* mode = VideoManager::get_video_mode_by_name(mode_name);
+  const VideoMode* mode = VideoManager::get_video_mode_by_name(mode_name);
 
-  bool supported = VideoManager::is_mode_supported(mode);
+  bool supported = mode != NULL && VideoManager::is_mode_supported(*mode);
 
   lua_pushboolean(l, supported);
   return 1;

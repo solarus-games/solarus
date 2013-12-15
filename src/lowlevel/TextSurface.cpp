@@ -20,7 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include "lua/LuaContext.h"
 #include "Transition.h"
 #include <lua.hpp>

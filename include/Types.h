@@ -43,7 +43,8 @@ class RefCountable;
 // low level
 class System;
 class FileTools;
-class VideoManager;
+class Video;
+class VideoMode;
 class Surface;
 class TextSurface;
 class Color;

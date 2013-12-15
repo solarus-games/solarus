@@ -16,7 +16,7 @@
  */
 #include "QuestProperties.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -151,25 +151,25 @@ int QuestProperties::l_quest(lua_State* l) {
 
   FileTools::set_quest_write_dir(quest_write_dir);
   if (!title_bar.empty()) {
-    VideoManager::set_window_title(title_bar);
+    Video::set_window_title(title_bar);
   }
 
   Rectangle normal_quest_size, min_quest_size, max_quest_size;
-  bool success = VideoManager::parse_size(normal_quest_size_string, normal_quest_size);
+  bool success = Video::parse_size(normal_quest_size_string, normal_quest_size);
   if (!success) {
     LuaContext::arg_error(l, 1, std::string(
         "Bad field 'normal_quest_size' (not a valid size string: '")
         + normal_quest_size_string + "')");
   }
 
-  success = VideoManager::parse_size(min_quest_size_string, min_quest_size);
+  success = Video::parse_size(min_quest_size_string, min_quest_size);
   if (!success) {
     LuaContext::arg_error(l, 1, std::string(
         "Bad field 'min_quest_size' (not a valid size string: '")
         + min_quest_size_string + "')");
   }
 
-  success = VideoManager::parse_size(max_quest_size_string, max_quest_size);
+  success = Video::parse_size(max_quest_size_string, max_quest_size);
   if (!success) {
     LuaContext::arg_error(l, 1, std::string(
         "Bad field 'max_quest_size' (not a valid size string: '")
@@ -183,7 +183,7 @@ int QuestProperties::l_quest(lua_State* l) {
     LuaContext::arg_error(l, 1, "Invalid range of quest sizes");
   }
 
-  VideoManager::set_quest_size_range(
+  Video::set_quest_size_range(
       normal_quest_size,
       min_quest_size,
       max_quest_size);

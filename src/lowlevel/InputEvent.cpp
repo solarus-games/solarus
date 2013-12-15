@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/InputEvent.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include <cstdlib>  // std::abs
 
 const InputEvent::KeyboardKey InputEvent::directional_keys[] = {

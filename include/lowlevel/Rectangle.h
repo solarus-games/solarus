@@ -34,7 +34,7 @@ class Rectangle {
 
   // low-level classes allowed to manipulate directly the internal SDL rectangle encapsulated
   friend class Surface;
-  friend class VideoManager;
+  friend class Video;
 
   public:
 

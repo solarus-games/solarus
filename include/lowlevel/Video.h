@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_VIDEO_MANAGER_H
-#define SOLARUS_VIDEO_MANAGER_H
+#ifndef SOLARUS_VIDEO_H
+#define SOLARUS_VIDEO_H
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
@@ -30,24 +30,9 @@ struct SDL_Renderer;
 /**
  * \brief Draws the window and handles the video mode.
  */
-class VideoManager {
+class Video {
 
   public:
-
-    /**
-     * \brief Structure of a video mode.
-     * TODO move this class to another file and add constness
-     */
-    typedef struct _VideoMode {
-      const std::string name;           /**< Name of the video mode. */
-      Rectangle window_size;            /**< Final size of the window when selecting this video mode. */
-      Shader* shader;                   /**< Shader to use or NULL. */
-      
-      _VideoMode(const std::string& name, Rectangle window_size, Shader* shader) :
-          name(name),
-          window_size(window_size),
-          shader(shader) {};
-    } VideoMode;
 
     static void initialize(int argc, char** argv);
     static void quit();
@@ -65,15 +50,15 @@ class VideoManager {
     static void update_viewport();
   
     static void initialize_video_modes(bool allow_shaded_modes);
-    static VideoMode* get_video_mode();
-    static const std::vector<VideoMode*>& get_video_modes();
-    static bool is_mode_supported(VideoMode* mode);
-    static bool set_video_mode(VideoMode* mode);
+    static const VideoMode& get_video_mode();
+    static std::vector<const VideoMode*> get_video_modes();
+    static bool is_mode_supported(const VideoMode& mode);
+    static bool set_video_mode(const VideoMode& mode);
     static void set_default_video_mode();
     static void switch_video_mode();
 
-    static std::string get_video_mode_name(VideoMode& mode);
-    static VideoMode* get_video_mode_by_name(const std::string& mode_name);
+    static const std::string& get_video_mode_name(const VideoMode& mode);
+    static const VideoMode* get_video_mode_by_name(const std::string& mode_name);
 
     static bool is_fullscreen();
     static void set_fullscreen(bool fullscreen);
@@ -98,8 +83,8 @@ class VideoManager {
 
   private:
 
-    VideoManager(bool disable_window, const Rectangle& wanted_quest_size);
-    ~VideoManager();
+    Video(bool disable_window, const Rectangle& wanted_quest_size);
+    ~Video();
 
     static void shaded_render(Surface& quest_surface);
 };

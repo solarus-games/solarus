@@ -16,7 +16,7 @@
  */
 #include "lowlevel/Shader.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 
 
 #if SOLARUS_HAVE_OPENGL_OR_ES == 1
@@ -51,7 +51,7 @@ bool Shader::initialize() {
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-  if (!(gl_context = SDL_GL_CreateContext(VideoManager::get_window()))) {
+  if (!(gl_context = SDL_GL_CreateContext(Video::get_window()))) {
     Debug::warning("Unable to create OpenGL context : " + std::string(SDL_GetError()));
     return false;
   }
@@ -157,7 +157,7 @@ void Shader::restore_default_shader_program() {
  */
 void Shader::set_rendering_settings() {
   
-  Rectangle quest_size = VideoManager::get_quest_size();
+  Rectangle quest_size = Video::get_quest_size();
   static const GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
   
   glMatrixMode(GL_PROJECTION);
@@ -219,7 +219,7 @@ double Shader::get_logical_scale() {
 void Shader::load(const std::string& shader_name) {
   
   const std::string base_shader_path = 
-      "shaders/filters/" + VideoManager::get_rendering_driver_name() +
+      "shaders/filters/" + Video::get_rendering_driver_name() +
       "/" + shader_name + "/" + shader_name;
   
   // Parse the lua file

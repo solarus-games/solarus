@@ -277,7 +277,7 @@ void Surface::create_texture_from_surface() {
     );
     SDL_SetTextureBlendMode(internal_texture, SDL_BLENDMODE_BLEND);
 
-    // Copy the pixels of the sofware surface to the GPU texture.
+    // Copy the pixels of the software surface to the GPU texture.
     SDL_UpdateTexture(internal_texture, NULL, internal_surface->pixels, internal_surface->pitch);
   }
 }

@@ -703,7 +703,7 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
     std::vector<std::string> shader_names = 
         FileTools::data_files_enumerate("shaders/filters/" + get_rendering_driver_name(), false, true);
 
-    for(int i=0 ; i<shader_names.size() ; ++i) {
+    for(int i=0; i<shader_names.size() ; ++i) {
 
       if (shader_names.at(i) == normal_mode_name) {
         Debug::warning("Forbidden video mode name : " + shader_names.at(i));
@@ -719,9 +719,10 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
     }
 #endif
   }
-  // TODO Initialize hardcoded video modes
+  // Initialize hardcoded video modes
   else {
-    
+    all_video_modes.push_back(new VideoMode("scale2x", quest_size_2, NULL));
+    all_video_modes.push_back(new VideoMode("hq4x", quest_size_2, NULL));
   }
 
   // Everything is ready now.

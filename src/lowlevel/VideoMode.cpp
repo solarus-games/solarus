@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/VideoMode.h"
+#include "lowlevel/Shader.h"
 
 /**
  * \brief Creates a video mode with the specified properties.
@@ -38,6 +39,9 @@ VideoMode::VideoMode(
  */
 VideoMode::~VideoMode() {
 
+  if (shader != NULL) {
+    delete shader;
+  }
 }
 
 /**

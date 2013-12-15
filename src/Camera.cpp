@@ -21,7 +21,7 @@
 #include "entities/Hero.h"
 #include "entities/Separator.h"
 #include "movements/TargetMovement.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include "lowlevel/System.h"
 #include "lua/LuaContext.h"
 
@@ -30,7 +30,7 @@
  * \param map The map.
  */
 Camera::Camera(Map& map):
-  position(VideoManager::get_quest_size()),
+  position(Video::get_quest_size()),
   map(map),
   fixed_on_hero(true),
   separator_scrolling_dx(0),

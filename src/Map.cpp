@@ -22,7 +22,7 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
 #include "entities/Ground.h"
@@ -259,11 +259,11 @@ void Map::unload() {
 void Map::load(Game& game) {
 
   visible_surface = Surface::create(
-      VideoManager::get_quest_size()
+      Video::get_quest_size()
   );
   RefCountable::ref(visible_surface);
   background_surface = Surface::create(
-      VideoManager::get_quest_size()
+      Video::get_quest_size()
   );
   RefCountable::ref(background_surface);
   entities = new MapEntities(game, *this);

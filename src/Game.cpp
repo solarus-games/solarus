@@ -30,7 +30,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Music.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include <sstream>
 #include <vector>
 
@@ -443,7 +443,7 @@ void Game::update_transitions() {
         // that want to display both maps at the same time
         if (needs_previous_surface) {
           previous_map_surface = Surface::create(
-              VideoManager::get_quest_size()
+              Video::get_quest_size()
           );
           RefCountable::ref(previous_map_surface);
           current_map->draw();

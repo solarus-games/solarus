@@ -20,7 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include "lua/LuaContext.h"
 #include "Transition.h"
 #include <SDL.h>
@@ -233,7 +233,7 @@ void Surface::convert_software_surface() {
   Debug::check_assertion(internal_surface != NULL,
       "Missing software surface to convert");
 
-  SDL_PixelFormat* pixel_format = VideoManager::get_pixel_format();
+  SDL_PixelFormat* pixel_format = Video::get_pixel_format();
   if (internal_surface->format->format != pixel_format->format) {
     // Convert to the preferred pixel format.
     SDL_Surface* converted_surface = SDL_ConvertSurface(
@@ -256,7 +256,7 @@ void Surface::convert_software_surface() {
  */
 void Surface::create_texture_from_surface() {
 
-  SDL_Renderer* main_renderer = VideoManager::get_renderer();
+  SDL_Renderer* main_renderer = Video::get_renderer();
   if (main_renderer != NULL) {
 
     Debug::check_assertion(internal_surface != NULL,
@@ -270,7 +270,7 @@ void Surface::create_texture_from_surface() {
     // Create the texture.
     internal_texture = SDL_CreateTexture(
         main_renderer,
-        VideoManager::VideoManager::get_pixel_format()->format,
+        Video::Video::get_pixel_format()->format,
         SDL_TEXTUREACCESS_STATIC,
         internal_surface->w,
         internal_surface->h
@@ -314,7 +314,7 @@ const Rectangle Surface::get_size() const {
 void Surface::set_opacity(int opacity) {
 
   if (software_destination  // The destination surface is in RAM.
-      || !VideoManager::is_acceleration_enabled()  // The rendering is in RAM.
+      || !Video::is_acceleration_enabled()  // The rendering is in RAM.
   ) {
     if (internal_surface == NULL) {
       create_software_surface();
@@ -373,7 +373,7 @@ void Surface::create_software_surface() {
       "Software surface already exists");
 
   // Create a surface with the appropriate pixel format.
-  SDL_PixelFormat* format = VideoManager::VideoManager::get_pixel_format();
+  SDL_PixelFormat* format = Video::Video::get_pixel_format();
   internal_surface = SDL_CreateRGBSurface(
       0,
       width,
@@ -415,7 +415,7 @@ void Surface::fill_with_color(Color& color) {
 void Surface::fill_with_color(Color& color, const Rectangle& where) {
 
   if (software_destination  // The destination surface is in RAM.
-      || !VideoManager::is_acceleration_enabled()  // The rendering is in RAM.
+      || !Video::is_acceleration_enabled()  // The rendering is in RAM.
   ) {
 
     // We have to draw on a software surface: draw pixels directly.
@@ -424,7 +424,7 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
     }
 
     uint32_t color_value = color.get_internal_value();
-    if (internal_surface->format->format != VideoManager::get_pixel_format()->format) {
+    if (internal_surface->format->format != Video::get_pixel_format()->format) {
       // Get a color value in the pixel format of the destination surface.
       int r, g, b, a;
       color.get_components(r, g, b, a);
@@ -509,7 +509,7 @@ void Surface::raw_draw_region(
     const Rectangle& dst_position) {
 
   if (dst_surface.software_destination  // The destination surface is in RAM.
-      || !VideoManager::is_acceleration_enabled()  // The rendering is in RAM.
+      || !Video::is_acceleration_enabled()  // The rendering is in RAM.
   ) {
 
     // First, draw subsurfaces if any.

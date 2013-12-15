@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_VIDEO_MANAGER_H
-#define SOLARUS_VIDEO_MANAGER_H
+#ifndef SOLARUS_VIDEO_H
+#define SOLARUS_VIDEO_H
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
@@ -30,7 +30,7 @@ struct SDL_Renderer;
 /**
  * \brief Draws the window and handles the video mode.
  */
-class VideoManager {
+class Video {
 
   public:
 
@@ -83,8 +83,8 @@ class VideoManager {
 
   private:
 
-    VideoManager(bool disable_window, const Rectangle& wanted_quest_size);
-    ~VideoManager();
+    Video(bool disable_window, const Rectangle& wanted_quest_size);
+    ~Video();
 
     static void shaded_render(Surface& quest_surface);
 };

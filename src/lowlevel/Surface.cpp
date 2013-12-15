@@ -372,18 +372,10 @@ void Surface::create_software_surface() {
       width,
       height,
       32,
-// FIXME Temporary preprocessor test, it should work with every format
-#if not defined(SOLARUS_OSX)
       format->Rmask,
       format->Gmask,
       format->Bmask,
       format->Amask
-#else
-      SDL_SwapBE32(format->Rmask),
-      SDL_SwapBE32(format->Gmask),
-      SDL_SwapBE32(format->Bmask),
-      SDL_SwapBE32(format->Amask)
-#endif
   );
   is_rendered = false;
 

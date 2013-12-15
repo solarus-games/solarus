@@ -43,6 +43,7 @@ Shader* Shader::loading_shader = NULL;
 
 /**
  * \brief Initialize OpenGL and the shader system.
+ * \return true if shader are supported.
  */
 bool Shader::initialize() {
 
@@ -56,10 +57,10 @@ bool Shader::initialize() {
   }
   
   // Setting some parameters
-  glClearDepth(1.0);
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LESS);
-  glShadeModel(GL_SMOOTH);
+  glClearDepth(1.0); // Enables Clearing Of The Depth Buffer.
+  glEnable(GL_DEPTH_TEST); // The Type Of Depth Test To Do.
+  glDepthFunc(GL_LESS); // Enables Depth Testing.
+  glShadeModel(GL_SMOOTH); // Enables Smooth Color Shading.
   
   // Check for shader support
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
@@ -103,8 +104,7 @@ bool Shader::initialize() {
 }
 
 /**
- * \brief Compile a shader from source.
- * \return true if success.
+ * \brief Free shader-related context.
  */
 void Shader::quit() {
   
@@ -116,6 +116,8 @@ void Shader::quit() {
 #if SOLARUS_HAVE_OPENGL_OR_ES == 1
 /**
  * \brief Compile a shader from source.
+ * \param shader Reference to the shader to fill and compile.
+ * \param source Sources to compile.
  * \return true if success.
  */
 bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
@@ -180,7 +182,7 @@ Shader::Shader(std::string shader_name) :
   // Load the shader.
   load(shader_name);
     
-  // Set up the sampler uniform variable.
+  // Notify the shader program that the uniform sampler will be in the texture unit 0.
   glUseProgramObjectARB(program);
   GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
   if (location >= 0) {
@@ -238,6 +240,7 @@ void Shader::load(const std::string& shader_name) {
 
 /**
  * \brief Load and parse the Lua file of the requested shader.
+ * \param path The path to the lua file, relative to the data folder.
  */
 void Shader::load_lua_file(const std::string& path) {
   
@@ -271,7 +274,7 @@ void Shader::load_lua_file(const std::string& path) {
 
 /**
  * \brief Load and compile a shader from a vertex or shader file.
- * \param path The path to the shader file source.
+ * \param path The path to the shader file source, relative to the data folder.
  * \param shader_type The type of shader (vertex or fragment).
  * \param shader The GLhandleARB pointer to fill with the result.
  */
@@ -313,8 +316,7 @@ int Shader::l_shader(lua_State* l) {
 }
 
 /**
- * \brief Apply the current shader, and render to the window.
- * \param renderer The renderer.
+ * \brief Apply the shader program.
  */
 void Shader::apply()
 {

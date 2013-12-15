@@ -457,11 +457,11 @@ void VideoManager::render(Surface& quest_surface) {
 
   if (is_acceleration_enabled() && rendertarget_supported) {
     
-    // Perform faster render if shaders supported
+    // Perform faster render if shaders are supported.
     if (shaders_supported) {
       shaded_render(quest_surface);
     }
-    // Accelerated render with hardcoded video modes else
+    // Accelerated render with hardcoded video modes else.
     else
     {
       /* TODO
@@ -484,7 +484,7 @@ void VideoManager::render(Surface& quest_surface) {
        */
     }
   }
-  // Software render
+  // Software render.
   else {
     // TODO
   }
@@ -518,7 +518,6 @@ void VideoManager::shaded_render(Surface& quest_surface) {
   Shader::set_rendering_settings();
 
   glEnable(GL_TEXTURE_2D);
-  glActiveTexture(GL_TEXTURE0_ARB); // Make sure to active the texture unit 0.
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
   if (video_mode->shader != NULL) {
     video_mode->shader->apply();

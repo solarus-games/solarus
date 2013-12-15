@@ -213,7 +213,7 @@ SDL_Surface* Surface::get_surface_from_file(
   FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
   SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
 
-  SDL_Surface* software_surface = IMG_Load_RW(rw, 0);
+  SDL_Surface* software_surface = convert_software_surface(IMG_Load_RW(rw, 0));
 
   SDL_RWclose(rw);
   FileTools::data_file_close_buffer(buffer);
@@ -228,25 +228,26 @@ SDL_Surface* Surface::get_surface_from_file(
  * \brief Converts the software surface to the preferred pixel format
  * (32-bit with alpha channel).
  */
-void Surface::convert_software_surface() {
+SDL_Surface* Surface::convert_software_surface(SDL_Surface* software_surface) {
 
-  Debug::check_assertion(internal_surface != NULL,
+  Debug::check_assertion(software_surface != NULL,
       "Missing software surface to convert");
 
   SDL_PixelFormat* pixel_format = VideoManager::get_pixel_format();
-  if (internal_surface->format->format != pixel_format->format) {
+  if (software_surface->format->format != pixel_format->format) {
     // Convert to the preferred pixel format.
     SDL_Surface* converted_surface = SDL_ConvertSurface(
-        internal_surface,
+        software_surface,
         pixel_format,
         0
     );
     Debug::check_assertion(converted_surface != NULL,
         "Failed to convert software surface");
 
-    SDL_FreeSurface(internal_surface);
-    internal_surface = converted_surface;
+    SDL_FreeSurface(software_surface);
+    return converted_surface;
   }
+  return software_surface;
 }
 
 /**
@@ -262,15 +263,10 @@ void Surface::create_texture_from_surface() {
     Debug::check_assertion(internal_surface != NULL,
         "Missing software surface to create texture from");
 
-    // Make sure the software surface has the same format as the texture.
-    // This is because SDL_UpdateTexture does not have a format parameter
-    // for performance reasons.
-    convert_software_surface();
-
     // Create the texture.
     internal_texture = SDL_CreateTexture(
         main_renderer,
-        VideoManager::VideoManager::get_pixel_format()->format,
+        VideoManager::get_pixel_format()->format,
         SDL_TEXTUREACCESS_STATIC,
         internal_surface->w,
         internal_surface->h
@@ -319,9 +315,6 @@ void Surface::set_opacity(int opacity) {
     if (internal_surface == NULL) {
       create_software_surface();
     }
-
-    // The surface must be 32-bit with alpha value for this function to work.
-    convert_software_surface();
 
     int error = SDL_SetSurfaceAlphaMod(internal_surface, opacity);
     if (error != 0) {
@@ -658,7 +651,7 @@ void Surface::render(
     // Set the intersection of the subsurface destination and this surface's clip as clipping rectangle.
     Rectangle superimposed_clip_rect;
     if (SDL_IntersectRect(subsurface_dst_rect.get_internal_rect(),
-        dst_rect.get_internal_rect(),
+        clip_rect.get_internal_rect(),
         superimposed_clip_rect.get_internal_rect())) {
 
       // If there is an intersection, render the subsurface.

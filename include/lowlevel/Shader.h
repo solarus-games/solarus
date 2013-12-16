@@ -41,6 +41,7 @@ class Shader {
 #if SOLARUS_HAVE_OPENGL_OR_ES == 1
     static void restore_default_shader_program();
     static void set_rendering_settings();
+    static Shader* create(std::string shader_name);
   
     Shader(std::string shader_name);
     ~Shader();
@@ -64,7 +65,7 @@ class Shader {
     static PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
     static PFNGLGETHANDLEARBPROC glGetHandleARB;
   
-    static bool compile_shader(GLhandleARB& shader, const char* source);
+    static void compile_shader(GLhandleARB& shader, const char* source);
     static void load_shader_file(const std::string& path, GLenum shader_type, GLhandleARB* shader);
     static int l_shader(lua_State* l);
   

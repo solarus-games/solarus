@@ -329,7 +329,6 @@ void Video::switch_video_mode() {
     }
     ++it;
     mode = *it;
-    std::cout << mode << std::endl;
   } while (!is_mode_supported(*mode));
   set_video_mode(*mode);
 }
@@ -498,7 +497,7 @@ void Video::render(Surface& quest_surface) {
 
 /**
  * \brief Draws the quest surface on the screen in a shader-allowed context.
- * It will perform the render using OpenGL API directly.
+ * It will perform the render using the OpenGL API directly.
  */
 void Video::shaded_render(Surface& quest_surface) {
 
@@ -711,11 +710,14 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
       }
 
       // Load the shader and add the corresponding video mode.
-      Shader* video_mode_shader = new Shader(shader_names.at(i));
-      const Rectangle scaled_quest_size(0, 0, 
-          double(quest_size.get_width()) * video_mode_shader->get_logical_scale(),
-          double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
-      all_video_modes.push_back( new VideoMode(shader_names.at(i), scaled_quest_size, video_mode_shader) );
+      Shader* video_mode_shader = Shader::create(shader_names.at(i));
+      
+      if (video_mode_shader != NULL) {
+        const Rectangle scaled_quest_size(0, 0, 
+            double(quest_size.get_width()) * video_mode_shader->get_logical_scale(),
+            double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
+        all_video_modes.push_back( new VideoMode(shader_names.at(i), scaled_quest_size, video_mode_shader) );
+      }
     }
 #endif
   }

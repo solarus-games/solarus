@@ -98,7 +98,8 @@ bool Shader::initialize() {
       // Get the SDL default shader program
       default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
       
-      // WORKAROUND Guarantee the shader to deal with the rectangle sampler whatever the hardware is.
+      // WORKAROUND Guarantee the shader to deal with the rectangle texture whatever the hardware is.
+      // /!\ If a shader use specific fetch texture features, the shader will not compile.
       if (SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle")
           || SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) {
         defines_source += "#define sampler2D sampler2DRect\n";
@@ -129,9 +130,8 @@ void Shader::quit() {
  * \brief Compile a shader from source.
  * \param shader Reference to the shader to fill and compile.
  * \param source Sources to compile.
- * \return true if success.
  */
-bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
+void Shader::compile_shader(GLhandleARB& shader, const char* source) {
   
   GLint status;
   const char *sources[2];
@@ -151,10 +151,6 @@ bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
     glGetInfoLogARB(shader, length, NULL, info);
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to compile shader:\n%s\n%s", source, info);
     SDL_stack_free(info);
-    
-    return false;
-  } else {
-    return true;
   }
 }
 
@@ -204,8 +200,6 @@ Shader::Shader(std::string shader_name) :
     glUniform1iARB(location, 0);
   }
   restore_default_shader_program();
-    
-  Debug::check_assertion(glGetError() == GL_NO_ERROR, "Cannot compile the shader : " + shader_name);
 }
 
 /**
@@ -216,6 +210,23 @@ Shader::~Shader()
   glDeleteObjectARB(vertex_shader);
   glDeleteObjectARB(fragment_shader);
   glDeleteObjectARB(program);
+}
+
+/**
+ * \brief Construct a shader from a name.
+ * \param shadername The name of the shader to load.
+ * \return The created shader, or NULL if the shader fails to compile.
+ */
+Shader* Shader::create(std::string shader_name)
+{
+  Shader* created_shader = new Shader(shader_name);
+  
+  if(glGetError() != GL_NO_ERROR) {
+    return created_shader;
+  }
+  
+  Debug::warning("Cannot compile the shader : " + shader_name);
+  return NULL;
 }
 
 /**
@@ -305,9 +316,7 @@ void Shader::load_shader_file(const std::string& path, GLenum shader_type, GLhan
   
   *shader = glCreateShaderObjectARB(shader_type);
   
-  if (!compile_shader(*shader, source.c_str())) {
-    Debug::die("Cannot compile the shader : " + path);
-  }
+  compile_shader(*shader, source.c_str());
 }
 
 /**

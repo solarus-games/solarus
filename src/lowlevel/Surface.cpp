@@ -431,8 +431,8 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
     );
     is_rendered = false;  // The surface has changed.
   }
-  // Else, create a Surface with the requested size and color, and add it to the subsurface queue.
   else {
+    // Create a Surface with the requested size and color, and add it to the subsurface queue.
     Rectangle subsurface_size(0, 0, where.get_width(), where.get_height());
     Surface* subsurface = Surface::create(subsurface_size);
     RefCountable::ref(subsurface);

@@ -99,8 +99,8 @@ bool Shader::initialize() {
       // Get the SDL default shader program
       default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
       
-      // WORKAROUND Guarantee the shader to deal with the rectangle texture whatever the hardware is.
-      // /!\ If a shader use specific fetch texture features, the shader will not compile.
+      // WORKAROUND Guarantee the shader to deal with a rectangle texture whatever the hardware is.
+      // /!\ If a shader use a specific fetch texture features, the shader will not compile.
       if (SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle")
           || SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) {
         defines_source += "#define sampler2D sampler2DRect\n";
@@ -222,7 +222,7 @@ Shader* Shader::create(std::string shader_name)
 {
   Shader* created_shader = new Shader(shader_name);
   
-  if(glGetError() != GL_NO_ERROR) {
+  if(glGetError() == GL_NO_ERROR) {
     return created_shader;
   }
   

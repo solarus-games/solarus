@@ -28,6 +28,8 @@
 #include "KeysEffect.h"
 #include "lowlevel/Debug.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -368,5 +370,7 @@ void Hero::StairsState::notify_layer_changed() {
   if (carried_item != NULL) {
     carried_item->set_layer(get_hero().get_layer());
   }
+}
+
 }
 

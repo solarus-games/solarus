@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief Represents a method to display the quest content on the screen.
  *
@@ -48,6 +50,8 @@ class VideoMode {
     Shader* shader;                    /**< Shader to use or NULL. */
 
 };
+
+}
 
 #endif
 

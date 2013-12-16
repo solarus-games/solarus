@@ -29,6 +29,8 @@
 #include "Sprite.h"
 #include "EquipmentItem.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a pickable item with the specified subtype.
  * \param name Unique name identifying the entity on the map or an empty string.
@@ -514,5 +516,7 @@ void Pickable::draw_on_map() {
  */
 const std::string& Pickable::get_lua_type_name() const {
   return LuaContext::entity_pickable_module_name;
+}
+
 }
 

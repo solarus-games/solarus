@@ -23,6 +23,8 @@
 #include <sstream>
 #include <cmath>
 
+namespace solarus {
+
 const std::string LuaContext::main_module_name = "sol.main";
 
 /**
@@ -292,5 +294,7 @@ bool LuaContext::main_on_input(const InputEvent& event) {
   }
   lua_pop(l, 1);
   return handled;
+}
+
 }
 

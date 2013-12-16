@@ -18,6 +18,8 @@
 #include "hero/HeroSprites.h"
 #include "movements/PathMovement.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero the hero controlled by this state
@@ -183,5 +185,7 @@ bool Hero::ForcedWalkingState::can_avoid_switch() const {
  */
 bool Hero::ForcedWalkingState::can_be_hurt(Enemy* attacker) const {
   return false;
+}
+
 }
 

@@ -23,6 +23,8 @@
 #include <map>
 #include <string>
 
+namespace solarus {
+
 /**
  * \brief This class reads the quest resource list from file project_db.dat
  * and stores them.
@@ -62,6 +64,8 @@ class QuestResourceList {
     QuestResourceList();
     ~QuestResourceList();
 };
+
+}
 
 #endif
 

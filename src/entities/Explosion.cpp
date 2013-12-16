@@ -23,6 +23,8 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 
+namespace solarus {
+
 /**
  * \brief Creates an explosion.
  * \param name Unique name identifying the entity on the map or an empty string.
@@ -197,5 +199,7 @@ void Explosion::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
   if (result.type != EnemyReaction::IGNORED) {
     victims.push_back(&victim);
   }
+}
+
 }
 

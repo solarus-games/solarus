@@ -19,6 +19,8 @@
 #include "lowlevel/Debug.h"
 #include "lua/LuaContext.h"
 
+namespace solarus {
+
 namespace {
 
   const std::string resource_type_names[] = {
@@ -107,5 +109,7 @@ const std::vector<QuestResourceList::Element>&
   Debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
       "Invalid resource type");
   return resource_elements[resource_type];
+}
+
 }
 

@@ -24,6 +24,8 @@
 #include "Game.h"
 #include "KeysEffect.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -193,5 +195,7 @@ void Hero::FreeState::set_animation_stopped() {
  */
 void Hero::FreeState::set_animation_walking() {
   get_sprites().set_animation_walking_normal();
+}
+
 }
 

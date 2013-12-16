@@ -26,6 +26,8 @@
 #include <lua.hpp>
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief Attempts to load the built-in settings from a file.
  * \param file_name Settings file to read, relative to the quest write directory.
@@ -132,5 +134,7 @@ bool Settings::save(const std::string& file_name) {
   const std::string& text = oss.str();
   FileTools::data_file_save_buffer(file_name, text.c_str(), text.size());
   return true;
+}
+
 }
 

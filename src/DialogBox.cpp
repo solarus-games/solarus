@@ -23,6 +23,8 @@
 #include "lowlevel/TextSurface.h"
 #include "lua/LuaContext.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a new dialog box.
  * \param game The game this dialog box belongs to.
@@ -304,5 +306,7 @@ void DialogBox::draw(Surface& dst_surface) {
   for (int i = 0; i < nb_visible_lines; i++) {
     line_surfaces[i]->draw(dst_surface);
   }
+}
+
 }
 

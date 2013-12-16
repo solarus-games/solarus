@@ -23,6 +23,8 @@
 #include "Game.h"
 #include "GameCommands.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -310,5 +312,7 @@ bool Hero::PullingState::is_conveyor_belt_obstacle(
 bool Hero::PullingState::is_separator_obstacle(
     const Separator& separator) const {
   return true;
+}
+
 }
 

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "movements/StraightMovement.h"
 
+namespace solarus {
+
 /**
  * \brief Movement of an object that goes to a target point.
  *
@@ -69,6 +71,8 @@ class TargetMovement: public StraightMovement {
     bool finished;                     /**< \c true if the target is reached. */
 
 };
+
+}
 
 #endif
 

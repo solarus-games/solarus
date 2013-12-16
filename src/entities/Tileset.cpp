@@ -27,6 +27,8 @@
 #include "lua/LuaContext.h"
 #include <lua.hpp>
 
+namespace solarus {
+
 const std::string Tileset::ground_names[] = {
   "empty",
   "traversable",
@@ -392,5 +394,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
   tileset->add_tile_pattern(id, tile_pattern);
 
   return 0;
+}
+
 }
 

@@ -18,6 +18,8 @@
 #include <ctime>
 #include <cstdlib>
 
+namespace solarus {
+
 /**
  * \brief Initializes the random number generator.
  */
@@ -52,5 +54,7 @@ int Random::get_number(unsigned int x) {
  */
 int Random::get_number(unsigned int x, unsigned int y) {
   return x + get_number(y - x);
+}
+
 }
 

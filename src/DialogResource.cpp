@@ -21,6 +21,8 @@
 #include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 
+namespace solarus {
+
 const std::string DialogResource::file_name = "text/dialogs.dat";
 std::map<std::string, Dialog> DialogResource::dialogs;
 
@@ -167,5 +169,7 @@ int DialogResource::l_dialog(lua_State* l) {
   dialogs[dialog_id] = dialog;
 
   return 0;
+}
+
 }
 

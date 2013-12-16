@@ -22,6 +22,8 @@
 #include "Equipment.h"
 #include "KeysEffect.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -186,5 +188,7 @@ bool Hero::SwimmingState::is_stairs_obstacle(const Stairs& stairs) const {
  */
 bool Hero::SwimmingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
+}
+
 }
 

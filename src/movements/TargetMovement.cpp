@@ -24,6 +24,8 @@
 #include <sstream>
 #include <cmath>
 
+namespace solarus {
+
 const uint32_t TargetMovement::recomputation_delay = 150;
 
 /**
@@ -195,5 +197,7 @@ bool TargetMovement::is_finished() const {
  */
 const std::string& TargetMovement::get_lua_type_name() const {
   return LuaContext::movement_target_module_name;
+}
+
 }
 

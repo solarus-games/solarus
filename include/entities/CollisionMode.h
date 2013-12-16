@@ -17,6 +17,8 @@
 #ifndef SOLARUS_COLLISION_MODE_H
 #define SOLARUS_COLLISION_MODE_H
 
+namespace solarus {
+
 /**
  * \brief Collisions modes of a detector.
  *
@@ -41,6 +43,8 @@ enum CollisionMode {
                                          * overlapping pixels of the detector's sprite */
   COLLISION_CUSTOM            = 0x0080  /**< custom collision function, defined by a subclass of Detector */
 };
+
+}
 
 #endif
 

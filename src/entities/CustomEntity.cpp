@@ -16,6 +16,8 @@
  */
 #include "entities/CustomEntity.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a custom entity.
  * \param game The game.
@@ -67,5 +69,7 @@ EntityType CustomEntity::get_type() const {
  */
 const std::string& CustomEntity::get_model() const {
   return model;
+}
+
 }
 

@@ -21,6 +21,8 @@
 #include "entities/TilePattern.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief Non-animated tile pattern.
  *
@@ -43,6 +45,8 @@ class SimpleTilePattern: public TilePattern {
 
     virtual bool is_animated();
 };
+
+}
 
 #endif
 

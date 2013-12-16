@@ -24,6 +24,8 @@
 #include "entities/EnemyReaction.h"
 #include "entities/Explosion.h"
 
+namespace solarus {
+
 /**
  * \brief Represents an enemy.
  *
@@ -261,6 +263,8 @@ class Enemy: public Detector {
     uint32_t next_explosion_date;      /**< date of the next explosion */
 
 };
+
+}
 
 #endif
 

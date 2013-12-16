@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A bomb that will explode soon.
  */
@@ -56,6 +58,8 @@ class Bomb: public Detector {
     uint32_t explosion_date;  /**< date when the bomb explodes */
 
 };
+
+}
 
 #endif
 

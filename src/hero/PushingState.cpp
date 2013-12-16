@@ -24,6 +24,8 @@
 #include "Game.h"
 #include "GameCommands.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -316,5 +318,7 @@ bool Hero::PushingState::is_lava_obstacle() const {
  */
 bool Hero::PushingState::is_prickle_obstacle() const {
   return true;
+}
+
 }
 

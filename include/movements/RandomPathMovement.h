@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "movements/PathMovement.h"
 
+namespace solarus {
+
 /**
  * \brief Movement of an entity that walks randomly.
  *
@@ -40,6 +42,8 @@ class RandomPathMovement: public PathMovement {
     virtual const std::string& get_lua_type_name() const;
 
 };
+
+}
 
 #endif
 

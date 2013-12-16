@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Grabbing" of the hero.
  */
@@ -35,6 +37,8 @@ class Hero::GrabbingState: public Hero::State {
     bool can_be_hurt(Enemy* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
 };
+
+}
 
 #endif
 

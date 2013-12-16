@@ -22,6 +22,8 @@
 #include "lowlevel/Debug.h"
 #include <vector>
 
+namespace solarus {
+
 /**
  * \brief A sequence of frames representing a sprite animated in a particular direction.
  *
@@ -89,6 +91,8 @@ inline PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
   SOLARUS_ASSERT(frame >= 0 && frame < get_nb_frames(), "Invalid frame number");
 
   return *pixel_bits[frame];
+}
+
 }
 
 #endif

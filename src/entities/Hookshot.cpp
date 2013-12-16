@@ -32,6 +32,8 @@
 #include "entities/Stairs.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a hookshot.
  * \param hero the hero
@@ -464,3 +466,6 @@ void Hookshot::notify_collision_with_crystal(Crystal& crystal, CollisionMode col
     }
   }
 }
+
+}
+

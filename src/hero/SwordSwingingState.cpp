@@ -24,6 +24,8 @@
 #include "Game.h"
 #include "GameCommands.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -238,5 +240,7 @@ void Hero::SwordSwingingState::notify_attacked_enemy(
       hero.set_movement(movement);
     }
   }
+}
+
 }
 

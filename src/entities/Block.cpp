@@ -28,6 +28,8 @@
 #include "lowlevel/Sound.h"
 #include "lua/LuaContext.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a block.
  * \param name name identifying this block
@@ -422,5 +424,7 @@ void Block::set_maximum_moves(int maximum_moves) {
  */
 const std::string& Block::get_lua_type_name() const {
   return LuaContext::entity_block_module_name;
+}
+
 }
 

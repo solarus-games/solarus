@@ -17,6 +17,8 @@
 #include "lowlevel/Debug.h"
 #include <SDL_messagebox.h>
 
+namespace solarus {
+
 namespace {
 
   const std::string error_output_file_name = "error.txt";
@@ -96,5 +98,7 @@ void Debug::die(const std::string& error_message) {
       NULL);
 
   std::abort();
+}
+
 }
 

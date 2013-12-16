@@ -58,6 +58,8 @@
 #include <lua.hpp>
 #include <sstream>
 
+namespace solarus {
+
 const std::string LuaContext::map_module_name = "sol.map";
 
 /**
@@ -2307,5 +2309,7 @@ void LuaContext::map_on_obtained_treasure(Map& map, const Treasure& treasure) {
   push_map(l, map);
   on_obtained_treasure(treasure);
   lua_pop(l, 1);
+}
+
 }
 

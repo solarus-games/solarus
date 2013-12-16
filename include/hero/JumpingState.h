@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Jumping" of the hero.
  */
@@ -70,6 +72,8 @@ class Hero::JumpingState: public Hero::State {
     void destroy_carried_item();
 
 };
+
+}
 
 #endif
 

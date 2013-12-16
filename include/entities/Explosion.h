@@ -21,6 +21,8 @@
 #include "entities/Detector.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief Represents an explosion on the map.
  *
@@ -53,7 +55,10 @@ class Explosion: public Detector {
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
     void try_attack_enemy(Enemy &enemy, Sprite &enemy_sprite);
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
+
 };
+
+}
 
 #endif
 

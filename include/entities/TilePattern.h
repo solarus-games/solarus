@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Ground.h"
 
+namespace solarus {
+
 /**
  * \brief Abstract class for a tile pattern.
  *
@@ -64,6 +66,8 @@ class TilePattern {
     TilePattern(Ground ground, int width, int height);
 
 };
+
+}
 
 #endif
 

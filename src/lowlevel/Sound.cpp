@@ -25,6 +25,8 @@
 #include "lowlevel/StringConcat.h"
 #include "QuestResourceList.h"
 
+namespace solarus {
+
 ALCdevice* Sound::device = NULL;
 ALCcontext* Sound::context = NULL;
 bool Sound::initialized = false;
@@ -478,5 +480,7 @@ size_t Sound::cb_read(void* ptr, size_t size, size_t nb_bytes, void* datasource)
   mem->position += nb_bytes;
 
   return nb_bytes;
+}
+
 }
 

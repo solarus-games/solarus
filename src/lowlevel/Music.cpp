@@ -22,6 +22,8 @@
 #include "lowlevel/StringConcat.h"
 #include <vector>
 
+namespace solarus {
+
 const int Music::nb_buffers;
 SpcDecoder* Music::spc_decoder = NULL;
 ItDecoder* Music::it_decoder = NULL;
@@ -670,5 +672,7 @@ void Music::set_paused(bool pause) {
   else {
     alSourcePlay(source);
   }
+}
+
 }
 

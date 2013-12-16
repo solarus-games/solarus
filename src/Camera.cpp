@@ -25,6 +25,8 @@
 #include "lowlevel/System.h"
 #include "lua/LuaContext.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a camera.
  * \param map The map.
@@ -418,5 +420,7 @@ void Camera::traverse_separator(Separator* separator) {
   // Move the hero two pixels ahead to avoid to traversed the separator again.
   hero.set_xy(hero.get_x() + 2 * separator_scrolling_dx,
       hero.get_y() + 2 * separator_scrolling_dy);
+}
+
 }
 

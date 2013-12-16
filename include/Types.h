@@ -27,6 +27,8 @@
 
 #include <stdint.h>
 
+namespace solarus {
+
 // declaration of all classes to avoid dependencies between the header files
 
 // main classes
@@ -156,6 +158,8 @@ class RandomMovement;
 class FollowMovement;
 class TargetMovement;
 class CircleMovement;
+
+}
 
 #endif
 

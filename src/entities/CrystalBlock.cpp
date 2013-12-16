@@ -25,6 +25,8 @@
 #include "lowlevel/Sound.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief Creates a new crystal block.
  * \param game the current game
@@ -230,5 +232,7 @@ void CrystalBlock::draw_on_map() {
       get_map().draw_sprite(sprite, x, y);
     }
   }
+}
+
 }
 

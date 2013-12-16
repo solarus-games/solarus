@@ -23,6 +23,8 @@
 #include "Game.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a new dynamic tile on the map.
  * \param name a name to identify this tile
@@ -157,5 +159,7 @@ void DynamicTile::draw_on_map() {
 
   tile_pattern->fill_surface(get_map().get_visible_surface(), dst_position,
       get_map().get_tileset(), camera_position);
+}
+
 }
 

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 
+namespace solarus {
+
 /**
  * \brief An item carried or thrown by the hero.
  *
@@ -133,6 +135,8 @@ class CarriedItem: public MapEntity {
     bool will_explode_soon() const;
 
 };
+
+}
 
 #endif
 

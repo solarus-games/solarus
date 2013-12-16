@@ -19,6 +19,8 @@
 
 #include "Common.h"
 
+namespace solarus {
+
 /**
  * \brief Provides lowlevel functions and initialization.
  *
@@ -43,6 +45,8 @@ class System {
 
     static uint32_t ticks;  // Simulated time in milliseconds.
 };
+
+}
 
 #endif
 

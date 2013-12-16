@@ -21,6 +21,8 @@
 #include <SDL.h>
 #include <iostream>
 
+namespace solarus {
+
 /**
  * \brief Represents a rectangle.
  *
@@ -394,6 +396,8 @@ inline std::ostream & operator <<(std::ostream& stream, const Rectangle& rectang
   stream << "(" << rectangle.get_x() << "," << rectangle.get_y() << ") x ("
     << rectangle.get_width() << "," << rectangle.get_height() << ")";
   return stream;
+}
+
 }
 
 #endif

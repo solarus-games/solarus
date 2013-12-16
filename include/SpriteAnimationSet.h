@@ -23,6 +23,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief A set of animations representing a sprite.
  *
@@ -61,6 +63,8 @@ class SpriteAnimationSet {
     Rectangle max_size;                      /**< Size of this biggest frame. */
 
 };
+
+}
 
 #endif
 

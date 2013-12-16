@@ -20,6 +20,8 @@
 #include "hero/State.h"
 #include "EquipmentItemUsage.h"
 
+namespace solarus {
+
 /**
  * \brief The state "using equipment item" of the hero.
  */
@@ -40,6 +42,8 @@ class Hero::UsingItemState: public Hero::State {
 
     EquipmentItemUsage item_usage;     /**< Info about using this equipment item. */
 };
+
+}
 
 #endif
 

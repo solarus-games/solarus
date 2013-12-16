@@ -30,6 +30,8 @@
 #include "lua/LuaContext.h"
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief Lua name of each value of the OpeningMethod enum.
  */
@@ -445,5 +447,7 @@ void Chest::set_suspended(bool suspended) {
  */
 const std::string& Chest::get_lua_type_name() const {
   return LuaContext::entity_chest_module_name;
+}
+
 }
 

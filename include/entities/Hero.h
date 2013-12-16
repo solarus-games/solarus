@@ -24,6 +24,8 @@
 #include "GameCommands.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief The hero's entity.
  *
@@ -340,6 +342,8 @@ class Hero: public MapEntity {
     Rectangle ground_dxy;                  /**< additional movement with special ground (hole or ice) */
 
 };
+
+}
 
 #endif
 

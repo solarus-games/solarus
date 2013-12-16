@@ -16,6 +16,8 @@
  */
 #include "TransitionImmediate.h"
 
+namespace solarus {
+
 /**
  * \brief Creates an immediate transition effect.
  * \param direction direction of the transition effect (in or out)
@@ -73,6 +75,8 @@ void TransitionImmediate::update() {
  * \param dst_surface the surface to draw
  */
 void TransitionImmediate::draw(Surface& dst_surface) {
+
+}
 
 }
 

@@ -24,6 +24,8 @@
 #include <map>
 #include <algorithm>
 
+namespace solarus {
+
 namespace {
 
   SDL_Window* main_window = NULL;           /**< The window. */
@@ -728,3 +730,6 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
   // Everything is ready now.
   set_default_video_mode();
 }
+
+}
+

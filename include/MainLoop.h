@@ -20,6 +20,8 @@
 #include "Common.h"
 #include <string>
 
+namespace solarus {
+
 /**
  * \brief Main class of the game engine.
  *
@@ -56,6 +58,8 @@ class MainLoop {
     void draw();
     void update();
 };
+
+}
 
 #endif
 

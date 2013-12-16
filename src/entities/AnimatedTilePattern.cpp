@@ -20,6 +20,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 
+namespace solarus {
+
 /**
  * \brief Interval in millisecond between two frames of an animation.
  */
@@ -141,5 +143,7 @@ void AnimatedTilePattern::draw(Surface& dst_surface,
  */
 bool AnimatedTilePattern::is_drawn_at_its_position() {
   return !parallax;
+}
+
 }
 

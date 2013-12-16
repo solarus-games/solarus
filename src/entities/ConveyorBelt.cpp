@@ -19,6 +19,8 @@
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a new conveyor belt.
  * \param name Unique name identifying the entity on the map or an empty string.
@@ -71,5 +73,7 @@ void ConveyorBelt::notify_collision(MapEntity& entity_overlapping, CollisionMode
 
   const Rectangle& xy_move = direction_to_xy_move(get_direction());
   entity_overlapping.notify_collision_with_conveyor_belt(*this, xy_move.get_x(), xy_move.get_y());
+}
+
 }
 

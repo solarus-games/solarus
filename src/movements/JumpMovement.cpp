@@ -20,6 +20,8 @@
 #include "lowlevel/StringConcat.h"
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief Trajectory of the basic jump movement for each direction.
  */
@@ -192,5 +194,7 @@ void JumpMovement::notify_step_done(int step_index, bool success) {
  */
 const std::string& JumpMovement::get_lua_type_name() const {
   return LuaContext::movement_jump_module_name;
+}
+
 }
 

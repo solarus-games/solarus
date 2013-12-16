@@ -21,6 +21,8 @@
 #include "entities/Detector.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief Represents some fire on the map.
  *
@@ -42,6 +44,8 @@ class Fire: public Detector {
     // collisions
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
 };
+
+}
 
 #endif
 

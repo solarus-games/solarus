@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "ConveyorBelt" of the hero.
  */
@@ -43,6 +45,8 @@ class Hero::ConveyorBeltState: public Hero::State {
     bool can_avoid_conveyor_belt() const;
 
 };
+
+}
 
 #endif
 

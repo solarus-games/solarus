@@ -19,6 +19,8 @@
 #include "Map.h"
 #include "lowlevel/Debug.h"
 
+namespace solarus {
+
 const Rectangle PathFinding::neighbours_locations[] = {
   Rectangle( 8,  0, 16, 16 ),
   Rectangle( 8, -8, 16, 16 ),
@@ -285,5 +287,7 @@ bool PathFinding::is_node_transition_valid(
   collision_box.add_xy(initial_node.location);
 
   return !map.test_collision_with_obstacles(source_entity.get_layer(), collision_box, source_entity);
+}
+
 }
 

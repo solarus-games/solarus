@@ -25,6 +25,8 @@
 #include "Transition.h"
 #include <lua.hpp>
 
+namespace solarus {
+
 bool TextSurface::fonts_loaded = false;
 std::map<std::string, TextSurface::FontData> TextSurface::fonts;
 std::string TextSurface::default_font_id;
@@ -677,5 +679,7 @@ Surface& TextSurface::get_transition_surface() {
  */
 const std::string& TextSurface::get_lua_type_name() const {
   return LuaContext::text_surface_module_name;
+}
+
 }
 

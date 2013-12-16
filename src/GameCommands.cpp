@@ -24,6 +24,8 @@
 #include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 
+namespace solarus {
+
 /**
  * \brief Lua name of each value of the Command enum.
  */
@@ -855,5 +857,7 @@ GameCommands::Command GameCommands::get_command_by_name(
     }
   }
   return NONE;
+}
+
 }
 

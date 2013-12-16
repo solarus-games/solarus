@@ -24,6 +24,8 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param name Name of the teletransporter.
@@ -255,5 +257,7 @@ void Teletransporter::transport_hero(Hero& hero) {
  */
 bool Teletransporter::is_on_map_side() const {
   return destination_side >= 0;
+}
+
 }
 

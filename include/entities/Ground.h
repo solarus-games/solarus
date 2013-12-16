@@ -17,6 +17,8 @@
 #ifndef SOLARUS_GROUND_H
 #define SOLARUS_GROUND_H
 
+namespace solarus {
+
 /**
  * \brief The possible kinds of grounds on a map.
  *
@@ -54,6 +56,8 @@ enum Ground {
   GROUND_PRICKLE,                 /**< Some untraversable prickles that hurt the hero. */
   GROUND_LAVA,                    /**< Some lava where the hero drowns and gets hurt. */
 };
+
+}
 
 #endif
 

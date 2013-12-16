@@ -27,6 +27,8 @@
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
+namespace solarus {
+
 const std::string LuaContext::game_module_name = "sol.game";
 
 /**
@@ -1642,5 +1644,7 @@ bool LuaContext::game_on_command_released(Game& game, GameCommands::Command comm
   }
   lua_pop(l, 1);
   return handled;
+}
+
 }
 

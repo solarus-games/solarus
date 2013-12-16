@@ -24,6 +24,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param name name of the entity
@@ -147,5 +149,7 @@ void Sensor::update() {
       notifying_script = false;
     }
   }
+}
+
 }
 

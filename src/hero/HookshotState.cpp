@@ -23,6 +23,8 @@
 #include "lowlevel/Sound.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -233,5 +235,7 @@ void Hero::HookshotState::finish_movement() {
       hero.set_state(new BackToSolidGroundState(hero, false, 0, true));
     }
   }
+}
+
 }
 

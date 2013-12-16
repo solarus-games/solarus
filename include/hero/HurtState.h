@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Hurt" of the hero.
  */
@@ -54,6 +56,8 @@ class Hero::HurtState: public Hero::State {
     bool can_avoid_ice() const;
 
 };
+
+}
 
 #endif
 

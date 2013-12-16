@@ -21,6 +21,8 @@
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
 
+namespace solarus {
+
 /**
  * \brief Abstract base class for a state of the hero.
  *
@@ -164,6 +166,8 @@ class Hero::State {
     bool stopping;            /**< Indicates that this state is being stopped. */
 
 };
+
+}
 
 #endif
 

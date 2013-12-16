@@ -23,6 +23,8 @@
 #include "lowlevel/Rectangle.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief Manages the dialog box where dialogs can be displayed.
  *
@@ -66,6 +68,8 @@ class DialogBox {
     bool is_question;                               /**< Whether the dialog is a question with two possible answers. */
     bool selected_first_answer;                     /**< If there is a question: whether the first or second answer is selected. */
 };
+
+}
 
 #endif
 

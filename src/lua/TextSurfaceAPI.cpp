@@ -22,6 +22,8 @@
 #include "lowlevel/Language.h"
 #include "StringResource.h"
 
+namespace solarus {
+
 const std::string LuaContext::text_surface_module_name = "sol.text_surface";
 
 static const std::string rendering_mode_names[] = {
@@ -408,5 +410,7 @@ int LuaContext::text_surface_api_get_size(lua_State* l) {
   lua_pushinteger(l, text_surface.get_height());
 
   return 2;
+}
+
 }
 

@@ -21,6 +21,8 @@
 #include <string>
 #include <map>
 
+namespace solarus {
+
 /**
  * \brief Provides access to strings translated in the current language.
  *
@@ -49,6 +51,8 @@ class StringResource {
     static bool exists(const std::string& key);
     static const std::string& get_string(const std::string& key);
 };
+
+}
 
 #endif
 

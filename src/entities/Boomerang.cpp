@@ -30,6 +30,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/Sound.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a boomerang.
  * \param hero the hero
@@ -377,5 +379,7 @@ void Boomerang::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
   if (result.type != EnemyReaction::IGNORED && !is_going_back()) {
     go_back();
   }
+}
+
 }
 

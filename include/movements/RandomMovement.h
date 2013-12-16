@@ -21,6 +21,8 @@
 #include "movements/StraightMovement.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief A movement that makes successive steps of random directions
  * and (possibly) stays inside a limited rectangle.
@@ -55,6 +57,8 @@ class RandomMovement: public StraightMovement {
     void set_next_direction();
 
 };
+
+}
 
 #endif
 

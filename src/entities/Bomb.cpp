@@ -27,6 +27,8 @@
 #include "Map.h"
 #include "KeysEffect.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  *
@@ -288,5 +290,7 @@ void Bomb::explode() {
   get_entities().add_entity(new Explosion("", get_layer(), get_center_point(), true));
   Sound::play("explosion");
   remove_from_map();
+}
+
 }
 

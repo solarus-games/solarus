@@ -18,6 +18,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a refcountable object.
  */
@@ -92,3 +94,6 @@ void RefCountable::unref(RefCountable* object) {
     delete object;
   }
 }
+
+}
+

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 
+namespace solarus {
+
 /**
  * \brief An arrow thrown by the bow on the map.
  */
@@ -75,6 +77,8 @@ class Arrow: public MapEntity {
         EnemyReaction::Reaction& result, bool killed);
     bool has_reached_map_border() const;
 };
+
+}
 
 #endif
 

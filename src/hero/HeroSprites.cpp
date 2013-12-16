@@ -26,6 +26,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 /**
  * \brief Associates to each movement direction the possible directions of the hero's sprites.
  *
@@ -1191,5 +1193,7 @@ void HeroSprites::play_ground_sound() {
  */
 void HeroSprites::set_lifted_item(CarriedItem *lifted_item) {
   this->lifted_item = lifted_item;
+}
+
 }
 

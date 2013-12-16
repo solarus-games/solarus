@@ -19,6 +19,8 @@
 
 #include "Common.h"
 
+namespace solarus {
+
 /**
  * \brief Provides pixel-perfect collision checks for a surface.
  *
@@ -49,6 +51,8 @@ class PixelBits {
     uint32_t** bits;         /**< a two-dimensional array representing the
                               * transparency bit of each pixel in the image */
 };
+
+}
 
 #endif
 

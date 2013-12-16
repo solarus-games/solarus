@@ -16,6 +16,8 @@
  */
 #include "movements/FallingOnFloorMovement.h"
 
+namespace solarus {
+
 /**
  * \brief Y move at each time frame.
  */
@@ -44,6 +46,8 @@ FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
  * \brief Destructor.
  */
 FallingOnFloorMovement::~FallingOnFloorMovement() {
+
+}
 
 }
 

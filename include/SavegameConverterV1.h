@@ -21,6 +21,8 @@
 #include "Common.h"
 #include <string>
 
+namespace solarus {
+
 /**
  * \brief Old format of savegames (version 1) kept for compatibility.
  *
@@ -215,6 +217,8 @@ class SavegameConverterV1 {
 
     SavedData saved_data;
 };
+
+}
 
 #endif
 

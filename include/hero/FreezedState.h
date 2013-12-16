@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Freezed" of the hero.
  */
@@ -31,6 +33,8 @@ class Hero::FreezedState: public Hero::State {
 
     void start(const State* previous_state);
 };
+
+}
 
 #endif
 

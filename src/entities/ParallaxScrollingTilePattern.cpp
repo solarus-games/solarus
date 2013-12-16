@@ -18,6 +18,8 @@
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
 
+namespace solarus {
+
 /**
  * \brief Distance made by the viewport to move the tile pattern of 1 pixel.
  */
@@ -92,5 +94,7 @@ bool ParallaxScrollingTilePattern::is_animated() {
  */
 bool ParallaxScrollingTilePattern::is_drawn_at_its_position() {
   return false;
+}
+
 }
 

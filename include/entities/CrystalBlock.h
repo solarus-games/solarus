@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A block in the ground that can be raised or lowered with the help of a crystal.
  *
@@ -63,6 +65,8 @@ class CrystalBlock: public Detector {
 
     bool is_raised() const;
 };
+
+}
 
 #endif
 

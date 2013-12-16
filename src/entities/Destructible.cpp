@@ -34,6 +34,8 @@
 #include "Sprite.h"
 #include <lauxlib.h>
 
+namespace solarus {
+
 /**
  * \brief Features of each type of destructible item.
  */
@@ -490,5 +492,7 @@ Destructible::Subtype Destructible::get_subtype_by_name(
   Debug::die(StringConcat() << "Invalid destructible item subtype name: '"
       << subtype_name << "'");
   throw;
+}
+
 }
 

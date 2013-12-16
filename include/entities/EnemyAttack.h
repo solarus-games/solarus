@@ -17,6 +17,8 @@
 #ifndef SOLARUS_ENEMY_ATTACK_H
 #define SOLARUS_ENEMY_ATTACK_H
 
+namespace solarus {
+
 /**
  * \brief Defines the types of attacks an enemy can be victim of.
  */
@@ -31,6 +33,8 @@ enum EnemyAttack {
   ATTACK_SCRIPT,      /**< a script decided to hurt the enemy */
   ATTACK_NUMBER
 };
+
+}
 
 #endif
 

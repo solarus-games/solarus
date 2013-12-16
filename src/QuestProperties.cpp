@@ -24,6 +24,8 @@
 #include <lua.hpp>
 #include <sstream>
 
+namespace solarus {
+
 namespace {
 
 /**
@@ -189,5 +191,7 @@ int QuestProperties::l_quest(lua_State* l) {
       max_quest_size);
 
   return 0;
+}
+
 }
 

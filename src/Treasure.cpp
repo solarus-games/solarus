@@ -26,6 +26,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a new treasure.
  *
@@ -232,5 +234,7 @@ void Treasure::draw(Surface& dst_surface, int x, int y) {
 
   // draw the item
   sprite->draw(dst_surface, x, y);
+}
+
 }
 

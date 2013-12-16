@@ -23,6 +23,8 @@
 #include "movements/FallingHeight.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief An treasure placed on the ground and that the hero can take.
  */
@@ -90,6 +92,8 @@ class Pickable: public Detector {
     uint32_t disappear_date;                    /**< date when the item disappears */
     MapEntity* entity_followed;                 /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 };
+
+}
 
 #endif
 

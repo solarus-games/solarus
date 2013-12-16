@@ -24,6 +24,8 @@
 #include "GameCommands.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero the hero controlled by this state
@@ -98,5 +100,7 @@ void Hero::BoomerangState::update() {
 
     hero.set_state(new FreeState(hero));
   }
+}
+
 }
 

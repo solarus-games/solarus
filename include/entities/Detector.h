@@ -21,6 +21,8 @@
 #include "entities/MapEntity.h"
 #include "entities/CollisionMode.h"
 
+namespace solarus {
+
 /**
  * \brief Abstract class for an entity able to detect the presence of other
  * entities.
@@ -86,6 +88,8 @@ class Detector: public MapEntity {
     bool layer_independent_collisions;      /**< indicates that the detector detects collisions on every layer */
 
 };
+
+}
 
 #endif
 

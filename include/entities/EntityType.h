@@ -17,6 +17,8 @@
 #ifndef SOLARUS_ENTITY_TYPE_H
 #define SOLARUS_ENTITY_TYPE_H
 
+namespace solarus {
+
 /**
  * \brief Constants to identify each kind of map entity.
  *
@@ -68,6 +70,8 @@ enum EntityType {
 
   ENTITY_NUMBER,             /**< Number of entity types. */
 };
+
+}
 
 #endif
 

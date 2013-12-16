@@ -23,6 +23,8 @@
 #include "QuestResourceList.h"
 #include <vector>
 
+namespace solarus {
+
 std::string Language::language_code;
 
 /**
@@ -94,3 +96,6 @@ const std::string& Language::get_language_name(
   static std::string empty_string("");
   return empty_string;
 }
+
+}
+

@@ -30,6 +30,8 @@
 #include "StringResource.h"
 #include "QuestResourceList.h"
 
+namespace solarus {
+
 /**
  * \brief Initializes the game engine.
  * \param argc number of arguments of the command line
@@ -298,5 +300,7 @@ void MainLoop::draw() {
   }
   lua_context->main_on_draw(*root_surface);
   Video::render(*root_surface);
+}
+
 }
 

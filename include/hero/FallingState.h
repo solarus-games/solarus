@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Falling" of the hero.
  */
@@ -37,6 +39,8 @@ class Hero::FallingState: public Hero::State {
     bool can_start_gameover_sequence() const;
 
 };
+
+}
 
 #endif
 

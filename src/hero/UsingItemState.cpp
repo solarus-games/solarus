@@ -19,6 +19,8 @@
 #include "lowlevel/System.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -91,3 +93,6 @@ bool Hero::UsingItemState::is_using_item() const {
 EquipmentItemUsage& Hero::UsingItemState::get_item_being_used() {
   return item_usage;
 }
+
+}
+

@@ -26,6 +26,8 @@
 #include "Game.h"
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -277,5 +279,7 @@ void Hero::SpinAttackState::notify_attacked_enemy(
       hero.set_movement(movement);
     }
   }
+}
+
 }
 

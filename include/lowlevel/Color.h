@@ -20,6 +20,8 @@
 #include "Common.h"
 #include <SDL.h>
 
+namespace solarus {
+
 /**
  * \brief Represents a color.
  *
@@ -143,6 +145,8 @@ inline Color& Color::get_magenta() {
  */
 inline Color& Color::get_cyan() {
   return cyan;
+}
+
 }
 
 #endif

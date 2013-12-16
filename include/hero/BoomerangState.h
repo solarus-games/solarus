@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "boomerang" of the hero.
  */
@@ -43,6 +45,8 @@ class Hero::BoomerangState: public Hero::State {
                                                   * when preparing the boomerang */
     const std::string sprite_name;               /**< animation set id that represents the boomerang */
 };
+
+}
 
 #endif
 

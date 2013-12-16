@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 
+namespace solarus {
+
 /**
  * \brief A location of the map where the hero can arrive when using a teletransporter.
  */
@@ -45,6 +47,8 @@ class Destination: public MapEntity {
 
     bool is_default_destination;
 };
+
+}
 
 #endif
 

@@ -27,6 +27,8 @@
 #include "GameCommands.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -212,5 +214,7 @@ void Hero::SwordTappingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
       get_sprites().set_animation_walking_normal();
     }
   }
+}
+
 }
 

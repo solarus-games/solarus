@@ -24,6 +24,8 @@
 #include "lowlevel/StringConcat.h"
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief Creates a chase movement.
  * \param speed speed of the movement in pixels per second
@@ -129,5 +131,7 @@ bool PathFindingMovement::is_finished() const {
  */
 const std::string& PathFindingMovement::get_lua_type_name() const {
   return LuaContext::movement_path_finding_module_name;
+}
+
 }
 

@@ -21,6 +21,8 @@
 #include "entities/MapEntity.h"
 #include "Sprite.h"
 
+namespace solarus {
+
 /**
  * \brief The hookshot thrown by the hero.
  */
@@ -77,6 +79,8 @@ class Hookshot: public MapEntity {
     void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
 
 };
+
+}
 
 #endif
 

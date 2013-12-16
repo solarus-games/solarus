@@ -18,6 +18,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
 
+namespace solarus {
 
 #if SOLARUS_HAVE_OPENGL_OR_ES == 1
 
@@ -324,3 +325,6 @@ void Shader::apply()
 }
 
 #endif
+
+}
+

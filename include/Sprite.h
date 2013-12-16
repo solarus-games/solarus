@@ -21,6 +21,8 @@
 #include "Drawable.h"
 #include <map>
 
+namespace solarus {
+
 /**
  * \brief Represents an animated sprite.
  *
@@ -152,6 +154,8 @@ class Sprite: public Drawable {
     uint32_t blink_next_change_date;   /**< date of the next change when blinking: visible or not */
 
 };
+
+}
 
 #endif
 

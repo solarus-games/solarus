@@ -23,6 +23,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief Handles access to data files.
  *
@@ -97,6 +99,8 @@ class FileTools {
 
     static std::vector<std::string> temporary_files;     /**< Name of all temporary files created. */
 };
+
+}
 
 #endif
 

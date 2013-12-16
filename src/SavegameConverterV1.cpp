@@ -22,6 +22,8 @@
 #include "lowlevel/StringConcat.h"
 #include <cstring>
 
+namespace solarus {
+
 /**
  * \brief Creates an old savegame converter with a specified existing file name.
  * \param file_name Name of the savegame file (must exist),
@@ -223,5 +225,7 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
       savegame_v2.set_boolean(oss.str(), value);
     }
   }
+}
+
 }
 

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief Some stairs that trigger a special animation on the hero.
  *
@@ -99,6 +101,8 @@ class Stairs: public Detector {
                                  * (if not, they have no effect and are not obstacle) */
 
 };
+
+}
 
 #endif
 

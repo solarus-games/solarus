@@ -25,6 +25,8 @@
 #include <alc.h>
 #include <vorbis/vorbisfile.h>
 
+namespace solarus {
+
 /**
  * \brief Represents a sound effect that can be played in the program.
  *
@@ -90,6 +92,8 @@ class Sound {
     bool update_playing();
 
 };
+
+}
 
 #endif
 

@@ -38,6 +38,8 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 
+namespace solarus {
+
 /**
  * \brief Creates an enemy.
  * \param game The game.
@@ -1443,5 +1445,7 @@ void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
  */
 const std::string& Enemy::get_lua_type_name() const {
   return LuaContext::entity_enemy_module_name;
+}
+
 }
 

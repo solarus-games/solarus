@@ -21,6 +21,8 @@
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief Manages the animations of the hero's main sprites.
  *
@@ -146,6 +148,8 @@ class HeroSprites {
     void stop_displaying_trail();
 
 };
+
+}
 
 #endif
 

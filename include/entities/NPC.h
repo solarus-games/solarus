@@ -21,6 +21,8 @@
 #include "entities/Detector.h"
 #include "KeysEffect.h"
 
+namespace solarus {
+
 /**
  * \brief A non-playing character or a more general interactive entity.
  *
@@ -101,6 +103,8 @@ class NPC: public Detector {
     virtual const std::string& get_lua_type_name() const;
 
 };
+
+}
 
 #endif
 

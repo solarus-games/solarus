@@ -23,6 +23,8 @@
 #include "Game.h"
 #include "Sprite.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -128,5 +130,7 @@ bool Hero::ConveyorBeltState::can_avoid_teletransporter() const {
  */
 bool Hero::ConveyorBeltState::can_avoid_conveyor_belt() const {
   return true;
+}
+
 }
 

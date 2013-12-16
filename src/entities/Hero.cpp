@@ -63,6 +63,8 @@
 #include "KeysEffect.h"
 #include "Sprite.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a hero.
  * \param equipment the equipment (needed to build the sprites even outside a game)
@@ -2476,5 +2478,7 @@ void Hero::start_state_from_ground() {
  */
 const std::string& Hero::get_lua_type_name() const {
   return LuaContext::entity_hero_module_name;
+}
+
 }
 

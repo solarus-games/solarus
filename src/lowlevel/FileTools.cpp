@@ -33,6 +33,8 @@
 #   include "lowlevel/apple/AppleInterface.h"
 #endif
 
+namespace solarus {
+
 std::string FileTools::quest_path;
 std::string FileTools::solarus_write_dir;
 std::string FileTools::quest_write_dir;
@@ -561,5 +563,7 @@ bool FileTools::remove_temporary_files() {
   }
 
   return success;
+}
+
 }
 

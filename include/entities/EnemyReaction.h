@@ -21,6 +21,8 @@
 #include <string>
 #include <map>
 
+namespace solarus {
+
 /**
  * \brief Describes how an enemy reacts when it receives an attack.
  *
@@ -70,6 +72,8 @@ class EnemyReaction {
     static const std::string& get_reaction_name(ReactionType reaction);
     static ReactionType get_reaction_by_name(const std::string& name);
 };
+
+}
 
 #endif
 

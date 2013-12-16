@@ -23,6 +23,8 @@
 #include "Sprite.h"
 #include "TransitionFade.h"
 
+namespace solarus {
+
 const std::string LuaContext::surface_module_name = "sol.surface";
 
 /**
@@ -176,5 +178,7 @@ int LuaContext::surface_api_set_opacity(lua_State* l) {
   surface.set_opacity(opacity);
 
   return 0;
+}
+
 }
 

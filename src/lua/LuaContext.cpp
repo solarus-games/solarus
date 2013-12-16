@@ -35,6 +35,8 @@
 #include <sstream>
 #include <iomanip>
 
+namespace solarus {
+
 std::map<lua_State*, LuaContext*> LuaContext::lua_contexts;
 
 /**
@@ -2818,5 +2820,7 @@ int LuaContext::l_loader(lua_State* l) {
     push_string(l, oss.str());
   }
   return 1;
+}
+
 }
 

@@ -23,6 +23,8 @@
 #include "lua/LuaContext.h"
 #include <lua.hpp>
 
+namespace solarus {
+
 const int Savegame::SAVEGAME_VERSION = 2;
 
 const std::string Savegame::KEY_SAVEGAME_VERSION = "_version";         /**< Format of this savegame file. */
@@ -544,5 +546,7 @@ void Savegame::unset(const std::string& key) {
  */
 const std::string& Savegame::get_lua_type_name() const {
   return LuaContext::game_module_name;
+}
+
 }
 

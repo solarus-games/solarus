@@ -20,7 +20,39 @@
 #include <iostream>
 #include <SDL.h>  // Necessary on some systems for SDLMain.
 
-static void print_help(int argc, char** argv);
+namespace {
+
+/**
+ * \brief Prints the usage of the program.
+ * \param argc number of command-line arguments
+ * \param argv command-line arguments
+ */
+void print_help(int argc, char **argv) {
+
+  const std::string& binary_name = (argc > 0) ? argv[0] : "solarus";
+  std::cout << "Usage: " << binary_name << " [options] [quest_path]"
+    << std::endl << std::endl
+    << "The quest path is the name of a directory that contains either the data"
+    << std::endl
+    << "directory or the data archive (data.solarus or data.solarus.zip) of the game to run."
+    << std::endl
+    << "If the quest path is not specified, the default directory will be: '"
+    << SOLARUS_DEFAULT_QUEST << "'."
+    << std::endl
+    << std::endl
+    << "Options:"
+    << std::endl
+    << "  -help               shows this help message and exits"
+    << std::endl
+    << "  -no-audio           disables sounds and musics"
+    << std::endl
+    << "  -no-video           disables displaying (may be useful for automated tests)"
+    << std::endl
+    << "  -quest-size=<width>x<height>         sets the size of the drawing area (if compatible with the quest)"
+    << std::endl;
+}
+
+}
 
 /**
  * \brief Usual entry point of the program.
@@ -62,40 +94,10 @@ int main(int argc, char** argv) {
   }
   else {
     // run the window
-    MainLoop(argc, argv).run();
+    solarus::MainLoop(argc, argv).run();
   }
 
   return 0;
-}
-
-/**
- * \brief Prints the usage of the program.
- * \param argc number of command-line arguments
- * \param argv command-line arguments
- */
-static void print_help(int argc, char **argv) {
-
-  const std::string& binary_name = (argc > 0) ? argv[0] : "solarus";
-  std::cout << "Usage: " << binary_name << " [options] [quest_path]"
-    << std::endl << std::endl
-    << "The quest path is the name of a directory that contains either the data"
-    << std::endl
-    << "directory or the data archive (data.solarus or data.solarus.zip) of the game to run."
-    << std::endl
-    << "If the quest path is not specified, the default directory will be: '"
-    << SOLARUS_DEFAULT_QUEST << "'."
-    << std::endl
-    << std::endl
-    << "Options:"
-    << std::endl
-    << "  -help               shows this help message and exits"
-    << std::endl
-    << "  -no-audio           disables sounds and musics"
-    << std::endl
-    << "  -no-video           disables displaying (may be useful for automated tests)"
-    << std::endl
-    << "  -quest-size=<width>x<height>         sets the size of the drawing area (if compatible with the quest)"
-    << std::endl;
 }
 
 #endif

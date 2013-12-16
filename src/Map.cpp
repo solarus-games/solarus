@@ -33,6 +33,8 @@
 #include "entities/Detector.h"
 #include "entities/Hero.h"
 
+namespace solarus {
+
 MapLoader Map::map_loader;
 
 /**
@@ -1111,5 +1113,7 @@ void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
  */
 const std::string& Map::get_lua_type_name() const {
   return LuaContext::map_module_name;
+}
+
 }
 

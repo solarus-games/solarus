@@ -26,6 +26,8 @@
 #endif
 
 
+namespace solarus {
+
 /**
  * \brief Represents a GLSL shader.
  *
@@ -82,6 +84,8 @@ class Shader {
                                                    compared to the normal quest size. */
 #endif
 };
+
+}
 
 #endif
 

@@ -19,6 +19,8 @@
 
 #include "Common.h"
 
+namespace solarus {
+
 /**
  * \brief An object with an optional reference counting system.
  *
@@ -47,6 +49,8 @@ class RefCountable {
                                   * (0 means that it can be deleted). */
 
 };
+
+}
 
 #endif
 

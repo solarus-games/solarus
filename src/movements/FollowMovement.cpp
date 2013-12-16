@@ -18,6 +18,8 @@
 #include "entities/MapEntity.h"
 #include "lowlevel/Debug.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a follow movement.
  * \param entity_followed the entity to follow
@@ -122,5 +124,7 @@ const Rectangle FollowMovement::get_displayed_xy() const {
   Rectangle displayed_xy = get_xy();
   displayed_xy.add_xy(dx, dy);
   return displayed_xy;
+}
+
 }
 

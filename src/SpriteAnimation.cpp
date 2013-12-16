@@ -21,6 +21,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param image_file_name the image from which the frames are extracted
@@ -204,5 +206,7 @@ void SpriteAnimation::disable_pixel_collisions() {
  */
 bool SpriteAnimation::are_pixel_collisions_enabled() const {
   return directions[0]->are_pixel_collisions_enabled() || should_enable_pixel_collisions;
+}
+
 }
 

@@ -23,6 +23,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief Manages the game data saved.
  *
@@ -136,6 +138,8 @@ class Savegame: public ExportableToLua {
     void set_default_keyboard_controls();
     void set_default_joypad_controls();
 };
+
+}
 
 #endif
 

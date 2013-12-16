@@ -24,6 +24,8 @@
 #include "Game.h"
 #include "Equipment.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -210,5 +212,7 @@ bool Hero::HurtState::can_avoid_switch() const {
  */
 bool Hero::HurtState::can_avoid_ice() const {
   return true;
+}
+
 }
 

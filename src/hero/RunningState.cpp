@@ -28,6 +28,8 @@
 #include "Map.h"
 #include "Equipment.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -366,5 +368,7 @@ int Hero::RunningState::get_sword_damage_factor() const {
 
   // the damage are multiplied by 2
   return State::get_sword_damage_factor() * 2;
+}
+
 }
 

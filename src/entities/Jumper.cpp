@@ -19,6 +19,8 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a jumper.
  * \param name a name identifying this jumper
@@ -259,5 +261,7 @@ bool Jumper::is_sword_ignored() const {
 
   // We don't want a sword tapping animation.
   return true;
+}
+
 }
 

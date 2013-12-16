@@ -21,6 +21,8 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Video.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a fade-in or fade-out transition effect.
  * \param direction direction of the transition effect (in or out)
@@ -179,5 +181,7 @@ void TransitionFade::draw(Surface& dst_surface) {
   }
 
   this->dst_surface = &dst_surface;
+}
+
 }
 

@@ -22,6 +22,8 @@
 #include "Map.h"
 #include "Drawable.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param ignore_obstacles When there is a map and the movement is attached to
@@ -576,5 +578,7 @@ void Movement::set_finished_callback(int finished_callback_ref) {
  */
 const std::string& Movement::get_lua_type_name() const {
   return LuaContext::movement_module_name;
+}
+
 }
 

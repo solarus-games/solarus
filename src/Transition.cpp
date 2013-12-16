@@ -21,6 +21,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/System.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a transition effect.
  * \param direction direction of the transition effect (in or out)
@@ -155,5 +157,7 @@ void Transition::set_suspended(bool suspended) {
  */
 uint32_t Transition::get_when_suspended() const {
   return when_suspended;
+}
+
 }
 

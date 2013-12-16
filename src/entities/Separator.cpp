@@ -18,6 +18,8 @@
 #include "lowlevel/Debug.h"
 #include "lua/LuaContext.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a new separator.
  * \param name Name of the entity to create.
@@ -141,5 +143,7 @@ void Separator::notify_activating(int direction4) {
 void Separator::notify_activated(int direction4) {
 
   get_lua_context().separator_on_activated(*this, direction4);
+}
+
 }
 

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "snes_spc/spc.h"
 
+namespace solarus {
+
 /**
  * \brief Encapsulates the SPC music decoding.
  *
@@ -47,6 +49,8 @@ class SpcDecoder {
     void load(int16_t *sound_data, size_t sound_size);
     void decode(int16_t *decoded_data, int nb_samples);
 };
+
+}
 
 #endif
 

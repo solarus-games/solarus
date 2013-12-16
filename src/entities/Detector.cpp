@@ -21,6 +21,8 @@
 #include "Sprite.h"
 #include "lowlevel/Debug.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param collision_modes the detector's collision mode(s)
@@ -421,5 +423,7 @@ void Detector::notify_being_removed() {
   if (get_hero().get_facing_entity() == this) {
     get_hero().set_facing_entity(NULL);
   }
+}
+
 }
 

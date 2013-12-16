@@ -23,6 +23,8 @@
 #include "Game.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -121,5 +123,7 @@ CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior() 
  */
 bool Hero::TreasureState::is_brandishing_treasure() const {
   return true;
+}
+
 }
 

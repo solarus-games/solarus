@@ -19,6 +19,8 @@
 
 #include "Common.h"
 
+namespace solarus {
+
 /**
  * \brief Abstract class for pixel filtering algorithms.
  */
@@ -51,6 +53,8 @@ class PixelFilter {
         int src_height,
         uint32_t* dst) const = 0;
 };
+
+}
 
 #endif
 

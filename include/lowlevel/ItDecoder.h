@@ -21,6 +21,8 @@
 #include <modplug.h>
 #include <cstddef>
 
+namespace solarus {
+
 /**
  * \brief Encapsulates the Impulse Tracker music decoding.
  *
@@ -48,6 +50,8 @@ class ItDecoder {
     ModPlugFile* modplug_file;
 
 };
+
+}
 
 #endif
 

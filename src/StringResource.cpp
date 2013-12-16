@@ -19,6 +19,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 std::map<std::string, std::string> StringResource::strings;
 
 /**
@@ -117,5 +119,7 @@ const std::string& StringResource::get_string(const std::string& key) {
   Debug::check_assertion(exists(key), StringConcat()
       << "Cannot find string with key '" << key << "'");
   return strings[key];
+}
+
 }
 

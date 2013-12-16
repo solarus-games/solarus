@@ -25,6 +25,8 @@
 #include "lowlevel/Rectangle.h"
 #include "lua/ExportableToLua.h"
 
+namespace solarus {
+
 /**
  * \brief Represents a map where the game can take place.
  *
@@ -218,6 +220,8 @@ inline bool Map::test_collision_with_border(int x, int y) const {
  */
 inline const Rectangle& Map::get_camera_position() const {
   return camera->get_position();
+}
+
 }
 
 #endif

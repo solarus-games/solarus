@@ -23,6 +23,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief Provides access to dialogs translated in the current language.
  *
@@ -52,6 +54,8 @@ class DialogResource {
 
     static int l_dialog(lua_State* l);
 };
+
+}
 
 #endif
 

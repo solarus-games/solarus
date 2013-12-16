@@ -17,6 +17,8 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/InputEvent.h"
 
+namespace solarus {
+
 const std::string LuaContext::input_module_name = "sol.input";
 
 /**
@@ -121,5 +123,7 @@ int LuaContext::input_api_get_joypad_hat_direction(lua_State* l) {
 
   lua_pushinteger(l, InputEvent::get_joypad_hat_direction(hat));
   return 1;
+}
+
 }
 

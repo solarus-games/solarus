@@ -17,6 +17,8 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 
+namespace solarus {
+
 const std::string LuaContext::file_module_name = "sol.file";
 
 /**
@@ -171,5 +173,7 @@ int LuaContext::file_api_mkdir(lua_State* l) {
 
   lua_pushboolean(l, true);
   return 1;
+}
+
 }
 

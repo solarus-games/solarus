@@ -22,6 +22,8 @@
 #include "QuestResourceList.h"
 #include <vector>
 
+namespace solarus {
+
 const std::string LuaContext::language_module_name = "sol.language";
 
 /**
@@ -187,5 +189,7 @@ int LuaContext::language_api_get_dialog(lua_State* l) {
     push_dialog(l, DialogResource::get_dialog(dialog_id));
   }
   return 1;
+}
+
 }
 

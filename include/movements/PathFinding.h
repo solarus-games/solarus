@@ -22,6 +22,8 @@
 #include <list>
 #include <map>
 
+namespace solarus {
+
 /**
  * \brief Implementation of the A* algorithm to compute a path.
  *
@@ -85,6 +87,8 @@ class PathFinding {
     std::list<int> open_list_indices;  /**< indices of the open list elements, sorted by priority */
 
 };
+
+}
 
 #endif
 

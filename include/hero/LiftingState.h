@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Lifting" of the hero.
  */
@@ -43,6 +45,8 @@ class Hero::LiftingState: public Hero::State {
     void destroy_lifted_item();
 
 };
+
+}
 
 #endif
 

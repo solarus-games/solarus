@@ -23,6 +23,8 @@
 #include <list>
 #include <lua.hpp>
 
+namespace solarus {
+
 const std::string LuaContext::timer_module_name = "sol.timer";
 
 /**
@@ -454,5 +456,7 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
   timer.notify_map_suspended(game->get_current_map().is_suspended());
 
   return 0;
+}
+
 }
 

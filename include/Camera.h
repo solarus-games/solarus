@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief Manages the visible area of the map.
  *
@@ -83,6 +85,8 @@ class Camera {
  */
 inline const Rectangle& Camera::get_position() const {
   return position;
+}
+
 }
 
 #endif

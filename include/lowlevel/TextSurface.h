@@ -26,6 +26,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief Draws a line of text on a surface.
  *
@@ -154,6 +156,8 @@ class TextSurface: public Drawable {
     std::string text;                                 /**< the string to draw (only one line) */
 
 };
+
+}
 
 #endif
 

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "movements/Movement.h"
 
+namespace solarus {
+
 /**
  * \brief Movement of an entity attached to another entity.
  *
@@ -57,6 +59,8 @@ class FollowMovement: public Movement {
     bool finished;                     /**< indicates that the movement is stopped because of obstacles */
 
 };
+
+}
 
 #endif
 

@@ -24,6 +24,8 @@
  * i.e. surfaces, text surfaces and sprites.
  */
 
+namespace solarus {
+
 /**
  * \brief Returns whether a value is a userdata of a type.
  * \param l A Lua context.
@@ -323,5 +325,7 @@ int LuaContext::drawable_meta_gc(lua_State* l) {
   userdata_meta_gc(l);
 
   return 0;
+}
+
 }
 

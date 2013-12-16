@@ -34,6 +34,8 @@
 #include <sstream>
 #include <vector>
 
+namespace solarus {
+
 /**
  * \brief Creates a game.
  * \param main_loop The Solarus root object.
@@ -837,5 +839,7 @@ void Game::stop_game_over() {
     current_map->check_suspended();  // To unsuspend the hero before making him blink.
     hero->notify_game_over_finished();
   }
+}
+
 }
 

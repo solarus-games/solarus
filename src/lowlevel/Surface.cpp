@@ -26,6 +26,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+namespace solarus {
+
 /**
  * \brief Stores the tree of what surfaces have to be drawn on other surfaces.
  *
@@ -761,5 +763,7 @@ bool Surface::is_pixel_transparent(int index) const {
  */
 const std::string& Surface::get_lua_type_name() const {
   return LuaContext::surface_module_name;
+}
+
 }
 

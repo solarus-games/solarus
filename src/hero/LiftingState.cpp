@@ -24,6 +24,8 @@
 #include "Map.h"
 #include "KeysEffect.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -160,5 +162,7 @@ void Hero::LiftingState::destroy_lifted_item() {
 
   RefCountable::unref(lifted_item);
   lifted_item = NULL;
+}
+
 }
 

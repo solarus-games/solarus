@@ -29,6 +29,8 @@
 #  include "lowlevel/apple/AppleInterface.h"
 #endif
 
+namespace solarus {
+
 uint32_t System::ticks = 0;
 
 /**
@@ -149,5 +151,7 @@ uint32_t System::get_real_time() {
  */
 void System::sleep(uint32_t duration) {
   SDL_Delay(duration);
+}
+
 }
 

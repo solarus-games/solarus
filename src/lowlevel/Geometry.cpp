@@ -17,6 +17,8 @@
 
 #include "lowlevel/Geometry.h"
 
+namespace solarus {
+
 /**
  * \brief The pi constant.
  */
@@ -122,5 +124,7 @@ const Rectangle Geometry::get_xy(const Rectangle& xy1, double angle, int distanc
   Rectangle xy = get_xy(angle, distance);
   xy.add_xy(xy1.get_x(), xy1.get_y());
   return xy;
+}
+
 }
 

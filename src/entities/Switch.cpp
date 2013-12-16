@@ -27,6 +27,8 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param name name of the entity
@@ -334,5 +336,7 @@ void Switch::try_activate() {
  */
 const std::string& Switch::get_lua_type_name() const {
   return LuaContext::entity_switch_module_name;
+}
+
 }
 

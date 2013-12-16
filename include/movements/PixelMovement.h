@@ -22,6 +22,8 @@
 #include "lowlevel/Rectangle.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
  */
@@ -79,6 +81,8 @@ class PixelMovement: public Movement {
     void make_next_step();
 
 };
+
+}
 
 #endif
 

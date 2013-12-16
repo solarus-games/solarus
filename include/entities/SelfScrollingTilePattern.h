@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"
 
+namespace solarus {
+
 /**
  * \brief Tile pattern that scrolls on itself when the camera moves.
  *
@@ -44,6 +46,8 @@ class SelfScrollingTilePattern: public SimpleTilePattern {
 
     virtual bool is_animated();
 };
+
+}
 
 #endif
 

@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Pushing" of the hero.
  */
@@ -56,6 +58,8 @@ class Hero::PushingState: public Hero::State {
     bool is_prickle_obstacle() const;
 
 };
+
+}
 
 #endif
 

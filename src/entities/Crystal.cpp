@@ -26,6 +26,8 @@
 #include "lowlevel/Random.h"
 #include "lowlevel/Sound.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a new crystal.
  * \param name name of the entity to create
@@ -215,5 +217,7 @@ void Crystal::set_suspended(bool suspended) {
   if (!suspended) {
     next_possible_hit_date += System::now() - get_when_suspended();
   }
+}
+
 }
 

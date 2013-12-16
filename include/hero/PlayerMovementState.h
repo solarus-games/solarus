@@ -20,7 +20,11 @@
 #include "Common.h"
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
+ * \brief State where the hero is controlled by the player.
+ *
  * Abstract class for all hero states such that the movement is controlled by the player.
  * This means that the hero can move in the eight directions and the movement
  * is an instance of PlayerMovement.
@@ -66,6 +70,8 @@ class Hero::PlayerMovementState: public Hero::State {
     uint32_t jumper_start_date;        /**< Date to trigger the jumper
                                         * (because a small delay is necessary) */
 };
+
+}
 
 #endif
 

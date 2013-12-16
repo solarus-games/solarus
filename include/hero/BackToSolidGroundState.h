@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "back to solid ground" of the hero.
  */
@@ -62,6 +64,8 @@ class Hero::BackToSolidGroundState: public Hero::State {
     bool with_sound;                /**< true to play a sound when reaching the solid ground */
 
 };
+
+}
 
 #endif
 

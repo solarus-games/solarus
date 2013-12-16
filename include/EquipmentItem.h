@@ -22,6 +22,8 @@
 #include <string>
 #include <vector>
 
+namespace solarus {
+
 /**
  * \brief An item possibly possessed by the player.
  *
@@ -108,6 +110,8 @@ class EquipmentItem: public ExportableToLua {
     std::string sound_when_brandished;   /**< sound to play when the item is brandished (or an empty string) */
     std::string shadow;                  /**< animation of the shadow sprite when the item is on the ground (or an empty string) */
 };
+
+}
 
 #endif
 

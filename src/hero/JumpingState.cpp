@@ -25,6 +25,8 @@
 #include "Game.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -349,5 +351,7 @@ void Hero::JumpingState::destroy_carried_item() {
 CarriedItem::Behavior Hero::JumpingState::get_previous_carried_item_behavior() const {
 
   return CarriedItem::BEHAVIOR_KEEP;
+}
+
 }
 

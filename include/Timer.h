@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "lua/ExportableToLua.h"
 
+namespace solarus {
+
 /**
  * \brief Represents a timer that any class can start.
  *
@@ -58,6 +60,8 @@ class Timer: public ExportableToLua {
     // sound
     uint32_t next_sound_date;        /**< date when the next clock sound effect is played */
 };
+
+}
 
 #endif
 

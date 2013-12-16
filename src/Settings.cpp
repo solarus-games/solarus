@@ -16,7 +16,7 @@
  */
 #include "Settings.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Language.h"
+#include "Language.h"
 #include "lowlevel/Video.h"
 #include "lowlevel/VideoMode.h"
 #include "lowlevel/Sound.h"

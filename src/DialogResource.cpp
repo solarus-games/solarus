@@ -17,7 +17,7 @@
 #include "DialogResource.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/Language.h"
+#include "Language.h"
 #include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 

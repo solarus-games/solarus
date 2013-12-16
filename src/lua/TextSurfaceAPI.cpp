@@ -19,7 +19,7 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Language.h"
+#include "Language.h"
 #include "StringResource.h"
 
 namespace solarus {

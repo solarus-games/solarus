@@ -16,7 +16,7 @@
  */
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Language.h"
+#include "Language.h"
 #include "StringResource.h"
 #include "DialogResource.h"
 #include "QuestResourceList.h"

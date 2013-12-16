@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Language.h"
+#include "Language.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"

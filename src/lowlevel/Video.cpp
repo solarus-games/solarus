@@ -703,7 +703,7 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
     std::vector<std::string> shader_names = 
         FileTools::data_files_enumerate("shaders/filters/" + get_rendering_driver_name(), false, true);
 
-    for(int i=0; i<shader_names.size() ; ++i) {
+    for(int i = 0; i < shader_names.size(); ++i) {
 
       if (shader_names.at(i) == normal_mode_name) {
         Debug::warning("Forbidden video mode name : " + shader_names.at(i));

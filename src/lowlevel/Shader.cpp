@@ -37,6 +37,7 @@ PFNGLGETHANDLEARBPROC Shader::glGetHandleARB;
 
 SDL_GLContext Shader::gl_context;
 GLhandleARB Shader::default_shader_program;
+std::string Shader::defines_source = "";
 Shader* Shader::loading_shader = NULL;
 
 #endif
@@ -93,7 +94,17 @@ bool Shader::initialize() {
         glUniform1iARB &&
         glUseProgramObjectARB &&
         glGetHandleARB) {
+      
+      // Get the SDL default shader program
       default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
+      
+      // WORKAROUND Guarantee the shader to deal with the rectangle sampler whatever the hardware is.
+      if (SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle")
+          || SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) {
+        defines_source += "#define sampler2D sampler2DRect\n";
+        defines_source += "#define texture2D texture2DRect\n";
+      }
+      
       return true;
     }
   }
@@ -123,8 +134,12 @@ void Shader::quit() {
 bool Shader::compile_shader(GLhandleARB& shader, const char* source) {
   
   GLint status;
+  const char *sources[2];
   
-  glShaderSourceARB(shader, 1, &source, NULL);
+  sources[0] = defines_source.c_str();
+  sources[1] = source;
+  
+  glShaderSourceARB(shader, SDL_arraysize(sources), sources, NULL);
   glCompileShaderARB(shader);
   glGetObjectParameterivARB(shader, GL_OBJECT_COMPILE_STATUS_ARB, &status);
   if (status == 0) {

@@ -73,6 +73,7 @@ class Shader {
   
     static SDL_GLContext gl_context;             /**< The OpenGL context. */
     static GLhandleARB default_shader_program;   /**< Default shader program to restore once a shaded render is done. */
+    static std::string defines_source;           /**< Definitions source used with every shaders. */
     static Shader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */
   
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */

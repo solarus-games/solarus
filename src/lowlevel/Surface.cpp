@@ -384,6 +384,7 @@ void Surface::create_software_surface() {
       format->Bmask,
       format->Amask
   );
+  SDL_SetSurfaceBlendMode(internal_surface, SDL_BLENDMODE_BLEND);
   is_rendered = false;
 
   Debug::check_assertion(internal_surface != NULL,
@@ -532,7 +533,7 @@ void Surface::raw_draw_region(
       if (dst_surface.internal_surface == NULL) {
         dst_surface.create_software_surface();
       }
-
+      
       SDL_BlitSurface(
           this->internal_surface,
           region.get_internal_rect(),
@@ -604,6 +605,7 @@ void Surface::render(
 
     // If the software surface has changed, update the hardware texture.
     else if (software_destination && !is_rendered) {
+      convert_software_surface();
       SDL_UpdateTexture(
           internal_texture,
           NULL,

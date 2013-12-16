@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <string>
+#include <vector>
 
 namespace solarus {
 
@@ -31,7 +32,7 @@ class MainLoop {
 
   public:
 
-    MainLoop(int argc, char** argv);
+    MainLoop(const CommandLine& args);
     ~MainLoop();
 
     void run();

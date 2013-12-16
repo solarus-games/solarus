@@ -33,7 +33,7 @@ namespace solarus {
 
 // main classes
 class MainLoop;
-class Screen;
+class CommandLine;
 class QuestProperties;
 class QuestResourceList;
 class Settings;

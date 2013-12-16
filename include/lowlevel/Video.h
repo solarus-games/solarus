@@ -36,7 +36,7 @@ class Video {
 
   public:
 
-    static void initialize(int argc, char** argv);
+    static void initialize(const CommandLine& args);
     static void quit();
 
     static SDL_Window* get_window();

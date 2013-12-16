@@ -14,37 +14,38 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_SYSTEM_H
-#define SOLARUS_SYSTEM_H
+#ifndef SOLARUS_COMMAND_LINE_H
+#define SOLARUS_COMMAND_LINE_H
 
 #include "Common.h"
 #include <string>
+#include <vector>
 
 namespace solarus {
 
 /**
- * \brief Provides lowlevel functions and initialization.
+ * \brief Stores the command-line options passed to the program.
  *
- * This class initializes all low-level features.
+ * Provides easy access to find whether a particular option was passed,
+ * and to get the value of options of the form key=value.
  */
-class System {
+class CommandLine {
 
   public:
 
-    static void initialize(const CommandLine& args);
-    static void initialize_video_modes();
-    static void quit();
-    static void update();
+    CommandLine(int argc, char** argv);
+    ~CommandLine();
 
-    static uint32_t now();
-    static uint32_t get_real_time();
-    static void sleep(uint32_t duration);
-
-    static const uint32_t timestep = 10;  // Timestep added to the simulated time at each update.
+    const std::string& get_program_name() const;
+    const std::vector<std::string>& get_arguments() const;
+    bool has_argument(const std::string& option) const;
+    std::string get_argument_value(const std::string& key) const;
 
   private:
 
-    static uint32_t ticks;  // Simulated time in milliseconds.
+    std::string program_name;
+    std::vector<std::string> args;
+
 };
 
 }

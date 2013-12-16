@@ -65,7 +65,7 @@ class Sound {
     static bool exists(const std::string& sound_id);
     static void play(const std::string& sound_id);
 
-    static void initialize(int argc, char** argv);
+    static void initialize(const CommandLine& args);
     static void quit();
     static bool is_initialized();
     static void update();

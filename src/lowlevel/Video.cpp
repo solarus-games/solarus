@@ -21,6 +21,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "CommandLine.h"
 #include <map>
 #include <algorithm>
 
@@ -33,7 +34,7 @@ namespace {
   SDL_Texture* render_target;               /**< The render texture used when shader modes are supported. */
   SDL_PixelFormat* pixel_format = NULL;     /**< The pixel color format to use. */
   std::string rendering_driver_name;        /**< The name of the rendering driver. */
-  bool disable_window = false;             /**< Indicates that no window is displayed (used for unit tests). */
+  bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
   bool fullscreen;                          /**< True if fullscreen display. */
   bool rendertarget_supported;              /**< True if rendering on texture is supported. */
   bool shaders_supported;                   /**< True if shaded modes and rendering on texture are supported. */
@@ -62,26 +63,16 @@ namespace {
 /**
  * \brief Initializes the video system and creates the window.
  *
- * This method should be called when the application starts.
+ * This method should be called when the program starts.
  * Options "-no-video" and "-quest-size=<width>x<height>" are recognized.
  *
- * \param argc Command-line arguments number.
- * \param argv Command-line arguments.
+ * \param args Command-line arguments.
  */
-void Video::initialize(int argc, char **argv) {
-  // TODO pass options as an std::set<string> instead.
+void Video::initialize(const CommandLine& args) {
 
-  // check the -no-video and the -quest-size options.
-  std::string quest_size_string;
-  for (argv++; argc > 1; argv++, argc--) {
-    const std::string arg = *argv;
-    if (arg == "-no-video") {
-      disable_window = true;
-    }
-    else if (arg.find("-quest-size=") == 0) {
-      quest_size_string = arg.substr(12);
-    }
-  }
+  // Check the -no-video and the -quest-size options.
+  const std::string& quest_size_string = args.get_argument_value("-quest-size");
+  disable_window = args.has_argument("-no-video");
 
   wanted_quest_size = Rectangle(0, 0,
       SOLARUS_DEFAULT_QUEST_WIDTH, SOLARUS_DEFAULT_QUEST_HEIGHT);

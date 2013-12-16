@@ -17,13 +17,13 @@
 #include <cstring>  // memcpy
 #include <cmath>
 #include <sstream>
-#include <vector>
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "QuestResourceList.h"
+#include "CommandLine.h"
 
 namespace solarus {
 
@@ -79,22 +79,17 @@ Sound::~Sound() {
  * If the argument -no-audio is provided, this function has no effect and
  * there will be no sound.
  *
- * \param argc command-line arguments number
- * \param argv command-line arguments
+ * \param args Command-line arguments.
  */
-void Sound::initialize(int argc, char** argv) {
+void Sound::initialize(const CommandLine& args) {
 
-  // check the -no-audio option
-  bool disable = false;
-  for (argv++; argc > 1 && !disable; argv++, argc--) {
-    const std::string arg = *argv;
-    disable = (arg.find("-no-audio") == 0);
-  }
+  // Check the -no-audio option.
+  const bool disable = args.has_argument("-no-audio");
   if (disable) {
     return;
   }
 
-  // initialize OpenAL
+  // Initialize OpenAL.
 
   device = alcOpenDevice(NULL);
   if (!device) {

@@ -51,7 +51,7 @@ class FileTools {
     };
 
     // Initialization.
-    static void initialize(int argc, char** argv);
+    static void initialize(const CommandLine& args);
     static void quit();
 
     // Reading data files of the quest.

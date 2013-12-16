@@ -110,10 +110,10 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
-  internal_color(NULL),
   software_destination(false),
   internal_surface(internal_surface),
   internal_texture(NULL),
+  internal_color(NULL),
   is_rendered(false),
   internal_opacity(255) {
 

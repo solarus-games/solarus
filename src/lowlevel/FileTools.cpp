@@ -322,8 +322,8 @@ std::vector<std::string> FileTools::data_files_enumerate(const std::string& dir_
       bool is_folder = PHYSFS_isDirectory(std::string(dir_path + "/" + *i).c_str());
       
       if (!PHYSFS_isSymbolicLink(*i)
-          && (list_files && !is_folder
-          || list_folders && is_folder))
+          && ((list_files && !is_folder)
+              || (list_folders && is_folder)))
         listed_files.push_back(std::string(*i));
     }
 

@@ -39,7 +39,7 @@ namespace {
   bool shaders_supported;                   /**< True if shaded modes and rendering on texture are supported. */
   bool renderer_accelerated = false;       /**< \c true if 2D GPU acceleration is available. */
   // TODO const PixelFilter* pixel_filter = NULL;   /**< The pixel filtering algorithm (if any) applied with the current video mode. */
-  Surface* scaled_surface = NULL;           /**< The screen surface used with scaled modes. */
+  // TODO Surface* scaled_surface = NULL;           /**< The screen surface used with scaled modes. */
 
   const std::string normal_mode_name =
       "solarus_default";                    /**< Non-shaded mode name. It will be forbidden for shaded ones. */
@@ -105,7 +105,7 @@ void Video::quit() {
     SDL_SetWindowFullscreen(main_window, 0);
   }
 
-  for (int i = 0; i < all_video_modes.size(); ++i) {
+  for (unsigned i = 0; i < all_video_modes.size(); ++i) {
     delete all_video_modes[i];
   }
   all_video_modes.clear();
@@ -443,7 +443,7 @@ std::vector<const VideoMode*> Video::get_video_modes() {
 const VideoMode* Video::get_video_mode_by_name(
     const std::string& mode_name) {
 
-  for (int i = 0; i < all_video_modes.size(); ++i) {
+  for (unsigned i = 0; i < all_video_modes.size(); ++i) {
     if (all_video_modes.at(i)->get_name() == mode_name) {
       return all_video_modes.at(i);
     }
@@ -705,7 +705,7 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
     std::vector<std::string> shader_names = 
         FileTools::data_files_enumerate("shaders/filters/" + get_rendering_driver_name(), false, true);
 
-    for(int i=0; i<shader_names.size() ; ++i) {
+    for (unsigned i = 0; i < shader_names.size(); ++i) {
 
       if (shader_names.at(i) == normal_mode_name) {
         Debug::warning("Forbidden video mode name : " + shader_names.at(i));

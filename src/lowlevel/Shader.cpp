@@ -172,11 +172,11 @@ void Shader::set_rendering_settings() {
  * \brief Constructor.
  * \param shadername The name of the shader to load.
  */
-Shader::Shader(std::string shader_name) :
-  logical_scale(1.0),
+Shader::Shader(std::string shader_name):
   program(0),
   vertex_shader(0),
-  fragment_shader(0) {
+  fragment_shader(0),
+  logical_scale(1.0) {
     
   glGetError();
     

@@ -22,6 +22,8 @@
 #include <string>
 #include <map>
 
+namespace solarus {
+
 /**
  * \brief Represents a low-level event.
  *
@@ -261,6 +263,8 @@ class InputEvent {
 
     const SDL_Event internal_event;               /**< the internal event encapsulated */
 };
+
+}
 
 #endif
 

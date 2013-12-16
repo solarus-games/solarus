@@ -19,6 +19,8 @@
 #include "lowlevel/Music.h"
 #include <lua.hpp>
 
+namespace solarus {
+
 const std::string LuaContext::audio_module_name = "sol.audio";
 
 /**
@@ -291,5 +293,7 @@ int LuaContext::audio_api_set_music_tempo(lua_State* l) {
     lua_pushboolean(l, true);
   }
   return 1;
+}
+
 }
 

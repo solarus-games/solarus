@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "movements/StraightMovement.h"
 
+namespace solarus {
+
 /**
  * \brief Movement of an entity controlled by the player.
  *
@@ -51,6 +53,8 @@ class PlayerMovement: public StraightMovement {
                               * currently pressed by the player (when the movement allows them) or -1 */
 
 };
+
+}
 
 #endif
 

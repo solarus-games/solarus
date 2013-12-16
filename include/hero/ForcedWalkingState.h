@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief State of the hero where he is walking with a predetermined path.
  *
@@ -56,6 +58,8 @@ class Hero::ForcedWalkingState: public Hero::State {
     PathMovement* movement;       /**< the movement applied to the hero */
 
 };
+
+}
 
 #endif
 

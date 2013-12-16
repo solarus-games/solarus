@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "movements/Movement.h"
 
+namespace solarus {
+
 /**
  * \brief A straight movement represented as a speed vector
  * whose properties (speed and angle) can be changed.
@@ -106,6 +108,8 @@ class StraightMovement: public Movement {
                                   * when an obstacle is close */
 
 };
+
+}
 
 #endif
 

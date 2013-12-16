@@ -20,6 +20,8 @@
 #include "Common.h"
 #include <string>
 
+namespace solarus {
+
 /**
  * \brief Represents an item that the hero brandishes when he receives it.
  *
@@ -69,6 +71,8 @@ class Treasure {
 
     void check_obtainable() const;
 };
+
+}
 
 #endif
 

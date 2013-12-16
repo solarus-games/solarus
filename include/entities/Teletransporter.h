@@ -21,6 +21,8 @@
 #include "entities/Detector.h"
 #include "Transition.h"
 
+namespace solarus {
+
 /**
  * \brief A detector that sends the hero to a destination.
  *
@@ -74,6 +76,8 @@ class Teletransporter: public Detector {
     void transport_hero(Hero& hero);
     bool is_on_map_side() const;
 };
+
+}
 
 #endif
 

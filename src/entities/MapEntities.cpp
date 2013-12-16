@@ -32,7 +32,8 @@
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-using std::list;
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -97,7 +98,7 @@ void MapEntities::destroy_all_entities() {
 
   // delete the other entities
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     destroy_entity(*i);
   }
@@ -137,7 +138,7 @@ Hero& MapEntities::get_hero() {
  * \param layer The layer.
  * \return The obstacle entities on that layer.
  */
-const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
+const std::list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
   return obstacle_entities[layer];
 }
 
@@ -146,7 +147,7 @@ const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
  * \param layer The layer.
  * \return The ground observers on that layer.
  */
-const list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
+const std::list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
   return ground_observers[layer];
 }
 
@@ -155,7 +156,7 @@ const list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
  * \param layer The layer.
  * \return The ground observers on that layer.
  */
-const list<MapEntity*>& MapEntities::get_ground_modifiers(Layer layer) {
+const std::list<MapEntity*>& MapEntities::get_ground_modifiers(Layer layer) {
   return ground_modifiers[layer];
 }
 
@@ -163,7 +164,7 @@ const list<MapEntity*>& MapEntities::get_ground_modifiers(Layer layer) {
  * \brief Returns all detectors on the map.
  * \return the detectors
  */
-const list<Detector*>& MapEntities::get_detectors() {
+const std::list<Detector*>& MapEntities::get_detectors() {
   return detectors;
 }
 
@@ -181,7 +182,7 @@ Destination* MapEntities::get_default_destination() {
  * \param layer the layer
  * \return the stairs on this layer
  */
-const list<Stairs*>& MapEntities::get_stairs(Layer layer) {
+const std::list<Stairs*>& MapEntities::get_stairs(Layer layer) {
   return stairs[layer];
 }
 
@@ -190,7 +191,7 @@ const list<Stairs*>& MapEntities::get_stairs(Layer layer) {
  * \param layer the layer
  * \return the crystal blocks on this layer
  */
-const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
+const std::list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
   return crystal_blocks[layer];
 }
 
@@ -198,7 +199,7 @@ const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
  * \brief Returns all separators of the map.
  * \return The separators.
  */
-const list<const Separator*>& MapEntities::get_separators() const {
+const std::list<const Separator*>& MapEntities::get_separators() const {
   return separators;
 }
 
@@ -268,11 +269,11 @@ MapEntity* MapEntities::find_entity(const std::string& name) {
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name.
  */
-list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix) {
+std::list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix) {
 
-  list<MapEntity*> entities;
+  std::list<MapEntity*> entities;
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     MapEntity* entity = *i;
@@ -291,12 +292,12 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name.
  */
-list<MapEntity*> MapEntities::get_entities_with_prefix(
+std::list<MapEntity*> MapEntities::get_entities_with_prefix(
     EntityType type, const std::string& prefix) {
 
-  list<MapEntity*> entities;
+  std::list<MapEntity*> entities;
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     MapEntity* entity = *i;
@@ -316,7 +317,7 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(
  */
 bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 
-  list<MapEntity*>::const_iterator i;
+  std::list<MapEntity*>::const_iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     const MapEntity* entity = *i;
@@ -350,7 +351,7 @@ void MapEntities::bring_to_front(MapEntity* entity) {
  */
 void MapEntities::notify_map_started() {
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity* entity = *i;
     entity->notify_map_started();
@@ -369,7 +370,7 @@ void MapEntities::notify_map_started() {
  */
 void MapEntities::notify_map_opening_transition_finished() {
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity* entity = *i;
     entity->notify_map_opening_transition_finished();
@@ -386,7 +387,7 @@ void MapEntities::notify_tileset_changed() {
   // Redraw optimized tiles (i.e. non animated ones).
   redraw_non_animated_tiles();
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity* entity = *i;
     entity->notify_tileset_changed();
@@ -711,7 +712,7 @@ void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
  */
 void MapEntities::remove_marked_entities() {
 
-  list<MapEntity*>::iterator it;
+  std::list<MapEntity*>::iterator it;
 
   // remove the marked entities
   for (it = entities_to_remove.begin();
@@ -808,7 +809,7 @@ void MapEntities::set_suspended(bool suspended) {
   hero.set_suspended(suspended);
 
   // other entities
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin();
        i != all_entities.end();
        i++) {
@@ -830,7 +831,7 @@ void MapEntities::update() {
   hero.update();
 
   // Update the dynamic entities.
-  list<MapEntity*>::iterator it;
+  std::list<MapEntity*>::iterator it;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     // Sort the entities drawn in y order.
@@ -1014,7 +1015,7 @@ void MapEntities::draw() {
         map.get_camera_position(), map.get_visible_surface());
 
     // draw the first sprites
-    list<MapEntity*>::iterator i;
+    std::list<MapEntity*>::iterator i;
     for (i = entities_drawn_first[layer].begin();
         i != entities_drawn_first[layer].end();
         i++) {
@@ -1150,5 +1151,7 @@ void MapEntities::remove_arrows() {
       remove_entity(entity);
     }
   }
+}
+
 }
 

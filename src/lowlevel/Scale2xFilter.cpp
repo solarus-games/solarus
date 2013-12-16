@@ -16,6 +16,8 @@
  */
 #include "lowlevel/Scale2xFilter.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  */
@@ -94,6 +96,8 @@ void Scale2xFilter::filter(
     }
     e1 += dst_width;
   }
+
+}
 
 }
 

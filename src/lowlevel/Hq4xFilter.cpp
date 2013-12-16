@@ -17,6 +17,8 @@
 #include "lowlevel/Hq4xFilter.h"
 #include "hqx/hqx.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  */
@@ -49,5 +51,7 @@ void Hq4xFilter::filter(
     uint32_t* dst) const {
 
   hq4x_32(const_cast<uint32_t*>(src), dst, src_width, src_height);
+}
+
 }
 

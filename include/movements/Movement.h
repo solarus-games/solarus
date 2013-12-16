@@ -21,6 +21,8 @@
 #include "lua/ExportableToLua.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief Abstract class for representing a movement.
  *
@@ -128,6 +130,8 @@ class Movement: public ExportableToLua {
     int finished_callback_ref;                   /**< Lua ref to a function to call when this movement finishes. */
 
 };
+
+}
 
 #endif
 

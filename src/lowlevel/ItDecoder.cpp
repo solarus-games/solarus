@@ -20,6 +20,8 @@
 #include <stdafx.h>  // These two headers are with the libmodplug ones.
 #include <sndfile.h>
 
+namespace solarus {
+
 /**
  * \brief Creates an Impulse Tracker decoder.
  */
@@ -139,5 +141,7 @@ int ItDecoder::get_tempo() {
 void ItDecoder::set_tempo(int tempo) {
 
   reinterpret_cast<CSoundFile*>(modplug_file)->SetTempo(tempo);
+}
+
 }
 

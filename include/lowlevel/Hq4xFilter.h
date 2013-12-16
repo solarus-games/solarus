@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "lowlevel/PixelFilter.h"
 
+namespace solarus {
+
 /**
  * \brief Wrapper to the hq4x algorithm.
  */
@@ -37,6 +39,8 @@ class Hq4xFilter: public PixelFilter {
         int src_height,
         uint32_t* dst) const;
 };
+
+}
 
 #endif
 

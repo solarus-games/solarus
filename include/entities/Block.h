@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A entity that the hero can push or pull.
  *
@@ -91,6 +93,8 @@ class Block: public Detector {
     void movement_by_hero_finished();
 
 };
+
+}
 
 #endif
 

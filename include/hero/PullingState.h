@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Pulling" of the hero.
  */
@@ -56,6 +58,8 @@ class Hero::PullingState: public Hero::State {
     void stop_moving_pulled_entity();
 
 };
+
+}
 
 #endif
 

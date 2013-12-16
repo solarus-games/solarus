@@ -21,6 +21,8 @@
 #include <string>
 #include <map>
 
+namespace solarus {
+
 /**
  * \brief A dialog that can be displayed during the game in the dialog box.
  */
@@ -51,6 +53,8 @@ class Dialog {
     std::map<std::string, std::string>
         properties;               /**< Custom properties of this dialog. */
 };
+
+}
 
 #endif
 

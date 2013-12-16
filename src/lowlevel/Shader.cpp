@@ -18,6 +18,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
 
+namespace solarus {
 
 #if SOLARUS_HAVE_OPENGL_OR_ES == 1
 
@@ -182,11 +183,11 @@ void Shader::set_rendering_settings() {
  * \brief Constructor.
  * \param shadername The name of the shader to load.
  */
-Shader::Shader(std::string shader_name) :
-  logical_scale(1.0),
+Shader::Shader(std::string shader_name):
   program(0),
   vertex_shader(0),
-  fragment_shader(0) {
+  fragment_shader(0),
+  logical_scale(1.0) {
     
   glGetError();
     
@@ -348,3 +349,6 @@ void Shader::apply()
 }
 
 #endif
+
+}
+

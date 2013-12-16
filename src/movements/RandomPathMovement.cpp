@@ -20,6 +20,8 @@
 #include "lowlevel/StringConcat.h"
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief Creates a random walk movement object.
  * \param speed speed of the movement in pixels per second
@@ -66,5 +68,7 @@ bool RandomPathMovement::is_finished() const {
  */
 const std::string& RandomPathMovement::get_lua_type_name() const {
   return LuaContext::movement_random_path_module_name;
+}
+
 }
 

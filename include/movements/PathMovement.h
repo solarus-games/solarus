@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "movements/PixelMovement.h"
 
+namespace solarus {
+
 /**
  * \brief Movement of an entity that follows a predetermined path.
  *
@@ -101,6 +103,8 @@ class PathMovement: public PixelMovement {
     static const std::string elementary_moves[];		/**< 8 pixel trajectory (in the PixelMovement sense) for each direction (0 to 7) */
 
 };
+
+}
 
 #endif
 

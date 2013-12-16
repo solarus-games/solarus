@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 
+namespace solarus {
+
 /**
  * \brief A special tile that can be enabled or disabled.
  *
@@ -58,6 +60,8 @@ class DynamicTile: public MapEntity {
     TilePattern* tile_pattern; /**< pattern of the tile */
 
 };
+
+}
 
 #endif
 

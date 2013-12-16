@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"
 
+namespace solarus {
+
 /**
  * \brief Tile pattern with a parallax scrolling effect.
  *
@@ -49,6 +51,8 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
     virtual bool is_animated();
     virtual bool is_drawn_at_its_position();
 };
+
+}
 
 #endif
 

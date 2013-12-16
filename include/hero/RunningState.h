@@ -20,6 +20,8 @@
 #include "hero/State.h"
 #include "GameCommands.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Running" of the hero.
  */
@@ -65,6 +67,8 @@ class Hero::RunningState: public Hero::State {
     bool is_cutting_with_sword(Detector& detector) const;
     int get_sword_damage_factor() const;
 };
+
+}
 
 #endif
 

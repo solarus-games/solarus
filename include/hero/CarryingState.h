@@ -19,6 +19,8 @@
 
 #include "hero/PlayerMovementState.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Carrying" of the hero.
  */
@@ -51,6 +53,8 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
     void destroy_carried_item();
 
 };
+
+}
 
 #endif
 

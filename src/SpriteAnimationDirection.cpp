@@ -20,6 +20,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param frames Position of each frame of the sequence in the image.
@@ -135,5 +137,7 @@ void SpriteAnimationDirection::disable_pixel_collisions() {
  */
 bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
   return !pixel_bits.empty();
+}
+
 }
 

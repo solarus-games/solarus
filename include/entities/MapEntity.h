@@ -30,6 +30,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief Abstract class for all objects placed on a map.
  *
@@ -401,6 +403,7 @@ inline bool MapEntity::overlaps(const MapEntity& other) const {
   return overlaps(other.get_bounding_box());
 }
 
+}
 
 #endif
 

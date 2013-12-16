@@ -23,6 +23,8 @@
 #include "Game.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -109,5 +111,7 @@ void Hero::VictoryState::set_suspended(bool suspended) {
   if (!suspended) {
     end_victory_date += System::now() - get_when_suspended();
   }
+}
+
 }
 

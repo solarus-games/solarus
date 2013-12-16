@@ -17,6 +17,8 @@
 #include "lowlevel/VideoMode.h"
 #include "lowlevel/Shader.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a video mode with the specified properties.
  * \param name Lua name of the video mode.
@@ -66,5 +68,7 @@ const Rectangle& VideoMode::get_window_size() const {
  */
 Shader* VideoMode::get_shader() const {
   return shader;
+}
+
 }
 

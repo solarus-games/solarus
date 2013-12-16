@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "movements/PathMovement.h"
 
+namespace solarus {
+
 /**
  * \brief Movement for an entity that looks for a path to another entity.
  *
@@ -51,6 +53,8 @@ class PathFindingMovement: public PathMovement {
     uint32_t next_recomputation_date;
 
 };
+
+}
 
 #endif
 

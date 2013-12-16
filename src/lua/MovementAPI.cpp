@@ -34,6 +34,8 @@
 #include "Map.h"
 #include "Drawable.h"
 
+namespace solarus {
+
 const std::string LuaContext::movement_module_name = "sol.movement";
 const std::string LuaContext::movement_straight_module_name = "sol.movement.straight";
 const std::string LuaContext::movement_target_module_name = "sol.movement.target";
@@ -1786,5 +1788,7 @@ void LuaContext::movement_on_finished(Movement& movement) {
   push_movement(l, movement);
   on_finished();
   lua_pop(l, 1);
+}
+
 }
 

@@ -31,6 +31,8 @@
 #include "lowlevel/StringConcat.h"
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief Creates a new shop treasure with the specified treasure and price.
  * \param name the name identifying this entity
@@ -227,5 +229,7 @@ void ShopTreasure::draw_on_map() {
  */
 const std::string& ShopTreasure::get_lua_type_name() const {
   return LuaContext::entity_shop_treasure_module_name;
+}
+
 }
 

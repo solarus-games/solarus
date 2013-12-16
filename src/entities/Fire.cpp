@@ -18,6 +18,8 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 
+namespace solarus {
+
 /**
  * \brief Creates some fire.
  * \param name Unique name identifying the entity on the map or an empty string.
@@ -88,5 +90,7 @@ void Fire::update() {
 void Fire::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
 
   other_entity.notify_collision_with_fire(*this, other_sprite);
+}
+
 }
 

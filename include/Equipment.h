@@ -23,6 +23,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief Represents the hero's equipment.
  *
@@ -106,6 +108,8 @@ class Equipment {
     void set_ability(const std::string& ability_name, int level);
     void notify_ability_used(const std::string& ability_name);
 };
+
+}
 
 #endif
 

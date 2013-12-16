@@ -19,6 +19,9 @@
 
 #include "Common.h"
 #include <string>
+#include <vector>
+
+namespace solarus {
 
 /**
  * \brief Main class of the game engine.
@@ -29,7 +32,7 @@ class MainLoop {
 
   public:
 
-    MainLoop(int argc, char** argv);
+    MainLoop(const CommandLine& args);
     ~MainLoop();
 
     void run();
@@ -56,6 +59,8 @@ class MainLoop {
     void draw();
     void update();
 };
+
+}
 
 #endif
 

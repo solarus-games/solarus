@@ -21,6 +21,8 @@
 #include "Common.h"
 #include <string>
 
+namespace solarus {
+
 /**
  * \brief Loads and saves the built-in settings of the quest.
  *
@@ -33,6 +35,8 @@ class Settings {
     static bool load(const std::string& file_name);
     static bool save(const std::string& file_name);
 };
+
+}
 
 #endif
 

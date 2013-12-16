@@ -22,6 +22,8 @@
 #include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 
+namespace solarus {
+
 /**
  * \brief Loads the animations of a sprite from a file.
  * \param id Id of the sprite animation set to load
@@ -291,5 +293,7 @@ bool SpriteAnimationSet::are_pixel_collisions_enabled() const {
  */
 const Rectangle& SpriteAnimationSet::get_max_size() const {
   return max_size;
+}
+
 }
 

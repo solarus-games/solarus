@@ -21,6 +21,8 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Video.h"
 
+namespace solarus {
+
 Color Color::transparent;
 Color Color::black;
 Color Color::white;
@@ -125,5 +127,7 @@ void Color::get_components(int& r, int& g, int& b, int& a) const {
   g = internal_color.g;
   b = internal_color.b;
   a = internal_color.a;
+}
+
 }
 

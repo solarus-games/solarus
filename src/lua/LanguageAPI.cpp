@@ -16,11 +16,13 @@
  */
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Language.h"
+#include "Language.h"
 #include "StringResource.h"
 #include "DialogResource.h"
 #include "QuestResourceList.h"
 #include <vector>
+
+namespace solarus {
 
 const std::string LuaContext::language_module_name = "sol.language";
 
@@ -187,5 +189,7 @@ int LuaContext::language_api_get_dialog(lua_State* l) {
     push_dialog(l, DialogResource::get_dialog(dialog_id));
   }
   return 1;
+}
+
 }
 

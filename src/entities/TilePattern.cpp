@@ -21,6 +21,8 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Surface.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  *
@@ -158,5 +160,7 @@ void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_positi
       }
     }
   }
+}
+
 }
 

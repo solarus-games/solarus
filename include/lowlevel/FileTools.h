@@ -23,6 +23,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief Handles access to data files.
  *
@@ -49,7 +51,7 @@ class FileTools {
     };
 
     // Initialization.
-    static void initialize(int argc, char** argv);
+    static void initialize(const CommandLine& args);
     static void quit();
 
     // Reading data files of the quest.
@@ -97,6 +99,8 @@ class FileTools {
 
     static std::vector<std::string> temporary_files;     /**< Name of all temporary files created. */
 };
+
+}
 
 #endif
 

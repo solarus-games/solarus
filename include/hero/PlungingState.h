@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Plunging" of the hero.
  */
@@ -35,6 +37,8 @@ class Hero::PlungingState: public Hero::State {
     bool is_touching_ground() const;
 
 };
+
+}
 
 #endif
 

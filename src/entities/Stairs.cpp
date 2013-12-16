@@ -23,6 +23,8 @@
 #include "Game.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a new stairs entity.
  * \param name Name of the entity to create.
@@ -381,5 +383,7 @@ void Stairs::update_dynamic_tiles() {
     DynamicTile* tile = static_cast<DynamicTile*>(*it);
     tile->set_enabled(!is_enabled());
   }
+}
+
 }
 

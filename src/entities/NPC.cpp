@@ -29,6 +29,8 @@
 #include "Equipment.h"
 #include "EquipmentItemUsage.h"
 
+namespace solarus {
+
 /**
  * \brief Creates an NPC.
  * \param game the game
@@ -372,5 +374,7 @@ bool NPC::can_be_lifted() const {
  */
 const std::string& NPC::get_lua_type_name() const {
   return LuaContext::entity_npc_module_name;
+}
+
 }
 

@@ -22,6 +22,8 @@
 #include <string>
 #include <vector>
 
+namespace solarus {
+
 /**
  * \brief Stores the animated sequences of a sprite in a specific animation.
  *
@@ -83,6 +85,8 @@ inline const SpriteAnimationDirection* SpriteAnimation::get_direction(
   SOLARUS_ASSERT(direction >= 0 && direction < get_nb_directions(),
       "Invalid sprite direction");
   return directions[direction];
+}
+
 }
 
 #endif

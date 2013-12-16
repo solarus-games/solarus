@@ -27,6 +27,8 @@
 struct SDL_PixelFormat;
 struct SDL_Renderer;
 
+namespace solarus {
+
 /**
  * \brief Draws the window and handles the video mode.
  */
@@ -34,7 +36,7 @@ class Video {
 
   public:
 
-    static void initialize(int argc, char** argv);
+    static void initialize(const CommandLine& args);
     static void quit();
 
     static SDL_Window* get_window();
@@ -88,6 +90,8 @@ class Video {
 
     static void shaded_render(Surface& quest_surface);
 };
+
+}
 
 #endif
 

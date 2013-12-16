@@ -21,6 +21,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a pixel movement object.
  * \param trajectory_string a string describing the succession of translations that compose this movement,
@@ -284,3 +286,6 @@ bool PixelMovement::is_finished() const {
 const std::string& PixelMovement::get_lua_type_name() const {
   return LuaContext::movement_pixel_module_name;
 }
+
+}
+

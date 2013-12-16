@@ -19,6 +19,8 @@
 #include "lowlevel/StringConcat.h"
 #include "Sprite.h"
 
+namespace solarus {
+
 const std::string EnemyReaction::reaction_names[] = {
   "hurt",
   "ignored",
@@ -130,5 +132,7 @@ EnemyReaction::ReactionType EnemyReaction::get_reaction_by_name(const std::strin
 
   Debug::die(StringConcat() << "Invalid reaction name: " << name);
   throw;
+}
+
 }
 

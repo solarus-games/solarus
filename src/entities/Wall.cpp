@@ -18,6 +18,8 @@
 #include "entities/Hero.h"
 #include "lowlevel/FileTools.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param name name of the wall to create
@@ -86,5 +88,7 @@ bool Wall::is_obstacle_for(const MapEntity& other) const {
   std::map<EntityType, bool>::const_iterator it =
       entity_types_stopped.find(other.get_type());
   return it != entity_types_stopped.end() && it->second;
+}
+
 }
 

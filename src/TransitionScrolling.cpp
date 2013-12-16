@@ -23,6 +23,8 @@
 #include "lowlevel/Video.h"
 #include "lowlevel/Debug.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a scrolling transition effect.
  * \param direction direction of the transition (in or out)
@@ -195,5 +197,7 @@ void TransitionScrolling::draw(Surface& dst_surface) {
 
   // blit both surfaces
   both_maps_surface->draw_region(current_scrolling_position, dst_surface);
+}
+
 }
 

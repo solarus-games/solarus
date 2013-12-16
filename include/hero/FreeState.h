@@ -20,6 +20,8 @@
 #include "hero/State.h"
 #include "hero/PlayerMovementState.h"
 
+namespace solarus {
+
 /**
  * \brief State of the hero where he can walk normally and interact with entities.
  */
@@ -52,6 +54,8 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     uint32_t start_pushing_date;    /**< date when the state pushing starts */
 
 };
+
+}
 
 #endif
 

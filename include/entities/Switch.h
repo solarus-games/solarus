@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A button that the hero can trigger.
  *
@@ -85,6 +87,8 @@ class Switch: public Detector {
 
     virtual const std::string& get_lua_type_name() const;
 };
+
+}
 
 #endif
 

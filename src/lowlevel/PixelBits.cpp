@@ -22,6 +22,8 @@
 #include <SDL.h>
 #include <iostream> // print functions
 
+namespace solarus {
+
 /**
  * \brief Creates a pixel bits object.
  * \param surface The surface where the image is.
@@ -269,5 +271,7 @@ void PixelBits::print_mask(uint32_t mask) const {
     std::cout << (((mask & 0x80000000) != 0x00000000) ? "X" : ".");
     mask <<= 1;
   }
+}
+
 }
 

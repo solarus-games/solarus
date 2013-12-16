@@ -26,6 +26,8 @@
 #include <vector>
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief Manages the whole content of a map.
  *
@@ -184,6 +186,8 @@ inline Ground MapEntities::get_tile_ground(Layer layer, int x, int y) const {
 
   // Optimization of: return tiles_ground[layer][(y / 8) * map_width8 + (x / 8)];
   return tiles_ground[layer][(y >> 3) * map_width8 + (x >> 3)];
+}
+
 }
 
 #endif

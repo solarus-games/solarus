@@ -23,6 +23,8 @@
 #include "lowlevel/StringConcat.h"
 #include <cmath>
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param ignore_obstacles true to ignore obstacles of the map
@@ -685,5 +687,7 @@ void StraightMovement::update() {
  */
 const std::string& StraightMovement::get_lua_type_name() const {
   return LuaContext::movement_straight_module_name;
+}
+
 }
 

@@ -19,6 +19,8 @@
 
 #include "hero/PlayerMovementState.h"
 
+namespace solarus {
+
 /**
  * \brief The state "sword loading" of the hero.
  */
@@ -49,6 +51,8 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
     void set_animation_stopped();
     void set_animation_walking();
 };
+
+}
 
 #endif
 

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "lowlevel/PixelFilter.h"
 
+namespace solarus {
+
 /**
  * \brief Implementation of the Scale2x algorithm.
  *
@@ -39,6 +41,8 @@ class Scale2xFilter: public PixelFilter {
         int src_height,
         uint32_t* dst) const;
 };
+
+}
 
 #endif
 

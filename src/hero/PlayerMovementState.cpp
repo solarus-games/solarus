@@ -21,6 +21,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/System.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -312,5 +314,7 @@ void Hero::PlayerMovementState::cancel_jumper() {
     current_jumper = NULL;
     jumper_start_date = 0;
   }
+}
+
 }
 

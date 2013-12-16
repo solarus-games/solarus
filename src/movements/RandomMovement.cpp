@@ -24,6 +24,8 @@
 #include "lowlevel/StringConcat.h"
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param speed Speed of the movement in pixels per seconds.
@@ -154,5 +156,7 @@ void RandomMovement::notify_obstacle_reached() {
  */
 const std::string& RandomMovement::get_lua_type_name() const {
   return LuaContext::movement_random_module_name;
+}
+
 }
 

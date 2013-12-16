@@ -23,6 +23,8 @@
 #include "lowlevel/StringConcat.h"
 #include <map>
 
+namespace solarus {
+
 /**
  * \brief Creates the description of an item.
  * \param equipment The equipment object that stores all item descriptions.
@@ -492,3 +494,6 @@ void EquipmentItem::set_max_amount(int max_amount) {
 const std::string& EquipmentItem::get_lua_type_name() const {
   return LuaContext::item_module_name;
 }
+
+}
+

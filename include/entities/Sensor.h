@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief An invisible entity that triggers something when it is walked on.
  *
@@ -48,6 +50,8 @@ class Sensor: public Detector {
     bool activated_by_hero;      /**< true if the sensor is activated by the hero */
     bool notifying_script;       /**< true if the map script is currently being notified */
 };
+
+}
 
 #endif
 

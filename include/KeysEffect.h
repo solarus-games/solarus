@@ -20,6 +20,8 @@
 #include "Common.h"
 #include <string>
 
+namespace solarus {
+
 /**
  * \brief Associate to each game key its current effect on the game.
  *
@@ -146,6 +148,8 @@ class KeysEffect {
     void set_all_keys_enabled(bool enable);
 
 };
+
+}
 
 #endif
 

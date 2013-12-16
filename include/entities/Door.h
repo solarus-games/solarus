@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A door that may be open or closed.
  *
@@ -140,6 +142,8 @@ class Door: public Detector {
     uint32_t next_hint_sound_date;                /**< If the player has the ability to detect weak walls,
                                                    * indicates when a hint sound is played next time. */
 };
+
+}
 
 #endif
 

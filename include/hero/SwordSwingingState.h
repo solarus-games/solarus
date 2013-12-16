@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "sword swinging" of the hero.
  */
@@ -47,6 +49,8 @@ class Hero::SwordSwingingState: public Hero::State {
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
 };
+
+}
 
 #endif
 

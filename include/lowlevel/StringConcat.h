@@ -19,6 +19,8 @@
 
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief A subclass of std::string that add operators
  * to directly concatenate elements.
@@ -59,6 +61,8 @@ inline StringConcat& StringConcat::operator<<(const T& element) {
   oss << element;
   append(oss.str());
   return *this;
+}
+
 }
 
 #endif

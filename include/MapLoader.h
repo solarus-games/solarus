@@ -21,6 +21,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief Parses a map file.
  *
@@ -39,6 +41,8 @@ class MapLoader {
 
     static int l_properties(lua_State* l);
 };
+
+}
 
 #endif
 

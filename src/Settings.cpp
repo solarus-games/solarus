@@ -16,7 +16,7 @@
  */
 #include "Settings.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Language.h"
+#include "Language.h"
 #include "lowlevel/Video.h"
 #include "lowlevel/VideoMode.h"
 #include "lowlevel/Sound.h"
@@ -25,6 +25,8 @@
 #include "lowlevel/Debug.h"
 #include <lua.hpp>
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Attempts to load the built-in settings from a file.
@@ -132,5 +134,7 @@ bool Settings::save(const std::string& file_name) {
   const std::string& text = oss.str();
   FileTools::data_file_save_buffer(file_name, text.c_str(), text.size());
   return true;
+}
+
 }
 

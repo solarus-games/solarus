@@ -21,6 +21,8 @@
 #include "entities/MapEntity.h"
 #include <map>
 
+namespace solarus {
+
 /**
  * \brief An invisible obstacle that stops other types of entities.
  *
@@ -47,6 +49,8 @@ class Wall: public MapEntity {
     bool can_be_drawn() const;
     bool is_obstacle_for(const MapEntity& other) const;
 };
+
+}
 
 #endif
 

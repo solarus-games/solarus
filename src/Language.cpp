@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "Language.h"
 #include "DialogResource.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/Language.h"
 #include "lowlevel/StringConcat.h"
 #include "StringResource.h"
 #include "QuestResourceList.h"
-#include <vector>
+
+namespace solarus {
 
 std::string Language::language_code;
 
@@ -94,3 +94,6 @@ const std::string& Language::get_language_name(
   static std::string empty_string("");
   return empty_string;
 }
+
+}
+

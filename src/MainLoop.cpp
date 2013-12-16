@@ -30,12 +30,13 @@
 #include "StringResource.h"
 #include "QuestResourceList.h"
 
+namespace solarus {
+
 /**
  * \brief Initializes the game engine.
- * \param argc number of arguments of the command line
- * \param argv command-line arguments
+ * \param args Command-line arguments.
  */
-MainLoop::MainLoop(int argc, char** argv):
+MainLoop::MainLoop(const CommandLine& args):
   root_surface(NULL),
   lua_context(NULL),
   exiting(false),
@@ -43,7 +44,7 @@ MainLoop::MainLoop(int argc, char** argv):
   next_game(NULL) {
 
   // Initialize low-level features (audio, video, files...).
-  System::initialize(argc, argv);
+  System::initialize(args);
 
   // Read the quest general properties.
   QuestProperties quest_properties(*this);
@@ -298,5 +299,7 @@ void MainLoop::draw() {
   }
   lua_context->main_on_draw(*root_surface);
   Video::render(*root_surface);
+}
+
 }
 

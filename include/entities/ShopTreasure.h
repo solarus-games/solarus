@@ -25,6 +25,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief A treasure the hero can buy in a shop.
  *
@@ -83,6 +85,8 @@ class ShopTreasure: public Detector {
     TextSurface price_digits;         /**< the digits that show the price */
     Sprite rupee_icon_sprite;         /**< the rupee icon near the price */
 };
+
+}
 
 #endif
 

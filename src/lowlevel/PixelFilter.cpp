@@ -16,6 +16,8 @@
  */
 #include "lowlevel/PixelFilter.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  */
@@ -26,5 +28,7 @@ PixelFilter::PixelFilter() {
  * \brief Destructor.
  */
 PixelFilter::~PixelFilter() {
+}
+
 }
 

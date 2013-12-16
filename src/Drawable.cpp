@@ -21,6 +21,8 @@
 #include "lowlevel/Debug.h"
 #include <lua.hpp>
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  */
@@ -245,5 +247,7 @@ void Drawable::draw_region(
   }
 
   raw_draw_region(region, dst_surface, dst_position2);
+}
+
 }
 

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 
+namespace solarus {
+
 /**
  * \brief A small fixed piece of the map, optimized for collisions and drawing.
  *
@@ -57,6 +59,8 @@ class Tile: public MapEntity {
     TilePattern* tile_pattern;    /**< pattern of the tile */
 
 };
+
+}
 
 #endif
 

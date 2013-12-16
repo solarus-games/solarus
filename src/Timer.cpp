@@ -20,6 +20,8 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
+namespace solarus {
+
 /**
  * \brief Creates and starts a timer.
  * \param delay duration of the timer in milliseconds
@@ -177,5 +179,7 @@ void Timer::notify_map_suspended(bool suspended) {
  */
 const std::string& Timer::get_lua_type_name() const {
   return LuaContext::timer_module_name;
+}
+
 }
 

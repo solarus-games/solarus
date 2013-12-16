@@ -17,6 +17,8 @@
 #include "Dialog.h"
 #include "lowlevel/Debug.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  */
@@ -146,5 +148,7 @@ void Dialog::set_property(const std::string& key, const std::string& value) {
       "Invalid property key for dialog");
 
   properties[key] = value;
+}
+
 }
 

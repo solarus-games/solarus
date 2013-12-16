@@ -22,6 +22,8 @@
 #include "Game.h"
 #include "GameCommands.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -101,5 +103,7 @@ bool Hero::GrabbingState::can_be_hurt(Enemy* attacker) const {
  */
 bool Hero::GrabbingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
+}
+
 }
 

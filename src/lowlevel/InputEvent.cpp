@@ -18,6 +18,8 @@
 #include "lowlevel/Video.h"
 #include <cstdlib>  // std::abs
 
+namespace solarus {
+
 const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
     KEY_RIGHT,
     KEY_UP,
@@ -1021,5 +1023,7 @@ bool InputEvent::is_released() const {
 bool InputEvent::is_window_closing() const {
 
   return internal_event.type == SDL_QUIT;
+}
+
 }
 

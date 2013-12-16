@@ -21,6 +21,8 @@
 #include "entities/Detector.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief An horizontal or vertical separation between two parts of the map.
  *
@@ -54,6 +56,8 @@ class Separator: public Detector {
     void notify_activating(int direction4);
     void notify_activated(int direction4);
 };
+
+}
 
 #endif
 

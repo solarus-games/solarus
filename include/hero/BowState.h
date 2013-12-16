@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "bow" of the hero.
  */
@@ -32,6 +34,8 @@ class Hero::BowState: public Hero::State {
     void start(const State* previous_state);
     void update();
 };
+
+}
 
 #endif
 

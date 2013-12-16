@@ -17,63 +17,21 @@
 #ifndef SOLARUS_NOMAIN
 
 #include "MainLoop.h"
+#include "CommandLine.h"
 #include <iostream>
+#include <string>
 #include <SDL.h>  // Necessary on some systems for SDLMain.
 
-static void print_help(int argc, char** argv);
+using namespace solarus;
 
-/**
- * \brief Usual entry point of the program.
- *
- * Usage: solarus [options] [quest_path]
- *
- * The quest path is the name of a directory that contains either the data
- * directory ("data") or the data archive ("data.solarus" or
- * "data.solarus.zip").
- * If the quest path is not specified, it is set to the preprocessor constant
- * DEFAULT_QUEST, which is the current directory "." by default.
- * In all cases, this quest path is relative to the working directory,
- * or to the solarus executable directory if no quest is found in the working
- * directory.
- *
- * The following options are supported:
- *   -help               shows a help message
- *   -no-audio           disables sounds and musics
- *   -no-video           disables displaying (used for unitary tests)
- *   -quest-size=<width>x<height>         sets the size of the drawing area (if compatible with the quest)
- *
- * \param argc number of command-line arguments
- * \param argv command-line arguments
- */
-int main(int argc, char** argv) {
-
-  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
-
-  // check the -help option
-  bool help = false;
-  for (int i = 1; i < argc && !help; ++i) {
-    const std::string arg = argv[i];
-    help = (arg == std::string("-help"));
-  }
-
-  if (help) {
-    // print a help message
-    print_help(argc, argv);
-  }
-  else {
-    // run the window
-    MainLoop(argc, argv).run();
-  }
-
-  return 0;
-}
+namespace {
 
 /**
  * \brief Prints the usage of the program.
  * \param argc number of command-line arguments
  * \param argv command-line arguments
  */
-static void print_help(int argc, char **argv) {
+void print_help(int argc, char **argv) {
 
   const std::string& binary_name = (argc > 0) ? argv[0] : "solarus";
   std::cout << "Usage: " << binary_name << " [options] [quest_path]"
@@ -96,6 +54,51 @@ static void print_help(int argc, char **argv) {
     << std::endl
     << "  -quest-size=<width>x<height>         sets the size of the drawing area (if compatible with the quest)"
     << std::endl;
+}
+
+}
+
+/**
+ * \brief Usual entry point of the program.
+ *
+ * Usage: solarus [options] [quest_path]
+ *
+ * The quest path is the name of a directory that contains either the data
+ * directory ("data") or the data archive ("data.solarus" or
+ * "data.solarus.zip").
+ * If the quest path is not specified, it is set to the preprocessor constant
+ * DEFAULT_QUEST, which is the current directory "." by default.
+ * In all cases, this quest path is relative to the working directory,
+ * or to the solarus executable directory if no quest is found in the working
+ * directory.
+ *
+ * The following options are supported:
+ *   -help               shows a help message
+ *   -no-audio           disables sounds and musics
+ *   -no-video           disables displaying (used for unitary tests)
+ *   -quest-size=<width>x<height>         sets the size of the drawing area (if compatible with the quest)
+ *
+ * \param argc Number of command-line arguments.
+ * \param argv Command-line arguments.
+ */
+int main(int argc, char** argv) {
+
+  std::cout << "Solarus " << SOLARUS_VERSION << std::endl;
+
+  // Store the command-line arguments.
+  const CommandLine args(argc, argv);
+
+  // Check the -help option.
+  if (args.has_argument("-help")) {
+    // Print a help message.
+    print_help(argc, argv);
+  }
+  else {
+    // Run the main loop.
+    MainLoop(args).run();
+  }
+
+  return 0;
 }
 
 #endif

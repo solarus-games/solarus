@@ -29,6 +29,8 @@
 #  include "lowlevel/apple/AppleInterface.h"
 #endif
 
+namespace solarus {
+
 uint32_t System::ticks = 0;
 
 /**
@@ -37,10 +39,9 @@ uint32_t System::ticks = 0;
  * Initializes the graphics, the audio system,
  * the data file system, etc.
  *
- * \param argc number of command line arguments
- * \param argv command line arguments
+ * \param args Command-line arguments.
  */
-void System::initialize(int argc, char** argv) {
+void System::initialize(const CommandLine& args) {
 
 #ifdef SOLARUS_USE_APPLE_POOL
   // initialize pool if any
@@ -51,16 +52,16 @@ void System::initialize(int argc, char** argv) {
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
 
   // files
-  FileTools::initialize(argc, argv);
+  FileTools::initialize(args);
 
   // video
-  Video::initialize(argc, argv);
+  Video::initialize(args);
   Color::initialize();
   TextSurface::initialize();
   Sprite::initialize();
 
   // audio
-  Sound::initialize(argc, argv);
+  Sound::initialize(args);
 
   // input
   InputEvent::initialize();
@@ -149,5 +150,7 @@ uint32_t System::get_real_time() {
  */
 void System::sleep(uint32_t duration) {
   SDL_Delay(duration);
+}
+
 }
 

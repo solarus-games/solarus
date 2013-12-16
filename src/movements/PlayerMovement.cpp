@@ -21,6 +21,8 @@
 #include "Game.h"
 #include "GameCommands.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param moving_speed movement speed
@@ -131,5 +133,7 @@ void PlayerMovement::compute_movement() {
   // notify the entity that its movement has just changed:
   // indeed, the entity may need to update its sprites
   notify_movement_changed();
+}
+
 }
 

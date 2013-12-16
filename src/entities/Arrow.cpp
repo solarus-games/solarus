@@ -32,6 +32,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 /**
  * \brief Creates an arrow.
  * \param hero The hero.
@@ -498,5 +500,7 @@ bool Arrow::has_reached_map_border() const {
   }
 
   return get_map().test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle());
+}
+
 }
 

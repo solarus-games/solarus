@@ -35,6 +35,8 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Geometry.h"
 
+namespace solarus {
+
 /**
  * \brief Movement of the item when the hero is lifting it.
  */
@@ -670,5 +672,7 @@ void CarriedItem::notify_collision_with_stairs(Stairs& stairs, CollisionMode col
       && get_layer() == stairs.get_layer()) {
     break_one_layer_above = true; // show the destruction animation above the stairs
   }
+}
+
 }
 

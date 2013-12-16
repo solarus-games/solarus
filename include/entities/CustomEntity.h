@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A map entity fully controlled by Lua.
  *
@@ -132,6 +134,8 @@ class CustomEntity: public Detector {
     const std::string& model;          /**< Model of this custom entity, or an empty string. */
 
 };
+
+}
 
 #endif
 

@@ -17,6 +17,8 @@
 #ifndef SOLARUS_LAYER_H
 #define SOLARUS_LAYER_H
 
+namespace solarus {
+
 /**
  * \brief Layer of an entity.
  *
@@ -30,6 +32,8 @@ enum Layer {
   LAYER_HIGH,            /**< High layer. */
   LAYER_NB               /**< Number of layers. */
 };
+
+}
 
 #endif
 

@@ -18,9 +18,17 @@
 
 #include <string>
 
+namespace solarus {
+
+/**
+ * \brief Provide language management features.
+ *
+ * This class handles the current language and the list of available languages.
+ */
 class Language {
 
   public:
+
     // Languages.
     static bool has_language(const std::string& language_code);
     static void set_language(const std::string& language_code);
@@ -28,7 +36,12 @@ class Language {
     static const std::string& get_language_name(const std::string& language_code);
 
   private:
-    static std::string language_code;                    /**< Code of the current language (e.g. "en", "fr", etc.). */
+
+    static std::string language_code;       /**< Code of the current language (e.g. "en", "fr", etc.). */
+
 };
 
+}
+
 #endif
+

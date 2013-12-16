@@ -21,8 +21,11 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "CommandLine.h"
 #include <map>
 #include <algorithm>
+
+namespace solarus {
 
 namespace {
 
@@ -31,13 +34,13 @@ namespace {
   SDL_Texture* render_target;               /**< The render texture used when shader modes are supported. */
   SDL_PixelFormat* pixel_format = NULL;     /**< The pixel color format to use. */
   std::string rendering_driver_name;        /**< The name of the rendering driver. */
-  bool disable_window = false;             /**< Indicates that no window is displayed (used for unit tests). */
+  bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
   bool fullscreen;                          /**< True if fullscreen display. */
   bool rendertarget_supported;              /**< True if rendering on texture is supported. */
   bool shaders_supported;                   /**< True if shaded modes and rendering on texture are supported. */
   bool renderer_accelerated = false;       /**< \c true if 2D GPU acceleration is available. */
   // TODO const PixelFilter* pixel_filter = NULL;   /**< The pixel filtering algorithm (if any) applied with the current video mode. */
-  Surface* scaled_surface = NULL;           /**< The screen surface used with scaled modes. */
+  // TODO Surface* scaled_surface = NULL;           /**< The screen surface used with scaled modes. */
 
   const std::string normal_mode_name =
       "solarus_default";                    /**< Non-shaded mode name. It will be forbidden for shaded ones. */
@@ -60,26 +63,16 @@ namespace {
 /**
  * \brief Initializes the video system and creates the window.
  *
- * This method should be called when the application starts.
+ * This method should be called when the program starts.
  * Options "-no-video" and "-quest-size=<width>x<height>" are recognized.
  *
- * \param argc Command-line arguments number.
- * \param argv Command-line arguments.
+ * \param args Command-line arguments.
  */
-void Video::initialize(int argc, char **argv) {
-  // TODO pass options as an std::set<string> instead.
+void Video::initialize(const CommandLine& args) {
 
-  // check the -no-video and the -quest-size options.
-  std::string quest_size_string;
-  for (argv++; argc > 1; argv++, argc--) {
-    const std::string arg = *argv;
-    if (arg == "-no-video") {
-      disable_window = true;
-    }
-    else if (arg.find("-quest-size=") == 0) {
-      quest_size_string = arg.substr(12);
-    }
-  }
+  // Check the -no-video and the -quest-size options.
+  const std::string& quest_size_string = args.get_argument_value("-quest-size");
+  disable_window = args.has_argument("-no-video");
 
   wanted_quest_size = Rectangle(0, 0,
       SOLARUS_DEFAULT_QUEST_WIDTH, SOLARUS_DEFAULT_QUEST_HEIGHT);
@@ -103,7 +96,7 @@ void Video::quit() {
     SDL_SetWindowFullscreen(main_window, 0);
   }
 
-  for (int i = 0; i < all_video_modes.size(); ++i) {
+  for (unsigned i = 0; i < all_video_modes.size(); ++i) {
     delete all_video_modes[i];
   }
   all_video_modes.clear();
@@ -440,7 +433,7 @@ std::vector<const VideoMode*> Video::get_video_modes() {
 const VideoMode* Video::get_video_mode_by_name(
     const std::string& mode_name) {
 
-  for (int i = 0; i < all_video_modes.size(); ++i) {
+  for (unsigned i = 0; i < all_video_modes.size(); ++i) {
     if (all_video_modes.at(i)->get_name() == mode_name) {
       return all_video_modes.at(i);
     }
@@ -702,7 +695,7 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
     std::vector<std::string> shader_names = 
         FileTools::data_files_enumerate("shaders/filters/" + get_rendering_driver_name(), false, true);
 
-    for(int i = 0; i < shader_names.size(); ++i) {
+    for (unsigned i = 0; i < shader_names.size(); ++i) {
 
       if (shader_names.at(i) == normal_mode_name) {
         Debug::warning("Forbidden video mode name : " + shader_names.at(i));
@@ -730,3 +723,6 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
   // Everything is ready now.
   set_default_video_mode();
 }
+
+}
+

@@ -35,6 +35,8 @@
 #include <list>
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief Lua name of each value of the OpeningMethod enum.
  */
@@ -727,5 +729,7 @@ void Door::set_closing() {
  */
 const std::string& Door::get_lua_type_name() const {
   return LuaContext::entity_door_module_name;
+}
+
 }
 

@@ -28,6 +28,8 @@
 #include "GameCommands.h"
 #include <sstream>
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -203,5 +205,7 @@ void Hero::SwordLoadingState::play_load_sound() {
   else {
     Sound::play("sword_spin_attack_load");
   }
+}
+
 }
 

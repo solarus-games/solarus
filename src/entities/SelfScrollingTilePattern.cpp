@@ -18,6 +18,8 @@
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a tile pattern with self scrolling.
  * \param ground Kind of ground of the tile pattern.
@@ -119,5 +121,7 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
  */
 bool SelfScrollingTilePattern::is_animated() {
   return true;
+}
+
 }
 

@@ -38,6 +38,8 @@
 #include "Sprite.h"
 #include "EquipmentItem.h"
 
+namespace solarus {
+
 const std::string LuaContext::entity_module_name = "sol.entity";
 const std::string LuaContext::entity_hero_module_name = "sol.entity.hero";
 const std::string LuaContext::entity_npc_module_name = "sol.entity.npc";
@@ -3485,5 +3487,7 @@ void LuaContext::enemy_on_immobilized(Enemy& enemy) {
     on_immobilized();
   }
   lua_pop(l, 1);
+}
+
 }
 

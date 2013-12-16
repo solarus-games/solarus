@@ -28,6 +28,8 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Random.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param savegame The savegame to encapsulate.
@@ -634,5 +636,7 @@ void Equipment::notify_ability_used(const std::string& ability_name) {
   for (it = items.begin(); it != items.end(); it++) {
     it->second->notify_ability_used(ability_name);
   }
+}
+
 }
 

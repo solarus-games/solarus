@@ -23,6 +23,8 @@
 #include "Game.h"
 #include "Equipment.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -104,5 +106,7 @@ bool Hero::PlungingState::can_start_gameover_sequence() const {
  */
 bool Hero::PlungingState::is_touching_ground() const {
   return false;
+}
+
 }
 

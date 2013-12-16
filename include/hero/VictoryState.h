@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The victory state of the hero.
  */
@@ -40,6 +42,8 @@ class Hero::VictoryState: public Hero::State {
     void update();
     void set_suspended(bool suspended);
 };
+
+}
 
 #endif
 

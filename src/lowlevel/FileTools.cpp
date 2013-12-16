@@ -15,13 +15,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Language.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
+#include "Language.h"
 #include "StringResource.h"
 #include "DialogResource.h"
 #include "QuestResourceList.h"
+#include "CommandLine.h"
 #include <physfs.h>
 #include <cstdlib>  // mkstemp(), tmpnam()
 #include <cstdio>   // remove()
@@ -33,6 +34,8 @@
 #   include "lowlevel/apple/AppleInterface.h"
 #endif
 
+namespace solarus {
+
 std::string FileTools::quest_path;
 std::string FileTools::solarus_write_dir;
 std::string FileTools::quest_write_dir;
@@ -40,20 +43,28 @@ std::vector<std::string> FileTools::temporary_files;
 
 /**
  * \brief Initializes the file tools.
- * \param argc number of command-line arguments
- * \param argv command line arguments
+ * \param args Command-line arguments.
  */
-void FileTools::initialize(int argc, char** argv) {
+void FileTools::initialize(const CommandLine& args) {
 
-  PHYSFS_init(argv[0]);
+  const std::string& program_name = args.get_program_name().c_str();
+  if (program_name.empty()) {
+    PHYSFS_init(NULL);
+  }
+  else {
+    PHYSFS_init(program_name.c_str());
+  }
 
   // Set the quest path, by default as defined during the build process.
   quest_path = SOLARUS_DEFAULT_QUEST;
 
-  // If a command-line argument was specified, use it instead.
-  if (argc > 1 && argv[argc - 1][0] != '-') {
+  // If a quest command-line argument was specified, use it instead.
+  const std::vector<std::string>& options = args.get_arguments();
+  if (!options.empty()
+      && !options.back().empty()
+      && options.back()[0] != '-') {
     // The last parameter is not an option: it is the quest path.
-    quest_path = argv[argc - 1];
+    quest_path = options.back();
   }
 
   std::cout << "Opening quest '" << quest_path << "'" << std::endl;
@@ -78,7 +89,8 @@ void FileTools::initialize(int argc, char** argv) {
   if (!FileTools::data_file_exists("quest.dat")) {
     std::cout << "Fatal: No quest was found in the directory '" << quest_path
         << "'.\n" << "To specify your quest's path, run: "
-        << argv[0] << " path/to/quest" << std::endl;
+        << (program_name.empty() ? std::string("solarus") : program_name)
+        << " path/to/quest" << std::endl;
     std::exit(EXIT_SUCCESS);
   }
 
@@ -320,8 +332,8 @@ std::vector<std::string> FileTools::data_files_enumerate(const std::string& dir_
       bool is_folder = PHYSFS_isDirectory(std::string(dir_path + "/" + *i).c_str());
       
       if (!PHYSFS_isSymbolicLink(*i)
-          && (list_files && !is_folder
-          || list_folders && is_folder))
+          && ((list_files && !is_folder)
+              || (list_folders && is_folder)))
         listed_files.push_back(std::string(*i));
     }
 
@@ -561,5 +573,7 @@ bool FileTools::remove_temporary_files() {
   }
 
   return success;
+}
+
 }
 

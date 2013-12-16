@@ -26,6 +26,8 @@
 typedef struct SDL_Surface SDL_Surface;
 typedef struct SDL_Texture SDL_Texture;
 
+namespace solarus {
+
 /**
  * \brief Represents a graphic surface.
  *
@@ -128,6 +130,8 @@ class Surface: public Drawable {
     int internal_opacity;                 /**< opacity to apply to all subtexture. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
 };
+
+}
 
 #endif
 

@@ -19,6 +19,8 @@
 #include <lua.hpp>
 #include <list>
 
+namespace solarus {
+
 const std::string LuaContext::menu_module_name = "sol.menu";
 
 /**
@@ -514,5 +516,7 @@ bool LuaContext::menus_on_command_released(int context_index,
   }
 
   return handled;
+}
+
 }
 

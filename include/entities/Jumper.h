@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A sensor that makes the hero jump.
  *
@@ -60,6 +62,8 @@ class Jumper: public Detector {
     int jump_length; /**< length of the jump in pixels (should be a multiple of 8) */
 
 };
+
+}
 
 #endif
 

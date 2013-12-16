@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "Savegame.h"
 
+namespace solarus {
+
 /**
  * \brief Represents an equipment item being used by the hero.
  *
@@ -51,6 +53,8 @@ class EquipmentItemUsage {
     // state
     bool finished;           /**< true if we have finished using this item or not using it */
 };
+
+}
 
 #endif
 

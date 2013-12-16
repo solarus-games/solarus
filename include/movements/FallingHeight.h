@@ -17,6 +17,8 @@
 #ifndef SOLARUS_FALLING_HEIGHT_H
 #define SOLARUS_FALLING_HEIGHT_H
 
+namespace solarus {
+
 /**
  * \brief Indicates from which height an entity falls.
  *
@@ -30,6 +32,8 @@ enum FallingHeight {
   FALLING_MEDIUM	= 2,
   FALLING_HIGH		= 3
 };
+
+}
 
 #endif
 

@@ -23,6 +23,8 @@
 #include <map>
 #include <set>
 
+namespace solarus {
+
 /**
  * \brief Stores the mapping between the in-game high-level commands
  * and their keyboard and joypad bindings.
@@ -139,6 +141,8 @@ class GameCommands {
         direction_names[4];              /**< English name of each arrow direction,
                                           * used to save a joypad action as a string. */
 };
+
+}
 
 #endif
 

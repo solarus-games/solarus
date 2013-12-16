@@ -30,6 +30,8 @@
 #include "Sprite.h"
 #include "KeysEffect.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a state.
  *
@@ -1139,5 +1141,7 @@ CarriedItem* Hero::State::get_carried_item() const {
  */
 CarriedItem::Behavior Hero::State::get_previous_carried_item_behavior() const {
   return CarriedItem::BEHAVIOR_THROW;
+}
+
 }
 

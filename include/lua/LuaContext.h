@@ -29,6 +29,8 @@
 #include <list>
 #include <lua.hpp>
 
+namespace solarus {
+
 /**
  * \brief This class represents a living Lua context that can execute dynamic
  * scripts at runtime.
@@ -1243,6 +1245,8 @@ E LuaContext::opt_enum_field(
   }
 
   return value;
+}
+
 }
 
 #endif

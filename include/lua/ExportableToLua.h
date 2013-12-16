@@ -21,6 +21,8 @@
 #include "RefCountable.h"
 #include <string>
 
+namespace solarus {
+
 /**
  * \brief Interface of a C++ type that can also exist as a Lua userdata.
  *
@@ -65,6 +67,8 @@ class ExportableToLua: public RefCountable {
                                   * this userdata indexable like a table. */
 
 };
+
+}
 
 #endif
 

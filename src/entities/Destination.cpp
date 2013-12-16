@@ -19,6 +19,8 @@
 #include "Game.h"
 #include "lowlevel/FileTools.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param name Name of the destination to create.
@@ -77,5 +79,7 @@ bool Destination::can_be_obstacle() const {
  */
 bool Destination::is_default() const {
   return is_default_destination;
+}
+
 }
 

@@ -24,6 +24,8 @@
 #include "DialogBox.h"
 #include <lua.hpp>
 
+namespace solarus {
+
 /**
  * \brief Represents the game currently running.
  *
@@ -135,6 +137,8 @@ class Game {
     void notify_map_changed();
 
 };
+
+}
 
 #endif
 

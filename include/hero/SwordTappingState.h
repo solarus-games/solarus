@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "sword tapping" of the hero.
  */
@@ -46,6 +48,8 @@ class Hero::SwordTappingState: public Hero::State {
     uint32_t next_sound_date;     /**< date when the sword tapping sound should be played */
 
 };
+
+}
 
 #endif
 

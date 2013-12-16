@@ -19,6 +19,8 @@
 #include "Game.h"
 #include "KeysEffect.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -45,5 +47,7 @@ void Hero::FreezedState::start(const State* previous_state) {
 
   get_sprites().set_animation_stopped_normal();
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+}
+
 }
 

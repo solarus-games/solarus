@@ -21,6 +21,8 @@
 #include "entities/Detector.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief A switch that can be activated to change the state of the
  * crystal blocks.
@@ -56,6 +58,8 @@ class Crystal: public Detector {
     void draw_on_map();
     void set_suspended(bool suspended);
 };
+
+}
 
 #endif
 

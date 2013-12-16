@@ -20,6 +20,8 @@
 #include "hero/State.h"
 #include "entities/Stairs.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Stairs" of the hero.
  */
@@ -63,6 +65,8 @@ class Hero::StairsState: public Hero::State {
 
     void destroy_carried_item();
 };
+
+}
 
 #endif
 

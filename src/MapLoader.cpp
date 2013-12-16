@@ -30,6 +30,8 @@
 #include "entities/MapEntity.h"
 #include "lua/LuaContext.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a map loader.
  */
@@ -181,5 +183,7 @@ int MapLoader::l_properties(lua_State* l) {
   }
 
   return 0;
+}
+
 }
 

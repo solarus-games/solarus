@@ -21,6 +21,8 @@
 #include "movements/PixelMovement.h"
 #include "movements/FallingHeight.h"
 
+namespace solarus {
+
 /**
  * \brief Movement of an entity that falls on the floor and bounces.
  *
@@ -42,6 +44,8 @@ class FallingOnFloorMovement: public PixelMovement {
     static const std::string trajectories[];
 
 };
+
+}
 
 #endif
 

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "Transition.h"
 
+namespace solarus {
+
 /**
  * \brief Immediate transition effect.
  *
@@ -41,6 +43,8 @@ class TransitionImmediate: public Transition {
     void draw(Surface& dst_surface);
 
 };
+
+}
 
 #endif
 

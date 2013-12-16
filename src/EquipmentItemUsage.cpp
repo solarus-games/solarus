@@ -21,6 +21,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a new item to be used.
  * \param game The game.
@@ -80,5 +82,7 @@ bool EquipmentItemUsage::is_finished() {
  */
 void EquipmentItemUsage::set_finished() {
   this->finished = true;
+}
+
 }
 

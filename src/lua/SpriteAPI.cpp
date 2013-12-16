@@ -18,6 +18,8 @@
 #include "lua/LuaContext.h"
 #include "Sprite.h"
 
+namespace solarus {
+
 const std::string LuaContext::sprite_module_name = "sol.sprite";
 
 /**
@@ -401,5 +403,7 @@ void LuaContext::sprite_on_frame_changed(Sprite& sprite,
   push_sprite(l, sprite);
   on_frame_changed(animation, frame);
   lua_pop(l, 1);
+}
+
 }
 

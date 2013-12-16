@@ -19,6 +19,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 
+namespace solarus {
+
 int TimeScrollingTilePattern::shift = 0;
 uint32_t TimeScrollingTilePattern::next_shift_date = 0;
 
@@ -120,5 +122,7 @@ void TimeScrollingTilePattern::draw(Surface& dst_surface,
  */
 bool TimeScrollingTilePattern::is_animated() {
   return true;
+}
+
 }
 

@@ -20,6 +20,8 @@
 #include "hero/State.h"
 #include "Treasure.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Treasure" of the hero.
  */
@@ -42,6 +44,8 @@ class Hero::TreasureState: public Hero::State {
     CarriedItem::Behavior get_previous_carried_item_behavior() const;
     bool is_brandishing_treasure() const;
 };
+
+}
 
 #endif
 

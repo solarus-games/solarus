@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "hookshot" of the hero.
  */
@@ -54,6 +56,8 @@ class Hero::HookshotState: public Hero::State {
 
     Hookshot* hookshot;    /**< the hookshot thrown by the hero */
 };
+
+}
 
 #endif
 

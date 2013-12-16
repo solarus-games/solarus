@@ -21,6 +21,8 @@
 #include "movements/Movement.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief Movement that makes circles around a center.
  *
@@ -101,6 +103,8 @@ class CircleMovement: public Movement {
     uint32_t restart_date;                          /**< date when the movement restarts */
 
 };
+
+}
 
 #endif
 

@@ -22,6 +22,8 @@
 #include "Game.h"
 #include "Equipment.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -118,5 +120,7 @@ bool Hero::FallingState::can_avoid_prickle() const {
  */
 bool Hero::FallingState::can_start_gameover_sequence() const {
   return false;
+}
+
 }
 

@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "Transition.h"
 
+namespace solarus {
+
 /**
  * \brief Fade in or fade out transition effect.
  */
@@ -56,6 +58,8 @@ class TransitionFade: public Transition {
     Color* transition_color;
 
 };
+
+}
 
 #endif
 

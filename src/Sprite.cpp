@@ -29,6 +29,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 std::map<std::string, SpriteAnimationSet*> Sprite::all_animation_sets;
 
 /**
@@ -828,5 +830,7 @@ void Sprite::set_lua_context(LuaContext* lua_context) {
  */
 const std::string& Sprite::get_lua_type_name() const {
   return LuaContext::sprite_module_name;
+}
+
 }
 

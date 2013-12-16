@@ -20,6 +20,8 @@
 #include "Common.h"
 #include <cstdlib>
 
+namespace solarus {
+
 /**
  * \brief Abstract class for a transition effect between two phases.
  *
@@ -112,6 +114,8 @@ class Transition {
     bool suspended;               /**< Indicates that the transition is currently paused. */
     uint32_t when_suspended;      /**< Date when the transition was suspended. */
 };
+
+}
 
 #endif
 

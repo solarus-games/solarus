@@ -16,6 +16,8 @@
  */
 #include "KeysEffect.h"
 
+namespace solarus {
+
 /**
  * \brief Lua name of each value of the ActionKeyEffect enum.
  */
@@ -351,5 +353,7 @@ void KeysEffect::set_all_keys_enabled(bool enable) {
   set_sword_key_enabled(enable);
   set_pause_key_enabled(enable);
   set_item_keys_enabled(enable);
+}
+
 }
 

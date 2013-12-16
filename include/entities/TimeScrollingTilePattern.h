@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"
 
+namespace solarus {
+
 /**
  * \brief Tile pattern with a scrolling effect.
  *
@@ -44,6 +46,8 @@ class TimeScrollingTilePattern: public SimpleTilePattern {
 
     virtual bool is_animated();
 };
+
+}
 
 #endif
 

@@ -22,6 +22,8 @@
 #include "entities/Ground.h"
 #include "Treasure.h"
 
+namespace solarus {
+
 /**
  * \brief An entity that the hero can destroy and that may contain a pickable item.
  *
@@ -119,6 +121,8 @@ class Destructible: public Detector {
     static const std::string& get_subtype_name(Subtype subtype);
     static Subtype get_subtype_by_name(const std::string& subtype_name);
 };
+
+}
 
 #endif
 

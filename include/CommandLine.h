@@ -14,40 +14,41 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/FallingOnFloorMovement.h"
+#ifndef SOLARUS_COMMAND_LINE_H
+#define SOLARUS_COMMAND_LINE_H
+
+#include "Common.h"
+#include <string>
+#include <vector>
 
 namespace solarus {
 
 /**
- * \brief Y move at each time frame.
+ * \brief Stores the command-line options passed to the program.
+ *
+ * Provides easy access to find whether a particular option was passed,
+ * and to get the value of options of the form key=value.
  */
-const std::string FallingOnFloorMovement::trajectories[4] = {
+class CommandLine {
 
-    "", // none
+  public:
 
-    "0 -1  0 1", // low
+    CommandLine(int argc, char** argv);
+    ~CommandLine();
 
-    "0 -1  0 -1  0 -1  0 -1  0 1  0 1  0 1  0 1  0 -1  0 -1  0 1  0 1", // medium
+    const std::string& get_program_name() const;
+    const std::vector<std::string>& get_arguments() const;
+    bool has_argument(const std::string& option) const;
+    std::string get_argument_value(const std::string& key) const;
 
-    "0 -4  0 -3  0 -3  0 -2  0 -2  0 -1  0 1  0 2  0 2  0 3  0 3  0 4  "
-    "0 -2  0 -1  0 -1  0 -1  0 -1  0 1  0 1  0 1  0 1  0 2  0 -1  0 -1  0 1  0 1" // high
+  private:
+
+    std::string program_name;
+    std::vector<std::string> args;
+
 };
 
-/**
- * \brief Creates a movement falling object.
- * \param height height the entity will fall from
- */
-FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
-  PixelMovement(trajectories[height], 30, false, true) {
-
 }
 
-/**
- * \brief Destructor.
- */
-FallingOnFloorMovement::~FallingOnFloorMovement() {
-
-}
-
-}
+#endif
 

@@ -21,6 +21,8 @@
 #include "Treasure.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief Represents a chest on a map.
  *
@@ -96,6 +98,8 @@ class Chest: public Detector {
     std::string cannot_open_dialog_id; /**< Dialog to show if the door cannot be opened,
                                         * or an empty string. */
 };
+
+}
 
 #endif
 

@@ -21,6 +21,8 @@
 #include "lowlevel/FileTools.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a new tile.
  * \param layer layer of the tile
@@ -131,5 +133,7 @@ int Tile::get_tile_pattern_id() const {
  */
 bool Tile::is_animated() {
   return tile_pattern->is_animated();
+}
+
 }
 

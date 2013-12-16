@@ -23,6 +23,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 const std::string PathMovement::elementary_moves[] = {
     " 1  0   1  0   1  0   1  0   1  0   1  0   1  0   1  0", // 8 pixels right
     " 1 -1   1 -1   1 -1   1 -1   1 -1   1 -1   1 -1   1 -1", // 8 pixels right-up
@@ -462,5 +464,7 @@ const std::string PathMovement::create_random_path() {
  */
 const std::string& PathMovement::get_lua_type_name() const {
   return LuaContext::movement_path_module_name;
+}
+
 }
 

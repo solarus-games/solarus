@@ -24,6 +24,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief An image containing all tile patterns.
  *
@@ -65,6 +67,8 @@ class Tileset {
 
     static const std::string ground_names[];  /**< Lua name of each ground type. */
 };
+
+}
 
 #endif
 

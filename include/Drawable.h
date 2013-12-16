@@ -22,6 +22,8 @@
 #include "lowlevel/Rectangle.h"
 #include <lua.hpp>
 
+namespace solarus {
+
 /**
  * \brief An object that can be drawn on a surface with additional effects.
  *
@@ -117,6 +119,8 @@ class Drawable: public ExportableToLua {
                                    * when the transition finishes */
     LuaContext* lua_context;      /**< The Lua world used for callbacks. */
 };
+
+}
 
 #endif
 

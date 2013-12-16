@@ -21,6 +21,8 @@
 #include "entities/TilePattern.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief Animated tile pattern.
  *
@@ -65,6 +67,8 @@ class AnimatedTilePattern: public TilePattern {
         Tileset& tileset, const Rectangle& viewport);
     virtual bool is_drawn_at_its_position();
 };
+
+}
 
 #endif
 

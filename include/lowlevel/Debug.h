@@ -29,6 +29,8 @@
 #define SOLARUS_ASSERT(condition, message)
 #endif
 
+namespace solarus {
+
 /**
  * \brief Provides features for printing error messages or making runtime checks.
  */
@@ -46,6 +48,8 @@ class Debug {
 
     Debug();    // don't instantiate this class
 };
+
+}
 
 #endif
 

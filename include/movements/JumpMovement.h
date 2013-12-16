@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "movements/PixelMovement.h"
 
+namespace solarus {
+
 /**
  * \brief Movement of an entity that jumps towards a direction.
  *
@@ -63,6 +65,8 @@ class JumpMovement: public PixelMovement {
     int jump_height;                                /**< current height of the object while jumping */
 
 };
+
+}
 
 #endif
 

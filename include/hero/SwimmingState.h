@@ -19,6 +19,8 @@
 
 #include "hero/PlayerMovementState.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Swimming" of the hero.
  */
@@ -52,6 +54,8 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
     bool is_stairs_obstacle(const Stairs& stairs) const;
     bool can_pick_treasure(EquipmentItem& item) const;
 };
+
+}
 
 #endif
 

@@ -24,6 +24,8 @@
 #include "entities/MapEntities.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a circle movement.
  * \param ignore_obstacles true to ignore obstacles
@@ -466,5 +468,7 @@ void CircleMovement::stop() {
  */
 const std::string& CircleMovement::get_lua_type_name() const {
   return LuaContext::movement_circle_module_name;
+}
+
 }
 

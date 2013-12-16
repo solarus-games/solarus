@@ -19,6 +19,8 @@
 #include "lowlevel/Surface.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a simple tile pattern.
  * \param ground Kind of the of the tile pattern.
@@ -66,5 +68,7 @@ void SimpleTilePattern::draw(Surface& dst_surface, const Rectangle& dst_position
  */
 bool SimpleTilePattern::is_animated() {
   return false;
+}
+
 }
 

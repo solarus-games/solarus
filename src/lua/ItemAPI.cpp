@@ -29,6 +29,8 @@
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
+namespace solarus {
+
 const std::string LuaContext::item_module_name = "sol.item";
 
 /**
@@ -1017,5 +1019,7 @@ void LuaContext::item_on_npc_collision_fire(EquipmentItem& item, NPC& npc) {
   push_item(l, item);
   on_npc_collision_fire(npc);
   lua_pop(l, 1);
+}
+
 }
 

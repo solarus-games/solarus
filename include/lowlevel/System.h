@@ -18,6 +18,9 @@
 #define SOLARUS_SYSTEM_H
 
 #include "Common.h"
+#include <string>
+
+namespace solarus {
 
 /**
  * \brief Provides lowlevel functions and initialization.
@@ -28,7 +31,7 @@ class System {
 
   public:
 
-    static void initialize(int argc, char** argv);
+    static void initialize(const CommandLine& args);
     static void initialize_video_modes();
     static void quit();
     static void update();
@@ -43,6 +46,8 @@ class System {
 
     static uint32_t ticks;  // Simulated time in milliseconds.
 };
+
+}
 
 #endif
 

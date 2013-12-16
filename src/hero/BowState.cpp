@@ -21,6 +21,8 @@
 #include "entities/Arrow.h"
 #include "lowlevel/Sound.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -58,5 +60,7 @@ void Hero::BowState::update() {
     get_entities().add_entity(new Arrow(hero));
     hero.set_state(new FreeState(hero));
   }
+}
+
 }
 

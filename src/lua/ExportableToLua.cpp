@@ -18,6 +18,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+namespace solarus {
+
 /**
  * \brief Creates an object exportable to Lua.
  */
@@ -73,5 +75,7 @@ bool ExportableToLua::is_with_lua_table() const {
  */
 void ExportableToLua::set_with_lua_table(bool with_lua_table) {
   this->with_lua_table = with_lua_table;
+}
+
 }
 

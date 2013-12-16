@@ -33,6 +33,8 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 
+namespace solarus {
+
 const Rectangle MapEntity::directions_to_xy_moves[] = {
   Rectangle( 1, 0),
   Rectangle( 1,-1),
@@ -2289,3 +2291,6 @@ const std::string& MapEntity::get_type_name() const {
 
   return entity_type_names[get_type()];
 }
+
+}
+

@@ -19,6 +19,8 @@
 
 #include "Common.h"
 
+namespace solarus {
+
 /**
  * \brief Provides some functions to compute random numbers.
  */
@@ -36,6 +38,8 @@ class Random {
 
     Random();
 };
+
+}
 
 #endif
 

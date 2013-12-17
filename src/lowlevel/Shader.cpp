@@ -39,7 +39,7 @@ PFNGLGETHANDLEARBPROC Shader::glGetHandleARB;
 SDL_GLContext Shader::gl_context;
 GLhandleARB Shader::default_shader_program;
 GLenum Shader::gl_texture_type = GL_TEXTURE_2D;
-std::string Shader::defines_source = "";
+std::string Shader::language_version = "";
 Shader* Shader::loading_shader = NULL;
 
 #endif
@@ -106,6 +106,9 @@ bool Shader::initialize() {
         gl_texture_type = GL_TEXTURE_RECTANGLE_ARB;
       }
       
+      // Get the shading language version.
+      language_version = *glGetString(GL_SHADING_LANGUAGE_VERSION);
+      
       return true;
     }
   }
@@ -134,12 +137,8 @@ void Shader::quit() {
 void Shader::compile_shader(GLhandleARB& shader, const char* source) {
   
   GLint status;
-  const char *sources[2];
   
-  sources[0] = defines_source.c_str();
-  sources[1] = source;
-  
-  glShaderSourceARB(shader, SDL_arraysize(sources), sources, NULL);
+  glShaderSourceARB(shader, 1, &source, NULL);
   glCompileShaderARB(shader);
   glGetObjectParameterivARB(shader, GL_OBJECT_COMPILE_STATUS_ARB, &status);
   if (status == 0) {
@@ -195,6 +194,7 @@ Shader::Shader(std::string shader_name):
   program(0),
   vertex_shader(0),
   fragment_shader(0),
+  shader_name(shader_name),
   logical_scale(1.0) {
     
   glGetError();
@@ -214,8 +214,8 @@ Shader::Shader(std::string shader_name):
 /**
  * \brief Destructor.
  */
-Shader::~Shader()
-{
+Shader::~Shader() {
+  
   glDeleteObjectARB(vertex_shader);
   glDeleteObjectARB(fragment_shader);
   glDeleteObjectARB(program);
@@ -226,8 +226,8 @@ Shader::~Shader()
  * \param shadername The name of the shader to load.
  * \return The created shader, or NULL if the shader fails to compile.
  */
-Shader* Shader::create(std::string shader_name)
-{
+Shader* Shader::create(std::string shader_name) {
+  
   Shader* created_shader = new Shader(shader_name);
   
   if(glGetError() == GL_NO_ERROR) {
@@ -239,10 +239,20 @@ Shader* Shader::create(std::string shader_name)
 }
 
 /**
+ * \brief Get the name of the shader, which is also the name of the related video mode.
+ * \return The name of the shader.
+ */
+std::string Shader::get_name() {
+  
+  return shader_name;
+}
+  
+/**
  * \brief Get the scale to apply on the quest size to get the final window size of this shader.
  * \return The logical scale.
  */
 double Shader::get_logical_scale() {
+  
   return logical_scale;
 }
 
@@ -253,24 +263,11 @@ double Shader::get_logical_scale() {
  */
 void Shader::load(const std::string& shader_name) {
   
-  const std::string base_shader_path = 
-      "shaders/filters/" + Video::get_rendering_driver_name() +
-      "/" + shader_name + "/" + shader_name;
+  const std::string shader_path = 
+      "shaders/filters/" + shader_name;
   
   // Parse the lua file
-  load_lua_file(base_shader_path + ".lua");
-  
-  // Create the vertex and fragment shaders.
-  load_shader_file(base_shader_path + ".slv", GL_VERTEX_SHADER_ARB, &vertex_shader);
-  load_shader_file(base_shader_path + ".slf", GL_FRAGMENT_SHADER_ARB, &fragment_shader);
-  
-  // Create one program object to rule them all ...
-  program = glCreateProgramObjectARB();
-  
-  // ... and in the darkness bind them
-  glAttachObjectARB(program, vertex_shader);
-  glAttachObjectARB(program, fragment_shader);
-  glLinkProgramARB(program);
+  load_lua_file(shader_path);
 }
 
 /**
@@ -308,27 +305,6 @@ void Shader::load_lua_file(const std::string& path) {
 }
 
 /**
- * \brief Load and compile a shader from a vertex or shader file.
- * \param path The path to the shader file source, relative to the data folder.
- * \param shader_type The type of shader (vertex or fragment).
- * \param shader The GLhandleARB pointer to fill with the result.
- */
-void Shader::load_shader_file(const std::string& path, GLenum shader_type, GLhandleARB* shader) {
-  
-  size_t size;
-  char* buffer;
-  std::string source; 
-  
-  FileTools::data_file_open_buffer(path, &buffer, &size);
-  source = std::string(buffer, size); // Make sure the buffer is a valid string.
-  FileTools::data_file_close_buffer(buffer);
-  
-  *shader = glCreateShaderObjectARB(shader_type);
-  
-  compile_shader(*shader, source.c_str());
-}
-
-/**
  * \brief Callback when parsing the lua file. Fill the loading shader with the result.
  * \param l The lua state.
  */
@@ -336,13 +312,38 @@ int Shader::l_shader(lua_State* l) {
   
   if (loading_shader != NULL) {
 
+    GLhandleARB& program = loading_shader->program,
+      vertex_shader = loading_shader->vertex_shader,
+      fragment_shader = loading_shader->fragment_shader;
+    
     // Retrieve the shader properties from the table parameter.
     luaL_checktype(l, 1, LUA_TTABLE);
   
     const double& window_scale =
         LuaContext::opt_number_field(l, 1, "logical_scale", 1.0);
+    const std::string shader_name =
+        LuaContext::opt_string_field(l, 1, "name", loading_shader->shader_name);
+    const std::string vertex_source =
+        LuaContext::check_string_field(l, 1, "vertex_source");
+    const std::string fragment_source =
+        LuaContext::check_string_field(l, 1, "fragment_source");
     
     loading_shader->logical_scale = window_scale;
+    loading_shader->shader_name = shader_name;
+    
+    // Create the vertex and fragment shaders.
+    vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+    compile_shader(vertex_shader, vertex_source.c_str());
+    fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+    compile_shader(fragment_shader, fragment_source.c_str());
+    
+    // Create one program object to rule them all ...
+    program = glCreateProgramObjectARB();
+    
+    // ... and in the darkness bind them
+    glAttachObjectARB(program, vertex_shader);
+    glAttachObjectARB(program, fragment_shader);
+    glLinkProgramARB(program);
   }
 
   return 0;

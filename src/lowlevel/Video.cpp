@@ -693,23 +693,24 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
     
     // Get all shaders of the quest's shader/filters/driver folder.
     std::vector<std::string> shader_names = 
-        FileTools::data_files_enumerate("shaders/filters/" + get_rendering_driver_name(), false, true);
+        FileTools::data_files_enumerate("shaders/filters/", true, false);
 
     for (unsigned i = 0; i < shader_names.size(); ++i) {
 
-      if (shader_names.at(i) == normal_mode_name) {
-        Debug::warning("Forbidden video mode name : " + shader_names.at(i));
-        continue;
-      }
-
       // Load the shader and add the corresponding video mode.
       Shader* video_mode_shader = Shader::create(shader_names.at(i));
+      
+      if (video_mode_shader->get_name() == normal_mode_name) {
+        Debug::warning("Forbidden video mode name : " + video_mode_shader->get_name());
+        delete video_mode_shader;
+        continue;
+      }
       
       if (video_mode_shader != NULL) {
         const Rectangle scaled_quest_size(0, 0, 
             double(quest_size.get_width()) * video_mode_shader->get_logical_scale(),
             double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
-        all_video_modes.push_back( new VideoMode(shader_names.at(i), scaled_quest_size, video_mode_shader) );
+        all_video_modes.push_back( new VideoMode(video_mode_shader->get_name(), scaled_quest_size, video_mode_shader) );
       }
     }
 #endif

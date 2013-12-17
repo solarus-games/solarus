@@ -49,6 +49,7 @@ class Shader {
     Shader(std::string shader_name);
     ~Shader();
 
+    std::string get_name();
     double get_logical_scale();
   
     void apply();
@@ -69,7 +70,6 @@ class Shader {
     static PFNGLGETHANDLEARBPROC glGetHandleARB;
   
     static void compile_shader(GLhandleARB& shader, const char* source);
-    static void load_shader_file(const std::string& path, GLenum shader_type, GLhandleARB* shader);
     static int l_shader(lua_State* l);
   
     void load(const std::string& shader_name);
@@ -78,12 +78,13 @@ class Shader {
     static SDL_GLContext gl_context;             /**< The OpenGL context. */
     static GLhandleARB default_shader_program;   /**< Default shader program to restore once a shaded render is done. */
     static GLenum gl_texture_type;               /**< The type of GL texture used by SDL. */
-    static std::string defines_source;           /**< Definitions source used with every shaders. */
+    static std::string language_version;         /**< The version of the shading language. */
     static Shader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */
   
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
+    std::string shader_name;                     /**< The name of the shader. */
     double logical_scale;                        /**< Logical scale of the renderer when the shader is active,
                                                    compared to the normal quest size. */
 #endif

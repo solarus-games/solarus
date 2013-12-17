@@ -44,8 +44,8 @@ class Transition {
      * \brief Possible directions of a transition.
      */
     enum Direction {
-      IN  = 0,
-      OUT = 1
+      TRANSITION_OPENING  = 0,
+      TRANSITION_CLOSING = 1
     };
 
     virtual ~Transition();

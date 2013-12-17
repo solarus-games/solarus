@@ -27,7 +27,7 @@ namespace solarus {
 
 /**
  * \brief Creates a scrolling transition effect.
- * \param direction direction of the transition (in or out)
+ * \param direction direction of the transition (opening or closing)
  */
 TransitionScrolling::TransitionScrolling(Transition::Direction direction):
   Transition(direction),
@@ -41,7 +41,7 @@ TransitionScrolling::TransitionScrolling(Transition::Direction direction):
  */
 TransitionScrolling::~TransitionScrolling() {
 
-  if (get_direction() == IN) {
+  if (get_direction() == TRANSITION_OPENING) {
     RefCountable::unref(both_maps_surface);
   }
 }
@@ -73,7 +73,7 @@ Rectangle TransitionScrolling::get_previous_map_dst_position(
  */
 void TransitionScrolling::start() {
 
-  if (get_direction() == OUT) {
+  if (get_direction() == TRANSITION_CLOSING) {
     return;
   }
 
@@ -130,7 +130,7 @@ bool TransitionScrolling::is_started() const {
  */
 bool TransitionScrolling::is_finished() const {
 
-  if (get_direction() == OUT) {
+  if (get_direction() == TRANSITION_CLOSING) {
     return true;
   }
 
@@ -181,7 +181,7 @@ void TransitionScrolling::update() {
  */
 void TransitionScrolling::draw(Surface& dst_surface) {
 
-  if (get_direction() == OUT) {
+  if (get_direction() == TRANSITION_CLOSING) {
     return;
   }
 

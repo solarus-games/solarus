@@ -20,7 +20,7 @@ namespace solarus {
 
 /**
  * \brief Creates an immediate transition effect.
- * \param direction direction of the transition effect (in or out)
+ * \param direction direction of the transition effect (opening or closing)
  */
 TransitionImmediate::TransitionImmediate(Transition::Direction direction):
   Transition(direction) {

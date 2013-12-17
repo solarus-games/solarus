@@ -25,7 +25,7 @@ namespace solarus {
 
 /**
  * \brief Creates a fade-in or fade-out transition effect.
- * \param direction direction of the transition effect (in or out)
+ * \param direction direction of the transition effect (opening or closing)
  * \param dst_surface The destination surface that will receive this
  * transition.
  */
@@ -36,7 +36,7 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
   dst_surface(&dst_surface),
   transition_color(NULL) {
 
-  if (direction == OUT) {
+  if (direction == TRANSITION_CLOSING) {
     alpha_start = 256;
     alpha_limit = 0;
     alpha_increment = -8;

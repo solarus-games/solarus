@@ -381,7 +381,7 @@ void Game::update_transitions() {
     else { // normal case: stop the control and play an out transition before leaving the current map
       transition = Transition::create(
           transition_style,
-          Transition::OUT,
+          Transition::TRANSITION_CLOSING,
           current_map->get_visible_surface(),
           this);
       if(transition_style == Transition::FADE) {
@@ -408,14 +408,14 @@ void Game::update_transitions() {
       RefCountable::unref(savegame);
       savegame = NULL;  // The new game is the owner.
     }
-    else if (transition_direction == Transition::OUT) {
+    else if (transition_direction == Transition::TRANSITION_CLOSING) {
 
       if (next_map == current_map) {
         // same map
         hero->place_on_destination(*current_map, previous_map_location);
         transition = Transition::create(
             transition_style,
-            Transition::IN,
+            Transition::TRANSITION_OPENING,
             current_map->get_visible_surface(),
             this);
         if(transition_style == Transition::FADE) {
@@ -472,7 +472,7 @@ void Game::update_transitions() {
   if (started && !current_map->is_started()) {
     transition = Transition::create(
         transition_style,
-        Transition::IN,
+        Transition::TRANSITION_OPENING,
         current_map->get_visible_surface(),
         this);
     if(transition_style == Transition::FADE) {
@@ -790,7 +790,7 @@ void Game::restart() {
 
   transition = Transition::create(
       Transition::FADE,
-      Transition::OUT,
+      Transition::TRANSITION_CLOSING,
       current_map->get_visible_surface(),
       this);
   static_cast<TransitionFade*>(transition)->set_color(new Color(Color::get_black()));

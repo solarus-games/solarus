@@ -45,7 +45,6 @@ class Video {
     static SDL_PixelFormat* get_pixel_format();
     static bool is_acceleration_enabled();
     static const std::string& get_rendering_driver_name();
-    static void create_window();
     static void show_window();
   
     static Rectangle& get_viewport();
@@ -84,9 +83,6 @@ class Video {
     static void render(Surface& quest_surface);
 
   private:
-
-    Video(bool disable_window, const Rectangle& wanted_quest_size);
-    ~Video();
 
     static void shaded_render(Surface& quest_surface);
 };

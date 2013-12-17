@@ -39,7 +39,6 @@ CommandLine::CommandLine(int argc, char** argv) {
  * \brief Destructor.
  */
 CommandLine::~CommandLine() {
-
 }
 
 /**

@@ -29,42 +29,128 @@ namespace solarus {
 
 namespace {
 
-  SDL_Window* main_window = NULL;           /**< The window. */
-  SDL_Renderer* main_renderer = NULL;       /**< The screen renderer. */
-  SDL_Texture* render_target;               /**< The render texture used when shader modes are supported. */
-  SDL_PixelFormat* pixel_format = NULL;     /**< The pixel color format to use. */
-  std::string rendering_driver_name;        /**< The name of the rendering driver. */
-  bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
-  bool fullscreen;                          /**< True if fullscreen display. */
-  bool rendertarget_supported;              /**< True if rendering on texture is supported. */
-  bool shaders_supported;                   /**< True if shaded modes and rendering on texture are supported. */
-  bool renderer_accelerated = false;       /**< \c true if 2D GPU acceleration is available. */
-  // TODO const PixelFilter* pixel_filter = NULL;   /**< The pixel filtering algorithm (if any) applied with the current video mode. */
-  // TODO Surface* scaled_surface = NULL;           /**< The screen surface used with scaled modes. */
+SDL_Window* main_window = NULL;           /**< The window. */
+SDL_Renderer* main_renderer = NULL;       /**< The screen renderer. */
+SDL_Texture* render_target = NULL;        /**< The render texture used when shader modes are supported. */
+SDL_PixelFormat* pixel_format = NULL;     /**< The pixel color format to use. */
+std::string rendering_driver_name;        /**< The name of the rendering driver. */
+bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
+bool fullscreen = false;                  /**< True if fullscreen display. */
+bool rendertarget_supported = false;      /**< True if rendering on texture is supported. */
+bool shaders_supported = false;           /**< True if shaded modes and rendering on texture are supported. */
+bool acceleration_enabled = false;        /**< \c true if 2D GPU acceleration is available and enabled. */
+// TODO const PixelFilter* pixel_filter = NULL;   /**< The pixel filtering algorithm (if any) applied with the current video mode. */
+// TODO Surface* scaled_surface = NULL;           /**< The screen surface used with scaled modes. */
 
-  const std::string normal_mode_name =
-      "solarus_default";                    /**< Non-shaded mode name. It will be forbidden for shaded ones. */
+const std::string normal_mode_name =
+    "solarus_default";                    /**< Non-shaded mode name. It will be forbidden for shaded ones. */
 
-  std::vector<VideoMode*>
-      all_video_modes;                      /**< Display information for each supported video mode. */
-  const VideoMode* video_mode;              /**< Current display mode, pointer to an element of all_video_modes. */
+std::vector<VideoMode*>
+    all_video_modes;                      /**< Display information for each supported video mode. */
+const VideoMode* video_mode;              /**< Current display mode, pointer to an element of all_video_modes. */
 
-  Rectangle normal_quest_size;              /**< Default value of quest_size (depends on the quest). */
-  Rectangle min_quest_size;                 /**< Minimum value of quest_size (depends on the quest). */
-  Rectangle max_quest_size;                 /**< Maximum value of quest_size (depends on the quest). */
-  Rectangle quest_size;                     /**< Size of the quest surface to render. */
-  Rectangle wanted_quest_size;              /**< Size wanted by the user. */
+Rectangle normal_quest_size;              /**< Default value of quest_size (depends on the quest). */
+Rectangle min_quest_size;                 /**< Minimum value of quest_size (depends on the quest). */
+Rectangle max_quest_size;                 /**< Maximum value of quest_size (depends on the quest). */
+Rectangle quest_size;                     /**< Size of the quest surface to render. */
+Rectangle wanted_quest_size;              /**< Size wanted by the user. */
 
-  // TODO
-  // Scale2xFilter scale2x_filter;             /**< Scale2X pixel filter. */
-  // Hq4xFilter hq4x_filter;                   /**< hq4X pixel filter. */
+// TODO
+// Scale2xFilter scale2x_filter;             /**< Scale2X pixel filter. */
+// Hq4xFilter hq4x_filter;                   /**< hq4X pixel filter. */
+
+
+/**
+ * \brief Creates the window but does not show it.
+ * \param args Command-line arguments.
+ */
+void create_window(const CommandLine& args) {
+
+  Debug::check_assertion(main_window == NULL, "Window already exists");
+
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+  // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
+  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
+
+  // Set the default OpenGL built-in shader (nearest)
+  SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
+#endif
+
+  main_window = SDL_CreateWindow(
+      (std::string("Solarus ") + SOLARUS_VERSION).c_str(),
+      SDL_WINDOWPOS_CENTERED,
+      SDL_WINDOWPOS_CENTERED,
+      wanted_quest_size.get_width(),
+      wanted_quest_size.get_height(),
+      SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+      | SDL_WINDOW_OPENGL
+#endif
+  );
+  Debug::check_assertion(main_window != NULL,
+      std::string("Cannot create the window: ") + SDL_GetError());
+
+  int acceleration_flag = 0;
+  if (args.get_argument_value("-video-acceleration") == "no") {
+    acceleration_enabled = false;
+    acceleration_flag = SDL_RENDERER_SOFTWARE;
+  }
+  else {
+    // Accelerated by default.
+    acceleration_enabled = true;
+    acceleration_flag = SDL_RENDERER_ACCELERATED;
+  }
+  main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag | SDL_RENDERER_PRESENTVSYNC);
+  if (main_renderer == NULL) {
+      // Try without vsync.
+      main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag);
+  }
+
+  Debug::check_assertion(main_renderer != NULL,
+      std::string("Cannot create the renderer: ") + SDL_GetError());
+  SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.
+
+  // Get the first renderer format which is a packed32 type and supports alpha channel
+  SDL_RendererInfo renderer_info;
+  SDL_GetRendererInfo(main_renderer, &renderer_info);
+  for (unsigned i = 0; i < renderer_info.num_texture_formats; ++i) {
+
+    if (SDL_PIXELTYPE(renderer_info.texture_formats[i]) == SDL_PIXELTYPE_PACKED32
+        && SDL_ISPIXELFORMAT_ALPHA(renderer_info.texture_formats[i])) {
+      pixel_format = SDL_AllocFormat(renderer_info.texture_formats[i]);
+      break;
+    }
+  }
+
+  Debug::check_assertion(pixel_format != NULL, "No compatible pixel format");
+
+  // Check renderer's flags
+  rendering_driver_name = renderer_info.name;
+  rendertarget_supported = (renderer_info.flags & SDL_RENDERER_TARGETTEXTURE) != 0;
+  acceleration_enabled = acceleration_enabled
+    && (renderer_info.flags & SDL_RENDERER_ACCELERATED) != 0;
+  if (acceleration_enabled) {
+    // Solarus uses accelerated graphics as of version 1.2 with SDL2.
+    std::cout << "2D acceleration: yes" << std::endl;
+  }
+  else {
+    // Acceleration may be disabled because the user decided so or because the
+    // system does not support it.
+    // This is not a problem: the engine runs perfectly in software mode.
+    std::cout << "2D acceleration: no" << std::endl;
+  }
+}
+
 };
 
 /**
  * \brief Initializes the video system and creates the window.
  *
  * This method should be called when the program starts.
- * Options "-no-video" and "-quest-size=<width>x<height>" are recognized.
+ * Options recognized:
+ *   -no-video
+ *   -video-acceleration=yes|no
+ *   -quest-size=<width>x<height>
  *
  * \param args Command-line arguments.
  */
@@ -83,7 +169,9 @@ void Video::initialize(const CommandLine& args) {
     }
   }
 
-  create_window();
+  if (!disable_window) {
+    create_window(args);
+  }
 }
 
 /**
@@ -141,73 +229,8 @@ SDL_PixelFormat* Video::get_pixel_format() {
  * \return a string containing the rendering driver name.
  */
 const std::string& Video::get_rendering_driver_name() {
-  
+
   return rendering_driver_name;
-}
-
-/**
- * \brief Creates the window.
- */
-void Video::create_window() {
-
-  Debug::check_assertion(main_window == NULL, "Window already exists");
-  
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
-  // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
-  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
-
-  // Set the default OpenGL built-in shader (nearest)
-  SDL_SetHint(SDL_HINT_RENDER_OPENGL_SHADERS, "0");
-#endif
-
-  main_window = SDL_CreateWindow(
-      (std::string("Solarus ") + SOLARUS_VERSION).c_str(),
-      SDL_WINDOWPOS_CENTERED,
-      SDL_WINDOWPOS_CENTERED,
-      wanted_quest_size.get_width(),
-      wanted_quest_size.get_height(),
-      SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
-      | SDL_WINDOW_OPENGL
-#endif
-  );
-  Debug::check_assertion(main_window != NULL,
-      std::string("Cannot create the window: ") + SDL_GetError());
-
-  main_renderer = SDL_CreateRenderer(main_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-  if (main_renderer == NULL) {
-      // Try without vsync.
-      main_renderer = SDL_CreateRenderer(main_window, -1, SDL_RENDERER_ACCELERATED);
-  }
-
-  Debug::check_assertion(main_renderer != NULL,
-      std::string("Cannot create the renderer: ") + SDL_GetError());
-  SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.
-
-  // Get the first renderer format which is a packed32 type and supports alpha channel
-  SDL_RendererInfo renderer_info;
-  SDL_GetRendererInfo(main_renderer, &renderer_info);
-  for (unsigned i = 0; i < renderer_info.num_texture_formats; ++i) {
-
-    if (SDL_PIXELTYPE(renderer_info.texture_formats[i]) == SDL_PIXELTYPE_PACKED32
-        && SDL_ISPIXELFORMAT_ALPHA(renderer_info.texture_formats[i])) {
-      pixel_format = SDL_AllocFormat(renderer_info.texture_formats[i]);
-      break;
-    }
-  }
-  
-  Debug::check_assertion(pixel_format != NULL, "No compatible pixel format");
-
-  // Check renderer's flags
-  rendering_driver_name = renderer_info.name;
-  rendertarget_supported = (renderer_info.flags & SDL_RENDERER_TARGETTEXTURE) != 0;
-  renderer_accelerated = (renderer_info.flags & SDL_RENDERER_ACCELERATED) != 0;
-  if (renderer_accelerated) {
-    std::cout << "2D acceleration: yes" << std::endl;
-  }
-  else {
-    std::cout << "2D acceleration: no" << std::endl;
-  }
 }
 
 /**
@@ -230,7 +253,7 @@ void Video::show_window() {
 bool Video::is_acceleration_enabled() {
 
   void* pixel_filter = NULL;  // TODO
-  return renderer_accelerated  // 2D acceleration must be available on the system.
+  return acceleration_enabled   // 2D acceleration must be available on the system.
       && pixel_filter == NULL;  // For now pixel filters are all implemented in software.
 }
 
@@ -438,7 +461,7 @@ const VideoMode* Video::get_video_mode_by_name(
       return all_video_modes.at(i);
     }
   }
-  
+
   Debug::warning("No video mode with name: " + mode_name);
   return NULL;
 }
@@ -454,7 +477,7 @@ void Video::render(Surface& quest_surface) {
   }
 
   if (is_acceleration_enabled() && rendertarget_supported) {
-    
+
     // Perform faster render if shaders are supported.
     if (shaders_supported) {
       shaded_render(quest_surface);
@@ -473,7 +496,7 @@ void Video::render(Surface& quest_surface) {
        else {
        surface_to_render = &quest_surface;
        }
-       
+
        SDL_RenderSetClipRect(main_renderer, NULL);
        SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
        SDL_RenderClear(main_renderer);
@@ -500,8 +523,8 @@ void Video::shaded_render(Surface& quest_surface) {
   // Clear the window
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity(); 
-  
+  glLoadIdentity();
+
   // Clear the render target
   SDL_SetRenderTarget(main_renderer, render_target);
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
@@ -676,7 +699,7 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
   // Initialize non-shaded video mode...
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
   all_video_modes.push_back(new VideoMode(normal_mode_name, quest_size_2, NULL));
-  
+
   // ... and shaded ones if shaders and render target are supported.
   shaders_supported = allow_shaded_modes && rendertarget_supported;
   if (shaders_supported) {
@@ -690,24 +713,24 @@ void Video::initialize_video_modes(bool allow_shaded_modes) {
         quest_size.get_width(),
         quest_size.get_height());
     SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
-    
+
     // Get all shaders of the quest's shader/filters/driver folder.
-    std::vector<std::string> shader_names = 
+    std::vector<std::string> shader_names =
         FileTools::data_files_enumerate("shaders/filters/", true, false);
 
     for (unsigned i = 0; i < shader_names.size(); ++i) {
 
       // Load the shader and add the corresponding video mode.
       Shader* video_mode_shader = Shader::create(shader_names.at(i));
-      
+
       if (video_mode_shader->get_name() == normal_mode_name) {
         Debug::warning("Forbidden video mode name : " + video_mode_shader->get_name());
         delete video_mode_shader;
         continue;
       }
-      
+
       if (video_mode_shader != NULL) {
-        const Rectangle scaled_quest_size(0, 0, 
+        const Rectangle scaled_quest_size(0, 0,
             double(quest_size.get_width()) * video_mode_shader->get_logical_scale(),
             double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
         all_video_modes.push_back( new VideoMode(video_mode_shader->get_name(), scaled_quest_size, video_mode_shader) );

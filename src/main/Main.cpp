@@ -46,13 +46,15 @@ void print_help(int argc, char **argv) {
     << std::endl
     << "Options:"
     << std::endl
-    << "  -help               shows this help message and exits"
+    << "  -help                         shows this help message and exits"
     << std::endl
-    << "  -no-audio           disables sounds and musics"
+    << "  -no-audio                     disables sounds and musics"
     << std::endl
-    << "  -no-video           disables displaying (may be useful for automated tests)"
+    << "  -no-video                     disables displaying"
     << std::endl
-    << "  -quest-size=<width>x<height>         sets the size of the drawing area (if compatible with the quest)"
+    << "  -video-acceleration=yes|no    enables or disables accelerated graphics (default yes)"
+    << std::endl
+    << "  -quest-size=<width>x<height>  sets the size of the drawing area (if compatible with the quest)"
     << std::endl;
 }
 
@@ -73,10 +75,11 @@ void print_help(int argc, char **argv) {
  * directory.
  *
  * The following options are supported:
- *   -help               shows a help message
- *   -no-audio           disables sounds and musics
- *   -no-video           disables displaying (used for unitary tests)
- *   -quest-size=<width>x<height>         sets the size of the drawing area (if compatible with the quest)
+ *   -help                             Shows a help message.
+ *   -no-audio                         Disables sounds and musics.
+ *   -no-video                         Disables displaying (used for unitary tests).
+ *   -video-acceleration=yes|no        Enables or disables 2D accelerated graphics if available (default yes).
+ *   -quest-size=<width>x<height>      Sets the size of the drawing area (if compatible with the quest).
  *
  * \param argc Number of command-line arguments.
  * \param argv Command-line arguments.

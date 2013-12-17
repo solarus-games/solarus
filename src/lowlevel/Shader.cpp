@@ -36,7 +36,7 @@ PFNGLUNIFORM1IARBPROC Shader::glUniform1iARB;
 PFNGLUSEPROGRAMOBJECTARBPROC Shader::glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC Shader::glGetHandleARB;
 
-SDL_GLContext Shader::gl_context;
+SDL_GLContext Shader::gl_context = NULL;
 GLhandleARB Shader::default_shader_program;
 GLenum Shader::gl_texture_type = GL_TEXTURE_2D;
 std::string Shader::language_version = "";

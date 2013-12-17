@@ -32,7 +32,6 @@ class System {
   public:
 
     static void initialize(const CommandLine& args);
-    static void initialize_video_modes();
     static void quit();
     static void update();
 

@@ -147,10 +147,71 @@ void create_window(const CommandLine& args) {
   }
 }
 
+/**
+ * \brief Detects the available shaders and initializes all needed video modes.
+ *
+ * Fullscreen modes all are at the top of the list.
+ */
+void initialize_video_modes() {
+
+  const bool allow_shaded_modes = acceleration_enabled && Shader::initialize();
+
+  // Initialize non-shaded video mode...
+  const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
+  all_video_modes.push_back(new VideoMode(normal_mode_name, quest_size_2, NULL));
+
+  // ... and shaded ones if shaders and render target are supported.
+  shaders_supported = allow_shaded_modes && rendertarget_supported;
+  if (shaders_supported) {
+
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+    // Initialize the render target
+    render_target = SDL_CreateTexture(
+        main_renderer,
+        pixel_format->format,
+        SDL_TEXTUREACCESS_TARGET,
+        quest_size.get_width(),
+        quest_size.get_height());
+    SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
+
+    // Get all shaders of the quest's shader/filters/driver folder.
+    std::vector<std::string> shader_names =
+        FileTools::data_files_enumerate("shaders/filters/", true, false);
+
+    for (unsigned i = 0; i < shader_names.size(); ++i) {
+
+      // Load the shader and add the corresponding video mode.
+      Shader* video_mode_shader = Shader::create(shader_names.at(i));
+
+      if (video_mode_shader->get_name() == normal_mode_name) {
+        Debug::warning("Forbidden video mode name : " + video_mode_shader->get_name());
+        delete video_mode_shader;
+        continue;
+      }
+
+      if (video_mode_shader != NULL) {
+        const Rectangle scaled_quest_size(0, 0,
+            double(quest_size.get_width()) * video_mode_shader->get_logical_scale(),
+            double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
+        all_video_modes.push_back( new VideoMode(video_mode_shader->get_name(), scaled_quest_size, video_mode_shader) );
+      }
+    }
+#endif
+  }
+  // Initialize hardcoded video modes
+  else {
+    all_video_modes.push_back(new VideoMode("scale2x", quest_size_2, NULL));
+    all_video_modes.push_back(new VideoMode("hq4x", quest_size_2, NULL));
+  }
+
+  // Everything is ready now.
+  Video::set_default_video_mode();
+}
+
 };
 
 /**
- * \brief Initializes the video system and creates the window.
+ * \brief Initializes the video system.
  *
  * This method should be called when the program starts.
  * Options recognized:
@@ -652,7 +713,8 @@ void Video::get_quest_size_range(
 /**
  * \brief Sets the allowed range of quest sizes for this quest.
  *
- * This function sets the actual quest size and creates the screen.
+ * This function sets the actual quest size and finishes the initialization
+ * by creating the window.
  *
  * \param normal_quest_size Default size for this quest.
  * \param min_quest_size Minimum size for this quest.
@@ -693,65 +755,9 @@ void Video::set_quest_size_range(
   else {
     quest_size = wanted_quest_size;
   }
-}
 
-/**
- * \brief Detects the available shaders and initialize all needed video modes.
- * Fullscreen modes all are at the top of the list.
- * \param allow_shaded_modes true to skip shaded modes loading.
- */
-void Video::initialize_video_modes(bool allow_shaded_modes) {
-
-  // Initialize non-shaded video mode...
-  const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
-  all_video_modes.push_back(new VideoMode(normal_mode_name, quest_size_2, NULL));
-
-  // ... and shaded ones if shaders and render target are supported.
-  shaders_supported = allow_shaded_modes && rendertarget_supported;
-  if (shaders_supported) {
-
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
-    // Initialize the render target
-    render_target = SDL_CreateTexture(
-        main_renderer,
-        pixel_format->format,
-        SDL_TEXTUREACCESS_TARGET,
-        quest_size.get_width(),
-        quest_size.get_height());
-    SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
-
-    // Get all shaders of the quest's shader/filters/driver folder.
-    std::vector<std::string> shader_names =
-        FileTools::data_files_enumerate("shaders/filters/", true, false);
-
-    for (unsigned i = 0; i < shader_names.size(); ++i) {
-
-      // Load the shader and add the corresponding video mode.
-      Shader* video_mode_shader = Shader::create(shader_names.at(i));
-
-      if (video_mode_shader->get_name() == normal_mode_name) {
-        Debug::warning("Forbidden video mode name : " + video_mode_shader->get_name());
-        delete video_mode_shader;
-        continue;
-      }
-
-      if (video_mode_shader != NULL) {
-        const Rectangle scaled_quest_size(0, 0,
-            double(quest_size.get_width()) * video_mode_shader->get_logical_scale(),
-            double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
-        all_video_modes.push_back( new VideoMode(video_mode_shader->get_name(), scaled_quest_size, video_mode_shader) );
-      }
-    }
-#endif
-  }
-  // Initialize hardcoded video modes
-  else {
-    all_video_modes.push_back(new VideoMode("scale2x", quest_size_2, NULL));
-    all_video_modes.push_back(new VideoMode("hq4x", quest_size_2, NULL));
-  }
-
-  // Everything is ready now.
-  set_default_video_mode();
+  // We know the quest size: finish the initialization, create the window.
+  initialize_video_modes();
 }
 
 }

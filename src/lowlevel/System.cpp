@@ -34,9 +34,9 @@ namespace solarus {
 uint32_t System::ticks = 0;
 
 /**
- * \brief Initializes the whole lowlevel system.
+ * \brief Initializes the basic lowlevel system.
  *
- * Initializes the graphics, the audio system,
+ * Initializes the audio system, the video system,
  * the data file system, etc.
  *
  * \param args Command-line arguments.
@@ -54,12 +54,6 @@ void System::initialize(const CommandLine& args) {
   // files
   FileTools::initialize(args);
 
-  // video
-  Video::initialize(args);
-  Color::initialize();
-  TextSurface::initialize();
-  Sprite::initialize();
-
   // audio
   Sound::initialize(args);
 
@@ -68,15 +62,12 @@ void System::initialize(const CommandLine& args) {
 
   // random number generator
   Random::initialize();
-}
 
-/**
- * \brief Initialize the video mode system.
- */
-void System::initialize_video_modes() {  // TODO call Video directly, remove this function
-  
-  // Initialize quest's shaded video modes if supported, and engine's hardcoded ones else.
-  Video::initialize_video_modes( Shader::initialize() );
+  // video
+  Video::initialize(args);
+  Color::initialize();
+  TextSurface::initialize();
+  Sprite::initialize();
 }
 
 /**

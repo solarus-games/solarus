@@ -43,28 +43,29 @@ MainLoop::MainLoop(const CommandLine& args):
   game(NULL),
   next_game(NULL) {
 
-  // Initialize low-level features (audio, video, files...).
+  // Initialize basic features (input, audio, video, files...).
   System::initialize(args);
 
   // Read the quest general properties.
   QuestProperties quest_properties(*this);
   quest_properties.load();
 
-  // Initialize all video modes (default + quest dependent ones).
-  System::initialize_video_modes();
-    
   // Read the quest resource list from data.
   QuestResourceList::initialize();
 
-  // Load the lua quest stuff now that the window is created.
+  // Create the quest surface.
   root_surface = Surface::create(
       Video::get_quest_size()
   );
   RefCountable::ref(root_surface);
+
+  // Run the Lua world.
+  // Do this after the creation of the window because Lua might change the
+  // video mode initially. This will avoid blinking.
   lua_context = new LuaContext(*this);
   lua_context->initialize();
 
-  // Show the window now that we know the actual outset size, to avoid blinking.
+  // Finally show the window.
   Video::show_window();
 }
 

@@ -46,11 +46,10 @@ class Video {
     static bool is_acceleration_enabled();
     static const std::string& get_rendering_driver_name();
     static void show_window();
-  
+
     static Rectangle& get_viewport();
     static void update_viewport();
-  
-    static void initialize_video_modes(bool allow_shaded_modes);
+
     static const VideoMode& get_video_mode();
     static std::vector<const VideoMode*> get_video_modes();
     static bool is_mode_supported(const VideoMode& mode);

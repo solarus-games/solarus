@@ -104,6 +104,12 @@ void create_window(const CommandLine& args) {
   if (main_renderer == NULL) {
       // Try without vsync.
       main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag);
+      if (main_renderer == NULL && acceleration_enabled) {
+          // Try without acceleration.
+          acceleration_enabled = false;
+          acceleration_flag = SDL_RENDERER_SOFTWARE;
+          main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag);
+      }
   }
 
   Debug::check_assertion(main_renderer != NULL,

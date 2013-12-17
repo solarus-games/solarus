@@ -38,6 +38,7 @@ PFNGLGETHANDLEARBPROC Shader::glGetHandleARB;
 
 SDL_GLContext Shader::gl_context;
 GLhandleARB Shader::default_shader_program;
+GLenum Shader::gl_texture_type = GL_TEXTURE_2D;
 std::string Shader::defines_source = "";
 Shader* Shader::loading_shader = NULL;
 
@@ -99,12 +100,10 @@ bool Shader::initialize() {
       // Get the SDL default shader program
       default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
       
-      // WORKAROUND Guarantee the shader to deal with a rectangle texture whatever the hardware is.
-      // /!\ If a shader use a specific fetch texture features, the shader will not compile.
+      // Get the type of GL texture used by SDL
       if (SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle")
           || SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) {
-        defines_source += "#define sampler2D sampler2DRect\n";
-        defines_source += "#define texture2D texture2DRect\n";
+        gl_texture_type = GL_TEXTURE_RECTANGLE_ARB;
       }
       
       return true;
@@ -155,6 +154,15 @@ void Shader::compile_shader(GLhandleARB& shader, const char* source) {
   }
 }
 
+/**
+ * \brief Get the GL texture type used by SDL.
+ * \return The type of the GL texture.
+ */
+GLenum Shader::get_texture_type() {
+    
+  return gl_texture_type;
+}
+  
 /**
  * \brief Restore the default shader.
  */

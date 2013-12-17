@@ -535,7 +535,7 @@ void Surface::raw_draw_region(
       if (dst_surface.internal_surface == NULL) {
         dst_surface.create_software_surface();
       }
-      
+
       SDL_BlitSurface(
           this->internal_surface,
           region.get_internal_rect(),

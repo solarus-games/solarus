@@ -515,7 +515,7 @@ void Video::shaded_render(Surface& quest_surface) {
   SDL_SetRenderTarget(main_renderer, NULL);
   Shader::set_rendering_settings();
 
-  glEnable(GL_TEXTURE_2D);
+  glEnable(Shader::get_texture_type());
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
   if (video_mode->get_shader() != NULL) {
     video_mode->get_shader()->apply();
@@ -537,7 +537,7 @@ void Video::shaded_render(Surface& quest_surface) {
     Shader::restore_default_shader_program();
   }
   SDL_GL_UnbindTexture(render_target);
-  glDisable(GL_TEXTURE_2D);
+  glDisable(Shader::get_texture_type());
 
   // And swap the window.
   SDL_GL_SwapWindow(main_window);

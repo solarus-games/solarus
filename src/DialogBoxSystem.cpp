@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DialogBox.h"
+#include "DialogBoxSystem.h"
 #include "DialogResource.h"
 #include "Game.h"
 #include "Map.h"
@@ -29,7 +29,7 @@ namespace solarus {
  * \brief Creates a new dialog box.
  * \param game The game this dialog box belongs to.
  */
-DialogBox::DialogBox(Game& game):
+DialogBoxSystem::DialogBoxSystem(Game& game):
   game(game),
   callback_ref(LUA_REFNIL),
   built_in(false),
@@ -45,7 +45,7 @@ DialogBox::DialogBox(Game& game):
 /**
  * \brief Destructor.
  */
-DialogBox::~DialogBox() {
+DialogBoxSystem::~DialogBoxSystem() {
 
   for (int i = 0; i < nb_visible_lines; i++) {
     delete line_surfaces[i];
@@ -57,7 +57,7 @@ DialogBox::~DialogBox() {
  * \brief Returns the game where this dialog box is displayed.
  * \return the current game
  */
-Game& DialogBox::get_game() {
+Game& DialogBoxSystem::get_game() {
   return game;
 }
 
@@ -65,7 +65,7 @@ Game& DialogBox::get_game() {
  * \brief Returns whether the dialog box is currently active.
  * \return true if the dialog box is enabled
  */
-bool DialogBox::is_enabled() const {
+bool DialogBoxSystem::is_enabled() const {
 
   return !dialog_id.empty();
 }
@@ -74,7 +74,7 @@ bool DialogBox::is_enabled() const {
  * \brief Returns the id of the current dialog.
  * \return the id of the dialog currently shown
  */
-const std::string& DialogBox::get_dialog_id() const {
+const std::string& DialogBoxSystem::get_dialog_id() const {
   return dialog_id;
 }
 
@@ -89,7 +89,7 @@ const std::string& DialogBox::get_dialog_id() const {
  * \param callback_ref Lua ref to a function to call when the dialog finishes,
  * or LUA_REFNIL.
  */
-void DialogBox::open(const std::string& dialog_id,
+void DialogBoxSystem::open(const std::string& dialog_id,
     int info_ref, int callback_ref) {
 
   Debug::check_assertion(!is_enabled(), "A dialog is already active");
@@ -167,7 +167,7 @@ void DialogBox::open(const std::string& dialog_id,
  * callback, or LUA_REFNIL. "skipped" means that the dialog was canceled by
  * the user.
  */
-void DialogBox::close(int status_ref) {
+void DialogBoxSystem::close(int status_ref) {
 
   Debug::check_assertion(is_enabled(), "No dialog is active");
 
@@ -191,7 +191,7 @@ void DialogBox::close(int status_ref) {
  * current 3 lines in the built-in dialog box.
  * \return \c true if there are more lines.
  */
-bool DialogBox::has_more_lines() const {
+bool DialogBoxSystem::has_more_lines() const {
   return !remaining_lines.empty();
 }
 
@@ -199,7 +199,7 @@ bool DialogBox::has_more_lines() const {
  * \brief Shows a new group of 3 lines (if possible) in the built-in
  * dialog box.
  */
-void DialogBox::show_more_lines() {
+void DialogBoxSystem::show_more_lines() {
 
   // This function is only called in the built-in case.
   Debug::check_assertion(built_in, "This dialog box is not the built-in one");
@@ -259,7 +259,7 @@ void DialogBox::show_more_lines() {
  * \return \c true if the command was handled (that is, if the dialog box
  * is active and is the built-in one).
  */
-bool DialogBox::notify_command_pressed(GameCommands::Command command) {
+bool DialogBoxSystem::notify_command_pressed(GameCommands::Command command) {
 
   if (!is_enabled()) {
     return false;
@@ -295,7 +295,7 @@ bool DialogBox::notify_command_pressed(GameCommands::Command command) {
  *
  * \param dst_surface The destination surface.
  */
-void DialogBox::draw(Surface& dst_surface) {
+void DialogBoxSystem::draw(Surface& dst_surface) {
 
   if (!built_in) {
     // The dialog box is handled by a Lua script.

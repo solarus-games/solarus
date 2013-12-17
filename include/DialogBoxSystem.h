@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_DIALOG_BOX_H
-#define SOLARUS_DIALOG_BOX_H
+#ifndef SOLARUS_DIALOG_BOX_SYSTEM_H
+#define SOLARUS_DIALOG_BOX_SYSTEM_H
 
 #include "Common.h"
 #include "Dialog.h"
@@ -32,12 +32,12 @@ namespace solarus {
  * script can define its own one instead.
  * This class handles both cases.
  */
-class DialogBox {
+class DialogBoxSystem {
 
   public:
 
-    DialogBox(Game& game);
-    ~DialogBox();
+    DialogBoxSystem(Game& game);
+    ~DialogBoxSystem();
 
     Game& get_game();
     bool is_enabled() const;

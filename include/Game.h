@@ -21,7 +21,7 @@
 #include "Transition.h"
 #include "GameCommands.h"
 #include "Savegame.h"
-#include "DialogBox.h"
+#include "DialogBoxSystem.h"
 #include <lua.hpp>
 
 namespace solarus {
@@ -108,7 +108,7 @@ class Game {
     // current game state (elements currently shown)
     bool pause_allowed;        /**< indicates that the player is allowed to use the pause command */
     bool paused;               /**< indicates that the game is paused */
-    DialogBox dialog_box;      /**< The dialog box manager. */
+    DialogBoxSystem dialog_box;    /**< The dialog box manager. */
     bool showing_game_over;    /**< Whether a game-over sequence is currently active. */
     bool started;              /**< true if this game is running, false if it is not yet started or being closed. */
     bool restarting;           /**< true if the game will be restarted */

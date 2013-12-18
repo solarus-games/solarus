@@ -23,7 +23,7 @@ shader {
 
 		void main()
 		{
-			gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+   			gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
     		v_color = gl_Color;
     		v_texCoord = vec2(gl_MultiTexCoord0);
 		}

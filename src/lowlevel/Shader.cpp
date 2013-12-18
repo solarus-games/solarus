@@ -39,7 +39,7 @@ PFNGLGETHANDLEARBPROC Shader::glGetHandleARB;
 SDL_GLContext Shader::gl_context = NULL;
 GLhandleARB Shader::default_shader_program;
 GLenum Shader::gl_texture_type = GL_TEXTURE_2D;
-std::string Shader::language_version = "";
+std::string Shader::shading_language_version = "";
 Shader* Shader::loading_shader = NULL;
 
 #endif
@@ -107,7 +107,7 @@ bool Shader::initialize() {
       }
       
       // Get the shading language version.
-      language_version = *glGetString(GL_SHADING_LANGUAGE_VERSION);
+      shading_language_version = *glGetString(GL_SHADING_LANGUAGE_VERSION);
       
       return true;
     }
@@ -289,10 +289,10 @@ void Shader::load_lua_file(const std::string& path) {
     Debug::die(std::string("Failed to load : ") + path);
   }
   else {
-    // Send the video driver, the shading language version and the sampler type to the lua script.
+    // Use the video driver, the shading language version and the sampler type as parameter for the lua script.
+    lua_pushstring(l, get_sampler2d_type().c_str());
+    lua_pushstring(l, shading_language_version.c_str());
     lua_pushstring(l, Video::get_rendering_driver_name().c_str());
-    lua_pushstring(l, language_version.c_str());
-    lua_pushstring(l, get_sampler_type().c_str());
     
     lua_register(l, "shader", l_shader);
     if (lua_pcall(l, 3, 0, 0) != 0) {
@@ -354,15 +354,15 @@ int Shader::l_shader(lua_State* l) {
 }
 
 /**
- * \brief Get the type of sampler to use into the GLSL shader.
- * \return A string containing the type of sampler.
+ * \brief Get the suffixe (after "sampler2D") of the sampler2D type to use into the GLSL shader.
+ * \return A string containing the type of sampler2D to use.
  */
-std::string Shader::get_sampler_type()
+std::string Shader::get_sampler2d_type()
 {
   if (gl_texture_type == GL_TEXTURE_RECTANGLE_ARB) {
-    return "sampler2DRect";
+    return "Rect";
   }
-  return "sampler2D";
+  return "";
 }
   
 /**

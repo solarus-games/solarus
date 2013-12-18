@@ -71,7 +71,7 @@ class Shader {
   
     static void compile_shader(GLhandleARB& shader, const char* source);
     static int l_shader(lua_State* l);
-    static std::string get_sampler_type();
+    static std::string get_sampler2d_type();
   
     void load(const std::string& shader_name);
     void load_lua_file(const std::string& path);
@@ -79,7 +79,7 @@ class Shader {
     static SDL_GLContext gl_context;             /**< The OpenGL context. */
     static GLhandleARB default_shader_program;   /**< Default shader program to restore once a shaded render is done. */
     static GLenum gl_texture_type;               /**< The type of GL texture used by SDL. */
-    static std::string language_version;         /**< The version of the shading language. */
+    static std::string shading_language_version; /**< The version of the shading language. */
     static Shader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */
   
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */

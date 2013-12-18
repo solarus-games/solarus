@@ -1,10 +1,10 @@
 video_driver_name = ...
 shading_language_version = ...
-sampler_type = ...
+sampler2D_type = ...
 
 shader {
 	name = "normal",
-	logical_scale = 2,
+	logical_scale = 1,
 	vertex_source = [[
 		varying vec4 v_color;
 		varying vec2 v_texCoord;
@@ -19,11 +19,11 @@ shader {
 	fragment_source = [[
 		varying vec4 v_color;
 		varying vec2 v_texCoord;
-		uniform sampler2DRect solarus_sampler;
+		uniform sampler2D]] .. sampler2D_type .. [[ solarus_sampler;
 
 		void main()
 		{
-    		gl_FragColor = texture2DRect(solarus_sampler, v_texCoord) * v_color;
+    		gl_FragColor = texture2D]] .. sampler2D_type .. [[(solarus_sampler, v_texCoord) * v_color;
 		}
 	]]
 }

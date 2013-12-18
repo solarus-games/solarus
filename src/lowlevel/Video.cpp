@@ -557,10 +557,10 @@ void Video::render(Surface& quest_surface) {
     // a software filter.
     Surface* surface_to_render = NULL;
     if (software_filter != NULL) {
-       Debug::check_assertion(scaled_surface != NULL,
-           "Missing destination surface for scaling");
-       quest_surface.apply_pixel_filter(*software_filter, *scaled_surface);
-       surface_to_render = scaled_surface;
+      Debug::check_assertion(scaled_surface != NULL,
+          "Missing destination surface for scaling");
+      quest_surface.apply_pixel_filter(*software_filter, *scaled_surface);
+      surface_to_render = scaled_surface;
     }
     else {
       surface_to_render = &quest_surface;

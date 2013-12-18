@@ -646,7 +646,9 @@ void Surface::render(
     }
 
     // If the software surface has changed, update the hardware texture.
-    else if (software_destination && !is_rendered) {
+    else if (
+        (software_destination || !Video::is_acceleration_enabled())
+         && !is_rendered) {
       convert_software_surface();
       SDL_UpdateTexture(
           internal_texture,

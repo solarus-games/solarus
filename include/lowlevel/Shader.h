@@ -71,6 +71,7 @@ class Shader {
   
     static void compile_shader(GLhandleARB& shader, const char* source);
     static int l_shader(lua_State* l);
+    static std::string get_sampler_type();
   
     void load(const std::string& shader_name);
     void load_lua_file(const std::string& path);

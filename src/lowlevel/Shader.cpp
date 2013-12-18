@@ -289,9 +289,13 @@ void Shader::load_lua_file(const std::string& path) {
     Debug::die(std::string("Failed to load : ") + path);
   }
   else {
+    // Send the video driver, the shading language version and the sampler type to the lua script.
+    lua_pushstring(l, Video::get_rendering_driver_name().c_str());
+    lua_pushstring(l, language_version.c_str());
+    lua_pushstring(l, get_sampler_type().c_str());
     
     lua_register(l, "shader", l_shader);
-    if (lua_pcall(l, 0, 0, 0) != 0) {
+    if (lua_pcall(l, 3, 0, 0) != 0) {
 
       // Runtime error.
       Debug::die(std::string("Failed to parse: ") + path);
@@ -349,6 +353,18 @@ int Shader::l_shader(lua_State* l) {
   return 0;
 }
 
+/**
+ * \brief Get the type of sampler to use into the GLSL shader.
+ * \return A string containing the type of sampler.
+ */
+std::string Shader::get_sampler_type()
+{
+  if (gl_texture_type == GL_TEXTURE_RECTANGLE_ARB) {
+    return "sampler2DRect";
+  }
+  return "sampler2D";
+}
+  
 /**
  * \brief Apply the shader program.
  */

@@ -34,20 +34,25 @@ class VideoMode {
     VideoMode(
         const std::string& name,
         const Rectangle& window_size,
-        Shader* shader);
+        PixelFilter* software_filter,
+        Shader* hardware_filter);
     ~VideoMode();
 
     const std::string& get_name() const;
     const Rectangle& get_window_size() const;
-    Shader* get_shader() const;
+    PixelFilter* get_software_filter() const;
+    Shader* get_hardware_filter() const;
 
   private:
 
     VideoMode(const VideoMode& other);
 
-    const std::string name;            /**< Lua name of this video mode. */
-    Rectangle window_size;             /**< Final size of the window when selecting this video mode. */
-    Shader* shader;                    /**< Shader to use or NULL. */
+    const std::string name;              /**< Lua name of this video mode. */
+    const Rectangle window_size;         /**< Final size of the window when selecting this video mode. */
+
+    // Pixel filter (in CPU or GPU).
+    PixelFilter* software_filter;        /**< Software scaling pixel filter to use or NULL. */
+    Shader* hardware_filter;             /**< Scaling shader to use or NULL. */
 
 };
 

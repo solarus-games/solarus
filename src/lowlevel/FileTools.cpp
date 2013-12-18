@@ -316,31 +316,40 @@ bool FileTools::data_file_mkdir(const std::string& dir_name) {
 }
 
 /**
- * \brief Enumerate files of a folder.
- * \param dir_path Name of the directory to list, relative to the Solarus
- * data directory.
- * \return a vector of string containing result names.
+ * \brief Enumerate files of a directory.
+ *
+ * Symbolic links are never returned.
+ *
+ * \param dir_path Name of the directory to list, relative to the quest data
+ * directory.
+ * \param list_files Whether regular files should be included in the result.
+ * \param list_directories Whether directories should be included in the result.
+ * \return The files in this directory.
  */
-std::vector<std::string> FileTools::data_files_enumerate(const std::string& dir_path, bool list_files, bool list_folders) {
+std::vector<std::string> FileTools::data_files_enumerate(
+    const std::string& dir_path,
+    bool list_files,
+    bool list_directories
+) {
   
-  std::vector<std::string> listed_files;
+  std::vector<std::string> result;
   
   if (data_file_exists(dir_path.c_str())) {
-    char **rc = PHYSFS_enumerateFiles(dir_path.c_str());
+    char** files = PHYSFS_enumerateFiles(dir_path.c_str());
   
-    for (char **i = rc; *i != NULL; i++) {
-      bool is_folder = PHYSFS_isDirectory(std::string(dir_path + "/" + *i).c_str());
+    for (char** file = files; *file != NULL; file++) {
+      bool is_directory = PHYSFS_isDirectory((dir_path + "/" + *file).c_str());
       
-      if (!PHYSFS_isSymbolicLink(*i)
-          && ((list_files && !is_folder)
-              || (list_folders && is_folder)))
-        listed_files.push_back(std::string(*i));
+      if (!PHYSFS_isSymbolicLink(*file)
+          && ((list_files && !is_directory)
+              || (list_directories && is_directory)))
+        result.push_back(std::string(*file));
     }
 
-    PHYSFS_freeList(rc);
+    PHYSFS_freeList(files);
   }
 
-  return listed_files;
+  return result;
 }
 
 /**

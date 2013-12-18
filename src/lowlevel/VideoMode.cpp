@@ -21,19 +21,27 @@ namespace solarus {
 
 /**
  * \brief Creates a video mode with the specified properties.
+ *
+ * \c software_filter and \c hardware_filter cannot be both set.
+ *
  * \param name Lua name of the video mode.
  * \param window_size Final size of the window when selecting this video mode.
- * \param shader Shader to apply to the quest image or NULL.
+ * \param software_filter Software filter to apply to the quest image or NULL.
+ * \param hardware_filter Scaling shader to apply to the quest image or NULL.
  */
 VideoMode::VideoMode(
     const std::string& name,
     const Rectangle& window_size,
-    Shader* shader
+    PixelFilter* software_filter,
+    Shader* hardware_filter
 ):
    name(name),
    window_size(window_size),
-   shader(shader) {
+   software_filter(software_filter),
+   hardware_filter(hardware_filter) {
 
+   Debug::check_assertion(software_filter == NULL || hardware_filter == NULL,
+       "Video mode can have at most one filter");
 }
 
 /**
@@ -41,9 +49,8 @@ VideoMode::VideoMode(
  */
 VideoMode::~VideoMode() {
 
-  if (shader != NULL) {
-    delete shader;
-  }
+  delete software_filter;
+  delete hardware_filter;
 }
 
 /**
@@ -63,11 +70,19 @@ const Rectangle& VideoMode::get_window_size() const {
 }
 
 /**
- * \brief Returns the shader applied to the quest image in this mode.
- * \return Shader to apply to the quest image or NULL.
+ * \brief Returns the software filter applied to the quest image in this mode.
+ * \return Software filter or NULL.
  */
-Shader* VideoMode::get_shader() const {
-  return shader;
+PixelFilter* VideoMode::get_software_filter() const {
+  return software_filter;
+}
+
+/**
+ * \brief Returns the hardware filter applied to the quest image in this mode.
+ * \return Hardware filter or NULL.
+ */
+Shader* VideoMode::get_hardware_filter() const {
+  return hardware_filter;
 }
 
 }

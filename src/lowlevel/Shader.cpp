@@ -45,8 +45,8 @@ Shader* Shader::loading_shader = NULL;
 #endif
 
 /**
- * \brief Initialize OpenGL and the shader system.
- * \return true if shader are supported.
+ * \brief Initializes OpenGL and the shader system.
+ * \return \c true if shaders are supported.
  */
 bool Shader::initialize() {
 
@@ -114,7 +114,6 @@ bool Shader::initialize() {
   }
 #endif
 
-  Debug::warning("OpenGL shaders not supported : " + std::string(SDL_GetError()));
   return false;
 }
 
@@ -188,9 +187,9 @@ void Shader::set_rendering_settings() {
 
 /**
  * \brief Constructor.
- * \param shadername The name of the shader to load.
+ * \param shader_name The name of the shader to load.
  */
-Shader::Shader(std::string shader_name):
+Shader::Shader(const std::string& shader_name):
   program(0),
   vertex_shader(0),
   fragment_shader(0),
@@ -223,19 +222,18 @@ Shader::~Shader() {
 
 /**
  * \brief Construct a shader from a name.
- * \param shadername The name of the shader to load.
+ * \param shader_name The name of the shader to load.
  * \return The created shader, or NULL if the shader fails to compile.
  */
-Shader* Shader::create(std::string shader_name) {
+Shader* Shader::create(const std::string& shader_name) {
   
-  Shader* created_shader = new Shader(shader_name);
+  Shader* shader = new Shader(shader_name);
   
-  if(glGetError() == GL_NO_ERROR) {
-    return created_shader;
+  if (glGetError() != GL_NO_ERROR) {
+    Debug::error("Cannot compile shader '" + shader_name + "'");
+    return NULL;
   }
-  
-  Debug::warning("Cannot compile the shader : " + shader_name);
-  return NULL;
+  return shader;
 }
 
 /**

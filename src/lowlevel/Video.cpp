@@ -16,6 +16,8 @@
  */
 #include "lowlevel/Video.h"
 #include "lowlevel/VideoMode.h"
+#include "lowlevel/Scale2xFilter.h"
+#include "lowlevel/Hq4xFilter.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
@@ -38,27 +40,20 @@ bool disable_window = false;              /**< Indicates that no window is displ
 bool fullscreen = false;                  /**< True if fullscreen display. */
 bool rendertarget_supported = false;      /**< True if rendering on texture is supported. */
 bool shaders_supported = false;           /**< True if shaded modes and rendering on texture are supported. */
+bool shaders_enabled = false;             /**< True if shaded modes support is enabled. */
 bool acceleration_enabled = false;        /**< \c true if 2D GPU acceleration is available and enabled. */
-// TODO const PixelFilter* pixel_filter = NULL;   /**< The pixel filtering algorithm (if any) applied with the current video mode. */
-// TODO Surface* scaled_surface = NULL;           /**< The screen surface used with scaled modes. */
-
-const std::string normal_mode_name =
-    "solarus_default";                    /**< Non-shaded mode name. It will be forbidden for shaded ones. */
+Surface* scaled_surface = NULL;           /**< The screen surface used with software-scaled modes. */
 
 std::vector<VideoMode*>
     all_video_modes;                      /**< Display information for each supported video mode. */
-const VideoMode* video_mode;              /**< Current display mode, pointer to an element of all_video_modes. */
+const VideoMode* video_mode;              /**< Current video mode. */
+const VideoMode* default_video_mode;      /**< Default video mode. */
 
 Rectangle normal_quest_size;              /**< Default value of quest_size (depends on the quest). */
 Rectangle min_quest_size;                 /**< Minimum value of quest_size (depends on the quest). */
 Rectangle max_quest_size;                 /**< Maximum value of quest_size (depends on the quest). */
 Rectangle quest_size;                     /**< Size of the quest surface to render. */
 Rectangle wanted_quest_size;              /**< Size wanted by the user. */
-
-// TODO
-// Scale2xFilter scale2x_filter;             /**< Scale2X pixel filter. */
-// Hq4xFilter hq4x_filter;                   /**< hq4X pixel filter. */
-
 
 /**
  * \brief Creates the window but does not show it.
@@ -148,23 +143,28 @@ void create_window(const CommandLine& args) {
 }
 
 /**
- * \brief Detects the available shaders and initializes all needed video modes.
+ * \brief Creates the list of video modes.
  *
- * Fullscreen modes all are at the top of the list.
+ * Some video modes are hardcoded, and some others may be added by the quest.
  */
 void initialize_video_modes() {
 
-  const bool allow_shaded_modes = acceleration_enabled && Shader::initialize();
+  // Decide whether we enable shaders.
+  shaders_supported = Shader::initialize();
+  shaders_enabled = shaders_supported && rendertarget_supported;
 
-  // Initialize non-shaded video mode...
+  // Initialize hardcoded video modes.
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
-  all_video_modes.push_back(new VideoMode(normal_mode_name, quest_size_2, NULL));
+  const Rectangle quest_size_4(0, 0, quest_size.get_width() * 4, quest_size.get_height() * 4);
+  all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL, NULL));
+  all_video_modes.push_back(new VideoMode("scale2x", quest_size_2, new Scale2xFilter(), NULL));
+  all_video_modes.push_back(new VideoMode("hq4x", quest_size_4, new Hq4xFilter(), NULL));
+  default_video_mode = all_video_modes[0];
+  // TODO If shaders are enabled, use a C++ shader version of Scale2x and Hq4x instead.
 
-  // ... and shaded ones if shaders and render target are supported.
-  shaders_supported = allow_shaded_modes && rendertarget_supported;
-  if (shaders_supported) {
+  // Initialize quest custom video modes. These can only include shaded modes.
+  if (shaders_enabled) {
 
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
     // Initialize the render target
     render_target = SDL_CreateTexture(
         main_renderer,
@@ -177,31 +177,32 @@ void initialize_video_modes() {
     // Get all shaders of the quest's shader/filters/driver folder.
     std::vector<std::string> shader_names =
         FileTools::data_files_enumerate("shaders/filters/", true, false);
+    // FIXME don't enumerate data files, use the quest resource system like always.
 
     for (unsigned i = 0; i < shader_names.size(); ++i) {
 
       // Load the shader and add the corresponding video mode.
       Shader* video_mode_shader = Shader::create(shader_names.at(i));
-
-      if (video_mode_shader->get_name() == normal_mode_name) {
-        Debug::warning("Forbidden video mode name : " + video_mode_shader->get_name());
-        delete video_mode_shader;
-        continue;
-      }
-
       if (video_mode_shader != NULL) {
+
+        const std::string& video_mode_name = video_mode_shader->get_name();
+        if (Video::get_video_mode_by_name(video_mode_name) != NULL) {
+          Debug::error("There is already a video mode with name '" + video_mode_name);
+          delete video_mode_shader;
+          continue;
+        }
+
         const Rectangle scaled_quest_size(0, 0,
-            double(quest_size.get_width()) * video_mode_shader->get_logical_scale(),
-            double(quest_size.get_height()) * video_mode_shader->get_logical_scale());
-        all_video_modes.push_back( new VideoMode(video_mode_shader->get_name(), scaled_quest_size, video_mode_shader) );
+            int(quest_size.get_width() * video_mode_shader->get_logical_scale()),
+            int(quest_size.get_height() * video_mode_shader->get_logical_scale()));
+        all_video_modes.push_back(new VideoMode(
+              video_mode_shader->get_name(),
+              scaled_quest_size,
+              NULL,
+              video_mode_shader
+        ));
       }
     }
-#endif
-  }
-  // Initialize hardcoded video modes
-  else {
-    all_video_modes.push_back(new VideoMode("scale2x", quest_size_2, NULL));
-    all_video_modes.push_back(new VideoMode("hq4x", quest_size_2, NULL));
   }
 
   // Everything is ready now.
@@ -319,9 +320,13 @@ void Video::show_window() {
  */
 bool Video::is_acceleration_enabled() {
 
-  void* pixel_filter = NULL;  // TODO
-  return acceleration_enabled   // 2D acceleration must be available on the system.
-      && pixel_filter == NULL;  // For now pixel filters are all implemented in software.
+  const PixelFilter* software_filter = NULL;
+  if (video_mode != NULL) {
+    software_filter = video_mode->get_software_filter();
+  }
+
+  return acceleration_enabled      // 2D acceleration must be available on the system.
+      && software_filter == NULL;  // No software pixel filter must be active.
 }
 
 /**
@@ -388,10 +393,9 @@ void Video::switch_fullscreen() {
  */
 void Video::set_default_video_mode() {
 
-  const VideoMode* mode = get_video_mode_by_name(normal_mode_name);
-  Debug::check_assertion(mode != NULL, std::string(
-      "No video mode with default name '") + normal_mode_name + "'");
-  set_video_mode(*mode);
+  Debug::check_assertion(default_video_mode != NULL,
+      "Default video mode was not initialized");
+  set_video_mode(*default_video_mode);
 }
 
 /**
@@ -410,9 +414,11 @@ void Video::switch_video_mode() {
     if (it == all_video_modes.end()) {
       it = all_video_modes.begin();
     }
-    ++it;
+    else {
+      ++it;
+    }
     mode = *it;
-  } while (!is_mode_supported(*mode));
+  } while (mode == NULL || !is_mode_supported(*mode));
   set_video_mode(*mode);
 }
 
@@ -440,31 +446,23 @@ bool Video::set_video_mode(const VideoMode& mode) {
 
   if (!disable_window) {
 
-/* TODO
-    // Initalize the scaling mode.
-    if (mode == WINDOWED_SCALE2X || mode == FULLSCREEN_SCALE2X) {
-      pixel_filter = &scale2x_filter;
-    }
-    else if (mode == WINDOWED_HQ4X || mode == FULLSCREEN_HQ4X) {
-      pixel_filter = &hq4x_filter;
-    }
-    else {
-      pixel_filter = NULL;
-    }
+    RefCountable::unref(scaled_surface);
+    scaled_surface = NULL;
 
-    if (scaled_surface != NULL) {
-      RefCountable::unref(scaled_surface);
-      scaled_surface = NULL;
-    }
-    if (pixel_filter != NULL) {
-      int factor = pixel_filter->get_scaling_factor();
-      render_size.set_size(render_size.get_width() * factor, render_size.get_height() * factor);
+    Rectangle render_size(quest_size);
+
+    const PixelFilter* software_filter = mode.get_software_filter();
+    if (software_filter != NULL) {
+      int factor = software_filter->get_scaling_factor();
+      render_size.set_size(
+          quest_size.get_width() * factor,
+          quest_size.get_height() * factor
+      );
       scaled_surface = Surface::create(render_size);
+      RefCountable::ref(scaled_surface);
       scaled_surface->set_software_destination(true);
       scaled_surface->fill_with_color(Color::get_black());  // To initialize the internal surface.
-      RefCountable::ref(scaled_surface);
     }
-*/
 
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
@@ -475,9 +473,10 @@ bool Video::set_video_mode(const VideoMode& mode) {
         mode.get_window_size().get_height());
     SDL_RenderSetLogicalSize(
         main_renderer,
-        quest_size.get_width(),
-        quest_size.get_height());
+        render_size.get_width(),
+        render_size.get_height());
     SDL_ShowCursor(show_cursor);
+
     if (!fullscreen_flag) {
       SDL_SetWindowPosition(main_window,
           SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
@@ -524,8 +523,8 @@ const VideoMode* Video::get_video_mode_by_name(
     const std::string& mode_name) {
 
   for (unsigned i = 0; i < all_video_modes.size(); ++i) {
-    if (all_video_modes.at(i)->get_name() == mode_name) {
-      return all_video_modes.at(i);
+    if (all_video_modes[i]->get_name() == mode_name) {
+      return all_video_modes[i];
     }
   }
 
@@ -543,44 +542,42 @@ void Video::render(Surface& quest_surface) {
     return;
   }
 
-  if (is_acceleration_enabled() && rendertarget_supported) {
+  Debug::check_assertion(video_mode != NULL,
+      "Missing video mode");
 
-    // Perform faster render if shaders are supported.
-    if (shaders_supported) {
-      shaded_render(quest_surface);
-    }
-    // Accelerated render with hardcoded video modes else.
-    else
-    {
-      /* TODO
-       Surface* surface_to_render = NULL;
-       if (pixel_filter != NULL) {
-       Debug::check_assertion(scaled_surface != NULL,
-       "Missing destination surface for scaling");
-       quest_surface.apply_pixel_filter(*pixel_filter, *scaled_surface);
-       surface_to_render = scaled_surface;
-       }
-       else {
-       surface_to_render = &quest_surface;
-       }
-
-       SDL_RenderSetClipRect(main_renderer, NULL);
-       SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
-       SDL_RenderClear(main_renderer);
-       surface_to_render->render(main_renderer);
-       SDL_RenderPresent(main_renderer);
-       */
-    }
+  // See if there is a filter to apply.
+  const Shader* hardware_filter = video_mode->get_hardware_filter();
+  const PixelFilter* software_filter = video_mode->get_software_filter();
+  if (hardware_filter != NULL) {
+    // OpenGL rendering.
+    shaded_render(quest_surface);
   }
-  // Software render.
   else {
-    // TODO
+    // SDL rendering, with acceleration if supported, and optionally with
+    // a software filter.
+    Surface* surface_to_render = NULL;
+    if (software_filter != NULL) {
+       Debug::check_assertion(scaled_surface != NULL,
+           "Missing destination surface for scaling");
+       quest_surface.apply_pixel_filter(*software_filter, *scaled_surface);
+       surface_to_render = scaled_surface;
+    }
+    else {
+      surface_to_render = &quest_surface;
+    }
+
+    SDL_RenderSetClipRect(main_renderer, NULL);
+    SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
+    SDL_RenderClear(main_renderer);
+    surface_to_render->render(main_renderer);
+    SDL_RenderPresent(main_renderer);
   }
 }
 
 /**
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
+ * // TODO move this to class Shader (no OpenGL here) and add a shader parameter
  */
 void Video::shaded_render(Surface& quest_surface) {
 
@@ -607,8 +604,8 @@ void Video::shaded_render(Surface& quest_surface) {
 
   glEnable(Shader::get_texture_type());
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
-  if (video_mode->get_shader() != NULL) {
-    video_mode->get_shader()->apply();
+  if (video_mode->get_hardware_filter() != NULL) {
+    video_mode->get_hardware_filter()->apply();
   }
 
   glBegin(GL_QUADS);
@@ -623,7 +620,7 @@ void Video::shaded_render(Surface& quest_surface) {
   glEnd();
 
   // Restore default states.
-  if (video_mode->get_shader() != NULL) {
+  if (video_mode->get_hardware_filter() != NULL) {
     Shader::restore_default_shader_program();
   }
   SDL_GL_UnbindTexture(render_target);

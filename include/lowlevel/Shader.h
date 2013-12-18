@@ -37,6 +37,7 @@ namespace solarus {
 class Shader {
 
   public:
+
     static bool initialize();
     static void quit();
 
@@ -44,9 +45,9 @@ class Shader {
     static GLenum get_texture_type();
     static void restore_default_shader_program();
     static void set_rendering_settings();
-    static Shader* create(std::string shader_name);
+    static Shader* create(const std::string& shader_name);
   
-    Shader(std::string shader_name);
+    Shader(const std::string& shader_name);
     ~Shader();
 
     std::string get_name();
@@ -55,6 +56,7 @@ class Shader {
     void apply();
 
   private:
+
     static PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
     static PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
     static PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;

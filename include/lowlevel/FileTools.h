@@ -73,7 +73,7 @@ class FileTools {
     static std::vector<std::string> data_files_enumerate(
         const std::string& dir_path,
         bool list_files = true,
-        bool list_folders = true
+        bool list_directories = true
     );
 
     static void read(std::istream& is, int& value);

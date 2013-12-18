@@ -230,7 +230,7 @@ Shader* Shader::create(const std::string& shader_name) {
   Shader* shader = new Shader(shader_name);
   
   if (glGetError() != GL_NO_ERROR) {
-    Debug::error("Cannot compile shader '" + shader_name + "'");
+    Debug::warning("Cannot compile shader '" + shader_name + "'");
     return NULL;
   }
   return shader;

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Shader.h"
+#include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
 
@@ -151,15 +152,6 @@ void Shader::compile_shader(GLhandleARB& shader, const char* source) {
     SDL_stack_free(info);
   }
 }
-
-/**
- * \brief Get the GL texture type used by SDL.
- * \return The type of the GL texture.
- */
-GLenum Shader::get_texture_type() {
-    
-  return gl_texture_type;
-}
   
 /**
  * \brief Restore the default shader.
@@ -234,6 +226,64 @@ Shader* Shader::create(const std::string& shader_name) {
     return NULL;
   }
   return shader;
+}
+
+/**
+ * \brief Draws the quest surface on the screen in a shader-allowed context.
+ * It will perform the render using the OpenGL API directly.
+ * \param quest_surface 
+ */
+void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
+    
+  float rendering_width, rendering_height;
+  SDL_Renderer* renderer = Video::get_renderer();
+  SDL_Window* window = Video::get_window();
+  SDL_Texture* render_target = Video::get_render_target();
+
+  // Clear the window
+  glClearColor(0.0, 0.0, 0.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity();
+    
+  // Clear the render target
+  SDL_SetRenderTarget(renderer, render_target);
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+  SDL_RenderSetClipRect(renderer, NULL);
+  SDL_RenderClear(renderer);
+    
+  // Draw on the render target.
+  quest_surface.render(renderer);
+    
+  // Render on the window using OpenGL, to apply a shader if we have to.
+  SDL_SetRenderTarget(renderer, NULL);
+  Shader::set_rendering_settings();
+    
+  glEnable(gl_texture_type);
+  SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
+  if (shader != NULL) {
+    shader->apply();
+  }
+    
+  glBegin(GL_QUADS);
+  glTexCoord2f(0.0f, 0.0f);
+  glVertex3f(-1.0f, 1.0f, 0.0f); // Top left
+  glTexCoord2f(rendering_width, 0.0f);
+  glVertex3f(1.0f, 1.0f, 0.0f); // Top right
+  glTexCoord2f(rendering_width, rendering_height);
+  glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
+  glTexCoord2f(0.0f, rendering_height);
+  glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
+  glEnd();
+    
+  // Restore default states.
+  if (shader != NULL) {
+    Shader::restore_default_shader_program();
+  }
+  SDL_GL_UnbindTexture(render_target);
+  glDisable(gl_texture_type);
+    
+  // And swap the window.
+  SDL_GL_SwapWindow(window);  
 }
 
 /**
@@ -370,8 +420,7 @@ void Shader::apply()
 {
   glUseProgramObjectARB(program);
 }
-
+ 
 #endif
 
 }
-

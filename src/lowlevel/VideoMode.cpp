@@ -16,6 +16,7 @@
  */
 #include "lowlevel/VideoMode.h"
 #include "lowlevel/Shader.h"
+#include "lowlevel/PixelFilter.h"
 
 namespace solarus {
 
@@ -49,8 +50,12 @@ VideoMode::VideoMode(
  */
 VideoMode::~VideoMode() {
 
-  delete software_filter;
-  delete hardware_filter;
+  if (software_filter != NULL) {
+    delete software_filter;
+  }
+  if (hardware_filter) {
+    delete hardware_filter;
+  }
 }
 
 /**

@@ -42,6 +42,7 @@ class Video {
     static SDL_Window* get_window();
     static SDL_Renderer* get_renderer();
 
+    static SDL_Texture* get_render_target();
     static SDL_PixelFormat* get_pixel_format();
     static bool is_acceleration_enabled();
     static const std::string& get_rendering_driver_name();

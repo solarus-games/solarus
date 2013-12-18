@@ -42,10 +42,10 @@ class Shader {
     static void quit();
 
 #if SOLARUS_HAVE_OPENGL_OR_ES == 1
-    static GLenum get_texture_type();
+    static Shader* create(const std::string& shader_name);
+    static void shaded_render(Surface& quest_surface, Shader* shader);
     static void restore_default_shader_program();
     static void set_rendering_settings();
-    static Shader* create(const std::string& shader_name);
   
     Shader(const std::string& shader_name);
     ~Shader();

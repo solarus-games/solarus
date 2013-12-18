@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HQ4X_FILTER_H
-#define SOLARUS_HQ4X_FILTER_H
+#ifndef SOLARUS_HQ3X_FILTER_H
+#define SOLARUS_HQ3X_FILTER_H
 
 #include "Common.h"
 #include "lowlevel/PixelFilter.h"
@@ -23,14 +23,14 @@
 namespace solarus {
 
 /**
- * \brief Wrapper to the hq4x algorithm.
+ * \brief Wrapper to the hq3x algorithm.
  */
-class Hq4xFilter: public PixelFilter {
+class Hq3xFilter: public PixelFilter {
 
   public:
 
-    Hq4xFilter();
-    ~Hq4xFilter();
+    Hq3xFilter();
+    ~Hq3xFilter();
 
     int get_scaling_factor() const;
     void filter(
@@ -38,8 +38,6 @@ class Hq4xFilter: public PixelFilter {
         int src_width,
         int src_height,
         uint32_t* dst) const;
-
-    static void initialize_hqx();
 };
 
 }

@@ -19,14 +19,11 @@ range.
 Note however that the quest size never changes after the program is started.
 
 At runtime, the video mode can be changed. The video mode determines
-the size of the window, whether it runs in fullscreen,
-and how the quest screen is displayed on this
-window when the window is larger.
-All quest sizes are not necessarily supported as fullscreen resolutions, but
-you don't have to worry:
-Solarus automatically chooses an available fullscreen resolution that can
-contain the quest size, possibly by adding black borders or by using a
-resolution of double size (stretching the image by a factor of 2).
+whether a pixel scaling algorithm is applied to the image, and which one.
+
+Any video mode can be played in windowed mode or in fullscreen.
+When the user plays in fullscreen, the quest image is automatically stretched
+and keeps the same pixel ratio, possibly by adding black borders.
 
 The video mode can be saved and loaded with the global settings,
 as well as the language and the volume, independently of any savegame
@@ -34,32 +31,22 @@ as well as the language and the volume, independently of any savegame
 
 Video modes are identified by strings in the Lua API.
 The following modes are implemented:
-- \c "windowed_stretched" (default): The quest screen is stretched on a
-  window of double size.
-- \c "windowed_scale2x": The quest screen is scaled on a window of
-  double size with the
+- \c "normal" (default): The quest screen is unchanged.
+  In windowed mode, the image is stretched by a factor of 2.
+- \c "scale2x": The quest screen is scaled by a factor of 2
+  with the
   <a href="http://scale2x.sourceforge.net/algorithm.html">Scale2X</a>
   algorithm.
-- \c "windowed_hq4x": The quest screen is scaled on a window of
-  quadruple size with the
-  <a href="http://en.wikipedia.org/wiki/Hqx">hq4x</a>
-  algorithm.
-- \c "windowed_normal": The quest screen is displayed onto a window of the
-  same size.
-- \c "fullscreen_normal": The quest screen is displayed in fullscreen.
-  Black borders may be added if necessary.
-- \c "fullscreen_scale2x": The quest screen is scaled on a surface of
-  double size with the Scale2X algorithm, and then displayed in fullscreen.
-  Black borders are added if necessary.
-- \c "fullscreen_hq4x": The quest screen is scaled on a surface of
-  quadruple size with the hq4x algorithm, and then displayed in fullscreen.
-  Black borders are added if necessary.
+- \c "hq2x": The quest screen is scaled by a factor of 2
+  with the <a href="http://en.wikipedia.org/wiki/Hqx">hq2x</a> algorithm.
+- \c "hq3x": The quest screen is scaled by a factor of 3
+  with the <a href="http://en.wikipedia.org/wiki/Hqx">hq3x</a> algorithm.
+- \c "hq4x": The quest screen is scaled by a factor of 4
+  with the <a href="http://en.wikipedia.org/wiki/Hqx">hq4x</a> algorithm.
 
-\remark On some platforms, some video modes may be unavailable or disabled
-  at compilation time. Use \ref lua_api_video_is_mode_supported
-  "sol.video.is_mode_supported()" to test a
-  video mode, and \ref lua_api_video_get_modes to know the list of
-  video modes supported.
+In windowed mode, the user can resize the window.
+The image is then automatically stretched
+and keeps the same pixel ratio, possibly by adding black borders.
 
 \section lua_api_video_functions Functions of sol.video
 
@@ -94,6 +81,7 @@ Sets the next video mode in the list of video modes supported.
 
 You can use this function if you want to change the video mode without
 specifying which one to use.
+The fullscreen flag is never changed by this function.
 
 \subsection lua_api_video_is_mode_supported sol.video.is_mode_supported(video_mode)
 
@@ -125,8 +113,7 @@ It is always in the range of allowed quest sizes specified in
 \ref quest_properties_file "quest.dat".
 
 The quest size is independent from the video mode:
-video mode are just various methods to draw the quest screen on a window
-or in fullscreen.
+video modes are just various methods to draw the quest on the screen.
 - Return value 1 (number): Width of the quest screen in pixels.
 - Return value 2 (number): Height of the quest screen in pixels.
 

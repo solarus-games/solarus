@@ -53,6 +53,8 @@ class Color;
 class Shader;
 class PixelFilter;
 class Scale2xFilter;
+class Hq2xFilter;
+class Hq3xFilter;
 class Hq4xFilter;
 class Sound;
 class Music;

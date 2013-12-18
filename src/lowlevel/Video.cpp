@@ -17,6 +17,8 @@
 #include "lowlevel/Video.h"
 #include "lowlevel/VideoMode.h"
 #include "lowlevel/Scale2xFilter.h"
+#include "lowlevel/Hq2xFilter.h"
+#include "lowlevel/Hq3xFilter.h"
 #include "lowlevel/Hq4xFilter.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
@@ -155,9 +157,12 @@ void initialize_video_modes() {
 
   // Initialize hardcoded video modes.
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
+  const Rectangle quest_size_3(0, 0, quest_size.get_width() * 3, quest_size.get_height() * 3);
   const Rectangle quest_size_4(0, 0, quest_size.get_width() * 4, quest_size.get_height() * 4);
   all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL, NULL));
   all_video_modes.push_back(new VideoMode("scale2x", quest_size_2, new Scale2xFilter(), NULL));
+  all_video_modes.push_back(new VideoMode("hq2x", quest_size_2, new Hq2xFilter(), NULL));
+  all_video_modes.push_back(new VideoMode("hq3x", quest_size_3, new Hq3xFilter(), NULL));
   all_video_modes.push_back(new VideoMode("hq4x", quest_size_4, new Hq4xFilter(), NULL));
   default_video_mode = all_video_modes[0];
   // TODO If shaders are enabled, use a C++ shader version of Scale2x and Hq4x instead.

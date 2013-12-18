@@ -8,7 +8,7 @@ Engine changes
 
 * Upgrade to SDL 2 (#262). Thanks Vlag.
 * Accelerate video operations in GPU if available. Expect huge speedups.
-* Add the hq4x pixel filter algorithm as a new video mode.
+* Add the hq2x, hq3 and hq4x pixel filter algorithms as new video modes.
 * Make the window resizable (#338).
 * New map entity type: custom entities, fully scripted (#323).
 * Rewrite the main loop with a constant timestep (#351).
@@ -38,7 +38,7 @@ Changes that introduce incompatibilities:
 
 * sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
 * map:create_shop_item() is replaced by map:create_shop_treasure().
-* In sol.video.get/set_mode(), "fullscreen_*_wide" modes no longer exist.
+* Video mode names have changed: no more wide, fullscreen ou windowed names.
 * on_key_pressed() and on_character_pressed() are now both called (#344).
 * surface:set_transparency_color() no longer exists.
 * Enemies have now a default size of 16x16 and origin of 8,13 (#354).
@@ -48,7 +48,6 @@ Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
 * Colors now take an optional alpha value as fourth component.
-* sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
 * Fix random_movement:get_max_radius() that was not working.
 * Add a method menu:is_started().
 * Add a method map:get_hero() (#362).

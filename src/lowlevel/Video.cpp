@@ -159,11 +159,11 @@ void initialize_video_modes() {
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
   const Rectangle quest_size_3(0, 0, quest_size.get_width() * 3, quest_size.get_height() * 3);
   const Rectangle quest_size_4(0, 0, quest_size.get_width() * 4, quest_size.get_height() * 4);
-  all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL, NULL));
-  all_video_modes.push_back(new VideoMode("scale2x", quest_size_2, new Scale2xFilter(), NULL));
-  all_video_modes.push_back(new VideoMode("hq2x", quest_size_2, new Hq2xFilter(), NULL));
-  all_video_modes.push_back(new VideoMode("hq3x", quest_size_3, new Hq3xFilter(), NULL));
-  all_video_modes.push_back(new VideoMode("hq4x", quest_size_4, new Hq4xFilter(), NULL));
+  all_video_modes.push_back(new VideoMode("solarus_normal", quest_size_2, NULL, NULL));
+  all_video_modes.push_back(new VideoMode("solarus_scale2x", quest_size_2, new Scale2xFilter(), NULL));
+  all_video_modes.push_back(new VideoMode("solarus_hq2x", quest_size_2, new Hq2xFilter(), NULL));
+  all_video_modes.push_back(new VideoMode("solarus_hq3x", quest_size_3, new Hq3xFilter(), NULL));
+  all_video_modes.push_back(new VideoMode("solarus_hq4x", quest_size_4, new Hq4xFilter(), NULL));
   default_video_mode = all_video_modes[0];
   // TODO If shaders are enabled, use a C++ shader version of Scale2x and Hq4x instead.
 
@@ -571,8 +571,8 @@ void Video::render(Surface& quest_surface) {
       surface_to_render = &quest_surface;
     }
 
-    SDL_RenderSetClipRect(main_renderer, NULL);
     SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
+    SDL_RenderSetClipRect(main_renderer, NULL);
     SDL_RenderClear(main_renderer);
     surface_to_render->render(main_renderer);
     SDL_RenderPresent(main_renderer);

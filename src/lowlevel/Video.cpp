@@ -155,18 +155,11 @@ void initialize_video_modes() {
   shaders_supported = Shader::initialize();
   shaders_enabled = shaders_supported && rendertarget_supported;
 
-  // Initialize hardcoded video modes.
+  // Initalize the default mode, with a longer name to let trivial ones usable for shader names.
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
-  const Rectangle quest_size_3(0, 0, quest_size.get_width() * 3, quest_size.get_height() * 3);
-  const Rectangle quest_size_4(0, 0, quest_size.get_width() * 4, quest_size.get_height() * 4);
-  all_video_modes.push_back(new VideoMode("normal", quest_size_2, NULL, NULL));
-  all_video_modes.push_back(new VideoMode("scale2x", quest_size_2, new Scale2xFilter(), NULL));
-  all_video_modes.push_back(new VideoMode("hq2x", quest_size_2, new Hq2xFilter(), NULL));
-  all_video_modes.push_back(new VideoMode("hq3x", quest_size_3, new Hq3xFilter(), NULL));
-  all_video_modes.push_back(new VideoMode("hq4x", quest_size_4, new Hq4xFilter(), NULL));
+  all_video_modes.push_back(new VideoMode("solarus_default", quest_size_2, NULL, NULL));
   default_video_mode = all_video_modes[0];
-  // TODO If shaders are enabled, use a C++ shader version of Scale2x and Hq4x instead.
-
+  
   // Initialize quest custom video modes. These can only include shaded modes.
   if (shaders_enabled) {
 
@@ -208,6 +201,15 @@ void initialize_video_modes() {
         ));
       }
     }
+  }
+  // Initialize hardcoded video modes if quest ones are not supported.
+  else {
+    const Rectangle quest_size_3(0, 0, quest_size.get_width() * 3, quest_size.get_height() * 3);
+    const Rectangle quest_size_4(0, 0, quest_size.get_width() * 4, quest_size.get_height() * 4);
+    all_video_modes.push_back(new VideoMode("scale2x", quest_size_2, new Scale2xFilter(), NULL));
+    all_video_modes.push_back(new VideoMode("hq2x", quest_size_2, new Hq2xFilter(), NULL));
+    all_video_modes.push_back(new VideoMode("hq3x", quest_size_3, new Hq3xFilter(), NULL));
+    all_video_modes.push_back(new VideoMode("hq4x", quest_size_4, new Hq4xFilter(), NULL));
   }
 
   // Everything is ready now.
@@ -533,7 +535,6 @@ const VideoMode* Video::get_video_mode_by_name(
     }
   }
 
-  Debug::warning("No video mode with name: " + mode_name);
   return NULL;
 }
 

@@ -290,7 +290,7 @@ void Shader::load_lua_file(const std::string& path) {
   }
   else {
     // Use the video driver, the shading language version and the sampler type as parameter for the lua script.
-    lua_pushstring(l, get_sampler2d_type().c_str());
+    lua_pushstring(l, get_sampler_type().c_str());
     lua_pushstring(l, shading_language_version.c_str());
     lua_pushstring(l, Video::get_rendering_driver_name().c_str());
     
@@ -354,15 +354,15 @@ int Shader::l_shader(lua_State* l) {
 }
 
 /**
- * \brief Get the suffixe (after "sampler2D") of the sampler2D type to use into the GLSL shader.
- * \return A string containing the type of sampler2D to use.
+ * \brief Get the type of the sampler type to use into the GLSL shader.
+ * \return A string containing the type of sampler to use.
  */
-std::string Shader::get_sampler2d_type()
+const std::string Shader::get_sampler_type()
 {
   if (gl_texture_type == GL_TEXTURE_RECTANGLE_ARB) {
-    return "Rect";
+    return "sampler2DRect";
   }
-  return "";
+  return "sampler2D";
 }
   
 /**

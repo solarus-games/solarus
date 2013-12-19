@@ -51,7 +51,7 @@ class Shader {
     ~Shader();
 
     std::string get_name();
-    double get_logical_scale();
+    double get_window_scale();
   
     void apply();
 
@@ -88,8 +88,8 @@ class Shader {
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
     std::string shader_name;                     /**< The name of the shader. */
-    double logical_scale;                        /**< Logical scale of the renderer when the shader is active,
-                                                   compared to the normal quest size. */
+    double window_scale;                         /**< Default scale of the window when the shader is being active,
+                                                      compared to the normal quest size. */
 #endif
 };
 

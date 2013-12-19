@@ -186,7 +186,7 @@ Shader::Shader(const std::string& shader_name):
   vertex_shader(0),
   fragment_shader(0),
   shader_name(shader_name),
-  logical_scale(1.0) {
+  window_scale(1.0) {
     
   glGetError();
     
@@ -297,12 +297,12 @@ std::string Shader::get_name() {
 }
   
 /**
- * \brief Get the scale to apply on the quest size to get the final window size of this shader.
- * \return The logical scale.
+ * \brief Get the scale to apply on the quest size to get the final default size of the related video mode.
+ * \return The window scale.
  */
-double Shader::get_logical_scale() {
+double Shader::get_window_scale() {
   
-  return logical_scale;
+  return window_scale;
 }
 
 /**
@@ -378,7 +378,7 @@ int Shader::l_shader(lua_State* l) {
     luaL_checktype(l, 1, LUA_TTABLE);
   
     const double& window_scale =
-        LuaContext::opt_number_field(l, 1, "logical_scale", 1.0);
+        LuaContext::opt_number_field(l, 1, "window_scale", 1.0);
     const std::string shader_name =
         LuaContext::opt_string_field(l, 1, "name", loading_shader->shader_name);
     const std::string vertex_source =
@@ -386,7 +386,7 @@ int Shader::l_shader(lua_State* l) {
     const std::string fragment_source =
         LuaContext::check_string_field(l, 1, "fragment_source");
     
-    loading_shader->logical_scale = window_scale;
+    loading_shader->window_scale = window_scale;
     loading_shader->shader_name = shader_name;
     
     // Create the vertex and fragment shaders.

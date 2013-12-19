@@ -231,7 +231,8 @@ Shader* Shader::create(const std::string& shader_name) {
 /**
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
- * \param quest_surface 
+ * \param quest_surface the surface to render on the screen
+ * \param shader the shader to apply if any, or NULL.
  */
 void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
     
@@ -256,7 +257,7 @@ void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
     
   // Render on the window using OpenGL, to apply a shader if we have to.
   SDL_SetRenderTarget(renderer, NULL);
-  Shader::set_rendering_settings();
+  set_rendering_settings();
     
   glEnable(gl_texture_type);
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
@@ -277,7 +278,7 @@ void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
     
   // Restore default states.
   if (shader != NULL) {
-    Shader::restore_default_shader_program();
+    restore_default_shader_program();
   }
   SDL_GL_UnbindTexture(render_target);
   glDisable(gl_texture_type);
@@ -325,6 +326,7 @@ void Shader::load(const std::string& shader_name) {
 void Shader::load_lua_file(const std::string& path) {
   
   lua_State* l = luaL_newstate();
+  luaL_openlibs(l);
   size_t size;
   char* buffer;  
   
@@ -334,20 +336,24 @@ void Shader::load_lua_file(const std::string& path) {
   
   if (load_result != 0) {
     // Syntax error in the lua file.
-    Debug::die(std::string("Failed to load : ") + path);
+    Debug::die(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
   }
   else {
-    // Use the video driver, the shading language version and the sampler type as parameter for the lua script.
-    lua_pushstring(l, get_sampler_type().c_str());
-    lua_pushstring(l, shading_language_version.c_str());
-    lua_pushstring(l, Video::get_rendering_driver_name().c_str());
-    
+    const Rectangle& quest_size = Video::get_quest_size();
     lua_register(l, "shader", l_shader);
-    if (lua_pcall(l, 3, 0, 0) != 0) {
+    
+    // Send some parameters to the lua script.
+    lua_pushstring(l, Video::get_rendering_driver_name().c_str());
+    lua_pushstring(l, shading_language_version.c_str());
+    lua_pushstring(l, get_sampler_type().c_str());
+    lua_pushinteger(l, quest_size.get_width());
+    lua_pushinteger(l, quest_size.get_height());
+    
+    if (lua_pcall(l, 5, 0, 0) != 0) {
 
       // Runtime error.
-      Debug::die(std::string("Failed to parse: ") + path);
-      lua_pop(l, 1);
+      Debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
+      lua_pop(l, 6);
     }
   }
   

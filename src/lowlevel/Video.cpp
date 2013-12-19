@@ -578,8 +578,8 @@ void Video::render(Surface& quest_surface) {
       surface_to_render = &quest_surface;
     }
 
-    SDL_RenderSetClipRect(main_renderer, NULL);
     SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
+    SDL_RenderSetClipRect(main_renderer, NULL);
     SDL_RenderClear(main_renderer);
     surface_to_render->render(main_renderer);
     SDL_RenderPresent(main_renderer);

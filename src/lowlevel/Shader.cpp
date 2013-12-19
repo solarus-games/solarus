@@ -392,6 +392,7 @@ int Shader::l_shader(lua_State* l) {
     // Create the vertex and fragment shaders.
     vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
     compile_shader(vertex_shader, vertex_source.c_str());
+    
     fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
     compile_shader(fragment_shader, fragment_source.c_str());
     

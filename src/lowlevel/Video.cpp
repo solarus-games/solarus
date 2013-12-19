@@ -152,8 +152,8 @@ void create_window(const CommandLine& args) {
 void initialize_video_modes() {
 
   // Decide whether we enable shaders.
-  shaders_supported = Shader::initialize();
-  shaders_enabled = shaders_supported && rendertarget_supported;
+  shaders_supported =  rendertarget_supported && Video::is_acceleration_enabled() && Shader::initialize();
+  shaders_enabled = shaders_supported;
 
   // Initialize hardcoded video modes.
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
@@ -179,7 +179,7 @@ void initialize_video_modes() {
         quest_size.get_height());
     SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
 
-    // Get all shaders of the quest's shader/filters/driver folder.
+    // Get all shaders of the quest's shader/filters folder.
     std::vector<std::string> shader_names =
         FileTools::data_files_enumerate("shaders/filters/", true, false);
     // FIXME don't enumerate data files, use the quest resource system like always.
@@ -198,8 +198,8 @@ void initialize_video_modes() {
         }
 
         const Rectangle scaled_quest_size(0, 0,
-            int(quest_size.get_width() * video_mode_shader->get_logical_scale()),
-            int(quest_size.get_height() * video_mode_shader->get_logical_scale()));
+            int(double(quest_size.get_width()) * video_mode_shader->get_window_scale()),
+            int(double(quest_size.get_height()) * video_mode_shader->get_window_scale()));
         all_video_modes.push_back(new VideoMode(
               video_mode_shader->get_name(),
               scaled_quest_size,

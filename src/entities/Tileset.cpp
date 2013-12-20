@@ -198,7 +198,11 @@ Surface& Tileset::get_entities_image() {
 TilePattern& Tileset::get_tile_pattern(int id) {
 
   TilePattern* tile_pattern =  tile_patterns[id];
-  Debug::check_assertion(tile_pattern != NULL, StringConcat() << "There is not tile pattern with id '" << id << "' in this tileset'");
+  if (tile_pattern == NULL) {
+    std::ostringstream oss;
+    oss << "No such tile pattern in tileset '" << get_id() << "': " << id;
+    Debug::die(oss.str());
+  }
   return *tile_pattern;
 }
 

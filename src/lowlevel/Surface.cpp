@@ -239,6 +239,8 @@ void Surface::convert_software_surface() {
   SDL_PixelFormat* pixel_format = Video::get_pixel_format();
   if (internal_surface->format->format != pixel_format->format) {
     // Convert to the preferred pixel format.
+    uint8_t opacity;
+    SDL_GetSurfaceAlphaMod(internal_surface, &opacity);
     SDL_Surface* converted_surface = SDL_ConvertSurface(
         internal_surface,
         pixel_format,
@@ -249,6 +251,7 @@ void Surface::convert_software_surface() {
 
     SDL_FreeSurface(internal_surface);
     internal_surface = converted_surface;
+    SDL_SetSurfaceAlphaMod(internal_surface, opacity);  // Re-apply the alpha.
   }
 }
 
@@ -282,6 +285,7 @@ void Surface::create_texture_from_surface() {
 
     // Copy the pixels of the software surface to the GPU texture.
     SDL_UpdateTexture(internal_texture, NULL, internal_surface->pixels, internal_surface->pitch);
+    SDL_GetSurfaceAlphaMod(internal_surface, &internal_opacity);
   }
 }
 
@@ -314,7 +318,7 @@ const Rectangle Surface::get_size() const {
  * \brief Sets the opacity of this surface.
  * \param opacity the opacity (0 to 255).
  */
-void Surface::set_opacity(int opacity) {
+void Surface::set_opacity(uint8_t opacity) {
 
   if (software_destination  // The destination surface is in RAM.
       || !Video::is_acceleration_enabled()  // The rendering is in RAM.
@@ -633,10 +637,10 @@ void Surface::render(
     const Rectangle& src_rect,
     const Rectangle& dst_rect,
     const Rectangle& clip_rect,
-    int opacity,
+    uint8_t opacity,
     const std::vector<SubSurfaceNode*>& subsurfaces) {
 
-  const int current_opacity = std::min(internal_opacity, opacity);
+  const uint8_t current_opacity = std::min(internal_opacity, opacity);
 
   // Accelerate the internal software surface.
   if (internal_surface != NULL) {
@@ -656,6 +660,7 @@ void Surface::render(
           internal_surface->pixels,
           internal_surface->pitch
       );
+      SDL_GetSurfaceAlphaMod(internal_surface, &internal_opacity);
     }
   }
 
@@ -664,7 +669,7 @@ void Surface::render(
     int r, g, b, a;
     internal_color->get_components(r, g, b, a);
 
-    SDL_SetRenderDrawColor(renderer, r, g, b, std::min(a, current_opacity));
+    SDL_SetRenderDrawColor(renderer, r, g, b, std::min((uint8_t) a, current_opacity));
     //SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
     SDL_RenderFillRect(renderer, clip_rect.get_internal_rect());
   }

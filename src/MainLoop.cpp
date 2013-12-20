@@ -162,7 +162,7 @@ void MainLoop::set_game(Game* game) {
 void MainLoop::run() {
 
   // Main loop.
-  uint32_t last_frame_duration = 0;
+  uint32_t last_frame_date = System::get_real_time();
   uint32_t lag = 0;  // Lose time of the simulation.
 
   // The main loop basically repeats
@@ -171,7 +171,9 @@ void MainLoop::run() {
   while (!is_exiting()) {
 
     // Measure the time of the last iteration.
-    uint32_t current_frame_date = System::get_real_time();
+    uint32_t now = System::get_real_time();
+    uint32_t last_frame_duration = now - last_frame_date;
+    last_frame_date = now;
     lag += last_frame_duration;
     // At this point, lag represents how much late the simulated time with
     // compared to the real time.
@@ -196,7 +198,7 @@ void MainLoop::run() {
     }
 
     // 4. Sleep if we have time, to save CPU and GPU cycles.
-    last_frame_duration = System::get_real_time() - current_frame_date;
+    last_frame_duration = System::get_real_time() - last_frame_date;
     if (last_frame_duration < System::timestep) {
       System::sleep(System::timestep - last_frame_duration);
     }

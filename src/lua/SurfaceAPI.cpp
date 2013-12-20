@@ -173,7 +173,7 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
 int LuaContext::surface_api_set_opacity(lua_State* l) {
 
   Surface& surface = check_surface(l, 1);
-  int opacity = luaL_checkint(l, 2);
+  uint8_t opacity = (uint8_t) luaL_checkint(l, 2);
 
   surface.set_opacity(opacity);
 

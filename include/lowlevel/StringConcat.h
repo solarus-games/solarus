@@ -24,6 +24,7 @@ namespace solarus {
 /**
  * \brief A subclass of std::string that add operators
  * to directly concatenate elements.
+ * TODO remove this class, it makes it too easy to write very slow code.
  */
 class StringConcat: public std::string {
 

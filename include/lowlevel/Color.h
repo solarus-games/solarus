@@ -30,29 +30,6 @@ namespace solarus {
  */
 class Color {
 
-  // low-level classes allowed to manipulate directly the internal SDL objects encapsulated
-  friend class Surface;
-  friend class TextSurface;
-
-  private:
-
-    SDL_Color internal_color;             /**< the SDL color encapsulated. */
-    uint32_t internal_value;              /**< the SDL 32-bit value representing this color. */
-
-    // some predefined colors
-    static Color transparent;
-    static Color black;
-    static Color white;
-    static Color red;
-    static Color green;
-    static Color blue;
-    static Color yellow;
-    static Color magenta;
-    static Color cyan;
-
-    uint32_t get_internal_value() const;
-    SDL_Color* get_internal_color();
-
   public:
 
     static void initialize();
@@ -73,6 +50,29 @@ class Color {
     Color(int r, int g, int b, int a = 255);
 
     void get_components(int& r, int& g, int& b, int& a) const;
+  private:
+
+    SDL_Color internal_color;             /**< the SDL color encapsulated. */
+    uint32_t internal_value;              /**< the SDL 32-bit value representing this color. */
+
+    // some predefined colors
+    static Color transparent;
+    static Color black;
+    static Color white;
+    static Color red;
+    static Color green;
+    static Color blue;
+    static Color yellow;
+    static Color magenta;
+    static Color cyan;
+
+    uint32_t get_internal_value() const;
+    SDL_Color* get_internal_color();
+
+    // low-level classes allowed to manipulate directly the internal SDL objects encapsulated
+    friend class Surface;
+    friend class TextSurface;
+
 };
 
 /**

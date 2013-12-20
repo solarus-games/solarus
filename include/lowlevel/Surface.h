@@ -68,7 +68,7 @@ class Surface: public Drawable {
     bool is_software_destination() const;
     void set_software_destination(bool software_destination);
 
-    void set_opacity(int opacity);
+    void set_opacity(uint8_t opacity);
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
 
@@ -115,7 +115,7 @@ class Surface: public Drawable {
         const Rectangle& src_rect,
         const Rectangle& dst_rect,
         const Rectangle& clip_rect,
-        int opacity,
+        uint8_t opacity,
         const std::vector<SubSurfaceNode*>& subsurfaces
     );
 
@@ -127,7 +127,7 @@ class Surface: public Drawable {
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     Color* internal_color;                /**< the background color to use, if any. */
     bool is_rendered;                     /**< indicates if the current surface has been rendered. Set to false when drawing a surface on this one. */
-    int internal_opacity;                 /**< opacity to apply to all subtexture. */
+    uint8_t internal_opacity;             /**< opacity to apply to all subtextures. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
 };
 

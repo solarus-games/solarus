@@ -21,6 +21,7 @@ Engine changes
 * Fix RandomMovement speed that was not taken into account (#361).
 * The size of all map entities must be a multiple of 8 (#358).
 * Fix pixel collisions coordinates when sprites move (#372).
+* Fix a slowness when loading maps (#374).
 
 Data files format changes
 -------------------------

@@ -23,7 +23,6 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 #include <lua.hpp>
 
@@ -112,8 +111,8 @@ void Tileset::load() {
   FileTools::data_file_close_buffer(buffer);
 
   if (load_result != 0) {
-    Debug::die(StringConcat() << "Failed to load tileset file '"
-        << file_name << "': " << lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load tileset file '")
+        + file_name + "': " + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
 
@@ -122,8 +121,8 @@ void Tileset::load() {
   lua_register(l, "background_color", l_background_color);
   lua_register(l, "tile_pattern", l_tile_pattern);
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(StringConcat() << "Failed to load tileset file '"
-        << file_name << "': " << lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load tileset file '")
+        + file_name + "': " + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
 
@@ -198,7 +197,11 @@ Surface& Tileset::get_entities_image() {
 TilePattern& Tileset::get_tile_pattern(int id) {
 
   TilePattern* tile_pattern =  tile_patterns[id];
-  Debug::check_assertion(tile_pattern != NULL, StringConcat() << "There is not tile pattern with id '" << id << "' in this tileset'");
+  if (tile_pattern == NULL) {
+    std::ostringstream oss;
+    oss << "No such tile pattern in tileset '" << get_id() << "': " << id;
+    Debug::die(oss.str());
+  }
   return *tile_pattern;
 }
 
@@ -333,7 +336,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
       scrolling = luaL_checkstring(l, 3);
     }
     else {
-      LuaContext::error(l, StringConcat() << "Unknown key '" << key << "'");
+      LuaContext::error(l, std::string("Unknown key '") + key + "'");
     }
     lua_pop(l, 1);
   }

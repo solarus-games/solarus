@@ -170,23 +170,16 @@ void MainLoop::run() {
   // Each call to update() makes the simulated time advance one fixed step.
   while (!is_exiting()) {
 
-    // Measure the time of the last iteration without the check_input() phase.
-    // Some check_input() calls are much slower than other, for example when
-    // they involve loading a map. However, these long check_input() calls do
-    // not mean that the system is slow and that we should skip drawings,
-    // unlike long updates and long drawings.
-    // That is is why to compute the lag, we ignore the time spent in
-    // check_input().
-    uint32_t current_frame_date = System::get_real_time();
-    uint32_t last_frame_duration = current_frame_date - last_frame_date;
-
-    // 1. Detect and handle input events.
-    check_input();
-
-    last_frame_date = System::get_real_time();
+    // Measure the time of the last iteration.
+    uint32_t now = System::get_real_time();
+    uint32_t last_frame_duration = now - last_frame_date;
+    last_frame_date = now;
     lag += last_frame_duration;
     // At this point, lag represents how much late the simulated time with
     // compared to the real time.
+
+    // 1. Detect and handle input events.
+    check_input();
 
     // 2. Update the world once, or several times (skipping some draws)
     // if the system is slow.
@@ -205,9 +198,9 @@ void MainLoop::run() {
     }
 
     // 4. Sleep if we have time, to save CPU and GPU cycles.
-    uint32_t frame_duration = System::get_real_time() - last_frame_date;
-    if (frame_duration < System::timestep) {
-      System::sleep(System::timestep - frame_duration);
+    last_frame_duration = System::get_real_time() - last_frame_date;
+    if (last_frame_duration < System::timestep) {
+      System::sleep(System::timestep - last_frame_duration);
     }
   }
 }

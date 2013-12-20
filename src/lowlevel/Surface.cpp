@@ -547,6 +547,9 @@ void Surface::raw_draw_region(
           Rectangle(dst_position).get_internal_rect()
       );
     }
+    else if (internal_color != NULL) { // No internal surface to draw: this may be a color.
+      dst_surface.fill_with_color(*internal_color, dst_position);
+    }
   }
   else {
     // The destination is a GPU surface (a texture).

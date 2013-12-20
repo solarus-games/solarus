@@ -152,7 +152,7 @@ void create_window(const CommandLine& args) {
 void initialize_video_modes() {
 
   // Decide whether we enable shaders.
-  shaders_supported =  rendertarget_supported && Video::is_acceleration_enabled() && Shader::initialize();
+  shaders_supported = rendertarget_supported && Video::is_acceleration_enabled() && Shader::initialize();
   shaders_enabled = shaders_supported;
 
   // Initialize hardcoded video modes.

@@ -198,8 +198,8 @@ void initialize_video_modes() {
         }
 
         const Rectangle scaled_quest_size(0, 0,
-            int(double(quest_size.get_width()) * video_mode_shader->get_window_scale()),
-            int(double(quest_size.get_height()) * video_mode_shader->get_window_scale()));
+            int(quest_size.get_width() * video_mode_shader->get_window_scale()),
+            int(quest_size.get_height() * video_mode_shader->get_window_scale()));
         all_video_modes.push_back(new VideoMode(
               video_mode_shader->get_name(),
               scaled_quest_size,

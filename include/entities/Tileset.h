@@ -35,20 +35,6 @@ namespace solarus {
  */
 class Tileset {
 
-  private:
-
-    const std::string id;                             /**< id of the tileset */
-    std::map<int, TilePattern*> tile_patterns;        /**< tile patterns in this tileset */
-    int max_tile_id;                                  /**< current maximum id of a tile pattern in this tileset */
-    Color background_color;                           /**< background color of the tileset */
-    Surface* tiles_image;                             /**< image from which the tile patterns are extracted */
-    Surface* entities_image;                          /**< image from which the skin-dependent entities are extracted */
-
-    void add_tile_pattern(int id, TilePattern* tile_pattern);
-
-    static int l_background_color(lua_State* l);
-    static int l_tile_pattern(lua_State* l);
-
   public:
 
     Tileset(const std::string& id);
@@ -66,6 +52,21 @@ class Tileset {
     void set_images(const std::string& other_id);
 
     static const std::string ground_names[];  /**< Lua name of each ground type. */
+
+  private:
+
+    const std::string id;                             /**< id of the tileset */
+    std::map<int, TilePattern*> tile_patterns;        /**< tile patterns in this tileset */
+    int max_tile_id;                                  /**< current maximum id of a tile pattern in this tileset */
+    Color background_color;                           /**< background color of the tileset */
+    Surface* tiles_image;                             /**< image from which the tile patterns are extracted */
+    Surface* entities_image;                          /**< image from which the skin-dependent entities are extracted */
+
+    void add_tile_pattern(int id, TilePattern* tile_pattern);
+
+    static int l_background_color(lua_State* l);
+    static int l_tile_pattern(lua_State* l);
+
 };
 
 }

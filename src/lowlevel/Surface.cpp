@@ -111,7 +111,7 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
-  software_destination(true),
+  software_destination(false),
   internal_surface(internal_surface),
   internal_texture(NULL),
   internal_color(NULL),
@@ -177,6 +177,7 @@ Surface* Surface::create(const std::string& file_name,
   }
 
   Surface* surface = new Surface(sdl_surface);
+  surface->set_software_destination(true);
   return surface;
 }
 

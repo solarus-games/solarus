@@ -28,7 +28,6 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Video.h"
 #include <sstream>

@@ -21,7 +21,6 @@
 #include "lowlevel/Random.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <sstream>
 
 namespace solarus {
@@ -71,8 +70,11 @@ int RandomMovement::get_max_radius() const {
  */
 void RandomMovement::set_max_radius(int max_radius) {
 
-  Debug::check_assertion(max_radius >= 0, StringConcat()
-      << "Invalid value of max_radius: " << max_radius);
+  if (max_radius < 0) {
+    std::ostringstream oss;
+    oss << "Invalid max radius: " << max_radius;
+    Debug::die(oss.str());
+  }
   this->max_radius = max_radius;
 
   // restrict the movement in a rectangle

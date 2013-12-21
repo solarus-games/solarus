@@ -66,7 +66,6 @@ class Rectangle;
 class PixelBits;
 class InputEvent;
 class Debug;
-class StringConcat;
 
 // game
 class Game;

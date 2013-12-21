@@ -21,8 +21,8 @@
 #include "StringResource.h"
 #include "entities/Hero.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
+#include <sstream>
 
 namespace solarus {
 

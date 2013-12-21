@@ -24,7 +24,6 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 
 namespace solarus {
 
@@ -93,8 +92,9 @@ void Treasure::check_obtainable() const {
 
   Debug::check_assertion(item_name.empty()
       || game->get_equipment().get_item(item_name).is_obtainable(),
-      StringConcat() << "Treasure '" << item_name
-      << "' is not allowed, did you call ensure_obtainable()?");
+      std::string("Treasure '") + item_name
+      + "' is not allowed, did you call ensure_obtainable()?"
+  );
 }
 
 /**

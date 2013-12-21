@@ -19,7 +19,7 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -98,7 +98,8 @@ void PixelMovement::set_trajectory(const std::string& trajectory_string) {
   std::istringstream iss(trajectory_string);
   while (iss >> dx) {
     if (!(iss >> dy)) {
-      Debug::die(StringConcat() << "Invalid trajectory string '" << trajectory_string << "'");
+      Debug::die(std::string("Invalid trajectory string: '")
+          + trajectory_string + "'");
     }
     trajectory.push_back(Rectangle(dx, dy));
   }

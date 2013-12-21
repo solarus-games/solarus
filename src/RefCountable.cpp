@@ -16,7 +16,7 @@
  */
 #include "RefCountable.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -34,8 +34,9 @@ RefCountable::RefCountable():
 RefCountable::~RefCountable() {
 
   if (refcount != 0) {
-    Debug::die(StringConcat()
-        << "This object is still used somewhere else: refcount is " << refcount);
+    std::ostringstream oss;
+    oss << "This object is still used somewhere else: refcount is " << refcount;
+    Debug::die(oss.str());
   }
 }
 

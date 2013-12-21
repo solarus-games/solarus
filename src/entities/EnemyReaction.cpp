@@ -16,8 +16,8 @@
  */
 #include "entities/EnemyReaction.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "Sprite.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -111,8 +111,11 @@ const EnemyReaction::Reaction& EnemyReaction::get_reaction(
  */
 const std::string& EnemyReaction::get_reaction_name(ReactionType reaction) {
 
-  Debug::check_assertion(reaction >= 0 && reaction < REACTION_NUMBER,
-      StringConcat() << "Invalid reaction number: " << reaction);
+  if (reaction < 0 || reaction >= REACTION_NUMBER) {
+    std::ostringstream oss;
+    oss << "Invalid reaction number: " << reaction;
+    Debug::die(oss.str());
+  }
 
   return reaction_names[reaction];
 }
@@ -130,7 +133,7 @@ EnemyReaction::ReactionType EnemyReaction::get_reaction_by_name(const std::strin
     }
   }
 
-  Debug::die(StringConcat() << "Invalid reaction name: " << name);
+  Debug::die(std::string("Invalid enemy reaction name: '") + name + "'");
   throw;
 }
 

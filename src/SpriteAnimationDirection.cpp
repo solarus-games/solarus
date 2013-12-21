@@ -18,7 +18,7 @@
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -73,8 +73,10 @@ int SpriteAnimationDirection::get_nb_frames() const {
 const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
 
   if (frame < 0 || frame >= get_nb_frames()) {
-    Debug::die(StringConcat() << "Invalid frame " << frame
-        << ": this direction has " << get_nb_frames() << " frames");
+    std::ostringstream oss;
+    oss << "Invalid frame " << frame
+        << ": this direction has " << get_nb_frames() << " frames";
+    Debug::die(oss.str());
   }
   return frames[frame];
 }

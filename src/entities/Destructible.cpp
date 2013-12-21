@@ -25,7 +25,6 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "Game.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
@@ -469,8 +468,9 @@ void Destructible::update() {
 const std::string& Destructible::get_subtype_name(Subtype subtype) {
 
   Debug::check_assertion(subtype >= 0 && subtype != DEPRECATED_1
-      && subtype < SUBTYPE_NUMBER, StringConcat()
-      << "Invalid destructible item subtype number: " << subtype);
+      && subtype < SUBTYPE_NUMBER,
+      "Invalid destructible item subtype number"
+  );
 
   return features[subtype].name;
 }
@@ -489,8 +489,8 @@ Destructible::Subtype Destructible::get_subtype_by_name(
     }
   }
 
-  Debug::die(StringConcat() << "Invalid destructible item subtype name: '"
-      << subtype_name << "'");
+  Debug::die(std::string("Invalid destructible item subtype name: '")
+      + subtype_name + "'");
   throw;
 }
 

@@ -21,7 +21,6 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
@@ -73,8 +72,8 @@ NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
     dialog_to_show = behavior_string.substr(7);
   }
   else {
-    Debug::die(StringConcat() << "Invalid behavior string for NPC '" << name
-        << "': '" << behavior_string << "'");
+    Debug::die(std::string("Invalid behavior string for NPC '") + name
+        + "': '" + behavior_string + "'");
   }
 }
 

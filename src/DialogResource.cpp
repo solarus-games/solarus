@@ -18,7 +18,6 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "Language.h"
-#include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 
 namespace solarus {
@@ -59,17 +58,17 @@ void DialogResource::initialize() {
   FileTools::data_file_close_buffer(buffer);
 
   if (load_result != 0) {
-    Debug::error(StringConcat() << "Failed to load dialog file '" << file_name
-        << "' for language '" << Language::get_language() << "': "
-        << lua_tostring(l, -1));
+    Debug::error(std::string("Failed to load dialog file '") + file_name
+        + "' for language '" + Language::get_language() + "': "
+        + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
   else {
     lua_register(l, "dialog", l_dialog);
     if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::error(StringConcat() << "Failed to load dialog file '" << file_name
-          << "' for language '" << Language::get_language() << "': "
-          << lua_tostring(l, -1));
+      Debug::error(std::string("Failed to load dialog file '") + file_name
+          + "' for language '" + Language::get_language() + "': "
+          + lua_tostring(l, -1));
       lua_pop(l, 1);
     }
   }
@@ -103,8 +102,8 @@ bool DialogResource::exists(const std::string& dialog_id) {
  */
 const Dialog& DialogResource::get_dialog(const std::string& dialog_id) {
 
-  Debug::check_assertion(exists(dialog_id), StringConcat()
-      << "Cannot find dialog with id '" << dialog_id << "'");
+  Debug::check_assertion(exists(dialog_id), std::string(
+      "No such dialog: '") + dialog_id + "'");
   return dialogs[dialog_id];
 }
 

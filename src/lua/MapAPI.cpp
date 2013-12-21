@@ -54,7 +54,6 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 #include <sstream>
 
@@ -528,13 +527,9 @@ int LuaContext::map_api_get_ground(lua_State* l) {
   Map& map = check_map(l, 1);
   int x = luaL_checkint(l, 2);
   int y = luaL_checkint(l, 3);
-  int layer = luaL_checkint(l, 4);
+  Layer layer = check_layer(l, 4);
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    error(l, StringConcat() << "Invalid layer: " << layer);
-  }
-
-  Ground ground = map.get_ground(Layer(layer), x, y);
+  Ground ground = map.get_ground(layer, x, y);
 
   push_string(l, Tileset::ground_names[ground]);
   return 1;
@@ -837,6 +832,35 @@ int LuaContext::map_api_remove_entities(lua_State* l) {
   return 0;
 }
 
+namespace {
+
+/**
+ * \brief Utility function to check the size of an entity to be created.
+ * \param l A Lua state.
+ * \param index Index of the argument in the Lua stack.
+ * \param width Width to check.
+ * \param height Height to check.
+ */
+void entity_creation_check_size(
+    lua_State* l,
+    int index,
+    int width,
+    int height) {
+
+  if (width < 0 || width % 8 != 0) {
+    std::ostringstream oss;
+    oss << "Invalid width " << width << ": should be a positive multiple of 8";
+    LuaContext::arg_error(l, 1, oss.str());
+  }
+  if (height < 0 || height % 8 != 0) {
+    std::ostringstream oss;
+    oss << "Invalid height " << height << ": should be a positive multiple of 8";
+    LuaContext::arg_error(l, 1, oss.str());
+  }
+}
+
+}
+
 /**
  * \brief Implementation of the tile creation function.
  *
@@ -855,31 +879,21 @@ int LuaContext::map_api_create_tile(lua_State* l) {
       "Cannot create a tile when the map is already started");
 
   luaL_checktype(l, 1, LUA_TTABLE);
-  const int layer = check_int_field(l, 1, "layer");
+  const Layer layer = check_layer_field(l, 1, "layer");
   const int x = check_int_field(l, 1, "x");
   const int y = check_int_field(l, 1, "y");
   const int width = check_int_field(l, 1, "width");
   const int height = check_int_field(l, 1, "height");
   const int tile_pattern_id = check_int_field(l, 1, "pattern");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-  if (width < 0 || width % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid width: " << width << ": should be a positive multiple of 8");
-  }
-  if (height < 0 || height % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid height: " << height << ": should be a positive multiple of 8");
-  }
+  entity_creation_check_size(l, 1, width, height);
 
   TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
 
   for (int current_y = y; current_y < y + height; current_y += pattern.get_height()) {
     for (int current_x = x; current_x < x + width; current_x += pattern.get_width()) {
       MapEntity* entity = new Tile(
-          Layer(layer),
+          layer,
           current_x,
           current_y,
           pattern.get_width(),
@@ -902,20 +916,16 @@ int LuaContext::map_api_create_destination(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int direction = check_int_field(l, 1, "direction");
   const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
   bool is_default = opt_boolean_field(l, 1, "default", false);
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   MapEntity* entity = new Destination(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       direction,
@@ -940,7 +950,7 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int width = check_int_field(l, 1, "width");
@@ -951,21 +961,11 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
   const std::string& destination_map_id = check_string_field(l, 1, "destination_map");
   const std::string& destination_name = opt_string_field(l, 1, "destination", "");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-  if (width < 0 || width % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid width: " << width << ": should be a positive multiple of 8");
-  }
-  if (height < 0 || height % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid height: " << height << ": should be a positive multiple of 8");
-  }
+  entity_creation_check_size(l, 1, width, height);
 
   MapEntity* entity = new Teletransporter(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       width,
@@ -994,21 +994,18 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
-    arg_error(l, 1, StringConcat() <<
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
-        treasure_savegame_variable << "'");
+    arg_error(l, 1, std::string(
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
+        + treasure_savegame_variable + "')"
+    );
   }
 
   bool force_persistent = false;
@@ -1023,7 +1020,7 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
   MapEntity* entity = Pickable::create(
       game,
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
@@ -1053,7 +1050,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
@@ -1061,14 +1058,10 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
-    arg_error(l, 1, StringConcat() <<
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
-        treasure_savegame_variable << "'");
+    arg_error(l, 1, std::string(
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
+        + treasure_savegame_variable + "'");
   }
 
   // TODO Like enemies, implement this callback at runtime with function destructible:on_destroyed()
@@ -1094,7 +1087,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
 
   Destructible* destructible = new Destructible(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       Destructible::get_subtype_by_name(subtype_name),
@@ -1119,7 +1112,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
@@ -1132,43 +1125,43 @@ int LuaContext::map_api_create_chest(lua_State* l) {
   bool opening_condition_consumed = opt_boolean_field(l, 1, "opening_condition_consumed", false);
   const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog", "");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
-    arg_error(l, 1, StringConcat() <<
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
-        treasure_savegame_variable << "'");
+    arg_error(l, 1, std::string(
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
+        + treasure_savegame_variable + "')"
+    );
   }
 
   Game& game = map.get_game();
 
   if (opening_method == Chest::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
     if (!is_valid_lua_identifier(opening_condition)) {
-      arg_error(l, 1, StringConcat() <<
-          "Bad field 'opening_condition' (expected a valid savegame variable identifier, got '" <<
-          opening_condition << "'");
+      arg_error(l, 1, std::string(
+          "Bad field 'opening_condition' (invalid valid savegame variable identifier: '")
+          + opening_condition + "')"
+      );
     }
   }
 
   else if (opening_method == Chest::OPENING_BY_INTERACTION_IF_ITEM) {
     if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
-      arg_error(l, 1, StringConcat() <<
-          "Bad field 'opening_condition' (there is no equipment item with name '" <<
-          opening_condition << "'");
+      arg_error(l, 1, std::string(
+          "Bad field 'opening_condition' (no such equipment item: '")
+          + opening_condition + "')"
+      );
     }
     EquipmentItem& item = game.get_equipment().get_item(opening_condition);
     if (!item.is_saved()) {
-      arg_error(l, 1, StringConcat() <<
-          "Bad field 'opening_condition' (the possession state of equipment item '" <<
-          opening_condition << "' is not saved");
+      arg_error(l, 1, std::string(
+          "Bad field 'opening_condition' (equipment item '")
+          + opening_condition + "' is not saved)"
+      );
     }
   }
 
   Chest* chest = new Chest(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       sprite_name,
@@ -1196,7 +1189,7 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int width = check_int_field(l, 1, "width");
@@ -1204,21 +1197,11 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
   int direction = check_int_field(l, 1, "direction");
   int jump_length = check_int_field(l, 1, "jump_length");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-  if (width < 0 || width % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid width: " << width << ": should be a positive multiple of 8");
-  }
-  if (height < 0 || height % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid height: " << height << ": should be a positive multiple of 8");
-  }
+  entity_creation_check_size(l, 1, width, height);
 
   MapEntity* entity = new Jumper(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       width,
@@ -1244,7 +1227,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int direction = check_int_field(l, 1, "direction");
@@ -1255,20 +1238,18 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
-    arg_error(l, 1, StringConcat() <<
-        "Bad field 'savegame_variable' (invalid savegame variable identifier '" <<
-        savegame_variable << "'");
+    arg_error(l, 1, std::string(
+        "Bad field 'savegame_variable' (invalid savegame variable identifier: '")
+        + savegame_variable + "')"
+    );
   }
 
   if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
-    arg_error(l, 1, StringConcat() <<
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
-        treasure_savegame_variable << "'");
+    arg_error(l, 1, std::string(
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
+        + treasure_savegame_variable + "')"
+    );
   }
 
   Game& game = map.get_game();
@@ -1278,7 +1259,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
       rank,
       savegame_variable,
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       direction,
@@ -1307,17 +1288,13 @@ int LuaContext::map_api_create_npc(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int direction = check_int_field(l, 1, "direction");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
   const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
   const std::string& behavior = opt_string_field(l, 1, "behavior", "map");
-
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
 
   int subtype;
   std::istringstream iss(subtype_name);
@@ -1327,7 +1304,7 @@ int LuaContext::map_api_create_npc(lua_State* l) {
   MapEntity* entity = new NPC(
       game,
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       NPC::Subtype(subtype),
@@ -1353,7 +1330,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int direction = opt_int_field(l, 1, "direction", -1);
@@ -1362,16 +1339,15 @@ int LuaContext::map_api_create_block(lua_State* l) {
   bool pullable = check_boolean_field(l, 1, "pullable");
   int maximum_moves = check_int_field(l, 1, "maximum_moves");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
   if (maximum_moves < 0 || maximum_moves > 2) {
-    arg_error(l, 1, StringConcat() << "Invalid maximum_moves: " << maximum_moves);
+    std::ostringstream oss;
+    oss << "Invalid maximum_moves: " << maximum_moves;
+    arg_error(l, 1, oss.str());
   }
 
   Block* entity = new Block(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       direction,
@@ -1398,7 +1374,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int width = check_int_field(l, 1, "width");
@@ -1406,21 +1382,11 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
   int tile_pattern_id = check_int_field(l, 1, "pattern");
   bool enabled_at_start = check_boolean_field(l, 1, "enabled_at_start");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-  if (width < 0 || width % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid width: " << width << ": should be a positive multiple of 8");
-  }
-  if (height < 0 || height % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid height: " << height << ": should be a positive multiple of 8");
-  }
+  entity_creation_check_size(l, 1, width, height);
 
   MapEntity* entity = new DynamicTile(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       width,
@@ -1446,16 +1412,12 @@ int LuaContext::map_api_create_switch(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
   bool needs_block = check_boolean_field(l, 1, "needs_block");
   bool inactivate_when_leaving = check_boolean_field(l, 1, "inactivate_when_leaving");
-
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
 
   int subtype;
   std::istringstream iss(subtype_name);
@@ -1463,7 +1425,7 @@ int LuaContext::map_api_create_switch(lua_State* l) {
 
   MapEntity* entity = new Switch(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       Switch::Subtype(subtype),
@@ -1488,7 +1450,7 @@ int LuaContext::map_api_create_wall(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int width = check_int_field(l, 1, "width");
@@ -1498,21 +1460,11 @@ int LuaContext::map_api_create_wall(lua_State* l) {
   bool stops_npcs = check_boolean_field(l, 1, "stops_npcs");
   bool stops_blocks = check_boolean_field(l, 1, "stops_blocks");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-  if (width < 0 || width % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid width: " << width << ": should be a positive multiple of 8");
-  }
-  if (height < 0 || height % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid height: " << height << ": should be a positive multiple of 8");
-  }
+  entity_creation_check_size(l, 1, width, height);
 
   MapEntity* entity = new Wall(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       width,
@@ -1540,27 +1492,17 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int width = check_int_field(l, 1, "width");
   int height = check_int_field(l, 1, "height");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-  if (width < 0 || width % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid width: " << width << ": should be a positive multiple of 8");
-  }
-  if (height < 0 || height % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid height: " << height << ": should be a positive multiple of 8");
-  }
+  entity_creation_check_size(l, 1, width, height);
 
   MapEntity* entity = new Sensor(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       width,
@@ -1584,17 +1526,13 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   MapEntity* entity = new Crystal(
       name,
-      Layer(layer),
+      layer,
       x,
       y);
   map.get_entities().add_entity(entity);
@@ -1616,24 +1554,14 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int width = check_int_field(l, 1, "width");
   int height = check_int_field(l, 1, "height");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-  if (width < 0 || width % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid width: " << width << ": should be a positive multiple of 8");
-  }
-  if (height < 0 || height % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid height: " << height << ": should be a positive multiple of 8");
-  }
+  entity_creation_check_size(l, 1, width, height);
 
   int subtype;
   std::istringstream iss(subtype_name);
@@ -1643,7 +1571,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
   MapEntity* entity = new CrystalBlock(
       game,
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       width,
@@ -1668,7 +1596,7 @@ int LuaContext::map_api_create_shop_treasure(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
@@ -1677,21 +1605,18 @@ int LuaContext::map_api_create_shop_treasure(lua_State* l) {
   int price = check_int_field(l, 1, "price");
   const std::string& dialog_id = check_string_field(l, 1, "dialog");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
-    arg_error(l, 1, StringConcat() <<
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
-        treasure_savegame_variable << "'");
+    arg_error(l, 1, std::string(
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
+        + treasure_savegame_variable + "')"
+    );
   }
 
   Game& game = map.get_game();
   MapEntity* entity = ShopTreasure::create(
       game,
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
@@ -1721,18 +1646,14 @@ int LuaContext::map_api_create_conveyor_belt(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int  layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int direction = check_int_field(l, 1, "direction");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   MapEntity* entity = new ConveyorBelt(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       direction);
@@ -1755,7 +1676,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int direction = check_int_field(l, 1, "direction");
@@ -1767,38 +1688,37 @@ int LuaContext::map_api_create_door(lua_State* l) {
   bool opening_condition_consumed = opt_boolean_field(l, 1, "opening_condition_consumed", false);
   const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog", "");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   Game& game = map.get_game();
 
   if (opening_method == Door::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
     if (!is_valid_lua_identifier(opening_condition)) {
-      arg_error(l, 1, StringConcat() <<
-          "Bad field 'opening_condition' (expected a valid savegame variable identifier, got '" <<
-          opening_condition << "')");
+      arg_error(l, 1, std::string(
+          "Bad field 'opening_condition' (invalid savegame variable identifier: '")
+          + opening_condition + "')"
+      );
     }
   }
 
   else if (opening_method == Door::OPENING_BY_INTERACTION_IF_ITEM) {
     if (opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
-      arg_error(l, 1, StringConcat() <<
-          "Bad field 'opening_condition' (there is no equipment item with name '" <<
-          opening_condition << "')");
+      arg_error(l, 1, std::string(
+          "Bad field 'opening_condition' (no such equipment item: '")
+          + opening_condition + "')"
+      );
     }
     EquipmentItem& item = game.get_equipment().get_item(opening_condition);
     if (!item.is_saved()) {
-      arg_error(l, 1, StringConcat() <<
-          "Bad field 'opening_condition' (the possession state of equipment item '" <<
-          opening_condition << "' is not saved");
+      arg_error(l, 1, std::string(
+          "Bad field 'opening_condition' (equipment item '")
+          + opening_condition + "' is not saved)"
+      );
     }
   }
 
   Door* door = new Door(
       game,
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       direction,
@@ -1827,15 +1747,11 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int direction = check_int_field(l, 1, "direction");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
-
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
 
   int subtype;
   std::istringstream iss(subtype_name);
@@ -1843,7 +1759,7 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
 
   MapEntity* entity = new Stairs(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       direction,
@@ -1867,27 +1783,17 @@ int LuaContext::map_api_create_separator(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int width = check_int_field(l, 1, "width");
   int height = check_int_field(l, 1, "height");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-  if (width < 0 || width % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid width: " << width << ": should be a positive multiple of 8");
-  }
-  if (height < 0 || height % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid height: " << height << ": should be a positive multiple of 8");
-  }
+  entity_creation_check_size(l, 1, width, height);
 
   MapEntity* entity = new Separator(
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       width,
@@ -1912,30 +1818,20 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   int width = opt_int_field(l, 1, "width", 16);
   int height = opt_int_field(l, 1, "height", 16);
   const std::string& model = opt_string_field(l, 1, "model", "");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-  if (width < 0 || width % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid width: " << width << ": should be a positive multiple of 8");
-  }
-  if (height < 0 || height % 8 != 0) {
-    arg_error(l, 1, StringConcat() <<
-        "Invalid height: " << height << ": should be a positive multiple of 8");
-  }
+  entity_creation_check_size(l, 1, width, height);
 
   Game& game = map.get_game();
   CustomEntity* entity = new CustomEntity(
       game,
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       width,
@@ -1960,17 +1856,13 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   MapEntity* entity = new Bomb(
       name,
-      Layer(layer),
+      layer,
       x,
       y);
   map.get_entities().add_entity(entity);
@@ -1992,17 +1884,13 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   MapEntity* entity = new Explosion(
       name,
-      Layer(layer),
+      layer,
       Rectangle(x, y),
       true);
   map.get_entities().add_entity(entity);
@@ -2024,17 +1912,13 @@ int LuaContext::map_api_create_fire(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 1, "name", "");
-  int layer = check_int_field(l, 1, "layer");
+  Layer layer = check_layer_field(l, 1, "layer");
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 1, StringConcat() << "Invalid layer: " << layer);
-  }
-
   MapEntity* entity = new Fire(
       name,
-      Layer(layer),
+      layer,
       Rectangle(x, y));
   map.get_entities().add_entity(entity);
 

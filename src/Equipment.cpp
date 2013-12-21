@@ -25,8 +25,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Random.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -158,8 +158,11 @@ int Equipment::get_max_money() const {
  */
 void Equipment::set_max_money(int max_money) {
 
-  Debug::check_assertion(max_money > 0, StringConcat()
-      << "Illegal maximum amount of money: " << max_money);
+  if (max_money <= 0) {
+    std::ostringstream oss;
+    oss << "Illegal maximum amount of money: " << max_money;
+    Debug::die(oss.str());
+  }
 
   savegame.set_integer(Savegame::KEY_MAX_MONEY, max_money);
 
@@ -236,8 +239,11 @@ int Equipment::get_max_life() const {
  */
 void Equipment::set_max_life(int max_life) {
 
-  Debug::check_assertion(max_life > 0, StringConcat()
-      << "Illegal maximum life: " << max_life);
+  if (max_life <= 0) {
+    std::ostringstream oss;
+    oss << "Illegal maximum life: " << max_life;
+    Debug::die(oss.str());
+  }
 
   savegame.set_integer(Savegame::KEY_MAX_LIFE, max_life);
 
@@ -319,8 +325,11 @@ int Equipment::get_max_magic() const {
  */
 void Equipment::set_max_magic(int max_magic) {
 
-  Debug::check_assertion(max_magic >= 0, StringConcat()
-      << "Illegal maximum number of magic points: " << max_magic);
+  if (max_magic < 0) {
+    std::ostringstream oss;
+    oss << "Illegal maximum number of magic points: " << max_magic;
+    Debug::die(oss.str());
+  }
 
   savegame.set_integer(Savegame::KEY_MAX_MAGIC, max_magic);
 
@@ -433,7 +442,7 @@ bool Equipment::item_exists(const std::string& item_name) const {
 EquipmentItem& Equipment::get_item(const std::string& item_name) {
 
   Debug::check_assertion(item_exists(item_name),
-      StringConcat() << "Cannot find item with name '" << item_name << "'");
+      std::string("No such item: '") + item_name + "'");
 
   return *items.find(item_name)->second;
 }
@@ -446,7 +455,7 @@ EquipmentItem& Equipment::get_item(const std::string& item_name) {
 const EquipmentItem& Equipment::get_item(const std::string& item_name) const {
 
   Debug::check_assertion(item_exists(item_name),
-      StringConcat() << "Cannot find item with name '" << item_name << "'");
+      std::string("No such item: '") + item_name + "'");
 
   return *items.find(item_name)->second;
 }
@@ -481,8 +490,8 @@ EquipmentItem* Equipment::get_item_assigned(int slot) {
  */
 const EquipmentItem* Equipment::get_item_assigned(int slot) const {
 
-  Debug::check_assertion(slot >= 1 && slot <= 2, StringConcat() <<
-      "Invalid item slot '" << slot << "'");
+  Debug::check_assertion(slot >= 1 && slot <= 2,
+      "Invalid item slot");
 
   std::ostringstream oss;
   oss << "_item_slot_" << slot;
@@ -506,17 +515,19 @@ const EquipmentItem* Equipment::get_item_assigned(int slot) const {
  */
 void Equipment::set_item_assigned(int slot, EquipmentItem* item) {
 
-  Debug::check_assertion(slot >= 1 && slot <= 2, StringConcat() <<
-      "Invalid item slot '" << slot << "'");
+  Debug::check_assertion(slot >= 1 && slot <= 2,
+      "Invalid item slot");
 
   std::ostringstream oss;
   oss << "_item_slot_" << slot;
 
   if (item != NULL) {
-    Debug::check_assertion(item->get_variant() > 0, StringConcat()
-        << "Cannot assign item '" << item->get_name() << "' because the player does not have it");
-    Debug::check_assertion(item->is_assignable(), StringConcat()
-        << "The item '" << item->get_name() << "' cannot be assigned");
+    Debug::check_assertion(item->get_variant() > 0,
+        std::string("Cannot assign item '") + item->get_name()
+        + "' because the player does not have it");
+    Debug::check_assertion(item->is_assignable(),
+        std::string("The item '") + item->get_name()
+        + "' cannot be assigned");
     savegame.set_string(oss.str(), item->get_name());
   }
   else {
@@ -578,7 +589,7 @@ std::string Equipment::get_ability_savegame_variable(
     savegame_variable = Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
   }
   else {
-    Debug::die(StringConcat() << "Unknown ability '" << ability_name << "'");
+    Debug::die(std::string("No such ability: '") + ability_name + "'");
   }
 
   return savegame_variable;

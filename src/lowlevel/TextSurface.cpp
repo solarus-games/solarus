@@ -19,7 +19,6 @@
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Video.h"
 #include "lua/LuaContext.h"
 #include "Transition.h"
@@ -59,15 +58,17 @@ void TextSurface::load_fonts() {
   FileTools::data_file_close_buffer(buffer);
 
   if (load_result != 0) {
-    Debug::die(StringConcat() << "Failed to load the fonts file '"
-        << file_name << "': " << lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load the fonts file '")
+        + file_name + "': " + lua_tostring(l, -1)
+    );
     lua_pop(l, 1);
   }
   else {
     lua_register(l, "font", l_font);
     if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::die(StringConcat() << "Failed to load the fonts file '"
-          << file_name << "': " << lua_tostring(l, -1));
+      Debug::die(std::string("Failed to load the fonts file '")
+          + file_name + "': " + lua_tostring(l, -1)
+      );
       lua_pop(l, 1);
     }
   }
@@ -147,7 +148,9 @@ int TextSurface::l_font(lua_State* l) {
     fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, int(size));
     fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
     Debug::check_assertion(fonts[font_id].internal_font != NULL,
-        StringConcat() << "Cannot load font from file '" << file_name << "': " << TTF_GetError());
+        std::string("Cannot load font from file '") + file_name
+        + "': " + TTF_GetError()
+    );
   }
 
   return 0;
@@ -494,8 +497,9 @@ void TextSurface::rebuild() {
     return;
   }
 
-  Debug::check_assertion(has_font(font_id), StringConcat() <<
-      "No such font: '" << font_id << "'");
+  Debug::check_assertion(has_font(font_id),
+      std::string("No such font: '") + font_id + "'"
+  );
 
   if (fonts[font_id].bitmap) {
     rebuild_bitmap();
@@ -611,8 +615,10 @@ void TextSurface::rebuild_ttf() {
     break;
   }
 
-  Debug::check_assertion(internal_surface != NULL, StringConcat()
-      << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
+  Debug::check_assertion(internal_surface != NULL,
+      std::string("Cannot create the text surface for string '") + text + "': "
+      + SDL_GetError()
+  );
 
   surface = new Surface(internal_surface);
   RefCountable::ref(surface);

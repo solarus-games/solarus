@@ -19,7 +19,7 @@
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -123,10 +123,11 @@ int SpriteAnimation::get_next_frame(
 
   if (current_direction < 0
       || current_direction >= get_nb_directions()) {
-    Debug::die(StringConcat()
-        << "Invalid sprite direction '" << current_direction
+    std::ostringstream oss;
+    oss << "Invalid sprite direction '" << current_direction
         << "': this sprite has " << get_nb_directions()
-        << " direction(s)");
+        << " direction(s)";
+    Debug::die(oss.str());
   }
 
   int next_frame = current_frame + 1;
@@ -155,9 +156,11 @@ void SpriteAnimation::draw(Surface& dst_surface,
   if (src_image != NULL) {
     if (current_direction < 0
         || current_direction >= get_nb_directions()) {
-      Debug::die(StringConcat() << "Invalid sprite direction "
+      std::ostringstream oss;
+      oss << "Invalid sprite direction "
           << current_direction << ": this sprite has " << get_nb_directions()
-          << " direction(s)");
+          << " direction(s)";
+      Debug::die(oss.str());
     }
     directions[current_direction]->draw(dst_surface, dst_position,
         current_frame, *src_image);

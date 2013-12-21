@@ -23,7 +23,6 @@
 #include "entities/Crystal.h"
 #include "entities/Hero.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "movements/PathMovement.h"
@@ -224,8 +223,7 @@ const Rectangle Hookshot::get_facing_point() const {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid direction for Hookshot::get_facing_point(): "
-          << get_sprite().get_current_direction());
+      Debug::die("Invalid direction for Hookshot::get_facing_point()");
   }
 
   return facing_point;

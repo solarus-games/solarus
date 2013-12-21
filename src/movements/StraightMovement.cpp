@@ -20,7 +20,6 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <cmath>
 
 namespace solarus {

@@ -24,7 +24,6 @@
 #include "KeysEffect.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
 namespace solarus {
@@ -376,8 +375,7 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
   int callback_ref = LUA_REFNIL;
 
   if (!DialogResource::exists(dialog_id)) {
-    arg_error(l, 2, StringConcat()
-          << "No such dialog: '" << dialog_id << "'");
+    arg_error(l, 2, std::string("No such dialog: '") + dialog_id + "'");
   }
 
   Game* game = savegame.get_game();
@@ -547,10 +545,10 @@ int LuaContext::game_api_get_value(lua_State* l) {
   const std::string& key = luaL_checkstring(l, 2);
 
   if (!is_valid_lua_identifier(key)) {
-    arg_error(l, 3, StringConcat() <<
-        "Invalid savegame variable '" << key <<
-        "': the name should only contain alphanumeric characters or '_'" <<
-        " and cannot start with a digit");
+    arg_error(l, 3,
+        std::string("Invalid savegame variable '") + key
+        + "': the name should only contain alphanumeric characters or '_'"
+        + " and cannot start with a digit");
   }
 
   if (savegame.is_boolean(key)) {
@@ -580,16 +578,16 @@ int LuaContext::game_api_set_value(lua_State* l) {
   const std::string& key = luaL_checkstring(l, 2);
 
   if (key[0] == '_') {
-    arg_error(l, 3, StringConcat() <<
-        "Invalid savegame variable '" << key <<
-        "': names prefixed by '_' are reserved for built-in variables");
+    arg_error(l, 3,
+        std::string("Invalid savegame variable '") + key
+        + "': names prefixed by '_' are reserved for built-in variables");
   }
 
   if (!is_valid_lua_identifier(key)) {
-    arg_error(l, 3, StringConcat() <<
-        "Invalid savegame variable '" << key <<
-        "': the name should only contain alphanumeric characters or '_'" <<
-        " and cannot start with a digit");
+    arg_error(l, 3,
+        std::string("Invalid savegame variable '") + key
+        + "': the name should only contain alphanumeric characters or '_'"
+        + " and cannot start with a digit");
   }
 
   switch (lua_type(l, 3)) {
@@ -611,8 +609,10 @@ int LuaContext::game_api_set_value(lua_State* l) {
       break;
 
     default:
-      arg_error(l, 3, StringConcat() <<
-          "Expected string, number or boolean, got " << luaL_typename(l, 3));
+      arg_error(l, 3,
+          std::string("Expected string, number or boolean, got ")
+          + luaL_typename(l, 3)
+      );
   }
 
   return 0;
@@ -1006,7 +1006,7 @@ int LuaContext::game_api_get_item(lua_State* l) {
   const std::string& item_name = luaL_checkstring(l, 2);
 
   if (!savegame.get_equipment().item_exists(item_name)) {
-    error(l, StringConcat() << "No such item: '" << item_name << "'");
+    error(l, std::string("No such item: '") + item_name + "'");
   }
 
   push_item(l, savegame.get_equipment().get_item(item_name));
@@ -1025,11 +1025,11 @@ int LuaContext::game_api_has_item(lua_State* l) {
 
   Equipment& equipment = savegame.get_equipment();
   if (!equipment.item_exists(item_name)) {
-    error(l, StringConcat() << "No such item: '" << item_name << "'");
+    error(l, std::string("No such item: '") + item_name + "'");
   }
 
   if (!equipment.get_item(item_name).is_saved()) {
-    error(l, StringConcat() << "Item '" << item_name << "' is not saved");
+    error(l, std::string("Item '") + item_name + "' is not saved");
   }
 
   lua_pushboolean(l, equipment.get_item(item_name).get_variant() > 0);
@@ -1162,7 +1162,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
       }
 
       default:
-        Debug::die(StringConcat() << "Invalid game command: " << command);
+        Debug::die("Invalid game command");
     }
 
     if (effect_name.empty()) {
@@ -1218,8 +1218,8 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
   GameCommands& commands = savegame.get_game()->get_commands();
   InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
   if (!key_name.empty() && key == InputEvent::KEY_NONE) {
-    arg_error(l, 3, StringConcat() <<
-          "Invalid keyboard key name: '" << key_name << "'");
+    arg_error(l, 3,
+          std::string("Invalid keyboard key name: '") + key_name + "'");
   }
   commands.set_keyboard_binding(command, key);
 
@@ -1265,8 +1265,8 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
   const std::string& joypad_string = luaL_optstring(l, 3, "");
 
   if (!joypad_string.empty() && !GameCommands::is_joypad_string_valid(joypad_string)) {
-    arg_error(l, 3, StringConcat() <<
-          "Invalid joypad string: '" << joypad_string << "'");
+    arg_error(l, 3,
+          std::string("Invalid joypad string: '") + joypad_string + "'");
   }
   GameCommands& commands = savegame.get_game()->get_commands();
   commands.set_joypad_binding(command, joypad_string);

@@ -54,7 +54,6 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
@@ -647,7 +646,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         break;
 
       default:
-        Debug::die(StringConcat() << "Invalid destination side: " << side);
+        Debug::die("Invalid destination side");
       }
       last_solid_ground_coords = get_xy();
       // note that we keep the hero's state from the previous map
@@ -711,7 +710,7 @@ void Hero::notify_map_opening_transition_finished() {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid destination side: " << side);
+      Debug::die("Invalid destination side");
     }
   }
   check_position();
@@ -769,7 +768,7 @@ const Rectangle Hero::get_facing_point(int direction) const {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid direction for Hero::get_facing_point(): " << direction);
+      Debug::die("Invalid direction for Hero::get_facing_point()");
   }
 
   facing_point.set_size(1, 1);
@@ -825,7 +824,7 @@ bool Hero::is_facing_obstacle() const {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid animation direction '" << sprites->get_animation_direction() << "'");
+      Debug::die("Invalid animation direction");
       break;
   }
 
@@ -1856,7 +1855,7 @@ void Hero::avoid_collision(MapEntity& entity, int direction) {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid direction in Hero::avoid_collision(): " << direction);
+      Debug::die("Invalid direction in Hero::avoid_collision()");
       break;
   }
   reset_movement();
@@ -2353,8 +2352,9 @@ bool Hero::can_start_item(EquipmentItem& item) {
  * \param item The equipment item to use.
  */
 void Hero::start_item(EquipmentItem& item) {
-  Debug::check_assertion(can_start_item(item), StringConcat() <<
-      "The hero cannot start using item '" << item.get_name() << "' now.");
+  Debug::check_assertion(can_start_item(item),
+      std::string("The hero cannot start using item '")
+      + item.get_name() + "' now.");
   set_state(new UsingItemState(*this, item));
 }
 

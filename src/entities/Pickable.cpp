@@ -28,6 +28,7 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "EquipmentItem.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -165,12 +166,13 @@ void Pickable::initialize_sprites() {
   item_sprite.set_current_animation(treasure.get_item_name());
   int direction = treasure.get_variant() - 1;
   if (direction < 0 || direction >= item_sprite.get_nb_directions()) {
-    Debug::error(StringConcat() <<
-        "Pickable treasure '" << treasure.get_item_name() << "' has variant "
-        << treasure.get_variant()
-        << " but sprite 'entities/items' has only "
+    std::ostringstream oss;
+    oss << "Pickable treasure '" << treasure.get_item_name()
+        << "' has variant " << treasure.get_variant()
+        << " but sprite 'entities/items' only has "
         << item_sprite.get_nb_directions() << " variant(s) in animation '"
-        << treasure.get_item_name() << "'");
+        << treasure.get_item_name() << "'";
+    Debug::error(oss.str());
     direction = 0;  // Fallback.
   }
   item_sprite.set_current_direction(direction);

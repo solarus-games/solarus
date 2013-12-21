@@ -22,6 +22,7 @@
 #include "entities/Hero.h"
 #include "lowlevel/TextSurface.h"
 #include "lua/LuaContext.h"
+#include <sstream>
 
 namespace solarus {
 

@@ -19,7 +19,6 @@
 #include "SpriteAnimationDirection.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 
 namespace solarus {
@@ -108,8 +107,9 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
   int frame_to_loop_on = LuaContext::opt_int_field(l, 1, "frame_to_loop_on", -1);
 
   if (frame_to_loop_on < -1) {
-    LuaContext::arg_error(l, 1, StringConcat() <<
-          "Bad field 'frame_to_loop_on' (must be a positive number or -1)");
+    LuaContext::arg_error(l, 1,
+        "Bad field 'frame_to_loop_on' (must be a positive number or -1)"
+    );
   }
 
   lua_settop(l, 1);
@@ -128,9 +128,10 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
     ++i;
 
     if (lua_type(l, -1) != LUA_TTABLE) {
-      LuaContext::arg_error(l, 1, StringConcat() <<
-          "Bad field 'directions' (got " <<
-          luaL_typename(l, -1) << " in the table)");
+      LuaContext::arg_error(l, 1,
+          std::string("Bad field 'directions' (expected table, got ")
+          + luaL_typename(l, -1)
+      );
     }
 
     int x = LuaContext::check_int_field(l, -1, "x");
@@ -236,8 +237,10 @@ bool SpriteAnimationSet::has_animation(
 const SpriteAnimation* SpriteAnimationSet::get_animation(
     const std::string& animation_name) const {
 
-  Debug::check_assertion(has_animation(animation_name), StringConcat() <<
-      "No animation '" << animation_name << "' in animation set '" << id << "'");
+  Debug::check_assertion(has_animation(animation_name),
+      std::string("No animation '") + animation_name
+      + "' in animation set '" + id + "'"
+  );
 
   return animations.find(animation_name)->second; // the [] operator is not const in std::map
 }
@@ -250,8 +253,10 @@ const SpriteAnimation* SpriteAnimationSet::get_animation(
 SpriteAnimation* SpriteAnimationSet::get_animation(
     const std::string& animation_name) {
 
-  Debug::check_assertion(has_animation(animation_name), StringConcat() <<
-      "No animation '" << animation_name << "' in animation set '" << id << "'");
+  Debug::check_assertion(has_animation(animation_name),
+      std::string("No animation '") + animation_name
+      + "' in animation set '" + id + "'"
+  );
 
   return animations[animation_name];
 }

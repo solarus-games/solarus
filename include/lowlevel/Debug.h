@@ -18,9 +18,6 @@
 #define SOLARUS_DEBUG_H
 
 #include "Common.h"
-#include <cstdlib>
-#include <iostream>
-#include <fstream>
 #include <string>
 
 #ifndef NDEBUG
@@ -46,7 +43,7 @@ class Debug {
 
   private:
 
-    Debug();    // don't instantiate this class
+    Debug();  // Don't instantiate this class
 };
 
 }

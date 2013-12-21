@@ -30,7 +30,6 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 
 namespace solarus {
 
@@ -261,8 +260,7 @@ const Rectangle Arrow::get_facing_point() const {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid direction for Arrow::get_facing_point(): "
-          << get_sprite().get_current_direction());
+      Debug::die("Invalid direction for Arrow::get_facing_point()");
   }
 
   return facing_point;

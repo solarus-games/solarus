@@ -22,7 +22,6 @@
 #include "Map.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 
 namespace solarus {
 

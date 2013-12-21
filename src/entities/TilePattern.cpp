@@ -18,8 +18,8 @@
 #include "entities/AnimatedTilePattern.h"
 #include "entities/TimeScrollingTilePattern.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Surface.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -38,12 +38,14 @@ TilePattern::TilePattern(Ground ground, int width, int height):
   height(height) {
 
   // Check the width and the height.
-  Debug::check_assertion(
-      width > 0 && height > 0
-      && width % 8 == 0 && height % 8 == 0,
-      StringConcat() << "Invalid tile pattern: the size is ("
-          << width << "x" << height <<
-          ") but should be positive and multiple of 8 pixels");
+  if (width <= 0 || height <= 0
+      || width % 8 != 0 || height % 8 != 0) {
+    std::ostringstream oss;
+    oss << "Invalid tile pattern: the size is ("
+        << width << "x" << height <<
+        ") but should be positive and multiple of 8 pixels";
+    Debug::die(oss.str());
+  }
 
   // Diagonal obstacle: check that the tile is square.
   if (ground >= GROUND_WALL_TOP_RIGHT && ground <= GROUND_WALL_BOTTOM_RIGHT_WATER) {

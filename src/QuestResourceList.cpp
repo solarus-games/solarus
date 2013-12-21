@@ -18,6 +18,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lua/LuaContext.h"
+#include <sstream>
 
 namespace solarus {
 

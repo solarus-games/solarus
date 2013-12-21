@@ -16,7 +16,6 @@
  */
 #include "lowlevel/ItDecoder.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <stdafx.h>  // These two headers are with the libmodplug ones.
 #include <sndfile.h>
 

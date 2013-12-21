@@ -17,7 +17,7 @@
 #include "StringResource.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -62,9 +62,12 @@ void StringResource::initialize() {
 
     // get the key
     size_t index = line.find_first_of(" \t");
-    Debug::check_assertion(index != std::string::npos,
-        StringConcat() << "strings.dat, line " << i
-        << ": invalid line (expected a key and a value)");
+    if (index == std::string::npos) {
+      std::ostringstream oss;
+      oss << "strings.dat, line " << i
+        << ": invalid line (expected a key and a value)";
+      Debug::die(oss.str());
+    }
     std::string key = line.substr(0, index);
 
     // get the value
@@ -73,9 +76,12 @@ void StringResource::initialize() {
     } while (index < line.size()
         && (line[index] == ' ' || line[index] == '\t' || line[index] == '\r'));
 
-    Debug::check_assertion(index < line.size(),
-      StringConcat() << "strings.dat, line " << i
-      << ": the value of key '" << key << "' is missing");
+    if (index >= line.size()) {
+      std::ostringstream oss;
+      oss << "strings.dat, line " << i
+          << ": the value of key '" << key << "' is missing";
+      Debug::die(oss.str());
+    }
 
     std::string value = line.substr(index);
 
@@ -116,8 +122,9 @@ bool StringResource::exists(const std::string& key) {
  */
 const std::string& StringResource::get_string(const std::string& key) {
 
-  Debug::check_assertion(exists(key), StringConcat()
-      << "Cannot find string with key '" << key << "'");
+  Debug::check_assertion(exists(key),
+      std::string("Cannot find string with key '") + key + "'"
+  );
   return strings[key];
 }
 

@@ -1179,9 +1179,18 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
   const std::string& savegame_variable = luaL_optstring(l, 4, "");
 
   if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
-    arg_error(l, 4, StringConcat() <<
-        "savegame variable identifier expected, got '" <<
-        savegame_variable << "'");
+    arg_error(l, 4, std::string(
+        "savegame variable identifier expected, got '") +
+        savegame_variable + "'");
+  }
+
+  if (!hero.get_game().get_equipment().item_exists(item_name)) {
+    arg_error(l, 2, std::string("No such item: '") + item_name + "'");
+  }
+
+  Treasure treasure(hero.get_game(), item_name, variant, savegame_variable);
+  if (treasure.is_found()) {
+    arg_error(l, 4, "This treasure is already found");
   }
 
   int callback_ref = LUA_REFNIL;
@@ -1191,9 +1200,7 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
 
-  hero.start_treasure(
-      Treasure(hero.get_game(), item_name, variant, savegame_variable),
-      callback_ref);
+  hero.start_treasure(treasure, callback_ref);
 
   return 0;
 }

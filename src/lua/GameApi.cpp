@@ -93,6 +93,8 @@ void LuaContext::register_game_module() {
       { "get_command_joypad_binding", game_api_get_command_joypad_binding },
       { "set_command_joypad_binding", game_api_set_command_joypad_binding },
       { "capture_command_binding", game_api_capture_command_binding },
+      { "force_command_pressed", game_api_force_command_pressed },
+      { "force_command_released", game_api_force_command_released },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -1646,5 +1648,28 @@ bool LuaContext::game_on_command_released(Game& game, GameCommands::Command comm
   return handled;
 }
 
+int LuaContext::game_api_force_command_pressed(lua_State* l){
+  //Read a string from Lua
+  //Compare the string with our Command enums
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+  Game* game = savegame.get_game();
+  //Call game.force_command_pressed on the resultant command
+  game->force_command_pressed(command);
+  return 0;
 }
 
+int LuaContext::game_api_force_command_released(lua_State* l){
+  //Read a string from Lua
+  //Compare the string with our Command enums
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+  Game* game = savegame.get_game();
+  //Call game.force_command_pressed on the resultant command
+  game->force_command_released(command);
+  return 0;
+}
+
+}

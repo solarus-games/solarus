@@ -35,6 +35,7 @@ void LuaContext::register_surface_module() {
   static const luaL_Reg methods[] = {
       { "create", surface_api_create },
       { "get_size", surface_api_get_size },
+      { "clear", surface_api_clear },
       { "fill_color", surface_api_fill_color },
       { "set_opacity", surface_api_set_opacity },
       { "draw", drawable_api_draw },
@@ -138,6 +139,20 @@ int LuaContext::surface_api_get_size(lua_State* l) {
   lua_pushinteger(l, surface.get_height());
 
   return 2;
+}
+
+/**
+ * \brief Implementation of surface:clear().
+ * \param l the Lua context that is calling this function
+ * \return number of values to return to Lua
+ */
+int LuaContext::surface_api_clear(lua_State* l) {
+
+  Surface& surface = check_surface(l, 1);
+
+  surface.clear();
+
+  return 0;
 }
 
 /**

@@ -399,6 +399,37 @@ void Surface::create_software_surface() {
 }
 
 /**
+ * \brief Clears this surface.
+ *
+ * The surface becomes fully transparent and its size remains unchanged.
+ * The opacity property of the surface is preserved.
+ */
+void Surface::clear() {
+
+  if (software_destination
+      || !Video::is_acceleration_enabled()
+  ) {
+    // Software version: set all pixels transparent.
+    fill_with_color(Color::get_transparent(), Rectangle(0, 0, width, height));
+  }
+  else {
+    // Hardware version: clear the subsurface queue.
+    clear_subsurfaces();
+
+    delete internal_color;
+    internal_color = NULL;
+
+    if (internal_texture != NULL) {
+      SDL_DestroyTexture(internal_texture);
+    }
+
+    if (internal_surface != NULL) {
+      SDL_FreeSurface(internal_surface);
+    }
+  }
+}
+
+/**
  * \brief Fills the entire surface with the specified color.
  * \param color A color.
  */

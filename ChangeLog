@@ -44,7 +44,7 @@ Changes that introduce incompatibilities:
 * Video mode names have changed: no more wide, fullscreen ou windowed names.
 * sol.video.switch_mode() no longer changes the fullscreen flag.
 * on_key_pressed() and on_character_pressed() are now both called (#344).
-* surface:set_transparency_color() no longer exists.
+* surface:set_transparency_color() no longer exists. Use surface:clear().
 * Enemies have now a default size of 16x16 and origin of 8,13 (#354).
 * The size of enemies must be a multiple of 8 (#358).
 * item:on_pickable_movement_changed replaced by pickable:on_movement_changed.
@@ -54,6 +54,7 @@ Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
 * Colors now take an optional alpha value as fourth component.
+* Add a method surface:clear().
 * Fix random_movement:get_max_radius() that was not working.
 * Add a method menu:is_started().
 * Add a method map:get_hero() (#362).

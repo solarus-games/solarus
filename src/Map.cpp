@@ -545,6 +545,7 @@ void Map::draw() {
 void Map::rebuild_background_surface() {
 
   if (tileset != NULL) {
+    background_surface->clear();
     background_surface->fill_with_color(tileset->get_background_color());
   }
 }

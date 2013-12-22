@@ -1017,7 +1017,8 @@ void MapEntities::draw() {
     // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
     // since they are already drawn)
     non_animated_tiles_surfaces[layer]->draw_region(
-        map.get_camera_position(), map.get_visible_surface());
+        map.get_camera_position(), map.get_visible_surface()
+    );
 
     // draw the first sprites
     std::list<MapEntity*>::iterator i;

@@ -32,7 +32,7 @@
 #include "entities/Chest.h"
 #include "entities/Jumper.h"
 #include "entities/Enemy.h"
-#include "entities/NPC.h"
+#include "entities/Npc.h"
 #include "entities/Block.h"
 #include "entities/DynamicTile.h"
 #include "entities/Switch.h"
@@ -1301,13 +1301,13 @@ int LuaContext::map_api_create_npc(lua_State* l) {
   iss >> subtype;
 
   Game& game = map.get_game();
-  MapEntity* entity = new NPC(
+  MapEntity* entity = new Npc(
       game,
       name,
       layer,
       x,
       y,
-      NPC::Subtype(subtype),
+      Npc::Subtype(subtype),
       sprite_name,
       direction,
       behavior);

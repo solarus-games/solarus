@@ -16,7 +16,7 @@
  */
 #include "lua/LuaContext.h"
 #include "entities/Hero.h"
-#include "entities/NPC.h"
+#include "entities/Npc.h"
 #include "entities/Chest.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
@@ -1418,8 +1418,8 @@ bool LuaContext::is_npc(lua_State* l, int index) {
  * \param index An index in the stack.
  * \return The NPC.
  */
-NPC& LuaContext::check_npc(lua_State* l, int index) {
-  return static_cast<NPC&>(check_userdata(l, index, entity_npc_module_name));
+Npc& LuaContext::check_npc(lua_State* l, int index) {
+  return static_cast<Npc&>(check_userdata(l, index, entity_npc_module_name));
 }
 
 /**
@@ -1427,7 +1427,7 @@ NPC& LuaContext::check_npc(lua_State* l, int index) {
  * \param l A Lua context.
  * \param npc An NPC.
  */
-void LuaContext::push_npc(lua_State* l, NPC& npc) {
+void LuaContext::push_npc(lua_State* l, Npc& npc) {
   push_userdata(l, npc);
 }
 
@@ -2873,7 +2873,7 @@ void LuaContext::hero_on_state_changed(
  *
  * \param npc An NPC.
  */
-void LuaContext::npc_on_interaction(NPC& npc) {
+void LuaContext::npc_on_interaction(Npc& npc) {
 
   if (!userdata_has_field(npc, "on_interaction")) {
     return;
@@ -2893,7 +2893,7 @@ void LuaContext::npc_on_interaction(NPC& npc) {
  * \param item_used The equipment item used.
  * \return \c true if an interaction occurred.
  */
-bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
+bool LuaContext::npc_on_interaction_item(Npc& npc, EquipmentItem& item_used) {
 
   if (!userdata_has_field(npc, "on_interaction_item")) {
     return false;
@@ -2912,7 +2912,7 @@ bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
  *
  * \param npc An NPC.
  */
-void LuaContext::npc_on_collision_fire(NPC& npc) {
+void LuaContext::npc_on_collision_fire(Npc& npc) {
 
   if (!userdata_has_field(npc, "on_collision_fire")) {
     return;

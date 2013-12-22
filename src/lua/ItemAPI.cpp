@@ -962,7 +962,7 @@ void LuaContext::item_on_ability_used(EquipmentItem& item, const std::string& ab
  * \param item An equipment item.
  * \param npc An NPC.
  */
-void LuaContext::item_on_npc_interaction(EquipmentItem& item, NPC& npc) {
+void LuaContext::item_on_npc_interaction(EquipmentItem& item, Npc& npc) {
 
   if (!userdata_has_field(item, "on_npc_interaction")) {
     return;
@@ -983,7 +983,7 @@ void LuaContext::item_on_npc_interaction(EquipmentItem& item, NPC& npc) {
  * \param item_used The equipment item used.
  * \return true if an interaction occurred.
  */
-bool LuaContext::item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
+bool LuaContext::item_on_npc_interaction_item(EquipmentItem& item, Npc& npc,
     EquipmentItem& item_used) {
 
   if (!userdata_has_field(item, "on_npc_interaction_item")) {
@@ -1004,7 +1004,7 @@ bool LuaContext::item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
  * \param item An equipment item.
  * \param npc An NPC.
  */
-void LuaContext::item_on_npc_collision_fire(EquipmentItem& item, NPC& npc) {
+void LuaContext::item_on_npc_collision_fire(EquipmentItem& item, Npc& npc) {
 
   if (!userdata_has_field(item, "on_npc_collision_fire")) {
     return;

@@ -277,10 +277,10 @@ class LuaContext {
     void item_on_amount_changed(EquipmentItem& item, int amount);
     void item_on_using(EquipmentItem& item);
     void item_on_ability_used(EquipmentItem& item, const std::string& ability_name);
-    void item_on_npc_interaction(EquipmentItem& item, NPC& npc);
-    bool item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
+    void item_on_npc_interaction(EquipmentItem& item, Npc& npc);
+    bool item_on_npc_interaction_item(EquipmentItem& item, Npc& npc,
         EquipmentItem& item_used);
-    void item_on_npc_collision_fire(EquipmentItem& item, NPC& npc);
+    void item_on_npc_collision_fire(EquipmentItem& item, Npc& npc);
 
     // Game events.
     void game_on_started(Game& game);
@@ -323,9 +323,9 @@ class LuaContext {
     void entity_on_movement_finished(MapEntity& entity);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
     // TODO add destination_on_activated
-    void npc_on_interaction(NPC& npc);
-    bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
-    void npc_on_collision_fire(NPC& npc);
+    void npc_on_interaction(Npc& npc);
+    bool npc_on_interaction_item(Npc& npc, EquipmentItem& item_used);
+    void npc_on_collision_fire(Npc& npc);
     bool chest_on_empty(Chest& chest);
     void block_on_moving(Block& block);
     void block_on_moved(Block& block);
@@ -923,7 +923,7 @@ class LuaContext {
     static void push_map(lua_State* l, Map& map);
     static void push_entity(lua_State* l, MapEntity& entity);
     static void push_hero(lua_State* l, Hero& hero);
-    static void push_npc(lua_State* l, NPC& npc);
+    static void push_npc(lua_State* l, Npc& npc);
     static void push_chest(lua_State* l, Chest& chest);
     static void push_block(lua_State* l, Block& block);
     static void push_switch(lua_State* l, Switch& sw);
@@ -979,7 +979,7 @@ class LuaContext {
     static bool is_hero(lua_State* l, int index);
     static Hero& check_hero(lua_State* l, int index);
     static bool is_npc(lua_State* l, int index);
-    static NPC& check_npc(lua_State* l, int index);
+    static Npc& check_npc(lua_State* l, int index);
     static bool is_chest(lua_State* l, int index);
     static Chest& check_chest(lua_State* l, int index);
     static bool is_block(lua_State* l, int index);
@@ -1043,9 +1043,9 @@ class LuaContext {
     void on_left();
     void on_interaction();
     bool on_interaction_item(EquipmentItem& item_used);
-    void on_npc_interaction(NPC& npc);
-    bool on_npc_interaction_item(NPC& npc, EquipmentItem& item_used);
-    void on_npc_collision_fire(NPC& npc);
+    void on_npc_interaction(Npc& npc);
+    bool on_npc_interaction_item(Npc& npc, EquipmentItem& item_used);
+    void on_npc_collision_fire(Npc& npc);
     void on_collision_fire();
     void on_collision_explosion();
     void on_collision_enemy(Enemy& enemy, Sprite& other_sprite, Sprite& this_sprite);

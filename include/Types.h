@@ -115,7 +115,7 @@ class Chest;
 class Jumper;
 class Enemy;
 class EnemyReaction;
-class NPC;
+class Npc;
 class Block;
 class Switch;
 class Wall;

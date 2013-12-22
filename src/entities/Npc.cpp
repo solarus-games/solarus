@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/NPC.h"
+#include "entities/Npc.h"
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
 #include "movements/Movement.h"
@@ -46,7 +46,7 @@ namespace solarus {
  * (with an event_hero_interaction() call) or "item#XXX" to call the script
  * of item XXX  (with an event_hero_interaction() call)
  */
-NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
+Npc::Npc(Game& game, const std::string& name, Layer layer, int x, int y,
     Subtype subtype, const std::string& sprite_name,
     int direction, const std::string& behavior_string):
   Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, name, layer, x, y, 0, 0),
@@ -80,7 +80,7 @@ NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
 /**
  * \brief Destructor.
  */
-NPC::~NPC() {
+Npc::~Npc() {
 
 }
 
@@ -88,7 +88,7 @@ NPC::~NPC() {
  * \brief Returns the type of entity.
  * \return the type of entity
  */
-EntityType NPC::get_type() const {
+EntityType Npc::get_type() const {
   return ENTITY_NPC;
 }
 
@@ -97,7 +97,7 @@ EntityType NPC::get_type() const {
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
-bool NPC::is_drawn_in_y_order() const {
+bool Npc::is_drawn_in_y_order() const {
   // usual NPCs are displayed like the hero whereas generalized NPCs are
   // not necessarily people
   return subtype == USUAL_NPC;
@@ -109,7 +109,7 @@ bool NPC::is_drawn_in_y_order() const {
  * \param initial_direction direction of the entity's sprite (ignored if there is no sprite
  * of if the direction specified is -1)
  */
-void NPC::initialize_sprite(const std::string& sprite_name, int initial_direction) {
+void Npc::initialize_sprite(const std::string& sprite_name, int initial_direction) {
 
   if (!sprite_name.empty()) {
     create_sprite(sprite_name);
@@ -128,7 +128,7 @@ void NPC::initialize_sprite(const std::string& sprite_name, int initial_directio
  *
  * \return true if the NPC is a solid object
  */
-bool NPC::is_solid() const {
+bool Npc::is_solid() const {
 
   return subtype != USUAL_NPC;
 }
@@ -138,7 +138,7 @@ bool NPC::is_solid() const {
  * \param other another entity
  * \return true
  */
-bool NPC::is_obstacle_for(const MapEntity& other) const {
+bool Npc::is_obstacle_for(const MapEntity& other) const {
 
   return other.is_npc_obstacle(*this);
 }
@@ -148,7 +148,7 @@ bool NPC::is_obstacle_for(const MapEntity& other) const {
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity
  */
-bool NPC::is_hero_obstacle(const Hero& hero) const {
+bool Npc::is_hero_obstacle(const Hero& hero) const {
   return true;
 }
 
@@ -157,7 +157,7 @@ bool NPC::is_hero_obstacle(const Hero& hero) const {
  * \param npc an NPC
  * \return true if this NPC is currently considered as an obstacle by this entity
  */
-bool NPC::is_npc_obstacle(const NPC& npc) const {
+bool Npc::is_npc_obstacle(const Npc& npc) const {
   // usual NPCs can traverse each other
   return subtype != USUAL_NPC || npc.subtype != USUAL_NPC;
 }
@@ -167,7 +167,7 @@ bool NPC::is_npc_obstacle(const NPC& npc) const {
  * \param enemy an enemy
  * \return true if this enemy is currently considered as an obstacle by this entity
  */
-bool NPC::is_enemy_obstacle(const Enemy& enemy) const {
+bool Npc::is_enemy_obstacle(const Enemy& enemy) const {
 
   // usual NPCs can traverse enemies
   return subtype != USUAL_NPC;
@@ -180,7 +180,7 @@ bool NPC::is_enemy_obstacle(const Enemy& enemy) const {
  *
  * \return true if the sword is ignored
  */
-bool NPC::is_sword_ignored() const {
+bool Npc::is_sword_ignored() const {
 
   // usual NPCs ignore the sword (we don't want a sword tapping sound with them)
   return subtype == USUAL_NPC;
@@ -194,7 +194,7 @@ bool NPC::is_sword_ignored() const {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_FACING_POINT && entity_overlapping.is_hero()) {
 
@@ -236,7 +236,7 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
  * while the hero is facing this detector, and the action command effect lets
  * him do this.
  */
-void NPC::notify_action_command_pressed() {
+void Npc::notify_action_command_pressed() {
 
   Hero& hero = get_hero();
   if (hero.is_free()) {
@@ -281,7 +281,7 @@ void NPC::notify_action_command_pressed() {
 /**
  * \brief Notifies the appropriate script that the hero is interacting with this entity.
  */
-void NPC::call_script_hero_interaction() {
+void Npc::call_script_hero_interaction() {
 
   if (behavior == BEHAVIOR_MAP_SCRIPT) {
     get_lua_context().npc_on_interaction(*this);
@@ -302,7 +302,7 @@ void NPC::call_script_hero_interaction() {
  * \param item_used The equipment item used.
  * \return true if an interaction occured.
  */
-bool NPC::interaction_with_item(EquipmentItem& item_used) {
+bool Npc::interaction_with_item(EquipmentItem& item_used) {
 
   bool interaction_occured;
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {
@@ -323,7 +323,7 @@ bool NPC::interaction_with_item(EquipmentItem& item_used) {
  *
  * If it is an NPC, its sprite's direction is updated.
  */
-void NPC::notify_position_changed() {
+void Npc::notify_position_changed() {
 
   Detector::notify_position_changed();
 
@@ -346,7 +346,7 @@ void NPC::notify_position_changed() {
 /**
  * \brief This function is called when the movement of the entity is finished.
  */
-void NPC::notify_movement_finished() {
+void Npc::notify_movement_finished() {
 
   Detector::notify_movement_finished();
 
@@ -359,7 +359,7 @@ void NPC::notify_movement_finished() {
 /**
  * \brief Returns whether this interactive entity can be lifted.
  */
-bool NPC::can_be_lifted() const {
+bool Npc::can_be_lifted() const {
 
   // there is currently no way to specify from the data file of the map
   // that an interactive entity can be lifted (nor its weight, damage, sound, etc) so this is hardcoded
@@ -371,7 +371,7 @@ bool NPC::can_be_lifted() const {
  * \brief Returns the name identifying this type in Lua.
  * \return The name identifying this type in Lua.
  */
-const std::string& NPC::get_lua_type_name() const {
+const std::string& Npc::get_lua_type_name() const {
   return LuaContext::entity_npc_module_name;
 }
 

@@ -18,7 +18,7 @@
 #include "entities/Destination.h"
 #include "entities/Switch.h"
 #include "entities/Sensor.h"
-#include "entities/NPC.h"
+#include "entities/Npc.h"
 #include "entities/Chest.h"
 #include "entities/ShopTreasure.h"
 #include "entities/Door.h"
@@ -2390,7 +2390,7 @@ void LuaContext::on_left() {
  * \brief Calls the on_npc_interaction() method of the object on top of the stack.
  * \param npc An NPC.
  */
-void LuaContext::on_npc_interaction(NPC& npc) {
+void LuaContext::on_npc_interaction(Npc& npc) {
 
   if (find_method("on_npc_interaction")) {
     push_npc(l, npc);
@@ -2404,7 +2404,7 @@ void LuaContext::on_npc_interaction(NPC& npc) {
  * \param item_used The equipment item used.
  * \return true if an interaction occurred.
  */
-bool LuaContext::on_npc_interaction_item(NPC& npc, EquipmentItem& item_used) {
+bool LuaContext::on_npc_interaction_item(Npc& npc, EquipmentItem& item_used) {
 
   bool interacted = false;
   if (find_method("on_npc_interaction_item")) {
@@ -2460,7 +2460,7 @@ bool LuaContext::on_interaction_item(EquipmentItem& item) {
  * \brief Calls the on_npc_collision_fire() method of the object on top of the stack.
  * \param npc An NPC.
  */
-void LuaContext::on_npc_collision_fire(NPC& npc) {
+void LuaContext::on_npc_collision_fire(Npc& npc) {
 
   if (find_method("on_npc_collision_fire")) {
     push_npc(l, npc);

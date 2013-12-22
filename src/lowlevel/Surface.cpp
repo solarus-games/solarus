@@ -19,13 +19,13 @@
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Video.h"
 #include "lowlevel/PixelFilter.h"
 #include "lua/LuaContext.h"
 #include "Transition.h"
 #include <SDL.h>
 #include <SDL_image.h>
+#include <sstream>
 
 namespace solarus {
 
@@ -221,8 +221,8 @@ SDL_Surface* Surface::get_surface_from_file(
   SDL_RWclose(rw);
   FileTools::data_file_close_buffer(buffer);
 
-  Debug::check_assertion(software_surface != NULL, StringConcat() <<
-    "Cannot load image '" << prefixed_file_name << "'");
+  Debug::check_assertion(software_surface != NULL,
+      std::string("Cannot load image '") + prefixed_file_name + "'");
 
   return software_surface;
 }
@@ -773,7 +773,9 @@ uint32_t Surface::get_pixel(int index) const {
       }
   }
 
-  Debug::die(StringConcat() << "Unknown pixel depth: " << format->BitsPerPixel);
+  std::ostringstream oss;
+  oss << "Unknown pixel depth: " << format->BitsPerPixel;
+  Debug::die(oss.str());
   return 0;
 }
 

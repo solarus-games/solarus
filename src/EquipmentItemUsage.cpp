@@ -19,7 +19,6 @@
 #include "Equipment.h"
 #include "EquipmentItem.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 
 namespace solarus {
 
@@ -55,9 +54,9 @@ EquipmentItem& EquipmentItemUsage::get_item() {
  */
 void EquipmentItemUsage::start() {
 
-  Debug::check_assertion(variant > 0, StringConcat()
-      << "Trying to use equipment item '" << item.get_name()
-      << "' without having it");
+  Debug::check_assertion(variant > 0,
+      std::string("Attempt to use equipment item '") + item.get_name()
+      + "' without having it");
 
   this->finished = false;
   item.notify_using();

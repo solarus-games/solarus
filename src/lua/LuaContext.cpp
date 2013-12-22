@@ -27,13 +27,12 @@
 #include "entities/Pickable.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "EquipmentItem.h"
 #include "Treasure.h"
 #include "Map.h"
 #include "Timer.h"
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
 namespace solarus {
 
@@ -412,9 +411,10 @@ int LuaContext::check_int_field(
 
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isnumber(l, -1)) {
-    arg_error(l, table_index, StringConcat() <<
-        "Bad field '" << key << "' (integer expected, got " <<
-        luaL_typename(l, -1) << ")");
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (integer expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
   }
 
   int value = int(lua_tointeger(l, -1));
@@ -441,9 +441,10 @@ int LuaContext::opt_int_field(
   if (!lua_isnil(l, -1)) {
 
     if (!lua_isnumber(l, -1)) {
-      arg_error(l, table_index, StringConcat() <<
-          "Bad field '" << key << "' (integer expected, got " <<
-          luaL_typename(l, -1) << ")");
+      arg_error(l, table_index,
+          std::string("Bad field '") + key + "' (integer expected, got "
+          + luaL_typename(l, -1) + ")"
+      );
     }
     value = int(lua_tointeger(l, -1));
   }
@@ -467,9 +468,10 @@ double LuaContext::check_number_field(
 
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isnumber(l, -1)) {
-    arg_error(l, table_index, StringConcat() <<
-        "Bad field '" << key << "' (number expected, got " <<
-        luaL_typename(l, -1) << ")");
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (number expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
   }
 
   int value = lua_tonumber(l, -1);
@@ -496,9 +498,10 @@ double LuaContext::opt_number_field(
   if (!lua_isnil(l, -1)) {
 
     if (!lua_isnumber(l, -1)) {
-      arg_error(l, table_index, StringConcat() <<
-          "Bad field '" << key << "' (number expected, got " <<
-          luaL_typename(l, -1) << ")");
+      arg_error(l, table_index,
+          std::string("Bad field '") + key + "' (number expected, got "
+          + luaL_typename(l, -1) + ")"
+      );
     }
     value = lua_tonumber(l, -1);
   }
@@ -522,9 +525,10 @@ const std::string LuaContext::check_string_field(
 
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isstring(l, -1)) {
-    arg_error(l, table_index, StringConcat() <<
-        "Bad field '" << key << "' (string expected, got " <<
-        luaL_typename(l, -1) << ")");
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (string expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
   }
 
   const std::string& value = lua_tostring(l, -1);
@@ -553,9 +557,10 @@ const std::string LuaContext::opt_string_field(
   }
   else {
     if (!lua_isstring(l, -1)) {
-      arg_error(l, table_index, StringConcat() <<
-          "Bad field '" << key << "' (string expected, got " <<
-          luaL_typename(l, -1) << ")");
+      arg_error(l, table_index,
+          std::string("Bad field '") + key + "' (string expected, got "
+          + luaL_typename(l, -1) + ")"
+      );
     }
     value = lua_tostring(l, -1);
   }
@@ -580,9 +585,10 @@ bool LuaContext::check_boolean_field(
 
   lua_getfield(l, table_index, key.c_str());
   if (lua_type(l, -1) != LUA_TBOOLEAN) {
-    arg_error(l, table_index, StringConcat() <<
-        "Bad field '" << key << "' (boolean expected, got " <<
-        luaL_typename(l, -1) << ")");
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (boolean expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
   }
 
   bool value = lua_toboolean(l, -1);
@@ -609,9 +615,10 @@ bool LuaContext::opt_boolean_field(
   if (!lua_isnil(l, -1)) {
 
     if (lua_type(l, -1) != LUA_TBOOLEAN) {
-      arg_error(l, table_index, StringConcat() <<
-          "Bad field '" << key << "' (boolean expected, got " <<
-          luaL_typename(l, -1) << ")");
+      arg_error(l, table_index,
+          std::string("Bad field '") + key + "' (boolean expected, got "
+          + luaL_typename(l, -1) + ")"
+      );
     }
     value = lua_toboolean(l, -1);
   }
@@ -636,9 +643,10 @@ int LuaContext::check_function_field(
 
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isfunction(l, -1)) {
-    arg_error(l, table_index, StringConcat() <<
-        "Bad field '" << key << "' (function expected, got " <<
-        luaL_typename(l, -1) << ")");
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (function expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
   }
 
   int ref = luaL_ref(l, LUA_REGISTRYINDEX);
@@ -666,14 +674,75 @@ int LuaContext::opt_function_field(
   }
   else {
     if (!lua_isfunction(l, -1)) {
-      arg_error(l, table_index, StringConcat() <<
-          "Bad field '" << key << "' (function expected, got " <<
-          luaL_typename(l, -1) << ")");
+      arg_error(l, table_index,
+          std::string("Bad field '") + key + "' (function expected, got "
+          + luaL_typename(l, -1) + ")"
+      );
     }
     ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
 
   return ref;
+}
+
+/**
+ * \brief Checks that a table field is a valid layer and returns it.
+ *
+ * This function acts like lua_getfield() followed by check_layer().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \return The wanted field as a layer.
+ */
+Layer LuaContext::check_layer_field(
+    lua_State* l, int table_index, const std::string& key) {
+
+  lua_getfield(l, table_index, key.c_str());
+  if (!is_layer(l, -1)) {
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (layer expected, got "
+        + luaL_typename(l, -1) + ")"
+    );
+  }
+
+  Layer value = Layer(lua_tointeger(l, -1));
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * \brief Like check_layer_field() but with a default value.
+ *
+ * This function acts like lua_getfield() followed by is_layer().
+ *
+ * \param l A Lua state.
+ * \param table_index Index of a table in the stack.
+ * \param key Key of the field to get in that table.
+ * \param default_value The default value to return if the field is \c nil.
+ * \return The wanted field as a layer.
+ */
+Layer LuaContext::opt_layer_field(
+    lua_State* l,
+    int table_index,
+    const std::string& key,
+    Layer default_value) {
+
+  lua_getfield(l, table_index, key.c_str());
+  Layer value = default_value;
+  if (!lua_isnil(l, -1)) {
+
+    if (!is_layer(l, -1)) {
+      arg_error(l, table_index,
+          std::string("Bad field '") + key + "' (layer expected, got "
+          + luaL_typename(l, -1) + ")"
+      );
+    }
+    value = Layer(lua_tointeger(l, -1));
+  }
+
+  lua_pop(l, 1);
+  return value;
 }
 
 /**
@@ -720,11 +789,11 @@ void LuaContext::push_callback(int callback_ref) {
   push_ref(l, callback_ref);
 #ifndef NDEBUG
   if (!lua_isfunction(l, -1)) {
-    Debug::die(StringConcat()
-        << "There is no callback with ref " << callback_ref
+    std::ostringstream oss;
+    oss << "There is no callback with ref " << callback_ref
         << " (function expected, got " << luaL_typename(l, -1)
-        << "). Did you already invoke or cancel it?"
-    );
+        << "). Did you already invoke or cancel it?";
+    Debug::die(oss.str());
   }
 #endif
 }
@@ -747,11 +816,11 @@ void LuaContext::cancel_callback(int callback_ref) {
     // uniqueness of Lua refs.
     push_ref(l, callback_ref);
     if (!lua_isfunction(l, -1)) {
-      Debug::die(StringConcat()
-          << "There is no callback with ref " << callback_ref
+      std::ostringstream oss;
+      oss << "There is no callback with ref " << callback_ref
           << " (function expected, got " << luaL_typename(l, -1)
-          << "). Did you already invoke or cancel it?"
-      );
+          << "). Did you already invoke or cancel it?";
+      Debug::die(oss.str());
       lua_pop(l, 1);
     }
 #endif
@@ -921,8 +990,9 @@ bool LuaContext::call_function(
     const char* function_name) {
 
   if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
-    Debug::error(StringConcat() << "In " << function_name << "(): "
-        << lua_tostring(l, -1));
+    Debug::error(std::string("In ") + function_name + ": "
+        + lua_tostring(l, -1)
+    );
     lua_pop(l, 1);
     return false;
   }
@@ -939,8 +1009,7 @@ bool LuaContext::call_function(
 void LuaContext::load_file(lua_State* l, const std::string& script_name) {
 
   if (!load_file_if_exists(l, script_name)) {
-    Debug::die(StringConcat() << "Cannot find script file '"
-        << script_name << "'");
+    Debug::die(std::string("Cannot find script file '") + script_name + "'");
   }
 }
 
@@ -975,8 +1044,8 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
     FileTools::data_file_close_buffer(buffer);
 
     if (result != 0) {
-      Debug::error(StringConcat() << "Failed to load script '"
-          << script_name << "': " << lua_tostring(l, -1));
+      Debug::error(std::string("Failed to load script '")
+          + script_name + "': " + lua_tostring(l, -1));
     }
     return true;
   }
@@ -1396,6 +1465,40 @@ Color LuaContext::check_color(lua_State* l, int index) {
   lua_pop(l, 4);
 
   return color;
+}
+
+/**
+ * \brief Returns whether a value is a layer.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return \c true if the value is a layer, that is, a number between 0 and 2.
+ */
+bool LuaContext::is_layer(lua_State* l, int index) {
+
+  int layer = luaL_checkint(l, index);
+  return layer >= 0 && layer < LAYER_NB;
+}
+
+/**
+ * \brief Checks that the value at the given index is a valid layer and returns it.
+ * \param l A Lua state.
+ * \param index An index in the Lua stack.
+ * \return The layer at this index.
+ */
+Layer LuaContext::check_layer(lua_State* l, int index) {
+
+  if (!is_layer(l, index)) {
+    std::ostringstream oss;
+    if (!lua_isnumber(l, index)) {
+      oss << "Invalid layer";
+    }
+    else {
+      oss << "Invalid layer: " << lua_tonumber(l, index);
+    }
+    arg_error(l, index, oss.str());
+  }
+
+  return Layer(lua_tointeger(l, index));
 }
 
 /**

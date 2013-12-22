@@ -24,7 +24,7 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -110,8 +110,7 @@ void HeroSprites::rebuild_equipment() {
 
   int tunic_number = equipment.get_ability("tunic");
 
-  Debug::check_assertion(tunic_number > 0, StringConcat() <<
-      "Invalid tunic number: " << tunic_number);
+  Debug::check_assertion(tunic_number > 0, "Invalid tunic number");
 
   std::ostringstream oss;
   oss << "hero/tunic" << tunic_number;
@@ -420,7 +419,7 @@ int HeroSprites::get_animation_direction(
 void HeroSprites::set_animation_direction(int direction) {
 
   Debug::check_assertion(direction >= 0 && direction < 4,
-    StringConcat() << "Invalid direction for set_animation_direction: " << direction);
+    "Invalid direction for set_animation_direction");
 
   tunic_sprite->set_current_direction(direction);
 

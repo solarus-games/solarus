@@ -24,10 +24,10 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "CommandLine.h"
 #include <map>
 #include <algorithm>
+#include <sstream>
 
 namespace solarus {
 
@@ -692,8 +692,8 @@ void Video::set_quest_size_range(
       || wanted_quest_size.get_height() < min_size.get_height()
       || wanted_quest_size.get_width() > max_size.get_width()
       || wanted_quest_size.get_height() > max_size.get_height()) {
-    Debug::warning(StringConcat() <<
-        "Cannot use quest size "
+    std::ostringstream oss;
+    oss << "Cannot use quest size "
         << wanted_quest_size.get_width() << "x" << wanted_quest_size.get_height()
         << ": this quest only supports "
         << min_size.get_width() << "x" << min_size.get_height()
@@ -701,7 +701,8 @@ void Video::set_quest_size_range(
         << max_size.get_width() << "x" << max_size.get_height()
         << ". Using "
         << normal_size.get_width() << "x" << normal_size.get_height()
-        << " instead.");
+        << " instead.";
+    Debug::warning(oss.str());
     quest_size = normal_size;
   }
   else {

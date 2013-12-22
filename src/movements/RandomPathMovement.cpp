@@ -17,7 +17,6 @@
 #include "movements/RandomPathMovement.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <sstream>
 
 namespace solarus {

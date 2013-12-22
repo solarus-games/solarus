@@ -19,8 +19,8 @@
 #include "lowlevel/ItDecoder.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <vector>
+#include <sstream>
 
 namespace solarus {
 
@@ -405,8 +405,12 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
   alBufferData(destination_buffer, AL_FORMAT_STEREO16, &raw_data[0], nb_samples * 2, 32000);
 
   int error = alGetError();
-  Debug::check_assertion(error == AL_NO_ERROR,
-      StringConcat() << "Failed to fill the audio buffer with decoded SPC data for music file '" << file_name << ": error " << error);
+  if (error != AL_NO_ERROR) {
+    std::ostringstream oss;
+    oss << "Failed to fill the audio buffer with decoded SPC data for music file '"
+        << file_name << ": error " << error;
+    Debug::die(oss.str());
+  }
 }
 
 /**
@@ -424,8 +428,12 @@ void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
   alBufferData(destination_buffer, AL_FORMAT_STEREO16, &raw_data[0], nb_samples, 44100);
 
   int error = alGetError();
-  Debug::check_assertion(error == AL_NO_ERROR,
-      StringConcat() << "Failed to fill the audio buffer with decoded IT data for music file '" << file_name << ": error " << error);
+  if (error != AL_NO_ERROR) {
+    std::ostringstream oss;
+    oss << "Failed to fill the audio buffer with decoded IT data for music file '"
+        << file_name << ": error " << error;
+    Debug::die(oss.str());
+  }
 }
 
 /**
@@ -457,8 +465,9 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
     bytes_read = ov_read(&ogg_file, ((char*) &raw_data[0]) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
     if (bytes_read < 0) {
       if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
-        Debug::error(StringConcat() << "Error while decoding ogg chunk: "
-            << bytes_read);
+        std::ostringstream oss;
+        oss << "Error while decoding ogg chunk: " << bytes_read;
+        Debug::error(oss.str());
         return;
       }
     }
@@ -474,9 +483,10 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
 
   int error = alGetError();
   if (error != AL_NO_ERROR) {
-    Debug::error(StringConcat()
-        << "Failed to fill the audio buffer with decoded OGG data for music file '"
-        << file_name << "': error " << error);
+    std::ostringstream oss;
+    oss << "Failed to fill the audio buffer with decoded OGG data for music file '"
+        << file_name << "': error " << error;
+    Debug::error(oss.str());
   }
 }
 
@@ -493,17 +503,19 @@ bool Music::start() {
     return false;
   }
 
-  Debug::check_assertion(current_music == NULL, StringConcat()
-      << "Cannot play music '" << id
-      << "': a music is already playing");
+  Debug::check_assertion(current_music == NULL,
+      std::string("Cannot play music '") + id
+      + "': a music is already playing"
+  );
 
   // First time: find the file.
   if (file_name.empty()) {
     find_music_file(id, file_name, format);
 
     if (file_name.empty()) {
-      Debug::error(StringConcat() << "Cannot find music file 'musics/" << id
-          << "' (tried with extensions .ogg, .it and .spc)");
+      Debug::error(std::string("Cannot find music file 'musics/")
+          + id + "' (tried with extensions .ogg, .it and .spc)"
+      );
       return false;
     }
   }
@@ -556,8 +568,10 @@ bool Music::start() {
 
       int error = ov_open_callbacks(&ogg_mem, &ogg_file, NULL, 0, Sound::ogg_callbacks);
       if (error) {
-        Debug::error(StringConcat() << "Cannot load music file '" << file_name
-          << "' from memory: error " << error);
+        std::ostringstream oss;
+        oss << "Cannot load music file '" << file_name
+            << "' from memory: error " << error;
+        Debug::error(oss.str());
       }
       else {
         for (int i = 0; i < nb_buffers; i++) {
@@ -576,8 +590,10 @@ bool Music::start() {
   alSourceQueueBuffers(source, nb_buffers, buffers);
   int error = alGetError();
   if (error != AL_NO_ERROR) {
-    Debug::error(StringConcat() << "Cannot initialize buffers for music '"
-        << file_name << "': error " << error);
+    std::ostringstream oss;
+    oss << "Cannot initialize buffers for music '"
+        << file_name << "': error " << error;
+    Debug::error(oss.str());
     success = false;
   }
 

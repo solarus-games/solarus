@@ -27,7 +27,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -302,11 +302,14 @@ void Sprite::set_current_direction(int current_direction) {
 
   if (current_direction != this->current_direction) {
 
-    Debug::check_assertion(current_direction >= 0
-        && current_direction < get_nb_directions(),
-        StringConcat() << "Invalid direction " << current_direction
-        << " for sprite '" << get_animation_set_id()
-        << "' in animation '" << current_animation_name << "'");
+    if (current_direction < 0
+        || current_direction >= get_nb_directions()) {
+      std::ostringstream oss;
+      oss << "Invalid direction " << current_direction
+          << " for sprite '" << get_animation_set_id()
+          << "' in animation '" << current_animation_name << "'";
+      Debug::die(oss.str());
+    }
 
     this->current_direction = current_direction;
 

@@ -17,7 +17,6 @@
 #include "Language.h"
 #include "DialogResource.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "StringResource.h"
 #include "QuestResourceList.h"
 
@@ -55,7 +54,7 @@ bool Language::has_language(const std::string& language_code) {
 void Language::set_language(const std::string& language_code) {
 
   Debug::check_assertion(has_language(language_code),
-      StringConcat() << "Unknown language '" << language_code << "'");
+      std::string("No such language: '") + language_code + "'");
 
   Language::language_code = language_code;
   StringResource::initialize();

@@ -19,8 +19,8 @@
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <cstring>
+#include <sstream>
 
 namespace solarus {
 
@@ -31,16 +31,20 @@ namespace solarus {
  */
 SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
 
-  Debug::check_assertion(FileTools::data_file_exists(file_name), StringConcat() <<
-      "Cannot convert savegame '" << file_name << "' since it does not exist");
+  Debug::check_assertion(FileTools::data_file_exists(file_name),
+      std::string("Cannot convert savegame '") + file_name
+      + "': file does not exist"
+  );
 
   // Let's load this obsolete savegame.
   size_t size;
   char *buffer;
 
   FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  Debug::check_assertion(size == sizeof(SavedData), StringConcat()
-      << "Cannot read savegame file version 1 '" << file_name << "': invalid file size");
+  Debug::check_assertion(size == sizeof(SavedData),
+      std::string("Cannot read savegame file version 1 '")
+      + file_name + "': invalid file size"
+  );
   memcpy(&saved_data, buffer, sizeof(SavedData));
   FileTools::data_file_close_buffer(buffer);
 }

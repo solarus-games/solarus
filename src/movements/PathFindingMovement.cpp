@@ -21,7 +21,6 @@
 #include "lowlevel/Random.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <sstream>
 
 namespace solarus {

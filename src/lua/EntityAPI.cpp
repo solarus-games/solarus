@@ -30,13 +30,13 @@
 #include "entities/MapEntities.h"
 #include "movements/Movement.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "EquipmentItem.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -496,12 +496,14 @@ int LuaContext::entity_api_set_size(lua_State* l) {
   int height = luaL_checkint(l, 3);
 
   if (width < 0 || width % 8 != 0) {
-    arg_error(l, 2, StringConcat() <<
-        "Invalid width: " << width << ": should be a positive multiple of 8");
+    std::ostringstream oss;
+    oss << "Invalid width: " << width << ": should be a positive multiple of 8";
+    arg_error(l, 2, oss.str());
   }
   if (height < 0 || height % 8 != 0) {
-    arg_error(l, 3, StringConcat() <<
-        "Invalid height: " << height << ": should be a positive multiple of 8");
+    std::ostringstream oss;
+    oss << "Invalid height: " << height << ": should be a positive multiple of 8";
+    arg_error(l, 3, oss.str());
   }
 
   entity.set_size(width, height);
@@ -568,14 +570,11 @@ int LuaContext::entity_api_set_position(lua_State* l) {
   int y = luaL_checkint(l, 3);
   int layer = -1;
   if (lua_gettop(l) >= 4) {
-    layer = luaL_checkint(l, 4);
+    layer = check_layer(l, 4);
   }
 
   entity.set_xy(x, y);
   if (layer != -1) {
-    if (layer < LAYER_LOW || layer >= LAYER_NB) {
-      arg_error(l, 4, StringConcat() << "Invalid layer: " << layer);
-    }
     MapEntities& entities = entity.get_map().get_entities();
     entities.set_entity_layer(entity, Layer(layer));
   }
@@ -1057,14 +1056,12 @@ int LuaContext::hero_api_set_walking_speed(lua_State* l) {
 int LuaContext::hero_api_save_solid_ground(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
-  int x, y, layer;
+  int x, y;
+  Layer layer;
   if (lua_gettop(l) >= 2) {
     x = luaL_checkint(l, 2);
     y = luaL_checkint(l, 3);
-    layer = luaL_checkint(l, 4);
-    if (layer < LAYER_LOW || layer >= LAYER_NB) {
-      arg_error(l, 4, StringConcat() << "Invalid layer: " << layer);
-    }
+    layer = check_layer(l, 4);
   }
   else {
     x = hero.get_x();
@@ -1072,7 +1069,7 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
     layer = hero.get_layer();
   }
 
-  hero.set_target_solid_ground_coords(Rectangle(x, y), Layer(layer));
+  hero.set_target_solid_ground_coords(Rectangle(x, y), layer);
 
   return 0;
 }
@@ -2407,9 +2404,10 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
   if (lua_isnumber(l, 3)) {
     int life_points = luaL_checkint(l, 3);
     if (life_points < 0) {
-      LuaContext::arg_error(l, 3, StringConcat() <<
-          "Invalid life points number for attack consequence: '"
-          << life_points << "'");
+      std::ostringstream oss;
+      oss << "Invalid life points number for attack consequence: '"
+          << life_points << "'";
+      LuaContext::arg_error(l, 3, oss.str());
     }
     enemy.set_attack_consequence(attack, EnemyReaction::HURT, life_points);
   }
@@ -2436,9 +2434,10 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
   if (lua_isnumber(l, 4)) {
     int life_points = luaL_checkint(l, 4);
     if (life_points < 0) {
-      LuaContext::arg_error(l, 4, StringConcat() <<
-          "Invalid life points number for attack consequence: '"
-          << life_points << "'");
+      std::ostringstream oss;
+      oss << "Invalid life points number for attack consequence: '"
+          << life_points << "'";
+      LuaContext::arg_error(l, 4, oss.str());
     }
     enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::HURT, life_points);
   }
@@ -2531,9 +2530,9 @@ int LuaContext::enemy_api_set_treasure(lua_State* l) {
   }
 
   if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
-    LuaContext::arg_error(l, 4, StringConcat() <<
-        "savegame variable identifier expected, got '" <<
-        savegame_variable << "'");
+    arg_error(l, 4,
+        std::string("savegame variable identifier expected, got '")
+        + savegame_variable + "'");
   }
 
   Treasure treasure(enemy.get_game(), item_name, variant, savegame_variable);
@@ -2666,7 +2665,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   luaL_checktype(l, 2, LUA_TTABLE);
   const std::string& name = opt_string_field(l, 2, "name", "");
-  int layer = opt_int_field(l, 2, "layer", enemy.get_layer());
+  Layer layer = opt_layer_field(l, 2, "layer", enemy.get_layer());
   int x = opt_int_field(l, 2, "x", 0);
   int y = opt_int_field(l, 2, "y", 0);
   int direction = opt_int_field(l, 2, "direction", 3);
@@ -2677,20 +2676,16 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
   int treasure_variant = opt_int_field(l, 2, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 2, "treasure_savegame_variable", "");
 
-  if (layer < LAYER_LOW || layer >= LAYER_NB) {
-    arg_error(l, 2, StringConcat() << "Invalid layer: " << layer);
-  }
-
   if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
-    LuaContext::arg_error(l, 2, StringConcat() <<
-        "Bad field 'savegame_variable' (invalid savegame variable identifier '" <<
-        savegame_variable << "'");
+    arg_error(l, 2, std::string(
+        "Bad field 'savegame_variable' (invalid savegame variable identifier '")
+        + savegame_variable + "'");
   }
 
   if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
-    LuaContext::arg_error(l, 2, StringConcat() <<
-        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
-        treasure_savegame_variable << "'");
+    arg_error(l, 2, std::string(
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
+        + treasure_savegame_variable + "'");
   }
 
   // Make x and y relative to the existing enemy.
@@ -2706,7 +2701,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
       rank,
       savegame_variable,
       name,
-      Layer(layer),
+      layer,
       x,
       y,
       direction,

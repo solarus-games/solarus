@@ -16,7 +16,6 @@
  */
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 #include "Language.h"
 #include "StringResource.h"
@@ -24,6 +23,9 @@
 #include "QuestResourceList.h"
 #include "CommandLine.h"
 #include <physfs.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cstdlib>  // mkstemp(), tmpnam()
 #include <cstdio>   // remove()
 #ifdef HAVE_UNISTD_H
@@ -226,8 +228,10 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
 
   std::string full_file_name;
   if (language_specific) {
-    Debug::check_assertion(!Language::get_language().empty(), StringConcat() <<
-        "Cannot open language-specific file '" << file_name << "': no language was set");
+    Debug::check_assertion(!Language::get_language().empty(),
+        std::string("Cannot open language-specific file '") + file_name
+        + "': no language was set"
+    );
     full_file_name = std::string("languages/") + Language::get_language() + "/" + file_name;
   }
   else {
@@ -235,18 +239,18 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
   }
 
   // open the file
-  Debug::check_assertion(PHYSFS_exists(full_file_name.c_str()), StringConcat()
-      << "Data file " << full_file_name << " does not exist");
+  Debug::check_assertion(PHYSFS_exists(full_file_name.c_str()),
+      std::string("Data file '") + full_file_name + "' does not exist"
+  );
   PHYSFS_file* file = PHYSFS_openRead(full_file_name.c_str());
-  Debug::check_assertion(file != NULL, StringConcat()
-      << "Cannot open data file " << full_file_name);
+  Debug::check_assertion(file != NULL,
+      std::string("Cannot open data file '") + full_file_name + "'"
+  );
 
   // load it into memory
   *size = PHYSFS_fileLength(file);
 
   *buffer = new char[*size];
-  Debug::check_assertion(buffer != NULL, StringConcat()
-      << "Cannot allocate memory to read file " << full_file_name);
 
   PHYSFS_read(file, *buffer, 1, PHYSFS_uint32(*size));
   PHYSFS_close(file);
@@ -264,14 +268,14 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
 
   // open the file to write
   PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
-  Debug::check_assertion(file != NULL, StringConcat()
-      << "Cannot open file '" << file_name << "' for writing: "
-      << PHYSFS_getLastError());
+  Debug::check_assertion(file != NULL,
+      std::string("Cannot open file '") + file_name + "' for writing: "
+      + PHYSFS_getLastError());
 
   // save the memory buffer
   if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {
-    Debug::die(StringConcat() << "Cannot write file '" << file_name
-        << "': " << PHYSFS_getLastError());
+    Debug::die(std::string("Cannot write file '") + file_name + "': "
+        + PHYSFS_getLastError());
   }
   PHYSFS_close(file);
 }
@@ -429,8 +433,8 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
   // First check that we can write in a directory.
   if (!PHYSFS_setWriteDir(get_base_write_dir().c_str())) {
-     Debug::die(StringConcat() << "Cannot write in user directory '"
-         << get_base_write_dir().c_str()  << "': " << PHYSFS_getLastError());
+     Debug::die(std::string("Cannot write in user directory '")
+         + get_base_write_dir().c_str() + "': " + PHYSFS_getLastError());
   }
 
   // Create the directory.
@@ -438,8 +442,8 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
   const std::string& full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
   if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
-    Debug::die(StringConcat() << "Cannot set Solarus write directory to '"
-        << full_write_dir << "': " << PHYSFS_getLastError());
+    Debug::die(std::string("Cannot set Solarus write directory to '")
+        + full_write_dir + "': " + PHYSFS_getLastError());
   }
 
   // The quest subdirectory may be new, create it if needed.
@@ -484,8 +488,8 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
   // so that we can create the new quest subdirectory.
   std::string full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
   if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
-    Debug::die(StringConcat() << "Cannot set Solarus write directory to '"
-        << full_write_dir << "': " << PHYSFS_getLastError());
+    Debug::die(std::string("Cannot set Solarus write directory to '")
+        + full_write_dir + "': " + PHYSFS_getLastError());
   }
 
   if (!quest_write_dir.empty()) {

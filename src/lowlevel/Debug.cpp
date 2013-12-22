@@ -16,6 +16,11 @@
  */
 #include "lowlevel/Debug.h"
 #include <SDL_messagebox.h>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <cstdlib>  // std::abort
 
 namespace solarus {
 
@@ -60,6 +65,7 @@ void Debug::error(const std::string& message) {
  */
 void Debug::check_assertion(bool assertion, const char* error_message) {
 
+  // Don't build the std::string when the assertion succeeds.
   if (!assertion) {
     die(error_message);
   }
@@ -101,4 +107,3 @@ void Debug::die(const std::string& error_message) {
 }
 
 }
-

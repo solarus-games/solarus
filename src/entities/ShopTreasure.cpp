@@ -28,7 +28,6 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <sstream>
 
 namespace solarus {

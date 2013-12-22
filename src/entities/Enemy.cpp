@@ -35,8 +35,8 @@
 #include "lowlevel/Random.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -649,7 +649,11 @@ void Enemy::set_attack_consequence(
     EnemyReaction::ReactionType reaction,
     int life_lost) {
 
-  Debug::check_assertion(life_lost >= 0, StringConcat() << "Invalid amount of life: " << life_lost);
+  if (life_lost < 0) {
+    std::ostringstream oss;
+    oss << "Invalid amount of life: " << life_lost;
+    Debug::die(oss.str());
+  }
   attack_reactions[attack].set_general_reaction(reaction, life_lost);
 }
 
@@ -666,7 +670,11 @@ void Enemy::set_attack_consequence_sprite(
     EnemyReaction::ReactionType reaction,
     int life_lost) {
 
-  Debug::check_assertion(life_lost >= 0, StringConcat() << "Invalid amount of life: " << life_lost);
+  if (life_lost < 0) {
+    std::ostringstream oss;
+    oss << "Invalid amount of life: " << life_lost;
+    Debug::die(oss.str());
+  }
   attack_reactions[attack].set_sprite_reaction(&sprite, reaction, life_lost);
 }
 
@@ -1068,7 +1076,7 @@ void Enemy::play_hurt_sound() {
       break;
 
     case HURT_NUMBER:
-      Debug::die(StringConcat() << "Invalid hurt style" << hurt_style);
+      Debug::die("Invalid hurt style");
       break;
   }
 
@@ -1190,8 +1198,12 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
 
     case EnemyReaction::IGNORED:
     case EnemyReaction::REACTION_NUMBER:
-      Debug::die(StringConcat() << "Invalid enemy reaction" << reaction.type);
+    {
+      std::ostringstream oss;
+      oss << "Invalid enemy reaction: " << reaction.type;
+      Debug::die(oss.str());
       break;
+    }
   }
 
   // notify the source

@@ -31,7 +31,6 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 
 namespace solarus {
 
@@ -336,10 +335,14 @@ bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 void MapEntities::bring_to_front(MapEntity* entity) {
 
   Debug::check_assertion(entity->can_be_drawn(),
-      StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is not drawn");
+      std::string("Cannot bring to front entity '")
+          + entity->get_name() + "' since it is not drawn"
+  );
 
   Debug::check_assertion(!entity->is_drawn_in_y_order(),
-    StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is drawn in the y order");
+      std::string("Cannot bring to front entity '")
+      + entity->get_name() + "' since it is drawn in the y order"
+  );
 
   Layer layer = entity->get_layer();
   entities_drawn_first[layer].remove(entity);
@@ -655,9 +658,11 @@ void MapEntities::add_entity(MapEntity* entity) {
 
   const std::string& name = entity->get_name();
   if (!name.empty()) {
-    Debug::check_assertion(named_entities.find(name) == named_entities.end(),
-        StringConcat()
-        << "An entity with name '" << name << "' already exists.");
+    if (named_entities.find(name) != named_entities.end()) {
+        Debug::die(std::string("An entity with name '") + name
+            + "' already exists"
+        );
+    }
     named_entities[name] = entity;
   }
   RefCountable::ref(entity);

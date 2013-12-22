@@ -20,8 +20,6 @@
 #include "lua/LuaContext.h"
 #include "entities/Pickable.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
-#include <map>
 
 namespace solarus {
 
@@ -403,8 +401,8 @@ void EquipmentItem::notify_movement_changed(Pickable& pickable) {
  */
 int EquipmentItem::get_variant() const {
 
-  Debug::check_assertion(is_saved(), StringConcat()
-      << "The item '" << get_name() << "' is not saved");
+  Debug::check_assertion(is_saved(),
+      std::string("The item '") + get_name() + "' is not saved");
 
   return get_savegame().get_integer(get_savegame_variable());
 }
@@ -418,8 +416,8 @@ int EquipmentItem::get_variant() const {
  */
 void EquipmentItem::set_variant(int variant) {
 
-  Debug::check_assertion(is_saved(), StringConcat()
-      << "The item '" << get_name() << "' is not saved");
+  Debug::check_assertion(is_saved(),
+      std::string("The item '") + get_name() + "' is not saved");
 
   // Set the possession state in the savegame.
   get_savegame().set_integer(get_savegame_variable(), variant);
@@ -442,8 +440,8 @@ void EquipmentItem::set_variant(int variant) {
  */
 int EquipmentItem::get_amount() const {
 
-  Debug::check_assertion(has_amount(), StringConcat()
-      << "The item '" << get_name() << "' has no amount");
+  Debug::check_assertion(has_amount(),
+      std::string("The item '") + get_name() + "' has no amount");
 
   return get_savegame().get_integer(get_amount_savegame_variable());
 }
@@ -454,8 +452,8 @@ int EquipmentItem::get_amount() const {
  */
 void EquipmentItem::set_amount(int amount) {
 
-  Debug::check_assertion(has_amount(), StringConcat()
-      << "The item '" << get_name() << "' has no amount");
+  Debug::check_assertion(has_amount(),
+      std::string("The item '") + get_name() + "' has no amount");
 
   amount = std::max(0, std::min(get_max_amount(), amount));
   get_savegame().set_integer(get_amount_savegame_variable(), amount);
@@ -469,8 +467,8 @@ void EquipmentItem::set_amount(int amount) {
  */
 int EquipmentItem::get_max_amount() const {
 
-  Debug::check_assertion(has_amount(), StringConcat()
-      << "The item '" << get_name() << "' has no amount");
+  Debug::check_assertion(has_amount(),
+      std::string("The item '") + get_name() + "' has no amount");
 
   return max_amount;
 }
@@ -481,8 +479,8 @@ int EquipmentItem::get_max_amount() const {
  */
 void EquipmentItem::set_max_amount(int max_amount) {
 
-  Debug::check_assertion(has_amount(), StringConcat()
-      << "The item '" << get_name() << "' has no amount");
+  Debug::check_assertion(has_amount(),
+      std::string("The item '") + get_name() + "' has no amount");
 
   this->max_amount = max_amount;
 }

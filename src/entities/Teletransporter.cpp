@@ -21,7 +21,6 @@
 #include "Map.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 
 namespace solarus {
@@ -106,7 +105,8 @@ void Teletransporter::set_map(Map& map) {
       destination_side = 1;
     }
     else {
-      Debug::die(StringConcat() << "Bad position of teletransporter '" << get_name() << "'");
+      Debug::die(std::string("Bad position of teletransporter '")
+          + get_name() + "'");
     }
   }
 
@@ -239,7 +239,8 @@ void Teletransporter::transport_hero(Hero& hero) {
       break;
 
     default:
-      Debug::die(StringConcat() << "Bad destination side for teletransporter '" << get_name() << "'");
+      Debug::die(std::string("Bad destination side for teletransporter '")
+          + get_name() + "'");
     }
   }
 

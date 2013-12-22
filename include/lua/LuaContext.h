@@ -23,7 +23,6 @@
 #include "entities/EnemyAttack.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <map>
 #include <set>
 #include <list>
@@ -114,10 +113,14 @@ class LuaContext {
 
     // Lua helpers.
     static int error(lua_State* l, const std::string& message);
+    static int error(lua_State* l, std::ostringstream& message);
     static int arg_error(lua_State* l, int arg_index, const std::string& message);
+    static int arg_error(lua_State* l, int arg_index, std::ostringstream message);
 
     static bool is_color(lua_State* l, int index);
     static Color check_color(lua_State* l, int index);
+    static bool is_layer(lua_State* l, int index);
+    static Layer check_layer(lua_State* l, int index);
 
     static int check_int_field(
         lua_State* l, int table_index, const std::string& key
@@ -152,6 +155,13 @@ class LuaContext {
     );
     static int opt_function_field(
         lua_State* l, int table_index, const std::string& key
+    );
+    static Layer check_layer_field(
+        lua_State* l, int table_index, const std::string& key
+    );
+    static Layer opt_layer_field(
+        lua_State* l, int table_index, const std::string& key,
+        Layer default_value
     );
     template<typename E>
     static E check_enum_field(
@@ -1156,8 +1166,10 @@ E LuaContext::check_enum(
   }
   allowed_names = allowed_names.substr(0, allowed_names.size() - 2);
 
-  luaL_argerror(l, index, (StringConcat() <<
-      "Invalid name '" << name << "'. Allowed names are: " << allowed_names).c_str());
+  arg_error(l, index,
+      std::string("Invalid name '") + name + "'. Allowed names are: "
+      + allowed_names
+  );
   throw;  // Make sure the compiler is happy.
 }
 
@@ -1204,9 +1216,9 @@ E LuaContext::check_enum_field(
 
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isstring(l, -1)) {
-    luaL_argerror(l, table_index, (StringConcat() <<
-        "Bad field '" << key << "' (string expected, got " <<
-        luaL_typename(l, -1)).c_str()
+    arg_error(l, table_index,
+        std::string("Bad field '") + key + "' (string expected, got "
+        + luaL_typename(l, -1)
     );
   }
 
@@ -1236,9 +1248,9 @@ E LuaContext::opt_enum_field(
   E value = default_value;
   if (!lua_isnil(l, -1)) {
     if (!lua_isstring(l, -1)) {
-      luaL_argerror(l, table_index, (StringConcat() <<
-          "Bad field '" << key << "' (string expected, got " <<
-          luaL_typename(l, -1)).c_str()
+      arg_error(l, table_index,
+          std::string("Bad field '") + key + "' (string expected, got "
+          + luaL_typename(l, -1) + ")"
       );
     }
     value = check_enum<E>(l, -1, names);

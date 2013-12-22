@@ -26,7 +26,6 @@
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"

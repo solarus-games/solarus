@@ -19,7 +19,6 @@
 #include "lowlevel/Video.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
 #include <lua.hpp>
 #include <sstream>
@@ -65,10 +64,11 @@ void check_version_compatibility(const std::string& solarus_required_version) {
   // necessarily break compatibility.
   if (required_major_version != SOLARUS_MAJOR_VERSION ||
       required_minor_version != SOLARUS_MINOR_VERSION) {
-    Debug::die(StringConcat() <<
-        "This quest is made for Solarus " << required_major_version << "."
+    std::ostringstream oss;
+    oss << "This quest is made for Solarus " << required_major_version << "."
         << required_minor_version << ".x but you are running Solarus "
-        << SOLARUS_VERSION);
+        << SOLARUS_VERSION;
+    Debug::die(oss.str());
   }
 }
 

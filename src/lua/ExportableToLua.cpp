@@ -16,7 +16,6 @@
  */
 #include "lua/ExportableToLua.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 
 namespace solarus {
 

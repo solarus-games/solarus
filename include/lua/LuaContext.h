@@ -636,7 +636,7 @@ class LuaContext {
       map_api_create_sensor,
       map_api_create_crystal,
       map_api_create_crystal_block,
-      map_api_create_shop_treasure,  // TODO rename to shop treasure
+      map_api_create_shop_treasure,
       map_api_create_conveyor_belt,
       map_api_create_door,
       map_api_create_stairs,
@@ -692,7 +692,7 @@ class LuaContext {
       hero_api_unfreeze,
       hero_api_walk,
       hero_api_start_jumping,
-      hero_api_start_treasure,  // TODO don't die if the savegame variable is invalid
+      hero_api_start_treasure,
       hero_api_start_victory,
       hero_api_start_item,
       hero_api_start_boomerang,

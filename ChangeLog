@@ -47,6 +47,7 @@ Changes that introduce incompatibilities:
 * Enemies have now a default size of 16x16 and origin of 8,13 (#354).
 * The size of enemies must be a multiple of 8 (#358).
 * item:on_pickable_movement_changed replaced by pickable:on_movement_changed.
+* pickable:get_treasure() now returns the item instead of the item's name.
 
 Changes that do not introduce incompatibilities:
 

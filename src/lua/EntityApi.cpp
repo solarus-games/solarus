@@ -2024,7 +2024,7 @@ int LuaContext::pickable_api_get_treasure(lua_State* l) {
   Pickable& pickable = check_pickable(l, 1);
   const Treasure& treasure = pickable.get_treasure();
 
-  push_string(l, treasure.get_item_name());
+  push_item(l, treasure.get_item());
   lua_pushinteger(l, treasure.get_variant());
   lua_pushstring(l, treasure.get_savegame_variable().c_str());
   return 1;

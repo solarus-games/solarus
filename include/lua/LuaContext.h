@@ -718,7 +718,7 @@ class LuaContext {
       door_api_is_closing,
       pickable_api_get_followed_entity,
       pickable_api_get_falling_height,
-      pickable_api_get_treasure,  // TODO return the item, not the item name
+      pickable_api_get_treasure,
       enemy_api_get_breed,
       enemy_api_get_life,
       enemy_api_set_life,

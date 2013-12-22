@@ -31,6 +31,7 @@ You can use the script tools/data_files_conversion/1.1_to_1.2/update_quest.lua
 to automatically update your data files.
 Don't forget to make a backup first.
 
+* Languages: New syntax of strings.dat easier to read and parse (#170).
 * Maps: Rename entity shop_item to shop_treasure.
 
 Lua API changes

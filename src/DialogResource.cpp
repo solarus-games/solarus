@@ -18,7 +18,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "Language.h"
-#include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 
 namespace solarus {
 
@@ -145,7 +145,7 @@ int DialogResource::l_dialog(lua_State* l) {
         value = lua_toboolean(l, -1) ? "1" : "0";
       }
       else {
-        LuaContext::error(l, std::string("Invalid value '") + key + "' for dialog '"
+        LuaTools::error(l, std::string("Invalid value '") + key + "' for dialog '"
             + dialog_id + "'");
       }
       dialog.set_property(key, value);
@@ -155,15 +155,15 @@ int DialogResource::l_dialog(lua_State* l) {
 
   dialog.set_id(dialog_id);
   if (dialog.get_id().empty()) {
-    LuaContext::error(l, "Missing value dialog_id");
+    LuaTools::error(l, "Missing value dialog_id");
   }
 
   if (dialog.get_text().empty()) {
-    LuaContext::error(l, std::string("Missing text for dialog '") + dialog_id + "'");
+    LuaTools::error(l, std::string("Missing text for dialog '") + dialog_id + "'");
   }
 
   if (exists(dialog_id)) {
-    LuaContext::error(l, std::string("Duplicate dialog '") + dialog_id + "'");
+    LuaTools::error(l, std::string("Duplicate dialog '") + dialog_id + "'");
   }
   dialogs[dialog_id] = dialog;
 

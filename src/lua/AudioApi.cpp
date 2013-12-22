@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include <lua.hpp>
@@ -85,7 +86,7 @@ int LuaContext::audio_api_play_sound(lua_State* l) {
   const std::string& sound_id = luaL_checkstring(l, 1);
 
   if (!Sound::exists(sound_id)) {
-    error(l, std::string("No such sound: '") + sound_id + "'");
+    LuaTools::error(l, std::string("No such sound: '") + sound_id + "'");
   }
 
   Sound::play(sound_id);
@@ -142,7 +143,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
   }
   else {
     if (!Music::exists(music_id)) {
-      error(l, std::string("No such music: '") + music_id + "'");
+      LuaTools::error(l, std::string("No such music: '") + music_id + "'");
     }
     Music::play(music_id);
   }
@@ -231,7 +232,7 @@ int LuaContext::audio_api_get_music_channel_volume(lua_State* l) {
     if (channel < 0 || channel >= Music::get_num_channels()) {
       std::ostringstream oss;
       oss << "Invalid channel number: " << channel;
-      arg_error(l, 1, oss.str());
+      LuaTools::arg_error(l, 1, oss.str());
     }
     lua_pushinteger(l, Music::get_channel_volume(channel));
   }
@@ -255,7 +256,7 @@ int LuaContext::audio_api_set_music_channel_volume(lua_State* l) {
     if (channel < 0 || channel >= Music::get_num_channels()) {
       std::ostringstream oss;
       oss << "Invalid channel number: " << channel;
-      arg_error(l, 1, oss.str());
+      LuaTools::arg_error(l, 1, oss.str());
     }
     Music::set_channel_volume(channel, volume);
     lua_pushboolean(l, true);

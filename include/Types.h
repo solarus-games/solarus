@@ -84,6 +84,7 @@ class DialogResource;
 // Lua
 class ExportableToLua;
 class LuaContext;
+class LuaTools;
 
 // drawable objects
 class Sprite;

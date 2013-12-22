@@ -19,7 +19,7 @@
 #include "SpriteAnimationDirection.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 
 namespace solarus {
 
@@ -101,13 +101,13 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
   luaL_checktype(l, 1, LUA_TTABLE);
 
 
-  std::string animation_name = LuaContext::check_string_field(l, 1, "name");
-  std::string src_image = LuaContext::check_string_field(l, 1, "src_image");
-  uint32_t frame_delay = (uint32_t) LuaContext::opt_int_field(l, 1, "frame_delay", 0);
-  int frame_to_loop_on = LuaContext::opt_int_field(l, 1, "frame_to_loop_on", -1);
+  std::string animation_name = LuaTools::check_string_field(l, 1, "name");
+  std::string src_image = LuaTools::check_string_field(l, 1, "src_image");
+  uint32_t frame_delay = (uint32_t) LuaTools::opt_int_field(l, 1, "frame_delay", 0);
+  int frame_to_loop_on = LuaTools::opt_int_field(l, 1, "frame_to_loop_on", -1);
 
   if (frame_to_loop_on < -1) {
-    LuaContext::arg_error(l, 1,
+    LuaTools::arg_error(l, 1,
         "Bad field 'frame_to_loop_on' (must be a positive number or -1)"
     );
   }
@@ -115,7 +115,7 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
   lua_settop(l, 1);
   lua_getfield(l, 1, "directions");
   if (lua_type(l, 2) != LUA_TTABLE) {
-    LuaContext::arg_error(l, 1,
+    LuaTools::arg_error(l, 1,
         std::string("Bad field 'directions' (table expected, got ")
         + luaL_typename(l, -1) + ")");
   }
@@ -128,28 +128,28 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
     ++i;
 
     if (lua_type(l, -1) != LUA_TTABLE) {
-      LuaContext::arg_error(l, 1,
+      LuaTools::arg_error(l, 1,
           std::string("Bad field 'directions' (expected table, got ")
           + luaL_typename(l, -1)
       );
     }
 
-    int x = LuaContext::check_int_field(l, -1, "x");
-    int y = LuaContext::check_int_field(l, -1, "y");
-    int frame_width = LuaContext::check_int_field(l, -1, "frame_width");
-    int frame_height = LuaContext::check_int_field(l, -1, "frame_height");
-    int origin_x = LuaContext::opt_int_field(l, -1, "origin_x", 0);
-    int origin_y = LuaContext::opt_int_field(l, -1, "origin_y", 0);
-    int num_frames = LuaContext::opt_int_field(l, -1, "num_frames", 1);
-    int num_columns = LuaContext::opt_int_field(l, -1, "num_columns", num_frames);
+    int x = LuaTools::check_int_field(l, -1, "x");
+    int y = LuaTools::check_int_field(l, -1, "y");
+    int frame_width = LuaTools::check_int_field(l, -1, "frame_width");
+    int frame_height = LuaTools::check_int_field(l, -1, "frame_height");
+    int origin_x = LuaTools::opt_int_field(l, -1, "origin_x", 0);
+    int origin_y = LuaTools::opt_int_field(l, -1, "origin_y", 0);
+    int num_frames = LuaTools::opt_int_field(l, -1, "num_frames", 1);
+    int num_columns = LuaTools::opt_int_field(l, -1, "num_columns", num_frames);
 
     if (num_columns < 1 || num_columns > num_frames) {
-      LuaContext::arg_error(l, 1,
+      LuaTools::arg_error(l, 1,
           "Bad field 'num_columns': must be between 1 and the number of frames");
     }
 
     if (frame_to_loop_on >= num_frames) {
-      LuaContext::arg_error(l, 1,
+      LuaTools::arg_error(l, 1,
           "Bad field 'frame_to_loop_on': exceeds the number of frames");
     }
 
@@ -188,7 +188,7 @@ int SpriteAnimationSet::l_animation(lua_State* l) {
   }
 
   if (animation_set->animations.find(animation_name) != animation_set->animations.end()) {
-    LuaContext::error(l, std::string("Duplicate animation '") + animation_name
+    LuaTools::error(l, std::string("Duplicate animation '") + animation_name
         + "' in sprite '" + animation_set->id + "'");
   }
 

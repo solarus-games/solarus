@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "MainLoop.h"
 #include "Game.h"
 #include "Savegame.h"
@@ -24,7 +25,6 @@
 #include "KeysEffect.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include <lua.hpp>
 
 namespace solarus {
 
@@ -144,7 +144,7 @@ int LuaContext::game_api_exists(lua_State* l) {
   const std::string& file_name = luaL_checkstring(l, 1);
 
   if (FileTools::get_quest_write_dir().empty()) {
-    error(l, "Cannot check savegame: no write directory was specified in quest.dat");
+    LuaTools::error(l, "Cannot check savegame: no write directory was specified in quest.dat");
   }
 
   bool exists = FileTools::data_file_exists(file_name);
@@ -163,7 +163,7 @@ int LuaContext::game_api_delete(lua_State* l) {
   const std::string& file_name = luaL_checkstring(l, 1);
 
   if (FileTools::get_quest_write_dir().empty()) {
-    error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
+    LuaTools::error(l, "Cannot delete savegame: no write directory was specified in quest.dat");
   }
 
   FileTools::data_file_delete(file_name);
@@ -181,7 +181,7 @@ int LuaContext::game_api_load(lua_State* l) {
   const std::string& file_name = luaL_checkstring(l, 1);
 
   if (FileTools::get_quest_write_dir().empty()) {
-    error(l, "Cannot load savegame: no write directory was specified in quest.dat");
+    LuaTools::error(l, "Cannot load savegame: no write directory was specified in quest.dat");
   }
 
   Savegame* savegame = new Savegame(get_lua_context(l).get_main_loop(), file_name);
@@ -204,7 +204,7 @@ int LuaContext::game_api_save(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   if (FileTools::get_quest_write_dir().empty()) {
-    error(l, "Cannot save game: no write directory was specified in quest.dat");
+    LuaTools::error(l, "Cannot save game: no write directory was specified in quest.dat");
   }
 
   savegame.save();
@@ -375,16 +375,16 @@ int LuaContext::game_api_start_dialog(lua_State* l) {
   int callback_ref = LUA_REFNIL;
 
   if (!DialogResource::exists(dialog_id)) {
-    arg_error(l, 2, std::string("No such dialog: '") + dialog_id + "'");
+    LuaTools::arg_error(l, 2, std::string("No such dialog: '") + dialog_id + "'");
   }
 
   Game* game = savegame.get_game();
   if (game == NULL) {
-    error(l, "Cannot start dialog: this game is not running");
+    LuaTools::error(l, "Cannot start dialog: this game is not running");
   }
 
   if (game->is_dialog_enabled()) {
-    error(l, "Cannot start dialog: another dialog is already active");
+    LuaTools::error(l, "Cannot start dialog: another dialog is already active");
   }
 
   if (lua_gettop(l) >= 3) {
@@ -420,11 +420,11 @@ int LuaContext::game_api_stop_dialog(lua_State* l) {
 
   Game* game = savegame.get_game();
   if (game == NULL) {
-    error(l, "Cannot stop dialog: this game is not running.");
+    LuaTools::error(l, "Cannot stop dialog: this game is not running.");
   }
 
   if (!game->is_dialog_enabled()) {
-    error(l, "Cannot stop dialog: no dialog is active.");
+    LuaTools::error(l, "Cannot stop dialog: no dialog is active.");
   }
 
   // Optional parameter: status.
@@ -469,7 +469,7 @@ int LuaContext::game_api_start_game_over(lua_State* l) {
 
   Game* game = savegame.get_game();
   if (game == NULL) {
-    error(l, "Cannot start game-over: this game is not running");
+    LuaTools::error(l, "Cannot start game-over: this game is not running");
   }
 
   game->start_game_over();
@@ -488,7 +488,7 @@ int LuaContext::game_api_stop_game_over(lua_State* l) {
 
   Game* game = savegame.get_game();
   if (game == NULL) {
-    error(l, "Cannot stop game-over: this game is not running.");
+    LuaTools::error(l, "Cannot stop game-over: this game is not running.");
   }
 
   game->stop_game_over();
@@ -544,8 +544,8 @@ int LuaContext::game_api_get_value(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   const std::string& key = luaL_checkstring(l, 2);
 
-  if (!is_valid_lua_identifier(key)) {
-    arg_error(l, 3,
+  if (!LuaTools::is_valid_lua_identifier(key)) {
+    LuaTools::arg_error(l, 3,
         std::string("Invalid savegame variable '") + key
         + "': the name should only contain alphanumeric characters or '_'"
         + " and cannot start with a digit");
@@ -578,13 +578,13 @@ int LuaContext::game_api_set_value(lua_State* l) {
   const std::string& key = luaL_checkstring(l, 2);
 
   if (key[0] == '_') {
-    arg_error(l, 3,
+    LuaTools::arg_error(l, 3,
         std::string("Invalid savegame variable '") + key
         + "': names prefixed by '_' are reserved for built-in variables");
   }
 
-  if (!is_valid_lua_identifier(key)) {
-    arg_error(l, 3,
+  if (!LuaTools::is_valid_lua_identifier(key)) {
+    LuaTools::arg_error(l, 3,
         std::string("Invalid savegame variable '") + key
         + "': the name should only contain alphanumeric characters or '_'"
         + " and cannot start with a digit");
@@ -609,7 +609,7 @@ int LuaContext::game_api_set_value(lua_State* l) {
       break;
 
     default:
-      arg_error(l, 3,
+      LuaTools::arg_error(l, 3,
           std::string("Expected string, number or boolean, got ")
           + luaL_typename(l, 3)
       );
@@ -1006,7 +1006,7 @@ int LuaContext::game_api_get_item(lua_State* l) {
   const std::string& item_name = luaL_checkstring(l, 2);
 
   if (!savegame.get_equipment().item_exists(item_name)) {
-    error(l, std::string("No such item: '") + item_name + "'");
+    LuaTools::error(l, std::string("No such item: '") + item_name + "'");
   }
 
   push_item(l, savegame.get_equipment().get_item(item_name));
@@ -1025,11 +1025,11 @@ int LuaContext::game_api_has_item(lua_State* l) {
 
   Equipment& equipment = savegame.get_equipment();
   if (!equipment.item_exists(item_name)) {
-    error(l, std::string("No such item: '") + item_name + "'");
+    LuaTools::error(l, std::string("No such item: '") + item_name + "'");
   }
 
   if (!equipment.get_item(item_name).is_saved()) {
-    error(l, std::string("Item '") + item_name + "' is not saved");
+    LuaTools::error(l, std::string("Item '") + item_name + "' is not saved");
   }
 
   lua_pushboolean(l, equipment.get_item(item_name).get_variant() > 0);
@@ -1047,7 +1047,7 @@ int LuaContext::game_api_get_item_assigned(lua_State* l) {
   int slot = luaL_checkint(l, 2);
 
   if (slot < 1 || slot > 2) {
-    arg_error(l, 2, "The item slot should be 1 or 2");
+    LuaTools::arg_error(l, 2, "The item slot should be 1 or 2");
   }
 
   EquipmentItem* item = savegame.get_equipment().get_item_assigned(slot);
@@ -1076,7 +1076,7 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
   }
 
   if (slot < 1 || slot > 2) {
-    arg_error(l, 2, "The item slot should be 1 or 2");
+    LuaTools::arg_error(l, 2, "The item slot should be 1 or 2");
   }
 
   savegame.get_equipment().set_item_assigned(slot, item);
@@ -1092,7 +1092,7 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
 int LuaContext::game_api_get_command_effect(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  GameCommands::Command command = check_enum<GameCommands::Command>(
+  GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
       l, 2, GameCommands::command_names);
 
   Game* game = savegame.get_game();
@@ -1184,7 +1184,7 @@ int LuaContext::game_api_get_command_effect(lua_State* l) {
 int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  GameCommands::Command command = check_enum<GameCommands::Command>(
+  GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
       l, 2, GameCommands::command_names);
 
   GameCommands& commands = savegame.get_game()->get_commands();
@@ -1208,7 +1208,7 @@ int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
 int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  GameCommands::Command command = check_enum<GameCommands::Command>(
+  GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
       l, 2, GameCommands::command_names);
   if (lua_gettop(l) <= 3) {
     luaL_typerror(l, 3, "string or nil");
@@ -1218,7 +1218,7 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
   GameCommands& commands = savegame.get_game()->get_commands();
   InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
   if (!key_name.empty() && key == InputEvent::KEY_NONE) {
-    arg_error(l, 3,
+    LuaTools::arg_error(l, 3,
           std::string("Invalid keyboard key name: '") + key_name + "'");
   }
   commands.set_keyboard_binding(command, key);
@@ -1234,7 +1234,7 @@ int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
 int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  GameCommands::Command command = check_enum<GameCommands::Command>(
+  GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
       l, 2, GameCommands::command_names);
 
   GameCommands& commands = savegame.get_game()->get_commands();
@@ -1257,7 +1257,7 @@ int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
 int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  GameCommands::Command command = check_enum<GameCommands::Command>(
+  GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
       l, 2, GameCommands::command_names);
   if (lua_gettop(l) <= 3) {
     luaL_typerror(l, 3, "string or nil");
@@ -1265,7 +1265,7 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
   const std::string& joypad_string = luaL_optstring(l, 3, "");
 
   if (!joypad_string.empty() && !GameCommands::is_joypad_string_valid(joypad_string)) {
-    arg_error(l, 3,
+    LuaTools::arg_error(l, 3,
           std::string("Invalid joypad string: '") + joypad_string + "'");
   }
   GameCommands& commands = savegame.get_game()->get_commands();
@@ -1282,7 +1282,7 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
 int LuaContext::game_api_capture_command_binding(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  GameCommands::Command command = check_enum<GameCommands::Command>(
+  GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
       l, 2, GameCommands::command_names);
 
   int callback_ref = LUA_REFNIL;
@@ -1306,7 +1306,7 @@ int LuaContext::game_api_capture_command_binding(lua_State* l) {
 int LuaContext::game_api_is_command_pressed(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  GameCommands::Command command = check_enum<GameCommands::Command>(
+  GameCommands::Command command = LuaTools::check_enum<GameCommands::Command>(
       l, 2, GameCommands::command_names);
 
   GameCommands& commands = savegame.get_game()->get_commands();

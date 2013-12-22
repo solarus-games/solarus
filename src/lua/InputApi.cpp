@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "lowlevel/InputEvent.h"
 
 namespace solarus {
@@ -78,7 +79,7 @@ int LuaContext::input_api_is_key_pressed(lua_State* l) {
   InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
 
   if (key == InputEvent::KEY_NONE) {
-    arg_error(l, 1, std::string(
+    LuaTools::arg_error(l, 1, std::string(
         "Unknown keyboard key name: '") + key_name + "'");
   }
 

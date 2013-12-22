@@ -18,6 +18,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
+#include "lua/LuaTools.h"
 
 namespace solarus {
 
@@ -59,13 +60,13 @@ bool Shader::initialize() {
     Debug::warning("Unable to create OpenGL context : " + std::string(SDL_GetError()));
     return false;
   }
-  
+
   // Setting some parameters
   glClearDepth(1.0); // Enables Clearing Of The Depth Buffer.
   glEnable(GL_DEPTH_TEST); // The Type Of Depth Test To Do.
   glDepthFunc(GL_LESS); // Enables Depth Testing.
   glShadeModel(GL_SMOOTH); // Enables Smooth Color Shading.
-  
+
   // Check for shader support
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
@@ -97,19 +98,19 @@ bool Shader::initialize() {
         glUniform1iARB &&
         glUseProgramObjectARB &&
         glGetHandleARB) {
-      
+
       // Get the SDL default shader program
       default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
-      
+
       // Get the type of GL texture used by SDL
       if (SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle")
           || SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) {
         gl_texture_type = GL_TEXTURE_RECTANGLE_ARB;
       }
-      
+
       // Get the shading language version.
       shading_language_version = *glGetString(GL_SHADING_LANGUAGE_VERSION);
-      
+
       return true;
     }
   }
@@ -122,7 +123,7 @@ bool Shader::initialize() {
  * \brief Free shader-related context.
  */
 void Shader::quit() {
-  
+
 #if SOLARUS_HAVE_OPENGL_OR_ES == 1
   SDL_GL_DeleteContext(gl_context);
 #endif
@@ -135,16 +136,16 @@ void Shader::quit() {
  * \param source Sources to compile.
  */
 void Shader::compile_shader(GLhandleARB& shader, const char* source) {
-  
+
   GLint status;
-  
+
   glShaderSourceARB(shader, 1, &source, NULL);
   glCompileShaderARB(shader);
   glGetObjectParameterivARB(shader, GL_OBJECT_COMPILE_STATUS_ARB, &status);
   if (status == 0) {
     GLint length;
-    char *info;
-    
+    char* info;
+
     glGetObjectParameterivARB(shader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
     info = SDL_stack_alloc(char, length+1);
     glGetInfoLogARB(shader, length, NULL, info);
@@ -166,14 +167,14 @@ void Shader::restore_default_shader_program() {
  * This basically reset the projection matrix.
  */
 void Shader::set_rendering_settings() {
-  
+
   Rectangle quest_size = Video::get_quest_size();
   static const GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
-  
+
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   glOrtho(-1.0, 1.0, -1.0 / aspect, 1.0 / aspect, 0.0, 1.0);
-  
+
   glMatrixMode(GL_MODELVIEW);
 }
 
@@ -187,12 +188,12 @@ Shader::Shader(const std::string& shader_name):
   fragment_shader(0),
   shader_name(shader_name),
   window_scale(1.0) {
-    
+
   glGetError();
-    
+
   // Load the shader.
   load(shader_name);
-    
+
   // Notify the shader program that the uniform sampler will be in the texture unit 0.
   glUseProgramObjectARB(program);
   GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
@@ -206,7 +207,7 @@ Shader::Shader(const std::string& shader_name):
  * \brief Destructor.
  */
 Shader::~Shader() {
-  
+
   glDeleteObjectARB(vertex_shader);
   glDeleteObjectARB(fragment_shader);
   glDeleteObjectARB(program);
@@ -218,9 +219,9 @@ Shader::~Shader() {
  * \return The created shader, or NULL if the shader fails to compile.
  */
 Shader* Shader::create(const std::string& shader_name) {
-  
+
   Shader* shader = new Shader(shader_name);
-  
+
   if (glGetError() != GL_NO_ERROR) {
     Debug::warning("Cannot compile shader '" + shader_name + "'");
     return NULL;
@@ -235,7 +236,7 @@ Shader* Shader::create(const std::string& shader_name) {
  * \param shader the shader to apply if any, or NULL.
  */
 void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
-    
+
   float rendering_width, rendering_height;
   SDL_Renderer* renderer = Video::get_renderer();
   SDL_Window* window = Video::get_window();
@@ -245,26 +246,26 @@ void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
-    
+
   // Clear the render target
   SDL_SetRenderTarget(renderer, render_target);
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderSetClipRect(renderer, NULL);
   SDL_RenderClear(renderer);
-    
+
   // Draw on the render target.
   quest_surface.render(renderer);
-    
+
   // Render on the window using OpenGL, to apply a shader if we have to.
   SDL_SetRenderTarget(renderer, NULL);
   set_rendering_settings();
-    
+
   glEnable(gl_texture_type);
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
   if (shader != NULL) {
     shader->apply();
   }
-    
+
   glBegin(GL_QUADS);
   glTexCoord2f(0.0f, 0.0f);
   glVertex3f(-1.0f, 1.0f, 0.0f); // Top left
@@ -275,14 +276,14 @@ void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
   glTexCoord2f(0.0f, rendering_height);
   glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
   glEnd();
-    
+
   // Restore default states.
   if (shader != NULL) {
     restore_default_shader_program();
   }
   SDL_GL_UnbindTexture(render_target);
   glDisable(gl_texture_type);
-    
+
   // And swap the window.
   SDL_GL_SwapWindow(window);  
 }
@@ -291,8 +292,8 @@ void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
  * \brief Get the name of the shader, which is also the name of the related video mode.
  * \return The name of the shader.
  */
-std::string Shader::get_name() {
-  
+const std::string& Shader::get_name() {
+
   return shader_name;
 }
   
@@ -301,7 +302,7 @@ std::string Shader::get_name() {
  * \return The window scale.
  */
 double Shader::get_window_scale() {
-  
+
   return window_scale;
 }
 
@@ -311,10 +312,10 @@ double Shader::get_window_scale() {
  * \param shader_name The name of the shader to load.
  */
 void Shader::load(const std::string& shader_name) {
-  
+
   const std::string shader_path = 
       "shaders/filters/" + shader_name;
-  
+
   // Parse the lua file
   load_lua_file(shader_path);
 }
@@ -324,16 +325,16 @@ void Shader::load(const std::string& shader_name) {
  * \param path The path to the lua file, relative to the data folder.
  */
 void Shader::load_lua_file(const std::string& path) {
-  
+
   lua_State* l = luaL_newstate();
-  luaL_openlibs(l);
+  luaL_openlibs(l);  // FIXME don't open the libs
   size_t size;
   char* buffer;  
-  
+
   FileTools::data_file_open_buffer(path, &buffer, &size);
   int load_result = luaL_loadbuffer(l, buffer, size, path.c_str());
   loading_shader = this;
-  
+
   if (load_result != 0) {
     // Syntax error in the lua file.
     Debug::die(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
@@ -341,14 +342,14 @@ void Shader::load_lua_file(const std::string& path) {
   else {
     const Rectangle& quest_size = Video::get_quest_size();
     lua_register(l, "shader", l_shader);
-    
+
     // Send some parameters to the lua script.
     lua_pushstring(l, Video::get_rendering_driver_name().c_str());
     lua_pushstring(l, shading_language_version.c_str());
     lua_pushstring(l, get_sampler_type().c_str());
     lua_pushinteger(l, quest_size.get_width());
     lua_pushinteger(l, quest_size.get_height());
-    
+
     if (lua_pcall(l, 5, 0, 0) != 0) {
 
       // Runtime error.
@@ -356,7 +357,7 @@ void Shader::load_lua_file(const std::string& path) {
       lua_pop(l, 6);
     }
   }
-  
+
   loading_shader = NULL;
   FileTools::data_file_close_buffer(buffer);
   lua_close(l);
@@ -367,38 +368,38 @@ void Shader::load_lua_file(const std::string& path) {
  * \param l The lua state.
  */
 int Shader::l_shader(lua_State* l) {
-  
+
   if (loading_shader != NULL) {
 
     GLhandleARB& program = loading_shader->program,
       vertex_shader = loading_shader->vertex_shader,
       fragment_shader = loading_shader->fragment_shader;
-    
+
     // Retrieve the shader properties from the table parameter.
     luaL_checktype(l, 1, LUA_TTABLE);
-  
+
     const double& window_scale =
-        LuaContext::opt_number_field(l, 1, "window_scale", 1.0);
+        LuaTools::opt_number_field(l, 1, "window_scale", 1.0);
     const std::string shader_name =
-        LuaContext::opt_string_field(l, 1, "name", loading_shader->shader_name);
+        LuaTools::opt_string_field(l, 1, "name", loading_shader->shader_name);
     const std::string vertex_source =
-        LuaContext::check_string_field(l, 1, "vertex_source");
+        LuaTools::check_string_field(l, 1, "vertex_source");
     const std::string fragment_source =
-        LuaContext::check_string_field(l, 1, "fragment_source");
-    
+        LuaTools::check_string_field(l, 1, "fragment_source");
+
     loading_shader->window_scale = window_scale;
     loading_shader->shader_name = shader_name;
-    
+
     // Create the vertex and fragment shaders.
     vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
     compile_shader(vertex_shader, vertex_source.c_str());
-    
+
     fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
     compile_shader(fragment_shader, fragment_source.c_str());
-    
+
     // Create one program object to rule them all ...
     program = glCreateProgramObjectARB();
-    
+
     // ... and in the darkness bind them
     glAttachObjectARB(program, vertex_shader);
     glAttachObjectARB(program, fragment_shader);
@@ -412,8 +413,8 @@ int Shader::l_shader(lua_State* l) {
  * \brief Get the type of the sampler type to use into the GLSL shader.
  * \return A string containing the type of sampler to use.
  */
-const std::string Shader::get_sampler_type()
-{
+const std::string Shader::get_sampler_type() {
+
   if (gl_texture_type == GL_TEXTURE_RECTANGLE_ARB) {
     return "sampler2DRect";
   }
@@ -423,8 +424,7 @@ const std::string Shader::get_sampler_type()
 /**
  * \brief Apply the shader program.
  */
-void Shader::apply()
-{
+void Shader::apply() {
   glUseProgramObjectARB(program);
 }
  

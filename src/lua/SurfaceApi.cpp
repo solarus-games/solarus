@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <lua.hpp>
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Video.h"
@@ -148,7 +148,7 @@ int LuaContext::surface_api_get_size(lua_State* l) {
 int LuaContext::surface_api_fill_color(lua_State* l) {
 
   Surface& surface = check_surface(l, 1);
-  Color color = check_color(l, 2);
+  Color color = LuaTools::check_color(l, 2);
 
   if (lua_gettop(l) >= 3) {
     int x = luaL_checkint(l, 3);

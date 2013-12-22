@@ -27,6 +27,7 @@
 #include "entities/MapEntities.h"
 #include "entities/EntityType.h"
 #include "entities/MapEntity.h"
+#include "lua/LuaTools.h"
 #include "lua/LuaContext.h"
 
 namespace solarus {
@@ -111,14 +112,14 @@ int MapLoader::l_properties(lua_State* l) {
   // Retrieve the map properties from the table parameter.
   luaL_checktype(l, 1, LUA_TTABLE);
 
-  int x = LuaContext::opt_int_field(l, 1, "x", 0);
-  int y = LuaContext::opt_int_field(l, 1, "y", 0);
-  int width = LuaContext::check_int_field(l, 1, "width");
-  int height = LuaContext::check_int_field(l, 1, "height");
-  const std::string& world_name = LuaContext::check_string_field(l, 1 , "world");
-  int floor = LuaContext::opt_int_field(l, 1, "floor", Map::NO_FLOOR);
-  const std::string& tileset_id = LuaContext::check_string_field(l, 1, "tileset");
-  const std::string& music_id = LuaContext::opt_string_field(l, 1, "music", Music::none);
+  int x = LuaTools::opt_int_field(l, 1, "x", 0);
+  int y = LuaTools::opt_int_field(l, 1, "y", 0);
+  int width = LuaTools::check_int_field(l, 1, "width");
+  int height = LuaTools::check_int_field(l, 1, "height");
+  const std::string& world_name = LuaTools::check_string_field(l, 1 , "world");
+  int floor = LuaTools::opt_int_field(l, 1, "floor", Map::NO_FLOOR);
+  const std::string& tileset_id = LuaTools::check_string_field(l, 1, "tileset");
+  const std::string& music_id = LuaTools::opt_string_field(l, 1, "music", Music::none);
 
   // Initialize the map data.
   // TODO implement methods in Map instead to check the values instead of changing directly the fields.

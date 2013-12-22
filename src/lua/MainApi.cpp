@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/FileTools.h"
 #include "MainLoop.h"
@@ -159,7 +160,7 @@ int LuaContext::main_api_load_settings(lua_State* l) {
   std::string file_name = luaL_optstring(l, 1, "settings.dat");
 
   if (FileTools::get_quest_write_dir().empty()) {
-    error(l, "Cannot load settings: no write directory was specified in quest.dat");
+    LuaTools::error(l, "Cannot load settings: no write directory was specified in quest.dat");
   }
 
   bool success = Settings::load(file_name);
@@ -178,7 +179,7 @@ int LuaContext::main_api_save_settings(lua_State* l) {
   std::string file_name = luaL_optstring(l, 1, "settings.dat");
 
   if (FileTools::get_quest_write_dir().empty()) {
-    error(l, "Cannot save settings: no write directory was specified in quest.dat");
+    LuaTools::error(l, "Cannot save settings: no write directory was specified in quest.dat");
   }
 
   bool success = Settings::save(file_name);

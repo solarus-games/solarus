@@ -2102,20 +2102,6 @@ void LuaContext::on_pickable_created(Pickable& pickable) {
 }
 
 /**
- * \brief Calls the on_pickable_movement_changed() method of the object on top of the stack.
- * \param pickable A pickable treasure.
- * \param movement The movement of this pickable treasure.
- */
-void LuaContext::on_pickable_movement_changed(Pickable& pickable, Movement& movement) {
-
-  if (find_method("on_pickable_movement_changed")) {
-    push_entity(l, pickable);
-    push_movement(l, movement);
-    call_function(3, 0, "on_pickable_movement_changed");
-  }
-}
-
-/**
  * \brief Calls the on_variant_changed() method of the object on top of the stack.
  * \param variant Variant of an equipment item.
  */

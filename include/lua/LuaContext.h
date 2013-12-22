@@ -194,7 +194,6 @@ class LuaContext {
     void item_on_suspended(EquipmentItem& item, bool suspended);
     void item_on_map_changed(EquipmentItem& item, Map& map);
     void item_on_pickable_created(EquipmentItem& item, Pickable& pickable);
-    void item_on_pickable_movement_changed(EquipmentItem& item, Pickable& pickable, Movement& movement);  // TODO remove this, use movement:on_changed instead
     void item_on_obtaining(EquipmentItem& item, const Treasure& treasure);
     void item_on_obtained(EquipmentItem& item, const Treasure& treasure);
     void item_on_variant_changed(EquipmentItem& item, int variant);
@@ -983,7 +982,6 @@ class LuaContext {
     void on_moved();
     void on_map_changed(Map& map);
     void on_pickable_created(Pickable& pickable);
-    void on_pickable_movement_changed(Pickable& pickable, Movement& movement);
     void on_variant_changed(int variant);
     void on_amount_changed(int amount);
     void on_obtaining(const Treasure& treasure);

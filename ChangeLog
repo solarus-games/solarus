@@ -45,6 +45,7 @@ Changes that introduce incompatibilities:
 * surface:set_transparency_color() no longer exists.
 * Enemies have now a default size of 16x16 and origin of 8,13 (#354).
 * The size of enemies must be a multiple of 8 (#358).
+* item:on_pickable_movement_changed replaced by pickable:on_movement_changed.
 
 Changes that do not introduce incompatibilities:
 

@@ -823,27 +823,6 @@ void LuaContext::item_on_pickable_created(EquipmentItem& item,
 }
 
 /**
- * \brief Calls the on_pickable_movement_changed() method of a Lua equipment item.
- *
- * Does nothing if the method is not defined.
- *
- * \param item An equipment item.
- * \param pickable The instance of pickable item whose movement has changed.
- * \param movement The movement.
- */
-void LuaContext::item_on_pickable_movement_changed(EquipmentItem& item,
-    Pickable& pickable, Movement& movement) {
-
-  if (!userdata_has_field(item, "on_pickable_movement_changed")) {
-    return;
-  }
-
-  push_item(l, item);
-  on_pickable_movement_changed(pickable, movement);
-  lua_pop(l, 1);
-}
-
-/**
  * \brief Calls the on_obtaining() method of a Lua equipment item.
  *
  * Does nothing if the method is not defined.

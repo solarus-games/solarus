@@ -78,7 +78,6 @@ class EquipmentItem: public ExportableToLua {
     void notify_using();
     void notify_ability_used(const std::string& ability_name);
     void notify_pickable_appeared(Pickable& pickable);
-    void notify_movement_changed(Pickable& pickable);
 
     int get_variant() const;
     void set_variant(int variant);

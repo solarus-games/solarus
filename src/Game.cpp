@@ -841,16 +841,16 @@ void Game::stop_game_over() {
 }
 
 /**
- *  \brief Forces a command into the command set.
+ * \brief Simulates pressing a game command.
  */
-void Game::force_command_pressed(GameCommands::Command command){
+void Game::simulate_command_pressed(GameCommands::Command command){
   commands->game_command_pressed(command);
 }
 
 /**
-*  \brief Forces a command into the command set.
-*/
-void Game::force_command_released(GameCommands::Command command){
+ * \brief Simulates releasing a game command.
+ */
+void Game::simulate_command_released(GameCommands::Command command){
   commands->game_command_released(command);
 }
 

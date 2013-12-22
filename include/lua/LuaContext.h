@@ -557,8 +557,8 @@ class LuaContext {
       game_api_get_command_joypad_binding,
       game_api_set_command_joypad_binding,
       game_api_capture_command_binding,
-      game_api_force_command_pressed,
-      game_api_force_command_released,
+      game_api_simulate_command_pressed,
+      game_api_simulate_command_released,
 
       // Equipment item API.
       item_api_get_name,

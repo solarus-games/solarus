@@ -62,7 +62,7 @@ Changes that do not introduce incompatibilities:
 * Add an event block:on_moving() (#334).
 * Add functions to get/set the properties of blocks.
 * sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
-* Add methods to simulate game commands pressed and released.
+* Add methods to simulate game commands, by mrunderhill (#382).
 * Add an event sensor:on_left() (#339).
 * Add an event block:on_moving() (#334).
 

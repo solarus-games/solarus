@@ -35,14 +35,6 @@ namespace solarus {
  */
 class StringResource {
 
-  private:
-
-    static std::map<std::string, std::string> strings;
-
-    // we don't need to instantiate this class
-    StringResource();
-    ~StringResource();
-
   public:
 
     static void initialize();
@@ -50,6 +42,12 @@ class StringResource {
 
     static bool exists(const std::string& key);
     static const std::string& get_string(const std::string& key);
+
+  private:
+
+    // we don't need to instantiate this class
+    StringResource();
+    ~StringResource();
 };
 
 }

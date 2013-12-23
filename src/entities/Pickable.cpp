@@ -269,17 +269,6 @@ MapEntity* Pickable::get_entity_followed() {
 }
 
 /**
- * \brief Notifies this pickable item that its movement has just changed.
- */
-void Pickable::notify_movement_changed() {
-
-  if (is_on_map()) {
-    // Notify the Lua equipment item.
-    get_equipment().get_item(treasure.get_item_name()).notify_movement_changed(*this);
-  }
-}
-
-/**
  * \brief This function is called by the engine when an entity overlaps the pickable item.
  *
  * If the entity is the player, we give him the item, and the map is notified

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <lua.hpp>
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "Sprite.h"
 #include <sstream>
 
@@ -136,7 +136,7 @@ int LuaContext::sprite_api_set_animation(lua_State* l) {
 
   const std::string& animation_name = luaL_checkstring(l, 2);
   if (!sprite.has_animation(animation_name)) {
-    arg_error(l, 2,
+    LuaTools::arg_error(l, 2,
         std::string("Animation '") + animation_name
         + "' does not exist in sprite '" + sprite.get_animation_set_id() + "'"
     );
@@ -176,7 +176,7 @@ int LuaContext::sprite_api_set_direction(lua_State* l) {
     oss << "Illegal direction " << direction
         << " for sprite '" + sprite.get_animation_set_id()
         << "' in animation '" + sprite.get_current_animation() + "'";
-    arg_error(l, 2, oss.str());
+    LuaTools::arg_error(l, 2, oss.str());
   }
   sprite.set_current_direction(direction);
 
@@ -212,7 +212,7 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
         << " for sprite '" << sprite.get_animation_set_id()
         << "' in direction " << sprite.get_current_direction()
         << " of animation '" << sprite.get_current_animation() << "'";
-    arg_error(l, 2, oss.str());
+    LuaTools::arg_error(l, 2, oss.str());
   }
   sprite.set_current_frame(frame);
 

@@ -1649,7 +1649,7 @@ bool MapEntity::is_crystal_obstacle(const Crystal& crystal) const {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool MapEntity::is_npc_obstacle(const NPC& npc) const {
+bool MapEntity::is_npc_obstacle(const Npc& npc) const {
   return true;
 }
 

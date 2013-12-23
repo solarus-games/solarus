@@ -82,14 +82,14 @@ class GameCommands {
 
     static const std::string command_names[];
 
+    // High-level resulting commands.
+    void game_command_pressed(Command command);
+    void game_command_released(Command command);
+
   private:
 
     Savegame& get_savegame();
     const Savegame& get_savegame() const;
-
-    // High-level resulting commands.
-    void game_command_pressed(Command command);
-    void game_command_released(Command command);
 
     // Keyboard mapping.
     void keyboard_key_pressed(InputEvent::KeyboardKey keyboard_key_pressed);

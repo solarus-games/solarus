@@ -943,7 +943,7 @@ void MapEntities::redraw_non_animated_tiles() {
   const Rectangle map_size(0, 0, map.get_width(), map.get_height());
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_transparent());
+    non_animated_tiles_surfaces[layer]->clear();
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       Tile& tile = *tiles[layer][i];
@@ -1017,7 +1017,8 @@ void MapEntities::draw() {
     // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
     // since they are already drawn)
     non_animated_tiles_surfaces[layer]->draw_region(
-        map.get_camera_position(), map.get_visible_surface());
+        map.get_camera_position(), map.get_visible_surface()
+    );
 
     // draw the first sprites
     std::list<MapEntity*>::iterator i;

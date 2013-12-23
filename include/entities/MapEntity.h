@@ -236,7 +236,7 @@ class MapEntity: public ExportableToLua {
     virtual bool is_switch_obstacle(const Switch& sw) const;
     virtual bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
     virtual bool is_crystal_obstacle(const Crystal& crystal) const;
-    virtual bool is_npc_obstacle(const NPC& npc) const;
+    virtual bool is_npc_obstacle(const Npc& npc) const;
     virtual bool is_enemy_obstacle(const Enemy& enemy) const;
     virtual bool is_jumper_obstacle(const Jumper& jumper) const;
     virtual bool is_destructible_obstacle(const Destructible& destructible) const;

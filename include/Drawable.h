@@ -77,6 +77,7 @@ class Drawable: public ExportableToLua {
      * \param region The subrectangle to draw in this object.
      * \param dst_surface The destination surface.
      * \param dst_position Coordinates on the destination surface.
+     * The width and height of this rectangle are ignored.
      */
     virtual void raw_draw_region(
         const Rectangle& region,

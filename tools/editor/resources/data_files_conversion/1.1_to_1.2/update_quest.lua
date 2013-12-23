@@ -38,5 +38,14 @@ for _, resource in pairs(resources["map"]) do
 end
 write_info("  All maps were converted.")
 
+-- Convert strings.dat files.
+write_info("  Converting strings...")
+local strings_converter = require("strings_converter")
+for _, resource in pairs(resources["language"]) do
+  write_info("    Language " .. resource.id .. " (" .. resource.description .. ")")
+  strings_converter.convert(quest_path, resource.id)
+end
+write_info("  All strings files were converted.")
+
 write_info("Update successful!")
 

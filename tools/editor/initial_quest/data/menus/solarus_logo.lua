@@ -13,7 +13,6 @@ local solarus_logo_menu = {}
 
 -- Main surface of the menu.
 local surface = sol.surface.create(201, 48)
-surface:set_transparency_color{0, 0, 0}
 
 -- Solarus title sprite.
 local title = sol.sprite.create("menus/solarus_logo")
@@ -44,10 +43,9 @@ local timer = nil
 -------------------------------------------------------------------------------
 
 -- Rebuilds the whole surface of the menu.
-local function rebuild_surface ()
+local function rebuild_surface()
 
-  -- Clean the surface by filling it with the transparency color.
-  surface:fill_color{0, 0, 0}
+  surface:clear()
 
   -- Draw the title (after step 1).
   if animation_step >= 1 then

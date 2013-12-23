@@ -55,10 +55,10 @@ void SpcDecoder::load(int16_t *sound_data, size_t sound_size) {
 
 /**
  * \brief Decodes a chunk of the previously loaded SPC data into PCM data.
- * \param decoded_data pointer to where you want the decoded data to be wrote
+ * \param decoded_data pointer to where you want the decoded data to be written.
  * \param nb_samples number of samples to write
  */
-void SpcDecoder::decode(int16_t *decoded_data, int nb_samples) {
+void SpcDecoder::decode(int16_t* decoded_data, int nb_samples) {
 
   // decode from the SPC data the specified number of PCM samples
 

@@ -161,6 +161,9 @@ Surface::~Surface() {
 
 /**
  * \brief Creates a surface with the specified size.
+ *
+ * The surface is initially transparent.
+ *
  * \param width The width in pixels.
  * \param height The height in pixels.
  */
@@ -170,8 +173,7 @@ Surface* Surface::create(int width, int height) {
 
 /**
  * \brief Creates a surface with the specified size.
- * \param width The width in pixels.
- * \param height The height in pixels.
+ * \param size The size in pixels.
  */
 Surface* Surface::create(const Rectangle& size) {
   return new Surface(size.get_width(), size.get_height());
@@ -426,77 +428,80 @@ void Surface::create_software_surface() {
  */
 void Surface::clear() {
 
-  if (software_destination
-      || !Video::is_acceleration_enabled()
-  ) {
-    // Software version: set all pixels transparent.
-    fill_with_color(Color::get_transparent(), Rectangle(0, 0, width, height));
+  clear_subsurfaces();
+
+  delete internal_color;
+  internal_color = NULL;
+
+  if (internal_texture != NULL) {
+    SDL_DestroyTexture(internal_texture);
+    internal_texture = NULL;
   }
-  else {
-    // Hardware version: clear the subsurface queue.
-    clear_subsurfaces();
 
-    delete internal_color;
-    internal_color = NULL;
-
-    if (internal_texture != NULL) {
-      SDL_DestroyTexture(internal_texture);
-    }
-
-    if (internal_surface != NULL) {
-      SDL_FreeSurface(internal_surface);
-    }
+  if (internal_surface != NULL) {
+    SDL_FillRect(
+        internal_surface,
+        NULL,
+        Color::get_transparent().get_internal_value()
+    );
   }
 }
 
 /**
+ * \brief Clears a rectangle of this surface.
+ *
+ * This is only supported for software surfaces.
+ *
+ * The rectangle cleared becomes fully transparent.
+ */
+void Surface::clear(const Rectangle& where) {
+
+  Debug::check_assertion(software_destination,
+      "Partial surface clear is only supported with software surfaces");
+
+  if (internal_surface == NULL) {
+    // Nothing to do.
+    return;
+  }
+
+  SDL_FillRect(
+      internal_surface,
+      where.get_internal_rect(),
+      Color::get_transparent().get_internal_value()
+  );
+  is_rendered = false;  // The surface has changed.
+}
+
+/**
  * \brief Fills the entire surface with the specified color.
+ *
+ * If the color has a non-opaque alpha component, then the color is
+ * alpha-blended onto the surface.
+ *
  * \param color A color.
  */
-void Surface::fill_with_color(Color& color) {
+void Surface::fill_with_color(const Color& color) {
 
   fill_with_color(color, Rectangle(0, 0, width, height));
 }
 
 /**
- * \brief Fill the rectangle at given coords with the specified color.
+ * \brief Fills the rectangle at given coordinates with the specified color.
+ *
+ * If the color has a non-opaque alpha component, then the color is
+ * alpha-blended onto the surface.
+ *
  * \param color A color.
  * \param where The rectangle to fill.
  */
-void Surface::fill_with_color(Color& color, const Rectangle& where) {
+void Surface::fill_with_color(const Color& color, const Rectangle& where) {
 
-  if (software_destination  // The destination surface is in RAM.
-      || !Video::is_acceleration_enabled()  // The rendering is in RAM.
-  ) {
-
-    // We have to draw on a software surface: draw pixels directly.
-    if (internal_surface == NULL) {
-      create_software_surface();
-    }
-
-    uint32_t color_value = color.get_internal_value();
-    if (internal_surface->format->format != Video::get_pixel_format()->format) {
-      // Get a color value in the pixel format of the destination surface.
-      int r, g, b, a;
-      color.get_components(r, g, b, a);
-      color_value = SDL_MapRGBA(internal_surface->format, r, g, b, a);
-    }
-
-    SDL_FillRect(
-        internal_surface,
-        Rectangle(where).get_internal_rect(),
-        color_value
-    );
-    is_rendered = false;  // The surface has changed.
-  }
-  else {
-    // Create a Surface with the requested size and color, and add it to the subsurface queue.
-    Rectangle subsurface_size(0, 0, where.get_width(), where.get_height());
-    Surface* subsurface = Surface::create(subsurface_size);
-    RefCountable::ref(subsurface);
-    subsurface->internal_color = new Color(color);
-    subsurface->raw_draw_region(subsurface_size, *this, where);
-  }
+  // Create a surface with the requested size and color and draw it.
+  Surface* colored_surface = Surface::create(where);
+  colored_surface->internal_color = new Color(color);
+  RefCountable::ref(colored_surface);
+  colored_surface->raw_draw_region(colored_surface->get_size(), *this, where);
+  RefCountable::unref(colored_surface);
 }
 
 /**
@@ -565,6 +570,10 @@ void Surface::raw_draw_region(
       || !Video::is_acceleration_enabled()  // The rendering is in RAM.
   ) {
 
+    if (dst_surface.internal_surface == NULL) {
+      dst_surface.create_software_surface();
+    }
+
     // First, draw subsurfaces if any.
     // They can exist if the video mode recently switched from an accelerated
     // one to a software one.
@@ -590,10 +599,6 @@ void Surface::raw_draw_region(
     if (this->internal_surface != NULL) {
       // The source surface is not empty: draw it onto the destination.
 
-      if (dst_surface.internal_surface == NULL) {
-        dst_surface.create_software_surface();
-      }
-
       SDL_BlitSurface(
           this->internal_surface,
           region.get_internal_rect(),
@@ -602,7 +607,34 @@ void Surface::raw_draw_region(
       );
     }
     else if (internal_color != NULL) { // No internal surface to draw: this may be a color.
-      dst_surface.fill_with_color(*internal_color, region);
+
+      if (internal_color->get_internal_color()->a == 255) {
+        // Fill with opaque color: we can directly modify the destination pixels.
+        Rectangle dst_rect(
+            dst_position.get_x(), dst_position.get_y(),
+            region.get_width(), region.get_height()
+        );
+        SDL_FillRect(
+            dst_surface.internal_surface,
+            dst_rect.get_internal_rect(),
+            this->internal_color->get_internal_value()
+        );
+      }
+      else {
+        // Fill with semi-transparent pixels: perform alpha-blending.
+        create_software_surface();
+        SDL_FillRect(
+            this->internal_surface,
+            NULL,
+            this->internal_color->get_internal_value()
+        );
+        SDL_BlitSurface(
+            this->internal_surface,
+            region.get_internal_rect(),
+            dst_surface.internal_surface,
+            Rectangle(dst_position).get_internal_rect()
+        );
+      }
     }
   }
   else {

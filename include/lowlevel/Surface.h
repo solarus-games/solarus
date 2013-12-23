@@ -68,10 +68,11 @@ class Surface: public Drawable {
     bool is_software_destination() const;
     void set_software_destination(bool software_destination);
 
-    void set_opacity(uint8_t opacity);
     void clear();
-    void fill_with_color(Color& color);
-    void fill_with_color(Color& color, const Rectangle& where);
+    void clear(const Rectangle& where);
+    void fill_with_color(const Color& color);
+    void fill_with_color(const Color& color, const Rectangle& where);
+    void set_opacity(uint8_t opacity);
 
     void apply_pixel_filter(const PixelFilter& pixel_filter, Surface& dst_surface);
 

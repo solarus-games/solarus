@@ -21,7 +21,7 @@
 #include "Game.h"
 #include "Map.h"
 #include <list>
-#include <lua.hpp>
+#include <sstream>
 
 namespace solarus {
 
@@ -114,8 +114,10 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   std::map<Timer*, LuaTimerData>::iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
     if (it->second.callback_ref == callback_ref) {
-      Debug::die(StringConcat() << "Callback ref " << callback_ref
-            << " is already used by a timer (duplicate luaL_unref?)");
+      std::ostringstream oss;
+      oss << "Callback ref " << callback_ref
+          << " is already used by a timer (duplicate luaL_unref?)";
+      Debug::die(oss.str());
     }
   }
 #endif

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "lowlevel/FileTools.h"
 #include "Language.h"
 #include "StringResource.h"
@@ -98,7 +99,7 @@ int LuaContext::language_api_set_language(lua_State* l) {
   const std::string& language_code = luaL_checkstring(l, 1);
 
   if (!Language::has_language(language_code)) {
-    arg_error(l, 1, std::string("No such language: '") + language_code + "'");
+    LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
   }
   Language::set_language(language_code);
 
@@ -116,13 +117,13 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
   if (lua_gettop(l) >= 1) {
     language_code = luaL_checkstring(l, 1);
     if (!Language::has_language(language_code)) {
-      arg_error(l, 1, std::string("No such language: '") + language_code + "'");
+      LuaTools::arg_error(l, 1, std::string("No such language: '") + language_code + "'");
     }
   }
   else {
     language_code = Language::get_language();
     if (language_code.empty()) {
-      error(l, "No language is set");
+      LuaTools::error(l, "No language is set");
     }
   }
 

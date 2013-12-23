@@ -15,26 +15,49 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "StringResource.h"
+#include "Language.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
+#include "lua/LuaTools.h"
 #include <sstream>
 
 namespace solarus {
 
-std::map<std::string, std::string> StringResource::strings;
+namespace {
+
+std::map<std::string, std::string> strings;
+
+/**
+ * \brief Function called by Lua to add a dialog to the resource.
+ *
+ * - Argument 1 (table): properties of the dialog.
+ *
+ * \param l the Lua context that is calling this function
+ * \return Number of values to return to Lua.
+ */
+int l_text(lua_State* l) {
+
+  luaL_checktype(l, 1, LUA_TTABLE);
+
+  std::string key = LuaTools::check_string_field(l, 1, "key");
+  std::string value = LuaTools::check_string_field(l, 1, "value");
+
+  strings[key] = value;
+
+  return 0;
+}
+
+}
 
 /**
  * \brief Constructor.
  */
 StringResource::StringResource() {
-
 }
 
 /**
  * \brief Destructor.
  */
 StringResource::~StringResource() {
-
 }
 
 /**
@@ -46,54 +69,32 @@ StringResource::~StringResource() {
 void StringResource::initialize() {
 
   strings.clear();
-  std::istream& file = FileTools::data_file_open("text/strings.dat", true);
-  std::string line;
 
-  // read each line
-  int i = 0;
-  while (std::getline(file, line)) {
+  const std::string file_name("text/strings.dat");
+  lua_State* l = luaL_newstate();
+  size_t size;
+  char* buffer;
+  FileTools::data_file_open_buffer(file_name, &buffer, &size, true);
+  int load_result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  FileTools::data_file_close_buffer(buffer);
 
-    i++;
-
-    // ignore empty lines or lines starting with '#'
-    if (line.size() == 0 || line[0] == '\r' || line[0] == '#') {
-      continue;
+  if (load_result != 0) {
+    Debug::error(std::string("Failed to load strings file '") + file_name
+        + "' for language '" + Language::get_language() + "': "
+        + lua_tostring(l, -1));
+    lua_pop(l, 1);
+  }
+  else {
+    lua_register(l, "text", l_text);
+    if (lua_pcall(l, 0, 0, 0) != 0) {
+      Debug::error(std::string("Failed to load strings file '") + file_name
+          + "' for language '" + Language::get_language() + "': "
+          + lua_tostring(l, -1));
+      lua_pop(l, 1);
     }
-
-    // get the key
-    size_t index = line.find_first_of(" \t");
-    if (index == std::string::npos) {
-      std::ostringstream oss;
-      oss << "strings.dat, line " << i
-        << ": invalid line (expected a key and a value)";
-      Debug::die(oss.str());
-    }
-    std::string key = line.substr(0, index);
-
-    // get the value
-    do {
-      index++;
-    } while (index < line.size()
-        && (line[index] == ' ' || line[index] == '\t' || line[index] == '\r'));
-
-    if (index >= line.size()) {
-      std::ostringstream oss;
-      oss << "strings.dat, line " << i
-          << ": the value of key '" << key << "' is missing";
-      Debug::die(oss.str());
-    }
-
-    std::string value = line.substr(index);
-
-    if (value[value.size() - 1] == '\r') {
-      // If the file has DOS line endings, remove the trailing '\r'.
-      value = value.substr(0, value.size() - 1);
-    }
-
-    strings[key] = value;
   }
 
-  FileTools::data_file_close(file);
+  lua_close(l);
 }
 
 /**

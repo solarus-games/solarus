@@ -840,5 +840,18 @@ void Game::stop_game_over() {
   }
 }
 
+/**
+ * \brief Simulates pressing a game command.
+ */
+void Game::simulate_command_pressed(GameCommands::Command command){
+  commands->game_command_pressed(command);
 }
 
+/**
+ * \brief Simulates releasing a game command.
+ */
+void Game::simulate_command_released(GameCommands::Command command){
+  commands->game_command_released(command);
+}
+
+}

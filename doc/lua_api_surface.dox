@@ -44,6 +44,15 @@ Returns the size of this surface.
 - Return value 1 (number): Width of the surface in pixels.
 - Return value 2 (number): Height of the surface in pixels.
 
+\subsection lua_api_surface_clear surface:clear()
+
+Erase all pixels of this surface.
+
+The opacity property and the size of the surface are preserved.
+
+This is equivalent to setting transparent pixels to the entire surface:
+<tt>surface:fill_color({0, 0, 0, 0})</tt>.
+
 \subsection lua_api_surface_fill_color surface:fill_color(color, [x, y, width, height])
 
 Fills a region of this surface with a color.

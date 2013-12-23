@@ -20,7 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Video.h"
-#include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "Transition.h"
 #include <lua.hpp>
 
@@ -116,10 +116,10 @@ int TextSurface::l_font(lua_State* l) {
 
   luaL_checktype(l, 1, LUA_TTABLE);
 
-  const std::string& font_id = LuaContext::check_string_field(l, 1, "id");
-  const std::string& file_name = LuaContext::check_string_field(l, 1, "file");
-  int font_size = LuaContext::opt_int_field(l, 1, "size", 11);
-  bool is_default = LuaContext::opt_boolean_field(l, 1, "default", false);
+  const std::string& font_id = LuaTools::check_string_field(l, 1, "id");
+  const std::string& file_name = LuaTools::check_string_field(l, 1, "file");
+  int font_size = LuaTools::opt_int_field(l, 1, "size", 11);
+  bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
 
   fonts[font_id].file_name = file_name;
   fonts[font_id].font_size = font_size;

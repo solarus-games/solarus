@@ -26,7 +26,9 @@
 #include <map>
 #include <set>
 #include <list>
-#include <lua.hpp>
+
+struct lua_State;
+struct luaL_Reg;
 
 namespace solarus {
 
@@ -40,9 +42,6 @@ namespace solarus {
  * On the contrary, data files written in Lua (like maps and dialogs) are
  * always parsed in their own, independent Lua states because data files only
  * have access to a few determined functions.
- *
- * TODO: this class also provides general Lua utilities that should be moved
- * to a separate LuaTools class. And rename this class to SolarusAPI?
  */
 class LuaContext {
 
@@ -110,81 +109,6 @@ class LuaContext {
     void run_item(EquipmentItem& item);
     void run_map(Map& map, Destination* destination);
     void run_enemy(Enemy& enemy);
-
-    // Lua helpers.
-    static int error(lua_State* l, const std::string& message);
-    static int error(lua_State* l, std::ostringstream& message);
-    static int arg_error(lua_State* l, int arg_index, const std::string& message);
-    static int arg_error(lua_State* l, int arg_index, std::ostringstream message);
-
-    static bool is_color(lua_State* l, int index);
-    static Color check_color(lua_State* l, int index);
-    static bool is_layer(lua_State* l, int index);
-    static Layer check_layer(lua_State* l, int index);
-
-    static int check_int_field(
-        lua_State* l, int table_index, const std::string& key
-    );
-    static int opt_int_field(
-        lua_State* l, int table_index, const std::string& key,
-        int default_value
-    );
-    static double check_number_field(
-        lua_State* l, int table_index, const std::string& key
-    );
-    static double opt_number_field(
-        lua_State* l, int table_index, const std::string& key,
-        double default_value
-    );
-    static const std::string check_string_field(
-        lua_State* l, int table_index, const std::string& key
-    );
-    static const std::string opt_string_field(
-        lua_State* l, int table_index, const std::string& key,
-        const std::string& default_value
-    );
-    static bool check_boolean_field(
-        lua_State* l, int table_index, const std::string& key
-    );
-    static bool opt_boolean_field(
-        lua_State* l, int table_index, const std::string& key,
-        bool default_value
-    );
-    static int check_function_field(
-        lua_State* l, int table_index, const std::string& key
-    );
-    static int opt_function_field(
-        lua_State* l, int table_index, const std::string& key
-    );
-    static Layer check_layer_field(
-        lua_State* l, int table_index, const std::string& key
-    );
-    static Layer opt_layer_field(
-        lua_State* l, int table_index, const std::string& key,
-        Layer default_value
-    );
-    template<typename E>
-    static E check_enum_field(
-        lua_State* l, int table_index, const std::string& key,
-        const std::string names[]
-    );
-    template<typename E>
-    static E opt_enum_field(
-        lua_State* l, int table_index, const std::string& key,
-        const std::string names[], E default_value
-    );
-    template<typename E>
-    static E check_enum(
-        lua_State* l, int index, const std::string names[]
-    );
-    template<typename E>
-    static E opt_enum(
-        lua_State* l, int index, const std::string names[], E default_value
-    );
-
-    static int get_positive_index(lua_State* l, int index);
-    static void print_stack(lua_State* l);
-    static bool is_valid_lua_identifier(const std::string& name);
 
     // Lua refs.
     int create_ref();
@@ -270,17 +194,16 @@ class LuaContext {
     void item_on_suspended(EquipmentItem& item, bool suspended);
     void item_on_map_changed(EquipmentItem& item, Map& map);
     void item_on_pickable_created(EquipmentItem& item, Pickable& pickable);
-    void item_on_pickable_movement_changed(EquipmentItem& item, Pickable& pickable, Movement& movement);  // TODO remove this, use movement:on_changed instead
     void item_on_obtaining(EquipmentItem& item, const Treasure& treasure);
     void item_on_obtained(EquipmentItem& item, const Treasure& treasure);
     void item_on_variant_changed(EquipmentItem& item, int variant);
     void item_on_amount_changed(EquipmentItem& item, int amount);
     void item_on_using(EquipmentItem& item);
     void item_on_ability_used(EquipmentItem& item, const std::string& ability_name);
-    void item_on_npc_interaction(EquipmentItem& item, NPC& npc);
-    bool item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
+    void item_on_npc_interaction(EquipmentItem& item, Npc& npc);
+    bool item_on_npc_interaction_item(EquipmentItem& item, Npc& npc,
         EquipmentItem& item_used);
-    void item_on_npc_collision_fire(EquipmentItem& item, NPC& npc);
+    void item_on_npc_collision_fire(EquipmentItem& item, Npc& npc);
 
     // Game events.
     void game_on_started(Game& game);
@@ -323,9 +246,9 @@ class LuaContext {
     void entity_on_movement_finished(MapEntity& entity);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
     // TODO add destination_on_activated
-    void npc_on_interaction(NPC& npc);
-    bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
-    void npc_on_collision_fire(NPC& npc);
+    void npc_on_interaction(Npc& npc);
+    bool npc_on_interaction_item(Npc& npc, EquipmentItem& item_used);
+    void npc_on_collision_fire(Npc& npc);
     bool chest_on_empty(Chest& chest);
     void block_on_moving(Block& block);
     void block_on_moved(Block& block);
@@ -468,6 +391,7 @@ class LuaContext {
       // Surface API.
       surface_api_create,
       surface_api_get_size,
+      surface_api_clear,
       surface_api_fill_color,
       surface_api_set_opacity,
 
@@ -634,6 +558,8 @@ class LuaContext {
       game_api_get_command_joypad_binding,
       game_api_set_command_joypad_binding,
       game_api_capture_command_binding,
+      game_api_simulate_command_pressed,
+      game_api_simulate_command_released,
 
       // Equipment item API.
       item_api_get_name,
@@ -713,7 +639,7 @@ class LuaContext {
       map_api_create_sensor,
       map_api_create_crystal,
       map_api_create_crystal_block,
-      map_api_create_shop_treasure,  // TODO rename to shop treasure
+      map_api_create_shop_treasure,
       map_api_create_conveyor_belt,
       map_api_create_door,
       map_api_create_stairs,
@@ -769,7 +695,7 @@ class LuaContext {
       hero_api_unfreeze,
       hero_api_walk,
       hero_api_start_jumping,
-      hero_api_start_treasure,  // TODO don't die if the savegame variable is invalid
+      hero_api_start_treasure,
       hero_api_start_victory,
       hero_api_start_item,
       hero_api_start_boomerang,
@@ -795,7 +721,7 @@ class LuaContext {
       door_api_is_closing,
       pickable_api_get_followed_entity,
       pickable_api_get_falling_height,
-      pickable_api_get_treasure,  // TODO return the item, not the item name
+      pickable_api_get_treasure,
       enemy_api_get_breed,
       enemy_api_get_life,
       enemy_api_set_life,
@@ -883,6 +809,7 @@ class LuaContext {
     static bool load_file_if_exists(lua_State* l, const std::string& script_name);
     static void do_file(lua_State* l, const std::string& script_name);
     static bool do_file_if_exists(lua_State* l, const std::string& script_name);
+    void print_stack(lua_State* l);
 
     // Initialization of modules.
     void register_functions(const std::string& module_name, const luaL_Reg* functions);
@@ -923,7 +850,7 @@ class LuaContext {
     static void push_map(lua_State* l, Map& map);
     static void push_entity(lua_State* l, MapEntity& entity);
     static void push_hero(lua_State* l, Hero& hero);
-    static void push_npc(lua_State* l, NPC& npc);
+    static void push_npc(lua_State* l, Npc& npc);
     static void push_chest(lua_State* l, Chest& chest);
     static void push_block(lua_State* l, Block& block);
     static void push_switch(lua_State* l, Switch& sw);
@@ -979,7 +906,7 @@ class LuaContext {
     static bool is_hero(lua_State* l, int index);
     static Hero& check_hero(lua_State* l, int index);
     static bool is_npc(lua_State* l, int index);
-    static NPC& check_npc(lua_State* l, int index);
+    static Npc& check_npc(lua_State* l, int index);
     static bool is_chest(lua_State* l, int index);
     static Chest& check_chest(lua_State* l, int index);
     static bool is_block(lua_State* l, int index);
@@ -1043,9 +970,9 @@ class LuaContext {
     void on_left();
     void on_interaction();
     bool on_interaction_item(EquipmentItem& item_used);
-    void on_npc_interaction(NPC& npc);
-    bool on_npc_interaction_item(NPC& npc, EquipmentItem& item_used);
-    void on_npc_collision_fire(NPC& npc);
+    void on_npc_interaction(Npc& npc);
+    bool on_npc_interaction_item(Npc& npc, EquipmentItem& item_used);
+    void on_npc_collision_fire(Npc& npc);
     void on_collision_fire();
     void on_collision_explosion();
     void on_collision_enemy(Enemy& enemy, Sprite& other_sprite, Sprite& this_sprite);
@@ -1058,7 +985,6 @@ class LuaContext {
     void on_moved();
     void on_map_changed(Map& map);
     void on_pickable_created(Pickable& pickable);
-    void on_pickable_movement_changed(Pickable& pickable, Movement& movement);
     void on_variant_changed(int variant);
     void on_amount_changed(int amount);
     void on_obtaining(const Treasure& treasure);
@@ -1126,138 +1052,6 @@ class LuaContext {
     static const std::string enemy_obstacle_behavior_names[];
     static const std::string transition_style_names[];
 };
-
-/**
- * \brief Checks whether a value is the name of an enumeration value and
- * returns this value.
- *
- * Raises a Lua error if the value is not a string or if the string cannot
- * be found in the array.
- * This is a useful function for mapping strings to C enums.
- *
- * This function is similar to luaL_checkoption except that it accepts an
- * array of std::string instead of char*, and returns a value of enumerated
- * type E instead of int.
- *
- * \param l A Lua state.
- * \param index Index of a string in the Lua stack.
- * \param names An array of strings to search in. This array must be
- * terminated by an empty string.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the array.
- */
-template<typename E>
-E LuaContext::check_enum(
-    lua_State* l, int index, const std::string names[]) {
-
-  Debug::check_assertion(!names[0].empty(), "Invalid list of names");
-
-  const std::string& name = luaL_checkstring(l, index);
-  for (int i = 0; !names[i].empty(); ++i) {
-    if (names[i] == name) {
-      return E(i);
-    }
-  }
-
-  // The value was not found. Build an error message with possible values.
-  std::string allowed_names;
-  for (int i = 0; !names[i].empty(); ++i) {
-    allowed_names += "\"" + names[i] + "\", ";
-  }
-  allowed_names = allowed_names.substr(0, allowed_names.size() - 2);
-
-  arg_error(l, index,
-      std::string("Invalid name '") + name + "'. Allowed names are: "
-      + allowed_names
-  );
-  throw;  // Make sure the compiler is happy.
-}
-
-/**
- * \brief Like check_enum but with a default value.
- *
- * \param l A Lua state.
- * \param index Index of a string in the Lua stack.
- * \param names An array of strings to search in. This array must be
- * terminated by an empty string.
- * \param default_value The default value to return.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the array.
- */
-template<typename E>
-E LuaContext::opt_enum(
-    lua_State* l, int index, const std::string names[], E default_value) {
-
-  E value = default_value;
-  if (!lua_isnoneornil(l, index)) {
-    value = check_enum<E>(l, index, names);
-  }
-  return value;
-}
-
-/**
- * \brief Checks that a table field is the name of an enumeration value and
- * returns this value.
- *
- * This function acts like lua_getfield() followed by check_enum().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param names An array of strings to search in. This array must be
- * terminated by an empty string.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the array.
- */
-template<typename E>
-E LuaContext::check_enum_field(
-    lua_State* l, int table_index, const std::string& key,
-    const std::string names[]) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (!lua_isstring(l, -1)) {
-    arg_error(l, table_index,
-        std::string("Bad field '") + key + "' (string expected, got "
-        + luaL_typename(l, -1)
-    );
-  }
-
-  E value = check_enum<E>(l, -1, names);
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Like check_enum_field but with a default value.
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param names An array of strings to search in. This array must be
- * terminated by an empty string.
- * \param default_value The default value to return.
- * \return The index (converted to the enumerated type E) where the string was
- * found in the array.
- */
-template<typename E>
-E LuaContext::opt_enum_field(
-    lua_State* l, int table_index, const std::string& key,
-    const std::string names[], E default_value) {
-
-  lua_getfield(l, table_index, key.c_str());
-  E value = default_value;
-  if (!lua_isnil(l, -1)) {
-    if (!lua_isstring(l, -1)) {
-      arg_error(l, table_index,
-          std::string("Bad field '") + key + "' (string expected, got "
-          + luaL_typename(l, -1) + ")"
-      );
-    }
-    value = check_enum<E>(l, -1, names);
-  }
-
-  return value;
-}
 
 }
 

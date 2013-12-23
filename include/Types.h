@@ -84,6 +84,7 @@ class DialogResource;
 // Lua
 class ExportableToLua;
 class LuaContext;
+class LuaTools;
 
 // drawable objects
 class Sprite;
@@ -115,7 +116,7 @@ class Chest;
 class Jumper;
 class Enemy;
 class EnemyReaction;
-class NPC;
+class Npc;
 class Block;
 class Switch;
 class Wall;

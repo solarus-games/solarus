@@ -408,26 +408,25 @@ void MapEntities::notify_tileset_changed() {
  */
 void MapEntities::add_tile(Tile* tile) {
 
-  TilePattern& pattern = map.get_tileset().get_tile_pattern(tile->get_tile_pattern_id());
-
-  Debug::check_assertion(
-      tile->get_width() == pattern.get_width()
-      && tile->get_height() == pattern.get_height(),
-      "Static tile size must match tile pattern size");
-
-  Layer layer = tile->get_layer();
+  const Layer layer = tile->get_layer();
 
   // Add the tile to the map.
   tiles[layer].push_back(tile);
   tile->set_map(map);
 
-  // Update the ground list.
-  Ground ground = tile->get_tile_pattern().get_ground();
+  const TilePattern& pattern = tile->get_tile_pattern();
+  Debug::check_assertion(
+      tile->get_width() == pattern.get_width()
+      && tile->get_height() == pattern.get_height(),
+      "Static tile size must match tile pattern size");
 
-  int tile_x8 = tile->get_x() / 8;
-  int tile_y8 = tile->get_y() / 8;
-  int tile_width8 = tile->get_width() / 8;
-  int tile_height8 = tile->get_height() / 8;
+  // Update the ground list.
+  const Ground ground = tile->get_tile_pattern().get_ground();
+
+  const int tile_x8 = tile->get_x() / 8;
+  const int tile_y8 = tile->get_y() / 8;
+  const int tile_width8 = tile->get_width() / 8;
+  const int tile_height8 = tile->get_height() / 8;
 
   int i, j;
   Ground non_obstacle_triangle;

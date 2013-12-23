@@ -889,7 +889,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
 
   entity_creation_check_size(l, 1, width, height);
 
-  TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
+  const TilePattern& pattern = map.get_tileset().get_tile_pattern(tile_pattern_id);
 
   for (int current_y = y; current_y < y + height; current_y += pattern.get_height()) {
     for (int current_x = x; current_x < x + width; current_x += pattern.get_width()) {

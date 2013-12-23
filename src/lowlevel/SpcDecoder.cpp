@@ -55,17 +55,17 @@ void SpcDecoder::load(int16_t *sound_data, size_t sound_size) {
 
 /**
  * \brief Decodes a chunk of the previously loaded SPC data into PCM data.
- * \param decoded_data pointer to where you want the decoded data to be wrote
+ * \param decoded_data pointer to where you want the decoded data to be written.
  * \param nb_samples number of samples to write
  */
-void SpcDecoder::decode(int16_t *decoded_data, int nb_samples) {
+void SpcDecoder::decode(int16_t* decoded_data, int nb_samples) {
 
   // decode from the SPC data the specified number of PCM samples
 
   const char* err = spc_play(snes_spc_manager, nb_samples, (short int*) decoded_data);
-  Debug::check_assertion(err == NULL,
-      std::string("Failed to decode SPC data: ") + err
-  );
+  if (err != NULL) {
+      Debug::die(std::string("Failed to decode SPC data: ") + err);
+  }
   spc_filter_run(snes_spc_filter, (short int*) decoded_data, nb_samples);
 }
 

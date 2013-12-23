@@ -113,13 +113,13 @@ int LuaContext::surface_api_create(lua_State* l) {
   else {
     luaL_typerror(l, 1, "number, string or no value");
   }
-  surface->set_software_destination(true);
 
   if (surface == NULL) {
     // Image file not found or not valid.
     lua_pushnil(l);
   }
   else {
+    surface->set_software_destination(true);
     get_lua_context(l).add_drawable(surface);
     push_surface(l, *surface);
   }

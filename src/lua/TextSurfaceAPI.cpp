@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include <lua.hpp>
 #include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/FileTools.h"
 #include "Language.h"
@@ -134,27 +134,27 @@ int LuaContext::text_surface_api_create(lua_State* l) {
       if (key == "font") {
         const std::string& font_id = luaL_checkstring(l, 3);
         if (!TextSurface::has_font(font_id)) {
-          LuaTools::error(l, std::string("No such font: '") + font_id + "'");
+          error(l, std::string("No such font: '") + font_id + "'");
         }
         text_surface->set_font(font_id);
       }
       else if (key == "rendering_mode") {
         TextSurface::RenderingMode mode =
-            LuaTools::check_enum<TextSurface::RenderingMode>(l, 3, rendering_mode_names);
+            check_enum<TextSurface::RenderingMode>(l, 3, rendering_mode_names);
         text_surface->set_rendering_mode(mode);
       }
       else if (key == "horizontal_alignment") {
         TextSurface::HorizontalAlignment alignment =
-            LuaTools::check_enum<TextSurface::HorizontalAlignment>(l, 3, horizontal_alignment_names);
+            check_enum<TextSurface::HorizontalAlignment>(l, 3, horizontal_alignment_names);
         text_surface->set_horizontal_alignment(alignment);
       }
       else if (key == "vertical_alignment") {
         TextSurface::VerticalAlignment alignment =
-            LuaTools::check_enum<TextSurface::VerticalAlignment>(l, 3, vertical_alignment_names);
+            check_enum<TextSurface::VerticalAlignment>(l, 3, vertical_alignment_names);
         text_surface->set_vertical_alignment(alignment);
       }
       else if (key == "color") {
-        Color color = LuaTools::check_color(l, 3);
+        Color color = check_color(l, 3);
         text_surface->set_text_color(color);
       }
       else if (key == "text") {
@@ -166,7 +166,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
 
         if (!StringResource::exists(text_key)) {
           delete text_surface;
-          LuaTools::error(l, std::string("No value with key '") + text_key
+          error(l, std::string("No value with key '") + text_key
               + "' in strings.dat for language '"
               + Language::get_language() + "'"
           );
@@ -175,7 +175,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
       }
       else {
         delete text_surface;
-        LuaTools::error(l, std::string("Invalid key '") + key
+        error(l, std::string("Invalid key '") + key
             + "' for text surface properties");
       }
       lua_pop(l, 1); // Pop the value, let the key for the iteration.
@@ -210,9 +210,8 @@ int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
 int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  TextSurface::HorizontalAlignment alignment =
-      LuaTools::check_enum<TextSurface::HorizontalAlignment>(
-          l, 1, horizontal_alignment_names);
+  TextSurface::HorizontalAlignment alignment = check_enum<TextSurface::HorizontalAlignment>(
+      l, 1, horizontal_alignment_names);
 
   text_surface.set_horizontal_alignment(alignment);
 
@@ -242,9 +241,8 @@ int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  TextSurface::VerticalAlignment alignment =
-      LuaTools::check_enum<TextSurface::VerticalAlignment>(
-          l, 1, vertical_alignment_names);
+  TextSurface::VerticalAlignment alignment = check_enum<TextSurface::VerticalAlignment>(
+      l, 1, vertical_alignment_names);
 
   text_surface.set_vertical_alignment(alignment);
 
@@ -277,7 +275,7 @@ int LuaContext::text_surface_api_set_font(lua_State* l) {
   const std::string& font_id = luaL_checkstring(l, 2);
 
   if (!TextSurface::has_font(font_id)) {
-    LuaTools::arg_error(l, 2, std::string("No such font: '") + font_id + "'");
+    arg_error(l, 2, std::string("No such font: '") + font_id + "'");
   }
   text_surface.set_font(font_id);
 
@@ -307,7 +305,7 @@ int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  TextSurface::RenderingMode mode = LuaTools::check_enum<TextSurface::RenderingMode>(
+  TextSurface::RenderingMode mode = check_enum<TextSurface::RenderingMode>(
       l, 1, rendering_mode_names);
 
   text_surface.set_rendering_mode(mode);
@@ -338,7 +336,7 @@ int LuaContext::text_surface_api_get_color(lua_State* l) {
 int LuaContext::text_surface_api_set_color(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  const Color& color = LuaTools::check_color(l, 2);
+  const Color& color = check_color(l, 2);
 
   text_surface.set_text_color(color);
 
@@ -388,7 +386,7 @@ int LuaContext::text_surface_api_set_text_key(lua_State* l) {
   const std::string& key = luaL_checkstring(l, 2);
 
   if (!StringResource::exists(key)) {
-    LuaTools::arg_error(l, 2, std::string("No value with key '") + key
+    arg_error(l, 2, std::string("No value with key '") + key
         + "' in strings.dat for language '"
         + Language::get_language() + "'"
     );

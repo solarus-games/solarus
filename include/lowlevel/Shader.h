@@ -17,7 +17,6 @@
 #ifndef SOLARUS_SHADER_H
 #define SOLARUS_SHADER_H
 
-#include "Common.h"
 #include "Debug.h"
 
 #if SOLARUS_HAVE_OPENGL_OR_ES == 1
@@ -51,7 +50,7 @@ class Shader {
     Shader(const std::string& shader_name);
     ~Shader();
 
-    const std::string& get_name();
+    std::string get_name();
     double get_window_scale();
   
     void apply();
@@ -90,7 +89,7 @@ class Shader {
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
     std::string shader_name;                     /**< The name of the shader. */
     double window_scale;                         /**< Default scale of the window when the shader is being active,
-                                                  * compared to the normal quest size. */
+                                                      compared to the normal quest size. */
 #endif
 };
 

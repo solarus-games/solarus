@@ -384,6 +384,15 @@ void EquipmentItem::notify_pickable_appeared(Pickable& pickable) {
 }
 
 /**
+ * \brief Notifies the script that a pickable instance of this item has moved.
+ * \param pickable The pickable treasure.
+ */
+void EquipmentItem::notify_movement_changed(Pickable& pickable) {
+
+  get_lua_context().item_on_pickable_movement_changed(*this, pickable, *pickable.get_movement());
+}
+
+/**
  * \brief Returns the possession state of this item.
  *
  * The item must be saved.

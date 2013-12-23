@@ -62,26 +62,6 @@ class Surface::SubSurfaceNode: public RefCountable {
       for (unsigned i = 0; i < subsurfaces.size(); ++i) {
         RefCountable::ref(subsurfaces[i]);
       }
-
-      // Clip the source rectangle to the size of the source surface.
-      // Otherwise, SDL_RenderCopy() will stretch the image.
-      if (this->src_rect.get_x() < 0) {
-        this->src_rect.set_x(0);
-        this->src_rect.set_width(this->src_rect.get_width() + src_rect.get_x());
-        this->dst_rect.add_x(-src_rect.get_x());
-      }
-      if (this->src_rect.get_x() + this->src_rect.get_width() > src_surface->get_width()) {
-        this->src_rect.set_width(src_surface->get_width() - this->src_rect.get_x());
-      }
-      if (src_rect.get_y() < 0) {
-        this->src_rect.set_y(0);
-        this->src_rect.set_height(this->src_rect.get_height() + src_rect.get_y());
-        this->dst_rect.add_y(-src_rect.get_y());
-      }
-      if (this->src_rect.get_y() + this->src_rect.get_height() > src_surface->get_height()) {
-        this->src_rect.set_height(src_surface->get_height() - this->src_rect.get_y());
-      }
-
     }
 
     ~SubSurfaceNode() {
@@ -419,37 +399,6 @@ void Surface::create_software_surface() {
 }
 
 /**
- * \brief Clears this surface.
- *
- * The surface becomes fully transparent and its size remains unchanged.
- * The opacity property of the surface is preserved.
- */
-void Surface::clear() {
-
-  if (software_destination
-      || !Video::is_acceleration_enabled()
-  ) {
-    // Software version: set all pixels transparent.
-    fill_with_color(Color::get_transparent(), Rectangle(0, 0, width, height));
-  }
-  else {
-    // Hardware version: clear the subsurface queue.
-    clear_subsurfaces();
-
-    delete internal_color;
-    internal_color = NULL;
-
-    if (internal_texture != NULL) {
-      SDL_DestroyTexture(internal_texture);
-    }
-
-    if (internal_surface != NULL) {
-      SDL_FreeSurface(internal_surface);
-    }
-  }
-}
-
-/**
  * \brief Fills the entire surface with the specified color.
  * \param color A color.
  */
@@ -504,7 +453,6 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
  * \param src_surface The Surface to draw.
  * \param region The subrectangle to draw in the source surface.
  * \param dst_position Coordinates on this surface.
- * The width and height of this rectangle are ignored.
  */
 void Surface::add_subsurface(
     Surface& src_surface,
@@ -554,7 +502,6 @@ void Surface::raw_draw(Surface& dst_surface, const Rectangle& dst_position) {
  * \param region The subrectangle to draw in this object.
  * \param dst_surface The destination surface.
  * \param dst_position Coordinates on the destination surface.
- * The width and height of this rectangle are ignored.
  */
 void Surface::raw_draw_region(
     const Rectangle& region,
@@ -602,7 +549,7 @@ void Surface::raw_draw_region(
       );
     }
     else if (internal_color != NULL) { // No internal surface to draw: this may be a color.
-      dst_surface.fill_with_color(*internal_color, region);
+      dst_surface.fill_with_color(*internal_color, dst_position);
     }
   }
   else {
@@ -674,21 +621,21 @@ void Surface::render(SDL_Renderer* renderer) {
 }
 
 /**
- * \brief Renders the internal texture if any, and all subsurfaces that are
- * drawn onto it.
+ * \brief Draws the internal texture if any, and all subtextures on the
+ * renderer.
+ *
+ * Clears the subsurfaces vector at the end of the method.
+ *
  * \param renderer The renderer where to draw.
  * \param src_rect The subrectangle of the texture to draw.
- * \param dst_xy The position where to draw on the renderer.
- * The width and height of this rectangle are ignored.
- * \param clip_rect A portion of the renderer where to restrict the drawing.
+ * \param dst_rect The portion of renderer where to draw.
+ * \param clip_rect The clip area, correspond to parents dst_rect.
  * \param opacity The opacity of the parent surface.
- * \param subsurfaces The subsurfaces drawn onto this texture. They will be
- * renderered recursively.
  */
 void Surface::render(
     SDL_Renderer* renderer,
     const Rectangle& src_rect,
-    const Rectangle& dst_xy,
+    const Rectangle& dst_rect,
     const Rectangle& clip_rect,
     uint8_t opacity,
     const std::vector<SubSurfaceNode*>& subsurfaces) {
@@ -731,30 +678,25 @@ void Surface::render(
   if (internal_texture != NULL) {
     SDL_SetTextureAlphaMod(internal_texture, current_opacity);
     //SDL_RenderSetClipRect(renderer, clip_rect.get_internal_rect());
-
     SDL_RenderCopy(
         renderer,
         internal_texture,
         src_rect.get_internal_rect(),
-        dst_xy.get_internal_rect()
-    );
+        dst_rect.get_internal_rect());
   }
 
-  // The surface is renderered. Now draw all subtextures.
+  // Draw all subtextures.
   std::vector<SubSurfaceNode*>::const_iterator it;
   const std::vector<SubSurfaceNode*>::const_iterator end = subsurfaces.end();
   for (it = subsurfaces.begin(); it != end; ++it) {
     SubSurfaceNode* subsurface = *it;
 
-    // subsurface has to be drawn on this surface
-
     // Calculate absolute destination subrectangle position on screen.
     Rectangle subsurface_dst_rect(
-        dst_xy.get_x() + subsurface->dst_rect.get_x() - src_rect.get_x(),
-        dst_xy.get_y() + subsurface->dst_rect.get_y() - src_rect.get_y(),
+        dst_rect.get_x() + subsurface->dst_rect.get_x() - src_rect.get_x(),
+        dst_rect.get_y() + subsurface->dst_rect.get_y() - src_rect.get_y(),
         subsurface->src_rect.get_width(),
-        subsurface->src_rect.get_height()
-    );
+        subsurface->src_rect.get_height());
 
     // Set the intersection of the subsurface destination and this surface's clip as clipping rectangle.
     Rectangle superimposed_clip_rect;

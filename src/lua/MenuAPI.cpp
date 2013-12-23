@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
 #include "lowlevel/Surface.h"
 #include <lua.hpp>
 #include <list>
@@ -229,7 +228,7 @@ int LuaContext::menu_api_stop(lua_State* l) {
   }
 
   if (menu_ref == LUA_REFNIL) {
-    LuaTools::error(l, "Unknown menu");
+    error(l, "Unknown menu.");
   }
 
   return 0;

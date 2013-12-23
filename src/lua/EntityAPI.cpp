@@ -15,9 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
 #include "entities/Hero.h"
-#include "entities/Npc.h"
+#include "entities/NPC.h"
 #include "entities/Chest.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
@@ -499,12 +498,12 @@ int LuaContext::entity_api_set_size(lua_State* l) {
   if (width < 0 || width % 8 != 0) {
     std::ostringstream oss;
     oss << "Invalid width: " << width << ": should be a positive multiple of 8";
-    LuaTools::arg_error(l, 2, oss.str());
+    arg_error(l, 2, oss.str());
   }
   if (height < 0 || height % 8 != 0) {
     std::ostringstream oss;
     oss << "Invalid height: " << height << ": should be a positive multiple of 8";
-    LuaTools::arg_error(l, 3, oss.str());
+    arg_error(l, 3, oss.str());
   }
 
   entity.set_size(width, height);
@@ -571,7 +570,7 @@ int LuaContext::entity_api_set_position(lua_State* l) {
   int y = luaL_checkint(l, 3);
   int layer = -1;
   if (lua_gettop(l) >= 4) {
-    layer = LuaTools::check_layer(l, 4);
+    layer = check_layer(l, 4);
   }
 
   entity.set_xy(x, y);
@@ -983,7 +982,7 @@ int LuaContext::hero_api_teleport(lua_State* l) {
   Hero& hero = check_hero(l, 1);
   const std::string& map_id = luaL_checkstring(l, 2);
   const std::string& destination_name = luaL_optstring(l, 3, "");
-  Transition::Style transition_style = LuaTools::opt_enum<Transition::Style>(
+  Transition::Style transition_style = opt_enum<Transition::Style>(
       l, 4, transition_style_names, Transition::FADE);
 
   // TODO don't allow side destinations and scrolling?
@@ -1062,7 +1061,7 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
   if (lua_gettop(l) >= 2) {
     x = luaL_checkint(l, 2);
     y = luaL_checkint(l, 3);
-    layer = LuaTools::check_layer(l, 4);
+    layer = check_layer(l, 4);
   }
   else {
     x = hero.get_x();
@@ -1176,20 +1175,19 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
   int variant = luaL_optint(l, 3, 1);
   const std::string& savegame_variable = luaL_optstring(l, 4, "");
 
-  if (!savegame_variable.empty()
-      && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
-    LuaTools::arg_error(l, 4, std::string(
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    arg_error(l, 4, std::string(
         "savegame variable identifier expected, got '") +
         savegame_variable + "'");
   }
 
   if (!hero.get_game().get_equipment().item_exists(item_name)) {
-    LuaTools::arg_error(l, 2, std::string("No such item: '") + item_name + "'");
+    arg_error(l, 2, std::string("No such item: '") + item_name + "'");
   }
 
   Treasure treasure(hero.get_game(), item_name, variant, savegame_variable);
   if (treasure.is_found()) {
-    LuaTools::arg_error(l, 4, "This treasure is already found");
+    arg_error(l, 4, "This treasure is already found");
   }
 
   int callback_ref = LUA_REFNIL;
@@ -1420,8 +1418,8 @@ bool LuaContext::is_npc(lua_State* l, int index) {
  * \param index An index in the stack.
  * \return The NPC.
  */
-Npc& LuaContext::check_npc(lua_State* l, int index) {
-  return static_cast<Npc&>(check_userdata(l, index, entity_npc_module_name));
+NPC& LuaContext::check_npc(lua_State* l, int index) {
+  return static_cast<NPC&>(check_userdata(l, index, entity_npc_module_name));
 }
 
 /**
@@ -1429,7 +1427,7 @@ Npc& LuaContext::check_npc(lua_State* l, int index) {
  * \param l A Lua context.
  * \param npc An NPC.
  */
-void LuaContext::push_npc(lua_State* l, Npc& npc) {
+void LuaContext::push_npc(lua_State* l, NPC& npc) {
   push_userdata(l, npc);
 }
 
@@ -1637,7 +1635,7 @@ int LuaContext::block_api_set_maximum_moves(lua_State* l) {
   if (lua_isnumber(l, 2)) {
     const int maximum_moves = luaL_checkint(l, 2);
     if (maximum_moves < 0 || maximum_moves > 1) {
-      LuaTools::arg_error(l, 2, "maximum_moves should be 0, 1 or nil");
+      arg_error(l, 2, "maximum_moves should be 0, 1 or nil");
     }
     block.set_maximum_moves(maximum_moves);
   }
@@ -2024,7 +2022,7 @@ int LuaContext::pickable_api_get_treasure(lua_State* l) {
   Pickable& pickable = check_pickable(l, 1);
   const Treasure& treasure = pickable.get_treasure();
 
-  push_item(l, treasure.get_item());
+  push_string(l, treasure.get_item_name());
   lua_pushinteger(l, treasure.get_variant());
   lua_pushstring(l, treasure.get_savegame_variable().c_str());
   return 1;
@@ -2324,7 +2322,7 @@ int LuaContext::enemy_api_get_hurt_style(lua_State* l) {
 int LuaContext::enemy_api_set_hurt_style(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  Enemy::HurtStyle hurt_style = LuaTools::check_enum<Enemy::HurtStyle>(
+  Enemy::HurtStyle hurt_style = check_enum<Enemy::HurtStyle>(
       l, 2, enemy_hurt_style_names);
 
   enemy.set_hurt_style(hurt_style);
@@ -2401,7 +2399,7 @@ int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
 int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, enemy_attack_names);
+  EnemyAttack attack = check_enum<EnemyAttack>(l, 2, enemy_attack_names);
 
   if (lua_isnumber(l, 3)) {
     int life_points = luaL_checkint(l, 3);
@@ -2409,12 +2407,12 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
       std::ostringstream oss;
       oss << "Invalid life points number for attack consequence: '"
           << life_points << "'";
-      LuaTools::arg_error(l, 3, oss.str());
+      LuaContext::arg_error(l, 3, oss.str());
     }
     enemy.set_attack_consequence(attack, EnemyReaction::HURT, life_points);
   }
   else {
-    EnemyReaction::ReactionType reaction = LuaTools::check_enum<EnemyReaction::ReactionType>(
+    EnemyReaction::ReactionType reaction = check_enum<EnemyReaction::ReactionType>(
         l, 3, EnemyReaction::reaction_names);
     enemy.set_attack_consequence(attack, reaction);
   }
@@ -2431,7 +2429,7 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   Sprite& sprite = check_sprite(l, 2);
-  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, enemy_attack_names);
+  EnemyAttack attack = check_enum<EnemyAttack>(l, 3, enemy_attack_names);
 
   if (lua_isnumber(l, 4)) {
     int life_points = luaL_checkint(l, 4);
@@ -2439,12 +2437,12 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
       std::ostringstream oss;
       oss << "Invalid life points number for attack consequence: '"
           << life_points << "'";
-      LuaTools::arg_error(l, 4, oss.str());
+      LuaContext::arg_error(l, 4, oss.str());
     }
     enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::HURT, life_points);
   }
   else {
-    EnemyReaction::ReactionType reaction = LuaTools::check_enum<EnemyReaction::ReactionType>(
+    EnemyReaction::ReactionType reaction = check_enum<EnemyReaction::ReactionType>(
         l, 4, EnemyReaction::reaction_names);
     enemy.set_attack_consequence_sprite(sprite, attack, reaction);
   }
@@ -2531,9 +2529,8 @@ int LuaContext::enemy_api_set_treasure(lua_State* l) {
     savegame_variable = luaL_checkstring(l, 4);
   }
 
-  if (!savegame_variable.empty()
-      && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
-    LuaTools::arg_error(l, 4,
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    arg_error(l, 4,
         std::string("savegame variable identifier expected, got '")
         + savegame_variable + "'");
   }
@@ -2599,7 +2596,7 @@ int LuaContext::enemy_api_get_obstacle_behavior(lua_State* l) {
 int LuaContext::enemy_api_set_obstacle_behavior(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  Enemy::ObstacleBehavior behavior = LuaTools::check_enum<Enemy::ObstacleBehavior>(
+  Enemy::ObstacleBehavior behavior = check_enum<Enemy::ObstacleBehavior>(
       l, 2, enemy_obstacle_behavior_names);
 
   enemy.set_obstacle_behavior(behavior);
@@ -2667,28 +2664,26 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   luaL_checktype(l, 2, LUA_TTABLE);
-  const std::string& name = LuaTools::opt_string_field(l, 2, "name", "");
-  Layer layer = LuaTools::opt_layer_field(l, 2, "layer", enemy.get_layer());
-  int x = LuaTools::opt_int_field(l, 2, "x", 0);
-  int y = LuaTools::opt_int_field(l, 2, "y", 0);
-  int direction = LuaTools::opt_int_field(l, 2, "direction", 3);
-  const std::string& breed = LuaTools::check_string_field(l, 2, "breed");
-  Enemy::Rank rank = Enemy::Rank(LuaTools::opt_int_field(l, 2, "rank", 0));
-  const std::string& savegame_variable = LuaTools::opt_string_field(l, 2, "savegame_variable", "");
-  const std::string& treasure_name = LuaTools::opt_string_field(l, 2, "treasure_name", "");
-  int treasure_variant = LuaTools::opt_int_field(l, 2, "treasure_variant", 1);
-  const std::string& treasure_savegame_variable = LuaTools::opt_string_field(l, 2, "treasure_savegame_variable", "");
+  const std::string& name = opt_string_field(l, 2, "name", "");
+  Layer layer = opt_layer_field(l, 2, "layer", enemy.get_layer());
+  int x = opt_int_field(l, 2, "x", 0);
+  int y = opt_int_field(l, 2, "y", 0);
+  int direction = opt_int_field(l, 2, "direction", 3);
+  const std::string& breed = check_string_field(l, 2, "breed");
+  Enemy::Rank rank = Enemy::Rank(opt_int_field(l, 2, "rank", 0));
+  const std::string& savegame_variable = opt_string_field(l, 2, "savegame_variable", "");
+  const std::string& treasure_name = opt_string_field(l, 2, "treasure_name", "");
+  int treasure_variant = opt_int_field(l, 2, "treasure_variant", 1);
+  const std::string& treasure_savegame_variable = opt_string_field(l, 2, "treasure_savegame_variable", "");
 
-  if (!savegame_variable.empty()
-      && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
-    LuaTools::arg_error(l, 2, std::string(
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    arg_error(l, 2, std::string(
         "Bad field 'savegame_variable' (invalid savegame variable identifier '")
         + savegame_variable + "'");
   }
 
-  if (!treasure_savegame_variable.empty()
-      && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
-    LuaTools::arg_error(l, 2, std::string(
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    arg_error(l, 2, std::string(
         "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '")
         + treasure_savegame_variable + "'");
   }
@@ -2878,7 +2873,7 @@ void LuaContext::hero_on_state_changed(
  *
  * \param npc An NPC.
  */
-void LuaContext::npc_on_interaction(Npc& npc) {
+void LuaContext::npc_on_interaction(NPC& npc) {
 
   if (!userdata_has_field(npc, "on_interaction")) {
     return;
@@ -2898,7 +2893,7 @@ void LuaContext::npc_on_interaction(Npc& npc) {
  * \param item_used The equipment item used.
  * \return \c true if an interaction occurred.
  */
-bool LuaContext::npc_on_interaction_item(Npc& npc, EquipmentItem& item_used) {
+bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
 
   if (!userdata_has_field(npc, "on_interaction_item")) {
     return false;
@@ -2917,7 +2912,7 @@ bool LuaContext::npc_on_interaction_item(Npc& npc, EquipmentItem& item_used) {
  *
  * \param npc An NPC.
  */
-void LuaContext::npc_on_collision_fire(Npc& npc) {
+void LuaContext::npc_on_collision_fire(NPC& npc) {
 
   if (!userdata_has_field(npc, "on_collision_fire")) {
     return;

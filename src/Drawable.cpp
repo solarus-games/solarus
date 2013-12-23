@@ -233,7 +233,6 @@ void Drawable::draw_region(
  * \param dst_surface The destination surface
  * \param dst_position Position on this surface
  * (will be added to the position obtained by previous movements).
- * The width and height of this rectangle are ignored.
  */
 void Drawable::draw_region(
     const Rectangle& region,

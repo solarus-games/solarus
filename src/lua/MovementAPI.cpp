@@ -14,8 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include <lua.hpp>
+#include <cmath>
+#include <sstream>
 #include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
 #include "movements/PixelMovement.h"
 #include "movements/PathMovement.h"
 #include "movements/RandomMovement.h"
@@ -31,8 +33,6 @@
 #include "Game.h"
 #include "Map.h"
 #include "Drawable.h"
-#include <cmath>
-#include <sstream>
 
 namespace solarus {
 
@@ -434,7 +434,7 @@ int LuaContext::movement_api_create(lua_State* l) {
     movement = new PixelMovement("", 30, false, false);
   }
   else {
-    LuaTools::arg_error(l, 1, "should be one of: "
+    arg_error(l, 1, "should be one of: "
         "\"straight\", "
         "\"random\", "
         "\"target\", "

@@ -148,8 +148,7 @@ class Map: public ExportableToLua {
     friend class MapLoader; // the map loader modifies the private fields of Map
 
     void set_suspended(bool suspended);
-    void build_background_surface();
-    void build_foreground_surface();
+    void rebuild_background_surface();
     void draw_background();
     void draw_foreground();
 
@@ -189,7 +188,6 @@ class Map: public ExportableToLua {
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map */
     Surface* background_surface;  /**< a surface filled with the background color of the tileset */
-    Surface* foreground_surface;  /**< A surface with black bars, when the map is smaller than the screen. */
 
     // map state
     bool loaded;                  /**< true if the loading phase is finished */

@@ -44,7 +44,7 @@ namespace solarus {
  * interactive entity, and the map script has to handle explicitly its
  * animations (if any).
  */
-class Npc: public Detector {
+class NPC: public Detector {
 
   public:
 
@@ -77,10 +77,10 @@ class Npc: public Detector {
 
   public:
 
-    Npc(Game& game, const std::string& name, Layer layer, int x, int y,
+    NPC(Game& game, const std::string& name, Layer layer, int x, int y,
         Subtype subtype, const std::string& sprite_name,
         int initial_direction, const std::string& behavior_string);
-    ~Npc();
+    ~NPC();
 
     EntityType get_type() const;
 
@@ -89,7 +89,7 @@ class Npc: public Detector {
     bool is_drawn_in_y_order() const;
     bool is_obstacle_for(const MapEntity& other) const;
     bool is_hero_obstacle(const Hero& hero) const;
-    bool is_npc_obstacle(const Npc& npc) const;
+    bool is_npc_obstacle(const NPC& npc) const;
     bool is_enemy_obstacle(const Enemy& enemy) const;
     bool is_sword_ignored() const;
 

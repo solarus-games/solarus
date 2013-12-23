@@ -20,7 +20,7 @@
 #include "entities/Stairs.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
-#include "entities/Npc.h"
+#include "entities/NPC.h"
 #include "entities/MapEntities.h"
 #include "movements/TargetMovement.h"
 #include "movements/StraightMovement.h"
@@ -231,7 +231,7 @@ bool Boomerang::is_crystal_obstacle(const Crystal& crystal) const {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool Boomerang::is_npc_obstacle(const Npc& npc) const {
+bool Boomerang::is_npc_obstacle(const NPC& npc) const {
   return npc.is_solid();
 }
 

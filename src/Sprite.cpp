@@ -704,7 +704,7 @@ void Sprite::raw_draw(
           current_direction, current_frame);
     }
     else {
-      intermediate_surface->clear();
+      intermediate_surface->fill_with_color(Color::get_transparent());
       current_animation->draw(*intermediate_surface, get_origin(),
           current_direction, current_frame);
       Rectangle dst_position2(dst_position);
@@ -731,7 +731,7 @@ void Sprite::raw_draw_region(
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
     // Clear the working surface.
-    get_intermediate_surface().clear();
+    get_intermediate_surface().fill_with_color(Color::get_transparent());
 
     // Draw the current animation on the working surface.
     const Rectangle& origin = get_origin();

@@ -69,7 +69,6 @@ class Surface: public Drawable {
     void set_software_destination(bool software_destination);
 
     void set_opacity(uint8_t opacity);
-    void clear();
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
 

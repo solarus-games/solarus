@@ -781,28 +781,6 @@ of directional game commands currently pressed by the player.
   \ref lua_api_game_is_command_pressed "game:is_command_pressed()" four times
   (with the four directional game commands).
 
-\subsection lua_api_game_simulate_command_pressed game:simulate_command_pressed(command)
-
-Creates a command pressed input event.
-
-Everything acts like if the player had just pressed an input mapped to this
-game command.
-- \c command (string): Name of a game command.
-  Valid commands are
-  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
-  \c "right", \c "up", \c "left" and \c "down".
-
-\subsection lua_api_game_simulate_command_released game:simulate_command_released(command)
-
-Creates a command released input event.
-
-Everything acts like if the player had just released an input mapped to this
-game command.
-- \c command (string): Name of a game command.
-  Valid commands are
-  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
-  \c "right", \c "up", \c "left" and \c "down".
-
 \section lua_api_game_events Events of a game
 
 Events are callback methods automatically called by the engine if you define

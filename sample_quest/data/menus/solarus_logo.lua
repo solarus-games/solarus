@@ -37,9 +37,7 @@ local timer = nil
 -------------------------------------------------------------------------------
 
 -- Rebuilds the whole surface of the menu.
-local function rebuild_surface()
-
-  surface:clear()
+local function rebuild_surface ()
 
   -- Draw the title (after step 1).
   if animation_step >= 1 then

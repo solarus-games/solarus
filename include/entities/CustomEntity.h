@@ -111,7 +111,7 @@ class CustomEntity: public Detector {
     bool is_switch_obstacle(const Switch& sw) const;
     bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
     bool is_crystal_obstacle(const Crystal& crystal) const;
-    bool is_npc_obstacle(const Npc& npc) const;
+    bool is_npc_obstacle(const NPC& npc) const;
     bool is_enemy_obstacle(const Enemy& enemy) const;
     bool is_jumper_obstacle(const Jumper& jumper) const;
     bool is_destructible_obstacle(const Destructible& destructible) const;

@@ -86,7 +86,7 @@ class CarriedItem: public MapEntity {
     bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
     bool is_crystal_obstacle(const Crystal& crystal) const;
     bool is_sensor_obstacle(const Sensor& sensor) const;
-    bool is_npc_obstacle(const Npc& npc) const;
+    bool is_npc_obstacle(const NPC& npc) const;
     bool is_jumper_obstacle(const Jumper& jumper) const;
     bool is_enemy_obstacle(const Enemy& enemy) const;
     void notify_obstacle_reached();

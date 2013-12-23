@@ -475,6 +475,19 @@ appears on the \ref lua_api_map "map", like setting a particular
 - \c pickable (\ref lua_api_pickable "pickable treasure"): The pickable
   treasure just created.
 
+\subsection lua_api_item_on_pickable_movement_changed item:on_pickable_movement_changed(pickable, movement)
+
+Called when the \ref lua_api_movement "movement" of a \ref lua_api_pickable
+"pickable treasure" of your item's kind changes.
+Only possible when the \ref lua_api_game "game" is running.
+- \c pickable (\ref lua_api_pickable "pickable treasure"): A pickable
+  treasure.
+- \c movement (\ref lua_api_movement "movement"): The movement that has
+  changed.
+
+\todo This event is redundant with \ref lua_api_movement_on_changed
+  "movement:on_changed()". It will be removed in a future version.
+
 \subsection lua_api_item_on_obtaining item:on_obtaining(variant, savegame_variable)
 
 Called when the hero is obtaining a treasure of this kind of item.

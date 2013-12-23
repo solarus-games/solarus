@@ -286,7 +286,7 @@ void MainLoop::draw() {
 
   if (root_surface->is_software_destination()
       || !Video::is_acceleration_enabled()) {
-    root_surface->clear();
+    root_surface->fill_with_color(Color::get_transparent());
   }
   if (game != NULL) {
     game->draw(*root_surface);

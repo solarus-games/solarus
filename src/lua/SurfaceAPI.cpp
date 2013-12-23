@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include <lua.hpp>
 #include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Video.h"
@@ -35,7 +35,6 @@ void LuaContext::register_surface_module() {
   static const luaL_Reg methods[] = {
       { "create", surface_api_create },
       { "get_size", surface_api_get_size },
-      { "clear", surface_api_clear },
       { "fill_color", surface_api_fill_color },
       { "set_opacity", surface_api_set_opacity },
       { "draw", drawable_api_draw },
@@ -142,20 +141,6 @@ int LuaContext::surface_api_get_size(lua_State* l) {
 }
 
 /**
- * \brief Implementation of surface:clear().
- * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
- */
-int LuaContext::surface_api_clear(lua_State* l) {
-
-  Surface& surface = check_surface(l, 1);
-
-  surface.clear();
-
-  return 0;
-}
-
-/**
  * \brief Implementation of surface:fill_color().
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
@@ -163,7 +148,7 @@ int LuaContext::surface_api_clear(lua_State* l) {
 int LuaContext::surface_api_fill_color(lua_State* l) {
 
   Surface& surface = check_surface(l, 1);
-  Color color = LuaTools::check_color(l, 2);
+  Color color = check_color(l, 2);
 
   if (lua_gettop(l) >= 3) {
     int x = luaL_checkint(l, 3);

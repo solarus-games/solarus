@@ -65,10 +65,6 @@ class Game {
     void notify_command_pressed(GameCommands::Command command);
     void notify_command_released(GameCommands::Command command);
 
-    // simulate commands
-    void simulate_command_pressed(GameCommands::Command command);
-    void simulate_command_released(GameCommands::Command command);
-
     // map
     bool has_current_map() const;
     Map& get_current_map();

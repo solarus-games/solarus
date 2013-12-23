@@ -17,7 +17,7 @@
 #include "QuestResourceList.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lua/LuaTools.h"
+#include "lua/LuaContext.h"
 #include <sstream>
 
 namespace solarus {
@@ -47,9 +47,9 @@ namespace {
   int l_resource_element(lua_State* l) {
 
     QuestResourceList::ResourceType resource_type =
-        LuaTools::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
-    const std::string& id = LuaTools::check_string_field(l, 2, "id");
-    const std::string& description = LuaTools::check_string_field(l, 2, "description");
+        LuaContext::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
+    const std::string& id = LuaContext::check_string_field(l, 2, "id");
+    const std::string& description = LuaContext::check_string_field(l, 2, "description");
 
     resource_elements[resource_type].push_back(std::make_pair(id, description));
 

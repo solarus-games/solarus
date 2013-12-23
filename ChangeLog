@@ -31,7 +31,6 @@ You can use the script tools/data_files_conversion/1.1_to_1.2/update_quest.lua
 to automatically update your data files.
 Don't forget to make a backup first.
 
-* Languages: New syntax of strings.dat easier to read and parse (#170).
 * Maps: Rename entity shop_item to shop_treasure.
 
 Lua API changes
@@ -42,19 +41,15 @@ Changes that introduce incompatibilities:
 * sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
 * map:create_shop_item() is replaced by map:create_shop_treasure().
 * Video mode names have changed: no more wide, fullscreen ou windowed names.
-* sol.video.switch_mode() no longer changes the fullscreen flag.
 * on_key_pressed() and on_character_pressed() are now both called (#344).
-* surface:set_transparency_color() no longer exists. Use surface:clear().
+* surface:set_transparency_color() no longer exists.
 * Enemies have now a default size of 16x16 and origin of 8,13 (#354).
 * The size of enemies must be a multiple of 8 (#358).
-* item:on_pickable_movement_changed replaced by pickable:on_movement_changed.
-* pickable:get_treasure() now returns the item instead of the item's name.
 
 Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
 * Colors now take an optional alpha value as fourth component.
-* Add a method surface:clear().
 * Fix random_movement:get_max_radius() that was not working.
 * Add a method menu:is_started().
 * Add a method map:get_hero() (#362).
@@ -62,10 +57,6 @@ Changes that do not introduce incompatibilities:
 * Add an event sensor:on_left() (#339).
 * Add an event block:on_moving() (#334).
 * Add functions to get/set the properties of blocks.
-* sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
-* Add methods to simulate game commands, by mrunderhill (#382).
-* Add an event sensor:on_left() (#339).
-* Add an event block:on_moving() (#334).
 
 Solarus Quest Editor changes
 ----------------------------

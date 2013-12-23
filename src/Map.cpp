@@ -50,7 +50,6 @@ Map::Map(const std::string& id):
   camera(NULL),
   visible_surface(NULL),
   background_surface(NULL),
-  foreground_surface(NULL),
   loaded(false),
   started(false),
   destination_name(""),
@@ -113,7 +112,7 @@ void Map::set_tileset(const std::string& tileset_id) {
   tileset->set_images(tileset_id);
   get_entities().notify_tileset_changed();
   this->tileset_id = tileset_id;
-  build_background_surface();
+  rebuild_background_surface();
 }
 
 /**
@@ -243,8 +242,6 @@ void Map::unload() {
     visible_surface = NULL;
     RefCountable::unref(background_surface);
     background_surface = NULL;
-    RefCountable::unref(foreground_surface);
-    foreground_surface = NULL;
     delete entities;
     entities = NULL;
     delete camera;
@@ -271,14 +268,12 @@ void Map::load(Game& game) {
       Video::get_quest_size()
   );
   RefCountable::ref(background_surface);
-  background_surface->set_software_destination(true);
   entities = new MapEntities(game, *this);
 
   // read the map file
   map_loader.load_map(game, *this);
 
-  build_background_surface();
-  build_foreground_surface();
+  rebuild_background_surface();
 
   loaded = true;
 }
@@ -547,10 +542,9 @@ void Map::draw() {
  * \brief Builds or rebuilds the surface corresponding to the background of
  * the tileset.
  */
-void Map::build_background_surface() {
+void Map::rebuild_background_surface() {
 
   if (tileset != NULL) {
-    background_surface->clear();
     background_surface->fill_with_color(tileset->get_background_color());
   }
 }
@@ -564,54 +558,31 @@ void Map::draw_background() {
 }
 
 /**
- * \brief Builds a surface with black bars when the map is smaller than the
- * quest size.
+ * \brief Draws the foreground of the map.
  */
-void Map::build_foreground_surface() {
-
-  RefCountable::unref(foreground_surface);
+void Map::draw_foreground() {
 
   const int screen_width = visible_surface->get_width();
   const int screen_height = visible_surface->get_height();
 
   // If the map is too small for the screen, add black bars outside the map.
+  // TODO make the same optimization as for the background (avoid fill_with_color)
   const int map_width = get_width();
-  const int map_height = get_height();
-
-  if (map_width >= screen_width
-      && map_height >= screen_height) {
-    // Nothing to do.
-    return;
-  }
-
-  foreground_surface = Surface::create(visible_surface->get_size());
-  RefCountable::ref(foreground_surface);
-  foreground_surface->set_software_destination(true);  // Built only once.
-
   if (map_width < screen_width) {
     int bar_width = (screen_width - map_width) / 2;
     Rectangle dst_position(0, 0, bar_width, screen_height);
-    foreground_surface->fill_with_color(Color::get_black(), dst_position);
+    visible_surface->fill_with_color(Color::get_black(), dst_position);
     dst_position.set_x(bar_width + map_width);
-    foreground_surface->fill_with_color(Color::get_black(), dst_position);
+    visible_surface->fill_with_color(Color::get_black(), dst_position);
   }
 
+  const int map_height = get_height();
   if (map_height < screen_height) {
     int bar_height = (screen_height - map_height) / 2;
     Rectangle dst_position(0, 0, screen_width, bar_height);
-    foreground_surface->fill_with_color(Color::get_black(), dst_position);
+    visible_surface->fill_with_color(Color::get_black(), dst_position);
     dst_position.set_y(bar_height + map_height);
-    foreground_surface->fill_with_color(Color::get_black(), dst_position);
-  }
-}
-
-/**
- * \brief Draws the foreground of the map.
- */
-void Map::draw_foreground() {
-
-  if (foreground_surface != NULL) {
-    foreground_surface->draw(*visible_surface);
+    visible_surface->fill_with_color(Color::get_black(), dst_position);
   }
 }
 

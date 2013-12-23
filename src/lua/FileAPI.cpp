@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
 #include "lowlevel/FileTools.h"
 
 namespace solarus {
@@ -64,8 +63,7 @@ int LuaContext::file_api_open(lua_State* l) {
 
     // Writing a file.
     if (FileTools::get_quest_write_dir().empty()) {
-      LuaTools::error(l,
-          "Cannot open file in writing: no write directory was specified in quest.dat");
+      error(l, "Cannot open file in writing: no write directory was specified in quest.dat");
     }
 
     real_file_name = FileTools::get_full_quest_write_dir() + "/" + file_name;
@@ -115,7 +113,7 @@ int LuaContext::file_api_open(lua_State* l) {
 
   bool called = call_function(l, 2, 2, "io.open");
   if (!called) {
-    LuaTools::error(l, "Unexpected error: failed to call io.open()");
+    error(l, "Unexpected error: failed to call io.open()");
   }
 
   return 2;

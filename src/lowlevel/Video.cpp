@@ -97,7 +97,11 @@ void create_window(const CommandLine& args) {
     acceleration_enabled = true;
     acceleration_flag = SDL_RENDERER_ACCELERATED;
   }
-  main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag | SDL_RENDERER_PRESENTVSYNC);
+  main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag
+#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+      | SDL_RENDERER_PRESENTVSYNC);
+#endif
+
   if (main_renderer == NULL) {
       // Try without vsync.
       main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag);

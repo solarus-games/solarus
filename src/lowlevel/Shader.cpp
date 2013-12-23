@@ -61,10 +61,15 @@ bool Shader::initialize() {
   }
   
   // Setting some parameters
-  glClearDepth(1.0); // Enables Clearing Of The Depth Buffer.
-  glEnable(GL_DEPTH_TEST); // The Type Of Depth Test To Do.
-  glDepthFunc(GL_LESS); // Enables Depth Testing.
-  glShadeModel(GL_SMOOTH); // Enables Smooth Color Shading.
+  glClearDepth(1.0); // Enables clearing of the depth buffer.
+  glEnable(GL_DEPTH_TEST); // The type of depth test to do.
+  glDepthFunc(GL_LESS); // Enables depth testing.
+  glShadeModel(GL_SMOOTH); // Enables smooth color shading.
+  if(SDL_GL_SetSwapInterval(-1) == -1)
+  {
+    // If the late swap tearing is not supported, try to use the classic VSync.
+    SDL_GL_SetSwapInterval(1);
+  }
   
   // Check for shader support
   if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&

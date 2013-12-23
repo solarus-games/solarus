@@ -267,10 +267,12 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
     const char* buffer, size_t size) {
 
   // open the file to write
-  PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
-  Debug::check_assertion(file != NULL,
-      std::string("Cannot open file '") + file_name + "' for writing: "
-      + PHYSFS_getLastError());
+  PHYSFS_file* file = PHYSFS_openWrite(file_name.c_str());
+  if (file == NULL) {
+    Debug::die(std::string("Cannot open file '") + file_name
+        + "' for writing: " + PHYSFS_getLastError()
+    );
+  }
 
   // save the memory buffer
   if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {

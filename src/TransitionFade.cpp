@@ -176,7 +176,6 @@ void TransitionFade::draw(Surface& dst_surface) {
     // A full opaque transition corresponds to a foreground with full alpha.
     Color fade_color(r, g, b, 255 - std::min(alpha_impl, a));
 
-    dst_surface.set_opacity(255);
     dst_surface.fill_with_color(fade_color);
   }
 

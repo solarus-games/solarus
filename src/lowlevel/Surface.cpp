@@ -439,11 +439,17 @@ void Surface::clear() {
   }
 
   if (internal_surface != NULL) {
-    SDL_FillRect(
-        internal_surface,
-        NULL,
-        Color::get_transparent().get_internal_value()
-    );
+    if (software_destination) {
+      SDL_FillRect(
+          internal_surface,
+          NULL,
+          Color::get_transparent().get_internal_value()
+      );
+    }
+    else {
+      SDL_FreeSurface(internal_surface);
+      internal_surface = NULL;
+    }
   }
 }
 

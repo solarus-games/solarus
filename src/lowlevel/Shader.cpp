@@ -66,9 +66,9 @@ bool Shader::initialize() {
   glEnable(GL_DEPTH_TEST); // The type of depth test to do.
   glDepthFunc(GL_LESS); // Enables depth testing.
   glShadeModel(GL_SMOOTH); // Enables smooth color shading.
-  if(SDL_GL_SetSwapInterval(-1) == -1)
-  {
-    // If the late swap tearing is not supported, try to use the classic VSync.
+  
+  if(SDL_GL_SetSwapInterval(-1) == -1) {
+    // If the late swap tearing is not supported, try to use the classic swap interval (aka VSync).
     SDL_GL_SetSwapInterval(1);
   }
   
@@ -135,6 +135,58 @@ void Shader::quit() {
 }
 
 #if SOLARUS_HAVE_OPENGL_OR_ES == 1
+
+/**
+ * \brief Constructor.
+ * \param shader_name The name of the shader to load.
+ */
+Shader::Shader(const std::string& shader_name):
+    program(0),
+    vertex_shader(0),
+    fragment_shader(0),
+    shader_name(shader_name),
+    window_scale(1.0) {
+    
+  glGetError();
+    
+  // Load the shader.
+  load(shader_name);
+    
+  // Notify the shader program that the uniform sampler will be in the texture unit 0.
+  glUseProgramObjectARB(program);
+  GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
+  if (location >= 0) {
+    glUniform1iARB(location, 0);
+  }
+  restore_default_shader_program();
+}
+  
+/**
+ * \brief Destructor.
+ */
+Shader::~Shader() {
+    
+  glDeleteObjectARB(vertex_shader);
+  glDeleteObjectARB(fragment_shader);
+  glDeleteObjectARB(program);
+}
+
+/**
+ * \brief Construct a shader from a name.
+ * \param shader_name The name of the shader to load.
+ * \return The created shader, or NULL if the shader fails to compile.
+ */
+Shader* Shader::create(const std::string& shader_name) {
+    
+  Shader* shader = new Shader(shader_name);
+    
+  if (glGetError() != GL_NO_ERROR) {
+    Debug::warning("Cannot compile shader '" + shader_name + "'");
+    return NULL;
+  }
+  return shader;
+}
+  
 /**
  * \brief Compile a shader from source.
  * \param shader Reference to the shader to fill and compile.
@@ -181,57 +233,6 @@ void Shader::set_rendering_settings() {
   glOrtho(-1.0, 1.0, -1.0 / aspect, 1.0 / aspect, 0.0, 1.0);
 
   glMatrixMode(GL_MODELVIEW);
-}
-
-/**
- * \brief Constructor.
- * \param shader_name The name of the shader to load.
- */
-Shader::Shader(const std::string& shader_name):
-  program(0),
-  vertex_shader(0),
-  fragment_shader(0),
-  shader_name(shader_name),
-  window_scale(1.0) {
-
-  glGetError();
-
-  // Load the shader.
-  load(shader_name);
-
-  // Notify the shader program that the uniform sampler will be in the texture unit 0.
-  glUseProgramObjectARB(program);
-  GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
-  if (location >= 0) {
-    glUniform1iARB(location, 0);
-  }
-  restore_default_shader_program();
-}
-
-/**
- * \brief Destructor.
- */
-Shader::~Shader() {
-
-  glDeleteObjectARB(vertex_shader);
-  glDeleteObjectARB(fragment_shader);
-  glDeleteObjectARB(program);
-}
-
-/**
- * \brief Construct a shader from a name.
- * \param shader_name The name of the shader to load.
- * \return The created shader, or NULL if the shader fails to compile.
- */
-Shader* Shader::create(const std::string& shader_name) {
-
-  Shader* shader = new Shader(shader_name);
-
-  if (glGetError() != GL_NO_ERROR) {
-    Debug::warning("Cannot compile shader '" + shader_name + "'");
-    return NULL;
-  }
-  return shader;
 }
 
 /**

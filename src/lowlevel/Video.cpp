@@ -117,12 +117,12 @@ void create_window(const CommandLine& args) {
       std::string("Cannot create the renderer: ") + SDL_GetError());
   SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.
 
-  // Get the first renderer format which is a packed32 type and supports alpha channel
+  // Get the first renderer format which supports alpha channel and is not a unique format (YUV for example).
   SDL_RendererInfo renderer_info;
   SDL_GetRendererInfo(main_renderer, &renderer_info);
   for (unsigned i = 0; i < renderer_info.num_texture_formats; ++i) {
 
-    if (SDL_PIXELTYPE(renderer_info.texture_formats[i]) == SDL_PIXELTYPE_PACKED32
+    if (!SDL_ISPIXELFORMAT_FOURCC(renderer_info.texture_formats[i])
         && SDL_ISPIXELFORMAT_ALPHA(renderer_info.texture_formats[i])) {
       pixel_format = SDL_AllocFormat(renderer_info.texture_formats[i]);
       break;

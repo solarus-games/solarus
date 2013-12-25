@@ -2,7 +2,6 @@ package org.solarus.editor.gui.tree;
 
 import java.awt.datatransfer.Transferable;
 
-import javax.lang.model.element.ElementKind;
 import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;

@@ -32,8 +32,11 @@ const std::string LuaContext::surface_module_name = "sol.surface";
  */
 void LuaContext::register_surface_module() {
 
+  static const luaL_Reg functions[] = {
+      { "create", surface_api_create }
+  };
+
   static const luaL_Reg methods[] = {
-      { "create", surface_api_create },
       { "get_size", surface_api_get_size },
       { "clear", surface_api_clear },
       { "fill_color", surface_api_fill_color },
@@ -48,11 +51,13 @@ void LuaContext::register_surface_module() {
       { "stop_movement", drawable_api_stop_movement },
       { NULL, NULL }
   };
+
   static const luaL_Reg metamethods[] = {
       { "__gc", drawable_meta_gc },
       { NULL, NULL }
   };
-  register_type(surface_module_name, methods, metamethods);
+
+  register_type(surface_module_name, functions, methods, metamethods);
 }
 
 /**

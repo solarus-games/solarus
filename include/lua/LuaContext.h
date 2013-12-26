@@ -303,6 +303,7 @@ class LuaContext {
       main_api_save_settings,
       main_api_get_distance,  // TODO remove?
       main_api_get_angle,     // TODO remove?
+      main_api_get_metatable,
 
       // Audio API.
       audio_api_get_sound_volume,
@@ -812,9 +813,16 @@ class LuaContext {
     void print_stack(lua_State* l);
 
     // Initialization of modules.
-    void register_functions(const std::string& module_name, const luaL_Reg* functions);
-    void register_type(const std::string& module_name, const luaL_Reg* methods,
-        const luaL_Reg* metamethods);
+    void register_functions(
+        const std::string& module_name,
+        const luaL_Reg* functions
+    );
+    void register_type(
+        const std::string& module_name,
+        const luaL_Reg* functions,
+        const luaL_Reg* methods,
+        const luaL_Reg* metamethods
+    );
     void register_modules();
     void register_main_module();
     void register_audio_module();
@@ -1042,6 +1050,10 @@ class LuaContext {
                                      * userdata with our __newindex. This is
                                      * only for performance, to avoid Lua
                                      * lookups for callbacks like on_update. */
+    std::map<std::string, std::set<std::string> >
+        userdata_metafields;        /**< TODO Existing additional string keys
+                                     * created on each userdata type metatable
+                                     * by the user. Only for performance. */
 
     static std::map<lua_State*, LuaContext*>
         lua_contexts;               /**< Mapping to get the encapsulating object

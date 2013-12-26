@@ -65,7 +65,12 @@ void ExportableToLua::set_known_to_lua(bool known_to_lua) {
  * \return \c true if there is a Lua table for this userdata.
  */
 bool ExportableToLua::is_with_lua_table() const {
-  return with_lua_table;
+  // FIXME this function does not give enough information
+  // because of the __index metamethod. Fix the callers.
+  // In the meantime, always assume \c true.
+  // This does not introduce any wrong behavior, but it is slower.
+  return true;
+  //return with_lua_table;
 }
 
 /**

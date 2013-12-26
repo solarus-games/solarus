@@ -35,10 +35,16 @@ const std::string LuaContext::game_module_name = "sol.game";
  */
 void LuaContext::register_game_module() {
 
-  static const luaL_Reg methods[] = {
+  // Functions of sol.game.
+  static const luaL_Reg functions[] = {
       { "exists", game_api_exists },
       { "delete", game_api_delete },
       { "load", game_api_load },
+      { NULL, NULL }
+  };
+
+  // Methods of the game type.
+  static const luaL_Reg methods[] = {
       { "save", game_api_save },
       { "start", game_api_start },
       { "is_started", game_api_is_started },
@@ -97,13 +103,15 @@ void LuaContext::register_game_module() {
       { "simulate_command_released", game_api_simulate_command_released },
       { NULL, NULL }
   };
+
   static const luaL_Reg metamethods[] = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
-  register_type(game_module_name, methods, metamethods);
+
+  register_type(game_module_name, functions, methods, metamethods);
 }
 
 /**

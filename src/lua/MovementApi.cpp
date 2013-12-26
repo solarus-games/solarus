@@ -52,35 +52,46 @@ const std::string LuaContext::movement_pixel_module_name = "sol.movement.pixel";
  */
 void LuaContext::register_movement_module() {
 
-  // sol.movement
+  // Functions of sol.movement.
   static const luaL_Reg movement_functions[] = {
       { "create", movement_api_create },
       { NULL, NULL }
   };
-  register_functions(movement_module_name, movement_functions);
 
-  // methods common to all movement types
-  static const luaL_Reg common_methods[] = {
-      { "get_xy", movement_api_get_xy },
-      { "set_xy", movement_api_set_xy },
-      { "start", movement_api_start },
-      { "stop", movement_api_stop },
-      { "get_ignore_obstacles", movement_api_get_ignore_obstacles },
-      { "set_ignore_obstacles", movement_api_set_ignore_obstacles },
-      { "get_direction4", movement_api_get_direction4 },
-      { NULL, NULL }
-  };
-  static const luaL_Reg common_metamethods[] = {
+  // Methods common to all movement types.
+#define MOVEMENT_COMMON_METHODS\
+      { "get_xy", movement_api_get_xy },\
+      { "set_xy", movement_api_set_xy },\
+      { "start", movement_api_start },\
+      { "stop", movement_api_stop },\
+      { "get_ignore_obstacles", movement_api_get_ignore_obstacles },\
+      { "set_ignore_obstacles", movement_api_set_ignore_obstacles },\
+      { "get_direction4", movement_api_get_direction4 }
+
+  // Metamethods of all movement types.
+  static const luaL_Reg metamethods[] = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
-  register_type(movement_module_name, common_methods,
-      common_metamethods);
+
+  // Methods of the movement type.
+  static const luaL_Reg movement_methods[] = {
+      MOVEMENT_COMMON_METHODS,
+      { NULL, NULL }
+  };
+
+  register_type(
+      movement_module_name,
+      movement_functions,
+      movement_methods,
+      metamethods
+  );
 
   // straight movement
   static const luaL_Reg straight_movement_methods[] = {
+      MOVEMENT_COMMON_METHODS,
       { "get_speed", straight_movement_api_get_speed },
       { "set_speed", straight_movement_api_set_speed },
       { "get_angle", straight_movement_api_get_angle },
@@ -91,12 +102,16 @@ void LuaContext::register_movement_module() {
       { "set_smooth", straight_movement_api_set_smooth },
       { NULL, NULL }
   };
-  register_functions(movement_straight_module_name, common_methods);
-  register_type(movement_straight_module_name, straight_movement_methods,
-      common_metamethods);
+  register_type(
+      movement_straight_module_name,
+      NULL,
+      straight_movement_methods,
+      metamethods
+  );
 
   // random movement
   static const luaL_Reg random_movement_methods[] = {
+      MOVEMENT_COMMON_METHODS,
       { "get_speed", random_movement_api_get_speed },
       { "set_speed", random_movement_api_set_speed },
       { "get_angle", random_movement_api_get_angle },
@@ -106,12 +121,16 @@ void LuaContext::register_movement_module() {
       { "set_smooth", random_movement_api_set_smooth },
       { NULL, NULL }
   };
-  register_functions(movement_random_module_name, common_methods);
-  register_type(movement_random_module_name, random_movement_methods,
-      common_metamethods);
+  register_type(
+      movement_random_module_name,
+      NULL,
+      random_movement_methods,
+      metamethods
+  );
 
   // target movement
   static const luaL_Reg target_movement_methods[] = {
+      MOVEMENT_COMMON_METHODS,
       { "set_target", target_movement_api_set_target },
       { "get_speed", target_movement_api_get_speed },
       { "set_speed", target_movement_api_set_speed },
@@ -120,12 +139,16 @@ void LuaContext::register_movement_module() {
       { "set_smooth", target_movement_api_set_smooth },
       { NULL, NULL }
   };
-  register_functions(movement_target_module_name, common_methods);
-  register_type(movement_target_module_name, target_movement_methods,
-      common_metamethods);
+  register_type(
+      movement_target_module_name,
+      NULL,
+      target_movement_methods,
+      metamethods
+  );
 
   // path movement
   static const luaL_Reg path_movement_methods[] = {
+      MOVEMENT_COMMON_METHODS,
       { "get_path", path_movement_api_get_path },
       { "set_path", path_movement_api_set_path },
       { "get_speed", path_movement_api_get_speed },
@@ -136,33 +159,45 @@ void LuaContext::register_movement_module() {
       { "set_snap_to_grid", path_movement_api_set_snap_to_grid },
       { NULL, NULL }
   };
-  register_functions(movement_path_module_name, common_methods);
-  register_type(movement_path_module_name, path_movement_methods,
-      common_metamethods);
+  register_type(
+      movement_path_module_name,
+      NULL,
+      path_movement_methods,
+      metamethods
+  );
 
   // random path movement
   static const luaL_Reg random_path_movement_methods[] = {
+      MOVEMENT_COMMON_METHODS,
       { "get_speed", random_path_movement_api_get_speed },
       { "set_speed", random_path_movement_api_set_speed },
       { NULL, NULL }
   };
-  register_functions(movement_random_path_module_name, common_methods);
-  register_type(movement_random_path_module_name, random_path_movement_methods,
-      common_metamethods);
+  register_type(
+      movement_random_path_module_name,
+      NULL,
+      random_path_movement_methods,
+      metamethods
+  );
 
   // path finding movement
   static const luaL_Reg path_finding_movement_methods[] = {
+      MOVEMENT_COMMON_METHODS,
       { "set_target", path_finding_movement_api_set_target },
       { "get_speed", path_finding_movement_api_get_speed },
       { "set_speed", path_finding_movement_api_set_speed },
       { NULL, NULL }
   };
-  register_functions(movement_path_finding_module_name, common_methods);
-  register_type(movement_path_finding_module_name, path_finding_movement_methods,
-      common_metamethods);
+  register_type(
+      movement_path_finding_module_name,
+      NULL,
+      path_finding_movement_methods,
+      metamethods
+  );
 
   // circle movement
   static const luaL_Reg circle_movement_methods[] = {
+      MOVEMENT_COMMON_METHODS,
       { "set_center", circle_movement_api_set_center },
       { "get_radius", circle_movement_api_get_radius },
       { "set_radius", circle_movement_api_set_radius },
@@ -182,12 +217,16 @@ void LuaContext::register_movement_module() {
       { "set_loop_delay", circle_movement_api_set_loop_delay },
       { NULL, NULL }
   };
-  register_functions(movement_circle_module_name, common_methods);
-  register_type(movement_circle_module_name, circle_movement_methods,
-      common_metamethods);
+  register_type(
+      movement_circle_module_name,
+      NULL,
+      circle_movement_methods,
+      metamethods
+  );
 
   // jump movement
   static const luaL_Reg jump_movement_methods[] = {
+      MOVEMENT_COMMON_METHODS,
       { "get_direction8", jump_movement_api_get_direction8 },
       { "set_direction8", jump_movement_api_set_direction8 },
       { "get_distance", jump_movement_api_get_distance },
@@ -196,12 +235,16 @@ void LuaContext::register_movement_module() {
       { "set_speed", jump_movement_api_set_speed },
       { NULL, NULL }
   };
-  register_functions(movement_jump_module_name, common_methods);
-  register_type(movement_jump_module_name, jump_movement_methods,
-      common_metamethods);
+  register_type(
+      movement_jump_module_name,
+      NULL,
+      jump_movement_methods,
+      metamethods
+  );
 
   // pixel movement
   static const luaL_Reg pixel_movement_methods[] = {
+      MOVEMENT_COMMON_METHODS,
       { "get_trajectory", pixel_movement_api_get_trajectory },
       { "set_trajectory", pixel_movement_api_set_trajectory },
       { "get_loop", pixel_movement_api_get_loop },
@@ -210,9 +253,12 @@ void LuaContext::register_movement_module() {
       { "set_delay", pixel_movement_api_set_delay },
       { NULL, NULL }
   };
-  register_functions(movement_pixel_module_name, common_methods);
-  register_type(movement_pixel_module_name, pixel_movement_methods,
-      common_metamethods);
+  register_type(
+      movement_pixel_module_name,
+      NULL,
+      pixel_movement_methods,
+      metamethods
+  );
 
   // Create the table that will store the movements applied to x,y points.
                                   // ...

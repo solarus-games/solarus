@@ -476,6 +476,11 @@ void LuaContext::cancel_callback(int callback_ref) {
 bool LuaContext::userdata_has_field(ExportableToLua& userdata,
     const char* key) const {
 
+  // TODO by returning true we temporarily disable the optimization
+  // but the behavior is still correct.
+  return true;
+
+  /* TODO reimplement taking into account __index
   if (!userdata.is_with_lua_table()) {
     return false;
   }
@@ -487,6 +492,7 @@ bool LuaContext::userdata_has_field(ExportableToLua& userdata,
   }
 
   return it->second.find(key) != it->second.end();
+  */
 }
 
 /**
@@ -505,6 +511,11 @@ bool LuaContext::userdata_has_field(ExportableToLua& userdata,
 bool LuaContext::userdata_has_field(ExportableToLua& userdata,
     const std::string& key) const {
 
+  // TODO by returning true we temporarily disable the optimization
+  // but the behavior is still correct.
+  return true;
+
+  /* TODO reimplement taking into account __index
   if (!userdata.is_with_lua_table()) {
     return false;
   }
@@ -516,6 +527,7 @@ bool LuaContext::userdata_has_field(ExportableToLua& userdata,
   }
 
   return it->second.find(key) != it->second.end();
+  */
 }
 
 /**
@@ -771,12 +783,14 @@ void LuaContext::print_stack(lua_State* l) {
 /**
  * \brief Defines some C++ functions into a Lua table.
  * \param module_name name of the table that will contain the functions
- * (e.g. "sol.main")
+ * (e.g. "sol.main").
  * \param functions list of functions to define in the table
- * (must end with {NULLL, NULL})
+ * (must end with {NULLL, NULL}).
  */
-void LuaContext::register_functions(const std::string& module_name,
-    const luaL_Reg* functions) {
+void LuaContext::register_functions(
+    const std::string& module_name,
+    const luaL_Reg* functions
+) {
 
   // create a table and fill it with the functions
   luaL_register(l, module_name.c_str(), functions);
@@ -786,43 +800,66 @@ void LuaContext::register_functions(const std::string& module_name,
 /**
  * \brief Defines some C++ functions into a new Lua userdata type.
  * \param module_name name of the table that will contain the functions
- * (e.g. "sol.movement") - this string will also identify the type
- * \param functions list of functions to define on the type
- * (must end with {NULLL, NULL})
- * \param metamethods metamethods to define on the type (can be NULL)
+ * (e.g. "sol.game"). It may already exist or not.
+ * This string will also identify the type.
+ * \param functions List of functions to define in the module table or NULL.
+ * Must end with {NULLL, NULL}.
+ * \param methods List of methods to define in the type or NULL.
+ * Must end with {NULLL, NULL}.
+ * \param metamethods List of metamethods to define in the metatable of the
+ * type or NULL.
+ * Must end with {NULLL, NULL}.
  */
-void LuaContext::register_type(const std::string& module_name,
-    const luaL_Reg* methods, const luaL_Reg* metamethods) {
+void LuaContext::register_type(
+    const std::string& module_name,
+    const luaL_Reg* functions,
+    const luaL_Reg* methods,
+    const luaL_Reg* metamethods
+) {
 
-  // create a table and fill it with the methods
-  luaL_register(l, module_name.c_str(), methods);
+  // Make sure we create the table if not already existing.
+  const luaL_Reg empty[] = {
+      { NULL, NULL }
+  };
+  luaL_register(l, module_name.c_str(), empty);
                                   // module
-  // create the metatable for the type, add it to the Lua registry
+
+  // Add the functions to the module.
+  if (functions != NULL) {
+    luaL_register(l, NULL, functions);
+                                  // module
+  }
+  lua_pop(l, 1);
+                                  // --
+
+  // Create the metatable for the type, add it to the Lua registry.
   luaL_newmetatable(l, module_name.c_str());
-                                  // module mt
+                                  // meta
+
+  // Add the methods to the metatable.
+  if (methods != NULL) {
+    luaL_register(l, NULL, methods);
+  }
+                                  // meta
+
+  // Add the metamethods to the metatable.
   if (metamethods != NULL) {
-    // fill the metatable
     luaL_register(l, NULL, metamethods);
-                                  // module mt
+                                  // meta
   }
 
-  // make metatable.__index = module
-  // (or metatable.usual_index = module if __index is already defined)
+  // make metatable.__index = metatable,
+  // unless if __index is already defined
   lua_getfield(l, -1, "__index");
-                                  // module mt __index/nil
-  lua_pushvalue(l, -3);
-                                  // module mt __index/nil module
+                                  // meta __index/nil
+  lua_pushvalue(l, -2);
+                                  // meta __index/nil meta
   if (lua_isnil(l, -2)) {
-                                  // module mt nil module
+                                  // meta nil meta
     lua_setfield(l, -3, "__index");
-                                  // module mt nil
+                                  // meta nil
   }
-  else {
-                                  // module mt __index module
-    lua_setfield(l, -3, "usual_index");
-                                  // module mt __index
-  }
-  lua_pop(l, 3);
+  lua_settop(l, 0);
                                   // --
 }
 
@@ -831,7 +868,6 @@ void LuaContext::register_type(const std::string& module_name,
  */
 void LuaContext::register_modules() {
 
-  // modules available to all scripts
   register_main_module();
   register_game_module();
   register_map_module();
@@ -1136,8 +1172,7 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
    * So what we retrieve instead is udata_tables[udata][key].
    * This redirection is totally transparent from the Lua side.
    * If udata_tables[udata][key] does not exist, we fall back
-   * to the usual __index for userdata, i.e. we look for a method
-   * in its type.
+   * to the userdata __index metamethod.
    */
 
   luaL_checktype(l, 1, LUA_TUSERDATA);
@@ -1147,7 +1182,6 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
   LuaContext& lua_context = get_lua_context(l);
 
-  bool found = false;
   // If the userdata actually has a table, lookup this table, unless we already
   // know that we won't find it (because we know all the existing string keys).
   if (userdata->is_with_lua_table() &&
@@ -1157,29 +1191,33 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
                                   // ... udata_tables
     lua_pushlightuserdata(l, userdata);
                                   // ... udata_tables lightudata
-    lua_gettable(l, -2);
+    // Lookup the key in the table, without metamethods.
+    lua_rawget(l, -2);
                                   // ... udata_tables udata_table/nil
-    Debug::check_assertion(!lua_isnil(l, -1), "Missing userdata table");
-    lua_pushvalue(l, 2);
+    if (!lua_isnil(l, -1)) {
+      lua_pushvalue(l, 2);
                                   // ... udata_tables udata_table key
-    lua_gettable(l, -2);
-                                  // ... udata_tables udata_table value
-    found = !lua_isnil(l, -1);
+      lua_gettable(l, -2);
+                                  // ... udata_tables udata_table value/nil
+      if (!lua_isnil(l, -1)) {
+        // Found it!
+        return 1;
+      }
+    }
   }
 
-  // Nothing in the userdata's table: do the usual __index instead
-  // (look in the userdata's type).
-  if (!found) {
-    lua_getmetatable(l, 1);
-                                  // ... meta
-    lua_getfield(l, -1, "usual_index");
-                                  // ... meta module
-    lua_pushvalue(l, 2);
-                                  // ... meta module key
-    lua_gettable(l, -2);
-                                  // ... meta module value
-  }
+  // Not in the table. See in the metatable
+  // (just like when metatable.__index = metatable).
 
+  lua_pushvalue(l, 1);
+                                  // ... udata
+  lua_getmetatable(l, -1);
+                                  // ... udata meta
+  Debug::check_assertion(!lua_isnil(l, -1), "Missing userdata metatable");
+  lua_pushvalue(l, 2);
+                                  // ... udata meta key
+  lua_gettable(l, -2);
+                                  // ... udata meta key value/nil
   return 1;
 }
 

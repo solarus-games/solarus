@@ -812,9 +812,16 @@ class LuaContext {
     void print_stack(lua_State* l);
 
     // Initialization of modules.
-    void register_functions(const std::string& module_name, const luaL_Reg* functions);
-    void register_type(const std::string& module_name, const luaL_Reg* methods,
-        const luaL_Reg* metamethods);
+    void register_functions(
+        const std::string& module_name,
+        const luaL_Reg* functions
+    );
+    void register_type(
+        const std::string& module_name,
+        const luaL_Reg* functions,
+        const luaL_Reg* methods,
+        const luaL_Reg* metamethods
+    );
     void register_modules();
     void register_main_module();
     void register_audio_module();

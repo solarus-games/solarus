@@ -38,7 +38,6 @@ void LuaContext::register_timer_module() {
       { "stop_all", timer_api_stop_all },
       { NULL, NULL }
   };
-  register_functions(timer_module_name, functions);
 
   // Methods of the timer type.
   static const luaL_Reg methods[] = {
@@ -47,15 +46,17 @@ void LuaContext::register_timer_module() {
       { "set_with_sound", timer_api_set_with_sound },
       { "is_suspended", timer_api_is_suspended },
       { "set_suspended", timer_api_set_suspended },
-      { "is_suspended_with_map", timer_api_is_suspended_with_map },
+      { "is_suspended_iwith_map", timer_api_is_suspended_with_map },
       { "set_suspended_with_map", timer_api_set_suspended_with_map },
       { NULL, NULL }
   };
+
   static const luaL_Reg metamethods[] = {
       { "__gc", userdata_meta_gc },
       { NULL, NULL }
   };
-  register_type(timer_module_name, methods, metamethods);
+
+  register_type(timer_module_name, functions, methods, metamethods);
 }
 
 /**

@@ -50,8 +50,14 @@ static const std::string vertical_alignment_names[] = {
  */
 void LuaContext::register_text_surface_module() {
 
-  static const luaL_Reg methods[] = {
+  // Functions of sol.surface.
+  static const luaL_Reg functions[] = {
       { "create", text_surface_api_create },
+      { NULL, NULL },
+  };
+
+  // Methods of the text_surface type.
+  static const luaL_Reg methods[] = {
       { "get_horizontal_alignment", text_surface_api_get_horizontal_alignment },
       { "set_horizontal_alignment", text_surface_api_set_horizontal_alignment },
       { "get_vertical_alignment", text_surface_api_get_vertical_alignment },
@@ -76,11 +82,13 @@ void LuaContext::register_text_surface_module() {
       { "stop_movement", drawable_api_stop_movement },
       { NULL, NULL }
   };
+
   static const luaL_Reg metamethods[] = {
       { "__gc", drawable_meta_gc },
       { NULL, NULL }
   };
-  register_type(text_surface_module_name, methods, metamethods);
+
+  register_type(text_surface_module_name, functions, methods, metamethods);
 }
 
 /**

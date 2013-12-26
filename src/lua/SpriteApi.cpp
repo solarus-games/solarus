@@ -28,8 +28,11 @@ const std::string LuaContext::sprite_module_name = "sol.sprite";
  */
 void LuaContext::register_sprite_module() {
 
+  static const luaL_Reg functions[] = {
+      { "create", sprite_api_create }
+  };
+
   static const luaL_Reg methods[] = {
-      { "create", sprite_api_create },
       { "get_animation", sprite_api_get_animation },
       { "set_animation", sprite_api_set_animation },
       { "get_direction", sprite_api_get_direction },
@@ -52,13 +55,14 @@ void LuaContext::register_sprite_module() {
       { "stop_movement", drawable_api_stop_movement },
       { NULL, NULL }
   };
+
   static const luaL_Reg metamethods[] = {
       { "__gc", drawable_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
-  register_type(sprite_module_name, methods, metamethods);
+  register_type(sprite_module_name, functions, methods, metamethods);
 }
 
 /**

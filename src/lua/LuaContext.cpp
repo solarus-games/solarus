@@ -771,12 +771,14 @@ void LuaContext::print_stack(lua_State* l) {
 /**
  * \brief Defines some C++ functions into a Lua table.
  * \param module_name name of the table that will contain the functions
- * (e.g. "sol.main")
+ * (e.g. "sol.main").
  * \param functions list of functions to define in the table
- * (must end with {NULLL, NULL})
+ * (must end with {NULLL, NULL}).
  */
-void LuaContext::register_functions(const std::string& module_name,
-    const luaL_Reg* functions) {
+void LuaContext::register_functions(
+    const std::string& module_name,
+    const luaL_Reg* functions
+) {
 
   // create a table and fill it with the functions
   luaL_register(l, module_name.c_str(), functions);
@@ -786,41 +788,65 @@ void LuaContext::register_functions(const std::string& module_name,
 /**
  * \brief Defines some C++ functions into a new Lua userdata type.
  * \param module_name name of the table that will contain the functions
- * (e.g. "sol.movement") - this string will also identify the type
- * \param functions list of functions to define on the type
- * (must end with {NULLL, NULL})
- * \param metamethods metamethods to define on the type (can be NULL)
+ * (e.g. "sol.game"). It may already exist or not.
+ * This string will also identify the type.
+ * \param functions List of functions to define in the module table or NULL.
+ * Must end with {NULLL, NULL}.
+ * \param methods List of methods to define in the type or NULL.
+ * Must end with {NULLL, NULL}.
+ * \param metamethods List of metamethods to define in the metatable of the
+ * type or NULL.
+ * Must end with {NULLL, NULL}.
  */
-void LuaContext::register_type(const std::string& module_name,
-    const luaL_Reg* methods, const luaL_Reg* metamethods) {
+void LuaContext::register_type(
+    const std::string& module_name,
+    const luaL_Reg* functions,
+    const luaL_Reg* methods,
+    const luaL_Reg* metamethods
+) {
 
-  // create a table and fill it with the methods
-  luaL_register(l, module_name.c_str(), methods);
+  // Make sure we create the table if not already existing.
+  const luaL_Reg empty[] = {
+      { NULL, NULL }
+  };
+  luaL_register(l, module_name.c_str(), empty);
+
+  // Add the functions if any.
+  if (functions != NULL) {
+    luaL_register(l, module_name.c_str(), functions);
+  }
                                   // module
-  // create the metatable for the type, add it to the Lua registry
+  // Add the methods if any.
+  // TODO add them to the metatable instead.
+  if (methods != NULL) {
+    luaL_register(l, module_name.c_str(), methods);
+  }
+                                  // module
+  // Create the metatable for the type, add it to the Lua registry.
   luaL_newmetatable(l, module_name.c_str());
-                                  // module mt
+                                  // module meta
   if (metamethods != NULL) {
-    // fill the metatable
+    // Add the metamethods.
     luaL_register(l, NULL, metamethods);
-                                  // module mt
+                                  // module meta
   }
 
   // make metatable.__index = module
   // (or metatable.usual_index = module if __index is already defined)
+  // TODO make metatable.__index = metatable instead
   lua_getfield(l, -1, "__index");
-                                  // module mt __index/nil
+                                  // module meta __index/nil
   lua_pushvalue(l, -3);
-                                  // module mt __index/nil module
+                                  // module meta __index/nil module
   if (lua_isnil(l, -2)) {
-                                  // module mt nil module
+                                  // module meta nil module
     lua_setfield(l, -3, "__index");
-                                  // module mt nil
+                                  // module meta nil
   }
   else {
-                                  // module mt __index module
+                                  // module meta __index module
     lua_setfield(l, -3, "usual_index");
-                                  // module mt __index
+                                  // module meta __index
   }
   lua_pop(l, 3);
                                   // --

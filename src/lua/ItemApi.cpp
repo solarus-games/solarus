@@ -72,13 +72,15 @@ void LuaContext::register_item_module() {
       { "set_finished", item_api_set_finished },
       { NULL, NULL }
   };
+
   static const luaL_Reg metamethods[] = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
-  register_type(item_module_name, methods, metamethods);
+
+  register_type(item_module_name, NULL, methods, metamethods);
 }
 
 /**

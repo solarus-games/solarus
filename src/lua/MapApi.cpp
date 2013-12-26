@@ -120,13 +120,15 @@ void LuaContext::register_map_module() {
       { "create_fire", map_api_create_fire },
       { NULL, NULL }
   };
+
   static const luaL_Reg metamethods[] = {
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
-  register_type(map_module_name, methods, metamethods);
+
+  register_type(map_module_name, NULL, methods, metamethods);
 }
 
 /**

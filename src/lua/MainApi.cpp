@@ -44,6 +44,7 @@ void LuaContext::register_main_module() {
       { "save_settings", main_api_save_settings },
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
+      { "get_metatable", main_api_get_metatable },
       { NULL, NULL }
   };
   register_functions(main_module_name, functions);
@@ -222,6 +223,26 @@ int LuaContext::main_api_get_angle(lua_State* l) {
 
   lua_pushnumber(l, angle);
   return 1;
+}
+
+/**
+ * \brief Implementation of sol.main.get_metatable().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::main_api_get_metatable(lua_State* l) {
+
+  // TODO
+  return 0;
+
+  /*
+  const std::string& type_name = luaL_checkstring(l, 1);
+
+  if (type_name == "map") {
+    luaL_getmetatable(l, map_module_name.c_str());
+  }
+  return 1;
+  */
 }
 
 /**

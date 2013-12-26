@@ -2142,7 +2142,7 @@ void LuaContext::map_on_opening_transition_finished(Map& map,
     Destination* destination) {
 
   if (!userdata_has_field(map, "on_opening_transition_finished")) {
-    return;
+    //return;
   }
 
   push_map(l, map);

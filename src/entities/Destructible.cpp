@@ -183,7 +183,7 @@ bool Destructible::is_obstacle_for(const MapEntity& other) const {
  * \param entity an entity
  * \return true if the entity's collides with this entity
  */
-bool Destructible::test_collision_custom(MapEntity &entity) {
+bool Destructible::test_collision_custom(MapEntity& entity) {
   return overlaps(entity.get_x(), entity.get_y() - 2);
 }
 

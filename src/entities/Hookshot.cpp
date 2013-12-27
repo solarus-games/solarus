@@ -411,7 +411,7 @@ void Hookshot::notify_collision_with_destructible(Destructible& destructible, Co
 
   if (destructible.is_obstacle_for(*this) && is_flying()) {
 
-    if (destructible.can_explode()) {
+    if (destructible.get_can_explode()) {
       destructible.explode();
       go_back();
     }

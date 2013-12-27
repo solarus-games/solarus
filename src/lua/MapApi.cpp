@@ -1071,25 +1071,59 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
         + treasure_savegame_variable + "'");
   }
 
-  // TODO Like enemies, implement this callback at runtime with function destructible:on_destroyed()
-  int destruction_callback_ref = LUA_REFNIL;
-  if (map.is_loaded()) {
-    // We are at map runtime, i.e. running a Lua script.
-    // In this case, we can do more than from the map data file.
-    destruction_callback_ref = LuaTools::opt_function_field(l, 1, "on_destroyed");
+  // TODO This code is transitional. Subtypes will be removed from the data file too.
+  std::string animation_set_id;
+  Ground modified_ground = GROUND_WALL;
+  std::string destruction_sound_id;
+  int weight = 0;
+  int damage_on_enemies = 1;
+  bool can_be_cut = false;
+  bool can_explode = false;
+  bool can_regenerate = false;
+
+  if (subtype_name == "pot") {
+    animation_set_id = "entities/pot";
+    destruction_sound_id = "stone";
+    damage_on_enemies = 2;
+  }
+  else if (subtype_name == "bush") {
+    animation_set_id = "entities/bush";
+    destruction_sound_id = "bush";
+    weight = 1;
+    can_be_cut = true;
+    damage_on_enemies = 1;
+  }
+  else if (subtype_name == "white_stone") {
+    animation_set_id = "entities/stone_small_white";
+    destruction_sound_id = "stone";
+    weight = 1;
+    damage_on_enemies = 2;
+  }
+  else if (subtype_name == "black_stone") {
+    animation_set_id = "entities/stone_small_black";
+    destruction_sound_id = "stone";
+    weight = 2;
+    damage_on_enemies = 4;
+  }
+  else if (subtype_name == "grass") {
+    animation_set_id = "entities/grass";
+    destruction_sound_id = "bush";
+    weight = -1;
+    can_be_cut = true;
+    damage_on_enemies = 0;
+    modified_ground = GROUND_GRASS;
+  }
+  else if (subtype_name == "bomb_flower") {
+    animation_set_id = "entities/bomb_flower";
+    destruction_sound_id = "bush";
+    weight = 1;
+    can_be_cut = true;
+    can_explode = true;
+    can_regenerate = true;
+    damage_on_enemies = 1;
   }
   else {
-    // We are at map loading time, i.e. parsing a map data file
-    // (that happens to be written in Lua but it could be XML or anything...).
-    // This current Lua state l is only used to parse the map data file.
-    // It knows nothing from the Solarus API (it just reuses these
-    // map_api_create_XXX functions for to avoid to reimplement all of them).
-    // But we don't allow to pass the on_destroyed callback as a function
-    // since it's not the same Lua state.
-    // We also want the map data file, including the on_destroyed field, to be
-    // editable in clear text by a quest editor, so it has to be a string.
-
-    // TODO Allow to pass the on_destroyed callback as a string in this case.
+    LuaTools::error(l, std::string("Unknown destructible subtype: '") + subtype_name + "'");
   }
 
   Destructible* destructible = new Destructible(
@@ -1097,9 +1131,17 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
       layer,
       x,
       y,
-      Destructible::get_subtype_by_name(subtype_name),
-      Treasure(map.get_game(), treasure_name, treasure_variant, treasure_savegame_variable));
-  destructible->set_destruction_callback(destruction_callback_ref);
+      animation_set_id,
+      Treasure(map.get_game(), treasure_name, treasure_variant, treasure_savegame_variable),
+      modified_ground
+  );
+  destructible->set_destruction_sound(destruction_sound_id);
+  destructible->set_weight(weight);
+  destructible->set_can_be_cut(can_be_cut);
+  destructible->set_can_explode(can_explode);
+  destructible->set_can_regenerate(can_regenerate);
+  destructible->set_damage_on_enemies(damage_on_enemies);
+
   map.get_entities().add_entity(destructible);
 
   if (map.is_started()) {

@@ -1663,7 +1663,7 @@ bool MapEntity::is_jumper_obstacle(const Jumper& jumper) const {
 bool MapEntity::is_destructible_obstacle(
     const Destructible& destructible) const {
 
-  return !destructible.is_disabled();
+  return !destructible.is_waiting_for_regeneration();
 }
 
 /**

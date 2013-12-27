@@ -402,7 +402,7 @@ void Surface::create_software_surface() {
       "Software surface already exists");
 
   // Create a surface with the appropriate pixel format.
-  SDL_PixelFormat* format = Video::Video::get_pixel_format();
+  SDL_PixelFormat* format = Video::get_pixel_format();
   internal_surface = SDL_CreateRGBSurface(
       0,
       width,

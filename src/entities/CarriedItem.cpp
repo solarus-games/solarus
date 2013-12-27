@@ -53,8 +53,8 @@ const std::string CarriedItem::lifting_trajectories[4] = {
  * \param original_entity the entity that will be replaced by this carried item
  * (its coordinates, size and origin will be copied)
  * \param animation_set_id name of the animation set for the sprite to create
- * \param destruction_sound_id name of the sound to play when this item is destroyed
- * (or an empty string)
+ * \param destruction_sound_id Name of the sound to play when this item is destroyed
+ * (or an empty string).
  * \param damage_on_enemies damage received by an enemy if the item is thrown on him
  * (possibly 0)
  * \param explosion_date date of the explosion if the item should explode,
@@ -249,7 +249,7 @@ void CarriedItem::break_item() {
   get_movement()->stop();
 
   if (!can_explode()) {
-    if (destruction_sound_id.size() > 0) {
+    if (!destruction_sound_id.empty()) {
       Sound::play(destruction_sound_id);
     }
     if (get_sprite().has_animation("destroy")) {

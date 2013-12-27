@@ -33,6 +33,8 @@
 #include "Sprite.h"
 #include <lauxlib.h>
 
+// TODO call events
+
 namespace solarus {
 
 /**
@@ -152,7 +154,7 @@ const std::string& Destructible::get_animation_set_id() const {
 
 /**
  * \brief Returns the id of the sound to play when this item is destroyed.
- * \return The destruction sound id
+ * \return The destruction sound id or an empty string.
  */
 const std::string& Destructible::get_destruction_sound() const {
   return destruction_sound_id;
@@ -160,7 +162,7 @@ const std::string& Destructible::get_destruction_sound() const {
 
 /**
  * \brief Sets the id of the sound to play when this item is destroyed.
- * \param destruction_sound_id The destruction sound id.
+ * \param destruction_sound_id The destruction sound id or an empty string.
  */
 void Destructible::set_destruction_sound(const std::string& destruction_sound_id) {
   this->destruction_sound_id = destruction_sound_id;
@@ -371,7 +373,7 @@ void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode collisio
 void Destructible::notify_collision(MapEntity& other_entity,
     Sprite& other_sprite, Sprite& this_sprite) {
 
-  if (get_weight() != -1
+  if (get_can_be_cut()
       && !is_being_cut
       && !is_waiting_for_regeneration()
       && !is_regenerating
@@ -458,7 +460,9 @@ void Destructible::notify_action_command_pressed() {
 void Destructible::play_destroy_animation() {
 
   is_being_cut = true;
-  Sound::play(get_destruction_sound());
+  if (!destruction_sound_id.empty()) {
+    Sound::play(destruction_sound_id);
+  }
   get_sprite().set_current_animation("destroy");
   if (!is_drawn_in_y_order()) {
     get_entities().bring_to_front(this);  // Show animation destroy to front.

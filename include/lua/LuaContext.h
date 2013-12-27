@@ -793,10 +793,12 @@ class LuaContext {
     };
 
     // Executing Lua code.
-    bool userdata_has_field(ExportableToLua& userdata, const char* key) const;
-    bool userdata_has_field(ExportableToLua& userdata, const std::string& key) const;
-    bool userdata_metatable_has_field(
-        const std::string& lua_type_name, const char* key) const;
+    bool userdata_has_field(
+        const ExportableToLua& userdata, const char* key) const;
+    bool userdata_has_field(
+        const ExportableToLua& userdata, const std::string& key) const;
+    bool userdata_has_metafield(
+        const ExportableToLua& userdata, const char* key) const;
     bool find_method(int index, const char* function_name);
     bool find_method(const char* function_name);
     bool call_function(
@@ -1047,7 +1049,7 @@ class LuaContext {
     std::set<Drawable*>
         drawables_to_remove;        /**< Drawable objects to be removed at the
                                      * next cycle. */
-    std::map<ExportableToLua*, std::set<std::string> >
+    std::map<const ExportableToLua*, std::set<std::string> >
         userdata_fields;            /**< Existing string keys created on each
                                      * userdata with our __newindex. This is
                                      * only for performance, to avoid Lua

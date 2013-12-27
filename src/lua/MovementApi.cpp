@@ -1749,10 +1749,6 @@ int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
  */
 void LuaContext::movement_on_position_changed(Movement& movement) {
 
-  if (!movement.is_known_to_lua()) {
-    return;
-  }
-
                                   // ...
   push_movement(l, movement);
                                   // ... movement

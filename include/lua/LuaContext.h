@@ -795,6 +795,8 @@ class LuaContext {
     // Executing Lua code.
     bool userdata_has_field(ExportableToLua& userdata, const char* key) const;
     bool userdata_has_field(ExportableToLua& userdata, const std::string& key) const;
+    bool userdata_metatable_has_field(
+        const std::string& lua_type_name, const char* key) const;
     bool find_method(int index, const char* function_name);
     bool find_method(const char* function_name);
     bool call_function(
@@ -1050,10 +1052,6 @@ class LuaContext {
                                      * userdata with our __newindex. This is
                                      * only for performance, to avoid Lua
                                      * lookups for callbacks like on_update. */
-    std::map<std::string, std::set<std::string> >
-        userdata_metafields;        /**< TODO Existing additional string keys
-                                     * created on each userdata type metatable
-                                     * by the user. Only for performance. */
 
     static std::map<lua_State*, LuaContext*>
         lua_contexts;               /**< Mapping to get the encapsulating object

@@ -476,11 +476,17 @@ void LuaContext::cancel_callback(int callback_ref) {
 bool LuaContext::userdata_has_field(ExportableToLua& userdata,
     const char* key) const {
 
-  // TODO by returning true we temporarily disable the optimization
-  // but the behavior is still correct.
-  return true;
+  // TODO since this function now also checks the metatable, check that
+  // doing the work below instead of just returning true is still useful
+  // for performance.
+  // If not, kill this function.
 
-  /* TODO reimplement taking into account __index
+  // First check the metatable of the type.
+  if (userdata_metatable_has_field(userdata.get_lua_type_name(), key)) {
+    return true;
+  }
+
+  // Check the userdata itself then.
   if (!userdata.is_with_lua_table()) {
     return false;
   }
@@ -492,7 +498,6 @@ bool LuaContext::userdata_has_field(ExportableToLua& userdata,
   }
 
   return it->second.find(key) != it->second.end();
-  */
 }
 
 /**
@@ -511,11 +516,12 @@ bool LuaContext::userdata_has_field(ExportableToLua& userdata,
 bool LuaContext::userdata_has_field(ExportableToLua& userdata,
     const std::string& key) const {
 
-  // TODO by returning true we temporarily disable the optimization
-  // but the behavior is still correct.
-  return true;
+  // First check the metatable of the type.
+  if (userdata_metatable_has_field(userdata.get_lua_type_name(), key.c_str())) {
+    return true;
+  }
 
-  /* TODO reimplement taking into account __index
+  // Check the userdata itself then.
   if (!userdata.is_with_lua_table()) {
     return false;
   }
@@ -527,7 +533,27 @@ bool LuaContext::userdata_has_field(ExportableToLua& userdata,
   }
 
   return it->second.find(key) != it->second.end();
-  */
+}
+
+/**
+ * \brief Returns whether the metatable of a type contains the specified field.
+ * \param lua_type_name Name of a Lua type (e.g. "sol.game").
+ * \param key Key of the entry to test.
+ */
+bool LuaContext::userdata_metatable_has_field(
+    const std::string& lua_type_name, const char* key) const {
+
+                                  // ...
+  luaL_getmetatable(l, lua_type_name.c_str());
+                                  // ... meta
+  lua_pushstring(l, key);
+                                  // ... meta key
+  lua_rawget(l, -2);
+                                  // ... meta field/nil
+  const bool found = !lua_isnil(l, -1);
+  lua_pop(l, 2);
+                                  // ...
+  return found;
 }
 
 /**

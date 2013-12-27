@@ -2815,10 +2815,6 @@ int LuaContext::custom_entity_api_get_model(lua_State* l) {
  */
 void LuaContext::entity_on_removed(MapEntity& entity) {
 
-  if (!entity.is_known_to_lua()) {
-    return;
-  }
-
   push_entity(l, entity);
   if (userdata_has_field(entity, "on_removed")) {
     on_removed();
@@ -3377,10 +3373,6 @@ void LuaContext::enemy_on_disabled(Enemy& enemy) {
  */
 void LuaContext::enemy_on_restarted(Enemy& enemy) {
 
-  if (!enemy.is_known_to_lua()) {
-    return;
-  }
-
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
   if (userdata_has_field(enemy, "on_restarted")) {
@@ -3479,10 +3471,6 @@ void LuaContext::enemy_on_custom_attack_received(Enemy& enemy,
  */
 void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) {
 
-  if (!enemy.is_known_to_lua()) {
-    return;
-  }
-
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
   if (userdata_has_field(enemy, "on_hurt")) {
@@ -3499,10 +3487,6 @@ void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) 
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_dying(Enemy& enemy) {
-
-  if (!enemy.is_known_to_lua()) {
-    return;
-  }
 
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
@@ -3538,10 +3522,6 @@ void LuaContext::enemy_on_dead(Enemy& enemy) {
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_immobilized(Enemy& enemy) {
-
-  if (!enemy.is_known_to_lua()) {
-    return;
-  }
 
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.

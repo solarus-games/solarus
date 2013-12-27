@@ -42,16 +42,16 @@
 namespace solarus {
 
 const std::string LuaContext::entity_module_name = "sol.entity";
-const std::string LuaContext::entity_hero_module_name = "sol.entity.hero";
-const std::string LuaContext::entity_npc_module_name = "sol.entity.npc";
-const std::string LuaContext::entity_chest_module_name = "sol.entity.chest";
-const std::string LuaContext::entity_block_module_name = "sol.entity.block";
-const std::string LuaContext::entity_switch_module_name = "sol.entity.switch";
-const std::string LuaContext::entity_door_module_name = "sol.entity.door";
-const std::string LuaContext::entity_shop_treasure_module_name = "sol.entity.shop_treasure";
-const std::string LuaContext::entity_pickable_module_name = "sol.entity.pickable";
-const std::string LuaContext::entity_enemy_module_name = "sol.entity.enemy";
-const std::string LuaContext::entity_custom_module_name = "sol.entity.custom";
+const std::string LuaContext::entity_hero_module_name = "sol.hero";
+const std::string LuaContext::entity_npc_module_name = "sol.npc";
+const std::string LuaContext::entity_chest_module_name = "sol.chest";
+const std::string LuaContext::entity_block_module_name = "sol.block";
+const std::string LuaContext::entity_switch_module_name = "sol.switch";
+const std::string LuaContext::entity_door_module_name = "sol.door";
+const std::string LuaContext::entity_shop_treasure_module_name = "sol.shop_treasure";
+const std::string LuaContext::entity_pickable_module_name = "sol.pickable";
+const std::string LuaContext::entity_enemy_module_name = "sol.enemy";
+const std::string LuaContext::entity_custom_module_name = "sol.custom_entity";
 
 // TODO move this to Enemy
 const std::string LuaContext::enemy_attack_names[] = {

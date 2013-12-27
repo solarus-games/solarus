@@ -37,15 +37,15 @@
 namespace solarus {
 
 const std::string LuaContext::movement_module_name = "sol.movement";
-const std::string LuaContext::movement_straight_module_name = "sol.movement.straight";
-const std::string LuaContext::movement_target_module_name = "sol.movement.target";
-const std::string LuaContext::movement_random_module_name = "sol.movement.random";
-const std::string LuaContext::movement_path_module_name = "sol.movement.path";
-const std::string LuaContext::movement_random_path_module_name = "sol.movement.random_path";
-const std::string LuaContext::movement_path_finding_module_name = "sol.movement.path_finding";
-const std::string LuaContext::movement_circle_module_name = "sol.movement.circle";
-const std::string LuaContext::movement_jump_module_name = "sol.movement.jump";
-const std::string LuaContext::movement_pixel_module_name = "sol.movement.pixel";
+const std::string LuaContext::movement_straight_module_name = "sol.straight_movement";
+const std::string LuaContext::movement_target_module_name = "sol.target_movement";
+const std::string LuaContext::movement_random_module_name = "sol.random_movement";
+const std::string LuaContext::movement_path_module_name = "sol.path_movement";
+const std::string LuaContext::movement_random_path_module_name = "sol.random_path_movement";
+const std::string LuaContext::movement_path_finding_module_name = "sol.path_finding_movement";
+const std::string LuaContext::movement_circle_module_name = "sol.circle_movement";
+const std::string LuaContext::movement_jump_module_name = "sol.jump_movement";
+const std::string LuaContext::movement_pixel_module_name = "sol.pixel_movement";
 
 /**
  * \brief Initializes the movement features provided to Lua.

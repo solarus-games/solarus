@@ -3,6 +3,16 @@ Notes about the new destructible object API.
 Remove the built-in subtypes.
 Remove the destruction callback of map:create_destructible, replaced by on_cut() and on_lifted()
 
+Done:
+- Update the engine.
+- Update the syntax of maps.
+- Make a converter for existing maps.
+
+Still to be done:
+- Update the editor.
+- Update the Lua API (methods + events).
+- Update quests data files.
+- Update quest dialogs of destructibles.
 
 Properties at creation time:
 
@@ -20,7 +30,7 @@ can_be_cut
 can_explode
 can_regenerate
 damage_on_enemies
-modified_ground (default "wall")
+ground (default "wall")
 
 
 Methods:

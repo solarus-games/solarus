@@ -1058,72 +1058,28 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
   int y = LuaTools::check_int_field(l, 1, "y");
-  const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
   const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
   int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable =
       LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
+  const std::string& animation_set_id = LuaTools::check_string_field(l, 1, "sprite");
+  Ground modified_ground = LuaTools::opt_enum_field<Ground>(
+      l, 1, "ground", Tileset::ground_names, GROUND_WALL
+  );
+  const std::string& destruction_sound_id = LuaTools::opt_string_field(
+      l, 1, "destruction_sound", ""
+  );
+  int weight = LuaTools::opt_int_field(l, 1, "weight", 0);
+  int damage_on_enemies = LuaTools::opt_int_field(l, 1, "damage_on_enemies", 1);
+  bool can_be_cut = LuaTools::opt_boolean_field(l, 1, "can_be_cut", false);
+  bool can_explode = LuaTools::opt_boolean_field(l, 1, "can_explode", false);
+  bool can_regenerate = LuaTools::opt_boolean_field(l, 1, "can_regenerate", false);
 
   if (!treasure_savegame_variable.empty()
       && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
     LuaTools::arg_error(l, 1, std::string(
         "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier: '")
         + treasure_savegame_variable + "'");
-  }
-
-  // TODO This code is transitional. Subtypes will be removed from the data file too.
-  std::string animation_set_id;
-  Ground modified_ground = GROUND_WALL;
-  std::string destruction_sound_id;
-  int weight = 0;
-  int damage_on_enemies = 1;
-  bool can_be_cut = false;
-  bool can_explode = false;
-  bool can_regenerate = false;
-
-  if (subtype_name == "pot") {
-    animation_set_id = "entities/pot";
-    destruction_sound_id = "stone";
-    damage_on_enemies = 2;
-  }
-  else if (subtype_name == "bush") {
-    animation_set_id = "entities/bush";
-    destruction_sound_id = "bush";
-    weight = 1;
-    can_be_cut = true;
-    damage_on_enemies = 1;
-  }
-  else if (subtype_name == "white_stone") {
-    animation_set_id = "entities/stone_small_white";
-    destruction_sound_id = "stone";
-    weight = 1;
-    damage_on_enemies = 2;
-  }
-  else if (subtype_name == "black_stone") {
-    animation_set_id = "entities/stone_small_black";
-    destruction_sound_id = "stone";
-    weight = 2;
-    damage_on_enemies = 4;
-  }
-  else if (subtype_name == "grass") {
-    animation_set_id = "entities/grass";
-    destruction_sound_id = "bush";
-    weight = -1;
-    can_be_cut = true;
-    damage_on_enemies = 0;
-    modified_ground = GROUND_GRASS;
-  }
-  else if (subtype_name == "bomb_flower") {
-    animation_set_id = "entities/bomb_flower";
-    destruction_sound_id = "bush";
-    weight = 1;
-    can_be_cut = true;
-    can_explode = true;
-    can_regenerate = true;
-    damage_on_enemies = 1;
-  }
-  else {
-    LuaTools::error(l, std::string("Unknown destructible subtype: '") + subtype_name + "'");
   }
 
   Destructible* destructible = new Destructible(

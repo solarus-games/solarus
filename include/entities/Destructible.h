@@ -120,6 +120,7 @@ class Destructible: public Detector {
 
     static const std::string& get_subtype_name(Subtype subtype);
     static Subtype get_subtype_by_name(const std::string& subtype_name);
+
 };
 
 }

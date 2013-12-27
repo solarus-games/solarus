@@ -846,7 +846,13 @@ void LuaContext::register_type(
     const luaL_Reg* metamethods
 ) {
 
-  // Make sure we create the table if not already existing.
+  // Check that this type does not already exist.
+  luaL_getmetatable(l, module_name.c_str());
+  Debug::check_assertion(lua_isnil(l, -1),
+      std::string("Type ") + module_name + " already exists");
+  lua_pop(l, 1);
+
+  // Make sure we create the table.
   const luaL_Reg empty[] = {
       { NULL, NULL }
   };
@@ -863,6 +869,12 @@ void LuaContext::register_type(
 
   // Create the metatable for the type, add it to the Lua registry.
   luaL_newmetatable(l, module_name.c_str());
+                                  // meta
+
+  // Store a metafield __solarus_type with the module name.
+  lua_pushstring(l, module_name.c_str());
+                                  // meta type_name
+  lua_setfield(l, -2, "__solarus_type");
                                   // meta
 
   // Add the methods to the metatable.
@@ -1035,7 +1047,7 @@ bool LuaContext::is_userdata(lua_State* l, int index,
   index = LuaTools::get_positive_index(l, index);
 
                                   // ... udata ...
-  void *udata = lua_touserdata(l, index);
+  void* udata = lua_touserdata(l, index);
   if (udata == NULL) {
     // This is not a userdata.
     return false;

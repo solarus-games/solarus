@@ -1451,13 +1451,5 @@ void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
   get_lua_context().enemy_on_custom_attack_received(*this, attack, this_sprite);
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Enemy::get_lua_type_name() const {
-  return LuaContext::entity_enemy_module_name;
-}
-
 }
 

@@ -2472,13 +2472,5 @@ void Hero::start_state_from_ground() {
   }
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Hero::get_lua_type_name() const {
-  return LuaContext::entity_hero_module_name;
-}
-
 }
 

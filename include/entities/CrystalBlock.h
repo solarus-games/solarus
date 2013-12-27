@@ -64,6 +64,7 @@ class CrystalBlock: public Detector {
     void draw_on_map();
 
     bool is_raised() const;
+
 };
 
 }

@@ -43,6 +43,7 @@ class Fire: public Detector {
 
     // collisions
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+
 };
 
 }

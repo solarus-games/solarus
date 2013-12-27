@@ -222,13 +222,5 @@ void ShopTreasure::draw_on_map() {
       y + 22 - camera_position.get_y());
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& ShopTreasure::get_lua_type_name() const {
-  return LuaContext::entity_shop_treasure_module_name;
-}
-
 }
 

@@ -38,19 +38,96 @@
 #include "Sprite.h"
 #include "EquipmentItem.h"
 #include <sstream>
+#include <set>
 
 namespace solarus {
 
-const std::string LuaContext::entity_module_name = "sol.entity";
+namespace {
+
+/**
+ * \brief Lua type name of each map entity type.
+ */
+const std::string entity_type_names[ENTITY_NUMBER] = {
+    "sol.tile",
+    "sol.destination",
+    "sol.teletransporter",
+    "sol.pickable",
+    "sol.destructible",
+    "sol.chest",
+    "sol.jumper",
+    "sol.enemy",
+    "sol.npc",
+    "sol.block",
+    "sol.dynamic_tile",
+    "sol.switch",
+    "sol.wall",
+    "sol.sensor",
+    "sol.crystal",
+    "sol.crystal_block",
+    "sol.shop_treasure",
+    "sol.conveyor_belt",
+    "sol.door",
+    "sol.stairs",
+    "sol.separator",
+    "sol.custom",
+    "sol.hero",
+    "sol.carried_object",
+    "sol.boomerang",
+    "sol.explosion",
+    "sol.arrow",
+    "sol.bomb",
+    "sol.fire",
+    "sol.hookshot",
+};
+
+/**
+ * \brief Returns the Lua names of all entity types.
+ * \return The Lua name of all entity types.
+ */
+const std::set<std::string>& get_entity_type_names() {
+
+  static std::set<std::string> result;
+  if (result.empty()) {
+    for (int i = 0; i < ENTITY_NUMBER; ++i) {
+      result.insert(entity_type_names[i]);
+    }
+  }
+
+  return result;
+}
+
+}
+
+// TODO can we remove all this?
 const std::string LuaContext::entity_hero_module_name = "sol.hero";
-const std::string LuaContext::entity_npc_module_name = "sol.npc";
-const std::string LuaContext::entity_chest_module_name = "sol.chest";
-const std::string LuaContext::entity_block_module_name = "sol.block";
-const std::string LuaContext::entity_switch_module_name = "sol.switch";
-const std::string LuaContext::entity_door_module_name = "sol.door";
-const std::string LuaContext::entity_shop_treasure_module_name = "sol.shop_treasure";
+const std::string LuaContext::entity_tile_module_name = "sol.tile";
+const std::string LuaContext::entity_dynamic_tile_module_name = "sol.dynamic_tile";
+const std::string LuaContext::entity_teletransporter_module_name = "sol.teletransporter";
+const std::string LuaContext::entity_destination_module_name = "sol.destination";
 const std::string LuaContext::entity_pickable_module_name = "sol.pickable";
+const std::string LuaContext::entity_destructible_module_name = "sol.destructible";
+const std::string LuaContext::entity_carried_object_module_name = "sol.carried_object";
+const std::string LuaContext::entity_chest_module_name = "sol.chest";
+const std::string LuaContext::entity_shop_treasure_module_name = "sol.shop_treasure";
 const std::string LuaContext::entity_enemy_module_name = "sol.enemy";
+const std::string LuaContext::entity_npc_module_name = "sol.npc";
+const std::string LuaContext::entity_block_module_name = "sol.block";
+const std::string LuaContext::entity_jumper_module_name = "sol.jumper";
+const std::string LuaContext::entity_switch_module_name = "sol.switch";
+const std::string LuaContext::entity_sensor_module_name = "sol.sensor";
+const std::string LuaContext::entity_separator_module_name = "sol.separator";
+const std::string LuaContext::entity_wall_module_name = "sol.wall";
+const std::string LuaContext::entity_crystal_module_name = "sol.crystal";
+const std::string LuaContext::entity_crystal_block_module_name = "sol.crystal_block";
+const std::string LuaContext::entity_conveyor_belt_module_name = "sol.conveyor_belt";
+const std::string LuaContext::entity_door_module_name = "sol.door";
+const std::string LuaContext::entity_stairs_module_name = "sol.stairs";
+const std::string LuaContext::entity_bomb_module_name = "sol.bomb";
+const std::string LuaContext::entity_explosion_module_name = "sol.explosion";
+const std::string LuaContext::entity_fire_module_name = "sol.fire";
+const std::string LuaContext::entity_arrow_module_name = "sol.arrow";
+const std::string LuaContext::entity_hookshot_module_name = "sol.hookshot";
+const std::string LuaContext::entity_boomerang_module_name = "sol.boomerang";
 const std::string LuaContext::entity_custom_module_name = "sol.custom_entity";
 
 // TODO move this to Enemy
@@ -129,14 +206,6 @@ void LuaContext::register_entity_module() {
       { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
-
-  // Methods of the entity type.
-  static const luaL_Reg entity_methods[] = {
-      ENTITY_COMMON_METHODS,
-      { NULL, NULL }
-  };
-
-  register_type(entity_module_name, NULL, entity_methods, metamethods);
 
   // Hero.
   static const luaL_Reg hero_methods[] = {
@@ -355,6 +424,34 @@ void LuaContext::register_entity_module() {
       custom_entity_methods,
       metamethods
   );
+
+  // Methods of the entity type.
+  static const luaL_Reg entity_common_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { NULL, NULL }
+  };
+
+  // Register all other types of entity, without specific methods.
+  register_type(entity_tile_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_dynamic_tile_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_teletransporter_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_destination_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_destructible_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_carried_object_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_jumper_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_sensor_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_separator_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_wall_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_crystal_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_crystal_block_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_conveyor_belt_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_stairs_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_bomb_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_explosion_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_fire_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_arrow_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_hookshot_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_boomerang_module_name, NULL, entity_common_methods, metamethods);
 }
 
 /**
@@ -364,16 +461,35 @@ void LuaContext::register_entity_module() {
  * \return true if the value at this index is a entity.
  */
 bool LuaContext::is_entity(lua_State* l, int index) {
-  return is_userdata(l, index, entity_module_name)
-      || is_hero(l, index)
-      || is_npc(l, index)
-      || is_chest(l, index)
-      || is_block(l, index)
-      || is_switch(l, index)
-      || is_door(l, index)
-      || is_pickable(l, index)
-      || is_enemy(l, index)
-      || is_shop_treasure(l, index);
+
+  // We could return is_hero() || is_tile() || is_dynamic_tile || ...
+  // but this would be tedious and costly.
+
+  void* udata = lua_touserdata(l, index);
+  if (udata == NULL) {
+    // This is not a userdata.
+    return false;
+  }
+
+  if (!lua_getmetatable(l, index)) {
+    // The userdata has no metatable.
+    return false;
+  }
+
+  // Get the name of the Solarus type from this userdata.
+  lua_pushstring(l, "__solarus_type");
+  lua_rawget(l, -2);
+  if (lua_isnil(l, -1)) {
+    // This is a userdata from some library other than Solarus.
+    lua_pop(l, 2);
+    return false;
+  }
+
+  // Check if the type name is one of the entity type names.
+  const std::string& type_name = lua_tostring(l, -1);
+  lua_pop(l, 2);
+
+  return get_entity_type_names().find(type_name) != get_entity_type_names().end();
 }
 
 /**
@@ -411,6 +527,16 @@ void LuaContext::push_entity(lua_State* l, MapEntity& entity) {
 }
 
 /**
+ * \brief Returns the Lua type name corresponding to a type of map entity.
+ * \param entity_type A type of map entity.
+ * \return The corresponding Lua type name, e.g. "sol.enemy".
+ */
+const std::string& LuaContext::get_entity_type_name(EntityType entity_type) {
+
+  return entity_type_names[entity_type];
+}
+
+/**
  * \brief Implementation of entity:get_type().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -419,7 +545,13 @@ int LuaContext::entity_api_get_type(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
 
-  push_string(l, entity.get_type_name());
+  // Get the internal name of the type (e.g. "sol.enemy").
+  const std::string& module_name = entity.get_lua_type_name();
+  Debug::check_assertion(module_name.substr(0, 4) == "sol.",
+      std::string("Unexpected type name '") + module_name
+  );
+
+  push_string(l, module_name.substr(4));
   return 1;
 }
 

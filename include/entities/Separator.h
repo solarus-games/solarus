@@ -55,6 +55,7 @@ class Separator: public Detector {
         MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_activating(int direction4);
     void notify_activated(int direction4);
+
 };
 
 }

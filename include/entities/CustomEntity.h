@@ -127,6 +127,7 @@ class CustomEntity: public Detector {
     virtual void stop_movement_by_hero();
     virtual std::string get_sword_tapping_sound();
     virtual bool test_collision_custom(MapEntity& entity);
+
 */
 
   private:

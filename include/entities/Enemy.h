@@ -189,8 +189,6 @@ class Enemy: public Detector {
     bool is_dying() const;
     void set_treasure(const Treasure& treasure);
 
-    virtual const std::string& get_lua_type_name() const;
-
   private:
 
     // creation

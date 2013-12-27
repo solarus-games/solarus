@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_SHOP_ITEM_H
-#define SOLARUS_SHOP_ITEM_H
+#ifndef SOLARUS_SHOP_TREASURE_H
+#define SOLARUS_SHOP_TREASURE_H
 
 #include "Common.h"
 #include "Treasure.h"
@@ -62,8 +62,6 @@ class ShopTreasure: public Detector {
     void notify_action_command_pressed();
 
     void draw_on_map();
-
-    virtual const std::string& get_lua_type_name() const;
 
   private:
 

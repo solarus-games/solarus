@@ -58,7 +58,7 @@ class MapEntity: public ExportableToLua {
      * \return the type of entity
      */
     virtual EntityType get_type() const = 0;
-    const std::string& get_type_name() const;
+    virtual const std::string& get_lua_type_name() const;
     bool is_hero() const;
     virtual bool is_detector() const;
     virtual bool can_be_obstacle() const;
@@ -249,10 +249,7 @@ class MapEntity: public ExportableToLua {
     virtual void update();
     virtual void draw_on_map();
 
-    virtual const std::string& get_lua_type_name() const;
-
     static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
-    static const std::string entity_type_names[ENTITY_NUMBER + 1];  /** Lua name of each entity type. */
 
   protected:
 

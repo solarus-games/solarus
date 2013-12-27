@@ -57,6 +57,7 @@ class Crystal: public Detector {
     void update();
     void draw_on_map();
     void set_suspended(bool suspended);
+
 };
 
 }

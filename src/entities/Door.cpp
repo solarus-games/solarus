@@ -722,13 +722,5 @@ void Door::set_closing() {
   }
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Door::get_lua_type_name() const {
-  return LuaContext::entity_door_module_name;
-}
-
 }
 

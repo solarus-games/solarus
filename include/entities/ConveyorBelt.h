@@ -39,6 +39,7 @@ class ConveyorBelt: public Detector {
 
     bool is_obstacle_for(const MapEntity& other) const;
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+
 };
 
 }

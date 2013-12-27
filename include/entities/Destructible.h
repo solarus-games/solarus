@@ -53,6 +53,37 @@ class Destructible: public Detector {
       SUBTYPE_NUMBER    = 7
     };
 
+    // creation and destruction
+    Destructible(const std::string& name, Layer layer, int x, int y,
+        Subtype subtype, const Treasure &treasure);
+    ~Destructible();
+
+    EntityType get_type() const;
+    bool is_drawn_in_y_order() const;
+    bool is_ground_modifier() const;
+    Ground get_modified_ground() const;
+
+    const std::string& get_animation_set_id();
+    const std::string& get_destruction_sound_id();
+    int get_damage_on_enemies();
+    void explode();
+    bool can_explode();
+    bool is_disabled() const;
+    void set_destruction_callback(int destroy_callback_ref);
+
+    bool is_obstacle_for(const MapEntity& other) const;
+    bool test_collision_custom(MapEntity& entity);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+    void notify_collision_with_hero(Hero& hero, CollisionMode collision_mode);
+    void notify_action_command_pressed();
+
+    void set_suspended(bool suspended);
+    void update();
+
+    static const std::string& get_subtype_name(Subtype subtype);
+    static Subtype get_subtype_by_name(const std::string& subtype_name);
+
   private:
 
     /**
@@ -87,39 +118,6 @@ class Destructible: public Detector {
     void play_destroy_animation();
     void create_pickable();
     void destruction_callback();
-
-  public:
-
-    // creation and destruction
-    Destructible(const std::string& name, Layer layer, int x, int y,
-        Subtype subtype, const Treasure &treasure);
-    ~Destructible();
-
-    EntityType get_type() const;
-    bool is_drawn_in_y_order() const;
-    bool is_ground_modifier() const;
-    Ground get_modified_ground() const;
-
-    const std::string& get_animation_set_id();
-    const std::string& get_destruction_sound_id();
-    int get_damage_on_enemies();
-    void explode();
-    bool can_explode();
-    bool is_disabled() const;
-    void set_destruction_callback(int destroy_callback_ref);
-
-    bool is_obstacle_for(const MapEntity& other) const;
-    bool test_collision_custom(MapEntity& entity);
-    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
-    void notify_collision_with_hero(Hero& hero, CollisionMode collision_mode);
-    void notify_action_command_pressed();
-
-    void set_suspended(bool suspended);
-    void update();
-
-    static const std::string& get_subtype_name(Subtype subtype);
-    static Subtype get_subtype_by_name(const std::string& subtype_name);
 
 };
 

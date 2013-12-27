@@ -473,26 +473,31 @@ void LuaContext::cancel_callback(int callback_ref) {
  * \param key String key to test.
  * \return \c true if this key exists on the userdata.
  */
-bool LuaContext::userdata_has_field(ExportableToLua& userdata,
-    const char* key) const {
+bool LuaContext::userdata_has_field(
+    const ExportableToLua& userdata, const char* key) const {
 
-  // TODO by returning true we temporarily disable the optimization
-  // but the behavior is still correct.
-  return true;
+  // TODO since this function now also checks the metatable, check that
+  // doing the work below instead of just returning true is still useful
+  // for performance.
+  // If not, kill this function.
 
-  /* TODO reimplement taking into account __index
+  // First check the metatable of the type.
+  if (userdata_has_metafield(userdata, key)) {
+    return true;
+  }
+
+  // Check the userdata itself then.
   if (!userdata.is_with_lua_table()) {
     return false;
   }
 
-  const std::map<ExportableToLua*, std::set<std::string> >::const_iterator it =
+  const std::map<const ExportableToLua*, std::set<std::string> >::const_iterator it =
       userdata_fields.find(&userdata);
   if (it == userdata_fields.end()) {
     return false;
   }
 
   return it->second.find(key) != it->second.end();
-  */
 }
 
 /**
@@ -508,26 +513,50 @@ bool LuaContext::userdata_has_field(ExportableToLua& userdata,
  * \param key String key to test.
  * \return \c true if this key exists on the userdata.
  */
-bool LuaContext::userdata_has_field(ExportableToLua& userdata,
-    const std::string& key) const {
+bool LuaContext::userdata_has_field(
+    const ExportableToLua& userdata, const std::string& key) const {
 
-  // TODO by returning true we temporarily disable the optimization
-  // but the behavior is still correct.
-  return true;
+  // First check the metatable of the type.
+  if (userdata_has_metafield(userdata, key.c_str())) {
+    return true;
+  }
 
-  /* TODO reimplement taking into account __index
+  // Check the userdata itself then.
   if (!userdata.is_with_lua_table()) {
     return false;
   }
 
-  const std::map<ExportableToLua*, std::set<std::string> >::const_iterator it =
+  const std::map<const ExportableToLua*, std::set<std::string> >::const_iterator it =
       userdata_fields.find(&userdata);
   if (it == userdata_fields.end()) {
     return false;
   }
 
   return it->second.find(key) != it->second.end();
-  */
+}
+
+/**
+ * \brief Returns whether the metatable of a userdata has the specified field.
+ * \param userdata A userdata.
+ * \param key String key to test.
+ * \return \c true if this key exists on the userdata's metatable.
+ */
+bool LuaContext::userdata_has_metafield(
+    const ExportableToLua& userdata, const char* key) const {
+
+  // We avoid to push the userdata for performance.
+  // Maybe the userdata does not even exist in the Lua side.
+                                  // ...
+  luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
+                                  // ... meta
+  lua_pushstring(l, key);
+                                  // ... meta key
+  lua_rawget(l, -2);
+                                  // ... meta field/nil
+  const bool found = !lua_isnil(l, -1);
+  lua_pop(l, 2);
+                                  // ...
+  return found;
 }
 
 /**

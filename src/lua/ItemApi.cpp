@@ -714,10 +714,6 @@ void LuaContext::item_on_started(EquipmentItem& item) {
  */
 void LuaContext::item_on_finished(EquipmentItem& item) {
 
-  if (!item.is_known_to_lua()) {
-    return;
-  }
-
   push_item(l, item);
   if (userdata_has_field(item, "on_finished")) {
     on_finished();

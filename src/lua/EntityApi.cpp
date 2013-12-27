@@ -42,16 +42,16 @@
 namespace solarus {
 
 const std::string LuaContext::entity_module_name = "sol.entity";
-const std::string LuaContext::entity_hero_module_name = "sol.entity.hero";
-const std::string LuaContext::entity_npc_module_name = "sol.entity.npc";
-const std::string LuaContext::entity_chest_module_name = "sol.entity.chest";
-const std::string LuaContext::entity_block_module_name = "sol.entity.block";
-const std::string LuaContext::entity_switch_module_name = "sol.entity.switch";
-const std::string LuaContext::entity_door_module_name = "sol.entity.door";
-const std::string LuaContext::entity_shop_treasure_module_name = "sol.entity.shop_treasure";
-const std::string LuaContext::entity_pickable_module_name = "sol.entity.pickable";
-const std::string LuaContext::entity_enemy_module_name = "sol.entity.enemy";
-const std::string LuaContext::entity_custom_module_name = "sol.entity.custom";
+const std::string LuaContext::entity_hero_module_name = "sol.hero";
+const std::string LuaContext::entity_npc_module_name = "sol.npc";
+const std::string LuaContext::entity_chest_module_name = "sol.chest";
+const std::string LuaContext::entity_block_module_name = "sol.block";
+const std::string LuaContext::entity_switch_module_name = "sol.switch";
+const std::string LuaContext::entity_door_module_name = "sol.door";
+const std::string LuaContext::entity_shop_treasure_module_name = "sol.shop_treasure";
+const std::string LuaContext::entity_pickable_module_name = "sol.pickable";
+const std::string LuaContext::entity_enemy_module_name = "sol.enemy";
+const std::string LuaContext::entity_custom_module_name = "sol.custom_entity";
 
 // TODO move this to Enemy
 const std::string LuaContext::enemy_attack_names[] = {
@@ -2815,10 +2815,6 @@ int LuaContext::custom_entity_api_get_model(lua_State* l) {
  */
 void LuaContext::entity_on_removed(MapEntity& entity) {
 
-  if (!entity.is_known_to_lua()) {
-    return;
-  }
-
   push_entity(l, entity);
   if (userdata_has_field(entity, "on_removed")) {
     on_removed();
@@ -3377,10 +3373,6 @@ void LuaContext::enemy_on_disabled(Enemy& enemy) {
  */
 void LuaContext::enemy_on_restarted(Enemy& enemy) {
 
-  if (!enemy.is_known_to_lua()) {
-    return;
-  }
-
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
   if (userdata_has_field(enemy, "on_restarted")) {
@@ -3479,10 +3471,6 @@ void LuaContext::enemy_on_custom_attack_received(Enemy& enemy,
  */
 void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) {
 
-  if (!enemy.is_known_to_lua()) {
-    return;
-  }
-
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
   if (userdata_has_field(enemy, "on_hurt")) {
@@ -3499,10 +3487,6 @@ void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) 
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_dying(Enemy& enemy) {
-
-  if (!enemy.is_known_to_lua()) {
-    return;
-  }
 
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
@@ -3538,10 +3522,6 @@ void LuaContext::enemy_on_dead(Enemy& enemy) {
  * \param enemy An enemy.
  */
 void LuaContext::enemy_on_immobilized(Enemy& enemy) {
-
-  if (!enemy.is_known_to_lua()) {
-    return;
-  }
 
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.

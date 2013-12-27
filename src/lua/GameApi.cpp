@@ -1405,10 +1405,6 @@ void LuaContext::game_on_started(Game& game) {
  */
 void LuaContext::game_on_finished(Game& game) {
 
-  if (!game.get_savegame().is_known_to_lua()) {
-    return;
-  }
-
   push_game(l, game.get_savegame());
   if (userdata_has_field(game.get_savegame(), "on_finished")) {
     on_finished();
@@ -1426,10 +1422,6 @@ void LuaContext::game_on_finished(Game& game) {
  * \param game A game.
  */
 void LuaContext::game_on_update(Game& game) {
-
-  if (!game.get_savegame().is_known_to_lua()) {
-    return;
-  }
 
   push_game(l, game.get_savegame());
   // This particular method is tried so often that we want to save optimize
@@ -1451,10 +1443,6 @@ void LuaContext::game_on_update(Game& game) {
  * \param dst_surface The destination surface.
  */
 void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
-
-  if (!game.get_savegame().is_known_to_lua()) {
-    return;
-  }
 
   push_game(l, game.get_savegame());
   if (userdata_has_field(game.get_savegame(), "on_draw")) {
@@ -1616,15 +1604,8 @@ void LuaContext::game_on_game_over_finished(Game& game) {
  */
 bool LuaContext::game_on_input(Game& game, const InputEvent& event) {
 
-  if (!game.get_savegame().is_known_to_lua()) {
-    return false;
-  }
-
-  bool handled = false;
   push_game(l, game.get_savegame());
-  if (game.get_savegame().is_with_lua_table()) {
-    handled = on_input(event);
-  }
+  bool handled = on_input(event);
   if (!handled) {
     handled = menus_on_input(-1, event);
   }
@@ -1643,10 +1624,6 @@ bool LuaContext::game_on_input(Game& game, const InputEvent& event) {
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command command) {
-
-  if (!game.get_savegame().is_known_to_lua()) {
-    return false;
-  }
 
   bool handled = false;
   push_game(l, game.get_savegame());
@@ -1671,10 +1648,6 @@ bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command comma
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::game_on_command_released(Game& game, GameCommands::Command command) {
-
-  if (!game.get_savegame().is_known_to_lua()) {
-    return false;
-  }
 
   bool handled = false;
   push_game(l, game.get_savegame());

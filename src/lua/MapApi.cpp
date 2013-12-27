@@ -1968,10 +1968,6 @@ void LuaContext::map_on_started(Map& map, Destination* destination) {
  */
 void LuaContext::map_on_finished(Map& map) {
 
-  if (!map.is_known_to_lua()) {
-    return;
-  }
-
   push_map(l, map);
   if (userdata_has_field(map, "on_finished")) {
     on_finished();
@@ -1989,10 +1985,6 @@ void LuaContext::map_on_finished(Map& map) {
  * \param map A map.
  */
 void LuaContext::map_on_update(Map& map) {
-
-  if (!map.is_known_to_lua()) {
-    return;
-  }
 
   push_map(l, map);
   // This particular method is tried so often that we want to save optimize
@@ -2015,9 +2007,6 @@ void LuaContext::map_on_update(Map& map) {
  */
 void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
 
-  if (!map.is_known_to_lua()) {
-    return;
-  }
   push_map(l, map);
   if (userdata_has_field(map, "on_draw")) {
     on_draw(dst_surface);
@@ -2039,15 +2028,8 @@ void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
  */
 bool LuaContext::map_on_input(Map& map, const InputEvent& event) {
 
-  if (!map.is_known_to_lua()) {
-    return false;
-  }
-
-  bool handled = false;
   push_map(l, map);
-  if (map.is_with_lua_table()) {
-    handled = on_input(event);
-  }
+  bool handled = on_input(event);
   if (!handled) {
     handled = menus_on_input(-1, event);
   }
@@ -2066,10 +2048,6 @@ bool LuaContext::map_on_input(Map& map, const InputEvent& event) {
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command) {
-
-  if (!map.is_known_to_lua()) {
-    return false;
-  }
 
   bool handled = false;
   push_map(l, map);
@@ -2094,10 +2072,6 @@ bool LuaContext::map_on_command_pressed(Map& map, GameCommands::Command command)
  * \return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::map_on_command_released(Map& map, GameCommands::Command command) {
-
-  if (!map.is_known_to_lua()) {
-    return false;
-  }
 
   bool handled = false;
   push_map(l, map);

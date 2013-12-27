@@ -54,18 +54,19 @@ Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
 * Colors now take an optional alpha value as fourth component.
-* Add a method surface:clear().
-* Fix random_movement:get_max_radius() that was not working.
-* Add a method menu:is_started().
-* Add a method map:get_hero() (#362).
-* Add a method entity:get_game() (#363).
-* Add an event sensor:on_left() (#339).
-* Add an event block:on_moving() (#334).
-* Add functions to get/set the properties of blocks.
 * sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
-* Add methods to simulate game commands, by mrunderhill (#382).
-* Add an event sensor:on_left() (#339).
-* Add an event block:on_moving() (#334).
+* New method surface:clear().
+* New function sol.main.get_metatable(), allows to implement shared behaviors.
+* New method menu:is_started().
+* New method map:get_hero() (#362).
+* New method entity:get_game() (#363).
+* New event sensor:on_left() (#339).
+* New event block:on_moving() (#334).
+* New functions to get/set the properties of blocks.
+* New methods to simulate game commands, by mrunderhill (#382).
+* New event sensor:on_left() (#339).
+* New event block:on_moving() (#334).
+* Fix random_movement:get_max_radius() that was not working.
 
 Solarus Quest Editor changes
 ----------------------------

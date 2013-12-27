@@ -232,17 +232,10 @@ int LuaContext::main_api_get_angle(lua_State* l) {
  */
 int LuaContext::main_api_get_metatable(lua_State* l) {
 
-  // TODO
-  return 0;
-
-  /*
   const std::string& type_name = luaL_checkstring(l, 1);
 
-  if (type_name == "map") {
-    luaL_getmetatable(l, map_module_name.c_str());
-  }
+  luaL_getmetatable(l, (std::string("sol.") + type_name).c_str());
   return 1;
-  */
 }
 
 /**

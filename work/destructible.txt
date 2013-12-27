@@ -1,0 +1,49 @@
+Notes about the new destructible object API.
+
+Remove the built-in subtypes.
+Remove the destruction callback of map:create_destructible, replaced by on_cut() and on_lifted()
+
+
+Properties at creation time:
+
+name
+layer
+x
+y
+treasure_name
+treasure_variant
+treasure_savegame_variable
+sprite
+destruction_sound (when cut or thown)
+weight (nil means cannot be lifted)
+can_be_cut 
+can_explode
+can_regenerate
+damage_on_enemies
+modified_ground (default "wall")
+
+
+Methods:
+
+get/set_treasure (like enemies)
+get/set_destruction_sound
+get/set_weight
+get/set_can_be_cut
+get/set_can_explode
+get/set_can_regenerate
+get/set_damage_on_enemies
+get_modified_ground
+
+
+Events:
+
+on_looked(): means cannot lift or cut
+on_cut()
+on_lifted()
+on_exploded()
+on_regenerated()
+on_reached_enemy(enemy): to do something other than hurting the enemy
+
+Use the metatable of destructibles to make a default event on_looked()
+that shows a dialog if the destructible object is too heavy or cannot be cut.
+

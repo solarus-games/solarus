@@ -75,6 +75,9 @@ Changes that do not introduce incompatibilities:
 Solarus Quest Editor changes
 ----------------------------
 
+* The editor is now built with Maven (#365).
+* The id and name of a new resource and now asked in a single dialog (#321).
+* The order of resources in the quest tree can now be changed (#319).
 * Fix NullPointerException when canceling the Open Project dialog.
 
 _________________________________

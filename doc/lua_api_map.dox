@@ -466,6 +466,7 @@ that overlap this point.
   \c "wall_bottom_right_water",
   \c "deep_water",
   \c "shallow_water",
+  \c "grass",
   \c "hole",
   \c "ice",
   \c "ladder",

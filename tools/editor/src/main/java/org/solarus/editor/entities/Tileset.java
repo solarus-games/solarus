@@ -97,31 +97,6 @@ public class Tileset extends Observable {
      */
     private boolean isNewTilePatternAreaOverlapping;
 
-    // TODO store this directly in the Obstacle enum
-    private static final HashMap<String, Ground> groundsByName =
-        new HashMap<String, Ground>();
-    static {
-        groundsByName.put("empty", Ground.EMPTY);
-        groundsByName.put("traversable", Ground.TRAVERSABLE);
-        groundsByName.put("wall", Ground.WALL);
-        groundsByName.put("low_wall", Ground.LOW_WALL);
-        groundsByName.put("wall_top_right", Ground.WALL_TOP_RIGHT);
-        groundsByName.put("wall_top_left", Ground.WALL_TOP_LEFT);
-        groundsByName.put("wall_bottom_left", Ground.WALL_BOTTOM_LEFT);
-        groundsByName.put("wall_bottom_right", Ground.WALL_BOTTOM_RIGHT);
-        groundsByName.put("wall_top_right_water", Ground.WALL_TOP_RIGHT_WATER);
-        groundsByName.put("wall_top_left_water", Ground.WALL_TOP_LEFT_WATER);
-        groundsByName.put("wall_bottom_left_water", Ground.WALL_BOTTOM_LEFT_WATER);
-        groundsByName.put("wall_bottom_right_water", Ground.WALL_BOTTOM_RIGHT_WATER);
-        groundsByName.put("deep_water", Ground.DEEP_WATER);
-        groundsByName.put("shallow_water", Ground.SHALLOW_WATER);
-        groundsByName.put("hole", Ground.HOLE);
-        groundsByName.put("ice", Ground.ICE);
-        groundsByName.put("ladder", Ground.LADDER);
-        groundsByName.put("prickles", Ground.PRICKLE);
-        groundsByName.put("lava", Ground.LAVA);
-    }
-
     /**
      * Creates or loads a tileset.
      * @param tilesetId Id of the tileset to create (may be a new one or an existing one).
@@ -713,7 +688,7 @@ public class Tileset extends Observable {
 
                 out.println("tile_pattern{");
                 out.println("  id = " + id + ",");
-                out.println("  ground = \"" + getGroundName(tilePattern.getGround()) + "\",");
+                out.println("  ground = \"" + tilePattern.getGround().getName() + "\",");
                 out.println("  default_layer = " + tilePattern.getDefaultLayer().getId() + ",");
                 out.println("  x = " + x + ",");
                 out.println("  y = " + y + ",");
@@ -738,36 +713,6 @@ public class Tileset extends Observable {
             message += ex.getMessage();
             throw new QuestEditorException(message);
         }
-    }
-
-    /**
-     * @brief Turns a Lua ground name into a Ground enum value.
-     * @param name The Lua name.
-     * @return The corresponding enum value or null.
-     */
-    private Ground getGroundByName(String name) throws QuestEditorException {
-
-        Ground ground = groundsByName.get(name);
-        if (ground == null) {
-            throw new QuestEditorException("Invalid ground name: '" + ground);
-        }
-        return ground;
-    }
-
-    /**
-     * @brief Turns a ground enum value into a Lua ground name.
-     * @param obstacle The ground value.
-     * @return The corresponding name.
-     */
-    private String getGroundName(Ground ground) throws QuestEditorException {
-
-        for (java.util.Map.Entry<String, Ground> keyValue: groundsByName.entrySet()) {
-
-            if (keyValue.getValue() == ground) {
-                return keyValue.getKey();
-            }
-        }
-        throw new QuestEditorException("No name for ground " + ground);
     }
 
     /**
@@ -822,7 +767,7 @@ public class Tileset extends Observable {
                     }
                     else if (keyString.equals("ground")) {
                         String groundName = value.checkjstring();
-                        ground = getGroundByName(groundName);
+                        ground = Ground.getByName(groundName);
                     }
                     else if (keyString.equals("default_layer")) {
                         defaultLayer = Layer.get(value.checkint());

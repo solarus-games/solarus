@@ -438,6 +438,7 @@ Additional properties:
   The ground is usually \c "wall", but you may set \c "traversable"
   to make the object traversable, or for example \c "grass" to make it
   traversable too but with an additional grass sprite below the hero.
+  See \ref lua_api_map_get_ground "map:get_ground()" for the list of grounds.
   The default value is \c "wall".
 
 Examples of destructible objects:

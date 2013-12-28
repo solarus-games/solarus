@@ -49,10 +49,10 @@ Events:
 
 on_looked(): means cannot lift or cut
 on_cut()
+on_lifting()
 on_lifted()
 on_exploded()
-on_regenerated()
-on_reached_enemy(enemy): to do something other than hurting the enemy
+on_regenerating()
 
 Use the metatable of destructibles to make a default event on_looked()
 that shows a dialog if the destructible object is too heavy or cannot be cut.

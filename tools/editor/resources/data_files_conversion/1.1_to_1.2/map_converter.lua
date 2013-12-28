@@ -16,8 +16,7 @@ local destructible_subtype_replacements = {
   sprite = "entities/bush",
   destruction_sound = "bush",
   weight = 1,
-  can_be_cut = true,
-  damage_on_enemies = 1,]],
+  can_be_cut = true,]],
 
   ['  subtype = "white_stone",'] = [[
   sprite = "entities/stone_small_white",
@@ -44,8 +43,7 @@ local destructible_subtype_replacements = {
   weight = 1,
   can_be_cut = true,
   can_explode = true,
-  can_regenerate = true,
-  damage_on_enemies = 1,]],
+  can_regenerate = true,]],
 
 }
 

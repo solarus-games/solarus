@@ -93,7 +93,7 @@ The weight corresponds to the \c "lift"
 \ref lua_api_game_get_ability "ability" required to lift the object.
 - Return value (number): The level of \c "lift" ability required.
   \c 0 allows the player to lift the object unconditionally.
-  \c nil means that the object can never be lifted.
+  The special value \c -1 means that the object can never be lifted.
 
 \subsection lua_api_destructible_set_weight destructible:set_weight()
 
@@ -102,7 +102,7 @@ The weight corresponds to the \c "lift"
 \ref lua_api_game_get_ability "ability" required to lift the object.
 - \c weight (number): The level of \c "lift" ability required.
   \c 0 allows the player to lift the object unconditionally.
-  \c nil means that the object can never be lifted.
+  The special value \c -1 means that the object can never be lifted.
 
 \subsection lua_api_destructible_get_can_be_cut destructible:get_can_be_cut()
 
@@ -210,14 +210,6 @@ cannot control the hero.
   \ref lua_api_destructible_get_can_regenerate "regenerate").
   It is replaced by a
   \ref lua_api_carried_object "carried object" with the same sprite.
-
-\subsection lua_api_destructible_on_lifted destructible:on_lifted()
-
-Called when the hero has just finished to lift this destructible object.
-
-At this point, the \ref lua_api_hero "hero" is in
-\ref lua_api_hero_get_state "state" \c "carrying".
-The player controls the hero and the hero carries the object.
 
 \subsection lua_api_destructible_on_exploded destructible:on_exploded()
 

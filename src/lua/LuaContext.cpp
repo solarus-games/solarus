@@ -2398,6 +2398,56 @@ void LuaContext::on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sp
 }
 
 /**
+ * \brief Calls the on_looked() method of the object on top of the stack.
+ */
+void LuaContext::on_looked() {
+
+  if (find_method("on_looked")) {
+    call_function(1, 0, "on_looked");
+  }
+}
+
+/**
+ * \brief Calls the on_cut() method of the object on top of the stack.
+ */
+void LuaContext::on_cut() {
+
+  if (find_method("on_cut")) {
+    call_function(1, 0, "on_cut");
+  }
+}
+
+/**
+ * \brief Calls the on_lifting() method of the object on top of the stack.
+ */
+void LuaContext::on_lifting() {
+
+  if (find_method("on_lifting")) {
+    call_function(1, 0, "on_lifting");
+  }
+}
+
+/**
+ * \brief Calls the on_exploded() method of the object on top of the stack.
+ */
+void LuaContext::on_exploded() {
+
+  if (find_method("on_exploded")) {
+    call_function(1, 0, "on_exploded");
+  }
+}
+
+/**
+ * \brief Calls the on_regenerating() method of the object on top of the stack.
+ */
+void LuaContext::on_regenerating() {
+
+  if (find_method("on_regenerating")) {
+    call_function(1, 0, "on_regenerating");
+  }
+}
+
+/**
  * \brief Calls the on_custom_attack_received() method of the object on top of the stack.
  * \param attack The attack received.
  * \param sprite The sprite that receives the attack if any.

@@ -27,8 +27,10 @@
 #include "entities/Separator.h"
 #include "entities/ShopTreasure.h"
 #include "entities/Pickable.h"
+#include "entities/Destructible.h"
 #include "entities/CustomEntity.h"
 #include "entities/MapEntities.h"
+#include "entities/Tileset.h"
 #include "movements/Movement.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Geometry.h"
@@ -345,13 +347,40 @@ void LuaContext::register_entity_module() {
       { "get_falling_height", pickable_api_get_falling_height },
       { "get_treasure", pickable_api_get_treasure },
       { NULL, NULL }
-
   };
 
   register_type(
       entity_pickable_module_name,
       NULL,
       pickable_methods,
+      metamethods
+  );
+
+  // Destructibles.
+  static const luaL_Reg destructible_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "get_treasure", destructible_api_get_treasure },
+      { "set_treasure", destructible_api_set_treasure },
+      { "get_destruction_sound", destructible_api_get_destruction_sound },
+      { "set_destruction_sound", destructible_api_set_destruction_sound },
+      { "get_weight", destructible_api_get_weight },
+      { "set_weight", destructible_api_set_weight },
+      { "get_can_be_cut", destructible_api_get_can_be_cut },
+      { "set_can_be_cut", destructible_api_set_can_be_cut },
+      { "get_can_explode", destructible_api_get_can_explode },
+      { "set_can_explode", destructible_api_set_can_explode },
+      { "get_can_regenerate", destructible_api_get_can_regenerate },
+      { "set_can_regenerate", destructible_api_set_can_regenerate },
+      { "get_damage_on_enemies", destructible_api_get_damage_on_enemies },
+      { "set_damage_on_enemies", destructible_api_set_damage_on_enemies },
+      { "get_modified_ground", destructible_api_get_modified_ground },
+      { NULL, NULL }
+  };
+
+  register_type(
+      entity_destructible_module_name,
+      NULL,
+      destructible_methods,
       metamethods
   );
 
@@ -436,7 +465,6 @@ void LuaContext::register_entity_module() {
   register_type(entity_dynamic_tile_module_name, NULL, entity_common_methods, metamethods);
   register_type(entity_teletransporter_module_name, NULL, entity_common_methods, metamethods);
   register_type(entity_destination_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_destructible_module_name, NULL, entity_common_methods, metamethods);
   register_type(entity_carried_object_module_name, NULL, entity_common_methods, metamethods);
   register_type(entity_jumper_module_name, NULL, entity_common_methods, metamethods);
   register_type(entity_sensor_module_name, NULL, entity_common_methods, metamethods);
@@ -2214,6 +2242,300 @@ int LuaContext::pickable_api_get_treasure(lua_State* l) {
   push_item(l, treasure.get_item());
   lua_pushinteger(l, treasure.get_variant());
   lua_pushstring(l, treasure.get_savegame_variable().c_str());
+  return 3;
+}
+
+/**
+ * \brief Returns whether a value is a userdata of type destructible object.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return \c true if the value at this index is a destructible object.
+ */
+bool LuaContext::is_destructible(lua_State* l, int index) {
+  return is_userdata(l, index, entity_destructible_module_name);
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * destructible object and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The destructible object.
+ */
+Destructible& LuaContext::check_destructible(lua_State* l, int index) {
+  return static_cast<Destructible&>(check_userdata(l, index, entity_destructible_module_name));
+}
+
+/**
+ * \brief Pushes a destructible userdata onto the stack.
+ * \param l A Lua context.
+ * \param destructible A destructible object.
+ */
+void LuaContext::push_destructible(lua_State* l, Destructible& destructible) {
+  push_userdata(l, destructible);
+}
+
+/**
+ * \brief Implementation of destructible:get_treasure().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_get_treasure(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+  const Treasure& treasure = destructible.get_treasure();
+
+  if (treasure.get_item_name().empty()) {
+    // No treasure: return nil.
+    lua_pushnil(l);
+    return 1;
+  }
+
+  push_item(l, treasure.get_item());
+  lua_pushinteger(l, treasure.get_variant());
+  lua_pushstring(l, treasure.get_savegame_variable().c_str());
+  return 3;
+}
+
+/**
+ * \brief Implementation of destructible:set_treasure().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_set_treasure(lua_State* l) {
+
+  Destructible& destructible= check_destructible(l, 1);
+  std::string item_name, savegame_variable;
+  int variant = 1;
+
+  if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
+    item_name = luaL_checkstring(l, 2);
+  }
+  if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
+    variant = luaL_checkint(l, 3);
+  }
+  if (lua_gettop(l) >= 4 && !lua_isnil(l, 4)) {
+    savegame_variable = luaL_checkstring(l, 4);
+  }
+
+  if (!savegame_variable.empty()
+      && !LuaTools::is_valid_lua_identifier(savegame_variable)) {
+    LuaTools::arg_error(l, 4,
+        std::string("savegame variable identifier expected, got '")
+        + savegame_variable + "'");
+  }
+
+  Treasure treasure(destructible.get_game(), item_name, variant, savegame_variable);
+  destructible.set_treasure(treasure);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of destructible:get_destruction_sound().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_get_destruction_sound(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+
+  const std::string& destruction_sound_id = destructible.get_destruction_sound();
+
+  if (destruction_sound_id.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, destruction_sound_id);
+  }
+  return 1;
+}
+
+/**
+ * \brief Implementation of destructible:set_destruction_sound().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_set_destruction_sound(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+  std::string destruction_sound_id;
+  if (!lua_isnil(l, 2)) {
+    destruction_sound_id = luaL_checkstring(l, 2);
+  }
+
+  destructible.set_destruction_sound(destruction_sound_id);
+  return 0;
+}
+
+/**
+ * \brief Implementation of destructible:get_weight().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_get_weight(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+
+  int weight = destructible.get_weight();
+
+  lua_pushinteger(l, weight);
+  return 1;
+}
+
+/**
+ * \brief Implementation of destructible:set_weight().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_set_weight(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+  int weight = luaL_checkint(l, 2);
+
+  destructible.set_weight(weight);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of destructible:get_can_be_cut().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_get_can_be_cut(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+
+  bool can_be_cut = destructible.get_can_be_cut();
+
+  lua_pushboolean(l, can_be_cut);
+  return 1;
+}
+
+/**
+ * \brief Implementation of destructible:set_can_be_cut().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_set_can_be_cut(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+  bool can_be_cut = true;
+  if (lua_gettop(l) >= 2) {
+    can_be_cut = lua_toboolean(l, 2);
+  }
+  destructible.set_can_be_cut(can_be_cut);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of destructible:get_can_explode().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_get_can_explode(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+
+  bool can_explode = destructible.get_can_explode();
+
+  lua_pushboolean(l, can_explode);
+  return 1;
+}
+
+/**
+ * \brief Implementation of destructible:set_can_explode().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_set_can_explode(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+  bool can_explode = true;
+  if (lua_gettop(l) >= 2) {
+    can_explode = lua_toboolean(l, 2);
+  }
+  destructible.set_can_explode(can_explode);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of destructible:get_can_regenerate().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_get_can_regenerate(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+
+  bool can_regenerate = destructible.get_can_regenerate();
+
+  lua_pushboolean(l, can_regenerate);
+  return 1;
+}
+
+/**
+ * \brief Implementation of destructible:set_can_regenerate().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_set_can_regenerate(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+  bool can_regenerate = true;
+  if (lua_gettop(l) >= 2) {
+    can_regenerate = lua_toboolean(l, 2);
+  }
+  destructible.set_can_regenerate(can_regenerate);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of destructible:get_damage_on_enemies().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_get_damage_on_enemies(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+
+  int damage_on_enemies = destructible.get_damage_on_enemies();
+
+  lua_pushinteger(l, damage_on_enemies);
+  return 1;
+}
+
+/**
+ * \brief Implementation of destructible:set_damage_on_enemies().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_set_damage_on_enemies(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+  int damage_on_enemies = luaL_checkint(l, 2);
+
+  destructible.set_damage_on_enemies(damage_on_enemies);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of destructible:get_modified_ground().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::destructible_api_get_modified_ground(lua_State* l) {
+
+  Destructible& destructible = check_destructible(l, 1);
+
+  Ground modified_ground = destructible.get_modified_ground();
+
+  push_string(l, Tileset::ground_names[modified_ground]);
   return 1;
 }
 
@@ -3399,6 +3721,96 @@ void LuaContext::shop_treasure_on_bought(ShopTreasure& shop_treasure) {
 
   push_shop_treasure(l, shop_treasure);
   on_bought();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_looked() method of a Lua destructible.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param destructible A destructible object.
+ */
+void LuaContext::destructible_on_looked(Destructible& destructible) {
+
+  if (!userdata_has_field(destructible, "on_looked")) {
+    return;
+  }
+
+  push_destructible(l, destructible);
+  on_looked();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_cut() method of a Lua destructible.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param destructible A destructible object.
+ */
+void LuaContext::destructible_on_cut(Destructible& destructible) {
+
+  if (!userdata_has_field(destructible, "on_cut")) {
+    return;
+  }
+
+  push_destructible(l, destructible);
+  on_cut();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_lifting() method of a Lua destructible.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param destructible A destructible object.
+ */
+void LuaContext::destructible_on_lifting(Destructible& destructible) {
+
+  if (!userdata_has_field(destructible, "on_lifting")) {
+    return;
+  }
+
+  push_destructible(l, destructible);
+  on_lifting();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_exploded() method of a Lua destructible.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param destructible A destructible object.
+ */
+void LuaContext::destructible_on_exploded(Destructible& destructible) {
+
+  if (!userdata_has_field(destructible, "on_exploded")) {
+    return;
+  }
+
+  push_destructible(l, destructible);
+  on_exploded();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_regenerating() method of a Lua destructible.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param destructible A destructible object.
+ */
+void LuaContext::destructible_on_regenerating(Destructible& destructible) {
+
+  if (!userdata_has_field(destructible, "on_regenerating")) {
+    return;
+  }
+
+  push_destructible(l, destructible);
+  on_regenerating();
   lua_pop(l, 1);
 }
 

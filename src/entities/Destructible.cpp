@@ -272,6 +272,7 @@ void Destructible::set_damage_on_enemies(int damage_on_enemies) {
  * \return \c true if this entity is an obstacle for the other one.
  */
 bool Destructible::is_obstacle_for(const MapEntity& other) const {
+
   return get_modified_ground() == GROUND_WALL
       && !is_being_cut
       && other.is_destructible_obstacle(*this);
@@ -387,6 +388,8 @@ void Destructible::notify_collision(MapEntity& other_entity,
       hero.check_position();  // To update the ground under the hero.
       create_treasure();
 
+      get_lua_context().destructible_on_cut(*this);
+
       if (get_can_explode()) {
         explode();
       }
@@ -450,6 +453,13 @@ void Destructible::notify_action_command_pressed() {
         // The item can actually regenerate.
         play_destroy_animation();
       }
+
+      // Notify Lua.
+      get_lua_context().destructible_on_lifting(*this);
+    }
+    else {
+      // Cannot lift the object.
+      get_lua_context().destructible_on_looked(*this);
     }
   }
 }
@@ -485,6 +495,7 @@ void Destructible::explode() {
 
   get_entities().add_entity(new Explosion("", get_layer(), get_xy(), true));
   Sound::play("explosion");
+  get_lua_context().destructible_on_exploded(*this);
 }
 
 /**
@@ -530,6 +541,7 @@ void Destructible::update() {
     get_sprite().set_current_animation("regenerating");
     is_regenerating = true;
     regeneration_date = 0;
+    get_lua_context().destructible_on_regenerating(*this);
   }
   else if (is_regenerating && get_sprite().is_animation_finished()) {
     get_sprite().set_current_animation("on_ground");

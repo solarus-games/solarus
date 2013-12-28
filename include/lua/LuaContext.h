@@ -286,6 +286,11 @@ class LuaContext {
     void door_on_closed(Door& door);
     bool shop_treasure_on_buying(ShopTreasure& shop_treasure);
     void shop_treasure_on_bought(ShopTreasure& shop_treasure);
+    void destructible_on_looked(Destructible& destructible);
+    void destructible_on_cut(Destructible& destructible);
+    void destructible_on_lifting(Destructible& destructible);
+    void destructible_on_exploded(Destructible& destructible);
+    void destructible_on_regenerating(Destructible& destructible);
     void enemy_on_update(Enemy& enemy);
     void enemy_on_suspended(Enemy& enemy, bool suspended);
     void enemy_on_created(Enemy& enemy);  // TODO remove?
@@ -744,6 +749,21 @@ class LuaContext {
       pickable_api_get_followed_entity,
       pickable_api_get_falling_height,
       pickable_api_get_treasure,
+      destructible_api_get_treasure,
+      destructible_api_set_treasure,
+      destructible_api_get_destruction_sound,
+      destructible_api_set_destruction_sound,
+      destructible_api_get_weight,
+      destructible_api_set_weight,
+      destructible_api_get_can_be_cut,
+      destructible_api_set_can_be_cut,
+      destructible_api_get_can_explode,
+      destructible_api_set_can_explode,
+      destructible_api_get_can_regenerate,
+      destructible_api_set_can_regenerate,
+      destructible_api_get_damage_on_enemies,
+      destructible_api_set_damage_on_enemies,
+      destructible_api_get_modified_ground,
       enemy_api_get_breed,
       enemy_api_get_life,
       enemy_api_set_life,
@@ -890,6 +910,7 @@ class LuaContext {
     static void push_door(lua_State* l, Door& door);
     static void push_shop_treasure(lua_State* l, ShopTreasure& shop_treasure);
     static void push_pickable(lua_State* l, Pickable& pickable);
+    static void push_destructible(lua_State* l, Destructible& destructible);
     static void push_enemy(lua_State* l, Enemy& enemy);
     static void push_custom_entity(lua_State* l, CustomEntity& entity);
 
@@ -952,6 +973,8 @@ class LuaContext {
     static ShopTreasure& check_shop_treasure(lua_State* l, int index);
     static bool is_pickable(lua_State* l, int index);
     static Pickable& check_pickable(lua_State* l, int index);
+    static bool is_destructible(lua_State* l, int index);
+    static Destructible& check_destructible(lua_State* l, int index);
     static bool is_enemy(lua_State* l, int index);
     static Enemy& check_enemy(lua_State* l, int index);
     static bool is_custom_entity(lua_State* l, int index);
@@ -1035,6 +1058,11 @@ class LuaContext {
     void on_obstacle_reached(Movement& movement);
     void on_movement_changed(Movement& movement);
     void on_movement_finished();
+    void on_looked();
+    void on_cut();
+    void on_lifting();
+    void on_exploded();
+    void on_regenerating();
     void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
     void on_hurt(EnemyAttack attack, int life_lost);
     void on_dying();

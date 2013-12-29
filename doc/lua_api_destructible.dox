@@ -188,7 +188,7 @@ You can for example show a dialog to give the player a hint like
 "This is too heavy".
 
 \remark If you want to do the same action for all destructible objects of your
-game, use the \ref lua_api_main_get_metatable() "metatable trick".
+game, use the \ref lua_api_main_get_metatable "metatable trick".
 Just define this event on the metatable of the destructible object type
 instead of each individual object, and it will be applied to all
 of them.

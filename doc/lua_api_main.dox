@@ -171,7 +171,7 @@ Returns the metatable of a Solarus userdata type.
 
 This function is very powerful and should be used with care.
 
-All userdata objects of the a type share the same metatable.
+All userdata objects of a type share the same metatable.
 So there is a metatable for maps, a metatable for games, a metatables for
 enemies, etc.
 

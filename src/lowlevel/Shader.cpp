@@ -67,13 +67,18 @@ bool Shader::initialize() {
   glDepthFunc(GL_LESS); // Enables depth testing.
   glShadeModel(GL_SMOOTH); // Enables smooth color shading.
   
+  // Use late swap tearing, or try to use the classic swap interval (aka VSync) if not supported.
   if(SDL_GL_SetSwapInterval(-1) == -1) {
-    // If the late swap tearing is not supported, try to use the classic swap interval (aka VSync).
     SDL_GL_SetSwapInterval(1);
   }
   
+  // Get the shading language version.
+  shading_language_version = *glGetString(GL_SHADING_LANGUAGE_VERSION);
+  
   // Check for shader support
-  if (SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
+  if((SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle") || // WORKAROUND : this is the way SDL check for the GL_ARB support
+        SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) && // but it may change in the future or be deactivate with render target.
+      SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
       SDL_GL_ExtensionSupported("GL_ARB_vertex_shader") &&
       SDL_GL_ExtensionSupported("GL_ARB_fragment_shader")) {
@@ -104,21 +109,21 @@ bool Shader::initialize() {
         glUseProgramObjectARB &&
         glGetHandleARB) {
 
-      // Get the SDL default shader program
+      // Get ARB default configuration.
       default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
-
-      // Get the type of GL texture used by SDL
-      if (SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle")
-          || SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) {
-        gl_texture_type = GL_TEXTURE_RECTANGLE_ARB;
-      }
-
-      // Get the shading language version.
-      shading_language_version = *glGetString(GL_SHADING_LANGUAGE_VERSION);
-
+      gl_texture_type = GL_TEXTURE_RECTANGLE_ARB;
+      
       return true;
     }
+    else {
+      // TODO Force SDL to use 2D fetch textures.
+    }
   }
+  
+  // TODO Use fetch sampler and shaders if GL_ARB not supported.
+  // TODO2 Deactivate shaders if fetch shaders are not supported too.
+  
+  // TODISCUSS Use a virtual class to access the used shader context type ?
 #endif
 
   return false;

@@ -28,7 +28,7 @@ class Hero::ConveyorBeltState: public Hero::State {
 
   private:
 
-    ConveyorBelt& conveyor_belt;	/**< the conveyor belt to take */
+    ConveyorBelt& conveyor_belt;    /**< the conveyor belt to take */
     bool snapping;                  /**< indicates that the hero is currently moving towards the
                                      * center of the conveyor belt, before following its real direction */
 

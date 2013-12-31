@@ -39,7 +39,7 @@ PFNGLUSEPROGRAMOBJECTARBPROC Shader::glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC Shader::glGetHandleARB;
 
 SDL_GLContext Shader::gl_context = NULL;
-GLhandleARB Shader::default_shader_program;
+GLhandleARB Shader::default_shader_program = 0;
 GLenum Shader::gl_texture_type = GL_TEXTURE_2D;
 std::string Shader::shading_language_version = "";
 Shader* Shader::loading_shader = NULL;

@@ -367,13 +367,5 @@ bool Npc::can_be_lifted() const {
   return has_sprite() && get_sprite().get_animation_set_id() == "entities/sign";
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Npc::get_lua_type_name() const {
-  return LuaContext::entity_npc_module_name;
-}
-
 }
 

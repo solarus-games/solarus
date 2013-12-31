@@ -32,6 +32,7 @@ to automatically update your data files.
 Don't forget to make a backup first.
 
 * Languages: New syntax of strings.dat easier to read and parse (#170).
+* Maps: Destructibles no longer have subtypes, they are customizable (#270).
 * Maps: Rename entity shop_item to shop_treasure.
 
 Lua API changes
@@ -39,12 +40,14 @@ Lua API changes
 
 Changes that introduce incompatibilities:
 
-* sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
-* map:create_shop_item() is replaced by map:create_shop_treasure().
 * Video mode names have changed: no more wide, fullscreen ou windowed names.
 * sol.video.switch_mode() no longer changes the fullscreen flag.
-* on_key_pressed() and on_character_pressed() are now both called (#344).
 * surface:set_transparency_color() no longer exists. Use surface:clear().
+* sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
+* on_key_pressed() and on_character_pressed() are now both called (#344).
+* map:create_destructible() has no hardcoded subtypes anymore (#270).
+* Destructible objects no longer show hardcoded dialogs (#270).
+* map:create_shop_item() is replaced by map:create_shop_treasure().
 * Enemies have now a default size of 16x16 and origin of 8,13 (#354).
 * The size of enemies must be a multiple of 8 (#358).
 * item:on_pickable_movement_changed replaced by pickable:on_movement_changed.
@@ -53,6 +56,7 @@ Changes that introduce incompatibilities:
 Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
+* New API of destructible objects, fully customizable now (#270).
 * Colors now take an optional alpha value as fourth component.
 * sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
 * New method surface:clear().
@@ -71,6 +75,9 @@ Changes that do not introduce incompatibilities:
 Solarus Quest Editor changes
 ----------------------------
 
+* The editor is now built with Maven (#365).
+* The id and name of a new resource and now asked in a single dialog (#321).
+* The order of resources in the quest tree can now be changed (#319).
 * Fix NullPointerException when canceling the Open Project dialog.
 
 _________________________________

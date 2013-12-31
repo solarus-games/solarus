@@ -73,8 +73,6 @@ class Chest: public Detector {
     void notify_action_command_pressed();
     void set_suspended(bool suspended);
 
-    virtual const std::string& get_lua_type_name() const;
-
     static const std::string opening_method_names[];
 
   private:

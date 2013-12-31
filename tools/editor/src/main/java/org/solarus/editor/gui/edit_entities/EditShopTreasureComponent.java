@@ -51,7 +51,7 @@ public class EditShopTreasureComponent extends EditEntityComponent {
         addField("Treasure", treasureField);
 
         // price
-        priceField = new NumberChooser(10, 1, 999);
+        priceField = new NumberChooser(10, 1, Integer.MAX_VALUE);
         addField("Price", priceField);
 
         // description dialog

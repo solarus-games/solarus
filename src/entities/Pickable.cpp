@@ -501,13 +501,5 @@ void Pickable::draw_on_map() {
   MapEntity::draw_on_map();
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Pickable::get_lua_type_name() const {
-  return LuaContext::entity_pickable_module_name;
-}
-
 }
 

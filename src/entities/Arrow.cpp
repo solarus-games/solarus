@@ -436,7 +436,7 @@ void Arrow::notify_collision_with_destructible(
 
   if (destructible.is_obstacle_for(*this) && is_flying()) {
 
-    if (destructible.can_explode()) {
+    if (destructible.get_can_explode()) {
       destructible.explode();
       remove_from_map();
     }

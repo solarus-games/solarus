@@ -441,13 +441,5 @@ void Chest::set_suspended(bool suspended) {
   }
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Chest::get_lua_type_name() const {
-  return LuaContext::entity_chest_module_name;
-}
-
 }
 

@@ -73,8 +73,6 @@ class Block: public Detector {
     int get_maximum_moves() const;
     void set_maximum_moves(int maximum_moves);
 
-    virtual const std::string& get_lua_type_name() const;
-
   private:
 
     int maximum_moves;          /**< indicates whether the block can be pushed

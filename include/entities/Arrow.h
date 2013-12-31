@@ -76,6 +76,7 @@ class Arrow: public MapEntity {
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
     bool has_reached_map_border() const;
+
 };
 
 }

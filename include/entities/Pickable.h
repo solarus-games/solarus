@@ -58,8 +58,6 @@ class Pickable: public Detector {
     void update();
     void draw_on_map();
 
-    virtual const std::string& get_lua_type_name() const;
-
   private:
 
     // creation and initialization

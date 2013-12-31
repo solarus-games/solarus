@@ -100,8 +100,6 @@ class Npc: public Detector {
     void notify_movement_finished();
     bool can_be_lifted() const;
 
-    virtual const std::string& get_lua_type_name() const;
-
 };
 
 }

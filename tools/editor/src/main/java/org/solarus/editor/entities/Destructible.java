@@ -17,7 +17,6 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
-import java.util.NoSuchElementException;
 
 import org.solarus.editor.*;
 
@@ -31,69 +30,7 @@ public class Destructible extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
-        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
-        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
-        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
-        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
-        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
-        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32),
-    };
-
-    /**
-     * Animation set of a destructible item.
-     */
-    private static final String[] spriteIds = {
-        "entities/pot",
-        "",
-        "entities/bush",
-        "entities/stone_small_white",
-        "entities/stone_small_black",
-        "entities/grass",
-        "entities/bomb_flower",
-    };
-
-    /**
-     * Subtypes of destructible items.
-     */
-    public enum Subtype implements EntitySubtype {
-        POT("pot"),
-        SKULL("skull"),  // TODO remove this (obsolete).
-        BUSH("bush"),
-        STONE_SMALL_WHITE("white_stone"),
-        STONE_SMALL_BLACK("black_stone"),
-        GRASS("grass"),
-        BOMB_FLOWER("bomb_flower");
-
-        public static final String[] humanNames = {
-            "Pot",
-            "Skull",
-            "Bush",
-            "Small white stone",
-            "Small black stone",
-            "Grass",
-            "Bomb flower",
-        };
-
-        private final String id;
-
-        private Subtype(String id) {
-            this.id = id;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public static Subtype get(String id) {
-            for (Subtype subtype: values()) {
-                if (subtype.getId().equals(id)) {
-                    return subtype;
-                }
-            }
-            throw new NoSuchElementException(
-                    "No destructible item subtype with id '" + id + "'");
-        }
+        new EntityImageDescription("entity_destructible.png", 0, 0, 32, 32)
     };
 
     /**
@@ -123,23 +60,6 @@ public class Destructible extends MapEntity {
     }
 
     /**
-     * Sets the subtype of this entity.
-     * @param subtype the subtype of entity
-     */
-    public void setSubtype(EntitySubtype subtype) throws MapException {
-
-        try {
-            sprite = new Sprite(spriteIds[subtype.ordinal()], getMap());
-        }
-        catch (MapException ex) {
-            // The sprite creation failed.
-            sprite = null;
-        }
-
-        super.setSubtype(subtype);
-    }
-
-    /**
      * Declares all properties specific to the current entity type and sets
      * their initial values.
      */
@@ -147,6 +67,33 @@ public class Destructible extends MapEntity {
         createStringProperty("treasure_name", true, null);
         createIntegerProperty("treasure_variant", true, 1);
         createStringProperty("treasure_savegame_variable", true, null);
+        createStringProperty("sprite", false, "");
+        createStringProperty("destruction_sound", true, null);
+        createIntegerProperty("weight", true, 0);
+        createBooleanProperty("can_be_cut", true, false);
+        createBooleanProperty("can_explode", true, false);
+        createBooleanProperty("can_regenerate", true, false);
+        createIntegerProperty("damage_on_enemies", true, 1);
+        createStringProperty("ground", true, Ground.WALL.getName());
+    }
+
+    /**
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
+     */
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
+
+        if (name.equals("sprite")) {
+
+            if (isValidSpriteName(value)) {
+                sprite = new Sprite(value, getMap());
+            }
+            else {
+                sprite = null;
+            }
+        }
     }
 
     /**
@@ -154,10 +101,6 @@ public class Destructible extends MapEntity {
      * @throws MapException if a property is not valid
      */
     public void checkProperties() throws MapException {
-
-        if (subtype == Subtype.SKULL) {
-            throw new MapException("The skull subtype is obsolete, please use pot instead");
-        }
 
         Integer variant = getIntegerProperty("treasure_variant");
         if (variant != null && variant < 1) {
@@ -167,6 +110,11 @@ public class Destructible extends MapEntity {
         String savegameVariable = getStringProperty("treasure_savegame_variable");
         if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid treasure savegame variable");
+        }
+
+        String spriteName = getStringProperty("sprite");
+        if (!isValidSpriteName(spriteName)) {
+            throw new MapException("Invalid sprite name: '" + spriteName + "'");
         }
     }
 
@@ -179,9 +127,15 @@ public class Destructible extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-        // display the sprite
-        sprite.paint(g, zoom, showTransparency,
-                getX(), getY(), null, 0, 0);
+        if (sprite == null) {
+            super.paint(g, zoom, showTransparency);
+        }
+        else {
+            // display the sprite
+            int direction = getDirection();
+            sprite.paint(g, zoom, showTransparency,
+                    getX(), getY(), null, direction, 0);
+        }
     }
 }
 

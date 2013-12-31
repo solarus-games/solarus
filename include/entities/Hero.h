@@ -254,8 +254,6 @@ class Hero: public MapEntity {
         uint32_t end_delay = 0, bool with_sound = true);
     void start_state_from_ground();
 
-    virtual const std::string& get_lua_type_name() const;
-
   private:
 
     // state

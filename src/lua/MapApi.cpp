@@ -1058,11 +1058,22 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
   int y = LuaTools::check_int_field(l, 1, "y");
-  const std::string& subtype_name = LuaTools::check_string_field(l, 1, "subtype");
   const std::string& treasure_name = LuaTools::opt_string_field(l, 1, "treasure_name", "");
   int treasure_variant = LuaTools::opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable =
       LuaTools::opt_string_field(l, 1, "treasure_savegame_variable", "");
+  const std::string& animation_set_id = LuaTools::check_string_field(l, 1, "sprite");
+  Ground modified_ground = LuaTools::opt_enum_field<Ground>(
+      l, 1, "ground", Tileset::ground_names, GROUND_WALL
+  );
+  const std::string& destruction_sound_id = LuaTools::opt_string_field(
+      l, 1, "destruction_sound", ""
+  );
+  int weight = LuaTools::opt_int_field(l, 1, "weight", 0);
+  int damage_on_enemies = LuaTools::opt_int_field(l, 1, "damage_on_enemies", 1);
+  bool can_be_cut = LuaTools::opt_boolean_field(l, 1, "can_be_cut", false);
+  bool can_explode = LuaTools::opt_boolean_field(l, 1, "can_explode", false);
+  bool can_regenerate = LuaTools::opt_boolean_field(l, 1, "can_regenerate", false);
 
   if (!treasure_savegame_variable.empty()
       && !LuaTools::is_valid_lua_identifier(treasure_savegame_variable)) {
@@ -1071,35 +1082,22 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
         + treasure_savegame_variable + "'");
   }
 
-  // TODO Like enemies, implement this callback at runtime with function destructible:on_destroyed()
-  int destruction_callback_ref = LUA_REFNIL;
-  if (map.is_loaded()) {
-    // We are at map runtime, i.e. running a Lua script.
-    // In this case, we can do more than from the map data file.
-    destruction_callback_ref = LuaTools::opt_function_field(l, 1, "on_destroyed");
-  }
-  else {
-    // We are at map loading time, i.e. parsing a map data file
-    // (that happens to be written in Lua but it could be XML or anything...).
-    // This current Lua state l is only used to parse the map data file.
-    // It knows nothing from the Solarus API (it just reuses these
-    // map_api_create_XXX functions for to avoid to reimplement all of them).
-    // But we don't allow to pass the on_destroyed callback as a function
-    // since it's not the same Lua state.
-    // We also want the map data file, including the on_destroyed field, to be
-    // editable in clear text by a quest editor, so it has to be a string.
-
-    // TODO Allow to pass the on_destroyed callback as a string in this case.
-  }
-
   Destructible* destructible = new Destructible(
       name,
       layer,
       x,
       y,
-      Destructible::get_subtype_by_name(subtype_name),
-      Treasure(map.get_game(), treasure_name, treasure_variant, treasure_savegame_variable));
-  destructible->set_destruction_callback(destruction_callback_ref);
+      animation_set_id,
+      Treasure(map.get_game(), treasure_name, treasure_variant, treasure_savegame_variable),
+      modified_ground
+  );
+  destructible->set_destruction_sound(destruction_sound_id);
+  destructible->set_weight(weight);
+  destructible->set_can_be_cut(can_be_cut);
+  destructible->set_can_explode(can_explode);
+  destructible->set_can_regenerate(can_regenerate);
+  destructible->set_damage_on_enemies(damage_on_enemies);
+
   map.get_entities().add_entity(destructible);
 
   if (map.is_started()) {

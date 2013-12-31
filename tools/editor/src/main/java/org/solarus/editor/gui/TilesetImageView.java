@@ -115,7 +115,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
             int i = 0;
             for (Ground ground: Ground.values()) {
-                itemsGround[i] = new JRadioButtonMenuItem(ground.getName(), ground.getIcon());
+                itemsGround[i] = new JRadioButtonMenuItem(ground.getHumanName(), ground.getIcon());
                 itemsGround[i].addActionListener(new ActionChangeGround(ground));
                 popupMenuSelectedTilePattern.add(itemsGround[i]);
                 itemsObstacleGroup.add(itemsGround[i]);

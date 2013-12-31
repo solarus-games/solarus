@@ -846,7 +846,13 @@ void LuaContext::register_type(
     const luaL_Reg* metamethods
 ) {
 
-  // Make sure we create the table if not already existing.
+  // Check that this type does not already exist.
+  luaL_getmetatable(l, module_name.c_str());
+  Debug::check_assertion(lua_isnil(l, -1),
+      std::string("Type ") + module_name + " already exists");
+  lua_pop(l, 1);
+
+  // Make sure we create the table.
   const luaL_Reg empty[] = {
       { NULL, NULL }
   };
@@ -863,6 +869,12 @@ void LuaContext::register_type(
 
   // Create the metatable for the type, add it to the Lua registry.
   luaL_newmetatable(l, module_name.c_str());
+                                  // meta
+
+  // Store a metafield __solarus_type with the module name.
+  lua_pushstring(l, module_name.c_str());
+                                  // meta type_name
+  lua_setfield(l, -2, "__solarus_type");
                                   // meta
 
   // Add the methods to the metatable.
@@ -1035,7 +1047,7 @@ bool LuaContext::is_userdata(lua_State* l, int index,
   index = LuaTools::get_positive_index(l, index);
 
                                   // ... udata ...
-  void *udata = lua_touserdata(l, index);
+  void* udata = lua_touserdata(l, index);
   if (udata == NULL) {
     // This is not a userdata.
     return false;
@@ -2382,6 +2394,56 @@ void LuaContext::on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sp
     push_sprite(l, other_sprite);
     push_sprite(l, this_sprite);
     call_function(4, 0, "on_collision_enemy");
+  }
+}
+
+/**
+ * \brief Calls the on_looked() method of the object on top of the stack.
+ */
+void LuaContext::on_looked() {
+
+  if (find_method("on_looked")) {
+    call_function(1, 0, "on_looked");
+  }
+}
+
+/**
+ * \brief Calls the on_cut() method of the object on top of the stack.
+ */
+void LuaContext::on_cut() {
+
+  if (find_method("on_cut")) {
+    call_function(1, 0, "on_cut");
+  }
+}
+
+/**
+ * \brief Calls the on_lifting() method of the object on top of the stack.
+ */
+void LuaContext::on_lifting() {
+
+  if (find_method("on_lifting")) {
+    call_function(1, 0, "on_lifting");
+  }
+}
+
+/**
+ * \brief Calls the on_exploded() method of the object on top of the stack.
+ */
+void LuaContext::on_exploded() {
+
+  if (find_method("on_exploded")) {
+    call_function(1, 0, "on_exploded");
+  }
+}
+
+/**
+ * \brief Calls the on_regenerating() method of the object on top of the stack.
+ */
+void LuaContext::on_regenerating() {
+
+  if (find_method("on_regenerating")) {
+    call_function(1, 0, "on_regenerating");
   }
 }
 

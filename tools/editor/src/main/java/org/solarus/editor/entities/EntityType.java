@@ -29,7 +29,7 @@ public enum EntityType {
     DESTINATION          ("Destination",       "destination",     Destination.class,     null),
     TELETRANSPORTER      ("Teletransporter",   "teletransporter", Teletransporter.class, null),
     PICKABLE             ("Pickable",          "pickable",        Pickable.class,        null),
-    DESTRUCTIBLE         ("Destructible",      "destructible",    Destructible.class,    Destructible.Subtype.class),
+    DESTRUCTIBLE         ("Destructible",      "destructible",    Destructible.class,    null),
     CHEST                ("Chest",             "chest",           Chest.class,           null),
     JUMPER               ("Jumper",            "jumper",          Jumper.class,          null),
     ENEMY                ("Enemy",             "enemy",           Enemy.class,           null),

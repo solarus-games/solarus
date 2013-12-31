@@ -21,6 +21,7 @@
 #include "GameCommands.h"
 #include "entities/Layer.h"
 #include "entities/EnemyAttack.h"
+#include "entities/EntityType.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Debug.h"
 #include <map>
@@ -48,41 +49,60 @@ class LuaContext {
   public:
 
     // Functions and types.
-    static const std::string main_module_name;                   /**< sol.main */
-    static const std::string audio_module_name;                  /**< sol.audio */
-    static const std::string video_module_name;                  /**< sol.video */
-    static const std::string input_module_name;                  /**< sol.input */
-    static const std::string file_module_name;                   /**< sol.file */
-    static const std::string timer_module_name;                  /**< sol.timer */
-    static const std::string game_module_name;                   /**< sol.game */
-    static const std::string map_module_name;                    /**< sol.map */
-    static const std::string item_module_name;                   /**< sol.item */
-    static const std::string surface_module_name;                /**< sol.surface */
-    static const std::string text_surface_module_name;           /**< sol.text_surface */
-    static const std::string sprite_module_name;                 /**< sol.sprite */
-    static const std::string menu_module_name;                   /**< sol.menu */
-    static const std::string language_module_name;               /**< sol.language */
-    static const std::string movement_module_name;               /**< sol.movement */
-    static const std::string movement_straight_module_name;      /**< sol.movement.straight */
-    static const std::string movement_random_module_name;        /**< sol.movement.random */
-    static const std::string movement_target_module_name;        /**< sol.movement.target */
-    static const std::string movement_path_module_name;          /**< sol.movement.path */
-    static const std::string movement_random_path_module_name;   /**< sol.movement.random_path */
-    static const std::string movement_path_finding_module_name;  /**< sol.movement.path_finding */
-    static const std::string movement_circle_module_name;        /**< sol.movement.circle */
-    static const std::string movement_jump_module_name;          /**< sol.movement.jump */
-    static const std::string movement_pixel_module_name;         /**< sol.movement.pixel */
-    static const std::string entity_module_name;                 /**< sol.entity */
-    static const std::string entity_hero_module_name;            /**< sol.entity.hero */
-    static const std::string entity_npc_module_name;             /**< sol.entity.npc */
-    static const std::string entity_chest_module_name;           /**< sol.entity.chest */
-    static const std::string entity_block_module_name;           /**< sol.entity.block */
-    static const std::string entity_switch_module_name;          /**< sol.entity.switch */
-    static const std::string entity_door_module_name;            /**< sol.entity.door */
-    static const std::string entity_shop_treasure_module_name;   /**< sol.entity.shop_treasure */
-    static const std::string entity_pickable_module_name;        /**< sol.entity.pickable */
-    static const std::string entity_enemy_module_name;           /**< sol.entity.enemy */
-    static const std::string entity_custom_module_name;          /**< sol.entity.custom */
+    static const std::string main_module_name;
+    static const std::string audio_module_name;
+    static const std::string video_module_name;
+    static const std::string input_module_name;
+    static const std::string file_module_name;
+    static const std::string timer_module_name;
+    static const std::string game_module_name;
+    static const std::string map_module_name;
+    static const std::string item_module_name;
+    static const std::string surface_module_name;
+    static const std::string text_surface_module_name;
+    static const std::string sprite_module_name;
+    static const std::string menu_module_name;
+    static const std::string language_module_name;
+    static const std::string movement_module_name;
+    static const std::string movement_straight_module_name;
+    static const std::string movement_random_module_name;
+    static const std::string movement_target_module_name;
+    static const std::string movement_path_module_name;
+    static const std::string movement_random_path_module_name;
+    static const std::string movement_path_finding_module_name;
+    static const std::string movement_circle_module_name;
+    static const std::string movement_jump_module_name;
+    static const std::string movement_pixel_module_name;
+    static const std::string entity_hero_module_name;
+    static const std::string entity_tile_module_name;
+    static const std::string entity_dynamic_tile_module_name;
+    static const std::string entity_teletransporter_module_name;
+    static const std::string entity_destination_module_name;
+    static const std::string entity_pickable_module_name;
+    static const std::string entity_destructible_module_name;
+    static const std::string entity_carried_object_module_name;
+    static const std::string entity_chest_module_name;
+    static const std::string entity_shop_treasure_module_name;
+    static const std::string entity_enemy_module_name;
+    static const std::string entity_npc_module_name;
+    static const std::string entity_block_module_name;
+    static const std::string entity_jumper_module_name;
+    static const std::string entity_switch_module_name;
+    static const std::string entity_sensor_module_name;
+    static const std::string entity_separator_module_name;
+    static const std::string entity_wall_module_name;
+    static const std::string entity_crystal_module_name;
+    static const std::string entity_crystal_block_module_name;
+    static const std::string entity_conveyor_belt_module_name;
+    static const std::string entity_door_module_name;
+    static const std::string entity_stairs_module_name;
+    static const std::string entity_bomb_module_name;
+    static const std::string entity_explosion_module_name;
+    static const std::string entity_fire_module_name;
+    static const std::string entity_arrow_module_name;
+    static const std::string entity_hookshot_module_name;
+    static const std::string entity_boomerang_module_name;
+    static const std::string entity_custom_module_name;
 
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
@@ -145,6 +165,7 @@ class LuaContext {
     void update_movements();
 
     // Entities.
+    static const std::string& get_entity_type_name(EntityType entity_type);
     static Map& get_entity_creation_map(lua_State* l);
     static Map* get_entity_implicit_creation_map(lua_State* l);
     static void set_entity_implicit_creation_map(lua_State* l, Map* map);
@@ -265,6 +286,11 @@ class LuaContext {
     void door_on_closed(Door& door);
     bool shop_treasure_on_buying(ShopTreasure& shop_treasure);
     void shop_treasure_on_bought(ShopTreasure& shop_treasure);
+    void destructible_on_looked(Destructible& destructible);
+    void destructible_on_cut(Destructible& destructible);
+    void destructible_on_lifting(Destructible& destructible);
+    void destructible_on_exploded(Destructible& destructible);
+    void destructible_on_regenerating(Destructible& destructible);
     void enemy_on_update(Enemy& enemy);
     void enemy_on_suspended(Enemy& enemy, bool suspended);
     void enemy_on_created(Enemy& enemy);  // TODO remove?
@@ -723,6 +749,21 @@ class LuaContext {
       pickable_api_get_followed_entity,
       pickable_api_get_falling_height,
       pickable_api_get_treasure,
+      destructible_api_get_treasure,
+      destructible_api_set_treasure,
+      destructible_api_get_destruction_sound,
+      destructible_api_set_destruction_sound,
+      destructible_api_get_weight,
+      destructible_api_set_weight,
+      destructible_api_get_can_be_cut,
+      destructible_api_set_can_be_cut,
+      destructible_api_get_can_explode,
+      destructible_api_set_can_explode,
+      destructible_api_get_can_regenerate,
+      destructible_api_set_can_regenerate,
+      destructible_api_get_damage_on_enemies,
+      destructible_api_set_damage_on_enemies,
+      destructible_api_get_modified_ground,
       enemy_api_get_breed,
       enemy_api_get_life,
       enemy_api_set_life,
@@ -869,6 +910,7 @@ class LuaContext {
     static void push_door(lua_State* l, Door& door);
     static void push_shop_treasure(lua_State* l, ShopTreasure& shop_treasure);
     static void push_pickable(lua_State* l, Pickable& pickable);
+    static void push_destructible(lua_State* l, Destructible& destructible);
     static void push_enemy(lua_State* l, Enemy& enemy);
     static void push_custom_entity(lua_State* l, CustomEntity& entity);
 
@@ -931,6 +973,8 @@ class LuaContext {
     static ShopTreasure& check_shop_treasure(lua_State* l, int index);
     static bool is_pickable(lua_State* l, int index);
     static Pickable& check_pickable(lua_State* l, int index);
+    static bool is_destructible(lua_State* l, int index);
+    static Destructible& check_destructible(lua_State* l, int index);
     static bool is_enemy(lua_State* l, int index);
     static Enemy& check_enemy(lua_State* l, int index);
     static bool is_custom_entity(lua_State* l, int index);
@@ -1014,6 +1058,11 @@ class LuaContext {
     void on_obstacle_reached(Movement& movement);
     void on_movement_changed(Movement& movement);
     void on_movement_finished();
+    void on_looked();
+    void on_cut();
+    void on_lifting();
+    void on_exploded();
+    void on_regenerating();
     void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
     void on_hurt(EnemyAttack attack, int life_lost);
     void on_dying();

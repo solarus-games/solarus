@@ -466,6 +466,7 @@ that overlap this point.
   \c "wall_bottom_right_water",
   \c "deep_water",
   \c "shallow_water",
+  \c "grass",
   \c "hole",
   \c "ice",
   \c "ladder",
@@ -799,10 +800,6 @@ on the map.
     \c 2: high).
   - \c x (number): X coordinate on the map.
   - \c y (number): Y coordinate on the map.
-  - \c subtype (string): The kind of
-    \ref lua_api_destructible "destructible object" to create:
-    \c "pot", \c "bush", \c "stone_small_white", \c "stone_small_black",
-    \c "grass" or \c "bomb_flower".
   - \c treasure_name (string, optional): Kind of
     \ref lua_api_pickable "pickable treasure" to hide in the
     destructible object
@@ -821,8 +818,35 @@ on the map.
     No value means that the treasure (if any) is not saved.
     If the treasure is saved and the player already has it, then no
     treasure is put in the destructible object.
-  - \c on_destroyed (function, optional): A function to be called when the
-    \ref lua_api_hero "hero" lifts the destructible object.
+  - \c sprite (string): Name of the animation set of a
+    \ref lua_api_sprite "sprite" to create for the destructible object.
+  - \c destruction_sound (string, optional): Sound to
+    \ref lua_api_audio_play_sound
+    "play" when the destructible object is cut or broken after being thrown.
+    No value means no sound.
+  - \c weight (number, optional): Level of \c "lift"
+    \ref lua_api_game_get_ability "ability" required to lift the object.
+    \c 0 allows the player to lift the object unconditionally.
+    The special value \c -1 means that the object can never be lifted.
+    The default value is \c 0.
+  - \c can_be_cut (boolean, optional): Whether the hero can cut the object
+    with the sword. No value means \c false.
+  - \c can_explode (boolean, optional): Whether the object should explode
+    when it is cut, hit by a weapon and after a delay when the hero lifts it.
+    The default value is \c false.
+  - \c can_regenerate (boolean, optional): Whether the object should
+    automatically regenerate after a delay when it is destroyed.
+    The default value is \c false.
+  - \c damage_on_enemies (number, optional): Number of life points to remove
+    from an enemy that gets hit by this object after the
+    \ref lua_api_hero "hero" throws it.
+    If the value is \c 0, enemies will ignore the object.
+    The default value is \c 1.
+  - \c ground (string, optional): Ground defined by this entity.
+    The ground is usually \c "wall", but you may set \c "traversable"
+    to make the object traversable, or for example \c "grass" to make it
+    traversable too but with an additional grass sprite below the hero.
+    The default value is \c "wall".
 - Return value (\ref lua_api_destructible "destructible object"): The
   destructible object created.
 

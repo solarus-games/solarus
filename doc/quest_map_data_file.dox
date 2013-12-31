@@ -394,9 +394,6 @@ A destructible object can be declared in the map data file with
 <tt>destructible{ ... }</tt>.
 
 Additional properties:
-- \c subtype (string): The kind of destructible object to create:
-  \c "pot", \c "bush", \c "stone_small_white", \c "stone_small_black",
-  \c "grass" or \c "bomb_flower".
 - \c treasure_name (string, optional): Kind of
   \ref quest_map_data_file_syntax_pickable "pickable treasure" to hide in the
   destructible object (the id of an equipment item).
@@ -413,15 +410,58 @@ Additional properties:
   No value means that the treasure (if any) is not saved.
   If the treasure is saved and the player already has it, then no
   treasure is put in the destructible object.
+- \c sprite (string): Name of the animation set of a
+  \ref lua_api_sprite "sprite" to create for the destructible object.
+- \c destruction_sound (string, optional): Sound to
+  \ref lua_api_audio_play_sound
+  "play" when the destructible object is cut or broken after being thrown.
+  No value means no sound.
+- \c weight (number, optional): Level of \c "lift"
+  \ref lua_api_game_get_ability "ability" required to lift the object.
+  \c 0 allows the player to lift the object unconditionally.
+  The special value \c -1 means that the object can never be lifted.
+  The default value is \c 0.
+- \c can_be_cut (boolean, optional): Whether the hero can cut the object
+  with the sword. No value means \c false.
+- \c can_explode (boolean, optional): Whether the object should explode
+  when it is cut, hit by a weapon and after a delay when the hero lifts it.
+  The default value is \c false.
+- \c can_regenerate (boolean, optional): Whether the object should
+  automatically regenerate after a delay when it is destroyed.
+  The default value is \c false.
+- \c damage_on_enemies (number, optional): Number of life points to remove
+  from an enemy that gets hit by this object after the
+  \ref lua_api_hero "hero" throws it.
+  If the value is \c 0, enemies will ignore the object.
+  The default value is \c 1.
+- \c ground (string, optional): Ground defined by this entity.
+  The ground is usually \c "wall", but you may set \c "traversable"
+  to make the object traversable, or for example \c "grass" to make it
+  traversable too but with an additional grass sprite below the hero.
+  See \ref lua_api_map_get_ground "map:get_ground()" for the list of grounds.
+  The default value is \c "wall".
 
-Example of destructible object:
+Examples of destructible objects:
 \verbatim
 destructible{
   layer = 0,
   x = 232,
   y = 165,
-  subtype = "pot",
   treasure_name = "heart",
+  sprite = "entities/white_stone",
+  destruction_sound = "stone",
+  weight = 1,
+  damage_on_enemies = 2,
+}
+
+destructible{
+  layer = 0,
+  x = 264,
+  y = 165,
+  treasure_name = "heart",
+  sprite = "entities/grass",
+  can_be_cut = true,
+  ground = "grass",
 }
 \endverbatim
 

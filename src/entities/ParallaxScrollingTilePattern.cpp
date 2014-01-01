@@ -75,7 +75,7 @@ void ParallaxScrollingTilePattern::draw(Surface& dst_surface,
  *
  * \return true if this tile pattern is animated
  */
-bool ParallaxScrollingTilePattern::is_animated() {
+bool ParallaxScrollingTilePattern::is_animated() const {
   return true;
 }
 
@@ -92,7 +92,7 @@ bool ParallaxScrollingTilePattern::is_animated() {
  *
  * \return true to if this tile pattern is always drawn at its coordinates
  */
-bool ParallaxScrollingTilePattern::is_drawn_at_its_position() {
+bool ParallaxScrollingTilePattern::is_drawn_at_its_position() const {
   return false;
 }
 

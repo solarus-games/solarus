@@ -119,7 +119,7 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
  *
  * \return true if this tile pattern is animated
  */
-bool SelfScrollingTilePattern::is_animated() {
+bool SelfScrollingTilePattern::is_animated() const {
   return true;
 }
 

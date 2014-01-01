@@ -30,11 +30,6 @@ namespace solarus {
  */
 class TimeScrollingTilePattern: public SimpleTilePattern {
 
-  private:
-
-    static int shift;                   /**< number of pixels to shift, increased with the time */
-    static uint32_t next_shift_date;    /**< when the shift variable is incremented */
-
   public:
 
     TimeScrollingTilePattern(Ground ground, int x, int y, int width, int height);
@@ -44,7 +39,13 @@ class TimeScrollingTilePattern: public SimpleTilePattern {
     void draw(Surface& dst_surface, const Rectangle& dst_position,
             Tileset& tileset, const Rectangle& viewport);
 
-    virtual bool is_animated();
+    virtual bool is_animated() const;
+
+  private:
+
+    static int shift;                   /**< number of pixels to shift, increased with the time */
+    static uint32_t next_shift_date;    /**< when the shift variable is incremented */
+
 };
 
 }

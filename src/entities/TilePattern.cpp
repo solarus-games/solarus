@@ -105,7 +105,7 @@ void TilePattern::update() {
  *
  * \return true if this tile pattern is animated
  */
-bool TilePattern::is_animated() {
+bool TilePattern::is_animated() const {
   return true;
 }
 
@@ -122,7 +122,7 @@ bool TilePattern::is_animated() {
  *
  * \return true if tiles having this pattern are drawn where they are placed
  */
-bool TilePattern::is_drawn_at_its_position() {
+bool TilePattern::is_drawn_at_its_position() const {
   return true;
 }
 

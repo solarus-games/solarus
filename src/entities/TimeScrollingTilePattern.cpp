@@ -120,7 +120,7 @@ void TimeScrollingTilePattern::draw(Surface& dst_surface,
  *
  * \return true if this tile pattern is animated
  */
-bool TimeScrollingTilePattern::is_animated() {
+bool TimeScrollingTilePattern::is_animated() const {
   return true;
 }
 

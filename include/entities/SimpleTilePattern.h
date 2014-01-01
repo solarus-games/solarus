@@ -31,10 +31,6 @@ namespace solarus {
  */
 class SimpleTilePattern: public TilePattern {
 
-  protected:
-
-    Rectangle position_in_tileset; /**< position of the tile pattern in the tileset image */
-
   public:
 
     SimpleTilePattern(Ground ground, int x, int y, int width, int height);
@@ -43,7 +39,12 @@ class SimpleTilePattern: public TilePattern {
     virtual void draw(Surface& dst_surface, const Rectangle& dst_position,
         Tileset& tileset, const Rectangle& viewport);
 
-    virtual bool is_animated();
+    virtual bool is_animated() const;
+
+  protected:
+
+    Rectangle position_in_tileset; /**< position of the tile pattern in the tileset image */
+
 };
 
 }

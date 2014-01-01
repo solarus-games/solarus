@@ -141,7 +141,7 @@ void AnimatedTilePattern::draw(Surface& dst_surface,
  *
  * \return true to if this tile pattern is always drawn at its coordinates
  */
-bool AnimatedTilePattern::is_drawn_at_its_position() {
+bool AnimatedTilePattern::is_drawn_at_its_position() const {
   return !parallax;
 }
 

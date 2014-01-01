@@ -66,7 +66,7 @@ void SimpleTilePattern::draw(Surface& dst_surface, const Rectangle& dst_position
  *
  * \return true if this tile pattern is animated
  */
-bool SimpleTilePattern::is_animated() {
+bool SimpleTilePattern::is_animated() const {
   return false;
 }
 

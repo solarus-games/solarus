@@ -22,6 +22,7 @@ Engine changes
 * The size of all map entities must be a multiple of 8 (#358).
 * Fix pixel collisions coordinates when sprites move (#372).
 * Fix a slowness when loading maps (#374).
+* Fix a crash when changing the movement of the hero (#392).
 * Fix a crash when calling hero:start_treasure() with wrong parameters (#391).
 * Fix the starting location wrongly saved with special destinations (#375).
 * Don't die if the map or destination saved no longer exists (#301).

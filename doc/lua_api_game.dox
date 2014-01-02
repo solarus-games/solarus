@@ -445,10 +445,10 @@ restarted.
   be placed on that map. By default, the default destination of the map is used.
 
 \remark When the hero moves from a map to another map that belongs to a
-  different world (for example, from a dungeon to the outside world), the
-  starting location is automatically set to this point. If this behavior is
-  okay for your quest, you never need to call this function except the first
-  time (when initializing a new savegame file).
+  different world (for example, from a dungeon to the outside world) using a
+  destination entity, the starting location is automatically set to this point.
+  If this behavior is okay for your quest, you never need to call this function
+  except the first time: when initializing a new savegame file.
 
 \subsection lua_api_game_get_life game:get_life()
 

@@ -435,9 +435,13 @@ void Game::update_transitions() {
           // reset the crystal blocks
           crystal_state = false;
 
-          // save the location
-          get_savegame().set_string(Savegame::KEY_STARTING_MAP, next_map->get_id());
-          get_savegame().set_string(Savegame::KEY_STARTING_POINT, next_map->get_destination_name());
+          // Save the location except if this is a special destination.
+          const std::string& destination_name = next_map->get_destination_name();
+          if (destination_name != "_same"
+              && destination_name.substr(0,5) != "_side") {
+            get_savegame().set_string(Savegame::KEY_STARTING_MAP, next_map->get_id());
+            get_savegame().set_string(Savegame::KEY_STARTING_POINT, destination_name);
+          }
         }
 
         // before closing the map, draw it on a backup surface for transition effects

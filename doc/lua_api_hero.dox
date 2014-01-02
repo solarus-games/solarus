@@ -51,9 +51,15 @@ Teletransports the hero to a different place.
 - \c destination_name (string, optional): Name of the \ref lua_api_destination
   "destination entity" to go to on that map,
   or the special keyword \c "_same" to go to the same coordinates.
+  Can also be the special keyword \c "_side0", \c "_side1", \c "_side2" or
+  \c "_side3" to move to the East, North, West or South side of the map,
+  respectively, but the hero should be near the corresponding side or the
+  current map for this to look okay. This is usually used with scrolling
+  transitions.
   No value means the default destination entity of the map.
 - \c transition_style (string, optional): \c "immediate" (no transition effect)
-  or \c "fade" (fade-out and fade-in effect). The default value is \c "fade".
+  \c "fade" (fade-out and fade-in effect) or \c "scrolling".
+  The default value is \c "fade".
 
 \remark The transportation will occur at the next cycle of the engine's main
   loop. Therefore, your map is not unloaded immediately and your map script

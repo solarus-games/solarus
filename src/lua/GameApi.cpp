@@ -22,6 +22,7 @@
 #include "Equipment.h"
 #include "EquipmentItem.h"
 #include "DialogResource.h"
+#include "QuestResourceList.h"
 #include "KeysEffect.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
@@ -230,6 +231,10 @@ int LuaContext::game_api_save(lua_State* l) {
 int LuaContext::game_api_start(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
+
+  if (QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP).empty()) {
+    LuaTools::error(l, "Cannot start game: there is no map in this quest");
+  }
 
   Game* game = savegame.get_game();
   if (game != NULL) {

@@ -288,6 +288,7 @@ void Hero::update_ground_effects() {
     if (is_ground_visible() && get_movement() != NULL) {
 
       // a special ground is displayed under the hero and it's time to play a sound
+      // FIXME this static_cast is unsafe.
       double speed = (static_cast<StraightMovement*>(get_movement()))->get_speed();
       next_ground_date = now + std::max(150, (int) (20000 / speed));
       if (sprites->is_walking() && state->is_touching_ground()) {

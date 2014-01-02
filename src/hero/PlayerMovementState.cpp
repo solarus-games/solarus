@@ -50,6 +50,7 @@ Hero::PlayerMovementState::~PlayerMovementState() {
  * \return The movement.
  */
 PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
+  // FIXME this static_cast is unsafe. The Lua API can set another movement.
   return static_cast<PlayerMovement*>(get_hero().get_movement());
 }
 
@@ -62,6 +63,7 @@ PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
  * \return The movement.
  */
 const PlayerMovement* Hero::PlayerMovementState::get_player_movement() const {
+  // FIXME this static_cast is unsafe. The Lua API can set another movement.
   return static_cast<const PlayerMovement*>(get_hero().get_movement());
 }
 

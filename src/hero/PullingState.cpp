@@ -174,6 +174,7 @@ void Hero::PullingState::notify_position_changed() {
     // if the entity has made more than 8 pixels and is aligned on the grid,
     // we stop the movement
 
+    // FIXME this static_cast is unsafe. The Lua API can set another movement.
     PathMovement* movement = static_cast<PathMovement*>(get_hero().get_movement());
 
     bool horizontal = get_sprites().get_animation_direction() % 2 == 0;

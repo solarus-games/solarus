@@ -68,6 +68,7 @@ void LuaContext::register_language_module() {
       { "get_dialog", language_api_get_dialog },
       { NULL, NULL }
   };
+
   register_functions(language_module_name, functions);
 }
 

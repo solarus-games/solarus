@@ -36,7 +36,7 @@ void LuaContext::register_input_module() {
       { "get_joypad_hat_direction", input_api_get_joypad_hat_direction },
       { NULL, NULL }
   };
-  // create the "sol.input" table anyway
+
   register_functions(input_module_name, functions);
 }
 

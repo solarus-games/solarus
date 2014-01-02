@@ -29,7 +29,8 @@ const std::string LuaContext::sprite_module_name = "sol.sprite";
 void LuaContext::register_sprite_module() {
 
   static const luaL_Reg functions[] = {
-      { "create", sprite_api_create }
+      { "create", sprite_api_create },
+      { NULL, NULL }
   };
 
   static const luaL_Reg methods[] = {

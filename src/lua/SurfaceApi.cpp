@@ -33,7 +33,8 @@ const std::string LuaContext::surface_module_name = "sol.surface";
 void LuaContext::register_surface_module() {
 
   static const luaL_Reg functions[] = {
-      { "create", surface_api_create }
+      { "create", surface_api_create },
+      { NULL, NULL }
   };
 
   static const luaL_Reg methods[] = {

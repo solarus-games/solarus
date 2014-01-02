@@ -37,6 +37,7 @@ void LuaContext::register_menu_module() {
       { "is_started", menu_api_is_started },
       { NULL, NULL }
   };
+
   register_functions(menu_module_name, functions);
 }
 

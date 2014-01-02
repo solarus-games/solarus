@@ -47,6 +47,7 @@ void LuaContext::register_main_module() {
       { "get_metatable", main_api_get_metatable },
       { NULL, NULL }
   };
+
   register_functions(main_module_name, functions);
 }
 

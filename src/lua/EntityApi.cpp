@@ -39,6 +39,7 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "EquipmentItem.h"
+#include "QuestResourceList.h"
 #include <sstream>
 #include <set>
 
@@ -1200,6 +1201,10 @@ int LuaContext::hero_api_teleport(lua_State* l) {
   const std::string& destination_name = luaL_optstring(l, 3, "");
   Transition::Style transition_style = LuaTools::opt_enum<Transition::Style>(
       l, 4, transition_style_names, Transition::FADE);
+
+  if (!QuestResourceList::exists(QuestResourceList::RESOURCE_MAP, map_id)) {
+    LuaTools::arg_error(l, 2, std::string("No such map: '") + map_id + "'");
+  }
 
   hero.get_game().set_current_map(map_id, destination_name, transition_style);
 

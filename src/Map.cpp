@@ -39,8 +39,8 @@ MapLoader Map::map_loader;
 
 /**
  * \brief Creates a map.
- * \param id id of the map, used to determine the description file
- * and the script file of the map
+ * \param id Id of the map, used to determine the data file and
+ * and the script file of the map. The data file must exist.
  */
 Map::Map(const std::string& id):
   game(NULL),

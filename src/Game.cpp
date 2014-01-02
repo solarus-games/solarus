@@ -570,7 +570,7 @@ Map& Game::get_current_map() {
  *
  * Call this function when you want the hero to go to another map.
  *
- * \param map_id id of the map to launch
+ * \param map_id Id of the map to launch. It must exist.
  * \param destination_name name of the destination point of the map you want to use,
  * or en ampty string to use the default destination point.
  * \param transition_style type of transition between the two maps

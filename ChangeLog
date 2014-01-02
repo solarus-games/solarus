@@ -26,6 +26,7 @@ Engine changes
 * Fix the starting location wrongly saved with special destinations (#375).
 * Don't die if the destination saved no longer exists.
 * Don't die if a map has no destination. Show an error and go to 0,0 instead.
+* Don't die if hero:teleport() attempts to go to a non-existing map.
 
 Data files format changes
 -------------------------

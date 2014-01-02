@@ -43,20 +43,29 @@ See \ref lua_api_entity_methods to know these methods.
 
 The following methods are specific to the hero.
 
-\subsection lua_api_hero_teleport hero:teleport(map_id, [destination_name], [transition_style])
+\subsection lua_api_hero_teleport hero:teleport(map_id, [destination_name, [transition_style]])
 
 Teletransports the hero to a different place.
 - \c map_id (string): Id of the \ref lua_api_map "map" to go to
   (may be the same map or another one).
+  If the map does not exist, the teletransportation fails and this function
+  generates a Lua error.
+  If the map exists, then the teletransportation is always successful
+  even if there is no viable destination (see below).
 - \c destination_name (string, optional): Name of the \ref lua_api_destination
-  "destination entity" to go to on that map,
-  or the special keyword \c "_same" to go to the same coordinates.
+  "destination entity" where to go on that map,
+  or the special keyword \c "_same" to keep the same coordinates.
   Can also be the special keyword \c "_side0", \c "_side1", \c "_side2" or
-  \c "_side3" to move to the East, North, West or South side of the map,
-  respectively, but the hero should be near the corresponding side or the
-  current map for this to look okay. This is usually used with scrolling
-  transitions.
+  \c "_side3" to arrive near the East, North, West or South frontier of the map
+  respectively. But the hero should be near the corresponding side or the
+  original map for this to look okay. This is usually used in combination with
+  scrolling transitions.
   No value means the default destination entity of the map.
+  If the destination does not exist, a debugging message is logged and the
+  default destination is used as a fallback.
+  Finally, if there is no destination at all, then no default destination can
+  be used. In this case, another debugging message is logged and the hero
+  is placed at coordinates \c (0,0).
 - \c transition_style (string, optional): \c "immediate" (no transition effect)
   \c "fade" (fade-out and fade-in effect) or \c "scrolling".
   The default value is \c "fade".

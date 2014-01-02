@@ -32,7 +32,8 @@ namespace solarus {
  */
 Hero::PushingState::PushingState(Hero& hero):
   State(hero, "pushing"),
-  pushed_entity(NULL) {
+  pushed_entity(NULL),
+  pushing_movement(NULL) {
 
 }
 
@@ -41,6 +42,7 @@ Hero::PushingState::PushingState(Hero& hero):
  */
 Hero::PushingState::~PushingState() {
 
+  RefCountable::unref(pushing_movement);
 }
 
 /**
@@ -110,7 +112,9 @@ void Hero::PushingState::update() {
           std::string path = "  ";
           path[0] = path[1] = '0' + pushing_direction4 * 2;
 
-          hero.set_movement(new PathMovement(path, 40, false, false, false));
+          pushing_movement = new PathMovement(path, 40, false, false, false);
+          RefCountable::ref(pushing_movement);
+          hero.set_movement(pushing_movement);
           pushed_entity = facing_entity;
           pushed_entity->notify_moving_by(hero);
         }
@@ -186,11 +190,8 @@ void Hero::PushingState::notify_position_changed() {
     // if the entity has made more than 8 pixels and is aligned on the grid,
     // we stop the movement
 
-    // FIXME this static_cast is unsafe. The Lua API can set another movement.
-    PathMovement* movement = static_cast<PathMovement*>(get_hero().get_movement());
-
     bool horizontal = pushing_direction4 % 2 == 0;
-    bool has_reached_grid = movement->get_total_distance_covered() >= 16
+    bool has_reached_grid = pushing_movement->get_total_distance_covered() >= 16
       && ((horizontal && pushed_entity->is_aligned_to_grid_x())
           || (!horizontal && pushed_entity->is_aligned_to_grid_y()));
 
@@ -237,6 +238,8 @@ void Hero::PushingState::stop_moving_pushed_entity() {
     }
 
     hero.clear_movement();
+    RefCountable::unref(pushing_movement);
+    pushing_movement = NULL;
     MapEntity* entity_just_moved = pushed_entity;
     pushed_entity = NULL;
     entity_just_moved->notify_moved_by(hero);

@@ -288,11 +288,14 @@ void Hero::update_ground_effects() {
     if (is_ground_visible() && get_movement() != NULL) {
 
       // a special ground is displayed under the hero and it's time to play a sound
-      // FIXME this static_cast is unsafe.
-      double speed = (static_cast<StraightMovement*>(get_movement()))->get_speed();
-      next_ground_date = now + std::max(150, (int) (20000 / speed));
-      if (sprites->is_walking() && state->is_touching_ground()) {
-        sprites->play_ground_sound();
+      StraightMovement* movement = dynamic_cast<StraightMovement*>(get_movement());
+      if (movement != NULL) {
+        // TODO replace the dynamic_cast by a virtual method get_speed() in Movement.
+        double speed = movement->get_speed();
+        next_ground_date = now + std::max(150, (int) (20000 / speed));
+        if (sprites->is_walking() && state->is_touching_ground()) {
+          sprites->play_ground_sound();
+        }
       }
     }
 
@@ -2216,9 +2219,7 @@ bool Hero::is_grabbing_or_pulling() const {
  */
 void Hero::start_free() {
 
-  if (!state->is_free()) {
-    set_state(new FreeState(*this));
-  }
+  set_state(new FreeState(*this));
 }
 
 /**

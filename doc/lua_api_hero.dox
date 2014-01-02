@@ -172,8 +172,11 @@ lua_api_hero_unfreeze "hero:unfreeze()".
 
 \subsection lua_api_hero_unfreeze hero:unfreeze()
 
-Restores the control to the player, typically after a call to
-\ref lua_api_hero_freeze "hero:freeze()".
+Restores the control to the player.
+The control may have been lost for example by a call to
+\ref lua_api_hero_freeze "hero:freeze()"
+or to
+\ref lua_api_movement_start "some_movement:start(hero)".
 
 \subsection lua_api_hero_walk hero:walk(path, [loop, [ignore_obstacles]])
 

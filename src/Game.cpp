@@ -402,9 +402,6 @@ void Game::update_transitions() {
           Transition::TRANSITION_CLOSING,
           current_map->get_visible_surface(),
           this);
-      if(transition_style == Transition::FADE) {
-        static_cast<TransitionFade*>(transition)->set_color(new Color(Color::get_black()));
-      }
       transition->start();
     }
   }
@@ -436,9 +433,6 @@ void Game::update_transitions() {
             Transition::TRANSITION_OPENING,
             current_map->get_visible_surface(),
             this);
-        if(transition_style == Transition::FADE) {
-          static_cast<TransitionFade*>(transition)->set_color(new Color(Color::get_black()));
-        }
         transition->start();
         next_map = NULL;
       }
@@ -497,9 +491,6 @@ void Game::update_transitions() {
         Transition::TRANSITION_OPENING,
         current_map->get_visible_surface(),
         this);
-    if(transition_style == Transition::FADE) {
-      static_cast<TransitionFade*>(transition)->set_color(new Color(Color::get_black()));
-    }
 
     if (previous_map_surface != NULL) {
       // some transition effects need to display both maps simultaneously
@@ -815,7 +806,6 @@ void Game::restart() {
       Transition::TRANSITION_CLOSING,
       current_map->get_visible_surface(),
       this);
-  static_cast<TransitionFade*>(transition)->set_color(new Color(Color::get_black()));
   transition->start();
   restarting = true;
 }

@@ -34,7 +34,8 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
   finished(false),
   alpha(-1),
   dst_surface(&dst_surface),
-  transition_color(NULL) {
+  colored(true),
+  transition_color(Color::get_black()) {
 
   if (direction == TRANSITION_CLOSING) {
     alpha_start = 256;
@@ -54,7 +55,6 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
  * \brief Destructor.
  */
 TransitionFade::~TransitionFade() {
-  delete transition_color;
 }
 
 /**
@@ -77,23 +77,49 @@ void TransitionFade::start() {
 }
 
 /**
- * \brief Returns the foreground color of this fade transition.
- * \returnr The color of the transition, or NULL if the transition
- * changes the opacity of the destination surface (only possible for
- * sotware destination surfaces).
+ * \brief Returns whether this fade transition uses a foreground color.
+ * \return \c true if there is a foreground color,
+ * \c false if the transition changes the opacity of the destination surface
+ * (only possible for sotware destination surfaces).
  */
-const Color* TransitionFade::get_color() {
+bool TransitionFade::is_colored() const {
+  return colored;
+}
+
+/**
+ * \brief Returns the foreground color of this fade transition.
+ *
+ * This function only makes sense when is_colored() is \c true.
+ *
+ * \return The color of the transition.
+ */
+const Color& TransitionFade::get_color() const {
   return transition_color;
 }
 
 /**
  * \brief Sets the foreground color of this fade transition.
- * \param color The color of the transition, or NULL to make the transition
- * change the opacity of the destination surface (only possible for
- * sotware destination surfaces).
+ *
+ * The default color is black.
+ *
+ * \param color The color of the transition.
  */
-void TransitionFade::set_color(Color* color) {
+void TransitionFade::set_color(const Color& color) {
+
   transition_color = color;
+  colored = true;
+}
+
+/**
+ * \brief Sets no foreground color for this fade transition.
+ *
+ * The transition effect will then change the opacity of the destination
+ * surface. This is only possible for destination surfaces, so make sure
+ * you know what you are doing.
+ */
+void TransitionFade::clear_color() {
+
+  colored = false;
 }
 
 /**
@@ -157,12 +183,8 @@ void TransitionFade::draw(Surface& dst_surface) {
   // Draw the transition effect on the surface.
   int alpha_impl = std::min(alpha, 255);
 
-  if (transition_color == NULL
-      || !Video::is_acceleration_enabled()
-      // FIXME kill the two different behaviors of TransitionFade:
-      // remove colored transitions and only allow fading on software surfaces.
-  ) {
-    // Directly set the opacity on the surface.
+  if (!colored) {
+    // Set the opacity on the surface.
     // Only possible for software destinations.
     Debug::check_assertion(dst_surface.is_software_destination()
         || !Video::is_acceleration_enabled(),
@@ -172,7 +194,7 @@ void TransitionFade::draw(Surface& dst_surface) {
   else {
     // Add a colored foreground surface with the appropriate opacity.
     int r, g, b, a;
-    transition_color->get_components(r, g, b, a);
+    transition_color.get_components(r, g, b, a);
     // A full opaque transition corresponds to a foreground with full alpha.
     Color fade_color(r, g, b, 255 - std::min(alpha_impl, a));
 

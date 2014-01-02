@@ -19,11 +19,14 @@
 
 #include "Common.h"
 #include "Transition.h"
+#include "lowlevel/Color.h"
 
 namespace solarus {
 
 /**
  * \brief Fade in or fade out transition effect.
+ *
+ * TODO separate both behaviors in two classes (color and opacity).
  */
 class TransitionFade: public Transition {
 
@@ -35,8 +38,10 @@ class TransitionFade: public Transition {
     void set_delay(uint32_t delay);
 
     void start();
-    const Color* get_color();
-    void set_color(Color* color);
+    bool is_colored() const;
+    const Color& get_color() const;
+    void set_color(const Color& color);
+    void clear_color();
     bool is_started() const;
     bool is_finished() const;
     void notify_suspended(bool suspended);
@@ -55,7 +60,8 @@ class TransitionFade: public Transition {
     uint32_t delay;
 
     Surface* dst_surface;
-    Color* transition_color;
+    bool colored;
+    Color transition_color;
 
 };
 

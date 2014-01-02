@@ -76,18 +76,37 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   }
 
   // Launch the starting map.
-  std::string starting_map_id = get_savegame().get_string(Savegame::KEY_STARTING_MAP);
-  if (starting_map_id.empty()) {
-    // When no starting map is set, use the first one declared in the resource list file.
+  std::string starting_map_id = savegame->get_string(Savegame::KEY_STARTING_MAP);
+  std::string starting_destination_name = savegame->get_string(Savegame::KEY_STARTING_POINT);
+
+  bool valid_map_saved = false;
+  if (!starting_map_id.empty()) {
+
+    if (QuestResourceList::exists(QuestResourceList::RESOURCE_MAP, starting_map_id)) {
+      // We are okay: the savegame file refers to an existing map.
+      valid_map_saved = true;
+    }
+    else {
+      // The savegame refers to a map that no longer exists.
+      // Maybe the quest is in an intermediate development phase.
+      // Show an error and fallback to the default map.
+      Debug::error(std::string("The savegame refers to a non-existing map: '") + starting_map_id + "'");
+    }
+  }
+
+  if (!valid_map_saved) {
+    // When no valid starting map is set, use the first one declared in the
+    // resource list file.
     const std::vector<QuestResourceList::Element>& maps =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP);
     if (maps.empty()) {
       Debug::die("This quest has no map");
     }
     starting_map_id = maps[0].first;
+    starting_destination_name = "";  // Default destination.
   }
-  set_current_map(starting_map_id,
-      savegame->get_string(Savegame::KEY_STARTING_POINT), Transition::FADE);
+
+  set_current_map(starting_map_id, starting_destination_name, Transition::FADE);
 }
 
 /**

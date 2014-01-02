@@ -354,8 +354,14 @@ const std::string& Map::get_destination_name() const {
  * \brief Returns the destination point specified by the last call to
  * set_destination().
  *
- * Returns NULL if the destination point was set to a special value
- * ("_same", "_side0", "_side1", "_side2" or "_side3").
+ * If the destination point was set to a special value
+ * ("_same", "_side0", "_side1", "_side2" or "_side3"), returns NULL.
+ *
+ * If the destination name is empty, returns the default destination if any,
+ * or NULL.
+ *
+ * Otherwise, if there is no destination entity with this name on the map,
+ * prints an error message and returns the default destination if any or NULL.
  *
  * \return The destination point previously set, or NULL.
  */
@@ -369,23 +375,29 @@ Destination* Map::get_destination() {
   Debug::check_assertion(is_loaded(), "This map is not loaded");
 
   Destination* destination = NULL;
-  std::string destination_name = this->destination_name;
   if (!destination_name.empty()) {
     // Use the destination whose name was specified.
-    MapEntity* entity = get_entities().get_entity(destination_name);
+    MapEntity* entity = get_entities().find_entity(destination_name);
 
-    if (entity->get_type() != ENTITY_DESTINATION) {
-      Debug::die(std::string("Map '") + get_id() + "': entity '"
-          + destination_name + "' is not a destination");
+    if (entity == NULL || entity->get_type() != ENTITY_DESTINATION) {
+      Debug::error(
+          std::string("Map '") + get_id() + "': No such destination: '"
+          + destination_name + "'"
+      );
+      // Perhaps the game was saved with a destination that no longer exists
+      // or whose name was changed during the development of the quest.
+      // This is not a fatal error: we will use the default destination
+      // instead. It is up to quest makers to avoid this situation once their
+      // quest is released.
     }
-    destination = static_cast<Destination*>(entity);
+    else {
+      destination = static_cast<Destination*>(entity);
+    }
   }
-  else {
-    // No destination name was set: use the default one.
+
+  if (destination == NULL) {
+    // No valid destination name was set: use the default one if any.
     destination = get_entities().get_default_destination();
-    if (destination == NULL) {
-      Debug::die(std::string("Map '") + get_id() + "' has no destination entity");
-    }
   }
 
   return destination;

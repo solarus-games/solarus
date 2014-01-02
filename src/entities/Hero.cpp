@@ -604,6 +604,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     int x = get_x() - next_map_location.get_x() + previous_map_location.get_x();
     int y = get_y() - next_map_location.get_y() + previous_map_location.get_y();
 
+    // TODO try LAYER_HIGH first
     Layer layer = LAYER_INTERMEDIATE;
     if (map.get_ground(LAYER_INTERMEDIATE, x, y) == GROUND_EMPTY) {
       layer = LAYER_LOW;
@@ -657,10 +658,25 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
       MapEntity* destination = map.get_destination();
 
-      set_map(map, destination->get_direction());
-      set_xy(destination->get_x(), destination->get_y());
+      if (destination == NULL) {
+        // This is embarrassing: there is no valid destination that we can use.
+        // The map is probably in an early development phase.
+        // For now, let's place the hero at the top-left corner of the map.
+        Debug::error(
+            std::string("No valid destination on map '") + map.get_id()
+            + "'. Placing the hero at (0,0) instead."
+        );
+        set_map(map, 3);
+        set_top_left_xy(0, 0);
+        map.get_entities().set_entity_layer(*this, LAYER_HIGH);
+      }
+      else {
+        // Normal case.
+        set_map(map, destination->get_direction());
+        set_xy(destination->get_x(), destination->get_y());
+        map.get_entities().set_entity_layer(*this, destination->get_layer());
+      }
       last_solid_ground_coords = get_xy();
-      map.get_entities().set_entity_layer(*this, destination->get_layer());
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
 

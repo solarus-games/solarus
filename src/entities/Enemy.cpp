@@ -20,6 +20,7 @@
 #include "entities/CarriedItem.h"
 #include "entities/Pickable.h"
 #include "entities/Destructible.h"
+#include "entities/Block.h"
 #include "entities/Fire.h"
 #include "lua/LuaContext.h"
 #include "Game.h"
@@ -308,12 +309,25 @@ bool Enemy::is_low_wall_obstacle() const {
  */
 bool Enemy::is_destructible_obstacle(const Destructible& destructible) const {
 
-  // the destructible item is an obstacle unless the enemy is already overlapping it,
-  // which is possible with bomb flowers
+  // The destructible object is an obstacle unless the enemy is already
+  // overlapping it, which is possible with destructibles that can regenerate.
   if (this->overlaps(destructible)) {
     return false;
   }
   return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
+}
+
+/**
+ * \copydoc MapEntity::is_block_obstacle
+ */
+bool Enemy::is_block_obstacle(const Block& block) const {
+
+  // The block is an obstacle unless the enemy is already overlapping it,
+  // which is easily possible with blocks created by the hero.
+  if (this->overlaps(block)) {
+    return false;
+  }
+  return true;
 }
 
 /**

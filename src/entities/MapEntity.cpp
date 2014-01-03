@@ -1535,7 +1535,7 @@ bool MapEntity::is_hero_obstacle(const Hero& hero) const {
  * This function returns true by default.
  *
  * \param block a block
- * \return true if the teletransporter is currently an obstacle for this entity
+ * \return true if the block is currently an obstacle for this entity
  */
 bool MapEntity::is_block_obstacle(const Block& block) const {
   return true;

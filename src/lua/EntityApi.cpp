@@ -3211,6 +3211,11 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
 
   // Create the new enemy.
   Map& map = enemy.get_map();
+
+  if (!map.is_loaded()) {
+    LuaTools::error(l, "Cannot create enemy: this map is not running");
+  }
+
   Game& game = map.get_game();
   MapEntity* entity = Enemy::create(
       game,

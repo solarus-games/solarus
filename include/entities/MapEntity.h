@@ -185,6 +185,10 @@ class MapEntity: public ExportableToLua {
 
     double get_angle(int x, int y) const;
     double get_angle(const MapEntity& other) const;
+    double get_angle(
+        const MapEntity& other,
+        const Sprite* this_sprite,
+        const Sprite* other_sprite) const;
     int get_distance(int x, int y) const;
     int get_distance(const MapEntity& other) const;
     int get_distance_to_camera() const;
@@ -216,8 +220,12 @@ class MapEntity: public ExportableToLua {
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
     virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    virtual void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
 
     virtual bool is_obstacle_for(const MapEntity& other) const;
     virtual bool is_low_wall_obstacle() const;

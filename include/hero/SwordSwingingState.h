@@ -26,11 +26,6 @@ namespace solarus {
  */
 class Hero::SwordSwingingState: public Hero::State {
 
-  private:
-
-    bool attacked;               /* indicates that at least one enemy was attacked */
-    bool sword_finished;         /* indicates that the sword animation is finished */
-
   public:
 
     SwordSwingingState(Hero& hero);
@@ -46,8 +41,18 @@ class Hero::SwordSwingingState: public Hero::State {
     bool is_cutting_with_sword(Detector& detector) const;
     bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
     void notify_obstacle_reached();
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
+
+  private:
+
+    bool attacked;               /* indicates that at least one enemy was attacked */
+    bool sword_finished;         /* indicates that the sword animation is finished */
+
 };
 
 }

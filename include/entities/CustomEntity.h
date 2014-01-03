@@ -92,8 +92,12 @@ class CustomEntity: public Detector {
     void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
     void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
     bool is_obstacle_for(const MapEntity& other) const;
     bool is_low_wall_obstacle() const;
     bool is_shallow_water_obstacle() const;

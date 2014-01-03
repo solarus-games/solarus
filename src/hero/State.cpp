@@ -937,17 +937,22 @@ void Hero::State::notify_jumper_activated(Jumper& jumper) {
 }
 
 /**
- * \brief Notifies this state that the hero has just attacked an enemy
+ * \brief Notifies this state that the hero has just attacked an enemy.
  *
  * This function is called even if this attack was not successful.
  *
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack
- * \param killed indicates that the attack has just killed the enemy
+ * \param attack The attack.
+ * \param victim The enemy just hurt.
+ * \param victim_sprite The enemy's sprite that was touched or NULL.
+ * \param result How the enemy has reacted to the attack.
+ * \param killed Whether the attack has just killed the enemy.
  */
-void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::State::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 }
 
 /**

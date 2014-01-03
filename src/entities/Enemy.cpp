@@ -1002,11 +1002,11 @@ void Enemy::notify_collision_with_enemy(Enemy& other,
  *
  * This function is called when there is a collision between the enemy and the hero.
  *
- * \param hero the hero
- * \param this_sprite the sprite of this enemy that detected the collision with the hero,
+ * \param hero The hero to attack.
+ * \param this_sprite The sprite of this enemy that detected the collision with the hero,
  * or NULL if it was not a pixel-precise collision.
  */
-void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
+void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
 
   if (!is_immobilized() && can_attack && hero.can_be_hurt(this)) {
 
@@ -1014,18 +1014,18 @@ void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
     if (minimum_shield_needed != 0
         && get_equipment().has_ability("shield", minimum_shield_needed)) {
 
-      // compute the direction corresponding to the angle between the enemy and the hero
-      double angle = hero.get_angle(*this);
+      // Compute the direction corresponding to the angle between the enemy and the hero.
+      double angle = hero.get_angle(*this, NULL, this_sprite);
       int protected_direction4 = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
       protected_direction4 = (protected_direction4 + 4) % 4;
 
-      // also get the direction of the enemy's sprite
+      // Also get the direction of the enemy's sprite.
       int sprite_opposite_direction4 = -1;
       if (this_sprite != NULL) {
         sprite_opposite_direction4 = (this_sprite->get_current_direction() + 2) % 4;
       }
 
-      // the hero is protected if he is facing the opposite of one of these directions
+      // The hero is protected if he is facing the opposite of one of these directions.
       hero_protected = hero.is_facing_direction4(protected_direction4) ||
           hero.is_facing_direction4(sprite_opposite_direction4);
     }
@@ -1034,7 +1034,7 @@ void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
       attack_stopped_by_hero_shield();
     }
     else {
-      hero.hurt(*this, damage_on_hero, magic_damage_on_hero);
+      hero.hurt(*this, this_sprite, damage_on_hero, magic_damage_on_hero);
     }
   }
 }
@@ -1156,7 +1156,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
 
     case EnemyReaction::IMMOBILIZED:
       // get immobilized
-      hurt(source);
+      hurt(source, this_sprite);
       immobilize();
       notify_hurt(source, attack, 0);
       break;
@@ -1184,15 +1184,15 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
       if (attack == ATTACK_SWORD) {
 
         // for a sword attack, the damage depends on the sword and the variant of sword attack used
-        int damage_multiplicator = ((Hero&) source).get_sword_damage_factor();
+        int damage_multiplicator = static_cast<Hero&>(source).get_sword_damage_factor();
         reaction.life_lost *= damage_multiplicator;
       }
       else if (attack == ATTACK_THROWN_ITEM) {
-        reaction.life_lost *= ((CarriedItem&) source).get_damage_on_enemies();
+        reaction.life_lost *= static_cast<CarriedItem&>(source).get_damage_on_enemies();
       }
       life -= reaction.life_lost;
 
-      hurt(source);
+      hurt(source, this_sprite);
       notify_hurt(source, attack, reaction.life_lost);
       break;
 
@@ -1207,7 +1207,13 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
   }
 
   // notify the source
-  source.notify_attacked_enemy(attack, *this, reaction, get_life() <= 0);
+  source.notify_attacked_enemy(
+      attack,
+      *this,
+      this_sprite,
+      reaction,
+      get_life() <= 0
+  );
 }
 
 /**
@@ -1215,9 +1221,11 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
  *
  * Updates its state, its sprite and plays the sound.
  *
- * \param source the entity attacking the enemy (often the hero)
+ * \param source The entity attacking the enemy (often the hero).
+ * \param this_sprite The sprite of this enemy that received the attack, or NULL
+ * if the attack comes from a non pixel-precise collision test.
  */
-void Enemy::hurt(MapEntity& source) {
+void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
 
   uint32_t now = System::now();
 
@@ -1237,7 +1245,7 @@ void Enemy::hurt(MapEntity& source) {
 
   // push the enemy back
   if (pushed_back_when_hurt) {
-    double angle = source.get_angle(*this);
+    double angle = source.get_angle(*this, NULL, this_sprite);
     StraightMovement* movement = new StraightMovement(false, true);
     movement->set_max_distance(24);
     movement->set_speed(120);

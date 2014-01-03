@@ -26,11 +26,6 @@ namespace solarus {
  */
 class Hero::SpinAttackState: public Hero::State {
 
-  private:
-
-    bool being_pushed;           /**< indicates that the hero is being pushed after hitting an enemy */
-    void play_spin_attack_sound();
-
   public:
 
     SpinAttackState(Hero& hero);
@@ -51,8 +46,18 @@ class Hero::SpinAttackState: public Hero::State {
     bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
     bool is_separator_obstacle(const Separator& separator) const;
     void notify_obstacle_reached();
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
+
+  private:
+
+    bool being_pushed;           /**< indicates that the hero is being pushed after hitting an enemy */
+    void play_spin_attack_sound();
+
 };
 
 }

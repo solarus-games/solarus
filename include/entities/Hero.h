@@ -198,11 +198,16 @@ class Hero: public MapEntity {
     void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,
+        const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
         bool killed);
     int get_sword_damage_factor() const;
     bool can_be_hurt(Enemy* attacker);
-    void hurt(MapEntity& source, int life_points, int magic_points);
+    void hurt(
+        MapEntity& source,
+        const Sprite* source_sprite,
+        int life_points,
+        int magic_points);
     void hurt(const Rectangle& source_xy, int life_points, int magic_points);
     void notify_game_over_finished();
 

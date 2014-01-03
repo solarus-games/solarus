@@ -246,15 +246,12 @@ void Hero::SpinAttackState::notify_obstacle_reached() {
 }
 
 /**
- * \brief Notifies this state that the hero has just attacked an enemy.
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc Hero::State::notify_attacked_enemy
  */
 void Hero::SpinAttackState::notify_attacked_enemy(
     EnemyAttack attack,
     Enemy& victim,
+    const Sprite* victim_sprite,
     EnemyReaction::Reaction& result,
     bool killed) {
 
@@ -270,8 +267,7 @@ void Hero::SpinAttackState::notify_attacked_enemy(
       }
 
       being_pushed = true;
-      double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
-          hero.get_x(), hero.get_y());
+      double angle = victim.get_angle(hero, victim_sprite, NULL);
       StraightMovement* movement = new StraightMovement(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);

@@ -113,8 +113,8 @@ bool PixelBits::test_collision(
 
   if (debug_pixel_collisions) {
     std::cout << System::now() << "\n bounding box collision\n";
-    std::cout << "rect1 = " << location1 << "\n";
-    std::cout << "rect2 = " << location2 << "\n";
+    std::cout << "rect1 = " << bounding_box1 << "\n";
+    std::cout << "rect2 = " << bounding_box2 << "\n";
     print();
     other.print();
   }

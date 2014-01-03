@@ -108,8 +108,12 @@ class Hero::State {
     virtual bool can_avoid_switch() const;
 
     // enemies
-    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    virtual void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
     virtual int get_sword_damage_factor() const;
     virtual bool can_be_hurt(Enemy* attacker) const;
 

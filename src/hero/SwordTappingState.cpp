@@ -190,22 +190,21 @@ void Hero::SwordTappingState::notify_obstacle_reached() {
 }
 
 /**
- * \brief Notifies this state that the hero has just attacked an enemy.
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc Hero::State::notify_attacked_enemy
  */
-void Hero::SwordTappingState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::SwordTappingState::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
 
     if (victim.get_push_hero_on_sword()) {
 
       Hero& hero = get_hero();
-      double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
-          hero.get_x(), hero.get_y());
+      double angle = victim.get_angle(hero, victim_sprite, NULL);
       StraightMovement* movement = new StraightMovement(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);

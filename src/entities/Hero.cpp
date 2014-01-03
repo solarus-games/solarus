@@ -1554,11 +1554,17 @@ void Hero::notify_collision_with_enemy(
     enemy.try_hurt(ATTACK_SWORD, *this, &enemy_sprite);
   }
   else if (this_sprite.contains("tunic")) {
-    // the hero's body overlaps the enemy: ensure that the 16*16 rectangle of the hero also overlaps the enemy
-    Rectangle enemy_sprite_rectangle = enemy_sprite.get_size();
-    const Rectangle &enemy_sprite_origin = enemy_sprite.get_origin();
-    enemy_sprite_rectangle.set_x(enemy.get_x() - enemy_sprite_origin.get_x());
-    enemy_sprite_rectangle.set_y(enemy.get_y() - enemy_sprite_origin.get_y());
+    // The hero's body sprite overlaps the enemy.
+    // Check that the 16x16 rectangle of the hero also overlaps the enemy.
+    const Rectangle& enemy_sprite_size = enemy_sprite.get_size();
+    const Rectangle& enemy_sprite_origin = enemy_sprite.get_origin();
+    const Rectangle& enemy_sprite_offset = enemy_sprite.get_xy();
+    Rectangle enemy_sprite_rectangle(
+        enemy.get_x() - enemy_sprite_origin.get_x() + enemy_sprite_offset.get_x(),
+        enemy.get_y() - enemy_sprite_origin.get_y() + enemy_sprite_offset.get_y(),
+        enemy_sprite_size.get_width(),
+        enemy_sprite_size.get_height()
+    );
 
     if (overlaps(enemy_sprite_rectangle)) {
       enemy.attack_hero(*this, &enemy_sprite);
@@ -1834,7 +1840,7 @@ void Hero::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_
 
   if (!state->can_avoid_explosion()) {
     if (sprite_overlapping.contains("tunic")) {
-      hurt(explosion, 2, 0);
+      hurt(explosion, NULL, 2, 0);
     }
   }
 }
@@ -1939,19 +1945,16 @@ void Hero::try_snap_to_facing_entity() {
 }
 
 /**
- * \brief Notifies this entity that it has just attacked an enemy
- *
- * This function is called even if this attack was not successful.
- *
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc MapEntity::notify_attacked_enemy
  */
-void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
-  state->notify_attacked_enemy(attack, victim, result, killed);
+  state->notify_attacked_enemy(attack, victim, victim_sprite, result, killed);
 }
 
 /**
@@ -1979,11 +1982,16 @@ bool Hero::can_be_hurt(Enemy* attacker) {
 
 /**
  * \brief Hurts the hero if possible.
- * \param source an entity that hurts the hero (usually an enemy)
- * \param life_points number of heart quarters to remove (this number may be reduced by the tunic)
- * \param magic_points number of magic points to remove
+ * \param source An entity that hurts the hero (usually an enemy).
+ * \param source_sprite Sprite of the source entity that detected the collision.
+ * \param life_points Number of life points to remove (this number may be
+ * reduced by the tunic then).
+ * \param magic_points Number of magic points to remove.
  */
-void Hero::hurt(MapEntity& source, int life_points, int magic_points) {
+void Hero::hurt(MapEntity& source,
+    const Sprite* source_sprite,
+    int life_points,
+    int magic_points) {
 
   Enemy* enemy = NULL;
   if (source.get_type() == ENTITY_ENEMY) {
@@ -1991,8 +1999,14 @@ void Hero::hurt(MapEntity& source, int life_points, int magic_points) {
     enemy = (Enemy*) &source;
   }
 
+  Rectangle source_xy = source.get_xy();
+  if (source_sprite != NULL) {
+    // Add the offset of the sprite if any.
+    source_xy.add_xy(source_sprite->get_xy());
+  }
+
   if (!sprites->is_blinking() && state->can_be_hurt(enemy)) {
-    set_state(new HurtState(*this, source.get_xy(), life_points, magic_points));
+    set_state(new HurtState(*this, source_xy, life_points, magic_points));
   }
 }
 

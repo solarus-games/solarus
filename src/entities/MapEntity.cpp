@@ -1791,6 +1791,40 @@ double MapEntity::get_angle(const MapEntity& other) const {
 }
 
 /**
+ * \brief Returns the angle of the vector between the origin of this entity or
+ * one of its sprite and the origin of another entity or one of its sprites.
+ * \param other The other entity.
+ * \param this_sprite Sprite of this entity to use instead of the entity itself
+ * or NULL.
+ * \param other_sprite Sprite of the other entity to use instead of the entity
+ * itself or NULL.
+ * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
+ */
+double MapEntity::get_angle(
+    const MapEntity& other,
+    const Sprite* this_sprite,
+    const Sprite* other_sprite) const {
+
+  // Add the coordinates of sprites as offsets.
+  Rectangle this_offset(0, 0);
+  if (this_sprite != NULL) {
+    this_offset.add_xy(this_sprite->get_xy());
+  }
+
+  Rectangle other_offset(0, 0);
+  if (other_sprite != NULL) {
+    other_offset.add_xy(other_sprite->get_xy());
+  }
+
+  return Geometry::get_angle(
+      get_x() + this_offset.get_x(),
+      get_y() + this_offset.get_y(),
+      other.get_x() + other_offset.get_x(),
+      other.get_y() + other_offset.get_y()
+  );
+}
+
+/**
  * \brief Returns the distance between the origin of this entity and a point.
  * \param x x coordinate of the point
  * \param y y coordinate of the point
@@ -2051,13 +2085,18 @@ void MapEntity::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, 
  *
  * This function is called even if this attack was not successful.
  *
- * \param attack the attack
- * \param victim the enemy just attacked
- * \param result indicates how the enemy reacted to the attack
- * \param killed indicates that the attack has just killed the enemy
+ * \param attack The attack.
+ * \param victim The enemy just hurt.
+ * \param victim_sprite The enemy's sprite that was touched or NULL.
+ * \param result How the enemy has reacted to the attack.
+ * \param killed Whether the attack has just killed the enemy.
  */
-void MapEntity::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void MapEntity::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 }
 
 /**

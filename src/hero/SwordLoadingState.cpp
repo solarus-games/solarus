@@ -126,14 +126,14 @@ void Hero::SwordLoadingState::notify_obstacle_reached() {
 }
 
 /**
- * \brief Notifies this state that the hero has just attacked an enemy
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc Hero::State::notify_attacked_enemy
  */
-void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::SwordLoadingState::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
 
@@ -142,7 +142,7 @@ void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
       // let SwordTappingState do the job so that no player movement interferes
       State* state = new SwordTappingState(hero);
       hero.set_state(state);
-      state->notify_attacked_enemy(attack, victim, result, killed);
+      state->notify_attacked_enemy(attack, victim, victim_sprite, result, killed);
     }
     else {
       // after an attack, stop loading the sword

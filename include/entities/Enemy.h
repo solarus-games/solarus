@@ -184,7 +184,7 @@ class Enemy: public Detector {
     bool is_killed() const;
     bool is_dying_animation_finished() const;
     void try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite);
-    void hurt(MapEntity& source);
+    void hurt(MapEntity& source, Sprite* this_sprite);
     void kill();
     bool is_dying() const;
     void set_treasure(const Treasure& treasure);

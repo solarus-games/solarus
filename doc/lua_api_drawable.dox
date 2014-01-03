@@ -98,19 +98,25 @@ when the map entity is destroyed.
 
 \subsection lua_api_drawable_get_xy drawable:get_xy()
 
-Returns the coordinates where this drawable object is drawn.
+Returns the offset added where this drawable object is drawn.
+
+This value is initially \c 0,0.
+It is added to whatever coordinates the object is drawn at.
 
 They can be modified by a \ref lua_api_movement "movement"
 or by \ref lua_api_drawable_set_xy "drawable:set_xy()".
-- Return value 1 (number): X coordinate of the drawable object.
-- Return value 2 (number): Y coordinate of the drawable object.
+- Return value 1 (number): X offset of the drawable object.
+- Return value 2 (number): Y offset of the drawable object.
 
 \subsection lua_api_drawable_set_xy drawable:set_xy(x, y)
 
-Sets the coordinates where this drawable object is drawn.
+Sets the offset added where this drawable object is drawn.
 
-- \c x (number): X coordinate to set.
-- \c y (number): Y coordinate to set.
+This value is initially \c 0,0.
+It is added to whatever coordinates the object is drawn at.
+
+- \c x (number): X offset to set.
+- \c y (number): Y offset to set.
 
 \subsection lua_api_drawable_get_movement drawable:get_movement()
 

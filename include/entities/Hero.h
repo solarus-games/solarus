@@ -205,7 +205,7 @@ class Hero: public MapEntity {
     bool can_be_hurt(Enemy* attacker);
     void hurt(
         MapEntity& source,
-        const Sprite* source_sprite,
+        Sprite* source_sprite,
         int life_points,
         int magic_points);
     void hurt(const Rectangle& source_xy, int life_points, int magic_points);

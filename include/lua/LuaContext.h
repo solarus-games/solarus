@@ -307,6 +307,7 @@ class LuaContext {
     void enemy_on_dying(Enemy& enemy);
     void enemy_on_dead(Enemy& enemy);
     void enemy_on_immobilized(Enemy& enemy);
+    bool enemy_on_attacking_hero(Enemy& enemy, Hero& hero, Sprite* enemy_sprite);
 
     // Implementation of the API.
 
@@ -1068,6 +1069,7 @@ class LuaContext {
     void on_dying();
     void on_dead();
     void on_immobilized();
+    bool on_attacking_hero(Hero& hero, Sprite* attacker_sprite);
 
     // Functions exported to Lua for internal needs.
     static FunctionExportedToLua

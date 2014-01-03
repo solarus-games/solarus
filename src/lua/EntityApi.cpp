@@ -4090,5 +4090,24 @@ void LuaContext::enemy_on_immobilized(Enemy& enemy) {
   lua_pop(l, 1);
 }
 
+/**
+ * \brief Calls the on_attacking_hero() method of a Lua enemy if it is defined.
+ * \param enemy An enemy.
+ * \param hero The hero attacked.
+ * \param enemy_sprite Enemy's sprite that caused the collision or NULL.
+ * \return \c true if the method is defined.
+ */
+bool LuaContext::enemy_on_attacking_hero(Enemy& enemy, Hero& hero, Sprite* attacker_sprite) {
+
+  if (!userdata_has_field(enemy, "on_attacking_hero")) {
+    return false;
+  }
+
+  push_enemy(l, enemy);
+  bool exists = on_attacking_hero(hero, attacker_sprite);
+  lua_pop(l, 1);
+  return exists;
+}
+
 }
 

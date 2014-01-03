@@ -75,6 +75,7 @@ Changes that do not introduce incompatibilities:
 * New method map:get_hero() (#362).
 * Entity names are now auto-incremented to simplify their creation.
 * New method entity:get_game() (#363).
+* New event enemy:on_attacking_hero() to customize attacks (#356).
 * New event sensor:on_left() (#339).
 * New event block:on_moving() (#334).
 * New functions to get/set the properties of blocks.

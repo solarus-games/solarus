@@ -2512,6 +2512,28 @@ void LuaContext::on_immobilized() {
 }
 
 /**
+ * \brief Calls the on_attacking_hero() method of the object on top of the stack.
+ * \param hero The hero attacked.
+ * \param attacker_sprite Sprite that caused the collision or NULL.
+ * \return \c true if the method is defined.
+ */
+bool LuaContext::on_attacking_hero(Hero& hero, Sprite* attacker_sprite) {
+
+  if (find_method("on_attacking_hero")) {
+    push_hero(l, hero);
+    if (attacker_sprite == NULL) {
+      lua_pushnil(l);
+    }
+    else {
+      push_sprite(l, *attacker_sprite);
+    }
+    call_function(3, 0, "on_attacking_hero");
+    return true;
+  }
+  return false;
+}
+
+/**
  * \brief Function called when an unprotected Lua error occurs.
  * \param l The Lua context.
  * \return Number of values to return to Lua.

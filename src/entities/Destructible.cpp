@@ -33,8 +33,6 @@
 #include "Sprite.h"
 #include <lauxlib.h>
 
-// TODO call events
-
 namespace solarus {
 
 /**

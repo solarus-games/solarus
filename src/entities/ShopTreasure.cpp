@@ -78,7 +78,8 @@ ShopTreasure::~ShopTreasure() {
  * \param treasure the treasure that the hero can buy
  * \param price the treasure's price in rupees
  * \param dialog_id id of the dialog describing the item when the player watches it
- * \return the shop treasure created, or NULL if it is already bought
+ * \return the shop treasure created, or NULL if it is already bought or if it
+ * is not obtainable.
  */
 ShopTreasure* ShopTreasure::create(
     Game& game,
@@ -90,8 +91,8 @@ ShopTreasure* ShopTreasure::create(
     int price,
     const std::string& dialog_id) {
 
-  // see if the item is not already bought
-  if (treasure.is_found()) {
+  // See if the item is not already bought and is obtainable.
+  if (treasure.is_found() || !treasure.is_obtainable()) {
     return NULL;
   }
 

@@ -25,6 +25,7 @@ Engine changes
 * Fix a crash when accessing a map not active anymore (#371).
 * Fix a crash when changing the movement of the hero (#392).
 * Fix a crash when calling hero:start_treasure() with wrong parameters (#391).
+* Fix issues with unobtainable treasures.
 * Fix the starting location wrongly saved with special destinations (#375).
 * Don't die if the map or destination saved no longer exists (#301).
 * Don't die if a map has no destination. Show an error and go to 0,0 instead.

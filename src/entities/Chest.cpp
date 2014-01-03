@@ -366,7 +366,7 @@ void Chest::update() {
     if (!treasure_given && treasure_date != 0 && System::now() >= treasure_date) {
 
       treasure_date = 0;
-
+      treasure.ensure_obtainable();  // Make the chest empty if the treasure is not allowed.
       if (!treasure.is_empty()) {
         // Give a treasure to the player.
 

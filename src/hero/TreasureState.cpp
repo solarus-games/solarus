@@ -28,7 +28,7 @@ namespace solarus {
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
- * \param treasure The treasure to give to the hero.
+ * \param treasure The treasure to give to the hero. It must be obtainable.
  * \param callback_ref Lua ref to a function to call when the
  * treasure's dialog finishes (possibly LUA_REFNIL).
  */
@@ -41,13 +41,13 @@ Hero::TreasureState::TreasureState(
   treasure(treasure),
   callback_ref(callback_ref) {
 
+  treasure.check_obtainable();
 }
 
 /**
  * \brief Destructor.
  */
 Hero::TreasureState::~TreasureState() {
-
 }
 
 /**

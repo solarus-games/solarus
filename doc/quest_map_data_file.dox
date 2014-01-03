@@ -360,8 +360,7 @@ Additional properties:
 - \c treasure_name (string, optional): Kind of treasure to create
   (the id of an equipment item).
   If this value is not set, or corresponds to a
-  non obtainable item, then
-  the pickable treasure won't be created.
+  non-obtainable item, then the pickable treasure won't be created.
 - \c treasure_variant (number, optional): Variant of the treasure
   (because some equipment items may have several variants).
   The default value is \c 1 (the first variant).
@@ -397,9 +396,10 @@ Additional properties:
 - \c treasure_name (string, optional): Kind of
   \ref quest_map_data_file_syntax_pickable "pickable treasure" to hide in the
   destructible object (the id of an equipment item).
-  If this value is not set, or corresponds to a
-  non obtainable item, then
+  If this value is not set, then
   no treasure is placed in the destructible object.
+  If the treasure is not obtainable when the object is destroyed,
+  no pickable treasure is be created.
 - \c treasure_variant (number, optional): Variant of the treasure if any
   (because some equipment items may have several variants).
   The default value is \c 1 (the first variant).
@@ -475,9 +475,9 @@ A chest can be declared in the map data file with
 Additional properties:
 - \c treasure_name (string, optional): Kind of treasure to place in the chest
   (the name of an equipment item).
-  If this value is not set, or corresponds to a
-  non obtainable item, then
-  the chest will be empty.
+  If this value is not set, then the chest will be empty.
+  If the treasure is not obtainable when the hero opens the chest, it
+  becomes empty.
 - \c treasure_variant (number, optional): Variant of the treasure
   (because some equipment items may have several variants).
   The default value is \c 1 (the first variant).
@@ -559,7 +559,7 @@ Additional properties:
 - \c treasure_name (string): Kind of treasure to sell
   (the name of an equipment item).
   If this value or corresponds to a
-  non obtainable item, then
+  non-obtainable item, then
   the shop treasure is not created.
 - \c treasure_variant (number, optional): Variant of the treasure
   (because some equipment items may have several variants).
@@ -606,9 +606,9 @@ Additional properties:
   \ref quest_map_data_file_syntax_pickable "pickable treasure"
   to drop when the enemy is killed
   (the name of an equipment item).
-  If this value is not set, or corresponds to a
-  non obtainable item, then
-  the enemy won't drop anything.
+  If this value is not set, then the enemy won't drop anything.
+  If the treasure is not obtainable when the enemy is killed,
+  then nothing is dropped either.
 - \c treasure_variant (number, optional): Variant of the treasure
   (because some equipment items may have several variants).
   The default value is \c 1 (the first variant).

@@ -1409,6 +1409,9 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
   if (treasure.is_found()) {
     LuaTools::arg_error(l, 4, "This treasure is already found");
   }
+  if (!treasure.is_obtainable()) {
+    LuaTools::arg_error(l, 4, "This treasure is not obtainable");
+  }
 
   int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 5) {
@@ -2139,13 +2142,17 @@ int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
     const Treasure& treasure = shop_treasure.get_treasure();
     EquipmentItem& item = treasure.get_item();
 
-    if (equipment.get_money() < shop_treasure.get_price()) {
-      // not enough rupees
+    if (!treasure.is_obtainable()) {
+      // This treasure is not allowed.
+      Sound::play("wrong");
+    }
+    else if (equipment.get_money() < shop_treasure.get_price()) {
+      // Not enough money.
       Sound::play("wrong");
       game.start_dialog("_shop.not_enough_money");
     }
     else if (item.has_amount() && item.get_amount() >= item.get_max_amount()) {
-      // the player already has the maximum amount of this item
+      // The player already has the maximum amount of this item.
       Sound::play("wrong");
       game.start_dialog("_shop.amount_full");
     }
@@ -2154,7 +2161,7 @@ int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
       bool can_buy = lua_context.shop_treasure_on_buying(shop_treasure);
       if (can_buy) {
 
-        // give the treasure
+        // Give the treasure.
         equipment.remove_money(shop_treasure.get_price());
 
         game.get_hero().start_treasure(treasure, LUA_REFNIL);

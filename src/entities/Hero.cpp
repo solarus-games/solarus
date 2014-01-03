@@ -2252,7 +2252,7 @@ void Hero::start_free_or_carrying() {
 
 /**
  * \brief Makes the hero brandish a treasure.
- * \param treasure The treasure to give him.
+ * \param treasure The treasure to give him. It must be obtainable.
  * \param callback_ref Lua ref to a function to call when the
  * treasure's dialog finishes (possibly LUA_REFNIL).
  */

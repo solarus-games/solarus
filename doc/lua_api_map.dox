@@ -771,7 +771,7 @@ on the map.
   - \c treasure_name (string, optional): Kind of treasure to create
     (the name of an \ref lua_api_item "equipment item").
     If this value is not set, or corresponds to a
-    \ref lua_api_item_is_obtainable "non obtainable" item, then
+    \ref lua_api_item_is_obtainable "non-obtainable" item, then
     no entity is created and \c nil is returned.
   - \c treasure_variant (number, optional): Variant of the treasure
     (because some \ref lua_api_item "equipment items"
@@ -804,9 +804,10 @@ on the map.
     \ref lua_api_pickable "pickable treasure" to hide in the
     destructible object
     (the name of an \ref lua_api_item "equipment item").
-    If this value is not set, or corresponds to a
-    \ref lua_api_item_is_obtainable "non obtainable" item, then
+    If this value is not set, then
     no treasure is placed in the destructible object.
+    If the treasure is not obtainable when the object is destroyed,
+    no pickable treasure is created.
   - \c treasure_variant (number, optional): Variant of the treasure if any
     (because some \ref lua_api_item "equipment items"
     may have several variants).
@@ -872,9 +873,9 @@ on the map.
   - \c y (number): Y coordinate on the map.
   - \c treasure_name (string, optional): Kind of treasure to place in the chest
     (the name of an \ref lua_api_item "equipment item").
-    If this value is not set, or corresponds to a
-    \ref lua_api_item_is_obtainable "non obtainable" item, then
-    the chest will be empty.
+    If this value is not set, then the chest will be empty.
+    If the treasure is not obtainable when the hero opens the chest, it
+    becomes empty.
   - \c treasure_variant (number, optional): Variant of the treasure
     (because some \ref lua_api_item "equipment items"
     may have several variants).
@@ -988,9 +989,9 @@ on the map.
     \ref lua_api_pickable "pickable treasure" to drop when the
     enemy is killed
     (the name of an \ref lua_api_item "equipment item").
-    If this value is not set, or corresponds to a
-    \ref lua_api_item_is_obtainable "non obtainable" item, then
-    the enemy won't drop anything.
+    If this value is not set, then the enemy won't drop anything.
+    If the treasure is not obtainable when the enemy is killed,
+    then nothing is dropped either.
   - \c treasure_variant (number, optional): Variant of the treasure
     (because some \ref lua_api_item "equipment items"
     may have several variants).
@@ -1215,7 +1216,7 @@ on the map.
   - \c treasure_name (string): Kind of treasure to sell
     (the name of an \ref lua_api_item "equipment item").
     If this value or corresponds to a
-    \ref lua_api_item_is_obtainable "non obtainable" item, then
+    \ref lua_api_item_is_obtainable "non-obtainable" item, then
     the shop treasure is not created and \c nil is returned.
   - \c treasure_variant (number, optional): Variant of the treasure
     (because some \ref lua_api_item "equipment items"

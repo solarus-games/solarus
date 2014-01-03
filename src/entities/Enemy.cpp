@@ -43,7 +43,7 @@ namespace solarus {
 /**
  * \brief Creates an enemy.
  * \param game The game.
- * \param name Id of the enemy.
+ * \param name Name identifying the enemy or an empty string.
  * \param layer The layer on the map.
  * \param x X position on the map.
  * \param y Y position on the map.

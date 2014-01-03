@@ -23,7 +23,7 @@ namespace solarus {
 
 /**
  * \brief Creates a new conveyor belt.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the entity to create on the map
  * \param x x coordinate of the entity to create
  * \param y y coordinate of the entity to create

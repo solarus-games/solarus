@@ -23,7 +23,7 @@ namespace solarus {
 
 /**
  * \brief Creates a jumper.
- * \param name a name identifying this jumper
+ * \param Name identifying this jumper
  * \param layer layer of the sensor on the map
  * \param x x coordinate of the top-left corner of the sensor's rectangle
  * \param y y coordinate of the top-left corner of the sensor's rectangle

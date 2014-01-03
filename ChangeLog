@@ -25,6 +25,7 @@ Engine changes
 * Fix a crash when accessing a map not active anymore (#371).
 * Fix a crash when changing the movement of the hero (#392).
 * Fix a crash when calling hero:start_treasure() with wrong parameters (#391).
+* Fix a crash when creating two entities with the same name (#370).
 * Fix issues with unobtainable treasures.
 * Fix the starting location wrongly saved with special destinations (#375).
 * Don't die if the map or destination saved no longer exists (#301).
@@ -71,6 +72,7 @@ Changes that do not introduce incompatibilities:
 * New function sol.main.get_metatable(), allows to implement shared behaviors.
 * New method menu:is_started().
 * New method map:get_hero() (#362).
+* Entity names are now auto-incremented to simplify their creation.
 * New method entity:get_game() (#363).
 * New event sensor:on_left() (#339).
 * New event block:on_moving() (#334).

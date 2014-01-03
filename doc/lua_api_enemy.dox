@@ -509,6 +509,9 @@ and the layer is the one of the current enemy by default.
 - \c properties (table): A table that describes all properties of the enemy
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
     No value means no name.
   - \c layer (number, optional): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).

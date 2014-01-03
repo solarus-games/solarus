@@ -47,7 +47,7 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
 
 /**
  * \brief Creates an entity, specifying its position, its name and its direction.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param direction direction of the entity
  * \param layer layer of the entity
  * \param x x position of the entity
@@ -914,6 +914,20 @@ const Rectangle MapEntity::get_center_point() const {
  */
 const std::string& MapEntity::get_name() const {
   return name;
+}
+
+/**
+ * \brief Sets the name of the entity.
+ *
+ * The name can only be changed before the entity is added to a map.
+ *
+ * \return The name of the entity, or an empty string to unset the name.
+ */
+void MapEntity::set_name(const std::string& name) {
+
+  Debug::check_assertion(!is_on_map(),
+      "Cannot change entity name: this entity is already on a map.");
+  this->name = name;
 }
 
 /**

@@ -37,7 +37,7 @@ namespace solarus {
 
 /**
  * \brief Creates a new destructible item with the specified subtype.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer Layer where to create the entity.
  * \param x X coordinate where to create the entity.
  * \param y Y coordinate where to create the entity.

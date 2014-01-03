@@ -703,6 +703,9 @@ on the map.
 - \c properties (table): A table that describles all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -730,6 +733,9 @@ on the map.
 - \c properties (table): A table that describles all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -764,6 +770,9 @@ on the map.
 - \c properties (table): A table that describles all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -796,6 +805,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -867,6 +879,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -947,6 +962,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -970,6 +988,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1026,6 +1047,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1060,6 +1084,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1084,6 +1111,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate of the top-left corner of the dynamic tile on
@@ -1109,6 +1139,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1133,6 +1166,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1157,6 +1193,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1173,6 +1212,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1187,6 +1229,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1206,6 +1251,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1248,6 +1296,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1266,6 +1317,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1341,6 +1395,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1366,6 +1423,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1381,6 +1441,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1396,6 +1459,9 @@ on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1411,6 +1477,9 @@ on the map.
 - \c properties (table): A table that describles all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high). The layer has no effect for separators.
   - \c x (number): X coordinate on the map.
@@ -1429,6 +1498,9 @@ on the map.
 - \c properties (table): A table that describles all properties of the entity
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity or \c nil.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.

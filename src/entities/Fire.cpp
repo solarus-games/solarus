@@ -22,7 +22,7 @@ namespace solarus {
 
 /**
  * \brief Creates some fire.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the fire entity to create
  * \param xy coordinates of the fire
  */

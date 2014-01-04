@@ -1257,6 +1257,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     }
 
                     break;
+
+                default:
+                    break;
             }
         }
 
@@ -1304,6 +1307,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 case MOVING_ENTITIES:
                     endMovingEntities();
                     break;
+
+                default:
+                    break;
             }
         }
 
@@ -1338,6 +1344,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
                         // if we are resizing an entity, calculate the coordinates of
                         // the second point of the rectangle formed by the pointer
                         updateResizingEntity(x, y);
+                        break;
+
+                    default:
                         break;
                 }
             }
@@ -1382,6 +1391,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     if (leftClick) {
                         updateMovingEntities(x, y);
                     }
+                    break;
+
+                default:
                     break;
             }
         }

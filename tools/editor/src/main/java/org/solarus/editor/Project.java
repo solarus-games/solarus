@@ -779,8 +779,17 @@ public class Project {
             getItemScriptFile(id).createNewFile();
             break;
 
+        case ENTITY:
+            getEntityScriptFile(id).createNewFile();
+            break;
+
         case SPRITE:
             getSpriteFile(id).createNewFile();
+            break;
+
+        case SOUND:
+        case MUSIC:
+            // There is nothing to do here.
             break;
         }
     }
@@ -851,8 +860,20 @@ public class Project {
             getItemScriptFile(id).delete();
             break;
 
+        case ENTITY:
+            getEntityScriptFile(id).delete();
+            break;
+
         case SPRITE:
             getSpriteFile(id).delete();
+            break;
+
+        case MUSIC:
+            // TODO
+            break;
+
+        case SOUND:
+            // TODO
             break;
         }
     }
@@ -924,8 +945,20 @@ public class Project {
             renameFile(getItemScriptFile(oldId), getItemScriptFile(newId));
             break;
 
+        case ENTITY:
+            renameFile(getItemScriptFile(oldId), getItemScriptFile(newId));
+            break;
+
         case SPRITE:
             renameFile(getSpriteFile(oldId), getSpriteFile(newId));
+            break;
+
+        case SOUND:
+            // TODO
+            break;
+
+        case MUSIC:
+            // TODO
             break;
         }
     }

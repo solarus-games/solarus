@@ -181,6 +181,7 @@ public class ExternalLuaScriptDialog extends JDialog {
     private class LogFileReader extends Thread {
 
         public void run() {
+
             try {
                 int totalLinesRead = 0;
                 while (!finished) {
@@ -197,6 +198,7 @@ public class ExternalLuaScriptDialog extends JDialog {
                         }
                         linesRead++;
                     }
+                    buffer.close();
                 }
             }
             catch (Exception ex) {

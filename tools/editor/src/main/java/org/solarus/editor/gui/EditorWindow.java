@@ -743,6 +743,11 @@ public class EditorWindow extends JFrame
                 openTextEditor(Project.getEntityScriptFile(resourceId));
                 break;
             }
+
+            case SOUND:
+            case MUSIC:
+                // No editor for these kinds of resources.
+                break;
             }
         }
         catch (QuestEditorException ex) {
@@ -842,11 +847,22 @@ public class EditorWindow extends JFrame
             break;
         }
 
+        case ENTITY:
+        {
+            editorIds.add(TextEditorPanel.getEditorId(Project.getEntityScriptFile(elementId)));
+            break;
+        }
+
         case SPRITE:
         {
             editorIds.add(TextEditorPanel.getEditorId(Project.getSpriteFile(elementId)));
             break;
         }
+
+        case SOUND:
+        case MUSIC:
+            // No editor for these kinds of resources.
+            break;
         }
 
         for (String editorId: editorIds) {

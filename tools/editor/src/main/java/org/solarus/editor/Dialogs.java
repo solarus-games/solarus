@@ -124,6 +124,7 @@ public class Dialogs extends Observable {
             line = in.readLine();
 
             if (line == null) {
+                in.close();
                 throw new QuestEditorException("The dialogs file is empty");
             }
             // First step : read the file description.

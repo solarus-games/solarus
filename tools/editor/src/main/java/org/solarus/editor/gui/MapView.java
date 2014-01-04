@@ -441,6 +441,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     g.drawRect(x + 1, y + 1, width - 2, height - 2);
 
                     break;
+
+                default:
+                    break;
             }
         }
     }

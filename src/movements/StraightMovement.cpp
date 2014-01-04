@@ -38,6 +38,8 @@ StraightMovement::StraightMovement(bool ignore_obstacles, bool smooth):
   y_speed(0),
   next_move_date_x(System::now()),
   next_move_date_y(System::now()),
+  x_delay(0),
+  y_delay(0),
   x_move(0),
   y_move(0),
   max_distance(0),

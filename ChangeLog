@@ -19,6 +19,7 @@ Engine changes
 * Make stairs sounds optional (#364).
 * Make more checks in sprite files to avoid crashes (#357).
 * Fix RandomMovement speed that was not taken into account (#361).
+* Set the default speed of StraightMovement to 32 instead of 0 (#343).
 * The size of all map entities must be a multiple of 8 (#358).
 * Fix pixel collisions coordinates when sprites move (#372).
 * Fix a slowness when loading maps (#374).

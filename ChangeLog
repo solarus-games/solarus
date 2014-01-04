@@ -92,6 +92,7 @@ Solarus Quest Editor changes
 * The id and name of a new resource and now asked in a single dialog (#321).
 * The order of resources in the quest tree can now be changed (#319).
 * Fix NullPointerException when canceling the Open Project dialog.
+* Switches, crystals and crystal blocks now show their actual sprite (#376).
 
 _________________________________
 

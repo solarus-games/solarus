@@ -46,18 +46,6 @@ class Switch: public Detector {
       SOLID              = 3  /**< a crystal-like switch that can be triggered with the sword */
     };
 
-  private:
-
-    Subtype subtype;                           /**< subtype of switch */
-    bool activated;                            /**< indicates that this switch is currently on */
-    bool locked;                               /**< indicates that this switch cannot be enabled or disabled by other entities for now */
-
-    // the following fields are used only for walkable switches
-    bool needs_block;                          /**< indicates that a block or a statue is required to activate this walkable switch */
-    bool inactivate_when_leaving;              /**< indicates that this walkable switch becomes inactivated when the hero or the block leaves it */
-    MapEntity* entity_overlapping;             /**< the entity currently on this walkable switch (as arrows may be destroyed at any moment) */
-    bool entity_overlapping_still_present;     /**< to detect when the entity overlapping leaves the switch */
-
   public:
 
     Switch(const std::string& name, Layer layer, int x, int y,
@@ -84,6 +72,18 @@ class Switch: public Detector {
     bool test_collision_custom(MapEntity& entity);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+
+  private:
+
+    Subtype subtype;                           /**< subtype of switch */
+    bool activated;                            /**< indicates that this switch is currently on */
+    bool locked;                               /**< indicates that this switch cannot be enabled or disabled by other entities for now */
+
+    // the following fields are used only for walkable switches
+    bool needs_block;                          /**< indicates that a block or a statue is required to activate this walkable switch */
+    bool inactivate_when_leaving;              /**< indicates that this walkable switch becomes inactivated when the hero or the block leaves it */
+    MapEntity* entity_overlapping;             /**< the entity currently on this walkable switch (as arrows may be destroyed at any moment) */
+    bool entity_overlapping_still_present;     /**< to detect when the entity overlapping leaves the switch */
 
 };
 

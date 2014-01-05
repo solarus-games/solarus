@@ -927,7 +927,7 @@ void MapEntities::build_non_animated_tiles() {
             int y8 = tile_y8 + i;
             if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
               int index = y8 * map_width8 + x8;
-              animated_tiles[layer][index] = true;
+              is_square_animated[layer][index] = true;
             }
           }
         }
@@ -939,7 +939,7 @@ void MapEntities::build_non_animated_tiles() {
     for (int y = 0; y < map.get_height(); y += 8) {
       for (int x = 0; x < map.get_width(); x += 8) {
 
-        if (animated_tiles[layer][index]) {
+        if (is_square_animated[layer][index]) {
           Rectangle animated_square(x, y, 8, 8);
           non_animated_tiles_surface->clear(animated_square);
         }
@@ -985,7 +985,7 @@ void MapEntities::redraw_non_animated_tiles() {
     for (int y = 0; y < map.get_height(); y += 8) {
       for (int x = 0; x < map.get_width(); x += 8) {
 
-        if (animated_tiles[layer][index]) {
+        if (is_square_animated[layer][index]) {
           Rectangle animated_square(x, y, 8, 8);
           non_animated_tiles_surfaces[layer]->clear(animated_square);
         }
@@ -1003,7 +1003,7 @@ void MapEntities::redraw_non_animated_tiles() {
 bool MapEntities::overlaps_animated_tile(Tile& tile) {
 
   const std::vector<bool>& animated_tiles_layer =
-      animated_tiles[tile.get_layer()];
+      is_square_animated[tile.get_layer()];
 
   int tile_x8 = tile.get_x() / 8;
   int tile_y8 = tile.get_y() / 8;

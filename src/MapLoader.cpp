@@ -143,7 +143,7 @@ int MapLoader::l_properties(lua_State* l) {
 
     Ground initial_ground = (layer == LAYER_LOW) ? GROUND_TRAVERSABLE : GROUND_EMPTY;
     for (int i = 0; i < entities.tiles_grid_size; i++) {
-      entities.animated_tiles[layer].push_back(false);
+      entities.is_square_animated[layer].push_back(false);
       entities.tiles_ground[layer].push_back(initial_ground);
     }
   }

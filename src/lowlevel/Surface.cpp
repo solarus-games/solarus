@@ -65,6 +65,8 @@ class Surface::SubSurfaceNode: public RefCountable {
 
       // Clip the source rectangle to the size of the source surface.
       // Otherwise, SDL_RenderCopy() will stretch the image.
+      // FIXME should be fixed with the next SDL patch version :
+      // https://bugzilla.libsdl.org/show_bug.cgi?id=1968
       if (this->src_rect.get_x() < 0) {
         this->src_rect.set_x(0);
         this->src_rect.set_width(this->src_rect.get_width() + src_rect.get_x());

@@ -22,17 +22,23 @@
 #include "RefCountable.h"
 #include "Map.h"
 
+/* TODO still to be fixed:
+ * - Need to erase animated tiles regions.
+ * - What about tiles that overlap each other at the frontier of cells?
+ */
+
 namespace solarus {
 
 /**
  * \brief Constructor.
- * \param map The map (not loaded yet).
+ * \param map The map. Its size must be known.
  * \param layer The layer to represent.
  */
 NonAnimatedRegions::NonAnimatedRegions(Map& map, Layer layer):
   map(map),
   layer(layer),
-  non_animated_tiles_surface(NULL) {
+  optimized_tiles_surface(NULL),
+  optimized_tiles(map.get_size(), Rectangle(0, 0, 400, 300)) {
 
 }
 
@@ -49,8 +55,8 @@ NonAnimatedRegions::~NonAnimatedRegions() {
  */
 void NonAnimatedRegions::clear() {
 
-  RefCountable::unref(non_animated_tiles_surface);
-  non_animated_tiles_surface = NULL;
+  RefCountable::unref(optimized_tiles_surface);
+  optimized_tiles_surface = NULL;
   are_squares_animated.clear();
 
   for (unsigned i = 0; i < tiles.size(); ++i) {
@@ -64,7 +70,7 @@ void NonAnimatedRegions::clear() {
  */
 void NonAnimatedRegions::add_tile(Tile* tile) {
 
-  Debug::check_assertion(non_animated_tiles_surface == NULL,
+  Debug::check_assertion(optimized_tiles_surface == NULL,
       "Tile regions are already built");
   Debug::check_assertion(tile != NULL, "Missing tile");
   Debug::check_assertion(tile->get_layer() == layer, "Wrong layer for add tile");
@@ -80,7 +86,7 @@ void NonAnimatedRegions::add_tile(Tile* tile) {
  */
 void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
 
-  Debug::check_assertion(non_animated_tiles_surface == NULL,
+  Debug::check_assertion(optimized_tiles_surface == NULL,
       "Tile regions are already built");
 
   const Rectangle map_size(0, 0, map.get_width(), map.get_height());
@@ -93,22 +99,18 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
   }
 
   // Create the surface where all non-animated tiles will be drawn.
-  non_animated_tiles_surface = Surface::create(
+  optimized_tiles_surface = Surface::create(
       map_size.get_width(), map_size.get_height()
   );
-  RefCountable::ref(non_animated_tiles_surface);
+  RefCountable::ref(optimized_tiles_surface);
 
   // Set this surface as a software destination because it is built only
   // once and never changes later.
-  non_animated_tiles_surface->set_software_destination(true);
+  optimized_tiles_surface->set_software_destination(true);
 
   for (unsigned i = 0; i < tiles.size(); ++i) {
     Tile& tile = *tiles[i];
-    if (!tile.is_animated()) {
-      // Non-animated tile: optimize its displaying.
-      tile.draw(*non_animated_tiles_surface, map_size);
-    }
-    else {
+    if (tile.is_animated()) {
       // Animated tile: mark its region as non-optimizable
       // (otherwise, a non-animated tile above an animated one would screw us).
 
@@ -138,14 +140,13 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
 
       if (are_squares_animated[index]) {
         Rectangle animated_square(x, y, 8, 8);
-        non_animated_tiles_surface->clear(animated_square);
+        optimized_tiles_surface->clear(animated_square);
       }
       index++;
     }
   }
 
   // Build the list of animated tiles and tiles overlapping them.
-  std::vector<Tile*> accepted_tiles;
   for (unsigned i = 0; i < tiles.size(); ++i) {
     Tile& tile = *tiles[i];
     if (tile.is_animated() || overlaps_animated_tile(tile)) {
@@ -153,12 +154,12 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
       rejected_tiles.push_back(&tile);
     }
     else {
-      accepted_tiles.push_back(&tile);
+      optimized_tiles.add(&tile);
     }
   }
 
   // No need to keep all tiles at this point. Just keep the optimized ones.
-  tiles = accepted_tiles;
+  tiles.clear();
 }
 
 /**
@@ -166,34 +167,8 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
  */
 void NonAnimatedRegions::notify_tileset_changed() {
 
-  if (non_animated_tiles_surface == NULL) {
-    // Regions are not built yet.
-    return;
-  }
-
-  const Rectangle map_size(0, 0, map.get_width(), map.get_height());
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    non_animated_tiles_surface->clear();
-
-    for (unsigned i = 0; i < tiles.size(); ++i) {
-      // The tiles list only contains the optimized ones.
-      tiles[i]->draw(*non_animated_tiles_surface, map_size);
-    }
-
-    // Erase rectangles that contain animated tiles.
-    int index = 0;
-    for (int y = 0; y < map.get_height(); y += 8) {
-      for (int x = 0; x < map.get_width(); x += 8) {
-
-        if (are_squares_animated[index]) {
-          Rectangle animated_square(x, y, 8, 8);
-          non_animated_tiles_surface->clear(animated_square);
-        }
-        index++;
-      }
-    }
-  }
+  optimized_tiles_surface->clear();
+  grid_cells_drawn.clear();  // Everything will be redrawn when necessary.
 }
 
 /**
@@ -234,9 +209,65 @@ bool NonAnimatedRegions::overlaps_animated_tile(Tile& tile) const {
  */
 void NonAnimatedRegions::draw_on_map() {
 
-  non_animated_tiles_surface->draw_region(
+  if (grid_cells_drawn.size() < optimized_tiles.get_num_cells()) {
+    // Not everything is drawn yet.
+    // Make sure the grid cells in the camera are drawn.
+    ensure_tiles_drawn(map.get_camera_position());
+  }
+
+  // At this point, at least all tiles in the camera are drawn on optimized_tiles_surface.
+  optimized_tiles_surface->draw_region(
       map.get_camera_position(), map.get_visible_surface()
   );
+}
+
+/**
+ * \brief Makes sures that at least all tiles in the specified rectangle are
+ * drawn on the surface.
+ * \param where The area to draw.
+ */
+void NonAnimatedRegions::ensure_tiles_drawn(const Rectangle& where) {
+
+  // Check all cells that overlap the rectangle.
+  const int num_rows = optimized_tiles.get_num_rows();
+  const int num_columns = optimized_tiles.get_num_columns();
+  const Rectangle& cell_size(optimized_tiles.get_cell_size());
+  const Rectangle& map_size = map.get_size();
+
+  const int row1 = where.get_y() / cell_size.get_height();
+  const int row2 = (where.get_y() + where.get_height()) / cell_size.get_height();
+  const int column1 = where.get_x() / cell_size.get_width();
+  const int column2 = (where.get_x() + where.get_width()) / cell_size.get_width();
+
+  if (row1 > row2 || column1 > column2) {
+    // No cell.
+    return;
+  }
+
+  for (int i = row1; i <= row2; ++i) {
+    if (i < 0 || i >= num_rows) {
+      continue;
+    }
+
+    for (int j = column1; j <= column2; ++j) {
+      if (j < 0 || j >= num_columns) {
+        continue;
+      }
+
+      int cell_index = i * num_columns + j;
+      if (grid_cells_drawn.find(cell_index) == grid_cells_drawn.end()) {
+        // This cell is not drawn yet. Let's draw it.
+        grid_cells_drawn.insert(cell_index);
+        const std::vector<Tile*> tiles_in_cell =
+            optimized_tiles.get_elements(cell_index);
+        std::vector<Tile*>::const_iterator it;
+        for (it = tiles_in_cell.begin(); it != tiles_in_cell.end(); ++it) {
+          Tile& tile = *(*it);
+          tile.draw(*optimized_tiles_surface, map_size);
+        }
+      }
+    }
+  }
 }
 
 }

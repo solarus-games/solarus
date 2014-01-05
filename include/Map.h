@@ -59,6 +59,7 @@ class Map: public ExportableToLua {
     void set_floor(int floor);
     const Rectangle& get_location() const;
 
+    Rectangle get_size() const;
     int get_width() const;
     int get_height() const;
     int get_width8() const;

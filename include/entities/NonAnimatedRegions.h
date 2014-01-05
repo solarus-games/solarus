@@ -19,7 +19,9 @@
 
 #include "Common.h"
 #include "entities/Layer.h"
+#include "containers/Grid.h"
 #include <vector>
+#include <set>
 
 namespace solarus {
 
@@ -28,7 +30,8 @@ namespace solarus {
  *
  * A non-animated region is a rectangle of the map that contains no animated
  * tile. The tiles in such rectangles of the map can be pre-drawn once for all
- * on an intermediate surface for performance.
+ * on an intermediate surface for performance. Furthermore, this intermediate
+ * surface is drawn lazily when the camera moves.
  */
 class NonAnimatedRegions {
 
@@ -46,15 +49,22 @@ class NonAnimatedRegions {
   private:
 
     bool overlaps_animated_tile(Tile& tile) const;
+    void ensure_tiles_drawn(const Rectangle& where);
 
     Map& map;                               /**< The map. */
     Layer layer;                            /**< Layer of the map managed by this object. */
-    std::vector<Tile*> tiles;               /**< The tiles contained in this layer.
-                                             * After build() is called, rejected ones are removed. */
-    Surface* non_animated_tiles_surface;    /**< All non-animated tiles are drawn here once for all
+    std::vector<Tile*> tiles;               /**< All tiles contained in this layer and candidates to
+                                             * be optimized. This list is after build() is called. */
+    Surface* optimized_tiles_surface;       /**< All optimized tiles are drawn here once for all
                                              * for performance. */
     std::vector<bool> are_squares_animated; /**< Whether each 8x8 square of the map has animated tiles. */
 
+    // Handle the lazy drawing.
+    Grid<Tile*> optimized_tiles;            /**< Tiles in non-animated regions. Stored in a grid so that
+                                             * we can quickly find the ones to draw lazily later when the
+                                             * camera moves. */
+    std::set<int> grid_cells_drawn;         /**< Whether each part of the map was drawn on
+                                             * optinized_tiles_surface. */
 };
 
 }

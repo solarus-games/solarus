@@ -24,6 +24,7 @@
 #include "lowlevel/Music.h"
 #include "entities/Layer.h"
 #include "entities/Tileset.h"
+#include "entities/NonAnimatedRegions.h"
 #include "entities/MapEntities.h"
 #include "entities/EntityType.h"
 #include "entities/MapEntity.h"
@@ -145,6 +146,8 @@ int MapLoader::l_properties(lua_State* l) {
     for (int i = 0; i < entities.tiles_grid_size; ++i) {
       entities.tiles_ground[layer].push_back(initial_ground);
     }
+
+    entities.non_animated_regions[layer] = new NonAnimatedRegions(*map, Layer(layer));
   }
   entities.boomerang = NULL;
   map->camera = new Camera(*map);

@@ -114,9 +114,9 @@ class MapEntities {
                                                      * optimized and never used individually.*/
     int tiles_grid_size;                            /**< number of 8x8 squares in the map
                                                      * (tiles_grid_size = map_width8 * map_height8) */
-    Ground* tiles_ground[LAYER_NB];                 /**< array of size tiles_grid_size representing the ground property
+    std::vector<Ground> tiles_ground[LAYER_NB];     /**< array of size tiles_grid_size representing the ground property
                                                      * of each 8x8 square. */
-    bool* animated_tiles[LAYER_NB];                 /**< array of size tiles_grid_size that remembers which squares
+    std::vector<bool> animated_tiles[LAYER_NB];     /**< array of size tiles_grid_size that remembers which squares
                                                      * have animated tiles */
     Surface* non_animated_tiles_surfaces[LAYER_NB]; /**< all non-animated tiles are rendered once for all on these surfaces
                                                      * for performance */

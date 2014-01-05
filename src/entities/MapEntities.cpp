@@ -85,8 +85,6 @@ void MapEntities::destroy_all_entities() {
     }
 
     tiles[layer].clear();
-    delete[] tiles_ground[layer];
-    delete[] animated_tiles[layer];
 
     RefCountable::unref(non_animated_tiles_surfaces[layer]);
 
@@ -1004,7 +1002,8 @@ void MapEntities::redraw_non_animated_tiles() {
  */
 bool MapEntities::overlaps_animated_tile(Tile& tile) {
 
-  bool* animated_tiles_layer = animated_tiles[tile.get_layer()];
+  const std::vector<bool>& animated_tiles_layer =
+      animated_tiles[tile.get_layer()];
 
   int tile_x8 = tile.get_x() / 8;
   int tile_y8 = tile.get_y() / 8;

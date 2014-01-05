@@ -1989,24 +1989,35 @@ bool Hero::can_be_hurt(Enemy* attacker) {
  * \param magic_points Number of magic points to remove.
  */
 void Hero::hurt(MapEntity& source,
-    const Sprite* source_sprite,
+    Sprite* source_sprite,
     int life_points,
     int magic_points) {
 
   Enemy* enemy = NULL;
   if (source.get_type() == ENTITY_ENEMY) {
     // TODO make state->can_be_hurt(MapEntity*)
-    enemy = (Enemy*) &source;
-  }
-
-  Rectangle source_xy = source.get_xy();
-  if (source_sprite != NULL) {
-    // Add the offset of the sprite if any.
-    source_xy.add_xy(source_sprite->get_xy());
+    enemy = static_cast<Enemy*>(&source);
   }
 
   if (!sprites->is_blinking() && state->can_be_hurt(enemy)) {
-    set_state(new HurtState(*this, source_xy, life_points, magic_points));
+
+    bool handled = false;
+    if (enemy != NULL) {
+      // Let the enemy script handle this if it wants.
+      handled = get_lua_context().enemy_on_attacking_hero(
+          *enemy, *this, source_sprite);
+    }
+
+    if (!handled) {
+      // Scripts did not customize the attack:
+      // do the built-in hurt state of the hero.
+      Rectangle source_xy = source.get_xy();
+      if (source_sprite != NULL) {
+        // Add the offset of the sprite if any.
+        source_xy.add_xy(source_sprite->get_xy());
+      }
+      set_state(new HurtState(*this, source_xy, life_points, magic_points));
+    }
   }
 }
 
@@ -2252,7 +2263,7 @@ void Hero::start_free_or_carrying() {
 
 /**
  * \brief Makes the hero brandish a treasure.
- * \param treasure The treasure to give him.
+ * \param treasure The treasure to give him. It must be obtainable.
  * \param callback_ref Lua ref to a function to call when the
  * treasure's dialog finishes (possibly LUA_REFNIL).
  */

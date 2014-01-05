@@ -17,6 +17,7 @@
 package org.solarus.editor.entities;
 
 import org.solarus.editor.*;
+
 import java.awt.*;
 import java.util.NoSuchElementException;
 
@@ -47,6 +48,12 @@ public class CrystalBlock extends MapEntity {
         public String getId() {
             return id;
         }
+        
+        public String getAnimationName() {
+            return this == INITIALLY_LOWERED ?
+                    "orange_lowered" :
+                    "blue_raised";
+        }
 
         public static Subtype get(String id) {
             for (Subtype subtype: values()) {
@@ -73,12 +80,26 @@ public class CrystalBlock extends MapEntity {
     private static final Dimension unitarySize = new Dimension(16, 16);
 
     /**
+     * The sprite representing this entity.
+     */
+    private Sprite sprite;
+
+    /**
      * Creates a new crystal block.
      * @param map the map
      */
     public CrystalBlock(Map map) throws MapException {
         super(map, 16, 16);
         subtype = Subtype.INITIALLY_LOWERED;
+
+        try {
+            sprite = new Sprite("entities/crystal_block", map);
+        }
+        catch (MapException ex) {
+            // The sprite could not be loaded.
+            // The default icon for this entity will be used instead.
+            sprite = null;
+        }
     }
 
     /**
@@ -122,7 +143,23 @@ public class CrystalBlock extends MapEntity {
         for (int i = 0; i < getHeight(); i += unitarySize.height) {
             rectangle.x = positionInMap.x;
             for (int j = 0; j < getWidth(); j += unitarySize.width) {
-                currentImageDescription.paint(g, zoom, showTransparency, rectangle);
+
+                if (sprite == null) {
+                    currentImageDescription.paint(g, zoom, showTransparency, rectangle);
+                }
+                else {
+                    String animationName = ((Subtype) getSubtype()).getAnimationName();
+                    sprite.paint(
+                            g,
+                            zoom,
+                            showTransparency,
+                            rectangle.x,
+                            rectangle.y,
+                            animationName,
+                            0,
+                            sprite.getAnimation(animationName).getDirection(0).getNbFrames() - 1
+                    );
+                }
                 rectangle.x += unitarySize.width;
             }
             rectangle.y += unitarySize.height;

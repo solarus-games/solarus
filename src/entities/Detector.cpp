@@ -26,7 +26,7 @@ namespace solarus {
 /**
  * \brief Constructor.
  * \param collision_modes the detector's collision mode(s)
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the detector
  * \param x x position of the detector's rectangle
  * \param y y position of the detector's rectangle

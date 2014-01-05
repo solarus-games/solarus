@@ -1409,6 +1409,9 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
   if (treasure.is_found()) {
     LuaTools::arg_error(l, 4, "This treasure is already found");
   }
+  if (!treasure.is_obtainable()) {
+    LuaTools::arg_error(l, 4, "This treasure is not obtainable");
+  }
 
   int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 5) {
@@ -2139,13 +2142,17 @@ int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
     const Treasure& treasure = shop_treasure.get_treasure();
     EquipmentItem& item = treasure.get_item();
 
-    if (equipment.get_money() < shop_treasure.get_price()) {
-      // not enough rupees
+    if (!treasure.is_obtainable()) {
+      // This treasure is not allowed.
+      Sound::play("wrong");
+    }
+    else if (equipment.get_money() < shop_treasure.get_price()) {
+      // Not enough money.
       Sound::play("wrong");
       game.start_dialog("_shop.not_enough_money");
     }
     else if (item.has_amount() && item.get_amount() >= item.get_max_amount()) {
-      // the player already has the maximum amount of this item
+      // The player already has the maximum amount of this item.
       Sound::play("wrong");
       game.start_dialog("_shop.amount_full");
     }
@@ -2154,7 +2161,7 @@ int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
       bool can_buy = lua_context.shop_treasure_on_buying(shop_treasure);
       if (can_buy) {
 
-        // give the treasure
+        // Give the treasure.
         equipment.remove_money(shop_treasure.get_price());
 
         game.get_hero().start_treasure(treasure, LUA_REFNIL);
@@ -3211,6 +3218,11 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
 
   // Create the new enemy.
   Map& map = enemy.get_map();
+
+  if (!map.is_loaded()) {
+    LuaTools::error(l, "Cannot create enemy: this map is not running");
+  }
+
   Game& game = map.get_game();
   MapEntity* entity = Enemy::create(
       game,
@@ -4076,6 +4088,25 @@ void LuaContext::enemy_on_immobilized(Enemy& enemy) {
     on_immobilized();
   }
   lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_attacking_hero() method of a Lua enemy if it is defined.
+ * \param enemy An enemy.
+ * \param hero The hero attacked.
+ * \param enemy_sprite Enemy's sprite that caused the collision or NULL.
+ * \return \c true if the method is defined.
+ */
+bool LuaContext::enemy_on_attacking_hero(Enemy& enemy, Hero& hero, Sprite* attacker_sprite) {
+
+  if (!userdata_has_field(enemy, "on_attacking_hero")) {
+    return false;
+  }
+
+  push_enemy(l, enemy);
+  bool exists = on_attacking_hero(hero, attacker_sprite);
+  lua_pop(l, 1);
+  return exists;
 }
 
 }

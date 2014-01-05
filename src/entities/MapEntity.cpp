@@ -47,7 +47,7 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
 
 /**
  * \brief Creates an entity, specifying its position, its name and its direction.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param direction direction of the entity
  * \param layer layer of the entity
  * \param x x position of the entity
@@ -917,6 +917,20 @@ const std::string& MapEntity::get_name() const {
 }
 
 /**
+ * \brief Sets the name of the entity.
+ *
+ * The name can only be changed before the entity is added to a map.
+ *
+ * \return The name of the entity, or an empty string to unset the name.
+ */
+void MapEntity::set_name(const std::string& name) {
+
+  Debug::check_assertion(!is_on_map(),
+      "Cannot change entity name: this entity is already on a map.");
+  this->name = name;
+}
+
+/**
  * \brief Returns whether the name of this entity starts with the specified prefix.
  * \param prefix a prefix
  * \return true if the name starts with this prefix
@@ -1521,7 +1535,7 @@ bool MapEntity::is_hero_obstacle(const Hero& hero) const {
  * This function returns true by default.
  *
  * \param block a block
- * \return true if the teletransporter is currently an obstacle for this entity
+ * \return true if the block is currently an obstacle for this entity
  */
 bool MapEntity::is_block_obstacle(const Block& block) const {
   return true;

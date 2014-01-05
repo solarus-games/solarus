@@ -157,10 +157,8 @@ public class EditDestructibleComponent extends EditEntityComponent {
         Ground ground;
         try {
             ground = Ground.getByName(destructible.getStringProperty("ground"));
-            System.out.println(ground);
         }
         catch (QuestEditorException ex) {
-            System.out.println(ex.getMessage());
             ground = Ground.WALL;
         }
 

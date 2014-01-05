@@ -12,13 +12,16 @@ It can also be created dynamically with
 
 \section lua_api_chest_overview Overview
 
-A chest may contain a treasure of be empty.
+A chest may contain a treasure or be empty.
 - If the chest contains a treasure, the engine will give it automatically
-to the player when the \ref lua_api_hero "hero" opens its.
+  to the player when the \ref lua_api_hero "hero" opens its.
+  If the treasure is not
+  \ref lua_api_item_is_obtainable "obtainable",
+  it is replaced by an empty treasure.
 - If the chest is empty, it may either mean that there is really
-no treasure, or that what happens when the player opens it
-is defined dynamically by your script
-(see the \ref lua_api_chest_on_empty "chest:on_empty()" event).
+  no treasure, or that what happens when the player opens it
+  is defined dynamically by your script
+  (see the \ref lua_api_chest_on_empty "chest:on_empty()" event).
 
 The state of a chest is either open or closed.
 When a chest is closed, its treasure (if any) is still inside
@@ -29,10 +32,6 @@ if its state is saved and the corresponding
 \ref lua_api_game_get_value "boolean value" is \c true.
 If is possible to save the state of a chest (open or closed)
 even if it contains no treasure.
-
-There exists two subtypes of chests:
-small chests (with a size of 16x16 pixels)
-and big chests (with a size of 32x16 pixels).
 
 \section lua_api_chest_inherited_methods Methods inherited from map entity
 

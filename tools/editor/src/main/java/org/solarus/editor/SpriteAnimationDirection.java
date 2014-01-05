@@ -107,8 +107,17 @@ public class SpriteAnimationDirection {
     }
 
     /**
+     * Returns the number of frames in this direction.
+     * @return The number of frames.
+     */
+    public int getNbFrames() {
+        return frames.length;
+    }
+
+    /**
      * Returns a frame of this direction.
-     * @param frame index of the frame to show
+     * @param frame Index of the frame to get.
+     * @return The corresponding frame.
      */
     public Image getFrame(int frame) {
 

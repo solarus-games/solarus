@@ -53,7 +53,8 @@ Switch::Switch(
   locked(false),
   needs_block(needs_block),
   inactivate_when_leaving(inactivate_when_leaving),
-  entity_overlapping(NULL) {
+  entity_overlapping(NULL),
+  entity_overlapping_still_present(false) {
 
   // sprite
   if (is_walkable()) {

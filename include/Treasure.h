@@ -54,7 +54,9 @@ class Treasure {
     bool is_saved() const;
     bool is_empty() const;
 
+    bool is_obtainable() const;
     void ensure_obtainable();
+    void check_obtainable() const;
     void give_to_player() const;
     bool is_found() const;
 
@@ -69,7 +71,6 @@ class Treasure {
                                      * or an empty string if the treasure state is not saved */
     Sprite* sprite;                 /**< the sprite of the treasure (loaded on demand, NULL until required) */
 
-    void check_obtainable() const;
 };
 
 }

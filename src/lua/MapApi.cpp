@@ -143,13 +143,19 @@ bool LuaContext::is_map(lua_State* l, int index) {
 
 /**
  * \brief Checks that the userdata at the specified index of the stack is a
- * map and returns it.
+ * map that is currently loaded and returns it.
  * \param l A Lua context.
  * \param index An index in the stack.
  * \return The map.
  */
 Map& LuaContext::check_map(lua_State* l, int index) {
-  return static_cast<Map&>(check_userdata(l, index, map_module_name));
+
+  Map& map = static_cast<Map&>(check_userdata(l, index, map_module_name));
+
+  if (!map.is_loaded()) {
+    LuaTools::arg_error(l, index, "This map is not running");
+  }
+  return map;
 }
 
 /**

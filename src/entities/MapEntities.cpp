@@ -31,6 +31,7 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
+#include <sstream>
 
 namespace solarus {
 
@@ -651,22 +652,49 @@ void MapEntities::add_entity(MapEntity* entity) {
       break;
     }
 
-    // update the list of all entities
+    // Update the list of all entities.
     all_entities.push_back(entity);
   }
 
-  const std::string& name = entity->get_name();
+  // Rename the entity if there is already an entity with the same name.
+  std::string name = entity->get_name();
+  std::ostringstream oss;
+  std::istringstream iss;
   if (!name.empty()) {
+
     if (named_entities.find(name) != named_entities.end()) {
-        Debug::die(std::string("An entity with name '") + name
-            + "' already exists"
-        );
+      // This name is already used by another entity. Add a suffix.
+      int suffix_number = 1;
+      std::string prefix = name;
+      size_t index = name.rfind('_');
+      if (index != std::string::npos) {
+        // If there is already a numbered suffix, we will increment it.
+        const std::string& suffix = name.substr(index + 1);
+        iss.clear();
+        iss.str(suffix);
+        if (iss >> suffix_number) {
+          prefix = name.substr(0, index);
+        }
+      }
+
+      // Now we have the final prefix. Find the first available suffix.
+      do {
+        ++suffix_number;
+        oss.str("");
+        oss.clear();
+        oss << prefix << '_' << suffix_number;
+        name = oss.str();
+      }
+      while (named_entities.find(name) != named_entities.end());
+
+      entity->set_name(name);
     }
     named_entities[name] = entity;
   }
+
   RefCountable::ref(entity);
 
-  // notify the entity
+  // Notify the entity.
   entity->set_map(map);
 }
 

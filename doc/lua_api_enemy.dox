@@ -509,6 +509,9 @@ and the layer is the one of the current enemy by default.
 - \c properties (table): A table that describes all properties of the enemy
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
     No value means no name.
   - \c layer (number, optional): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
@@ -699,5 +702,27 @@ are dead.
 
 Called when the enemy is immobilized.
 
+\subsection lua_api_enemy_on_attacking_hero enemy:on_attacking_hero(hero, enemy_sprite)
+
+Called when the \ref lua_api_hero "hero" is successfully touched by this enemy.
+
+This event is not called if the hero was protected by his shield,
+or if he currently cannot be hurt for some reason, like when he his in a
+special \ref lua_api_hero_get_state "state"
+like brandishing a treasure or falling into a hole.
+
+Your script can define this event to customize what bad things happen to the
+hero.
+If you define this event, the engine does nothing and lets you handle this.
+
+If you don't define this event, the hero is hurt with the predefined behavior:
+he loses some life (and optionally some magic) depending on the enemy and on
+his tunic, and he goes to the state \c "hurt" where is pushed away from the
+enemy. Then he recovers and his sprites blink for a while. During this short
+period, he is temporarily invincible.
+- \c hero (\ref lua_api_hero "hero"): The hero being attacked.
+- \c enemy_sprite (\ref lua_api_sprite "sprite"): The sprite of the enemy that
+  caused the collision with the hero. You may use this information if your
+  enemy has several sprites with different behaviors.
 */
 

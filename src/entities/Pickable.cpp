@@ -34,7 +34,7 @@ namespace solarus {
 
 /**
  * \brief Creates a pickable item with the specified subtype.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the pickable item to create on the map
  * \param x x coordinate of the pickable item to create
  * \param y y coordinate of the pickable item to create
@@ -83,7 +83,7 @@ EntityType Pickable::get_type() const {
  * - the item cannot be obtained by the hero yet.
  *
  * \param game the current game
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the pickable item to create on the map
  * \param x x coordinate of the pickable item to create
  * \param y y coordinate of the pickable item to create

@@ -30,7 +30,8 @@ namespace solarus {
 /**
  * \brief Creates a new treasure.
  *
- * You must call ensure_obtainable() later because of unauthorized treasures.
+ * You must call ensure_obtainable() before giving it to the player, because
+ * of unauthorized treasures.
  *
  * \param game The current game.
  * \param item_name Name of the item to give, or an empty string to mean no
@@ -86,29 +87,35 @@ Treasure& Treasure::operator=(const Treasure& other) {
 }
 
 /**
+ * \brief Returns whether the player can obtain this treasure.
+ */
+bool Treasure::is_obtainable() const {
+
+  return item_name.empty()
+      || game->get_equipment().get_item(item_name).is_obtainable();
+}
+
+/**
  * \brief Raises an assertion error if the player cannot obtain this treasure.
  */
 void Treasure::check_obtainable() const {
 
-  Debug::check_assertion(item_name.empty()
-      || game->get_equipment().get_item(item_name).is_obtainable(),
-      std::string("Treasure '") + item_name
-      + "' is not allowed, did you call ensure_obtainable()?"
-  );
+  if (!is_obtainable()) {
+    Debug::die(std::string("Treasure '") + item_name
+      + "' is not allowed, did you call ensure_obtainable()?");
+  }
 }
 
 /**
  * \brief Makes sure that the content of this treasure is allowed.
  *
  * If the item is not allowed, the treasure becomes empty.
- * This function must be called before any function
- * that needs to know the treasure content:
- * get_item_name(), get_item_properties(), is_empty(), give_to_player() and
- * draw().
+ * This function must be called before giving it to the player.
  *
  * This function is not called automatically because we want to decide to
  * remove the treasure (or not) as late as possible. The obtainable property
- * may indeed change after the creation of the treasure.
+ * may indeed change after the creation of the treasure, for example if the
+ * player finds a new equipment item in the meantime.
  */
 void Treasure::ensure_obtainable() {
 
@@ -140,8 +147,6 @@ EquipmentItem& Treasure::get_item() const {
  * \return The name of the item.
  */
 const std::string& Treasure::get_item_name() const {
-
-  check_obtainable();
   return item_name;
 }
 
@@ -194,11 +199,12 @@ const std::string& Treasure::get_savegame_variable() const {
  * \brief Gives the treasure to the player.
  *
  * Adds the item to the hero's equipment.
- * The item should not be empty.
+ * The item should not be empty and must be obtainable.
  */
 void Treasure::give_to_player() const {
 
   Debug::check_assertion(!is_found(), "This treasure was already found");
+  check_obtainable();
 
   // Mark the treasure as found in the savegame.
   if (is_saved()) {

@@ -439,7 +439,9 @@ int LuaContext::movement_api_create(lua_State* l) {
 
   Movement* movement = NULL;
   if (type == "straight") {
-    movement = new StraightMovement(false, true);
+    StraightMovement* straight_movement = new StraightMovement(false, true);
+    straight_movement->set_speed(32);
+    movement = straight_movement;
   }
   else if (type == "random") {
     movement = new RandomMovement(32);

@@ -98,9 +98,12 @@ void Tile::draw_on_map() {
  */
 void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
 
-  Rectangle dst_position(get_top_left_x() - viewport.get_x(),
+  Rectangle dst_position(
+      get_top_left_x() - viewport.get_x(),
       get_top_left_y() - viewport.get_y(),
-      get_width(), get_height());
+      get_width(),
+      get_height()
+  );
 
   tile_pattern->fill_surface(dst_surface, dst_position,
       get_map().get_tileset(), viewport);

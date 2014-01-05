@@ -49,22 +49,23 @@ class NonAnimatedRegions {
   private:
 
     bool overlaps_animated_tile(Tile& tile) const;
-    void ensure_tiles_drawn(const Rectangle& where);
+    void build_cell(int cell_index);
 
     Map& map;                               /**< The map. */
     Layer layer;                            /**< Layer of the map managed by this object. */
     std::vector<Tile*> tiles;               /**< All tiles contained in this layer and candidates to
                                              * be optimized. This list is after build() is called. */
-    Surface* optimized_tiles_surface;       /**< All optimized tiles are drawn here once for all
-                                             * for performance. */
     std::vector<bool> are_squares_animated; /**< Whether each 8x8 square of the map has animated tiles. */
 
     // Handle the lazy drawing.
     Grid<Tile*> optimized_tiles;            /**< Tiles in non-animated regions. Stored in a grid so that
                                              * we can quickly find the ones to draw lazily later when the
                                              * camera moves. */
-    std::set<int> grid_cells_drawn;         /**< Whether each part of the map was drawn on
-                                             * optinized_tiles_surface. */
+    std::vector<Surface*>
+        optimized_tiles_surfaces;           /**< All optimized tiles are drawn here once for all
+                                             * for performance. Each cell of the grid has a surface
+                                             * or NULL before it is drawn. */
+
 };
 
 }

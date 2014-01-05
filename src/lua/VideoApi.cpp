@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "lowlevel/Video.h"
 #include "lowlevel/VideoMode.h"
 #include "lowlevel/Rectangle.h"
@@ -40,6 +41,9 @@ void LuaContext::register_video_module() {
       { "is_fullscreen", video_api_is_fullscreen },
       { "set_fullscreen", video_api_set_fullscreen },
       { "get_quest_size", video_api_get_quest_size },
+      { "get_window_size", video_api_get_window_size },
+      { "set_window_size", video_api_set_window_size },
+      { "reset_window_size", video_api_reset_window_size },
       { NULL, NULL }
   };
   register_functions(video_module_name, functions);
@@ -88,7 +92,7 @@ int LuaContext::video_api_get_mode(lua_State *l) {
 /**
  * \brief Implementation of sol.video.set_mode().
  * \param l the Lua context that is calling this function
- * \return number of values to return to Lua
+ * \return Number of values to return to Lua.
  */
 int LuaContext::video_api_set_mode(lua_State *l) {
 
@@ -196,6 +200,54 @@ int LuaContext::video_api_get_quest_size(lua_State* l) {
   lua_pushinteger(l, quest_size.get_width());
   lua_pushinteger(l, quest_size.get_height());
   return 2;
+}
+
+/**
+ * \brief Implementation of sol.video.get_window_size().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::video_api_get_window_size(lua_State* l) {
+
+  const Rectangle& window_size = Video::get_window_size();
+
+  lua_pushinteger(l, window_size.get_width());
+  lua_pushinteger(l, window_size.get_height());
+  return 2;
+}
+
+/**
+ * \brief Implementation of sol.video.set_window_size().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::video_api_set_window_size(lua_State* l) {
+
+  int width = luaL_checkint(l, 1);
+  int height = luaL_checkint(l, 2);
+
+  if (width <= 0) {
+    LuaTools::arg_error(l, 1, "Window width must be positive");
+  }
+  if (height <= 0) {
+    LuaTools::arg_error(l, 2, "Window height must be positive");
+  }
+
+  Video::set_window_size(Rectangle(0, 0, width, height));
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of sol.video.reset_window_size().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::video_api_reset_window_size(lua_State* l) {
+
+  Video::reset_window_size();
+
+  return 0;
 }
 
 }

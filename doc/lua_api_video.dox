@@ -44,7 +44,7 @@ The following modes are implemented:
 - \c "hq4x": The quest screen is scaled by a factor of 4
   with the <a href="http://en.wikipedia.org/wiki/Hqx">hq4x</a> algorithm.
 
-In windowed mode, the user can resize the window.
+In windowed mode, the user and the scripts can resize the window.
 The image is then automatically stretched
 and keeps the same pixel ratio, possibly by adding black borders.
 
@@ -113,9 +113,62 @@ It is always in the range of allowed quest sizes specified in
 \ref quest_properties_file "quest.dat".
 
 The quest size is independent from the video mode:
-video modes are just various methods to draw the quest on the screen.
+video modes are just various methods to draw the quest on the window.
 - Return value 1 (number): Width of the quest screen in pixels.
 - Return value 2 (number): Height of the quest screen in pixels.
+
+\subsection lua_api_video_get_window_size sol.video.get_window_size()
+
+Returns the size of the window.
+
+The quest image has a
+\ref lua_api_video_get_quest_size "fixed size"
+determined when the program starts.
+This quest image is then stretched on the window, and the size of the window
+size can be changed by the user or by
+\ref lua_api_video_set_window_size "sol.video.set_window_size()".
+Black borders are added if necessary to keep the correct pixel ratio.
+
+When the window is in fullscreen, this function returns the size to be used
+when returning to windowed mode.
+
+By default, the size of the window depends on the
+\ref lua_api_video_get_mode "video mode".
+If no scaling algorithm is used (that is, in \c "normal" mode),
+the window size is initially twice the quest size to avoid a too small
+window.
+If a scaling algorithm is used, the scaling factor is naturally applied to the
+window size.
+For example, with hq2x, if your quest size is 320x240, the window will
+initially have a size of 640x480.
+- Return value 1 (number): Width of the window in pixels.
+- Return value 2 (number): Height of the window in pixels.
+
+\subsection lua_api_video_set_window_size sol.video.set_window_size(width, height)
+
+Sets the size of the window.
+
+See \ref lua_api_get_window_size "sol.video.get_window_size()" for a
+detailed description of the window size.
+
+When the window is in fullscreen, this function still works: the changes will
+be visible when returning to windowed mode.
+
+Note that when the video mode is changed, the window size is reset to its
+default value for the new video mode.
+- Return value 1 (number): Width of the window in pixels.
+- Return value 2 (number): Height of the window in pixels.
+
+\subsection lua_api_video_reset_window_size sol.video.reset_window_size()
+
+Restores the size of the window to its default value.
+
+The default size of the window depends on the video mode: see
+\ref lua_api_get_window_size "sol.video.get_window_size()"
+for a detailed explanation.
+
+When the window is in fullscreen, this function still works: the changes will
+be visible when returning to windowed mode.
 
 */
 

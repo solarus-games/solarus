@@ -55,6 +55,7 @@ class Video {
     static std::vector<const VideoMode*> get_video_modes();
     static bool is_mode_supported(const VideoMode& mode);
     static bool set_video_mode(const VideoMode& mode);
+    static bool set_video_mode(const VideoMode& mode, bool fullscreen);
     static void set_default_video_mode();
     static void switch_video_mode();
 
@@ -63,7 +64,6 @@ class Video {
 
     static bool is_fullscreen();
     static void set_fullscreen(bool fullscreen);
-    static void switch_fullscreen();
 
     static const std::string get_window_title();
     static void set_window_title(const std::string& window_title);
@@ -80,6 +80,9 @@ class Video {
         const Rectangle& min_quest_size,
         const Rectangle& max_quest_size);
 
+    static Rectangle get_window_size();
+    static void set_window_size(const Rectangle& size);
+    static void reset_window_size();
     static void render(Surface& quest_surface);
 
   private:

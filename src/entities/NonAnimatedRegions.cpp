@@ -65,7 +65,7 @@ void NonAnimatedRegions::clear() {
 void NonAnimatedRegions::add_tile(Tile* tile) {
 
   Debug::check_assertion(non_animated_tiles_surface == NULL,
-      "Tile regions are alrady built");
+      "Tile regions are already built");
   Debug::check_assertion(tile != NULL, "Missing tile");
   Debug::check_assertion(tile->get_layer() == layer, "Wrong layer for add tile");
 
@@ -81,7 +81,7 @@ void NonAnimatedRegions::add_tile(Tile* tile) {
 void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
 
   Debug::check_assertion(non_animated_tiles_surface == NULL,
-      "Tile regions are alrady built");
+      "Tile regions are already built");
 
   const Rectangle map_size(0, 0, map.get_width(), map.get_height());
   const int map_width8 = map.get_width8();

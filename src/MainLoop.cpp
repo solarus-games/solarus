@@ -60,8 +60,8 @@ MainLoop::MainLoop(const CommandLine& args):
   RefCountable::ref(root_surface);
 
   // Run the Lua world.
-  // Do this after the creation of the window because Lua might change the
-  // video mode initially. This will avoid blinking.
+  // Do this after the creation of the window, but before showing the window,
+  // because Lua might change the video mode initially.
   lua_context = new LuaContext(*this);
   lua_context->initialize();
 

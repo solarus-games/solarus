@@ -391,10 +391,8 @@ bool Video::is_fullscreen() {
  */
 void Video::set_fullscreen(bool fullscreen) {
 
-  if (fullscreen != is_fullscreen()) {
-    Debug::check_assertion(video_mode != NULL, "No video mode");
-    set_video_mode(*video_mode, fullscreen);
-  }
+  Debug::check_assertion(video_mode != NULL, "No video mode");
+  set_video_mode(*video_mode, fullscreen);
 }
 
 /**

@@ -45,6 +45,8 @@ MapLoader Map::map_loader;
 Map::Map(const std::string& id):
   game(NULL),
   id(id),
+  width8(0),
+  height8(0),
   tileset(NULL),
   floor(NO_FLOOR),
   camera(NULL),

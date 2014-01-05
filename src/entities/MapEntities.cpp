@@ -43,10 +43,12 @@ namespace solarus {
 MapEntities::MapEntities(Game& game, Map& map):
   game(game),
   map(map),
+  map_width8(0),
+  map_height8(0),
+  tiles_grid_size(0),
   hero(game.get_hero()),
   default_destination(NULL),
-  boomerang(NULL),
-  music_before_miniboss(Music::none) {
+  boomerang(NULL) {
 
   Layer layer = hero.get_layer();
   this->obstacle_entities[layer].push_back(&hero);

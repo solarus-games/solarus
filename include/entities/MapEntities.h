@@ -161,7 +161,6 @@ class MapEntities {
     std::list<const Separator*> separators;         /**< all separators of the map */
 
     Boomerang* boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
-    std::string music_before_miniboss;              /**< the music that was played before starting a miniboss fight */
 };
 
 /**

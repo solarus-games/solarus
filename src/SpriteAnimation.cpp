@@ -45,8 +45,10 @@ SpriteAnimation::SpriteAnimation(
   should_enable_pixel_collisions(false) {
 
   if (!src_image_is_tileset) {
-    //TODO We should create only one surface by distinct image_file_name (it's currently one by sprite's animation)
-    // to have a *huge* loading speedup.
+    // TODO It would be better to create only one surface by distinct
+    // image_file_name (it's currently one by sprite's animation).
+    // However, sprite animation sets are already cached so the gain might
+    // not be significant.
     src_image = Surface::create(image_file_name);
     RefCountable::ref(src_image);
   }

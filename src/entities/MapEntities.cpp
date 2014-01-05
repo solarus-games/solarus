@@ -658,12 +658,12 @@ void MapEntities::add_entity(MapEntity* entity) {
 
   // Rename the entity if there is already an entity with the same name.
   std::string name = entity->get_name();
-  std::ostringstream oss;
-  std::istringstream iss;
   if (!name.empty()) {
 
     if (named_entities.find(name) != named_entities.end()) {
       // This name is already used by another entity. Add a suffix.
+      std::ostringstream oss;
+      std::istringstream iss;
       int suffix_number = 1;
       std::string prefix = name;
       size_t index = name.rfind('_');

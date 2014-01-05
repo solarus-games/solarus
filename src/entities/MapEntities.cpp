@@ -25,6 +25,7 @@
 #include "entities/Stairs.h"
 #include "entities/Separator.h"
 #include "entities/Destination.h"
+#include "entities/NonAnimatedRegions.h"
 #include "Map.h"
 #include "Game.h"
 #include "lowlevel/Surface.h"
@@ -37,8 +38,8 @@ namespace solarus {
 
 /**
  * \brief Constructor.
- * \param game the game
- * \param map the map (not loaded yet)
+ * \param game The game.
+ * \param map The map (not loaded yet).
  */
 MapEntities::MapEntities(Game& game, Map& map):
   game(game),
@@ -50,16 +51,15 @@ MapEntities::MapEntities(Game& game, Map& map):
   default_destination(NULL),
   boomerang(NULL) {
 
-  Layer layer = hero.get_layer();
-  this->obstacle_entities[layer].push_back(&hero);
-  this->entities_drawn_y_order[layer].push_back(&hero);
-  this->ground_observers[layer].push_back(&hero);
-  this->named_entities[hero.get_name()] = &hero;
-
-  // surfaces to pre-render static tiles
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-    non_animated_tiles_surfaces[layer] = NULL;
+  for (int layer = 0; layer < LAYER_NB; ++layer) {
+    non_animated_regions[layer] = new NonAnimatedRegions(map, Layer(layer));
   }
+
+  Layer hero_layer = hero.get_layer();
+  this->obstacle_entities[hero_layer].push_back(&hero);
+  this->entities_drawn_y_order[hero_layer].push_back(&hero);
+  this->ground_observers[hero_layer].push_back(&hero);
+  this->named_entities[hero.get_name()] = &hero;
 }
 
 /**
@@ -67,27 +67,10 @@ MapEntities::MapEntities(Game& game, Map& map):
  */
 MapEntities::~MapEntities() {
 
-  destroy_all_entities();
-}
-
-/**
- * \brief Removes all entities from the map.
- *
- * This function is called by the destructor or when the map is unloaded.
- */
-void MapEntities::destroy_all_entities() {
-
   // delete tiles and clear lists sorted by layer
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      destroy_entity(tiles[layer][i]);
-    }
-
-    tiles[layer].clear();
-
-    RefCountable::unref(non_animated_tiles_surfaces[layer]);
-
+    delete non_animated_regions[layer];
     entities_drawn_first[layer].clear();
     entities_drawn_y_order[layer].clear();
     obstacle_entities[layer].clear();
@@ -364,8 +347,11 @@ void MapEntities::notify_map_started() {
   hero.notify_map_started();
   hero.notify_tileset_changed();
 
-  // pre-render non-animated tiles
-  build_non_animated_tiles();
+  // Setup non-animated tiles pre-drawing.
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    non_animated_regions[layer]->build(tiles_in_animated_regions[layer]);
+    // Now, tiles_in_animated_regions contains the tiles that won't be optimized.
+  }
 }
 
 /**
@@ -389,7 +375,9 @@ void MapEntities::notify_map_opening_transition_finished() {
 void MapEntities::notify_tileset_changed() {
 
   // Redraw optimized tiles (i.e. non animated ones).
-  redraw_non_animated_tiles();
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    non_animated_regions[layer]->notify_tileset_changed();
+  }
 
   std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
@@ -412,7 +400,7 @@ void MapEntities::add_tile(Tile* tile) {
   const Layer layer = tile->get_layer();
 
   // Add the tile to the map.
-  tiles[layer].push_back(tile);
+  non_animated_regions[layer]->add_tile(tile);
   tile->set_map(map);
 
   const TilePattern& pattern = tile->get_tile_pattern();
@@ -884,155 +872,11 @@ void MapEntities::update() {
 }
 
 /**
- * \brief Determines which rectangles are animated and draws all non-animated
- * rectangles of tiles on intermediate surfaces.
- */
-void MapEntities::build_non_animated_tiles() {
-
-  const Rectangle map_size(0, 0, map.get_width(), map.get_height());
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    Surface* non_animated_tiles_surface = non_animated_tiles_surfaces[layer];
-
-    RefCountable::unref(non_animated_tiles_surface);
-    non_animated_tiles_surface = Surface::create(
-        map_size.get_width(), map_size.get_height()
-    );
-    non_animated_tiles_surfaces[layer] = non_animated_tiles_surface;
-    RefCountable::ref(non_animated_tiles_surface);
-
-    // Set this surface as a software destination because it is built only
-    // once and never changes later.
-    non_animated_tiles_surface->set_software_destination(true);
-
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      Tile& tile = *tiles[layer][i];
-      if (!tile.is_animated()) {
-        // non-animated tile: optimize its displaying
-        tile.draw(*non_animated_tiles_surface, map_size);
-      }
-      else {
-        // animated tile: mark its region as non-optimizable
-        // (otherwise, a non-animated tile above an animated one would screw us)
-
-        int tile_x8 = tile.get_x() / 8;
-        int tile_y8 = tile.get_y() / 8;
-        int tile_width8 = tile.get_width() / 8;
-        int tile_height8 = tile.get_height() / 8;
-
-        for (int i = 0; i < tile_height8; i++) {
-          for (int j = 0; j < tile_width8; j++) {
-
-            int x8 = tile_x8 + j;
-            int y8 = tile_y8 + i;
-            if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
-              int index = y8 * map_width8 + x8;
-              is_square_animated[layer][index] = true;
-            }
-          }
-        }
-      }
-    }
-
-    // erase the rectangles that contain animated tiles
-    int index = 0;
-    for (int y = 0; y < map.get_height(); y += 8) {
-      for (int x = 0; x < map.get_width(); x += 8) {
-
-        if (is_square_animated[layer][index]) {
-          Rectangle animated_square(x, y, 8, 8);
-          non_animated_tiles_surface->clear(animated_square);
-        }
-        index++;
-      }
-    }
-
-    // build the list of animated tiles and tiles overlapping them
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      Tile& tile = *tiles[layer][i];
-      if (tile.is_animated() || overlaps_animated_tile(tile)) {
-        tiles_in_animated_regions[layer].push_back(&tile);
-      }
-    }
-  }
-}
-
-/**
- * \brief Draws all non-animated rectangles of tiles on intermediate surfaces.
- *
- * This function is similar to build_non_animated_tiles() except that it
- * assumes that animated and non-animated rectangles were already determined.
- *
- * This function is called when the tileset changes.
- */
-void MapEntities::redraw_non_animated_tiles() {
-
-  const Rectangle map_size(0, 0, map.get_width(), map.get_height());
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    non_animated_tiles_surfaces[layer]->clear();
-
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      Tile& tile = *tiles[layer][i];
-      if (!tile.is_animated()) {
-        // Non-animated tile: optimize its displaying.
-        tile.draw(*non_animated_tiles_surfaces[layer], map_size);
-      }
-    }
-
-    // Erase rectangles that contain animated tiles.
-    int index = 0;
-    for (int y = 0; y < map.get_height(); y += 8) {
-      for (int x = 0; x < map.get_width(); x += 8) {
-
-        if (is_square_animated[layer][index]) {
-          Rectangle animated_square(x, y, 8, 8);
-          non_animated_tiles_surfaces[layer]->clear(animated_square);
-        }
-        index++;
-      }
-    }
-  }
-}
-
-/**
- * \brief Returns whether a tile is overlapping an animated other tile.
- * \param tile the tile to check
- * \return true if this tile is overlapping an animated tile
- */
-bool MapEntities::overlaps_animated_tile(Tile& tile) {
-
-  const std::vector<bool>& animated_tiles_layer =
-      is_square_animated[tile.get_layer()];
-
-  int tile_x8 = tile.get_x() / 8;
-  int tile_y8 = tile.get_y() / 8;
-  int tile_width8 = tile.get_width() / 8;
-  int tile_height8 = tile.get_height() / 8;
-
-  for (int i = 0; i < tile_height8; i++) {
-    for (int j = 0; j < tile_width8; j++) {
-
-      int x8 = tile_x8 + j;
-      int y8 = tile_y8 + i;
-      if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
-
-        int index = y8 * map_width8 + x8;
-        if (animated_tiles_layer[index]) {
-          return true;
-        }
-      }
-    }
-  }
-  return false;
-}
-
-/**
  * \brief Draws the entities on the map surface.
  */
 void MapEntities::draw() {
 
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < LAYER_NB; ++layer) {
 
     // draw the animated tiles and the tiles that overlap them:
     // in other words, draw all regions containing animated tiles
@@ -1044,9 +888,7 @@ void MapEntities::draw() {
 
     // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
     // since they are already drawn)
-    non_animated_tiles_surfaces[layer]->draw_region(
-        map.get_camera_position(), map.get_visible_surface()
-    );
+    non_animated_regions[layer]->draw_on_map();
 
     // draw the first sprites
     std::list<MapEntity*>::iterator i;

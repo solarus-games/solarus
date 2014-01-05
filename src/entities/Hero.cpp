@@ -28,6 +28,7 @@
 #include "entities/Jumper.h"
 #include "entities/Sensor.h"
 #include "entities/Bomb.h"
+#include "entities/Enemy.h"
 #include "hero/HeroSprites.h"
 #include "hero/CarryingState.h"
 #include "hero/ConveyorBeltState.h"

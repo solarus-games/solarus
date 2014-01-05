@@ -19,6 +19,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Pickable.h"
 #include "entities/CarriedItem.h"
+#include "entities/Explosion.h"
 #include "movements/FallingHeight.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"

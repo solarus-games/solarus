@@ -139,11 +139,10 @@ int MapLoader::l_properties(lua_State* l) {
   entities.map_width8 = map->width8;
   entities.map_height8 = map->height8;
   entities.tiles_grid_size = map->width8 * map->height8;
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < LAYER_NB; ++layer) {
 
     Ground initial_ground = (layer == LAYER_LOW) ? GROUND_TRAVERSABLE : GROUND_EMPTY;
-    for (int i = 0; i < entities.tiles_grid_size; i++) {
-      entities.is_square_animated[layer].push_back(false);
+    for (int i = 0; i < entities.tiles_grid_size; ++i) {
       entities.tiles_ground[layer].push_back(initial_ground);
     }
   }

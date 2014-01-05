@@ -17,6 +17,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Door.h"
 #include "entities/Hero.h"
+#include "entities/Explosion.h"
 #include "entities/DynamicTile.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"

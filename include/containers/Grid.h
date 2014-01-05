@@ -174,12 +174,12 @@ void Grid<T>::get_elements(
   }
 
   std::set<T> elements_added;
-  for (int i = row1; i < row2; ++i) {
+  for (int i = row1; i <= row2; ++i) {
     if (i < 0 || i >= num_rows) {
       continue;
     }
 
-    for (int j = column1; j < column2; ++j) {
+    for (int j = column1; j <= column2; ++j) {
       if (j < 0 || j >= num_columns) {
         continue;
       }

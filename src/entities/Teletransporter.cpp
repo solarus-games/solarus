@@ -62,6 +62,7 @@ Teletransporter::Teletransporter(
   destination_map_id(destination_map_id),
   destination_name(destination_name),
   destination_side(-1),
+  transition_direction(0),
   transporting_hero(false) {
 
   if (!sprite_name.empty()) {

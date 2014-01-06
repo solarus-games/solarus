@@ -599,16 +599,25 @@ void Surface::raw_draw_region(
       if (this->internal_surface == NULL) {
         create_software_surface();
       }
+
+      std::vector<SubSurfaceNode*> subsurfaces = this->subsurfaces;
+      this->subsurfaces.clear();  // Avoid infinite recursive calls if there are cycles.
+
       std::vector<SubSurfaceNode*>::const_iterator it;
       const std::vector<SubSurfaceNode*>::const_iterator end = subsurfaces.end();
       for (it = subsurfaces.begin(); it != end; ++it) {
         SubSurfaceNode* subsurface = *it;
 
+        // TODO draw the subsurfaces of the whole tree recursively instead.
+        // The current version is not correct because it handles only one level
+        // (it ignores subsurface->subsurfaces).
+        // Plus it needs the workaround above to avoid a stack overflow.
         subsurface->src_surface->raw_draw_region(
             subsurface->src_rect,
             *this,
             subsurface->dst_rect
         );
+        RefCountable::unref(subsurface);
       }
       clear_subsurfaces();
     }

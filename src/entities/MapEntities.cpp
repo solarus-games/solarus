@@ -380,7 +380,7 @@ void MapEntities::notify_tileset_changed() {
     MapEntity* entity = *i;
     entity->notify_tileset_changed();
   }
-  hero.notify_map_opening_transition_finished();
+  hero.notify_tileset_changed();
 }
 
 /**

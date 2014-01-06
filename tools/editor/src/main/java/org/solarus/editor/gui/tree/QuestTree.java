@@ -171,7 +171,7 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
     @Override
     public void resourceElementRemoved(ResourceType resourceType, String id) {
         DefaultMutableTreeNode resourceNode = getResourceElementNode(resourceType, id);
-        resourceNode.removeFromParent();
+        getQuestTreeModel().removeNodeFromParent(resourceNode);
     }
 
     /**

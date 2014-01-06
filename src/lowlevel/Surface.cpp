@@ -700,6 +700,11 @@ void Surface::apply_pixel_filter(
   SDL_Surface* src_internal_surface = this->internal_surface;
   SDL_Surface* dst_internal_surface = dst_surface.internal_surface;
 
+  if (src_internal_surface == NULL) {
+    // This is possible if nothing was drawn on the surface yet.
+    return;
+  }
+
   Debug::check_assertion(src_internal_surface != NULL,
       "Missing software source surface for pixel filter");
   Debug::check_assertion(dst_internal_surface != NULL,

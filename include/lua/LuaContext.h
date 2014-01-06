@@ -202,7 +202,7 @@ class LuaContext {
         Sprite& sprite, const std::string& animation, int frame);
 
     // Movement events.
-    void movement_on_position_changed(Movement& movement);
+    void movement_on_position_changed(Movement& movement, const Rectangle& xy);
     void movement_on_obstacle_reached(Movement& movement);
     void movement_on_changed(Movement& movement);
     void movement_on_finished(Movement& movement);
@@ -1012,7 +1012,7 @@ class LuaContext {
     void on_animation_changed(const std::string& animation);
     void on_direction_changed(const std::string& animation, int direction);
     void on_frame_changed(const std::string& animation, int frame);
-    void on_position_changed();
+    void on_position_changed(const Rectangle& xy);
     void on_obstacle_reached();
     void on_changed();
     void on_started(Destination* destination);

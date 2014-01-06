@@ -58,6 +58,7 @@ Changes that introduce incompatibilities:
 * surface:set_transparency_color() no longer exists. Use surface:clear().
 * sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
 * on_key_pressed() and on_character_pressed() are now both called (#344).
+* movement:on_position_changed() now takes x and y parameters (#342).
 * map:create_destructible() has no hardcoded subtypes anymore (#270).
 * Destructible objects no longer show hardcoded dialogs (#270).
 * map:create_shop_item() is replaced by map:create_shop_treasure().

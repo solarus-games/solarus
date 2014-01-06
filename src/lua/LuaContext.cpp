@@ -1774,11 +1774,14 @@ void LuaContext::on_frame_changed(const std::string& animation, int frame) {
 
 /**
  * \brief Calls the on_position_changed() method of the object on top of the stack.
+ * \param xy The new coordinates.
  */
-void LuaContext::on_position_changed() {
+void LuaContext::on_position_changed(const Rectangle& xy) {
 
   if (find_method("on_position_changed")) {
-    call_function(1, 0, "on_position_changed");
+    lua_pushinteger(l, xy.get_x());
+    lua_pushinteger(l, xy.get_y());
+    call_function(3, 0, "on_position_changed");
   }
 }
 

@@ -262,7 +262,7 @@ void Movement::notify_position_changed() {
 
   LuaContext* lua_context = get_lua_context();
   if (lua_context != NULL) {
-    lua_context->movement_on_position_changed(*this);
+    lua_context->movement_on_position_changed(*this, get_xy());
   }
 
   if (entity != NULL) {

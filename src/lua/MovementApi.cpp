@@ -1748,8 +1748,10 @@ int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
  * Does nothing if the method is not defined.
  *
  * \param movement A movement.
+ * \param xy The new coordinates.
  */
-void LuaContext::movement_on_position_changed(Movement& movement) {
+void LuaContext::movement_on_position_changed(
+    Movement& movement, const Rectangle& xy) {
 
                                   // ...
   push_movement(l, movement);
@@ -1762,7 +1764,6 @@ void LuaContext::movement_on_position_changed(Movement& movement) {
                                   // ... movement movements xy/nil
   if (!lua_isnil(l, -1)) {
                                   // ... movement movements xy
-    const Rectangle& xy = movement.get_xy();
     lua_pushinteger(l, xy.get_x());
                                   // ... movement movements xy x
     lua_setfield(l, -2, "x");
@@ -1775,7 +1776,7 @@ void LuaContext::movement_on_position_changed(Movement& movement) {
   lua_pop(l, 2);
                                   // ... movement
   if (userdata_has_field(movement, "on_position_changed")) {
-    on_position_changed();
+    on_position_changed(xy);
   }
   lua_pop(l, 1);
 }

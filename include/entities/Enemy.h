@@ -152,6 +152,7 @@ class Enemy: public Detector {
     bool is_destructible_obstacle(const Destructible& destructible) const;
     bool is_block_obstacle(const Block& block) const;
     bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
     bool is_low_wall_obstacle() const;
     bool is_deep_water_obstacle() const;
     bool is_shallow_water_obstacle() const;

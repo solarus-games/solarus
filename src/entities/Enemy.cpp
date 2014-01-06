@@ -20,6 +20,7 @@
 #include "entities/CarriedItem.h"
 #include "entities/Pickable.h"
 #include "entities/Destructible.h"
+#include "entities/CrystalBlock.h"
 #include "entities/Block.h"
 #include "entities/Fire.h"
 #include "lua/LuaContext.h"
@@ -338,6 +339,23 @@ bool Enemy::is_block_obstacle(const Block& block) const {
 bool Enemy::is_teletransporter_obstacle(
     const Teletransporter& teletransporter) const {
   return false;
+}
+
+/**
+ * \brief Returns whether a raised crystal block is currently considered as an
+ * obstacle by this entity.
+ * \param raised_block A crystal block raised.
+ * \return \c true if the raised block is currently an obstacle for this entity.
+ */
+bool Enemy::is_raised_block_obstacle(
+    const CrystalBlock& raised_block) const {
+
+  // The crystal block is an obstacle unless the enemy is already on it.
+  if (this->overlaps(raised_block)) {
+    return false;
+  }
+
+  return true;
 }
 
 /**

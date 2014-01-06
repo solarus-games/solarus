@@ -167,7 +167,8 @@ void MainLoop::run() {
 
   // Main loop.
   uint32_t last_frame_date = System::get_real_time();
-  uint32_t lag = 0;  // Lose time of the simulation.
+  uint32_t lag = 0;  // Lose time of the simulation to catch up.
+  uint32_t time_dropped = 0;  // Time that won't be catched up.
 
   // The main loop basically repeats
   // check_input(), update(), draw() and sleep().
@@ -175,18 +176,28 @@ void MainLoop::run() {
   while (!is_exiting()) {
 
     // Measure the time of the last iteration.
-    uint32_t now = System::get_real_time();
+    uint32_t now = System::get_real_time() - time_dropped;
     uint32_t last_frame_duration = now - last_frame_date;
     last_frame_date = now;
     lag += last_frame_duration;
     // At this point, lag represents how much late the simulated time with
     // compared to the real time.
+ 
+    if (lag >= 200) {
+      // Huge lag: don't try to catch up.
+      // Maybe we have just made a one-time heavy operation like loading a
+      // big file, or the process was just unsuspended.
+      // Let's fake the real time instead.
+      time_dropped += lag - System::timestep;
+      lag = System::timestep;
+      last_frame_date = System::get_real_time() - time_dropped;
+    }
 
     // 1. Detect and handle input events.
     check_input();
 
     // 2. Update the world once, or several times (skipping some draws)
-    // if the system is slow.
+    // to catch up if the system is slow.
     int num_updates = 0;
     while (lag >= System::timestep
         && num_updates < 10  // To draw sometimes anyway on very slow systems.
@@ -202,7 +213,7 @@ void MainLoop::run() {
     }
 
     // 4. Sleep if we have time, to save CPU and GPU cycles.
-    last_frame_duration = System::get_real_time() - last_frame_date;
+    last_frame_duration = (System::get_real_time() - time_dropped) - last_frame_date;
     if (last_frame_duration < System::timestep) {
       System::sleep(System::timestep - last_frame_duration);
     }

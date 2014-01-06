@@ -286,7 +286,13 @@ void NonAnimatedRegions::build_cell(int cell_index) {
   // We have to make sure we don't exceed the non-animated regions.
   // Erase 8x8 squares that contain animated tiles.
   for (int y = cell_xy.get_y(); y < cell_xy.get_y() + cell_size.get_height(); y += 8) {
+    if (y >= map.get_height()) {  // The last cell might exceed the map border.
+      continue;
+    }
     for (int x = cell_xy.get_x(); x < cell_xy.get_x() + cell_size.get_width(); x += 8) {
+      if (x >= map.get_width()) {
+        continue;
+      }
 
       int square_index = (y / 8) * map.get_width8() + (x / 8);
 

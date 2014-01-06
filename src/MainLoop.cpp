@@ -80,8 +80,11 @@ MainLoop::~MainLoop() {
     game = NULL;
   }
 
-  delete lua_context;
+  // Destroying the root surface may indirectly trigger Lua operations,
+  // so the Lua context must still exist at this point.
   RefCountable::unref(root_surface);
+
+  delete lua_context;
   QuestResourceList::quit();
   System::quit();
 }

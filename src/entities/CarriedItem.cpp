@@ -101,15 +101,16 @@ CarriedItem::CarriedItem(
   set_movement(movement);
 
   // create the shadow (not visible yet)
-  this->shadow_sprite = new Sprite("entities/shadow");
-  this->shadow_sprite->set_current_animation("big");
+  shadow_sprite = new Sprite("entities/shadow");
+  RefCountable::ref(shadow_sprite);
+  shadow_sprite->set_current_animation("big");
 }
 
 /**
  * \brief Destructor.
  */
 CarriedItem::~CarriedItem() {
-  delete shadow_sprite;
+  RefCountable::unref(shadow_sprite);
 }
 
 /**
@@ -277,6 +278,21 @@ void CarriedItem::break_item_on_ground() {
 
   Ground ground = get_ground_below();
   switch (ground) {
+
+    case GROUND_EMPTY:
+      // Nothing here: fall one layer below.
+    {
+      int layer = get_layer();
+      if (layer == LAYER_LOW) {
+        // Cannot fall lower.
+        break_item();
+      }
+      else {
+        get_entities().set_entity_layer(*this, Layer(layer - 1));
+        break_item_on_ground();  // Do this again on the next layer.
+      }
+      break;
+    }
 
     case GROUND_HOLE:
       Sound::play("jump");

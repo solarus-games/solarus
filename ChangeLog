@@ -21,6 +21,7 @@ Engine changes
 * Fix RandomMovement speed that was not taken into account (#361).
 * Set the default speed of StraightMovement to 32 instead of 0 (#343).
 * The size of all map entities must be a multiple of 8 (#358).
+* Thrown entities (pots, bombs...) can now fall to a lower layer (#349).
 * Fix pixel collisions coordinates when sprites move (#372).
 * Fix a slowness when loading maps (#374).
 * Fix a crash when accessing a map not active anymore (#371).

@@ -45,6 +45,7 @@ class HeroSprites {
     void set_suspended(bool suspended);
     void rebuild_equipment();
     void notify_map_started();
+    void notify_tileset_changed();
 
     void blink();
     void stop_blinking();

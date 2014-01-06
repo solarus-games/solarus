@@ -84,6 +84,7 @@ class Hero: public MapEntity {
     void set_map(Map& map);
     void set_map(Map& map, int initial_direction);
     void notify_map_started();
+    void notify_tileset_changed();
     void place_on_destination(Map& map, const Rectangle& previous_map_location);
     void notify_map_opening_transition_finished();
 

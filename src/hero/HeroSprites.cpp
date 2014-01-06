@@ -66,6 +66,8 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
   shadow_sprite(NULL),
   ground_sprite(NULL),
   trail_sprite(NULL),
+  animation_direction_saved(0),
+  when_suspended(0),
   end_blink_date(0),
   walking(false),
   clipping_rectangle(Rectangle()),
@@ -621,9 +623,18 @@ void HeroSprites::set_suspended(bool suspended) {
  */
 void HeroSprites::notify_map_started() {
 
-  // some sprites may be tileset dependent
+  // Some sprites may be tileset dependent.
+  notify_tileset_changed();
+}
+
+/**
+ * \brief Notifies the hero's sprites that the tileset has just changed.
+ */
+void HeroSprites::notify_tileset_changed() {
+
+  // Some sprites may be tileset dependent.
   if (lifted_item != NULL) {
-    lifted_item->notify_map_started();
+    lifted_item->notify_tileset_changed();
   }
 
   if (is_ground_visible()) {

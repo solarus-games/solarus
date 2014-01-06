@@ -571,6 +571,15 @@ void Hero::notify_map_started() {
 }
 
 /**
+ * \copydoc MapEntity::notify_tileset_changed
+ */
+void Hero::notify_tileset_changed() {
+
+  MapEntity::notify_tileset_changed();
+  get_sprites().notify_tileset_changed();
+}
+
+/**
  * \brief Sets the hero's current map.
  *
  * This function is called when the map is changed.
@@ -615,11 +624,13 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       layer = LAYER_LOW;
     }
     set_map(map);
-    last_solid_ground_coords.set_xy(x, y);
     set_xy(x, y);
     map.get_entities().set_entity_layer(*this, layer);
+    last_solid_ground_coords.set_xy(x, y);
+    last_solid_ground_layer = get_layer();
 
     start_free();
+    check_position();  // To appear initially swimming, for example.
   }
   else {
     int side = map.get_destination_side();
@@ -655,7 +666,8 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         Debug::die("Invalid destination side");
       }
       last_solid_ground_coords = get_xy();
-      // note that we keep the hero's state from the previous map
+      last_solid_ground_layer = get_layer();
+      // Note that we keep the hero's state from the previous map.
     }
     else {
 
@@ -682,17 +694,19 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         map.get_entities().set_entity_layer(*this, destination->get_layer());
       }
       last_solid_ground_coords = get_xy();
+      last_solid_ground_layer = get_layer();
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
 
       Stairs* stairs = get_stairs_overlapping();
       if (stairs != NULL) {
-        // the hero arrived on the map by stairs
+        // The hero arrived on the map by stairs.
         set_state(new StairsState(*this, *stairs, Stairs::REVERSE_WAY));
       }
       else {
-        // the hero arrived on the map by a usual destination point
+        // The hero arrived on the map by a usual destination point.
         start_free();
+        check_position();  // To appear initially swimming, for example.
       }
     }
   }
@@ -735,6 +749,9 @@ void Hero::notify_map_opening_transition_finished() {
     }
   }
   check_position();
+  if (state->is_touching_ground()) {  // Don't change the state during stairs.
+    start_state_from_ground();
+  }
 }
 
 /**
@@ -742,7 +759,7 @@ void Hero::notify_map_opening_transition_finished() {
  *
  * This point is 1 pixel outside the hero's bounding box (and centered). It is used
  * to determine the actions he can do depending on the entity he is facing
- * (a bush, a pot, an NPC…)
+ * (a bush, a pot, an NPC...)
  *
  * \return the point the hero is touching
  */
@@ -1141,7 +1158,8 @@ void Hero::check_position() {
   set_facing_entity(NULL);
   check_collision_with_detectors(true);
 
-  if (is_suspended()) {
+  if (is_suspended()
+      && get_map().test_collision_with_border(get_ground_point())) {
     // When suspended, the hero may have invalid coordinates
     // (e.g. transition between maps).
     return;
@@ -1252,6 +1270,8 @@ void Hero::reset_movement() {
  */
 void Hero::notify_ground_below_changed() {
 
+  const bool suspended = get_game().is_suspended();
+
   MapEntity::notify_ground_below_changed();
 
   switch (get_ground_below()) {
@@ -1265,13 +1285,25 @@ void Hero::notify_ground_below_changed() {
   case GROUND_DEEP_WATER:
     // Deep water: plunge if the hero is not jumping.
     if (!state->can_avoid_deep_water()) {
-      start_deep_water();
+
+      if (suspended) {
+        // During a transition, it is okay to start swimming
+        // but we don't want to start plunging right now.
+        if (state->is_touching_ground()) {
+          start_deep_water();
+        }
+      }
+      else {
+        start_deep_water();
+      }
     }
     break;
 
   case GROUND_HOLE:
-    // Hole: attract the hero towards the hole.
-    if (!state->can_avoid_hole()) {
+    // Hole: fall into the hole or get attracted to it.
+    // But wait for the teletransporter opening transition to finish if any.
+    if (!suspended
+        && state->can_avoid_hole()) {
       start_hole();
     }
     break;
@@ -1285,14 +1317,16 @@ void Hero::notify_ground_below_changed() {
 
   case GROUND_LAVA:
     // Lava: plunge into lava.
-    if (!state->can_avoid_lava()) {
+    if (!suspended
+        && !state->can_avoid_lava()) {
       start_lava();
     }
     break;
 
   case GROUND_PRICKLE:
     // Prickles.
-    if (!state->can_avoid_prickle()) {
+    if (!suspended
+        && !state->can_avoid_prickle()) {
       start_prickle(500);
     }
     break;
@@ -2464,7 +2498,13 @@ void Hero::start_state_from_ground() {
   switch (get_ground_below()) {
 
   case GROUND_DEEP_WATER:
-    set_state(new PlungingState(*this));
+    if (state->is_touching_ground()
+        && get_equipment().has_ability("swim")) {
+      set_state(new SwimmingState(*this));
+    }
+    else {
+      set_state(new PlungingState(*this));
+    }
     break;
 
   case GROUND_HOLE:

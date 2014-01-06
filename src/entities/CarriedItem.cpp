@@ -73,7 +73,15 @@ CarriedItem::CarriedItem(
   is_lifting(true),
   is_throwing(false),
   is_breaking(false),
-  break_one_layer_above(false) {
+  break_one_layer_above(false),
+  destruction_sound_id(destruction_sound_id),
+  damage_on_enemies(damage_on_enemies),
+  shadow_sprite(NULL),
+  throwing_direction(0),
+  next_down_date(0),
+  item_height(0),
+  y_increment(0),
+  explosion_date(explosion_date) {
 
   // align correctly the item with the hero
   int direction = hero.get_animation_direction();
@@ -92,18 +100,9 @@ CarriedItem::CarriedItem(
   get_sprite().set_current_animation("stopped");
   set_movement(movement);
 
-  // create the breaking sound
-  this->destruction_sound_id = destruction_sound_id;
-
   // create the shadow (not visible yet)
   this->shadow_sprite = new Sprite("entities/shadow");
   this->shadow_sprite->set_current_animation("big");
-
-  // damage on enemies
-  this->damage_on_enemies = damage_on_enemies;
-
-  // explosion
-  this->explosion_date = explosion_date;
 }
 
 /**

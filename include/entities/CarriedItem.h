@@ -110,7 +110,7 @@ class CarriedItem: public MapEntity {
     bool is_lifting;            /**< indicates that the hero is lifting this item */
     bool is_throwing;           /**< indicates that the item is being thrown */
     bool is_breaking;           /**< indicates that the item is breaking */
-    bool break_one_layer_above; /**<  indicates that the item has to get broken
+    bool break_one_layer_above; /**< indicates that the item has to get broken
                                  * now one layer above its current position */
     std::string destruction_sound_id;   /**< the sound played when the item breaks */
     int damage_on_enemies;      /**< damage for an enemy that receives the item */

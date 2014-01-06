@@ -104,6 +104,7 @@ class MapEntities;
 class MapEntity;
 class Hero;
 class HeroSprites;
+class NonAnimatedRegions;
 class Tile;
 class DynamicTile;
 class Detector;

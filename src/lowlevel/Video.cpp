@@ -39,7 +39,7 @@ SDL_Texture* render_target = NULL;        /**< The render texture used when shad
 SDL_PixelFormat* pixel_format = NULL;     /**< The pixel color format to use. */
 std::string rendering_driver_name;        /**< The name of the rendering driver. */
 bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
-bool fullscreen = false;                  /**< True if fullscreen display. */
+bool fullscreen_window = false;           /**< True if the window is in fullscreen. */
 bool rendertarget_supported = false;      /**< True if rendering on texture is supported. */
 bool shaders_supported = false;           /**< True if shaded modes and rendering on texture are supported. */
 bool shaders_enabled = false;             /**< True if shaded modes support is enabled. */
@@ -56,6 +56,10 @@ Rectangle min_quest_size;                 /**< Minimum value of quest_size (depe
 Rectangle max_quest_size;                 /**< Maximum value of quest_size (depends on the quest). */
 Rectangle quest_size;                     /**< Size of the quest surface to render. */
 Rectangle wanted_quest_size;              /**< Size wanted by the user. */
+
+Rectangle window_size;                    /**< Size of the window. The quest size is stretched and
+                                           * letterboxed to fit. In fullscreen, remembers the size
+                                           * to use when returning to windowed mode. */
 
 /**
  * \brief Creates the window but does not show it.
@@ -116,7 +120,9 @@ void create_window(const CommandLine& args) {
 
   Debug::check_assertion(main_renderer != NULL,
       std::string("Cannot create the renderer: ") + SDL_GetError());
-  SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND); // Allow blending mode for direct drawing primitives.
+
+  // Allow blending mode for direct drawing primitives.
+  SDL_SetRenderDrawBlendMode(main_renderer, SDL_BLENDMODE_BLEND);
 
   // Get the first renderer format which supports alpha channel and is not a unique format.
   SDL_RendererInfo renderer_info;
@@ -362,7 +368,7 @@ bool Video::is_mode_supported(const VideoMode& mode) {
     return false;
   }
 
-  if ((*it)->get_window_size().is_flat()) {
+  if ((*it)->get_initial_window_size().is_flat()) {
     Debug::die(std::string(
         "Uninitialized size for video mode ") + mode.get_name());
   }
@@ -375,7 +381,7 @@ bool Video::is_mode_supported(const VideoMode& mode) {
  * \return true if the current video mode is in fullscreen.
  */
 bool Video::is_fullscreen() {
-  return fullscreen;
+  return fullscreen_window;
 }
 
 /**
@@ -385,25 +391,8 @@ bool Video::is_fullscreen() {
  */
 void Video::set_fullscreen(bool fullscreen) {
 
-  if (fullscreen != is_fullscreen()) {
-    switch_fullscreen();
-  }
-}
-
-/**
- * \brief Switches from windowed to fullscreen or from fullscreen to windowed,
- * keeping an equivalent resolution.
- */
-void Video::switch_fullscreen() {
-
-  Debug::check_assertion(video_mode != NULL,
-      "No video mode selected");
-
-  fullscreen = !fullscreen;
-
-  if (is_mode_supported(*video_mode)) {
-    set_video_mode(*video_mode);
-  }
+  Debug::check_assertion(video_mode != NULL, "No video mode");
+  set_video_mode(*video_mode, fullscreen);
 }
 
 /**
@@ -413,11 +402,15 @@ void Video::set_default_video_mode() {
 
   Debug::check_assertion(default_video_mode != NULL,
       "Default video mode was not initialized");
-  set_video_mode(*default_video_mode);
+
+  set_video_mode(*default_video_mode, false);
 }
 
 /**
  * \brief Sets the next video mode.
+ *
+ * The fullscreen flag is preserved.
+ * The window size is reset to the default size of the new video mode.
  */
 void Video::switch_video_mode() {
 
@@ -426,7 +419,8 @@ void Video::switch_video_mode() {
   }
 
   std::vector<VideoMode*>::const_iterator it = std::find(
-      all_video_modes.begin(), all_video_modes.end(), video_mode);
+      all_video_modes.begin(), all_video_modes.end(), video_mode
+  );
   VideoMode* mode = NULL;
   do {
     if (it == all_video_modes.end()) {
@@ -437,15 +431,33 @@ void Video::switch_video_mode() {
     }
     mode = *it;
   } while (mode == NULL || !is_mode_supported(*mode));
+
   set_video_mode(*mode);
 }
 
 /**
- * \brief Sets the video mode.
+ * \brief Sets the video mode, keeping the fullscreen setting unchanged.
  * \param mode The video mode to set.
  * \return true in case of success, false if this mode is not supported.
  */
 bool Video::set_video_mode(const VideoMode& mode) {
+
+  return set_video_mode(mode, is_fullscreen());
+}
+
+/**
+ * \brief Sets the video mode and the fullscreen setting.
+ *
+ * If the mode changes, the window size is reset to its default value.
+ *
+ * \param mode The video mode to set.
+ * \param fullscreen \c true to set the window to fullscreen.
+ * \return true in case of success, false if this mode is not supported.
+ */
+bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
+
+  bool mode_changed = video_mode == NULL
+      || mode.get_name() != video_mode->get_name();
 
   if (!is_mode_supported(mode)) {
     return false;
@@ -453,9 +465,10 @@ bool Video::set_video_mode(const VideoMode& mode) {
 
   int show_cursor;
   Uint32 fullscreen_flag;
-  if (is_fullscreen()) {
+  if (fullscreen) {
     fullscreen_flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
     show_cursor = SDL_DISABLE;
+    window_size = get_window_size();  // Store the window size before fullscreen.
   }
   else {
     fullscreen_flag = 0;
@@ -478,29 +491,34 @@ bool Video::set_video_mode(const VideoMode& mode) {
       );
       scaled_surface = Surface::create(render_size);
       RefCountable::ref(scaled_surface);
-      scaled_surface->set_software_destination(true);
       scaled_surface->fill_with_color(Color::get_black());  // To initialize the internal surface.
     }
 
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
-    SDL_SetWindowSize(
-        main_window,
-        mode.get_window_size().get_width(),
-        mode.get_window_size().get_height());
+    if (!fullscreen && is_fullscreen()) {
+      SDL_SetWindowSize(
+          main_window,
+          window_size.get_width(),
+          window_size.get_height()
+      );
+      SDL_SetWindowPosition(main_window,
+          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+    }
     SDL_RenderSetLogicalSize(
         main_renderer,
         render_size.get_width(),
         render_size.get_height());
     SDL_ShowCursor(show_cursor);
-
-    if (!fullscreen_flag) {
-      SDL_SetWindowPosition(main_window,
-          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-    }
   }
+
   video_mode = &mode;
+  fullscreen_window = fullscreen;
+
+  if (mode_changed) {
+    reset_window_size();
+  }
 
   return true;
 }
@@ -714,9 +732,78 @@ void Video::set_quest_size_range(
     quest_size = wanted_quest_size;
   }
 
-  // We know the quest size: finish the initialization, create the window.
+  // We know the quest size: finish the initialization.
   initialize_video_modes();
 }
 
+/**
+ * \brief Returns the size of the window.
+ * \return The size of the window in pixels. The x and y value of the
+ * returned rectangle are set to zero.
+ */
+Rectangle Video::get_window_size() {
+
+  Debug::check_assertion(main_window != NULL, "No window");
+  Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
+
+  if (is_fullscreen()) {
+    // Returns the memorized window size.
+    return window_size;
+  }
+
+  // Returns the current window size.
+  int width = 0;
+  int height = 0;
+  SDL_GetWindowSize(main_window, &width, &height);
+
+  return Rectangle(0, 0, width, height);
 }
 
+/**
+ * \brief Sets the size of the window.
+ * \param window_size The size of the window in pixels.
+ * The x and y values of the rectangle are ignored.
+ */
+void Video::set_window_size(const Rectangle& size) {
+
+  Debug::check_assertion(main_window != NULL, "No window");
+  Debug::check_assertion(!quest_size.is_flat(), "Quest size is not initialized");
+  Debug::check_assertion(
+      size.get_width() > 0 && size.get_height() > 0,
+      "Wrong window size"
+  );
+
+  if (is_fullscreen()) {
+    // Store the size to remember it during fullscreen.
+    window_size = size;
+  }
+  else {
+    int width = 0;
+    int height = 0;
+    SDL_GetWindowSize(main_window, &width, &height);
+    if (width != size.get_width() || height != size.get_height()) {
+      SDL_SetWindowSize(
+          main_window,
+          size.get_width(),
+          size.get_height()
+      );
+      SDL_SetWindowPosition(
+          main_window,
+          SDL_WINDOWPOS_CENTERED,
+          SDL_WINDOWPOS_CENTERED
+      );
+    }
+  }
+}
+
+/**
+ * \brief Restores the default size of the window for the current video mode.
+ */
+void Video::reset_window_size() {
+
+  Debug::check_assertion(video_mode != NULL, "No video mode");
+
+  set_window_size(video_mode->get_initial_window_size());
+}
+
+}

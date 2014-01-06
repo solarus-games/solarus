@@ -139,14 +139,11 @@ int MapLoader::l_properties(lua_State* l) {
   entities.map_width8 = map->width8;
   entities.map_height8 = map->height8;
   entities.tiles_grid_size = map->width8 * map->height8;
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < LAYER_NB; ++layer) {
 
-    entities.animated_tiles[layer] = new bool[entities.tiles_grid_size];
-    entities.tiles_ground[layer] = new Ground[entities.tiles_grid_size];
     Ground initial_ground = (layer == LAYER_LOW) ? GROUND_TRAVERSABLE : GROUND_EMPTY;
-    for (int i = 0; i < entities.tiles_grid_size; i++) {
-      entities.animated_tiles[layer][i] = false;
-      entities.tiles_ground[layer][i] = initial_ground;
+    for (int i = 0; i < entities.tiles_grid_size; ++i) {
+      entities.tiles_ground[layer].push_back(initial_ground);
     }
   }
   entities.boomerang = NULL;

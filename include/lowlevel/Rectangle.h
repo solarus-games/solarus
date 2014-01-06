@@ -133,12 +133,17 @@ inline int Rectangle::get_y() const {
 }
 
 /**
- * \brief Returns the center point of this rectangle
- * \return the center point (represented as a zero-sized rectangle)
+ * \brief Returns the center point of this rectangle.
+ * \return The center point, represented as a rectangle of size 1x1.
  */
 inline Rectangle Rectangle::get_center() const {
 
-  return Rectangle(get_x() + get_width() / 2, get_y() + get_height() / 2);
+  return Rectangle(
+      get_x() + get_width() / 2,
+      get_y() + get_height() / 2,
+      1,
+      1
+  );
 }
 
 /**

@@ -69,7 +69,7 @@ Changes that do not introduce incompatibilities:
 * New Lua type and methods for custom map entities.
 * New API of destructible objects, fully customizable now (#270).
 * Colors now take an optional alpha value as fourth component.
-* sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
+* New functions sol.video.get/set/reset_window_size().
 * New method surface:clear().
 * New function sol.main.get_metatable(), allows to implement shared behaviors.
 * New method menu:is_started().

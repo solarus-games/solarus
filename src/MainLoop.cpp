@@ -57,11 +57,12 @@ MainLoop::MainLoop(const CommandLine& args):
   root_surface = Surface::create(
       Video::get_quest_size()
   );
+  root_surface->set_software_destination(false);  // Accelerate this surface.
   RefCountable::ref(root_surface);
 
   // Run the Lua world.
-  // Do this after the creation of the window because Lua might change the
-  // video mode initially. This will avoid blinking.
+  // Do this after the creation of the window, but before showing the window,
+  // because Lua might change the video mode initially.
   lua_context = new LuaContext(*this);
   lua_context->initialize();
 
@@ -80,8 +81,11 @@ MainLoop::~MainLoop() {
     game = NULL;
   }
 
-  delete lua_context;
+  // Destroying the root surface may indirectly trigger Lua operations,
+  // so the Lua context must still exist at this point.
   RefCountable::unref(root_surface);
+
+  delete lua_context;
   QuestResourceList::quit();
   System::quit();
 }

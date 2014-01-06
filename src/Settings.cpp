@@ -52,6 +52,9 @@ bool Settings::load(const std::string& file_name) {
   FileTools::data_file_close_buffer(buffer);
 
   if (load_result != 0 || lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::error(std::string("Cannot read settings file '")
+        + file_name + "': " + lua_tostring(l, -1)
+    );
     lua_pop(l, 1);
     lua_close(l);
     return false;
@@ -69,6 +72,14 @@ bool Settings::load(const std::string& file_name) {
         Video::set_video_mode(*video_mode);
       }
     }
+  }
+  lua_pop(l, 1);
+
+  // Fullscreen.
+  lua_getglobal(l, "fullscreen");
+  if (lua_isboolean(l, 1)) {
+    bool fullscreen = lua_toboolean(l, 1);
+    Video::set_fullscreen(fullscreen);
   }
   lua_pop(l, 1);
 
@@ -104,6 +115,7 @@ bool Settings::load(const std::string& file_name) {
     bool joypad_enabled = lua_toboolean(l, 1);
     InputEvent::set_joypad_enabled(joypad_enabled);
   }
+  lua_pop(l, 1);
 
   lua_close(l);
 
@@ -124,6 +136,7 @@ bool Settings::save(const std::string& file_name) {
   std::ostringstream oss;
   const VideoMode& video_mode = Video::get_video_mode();
   oss << "video_mode = \"" << video_mode.get_name() << "\"\n";
+  oss << "fullscreen = " << (Video::is_fullscreen() ? "true" : "false") << "\n";
   oss << "sound_volume = " << Sound::get_volume() << "\n";
   oss << "music_volume = " << Music::get_volume() << "\n";
   if (!Language::get_language().empty()) {

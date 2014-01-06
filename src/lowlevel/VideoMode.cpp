@@ -26,18 +26,18 @@ namespace solarus {
  * \c software_filter and \c hardware_filter cannot be both set.
  *
  * \param name Lua name of the video mode.
- * \param window_size Final size of the window when selecting this video mode.
+ * \param initial_window_size Default size of the window when selecting this video mode.
  * \param software_filter Software filter to apply to the quest image or NULL.
  * \param hardware_filter Scaling shader to apply to the quest image or NULL.
  */
 VideoMode::VideoMode(
     const std::string& name,
-    const Rectangle& window_size,
+    const Rectangle& initial_window_size,
     PixelFilter* software_filter,
     Shader* hardware_filter
 ):
    name(name),
-   window_size(window_size),
+   initial_window_size(initial_window_size),
    software_filter(software_filter),
    hardware_filter(hardware_filter) {
 
@@ -67,11 +67,11 @@ const std::string& VideoMode::get_name() const {
 }
 
 /**
- * \brief Returns the size of the window when selecting this mode.
- * \return Size of the window when selecting this video mode.
+ * \brief Returns the default size of the window when selecting this mode.
+ * \return Default size of the window when selecting this video mode.
  */
-const Rectangle& VideoMode::get_window_size() const {
-  return window_size;
+const Rectangle& VideoMode::get_initial_window_size() const {
+  return initial_window_size;
 }
 
 /**

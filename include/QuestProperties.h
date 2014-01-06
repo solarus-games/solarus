@@ -30,8 +30,10 @@ namespace solarus {
  * and applies them.
  *
  * These properties are general information about the quest. They include:
+ * - the Solarus compatibility version,
  * - the writing directory for savegames of this quest,
  * - the window title bar.
+ * - the quest size.
  *
  * The main reason why these quest properties are stored as a data file
  * (even if they are also available through the Solarus scripting API)

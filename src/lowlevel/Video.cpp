@@ -497,18 +497,22 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     // Initialize the window.
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
-    SDL_SetWindowSize(main_window, window_size.get_width(), window_size.get_height());
+    if (!fullscreen && is_fullscreen()) {
+      SDL_SetWindowSize(
+          main_window,
+          window_size.get_width(),
+          window_size.get_height()
+      );
+      SDL_SetWindowPosition(main_window,
+          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+    }
     SDL_RenderSetLogicalSize(
         main_renderer,
         render_size.get_width(),
         render_size.get_height());
     SDL_ShowCursor(show_cursor);
-
-    if (!fullscreen) {
-      SDL_SetWindowPosition(main_window,
-          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-    }
   }
+
   video_mode = &mode;
   fullscreen_window = fullscreen;
 
@@ -774,16 +778,21 @@ void Video::set_window_size(const Rectangle& size) {
     window_size = size;
   }
   else {
-    SDL_SetWindowSize(
-        main_window,
-        size.get_width(),
-        size.get_height()
-    );
-    SDL_SetWindowPosition(
-        main_window,
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED
-    );
+    int width = 0;
+    int height = 0;
+    SDL_GetWindowSize(main_window, &width, &height);
+    if (width != size.get_width() || height != size.get_height()) {
+      SDL_SetWindowSize(
+          main_window,
+          size.get_width(),
+          size.get_height()
+      );
+      SDL_SetWindowPosition(
+          main_window,
+          SDL_WINDOWPOS_CENTERED,
+          SDL_WINDOWPOS_CENTERED
+      );
+    }
   }
 }
 

@@ -22,10 +22,6 @@
 #include "RefCountable.h"
 #include "Map.h"
 
-/* TODO still to be fixed:
- * - Changing the tileset moves the hero.
- */
-
 namespace solarus {
 
 /**

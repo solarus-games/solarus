@@ -107,7 +107,7 @@ class Surface::SubSurfaceNode: public RefCountable {
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  software_destination(false),
+  software_destination(true),
   internal_surface(NULL),
   internal_texture(NULL),
   internal_color(NULL),
@@ -131,7 +131,7 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
-  software_destination(false),
+  software_destination(true),
   internal_surface(internal_surface),
   internal_texture(NULL),
   internal_color(NULL),
@@ -199,7 +199,6 @@ Surface* Surface::create(const std::string& file_name,
   }
 
   Surface* surface = new Surface(sdl_surface);
-  surface->set_software_destination(true);
   return surface;
 }
 
@@ -365,11 +364,12 @@ void Surface::set_opacity(uint8_t opacity) {
 
 /**
  * When this surface is used as the destination of a drawing operation,
- * return whether the drawing operation is performed in RAM or by the GPU
- * at rendering time.
+ * return whether the drawing operation is performed in RAM or by the GPU.
  *
- * By default, this setting is false and all drawing operations are
- * performed by the GPU when 2D acceleration is active.
+ * By default, this setting is true and all drawing operations are performed
+ * in RAM.
+ * Otherwise, when 2D acceleration is active, drawing operations are delayed
+ * and performed by the GPU at rendering time.
  */
 bool Surface::is_software_destination() const {
   return software_destination;
@@ -377,15 +377,25 @@ bool Surface::is_software_destination() const {
 
 /**
  * When this surface is used as the destination of a drawing operation,
- * return whether the drawing operation is performed in RAM or by the GPU
- * at rendering time.
+ * sets whether the drawing operation is performed immediately in RAM or later
+ * by the GPU.
  *
- * By default, this setting is false and all drawing operations are
- * performed by the GPU when 2D acceleration is active.
+ * By default, this setting is true and all drawing operations are performed
+ * in RAM.
+ * Otherwise, when 2D acceleration is active, drawing operations are delayed
+ * and performed by the GPU at rendering time.
  *
- * You should set this to \c true if your surface is built from lots of source
+ * You should leave this to \c true if your surface is built from lots of source
  * surfaces that don't change often.
- * If in doubt, leave it to \c false.
+ *
+ * Hardware destinations are intended to be used for internal optimizations of
+ * the engine. They do not support all operations that software ones do.
+ * In particular, a hardware surface can never be drawn on a software surface.
+ * Also, when you draw on a hardware surface after it was rendered, previous
+ * drawings on this surface get automatically cleared.
+ *
+ * Use hardware surfaces only if you know what you are doing.
+ * If in doubt, leave this to \c true.
  */
 void Surface::set_software_destination(bool software_destination) {
 
@@ -504,6 +514,7 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
 
   // Create a surface with the requested size and color and draw it.
   Surface* colored_surface = Surface::create(where);
+  colored_surface->set_software_destination(false);
   colored_surface->internal_color = new Color(color);
   RefCountable::ref(colored_surface);
   colored_surface->raw_draw_region(colored_surface->get_size(), *this, where);

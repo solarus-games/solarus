@@ -491,7 +491,6 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
       );
       scaled_surface = Surface::create(render_size);
       RefCountable::ref(scaled_surface);
-      scaled_surface->set_software_destination(true);
       scaled_surface->fill_with_color(Color::get_black());  // To initialize the internal surface.
     }
 

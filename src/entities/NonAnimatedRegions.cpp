@@ -93,14 +93,12 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
   }
 
   // Create the surface where all non-animated tiles will be drawn.
+  // Let this surface as a software destination because it is built only
+  // once and never changes later.
   non_animated_tiles_surface = Surface::create(
       map_size.get_width(), map_size.get_height()
   );
   RefCountable::ref(non_animated_tiles_surface);
-
-  // Set this surface as a software destination because it is built only
-  // once and never changes later.
-  non_animated_tiles_surface->set_software_destination(true);
 
   for (unsigned i = 0; i < tiles.size(); ++i) {
     Tile& tile = *tiles[i];

@@ -463,6 +463,7 @@ void Game::update_transitions() {
           previous_map_surface = Surface::create(
               Video::get_quest_size()
           );
+          previous_map_surface->set_software_destination(false);
           RefCountable::ref(previous_map_surface);
           current_map->draw();
           current_map->get_visible_surface().draw(*previous_map_surface);

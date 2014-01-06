@@ -97,6 +97,7 @@ void TransitionScrolling::start() {
   // create a surface with the two maps
   both_maps_surface = Surface::create(width, height);
   RefCountable::ref(both_maps_surface);
+  both_maps_surface->set_software_destination(false);
 
   // set the blitting rectangles
 

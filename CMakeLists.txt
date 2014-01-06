@@ -49,6 +49,7 @@ file(
   src/lua/*.cpp
   src/menus/*.cpp
   src/movements/*.cpp
+  src/containers/*.cpp
   include/*.h
   include/entities/*.h
   include/hero/*.h
@@ -57,6 +58,7 @@ file(
   include/lua/*.h
   include/menus/*.h
   include/movements/*.h
+  include/containers/*.h
   include/third_party/snes_spc/*.h
   include/third_party/hqx/*.h
 )

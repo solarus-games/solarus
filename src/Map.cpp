@@ -184,6 +184,14 @@ const Rectangle& Map::get_location() const {
 }
 
 /**
+ * \brief Returns the size of this map.
+ * \return The size of this map in pixels. The x and y values are 0.
+ */
+Rectangle Map::get_size() const {
+  return Rectangle(0, 0, location.get_width(), location.get_height());
+}
+
+/**
  * \brief Returns the map width in pixels.
  * \return the map width
  */

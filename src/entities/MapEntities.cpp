@@ -51,10 +51,6 @@ MapEntities::MapEntities(Game& game, Map& map):
   default_destination(NULL),
   boomerang(NULL) {
 
-  for (int layer = 0; layer < LAYER_NB; ++layer) {
-    non_animated_regions[layer] = new NonAnimatedRegions(map, Layer(layer));
-  }
-
   Layer hero_layer = hero.get_layer();
   this->obstacle_entities[hero_layer].push_back(&hero);
   this->entities_drawn_y_order[hero_layer].push_back(&hero);
@@ -384,7 +380,7 @@ void MapEntities::notify_tileset_changed() {
     MapEntity* entity = *i;
     entity->notify_tileset_changed();
   }
-  hero.notify_map_opening_transition_finished();
+  hero.notify_tileset_changed();
 }
 
 /**

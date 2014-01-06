@@ -329,10 +329,13 @@ void Npc::notify_position_changed() {
 
   if (subtype == USUAL_NPC) {
 
-    if (get_sprite().get_current_animation() == "walking") {
-      int direction4 = get_movement()->get_displayed_direction4();
-      get_sprite().set_current_direction(direction4);
+    Sprite& sprite = get_sprite();
+    if (sprite.get_current_animation() != "walking") {
+      sprite.set_current_animation("walking");
     }
+
+    int direction4 = get_movement()->get_displayed_direction4();
+    get_sprite().set_current_direction(direction4);
 
     if (get_hero().get_facing_entity() == this &&
         get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
@@ -362,7 +365,7 @@ void Npc::notify_movement_finished() {
 bool Npc::can_be_lifted() const {
 
   // there is currently no way to specify from the data file of the map
-  // that an interactive entity can be lifted (nor its weight, damage, sound, etc) so this is hardcoded
+  // that an NPC can be lifted (nor its weight, damage, sound, etc) so this is hardcoded
   // TODO: specify the possibility to lift and the weight from Lua
   return has_sprite() && get_sprite().get_animation_set_id() == "entities/sign";
 }

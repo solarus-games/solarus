@@ -896,12 +896,15 @@ void MapEntity::notify_facing_entity_changed(Detector* facing_entity) {
  */
 const Rectangle MapEntity::get_ground_point() const {
 
-  return get_xy();
+  return Rectangle(get_x(), get_y(), 1, 1);
 }
 
 /**
  * \brief Returns the coordinates of the center point of the entity's rectangle.
- * \return the coordinates of the center point of the entity
+ *
+ * The size of the rectangle returned is 1x1.
+ *
+ * \return The coordinates of the center point of the entity.
  */
 const Rectangle MapEntity::get_center_point() const {
   return bounding_box.get_center();

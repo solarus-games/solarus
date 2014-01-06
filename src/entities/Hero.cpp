@@ -756,7 +756,7 @@ const Rectangle Hero::get_facing_point() const {
  *
  * This point is 1 pixel outside the hero's bounding box (and centered). It is used
  * to determine the actions he can do depending on the entity he is facing
- * (a bush, a pot, an NPC…)
+ * (a bush, a pot, an NPC...)
  *
  * \param direction a direction (0 to 3)
  * \return coordinates of the point the hero would be touching if he was looking towards that direction

@@ -114,8 +114,8 @@ void TransitionFade::set_color(const Color& color) {
  * \brief Sets no foreground color for this fade transition.
  *
  * The transition effect will then change the opacity of the destination
- * surface. This is only possible for destination surfaces, so make sure
- * you know what you are doing.
+ * surface. This is only possible for software destination surfaces, so make
+ * sure you know what you are doing.
  */
 void TransitionFade::clear_color() {
 

@@ -277,11 +277,14 @@ void Map::load(Game& game) {
       Video::get_quest_size()
   );
   RefCountable::ref(visible_surface);
+  visible_surface->set_software_destination(false);
+
   background_surface = Surface::create(
       Video::get_quest_size()
   );
   RefCountable::ref(background_surface);
-  background_surface->set_software_destination(true);
+  background_surface->set_software_destination(false);
+
   entities = new MapEntities(game, *this);
 
   // read the map file
@@ -608,7 +611,7 @@ void Map::build_foreground_surface() {
 
   foreground_surface = Surface::create(visible_surface->get_size());
   RefCountable::ref(foreground_surface);
-  foreground_surface->set_software_destination(true);  // Built only once.
+  // Keep this surface as software destination because it is built only once.
 
   if (map_width < screen_width) {
     int bar_width = (screen_width - map_width) / 2;

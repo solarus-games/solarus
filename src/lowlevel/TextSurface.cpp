@@ -569,7 +569,6 @@ void TextSurface::rebuild_bitmap() {
   int char_height = bitmap_size.get_height() / 16;
 
   surface = Surface::create(char_width * num_chars, char_height);
-  surface->set_software_destination(true);  // Necessary as long as Lua surfaces are software destinations.
   RefCountable::ref(surface);
 
   // Traverse the string again to draw the characters.

@@ -804,7 +804,6 @@ Surface& Sprite::get_intermediate_surface() const {
 
   if (intermediate_surface == NULL) {
     intermediate_surface = Surface::create(get_max_size());
-    intermediate_surface->set_software_destination(true);
     RefCountable::ref(intermediate_surface);
   }
   return *intermediate_surface;

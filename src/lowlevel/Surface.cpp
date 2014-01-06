@@ -107,7 +107,7 @@ class Surface::SubSurfaceNode: public RefCountable {
  */
 Surface::Surface(int width, int height):
   Drawable(),
-  software_destination(false),
+  software_destination(true),
   internal_surface(NULL),
   internal_texture(NULL),
   internal_color(NULL),
@@ -131,7 +131,7 @@ Surface::Surface(int width, int height):
  */
 Surface::Surface(SDL_Surface* internal_surface):
   Drawable(),
-  software_destination(false),
+  software_destination(true),
   internal_surface(internal_surface),
   internal_texture(NULL),
   internal_color(NULL),
@@ -199,7 +199,6 @@ Surface* Surface::create(const std::string& file_name,
   }
 
   Surface* surface = new Surface(sdl_surface);
-  surface->set_software_destination(true);
   return surface;
 }
 
@@ -365,11 +364,12 @@ void Surface::set_opacity(uint8_t opacity) {
 
 /**
  * When this surface is used as the destination of a drawing operation,
- * return whether the drawing operation is performed in RAM or by the GPU
- * at rendering time.
+ * return whether the drawing operation is performed in RAM or by the GPU.
  *
- * By default, this setting is false and all drawing operations are
- * performed by the GPU when 2D acceleration is active.
+ * By default, this setting is true and all drawing operations are performed
+ * in RAM.
+ * Otherwise, when 2D acceleration is active, drawing operations are delayed
+ * and performed by the GPU at rendering time.
  */
 bool Surface::is_software_destination() const {
   return software_destination;
@@ -377,15 +377,25 @@ bool Surface::is_software_destination() const {
 
 /**
  * When this surface is used as the destination of a drawing operation,
- * return whether the drawing operation is performed in RAM or by the GPU
- * at rendering time.
+ * sets whether the drawing operation is performed immediately in RAM or later
+ * by the GPU.
  *
- * By default, this setting is false and all drawing operations are
- * performed by the GPU when 2D acceleration is active.
+ * By default, this setting is true and all drawing operations are performed
+ * in RAM.
+ * Otherwise, when 2D acceleration is active, drawing operations are delayed
+ * and performed by the GPU at rendering time.
  *
- * You should set this to \c true if your surface is built from lots of source
+ * You should leave this to \c true if your surface is built from lots of source
  * surfaces that don't change often.
- * If in doubt, leave it to \c false.
+ *
+ * Hardware destinations are intended to be used for internal optimizations of
+ * the engine. They do not support all operations that software ones do.
+ * In particular, a hardware surface can never be drawn on a software surface.
+ * Also, when you draw on a hardware surface after it was rendered, previous
+ * drawings on this surface get automatically cleared.
+ *
+ * Use hardware surfaces only if you know what you are doing.
+ * If in doubt, leave this to \c true.
  */
 void Surface::set_software_destination(bool software_destination) {
 
@@ -504,6 +514,7 @@ void Surface::fill_with_color(const Color& color, const Rectangle& where) {
 
   // Create a surface with the requested size and color and draw it.
   Surface* colored_surface = Surface::create(where);
+  colored_surface->set_software_destination(false);
   colored_surface->internal_color = new Color(color);
   RefCountable::ref(colored_surface);
   colored_surface->raw_draw_region(colored_surface->get_size(), *this, where);
@@ -588,16 +599,25 @@ void Surface::raw_draw_region(
       if (this->internal_surface == NULL) {
         create_software_surface();
       }
+
+      std::vector<SubSurfaceNode*> subsurfaces = this->subsurfaces;
+      this->subsurfaces.clear();  // Avoid infinite recursive calls if there are cycles.
+
       std::vector<SubSurfaceNode*>::const_iterator it;
       const std::vector<SubSurfaceNode*>::const_iterator end = subsurfaces.end();
       for (it = subsurfaces.begin(); it != end; ++it) {
         SubSurfaceNode* subsurface = *it;
 
+        // TODO draw the subsurfaces of the whole tree recursively instead.
+        // The current version is not correct because it handles only one level
+        // (it ignores subsurface->subsurfaces).
+        // Plus it needs the workaround above to avoid a stack overflow.
         subsurface->src_surface->raw_draw_region(
             subsurface->src_rect,
             *this,
             subsurface->dst_rect
         );
+        RefCountable::unref(subsurface);
       }
       clear_subsurfaces();
     }
@@ -679,6 +699,11 @@ void Surface::apply_pixel_filter(
 
   SDL_Surface* src_internal_surface = this->internal_surface;
   SDL_Surface* dst_internal_surface = dst_surface.internal_surface;
+
+  if (src_internal_surface == NULL) {
+    // This is possible if nothing was drawn on the surface yet.
+    return;
+  }
 
   Debug::check_assertion(src_internal_surface != NULL,
       "Missing software source surface for pixel filter");

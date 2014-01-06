@@ -23,7 +23,6 @@
 #include "Map.h"
 
 /* TODO still to be fixed:
- * - Need to erase animated tiles regions.
  * - Changing the tileset moves the hero.
  */
 
@@ -37,7 +36,7 @@ namespace solarus {
 NonAnimatedRegions::NonAnimatedRegions(Map& map, Layer layer):
   map(map),
   layer(layer),
-  optimized_tiles(map.get_size(), Rectangle(0, 0, 512, 256)) {
+  non_animated_tiles(map.get_size(), Rectangle(0, 0, 512, 256)) {
 
 }
 
@@ -85,6 +84,7 @@ void NonAnimatedRegions::add_tile(Tile* tile) {
  * rectangles of tiles only once.
  * \param[out] rejected_tiles The list of tiles that are in animated regions.
  * They include all animated tiles plus the static tiles overlapping them.
+ * You will have to redraw these tiles at each frame.
  */
 void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
 
@@ -101,7 +101,7 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
   }
 
   // Create the surfaces where all non-animated tiles will be drawn.
-  optimized_tiles_surfaces.resize(optimized_tiles.get_num_cells());
+  optimized_tiles_surfaces.resize(non_animated_tiles.get_num_cells());
 
   // Mark animated 8x8 squares of the map.
   for (unsigned i = 0; i < tiles.size(); ++i) {
@@ -129,35 +129,22 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
     }
   }
 
-  // TODO
-  /*
-  // Erase rectangles that contain animated tiles.
-  int index = 0;
-  for (int y = 0; y < map.get_height(); y += 8) {
-    for (int x = 0; x < map.get_width(); x += 8) {
-
-      if (are_squares_animated[index]) {
-        Rectangle animated_square(x, y, 8, 8);
-        optimized_tiles_surface->clear(animated_square);
-      }
-      index++;
-    }
-  }
-  */
-
   // Build the list of animated tiles and tiles overlapping them.
   for (unsigned i = 0; i < tiles.size(); ++i) {
     Tile& tile = *tiles[i];
-    if (tile.is_animated() || overlaps_animated_tile(tile)) {
-      // Sorry, this tile cannot be optimized.
-      rejected_tiles.push_back(&tile);
+    if (!tile.is_animated()) {
+      non_animated_tiles.add(&tile);
+      if (overlaps_animated_tile(tile)) {
+        rejected_tiles.push_back(&tile);
+      }
     }
     else {
-      optimized_tiles.add(&tile);
+      rejected_tiles.push_back(&tile);
     }
   }
 
-  // No need to keep all tiles at this point. Just keep the optimized ones.
+  // No need to keep all tiles at this point.
+  // Just keep the non-animated ones to draw them lazily.
   tiles.clear();
 }
 
@@ -166,7 +153,7 @@ void NonAnimatedRegions::build(std::vector<Tile*>& rejected_tiles) {
  */
 void NonAnimatedRegions::notify_tileset_changed() {
 
-  for (unsigned i = 0; i < optimized_tiles.get_num_cells(); ++i) {
+  for (unsigned i = 0; i < non_animated_tiles.get_num_cells(); ++i) {
     RefCountable::unref(optimized_tiles_surfaces[i]);
     optimized_tiles_surfaces[i] = NULL;
   }
@@ -212,9 +199,9 @@ bool NonAnimatedRegions::overlaps_animated_tile(Tile& tile) const {
 void NonAnimatedRegions::draw_on_map() {
 
   // Check all grid cells that overlap the camera.
-  const int num_rows = optimized_tiles.get_num_rows();
-  const int num_columns = optimized_tiles.get_num_columns();
-  const Rectangle& cell_size(optimized_tiles.get_cell_size());
+  const int num_rows = non_animated_tiles.get_num_rows();
+  const int num_columns = non_animated_tiles.get_num_columns();
+  const Rectangle& cell_size(non_animated_tiles.get_cell_size());
   const Rectangle& camera_position = map.get_camera_position();
 
   const int row1 = camera_position.get_y() / cell_size.get_height();
@@ -267,34 +254,56 @@ void NonAnimatedRegions::draw_on_map() {
 void NonAnimatedRegions::build_cell(int cell_index) {
 
   Debug::check_assertion(
-      cell_index >= 0 && (size_t) cell_index < optimized_tiles.get_num_cells(),
+      cell_index >= 0 && (size_t) cell_index < non_animated_tiles.get_num_cells(),
       "Wrong cell index"
   );
   Debug::check_assertion(optimized_tiles_surfaces[cell_index] == NULL,
       "This cell is already built"
   );
 
-  const int row = cell_index / optimized_tiles.get_num_columns();
-  const int column = cell_index % optimized_tiles.get_num_columns();
-  const Rectangle& cell_size = optimized_tiles.get_cell_size();
+  const int row = cell_index / non_animated_tiles.get_num_columns();
+  const int column = cell_index % non_animated_tiles.get_num_columns();
 
+  // Position of this cell on the map.
+  const Rectangle& cell_size = non_animated_tiles.get_cell_size();
   const Rectangle cell_xy(
       column * cell_size.get_width(),
       row * cell_size.get_height()
   );
 
-  optimized_tiles_surfaces[cell_index] = Surface::create(cell_size);
-  RefCountable::ref(optimized_tiles_surfaces[cell_index]);
-  // Set this surface as a software destination because it is built only
-  // once (here) and almost never changes later.
-  optimized_tiles_surfaces[cell_index]->set_software_destination(true);
+  Surface* cell_surface = Surface::create(cell_size);
+  RefCountable::ref(cell_surface);
+  optimized_tiles_surfaces[cell_index] = cell_surface;
+  // Let this surface as a software destination because it is built only
+  // once (here) and never changes later.
 
-  const std::vector<Tile*> tiles_in_cell =
-      optimized_tiles.get_elements(cell_index);
+  const std::vector<Tile*>& tiles_in_cell =
+      non_animated_tiles.get_elements(cell_index);
   std::vector<Tile*>::const_iterator it;
   for (it = tiles_in_cell.begin(); it != tiles_in_cell.end(); ++it) {
     Tile& tile = *(*it);
-    tile.draw(*optimized_tiles_surfaces[cell_index], cell_xy);
+    tile.draw(*cell_surface, cell_xy);
+  }
+
+  // Remember that non-animated tiles are drawn after animated ones.
+  // We may have drawn too much.
+  // We have to make sure we don't exceed the non-animated regions.
+  // Erase 8x8 squares that contain animated tiles.
+  for (int y = cell_xy.get_y(); y < cell_xy.get_y() + cell_size.get_height(); y += 8) {
+    for (int x = cell_xy.get_x(); x < cell_xy.get_x() + cell_size.get_width(); x += 8) {
+
+      int square_index = (y / 8) * map.get_width8() + (x / 8);
+
+      if (are_squares_animated[square_index]) {
+        Rectangle animated_square(
+            x - cell_xy.get_x(),
+            y - cell_xy.get_y(),
+            8,
+            8
+        );
+        cell_surface->clear(animated_square);
+      }
+    }
   }
 }
 

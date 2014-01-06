@@ -58,11 +58,11 @@ class NonAnimatedRegions {
     std::vector<bool> are_squares_animated; /**< Whether each 8x8 square of the map has animated tiles. */
 
     // Handle the lazy drawing.
-    Grid<Tile*> optimized_tiles;            /**< Tiles in non-animated regions. Stored in a grid so that
+    Grid<Tile*> non_animated_tiles;         /**< All non-animated tiles. Stored in a grid so that
                                              * we can quickly find the ones to draw lazily later when the
                                              * camera moves. */
     std::vector<Surface*>
-        optimized_tiles_surfaces;           /**< All optimized tiles are drawn here once for all
+        optimized_tiles_surfaces;           /**< All non-animated tiles are drawn here once for all
                                              * for performance. Each cell of the grid has a surface
                                              * or NULL before it is drawn. */
 

@@ -48,7 +48,7 @@ class Grid {
     void clear();
     void add(const T& element);
 
-    const std::vector<T>& get_elements(int cell_index) const;
+    const std::vector<T>& get_elements(size_t cell_index) const;
     void get_elements(const Rectangle& where,
         std::vector<T>& elements) const;
 
@@ -142,7 +142,7 @@ const size_t Grid<T>::get_num_cells() const {
  * \return The elements in this cell.
  */
 template <typename T>
-const std::vector<T>& Grid<T>::get_elements(int cell_index) const {
+const std::vector<T>& Grid<T>::get_elements(size_t cell_index) const {
 
   Debug::check_assertion(cell_index >= 0 && cell_index < get_num_cells(),
       "Invalid index");
@@ -163,10 +163,10 @@ void Grid<T>::get_elements(
     const Rectangle& where,
     std::vector<T>& elements) const {
 
-  const int row1 = where.get_y() / num_rows;
-  const int row2 = where.get_y() + where.get_height() / num_rows;
-  const int column1 = where.get_x() / num_columns;
-  const int column2 = where.get_x() + where.get_width() / num_columns;
+  const size_t row1 = where.get_y() / num_rows;
+  const size_t row2 = where.get_y() + where.get_height() / num_rows;
+  const size_t column1 = where.get_x() / num_columns;
+  const size_t column2 = where.get_x() + where.get_width() / num_columns;
 
   if (row1 > row2 || column1 > column2) {
     // No cell.
@@ -174,12 +174,12 @@ void Grid<T>::get_elements(
   }
 
   std::set<T> elements_added;
-  for (int i = row1; i <= row2; ++i) {
+  for (size_t i = row1; i <= row2; ++i) {
     if (i < 0 || i >= num_rows) {
       continue;
     }
 
-    for (int j = column1; j <= column2; ++j) {
+    for (size_t j = column1; j <= column2; ++j) {
       if (j < 0 || j >= num_columns) {
         continue;
       }
@@ -219,22 +219,22 @@ void Grid<T>::add(const T& element) {
 
   const Rectangle& position = element->get_bounding_box();
 
-  const int row1 = position.get_y() / cell_size.get_height();
-  const int row2 = (position.get_y() + position.get_height()) / cell_size.get_height();
-  const int column1 = position.get_x() / cell_size.get_width();
-  const int column2 = (position.get_x() + position.get_width()) / cell_size.get_width();
+  const size_t row1 = position.get_y() / cell_size.get_height();
+  const size_t row2 = (position.get_y() + position.get_height()) / cell_size.get_height();
+  const size_t column1 = position.get_x() / cell_size.get_width();
+  const size_t column2 = (position.get_x() + position.get_width()) / cell_size.get_width();
 
   if (row1 > row2 || column1 > column2) {
     // No cell.
     return;
   }
 
-  for (int i = row1; i <= row2; ++i) {
+  for (size_t i = row1; i <= row2; ++i) {
     if (i < 0 || i >= num_rows) {
       continue;
     }
 
-    for (int j = column1; j <= column2; ++j) {
+    for (size_t j = column1; j <= column2; ++j) {
       if (j < 0 || j >= num_columns) {
         continue;
       }

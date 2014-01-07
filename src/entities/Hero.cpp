@@ -673,7 +673,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
       // Normal case: the location is specified by a destination point object.
 
-      MapEntity* destination = map.get_destination();
+      Destination* destination = map.get_destination();
 
       if (destination == NULL) {
         // This is embarrassing: there is no valid destination that we can use.
@@ -697,6 +697,10 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       last_solid_ground_layer = get_layer();
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
+
+      if (destination != NULL) {
+        get_lua_context().destination_on_activated(*destination);
+      }
 
       Stairs* stairs = get_stairs_overlapping();
       if (stairs != NULL) {

@@ -17,6 +17,8 @@
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 #include "entities/Hero.h"
+#include "entities/Destination.h"
+#include "entities/Teletransporter.h"
 #include "entities/Npc.h"
 #include "entities/Chest.h"
 #include "entities/Block.h"
@@ -3388,6 +3390,42 @@ void LuaContext::hero_on_state_changed(
 
   push_hero(l, hero);
   on_state_changed(state_name);
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_activated() method of a Lua destination.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param destination A destination.
+ */
+void LuaContext::destination_on_activated(Destination& destination) {
+
+  if (!userdata_has_field(destination, "on_activated")) {
+    return;
+  }
+
+  push_entity(l, destination);
+  on_activated();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_activated() method of a Lua teletransporter.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param teletransporter A teletransporter.
+ */
+void LuaContext::teletransporter_on_activated(Teletransporter& teletransporter) {
+
+  if (!userdata_has_field(teletransporter, "on_activated")) {
+    return;
+  }
+
+  push_entity(l, teletransporter);
+  on_activated();
   lua_pop(l, 1);
 }
 

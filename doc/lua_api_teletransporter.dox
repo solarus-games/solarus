@@ -52,7 +52,12 @@ See \ref lua_api_entity_events to know these events.
 
 \section lua_api_teletransporter_events Events of the type teletransporter
 
-None.
+The following events are specific to teletransporters.
+
+\subsection lua_api_teletransporter_on_activated teletransporter:on_activated()
+
+Called when the user takes this teletransporter, just before the map closing
+transition starts.
 
 */
 

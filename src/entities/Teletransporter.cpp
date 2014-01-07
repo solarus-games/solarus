@@ -16,6 +16,7 @@
  */
 #include "entities/Teletransporter.h"
 #include "entities/Hero.h"
+#include "lua/LuaContext.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "Map.h"
@@ -202,6 +203,8 @@ void Teletransporter::transport_hero(Hero& hero) {
     return;
   }
   transporting_hero = true;
+
+  get_lua_context().teletransporter_on_activated(*this);
 
   if (!sound_id.empty()) {
     Sound::play(sound_id);

@@ -88,6 +88,8 @@ Changes that do not introduce incompatibilities:
 * New methods to simulate game commands, by mrunderhill (#382).
 * New event sensor:on_left() (#339).
 * New event block:on_moving() (#334).
+* New event teletransporter:on_activated() (#312).
+* New event destination:on_activated() (#312).
 * Fix random_movement:get_max_radius() that was not working.
 
 Solarus Quest Editor changes

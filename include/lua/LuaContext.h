@@ -266,7 +266,8 @@ class LuaContext {
     void entity_on_movement_changed(MapEntity& entity, Movement& movement);
     void entity_on_movement_finished(MapEntity& entity);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
-    // TODO add destination_on_activated
+    void destination_on_activated(Destination& destination);
+    void teletransporter_on_activated(Teletransporter& teletransporter);
     void npc_on_interaction(Npc& npc);
     bool npc_on_interaction_item(Npc& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(Npc& npc);

@@ -49,6 +49,24 @@ void LuaContext::register_main_module() {
   };
 
   register_functions(main_module_name, functions);
+
+  // Store sol.main in the registry to access it safely
+  // from C++ (and also slightly faster).
+  // After that, the engine will never rely on the existence of a global
+  // value called "sol". The user can therefore do whatever he wants, including
+  // renaming the sol global table to something else in the unlikely case where
+  // another Lua library called "sol" is required, or if he simply does not
+  // like the name "sol".
+
+                                  // ...
+  lua_getglobal(l, "sol");
+                                  // ... sol
+  lua_getfield(l, -1, "main");
+                                  // ... sol main
+  lua_setfield(l, LUA_REGISTRYINDEX, main_module_name.c_str());
+                                  // ... sol
+  lua_pop(l, 1);
+                                  // ...
 }
 
 /**
@@ -57,13 +75,7 @@ void LuaContext::register_main_module() {
  */
 void LuaContext::push_main(lua_State* l) {
 
-                                  // ...
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_getfield(l, -1, "main");
-                                  // ... sol main
-  lua_remove(l, -2);
-                                  // ... main
+  lua_getfield(l, LUA_REGISTRYINDEX, main_module_name.c_str());
 }
 
 /**

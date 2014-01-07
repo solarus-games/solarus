@@ -103,38 +103,6 @@ const std::set<std::string>& get_entity_type_names() {
 
 }
 
-// TODO can we remove all this?
-const std::string LuaContext::entity_hero_module_name = "sol.hero";
-const std::string LuaContext::entity_tile_module_name = "sol.tile";
-const std::string LuaContext::entity_dynamic_tile_module_name = "sol.dynamic_tile";
-const std::string LuaContext::entity_teletransporter_module_name = "sol.teletransporter";
-const std::string LuaContext::entity_destination_module_name = "sol.destination";
-const std::string LuaContext::entity_pickable_module_name = "sol.pickable";
-const std::string LuaContext::entity_destructible_module_name = "sol.destructible";
-const std::string LuaContext::entity_carried_object_module_name = "sol.carried_object";
-const std::string LuaContext::entity_chest_module_name = "sol.chest";
-const std::string LuaContext::entity_shop_treasure_module_name = "sol.shop_treasure";
-const std::string LuaContext::entity_enemy_module_name = "sol.enemy";
-const std::string LuaContext::entity_npc_module_name = "sol.npc";
-const std::string LuaContext::entity_block_module_name = "sol.block";
-const std::string LuaContext::entity_jumper_module_name = "sol.jumper";
-const std::string LuaContext::entity_switch_module_name = "sol.switch";
-const std::string LuaContext::entity_sensor_module_name = "sol.sensor";
-const std::string LuaContext::entity_separator_module_name = "sol.separator";
-const std::string LuaContext::entity_wall_module_name = "sol.wall";
-const std::string LuaContext::entity_crystal_module_name = "sol.crystal";
-const std::string LuaContext::entity_crystal_block_module_name = "sol.crystal_block";
-const std::string LuaContext::entity_conveyor_belt_module_name = "sol.conveyor_belt";
-const std::string LuaContext::entity_door_module_name = "sol.door";
-const std::string LuaContext::entity_stairs_module_name = "sol.stairs";
-const std::string LuaContext::entity_bomb_module_name = "sol.bomb";
-const std::string LuaContext::entity_explosion_module_name = "sol.explosion";
-const std::string LuaContext::entity_fire_module_name = "sol.fire";
-const std::string LuaContext::entity_arrow_module_name = "sol.arrow";
-const std::string LuaContext::entity_hookshot_module_name = "sol.hookshot";
-const std::string LuaContext::entity_boomerang_module_name = "sol.boomerang";
-const std::string LuaContext::entity_custom_module_name = "sol.custom_entity";
-
 // TODO move this to Enemy
 const std::string LuaContext::enemy_attack_names[] = {
   "sword",
@@ -231,7 +199,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_hero_module_name,
+      entity_type_names[ENTITY_HERO],
       NULL,
       hero_methods,
       metamethods
@@ -253,7 +221,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_teletransporter_module_name,
+      entity_type_names[ENTITY_TELETRANSPORTER],
       NULL,
       teletransporter_methods,
       metamethods
@@ -267,7 +235,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_npc_module_name,
+      entity_type_names[ENTITY_NPC],
       NULL,
       npc_methods,
       metamethods
@@ -282,7 +250,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_chest_module_name,
+      entity_type_names[ENTITY_CHEST],
       NULL,
       chest_methods,
       metamethods
@@ -302,7 +270,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_block_module_name,
+      entity_type_names[ENTITY_BLOCK],
       NULL,
       block_methods,
       metamethods
@@ -318,7 +286,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_switch_module_name,
+      entity_type_names[ENTITY_SWITCH],
       NULL,
       switch_methods,
       metamethods
@@ -335,7 +303,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_door_module_name,
+      entity_type_names[ENTITY_DOOR],
       NULL,
       door_methods,
       metamethods
@@ -348,7 +316,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_shop_treasure_module_name,
+      entity_type_names[ENTITY_SHOP_TREASURE],
       NULL,
       shop_treasure_methods,
       metamethods
@@ -367,7 +335,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_pickable_module_name,
+      entity_type_names[ENTITY_PICKABLE],
       NULL,
       pickable_methods,
       metamethods
@@ -395,7 +363,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_destructible_module_name,
+      entity_type_names[ENTITY_DESTRUCTIBLE],
       NULL,
       destructible_methods,
       metamethods
@@ -451,7 +419,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_enemy_module_name,
+      entity_type_names[ENTITY_ENEMY],
       NULL,
       enemy_methods,
       metamethods
@@ -465,7 +433,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_custom_module_name,
+      entity_type_names[ENTITY_CUSTOM],
       NULL,
       custom_entity_methods,
       metamethods
@@ -478,24 +446,24 @@ void LuaContext::register_entity_module() {
   };
 
   // Also register all other types of entities that have no specific methods.
-  register_type(entity_tile_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_dynamic_tile_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_destination_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_carried_object_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_jumper_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_sensor_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_separator_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_wall_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_crystal_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_crystal_block_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_conveyor_belt_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_stairs_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_bomb_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_explosion_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_fire_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_arrow_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_hookshot_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_boomerang_module_name, NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_TILE], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_DYNAMIC_TILE], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_DESTINATION], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_CARRIED_ITEM], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_JUMPER], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_SENSOR], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_SEPARATOR], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_WALL], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_CRYSTAL], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_CRYSTAL_BLOCK], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_CONVEYOR_BELT], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_STAIRS], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_BOMB], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_EXPLOSION], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_FIRE], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_ARROW], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_HOOKSHOT], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_BOOMERANG], NULL, entity_common_methods, metamethods);
 }
 
 /**
@@ -1181,7 +1149,7 @@ int LuaContext::entity_api_is_in_same_region(lua_State* l) {
  * \return true if the value at this index is a hero.
  */
 bool LuaContext::is_hero(lua_State* l, int index) {
-  return is_userdata(l, index, entity_hero_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_HERO]);
 }
 
 /**
@@ -1192,7 +1160,7 @@ bool LuaContext::is_hero(lua_State* l, int index) {
  * \return The hero.
  */
 Hero& LuaContext::check_hero(lua_State* l, int index) {
-  return static_cast<Hero&>(check_userdata(l, index, entity_hero_module_name));
+  return static_cast<Hero&>(check_userdata(l, index, entity_type_names[ENTITY_HERO]));
 }
 
 /**
@@ -1646,7 +1614,7 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
  * \return \c true if the value at this index is an teletransporter.
  */
 bool LuaContext::is_teletransporter(lua_State* l, int index) {
-  return is_userdata(l, index, entity_teletransporter_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_TELETRANSPORTER]);
 }
 
 /**
@@ -1658,7 +1626,7 @@ bool LuaContext::is_teletransporter(lua_State* l, int index) {
  */
 Teletransporter& LuaContext::check_teletransporter(lua_State* l, int index) {
   return static_cast<Teletransporter&>(check_userdata(
-      l, index, entity_teletransporter_module_name)
+      l, index, entity_type_names[ENTITY_TELETRANSPORTER])
   );
 }
 
@@ -1808,7 +1776,7 @@ int LuaContext::teletransporter_api_set_destination_name(lua_State* l) {
  * \return true if the value at this index is an NPC.
  */
 bool LuaContext::is_npc(lua_State* l, int index) {
-  return is_userdata(l, index, entity_npc_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_NPC]);
 }
 
 /**
@@ -1819,7 +1787,7 @@ bool LuaContext::is_npc(lua_State* l, int index) {
  * \return The NPC.
  */
 Npc& LuaContext::check_npc(lua_State* l, int index) {
-  return static_cast<Npc&>(check_userdata(l, index, entity_npc_module_name));
+  return static_cast<Npc&>(check_userdata(l, index, entity_type_names[ENTITY_NPC]));
 }
 
 /**
@@ -1838,7 +1806,7 @@ void LuaContext::push_npc(lua_State* l, Npc& npc) {
  * \return true if the value at this index is a chest.
  */
 bool LuaContext::is_chest(lua_State* l, int index) {
-  return is_userdata(l, index, entity_chest_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_CHEST]);
 }
 
 /**
@@ -1849,7 +1817,7 @@ bool LuaContext::is_chest(lua_State* l, int index) {
  * \return The chest.
  */
 Chest& LuaContext::check_chest(lua_State* l, int index) {
-  return static_cast<Chest&>(check_userdata(l, index, entity_chest_module_name));
+  return static_cast<Chest&>(check_userdata(l, index, entity_type_names[ENTITY_CHEST]));
 }
 
 /**
@@ -1899,7 +1867,7 @@ int LuaContext::chest_api_set_open(lua_State* l) {
  * \return true if the value at this index is a block.
  */
 bool LuaContext::is_block(lua_State* l, int index) {
-  return is_userdata(l, index, entity_block_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_BLOCK]);
 }
 
 /**
@@ -1910,7 +1878,7 @@ bool LuaContext::is_block(lua_State* l, int index) {
  * \return The block.
  */
 Block& LuaContext::check_block(lua_State* l, int index) {
-  return static_cast<Block&>(check_userdata(l, index, entity_block_module_name));
+  return static_cast<Block&>(check_userdata(l, index, entity_type_names[ENTITY_BLOCK]));
 }
 
 /**
@@ -2056,7 +2024,7 @@ int LuaContext::block_api_set_maximum_moves(lua_State* l) {
  * \return true if the value at this index is a switch.
  */
 bool LuaContext::is_switch(lua_State* l, int index) {
-  return is_userdata(l, index, entity_switch_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_SWITCH]);
 }
 
 /**
@@ -2067,7 +2035,7 @@ bool LuaContext::is_switch(lua_State* l, int index) {
  * \return The switch.
  */
 Switch& LuaContext::check_switch(lua_State* l, int index) {
-  return static_cast<Switch&>(check_userdata(l, index, entity_switch_module_name));
+  return static_cast<Switch&>(check_userdata(l, index, entity_type_names[ENTITY_SWITCH]));
 }
 
 /**
@@ -2135,7 +2103,7 @@ int LuaContext::switch_api_set_locked(lua_State* l) {
  * \return true if the value at this index is a door.
  */
 bool LuaContext::is_door(lua_State* l, int index) {
-  return is_userdata(l, index, entity_door_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_DOOR]);
 }
 
 /**
@@ -2146,7 +2114,7 @@ bool LuaContext::is_door(lua_State* l, int index) {
  * \return The door.
  */
 Door& LuaContext::check_door(lua_State* l, int index) {
-  return static_cast<Door&>(check_userdata(l, index, entity_door_module_name));
+  return static_cast<Door&>(check_userdata(l, index, entity_type_names[ENTITY_DOOR]));
 }
 
 /**
@@ -2217,7 +2185,7 @@ int LuaContext::door_api_is_closing(lua_State* l) {
  * \return true if the value at this index is a shop treasure.
  */
 bool LuaContext::is_shop_treasure(lua_State* l, int index) {
-  return is_userdata(l, index, entity_shop_treasure_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_SHOP_TREASURE]);
 }
 
 /**
@@ -2229,7 +2197,7 @@ bool LuaContext::is_shop_treasure(lua_State* l, int index) {
  */
 ShopTreasure& LuaContext::check_shop_treasure(lua_State* l, int index) {
   return static_cast<ShopTreasure&>(
-      check_userdata(l, index, entity_shop_treasure_module_name));
+      check_userdata(l, index, entity_type_names[ENTITY_SHOP_TREASURE]));
 }
 
 /**
@@ -2360,7 +2328,7 @@ int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
  * \return true if the value at this index is a pickable.
  */
 bool LuaContext::is_pickable(lua_State* l, int index) {
-  return is_userdata(l, index, entity_pickable_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_PICKABLE]);
 }
 
 /**
@@ -2371,7 +2339,7 @@ bool LuaContext::is_pickable(lua_State* l, int index) {
  * \return The pickable.
  */
 Pickable& LuaContext::check_pickable(lua_State* l, int index) {
-  return static_cast<Pickable&>(check_userdata(l, index, entity_pickable_module_name));
+  return static_cast<Pickable&>(check_userdata(l, index, entity_type_names[ENTITY_PICKABLE]));
 }
 
 /**
@@ -2439,7 +2407,7 @@ int LuaContext::pickable_api_get_treasure(lua_State* l) {
  * \return \c true if the value at this index is a destructible object.
  */
 bool LuaContext::is_destructible(lua_State* l, int index) {
-  return is_userdata(l, index, entity_destructible_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_DESTRUCTIBLE]);
 }
 
 /**
@@ -2450,7 +2418,7 @@ bool LuaContext::is_destructible(lua_State* l, int index) {
  * \return The destructible object.
  */
 Destructible& LuaContext::check_destructible(lua_State* l, int index) {
-  return static_cast<Destructible&>(check_userdata(l, index, entity_destructible_module_name));
+  return static_cast<Destructible&>(check_userdata(l, index, entity_type_names[ENTITY_DESTRUCTIBLE]));
 }
 
 /**
@@ -2733,7 +2701,7 @@ int LuaContext::destructible_api_get_modified_ground(lua_State* l) {
  * \return true if the value at this index is an enemy.
  */
 bool LuaContext::is_enemy(lua_State* l, int index) {
-  return is_userdata(l, index, entity_enemy_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_ENEMY]);
 }
 
 /**
@@ -2744,7 +2712,7 @@ bool LuaContext::is_enemy(lua_State* l, int index) {
  * \return The enemy.
  */
 Enemy& LuaContext::check_enemy(lua_State* l, int index) {
-  return static_cast<Enemy&>(check_userdata(l, index, entity_enemy_module_name));
+  return static_cast<Enemy&>(check_userdata(l, index, entity_type_names[ENTITY_ENEMY]));
 }
 
 /**
@@ -2754,7 +2722,7 @@ Enemy& LuaContext::check_enemy(lua_State* l, int index) {
  * \return true if the value at this index is a custom entity.
  */
 bool LuaContext::is_custom_entity(lua_State* l, int index) {
-  return is_userdata(l, index, entity_custom_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_CUSTOM]);
 }
 
 /**
@@ -2765,7 +2733,7 @@ bool LuaContext::is_custom_entity(lua_State* l, int index) {
  * \return The custom entity.
  */
 CustomEntity& LuaContext::check_custom_entity(lua_State* l, int index) {
-  return static_cast<CustomEntity&>(check_userdata(l, index, entity_custom_module_name));
+  return static_cast<CustomEntity&>(check_userdata(l, index, entity_type_names[ENTITY_CUSTOM]));
 }
 
 /**

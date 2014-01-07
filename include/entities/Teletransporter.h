@@ -51,11 +51,20 @@ class Teletransporter: public Detector {
     EntityType get_type() const;
     void set_map(Map& map);
 
+    const std::string& get_sound_id() const;
+    void set_sound_id(const std::string& sound_id);
+    Transition::Style get_transition_style() const;
+    void set_transition_style(Transition::Style transition_style);
+    const std::string& get_destination_map_id() const;
+    void set_destination_map_id(const std::string& map_id);
+    const std::string& get_destination_name() const;
+    void set_destination_name(const std::string& destination_name);
+    bool is_on_map_side() const;
+
     bool is_obstacle_for(const MapEntity& other) const;
     bool test_collision_custom(MapEntity& entity);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void transport_hero(Hero& hero);
-    bool is_on_map_side() const;
 
   private:
 

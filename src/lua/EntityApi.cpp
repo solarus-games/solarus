@@ -162,14 +162,6 @@ const std::string LuaContext::enemy_obstacle_behavior_names[] = {
   ""  // Sentinel.
 };
 
-// TODO move this to Transition
-const std::string LuaContext::transition_style_names[] = {
-  "immediate",
-  "fade",
-  "scrolling",
-  ""  // Sentinel.
-};
-
 /**
  * \brief Initializes the map entity features provided to Lua.
  */
@@ -242,6 +234,28 @@ void LuaContext::register_entity_module() {
       entity_hero_module_name,
       NULL,
       hero_methods,
+      metamethods
+  );
+
+  // Teletransporter.
+  static const luaL_Reg teletransporter_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "get_sprite", entity_api_get_sprite },
+      { "get_sound", teletransporter_api_get_sound },
+      { "set_sound", teletransporter_api_set_sound },
+      { "get_transition", teletransporter_api_get_transition },
+      { "set_transition", teletransporter_api_set_transition },
+      { "get_destination_map", teletransporter_api_get_destination_map },
+      { "set_destination_map", teletransporter_api_set_destination_map},
+      { "get_destination_name", teletransporter_api_get_destination_name },
+      { "set_destination_name", teletransporter_api_set_destination_name },
+      { NULL, NULL }
+  };
+
+  register_type(
+      entity_teletransporter_module_name,
+      NULL,
+      teletransporter_methods,
       metamethods
   );
 
@@ -463,10 +477,9 @@ void LuaContext::register_entity_module() {
       { NULL, NULL }
   };
 
-  // Register all other types of entity, without specific methods.
+  // Also register all other types of entities that have no specific methods.
   register_type(entity_tile_module_name, NULL, entity_common_methods, metamethods);
   register_type(entity_dynamic_tile_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_teletransporter_module_name, NULL, entity_common_methods, metamethods);
   register_type(entity_destination_module_name, NULL, entity_common_methods, metamethods);
   register_type(entity_carried_object_module_name, NULL, entity_common_methods, metamethods);
   register_type(entity_jumper_module_name, NULL, entity_common_methods, metamethods);
@@ -1202,7 +1215,7 @@ int LuaContext::hero_api_teleport(lua_State* l) {
   const std::string& map_id = luaL_checkstring(l, 2);
   const std::string& destination_name = luaL_optstring(l, 3, "");
   Transition::Style transition_style = LuaTools::opt_enum<Transition::Style>(
-      l, 4, transition_style_names, Transition::FADE);
+      l, 4, Transition::style_names, Transition::FADE);
 
   if (!QuestResourceList::exists(QuestResourceList::RESOURCE_MAP, map_id)) {
     LuaTools::arg_error(l, 2, std::string("No such map: '") + map_id + "'");
@@ -1622,6 +1635,168 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
     // If not, stop the treasure state.
     hero.start_free();
   }
+
+  return 0;
+}
+
+/**
+ * \brief Returns whether a value is a userdata of type teletransporter.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return \c true if the value at this index is an teletransporter.
+ */
+bool LuaContext::is_teletransporter(lua_State* l, int index) {
+  return is_userdata(l, index, entity_teletransporter_module_name);
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * teletransporter and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The teletransporter.
+ */
+Teletransporter& LuaContext::check_teletransporter(lua_State* l, int index) {
+  return static_cast<Teletransporter&>(check_userdata(
+      l, index, entity_teletransporter_module_name)
+  );
+}
+
+/**
+ * \brief Pushes an teletransporter userdata onto the stack.
+ * \param l A Lua context.
+ * \param teletransporter A teletransporter.
+ */
+void LuaContext::push_teletransporter(lua_State* l, Teletransporter& teletransporter) {
+  push_userdata(l, teletransporter);
+}
+
+/**
+ * \brief Implementation of teletransporter:get_sound().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_get_sound(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+
+  const std::string& sound_id = teletransporter.get_sound_id();
+
+  if (sound_id.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, sound_id);
+  }
+  return 1;
+}
+
+/**
+ * \brief Implementation of teletransporter:set_sound().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_set_sound(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+
+  std::string sound_id;
+  if (lua_gettop(l) > 1) {
+    sound_id = luaL_checkstring(l, 2);
+  }
+
+  teletransporter.set_sound_id(sound_id);
+  return 0;
+}
+
+/**
+ * \brief Implementation of teletransporter:get_transition().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_get_transition(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+
+  Transition::Style transition_style = teletransporter.get_transition_style();
+
+  push_string(l, Transition::style_names[transition_style]);
+  return 1;
+}
+
+/**
+ * \brief Implementation of teletransporter:set_transition().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_set_transition(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+  Transition::Style transition_style = LuaTools::check_enum<Transition::Style>(
+      l, 2, Transition::style_names
+  );
+
+  teletransporter.set_transition_style(transition_style);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of teletransporter:get_destination_map().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_get_destination_map(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+
+  const std::string& map_id = teletransporter.get_destination_map_id();
+
+  push_string(l, map_id);
+  return 1;
+}
+
+/**
+ * \brief Implementation of teletransporter:set_destination_map().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_set_destination_map(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+  const std::string& map_id = luaL_checkstring(l, 2);
+
+  teletransporter.set_destination_map_id(map_id);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of teletransporter:get_destination_name().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_get_destination_name(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+
+  const std::string& destination_name = teletransporter.get_destination_name();
+
+  push_string(l, destination_name);
+  return 1;
+}
+
+/**
+ * \brief Implementation of teletransporter:set_destination_name().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_set_destination_name(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+  const std::string& destination_name = luaL_checkstring(l, 2);
+
+  teletransporter.set_destination_name(destination_name);
 
   return 0;
 }
@@ -3424,7 +3599,7 @@ void LuaContext::teletransporter_on_activated(Teletransporter& teletransporter) 
     return;
   }
 
-  push_entity(l, teletransporter);
+  push_teletransporter(l, teletransporter);
   on_activated();
   lua_pop(l, 1);
 }

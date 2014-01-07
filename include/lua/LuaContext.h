@@ -735,6 +735,14 @@ class LuaContext {
       hero_api_start_hookshot,
       hero_api_start_running,
       hero_api_start_hurt,
+      teletransporter_api_get_sound,
+      teletransporter_api_set_sound,
+      teletransporter_api_get_transition,
+      teletransporter_api_set_transition,
+      teletransporter_api_get_destination_map,
+      teletransporter_api_set_destination_map,
+      teletransporter_api_get_destination_name,
+      teletransporter_api_set_destination_name,
       chest_api_is_open,
       chest_api_set_open,
       block_api_reset,
@@ -909,6 +917,7 @@ class LuaContext {
     static void push_entity(lua_State* l, MapEntity& entity);
     static void push_hero(lua_State* l, Hero& hero);
     static void push_npc(lua_State* l, Npc& npc);
+    static void push_teletransporter(lua_State* l, Teletransporter& teletransporter);
     static void push_chest(lua_State* l, Chest& chest);
     static void push_block(lua_State* l, Block& block);
     static void push_switch(lua_State* l, Switch& sw);
@@ -964,6 +973,8 @@ class LuaContext {
     static MapEntity& check_entity(lua_State* l, int index);
     static bool is_hero(lua_State* l, int index);
     static Hero& check_hero(lua_State* l, int index);
+    static bool is_teletransporter(lua_State* l, int index);
+    static Teletransporter& check_teletransporter(lua_State* l, int index);
     static bool is_npc(lua_State* l, int index);
     static Npc& check_npc(lua_State* l, int index);
     static bool is_chest(lua_State* l, int index);
@@ -1117,7 +1128,6 @@ class LuaContext {
     static const std::string enemy_attack_names[];
     static const std::string enemy_hurt_style_names[];
     static const std::string enemy_obstacle_behavior_names[];
-    static const std::string transition_style_names[];
 };
 
 }

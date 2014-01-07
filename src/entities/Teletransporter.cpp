@@ -89,27 +89,22 @@ void Teletransporter::set_map(Map& map) {
 
   MapEntity::set_map(map);
 
-  if (destination_name == "_side") {
+  int x = get_x();
+  int y = get_y();
 
-    int x = get_x();
-    int y = get_y();
-
-    if (get_width() == 16 && x == -16) {
-      destination_side = 0;
-    }
-    else if (get_width() == 16 && x == map.get_width()) {
-      destination_side = 2;
-    }
-    else if (get_height() == 16 && y == -16) {
-      destination_side = 3;
-    }
-    else if (get_height() == 16 && y == map.get_height()) {
-      destination_side = 1;
-    }
-    else {
-      Debug::die(std::string("Bad position of teletransporter '")
-          + get_name() + "'");
-    }
+  // Compute the destination side in case the destination name is "_side"
+  // or becomes it later.
+  if (get_width() == 16 && x == -16) {
+    destination_side = 0;
+  }
+  else if (get_width() == 16 && x == map.get_width()) {
+    destination_side = 2;
+  }
+  else if (get_height() == 16 && y == -16) {
+    destination_side = 3;
+  }
+  else if (get_height() == 16 && y == map.get_height()) {
+    destination_side = 1;
   }
 
   transition_direction = (destination_side + 2) % 4;
@@ -176,7 +171,7 @@ const std::string& Teletransporter::get_destination_map_id() const {
  * \param map_id The id of the destination map.
  */
 void Teletransporter::set_destination_map_id(const std::string& map_id) {
-  this->destination_map_id = destination_map_id;
+  this->destination_map_id = map_id;
 }
 
 /**
@@ -210,7 +205,7 @@ void Teletransporter::set_destination_name(const std::string& destination_name) 
  * \return true if this teletransporter is on the side of the map
  */
 bool Teletransporter::is_on_map_side() const {
-  return destination_side >= 0;
+  return destination_name == "_side";
 }
 
 /**

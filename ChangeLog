@@ -86,6 +86,7 @@ Changes that do not introduce incompatibilities:
 * New event enemy:on_attacking_hero() to customize attacks (#356).
 * New event sensor:on_left() (#339).
 * New event block:on_moving() (#334).
+* New functions to get/set the properties of teletransporters (#403).
 * New functions to get/set the properties of blocks.
 * New methods to simulate game commands, by mrunderhill (#382).
 * New event sensor:on_left() (#339).

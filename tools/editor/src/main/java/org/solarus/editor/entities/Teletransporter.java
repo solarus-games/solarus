@@ -80,7 +80,7 @@ public class Teletransporter extends MapEntity {
     public void createProperties() throws MapException {
         createStringProperty("sprite", true, null);
         createStringProperty("sound", true, null);
-        createIntegerProperty("transition", false, Transition.FADE.getId());
+        createStringProperty("transition", true, Transition.FADE.getId());
         createStringProperty("destination_map", false, getMap().getId());
         createStringProperty("destination", true, null);
     }

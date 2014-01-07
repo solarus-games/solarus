@@ -123,7 +123,9 @@ public class EditTeletransporterComponent extends EditEntityComponent {
         soundField.setSelectedId(hasSound ? sound : "");
         soundField.setEnabled(hasSound);
 
-        transitionField.setValue(Transition.get(teletransporter.getIntegerProperty("transition")));
+        Transition transition = Transition.get(teletransporter.getStringProperty("transition"));
+        transitionField.setValue(transition);
+
         try {
             mapField.setSelectedId(teletransporter.getStringProperty("destination_map"));
         }
@@ -173,10 +175,12 @@ public class EditTeletransporterComponent extends EditEntityComponent {
             destinationName = "_side";
         }
 
+        Transition transition = transitionField.getValue();
+
         return new ActionEditEntitySpecific(entity,
                 sprite,
                 sound,
-                Integer.toString(transitionField.getValue().getId()),
+                transition.getId(),
                 destinationMapId,
                 destinationName);
     }

@@ -288,9 +288,12 @@ Additional properties:
 - \c sound (string, optional): Sound to play
   when the hero uses the
   teletransporter. No value means no sound.
-- \c transition_style (number): Style of transition to play when the hero
-  uses the teletransporter. \c 0: immediate (no transition), \c 1:
-  fade-out effect, \c 2: scrolling between maps.
+- \c transition (string, optional): Style of transition to play when
+  the hero uses the teletransporter. Must be one of:
+  - \c "immediate": No transition.
+  - \c "fade": Fade-out and fade-in effect.
+  - \c "scrolling": Scrolling between maps.
+  The default value is \c "fade".
 - \c destination_map (string): Id of the map to transport to (can be
   id of the current map).
 - \c destination_name (string, optional): Location on the destination map.
@@ -309,7 +312,7 @@ teletransporter{
   y = 600,
   width = 16,
   height = 16,
-  transition = 1,
+  transition = "fade",
   destination_map = "dungeon_1_1f",
   destination = "from_outside",
 }

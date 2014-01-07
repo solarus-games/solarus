@@ -657,7 +657,7 @@ class LuaContext {
       map_api_remove_entities,
       map_api_create_tile,
       map_api_create_destination,
-      map_api_create_teletransporter,  // TODO stringify transition_style
+      map_api_create_teletransporter,
       map_api_create_pickable,
       map_api_create_destructible,
       map_api_create_chest,

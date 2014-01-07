@@ -1,7 +1,8 @@
 -- Solarus 1.1 to 1.2.
 -- Changes in the map syntax
 -- - shop_item becomes shop_treasure.
--- - destructibles are now customizable and no longer have hardcoded subtypes.
+-- - Destructibles are now customizable and no longer have hardcoded subtypes.
+-- - Teletransporter now take a string for the transition property.
 
 local converter = {}
 
@@ -47,6 +48,13 @@ local destructible_subtype_replacements = {
 
 }
 
+local teletransporter_transition_replacements = {
+  ['  transition = 0,'] = '  transition = "immediate",',
+  ['  transition = 1,'] = '  transition = "fade",',
+  ['  transition = 2,'] = '  transition = "scrolling",',
+}
+
+
 function converter.convert(quest_path, map_id)
 
   local input_file_name = quest_path .. "/data/maps/" .. map_id .. ".dat"
@@ -62,6 +70,9 @@ function converter.convert(quest_path, map_id)
 
   -- Replace destructible subtypes.
   text = text:gsub("(  subtype = \"[a-z_]+\",)", destructible_subtype_replacements)
+
+  -- Replace teletransporter transitions.
+  text = text:gsub("(  transition = [0-2],)", teletransporter_transition_replacements)
 
   input_file:close()
 

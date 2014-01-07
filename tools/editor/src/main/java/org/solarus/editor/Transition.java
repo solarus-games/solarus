@@ -15,23 +15,41 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.solarus.editor;
+import java.util.*;
 
 /**
  * Indicates a type of transition between two maps.
  */
 public enum Transition {
 
-    IMMEDIATE,
-    FADE,
-    SCROLLING;
+    IMMEDIATE("immediate"),
+    FADE("fade"),
+    SCROLLING("scrolling");
 
-    public static final String[] humanNames = {"Immediate", "Fade in/out", "Scrolling"};
+    public static final String[] humanNames = {
+      "Immediate",
+      "Fade in/out",
+      "Scrolling"
+    };
 
-    public int getId() {
-        return ordinal();
+    private final String id;
+
+    private Transition(String id) {
+      this.id = id;
     }
 
-    public static Transition get(int id) {
-        return values()[id];
+    public String getId() {
+        return id;
+    }
+
+    public static Transition get(String id) {
+        for (Transition transition: values()) {
+            if (transition.getId().equals(id)) {
+                return transition;
+            }
+        }
+        throw new NoSuchElementException(
+                "No transition style with name '" + id + "'");
     }
 }
+

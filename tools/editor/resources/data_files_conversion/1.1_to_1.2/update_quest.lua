@@ -22,7 +22,7 @@ write_info("It is recommended to backup your quest files before.")
 -- Convert the quest properties file quest.dat.
 write_info("  Converting the quest properties file...")
 local quest_properties_converter = require("quest_properties_converter")
-quest_properties_converter.convert(quest_path)
+--quest_properties_converter.convert(quest_path)
 
 -- Read the resource list file project_db.dat.
 write_info("  Reading the list of resources...")
@@ -43,7 +43,7 @@ write_info("  Converting strings...")
 local strings_converter = require("strings_converter")
 for _, resource in pairs(resources["language"]) do
   write_info("    Language " .. resource.id .. " (" .. resource.description .. ")")
-  strings_converter.convert(quest_path, resource.id)
+--  strings_converter.convert(quest_path, resource.id)
 end
 write_info("  All strings files were converted.")
 

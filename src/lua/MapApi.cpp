@@ -966,8 +966,8 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
   int height = LuaTools::check_int_field(l, 1, "height");
   const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
   const std::string& sound_id = LuaTools::opt_string_field(l, 1, "sound", "");
-  Transition::Style transition_style =
-      Transition::Style(LuaTools::check_int_field(l, 1, "transition"));
+  Transition::Style transition_style = LuaTools::opt_enum_field<Transition::Style>(
+          l, 1, "transition", Transition::style_names, Transition::FADE);
   const std::string& destination_map_id = LuaTools::check_string_field(l, 1, "destination_map");
   const std::string& destination_name = LuaTools::opt_string_field(l, 1, "destination", "");
 

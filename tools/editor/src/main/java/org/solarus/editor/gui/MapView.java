@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
@@ -47,12 +48,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
     /**
      * Constants to identify the state of the map view.
      */
-    enum State {
+    private enum State {
 
         NORMAL, // the user is not performing any special operation, he can select or unselect entities
         SELECTING_AREA, // the user is drawing a rectangle to select several entities
         MOVING_ENTITIES, // drag and drop
-        RESIZING_ENTITY, // the user is resizing the selected entity
+        RESIZING_ENTITIES, // the user is resizing the selected entities
         ADDING_ENTITY,   // an entity is being added on the map and is displayed under the cursor
     }
 
@@ -68,17 +69,23 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * - in state NORMAL: unused
      * - in state SELECTING_AREA: coordinates of the second point of the rectangle, defined by the cursor
      * - in state MOVING_ENTITIES: coordinates of the pointer
-     * - in state RESIZING_ENTITY: coordinates of the second point of the rectangle, defined by the cursor
+     * - in state RESIZING_ENTITIES: coordinates of the second point of the rectangle, defined by the cursor
      * - in state ADDING_ENTITY: coordinates of the entity displayed under the cursor
      */
     private Point cursorLocation;
 
     /**
-     * Location of the fixed area of the rectangle the user is drawing.
-     * - in state SELECTING_AREA: coordinates of the initial point (width and height are not used)
-     * - in state RESIZING_ENTITY: top-left rectangle of the entity before being resized
+     * Location of the fixed area of the rectangle the user is drawing
+     * in state SELECTING_AREA.
      */
     private Rectangle fixedLocation;
+
+    /**
+     * In state RESIZING_ENTITIES, top-left rectangle of each entity before
+     * being resized.
+     */
+    private HashMap<MapEntity, Rectangle> positionsBeforeResizing;
+
     private int total_dx;                          // in state MOVING_ENTITIES: total x and y translation
     private int total_dy;
     private boolean isMouseInMapView;              // true if the mouse is in the map view (useful in state ADDING_ENTITY)
@@ -118,6 +125,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
         this.cursorLocation = new Point();
         this.fixedLocation = new Rectangle();
+        this.positionsBeforeResizing = new HashMap<MapEntity, Rectangle>();
         this.initialSelection = new ArrayList<MapEntity>();
 
         MouseInputListener mouseListener = new MapMouseInputListener();
@@ -524,15 +532,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * Changes the current state of the map view.
-     * If the state was State.RESIZING_ENTITY or State.MOVING_ENTITIES,
-     * the endResizingEntity() or endMovingEntities() function is called.
+     * If the state was State.RESIZING_ENTITIES or State.MOVING_ENTITIES,
+     * the endResizingEntities() or endMovingEntities() function is called.
      * If you don't want these functions to be called, just change the state variable by hand.
      * @param state the new state
      */
     private void setState(State state) {
 
-        if (this.state == State.RESIZING_ENTITY) {
-            endResizingEntity();
+        if (this.state == State.RESIZING_ENTITIES) {
+            endResizingEntities();
         } else if (this.state == State.MOVING_ENTITIES) {
             endMovingEntities();
         }
@@ -551,7 +559,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * Move to the state State.ADDING_ENTITY.
+     * Moves to the state State.ADDING_ENTITY.
      * Allows the user to place on the map an entity.
      * This entity is displayed under the cursor and the user
      * can place it by pressing the mouse at the location he wants.
@@ -678,7 +686,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 // let the user resize the entity until the mouse is released
                 // (unless the dialog box was shown)
                 if (entityBeingAdded.isResizable() && dialog == null) {
-                    startResizingEntity();
+                    startResizingEntities();
                 } else {
                     state = State.NORMAL;
                 }
@@ -796,39 +804,65 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * Moves to the state State.RESIZING_ENTITY.
-     * Lets the user resize the entity selected on the map.
-     * There must be exactly one entity selected, and this entity must be resizable,
-     * otherwise nothing is done.
+     * Moves to the state State.RESIZING_ENTITIES.
+     * Lets the user resize the entities selected on the map.
+     * All selected entities must be resizable, otherwise nothing is done.
      */
-    public void startResizingEntity() {
+    public void startResizingEntities() {
 
         MapEntitySelection entitySelection = map.getEntitySelection();
 
         if (entitySelection.isResizable()) {
-            MapEntity entity = entitySelection.getEntity();
-            Rectangle positionInMap = entity.getPositionInMap();
 
-            fixedLocation.x = positionInMap.x;
-            fixedLocation.y = positionInMap.y;
-            fixedLocation.width = positionInMap.width;
-            fixedLocation.height = positionInMap.height;
+            for (MapEntity entity: entitySelection) {
+                Rectangle positionInMap = entity.getPositionInMap();
+                positionsBeforeResizing.put(entity, new Rectangle(positionInMap));
+            }
 
-            cursorLocation.x = positionInMap.x + positionInMap.width;
-            cursorLocation.y = positionInMap.y + positionInMap.height;
+            Rectangle leaderPosition = entitySelection.getEntity().getPositionInMap();
+            cursorLocation.x = leaderPosition.x + leaderPosition.width;
+            cursorLocation.y = leaderPosition.y + leaderPosition.height;
 
-            state = State.RESIZING_ENTITY;
+            state = State.RESIZING_ENTITIES;
             repaint();
         }
     }
 
     /**
-     * In state State.RESIZING_ENTITY, updates with the new mouse coordinates
-     * the rectangle of the entity that is being resized.
+     * In state State.RESIZING_ENTITIES, updates with the new mouse coordinates
+     * the rectangle of the entities that are being resized.
      * @param x x coordinate of the pointer
      * @param y y coordinate of the pointer
      */
-    private void updateResizingEntity(int x, int y) {
+    private void updateResizingEntities(int x, int y) {
+
+        // Resize only if the cursor is inside the drawn area.
+        if (x < map.getWidth() + AREA_AROUND_MAP
+                && y < map.getHeight() + 2 * AREA_AROUND_MAP) {
+
+            MapEntitySelection entitySelection = map.getEntitySelection();
+            MapEntity leaderEntity = entitySelection.getEntity();
+            Rectangle oldLeaderPosition = positionsBeforeResizing.get(leaderEntity);
+
+            for (MapEntity entity: entitySelection) {
+                Rectangle oldEntityPosition = positionsBeforeResizing.get(entity);
+                int leaderOffsetX = oldEntityPosition.x + oldEntityPosition.width
+                        - (oldLeaderPosition.x + oldLeaderPosition.width);
+                int leaderOffsetY = oldEntityPosition.y + oldEntityPosition.height
+                        - (oldLeaderPosition.y + oldLeaderPosition.height);
+                updateResizingEntity(entity, x + leaderOffsetX, y + leaderOffsetY);
+            }
+        }
+    }
+
+    /**
+     * In state State.RESIZING_ENTITIES, updates with new coordinates
+     * the rectangle of one entity.
+     * @param entity The entity to resize.
+     * @param x x coordinate of the pointer
+     * @param y y coordinate of the pointer
+     */
+    private void updateResizingEntity(MapEntity entity, int x, int y) {
 
         int xA, yA; // A is the original point of the rectangle we are drawing
         int xB, yB; // B is the second point, defined by the cursor location
@@ -836,69 +870,64 @@ public class MapView extends JComponent implements Observer, Scrollable {
         xB = x;
         yB = y;
 
-        // resize only if the cursor is inside the drawn area
-        if (xB < map.getWidth() + AREA_AROUND_MAP && yB < map.getHeight() + 2 * AREA_AROUND_MAP) {
+        int width = entity.getUnitarySize().width;
+        int height = entity.getUnitarySize().height;
 
-            MapEntity selectedEntity = map.getEntitySelection().getEntity();
+        xA = positionsBeforeResizing.get(entity).x;
+        yA = positionsBeforeResizing.get(entity).y;
+        // we have to extend the entity's rectangle with units of size (width,height) from point A to point B
 
-            int width = selectedEntity.getUnitarySize().width;
-            int height = selectedEntity.getUnitarySize().height;
+        // trust me: this awful formula calculates the coordinates of point B such
+        // that the size of the rectangle from A to B is a multiple of (width,height)
+        int diffX = xB - xA;
+        int diffY = yB - yA;
+        int signX = (diffX >= 0) ? 1 : -1;
+        int signY = (diffY >= 0) ? 1 : -1;
+        xB = xB + signX * (width - ((Math.abs(diffX) + width) % width));
+        yB = yB + signY * (height - ((Math.abs(diffY) + height) % height));
 
-            xA = fixedLocation.x;
-            yA = fixedLocation.y;
-            // we have to extend the entity's rectangle with units of size (width,height) from point A to point B
+        // TODO
+        if (xB != cursorLocation.x || yB != cursorLocation.y) {
+            // the rectangle has changed
 
-            // trust me: this awful formula calculates the coordinates of point B such
-            // that the size of the rectangle from A to B is a multiple of (width,height)
-            int diffX = xB - xA;
-            int diffY = yB - yA;
-            int signX = (diffX >= 0) ? 1 : -1;
-            int signY = (diffY >= 0) ? 1 : -1;
-            xB = xB + signX * (width - ((Math.abs(diffX) + width) % width));
-            yB = yB + signY * (height - ((Math.abs(diffY) + height) % height));
+            // store the coordinates of point B for next time
+            cursorLocation.x = xB;
+            cursorLocation.y = yB;
 
-            if (xB != cursorLocation.x || yB != cursorLocation.y) {
-                // the rectangle has changed
-
-                // store the coordinates of point B for next time
-                cursorLocation.x = xB;
-                cursorLocation.y = yB;
-
-                // if the entity is constrained to be square, set the position of point B accordingly
-                if (selectedEntity.mustBeSquare()) {
-                    diffX = Math.abs(xB - xA);
-                    diffY = Math.abs(yB - yA);
-                    int length = Math.max(diffX, diffY); // length of the square
-                    xB = xA + signX * length;
-                    yB = yA + signY * length;
-                }
-                // point A or B may have to be updated so that the rectangle is extended
-                // only in allowed directions, making sure its size is never zero
-                else {
-                    if (selectedEntity.isExtensible(0)) {
-                        if (xB <= xA) {
-                            xA += width;
-                        }
-                    } else {
-                        xB = xA + width;
+            // if the entity is constrained to be square, set the position of point B accordingly
+            if (entity.mustBeSquare()) {
+                diffX = Math.abs(xB - xA);
+                diffY = Math.abs(yB - yA);
+                int length = Math.max(diffX, diffY); // length of the square
+                xB = xA + signX * length;
+                yB = yA + signY * length;
+            }
+            // point A or B may have to be updated so that the rectangle is extended
+            // only in allowed directions, making sure its size is never zero
+            else {
+                if (entity.isExtensible(0)) {
+                    if (xB <= xA) {
+                        xA += width;
                     }
+                } else {
+                    xB = xA + width;
+                }
 
-                    if (selectedEntity.isExtensible(1)) {
-                        if (yB <= yA) {
-                            yA += height;
-                        }
-                    } else {
-                        yB = yA + height;
+                if (entity.isExtensible(1)) {
+                    if (yB <= yA) {
+                        yA += height;
                     }
+                } else {
+                    yB = yA + height;
                 }
+            }
 
-                // now let's update the entity
-                try {
-                    // note that A is not necessarily the top-left corner of the rectangle
-                    map.setEntityPosition(selectedEntity, xA, yA, xB, yB);
-                } catch (QuestEditorException ex) {
-                    GuiTools.errorDialog("Cannot resize the entity: " + ex.getMessage());
-                }
+            // now let's update the entity
+            try {
+                // note that A is not necessarily the top-left corner of the rectangle
+                map.setEntityPosition(entity, xA, yA, xB, yB);
+            } catch (QuestEditorException ex) {
+                GuiTools.errorDialog("Cannot resize the entity: " + ex.getMessage());
             }
         }
     }
@@ -906,8 +935,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
     /**
      * In state State.RESIZING_ENTITY, stops the resizing and saves it into the undo/redo history.
      */
-    private void endResizingEntity() {
+    private void endResizingEntities() {
 
+        /* TODO
         MapEntity entity = map.getEntitySelection().getEntity();
 
         // get a copy of the final rectangle before we restore the initial one
@@ -915,11 +945,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
         if (!finalPosition.equals(fixedLocation)) { // if the tile's rectangle has changed
 
-            /**
-             * While dragging the mouse, the entity's rectangle has followed the mouse, being
-             * resized with small steps. Now we want to consider the whole resizing process
-             * as one step only, so that it can be undone or redone directly later.
-             */
+            // While dragging the mouse, the entity's rectangle has followed the mouse, being
+            // resized with small steps. Now we want to consider the whole resizing process
+            // as one step only, so that it can be undone or redone directly later.
             try {
                 // we restore the entity at its initial size
                 map.setEntityPosition(entity, fixedLocation);
@@ -930,6 +958,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 GuiTools.errorDialog("Cannot resize the entity: " + e.getMessage());
             }
         }
+        */
         state = State.NORMAL;
         repaint();
     }
@@ -1233,9 +1262,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     break;
 
                 // validate the new size
-                case RESIZING_ENTITY:
+                case RESIZING_ENTITIES:
 
-                    endResizingEntity();
+                    endResizingEntities();
                     break;
 
                 // place the new entity
@@ -1275,9 +1304,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
             switch (state) {
 
-                case RESIZING_ENTITY:
+                case RESIZING_ENTITIES:
                     MapEntity entity = map.getEntitySelection().getEntity();
-                    endResizingEntity();
+                    endResizingEntities();
 
                     if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
 
@@ -1340,10 +1369,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
                         updateAddingEntity(x, y);
                         break;
 
-                    case RESIZING_ENTITY:
+                    case RESIZING_ENTITIES:
                         // if we are resizing an entity, calculate the coordinates of
                         // the second point of the rectangle formed by the pointer
-                        updateResizingEntity(x, y);
+                        updateResizingEntities(x, y);
                         break;
 
                     default:
@@ -1379,10 +1408,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     }
                     break;
 
-                case RESIZING_ENTITY:
+                case RESIZING_ENTITIES:
                     // if we are resizing a tile, calculate the coordinates of
                     // the second point of the rectangle formed by the pointer
-                    updateResizingEntity(x, y);
+                    updateResizingEntities(x, y);
                     break;
 
                 case MOVING_ENTITIES:
@@ -1433,7 +1462,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     break;
 
                 case KeyEvent.VK_R:
-                    startResizingEntity();
+                    startResizingEntities();
                     break;
 
                 case KeyEvent.VK_T:

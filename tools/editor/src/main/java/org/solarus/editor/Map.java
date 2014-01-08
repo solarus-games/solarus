@@ -687,7 +687,7 @@ public class Map extends Observable {
 
     /**
      * Changes the position of an entity on the map, by specifying two points.
-     * The entity is resized (i.e. repeatX and repeatY are updated) so that
+     * The entity is resized so that
      * it fits exactly in the rectangle formed by the two points.
      * @param entity an entity
      * @param x1 x coordinate of the first point

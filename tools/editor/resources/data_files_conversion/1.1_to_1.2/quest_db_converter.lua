@@ -37,7 +37,22 @@ function converter.convert(quest_path, languages)
   -- Read project_db.dat.
   local resources = load_quest_db(quest_path)
 
-  -- Nothing to write (the format does not change).
+  -- Add the new sound "running_obstacle.dat" unless it already exists.
+  local running_obstacle_sound_exists = false
+  for _, element in ipairs(resources.sound) do
+    if element.id == "running_obstacle" then
+      running_obstacle_sound_exists = true
+    end
+  end
+
+  if not running_obstacle_sound_exists then
+    local output_file, error_message = io.open(quest_path .. "/data/project_db.dat", "a")
+    if output_file == nil then
+      error("Cannot open quest resource list file for writing: " .. error_message)
+    end
+    output_file:write('sound{ id = "running_obstacle", description = "running_obstacle" }\n')
+    output_file:close()
+  end
 
   return resources
 end

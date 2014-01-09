@@ -87,3 +87,4 @@ item{ id = "bomb", description = "Bomb" }
 
 language{ id = "en", description = "English" }
 
+sound{ id = "running_obstacle", description = "running_obstacle" }

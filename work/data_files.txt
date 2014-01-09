@@ -42,6 +42,7 @@ sounds/
   monster_hurt.ogg
   picked_item.ogg
   running.ogg
+  running_obstacle.ogg
   shield.ogg
   splash.ogg
   stairs_down_start.ogg

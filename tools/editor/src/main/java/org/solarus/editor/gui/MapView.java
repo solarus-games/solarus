@@ -736,7 +736,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * In state State.ADDING_ENTITIES, adds the current entities to the map.
-     * If the entity is resizable, the resulting state is State.RESIZING_ENTITY.
+     * If there was only one entity added and if it resizable,
+     * the resulting state is State.RESIZING_ENTITY.
      * Otherwise it is State.NORMAL.
      * @returns The entities added or null if there was a problem.
      */
@@ -778,17 +779,21 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 map.getHistory().doAction(new ActionAddEntities(map, entitiesBeingAdded));
 
                 // make then selected
-                map.getEntitySelection().unselectAll();
-                map.getEntitySelection().select(entitiesBeingAdded);
+                MapEntitySelection selection = map.getEntitySelection();
+                selection.unselectAll();
+                selection.select(entitiesBeingAdded);
 
                 // Unselect the tile in the tileset (if any).
                 if (map.getTileset().getSelectedTilePattern() != null) {
                     map.getTileset().unselectTilePattern();
                 }
 
-                // Let the user resize the entities until the mouse is released
+                // If there is only one entity, let the user resize it
+                // until the mouse is released
                 // (unless the dialog box was shown).
-                if (map.getEntitySelection().isResizable() && dialog == null) {
+                if (selection.isResizable()
+                        && selection.getNbEntitiesSelected() == 1
+                        && dialog == null) {
                     startResizingEntities();
                 } else {
                     entityTypeBeingAdded = null;

@@ -54,7 +54,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         SELECTING_AREA, // the user is drawing a rectangle to select several entities
         MOVING_ENTITIES, // drag and drop
         RESIZING_ENTITIES, // the user is resizing the selected entities
-        ADDING_ENTITY,   // an entity is being added on the map and is displayed under the cursor
+        ADDING_ENTITIES,   // entities are being added on the map and displayed under the cursor
     }
 
     // information about the current state
@@ -69,7 +69,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * - in state NORMAL: unused
      * - in state SELECTING_AREA: coordinates of the second point of the rectangle, defined by the cursor
      * - in state MOVING_ENTITIES: coordinates of the pointer
-     * - in state ADDING_ENTITY: coordinates of the entity displayed under the cursor
      */
     private Point cursorLocation;
 
@@ -81,14 +80,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     private int total_dx;                          // in state MOVING_ENTITIES: total x and y translation
     private int total_dy;
-    private boolean isMouseInMapView;              // true if the mouse is in the map view (useful in state ADDING_ENTITY)
+    private boolean isMouseInMapView;              // true if the mouse is in the map view (useful in state ADDING_ENTITIES)
     private List<MapEntity> initialSelection;      // the entities selected, saved here before drawing a selection rectangle
     private boolean entityJustSelected;            // true if the last entity on which the mouse was pressed was not already selected
-    private EntityType entityTypeBeingAdded;       // in state ADDING_ENTITY: type of the entity that is about to be added
-    private EntitySubtype entitySubtypeBeingAdded; // in state ADDING_ENTITY: subtype of the entity that is about to be added
-    private MapEntity entityBeingAdded;            // in state ADDING_ENTITY: the entity that is about to be added (except for a tile)s
-    private MapEntity masterEntityBeingResized;    // In state RESIZING_ENTITIES: the master entity. This one gets resized according to
-                                                   // the cursor position, and an equivalent change is computed for the other ones.
+    private EntityType entityTypeBeingAdded;       // In state ADDING_ENTITIES: type of the only entity that is about to be added
+                                                   // (only for a new entity, not used when pasting).
+    private List<MapEntity> entitiesBeingAdded;    // In state ADDING_ENTITIES: entities about to be added.
+    private MapEntity masterEntity;                // In states ADDING_ENTITIES and RESIZING_ENTITIES:
+                                                   // the master entity. This one follows the the cursor position, and an equivalent
+                                                   // change is computed for the other ones.
     private HashMap<MapEntity, Rectangle>
         positionsBeforeResizing;                   // in state RESIZING_ENTITIES: the initial bounding box of entities being resized.
     private static List<MapEntity> copiedEntities; // entities cut or copied, ready to be pasted (or null)
@@ -409,7 +409,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 } // for
             } // for
 
-            //draw the grid if needed
+            // draw the grid if needed
             if (getViewSettings().getShowGrid()) {
                 g.setColor(Color.GRAY);
                 // draw the vertical lines
@@ -425,11 +425,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
             // special display for some states
             switch (state) {
 
-                case ADDING_ENTITY:
+                case ADDING_ENTITIES:
 
                     if (isMouseInMapView) {
-                        // display the entity on the map, under the cursor
-                        entityBeingAdded.paint(g, zoom, getViewSettings().getShowTransparency());
+                        // Display the entities on the map, under the cursor.
+                        for (MapEntity entity: entitiesBeingAdded) {
+                            entity.paint(g, zoom, getViewSettings().getShowTransparency());
+                        }
                     }
                     break;
 
@@ -482,14 +484,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
         selectedEntities = map.getSortedEntities(selectedEntities);
 
         try {
-            for (MapEntity entity : selectedEntities) {
+            for (MapEntity entity: selectedEntities) {
                 MapEntity copy = MapEntity.createCopy(map, entity);
-                copy.move(8, 8);
                 copiedEntities.add(copy);
             }
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog(ex.getMessage());
             ex.printStackTrace();
+            copiedEntities = null;
         }
 
         // Update copy/paste menu items.
@@ -500,14 +502,29 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * Paste the copied entities.
      */
     public void paste() {
+
+        if (!canPaste()) {
+            return;
+        }
+
+        for (MapEntity entity: copiedEntities) {
+            entity.setMap(map);  // The entities may come from another map.
+        }
+        // Place the entities under the pointer.
+        startAddingEntities(copiedEntities);
+
+        // Make new copies for a next paste.
+        List<MapEntity> pastedEntities = copiedEntities;
+        copiedEntities = new ArrayList<MapEntity>();
+
         try {
-            for (MapEntity entity : copiedEntities) {
-                entity.setMap(map); // the entities may come from another map
+            for (MapEntity entity: pastedEntities) {
+                copiedEntities.add(MapEntity.createCopy(map, entity));
             }
-            map.getHistory().doAction(new ActionAddEntities(map, copiedEntities));
-            copySelectedEntities();
         } catch (QuestEditorException ex) {
-            GuiTools.errorDialog("Cannot paste the entities: " + ex.getMessage());
+            GuiTools.errorDialog(ex.getMessage());
+            ex.printStackTrace();
+            copiedEntities = null;
         }
     }
 
@@ -556,31 +573,27 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * Moves to the state State.ADDING_ENTITY.
-     * Allows the user to place on the map an entity.
-     * This entity is displayed under the cursor and the user
-     * can place it by pressing the mouse at the location he wants.
-     * If the user was already adding an entity of the same kind,
+     * Starts or stops adding an entity.
+     * If the user was already adding a new entity of the same kind,
      * we get back to the normal state.
-     * @param entityType type of entity to add
-     * @param entitySubtype subtype of entity to add (null if this type of entity has no subtype)
+     * Otherwise, we move to State.ADDING_ENTITIES.
+     * @param entityType Type of entity to create.
+     * @param entitySubtype Subtype of entity to create.
      */
-    public void startAddingEntity(EntityType entityType, EntitySubtype entitySubtype) {
+    public void switchAddingNewEntity(EntityType entityType, EntitySubtype entitySubtype) {
 
-        if (state == State.ADDING_ENTITY
-                && entityType == entityTypeBeingAdded
-                && entitySubtype == entitySubtypeBeingAdded) {
+        boolean backToNormal = false;
+        if (state == State.ADDING_ENTITIES
+                && entityType == entityTypeBeingAdded) {
+            entityTypeBeingAdded = null;
             returnToNormalState();
-        } else {
-
-            setState(State.ADDING_ENTITY);
-            this.entityTypeBeingAdded = entityType;
-            this.entitySubtypeBeingAdded = entitySubtype;
-
+        }
+        else {
             try {
-                entityBeingAdded = MapEntity.create(map, entityType, entitySubtype);
+                entityTypeBeingAdded = entityType;
+                MapEntity entity = MapEntity.create(map, entityType, entitySubtype);
 
-                if (entityBeingAdded == null) {
+                if (entity == null) {
                     // Cannot happen: MapEntity.create() returns an entity
                     // or throws a MapException.
                     throw new NullPointerException();
@@ -588,43 +601,99 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 if (entityType == EntityType.TILE) {
                     int tileId = map.getTileset().getSelectedTilePatternId();
-                    entityBeingAdded.setIntegerProperty("pattern", tileId);
+                    entity.setIntegerProperty("pattern", tileId);
                 }
 
-                Point mousePosition = MouseInfo.getPointerInfo().getLocation();
-                MouseEvent mouseEvent = new MouseEvent(this, 0, 0, 0,
-                        mousePosition.x - getLocationOnScreen().x,
-                        mousePosition.y - getLocationOnScreen().y,
-                        1, false, 0);
-                int x = getMouseInMapX(mouseEvent);
-                int y = getMouseInMapY(mouseEvent);
-                isMouseInMapView = true;
-                updateAddingEntity(x, y);
+                List<MapEntity> entities = new ArrayList<MapEntity>();
+                entities.add(entity);
+                startAddingEntities(entities);
             } catch (MapException ex) {
                 GuiTools.errorDialog("Cannot create the entity: " + ex.getMessage());
-                returnToNormalState();
             }
         }
     }
 
     /**
-     * In state State.ADDING_ENTITY, updates the position of the entity
-     * to add with the new mouse coordinates.
-     * @param x x coordinate of the pointer
-     * @param y y coordinate of the pointer
+     * Moves to the state State.ADDING_ENTITIES.
+     * Allows the user to place on the map some new entities.
+     * These entities is displayed under the cursor, keeping their relative position.
+     * The user can place them by pressing the mouse at the location he wants.
+     * If the user was already adding an entity of the same kind,
+     * we get back to the normal state.
+     * @param entities The entities to add (the list will be copied).
+     * Nothing happens if this list is empty.
      */
-    private void updateAddingEntity(int x, int y) {
+    public void startAddingEntities(List<MapEntity> entities) {
 
-        int width, height;
+        if (entities.isEmpty()) {
+            return;
+        }
 
-        width = entityBeingAdded.getWidth();
-        height = entityBeingAdded.getHeight();
-        x = GuiTools.round8(x - width / 2); // center the entity around the cursor
+        setState(State.ADDING_ENTITIES);
+
+        // Set as master entity the one the most to the left and top.
+        entitiesBeingAdded = new ArrayList<MapEntity>(entities);
+        masterEntity = null;
+        int minDistance2 = Integer.MAX_VALUE;
+        for (MapEntity entity: entitiesBeingAdded) {
+            int dx = entity.getXTopLeft();
+            int dy = entity.getYTopLeft();
+            int distance2 = dx * dx + dy * dy;
+            if (distance2 < minDistance2) {
+                minDistance2 = distance2;
+                masterEntity = entity;
+            }
+        }
+
+        if (masterEntity == null) {
+            // Cannot happen.
+            new NullPointerException().printStackTrace();
+            return;
+        }
+
+        isMouseInMapView = true;
+        Point mousePosition = MouseInfo.getPointerInfo().getLocation();
+        int x = getMouseInMapX(mousePosition.x);
+        int y = getMouseInMapY(mousePosition.y);
+        updateAddingEntities(x, y);
+    }
+
+    /**
+     * In state State.ADDING_ENTITIES, updates the position of the entities
+     * to add with the new mouse coordinates.
+     * @param x X coordinate of the pointer relative to the map.
+     * @param y Y coordinate of the pointer relative to the map.
+     */
+    private void updateAddingEntities(int x, int y) {
+
+        if (masterEntity == null) {
+            new NullPointerException().printStackTrace();
+            entityTypeBeingAdded = null;
+            entitiesBeingAdded = null;
+            returnToNormalState();
+            return;
+        }
+
+        // The master entity will be centered around x,y
+        // and the other ones will keep their relative position to master.
+
+        int width = masterEntity.getWidth();
+        int height = masterEntity.getHeight();
+        x = GuiTools.round8(x - width / 2);  // Center the master entity around the cursor.
         y = GuiTools.round8(y - height / 2);
 
-        if (x != entityBeingAdded.getXTopLeft() || y != entityBeingAdded.getYTopLeft()) {
+        int dx = x - masterEntity.getXTopLeft();
+        int dy = y - masterEntity.getYTopLeft();
+        if (dx != 0 || dy != 0) {
+            // There is a change.
             try {
-                entityBeingAdded.setPositionTopLeft(x, y);
+                for (MapEntity entity: entitiesBeingAdded) {
+                    Rectangle oldEntityPosition = entity.getPositionInMap();
+                    entity.setPositionTopLeft(
+                            entity.getXTopLeft() + dx,
+                            entity.getYTopLeft() + dy
+                    );
+                }
             } catch (MapException ex) {
                 GuiTools.errorDialog("Unexpected error: " + ex.getMessage());
             }
@@ -633,102 +702,93 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * In state State.ADDING_ENTITY, adds the current entity to the map.
-     * The current entity selected in the tileset is placed on the map at the mouse location.
+     * In state State.ADDING_ENTITIES, adds the current entities to the map.
      * If the entity is resizable, the resulting state is State.RESIZING_ENTITY.
      * Otherwise it is State.NORMAL.
-     * @returns the entity added (or null if there was a problem)
+     * @returns The entities added or null if there was a problem.
      */
-    private MapEntity endAddingEntity() {
-        MapEntity entityAdded = null;
-        EditEntityDialog dialog = null;
+    private List<MapEntity> endAddingEntities() {
 
+        List<MapEntity> entitiesAdded = null;
+        EditEntityDialog dialog = null;
         try {
 
-            // first choose a layer if necessary
-            if (!entityBeingAdded.hasInitialLayer()) {
-                Layer layer = map.getLayerInRectangle(entityBeingAdded.getPositionInMap());
-                map.setEntityLayer(entityBeingAdded, layer);
-            }
+            boolean valid = true;
+            if (entitiesBeingAdded.size() == 1 && entityTypeBeingAdded != null) {
+                // New entity just created.
+                MapEntity entityBeingAdded = entitiesBeingAdded.get(0);
+                // first choose a layer if necessary
+                if (!entityBeingAdded.hasInitialLayer()) {
+                    Layer layer = map.getLayerInRectangle(entityBeingAdded.getPositionInMap());
+                    map.setEntityLayer(entityBeingAdded, layer);
+                }
 
-            // make sure the entity is valid
-            boolean valid = entityBeingAdded.isValid();
+                // make sure the entity is valid
+                valid = entityBeingAdded.isValid();
 
-            if (!valid) {
-                // if the entity is not valid yet, this is because some information is missing:
-                // we show a dialog box to let the user edit the entity
+                if (!valid) {
+                    // The entity is not valid yet, this is because some information is missing.
+                    // Show a dialog box to let the user edit the entity.
 
-                dialog = new EditEntityDialog(map, entityBeingAdded);
-                dialog.setLocationRelativeTo(MapView.this);
-                if (dialog.display()) { // if the user filled the dialog box
-                    valid = true;
-                } else { // the user cancelled the dialog box
-                    state = State.NORMAL;
+                    dialog = new EditEntityDialog(map, entityBeingAdded);
+                    dialog.setLocationRelativeTo(MapView.this);
+                    if (dialog.display()) { // if the user filled the dialog box
+                        valid = true;
+                    } else { // the user cancelled the dialog box
+                        state = State.NORMAL;
+                    }
                 }
             }
 
             if (valid) {
-                // add the entity to the map
-                map.getHistory().doAction(new ActionAddEntities(map, entityBeingAdded));
+                // Add the entities to the map.
+                map.getHistory().doAction(new ActionAddEntities(map, entitiesBeingAdded));
 
-                // make it selected
+                // make then selected
                 map.getEntitySelection().unselectAll();
-                map.getEntitySelection().select(entityBeingAdded);
+                map.getEntitySelection().select(entitiesBeingAdded);
 
-                // unselect the tile in the tileset (if any)
+                // Unselect the tile in the tileset (if any).
                 if (map.getTileset().getSelectedTilePattern() != null) {
                     map.getTileset().unselectTilePattern();
                 }
 
-                // let the user resize the entity until the mouse is released
-                // (unless the dialog box was shown)
-                if (entityBeingAdded.isResizable() && dialog == null) {
+                // Let the user resize the entities until the mouse is released
+                // (unless the dialog box was shown).
+                if (map.getEntitySelection().isResizable() && dialog == null) {
                     startResizingEntities();
                 } else {
+                    entityTypeBeingAdded = null;
                     state = State.NORMAL;
                 }
 
-                entityAdded = entityBeingAdded;
-                entityBeingAdded = null;
+                entitiesAdded = entitiesBeingAdded;
+                entitiesBeingAdded = null;
             }
         } catch (QuestEditorException ex) {
-            GuiTools.errorDialog("Cannot add the entity: " + ex.getMessage());
+            GuiTools.errorDialog("Cannot add entities: " + ex.getMessage());
         }
 
         repaint();
         addEntitiesToolbar.repaint();
 
-        return entityAdded;
+        return entitiesAdded;
     }
 
     /**
-     * Returns the type of the entity that is being added.
-     * If the state is not State.ADDING_ENTITY, null is returned.
-     * @return the type of the entity being added, or null if the user is
-     * not adding an entity
+     * Returns the type of the entity that is being created if any.
+     * If the state is not State.ADDING_ENTITIES, or if the entities being added
+     * are not a new one (i.e. were pasted), null is returned.
+     * @return The type of the entity being created, or null if the user is
+     * not creating an entity.
      */
     public EntityType getEntityTypeBeingAdded() {
 
-        if (state != State.ADDING_ENTITY) {
+        if (state != State.ADDING_ENTITIES) {
             return null;
         }
 
-        return entityBeingAdded.getType();
-    }
-
-    /**
-     * Returns the subtype of the entity that is being added.
-     * If the state is not State.ADDING_ENTITY, null is returned.
-     * @return the subtype of the entity being added, or null if the user is
-     * not adding an entity
-     */
-    public EntitySubtype getEntitySubtypeBeingAdded() {
-
-        if (state != State.ADDING_ENTITY) {
-            return null;
-        }
-
-        return entitySubtypeBeingAdded;
+        return entityTypeBeingAdded;
     }
 
     /**
@@ -821,7 +881,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         int mouseX = getMouseInMapX(mousePosition.x);
         int mouseY = getMouseInMapY(mousePosition.y);
 
-        masterEntityBeingResized = entitySelection.getEntity();
+        masterEntity = entitySelection.getEntity();
         int minDistanceToMouse2 = Integer.MAX_VALUE;
         for (MapEntity entity: entitySelection) {
             Rectangle positionInMap = entity.getPositionInMap();
@@ -832,7 +892,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 int dy = (positionInMap.y + positionInMap.height) - mouseY;
                 int distanceToMouse2 = dx * dx + dy * dy;
                 if (distanceToMouse2 < minDistanceToMouse2) {
-                    masterEntityBeingResized = entity;
+                    masterEntity = entity;
                     minDistanceToMouse2 = distanceToMouse2;
                 }
             }
@@ -854,7 +914,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         if (x < map.getWidth() + AREA_AROUND_MAP
                 && y < map.getHeight() + 2 * AREA_AROUND_MAP) {
 
-            Rectangle oldMasterPosition = positionsBeforeResizing.get(masterEntityBeingResized);
+            Rectangle oldMasterPosition = positionsBeforeResizing.get(masterEntity);
 
             for (MapEntity entity: map.getEntitySelection()) {
                 Rectangle oldEntityPosition = positionsBeforeResizing.get(entity);
@@ -897,10 +957,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
         int signY = (diffY >= 0) ? 1 : -1;
         xB = xB + signX * (width - ((Math.abs(diffX) + width) % width));
         yB = yB + signY * (height - ((Math.abs(diffY) + height) % height));
-
-        // store the coordinates of point B for next time
-        cursorLocation.x = xB;
-        cursorLocation.y = yB;
 
         // if the entity is constrained to be square, set the position of point B accordingly
         if (entity.mustBeSquare()) {
@@ -970,7 +1026,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             GuiTools.errorDialog("Cannot resize entities: " + e.getMessage());
         }
         positionsBeforeResizing.clear();
-        masterEntityBeingResized = null;
+        masterEntity = null;
         state = State.NORMAL;
         repaint();
     }
@@ -1153,7 +1209,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             }
 
             isMouseInMapView = false;
-            if (state == State.ADDING_ENTITY) {
+            if (state == State.ADDING_ENTITIES) {
                 repaint(); // useful when adding an entity
             }
         }
@@ -1174,8 +1230,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 int x = getMouseInMapX(mouseEvent);
                 int y = getMouseInMapY(mouseEvent);
 
-                startAddingEntity(EntityType.TILE, null);
-                updateAddingEntity(x, y);
+                switchAddingNewEntity(EntityType.TILE, null);
+                updateAddingEntities(x, y);
             }
         }
 
@@ -1221,10 +1277,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
         /**
          * This method is called when the mouse is pressed on the map view.
-         * If the state is State.ADDING_ENTITY, an instance of the entity is
-         * added to the map at the cursor location.
-         * Otherwise, the entity clicked becomes selected in the map.
-         * A right click on an entity of the map shows a popup menu.
          */
         public void mousePressed(MouseEvent mouseEvent) {
 
@@ -1302,21 +1354,34 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     break;
 
                 // place the new entity
-                case ADDING_ENTITY:
+                case ADDING_ENTITIES:
 
-                    MapEntity entityAdded = endAddingEntity(); // add the entity to the map
+                    List<MapEntity> entitiesAdded = endAddingEntities();  // Add the entities to the map.
 
-                    // if the entity was added with a right click and is not being
-                    // resized, we propose to add another entity of the same type
-                    if (button == MouseEvent.BUTTON3 && state == State.NORMAL) {
+                    // If the entities were added with a right click and are not being
+                    // resized, we propose to add another copy of these entities.
+                    if (button == MouseEvent.BUTTON3
+                            && state == State.NORMAL
+                            && entitiesAdded != null) {
 
-                        if (entityBeingAdded instanceof Tile) {
-                            int tilePatternId = ((Tile) entityAdded).getTilePatternId();
+                        if (entitiesAdded.size() == 1
+                                && entitiesAdded.get(0) instanceof Tile) {
+                            int tilePatternId = ((Tile) entitiesAdded.get(0)).getTilePatternId();
                             map.getTileset().setSelectedTilePatternId(tilePatternId);
                         }
 
-                        startAddingEntity(entityTypeBeingAdded, entitySubtypeBeingAdded);
-                        updateAddingEntity(x, y);
+                        copiedEntities = new ArrayList<MapEntity>();
+                        try {
+                            for (MapEntity entity: entitiesAdded) {
+                                MapEntity copy = MapEntity.createCopy(map, entity);
+                                copiedEntities.add(copy);
+                            }
+                        } catch (QuestEditorException ex) {
+                            GuiTools.errorDialog(ex.getMessage());
+                            ex.printStackTrace();
+                        }
+                        startAddingEntities(copiedEntities);
+                        updateAddingEntities(x, y);
                     }
 
                     break;
@@ -1339,23 +1404,52 @@ public class MapView extends JComponent implements Observer, Scrollable {
             switch (state) {
 
                 case RESIZING_ENTITIES:
-                    MapEntity entity = map.getEntitySelection().getEntity();
+                    // Resizing while the mouse was pressed means we were just adding entities.
+                    // FIXME: this is not entirely true, we should remember the information explictly.
+                    MapEntitySelection entitySelection = map.getEntitySelection();
+                    Collection<MapEntity> entitiesResized = entitySelection.getEntities();
+                    entitiesResized = map.getSortedEntities(entitiesResized);
+
                     endResizingEntities();
+                    // At this point no entity is selected anymore.
 
-                    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+                    if (mouseEvent.getButton() != MouseEvent.BUTTON3) {
+                        entityTypeBeingAdded = null;
+                    }
+                    else {
+                        // Add copies of these entities again if the right button was released.
 
-                        int x = getMouseInMapX(mouseEvent);
-                        int y = getMouseInMapY(mouseEvent);
-
-                        // move to the state State.ADDING_ENTITY
-
-                        // if it is a tile
-                        if (entityTypeBeingAdded == EntityType.TILE) {
-                            int tilePatternId = ((Tile) entity).getTilePatternId();
+                        if (entitiesResized.size() == 1
+                                && entityTypeBeingAdded == EntityType.TILE) {
+                            // If it is a single tile just created, update the tileset view.
+                            Tile tile = (Tile) entitySelection.getEntity();
+                            int tilePatternId = tile.getTilePatternId();
                             map.getTileset().setSelectedTilePatternId(tilePatternId);
                         }
-                        startAddingEntity(entityTypeBeingAdded, entitySubtypeBeingAdded);
-                        updateAddingEntity(x, y);
+
+                        // Move to the state State.ADDING_ENTITIES.
+                        try {
+                            List<MapEntity> copiedEntities = new ArrayList<MapEntity>();
+                            for (MapEntity entity: entitiesResized) {
+                                MapEntity copy = MapEntity.createCopy(map, entity);
+                                copiedEntities.add(copy);
+                            }
+
+                            // If this was a new entity creation, restore the unitary size for next addings.
+                            if (copiedEntities.size() == 1 && entityTypeBeingAdded != null) {
+                                MapEntity entity = copiedEntities.get(0);
+                                entity.setSize(entity.getUnitarySize());
+                            }
+
+                            startAddingEntities(copiedEntities);
+                            int x = getMouseInMapX(mouseEvent);
+                            int y = getMouseInMapY(mouseEvent);
+                            updateAddingEntities(x, y);
+                        } catch (QuestEditorException ex) {
+                            GuiTools.errorDialog(ex.getMessage());
+                            ex.printStackTrace();
+                            returnToNormalState();
+                        }
                     }
                     break;
 
@@ -1393,14 +1487,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
                         // if a tile pattern is selected in the tileset,
                         // display it on the map under the cursor
                         if (map.getTileset().getSelectedTilePattern() != null) {
-                            startAddingEntity(EntityType.TILE, null);
-                            updateAddingEntity(x, y);
+                            switchAddingNewEntity(EntityType.TILE, null);
+                            updateAddingEntities(x, y);
                         }
                         break;
 
-                    case ADDING_ENTITY:
-                        // update the entity position
-                        updateAddingEntity(x, y);
+                    case ADDING_ENTITIES:
+                        // update the entities position
+                        updateAddingEntities(x, y);
                         break;
 
                     case RESIZING_ENTITIES:

@@ -806,7 +806,7 @@ public class Map extends Observable {
      */
     public List<MapEntity> getSortedEntities(Collection<MapEntity> entities) {
 
-        List<MapEntity> sortedEntities = new LinkedList<MapEntity>();
+        List<MapEntity> sortedEntities = new ArrayList<MapEntity>();
 
         // sort the entities so that they have the same order as in the map
         for (Layer layer: Layer.values()) {

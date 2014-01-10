@@ -1310,7 +1310,7 @@ public abstract class MapEntity extends Observable {
     /**
      * Sets the subtype of this entity.
      * @param subtype The subtype to set.
-     * @throws MapException If the subtype is not valid.1
+     * @throws MapException If the subtype is not valid.
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
         this.subtype = subtype;

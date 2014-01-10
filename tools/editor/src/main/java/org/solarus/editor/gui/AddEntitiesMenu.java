@@ -163,7 +163,7 @@ public class AddEntitiesMenu extends JMenu {
         }
 
         public void actionPerformed(ActionEvent ev) {
-            mapView.startAddingEntity(entityType, entitySubtype);
+            mapView.switchAddingNewEntity(entityType, entitySubtype);
         }
     }
 }

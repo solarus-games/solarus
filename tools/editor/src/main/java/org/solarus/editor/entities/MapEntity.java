@@ -177,10 +177,6 @@ public abstract class MapEntity extends Observable {
         }
 
         initializeImageDescription();
-
-        if (hasName()) {
-            computeDefaultName();
-        }
     }
 
     /**
@@ -950,30 +946,6 @@ public abstract class MapEntity extends Observable {
         this.name = name;
         setChanged();
         notifyObservers();
-    }
-
-    /**
-     * Returns the prefix of the default name to give to entities created with this type.
-     */
-    protected String getDefaultNamePrefix() {
-        return getType().getLuaName();
-    }
-
-    /**
-     * Sets a default name to the entity.
-     * @param map the map
-     */
-    private void computeDefaultName() {
-
-        try {
-            setName(getDefaultNamePrefix());
-        }
-        catch (MapException ex) {
-            // should not happen since setName() makes sure the name is unique
-            System.err.println("Unexcepted error: " + ex.getMessage());
-            ex.printStackTrace();
-            System.exit(1);
-        }
     }
 
     /**

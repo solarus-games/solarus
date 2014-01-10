@@ -909,10 +909,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
         // Store the initial position of all entities to resize
         // and chose the leader.
         // The leader will be the closest entity to the mouse.
-        // Arbitrary initialization in case the mouse is outside the view.
+        // Arbitrary choice of the leader
+        // in case the mouse is outside the view.
         Point mousePosition = getMousePosition();
-        int mouseX = getMouseInMapX(mousePosition.x);
-        int mouseY = getMouseInMapY(mousePosition.y);
 
         masterEntity = entitySelection.getEntity();
         int minDistanceToMouse2 = Integer.MAX_VALUE;
@@ -921,6 +920,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
             positionsBeforeResizing.put(entity, new Rectangle(positionInMap));
 
             if (mousePosition != null) {
+                int mouseX = getMouseInMapX(mousePosition.x);
+                int mouseY = getMouseInMapY(mousePosition.y);
                 int dx = (positionInMap.x + positionInMap.width) - mouseX;
                 int dy = (positionInMap.y + positionInMap.height) - mouseY;
                 int distanceToMouse2 = dx * dx + dy * dy;
@@ -1034,6 +1035,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private void endResizingEntities() {
 
         try {
+            boolean changed = false;
             HashMap<MapEntity, Rectangle> finalPositions = new HashMap<MapEntity, Rectangle>();
             for (MapEntity entity: map.getEntitySelection()) {
 
@@ -1041,7 +1043,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 Rectangle initialPosition = positionsBeforeResizing.get(entity);
                 Rectangle finalPosition = new Rectangle(entity.getPositionInMap());
 
-                if (!finalPosition.equals(fixedLocation)) {  // If the entity's rectangle has changed.
+                if (!finalPosition.equals(initialPosition)) {  // If the entity's rectangle has changed.
 
                     // While dragging the mouse, the entity's rectangle has followed the mouse, being
                     // resized with many small steps and with individual entities.
@@ -1050,11 +1052,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     // So first, restore entities with their initial shape.
                     finalPositions.put(entity, finalPosition);
                     map.setEntityPosition(entity, initialPosition);
+                    changed = true;
                 }
             }
 
-            // Make the resizing in one step, this time saving it into the undo/redo history.
-            map.getHistory().doAction(new ActionResizeEntities(map, finalPositions));
+            if (changed) {
+                // Make the resizing in one step, this time saving it into the undo/redo history.
+                map.getHistory().doAction(new ActionResizeEntities(map, finalPositions));
+            }
         } catch (QuestEditorException e) {
             GuiTools.errorDialog("Cannot resize entities: " + e.getMessage());
         }

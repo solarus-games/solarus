@@ -230,11 +230,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return 16;
+        return getScrollableBlockIncrement(visibleRect, orientation, direction) / 3;
     }
 
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return 160;
+        return orientation == SwingConstants.HORIZONTAL ?
+                visibleRect.width : visibleRect.height;
     }
 
     public boolean getScrollableTracksViewportWidth() {
@@ -1633,7 +1634,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
         /**
          * This method is invoked when a key is pressed on the map image.
-         * If the user presses Delete, the selected entities are removed from the map.
          */
         public void keyPressed(KeyEvent keyEvent) {
 

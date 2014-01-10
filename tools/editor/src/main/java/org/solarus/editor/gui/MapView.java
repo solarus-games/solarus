@@ -80,9 +80,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     private int total_dx;                          // in state MOVING_ENTITIES: total x and y translation
     private int total_dy;
-    private boolean isMouseInMapView;              // true if the mouse is in the map view (useful in state ADDING_ENTITIES)
     private List<MapEntity> initialSelection;      // the entities selected, saved here before drawing a selection rectangle
-    private boolean entityJustSelected;            // true if the last entity on which the mouse was pressed was not already selected
     private EntityType entityTypeBeingAdded;       // In state ADDING_ENTITIES: type of the only entity that is about to be added
                                                    // (only for a new entity, not used when pasting).
     private List<MapEntity> entitiesBeingAdded;    // In state ADDING_ENTITIES: entities about to be added.
@@ -92,6 +90,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private HashMap<MapEntity, Rectangle>
         positionsBeforeResizing;                   // in state RESIZING_ENTITIES: the initial bounding box of entities being resized.
     private static List<MapEntity> copiedEntities; // entities cut or copied, ready to be pasted (or null)
+
+    boolean blockTilesetUpdates = false;           // Temporarily ignore tileset changes in this view.
 
     // headers of the map view
 
@@ -270,7 +270,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             // the map has been modified
 
             if (parameter instanceof Tileset) {
-                // the tileset has been changed
+                // The tileset is now another one.
                 Tileset tileset = map.getTileset();
                 tileset.addObserver(this);
                 update(tileset, null);
@@ -279,23 +279,50 @@ public class MapView extends JComponent implements Observer, Scrollable {
             // redraw the image
             repaint();
         } else if (o instanceof MapEntitySelection) {
-            // the entity selection has changed
+            // The entity selection has changed.
 
-            // redraw the map
+            MapEntitySelection selection = (MapEntitySelection) o;
+            Tileset tileset = map.getTileset();
+            blockTilesetUpdates = true;  // To avoid adding a new tile by reentrant update.
+            if (selection.getNbEntitiesSelected() > 1) {
+                // Several entities are selected: unhighlight any tile pattern
+                tileset.unselectTilePattern();
+            }
+            else if (selection.getNbEntitiesSelected() == 1
+                    && selection.getEntity() instanceof Tile) {
+                // A single tile is selected: highlight its pattern in the tileset view.
+                int tilePatternId = ((Tile) selection.getEntity()).getTilePatternId();
+                tileset.setSelectedTilePatternId(tilePatternId);
+            }
+            blockTilesetUpdates = false;
+
+            // Redraw the map.
             repaint();
-        } else if (o instanceof Tileset) {
+        } else if (o instanceof Tileset
+                && !blockTilesetUpdates) {
             // the selected tile pattern in the tileset has changed
 
             Tileset tileset = map.getTileset();
-            if (tileset.getSelectedTilePattern() == null) {
-                // no tile pattern is selected anymore in the tileset
-                returnToNormalState();
-            } else if (!map.getEntitySelection().isEmpty()) {
+            TilePattern pattern = tileset.getSelectedTilePattern();
+            if (pattern == null) {
+                // No tile pattern is selected anymore in the tileset.
+                if (state == State.ADDING_ENTITIES &&
+                        entitiesBeingAdded.size() == 1 &&
+                        entityTypeBeingAdded == EntityType.TILE) {
+                    returnToNormalState();
+                }
+            }
+            else {
+                if (state == State.NORMAL) {
+                    if (!map.getEntitySelection().isEmpty()) {
+                        // If a tile pattern was just selected in the tileset whereas there is already
+                        // some entities selected in the map, unselected the entities in the map.
+                        setState(State.NORMAL);
+                        map.getEntitySelection().unselectAll();
+                    }
 
-                // if a tile pattern was just selected in the tileset whereas there is already
-                // entities selected in the map, unselected the entities in the map
-                setState(State.NORMAL);
-                map.getEntitySelection().unselectAll();
+                    switchAddingNewEntity(EntityType.TILE, null);
+                }
             }
         }
         else if (o instanceof MapViewSettings) {
@@ -382,7 +409,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                     MapEntities entities = map.getEntities(layer);
 
-                    for (MapEntity entity : entities) {
+                    for (MapEntity entity: entities) {
 
                         // should we draw this entity?
                         if (getViewSettings().isEntityShown(entity)) {
@@ -427,8 +454,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 case ADDING_ENTITIES:
 
-                    if (isMouseInMapView) {
-                        // Display the entities on the map, under the cursor.
+                    if (getMousePosition() != null) {
+                        // The mouse is over the view.
+                        // Display the entities on the map, under the pointer.
                         for (MapEntity entity: entitiesBeingAdded) {
                             entity.paint(g, zoom, getViewSettings().getShowTransparency());
                         }
@@ -650,20 +678,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
             return;
         }
 
-        isMouseInMapView = true;
-        Point mousePosition = MouseInfo.getPointerInfo().getLocation();
-        int x = getMouseInMapX(mousePosition.x);
-        int y = getMouseInMapY(mousePosition.y);
-        updateAddingEntities(x, y);
+        updateAddingEntities();
     }
 
     /**
      * In state State.ADDING_ENTITIES, updates the position of the entities
      * to add with the new mouse coordinates.
-     * @param x X coordinate of the pointer relative to the map.
-     * @param y Y coordinate of the pointer relative to the map.
      */
-    private void updateAddingEntities(int x, int y) {
+    private void updateAddingEntities() {
 
         if (masterEntity == null) {
             new NullPointerException().printStackTrace();
@@ -672,6 +694,15 @@ public class MapView extends JComponent implements Observer, Scrollable {
             returnToNormalState();
             return;
         }
+
+        // Get the coordinates of the mouse relative to the map.
+        Point mousePosition = getMousePosition();
+        if (mousePosition == null) {
+            // The mouse is not in this component.
+            return;
+        }
+        int x = getMouseInMapX(mousePosition.x);
+        int y = getMouseInMapY(mousePosition.y);
 
         // The master entity will be centered around x,y
         // and the other ones will keep their relative position to master.
@@ -1206,30 +1237,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 return;
             }
 
-            isMouseInMapView = false;
             if (state == State.ADDING_ENTITIES) {
                 repaint(); // useful when adding an entity
-            }
-        }
-
-        /**
-         * This method is called when the mouse enters the map view.
-         */
-        public void mouseEntered(MouseEvent mouseEvent) {
-
-            if (!isImageLoaded()) {
-                return;
-            }
-
-            isMouseInMapView = true;
-
-            if (state == State.NORMAL && map.getTileset().getSelectedTilePattern() != null) {
-
-                int x = getMouseInMapX(mouseEvent);
-                int y = getMouseInMapY(mouseEvent);
-
-                switchAddingNewEntity(EntityType.TILE, null);
-                updateAddingEntities(x, y);
             }
         }
 
@@ -1250,25 +1259,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 MapEntity entityClicked = getEntityClicked(mouseEvent);
 
                 // detect whether CTRL or SHIFT is pressed
-                if (mouseEvent.isControlDown() || mouseEvent.isShiftDown()) {
-
-                    MapEntitySelection entitySelection = map.getEntitySelection();
-
-                    if (entityClicked != null && !entityJustSelected
-                            && entitySelection.isSelected(entityClicked)) {
-
-                        // CTRL + left click or SHIFT + left click:
-                        // unselect the tile clicked
-                        entitySelection.unselect(entityClicked);
-                    }
-                } else if (mouseEvent.getClickCount() == 2) {
+                if (!mouseEvent.isControlDown() && !mouseEvent.isShiftDown()
+                    && mouseEvent.getClickCount() == 2
+                    && entityClicked != null) {
                     // double-click on an entity: show the edit dialog
 
-                    if (entityClicked != null) {
-                        EditEntityDialog dialog = new EditEntityDialog(map, entityClicked);
-                        dialog.setLocationRelativeTo(MapView.this);
-                        dialog.display();
-                    }
+                    EditEntityDialog dialog = new EditEntityDialog(map, entityClicked);
+                    dialog.setLocationRelativeTo(MapView.this);
+                    dialog.display();
                 }
             }
         }
@@ -1311,18 +1309,17 @@ public class MapView extends JComponent implements Observer, Scrollable {
                             entitySelection.unselectAll();
                         }
 
-                        // the user may want to select entities
+                        // The user may want to select multiple entities.
                         if (entityClicked == null ||
                             mouseEvent.isControlDown() ||
                             mouseEvent.isShiftDown()
                         ) {
                             startSelectingArea(x, y);
                         } else {
-                            // make the entity selected
+                            // Make the entity clicked selected.
                             entitySelection.select(entityClicked);
-                            entityJustSelected = !alreadySelected;
 
-                            // the user may want to move the selected entities
+                            // The user may want to move it.
                             startMovingEntities(x, y);
                         }
                     } // right click
@@ -1382,7 +1379,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
                             ex.printStackTrace();
                         }
                         startAddingEntities(copiedEntities);
-                        updateAddingEntities(x, y);
                     }
 
                     break;
@@ -1402,12 +1398,34 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 return;
             }
 
+            int button = mouseEvent.getButton();
+            MapEntitySelection entitySelection = map.getEntitySelection();
+
             switch (state) {
+
+                case NORMAL:
+
+                    if (button == MouseEvent.BUTTON1 &&
+                        mouseEvent.isControlDown() || mouseEvent.isShiftDown()) {
+
+                        // Find the entity clicked.
+                        MapEntity entityClicked = getEntityClicked(mouseEvent);
+
+                        if (entityClicked != null) {
+                            // Toggle the selected state of this entity.
+                            if (entitySelection.isSelected(entityClicked)) {
+                                entitySelection.unselect(entityClicked);
+                            }
+                            else {
+                                entitySelection.select(entityClicked);
+                            }
+                        }
+                    }
+                    break;
 
                 case RESIZING_ENTITIES:
                     // Resizing while the mouse was pressed means we were just adding entities.
-                    // FIXME: this is not entirely true, we should remember the information explictly.
-                    MapEntitySelection entitySelection = map.getEntitySelection();
+                    // FIXME: this is not entirely true, we should remember the information explicitly.
                     Collection<MapEntity> entitiesResized = entitySelection.getEntities();
                     entitiesResized = map.getSortedEntities(entitiesResized);
 
@@ -1443,9 +1461,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
                             }
 
                             startAddingEntities(copiedEntities);
-                            int x = getMouseInMapX(mouseEvent);
-                            int y = getMouseInMapY(mouseEvent);
-                            updateAddingEntities(x, y);
                         } catch (QuestEditorException ex) {
                             GuiTools.errorDialog(ex.getMessage());
                             ex.printStackTrace();
@@ -1457,8 +1472,32 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 case SELECTING_AREA:
                     returnToNormalState();
 
-                    if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+                    if (button == MouseEvent.BUTTON3) {
                         showPopupMenu(mouseEvent);
+                    }
+                    else if (button == MouseEvent.BUTTON1 &&
+                            mouseEvent.isControlDown() || mouseEvent.isShiftDown()) {
+
+                        // If the rectangle is empty, this was actually a single selection,
+                        // that ends when releasing the mouse because ctrl or shift was pressed.
+                        // Usually, a single selection ends when pressing the mouse, but when
+                        // ctrl and shift are pressed, a selection rectangle is started instead. 
+                        if (fixedLocation.x == cursorLocation.x &&
+                                fixedLocation.y == cursorLocation.y) {
+
+                            // Find the entity clicked.
+                            MapEntity entityClicked = getEntityClicked(mouseEvent);
+
+                            if (entityClicked != null) {
+                                // Toggle the selected state of this entity.
+                                if (entitySelection.isSelected(entityClicked)) {
+                                    entitySelection.unselect(entityClicked);
+                                }
+                                else {
+                                    entitySelection.select(entityClicked);
+                                }
+                            }
+                        }
                     }
                     break;
 
@@ -1484,18 +1523,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 switch (state) {
 
-                    case NORMAL:
-                        // if a tile pattern is selected in the tileset,
-                        // display it on the map under the cursor
-                        if (map.getTileset().getSelectedTilePattern() != null) {
-                            switchAddingNewEntity(EntityType.TILE, null);
-                            updateAddingEntities(x, y);
-                        }
-                        break;
-
                     case ADDING_ENTITIES:
                         // update the entities position
-                        updateAddingEntities(x, y);
+                        updateAddingEntities();
                         break;
 
                     case RESIZING_ENTITIES:

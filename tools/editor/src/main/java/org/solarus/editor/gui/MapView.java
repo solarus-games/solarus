@@ -538,6 +538,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
         for (MapEntity entity: copiedEntities) {
             entity.setMap(map);  // The entities may come from another map.
         }
+
+        // Unselect previously selected entities so better show we are pasting.
+        map.getEntitySelection().unselectAll();
+
         // Place the entities under the pointer.
         startAddingEntities(copiedEntities);
 

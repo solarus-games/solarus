@@ -582,7 +582,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
      */
     public void switchAddingNewEntity(EntityType entityType, EntitySubtype entitySubtype) {
 
-        boolean backToNormal = false;
         if (state == State.ADDING_ENTITIES
                 && entityType == entityTypeBeingAdded) {
             entityTypeBeingAdded = null;
@@ -688,7 +687,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
             // There is a change.
             try {
                 for (MapEntity entity: entitiesBeingAdded) {
-                    Rectangle oldEntityPosition = entity.getPositionInMap();
                     entity.setPositionTopLeft(
                             entity.getXTopLeft() + dx,
                             entity.getYTopLeft() + dy

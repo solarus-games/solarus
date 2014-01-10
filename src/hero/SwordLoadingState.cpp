@@ -178,6 +178,13 @@ bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& item) const {
 }
 
 /**
+ * \copydoc Hero::State::can_use_shield
+ */
+bool Hero::SwordLoadingState::can_use_shield() const {
+  return false;
+}
+
+/**
  * \brief Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::SwordLoadingState::set_animation_stopped() {

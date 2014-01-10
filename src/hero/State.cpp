@@ -1103,6 +1103,17 @@ bool Hero::State::can_pick_treasure(EquipmentItem& item) const {
 }
 
 /**
+ * \brief Returns whether attack can be stopped with a shield in this state.
+ *
+ * Returns \c true by default.
+ *
+ * \return \c true if the shield is active is this state.
+ */
+bool Hero::State::can_use_shield() const {
+  return true;
+}
+
+/**
  * \brief Returns whether the hero can use an equipment item in this state.
  *
  * Returns false by default.

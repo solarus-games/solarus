@@ -137,6 +137,13 @@ bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) const {
 }
 
 /**
+ * \copydoc Hero::State::can_use_shield
+ */
+bool Hero::SwordSwingingState::can_use_shield() const {
+  return false;
+}
+
+/**
  * \brief Returns whether crystals can be activated by the sword in this state.
  * \return true if crystals can be activated by the sword in this state
  */

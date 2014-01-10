@@ -52,6 +52,7 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
     bool is_direction_locked() const;
     bool can_take_stairs() const;
     bool can_pick_treasure(EquipmentItem& item) const;
+    bool can_use_shield() const;
     void set_animation_stopped();
     void set_animation_walking();
 };

@@ -211,7 +211,7 @@ void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
         get_keys_effect().set_action_key_effect(subtype == USUAL_NPC ?
             KeysEffect::ACTION_KEY_SPEAK : KeysEffect::ACTION_KEY_LOOK);
       }
-      else if (can_be_lifted() && get_equipment().has_ability("lift")) {
+      else if (can_be_lifted() && get_equipment().has_ability(ABILITY_LIFT)) {
         get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
       }
     }
@@ -261,7 +261,7 @@ void Npc::notify_action_command_pressed() {
     }
     else {
       // lift the entity
-      if (get_equipment().has_ability("lift")) {
+      if (get_equipment().has_ability(ABILITY_LIFT)) {
 
         hero.start_lifting(new CarriedItem(
             hero,
@@ -367,6 +367,7 @@ bool Npc::can_be_lifted() const {
   // there is currently no way to specify from the data file of the map
   // that an NPC can be lifted (nor its weight, damage, sound, etc) so this is hardcoded
   // TODO: specify the possibility to lift and the weight from Lua
+  // npc:set_weight()?
   return has_sprite() && get_sprite().get_animation_set_id() == "entities/sign";
 }
 

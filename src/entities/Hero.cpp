@@ -2125,7 +2125,7 @@ void Hero::start_deep_water() {
   }
   else {
     // move to state swimming or jumping
-    if (get_equipment().has_ability("swim")) {
+    if (get_equipment().has_ability(ABILITY_SWIM)) {
       set_state(new SwimmingState(*this));
     }
     else {
@@ -2503,7 +2503,7 @@ void Hero::start_state_from_ground() {
 
   case GROUND_DEEP_WATER:
     if (state->is_touching_ground()
-        && get_equipment().has_ability("swim")) {
+        && get_equipment().has_ability(ABILITY_SWIM)) {
       set_state(new SwimmingState(*this));
     }
     else {

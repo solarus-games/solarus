@@ -920,16 +920,16 @@ void LuaContext::item_on_using(EquipmentItem& item) {
  * Does nothing if the method is not defined.
  *
  * \param item An equipment item.
- * \param ability_name The ability just used.
+ * \param ability The ability just used.
  */
-void LuaContext::item_on_ability_used(EquipmentItem& item, const std::string& ability_name) {
+void LuaContext::item_on_ability_used(EquipmentItem& item, Ability ability) {
 
   if (!userdata_has_field(item, "on_ability_used")) {
     return;
   }
 
   push_item(l, item);
-  on_ability_used(ability_name);
+  on_ability_used(ability);
   lua_pop(l, 1);
 }
 

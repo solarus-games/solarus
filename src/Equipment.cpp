@@ -30,6 +30,18 @@
 
 namespace solarus {
 
+const std::string Equipment::ability_names[] = {
+  "tunic",
+  "sword",
+  "sword_knowledge",
+  "shield",
+  "lift",
+  "swim",
+  "run",
+  "detect_weak_walls",
+  ""  // Sentinel.
+};
+
 /**
  * \brief Constructor.
  * \param savegame The savegame to encapsulate.
@@ -556,78 +568,75 @@ int Equipment::get_item_slot(const EquipmentItem& item) const {
 
 /**
  * \brief Returns the index of the savegame variable that stores the specified ability.
- * \param ability_name Name of the ability.
+ * \param ability An ability.
  * \return Name of the boolean savegame variable that stores this ability.
  */
-std::string Equipment::get_ability_savegame_variable(
-    const std::string& ability_name) const {
+std::string Equipment::get_ability_savegame_variable(Ability ability) const {
 
-  std::string savegame_variable;
+  switch (ability) {
 
-  if (ability_name == "tunic") {
-    savegame_variable = Savegame::KEY_ABILITY_TUNIC;
-  }
-  else if (ability_name == "sword") {
-    savegame_variable = Savegame::KEY_ABILITY_SWORD;
-  }
-  else if (ability_name == "sword_knowledge") {
-    savegame_variable = Savegame::KEY_ABILITY_SWORD_KNOWLEDGE;
-  }
-  else if (ability_name == "shield") {
-    savegame_variable = Savegame::KEY_ABILITY_SHIELD;
-  }
-  else if (ability_name == "lift") {
-    savegame_variable = Savegame::KEY_ABILITY_LIFT;
-  }
-  else if (ability_name == "swim") {
-    savegame_variable = Savegame::KEY_ABILITY_SWIM;
-  }
-  else if (ability_name == "run") {
-    savegame_variable = Savegame::KEY_ABILITY_RUN;
-  }
-  else if (ability_name == "detect_weak_walls") {
-    savegame_variable = Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
-  }
-  else {
-    Debug::die(std::string("No such ability: '") + ability_name + "'");
+    case ABILITY_RESISTANCE:
+      return Savegame::KEY_ABILITY_RESISTANCE;
+
+    case ABILITY_SWORD:
+      return Savegame::KEY_ABILITY_SWORD;
+ 
+    case ABILITY_SWORD_KNOWLEDGE:
+      return Savegame::KEY_ABILITY_SWORD_KNOWLEDGE;
+
+    case ABILITY_SHIELD:
+      return Savegame::KEY_ABILITY_SHIELD;
+
+    case ABILITY_LIFT:
+      return Savegame::KEY_ABILITY_LIFT;
+
+    case ABILITY_SWIM:
+      return Savegame::KEY_ABILITY_SWIM;
+
+    case ABILITY_RUN:
+      return Savegame::KEY_ABILITY_RUN;
+
+    case ABILITY_DETECT_WEAK_WALLS:
+      return Savegame::KEY_ABILITY_DETECT_WEAK_WALLS;
   }
 
-  return savegame_variable;
+  Debug::die("Invalid ability");
+  return "";
 }
 
 /**
  * \brief Returns whether the player has at least the specified level of an ability.
- * \param ability_name the ability to get
- * \param level the minimum level to check
- * \return true if the player has at least this level of the ability
+ * \param ability The ability to get.
+ * \param level The minimum level to check.
+ * \return \c true if the player has at least this level of the ability.
  */
-bool Equipment::has_ability(const std::string& ability_name, int level) const {
-  return get_ability(ability_name) >= level;
+bool Equipment::has_ability(Ability ability, int level) const {
+  return get_ability(ability) >= level;
 }
 
 /**
  * \brief Returns the level of the specified ability.
- * \param ability_name the ability to get
- * \return the level of this ability
+ * \param ability The ability to get.
+ * \return The level of this ability.
  */
-int Equipment::get_ability(const std::string& ability_name) const {
-  return savegame.get_integer(get_ability_savegame_variable(ability_name));
+int Equipment::get_ability(Ability ability) const {
+  return savegame.get_integer(get_ability_savegame_variable(ability));
 }
 
 /**
  * \brief Sets the level of the specified ability.
- * \param ability_name the ability to set
- * \param level the level of this ability
+ * \param ability The ability to set.
+ * \param level The level of this ability.
  */
-void Equipment::set_ability(const std::string& ability_name, int level) {
+void Equipment::set_ability(Ability ability, int level) {
 
-  savegame.set_integer(get_ability_savegame_variable(ability_name), level);
+  savegame.set_integer(get_ability_savegame_variable(ability), level);
 
   Game* game = get_game();
   if (game != NULL) {
-    if (ability_name == "tunic" ||
-        ability_name == "sword" ||
-        ability_name == "shield") {
+    if (ability == ABILITY_RESISTANCE ||
+        ability == ABILITY_SWORD ||
+        ability == ABILITY_SHIELD) {
       // The hero's sprites depend on these abilities.
       game->get_hero().rebuild_equipment();
     }
@@ -639,13 +648,13 @@ void Equipment::set_ability(const std::string& ability_name, int level) {
  *
  * All item scripts are notified.
  *
- * \param ability_name the ability used
+ * \param ability The ability used.
  */
-void Equipment::notify_ability_used(const std::string& ability_name) {
+void Equipment::notify_ability_used(Ability ability) {
 
   std::map<std::string, EquipmentItem*>::iterator it;
   for (it = items.begin(); it != items.end(); it++) {
-    it->second->notify_ability_used(ability_name);
+    it->second->notify_ability_used(ability);
   }
 }
 

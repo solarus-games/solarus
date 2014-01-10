@@ -63,7 +63,7 @@ void Hero::LiftingState::start(const State* previous_state) {
   get_sprites().set_lifted_item(lifted_item);
   get_hero().set_facing_entity(NULL);
 
-  get_equipment().notify_ability_used("lift");
+  get_equipment().notify_ability_used(ABILITY_LIFT);
 }
 
 /**

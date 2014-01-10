@@ -71,7 +71,7 @@ void Hero::PlungingState::update() {
     int drown = 0;
     if (hero.get_ground_below() == GROUND_DEEP_WATER) {
 
-      if (get_equipment().has_ability("swim")) {
+      if (get_equipment().has_ability(ABILITY_SWIM)) {
         hero.set_state(new SwimmingState(hero));
       }
       else {

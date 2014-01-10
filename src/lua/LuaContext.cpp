@@ -28,6 +28,7 @@
 #include "entities/Pickable.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
+#include "Equipment.h"
 #include "EquipmentItem.h"
 #include "Treasure.h"
 #include "Map.h"
@@ -2255,12 +2256,12 @@ void LuaContext::on_using() {
 
 /**
  * \brief Calls the on_ability_used() method of the object on top of the stack.
- * \param ability_name Id of a built-in ability.
+ * \param ability A built-in ability.
  */
-void LuaContext::on_ability_used(const std::string& ability_name) {
+void LuaContext::on_ability_used(Ability ability) {
 
   if (find_method("on_ability_used")) {
-    push_string(l, ability_name);
+    push_string(l, Equipment::ability_names[ability]);
     call_function(2, 0, "on_ability_used");
   }
 }

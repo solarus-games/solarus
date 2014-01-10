@@ -970,9 +970,9 @@ int LuaContext::game_api_set_max_magic(lua_State* l) {
 int LuaContext::game_api_has_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& ability_name = luaL_checkstring(l, 2);
+  Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
 
-  bool has_ability = savegame.get_equipment().has_ability(ability_name);
+  bool has_ability = savegame.get_equipment().has_ability(ability);
 
   lua_pushboolean(l, has_ability);
   return 1;
@@ -986,9 +986,9 @@ int LuaContext::game_api_has_ability(lua_State* l) {
 int LuaContext::game_api_get_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& ability_name = luaL_checkstring(l, 2);
+  Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
 
-  int ability_level = savegame.get_equipment().get_ability(ability_name);
+  int ability_level = savegame.get_equipment().get_ability(ability);
 
   lua_pushinteger(l, ability_level);
   return 1;
@@ -1002,10 +1002,10 @@ int LuaContext::game_api_get_ability(lua_State* l) {
 int LuaContext::game_api_set_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& ability_name = luaL_checkstring(l, 2);
+  Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
   int level = luaL_checkint(l, 3);
 
-  savegame.get_equipment().set_ability(ability_name, level);
+  savegame.get_equipment().set_ability(ability, level);
 
   return 0;
 }

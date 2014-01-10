@@ -1314,7 +1314,10 @@ public class MapView extends JComponent implements Observer, Scrollable {
                         }
 
                         // the user may want to select entities
-                        if (entityClicked == null) {
+                        if (entityClicked == null ||
+                            mouseEvent.isControlDown() ||
+                            mouseEvent.isShiftDown()
+                        ) {
                             startSelectingArea(x, y);
                         } else {
                             // make the entity selected

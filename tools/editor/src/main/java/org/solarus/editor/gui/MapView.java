@@ -661,14 +661,39 @@ public class MapView extends JComponent implements Observer, Scrollable {
         }
 
         setState(State.ADDING_ENTITIES);
-
-        // Set as master entity the one the most to the left and top.
         entitiesBeingAdded = new ArrayList<MapEntity>(entities);
+
+        // Set as master entity the one the most centered one.
+        // To do this, we need to compute the center of our entities.
+        int minX = Integer.MAX_VALUE;
+        int minY = Integer.MAX_VALUE;
+        int maxX = -Integer.MAX_VALUE;
+        int maxY = -Integer.MAX_VALUE;
+
+        for (MapEntity entity: entitiesBeingAdded) {
+            Rectangle position = entity.getPositionInMap();
+            if (position.x < minX) {
+                minX = position.x;
+            }
+            if (position.x + position.width > maxX) {
+                maxX = position.x + position.width;
+            }
+            if (position.y < minY) {
+                minY = position.y;
+            }
+            if (position.y + position.height > maxY) {
+                maxY = position.y + position.height;
+            }
+        }
+        int centerX = (minX + maxX) / 2;
+        int centerY = (minY + maxY) / 2;
+
+        // We have the center. Find the closest one to the center.
         masterEntity = null;
         int minDistance2 = Integer.MAX_VALUE;
         for (MapEntity entity: entitiesBeingAdded) {
-            int dx = entity.getXTopLeft();
-            int dy = entity.getYTopLeft();
+            int dx = (entity.getXTopLeft() + entity.getWidth() / 2) - centerX;
+            int dy = (entity.getYTopLeft() + entity.getHeight() / 2) - centerY;
             int distance2 = dx * dx + dy * dy;
             if (distance2 < minDistance2) {
                 minDistance2 = distance2;

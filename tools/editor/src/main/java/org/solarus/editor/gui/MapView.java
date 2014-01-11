@@ -1486,47 +1486,51 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     break;
 
                 case RESIZING_ENTITIES:
-                    // Resizing while the mouse was pressed means we were just adding entities.
-                    // FIXME: this is not entirely true, we should remember the information explicitly.
-                    Collection<MapEntity> entitiesResized = entitySelection.getEntities();
-                    entitiesResized = map.getSortedEntities(entitiesResized);
 
-                    endResizingEntities();
-                    // At this point no entity is selected anymore.
+                    if (button == MouseEvent.BUTTON1 ||
+                            button == MouseEvent.BUTTON3) {
+                        // Resizing while the mouse was pressed means we were just adding entities.
+                        // FIXME: this is not entirely true, we should remember the information explicitly.
+                        Collection<MapEntity> entitiesResized = entitySelection.getEntities();
+                        entitiesResized = map.getSortedEntities(entitiesResized);
 
-                    if (mouseEvent.getButton() != MouseEvent.BUTTON3) {
-                        entityTypeBeingAdded = null;
-                    }
-                    else {
-                        // Add copies of these entities again if the right button was released.
+                        endResizingEntities();
+                        // At this point no entity is selected anymore.
 
-                        if (entitiesResized.size() == 1
-                                && entityTypeBeingAdded == EntityType.TILE) {
-                            // If it is a single tile just created, update the tileset view.
-                            Tile tile = (Tile) entitySelection.getEntity();
-                            int tilePatternId = tile.getTilePatternId();
-                            map.getTileset().setSelectedTilePatternId(tilePatternId);
+                        if (button != MouseEvent.BUTTON3) {
+                            entityTypeBeingAdded = null;
                         }
+                        else {
+                            // Add copies of these entities again if the right button was released.
 
-                        // Move to the state State.ADDING_ENTITIES.
-                        try {
-                            List<MapEntity> copiedEntities = new ArrayList<MapEntity>();
-                            for (MapEntity entity: entitiesResized) {
-                                MapEntity copy = MapEntity.createCopy(map, entity);
-                                copiedEntities.add(copy);
+                            if (entitiesResized.size() == 1
+                                    && entityTypeBeingAdded == EntityType.TILE) {
+                                // If it is a single tile just created, update the tileset view.
+                                Tile tile = (Tile) entitySelection.getEntity();
+                                int tilePatternId = tile.getTilePatternId();
+                                map.getTileset().setSelectedTilePatternId(tilePatternId);
                             }
 
-                            // If this was a new entity creation, restore the unitary size for next addings.
-                            if (copiedEntities.size() == 1 && entityTypeBeingAdded != null) {
-                                MapEntity entity = copiedEntities.get(0);
-                                entity.setSize(entity.getUnitarySize());
-                            }
+                            // Move to the state State.ADDING_ENTITIES.
+                            try {
+                                List<MapEntity> copiedEntities = new ArrayList<MapEntity>();
+                                for (MapEntity entity: entitiesResized) {
+                                    MapEntity copy = MapEntity.createCopy(map, entity);
+                                    copiedEntities.add(copy);
+                                }
 
-                            startAddingEntities(copiedEntities);
-                        } catch (QuestEditorException ex) {
-                            GuiTools.errorDialog(ex.getMessage());
-                            ex.printStackTrace();
-                            returnToNormalState();
+                                // If this was a new entity creation, restore the unitary size for next addings.
+                                if (copiedEntities.size() == 1 && entityTypeBeingAdded != null) {
+                                    MapEntity entity = copiedEntities.get(0);
+                                    entity.setSize(entity.getUnitarySize());
+                                }
+
+                                startAddingEntities(copiedEntities);
+                            } catch (QuestEditorException ex) {
+                                GuiTools.errorDialog(ex.getMessage());
+                                ex.printStackTrace();
+                                returnToNormalState();
+                            }
                         }
                     }
                     break;

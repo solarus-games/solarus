@@ -1421,10 +1421,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                     List<MapEntity> entitiesAdded = endAddingEntities();  // Add the entities to the map.
 
-                    // If the entities were added with a right click and are not being
-                    // resized, we propose to add another copy of these entities.
-                    if (button == MouseEvent.BUTTON3
-                            && state == State.NORMAL
+                    // Copy the entities just added for the next paste.
+                    if (state == State.NORMAL
                             && entitiesAdded != null) {
 
                         if (entitiesAdded.size() == 1
@@ -1443,7 +1441,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
                             GuiTools.errorDialog(ex.getMessage());
                             ex.printStackTrace();
                         }
-                        startAddingEntities(copiedEntities);
+
+                        // If the entities were added with a right click and are not being
+                        // resized, we propose to add another copy of these entities now.
+                        if (button == MouseEvent.BUTTON3) {
+                            startAddingEntities(copiedEntities);
+                        }
                     }
 
                     break;

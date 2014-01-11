@@ -314,7 +314,12 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 }
             }
             else {
-                if (state == State.NORMAL) {
+                // Just picked a tile pattern.
+                if (state == State.NORMAL ||
+                        (state == State.ADDING_ENTITIES && entityTypeBeingAdded != null)
+                ) {
+                    // If we are doing nothing or creating another type of entity,
+                    // create the tile.
                     if (!map.getEntitySelection().isEmpty()) {
                         // If a tile pattern was just selected in the tileset whereas there is already
                         // some entities selected in the map, unselected the entities in the map.

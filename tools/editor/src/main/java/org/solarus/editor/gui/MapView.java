@@ -230,7 +230,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return getScrollableBlockIncrement(visibleRect, orientation, direction) / 3;
+        return getScrollableBlockIncrement(visibleRect, orientation, direction) / 5;
     }
 
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
@@ -343,19 +343,21 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 MapViewSettings.ChangeInfo info = (MapViewSettings.ChangeInfo) parameter;
                 if (info.setting.equals("zoom")) {
                     // The zoom has changed.
-                    JViewport viewport = (JViewport) getParent();
+                    if (getParent() instanceof JViewport) {
+                        JViewport viewport = (JViewport) getParent();
 
-                    double oldZoom = (double) info.oldValue;
-                    double newZoom = (double) info.newValue;
-                    Rectangle viewRegion = viewport.getViewRect();
+                        double oldZoom = (double) info.oldValue;
+                        double newZoom = (double) info.newValue;
+                        Rectangle viewRegion = viewport.getViewRect();
 
-                    int centerX = viewRegion.x + viewRegion.width / 2;
-                    int x = (int) (centerX / oldZoom * newZoom) - viewRegion.width / 2;
+                        int centerX = viewRegion.x + viewRegion.width / 2;
+                        int x = (int) (centerX / oldZoom * newZoom) - viewRegion.width / 2;
 
-                    int centerY = viewRegion.y + viewRegion.height / 2;
-                    int y = (int) (centerY / oldZoom * newZoom) - viewRegion.height / 2;
+                        int centerY = viewRegion.y + viewRegion.height / 2;
+                        int y = (int) (centerY / oldZoom * newZoom) - viewRegion.height / 2;
 
-                    viewport.setViewPosition(new Point(x, y));
+                        viewport.setViewPosition(new Point(x, y));
+                    }
                 }
             }
         }
@@ -1269,6 +1271,19 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private class MapMouseInputListener extends MouseInputAdapter {
 
         /**
+         * Initial position of the cursor when dragging the view.
+         * Relative to the MapView component.
+         */
+        Point dragInitialPoint;
+
+        /**
+         * Constructor.
+         */
+        MapMouseInputListener() {
+            dragInitialPoint = new Point();
+        }
+
+        /**
          * This method is called when the mouse exits the map view.
          */
         public void mouseExited(MouseEvent mouseEvent) {
@@ -1325,11 +1340,16 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
             // detect the mouse button
             int button = mouseEvent.getButton();
-
             int x = getMouseInMapX(mouseEvent);
             int y = getMouseInMapY(mouseEvent);
 
-            switch (state) {
+            if (button == MouseEvent.BUTTON2) {
+                // Middle button: drag the view
+                dragInitialPoint = mouseEvent.getPoint();
+            }
+            else {
+
+                switch (state) {
 
                 // select or unselect an entity
                 case NORMAL:
@@ -1351,9 +1371,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                         // The user may want to select multiple entities.
                         if (entityClicked == null ||
-                            mouseEvent.isControlDown() ||
-                            mouseEvent.isShiftDown()
-                        ) {
+                                mouseEvent.isControlDown() ||
+                                mouseEvent.isShiftDown()
+                                ) {
                             startSelectingArea(x, y);
                         } else {
                             // Make the entity clicked selected.
@@ -1385,13 +1405,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                     break;
 
-                // validate the new size
+                    // validate the new size
                 case RESIZING_ENTITIES:
 
                     endResizingEntities();
                     break;
 
-                // place the new entity
+                    // place the new entity
                 case ADDING_ENTITIES:
 
                     List<MapEntity> entitiesAdded = endAddingEntities();  // Add the entities to the map.
@@ -1425,6 +1445,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 default:
                     break;
+                }
             }
         }
 
@@ -1439,6 +1460,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             }
 
             int button = mouseEvent.getButton();
+
             MapEntitySelection entitySelection = map.getEntitySelection();
 
             switch (state) {
@@ -1552,7 +1574,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
         /**
          * This method is called when the cursor is moved onto the map view.
-         * If a tile is selected in the tileset, it is displayed under the cursor.
          */
         public void mouseMoved(MouseEvent mouseEvent) {
 
@@ -1592,17 +1613,36 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 return;
             }
 
-            boolean leftClick = (mouseEvent.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0;
+            boolean leftDrag = (mouseEvent.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0;
+            boolean middleDrag = (mouseEvent.getModifiersEx() & InputEvent.BUTTON2_DOWN_MASK) != 0;
 
-            int x = getMouseInMapX(mouseEvent);
-            int y = getMouseInMapY(mouseEvent);
+            if (middleDrag) {
+                int x = mouseEvent.getX();
+                int y = mouseEvent.getY();
 
-            switch (state) {
+                if (getParent() instanceof JViewport) {
+                    // We are in a viewport: drag the view with the middle mouse button.
+                    JViewport viewport = (JViewport) getParent();
+                    viewport.setViewPosition(new Point(
+                            dragInitialPoint.x - getX() - x,
+                            dragInitialPoint.y - getY() - y
+                    ));
+
+                    // Make sure we stay in the bounds of the MapView.
+                    viewport.scrollRectToVisible(getBounds());
+                }
+            }
+            else {
+                // Left or right button.
+                int x = getMouseInMapX(mouseEvent);
+                int y = getMouseInMapY(mouseEvent);
+
+                switch (state) {
 
                 case SELECTING_AREA:
 
                     // update the selection rectangle
-                    if (leftClick) {
+                    if (leftDrag) {
                         updateSelectingArea(x, y);
                     }
                     break;
@@ -1616,13 +1656,14 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 case MOVING_ENTITIES:
                     // if we are moving entities, update their position
 
-                    if (leftClick) {
+                    if (leftDrag) {
                         updateMovingEntities(x, y);
                     }
                     break;
 
                 default:
                     break;
+                }
             }
         }
     }

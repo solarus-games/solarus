@@ -104,10 +104,12 @@ Solarus Quest Editor changes
 * The editor is now built with Maven (#365).
 * Multiple entities can now be resized at the same time (#405).
 * Copy-pasting entities now pastes them at the cursor (#404).
+* The map view can now be dragged using the middle mouse button (#413).
 * Selecting a tile now highlights its pattern in the tileset view (#290).
 * Ctrl/Shift+click even on an entity now starts a selection rectangle (#410).
 * The id and name of a new resource and now asked in a single dialog (#321).
 * The order of resources in the quest tree can now be changed (#319).
+* Increase the stepsize when scrolling the map view.
 * Fix NullPointerException when canceling the Open Project dialog.
 * Fix the tree not refreshing when deleting a resource (#335).
 * Switches, crystals and crystal blocks now show their actual sprite (#376).

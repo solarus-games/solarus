@@ -48,10 +48,10 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
 
   private:
 
-    CarriedItem* carried_item;		/**< the item to carry */
-
     void throw_item();
     void destroy_carried_item();
+
+    CarriedItem* carried_item;         /**< the item to carry */
 
 };
 

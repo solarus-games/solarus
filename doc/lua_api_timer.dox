@@ -115,10 +115,6 @@ when an \ref lua_api_enemy "enemy" is killed, its timers are canceled, etc.
 In all these cases, you don't need this function.
 But there are situations where you need to cancel explictly the timers of a
 context.
-Typically, when an \ref lua_api_enemy "enemy" is hurt, you may want to cancel
-all its timers, because
-you don't want your enemy to perform its next attacks or to make a
-movement during its hurting animation.
 
 \section lua_api_timer_methods Methods of the type timer
 
@@ -177,7 +173,7 @@ map.
   the map is suspended, \c false to continue (no value means \c true).
 
 \remark Even when this setting is set to \c true, you can override its
-behavior by calling \ref lua_api_timer_set_suspended "timer:set_suspended()"
+behavior by calling \ref lua_api_timer_set_suspended "timer:set_suspended()".
 
 */
 

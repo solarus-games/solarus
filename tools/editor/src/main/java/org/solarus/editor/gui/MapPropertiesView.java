@@ -332,7 +332,11 @@ public class MapPropertiesView extends JPanel
                             map.getHistory().doAction(new MapEditorAction() {
 
                                 public void execute() throws MapException {
-                                    MapPropertiesView.this.map.setWorld(getText());
+                                    String world = getText();
+                                    if (world.isEmpty()) {
+                                        world = null;
+                                    }
+                                    MapPropertiesView.this.map.setWorld(world);
                                 }
 
                                 public void undo() throws MapException {
@@ -375,8 +379,12 @@ public class MapPropertiesView extends JPanel
             updating = true;
             if (map != null) {
                 setEnabled(true);
-                if (!getText().equals(map.getWorld())) {
-                    setText(map.getWorld());
+                String world = map.getWorld();
+                if (world == null) {
+                    world = "";
+                }
+                if (!getText().equals(world)) {
+                    setText(world);
                 }
             }
             else {

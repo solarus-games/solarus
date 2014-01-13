@@ -20,14 +20,14 @@ A map with id \c xx is defined with two files:
   See the \ref lua_api_map "map API" page for more details about map scripts.
 
 A map is composed of the following information:
-- a size in pixels,
-- a \ref quest_tileset_data_file "tileset"
-  (the graphical skin used to draw its tiles),
-- a background music,
-- the world it belongs to (allows to define groups of maps),
-- its location relative to its world,
-- the floor it belongs to (if any),
-- all entities of the map (tiles, enemies, chests, pots, switches, etc.).
+- A size in pixels.
+- A \ref quest_tileset_data_file "tileset"
+  (the graphical skin used to draw its tiles).
+- A background music.
+- The world it belongs to (optional). Allows to groups maps together.
+- Its location relative to its world.
+- The floor it belongs to (if any),
+- All entities of the map (tiles, enemies, chests, pots, switches, etc.).
 
 All of this is stored in the map data file \c xx.dat.
 We now specify its syntax below.
@@ -55,9 +55,10 @@ double quotes.
 The following properties must be defined:
 - \c width (number): Width of the map in pixels. Must be a multiple of 8.
 - \c height (number): Height of the map in pixels. Must be a multiple of 8.
-- \c world (string): A name that identifies a group of maps this map
+- \c world (string, optional): A name that identifies a group of maps this map
   belongs to. Worlds allow to group maps together.
-  The world can be any arbitrary name. Maps that have the same world name
+  The world can be any arbitrary name.
+  Maps that have the same non-empty world name
   are considered to be part of the same environment.
   The starting location of the savegame is automatically set by the engine
   when the world changes (not when the map changes).

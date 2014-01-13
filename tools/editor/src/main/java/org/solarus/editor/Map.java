@@ -62,7 +62,7 @@ public class Map extends Observable {
     private Tileset tileset;
 
     /**
-     * A name identifying the world where this map is.
+     * A name identifying the world where this map, or null.
      * This can be used to link maps together.
      */
     private String world;
@@ -132,7 +132,7 @@ public class Map extends Observable {
         this.tileset = null;
         this.tilesetId = "";
         this.musicId = Music.unchangedId;
-        this.world = "";
+        this.world = null;
         this.floor = null;
         this.mapId = mapId;
         initialize();
@@ -379,22 +379,34 @@ public class Map extends Observable {
 
     /**
      * Returns the world where this map is.
-     * @return the world of this map
+     * @return The world of this map or null.
      */
     public String getWorld() {
         return world;
     }
 
     /**
+     * Returns whether this map belongs to a world.
+     * @return \c true if there is a world.
+     */
+    public boolean hasWorld() {
+        return world != null;
+    }
+
+    /**
      * Sets the world where this map is.
-     * @param world name of the world (cannot be null)
+     * @param world Name of the world or null.
      */
     public void setWorld(String world) {
 
-        if (world == null) {
-            throw new NullPointerException();
+        if (world == null && this.world == null) {
+            // No change.
+            return;
         }
-        if (!world.equals(this.world)) {
+
+        if (world == null
+            || this.world == null
+            || !world.equals(this.world)) {
             this.world = world;
             setChanged();
             notifyObservers();
@@ -933,10 +945,6 @@ public class Map extends Observable {
             throw new MapException("No tileset is selected");
         }
 
-        if (world.isEmpty()) {
-            throw new MapException("No world is set");
-        }
-
         // check that all entities are valid
         for (MapEntities entities: allEntities) {
             for (MapEntity entity: entities) {
@@ -1006,7 +1014,9 @@ public class Map extends Observable {
             out.println("  y = " + getLocation().y + ",");
             out.println("  width = " + getWidth() + ",");
             out.println("  height = " + getHeight() + ",");
-            out.println("  world = \"" + getWorld() + "\",");
+            if (hasWorld()) {
+                out.println("  world = \"" + getWorld() + "\",");
+            }
             if (hasFloor()) {
                 out.println("  floor = " + getFloor() + ",");
             }
@@ -1050,7 +1060,7 @@ public class Map extends Observable {
                 int y = table.get("y").checkint();
                 int width = table.get("width").checkint();
                 int height = table.get("height").checkint();
-                String world = table.get("world").checkjstring();
+                String world = table.get("world").optjstring(null);
                 Integer floor = null;
                 if (!table.get("floor").isnil()) {
                   floor = table.get("floor").checkint();

@@ -49,6 +49,7 @@ to automatically update your data files.
 Don't forget to make a backup first.
 
 * Languages: New syntax of strings.dat easier to read and parse (#170).
+* Maps: The world property is now optional (#128).
 * Maps: Destructibles no longer have subtypes, they are customizable (#270).
 * Maps: Rename entity shop_item to shop_treasure.
 * Maps: Teletransporters transition property is now a string (#402).
@@ -84,6 +85,7 @@ Changes that do not introduce incompatibilities:
 * New function sol.main.get_metatable(), allows to implement shared behaviors.
 * New method menu:is_started().
 * New method map:get_hero() (#362).
+* map:get_world() can now return nil because the world is now optional (#128).
 * Entity names are now auto-incremented to simplify their creation.
 * New method entity:get_game() (#363).
 * New event enemy:on_attacking_hero() to customize attacks (#356).

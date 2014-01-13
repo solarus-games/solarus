@@ -367,7 +367,14 @@ int LuaContext::map_api_get_world(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
-  push_string(l, map.get_world());
+  const std::string& world = map.get_world();
+
+  if (world.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, world);
+  }
   return 1;
 }
 

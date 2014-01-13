@@ -443,7 +443,7 @@ void Game::update_transitions() {
 
         // special treatments for a transition between two different worlds
         // (e.g. outside world to a dungeon)
-        if (next_map->get_world() != current_map->get_world()) {
+        if (!next_map->has_world() || next_map->get_world() != current_map->get_world()) {
 
           // reset the crystal blocks
           crystal_state = false;

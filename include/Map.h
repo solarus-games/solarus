@@ -52,6 +52,7 @@ class Map: public ExportableToLua {
     const std::string& get_tileset_id() const;
     void set_tileset(const std::string& tileset_id);
     const std::string& get_music_id() const;
+    bool has_world() const;
     const std::string& get_world() const;
     void set_world(const std::string& world);
     bool has_floor() const;

@@ -21,7 +21,7 @@ See the \ref lua_api_entity "entity API" for more details.
 
 A map has a rectangular size in pixels. The width and the height are always
 multiples of 8 pixels, and most \ref lua_api_entity "map entities" usually
-stay aligned on a grid of squares of 8*8 pixels (except when they are moving).
+stay aligned on a grid of squares of 8x8 pixels (except when they are moving).
 
 Thus, each \ref lua_api_entity "entity" has some coordinates <tt>X,Y</tt>
 on the map. But its position is also defined by a third value: its layer.
@@ -131,7 +131,7 @@ like the position of an \ref lua_api_npc "NPC" or whether a puzzle was solved,
 you can store the information into the \ref lua_api_game_set_value "savegame".
 Alternatively, if you don't want these data to be saved, but you want to
 remember then during the current \ref lua_api_game "game" session,
-you can store the information as a field the
+you can store the information as a field of the
 \ref lua_api_game "game" object. The game object persists until the player
 stops playing and comes back to the title screen or restarts the game.
 
@@ -208,16 +208,16 @@ we add a value \c on_activated on them.
 \c puzzle_switch_2
 and \c puzzle_switch_3 without declaring them.
 There is a mechanism that makes all
-named \ref lua_api_entity "entities" directly accessible in the environment
+named \ref lua_api_entity "map entities" directly accessible in the environment
 of the map script.
 See \ref lua_api_map_get_entity "map:get_entity()" for more details.
 
 But this example has some issues.
 The three \ref lua_api_switch "switches" are managed by duplicated code.
-This is error-prone because and one day, we will probably want to make a similar
+This is error-prone because one day, we will probably want to make a similar
 puzzle with 50 entities instead of just 3.
 To make your map easier to maintain, the following and equivalent version is
-much preferred:
+much more preferred:
 \verbatim
 local map = ...
 
@@ -232,7 +232,7 @@ end
 -- Define the same on_activated() method for all entities whose name
 -- starts with "puzzle_switch_".
 for switch in map:get_entities("puzzle_switch_") do
-  switch.on_activated = switch_activated
+  switch.on_activated = puzzle_switch_activated
 end
 
 function map:check_switch(switch)
@@ -280,13 +280,15 @@ Returns the current game.
 
 Returns the world name that was set on this map.
 
-The world name is a property defined in the
+The world name is an optional property defined in the
 \ref lua_api_map_overview_files "map data file".
 Worlds allow to group maps together.
 The world can be any arbitrary name. Maps that have the same world name
 are considered to be part of the same environment.
 For example, your map can be in a world named \c "outside_world",
 \c "dungeon_1" or \c "some_scary_cave".
+A map that has no world is always considered to be alone in its own
+environment.
 
 The world property is used to decide when to set the starting location of
 the player (the place where he starts when loading his
@@ -298,6 +300,7 @@ Some other features may also rely on the world property, like the state of
 \ref lua_api_crystal_block "crystal blocks". Their state persists
 between all maps of the current world and is reset when the world changes.
 - Return value (string): Name of the world of the current map.
+  \c nil means no world.
 
 \subsection lua_api_map_get_floor map:get_floor()
 

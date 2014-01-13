@@ -170,11 +170,7 @@ int Equipment::get_max_money() const {
  */
 void Equipment::set_max_money(int max_money) {
 
-  if (max_money <= 0) {
-    std::ostringstream oss;
-    oss << "Illegal maximum amount of money: " << max_money;
-    Debug::die(oss.str());
-  }
+  Debug::check_assertion(max_money >= 0, "Invalid money amount to add");
 
   savegame.set_integer(Savegame::KEY_MAX_MONEY, max_money);
 
@@ -212,9 +208,12 @@ void Equipment::set_money(int money) {
  *
  * If the maximum amount of money is reached, no more money is added.
  * 
- * \param money_to_add amount of money to add
+ * \param money_to_add Amount of money to add.
+ * Must be positive of zero.
  */
 void Equipment::add_money(int money_to_add) {
+
+  Debug::check_assertion(money_to_add >= 0, "Invalid money amount to add");
 
   set_money(get_money() + money_to_add);
 }
@@ -224,9 +223,12 @@ void Equipment::add_money(int money_to_add) {
  *
  * If the money reaches zero, no more money is removed.
  *
- * \param money_to_remove amount of money to remove
+ * \param money_to_remove Amount of money to remove.
+ * Must be positive of zero.
  */
 void Equipment::remove_money(int money_to_remove) {
+
+  Debug::check_assertion(money_to_remove >= 0, "Invalid money amount to remove");
 
   set_money(get_money() - money_to_remove);
 }
@@ -251,11 +253,7 @@ int Equipment::get_max_life() const {
  */
 void Equipment::set_max_life(int max_life) {
 
-  if (max_life <= 0) {
-    std::ostringstream oss;
-    oss << "Illegal maximum life: " << max_life;
-    Debug::die(oss.str());
-  }
+  Debug::check_assertion(max_life >= 0, "Invalid life amount");
 
   savegame.set_integer(Savegame::KEY_MAX_LIFE, max_life);
 
@@ -293,18 +291,24 @@ void Equipment::set_life(int life) {
  *
  * If the maximum life is reached, no more life is added.
  *
- * \param life_to_add level of life to add
+ * \param life_to_add Level of life to add.
+ * Must be positive of zero.
  */
 void Equipment::add_life(int life_to_add) {
+
+  Debug::check_assertion(life_to_add >= 0, "Invalid life amount to add");
 
   set_life(get_life() + life_to_add);
 }
 
 /**
  * \brief Removes some life from the player.
- * \param life_to_remove amount of life to remove
+ * \param life_to_remove Amount of life to remove.
+ * Must be positive of zero.
  */
 void Equipment::remove_life(int life_to_remove) {
+
+  Debug::check_assertion(life_to_remove >= 0, "Invalid life amount to remove");
 
   set_life(get_life() - life_to_remove);
 }
@@ -337,11 +341,7 @@ int Equipment::get_max_magic() const {
  */
 void Equipment::set_max_magic(int max_magic) {
 
-  if (max_magic < 0) {
-    std::ostringstream oss;
-    oss << "Illegal maximum number of magic points: " << max_magic;
-    Debug::die(oss.str());
-  }
+  Debug::check_assertion(max_magic >= 0, "Invalid magic amount");
 
   savegame.set_integer(Savegame::KEY_MAX_MAGIC, max_magic);
 
@@ -363,8 +363,11 @@ int Equipment::get_magic() const {
  * If the value is greater than get_max_life(), it is replaced by that value.
  *
  * \param magic The player's new number of magic points.
+ * Must be positive of zero.
  */
 void Equipment::set_magic(int magic) {
+
+  Debug::check_assertion(magic >= 0, "Invalid magic amount");
 
   magic = std::max(0, std::min(get_max_magic(), magic));
   savegame.set_integer(Savegame::KEY_CURRENT_MAGIC, magic);
@@ -375,9 +378,12 @@ void Equipment::set_magic(int magic) {
  *
  * If the maximum value is reached, no more magic points are added.
  * 
- * \param magic_to_add number of magic points to add
+ * \param magic_to_add Number of magic points to add.
+ * Must be positive of zero.
  */
 void Equipment::add_magic(int magic_to_add) {
+
+  Debug::check_assertion(magic_to_add >= 0, "Invalid magic amount to add");
 
   set_magic(get_magic() + magic_to_add);
 }
@@ -388,9 +394,12 @@ void Equipment::add_magic(int magic_to_add) {
  * If the number of magic points reaches zero, no more magic points
  * are removed.
  *
- * \param magic_to_remove number of magic poits to remove
+ * \param magic_to_remove Number of magic poits to remove.
+ * Must be positive of zero.
  */
 void Equipment::remove_magic(int magic_to_remove) {
+
+  Debug::check_assertion(magic_to_remove >= 0, "Invalid magic amount to remove");
 
   set_magic(get_magic() - magic_to_remove);
 }

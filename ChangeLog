@@ -99,6 +99,7 @@ Changes that do not introduce incompatibilities:
 * New event teletransporter:on_activated() (#312).
 * New event destination:on_activated() (#312).
 * Fix random_movement:get_max_radius() that was not working.
+* Check the parameter sign in game:add/remove life/money/magic (#416).
 
 Solarus Quest Editor changes
 ----------------------------

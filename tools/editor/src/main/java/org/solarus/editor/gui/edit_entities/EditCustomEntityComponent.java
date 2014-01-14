@@ -31,6 +31,8 @@ import org.solarus.editor.map_editor_actions.*;
 public class EditCustomEntityComponent extends EditEntityComponent {
 
     // specific fields
+    private JCheckBox withSpriteField;
+    private ResourceChooser spriteField;
     private JCheckBox withModelField;
     private ResourceChooser modelField;
 
@@ -48,6 +50,14 @@ public class EditCustomEntityComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
+        // Has a sprite?
+        withSpriteField = new JCheckBox("Display a sprite");
+        addField("Visibility", withSpriteField);
+
+        // Sprite name.
+        spriteField = new ResourceChooser(ResourceType.SPRITE, true);
+        addField("Sprite name", spriteField);
+
         // Has a model?
         withModelField = new JCheckBox("Call a custom entity script");
         addField("Use a model", withModelField);
@@ -57,6 +67,12 @@ public class EditCustomEntityComponent extends EditEntityComponent {
         addField("Entity script to call", modelField);
 
         // Listeners.
+        withSpriteField.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent ev) {
+                spriteField.setEnabled(withSpriteField.isSelected());
+            }
+        });
+
         withModelField.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent ev) {
                 modelField.setEnabled(withModelField.isSelected());
@@ -75,10 +91,15 @@ public class EditCustomEntityComponent extends EditEntityComponent {
 
         String model = customEntity.getStringProperty("model");
         boolean hasModel = model != null && Project.getResource(ResourceType.ENTITY).exists(model);
+        String sprite = customEntity.getStringProperty("sprite");
+        boolean hasSprite = sprite != null;
+
+        withSpriteField.setSelected(hasSprite);
+        spriteField.setSelectedId(hasSprite ? sprite : "");
+        spriteField.setEnabled(hasSprite);
 
         withModelField.setSelected(hasModel);
         modelField.setSelectedId(hasModel ? model : "");
-
         modelField.setEnabled(hasModel);
     }
 
@@ -88,12 +109,17 @@ public class EditCustomEntityComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
+        String sprite = spriteField.getSelectedId();
+        if (!withSpriteField.isSelected()) {
+            sprite = null;
+        }
+
         String model = modelField.getSelectedId();
         if (!withModelField.isSelected()) {
             model = null;
         }
 
-        return new ActionEditEntitySpecific(entity, model);
+        return new ActionEditEntitySpecific(entity, sprite, model);
     }
 }
 

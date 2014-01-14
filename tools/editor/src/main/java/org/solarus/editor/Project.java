@@ -758,32 +758,42 @@ public class Project {
         switch (resourceType) {
 
         case MAP:
+            getMapDir().mkdir();
             getMapFile(id).createNewFile();
             getMapScriptFile(id).createNewFile();
             break;
 
         case TILESET:
+            getTilesetDir().mkdir();
             getTilesetFile(id).createNewFile();
             break;
 
         case LANGUAGE:
+            getLanguageDir().mkdir();
+            getLanguageDir(id).mkdir();
+            getLanguageImageDir(id).mkdir();
+            getLanguageTextDir(id).mkdir();
             getDialogsFile(id).createNewFile();
             getStringsFile(id).createNewFile();
             break;
 
         case ENEMY:
+            getEnemyDir().mkdir();
             getEnemyScriptFile(id).createNewFile();
             break;
 
         case ITEM:
+            getItemDir().mkdir();
             getItemScriptFile(id).createNewFile();
             break;
 
         case ENTITY:
+            getEntityDir().mkdir();
             getEntityScriptFile(id).createNewFile();
             break;
 
         case SPRITE:
+            getSpriteDir().mkdir();
             getSpriteFile(id).createNewFile();
             break;
 

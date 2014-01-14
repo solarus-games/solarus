@@ -12,7 +12,28 @@ It can also be created dynamically with
 
 \section lua_api_custom_entity_overview Overview
  
-TODO
+Custom entities have no special properties or behavior.
+You can define them entirely in your scripts.
+
+Optionally, a custom entity may be managed by a model.
+The model is the name of a Lua script that will be applied to all custom
+entities refering to it.
+This works exactly like the
+\ref lua_api_enemy_get_breed "breed" of enemies,
+except that it is optional.
+The model is useful if you have a lot of identical (or very similar)
+custom entities in your game, like for example torches.
+
+If you make an entity that is unique in your game, like for example,
+a big rock that blocks the entrance of a dungeon and that requires some
+special action from the player, you don't need a model.
+You can just program define the behavior of your custom entity in the
+script of the map where your entity is placed.
+
+Similarly, to define a customized weapon of the hero, like a hammer,
+you don't need a model.
+Just create a custom entity from the item script of the hammer and define
+its behavior there.
 
 \section lua_api_custom_entity_inherited_methods Methods inherited from map entity
 

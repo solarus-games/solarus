@@ -42,7 +42,7 @@ public class CustomEntity extends MapEntity {
      */
     public CustomEntity(Map map) throws MapException {
         super(map, 16, 16);
-        setDirection(3);
+        setDirection(3);  // Look to the south initially.
     }
 
     /**
@@ -68,7 +68,7 @@ public class CustomEntity extends MapEntity {
 
     /**
      * Returns the number of possible directions of the entity.
-     * @return 4
+     * @return 4.
      */
     public int getNbDirections() {
         return 4;
@@ -183,3 +183,4 @@ public class CustomEntity extends MapEntity {
         }
     }
 }
+

@@ -164,6 +164,8 @@ declared in the map data file, see the
   Stairs between two maps or to a platform of a single map.
 - \ref quest_map_data_file_syntax_separator "Separator":
   A visual separation between parts of the map.
+- \ref quest_map_data_file_syntax_custom_entity "Custom entity":
+  An entity fully customizable, with no built-in behavior.
 
 The definition of a map entity starts with \c entity_type{ and ends with
 \c }, where \c entity_type is a type of entity (see below).
@@ -181,7 +183,10 @@ The following properties exist for all types of entities:
   entity individually, for example to make a
   \ref quest_map_data_file_syntax_switch "switch" open a
   \ref quest_map_data_file_syntax_door "door". 
-  If you define a name to an entity, it must be unique in the map.
+  If you define a name to an entity, it should be unique in the map.
+  If the name is already used by another entity, a suffix (of the form
+  \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+  unique.
   All entities can have a name except
   \ref quest_map_data_file_syntax_tile "tiles": this is because tiles
   don't exist individually at runtime for performance reasons.
@@ -1045,6 +1050,62 @@ separator{
   height = 1280,
 }
 \endverbatim
+
+\subsubsection quest_map_data_file_syntax_custom_entity Custom entity
+
+Custom entities have no special properties or behavior.
+You can define them entirely in your scripts.
+Optionally, a custom entity may be managed by model.
+The model is the name of a Lua script that will be applied to all custom
+entities refering to it.
+This works exactly like the breed of enemies,
+except that it is optional.
+The model is useful if you have a lot of identical (or very similar)
+custom entities in your game, like for example torches.
+
+A custom entity can be declared in the map data file with
+<tt>custom_entity{ ... }</tt>.
+
+Additional properties:
+- \c direction (number): Direction of the custom entity, between \c 0 (East)
+  and \c 3 (South).
+  This direction will be applied to the entity's sprite if possible.
+- \c width (number): Width of the entity in pixels.
+- \c height (number): Height of the entity in pixels.
+- \c sprite (string, optional): Id of the animation set of a
+  \ref quest_sprite_data_file "sprite" to create for the custom entity.
+  No value means no sprite (the custom entity will then be invisible).
+- \c model (string, optional): Model of custom entity to create.
+  The model is the name of a Lua script in the \c "entities" directory of
+  your quest. It will define the behavior of your entity.
+  No value means no model: in this case, no particular script will be called
+  but you can still define the behavior of your entity in the map script.
+
+Examples of custom entities:
+\verbatim
+-- A cannon that exists only at this place of the game.
+custom_entity{
+  name = "cannon"
+  layer = 0,
+  x = 496,
+  y = 232,
+  width = 16,
+  height = 16,
+  sprite = "entities/cannon",
+}
+
+-- A minecart.
+-- Managed by a model because several minecarts may exist in the game.
+custom_entity{
+  layer = 0,
+  x = 152,
+  y = 272,
+  width = 16,
+  height = 16,
+  model = "minecart",
+}
+\endverbatim
+
 
 \remark The syntax of map data files is actually valid Lua.
   The engine and the editor internally use Lua to parse it.

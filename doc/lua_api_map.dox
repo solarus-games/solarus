@@ -1507,6 +1507,9 @@ on the map.
     If the name is already used by another entity, a suffix (of the form
     \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
     unique.
+  - \c direction (number): Direction of the custom entity, between \c 0 (East)
+    and \c 3 (South).
+    This direction will be applied to the entity's sprite if possible.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1516,15 +1519,15 @@ on the map.
   - \c height (number, optional): Height of the entity in pixels
     (default \c 16).
   - \c model (string, optional): Model of custom entity or \c nil.
-    The model is the name of a Lua script in the \c "entities" directory
-    that will define the behavior of your entity.
+    The model is the name of a Lua script in the \c "entities" directory of
+    your quest. It will define the behavior of your entity.
     This script will be called with the entity as parameter.
     Models are useful when you need to create lots of similar entities,
     especially in different maps.
     \c nil means no model: in this case, no particular script will be called
-    and your entity will be blank.
+    but you can still define the behavior of your entity in the map script.
 - Return value (\ref lua_api_custom_entity "custom entity"): The
-  custom entity created and initialized with its model if any.
+  custom entity created.
 
 \section lua_api_map_events Events of a map
 

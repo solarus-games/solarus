@@ -46,7 +46,7 @@ public enum EntityType {
     DOOR                 ("Door",              "door",            Door.class,            null),
     STAIRS               ("Stairs",            "stairs",          Stairs.class,          Stairs.Subtype.class),
     SEPARATOR            ("Separator",         "separator",       Separator.class,       null),
-    CUSTOM               ("Custom entity",     "custom",          CustomEntity.class,    null)
+    CUSTOM               ("Custom entity",     "custom_entity",   CustomEntity.class,    null)
     ;
 
     private Class<? extends MapEntity> entityClass;

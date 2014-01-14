@@ -36,11 +36,13 @@ class CustomEntity: public Detector {
     CustomEntity(
         Game& game,
         const std::string& name,
+        int direction,
         Layer layer,
         int x,
         int y,
         int width,
         int height,
+        const std::string& sprite_name,
         const std::string& model);
     ~CustomEntity();
 
@@ -136,7 +138,10 @@ class CustomEntity: public Detector {
 
   private:
 
-    const std::string& model;          /**< Model of this custom entity, or an empty string. */
+    void initialize_sprite(
+        const std::string& sprite_name, int initial_direction);
+
+    const std::string& model;          /**< Model of this custom entity or an empty string. */
 
 };
 

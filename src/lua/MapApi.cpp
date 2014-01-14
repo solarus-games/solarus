@@ -115,6 +115,7 @@ void LuaContext::register_map_module() {
       { "create_door", map_api_create_door },
       { "create_stairs", map_api_create_stairs },
       { "create_separator", map_api_create_separator },
+      { "create_custom_entity", map_api_create_custom_entity },
       { "create_bomb", map_api_create_bomb },
       { "create_explosion", map_api_create_explosion },
       { "create_fire", map_api_create_fire },
@@ -1840,11 +1841,13 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
   Map& map = get_entity_creation_map(l);
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& name = LuaTools::opt_string_field(l, 1, "name", "");
+  int direction = LuaTools::check_int_field(l, 1, "direction");
   Layer layer = LuaTools::check_layer_field(l, 1, "layer");
   int x = LuaTools::check_int_field(l, 1, "x");
   int y = LuaTools::check_int_field(l, 1, "y");
   int width = LuaTools::opt_int_field(l, 1, "width", 16);
   int height = LuaTools::opt_int_field(l, 1, "height", 16);
+  const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
   const std::string& model = LuaTools::opt_string_field(l, 1, "model", "");
 
   entity_creation_check_size(l, 1, width, height);
@@ -1853,11 +1856,13 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
   CustomEntity* entity = new CustomEntity(
       game,
       name,
+      direction,
       layer,
       x,
       y,
       width,
       height,
+      sprite_name,
       model);
 
   map.get_entities().add_entity(entity);

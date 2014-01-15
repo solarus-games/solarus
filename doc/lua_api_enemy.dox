@@ -698,7 +698,7 @@ This means that you can safely use
 <tt>enemy:on_dead()</tt> to detect when all enemies with a common prefix
 are dead.
 
-\subsection lua_api_enemy_on_immobilized enemy:on_immobilized():
+\subsection lua_api_enemy_on_immobilized enemy:on_immobilized()
 
 Called when the enemy is immobilized.
 

@@ -230,7 +230,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return getScrollableBlockIncrement(visibleRect, orientation, direction) / 5;
+        return getScrollableBlockIncrement(visibleRect, orientation, direction) / 10;
     }
 
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
@@ -1755,29 +1755,6 @@ public class MapView extends JComponent implements Observer, Scrollable {
                         GuiTools.errorDialog("Cannot change the layer: " + e.getMessage());
                     }
                     break;
-                /* TODO not working yet because of the JScrollPane...
-                case KeyEvent.VK_RIGHT:
-                case KeyEvent.VK_UP:
-                case KeyEvent.VK_LEFT:
-                case KeyEvent.VK_DOWN:
-                if (!selectedEntities.isEmpty()) {
-                try {
-                int dx = 0;
-                int dy = 0;
-
-                if (key == KeyEvent.VK_RIGHT) { dx = 8; }
-                else if (key == KeyEvent.VK_UP) { dy = -8; }
-                else if (key == KeyEvent.VK_LEFT) { dx = -8; }
-                else if (key == KeyEvent.VK_DOWN) { dy = 8; }
-
-                map.getHistory().doAction(new ActionMoveEntities(map, selectedEntities.getEntities(), dx, dy));
-                }
-                catch (QuestEditorException e) {
-                GuiTools.errorDialog("Cannot move the entities: " + e.getMessage());
-                }
-                }
-                break;
-                 */
             }
         }
     }

@@ -108,7 +108,7 @@ public class Tile extends MapEntity {
 
             int tilePatternId = getTilePatternId();
             try {
-                TilePattern newTilePattern = getTilePattern();
+                TilePattern newTilePattern = tileset.getTilePattern(tilePatternId);
 
                 // if a tileset was already defined, check that the
                 // tile has the same properties

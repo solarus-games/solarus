@@ -94,5 +94,15 @@ void CustomEntity::initialize_sprite(
   }
 }
 
+/**
+ * \brief Returns whether this entity is an obstacle for another one.
+ * \param other Another entity.
+ * \return \c true if this entity is an obstacle for the other one.
+ */
+bool CustomEntity::is_obstacle_for(const MapEntity& other) const {
+  // TODO
+  return true;
+}
+
 }
 

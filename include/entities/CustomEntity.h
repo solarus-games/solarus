@@ -50,6 +50,8 @@ class CustomEntity: public Detector {
 
     const std::string& get_model() const;
 
+    bool is_obstacle_for(const MapEntity& other) const;
+
     /* TODO
     bool can_be_obstacle() const;
     bool is_ground_observer() const;
@@ -100,7 +102,6 @@ class CustomEntity: public Detector {
         const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
         bool killed);
-    bool is_obstacle_for(const MapEntity& other) const;
     bool is_low_wall_obstacle() const;
     bool is_shallow_water_obstacle() const;
     bool is_deep_water_obstacle() const;

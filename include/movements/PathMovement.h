@@ -85,22 +85,23 @@ class PathMovement: public PixelMovement {
     void snap();
     void set_snapping_trajectory(const Rectangle& src, const Rectangle& dst);
 
-    std::string initial_path;					/**< the path: each character is a direction ('0' to '7')
-								* and corresponds to a trajectory of 8 pixels (performed by PixelMovement) */
-    std::string remaining_path;					/**< the remaining part of the path */
-    int current_direction;					/**< current element in the path (0 to 7) */
-    int total_distance_covered;					/**< total number of pixels covered (each element of the path counts for 8) */
-    bool stopped_by_obstacle;					/**< true if the movement was stopped by an obstacle */
+    std::string initial_path;          /**< the path: each character is a direction ('0' to '7')
+                                        * and corresponds to a trajectory of 8 pixels (performed by PixelMovement) */
+    std::string remaining_path;        /**< the remaining part of the path */
+    int current_direction;             /**< current element in the path (0 to 7) */
+    int total_distance_covered;        /**< total number of pixels covered (each element of the path counts for 8) */
+    bool stopped_by_obstacle;          /**< true if the movement was stopped by an obstacle */
 
-    int speed;							/**< the movement speed in pixels per second (corrected for diagonal moves) */
-    bool loop;							/**< should the path restart from the beginning once finished? */
+    int speed;                         /**< the movement speed in pixels per second (corrected for diagonal moves) */
+    bool loop;                         /**< should the path restart from the beginning once finished? */
 
     // snapping
-    bool snap_to_grid;						/**< indicates that the entity must be aligned to the grid before moving */
-    bool snapping;						/**< indicates that the entity is currently being aligned to the grid */
-    uint32_t stop_snapping_date;				/**< date when we stop trying to snap the entity if it is unsuccessful */
+    bool snap_to_grid;                 /**< indicates that the entity must be aligned to the grid before moving */
+    bool snapping;                     /**< indicates that the entity is currently being aligned to the grid */
+    uint32_t stop_snapping_date;       /**< date when we stop trying to snap the entity if it is unsuccessful */
 
-    static const std::string elementary_moves[];		/**< 8 pixel trajectory (in the PixelMovement sense) for each direction (0 to 7) */
+    static const std::string
+        elementary_moves[];            /**< 8 pixel trajectory (in the PixelMovement sense) for each direction (0 to 7) */
 
 };
 

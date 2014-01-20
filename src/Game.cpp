@@ -129,6 +129,7 @@ Game::~Game() {
 
   delete transition;
   delete keys_effect;
+  hero->notify_being_removed();
   RefCountable::unref(hero);
   delete commands;
 

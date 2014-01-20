@@ -86,6 +86,8 @@ MapEntities::~MapEntities() {
 
   detectors.clear();
   entities_to_remove.clear();
+
+  // Don't delete the hero because he continues to live on the next map.
 }
 
 /**

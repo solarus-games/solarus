@@ -170,14 +170,8 @@ public class TilePattern extends Observable {
                 Animation animation, AnimationSeparation animationSeparation) throws TilesetException {
         super();
 
-        // check the width and the height
-        if (positionInTileset.width <= 0 || positionInTileset.height <= 0 ||
-            positionInTileset.width % 8 != 0 || positionInTileset.height % 8 != 0) {
-            throw new TilesetException("The size of a tile must be positive and multiple of 8 pixels");
-        }
-
-        this.positionInTileset = positionInTileset;
         this.defaultLayer = defaultLayer;
+        setPositionInTileset(positionInTileset);
         setAnimation(animation);
         setAnimationSeparation(animationSeparation);
         setGround(ground);
@@ -193,6 +187,26 @@ public class TilePattern extends Observable {
      */
     public Rectangle getPositionInTileset() {
         return positionInTileset;
+    }
+
+    /**
+     * Changes the rectangle of the tile pattern.
+     * If the tile pattern is animated, the rectangle should contain the 3 frames.
+     * @param position The new pattern's rectangle.
+     * @throws TilesetException If the new position is invalid.
+     */
+    public void setPositionInTileset(Rectangle position) throws TilesetException {
+
+        // Check the size.
+        if (position.width <= 0 || position.height <= 0 ||
+                position.width % 8 != 0 || position.height % 8 != 0) {
+            throw new TilesetException(
+                    "The size of a tile pattern must be positive and multiple of 8 pixels");
+        }
+
+        this.positionInTileset = position;
+        setChanged();
+        notifyObservers();
     }
 
     /**

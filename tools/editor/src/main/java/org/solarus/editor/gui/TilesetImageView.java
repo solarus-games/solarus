@@ -33,7 +33,9 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      */
     private enum State {
         NORMAL,                   /**< Can select a tile. */
-        DRAWING_NEW_PATTERN       /**< Drawing a rectangle for a new tile. */
+        DRAWING_NEW_PATTERN,      /**< Drawing a rectangle for a new tile. */
+        MOVING_PATTERN            /**< Moving an existing tile to another place
+                                   * in the PNG image. */
     }
 
     /**
@@ -51,38 +53,42 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      */
     private boolean editable;
 
-    // State NORMAL.
-
     /**
-     * The current selected tile.
+     * The currently selected tile in the tileset.
      */
     private TilePattern currentSelectedTilePattern;
 
-    // State DRAWING_NEW_PATTERN.
+    /**
+     * In states DRAWING_NEW_PATTERN and MOVING_PATTERN:
+     * point where the dragging started.
+     */
+    private Point draggingStartPoint;
 
     /**
-     * Point where the selection started,
-     * or null if there in no new tile selection.
+     * In states DRAWING_NEW_PATTERN and MOVING_PATTERN:
+     * point where the dragging is currently.
      */
-    private Point newPatternStartPoint;
+    private Point draggingCurrentPoint;
 
     /**
-     * Point where the selection currently ends,
-     * or null if there in no new tile selection.
+     * In states DRAWING_NEW_PATTERN and MOVING_PATTERN:
+     * position of the tile pattern the user is creating
+     * or moving.
      */
-    private Point newPatternCurrentPoint;
+    private Rectangle currentArea;
 
     /**
-     * Position of the tile pattern the user is creating,
-     * or null if there no new tile pattern selected.
+     * In states DRAWING_NEW_PATTERN and MOVING_PATTERN:
+     * true if the area is overlapping an existing tile pattern.
+     * Is so, the tile pattern cannot be created or moved.
      */
-    private Rectangle newPatternArea;
+    private boolean isCurrentAreaOverlapping;
 
     /**
-     * True if the new tile pattern area is overlapping an existing tile pattern.
-     * Is so, the tile pattern cannot be created.
+     * In state MOVING_PATTERN:
+     * the tile pattern being moved by the user.
      */
-    private boolean isNewPatternAreaOverlapping;
+    private TilePattern patternBeingMoved;
 
     // Components.
 
@@ -90,6 +96,11 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      * A popup menu with an item "Create", displayed when the user selects a new tile pattern.
      */
     private JPopupMenu popupMenuCreate;
+
+    /**
+     * A popup menu with an item "Move here", displayed when the user moves a tile pattern.
+     */
+    private JPopupMenu popupMenuMove;
 
     /**
      * A popup menu with an item "Obstacle" and an item "Delete", displayed
@@ -118,7 +129,6 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
         if (editable) {
             JMenuItem item;
-            JMenuItem itemCancelCreate = new JMenuItem("Cancel");
 
             // popup menu to create a tile pattern
             popupMenuCreate = new JPopupMenu();
@@ -131,6 +141,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
             item.addActionListener(new ActionCreateTilePattern(Ground.WALL));
             popupMenuCreate.add(item);
 
+            JMenuItem itemCancelCreate = new JMenuItem("Cancel");
             itemCancelCreate.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         tileset.unselectTilePattern();
@@ -139,6 +150,35 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
                 });
             popupMenuCreate.addSeparator();
             popupMenuCreate.add(itemCancelCreate);
+
+            // Popup menu to move a tile pattern.
+            popupMenuMove = new JPopupMenu();
+
+            item = new JMenuItem("Move here");
+            item.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // Actually move the pattern.
+                    try {
+                        patternBeingMoved.setPositionInTileset(currentArea);
+                    }
+                    catch (TilesetException ex) {
+                        // Should not happen: this view is supposed to
+                        // draw a valid rectangle.
+                        ex.printStackTrace();
+                    }
+                    startStateNormal();
+                }
+            });
+            popupMenuMove.add(item);
+
+            JMenuItem itemCancelMove = new JMenuItem("Cancel");
+            itemCancelMove.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        startStateNormal();
+                    }
+                });
+            popupMenuMove.addSeparator();
+            popupMenuMove.add(itemCancelMove);
 
             // popup menu for a selected tile pattern
             popupMenuSelectedTilePattern = new JPopupMenu();
@@ -291,9 +331,10 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     private void startStateNormal() {
 
         state = State.NORMAL;
-        newPatternStartPoint = null;
-        newPatternCurrentPoint = null;
-        newPatternArea = null;
+        draggingStartPoint = null;
+        draggingCurrentPoint = null;
+        currentArea = null;
+        patternBeingMoved = null;
         repaint();
     }
 
@@ -304,44 +345,43 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     private void startStateDrawingNewArea(Point startPoint) {
 
         state = State.DRAWING_NEW_PATTERN;
-        newPatternStartPoint = startPoint;
+        draggingStartPoint = startPoint;
         repaint();
     }
 
     /**
-     * Returns the position of the tile pattern the user is creating.
-     * @return position of the new tile pattern, or null if there no new tile pattern selected
+     * Sets the state to moving an existing tile pattern.
+     * @param pattern The pattern to move.
+     * @param startPoint Where the user starts dragging the pattern.
      */
-    public Rectangle getNewTilePatternArea() {
+    private void startStateMovingPattern(TilePattern pattern, Point startPoint) {
 
-        if (state != State.DRAWING_NEW_PATTERN) {
-            return null;
-        }
-
-        return newPatternArea;
+        state = State.MOVING_PATTERN;
+        patternBeingMoved = pattern;
+        draggingStartPoint = new Point(startPoint);
+        currentArea = new Rectangle(pattern.getPositionInTileset());
+        repaint();
     }
 
     /**
-     * Changes the position of the tile pattern the user is creating.
+     * Changes the position of the tile pattern the user is creating or moving
      * If the specified area is the same than before, nothing is done.
-     * @param newTileArea position of the new tile, or null if there is currently no new tile selected
+     * @param newArea new position of the pattern.
      */
-    public void setNewTilePatternArea(Rectangle newTilePatternArea) {
+    public void setCurrentArea(Rectangle newArea) {
 
-        if (state != State.DRAWING_NEW_PATTERN) {
-            return;
-        }
+        if (!newArea.equals(this.currentArea)) {
 
-        if (!newTilePatternArea.equals(this.newPatternArea)) {
+            this.currentArea = new Rectangle(newArea);
 
-            this.newPatternArea = newTilePatternArea;
-
-            // determine whether or not the new tile pattern area is overlapping an existing tile pattern
-            isNewPatternAreaOverlapping = false;
+            // Determine whether or not the new area is overlapping
+            // an existing tile pattern.
+            isCurrentAreaOverlapping = false;
             for (TilePattern pattern: tileset.getTilePatterns()) {
 
-                if (pattern.getPositionInTileset().intersects(newTilePatternArea)) {
-                    isNewPatternAreaOverlapping = true;
+                if (pattern.getPositionInTileset().intersects(newArea)
+                        && pattern != patternBeingMoved) {
+                    isCurrentAreaOverlapping = true;
                     break;
                 }
             }
@@ -353,17 +393,8 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      * Returns whether or not the user is selecting a new tile pattern.
      * @return true if the user is selecting a new tile pattern.
      */
-    public boolean isSelectingNewTilePattern() {
+    public boolean isDrawingNewTilePattern() {
         return state == State.DRAWING_NEW_PATTERN;
-    }
-
-    /**
-     * Returns whether or not the area selected by the user to make a new tile pattern
-     * is overlapping an existing tile pattern.
-     * @return true if the new tile pattern area is overlapping an existing tile pattern, false otherwise
-     */
-    public boolean isNewTilePatternAreaOverlapping() {
-        return isSelectingNewTilePattern() && isNewPatternAreaOverlapping;
     }
 
     /**
@@ -382,16 +413,19 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
             // Draw a rectangle depending on the current state.
             Rectangle rectangleToDraw = null;
-            if (isSelectingNewTilePattern()) {
 
-                // The selected tile doesn't exist yet. Draw the rectangle
-                // the user is dragging.
-                rectangleToDraw = getNewTilePatternArea();
+            switch (state) {
+
+            case DRAWING_NEW_PATTERN:
+            case MOVING_PATTERN:
+
+                // Draw the rectangle the user is dragging.
+                rectangleToDraw = currentArea;
 
                 if (rectangleToDraw == null
                     || rectangleToDraw.width == 0
                     || rectangleToDraw.height == 0
-                    || isNewTilePatternAreaOverlapping()) {
+                    || isCurrentAreaOverlapping) {
                     // Invalid area.
                     g.setColor(Color.RED);
                 }
@@ -399,9 +433,10 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
                     // Valid area.
                     g.setColor(Color.GREEN);
                 }
-            }
-            else {
-                // Normal state: an existing tile pattern may be selected.
+                break;
+
+            case NORMAL:
+                // Normal state: draw the selected pattern if any.
                 selectedTilePattern = tileset.getSelectedTilePattern();
 
                 if (selectedTilePattern != null) {
@@ -409,6 +444,8 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
                     rectangleToDraw = selectedTilePattern.getPositionInTileset();
                     g.setColor(Color.BLUE);
                 }
+                break;
+
             }
 
             // Draw the additional rectangle.
@@ -522,8 +559,12 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
          */
         public void mousePressed(MouseEvent mouseEvent) {
 
-            // only consider left clicks
-            if (isImageLoaded() && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+            if (!isImageLoaded()) {
+                return;
+            }
+
+            // Only consider left clicks.
+            if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
                 Image scaledImage = tileset.getDoubleImage();
 
@@ -532,28 +573,45 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
                 int y = Math.min(Math.max(mouseEvent.getY(), 0),
                         scaledImage.getHeight(TilesetImageView.this)) / 2;
 
-                TilePattern selectedTilePattern = tileset.getSelectedTilePattern();
+                switch (state) {
 
-                if (selectedTilePattern != null &&
-                        !selectedTilePattern.getPositionInTileset().contains(x,y)) {
-                    // An existing tile pattern was selected and the user
-                    // pressed the mouse button outside: unselect it.
-                    tileset.unselectTilePattern();
+                case NORMAL:
+                {
+                    TilePattern selectedTilePattern = tileset.getSelectedTilePattern();
+
+                    if (selectedTilePattern != null) {
+                        // An existing tile pattern is selected.
+                        if (selectedTilePattern.getPositionInTileset().contains(x,y)) {
+                            // The user pressed the button inside: move it.
+                            startStateMovingPattern(selectedTilePattern, new Point(x, y));
+                        }
+                        else {
+                            // The user pressed the button outside: unselect it.
+                            tileset.unselectTilePattern();
+                        }
+                    }
+
+                    // Begin a selection.
+                    if (state == State.NORMAL && editable) {
+                        Point startPoint = new Point(
+                                (x + 4) / 8 * 8,
+                                (y + 4) / 8 * 8
+                        );
+                        startStateDrawingNewArea(startPoint);
+                    }
                 }
+                    break;
 
-                else if (isSelectingNewTilePattern()) {
+                case DRAWING_NEW_PATTERN:
                     // A new tile pattern was being drawn: unselect it.
                     tileset.unselectTilePattern();
                     startStateNormal();
-                }
 
-                // Begin a selection.
-                if (!isSelectingNewTilePattern() && editable) {
-                    Point startPoint = new Point(
-                            (x + 4) / 8 * 8,
-                            (y + 4) / 8 * 8
-                    );
-                    startStateDrawingNewArea(startPoint);
+                    break;
+
+                case MOVING_PATTERN:
+                    startStateNormal();
+                    break;
                 }
             }
         }
@@ -565,26 +623,56 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
          */
         public void mouseReleased(MouseEvent mouseEvent) {
 
+            if (!isImageLoaded()) {
+                return;
+            }
+
             // only consider left clicks
-            if (isImageLoaded() && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+            if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
-                // keep the new selected tile pattern only if it really exists
-                Rectangle newTilePatternArea = getNewTilePatternArea();
-                if (isSelectingNewTilePattern()
-                    && newTilePatternArea != null
-                    && newTilePatternArea.width > 0
-                    && newTilePatternArea.height > 0
-                    && !isNewTilePatternAreaOverlapping()) {
+                switch (state) {
 
-                    // the area is valid: show a popup menu with an item "Create"
-                    popupMenuCreate.show(TilesetImageView.this,
-                                         mouseEvent.getX(),
-                                         mouseEvent.getY());
-                }
-                else {
-                    // the area doesn't exist or is not valid: we cancel the selection
-                    tileset.unselectTilePattern();
-                    startStateNormal();
+                case NORMAL:
+                    break;
+
+                case DRAWING_NEW_PATTERN:
+                    // Keep the new area only if it exists.
+                    if (currentArea != null
+                            && currentArea.width > 0
+                            && currentArea.height > 0
+                            && !isCurrentAreaOverlapping) {
+
+                        // The area is valid: show a popup menu with an item "Create".
+                        popupMenuCreate.show(TilesetImageView.this,
+                                mouseEvent.getX(),
+                                mouseEvent.getY());
+                    }
+                    else {
+                        // The area doesn't exist or is not valid: we cancel
+                        // the selection.
+                        tileset.unselectTilePattern();
+                        startStateNormal();
+                    }
+                    break;
+
+                case MOVING_PATTERN:
+                    if (currentArea != null
+                            && currentArea.width > 0
+                            && currentArea.height > 0
+                            && !isCurrentAreaOverlapping
+                            && !currentArea.equals(patternBeingMoved.getPositionInTileset())) {
+                        // The pattern was dropped in a valid area: show a popup menu
+                        // with an item "Move here".
+                        popupMenuMove.show(TilesetImageView.this,
+                                mouseEvent.getX(),
+                                mouseEvent.getY());
+                    }
+                    else {
+                        // The pattern was dropped at its original place
+                        // or at an invalid place.
+                        startStateNormal();
+                    }
+                    break;
                 }
             }
         }
@@ -596,52 +684,83 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
     private class TilesetImageMouseMotionListener extends MouseMotionAdapter {
 
         /**
-         * This method is called when a mouse button is pressed on the component and then dragged.
+         * This method is called when a mouse button is pressed
+         * on the component and then dragged.
          * It is called again until the mouse button is released.
          */
         public void mouseDragged(MouseEvent mouseEvent) {
 
-            if (isImageLoaded() && isSelectingNewTilePattern()) {
+            if (!isImageLoaded()) {
+                return;
+            }
 
-                Image scaledImage = tileset.getDoubleImage();
+            Image scaledImage = tileset.getDoubleImage();
+            switch (state) {
+
+            case NORMAL:
+                break;
+
+            case DRAWING_NEW_PATTERN:
 
                 // compute the selected area
-                Point selectionPreviousPoint = newPatternCurrentPoint;
-                newPatternCurrentPoint = mouseEvent.getPoint();
+                Point selectionPreviousPoint = draggingCurrentPoint;
+                draggingCurrentPoint = mouseEvent.getPoint();
 
-                newPatternCurrentPoint.x = Math.min(Math.max(
+                draggingCurrentPoint.x = Math.min(Math.max(
                         mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this));
-                newPatternCurrentPoint.y = Math.min(Math.max(
+                draggingCurrentPoint.y = Math.min(Math.max(
                         mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this));
 
-                newPatternCurrentPoint.x = (newPatternCurrentPoint.x + 8) / 16 * 8;
-                newPatternCurrentPoint.y = (newPatternCurrentPoint.y + 8) / 16 * 8;
+                draggingCurrentPoint.x = (draggingCurrentPoint.x + 8) / 16 * 8;
+                draggingCurrentPoint.y = (draggingCurrentPoint.y + 8) / 16 * 8;
 
-                if (!newPatternCurrentPoint.equals(selectionPreviousPoint)) {
+                if (!draggingCurrentPoint.equals(selectionPreviousPoint)) {
 
                     Rectangle newTilePatternArea = new Rectangle();
 
                     // the selected area has changed: recalculate the rectangle
-                    if (newPatternStartPoint.x < newPatternCurrentPoint.x) {
-                        newTilePatternArea.x = newPatternStartPoint.x;
-                        newTilePatternArea.width = newPatternCurrentPoint.x - newPatternStartPoint.x;
+                    if (draggingStartPoint.x < draggingCurrentPoint.x) {
+                        newTilePatternArea.x = draggingStartPoint.x;
+                        newTilePatternArea.width = draggingCurrentPoint.x - draggingStartPoint.x;
                     }
                     else {
-                        newTilePatternArea.x = newPatternCurrentPoint.x;
-                        newTilePatternArea.width = newPatternStartPoint.x - newPatternCurrentPoint.x;
+                        newTilePatternArea.x = draggingCurrentPoint.x;
+                        newTilePatternArea.width = draggingStartPoint.x - draggingCurrentPoint.x;
                     }
 
-                    if (newPatternStartPoint.y < newPatternCurrentPoint.y) {
-                        newTilePatternArea.y = newPatternStartPoint.y;
-                        newTilePatternArea.height = newPatternCurrentPoint.y - newPatternStartPoint.y;
+                    if (draggingStartPoint.y < draggingCurrentPoint.y) {
+                        newTilePatternArea.y = draggingStartPoint.y;
+                        newTilePatternArea.height = draggingCurrentPoint.y - draggingStartPoint.y;
                     }
                     else {
-                        newTilePatternArea.y = newPatternCurrentPoint.y;
-                        newTilePatternArea.height = newPatternStartPoint.y - newPatternCurrentPoint.y;
+                        newTilePatternArea.y = draggingCurrentPoint.y;
+                        newTilePatternArea.height = draggingStartPoint.y - draggingCurrentPoint.y;
                     }
 
-                    setNewTilePatternArea(newTilePatternArea);
+                    setCurrentArea(newTilePatternArea);
                 }
+                break;
+
+            case MOVING_PATTERN:
+            {
+                draggingCurrentPoint = mouseEvent.getPoint();
+
+                draggingCurrentPoint.x = Math.min(Math.max(
+                        mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this));
+                draggingCurrentPoint.y = Math.min(Math.max(
+                        mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this));
+
+                Rectangle newTilePatternArea = new Rectangle(currentArea);
+                newTilePatternArea.x = patternBeingMoved.getX()
+                        + draggingCurrentPoint.x - draggingStartPoint.x;
+                newTilePatternArea.y = patternBeingMoved.getY()
+                        + draggingCurrentPoint.y - draggingStartPoint.y;
+
+                newTilePatternArea.x = (newTilePatternArea.x + 8) / 16 * 8;
+                newTilePatternArea.y = (newTilePatternArea.y + 8) / 16 * 8;
+                setCurrentArea(newTilePatternArea);
+            }
+            break;
             }
         }
     }
@@ -669,8 +788,8 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
          */
         public void actionPerformed(ActionEvent ev) {
             try {
-                if (isSelectingNewTilePattern() && !isNewPatternAreaOverlapping) {
-                    tileset.addTilePattern(newPatternArea, ground);
+                if (isDrawingNewTilePattern() && !isCurrentAreaOverlapping) {
+                    tileset.addTilePattern(currentArea, ground);
                     startStateNormal();
                 }
             }

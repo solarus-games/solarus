@@ -111,6 +111,7 @@ Solarus Quest Editor changes
 * The map view can now be dragged using the middle mouse button (#413).
 * Selecting a tile now highlights its pattern in the tileset view (#290).
 * Ctrl/Shift+click even on an entity now starts a selection rectangle (#410).
+* Tile patterns can now be moved in the tileset editor (#422).
 * The id and name of a new resource and now asked in a single dialog (#321).
 * The order of resources in the quest tree can now be changed (#319).
 * Increase the stepsize when scrolling the map view.

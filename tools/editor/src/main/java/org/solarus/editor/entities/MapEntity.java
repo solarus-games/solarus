@@ -225,12 +225,11 @@ public abstract class MapEntity extends Observable {
     /**
      * Creates a copy of the specified entity.
      * If the entity has a name, a different name is automatically assigned to the copy.
-     * @param map the map
-     * @param other an entity
-     * @return the copy created
+     * @param other An entity.
+     * @return The copy created.
      * @throws QuestEditorException If the entity could not be copied.
      */
-    public static MapEntity createCopy(Map map, MapEntity other) throws QuestEditorException {
+    public static MapEntity createCopy(MapEntity other) throws QuestEditorException {
 
         MapEntity entity = null;
         try {
@@ -419,10 +418,14 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Changes the map of this entity.
-     * @param map the new map
+     * @param map The new map.
+     * @param QuestEditorException if this entity cannot exist in the new map.
      */
-    public void setMap(Map map) {
+    public void setMap(Map map) throws QuestEditorException {
         this.map = map;
+
+        // The tileset may have changed.
+        setTileset(map.getTileset());
     }
 
     /**

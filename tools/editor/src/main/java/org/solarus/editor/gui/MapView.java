@@ -521,7 +521,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
         try {
             for (MapEntity entity: selectedEntities) {
-                MapEntity copy = MapEntity.createCopy(map, entity);
+                MapEntity copy = MapEntity.createCopy(entity);
                 copiedEntities.add(copy);
             }
         } catch (QuestEditorException ex) {
@@ -543,29 +543,27 @@ public class MapView extends JComponent implements Observer, Scrollable {
             return;
         }
 
-        for (MapEntity entity: copiedEntities) {
-            entity.setMap(map);  // The entities may come from another map.
+        List<MapEntity> successfullyCopiedEntities = new ArrayList<MapEntity>();
+
+        for (MapEntity original: copiedEntities) {
+            try {
+                // The entities may come from another map.
+                MapEntity copy = MapEntity.createCopy(original);
+                copy.setMap(map);
+                successfullyCopiedEntities.add(copy);
+            }
+            catch (QuestEditorException ex) {
+                // This entity cannot exist in the new map, typically a tile
+                // that does not exist in the tileset of the new map.
+                // Don't paste it in this case.
+            }
         }
 
         // Unselect previously selected entities so better show we are pasting.
         map.getEntitySelection().unselectAll();
 
         // Place the entities under the pointer.
-        startAddingEntities(copiedEntities);
-
-        // Make new copies for a next paste.
-        List<MapEntity> pastedEntities = copiedEntities;
-        copiedEntities = new ArrayList<MapEntity>();
-
-        try {
-            for (MapEntity entity: pastedEntities) {
-                copiedEntities.add(MapEntity.createCopy(map, entity));
-            }
-        } catch (QuestEditorException ex) {
-            GuiTools.errorDialog(ex.getMessage());
-            ex.printStackTrace();
-            copiedEntities = null;
-        }
+        startAddingEntities(successfullyCopiedEntities);
     }
 
     /**
@@ -1434,7 +1432,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                         copiedEntities = new ArrayList<MapEntity>();
                         try {
                             for (MapEntity entity: entitiesAdded) {
-                                MapEntity copy = MapEntity.createCopy(map, entity);
+                                MapEntity copy = MapEntity.createCopy(entity);
                                 copiedEntities.add(copy);
                             }
                         } catch (QuestEditorException ex) {
@@ -1523,7 +1521,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                             try {
                                 List<MapEntity> copiedEntities = new ArrayList<MapEntity>();
                                 for (MapEntity entity: entitiesResized) {
-                                    MapEntity copy = MapEntity.createCopy(map, entity);
+                                    MapEntity copy = MapEntity.createCopy(entity);
                                     copiedEntities.add(copy);
                                 }
 

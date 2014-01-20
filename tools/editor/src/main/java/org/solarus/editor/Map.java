@@ -327,7 +327,7 @@ public class Map extends Observable {
      * @param tilesetId id of the new tileset, or an empty string to set no tileset
      * @return true if the tileset was loaded successfuly, false if some tiles could
      * not be loaded in this tileset
-     * @throws MapException if this tileset could be applied
+     * @throws QuestEditorException if this tileset could not be applied
      */
     public boolean setTileset(String tilesetId) throws QuestEditorException {
 

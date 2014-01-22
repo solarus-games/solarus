@@ -80,7 +80,7 @@ Returns the direction of the hero's \ref lua_api_sprite "sprites".
 - Return value (number): The direction of the hero's sprites, between \c 0
   (East) and 3 (South).
 
-\remark: The direction of the hero's sprites may be different from both the
+\remark The direction of the hero's sprites may be different from both the
   direction pressed by the \ref lua_api_game_get_commands_direction "player's
   commands" and from the actual direction of the hero's \ref lua_api_movement
   "movement".
@@ -91,7 +91,7 @@ Sets the direction of the hero's \ref lua_api_sprite "sprites".
 - \c direction4 (number): The direction of the hero's sprites, between \c 0
   (East) and 3 (South).
 
-\remark: The direction of the hero's sprites may be different from both the
+\remark The direction of the hero's sprites may be different from both the
   direction pressed by the \ref lua_api_game_get_commands_direction "player's
   commands" and from the actual direction of the hero's \ref lua_api_movement
   "movement".

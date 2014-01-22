@@ -38,6 +38,7 @@ class Hq3xFilter: public PixelFilter {
         int src_width,
         int src_height,
         uint32_t* dst) const;
+
 };
 
 }

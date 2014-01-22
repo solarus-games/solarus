@@ -46,6 +46,7 @@ class Destination: public MapEntity {
   private:
 
     bool is_default_destination;
+
 };
 
 }

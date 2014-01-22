@@ -44,6 +44,7 @@ class System {
   private:
 
     static uint32_t ticks;  // Simulated time in milliseconds.
+
 };
 
 }

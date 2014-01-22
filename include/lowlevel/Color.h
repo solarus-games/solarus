@@ -50,6 +50,7 @@ class Color {
     Color(int r, int g, int b, int a = 255);
 
     void get_components(int& r, int& g, int& b, int& a) const;
+
   private:
 
     SDL_Color internal_color;             /**< the SDL color encapsulated. */

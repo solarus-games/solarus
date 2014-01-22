@@ -59,6 +59,7 @@ class Timer: public ExportableToLua {
 
     // sound
     uint32_t next_sound_date;        /**< date when the next clock sound effect is played */
+
 };
 
 }

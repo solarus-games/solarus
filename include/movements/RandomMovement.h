@@ -49,12 +49,12 @@ class RandomMovement: public StraightMovement {
 
   private:
 
+    void set_next_direction();
+
     int max_radius;                                     /**< if the object goes further than this distance in x or y, it will come back
                                                          * (this is not a hard limit, there is no guarantee) */
     Rectangle bounds;                                   /**< a rectangle the object should not escape from */
     uint32_t next_direction_change_date;                /**< date of the next direction change */
-
-    void set_next_direction();
 
 };
 

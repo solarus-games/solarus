@@ -81,6 +81,7 @@ class Rectangle {
     const SDL_Rect* get_internal_rect() const;
 
     SDL_Rect rect;      /**< the SDL_Rect encapsulated */
+
 };
 
 std::ostream& operator <<(std::ostream& stream, const Rectangle& rectangle);

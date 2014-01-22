@@ -27,15 +27,6 @@ namespace solarus {
  */
 class Hero::RunningState: public Hero::State {
 
-  private:
-
-    int phase;                      /**< current phase of the run */
-    uint32_t next_phase_date;       /**< date of the next phase */
-    uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
-    GameCommands::Command command;  /**< the command pressed to make the hero run */
-
-    bool is_bouncing() const;
-
   public:
 
     RunningState(Hero& hero, GameCommands::Command command);
@@ -66,6 +57,16 @@ class Hero::RunningState: public Hero::State {
     bool is_sensor_obstacle(const Sensor& sensor) const;
     bool is_cutting_with_sword(Detector& detector) const;
     int get_sword_damage_factor() const;
+
+  private:
+
+    bool is_bouncing() const;
+
+    int phase;                      /**< current phase of the run */
+    uint32_t next_phase_date;       /**< date of the next phase */
+    uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
+    GameCommands::Command command;  /**< the command pressed to make the hero run */
+
 };
 
 }

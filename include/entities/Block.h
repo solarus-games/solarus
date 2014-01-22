@@ -75,6 +75,8 @@ class Block: public Detector {
 
   private:
 
+    void movement_by_hero_finished();
+
     int maximum_moves;          /**< indicates whether the block can be pushed
                                  * (0: none, 1: once: 2: infinite) */
     bool sound_played;          /**< true if the block sound was played while pulling it */
@@ -87,8 +89,6 @@ class Block: public Detector {
     bool can_be_pulled;         /**< indicates that the hero can pull this block */
 
     static const uint32_t moving_delay = 500; /**< delay between two successive moves of a block */
-
-    void movement_by_hero_finished();
 
 };
 

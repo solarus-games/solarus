@@ -58,12 +58,12 @@ class TilePattern {
 
   protected:
 
+    TilePattern(Ground ground, int width, int height);
+
     const Ground ground;     /**< Kind of tile. */
 
     const int width;         /**< Pattern width (multiple of 8). */
     const int height;        /**< Pattern height (multiple of 8). */
-
-    TilePattern(Ground ground, int width, int height);
 
 };
 

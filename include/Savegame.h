@@ -137,6 +137,7 @@ class Savegame: public ExportableToLua {
     void set_initial_values();
     void set_default_keyboard_controls();
     void set_default_joypad_controls();
+
 };
 
 }

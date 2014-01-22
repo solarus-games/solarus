@@ -102,6 +102,7 @@ class FileTools {
     static std::string quest_write_dir;                  /**< Write directory of the current quest, relative to solarus_write_dir. */
 
     static std::vector<std::string> temporary_files;     /**< Name of all temporary files created. */
+
 };
 
 }

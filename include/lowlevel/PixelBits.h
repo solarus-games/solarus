@@ -48,8 +48,10 @@ class PixelBits {
     int nb_integers_per_row; /**< number of uint32_t necessary to store
                               * the bits of a row of the image */
 
-    uint32_t** bits;         /**< a two-dimensional array representing the
-                              * transparency bit of each pixel in the image */
+    uint32_t** bits;         /**< A two-dimensional array representing the
+                              * transparency bit of each pixel in the image.
+                              * TODO use an std::vector. */
+
 };
 
 }

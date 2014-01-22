@@ -51,6 +51,8 @@ class Hero::StairsState: public Hero::State {
 
   private:
 
+    void destroy_carried_item();
+
     Stairs& stairs;                    /**< the stairs the hero is currently taking */
     Stairs::Way way;                   /**< indicates the way the hero is taking the stairs:
                                         * - for stairs inside a single floor, NORMAL_WAY means that the hero is going upstairs
@@ -63,7 +65,6 @@ class Hero::StairsState: public Hero::State {
     uint32_t next_phase_date;          /**< date when the stairs phase changes */
     CarriedItem* carried_item;         /**< an item carried by the hero while taking the stairs, or NULL */
 
-    void destroy_carried_item();
 };
 
 }

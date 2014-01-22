@@ -91,6 +91,7 @@ class Shader {
     std::string shader_name;                     /**< The name of the shader. */
     double window_scale;                         /**< Default scale of the window when the shader is being active,
                                                   * compared to the normal quest size. */
+
 #endif
 };
 

@@ -262,6 +262,7 @@ class InputEvent {
     static bool repeat_keyboard;                  /**< True to handle repeat KEYDOWN and KEYUP events. */
 
     const SDL_Event internal_event;               /**< the internal event encapsulated */
+
 };
 
 }

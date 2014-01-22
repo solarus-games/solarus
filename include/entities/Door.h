@@ -139,6 +139,7 @@ class Door: public Detector {
     bool initialized;                             /**< \c true if update() was called at least once. */
     uint32_t next_hint_sound_date;                /**< If the player has the ability to detect weak walls,
                                                    * indicates when a hint sound is played next time. */
+
 };
 
 }

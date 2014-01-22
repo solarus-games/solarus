@@ -116,6 +116,7 @@ class Transition {
                                     * when the out transition was played. */
     bool suspended;               /**< Indicates that the transition is currently paused. */
     uint32_t when_suspended;      /**< Date when the transition was suspended. */
+
 };
 
 }

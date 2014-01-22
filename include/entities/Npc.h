@@ -65,18 +65,6 @@ class Npc: public Detector {
        BEHAVIOR_ITEM_SCRIPT             /**< notify an equipment item in Lua */
     };
 
-  private:
-
-    Subtype subtype;                    /**< subtpype of NPC */
-    Behavior behavior;                  /**< type of action done when the player interacts with this entity */
-    std::string dialog_to_show;         /**< dialog to show when an interaction occurs, or an empty string */
-    std::string item_name;              /**< name of an equipment item to notify when an interaction occurs */
-
-    void initialize_sprite(const std::string& sprite_name, int initial_direction);
-    void call_script_hero_interaction();
-
-  public:
-
     Npc(Game& game, const std::string& name, Layer layer, int x, int y,
         Subtype subtype, const std::string& sprite_name,
         int initial_direction, const std::string& behavior_string);
@@ -99,6 +87,16 @@ class Npc: public Detector {
     void notify_position_changed();
     void notify_movement_finished();
     bool can_be_lifted() const;
+
+  private:
+
+    Subtype subtype;                    /**< subtpype of NPC */
+    Behavior behavior;                  /**< type of action done when the player interacts with this entity */
+    std::string dialog_to_show;         /**< dialog to show when an interaction occurs, or an empty string */
+    std::string item_name;              /**< name of an equipment item to notify when an interaction occurs */
+
+    void initialize_sprite(const std::string& sprite_name, int initial_direction);
+    void call_script_hero_interaction();
 
 };
 

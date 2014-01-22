@@ -41,6 +41,7 @@ class Hero::VictoryState: public Hero::State {
     void stop(const State* next_state);
     void update();
     void set_suspended(bool suspended);
+
 };
 
 }

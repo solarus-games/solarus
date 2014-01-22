@@ -64,6 +64,7 @@ class QuestResourceList {
 
     QuestResourceList();
     ~QuestResourceList();
+
 };
 
 }

@@ -52,13 +52,13 @@ class Hero::PushingState: public Hero::State {
 
   private:
 
+    void stop_moving_pushed_entity();
+
     int pushing_direction4;            /**< Direction where the hero is looking (0 to 3). */
     Detector* pushed_entity;           /**< The entity the hero is pushing or NULL. */
     PathMovement* pushing_movement;    /**< The movement created by this state.
                                         * The movement of the hero is also this object,
                                         * unless a script decided to change it. */
-    void stop_moving_pushed_entity();
-
 };
 
 }

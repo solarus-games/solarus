@@ -95,6 +95,7 @@ class Chest: public Detector {
                                         * should be consumed when opening the door. */
     std::string cannot_open_dialog_id; /**< Dialog to show if the door cannot be opened,
                                         * or an empty string. */
+
 };
 
 }

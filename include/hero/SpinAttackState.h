@@ -55,8 +55,9 @@ class Hero::SpinAttackState: public Hero::State {
 
   private:
 
-    bool being_pushed;           /**< indicates that the hero is being pushed after hitting an enemy */
     void play_spin_attack_sound();
+
+    bool being_pushed;           /**< indicates that the hero is being pushed after hitting an enemy */
 
 };
 

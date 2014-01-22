@@ -37,6 +37,7 @@ class Random {
   private:
 
     Random();
+
 };
 
 }

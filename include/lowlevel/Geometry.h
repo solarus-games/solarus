@@ -49,6 +49,7 @@ class Geometry {
     static double get_angle(int x1, int y1, int x2, int y2);
     static const Rectangle get_xy(double angle, int distance);
     static const Rectangle get_xy(const Rectangle &xy1, double angle, int distance);
+
 };
 
 /**

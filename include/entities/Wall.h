@@ -32,13 +32,6 @@ namespace solarus {
  */
 class Wall: public MapEntity {
 
-  private:
-
-    std::map<EntityType, bool> entity_types_stopped;
-
-    bool enabled;              /**< indicates that the obstacle is enabled (default: yes) */
-    bool waiting_enabled;      /**< indicates that the obstacle is waiting to be enabled */
-
   public:
 
     Wall(const std::string& name, Layer layer, int x, int y, int width, int height,
@@ -48,6 +41,13 @@ class Wall: public MapEntity {
     EntityType get_type() const;
     bool can_be_drawn() const;
     bool is_obstacle_for(const MapEntity& other) const;
+
+  private:
+
+    std::map<EntityType, bool> entity_types_stopped;
+
+    bool enabled;              /**< indicates that the obstacle is enabled (default: yes) */
+    bool waiting_enabled;      /**< indicates that the obstacle is waiting to be enabled */
 
 };
 

@@ -1099,6 +1099,7 @@ class LuaContext {
     static const std::string enemy_attack_names[];
     static const std::string enemy_hurt_style_names[];
     static const std::string enemy_obstacle_behavior_names[];
+
 };
 
 }

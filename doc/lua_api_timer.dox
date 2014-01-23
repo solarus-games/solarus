@@ -117,7 +117,10 @@ If the delay is set to zero, the function is called immediately.
 - \c callback (function): The function to be called when the timer finishes.
   If this callback function returns \c true, then the timer automatically
   repeats itself with the same delay.
-- Return value (timer): The timer created (or \c nil if \c delay is \c 0).
+  In this case, if the delay is shorter than the time of a cycle of the main
+  loop, then the callback may be executed several times in
+  the same cycle in order to catch up.
+- Return value (timer): The timer created.
   Most of the time, you don't need to store the returned timer.
   Indeed, there is no problem if it gets garbage-collected: the timer persists
   in the engine side until its completion or the end of its context.

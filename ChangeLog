@@ -66,7 +66,6 @@ Changes that introduce incompatibilities:
 * surface:set_transparency_color() no longer exists. Use surface:clear().
 * sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
 * on_key_pressed() and on_character_pressed() are now both called (#344).
-* movement:on_position_changed() now takes x and y parameters (#342).
 * map:create_destructible() has no hardcoded subtypes anymore (#270).
 * Destructible objects no longer show hardcoded dialogs (#270).
 * map:create_shop_item() is replaced by map:create_shop_treasure().
@@ -76,6 +75,7 @@ Changes that introduce incompatibilities:
 * item:on_pickable_movement_changed replaced by pickable:on_movement_changed.
 * pickable:get_treasure() now returns the item instead of the item's name.
 * Timers: returning true in the callback now repeats the timer (#152).
+* sol.timer.start() now always returns the timer, even if its delay is zero.
 
 Changes that do not introduce incompatibilities:
 
@@ -100,6 +100,7 @@ Changes that do not introduce incompatibilities:
 * New event block:on_moving() (#334).
 * New event teletransporter:on_activated() (#312).
 * New event destination:on_activated() (#312).
+* movement:on_position_changed() now takes x and y parameters (#342).
 * Fix random_movement:get_max_radius() that was not working.
 * Check the parameter sign in game:add/remove life/money/magic (#416).
 * New methods timer:get/set_remaining_time.

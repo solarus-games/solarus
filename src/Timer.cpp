@@ -29,7 +29,7 @@ namespace solarus {
 Timer::Timer(uint32_t duration):
   expiration_date(System::now() + duration),
   duration(duration),
-  finished(false),
+  finished(System::now() >= this->expiration_date),
   suspended_with_map(false),
   suspended(false),
   when_suspended(0),
@@ -138,31 +138,21 @@ uint32_t Timer::get_initial_duration() const {
 }
 
 /**
- * \brief Returns the remaining time of this timer.
- * \return The remaining time in milliseconds, or \c 0 if the timer is already
- * finished.
+ * \brief Returns the expiration date of this timer.
+ * \return The expiration date in milliseconds.
  */
-uint32_t Timer::get_remaining_time() const {
-
-  if (is_finished()) {
-    return 0;
-  }
-
-  return std::max(uint32_t(0), expiration_date - System::now());
+uint32_t Timer::get_expiration_date() const {
+  return expiration_date;
 }
 
 /**
- * \brief Sets the remaining time of this timer.
- * \param remaining_time The remaining time in milliseconds, or \c 0 to
- * make the timer finished.
+ * \brief Sets the expiration date of this timer.
+ * \param expiration_date The expiration date in milliseconds.
  */
-void Timer::set_remaining_time(uint32_t remaining_time) {
+void Timer::set_expiration_date(uint32_t expiration_date) {
 
-  Debug::check_assertion(remaining_time >= 0, "Invalid remaining time");
-
-  const uint32_t now = System::now();
-  this->expiration_date = now + remaining_time;
-  this->finished = (now >= this->expiration_date);
+  this->expiration_date = expiration_date;
+  this->finished = System::now() >= this->expiration_date;
 }
 
 /**

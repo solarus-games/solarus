@@ -104,6 +104,7 @@ Changes that do not introduce incompatibilities:
 * Fix random_movement:get_max_radius() that was not working.
 * Check the parameter sign in game:add/remove life/money/magic (#416).
 * New methods timer:get/set_remaining_time.
+* New function sol.main.get_elapsed_time() to get the simulated time (#424).
 
 Solarus Quest Editor changes
 ----------------------------

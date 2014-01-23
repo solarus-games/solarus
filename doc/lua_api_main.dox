@@ -79,6 +79,18 @@ Lua will be entirely shut down and then initialized again.
 
 Exits the program after the current cycle.
 
+\subsection lua_api_main_get_elapsed_time sol.main.get_elapsed_time()
+
+Returns the simulated time elapsed since Solarus was started.
+
+This corresponds to real time, unless the system is too slow to play at
+normal speed.
+- Return value (number): The number of simulated milliseconds elapsed since
+  the beginning of the program.
+
+\remark This time is not reset when you call
+  \ref lua_api_main_reset "sol.main.reset()".
+
 \subsection lua_api_main_get_quest_write_dir sol.main.get_quest_write_dir()
 
 Returns the subdirectory where files specific to the quest are saved,

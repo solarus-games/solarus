@@ -297,6 +297,7 @@ class LuaContext {
       main_api_do_file,
       main_api_reset,
       main_api_exit,
+      main_api_get_elapsed_time,
       main_api_get_quest_write_dir,
       main_api_set_quest_write_dir,
       main_api_load_settings,

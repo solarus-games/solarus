@@ -18,6 +18,7 @@
 #include "lua/LuaTools.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/System.h"
 #include "MainLoop.h"
 #include "Settings.h"
 #include <lua.hpp>
@@ -38,6 +39,7 @@ void LuaContext::register_main_module() {
       { "do_file", main_api_do_file },
       { "reset", main_api_reset },
       { "exit", main_api_exit },
+      { "get_elapsed_time", main_api_get_elapsed_time },
       { "get_quest_write_dir", main_api_get_quest_write_dir },
       { "set_quest_write_dir", main_api_set_quest_write_dir },
       { "load_settings", main_api_load_settings },
@@ -130,6 +132,19 @@ int LuaContext::main_api_exit(lua_State* l) {
   get_lua_context(l).get_main_loop().set_exiting();
 
   return 0;
+}
+
+/**
+ * \brief Implementation of sol.main.get_elapsed_time().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::main_api_get_elapsed_time(lua_State* l) {
+
+  uint32_t elapsed_time = System::now();
+
+  lua_pushinteger(l, elapsed_time);
+  return 1;
 }
 
 /**

@@ -75,6 +75,7 @@ Changes that introduce incompatibilities:
 * The size of enemies must be a multiple of 8 (#358).
 * item:on_pickable_movement_changed replaced by pickable:on_movement_changed.
 * pickable:get_treasure() now returns the item instead of the item's name.
+* Timers: returning true in the callback now repeats the timer (#152).
 
 Changes that do not introduce incompatibilities:
 
@@ -101,6 +102,7 @@ Changes that do not introduce incompatibilities:
 * New event destination:on_activated() (#312).
 * Fix random_movement:get_max_radius() that was not working.
 * Check the parameter sign in game:add/remove life/money/magic (#416).
+* New methods timer:get/set_remaining_time.
 
 Solarus Quest Editor changes
 ----------------------------

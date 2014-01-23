@@ -24,10 +24,11 @@ namespace solarus {
 
 /**
  * \brief Creates and starts a timer.
- * \param delay duration of the timer in milliseconds
+ * \param duration Duration of the timer in milliseconds.
  */
-Timer::Timer(uint32_t delay):
-  expiration_date(System::now() + delay),
+Timer::Timer(uint32_t duration):
+  expiration_date(System::now() + duration),
+  duration(duration),
   finished(false),
   suspended_with_map(false),
   suspended(false),
@@ -40,14 +41,13 @@ Timer::Timer(uint32_t delay):
  * \brief Destructor.
  */
 Timer::~Timer() {
-
 }
 
 /**
  * \brief Returns whether a clock sound is played during this timer.
  * \return true if a clock sound is played.
  */
-bool Timer::is_with_sound() {
+bool Timer::is_with_sound() const {
   return next_sound_date != 0;
 }
 
@@ -63,7 +63,7 @@ void Timer::set_with_sound(bool with_sound) {
  * \brief Returns whether this timer is currently suspended.
  * \return true if this timer is suspended.
  */
-bool Timer::is_suspended() {
+bool Timer::is_suspended() const {
   return suspended;
 }
 
@@ -102,7 +102,7 @@ void Timer::set_suspended(bool suspended) {
  * \brief Returns whether this timer is suspended when the map is suspended.
  * \return true if this timer is suspended with the map.
  */
-bool Timer::is_suspended_with_map() {
+bool Timer::is_suspended_with_map() const {
   return suspended_with_map;
 }
 
@@ -125,8 +125,44 @@ void Timer::set_suspended_with_map(bool suspended_with_map) {
  * \brief Returns whether the timer is finished.
  * \return true if the timer is finished
  */
-bool Timer::is_finished() {
+bool Timer::is_finished() const {
   return finished;
+}
+
+/**
+ * \brief Returns the initial duration of this timer.
+ * \return The initial duration in milliseconds.
+ */
+uint32_t Timer::get_initial_duration() const {
+  return duration;
+}
+
+/**
+ * \brief Returns the remaining time of this timer.
+ * \return The remaining time in milliseconds, or \c 0 if the timer is already
+ * finished.
+ */
+uint32_t Timer::get_remaining_time() const {
+
+  if (is_finished()) {
+    return 0;
+  }
+
+  return std::max(uint32_t(0), expiration_date - System::now());
+}
+
+/**
+ * \brief Sets the remaining time of this timer.
+ * \param remaining_time The remaining time in milliseconds, or \c 0 to
+ * make the timer finished.
+ */
+void Timer::set_remaining_time(uint32_t remaining_time) {
+
+  Debug::check_assertion(remaining_time >= 0, "Invalid remaining time");
+
+  const uint32_t now = System::now();
+  this->expiration_date = now + remaining_time;
+  this->finished = (now >= this->expiration_date);
 }
 
 /**

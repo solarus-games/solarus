@@ -115,6 +115,7 @@ class LuaContext {
     void destroy_timers();
     void update_timers();
     void notify_timers_map_suspended(bool suspended);
+    void do_timer_callback(Timer& timer);
 
     // Menus.
     void add_menu(int menu_ref, int context_index, bool on_top);
@@ -366,11 +367,9 @@ class LuaContext {
       timer_api_set_suspended,
       timer_api_is_suspended_with_map,
       timer_api_set_suspended_with_map,
-      // TODO add get_remaining_time, set_remaining_time,
-      // TODO allow to repeat a timer automatically
+      timer_api_get_remaining_time,
+      timer_api_set_remaining_time,
       // TODO remove is_with_sound, set_with_sound (do this in pure Lua, possibly with a second timer)
-      // TODO game:is_suspended, timer:is/set_suspended_with_map, sprite:get/set_ignore_suspend
-      // are the same concept, make these names consistent
 
       // Language API.
       language_api_get_language,
@@ -427,7 +426,7 @@ class LuaContext {
       sprite_api_set_frame_delay,
       sprite_api_is_paused,
       sprite_api_set_paused,
-      sprite_api_set_ignore_suspend,
+      sprite_api_set_ignore_suspend,  // TODO rename to set_suspended_with_map() like timers
       sprite_api_synchronize,
 
       // Movement API.

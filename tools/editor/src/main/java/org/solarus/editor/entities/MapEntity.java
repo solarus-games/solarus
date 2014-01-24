@@ -201,6 +201,7 @@ public abstract class MapEntity extends Observable {
         }
         catch (InvocationTargetException ex) {
             System.err.println("Cannot create the entity: " + ex.getCause().getMessage());
+            ex.getCause().printStackTrace();
             throw new MapException(ex.getCause().getMessage());
         }
         catch (NoSuchMethodException ex) {
@@ -422,10 +423,23 @@ public abstract class MapEntity extends Observable {
      * @param QuestEditorException if this entity cannot exist in the new map.
      */
     public void setMap(Map map) throws QuestEditorException {
-        this.map = map;
 
-        // The tileset may have changed.
-        setTileset(map.getTileset());
+        Map oldMap = this.map;
+        Tileset oldTileset = oldMap != null ? oldMap.getTileset() : null;
+        this.map = map;
+        notifyMapChanged(oldMap, map);
+        notifyTilesetChanged(oldTileset, map.getTileset());
+    }
+
+    /**
+     * Returns the tileset of the current map of this entity.
+     * @return The tileset or null.
+     */
+    public Tileset getTileset() {
+        if (map == null) {
+            return null;
+        }
+        return map.getTileset();
     }
 
     /**
@@ -1595,13 +1609,24 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Changes the tileset used to represent this entity on the map.
-     * By default, nothing is done since most of the entities do not use the tileset.
-     * @param tileset the tileset
-     * @throws MapException if the new tileset could not be applied to this entity
+     * Notifies this entity that it now belongs to another map.
+     * By default, nothing is done.
+     * @param oldMap The previous map or null.
+     * @param newMap The new map.
+     * @throws MapException If this entity is invalid in the new map.
      */
-    public void setTileset(Tileset tileset) throws MapException {
-
+    public void notifyMapChanged(Map oldMap, Map newMap) throws MapException {
     }
+
+    /**
+     * Notifies this entity the tileset has changed.
+     * By default, nothing is done.
+     * @param oldTileset The previous tileset or null.
+     * @param tileset The new tileset.
+     * @throws MapException If this entity is invalid with the new tileset.
+     */
+    public void notifyTilesetChanged(Tileset oldTileset, Tileset newTileset) throws MapException {
+    }
+
 }
 

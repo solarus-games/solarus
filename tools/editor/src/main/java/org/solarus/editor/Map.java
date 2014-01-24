@@ -346,15 +346,14 @@ public class Map extends Observable {
         // if the tileset is changed
         else if (!tilesetId.equals(this.tilesetId)) {
 
-            this.tileset = new Tileset(tilesetId);
-
+            Tileset newTileset = new Tileset(tilesetId);
             for (Layer layer: Layer.values()) {
 
                 LinkedList<MapEntity> entitiesToRemove = new LinkedList<MapEntity>();
                 for (MapEntity entity: allEntities[layer.getId()]) {
 
                     try {
-                        entity.setTileset(tileset);
+                        entity.notifyTilesetChanged(this.tileset, newTileset);
                     }
                     catch (NoSuchTilePatternException ex) {
                         // the entity is not valid anymore, we should remove it from the map
@@ -368,6 +367,7 @@ public class Map extends Observable {
                 }
             }
 
+            this.tileset = newTileset;
             this.tilesetId = tilesetId;
 
             setChanged();

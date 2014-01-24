@@ -35,18 +35,12 @@ public class Tile extends MapEntity {
     public static final EntityImageDescription[] generalImageDescriptions = null;
 
     /**
-     * The tileset from which this tile is extracted.
-     */
-    protected Tileset tileset;
-
-    /**
      * Creates a new tile on the map.
      * @param map the map
      * @throws MapException if the tile is not valid
      */
     public Tile(Map map) throws MapException {
         super(map, 0, 0);
-        this.tileset = map.getTileset();
         this.layer = null;
     }
 
@@ -72,19 +66,21 @@ public class Tile extends MapEntity {
     protected void notifyPropertyChanged(String name, String value) throws MapException {
 
         if (name.equals("pattern")) {
-            if (tileset == null) {
+            if (getTileset() == null) {
                 return;
             }
 
             try {
                 TilePattern tilePattern = getTilePattern(); // get the tile pattern from the tileset
 
-                if (getWidth() == 0) {
-                    setSize(tilePattern.getWidth(), tilePattern.getHeight());
-                }
+                if (tilePattern != null) {
+                    if (getWidth() == 0) {
+                        setSize(tilePattern.getWidth(), tilePattern.getHeight());
+                    }
 
-                if (layer == null) {
-                    setLayer(tilePattern.getDefaultLayer());
+                    if (layer == null) {
+                        setLayer(tilePattern.getDefaultLayer());
+                    }
                 }
             }
             catch (NoSuchElementException ex) {
@@ -94,50 +90,52 @@ public class Tile extends MapEntity {
     }
 
     /**
-     * Changes the tileset used to represent this tile on the map.
-     * The corresponding tile pattern from the new tileset (i.e. the tile pattern
-     * with the same id) must have exactly the same properties,
+     * Notifies this entity that the tileset has changed.
+     * The tile pattern from the new tileset
+     * (i.e. the tile pattern with the same id)
+     * must have exactly the same properties,
      * otherwise a NoSuchTilePatternException is thrown.
-     * @param tileset the tileset
-     * @throws NoSuchTilePatternException if the new tileset could not be applied
+     * @param oldTileset The previous tileset or null.
+     * @param newTileset The new tileset.
+     * @throws NoSuchTilePatternException If the new tileset could not be applied
      * because the tile pattern doesn't exist in this tileset or is different.
      */
-    public void setTileset(Tileset tileset) throws NoSuchTilePatternException {
+    public void notifyTilesetChanged(Tileset oldTileset, Tileset newTileset)
+        throws NoSuchTilePatternException {
 
-        if (tileset != this.tileset) {
+        if (newTileset == oldTileset) {
+            return;
+        }
 
-            int tilePatternId = getTilePatternId();
-            try {
-                TilePattern newTilePattern = tileset.getTilePattern(tilePatternId);
+        int tilePatternId = getTilePatternId();
+        try {
+            TilePattern newTilePattern = newTileset.getTilePattern(tilePatternId);
 
-                // if a tileset was already defined, check that the
-                // tile has the same properties
-                if (this.tileset != null) {
+            // if a tileset was already defined, check that the
+            // tile has the same properties
+            if (oldTileset != null) {
 
-                    TilePattern oldTilePattern = this.tileset.getTilePattern(tilePatternId);
+                TilePattern oldTilePattern = oldTileset.getTilePattern(tilePatternId);
 
-                    if (!newTilePattern.equals(oldTilePattern)) {
-                        throw new NoSuchTilePatternException("The tile pattern #" + tilePatternId + " is different in this tileset.");
-                    }
-
-                    // update the size on the map if the size in the tileset has changed
-                    positionInMap.width = newTilePattern.getWidth() * getRepeatX();
-                    positionInMap.height = newTilePattern.getHeight() * getRepeatY();
+                if (!newTilePattern.equals(oldTilePattern)) {
+                    throw new NoSuchTilePatternException("The tile pattern #" + tilePatternId + " is different in this tileset.");
                 }
 
-                this.tileset = tileset;
+                // update the size on the map if the size in the tileset has changed
+                positionInMap.width = newTilePattern.getWidth() * getRepeatX();
+                positionInMap.height = newTilePattern.getHeight() * getRepeatY();
             }
-            catch (NoSuchElementException e) {
-                throw new NoSuchTilePatternException("Unable to apply the tileset because the tile pattern #" + tilePatternId + " doesn't exist in this tileset.");
-            }
+        }
+        catch (NoSuchElementException e) {
+            throw new NoSuchTilePatternException("Unable to apply the tileset because the tile pattern #" + tilePatternId + " doesn't exist in this tileset.");
         }
     }
 
     /**
      * Returns the id of the tile pattern in the tileset.
-     * @return the id of the tile pattern in the tileset.
+     * @return The id of the tile pattern in the tileset or null.
      */
-    public int getTilePatternId() {
+    public Integer getTilePatternId() {
         return getIntegerProperty("pattern");
     }
 
@@ -146,7 +144,12 @@ public class Tile extends MapEntity {
      * @return the tile pattern in the tileset.
      */
     public TilePattern getTilePattern() {
-        return tileset.getTilePattern(getTilePatternId());
+
+        if (getTileset() == null || getTilePatternId() == null) {
+            return null;
+        }
+
+        return getTileset().getTilePattern(getTilePatternId());
     }
 
     /**
@@ -185,7 +188,7 @@ public class Tile extends MapEntity {
      */
     public Dimension getUnitarySize() {
 
-        if (tileset == null) { // special case when the tileset is not initialized yet
+        if (getTileset() == null) { // special case when the tileset is not initialized yet
             return super.getUnitarySize();
         }
 
@@ -229,7 +232,7 @@ public class Tile extends MapEntity {
 
         for (int i = 0; i < repeatY; i++) {
             for (int j = 0; j < repeatX; j++) {
-                tilePattern.paint(g, tileset, x, y, zoom, showTransparency);
+                tilePattern.paint(g, getTileset(), x, y, zoom, showTransparency);
                 x += width;
             }
             y += height;

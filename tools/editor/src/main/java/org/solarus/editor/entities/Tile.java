@@ -97,11 +97,13 @@ public class Tile extends MapEntity {
      * otherwise a NoSuchTilePatternException is thrown.
      * @param oldTileset The previous tileset or null.
      * @param newTileset The new tileset.
-     * @throws NoSuchTilePatternException If the new tileset could not be applied
+     * @throws MapException If the new tileset could not be applied
      * because the tile pattern doesn't exist in this tileset or is different.
      */
     public void notifyTilesetChanged(Tileset oldTileset, Tileset newTileset)
-        throws NoSuchTilePatternException {
+        throws MapException {
+
+        super.notifyTilesetChanged(oldTileset, newTileset);
 
         if (newTileset == oldTileset) {
             return;

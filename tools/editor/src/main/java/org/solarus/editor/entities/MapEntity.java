@@ -1660,13 +1660,16 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Notifies this entity the tileset has changed.
-     * By default, nothing is done.
+     * By default, the sprite (if any) is notified.
      * @param oldTileset The previous tileset or null.
      * @param tileset The new tileset.
      * @throws MapException If this entity is invalid with the new tileset.
      */
     public void notifyTilesetChanged(Tileset oldTileset, Tileset newTileset) throws MapException {
-    }
 
+        if (sprite != null) {
+            sprite.notifyTilesetChanged(newTileset.getId());
+        }
+    }
 }
 

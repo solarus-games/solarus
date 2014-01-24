@@ -46,13 +46,19 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private Map map;
 
     /**
+     * The tileset of the current map.
+     * Store here to track whenever it is changed.
+     */
+    private Tileset tileset;
+
+    /**
      * Constants to identify the state of the map view.
      */
     private enum State {
 
-        NORMAL, // the user is not performing any special operation, he can select or unselect entities
-        SELECTING_AREA, // the user is drawing a rectangle to select several entities
-        MOVING_ENTITIES, // drag and drop
+        NORMAL,            // the user is not performing any special operation, he can select or unselect entities
+        SELECTING_AREA,    // the user is drawing a rectangle to select several entities
+        MOVING_ENTITIES,   // drag and drop
         RESIZING_ENTITIES, // the user is resizing the selected entities
         ADDING_ENTITIES,   // entities are being added on the map and displayed under the cursor
     }
@@ -159,8 +165,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
         if (map != null) {
             map.addObserver(this);
             map.getEntitySelection().addObserver(this);
-            if (map.getTileset() != null) {
-                map.getTileset().addObserver(this);
+            this.tileset = map.getTileset();
+            if (this.tileset != null) {
+                this.tileset.addObserver(this);
             }
             getViewSettings().addObserver(this);
             update(getViewSettings(), null);
@@ -273,7 +280,26 @@ public class MapView extends JComponent implements Observer, Scrollable {
             if (parameter instanceof Tileset) {
                 // The tileset is now another one.
                 Tileset tileset = map.getTileset();
-                tileset.addObserver(this);
+
+                if (tileset != this.tileset) {
+                    Tileset oldTileset = this.tileset;
+                    oldTileset.deleteObserver(this);
+                    tileset.addObserver(this);
+                    this.tileset = tileset;
+                    if (state == State.ADDING_ENTITIES) {
+                        // Notify entities that are about to be added
+                        // but don't belong to the map yet.
+                        for (MapEntity entity: entitiesBeingAdded) {
+                            try {
+                                entity.notifyTilesetChanged(oldTileset, tileset);
+                            }
+                            catch (MapException ex) {
+                                // Entity invalid with the new tileset.
+                            }
+                        }
+                    }
+                }
+
                 update(tileset, null);
             }
 
@@ -301,7 +327,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             repaint();
         } else if (o instanceof Tileset
                 && !blockTilesetUpdates) {
-            // the selected tile pattern in the tileset has changed
+            // The selected tile pattern in the tileset has changed.
 
             Tileset tileset = map.getTileset();
             TilePattern pattern = tileset.getSelectedTilePattern();
@@ -317,7 +343,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 // Just picked a tile pattern.
                 if (state == State.NORMAL ||
                         (state == State.ADDING_ENTITIES && entityTypeBeingAdded != null)
-                ) {
+                   ) {
                     // If we are doing nothing or creating another type of entity,
                     // create the tile.
                     if (!map.getEntitySelection().isEmpty()) {
@@ -328,7 +354,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     }
 
                     switchAddingNewEntity(EntityType.TILE, null);
-                }
+                   }
             }
         }
         else if (o instanceof MapViewSettings) {
@@ -669,7 +695,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         setState(State.ADDING_ENTITIES);
         entitiesBeingAdded = new ArrayList<MapEntity>(entities);
 
-        // Set as master entity the one the most centered one.
+        // Set as master entity the most centered one.
         // To do this, we need to compute the center of our entities.
         int minX = Integer.MAX_VALUE;
         int minY = Integer.MAX_VALUE;

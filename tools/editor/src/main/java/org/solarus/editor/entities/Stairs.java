@@ -102,7 +102,7 @@ public class Stairs extends MapEntity {
 
         super.setSubtype(subtype);
 
-        if (!isInsideFloor() && direction % 2 == 0) {
+        if (!isInsideFloor() && getDirection() % 2 == 0) {
             setDirection(1);
         }
 
@@ -142,7 +142,7 @@ public class Stairs extends MapEntity {
      * @return true if the subtype is INSIDE_FLOOR
      */
     private boolean isInsideFloor() {
-        return subtype == Subtype.INSIDE_FLOOR;
+        return getSubtype() == Subtype.INSIDE_FLOOR;
     }
 }
 

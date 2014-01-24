@@ -90,7 +90,7 @@ public class CrystalBlock extends MapEntity {
      */
     public CrystalBlock(Map map) throws MapException {
         super(map, 16, 16);
-        subtype = Subtype.INITIALLY_LOWERED;
+        setSubtype(Subtype.INITIALLY_LOWERED);
 
         try {
             sprite = new Sprite("entities/crystal_block", map);
@@ -123,7 +123,7 @@ public class CrystalBlock extends MapEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-        int x = (subtype == Subtype.INITIALLY_LOWERED) ? 0 : 32;
+        int x = (getSubtype() == Subtype.INITIALLY_LOWERED) ? 0 : 32;
         currentImageDescription.setX(x);
     }
 

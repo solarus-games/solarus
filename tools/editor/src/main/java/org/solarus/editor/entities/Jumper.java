@@ -136,7 +136,7 @@ public class Jumper extends MapEntity {
      * @return true if the entity must be square
      */
     public boolean mustBeSquare() {
-        return direction % 2 != 0;
+        return getDirection() % 2 != 0;
     }
 
     /**
@@ -190,7 +190,7 @@ public class Jumper extends MapEntity {
 
         Color fillColor = new Color(48, 184, 208);
         Color borderColor = new Color(144, 224, 240);
-        if (direction % 2 == 0) {
+        if (getDirection() % 2 == 0) {
 
             g.setColor(fillColor);
             g.fillRect(x, y, w, h);

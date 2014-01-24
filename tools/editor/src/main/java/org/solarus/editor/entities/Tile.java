@@ -41,7 +41,7 @@ public class Tile extends MapEntity {
      */
     public Tile(Map map) throws MapException {
         super(map, 0, 0);
-        this.layer = null;
+        setLayer(null);
     }
 
     /**
@@ -78,7 +78,7 @@ public class Tile extends MapEntity {
                         setSize(tilePattern.getWidth(), tilePattern.getHeight());
                     }
 
-                    if (layer == null) {
+                    if (getLayer() == null) {
                         setLayer(tilePattern.getDefaultLayer());
                     }
                 }
@@ -122,8 +122,14 @@ public class Tile extends MapEntity {
                 }
 
                 // update the size on the map if the size in the tileset has changed
-                positionInMap.width = newTilePattern.getWidth() * getRepeatX();
-                positionInMap.height = newTilePattern.getHeight() * getRepeatY();
+                try {
+                    setSize(newTilePattern.getWidth() * getRepeatX(),
+                            newTilePattern.getHeight() * getRepeatY());
+                }
+                catch (MapException ex) {
+                    // Should not happen since we are precisely fixing the size.
+                    ex.printStackTrace();
+                }
             }
         }
         catch (NoSuchElementException e) {
@@ -201,7 +207,7 @@ public class Tile extends MapEntity {
      * @return the number of times the pattern is repeated on x
      */
     public int getRepeatX() {
-        return positionInMap.width / getUnitarySize().width;
+        return getWidth() / getUnitarySize().width;
     }
 
     /**
@@ -209,7 +215,7 @@ public class Tile extends MapEntity {
      * @return the number of times the pattern is repeated on y
      */
     public int getRepeatY() {
-        return positionInMap.height / getUnitarySize().height;
+        return getHeight() / getUnitarySize().height;
     }
 
     /**

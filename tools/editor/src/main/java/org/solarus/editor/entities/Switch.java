@@ -106,7 +106,7 @@ public class Switch extends MapEntity {
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
 
-        if (subtype != this.subtype && hasProperty("needs_block")) {
+        if (subtype != getSubtype() && hasProperty("needs_block")) {
             if (subtype == Subtype.WALKABLE_INVISIBLE) {
                 setBooleanProperty("needs_block", false);
             }
@@ -164,13 +164,6 @@ public class Switch extends MapEntity {
                 throw new MapException("Cannot disable the switch when leaving for a non-walkable switch");
             }
         }
-    }
-
-    /**
-     * Updates the description of the image currently representing the entity.
-     */
-    public void updateImageDescription() {
-        currentImageDescription = generalImageDescriptions[subtype.ordinal()];
     }
 
     /**

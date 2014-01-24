@@ -24,7 +24,6 @@ import java.io.PrintWriter;
 import java.lang.reflect.*;
 import java.util.*;
 
-
 /**
  * Represents an entity placed on the map with the map editor.
  *
@@ -83,28 +82,28 @@ public abstract class MapEntity extends Observable {
     /**
      * Position of the entity in the map.
      */
-    protected Rectangle positionInMap;
+    private Rectangle positionInMap;
 
     /**
      * Layer of the entity on the map.
      */
-    protected Layer layer;
+    private Layer layer;
 
     /**
      * Direction of the entity (0 to 3).
      * Not used by all kinds of entities.
      */
-    protected int direction;
+    private int direction;
 
     /**
      * Name identifying the entity or null.
      */
-    protected String name;
+    private String name;
 
     /**
      * The subtype of entity, or null if the entity has no subtype.
      */
-    protected EntitySubtype subtype;
+    private EntitySubtype subtype;
 
     /**
      * All other properties of the entity, specific to each entity type.

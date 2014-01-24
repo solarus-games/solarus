@@ -25,11 +25,6 @@ import org.solarus.editor.*;
 public class Block extends MapEntity {
 
     /**
-     * The sprite representing this entity.
-     */
-    private Sprite sprite;
-
-    /**
      * Limitations of moves for blocks.
      */
     public enum MaximumMoves {
@@ -128,10 +123,10 @@ public class Block extends MapEntity {
         if (name.equals("sprite")) {
 
             if (value != null) {
-                sprite = new Sprite(value, getMap());
+                setSprite(new Sprite(value, getMap()));
             }
             else {
-                sprite = null;
+                setSprite(null);
             }
         }
     }
@@ -144,26 +139,6 @@ public class Block extends MapEntity {
 
         if (!isValidSpriteName(getStringProperty("sprite"))) {
             throw new MapException("Invalid sprite name: '" + getStringProperty("sprite") + "'");
-        }
-    }
-
-    /**
-     * Draws this entity on the map editor.
-     * @param g graphic context
-     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
-     * @param showTransparency true to make transparent pixels,
-     * false to replace them by a background color
-     */
-    public void paint(Graphics g, double zoom, boolean showTransparency) {
-
-        if (sprite == null) {
-            // sprite not set yet: display a default block icon
-            super.paint(g, zoom, showTransparency);
-        }
-        else {
-            // display the appropriate sprite
-            sprite.paint(g, zoom, showTransparency,
-                    getX(), getY(), null, 0, 0);
         }
     }
 }

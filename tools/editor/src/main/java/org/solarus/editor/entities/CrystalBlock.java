@@ -80,11 +80,6 @@ public class CrystalBlock extends MapEntity {
     private static final Dimension unitarySize = new Dimension(16, 16);
 
     /**
-     * The sprite representing this entity.
-     */
-    private Sprite sprite;
-
-    /**
      * Creates a new crystal block.
      * @param map the map
      */
@@ -93,12 +88,11 @@ public class CrystalBlock extends MapEntity {
         setSubtype(Subtype.INITIALLY_LOWERED);
 
         try {
-            sprite = new Sprite("entities/crystal_block", map);
+            setSprite(new Sprite("entities/crystal_block", map));
         }
         catch (MapException ex) {
             // The sprite could not be loaded.
             // The default icon for this entity will be used instead.
-            sprite = null;
         }
     }
 
@@ -139,6 +133,7 @@ public class CrystalBlock extends MapEntity {
         Rectangle positionInMap = getPositionInMap();
         Rectangle rectangle = new Rectangle(positionInMap.x, positionInMap.y,
                 unitarySize.width, unitarySize.height);
+        Sprite sprite = getSprite();
 
         for (int i = 0; i < getHeight(); i += unitarySize.height) {
             rectangle.x = positionInMap.x;

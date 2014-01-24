@@ -27,11 +27,6 @@ public class CustomEntity extends MapEntity {
     private static Image resizableImage;
 
     /**
-     * The sprite representing this entity (if any).
-     */
-    private Sprite sprite;
-
-    /**
      * Unitary size of a custom entity.
      */
     private static final Dimension unitarySize = new Dimension(8, 8);
@@ -51,6 +46,7 @@ public class CustomEntity extends MapEntity {
      */
     protected Point getOrigin() {
 
+        Sprite sprite = getSprite();
         if (sprite == null) {
             return new Point(8, 13);
         }
@@ -125,10 +121,10 @@ public class CustomEntity extends MapEntity {
         if (name.equals("sprite")) {
 
             if (isValidSpriteName(value)) {
-                sprite = new Sprite(value, getMap());
+                setSprite(new Sprite(value, getMap()));
             }
             else {
-                sprite = null;
+                setSprite(null);
             }
         }
     }
@@ -142,17 +138,9 @@ public class CustomEntity extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-        if (sprite != null) {
+        if (getSprite() != null) {
             // Display the sprite.
-            int direction = getDirection();
-            int spriteNumDirections = sprite.getAnimation(
-                    sprite.getDefaultAnimationName()).getNbDirections();
-
-            if (direction >= spriteNumDirections) {
-                direction = 0;
-            }
-            sprite.paint(g, zoom, showTransparency,
-                    getX(), getY(), null, direction, 0);
+            super.paint(g, zoom, showTransparency);
         }
         else {
             // Draw the resizable icon.

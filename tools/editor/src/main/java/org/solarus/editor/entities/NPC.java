@@ -70,11 +70,6 @@ public class NPC extends MapEntity {
     };
 
     /**
-     * The sprite representing this entity (if any).
-     */
-    private Sprite sprite;
-
-    /**
      * Origin point of each type of NPC.
      */
     private static final Point[] origins = {
@@ -179,10 +174,10 @@ public class NPC extends MapEntity {
         if (name.equals("sprite")) {
 
             if (isValidSpriteName(value)) {
-                sprite = new Sprite(value, getMap());
+                setSprite(new Sprite(value, getMap()));
             }
             else {
-                sprite = null;
+                setSprite(null);
             }
         }
     }
@@ -216,17 +211,17 @@ public class NPC extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
+        Sprite sprite = getSprite();
         if (sprite == null) {
             super.paint(g, zoom, showTransparency);
         }
         else {
-            // display the sprite
+            // Display the sprite with default direction south.
             int direction = getDirection();
             if (direction == -1) {
                 direction = 3;
             }
-            sprite.paint(g, zoom, showTransparency,
-                    getX(), getY(), null, direction, 0);
+            sprite.paint(g, zoom, showTransparency, getX(), getY(), null, direction, 0);
         }
     }
 }

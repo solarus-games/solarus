@@ -39,11 +39,6 @@ public class Crystal extends MapEntity {
     private static final Point origin = new Point(8, 13);
 
     /**
-     * The sprite representing this entity.
-     */
-    private Sprite sprite;
-
-    /**
      * Creates a new crystal.
      * @param map the map
      */
@@ -51,12 +46,11 @@ public class Crystal extends MapEntity {
         super(map, 16, 16);
 
         try {
-            sprite = new Sprite("entities/crystal", map);
+            setSprite(new Sprite("entities/crystal", map));
         }
         catch (MapException ex) {
             // The sprite could not be loaded.
             // The default icon for this entity will be used instead.
-            sprite = null;
         }
     }
 
@@ -67,23 +61,5 @@ public class Crystal extends MapEntity {
     protected Point getOrigin() {
         return origin;
     }
-
-    /**
-     * Draws this entity on the map editor.
-     * @param g graphic context
-     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
-     * @param showTransparency true to make transparent pixels,
-     * false to replace them by a background color
-     */
-    public void paint(Graphics g, double zoom, boolean showTransparency) {
-
-        if (sprite == null) {
-            super.paint(g, zoom, showTransparency);
-        }
-        else {
-            // display the appropriate sprite
-            sprite.paint(g, zoom, showTransparency,
-                    getX(), getY(), null, 0, 0);
-        }
-    }
 }
+

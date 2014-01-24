@@ -64,11 +64,6 @@ public class Chest extends MapEntity {
     }
 
     /**
-     * The sprite representing this entity.
-     */
-    private Sprite sprite;
-
-    /**
      * Description of the default images representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions =
@@ -150,31 +145,8 @@ public class Chest extends MapEntity {
 
         if (name.equals("sprite")) {
             if (isValidSpriteName(value)) {
-                sprite = new Sprite(value, getMap());
+                setSprite(new Sprite(value, getMap()));
             }
-            else {
-                sprite = null;
-            }
-        }
-    }
-
-    /**
-     * Draws this entity on the map editor.
-     * @param g graphic context
-     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
-     * @param showTransparency true to make transparent pixels,
-     * false to replace them by a background color
-     */
-    public void paint(Graphics g, double zoom, boolean showTransparency) {
-
-        if (sprite == null) {
-            super.paint(g, zoom, showTransparency);
-        }
-        else {
-            // display the sprite
-            int direction = getDirection();
-            sprite.paint(g, zoom, showTransparency,
-                    getX(), getY(), null, direction, 0);
         }
     }
 }

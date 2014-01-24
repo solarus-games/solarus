@@ -33,11 +33,6 @@ public class Enemy extends MapEntity {
     };
 
     /**
-     * The sprite representing this entity (if any).
-     */
-    private Sprite sprite;
-
-    /**
      * Enemy ranks.
      */
     public enum Rank {
@@ -71,6 +66,7 @@ public class Enemy extends MapEntity {
      */
     protected Point getOrigin() {
 
+        Sprite sprite = getSprite();
         if (sprite == null) {
             return new Point(8, 29);
         }
@@ -110,19 +106,20 @@ public class Enemy extends MapEntity {
 
             if (value.length() > 0) {
                 try {
-                    sprite = new Sprite("enemies/" + value, getMap());
+                    Sprite sprite = new Sprite("enemies/" + value, getMap());
+                    setSprite(sprite);
                     setSizeUnchecked(sprite.getSize(null, 0));
                 }
                 catch (QuestEditorException ex) {
                     System.err.println(ex.getMessage());
 
-                    // Keep the default sprite.
-                    sprite = null;
+                    // Keep the default enemy icon.
+                    setSprite(null);
                     setSizeUnchecked(16, 16);
                 }
             }
             else {
-                sprite = null;
+                setSprite(null);
             }
         }
     }
@@ -153,26 +150,6 @@ public class Enemy extends MapEntity {
         String treasureSavegameVariable = getStringProperty("treasure_savegame_variable");
         if (treasureSavegameVariable != null && !isValidSavegameVariable(treasureSavegameVariable)) {
             throw new MapException("Invalid treasure savegame variable");
-        }
-    }
-
-    /**
-     * Draws this entity on the map editor.
-     * @param g graphic context
-     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
-     * @param showTransparency true to make transparent pixels,
-     * false to replace them by a background color
-     */
-    public void paint(Graphics g, double zoom, boolean showTransparency) {
-
-        if (sprite == null) {
-            // display a default enemy icon
-            super.paint(g, zoom, showTransparency);
-        }
-        else {
-            // display the sprite
-            sprite.paint(g, zoom, showTransparency,
-                    getX(), getY(), null, getDirection(), 0);
         }
     }
 }

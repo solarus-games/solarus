@@ -101,6 +101,11 @@ public abstract class MapEntity extends Observable {
     private String name;
 
     /**
+     * Sprite representing this entity or null.
+     */
+    private Sprite sprite;
+
+    /**
      * The subtype of entity, or null if the entity has no subtype.
      */
     private EntitySubtype subtype;
@@ -1100,6 +1105,26 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Returns the sprite of this entity if any.
+     * @return The sprite or null.
+     */
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    /**
+     * Sets the sprite of this entity.
+     *
+     * If you set a sprite, it will be used to draw the entity in the editor
+     * instead of currentImageDescription.
+     *
+     * @param sprite The sprite or null.
+     */
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    /**
      * Initializes the description of the image currently representing the entity.
      * By default, the image description is initialized to a copy of the
      * image description of this kind of entity.
@@ -1194,7 +1219,8 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Draws the entity on the map view.
-     * This method draws the entity's image as described by the currentImageDescription field,
+     * This method draws the entity's image as described by the sprite or
+     * the currentImageDescription field,
      * which you can modify by redefining the updateImageDescription() method.
      * To draw a more complex image, redefine the paint() method.
      * @param g graphic context
@@ -1203,7 +1229,22 @@ public abstract class MapEntity extends Observable {
      * false to replace them by a background color
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
-        currentImageDescription.paint(g, zoom, showTransparency, positionInMap);
+
+        if (sprite != null && sprite.getDefaultAnimationName() != null) {
+            // There is a sprite, display it.
+            int direction = getDirection();
+            int numDirections = sprite.getAnimation(sprite.getDefaultAnimationName()).getNbDirections();
+            if (direction < 0 || direction >= numDirections) {
+                // The direction property of an entity may be independent from
+                // the one of its sprite, so being out of the range is not an error.
+                direction = 0;
+            }
+            sprite.paint(g, zoom, showTransparency, getX(), getY(), null, direction, 0);
+        }
+        else {
+            // Use the built-in image description of the editor.
+            currentImageDescription.paint(g, zoom, showTransparency, positionInMap);
+        }
     }
 
     /**

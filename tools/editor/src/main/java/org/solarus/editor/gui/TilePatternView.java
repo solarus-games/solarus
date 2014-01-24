@@ -67,6 +67,7 @@ public class TilePatternView extends JPanel implements Observer {
                         // the type of ground has changed
                         try {
                             tilePattern.setGround(ground);
+                            tileset.setSaved(false);
                         }
                         catch (TilesetException e) {
                             JOptionPane.showMessageDialog(null,
@@ -96,6 +97,7 @@ public class TilePatternView extends JPanel implements Observer {
                     if (tilePattern != null && defaultLayer != tilePattern.getDefaultLayer()) {
                         // the default layer has changed
                         tilePattern.setDefaultLayer(defaultLayer);
+                        tileset.setSaved(false);
                     }
                 }
             });

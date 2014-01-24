@@ -160,6 +160,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
                     // Actually move the pattern.
                     try {
                         patternBeingMoved.setPositionInTileset(currentArea);
+                        tileset.setSaved(false);
                     }
                     catch (TilesetException ex) {
                         // Should not happen: this view is supposed to
@@ -832,6 +833,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
                 try {
                     tilePattern.setGround(ground);
+                    tileset.setSaved(false);
                 }
                 catch (TilesetException e) {
                     JOptionPane.showMessageDialog(null,

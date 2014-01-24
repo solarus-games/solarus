@@ -123,6 +123,7 @@ Solarus Quest Editor changes
 * Fix NullPointerException when canceling the Open Project dialog.
 * Fix freeze if tiles don't exist when changing the tileset of a map.
 * Fix the tree not refreshing when deleting a resource (#335).
+* Fix the tileset editor not always showing the save dialog on closing.
 * Switches, crystals and crystal blocks now show their actual sprite (#376).
 
 _________________________________

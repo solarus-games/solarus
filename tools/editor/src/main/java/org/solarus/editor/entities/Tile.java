@@ -120,16 +120,6 @@ public class Tile extends MapEntity {
                 if (!newTilePattern.equals(oldTilePattern)) {
                     throw new NoSuchTilePatternException("The tile pattern #" + tilePatternId + " is different in this tileset.");
                 }
-
-                // update the size on the map if the size in the tileset has changed
-                try {
-                    setSize(newTilePattern.getWidth() * getRepeatX(),
-                            newTilePattern.getHeight() * getRepeatY());
-                }
-                catch (MapException ex) {
-                    // Should not happen since we are precisely fixing the size.
-                    ex.printStackTrace();
-                }
             }
         }
         catch (NoSuchElementException e) {

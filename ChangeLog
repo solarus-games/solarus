@@ -106,6 +106,7 @@ Changes that do not introduce incompatibilities:
 * Check the parameter sign in game:add/remove life/money/magic (#416).
 * New methods timer:get/set_remaining_time.
 * New function sol.main.get_elapsed_time() to get the simulated time (#424).
+* New function sol.input.get_key_modifiers() to get the key modifiers state.
 
 Solarus Quest Editor changes
 ----------------------------

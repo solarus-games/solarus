@@ -342,6 +342,7 @@ class LuaContext {
       input_api_is_joypad_enabled,
       input_api_set_joypad_enabled,
       input_api_is_key_pressed,
+      input_api_get_key_modifiers,
       input_api_is_joypad_button_pressed,
       input_api_get_joypad_axis_state,
       input_api_get_joypad_hat_direction,

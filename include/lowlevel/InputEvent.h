@@ -189,6 +189,8 @@ class InputEvent {
     static bool is_shift_down();
     static bool is_control_down();
     static bool is_alt_down();
+    static bool is_caps_lock_on();
+    static bool is_num_lock_on();
     static bool is_key_down(KeyboardKey key);
     static bool is_joypad_button_down(int button);
     static int get_joypad_axis_state(int axis);

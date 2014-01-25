@@ -31,6 +31,7 @@ void LuaContext::register_input_module() {
       { "is_joypad_enabled", input_api_is_joypad_enabled },
       { "set_joypad_enabled", input_api_set_joypad_enabled },
       { "is_key_pressed", input_api_is_key_pressed },
+      { "get_key_modifiers", input_api_get_key_modifiers },
       { "is_joypad_button_pressed", input_api_is_joypad_button_pressed },
       { "get_joypad_axis_state", input_api_get_joypad_axis_state },
       { "get_joypad_hat_direction", input_api_get_joypad_hat_direction },
@@ -84,6 +85,44 @@ int LuaContext::input_api_is_key_pressed(lua_State* l) {
   }
 
   lua_pushboolean(l, InputEvent::is_key_down(key));
+  return 1;
+}
+
+/**
+ * \brief Implementation of sol.input.get_key_modifiers().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::input_api_get_key_modifiers(lua_State* l) {
+
+  const bool shift = InputEvent::is_shift_down();
+  const bool control = InputEvent::is_control_down();
+  const bool alt = InputEvent::is_alt_down();
+  const bool caps_lock = InputEvent::is_caps_lock_on();
+  const bool num_lock = InputEvent::is_num_lock_on();
+
+  lua_newtable(l);
+  if (shift) {
+    lua_pushboolean(l, 1);
+    lua_setfield(l, -2, "shift");
+  }
+  if (control) {
+    lua_pushboolean(l, 1);
+    lua_setfield(l, -2, "control");
+  }
+  if (alt) {
+    lua_pushboolean(l, 1);
+    lua_setfield(l, -2, "alt");
+  }
+  if (caps_lock) {
+    lua_pushboolean(l, 1);
+    lua_setfield(l, -2, "caps lock");
+  }
+  if (num_lock) {
+    lua_pushboolean(l, 1);
+    lua_setfield(l, -2, "num lock");
+  }
+
   return 1;
 }
 

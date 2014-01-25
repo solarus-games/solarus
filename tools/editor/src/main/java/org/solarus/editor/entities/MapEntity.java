@@ -1146,12 +1146,12 @@ public abstract class MapEntity extends Observable {
      */
     public void updateImageDescription() {
 
-      EntityImageDescription generalImageDescription = getImageDescription(getType(), getSubtype());
+        EntityImageDescription generalImageDescription = getImageDescription(getType(), getSubtype());
 
-      if (generalImageDescription != null) {
-        // by default, the image description is the general description of the subtype
-        currentImageDescription.set(generalImageDescription);
-      }
+        if (generalImageDescription != null) {
+            // by default, the image description is the general description of the subtype
+            currentImageDescription.set(generalImageDescription);
+        }
     }
 
     /**

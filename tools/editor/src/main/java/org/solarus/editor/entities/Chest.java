@@ -16,7 +16,6 @@
  */
 package org.solarus.editor.entities;
 
-import java.awt.Graphics;
 import java.awt.Point;
 import java.util.NoSuchElementException;
 

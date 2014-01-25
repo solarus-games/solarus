@@ -58,10 +58,13 @@ const std::string KeysEffect::pause_key_effect_names[] = {
  */
 KeysEffect::KeysEffect():
   action_key_effect(ACTION_KEY_NONE),
+  action_key_effect_saved(ACTION_KEY_NONE),
   action_key_enabled(true),
   sword_key_effect(SWORD_KEY_NONE),
+  sword_key_effect_saved(SWORD_KEY_NONE),
   sword_key_enabled(true),
   pause_key_effect(PAUSE_KEY_PAUSE),
+  pause_key_effect_saved(PAUSE_KEY_PAUSE),
   pause_key_enabled(true),
   item_keys_enabled(true) {
 

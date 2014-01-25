@@ -31,7 +31,10 @@ namespace solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::FreeState::FreeState(Hero& hero):
-  PlayerMovementState(hero, "free") {
+  PlayerMovementState(hero, "free"),
+  start_pushing_date(0),
+  pushing_direction4(0) {
+
 
 }
 

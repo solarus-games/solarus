@@ -36,6 +36,7 @@ Engine changes
 * Fix enemies stuck on blocks (#360).
 * Fix enemies stuck on crystal blocks (#41).
 * Fix human NPCs not automatically showing "walking" when moving (#336).
+* Fix the hero leaving the grabbing state even while the game is suspended.
 * Call hero:on_removed() and stop hero timers when stopping the game (#421).
 * Don't die if the map or destination saved no longer exists (#301).
 * Don't die if a map has no destination. Show an error and go to 0,0 instead.

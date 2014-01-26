@@ -285,7 +285,9 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 if (tileset != this.tileset) {
                     Tileset oldTileset = this.tileset;
-                    oldTileset.deleteObserver(this);
+                    if (oldTileset != null) {
+                        oldTileset.deleteObserver(this);
+                    }
                     tileset.addObserver(this);
                     this.tileset = tileset;
                     if (state == State.ADDING_ENTITIES) {

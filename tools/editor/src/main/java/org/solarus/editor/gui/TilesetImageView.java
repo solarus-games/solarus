@@ -126,6 +126,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 
         addMouseListener(new TilesetImageMouseListener());
         addMouseMotionListener(new TilesetImageMouseMotionListener());
+        MouseMiddleButtonScrollListener.install(this);
 
         if (editable) {
             JMenuItem item;

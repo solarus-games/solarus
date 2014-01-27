@@ -1901,6 +1901,20 @@ void LuaContext::on_state_changed(const std::string& state_name) {
 }
 
 /**
+ * \brief Calls the on_taking_damage() method of the object on top of the stack.
+ * \param damage The damage to take.
+ */
+bool LuaContext::on_taking_damage(int damage) {
+
+  if (find_method("on_taking_damage")) {
+    lua_pushinteger(l, damage);
+    call_function(2, 0, "on_taking_damage");
+    return true;
+  }
+  return false;
+}
+
+/**
  * \brief Calls the on_activating() method of the object on top of the stack.
  */
 void LuaContext::on_activating() {

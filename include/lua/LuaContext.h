@@ -238,6 +238,7 @@ class LuaContext {
     void entity_on_movement_changed(MapEntity& entity, Movement& movement);
     void entity_on_movement_finished(MapEntity& entity);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
+    bool hero_on_taking_damage(Hero& hero, int damage);
     void destination_on_activated(Destination& destination);
     void teletransporter_on_activated(Teletransporter& teletransporter);
     void npc_on_interaction(Npc& npc);
@@ -1010,6 +1011,7 @@ class LuaContext {
     void on_obtaining_treasure(const Treasure& treasure);
     void on_obtained_treasure(const Treasure& treasure);
     void on_state_changed(const std::string& state_name);
+    bool on_taking_damage(int damage);
     void on_activating();
     void on_activating(int direction4);
     void on_activated();

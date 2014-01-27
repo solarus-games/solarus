@@ -29,9 +29,8 @@ class Hero::HurtState: public Hero::State {
   public:
 
     HurtState(Hero& hero,
-        const Rectangle& source_xy,
-        int life_points,
-        int magic_points);
+        const Rectangle* source_xy,
+        int damage);
     ~HurtState();
 
     void start(const State* previous_state);
@@ -50,10 +49,14 @@ class Hero::HurtState: public Hero::State {
 
   private:
 
-    const Rectangle source_xy; /**< coordinates of whatever is hurting the hero (usually an enemy) */
-    int life_points;           /**< number of life points to remove (this number may be reduced by the tunic) */
-    int magic_points;          /**< number of magic points to remove */
-    uint32_t end_hurt_date;    /**< date when the state ends */
+    bool has_source;              /**< Whether there is a source_xy rectangle.
+                                   * If no, the hero does not move. */
+    const Rectangle source_xy;    /**< Coordinates of whatever is hurting the
+                                   * hero (usually an enemy). */
+    int damage;                   /**< Number of life points to remove
+                                   * (this number may be reduced by the tunic
+                                   * or by hero:on_taking_damage()). */
+    uint32_t end_hurt_date;       /**< Date when the state ends. */
 
 };
 

@@ -381,8 +381,6 @@ void LuaContext::register_entity_module() {
       { "remove_life", enemy_api_remove_life },
       { "get_damage", enemy_api_get_damage },
       { "set_damage", enemy_api_set_damage },
-      { "get_magic_damage", enemy_api_get_magic_damage },
-      { "set_magic_damage", enemy_api_set_magic_damage },
       { "is_pushed_back_when_hurt", enemy_api_is_pushed_back_when_hurt },
       { "set_pushed_back_when_hurt", enemy_api_set_pushed_back_when_hurt },
       { "get_push_hero_on_sword", enemy_api_get_push_hero_on_sword },
@@ -1545,14 +1543,34 @@ int LuaContext::hero_api_start_running(lua_State* l) {
  */
 int LuaContext::hero_api_start_hurt(lua_State* l) {
 
+  // There are three possible prototypes:
+  // - hero:start_hurt(life_points)
+  // - hero:start_hurt(source_x, source_y, damage)
+  // - hero:start_hurt(source_entity, [source_sprite], damage)
   Hero& hero = check_hero(l, 1);
-  int source_x = luaL_checkint(l, 2);
-  int source_y = luaL_checkint(l, 3);
-  int life_points = luaL_checkint(l, 4);
-  int magic_points = luaL_checkint(l, 5);
 
-  hero.hurt(Rectangle(source_x, source_y),
-      life_points, magic_points);
+  int life_points = 0;
+  if (lua_gettop(l) <= 2) {
+    int damage = luaL_checkint(l, 2);
+    hero.hurt(life_points);
+  }
+  else if (lua_isnumber(l, 2)) {
+    int source_x = luaL_checkint(l, 2);
+    int source_y = luaL_checkint(l, 3);
+    int damage = luaL_checkint(l, 4);
+    hero.hurt(Rectangle(source_x, source_y), damage);
+  }
+  else {
+    MapEntity& source_entity = check_entity(l, 2);
+    Sprite* source_sprite = NULL;
+    int index = 3;
+    if (is_sprite(l, 3)) {
+      source_sprite = &check_sprite(l, 3);
+      index = 4;
+    }
+    int damage = luaL_checkint(l, index);
+    hero.hurt(source_entity, source_sprite, damage);
+  }
 
   return 0;
 }
@@ -2877,34 +2895,6 @@ int LuaContext::enemy_api_set_damage(lua_State* l) {
 }
 
 /**
- * \brief Implementation of enemy:get_magic_damage().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_get_magic_damage(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  lua_pushinteger(l, enemy.get_magic_damage());
-  return 1;
-}
-
-/**
- * \brief Implementation of enemy:set_magic_damage().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_set_magic_damage(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  int magic_damage = luaL_checkint(l, 2);
-
-  enemy.set_magic_damage(magic_damage);
-
-  return 0;
-}
-
-/**
  * \brief Implementation of enemy:is_pushed_back_when_hurt().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -3611,6 +3601,27 @@ void LuaContext::hero_on_state_changed(
   push_hero(l, hero);
   on_state_changed(state_name);
   lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_taking_damage() method of a Lua hero.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param hero The hero.
+ * \param damage The damage to take.
+ * \return \c true if the event is defined.
+ */
+bool LuaContext::hero_on_taking_damage(Hero& hero, int damage) {
+
+  if (!userdata_has_field(hero, "on_taking_damage")) {
+    return false;
+  }
+
+  push_hero(l, hero);
+  bool exists = on_taking_damage(damage);
+  lua_pop(l, 1);
+  return exists;
 }
 
 /**

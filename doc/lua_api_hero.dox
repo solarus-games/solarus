@@ -27,7 +27,7 @@ In other words, the effect of functions like
 \ref lua_api_hero_set_walking_speed "hero:set_walking_speed()"
 persists when the player goes to another map.
 Similarly, events that you define on the hero
-(like \ref lua_api_hero_on_state_changed "hero:on_state_changed()")
+(like \ref lua_api_hero_on_taking_damage "hero:on_taking_damage()")
 continue to get called on any map while the game is active.
 
 We describe here the Lua API that you can use to change the hero's state.
@@ -35,7 +35,7 @@ We describe here the Lua API that you can use to change the hero's state.
 \section lua_api_hero_inherited_methods Methods inherited from map entity
 
 The hero is a particular \ref lua_api_entity "map entity".
-Therefore, it inherits all methods from the type map entity.
+Therefore, he inherits all methods from the type map entity.
 
 See \ref lua_api_entity_methods to know these methods.
 
@@ -269,7 +269,7 @@ Makes the hero throw a hookshot.
 
 Makes the hero run.
 
-\subsection lua_api_hero_start_hurt hero:start_hurt(source_x, source_y, life_points, magic_points)
+\subsection lua_api_hero_start_hurt hero:start_hurt(source_x, source_y, damage)
 
 Hurts the hero if possible, exactly like when he is touched by an
 \ref lua_api_enemy "enemy".
@@ -278,18 +278,39 @@ The hurting animations and sounds of the hero are played.
 This method has no effect if the hero is temporarily invincible
 (because he was already hurt recently) or if the hero is in a state where
 he cannot be hurt (for example when he is brandishing a treasure).
-- \c source_x: X coordinate of whatever hurts the hero. Used to push the hero
+- \c source_x (number): X coordinate of whatever hurts the hero. Used to push the hero
   away from that source.
-- \c source_y: Y coordinate of whatever hurts the hero. Used to push the hero
+- \c source_y (number): Y coordinate of whatever hurts the hero. Used to push the hero
   away from that source.
-- \c life_points: Base number of life points to remove (possibly \c 0).
-  This number will be
-  divided by the resistance ability level of the player (his tunic).
-- \c magic_points: Number of magic points to remove (possibly \c 0).
+- \c damage (number): Base number of life points to remove (possibly \c 0).
+  This number will be divided by the
+  \ref lua_api_game_get_ability "tunic" level of the player,
+  unless you override this default calculation in
+  \ref lua_api_hero_on_taking_damage "hero:on_taking_damage()".
 
 \remark If you just want to remove some life to the player, without making the
   hurting animations and sounds of the hero, see \ref lua_api_game_remove_life
   "game:remove_life()".
+
+\subsection lua_api_hero_start_hurt hero:start_hurt([source_entity, [source_sprite]], life_points)
+
+Same as
+\rev lua_api_hero_start_hurt "hero:start_hurt(source_x, source_y, life_points)",
+but specifying the source as an optional entity and possibly its sprite.
+- \c source_entity (\ref lua_api_entity "map entity", optional):
+  Whatever hurts the hero.
+  The coordinates of this source entity are used to push the hero away from
+  that source.
+  No value means that the hero will not be pushed away.
+- \c source_sprite (\ref lua_api_sprite "sprite", optional): Which sprite of
+  the source entity is hurting the hero.
+  If you set this value, the hero will be pushed away from the origin of this
+  sprite instead of from the origin of the source entity.
+- \c life_points: Base number of life points to remove (possibly \c 0).
+  This number will be divided by the
+  \ref lua_api_game_get_ability "tunic" level of the player,
+  unless you override this default calculation in
+  \ref lua_api_hero_on_taking_damage "hero:on_taking_damage()".
 
 \section lua_api_hero_inherited_events Events inherited from map entity
 
@@ -297,7 +318,7 @@ Events are callback methods automatically called by the engine if you define
 them.
 
 The hero is a particular \ref lua_api_entity "map entity".
-Therefore, it inherits all events from the type map entity.
+Therefore, he inherits all events from the type map entity.
 
 See \ref lua_api_entity_events to know these events.
 
@@ -318,6 +339,29 @@ Called when the built-in state of the hero changes.
 \remark This event is called even for the initial state of the hero,
   right after \ref lua_api_game_on_started "game:on_started()".
   This initial state is always \c "free".
+
+\subsection lua_api_hero_on_taking_damage hero:on_taking_damage(damage)
+
+Called when the hero is hurt and should take damages.
+
+This happens usually after a collision with an
+\ref lua_api_enemy "enemy" or when you call
+\ref lua_api_hero_start_hurt "hero:start_hurt()".
+
+This event allows you to override what happens when the hero takes damage.
+By default, if you don't define this event, the hero loses some life as
+follows.
+The life lost is the damage inflicted by the attacker divided by the
+\ref lua_api_game_get_ability "tunic level" of the player, with a minimum of
+\c 1 (unless the initial damage was already \c 0).
+
+You can define this even if you need to change how the hero takes damage,
+for example if you want the
+\ref lua_api_game_get_ability "shield level"
+to give better resistance to injuries.
+- \c damage (number): Damage inflicted by the attacker, no matter if this was
+  an enemy or a call to
+  \ref lua_api_hero_start_hurt "hero:start_hurt()".
 
 */
 

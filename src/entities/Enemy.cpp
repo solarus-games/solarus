@@ -66,7 +66,6 @@ Enemy::Enemy(
 
   breed(breed),
   damage_on_hero(1),
-  magic_damage_on_hero(0),
   life(1),
   hurt_style(HURT_NORMAL),
   pushed_back_when_hurt(true),
@@ -470,22 +469,6 @@ int Enemy::get_damage() const {
  */
 void Enemy::set_damage(int damage_on_hero) {
   this->damage_on_hero = damage_on_hero;
-}
-
-/**
- * \brief Returns the amount of magic damage this kind of enemy can make to the hero.
- * \return Number of magic points the player loses.
- */
-int Enemy::get_magic_damage() const {
-  return magic_damage_on_hero;
-}
-
-/**
- * \brief Sets the amount of magic damage this kind of enemy can make to the hero.
- * \param magic_damage_on_hero Number of magic points the player loses.
- */
-void Enemy::set_magic_damage(int magic_damage_on_hero) {
-  this->magic_damage_on_hero = magic_damage_on_hero;
 }
 
 /**
@@ -1067,7 +1050,7 @@ void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
       attack_stopped_by_hero_shield();
     }
     else {
-      hero.hurt(*this, this_sprite, damage_on_hero, magic_damage_on_hero);
+      hero.hurt(*this, this_sprite, damage_on_hero);
     }
   }
 }

@@ -140,25 +140,13 @@ divided by the level of resistance ability of the player (his tunic).
 
 Sets the number of life points that the enemy removes from the
 \ref lua_api_hero "hero" when touching him.
-This number will be
-divided by the level of resistance ability of the player (his tunic).
+This number will be divided by the
+\ref lua_api_game_get_ability "tunic" level of the player,
+unless you override this default behavior in
+\ref lua_api_hero_on_hurt "hero:on_hurt()".
 
 The default value is \c 1.
 - \c damage (number): Damage inflicted to the hero.
-
-\subsection lua_api_enemy_get_magic_damage enemy:get_magic_damage()
-
-Returns the number of magic points that the enemy removes from the
-\ref lua_api_hero "hero" when touching him.
-- Return value (number): Magic damage inflicted to the hero.
-
-\subsection lua_api_enemy_set_magic_damage enemy:set_magic_damage(magic_damage)
-
-Sets the number of magic points that the enemy removes from the
-\ref lua_api_hero "hero" when touching him.
-
-The default value is \c 0.
-- \c magic_damage (number): Magic damage inflicted to the hero.
 
 \subsection lua_api_enemy_is_pushed_back_when_hurt enemy:is_pushed_back_when_hurt()
 
@@ -801,16 +789,23 @@ like brandishing a treasure or falling into a hole.
 
 Your script can define this event to customize what bad things happen to the
 hero.
-If you define this event, the engine does nothing and lets you handle this.
+If you define this event, the engine does absolutely nothing and lets you
+handle this.
 
-If you don't define this event, the hero is hurt with the predefined behavior:
-he loses some life (and optionally some magic) depending on the enemy and on
-his tunic, and he goes to the state \c "hurt" where is pushed away from the
-enemy. Then he recovers and his sprites blink for a while. During this short
-period, he is temporarily invincible.
+If you don't define this event, the hero is hurt with the predefined behavior
+as follows.
+The hero goes to the state \c "hurt" where is pushed away from the enemy.
+He loses some life depending on the enemy's
+\ref lua_api_enemy_get_damage "damage" property,
+on the hero's
+\ref lua_api_game_get_ability "tunic"
+and on \ref lua_api_hero_on_hurt "hero:on_hurt()" if defined.
+Then, he recovers and his sprites blink for a while.
+During this short period, he is temporarily invincible.
 - \c hero (\ref lua_api_hero "hero"): The hero being attacked.
 - \c enemy_sprite (\ref lua_api_sprite "sprite"): The sprite of the enemy that
   caused the collision with the hero. You may use this information if your
   enemy has several sprites with different behaviors.
+
 */
 

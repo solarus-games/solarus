@@ -17,6 +17,7 @@
 #include "hero/HurtState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
+#include "lua/LuaContext.h"
 #include "movements/StraightMovement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Geometry.h"
@@ -29,20 +30,20 @@ namespace solarus {
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
- * \param source_xy Coordinates of the thing (usually an enemy) that hurts the hero,
- * used to compute the trajectory of the hero.
- * \param life_points Number of heart quarters to remove (this number may be reduced by the tunic).
- * \param magic_points Number of magic points to remove.
+ * \param source_xy Coordinates of the thing (usually an enemy) that hurts
+ * the hero, used to compute the trajectory of the hero.
+ * If NULL, the hero won't move.
+ * \param damage Number of life poitns to remove
+ * (this number may be reduced by the tunic or by hero:on_taking_damage()).
  */
 Hero::HurtState::HurtState(
     Hero& hero,
-    const Rectangle& source_xy,
-    int life_points,
-    int magic_points):
+    const Rectangle* source_xy,
+    int damage):
   State(hero, "hurt"),
-  source_xy(source_xy),
-  life_points(life_points),
-  magic_points(magic_points),
+  has_source(source_xy != NULL),
+  source_xy(has_source ? *source_xy : Rectangle()),
+  damage(damage),
   end_hurt_date(0) {
 
 }
@@ -51,12 +52,11 @@ Hero::HurtState::HurtState(
  * \brief Destructor.
  */
 Hero::HurtState::~HurtState() {
-
 }
 
 /**
  * \brief Starts this state.
- * \param previous_state the previous state
+ * \param previous_state The previous state.
  */
 void Hero::HurtState::start(const State* previous_state) {
 
@@ -66,32 +66,35 @@ void Hero::HurtState::start(const State* previous_state) {
 
   Sound::play("hero_hurt");
 
-  if (life_points != 0) {
-    // the level of the tunic reduces the damage, but we remove at least 1 life point
-    life_points = std::max(1, life_points / (equipment.get_ability(ABILITY_TUNIC)));
+  get_sprites().set_animation_hurt();
+  get_sprites().blink();
+
+  Hero& hero = get_hero();
+  if (has_source) {
+    double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(),
+        hero.get_x(), hero.get_y());
+    StraightMovement* movement = new StraightMovement(false, true);
+    movement->set_max_distance(24);
+    movement->set_speed(120);
+    movement->set_angle(angle);
+    hero.set_movement(movement);
+  }
+  end_hurt_date = System::now() + 200;
+
+  // See if the script customizes how the hero takes damages.
+  bool handled = get_lua_context().hero_on_taking_damage(get_hero(), damage);
+
+  if (!handled && damage != 0) {
+    // No customized damage: perform the default calculation.
+    // The level of the tunic reduces the damage,
+    // but we remove at least 1 life point.
+    int life_points = std::max(1, damage / (equipment.get_ability(ABILITY_TUNIC)));
 
     equipment.remove_life(life_points);
     if (equipment.has_ability(ABILITY_TUNIC)) {
       equipment.notify_ability_used(ABILITY_TUNIC);
     }
   }
-
-  if (magic_points > 0 && equipment.get_magic() > 0) {
-    equipment.remove_magic(magic_points);
-    Sound::play("magic_bar");
-  }
-  get_sprites().set_animation_hurt();
-  get_sprites().blink();
-
-  Hero& hero = get_hero();
-  double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(),
-      hero.get_x(), hero.get_y());
-  StraightMovement* movement = new StraightMovement(false, true);
-  movement->set_max_distance(24);
-  movement->set_speed(120);
-  movement->set_angle(angle);
-  hero.set_movement(movement);
-  end_hurt_date = System::now() + 200;
 }
 
 /**
@@ -113,9 +116,10 @@ void Hero::HurtState::update() {
   State::update();
 
   Hero& hero = get_hero();
-  if (hero.get_movement()->is_finished()
+  if ((hero.get_movement() != NULL && hero.get_movement()->is_finished())
       || System::now() >= end_hurt_date) {
-    // we have end_hurt_date because the movement may never finish if there is an obstacle
+    // The movement may be finished, or the end date may be reached
+    // when there is an obstacle or when there is no movement at all.
 
     hero.clear_movement();
     hero.start_state_from_ground();

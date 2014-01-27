@@ -68,7 +68,8 @@ class MapEntities {
     void remove_entity(MapEntity* entity);
     void remove_entity(const std::string& name);
     void remove_entities_with_prefix(const std::string& prefix);
-    void bring_to_front(MapEntity* entity);
+    void bring_to_front(MapEntity& entity);
+    void bring_to_back(MapEntity& entity);
     void destroy_entity(MapEntity* entity);
     static bool compare_y(MapEntity* first, MapEntity* second);
     void set_entity_layer(MapEntity& entity, Layer layer);

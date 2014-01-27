@@ -155,6 +155,8 @@ void LuaContext::register_entity_module() {
       { "get_angle", entity_api_get_angle },\
       { "get_direction4_to", entity_api_get_direction4_to },\
       { "get_direction8_to", entity_api_get_direction8_to },\
+      { "bring_to_front", entity_api_bring_to_front },\
+      { "bring_to_back", entity_api_bring_to_back },\
       { "get_optimization_distance", entity_api_get_optimization_distance },\
       { "set_optimization_distance", entity_api_set_optimization_distance },\
       { "is_in_same_region", entity_api_is_in_same_region },\
@@ -914,6 +916,34 @@ int LuaContext::entity_api_get_direction8_to(lua_State* l) {
 
   lua_pushnumber(l, direction8);
   return 1;
+}
+
+/**
+ * \brief Implementation of entity:bring_to_front().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_bring_to_front(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  entity.get_map().get_entities().bring_to_front(entity);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of entity:bring_to_back().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_bring_to_back(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  entity.get_map().get_entities().bring_to_back(entity);
+
+  return 0;
 }
 
 /**

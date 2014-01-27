@@ -673,6 +673,8 @@ class LuaContext {
       entity_api_get_angle,
       entity_api_get_direction4_to,
       entity_api_get_direction8_to,
+      entity_api_bring_to_front,
+      entity_api_bring_to_back,
       entity_api_snap_to_grid,
       entity_api_get_sprite,
       entity_api_create_sprite,

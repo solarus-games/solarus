@@ -92,6 +92,7 @@ Changes that do not introduce incompatibilities:
 * map:get_world() can now return nil because the world is now optional (#128).
 * Entity names are now auto-incremented to simplify their creation.
 * New method entity:get_game() (#363).
+* New methods entity:bring_to_front() and entity:bring_to_back() (#273).
 * New event enemy:on_attacking_hero() to customize attacks (#356).
 * New event sensor:on_left() (#339).
 * New event block:on_moving() (#334).

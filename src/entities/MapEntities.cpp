@@ -311,24 +311,33 @@ bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 }
 
 /**
- * \brief Brings to front an entity that is displayed as a sprite in the normal order.
- * \param entity the entity to bring to front
+ * \brief Brings to front an entity in its layer.
+ * \param entity The entity to bring to front.
  */
-void MapEntities::bring_to_front(MapEntity* entity) {
+void MapEntities::bring_to_front(MapEntity& entity) {
 
-  Debug::check_assertion(entity->can_be_drawn(),
-      std::string("Cannot bring to front entity '")
-          + entity->get_name() + "' since it is not drawn"
-  );
+  Layer layer = entity.get_layer();
+  if (entity.can_be_drawn() && !entity.is_drawn_in_y_order()) {
+    entities_drawn_first[layer].remove(&entity);
+    entities_drawn_first[layer].push_back(&entity);  // Displayed last.
+  }
 
-  Debug::check_assertion(!entity->is_drawn_in_y_order(),
-      std::string("Cannot bring to front entity '")
-      + entity->get_name() + "' since it is drawn in the y order"
-  );
+  // TODO also update the obstacle_entities, ground_modifiers and ground_observers.
+}
 
-  Layer layer = entity->get_layer();
-  entities_drawn_first[layer].remove(entity);
-  entities_drawn_first[layer].push_back(entity);
+/**
+ * \brief Brings to back an entity in its layer.
+ * \param entity The entity to bring to back.
+ */
+void MapEntities::bring_to_back(MapEntity& entity) {
+
+  Layer layer = entity.get_layer();
+  if (entity.can_be_drawn() && !entity.is_drawn_in_y_order()) {
+    entities_drawn_first[layer].remove(&entity);
+    entities_drawn_first[layer].push_front(&entity);  // Displayed first.
+  }
+
+  // TODO also update the obstacle_entities, ground_modifiers and ground_observers.
 }
 
 /**

@@ -475,7 +475,7 @@ void Destructible::play_destroy_animation() {
   }
   get_sprite().set_current_animation("destroy");
   if (!is_drawn_in_y_order()) {
-    get_entities().bring_to_front(this);  // Show animation destroy to front.
+    get_entities().bring_to_front(*this);  // Show animation destroy to front.
   }
   update_ground_observers();  // The ground (if any) has just disappeared.
 }

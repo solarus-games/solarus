@@ -32,8 +32,8 @@ namespace solarus {
  */
 Hero::FreeState::FreeState(Hero& hero):
   PlayerMovementState(hero, "free"),
-  start_pushing_date(0),
-  pushing_direction4(0) {
+  pushing_direction4(0),
+  start_pushing_date(0) {
 
 
 }

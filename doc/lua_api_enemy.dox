@@ -110,9 +110,9 @@ Returns the current life of this enemy.
 
 Sets the current life of this enemy.
 
-The default value is \c 1.
+The initial value is \c 1.
 - \c life (number): Number of health points to set. A value of \c 0
-  kills the enemy.
+  or lower kills the enemy.
 
 \subsection lua_api_enemy_add_life enemy:add_life(life)
 
@@ -715,8 +715,9 @@ to lose or do something more.
 By default, if you don't define this event, the enemy loses a number of
 life points computed as
 \ref lua_api_enemy_get_attack_consequence "his reaction to sword attacks"
-plus
-the sword \ref lua_api_game_get_ability "ability level" of the hero.
+multiplied by
+the sword \ref lua_api_game_get_ability "ability level" of the hero,
+and doubled during a spin attack.
 - \c hero (\ref lua_api_hero "hero"): The hero who used the sword.
 - \c enemy_sprite (\ref lua_api_sprite "sprite"): The sprite of this enemy that
   was hit.

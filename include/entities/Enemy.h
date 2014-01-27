@@ -210,7 +210,7 @@ class Enemy: public Detector {
     void immobilize();
     void stop_immobilized();
     void custom_attack(EnemyAttack attack, Sprite* this_sprite);
-    void notify_hurt(MapEntity& source, EnemyAttack attack, int life_points);
+    void notify_hurt(MapEntity& source, EnemyAttack attack);
     void notify_dead();
     void notify_immobilized();
     bool is_saved() const;

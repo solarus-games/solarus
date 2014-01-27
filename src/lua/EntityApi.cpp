@@ -4278,20 +4278,39 @@ void LuaContext::enemy_on_custom_attack_received(Enemy& enemy,
 }
 
 /**
+ * \brief Calls the on_hurt_by_sword() method of a Lua enemy if it is defined.
+ * \param enemy An enemy.
+ * \param hero The hero whose sword is hitting the enemy.
+ * \param enemy_sprite Sprite of the enemy that gets hits.
+ * \return \c true if the method is defined.
+ */
+bool LuaContext::enemy_on_hurt_by_sword(
+    Enemy& enemy, Hero& hero, Sprite& enemy_sprite) {
+
+  if (!userdata_has_field(enemy, "on_hurt_by_sword")) {
+    return false;
+  }
+
+  push_enemy(l, enemy);
+  bool exists = on_hurt_by_sword(hero, enemy_sprite);
+  lua_pop(l, 1);
+  return exists;
+}
+
+/**
  * \brief Calls the on_hurt() method of a Lua enemy if it is defined.
  *
  * Also stops timers associated to the enemy.
  *
  * \param enemy An enemy.
  * \param attack The attack received.
- * \param life_lost Number of life points just lost.
  */
-void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) {
+void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack) {
 
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
   if (userdata_has_field(enemy, "on_hurt")) {
-    on_hurt(attack, life_lost);
+    on_hurt(attack);
   }
   lua_pop(l, 1);
 }

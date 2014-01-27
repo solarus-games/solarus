@@ -965,9 +965,7 @@ void Hero::State::notify_attacked_enemy(
  */
 int Hero::State::get_sword_damage_factor() const {
 
-  static const int sword_factors[] = {0, 1, 2, 4, 8};
-  int sword = get_equipment().get_ability(ABILITY_SWORD);
-  return sword_factors[sword];
+  return get_equipment().get_ability(ABILITY_SWORD);
 }
 
 /**

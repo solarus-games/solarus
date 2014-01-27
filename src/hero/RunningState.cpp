@@ -37,6 +37,9 @@ namespace solarus {
  */
 Hero::RunningState::RunningState(Hero& hero, GameCommands::Command command):
   State(hero, "running"),
+  phase(0),
+  next_phase_date(0),
+  next_sound_date(0),
   command(command) {
 
 }

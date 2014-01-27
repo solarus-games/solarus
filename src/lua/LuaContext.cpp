@@ -2472,16 +2472,31 @@ void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 }
 
 /**
+ * \brief Calls the on_hurt_by_sword() method of the object on top of the stack.
+ * \param hero The hero whose sword is hitting the enemy.
+ * \param enemy_sprite Sprite of the enemy that gets hits.
+ * \return \c true if the method is defined.
+ */
+bool LuaContext::on_hurt_by_sword(Hero& hero, Sprite& enemy_sprite) {
+
+  if (find_method("on_hurt_by_sword")) {
+    push_hero(l, hero);
+    push_sprite(l, enemy_sprite);
+    call_function(3, 0, "on_hurt_by_sword");
+    return true;
+  }
+  return false;
+}
+
+/**
  * \brief Calls the on_hurt() method of the object on top of the stack.
  * \param attack The attack received.
- * \param life_lost Number of life points just lost.
  */
-void LuaContext::on_hurt(EnemyAttack attack, int life_lost) {
+void LuaContext::on_hurt(EnemyAttack attack) {
 
   if (find_method("on_hurt")) {
     push_string(l, enemy_attack_names[attack]);
-    lua_pushinteger(l, life_lost);
-    call_function(3, 0, "on_hurt");
+    call_function(2, 0, "on_hurt");
   }
 }
 

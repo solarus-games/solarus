@@ -1211,13 +1211,30 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
         stop_immobilized();
       }
 
-      // compute the number of health points lost by the enemy
+      // Compute the number of health points lost by the enemy.
 
+      being_hurt = true;
       if (attack == ATTACK_SWORD) {
 
-        // For a sword attack, the damage depends on the sword strength.
-        int damage_multiplicator = static_cast<Hero&>(source).get_sword_damage_factor();
-        reaction.life_lost *= damage_multiplicator;
+        Hero& hero = static_cast<Hero&>(source);
+
+        // Sword attacks only use pixel-precise collisions.
+        Debug::check_assertion(this_sprite != NULL,
+            "Missing enemy sprite for sword attack"
+        );
+
+        // For a sword attack, the damage may be something customized.
+        bool customized = get_lua_context().enemy_on_hurt_by_sword(
+            *this, hero, *this_sprite);
+
+        if (customized) {
+          reaction.life_lost = 0;  // Already done by the script.
+        }
+        else {
+          // If this is not customized, the default it to multiply the reaction
+          // by a factor that depends on the sword.
+          reaction.life_lost *= hero.get_sword_damage_factor();
+        }
       }
       else if (attack == ATTACK_THROWN_ITEM) {
         reaction.life_lost *= static_cast<CarriedItem&>(source).get_damage_on_enemies();
@@ -1225,7 +1242,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
       life -= reaction.life_lost;
 
       hurt(source, this_sprite);
-      notify_hurt(source, attack, reaction.life_lost);
+      notify_hurt(source, attack);
       break;
 
     case EnemyReaction::IGNORED:
@@ -1262,7 +1279,6 @@ void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
   uint32_t now = System::now();
 
   // update the enemy state
-  being_hurt = true;
   set_movement_events_enabled(false);
 
   can_attack = false;
@@ -1290,13 +1306,12 @@ void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
 
 /**
  * \brief This function is called when the enemy has just been hurt.
- * \param source the source of the attack
- * \param attack the attack that was just successful
- * \param life_points the number of life points lost by this enemy
+ * \param source The source of the attack.
+ * \param attack The attack that was just successful.
  */
-void Enemy::notify_hurt(MapEntity& source, EnemyAttack attack, int life_points) {
+void Enemy::notify_hurt(MapEntity& source, EnemyAttack attack) {
 
-  get_lua_context().enemy_on_hurt(*this, attack, life_points);
+  get_lua_context().enemy_on_hurt(*this, attack);
   if (get_life() <= 0) {
     get_lua_context().enemy_on_dying(*this);
   }

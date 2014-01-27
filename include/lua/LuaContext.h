@@ -276,7 +276,8 @@ class LuaContext {
         Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void enemy_on_custom_attack_received(Enemy& enemy,
         EnemyAttack attack, Sprite* sprite);
-    void enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost);
+    bool enemy_on_hurt_by_sword(Enemy& enemy, Hero& hero, Sprite& enemy_sprite);
+    void enemy_on_hurt(Enemy& enemy, EnemyAttack attack);
     void enemy_on_dying(Enemy& enemy);
     void enemy_on_dead(Enemy& enemy);
     void enemy_on_immobilized(Enemy& enemy);
@@ -1056,7 +1057,8 @@ class LuaContext {
     void on_exploded();
     void on_regenerating();
     void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
-    void on_hurt(EnemyAttack attack, int life_lost);
+    bool on_hurt_by_sword(Hero& hero, Sprite& enemy_sprite);
+    void on_hurt(EnemyAttack attack);
     void on_dying();
     void on_dead();
     void on_immobilized();

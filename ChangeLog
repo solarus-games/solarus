@@ -96,6 +96,7 @@ Changes that do not introduce incompatibilities:
 * Entity names are now auto-incremented to simplify their creation.
 * New method entity:get_game() (#363).
 * New methods entity:bring_to_front() and entity:bring_to_back() (#273).
+* New methods enemy:get_attack_consequence(), get_attack_consequence_sprite().
 * New event enemy:on_hurt_by_sword() to customize the sword strength (#426).
 * New event enemy:on_attacking_hero() to customize attacks (#356).
 * New event hero:on_hurt() to customize the defense of the equipment (#428).

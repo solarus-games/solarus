@@ -395,7 +395,9 @@ void LuaContext::register_entity_module() {
       { "set_can_attack", enemy_api_set_can_attack },
       { "get_minimum_shield_needed", enemy_api_get_minimum_shield_needed },
       { "set_minimum_shield_needed", enemy_api_set_minimum_shield_needed },
+      { "get_attack_consequence", enemy_api_get_attack_consequence },
       { "set_attack_consequence", enemy_api_set_attack_consequence },
+      { "get_attack_consequence_sprite", enemy_api_get_attack_consequence_sprite },
       { "set_attack_consequence_sprite", enemy_api_set_attack_consequence_sprite },
       { "set_default_attack_consequences", enemy_api_set_default_attack_consequences },
       { "set_default_attack_consequences_sprite", enemy_api_set_default_attack_consequences_sprite },
@@ -3088,6 +3090,28 @@ int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of enemy:get_attack_consequence().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_get_attack_consequence(lua_State* l) {
+
+  Enemy& enemy = check_enemy(l, 1);
+  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, enemy_attack_names);
+
+  const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, NULL);
+  if (reaction.type == EnemyReaction::HURT) {
+    // Return the life damage.
+    lua_pushinteger(l, reaction.life_lost);
+  }
+  else {
+    // Return a string.
+    push_string(l, EnemyReaction::get_reaction_name(reaction.type));
+  }
+  return 1;
+}
+
+/**
  * \brief Implementation of enemy:set_attack_consequence().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -3114,6 +3138,29 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
   }
 
   return 0;
+}
+
+/**
+ * \brief Implementation of enemy:get_attack_consequence_sprite().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_get_attack_consequence_sprite(lua_State* l) {
+
+  Enemy& enemy = check_enemy(l, 1);
+  Sprite& sprite = check_sprite(l, 2);
+  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, enemy_attack_names);
+
+  const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, &sprite);
+  if (reaction.type == EnemyReaction::HURT) {
+    // Return the life damage.
+    lua_pushinteger(l, reaction.life_lost);
+  }
+  else {
+    // Return a string.
+    push_string(l, EnemyReaction::get_reaction_name(reaction.type));
+  }
+  return 1;
 }
 
 /**

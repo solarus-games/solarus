@@ -290,6 +290,24 @@ unless you override some of them with
   - \c "custom": Event \ref lua_api_enemy_on_custom_attack_received
     "enemy:on_custom_attack_received()" is called.
 
+\subsection lua_api_enemy_set_attack_consequence enemy:set_attack_consequence(attack, consequence)
+
+Sets how this enemy reacts when he receives an attack.
+
+Recall that enemies may have several \ref lua_api_sprite "sprites".
+This attack consequence applies to all sprites of the enemy,
+unless you override some of them with
+\ref lua_api_enemy_set_attack_consequence_sprite
+"enemy:set_attack_consequence_sprite()".
+- \c attack (string): Name of an attack against the enemy:
+  \c "sword", \c "thrown_item", \c "explosion", \c "arrow", \c "hookshot",
+  \c "boomerang" or \c "fire".
+- \c consequence (number or string): Indicates what happens when this enemy
+  receives the attack.
+  The possible values are the same as in
+  \ref lua_api_enemy_get_attack_consequence
+  "enemy:get_attack_consequence()".
+
 \subsection lua_api_enemy_get_attack_consequence_sprite enemy:get_attack_consequence_sprite(sprite, attack):
 
 Returns how this enemy reacts when one of his \ref lua_api_sprite "sprites"
@@ -307,24 +325,6 @@ the reaction of the enemy for a particular sprite with
   "sword", "thrown_item", "explosion", "arrow", "hookshot",
   "boomerang" or "fire".
 - \c consequence (number or string): Indicates what happens when this sprite
-  receives the attack.
-  The possible values are the same as in
-  \ref lua_api_enemy_get_attack_consequence
-  "enemy:get_attack_consequence()".
-
-\subsection lua_api_enemy_set_attack_consequence enemy:set_attack_consequence(attack, consequence)
-
-Sets how this enemy reacts when he receives an attack.
-
-Recall that enemies may have several \ref lua_api_sprite "sprites".
-This attack consequence applies to all sprites of the enemy,
-unless you override some of them with
-\ref lua_api_enemy_set_attack_consequence_sprite
-"enemy:set_attack_consequence_sprite()".
-- \c attack (string): Name of an attack against the enemy:
-  \c "sword", \c "thrown_item", \c "explosion", \c "arrow", \c "hookshot",
-  \c "boomerang" or \c "fire".
-- \c consequence (number or string): Indicates what happens when this enemy
   receives the attack.
   The possible values are the same as in
   \ref lua_api_enemy_get_attack_consequence

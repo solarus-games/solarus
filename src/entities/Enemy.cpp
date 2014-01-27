@@ -739,7 +739,7 @@ void Enemy::set_default_attack_consequences() {
   for (int i = 0; i < ATTACK_NUMBER; i++) {
     attack_reactions[i].set_default_reaction();
   }
-  set_attack_consequence(ATTACK_SWORD, EnemyReaction::HURT, 1); // multiplied by the sword damage factor
+  set_attack_consequence(ATTACK_SWORD, EnemyReaction::HURT, 1); // multiplied by the sword strength
   set_attack_consequence(ATTACK_THROWN_ITEM, EnemyReaction::HURT, 1); // multiplied depending on the item
   set_attack_consequence(ATTACK_EXPLOSION, EnemyReaction::HURT, 2);
   set_attack_consequence(ATTACK_ARROW, EnemyReaction::HURT, 2);
@@ -1191,7 +1191,6 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
       // get immobilized
       hurt(source, this_sprite);
       immobilize();
-      notify_hurt(source, attack, 0);
       break;
 
     case EnemyReaction::CUSTOM:
@@ -1216,7 +1215,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
 
       if (attack == ATTACK_SWORD) {
 
-        // for a sword attack, the damage depends on the sword and the variant of sword attack used
+        // For a sword attack, the damage depends on the sword strength.
         int damage_multiplicator = static_cast<Hero&>(source).get_sword_damage_factor();
         reaction.life_lost *= damage_multiplicator;
       }

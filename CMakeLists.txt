@@ -8,6 +8,8 @@ endif()
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 set(SOLARUS_INSTALL_DESTINATION "bin")
 
+option(SOLARUS_USE_LUAJIT "Use LuaJIT instead of default Lua (recommended)" ON)
+
 # find the headers and the libraries of dependencies
 find_package(OpenGL)
 find_package(SDL2 "2" REQUIRED)
@@ -17,8 +19,12 @@ find_package(OpenAL REQUIRED)
 find_package(VorbisFile REQUIRED)
 find_package(Ogg REQUIRED)
 find_package(ModPlug REQUIRED)
-find_package(LuaJit REQUIRED)
 find_package(PhysFS REQUIRED)
+if(SOLARUS_USE_LUAJIT)
+  find_package(LuaJit REQUIRED)
+else()
+  find_package(Lua51 REQUIRED)
+endif()
 
 # Explicit link to libdl is needed for Lua on some systems.
 find_library(DL_LIBRARY dl)

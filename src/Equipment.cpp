@@ -584,8 +584,8 @@ std::string Equipment::get_ability_savegame_variable(Ability ability) const {
 
   switch (ability) {
 
-    case ABILITY_RESISTANCE:
-      return Savegame::KEY_ABILITY_RESISTANCE;
+    case ABILITY_TUNIC:
+      return Savegame::KEY_ABILITY_TUNIC;
 
     case ABILITY_SWORD:
       return Savegame::KEY_ABILITY_SWORD;
@@ -643,7 +643,7 @@ void Equipment::set_ability(Ability ability, int level) {
 
   Game* game = get_game();
   if (game != NULL) {
-    if (ability == ABILITY_RESISTANCE ||
+    if (ability == ABILITY_TUNIC ||
         ability == ABILITY_SWORD ||
         ability == ABILITY_SHIELD) {
       // The hero's sprites depend on these abilities.

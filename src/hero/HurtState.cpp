@@ -68,11 +68,11 @@ void Hero::HurtState::start(const State* previous_state) {
 
   if (life_points != 0) {
     // the level of the tunic reduces the damage, but we remove at least 1 life point
-    life_points = std::max(1, life_points / (equipment.get_ability(ABILITY_RESISTANCE)));
+    life_points = std::max(1, life_points / (equipment.get_ability(ABILITY_TUNIC)));
 
     equipment.remove_life(life_points);
-    if (equipment.has_ability(ABILITY_RESISTANCE)) {
-      equipment.notify_ability_used(ABILITY_RESISTANCE);
+    if (equipment.has_ability(ABILITY_TUNIC)) {
+      equipment.notify_ability_used(ABILITY_TUNIC);
     }
   }
 

@@ -24,14 +24,15 @@ namespace solarus {
  */
 enum Ability {
 
-  ABILITY_RESISTANCE,             /**< Reduces the life points lost when hurt. */
-  ABILITY_SWORD,                  /**< Hitting enemies with the main sword. */
+  ABILITY_TUNIC,                  /**< Tunic of the hero. Determines his sprite. */
+  ABILITY_SWORD,                  /**< Sword of the hero. 0 means no sword, a
+                                   * greater values determine the sword sprite. */
   ABILITY_SWORD_KNOWLEDGE,        /**< Allows to do the super spin attack. */
   ABILITY_SHIELD,                 /**< Allows to stop attacks from enemies. */
   ABILITY_LIFT,                   /**< Lifting destructible objects. */
   ABILITY_SWIM,                   /**< Swimming in deep water. */
   ABILITY_RUN,                    /**< Running faster. */
-  ABILITY_DETECT_WEAK_WALLS,      /**< Be notified or weak walls nearby. */
+  ABILITY_DETECT_WEAK_WALLS,      /**< Be notified of weak walls nearby. */
 };
 
 }

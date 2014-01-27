@@ -599,12 +599,11 @@ Built-in ability levels indicate whether the hero can perform some built-in
 actions like attacking, swimming or running.
 - \c ability_name (string): Name of the ability to get.
   Valid ability names are:
-  - \c "sword": Attack level (determines the life lost by enemies when using
-    the sword).
+  - \c "sword": Ability to use the sword and with which sprite.
   - \c "sword_knowledge": Ability to make the super spin-attack.
-  - \c "tunic": Resistance (determines the life lost when hurt by an enemy).
-  - \c "shield": Protection against enemies (determines whether the hero
-    can avoid some kinds of attacks).
+  - \c "tunic": Tunic (determines the sprite used for the hero's body).
+  - \c "shield": Protection against enemies.
+    Determines whether the hero can avoid some kinds of attacks.
   - \c "lift": Ability to lift heavy objects.
   - \c "swim": Ability to swim in deep water.
   - \c "run": Ability to run when pressing the action command.

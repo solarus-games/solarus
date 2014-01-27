@@ -142,7 +142,7 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
   savegame_v2.set_string(Savegame::KEY_JOYPAD_UP, get_string(JOYPAD_UP_KEY));
   savegame_v2.set_string(Savegame::KEY_JOYPAD_LEFT, get_string(JOYPAD_LEFT_KEY));
   savegame_v2.set_string(Savegame::KEY_JOYPAD_DOWN, get_string(JOYPAD_DOWN_KEY));
-  savegame_v2.set_integer(Savegame::KEY_ABILITY_RESISTANCE, get_integer(ABILITY_TUNIC));
+  savegame_v2.set_integer(Savegame::KEY_ABILITY_TUNIC, get_integer(ABILITY_TUNIC));
   savegame_v2.set_integer(Savegame::KEY_ABILITY_SWORD, get_integer(ABILITY_SWORD));
   savegame_v2.set_integer(Savegame::KEY_ABILITY_SHIELD, get_integer(ABILITY_SHIELD));
   savegame_v2.set_integer(Savegame::KEY_ABILITY_LIFT, get_integer(ABILITY_LIFT));

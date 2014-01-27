@@ -16,6 +16,7 @@ Engine changes
 * Show a dialog box in case of fatal error.
 * The "wide" video modes do not exist anymore. SDL2 does the job now.
 * Call enemy:on_hurt() before enemy:on_dying() (#325).
+* Fix enemy:on_hurt() that was wrongly called when immobilized.
 * Fix life and money exceeding the max when the max changes (#355).
 * Make stairs sounds optional (#364).
 * Make more checks in sprite files to avoid crashes (#357).
@@ -68,10 +69,12 @@ Changes that introduce incompatibilities:
 * surface:set_transparency_color() no longer exists. Use surface:clear().
 * sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
 * on_key_pressed() and on_character_pressed() are now both called (#344).
-* map:create_destructible() has no hardcoded subtypes anymore (#270).
 * Destructible objects no longer show hardcoded dialogs (#270).
+* map:create_destructible() has no hardcoded subtypes anymore (#270).
 * map:create_shop_item() is replaced by map:create_shop_treasure().
 * map:create_teletransporter(): the transition is now a string (#402).
+* The built-in strength of the sword has changed (#426).
+* The built-in defense of the tunic has changed (#428).
 * Enemies have now a default size of 16x16 and origin of 8,13 (#354).
 * The size of enemies must be a multiple of 8 (#358).
 * item:on_pickable_movement_changed replaced by pickable:on_movement_changed.
@@ -93,7 +96,9 @@ Changes that do not introduce incompatibilities:
 * Entity names are now auto-incremented to simplify their creation.
 * New method entity:get_game() (#363).
 * New methods entity:bring_to_front() and entity:bring_to_back() (#273).
+* New event enemy:on_hurt_by_sword() to customize the sword strength (#426).
 * New event enemy:on_attacking_hero() to customize attacks (#356).
+* New event hero:on_hurt() to customize the defense of the equipment (#428).
 * New event sensor:on_left() (#339).
 * New event block:on_moving() (#334).
 * New functions to get/set the properties of teletransporters (#403).

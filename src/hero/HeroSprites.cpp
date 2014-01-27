@@ -110,7 +110,7 @@ void HeroSprites::rebuild_equipment() {
     delete tunic_sprite;
   }
 
-  int tunic_number = equipment.get_ability(ABILITY_RESISTANCE);
+  int tunic_number = equipment.get_ability(ABILITY_TUNIC);
 
   Debug::check_assertion(tunic_number > 0, "Invalid tunic number");
 

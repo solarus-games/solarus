@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,9 @@
 #include "movements/RandomPathMovement.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Creates a random walk movement object.
@@ -66,5 +67,7 @@ bool RandomPathMovement::is_finished() const {
  */
 const std::string& RandomPathMovement::get_lua_type_name() const {
   return LuaContext::movement_random_path_module_name;
+}
+
 }
 

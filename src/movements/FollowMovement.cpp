@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 #include "movements/FollowMovement.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Debug.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a follow movement.
@@ -122,5 +124,7 @@ const Rectangle FollowMovement::get_displayed_xy() const {
   Rectangle displayed_xy = get_xy();
   displayed_xy.add_xy(dx, dy);
   return displayed_xy;
+}
+
 }
 

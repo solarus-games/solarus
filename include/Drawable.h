@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "lua/ExportableToLua.h"
 #include "lowlevel/Rectangle.h"
 #include <lua.hpp>
+
+namespace solarus {
 
 /**
  * \brief An object that can be drawn on a surface with additional effects.
@@ -75,6 +77,7 @@ class Drawable: public ExportableToLua {
      * \param region The subrectangle to draw in this object.
      * \param dst_surface The destination surface.
      * \param dst_position Coordinates on the destination surface.
+     * The width and height of this rectangle are ignored.
      */
     virtual void raw_draw_region(
         const Rectangle& region,
@@ -117,6 +120,8 @@ class Drawable: public ExportableToLua {
                                    * when the transition finishes */
     LuaContext* lua_context;      /**< The Lua world used for callbacks. */
 };
+
+}
 
 #endif
 

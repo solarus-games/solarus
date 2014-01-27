@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -109,5 +111,7 @@ void Hero::VictoryState::set_suspended(bool suspended) {
   if (!suspended) {
     end_victory_date += System::now() - get_when_suspended();
   }
+}
+
 }
 

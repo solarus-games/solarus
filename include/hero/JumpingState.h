@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_HERO_JUMPING_STATE_H
 
 #include "hero/State.h"
+
+namespace solarus {
 
 /**
  * \brief The state "Jumping" of the hero.
@@ -62,14 +64,16 @@ class Hero::JumpingState: public Hero::State {
 
   private:
 
-    JumpMovement* movement;			/**< the movement applied to the hero */
-    int direction8;				/**< direction of the jump (0 to 7) */
-    bool with_sound;				/**< indicates that a jump sound is played */
-    CarriedItem* carried_item;			/**< an item carried by the hero while making this jump, or NULL */
-
     void destroy_carried_item();
 
+    JumpMovement* movement;       /**< the movement applied to the hero */
+    int direction8;               /**< direction of the jump (0 to 7) */
+    bool with_sound;              /**< indicates that a jump sound is played */
+    CarriedItem* carried_item;    /**< an item carried by the hero while making this jump, or NULL */
+
 };
+
+}
 
 #endif
 

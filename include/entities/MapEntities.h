@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,12 @@
 #include "entities/Ground.h"
 #include "entities/Layer.h"
 #include "entities/EntityType.h"
-#include "entities/Enemy.h"
 #include <vector>
 #include <list>
+#include <map>
+#include <string>
+
+namespace solarus {
 
 /**
  * \brief Manages the whole content of a map.
@@ -66,7 +69,6 @@ class MapEntities {
     void remove_entity(const std::string& name);
     void remove_entities_with_prefix(const std::string& prefix);
     void bring_to_front(MapEntity* entity);
-    void destroy_all_entities();
     void destroy_entity(MapEntity* entity);
     static bool compare_y(MapEntity* first, MapEntity* second);
     void set_entity_layer(MapEntity& entity, Layer layer);
@@ -93,9 +95,6 @@ class MapEntities {
 
     void add_tile(Tile* tile);
     void set_tile_ground(Layer layer, int x8, int y8, Ground ground);
-    void build_non_animated_tiles();
-    void redraw_non_animated_tiles();
-    bool overlaps_animated_tile(Tile& tile);
     void remove_marked_entities();
     void update_crystal_blocks();
 
@@ -106,18 +105,12 @@ class MapEntities {
     int map_height8;                                /**< number of 8x8 squares on a column of the map grid */
 
     // tiles
-    std::vector<Tile*> tiles[LAYER_NB];             /**< All tiles of the map (a vector for each layer).
-                                                     * Note: the only reason why we keep them at runtime
-                                                     * is in case the tileset changes. Otherwise, they are
-                                                     * optimized and never used individually.*/
     int tiles_grid_size;                            /**< number of 8x8 squares in the map
                                                      * (tiles_grid_size = map_width8 * map_height8) */
-    Ground* tiles_ground[LAYER_NB];                 /**< array of size tiles_grid_size representing the ground property
+    std::vector<Ground> tiles_ground[LAYER_NB];     /**< array of size tiles_grid_size representing the ground property
                                                      * of each 8x8 square. */
-    bool* animated_tiles[LAYER_NB];                 /**< array of size tiles_grid_size that remembers which squares
-                                                     * have animated tiles */
-    Surface* non_animated_tiles_surfaces[LAYER_NB]; /**< all non-animated tiles are rendered once for all on these surfaces
-                                                     * for performance */
+    NonAnimatedRegions*
+        non_animated_regions[LAYER_NB];             /**< All non-animated tiles are managed here for performance. */
     std::vector<Tile*>
         tiles_in_animated_regions[LAYER_NB];        /**< animated tiles and tiles overlapping them */
 
@@ -159,7 +152,7 @@ class MapEntities {
     std::list<const Separator*> separators;         /**< all separators of the map */
 
     Boomerang* boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
-    std::string music_before_miniboss;              /**< the music that was played before starting a miniboss fight */
+
 };
 
 /**
@@ -184,6 +177,8 @@ inline Ground MapEntities::get_tile_ground(Layer layer, int x, int y) const {
 
   // Optimization of: return tiles_ground[layer][(y / 8) * map_width8 + (x / 8)];
   return tiles_ground[layer][(y >> 3) * map_width8 + (x >> 3)];
+}
+
 }
 
 #endif

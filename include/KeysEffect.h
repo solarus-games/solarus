@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include <string>
+
+namespace solarus {
 
 /**
  * \brief Associate to each game key its current effect on the game.
@@ -77,24 +79,6 @@ class KeysEffect {
       PAUSE_KEY_NB
     };
 
-  private:
-
-    ActionKeyEffect action_key_effect;       /**< current effect of the action key */
-    ActionKeyEffect action_key_effect_saved; /**< a previous effect of the action key */
-    bool action_key_enabled;                 /**< indicates that the action key is currently enabled */
-
-    SwordKeyEffect sword_key_effect;         /**< current effect of the sword key */
-    SwordKeyEffect sword_key_effect_saved;   /**< a previous effect of the sword key */
-    bool sword_key_enabled;                  /**< indicates that the sword key is currently enabled */
-
-    PauseKeyEffect pause_key_effect;         /**< current effect of the pause key */
-    PauseKeyEffect pause_key_effect_saved;   /**< a previous effect of the pause key */
-    bool pause_key_enabled;                  /**< indicates that the pause key is currently enabled */
-
-    bool item_keys_enabled;
-
-  public:
-
     KeysEffect();
     ~KeysEffect();
 
@@ -145,7 +129,25 @@ class KeysEffect {
     // all keys
     void set_all_keys_enabled(bool enable);
 
+  private:
+
+    ActionKeyEffect action_key_effect;       /**< current effect of the action key */
+    ActionKeyEffect action_key_effect_saved; /**< a previous effect of the action key */
+    bool action_key_enabled;                 /**< indicates that the action key is currently enabled */
+
+    SwordKeyEffect sword_key_effect;         /**< current effect of the sword key */
+    SwordKeyEffect sword_key_effect_saved;   /**< a previous effect of the sword key */
+    bool sword_key_enabled;                  /**< indicates that the sword key is currently enabled */
+
+    PauseKeyEffect pause_key_effect;         /**< current effect of the pause key */
+    PauseKeyEffect pause_key_effect_saved;   /**< a previous effect of the pause key */
+    bool pause_key_enabled;                  /**< indicates that the pause key is currently enabled */
+
+    bool item_keys_enabled;
+
 };
+
+}
 
 #endif
 

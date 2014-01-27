@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_SHOP_ITEM_H
-#define SOLARUS_SHOP_ITEM_H
+#ifndef SOLARUS_SHOP_TREASURE_H
+#define SOLARUS_SHOP_TREASURE_H
 
 #include "Common.h"
 #include "Treasure.h"
@@ -24,6 +24,8 @@
 #include "lowlevel/TextSurface.h"
 
 struct lua_State;
+
+namespace solarus {
 
 /**
  * \brief A treasure the hero can buy in a shop.
@@ -61,8 +63,6 @@ class ShopTreasure: public Detector {
 
     void draw_on_map();
 
-    virtual const std::string& get_lua_type_name() const;
-
   private:
 
     ShopTreasure(
@@ -82,7 +82,10 @@ class ShopTreasure: public Detector {
     // displaying
     TextSurface price_digits;         /**< the digits that show the price */
     Sprite rupee_icon_sprite;         /**< the rupee icon near the price */
+
 };
+
+}
 
 #endif
 

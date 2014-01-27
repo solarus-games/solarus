@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #include "entities/MapEntity.h"
 #include "Map.h"
 #include "lowlevel/Debug.h"
+
+namespace solarus {
 
 const Rectangle PathFinding::neighbours_locations[] = {
   Rectangle( 8,  0, 16, 16 ),
@@ -285,5 +287,7 @@ bool PathFinding::is_node_transition_valid(
   collision_box.add_xy(initial_node.location);
 
   return !map.test_collision_with_obstacles(source_entity.get_layer(), collision_box, source_entity);
+}
+
 }
 

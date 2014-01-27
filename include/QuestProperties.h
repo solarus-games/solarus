@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +23,17 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief This class reads the quest properties from file quest.dat
  * and applies them.
  *
  * These properties are general information about the quest. They include:
+ * - the Solarus compatibility version,
  * - the writing directory for savegames of this quest,
  * - the window title bar.
+ * - the quest size.
  *
  * The main reason why these quest properties are stored as a data file
  * (even if they are also available through the Solarus scripting API)
@@ -50,6 +54,8 @@ class QuestProperties {
 
     MainLoop& main_loop;  /**< The quest main loop. */
 };
+
+}
 
 #endif
 

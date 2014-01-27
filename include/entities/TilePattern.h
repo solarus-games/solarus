@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "entities/Ground.h"
+
+namespace solarus {
 
 /**
  * \brief Abstract class for a tile pattern.
@@ -51,19 +53,21 @@ class TilePattern {
      */
     virtual void draw(Surface& dst_surface, const Rectangle& dst_position,
         Tileset& tileset, const Rectangle& viewport) = 0;
-    virtual bool is_animated();
-    virtual bool is_drawn_at_its_position();
+    virtual bool is_animated() const;
+    virtual bool is_drawn_at_its_position() const;
 
   protected:
+
+    TilePattern(Ground ground, int width, int height);
 
     const Ground ground;     /**< Kind of tile. */
 
     const int width;         /**< Pattern width (multiple of 8). */
     const int height;        /**< Pattern height (multiple of 8). */
 
-    TilePattern(Ground ground, int width, int height);
-
 };
+
+}
 
 #endif
 

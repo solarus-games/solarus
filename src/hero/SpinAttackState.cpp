@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
 #include "lowlevel/Geometry.h"
 #include "Game.h"
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -56,7 +58,7 @@ void Hero::SpinAttackState::start(const State* previous_state) {
 
   // start the animation
   Hero& hero = get_hero();
-  if (get_equipment().has_ability("sword_knowledge")) {
+  if (get_equipment().has_ability(ABILITY_SWORD_KNOWLEDGE)) {
     get_sprites().set_animation_super_spin_attack();
     CircleMovement* movement = new CircleMovement(false);
     movement->set_center(hero.get_xy());
@@ -164,7 +166,7 @@ int Hero::SpinAttackState::get_sword_damage_factor() const {
 void Hero::SpinAttackState::play_spin_attack_sound() {
 
   std::ostringstream oss;
-  oss << "sword_spin_attack_release_" << get_equipment().get_ability("sword");
+  oss << "sword_spin_attack_release_" << get_equipment().get_ability(ABILITY_SWORD);
   std::string custom_sound_name = oss.str();
   if (Sound::exists(custom_sound_name)) {
     Sound::play(custom_sound_name); // this particular sword has a spin attack sound effect
@@ -244,15 +246,12 @@ void Hero::SpinAttackState::notify_obstacle_reached() {
 }
 
 /**
- * \brief Notifies this state that the hero has just attacked an enemy.
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc Hero::State::notify_attacked_enemy
  */
 void Hero::SpinAttackState::notify_attacked_enemy(
     EnemyAttack attack,
     Enemy& victim,
+    const Sprite* victim_sprite,
     EnemyReaction::Reaction& result,
     bool killed) {
 
@@ -268,8 +267,7 @@ void Hero::SpinAttackState::notify_attacked_enemy(
       }
 
       being_pushed = true;
-      double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
-          hero.get_x(), hero.get_y());
+      double angle = victim.get_angle(hero, victim_sprite, NULL);
       StraightMovement* movement = new StraightMovement(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);
@@ -277,5 +275,7 @@ void Hero::SpinAttackState::notify_attacked_enemy(
       hero.set_movement(movement);
     }
   }
+}
+
 }
 

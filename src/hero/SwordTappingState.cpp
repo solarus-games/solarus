@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@
 #include "Game.h"
 #include "GameCommands.h"
 #include "Map.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -150,6 +152,13 @@ bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& item) const {
 }
 
 /**
+ * \copydoc Hero::State::can_use_shield
+ */
+bool Hero::SwordTappingState::can_use_shield() const {
+  return false;
+}
+
+/**
  * \brief Tests whether the hero is cutting with his sword the specified detector
  * for which a collision was detected.
  * \param detector the detector to check
@@ -188,22 +197,21 @@ void Hero::SwordTappingState::notify_obstacle_reached() {
 }
 
 /**
- * \brief Notifies this state that the hero has just attacked an enemy.
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc Hero::State::notify_attacked_enemy
  */
-void Hero::SwordTappingState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::SwordTappingState::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
 
     if (victim.get_push_hero_on_sword()) {
 
       Hero& hero = get_hero();
-      double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
-          hero.get_x(), hero.get_y());
+      double angle = victim.get_angle(hero, victim_sprite, NULL);
       StraightMovement* movement = new StraightMovement(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);
@@ -212,5 +220,7 @@ void Hero::SwordTappingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
       get_sprites().set_animation_walking_normal();
     }
   }
+}
+
 }
 

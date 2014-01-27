@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include <modplug.h>
 #include <cstddef>
+
+namespace solarus {
 
 /**
  * \brief Encapsulates the Impulse Tracker music decoding.
@@ -48,6 +50,8 @@ class ItDecoder {
     ModPlugFile* modplug_file;
 
 };
+
+}
 
 #endif
 

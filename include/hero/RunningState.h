@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,19 +20,12 @@
 #include "hero/State.h"
 #include "GameCommands.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Running" of the hero.
  */
 class Hero::RunningState: public Hero::State {
-
-  private:
-
-    int phase;                      /**< current phase of the run */
-    uint32_t next_phase_date;       /**< date of the next phase */
-    uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
-    GameCommands::Command command;  /**< the command pressed to make the hero run */
-
-    bool is_bouncing() const;
 
   public:
 
@@ -64,7 +57,19 @@ class Hero::RunningState: public Hero::State {
     bool is_sensor_obstacle(const Sensor& sensor) const;
     bool is_cutting_with_sword(Detector& detector) const;
     int get_sword_damage_factor() const;
+
+  private:
+
+    bool is_bouncing() const;
+
+    int phase;                      /**< current phase of the run */
+    uint32_t next_phase_date;       /**< date of the next phase */
+    uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
+    GameCommands::Command command;  /**< the command pressed to make the hero run */
+
 };
+
+}
 
 #endif
 

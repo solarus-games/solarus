@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,9 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Creates a new shop treasure with the specified treasure and price.
@@ -77,7 +78,8 @@ ShopTreasure::~ShopTreasure() {
  * \param treasure the treasure that the hero can buy
  * \param price the treasure's price in rupees
  * \param dialog_id id of the dialog describing the item when the player watches it
- * \return the shop treasure created, or NULL if it is already bought
+ * \return the shop treasure created, or NULL if it is already bought or if it
+ * is not obtainable.
  */
 ShopTreasure* ShopTreasure::create(
     Game& game,
@@ -89,8 +91,8 @@ ShopTreasure* ShopTreasure::create(
     int price,
     const std::string& dialog_id) {
 
-  // see if the item is not already bought
-  if (treasure.is_found()) {
+  // See if the item is not already bought and is obtainable.
+  if (treasure.is_found() || !treasure.is_obtainable()) {
     return NULL;
   }
 
@@ -221,11 +223,5 @@ void ShopTreasure::draw_on_map() {
       y + 22 - camera_position.get_y());
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& ShopTreasure::get_lua_type_name() const {
-  return LuaContext::entity_shop_treasure_module_name;
 }
 

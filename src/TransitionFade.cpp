@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,14 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Color.h"
+#include "lowlevel/Video.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a fade-in or fade-out transition effect.
- * \param direction direction of the transition effect (in or out)
+ * \param direction direction of the transition effect (opening or closing)
  * \param dst_surface The destination surface that will receive this
  * transition.
  */
@@ -29,9 +33,11 @@ TransitionFade::TransitionFade(Direction direction, Surface& dst_surface):
   Transition(direction),
   finished(false),
   alpha(-1),
-  dst_surface(&dst_surface) {
+  dst_surface(&dst_surface),
+  colored(true),
+  transition_color(Color::get_black()) {
 
-  if (direction == OUT) {
+  if (direction == TRANSITION_CLOSING) {
     alpha_start = 256;
     alpha_limit = 0;
     alpha_increment = -8;
@@ -68,6 +74,52 @@ void TransitionFade::set_delay(uint32_t delay) {
 void TransitionFade::start() {
   alpha = alpha_start;
   next_frame_date = System::now();
+}
+
+/**
+ * \brief Returns whether this fade transition uses a foreground color.
+ * \return \c true if there is a foreground color,
+ * \c false if the transition changes the opacity of the destination surface
+ * (only possible for sotware destination surfaces).
+ */
+bool TransitionFade::is_colored() const {
+  return colored;
+}
+
+/**
+ * \brief Returns the foreground color of this fade transition.
+ *
+ * This function only makes sense when is_colored() is \c true.
+ *
+ * \return The color of the transition.
+ */
+const Color& TransitionFade::get_color() const {
+  return transition_color;
+}
+
+/**
+ * \brief Sets the foreground color of this fade transition.
+ *
+ * The default color is black.
+ *
+ * \param color The color of the transition.
+ */
+void TransitionFade::set_color(const Color& color) {
+
+  transition_color = color;
+  colored = true;
+}
+
+/**
+ * \brief Sets no foreground color for this fade transition.
+ *
+ * The transition effect will then change the opacity of the destination
+ * surface. This is only possible for software destination surfaces, so make
+ * sure you know what you are doing.
+ */
+void TransitionFade::clear_color() {
+
+  colored = false;
 }
 
 /**
@@ -118,12 +170,6 @@ void TransitionFade::update() {
     alpha += alpha_increment;
     next_frame_date += delay; // 20 ms between two frame updates
 
-    if (dst_surface != NULL) {
-      // make sure the final opacity is applied to the surface
-      int alpha_impl = std::min(alpha, 255);
-      dst_surface->set_opacity(alpha_impl);
-    }
-
     finished = (alpha == alpha_limit);
   }
 }
@@ -134,9 +180,29 @@ void TransitionFade::update() {
  */
 void TransitionFade::draw(Surface& dst_surface) {
 
-  // draw the transition effect on the surface
+  // Draw the transition effect on the surface.
   int alpha_impl = std::min(alpha, 255);
-  dst_surface.set_opacity(alpha_impl);
+
+  if (!colored) {
+    // Set the opacity on the surface.
+    // Only possible for software destinations.
+    Debug::check_assertion(dst_surface.is_software_destination()
+        || !Video::is_acceleration_enabled(),
+        "Cannot apply fade transition: this surface is in read-only mode");
+    dst_surface.set_opacity(alpha_impl);
+  }
+  else {
+    // Add a colored foreground surface with the appropriate opacity.
+    int r, g, b, a;
+    transition_color.get_components(r, g, b, a);
+    // A full opaque transition corresponds to a foreground with full alpha.
+    Color fade_color(r, g, b, 255 - std::min(alpha_impl, a));
+
+    dst_surface.fill_with_color(fade_color);
+  }
+
   this->dst_surface = &dst_surface;
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 #include <al.h>
 #include <alc.h>
 #include <vorbis/vorbisfile.h>
+
+namespace solarus {
 
 /**
  * \brief Represents a sound effect that can be played in the program.
@@ -63,7 +65,7 @@ class Sound {
     static bool exists(const std::string& sound_id);
     static void play(const std::string& sound_id);
 
-    static void initialize(int argc, char** argv);
+    static void initialize(const CommandLine& args);
     static void quit();
     static bool is_initialized();
     static void update();
@@ -72,6 +74,9 @@ class Sound {
     static void set_volume(int volume);
 
   private:
+
+    ALuint decode_file(const std::string &file_name);
+    bool update_playing();
 
     static ALCdevice* device;
     static ALCcontext* context;
@@ -86,10 +91,9 @@ class Sound {
     static bool sounds_preloaded;                /**< true if load_all() was called */
     static float volume;                         /**< the volume of sound effects (0.0 to 1.0) */
 
-    ALuint decode_file(const std::string &file_name);
-    bool update_playing();
-
 };
+
+}
 
 #endif
 

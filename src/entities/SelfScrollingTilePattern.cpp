@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 #include "entities/SelfScrollingTilePattern.h"
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a tile pattern with self scrolling.
@@ -117,7 +119,9 @@ void SelfScrollingTilePattern::draw(Surface& dst_surface,
  *
  * \return true if this tile pattern is animated
  */
-bool SelfScrollingTilePattern::is_animated() {
+bool SelfScrollingTilePattern::is_animated() const {
   return true;
+}
+
 }
 

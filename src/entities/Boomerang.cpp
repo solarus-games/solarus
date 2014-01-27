@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include "entities/Stairs.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
-#include "entities/NPC.h"
+#include "entities/Npc.h"
 #include "entities/MapEntities.h"
 #include "movements/TargetMovement.h"
 #include "movements/StraightMovement.h"
@@ -29,6 +29,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Sound.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a boomerang.
@@ -52,7 +54,8 @@ Boomerang::Boomerang(
 
   // initialize the entity
   create_sprite(sprite_name);
-  set_bounding_box_from_sprite();
+  set_size(16, 16);
+  set_origin(8, 8);
 
   int hero_x = hero.get_top_left_x();
   int hero_y = hero.get_top_left_y();
@@ -228,7 +231,7 @@ bool Boomerang::is_crystal_obstacle(const Crystal& crystal) const {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool Boomerang::is_npc_obstacle(const NPC& npc) const {
+bool Boomerang::is_npc_obstacle(const Npc& npc) const {
   return npc.is_solid();
 }
 
@@ -361,20 +364,19 @@ void Boomerang::notify_collision_with_enemy(Enemy &enemy) {
 }
 
 /**
- * \brief Notifies this entity that it has just attacked an enemy.
- *
- * This function is called even if this attack was not successful.
- *
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc MapEntity::notify_attacked_enemy
  */
-void Boomerang::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Boomerang::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && !is_going_back()) {
     go_back();
   }
+}
+
 }
 

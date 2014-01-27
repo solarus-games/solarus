@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,13 +17,14 @@
 #include <cstring>  // memcpy
 #include <cmath>
 #include <sstream>
-#include <vector>
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "QuestResourceList.h"
+#include "CommandLine.h"
+
+namespace solarus {
 
 ALCdevice* Sound::device = NULL;
 ALCcontext* Sound::context = NULL;
@@ -77,22 +78,17 @@ Sound::~Sound() {
  * If the argument -no-audio is provided, this function has no effect and
  * there will be no sound.
  *
- * \param argc command-line arguments number
- * \param argv command-line arguments
+ * \param args Command-line arguments.
  */
-void Sound::initialize(int argc, char** argv) {
+void Sound::initialize(const CommandLine& args) {
 
-  // check the -no-audio option
-  bool disable = false;
-  for (argv++; argc > 1 && !disable; argv++, argc--) {
-    const std::string arg = *argv;
-    disable = (arg.find("-no-audio") == 0);
-  }
+  // Check the -no-audio option.
+  const bool disable = args.has_argument("-no-audio");
   if (disable) {
     return;
   }
 
-  // initialize OpenAL
+  // Initialize OpenAL.
 
   device = alcOpenDevice(NULL);
   if (!device) {
@@ -197,7 +193,7 @@ bool Sound::exists(const std::string& sound_id) {
  */
 void Sound::play(const std::string& sound_id) {
 
-  if (all_sounds.count(sound_id) == 0) {
+  if (all_sounds.find(sound_id) == all_sounds.end()) {
     all_sounds[sound_id] = Sound(sound_id);
   }
 
@@ -320,8 +316,10 @@ bool Sound::start() {
       // play the sound
       int error = alGetError();
       if (error != AL_NO_ERROR) {
-        Debug::error(StringConcat() << "Cannot attach buffer " << buffer
-            << " to the source to play sound '" << id << "': error " << error);
+        std::ostringstream oss;
+        oss << "Cannot attach buffer " << buffer
+            << " to the source to play sound '" << id << "': error " << error;
+        Debug::error(oss.str());
         alDeleteSources(1, &source);
       }
       else {
@@ -331,8 +329,9 @@ bool Sound::start() {
         alSourcePlay(source);
         error = alGetError();
         if (error != AL_NO_ERROR) {
-          Debug::error(StringConcat() << "Cannot play sound '" << id
-              << "': error " << error);
+          std::ostringstream oss;
+          oss << "Cannot play sound '" << id << "': error " << error;
+          Debug::error(oss.str());
         }
         else {
           success = true;
@@ -353,7 +352,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
   ALuint buffer = AL_NONE;
 
   if (!FileTools::data_file_exists(file_name)) {
-    Debug::error(StringConcat() << "Cannot find sound file '" << file_name << "'");
+    Debug::error(std::string("Cannot find sound file '") + file_name + "'");
     return AL_NONE;
   }
 
@@ -367,8 +366,10 @@ ALuint Sound::decode_file(const std::string& file_name) {
   int error = ov_open_callbacks(&mem, &file, NULL, 0, ogg_callbacks);
 
   if (error) {
-    Debug::error(StringConcat() << "Cannot load sound file '" << file_name
-        << "' from memory: error " << error);
+    std::ostringstream oss;
+    oss << "Cannot load sound file '" << file_name
+        << "' from memory: error " << error;
+    Debug::error(oss.str());
   }
   else {
 
@@ -385,8 +386,8 @@ ALuint Sound::decode_file(const std::string& file_name) {
     }
 
     if (format == AL_NONE) {
-      Debug::error(StringConcat() << "Invalid audio format for sound file '"
-          << file_name << "'");
+      Debug::error(std::string("Invalid audio format for sound file '")
+          + file_name + "'");
     }
     else {
       // decode the sound with vorbisfile
@@ -399,8 +400,10 @@ ALuint Sound::decode_file(const std::string& file_name) {
       do {
         bytes_read = ov_read(&file, samples_buffer, buffer_size, 0, 2, 1, &bitstream);
         if (bytes_read < 0) {
-          Debug::error(StringConcat() << "Error while decoding ogg chunk in sound file '"
-              << file_name << "': " << bytes_read);
+          std::ostringstream oss;
+          oss << "Error while decoding ogg chunk in sound file '"
+              << file_name << "': " << bytes_read;
+          Debug::error(oss.str());
         }
         else {
           total_bytes_read += bytes_read;
@@ -433,9 +436,11 @@ ALuint Sound::decode_file(const std::string& file_name) {
           sample_rate);
       ALenum error = alGetError();
       if (error != AL_NO_ERROR) {
-        Debug::error(StringConcat() << "Cannot copy the sound samples of '"
+        std::ostringstream oss;
+        oss << "Cannot copy the sound samples of '"
             << file_name << "' into buffer " << buffer
-            << ": error " << error);
+            << ": error " << error;
+        Debug::error(oss.str());
         buffer = AL_NONE;
       }
     }
@@ -478,5 +483,7 @@ size_t Sound::cb_read(void* ptr, size_t size, size_t nb_bytes, void* datasource)
   mem->position += nb_bytes;
 
   return nb_bytes;
+}
+
 }
 

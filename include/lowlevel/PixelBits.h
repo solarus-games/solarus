@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_PIXEL_BITS_H
 
 #include "Common.h"
+
+namespace solarus {
 
 /**
  * \brief Provides pixel-perfect collision checks for a surface.
@@ -46,9 +48,13 @@ class PixelBits {
     int nb_integers_per_row; /**< number of uint32_t necessary to store
                               * the bits of a row of the image */
 
-    uint32_t** bits;         /**< a two-dimensional array representing the
-                              * transparency bit of each pixel in the image */
+    uint32_t** bits;         /**< A two-dimensional array representing the
+                              * transparency bit of each pixel in the image.
+                              * TODO use an std::vector. */
+
 };
+
+}
 
 #endif
 

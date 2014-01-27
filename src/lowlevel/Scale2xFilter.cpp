@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Scale2xFilter.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -94,6 +96,8 @@ void Scale2xFilter::filter(
     }
     e1 += dst_width;
   }
+
+}
 
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include "lowlevel/Rectangle.h"
 #include "GameCommands.h"
 #include <list>
+
+namespace solarus {
 
 /**
  * \brief The hero's entity.
@@ -82,6 +84,7 @@ class Hero: public MapEntity {
     void set_map(Map& map);
     void set_map(Map& map, int initial_direction);
     void notify_map_started();
+    void notify_tileset_changed();
     void place_on_destination(Map& map, const Rectangle& previous_map_location);
     void notify_map_opening_transition_finished();
 
@@ -196,11 +199,16 @@ class Hero: public MapEntity {
     void notify_attacked_enemy(
         EnemyAttack attack,
         Enemy& victim,
+        const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
         bool killed);
     int get_sword_damage_factor() const;
     bool can_be_hurt(Enemy* attacker);
-    void hurt(MapEntity& source, int life_points, int magic_points);
+    void hurt(
+        MapEntity& source,
+        Sprite* source_sprite,
+        int life_points,
+        int magic_points);
     void hurt(const Rectangle& source_xy, int life_points, int magic_points);
     void notify_game_over_finished();
 
@@ -241,6 +249,7 @@ class Hero: public MapEntity {
     void start_running();
     void start_grabbing();
     bool can_pick_treasure(EquipmentItem& item);
+    bool can_use_shield() const;
     bool can_start_item(EquipmentItem& item);
     void start_item(EquipmentItem& item);
     void start_boomerang(int max_distance, int speed,
@@ -251,8 +260,6 @@ class Hero: public MapEntity {
     void start_back_to_solid_ground(bool use_memorized_xy,
         uint32_t end_delay = 0, bool with_sound = true);
     void start_state_from_ground();
-
-    virtual const std::string& get_lua_type_name() const;
 
   private:
 
@@ -340,6 +347,8 @@ class Hero: public MapEntity {
     Rectangle ground_dxy;                  /**< additional movement with special ground (hole or ice) */
 
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include "movements/PathMovement.h"
 #include "Game.h"
 #include "Sprite.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -128,5 +130,7 @@ bool Hero::ConveyorBeltState::can_avoid_teletransporter() const {
  */
 bool Hero::ConveyorBeltState::can_avoid_conveyor_belt() const {
   return true;
+}
+
 }
 

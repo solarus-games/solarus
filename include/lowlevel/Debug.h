@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,6 @@
 #define SOLARUS_DEBUG_H
 
 #include "Common.h"
-#include <cstdlib>
-#include <iostream>
-#include <fstream>
 #include <string>
 
 #ifndef NDEBUG
@@ -28,6 +25,8 @@
 #else
 #define SOLARUS_ASSERT(condition, message)
 #endif
+
+namespace solarus {
 
 /**
  * \brief Provides features for printing error messages or making runtime checks.
@@ -44,8 +43,11 @@ class Debug {
 
   private:
 
-    Debug();    // don't instantiate this class
+    Debug();  // Don't instantiate this class
+
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +16,10 @@
  */
 #include "lowlevel/ItDecoder.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <stdafx.h>  // These two headers are with the libmodplug ones.
 #include <sndfile.h>
+
+namespace solarus {
 
 /**
  * \brief Creates an Impulse Tracker decoder.
@@ -139,5 +140,7 @@ int ItDecoder::get_tempo() {
 void ItDecoder::set_tempo(int tempo) {
 
   reinterpret_cast<CSoundFile*>(modplug_file)->SetTempo(tempo);
+}
+
 }
 

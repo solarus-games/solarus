@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +20,14 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include "lowlevel/Debug.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a scrolling transition effect.
- * \param direction direction of the transition (in or out)
+ * \param direction direction of the transition (opening or closing)
  */
 TransitionScrolling::TransitionScrolling(Transition::Direction direction):
   Transition(direction),
@@ -39,7 +41,7 @@ TransitionScrolling::TransitionScrolling(Transition::Direction direction):
  */
 TransitionScrolling::~TransitionScrolling() {
 
-  if (get_direction() == IN) {
+  if (get_direction() == TRANSITION_OPENING) {
     RefCountable::unref(both_maps_surface);
   }
 }
@@ -52,7 +54,7 @@ TransitionScrolling::~TransitionScrolling() {
 Rectangle TransitionScrolling::get_previous_map_dst_position(
     int scrolling_direction) {
 
-  const Rectangle& quest_size = VideoManager::get_instance()->get_quest_size();
+  const Rectangle& quest_size = Video::get_quest_size();
 
   Rectangle dst_position(0, 0);
   if (scrolling_direction == 1) {
@@ -71,7 +73,7 @@ Rectangle TransitionScrolling::get_previous_map_dst_position(
  */
 void TransitionScrolling::start() {
 
-  if (get_direction() == OUT) {
+  if (get_direction() == TRANSITION_CLOSING) {
     return;
   }
 
@@ -79,7 +81,7 @@ void TransitionScrolling::start() {
   scrolling_direction = (get_game()->get_current_map().get_destination_side() + 2) % 4;
 
   const int scrolling_step = 5;
-  const Rectangle& quest_size = VideoManager::get_instance()->get_quest_size();
+  const Rectangle& quest_size = Video::get_quest_size();
   int width = quest_size.get_width();
   int height = quest_size.get_height();
   if (scrolling_direction % 2 == 0) {
@@ -95,13 +97,14 @@ void TransitionScrolling::start() {
   // create a surface with the two maps
   both_maps_surface = Surface::create(width, height);
   RefCountable::ref(both_maps_surface);
+  both_maps_surface->set_software_destination(false);
 
   // set the blitting rectangles
 
   previous_map_dst_position = get_previous_map_dst_position(scrolling_direction);
   current_map_dst_position = get_previous_map_dst_position((scrolling_direction + 2) % 4);
   current_scrolling_position = previous_map_dst_position;
-  current_scrolling_position.set_size(VideoManager::get_instance()->get_quest_size());
+  current_scrolling_position.set_size(Video::get_quest_size());
 
   next_scroll_date = System::now();
 }
@@ -128,7 +131,7 @@ bool TransitionScrolling::is_started() const {
  */
 bool TransitionScrolling::is_finished() const {
 
-  if (get_direction() == OUT) {
+  if (get_direction() == TRANSITION_CLOSING) {
     return true;
   }
 
@@ -179,7 +182,7 @@ void TransitionScrolling::update() {
  */
 void TransitionScrolling::draw(Surface& dst_surface) {
 
-  if (get_direction() == OUT) {
+  if (get_direction() == TRANSITION_CLOSING) {
     return;
   }
 
@@ -194,7 +197,8 @@ void TransitionScrolling::draw(Surface& dst_surface) {
   dst_surface.draw(*both_maps_surface, current_map_dst_position);
 
   // blit both surfaces
-  dst_surface.fill_with_color(Color::get_black());
   both_maps_surface->draw_region(current_scrolling_position, dst_surface);
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,13 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "EquipmentItem.h"
+#include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Creates a pickable item with the specified subtype.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the pickable item to create on the map
  * \param x x coordinate of the pickable item to create
  * \param y y coordinate of the pickable item to create
@@ -80,7 +83,7 @@ EntityType Pickable::get_type() const {
  * - the item cannot be obtained by the hero yet.
  *
  * \param game the current game
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the pickable item to create on the map
  * \param x x coordinate of the pickable item to create
  * \param y y coordinate of the pickable item to create
@@ -163,19 +166,21 @@ void Pickable::initialize_sprites() {
   item_sprite.set_current_animation(treasure.get_item_name());
   int direction = treasure.get_variant() - 1;
   if (direction < 0 || direction >= item_sprite.get_nb_directions()) {
-    Debug::error(StringConcat() << 
-        "Pickable treasure '" << treasure.get_item_name() << "' has variant "
-        << treasure.get_variant()
-        << " but sprite 'entities/items' has only "
+    std::ostringstream oss;
+    oss << "Pickable treasure '" << treasure.get_item_name()
+        << "' has variant " << treasure.get_variant()
+        << " but sprite 'entities/items' only has "
         << item_sprite.get_nb_directions() << " variant(s) in animation '"
-        << treasure.get_item_name() << "'");
+        << treasure.get_item_name() << "'";
+    Debug::error(oss.str());
     direction = 0;  // Fallback.
   }
   item_sprite.set_current_direction(direction);
   item_sprite.enable_pixel_collisions();
 
   // Set the origin point and the size of the entity.
-  set_bounding_box_from_sprite();
+  set_size(16, 16);
+  set_origin(8, 13);
 
   uint32_t now = System::now();
 
@@ -261,17 +266,6 @@ const Treasure& Pickable::get_treasure() {
  */
 MapEntity* Pickable::get_entity_followed() {
   return entity_followed;
-}
-
-/**
- * \brief Notifies this pickable item that its movement has just changed.
- */
-void Pickable::notify_movement_changed() {
-
-  if (is_on_map()) {
-    // Notify the Lua equipment item.
-    get_equipment().get_item(treasure.get_item_name()).notify_movement_changed(*this);
-  }
 }
 
 /**
@@ -507,11 +501,5 @@ void Pickable::draw_on_map() {
   MapEntity::draw_on_map();
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Pickable::get_lua_type_name() const {
-  return LuaContext::entity_pickable_module_name;
 }
 

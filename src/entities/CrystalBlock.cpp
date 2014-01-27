@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,10 +25,12 @@
 #include "lowlevel/Sound.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief Creates a new crystal block.
  * \param game the current game
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the entity to create on the map
  * \param x x coordinate of the entity to create
  * \param y y coordinate of the entity to create
@@ -230,5 +232,7 @@ void CrystalBlock::draw_on_map() {
       get_map().draw_sprite(sprite, x, y);
     }
   }
+}
+
 }
 

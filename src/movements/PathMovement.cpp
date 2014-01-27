@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+
+namespace solarus {
 
 const std::string PathMovement::elementary_moves[] = {
     " 1  0   1  0   1  0   1  0   1  0   1  0   1  0   1  0", // 8 pixels right
@@ -288,7 +289,9 @@ void PathMovement::start_next_elementary_move() {
 
       current_direction = remaining_path[0] - '0';
       Debug::check_assertion(current_direction >= 0 && current_direction < 8,
-          StringConcat() << "Invalid path '" << initial_path << "' (bad direction '" << remaining_path[0] << "')");
+          std::string("Invalid path '") + initial_path + "' (bad direction '"
+          + remaining_path[0] + "')"
+      );
 
       PixelMovement::set_delay(speed_to_delay(speed, current_direction));
       PixelMovement::set_trajectory(elementary_moves[current_direction]);
@@ -462,5 +465,7 @@ const std::string PathMovement::create_random_path() {
  */
 const std::string& PathMovement::get_lua_type_name() const {
   return LuaContext::movement_path_module_name;
+}
+
 }
 

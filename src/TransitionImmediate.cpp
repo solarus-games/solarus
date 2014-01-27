@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +16,11 @@
  */
 #include "TransitionImmediate.h"
 
+namespace solarus {
+
 /**
  * \brief Creates an immediate transition effect.
- * \param direction direction of the transition effect (in or out)
+ * \param direction direction of the transition effect (opening or closing)
  */
 TransitionImmediate::TransitionImmediate(Transition::Direction direction):
   Transition(direction) {
@@ -73,6 +75,8 @@ void TransitionImmediate::update() {
  * \param dst_surface the surface to draw
  */
 void TransitionImmediate::draw(Surface& dst_surface) {
+
+}
 
 }
 

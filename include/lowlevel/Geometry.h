@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,9 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef SOLARUS_GEOMETRY_H
+#define SOLARUS_GEOMETRY_H
+
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
 #include <cmath>
+
+namespace solarus {
 
 /**
  * \brief Provides functions to make mathematic computations.
@@ -44,6 +49,7 @@ class Geometry {
     static double get_angle(int x1, int y1, int x2, int y2);
     static const Rectangle get_xy(double angle, int distance);
     static const Rectangle get_xy(const Rectangle &xy1, double angle, int distance);
+
 };
 
 /**
@@ -86,4 +92,8 @@ inline double Geometry::get_distance(const Rectangle& xy1, const Rectangle& xy2)
 
   return get_distance(xy1.get_x(), xy1.get_y(), xy2.get_x(), xy2.get_y());
 }
+
+}
+
+#endif
 

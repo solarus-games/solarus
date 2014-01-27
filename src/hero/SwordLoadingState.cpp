@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@
 #include "Game.h"
 #include "GameCommands.h"
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -124,14 +126,14 @@ void Hero::SwordLoadingState::notify_obstacle_reached() {
 }
 
 /**
- * \brief Notifies this state that the hero has just attacked an enemy
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc Hero::State::notify_attacked_enemy
  */
-void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::SwordLoadingState::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
 
@@ -140,7 +142,7 @@ void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
       // let SwordTappingState do the job so that no player movement interferes
       State* state = new SwordTappingState(hero);
       hero.set_state(state);
-      state->notify_attacked_enemy(attack, victim, result, killed);
+      state->notify_attacked_enemy(attack, victim, victim_sprite, result, killed);
     }
     else {
       // after an attack, stop loading the sword
@@ -176,6 +178,13 @@ bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& item) const {
 }
 
 /**
+ * \copydoc Hero::State::can_use_shield
+ */
+bool Hero::SwordLoadingState::can_use_shield() const {
+  return false;
+}
+
+/**
  * \brief Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::SwordLoadingState::set_animation_stopped() {
@@ -195,7 +204,7 @@ void Hero::SwordLoadingState::set_animation_walking() {
 void Hero::SwordLoadingState::play_load_sound() {
 
   std::ostringstream oss;
-  oss << "sword_spin_attack_load_" << get_equipment().get_ability("sword");
+  oss << "sword_spin_attack_load_" << get_equipment().get_ability(ABILITY_SWORD);
   std::string custom_sound_name = oss.str();
   if (Sound::exists(custom_sound_name)) {
     Sound::play(custom_sound_name); // this particular sword has a custom loading sound effect
@@ -203,5 +212,7 @@ void Hero::SwordLoadingState::play_load_sound() {
   else {
     Sound::play("sword_spin_attack_load");
   }
+}
+
 }
 

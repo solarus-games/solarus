@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
 #include <map>
 
 struct lua_State;
+
+namespace solarus {
 
 /**
  * \brief Draws a line of text on a surface.
@@ -130,7 +132,7 @@ class TextSurface: public Drawable {
 
     static void load_fonts();
     static int l_font(lua_State* l);
- 
+
     void rebuild();
     void rebuild_bitmap();
     void rebuild_ttf();
@@ -154,6 +156,8 @@ class TextSurface: public Drawable {
     std::string text;                                 /**< the string to draw (only one line) */
 
 };
+
+}
 
 #endif
 

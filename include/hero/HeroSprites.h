@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
+
+namespace solarus {
 
 /**
  * \brief Manages the animations of the hero's main sprites.
@@ -43,6 +45,7 @@ class HeroSprites {
     void set_suspended(bool suspended);
     void rebuild_equipment();
     void notify_map_started();
+    void notify_tileset_changed();
 
     void blink();
     void stop_blinking();
@@ -103,6 +106,18 @@ class HeroSprites {
 
   private:
 
+    bool is_visible() const;
+    bool is_sword_visible() const;
+    bool is_sword_stars_visible() const;
+    bool is_shield_visible() const;
+    bool is_trail_visible() const;
+    bool is_ground_visible() const;
+
+    void stop_displaying_sword();
+    void stop_displaying_sword_stars();
+    void stop_displaying_shield();
+    void stop_displaying_trail();
+
     Hero& hero;                        /**< the hero */
     Equipment& equipment;              /**< equipment of the player */
 
@@ -133,19 +148,9 @@ class HeroSprites {
 
     CarriedItem* lifted_item;          /**< if not NULL, an item to display above the hero */
 
-    bool is_visible() const;
-    bool is_sword_visible() const;
-    bool is_sword_stars_visible() const;
-    bool is_shield_visible() const;
-    bool is_trail_visible() const;
-    bool is_ground_visible() const;
-
-    void stop_displaying_sword();
-    void stop_displaying_sword_stars();
-    void stop_displaying_shield();
-    void stop_displaying_trail();
-
 };
+
+}
 
 #endif
 

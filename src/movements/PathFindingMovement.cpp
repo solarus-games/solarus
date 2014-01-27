@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #include "lowlevel/Random.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Creates a chase movement.
@@ -129,5 +130,7 @@ bool PathFindingMovement::is_finished() const {
  */
 const std::string& PathFindingMovement::get_lua_type_name() const {
   return LuaContext::movement_path_finding_module_name;
+}
+
 }
 

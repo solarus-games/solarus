@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include "lowlevel/Debug.h"
 #include "Game.h"
 #include "Map.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a new dynamic tile on the map.
@@ -157,5 +159,7 @@ void DynamicTile::draw_on_map() {
 
   tile_pattern->fill_surface(get_map().get_visible_surface(), dst_position,
       get_map().get_tileset(), camera_position);
+}
+
 }
 

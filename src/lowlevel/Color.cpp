@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,9 @@
  * color related functions.
  */
 #include "lowlevel/Color.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
+
+namespace solarus {
 
 Color Color::transparent;
 Color Color::black;
@@ -35,7 +37,7 @@ Color Color::cyan;
  * \brief Initializes the color static fields.
  */
 void Color::initialize() {
-  
+
   transparent = Color(  0,   0,   0,   0);
   black =       Color(  0,   0,   0);
   white =       Color(255, 255, 255);
@@ -87,7 +89,7 @@ Color::Color(int r, int g, int b, int a) {
   internal_color.b = b;
   internal_color.a = a;
 
-  internal_value = SDL_MapRGBA(VideoManager::get_pixel_format(), r, g, b, a);
+  internal_value = SDL_MapRGBA(Video::get_pixel_format(), r, g, b, a);
 }
 
 /**
@@ -125,5 +127,7 @@ void Color::get_components(int& r, int& g, int& b, int& a) const {
   g = internal_color.g;
   b = internal_color.b;
   a = internal_color.a;
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include "lowlevel/System.h"
 #include "Game.h"
 #include "Equipment.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -66,11 +68,11 @@ void Hero::HurtState::start(const State* previous_state) {
 
   if (life_points != 0) {
     // the level of the tunic reduces the damage, but we remove at least 1 life point
-    life_points = std::max(1, life_points / (equipment.get_ability("tunic")));
+    life_points = std::max(1, life_points / (equipment.get_ability(ABILITY_RESISTANCE)));
 
     equipment.remove_life(life_points);
-    if (equipment.has_ability("tunic")) {
-      equipment.notify_ability_used("tunic");
+    if (equipment.has_ability(ABILITY_RESISTANCE)) {
+      equipment.notify_ability_used(ABILITY_RESISTANCE);
     }
   }
 
@@ -210,5 +212,7 @@ bool Hero::HurtState::can_avoid_switch() const {
  */
 bool Hero::HurtState::can_avoid_ice() const {
   return true;
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -176,7 +178,7 @@ void Hero::RunningState::notify_obstacle_reached() {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
     get_hero().set_movement(new JumpMovement(opposite_direction, 32, 64, false));
     get_sprites().set_animation_hurt();
-    Sound::play("explosion");
+    Sound::play("running_obstacle");
     phase++;
   }
 }
@@ -366,5 +368,7 @@ int Hero::RunningState::get_sword_damage_factor() const {
 
   // the damage are multiplied by 2
   return State::get_sword_damage_factor() * 2;
+}
+
 }
 

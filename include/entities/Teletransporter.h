@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "entities/Detector.h"
 #include "Transition.h"
 
+namespace solarus {
+
 /**
  * \brief A detector that sends the hero to a destination.
  *
@@ -29,25 +31,6 @@
  * on the same map or another one.
  */
 class Teletransporter: public Detector {
-
-  private:
-
-    std::string sound_id;                 /**< Sound played when this teletransporter is used
-                                           * (an empty string means no sound). */
-    Transition::Style transition_style;   /**< Style of transition between the two maps. */
-    std::string destination_map_id;       /**< Id of the destination map. */
-    std::string destination_name;         /**< Destination on that map, or "_same" to keep the hero's coordinates,
-                                           * or "_side" to place the hero on the appropriate side of the map.
-                                           * An empty string means the default destination entity of the map. */
-    int destination_side;                 /**< When the destination is "_side", indicates which side
-                                           * of the destination map this teletransporters leads to.
-                                           * This depends on the teletransporter position on the original map.
-                                           * -1 means a teletransporter other than "_side". */
-    int transition_direction;             /**< When the destination is "_side", indicates the direction
-                                           * of the transition between the two maps (this is the opposite
-                                           * direction of destination_side). */
-    bool transporting_hero;               /**< indicates that the hero is currently being transported
-                                           * by this teletransporter */
 
   public:
 
@@ -68,12 +51,43 @@ class Teletransporter: public Detector {
     EntityType get_type() const;
     void set_map(Map& map);
 
+    const std::string& get_sound_id() const;
+    void set_sound_id(const std::string& sound_id);
+    Transition::Style get_transition_style() const;
+    void set_transition_style(Transition::Style transition_style);
+    const std::string& get_destination_map_id() const;
+    void set_destination_map_id(const std::string& map_id);
+    const std::string& get_destination_name() const;
+    void set_destination_name(const std::string& destination_name);
+    bool is_on_map_side() const;
+
     bool is_obstacle_for(const MapEntity& other) const;
     bool test_collision_custom(MapEntity& entity);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void transport_hero(Hero& hero);
-    bool is_on_map_side() const;
+
+  private:
+
+    std::string sound_id;                 /**< Sound played when this teletransporter is used
+                                           * (an empty string means no sound). */
+    Transition::Style transition_style;   /**< Style of transition between the two maps. */
+    std::string destination_map_id;       /**< Id of the destination map. */
+    std::string destination_name;         /**< Destination on that map, or "_same" to keep the hero's coordinates,
+                                           * or "_side" to place the hero on the appropriate side of the map.
+                                           * An empty string means the default destination entity of the map. */
+    int destination_side;                 /**< When the destination is "_side", indicates which side
+                                           * of the destination map this teletransporters leads to.
+                                           * This depends on the teletransporter position on the original map.
+                                           * -1 means a teletransporter other than "_side". */
+    int transition_direction;             /**< When the destination is "_side", indicates the direction
+                                           * of the transition between the two maps (this is the opposite
+                                           * direction of destination_side). */
+    bool transporting_hero;               /**< Whether the hero is currently being transported
+                                           * by this teletransporter. */
+
 };
+
+}
 
 #endif
 

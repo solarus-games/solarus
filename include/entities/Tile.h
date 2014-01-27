@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
+
+namespace solarus {
 
 /**
  * \brief A small fixed piece of the map, optimized for collisions and drawing.
@@ -57,6 +59,8 @@ class Tile: public MapEntity {
     TilePattern* tile_pattern;    /**< pattern of the tile */
 
 };
+
+}
 
 #endif
 

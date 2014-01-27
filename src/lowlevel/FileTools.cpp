@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,16 @@
  */
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"
+#include "Language.h"
 #include "StringResource.h"
 #include "DialogResource.h"
 #include "QuestResourceList.h"
+#include "CommandLine.h"
 #include <physfs.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cstdlib>  // mkstemp(), tmpnam()
 #include <cstdio>   // remove()
 #ifdef HAVE_UNISTD_H
@@ -32,28 +36,37 @@
 #   include "lowlevel/apple/AppleInterface.h"
 #endif
 
+namespace solarus {
+
 std::string FileTools::quest_path;
 std::string FileTools::solarus_write_dir;
 std::string FileTools::quest_write_dir;
-std::string FileTools::language_code;
 std::vector<std::string> FileTools::temporary_files;
 
 /**
  * \brief Initializes the file tools.
- * \param argc number of command-line arguments
- * \param argv command line arguments
+ * \param args Command-line arguments.
  */
-void FileTools::initialize(int argc, char** argv) {
+void FileTools::initialize(const CommandLine& args) {
 
-  PHYSFS_init(argv[0]);
+  const std::string& program_name = args.get_program_name().c_str();
+  if (program_name.empty()) {
+    PHYSFS_init(NULL);
+  }
+  else {
+    PHYSFS_init(program_name.c_str());
+  }
 
   // Set the quest path, by default as defined during the build process.
   quest_path = SOLARUS_DEFAULT_QUEST;
 
-  // If a command-line argument was specified, use it instead.
-  if (argc > 1 && argv[argc - 1][0] != '-') {
+  // If a quest command-line argument was specified, use it instead.
+  const std::vector<std::string>& options = args.get_arguments();
+  if (!options.empty()
+      && !options.back().empty()
+      && options.back()[0] != '-') {
     // The last parameter is not an option: it is the quest path.
-    quest_path = argv[argc - 1];
+    quest_path = options.back();
   }
 
   std::cout << "Opening quest '" << quest_path << "'" << std::endl;
@@ -78,7 +91,8 @@ void FileTools::initialize(int argc, char** argv) {
   if (!FileTools::data_file_exists("quest.dat")) {
     std::cout << "Fatal: No quest was found in the directory '" << quest_path
         << "'.\n" << "To specify your quest's path, run: "
-        << argv[0] << " path/to/quest" << std::endl;
+        << (program_name.empty() ? std::string("solarus") : program_name)
+        << " path/to/quest" << std::endl;
     std::exit(EXIT_SUCCESS);
   }
 
@@ -96,76 +110,6 @@ void FileTools::quit() {
   DialogResource::quit();
   StringResource::quit();
   PHYSFS_deinit();
-}
-
-/**
- * \brief Returns whether a language exists for this quest.
- * \param language_code Code of the language to test.
- * \return \c true if this language exists.
- */
-bool FileTools::has_language(const std::string& language_code) {
-
-  const std::vector<QuestResourceList::Element>& languages =
-    QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
-
-  std::vector<QuestResourceList::Element>::const_iterator it;
-  for (it = languages.begin(); it != languages.end(); ++it) {
-    if (it->first == language_code) {
-      return true;
-    }
-  }
-  return false;
-}
-
-/**
- * \brief Sets the current language.
- *
- * The language-specific data will be loaded from the directory of this language.
- * This function must be called before the first language-specific file is loaded.
- *
- * \param language_code Code of the language to set.
- */
-void FileTools::set_language(const std::string& language_code) {
-
-  Debug::check_assertion(has_language(language_code),
-      StringConcat() << "Unknown language '" << language_code << "'");
-
-  FileTools::language_code = language_code;
-  StringResource::initialize();
-  DialogResource::initialize();
-}
-
-/**
- * \brief Returns the current language.
- *
- * The language-specific data are be loaded from the directory of this language.
- *
- * \return code of the language, or an empty string if no language is set
- */
-const std::string& FileTools::get_language() {
-  return language_code;
-}
-
-/**
- * \brief Returns the user-friendly name of a language for this quest.
- * \param language_code Code of a language.
- * \return Name of this language of an empty string.
- */
-const std::string& FileTools::get_language_name(
-    const std::string& language_code) {
-
-  const std::vector<QuestResourceList::Element>& languages =
-    QuestResourceList::get_elements(QuestResourceList::RESOURCE_LANGUAGE);
-
-  std::vector<QuestResourceList::Element>::const_iterator it;
-  for (it = languages.begin(); it != languages.end(); ++it) {
-    if (it->first == language_code) {
-      return it->second;
-    }
-  }
-
-  static std::string empty_string;
-  return empty_string;
 }
 
 /**
@@ -228,10 +172,10 @@ bool FileTools::data_file_exists(const std::string& file_name,
 
   std::string full_file_name;
   if (language_specific) {
-    if (language_code.empty()) {
+    if (Language::get_language().empty()) {
       return false;
     }
-    full_file_name = std::string("languages/") + language_code + "/" + file_name;
+    full_file_name = std::string("languages/") + Language::get_language() + "/" + file_name;
   }
   else {
     full_file_name = file_name;
@@ -284,27 +228,29 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
 
   std::string full_file_name;
   if (language_specific) {
-    Debug::check_assertion(!language_code.empty(), StringConcat() <<
-        "Cannot open language-specific file '" << file_name << "': no language was set");
-    full_file_name = std::string("languages/") + language_code + "/" + file_name;
+    Debug::check_assertion(!Language::get_language().empty(),
+        std::string("Cannot open language-specific file '") + file_name
+        + "': no language was set"
+    );
+    full_file_name = std::string("languages/") + Language::get_language() + "/" + file_name;
   }
   else {
     full_file_name = file_name;
   }
 
   // open the file
-  Debug::check_assertion(PHYSFS_exists(full_file_name.c_str()), StringConcat()
-      << "Data file " << full_file_name << " does not exist");
+  Debug::check_assertion(PHYSFS_exists(full_file_name.c_str()),
+      std::string("Data file '") + full_file_name + "' does not exist"
+  );
   PHYSFS_file* file = PHYSFS_openRead(full_file_name.c_str());
-  Debug::check_assertion(file != NULL, StringConcat()
-      << "Cannot open data file " << full_file_name);
+  Debug::check_assertion(file != NULL,
+      std::string("Cannot open data file '") + full_file_name + "'"
+  );
 
   // load it into memory
   *size = PHYSFS_fileLength(file);
 
   *buffer = new char[*size];
-  Debug::check_assertion(buffer != NULL, StringConcat()
-      << "Cannot allocate memory to read file " << full_file_name);
 
   PHYSFS_read(file, *buffer, 1, PHYSFS_uint32(*size));
   PHYSFS_close(file);
@@ -321,15 +267,17 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
     const char* buffer, size_t size) {
 
   // open the file to write
-  PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
-  Debug::check_assertion(file != NULL, StringConcat()
-      << "Cannot open file '" << file_name << "' for writing: "
-      << PHYSFS_getLastError());
+  PHYSFS_file* file = PHYSFS_openWrite(file_name.c_str());
+  if (file == NULL) {
+    Debug::die(std::string("Cannot open file '") + file_name
+        + "' for writing: " + PHYSFS_getLastError()
+    );
+  }
 
   // save the memory buffer
   if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {
-    Debug::die(StringConcat() << "Cannot write file '" << file_name
-        << "': " << PHYSFS_getLastError());
+    Debug::die(std::string("Cannot write file '") + file_name + "': "
+        + PHYSFS_getLastError());
   }
   PHYSFS_close(file);
 }
@@ -371,6 +319,43 @@ bool FileTools::data_file_mkdir(const std::string& dir_name) {
   }
 
   return true;
+}
+
+/**
+ * \brief Enumerate files of a directory.
+ *
+ * Symbolic links are never returned.
+ *
+ * \param dir_path Name of the directory to list, relative to the quest data
+ * directory.
+ * \param list_files Whether regular files should be included in the result.
+ * \param list_directories Whether directories should be included in the result.
+ * \return The files in this directory.
+ */
+std::vector<std::string> FileTools::data_files_enumerate(
+    const std::string& dir_path,
+    bool list_files,
+    bool list_directories
+) {
+  
+  std::vector<std::string> result;
+  
+  if (data_file_exists(dir_path.c_str())) {
+    char** files = PHYSFS_enumerateFiles(dir_path.c_str());
+  
+    for (char** file = files; *file != NULL; file++) {
+      bool is_directory = PHYSFS_isDirectory((dir_path + "/" + *file).c_str());
+      
+      if (!PHYSFS_isSymbolicLink(*file)
+          && ((list_files && !is_directory)
+              || (list_directories && is_directory)))
+        result.push_back(std::string(*file));
+    }
+
+    PHYSFS_freeList(files);
+  }
+
+  return result;
 }
 
 /**
@@ -450,8 +435,8 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
   // First check that we can write in a directory.
   if (!PHYSFS_setWriteDir(get_base_write_dir().c_str())) {
-     Debug::die(StringConcat() << "Cannot write in user directory '"
-         << get_base_write_dir().c_str()  << "': " << PHYSFS_getLastError());
+     Debug::die(std::string("Cannot write in user directory '")
+         + get_base_write_dir().c_str() + "': " + PHYSFS_getLastError());
   }
 
   // Create the directory.
@@ -459,8 +444,8 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
   const std::string& full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
   if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
-    Debug::die(StringConcat() << "Cannot set Solarus write directory to '"
-        << full_write_dir << "': " << PHYSFS_getLastError());
+    Debug::die(std::string("Cannot set Solarus write directory to '")
+        + full_write_dir + "': " + PHYSFS_getLastError());
   }
 
   // The quest subdirectory may be new, create it if needed.
@@ -505,8 +490,8 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
   // so that we can create the new quest subdirectory.
   std::string full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
   if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
-    Debug::die(StringConcat() << "Cannot set Solarus write directory to '"
-        << full_write_dir << "': " << PHYSFS_getLastError());
+    Debug::die(std::string("Cannot set Solarus write directory to '")
+        + full_write_dir + "': " + PHYSFS_getLastError());
   }
 
   if (!quest_write_dir.empty()) {
@@ -603,5 +588,7 @@ bool FileTools::remove_temporary_files() {
   }
 
   return success;
+}
+
 }
 

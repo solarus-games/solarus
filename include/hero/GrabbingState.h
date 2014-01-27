@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Grabbing" of the hero.
  */
@@ -34,7 +36,10 @@ class Hero::GrabbingState: public Hero::State {
     bool is_grabbing_or_pulling() const;
     bool can_be_hurt(Enemy* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
+
 };
+
+}
 
 #endif
 

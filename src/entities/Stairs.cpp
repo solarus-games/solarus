@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a new stairs entity.
@@ -234,7 +236,10 @@ void Stairs::play_sound(Way way) {
       sound_id = (way == NORMAL_WAY) ? "stairs_down_start" : "stairs_up_end";
     }
   }
-  Sound::play(sound_id);
+
+  if (Sound::exists(sound_id)) {
+    Sound::play(sound_id);
+  }
 }
 
 /**
@@ -378,5 +383,7 @@ void Stairs::update_dynamic_tiles() {
     DynamicTile* tile = static_cast<DynamicTile*>(*it);
     tile->set_enabled(!is_enabled());
   }
+}
+
 }
 

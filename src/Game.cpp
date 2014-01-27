@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,16 +22,18 @@
 #include "Equipment.h"
 #include "Treasure.h"
 #include "QuestResourceList.h"
+#include "TransitionFade.h"
 #include "lua/LuaContext.h"
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Music.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include <sstream>
 #include <vector>
+
+namespace solarus {
 
 /**
  * \brief Creates a game.
@@ -74,18 +76,37 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   }
 
   // Launch the starting map.
-  std::string starting_map_id = get_savegame().get_string(Savegame::KEY_STARTING_MAP);
-  if (starting_map_id.empty()) {
-    // When no starting map is set, use the first one declared in the resource list file.
+  std::string starting_map_id = savegame->get_string(Savegame::KEY_STARTING_MAP);
+  std::string starting_destination_name = savegame->get_string(Savegame::KEY_STARTING_POINT);
+
+  bool valid_map_saved = false;
+  if (!starting_map_id.empty()) {
+
+    if (QuestResourceList::exists(QuestResourceList::RESOURCE_MAP, starting_map_id)) {
+      // We are okay: the savegame file refers to an existing map.
+      valid_map_saved = true;
+    }
+    else {
+      // The savegame refers to a map that no longer exists.
+      // Maybe the quest is in an intermediate development phase.
+      // Show an error and fallback to the default map.
+      Debug::error(std::string("The savegame refers to a non-existing map: '") + starting_map_id + "'");
+    }
+  }
+
+  if (!valid_map_saved) {
+    // When no valid starting map is set, use the first one declared in the
+    // resource list file.
     const std::vector<QuestResourceList::Element>& maps =
         QuestResourceList::get_elements(QuestResourceList::RESOURCE_MAP);
     if (maps.empty()) {
       Debug::die("This quest has no map");
     }
     starting_map_id = maps[0].first;
+    starting_destination_name = "";  // Default destination.
   }
-  set_current_map(starting_map_id,
-      savegame->get_string(Savegame::KEY_STARTING_POINT), Transition::FADE);
+
+  set_current_map(starting_map_id, starting_destination_name, Transition::FADE);
 }
 
 /**
@@ -108,6 +129,7 @@ Game::~Game() {
 
   delete transition;
   delete keys_effect;
+  hero->notify_being_removed();
   RefCountable::unref(hero);
   delete commands;
 
@@ -378,7 +400,7 @@ void Game::update_transitions() {
     else { // normal case: stop the control and play an out transition before leaving the current map
       transition = Transition::create(
           transition_style,
-          Transition::OUT,
+          Transition::TRANSITION_CLOSING,
           current_map->get_visible_surface(),
           this);
       transition->start();
@@ -402,14 +424,14 @@ void Game::update_transitions() {
       RefCountable::unref(savegame);
       savegame = NULL;  // The new game is the owner.
     }
-    else if (transition_direction == Transition::OUT) {
+    else if (transition_direction == Transition::TRANSITION_CLOSING) {
 
       if (next_map == current_map) {
         // same map
         hero->place_on_destination(*current_map, previous_map_location);
         transition = Transition::create(
             transition_style,
-            Transition::IN,
+            Transition::TRANSITION_OPENING,
             current_map->get_visible_surface(),
             this);
         transition->start();
@@ -422,22 +444,27 @@ void Game::update_transitions() {
 
         // special treatments for a transition between two different worlds
         // (e.g. outside world to a dungeon)
-        if (next_map->get_world() != current_map->get_world()) {
+        if (!next_map->has_world() || next_map->get_world() != current_map->get_world()) {
 
           // reset the crystal blocks
           crystal_state = false;
 
-          // save the location
-          get_savegame().set_string(Savegame::KEY_STARTING_MAP, next_map->get_id());
-          get_savegame().set_string(Savegame::KEY_STARTING_POINT, next_map->get_destination_name());
+          // Save the location except if this is a special destination.
+          const std::string& destination_name = next_map->get_destination_name();
+          if (destination_name != "_same"
+              && destination_name.substr(0,5) != "_side") {
+            get_savegame().set_string(Savegame::KEY_STARTING_MAP, next_map->get_id());
+            get_savegame().set_string(Savegame::KEY_STARTING_POINT, destination_name);
+          }
         }
 
         // before closing the map, draw it on a backup surface for transition effects
         // that want to display both maps at the same time
         if (needs_previous_surface) {
           previous_map_surface = Surface::create(
-              VideoManager::get_instance()->get_quest_size()
+              Video::get_quest_size()
           );
+          previous_map_surface->set_software_destination(false);
           RefCountable::ref(previous_map_surface);
           current_map->draw();
           current_map->get_visible_surface().draw(*previous_map_surface);
@@ -463,7 +490,7 @@ void Game::update_transitions() {
   if (started && !current_map->is_started()) {
     transition = Transition::create(
         transition_style,
-        Transition::IN,
+        Transition::TRANSITION_OPENING,
         current_map->get_visible_surface(),
         this);
 
@@ -490,12 +517,12 @@ void Game::update_keys_effect() {
   }
 
   // make sure the sword key is coherent with having a sword
-  if (get_equipment().has_ability("sword")
+  if (get_equipment().has_ability(ABILITY_SWORD)
       && keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
   }
-  else if (!get_equipment().has_ability("sword")
+  else if (!get_equipment().has_ability(ABILITY_SWORD)
       && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
@@ -555,7 +582,7 @@ Map& Game::get_current_map() {
  *
  * Call this function when you want the hero to go to another map.
  *
- * \param map_id id of the map to launch
+ * \param map_id Id of the map to launch. It must exist.
  * \param destination_name name of the destination point of the map you want to use,
  * or en ampty string to use the default destination point.
  * \param transition_style type of transition between the two maps
@@ -778,7 +805,7 @@ void Game::restart() {
 
   transition = Transition::create(
       Transition::FADE,
-      Transition::OUT,
+      Transition::TRANSITION_CLOSING,
       current_map->get_visible_surface(),
       this);
   transition->start();
@@ -828,3 +855,18 @@ void Game::stop_game_over() {
   }
 }
 
+/**
+ * \brief Simulates pressing a game command.
+ */
+void Game::simulate_command_pressed(GameCommands::Command command){
+  commands->game_command_pressed(command);
+}
+
+/**
+ * \brief Simulates releasing a game command.
+ */
+void Game::simulate_command_released(GameCommands::Command command){
+  commands->game_command_released(command);
+}
+
+}

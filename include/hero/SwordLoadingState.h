@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +19,12 @@
 
 #include "hero/PlayerMovementState.h"
 
+namespace solarus {
+
 /**
  * \brief The state "sword loading" of the hero.
  */
 class Hero::SwordLoadingState: public Hero::PlayerMovementState {
-
-  private:
-
-    uint32_t sword_loaded_date;            /**< date when the sword is loaded */
-    bool sword_loaded;                     /**< becomes true when the spin attack is possible */
-
-    void play_load_sound();
 
   public:
 
@@ -40,15 +35,30 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
     void update();
     void set_suspended(bool suspended);
     void notify_obstacle_reached();
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
 
     bool is_direction_locked() const;
     bool can_take_stairs() const;
     bool can_pick_treasure(EquipmentItem& item) const;
+    bool can_use_shield() const;
     void set_animation_stopped();
     void set_animation_walking();
+
+  private:
+
+    void play_load_sound();
+
+    uint32_t sword_loaded_date;            /**< date when the sword is loaded */
+    bool sword_loaded;                     /**< becomes true when the spin attack is possible */
+
 };
+
+}
 
 #endif
 

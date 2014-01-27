@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,13 @@
  */
 #include "lowlevel/Debug.h"
 #include <SDL_messagebox.h>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <cstdlib>  // std::abort
+
+namespace solarus {
 
 namespace {
 
@@ -58,6 +65,7 @@ void Debug::error(const std::string& message) {
  */
 void Debug::check_assertion(bool assertion, const char* error_message) {
 
+  // Don't build the std::string when the assertion succeeds.
   if (!assertion) {
     die(error_message);
   }
@@ -98,3 +106,4 @@ void Debug::die(const std::string& error_message) {
   std::abort();
 }
 
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,10 @@
 #include "hero/HeroSprites.h"
 #include "entities/Enemy.h"
 #include "movements/StraightMovement.h"
-#include "lowlevel/Geometry.h"
 #include "Game.h"
 #include "GameCommands.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -52,7 +53,7 @@ void Hero::SwordSwingingState::start(const State* previous_state) {
 
   get_sprites().play_sword_sound();
   get_sprites().set_animation_sword();
-  get_equipment().notify_ability_used("sword");
+  get_equipment().notify_ability_used(ABILITY_SWORD);
 }
 
 /**
@@ -136,6 +137,13 @@ bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) const {
 }
 
 /**
+ * \copydoc Hero::State::can_use_shield
+ */
+bool Hero::SwordSwingingState::can_use_shield() const {
+  return false;
+}
+
+/**
  * \brief Returns whether crystals can be activated by the sword in this state.
  * \return true if crystals can be activated by the sword in this state
  */
@@ -211,15 +219,12 @@ void Hero::SwordSwingingState::notify_obstacle_reached() {
 }
 
 /**
- * \brief Notifies this state that the hero has just attacked an enemy.
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc Hero::State::notify_attacked_enemy
  */
 void Hero::SwordSwingingState::notify_attacked_enemy(
     EnemyAttack attack,
     Enemy& victim,
+    const Sprite* victim_sprite,
     EnemyReaction::Reaction& result,
     bool killed) {
 
@@ -229,8 +234,7 @@ void Hero::SwordSwingingState::notify_attacked_enemy(
     if (victim.get_push_hero_on_sword()) {
 
       Hero& hero = get_hero();
-      double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
-          hero.get_x(), hero.get_y());
+      double angle = victim.get_angle(hero, victim_sprite, NULL);
       StraightMovement* movement = new StraightMovement(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);
@@ -238,5 +242,7 @@ void Hero::SwordSwingingState::notify_attacked_enemy(
       hero.set_movement(movement);
     }
   }
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,10 @@
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <sstream>
 #include <cmath>
+
+namespace solarus {
 
 const uint32_t TargetMovement::recomputation_delay = 150;
 
@@ -195,5 +196,7 @@ bool TargetMovement::is_finished() const {
  */
 const std::string& TargetMovement::get_lua_type_name() const {
   return LuaContext::movement_target_module_name;
+}
+
 }
 

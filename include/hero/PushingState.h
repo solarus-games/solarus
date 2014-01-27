@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +19,12 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Pushing" of the hero.
  */
 class Hero::PushingState: public Hero::State {
-
-  private:
-
-    int pushing_direction4;       /**< direction where the hero is looking (0 to 3) */
-    Detector* pushed_entity;      /**< the entity the hero is pushing (or NULL) */
-
-    void stop_moving_pushed_entity();
 
   public:
 
@@ -55,7 +50,18 @@ class Hero::PushingState: public Hero::State {
     bool is_lava_obstacle() const;
     bool is_prickle_obstacle() const;
 
+  private:
+
+    void stop_moving_pushed_entity();
+
+    int pushing_direction4;            /**< Direction where the hero is looking (0 to 3). */
+    Detector* pushed_entity;           /**< The entity the hero is pushing or NULL. */
+    PathMovement* pushing_movement;    /**< The movement created by this state.
+                                        * The movement of the hero is also this object,
+                                        * unless a script decided to change it. */
 };
+
+}
 
 #endif
 

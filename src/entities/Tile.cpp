@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
 #include "Map.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a new tile.
@@ -96,9 +98,12 @@ void Tile::draw_on_map() {
  */
 void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
 
-  Rectangle dst_position(get_top_left_x() - viewport.get_x(),
+  Rectangle dst_position(
+      get_top_left_x() - viewport.get_x(),
       get_top_left_y() - viewport.get_y(),
-      get_width(), get_height());
+      get_width(),
+      get_height()
+  );
 
   tile_pattern->fill_surface(dst_surface, dst_position,
       get_map().get_tileset(), viewport);
@@ -131,5 +136,7 @@ int Tile::get_tile_pattern_id() const {
  */
 bool Tile::is_animated() {
   return tile_pattern->is_animated();
+}
+
 }
 

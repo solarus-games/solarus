@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A block in the ground that can be raised or lowered with the help of a crystal.
  *
@@ -38,17 +40,6 @@ class CrystalBlock: public Detector {
       BLUE   = 1  /**< a blue block */
     };
 
-  private:
-
-    Subtype subtype;                   /**< indicates whether this is an orange or a blue block */
-    bool orange_raised;                /**< true if the orange blocks are raised,
-                                        * false if the blue blocks are raised */
-
-    bool try_jump(Hero& hero, const Rectangle& collision_box,
-        int jump_direction, int jump_length);
-
-  public:
-
     CrystalBlock(Game& game, const std::string& name,
         Layer layer, int x, int y, int width, int height, Subtype subtype);
     ~CrystalBlock();
@@ -62,7 +53,19 @@ class CrystalBlock: public Detector {
     void draw_on_map();
 
     bool is_raised() const;
+
+  private:
+
+    Subtype subtype;                   /**< indicates whether this is an orange or a blue block */
+    bool orange_raised;                /**< true if the orange blocks are raised,
+                                        * false if the blue blocks are raised */
+
+    bool try_jump(Hero& hero, const Rectangle& collision_box,
+        int jump_direction, int jump_length);
+
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,10 @@
 #include "entities/AnimatedTilePattern.h"
 #include "entities/TimeScrollingTilePattern.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Surface.h"
+#include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -36,12 +38,14 @@ TilePattern::TilePattern(Ground ground, int width, int height):
   height(height) {
 
   // Check the width and the height.
-  Debug::check_assertion(
-      width > 0 && height > 0
-      && width % 8 == 0 && height % 8 == 0,
-      StringConcat() << "Invalid tile pattern: the size is ("
-          << width << "x" << height <<
-          ") but should be positive and multiple of 8 pixels");
+  if (width <= 0 || height <= 0
+      || width % 8 != 0 || height % 8 != 0) {
+    std::ostringstream oss;
+    oss << "Invalid tile pattern: the size is ("
+        << width << "x" << height <<
+        ") but should be positive and multiple of 8 pixels";
+    Debug::die(oss.str());
+  }
 
   // Diagonal obstacle: check that the tile is square.
   if (ground >= GROUND_WALL_TOP_RIGHT && ground <= GROUND_WALL_BOTTOM_RIGHT_WATER) {
@@ -101,7 +105,7 @@ void TilePattern::update() {
  *
  * \return true if this tile pattern is animated
  */
-bool TilePattern::is_animated() {
+bool TilePattern::is_animated() const {
   return true;
 }
 
@@ -118,7 +122,7 @@ bool TilePattern::is_animated() {
  *
  * \return true if tiles having this pattern are drawn where they are placed
  */
-bool TilePattern::is_drawn_at_its_position() {
+bool TilePattern::is_drawn_at_its_position() const {
   return true;
 }
 
@@ -158,5 +162,7 @@ void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_positi
       }
     }
   }
+}
+
 }
 

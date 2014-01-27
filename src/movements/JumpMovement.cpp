@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,9 @@
 #include "movements/JumpMovement.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Trajectory of the basic jump movement for each direction.
@@ -48,8 +49,11 @@ JumpMovement::JumpMovement(int direction8, int distance, int speed, bool ignore_
   speed(0),
   jump_height(0) {
 
-  Debug::check_assertion(direction8 >= 0 && direction8 < 8,
-      StringConcat() << "Invalid jump direction: " << direction8);
+  if (direction8 < 0 || direction8 >= 8) {
+    std::ostringstream oss;
+    oss << "Invalid jump direction: " << direction8;
+    Debug::die(oss.str());
+  }
   set_speed(speed);
 }
 
@@ -192,5 +196,7 @@ void JumpMovement::notify_step_done(int step_index, bool success) {
  */
 const std::string& JumpMovement::get_lua_type_name() const {
   return LuaContext::movement_jump_module_name;
+}
+
 }
 

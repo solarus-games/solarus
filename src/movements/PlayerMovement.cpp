@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "lowlevel/Debug.h"
 #include "Game.h"
 #include "GameCommands.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -131,5 +133,7 @@ void PlayerMovement::compute_movement() {
   // notify the entity that its movement has just changed:
   // indeed, the entity may need to update its sprites
   notify_movement_changed();
+}
+
 }
 

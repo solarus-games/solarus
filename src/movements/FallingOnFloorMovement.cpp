@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/FallingOnFloorMovement.h"
+
+namespace solarus {
 
 /**
  * \brief Y move at each time frame.
@@ -44,6 +46,8 @@ FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
  * \brief Destructor.
  */
 FallingOnFloorMovement::~FallingOnFloorMovement() {
+
+}
 
 }
 

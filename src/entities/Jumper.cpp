@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,11 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a jumper.
- * \param name a name identifying this jumper
+ * \param Name identifying this jumper
  * \param layer layer of the sensor on the map
  * \param x x coordinate of the top-left corner of the sensor's rectangle
  * \param y y coordinate of the top-left corner of the sensor's rectangle
@@ -259,5 +261,7 @@ bool Jumper::is_sword_ignored() const {
 
   // We don't want a sword tapping animation.
   return true;
+}
+
 }
 

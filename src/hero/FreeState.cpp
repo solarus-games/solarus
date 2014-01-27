@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +24,17 @@
 #include "Game.h"
 #include "KeysEffect.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
  */
 Hero::FreeState::FreeState(Hero& hero):
-  PlayerMovementState(hero, "free") {
+  PlayerMovementState(hero, "free"),
+  pushing_direction4(0),
+  start_pushing_date(0) {
+
 
 }
 
@@ -107,7 +112,7 @@ void Hero::FreeState::notify_action_command_pressed() {
     // grab an obstacle
     hero.set_state(new GrabbingState(hero));
   }
-  else if (get_equipment().has_ability("run")) {
+  else if (get_equipment().has_ability(ABILITY_RUN)) {
 
     // run
     hero.start_running();
@@ -193,5 +198,7 @@ void Hero::FreeState::set_animation_stopped() {
  */
 void Hero::FreeState::set_animation_walking() {
   get_sprites().set_animation_walking_normal();
+}
+
 }
 

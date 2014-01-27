@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "lowlevel/PixelFilter.h"
 
+namespace solarus {
+
 /**
  * \brief Wrapper to the hq4x algorithm.
  */
@@ -36,7 +38,12 @@ class Hq4xFilter: public PixelFilter {
         int src_width,
         int src_height,
         uint32_t* dst) const;
+
+    static void initialize_hqx();
+
 };
+
+}
 
 #endif
 

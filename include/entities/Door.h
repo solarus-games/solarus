@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+
+namespace solarus {
 
 /**
  * \brief A door that may be open or closed.
@@ -98,8 +100,6 @@ class Door: public Detector {
     void close();
     void set_open(bool open);
 
-    virtual const std::string& get_lua_type_name() const;
-
     static const std::string opening_method_names[];
 
   private:
@@ -139,7 +139,10 @@ class Door: public Detector {
     bool initialized;                             /**< \c true if update() was called at least once. */
     uint32_t next_hint_sound_date;                /**< If the player has the ability to detect weak walls,
                                                    * indicates when a hint sound is played next time. */
+
 };
+
+}
 
 #endif
 

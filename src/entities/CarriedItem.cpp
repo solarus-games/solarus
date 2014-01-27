@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #include "entities/Stairs.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
-#include "entities/NPC.h"
+#include "entities/Npc.h"
 #include "entities/MapEntities.h"
 #include "movements/PixelMovement.h"
 #include "movements/FollowMovement.h"
@@ -34,6 +34,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Geometry.h"
+
+namespace solarus {
 
 /**
  * \brief Movement of the item when the hero is lifting it.
@@ -51,8 +53,8 @@ const std::string CarriedItem::lifting_trajectories[4] = {
  * \param original_entity the entity that will be replaced by this carried item
  * (its coordinates, size and origin will be copied)
  * \param animation_set_id name of the animation set for the sprite to create
- * \param destruction_sound_id name of the sound to play when this item is destroyed
- * (or an empty string)
+ * \param destruction_sound_id Name of the sound to play when this item is destroyed
+ * (or an empty string).
  * \param damage_on_enemies damage received by an enemy if the item is thrown on him
  * (possibly 0)
  * \param explosion_date date of the explosion if the item should explode,
@@ -71,7 +73,15 @@ CarriedItem::CarriedItem(
   is_lifting(true),
   is_throwing(false),
   is_breaking(false),
-  break_one_layer_above(false) {
+  break_one_layer_above(false),
+  destruction_sound_id(destruction_sound_id),
+  damage_on_enemies(damage_on_enemies),
+  shadow_sprite(NULL),
+  throwing_direction(0),
+  next_down_date(0),
+  item_height(0),
+  y_increment(0),
+  explosion_date(explosion_date) {
 
   // align correctly the item with the hero
   int direction = hero.get_animation_direction();
@@ -90,25 +100,17 @@ CarriedItem::CarriedItem(
   get_sprite().set_current_animation("stopped");
   set_movement(movement);
 
-  // create the breaking sound
-  this->destruction_sound_id = destruction_sound_id;
-
   // create the shadow (not visible yet)
-  this->shadow_sprite = new Sprite("entities/shadow");
-  this->shadow_sprite->set_current_animation("big");
-
-  // damage on enemies
-  this->damage_on_enemies = damage_on_enemies;
-
-  // explosion
-  this->explosion_date = explosion_date;
+  shadow_sprite = new Sprite("entities/shadow");
+  RefCountable::ref(shadow_sprite);
+  shadow_sprite->set_current_animation("big");
 }
 
 /**
  * \brief Destructor.
  */
 CarriedItem::~CarriedItem() {
-  delete shadow_sprite;
+  RefCountable::unref(shadow_sprite);
 }
 
 /**
@@ -225,7 +227,7 @@ bool CarriedItem::is_being_lifted() const {
 bool CarriedItem::is_being_thrown() const {
   return is_throwing;
 }
- 
+
 /**
  * \brief Returns whether the item is about to explode.
  * \return true if the item is about to explode
@@ -247,7 +249,7 @@ void CarriedItem::break_item() {
   get_movement()->stop();
 
   if (!can_explode()) {
-    if (destruction_sound_id.size() > 0) {
+    if (!destruction_sound_id.empty()) {
       Sound::play(destruction_sound_id);
     }
     if (get_sprite().has_animation("destroy")) {
@@ -276,6 +278,21 @@ void CarriedItem::break_item_on_ground() {
 
   Ground ground = get_ground_below();
   switch (ground) {
+
+    case GROUND_EMPTY:
+      // Nothing here: fall one layer below.
+    {
+      int layer = get_layer();
+      if (layer == LAYER_LOW) {
+        // Cannot fall lower.
+        break_item();
+      }
+      else {
+        get_entities().set_entity_layer(*this, Layer(layer - 1));
+        break_item_on_ground();  // Do this again on the next layer.
+      }
+      break;
+    }
 
     case GROUND_HOLE:
       Sound::play("jump");
@@ -461,18 +478,12 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
 }
 
 /**
- * \brief Notifies this entity that it has just attacked an enemy.
- *
- * This function is called even if this attack was not successful.
- *
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc MapEntity::notify_attacked_enemy
  */
 void CarriedItem::notify_attacked_enemy(
     EnemyAttack attack,
     Enemy& victim,
+        const Sprite* victim_sprite,
     EnemyReaction::Reaction& result,
     bool killed) {
 
@@ -593,7 +604,7 @@ bool CarriedItem::is_crystal_obstacle(const Crystal& crystal) const {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool CarriedItem::is_npc_obstacle(const NPC& npc) const {
+bool CarriedItem::is_npc_obstacle(const Npc& npc) const {
   return npc.is_solid();
 }
 
@@ -670,5 +681,7 @@ void CarriedItem::notify_collision_with_stairs(Stairs& stairs, CollisionMode col
       && get_layer() == stairs.get_layer()) {
     break_one_layer_above = true; // show the destruction animation above the stairs
   }
+}
+
 }
 

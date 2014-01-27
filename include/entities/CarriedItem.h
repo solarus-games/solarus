@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
+
+namespace solarus {
 
 /**
  * \brief An item carried or thrown by the hero.
@@ -84,7 +86,7 @@ class CarriedItem: public MapEntity {
     bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
     bool is_crystal_obstacle(const Crystal& crystal) const;
     bool is_sensor_obstacle(const Sensor& sensor) const;
-    bool is_npc_obstacle(const NPC& npc) const;
+    bool is_npc_obstacle(const Npc& npc) const;
     bool is_jumper_obstacle(const Jumper& jumper) const;
     bool is_enemy_obstacle(const Enemy& enemy) const;
     void notify_obstacle_reached();
@@ -92,10 +94,25 @@ class CarriedItem: public MapEntity {
     void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
     void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy& enemy);
-    void notify_attacked_enemy(EnemyAttack attack,
-        Enemy& victim, EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
 
   private:
+
+    void initialize(
+        const Rectangle& xy,
+        const Rectangle& size,
+        const Rectangle& origin,
+        const std::string& animation_set_id,
+        const std::string& destruction_sound_id,
+        int damage_on_enemies,
+        uint32_t explosion_date);
+
+    bool will_explode_soon() const;
 
     // game data
     Hero& hero;             /**< the hero, who is carrying or throwing this item */
@@ -104,7 +121,7 @@ class CarriedItem: public MapEntity {
     bool is_lifting;            /**< indicates that the hero is lifting this item */
     bool is_throwing;           /**< indicates that the item is being thrown */
     bool is_breaking;           /**< indicates that the item is breaking */
-    bool break_one_layer_above; /**<  indicates that the item has to get broken
+    bool break_one_layer_above; /**< indicates that the item has to get broken
                                  * now one layer above its current position */
     std::string destruction_sound_id;   /**< the sound played when the item breaks */
     int damage_on_enemies;      /**< damage for an enemy that receives the item */
@@ -121,18 +138,9 @@ class CarriedItem: public MapEntity {
 
     static const std::string lifting_trajectories[4];   /**< trajectory of the lifting movement for each direction */
 
-    void initialize(
-        const Rectangle& xy,
-        const Rectangle& size,
-        const Rectangle& origin,
-        const std::string& animation_set_id,
-        const std::string& destruction_sound_id,
-        int damage_on_enemies,
-        uint32_t explosion_date);
-
-    bool will_explode_soon() const;
-
 };
+
+}
 
 #endif
 

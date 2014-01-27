@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,16 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
+namespace solarus {
+
 /**
  * \brief Creates and starts a timer.
- * \param delay duration of the timer in milliseconds
+ * \param duration Duration of the timer in milliseconds.
  */
-Timer::Timer(uint32_t delay):
-  expiration_date(System::now() + delay),
-  finished(false),
+Timer::Timer(uint32_t duration):
+  expiration_date(System::now() + duration),
+  duration(duration),
+  finished(System::now() >= this->expiration_date),
   suspended_with_map(false),
   suspended(false),
   when_suspended(0),
@@ -38,14 +41,13 @@ Timer::Timer(uint32_t delay):
  * \brief Destructor.
  */
 Timer::~Timer() {
-
 }
 
 /**
  * \brief Returns whether a clock sound is played during this timer.
  * \return true if a clock sound is played.
  */
-bool Timer::is_with_sound() {
+bool Timer::is_with_sound() const {
   return next_sound_date != 0;
 }
 
@@ -61,7 +63,7 @@ void Timer::set_with_sound(bool with_sound) {
  * \brief Returns whether this timer is currently suspended.
  * \return true if this timer is suspended.
  */
-bool Timer::is_suspended() {
+bool Timer::is_suspended() const {
   return suspended;
 }
 
@@ -100,7 +102,7 @@ void Timer::set_suspended(bool suspended) {
  * \brief Returns whether this timer is suspended when the map is suspended.
  * \return true if this timer is suspended with the map.
  */
-bool Timer::is_suspended_with_map() {
+bool Timer::is_suspended_with_map() const {
   return suspended_with_map;
 }
 
@@ -123,8 +125,34 @@ void Timer::set_suspended_with_map(bool suspended_with_map) {
  * \brief Returns whether the timer is finished.
  * \return true if the timer is finished
  */
-bool Timer::is_finished() {
+bool Timer::is_finished() const {
   return finished;
+}
+
+/**
+ * \brief Returns the initial duration of this timer.
+ * \return The initial duration in milliseconds.
+ */
+uint32_t Timer::get_initial_duration() const {
+  return duration;
+}
+
+/**
+ * \brief Returns the expiration date of this timer.
+ * \return The expiration date in milliseconds.
+ */
+uint32_t Timer::get_expiration_date() const {
+  return expiration_date;
+}
+
+/**
+ * \brief Sets the expiration date of this timer.
+ * \param expiration_date The expiration date in milliseconds.
+ */
+void Timer::set_expiration_date(uint32_t expiration_date) {
+
+  this->expiration_date = expiration_date;
+  this->finished = System::now() >= this->expiration_date;
 }
 
 /**
@@ -177,5 +205,7 @@ void Timer::notify_map_suspended(bool suspended) {
  */
 const std::string& Timer::get_lua_type_name() const {
   return LuaContext::timer_module_name;
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,12 @@
 #include "Game.h"
 #include "Map.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
- * \param treasure The treasure to give to the hero.
+ * \param treasure The treasure to give to the hero. It must be obtainable.
  * \param callback_ref Lua ref to a function to call when the
  * treasure's dialog finishes (possibly LUA_REFNIL).
  */
@@ -39,13 +41,13 @@ Hero::TreasureState::TreasureState(
   treasure(treasure),
   callback_ref(callback_ref) {
 
+  treasure.check_obtainable();
 }
 
 /**
  * \brief Destructor.
  */
 Hero::TreasureState::~TreasureState() {
-
 }
 
 /**
@@ -121,5 +123,7 @@ CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior() 
  */
 bool Hero::TreasureState::is_brandishing_treasure() const {
   return true;
+}
+
 }
 

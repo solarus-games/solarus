@@ -445,10 +445,10 @@ restarted.
   be placed on that map. By default, the default destination of the map is used.
 
 \remark When the hero moves from a map to another map that belongs to a
-  different world (for example, from a dungeon to the outside world), the
-  starting location is automatically set to this point. If this behavior is
-  okay for your quest, you never need to call this function except the first
-  time (when initializing a new savegame file).
+  different world (for example, from a dungeon to the outside world) using a
+  destination entity, the starting location is automatically set to this point.
+  If this behavior is okay for your quest, you never need to call this function
+  except the first time: when initializing a new savegame file.
 
 \subsection lua_api_game_get_life game:get_life()
 
@@ -468,11 +468,15 @@ than the maximum level of life will be replaced by the maximum value.
 
 Adds some life to the player.
 - \c life (number): Number of life points to add.
+  Must be a positive number or \c 0.
 
 \remark Equivalent to <tt>game:set_life(game:get_life() + life)</tt>.
 
 \subsection lua_api_game_remove_life game:remove_life(life)
+
+Removes some life from the player.
 - \c life (number): Number of life points to remove.
+  Must be a positive number or \c 0.
 
 \remark Equivalent to <tt>game:set_life(game:get_life() - life)</tt>.
 
@@ -485,11 +489,13 @@ Returns the maximum level of life of the player.
 
 Sets the maximum level of life of the player.
 - \c life (number): Maximum number of life points to set.
+  Must be a positive number.
 
 \subsection lua_api_game_add_max_life game:add_max_life(life)
 
 Increases the maximum level of life of the player.
 - \c life (number): Maximum number of life points to add to the maximum.
+  Must be a positive number or \c 0.
 
 \remark Equivalent to <tt>game:set_max_life(game:get_max_life() + life)</tt>.
 
@@ -511,6 +517,7 @@ than the maximum amount of money will be replaced by the maximum amount.
 
 Adds some money to the player.
 - \c money (number): Amount of money to add.
+  Must be a positive number or \c 0.
 
 \remark Equivalent to <tt>game:set_money(game:get_money() + money)</tt>.
 
@@ -518,6 +525,7 @@ Adds some money to the player.
 
 Removes some money from the player.
 - \c money (number): Amount of money to remove.
+  Must be a positive number or \c 0.
 
 \remark Equivalent to <tt>game:set_money(game:get_money() - money)</tt>.
 
@@ -530,6 +538,7 @@ Returns the maximum amount of money of the player.
 
 Sets the maximum amount of money of the player.
 - \c money (number): Maximum money to set.
+  Must be a positive number or \c 0.
 
 \subsection lua_api_game_get_magic game:get_magic()
 
@@ -549,6 +558,7 @@ than the maximum number of magic points will be replaced by that maximum.
 
 Adds some magic points to the player.
 - \c magic (number): Number of magic points to add.
+  Must be a positive number or \c 0.
 
 \remark Equivalent to <tt>game:set_magic(game:get_magic() + magic)</tt>.
 
@@ -556,6 +566,7 @@ Adds some magic points to the player.
 
 Removes some magic points from the player.
 - \c magic (number): Number of magic points to remove.
+  Must be a positive number or \c 0.
 
 \remark Equivalent to <tt>game:set_magic(game:get_magic() - magic)</tt>.
 
@@ -568,6 +579,7 @@ Returns the maximum number of magic points.
 
 Sets the maximum number of magic points.
 - \c magic (number): The maximum number of magic points to set.
+  Must be a positive number or \c 0.
 
 \subsection lua_api_game_has_ability game:has_ability(ability_name)
 
@@ -780,6 +792,28 @@ of directional game commands currently pressed by the player.
   computed by calling
   \ref lua_api_game_is_command_pressed "game:is_command_pressed()" four times
   (with the four directional game commands).
+
+\subsection lua_api_game_simulate_command_pressed game:simulate_command_pressed(command)
+
+Creates a command pressed input event.
+
+Everything acts like if the player had just pressed an input mapped to this
+game command.
+- \c command (string): Name of a game command.
+  Valid commands are
+  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
+  \c "right", \c "up", \c "left" and \c "down".
+
+\subsection lua_api_game_simulate_command_released game:simulate_command_released(command)
+
+Creates a command released input event.
+
+Everything acts like if the player had just released an input mapped to this
+game command.
+- \c command (string): Name of a game command.
+  Valid commands are
+  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
+  \c "right", \c "up", \c "left" and \c "down".
 
 \section lua_api_game_events Events of a game
 

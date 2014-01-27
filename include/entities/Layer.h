@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,18 +17,23 @@
 #ifndef SOLARUS_LAYER_H
 #define SOLARUS_LAYER_H
 
+namespace solarus {
+
 /**
  * \brief Layer of an entity.
  *
- * The layer represents the height or the entity in the map.
+ * The layer represents the height of the entity on the map.
+ * Any map entity can be on any layer.
+ * On each layer, entities are placed in the order they were created.
  */
 enum Layer {
-  LAYER_LOW,             /**< the entity is always below the hero (floor, walls, chests,
-			      enemies and 99% of the entities) */
-  LAYER_INTERMEDIATE,    /**< the hero can be below or above the entity (platforms or objects on a plaform) */
-  LAYER_HIGH,            /**< the entity is always above the hero (trees, top of doors…) */
-  LAYER_NB               /**< number of layers */
+  LAYER_LOW,             /**< Low layer. */
+  LAYER_INTERMEDIATE,    /**< Intermediate layer. */
+  LAYER_HIGH,            /**< High layer. */
+  LAYER_NB               /**< Number of layers. */
 };
+
+}
 
 #endif
 

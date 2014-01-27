@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,9 @@
 
 #include "Common.h"
 #include <string>
+#include <vector>
+
+namespace solarus {
 
 /**
  * \brief Main class of the game engine.
@@ -29,7 +32,7 @@ class MainLoop {
 
   public:
 
-    MainLoop(int argc, char** argv);
+    MainLoop(const CommandLine& args);
     ~MainLoop();
 
     void run();
@@ -56,6 +59,8 @@ class MainLoop {
     void draw();
     void update();
 };
+
+}
 
 #endif
 

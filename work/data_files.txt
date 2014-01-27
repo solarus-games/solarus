@@ -23,7 +23,6 @@ sounds/
   boss_hurt.ogg
   boss_killed.ogg
   bow.ogg
-  bush.ogg
   cane.ogg
   chest_open.ogg
   door_closed.ogg
@@ -43,6 +42,7 @@ sounds/
   monster_hurt.ogg
   picked_item.ogg
   running.ogg
+  running_obstacle.ogg
   shield.ogg
   splash.ogg
   stairs_down_start.ogg
@@ -70,23 +70,17 @@ sprites/
     arrow.dat
     block.dat
     bomb.dat
-    bomb_flower.dat
-    bush.dat
     chest.dat
     conveyor_belt.dat
     crystal.dat
     explosion.dat
     fire.dat
-    grass.dat
     hookshot.dat
     items.dat
     miscellaneous.png
-    pot.dat
     shadow.dat
     solid_switch.dat
     star.dat
-    stone_small_black.dat
-    stone_small_white.dat
     switch.dat
   hero/
     tunic1.dat ...

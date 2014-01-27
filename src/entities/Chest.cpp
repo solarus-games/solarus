@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 #include "lowlevel/Sound.h"
 #include "lua/LuaContext.h"
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Lua name of each value of the OpeningMethod enum.
@@ -364,7 +366,7 @@ void Chest::update() {
     if (!treasure_given && treasure_date != 0 && System::now() >= treasure_date) {
 
       treasure_date = 0;
-
+      treasure.ensure_obtainable();  // Make the chest empty if the treasure is not allowed.
       if (!treasure.is_empty()) {
         // Give a treasure to the player.
 
@@ -439,11 +441,5 @@ void Chest::set_suspended(bool suspended) {
   }
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Chest::get_lua_type_name() const {
-  return LuaContext::entity_chest_module_name;
 }
 

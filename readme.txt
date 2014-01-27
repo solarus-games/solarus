@@ -1,9 +1,10 @@
 Solarus is an open-source Zelda-like game engine written in C++.
 This engine is used by our Zelda fangames.
-Our git repository of Solarus includes two subprojects:
-- Solarus: the C++ engine (under GPL),
-- Solarus Quest Editor: an editor for creating quests, written in Java (still
-  under development).
+The git repository of Solarus includes two subprojects:
+- Solarus: the C++ engine.
+- Solarus Quest Editor: an editor for creating quests, written in Java.
+
+Solarus and Solarus Quest Editor are both licensed under GPL v3.
 
 You might be interested in our fangames created with Solarus:
 - Zelda Mystery of Solarus DX, our main creation:

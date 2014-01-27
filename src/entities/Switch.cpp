@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,9 @@
 #include "Map.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -52,7 +53,8 @@ Switch::Switch(
   locked(false),
   needs_block(needs_block),
   inactivate_when_leaving(inactivate_when_leaving),
-  entity_overlapping(NULL) {
+  entity_overlapping(NULL),
+  entity_overlapping_still_present(false) {
 
   // sprite
   if (is_walkable()) {
@@ -328,11 +330,5 @@ void Switch::try_activate() {
   }
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Switch::get_lua_type_name() const {
-  return LuaContext::entity_switch_module_name;
 }
 

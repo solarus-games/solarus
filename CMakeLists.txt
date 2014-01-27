@@ -9,6 +9,7 @@ set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 set(SOLARUS_INSTALL_DESTINATION "bin")
 
 # find the headers and the libraries of dependencies
+find_package(OpenGL)
 find_package(SDL2 "2" REQUIRED)
 find_package(SDL2_image "2" REQUIRED)
 find_package(SDL2_ttf "2.0.12" REQUIRED)
@@ -48,6 +49,7 @@ file(
   src/lua/*.cpp
   src/menus/*.cpp
   src/movements/*.cpp
+  src/containers/*.cpp
   include/*.h
   include/entities/*.h
   include/hero/*.h
@@ -56,6 +58,7 @@ file(
   include/lua/*.h
   include/menus/*.h
   include/movements/*.h
+  include/containers/*.h
   include/third_party/snes_spc/*.h
   include/third_party/hqx/*.h
 )
@@ -90,6 +93,9 @@ else()
 endif()
 
 # generate -I flags
+if (OPENGL_FOUND)
+  include_directories(${OPENGL_INCLUDE_DIR})
+endif()
 include_directories(
   ${CMAKE_BINARY_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
@@ -107,7 +113,11 @@ include_directories(
 )
 
 # generate -l flags
+if (OPENGL_FOUND)
+  target_link_libraries(solarus ${OPENGL_gl_LIBRARY})
+endif()
 target_link_libraries(solarus
+  ${OPENGL_gl_LIBRARY}
   ${SDL2_LIBRARY}
   ${SDL2_IMAGE_LIBRARY}
   ${SDL2_TTF_LIBRARY}
@@ -144,6 +154,14 @@ else()
   set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 endif()
+
+
+if(OPENGL_FOUND)
+  set(HAVE_OPENGL_OR_ES 1)
+else()
+  set(HAVE_OPENGL_OR_ES 0)
+endif()
+add_definitions(-DSOLARUS_HAVE_OPENGL_OR_ES=${HAVE_OPENGL_OR_ES})
 
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
 if(DEFAULT_QUEST)
@@ -186,18 +204,6 @@ endif()
 set(COLOR_DEPTH ${INITIAL_COLOR_DEPTH} CACHE INTEGER "Number of bits per pixel for surfaces.")
 if(COLOR_DEPTH)
   add_definitions(-DSOLARUS_COLOR_DEPTH=${COLOR_DEPTH})
-endif()
-
-if(CAANOO OR GCWZERO)
-  set(INITIAL_SCREEN_FORCE_MODE 2)  # Windowed normal.
-elseif(PANDORA)
-  set(INITIAL_SCREEN_FORCE_MODE 3)  # Fullscreen normal.
-else()
-  set(INITIAL_SCREEN_FORCE_MODE -1)
-endif()
-set(SCREEN_FORCE_MODE ${INITIAL_SCREEN_FORCE_MODE} CACHE INTEGER "Video mode to force (-1 means no restriction).")
-if(SCREEN_FORCE_MODE)
-  add_definitions(-DSOLARUS_SCREEN_FORCE_MODE=${SCREEN_FORCE_MODE})
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

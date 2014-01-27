@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,22 +21,13 @@
 #include "entities/Detector.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief A switch that can be activated to change the state of the
  * crystal blocks.
  */
 class Crystal: public Detector {
-
-  private:
-
-    bool state;                                    /**< false if the orange blocks are lowered,
-                                                    * true if the blue blocks are lowered */
-    uint32_t next_possible_hit_date;               /**< date when the crystal can be hit again */
-    std::list<MapEntity*> entities_activating;     /**< list of entities that recently activated this crystal */
-    Sprite* star_sprite;                           /**< sprite of the star twinkling on the crystal */
-    Rectangle star_xy;                             /**< position of the star */
-
-    void twinkle();
 
   public:
 
@@ -55,7 +46,21 @@ class Crystal: public Detector {
     void update();
     void draw_on_map();
     void set_suspended(bool suspended);
+
+  private:
+
+    void twinkle();
+
+    bool state;                                    /**< false if the orange blocks are lowered,
+                                                    * true if the blue blocks are lowered */
+    uint32_t next_possible_hit_date;               /**< date when the crystal can be hit again */
+    std::list<MapEntity*> entities_activating;     /**< list of entities that recently activated this crystal */
+    Sprite* star_sprite;                           /**< sprite of the star twinkling on the crystal */
+    Rectangle star_xy;                             /**< position of the star */
+
 };
+
+}
 
 #endif
 

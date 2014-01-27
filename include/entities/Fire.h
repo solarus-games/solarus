@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "entities/Detector.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief Represents some fire on the map.
  *
@@ -41,7 +43,10 @@ class Fire: public Detector {
 
     // collisions
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+
 };
+
+}
 
 #endif
 

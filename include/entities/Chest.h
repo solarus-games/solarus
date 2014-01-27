@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "Treasure.h"
 #include "entities/Detector.h"
+
+namespace solarus {
 
 /**
  * \brief Represents a chest on a map.
@@ -71,8 +73,6 @@ class Chest: public Detector {
     void notify_action_command_pressed();
     void set_suspended(bool suspended);
 
-    virtual const std::string& get_lua_type_name() const;
-
     static const std::string opening_method_names[];
 
   private:
@@ -95,7 +95,10 @@ class Chest: public Detector {
                                         * should be consumed when opening the door. */
     std::string cannot_open_dialog_id; /**< Dialog to show if the door cannot be opened,
                                         * or an empty string. */
+
 };
+
+}
 
 #endif
 

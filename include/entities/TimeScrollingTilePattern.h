@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"
 
+namespace solarus {
+
 /**
  * \brief Tile pattern with a scrolling effect.
  *
@@ -27,11 +29,6 @@
  * giving the illusion of a movement.
  */
 class TimeScrollingTilePattern: public SimpleTilePattern {
-
-  private:
-
-    static int shift;                   /**< number of pixels to shift, increased with the time */
-    static uint32_t next_shift_date;    /**< when the shift variable is incremented */
 
   public:
 
@@ -42,8 +39,16 @@ class TimeScrollingTilePattern: public SimpleTilePattern {
     void draw(Surface& dst_surface, const Rectangle& dst_position,
             Tileset& tileset, const Rectangle& viewport);
 
-    virtual bool is_animated();
+    virtual bool is_animated() const;
+
+  private:
+
+    static int shift;                   /**< number of pixels to shift, increased with the time */
+    static uint32_t next_shift_date;    /**< when the shift variable is incremented */
+
 };
+
+}
 
 #endif
 

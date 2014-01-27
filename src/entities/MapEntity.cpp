@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +26,13 @@
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
+
+namespace solarus {
 
 const Rectangle MapEntity::directions_to_xy_moves[] = {
   Rectangle( 1, 0),
@@ -44,43 +45,9 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
   Rectangle( 1, 1)
 };
 
-const std::string MapEntity::entity_type_names[ENTITY_NUMBER + 1] = {
-    "tile",
-    "destination",
-    "teletransporter",
-    "pickable",
-    "destructible",
-    "chest",
-    "jumper",
-    "enemy",
-    "npc",
-    "block",
-    "dynamic_tile",
-    "switch",
-    "wall",
-    "sensor",
-    "crystal",
-    "crystal_block",
-    "shop_treasure",
-    "conveyor_belt",
-    "door",
-    "stairs",
-    "separator",
-    "custom",
-    "hero",
-    "carried_object",
-    "boomerang",
-    "explosion",
-    "arrow",
-    "bomb",
-    "fire",
-    "hookshot",
-    ""  // Sentinel.
-};
-
 /**
  * \brief Creates an entity, specifying its position, its name and its direction.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param direction direction of the entity
  * \param layer layer of the entity
  * \param x x position of the entity
@@ -116,6 +83,8 @@ MapEntity::MapEntity(
   optimization_distance(default_optimization_distance),
   optimization_distance2(default_optimization_distance * default_optimization_distance) {
 
+  Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
+      "Invalid entity size: width and height must be multiple of 8");
 }
 
 /**
@@ -129,6 +98,14 @@ MapEntity::~MapEntity() {
   clear_old_sprites();
   clear_movement();
   clear_old_movements();
+}
+
+/**
+ * \brief Returns the name identifying this type in Lua.
+ * \return The name identifying this type in Lua.
+ */
+const std::string& MapEntity::get_lua_type_name() const {
+  return LuaContext::get_entity_type_name(get_type());
 }
 
 /**
@@ -228,7 +205,11 @@ void MapEntity::update_ground_observers() {
       get_entities().get_ground_observers(get_layer());
   for (it = ground_observers.begin(); it != ground_observers.end(); ++it) {
     MapEntity& ground_observer = *(*it);
-    if (overlaps(ground_observer.get_ground_point())) {
+    // Update the ground of entities that overlap or were just overlapping this one.
+
+    if (overlaps(ground_observer.get_ground_point())
+        || overlaps(ground_observer)  // FIXME this is not precise and does not work for entities that disappear.
+    ) {
       ground_observer.update_ground_below();
     }
   }
@@ -269,7 +250,8 @@ void MapEntity::update_ground_below() {
 
   Ground previous_ground = this->ground_below;
   this->ground_below = get_map().get_ground(
-      get_layer(), get_ground_point());
+      get_layer(), get_ground_point()
+  );
   if (this->ground_below != previous_ground) {
     notify_ground_below_changed();
   }
@@ -744,6 +726,9 @@ const Rectangle& MapEntity::get_size() const {
  * \param height the entity's height
  */
 void MapEntity::set_size(int width, int height) {
+
+  Debug::check_assertion(width % 8 == 0 && height % 8 == 0,
+      "Invalid entity size: width and height must be multiple of 8");
   bounding_box.set_size(width, height);
 }
 
@@ -751,8 +736,9 @@ void MapEntity::set_size(int width, int height) {
  * \brief Sets the size of the entity.
  * \param size a rectangle having the width and height to set to the entity
  */
-void MapEntity::set_size(const Rectangle &size) {
-  bounding_box.set_size(size);
+void MapEntity::set_size(const Rectangle& size) {
+
+  set_size(size.get_width(), size.get_height());
 }
 
 /**
@@ -777,21 +763,6 @@ const Rectangle& MapEntity::get_bounding_box() const {
  */
 void MapEntity::set_bounding_box(const Rectangle &bounding_box) {
   this->bounding_box = bounding_box;
-}
-
-/**
- * \brief Sets the origin point and the size of the entity like its sprite.
- *
- * You may call this function only if the entity's bounding box
- * is the same as the sprite's rectangle.
- * Otherwise, you have to call set_size() and set_origin()
- * explicitely.
- */
-void MapEntity::set_bounding_box_from_sprite() {
-
-  Sprite &sprite = get_sprite();
-  set_size(sprite.get_size());
-  set_origin(sprite.get_origin());
 }
 
 /**
@@ -926,12 +897,15 @@ void MapEntity::notify_facing_entity_changed(Detector* facing_entity) {
  */
 const Rectangle MapEntity::get_ground_point() const {
 
-  return get_xy();
+  return Rectangle(get_x(), get_y(), 1, 1);
 }
 
 /**
  * \brief Returns the coordinates of the center point of the entity's rectangle.
- * \return the coordinates of the center point of the entity
+ *
+ * The size of the rectangle returned is 1x1.
+ *
+ * \return The coordinates of the center point of the entity.
  */
 const Rectangle MapEntity::get_center_point() const {
   return bounding_box.get_center();
@@ -944,6 +918,20 @@ const Rectangle MapEntity::get_center_point() const {
  */
 const std::string& MapEntity::get_name() const {
   return name;
+}
+
+/**
+ * \brief Sets the name of the entity.
+ *
+ * The name can only be changed before the entity is added to a map.
+ *
+ * \return The name of the entity, or an empty string to unset the name.
+ */
+void MapEntity::set_name(const std::string& name) {
+
+  Debug::check_assertion(!is_on_map(),
+      "Cannot change entity name: this entity is already on a map.");
+  this->name = name;
 }
 
 /**
@@ -1551,7 +1539,7 @@ bool MapEntity::is_hero_obstacle(const Hero& hero) const {
  * This function returns true by default.
  *
  * \param block a block
- * \return true if the teletransporter is currently an obstacle for this entity
+ * \return true if the block is currently an obstacle for this entity
  */
 bool MapEntity::is_block_obstacle(const Block& block) const {
   return true;
@@ -1653,7 +1641,7 @@ bool MapEntity::is_crystal_obstacle(const Crystal& crystal) const {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool MapEntity::is_npc_obstacle(const NPC& npc) const {
+bool MapEntity::is_npc_obstacle(const Npc& npc) const {
   return true;
 }
 
@@ -1693,7 +1681,7 @@ bool MapEntity::is_jumper_obstacle(const Jumper& jumper) const {
 bool MapEntity::is_destructible_obstacle(
     const Destructible& destructible) const {
 
-  return !destructible.is_disabled();
+  return !destructible.is_waiting_for_regeneration();
 }
 
 /**
@@ -1818,6 +1806,40 @@ double MapEntity::get_angle(int x, int y) const {
  */
 double MapEntity::get_angle(const MapEntity& other) const {
   return Geometry::get_angle(get_x(), get_y(), other.get_x(), other.get_y());
+}
+
+/**
+ * \brief Returns the angle of the vector between the origin of this entity or
+ * one of its sprite and the origin of another entity or one of its sprites.
+ * \param other The other entity.
+ * \param this_sprite Sprite of this entity to use instead of the entity itself
+ * or NULL.
+ * \param other_sprite Sprite of the other entity to use instead of the entity
+ * itself or NULL.
+ * \return The angle of the vector in radians, between 0 and Geometry::TWO_PI.
+ */
+double MapEntity::get_angle(
+    const MapEntity& other,
+    const Sprite* this_sprite,
+    const Sprite* other_sprite) const {
+
+  // Add the coordinates of sprites as offsets.
+  Rectangle this_offset(0, 0);
+  if (this_sprite != NULL) {
+    this_offset.add_xy(this_sprite->get_xy());
+  }
+
+  Rectangle other_offset(0, 0);
+  if (other_sprite != NULL) {
+    other_offset.add_xy(other_sprite->get_xy());
+  }
+
+  return Geometry::get_angle(
+      get_x() + this_offset.get_x(),
+      get_y() + this_offset.get_y(),
+      other.get_x() + other_offset.get_x(),
+      other.get_y() + other_offset.get_y()
+  );
 }
 
 /**
@@ -2081,13 +2103,18 @@ void MapEntity::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, 
  *
  * This function is called even if this attack was not successful.
  *
- * \param attack the attack
- * \param victim the enemy just attacked
- * \param result indicates how the enemy reacted to the attack
- * \param killed indicates that the attack has just killed the enemy
+ * \param attack The attack.
+ * \param victim The enemy just hurt.
+ * \param victim_sprite The enemy's sprite that was touched or NULL.
+ * \param result How the enemy has reacted to the attack.
+ * \param killed Whether the attack has just killed the enemy.
  */
-void MapEntity::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void MapEntity::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 }
 
 /**
@@ -2279,18 +2306,5 @@ void MapEntity::draw_on_map() {
   }
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& MapEntity::get_lua_type_name() const {
-  return LuaContext::entity_module_name;
 }
 
-/**
- * \brief Returns the Lua name of this entity type.
- */
-const std::string& MapEntity::get_type_name() const {
-
-  return entity_type_names[get_type()];
-}

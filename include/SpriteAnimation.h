@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "lowlevel/Debug.h"
 #include <string>
 #include <vector>
+
+namespace solarus {
 
 /**
  * \brief Stores the animated sequences of a sprite in a specific animation.
@@ -83,6 +85,8 @@ inline const SpriteAnimationDirection* SpriteAnimation::get_direction(
   SOLARUS_ASSERT(direction >= 0 && direction < get_nb_directions(),
       "Invalid sprite direction");
   return directions[direction];
+}
+
 }
 
 #endif

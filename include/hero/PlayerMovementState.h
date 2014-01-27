@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,11 @@
 #include "Common.h"
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
+ * \brief State where the hero is controlled by the player.
+ *
  * Abstract class for all hero states such that the movement is controlled by the player.
  * This means that the hero can move in the eight directions and the movement
  * is an instance of PlayerMovement.
@@ -62,10 +66,16 @@ class Hero::PlayerMovementState: public Hero::State {
 
     void cancel_jumper();
 
+    PlayerMovement* player_movement;   /**< The movement created by this state.
+                                        * The movement of the hero is also this object,
+                                        * unless a script decided to change it. */
     Jumper* current_jumper;            /**< The jumper about to be triggered or NULL */
     uint32_t jumper_start_date;        /**< Date to trigger the jumper
                                         * (because a small delay is necessary) */
+
 };
+
+}
 
 #endif
 

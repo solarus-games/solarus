@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"
 
+namespace solarus {
+
 /**
  * \brief Tile pattern with a parallax scrolling effect.
  *
@@ -38,17 +40,20 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
-    static const int ratio;
-
     ParallaxScrollingTilePattern(Ground ground, int x, int y, int width, int height);
     ~ParallaxScrollingTilePattern();
 
     void draw(Surface& dst_surface, const Rectangle& dst_position,
             Tileset& tileset, const Rectangle& viewport);
 
-    virtual bool is_animated();
-    virtual bool is_drawn_at_its_position();
+    virtual bool is_animated() const;
+    virtual bool is_drawn_at_its_position() const;
+
+    static const int ratio;
+
 };
+
+}
 
 #endif
 

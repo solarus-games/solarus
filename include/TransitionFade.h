@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,14 @@
 
 #include "Common.h"
 #include "Transition.h"
+#include "lowlevel/Color.h"
+
+namespace solarus {
 
 /**
  * \brief Fade in or fade out transition effect.
+ *
+ * TODO separate both behaviors in two classes (color and opacity).
  */
 class TransitionFade: public Transition {
 
@@ -33,6 +38,10 @@ class TransitionFade: public Transition {
     void set_delay(uint32_t delay);
 
     void start();
+    bool is_colored() const;
+    const Color& get_color() const;
+    void set_color(const Color& color);
+    void clear_color();
     bool is_started() const;
     bool is_finished() const;
     void notify_suspended(bool suspended);
@@ -51,8 +60,12 @@ class TransitionFade: public Transition {
     uint32_t delay;
 
     Surface* dst_surface;
+    bool colored;
+    Color transition_color;
 
 };
+
+}
 
 #endif
 

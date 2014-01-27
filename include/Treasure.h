@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include <string>
+
+namespace solarus {
 
 /**
  * \brief Represents an item that the hero brandishes when he receives it.
@@ -52,7 +54,9 @@ class Treasure {
     bool is_saved() const;
     bool is_empty() const;
 
+    bool is_obtainable() const;
     void ensure_obtainable();
+    void check_obtainable() const;
     void give_to_player() const;
     bool is_found() const;
 
@@ -67,8 +71,9 @@ class Treasure {
                                      * or an empty string if the treasure state is not saved */
     Sprite* sprite;                 /**< the sprite of the treasure (loaded on demand, NULL until required) */
 
-    void check_obtainable() const;
 };
+
+}
 
 #endif
 

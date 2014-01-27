@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "Transition.h"
 #include "lowlevel/Rectangle.h"
+
+namespace solarus {
 
 /**
  * \brief Scrolling transition between two maps.
@@ -62,7 +64,10 @@ class TransitionScrolling: public Transition {
     Rectangle previous_map_dst_position;  /**< position where the previous map is blitted on both_maps_surface */
     Rectangle current_map_dst_position;   /**< position where the current map is blitted on both_maps_surface */
     Rectangle current_scrolling_position; /**< the rectangle from both_maps_surface that is currently visible */
+
 };
+
+}
 
 #endif
 

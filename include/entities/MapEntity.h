@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief Abstract class for all objects placed on a map.
  *
@@ -56,7 +58,7 @@ class MapEntity: public ExportableToLua {
      * \return the type of entity
      */
     virtual EntityType get_type() const = 0;
-    const std::string& get_type_name() const;
+    virtual const std::string& get_lua_type_name() const;
     bool is_hero() const;
     virtual bool is_detector() const;
     virtual bool can_be_obstacle() const;
@@ -99,7 +101,6 @@ class MapEntity: public ExportableToLua {
     void set_size(int width, int height);
     void set_size(const Rectangle& size);
     const Rectangle& get_bounding_box() const;
-    void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle& bounding_box);
     const Rectangle& get_origin() const;
     void set_origin(int x, int y);
@@ -131,6 +132,7 @@ class MapEntity: public ExportableToLua {
 
     // properties
     const std::string& get_name() const;
+    void set_name(const std::string& name);
     bool has_prefix(const std::string& prefix) const;
     int get_direction() const;
 
@@ -184,6 +186,10 @@ class MapEntity: public ExportableToLua {
 
     double get_angle(int x, int y) const;
     double get_angle(const MapEntity& other) const;
+    double get_angle(
+        const MapEntity& other,
+        const Sprite* this_sprite,
+        const Sprite* other_sprite) const;
     int get_distance(int x, int y) const;
     int get_distance(const MapEntity& other) const;
     int get_distance_to_camera() const;
@@ -215,8 +221,12 @@ class MapEntity: public ExportableToLua {
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
     virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    virtual void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
 
     virtual bool is_obstacle_for(const MapEntity& other) const;
     virtual bool is_low_wall_obstacle() const;
@@ -235,7 +245,7 @@ class MapEntity: public ExportableToLua {
     virtual bool is_switch_obstacle(const Switch& sw) const;
     virtual bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
     virtual bool is_crystal_obstacle(const Crystal& crystal) const;
-    virtual bool is_npc_obstacle(const NPC& npc) const;
+    virtual bool is_npc_obstacle(const Npc& npc) const;
     virtual bool is_enemy_obstacle(const Enemy& enemy) const;
     virtual bool is_jumper_obstacle(const Jumper& jumper) const;
     virtual bool is_destructible_obstacle(const Destructible& destructible) const;
@@ -248,10 +258,7 @@ class MapEntity: public ExportableToLua {
     virtual void update();
     virtual void draw_on_map();
 
-    virtual const std::string& get_lua_type_name() const;
-
     static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
-    static const std::string entity_type_names[ENTITY_NUMBER + 1];  /** Lua name of each entity type. */
 
   protected:
 
@@ -402,6 +409,7 @@ inline bool MapEntity::overlaps(const MapEntity& other) const {
   return overlaps(other.get_bounding_box());
 }
 
+}
 
 #endif
 

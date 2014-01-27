@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "lowlevel/Debug.h"
 #include "Map.h"
 #include "Drawable.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -260,7 +262,7 @@ void Movement::notify_position_changed() {
 
   LuaContext* lua_context = get_lua_context();
   if (lua_context != NULL) {
-    lua_context->movement_on_position_changed(*this);
+    lua_context->movement_on_position_changed(*this, get_xy());
   }
 
   if (entity != NULL) {
@@ -576,5 +578,7 @@ void Movement::set_finished_callback(int finished_callback_ref) {
  */
 const std::string& Movement::get_lua_type_name() const {
   return LuaContext::movement_module_name;
+}
+
 }
 

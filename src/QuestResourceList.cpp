@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,10 @@
 #include "QuestResourceList.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
+#include <sstream>
+
+namespace solarus {
 
 namespace {
 
@@ -34,7 +37,10 @@ namespace {
     "",  // Sentinel for Lua.
   };
 
-  std::vector<QuestResourceList::Element> resource_elements[QuestResourceList::RESOURCE_NB];
+  // Duplicate the data because we need to preserve the insertion order and we
+  // don't want linear searches.
+  std::vector<QuestResourceList::Element> resource_vector[QuestResourceList::RESOURCE_NB];
+  std::map<std::string, std::string> resource_map[QuestResourceList::RESOURCE_NB];
 
   /**
    * \brief Implement of the resource() function.
@@ -44,11 +50,12 @@ namespace {
   int l_resource_element(lua_State* l) {
 
     QuestResourceList::ResourceType resource_type =
-        LuaContext::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
-    const std::string& id = LuaContext::check_string_field(l, 2, "id");
-    const std::string& description = LuaContext::check_string_field(l, 2, "description");
+        LuaTools::check_enum<QuestResourceList::ResourceType>(l, 1, resource_type_names);
+    const std::string& id = LuaTools::check_string_field(l, 2, "id");
+    const std::string& description = LuaTools::check_string_field(l, 2, "description");
 
-    resource_elements[resource_type].push_back(std::make_pair(id, description));
+    resource_vector[resource_type].push_back(std::make_pair(id, description));
+    resource_map[resource_type][id] = description;
 
     return 0;
   }
@@ -92,20 +99,39 @@ void QuestResourceList::initialize() {
 void QuestResourceList::quit() {
 
   for (int i = 0; i < RESOURCE_NB; ++i) {
-    resource_elements[i].clear();
+    resource_vector[i].clear();
+    resource_map[i].clear();
   }
+}
+
+/**
+ * \brief Returns whether there exists an element with the specified ID.
+ * \param resource_type A type of resource.
+ * \param id The ID to look for.
+ * \return \c true if there exists an element with the specified ID in this
+ * resource type.
+ */
+bool QuestResourceList::exists(ResourceType resource_type, const std::string& id) {
+
+  Debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
+      "Invalid resource type");
+
+  return resource_map[resource_type].find(id) != resource_map[resource_type].end();
 }
 
 /**
  * \brief Returns the list of element IDs of the specified resource type.
  * \param resource_type A type of resource.
- * \return The IDs of all declared element of this type.
+ * \return The IDs of all declared element of this type, in their declaration
+ * order.
  */
 const std::vector<QuestResourceList::Element>&
     QuestResourceList::get_elements(ResourceType resource_type) {
 
   Debug::check_assertion(resource_type >= 0 && resource_type < RESOURCE_NB,
       "Invalid resource type");
-  return resource_elements[resource_type];
+  return resource_vector[resource_type];
+}
+
 }
 

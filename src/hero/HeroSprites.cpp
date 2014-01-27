@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,9 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Associates to each movement direction the possible directions of the hero's sprites.
@@ -64,6 +66,8 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
   shadow_sprite(NULL),
   ground_sprite(NULL),
   trail_sprite(NULL),
+  animation_direction_saved(0),
+  when_suspended(0),
   end_blink_date(0),
   walking(false),
   clipping_rectangle(Rectangle()),
@@ -106,10 +110,9 @@ void HeroSprites::rebuild_equipment() {
     delete tunic_sprite;
   }
 
-  int tunic_number = equipment.get_ability("tunic");
+  int tunic_number = equipment.get_ability(ABILITY_RESISTANCE);
 
-  Debug::check_assertion(tunic_number > 0, StringConcat() <<
-      "Invalid tunic number: " << tunic_number);
+  Debug::check_assertion(tunic_number > 0, "Invalid tunic number");
 
   std::ostringstream oss;
   oss << "hero/tunic" << tunic_number;
@@ -136,7 +139,7 @@ void HeroSprites::rebuild_equipment() {
     sword_stars_sprite = NULL;
   }
 
-  int sword_number = equipment.get_ability("sword");
+  int sword_number = equipment.get_ability(ABILITY_SWORD);
 
   if (sword_number > 0) {
     // the hero has a sword: get the sprite and the sound
@@ -171,7 +174,7 @@ void HeroSprites::rebuild_equipment() {
     shield_sprite = NULL;
   }
 
-  int shield_number = equipment.get_ability("shield");
+  int shield_number = equipment.get_ability(ABILITY_SHIELD);
 
   if (shield_number > 0) {
     // the hero has a shield
@@ -202,7 +205,7 @@ void HeroSprites::rebuild_equipment() {
  * \return true if the sword is currently displayed on the screen
  */
 bool HeroSprites::is_sword_visible() const {
-  return equipment.has_ability("sword")
+  return equipment.has_ability(ABILITY_SWORD)
       && sword_sprite != NULL
       && sword_sprite->is_animation_started();
 }
@@ -212,7 +215,7 @@ bool HeroSprites::is_sword_visible() const {
  * \return true if the stars of the sword are currently displayed on the screen
  */
 bool HeroSprites::is_sword_stars_visible() const {
-  return equipment.has_ability("sword")
+  return equipment.has_ability(ABILITY_SWORD)
       && sword_stars_sprite != NULL
       && sword_stars_sprite->is_animation_started();
 }
@@ -222,7 +225,7 @@ bool HeroSprites::is_sword_stars_visible() const {
  * \return true if the shield is currently displayed on the screen
  */
 bool HeroSprites::is_shield_visible() const {
-  return equipment.has_ability("shield")
+  return equipment.has_ability(ABILITY_SHIELD)
       && shield_sprite != NULL
       && shield_sprite->is_animation_started();
 }
@@ -270,7 +273,7 @@ void HeroSprites::stop_displaying_sword_stars() {
  */
 void HeroSprites::stop_displaying_shield() {
 
-  if (equipment.has_ability("shield")) {
+  if (equipment.has_ability(ABILITY_SHIELD)) {
     shield_sprite->stop_animation();
   }
 }
@@ -288,10 +291,10 @@ void HeroSprites::stop_displaying_trail() {
 void HeroSprites::blink() {
   tunic_sprite->set_blinking(50);
 
-  if (equipment.has_ability("shield")) {
+  if (equipment.has_ability(ABILITY_SHIELD)) {
     shield_sprite->set_blinking(50);
   }
-  if (equipment.has_ability("sword")) {
+  if (equipment.has_ability(ABILITY_SWORD)) {
     sword_sprite->set_blinking(50);
   }
   trail_sprite->set_blinking(50);
@@ -306,10 +309,10 @@ void HeroSprites::stop_blinking() {
 
   tunic_sprite->set_blinking(0);
 
-  if (equipment.has_ability("shield")) {
+  if (equipment.has_ability(ABILITY_SHIELD)) {
     shield_sprite->set_blinking(0);
   }
-  if (equipment.has_ability("sword")) {
+  if (equipment.has_ability(ABILITY_SWORD)) {
     sword_sprite->set_blinking(0);
   }
   trail_sprite->set_blinking(0);
@@ -418,7 +421,7 @@ int HeroSprites::get_animation_direction(
 void HeroSprites::set_animation_direction(int direction) {
 
   Debug::check_assertion(direction >= 0 && direction < 4,
-    StringConcat() << "Invalid direction for set_animation_direction: " << direction);
+    "Invalid direction for set_animation_direction");
 
   tunic_sprite->set_current_direction(direction);
 
@@ -590,12 +593,12 @@ void HeroSprites::set_suspended(bool suspended) {
 
   tunic_sprite->set_suspended(suspended);
 
-  if (equipment.has_ability("sword") && sword_sprite != NULL) {
+  if (equipment.has_ability(ABILITY_SWORD) && sword_sprite != NULL) {
     sword_sprite->set_suspended(suspended);
     sword_stars_sprite->set_suspended(suspended);
   }
 
-  if (equipment.has_ability("shield") && shield_sprite != NULL) {
+  if (equipment.has_ability(ABILITY_SHIELD) && shield_sprite != NULL) {
     shield_sprite->set_suspended(suspended);
   }
 
@@ -620,9 +623,18 @@ void HeroSprites::set_suspended(bool suspended) {
  */
 void HeroSprites::notify_map_started() {
 
-  // some sprites may be tileset dependent
+  // Some sprites may be tileset dependent.
+  notify_tileset_changed();
+}
+
+/**
+ * \brief Notifies the hero's sprites that the tileset has just changed.
+ */
+void HeroSprites::notify_tileset_changed() {
+
+  // Some sprites may be tileset dependent.
   if (lifted_item != NULL) {
-    lifted_item->notify_map_started();
+    lifted_item->notify_tileset_changed();
   }
 
   if (is_ground_visible()) {
@@ -714,7 +726,7 @@ void HeroSprites::set_animation_stopped_normal() {
 
   set_animation_stopped_common();
 
-  if (equipment.has_ability("shield")) {
+  if (equipment.has_ability(ABILITY_SHIELD)) {
 
     tunic_sprite->set_current_animation("stopped_with_shield");
     shield_sprite->set_current_animation("stopped");
@@ -742,7 +754,7 @@ void HeroSprites::set_animation_stopped_sword_loading() {
   sword_stars_sprite->set_current_animation("loading");
   sword_stars_sprite->set_current_direction(direction);
 
-  if (equipment.has_ability("shield")) {
+  if (equipment.has_ability(ABILITY_SHIELD)) {
 
     shield_sprite->set_current_animation("sword_loading_stopped");
     shield_sprite->set_current_direction(direction);
@@ -802,7 +814,7 @@ void HeroSprites::set_animation_walking_normal() {
 
   set_animation_walking_common();
 
-  if (equipment.has_ability("shield")) {
+  if (equipment.has_ability(ABILITY_SHIELD)) {
 
     tunic_sprite->set_current_animation("walking_with_shield");
 
@@ -826,14 +838,14 @@ void HeroSprites::set_animation_walking_sword_loading() {
   int direction = get_animation_direction();
 
   tunic_sprite->set_current_animation("sword_loading_walking");
-  if (equipment.has_ability("sword")) {
+  if (equipment.has_ability(ABILITY_SWORD)) {
     sword_sprite->set_current_animation("sword_loading_walking");
     sword_sprite->set_current_direction(direction);
     sword_stars_sprite->set_current_animation("loading");
     sword_stars_sprite->set_current_direction(direction);
   }
 
-  if (equipment.has_ability("shield")) {
+  if (equipment.has_ability(ABILITY_SHIELD)) {
     shield_sprite->set_current_animation("sword_loading_walking");
     shield_sprite->set_current_direction(direction);
   }
@@ -913,7 +925,7 @@ void HeroSprites::set_animation_sword() {
   sword_sprite->restart_animation();
   sword_stars_sprite->stop_animation();
 
-  if (equipment.has_ability("shield")) {
+  if (equipment.has_ability(ABILITY_SHIELD)) {
 
     if (direction % 2 != 0) {
       shield_sprite->set_current_animation("sword");
@@ -949,7 +961,7 @@ void HeroSprites::set_animation_sword_tapping() {
   sword_sprite->restart_animation();
   sword_stars_sprite->stop_animation();
 
-  if (equipment.has_ability("shield")) {
+  if (equipment.has_ability(ABILITY_SHIELD)) {
 
     shield_sprite->set_current_animation("sword_tapping");
     shield_sprite->set_current_direction(direction);
@@ -1029,7 +1041,7 @@ void HeroSprites::set_animation_jumping() {
 
   tunic_sprite->set_current_animation("jumping");
 
-  if (equipment.has_ability("shield")) {
+  if (equipment.has_ability(ABILITY_SHIELD)) {
     shield_sprite->set_current_animation("stopped");
     shield_sprite->set_current_direction(get_animation_direction());
   }
@@ -1124,7 +1136,7 @@ void HeroSprites::set_animation(const std::string& tunic_animation,
   tunic_sprite->set_current_animation(tunic_animation);
 
   if (shield_animation.size() > 0
-      && equipment.has_ability("shield")) {
+      && equipment.has_ability(ABILITY_SHIELD)) {
     shield_sprite->set_current_animation(shield_animation);
   }
   else {
@@ -1191,5 +1203,7 @@ void HeroSprites::play_ground_sound() {
  */
 void HeroSprites::set_lifted_item(CarriedItem *lifted_item) {
   this->lifted_item = lifted_item;
+}
+
 }
 

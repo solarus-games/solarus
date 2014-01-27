@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Equipment.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -69,7 +71,7 @@ void Hero::PlungingState::update() {
     int drown = 0;
     if (hero.get_ground_below() == GROUND_DEEP_WATER) {
 
-      if (get_equipment().has_ability("swim")) {
+      if (get_equipment().has_ability(ABILITY_SWIM)) {
         hero.set_state(new SwimmingState(hero));
       }
       else {
@@ -104,5 +106,7 @@ bool Hero::PlungingState::can_start_gameover_sequence() const {
  */
 bool Hero::PlungingState::is_touching_ground() const {
   return false;
+}
+
 }
 

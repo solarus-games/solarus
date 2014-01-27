@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 #include "entities/Tileset.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
+
+namespace solarus {
 
 /**
  * \brief Interval in millisecond between two frames of an animation.
@@ -139,7 +141,9 @@ void AnimatedTilePattern::draw(Surface& dst_surface,
  *
  * \return true to if this tile pattern is always drawn at its coordinates
  */
-bool AnimatedTilePattern::is_drawn_at_its_position() {
+bool AnimatedTilePattern::is_drawn_at_its_position() const {
   return !parallax;
+}
+
 }
 

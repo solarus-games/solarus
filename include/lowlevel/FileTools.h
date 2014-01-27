@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include <vector>
 
 struct lua_State;
+
+namespace solarus {
 
 /**
  * \brief Handles access to data files.
@@ -49,7 +51,7 @@ class FileTools {
     };
 
     // Initialization.
-    static void initialize(int argc, char** argv);
+    static void initialize(const CommandLine& args);
     static void quit();
 
     // Reading data files of the quest.
@@ -68,6 +70,11 @@ class FileTools {
     static void data_file_close_buffer(char* buffer);
     static bool data_file_delete(const std::string& file_name);
     static bool data_file_mkdir(const std::string& dir_name);
+    static std::vector<std::string> data_files_enumerate(
+        const std::string& dir_path,
+        bool list_files = true,
+        bool list_directories = true
+    );
 
     static void read(std::istream& is, int& value);
     static void read(std::istream& is, uint32_t& value);
@@ -79,17 +86,10 @@ class FileTools {
     static const std::string& get_quest_write_dir();
     static void set_quest_write_dir(const std::string& quest_write_dir);
     static const std::string get_full_quest_write_dir();
- 
+
     // Temporary files.
     static std::string create_temporary_file(const char* buffer, size_t size);
     static bool remove_temporary_files();
-
-    // Languages.
-    // TODO move to a new class Language in lowlevel
-    static bool has_language(const std::string& language_code);
-    static void set_language(const std::string& language_code);
-    static const std::string& get_language();
-    static const std::string& get_language_name(const std::string& language_code);
 
   private:
 
@@ -101,10 +101,11 @@ class FileTools {
     static std::string solarus_write_dir;                /**< Directory where the engine can write files, relative to the user's home. */
     static std::string quest_write_dir;                  /**< Write directory of the current quest, relative to solarus_write_dir. */
 
-    static std::string language_code;                    /**< Code of the current language (e.g. "en", "fr", etc.). */
-
     static std::vector<std::string> temporary_files;     /**< Name of all temporary files created. */
+
 };
+
+}
 
 #endif
 

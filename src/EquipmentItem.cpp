@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@
 #include "lua/LuaContext.h"
 #include "entities/Pickable.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
-#include <map>
+
+namespace solarus {
 
 /**
  * \brief Creates the description of an item.
@@ -366,11 +366,11 @@ void EquipmentItem::notify_using() {
 
 /**
  * \brief Notifies this item that a built-in ability was used.
- * \param ability_name Name of an ability.
+ * \param ability An ability.
  */
-void EquipmentItem::notify_ability_used(const std::string& ability_name) {
+void EquipmentItem::notify_ability_used(Ability ability) {
 
-  get_lua_context().item_on_ability_used(*this, ability_name);
+  get_lua_context().item_on_ability_used(*this, ability);
 }
 
 /**
@@ -384,15 +384,6 @@ void EquipmentItem::notify_pickable_appeared(Pickable& pickable) {
 }
 
 /**
- * \brief Notifies the script that a pickable instance of this item has moved.
- * \param pickable The pickable treasure.
- */
-void EquipmentItem::notify_movement_changed(Pickable& pickable) {
-
-  get_lua_context().item_on_pickable_movement_changed(*this, pickable, *pickable.get_movement());
-}
-
-/**
  * \brief Returns the possession state of this item.
  *
  * The item must be saved.
@@ -401,8 +392,8 @@ void EquipmentItem::notify_movement_changed(Pickable& pickable) {
  */
 int EquipmentItem::get_variant() const {
 
-  Debug::check_assertion(is_saved(), StringConcat()
-      << "The item '" << get_name() << "' is not saved");
+  Debug::check_assertion(is_saved(),
+      std::string("The item '") + get_name() + "' is not saved");
 
   return get_savegame().get_integer(get_savegame_variable());
 }
@@ -416,8 +407,8 @@ int EquipmentItem::get_variant() const {
  */
 void EquipmentItem::set_variant(int variant) {
 
-  Debug::check_assertion(is_saved(), StringConcat()
-      << "The item '" << get_name() << "' is not saved");
+  Debug::check_assertion(is_saved(),
+      std::string("The item '") + get_name() + "' is not saved");
 
   // Set the possession state in the savegame.
   get_savegame().set_integer(get_savegame_variable(), variant);
@@ -440,8 +431,8 @@ void EquipmentItem::set_variant(int variant) {
  */
 int EquipmentItem::get_amount() const {
 
-  Debug::check_assertion(has_amount(), StringConcat()
-      << "The item '" << get_name() << "' has no amount");
+  Debug::check_assertion(has_amount(),
+      std::string("The item '") + get_name() + "' has no amount");
 
   return get_savegame().get_integer(get_amount_savegame_variable());
 }
@@ -452,8 +443,8 @@ int EquipmentItem::get_amount() const {
  */
 void EquipmentItem::set_amount(int amount) {
 
-  Debug::check_assertion(has_amount(), StringConcat()
-      << "The item '" << get_name() << "' has no amount");
+  Debug::check_assertion(has_amount(),
+      std::string("The item '") + get_name() + "' has no amount");
 
   amount = std::max(0, std::min(get_max_amount(), amount));
   get_savegame().set_integer(get_amount_savegame_variable(), amount);
@@ -467,8 +458,8 @@ void EquipmentItem::set_amount(int amount) {
  */
 int EquipmentItem::get_max_amount() const {
 
-  Debug::check_assertion(has_amount(), StringConcat()
-      << "The item '" << get_name() << "' has no amount");
+  Debug::check_assertion(has_amount(),
+      std::string("The item '") + get_name() + "' has no amount");
 
   return max_amount;
 }
@@ -479,8 +470,8 @@ int EquipmentItem::get_max_amount() const {
  */
 void EquipmentItem::set_max_amount(int max_amount) {
 
-  Debug::check_assertion(has_amount(), StringConcat()
-      << "The item '" << get_name() << "' has no amount");
+  Debug::check_assertion(has_amount(),
+      std::string("The item '") + get_name() + "' has no amount");
 
   this->max_amount = max_amount;
 }
@@ -492,3 +483,6 @@ void EquipmentItem::set_max_amount(int max_amount) {
 const std::string& EquipmentItem::get_lua_type_name() const {
   return LuaContext::item_module_name;
 }
+
+}
+

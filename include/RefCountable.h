@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_REF_COUNTABLE_H
 
 #include "Common.h"
+
+namespace solarus {
 
 /**
  * \brief An object with an optional reference counting system.
@@ -47,6 +49,8 @@ class RefCountable {
                                   * (0 means that it can be deleted). */
 
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_HERO_HOOKSHOT_STATE_H
 
 #include "hero/State.h"
+
+namespace solarus {
 
 /**
  * \brief The state "hookshot" of the hero.
@@ -54,6 +56,8 @@ class Hero::HookshotState: public Hero::State {
 
     Hookshot* hookshot;    /**< the hookshot thrown by the hero */
 };
+
+}
 
 #endif
 

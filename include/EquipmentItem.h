@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,11 @@
 
 #include "Common.h"
 #include "lua/ExportableToLua.h"
+#include "Ability.h"
 #include <string>
 #include <vector>
+
+namespace solarus {
 
 /**
  * \brief An item possibly possessed by the player.
@@ -74,9 +77,8 @@ class EquipmentItem: public ExportableToLua {
     void notify_amount_changed(int amount);
     void notify_variant_changed(int variant);
     void notify_using();
-    void notify_ability_used(const std::string& ability_name);
+    void notify_ability_used(Ability ability);
     void notify_pickable_appeared(Pickable& pickable);
-    void notify_movement_changed(Pickable& pickable);
 
     int get_variant() const;
     void set_variant(int variant);
@@ -108,6 +110,8 @@ class EquipmentItem: public ExportableToLua {
     std::string sound_when_brandished;   /**< sound to play when the item is brandished (or an empty string) */
     std::string shadow;                  /**< animation of the shadow sprite when the item is on the ground (or an empty string) */
 };
+
+}
 
 #endif
 

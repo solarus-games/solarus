@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include <string>
 #include <map>
 #include <set>
+
+namespace solarus {
 
 /**
  * \brief Stores the mapping between the in-game high-level commands
@@ -80,14 +82,14 @@ class GameCommands {
 
     static const std::string command_names[];
 
+    // High-level resulting commands.
+    void game_command_pressed(Command command);
+    void game_command_released(Command command);
+
   private:
 
     Savegame& get_savegame();
     const Savegame& get_savegame() const;
-
-    // High-level resulting commands.
-    void game_command_pressed(Command command);
-    void game_command_released(Command command);
 
     // Keyboard mapping.
     void keyboard_key_pressed(InputEvent::KeyboardKey keyboard_key_pressed);
@@ -139,6 +141,8 @@ class GameCommands {
         direction_names[4];              /**< English name of each arrow direction,
                                           * used to save a joypad action as a string. */
 };
+
+}
 
 #endif
 

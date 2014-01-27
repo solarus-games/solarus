@@ -20,14 +20,14 @@ A map with id \c xx is defined with two files:
   See the \ref lua_api_map "map API" page for more details about map scripts.
 
 A map is composed of the following information:
-- a size in pixels,
-- a \ref quest_tileset_data_file "tileset"
-  (the graphical skin used to draw its tiles),
-- a background music,
-- the world it belongs to (allows to define groups of maps),
-- its location relative to its world,
-- the floor it belongs to (if any),
-- all entities of the map (tiles, enemies, chests, pots, switches, etc.).
+- A size in pixels.
+- A \ref quest_tileset_data_file "tileset"
+  (the graphical skin used to draw its tiles).
+- A background music.
+- The world it belongs to (optional). Allows to groups maps together.
+- Its location relative to its world.
+- The floor it belongs to (if any),
+- All entities of the map (tiles, enemies, chests, pots, switches, etc.).
 
 All of this is stored in the map data file \c xx.dat.
 We now specify its syntax below.
@@ -55,9 +55,10 @@ double quotes.
 The following properties must be defined:
 - \c width (number): Width of the map in pixels. Must be a multiple of 8.
 - \c height (number): Height of the map in pixels. Must be a multiple of 8.
-- \c world (string): A name that identifies a group of maps this map
+- \c world (string, optional): A name that identifies a group of maps this map
   belongs to. Worlds allow to group maps together.
-  The world can be any arbitrary name. Maps that have the same world name
+  The world can be any arbitrary name.
+  Maps that have the same non-empty world name
   are considered to be part of the same environment.
   The starting location of the savegame is automatically set by the engine
   when the world changes (not when the map changes).
@@ -163,6 +164,8 @@ declared in the map data file, see the
   Stairs between two maps or to a platform of a single map.
 - \ref quest_map_data_file_syntax_separator "Separator":
   A visual separation between parts of the map.
+- \ref quest_map_data_file_syntax_custom_entity "Custom entity":
+  An entity fully customizable, with no built-in behavior.
 
 The definition of a map entity starts with \c entity_type{ and ends with
 \c }, where \c entity_type is a type of entity (see below).
@@ -180,7 +183,10 @@ The following properties exist for all types of entities:
   entity individually, for example to make a
   \ref quest_map_data_file_syntax_switch "switch" open a
   \ref quest_map_data_file_syntax_door "door". 
-  If you define a name to an entity, it must be unique in the map.
+  If you define a name to an entity, it should be unique in the map.
+  If the name is already used by another entity, a suffix (of the form
+  \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+  unique.
   All entities can have a name except
   \ref quest_map_data_file_syntax_tile "tiles": this is because tiles
   don't exist individually at runtime for performance reasons.
@@ -288,9 +294,12 @@ Additional properties:
 - \c sound (string, optional): Sound to play
   when the hero uses the
   teletransporter. No value means no sound.
-- \c transition_style (number): Style of transition to play when the hero
-  uses the teletransporter. \c 0: immediate (no transition), \c 1:
-  fade-out effect, \c 2: scrolling between maps.
+- \c transition (string, optional): Style of transition to play when
+  the hero uses the teletransporter. Must be one of:
+  - \c "immediate": No transition.
+  - \c "fade": Fade-out and fade-in effect.
+  - \c "scrolling": Scrolling between maps.
+  The default value is \c "fade".
 - \c destination_map (string): Id of the map to transport to (can be
   id of the current map).
 - \c destination_name (string, optional): Location on the destination map.
@@ -309,7 +318,7 @@ teletransporter{
   y = 600,
   width = 16,
   height = 16,
-  transition = 1,
+  transition = "fade",
   destination_map = "dungeon_1_1f",
   destination = "from_outside",
 }
@@ -360,8 +369,7 @@ Additional properties:
 - \c treasure_name (string, optional): Kind of treasure to create
   (the id of an equipment item).
   If this value is not set, or corresponds to a
-  non obtainable item, then
-  the pickable treasure won't be created.
+  non-obtainable item, then the pickable treasure won't be created.
 - \c treasure_variant (number, optional): Variant of the treasure
   (because some equipment items may have several variants).
   The default value is \c 1 (the first variant).
@@ -394,15 +402,13 @@ A destructible object can be declared in the map data file with
 <tt>destructible{ ... }</tt>.
 
 Additional properties:
-- \c subtype (string): The kind of destructible object to create:
-  \c "pot", \c "bush", \c "stone_small_white", \c "stone_small_black",
-  \c "grass" or \c "bomb_flower".
 - \c treasure_name (string, optional): Kind of
   \ref quest_map_data_file_syntax_pickable "pickable treasure" to hide in the
   destructible object (the id of an equipment item).
-  If this value is not set, or corresponds to a
-  non obtainable item, then
+  If this value is not set, then
   no treasure is placed in the destructible object.
+  If the treasure is not obtainable when the object is destroyed,
+  no pickable treasure is be created.
 - \c treasure_variant (number, optional): Variant of the treasure if any
   (because some equipment items may have several variants).
   The default value is \c 1 (the first variant).
@@ -413,15 +419,58 @@ Additional properties:
   No value means that the treasure (if any) is not saved.
   If the treasure is saved and the player already has it, then no
   treasure is put in the destructible object.
+- \c sprite (string): Name of the animation set of a
+  \ref lua_api_sprite "sprite" to create for the destructible object.
+- \c destruction_sound (string, optional): Sound to
+  \ref lua_api_audio_play_sound
+  "play" when the destructible object is cut or broken after being thrown.
+  No value means no sound.
+- \c weight (number, optional): Level of \c "lift"
+  \ref lua_api_game_get_ability "ability" required to lift the object.
+  \c 0 allows the player to lift the object unconditionally.
+  The special value \c -1 means that the object can never be lifted.
+  The default value is \c 0.
+- \c can_be_cut (boolean, optional): Whether the hero can cut the object
+  with the sword. No value means \c false.
+- \c can_explode (boolean, optional): Whether the object should explode
+  when it is cut, hit by a weapon and after a delay when the hero lifts it.
+  The default value is \c false.
+- \c can_regenerate (boolean, optional): Whether the object should
+  automatically regenerate after a delay when it is destroyed.
+  The default value is \c false.
+- \c damage_on_enemies (number, optional): Number of life points to remove
+  from an enemy that gets hit by this object after the
+  \ref lua_api_hero "hero" throws it.
+  If the value is \c 0, enemies will ignore the object.
+  The default value is \c 1.
+- \c ground (string, optional): Ground defined by this entity.
+  The ground is usually \c "wall", but you may set \c "traversable"
+  to make the object traversable, or for example \c "grass" to make it
+  traversable too but with an additional grass sprite below the hero.
+  See \ref lua_api_map_get_ground "map:get_ground()" for the list of grounds.
+  The default value is \c "wall".
 
-Example of destructible object:
+Examples of destructible objects:
 \verbatim
 destructible{
   layer = 0,
   x = 232,
   y = 165,
-  subtype = "pot",
   treasure_name = "heart",
+  sprite = "entities/white_stone",
+  destruction_sound = "stone",
+  weight = 1,
+  damage_on_enemies = 2,
+}
+
+destructible{
+  layer = 0,
+  x = 264,
+  y = 165,
+  treasure_name = "heart",
+  sprite = "entities/grass",
+  can_be_cut = true,
+  ground = "grass",
 }
 \endverbatim
 
@@ -435,9 +484,9 @@ A chest can be declared in the map data file with
 Additional properties:
 - \c treasure_name (string, optional): Kind of treasure to place in the chest
   (the name of an equipment item).
-  If this value is not set, or corresponds to a
-  non obtainable item, then
-  the chest will be empty.
+  If this value is not set, then the chest will be empty.
+  If the treasure is not obtainable when the hero opens the chest, it
+  becomes empty.
 - \c treasure_variant (number, optional): Variant of the treasure
   (because some equipment items may have several variants).
   The default value is \c 1 (the first variant).
@@ -519,7 +568,7 @@ Additional properties:
 - \c treasure_name (string): Kind of treasure to sell
   (the name of an equipment item).
   If this value or corresponds to a
-  non obtainable item, then
+  non-obtainable item, then
   the shop treasure is not created.
 - \c treasure_variant (number, optional): Variant of the treasure
   (because some equipment items may have several variants).
@@ -566,9 +615,9 @@ Additional properties:
   \ref quest_map_data_file_syntax_pickable "pickable treasure"
   to drop when the enemy is killed
   (the name of an equipment item).
-  If this value is not set, or corresponds to a
-  non obtainable item, then
-  the enemy won't drop anything.
+  If this value is not set, then the enemy won't drop anything.
+  If the treasure is not obtainable when the enemy is killed,
+  then nothing is dropped either.
 - \c treasure_variant (number, optional): Variant of the treasure
   (because some equipment items may have several variants).
   The default value is \c 1 (the first variant).
@@ -1001,6 +1050,62 @@ separator{
   height = 1280,
 }
 \endverbatim
+
+\subsubsection quest_map_data_file_syntax_custom_entity Custom entity
+
+Custom entities have no special properties or behavior.
+You can define them entirely in your scripts.
+Optionally, a custom entity may be managed by model.
+The model is the name of a Lua script that will be applied to all custom
+entities refering to it.
+This works exactly like the breed of enemies,
+except that it is optional.
+The model is useful if you have a lot of identical (or very similar)
+custom entities in your game, like for example torches.
+
+A custom entity can be declared in the map data file with
+<tt>custom_entity{ ... }</tt>.
+
+Additional properties:
+- \c direction (number): Direction of the custom entity, between \c 0 (East)
+  and \c 3 (South).
+  This direction will be applied to the entity's sprite if possible.
+- \c width (number): Width of the entity in pixels.
+- \c height (number): Height of the entity in pixels.
+- \c sprite (string, optional): Id of the animation set of a
+  \ref quest_sprite_data_file "sprite" to create for the custom entity.
+  No value means no sprite (the custom entity will then be invisible).
+- \c model (string, optional): Model of custom entity to create.
+  The model is the name of a Lua script in the \c "entities" directory of
+  your quest. It will define the behavior of your entity.
+  No value means no model: in this case, no particular script will be called
+  but you can still define the behavior of your entity in the map script.
+
+Examples of custom entities:
+\verbatim
+-- A cannon that exists only at this place of the game.
+custom_entity{
+  name = "cannon"
+  layer = 0,
+  x = 496,
+  y = 232,
+  width = 16,
+  height = 16,
+  sprite = "entities/cannon",
+}
+
+-- A minecart.
+-- Managed by a model because several minecarts may exist in the game.
+custom_entity{
+  layer = 0,
+  x = 152,
+  y = 272,
+  width = 16,
+  height = 16,
+  model = "minecart",
+}
+\endverbatim
+
 
 \remark The syntax of map data files is actually valid Lua.
   The engine and the editor internally use Lua to parse it.

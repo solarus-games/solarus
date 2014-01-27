@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,13 +16,17 @@
  */
 #include "Settings.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/VideoManager.h"
+#include "Language.h"
+#include "lowlevel/Video.h"
+#include "lowlevel/VideoMode.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Debug.h"
 #include <lua.hpp>
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Attempts to load the built-in settings from a file.
@@ -48,6 +52,9 @@ bool Settings::load(const std::string& file_name) {
   FileTools::data_file_close_buffer(buffer);
 
   if (load_result != 0 || lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::error(std::string("Cannot read settings file '")
+        + file_name + "': " + lua_tostring(l, -1)
+    );
     lua_pop(l, 1);
     lua_close(l);
     return false;
@@ -59,10 +66,20 @@ bool Settings::load(const std::string& file_name) {
   lua_getglobal(l, "video_mode");
   if (lua_isstring(l, 1)) {
     const std::string& mode_name = lua_tostring(l, 1);
-    VideoManager::VideoMode mode = VideoManager::get_video_mode_by_name(mode_name);
-    if (mode != VideoManager::NO_MODE && mode != VideoManager::get_instance()->get_video_mode()) {
-      VideoManager::get_instance()->set_video_mode(mode);
+    if (mode_name != "" && mode_name != Video::get_video_mode().get_name()) {
+      const VideoMode* video_mode = Video::get_video_mode_by_name(mode_name);
+      if (video_mode != NULL) {  // Valid video mode.
+        Video::set_video_mode(*video_mode);
+      }
     }
+  }
+  lua_pop(l, 1);
+
+  // Fullscreen.
+  lua_getglobal(l, "fullscreen");
+  if (lua_isboolean(l, 1)) {
+    bool fullscreen = lua_toboolean(l, 1);
+    Video::set_fullscreen(fullscreen);
   }
   lua_pop(l, 1);
 
@@ -86,8 +103,8 @@ bool Settings::load(const std::string& file_name) {
   lua_getglobal(l, "language");
   if (lua_isstring(l, 1)) {
     const std::string& language = lua_tostring(l, 1);
-    if (FileTools::has_language(language)) {
-      FileTools::set_language(language);
+    if (Language::has_language(language)) {
+      Language::set_language(language);
     }
   }
   lua_pop(l, 1);
@@ -98,6 +115,7 @@ bool Settings::load(const std::string& file_name) {
     bool joypad_enabled = lua_toboolean(l, 1);
     InputEvent::set_joypad_enabled(joypad_enabled);
   }
+  lua_pop(l, 1);
 
   lua_close(l);
 
@@ -116,17 +134,20 @@ bool Settings::save(const std::string& file_name) {
       "Cannot save settings: no quest write directory was specified in quest.dat");
 
   std::ostringstream oss;
-  VideoManager::VideoMode video_mode = VideoManager::get_instance()->get_video_mode();
-  oss << "video_mode = \"" << VideoManager::video_mode_names[video_mode] << "\"\n";
+  const VideoMode& video_mode = Video::get_video_mode();
+  oss << "video_mode = \"" << video_mode.get_name() << "\"\n";
+  oss << "fullscreen = " << (Video::is_fullscreen() ? "true" : "false") << "\n";
   oss << "sound_volume = " << Sound::get_volume() << "\n";
   oss << "music_volume = " << Music::get_volume() << "\n";
-  if (!FileTools::get_language().empty()) {
-    oss << "language = \"" << FileTools::get_language() << "\"\n";
+  if (!Language::get_language().empty()) {
+    oss << "language = \"" << Language::get_language() << "\"\n";
   }
   oss << "joypad_enabled = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
 
   const std::string& text = oss.str();
   FileTools::data_file_save_buffer(file_name, text.c_str(), text.size());
   return true;
+}
+
 }
 

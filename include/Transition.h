@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,9 @@
 
 #include "Common.h"
 #include <cstdlib>
+#include <string>
+
+namespace solarus {
 
 /**
  * \brief Abstract class for a transition effect between two phases.
@@ -33,17 +36,17 @@ class Transition {
      * \brief Styles of transitions.
      */
     enum Style {
-      IMMEDIATE = 0,  // no transition between the two surfaces
-      FADE      = 1,  // fade in and fade out
-      SCROLLING = 2   // scrolling between two maps
+      IMMEDIATE = 0,  /**< No transition between the two surfaces. */
+      FADE      = 1,  /**< Fade-out and fade-in effect. */
+      SCROLLING = 2   /**< Scrolling between two maps. */
     };
 
     /**
      * \brief Possible directions of a transition.
      */
     enum Direction {
-      IN  = 0,
-      OUT = 1
+      TRANSITION_OPENING  = 0,
+      TRANSITION_CLOSING = 1
     };
 
     virtual ~Transition();
@@ -89,6 +92,8 @@ class Transition {
      */
     virtual void draw(Surface& dst_surface) = 0;
 
+    static const std::string style_names[];  /**< Lua name of each style. */
+
   protected:
 
     Transition(Direction direction);
@@ -111,7 +116,10 @@ class Transition {
                                     * when the out transition was played. */
     bool suspended;               /**< Indicates that the transition is currently paused. */
     uint32_t when_suspended;      /**< Date when the transition was suspended. */
+
 };
+
+}
 
 #endif
 

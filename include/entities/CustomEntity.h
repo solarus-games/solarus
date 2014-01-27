@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A map entity fully controlled by Lua.
  *
@@ -34,17 +36,21 @@ class CustomEntity: public Detector {
     CustomEntity(
         Game& game,
         const std::string& name,
+        int direction,
         Layer layer,
         int x,
         int y,
         int width,
         int height,
+        const std::string& sprite_name,
         const std::string& model);
     ~CustomEntity();
 
     EntityType get_type() const;
 
     const std::string& get_model() const;
+
+    bool is_obstacle_for(const MapEntity& other) const;
 
     /* TODO
     bool can_be_obstacle() const;
@@ -90,9 +96,12 @@ class CustomEntity: public Detector {
     void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
     void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
-    bool is_obstacle_for(const MapEntity& other) const;
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
     bool is_low_wall_obstacle() const;
     bool is_shallow_water_obstacle() const;
     bool is_deep_water_obstacle() const;
@@ -109,7 +118,7 @@ class CustomEntity: public Detector {
     bool is_switch_obstacle(const Switch& sw) const;
     bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
     bool is_crystal_obstacle(const Crystal& crystal) const;
-    bool is_npc_obstacle(const NPC& npc) const;
+    bool is_npc_obstacle(const Npc& npc) const;
     bool is_enemy_obstacle(const Enemy& enemy) const;
     bool is_jumper_obstacle(const Jumper& jumper) const;
     bool is_destructible_obstacle(const Destructible& destructible) const;
@@ -125,13 +134,19 @@ class CustomEntity: public Detector {
     virtual void stop_movement_by_hero();
     virtual std::string get_sword_tapping_sound();
     virtual bool test_collision_custom(MapEntity& entity);
+
 */
 
   private:
 
-    const std::string& model;          /**< Model of this custom entity, or an empty string. */
+    void initialize_sprite(
+        const std::string& sprite_name, int initial_direction);
+
+    const std::string& model;          /**< Model of this custom entity or an empty string. */
 
 };
+
+}
 
 #endif
 

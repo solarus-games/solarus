@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
 #include "entities/Destructible.h"
-#include "entities/NPC.h"
+#include "entities/Npc.h"
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
@@ -30,7 +30,8 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+
+namespace solarus {
 
 /**
  * \brief Creates an arrow.
@@ -44,7 +45,18 @@ Arrow::Arrow(const Hero& hero):
   int direction = hero.get_animation_direction();
   create_sprite("entities/arrow", true);
   get_sprite().set_current_direction(direction);
-  set_bounding_box_from_sprite();
+
+  if (direction % 2 == 0) {
+    // Horizontal.
+    set_size(16, 8);
+    set_origin(8, 4);
+  }
+  else {
+    // Vertical.
+    set_size(8, 16);
+    set_origin(4, 8);
+  }
+
   set_xy(hero.get_center_point());
   set_optimization_distance(0); // Make the arrow continue outside the screen until disappear_date.
 
@@ -204,7 +216,7 @@ bool Arrow::is_crystal_obstacle(const Crystal& crystal) const {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool Arrow::is_npc_obstacle(const NPC& npc) const {
+bool Arrow::is_npc_obstacle(const Npc& npc) const {
   return npc.is_solid();
 }
 
@@ -248,8 +260,7 @@ const Rectangle Arrow::get_facing_point() const {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid direction for Arrow::get_facing_point(): "
-          << get_sprite().get_current_direction());
+      Debug::die("Invalid direction for Arrow::get_facing_point()");
   }
 
   return facing_point;
@@ -425,7 +436,7 @@ void Arrow::notify_collision_with_destructible(
 
   if (destructible.is_obstacle_for(*this) && is_flying()) {
 
-    if (destructible.can_explode()) {
+    if (destructible.get_can_explode()) {
       destructible.explode();
       remove_from_map();
     }
@@ -450,17 +461,14 @@ void Arrow::notify_collision_with_enemy(
 }
 
 /**
- * \brief Notifies this entity that it has just attacked an enemy.
- *
- * This function is called even if this attack was not successful.
- *
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc MapEntity::notify_attacked_enemy
  */
-void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Arrow::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type == EnemyReaction::PROTECTED) {
     stop();
@@ -487,5 +495,7 @@ bool Arrow::has_reached_map_border() const {
   }
 
   return get_map().test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle());
+}
+
 }
 

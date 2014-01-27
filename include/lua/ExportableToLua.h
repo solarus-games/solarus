@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "RefCountable.h"
 #include <string>
+
+namespace solarus {
 
 /**
  * \brief Interface of a C++ type that can also exist as a Lua userdata.
@@ -65,6 +67,8 @@ class ExportableToLua: public RefCountable {
                                   * this userdata indexable like a table. */
 
 };
+
+}
 
 #endif
 

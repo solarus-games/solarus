@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include "entities/Detector.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/Rectangle.h"
+
+namespace solarus {
 
 /**
  * \brief An treasure placed on the ground and that the hero can take.
@@ -51,13 +53,10 @@ class Pickable: public Detector {
     // item state
     void set_suspended(bool suspended);
     MapEntity* get_entity_followed();
-    void notify_movement_changed();
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
     void update();
     void draw_on_map();
-
-    virtual const std::string& get_lua_type_name() const;
 
   private:
 
@@ -90,6 +89,8 @@ class Pickable: public Detector {
     uint32_t disappear_date;                    /**< date when the item disappears */
     MapEntity* entity_followed;                 /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +19,12 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "entities/MapEntity.h"
 #include "entities/MapEntities.h"
 #include "Map.h"
+#include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Creates a circle movement.
@@ -108,7 +110,11 @@ int CircleMovement::get_radius() const {
  */
 void CircleMovement::set_radius(int radius) {
 
-  Debug::check_assertion(radius >= 0, StringConcat() << "Invalid radius: " << radius);
+  if (radius < 0) {
+    std::ostringstream oss;
+    oss << "Invalid radius: " << radius;
+    Debug::die(oss.str());
+  }
 
   this->wanted_radius = radius;
   if (radius_change_delay == 0) {
@@ -144,7 +150,11 @@ int CircleMovement::get_radius_speed() const {
  */
 void CircleMovement::set_radius_speed(int radius_speed) {
 
-  Debug::check_assertion(radius_speed >= 0, StringConcat() << "Invalid radius speed: " << radius_speed);
+  if (radius_speed < 0) {
+    std::ostringstream oss;
+    oss << "Invalid radius speed: " << radius_speed;
+    Debug::die(oss.str());
+  }
 
   if (radius_speed == 0) {
     this->radius_change_delay = 0;
@@ -170,7 +180,11 @@ int CircleMovement::get_angle_speed() const {
  */
 void CircleMovement::set_angle_speed(int angle_speed) {
 
-  Debug::check_assertion(angle_speed > 0, StringConcat() << "Invalid angle speed: " << angle_speed);
+  if (angle_speed <= 0) {
+    std::ostringstream oss;
+    oss << "Invalid angle speed: " << angle_speed;
+    Debug::die(oss.str());
+  }
 
   this->angle_change_delay = 1000 / angle_speed;
   this->next_angle_change_date = System::now();
@@ -192,8 +206,11 @@ double CircleMovement::get_initial_angle() const {
  */
 void CircleMovement::set_initial_angle(double initial_angle) {
 
-  Debug::check_assertion(initial_angle >= 0 && initial_angle < Geometry::TWO_PI,
-      StringConcat() << "Invalid initial angle: " << initial_angle);
+  if (initial_angle < 0 || initial_angle >= Geometry::TWO_PI) {
+    std::ostringstream oss;
+    oss << "Invalid initial angle: " << initial_angle;
+    Debug::die(oss.str());
+  }
 
   // convert to degrees (everything works in degrees in this class)
   this->initial_angle = Geometry::radians_to_degrees(initial_angle);
@@ -273,7 +290,11 @@ int CircleMovement::get_max_rotations() const {
  */
 void CircleMovement::set_max_rotations(int max_rotations) {
 
-  Debug::check_assertion(max_rotations >= 0, StringConcat() << "Invalid maximum rotations number: " << max_rotations);
+  if (max_rotations < 0) {
+    std::ostringstream oss;
+    oss << "Invalid maximum rotations number: " << max_rotations;
+    Debug::die(oss.str());
+  }
 
   this->max_rotations = max_rotations;
   this->nb_rotations = 0;
@@ -380,7 +401,7 @@ void CircleMovement::recompute_position() {
     center.add_xy(center_entity->get_xy());
   }
 
-  const Rectangle &xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
+  const Rectangle& xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
   if (get_entity() == NULL
       || !test_collision_with_obstacles(xy.get_x() - get_entity()->get_x(), xy.get_y() - get_entity()->get_y())) {
     set_xy(xy);
@@ -466,5 +487,7 @@ void CircleMovement::stop() {
  */
 const std::string& CircleMovement::get_lua_type_name() const {
   return LuaContext::movement_circle_module_name;
+}
+
 }
 

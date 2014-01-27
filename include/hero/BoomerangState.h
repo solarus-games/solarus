@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_HERO_BOOMERANG_STATE_H
 
 #include "hero/State.h"
+
+namespace solarus {
 
 /**
  * \brief The state "boomerang" of the hero.
@@ -42,7 +44,10 @@ class Hero::BoomerangState: public Hero::State {
     const std::string tunic_preparing_animation; /**< animation name of the hero's tunic
                                                   * when preparing the boomerang */
     const std::string sprite_name;               /**< animation set id that represents the boomerang */
+
 };
+
+}
 
 #endif
 

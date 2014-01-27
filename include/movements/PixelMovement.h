@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "movements/Movement.h"
 #include "lowlevel/Rectangle.h"
 #include <list>
+
+namespace solarus {
 
 /**
  * \brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
@@ -59,26 +61,29 @@ class PixelMovement: public Movement {
 
   private:
 
+    void make_next_step();
+
     // movement properties
 
-    std::list<Rectangle> trajectory;				/**< The trajectory. Each element of the
-					 			 * represents a move in pixels (only the
-					 			 * x and y fields of the Rectangle are used). */
-    std::string trajectory_string;				/**< String representation of the trajectory, like "dx1 dy1  dx2 dy2  dx3 dy3 ..." */
-    uint32_t next_move_date;					/**< Date of the next move */
-    uint32_t delay;						/**< Delay in milliseconds between two translations. */
-    bool loop;							/**< Should the trajectory return to the beginning once finished? */
+    std::list<Rectangle> trajectory;   /**< The trajectory. Each element of the
+                                        * represents a move in pixels (only the
+                                        * x and y fields of the Rectangle are used). */
+    std::string trajectory_string;     /**< String representation of the trajectory, like "dx1 dy1  dx2 dy2  dx3 dy3 ..." */
+    uint32_t next_move_date;           /**< Date of the next move */
+    uint32_t delay;                    /**< Delay in milliseconds between two translations. */
+    bool loop;                         /**< Should the trajectory return to the beginning once finished? */
 
     // current state
 
-    std::list<Rectangle>::iterator trajectory_iterator;		/**< Current element of the trajectory. */
-    int nb_steps_done;						/**< Number of steps already done in the trajectory */
-    bool finished;						/**< Indicates whether the object has reached the end of the trajectory
-								 * (only possible when loop is false). */
-
-    void make_next_step();
+    std::list<Rectangle>::iterator
+        trajectory_iterator;           /**< Current element of the trajectory. */
+    int nb_steps_done;                 /**< Number of steps already done in the trajectory */
+    bool finished;                     /**< Indicates whether the object has reached the end of the trajectory
+                                        * (only possible when loop is false). */
 
 };
+
+}
 
 #endif
 

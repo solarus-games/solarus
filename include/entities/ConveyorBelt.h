@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A special terrain where the hero is moved towards a specific direction.
  *
@@ -37,7 +39,10 @@ class ConveyorBelt: public Detector {
 
     bool is_obstacle_for(const MapEntity& other) const;
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+
 };
+
+}
 
 #endif
 

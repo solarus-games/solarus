@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +21,17 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Music.h"
 #include "entities/Layer.h"
 #include "entities/Tileset.h"
+#include "entities/NonAnimatedRegions.h"
 #include "entities/MapEntities.h"
 #include "entities/EntityType.h"
 #include "entities/MapEntity.h"
+#include "lua/LuaTools.h"
 #include "lua/LuaContext.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a map loader.
@@ -63,8 +66,9 @@ void MapLoader::load_map(Game& game, Map& map) {
   FileTools::data_file_close_buffer(buffer);
 
   if (load_result != 0) {
-    Debug::die(StringConcat() << "Failed to load map data file '"
-        << file_name << "': " << lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load map data file '")
+        + file_name + "': " + lua_tostring(l, -1)
+    );
     lua_pop(l, 1);
   }
 
@@ -80,8 +84,9 @@ void MapLoader::load_map(Game& game, Map& map) {
 
   // Execute the Lua code.
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(StringConcat() << "Failed to load map data file '"
-        << file_name << "': " << lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load map data file '")
+        + file_name + "': " + lua_tostring(l, -1)
+    );
     lua_pop(l, 1);
   }
 
@@ -108,14 +113,14 @@ int MapLoader::l_properties(lua_State* l) {
   // Retrieve the map properties from the table parameter.
   luaL_checktype(l, 1, LUA_TTABLE);
 
-  int x = LuaContext::opt_int_field(l, 1, "x", 0);
-  int y = LuaContext::opt_int_field(l, 1, "y", 0);
-  int width = LuaContext::check_int_field(l, 1, "width");
-  int height = LuaContext::check_int_field(l, 1, "height");
-  const std::string& world_name = LuaContext::check_string_field(l, 1 , "world");
-  int floor = LuaContext::opt_int_field(l, 1, "floor", Map::NO_FLOOR);
-  const std::string& tileset_id = LuaContext::check_string_field(l, 1, "tileset");
-  const std::string& music_id = LuaContext::opt_string_field(l, 1, "music", Music::none);
+  int x = LuaTools::opt_int_field(l, 1, "x", 0);
+  int y = LuaTools::opt_int_field(l, 1, "y", 0);
+  int width = LuaTools::check_int_field(l, 1, "width");
+  int height = LuaTools::check_int_field(l, 1, "height");
+  const std::string& world_name = LuaTools::opt_string_field(l, 1 , "world", "");
+  int floor = LuaTools::opt_int_field(l, 1, "floor", Map::NO_FLOOR);
+  const std::string& tileset_id = LuaTools::check_string_field(l, 1, "tileset");
+  const std::string& music_id = LuaTools::opt_string_field(l, 1, "music", Music::none);
 
   // Initialize the map data.
   // TODO implement methods in Map instead to check the values instead of changing directly the fields.
@@ -135,15 +140,14 @@ int MapLoader::l_properties(lua_State* l) {
   entities.map_width8 = map->width8;
   entities.map_height8 = map->height8;
   entities.tiles_grid_size = map->width8 * map->height8;
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < LAYER_NB; ++layer) {
 
-    entities.animated_tiles[layer] = new bool[entities.tiles_grid_size];
-    entities.tiles_ground[layer] = new Ground[entities.tiles_grid_size];
     Ground initial_ground = (layer == LAYER_LOW) ? GROUND_TRAVERSABLE : GROUND_EMPTY;
-    for (int i = 0; i < entities.tiles_grid_size; i++) {
-      entities.animated_tiles[layer][i] = false;
-      entities.tiles_ground[layer][i] = initial_ground;
+    for (int i = 0; i < entities.tiles_grid_size; ++i) {
+      entities.tiles_ground[layer].push_back(initial_ground);
     }
+
+    entities.non_animated_regions[layer] = new NonAnimatedRegions(*map, Layer(layer));
   }
   entities.boomerang = NULL;
   map->camera = new Camera(*map);
@@ -171,7 +175,7 @@ int MapLoader::l_properties(lua_State* l) {
     { "door",             LuaContext::map_api_create_door },
     { "stairs",           LuaContext::map_api_create_stairs },
     { "separator",        LuaContext::map_api_create_separator },
-    { "custom",           LuaContext::map_api_create_custom_entity },
+    { "custom_entity",    LuaContext::map_api_create_custom_entity },
     { NULL, NULL }
   };
   const luaL_Reg* function = functions;
@@ -181,5 +185,7 @@ int MapLoader::l_properties(lua_State* l) {
   }
 
   return 0;
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 #include "entities/Crystal.h"
 #include "entities/Hero.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "movements/PathMovement.h"
@@ -31,6 +30,8 @@
 #include "entities/Hero.h"
 #include "entities/Stairs.h"
 #include "Map.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a hookshot.
@@ -222,8 +223,7 @@ const Rectangle Hookshot::get_facing_point() const {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid direction for Hookshot::get_facing_point(): "
-          << get_sprite().get_current_direction());
+      Debug::die("Invalid direction for Hookshot::get_facing_point()");
   }
 
   return facing_point;
@@ -374,17 +374,14 @@ void Hookshot::notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, S
 }
 
 /**
- * \brief Notifies this entity that it has just attacked an enemy.
- *
- * This function is called even if this attack was not successful.
- *
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc MapEntity::notify_attacked_enemy
  */
-void Hookshot::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hookshot::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && !is_going_back()) {
     go_back();
@@ -411,7 +408,7 @@ void Hookshot::notify_collision_with_destructible(Destructible& destructible, Co
 
   if (destructible.is_obstacle_for(*this) && is_flying()) {
 
-    if (destructible.can_explode()) {
+    if (destructible.get_can_explode()) {
       destructible.explode();
       go_back();
     }
@@ -464,3 +461,6 @@ void Hookshot::notify_collision_with_crystal(Crystal& crystal, CollisionMode col
     }
   }
 }
+
+}
+

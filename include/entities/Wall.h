@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "entities/MapEntity.h"
 #include <map>
 
+namespace solarus {
+
 /**
  * \brief An invisible obstacle that stops other types of entities.
  *
@@ -29,13 +31,6 @@
  * a specific place.
  */
 class Wall: public MapEntity {
-
-  private:
-
-    std::map<EntityType, bool> entity_types_stopped;
-
-    bool enabled;              /**< indicates that the obstacle is enabled (default: yes) */
-    bool waiting_enabled;      /**< indicates that the obstacle is waiting to be enabled */
 
   public:
 
@@ -46,7 +41,17 @@ class Wall: public MapEntity {
     EntityType get_type() const;
     bool can_be_drawn() const;
     bool is_obstacle_for(const MapEntity& other) const;
+
+  private:
+
+    std::map<EntityType, bool> entity_types_stopped;
+
+    bool enabled;              /**< indicates that the obstacle is enabled (default: yes) */
+    bool waiting_enabled;      /**< indicates that the obstacle is waiting to be enabled */
+
 };
+
+}
 
 #endif
 

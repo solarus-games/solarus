@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,11 @@
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a new conveyor belt.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the entity to create on the map
  * \param x x coordinate of the entity to create
  * \param y y coordinate of the entity to create
@@ -71,5 +73,7 @@ void ConveyorBelt::notify_collision(MapEntity& entity_overlapping, CollisionMode
 
   const Rectangle& xy_move = direction_to_xy_move(get_direction());
   entity_overlapping.notify_collision_with_conveyor_belt(*this, xy_move.get_x(), xy_move.get_y());
+}
+
 }
 

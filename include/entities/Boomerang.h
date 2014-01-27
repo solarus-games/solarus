@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 
+namespace solarus {
+
 /**
  * \brief A boomerang thrown on the map.
  *
@@ -27,18 +29,6 @@
  * throw a boomerang.
  */
 class Boomerang: public MapEntity {
-
-  private:
-
-    Hero& hero;                     /**< the hero */
-
-    uint32_t next_sound_date;       /**< date when the boomerang sound is played next time */
-
-    bool has_to_go_back;            /**< true if the boomerang is about to go back */
-    bool going_back;                /**< indicates that the boomerang is going back towards the hero */
-
-    Rectangle initial_coords;       /**< coordinates of the boomerang's initial position */
-    int speed;                      /**< speed of the movement in pixels per second */
 
   public:
 
@@ -63,7 +53,7 @@ class Boomerang: public MapEntity {
     bool is_switch_obstacle(const Switch& sw) const;
     bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
     bool is_crystal_obstacle(const Crystal& crystal) const;
-    bool is_npc_obstacle(const NPC& npc) const;
+    bool is_npc_obstacle(const Npc& npc) const;
     bool is_jumper_obstacle(const Jumper& jumper) const;
 
     // state
@@ -79,8 +69,28 @@ class Boomerang: public MapEntity {
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy& enemy);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
+
+  private:
+
+    Hero& hero;                     /**< the hero */
+
+    uint32_t next_sound_date;       /**< date when the boomerang sound is played next time */
+
+    bool has_to_go_back;            /**< true if the boomerang is about to go back */
+    bool going_back;                /**< indicates that the boomerang is going back towards the hero */
+
+    Rectangle initial_coords;       /**< coordinates of the boomerang's initial position */
+    int speed;                      /**< speed of the movement in pixels per second */
+
 };
+
+}
 
 #endif
 

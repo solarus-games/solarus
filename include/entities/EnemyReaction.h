@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include <string>
 #include <map>
+
+namespace solarus {
 
 /**
  * \brief Describes how an enemy reacts when it receives an attack.
@@ -50,15 +52,6 @@ class EnemyReaction {
       int life_lost;     /**< number of life points lost (possibly zero) */
     };
 
-    static const std::string reaction_names[]; /**< Lua name of each reaction type */
-
-  private:
-
-    Reaction general_reaction;                 /**< reaction to make unless sprite-specific override */
-    std::map<const Sprite*, Reaction> sprite_reactions;  /**< sprite-specific reaction (overrides the default one) */
-
-  public:
-
     EnemyReaction();
     ~EnemyReaction();
 
@@ -69,7 +62,17 @@ class EnemyReaction {
 
     static const std::string& get_reaction_name(ReactionType reaction);
     static ReactionType get_reaction_by_name(const std::string& name);
+
+    static const std::string reaction_names[]; /**< Lua name of each reaction type */
+
+  private:
+
+    Reaction general_reaction;                 /**< reaction to make unless sprite-specific override */
+    std::map<const Sprite*, Reaction> sprite_reactions;  /**< sprite-specific reaction (overrides the default one) */
+
 };
+
+}
 
 #endif
 

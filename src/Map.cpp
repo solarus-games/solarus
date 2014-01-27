@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
 #include "entities/Ground.h"
@@ -33,21 +33,26 @@
 #include "entities/Detector.h"
 #include "entities/Hero.h"
 
+namespace solarus {
+
 MapLoader Map::map_loader;
 
 /**
  * \brief Creates a map.
- * \param id id of the map, used to determine the description file
- * and the script file of the map
+ * \param id Id of the map, used to determine the data file and
+ * and the script file of the map. The data file must exist.
  */
 Map::Map(const std::string& id):
   game(NULL),
   id(id),
+  width8(0),
+  height8(0),
   tileset(NULL),
   floor(NO_FLOOR),
   camera(NULL),
   visible_surface(NULL),
   background_surface(NULL),
+  foreground_surface(NULL),
   loaded(false),
   started(false),
   destination_name(""),
@@ -110,7 +115,7 @@ void Map::set_tileset(const std::string& tileset_id) {
   tileset->set_images(tileset_id);
   get_entities().notify_tileset_changed();
   this->tileset_id = tileset_id;
-  rebuild_background_surface();
+  build_background_surface();
 }
 
 /**
@@ -121,10 +126,20 @@ const std::string& Map::get_music_id() const {
   return music_id;
 }
 
+/**
+ * \brief Returns whether this map is in a world.
+ *
+ * This function returns \c true if the world is not an empty string.
+ *
+ * \return \c true if there is a world.
+ */
+bool Map::has_world() const {
+  return !get_world().empty();
+}
 
 /**
  * \brief Returns the world where this map is.
- * \return The world name.
+ * \return The world name or an empty string.
  */
 const std::string& Map::get_world() const {
   return world;
@@ -132,7 +147,7 @@ const std::string& Map::get_world() const {
 
 /**
  * \brief Returns the world where this map is.
- * \param world The world name.
+ * \param world The world name or an empty string.
  */
 void Map::set_world(const std::string& world) {
   this->world = world;
@@ -141,7 +156,7 @@ void Map::set_world(const std::string& world) {
 /**
  * \brief Returns whether this map has a floor.
  *
- * This function returns true if the floor is not nil.
+ * This function returns true if the floor is not NO_FLOOR.
  *
  * \return true if there is a floor.
  */
@@ -176,6 +191,14 @@ void Map::set_floor(int floor) {
  */
 const Rectangle& Map::get_location() const {
   return location;
+}
+
+/**
+ * \brief Returns the size of this map.
+ * \return The size of this map in pixels. The x and y values are 0.
+ */
+Rectangle Map::get_size() const {
+  return Rectangle(0, 0, location.get_width(), location.get_height());
 }
 
 /**
@@ -240,6 +263,8 @@ void Map::unload() {
     visible_surface = NULL;
     RefCountable::unref(background_surface);
     background_surface = NULL;
+    RefCountable::unref(foreground_surface);
+    foreground_surface = NULL;
     delete entities;
     entities = NULL;
     delete camera;
@@ -259,19 +284,24 @@ void Map::unload() {
 void Map::load(Game& game) {
 
   visible_surface = Surface::create(
-      VideoManager::get_instance()->get_quest_size()
+      Video::get_quest_size()
   );
   RefCountable::ref(visible_surface);
+  visible_surface->set_software_destination(false);
+
   background_surface = Surface::create(
-      VideoManager::get_instance()->get_quest_size()
+      Video::get_quest_size()
   );
   RefCountable::ref(background_surface);
+  background_surface->set_software_destination(false);
+
   entities = new MapEntities(game, *this);
 
   // read the map file
   map_loader.load_map(game, *this);
 
-  rebuild_background_surface();
+  build_background_surface();
+  build_foreground_surface();
 
   loaded = true;
 }
@@ -347,8 +377,14 @@ const std::string& Map::get_destination_name() const {
  * \brief Returns the destination point specified by the last call to
  * set_destination().
  *
- * Returns NULL if the destination point was set to a special value
- * ("_same", "_side0", "_side1", "_side2" or "_side3").
+ * If the destination point was set to a special value
+ * ("_same", "_side0", "_side1", "_side2" or "_side3"), returns NULL.
+ *
+ * If the destination name is empty, returns the default destination if any,
+ * or NULL.
+ *
+ * Otherwise, if there is no destination entity with this name on the map,
+ * prints an error message and returns the default destination if any or NULL.
  *
  * \return The destination point previously set, or NULL.
  */
@@ -362,23 +398,29 @@ Destination* Map::get_destination() {
   Debug::check_assertion(is_loaded(), "This map is not loaded");
 
   Destination* destination = NULL;
-  std::string destination_name = this->destination_name;
   if (!destination_name.empty()) {
     // Use the destination whose name was specified.
-    MapEntity* entity = get_entities().get_entity(destination_name);
+    MapEntity* entity = get_entities().find_entity(destination_name);
 
-    if (entity->get_type() != ENTITY_DESTINATION) {
-      Debug::die(std::string("Map '") + get_id() + "': entity '"
-          + destination_name + "' is not a destination");
+    if (entity == NULL || entity->get_type() != ENTITY_DESTINATION) {
+      Debug::error(
+          std::string("Map '") + get_id() + "': No such destination: '"
+          + destination_name + "'"
+      );
+      // Perhaps the game was saved with a destination that no longer exists
+      // or whose name was changed during the development of the quest.
+      // This is not a fatal error: we will use the default destination
+      // instead. It is up to quest makers to avoid this situation once their
+      // quest is released.
     }
-    destination = static_cast<Destination*>(entity);
+    else {
+      destination = static_cast<Destination*>(entity);
+    }
   }
-  else {
-    // No destination name was set: use the default one.
+
+  if (destination == NULL) {
+    // No valid destination name was set: use the default one if any.
     destination = get_entities().get_default_destination();
-    if (destination == NULL) {
-      Debug::die(std::string("Map '") + get_id() + "' has no destination entity");
-    }
   }
 
   return destination;
@@ -540,9 +582,10 @@ void Map::draw() {
  * \brief Builds or rebuilds the surface corresponding to the background of
  * the tileset.
  */
-void Map::rebuild_background_surface() {
+void Map::build_background_surface() {
 
   if (tileset != NULL) {
+    background_surface->clear();
     background_surface->fill_with_color(tileset->get_background_color());
   }
 }
@@ -556,31 +599,54 @@ void Map::draw_background() {
 }
 
 /**
- * \brief Draws the foreground of the map.
+ * \brief Builds a surface with black bars when the map is smaller than the
+ * quest size.
  */
-void Map::draw_foreground() {
+void Map::build_foreground_surface() {
+
+  RefCountable::unref(foreground_surface);
 
   const int screen_width = visible_surface->get_width();
   const int screen_height = visible_surface->get_height();
 
   // If the map is too small for the screen, add black bars outside the map.
-  // TODO make the same optimization as for the background (avoid fill_with_color)
   const int map_width = get_width();
+  const int map_height = get_height();
+
+  if (map_width >= screen_width
+      && map_height >= screen_height) {
+    // Nothing to do.
+    return;
+  }
+
+  foreground_surface = Surface::create(visible_surface->get_size());
+  RefCountable::ref(foreground_surface);
+  // Keep this surface as software destination because it is built only once.
+
   if (map_width < screen_width) {
     int bar_width = (screen_width - map_width) / 2;
     Rectangle dst_position(0, 0, bar_width, screen_height);
-    visible_surface->fill_with_color(Color::get_black(), dst_position);
+    foreground_surface->fill_with_color(Color::get_black(), dst_position);
     dst_position.set_x(bar_width + map_width);
-    visible_surface->fill_with_color(Color::get_black(), dst_position);
+    foreground_surface->fill_with_color(Color::get_black(), dst_position);
   }
 
-  const int map_height = get_height();
   if (map_height < screen_height) {
     int bar_height = (screen_height - map_height) / 2;
     Rectangle dst_position(0, 0, screen_width, bar_height);
-    visible_surface->fill_with_color(Color::get_black(), dst_position);
+    foreground_surface->fill_with_color(Color::get_black(), dst_position);
     dst_position.set_y(bar_height + map_height);
-    visible_surface->fill_with_color(Color::get_black(), dst_position);
+    foreground_surface->fill_with_color(Color::get_black(), dst_position);
+  }
+}
+
+/**
+ * \brief Draws the foreground of the map.
+ */
+void Map::draw_foreground() {
+
+  if (foreground_surface != NULL) {
+    foreground_surface->draw(*visible_surface);
   }
 }
 
@@ -1111,5 +1177,7 @@ void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
  */
 const std::string& Map::get_lua_type_name() const {
   return LuaContext::map_module_name;
+}
+
 }
 

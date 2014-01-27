@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  */
 #include "MainLoop.h"
 #include "lowlevel/System.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Music.h"
@@ -30,20 +30,21 @@
 #include "StringResource.h"
 #include "QuestResourceList.h"
 
+namespace solarus {
+
 /**
  * \brief Initializes the game engine.
- * \param argc number of arguments of the command line
- * \param argv command-line arguments
+ * \param args Command-line arguments.
  */
-MainLoop::MainLoop(int argc, char** argv):
+MainLoop::MainLoop(const CommandLine& args):
   root_surface(NULL),
   lua_context(NULL),
   exiting(false),
   game(NULL),
   next_game(NULL) {
 
-  // Initialize low-level features (audio, video, files...).
-  System::initialize(argc, argv);
+  // Initialize basic features (input, audio, video, files...).
+  System::initialize(args);
 
   // Read the quest general properties.
   QuestProperties quest_properties(*this);
@@ -51,18 +52,22 @@ MainLoop::MainLoop(int argc, char** argv):
 
   // Read the quest resource list from data.
   QuestResourceList::initialize();
-    
-  // Load the lua quest stuff now that the window is created.
+
+  // Create the quest surface.
   root_surface = Surface::create(
-      VideoManager::get_instance()->get_quest_size()
+      Video::get_quest_size()
   );
+  root_surface->set_software_destination(false);  // Accelerate this surface.
   RefCountable::ref(root_surface);
+
+  // Run the Lua world.
+  // Do this after the creation of the window, but before showing the window,
+  // because Lua might change the video mode initially.
   lua_context = new LuaContext(*this);
   lua_context->initialize();
-    
-  // Create the window now that we know the final outset size.
-  // If there were surfaces created before this, they are stored in RAM until the next render().
-  VideoManager::get_instance()->create_window();
+
+  // Finally show the window.
+  Video::show_window();
 }
 
 /**
@@ -76,8 +81,11 @@ MainLoop::~MainLoop() {
     game = NULL;
   }
 
-  delete lua_context;
+  // Destroying the root surface may indirectly trigger Lua operations,
+  // so the Lua context must still exist at this point.
   RefCountable::unref(root_surface);
+
+  delete lua_context;
   QuestResourceList::quit();
   System::quit();
 }
@@ -159,33 +167,37 @@ void MainLoop::run() {
 
   // Main loop.
   uint32_t last_frame_date = System::get_real_time();
-  uint32_t lag = 0;  // Lose time of the simulation.
+  uint32_t lag = 0;  // Lose time of the simulation to catch up.
+  uint32_t time_dropped = 0;  // Time that won't be catched up.
 
   // The main loop basically repeats
   // check_input(), update(), draw() and sleep().
   // Each call to update() makes the simulated time advance one fixed step.
   while (!is_exiting()) {
 
-    // Measure the time of the last iteration without the check_input() phase.
-    // Some check_input() calls are much slower than other, for example when
-    // they involve loading a map. However, these long check_input() calls do
-    // not mean that the system is slow and that we should skip drawings,
-    // unlike long updates and long drawings.
-    // That is is why to compute the lag, we ignore the time spent in
-    // check_input().
-    uint32_t current_frame_date = System::get_real_time();
-    uint32_t last_frame_duration = current_frame_date - last_frame_date;
+    // Measure the time of the last iteration.
+    uint32_t now = System::get_real_time() - time_dropped;
+    uint32_t last_frame_duration = now - last_frame_date;
+    last_frame_date = now;
+    lag += last_frame_duration;
+    // At this point, lag represents how much late the simulated time with
+    // compared to the real time.
+ 
+    if (lag >= 200) {
+      // Huge lag: don't try to catch up.
+      // Maybe we have just made a one-time heavy operation like loading a
+      // big file, or the process was just unsuspended.
+      // Let's fake the real time instead.
+      time_dropped += lag - System::timestep;
+      lag = System::timestep;
+      last_frame_date = System::get_real_time() - time_dropped;
+    }
 
     // 1. Detect and handle input events.
     check_input();
 
-    last_frame_date = System::get_real_time();
-    lag += last_frame_duration;
-    // At this point, lag represents how much late the simulated time with
-    // compared to the real time.
-
     // 2. Update the world once, or several times (skipping some draws)
-    // if the system is slow.
+    // to catch up if the system is slow.
     int num_updates = 0;
     while (lag >= System::timestep
         && num_updates < 10  // To draw sometimes anyway on very slow systems.
@@ -196,11 +208,14 @@ void MainLoop::run() {
     }
 
     // 3. Redraw the screen.
-    draw();
+    if (num_updates > 0) {
+      draw();
+    }
 
-    // 4. Sleep if we have time, to save CPU cycles.
-    if (System::get_real_time() - last_frame_date < System::timestep) {
-      System::sleep(1);
+    // 4. Sleep if we have time, to save CPU and GPU cycles.
+    last_frame_duration = (System::get_real_time() - time_dropped) - last_frame_date;
+    if (last_frame_duration < System::timestep) {
+      System::sleep(System::timestep - last_frame_duration);
     }
   }
 }
@@ -284,10 +299,14 @@ void MainLoop::update() {
  */
 void MainLoop::draw() {
 
+  root_surface->clear();
+
   if (game != NULL) {
     game->draw(*root_surface);
   }
   lua_context->main_on_draw(*root_surface);
-  VideoManager::get_instance()->render(*root_surface);
+  Video::render(*root_surface);
+}
+
 }
 

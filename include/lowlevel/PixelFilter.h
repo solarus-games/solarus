@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_PIXEL_FILTER_H
 
 #include "Common.h"
+
+namespace solarus {
 
 /**
  * \brief Abstract class for pixel filtering algorithms.
@@ -50,7 +52,10 @@ class PixelFilter {
         int src_width,
         int src_height,
         uint32_t* dst) const = 0;
+
 };
+
+}
 
 #endif
 

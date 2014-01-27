@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,10 @@
 #include "Transition.h"
 #include "GameCommands.h"
 #include "Savegame.h"
-#include "DialogBox.h"
+#include "DialogBoxSystem.h"
 #include <lua.hpp>
+
+namespace solarus {
 
 /**
  * \brief Represents the game currently running.
@@ -62,6 +64,10 @@ class Game {
     // game controls
     void notify_command_pressed(GameCommands::Command command);
     void notify_command_released(GameCommands::Command command);
+
+    // simulate commands
+    void simulate_command_pressed(GameCommands::Command command);
+    void simulate_command_released(GameCommands::Command command);
 
     // map
     bool has_current_map() const;
@@ -106,7 +112,7 @@ class Game {
     // current game state (elements currently shown)
     bool pause_allowed;        /**< indicates that the player is allowed to use the pause command */
     bool paused;               /**< indicates that the game is paused */
-    DialogBox dialog_box;      /**< The dialog box manager. */
+    DialogBoxSystem dialog_box;    /**< The dialog box manager. */
     bool showing_game_over;    /**< Whether a game-over sequence is currently active. */
     bool started;              /**< true if this game is running, false if it is not yet started or being closed. */
     bool restarting;           /**< true if the game will be restarted */
@@ -135,6 +141,8 @@ class Game {
     void notify_map_changed();
 
 };
+
+}
 
 #endif
 

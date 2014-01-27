@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "entities/TilePattern.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief Animated tile pattern.
  *
@@ -39,6 +41,16 @@ class AnimatedTilePattern: public TilePattern {
       ANIMATION_SEQUENCE_0121 = 2
     };
 
+    AnimatedTilePattern(Ground ground, AnimationSequence sequence,
+        int width, int height, int x1, int y1, int x2, int y2, int x3, int y3,
+        bool parallax);
+    ~AnimatedTilePattern();
+
+    static void update();
+    void draw(Surface& dst_surface, const Rectangle& dst_position,
+        Tileset& tileset, const Rectangle& viewport);
+    virtual bool is_drawn_at_its_position() const;
+
   private:
 
     // static variables to handle the animations of all tiles
@@ -53,18 +65,9 @@ class AnimatedTilePattern: public TilePattern {
                                        * The 3 frames should have the same width and height. */
     bool parallax;                    /**< Indicates that the tile pattern also makes parallax scrolling */
 
-  public:
-
-    AnimatedTilePattern(Ground ground, AnimationSequence sequence,
-        int width, int height, int x1, int y1, int x2, int y2, int x3, int y3,
-        bool parallax);
-    ~AnimatedTilePattern();
-
-    static void update();
-    void draw(Surface& dst_surface, const Rectangle& dst_position,
-        Tileset& tileset, const Rectangle& viewport);
-    virtual bool is_drawn_at_its_position();
 };
+
+}
 
 #endif
 

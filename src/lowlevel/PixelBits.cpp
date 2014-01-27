@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include <SDL.h>
 #include <iostream> // print functions
 
+namespace solarus {
+
 /**
  * \brief Creates a pixel bits object.
  * \param surface The surface where the image is.
@@ -32,9 +34,9 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position) {
   // Create a list of boolean values representing the transparency of each pixel.
   // This list is implemented as bit fields.
 
-  Debug::check_assertion(surface.internal_surface != NULL, 
+  Debug::check_assertion(surface.internal_surface != NULL,
     "Attempt to read a surface that doesn't have pixel buffer in RAM.");
-  
+
   width = image_position.get_width();
   height = image_position.get_height();
 
@@ -111,8 +113,8 @@ bool PixelBits::test_collision(
 
   if (debug_pixel_collisions) {
     std::cout << System::now() << "\n bounding box collision\n";
-    std::cout << "rect1 = " << location1 << "\n";
-    std::cout << "rect2 = " << location2 << "\n";
+    std::cout << "rect1 = " << bounding_box1 << "\n";
+    std::cout << "rect2 = " << bounding_box2 << "\n";
     print();
     other.print();
   }
@@ -227,7 +229,7 @@ bool PixelBits::test_collision(
       }
     }
   }
- 
+
   return false;
 }
 
@@ -269,5 +271,7 @@ void PixelBits::print_mask(uint32_t mask) const {
     std::cout << (((mask & 0x80000000) != 0x00000000) ? "X" : ".");
     mask <<= 1;
   }
+}
+
 }
 

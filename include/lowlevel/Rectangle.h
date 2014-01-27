@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include <SDL.h>
 #include <iostream>
 
+namespace solarus {
+
 /**
  * \brief Represents a rectangle.
  *
@@ -34,7 +36,7 @@ class Rectangle {
 
   // low-level classes allowed to manipulate directly the internal SDL rectangle encapsulated
   friend class Surface;
-  friend class VideoManager;
+  friend class Video;
 
   public:
 
@@ -79,6 +81,7 @@ class Rectangle {
     const SDL_Rect* get_internal_rect() const;
 
     SDL_Rect rect;      /**< the SDL_Rect encapsulated */
+
 };
 
 std::ostream& operator <<(std::ostream& stream, const Rectangle& rectangle);
@@ -131,12 +134,17 @@ inline int Rectangle::get_y() const {
 }
 
 /**
- * \brief Returns the center point of this rectangle
- * \return the center point (represented as a zero-sized rectangle)
+ * \brief Returns the center point of this rectangle.
+ * \return The center point, represented as a rectangle of size 1x1.
  */
 inline Rectangle Rectangle::get_center() const {
 
-  return Rectangle(get_x() + get_width() / 2, get_y() + get_height() / 2);
+  return Rectangle(
+      get_x() + get_width() / 2,
+      get_y() + get_height() / 2,
+      1,
+      1
+  );
 }
 
 /**
@@ -357,7 +365,7 @@ inline bool Rectangle::overlaps(const Rectangle& other) const {
 
   bool overlap_y = (y3 < y2 && y1 < y4);
 
-  return overlap_x && overlap_y;
+  return overlap_x && overlap_y && !is_flat() && !other.is_flat();
 }
 
 /**
@@ -394,6 +402,8 @@ inline std::ostream & operator <<(std::ostream& stream, const Rectangle& rectang
   stream << "(" << rectangle.get_x() << "," << rectangle.get_y() << ") x ("
     << rectangle.get_width() << "," << rectangle.get_height() << ")";
   return stream;
+}
+
 }
 
 #endif

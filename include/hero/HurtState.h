@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +19,12 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Hurt" of the hero.
  */
 class Hero::HurtState: public Hero::State {
-
-  private:
-
-    const Rectangle source_xy; /**< coordinates of whatever is hurting the hero (usually an enemy) */
-    int life_points;           /**< number of life points to remove (this number may be reduced by the tunic) */
-    int magic_points;          /**< number of magic points to remove */
-    uint32_t end_hurt_date;    /**< date when the state ends */
 
   public:
 
@@ -53,7 +48,16 @@ class Hero::HurtState: public Hero::State {
     bool can_avoid_switch() const;
     bool can_avoid_ice() const;
 
+  private:
+
+    const Rectangle source_xy; /**< coordinates of whatever is hurting the hero (usually an enemy) */
+    int life_points;           /**< number of life points to remove (this number may be reduced by the tunic) */
+    int magic_points;          /**< number of magic points to remove */
+    uint32_t end_hurt_date;    /**< date when the state ends */
+
 };
+
+}
 
 #endif
 

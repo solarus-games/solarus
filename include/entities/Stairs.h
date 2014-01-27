@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+
+namespace solarus {
 
 /**
  * \brief Some stairs that trigger a special animation on the hero.
@@ -99,6 +101,8 @@ class Stairs: public Detector {
                                  * (if not, they have no effect and are not obstacle) */
 
 };
+
+}
 
 #endif
 

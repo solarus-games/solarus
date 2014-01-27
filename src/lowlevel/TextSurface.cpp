@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,12 @@
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
-#include "lowlevel/VideoManager.h"
-#include "lua/LuaContext.h"
+#include "lowlevel/Video.h"
+#include "lua/LuaTools.h"
 #include "Transition.h"
 #include <lua.hpp>
+
+namespace solarus {
 
 bool TextSurface::fonts_loaded = false;
 std::map<std::string, TextSurface::FontData> TextSurface::fonts;
@@ -57,15 +58,17 @@ void TextSurface::load_fonts() {
   FileTools::data_file_close_buffer(buffer);
 
   if (load_result != 0) {
-    Debug::die(StringConcat() << "Failed to load the fonts file '"
-        << file_name << "': " << lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load the fonts file '")
+        + file_name + "': " + lua_tostring(l, -1)
+    );
     lua_pop(l, 1);
   }
   else {
     lua_register(l, "font", l_font);
     if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::die(StringConcat() << "Failed to load the fonts file '"
-          << file_name << "': " << lua_tostring(l, -1));
+      Debug::die(std::string("Failed to load the fonts file '")
+          + file_name + "': " + lua_tostring(l, -1)
+      );
       lua_pop(l, 1);
     }
   }
@@ -113,10 +116,10 @@ int TextSurface::l_font(lua_State* l) {
 
   luaL_checktype(l, 1, LUA_TTABLE);
 
-  const std::string& font_id = LuaContext::check_string_field(l, 1, "id");
-  const std::string& file_name = LuaContext::check_string_field(l, 1, "file");
-  int font_size = LuaContext::opt_int_field(l, 1, "size", 11);
-  bool is_default = LuaContext::opt_boolean_field(l, 1, "default", false);
+  const std::string& font_id = LuaTools::check_string_field(l, 1, "id");
+  const std::string& file_name = LuaTools::check_string_field(l, 1, "file");
+  int font_size = LuaTools::opt_int_field(l, 1, "size", 11);
+  bool is_default = LuaTools::opt_boolean_field(l, 1, "default", false);
 
   fonts[font_id].file_name = file_name;
   fonts[font_id].font_size = font_size;
@@ -145,7 +148,9 @@ int TextSurface::l_font(lua_State* l) {
     fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, int(size));
     fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
     Debug::check_assertion(fonts[font_id].internal_font != NULL,
-        StringConcat() << "Cannot load font from file '" << file_name << "': " << TTF_GetError());
+        std::string("Cannot load font from file '") + file_name
+        + "': " + TTF_GetError()
+    );
   }
 
   return 0;
@@ -492,8 +497,9 @@ void TextSurface::rebuild() {
     return;
   }
 
-  Debug::check_assertion(has_font(font_id), StringConcat() <<
-      "No such font: '" << font_id << "'");
+  Debug::check_assertion(has_font(font_id),
+      std::string("No such font: '") + font_id + "'"
+  );
 
   if (fonts[font_id].bitmap) {
     rebuild_bitmap();
@@ -608,8 +614,10 @@ void TextSurface::rebuild_ttf() {
     break;
   }
 
-  Debug::check_assertion(internal_surface != NULL, StringConcat()
-      << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
+  Debug::check_assertion(internal_surface != NULL,
+      std::string("Cannot create the text surface for string '") + text + "': "
+      + SDL_GetError()
+  );
 
   surface = new Surface(internal_surface);
   RefCountable::ref(surface);
@@ -676,5 +684,7 @@ Surface& TextSurface::get_transition_surface() {
  */
 const std::string& TextSurface::get_lua_type_name() const {
   return LuaContext::text_surface_module_name;
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "movements/Movement.h"
+
+namespace solarus {
 
 /**
  * \brief Movement of an entity attached to another entity.
@@ -57,6 +59,8 @@ class FollowMovement: public Movement {
     bool finished;                     /**< indicates that the movement is stopped because of obstacles */
 
 };
+
+}
 
 #endif
 

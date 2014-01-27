@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/System.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
@@ -29,6 +31,7 @@
 Hero::PlayerMovementState::PlayerMovementState(
     Hero& hero, const std::string& state_name):
   State(hero, state_name),
+  player_movement(NULL),
   current_jumper(NULL),
   jumper_start_date(0) {
 }
@@ -37,44 +40,49 @@ Hero::PlayerMovementState::PlayerMovementState(
  * \brief Destructor.
  */
 Hero::PlayerMovementState::~PlayerMovementState() {
+
+  RefCountable::unref(player_movement);
 }
 
 /**
- * \brief Returns the movement of the hero controlled by the player.
+ * \brief Returns the movement created by this state.
  *
- * This function should be called only when the movement of the hero is
- * an instance of PlayerMovement.
+ * This movement is applied to the hero until the end of this state or until
+ * someone sets another movement.
  *
- * \return The movement.
+ * \return The player movement.
  */
 PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
-  return static_cast<PlayerMovement*>(get_hero().get_movement());
+  return player_movement;
 }
 
 /**
  * \brief Returns the movement of the hero controlled by the player.
  *
- * This function should be called only when the movement of the hero is
- * an instance of PlayerMovement.
+ * This movement is applied to the hero until the end of this state or until
+ * someone sets another movement.
  *
- * \return The movement.
+ * \return The player movement.
  */
 const PlayerMovement* Hero::PlayerMovementState::get_player_movement() const {
-  return static_cast<const PlayerMovement*>(get_hero().get_movement());
+  return player_movement;
 }
 
 /**
  * \brief Starts this state.
  *
- * This function is called automatically when this state becomes the active state of the hero.
+ * This function is called automatically when this state becomes the active
+ * state of the hero.
  *
- * \param previous_state the previous state
+ * \param previous_state The previous state (for information).
  */
 void Hero::PlayerMovementState::start(const State* previous_state) {
 
   State::start(previous_state);
 
-  get_hero().set_movement(new PlayerMovement(get_hero().get_walking_speed()));
+  player_movement = new PlayerMovement(get_hero().get_walking_speed());
+  RefCountable::ref(player_movement);
+  get_hero().set_movement(player_movement);
 
   if (is_current_state()) { // yes, the state may have already changed
     get_player_movement()->compute_movement();
@@ -96,7 +104,7 @@ void Hero::PlayerMovementState::start(const State* previous_state) {
  * You should here close everything the start() function has opened.
  * The destructor will be called at the next cycle.
  *
- * \param next_state the next state (for information)
+ * \param next_state The next state (for information).
  */
 void Hero::PlayerMovementState::stop(const State* next_state) {
 
@@ -105,6 +113,8 @@ void Hero::PlayerMovementState::stop(const State* next_state) {
   get_hero().clear_movement();
   get_sprites().set_animation_stopped_normal();
   cancel_jumper();
+  RefCountable::unref(player_movement);
+  player_movement = NULL;
 }
 
 /**
@@ -186,7 +196,9 @@ void Hero::PlayerMovementState::set_animation_walking() {
  * \return true if the player can control his movements
  */
 bool Hero::PlayerMovementState::can_control_movement() const {
-  return true;
+
+  // The player has control, unless a script has set another movement.
+  return get_hero().get_movement() == get_player_movement();
 }
 
 /**
@@ -312,5 +324,7 @@ void Hero::PlayerMovementState::cancel_jumper() {
     current_jumper = NULL;
     jumper_start_date = 0;
   }
+}
+
 }
 

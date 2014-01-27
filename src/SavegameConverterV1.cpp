@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,10 @@
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <cstring>
+#include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Creates an old savegame converter with a specified existing file name.
@@ -29,16 +31,20 @@
  */
 SavegameConverterV1::SavegameConverterV1(const std::string& file_name) {
 
-  Debug::check_assertion(FileTools::data_file_exists(file_name), StringConcat() <<
-      "Cannot convert savegame '" << file_name << "' since it does not exist");
+  Debug::check_assertion(FileTools::data_file_exists(file_name),
+      std::string("Cannot convert savegame '") + file_name
+      + "': file does not exist"
+  );
 
   // Let's load this obsolete savegame.
   size_t size;
   char *buffer;
 
   FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  Debug::check_assertion(size == sizeof(SavedData), StringConcat()
-      << "Cannot read savegame file version 1 '" << file_name << "': invalid file size");
+  Debug::check_assertion(size == sizeof(SavedData),
+      std::string("Cannot read savegame file version 1 '")
+      + file_name + "': invalid file size"
+  );
   memcpy(&saved_data, buffer, sizeof(SavedData));
   FileTools::data_file_close_buffer(buffer);
 }
@@ -136,7 +142,7 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
   savegame_v2.set_string(Savegame::KEY_JOYPAD_UP, get_string(JOYPAD_UP_KEY));
   savegame_v2.set_string(Savegame::KEY_JOYPAD_LEFT, get_string(JOYPAD_LEFT_KEY));
   savegame_v2.set_string(Savegame::KEY_JOYPAD_DOWN, get_string(JOYPAD_DOWN_KEY));
-  savegame_v2.set_integer(Savegame::KEY_ABILITY_TUNIC, get_integer(ABILITY_TUNIC));
+  savegame_v2.set_integer(Savegame::KEY_ABILITY_RESISTANCE, get_integer(ABILITY_TUNIC));
   savegame_v2.set_integer(Savegame::KEY_ABILITY_SWORD, get_integer(ABILITY_SWORD));
   savegame_v2.set_integer(Savegame::KEY_ABILITY_SHIELD, get_integer(ABILITY_SHIELD));
   savegame_v2.set_integer(Savegame::KEY_ABILITY_LIFT, get_integer(ABILITY_LIFT));
@@ -223,5 +229,7 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
       savegame_v2.set_boolean(oss.str(), value);
     }
   }
+}
+
 }
 

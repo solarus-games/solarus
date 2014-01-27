@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include <vector>
 #include <map>
 #include <string>
+
+namespace solarus {
 
 /**
  * \brief This class reads the quest resource list from file project_db.dat
@@ -55,13 +57,17 @@ class QuestResourceList {
     static void initialize();
     static void quit();
 
+    static bool exists(ResourceType resource_type, const std::string& id);
     static const std::vector<Element>& get_elements(ResourceType resource_type);
 
   private:
 
     QuestResourceList();
     ~QuestResourceList();
+
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,11 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 
+namespace solarus {
+
 /**
  * \brief Creates some fire.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the fire entity to create
  * \param xy coordinates of the fire
  */
@@ -88,5 +90,7 @@ void Fire::update() {
 void Fire::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
 
   other_entity.notify_collision_with_fire(*this, other_sprite);
+}
+
 }
 

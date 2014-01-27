@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "entities/MapEntities.h"
 #include "entities/Arrow.h"
 #include "lowlevel/Sound.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -58,5 +60,7 @@ void Hero::BowState::update() {
     get_entities().add_entity(new Arrow(hero));
     hero.set_state(new FreeState(hero));
   }
+}
+
 }
 

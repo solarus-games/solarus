@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,12 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "sword swinging" of the hero.
  */
 class Hero::SwordSwingingState: public Hero::State {
-
-  private:
-
-    bool attacked;               /* indicates that at least one enemy was attacked */
-    bool sword_finished;         /* indicates that the sword animation is finished */
 
   public:
 
@@ -40,13 +37,26 @@ class Hero::SwordSwingingState: public Hero::State {
     bool can_start_sword() const;
     bool can_be_hurt(Enemy* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
+    bool can_use_shield() const;
     bool can_sword_hit_crystal() const;
     bool is_cutting_with_sword(Detector& detector) const;
     bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
     void notify_obstacle_reached();
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
+
+  private:
+
+    bool attacked;               /**< indicates that at least one enemy was attacked */
+    bool sword_finished;         /**< indicates that the sword animation is finished */
+
 };
+
+}
 
 #endif
 

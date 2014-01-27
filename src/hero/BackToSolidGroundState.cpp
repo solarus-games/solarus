@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "Map.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -230,5 +232,7 @@ bool Hero::BackToSolidGroundState::can_avoid_switch() const {
  */
 bool Hero::BackToSolidGroundState::can_avoid_explosion() const {
   return true;
+}
+
 }
 

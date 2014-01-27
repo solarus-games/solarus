@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
  */
 #ifndef SOLARUS_GROUND_H
 #define SOLARUS_GROUND_H
+
+namespace solarus {
 
 /**
  * \brief The possible kinds of grounds on a map.
@@ -54,6 +56,8 @@ enum Ground {
   GROUND_PRICKLE,                 /**< Some untraversable prickles that hurt the hero. */
   GROUND_LAVA,                    /**< Some lava where the hero drowns and gets hurt. */
 };
+
+}
 
 #endif
 

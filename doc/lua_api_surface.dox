@@ -44,28 +44,26 @@ Returns the size of this surface.
 - Return value 1 (number): Width of the surface in pixels.
 - Return value 2 (number): Height of the surface in pixels.
 
+\subsection lua_api_surface_clear surface:clear()
+
+Erases all pixels of this surface.
+
+All pixels become transparent.
+The opacity property and the size of the surface are preserved.
+
 \subsection lua_api_surface_fill_color surface:fill_color(color, [x, y, width, height])
 
 Fills a region of this surface with a color.
 
 If no region is specified, the entire surface is filled.
-- \c color (table): The color as an array of 3 RGB values (\c 0 to \c 255).
+If the color has an alpha component different from 255 (opaque), then the
+color is blended onto the existing pixels.
+- \c color (table): The color as an array of 3 RGB values or 4 RGBA values
+  (\c 0 to \c 255).
 - \c x (number, optional): X coordinate of the region to fill on this surface.
 - \c y (number, optional): Y coordinate of the region to fill on this surface.
 - \c width (number, optional): Width of the region to fill on this surface.
 - \c height (number, optional): Height of the region to fill on this surface.
-
-\subsection lua_api_surface_get_transparency_color surface:get_transparency_color()
-
-Returns the transparency color to this surface. Pixels in that color are not
-displayed when this surface is drawn.
-- Return value (table): The color as an array of 3 RGB values (\c 0 to \c 255).
-
-\subsection lua_api_surface_set_transparency_color surface:set_transparency_color(color)
-
-Sets a transparency color to this surface. Pixels in that color won't be
-displayed.
-- \c color (table): The color as an array of 3 RGB values (\c 0 to \c 255).
 
 \subsection lua_api_surface_set_opacity surface:set_opacity(opacity)
 

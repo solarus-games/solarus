@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "movements/StraightMovement.h"
 #include "lowlevel/Rectangle.h"
+
+namespace solarus {
 
 /**
  * \brief A movement that makes successive steps of random directions
@@ -47,15 +49,16 @@ class RandomMovement: public StraightMovement {
 
   private:
 
-    int normal_speed;                                   /**< speed of this movement */
+    void set_next_direction();
+
     int max_radius;                                     /**< if the object goes further than this distance in x or y, it will come back
                                                          * (this is not a hard limit, there is no guarantee) */
     Rectangle bounds;                                   /**< a rectangle the object should not escape from */
     uint32_t next_direction_change_date;                /**< date of the next direction change */
 
-    void set_next_direction();
-
 };
+
+}
 
 #endif
 

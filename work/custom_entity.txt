@@ -1,10 +1,24 @@
-Notes about the future custom entity API.
+Notes about the work in progress on custom entities.
+
+Done:
+- Document the map data file format.
+- Support custom entities in the quest editor.
+- Document map:create_custom_entity().
+- Implement map:create_custom_entity().
+- Load custom entities from map data files.
+- Implement basic properties in the engine: size, sprite, direction.
+
+To be done:
+- Load model scripts.
+- Document the custom_entity Lua type.
+- Implement the Lua API of the custom_entity Lua type.
 
 Properties:
 
 model
 sprite
 direction
+size
 
 Methods:
 
@@ -61,7 +75,7 @@ is/set_sword_ignored()
 get/set_sword_tapping_sound()
 
 set_entity_type_traversable(entity_type, traversable)
-  Describes if a type of entities can be traversed by the current entity.
+  Describes if a type of entities can be traversed by this custom entity.
   The traversable parameter may be:
   - a boolean (fast): whether that entity type is traversable or not.
   - nil (fast): default.
@@ -72,6 +86,8 @@ is_entity_traversable(entity_type)
 
 set_ground_traversable(ground, traversable)
 is_ground_traversable(ground)
+
+How to specify what entities can traverse this custom entity?
 
 set_collision_mode(mode, ...)
   With modes being strings or functions that take an entity and return a boolean.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "KeysEffect.h"
+
+namespace solarus {
 
 /**
  * \brief Lua name of each value of the ActionKeyEffect enum.
@@ -56,10 +58,13 @@ const std::string KeysEffect::pause_key_effect_names[] = {
  */
 KeysEffect::KeysEffect():
   action_key_effect(ACTION_KEY_NONE),
+  action_key_effect_saved(ACTION_KEY_NONE),
   action_key_enabled(true),
   sword_key_effect(SWORD_KEY_NONE),
+  sword_key_effect_saved(SWORD_KEY_NONE),
   sword_key_enabled(true),
   pause_key_effect(PAUSE_KEY_PAUSE),
+  pause_key_effect_saved(PAUSE_KEY_PAUSE),
   pause_key_enabled(true),
   item_keys_enabled(true) {
 
@@ -351,5 +356,7 @@ void KeysEffect::set_all_keys_enabled(bool enable) {
   set_sword_key_enabled(enable);
   set_pause_key_enabled(enable);
   set_item_keys_enabled(enable);
+}
+
 }
 

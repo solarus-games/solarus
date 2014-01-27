@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,20 +21,12 @@
 #include "entities/MapEntity.h"
 #include "Sprite.h"
 
+namespace solarus {
+
 /**
  * \brief The hookshot thrown by the hero.
  */
 class Hookshot: public MapEntity {
-
-  private:
-
-    uint32_t next_sound_date;    /**< date when the hookshot sound is be played next time */
-
-    bool has_to_go_back;         /**< true if the hookshot is about to go back */
-    bool going_back;             /**< indicates that the hookshot is going back towards the hero */
-    MapEntity* entity_reached;   /**< the entity the hookshot is attached to (or NULL) */
-
-    Sprite link_sprite;          /**< sprite of the links */
 
   public:
 
@@ -69,14 +61,31 @@ class Hookshot: public MapEntity {
     // collisions
     void notify_obstacle_reached();
     void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
     void notify_collision_with_chest(Chest& chest);
     void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
     void notify_collision_with_block(Block& block);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
 
+  private:
+
+    uint32_t next_sound_date;    /**< date when the hookshot sound is be played next time */
+
+    bool has_to_go_back;         /**< true if the hookshot is about to go back */
+    bool going_back;             /**< indicates that the hookshot is going back towards the hero */
+    MapEntity* entity_reached;   /**< the entity the hookshot is attached to (or NULL) */
+
+    Sprite link_sprite;          /**< sprite of the links */
+
 };
+
+}
 
 #endif
 

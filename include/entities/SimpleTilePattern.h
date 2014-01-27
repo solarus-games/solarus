@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "entities/TilePattern.h"
 #include "lowlevel/Rectangle.h"
 
+namespace solarus {
+
 /**
  * \brief Non-animated tile pattern.
  *
@@ -28,10 +30,6 @@
  * a single image.
  */
 class SimpleTilePattern: public TilePattern {
-
-  protected:
-
-    Rectangle position_in_tileset; /**< position of the tile pattern in the tileset image */
 
   public:
 
@@ -41,8 +39,15 @@ class SimpleTilePattern: public TilePattern {
     virtual void draw(Surface& dst_surface, const Rectangle& dst_position,
         Tileset& tileset, const Rectangle& viewport);
 
-    virtual bool is_animated();
+    virtual bool is_animated() const;
+
+  protected:
+
+    Rectangle position_in_tileset; /**< position of the tile pattern in the tileset image */
+
 };
+
+}
 
 #endif
 

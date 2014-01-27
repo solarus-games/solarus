@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include "entities/EnemyAttack.h"
 #include "entities/EnemyReaction.h"
 #include "entities/Explosion.h"
+
+namespace solarus {
 
 /**
  * \brief Represents an enemy.
@@ -148,7 +150,9 @@ class Enemy: public Detector {
     // obstacles
     bool is_obstacle_for(const MapEntity& other) const;
     bool is_destructible_obstacle(const Destructible& destructible) const;
+    bool is_block_obstacle(const Block& block) const;
     bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
+    bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
     bool is_low_wall_obstacle() const;
     bool is_deep_water_obstacle() const;
     bool is_shallow_water_obstacle() const;
@@ -182,12 +186,10 @@ class Enemy: public Detector {
     bool is_killed() const;
     bool is_dying_animation_finished() const;
     void try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite);
-    void hurt(MapEntity& source);
+    void hurt(MapEntity& source, Sprite* this_sprite);
     void kill();
     bool is_dying() const;
     void set_treasure(const Treasure& treasure);
-
-    virtual const std::string& get_lua_type_name() const;
 
   private:
 
@@ -261,6 +263,8 @@ class Enemy: public Detector {
     uint32_t next_explosion_date;      /**< date of the next explosion */
 
 };
+
+}
 
 #endif
 

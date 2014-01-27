@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,11 @@
 #include "entities/MapEntities.h"
 #include "entities/Door.h"
 #include "entities/Hero.h"
+#include "entities/Explosion.h"
 #include "entities/DynamicTile.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
@@ -34,6 +34,8 @@
 #include "Map.h"
 #include <list>
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Lua name of each value of the OpeningMethod enum.
@@ -520,7 +522,7 @@ void Door::update() {
 
   if (is_closed()
       && get_opening_method() == OPENING_BY_EXPLOSION
-      && get_equipment().has_ability("detect_weak_walls")
+      && get_equipment().has_ability(ABILITY_DETECT_WEAK_WALLS)
       && Geometry::get_distance(get_center_point(), get_hero().get_center_point()) < 40
       && !is_suspended()
       && System::now() >= next_hint_sound_date) {
@@ -721,11 +723,5 @@ void Door::set_closing() {
   }
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Door::get_lua_type_name() const {
-  return LuaContext::entity_door_module_name;
 }
 

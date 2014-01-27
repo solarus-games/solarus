@@ -79,6 +79,18 @@ Lua will be entirely shut down and then initialized again.
 
 Exits the program after the current cycle.
 
+\subsection lua_api_main_get_elapsed_time sol.main.get_elapsed_time()
+
+Returns the simulated time elapsed since Solarus was started.
+
+This corresponds to real time, unless the system is too slow to play at
+normal speed.
+- Return value (number): The number of simulated milliseconds elapsed since
+  the beginning of the program.
+
+\remark This time is not reset when you call
+  \ref lua_api_main_reset "sol.main.reset()".
+
 \subsection lua_api_main_get_quest_write_dir sol.main.get_quest_write_dir()
 
 Returns the subdirectory where files specific to the quest are saved,
@@ -164,6 +176,124 @@ specified vector.
 - \c y2 (number): Y coordinate of the second point.
 - Return value (number): The angle in radians between the x axis and this
   vector.
+
+\subsection lua_api_main_get_metatable sol.main.get_metatable(type_name)
+
+Returns the metatable of a Solarus userdata type.
+
+This function is very powerful and should be used with care.
+
+All userdata objects of a type share the same metatable.
+So there is a metatable for maps, a metatable for games, a metatables for
+enemies, etc.
+
+The metatable of a type stores what is common
+to all instances of this type. For example, the metatable of the \c "enemy"
+type has a field \c "get_life" that is the Solarus function
+\ref lua_api_enemy_get_life "enemy:get_life()" shared by all enemies.
+
+Note that you can already get the metatable of any object
+with the standard Lua function \c getmetatable(object).
+This function does the same thing, except that you don't have to provide an
+existing object: you just provide a type name.
+This allows you do manipulate the metatable of a type before objects of this
+type start to exist, typically to set up things before a game is started.
+
+You can use the metatable to add a function to all instances of a type.
+Thus, you can extend the Solarus API with your own functions.
+This also work for events (functions that the engine automatically calls
+when they exist).
+For example, you can easily provide a function \c add_overlay() to all your
+maps by defining it only once in the map metatable:
+
+\verbatim
+-- Somewhere in your main script, at initialization time:
+
+local map_metatable = sol.main.get_metatable("map")
+function map_metatable:add_overlay(image_file_name)
+  -- Here, self is the map.
+  self.overlay = sol.surface.create(image_file_name)
+end
+
+function map_metatable:on_draw(dst_surface)
+  if self.overlay ~= nil then
+    self.overlay:draw(dst_surface)
+  end
+end
+
+-- Now, all your maps will have a function map:add_overlay() and an event
+-- map:on_draw() that allow to draw an additional image above the map!
+\endverbatim
+
+When you define a field in a metatable, everything acts like if you defined it
+in all existing and future instances of the type.
+However, an individual instance is still able to define a field with the same
+name.
+In this case, the instance has the priority: the field from the metatable is
+overridden.
+
+Similarly, you can even remove (by assigning \c nil)
+or modify (by assigning a new value) any function of the Solarus API.
+We don't recommend to do that because introducing differences with the
+official API would be surprising for people who contribute to your game.
+- \c type_name (string): Name of a Solarus userdata Lua type. Can be one of:
+  \c "game",
+  \c "map",
+  \c "item",
+  \c "surface",
+  \c "text_surface",
+  \c "sprite",
+  \c "timer",
+  \c "movement",
+  \c "straight_movement",
+  \c "target_movement",
+  \c "random_movement",
+  \c "path_movement",
+  \c "random_path_movement",
+  \c "path_finding_movement",
+  \c "circle_movement",
+  \c "jump_movement",
+  \c "pixel_movement",
+  \c "hero",
+  \c "dynamic_tile",
+  \c "teletransporter",
+  \c "destination",
+  \c "pickable",
+  \c "destructible",
+  \c "carried_object",
+  \c "chest",
+  \c "shop_treasure",
+  \c "enemy",
+  \c "npc",
+  \c "block",
+  \c "jumper",
+  \c "switch",
+  \c "sensor",
+  \c "separator",
+  \c "wall",
+  \c "crystal",
+  \c "crystal_block",
+  \c "conveyor_belt",
+  \c "door",
+  \c "stairs",
+  \c "bomb",
+  \c "explosion",
+  \c "fire",
+  \c "arrow",
+  \c "hookshot",
+  \c "boomerang",
+  \c "custom_entity".
+- Return value (table): The metatable of this type, or \c nil if there is no
+  such Solarus type.
+
+\remark
+If you are a Lua expert, you know that metatables are a very powerful
+mechanism. They are where the magic happens.
+Solarus uses metatables to do a lot of things, like allowing you
+to access userdata as tables. Therefore, you should never touch any metamethod
+(fields whose name starts with two underscores) in the metatable of a userdata
+type, in particular \c __index, \c __newindex and \c __gc.
+This may result in unspecified behavior, but most likely crashes.
 
 \section lua_api_main_events Events of sol.main
 

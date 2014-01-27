@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include <SDL.h>
 #include <string>
 #include <map>
+
+namespace solarus {
 
 /**
  * \brief Represents a low-level event.
@@ -187,6 +189,8 @@ class InputEvent {
     static bool is_shift_down();
     static bool is_control_down();
     static bool is_alt_down();
+    static bool is_caps_lock_on();
+    static bool is_num_lock_on();
     static bool is_key_down(KeyboardKey key);
     static bool is_joypad_button_down(int button);
     static int get_joypad_axis_state(int axis);
@@ -260,7 +264,10 @@ class InputEvent {
     static bool repeat_keyboard;                  /**< True to handle repeat KEYDOWN and KEYUP events. */
 
     const SDL_Event internal_event;               /**< the internal event encapsulated */
+
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +23,11 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
-#include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include <lua.hpp>
+#include <sstream>
+
+namespace solarus {
 
 const std::string Tileset::ground_names[] = {
   "empty",
@@ -110,8 +112,8 @@ void Tileset::load() {
   FileTools::data_file_close_buffer(buffer);
 
   if (load_result != 0) {
-    Debug::die(StringConcat() << "Failed to load tileset file '"
-        << file_name << "': " << lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load tileset file '")
+        + file_name + "': " + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
 
@@ -120,8 +122,8 @@ void Tileset::load() {
   lua_register(l, "background_color", l_background_color);
   lua_register(l, "tile_pattern", l_tile_pattern);
   if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(StringConcat() << "Failed to load tileset file '"
-        << file_name << "': " << lua_tostring(l, -1));
+    Debug::die(std::string("Failed to load tileset file '")
+        + file_name + "': " + lua_tostring(l, -1));
     lua_pop(l, 1);
   }
 
@@ -196,7 +198,11 @@ Surface& Tileset::get_entities_image() {
 TilePattern& Tileset::get_tile_pattern(int id) {
 
   TilePattern* tile_pattern =  tile_patterns[id];
-  Debug::check_assertion(tile_pattern != NULL, StringConcat() << "There is not tile pattern with id '" << id << "' in this tileset'");
+  if (tile_pattern == NULL) {
+    std::ostringstream oss;
+    oss << "No such tile pattern in tileset '" << get_id() << "': " << id;
+    Debug::die(oss.str());
+  }
   return *tile_pattern;
 }
 
@@ -284,7 +290,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
       id = luaL_checkint(l, 3);
     }
     else if (key == "ground") {
-      ground = LuaContext::check_enum<Ground>(l, 3, ground_names);
+      ground = LuaTools::check_enum<Ground>(l, 3, ground_names);
     }
     else if (key == "default_layer") {
       default_layer = luaL_checkint(l, 3);
@@ -331,36 +337,36 @@ int Tileset::l_tile_pattern(lua_State* l) {
       scrolling = luaL_checkstring(l, 3);
     }
     else {
-      LuaContext::error(l, StringConcat() << "Unknown key '" << key << "'");
+      LuaTools::error(l, std::string("Unknown key '") + key + "'");
     }
     lua_pop(l, 1);
   }
 
   // Check data.
   if (id == -1) {
-    LuaContext::arg_error(l, 1, "Missing id for this tile pattern");
+    LuaTools::arg_error(l, 1, "Missing id for this tile pattern");
   }
 
   if (default_layer == -1) {
-    LuaContext::arg_error(l, 1, "Missing default layer for this tile pattern");
+    LuaTools::arg_error(l, 1, "Missing default layer for this tile pattern");
   }
 
   if (width == 0) {
-    LuaContext::arg_error(l, 1, "Missing width for this tile pattern");
+    LuaTools::arg_error(l, 1, "Missing width for this tile pattern");
   }
 
   if (height == 0) {
-    LuaContext::arg_error(l, 1, "Missing height for this tile pattern");
+    LuaTools::arg_error(l, 1, "Missing height for this tile pattern");
   }
 
   if (i != 1 && i != 3 && i != 4) {
-    LuaContext::arg_error(l, 1, "Invalid number of frames for x");
+    LuaTools::arg_error(l, 1, "Invalid number of frames for x");
   }
   if (j != 1 && j != 3 && j != 4) {
-    LuaContext::arg_error(l, 1, "Invalid number of frames for y");
+    LuaTools::arg_error(l, 1, "Invalid number of frames for y");
   }
   if (i != j) {
-    LuaContext::arg_error(l, 1, "The length of x and y must match");
+    LuaTools::arg_error(l, 1, "The length of x and y must match");
   }
 
   // Create the tile pattern.
@@ -380,7 +386,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
   else {
     // Multi-frame.
     if (scrolling == "self") {
-      LuaContext::arg_error(l, 1, "Multi-frame is not supported for self-scrolling tiles");
+      LuaTools::arg_error(l, 1, "Multi-frame is not supported for self-scrolling tiles");
     }
     bool parallax = scrolling == "parallax";
     AnimatedTilePattern::AnimationSequence sequence = (i == 3) ?
@@ -392,5 +398,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
   tileset->add_tile_pattern(id, tile_pattern);
 
   return 0;
+}
+
 }
 

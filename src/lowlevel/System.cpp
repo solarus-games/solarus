@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,8 @@
  */
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
+#include "lowlevel/Shader.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
@@ -24,48 +25,49 @@
 #include "lowlevel/InputEvent.h"
 #include "Sprite.h"
 #include <SDL.h>
-#ifdef SOLARUS_USE_APPLE_POOL 
+#ifdef SOLARUS_USE_APPLE_POOL
 #  include "lowlevel/apple/AppleInterface.h"
 #endif
+
+namespace solarus {
 
 uint32_t System::ticks = 0;
 
 /**
- * \brief Initializes the whole lowlevel system.
+ * \brief Initializes the basic lowlevel system.
  *
- * Initializes the graphics, the audio system,
+ * Initializes the audio system, the video system,
  * the data file system, etc.
  *
- * \param argc number of command line arguments
- * \param argv command line arguments
+ * \param args Command-line arguments.
  */
-void System::initialize(int argc, char** argv) {
+void System::initialize(const CommandLine& args) {
 
-#ifdef SOLARUS_USE_APPLE_POOL 
+#ifdef SOLARUS_USE_APPLE_POOL
   // initialize pool if any
   initPool();
 #endif
-  
+
   // initialize SDL
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
 
   // files
-  FileTools::initialize(argc, argv);
-
-  // video
-  VideoManager::initialize(argc, argv);
-  Color::initialize();
-  TextSurface::initialize();
-  Sprite::initialize();
+  FileTools::initialize(args);
 
   // audio
-  Sound::initialize(argc, argv);
+  Sound::initialize(args);
 
   // input
   InputEvent::initialize();
 
   // random number generator
   Random::initialize();
+
+  // video
+  Video::initialize(args);
+  Color::initialize();
+  TextSurface::initialize();
+  Sprite::initialize();
 }
 
 /**
@@ -81,11 +83,12 @@ void System::quit() {
   Sprite::quit();
   TextSurface::quit();
   Color::quit();
-  VideoManager::quit();
+  Shader::quit();
+  Video::quit();
   FileTools::quit();
 
   SDL_Quit();
-#ifdef SOLARUS_USE_APPLE_POOL 
+#ifdef SOLARUS_USE_APPLE_POOL
   drainPool();
 #endif
 }
@@ -138,5 +141,7 @@ uint32_t System::get_real_time() {
  */
 void System::sleep(uint32_t duration) {
   SDL_Delay(duration);
+}
+
 }
 

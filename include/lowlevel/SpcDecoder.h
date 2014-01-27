@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,12 @@
 #define SOLARUS_SPC_DECODER_H
 
 #include "Common.h"
-#include "snes_spc/spc.h"
+#include <cstddef>
+
+struct SNES_SPC;
+struct SPC_Filter;
+
+namespace solarus {
 
 /**
  * \brief Encapsulates the SPC music decoding.
@@ -33,20 +38,23 @@
  */
 class SpcDecoder {
 
-  private:
-
-    // Snes_SPC specific data
-    SNES_SPC *snes_spc_manager;   /**< the snes_spc object encapsulated */
-    SPC_Filter *snes_spc_filter;  /**< the snes_spc filter object */
-
   public:
 
     SpcDecoder();
     ~SpcDecoder();
 
-    void load(int16_t *sound_data, size_t sound_size);
-    void decode(int16_t *decoded_data, int nb_samples);
+    void load(int16_t* sound_data, size_t sound_size);
+    void decode(int16_t* decoded_data, int nb_samples);
+
+  private:
+
+    // Snes_SPC specific data
+    SNES_SPC* snes_spc_manager;   /**< the snes_spc object encapsulated */
+    SPC_Filter* snes_spc_filter;  /**< the snes_spc filter object */
+
 };
+
+}
 
 #endif
 

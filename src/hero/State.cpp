@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 #include "EquipmentItem.h"
 #include "Sprite.h"
 #include "KeysEffect.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a state.
@@ -935,17 +937,22 @@ void Hero::State::notify_jumper_activated(Jumper& jumper) {
 }
 
 /**
- * \brief Notifies this state that the hero has just attacked an enemy
+ * \brief Notifies this state that the hero has just attacked an enemy.
  *
  * This function is called even if this attack was not successful.
  *
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack
- * \param killed indicates that the attack has just killed the enemy
+ * \param attack The attack.
+ * \param victim The enemy just hurt.
+ * \param victim_sprite The enemy's sprite that was touched or NULL.
+ * \param result How the enemy has reacted to the attack.
+ * \param killed Whether the attack has just killed the enemy.
  */
-void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::State::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 }
 
 /**
@@ -959,7 +966,7 @@ void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
 int Hero::State::get_sword_damage_factor() const {
 
   static const int sword_factors[] = {0, 1, 2, 4, 8};
-  int sword = get_equipment().get_ability("sword");
+  int sword = get_equipment().get_ability(ABILITY_SWORD);
   return sword_factors[sword];
 }
 
@@ -1096,6 +1103,17 @@ bool Hero::State::can_pick_treasure(EquipmentItem& item) const {
 }
 
 /**
+ * \brief Returns whether attack can be stopped with a shield in this state.
+ *
+ * Returns \c true by default.
+ *
+ * \return \c true if the shield is active is this state.
+ */
+bool Hero::State::can_use_shield() const {
+  return true;
+}
+
+/**
  * \brief Returns whether the hero can use an equipment item in this state.
  *
  * Returns false by default.
@@ -1139,5 +1157,7 @@ CarriedItem* Hero::State::get_carried_item() const {
  */
 CarriedItem::Behavior Hero::State::get_previous_carried_item_behavior() const {
   return CarriedItem::BEHAVIOR_THROW;
+}
+
 }
 

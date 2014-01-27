@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,11 +27,13 @@
 
 #include <stdint.h>
 
+namespace solarus {
+
 // declaration of all classes to avoid dependencies between the header files
 
 // main classes
 class MainLoop;
-class Screen;
+class CommandLine;
 class QuestProperties;
 class QuestResourceList;
 class Settings;
@@ -43,12 +45,16 @@ class RefCountable;
 // low level
 class System;
 class FileTools;
-class VideoManager;
+class Video;
+class VideoMode;
 class Surface;
 class TextSurface;
 class Color;
+class Shader;
 class PixelFilter;
 class Scale2xFilter;
+class Hq2xFilter;
+class Hq3xFilter;
 class Hq4xFilter;
 class Sound;
 class Music;
@@ -60,7 +66,6 @@ class Rectangle;
 class PixelBits;
 class InputEvent;
 class Debug;
-class StringConcat;
 
 // game
 class Game;
@@ -79,6 +84,7 @@ class DialogResource;
 // Lua
 class ExportableToLua;
 class LuaContext;
+class LuaTools;
 
 // drawable objects
 class Sprite;
@@ -98,6 +104,7 @@ class MapEntities;
 class MapEntity;
 class Hero;
 class HeroSprites;
+class NonAnimatedRegions;
 class Tile;
 class DynamicTile;
 class Detector;
@@ -110,7 +117,7 @@ class Chest;
 class Jumper;
 class Enemy;
 class EnemyReaction;
-class NPC;
+class Npc;
 class Block;
 class Switch;
 class Wall;
@@ -154,6 +161,8 @@ class RandomMovement;
 class FollowMovement;
 class TargetMovement;
 class CircleMovement;
+
+}
 
 #endif
 

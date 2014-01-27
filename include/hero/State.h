@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
+
+namespace solarus {
 
 /**
  * \brief Abstract base class for a state of the hero.
@@ -106,8 +108,12 @@ class Hero::State {
     virtual bool can_avoid_switch() const;
 
     // enemies
-    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    virtual void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
     virtual int get_sword_damage_factor() const;
     virtual bool can_be_hurt(Enemy* attacker) const;
 
@@ -122,6 +128,7 @@ class Hero::State {
     virtual bool is_cutting_with_sword(Detector& detector) const;
     virtual bool can_start_sword() const;
     virtual bool can_pick_treasure(EquipmentItem& item) const;
+    virtual bool can_use_shield() const;
     virtual bool can_start_item(EquipmentItem& item) const;
     virtual bool can_take_stairs() const;
     virtual bool can_sword_hit_crystal() const;
@@ -164,6 +171,8 @@ class Hero::State {
     bool stopping;            /**< Indicates that this state is being stopped. */
 
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,9 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Creates a pixel movement object.
@@ -96,7 +98,8 @@ void PixelMovement::set_trajectory(const std::string& trajectory_string) {
   std::istringstream iss(trajectory_string);
   while (iss >> dx) {
     if (!(iss >> dy)) {
-      Debug::die(StringConcat() << "Invalid trajectory string '" << trajectory_string << "'");
+      Debug::die(std::string("Invalid trajectory string: '")
+          + trajectory_string + "'");
     }
     trajectory.push_back(Rectangle(dx, dy));
   }
@@ -284,3 +287,6 @@ bool PixelMovement::is_finished() const {
 const std::string& PixelMovement::get_lua_type_name() const {
   return LuaContext::movement_pixel_module_name;
 }
+
+}
+

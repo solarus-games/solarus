@@ -1,0 +1,59 @@
+/*
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
+ *
+ * Solarus is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Solarus is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "lowlevel/Hq3xFilter.h"
+#include "lowlevel/Hq4xFilter.h"
+#include "hqx/hqx.h"
+
+namespace solarus {
+
+/**
+ * \brief Constructor.
+ */
+Hq3xFilter::Hq3xFilter():
+  PixelFilter() {
+
+  // Make sure hqx is initialized.
+  Hq4xFilter::initialize_hqx();
+}
+
+/**
+ * \brief Destructor.
+ */
+Hq3xFilter::~Hq3xFilter() {
+}
+
+/**
+ * \copydoc PixelFilter::get_scaling_factor
+ */
+int Hq3xFilter::get_scaling_factor() const {
+  return 3;
+}
+
+/**
+ * \copydoc PixelFilter::filter
+ */
+void Hq3xFilter::filter(
+    const uint32_t* src,
+    int src_width,
+    int src_height,
+    uint32_t* dst) const {
+
+  hq3x_32(const_cast<uint32_t*>(src), dst, src_width, src_height);
+}
+
+}
+

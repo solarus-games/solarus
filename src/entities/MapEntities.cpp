@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,37 +25,37 @@
 #include "entities/Stairs.h"
 #include "entities/Separator.h"
 #include "entities/Destination.h"
+#include "entities/NonAnimatedRegions.h"
 #include "Map.h"
 #include "Game.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
-using std::list;
+#include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Constructor.
- * \param game the game
- * \param map the map (not loaded yet)
+ * \param game The game.
+ * \param map The map (not loaded yet).
  */
 MapEntities::MapEntities(Game& game, Map& map):
   game(game),
   map(map),
+  map_width8(0),
+  map_height8(0),
+  tiles_grid_size(0),
   hero(game.get_hero()),
   default_destination(NULL),
-  boomerang(NULL),
-  music_before_miniboss(Music::none) {
+  boomerang(NULL) {
 
-  Layer layer = hero.get_layer();
-  this->obstacle_entities[layer].push_back(&hero);
-  this->entities_drawn_y_order[layer].push_back(&hero);
+  Layer hero_layer = hero.get_layer();
+  this->obstacle_entities[hero_layer].push_back(&hero);
+  this->entities_drawn_y_order[hero_layer].push_back(&hero);
+  this->ground_observers[hero_layer].push_back(&hero);
   this->named_entities[hero.get_name()] = &hero;
-
-  // surfaces to pre-render static tiles
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-    non_animated_tiles_surfaces[layer] = NULL;
-  }
 }
 
 /**
@@ -63,29 +63,10 @@ MapEntities::MapEntities(Game& game, Map& map):
  */
 MapEntities::~MapEntities() {
 
-  destroy_all_entities();
-}
-
-/**
- * \brief Removes all entities from the map.
- *
- * This function is called by the destructor or when the map is unloaded.
- */
-void MapEntities::destroy_all_entities() {
-
   // delete tiles and clear lists sorted by layer
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      destroy_entity(tiles[layer][i]);
-    }
-
-    tiles[layer].clear();
-    delete[] tiles_ground[layer];
-    delete[] animated_tiles[layer];
-
-    RefCountable::unref(non_animated_tiles_surfaces[layer]);
-
+    delete non_animated_regions[layer];
     entities_drawn_first[layer].clear();
     entities_drawn_y_order[layer].clear();
     obstacle_entities[layer].clear();
@@ -96,7 +77,7 @@ void MapEntities::destroy_all_entities() {
 
   // delete the other entities
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     destroy_entity(*i);
   }
@@ -105,6 +86,8 @@ void MapEntities::destroy_all_entities() {
 
   detectors.clear();
   entities_to_remove.clear();
+
+  // Don't delete the hero because he continues to live on the next map.
 }
 
 /**
@@ -136,7 +119,7 @@ Hero& MapEntities::get_hero() {
  * \param layer The layer.
  * \return The obstacle entities on that layer.
  */
-const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
+const std::list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
   return obstacle_entities[layer];
 }
 
@@ -145,7 +128,7 @@ const list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
  * \param layer The layer.
  * \return The ground observers on that layer.
  */
-const list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
+const std::list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
   return ground_observers[layer];
 }
 
@@ -154,7 +137,7 @@ const list<MapEntity*>& MapEntities::get_ground_observers(Layer layer) {
  * \param layer The layer.
  * \return The ground observers on that layer.
  */
-const list<MapEntity*>& MapEntities::get_ground_modifiers(Layer layer) {
+const std::list<MapEntity*>& MapEntities::get_ground_modifiers(Layer layer) {
   return ground_modifiers[layer];
 }
 
@@ -162,7 +145,7 @@ const list<MapEntity*>& MapEntities::get_ground_modifiers(Layer layer) {
  * \brief Returns all detectors on the map.
  * \return the detectors
  */
-const list<Detector*>& MapEntities::get_detectors() {
+const std::list<Detector*>& MapEntities::get_detectors() {
   return detectors;
 }
 
@@ -180,7 +163,7 @@ Destination* MapEntities::get_default_destination() {
  * \param layer the layer
  * \return the stairs on this layer
  */
-const list<Stairs*>& MapEntities::get_stairs(Layer layer) {
+const std::list<Stairs*>& MapEntities::get_stairs(Layer layer) {
   return stairs[layer];
 }
 
@@ -189,7 +172,7 @@ const list<Stairs*>& MapEntities::get_stairs(Layer layer) {
  * \param layer the layer
  * \return the crystal blocks on this layer
  */
-const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
+const std::list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
   return crystal_blocks[layer];
 }
 
@@ -197,7 +180,7 @@ const list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
  * \brief Returns all separators of the map.
  * \return The separators.
  */
-const list<const Separator*>& MapEntities::get_separators() const {
+const std::list<const Separator*>& MapEntities::get_separators() const {
   return separators;
 }
 
@@ -267,11 +250,11 @@ MapEntity* MapEntities::find_entity(const std::string& name) {
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name.
  */
-list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix) {
+std::list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix) {
 
-  list<MapEntity*> entities;
+  std::list<MapEntity*> entities;
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     MapEntity* entity = *i;
@@ -290,12 +273,12 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix
  * \param prefix Prefix of the name.
  * \return The entities of this type and having this prefix in their name.
  */
-list<MapEntity*> MapEntities::get_entities_with_prefix(
+std::list<MapEntity*> MapEntities::get_entities_with_prefix(
     EntityType type, const std::string& prefix) {
 
-  list<MapEntity*> entities;
+  std::list<MapEntity*> entities;
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     MapEntity* entity = *i;
@@ -315,7 +298,7 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(
  */
 bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 
-  list<MapEntity*>::const_iterator i;
+  std::list<MapEntity*>::const_iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     const MapEntity* entity = *i;
@@ -334,10 +317,14 @@ bool MapEntities::has_entity_with_prefix(const std::string& prefix) const {
 void MapEntities::bring_to_front(MapEntity* entity) {
 
   Debug::check_assertion(entity->can_be_drawn(),
-      StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is not drawn");
+      std::string("Cannot bring to front entity '")
+          + entity->get_name() + "' since it is not drawn"
+  );
 
   Debug::check_assertion(!entity->is_drawn_in_y_order(),
-    StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is drawn in the y order");
+      std::string("Cannot bring to front entity '")
+      + entity->get_name() + "' since it is drawn in the y order"
+  );
 
   Layer layer = entity->get_layer();
   entities_drawn_first[layer].remove(entity);
@@ -349,7 +336,7 @@ void MapEntities::bring_to_front(MapEntity* entity) {
  */
 void MapEntities::notify_map_started() {
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity* entity = *i;
     entity->notify_map_started();
@@ -358,8 +345,11 @@ void MapEntities::notify_map_started() {
   hero.notify_map_started();
   hero.notify_tileset_changed();
 
-  // pre-render non-animated tiles
-  build_non_animated_tiles();
+  // Setup non-animated tiles pre-drawing.
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    non_animated_regions[layer]->build(tiles_in_animated_regions[layer]);
+    // Now, tiles_in_animated_regions contains the tiles that won't be optimized.
+  }
 }
 
 /**
@@ -368,7 +358,7 @@ void MapEntities::notify_map_started() {
  */
 void MapEntities::notify_map_opening_transition_finished() {
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity* entity = *i;
     entity->notify_map_opening_transition_finished();
@@ -383,14 +373,16 @@ void MapEntities::notify_map_opening_transition_finished() {
 void MapEntities::notify_tileset_changed() {
 
   // Redraw optimized tiles (i.e. non animated ones).
-  redraw_non_animated_tiles();
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    non_animated_regions[layer]->notify_tileset_changed();
+  }
 
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity* entity = *i;
     entity->notify_tileset_changed();
   }
-  hero.notify_map_opening_transition_finished();
+  hero.notify_tileset_changed();
 }
 
 /**
@@ -403,30 +395,29 @@ void MapEntities::notify_tileset_changed() {
  */
 void MapEntities::add_tile(Tile* tile) {
 
-  TilePattern& pattern = map.get_tileset().get_tile_pattern(tile->get_tile_pattern_id());
+  const Layer layer = tile->get_layer();
 
+  // Add the tile to the map.
+  non_animated_regions[layer]->add_tile(tile);
+  tile->set_map(map);
+
+  const TilePattern& pattern = tile->get_tile_pattern();
   Debug::check_assertion(
       tile->get_width() == pattern.get_width()
       && tile->get_height() == pattern.get_height(),
       "Static tile size must match tile pattern size");
 
-  Layer layer = tile->get_layer();
-
-  // Add the tile to the map.
-  tiles[layer].push_back(tile);
-  tile->set_map(map);
-
   // Update the ground list.
-  Ground ground = tile->get_tile_pattern().get_ground();
+  const Ground ground = tile->get_tile_pattern().get_ground();
 
-  int tile_x8 = tile->get_x() / 8;
-  int tile_y8 = tile->get_y() / 8;
-  int tile_width8 = tile->get_width() / 8;
-  int tile_height8 = tile->get_height() / 8;
+  const int tile_x8 = tile->get_x() / 8;
+  const int tile_y8 = tile->get_y() / 8;
+  const int tile_width8 = tile->get_width() / 8;
+  const int tile_height8 = tile->get_height() / 8;
 
   int i, j;
   Ground non_obstacle_triangle;
- 
+
   switch (ground) {
 
     // If the obstacle property is the same for all points inside the tile
@@ -647,20 +638,49 @@ void MapEntities::add_entity(MapEntity* entity) {
       break;
     }
 
-    // update the list of all entities
+    // Update the list of all entities.
     all_entities.push_back(entity);
   }
 
-  const std::string& name = entity->get_name();
+  // Rename the entity if there is already an entity with the same name.
+  std::string name = entity->get_name();
   if (!name.empty()) {
-    Debug::check_assertion(named_entities.find(name) == named_entities.end(),
-        StringConcat()
-        << "An entity with name '" << name << "' already exists.");
+
+    if (named_entities.find(name) != named_entities.end()) {
+      // This name is already used by another entity. Add a suffix.
+      std::ostringstream oss;
+      std::istringstream iss;
+      int suffix_number = 1;
+      std::string prefix = name;
+      size_t index = name.rfind('_');
+      if (index != std::string::npos) {
+        // If there is already a numbered suffix, we will increment it.
+        const std::string& suffix = name.substr(index + 1);
+        iss.clear();
+        iss.str(suffix);
+        if (iss >> suffix_number) {
+          prefix = name.substr(0, index);
+        }
+      }
+
+      // Now we have the final prefix. Find the first available suffix.
+      do {
+        ++suffix_number;
+        oss.str("");
+        oss.clear();
+        oss << prefix << '_' << suffix_number;
+        name = oss.str();
+      }
+      while (named_entities.find(name) != named_entities.end());
+
+      entity->set_name(name);
+    }
     named_entities[name] = entity;
   }
+
   RefCountable::ref(entity);
 
-  // notify the entity
+  // Notify the entity.
   entity->set_map(map);
 }
 
@@ -710,7 +730,7 @@ void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
  */
 void MapEntities::remove_marked_entities() {
 
-  list<MapEntity*>::iterator it;
+  std::list<MapEntity*>::iterator it;
 
   // remove the marked entities
   for (it = entities_to_remove.begin();
@@ -807,7 +827,7 @@ void MapEntities::set_suspended(bool suspended) {
   hero.set_suspended(suspended);
 
   // other entities
-  list<MapEntity*>::iterator i;
+  std::list<MapEntity*>::iterator i;
   for (i = all_entities.begin();
        i != all_entities.end();
        i++) {
@@ -829,7 +849,7 @@ void MapEntities::update() {
   hero.update();
 
   // Update the dynamic entities.
-  list<MapEntity*>::iterator it;
+  std::list<MapEntity*>::iterator it;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     // Sort the entities drawn in y order.
@@ -850,154 +870,11 @@ void MapEntities::update() {
 }
 
 /**
- * \brief Determines which rectangles are animated and draws all non-animated
- * rectangles of tiles on intermediate surfaces.
- */
-void MapEntities::build_non_animated_tiles() {
-
-  const Rectangle map_size(0, 0, map.get_width(), map.get_height());
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    Surface* non_animated_tiles_surface = non_animated_tiles_surfaces[layer];
-
-    RefCountable::unref(non_animated_tiles_surface);
-    non_animated_tiles_surface = Surface::create(
-        map_size.get_width(), map_size.get_height()
-    );
-    non_animated_tiles_surfaces[layer] = non_animated_tiles_surface;
-    RefCountable::ref(non_animated_tiles_surface);
-
-    // Set this surface as a software destination because it is built only
-    // once and never changes later.
-    non_animated_tiles_surface->set_software_destination(true);
-
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      Tile& tile = *tiles[layer][i];
-      if (!tile.is_animated()) {
-        // non-animated tile: optimize its displaying
-        tile.draw(*non_animated_tiles_surface, map_size);
-      }
-      else {
-        // animated tile: mark its region as non-optimizable
-        // (otherwise, a non-animated tile above an animated one would screw us)
-
-        int tile_x8 = tile.get_x() / 8;
-        int tile_y8 = tile.get_y() / 8;
-        int tile_width8 = tile.get_width() / 8;
-        int tile_height8 = tile.get_height() / 8;
-
-        for (int i = 0; i < tile_height8; i++) {
-          for (int j = 0; j < tile_width8; j++) {
-
-            int x8 = tile_x8 + j;
-            int y8 = tile_y8 + i;
-            if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
-              int index = y8 * map_width8 + x8;
-              animated_tiles[layer][index] = true;
-            }
-          }
-        }
-      }
-    }
-
-    // erase the rectangles that contain animated tiles
-    int index = 0;
-    for (int y = 0; y < map.get_height(); y += 8) {
-      for (int x = 0; x < map.get_width(); x += 8) {
-
-        if (animated_tiles[layer][index]) {
-          Rectangle animated_square(x, y, 8, 8);
-          non_animated_tiles_surface->fill_with_color(Color::get_transparent(), animated_square);
-        }
-        index++;
-      }
-    }
-
-    // build the list of animated tiles and tiles overlapping them
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      Tile& tile = *tiles[layer][i];
-      if (tile.is_animated() || overlaps_animated_tile(tile)) {
-        tiles_in_animated_regions[layer].push_back(&tile);
-      }
-    }
-  }
-}
-
-/**
- * \brief Draws all non-animated rectangles of tiles on intermediate surfaces.
- *
- * This function is similar to build_non_animated_tiles() except that it
- * assumes that animated and non-animated rectangles were already determined.
- *
- * This function is called when the tileset changes.
- */
-void MapEntities::redraw_non_animated_tiles() {
-
-  const Rectangle map_size(0, 0, map.get_width(), map.get_height());
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_transparent());
-
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      Tile& tile = *tiles[layer][i];
-      if (!tile.is_animated()) {
-        // Non-animated tile: optimize its displaying.
-        tile.draw(*non_animated_tiles_surfaces[layer], map_size);
-      }
-    }
-
-    // Erase rectangles that contain animated tiles.
-    int index = 0;
-    for (int y = 0; y < map.get_height(); y += 8) {
-      for (int x = 0; x < map.get_width(); x += 8) {
-
-        if (animated_tiles[layer][index]) {
-          Rectangle animated_square(x, y, 8, 8);
-          non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_transparent(), animated_square);
-        }
-        index++;
-      }
-    }
-  }
-}
-
-/**
- * \brief Returns whether a tile is overlapping an animated other tile.
- * \param tile the tile to check
- * \return true if this tile is overlapping an animated tile
- */
-bool MapEntities::overlaps_animated_tile(Tile& tile) {
-
-  bool* animated_tiles_layer = animated_tiles[tile.get_layer()];
-
-  int tile_x8 = tile.get_x() / 8;
-  int tile_y8 = tile.get_y() / 8;
-  int tile_width8 = tile.get_width() / 8;
-  int tile_height8 = tile.get_height() / 8;
-
-  for (int i = 0; i < tile_height8; i++) {
-    for (int j = 0; j < tile_width8; j++) {
-
-      int x8 = tile_x8 + j;
-      int y8 = tile_y8 + i;
-      if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
-
-        int index = y8 * map_width8 + x8;
-        if (animated_tiles_layer[index]) {
-          return true;
-        }
-      }
-    }
-  }
-  return false;
-}
-
-/**
  * \brief Draws the entities on the map surface.
  */
 void MapEntities::draw() {
 
-  for (int layer = 0; layer < LAYER_NB; layer++) {
+  for (int layer = 0; layer < LAYER_NB; ++layer) {
 
     // draw the animated tiles and the tiles that overlap them:
     // in other words, draw all regions containing animated tiles
@@ -1009,11 +886,10 @@ void MapEntities::draw() {
 
     // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
     // since they are already drawn)
-    non_animated_tiles_surfaces[layer]->draw_region(
-        map.get_camera_position(), map.get_visible_surface());
+    non_animated_regions[layer]->draw_on_map();
 
     // draw the first sprites
-    list<MapEntity*>::iterator i;
+    std::list<MapEntity*>::iterator i;
     for (i = entities_drawn_first[layer].begin();
         i != entities_drawn_first[layer].end();
         i++) {
@@ -1149,5 +1025,7 @@ void MapEntities::remove_arrows() {
       remove_entity(entity);
     }
   }
+}
+
 }
 

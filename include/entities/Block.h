@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+
+namespace solarus {
 
 /**
  * \brief A entity that the hero can push or pull.
@@ -64,10 +66,16 @@ class Block: public Detector {
     void notify_ground_below_changed();
 
     void reset();
-
-    virtual const std::string& get_lua_type_name() const;
+    bool is_pushable() const;
+    void set_pushable(bool pushable);
+    bool is_pullable() const;
+    void set_pullable(bool pullable);
+    int get_maximum_moves() const;
+    void set_maximum_moves(int maximum_moves);
 
   private:
+
+    void movement_by_hero_finished();
 
     int maximum_moves;          /**< indicates whether the block can be pushed
                                  * (0: none, 1: once: 2: infinite) */
@@ -82,9 +90,9 @@ class Block: public Detector {
 
     static const uint32_t moving_delay = 500; /**< delay between two successive moves of a block */
 
-    void movement_by_hero_finished();
-
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +20,12 @@
 #include "hero/State.h"
 #include "Treasure.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Treasure" of the hero.
  */
 class Hero::TreasureState: public Hero::State {
-
-  private:
-
-    Treasure treasure;       /**< the treasure to give to the hero */
-    int callback_ref;        /**< Lua ref of a function to call when the
-                              * treasure's dialog finishes. */
 
   public:
 
@@ -41,7 +37,16 @@ class Hero::TreasureState: public Hero::State {
     void draw_on_map();
     CarriedItem::Behavior get_previous_carried_item_behavior() const;
     bool is_brandishing_treasure() const;
+
+  private:
+
+    Treasure treasure;       /**< the treasure to give to the hero */
+    int callback_ref;        /**< Lua ref of a function to call when the
+                              * treasure's dialog finishes. */
+
 };
+
+}
 
 #endif
 

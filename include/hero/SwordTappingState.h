@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "sword tapping" of the hero.
  */
@@ -35,17 +37,24 @@ class Hero::SwordTappingState: public Hero::State {
     void set_suspended(bool suspended);
     bool can_sword_hit_crystal() const;
     bool can_pick_treasure(EquipmentItem& item) const;
+    bool can_use_shield() const;
     bool is_cutting_with_sword(Detector& detector) const;
     bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
     void notify_obstacle_reached();
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
 
   private:
 
     uint32_t next_sound_date;     /**< date when the sword tapping sound should be played */
 
 };
+
+}
 
 #endif
 

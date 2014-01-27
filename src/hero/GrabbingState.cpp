@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "hero/HeroSprites.h"
 #include "Game.h"
 #include "GameCommands.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -53,6 +55,10 @@ void Hero::GrabbingState::start(const State* previous_state) {
  * \brief Updates this state.
  */
 void Hero::GrabbingState::update() {
+
+  if (is_suspended()) {
+    return;
+  }
 
   // the hero is grabbing an obstacle: check the direction pressed
 
@@ -101,5 +107,7 @@ bool Hero::GrabbingState::can_be_hurt(Enemy* attacker) const {
  */
 bool Hero::GrabbingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
+}
+
 }
 

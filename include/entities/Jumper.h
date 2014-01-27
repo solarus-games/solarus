@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/Detector.h"
 
+namespace solarus {
+
 /**
  * \brief A sensor that makes the hero jump.
  *
@@ -36,7 +38,7 @@ class Jumper: public Detector {
         int y,
         int width,
         int height,
-	int direction,
+        int direction,
         int jump_length);
     ~Jumper();
 
@@ -60,6 +62,8 @@ class Jumper: public Detector {
     int jump_length; /**< length of the jump in pixels (should be a multiple of 8) */
 
 };
+
+}
 
 #endif
 

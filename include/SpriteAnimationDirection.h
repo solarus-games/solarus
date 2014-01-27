@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/Debug.h"
 #include <vector>
+
+namespace solarus {
 
 /**
  * \brief A sequence of frames representing a sprite animated in a particular direction.
@@ -89,6 +91,8 @@ inline PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
   SOLARUS_ASSERT(frame >= 0 && frame < get_nb_frames(), "Invalid frame number");
 
   return *pixel_bits[frame];
+}
+
 }
 
 #endif

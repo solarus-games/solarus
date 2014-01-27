@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,19 +19,12 @@
 
 #include "hero/PlayerMovementState.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Swimming" of the hero.
  */
 class Hero::SwimmingState: public Hero::PlayerMovementState {
-
-  private:
-
-    bool fast_swimming;            /**< indicates that the hero is currently swimming faster */
-    uint32_t end_fast_swim_date;   /**< date when the fast swimming stops */
-
-    int get_slow_swimming_speed() const;
-    int get_fast_swimming_speed() const;
-    void try_swim_faster();
 
   public:
 
@@ -51,7 +44,19 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
 
     bool is_stairs_obstacle(const Stairs& stairs) const;
     bool can_pick_treasure(EquipmentItem& item) const;
+
+  private:
+
+    int get_slow_swimming_speed() const;
+    int get_fast_swimming_speed() const;
+    void try_swim_faster();
+
+    bool fast_swimming;            /**< indicates that the hero is currently swimming faster */
+    uint32_t end_fast_swim_date;   /**< date when the fast swimming stops */
+
 };
+
+}
 
 #endif
 

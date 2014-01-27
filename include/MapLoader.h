@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief Parses a map file.
  *
@@ -39,6 +41,8 @@ class MapLoader {
 
     static int l_properties(lua_State* l);
 };
+
+}
 
 #endif
 

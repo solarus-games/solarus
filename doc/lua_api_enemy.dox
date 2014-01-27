@@ -15,7 +15,7 @@ It can also be created dynamically with
 
 Enemies can exist in various breeds.
 Each breed corresponds to a model of enemy with
-its the behavior, its
+its behavior, its
 \ref lua_api_sprite "sprites" and its
 \ref lua_api_movement "movements".
 
@@ -402,12 +402,18 @@ The default value is \c "normal".
 
 Sets the size of the bounding box of this enemy.
 
-The default value is 16x16 pixels.
+The default value is \c 16x16 pixels.
 This is the effective size used to detect obstacles when moving,
 but the \ref lua_api_sprite "sprite"
 of the enemy may be larger, especially for a boss.
 - \c width (number): Width of the enemy in pixels.
 - \c height (number): Height of the enemy in pixels.
+
+\remark Collisions with the
+  \ref lua_api_hero "hero" are pixel-precise and use the sprite of the enemy,
+  not his bounding box.
+  Therefore, this function has no influence on collisions with the hero, but
+  only on the detection of obstacles of the map when the enemy moves.
 
 \subsection lua_api_enemy_set_origin enemy:set_origin(origin_x, origin_y)
 
@@ -428,7 +434,8 @@ The origin point is also the point of synchronization of an entity with its
 \ref lua_api_sprite "sprites" (because again, an entity that has a given
 size may have sprites with different sizes).
 
-The default values is \c 0x0 and should be changed for most enemies.
+The default values is <tt>8,13</tt> and is usually okay for enemies of size
+\c 16x16.
 See \ref lua_api_entity_get_origin "entity:get_origin()" for more explanations
 about the origin point.
 - \c origin_x (number): X coordinate of the origin point in pixels,
@@ -502,6 +509,9 @@ and the layer is the one of the current enemy by default.
 - \c properties (table): A table that describes all properties of the enemy
   to create. Its key-value pairs must be:
   - \c name (string, optional): Name identifying the entity.
+    If the name is already used by another entity, a suffix (of the form
+    \c "_2", \c "_3", etc.) will be automatically appended to keep entity names
+    unique.
     No value means no name.
   - \c layer (number, optional): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
@@ -688,9 +698,31 @@ This means that you can safely use
 <tt>enemy:on_dead()</tt> to detect when all enemies with a common prefix
 are dead.
 
-\subsection lua_api_enemy_on_immobilized enemy:on_immobilized():
+\subsection lua_api_enemy_on_immobilized enemy:on_immobilized()
 
 Called when the enemy is immobilized.
 
+\subsection lua_api_enemy_on_attacking_hero enemy:on_attacking_hero(hero, enemy_sprite)
+
+Called when the \ref lua_api_hero "hero" is successfully touched by this enemy.
+
+This event is not called if the hero was protected by his shield,
+or if he currently cannot be hurt for some reason, like when he his in a
+special \ref lua_api_hero_get_state "state"
+like brandishing a treasure or falling into a hole.
+
+Your script can define this event to customize what bad things happen to the
+hero.
+If you define this event, the engine does nothing and lets you handle this.
+
+If you don't define this event, the hero is hurt with the predefined behavior:
+he loses some life (and optionally some magic) depending on the enemy and on
+his tunic, and he goes to the state \c "hurt" where is pushed away from the
+enemy. Then he recovers and his sprites blink for a while. During this short
+period, he is temporarily invincible.
+- \c hero (\ref lua_api_hero "hero"): The hero being attacked.
+- \c enemy_sprite (\ref lua_api_sprite "sprite"): The sprite of the enemy that
+  caused the collision with the hero. You may use this information if your
+  enemy has several sprites with different behaviors.
 */
 

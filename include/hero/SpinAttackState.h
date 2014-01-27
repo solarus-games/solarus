@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,12 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "spin attack" of the hero.
  */
 class Hero::SpinAttackState: public Hero::State {
-
-  private:
-
-    bool being_pushed;           /**< indicates that the hero is being pushed after hitting an enemy */
-    void play_spin_attack_sound();
 
   public:
 
@@ -49,9 +46,22 @@ class Hero::SpinAttackState: public Hero::State {
     bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
     bool is_separator_obstacle(const Separator& separator) const;
     void notify_obstacle_reached();
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
+
+  private:
+
+    void play_spin_attack_sound();
+
+    bool being_pushed;           /**< indicates that the hero is being pushed after hitting an enemy */
+
 };
+
+}
 
 #endif
 

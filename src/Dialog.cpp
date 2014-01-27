@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
  */
 #include "Dialog.h"
 #include "lowlevel/Debug.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -146,5 +148,7 @@ void Dialog::set_property(const std::string& key, const std::string& value) {
       "Invalid property key for dialog");
 
   properties[key] = value;
+}
+
 }
 

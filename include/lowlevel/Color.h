@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include <SDL.h>
 
+namespace solarus {
+
 /**
  * \brief Represents a color.
  *
@@ -28,12 +30,29 @@
  */
 class Color {
 
-  // low-level classes allowed to manipulate directly the internal SDL objects encapsulated
-  friend class Surface;
-  friend class TextSurface;
+  public:
+
+    static void initialize();
+    static void quit();
+
+    static Color& get_transparent();
+    static Color& get_black();
+    static Color& get_white();
+    static Color& get_red();
+    static Color& get_green();
+    static Color& get_blue();
+    static Color& get_yellow();
+    static Color& get_magenta();
+    static Color& get_cyan();
+
+    Color();
+    Color(const Color& other);
+    Color(int r, int g, int b, int a = 255);
+
+    void get_components(int& r, int& g, int& b, int& a) const;
 
   private:
-  
+
     SDL_Color internal_color;             /**< the SDL color encapsulated. */
     uint32_t internal_value;              /**< the SDL 32-bit value representing this color. */
 
@@ -51,26 +70,10 @@ class Color {
     uint32_t get_internal_value() const;
     SDL_Color* get_internal_color();
 
-  public:
+    // low-level classes allowed to manipulate directly the internal SDL objects encapsulated
+    friend class Surface;
+    friend class TextSurface;
 
-    static void initialize();
-    static void quit();
-  
-    static Color& get_transparent();
-    static Color& get_black();
-    static Color& get_white();
-    static Color& get_red();
-    static Color& get_green();
-    static Color& get_blue();
-    static Color& get_yellow();
-    static Color& get_magenta();
-    static Color& get_cyan();
-
-    Color();
-    Color(const Color& other);
-    Color(int r, int g, int b, int a = 255);
-
-    void get_components(int& r, int& g, int& b, int& a) const;
 };
 
 /**
@@ -143,6 +146,8 @@ inline Color& Color::get_magenta() {
  */
 inline Color& Color::get_cyan() {
   return cyan;
+}
+
 }
 
 #endif

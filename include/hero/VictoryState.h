@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_HERO_VICTORY_STATE_H
 
 #include "hero/State.h"
+
+namespace solarus {
 
 /**
  * \brief The victory state of the hero.
@@ -39,7 +41,10 @@ class Hero::VictoryState: public Hero::State {
     void stop(const State* next_state);
     void update();
     void set_suspended(bool suspended);
+
 };
+
+}
 
 #endif
 

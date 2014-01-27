@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 #include "lowlevel/Random.h"
 #include <ctime>
 #include <cstdlib>
+
+namespace solarus {
 
 /**
  * \brief Initializes the random number generator.
@@ -52,5 +54,7 @@ int Random::get_number(unsigned int x) {
  */
 int Random::get_number(unsigned int x, unsigned int y) {
   return x + get_number(y - x);
+}
+
 }
 

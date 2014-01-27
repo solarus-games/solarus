@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include "lua/ExportableToLua.h"
 
 struct lua_State;
+
+namespace solarus {
 
 /**
  * \brief Manages the game data saved.
@@ -64,7 +66,7 @@ class Savegame: public ExportableToLua {
     static const std::string KEY_MAX_MAGIC;
     static const std::string KEY_ITEM_SLOT_1;
     static const std::string KEY_ITEM_SLOT_2;
-    static const std::string KEY_ABILITY_TUNIC;
+    static const std::string KEY_ABILITY_RESISTANCE;
     static const std::string KEY_ABILITY_SWORD;
     static const std::string KEY_ABILITY_SWORD_KNOWLEDGE;
     static const std::string KEY_ABILITY_SHIELD;
@@ -135,7 +137,10 @@ class Savegame: public ExportableToLua {
     void set_initial_values();
     void set_default_keyboard_controls();
     void set_default_joypad_controls();
+
 };
+
+}
 
 #endif
 

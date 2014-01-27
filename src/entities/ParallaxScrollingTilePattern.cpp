@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 #include "entities/ParallaxScrollingTilePattern.h"
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
+
+namespace solarus {
 
 /**
  * \brief Distance made by the viewport to move the tile pattern of 1 pixel.
@@ -73,7 +75,7 @@ void ParallaxScrollingTilePattern::draw(Surface& dst_surface,
  *
  * \return true if this tile pattern is animated
  */
-bool ParallaxScrollingTilePattern::is_animated() {
+bool ParallaxScrollingTilePattern::is_animated() const {
   return true;
 }
 
@@ -90,7 +92,9 @@ bool ParallaxScrollingTilePattern::is_animated() {
  *
  * \return true to if this tile pattern is always drawn at its coordinates
  */
-bool ParallaxScrollingTilePattern::is_drawn_at_its_position() {
+bool ParallaxScrollingTilePattern::is_drawn_at_its_position() const {
   return false;
+}
+
 }
 

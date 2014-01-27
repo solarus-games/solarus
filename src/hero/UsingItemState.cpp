@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #include "hero/FreeState.h"
 #include "lowlevel/System.h"
 #include "entities/Detector.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -91,3 +93,6 @@ bool Hero::UsingItemState::is_using_item() const {
 EquipmentItemUsage& Hero::UsingItemState::get_item_being_used() {
   return item_usage;
 }
+
+}
+

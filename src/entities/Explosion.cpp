@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +23,11 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 
+namespace solarus {
+
 /**
  * \brief Creates an explosion.
- * \param name Unique name identifying the entity on the map or an empty string.
+ * \param name Name identifying the entity on the map or an empty string.
  * \param layer layer of the explosion
  * \param xy coordinates of the center of the explosion
  * \param with_damages true to hurt the hero and the enemies
@@ -40,7 +42,8 @@ Explosion::Explosion(const std::string& name, Layer layer,
   set_optimization_distance(2000); // because of placing a bomb on a switch
   get_sprite().enable_pixel_collisions();
   if (with_damages) {
-    set_bounding_box_from_sprite();
+    set_size(48, 48);
+    set_origin(24, 24);
   }
 }
 
@@ -181,20 +184,19 @@ void Explosion::try_attack_enemy(Enemy &enemy, Sprite &enemy_sprite) {
 }
 
 /**
- * \brief Notifies this entity that it has just attacked an enemy.
- *
- * This function is called even if this attack was not successful.
- *
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc MapEntity::notify_attacked_enemy
  */
-void Explosion::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Explosion::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
   if (result.type != EnemyReaction::IGNORED) {
     victims.push_back(&victim);
   }
+}
+
 }
 

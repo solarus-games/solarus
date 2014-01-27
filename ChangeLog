@@ -7,14 +7,42 @@ Engine changes
 --------------
 
 * Upgrade to SDL 2 (#262). Thanks Vlag.
-* Use LuaJIT instead of vanilla Lua for better performance.
+* Accelerate video operations in GPU if available. Expect huge speedups.
+* Add the hq2x, hq3 and hq4x pixel filter algorithms as new video modes.
+* Make the window resizable (#338).
+* Use LuaJIT if available instead of vanilla Lua for better performance.
 * New map entity type: custom entities, fully scripted (#323).
 * Rewrite the main loop with a constant timestep (#351).
 * Show a dialog box in case of fatal error.
 * The "wide" video modes do not exist anymore. SDL2 does the job now.
-* Add the hq4x pixel filter algorithm as a new video mode.
 * Call enemy:on_hurt() before enemy:on_dying() (#325).
 * Fix life and money exceeding the max when the max changes (#355).
+* Make stairs sounds optional (#364).
+* Make more checks in sprite files to avoid crashes (#357).
+* Fix RandomMovement speed that was not taken into account (#361).
+* Set the default speed of StraightMovement to 32 instead of 0 (#343).
+* The size of all map entities must be a multiple of 8 (#358).
+* Thrown entities (pots, bombs...) can now fall to a lower layer (#349).
+* The shield no longer protects while using the sword or carrying (#192).
+* Fix pixel collisions coordinates when sprites move (#372).
+* Fix a slowness when loading maps (#374).
+* Fix crash when accessing a map not active anymore (#371).
+* Fix crash when changing the movement of the hero (#392).
+* Fix crash when calling hero:start_treasure() with wrong parameters (#391).
+* Fix crash when calling game:has/get/set_ability() with wrong name (#408).
+* Fix a crash when creating two entities with the same name (#370).
+* Fix issues with unobtainable treasures.
+* Fix the starting location wrongly saved with special destinations (#375).
+* Fix map:set_tileset() sometimes moving the hero near the map border (#400).
+* Fix enemies stuck on blocks (#360).
+* Fix enemies stuck on crystal blocks (#41).
+* Fix human NPCs not automatically showing "walking" when moving (#336).
+* Fix the hero leaving the grabbing state even while the game is suspended.
+* Call hero:on_removed() and stop hero timers when stopping the game (#421).
+* Don't die if the map or destination saved no longer exists (#301).
+* Don't die if a map has no destination. Show an error and go to 0,0 instead.
+* Don't die if hero:teleport() attempts to go to a non-existing place.
+* Don't die if attempting to start a game without map.
 
 Data files format changes
 -------------------------
@@ -23,36 +51,88 @@ You can use the script tools/data_files_conversion/1.1_to_1.2/update_quest.lua
 to automatically update your data files.
 Don't forget to make a backup first.
 
+* Languages: New syntax of strings.dat easier to read and parse (#170).
+* Maps: The world property is now optional (#128).
+* Maps: Destructibles no longer have subtypes, they are customizable (#270).
 * Maps: Rename entity shop_item to shop_treasure.
+* Maps: Teletransporters transition property is now a string (#402).
+* Sounds: Running into a wall now plays a sound other than "explosion" (#297).
 
 Lua API changes
 ---------------
 
 Changes that introduce incompatibilities:
 
+* Video mode names have changed: no more wide, fullscreen ou windowed names.
+* sol.video.switch_mode() no longer changes the fullscreen flag.
+* surface:set_transparency_color() no longer exists. Use surface:clear().
 * sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
-* map:create_shop_item() is replaced by map:create_shop_treasure().
-* In sol.video.get/set_mode(), "fullscreen_*_wide" modes no longer exist.
 * on_key_pressed() and on_character_pressed() are now both called (#344).
-* surface:set_transparency_color() no longer exists.
+* map:create_destructible() has no hardcoded subtypes anymore (#270).
+* Destructible objects no longer show hardcoded dialogs (#270).
+* map:create_shop_item() is replaced by map:create_shop_treasure().
+* map:create_teletransporter(): the transition is now a string (#402).
+* Enemies have now a default size of 16x16 and origin of 8,13 (#354).
+* The size of enemies must be a multiple of 8 (#358).
+* item:on_pickable_movement_changed replaced by pickable:on_movement_changed.
+* pickable:get_treasure() now returns the item instead of the item's name.
+* Timers: returning true in the callback now repeats the timer (#152).
+* sol.timer.start() now always returns the timer, even if its delay is zero.
 
 Changes that do not introduce incompatibilities:
 
 * New Lua type and methods for custom map entities.
+* New API of destructible objects, fully customizable now (#270).
 * Colors now take an optional alpha value as fourth component.
-* sol.video.get/set_mode() now accept "windowed_hq4x" and "fullscreen_hq4x".
+* New functions sol.video.get/set/reset_window_size().
+* New method surface:clear().
+* New function sol.main.get_metatable(), allows to implement shared behaviors.
+* New method menu:is_started().
+* New method map:get_hero() (#362).
+* map:get_world() can now return nil because the world is now optional (#128).
+* Entity names are now auto-incremented to simplify their creation.
+* New method entity:get_game() (#363).
+* New event enemy:on_attacking_hero() to customize attacks (#356).
+* New event sensor:on_left() (#339).
+* New event block:on_moving() (#334).
+* New functions to get/set the properties of teletransporters (#403).
+* New functions to get/set the properties of blocks.
+* New methods to simulate game commands, by mrunderhill (#382).
+* New event sensor:on_left() (#339).
+* New event block:on_moving() (#334).
+* New event teletransporter:on_activated() (#312).
+* New event destination:on_activated() (#312).
+* movement:on_position_changed() now takes x and y parameters (#342).
 * Fix random_movement:get_max_radius() that was not working.
-* Add an event sensor:on_left() (#339).
-* Add an event block:on_moving() (#334).
+* Check the parameter sign in game:add/remove life/money/magic (#416).
+* New methods timer:get/set_remaining_time.
+* New function sol.main.get_elapsed_time() to get the simulated time (#424).
+* New function sol.input.get_key_modifiers() to get the key modifiers state.
 
 Solarus Quest Editor changes
 ----------------------------
 
+* The editor is now built with Maven (#365).
+* Multiple entities can now be resized at the same time (#405).
+* Copy-pasting entities now pastes them at the cursor (#404).
+* The map view can now be dragged using the middle mouse button (#413).
+* The tileset view can now be dragged using the middle mouse button (#427).
+* Selecting a tile now highlights its pattern in the tileset view (#290).
+* Ctrl/Shift+click even on an entity now starts a selection rectangle (#410).
+* Tile patterns can now be moved in the tileset editor (#422).
+* The id and name of a new resource and now asked in a single dialog (#321).
+* The order of resources in the quest tree can now be changed (#319).
+* Increase the stepsize when scrolling the map view.
+* Show the map or tileset name in the "do you want to save" dialog.
 * Fix NullPointerException when canceling the Open Project dialog.
+* Fix freeze if tiles don't exist when changing the tileset of a map.
+* Fix the tree not refreshing when deleting a resource (#335).
+* Fix the tileset editor not always showing the save dialog on closing.
+* Switches, crystals and crystal blocks now show their actual sprite (#376).
 
 _________________________________
 
-Solarus 1.1.1 (under development)
+Solarus 1.1.1 (2013-12-01)
 _________________________________
 
 Bug fixes for the 1.1 release.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,9 @@
  */
 #include "RefCountable.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Creates a refcountable object.
@@ -32,8 +34,9 @@ RefCountable::RefCountable():
 RefCountable::~RefCountable() {
 
   if (refcount != 0) {
-    Debug::die(StringConcat()
-        << "This object is still used somewhere else: refcount is " << refcount);
+    std::ostringstream oss;
+    oss << "This object is still used somewhere else: refcount is " << refcount;
+    Debug::die(oss.str());
   }
 }
 
@@ -92,3 +95,6 @@ void RefCountable::unref(RefCountable* object) {
     delete object;
   }
 }
+
+}
+

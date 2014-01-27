@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include "Game.h"
 #include "KeysEffect.h"
 #include "Map.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -145,7 +147,7 @@ void Hero::CarryingState::update() {
   PlayerMovementState::update();
 
   // The state may have just been changed for example by a jumper.
-  if (is_current_state()) { 
+  if (is_current_state()) {
     carried_item->update();
 
     if (!is_suspended()) {
@@ -190,6 +192,13 @@ void Hero::CarryingState::throw_item() {
  */
 bool Hero::CarryingState::can_start_sword() const {
   return true;
+}
+
+/**
+ * \copydoc Hero::State::can_use_shield
+ */
+bool Hero::CarryingState::can_use_shield() const {
+  return false;
 }
 
 /**
@@ -240,5 +249,7 @@ void Hero::CarryingState::destroy_carried_item() {
 CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior() const {
 
   return CarriedItem::BEHAVIOR_KEEP;
+}
+
 }
 

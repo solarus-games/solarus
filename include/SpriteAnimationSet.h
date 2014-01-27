@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include <map>
 
 struct lua_State;
+
+namespace solarus {
 
 /**
  * \brief A set of animations representing a sprite.
@@ -61,6 +63,8 @@ class SpriteAnimationSet {
     Rectangle max_size;                      /**< Size of this biggest frame. */
 
 };
+
+}
 
 #endif
 

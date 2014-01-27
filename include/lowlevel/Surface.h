@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,11 @@
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/PixelBits.h"
 #include <vector>
-#include <map>
 
 typedef struct SDL_Surface SDL_Surface;
 typedef struct SDL_Texture SDL_Texture;
+
+namespace solarus {
 
 /**
  * \brief Represents a graphic surface.
@@ -67,9 +68,13 @@ class Surface: public Drawable {
     bool is_software_destination() const;
     void set_software_destination(bool software_destination);
 
-    void set_opacity(int opacity);
-    void fill_with_color(Color& color);
-    void fill_with_color(Color& color, const Rectangle& where);
+    void clear();
+    void clear(const Rectangle& where);
+    void fill_with_color(const Color& color);
+    void fill_with_color(const Color& color, const Rectangle& where);
+    void set_opacity(uint8_t opacity);
+
+    void apply_pixel_filter(const PixelFilter& pixel_filter, Surface& dst_surface);
 
     void render(SDL_Renderer* renderer);
 
@@ -97,12 +102,14 @@ class Surface: public Drawable {
 
     uint32_t get_pixel(int index) const;
     bool is_pixel_transparent(int index) const;
-  
+
     static SDL_Surface* get_surface_from_file(
         const std::string& file_name,
         ImageDirectory base_directory);
-    static SDL_Texture* get_texture_from_surface(SDL_Surface* software_surface);
 
+    void create_software_surface();
+    void convert_software_surface();
+    void create_texture_from_surface();
     void add_subsurface(Surface& src_surface, const Rectangle& region, const Rectangle& dst_position);
     void clear_subsurfaces();
     void render(
@@ -110,7 +117,7 @@ class Surface: public Drawable {
         const Rectangle& src_rect,
         const Rectangle& dst_rect,
         const Rectangle& clip_rect,
-        int opacity,
+        uint8_t opacity,
         const std::vector<SubSurfaceNode*>& subsurfaces
     );
 
@@ -121,10 +128,13 @@ class Surface: public Drawable {
     SDL_Surface* internal_surface;        /**< the SDL_Surface encapsulated, if any. */
     SDL_Texture* internal_texture;        /**< the SDL_Texture encapsulated, if any. */
     Color* internal_color;                /**< the background color to use, if any. */
-    bool is_rendered;                     /**< indicated if the current surface has been rendered. Set to false when drawing a surface on this one. */
-    int internal_opacity;                 /**< opacity to apply to all subtexture. */
+    bool is_rendered;                     /**< indicates if the current surface has been rendered. Set to false when drawing a surface on this one. */
+    uint8_t internal_opacity;             /**< opacity to apply to all subtextures. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
+
 };
+
+}
 
 #endif
 

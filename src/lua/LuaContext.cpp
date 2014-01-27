@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,10 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include "entities/Destination.h"
 #include "entities/Switch.h"
 #include "entities/Sensor.h"
-#include "entities/NPC.h"
+#include "entities/Npc.h"
 #include "entities/Chest.h"
 #include "entities/ShopTreasure.h"
 #include "entities/Door.h"
@@ -27,13 +28,15 @@
 #include "entities/Pickable.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include "Equipment.h"
 #include "EquipmentItem.h"
 #include "Treasure.h"
 #include "Map.h"
 #include "Timer.h"
-#include <sstream>
 #include <iomanip>
+#include <sstream>
+
+namespace solarus {
 
 std::map<lua_State*, LuaContext*> LuaContext::lua_contexts;
 
@@ -375,306 +378,6 @@ void LuaContext::notify_dialog_finished(
 }
 
 /**
- * \brief Like luaL_error() but with an std::string message.
- * \param l A Lua state.
- * \param message Error message.
- * \return This function never returns.
- */
-int LuaContext::error(lua_State* l, const std::string& message) {
-  return luaL_error(l, message.c_str());
-}
-
-/**
- * \brief Like luaL_argerror() but with an std::string message.
- * \param l A Lua state.
- * \param arg_index Index of an argument in the stack.
- * \param message Error message.
- * \return This function never returns.
- */
-int LuaContext::arg_error(lua_State* l, int arg_index, const std::string& message) {
-  return luaL_argerror(l, arg_index, message.c_str());
-}
-
-/**
- * \brief Checks that a table field is a number and returns it as an integer.
- *
- * This function acts like lua_getfield() followed by luaL_checkint().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as an integer.
- */
-int LuaContext::check_int_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (!lua_isnumber(l, -1)) {
-    arg_error(l, table_index, StringConcat() <<
-        "Bad field '" << key << "' (integer expected, got " <<
-        luaL_typename(l, -1) << ")");
-  }
-
-  int value = int(lua_tointeger(l, -1));
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Like check_int_field() but with a default value.
- *
- * This function acts like lua_getfield() followed by luaL_optint().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param default_value The default value to return if the field is \c nil.
- * \return The wanted field as an integer.
- */
-int LuaContext::opt_int_field(
-    lua_State* l, int table_index, const std::string& key, int default_value) {
-
-  lua_getfield(l, table_index, key.c_str());
-  int value = default_value;
-  if (!lua_isnil(l, -1)) {
-
-    if (!lua_isnumber(l, -1)) {
-      arg_error(l, table_index, StringConcat() <<
-          "Bad field '" << key << "' (integer expected, got " <<
-          luaL_typename(l, -1) << ")");
-    }
-    value = int(lua_tointeger(l, -1));
-  }
-
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Checks that a table field is a number and returns it as a double.
- *
- * This function acts like lua_getfield() followed by luaL_checknumber().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as a double.
- */
-double LuaContext::check_number_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (!lua_isnumber(l, -1)) {
-    arg_error(l, table_index, StringConcat() <<
-        "Bad field '" << key << "' (number expected, got " <<
-        luaL_typename(l, -1) << ")");
-  }
-
-  int value = lua_tonumber(l, -1);
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Like check_number_field() but with a default value.
- *
- * This function acts like lua_getfield() followed by luaL_optnumber().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param default_value The default value to return if the field is \c nil.
- * \return The wanted field as a double.
- */
-double LuaContext::opt_number_field(
-    lua_State* l, int table_index, const std::string& key, double default_value) {
-
-  lua_getfield(l, table_index, key.c_str());
-  double value = default_value;
-  if (!lua_isnil(l, -1)) {
-
-    if (!lua_isnumber(l, -1)) {
-      arg_error(l, table_index, StringConcat() <<
-          "Bad field '" << key << "' (number expected, got " <<
-          luaL_typename(l, -1) << ")");
-    }
-    value = lua_tonumber(l, -1);
-  }
-
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Checks that a table field is a string and returns it.
- *
- * This function acts like lua_getfield() followed by luaL_checkstring().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as an string.
- */
-const std::string LuaContext::check_string_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (!lua_isstring(l, -1)) {
-    arg_error(l, table_index, StringConcat() <<
-        "Bad field '" << key << "' (string expected, got " <<
-        luaL_typename(l, -1) << ")");
-  }
-
-  const std::string& value = lua_tostring(l, -1);
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Like check_string_field() but with a default value.
- *
- * This function acts like lua_getfield() followed by luaL_optstring().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param default_value The default value to return if the field is \c nil.
- * \return The wanted field as a string.
- */
-const std::string LuaContext::opt_string_field(
-    lua_State* l, int table_index, const std::string& key, const std::string& default_value) {
-
-  lua_getfield(l, table_index, key.c_str());
-  std::string value;
-  if (lua_isnil(l, -1)) {
-    value = default_value;
-  }
-  else {
-    if (!lua_isstring(l, -1)) {
-      arg_error(l, table_index, StringConcat() <<
-          "Bad field '" << key << "' (string expected, got " <<
-          luaL_typename(l, -1) << ")");
-    }
-    value = lua_tostring(l, -1);
-  }
-
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Checks that a table field is a boolean and returns it.
- *
- * This function acts like lua_getfield() followed by luaL_checktype()
- * and lua_toboolean().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as a boolean.
- */
-bool LuaContext::check_boolean_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (lua_type(l, -1) != LUA_TBOOLEAN) {
-    arg_error(l, table_index, StringConcat() <<
-        "Bad field '" << key << "' (boolean expected, got " <<
-        luaL_typename(l, -1) << ")");
-  }
-
-  bool value = lua_toboolean(l, -1);
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Like check_boolean_field() but with a default value.
- *
- * This function acts like lua_getfield() followed by lua_toboolean().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \param default_value The default value to return if the field is \c nil.
- * \return The wanted field as a string.
- */
-bool LuaContext::opt_boolean_field(
-    lua_State* l, int table_index, const std::string& key, bool default_value) {
-
-  lua_getfield(l, table_index, key.c_str());
-  bool value = default_value;
-  if (!lua_isnil(l, -1)) {
-
-    if (lua_type(l, -1) != LUA_TBOOLEAN) {
-      arg_error(l, table_index, StringConcat() <<
-          "Bad field '" << key << "' (boolean expected, got " <<
-          luaL_typename(l, -1) << ")");
-    }
-    value = lua_toboolean(l, -1);
-  }
-
-  lua_pop(l, 1);
-  return value;
-}
-
-/**
- * \brief Checks that a table field is a function and returns a ref to it.
- *
- * This function acts like lua_getfield() followed by lua_isfunction() and
- * luaL_ref().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as a Lua ref to the function.
- */
-int LuaContext::check_function_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  if (!lua_isfunction(l, -1)) {
-    arg_error(l, table_index, StringConcat() <<
-        "Bad field '" << key << "' (function expected, got " <<
-        luaL_typename(l, -1) << ")");
-  }
-
-  int ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  return ref;
-}
-
-/**
- * \brief Like check_function_field() but the field is optional.
- *
- * This function acts like lua_getfield() followed by lua_isfunction() and
- * luaL_ref().
- *
- * \param l A Lua state.
- * \param table_index Index of a table in the stack.
- * \param key Key of the field to get in that table.
- * \return The wanted field as a Lua ref to the function, or LUA_REFNIL.
- */
-int LuaContext::opt_function_field(
-    lua_State* l, int table_index, const std::string& key) {
-
-  lua_getfield(l, table_index, key.c_str());
-  int ref = LUA_REFNIL;
-  if (lua_isnil(l, -1)) {
-    lua_pop(l, 1);
-  }
-  else {
-    if (!lua_isfunction(l, -1)) {
-      arg_error(l, table_index, StringConcat() <<
-          "Bad field '" << key << "' (function expected, got " <<
-          luaL_typename(l, -1) << ")");
-    }
-    ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  }
-
-  return ref;
-}
-
-/**
  * \brief Creates a reference to the Lua value on top of the stack and pops this
  * value.
  * \return The reference created.
@@ -718,11 +421,12 @@ void LuaContext::push_callback(int callback_ref) {
   push_ref(l, callback_ref);
 #ifndef NDEBUG
   if (!lua_isfunction(l, -1)) {
-    Debug::die(StringConcat()
-        << "There is no callback with ref " << callback_ref
+    std::ostringstream oss;
+    oss << "There is no callback with ref " << callback_ref
         << " (function expected, got " << luaL_typename(l, -1)
-        << "). Did you already invoke or cancel it?"
-    );
+        << "). Did you already invoke or cancel it?";
+    Debug::die(oss.str());
+  }
 #endif
 }
 
@@ -744,11 +448,11 @@ void LuaContext::cancel_callback(int callback_ref) {
     // uniqueness of Lua refs.
     push_ref(l, callback_ref);
     if (!lua_isfunction(l, -1)) {
-      Debug::die(StringConcat()
-          << "There is no callback with ref " << callback_ref
+      std::ostringstream oss;
+      oss << "There is no callback with ref " << callback_ref
           << " (function expected, got " << luaL_typename(l, -1)
-          << "). Did you already invoke or cancel it?"
-      );
+          << "). Did you already invoke or cancel it?";
+      Debug::die(oss.str());
       lua_pop(l, 1);
     }
 #endif
@@ -770,14 +474,25 @@ void LuaContext::cancel_callback(int callback_ref) {
  * \param key String key to test.
  * \return \c true if this key exists on the userdata.
  */
-bool LuaContext::userdata_has_field(ExportableToLua& userdata,
-    const char* key) const {
+bool LuaContext::userdata_has_field(
+    const ExportableToLua& userdata, const char* key) const {
 
+  // TODO since this function now also checks the metatable, check that
+  // doing the work below instead of just returning true is still useful
+  // for performance.
+  // If not, kill this function.
+
+  // First check the metatable of the type.
+  if (userdata_has_metafield(userdata, key)) {
+    return true;
+  }
+
+  // Check the userdata itself then.
   if (!userdata.is_with_lua_table()) {
     return false;
   }
 
-  const std::map<ExportableToLua*, std::set<std::string> >::const_iterator it =
+  const std::map<const ExportableToLua*, std::set<std::string> >::const_iterator it =
       userdata_fields.find(&userdata);
   if (it == userdata_fields.end()) {
     return false;
@@ -799,20 +514,50 @@ bool LuaContext::userdata_has_field(ExportableToLua& userdata,
  * \param key String key to test.
  * \return \c true if this key exists on the userdata.
  */
-bool LuaContext::userdata_has_field(ExportableToLua& userdata,
-    const std::string& key) const {
+bool LuaContext::userdata_has_field(
+    const ExportableToLua& userdata, const std::string& key) const {
 
+  // First check the metatable of the type.
+  if (userdata_has_metafield(userdata, key.c_str())) {
+    return true;
+  }
+
+  // Check the userdata itself then.
   if (!userdata.is_with_lua_table()) {
     return false;
   }
 
-  const std::map<ExportableToLua*, std::set<std::string> >::const_iterator it =
+  const std::map<const ExportableToLua*, std::set<std::string> >::const_iterator it =
       userdata_fields.find(&userdata);
   if (it == userdata_fields.end()) {
     return false;
   }
 
   return it->second.find(key) != it->second.end();
+}
+
+/**
+ * \brief Returns whether the metatable of a userdata has the specified field.
+ * \param userdata A userdata.
+ * \param key String key to test.
+ * \return \c true if this key exists on the userdata's metatable.
+ */
+bool LuaContext::userdata_has_metafield(
+    const ExportableToLua& userdata, const char* key) const {
+
+  // We avoid to push the userdata for performance.
+  // Maybe the userdata does not even exist in the Lua side.
+                                  // ...
+  luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
+                                  // ... meta
+  lua_pushstring(l, key);
+                                  // ... meta key
+  lua_rawget(l, -2);
+                                  // ... meta field/nil
+  const bool found = !lua_isnil(l, -1);
+  lua_pop(l, 2);
+                                  // ...
+  return found;
 }
 
 /**
@@ -846,7 +591,7 @@ bool LuaContext::find_method(const char* function_name) {
  */
 bool LuaContext::find_method(int index, const char* function_name) {
 
-  index = get_positive_index(l, index);
+  index = LuaTools::get_positive_index(l, index);
                                   // ... object ...
   lua_getfield(l, index, function_name);
                                   // ... object ... method/?
@@ -918,8 +663,9 @@ bool LuaContext::call_function(
     const char* function_name) {
 
   if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
-    Debug::error(StringConcat() << "In " << function_name << "(): "
-        << lua_tostring(l, -1));
+    Debug::error(std::string("In ") + function_name + ": "
+        + lua_tostring(l, -1)
+    );
     lua_pop(l, 1);
     return false;
   }
@@ -936,8 +682,7 @@ bool LuaContext::call_function(
 void LuaContext::load_file(lua_State* l, const std::string& script_name) {
 
   if (!load_file_if_exists(l, script_name)) {
-    Debug::die(StringConcat() << "Cannot find script file '"
-        << script_name << "'");
+    Debug::die(std::string("Cannot find script file '") + script_name + "'");
   }
 }
 
@@ -972,8 +717,8 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
     FileTools::data_file_close_buffer(buffer);
 
     if (result != 0) {
-      Debug::error(StringConcat() << "Failed to load script '"
-          << script_name << "': " << lua_tostring(l, -1));
+      Debug::error(std::string("Failed to load script '")
+          + script_name + "': " + lua_tostring(l, -1));
     }
     return true;
   }
@@ -1014,25 +759,6 @@ bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name)
     return true;
   }
   return false;
-}
-
-/**
- * \brief For an index in the Lua stack, returns an equivalent positive index.
- *
- * Pseudo-indexes are unchanged.
- *
- * \param l A Lua state.
- * \param index An index in the stack.
- * \return The corresponding positive index.
- */
-int LuaContext::get_positive_index(lua_State* l, int index) {
-
-  int positive_index = index;
-  if (index < 0 && index >= -lua_gettop(l)) {
-    positive_index = lua_gettop(l) + index + 1;
-  }
-
-  return positive_index;
 }
 
 /**
@@ -1085,37 +811,16 @@ void LuaContext::print_stack(lua_State* l) {
 }
 
 /**
- * \brief Returns whether the specified name is a valid Lua identifier.
- * \param name The name to check.
- * \return true if the name only contains alphanumeric characters or '_' and
- * does not start with a digit.
- */
-bool LuaContext::is_valid_lua_identifier(const std::string& name) {
-
-  if (name.empty() || (name[0] >= '0' && name[0] <= '9')) {
-    return false;
-  }
-
-  bool valid = true;
-  for (std::string::const_iterator it = name.begin(); it != name.end() && valid; it++) {
-    char character = *it;
-    valid = (character == '_' ||
-        (character >= 'a' && character <= 'z') ||
-        (character >= 'A' && character <= 'Z') ||
-        (character >= '0' && character <= '9'));
-  }
-  return valid;
-}
-
-/**
  * \brief Defines some C++ functions into a Lua table.
  * \param module_name name of the table that will contain the functions
- * (e.g. "sol.main")
+ * (e.g. "sol.main").
  * \param functions list of functions to define in the table
- * (must end with {NULLL, NULL})
+ * (must end with {NULLL, NULL}).
  */
-void LuaContext::register_functions(const std::string& module_name,
-    const luaL_Reg* functions) {
+void LuaContext::register_functions(
+    const std::string& module_name,
+    const luaL_Reg* functions
+) {
 
   // create a table and fill it with the functions
   luaL_register(l, module_name.c_str(), functions);
@@ -1125,43 +830,78 @@ void LuaContext::register_functions(const std::string& module_name,
 /**
  * \brief Defines some C++ functions into a new Lua userdata type.
  * \param module_name name of the table that will contain the functions
- * (e.g. "sol.movement") - this string will also identify the type
- * \param functions list of functions to define on the type
- * (must end with {NULLL, NULL})
- * \param metamethods metamethods to define on the type (can be NULL)
+ * (e.g. "sol.game"). It may already exist or not.
+ * This string will also identify the type.
+ * \param functions List of functions to define in the module table or NULL.
+ * Must end with {NULLL, NULL}.
+ * \param methods List of methods to define in the type or NULL.
+ * Must end with {NULLL, NULL}.
+ * \param metamethods List of metamethods to define in the metatable of the
+ * type or NULL.
+ * Must end with {NULLL, NULL}.
  */
-void LuaContext::register_type(const std::string& module_name,
-    const luaL_Reg* methods, const luaL_Reg* metamethods) {
+void LuaContext::register_type(
+    const std::string& module_name,
+    const luaL_Reg* functions,
+    const luaL_Reg* methods,
+    const luaL_Reg* metamethods
+) {
 
-  // create a table and fill it with the methods
-  luaL_register(l, module_name.c_str(), methods);
+  // Check that this type does not already exist.
+  luaL_getmetatable(l, module_name.c_str());
+  Debug::check_assertion(lua_isnil(l, -1),
+      std::string("Type ") + module_name + " already exists");
+  lua_pop(l, 1);
+
+  // Make sure we create the table.
+  const luaL_Reg empty[] = {
+      { NULL, NULL }
+  };
+  luaL_register(l, module_name.c_str(), empty);
                                   // module
-  // create the metatable for the type, add it to the Lua registry
+
+  // Add the functions to the module.
+  if (functions != NULL) {
+    luaL_register(l, NULL, functions);
+                                  // module
+  }
+  lua_pop(l, 1);
+                                  // --
+
+  // Create the metatable for the type, add it to the Lua registry.
   luaL_newmetatable(l, module_name.c_str());
-                                  // module mt
+                                  // meta
+
+  // Store a metafield __solarus_type with the module name.
+  lua_pushstring(l, module_name.c_str());
+                                  // meta type_name
+  lua_setfield(l, -2, "__solarus_type");
+                                  // meta
+
+  // Add the methods to the metatable.
+  if (methods != NULL) {
+    luaL_register(l, NULL, methods);
+  }
+                                  // meta
+
+  // Add the metamethods to the metatable.
   if (metamethods != NULL) {
-    // fill the metatable
     luaL_register(l, NULL, metamethods);
-                                  // module mt
+                                  // meta
   }
 
-  // make metatable.__index = module
-  // (or metatable.usual_index = module if __index is already defined)
+  // make metatable.__index = metatable,
+  // unless if __index is already defined
   lua_getfield(l, -1, "__index");
-                                  // module mt __index/nil
-  lua_pushvalue(l, -3);
-                                  // module mt __index/nil module
+                                  // meta __index/nil
+  lua_pushvalue(l, -2);
+                                  // meta __index/nil meta
   if (lua_isnil(l, -2)) {
-                                  // module mt nil module
+                                  // meta nil meta
     lua_setfield(l, -3, "__index");
-                                  // module mt nil
+                                  // meta nil
   }
-  else {
-                                  // module mt __index module
-    lua_setfield(l, -3, "usual_index");
-                                  // module mt __index
-  }
-  lua_pop(l, 3);
+  lua_settop(l, 0);
                                   // --
 }
 
@@ -1170,7 +910,6 @@ void LuaContext::register_type(const std::string& module_name,
  */
 void LuaContext::register_modules() {
 
-  // modules available to all scripts
   register_main_module();
   register_game_module();
   register_map_module();
@@ -1306,10 +1045,10 @@ void LuaContext::push_color(lua_State* l, const Color& color) {
 bool LuaContext::is_userdata(lua_State* l, int index,
     const std::string& module_name) {
 
-  index = get_positive_index(l, index);
+  index = LuaTools::get_positive_index(l, index);
 
                                   // ... udata ...
-  void *udata = lua_touserdata(l, index);
+  void* udata = lua_touserdata(l, index);
   if (udata == NULL) {
     // This is not a userdata.
     return false;
@@ -1338,61 +1077,11 @@ bool LuaContext::is_userdata(lua_State* l, int index,
 ExportableToLua& LuaContext::check_userdata(lua_State* l, int index,
     const std::string& module_name) {
 
-  index = get_positive_index(l, index);
+  index = LuaTools::get_positive_index(l, index);
 
   ExportableToLua** userdata = static_cast<ExportableToLua**>(
     luaL_checkudata(l, index, module_name.c_str()));
   return **userdata;
-}
-
-/**
- * \brief Returns whether a value is a color.
- * \param l A Lua context.
- * \param index An index in the stack.
- * \return true if the value is a color, that is, an array with three integers.
- */
-bool LuaContext::is_color(lua_State* l, int index) {
-
-  bool result = false;
-  if (lua_type(l, index) != LUA_TTABLE) {
-    lua_rawgeti(l, index, 1);
-    lua_rawgeti(l, index, 2);
-    lua_rawgeti(l, index, 3);
-    lua_rawgeti(l, index, 4);
-    result = lua_isnumber(l, -4) 
-      && lua_isnumber(l, -3)
-      && lua_isnumber(l, -2) 
-      && (lua_isnumber(l, -1) || lua_isnil(l, -1));
-    lua_pop(l, 4);
-  }
-  return result;
-}
-
-/**
- * \brief Checks that the value at the given index is a color and returns it.
- *
- * Set opaque by default if alpha channel is not specified.
- *
- * \param l a Lua state
- * \param index an index in the Lua stack
- * \return the color at this index
- */
-Color LuaContext::check_color(lua_State* l, int index) {
-
-  index = get_positive_index(l, index);
-
-  luaL_checktype(l, index, LUA_TTABLE);
-  lua_rawgeti(l, index, 1);
-  lua_rawgeti(l, index, 2);
-  lua_rawgeti(l, index, 3);
-  lua_rawgeti(l, index, 4);
-  Color color(luaL_checkint(l, -4),
-    luaL_checkint(l, -3),
-    luaL_checkint(l, -2),
-    luaL_optint(l, -1, 255));
-  lua_pop(l, 4);
-
-  return color;
 }
 
 /**
@@ -1525,8 +1214,7 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
    * So what we retrieve instead is udata_tables[udata][key].
    * This redirection is totally transparent from the Lua side.
    * If udata_tables[udata][key] does not exist, we fall back
-   * to the usual __index for userdata, i.e. we look for a method
-   * in its type.
+   * to the userdata __index metamethod.
    */
 
   luaL_checktype(l, 1, LUA_TUSERDATA);
@@ -1536,7 +1224,6 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
       *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
   LuaContext& lua_context = get_lua_context(l);
 
-  bool found = false;
   // If the userdata actually has a table, lookup this table, unless we already
   // know that we won't find it (because we know all the existing string keys).
   if (userdata->is_with_lua_table() &&
@@ -1546,29 +1233,33 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
                                   // ... udata_tables
     lua_pushlightuserdata(l, userdata);
                                   // ... udata_tables lightudata
-    lua_gettable(l, -2);
+    // Lookup the key in the table, without metamethods.
+    lua_rawget(l, -2);
                                   // ... udata_tables udata_table/nil
-    Debug::check_assertion(!lua_isnil(l, -1), "Missing userdata table");
-    lua_pushvalue(l, 2);
+    if (!lua_isnil(l, -1)) {
+      lua_pushvalue(l, 2);
                                   // ... udata_tables udata_table key
-    lua_gettable(l, -2);
-                                  // ... udata_tables udata_table value
-    found = !lua_isnil(l, -1);
+      lua_gettable(l, -2);
+                                  // ... udata_tables udata_table value/nil
+      if (!lua_isnil(l, -1)) {
+        // Found it!
+        return 1;
+      }
+    }
   }
 
-  // Nothing in the userdata's table: do the usual __index instead
-  // (look in the userdata's type).
-  if (!found) {
-    lua_getmetatable(l, 1);
-                                  // ... meta
-    lua_getfield(l, -1, "usual_index");
-                                  // ... meta module
-    lua_pushvalue(l, 2);
-                                  // ... meta module key
-    lua_gettable(l, -2);
-                                  // ... meta module value
-  }
+  // Not in the table. See in the metatable
+  // (just like when metatable.__index = metatable).
 
+  lua_pushvalue(l, 1);
+                                  // ... udata
+  lua_getmetatable(l, -1);
+                                  // ... udata meta
+  Debug::check_assertion(!lua_isnil(l, -1), "Missing userdata metatable");
+  lua_pushvalue(l, 2);
+                                  // ... udata meta key
+  lua_gettable(l, -2);
+                                  // ... udata meta key value/nil
   return 1;
 }
 
@@ -2084,11 +1775,14 @@ void LuaContext::on_frame_changed(const std::string& animation, int frame) {
 
 /**
  * \brief Calls the on_position_changed() method of the object on top of the stack.
+ * \param xy The new coordinates.
  */
-void LuaContext::on_position_changed() {
+void LuaContext::on_position_changed(const Rectangle& xy) {
 
   if (find_method("on_position_changed")) {
-    call_function(1, 0, "on_position_changed");
+    lua_pushinteger(l, xy.get_x());
+    lua_pushinteger(l, xy.get_y());
+    call_function(3, 0, "on_position_changed");
   }
 }
 
@@ -2284,7 +1978,7 @@ void LuaContext::on_left() {
  * \brief Calls the on_npc_interaction() method of the object on top of the stack.
  * \param npc An NPC.
  */
-void LuaContext::on_npc_interaction(NPC& npc) {
+void LuaContext::on_npc_interaction(Npc& npc) {
 
   if (find_method("on_npc_interaction")) {
     push_npc(l, npc);
@@ -2298,7 +1992,7 @@ void LuaContext::on_npc_interaction(NPC& npc) {
  * \param item_used The equipment item used.
  * \return true if an interaction occurred.
  */
-bool LuaContext::on_npc_interaction_item(NPC& npc, EquipmentItem& item_used) {
+bool LuaContext::on_npc_interaction_item(Npc& npc, EquipmentItem& item_used) {
 
   bool interacted = false;
   if (find_method("on_npc_interaction_item")) {
@@ -2354,7 +2048,7 @@ bool LuaContext::on_interaction_item(EquipmentItem& item) {
  * \brief Calls the on_npc_collision_fire() method of the object on top of the stack.
  * \param npc An NPC.
  */
-void LuaContext::on_npc_collision_fire(NPC& npc) {
+void LuaContext::on_npc_collision_fire(Npc& npc) {
 
   if (find_method("on_npc_collision_fire")) {
     push_npc(l, npc);
@@ -2491,20 +2185,6 @@ void LuaContext::on_pickable_created(Pickable& pickable) {
 }
 
 /**
- * \brief Calls the on_pickable_movement_changed() method of the object on top of the stack.
- * \param pickable A pickable treasure.
- * \param movement The movement of this pickable treasure.
- */
-void LuaContext::on_pickable_movement_changed(Pickable& pickable, Movement& movement) {
-
-  if (find_method("on_pickable_movement_changed")) {
-    push_entity(l, pickable);
-    push_movement(l, movement);
-    call_function(3, 0, "on_pickable_movement_changed");
-  }
-}
-
-/**
  * \brief Calls the on_variant_changed() method of the object on top of the stack.
  * \param variant Variant of an equipment item.
  */
@@ -2576,12 +2256,12 @@ void LuaContext::on_using() {
 
 /**
  * \brief Calls the on_ability_used() method of the object on top of the stack.
- * \param ability_name Id of a built-in ability.
+ * \param ability A built-in ability.
  */
-void LuaContext::on_ability_used(const std::string& ability_name) {
+void LuaContext::on_ability_used(Ability ability) {
 
   if (find_method("on_ability_used")) {
-    push_string(l, ability_name);
+    push_string(l, Equipment::ability_names[ability]);
     call_function(2, 0, "on_ability_used");
   }
 }
@@ -2722,6 +2402,56 @@ void LuaContext::on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sp
 }
 
 /**
+ * \brief Calls the on_looked() method of the object on top of the stack.
+ */
+void LuaContext::on_looked() {
+
+  if (find_method("on_looked")) {
+    call_function(1, 0, "on_looked");
+  }
+}
+
+/**
+ * \brief Calls the on_cut() method of the object on top of the stack.
+ */
+void LuaContext::on_cut() {
+
+  if (find_method("on_cut")) {
+    call_function(1, 0, "on_cut");
+  }
+}
+
+/**
+ * \brief Calls the on_lifting() method of the object on top of the stack.
+ */
+void LuaContext::on_lifting() {
+
+  if (find_method("on_lifting")) {
+    call_function(1, 0, "on_lifting");
+  }
+}
+
+/**
+ * \brief Calls the on_exploded() method of the object on top of the stack.
+ */
+void LuaContext::on_exploded() {
+
+  if (find_method("on_exploded")) {
+    call_function(1, 0, "on_exploded");
+  }
+}
+
+/**
+ * \brief Calls the on_regenerating() method of the object on top of the stack.
+ */
+void LuaContext::on_regenerating() {
+
+  if (find_method("on_regenerating")) {
+    call_function(1, 0, "on_regenerating");
+  }
+}
+
+/**
  * \brief Calls the on_custom_attack_received() method of the object on top of the stack.
  * \param attack The attack received.
  * \param sprite The sprite that receives the attack if any.
@@ -2786,6 +2516,28 @@ void LuaContext::on_immobilized() {
 }
 
 /**
+ * \brief Calls the on_attacking_hero() method of the object on top of the stack.
+ * \param hero The hero attacked.
+ * \param attacker_sprite Sprite that caused the collision or NULL.
+ * \return \c true if the method is defined.
+ */
+bool LuaContext::on_attacking_hero(Hero& hero, Sprite* attacker_sprite) {
+
+  if (find_method("on_attacking_hero")) {
+    push_hero(l, hero);
+    if (attacker_sprite == NULL) {
+      lua_pushnil(l);
+    }
+    else {
+      push_sprite(l, *attacker_sprite);
+    }
+    call_function(3, 0, "on_attacking_hero");
+    return true;
+  }
+  return false;
+}
+
+/**
  * \brief Function called when an unprotected Lua error occurs.
  * \param l The Lua context.
  * \return Number of values to return to Lua.
@@ -2817,5 +2569,7 @@ int LuaContext::l_loader(lua_State* l) {
     push_string(l, oss.str());
   }
   return 1;
+}
+
 }
 

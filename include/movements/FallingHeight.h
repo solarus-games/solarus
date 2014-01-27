@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 #ifndef SOLARUS_FALLING_HEIGHT_H
 #define SOLARUS_FALLING_HEIGHT_H
 
+namespace solarus {
+
 /**
  * \brief Indicates from which height an entity falls.
  *
@@ -25,11 +27,13 @@
  * when an enemy is killed or when a pot is lifted.
  */
 enum FallingHeight {
-  FALLING_NONE		= 0,
-  FALLING_LOW		= 1,
-  FALLING_MEDIUM	= 2,
-  FALLING_HIGH		= 3
+  FALLING_NONE          = 0,
+  FALLING_LOW           = 1,
+  FALLING_MEDIUM        = 2,
+  FALLING_HIGH          = 3
 };
+
+}
 
 #endif
 

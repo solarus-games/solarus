@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
 #include "Map.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a simple tile pattern.
@@ -64,7 +66,9 @@ void SimpleTilePattern::draw(Surface& dst_surface, const Rectangle& dst_position
  *
  * \return true if this tile pattern is animated
  */
-bool SimpleTilePattern::is_animated() {
+bool SimpleTilePattern::is_animated() const {
   return false;
+}
+
 }
 

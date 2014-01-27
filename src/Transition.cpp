@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,15 @@
 #include "TransitionScrolling.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/System.h"
+
+namespace solarus {
+
+const std::string Transition::style_names[] = {
+  "immediate",
+  "fade",
+  "scrolling",
+  ""  // Sentinel.
+};
 
 /**
  * \brief Creates a transition effect.
@@ -43,7 +52,7 @@ Transition::~Transition() {
 /**
  * \brief Creates a transition effect with the specified type and direction.
  * \param style style of the transition: Transition::IMMEDIATE, Transition::FADE, etc.
- * \param direction Transition::IN or Transition::OUT
+ * \param direction Direction of the transition.
  * \param dst_surface The surface that will receive the transition
  * (used by some kinds of transitions).
  * \param game The current game if any (used by some kinds of transitions).
@@ -90,15 +99,15 @@ Game* Transition::get_game() const {
 
 /**
  * \brief Returns the direction of this transition effect.
- * \returns the direction of this transition effect: Transition::IN or Transition::OUT
+ * \returns the direction of this transition effect.
  */
 Transition::Direction Transition::get_direction() const {
   return direction;
 }
 
 /**
- * \brief Returns the surface to show during the OUT transition
- * that was played before this IN transition.
+ * \brief Returns the surface to show during the closing transition
+ * that was played before this opening transition.
  * \return The previous surface or NULL.
  */
 Surface* Transition::get_previous_surface() const {
@@ -106,14 +115,15 @@ Surface* Transition::get_previous_surface() const {
 }
 
 /**
- * \brief Indicates the surface that was shown during the OUT transition
- * that was played before this IN transition.
+ * \brief Indicates the surface that was shown during the closing transition
+ * that was played before this opening transition.
  * \param previous_surface The previous surface or NULL.
  */
 void Transition::set_previous_surface(Surface* previous_surface) {
 
-  Debug::check_assertion(previous_surface == NULL || get_direction() != OUT,
-      "Cannot show a previous surface with an OUT transition effect");
+  Debug::check_assertion(previous_surface == NULL
+      || get_direction() != TRANSITION_CLOSING,
+      "Cannot show a previous surface with an closing transition effect");
 
   this->previous_surface = previous_surface;
 }
@@ -155,5 +165,7 @@ void Transition::set_suspended(bool suspended) {
  */
 uint32_t Transition::get_when_suspended() const {
   return when_suspended;
+}
+
 }
 

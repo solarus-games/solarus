@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,16 +19,12 @@
 
 #include "hero/State.h"
 
+namespace solarus {
+
 /**
  * \brief The state "ConveyorBelt" of the hero.
  */
 class Hero::ConveyorBeltState: public Hero::State {
-
-  private:
-
-    ConveyorBelt& conveyor_belt;	/**< the conveyor belt to take */
-    bool snapping;                  /**< indicates that the hero is currently moving towards the
-                                     * center of the conveyor belt, before following its real direction */
 
   public:
 
@@ -42,7 +38,15 @@ class Hero::ConveyorBeltState: public Hero::State {
     bool can_avoid_teletransporter() const;
     bool can_avoid_conveyor_belt() const;
 
+  private:
+
+    ConveyorBelt& conveyor_belt;    /**< the conveyor belt to take */
+    bool snapping;                  /**< indicates that the hero is currently moving towards the
+                                     * center of the conveyor belt, before following its real direction */
+
 };
+
+}
 
 #endif
 

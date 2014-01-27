@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +23,15 @@
 #include "Game.h"
 #include "GameCommands.h"
 
+namespace solarus {
+
 /**
  * \brief Constructor.
  * \param hero The hero controlled by this state.
  */
 Hero::PullingState::PullingState(Hero& hero):
-  State(hero, "pulling") {
+  State(hero, "pulling"),
+  pulling_movement(NULL) {
 
 }
 
@@ -37,6 +40,7 @@ Hero::PullingState::PullingState(Hero& hero):
  */
 Hero::PullingState::~PullingState() {
 
+  RefCountable::unref(pulling_movement);
 }
 
 /**
@@ -91,7 +95,7 @@ void Hero::PullingState::update() {
 
     // see if the obstacle is an entity that the hero can pull
     else {
- 
+
       Detector *facing_entity = hero.get_facing_entity();
       if (facing_entity != NULL) {
 
@@ -104,7 +108,9 @@ void Hero::PullingState::update() {
           std::string path = "  ";
           path[0] = path[1] = '0' + opposite_direction8;
 
-          hero.set_movement(new PathMovement(path, 40, false, false, false));
+          pulling_movement = new PathMovement(path, 40, false, false, false);
+          RefCountable::ref(pulling_movement);
+          hero.set_movement(pulling_movement);
           pulled_entity = facing_entity;
           pulled_entity->notify_moving_by(hero);
         }
@@ -172,10 +178,8 @@ void Hero::PullingState::notify_position_changed() {
     // if the entity has made more than 8 pixels and is aligned on the grid,
     // we stop the movement
 
-    PathMovement* movement = static_cast<PathMovement*>(get_hero().get_movement());
-
     bool horizontal = get_sprites().get_animation_direction() % 2 == 0;
-    bool has_reached_grid = movement->get_total_distance_covered() >= 16
+    bool has_reached_grid = pulling_movement->get_total_distance_covered() >= 16
       && ((horizontal && pulled_entity->is_aligned_to_grid_x())
           || (!horizontal && pulled_entity->is_aligned_to_grid_y()));
 
@@ -227,6 +231,8 @@ void Hero::PullingState::stop_moving_pulled_entity() {
     }
 
     hero.clear_movement();
+    RefCountable::unref(pulling_movement);
+    pulling_movement = NULL;
     MapEntity* entity_just_moved = pulled_entity;
     pulled_entity = NULL;
     entity_just_moved->notify_moved_by(hero);
@@ -310,5 +316,7 @@ bool Hero::PullingState::is_conveyor_belt_obstacle(
 bool Hero::PullingState::is_separator_obstacle(
     const Separator& separator) const {
   return true;
+}
+
 }
 

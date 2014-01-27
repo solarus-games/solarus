@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 
+namespace solarus {
+
 /**
  * \brief A special tile that can be enabled or disabled.
  *
@@ -33,8 +35,16 @@ class DynamicTile: public MapEntity {
 
   public:
 
-    DynamicTile(const std::string& name, Layer layer, int x, int y,
-	int width, int height, int tile_pattern_id, bool visible);
+    DynamicTile(
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        int width,
+        int height,
+        int tile_pattern_id,
+        bool visible
+    );
     ~DynamicTile();
 
     EntityType get_type() const;
@@ -50,6 +60,8 @@ class DynamicTile: public MapEntity {
     TilePattern* tile_pattern; /**< pattern of the tile */
 
 };
+
+}
 
 #endif
 

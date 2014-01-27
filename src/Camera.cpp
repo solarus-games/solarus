@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,17 +21,19 @@
 #include "entities/Hero.h"
 #include "entities/Separator.h"
 #include "movements/TargetMovement.h"
-#include "lowlevel/VideoManager.h"
+#include "lowlevel/Video.h"
 #include "lowlevel/System.h"
 #include "lua/LuaContext.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a camera.
  * \param map The map.
  */
 Camera::Camera(Map& map):
+  position(Video::get_quest_size()),
   map(map),
-  position(VideoManager::get_instance()->get_quest_size()),
   fixed_on_hero(true),
   separator_scrolling_dx(0),
   separator_scrolling_dy(0),
@@ -418,5 +420,7 @@ void Camera::traverse_separator(Separator* separator) {
   // Move the hero two pixels ahead to avoid to traversed the separator again.
   hero.set_xy(hero.get_x() + 2 * separator_scrolling_dx,
       hero.get_y() + 2 * separator_scrolling_dy);
+}
+
 }
 

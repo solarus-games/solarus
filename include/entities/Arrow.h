@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +20,12 @@
 #include "Common.h"
 #include "entities/MapEntity.h"
 
+namespace solarus {
+
 /**
  * \brief An arrow thrown by the bow on the map.
  */
 class Arrow: public MapEntity {
-
-  private:
-
-    const Hero& hero;          /**< the hero */
-    uint32_t disappear_date;   /**< date when the arrow disappears */
-    bool stop_now;             /**< true to make the arrow stop now */
-    MapEntity* entity_reached; /**< a dynamic entity reached by the arrow
-                                * (i.e. an enemy or a crystal, not a usual wall) */
 
   public:
 
@@ -54,7 +48,7 @@ class Arrow: public MapEntity {
     bool is_switch_obstacle(const Switch& sw) const;
     bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
     bool is_crystal_obstacle(const Crystal& crystal) const;
-    bool is_npc_obstacle(const NPC& npc) const;
+    bool is_npc_obstacle(const Npc& npc) const;
     bool is_jumper_obstacle(const Jumper& jumper) const;
 
     // state
@@ -71,10 +65,25 @@ class Arrow: public MapEntity {
     void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
     void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-        EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
     bool has_reached_map_border() const;
+
+  private:
+
+    const Hero& hero;          /**< the hero */
+    uint32_t disappear_date;   /**< date when the arrow disappears */
+    bool stop_now;             /**< true to make the arrow stop now */
+    MapEntity* entity_reached; /**< a dynamic entity reached by the arrow
+                                * (i.e. an enemy or a crystal, not a usual wall) */
+
 };
+
+}
 
 #endif
 

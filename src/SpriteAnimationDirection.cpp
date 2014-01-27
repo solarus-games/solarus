@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,9 @@
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -71,8 +73,10 @@ int SpriteAnimationDirection::get_nb_frames() const {
 const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
 
   if (frame < 0 || frame >= get_nb_frames()) {
-    Debug::die(StringConcat() << "Invalid frame " << frame
-        << ": this direction has " << get_nb_frames() << " frames");
+    std::ostringstream oss;
+    oss << "Invalid frame " << frame
+        << ": this direction has " << get_nb_frames() << " frames";
+    Debug::die(oss.str());
   }
   return frames[frame];
 }
@@ -135,5 +139,7 @@ void SpriteAnimationDirection::disable_pixel_collisions() {
  */
 bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
   return !pixel_bits.empty();
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,9 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <cmath>
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -37,6 +38,8 @@ StraightMovement::StraightMovement(bool ignore_obstacles, bool smooth):
   y_speed(0),
   next_move_date_x(System::now()),
   next_move_date_y(System::now()),
+  x_delay(0),
+  y_delay(0),
   x_move(0),
   y_move(0),
   max_distance(0),
@@ -685,5 +688,7 @@ void StraightMovement::update() {
  */
 const std::string& StraightMovement::get_lua_type_name() const {
   return LuaContext::movement_straight_module_name;
+}
+
 }
 

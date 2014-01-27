@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,11 @@
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Debug.h"
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
 #include <lua.hpp>
+#include <sstream>
+
+namespace solarus {
 
 const int Savegame::SAVEGAME_VERSION = 2;
 
@@ -54,7 +58,7 @@ const std::string Savegame::KEY_MAX_MONEY = "_max_money";              /**< Maxi
 const std::string Savegame::KEY_MAX_MAGIC = "_max_magic";              /**< Maximum allowed magic points. */
 const std::string Savegame::KEY_ITEM_SLOT_1 = "_item_slot_1";          /**< Name of the equipment item in slot 1. */
 const std::string Savegame::KEY_ITEM_SLOT_2 = "_item_slot_2";          /**< Name of the equipment item in slot 2. */
-const std::string Savegame::KEY_ABILITY_TUNIC = "_ability_tunic";      /**< Resistance level. */
+const std::string Savegame::KEY_ABILITY_RESISTANCE = "_ability_tunic"; /**< Resistance level. */
 const std::string Savegame::KEY_ABILITY_SWORD = "_ability_sword";      /**< Attack level. */
 const std::string Savegame::KEY_ABILITY_SWORD_KNOWLEDGE =
     "_ability_sword_knowledge";                                        /**< Super spin attack ability level. */
@@ -125,7 +129,7 @@ void Savegame::set_initial_values() {
   // Set the initial equipment.
   equipment.set_max_life(1);
   equipment.set_life(1);
-  equipment.set_ability("tunic", 1);  // Mandatory to have a valid hero sprite.
+  equipment.set_ability(ABILITY_RESISTANCE, 1);  // Mandatory to have a valid hero sprite.
 }
 
 /**
@@ -133,7 +137,7 @@ void Savegame::set_initial_values() {
  */
 void Savegame::set_default_keyboard_controls() {
 
-#if PANDORA 
+#if PANDORA
   set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_DOWN));
   set_string(KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(InputEvent::KEY_HOME));
   set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_UP));
@@ -370,7 +374,7 @@ void Savegame::notify_game_finished() {
  */
 bool Savegame::is_string(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
@@ -389,7 +393,7 @@ bool Savegame::is_string(const std::string& key) const {
  */
 const std::string& Savegame::get_string(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   std::map<std::string, SavedValue>::const_iterator it = saved_values.find(key);
@@ -411,7 +415,7 @@ const std::string& Savegame::get_string(const std::string& key) const {
  */
 void Savegame::set_string(const std::string& key, const std::string& value) {
 
-  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key),
+  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values[key].type = SavedValue::VALUE_STRING;
@@ -425,7 +429,7 @@ void Savegame::set_string(const std::string& key, const std::string& value) {
  */
 bool Savegame::is_integer(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
@@ -444,7 +448,7 @@ bool Savegame::is_integer(const std::string& key) const {
  */
 int Savegame::get_integer(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   int result = 0;
@@ -465,7 +469,7 @@ int Savegame::get_integer(const std::string& key) const {
  */
 void Savegame::set_integer(const std::string& key, int value) {
 
-  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key),
+  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values[key].type = SavedValue::VALUE_INTEGER;
@@ -479,7 +483,7 @@ void Savegame::set_integer(const std::string& key, int value) {
  */
 bool Savegame::is_boolean(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
@@ -498,7 +502,7 @@ bool Savegame::is_boolean(const std::string& key) const {
  */
 bool Savegame::get_boolean(const std::string& key) const {
 
-  SOLARUS_ASSERT(LuaContext::is_valid_lua_identifier(key),
+  SOLARUS_ASSERT(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   bool result = false;
@@ -519,7 +523,7 @@ bool Savegame::get_boolean(const std::string& key) const {
  */
 void Savegame::set_boolean(const std::string& key, bool value) {
 
-  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key),
+  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values[key].type = SavedValue::VALUE_BOOLEAN;
@@ -532,7 +536,7 @@ void Savegame::set_boolean(const std::string& key, bool value) {
  */
 void Savegame::unset(const std::string& key) {
 
-  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key),
+  Debug::check_assertion(LuaTools::is_valid_lua_identifier(key),
       std::string("Savegame variable '") + key + "' is not a valid key");
 
   saved_values.erase(key);
@@ -544,5 +548,7 @@ void Savegame::unset(const std::string& key) {
  */
 const std::string& Savegame::get_lua_type_name() const {
   return LuaContext::game_module_name;
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #include "Sprite.h"
 #include "Game.h"
 #include "lowlevel/FileTools.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -77,5 +79,7 @@ bool Destination::can_be_obstacle() const {
  */
 bool Destination::is_default() const {
   return is_default_destination;
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_HERO_BACK_TO_SOLID_GROUND_STATE_H
 
 #include "hero/State.h"
+
+namespace solarus {
 
 /**
  * \brief The state "back to solid ground" of the hero.
@@ -62,6 +64,8 @@ class Hero::BackToSolidGroundState: public Hero::State {
     bool with_sound;                /**< true to play a sound when reaching the solid ground */
 
 };
+
+}
 
 #endif
 

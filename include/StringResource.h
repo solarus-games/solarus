@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include <string>
 #include <map>
 
+namespace solarus {
+
 /**
  * \brief Provides access to strings translated in the current language.
  *
@@ -33,14 +35,6 @@
  */
 class StringResource {
 
-  private:
-
-    static std::map<std::string, std::string> strings;
-
-    // we don't need to instantiate this class
-    StringResource();
-    ~StringResource();
-
   public:
 
     static void initialize();
@@ -48,7 +42,16 @@ class StringResource {
 
     static bool exists(const std::string& key);
     static const std::string& get_string(const std::string& key);
+
+  private:
+
+    // we don't need to instantiate this class
+    StringResource();
+    ~StringResource();
+
 };
+
+}
 
 #endif
 

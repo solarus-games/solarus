@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/InputEvent.h"
+#include "lowlevel/Video.h"
 #include <cstdlib>  // std::abs
+
+namespace solarus {
 
 const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
     KEY_RIGHT,
@@ -33,10 +36,10 @@ bool InputEvent::repeat_keyboard = false;
  * \brief Initializes the input event manager.
  */
 void InputEvent::initialize() {
-    
+
   // Initialize text events.
   SDL_StartTextInput();
-  
+
   // Initialize the joypad.
   set_joypad_enabled(true);
 
@@ -240,7 +243,7 @@ void InputEvent::set_key_repeat(bool repeat) {
 bool InputEvent::is_shift_down() {
 
   SDL_Keymod mod = SDL_GetModState();
-  return mod & (KMOD_LSHIFT | KMOD_RSHIFT);
+  return mod & KMOD_SHIFT;
 }
 
 /**
@@ -253,7 +256,7 @@ bool InputEvent::is_shift_down() {
 bool InputEvent::is_control_down() {
 
   SDL_Keymod mod = SDL_GetModState();
-  return mod & (KMOD_LCTRL | KMOD_RCTRL);
+  return mod & KMOD_CTRL;
 }
 
 /**
@@ -266,7 +269,27 @@ bool InputEvent::is_control_down() {
 bool InputEvent::is_alt_down() {
 
   SDL_Keymod mod = SDL_GetModState();
-  return mod & (KMOD_LALT | KMOD_RALT);
+  return mod & KMOD_ALT;
+}
+
+/**
+ * \brief Returns whether the caps lock key is currently active.
+ * \return \c true if the caps lock key is currently active.
+ */
+bool InputEvent::is_caps_lock_on() {
+
+  SDL_Keymod mod = SDL_GetModState();
+  return mod & KMOD_CAPS;
+}
+
+/**
+ * \brief Returns whether the num lock key is currently active.
+ * \return \c true if the num lock key is currently active.
+ */
+bool InputEvent::is_num_lock_on() {
+
+  SDL_Keymod mod = SDL_GetModState();
+  return mod & KMOD_NUM;
 }
 
 /**
@@ -383,7 +406,7 @@ int InputEvent::get_joypad_hat_direction(int hat) {
  */
 bool InputEvent::is_keyboard_event() const {
 
-  return (internal_event.type == SDL_KEYDOWN || internal_event.type == SDL_KEYUP) 
+  return (internal_event.type == SDL_KEYDOWN || internal_event.type == SDL_KEYUP)
     && (!internal_event.key.repeat || repeat_keyboard);
 }
 
@@ -417,7 +440,7 @@ bool InputEvent::is_window_event() const {
  */
 bool InputEvent::is_keyboard_key_pressed() const {
 
-  return internal_event.type == SDL_KEYDOWN 
+  return internal_event.type == SDL_KEYDOWN
     && (!internal_event.key.repeat || repeat_keyboard);
 }
 
@@ -480,7 +503,7 @@ bool InputEvent::is_keyboard_non_direction_key_pressed() const {
  */
 bool InputEvent::is_keyboard_key_released() const {
 
-  return internal_event.type == SDL_KEYUP 
+  return internal_event.type == SDL_KEYUP
     && (!internal_event.key.repeat || repeat_keyboard);
 }
 
@@ -763,7 +786,7 @@ int InputEvent::get_joypad_axis_state() const {
   if (!is_joypad_axis_moved()) {
     return 0;
   }
- 
+
   int result;
   int value = internal_event.jaxis.value;
   if (std::abs(value) < 10000) {
@@ -1020,5 +1043,7 @@ bool InputEvent::is_released() const {
 bool InputEvent::is_window_closing() const {
 
   return internal_event.type == SDL_QUIT;
+}
+
 }
 

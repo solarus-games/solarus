@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_HERO_PULLING_STATE_H
 
 #include "hero/State.h"
+
+namespace solarus {
 
 /**
  * \brief The state "Pulling" of the hero.
@@ -51,11 +53,16 @@ class Hero::PullingState: public Hero::State {
 
   private:
 
-    Detector* pulled_entity;           /**< the entity the hero is pulling (or NULL) */
-
     void stop_moving_pulled_entity();
 
+    Detector* pulled_entity;           /**< The entity the hero is pulling (or NULL). */
+    PathMovement* pulling_movement;    /**< The movement created by this state.
+                                        * The movement of the hero is also this object,
+                                        * unless a script decided to change it. */
+
 };
+
+}
 
 #endif
 

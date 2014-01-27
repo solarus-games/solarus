@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "hero/PlayerMovementState.h"
 
+namespace solarus {
+
 /**
  * \brief The state "Carrying" of the hero.
  */
@@ -37,6 +39,7 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
     void update();
     void notify_action_command_pressed();
     bool can_start_sword() const;
+    bool can_use_shield() const;
     bool can_take_stairs() const;
     void set_animation_stopped();
     void set_animation_walking();
@@ -45,12 +48,14 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
 
   private:
 
-    CarriedItem* carried_item;		/**< the item to carry */
-
     void throw_item();
     void destroy_carried_item();
 
+    CarriedItem* carried_item;         /**< the item to carry */
+
 };
+
+}
 
 #endif
 

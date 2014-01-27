@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@
 #include "Map.h"
 #include "KeysEffect.h"
 #include "lowlevel/Debug.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -368,5 +370,7 @@ void Hero::StairsState::notify_layer_changed() {
   if (carried_item != NULL) {
     carried_item->set_layer(get_hero().get_layer());
   }
+}
+
 }
 

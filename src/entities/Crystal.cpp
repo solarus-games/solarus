@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Sound.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a new crystal.
@@ -179,7 +181,7 @@ void Crystal::update() {
       entities_activating.clear();
     }
   }
- 
+
   MapEntity::update();
 }
 
@@ -215,5 +217,7 @@ void Crystal::set_suspended(bool suspended) {
   if (!suspended) {
     next_possible_hit_date += System::now() - get_when_suspended();
   }
+}
+
 }
 

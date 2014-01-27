@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,20 +21,21 @@
 #include "lowlevel/Random.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Constructor.
- * \param speed speed of the movement in pixels per seconds
+ * \param speed Speed of the movement in pixels per seconds.
  * \param max_radius if the object goes further than this distance, it will come back
  */
 RandomMovement::RandomMovement(int speed, int max_radius):
   StraightMovement(false, false),
-  normal_speed(speed),
   max_radius(max_radius),
   next_direction_change_date(0) {
 
+  set_speed(speed);
   set_next_direction();
 }
 
@@ -69,8 +70,11 @@ int RandomMovement::get_max_radius() const {
  */
 void RandomMovement::set_max_radius(int max_radius) {
 
-  Debug::check_assertion(max_radius >= 0, StringConcat()
-      << "Invalid value of max_radius: " << max_radius);
+  if (max_radius < 0) {
+    std::ostringstream oss;
+    oss << "Invalid max radius: " << max_radius;
+    Debug::die(oss.str());
+  }
   this->max_radius = max_radius;
 
   // restrict the movement in a rectangle
@@ -83,8 +87,6 @@ void RandomMovement::set_max_radius(int max_radius) {
  * \brief Chooses a new direction for the movement.
  */
 void RandomMovement::set_next_direction() {
-
-  set_speed(normal_speed);
 
   double angle;
   if (get_entity() == NULL
@@ -156,5 +158,7 @@ void RandomMovement::notify_obstacle_reached() {
  */
 const std::string& RandomMovement::get_lua_type_name() const {
   return LuaContext::movement_random_module_name;
+}
+
 }
 

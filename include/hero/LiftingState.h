@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 #define SOLARUS_HERO_LIFTING_STATE_H
 
 #include "hero/State.h"
+
+namespace solarus {
 
 /**
  * \brief The state "Lifting" of the hero.
@@ -38,11 +40,12 @@ class Hero::LiftingState: public Hero::State {
   private:
 
     void throw_item();
-
-    CarriedItem* lifted_item;           /**< the item currently being lifted */
     void destroy_lifted_item();
 
+    CarriedItem* lifted_item;           /**< the item currently being lifted */
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include "entities/Jumper.h"
 #include "entities/Sensor.h"
 #include "entities/Bomb.h"
+#include "entities/Enemy.h"
 #include "hero/HeroSprites.h"
 #include "hero/CarryingState.h"
 #include "hero/ConveyorBeltState.h"
@@ -54,7 +55,6 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
@@ -62,6 +62,8 @@
 #include "EquipmentItem.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a hero.
@@ -81,7 +83,7 @@ Hero::Hero(Equipment& equipment):
   set_origin(8, 13);
   last_solid_ground_coords.set_xy(-1, -1);
   last_solid_ground_layer = LAYER_LOW;
- 
+
   // sprites
   sprites = new HeroSprites(*this, equipment);
   rebuild_equipment();
@@ -287,10 +289,14 @@ void Hero::update_ground_effects() {
     if (is_ground_visible() && get_movement() != NULL) {
 
       // a special ground is displayed under the hero and it's time to play a sound
-      double speed = (static_cast<StraightMovement*>(get_movement()))->get_speed();
-      next_ground_date = now + std::max(150, (int) (20000 / speed));
-      if (sprites->is_walking() && state->is_touching_ground()) {
-        sprites->play_ground_sound();
+      StraightMovement* movement = dynamic_cast<StraightMovement*>(get_movement());
+      if (movement != NULL) {
+        // TODO replace the dynamic_cast by a virtual method get_speed() in Movement.
+        double speed = movement->get_speed();
+        next_ground_date = now + std::max(150, (int) (20000 / speed));
+        if (sprites->is_walking() && state->is_touching_ground()) {
+          sprites->play_ground_sound();
+        }
       }
     }
 
@@ -565,6 +571,15 @@ void Hero::notify_map_started() {
 }
 
 /**
+ * \copydoc MapEntity::notify_tileset_changed
+ */
+void Hero::notify_tileset_changed() {
+
+  MapEntity::notify_tileset_changed();
+  get_sprites().notify_tileset_changed();
+}
+
+/**
  * \brief Sets the hero's current map.
  *
  * This function is called when the map is changed.
@@ -585,9 +600,9 @@ void Hero::set_map(Map& map, int initial_direction) {
 
 /**
  * \brief Places the hero on the map specified and at its destination point selected.
- * \param map the new map
- * \param previous_map_location position of the previous map in its world
- * (may be needed for scrolling transitions, but the previous map is already destroyed)
+ * \param map The new map.
+ * \param previous_map_location Position of the previous map in its world
+ * (because the previous map is already destroyed).
  */
 void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location) {
 
@@ -596,17 +611,26 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
   if (destination_name == "_same") {
 
     // The hero's coordinates are the same as on the previous map
-    // but we may have to change the layer.
+    // but 1) we need to take into account the location of both maps
+    // and 2) we may have to change the layer.
 
+    const Rectangle& next_map_location = map.get_location();
+    int x = get_x() - next_map_location.get_x() + previous_map_location.get_x();
+    int y = get_y() - next_map_location.get_y() + previous_map_location.get_y();
+
+    // TODO try LAYER_HIGH first
     Layer layer = LAYER_INTERMEDIATE;
-    if (map.get_ground(LAYER_INTERMEDIATE, get_x(), get_y()) == GROUND_EMPTY) {
+    if (map.get_ground(LAYER_INTERMEDIATE, x, y) == GROUND_EMPTY) {
       layer = LAYER_LOW;
     }
     set_map(map);
-    last_solid_ground_coords = get_xy();
+    set_xy(x, y);
     map.get_entities().set_entity_layer(*this, layer);
+    last_solid_ground_coords.set_xy(x, y);
+    last_solid_ground_layer = get_layer();
 
     start_free();
+    check_position();  // To appear initially swimming, for example.
   }
   else {
     int side = map.get_destination_side();
@@ -639,32 +663,54 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
         break;
 
       default:
-        Debug::die(StringConcat() << "Invalid destination side: " << side);
+        Debug::die("Invalid destination side");
       }
       last_solid_ground_coords = get_xy();
-      // note that we keep the hero's state from the previous map
+      last_solid_ground_layer = get_layer();
+      // Note that we keep the hero's state from the previous map.
     }
     else {
 
       // Normal case: the location is specified by a destination point object.
 
-      MapEntity* destination = map.get_destination();
+      Destination* destination = map.get_destination();
 
-      set_map(map, destination->get_direction());
-      set_xy(destination->get_x(), destination->get_y());
+      if (destination == NULL) {
+        // This is embarrassing: there is no valid destination that we can use.
+        // The map is probably in an early development phase.
+        // For now, let's place the hero at the top-left corner of the map.
+        Debug::error(
+            std::string("No valid destination on map '") + map.get_id()
+            + "'. Placing the hero at (0,0) instead."
+        );
+        set_map(map, 3);
+        set_top_left_xy(0, 0);
+        map.get_entities().set_entity_layer(*this, LAYER_HIGH);
+      }
+      else {
+        // Normal case.
+        set_map(map, destination->get_direction());
+        set_xy(destination->get_x(), destination->get_y());
+        map.get_entities().set_entity_layer(*this, destination->get_layer());
+      }
       last_solid_ground_coords = get_xy();
-      map.get_entities().set_entity_layer(*this, destination->get_layer());
+      last_solid_ground_layer = get_layer();
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
 
+      if (destination != NULL) {
+        get_lua_context().destination_on_activated(*destination);
+      }
+
       Stairs* stairs = get_stairs_overlapping();
       if (stairs != NULL) {
-        // the hero arrived on the map by stairs
+        // The hero arrived on the map by stairs.
         set_state(new StairsState(*this, *stairs, Stairs::REVERSE_WAY));
       }
       else {
-        // the hero arrived on the map by a usual destination point
+        // The hero arrived on the map by a usual destination point.
         start_free();
+        check_position();  // To appear initially swimming, for example.
       }
     }
   }
@@ -703,10 +749,13 @@ void Hero::notify_map_opening_transition_finished() {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid destination side: " << side);
+      Debug::die("Invalid destination side");
     }
   }
   check_position();
+  if (state->is_touching_ground()) {  // Don't change the state during stairs.
+    start_state_from_ground();
+  }
 }
 
 /**
@@ -714,7 +763,7 @@ void Hero::notify_map_opening_transition_finished() {
  *
  * This point is 1 pixel outside the hero's bounding box (and centered). It is used
  * to determine the actions he can do depending on the entity he is facing
- * (a bush, a pot, an NPC…)
+ * (a bush, a pot, an NPC...)
  *
  * \return the point the hero is touching
  */
@@ -728,7 +777,7 @@ const Rectangle Hero::get_facing_point() const {
  *
  * This point is 1 pixel outside the hero's bounding box (and centered). It is used
  * to determine the actions he can do depending on the entity he is facing
- * (a bush, a pot, an NPC…)
+ * (a bush, a pot, an NPC...)
  *
  * \param direction a direction (0 to 3)
  * \return coordinates of the point the hero would be touching if he was looking towards that direction
@@ -761,7 +810,7 @@ const Rectangle Hero::get_facing_point(int direction) const {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid direction for Hero::get_facing_point(): " << direction);
+      Debug::die("Invalid direction for Hero::get_facing_point()");
   }
 
   facing_point.set_size(1, 1);
@@ -817,7 +866,7 @@ bool Hero::is_facing_obstacle() const {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid animation direction '" << sprites->get_animation_direction() << "'");
+      Debug::die("Invalid animation direction");
       break;
   }
 
@@ -1113,7 +1162,8 @@ void Hero::check_position() {
   set_facing_entity(NULL);
   check_collision_with_detectors(true);
 
-  if (is_suspended()) {
+  if (is_suspended()
+      && get_map().test_collision_with_border(get_ground_point())) {
     // When suspended, the hero may have invalid coordinates
     // (e.g. transition between maps).
     return;
@@ -1151,7 +1201,7 @@ void Hero::check_position() {
 
       get_entities().set_entity_layer(*this, Layer(layer - 1));
       Ground new_ground = get_map().get_ground(get_layer(), x, y);
-      if (state->is_free() && 
+      if (state->is_free() &&
           (new_ground == GROUND_TRAVERSABLE
            || new_ground == GROUND_GRASS
            || new_ground == GROUND_LADDER)) {
@@ -1224,6 +1274,8 @@ void Hero::reset_movement() {
  */
 void Hero::notify_ground_below_changed() {
 
+  const bool suspended = get_game().is_suspended();
+
   MapEntity::notify_ground_below_changed();
 
   switch (get_ground_below()) {
@@ -1237,13 +1289,25 @@ void Hero::notify_ground_below_changed() {
   case GROUND_DEEP_WATER:
     // Deep water: plunge if the hero is not jumping.
     if (!state->can_avoid_deep_water()) {
-      start_deep_water();
+
+      if (suspended) {
+        // During a transition, it is okay to start swimming
+        // but we don't want to start plunging right now.
+        if (state->is_touching_ground()) {
+          start_deep_water();
+        }
+      }
+      else {
+        start_deep_water();
+      }
     }
     break;
 
   case GROUND_HOLE:
-    // Hole: attract the hero towards the hole.
-    if (!state->can_avoid_hole()) {
+    // Hole: fall into the hole or get attracted to it.
+    // But wait for the teletransporter opening transition to finish if any.
+    if (!suspended
+        && state->can_avoid_hole()) {
       start_hole();
     }
     break;
@@ -1257,14 +1321,16 @@ void Hero::notify_ground_below_changed() {
 
   case GROUND_LAVA:
     // Lava: plunge into lava.
-    if (!state->can_avoid_lava()) {
+    if (!suspended
+        && !state->can_avoid_lava()) {
       start_lava();
     }
     break;
 
   case GROUND_PRICKLE:
     // Prickles.
-    if (!state->can_avoid_prickle()) {
+    if (!suspended
+        && !state->can_avoid_prickle()) {
       start_prickle(500);
     }
     break;
@@ -1527,11 +1593,17 @@ void Hero::notify_collision_with_enemy(
     enemy.try_hurt(ATTACK_SWORD, *this, &enemy_sprite);
   }
   else if (this_sprite.contains("tunic")) {
-    // the hero's body overlaps the enemy: ensure that the 16*16 rectangle of the hero also overlaps the enemy
-    Rectangle enemy_sprite_rectangle = enemy_sprite.get_size();
-    const Rectangle &enemy_sprite_origin = enemy_sprite.get_origin();
-    enemy_sprite_rectangle.set_x(enemy.get_x() - enemy_sprite_origin.get_x());
-    enemy_sprite_rectangle.set_y(enemy.get_y() - enemy_sprite_origin.get_y());
+    // The hero's body sprite overlaps the enemy.
+    // Check that the 16x16 rectangle of the hero also overlaps the enemy.
+    const Rectangle& enemy_sprite_size = enemy_sprite.get_size();
+    const Rectangle& enemy_sprite_origin = enemy_sprite.get_origin();
+    const Rectangle& enemy_sprite_offset = enemy_sprite.get_xy();
+    Rectangle enemy_sprite_rectangle(
+        enemy.get_x() - enemy_sprite_origin.get_x() + enemy_sprite_offset.get_x(),
+        enemy.get_y() - enemy_sprite_origin.get_y() + enemy_sprite_offset.get_y(),
+        enemy_sprite_size.get_width(),
+        enemy_sprite_size.get_height()
+    );
 
     if (overlaps(enemy_sprite_rectangle)) {
       enemy.attack_hero(*this, &enemy_sprite);
@@ -1807,7 +1879,7 @@ void Hero::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_
 
   if (!state->can_avoid_explosion()) {
     if (sprite_overlapping.contains("tunic")) {
-      hurt(explosion, 2, 0);
+      hurt(explosion, NULL, 2, 0);
     }
   }
 }
@@ -1848,7 +1920,7 @@ void Hero::avoid_collision(MapEntity& entity, int direction) {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid direction in Hero::avoid_collision(): " << direction);
+      Debug::die("Invalid direction in Hero::avoid_collision()");
       break;
   }
   reset_movement();
@@ -1912,19 +1984,16 @@ void Hero::try_snap_to_facing_entity() {
 }
 
 /**
- * \brief Notifies this entity that it has just attacked an enemy
- *
- * This function is called even if this attack was not successful.
- *
- * \param attack the attack
- * \param victim the enemy just hurt
- * \param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * \param killed indicates that the attack has just killed the enemy
+ * \copydoc MapEntity::notify_attacked_enemy
  */
-void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
-    EnemyReaction::Reaction& result, bool killed) {
+void Hero::notify_attacked_enemy(
+    EnemyAttack attack,
+    Enemy& victim,
+    const Sprite* victim_sprite,
+    EnemyReaction::Reaction& result,
+    bool killed) {
 
-  state->notify_attacked_enemy(attack, victim, result, killed);
+  state->notify_attacked_enemy(attack, victim, victim_sprite, result, killed);
 }
 
 /**
@@ -1952,20 +2021,42 @@ bool Hero::can_be_hurt(Enemy* attacker) {
 
 /**
  * \brief Hurts the hero if possible.
- * \param source an entity that hurts the hero (usually an enemy)
- * \param life_points number of heart quarters to remove (this number may be reduced by the tunic)
- * \param magic_points number of magic points to remove
+ * \param source An entity that hurts the hero (usually an enemy).
+ * \param source_sprite Sprite of the source entity that detected the collision.
+ * \param life_points Number of life points to remove (this number may be
+ * reduced by the tunic then).
+ * \param magic_points Number of magic points to remove.
  */
-void Hero::hurt(MapEntity& source, int life_points, int magic_points) {
+void Hero::hurt(MapEntity& source,
+    Sprite* source_sprite,
+    int life_points,
+    int magic_points) {
 
   Enemy* enemy = NULL;
   if (source.get_type() == ENTITY_ENEMY) {
     // TODO make state->can_be_hurt(MapEntity*)
-    enemy = (Enemy*) &source;
+    enemy = static_cast<Enemy*>(&source);
   }
 
   if (!sprites->is_blinking() && state->can_be_hurt(enemy)) {
-    set_state(new HurtState(*this, source.get_xy(), life_points, magic_points));
+
+    bool handled = false;
+    if (enemy != NULL) {
+      // Let the enemy script handle this if it wants.
+      handled = get_lua_context().enemy_on_attacking_hero(
+          *enemy, *this, source_sprite);
+    }
+
+    if (!handled) {
+      // Scripts did not customize the attack:
+      // do the built-in hurt state of the hero.
+      Rectangle source_xy = source.get_xy();
+      if (source_sprite != NULL) {
+        // Add the offset of the sprite if any.
+        source_xy.add_xy(source_sprite->get_xy());
+      }
+      set_state(new HurtState(*this, source_xy, life_points, magic_points));
+    }
   }
 }
 
@@ -2034,7 +2125,7 @@ void Hero::start_deep_water() {
   }
   else {
     // move to state swimming or jumping
-    if (get_equipment().has_ability("swim")) {
+    if (get_equipment().has_ability(ABILITY_SWIM)) {
       set_state(new SwimmingState(*this));
     }
     else {
@@ -2165,7 +2256,7 @@ EquipmentItemUsage& Hero::get_item_being_used() {
  * \return true if the hero is grabbing and moving an entity
  */
 bool Hero::is_moving_grabbed_entity() const {
- 
+
   return state->is_moving_grabbed_entity();
 }
 
@@ -2192,9 +2283,7 @@ bool Hero::is_grabbing_or_pulling() const {
  */
 void Hero::start_free() {
 
-  if (!state->is_free()) {
-    set_state(new FreeState(*this));
-  }
+  set_state(new FreeState(*this));
 }
 
 /**
@@ -2213,7 +2302,7 @@ void Hero::start_free_or_carrying() {
 
 /**
  * \brief Makes the hero brandish a treasure.
- * \param treasure The treasure to give him.
+ * \param treasure The treasure to give him. It must be obtainable.
  * \param callback_ref Lua ref to a function to call when the
  * treasure's dialog finishes (possibly LUA_REFNIL).
  */
@@ -2319,13 +2408,23 @@ void Hero::start_grabbing() {
 }
 
 /**
- * \brief Returns whether the hero can pick a treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in his current state.
  * \param item The equipment item to pick.
  * \return true if this equipment item can currently be picked.
  */
 bool Hero::can_pick_treasure(EquipmentItem& item) {
 
   return state->can_pick_treasure(item);
+}
+
+/**
+ * \brief Returns whether the hero can stop attacks with a shield in his
+ * current state.
+ * \return \c true if the shield is active is this state.
+ */
+bool Hero::can_use_shield() const {
+
+  return state->can_use_shield();
 }
 
 /**
@@ -2345,8 +2444,9 @@ bool Hero::can_start_item(EquipmentItem& item) {
  * \param item The equipment item to use.
  */
 void Hero::start_item(EquipmentItem& item) {
-  Debug::check_assertion(can_start_item(item), StringConcat() <<
-      "The hero cannot start using item '" << item.get_name() << "' now.");
+  Debug::check_assertion(can_start_item(item),
+      std::string("The hero cannot start using item '")
+      + item.get_name() + "' now.");
   set_state(new UsingItemState(*this, item));
 }
 
@@ -2412,7 +2512,13 @@ void Hero::start_state_from_ground() {
   switch (get_ground_below()) {
 
   case GROUND_DEEP_WATER:
-    set_state(new PlungingState(*this));
+    if (state->is_touching_ground()
+        && get_equipment().has_ability(ABILITY_SWIM)) {
+      set_state(new SwimmingState(*this));
+    }
+    else {
+      set_state(new PlungingState(*this));
+    }
     break;
 
   case GROUND_HOLE:
@@ -2464,11 +2570,5 @@ void Hero::start_state_from_ground() {
   }
 }
 
-/**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
- */
-const std::string& Hero::get_lua_type_name() const {
-  return LuaContext::entity_hero_module_name;
 }
 

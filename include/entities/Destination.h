@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
+
+namespace solarus {
 
 /**
  * \brief A location of the map where the hero can arrive when using a teletransporter.
@@ -44,7 +46,10 @@ class Destination: public MapEntity {
   private:
 
     bool is_default_destination;
+
 };
+
+}
 
 #endif
 

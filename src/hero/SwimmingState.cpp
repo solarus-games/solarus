@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "lowlevel/System.h"
 #include "Equipment.h"
 #include "KeysEffect.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -48,7 +50,7 @@ void Hero::SwimmingState::start(const State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
-  get_equipment().notify_ability_used("swim");
+  get_equipment().notify_ability_used(ABILITY_SWIM);
   get_hero().set_walking_speed(get_slow_swimming_speed());
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_SWIM);
 }
@@ -186,5 +188,7 @@ bool Hero::SwimmingState::is_stairs_obstacle(const Stairs& stairs) const {
  */
 bool Hero::SwimmingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
+}
+
 }
 

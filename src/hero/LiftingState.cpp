@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -61,7 +63,7 @@ void Hero::LiftingState::start(const State* previous_state) {
   get_sprites().set_lifted_item(lifted_item);
   get_hero().set_facing_entity(NULL);
 
-  get_equipment().notify_ability_used("lift");
+  get_equipment().notify_ability_used(ABILITY_LIFT);
 }
 
 /**
@@ -160,5 +162,7 @@ void Hero::LiftingState::destroy_lifted_item() {
 
   RefCountable::unref(lifted_item);
   lifted_item = NULL;
+}
+
 }
 

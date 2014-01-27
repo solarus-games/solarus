@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
+
+#include "config.h"
 
 /**
  * \cond doxygen_ignore
@@ -100,6 +102,16 @@
 #endif
 
 /**
+ * \def SOLARUS_HAVE_OPENGL_OR_ES
+ * \brief Whether the system supports OpenGL / ES / 2 as renderer driver.
+ * This is optional, but allows to use advanced display features.
+ * Should be set by config.h, but if not, assume 1 by default.
+ */
+#ifndef SOLARUS_HAVE_OPENGL_OR_ES
+#  define SOLARUS_HAVE_OPENGL_OR_ES 1
+#endif
+
+/**
  * \def SOLARUS_DEFAULT_QUEST
  * \brief Path of the quest to run is none is specified at runtime.
  */
@@ -156,23 +168,6 @@
 #  endif
 #endif
 
-/**
- * \def SOLARUS_SCREEN_FORCE_MODE
- * \brief Forces a unique video mode.
- */
-#ifndef SOLARUS_SCREEN_FORCE_MODE
-#  if defined(SOLARUS_IOS)
-#    define SOLARUS_SCREEN_FORCE_MODE 4
-#  elif defined(CAANOO)
-#    define SOLARUS_SCREEN_FORCE_MODE 2
-#  elif defined(PANDORA)
-#    define SOLARUS_SCREEN_FORCE_MODE 3
-#  else
-#    define SOLARUS_SCREEN_FORCE_MODE -1
-#  endif
-#endif
-
-#include "config.h"
 #include "Types.h"
 
 #endif

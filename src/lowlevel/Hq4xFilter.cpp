@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,13 +17,20 @@
 #include "lowlevel/Hq4xFilter.h"
 #include "hqx/hqx.h"
 
+namespace solarus {
+
+namespace {
+  bool hqx_initialized = false;   /**< Whether the common hqx initialization was done. */
+}
+
 /**
  * \brief Constructor.
  */
 Hq4xFilter::Hq4xFilter():
   PixelFilter() {
 
-  hqxInit();
+  // Make sure hqx is initialized.
+  initialize_hqx();
 }
 
 /**
@@ -49,5 +56,20 @@ void Hq4xFilter::filter(
     uint32_t* dst) const {
 
   hq4x_32(const_cast<uint32_t*>(src), dst, src_width, src_height);
+}
+
+/**
+ * \brief Performs the initialization common to the 3 variants of hqx.
+ *
+ * Does nothing if the initialization was already done. 
+ */
+void Hq4xFilter::initialize_hqx() {
+
+  if (!hqx_initialized) {
+    hqx_initialized = true;
+    hqxInit();
+  }
+}
+
 }
 

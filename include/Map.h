@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
 #include "lua/ExportableToLua.h"
+
+namespace solarus {
 
 /**
  * \brief Represents a map where the game can take place.
@@ -50,6 +52,7 @@ class Map: public ExportableToLua {
     const std::string& get_tileset_id() const;
     void set_tileset(const std::string& tileset_id);
     const std::string& get_music_id() const;
+    bool has_world() const;
     const std::string& get_world() const;
     void set_world(const std::string& world);
     bool has_floor() const;
@@ -57,6 +60,7 @@ class Map: public ExportableToLua {
     void set_floor(int floor);
     const Rectangle& get_location() const;
 
+    Rectangle get_size() const;
     int get_width() const;
     int get_height() const;
     int get_width8() const;
@@ -146,7 +150,8 @@ class Map: public ExportableToLua {
     friend class MapLoader; // the map loader modifies the private fields of Map
 
     void set_suspended(bool suspended);
-    void rebuild_background_surface();
+    void build_background_surface();
+    void build_foreground_surface();
     void draw_background();
     void draw_foreground();
 
@@ -186,6 +191,7 @@ class Map: public ExportableToLua {
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map */
     Surface* background_surface;  /**< a surface filled with the background color of the tileset */
+    Surface* foreground_surface;  /**< A surface with black bars, when the map is smaller than the screen. */
 
     // map state
     bool loaded;                  /**< true if the loading phase is finished */
@@ -218,6 +224,8 @@ inline bool Map::test_collision_with_border(int x, int y) const {
  */
 inline const Rectangle& Map::get_camera_position() const {
   return camera->get_position();
+}
+
 }
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@
 #include "lowlevel/Sound.h"
 #include "lua/LuaContext.h"
 
+namespace solarus {
+
 /**
  * \brief Creates a block.
  * \param name name identifying this block
@@ -40,7 +42,7 @@
  * \param can_be_pushed true to allow the hero to push this block
  * \param can_be_pulled true to allow the hero to pull this block
  * \param maximum_moves indicates how many times the block can
- * be moved (0: none, 1: once: 2: infinite)
+ * be moved (0: none, 1: once, 2: infinite)
  */
 Block::Block(
     const std::string& name,
@@ -62,6 +64,8 @@ Block::Block(
   can_be_pushed(can_be_pushed),
   can_be_pulled(can_be_pulled) {
 
+  Debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
+      "maximum_moves must be between 0 and 2");
   set_origin(8, 13);
   set_direction(direction);
   create_sprite(sprite_name);
@@ -207,7 +211,7 @@ void Block::notify_action_command_pressed() {
     get_hero().start_grabbing();
   }
 }
- 
+
 /**
  * \brief This function is called when the player tries to push or pull this block.
  * \return true if the player is allowed to move this block
@@ -351,10 +355,67 @@ void Block::reset() {
 }
 
 /**
- * \brief Returns the name identifying this type in Lua.
- * \return The name identifying this type in Lua.
+ * \brief Returns whether this block can be pushed.
+ * \return \c true if it can be pushed, independently of the maximum moves.
  */
-const std::string& Block::get_lua_type_name() const {
-  return LuaContext::entity_block_module_name;
+bool Block::is_pushable() const {
+  return can_be_pushed;
+}
+
+/**
+ * \brief Returns whether this block can be pushed.
+ * \return \c true if it can be pushed, independently of the maximum moves.
+ */
+void Block::set_pushable(bool pushable) {
+  this->can_be_pushed = pushable;
+}
+
+/**
+ * \brief Returns whether this block can be pulled.
+ * \return \c true if it can be pulled, independently of the maximum moves.
+ */
+bool Block::is_pullable() const {
+  return can_be_pulled;
+}
+
+/**
+ * \brief Sets whether this block can be pulled.
+ * \param pullable \c true to make the block pullable, independently of the
+ * maximum moves.
+ */
+void Block::set_pullable(bool pullable) {
+  this->can_be_pulled = pullable;
+}
+
+/**
+ * \brief Returns the initial maximum moves of this block.
+ *
+ * This value is the one passed to the constructor or to set_maximum_moves,
+ * no matter if the block was already moved or not.
+ *
+ * \return How many times the block can be moved
+ * (0: none, 1: once, 2: infinite).
+ */
+int Block::get_maximum_moves() const {
+  return initial_maximum_moves;
+}
+
+/**
+ * \brief Sets the maximum moves of this block.
+ *
+ * This resets the remaining allowed moves.
+ *
+ * \return How many times the block can be moved
+ * (0: none, 1: once, 2: infinite).
+ */
+void Block::set_maximum_moves(int maximum_moves) {
+
+  Debug::check_assertion(maximum_moves >= 0 && maximum_moves <= 2,
+        "maximum_moves must be between 0 and 2");
+
+  this->initial_maximum_moves = maximum_moves;
+  this->maximum_moves = maximum_moves;
+}
+
 }
 

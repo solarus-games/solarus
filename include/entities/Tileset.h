@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 
 struct lua_State;
 
+namespace solarus {
+
 /**
  * \brief An image containing all tile patterns.
  *
@@ -32,20 +34,6 @@ struct lua_State;
  * See the directory images/tilesets of the data package.
  */
 class Tileset {
-
-  private:
-
-    const std::string id;                             /**< id of the tileset */
-    std::map<int, TilePattern*> tile_patterns;        /**< tile patterns in this tileset */
-    int max_tile_id;                                  /**< current maximum id of a tile pattern in this tileset */
-    Color background_color;                           /**< background color of the tileset */
-    Surface* tiles_image;                             /**< image from which the tile patterns are extracted */
-    Surface* entities_image;                          /**< image from which the skin-dependent entities are extracted */
-
-    void add_tile_pattern(int id, TilePattern* tile_pattern);
-
-    static int l_background_color(lua_State* l);
-    static int l_tile_pattern(lua_State* l);
 
   public:
 
@@ -64,7 +52,24 @@ class Tileset {
     void set_images(const std::string& other_id);
 
     static const std::string ground_names[];  /**< Lua name of each ground type. */
+
+  private:
+
+    void add_tile_pattern(int id, TilePattern* tile_pattern);
+
+    static int l_background_color(lua_State* l);
+    static int l_tile_pattern(lua_State* l);
+
+    const std::string id;                             /**< id of the tileset */
+    std::map<int, TilePattern*> tile_patterns;        /**< tile patterns in this tileset */
+    int max_tile_id;                                  /**< current maximum id of a tile pattern in this tileset */
+    Color background_color;                           /**< background color of the tileset */
+    Surface* tiles_image;                             /**< image from which the tile patterns are extracted */
+    Surface* entities_image;                          /**< image from which the skin-dependent entities are extracted */
+
 };
+
+}
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,8 @@
 #include "Equipment.h"
 #include "EquipmentItem.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+
+namespace solarus {
 
 /**
  * \brief Creates a new item to be used.
@@ -53,9 +54,9 @@ EquipmentItem& EquipmentItemUsage::get_item() {
  */
 void EquipmentItemUsage::start() {
 
-  Debug::check_assertion(variant > 0, StringConcat()
-      << "Trying to use equipment item '" << item.get_name()
-      << "' without having it");
+  Debug::check_assertion(variant > 0,
+      std::string("Attempt to use equipment item '") + item.get_name()
+      + "' without having it");
 
   this->finished = false;
   item.notify_using();
@@ -80,5 +81,7 @@ bool EquipmentItemUsage::is_finished() {
  */
 void EquipmentItemUsage::set_finished() {
   this->finished = true;
+}
+
 }
 

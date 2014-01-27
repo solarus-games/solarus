@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,14 @@
 #include "entities/Detector.h"
 #include <list>
 
+namespace solarus {
+
 /**
  * \brief Represents an explosion on the map.
  *
  * An explosion can hurt the hero, the enemies and open weak walls.
  */
 class Explosion: public Detector {
-
-  private:
-
-    std::list<Enemy*> victims; /**< list of enemies successfully hurt by this explosion */
 
   public:
 
@@ -52,8 +50,20 @@ class Explosion: public Detector {
     void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
     void try_attack_enemy(Enemy &enemy, Sprite &enemy_sprite);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
+    void notify_attacked_enemy(
+        EnemyAttack attack,
+        Enemy& victim,
+        const Sprite* victim_sprite,
+        EnemyReaction::Reaction& result,
+        bool killed);
+
+  private:
+
+    std::list<Enemy*> victims; /**< list of enemies successfully hurt by this explosion */
+
 };
+
+}
 
 #endif
 

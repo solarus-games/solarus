@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,9 @@
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include <sstream>
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -43,6 +45,10 @@ SpriteAnimation::SpriteAnimation(
   should_enable_pixel_collisions(false) {
 
   if (!src_image_is_tileset) {
+    // TODO It would be better to create only one surface by distinct
+    // image_file_name (it's currently one by sprite's animation).
+    // However, sprite animation sets are already cached so the gain might
+    // not be significant.
     src_image = Surface::create(image_file_name);
     RefCountable::ref(src_image);
   }
@@ -119,11 +125,14 @@ bool SpriteAnimation::is_looping() const {
 int SpriteAnimation::get_next_frame(
     int current_direction, int current_frame) const {
 
-  Debug::check_assertion(current_direction >= 0 &&
-      current_direction < get_nb_directions(),
-    StringConcat() << "Invalid sprite direction '" << current_direction
-        << "': this sprite animation has only " << get_nb_directions()
-        << " direction(s)");
+  if (current_direction < 0
+      || current_direction >= get_nb_directions()) {
+    std::ostringstream oss;
+    oss << "Invalid sprite direction '" << current_direction
+        << "': this sprite has " << get_nb_directions()
+        << " direction(s)";
+    Debug::die(oss.str());
+  }
 
   int next_frame = current_frame + 1;
 
@@ -149,10 +158,13 @@ void SpriteAnimation::draw(Surface& dst_surface,
     const Rectangle& dst_position, int current_direction, int current_frame) {
 
   if (src_image != NULL) {
-    if (current_direction < 0 || current_direction >= get_nb_directions()) {
-      Debug::die(StringConcat() << "Invalid sprite direction "
+    if (current_direction < 0
+        || current_direction >= get_nb_directions()) {
+      std::ostringstream oss;
+      oss << "Invalid sprite direction "
           << current_direction << ": this sprite has " << get_nb_directions()
-          << " directions");
+          << " direction(s)";
+      Debug::die(oss.str());
     }
     directions[current_direction]->draw(dst_surface, dst_position,
         current_frame, *src_image);
@@ -201,5 +213,7 @@ void SpriteAnimation::disable_pixel_collisions() {
  */
 bool SpriteAnimation::are_pixel_collisions_enabled() const {
   return directions[0]->are_pixel_collisions_enabled() || should_enable_pixel_collisions;
+}
+
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2013 Christopho, Solarus - http://www.solarus-games.org
+ * Copyright (C) 2006-2014 Christopho, Solarus - http://www.solarus-games.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/Debug.h"
 #include <lua.hpp>
+
+namespace solarus {
 
 /**
  * \brief Constructor.
@@ -231,6 +233,7 @@ void Drawable::draw_region(
  * \param dst_surface The destination surface
  * \param dst_position Position on this surface
  * (will be added to the position obtained by previous movements).
+ * The width and height of this rectangle are ignored.
  */
 void Drawable::draw_region(
     const Rectangle& region,
@@ -245,5 +248,7 @@ void Drawable::draw_region(
   }
 
   raw_draw_region(region, dst_surface, dst_position2);
+}
+
 }
 

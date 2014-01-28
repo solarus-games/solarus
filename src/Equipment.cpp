@@ -367,8 +367,6 @@ int Equipment::get_magic() const {
  */
 void Equipment::set_magic(int magic) {
 
-  Debug::check_assertion(magic >= 0, "Invalid magic amount");
-
   magic = std::max(0, std::min(get_max_magic(), magic));
   savegame.set_integer(Savegame::KEY_CURRENT_MAGIC, magic);
 }

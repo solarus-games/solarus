@@ -69,7 +69,7 @@ void create_window(const CommandLine& args) {
 
   Debug::check_assertion(main_window == NULL, "Window already exists");
 
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL == 1
   // Set OpenGL as the default renderer driver when available, to avoid using Direct3d.
   SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_DEFAULT);
 
@@ -84,7 +84,7 @@ void create_window(const CommandLine& args) {
       wanted_quest_size.get_width(),
       wanted_quest_size.get_height(),
       SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL == 1
       | SDL_WINDOW_OPENGL
 #endif
   );
@@ -102,7 +102,7 @@ void create_window(const CommandLine& args) {
     acceleration_flag = SDL_RENDERER_ACCELERATED;
   }
   main_renderer = SDL_CreateRenderer(main_window, -1, acceleration_flag
-#if SOLARUS_HAVE_OPENGL_OR_ES != 1
+#if SOLARUS_HAVE_OPENGL != 1
       | SDL_RENDERER_PRESENTVSYNC
 #endif
   );

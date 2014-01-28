@@ -22,7 +22,7 @@
 
 namespace solarus {
 
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL == 1
 
 PFNGLATTACHOBJECTARBPROC Shader::glAttachObjectARB;
 PFNGLCOMPILESHADERARBPROC Shader::glCompileShaderARB;
@@ -52,7 +52,7 @@ Shader* Shader::loading_shader = NULL;
  */
 bool Shader::initialize() {
 
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL == 1
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -134,12 +134,12 @@ bool Shader::initialize() {
  */
 void Shader::quit() {
 
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL == 1
   SDL_GL_DeleteContext(gl_context);
 #endif
 }
 
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL == 1
 
 /**
  * \brief Constructor.

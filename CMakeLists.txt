@@ -78,7 +78,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   endif()
 endif()
 
-# additional source files for Apple systems
+# Additional source files for Apple systems
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(source_files
     ${source_files}
@@ -163,11 +163,11 @@ endif()
 
 
 if(OPENGL_FOUND)
-  set(HAVE_OPENGL_OR_ES 1)
+  set(HAVE_OPENGL 1)
 else()
-  set(HAVE_OPENGL_OR_ES 0)
+  set(HAVE_OPENGL 0)
 endif()
-add_definitions(-DSOLARUS_HAVE_OPENGL_OR_ES=${HAVE_OPENGL_OR_ES})
+add_definitions(-DSOLARUS_HAVE_OPENGL=${HAVE_OPENGL})
 
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
 if(DEFAULT_QUEST)

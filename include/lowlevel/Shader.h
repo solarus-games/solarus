@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "Debug.h"
 
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL == 1
 #  include "lua/LuaContext.h"
 #  include <SDL.h>
 #  include <SDL_opengl.h>
@@ -42,7 +42,7 @@ class Shader {
     static bool initialize();
     static void quit();
 
-#if SOLARUS_HAVE_OPENGL_OR_ES == 1
+#if SOLARUS_HAVE_OPENGL == 1
     static Shader* create(const std::string& shader_name);
     static void shaded_render(Surface& quest_surface, Shader* shader);
     static void restore_default_shader_program();

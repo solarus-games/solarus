@@ -102,13 +102,13 @@
 #endif
 
 /**
- * \def SOLARUS_HAVE_OPENGL_OR_ES
- * \brief Whether the system supports OpenGL / ES / 2 as renderer driver.
+ * \def SOLARUS_HAVE_OPENGL
+ * \brief Whether the system supports OpenGL as renderer driver.
  * This is optional, but allows to use advanced display features.
- * Should be set by config.h, but if not, assume 1 by default.
+ * Should be set at the configuration part, but if not, assume 1 by default.
  */
-#ifndef SOLARUS_HAVE_OPENGL_OR_ES
-#  define SOLARUS_HAVE_OPENGL_OR_ES 1
+#ifndef SOLARUS_HAVE_OPENGL
+#  define SOLARUS_HAVE_OPENGL 1
 #endif
 
 /**

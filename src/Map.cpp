@@ -126,10 +126,20 @@ const std::string& Map::get_music_id() const {
   return music_id;
 }
 
+/**
+ * \brief Returns whether this map is in a world.
+ *
+ * This function returns \c true if the world is not an empty string.
+ *
+ * \return \c true if there is a world.
+ */
+bool Map::has_world() const {
+  return !get_world().empty();
+}
 
 /**
  * \brief Returns the world where this map is.
- * \return The world name.
+ * \return The world name or an empty string.
  */
 const std::string& Map::get_world() const {
   return world;
@@ -137,7 +147,7 @@ const std::string& Map::get_world() const {
 
 /**
  * \brief Returns the world where this map is.
- * \param world The world name.
+ * \param world The world name or an empty string.
  */
 void Map::set_world(const std::string& world) {
   this->world = world;
@@ -146,7 +156,7 @@ void Map::set_world(const std::string& world) {
 /**
  * \brief Returns whether this map has a floor.
  *
- * This function returns true if the floor is not nil.
+ * This function returns true if the floor is not NO_FLOOR.
  *
  * \return true if there is a floor.
  */

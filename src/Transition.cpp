@@ -23,6 +23,13 @@
 
 namespace solarus {
 
+const std::string Transition::style_names[] = {
+  "immediate",
+  "fade",
+  "scrolling",
+  ""  // Sentinel.
+};
+
 /**
  * \brief Creates a transition effect.
  * \param direction direction of the transition effect (in or out)

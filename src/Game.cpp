@@ -129,6 +129,7 @@ Game::~Game() {
 
   delete transition;
   delete keys_effect;
+  hero->notify_being_removed();
   RefCountable::unref(hero);
   delete commands;
 
@@ -443,7 +444,7 @@ void Game::update_transitions() {
 
         // special treatments for a transition between two different worlds
         // (e.g. outside world to a dungeon)
-        if (next_map->get_world() != current_map->get_world()) {
+        if (!next_map->has_world() || next_map->get_world() != current_map->get_world()) {
 
           // reset the crystal blocks
           crystal_state = false;
@@ -516,12 +517,12 @@ void Game::update_keys_effect() {
   }
 
   // make sure the sword key is coherent with having a sword
-  if (get_equipment().has_ability("sword")
+  if (get_equipment().has_ability(ABILITY_SWORD)
       && keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
   }
-  else if (!get_equipment().has_ability("sword")
+  else if (!get_equipment().has_ability(ABILITY_SWORD)
       && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);

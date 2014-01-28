@@ -53,7 +53,7 @@ void Hero::SwordSwingingState::start(const State* previous_state) {
 
   get_sprites().play_sword_sound();
   get_sprites().set_animation_sword();
-  get_equipment().notify_ability_used("sword");
+  get_equipment().notify_ability_used(ABILITY_SWORD);
 }
 
 /**
@@ -134,6 +134,13 @@ bool Hero::SwordSwingingState::can_be_hurt(Enemy* attacker) const {
  */
 bool Hero::SwordSwingingState::can_pick_treasure(EquipmentItem& item) const {
   return true;
+}
+
+/**
+ * \copydoc Hero::State::can_use_shield
+ */
+bool Hero::SwordSwingingState::can_use_shield() const {
+  return false;
 }
 
 /**

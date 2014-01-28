@@ -52,9 +52,16 @@ public class Sprite {
     private TreeMap<String, SpriteAnimation> animations;
 
     /**
-     * The map where this sprite is supposed to be displayed.
+     * Whether this sprite depends on the tileset.
+     * If yes, the sprite sheet image file will come from the tileset
+     * instead of from a specified fixed file.
      */
-    private Map map;
+    private boolean tilesetDependent;
+
+    /**
+     * Id of the tileset used to draw this sprite (for tileset-dependent sprites).
+     */
+    private String tilesetId;
 
     /**
      * Default image for empty sprites.
@@ -110,12 +117,12 @@ public class Sprite {
                     srcImage = Project.getProjectImage("sprites/" + srcImageName);
                 }
                 else {
-                    String tilesetId = map.getTilesetId();
                     if (tilesetId.isEmpty()) {
                         throw new MapException("No tileset selected");
                     }
+                    tilesetDependent = true;
                     srcImage = Project.getProjectImage(
-                            "tilesets/" + Project.getTilesetEntitiesImageFile(map.getTilesetId()).getName());
+                            "tilesets/" + Project.getTilesetEntitiesImageFile(tilesetId).getName());
                 }
 
                 Vector<SpriteAnimationDirection> directions = new Vector<SpriteAnimationDirection>();
@@ -178,7 +185,7 @@ public class Sprite {
     public Sprite(String animationSetId, Map map) throws MapException {
 
         this.animationSetId = animationSetId;
-        this.map = map;
+        this.tilesetId = map.getTilesetId();
         load();
     }
 
@@ -264,6 +271,27 @@ public class Sprite {
         }
 
         return animations.get(animationName).getSize(direction);
+    }
+
+    /**
+     * Changes the tileset used to draw this sprite.
+     *
+     * This function has an effect only for tileset-dependent sprites.
+     *
+     * @param tilesetId Id of the new tileset to use.
+     */
+    public void notifyTilesetChanged(String tilesetId) throws MapException {
+
+        if (tilesetId == null || !tilesetDependent) {
+            return;
+        }
+
+        if (this.tilesetId == null || !tilesetId.equals(this.tilesetId)) {
+
+            this.tilesetId = tilesetId;
+            // Reload the sprite because its source image has changed.
+            load();
+        }
     }
 
     /**

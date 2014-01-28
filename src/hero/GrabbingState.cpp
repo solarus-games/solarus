@@ -56,6 +56,10 @@ void Hero::GrabbingState::start(const State* previous_state) {
  */
 void Hero::GrabbingState::update() {
 
+  if (is_suspended()) {
+    return;
+  }
+
   // the hero is grabbing an obstacle: check the direction pressed
 
   int wanted_direction8 = get_commands().get_wanted_direction8();

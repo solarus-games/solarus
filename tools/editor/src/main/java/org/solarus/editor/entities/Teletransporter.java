@@ -44,11 +44,6 @@ public class Teletransporter extends MapEntity {
     private static Image resizableTeletransporterImage;
 
     /**
-     * The sprite representing this teletransporter, or null.
-     */
-    private Sprite sprite;
-
-    /**
      * Creates a new teletransporter.
      * @param map the map
      */
@@ -80,7 +75,7 @@ public class Teletransporter extends MapEntity {
     public void createProperties() throws MapException {
         createStringProperty("sprite", true, null);
         createStringProperty("sound", true, null);
-        createIntegerProperty("transition", false, Transition.FADE.getId());
+        createStringProperty("transition", true, Transition.FADE.getId());
         createStringProperty("destination_map", false, getMap().getId());
         createStringProperty("destination", true, null);
     }
@@ -96,10 +91,10 @@ public class Teletransporter extends MapEntity {
         if (name.equals("sprite")) {
 
             if (value != null && value.length() > 0) {
-                sprite = new Sprite(value, getMap());
+                setSprite(new Sprite(value, getMap()));
             }
             else {
-                sprite = null;
+                setSprite(null);
             }
         }
     }
@@ -152,13 +147,12 @@ public class Teletransporter extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-        if (sprite != null) {
-            // display the appropriate sprite
-            sprite.paint(g, zoom, showTransparency,
-                getX(), getY(), null, 0, 0);
+        if (getSprite() != null) {
+            // Display the appropriate sprite as always.
+            super.paint(g, zoom, showTransparency);
         }
         else {
-            // no sprite: display a teletransporter icon
+            // No sprite: display a teletransporter icon.
             if (resizableTeletransporterImage == null) {
                 resizableTeletransporterImage = Project.getEditorImageOrEmpty(
                         "entity_teletransporter_resizable.png");

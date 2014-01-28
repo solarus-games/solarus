@@ -40,6 +40,7 @@ class Hq4xFilter: public PixelFilter {
         uint32_t* dst) const;
 
     static void initialize_hqx();
+
 };
 
 }

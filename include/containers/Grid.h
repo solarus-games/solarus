@@ -59,6 +59,7 @@ class Grid {
     size_t num_rows;
     size_t num_columns;
     std::vector<std::vector<T> > elements;     /**< Two-dimensional array of cells. */
+
 };
 
 /**

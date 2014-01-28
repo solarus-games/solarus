@@ -24,6 +24,7 @@
 #include "entities/EntityType.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Debug.h"
+#include "Ability.h"
 #include <map>
 #include <set>
 #include <list>
@@ -73,36 +74,6 @@ class LuaContext {
     static const std::string movement_circle_module_name;
     static const std::string movement_jump_module_name;
     static const std::string movement_pixel_module_name;
-    static const std::string entity_hero_module_name;
-    static const std::string entity_tile_module_name;
-    static const std::string entity_dynamic_tile_module_name;
-    static const std::string entity_teletransporter_module_name;
-    static const std::string entity_destination_module_name;
-    static const std::string entity_pickable_module_name;
-    static const std::string entity_destructible_module_name;
-    static const std::string entity_carried_object_module_name;
-    static const std::string entity_chest_module_name;
-    static const std::string entity_shop_treasure_module_name;
-    static const std::string entity_enemy_module_name;
-    static const std::string entity_npc_module_name;
-    static const std::string entity_block_module_name;
-    static const std::string entity_jumper_module_name;
-    static const std::string entity_switch_module_name;
-    static const std::string entity_sensor_module_name;
-    static const std::string entity_separator_module_name;
-    static const std::string entity_wall_module_name;
-    static const std::string entity_crystal_module_name;
-    static const std::string entity_crystal_block_module_name;
-    static const std::string entity_conveyor_belt_module_name;
-    static const std::string entity_door_module_name;
-    static const std::string entity_stairs_module_name;
-    static const std::string entity_bomb_module_name;
-    static const std::string entity_explosion_module_name;
-    static const std::string entity_fire_module_name;
-    static const std::string entity_arrow_module_name;
-    static const std::string entity_hookshot_module_name;
-    static const std::string entity_boomerang_module_name;
-    static const std::string entity_custom_module_name;
 
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
@@ -144,6 +115,7 @@ class LuaContext {
     void destroy_timers();
     void update_timers();
     void notify_timers_map_suspended(bool suspended);
+    void do_timer_callback(Timer& timer);
 
     // Menus.
     void add_menu(int menu_ref, int context_index, bool on_top);
@@ -220,7 +192,7 @@ class LuaContext {
     void item_on_variant_changed(EquipmentItem& item, int variant);
     void item_on_amount_changed(EquipmentItem& item, int amount);
     void item_on_using(EquipmentItem& item);
-    void item_on_ability_used(EquipmentItem& item, const std::string& ability_name);
+    void item_on_ability_used(EquipmentItem& item, Ability ability);
     void item_on_npc_interaction(EquipmentItem& item, Npc& npc);
     bool item_on_npc_interaction_item(EquipmentItem& item, Npc& npc,
         EquipmentItem& item_used);
@@ -266,7 +238,9 @@ class LuaContext {
     void entity_on_movement_changed(MapEntity& entity, Movement& movement);
     void entity_on_movement_finished(MapEntity& entity);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
-    // TODO add destination_on_activated
+    bool hero_on_taking_damage(Hero& hero, int damage);
+    void destination_on_activated(Destination& destination);
+    void teletransporter_on_activated(Teletransporter& teletransporter);
     void npc_on_interaction(Npc& npc);
     bool npc_on_interaction_item(Npc& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(Npc& npc);
@@ -303,7 +277,8 @@ class LuaContext {
         Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void enemy_on_custom_attack_received(Enemy& enemy,
         EnemyAttack attack, Sprite* sprite);
-    void enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost);
+    bool enemy_on_hurt_by_sword(Enemy& enemy, Hero& hero, Sprite& enemy_sprite);
+    void enemy_on_hurt(Enemy& enemy, EnemyAttack attack);
     void enemy_on_dying(Enemy& enemy);
     void enemy_on_dead(Enemy& enemy);
     void enemy_on_immobilized(Enemy& enemy);
@@ -324,6 +299,7 @@ class LuaContext {
       main_api_do_file,
       main_api_reset,
       main_api_exit,
+      main_api_get_elapsed_time,
       main_api_get_quest_write_dir,
       main_api_set_quest_write_dir,
       main_api_load_settings,
@@ -368,6 +344,7 @@ class LuaContext {
       input_api_is_joypad_enabled,
       input_api_set_joypad_enabled,
       input_api_is_key_pressed,
+      input_api_get_key_modifiers,
       input_api_is_joypad_button_pressed,
       input_api_get_joypad_axis_state,
       input_api_get_joypad_hat_direction,
@@ -394,11 +371,9 @@ class LuaContext {
       timer_api_set_suspended,
       timer_api_is_suspended_with_map,
       timer_api_set_suspended_with_map,
-      // TODO add get_remaining_time, set_remaining_time,
-      // TODO allow to repeat a timer automatically
+      timer_api_get_remaining_time,
+      timer_api_set_remaining_time,
       // TODO remove is_with_sound, set_with_sound (do this in pure Lua, possibly with a second timer)
-      // TODO game:is_suspended, timer:is/set_suspended_with_map, sprite:get/set_ignore_suspend
-      // are the same concept, make these names consistent
 
       // Language API.
       language_api_get_language,
@@ -455,7 +430,7 @@ class LuaContext {
       sprite_api_set_frame_delay,
       sprite_api_is_paused,
       sprite_api_set_paused,
-      sprite_api_set_ignore_suspend,
+      sprite_api_set_ignore_suspend,  // TODO rename to set_suspended_with_map() like timers
       sprite_api_synchronize,
 
       // Movement API.
@@ -656,7 +631,7 @@ class LuaContext {
       map_api_remove_entities,
       map_api_create_tile,
       map_api_create_destination,
-      map_api_create_teletransporter,  // TODO stringify transition_style
+      map_api_create_teletransporter,
       map_api_create_pickable,
       map_api_create_destructible,
       map_api_create_chest,
@@ -700,6 +675,8 @@ class LuaContext {
       entity_api_get_angle,
       entity_api_get_direction4_to,
       entity_api_get_direction8_to,
+      entity_api_bring_to_front,
+      entity_api_bring_to_back,
       entity_api_snap_to_grid,
       entity_api_get_sprite,
       entity_api_create_sprite,
@@ -734,6 +711,14 @@ class LuaContext {
       hero_api_start_hookshot,
       hero_api_start_running,
       hero_api_start_hurt,
+      teletransporter_api_get_sound,
+      teletransporter_api_set_sound,
+      teletransporter_api_get_transition,
+      teletransporter_api_set_transition,
+      teletransporter_api_get_destination_map,
+      teletransporter_api_set_destination_map,
+      teletransporter_api_get_destination_name,
+      teletransporter_api_set_destination_name,
       chest_api_is_open,
       chest_api_set_open,
       block_api_reset,
@@ -789,7 +774,9 @@ class LuaContext {
       enemy_api_set_can_attack,
       enemy_api_get_minimum_shield_needed,
       enemy_api_set_minimum_shield_needed,
+      enemy_api_get_attack_consequence,
       enemy_api_set_attack_consequence,
+      enemy_api_get_attack_consequence_sprite,
       enemy_api_set_attack_consequence_sprite,
       enemy_api_set_default_attack_consequences,
       enemy_api_set_default_attack_consequences_sprite,
@@ -908,6 +895,7 @@ class LuaContext {
     static void push_entity(lua_State* l, MapEntity& entity);
     static void push_hero(lua_State* l, Hero& hero);
     static void push_npc(lua_State* l, Npc& npc);
+    static void push_teletransporter(lua_State* l, Teletransporter& teletransporter);
     static void push_chest(lua_State* l, Chest& chest);
     static void push_block(lua_State* l, Block& block);
     static void push_switch(lua_State* l, Switch& sw);
@@ -963,6 +951,8 @@ class LuaContext {
     static MapEntity& check_entity(lua_State* l, int index);
     static bool is_hero(lua_State* l, int index);
     static Hero& check_hero(lua_State* l, int index);
+    static bool is_teletransporter(lua_State* l, int index);
+    static Teletransporter& check_teletransporter(lua_State* l, int index);
     static bool is_npc(lua_State* l, int index);
     static Npc& check_npc(lua_State* l, int index);
     static bool is_chest(lua_State* l, int index);
@@ -1021,6 +1011,7 @@ class LuaContext {
     void on_obtaining_treasure(const Treasure& treasure);
     void on_obtained_treasure(const Treasure& treasure);
     void on_state_changed(const std::string& state_name);
+    bool on_taking_damage(int damage);
     void on_activating();
     void on_activating(int direction4);
     void on_activated();
@@ -1050,7 +1041,7 @@ class LuaContext {
     void on_obtaining(const Treasure& treasure);
     void on_obtained(const Treasure& treasure);
     void on_using();
-    void on_ability_used(const std::string& ability_name);
+    void on_ability_used(Ability ability);
     void on_created();
     void on_removed();
     void on_enabled();
@@ -1068,7 +1059,8 @@ class LuaContext {
     void on_exploded();
     void on_regenerating();
     void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
-    void on_hurt(EnemyAttack attack, int life_lost);
+    bool on_hurt_by_sword(Hero& hero, Sprite& enemy_sprite);
+    void on_hurt(EnemyAttack attack);
     void on_dying();
     void on_dead();
     void on_immobilized();
@@ -1116,7 +1108,7 @@ class LuaContext {
     static const std::string enemy_attack_names[];
     static const std::string enemy_hurt_style_names[];
     static const std::string enemy_obstacle_behavior_names[];
-    static const std::string transition_style_names[];
+
 };
 
 }

@@ -46,8 +46,6 @@ class Switch: public Detector {
       SOLID              = 3  /**< a crystal-like switch that can be triggered with the sword */
     };
 
-  public:
-
     Switch(const std::string& name, Layer layer, int x, int y,
         Subtype subtype, bool needs_block, bool inactivate_when_leaving);
     ~Switch();

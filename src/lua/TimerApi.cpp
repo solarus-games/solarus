@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "lua/LuaTools.h"
+#include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "Timer.h"
 #include "MainLoop.h"
@@ -48,6 +50,8 @@ void LuaContext::register_timer_module() {
       { "set_suspended", timer_api_set_suspended },
       { "is_suspended_iwith_map", timer_api_is_suspended_with_map },
       { "set_suspended_with_map", timer_api_set_suspended_with_map },
+      { "get_remaining_time", timer_api_get_remaining_time },
+      { "set_remaining_time", timer_api_set_remaining_time },
       { NULL, NULL }
   };
 
@@ -236,9 +240,7 @@ void LuaContext::update_timers() {
       // The timer is not being removed: update it.
       timer->update();
       if (timer->is_finished()) {
-        do_callback(callback_ref);
-        it->second.callback_ref = LUA_REFNIL;
-        timers_to_remove.push_back(timer);
+        do_timer_callback(*timer);
       }
     }
   }
@@ -280,6 +282,46 @@ void LuaContext::notify_timers_map_suspended(bool suspended) {
 }
 
 /**
+ * \brief Executes the callback of a timer.
+ *
+ * Then, if the callback returns \c true, the timer is rescheduled,
+ * otherwise it is discarded.
+ *
+ * Does nothing if the timer is already finished.
+ *
+ * \param timer The timer to execute.
+ */
+void LuaContext::do_timer_callback(Timer& timer) {
+
+  Debug::check_assertion(timer.is_finished(), "This timer is still running");
+
+  const std::map<Timer*, LuaTimerData>::iterator it = timers.find(&timer);
+  if (it != timers.end() && it->second.callback_ref != LUA_REFNIL) {
+    const int callback_ref = it->second.callback_ref;
+    push_callback(callback_ref);
+    call_function(0, 1, "timer callback");
+
+    const bool repeat = lua_isboolean(l, -1) && lua_toboolean(l, -1);
+    lua_pop(l, 1);
+
+    if (repeat) {
+      // The callback returned true: reschedule the timer.
+      timer.set_expiration_date(timer.get_expiration_date() + timer.get_initial_duration());
+      if (timer.is_finished()) {
+        // Already finished: this is possible if the duration is smaller than
+        // the main loop stepsize.
+        do_timer_callback(timer);
+      }
+    }
+    else {
+      cancel_callback(callback_ref);
+      it->second.callback_ref = LUA_REFNIL;
+      timers_to_remove.push_back(&timer);
+    }
+  }
+}
+
+/**
  * \brief Implementation of sol.timer.start().
  * \param l the Lua context that is calling this function
  * \return number of values to return to Lua
@@ -316,18 +358,16 @@ int LuaContext::timer_api_start(lua_State *l) {
   uint32_t delay = uint32_t(luaL_checkint(l, 2));
   luaL_checktype(l, 3, LUA_TFUNCTION);
 
+  // Create the timer.
+  Timer* timer = new Timer(delay);
+  lua_context.add_timer(timer, 1, 3);
+
   if (delay == 0) {
     // The delay is zero: call the function right now.
-    lua_settop(l, 3);
-    lua_context.call_function(0, 0, "callback");
-    lua_pushnil(l);
+    lua_context.do_timer_callback(*timer);
   }
-  else {
-    // Create the timer.
-    Timer* timer = new Timer(delay);
-    lua_context.add_timer(timer, 1, 3);
-    push_timer(l, *timer);
-  }
+
+  push_timer(l, *timer);
 
   return 1;
 }
@@ -457,6 +497,54 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
 
   Game* game = lua_context.get_main_loop().get_game();
   timer.notify_map_suspended(game->get_current_map().is_suspended());
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of timer:get_remaining_time().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::timer_api_get_remaining_time(lua_State* l) {
+
+  Timer& timer = check_timer(l, 1);
+
+  LuaContext& lua_context = get_lua_context(l);
+  const std::map<Timer*, LuaTimerData>::const_iterator it = lua_context.timers.find(&timer);
+  if (it == lua_context.timers.end() || it->second.callback_ref == LUA_REFNIL) {
+    // This timer is already finished or was canceled.
+    lua_pushinteger(l, 0);
+  }
+  else {
+    int remaining_time = std::max(0, int(System::now()) - int(timer.get_expiration_date()));
+    lua_pushinteger(l, remaining_time);
+  }
+  return 1;
+}
+
+/**
+ * \brief Implementation of timer:set_remaining_time().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::timer_api_set_remaining_time(lua_State* l) {
+
+  Timer& timer = check_timer(l, 1);
+  uint32_t remaining_time = luaL_checkint(l, 2);
+
+  LuaContext& lua_context = get_lua_context(l);
+  const std::map<Timer*, LuaTimerData>::const_iterator it = lua_context.timers.find(&timer);
+  if (it != lua_context.timers.end() && it->second.callback_ref != LUA_REFNIL) {
+    // The timer is still active.
+    const uint32_t now = System::now();
+    const uint32_t expiration_date = now + remaining_time;
+    timer.set_expiration_date(expiration_date);
+    if (now >= expiration_date) {
+      // Execute the callback now.
+      lua_context.do_timer_callback(timer);
+    }
+  }
 
   return 0;
 }

@@ -28,16 +28,6 @@ namespace solarus {
  */
 class Hookshot: public MapEntity {
 
-  private:
-
-    uint32_t next_sound_date;    /**< date when the hookshot sound is be played next time */
-
-    bool has_to_go_back;         /**< true if the hookshot is about to go back */
-    bool going_back;             /**< indicates that the hookshot is going back towards the hero */
-    MapEntity* entity_reached;   /**< the entity the hookshot is attached to (or NULL) */
-
-    Sprite link_sprite;          /**< sprite of the links */
-
   public:
 
     Hookshot(Hero& hero);
@@ -82,6 +72,16 @@ class Hookshot: public MapEntity {
     void notify_collision_with_block(Block& block);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
+
+  private:
+
+    uint32_t next_sound_date;    /**< date when the hookshot sound is be played next time */
+
+    bool has_to_go_back;         /**< true if the hookshot is about to go back */
+    bool going_back;             /**< indicates that the hookshot is going back towards the hero */
+    MapEntity* entity_reached;   /**< the entity the hookshot is attached to (or NULL) */
+
+    Sprite link_sprite;          /**< sprite of the links */
 
 };
 

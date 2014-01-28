@@ -82,7 +82,7 @@ public class MapViewPopupMenu extends JPopupMenu {
             item.setEnabled(selection.isResizable());
             item.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    mapView.startResizingEntity();
+                    mapView.startResizingEntities();
                 }
             });
             add(item);

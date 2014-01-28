@@ -178,6 +178,13 @@ bool Hero::SwordLoadingState::can_pick_treasure(EquipmentItem& item) const {
 }
 
 /**
+ * \copydoc Hero::State::can_use_shield
+ */
+bool Hero::SwordLoadingState::can_use_shield() const {
+  return false;
+}
+
+/**
  * \brief Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::SwordLoadingState::set_animation_stopped() {
@@ -197,7 +204,7 @@ void Hero::SwordLoadingState::set_animation_walking() {
 void Hero::SwordLoadingState::play_load_sound() {
 
   std::ostringstream oss;
-  oss << "sword_spin_attack_load_" << get_equipment().get_ability("sword");
+  oss << "sword_spin_attack_load_" << get_equipment().get_ability(ABILITY_SWORD);
   std::string custom_sound_name = oss.str();
   if (Sound::exists(custom_sound_name)) {
     Sound::play(custom_sound_name); // this particular sword has a custom loading sound effect

@@ -45,7 +45,19 @@ See \ref lua_api_entity_events to know these events.
 
 \section lua_api_destination_events Events of the type destination
 
-None.
+The following events are specific to destinations.
+
+\subsection lua_api_destination_on_activated destination:on_activated()
+
+Called when the
+\ref lua_api_hero "hero" arrives on this destination.
+
+The map opening transition is about to start at this point.
+
+He may come from a
+\ref lua_api_teletransporter "teletransporter", from
+\ref lua_api_hero_teleport "hero:teleport()" or from the
+\ref lua_api_game_get_starting_location "saved starting location".
 
 */
 

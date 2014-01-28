@@ -44,6 +44,7 @@ class Debug {
   private:
 
     Debug();  // Don't instantiate this class
+
 };
 
 }

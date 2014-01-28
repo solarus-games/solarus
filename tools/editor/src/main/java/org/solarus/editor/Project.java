@@ -282,6 +282,24 @@ public class Project {
     }
 
     /**
+     * Loads an image icon of the editor from a specified file name.
+     * The image loaded is not project dependent.
+     * If the image cannot be loaded, an empty image is returned instead.
+     * @param imageFileName the name of the image file to read, relative to the
+     * images directory of the editor
+     * @return the image
+     */
+    public static ImageIcon getEditorImageIconOrEmpty(String imageFileName) {
+
+        try {
+            return getEditorImageIcon(imageFileName);
+        }
+        catch (IOException ex) {
+            return new ImageIcon();
+        }
+    }
+
+    /**
      * Loads an image of the project from a specified file name.
      * If the image has been already loaded, it is not loaded again.
      * @param imageFileName the name of the image file to read, relative to the
@@ -758,32 +776,42 @@ public class Project {
         switch (resourceType) {
 
         case MAP:
+            getMapDir().mkdir();
             getMapFile(id).createNewFile();
             getMapScriptFile(id).createNewFile();
             break;
 
         case TILESET:
+            getTilesetDir().mkdir();
             getTilesetFile(id).createNewFile();
             break;
 
         case LANGUAGE:
+            getLanguageDir().mkdir();
+            getLanguageDir(id).mkdir();
+            getLanguageImageDir(id).mkdir();
+            getLanguageTextDir(id).mkdir();
             getDialogsFile(id).createNewFile();
             getStringsFile(id).createNewFile();
             break;
 
         case ENEMY:
+            getEnemyDir().mkdir();
             getEnemyScriptFile(id).createNewFile();
             break;
 
         case ITEM:
+            getItemDir().mkdir();
             getItemScriptFile(id).createNewFile();
             break;
 
         case ENTITY:
+            getEntityDir().mkdir();
             getEntityScriptFile(id).createNewFile();
             break;
 
         case SPRITE:
+            getSpriteDir().mkdir();
             getSpriteFile(id).createNewFile();
             break;
 

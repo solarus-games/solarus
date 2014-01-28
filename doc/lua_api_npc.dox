@@ -75,7 +75,8 @@ The following methods are specific to non-playing characters.
 \subsection lua_api_npc_get_sprite npc:get_sprite()
 
 Returns the sprite of this %NPC.
-- Return value (\ref lua_api_sprite "sprite"): The sprite of this %NPC.
+- Return value (\ref lua_api_sprite "sprite"): The sprite of this %NPC, or
+  \c nil if it has no sprite.
 
 \section lua_api_npc_inherited_events Events inherited from map entity
 

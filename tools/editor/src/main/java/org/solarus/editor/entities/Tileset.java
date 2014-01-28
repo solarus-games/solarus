@@ -81,21 +81,8 @@ public class Tileset extends Observable {
      * Id of the tile pattern currently selected by the user.
      * 0: no tile pattern is selected
      * 1 or more: an existing tile pattern is selected
-     * -1: a new tile pattern is selected, ready to be created
      */
     private int selectedTilePatternId;
-
-    /**
-     * Position of the tile pattern the user is creating,
-     * or null if there no new tile pattern selected.
-     */
-    private Rectangle newTilePatternArea;
-
-    /**
-     * True if the new tile pattern area is overlapping an existing tile pattern.
-     * Is so, the tile pattern cannot be created.
-     */
-    private boolean isNewTilePatternAreaOverlapping;
 
     /**
      * Creates or loads a tileset.
@@ -365,8 +352,7 @@ public class Tileset extends Observable {
 
     /**
      * Returns the id of the selected tile pattern.
-     * @return 0 if no tile pattern is selected, 1 or more if an existing tile pattern is selected,
-     * or -1 if a new tile pattern is selected
+     * @return 0 if no tile pattern is selected, 1 or more if an existing tile pattern is selected.
      */
     public int getSelectedTilePatternId() {
         return selectedTilePatternId;
@@ -376,16 +362,11 @@ public class Tileset extends Observable {
      * Selects a tile patterns and notifies the observers.
      * @param selectedTilePatternId 0 to select no tile pattern,
      * 1 or more to select the existing
-     * tile pattern with this id or -1 if a new tile pattern is selected
+     * tile pattern with this id.
      */
     public void setSelectedTilePatternId(int selectedTilePatternId) {
         if (selectedTilePatternId != this.selectedTilePatternId) {
             this.selectedTilePatternId = selectedTilePatternId;
-
-            if (selectedTilePatternId != getNbTilePatterns()) {
-                newTilePatternArea = null;
-            }
-
             setChanged();
             notifyObservers();
         }
@@ -400,14 +381,6 @@ public class Tileset extends Observable {
     }
 
     /**
-     * Starts the selection of a new tile pattern.
-     * This is equivalent to call setSelectedTilePatternId(-1).
-     */
-    public void startSelectingNewTilePattern() {
-        setSelectedTilePatternId(-1);
-    }
-
-    /**
      * Returns the selected tile pattern.
      * @return the selected tile pattern, or null if there is no selected
      * tile pattern or if doesn't exist yet
@@ -419,15 +392,6 @@ public class Tileset extends Observable {
         else {
             return null;
         }
-    }
-
-    /**
-     * Returns whether or not the user is selecting a new tile pattern.
-     * @return true if the user is selecting a new tile pattern,
-     * i.e. if getSelectedTilePatternId() == -1
-     */
-    public boolean isSelectingNewTilePattern() {
-        return selectedTilePatternId == -1;
     }
 
     /**
@@ -475,69 +439,27 @@ public class Tileset extends Observable {
     }
 
     /**
-     * Returns the position of the tile pattern the user is creating.
-     * @return position of the new tile pattern, or null if there no new tile pattern selected
-     */
-    public Rectangle getNewTilePatternArea() {
-        return newTilePatternArea;
-    }
-
-    /**
-     * Changes the position of the tile pattern the user is creating.
-     * If the specified area is the same than before, nothing is done.
-     * @param newTileArea position of the new tile, or null if there is currently no new tile selected
-     */
-    public void setNewTilePatternArea(Rectangle newTilePatternArea) {
-        if (!newTilePatternArea.equals(this.newTilePatternArea)) {
-
-            this.newTilePatternArea = newTilePatternArea;
-
-            // determine whether or not the new tile pattern area is overlapping an existing tile pattern
-            isNewTilePatternAreaOverlapping = false;
-            for (TilePattern pattern: getTilePatterns()) {
-
-                if (pattern.getPositionInTileset().intersects(newTilePatternArea)) {
-                    isNewTilePatternAreaOverlapping = true;
-                    break;
-                }
-            }
-
-            setChanged();
-            notifyObservers();
-        }
-    }
-
-    /**
-     * Returns whether or not the area selected by the user to make a new tile pattern
-     * is overlapping an existing tile pattern.
-     * @return true if the new tile pattern area is overlapping an existing tile pattern, false otherwise
-     */
-    public boolean isNewTilePatternAreaOverlapping() {
-        return isNewTilePatternAreaOverlapping;
-    }
-
-    /**
      * Creates the tile pattern specified by the current selection area
      * and adds it to the tileset.
      * The observers are notified with the created TilePattern as parameter.
+     * @param newTilePatternArea Position of the new tile pattern.
      * @param ground Ground property of the created tile pattern.
      * @throws TilesetException if the tile size is incorrect
      */
-    public void addTilePattern(Ground ground) throws TilesetException {
+    public void addTilePattern(Rectangle newTilePatternArea, Ground ground)
+            throws TilesetException {
 
-        if (isSelectingNewTilePattern() && !isNewTilePatternAreaOverlapping) {
-            TilePattern tilePattern = new TilePattern(newTilePatternArea, Layer.LOW, ground);
+        TilePattern tilePattern = new TilePattern(newTilePatternArea, Layer.LOW, ground);
 
-            maxId++;
-            tilePatterns.put(maxId, tilePattern);
+        maxId++;
+        tilePatterns.put(maxId, tilePattern);
 
-            setSelectedTilePatternId(maxId);
+        setSelectedTilePatternId(maxId);
 
-            isSaved = false;
+        isSaved = false;
 
-            setChanged();
-            notifyObservers(tilePattern); // indicates that a tile pattern has been created
-        }
+        setChanged();
+        notifyObservers(tilePattern); // indicates that a tile pattern has been created
     }
 
     /**

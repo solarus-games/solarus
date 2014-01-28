@@ -965,9 +965,7 @@ void Hero::State::notify_attacked_enemy(
  */
 int Hero::State::get_sword_damage_factor() const {
 
-  static const int sword_factors[] = {0, 1, 2, 4, 8};
-  int sword = get_equipment().get_ability("sword");
-  return sword_factors[sword];
+  return get_equipment().get_ability(ABILITY_SWORD);
 }
 
 /**
@@ -1100,6 +1098,17 @@ bool Hero::State::can_start_sword() const {
  */
 bool Hero::State::can_pick_treasure(EquipmentItem& item) const {
   return false;
+}
+
+/**
+ * \brief Returns whether attack can be stopped with a shield in this state.
+ *
+ * Returns \c true by default.
+ *
+ * \return \c true if the shield is active is this state.
+ */
+bool Hero::State::can_use_shield() const {
+  return true;
 }
 
 /**

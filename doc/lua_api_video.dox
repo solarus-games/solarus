@@ -148,7 +148,7 @@ initially have a size of 640x480.
 
 Sets the size of the window.
 
-See \ref lua_api_get_window_size "sol.video.get_window_size()" for a
+See \ref lua_api_video_get_window_size "sol.video.get_window_size()" for a
 detailed description of the window size.
 
 When the window is in fullscreen, this function still works: the changes will
@@ -164,7 +164,7 @@ default value for the new video mode.
 Restores the size of the window to its default value.
 
 The default size of the window depends on the video mode: see
-\ref lua_api_get_window_size "sol.video.get_window_size()"
+\ref lua_api_video_get_window_size "sol.video.get_window_size()"
 for a detailed explanation.
 
 When the window is in fullscreen, this function still works: the changes will

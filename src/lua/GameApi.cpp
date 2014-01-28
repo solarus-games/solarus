@@ -716,6 +716,10 @@ int LuaContext::game_api_add_life(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   int life = luaL_checkint(l, 2);
 
+  if (life < 0) {
+    LuaTools::arg_error(l, 2, "Invalid life value: must be positive or zero");
+  }
+
   savegame.get_equipment().add_life(life);
 
   return 0;
@@ -730,6 +734,10 @@ int LuaContext::game_api_remove_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int life = luaL_checkint(l, 2);
+
+  if (life < 0) {
+    LuaTools::arg_error(l, 2, "Invalid life value: must be positive or zero");
+  }
 
   savegame.get_equipment().remove_life(life);
 
@@ -761,6 +769,10 @@ int LuaContext::game_api_set_max_life(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   int life = luaL_checkint(l, 2);
 
+  if (life <= 0) {
+    LuaTools::arg_error(l, 2, "Invalid life value: max life must be strictly positive");
+  }
+
   savegame.get_equipment().set_max_life(life);
 
   return 0;
@@ -776,7 +788,11 @@ int LuaContext::game_api_add_max_life(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   int life = luaL_checkint(l, 2);
 
-  Equipment &equipment = savegame.get_equipment();
+  if (life < 0) {
+    LuaTools::arg_error(l, 2, "Invalid life value: must be positive or zero");
+  }
+
+  Equipment& equipment = savegame.get_equipment();
   equipment.set_max_life(equipment.get_max_life() + life);
 
   return 0;
@@ -822,6 +838,10 @@ int LuaContext::game_api_add_money(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   int money = luaL_checkint(l, 2);
 
+  if (money < 0) {
+    LuaTools::arg_error(l, 2, "Invalid money value: must be positive or zero");
+  }
+
   savegame.get_equipment().add_money(money);
 
   return 0;
@@ -836,6 +856,10 @@ int LuaContext::game_api_remove_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int money = luaL_checkint(l, 2);
+
+  if (money < 0) {
+    LuaTools::arg_error(l, 2, "Invalid money value: must be positive or zero");
+  }
 
   savegame.get_equipment().remove_money(money);
 
@@ -866,6 +890,10 @@ int LuaContext::game_api_set_max_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int money = luaL_checkint(l, 2);
+
+  if (money < 0) {
+    LuaTools::arg_error(l, 2, "Invalid money value: must be positive or zero");
+  }
 
   savegame.get_equipment().set_max_money(money);
 
@@ -912,6 +940,10 @@ int LuaContext::game_api_add_magic(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   int magic = luaL_checkint(l, 2);
 
+  if (magic < 0) {
+    LuaTools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
+  }
+
   savegame.get_equipment().add_magic(magic);
 
   return 0;
@@ -926,6 +958,10 @@ int LuaContext::game_api_remove_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int magic = luaL_checkint(l, 2);
+
+  if (magic < 0) {
+    LuaTools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
+  }
 
   savegame.get_equipment().remove_magic(magic);
 
@@ -957,6 +993,10 @@ int LuaContext::game_api_set_max_magic(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   int magic = luaL_checkint(l, 2);
 
+  if (magic < 0) {
+    LuaTools::arg_error(l, 2, "Invalid magic points value: must be positive or zero");
+  }
+
   savegame.get_equipment().set_max_magic(magic);
 
   return 0;
@@ -970,9 +1010,9 @@ int LuaContext::game_api_set_max_magic(lua_State* l) {
 int LuaContext::game_api_has_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& ability_name = luaL_checkstring(l, 2);
+  Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
 
-  bool has_ability = savegame.get_equipment().has_ability(ability_name);
+  bool has_ability = savegame.get_equipment().has_ability(ability);
 
   lua_pushboolean(l, has_ability);
   return 1;
@@ -986,9 +1026,9 @@ int LuaContext::game_api_has_ability(lua_State* l) {
 int LuaContext::game_api_get_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& ability_name = luaL_checkstring(l, 2);
+  Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
 
-  int ability_level = savegame.get_equipment().get_ability(ability_name);
+  int ability_level = savegame.get_equipment().get_ability(ability);
 
   lua_pushinteger(l, ability_level);
   return 1;
@@ -1002,10 +1042,10 @@ int LuaContext::game_api_get_ability(lua_State* l) {
 int LuaContext::game_api_set_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& ability_name = luaL_checkstring(l, 2);
+  Ability ability = LuaTools::check_enum<Ability>(l, 2, Equipment::ability_names);
   int level = luaL_checkint(l, 3);
 
-  savegame.get_equipment().set_ability(ability_name, level);
+  savegame.get_equipment().set_ability(ability, level);
 
   return 0;
 }

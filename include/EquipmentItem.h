@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lua/ExportableToLua.h"
+#include "Ability.h"
 #include <string>
 #include <vector>
 
@@ -76,7 +77,7 @@ class EquipmentItem: public ExportableToLua {
     void notify_amount_changed(int amount);
     void notify_variant_changed(int variant);
     void notify_using();
-    void notify_ability_used(const std::string& ability_name);
+    void notify_ability_used(Ability ability);
     void notify_pickable_appeared(Pickable& pickable);
 
     int get_variant() const;

@@ -17,6 +17,8 @@
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 #include "entities/Hero.h"
+#include "entities/Destination.h"
+#include "entities/Teletransporter.h"
 #include "entities/Npc.h"
 #include "entities/Chest.h"
 #include "entities/Block.h"
@@ -101,38 +103,6 @@ const std::set<std::string>& get_entity_type_names() {
 
 }
 
-// TODO can we remove all this?
-const std::string LuaContext::entity_hero_module_name = "sol.hero";
-const std::string LuaContext::entity_tile_module_name = "sol.tile";
-const std::string LuaContext::entity_dynamic_tile_module_name = "sol.dynamic_tile";
-const std::string LuaContext::entity_teletransporter_module_name = "sol.teletransporter";
-const std::string LuaContext::entity_destination_module_name = "sol.destination";
-const std::string LuaContext::entity_pickable_module_name = "sol.pickable";
-const std::string LuaContext::entity_destructible_module_name = "sol.destructible";
-const std::string LuaContext::entity_carried_object_module_name = "sol.carried_object";
-const std::string LuaContext::entity_chest_module_name = "sol.chest";
-const std::string LuaContext::entity_shop_treasure_module_name = "sol.shop_treasure";
-const std::string LuaContext::entity_enemy_module_name = "sol.enemy";
-const std::string LuaContext::entity_npc_module_name = "sol.npc";
-const std::string LuaContext::entity_block_module_name = "sol.block";
-const std::string LuaContext::entity_jumper_module_name = "sol.jumper";
-const std::string LuaContext::entity_switch_module_name = "sol.switch";
-const std::string LuaContext::entity_sensor_module_name = "sol.sensor";
-const std::string LuaContext::entity_separator_module_name = "sol.separator";
-const std::string LuaContext::entity_wall_module_name = "sol.wall";
-const std::string LuaContext::entity_crystal_module_name = "sol.crystal";
-const std::string LuaContext::entity_crystal_block_module_name = "sol.crystal_block";
-const std::string LuaContext::entity_conveyor_belt_module_name = "sol.conveyor_belt";
-const std::string LuaContext::entity_door_module_name = "sol.door";
-const std::string LuaContext::entity_stairs_module_name = "sol.stairs";
-const std::string LuaContext::entity_bomb_module_name = "sol.bomb";
-const std::string LuaContext::entity_explosion_module_name = "sol.explosion";
-const std::string LuaContext::entity_fire_module_name = "sol.fire";
-const std::string LuaContext::entity_arrow_module_name = "sol.arrow";
-const std::string LuaContext::entity_hookshot_module_name = "sol.hookshot";
-const std::string LuaContext::entity_boomerang_module_name = "sol.boomerang";
-const std::string LuaContext::entity_custom_module_name = "sol.custom_entity";
-
 // TODO move this to Enemy
 const std::string LuaContext::enemy_attack_names[] = {
   "sword",
@@ -157,14 +127,6 @@ const std::string LuaContext::enemy_obstacle_behavior_names[] = {
   "normal",
   "flying",
   "swimming",
-  ""  // Sentinel.
-};
-
-// TODO move this to Transition
-const std::string LuaContext::transition_style_names[] = {
-  "immediate",
-  "fade",
-  "scrolling",
   ""  // Sentinel.
 };
 
@@ -193,6 +155,8 @@ void LuaContext::register_entity_module() {
       { "get_angle", entity_api_get_angle },\
       { "get_direction4_to", entity_api_get_direction4_to },\
       { "get_direction8_to", entity_api_get_direction8_to },\
+      { "bring_to_front", entity_api_bring_to_front },\
+      { "bring_to_back", entity_api_bring_to_back },\
       { "get_optimization_distance", entity_api_get_optimization_distance },\
       { "set_optimization_distance", entity_api_set_optimization_distance },\
       { "is_in_same_region", entity_api_is_in_same_region },\
@@ -237,9 +201,31 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_hero_module_name,
+      entity_type_names[ENTITY_HERO],
       NULL,
       hero_methods,
+      metamethods
+  );
+
+  // Teletransporter.
+  static const luaL_Reg teletransporter_methods[] = {
+      ENTITY_COMMON_METHODS,
+      { "get_sprite", entity_api_get_sprite },
+      { "get_sound", teletransporter_api_get_sound },
+      { "set_sound", teletransporter_api_set_sound },
+      { "get_transition", teletransporter_api_get_transition },
+      { "set_transition", teletransporter_api_set_transition },
+      { "get_destination_map", teletransporter_api_get_destination_map },
+      { "set_destination_map", teletransporter_api_set_destination_map},
+      { "get_destination_name", teletransporter_api_get_destination_name },
+      { "set_destination_name", teletransporter_api_set_destination_name },
+      { NULL, NULL }
+  };
+
+  register_type(
+      entity_type_names[ENTITY_TELETRANSPORTER],
+      NULL,
+      teletransporter_methods,
       metamethods
   );
 
@@ -251,7 +237,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_npc_module_name,
+      entity_type_names[ENTITY_NPC],
       NULL,
       npc_methods,
       metamethods
@@ -266,7 +252,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_chest_module_name,
+      entity_type_names[ENTITY_CHEST],
       NULL,
       chest_methods,
       metamethods
@@ -286,7 +272,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_block_module_name,
+      entity_type_names[ENTITY_BLOCK],
       NULL,
       block_methods,
       metamethods
@@ -302,7 +288,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_switch_module_name,
+      entity_type_names[ENTITY_SWITCH],
       NULL,
       switch_methods,
       metamethods
@@ -319,7 +305,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_door_module_name,
+      entity_type_names[ENTITY_DOOR],
       NULL,
       door_methods,
       metamethods
@@ -332,7 +318,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_shop_treasure_module_name,
+      entity_type_names[ENTITY_SHOP_TREASURE],
       NULL,
       shop_treasure_methods,
       metamethods
@@ -351,7 +337,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_pickable_module_name,
+      entity_type_names[ENTITY_PICKABLE],
       NULL,
       pickable_methods,
       metamethods
@@ -379,7 +365,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_destructible_module_name,
+      entity_type_names[ENTITY_DESTRUCTIBLE],
       NULL,
       destructible_methods,
       metamethods
@@ -395,8 +381,6 @@ void LuaContext::register_entity_module() {
       { "remove_life", enemy_api_remove_life },
       { "get_damage", enemy_api_get_damage },
       { "set_damage", enemy_api_set_damage },
-      { "get_magic_damage", enemy_api_get_magic_damage },
-      { "set_magic_damage", enemy_api_set_magic_damage },
       { "is_pushed_back_when_hurt", enemy_api_is_pushed_back_when_hurt },
       { "set_pushed_back_when_hurt", enemy_api_set_pushed_back_when_hurt },
       { "get_push_hero_on_sword", enemy_api_get_push_hero_on_sword },
@@ -409,7 +393,9 @@ void LuaContext::register_entity_module() {
       { "set_can_attack", enemy_api_set_can_attack },
       { "get_minimum_shield_needed", enemy_api_get_minimum_shield_needed },
       { "set_minimum_shield_needed", enemy_api_set_minimum_shield_needed },
+      { "get_attack_consequence", enemy_api_get_attack_consequence },
       { "set_attack_consequence", enemy_api_set_attack_consequence },
+      { "get_attack_consequence_sprite", enemy_api_get_attack_consequence_sprite },
       { "set_attack_consequence_sprite", enemy_api_set_attack_consequence_sprite },
       { "set_default_attack_consequences", enemy_api_set_default_attack_consequences },
       { "set_default_attack_consequences_sprite", enemy_api_set_default_attack_consequences_sprite },
@@ -435,7 +421,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_enemy_module_name,
+      entity_type_names[ENTITY_ENEMY],
       NULL,
       enemy_methods,
       metamethods
@@ -449,7 +435,7 @@ void LuaContext::register_entity_module() {
   };
 
   register_type(
-      entity_custom_module_name,
+      entity_type_names[ENTITY_CUSTOM],
       NULL,
       custom_entity_methods,
       metamethods
@@ -461,26 +447,25 @@ void LuaContext::register_entity_module() {
       { NULL, NULL }
   };
 
-  // Register all other types of entity, without specific methods.
-  register_type(entity_tile_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_dynamic_tile_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_teletransporter_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_destination_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_carried_object_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_jumper_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_sensor_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_separator_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_wall_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_crystal_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_crystal_block_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_conveyor_belt_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_stairs_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_bomb_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_explosion_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_fire_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_arrow_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_hookshot_module_name, NULL, entity_common_methods, metamethods);
-  register_type(entity_boomerang_module_name, NULL, entity_common_methods, metamethods);
+  // Also register all other types of entities that have no specific methods.
+  register_type(entity_type_names[ENTITY_TILE], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_DYNAMIC_TILE], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_DESTINATION], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_CARRIED_ITEM], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_JUMPER], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_SENSOR], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_SEPARATOR], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_WALL], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_CRYSTAL], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_CRYSTAL_BLOCK], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_CONVEYOR_BELT], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_STAIRS], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_BOMB], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_EXPLOSION], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_FIRE], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_ARROW], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_HOOKSHOT], NULL, entity_common_methods, metamethods);
+  register_type(entity_type_names[ENTITY_BOOMERANG], NULL, entity_common_methods, metamethods);
 }
 
 /**
@@ -934,6 +919,34 @@ int LuaContext::entity_api_get_direction8_to(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of entity:bring_to_front().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_bring_to_front(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  entity.get_map().get_entities().bring_to_front(entity);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of entity:bring_to_back().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_bring_to_back(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  entity.get_map().get_entities().bring_to_back(entity);
+
+  return 0;
+}
+
+/**
  * \brief Implementation of
  * npc:get_sprite(), pickable:get_sprite() and enemy:get_sprite().
  * \param l The Lua context that is calling this function.
@@ -1166,7 +1179,7 @@ int LuaContext::entity_api_is_in_same_region(lua_State* l) {
  * \return true if the value at this index is a hero.
  */
 bool LuaContext::is_hero(lua_State* l, int index) {
-  return is_userdata(l, index, entity_hero_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_HERO]);
 }
 
 /**
@@ -1177,7 +1190,7 @@ bool LuaContext::is_hero(lua_State* l, int index) {
  * \return The hero.
  */
 Hero& LuaContext::check_hero(lua_State* l, int index) {
-  return static_cast<Hero&>(check_userdata(l, index, entity_hero_module_name));
+  return static_cast<Hero&>(check_userdata(l, index, entity_type_names[ENTITY_HERO]));
 }
 
 /**
@@ -1200,7 +1213,7 @@ int LuaContext::hero_api_teleport(lua_State* l) {
   const std::string& map_id = luaL_checkstring(l, 2);
   const std::string& destination_name = luaL_optstring(l, 3, "");
   Transition::Style transition_style = LuaTools::opt_enum<Transition::Style>(
-      l, 4, transition_style_names, Transition::FADE);
+      l, 4, Transition::style_names, Transition::FADE);
 
   if (!QuestResourceList::exists(QuestResourceList::RESOURCE_MAP, map_id)) {
     LuaTools::arg_error(l, 2, std::string("No such map: '") + map_id + "'");
@@ -1530,14 +1543,34 @@ int LuaContext::hero_api_start_running(lua_State* l) {
  */
 int LuaContext::hero_api_start_hurt(lua_State* l) {
 
+  // There are three possible prototypes:
+  // - hero:start_hurt(life_points)
+  // - hero:start_hurt(source_x, source_y, damage)
+  // - hero:start_hurt(source_entity, [source_sprite], damage)
   Hero& hero = check_hero(l, 1);
-  int source_x = luaL_checkint(l, 2);
-  int source_y = luaL_checkint(l, 3);
-  int life_points = luaL_checkint(l, 4);
-  int magic_points = luaL_checkint(l, 5);
 
-  hero.hurt(Rectangle(source_x, source_y),
-      life_points, magic_points);
+  int life_points = 0;
+  if (lua_gettop(l) <= 2) {
+    int damage = luaL_checkint(l, 2);
+    hero.hurt(life_points);
+  }
+  else if (lua_isnumber(l, 2)) {
+    int source_x = luaL_checkint(l, 2);
+    int source_y = luaL_checkint(l, 3);
+    int damage = luaL_checkint(l, 4);
+    hero.hurt(Rectangle(source_x, source_y), damage);
+  }
+  else {
+    MapEntity& source_entity = check_entity(l, 2);
+    Sprite* source_sprite = NULL;
+    int index = 3;
+    if (is_sprite(l, 3)) {
+      source_sprite = &check_sprite(l, 3);
+      index = 4;
+    }
+    int damage = luaL_checkint(l, index);
+    hero.hurt(source_entity, source_sprite, damage);
+  }
 
   return 0;
 }
@@ -1625,13 +1658,175 @@ int LuaContext::l_treasure_dialog_finished(lua_State* l) {
 }
 
 /**
+ * \brief Returns whether a value is a userdata of type teletransporter.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return \c true if the value at this index is an teletransporter.
+ */
+bool LuaContext::is_teletransporter(lua_State* l, int index) {
+  return is_userdata(l, index, entity_type_names[ENTITY_TELETRANSPORTER]);
+}
+
+/**
+ * \brief Checks that the userdata at the specified index of the stack is a
+ * teletransporter and returns it.
+ * \param l A Lua context.
+ * \param index An index in the stack.
+ * \return The teletransporter.
+ */
+Teletransporter& LuaContext::check_teletransporter(lua_State* l, int index) {
+  return static_cast<Teletransporter&>(check_userdata(
+      l, index, entity_type_names[ENTITY_TELETRANSPORTER])
+  );
+}
+
+/**
+ * \brief Pushes an teletransporter userdata onto the stack.
+ * \param l A Lua context.
+ * \param teletransporter A teletransporter.
+ */
+void LuaContext::push_teletransporter(lua_State* l, Teletransporter& teletransporter) {
+  push_userdata(l, teletransporter);
+}
+
+/**
+ * \brief Implementation of teletransporter:get_sound().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_get_sound(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+
+  const std::string& sound_id = teletransporter.get_sound_id();
+
+  if (sound_id.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, sound_id);
+  }
+  return 1;
+}
+
+/**
+ * \brief Implementation of teletransporter:set_sound().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_set_sound(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+
+  std::string sound_id;
+  if (lua_gettop(l) > 1) {
+    sound_id = luaL_checkstring(l, 2);
+  }
+
+  teletransporter.set_sound_id(sound_id);
+  return 0;
+}
+
+/**
+ * \brief Implementation of teletransporter:get_transition().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_get_transition(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+
+  Transition::Style transition_style = teletransporter.get_transition_style();
+
+  push_string(l, Transition::style_names[transition_style]);
+  return 1;
+}
+
+/**
+ * \brief Implementation of teletransporter:set_transition().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_set_transition(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+  Transition::Style transition_style = LuaTools::check_enum<Transition::Style>(
+      l, 2, Transition::style_names
+  );
+
+  teletransporter.set_transition_style(transition_style);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of teletransporter:get_destination_map().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_get_destination_map(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+
+  const std::string& map_id = teletransporter.get_destination_map_id();
+
+  push_string(l, map_id);
+  return 1;
+}
+
+/**
+ * \brief Implementation of teletransporter:set_destination_map().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_set_destination_map(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+  const std::string& map_id = luaL_checkstring(l, 2);
+
+  teletransporter.set_destination_map_id(map_id);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of teletransporter:get_destination_name().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_get_destination_name(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+
+  const std::string& destination_name = teletransporter.get_destination_name();
+
+  push_string(l, destination_name);
+  return 1;
+}
+
+/**
+ * \brief Implementation of teletransporter:set_destination_name().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::teletransporter_api_set_destination_name(lua_State* l) {
+
+  Teletransporter& teletransporter = check_teletransporter(l, 1);
+  const std::string& destination_name = luaL_checkstring(l, 2);
+
+  teletransporter.set_destination_name(destination_name);
+
+  return 0;
+}
+
+/**
  * \brief Returns whether a value is a userdata of type NPC.
  * \param l A Lua context.
  * \param index An index in the stack.
  * \return true if the value at this index is an NPC.
  */
 bool LuaContext::is_npc(lua_State* l, int index) {
-  return is_userdata(l, index, entity_npc_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_NPC]);
 }
 
 /**
@@ -1642,7 +1837,7 @@ bool LuaContext::is_npc(lua_State* l, int index) {
  * \return The NPC.
  */
 Npc& LuaContext::check_npc(lua_State* l, int index) {
-  return static_cast<Npc&>(check_userdata(l, index, entity_npc_module_name));
+  return static_cast<Npc&>(check_userdata(l, index, entity_type_names[ENTITY_NPC]));
 }
 
 /**
@@ -1661,7 +1856,7 @@ void LuaContext::push_npc(lua_State* l, Npc& npc) {
  * \return true if the value at this index is a chest.
  */
 bool LuaContext::is_chest(lua_State* l, int index) {
-  return is_userdata(l, index, entity_chest_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_CHEST]);
 }
 
 /**
@@ -1672,7 +1867,7 @@ bool LuaContext::is_chest(lua_State* l, int index) {
  * \return The chest.
  */
 Chest& LuaContext::check_chest(lua_State* l, int index) {
-  return static_cast<Chest&>(check_userdata(l, index, entity_chest_module_name));
+  return static_cast<Chest&>(check_userdata(l, index, entity_type_names[ENTITY_CHEST]));
 }
 
 /**
@@ -1722,7 +1917,7 @@ int LuaContext::chest_api_set_open(lua_State* l) {
  * \return true if the value at this index is a block.
  */
 bool LuaContext::is_block(lua_State* l, int index) {
-  return is_userdata(l, index, entity_block_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_BLOCK]);
 }
 
 /**
@@ -1733,7 +1928,7 @@ bool LuaContext::is_block(lua_State* l, int index) {
  * \return The block.
  */
 Block& LuaContext::check_block(lua_State* l, int index) {
-  return static_cast<Block&>(check_userdata(l, index, entity_block_module_name));
+  return static_cast<Block&>(check_userdata(l, index, entity_type_names[ENTITY_BLOCK]));
 }
 
 /**
@@ -1879,7 +2074,7 @@ int LuaContext::block_api_set_maximum_moves(lua_State* l) {
  * \return true if the value at this index is a switch.
  */
 bool LuaContext::is_switch(lua_State* l, int index) {
-  return is_userdata(l, index, entity_switch_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_SWITCH]);
 }
 
 /**
@@ -1890,7 +2085,7 @@ bool LuaContext::is_switch(lua_State* l, int index) {
  * \return The switch.
  */
 Switch& LuaContext::check_switch(lua_State* l, int index) {
-  return static_cast<Switch&>(check_userdata(l, index, entity_switch_module_name));
+  return static_cast<Switch&>(check_userdata(l, index, entity_type_names[ENTITY_SWITCH]));
 }
 
 /**
@@ -1958,7 +2153,7 @@ int LuaContext::switch_api_set_locked(lua_State* l) {
  * \return true if the value at this index is a door.
  */
 bool LuaContext::is_door(lua_State* l, int index) {
-  return is_userdata(l, index, entity_door_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_DOOR]);
 }
 
 /**
@@ -1969,7 +2164,7 @@ bool LuaContext::is_door(lua_State* l, int index) {
  * \return The door.
  */
 Door& LuaContext::check_door(lua_State* l, int index) {
-  return static_cast<Door&>(check_userdata(l, index, entity_door_module_name));
+  return static_cast<Door&>(check_userdata(l, index, entity_type_names[ENTITY_DOOR]));
 }
 
 /**
@@ -2040,7 +2235,7 @@ int LuaContext::door_api_is_closing(lua_State* l) {
  * \return true if the value at this index is a shop treasure.
  */
 bool LuaContext::is_shop_treasure(lua_State* l, int index) {
-  return is_userdata(l, index, entity_shop_treasure_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_SHOP_TREASURE]);
 }
 
 /**
@@ -2052,7 +2247,7 @@ bool LuaContext::is_shop_treasure(lua_State* l, int index) {
  */
 ShopTreasure& LuaContext::check_shop_treasure(lua_State* l, int index) {
   return static_cast<ShopTreasure&>(
-      check_userdata(l, index, entity_shop_treasure_module_name));
+      check_userdata(l, index, entity_type_names[ENTITY_SHOP_TREASURE]));
 }
 
 /**
@@ -2183,7 +2378,7 @@ int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
  * \return true if the value at this index is a pickable.
  */
 bool LuaContext::is_pickable(lua_State* l, int index) {
-  return is_userdata(l, index, entity_pickable_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_PICKABLE]);
 }
 
 /**
@@ -2194,7 +2389,7 @@ bool LuaContext::is_pickable(lua_State* l, int index) {
  * \return The pickable.
  */
 Pickable& LuaContext::check_pickable(lua_State* l, int index) {
-  return static_cast<Pickable&>(check_userdata(l, index, entity_pickable_module_name));
+  return static_cast<Pickable&>(check_userdata(l, index, entity_type_names[ENTITY_PICKABLE]));
 }
 
 /**
@@ -2262,7 +2457,7 @@ int LuaContext::pickable_api_get_treasure(lua_State* l) {
  * \return \c true if the value at this index is a destructible object.
  */
 bool LuaContext::is_destructible(lua_State* l, int index) {
-  return is_userdata(l, index, entity_destructible_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_DESTRUCTIBLE]);
 }
 
 /**
@@ -2273,7 +2468,7 @@ bool LuaContext::is_destructible(lua_State* l, int index) {
  * \return The destructible object.
  */
 Destructible& LuaContext::check_destructible(lua_State* l, int index) {
-  return static_cast<Destructible&>(check_userdata(l, index, entity_destructible_module_name));
+  return static_cast<Destructible&>(check_userdata(l, index, entity_type_names[ENTITY_DESTRUCTIBLE]));
 }
 
 /**
@@ -2556,7 +2751,7 @@ int LuaContext::destructible_api_get_modified_ground(lua_State* l) {
  * \return true if the value at this index is an enemy.
  */
 bool LuaContext::is_enemy(lua_State* l, int index) {
-  return is_userdata(l, index, entity_enemy_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_ENEMY]);
 }
 
 /**
@@ -2567,7 +2762,7 @@ bool LuaContext::is_enemy(lua_State* l, int index) {
  * \return The enemy.
  */
 Enemy& LuaContext::check_enemy(lua_State* l, int index) {
-  return static_cast<Enemy&>(check_userdata(l, index, entity_enemy_module_name));
+  return static_cast<Enemy&>(check_userdata(l, index, entity_type_names[ENTITY_ENEMY]));
 }
 
 /**
@@ -2577,7 +2772,7 @@ Enemy& LuaContext::check_enemy(lua_State* l, int index) {
  * \return true if the value at this index is a custom entity.
  */
 bool LuaContext::is_custom_entity(lua_State* l, int index) {
-  return is_userdata(l, index, entity_custom_module_name);
+  return is_userdata(l, index, entity_type_names[ENTITY_CUSTOM]);
 }
 
 /**
@@ -2588,7 +2783,7 @@ bool LuaContext::is_custom_entity(lua_State* l, int index) {
  * \return The custom entity.
  */
 CustomEntity& LuaContext::check_custom_entity(lua_State* l, int index) {
-  return static_cast<CustomEntity&>(check_userdata(l, index, entity_custom_module_name));
+  return static_cast<CustomEntity&>(check_userdata(l, index, entity_type_names[ENTITY_CUSTOM]));
 }
 
 /**
@@ -2695,34 +2890,6 @@ int LuaContext::enemy_api_set_damage(lua_State* l) {
   int damage = luaL_checkint(l, 2);
 
   enemy.set_damage(damage);
-
-  return 0;
-}
-
-/**
- * \brief Implementation of enemy:get_magic_damage().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_get_magic_damage(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  lua_pushinteger(l, enemy.get_magic_damage());
-  return 1;
-}
-
-/**
- * \brief Implementation of enemy:set_magic_damage().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_set_magic_damage(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  int magic_damage = luaL_checkint(l, 2);
-
-  enemy.set_magic_damage(magic_damage);
 
   return 0;
 }
@@ -2913,6 +3080,28 @@ int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of enemy:get_attack_consequence().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_get_attack_consequence(lua_State* l) {
+
+  Enemy& enemy = check_enemy(l, 1);
+  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, enemy_attack_names);
+
+  const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, NULL);
+  if (reaction.type == EnemyReaction::HURT) {
+    // Return the life damage.
+    lua_pushinteger(l, reaction.life_lost);
+  }
+  else {
+    // Return a string.
+    push_string(l, EnemyReaction::get_reaction_name(reaction.type));
+  }
+  return 1;
+}
+
+/**
  * \brief Implementation of enemy:set_attack_consequence().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -2939,6 +3128,29 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
   }
 
   return 0;
+}
+
+/**
+ * \brief Implementation of enemy:get_attack_consequence_sprite().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_get_attack_consequence_sprite(lua_State* l) {
+
+  Enemy& enemy = check_enemy(l, 1);
+  Sprite& sprite = check_sprite(l, 2);
+  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, enemy_attack_names);
+
+  const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, &sprite);
+  if (reaction.type == EnemyReaction::HURT) {
+    // Return the life damage.
+    lua_pushinteger(l, reaction.life_lost);
+  }
+  else {
+    // Return a string.
+    push_string(l, EnemyReaction::get_reaction_name(reaction.type));
+  }
+  return 1;
 }
 
 /**
@@ -3388,6 +3600,63 @@ void LuaContext::hero_on_state_changed(
 
   push_hero(l, hero);
   on_state_changed(state_name);
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_taking_damage() method of a Lua hero.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param hero The hero.
+ * \param damage The damage to take.
+ * \return \c true if the event is defined.
+ */
+bool LuaContext::hero_on_taking_damage(Hero& hero, int damage) {
+
+  if (!userdata_has_field(hero, "on_taking_damage")) {
+    return false;
+  }
+
+  push_hero(l, hero);
+  bool exists = on_taking_damage(damage);
+  lua_pop(l, 1);
+  return exists;
+}
+
+/**
+ * \brief Calls the on_activated() method of a Lua destination.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param destination A destination.
+ */
+void LuaContext::destination_on_activated(Destination& destination) {
+
+  if (!userdata_has_field(destination, "on_activated")) {
+    return;
+  }
+
+  push_entity(l, destination);
+  on_activated();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_activated() method of a Lua teletransporter.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param teletransporter A teletransporter.
+ */
+void LuaContext::teletransporter_on_activated(Teletransporter& teletransporter) {
+
+  if (!userdata_has_field(teletransporter, "on_activated")) {
+    return;
+  }
+
+  push_teletransporter(l, teletransporter);
+  on_activated();
   lua_pop(l, 1);
 }
 
@@ -4020,20 +4289,39 @@ void LuaContext::enemy_on_custom_attack_received(Enemy& enemy,
 }
 
 /**
+ * \brief Calls the on_hurt_by_sword() method of a Lua enemy if it is defined.
+ * \param enemy An enemy.
+ * \param hero The hero whose sword is hitting the enemy.
+ * \param enemy_sprite Sprite of the enemy that gets hits.
+ * \return \c true if the method is defined.
+ */
+bool LuaContext::enemy_on_hurt_by_sword(
+    Enemy& enemy, Hero& hero, Sprite& enemy_sprite) {
+
+  if (!userdata_has_field(enemy, "on_hurt_by_sword")) {
+    return false;
+  }
+
+  push_enemy(l, enemy);
+  bool exists = on_hurt_by_sword(hero, enemy_sprite);
+  lua_pop(l, 1);
+  return exists;
+}
+
+/**
  * \brief Calls the on_hurt() method of a Lua enemy if it is defined.
  *
  * Also stops timers associated to the enemy.
  *
  * \param enemy An enemy.
  * \param attack The attack received.
- * \param life_lost Number of life points just lost.
  */
-void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) {
+void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack) {
 
   push_enemy(l, enemy);
   remove_timers(-1);  // Stop timers associated to this enemy.
   if (userdata_has_field(enemy, "on_hurt")) {
-    on_hurt(attack, life_lost);
+    on_hurt(attack);
   }
   lua_pop(l, 1);
 }

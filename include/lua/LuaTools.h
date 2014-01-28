@@ -106,6 +106,7 @@ class LuaTools {
   private:
 
     LuaTools();  // Don't instantiate this class.
+
 };
 
 /**

@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <cstdlib>
+#include <string>
 
 namespace solarus {
 
@@ -35,9 +36,9 @@ class Transition {
      * \brief Styles of transitions.
      */
     enum Style {
-      IMMEDIATE = 0,  // no transition between the two surfaces
-      FADE      = 1,  // fade in and fade out
-      SCROLLING = 2   // scrolling between two maps
+      IMMEDIATE = 0,  /**< No transition between the two surfaces. */
+      FADE      = 1,  /**< Fade-out and fade-in effect. */
+      SCROLLING = 2   /**< Scrolling between two maps. */
     };
 
     /**
@@ -91,6 +92,8 @@ class Transition {
      */
     virtual void draw(Surface& dst_surface) = 0;
 
+    static const std::string style_names[];  /**< Lua name of each style. */
+
   protected:
 
     Transition(Direction direction);
@@ -113,6 +116,7 @@ class Transition {
                                     * when the out transition was played. */
     bool suspended;               /**< Indicates that the transition is currently paused. */
     uint32_t when_suspended;      /**< Date when the transition was suspended. */
+
 };
 
 }

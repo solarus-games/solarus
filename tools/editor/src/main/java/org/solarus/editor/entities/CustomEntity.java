@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.solarus.editor.*;
@@ -21,7 +22,7 @@ public class CustomEntity extends MapEntity {
     };
 
     /**
-     * Resizable image of this entity type.
+     * Resizable image of this entity type when there is no sprite.
      */
     private static Image resizableImage;
 
@@ -36,6 +37,37 @@ public class CustomEntity extends MapEntity {
      */
     public CustomEntity(Map map) throws MapException {
         super(map, 16, 16);
+        setDirection(3);  // Look to the south initially.
+    }
+
+    /**
+     * Returns the coordinates of the origin point of the entity.
+     * @return the coordinates of the origin point of the entity
+     */
+    protected Point getOrigin() {
+
+        Sprite sprite = getSprite();
+        if (sprite == null) {
+            return new Point(8, 13);
+        }
+
+        int spriteNumDirections = sprite.getAnimation(
+                sprite.getDefaultAnimationName()).getNbDirections();
+
+        if (getDirection() < spriteNumDirections) {
+            return sprite.getOrigin(null, getDirection());
+        }
+        else {
+            return sprite.getOrigin(null, 0);
+        }
+    }
+
+    /**
+     * Returns the number of possible directions of the entity.
+     * @return 4.
+     */
+    public int getNbDirections() {
+        return 4;
     }
 
     /**
@@ -60,6 +92,7 @@ public class CustomEntity extends MapEntity {
      * their initial values.
      */
     public void createProperties() throws MapException {
+        createStringProperty("sprite", true, null);
         createStringProperty("model", true, null);
     }
 
@@ -78,6 +111,25 @@ public class CustomEntity extends MapEntity {
     }
 
     /**
+     * Notifies this entity that a property specific to its type has just changed.
+     * Does nothing by default.
+     * @param name Name of the property that has changed.
+     * @param value The new value.
+     */
+    protected void notifyPropertyChanged(String name, String value) throws MapException {
+
+        if (name.equals("sprite")) {
+
+            if (isValidSpriteName(value)) {
+                setSprite(new Sprite(value, getMap()));
+            }
+            else {
+                setSprite(null);
+            }
+        }
+    }
+
+    /**
      * Draws the entity on the map editor.
      * @param g graphic context
      * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
@@ -86,29 +138,37 @@ public class CustomEntity extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-        if (resizableImage == null) {
-            resizableImage = Project.getEditorImageOrEmpty("entity_custom_resizable.png");
+        if (getSprite() != null) {
+            // Display the sprite.
+            super.paint(g, zoom, showTransparency);
         }
+        else {
+            // Draw the resizable icon.
+            if (resizableImage == null) {
+                resizableImage = Project.getEditorImageOrEmpty("entity_custom_resizable.png");
+            }
 
-        Rectangle positionInMap = getPositionInMap();
-        int x = (int) (positionInMap.x * zoom);
-        int y = (int) (positionInMap.y * zoom);
-        int w = (int) (positionInMap.width * zoom);
-        int h = (int) (positionInMap.height * zoom);
+            Rectangle positionInMap = getPositionInMap();
+            int x = (int) (positionInMap.x * zoom);
+            int y = (int) (positionInMap.y * zoom);
+            int w = (int) (positionInMap.width * zoom);
+            int h = (int) (positionInMap.height * zoom);
 
-        g.setColor(new Color(224, 108, 72));
-        g.fillRect(x, y, w, h);
+            g.setColor(new Color(224, 108, 72));
+            g.fillRect(x, y, w, h);
 
-        int dx1 = (int) ((positionInMap.x + positionInMap.width / 2 - 8) * zoom);
-        int dy1 = (int) ((positionInMap.y + positionInMap.height / 2 - 8) * zoom);
-        int dx2 = (int) (dx1 + 16 * zoom);
-        int dy2 = (int) (dy1 + 16 * zoom);
+            int dx1 = (int) ((positionInMap.x + positionInMap.width / 2 - 8) * zoom);
+            int dy1 = (int) ((positionInMap.y + positionInMap.height / 2 - 8) * zoom);
+            int dx2 = (int) (dx1 + 16 * zoom);
+            int dy2 = (int) (dy1 + 16 * zoom);
 
-        int sx1 = 0;
-        int sx2 = sx1 + 32;
+            int sx1 = 0;
+            int sx2 = sx1 + 32;
 
-        g.drawImage(resizableImage, dx1, dy1, dx2, dy2, sx1, 0, sx2, 32, null);
+            g.drawImage(resizableImage, dx1, dy1, dx2, dy2, sx1, 0, sx2, 32, null);
 
-        drawEntityOutline(g, zoom, new Color(184, 96, 96));
+            drawEntityOutline(g, zoom, new Color(184, 96, 96));
+        }
     }
 }
+

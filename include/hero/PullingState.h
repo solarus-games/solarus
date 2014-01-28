@@ -53,12 +53,12 @@ class Hero::PullingState: public Hero::State {
 
   private:
 
+    void stop_moving_pulled_entity();
+
     Detector* pulled_entity;           /**< The entity the hero is pulling (or NULL). */
     PathMovement* pulling_movement;    /**< The movement created by this state.
                                         * The movement of the hero is also this object,
                                         * unless a script decided to change it. */
-
-    void stop_moving_pulled_entity();
 
 };
 

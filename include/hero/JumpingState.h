@@ -64,12 +64,12 @@ class Hero::JumpingState: public Hero::State {
 
   private:
 
-    JumpMovement* movement;			/**< the movement applied to the hero */
-    int direction8;				/**< direction of the jump (0 to 7) */
-    bool with_sound;				/**< indicates that a jump sound is played */
-    CarriedItem* carried_item;			/**< an item carried by the hero while making this jump, or NULL */
-
     void destroy_carried_item();
+
+    JumpMovement* movement;       /**< the movement applied to the hero */
+    int direction8;               /**< direction of the jump (0 to 7) */
+    bool with_sound;              /**< indicates that a jump sound is played */
+    CarriedItem* carried_item;    /**< an item carried by the hero while making this jump, or NULL */
 
 };
 

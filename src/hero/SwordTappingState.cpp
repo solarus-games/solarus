@@ -152,6 +152,13 @@ bool Hero::SwordTappingState::can_pick_treasure(EquipmentItem& item) const {
 }
 
 /**
+ * \copydoc Hero::State::can_use_shield
+ */
+bool Hero::SwordTappingState::can_use_shield() const {
+  return false;
+}
+
+/**
  * \brief Tests whether the hero is cutting with his sword the specified detector
  * for which a collision was detected.
  * \param detector the detector to check

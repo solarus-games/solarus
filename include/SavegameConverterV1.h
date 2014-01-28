@@ -216,6 +216,7 @@ class SavegameConverterV1 {
     } SavedData;
 
     SavedData saved_data;
+
 };
 
 }

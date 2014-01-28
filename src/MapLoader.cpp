@@ -117,7 +117,7 @@ int MapLoader::l_properties(lua_State* l) {
   int y = LuaTools::opt_int_field(l, 1, "y", 0);
   int width = LuaTools::check_int_field(l, 1, "width");
   int height = LuaTools::check_int_field(l, 1, "height");
-  const std::string& world_name = LuaTools::check_string_field(l, 1 , "world");
+  const std::string& world_name = LuaTools::opt_string_field(l, 1 , "world", "");
   int floor = LuaTools::opt_int_field(l, 1, "floor", Map::NO_FLOOR);
   const std::string& tileset_id = LuaTools::check_string_field(l, 1, "tileset");
   const std::string& music_id = LuaTools::opt_string_field(l, 1, "music", Music::none);
@@ -175,7 +175,7 @@ int MapLoader::l_properties(lua_State* l) {
     { "door",             LuaContext::map_api_create_door },
     { "stairs",           LuaContext::map_api_create_stairs },
     { "separator",        LuaContext::map_api_create_separator },
-    { "custom",           LuaContext::map_api_create_custom_entity },
+    { "custom_entity",    LuaContext::map_api_create_custom_entity },
     { NULL, NULL }
   };
   const luaL_Reg* function = functions;

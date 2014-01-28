@@ -366,11 +366,11 @@ void EquipmentItem::notify_using() {
 
 /**
  * \brief Notifies this item that a built-in ability was used.
- * \param ability_name Name of an ability.
+ * \param ability An ability.
  */
-void EquipmentItem::notify_ability_used(const std::string& ability_name) {
+void EquipmentItem::notify_ability_used(Ability ability) {
 
-  get_lua_context().item_on_ability_used(*this, ability_name);
+  get_lua_context().item_on_ability_used(*this, ability);
 }
 
 /**

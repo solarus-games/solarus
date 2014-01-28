@@ -139,3 +139,4 @@ public class SpriteAnimation {
         directions.get(direction).paint(g, zoom, showTransparency, x, y, frame);
     }
 }
+

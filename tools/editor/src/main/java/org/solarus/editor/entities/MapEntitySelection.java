@@ -233,11 +233,18 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
 
     /**
      * Returns whether the selection is resizable.
-     * @return true if there is exactly one entity selected, and if this entity is resizable
+     * @return true if all selected entities are resizable.
      */
     public boolean isResizable() {
 
-        return getNbEntitiesSelected() == 1 && getEntity().isResizable();
+        for (MapEntity entity: entities) {
+
+            if (!entity.isResizable()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

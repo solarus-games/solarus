@@ -51,19 +51,20 @@ class Hero::StairsState: public Hero::State {
 
   private:
 
-    Stairs& stairs;			/**< the stairs the hero is currently taking */
-    Stairs::Way way;			/**< indicates the way the hero is taking the stairs:
-					 * - for stairs inside a single floor, NORMAL_WAY means that the hero is going upstairs
-					 * and REVERSE_WAY means the contrary;
-					 * - for stairs between two floors, NORMAL_WAY means that the hero is on the stairs
-					 *   of the old map and REVERSE_WAY means that he is on the stairs on the new map */
-    int phase;				/**< when walking on stairs between two floors, indicates the current
-					 * phase of the animations (0: not started, 1: initial animation,
-					 * 2: diagonal animation, 3: final animation) */
-    uint32_t next_phase_date;	 	/**< date when the stairs phase changes */
-    CarriedItem* carried_item;		/**< an item carried by the hero while taking the stairs, or NULL */
-
     void destroy_carried_item();
+
+    Stairs& stairs;                    /**< the stairs the hero is currently taking */
+    Stairs::Way way;                   /**< indicates the way the hero is taking the stairs:
+                                        * - for stairs inside a single floor, NORMAL_WAY means that the hero is going upstairs
+                                        * and REVERSE_WAY means the contrary;
+                                        * - for stairs between two floors, NORMAL_WAY means that the hero is on the stairs
+                                        *   of the old map and REVERSE_WAY means that he is on the stairs on the new map */
+    int phase;                         /**< when walking on stairs between two floors, indicates the current
+                                        * phase of the animations (0: not started, 1: initial animation,
+                                        * 2: diagonal animation, 3: final animation) */
+    uint32_t next_phase_date;          /**< date when the stairs phase changes */
+    CarriedItem* carried_item;         /**< an item carried by the hero while taking the stairs, or NULL */
+
 };
 
 }

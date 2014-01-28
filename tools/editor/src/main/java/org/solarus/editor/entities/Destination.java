@@ -27,11 +27,6 @@ import org.solarus.editor.*;
 public class Destination extends MapEntity {
 
     /**
-     * The sprite representing this destination.
-     */
-    private Sprite sprite;
-
-    /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
@@ -92,7 +87,7 @@ public class Destination extends MapEntity {
      */
     public void updateImageDescription() {
 
-        if (sprite == null) {
+        if (getSprite() == null) {
             currentImageDescription.setRectangle((getDirection() + 1) * 32, 0, 32, 32);
         }
     }
@@ -117,10 +112,10 @@ public class Destination extends MapEntity {
         if (name.equals("sprite")) {
 
             if (value != null) {
-                sprite = new Sprite(value, getMap());
+                setSprite(new Sprite(value, getMap()));
             }
             else {
-                sprite = null;
+                setSprite(null);
             }
         }
 
@@ -149,26 +144,6 @@ public class Destination extends MapEntity {
         String spriteName = getStringProperty("sprite");
         if (spriteName != null && !isValidSpriteName(spriteName)) {
             throw new MapException("Invalid sprite name: '" + spriteName + "'");
-        }
-    }
-
-    /**
-     * Draws this entity on the map editor.
-     * @param g graphic context
-     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
-     * @param showTransparency true to make transparent pixels,
-     * false to replace them by a background color
-     */
-    public void paint(Graphics g, double zoom, boolean showTransparency) {
-
-        if (sprite == null) {
-            // no sprite: display a destination icon
-            super.paint(g, zoom, showTransparency);
-        }
-        else {
-          // display the appropriate sprite
-          sprite.paint(g, zoom, showTransparency,
-              getX(), getY(), null, 0, 0);
         }
     }
 }

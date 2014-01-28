@@ -106,6 +106,18 @@ class HeroSprites {
 
   private:
 
+    bool is_visible() const;
+    bool is_sword_visible() const;
+    bool is_sword_stars_visible() const;
+    bool is_shield_visible() const;
+    bool is_trail_visible() const;
+    bool is_ground_visible() const;
+
+    void stop_displaying_sword();
+    void stop_displaying_sword_stars();
+    void stop_displaying_shield();
+    void stop_displaying_trail();
+
     Hero& hero;                        /**< the hero */
     Equipment& equipment;              /**< equipment of the player */
 
@@ -135,18 +147,6 @@ class HeroSprites {
                                         * (usually, the whole map is considered and this rectangle's values are all 0) */
 
     CarriedItem* lifted_item;          /**< if not NULL, an item to display above the hero */
-
-    bool is_visible() const;
-    bool is_sword_visible() const;
-    bool is_sword_stars_visible() const;
-    bool is_shield_visible() const;
-    bool is_trail_visible() const;
-    bool is_ground_visible() const;
-
-    void stop_displaying_sword();
-    void stop_displaying_sword_stars();
-    void stop_displaying_shield();
-    void stop_displaying_trail();
 
 };
 

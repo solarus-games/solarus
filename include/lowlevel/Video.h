@@ -88,6 +88,7 @@ class Video {
   private:
 
     static void shaded_render(Surface& quest_surface);
+
 };
 
 }

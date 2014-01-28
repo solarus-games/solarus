@@ -128,6 +128,7 @@ class Hero::State {
     virtual bool is_cutting_with_sword(Detector& detector) const;
     virtual bool can_start_sword() const;
     virtual bool can_pick_treasure(EquipmentItem& item) const;
+    virtual bool can_use_shield() const;
     virtual bool can_start_item(EquipmentItem& item) const;
     virtual bool can_take_stairs() const;
     virtual bool can_sword_hit_crystal() const;

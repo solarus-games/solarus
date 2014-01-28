@@ -106,8 +106,6 @@ class Enemy: public Detector {
     const std::string& get_breed() const;
     int get_damage() const;
     void set_damage(int damage_on_hero);
-    int get_magic_damage() const;
-    void set_magic_damage(int magic_damage_on_hero);
     int get_life() const;
     void set_life(int life);
     HurtStyle get_hurt_style() const;
@@ -210,7 +208,7 @@ class Enemy: public Detector {
     void immobilize();
     void stop_immobilized();
     void custom_attack(EnemyAttack attack, Sprite* this_sprite);
-    void notify_hurt(MapEntity& source, EnemyAttack attack, int life_points);
+    void notify_hurt(MapEntity& source, EnemyAttack attack);
     void notify_dead();
     void notify_immobilized();
     bool is_saved() const;
@@ -220,8 +218,6 @@ class Enemy: public Detector {
 
     int damage_on_hero;                /**< number of heart quarters the player loses when he gets hurt by this enemy;
                                         * this number is divided depending on the hero's tunic number (default: 1) */
-    int magic_damage_on_hero;          /**< number of magic points the player loses when he gets hurt
-                                        * by this enemy (default: 0) */
     int life;                          /**< number of health points of the enemy (default: 1) */
     HurtStyle hurt_style;              /**< style of sounds and animations when this enemy gets hurt
                                         * (default: HURT_NORMAL) */

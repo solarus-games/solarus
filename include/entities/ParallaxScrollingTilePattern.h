@@ -40,8 +40,6 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
-    static const int ratio;
-
     ParallaxScrollingTilePattern(Ground ground, int x, int y, int width, int height);
     ~ParallaxScrollingTilePattern();
 
@@ -50,6 +48,8 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
 
     virtual bool is_animated() const;
     virtual bool is_drawn_at_its_position() const;
+
+    static const int ratio;
 
 };
 

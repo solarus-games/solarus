@@ -48,6 +48,7 @@ class StringResource {
     // we don't need to instantiate this class
     StringResource();
     ~StringResource();
+
 };
 
 }

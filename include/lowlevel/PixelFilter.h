@@ -52,6 +52,7 @@ class PixelFilter {
         int src_width,
         int src_height,
         uint32_t* dst) const = 0;
+
 };
 
 }

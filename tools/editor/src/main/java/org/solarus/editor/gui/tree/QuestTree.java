@@ -589,7 +589,7 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
                 menuItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        mapEditor.getMapView().startAddingEntity(entityType, null);
+                        mapEditor.getMapView().switchAddingNewEntity(entityType, null);
                     }
                 });
             }
@@ -608,7 +608,7 @@ public class QuestTree extends JTree implements ProjectObserver, Observer {
                         menuItem.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                mapEditor.getMapView().startAddingEntity(entityType, entitySubtype);
+                                mapEditor.getMapView().switchAddingNewEntity(entityType, entitySubtype);
                             }
                         });
                     }

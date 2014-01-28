@@ -62,7 +62,7 @@ public class Map extends Observable {
     private Tileset tileset;
 
     /**
-     * A name identifying the world where this map is.
+     * A name identifying the world where this map, or null.
      * This can be used to link maps together.
      */
     private String world;
@@ -132,7 +132,7 @@ public class Map extends Observable {
         this.tileset = null;
         this.tilesetId = "";
         this.musicId = Music.unchangedId;
-        this.world = "";
+        this.world = null;
         this.floor = null;
         this.mapId = mapId;
         initialize();
@@ -327,7 +327,7 @@ public class Map extends Observable {
      * @param tilesetId id of the new tileset, or an empty string to set no tileset
      * @return true if the tileset was loaded successfuly, false if some tiles could
      * not be loaded in this tileset
-     * @throws MapException if this tileset could be applied
+     * @throws QuestEditorException if this tileset could not be applied
      */
     public boolean setTileset(String tilesetId) throws QuestEditorException {
 
@@ -346,19 +346,19 @@ public class Map extends Observable {
         // if the tileset is changed
         else if (!tilesetId.equals(this.tilesetId)) {
 
-            this.tileset = new Tileset(tilesetId);
-
+            Tileset newTileset = new Tileset(tilesetId);
             for (Layer layer: Layer.values()) {
 
                 LinkedList<MapEntity> entitiesToRemove = new LinkedList<MapEntity>();
                 for (MapEntity entity: allEntities[layer.getId()]) {
 
                     try {
-                        entity.setTileset(tileset);
+                        entity.notifyTilesetChanged(this.tileset, newTileset);
                     }
                     catch (NoSuchTilePatternException ex) {
                         // the entity is not valid anymore, we should remove it from the map
                         entitiesToRemove.add(entity);
+                        getEntitySelection.unselect(entity);
                         badTiles = true;
                     }
                 }
@@ -368,6 +368,7 @@ public class Map extends Observable {
                 }
             }
 
+            this.tileset = newTileset;
             this.tilesetId = tilesetId;
 
             setChanged();
@@ -379,22 +380,34 @@ public class Map extends Observable {
 
     /**
      * Returns the world where this map is.
-     * @return the world of this map
+     * @return The world of this map or null.
      */
     public String getWorld() {
         return world;
     }
 
     /**
+     * Returns whether this map belongs to a world.
+     * @return \c true if there is a world.
+     */
+    public boolean hasWorld() {
+        return world != null;
+    }
+
+    /**
      * Sets the world where this map is.
-     * @param world name of the world (cannot be null)
+     * @param world Name of the world or null.
      */
     public void setWorld(String world) {
 
-        if (world == null) {
-            throw new NullPointerException();
+        if (world == null && this.world == null) {
+            // No change.
+            return;
         }
-        if (!world.equals(this.world)) {
+
+        if (world == null
+            || this.world == null
+            || !world.equals(this.world)) {
             this.world = world;
             setChanged();
             notifyObservers();
@@ -687,7 +700,7 @@ public class Map extends Observable {
 
     /**
      * Changes the position of an entity on the map, by specifying two points.
-     * The entity is resized (i.e. repeatX and repeatY are updated) so that
+     * The entity is resized so that
      * it fits exactly in the rectangle formed by the two points.
      * @param entity an entity
      * @param x1 x coordinate of the first point
@@ -806,7 +819,7 @@ public class Map extends Observable {
      */
     public List<MapEntity> getSortedEntities(Collection<MapEntity> entities) {
 
-        List<MapEntity> sortedEntities = new LinkedList<MapEntity>();
+        List<MapEntity> sortedEntities = new ArrayList<MapEntity>();
 
         // sort the entities so that they have the same order as in the map
         for (Layer layer: Layer.values()) {
@@ -933,10 +946,6 @@ public class Map extends Observable {
             throw new MapException("No tileset is selected");
         }
 
-        if (world.isEmpty()) {
-            throw new MapException("No world is set");
-        }
-
         // check that all entities are valid
         for (MapEntities entities: allEntities) {
             for (MapEntity entity: entities) {
@@ -1006,7 +1015,9 @@ public class Map extends Observable {
             out.println("  y = " + getLocation().y + ",");
             out.println("  width = " + getWidth() + ",");
             out.println("  height = " + getHeight() + ",");
-            out.println("  world = \"" + getWorld() + "\",");
+            if (hasWorld()) {
+                out.println("  world = \"" + getWorld() + "\",");
+            }
             if (hasFloor()) {
                 out.println("  floor = " + getFloor() + ",");
             }
@@ -1050,7 +1061,7 @@ public class Map extends Observable {
                 int y = table.get("y").checkint();
                 int width = table.get("width").checkint();
                 int height = table.get("height").checkint();
-                String world = table.get("world").checkjstring();
+                String world = table.get("world").optjstring(null);
                 Integer floor = null;
                 if (!table.get("floor").isnil()) {
                   floor = table.get("floor").checkint();

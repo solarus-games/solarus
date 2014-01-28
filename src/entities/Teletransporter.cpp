@@ -16,6 +16,7 @@
  */
 #include "entities/Teletransporter.h"
 #include "entities/Hero.h"
+#include "lua/LuaContext.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "Map.h"
@@ -88,27 +89,22 @@ void Teletransporter::set_map(Map& map) {
 
   MapEntity::set_map(map);
 
-  if (destination_name == "_side") {
+  int x = get_x();
+  int y = get_y();
 
-    int x = get_x();
-    int y = get_y();
-
-    if (get_width() == 16 && x == -16) {
-      destination_side = 0;
-    }
-    else if (get_width() == 16 && x == map.get_width()) {
-      destination_side = 2;
-    }
-    else if (get_height() == 16 && y == -16) {
-      destination_side = 3;
-    }
-    else if (get_height() == 16 && y == map.get_height()) {
-      destination_side = 1;
-    }
-    else {
-      Debug::die(std::string("Bad position of teletransporter '")
-          + get_name() + "'");
-    }
+  // Compute the destination side in case the destination name is "_side"
+  // or becomes it later.
+  if (get_width() == 16 && x == -16) {
+    destination_side = 0;
+  }
+  else if (get_width() == 16 && x == map.get_width()) {
+    destination_side = 2;
+  }
+  else if (get_height() == 16 && y == -16) {
+    destination_side = 3;
+  }
+  else if (get_height() == 16 && y == map.get_height()) {
+    destination_side = 1;
   }
 
   transition_direction = (destination_side + 2) % 4;
@@ -120,6 +116,96 @@ void Teletransporter::set_map(Map& map) {
  */
 EntityType Teletransporter::get_type() const {
   return ENTITY_TELETRANSPORTER;
+}
+
+/**
+ * \brief Returns the sound to play when using this teletransporter.
+ * \return Id of the teletransporter's sound, or an empty string if no sound
+ * is played.
+ */
+const std::string& Teletransporter::get_sound_id() const {
+  return sound_id;
+}
+
+/**
+ * \brief Sets the sound to play when using this teletransporter.
+ * \param sound_id Id of the teletransporter's sound, or an empty string to
+ * play no sound.
+ */
+void Teletransporter::set_sound_id(const std::string& sound_id) {
+  this->sound_id = sound_id;
+}
+
+/**
+ * \brief Returns the style of transition between both maps.
+ * \return Style of transition of this teletransporter.
+ */
+Transition::Style Teletransporter::get_transition_style() const {
+  return transition_style;
+}
+
+/**
+ * \brief Sets the style of transition between both maps.
+ * \param transition_style Style of transition of this teletransporter.
+ */
+void Teletransporter::set_transition_style(Transition::Style transition_style) {
+  this->transition_style = transition_style;
+}
+
+/**
+ * \brief Returns the id of the destination map.
+ *
+ * This might be the same map.
+ *
+ * \return The id of the destination map.
+ */
+const std::string& Teletransporter::get_destination_map_id() const {
+  return destination_map_id;
+}
+
+/**
+ * \brief Sets the id of the destination map.
+ *
+ * This might be the same map.
+ *
+ * \param map_id The id of the destination map.
+ */
+void Teletransporter::set_destination_map_id(const std::string& map_id) {
+  this->destination_map_id = map_id;
+}
+
+/**
+ * \brief Returns the destination description of this teletransporter.
+ * \return Name of a destination entity of the destination map,
+ * or "_same" to keep the hero's coordinates,
+ * or "_side" to place the hero on the appropriate side of the map.
+ * An empty string means the default destination entity of the map.
+ */
+const std::string& Teletransporter::get_destination_name() const {
+  return destination_name;
+}
+
+/**
+ * \brief Sets the destination description of this teletransporter.
+ * \param destination_name Name of a destination entity of the destination map,
+ * or "_same" to keep the hero's coordinates,
+ * or "_side" to place the hero on the appropriate side of the map.
+ * An empty string means the default destination entity of the map.
+ */
+void Teletransporter::set_destination_name(const std::string& destination_name) {
+  this->destination_name = destination_name;
+}
+
+/**
+ * \brief Returns whether this teletransporter is on the side of the map.
+ *
+ * When true is returned, this means that the teletransporter can make the hero
+ * scroll towards an adjacent map.
+ *
+ * \return true if this teletransporter is on the side of the map
+ */
+bool Teletransporter::is_on_map_side() const {
+  return destination_name == "_side";
 }
 
 /**
@@ -203,6 +289,8 @@ void Teletransporter::transport_hero(Hero& hero) {
   }
   transporting_hero = true;
 
+  get_lua_context().teletransporter_on_activated(*this);
+
   if (!sound_id.empty()) {
     Sound::play(sound_id);
   }
@@ -247,18 +335,6 @@ void Teletransporter::transport_hero(Hero& hero) {
 
   get_game().set_current_map(destination_map_id, name, transition_style);
   hero.set_xy(hero_x, hero_y);
-}
-
-/**
- * \brief Returns whether this teletransporter is on the side of the map.
- *
- * When true is returned, this means that the teletransporter can make the hero
- * scroll towards an adjacent map.
- *
- * \return true if this teletransporter is on the side of the map
- */
-bool Teletransporter::is_on_map_side() const {
-  return destination_side >= 0;
 }
 
 }

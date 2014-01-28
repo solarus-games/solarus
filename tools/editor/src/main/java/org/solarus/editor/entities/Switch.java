@@ -16,7 +16,6 @@
  */
 package org.solarus.editor.entities;
 
-import java.awt.Graphics;
 import java.util.NoSuchElementException;
 
 import org.solarus.editor.*;
@@ -79,11 +78,6 @@ public class Switch extends MapEntity {
     };
 
     /**
-     * The sprite representing this entity or null.
-     */
-    private Sprite sprite;
-
-    /**
      * Creates a new switch.
      * @param map the map
      */
@@ -106,7 +100,7 @@ public class Switch extends MapEntity {
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
 
-        if (subtype != this.subtype && hasProperty("needs_block")) {
+        if (subtype != getSubtype() && hasProperty("needs_block")) {
             if (subtype == Subtype.WALKABLE_INVISIBLE) {
                 setBooleanProperty("needs_block", false);
             }
@@ -119,16 +113,16 @@ public class Switch extends MapEntity {
         switch ((Subtype) subtype) {
 
         case WALKABLE_VISIBLE:
-            sprite = new Sprite("entities/switch", getMap());
+            setSprite(new Sprite("entities/switch", getMap()));
             break;
 
         case SOLID:
-            sprite = new Sprite("entities/solid_switch", getMap());
+            setSprite(new Sprite("entities/solid_switch", getMap()));
             break;
 
         default:
             // No sprite.
-            sprite = null;
+            setSprite(null);
             break;
         }
         super.setSubtype(subtype);
@@ -163,32 +157,6 @@ public class Switch extends MapEntity {
             if (getBooleanProperty("inactivate_when_leaving")) {
                 throw new MapException("Cannot disable the switch when leaving for a non-walkable switch");
             }
-        }
-    }
-
-    /**
-     * Updates the description of the image currently representing the entity.
-     */
-    public void updateImageDescription() {
-        currentImageDescription = generalImageDescriptions[subtype.ordinal()];
-    }
-
-    /**
-     * Draws this entity on the map editor.
-     * @param g graphic context
-     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
-     * @param showTransparency true to make transparent pixels,
-     * false to replace them by a background color
-     */
-    public void paint(Graphics g, double zoom, boolean showTransparency) {
-
-        if (sprite == null) {
-            super.paint(g, zoom, showTransparency);
-        }
-        else {
-            // display the appropriate sprite
-            sprite.paint(g, zoom, showTransparency,
-                    getX(), getY(), null, 0, 0);
         }
     }
 }

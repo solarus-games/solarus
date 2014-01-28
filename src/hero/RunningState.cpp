@@ -37,6 +37,9 @@ namespace solarus {
  */
 Hero::RunningState::RunningState(Hero& hero, GameCommands::Command command):
   State(hero, "running"),
+  phase(0),
+  next_phase_date(0),
+  next_sound_date(0),
   command(command) {
 
 }
@@ -178,7 +181,7 @@ void Hero::RunningState::notify_obstacle_reached() {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
     get_hero().set_movement(new JumpMovement(opposite_direction, 32, 64, false));
     get_sprites().set_animation_hurt();
-    Sound::play("explosion");
+    Sound::play("running_obstacle");
     phase++;
   }
 }

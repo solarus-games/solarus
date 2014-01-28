@@ -211,7 +211,8 @@ public class TilePatternsView extends JPanel {
          * This function is called when the tileset changes.
          * @param o the tileset
          * @param params information about what has changed:
-         *   - a TilePattern: indicates that this tile pattern has just been created
+         *   - a TilePattern: indicates that this tile pattern has just been
+         *     created or has changed
          *   - an Integer: indicates that the tile pattern with this id has just been removed
          *   - null: other cases
          */

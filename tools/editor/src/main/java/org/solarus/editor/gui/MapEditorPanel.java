@@ -54,7 +54,7 @@ public class MapEditorPanel extends AbstractEditorPanel {
         setLayout(new BorderLayout());
 
         // Left panel : the map properties and the tile picker.
-        mapPropertiesView = new MapPropertiesView();
+        mapPropertiesView = new MapPropertiesView(this);
         mapPropertiesView.setMinimumSize(new Dimension(
                 0, mapPropertiesView.getPreferredSize().height));
         tilePicker = new TilePicker();
@@ -135,9 +135,10 @@ public class MapEditorPanel extends AbstractEditorPanel {
     public boolean checkCurrentFileSaved() {
         boolean result = true;
 
-        if (getMap() != null && !map.getHistory().isSaved()) {
+        Map map = getMap();
+        if (map != null && !map.getHistory().isSaved()) {
             int answer = JOptionPane.showConfirmDialog(this,
-                    "The map has been modified. Do you want to save it?",
+                    "Map '" + map.getName() + "' has been modified. Do you want to save it?",
                     "Save the modifications",
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.WARNING_MESSAGE);

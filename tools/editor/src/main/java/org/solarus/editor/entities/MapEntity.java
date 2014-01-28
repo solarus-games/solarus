@@ -24,7 +24,6 @@ import java.io.PrintWriter;
 import java.lang.reflect.*;
 import java.util.*;
 
-
 /**
  * Represents an entity placed on the map with the map editor.
  *
@@ -83,28 +82,33 @@ public abstract class MapEntity extends Observable {
     /**
      * Position of the entity in the map.
      */
-    protected Rectangle positionInMap;
+    private Rectangle positionInMap;
 
     /**
      * Layer of the entity on the map.
      */
-    protected Layer layer;
+    private Layer layer;
 
     /**
      * Direction of the entity (0 to 3).
      * Not used by all kinds of entities.
      */
-    protected int direction;
+    private int direction;
 
     /**
      * Name identifying the entity or null.
      */
-    protected String name;
+    private String name;
+
+    /**
+     * Sprite representing this entity or null.
+     */
+    private Sprite sprite;
 
     /**
      * The subtype of entity, or null if the entity has no subtype.
      */
-    protected EntitySubtype subtype;
+    private EntitySubtype subtype;
 
     /**
      * All other properties of the entity, specific to each entity type.
@@ -177,10 +181,6 @@ public abstract class MapEntity extends Observable {
         }
 
         initializeImageDescription();
-
-        if (hasName()) {
-            computeDefaultName();
-        }
     }
 
     /**
@@ -205,6 +205,7 @@ public abstract class MapEntity extends Observable {
         }
         catch (InvocationTargetException ex) {
             System.err.println("Cannot create the entity: " + ex.getCause().getMessage());
+            ex.getCause().printStackTrace();
             throw new MapException(ex.getCause().getMessage());
         }
         catch (NoSuchMethodException ex) {
@@ -229,12 +230,11 @@ public abstract class MapEntity extends Observable {
     /**
      * Creates a copy of the specified entity.
      * If the entity has a name, a different name is automatically assigned to the copy.
-     * @param map the map
-     * @param other an entity
-     * @return the copy created
+     * @param other An entity.
+     * @return The copy created.
      * @throws QuestEditorException If the entity could not be copied.
      */
-    public static MapEntity createCopy(Map map, MapEntity other) throws QuestEditorException {
+    public static MapEntity createCopy(MapEntity other) throws QuestEditorException {
 
         MapEntity entity = null;
         try {
@@ -423,10 +423,27 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Changes the map of this entity.
-     * @param map the new map
+     * @param map The new map.
+     * @param QuestEditorException if this entity cannot exist in the new map.
      */
-    public void setMap(Map map) {
+    public void setMap(Map map) throws QuestEditorException {
+
+        Map oldMap = this.map;
+        Tileset oldTileset = oldMap != null ? oldMap.getTileset() : null;
         this.map = map;
+        notifyMapChanged(oldMap, map);
+        notifyTilesetChanged(oldTileset, map.getTileset());
+    }
+
+    /**
+     * Returns the tileset of the current map of this entity.
+     * @return The tileset or null.
+     */
+    public Tileset getTileset() {
+        if (map == null) {
+            return null;
+        }
+        return map.getTileset();
     }
 
     /**
@@ -953,30 +970,6 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns the prefix of the default name to give to entities created with this type.
-     */
-    protected String getDefaultNamePrefix() {
-        return getType().getLuaName();
-    }
-
-    /**
-     * Sets a default name to the entity.
-     * @param map the map
-     */
-    private void computeDefaultName() {
-
-        try {
-            setName(getDefaultNamePrefix());
-        }
-        catch (MapException ex) {
-            // should not happen since setName() makes sure the name is unique
-            System.err.println("Unexcepted error: " + ex.getMessage());
-            ex.printStackTrace();
-            System.exit(1);
-        }
-    }
-
-    /**
      * Makes sure the name of this entity is unique on the map, renaming it if necessary.
      * setName() guarantees that no other entity has the same name on the map, but two
      * entities may have been created with the same name without detecting it because they are
@@ -1112,6 +1105,26 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Returns the sprite of this entity if any.
+     * @return The sprite or null.
+     */
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    /**
+     * Sets the sprite of this entity.
+     *
+     * If you set a sprite, it will be used to draw the entity in the editor
+     * instead of currentImageDescription.
+     *
+     * @param sprite The sprite or null.
+     */
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    /**
      * Initializes the description of the image currently representing the entity.
      * By default, the image description is initialized to a copy of the
      * image description of this kind of entity.
@@ -1133,12 +1146,12 @@ public abstract class MapEntity extends Observable {
      */
     public void updateImageDescription() {
 
-      EntityImageDescription generalImageDescription = getImageDescription(getType(), getSubtype());
+        EntityImageDescription generalImageDescription = getImageDescription(getType(), getSubtype());
 
-      if (generalImageDescription != null) {
-        // by default, the image description is the general description of the subtype
-        currentImageDescription.set(generalImageDescription);
-      }
+        if (generalImageDescription != null) {
+            // by default, the image description is the general description of the subtype
+            currentImageDescription.set(generalImageDescription);
+        }
     }
 
     /**
@@ -1206,7 +1219,8 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Draws the entity on the map view.
-     * This method draws the entity's image as described by the currentImageDescription field,
+     * This method draws the entity's image as described by the sprite or
+     * the currentImageDescription field,
      * which you can modify by redefining the updateImageDescription() method.
      * To draw a more complex image, redefine the paint() method.
      * @param g graphic context
@@ -1215,7 +1229,22 @@ public abstract class MapEntity extends Observable {
      * false to replace them by a background color
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
-        currentImageDescription.paint(g, zoom, showTransparency, positionInMap);
+
+        if (sprite != null && sprite.getDefaultAnimationName() != null) {
+            // There is a sprite, display it.
+            int direction = getDirection();
+            int numDirections = sprite.getAnimation(sprite.getDefaultAnimationName()).getNbDirections();
+            if (direction < 0 || direction >= numDirections) {
+                // The direction property of an entity may be independent from
+                // the one of its sprite, so being out of the range is not an error.
+                direction = 0;
+            }
+            sprite.paint(g, zoom, showTransparency, getX(), getY(), null, direction, 0);
+        }
+        else {
+            // Use the built-in image description of the editor.
+            currentImageDescription.paint(g, zoom, showTransparency, positionInMap);
+        }
     }
 
     /**
@@ -1338,7 +1367,7 @@ public abstract class MapEntity extends Observable {
     /**
      * Sets the subtype of this entity.
      * @param subtype The subtype to set.
-     * @throws MapException If the subtype is not valid.1
+     * @throws MapException If the subtype is not valid.
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
         this.subtype = subtype;
@@ -1620,13 +1649,27 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Changes the tileset used to represent this entity on the map.
-     * By default, nothing is done since most of the entities do not use the tileset.
-     * @param tileset the tileset
-     * @throws MapException if the new tileset could not be applied to this entity
+     * Notifies this entity that it now belongs to another map.
+     * By default, nothing is done.
+     * @param oldMap The previous map or null.
+     * @param newMap The new map.
+     * @throws MapException If this entity is invalid in the new map.
      */
-    public void setTileset(Tileset tileset) throws MapException {
+    public void notifyMapChanged(Map oldMap, Map newMap) throws MapException {
+    }
 
+    /**
+     * Notifies this entity the tileset has changed.
+     * By default, the sprite (if any) is notified.
+     * @param oldTileset The previous tileset or null.
+     * @param tileset The new tileset.
+     * @throws MapException If this entity is invalid with the new tileset.
+     */
+    public void notifyTilesetChanged(Tileset oldTileset, Tileset newTileset) throws MapException {
+
+        if (sprite != null) {
+            sprite.notifyTilesetChanged(newTileset.getId());
+        }
     }
 }
 

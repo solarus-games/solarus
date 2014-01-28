@@ -58,7 +58,7 @@ const std::string Savegame::KEY_MAX_MONEY = "_max_money";              /**< Maxi
 const std::string Savegame::KEY_MAX_MAGIC = "_max_magic";              /**< Maximum allowed magic points. */
 const std::string Savegame::KEY_ITEM_SLOT_1 = "_item_slot_1";          /**< Name of the equipment item in slot 1. */
 const std::string Savegame::KEY_ITEM_SLOT_2 = "_item_slot_2";          /**< Name of the equipment item in slot 2. */
-const std::string Savegame::KEY_ABILITY_TUNIC = "_ability_tunic";      /**< Resistance level. */
+const std::string Savegame::KEY_ABILITY_TUNIC = "_ability_tunic"; /**< Resistance level. */
 const std::string Savegame::KEY_ABILITY_SWORD = "_ability_sword";      /**< Attack level. */
 const std::string Savegame::KEY_ABILITY_SWORD_KNOWLEDGE =
     "_ability_sword_knowledge";                                        /**< Super spin attack ability level. */
@@ -129,7 +129,7 @@ void Savegame::set_initial_values() {
   // Set the initial equipment.
   equipment.set_max_life(1);
   equipment.set_life(1);
-  equipment.set_ability("tunic", 1);  // Mandatory to have a valid hero sprite.
+  equipment.set_ability(ABILITY_TUNIC, 1);  // Mandatory to have a valid hero sprite.
 }
 
 /**

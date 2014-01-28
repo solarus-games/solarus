@@ -137,7 +137,6 @@ public class AddEntitiesToolbar extends JComponent {
 
         // get the entity type being added (if any)
         EntityType entityTypeBeingAdded = mapView.getEntityTypeBeingAdded();
-        EntitySubtype entitySubtypeBeingAdded = mapView.getEntitySubtypeBeingAdded();
 
         // draw the icons for all types of entities (except TileOnMap which has its own dedicated view)
         for (int i = 0; i < cells.length; i++) {
@@ -150,8 +149,7 @@ public class AddEntitiesToolbar extends JComponent {
 
             // draw the selection rectangle if we are currently adding this kind of entity
             if (entityTypeBeingAdded != null &&
-                    entityTypeBeingAdded == cells[i].getType() &&
-                    entitySubtypeBeingAdded == cells[i].getSubtype()) {
+                    entityTypeBeingAdded == cells[i].getType()) {
                 int scaledX = x * 2;
                 int scaledY = y * 2;
                 g.setColor(Color.RED);
@@ -186,7 +184,7 @@ public class AddEntitiesToolbar extends JComponent {
 
             EntityType typeClicked = cells[cell].getType();
             EntitySubtype subtypeClicked = cells[cell].getSubtype();
-            mapView.startAddingEntity(typeClicked, subtypeClicked);
+            mapView.switchAddingNewEntity(typeClicked, subtypeClicked);
         }
     }
 

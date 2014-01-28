@@ -41,6 +41,7 @@ class Hero::UsingItemState: public Hero::State {
   private:
 
     EquipmentItemUsage item_usage;     /**< Info about using this equipment item. */
+
 };
 
 }

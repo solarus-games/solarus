@@ -32,6 +32,7 @@ class Hero::FreezedState: public Hero::State {
     ~FreezedState();
 
     void start(const State* previous_state);
+
 };
 
 }

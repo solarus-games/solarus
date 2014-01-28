@@ -28,6 +28,7 @@
 #include "entities/Pickable.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
+#include "Equipment.h"
 #include "EquipmentItem.h"
 #include "Treasure.h"
 #include "Map.h"
@@ -1900,6 +1901,20 @@ void LuaContext::on_state_changed(const std::string& state_name) {
 }
 
 /**
+ * \brief Calls the on_taking_damage() method of the object on top of the stack.
+ * \param damage The damage to take.
+ */
+bool LuaContext::on_taking_damage(int damage) {
+
+  if (find_method("on_taking_damage")) {
+    lua_pushinteger(l, damage);
+    call_function(2, 0, "on_taking_damage");
+    return true;
+  }
+  return false;
+}
+
+/**
  * \brief Calls the on_activating() method of the object on top of the stack.
  */
 void LuaContext::on_activating() {
@@ -2255,12 +2270,12 @@ void LuaContext::on_using() {
 
 /**
  * \brief Calls the on_ability_used() method of the object on top of the stack.
- * \param ability_name Id of a built-in ability.
+ * \param ability A built-in ability.
  */
-void LuaContext::on_ability_used(const std::string& ability_name) {
+void LuaContext::on_ability_used(Ability ability) {
 
   if (find_method("on_ability_used")) {
-    push_string(l, ability_name);
+    push_string(l, Equipment::ability_names[ability]);
     call_function(2, 0, "on_ability_used");
   }
 }
@@ -2471,16 +2486,31 @@ void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 }
 
 /**
+ * \brief Calls the on_hurt_by_sword() method of the object on top of the stack.
+ * \param hero The hero whose sword is hitting the enemy.
+ * \param enemy_sprite Sprite of the enemy that gets hits.
+ * \return \c true if the method is defined.
+ */
+bool LuaContext::on_hurt_by_sword(Hero& hero, Sprite& enemy_sprite) {
+
+  if (find_method("on_hurt_by_sword")) {
+    push_hero(l, hero);
+    push_sprite(l, enemy_sprite);
+    call_function(3, 0, "on_hurt_by_sword");
+    return true;
+  }
+  return false;
+}
+
+/**
  * \brief Calls the on_hurt() method of the object on top of the stack.
  * \param attack The attack received.
- * \param life_lost Number of life points just lost.
  */
-void LuaContext::on_hurt(EnemyAttack attack, int life_lost) {
+void LuaContext::on_hurt(EnemyAttack attack) {
 
   if (find_method("on_hurt")) {
     push_string(l, enemy_attack_names[attack]);
-    lua_pushinteger(l, life_lost);
-    call_function(3, 0, "on_hurt");
+    call_function(2, 0, "on_hurt");
   }
 }
 

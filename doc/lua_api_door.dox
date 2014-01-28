@@ -86,8 +86,8 @@ Returns whether this door is open.
 
 \subsection lua_api_door_is_opening door:is_opening()
 
-Returns whether this door is being open.
-- Return value (boolean): \c true if this door is being open, \c false if it is
+Returns whether this door is being opened.
+- Return value (boolean): \c true if this door is being opened, \c false if it is
   open, closed or closing.
 
 \subsection lua_api_door_is_closed door:is_closed()
@@ -118,11 +118,11 @@ The following events are specific to doors.
 
 \subsection lua_api_door_on_opened door:on_opened()
 
-Called when this door is just being opened.
+Called when this door starts being opened.
 
 \subsection lua_api_door_on_closed door:on_closed()
 
-Called when this door is just being closed.
+Called when this door starts being closed.
 
 */
 

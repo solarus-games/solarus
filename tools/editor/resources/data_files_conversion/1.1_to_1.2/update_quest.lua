@@ -24,7 +24,7 @@ write_info("  Converting the quest properties file...")
 local quest_properties_converter = require("quest_properties_converter")
 quest_properties_converter.convert(quest_path)
 
--- Read the resource list file project_db.dat.
+-- Convert the resource list file project_db.dat.
 write_info("  Reading the list of resources...")
 local quest_db_converter = require("quest_db_converter")
 local resources = quest_db_converter.convert(quest_path)
@@ -46,6 +46,11 @@ for _, resource in pairs(resources["language"]) do
   strings_converter.convert(quest_path, resource.id)
 end
 write_info("  All strings files were converted.")
+
+-- Create new required sound.
+write_info("  Converting sounds...")
+local sounds_converter = require("sound_converter")
+sounds_converter.convert(quest_path)
 
 write_info("Update successful!")
 

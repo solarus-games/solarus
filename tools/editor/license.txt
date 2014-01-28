@@ -1,0 +1,11 @@
+- The source code of Solarus Quest Editor is licensed under the terms of the
+  GNU General Public License in version 3.
+
+- Images used in the editor are licensed under CC BY-SA 3.0, unless the ones
+  specified below.
+
+- Some icons are by Yusuke Kamiyamane, licensed under a
+  Creative Commons Attribution 3.0 License:
+  - icon_refresh.png
+  - icon_edit.png
+

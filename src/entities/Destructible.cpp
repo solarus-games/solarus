@@ -351,7 +351,7 @@ void Destructible::notify_collision_with_hero(Hero& hero, CollisionMode collisio
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
       && hero.is_free()) {
 
-    if (get_equipment().has_ability("lift", get_weight())) {
+    if (get_equipment().has_ability(ABILITY_LIFT, get_weight())) {
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
     else {
@@ -426,7 +426,7 @@ void Destructible::notify_action_command_pressed() {
       && !is_waiting_for_regeneration()
       && !is_regenerating) {
 
-    if (get_equipment().has_ability("lift", get_weight())) {
+    if (get_equipment().has_ability(ABILITY_LIFT, get_weight())) {
 
       uint32_t explosion_date = get_can_explode() ? System::now() + 6000 : 0;
       get_hero().start_lifting(new CarriedItem(
@@ -458,6 +458,7 @@ void Destructible::notify_action_command_pressed() {
     }
     else {
       // Cannot lift the object.
+      get_hero().start_grabbing();
       get_lua_context().destructible_on_looked(*this);
     }
   }
@@ -474,7 +475,7 @@ void Destructible::play_destroy_animation() {
   }
   get_sprite().set_current_animation("destroy");
   if (!is_drawn_in_y_order()) {
-    get_entities().bring_to_front(this);  // Show animation destroy to front.
+    get_entities().bring_to_front(*this);  // Show animation destroy to front.
   }
   update_ground_observers();  // The ground (if any) has just disappeared.
 }

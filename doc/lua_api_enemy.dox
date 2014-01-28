@@ -110,9 +110,9 @@ Returns the current life of this enemy.
 
 Sets the current life of this enemy.
 
-The default value is \c 1.
+The initial value is \c 1.
 - \c life (number): Number of health points to set. A value of \c 0
-  kills the enemy.
+  or lower kills the enemy.
 
 \subsection lua_api_enemy_add_life enemy:add_life(life)
 
@@ -140,25 +140,13 @@ divided by the level of resistance ability of the player (his tunic).
 
 Sets the number of life points that the enemy removes from the
 \ref lua_api_hero "hero" when touching him.
-This number will be
-divided by the level of resistance ability of the player (his tunic).
+This number will be divided by the
+\ref lua_api_game_get_ability "tunic" level of the player,
+unless you override this default behavior in
+\ref lua_api_hero_on_hurt "hero:on_hurt()".
 
 The default value is \c 1.
 - \c damage (number): Damage inflicted to the hero.
-
-\subsection lua_api_enemy_get_magic_damage enemy:get_magic_damage()
-
-Returns the number of magic points that the enemy removes from the
-\ref lua_api_hero "hero" when touching him.
-- Return value (number): Magic damage inflicted to the hero.
-
-\subsection lua_api_enemy_set_magic_damage enemy:set_magic_damage(magic_damage)
-
-Sets the number of magic points that the enemy removes from the
-\ref lua_api_hero "hero" when touching him.
-
-The default value is \c 0.
-- \c magic_damage (number): Magic damage inflicted to the hero.
 
 \subsection lua_api_enemy_is_pushed_back_when_hurt enemy:is_pushed_back_when_hurt()
 
@@ -265,21 +253,24 @@ The default value is \c 0.
   attacks from this enemy.
   A value of \c 0 means that the hero cannot stop the attacks.
 
-\subsection lua_api_enemy_set_attack_consequence enemy:set_attack_consequence(attack, consequence)
+\subsection lua_api_enemy_get_attack_consequence enemy:get_attack_consequence(attack)
 
-Sets how this enemy reacts when it receives an attack.
+Returns how this enemy reacts when he receives an attack.
 
 Recall that enemies may have several \ref lua_api_sprite "sprites".
 This attack consequence applies to all sprites of the enemy,
-unless the ones that you override with
+unless you override some of them with
 \ref lua_api_enemy_set_attack_consequence_sprite
 "enemy:set_attack_consequence_sprite()".
 - \c attack (string): Name of an attack against the enemy:
-  "sword", "thrown_item", "explosion", "arrow", "hookshot",
-  "boomerang" or "fire".
+  \c "sword", \c "thrown_item", \c "explosion", \c "arrow", \c "hookshot",
+  \c "boomerang" or \c "fire".
 - \c consequence (number or string): Indicates what happens when this enemy
   receives the attack. It may be:
   - A positive integer: The enemy is hurt and loses this number of life points.
+    In the particular case of a sword attack, this number will by default
+    be increased by the level of the sword
+    (see \ref lua_api_enemy_on_hurt_by_sword "enemy:on_hurt_by_sword()").
   - \c "ignored": Nothing happens. The weapon (if any) traverses the enemy.
   - \c "protected": The enemy stops the attack. A attack failure sound is
     played.
@@ -287,10 +278,51 @@ unless the ones that you override with
   - \c "custom": Event \ref lua_api_enemy_on_custom_attack_received
     "enemy:on_custom_attack_received()" is called.
 
+\subsection lua_api_enemy_set_attack_consequence enemy:set_attack_consequence(attack, consequence)
+
+Sets how this enemy reacts when he receives an attack.
+
+Recall that enemies may have several \ref lua_api_sprite "sprites".
+This attack consequence applies to all sprites of the enemy,
+unless you override some of them with
+\ref lua_api_enemy_set_attack_consequence_sprite
+"enemy:set_attack_consequence_sprite()".
+- \c attack (string): Name of an attack against the enemy:
+  \c "sword", \c "thrown_item", \c "explosion", \c "arrow", \c "hookshot",
+  \c "boomerang" or \c "fire".
+- \c consequence (number or string): Indicates what happens when this enemy
+  receives the attack.
+  The possible values are the same as in
+  \ref lua_api_enemy_get_attack_consequence
+  "enemy:get_attack_consequence()".
+
+\subsection lua_api_enemy_get_attack_consequence_sprite enemy:get_attack_consequence_sprite(sprite, attack):
+
+Returns how this enemy reacts when one of his \ref lua_api_sprite "sprites"
+receives an attack.
+
+This method returns the same result as
+\ref lua_api_enemy_get_attack_consequence
+"enemy:get_attack_consequence()",
+unless you override 
+the reaction of the enemy for a particular sprite with
+\ref lua_api_enemy_set_attack_consequence_sprite
+"enemy:set_attack_consequence_sprite()".
+- \c sprite (\ref lua_api_sprite "sprite"): A sprite of this enemy.
+- \c attack (string): Name of an attack against the enemy:
+  "sword", "thrown_item", "explosion", "arrow", "hookshot",
+  "boomerang" or "fire".
+- \c consequence (number or string): Indicates what happens when this sprite
+  receives the attack.
+  The possible values are the same as in
+  \ref lua_api_enemy_get_attack_consequence
+  "enemy:get_attack_consequence()".
+
 \subsection lua_api_enemy_set_attack_consequence_sprite enemy:set_attack_consequence_sprite(sprite, attack, consequence):
 
-Sets how this enemy reacts when one of its \ref lua_api_sprite "sprites"
+Sets how this enemy reacts when one of his \ref lua_api_sprite "sprites"
 receives an attack.
+
 This method overrides for a particular sprite the attack consequences defined
 by \ref lua_api_enemy_set_attack_consequence
 "enemy:set_attack_consequence()".
@@ -299,9 +331,10 @@ by \ref lua_api_enemy_set_attack_consequence
   "sword", "thrown_item", "explosion", "arrow", "hookshot",
   "boomerang" or "fire".
 - \c consequence (number or string): Indicates what happens when this sprite
-  receives the attack. The possible values are the same as in
-  \ref lua_api_enemy_set_attack_consequence
-  "enemy:set_attack_consequence()".
+  receives the attack.
+  The possible values are the same as in
+  \ref lua_api_enemy_get_attack_consequence
+  "enemy:get_attack_consequence()".
 
 \subsection lua_api_enemy_set_default_attack_consequences enemy:set_default_attack_consequences()
 
@@ -643,8 +676,8 @@ of this enemy overlaps another enemy's sprite.
 
 Called when this enemy receives an attack with a custom effect.
 
-This function is called if you
-\ref lua_api_enemy_set_attack_consequence "consequence of the attack"
+This function is called if you have set
+\ref lua_api_enemy_get_attack_consequence "consequence of the attack"
 to \c "custom".
 You have to define what happens, for example hurting the enemy, making a
 special reaction, etc.
@@ -655,13 +688,53 @@ special reaction, etc.
   that receives the attack, or \c nil if the attack does not come from a
   pixel-precise collision.
 
-\subsection lua_api_enemy_on_hurt enemy:on_hurt(attack, life_lost)
+\subsection lua_api_enemy_on_hurt_by_sword enemy:on_hurt_by_sword(hero, enemy_sprite)
 
-Called when this enemy was just hurt.
+Called when this enemy is successfully hurt by the sword of the hero.
+
+This only happens if the
+\ref lua_api_enemy_get_attack_consequence "reaction" to the \c "sword" attack is
+hurting the enemy.
+The enemy has just started a hurt animation and should now lose some life
+points.
+You can define this event if you want to customize the number of life points
+to lose or do something more.
+
+By default, if you don't define this event, the enemy loses a number of
+life points computed as
+\ref lua_api_enemy_get_attack_consequence "his reaction to sword attacks"
+multiplied by
+the sword \ref lua_api_game_get_ability "ability level" of the hero,
+and doubled during a spin attack.
+- \c hero (\ref lua_api_hero "hero"): The hero who used the sword.
+- \c enemy_sprite (\ref lua_api_sprite "sprite"): The sprite of this enemy that
+  was hit.
+  You may use this information if your enemy has several sprites with
+  different behaviors.
+
+\remark This event is likely to be needed and identical for all enemies of
+  your quest.
+  Recall that you can easily apply an event to all enemies at once
+  by defining it on their \ref lua_api_main_get_metatable "metatable".
+
+\subsection lua_api_enemy_on_hurt enemy:on_hurt(attack)
+
+Called when this enemy is hurt by any attack.
+
+This only happens if the 
+\ref lua_api_enemy_get_attack_consequence "reaction" to the attack is
+hurting the enemy.
+
+At this point,
+the hurt animation of the enemy has started
+and he has just lost some life.
 - \c attack (string): The attack that was received:
   \c "sword", \c "thrown_item", \c "explosion",
   \c "arrow", \c "hookshot", \c "boomerang" or \c "fire".
-- \c life_lost (number): The number of life points just lost by the enemy.
+
+\remark In the case of a \c "sword" attack, this event is called
+  right after
+  \ref lua_api_enemy_on_hurt_by_sword "enemy:on_hurt_by_sword()"
 
 \subsection lua_api_enemy_on_dying enemy:on_dying()
 
@@ -681,6 +754,9 @@ animation "hurt", while explosions appear on the enemy.
 In both cases, the enemy will be removed from the map when the dying animation
 ends.
 
+\remark This event is called right after
+  \ref lua_api_enemy_on_hurt "enemy:on_hurt()".
+
 \subsection lua_api_enemy_on_dead enemy:on_dead()
 
 Called when the enemy's dying animation is finished.
@@ -698,7 +774,7 @@ This means that you can safely use
 <tt>enemy:on_dead()</tt> to detect when all enemies with a common prefix
 are dead.
 
-\subsection lua_api_enemy_on_immobilized enemy:on_immobilized():
+\subsection lua_api_enemy_on_immobilized enemy:on_immobilized()
 
 Called when the enemy is immobilized.
 
@@ -713,16 +789,23 @@ like brandishing a treasure or falling into a hole.
 
 Your script can define this event to customize what bad things happen to the
 hero.
-If you define this event, the engine does nothing and lets you handle this.
+If you define this event, the engine does absolutely nothing and lets you
+handle this.
 
-If you don't define this event, the hero is hurt with the predefined behavior:
-he loses some life (and optionally some magic) depending on the enemy and on
-his tunic, and he goes to the state \c "hurt" where is pushed away from the
-enemy. Then he recovers and his sprites blink for a while. During this short
-period, he is temporarily invincible.
+If you don't define this event, the hero is hurt with the predefined behavior
+as follows.
+The hero goes to the state \c "hurt" where is pushed away from the enemy.
+He loses some life depending on the enemy's
+\ref lua_api_enemy_get_damage "damage" property,
+on the hero's
+\ref lua_api_game_get_ability "tunic"
+and on \ref lua_api_hero_on_hurt "hero:on_hurt()" if defined.
+Then, he recovers and his sprites blink for a while.
+During this short period, he is temporarily invincible.
 - \c hero (\ref lua_api_hero "hero"): The hero being attacked.
 - \c enemy_sprite (\ref lua_api_sprite "sprite"): The sprite of the enemy that
   caused the collision with the hero. You may use this information if your
   enemy has several sprites with different behaviors.
+
 */
 

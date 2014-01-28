@@ -131,6 +131,7 @@ class Surface: public Drawable {
     bool is_rendered;                     /**< indicates if the current surface has been rendered. Set to false when drawing a surface on this one. */
     uint8_t internal_opacity;             /**< opacity to apply to all subtextures. */
     int width, height;                    /**< size of the texture, avoid to use SDL_QueryTexture. */
+
 };
 
 }

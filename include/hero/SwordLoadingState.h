@@ -26,13 +26,6 @@ namespace solarus {
  */
 class Hero::SwordLoadingState: public Hero::PlayerMovementState {
 
-  private:
-
-    uint32_t sword_loaded_date;            /**< date when the sword is loaded */
-    bool sword_loaded;                     /**< becomes true when the spin attack is possible */
-
-    void play_load_sound();
-
   public:
 
     SwordLoadingState(Hero& hero);
@@ -52,8 +45,17 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
     bool is_direction_locked() const;
     bool can_take_stairs() const;
     bool can_pick_treasure(EquipmentItem& item) const;
+    bool can_use_shield() const;
     void set_animation_stopped();
     void set_animation_walking();
+
+  private:
+
+    void play_load_sound();
+
+    uint32_t sword_loaded_date;            /**< date when the sword is loaded */
+    bool sword_loaded;                     /**< becomes true when the spin attack is possible */
+
 };
 
 }

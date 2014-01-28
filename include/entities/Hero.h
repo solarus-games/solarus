@@ -204,12 +204,9 @@ class Hero: public MapEntity {
         bool killed);
     int get_sword_damage_factor() const;
     bool can_be_hurt(Enemy* attacker);
-    void hurt(
-        MapEntity& source,
-        Sprite* source_sprite,
-        int life_points,
-        int magic_points);
-    void hurt(const Rectangle& source_xy, int life_points, int magic_points);
+    void hurt(MapEntity& source, Sprite* source_sprite, int life_points);
+    void hurt(const Rectangle& source_xy, int life_points);
+    void hurt(int life_points);
     void notify_game_over_finished();
 
     /**
@@ -249,6 +246,7 @@ class Hero: public MapEntity {
     void start_running();
     void start_grabbing();
     bool can_pick_treasure(EquipmentItem& item);
+    bool can_use_shield() const;
     bool can_start_item(EquipmentItem& item);
     void start_item(EquipmentItem& item);
     void start_boomerang(int max_distance, int speed,

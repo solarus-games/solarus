@@ -37,6 +37,7 @@ class Hero::SwordTappingState: public Hero::State {
     void set_suspended(bool suspended);
     bool can_sword_hit_crystal() const;
     bool can_pick_treasure(EquipmentItem& item) const;
+    bool can_use_shield() const;
     bool is_cutting_with_sword(Detector& detector) const;
     bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
     void notify_obstacle_reached();

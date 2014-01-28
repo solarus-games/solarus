@@ -16,6 +16,7 @@
  */
 #include "lowlevel/SpcDecoder.h"
 #include "lowlevel/Debug.h"
+#include "snes_spc/spc.h"
 
 namespace solarus {
 

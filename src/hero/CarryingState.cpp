@@ -195,6 +195,13 @@ bool Hero::CarryingState::can_start_sword() const {
 }
 
 /**
+ * \copydoc Hero::State::can_use_shield
+ */
+bool Hero::CarryingState::can_use_shield() const {
+  return false;
+}
+
+/**
  * \brief Returns whether the hero can take stairs in this state.
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  * \return true if the hero ignores the effect of stairs in this state

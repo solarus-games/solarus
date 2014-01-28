@@ -673,7 +673,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
       // Normal case: the location is specified by a destination point object.
 
-      MapEntity* destination = map.get_destination();
+      Destination* destination = map.get_destination();
 
       if (destination == NULL) {
         // This is embarrassing: there is no valid destination that we can use.
@@ -697,6 +697,10 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
       last_solid_ground_layer = get_layer();
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
+
+      if (destination != NULL) {
+        get_lua_context().destination_on_activated(*destination);
+      }
 
       Stairs* stairs = get_stairs_overlapping();
       if (stairs != NULL) {
@@ -1871,11 +1875,12 @@ void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) 
  * \param explosion the explosion
  * \param sprite_overlapping the sprite of the hero that collides with the explosion
  */
-void Hero::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) {
+void Hero::notify_collision_with_explosion(
+    Explosion& explosion, Sprite& sprite_overlapping) {
 
   if (!state->can_avoid_explosion()) {
     if (sprite_overlapping.contains("tunic")) {
-      hurt(explosion, NULL, 2, 0);
+      hurt(explosion, NULL, 2);
     }
   }
 }
@@ -2016,17 +2021,13 @@ bool Hero::can_be_hurt(Enemy* attacker) {
 }
 
 /**
- * \brief Hurts the hero if possible.
+ * \brief Hurts the hero if possible, an entity being the source of the attack.
  * \param source An entity that hurts the hero (usually an enemy).
- * \param source_sprite Sprite of the source entity that detected the collision.
- * \param life_points Number of life points to remove (this number may be
- * reduced by the tunic then).
- * \param magic_points Number of magic points to remove.
+ * \param source_sprite Sprite of the source entity that is hurting the hero.
+ * \param damage Number of life points to remove
+ * (this number may be reduced later by the tunic on by hero:on_taking_damage()).
  */
-void Hero::hurt(MapEntity& source,
-    Sprite* source_sprite,
-    int life_points,
-    int magic_points) {
+void Hero::hurt(MapEntity& source, Sprite* source_sprite, int damage) {
 
   Enemy* enemy = NULL;
   if (source.get_type() == ENTITY_ENEMY) {
@@ -2051,21 +2052,33 @@ void Hero::hurt(MapEntity& source,
         // Add the offset of the sprite if any.
         source_xy.add_xy(source_sprite->get_xy());
       }
-      set_state(new HurtState(*this, source_xy, life_points, magic_points));
+      set_state(new HurtState(*this, &source_xy, damage));
     }
   }
 }
 
 /**
- * \brief Hurts the hero if possible.
- * \param source_xy coordinates of whatever hurts the hero
- * \param life_points number of heart quarters to remove (this number may be reduced by the tunic)
- * \param magic_points number of magic points to remove
+ * \brief Hurts the hero if possible, a point being the source of the attack.
+ * \param source_xy Coordinates of whatever hurts the hero.
+ * \param damage Number of life points to remove
+ * (this number may be reduced later by the tunic on by hero:on_taking_damage()).
  */
-void Hero::hurt(const Rectangle& source_xy, int life_points, int magic_points) {
+void Hero::hurt(const Rectangle& source_xy, int damage) {
 
   if (!sprites->is_blinking() && state->can_be_hurt(NULL)) {
-    set_state(new HurtState(*this, source_xy, life_points, magic_points));
+    set_state(new HurtState(*this, &source_xy, damage));
+  }
+}
+
+/**
+ * \brief Hurts the hero if possible, with no located source of the attack.
+ * \param damage Number of life points to remove
+ * (this number may be reduced later by the tunic on by hero:on_taking_damage()).
+ */
+void Hero::hurt(int damage) {
+
+  if (!sprites->is_blinking() && state->can_be_hurt(NULL)) {
+    set_state(new HurtState(*this, NULL, damage));
   }
 }
 
@@ -2121,7 +2134,7 @@ void Hero::start_deep_water() {
   }
   else {
     // move to state swimming or jumping
-    if (get_equipment().has_ability("swim")) {
+    if (get_equipment().has_ability(ABILITY_SWIM)) {
       set_state(new SwimmingState(*this));
     }
     else {
@@ -2404,13 +2417,23 @@ void Hero::start_grabbing() {
 }
 
 /**
- * \brief Returns whether the hero can pick a treasure in this state.
+ * \brief Returns whether the hero can pick a treasure in his current state.
  * \param item The equipment item to pick.
  * \return true if this equipment item can currently be picked.
  */
 bool Hero::can_pick_treasure(EquipmentItem& item) {
 
   return state->can_pick_treasure(item);
+}
+
+/**
+ * \brief Returns whether the hero can stop attacks with a shield in his
+ * current state.
+ * \return \c true if the shield is active is this state.
+ */
+bool Hero::can_use_shield() const {
+
+  return state->can_use_shield();
 }
 
 /**
@@ -2499,7 +2522,7 @@ void Hero::start_state_from_ground() {
 
   case GROUND_DEEP_WATER:
     if (state->is_touching_ground()
-        && get_equipment().has_ability("swim")) {
+        && get_equipment().has_ability(ABILITY_SWIM)) {
       set_state(new SwimmingState(*this));
     }
     else {

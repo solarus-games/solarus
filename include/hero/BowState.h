@@ -33,6 +33,7 @@ class Hero::BowState: public Hero::State {
 
     void start(const State* previous_state);
     void update();
+
 };
 
 }

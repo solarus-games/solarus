@@ -40,17 +40,6 @@ class CrystalBlock: public Detector {
       BLUE   = 1  /**< a blue block */
     };
 
-  private:
-
-    Subtype subtype;                   /**< indicates whether this is an orange or a blue block */
-    bool orange_raised;                /**< true if the orange blocks are raised,
-                                        * false if the blue blocks are raised */
-
-    bool try_jump(Hero& hero, const Rectangle& collision_box,
-        int jump_direction, int jump_length);
-
-  public:
-
     CrystalBlock(Game& game, const std::string& name,
         Layer layer, int x, int y, int width, int height, Subtype subtype);
     ~CrystalBlock();
@@ -64,6 +53,15 @@ class CrystalBlock: public Detector {
     void draw_on_map();
 
     bool is_raised() const;
+
+  private:
+
+    Subtype subtype;                   /**< indicates whether this is an orange or a blue block */
+    bool orange_raised;                /**< true if the orange blocks are raised,
+                                        * false if the blue blocks are raised */
+
+    bool try_jump(Hero& hero, const Rectangle& collision_box,
+        int jump_direction, int jump_length);
 
 };
 

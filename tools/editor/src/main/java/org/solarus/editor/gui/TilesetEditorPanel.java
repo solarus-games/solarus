@@ -93,14 +93,14 @@ public class TilesetEditorPanel extends AbstractEditorPanel {
     /**
      * This function is called when the user wants to close the current tileset.
      * If the tileset is not saved, we propose to save it.
-     * @return false if the user cancelled
+     * @return false if the user canceled.
      */
     public boolean checkCurrentFileSaved() {
         boolean result = true;
 
         if (tileset != null && !tileset.isSaved()) {
             int answer = JOptionPane.showConfirmDialog(this,
-                    "The tileset has been modified. Do you want to save it?",
+                    "Tileset '" + tileset.getName() + "' has been modified. Do you want to save it?",
                     "Save the modifications",
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.WARNING_MESSAGE);

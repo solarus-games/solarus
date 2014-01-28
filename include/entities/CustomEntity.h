@@ -36,17 +36,21 @@ class CustomEntity: public Detector {
     CustomEntity(
         Game& game,
         const std::string& name,
+        int direction,
         Layer layer,
         int x,
         int y,
         int width,
         int height,
+        const std::string& sprite_name,
         const std::string& model);
     ~CustomEntity();
 
     EntityType get_type() const;
 
     const std::string& get_model() const;
+
+    bool is_obstacle_for(const MapEntity& other) const;
 
     /* TODO
     bool can_be_obstacle() const;
@@ -98,7 +102,6 @@ class CustomEntity: public Detector {
         const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
         bool killed);
-    bool is_obstacle_for(const MapEntity& other) const;
     bool is_low_wall_obstacle() const;
     bool is_shallow_water_obstacle() const;
     bool is_deep_water_obstacle() const;
@@ -136,7 +139,10 @@ class CustomEntity: public Detector {
 
   private:
 
-    const std::string& model;          /**< Model of this custom entity, or an empty string. */
+    void initialize_sprite(
+        const std::string& sprite_name, int initial_direction);
+
+    const std::string& model;          /**< Model of this custom entity or an empty string. */
 
 };
 

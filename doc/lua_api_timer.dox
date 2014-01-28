@@ -9,7 +9,7 @@ Here is a first example of use:
 
 \verbatim
 -- Play sound "secret" in one second.
-function play_secret_sound()
+local function play_secret_sound()
   sol.audio.play_sound("secret")
 end
 
@@ -24,6 +24,46 @@ sol.timer.start(1000, function()
   sol.audio.play_sound("secret")
 end)
 \endverbatim
+
+You can repeat a timer by returning \c true from your function:
+
+\verbatim
+-- Call a function every second.
+sol.timer.start(1000, function()
+  sol.audio.play_sound("danger")
+  return true  -- To call the timer again (with the same delay).
+end)
+\endverbatim
+
+To make a timer that repeats itself 10 times, just return \c false after
+10 calls:
+
+\verbatim
+-- Call a function ten times, with one second between each call.
+local num_calls = 0
+sol.timer.start(1000, function()
+  sol.audio.play_sound("danger")
+  num_calls = num_calls + 1
+  return num_calls < 10
+end)
+\endverbatim
+
+It is possible to restrict the lifetime of a timer to a context,
+like the game, the map or an enemy:
+
+\verbatim
+-- Enemy that shoots a fireball in 5 seconds,
+-- unless the enemy is killed in the meantime.
+sol.timer.start(your_enemy, 5000, function()
+  sol.audio.play_sound("attack_fireball")
+  your_enemy:create_enemy(...)  -- Code that creates the fireball.
+end)
+\endverbatim
+Setting the context to an enemy ensures that when the enemy is killed,
+the timer is canceled.
+Otherwise, the callback function would still be called: in this example,
+you would hear the \c "attack_fireball" sound and the fireball would be
+created even if the enemy is killed in the meantime.
 
 \section lua_api_timer_functions Functions of sol.timer
 
@@ -75,7 +115,12 @@ If the delay is set to zero, the function is called immediately.
     and \ref lua_api_main "sol.main" if no game is running.
 - \c delay (number): Delay before calling the function in milliseconds.
 - \c callback (function): The function to be called when the timer finishes.
-- Return value (timer): The timer created (or \c nil if \c delay is \c 0).
+  If this callback function returns \c true, then the timer automatically
+  repeats itself with the same delay.
+  In this case, if the delay is shorter than the time of a cycle of the main
+  loop, then the callback may be executed several times in
+  the same cycle in order to catch up.
+- Return value (timer): The timer created.
   Most of the time, you don't need to store the returned timer.
   Indeed, there is no problem if it gets garbage-collected: the timer persists
   in the engine side until its completion or the end of its context.
@@ -115,10 +160,6 @@ when an \ref lua_api_enemy "enemy" is killed, its timers are canceled, etc.
 In all these cases, you don't need this function.
 But there are situations where you need to cancel explictly the timers of a
 context.
-Typically, when an \ref lua_api_enemy "enemy" is hurt, you may want to cancel
-all its timers, because
-you don't want your enemy to perform its next attacks or to make a
-movement during its hurting animation.
 
 \section lua_api_timer_methods Methods of the type timer
 
@@ -127,6 +168,11 @@ movement during its hurting animation.
 Cancels this timer.
 
 If the timer was already finished or canceled, nothing happens.
+
+\remark Canceling timers by hand may be tedious and error-prone.
+  In lots of cases, you can simply pass a context parameter to
+  \ref lua_api_timer_start "sol.timer.start()" in order to restrict the
+  lifetime of your timer to some other object.
 
 \subsection lua_api_timer_is_with_sound timer:is_with_sound()
 
@@ -177,7 +223,26 @@ map.
   the map is suspended, \c false to continue (no value means \c true).
 
 \remark Even when this setting is set to \c true, you can override its
-behavior by calling \ref lua_api_timer_set_suspended "timer:set_suspended()"
+behavior by calling \ref lua_api_timer_set_suspended "timer:set_suspended()".
+
+\subsection lua_api_timer_get_remaining_time timer:get_remaining_time()
+
+Returns the remaining time of this timer.
+- Return value (number): The time remaining in milliseconds.
+  \c 0 means that the timer is finished (or will finish in the current cycle)
+  or was canceled.
+
+\subsection lua_api_timer_set_remaining_time timer:set_remaining_time(remaining_time)
+
+Changes the remaining time of this timer.
+
+This function has no effect if the timer is already finished.
+- \c remaining_time (number): The time remaining in milliseconds.
+  \c 0 makes the timer finish now and immediately executes its callback.
+
+\remark When a timer is repeated (that is, if its callback returns \c true),
+  the timer gets rescheduled with its initial delay again, no matter if you
+  called this function in the meantime.
 
 */
 

@@ -103,6 +103,17 @@ class CarriedItem: public MapEntity {
 
   private:
 
+    void initialize(
+        const Rectangle& xy,
+        const Rectangle& size,
+        const Rectangle& origin,
+        const std::string& animation_set_id,
+        const std::string& destruction_sound_id,
+        int damage_on_enemies,
+        uint32_t explosion_date);
+
+    bool will_explode_soon() const;
+
     // game data
     Hero& hero;             /**< the hero, who is carrying or throwing this item */
 
@@ -126,17 +137,6 @@ class CarriedItem: public MapEntity {
     uint32_t explosion_date;        /**< date when the item explodes (0 if there is no explosion) */
 
     static const std::string lifting_trajectories[4];   /**< trajectory of the lifting movement for each direction */
-
-    void initialize(
-        const Rectangle& xy,
-        const Rectangle& size,
-        const Rectangle& origin,
-        const std::string& animation_set_id,
-        const std::string& destruction_sound_id,
-        int damage_on_enemies,
-        uint32_t explosion_date);
-
-    bool will_explode_soon() const;
 
 };
 

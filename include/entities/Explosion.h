@@ -30,10 +30,6 @@ namespace solarus {
  */
 class Explosion: public Detector {
 
-  private:
-
-    std::list<Enemy*> victims; /**< list of enemies successfully hurt by this explosion */
-
   public:
 
     Explosion(const std::string& name, Layer layer, const Rectangle& xy,
@@ -60,6 +56,10 @@ class Explosion: public Detector {
         const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
         bool killed);
+
+  private:
+
+    std::list<Enemy*> victims; /**< list of enemies successfully hurt by this explosion */
 
 };
 

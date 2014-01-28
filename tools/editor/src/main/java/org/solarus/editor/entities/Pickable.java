@@ -34,11 +34,6 @@ public class Pickable extends MapEntity {
     };
 
     /**
-     * The sprite representing this entity.
-     */
-    private Sprite sprite;
-
-    /**
      * Origin point of a pickable item.
      */
     private static final Point origin = new Point(8, 13);
@@ -49,7 +44,7 @@ public class Pickable extends MapEntity {
      */
     public Pickable(Map map) throws MapException {
         super(map, 16, 16);
-        sprite = new Sprite("entities/items", map);
+        setSprite(new Sprite("entities/items", map));
     }
 
     /**
@@ -97,18 +92,21 @@ public class Pickable extends MapEntity {
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
         // Display the sprite of the treasure.
+        boolean success = false;
+        Sprite sprite = getSprite();
         String animation = getStringProperty("treasure_name");
         int direction = getIntegerProperty("treasure_variant") - 1;
-
         if (animation != null &&
                 sprite.hasAnimation(animation) &&
                 direction <= sprite.getAnimation(animation).getNbDirections()) {
             sprite.paint(g, zoom, showTransparency,
                     getX(), getY(), animation, direction, 0);
+            success = true;
         }
-        else {
+
+        if (!success) {
             // Display a default image.
-            super.paint(g, zoom, showTransparency);
+            currentImageDescription.paint(g, zoom, showTransparency, getPositionInMap());
         }
     }
 }

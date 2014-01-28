@@ -66,7 +66,6 @@ Enemy::Enemy(
 
   breed(breed),
   damage_on_hero(1),
-  magic_damage_on_hero(0),
   life(1),
   hurt_style(HURT_NORMAL),
   pushed_back_when_hurt(true),
@@ -473,22 +472,6 @@ void Enemy::set_damage(int damage_on_hero) {
 }
 
 /**
- * \brief Returns the amount of magic damage this kind of enemy can make to the hero.
- * \return Number of magic points the player loses.
- */
-int Enemy::get_magic_damage() const {
-  return magic_damage_on_hero;
-}
-
-/**
- * \brief Sets the amount of magic damage this kind of enemy can make to the hero.
- * \param magic_damage_on_hero Number of magic points the player loses.
- */
-void Enemy::set_magic_damage(int magic_damage_on_hero) {
-  this->magic_damage_on_hero = magic_damage_on_hero;
-}
-
-/**
  * \brief Returns the number of health points of the enemy.
  * \return number of health points of the enemy
  */
@@ -739,7 +722,7 @@ void Enemy::set_default_attack_consequences() {
   for (int i = 0; i < ATTACK_NUMBER; i++) {
     attack_reactions[i].set_default_reaction();
   }
-  set_attack_consequence(ATTACK_SWORD, EnemyReaction::HURT, 1); // multiplied by the sword damage factor
+  set_attack_consequence(ATTACK_SWORD, EnemyReaction::HURT, 1); // multiplied by the sword strength
   set_attack_consequence(ATTACK_THROWN_ITEM, EnemyReaction::HURT, 1); // multiplied depending on the item
   set_attack_consequence(ATTACK_EXPLOSION, EnemyReaction::HURT, 2);
   set_attack_consequence(ATTACK_ARROW, EnemyReaction::HURT, 2);
@@ -1044,7 +1027,8 @@ void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0
-        && get_equipment().has_ability("shield", minimum_shield_needed)) {
+        && get_equipment().has_ability(ABILITY_SHIELD, minimum_shield_needed)
+        && hero.can_use_shield()) {
 
       // Compute the direction corresponding to the angle between the enemy and the hero.
       double angle = hero.get_angle(*this, NULL, this_sprite);
@@ -1066,7 +1050,7 @@ void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
       attack_stopped_by_hero_shield();
     }
     else {
-      hero.hurt(*this, this_sprite, damage_on_hero, magic_damage_on_hero);
+      hero.hurt(*this, this_sprite, damage_on_hero);
     }
   }
 }
@@ -1084,7 +1068,7 @@ void Enemy::attack_stopped_by_hero_shield() {
   can_attack = false;
   can_attack_again_date = now + 1000;
 
-  get_equipment().notify_ability_used("shield");
+  get_equipment().notify_ability_used(ABILITY_SHIELD);
 }
 
 /**
@@ -1190,7 +1174,6 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
       // get immobilized
       hurt(source, this_sprite);
       immobilize();
-      notify_hurt(source, attack, 0);
       break;
 
     case EnemyReaction::CUSTOM:
@@ -1211,13 +1194,30 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
         stop_immobilized();
       }
 
-      // compute the number of health points lost by the enemy
+      // Compute the number of health points lost by the enemy.
 
+      being_hurt = true;
       if (attack == ATTACK_SWORD) {
 
-        // for a sword attack, the damage depends on the sword and the variant of sword attack used
-        int damage_multiplicator = static_cast<Hero&>(source).get_sword_damage_factor();
-        reaction.life_lost *= damage_multiplicator;
+        Hero& hero = static_cast<Hero&>(source);
+
+        // Sword attacks only use pixel-precise collisions.
+        Debug::check_assertion(this_sprite != NULL,
+            "Missing enemy sprite for sword attack"
+        );
+
+        // For a sword attack, the damage may be something customized.
+        bool customized = get_lua_context().enemy_on_hurt_by_sword(
+            *this, hero, *this_sprite);
+
+        if (customized) {
+          reaction.life_lost = 0;  // Already done by the script.
+        }
+        else {
+          // If this is not customized, the default it to multiply the reaction
+          // by a factor that depends on the sword.
+          reaction.life_lost *= hero.get_sword_damage_factor();
+        }
       }
       else if (attack == ATTACK_THROWN_ITEM) {
         reaction.life_lost *= static_cast<CarriedItem&>(source).get_damage_on_enemies();
@@ -1225,7 +1225,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
       life -= reaction.life_lost;
 
       hurt(source, this_sprite);
-      notify_hurt(source, attack, reaction.life_lost);
+      notify_hurt(source, attack);
       break;
 
     case EnemyReaction::IGNORED:
@@ -1262,7 +1262,6 @@ void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
   uint32_t now = System::now();
 
   // update the enemy state
-  being_hurt = true;
   set_movement_events_enabled(false);
 
   can_attack = false;
@@ -1290,13 +1289,12 @@ void Enemy::hurt(MapEntity& source, Sprite* this_sprite) {
 
 /**
  * \brief This function is called when the enemy has just been hurt.
- * \param source the source of the attack
- * \param attack the attack that was just successful
- * \param life_points the number of life points lost by this enemy
+ * \param source The source of the attack.
+ * \param attack The attack that was just successful.
  */
-void Enemy::notify_hurt(MapEntity& source, EnemyAttack attack, int life_points) {
+void Enemy::notify_hurt(MapEntity& source, EnemyAttack attack) {
 
-  get_lua_context().enemy_on_hurt(*this, attack, life_points);
+  get_lua_context().enemy_on_hurt(*this, attack);
   if (get_life() <= 0) {
     get_lua_context().enemy_on_dying(*this);
   }

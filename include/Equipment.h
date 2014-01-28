@@ -18,6 +18,7 @@
 #define SOLARUS_EQUIPMENT_H
 
 #include "Common.h"
+#include "Ability.h"
 #include <string>
 #include <map>
 
@@ -34,17 +35,6 @@ namespace solarus {
  * (sword, money, items...) and to modify it.
  */
 class Equipment {
-
-  private:
-
-    Savegame& savegame;                          /**< the savegame encapsulated by this equipment object */
-    bool suspended;                              /**< indicates that the game is suspended */
-
-    // items
-    std::map<std::string, EquipmentItem*> items;  /**< each item (properties loaded from item scripts) */
-
-    std::string get_ability_savegame_variable(
-        const std::string& ability_name) const;
 
   public:
 
@@ -101,12 +91,24 @@ class Equipment {
     int get_item_slot(const EquipmentItem& item) const;
 
     // built-in abilities
-    // TODO rename abilities: sword -> attack, tunic -> defense, shield -> protection.
     // TODO make notify_ability_changed
-    bool has_ability(const std::string& ability_name, int level = 1) const;
-    int get_ability(const std::string& ability_name) const;
-    void set_ability(const std::string& ability_name, int level);
-    void notify_ability_used(const std::string& ability_name);
+    bool has_ability(Ability ability, int level = 1) const;
+    int get_ability(Ability ability) const;
+    void set_ability(Ability ability, int level);
+    void notify_ability_used(Ability ability);
+
+    static const std::string ability_names[];    /**< Lua name of each ability. */
+
+  private:
+
+    Savegame& savegame;                          /**< The savegame encapsulated by this equipment object. */
+    bool suspended;                              /**< Indicates that the game is suspended. */
+
+    // items
+    std::map<std::string, EquipmentItem*> items; /**< Each item (properties loaded from item scripts). */
+
+    std::string get_ability_savegame_variable(Ability ability) const;
+
 };
 
 }

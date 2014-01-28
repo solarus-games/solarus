@@ -44,6 +44,7 @@ class Hero::BoomerangState: public Hero::State {
     const std::string tunic_preparing_animation; /**< animation name of the hero's tunic
                                                   * when preparing the boomerang */
     const std::string sprite_name;               /**< animation set id that represents the boomerang */
+
 };
 
 }

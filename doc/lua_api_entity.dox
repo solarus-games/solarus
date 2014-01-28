@@ -376,6 +376,31 @@ To compute the direction to another map entity:
 - Return value (number): The direction this entity should take to look at
   the other entity, between 0 (East) and 7 (South-East).
 
+\subsection lua_api_entity_bring_to_front entity:bring_to_front()
+
+Places this entity in front of all other entities on the same layer.
+
+Since entities that are on the same layer can overlap,
+you can use this function to change their Z-index.
+
+\remark Some entities like NPCs, enemies and the hero have the property to be
+  displayed in Y order.
+  The Z-index of these entities is already managed by the engine to show
+  entities more to the north behind the ones more to the south.
+  Therefore, this function has no effect for them.
+
+\subsection lua_api_entity_bring_to_back entity:bring_to_back()
+
+Places this entity behind all other entities on the same layer.
+
+Since entities that are on the same layer can overlap,
+you can use this function to change their Z-index.
+
+\remark Some entities like NPCs, enemies and the hero have the property to be
+  displayed in Y order.
+  The Z-index of these entities is already managed by the engine to show
+  entities more to the north behind the ones more to the south.
+  Therefore, this function has no effect for them.
 \subsection lua_api_entity_get_optimization_distance entity:get_optimization_distance()
 
 Returns the optimization threshold of this map entity.

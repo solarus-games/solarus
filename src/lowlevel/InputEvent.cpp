@@ -243,7 +243,7 @@ void InputEvent::set_key_repeat(bool repeat) {
 bool InputEvent::is_shift_down() {
 
   SDL_Keymod mod = SDL_GetModState();
-  return mod & (KMOD_LSHIFT | KMOD_RSHIFT);
+  return mod & KMOD_SHIFT;
 }
 
 /**
@@ -256,7 +256,7 @@ bool InputEvent::is_shift_down() {
 bool InputEvent::is_control_down() {
 
   SDL_Keymod mod = SDL_GetModState();
-  return mod & (KMOD_LCTRL | KMOD_RCTRL);
+  return mod & KMOD_CTRL;
 }
 
 /**
@@ -269,7 +269,27 @@ bool InputEvent::is_control_down() {
 bool InputEvent::is_alt_down() {
 
   SDL_Keymod mod = SDL_GetModState();
-  return mod & (KMOD_LALT | KMOD_RALT);
+  return mod & KMOD_ALT;
+}
+
+/**
+ * \brief Returns whether the caps lock key is currently active.
+ * \return \c true if the caps lock key is currently active.
+ */
+bool InputEvent::is_caps_lock_on() {
+
+  SDL_Keymod mod = SDL_GetModState();
+  return mod & KMOD_CAPS;
+}
+
+/**
+ * \brief Returns whether the num lock key is currently active.
+ * \return \c true if the num lock key is currently active.
+ */
+bool InputEvent::is_num_lock_on() {
+
+  SDL_Keymod mod = SDL_GetModState();
+  return mod & KMOD_NUM;
 }
 
 /**

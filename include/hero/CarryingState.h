@@ -39,6 +39,7 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
     void update();
     void notify_action_command_pressed();
     bool can_start_sword() const;
+    bool can_use_shield() const;
     bool can_take_stairs() const;
     void set_animation_stopped();
     void set_animation_walking();
@@ -47,10 +48,10 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
 
   private:
 
-    CarriedItem* carried_item;		/**< the item to carry */
-
     void throw_item();
     void destroy_carried_item();
+
+    CarriedItem* carried_item;         /**< the item to carry */
 
 };
 

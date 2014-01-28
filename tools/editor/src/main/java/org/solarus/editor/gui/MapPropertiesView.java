@@ -37,6 +37,11 @@ public class MapPropertiesView extends JPanel
      */
     private Map map;
 
+    /**
+     * The map editor panel this view belongs to.
+     */
+    private MapEditorPanel mapEditor;
+
     // Subcomponents.
     private JLabel idField;
     private NameField nameField;
@@ -52,8 +57,9 @@ public class MapPropertiesView extends JPanel
     /**
      * Constructor.
      */
-    public MapPropertiesView() {
+    public MapPropertiesView(MapEditorPanel mapEditor) {
         super(new GridBagLayout());
+        this.mapEditor = mapEditor;
 
         setBorder(BorderFactory.createTitledBorder("Map properties"));
 
@@ -604,14 +610,76 @@ public class MapPropertiesView extends JPanel
     /**
      * Component to change the tileset associated to the map.
      */
-    private class TilesetField extends ResourceChooser implements ActionListener {
+    private class TilesetField extends JPanel implements ActionListener {
+
+        /**
+         * The tileset selector.
+         */
+        private ResourceChooser tilesetChooser;
 
         /**
          * Constructor.
          */
         public TilesetField() {
-            super(ResourceType.TILESET, true);
-            addActionListener(this);
+            super();
+            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+            tilesetChooser = new ResourceChooser(ResourceType.TILESET, true);
+            tilesetChooser.setPreferredSize(new Dimension(100, 24));
+            add(tilesetChooser);
+            tilesetChooser.addActionListener(this);
+
+            JButton refreshButton = new JButton(Project.getEditorImageIconOrEmpty("icon_refresh.png"));
+            refreshButton.setPreferredSize(new Dimension(24, 24));
+            refreshButton.setToolTipText("Reload tileset");
+            refreshButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ev) {
+
+                    if (map == null) {
+                        return;
+                    }
+
+                    String selectedTilesetId = tilesetChooser.getSelectedId();
+                    if (selectedTilesetId.isEmpty()) {
+                        return;
+                    }
+
+                    // Reload the tileset.
+                    try {
+                        map.setTileset("");
+                        map.setTileset(selectedTilesetId);
+                        if (map.badTiles()) {
+                            GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in this tileset.");
+                        }
+                    }
+                    catch (QuestEditorException ex) {
+                        GuiTools.errorDialog("Cannot reload tileset '" + selectedTilesetId + "': " + ex.getMessage());
+                    }
+                }
+            });
+            add(refreshButton);
+
+
+            JButton editButton = new JButton(Project.getEditorImageIconOrEmpty("icon_edit.png"));
+            editButton.setPreferredSize(new Dimension(24, 24));
+            editButton.setToolTipText("Edit tileset");
+            editButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ev) {
+
+                    if (map == null) {
+                        return;
+                    }
+
+                    String selectedTilesetId = tilesetChooser.getSelectedId();
+                    if (!selectedTilesetId.isEmpty()) {
+                        mapEditor.getMainWindow().openResourceElement(
+                            ResourceType.TILESET, selectedTilesetId
+                        );
+                    }
+                }
+            });
+            add(editButton);
+
             update((Map) null);
         }
 
@@ -624,15 +692,15 @@ public class MapPropertiesView extends JPanel
             if (map != null) {
 
                 String currentTilesetId = map.getTilesetId();
-                String selectedTilesetId = getSelectedId();
+                String selectedTilesetId = tilesetChooser.getSelectedId();
 
                 if (!selectedTilesetId.equals(currentTilesetId)) {
-                    setSelectedId(currentTilesetId);
+                    tilesetChooser.setSelectedId(currentTilesetId);
                 }
-                setEnabled(true);
+                tilesetChooser.setEnabled(true);
             }
             else {
-                setEnabled(false);
+                tilesetChooser.setEnabled(false);
             }
         }
 
@@ -646,7 +714,7 @@ public class MapPropertiesView extends JPanel
                 return;
             }
 
-            String selectedTilesetId = getSelectedId();
+            String selectedTilesetId = tilesetChooser.getSelectedId();
             String currentTilesetId = map.getTilesetId();
 
             if (!currentTilesetId.equals(selectedTilesetId)) {

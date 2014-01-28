@@ -54,7 +54,7 @@ public class MapEditorPanel extends AbstractEditorPanel {
         setLayout(new BorderLayout());
 
         // Left panel : the map properties and the tile picker.
-        mapPropertiesView = new MapPropertiesView();
+        mapPropertiesView = new MapPropertiesView(this);
         mapPropertiesView.setMinimumSize(new Dimension(
                 0, mapPropertiesView.getPreferredSize().height));
         tilePicker = new TilePicker();

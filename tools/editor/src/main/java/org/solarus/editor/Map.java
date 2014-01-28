@@ -358,6 +358,7 @@ public class Map extends Observable {
                     catch (NoSuchTilePatternException ex) {
                         // the entity is not valid anymore, we should remove it from the map
                         entitiesToRemove.add(entity);
+                        getEntitySelection.unselect(entity);
                         badTiles = true;
                     }
                 }

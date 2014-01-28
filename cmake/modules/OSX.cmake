@@ -57,7 +57,11 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Oldest OS 
 # Compatibility options
 if(NOT XCODE)
   if(SOLARUS_CURRENT_OSX_VERSION_SHORT VERSION_EQUAL "10.6" AND SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
-    # Use condition to avoid duplicate flags caused by set(... FORCE)
+
+    # Use conditions to avoid duplicate flags caused by set(... FORCE)
+    if(NOT CMAKE_CXX_FLAGS MATCHES "-force_cpusubtype_ALL")
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -force_cpusubtype_ALL" CACHE STRING "Force all cpu subtypes, to avoid trouble with some old architectures")
+    endif()
     if(NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-Wl,-no_compact_linkedit")
       set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
     endif()

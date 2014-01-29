@@ -783,9 +783,12 @@ Called when the enemy is immobilized.
 Called when the \ref lua_api_hero "hero" is successfully touched by this enemy.
 
 This event is not called if the hero was protected by his shield,
-or if he currently cannot be hurt for some reason, like when he his in a
-special \ref lua_api_hero_get_state "state"
-like brandishing a treasure or falling into a hole.
+or if he currently cannot be hurt for some reason, like when he is already being
+hurt, when he is
+\ref lua_api_hero_set_invincible "temporarily invincible",
+or when he is in another
+\ref lua_api_hero_get_state "state"
+like brandishing a treasure.
 
 Your script can define this event to customize what bad things happen to the
 hero.
@@ -806,6 +809,16 @@ During this short period, he is temporarily invincible.
 - \c enemy_sprite (\ref lua_api_sprite "sprite"): The sprite of the enemy that
   caused the collision with the hero. You may use this information if your
   enemy has several sprites with different behaviors.
+
+\remark If you call \ref lua_api_hero_start_hurt hero:start_hurt(),
+  you will obtain something equivalent to the default behavior.
+  But if you don't, keep in mind that
+  if the hero can still be hurt after your call,
+  this event will continue to be called while
+  there is a collision with the enemy.
+  To avoid this, see for example
+  \ref lua_api_hero_set_invincible "hero:set_invincible()"
+  to make the hero temporarily invincible.
 
 */
 

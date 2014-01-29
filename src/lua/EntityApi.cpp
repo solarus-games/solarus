@@ -1549,11 +1549,10 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
   // - hero:start_hurt(source_entity, [source_sprite], damage)
   Hero& hero = check_hero(l, 1);
 
-  int life_points = 0;
   if (lua_gettop(l) <= 2) {
     // hero:start_hurt(damage)
     int damage = luaL_checkint(l, 2);
-    hero.hurt(life_points);
+    hero.hurt(damage);
   }
   else if (lua_isnumber(l, 2)) {
     // hero:start_hurt(source_x, source_y, damage)

@@ -1553,18 +1553,14 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
   if (lua_gettop(l) <= 2) {
     // hero:start_hurt(damage)
     int damage = luaL_checkint(l, 2);
-    if (hero.can_be_hurt(NULL)) {
-      hero.hurt(life_points);
-    }
+    hero.hurt(life_points);
   }
   else if (lua_isnumber(l, 2)) {
     // hero:start_hurt(source_x, source_y, damage)
     int source_x = luaL_checkint(l, 2);
     int source_y = luaL_checkint(l, 3);
     int damage = luaL_checkint(l, 4);
-    if (hero.can_be_hurt(NULL)) {
-      hero.hurt(Rectangle(source_x, source_y), damage);
-    }
+    hero.hurt(Rectangle(source_x, source_y), damage);
   }
   else {
     // hero:start_hurt(source_entity, [source_sprite], damage)
@@ -1576,9 +1572,7 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
       index = 4;
     }
     int damage = luaL_checkint(l, index);
-    if (hero.can_be_hurt(&source_entity)) {
-      hero.hurt(source_entity, source_sprite, damage);
-    }
+    hero.hurt(source_entity, source_sprite, damage);
   }
 
   return 0;

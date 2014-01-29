@@ -78,6 +78,7 @@ Changes that introduce incompatibilities:
 * The built-in defense of the tunic has changed (#428).
 * enemy:get/set_magic_damage() no longer exists (#428).
 * hero:start_hurt() no longer takes a magic parameter (#428).
+* hero:start_hurt() now hurts the hero even when enemies cannot.
 * Enemies have now a default size of 16x16 and origin of 8,13 (#354).
 * The size of enemies must be a multiple of 8 (#358).
 * item:on_pickable_movement_changed replaced by pickable:on_movement_changed.

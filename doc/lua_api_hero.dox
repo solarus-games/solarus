@@ -271,17 +271,20 @@ Makes the hero run.
 
 \subsection lua_api_hero_start_hurt hero:start_hurt(source_x, source_y, damage)
 
-Hurts the hero if possible, exactly like when he is touched by an
+Hurts the hero, exactly like when he is touched by an
 \ref lua_api_enemy "enemy".
 The hurting animations and sounds of the hero are played.
 
-This method has no effect if the hero is temporarily invincible
-(because he was already hurt recently) or if the hero is in a state where
+This method hurts the hero even if enemies cannot,
+including when the hero is temporarily
+\ref lua_api_hero_is_invincible "invincible"
+(because he was already hurt recently)
+or when the hero is in a state where
 he cannot be hurt (for example when he is brandishing a treasure).
-- \c source_x (number): X coordinate of whatever hurts the hero. Used to push the hero
-  away from that source.
-- \c source_y (number): Y coordinate of whatever hurts the hero. Used to push the hero
-  away from that source.
+- \c source_x (number): X coordinate of whatever hurts the hero.
+  Used to push the hero away from that source.
+- \c source_y (number): Y coordinate of whatever hurts the hero.
+  Used to push the hero away from that source.
 - \c damage (number): Base number of life points to remove (possibly \c 0).
   This number will be divided by the
   \ref lua_api_game_get_ability "tunic" level of the player,
@@ -296,7 +299,8 @@ he cannot be hurt (for example when he is brandishing a treasure).
 
 Same as
 \rev lua_api_hero_start_hurt "hero:start_hurt(source_x, source_y, life_points)",
-but specifying the source as an optional entity and possibly its sprite.
+but specifying the source coordinates as an optional entity
+and possibly its sprite.
 - \c source_entity (\ref lua_api_entity "map entity", optional):
   Whatever hurts the hero.
   The coordinates of this source entity are used to push the hero away from
@@ -306,6 +310,7 @@ but specifying the source as an optional entity and possibly its sprite.
   the source entity is hurting the hero.
   If you set this value, the hero will be pushed away from the origin of this
   sprite instead of from the origin of the source entity.
+  Most of the time, you don't need to set this parameter.
 - \c life_points: Base number of life points to remove (possibly \c 0).
   This number will be divided by the
   \ref lua_api_game_get_ability "tunic" level of the player,

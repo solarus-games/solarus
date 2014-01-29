@@ -142,8 +142,8 @@ Sets the number of life points that the enemy removes from the
 \ref lua_api_hero "hero" when touching him.
 This number will be divided by the
 \ref lua_api_game_get_ability "tunic" level of the player,
-unless you override this default behavior in
-\ref lua_api_hero_on_hurt "hero:on_hurt()".
+unless you override this default calculation in
+\ref lua_api_hero_on_taking_damage "hero:on_taking_damage()".
 
 The default value is \c 1.
 - \c damage (number): Damage inflicted to the hero.
@@ -786,7 +786,7 @@ This event is not called if the hero was protected by his shield,
 or if he currently cannot be hurt for some reason, like when he is already being
 hurt, when he is
 \ref lua_api_hero_set_invincible "temporarily invincible",
-or when he is in another
+or when he is in a special
 \ref lua_api_hero_get_state "state"
 like brandishing a treasure.
 
@@ -800,9 +800,9 @@ as follows.
 The hero goes to the state \c "hurt" where is pushed away from the enemy.
 He loses some life depending on the enemy's
 \ref lua_api_enemy_get_damage "damage" property,
-on the hero's
+and on the hero's
 \ref lua_api_game_get_ability "tunic"
-and on \ref lua_api_hero_on_hurt "hero:on_hurt()" if defined.
+and on \ref lua_api_hero_on_taking_damage "hero:on_taking_damage()" if defined.
 Then, he recovers and his sprites blink for a while.
 During this short period, he is temporarily invincible.
 - \c hero (\ref lua_api_hero "hero"): The hero being attacked.

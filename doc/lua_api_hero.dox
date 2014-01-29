@@ -133,6 +133,65 @@ The initial behavior is restored: the hero will now get
 back to where he was just before falling, instead going to of a memorized
 position.
 
+\subsection lua_api_hero_is_invincible hero:is_invincible()
+
+Returns whether the hero is currently invincible.
+
+The hero is temporarily invincible after being hurt or
+after you called
+\ref lua_api_hero_set_invincible "hero:set_invincible()".
+In this situation,
+\ref lua_api_enemy "enemies"
+cannot attack the hero,
+but you can still hurt him manually with
+\ref lua_api_hero_start_hurt "hero:start_hurt()".
+- Return value (boolean): \c true if the hero is currently invincible.
+
+\subsection lua_api_hero_set_invincible hero:set_invincible([invincible, [duration]])
+
+Sets or unsets the hero temporarily invincible.
+
+When the hero is invincible,
+\ref lua_api_enemy "enemies"
+cannot attack him,
+but you can still hurt him manually with
+\ref lua_api_hero_start_hurt "hero:start_hurt()".
+- \c invincible (boolean, optional): \c true to make the hero invincible,
+  or \c false to stop the invincibility.
+  No value means \c true.
+- \c duration (number, optional): Duration of the invincibility in milliseconds.
+  Only possible when you set \c invincible to \c true.
+  No value means unlimited.
+
+\subsection lua_api_hero_is_blinking hero:is_blinking()
+
+Returns whether the hero's sprites are currently blinking.
+
+The sprites are temporarily blinking after the hero was hurt or
+after you called
+\ref lua_api_hero_set_blinking "hero:set_blinking()".
+- Return value (boolean): \c true if the hero's sprite are currently blinking.
+
+\remark The visibility property of the hero is independent from this.
+  Even when the sprites are blinking, the result of
+  \ref lua_api_entity_is_visible "hero:is_visible()"
+  is unchanged.
+
+\subsection lua_api_hero_set_blinking hero:set_blinking([blinking, [duration]])
+
+Makes the hero's sprites temporarily blink or stop blinking.
+
+This only affects displaying: see
+\ref lua_api_hero_set_invincible "hero:set_invincible()"
+if you also want to make the hero invincible.
+- \c blinking (boolean, optional): \c true to to make the sprites blink,
+  or \c false to stop the blinking.
+  No value means \c true.
+- \c duration (number, optional): Duration in milliseconds before stopping
+  the blinking.
+  Only possible when you set \c blinking to \c true.
+  No value means unlimited.
+
 \subsection lua_api_hero_get_state hero:get_state()
 
 Returns the name of the current built-in state of the hero.
@@ -298,7 +357,7 @@ he cannot be hurt (for example when he is brandishing a treasure).
 \subsection lua_api_hero_start_hurt hero:start_hurt([source_entity, [source_sprite]], life_points)
 
 Same as
-\rev lua_api_hero_start_hurt "hero:start_hurt(source_x, source_y, life_points)",
+\ref lua_api_hero_start_hurt "hero:start_hurt(source_x, source_y, life_points)",
 but specifying the source coordinates as an optional entity
 and possibly its sprite.
 - \c source_entity (\ref lua_api_entity "map entity", optional):

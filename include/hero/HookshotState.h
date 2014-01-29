@@ -46,7 +46,7 @@ class Hero::HookshotState: public Hero::State {
     bool is_sensor_obstacle(const Sensor& sensor) const;
     bool is_jumper_obstacle(const Jumper& jumper) const;
     bool can_avoid_switch() const;
-    bool can_be_hurt(Enemy* attacker) const;
+    bool can_be_hurt(MapEntity* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
     void notify_obstacle_reached();
 

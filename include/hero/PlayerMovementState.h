@@ -50,7 +50,7 @@ class Hero::PlayerMovementState: public Hero::State {
     void notify_movement_changed();
     void notify_position_changed();
     void notify_layer_changed();
-    bool can_be_hurt(Enemy* attacker) const;
+    bool can_be_hurt(MapEntity* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
     bool can_take_jumper() const;
     void notify_jumper_activated(Jumper& jumper);

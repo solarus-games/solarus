@@ -203,7 +203,7 @@ class Hero: public MapEntity {
         EnemyReaction::Reaction& result,
         bool killed);
     int get_sword_damage_factor() const;
-    bool can_be_hurt(Enemy* attacker);
+    bool can_be_hurt(MapEntity* attacker) const;
     void hurt(MapEntity& source, Sprite* source_sprite, int life_points);
     void hurt(const Rectangle& source_xy, int life_points);
     void hurt(int life_points);

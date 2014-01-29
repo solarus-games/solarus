@@ -42,7 +42,7 @@ class Hero::PushingState: public Hero::State {
     void notify_obstacle_reached();
     void notify_position_changed();
 
-    bool can_be_hurt(Enemy* attacker) const;
+    bool can_be_hurt(MapEntity* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
     bool is_shallow_water_obstacle() const;
     bool is_deep_water_obstacle() const;

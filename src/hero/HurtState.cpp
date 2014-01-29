@@ -198,7 +198,7 @@ bool Hero::HurtState::is_separator_obstacle(const Separator& separator) const {
  * (or NULL if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::HurtState::can_be_hurt(Enemy* attacker) const {
+bool Hero::HurtState::can_be_hurt(MapEntity* attacker) const {
   return false;
 }
 

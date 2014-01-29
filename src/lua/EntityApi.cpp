@@ -1544,19 +1544,21 @@ int LuaContext::hero_api_start_running(lua_State* l) {
 int LuaContext::hero_api_start_hurt(lua_State* l) {
 
   // There are three possible prototypes:
-  // - hero:start_hurt(life_points)
+  // - hero:start_hurt(damage)
   // - hero:start_hurt(source_x, source_y, damage)
   // - hero:start_hurt(source_entity, [source_sprite], damage)
   Hero& hero = check_hero(l, 1);
 
   int life_points = 0;
   if (lua_gettop(l) <= 2) {
+    // hero:start_hurt(damage)
     int damage = luaL_checkint(l, 2);
     if (hero.can_be_hurt(NULL)) {
       hero.hurt(life_points);
     }
   }
   else if (lua_isnumber(l, 2)) {
+    // hero:start_hurt(source_x, source_y, damage)
     int source_x = luaL_checkint(l, 2);
     int source_y = luaL_checkint(l, 3);
     int damage = luaL_checkint(l, 4);
@@ -1565,6 +1567,7 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
     }
   }
   else {
+    // hero:start_hurt(source_entity, [source_sprite], damage)
     MapEntity& source_entity = check_entity(l, 2);
     Sprite* source_sprite = NULL;
     int index = 3;

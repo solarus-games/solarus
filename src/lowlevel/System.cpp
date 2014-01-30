@@ -45,7 +45,7 @@ void System::initialize(const CommandLine& args) {
 
 #ifdef SOLARUS_USE_APPLE_POOL
   // initialize pool if any
-  initPool();
+  init_pool();
 #endif
 
   // initialize SDL
@@ -89,7 +89,7 @@ void System::quit() {
 
   SDL_Quit();
 #ifdef SOLARUS_USE_APPLE_POOL
-  drainPool();
+  drain_pool();
 #endif
 }
 

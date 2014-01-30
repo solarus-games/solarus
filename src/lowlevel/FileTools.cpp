@@ -522,7 +522,7 @@ const std::string FileTools::get_full_quest_write_dir() {
 std::string FileTools::get_base_write_dir() {
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
-  return std::string(getUserApplicationSupportDirectory());
+  return std::string(get_user_application_support_directory());
 #else
   return std::string(PHYSFS_getUserDir());
 #endif

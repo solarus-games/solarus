@@ -31,7 +31,7 @@ NSAutoreleasePool* solarus_pool = nil;
  *
  * Allow to use the Cocoa's reference-counted memory management system on Cocoa objects.
  */
-void initPool()
+void init_pool()
 {
     if (solarus_pool == nil)
         solarus_pool = [[NSAutoreleasePool alloc] init];
@@ -40,7 +40,7 @@ void initPool()
 /**
  * @brief Drain the NSAutoreleasePool object.
  */
-void drainPool()
+void drain_pool()
 {
     if (solarus_pool)
         [solarus_pool drain];
@@ -54,7 +54,7 @@ void drainPool()
  *
  * @return The Application Support folder from the User Domain.
  */
-const char* getUserApplicationSupportDirectory()
+const char* get_user_application_support_directory()
 {
 #if defined(SOLARUS_OSX) && __MAC_OS_X_VERSION_MIN_REQUIRED  >= MAC_OS_X_VERSION_10_6 \
  || defined(SOLARUS_IOS) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_4_0

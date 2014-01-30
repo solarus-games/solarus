@@ -203,6 +203,8 @@ class Hero: public MapEntity {
         EnemyReaction::Reaction& result,
         bool killed);
     int get_sword_damage_factor() const;
+    bool is_invincible() const;
+    void set_invincible(bool invincible, uint32_t duration);
     bool can_be_hurt(MapEntity* attacker) const;
     void hurt(MapEntity& source, Sprite* source_sprite, int life_points);
     void hurt(const Rectangle& source_xy, int life_points);
@@ -311,16 +313,20 @@ class Hero: public MapEntity {
 
     // life
     void check_gameover();
+    void update_invincibility();
 
+    // state
     State* state;                   /**< the current internal state */
     std::list<State*> old_states;   /**< previous state objects to delete as soon as possible */
+    bool invincible;                /**< Whether the hero is temporarily invincible. */
+    uint32_t end_invincible_date;   /**< When stopping the invincibility (0 means infinite). */
 
     // sprites
     HeroSprites* sprites;           /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // position
-    int normal_walking_speed;      /**< speed when normally walking */
-    int walking_speed;             /**< current walking speed (possibly changed by the ground) */
+    int normal_walking_speed;       /**< speed when normally walking */
+    int walking_speed;              /**< current walking speed (possibly changed by the ground) */
 
     // state specific
     Teletransporter* delayed_teletransporter;   /**< a teletransporter that will be activated when the hero finishes

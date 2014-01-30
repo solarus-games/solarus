@@ -72,6 +72,8 @@ namespace solarus {
 Hero::Hero(Equipment& equipment):
   MapEntity("hero", 0, LAYER_LOW, 0, 0, 16, 16),
   state(NULL),
+  invincible(false),
+  end_invincible_date(0),
   normal_walking_speed(88),
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
@@ -216,6 +218,10 @@ void Hero::set_suspended(bool suspended) {
 
     uint32_t diff = System::now() - get_when_suspended();
     next_ground_date += diff;
+
+    if (end_invincible_date != 0) {
+      end_invincible_date += diff;
+    }
   }
 
   sprites->set_suspended(suspended);
@@ -225,10 +231,11 @@ void Hero::set_suspended(bool suspended) {
 /**
  * \brief Updates the hero's position, movement and animation.
  *
- * This function is called repetedly by the game loop.
+ * This function is called repeatedly by the game loop.
  */
 void Hero::update() {
 
+  update_invincibility();
   update_movement();
   sprites->update();
 
@@ -2011,13 +2018,47 @@ int Hero::get_sword_damage_factor() const {
 }
 
 /**
+ * \brief Returns whether the hero is currently invincible.
+ * \return \c true if the hero is currently invincible.
+ */
+bool Hero::is_invincible() const {
+  return invincible;
+}
+
+/**
+ * \brief Sets the hero temporarily invincible or stops the invincibility.
+ * \param invincible \c true to make the hero invincible, \c false to stop.
+ * \param duration How long to stay invincible in milliseconds.
+ * 0 means infinite. No effect if \c invincible is \c false.
+ */
+void Hero::set_invincible(bool invincible, uint32_t duration) {
+
+  this->invincible = invincible;
+  this->end_invincible_date = 0;
+  if (invincible) {
+    this->end_invincible_date = System::now() + duration;
+  }
+}
+
+/**
+ * \brief Checks whether the invincibility should end.
+ */
+void Hero::update_invincibility() {
+
+  if (is_invincible()
+      && System::now() >= end_invincible_date) {
+    set_invincible(false, 0);
+  }
+}
+
+/**
  * \brief Returns whether the hero can be hurt currently.
- * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
- * \return true if the hero can be hurt
+ * \param attacker An attacker that is trying to hurt the hero
+ * (or NULL if the source of the attack is not an entity).
+ * \return \c true if the hero can be hurt.
  */
 bool Hero::can_be_hurt(MapEntity* attacker) const {
-  return !sprites->is_blinking() && state->can_be_hurt(attacker);
+  return !is_invincible() && state->can_be_hurt(attacker);
 }
 
 /**

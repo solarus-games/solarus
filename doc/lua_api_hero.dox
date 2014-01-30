@@ -354,10 +354,10 @@ he cannot be hurt (for example when he is brandishing a treasure).
   hurting animations and sounds of the hero, see \ref lua_api_game_remove_life
   "game:remove_life()".
 
-\subsection lua_api_hero_start_hurt hero:start_hurt([source_entity, [source_sprite]], life_points)
+\subsection lua_api_hero_start_hurt hero:start_hurt([source_entity, [source_sprite]], damage)
 
 Same as
-\ref lua_api_hero_start_hurt "hero:start_hurt(source_x, source_y, life_points)",
+\ref lua_api_hero_start_hurt "hero:start_hurt(source_x, source_y, damage)",
 but specifying the source coordinates as an optional entity
 and possibly its sprite.
 - \c source_entity (\ref lua_api_entity "map entity", optional):
@@ -370,7 +370,7 @@ and possibly its sprite.
   If you set this value, the hero will be pushed away from the origin of this
   sprite instead of from the origin of the source entity.
   Most of the time, you don't need to set this parameter.
-- \c life_points: Base number of life points to remove (possibly \c 0).
+- \c damage: Base number of life points to remove (possibly \c 0).
   This number will be divided by the
   \ref lua_api_game_get_ability "tunic" level of the player,
   unless you override this default calculation in

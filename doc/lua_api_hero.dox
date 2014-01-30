@@ -419,7 +419,7 @@ The life lost is the damage inflicted by the attacker divided by the
 \ref lua_api_game_get_ability "tunic level" of the player, with a minimum of
 \c 1 (unless the initial damage was already \c 0).
 
-You can define this even if you need to change how the hero takes damage,
+You can define this event if you need to change how the hero takes damage,
 for example if you want the
 \ref lua_api_game_get_ability "shield level"
 to give better resistance to injuries.

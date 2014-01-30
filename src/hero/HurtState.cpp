@@ -67,7 +67,7 @@ void Hero::HurtState::start(const State* previous_state) {
   Sound::play("hero_hurt");
 
   get_sprites().set_animation_hurt();
-  get_sprites().blink();
+  get_sprites().blink(2000);
 
   Hero& hero = get_hero();
   if (has_source) {

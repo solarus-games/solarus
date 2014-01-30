@@ -68,6 +68,7 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
   trail_sprite(NULL),
   animation_direction_saved(0),
   when_suspended(0),
+  blinking(false),
   end_blink_date(0),
   walking(false),
   clipping_rectangle(Rectangle()),
@@ -79,6 +80,7 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
  * \brief Destructor.
  */
 HeroSprites::~HeroSprites() {
+
   delete tunic_sprite;
   delete shadow_sprite;
   delete sword_sprite;
@@ -287,25 +289,40 @@ void HeroSprites::stop_displaying_trail() {
 
 /**
  * \brief Makes the hero blink for a while.
+ * \param duration Delay before stopping blinking.
+ * 0 means infinite.
  */
-void HeroSprites::blink() {
-  tunic_sprite->set_blinking(50);
+void HeroSprites::blink(uint32_t duration) {
+
+  const uint32_t blink_delay = 50;
+
+  blinking = true;
+  tunic_sprite->set_blinking(blink_delay);
 
   if (equipment.has_ability(ABILITY_SHIELD)) {
-    shield_sprite->set_blinking(50);
+    shield_sprite->set_blinking(blink_delay);
   }
   if (equipment.has_ability(ABILITY_SWORD)) {
-    sword_sprite->set_blinking(50);
+    sword_sprite->set_blinking(blink_delay);
   }
-  trail_sprite->set_blinking(50);
+  trail_sprite->set_blinking(blink_delay);
 
-  end_blink_date = System::now() + 2000;
+  if (duration == 0) {
+    // No end date.
+    end_blink_date = 0;
+  }
+  else {
+    end_blink_date = System::now() + duration;
+  }
 }
 
 /**
  * \brief Stops making the hero's sprites blink.
  */
 void HeroSprites::stop_blinking() {
+
+  blinking = false;
+  end_blink_date = 0;
 
   tunic_sprite->set_blinking(0);
 
@@ -316,16 +333,14 @@ void HeroSprites::stop_blinking() {
     sword_sprite->set_blinking(0);
   }
   trail_sprite->set_blinking(0);
-
-  end_blink_date = 0;
 }
 
 /**
  * \brief Returns whether the hero's sprites are currently blinking.
- * \return true if the hero's sprites are currently blinking
+ * \return \c true if the hero's sprites are currently blinking.
  */
 bool HeroSprites::is_blinking() const {
-  return tunic_sprite->is_blinking();
+  return blinking;
 }
 
 /**
@@ -532,7 +547,9 @@ void HeroSprites::update() {
   }
 
   // blinking
-  if (tunic_sprite->is_blinking() && System::now() >= end_blink_date) {
+  if (is_blinking()
+      && end_blink_date != 0
+      && System::now() >= end_blink_date) {
     stop_blinking();
   }
 }

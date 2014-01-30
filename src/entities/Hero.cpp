@@ -2094,7 +2094,7 @@ void Hero::start_shallow_water() {
 void Hero::notify_game_over_finished() {
 
   if (is_on_map()) {
-    sprites->blink();
+    sprites->blink(2000);
     start_state_from_ground();
   }
 }

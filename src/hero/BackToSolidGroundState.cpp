@@ -100,7 +100,7 @@ void Hero::BackToSolidGroundState::update() {
     if (end_date == 0) {
       end_date = now + end_delay;
       get_sprites().set_animation_stopped_normal();
-      get_sprites().blink();
+      get_sprites().blink(2000);
 
       if (with_sound) {
         Sound::play("message_end");  // TODO rename this sound.

@@ -155,55 +155,52 @@ class Map: public ExportableToLua {
     void draw_background();
     void draw_foreground();
 
-    static MapLoader map_loader;  /**< the map file parser */
+    static MapLoader map_loader;  /**< The map file parser. */
 
     // map properties
 
-    Game* game;                   /**< the game this map was started in */
-    std::string id;               /**< id of the map */
+    Game* game;                   /**< The game this map was started in. */
+    std::string id;               /**< Id of this map. */
 
-    int width8;                   /**< map width in 8*8 squares (width8 = get_width() / 8) */
-    int height8;                  /**< map height in 8*8 squares (height8 = get_height() / 8) */
+    int width8;                   /**< Map width in 8x8 squares (width8 = get_width() / 8). */
+    int height8;                  /**< Map height in 8x8 squares (height8 = get_height() / 8). */
 
-    std::string tileset_id;       /**< id of the current tileset */
-    Tileset* tileset;             /**< tileset of the map: every tile of this map
-                                   * is extracted from this tileset */
+    std::string tileset_id;       /**< Id of the current tileset. */
+    Tileset* tileset;             /**< Tileset of the map: every tile of this map
+                                   * is extracted from this tileset. */
 
-    std::string music_id;         /**< id of the background music of the map:
-                                   * can be a valid music, Music::none or Music::unchanged */
+    std::string music_id;         /**< Id of the current music of the map:
+                                   * can be a valid music, Music::none or Music::unchanged. */
 
     std::string world;            /**< Name of the context where this map is. When changing context,
                                    * the savegame starting position is set and crystal switches are reset. */
 
     int floor;                    /**< The floor where this map is (possibly NO_FLOOR). */
 
-    Rectangle location;           /**< location of the map in its context: the width and height fields
-                                   * indicate the map size in pixel, and the x and y field indicate the position:
-                                   * - in the outside world: location of the map's top-left corner
-                                   *   relative to the whole world map
-                                   * - in the inside world: location of the map relative to the whole world map
-                                   * - in a dungeon: location of the map's top-left corner relative to the whole floor */
+    Rectangle location;           /**< Location of the map in its context: the width and height fields
+                                   * indicate the map size in pixel, and the x and y field indicate the position.
+                                   * This is used to correctly scroll between adjacent maps. */
 
     // screen
 
-    Camera* camera;               /**< determines the visible area of the map */
-    Surface* visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
+    Camera* camera;               /**< The visible area of the map. */
+    Surface* visible_surface;     /**< Surface where the map is displayed. This is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
-                                   * not to the map */
-    Surface* background_surface;  /**< a surface filled with the background color of the tileset */
-    Surface* foreground_surface;  /**< A surface with black bars, when the map is smaller than the screen. */
+                                   * not to the map. */
+    Surface* background_surface;  /**< A surface filled with the background color of the tileset. */
+    Surface* foreground_surface;  /**< A surface with black bars when the map is smaller than the screen. */
 
     // map state
-    bool loaded;                  /**< true if the loading phase is finished */
-    bool started;                 /**< true if this map is the current map */
-    std::string destination_name; /**< current destination point on the map,
+    bool loaded;                  /**< Whether the loading phase is done. */
+    bool started;                 /**< Whether this map is the current map. */
+    std::string destination_name; /**< Current destination point on the map,
                                    * or "_same" to keep the hero's coordinates,
                                    * or "_side0", "_side1", "_side2" or "_side3"
                                    * to place the hero on a side of the map,
                                    * or an empty string to use the one saved. */
 
-    MapEntities* entities;        /**< the entities on the map */
-    bool suspended;               /**< indicates whether the game is suspended */
+    MapEntities* entities;        /**< The entities on the map. */
+    bool suspended;               /**< Whether the game is suspended. */
 };
 
 /**

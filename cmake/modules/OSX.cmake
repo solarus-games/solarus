@@ -27,7 +27,7 @@ if(NOT SOLARUS_ARCH)
   if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.4.4")
     set(SOLARUS_ARCH "${SOLARUS_ARCH}i386;")
   endif()
-  # Make a 32bit-only build if LuaJit is requested.
+  # Make a 32bit-only build if LuaJit and i386 are requested.
   if(NOT SOLARUS_USE_LUAJIT OR NOT SOLARUS_ARCH MATCHES "i386")
     if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.5")
       set(SOLARUS_ARCH "${SOLARUS_ARCH}x86_64;")

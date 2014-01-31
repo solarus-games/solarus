@@ -50,17 +50,24 @@ else()
   endif()
 
   # Remove the hardcoded additional link on SDL2 path
-  string(REPLACE "-framework Cocoa" "" SDL2_FRAMEWORK "${SDL2_LIBRARY}") 
+  string(REPLACE "-framework Cocoa" "" SDL2_FRAMEWORK "${SDL2_LIBRARY}")
 
-  set(SOLARUS_BUNDLE_COPIED_LIBRARIES
-    ${SDL2_FRAMEWORK} 
-    ${SDL2_IMAGE_LIBRARY} 
-    ${SDL2_TTF_LIBRARY}
-    ${VORBISFILE_LIBRARY} 
-    ${OGG_LIBRARY} 
-    ${PHYSFS_LIBRARY} 
-    ${MODPLUG_LIBRARY}
-  )
+  # Find libraries to copy into the bundle
+  macro(add_to_copied_libraries library_path)
+    # Assuming that static libraries never match ".framework" or ".dylib" strings
+    if(${library_path} MATCHES ".framework" OR ${library_path} MATCHES ".dylib")
+      set(SOLARUS_BUNDLE_COPIED_LIBRARIES ${SOLARUS_BUNDLE_COPIED_LIBRARIES} ${library_path})
+    endif()
+  endmacro()
+
+  add_to_copied_libraries(${SDL2_FRAMEWORK})
+  add_to_copied_libraries(${SDL2_IMAGE_LIBRARY})
+  add_to_copied_libraries(${SDL2_TTF_LIBRARY})
+  add_to_copied_libraries(${VORBISFILE_LIBRARY})
+  add_to_copied_libraries(${OGG_LIBRARY})
+  add_to_copied_libraries(${PHYSFS_LIBRARY})
+  add_to_copied_libraries(${MODPLUG_LIBRARY})
+  add_to_copied_libraries(${LUA_LIBRARY})
 endif()
 
 # Default files if not specified

@@ -123,7 +123,6 @@ if (OPENGL_FOUND)
   target_link_libraries(solarus ${OPENGL_gl_LIBRARY})
 endif()
 target_link_libraries(solarus
-  ${OPENGL_gl_LIBRARY}
   ${SDL2_LIBRARY}
   ${SDL2_IMAGE_LIBRARY}
   ${SDL2_TTF_LIBRARY}

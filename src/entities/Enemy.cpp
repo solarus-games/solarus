@@ -1023,7 +1023,9 @@ void Enemy::notify_collision_with_enemy(Enemy& other,
  */
 void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
 
-  if (!is_immobilized() && can_attack && hero.can_be_hurt(this)) {
+  if (!is_immobilized()
+      && can_attack
+      && hero.can_be_hurt(this)) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0
@@ -1050,7 +1052,14 @@ void Enemy::attack_hero(Hero& hero, Sprite* this_sprite) {
       attack_stopped_by_hero_shield();
     }
     else {
-      hero.hurt(*this, this_sprite, damage_on_hero);
+      // Let the enemy script handle this if it wants.
+      const bool handled = get_lua_context().enemy_on_attacking_hero(
+          *this, hero, this_sprite);
+      if (!handled) {
+        // Scripts did not customize the attack:
+        // do the built-in hurt state of the hero.
+        hero.hurt(*this, this_sprite, damage_on_hero);
+      }
     }
   }
 }

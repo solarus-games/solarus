@@ -47,7 +47,7 @@ class HeroSprites {
     void notify_map_started();
     void notify_tileset_changed();
 
-    void blink();
+    void blink(uint32_t duration);
     void stop_blinking();
     bool is_blinking() const;
     bool is_walking() const;
@@ -139,7 +139,10 @@ class HeroSprites {
     int animation_direction_saved;     /**< direction of the hero's sprites, saved before
                                          * showing a sprite animation having only one direction */
     uint32_t when_suspended;           /**< date when the game was suspended */
-    uint32_t end_blink_date;           /**< when the hero's sprites stop blinking */
+
+    bool blinking;                     /**< Whether the hero's sprites are blinking. */
+    uint32_t end_blink_date;           /**< When the hero's sprites stop blinking.
+                                        * 0 means infinite. */
 
     bool walking;                      /**< stopped or walking? */
 

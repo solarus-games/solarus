@@ -48,7 +48,7 @@ class Hero::PullingState: public Hero::State {
     bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
     bool is_separator_obstacle(const Separator& separator) const;
 
-    bool can_be_hurt(Enemy* attacker) const;
+    bool can_be_hurt(MapEntity* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
 
   private:

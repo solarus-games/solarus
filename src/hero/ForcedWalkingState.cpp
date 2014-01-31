@@ -183,7 +183,7 @@ bool Hero::ForcedWalkingState::can_avoid_switch() const {
  * (or NULL if the source of the attack is not an enemy).
  * \return true if the hero can be hurt in this state
  */
-bool Hero::ForcedWalkingState::can_be_hurt(Enemy* attacker) const {
+bool Hero::ForcedWalkingState::can_be_hurt(MapEntity* attacker) const {
   return false;
 }
 

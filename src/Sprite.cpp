@@ -563,7 +563,7 @@ bool Sprite::is_blinking() const {
 
 /**
  * \brief Sets the blink delay of this sprite.
- * \param blink_delay blink delay of the sprite in milliseconds,
+ * \param blink_delay Blink delay of the sprite in milliseconds,
  * or zero to stop blinking.
  */
 void Sprite::set_blinking(uint32_t blink_delay) {

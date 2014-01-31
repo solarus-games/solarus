@@ -72,6 +72,8 @@ namespace solarus {
 Hero::Hero(Equipment& equipment):
   MapEntity("hero", 0, LAYER_LOW, 0, 0, 16, 16),
   state(NULL),
+  invincible(false),
+  end_invincible_date(0),
   normal_walking_speed(88),
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
@@ -216,6 +218,10 @@ void Hero::set_suspended(bool suspended) {
 
     uint32_t diff = System::now() - get_when_suspended();
     next_ground_date += diff;
+
+    if (end_invincible_date != 0) {
+      end_invincible_date += diff;
+    }
   }
 
   sprites->set_suspended(suspended);
@@ -225,10 +231,11 @@ void Hero::set_suspended(bool suspended) {
 /**
  * \brief Updates the hero's position, movement and animation.
  *
- * This function is called repetedly by the game loop.
+ * This function is called repeatedly by the game loop.
  */
 void Hero::update() {
 
+  update_invincibility();
   update_movement();
   sprites->update();
 
@@ -2011,17 +2018,51 @@ int Hero::get_sword_damage_factor() const {
 }
 
 /**
- * \brief Returns whether the hero can be hurt currently.
- * \param attacker an attacker that is trying to hurt the hero
- * (or NULL if the source of the attack is not an enemy)
- * \return true if the hero can be hurt
+ * \brief Returns whether the hero is currently invincible.
+ * \return \c true if the hero is currently invincible.
  */
-bool Hero::can_be_hurt(Enemy* attacker) {
-  return state->can_be_hurt(attacker);
+bool Hero::is_invincible() const {
+  return invincible;
 }
 
 /**
- * \brief Hurts the hero if possible, an entity being the source of the attack.
+ * \brief Sets the hero temporarily invincible or stops the invincibility.
+ * \param invincible \c true to make the hero invincible, \c false to stop.
+ * \param duration How long to stay invincible in milliseconds.
+ * 0 means infinite. No effect if \c invincible is \c false.
+ */
+void Hero::set_invincible(bool invincible, uint32_t duration) {
+
+  this->invincible = invincible;
+  this->end_invincible_date = 0;
+  if (invincible) {
+    this->end_invincible_date = System::now() + duration;
+  }
+}
+
+/**
+ * \brief Checks whether the invincibility should end.
+ */
+void Hero::update_invincibility() {
+
+  if (is_invincible()
+      && System::now() >= end_invincible_date) {
+    set_invincible(false, 0);
+  }
+}
+
+/**
+ * \brief Returns whether the hero can be hurt currently.
+ * \param attacker An attacker that is trying to hurt the hero
+ * (or NULL if the source of the attack is not an entity).
+ * \return \c true if the hero can be hurt.
+ */
+bool Hero::can_be_hurt(MapEntity* attacker) const {
+  return !is_invincible() && state->can_be_hurt(attacker);
+}
+
+/**
+ * \brief Hurts the hero, an entity being the source of the attack.
  * \param source An entity that hurts the hero (usually an enemy).
  * \param source_sprite Sprite of the source entity that is hurting the hero.
  * \param damage Number of life points to remove
@@ -2029,57 +2070,33 @@ bool Hero::can_be_hurt(Enemy* attacker) {
  */
 void Hero::hurt(MapEntity& source, Sprite* source_sprite, int damage) {
 
-  Enemy* enemy = NULL;
-  if (source.get_type() == ENTITY_ENEMY) {
-    // TODO make state->can_be_hurt(MapEntity*)
-    enemy = static_cast<Enemy*>(&source);
+  Rectangle source_xy = source.get_xy();
+  if (source_sprite != NULL) {
+    // Add the offset of the sprite if any.
+    source_xy.add_xy(source_sprite->get_xy());
   }
-
-  if (!sprites->is_blinking() && state->can_be_hurt(enemy)) {
-
-    bool handled = false;
-    if (enemy != NULL) {
-      // Let the enemy script handle this if it wants.
-      handled = get_lua_context().enemy_on_attacking_hero(
-          *enemy, *this, source_sprite);
-    }
-
-    if (!handled) {
-      // Scripts did not customize the attack:
-      // do the built-in hurt state of the hero.
-      Rectangle source_xy = source.get_xy();
-      if (source_sprite != NULL) {
-        // Add the offset of the sprite if any.
-        source_xy.add_xy(source_sprite->get_xy());
-      }
-      set_state(new HurtState(*this, &source_xy, damage));
-    }
-  }
+  set_state(new HurtState(*this, &source_xy, damage));
 }
 
 /**
- * \brief Hurts the hero if possible, a point being the source of the attack.
+ * \brief Hurts the hero, a point being the source of the attack.
  * \param source_xy Coordinates of whatever hurts the hero.
  * \param damage Number of life points to remove
  * (this number may be reduced later by the tunic on by hero:on_taking_damage()).
  */
 void Hero::hurt(const Rectangle& source_xy, int damage) {
 
-  if (!sprites->is_blinking() && state->can_be_hurt(NULL)) {
-    set_state(new HurtState(*this, &source_xy, damage));
-  }
+  set_state(new HurtState(*this, &source_xy, damage));
 }
 
 /**
- * \brief Hurts the hero if possible, with no located source of the attack.
+ * \brief Hurts the hero, with no located source of the attack.
  * \param damage Number of life points to remove
  * (this number may be reduced later by the tunic on by hero:on_taking_damage()).
  */
 void Hero::hurt(int damage) {
 
-  if (!sprites->is_blinking() && state->can_be_hurt(NULL)) {
-    set_state(new HurtState(*this, NULL, damage));
-  }
+  set_state(new HurtState(*this, NULL, damage));
 }
 
 /**
@@ -2118,7 +2135,7 @@ void Hero::start_shallow_water() {
 void Hero::notify_game_over_finished() {
 
   if (is_on_map()) {
-    sprites->blink();
+    sprites->blink(2000);
     start_state_from_ground();
   }
 }

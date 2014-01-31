@@ -33,6 +33,7 @@
 #include "entities/CustomEntity.h"
 #include "entities/MapEntities.h"
 #include "entities/Tileset.h"
+#include "hero/HeroSprites.h"
 #include "movements/Movement.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Geometry.h"
@@ -184,6 +185,10 @@ void LuaContext::register_entity_module() {
       { "set_walking_speed", hero_api_set_walking_speed },
       { "save_solid_ground", hero_api_save_solid_ground },
       { "reset_solid_ground", hero_api_reset_solid_ground },
+      { "is_blinking", hero_api_is_blinking },
+      { "set_blinking", hero_api_set_blinking },
+      { "is_invincible", hero_api_is_invincible },
+      { "set_invincible", hero_api_set_invincible },
       { "get_state", hero_api_get_state },
       { "freeze", hero_api_freeze },
       { "unfreeze", hero_api_unfreeze },
@@ -1321,6 +1326,81 @@ int LuaContext::hero_api_reset_solid_ground(lua_State* l) {
 }
 
 /**
+ * \brief Implementation of hero:is_blinking().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_is_blinking(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  lua_pushboolean(l, hero.get_sprites().is_blinking());
+  return 1;
+}
+
+/**
+ * \brief Implementation of hero:set_blinking().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_blinking(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  bool blinking = true;
+  uint32_t duration = 0;
+  if (lua_gettop(l) >= 2) {
+    blinking = lua_toboolean(l, 2);
+    if (lua_gettop(l) >= 3) {
+      duration = luaL_checkint(l, 3);
+    }
+  }
+
+  if (blinking) {
+    hero.get_sprites().blink(duration);
+  }
+  else {
+    hero.get_sprites().stop_blinking();
+  }
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of hero:is_invincible().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_is_invincible(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  lua_pushboolean(l, hero.is_invincible());
+  return 1;
+}
+
+/**
+ * \brief Implementation of hero:set_invincible().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_invincible(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  bool invincible = true;
+  uint32_t duration = 0;
+  if (lua_gettop(l) >= 2) {
+    invincible = lua_toboolean(l, 2);
+    if (lua_gettop(l) >= 3) {
+      duration = luaL_checkint(l, 3);
+    }
+  }
+
+  hero.set_invincible(invincible, duration);
+
+  return 0;
+}
+
+/**
  * \brief Implementation of hero:get_state().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -1544,23 +1624,25 @@ int LuaContext::hero_api_start_running(lua_State* l) {
 int LuaContext::hero_api_start_hurt(lua_State* l) {
 
   // There are three possible prototypes:
-  // - hero:start_hurt(life_points)
+  // - hero:start_hurt(damage)
   // - hero:start_hurt(source_x, source_y, damage)
   // - hero:start_hurt(source_entity, [source_sprite], damage)
   Hero& hero = check_hero(l, 1);
 
-  int life_points = 0;
   if (lua_gettop(l) <= 2) {
+    // hero:start_hurt(damage)
     int damage = luaL_checkint(l, 2);
-    hero.hurt(life_points);
+    hero.hurt(damage);
   }
   else if (lua_isnumber(l, 2)) {
+    // hero:start_hurt(source_x, source_y, damage)
     int source_x = luaL_checkint(l, 2);
     int source_y = luaL_checkint(l, 3);
     int damage = luaL_checkint(l, 4);
     hero.hurt(Rectangle(source_x, source_y), damage);
   }
   else {
+    // hero:start_hurt(source_entity, [source_sprite], damage)
     MapEntity& source_entity = check_entity(l, 2);
     Sprite* source_sprite = NULL;
     int index = 3;

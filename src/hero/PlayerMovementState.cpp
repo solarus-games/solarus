@@ -272,7 +272,7 @@ void Hero::PlayerMovementState::notify_layer_changed() {
  * \param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
-bool Hero::PlayerMovementState::can_be_hurt(Enemy* attacker) const {
+bool Hero::PlayerMovementState::can_be_hurt(MapEntity* attacker) const {
   return true;
 }
 

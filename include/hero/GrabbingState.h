@@ -34,7 +34,7 @@ class Hero::GrabbingState: public Hero::State {
     void start(const State* previous_state);
     void update();
     bool is_grabbing_or_pulling() const;
-    bool can_be_hurt(Enemy* attacker) const;
+    bool can_be_hurt(MapEntity* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
 
 };

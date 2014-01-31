@@ -66,10 +66,12 @@ void Hero::HurtState::start(const State* previous_state) {
 
   Sound::play("hero_hurt");
 
-  get_sprites().set_animation_hurt();
-  get_sprites().blink();
-
   Hero& hero = get_hero();
+  const uint32_t invincibility_duration = 2000;
+  hero.set_invincible(true, invincibility_duration);
+  get_sprites().set_animation_hurt();
+  get_sprites().blink(invincibility_duration);
+
   if (has_source) {
     double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(),
         hero.get_x(), hero.get_y());
@@ -198,7 +200,7 @@ bool Hero::HurtState::is_separator_obstacle(const Separator& separator) const {
  * (or NULL if the source of the attack is not an enemy)
  * \return true if the hero can be hurt in this state
  */
-bool Hero::HurtState::can_be_hurt(Enemy* attacker) const {
+bool Hero::HurtState::can_be_hurt(MapEntity* attacker) const {
   return false;
 }
 

@@ -43,7 +43,7 @@ class Hero::HurtState: public Hero::State {
     bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
     bool is_sensor_obstacle(const Sensor& sensor) const;
     bool is_separator_obstacle(const Separator& separator) const;
-    bool can_be_hurt(Enemy* attacker) const;
+    bool can_be_hurt(MapEntity* attacker) const;
     bool can_avoid_switch() const;
     bool can_avoid_ice() const;
 

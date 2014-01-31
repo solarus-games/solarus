@@ -58,7 +58,7 @@ class Hero::JumpingState: public Hero::State {
     bool can_avoid_conveyor_belt() const;
     bool can_avoid_sensor() const;
     bool can_avoid_switch() const;
-    bool can_be_hurt(Enemy* attacker) const;
+    bool can_be_hurt(MapEntity* attacker) const;
     CarriedItem* get_carried_item() const;
     CarriedItem::Behavior get_previous_carried_item_behavior() const;
 

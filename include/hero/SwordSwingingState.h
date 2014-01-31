@@ -35,7 +35,7 @@ class Hero::SwordSwingingState: public Hero::State {
     void stop(const State* next_state);
     void update();
     bool can_start_sword() const;
-    bool can_be_hurt(Enemy* attacker) const;
+    bool can_be_hurt(MapEntity* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
     bool can_use_shield() const;
     bool can_sword_hit_crystal() const;

@@ -133,6 +133,65 @@ The initial behavior is restored: the hero will now get
 back to where he was just before falling, instead going to of a memorized
 position.
 
+\subsection lua_api_hero_is_invincible hero:is_invincible()
+
+Returns whether the hero is currently invincible.
+
+The hero is temporarily invincible after being hurt or
+after you called
+\ref lua_api_hero_set_invincible "hero:set_invincible()".
+In this situation,
+\ref lua_api_enemy "enemies"
+cannot attack the hero,
+but you can still hurt him manually with
+\ref lua_api_hero_start_hurt "hero:start_hurt()".
+- Return value (boolean): \c true if the hero is currently invincible.
+
+\subsection lua_api_hero_set_invincible hero:set_invincible([invincible, [duration]])
+
+Sets or unsets the hero temporarily invincible.
+
+When the hero is invincible,
+\ref lua_api_enemy "enemies"
+cannot attack him,
+but you can still hurt him manually with
+\ref lua_api_hero_start_hurt "hero:start_hurt()".
+- \c invincible (boolean, optional): \c true to make the hero invincible,
+  or \c false to stop the invincibility.
+  No value means \c true.
+- \c duration (number, optional): Duration of the invincibility in milliseconds.
+  Only possible when you set \c invincible to \c true.
+  No value means unlimited.
+
+\subsection lua_api_hero_is_blinking hero:is_blinking()
+
+Returns whether the hero's sprites are currently blinking.
+
+The sprites are temporarily blinking after the hero was hurt or
+after you called
+\ref lua_api_hero_set_blinking "hero:set_blinking()".
+- Return value (boolean): \c true if the hero's sprite are currently blinking.
+
+\remark The visibility property of the hero is independent from this.
+  Even when the sprites are blinking, the result of
+  \ref lua_api_entity_is_visible "hero:is_visible()"
+  is unchanged.
+
+\subsection lua_api_hero_set_blinking hero:set_blinking([blinking, [duration]])
+
+Makes the hero's sprites temporarily blink or stop blinking.
+
+This only affects displaying: see
+\ref lua_api_hero_set_invincible "hero:set_invincible()"
+if you also want to make the hero invincible.
+- \c blinking (boolean, optional): \c true to to make the sprites blink,
+  or \c false to stop the blinking.
+  No value means \c true.
+- \c duration (number, optional): Duration in milliseconds before stopping
+  the blinking.
+  Only possible when you set \c blinking to \c true.
+  No value means unlimited.
+
 \subsection lua_api_hero_get_state hero:get_state()
 
 Returns the name of the current built-in state of the hero.
@@ -271,17 +330,20 @@ Makes the hero run.
 
 \subsection lua_api_hero_start_hurt hero:start_hurt(source_x, source_y, damage)
 
-Hurts the hero if possible, exactly like when he is touched by an
+Hurts the hero, exactly like when he is touched by an
 \ref lua_api_enemy "enemy".
 The hurting animations and sounds of the hero are played.
 
-This method has no effect if the hero is temporarily invincible
-(because he was already hurt recently) or if the hero is in a state where
+This method hurts the hero even if enemies cannot,
+including when the hero is temporarily
+\ref lua_api_hero_is_invincible "invincible"
+(because he was already hurt recently)
+or when the hero is in a state where
 he cannot be hurt (for example when he is brandishing a treasure).
-- \c source_x (number): X coordinate of whatever hurts the hero. Used to push the hero
-  away from that source.
-- \c source_y (number): Y coordinate of whatever hurts the hero. Used to push the hero
-  away from that source.
+- \c source_x (number): X coordinate of whatever hurts the hero.
+  Used to push the hero away from that source.
+- \c source_y (number): Y coordinate of whatever hurts the hero.
+  Used to push the hero away from that source.
 - \c damage (number): Base number of life points to remove (possibly \c 0).
   This number will be divided by the
   \ref lua_api_game_get_ability "tunic" level of the player,
@@ -292,11 +354,12 @@ he cannot be hurt (for example when he is brandishing a treasure).
   hurting animations and sounds of the hero, see \ref lua_api_game_remove_life
   "game:remove_life()".
 
-\subsection lua_api_hero_start_hurt hero:start_hurt([source_entity, [source_sprite]], life_points)
+\subsection lua_api_hero_start_hurt hero:start_hurt([source_entity, [source_sprite]], damage)
 
 Same as
-\rev lua_api_hero_start_hurt "hero:start_hurt(source_x, source_y, life_points)",
-but specifying the source as an optional entity and possibly its sprite.
+\ref lua_api_hero_start_hurt "hero:start_hurt(source_x, source_y, damage)",
+but specifying the source coordinates as an optional entity
+and possibly its sprite.
 - \c source_entity (\ref lua_api_entity "map entity", optional):
   Whatever hurts the hero.
   The coordinates of this source entity are used to push the hero away from
@@ -306,7 +369,8 @@ but specifying the source as an optional entity and possibly its sprite.
   the source entity is hurting the hero.
   If you set this value, the hero will be pushed away from the origin of this
   sprite instead of from the origin of the source entity.
-- \c life_points: Base number of life points to remove (possibly \c 0).
+  Most of the time, you don't need to set this parameter.
+- \c damage: Base number of life points to remove (possibly \c 0).
   This number will be divided by the
   \ref lua_api_game_get_ability "tunic" level of the player,
   unless you override this default calculation in
@@ -355,7 +419,7 @@ The life lost is the damage inflicted by the attacker divided by the
 \ref lua_api_game_get_ability "tunic level" of the player, with a minimum of
 \c 1 (unless the initial damage was already \c 0).
 
-You can define this even if you need to change how the hero takes damage,
+You can define this event if you need to change how the hero takes damage,
 for example if you want the
 \ref lua_api_game_get_ability "shield level"
 to give better resistance to injuries.

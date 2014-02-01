@@ -1314,7 +1314,7 @@ void Hero::notify_ground_below_changed() {
     // Hole: fall into the hole or get attracted to it.
     // But wait for the teletransporter opening transition to finish if any.
     if (!suspended
-        && state->can_avoid_hole()) {
+        && !state->can_avoid_hole()) {
       start_hole();
     }
     break;

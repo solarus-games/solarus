@@ -50,6 +50,9 @@ SpriteAnimation::SpriteAnimation(
     // However, sprite animation sets are already cached so the gain might
     // not be significant.
     src_image = Surface::create(image_file_name);
+    Debug::check_assertion(src_image != NULL,
+        std::string("Cannot load image '" + image_file_name + "'")
+    );
     RefCountable::ref(src_image);
   }
 }

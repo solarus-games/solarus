@@ -22,6 +22,7 @@
 #include "Equipment.h"
 #include "Treasure.h"
 #include "QuestResourceList.h"
+#include "DialogResource.h"
 #include "TransitionFade.h"
 #include "lua/LuaContext.h"
 #include "entities/Hero.h"
@@ -698,6 +699,8 @@ bool Game::is_dialog_enabled() const {
  * \brief Starts to show a dialog.
  *
  * No other dialog should be already running.
+ * If the dialog does not exist, a non-fatal error message is printed
+ * and no dialog is shown.
  *
  * \param dialog_id Id of the dialog to show.
  * \param info_ref Lua ref to an optional info parameter to pass to the
@@ -708,7 +711,12 @@ bool Game::is_dialog_enabled() const {
 void Game::start_dialog(const std::string& dialog_id,
     int info_ref, int callback_ref) {
 
-  dialog_box.open(dialog_id, info_ref, callback_ref);
+  if (!DialogResource::exists(dialog_id)) {
+    Debug::error(std::string("No such dialog: '") + dialog_id + "'");
+  }
+  else {
+    dialog_box.open(dialog_id, info_ref, callback_ref);
+  }
 }
 
 /**

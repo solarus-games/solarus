@@ -44,6 +44,7 @@ Engine changes
 * Don't die if a map has no destination. Show an error and go to 0,0 instead.
 * Don't die if hero:teleport() attempts to go to a non-existing place.
 * Don't die if attempting to start a game without map.
+* Don't die if attempting to start a non-existing dialog.
 
 Data files format changes
 -------------------------

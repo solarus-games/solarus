@@ -31,6 +31,7 @@ namespace solarus {
  */
 Hero::PullingState::PullingState(Hero& hero):
   State(hero, "pulling"),
+  pulled_entity(NULL),
   pulling_movement(NULL) {
 
 }

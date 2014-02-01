@@ -31,7 +31,8 @@ namespace solarus {
  */
 PathFindingMovement::PathFindingMovement(int speed):
   PathMovement("", speed, false, false, true),
-  target(NULL) {
+  target(NULL),
+  next_recomputation_date(0) {
 
 }
 

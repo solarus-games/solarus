@@ -33,7 +33,8 @@ namespace solarus {
 Hero::ConveyorBeltState::ConveyorBeltState(
     Hero& hero, ConveyorBelt& conveyor_belt):
   State(hero, "conveyor belt"),
-  conveyor_belt(conveyor_belt) {
+  conveyor_belt(conveyor_belt),
+  snapping(false) {
 
 }
 

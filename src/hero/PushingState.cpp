@@ -32,6 +32,7 @@ namespace solarus {
  */
 Hero::PushingState::PushingState(Hero& hero):
   State(hero, "pushing"),
+  pushing_direction4(0),
   pushed_entity(NULL),
   pushing_movement(NULL) {
 

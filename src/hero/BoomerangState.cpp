@@ -42,6 +42,7 @@ Hero::BoomerangState::BoomerangState(
     const std::string& tunic_preparing_animation,
     const std::string& sprite_name):
   State(hero, "boomerang"),
+  direction_pressed8(-1),
   max_distance(max_distance),
   speed(speed),
   tunic_preparing_animation(tunic_preparing_animation),

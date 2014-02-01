@@ -42,6 +42,7 @@ CircleMovement::CircleMovement(bool ignore_obstacles):
   current_radius(0),
   wanted_radius(0),
   previous_radius(0),
+  radius_increment(0),
   next_radius_change_date(System::now()),
   radius_change_delay(0),
   duration(0),

@@ -64,7 +64,9 @@ Chest::Chest(
   treasure(treasure),
   open(treasure.is_found()),
   treasure_given(open),
-  treasure_date(0) {
+  treasure_date(0),
+  opening_method(OPENING_BY_INTERACTION),
+  opening_condition_consumed(false) {
 
   // Create the sprite.
   Sprite& sprite = create_sprite(sprite_name);

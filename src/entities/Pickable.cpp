@@ -50,8 +50,14 @@ Pickable::Pickable(
   treasure(treasure),
   given_to_player(false),
   shadow_sprite(NULL),
+  falling_height(FALLING_NONE),
+  will_disappear(false),
   shadow_xy(Rectangle(x, y)),
   appear_date(System::now()),
+  allow_pick_date(0),
+  can_be_picked(true),
+  blink_date(0),
+  disappear_date(0),
   entity_followed(NULL) {
 
 }

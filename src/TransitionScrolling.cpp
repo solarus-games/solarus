@@ -31,6 +31,9 @@ namespace solarus {
  */
 TransitionScrolling::TransitionScrolling(Transition::Direction direction):
   Transition(direction),
+  both_maps_surface(NULL),
+  scrolling_direction(0),
+  next_scroll_date(0),
   dx(0),
   dy(0) {
 

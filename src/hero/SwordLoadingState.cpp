@@ -35,7 +35,9 @@ namespace solarus {
  * \param hero The hero controlled by this state.
  */
 Hero::SwordLoadingState::SwordLoadingState(Hero& hero):
-  PlayerMovementState(hero, "sword loading") {
+  PlayerMovementState(hero, "sword loading"),
+  sword_loaded_date(0),
+  sword_loaded(false) {
 
 }
 

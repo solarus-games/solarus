@@ -158,6 +158,7 @@ bool Npc::is_hero_obstacle(const Hero& hero) const {
  * \return true if this NPC is currently considered as an obstacle by this entity
  */
 bool Npc::is_npc_obstacle(const Npc& npc) const {
+
   // usual NPCs can traverse each other
   return subtype != USUAL_NPC || npc.subtype != USUAL_NPC;
 }
@@ -330,12 +331,15 @@ void Npc::notify_position_changed() {
   if (subtype == USUAL_NPC) {
 
     Sprite& sprite = get_sprite();
-    if (sprite.get_current_animation() != "walking") {
-      sprite.set_current_animation("walking");
-    }
+    if (get_movement() != NULL) {
+      // The NPC is moving.
+      if (sprite.get_current_animation() != "walking") {
+        sprite.set_current_animation("walking");
+      }
 
-    int direction4 = get_movement()->get_displayed_direction4();
-    get_sprite().set_current_direction(direction4);
+      int direction4 = get_movement()->get_displayed_direction4();
+      get_sprite().set_current_direction(direction4);
+    }
 
     if (get_hero().get_facing_entity() == this &&
         get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&

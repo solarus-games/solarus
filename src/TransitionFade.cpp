@@ -176,7 +176,7 @@ void TransitionFade::update() {
 
 /**
  * \brief Draws the transition effect on a surface.
- * \param dst_surface the destination surface
+ * \param dst_surface The destination surface.
  */
 void TransitionFade::draw(Surface& dst_surface) {
 

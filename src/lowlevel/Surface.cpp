@@ -756,8 +756,6 @@ void Surface::render(
     uint8_t opacity,
     const std::vector<SubSurfaceNode*>& subsurfaces) {
 
-  const uint8_t current_opacity = std::min(internal_opacity, opacity);
-
   // Accelerate the internal software surface.
   if (internal_surface != NULL) {
 
@@ -779,6 +777,8 @@ void Surface::render(
       SDL_GetSurfaceAlphaMod(internal_surface, &internal_opacity);
     }
   }
+
+  const uint8_t current_opacity = std::min(internal_opacity, opacity);
 
   // Draw the internal color as background color.
   if (internal_color != NULL) {
@@ -803,7 +803,7 @@ void Surface::render(
     );
   }
 
-  // The surface is renderered. Now draw all subtextures.
+  // The surface is rendered. Now draw all subtextures.
   std::vector<SubSurfaceNode*>::const_iterator it;
   const std::vector<SubSurfaceNode*>::const_iterator end = subsurfaces.end();
   for (it = subsurfaces.begin(); it != end; ++it) {

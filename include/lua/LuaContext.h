@@ -1109,10 +1109,6 @@ class LuaContext {
         lua_contexts;               /**< Mapping to get the encapsulating object
                                      * from the lua_State pointer. */
 
-    static const std::string enemy_attack_names[];
-    static const std::string enemy_hurt_style_names[];
-    static const std::string enemy_obstacle_behavior_names[];
-
 };
 
 }

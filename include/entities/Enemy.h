@@ -189,6 +189,10 @@ class Enemy: public Detector {
     bool is_dying() const;
     void set_treasure(const Treasure& treasure);
 
+    static const std::string attack_names[];
+    static const std::string hurt_style_names[];
+    static const std::string obstacle_behavior_names[];
+
   private:
 
     // creation

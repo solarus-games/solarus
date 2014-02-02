@@ -104,33 +104,6 @@ const std::set<std::string>& get_entity_type_names() {
 
 }
 
-// TODO move this to Enemy
-const std::string LuaContext::enemy_attack_names[] = {
-  "sword",
-  "thrown_item",
-  "explosion",
-  "arrow",
-  "hookshot",
-  "boomerang",
-  "fire",
-  "script",
-  ""  // Sentinel.
-};
-
-const std::string LuaContext::enemy_hurt_style_names[] = {
-  "normal",
-  "monster",
-  "boss",
-  ""  // Sentinel.
-};
-
-const std::string LuaContext::enemy_obstacle_behavior_names[] = {
-  "normal",
-  "flying",
-  "swimming",
-  ""  // Sentinel.
-};
-
 /**
  * \brief Initializes the map entity features provided to Lua.
  */
@@ -3080,7 +3053,7 @@ int LuaContext::enemy_api_get_hurt_style(lua_State* l) {
 
   Enemy::HurtStyle hurt_style = enemy.get_hurt_style();
 
-  push_string(l, enemy_hurt_style_names[hurt_style]);
+  push_string(l, Enemy::hurt_style_names[hurt_style]);
   return 1;
 }
 
@@ -3093,7 +3066,7 @@ int LuaContext::enemy_api_set_hurt_style(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   Enemy::HurtStyle hurt_style = LuaTools::check_enum<Enemy::HurtStyle>(
-      l, 2, enemy_hurt_style_names);
+      l, 2, Enemy::hurt_style_names);
 
   enemy.set_hurt_style(hurt_style);
 
@@ -3169,7 +3142,7 @@ int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
 int LuaContext::enemy_api_get_attack_consequence(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, enemy_attack_names);
+  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, Enemy::attack_names);
 
   const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, NULL);
   if (reaction.type == EnemyReaction::HURT) {
@@ -3191,7 +3164,7 @@ int LuaContext::enemy_api_get_attack_consequence(lua_State* l) {
 int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, enemy_attack_names);
+  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 2, Enemy::attack_names);
 
   if (lua_isnumber(l, 3)) {
     int life_points = luaL_checkint(l, 3);
@@ -3221,7 +3194,7 @@ int LuaContext::enemy_api_get_attack_consequence_sprite(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   Sprite& sprite = check_sprite(l, 2);
-  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, enemy_attack_names);
+  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, Enemy::attack_names);
 
   const EnemyReaction::Reaction& reaction = enemy.get_attack_consequence(attack, &sprite);
   if (reaction.type == EnemyReaction::HURT) {
@@ -3244,7 +3217,7 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   Sprite& sprite = check_sprite(l, 2);
-  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, enemy_attack_names);
+  EnemyAttack attack = LuaTools::check_enum<EnemyAttack>(l, 3, Enemy::attack_names);
 
   if (lua_isnumber(l, 4)) {
     int life_points = luaL_checkint(l, 4);
@@ -3400,7 +3373,7 @@ int LuaContext::enemy_api_get_obstacle_behavior(lua_State* l) {
 
   Enemy::ObstacleBehavior behavior = enemy.get_obstacle_behavior();
 
-  push_string(l, enemy_obstacle_behavior_names[behavior]);
+  push_string(l, Enemy::obstacle_behavior_names[behavior]);
   return 1;
 }
 
@@ -3413,7 +3386,7 @@ int LuaContext::enemy_api_set_obstacle_behavior(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   Enemy::ObstacleBehavior behavior = LuaTools::check_enum<Enemy::ObstacleBehavior>(
-      l, 2, enemy_obstacle_behavior_names);
+      l, 2, Enemy::obstacle_behavior_names);
 
   enemy.set_obstacle_behavior(behavior);
 

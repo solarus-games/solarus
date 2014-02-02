@@ -42,6 +42,32 @@
 
 namespace solarus {
 
+const std::string Enemy::attack_names[] = {
+  "sword",
+  "thrown_item",
+  "explosion",
+  "arrow",
+  "hookshot",
+  "boomerang",
+  "fire",
+  "script",
+  ""  // Sentinel.
+};
+
+const std::string Enemy::hurt_style_names[] = {
+  "normal",
+  "monster",
+  "boss",
+  ""  // Sentinel.
+};
+
+const std::string Enemy::obstacle_behavior_names[] = {
+  "normal",
+  "flying",
+  "swimming",
+  ""  // Sentinel.
+};
+
 /**
  * \brief Creates an enemy.
  * \param game The game.

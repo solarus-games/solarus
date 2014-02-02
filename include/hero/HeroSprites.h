@@ -146,10 +146,10 @@ class HeroSprites {
 
     bool walking;                           /**< stopped or walking? */
 
-    Rectangle clipping_rectangle;      /**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
-                                        * (usually, the whole map is considered and this rectangle's values are all 0) */
+    Rectangle clipping_rectangle;           /**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
+                                             * (usually, the whole map is considered and this rectangle's values are all 0) */
 
-    CarriedItem* lifted_item;          /**< if not NULL, an item to display above the hero */
+    CarriedItem* lifted_item;               /**< if not NULL, an item to display above the hero */
 
 };
 

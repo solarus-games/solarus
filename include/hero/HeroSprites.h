@@ -118,33 +118,33 @@ class HeroSprites {
     void stop_displaying_shield();
     void stop_displaying_trail();
 
-    Hero& hero;                        /**< the hero */
-    Equipment& equipment;              /**< equipment of the player */
+    Hero& hero;                             /**< the hero */
+    Equipment& equipment;                   /**< equipment of the player */
 
-    Sprite* tunic_sprite;              /**< sprite of the current tunic */
-    Sprite* sword_sprite;              /**< current sword sprite */
-    Sprite* sword_stars_sprite;        /**< stars running along the sword when the sword is loading */
-    Sprite* shield_sprite;             /**< current shield sprite */
-    Sprite* shadow_sprite;             /**< shadow of the hero, only in specific states (most of the time
-                                        * the shadow is with the tunic sprite) */
-    Sprite* ground_sprite;             /**< ground displayed under the hero (e.g. grass or shallow water) */
-    Sprite* trail_sprite;              /**< trail of dust that the hero lets behind him (e.g. when running) */
+    Sprite* tunic_sprite;                   /**< sprite of the current tunic */
+    Sprite* sword_sprite;                   /**< current sword sprite */
+    Sprite* sword_stars_sprite;             /**< stars running along the sword when the sword is loading */
+    Sprite* shield_sprite;                  /**< current shield sprite */
+    Sprite* shadow_sprite;                  /**< shadow of the hero, only in specific states (most of the time
+                                             * the shadow is with the tunic sprite) */
+    Sprite* ground_sprite;                  /**< ground displayed under the hero (e.g. grass or shallow water) */
+    Sprite* trail_sprite;                   /**< trail of dust that the hero lets behind him (e.g. when running) */
 
-    std::string sword_sound_id;        /**< sound id of the current sword */
-    std::string ground_sound_id;       /**< sound id of the current ground displayed under the hero */
+    std::string sword_sound_id;             /**< sound id of the current sword */
+    std::string ground_sound_id;            /**< sound id of the current ground displayed under the hero */
 
     static const int
-        animation_directions[8][2];    /**< possible directions of the animation for each movement direction */
+        animation_directions[8][2];         /**< possible directions of the animation for each movement direction */
 
-    int animation_direction_saved;     /**< direction of the hero's sprites, saved before
-                                         * showing a sprite animation having only one direction */
-    uint32_t when_suspended;           /**< date when the game was suspended */
+    int animation_direction_saved;          /**< direction of the hero's sprites, saved before
+                                              * showing a sprite animation having only one direction */
+    uint32_t when_suspended;                /**< date when the game was suspended */
 
-    bool blinking;                     /**< Whether the hero's sprites are blinking. */
-    uint32_t end_blink_date;           /**< When the hero's sprites stop blinking.
-                                        * 0 means infinite. */
+    bool blinking;                          /**< Whether the hero's sprites are blinking. */
+    uint32_t end_blink_date;                /**< When the hero's sprites stop blinking.
+                                             * 0 means infinite. */
 
-    bool walking;                      /**< stopped or walking? */
+    bool walking;                           /**< stopped or walking? */
 
     Rectangle clipping_rectangle;      /**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
                                         * (usually, the whole map is considered and this rectangle's values are all 0) */

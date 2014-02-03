@@ -201,7 +201,7 @@ const Rectangle& Sprite::get_origin() const {
  *
  * A value of 0 (only for 1-frame animations) means that the
  * animation must continue to be drawn: in this case,
- * is_animation_finished() returns always false.
+ * is_animation_finished() always returns false.
  *
  * \return The delay between two frames for the current animation
  * in miliseconds.

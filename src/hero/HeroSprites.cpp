@@ -17,8 +17,10 @@
 #include "hero/HeroSprites.h"
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
+#include "lua/LuaContext.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
+#include "Game.h"
 #include "Equipment.h"
 #include "Map.h"
 #include "lowlevel/Sound.h"
@@ -81,6 +83,8 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
  */
 HeroSprites::~HeroSprites() {
 
+  get_lua_context().cancel_callback(animation_callback_ref);
+
   delete tunic_sprite;
   delete shadow_sprite;
   delete sword_sprite;
@@ -88,6 +92,14 @@ HeroSprites::~HeroSprites() {
   delete shield_sprite;
   delete ground_sprite;
   delete trail_sprite;
+}
+
+/**
+ * \brief Returns the Lua context of the hero.
+ * \return The Lua context.
+ */
+LuaContext& HeroSprites::get_lua_context() {
+  return hero.get_game().get_lua_context();
 }
 
 /**
@@ -121,7 +133,7 @@ void HeroSprites::rebuild_equipment() {
   tunic_sprite = new Sprite(oss.str());
   tunic_sprite->enable_pixel_collisions();
   if (!tunic_animation.empty()) {
-    tunic_sprite->set_current_animation(tunic_animation);
+    set_tunic_animation(tunic_animation);
   }
 
   // the hero's shadow
@@ -552,6 +564,13 @@ void HeroSprites::update() {
       && System::now() >= end_blink_date) {
     stop_blinking();
   }
+
+  // Lua callback.
+  if (tunic_sprite->is_animation_finished()
+      && animation_callback_ref != LUA_REFNIL) {
+    get_lua_context().do_callback(animation_callback_ref);
+    this->animation_callback_ref = LUA_REFNIL;
+  }
 }
 
 /**
@@ -745,12 +764,12 @@ void HeroSprites::set_animation_stopped_normal() {
 
   if (equipment.has_ability(ABILITY_SHIELD)) {
 
-    tunic_sprite->set_current_animation("stopped_with_shield");
+    set_tunic_animation("stopped_with_shield");
     shield_sprite->set_current_animation("stopped");
     shield_sprite->set_current_direction(get_animation_direction());
   }
   else {
-    tunic_sprite->set_current_animation("stopped");
+    set_tunic_animation("stopped");
   }
   stop_displaying_sword();
   stop_displaying_trail();
@@ -765,7 +784,7 @@ void HeroSprites::set_animation_stopped_sword_loading() {
 
   int direction = get_animation_direction();
 
-  tunic_sprite->set_current_animation("sword_loading_stopped");
+  set_tunic_animation("sword_loading_stopped");
   sword_sprite->set_current_animation("sword_loading_stopped");
   sword_sprite->set_current_direction(direction);
   sword_stars_sprite->set_current_animation("loading");
@@ -788,7 +807,7 @@ void HeroSprites::set_animation_stopped_sword_loading() {
 void HeroSprites::set_animation_stopped_carrying() {
 
   set_animation_stopped_common();
-  tunic_sprite->set_current_animation("carrying_stopped");
+  set_tunic_animation("carrying_stopped");
 
   if (lifted_item != NULL) {
     lifted_item->set_animation_stopped();
@@ -803,7 +822,7 @@ void HeroSprites::set_animation_stopped_carrying() {
 void HeroSprites::set_animation_stopped_swimming() {
 
   set_animation_stopped_common();
-  tunic_sprite->set_current_animation("swimming_stopped");
+  set_tunic_animation("swimming_stopped");
   stop_displaying_sword();
   stop_displaying_shield();
   stop_displaying_trail();
@@ -833,13 +852,13 @@ void HeroSprites::set_animation_walking_normal() {
 
   if (equipment.has_ability(ABILITY_SHIELD)) {
 
-    tunic_sprite->set_current_animation("walking_with_shield");
+    set_tunic_animation("walking_with_shield");
 
     shield_sprite->set_current_animation("walking");
     shield_sprite->set_current_direction(get_animation_direction());
   }
   else {
-    tunic_sprite->set_current_animation("walking");
+    set_tunic_animation("walking");
   }
   stop_displaying_sword();
   stop_displaying_trail();
@@ -854,7 +873,7 @@ void HeroSprites::set_animation_walking_sword_loading() {
 
   int direction = get_animation_direction();
 
-  tunic_sprite->set_current_animation("sword_loading_walking");
+  set_tunic_animation("sword_loading_walking");
   if (equipment.has_ability(ABILITY_SWORD)) {
     sword_sprite->set_current_animation("sword_loading_walking");
     sword_sprite->set_current_direction(direction);
@@ -879,7 +898,7 @@ void HeroSprites::set_animation_walking_carrying() {
 
   set_animation_walking_common();
 
-  tunic_sprite->set_current_animation("carrying_walking");
+  set_tunic_animation("carrying_walking");
 
   if (lifted_item != NULL) {
     lifted_item->set_animation_walking();
@@ -895,7 +914,7 @@ void HeroSprites::set_animation_swimming_slow() {
 
   set_animation_walking_common();
 
-  tunic_sprite->set_current_animation("swimming_slow");
+  set_tunic_animation("swimming_slow");
   stop_displaying_sword();
   stop_displaying_shield();
   stop_displaying_trail();
@@ -908,7 +927,7 @@ void HeroSprites::set_animation_swimming_fast() {
 
   set_animation_walking_common();
 
-  tunic_sprite->set_current_animation("swimming_fast");
+  set_tunic_animation("swimming_fast");
   stop_displaying_sword();
   stop_displaying_shield();
   stop_displaying_trail();
@@ -923,7 +942,7 @@ void HeroSprites::set_animation_walking_diagonal(int direction8) {
   stop_displaying_sword();
   stop_displaying_shield();
   stop_displaying_trail();
-  tunic_sprite->set_current_animation("walking_diagonal");
+  set_tunic_animation("walking_diagonal");
   tunic_sprite->set_current_direction(direction8 / 2);
 }
 
@@ -934,7 +953,7 @@ void HeroSprites::set_animation_sword() {
 
   int direction = get_animation_direction();
 
-  tunic_sprite->set_current_animation("sword");
+  set_tunic_animation("sword");
   tunic_sprite->restart_animation();
 
   sword_sprite->set_current_animation("sword");
@@ -970,7 +989,7 @@ void HeroSprites::set_animation_sword_tapping() {
 
   int direction = get_animation_direction();
 
-  tunic_sprite->set_current_animation("sword_tapping");
+  set_tunic_animation("sword_tapping");
   tunic_sprite->restart_animation();
 
   sword_sprite->set_current_animation("sword_tapping");
@@ -992,7 +1011,7 @@ void HeroSprites::set_animation_sword_tapping() {
  */
 void HeroSprites::set_animation_spin_attack() {
 
-  tunic_sprite->set_current_animation("spin_attack");
+  set_tunic_animation("spin_attack");
   sword_sprite->set_current_animation("spin_attack");
   stop_displaying_sword_stars();
   stop_displaying_shield();
@@ -1004,7 +1023,7 @@ void HeroSprites::set_animation_spin_attack() {
  */
 void HeroSprites::set_animation_super_spin_attack() {
 
-  tunic_sprite->set_current_animation("super_spin_attack");
+  set_tunic_animation("super_spin_attack");
   sword_sprite->set_current_animation("super_spin_attack");
   stop_displaying_sword_stars();
   stop_displaying_shield();
@@ -1016,7 +1035,7 @@ void HeroSprites::set_animation_super_spin_attack() {
  */
 void HeroSprites::set_animation_grabbing() {
 
-  tunic_sprite->set_current_animation("grabbing");
+  set_tunic_animation("grabbing");
   stop_displaying_shield();
   stop_displaying_trail();
 }
@@ -1026,7 +1045,7 @@ void HeroSprites::set_animation_grabbing() {
  */
 void HeroSprites::set_animation_pulling() {
 
-  tunic_sprite->set_current_animation("pulling");
+  set_tunic_animation("pulling");
   stop_displaying_shield();
   stop_displaying_trail();
 }
@@ -1036,7 +1055,7 @@ void HeroSprites::set_animation_pulling() {
  */
 void HeroSprites::set_animation_pushing() {
 
-  tunic_sprite->set_current_animation("pushing");
+  set_tunic_animation("pushing");
   stop_displaying_shield();
   stop_displaying_trail();
 }
@@ -1046,7 +1065,7 @@ void HeroSprites::set_animation_pushing() {
  */
 void HeroSprites::set_animation_lifting() {
 
-  tunic_sprite->set_current_animation("lifting");
+  set_tunic_animation("lifting");
   stop_displaying_shield();
   stop_displaying_trail();
 }
@@ -1056,7 +1075,7 @@ void HeroSprites::set_animation_lifting() {
  */
 void HeroSprites::set_animation_jumping() {
 
-  tunic_sprite->set_current_animation("jumping");
+  set_tunic_animation("jumping");
 
   if (equipment.has_ability(ABILITY_SHIELD)) {
     shield_sprite->set_current_animation("stopped");
@@ -1071,7 +1090,7 @@ void HeroSprites::set_animation_jumping() {
  */
 void HeroSprites::set_animation_hurt() {
 
-  tunic_sprite->set_current_animation("hurt");
+  set_tunic_animation("hurt");
   stop_displaying_sword();
   stop_displaying_shield();
   stop_displaying_trail();
@@ -1083,7 +1102,7 @@ void HeroSprites::set_animation_hurt() {
 void HeroSprites::set_animation_falling() {
 
   // show the animation
-  tunic_sprite->set_current_animation("falling");
+  set_tunic_animation("falling");
   stop_displaying_sword();
   stop_displaying_shield();
   stop_displaying_trail();
@@ -1094,7 +1113,7 @@ void HeroSprites::set_animation_falling() {
  */
 void HeroSprites::set_animation_brandish() {
 
-  tunic_sprite->set_current_animation("brandish");
+  set_tunic_animation("brandish");
   tunic_sprite->set_current_direction(1);
   stop_displaying_sword();
   stop_displaying_shield();
@@ -1106,7 +1125,7 @@ void HeroSprites::set_animation_brandish() {
  */
 void HeroSprites::set_animation_victory() {
 
-  tunic_sprite->set_current_animation("victory");
+  set_tunic_animation("victory");
   tunic_sprite->set_current_direction(1);
   if (sword_sprite != NULL) {
     sword_sprite->set_current_animation("victory");
@@ -1144,7 +1163,7 @@ void HeroSprites::set_animation_running() {
 void HeroSprites::set_animation_boomerang(
     const std::string& tunic_preparing_animation) {
 
-  tunic_sprite->set_current_animation(tunic_preparing_animation);
+  set_tunic_animation(tunic_preparing_animation);
 
   if (shield_sprite != NULL
       && shield_sprite->has_animation("boomerang")) {
@@ -1161,9 +1180,43 @@ void HeroSprites::set_animation_boomerang(
  * \brief Returns the current animation of the tunic sprite.
  * \return The animation name of the tunic sprite.
  */
-const std::string& HeroSprites::get_animation() const {
+const std::string& HeroSprites::get_tunic_animation() const {
 
   return tunic_sprite->get_current_animation();
+}
+
+/**
+ * \brief Changes the animation of the tunic sprite.
+ *
+ * Cancels the Lua callback if any.
+ *
+ * \param animation The animation name of the tunic sprite.
+ */
+void HeroSprites::set_tunic_animation(const std::string& animation) {
+
+  set_tunic_animation(animation, LUA_REFNIL);
+}
+
+
+/**
+ * \brief Changes the animation of the tunic sprite.
+ *
+ * Cancels the Lua callback if any.
+ *
+ * \param animation The animation name of the tunic sprite.
+ * \param callback_ref Lua ref of a function to call when the animation ends
+ * or LUA_REFNIL.
+ */
+void HeroSprites::set_tunic_animation(
+    const std::string& animation, int callback_ref) {
+
+  if (this->animation_callback_ref != LUA_REFNIL) {
+    get_lua_context().cancel_callback(this->animation_callback_ref);
+  }
+
+  this->animation_callback_ref = callback_ref;
+
+  tunic_sprite->set_current_animation(animation);
 }
 
 /**
@@ -1178,8 +1231,26 @@ const std::string& HeroSprites::get_animation() const {
  */
 void HeroSprites::set_animation(const std::string& animation) {
 
+  set_animation(animation, LUA_REFNIL);
+}
+
+/**
+ * \brief Starts a custom animation of the hero's sprites.
+ *
+ * All sprites of the hero that have an animation with this name take the
+ * animation. The ones that don't have such an animation are not displayed.
+ * Many simple animations can be started with this function.
+ * More complex one have dedicated functions.
+ *
+ * \param animation Name of the animation to give to the hero's sprites.
+ * \param callback_ref Lua ref of a function to call when the animation ends
+ * or LUA_REFNIL.
+ */
+void HeroSprites::set_animation(
+    const std::string& animation, int callback_ref) {
+
   if (tunic_sprite->has_animation(animation)) {
-    tunic_sprite->set_current_animation(animation);
+    set_tunic_animation(animation, callback_ref);
   }
 
   if (shield_sprite != NULL

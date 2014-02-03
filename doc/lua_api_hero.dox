@@ -138,7 +138,7 @@ position.
 Returns the current animation of the tunic sprite of the hero.
 - Return value (string): The animation name of the tunic sprite.
 
-\subsection lua_api_hero_set_animation hero:set_animation(animation)
+\subsection lua_api_hero_set_animation hero:set_animation(animation, [callback])
 
 Changes the animation of the hero's sprites.
 
@@ -151,7 +151,7 @@ that are normally displayed or not depending on his
 - the shield,
 - the sword,
 - the sword stars,
-- the trail (by default, only shown when running).
+- the trail of dust (by default, only shown when running).
 
 The animation of all these sprites is usually managed by the engine to
 represent the current state of the hero.
@@ -165,6 +165,10 @@ unless you know what you are doing.
 All sprites of the hero that have an animation with the specified name take the
 animation. The ones that don't have such an animation are not displayed.
 - \c animation (string): Name of the animation to set to hero sprites.
+- \c callback (function, optional): A function to call when the animation ends
+  (on the tunic sprite).
+  If the animation loops, or is replaced by another animation before it ends,
+  then the function will never be called.
 
 \subsection lua_api_hero_is_invincible hero:is_invincible()
 

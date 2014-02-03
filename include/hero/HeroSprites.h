@@ -67,7 +67,8 @@ class HeroSprites {
     void restore_animation_direction();
     void set_ignore_suspend(bool ignore_suspend);
 
-    const std::string& get_animation() const;
+    const std::string& get_tunic_animation() const;
+
     void set_animation_stopped_common();
     void set_animation_stopped_normal();
     void set_animation_stopped_sword_loading();
@@ -98,6 +99,7 @@ class HeroSprites {
     void set_animation_running();
     void set_animation_boomerang(const std::string& tunic_preparing_animation);
     void set_animation(const std::string& animation);
+    void set_animation(const std::string& animation, int callback_ref);
 
     void create_ground(Ground grond);
     void destroy_ground();
@@ -118,6 +120,11 @@ class HeroSprites {
     void stop_displaying_sword_stars();
     void stop_displaying_shield();
     void stop_displaying_trail();
+
+    void set_tunic_animation(const std::string& animation);
+    void set_tunic_animation(const std::string& animation, int callback_ref);
+
+    LuaContext& get_lua_context();
 
     Hero& hero;                             /**< the hero */
     Equipment& equipment;                   /**< equipment of the player */
@@ -152,6 +159,7 @@ class HeroSprites {
 
     CarriedItem* lifted_item;               /**< if not NULL, an item to display above the hero */
 
+    int animation_callback_ref;             /**< Lua ref of a function to call when a custom animation ends. */
 };
 
 }

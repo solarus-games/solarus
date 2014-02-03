@@ -69,7 +69,7 @@ void Hero::BoomerangState::start(const State* previous_state) {
     hero.set_state(new FreeState(hero));
   }
   else {
-    get_sprites().set_animation(tunic_preparing_animation, "boomerang");
+    get_sprites().set_animation_boomerang(tunic_preparing_animation);
     this->direction_pressed8 = get_commands().get_wanted_direction8();
   }
 }

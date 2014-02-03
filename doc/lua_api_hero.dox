@@ -133,6 +133,39 @@ The initial behavior is restored: the hero will now get
 back to where he was just before falling, instead going to of a memorized
 position.
 
+\subsection lua_api_hero_get_animation hero:get_animation()
+
+Returns the current animation of the tunic sprite of the hero.
+- Return value (string): The animation name of the tunic sprite.
+
+\subsection lua_api_hero_set_animation hero:set_animation(animation)
+
+Changes the animation of the hero's sprites.
+
+The hero has several
+\ref lua_api_sprite "sprites",
+that are normally displayed or not depending on his
+\ref lua_api_hero_get_state "state" and his
+\ref lua_api_game_get_ability "abilities":
+- the body (the tunic),
+- the shield,
+- the sword,
+- the sword stars,
+- the trail (by default, only shown when running).
+
+The animation of all these sprites is usually managed by the engine to
+represent the current state of the hero.
+You can use this function to customize the animation.
+This allows you to implement custom actions that are not provided by the
+built-in states.
+Make sure that you don't call this function when the hero is not already doing
+a particular action (like pushing something or attacking),
+unless you know what you are doing.
+
+All sprites of the hero that have an animation with the specified name take the
+animation. The ones that don't have such an animation are not displayed.
+- \c animation (string): Name of the animation to set to hero sprites.
+
 \subsection lua_api_hero_is_invincible hero:is_invincible()
 
 Returns whether the hero is currently invincible.

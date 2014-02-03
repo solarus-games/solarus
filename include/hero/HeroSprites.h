@@ -67,6 +67,7 @@ class HeroSprites {
     void restore_animation_direction();
     void set_ignore_suspend(bool ignore_suspend);
 
+    const std::string& get_animation() const;
     void set_animation_stopped_common();
     void set_animation_stopped_normal();
     void set_animation_stopped_sword_loading();
@@ -95,8 +96,8 @@ class HeroSprites {
     void set_animation_victory();
     void set_animation_prepare_running();
     void set_animation_running();
-    void set_animation(const std::string& tunic_animation,
-        const std::string& shield_animation);
+    void set_animation_boomerang(const std::string& tunic_preparing_animation);
+    void set_animation(const std::string& animation);
 
     void create_ground(Ground grond);
     void destroy_ground();

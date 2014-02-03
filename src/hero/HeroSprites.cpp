@@ -1137,30 +1137,82 @@ void HeroSprites::set_animation_running() {
 }
 
 /**
- * \brief Starts a custom animation of the hero's sprites.
- *
- * The animation of the tunic and the shield (if any) can be specified here.
- * Other sprites are hidden. Many simple animations can be started with
- * this function. More complex one have dedicated functions.
- *
- * \param tunic_animation name of the animation to give to the tunic sprite
- * \param shield_animation name of the animation to give to the shield sprite,
- * or an empty string to hide the shield.
+ * \brief Starts the "boomerang" animation of the hero's sprites.
+ * \param tunic_preparing_animation Animation name of the hero's tunic sprite
+ * when preparing the boomerang.
  */
-void HeroSprites::set_animation(const std::string& tunic_animation,
-    const std::string& shield_animation) {
+void HeroSprites::set_animation_boomerang(
+    const std::string& tunic_preparing_animation) {
 
-  tunic_sprite->set_current_animation(tunic_animation);
+  tunic_sprite->set_current_animation(tunic_preparing_animation);
 
-  if (shield_animation.size() > 0
-      && equipment.has_ability(ABILITY_SHIELD)) {
-    shield_sprite->set_current_animation(shield_animation);
+  if (shield_sprite != NULL
+      && shield_sprite->has_animation("boomerang")) {
+    shield_sprite->set_current_animation("boomerang");
   }
   else {
     stop_displaying_shield();
   }
   stop_displaying_sword();
   stop_displaying_trail();
+}
+
+/**
+ * \brief Returns the current animation of the tunic sprite.
+ * \return The animation name of the tunic sprite.
+ */
+const std::string& HeroSprites::get_animation() const {
+
+  return tunic_sprite->get_current_animation();
+}
+
+/**
+ * \brief Starts a custom animation of the hero's sprites.
+ *
+ * All sprites of the hero that have an animation with this name take the
+ * animation. The ones that don't have such an animation are not displayed.
+ * Many simple animations can be started with this function.
+ * More complex one have dedicated functions.
+ *
+ * \param animation Name of the animation to give to the hero's sprites.
+ */
+void HeroSprites::set_animation(const std::string& animation) {
+
+  if (tunic_sprite->has_animation(animation)) {
+    tunic_sprite->set_current_animation(animation);
+  }
+
+  if (shield_sprite != NULL
+      && shield_sprite->has_animation(animation)) {
+    shield_sprite->set_current_animation(animation);
+  }
+  else {
+    stop_displaying_shield();
+  }
+
+  if (sword_sprite != NULL
+      && sword_sprite->has_animation(animation)) {
+    sword_sprite->set_current_animation(animation);
+  }
+  else {
+    stop_displaying_sword();
+  }
+
+  if (sword_stars_sprite != NULL
+      && sword_stars_sprite->has_animation(animation)) {
+    sword_stars_sprite->set_current_animation(animation);
+  }
+  else {
+    stop_displaying_sword_stars();
+  }
+
+  if (trail_sprite != NULL
+      && trail_sprite->has_animation(animation)) {
+    trail_sprite->set_current_animation(animation);
+  }
+  else {
+    stop_displaying_trail();
+  }
 }
 
 /**

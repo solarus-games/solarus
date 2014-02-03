@@ -108,6 +108,8 @@ Changes that do not introduce incompatibilities:
 * New event hero:on_hurt() to customize the defense of the equipment (#428).
 * hero:start_hurt() now takes an optional entity and sprite (#417).
 * New methods hero:is/set_invincible() and hero:is/set_blinking() (#418).
+* New methods hero:get/set_animation() to set custom animations (#155).
+* New methods to set custom tunic, sword and shield sprites (#155).
 * New event sensor:on_left() (#339).
 * New event block:on_moving() (#334).
 * New functions to get/set the properties of teletransporters (#403).

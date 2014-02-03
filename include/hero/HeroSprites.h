@@ -47,12 +47,12 @@ class HeroSprites {
     void notify_map_started();
     void notify_tileset_changed();
 
-    const std::string& get_tunic_sprite_id() const;
-    void get_tunic_sprite_id(const std::string& sprite_id) const;
+    const std::string& get_tunic_sprite_id() const;  // TODO
+    void set_tunic_sprite_id(const std::string& sprite_id) const;
     const std::string& get_sword_sprite_id() const;
-    void get_sword_sprite_id(const std::string& sprite_id) const;
+    void set_sword_sprite_id(const std::string& sprite_id) const;
     const std::string& get_shield_sprite_id() const;
-    void get_shield_sprite_id(const std::string& sprite_id) const;
+    void set_shield_sprite_id(const std::string& sprite_id) const;
 
     void blink(uint32_t duration);
     void stop_blinking();

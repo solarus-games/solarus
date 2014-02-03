@@ -1885,10 +1885,10 @@ void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) 
 void Hero::notify_collision_with_explosion(
     Explosion& explosion, Sprite& sprite_overlapping) {
 
-  if (!state->can_avoid_explosion()) {
-    if (sprite_overlapping.contains("tunic")) {
-      hurt(explosion, NULL, 2);
-    }
+  if (!state->can_avoid_explosion()
+      && sprite_overlapping.contains("tunic")
+      && can_be_hurt(&explosion)) {
+    hurt(explosion, NULL, 2);
   }
 }
 

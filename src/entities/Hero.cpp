@@ -88,7 +88,6 @@ Hero::Hero(Equipment& equipment):
 
   // sprites
   sprites = new HeroSprites(*this, equipment);
-  rebuild_equipment();
 
   // state
   set_state(new FreeState(*this));

@@ -47,6 +47,13 @@ class HeroSprites {
     void notify_map_started();
     void notify_tileset_changed();
 
+    const std::string& get_tunic_sprite_id() const;
+    void get_tunic_sprite_id(const std::string& sprite_id) const;
+    const std::string& get_sword_sprite_id() const;
+    void get_sword_sprite_id(const std::string& sprite_id) const;
+    const std::string& get_shield_sprite_id() const;
+    void get_shield_sprite_id(const std::string& sprite_id) const;
+
     void blink(uint32_t duration);
     void stop_blinking();
     bool is_blinking() const;
@@ -116,6 +123,13 @@ class HeroSprites {
     bool is_trail_visible() const;
     bool is_ground_visible() const;
 
+    std::string get_default_tunic_sprite_id() const;
+    bool has_default_tunic_sprite() const;
+    std::string get_default_sword_sprite_id() const;
+    bool has_default_sword_sprite() const;
+    std::string get_default_shield_sprite_id() const;
+    bool has_default_shield_sprite() const;
+
     void stop_displaying_sword();
     void stop_displaying_sword_stars();
     void stop_displaying_shield();
@@ -128,6 +142,13 @@ class HeroSprites {
 
     Hero& hero;                             /**< the hero */
     Equipment& equipment;                   /**< equipment of the player */
+
+    std::string tunic_sprite_id;            /**< Animation set used for the tunic.
+                                             * By default, "hero/tunicX" where X is the tunic level. */
+    std::string sword_sprite_id;            /**< Animation set used for the sword.
+                                             * By default, "hero/swordX" where X is the sword level. */
+    std::string shield_sprite_id;           /**< Animation set used for the shield.
+                                             * By default, "hero/shieldX" where X is the shield level. */
 
     Sprite* tunic_sprite;                   /**< sprite of the current tunic */
     Sprite* sword_sprite;                   /**< current sword sprite */

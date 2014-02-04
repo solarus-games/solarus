@@ -61,9 +61,13 @@ const int HeroSprites::animation_directions[][2] = {
 HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
   hero(hero),
   equipment(equipment),
+  has_default_tunic_sprite(true),
   tunic_sprite(NULL),
+  has_default_sword_sprite(true),
   sword_sprite(NULL),
   sword_stars_sprite(NULL),
+  has_default_sword_sound(true),
+  has_default_shield_sprite(true),
   shield_sprite(NULL),
   shadow_sprite(NULL),
   ground_sprite(NULL),
@@ -122,7 +126,7 @@ void HeroSprites::rebuild_equipment() {
   }
 
   // The hero's body.
-  if (tunic_sprite_id.empty() || has_default_tunic_sprite()) {
+  if (has_default_tunic_sprite) {
     set_tunic_sprite_id(get_default_tunic_sprite_id());
   }
 
@@ -133,11 +137,11 @@ void HeroSprites::rebuild_equipment() {
   }
 
   // The hero's sword.
-  if (sword_sprite_id.empty() || has_default_sword_sprite()) {
+  if (has_default_sword_sprite) {
     set_sword_sprite_id(get_default_sword_sprite_id());
   }
 
-  if (sword_sound_id.empty() || has_default_sword_sound()) {
+  if (has_default_sword_sound) {
     set_sword_sound_id(get_default_sword_sound_id());
   }
 
@@ -153,7 +157,7 @@ void HeroSprites::rebuild_equipment() {
   }
 
   // The hero's shield.
-  if (shield_sprite_id.empty() || has_default_shield_sprite()) {
+  if (has_default_shield_sprite) {
     set_shield_sprite_id(get_default_shield_sprite_id());
   }
 
@@ -203,7 +207,18 @@ void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
     set_tunic_animation(animation);
   }
 
-  // TODO synchronize other sprites to the new tunic sprite.
+
+  if (sprite_id == get_default_tunic_sprite_id()) {
+    has_default_tunic_sprite = true;
+  }
+
+  // Synchronize other sprites to the new tunic sprite.
+  if (sword_sprite != NULL) {
+    sword_sprite->set_synchronized_to(tunic_sprite);
+  }
+  if (shield_sprite != NULL) {
+    shield_sprite->set_synchronized_to(tunic_sprite);
+  }
 }
 
 /**
@@ -219,16 +234,6 @@ std::string HeroSprites::get_default_tunic_sprite_id() const {
   std::ostringstream oss;
   oss << "hero/tunic" << tunic_level;
   return oss.str();
-}
-
-/**
- * \brief Returns whether the sprite currently used for the tunic is
- * the default one.
- * \return \c true if the default tunic sprite is used.
- */
-bool HeroSprites::has_default_tunic_sprite() const {
-
-  return tunic_sprite_id == get_default_tunic_sprite_id();
 }
 
 /**
@@ -275,6 +280,10 @@ void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
       sword_sprite->set_current_animation(animation);
     }
   }
+
+  if (sprite_id == get_default_sword_sprite_id()) {
+    has_default_sword_sprite = true;
+  }
 }
 
 /**
@@ -298,16 +307,6 @@ std::string HeroSprites::get_default_sword_sprite_id() const {
 }
 
 /**
- * \brief Returns whether the sprite currently used for the sword is
- * the default one.
- * \return \c true if the default sword sprite is used.
- */
-bool HeroSprites::has_default_sword_sprite() const {
-
-  return sword_sprite_id == get_default_sword_sprite_id();
-}
-
-/**
  * \brief Returns the id of the sound played when using the sword.
  * \return The sword sound id.
  */
@@ -328,6 +327,10 @@ void HeroSprites::set_sword_sound_id(const std::string& sound_id) {
   }
 
   this->sword_sound_id = sound_id;
+
+  if (sound_id == get_default_sword_sound_id()) {
+    has_default_sword_sound = true;
+  }
 }
 
 /**
@@ -348,16 +351,6 @@ std::string HeroSprites::get_default_sword_sound_id() const {
   std::ostringstream oss;
   oss << "sword" << sword_level;
   return oss.str();
-}
-
-/**
- * \brief Returns whether the sound currently used for the sword is
- * the default one.
- * \return \c true if the default sword sound is used.
- */
-bool HeroSprites::has_default_sword_sound() const {
-
-  return sword_sound_id == get_default_sword_sound_id();
 }
 
 /**
@@ -403,6 +396,10 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
       shield_sprite->set_current_animation(animation);
     }
   }
+
+  if (sprite_id == get_default_shield_sprite_id()) {
+    has_default_shield_sprite = true;
+  }
 }
 
 /**
@@ -423,16 +420,6 @@ std::string HeroSprites::get_default_shield_sprite_id() const {
   std::ostringstream oss;
   oss << "hero/shield" << shield_level;
   return oss.str();
-}
-
-/**
- * \brief Returns whether the sprite currently used for the shield is
- * the default one.
- * \return \c true if the default shield sprite is used.
- */
-bool HeroSprites::has_default_shield_sprite() const {
-
-  return shield_sprite_id == get_default_shield_sprite_id();
 }
 
 /**

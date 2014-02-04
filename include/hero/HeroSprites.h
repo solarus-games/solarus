@@ -126,13 +126,9 @@ class HeroSprites {
     bool is_ground_visible() const;
 
     std::string get_default_tunic_sprite_id() const;
-    bool has_default_tunic_sprite() const;
     std::string get_default_sword_sprite_id() const;
-    bool has_default_sword_sprite() const;
     std::string get_default_sword_sound_id() const;
-    bool has_default_sword_sound() const;
     std::string get_default_shield_sprite_id() const;
-    bool has_default_shield_sprite() const;
 
     void stop_displaying_sword();
     void stop_displaying_sword_stars();
@@ -144,24 +140,35 @@ class HeroSprites {
 
     LuaContext& get_lua_context();
 
-    Hero& hero;                             /**< the hero */
-    Equipment& equipment;                   /**< equipment of the player */
+    Hero& hero;                             /**< The hero. */
+    Equipment& equipment;                   /**< Equipment of the player. */
 
+    // Tunic.
     std::string tunic_sprite_id;            /**< Animation set used for the tunic.
                                              * By default, "hero/tunicX" where X is the tunic level. */
+    bool has_default_tunic_sprite;          /**< Whether tunic_sprite_id has the defaut value. */
+    Sprite* tunic_sprite;                   /**< sprite of the current tunic */
+
+    // Sword.
     std::string sword_sprite_id;            /**< Animation set used for the sword.
                                              * An empty string means no sword sprite.
                                              * By default, "hero/swordX" where X is the sword level. */
+    bool has_default_sword_sprite;          /**< Whether sword_sprite_id has the defaut value. */
+    Sprite* sword_sprite;                   /**< Current sword sprite. */
+    Sprite* sword_stars_sprite;             /**< Stars running along the sword when the sword is loading. */
+
     std::string sword_sound_id;             /**< Sound played when using the sword.
                                              * By default, "swordX" where X is the sword level. */
+    bool has_default_sword_sound;           /**< Whether sword_sound_id has the defaut value. */
+
+    // Shield.
     std::string shield_sprite_id;           /**< Animation set used for the shield.
                                              * An empty string means no shield sprite.
                                              * By default, "hero/shieldX" where X is the shield level. */
+    bool has_default_shield_sprite;         /**< Whether shield_sprite_id has the defaut value. */
+    Sprite* shield_sprite;                  /**< Current shield sprite. */
 
-    Sprite* tunic_sprite;                   /**< sprite of the current tunic */
-    Sprite* sword_sprite;                   /**< current sword sprite */
-    Sprite* sword_stars_sprite;             /**< stars running along the sword when the sword is loading */
-    Sprite* shield_sprite;                  /**< current shield sprite */
+    // Other sprites.
     Sprite* shadow_sprite;                  /**< shadow of the hero, only in specific states (most of the time
                                              * the shadow is with the tunic sprite) */
     Sprite* ground_sprite;                  /**< ground displayed under the hero (e.g. grass or shallow water) */
@@ -169,6 +176,7 @@ class HeroSprites {
 
     std::string ground_sound_id;            /**< sound id of the current ground displayed under the hero */
 
+    // State.
     static const int
         animation_directions[8][2];         /**< possible directions of the animation for each movement direction */
 

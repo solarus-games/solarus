@@ -21,7 +21,6 @@
 #include "Map.h"
 #include "QuestResourceList.h"
 #include "entities/Hero.h"
-#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"

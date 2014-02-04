@@ -61,9 +61,6 @@ const int HeroSprites::animation_directions[][2] = {
 HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
   hero(hero),
   equipment(equipment),
-  tunic_sprite_id(get_default_tunic_sprite_id()),
-  sword_sprite_id(get_default_sword_sprite_id()),
-  shield_sprite_id(get_default_shield_sprite_id()),
   tunic_sprite(NULL),
   sword_sprite(NULL),
   sword_stars_sprite(NULL),
@@ -125,7 +122,7 @@ void HeroSprites::rebuild_equipment() {
   }
 
   // The hero's body.
-  if (has_default_tunic_sprite()) {
+  if (tunic_sprite_id.empty() || has_default_tunic_sprite()) {
     set_tunic_sprite_id(get_default_tunic_sprite_id());
   }
 
@@ -136,11 +133,11 @@ void HeroSprites::rebuild_equipment() {
   }
 
   // The hero's sword.
-  if (has_default_sword_sprite()) {
+  if (sword_sprite_id.empty() || has_default_sword_sprite()) {
     set_sword_sprite_id(get_default_sword_sprite_id());
   }
 
-  if (has_default_sword_sound()) {
+  if (sword_sound_id.empty() || has_default_sword_sound()) {
     set_sword_sound_id(get_default_sword_sound_id());
   }
 
@@ -156,7 +153,7 @@ void HeroSprites::rebuild_equipment() {
   }
 
   // The hero's shield.
-  if (has_default_shield_sprite()) {
+  if (shield_sprite_id.empty() || has_default_shield_sprite()) {
     set_shield_sprite_id(get_default_shield_sprite_id());
   }
 

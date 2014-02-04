@@ -51,6 +51,8 @@ class HeroSprites {
     void set_tunic_sprite_id(const std::string& sprite_id);
     const std::string& get_sword_sprite_id() const;
     void set_sword_sprite_id(const std::string& sprite_id);
+    const std::string& get_sword_sound_id() const;
+    void set_sword_sound_id(const std::string& sound_id);
     const std::string& get_shield_sprite_id() const;
     void set_shield_sprite_id(const std::string& sprite_id);
 
@@ -127,6 +129,8 @@ class HeroSprites {
     bool has_default_tunic_sprite() const;
     std::string get_default_sword_sprite_id() const;
     bool has_default_sword_sprite() const;
+    std::string get_default_sword_sound_id() const;
+    bool has_default_sword_sound() const;
     std::string get_default_shield_sprite_id() const;
     bool has_default_shield_sprite() const;
 
@@ -148,6 +152,8 @@ class HeroSprites {
     std::string sword_sprite_id;            /**< Animation set used for the sword.
                                              * An empty string means no sword sprite.
                                              * By default, "hero/swordX" where X is the sword level. */
+    std::string sword_sound_id;             /**< Sound played when using the sword.
+                                             * By default, "swordX" where X is the sword level. */
     std::string shield_sprite_id;           /**< Animation set used for the shield.
                                              * An empty string means no shield sprite.
                                              * By default, "hero/shieldX" where X is the shield level. */
@@ -161,7 +167,6 @@ class HeroSprites {
     Sprite* ground_sprite;                  /**< ground displayed under the hero (e.g. grass or shallow water) */
     Sprite* trail_sprite;                   /**< trail of dust that the hero lets behind him (e.g. when running) */
 
-    std::string sword_sound_id;             /**< sound id of the current sword */
     std::string ground_sound_id;            /**< sound id of the current ground displayed under the hero */
 
     static const int

@@ -140,20 +140,20 @@ void HeroSprites::rebuild_equipment() {
     set_sword_sprite_id(get_default_sword_sprite_id());
   }
 
-  int sword_number = equipment.get_ability(ABILITY_SWORD);
-  std::ostringstream oss;
-  oss.clear();
-  oss.str("");
-  oss << "sword" << sword_number;
-  sword_sound_id = oss.str();  // TODO
+  if (has_default_sword_sound()) {
+    set_sword_sound_id(get_default_sword_sound_id());
+  }
 
-  oss.clear();
-  oss.str("");
-  oss << "hero/sword_stars" << sword_number;
-  delete sword_stars_sprite;
-  sword_stars_sprite = NULL;
-  sword_stars_sprite = new Sprite(oss.str());  // TODO
-  sword_stars_sprite->stop_animation();
+  const int sword_number = equipment.get_ability(ABILITY_SWORD);
+  if (sword_number > 0) {
+    // TODO make this sprite depend on the sword sprite: sword_sprite_id + "_stars"
+    std::ostringstream oss;
+    oss << "hero/sword_stars" << sword_number;
+    delete sword_stars_sprite;
+    sword_stars_sprite = NULL;
+    sword_stars_sprite = new Sprite(oss.str());
+    sword_stars_sprite->stop_animation();
+  }
 
   // The hero's shield.
   if (has_default_shield_sprite()) {
@@ -283,7 +283,8 @@ void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
 /**
  * \brief Returns the animation set id of the default sword sprite.
  *
- * The default sword sprite id is "hero/swordX" where X is the sword level.
+ * The default sword sprite id is "hero/swordX" where X is the sword level,
+ * or no sprite if the sword level is 0.
  *
  * \return The default sword sprite animation set id.
  */
@@ -307,6 +308,59 @@ std::string HeroSprites::get_default_sword_sprite_id() const {
 bool HeroSprites::has_default_sword_sprite() const {
 
   return sword_sprite_id == get_default_sword_sprite_id();
+}
+
+/**
+ * \brief Returns the id of the sound played when using the sword.
+ * \return The sword sound id.
+ */
+const std::string& HeroSprites::get_sword_sound_id() const {
+
+  return sword_sound_id;
+}
+
+/**
+ * \brief Sets the sound to play when using the sword.
+ * \param sound_id The sword sound id.
+ * An empty string means no sword sound.
+ */
+void HeroSprites::set_sword_sound_id(const std::string& sound_id) {
+
+  if (sound_id == this->sword_sound_id) {
+    return;
+  }
+
+  this->sword_sound_id = sound_id;
+}
+
+/**
+ * \brief Returns the id of default sound to play when using the sword.
+ *
+ * The default sword sound is "swordX" where X is the sword level,
+ * or no sound if the sword level is 0.
+ *
+ * \return The default sword sound id.
+ */
+std::string HeroSprites::get_default_sword_sound_id() const {
+
+  const int sword_level = equipment.get_ability(ABILITY_SWORD);
+  if (sword_level == 0) {
+    return "";
+  }
+
+  std::ostringstream oss;
+  oss << "sword" << sword_level;
+  return oss.str();
+}
+
+/**
+ * \brief Returns whether the sound currently used for the sword is
+ * the default one.
+ * \return \c true if the default sword sound is used.
+ */
+bool HeroSprites::has_default_sword_sound() const {
+
+  return sword_sound_id == get_default_sword_sound_id();
 }
 
 /**
@@ -357,7 +411,8 @@ void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
 /**
  * \brief Returns the animation set id of the default shield sprite.
  *
- * The default shield sprite id is "hero/shieldX" where X is the shield level.
+ * The default shield sprite id is "hero/shieldX" where X is the shield level,
+ * or no shield if the sword level is 0.
  *
  * \return The default shield sprite animation set id.
  */

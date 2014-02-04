@@ -491,11 +491,8 @@ void GameCommands::joypad_hat_moved(int hat, int value) {
  */
 void GameCommands::game_command_pressed(Command command) {
 
-  if (commands_pressed.find(command) == commands_pressed.end()) {
-    // The command is not already known as pressed.
-    commands_pressed.insert(command);
-    game.notify_command_pressed(command);
-  }
+  commands_pressed.insert(command);
+  game.notify_command_pressed(command);
 }
 
 /**
@@ -507,11 +504,8 @@ void GameCommands::game_command_pressed(Command command) {
  */
 void GameCommands::game_command_released(Command command) {
 
-  if (commands_pressed.find(command) != commands_pressed.end()) {
-    // The command is indeed known as pressed.
-    commands_pressed.erase(command);
-    game.notify_command_released(command);
-  }
+  commands_pressed.erase(command);
+  game.notify_command_released(command);
 }
 
 /**

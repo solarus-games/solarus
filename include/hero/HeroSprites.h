@@ -47,12 +47,12 @@ class HeroSprites {
     void notify_map_started();
     void notify_tileset_changed();
 
-    const std::string& get_tunic_sprite_id() const;  // TODO
-    void set_tunic_sprite_id(const std::string& sprite_id) const;
+    const std::string& get_tunic_sprite_id() const;
+    void set_tunic_sprite_id(const std::string& sprite_id);
     const std::string& get_sword_sprite_id() const;
-    void set_sword_sprite_id(const std::string& sprite_id) const;
+    void set_sword_sprite_id(const std::string& sprite_id);
     const std::string& get_shield_sprite_id() const;
-    void set_shield_sprite_id(const std::string& sprite_id) const;
+    void set_shield_sprite_id(const std::string& sprite_id);
 
     void blink(uint32_t duration);
     void stop_blinking();
@@ -146,8 +146,10 @@ class HeroSprites {
     std::string tunic_sprite_id;            /**< Animation set used for the tunic.
                                              * By default, "hero/tunicX" where X is the tunic level. */
     std::string sword_sprite_id;            /**< Animation set used for the sword.
+                                             * An empty string means no sword sprite.
                                              * By default, "hero/swordX" where X is the sword level. */
     std::string shield_sprite_id;           /**< Animation set used for the shield.
+                                             * An empty string means no shield sprite.
                                              * By default, "hero/shieldX" where X is the shield level. */
 
     Sprite* tunic_sprite;                   /**< sprite of the current tunic */

@@ -118,35 +118,15 @@ LuaContext& HeroSprites::get_lua_context() {
  */
 void HeroSprites::rebuild_equipment() {
 
-  std::string tunic_animation;
-  std::string sword_animation;
-  std::string shield_animation;
   int animation_direction = -1;
-  std::ostringstream oss;
+  if (tunic_sprite != NULL) {
+    // Save the direction.
+    animation_direction = tunic_sprite->get_current_direction();
+  }
 
+  // The hero's body.
   if (has_default_tunic_sprite()) {
-
-    // The hero's body.
-    if (tunic_sprite != NULL) {
-      // Save the animation direction.
-      animation_direction = tunic_sprite->get_current_direction();
-      tunic_animation = tunic_sprite->get_current_animation();
-      delete tunic_sprite;
-      tunic_sprite = NULL;
-    }
-
-    int tunic_number = equipment.get_ability(ABILITY_TUNIC);
-
-    Debug::check_assertion(tunic_number > 0, "Invalid tunic number");
-
-    oss.clear();
-    oss.str("");
-    oss << "hero/tunic" << tunic_number;
-    tunic_sprite = new Sprite(oss.str());
-    tunic_sprite->enable_pixel_collisions();
-    if (!tunic_animation.empty()) {
-      set_tunic_animation(tunic_animation);
-    }
+    set_tunic_sprite_id(get_default_tunic_sprite_id());
   }
 
   // The hero's shadow.
@@ -157,71 +137,27 @@ void HeroSprites::rebuild_equipment() {
 
   // The hero's sword.
   if (has_default_sword_sprite()) {
-    if (sword_sprite != NULL) {
-      if (sword_sprite->is_animation_started()) {
-        sword_animation = sword_sprite->get_current_animation();
-      }
-      delete sword_sprite;
-      delete sword_stars_sprite;
-      sword_sprite = NULL;
-      sword_stars_sprite = NULL;
-    }
-
-    int sword_number = equipment.get_ability(ABILITY_SWORD);
-
-    if (sword_number > 0) {
-      // The hero has a sword: get the sprite and the sound.
-      oss.clear();
-      oss.str("");
-      oss << "hero/sword" << sword_number;
-      sword_sprite = new Sprite(oss.str());
-      sword_sprite->enable_pixel_collisions();
-      sword_sprite->set_synchronized_to(tunic_sprite);
-      if (sword_animation.empty()) {
-        sword_sprite->stop_animation();
-      }
-      else {
-        sword_sprite->set_current_animation(sword_animation);
-      }
-
-      oss.clear();
-      oss.str("");
-      oss << "sword" << sword_number;
-      sword_sound_id = oss.str();
-
-      oss.clear();
-      oss.str("");
-      oss << "hero/sword_stars" << sword_number;
-      sword_stars_sprite = new Sprite(oss.str());
-      sword_stars_sprite->stop_animation();
-    }
+    set_sword_sprite_id(get_default_sword_sprite_id());
   }
 
-  if (has_default_shield_sprite()) {
-    // The hero's shield.
-    if (shield_sprite != NULL) {
-      if (shield_sprite->is_animation_started()) {
-        shield_animation = shield_sprite->get_current_animation();
-      }
-      delete shield_sprite;
-      shield_sprite = NULL;
-    }
+  int sword_number = equipment.get_ability(ABILITY_SWORD);
+  std::ostringstream oss;
+  oss.clear();
+  oss.str("");
+  oss << "sword" << sword_number;
+  sword_sound_id = oss.str();  // TODO
 
-    int shield_number = equipment.get_ability(ABILITY_SHIELD);
-    if (shield_number > 0) {
-      // The hero has a shield.
-      oss.clear();
-      oss.str("");
-      oss << "hero/shield" << shield_number;
-      shield_sprite = new Sprite(oss.str());
-      shield_sprite->set_synchronized_to(tunic_sprite);
-      if (shield_animation.empty()) {
-        shield_sprite->stop_animation();
-      }
-      else {
-        shield_sprite->set_current_animation(shield_animation);
-      }
-    }
+  oss.clear();
+  oss.str("");
+  oss << "hero/sword_stars" << sword_number;
+  delete sword_stars_sprite;
+  sword_stars_sprite = NULL;
+  sword_stars_sprite = new Sprite(oss.str());  // TODO
+  sword_stars_sprite->stop_animation();
+
+  // The hero's shield.
+  if (has_default_shield_sprite()) {
+    set_shield_sprite_id(get_default_shield_sprite_id());
   }
 
   // The trail.
@@ -233,6 +169,44 @@ void HeroSprites::rebuild_equipment() {
   if (animation_direction != -1) {
     set_animation_direction(animation_direction);
   }
+}
+
+/**
+ * \brief Returns the animation set id used for the tunic sprite.
+ * \return The tunic sprite animation set id.
+ */
+const std::string& HeroSprites::get_tunic_sprite_id() const {
+
+  return tunic_sprite_id;
+}
+
+/**
+ * \brief Sets the animation set id to use for the tunic sprite.
+ * \param sprite_id The tunic sprite animation set id.
+ */
+void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
+
+  if (sprite_id == this->tunic_sprite_id) {
+    return;
+  }
+
+  this->tunic_sprite_id = sprite_id;
+
+  std::string animation;
+  if (tunic_sprite != NULL) {
+    // Delete the previous sprite, but save its animation.
+    animation = tunic_sprite->get_current_animation();
+    delete tunic_sprite;
+    tunic_sprite = NULL;
+  }
+
+  tunic_sprite = new Sprite(sprite_id);
+  tunic_sprite->enable_pixel_collisions();
+  if (!animation.empty()) {
+    set_tunic_animation(animation);
+  }
+
+  // TODO synchronize other sprites to the new tunic sprite.
 }
 
 /**
@@ -261,6 +235,52 @@ bool HeroSprites::has_default_tunic_sprite() const {
 }
 
 /**
+ * \brief Returns the animation set id used for the sword sprite.
+ * \return The sword sprite animation set id.
+ */
+const std::string& HeroSprites::get_sword_sprite_id() const {
+
+  return sword_sprite_id;
+}
+
+/**
+ * \brief Sets the animation set id to use for the sword sprite.
+ * \param sprite_id The sword sprite animation set id.
+ * An empty string means no sword sprite.
+ */
+void HeroSprites::set_sword_sprite_id(const std::string& sprite_id) {
+
+  if (sprite_id == this->sword_sprite_id) {
+    return;
+  }
+
+  this->sword_sprite_id = sprite_id;
+
+  std::string animation;
+  if (sword_sprite != NULL) {
+    // Delete the previous sprite, but save its animation.
+    if (sword_sprite->is_animation_started()) {
+      animation = sword_sprite->get_current_animation();
+    }
+    delete sword_sprite;
+    sword_sprite = NULL;
+  }
+
+  if (!sprite_id.empty()) {
+    // There is a sword sprite specified.
+    sword_sprite = new Sprite(sprite_id);
+    sword_sprite->enable_pixel_collisions();
+    sword_sprite->set_synchronized_to(tunic_sprite);
+    if (animation.empty()) {
+      sword_sprite->stop_animation();
+    }
+    else {
+      sword_sprite->set_current_animation(animation);
+    }
+  }
+}
+
+/**
  * \brief Returns the animation set id of the default sword sprite.
  *
  * The default sword sprite id is "hero/swordX" where X is the sword level.
@@ -270,6 +290,10 @@ bool HeroSprites::has_default_tunic_sprite() const {
 std::string HeroSprites::get_default_sword_sprite_id() const {
 
   const int sword_level = equipment.get_ability(ABILITY_SWORD);
+  if (sword_level == 0) {
+    return "";
+  }
+
   std::ostringstream oss;
   oss << "hero/sword" << sword_level;
   return oss.str();
@@ -286,6 +310,51 @@ bool HeroSprites::has_default_sword_sprite() const {
 }
 
 /**
+ * \brief Returns the animation set id used for the shield sprite.
+ * \return The shield sprite animation set id.
+ */
+const std::string& HeroSprites::get_shield_sprite_id() const {
+
+  return shield_sprite_id;
+}
+
+/**
+ * \brief Sets the animation set id to use for the shield sprite.
+ * \param sprite_id The shield sprite animation set id.
+ * An empty string means no sword sprite.
+ */
+void HeroSprites::set_shield_sprite_id(const std::string& sprite_id) {
+
+  if (sprite_id == this->shield_sprite_id) {
+    return;
+  }
+ 
+  this->shield_sprite_id = sprite_id;
+
+  std::string animation;
+  if (shield_sprite != NULL) {
+    // Delete the previous sprite, but save its animation.
+    if (shield_sprite->is_animation_started()) {
+      animation = shield_sprite->get_current_animation();
+    }
+    delete shield_sprite;
+    shield_sprite = NULL;
+  }
+
+  if (!sprite_id.empty()) {
+    // There is a shield sprite specified.
+    shield_sprite = new Sprite(sprite_id);
+    shield_sprite->set_synchronized_to(tunic_sprite);
+    if (animation.empty()) {
+      shield_sprite->stop_animation();
+    }
+    else {
+      shield_sprite->set_current_animation(animation);
+    }
+  }
+}
+
+/**
  * \brief Returns the animation set id of the default shield sprite.
  *
  * The default shield sprite id is "hero/shieldX" where X is the shield level.
@@ -295,6 +364,10 @@ bool HeroSprites::has_default_sword_sprite() const {
 std::string HeroSprites::get_default_shield_sprite_id() const {
 
   const int shield_level = equipment.get_ability(ABILITY_SHIELD);
+  if (shield_level == 0) {
+    return "";
+  }
+
   std::ostringstream oss;
   oss << "hero/shield" << shield_level;
   return oss.str();

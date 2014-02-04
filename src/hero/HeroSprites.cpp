@@ -77,7 +77,8 @@ HeroSprites::HeroSprites(Hero& hero, Equipment& equipment):
   end_blink_date(0),
   walking(false),
   clipping_rectangle(Rectangle()),
-  lifted_item(NULL) {
+  lifted_item(NULL),
+  animation_callback_ref(LUA_REFNIL) {
 
   rebuild_equipment();
 }

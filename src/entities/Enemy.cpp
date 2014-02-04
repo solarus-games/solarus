@@ -1207,6 +1207,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
 
     case EnemyReaction::IMMOBILIZED:
       // get immobilized
+      being_hurt = true;
       hurt(source, this_sprite);
       immobilize();
       break;

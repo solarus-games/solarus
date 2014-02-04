@@ -214,6 +214,25 @@ You can use this function if you want to use another sprite.
   of the hero's sword.
   An empty string means no sword sprite.
 
+\subsection lua_api_hero_get_sword_sound_id hero:get_sword_sound_id()
+
+Returns the name of the sound played when the hero uses the sword.
+- Return value (string): The sound id of the hero's sword.
+
+\subsection lua_api_hero_set_sword_sound_id hero:set_sword_sound_id(sound_id)
+
+Changes the sound to play when the hero uses the sword.
+
+By default, the sound used for the sword is
+\c "swordX",
+where X is the
+\ref lua_api_game_get_ability "sword level",
+or no sound if the sword level is \c 0.
+
+You can use this function if you want another sound to be played.
+- \c sound_id (string): The sound id of the hero's sword.
+  An empty string means no sword sound.
+
 \subsection lua_api_hero_get_shield_sprite_id hero:get_shield_sprite_id()
 
 Returns the name of the sprite representing the hero's shield.

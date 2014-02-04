@@ -76,6 +76,7 @@ class HeroSprites {
     void restore_animation_direction();
     void set_ignore_suspend(bool ignore_suspend);
 
+    bool has_tunic_animation(const std::string& animation) const;
     const std::string& get_tunic_animation() const;
 
     void set_animation_stopped_common();

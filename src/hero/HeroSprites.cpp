@@ -1385,6 +1385,16 @@ void HeroSprites::set_animation_boomerang(
 }
 
 /**
+ * \brief Returns whether the specified animation exists in the tunic sprite.
+ * \param animation Name of the animation to check.
+ * \return \c true if the tunic sprite has an animation with this name.
+ */
+bool HeroSprites::has_tunic_animation(const std::string& animation) const {
+
+  return tunic_sprite->has_animation(animation);
+}
+
+/**
  * \brief Returns the current animation of the tunic sprite.
  * \return The animation name of the tunic sprite.
  */

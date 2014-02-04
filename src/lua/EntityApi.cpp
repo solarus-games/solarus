@@ -158,6 +158,16 @@ void LuaContext::register_entity_module() {
       { "set_walking_speed", hero_api_set_walking_speed },
       { "save_solid_ground", hero_api_save_solid_ground },
       { "reset_solid_ground", hero_api_reset_solid_ground },
+      { "get_animation", hero_api_get_animation },
+      { "set_animation", hero_api_set_animation },
+      { "get_tunic_sprite_id", hero_api_get_tunic_sprite_id },
+      { "set_tunic_sprite_id", hero_api_set_tunic_sprite_id },
+      { "get_sword_sprite_id", hero_api_get_sword_sprite_id },
+      { "set_sword_sprite_id", hero_api_set_sword_sprite_id },
+      { "get_sword_sound_id", hero_api_get_sword_sound_id },
+      { "set_sword_sound_id", hero_api_set_sword_sound_id },
+      { "get_shield_sprite_id", hero_api_get_shield_sprite_id },
+      { "set_shield_sprite_id", hero_api_set_shield_sprite_id },
       { "is_blinking", hero_api_is_blinking },
       { "set_blinking", hero_api_set_blinking },
       { "is_invincible", hero_api_is_invincible },
@@ -1294,6 +1304,165 @@ int LuaContext::hero_api_reset_solid_ground(lua_State* l) {
   Hero& hero = check_hero(l, 1);
 
   hero.reset_target_solid_ground_coords();
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of hero:get_animation().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_get_animation(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  const std::string& animation = hero.get_sprites().get_tunic_animation();
+
+  push_string(l, animation);
+  return 1;
+}
+
+/**
+ * \brief Implementation of hero:set_animation().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_animation(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  const std::string& animation = luaL_checkstring(l, 2);
+
+  HeroSprites& sprites = hero.get_sprites();
+  if (!sprites.has_tunic_animation(animation)) {
+    LuaTools::arg_error(l, 2,
+        std::string("No such animation in tunic sprite: '") + animation + "'"
+    );
+  }
+
+  sprites.set_animation(animation);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of hero:get_tunic_sprite_id().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_get_tunic_sprite_id(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  const std::string& sprite_id = hero.get_sprites().get_tunic_sprite_id();
+
+  push_string(l, sprite_id);
+  return 1;
+}
+
+/**
+ * \brief Implementation of hero:set_tunic_sprite_id().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_tunic_sprite_id(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  const std::string& sprite_id = luaL_checkstring(l, 2);
+
+  // TODO check the existence of the sprite animation set
+  // (see also sol.sprite.create()).
+  hero.get_sprites().set_tunic_sprite_id(sprite_id);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of hero:get_sword_sprite_id().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_get_sword_sprite_id(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  const std::string& sprite_id = hero.get_sprites().get_sword_sprite_id();
+
+  push_string(l, sprite_id);
+  return 1;
+}
+
+/**
+ * \brief Implementation of hero:set_sword_sprite_id().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_sword_sprite_id(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  const std::string& sprite_id = luaL_checkstring(l, 2);
+
+  hero.get_sprites().set_sword_sprite_id(sprite_id);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of hero:get_sword_sound_id().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_get_sword_sound_id(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  const std::string& sound_id = hero.get_sprites().get_sword_sound_id();
+
+  push_string(l, sound_id);
+  return 1;
+}
+
+/**
+ * \brief Implementation of hero:set_sword_sound_id().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_sword_sound_id(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  const std::string& sound_id = luaL_checkstring(l, 2);
+
+  hero.get_sprites().set_sword_sound_id(sound_id);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of hero:get_shield_sprite_id().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_get_shield_sprite_id(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  const std::string& sprite_id = hero.get_sprites().get_shield_sprite_id();
+
+  push_string(l, sprite_id);
+  return 1;
+}
+
+/**
+ * \brief Implementation of hero:set_shield_sprite_id().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_shield_sprite_id(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  const std::string& sprite_id = luaL_checkstring(l, 2);
+
+  hero.get_sprites().set_shield_sprite_id(sprite_id);
 
   return 0;
 }
@@ -2501,7 +2670,7 @@ int LuaContext::pickable_api_get_treasure(lua_State* l) {
 
   push_item(l, treasure.get_item());
   lua_pushinteger(l, treasure.get_variant());
-  lua_pushstring(l, treasure.get_savegame_variable().c_str());
+  push_string(l, treasure.get_savegame_variable());
   return 3;
 }
 
@@ -2553,7 +2722,7 @@ int LuaContext::destructible_api_get_treasure(lua_State* l) {
 
   push_item(l, treasure.get_item());
   lua_pushinteger(l, treasure.get_variant());
-  lua_pushstring(l, treasure.get_savegame_variable().c_str());
+  push_string(l, treasure.get_savegame_variable());
   return 3;
 }
 

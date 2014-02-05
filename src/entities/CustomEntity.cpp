@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/CustomEntity.h"
+#include "lua/LuaContext.h"
 #include "Sprite.h"
 
 namespace solarus {
@@ -50,6 +51,7 @@ CustomEntity::CustomEntity(
 
   model(model) {
 
+  set_origin(8, 13);
   initialize_sprite(sprite_name, direction);
 }
 
@@ -92,6 +94,16 @@ void CustomEntity::initialize_sprite(
       sprite.set_current_direction(initial_direction);
     }
   }
+}
+
+/**
+ * \copydoc MapEntity::set_map
+ */
+void CustomEntity::set_map(Map& map) {
+
+  Detector::set_map(map);
+
+  get_lua_context().run_custom_entity(*this);
 }
 
 /**

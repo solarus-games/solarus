@@ -5,11 +5,11 @@ Done:
 - Support custom entities in the quest editor.
 - Document map:create_custom_entity().
 - Implement map:create_custom_entity().
-- Load custom entities from map data files.
 - Implement basic properties in the engine: size, sprite, direction.
+- Load custom entities from map data files.
+- Load model scripts.
 
 To be done:
-- Load model scripts.
 - Document the custom_entity Lua type.
 - Implement the Lua API of the custom_entity Lua type.
 

@@ -914,7 +914,7 @@ void Enemy::set_suspended(bool suspended) {
     end_shaking_date += diff;
     next_explosion_date += diff;
   }
-  get_lua_context().enemy_on_suspended(*this, suspended);
+  get_lua_context().entity_on_suspended(*this, suspended);
 }
 
 /**

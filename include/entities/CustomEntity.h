@@ -50,6 +50,8 @@ class CustomEntity: public Detector {
 
     const std::string& get_model() const;
 
+    void set_map(Map& map);
+
     bool is_obstacle_for(const MapEntity& other) const;
 
     /* TODO

@@ -17,6 +17,7 @@
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 #include "entities/Destination.h"
+#include "entities/Pickable.h"
 #include "entities/Switch.h"
 #include "entities/Sensor.h"
 #include "entities/Npc.h"
@@ -25,7 +26,7 @@
 #include "entities/Door.h"
 #include "entities/Block.h"
 #include "entities/Enemy.h"
-#include "entities/Pickable.h"
+#include "entities/CustomEntity.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "Equipment.h"
@@ -301,9 +302,45 @@ void LuaContext::run_enemy(Enemy& enemy) {
     push_enemy(l, enemy);
     call_function(1, 0, file_name.c_str());
 
-    enemy_on_suspended(enemy, enemy.is_suspended());
-    enemy_on_created(enemy);
+    entity_on_suspended(enemy, enemy.is_suspended());
+    entity_on_created(enemy);
   }
+
+  // TODO parse Lua only once for each breed.
+}
+
+/**
+ * \brief Notifies the Lua world that a custom entity has just been added to
+ * the map.
+ *
+ * The Lua file of this entity if any is automatically loaded.
+ *
+ * \param custom_entity The custom entity.
+ */
+void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
+
+  const std::string& model = custom_entity.get_model();
+
+  if (model.empty()) {
+    // No Lua model file to run for this entity.
+    return;
+  }
+
+  // Compute the file name depending on the model.
+  std::string file_name = (std::string) "entities/" + model;
+
+  // Load the entity's code.
+  if (load_file_if_exists(l, file_name)) {
+
+    // Run it with the entity userdata as parameter.
+    push_custom_entity(l, custom_entity);
+    call_function(1, 0, file_name.c_str());
+
+    entity_on_suspended(custom_entity, custom_entity.is_suspended());
+    entity_on_created(custom_entity);
+  }
+
+  // TODO parse Lua only once for each model.
 }
 
 /**

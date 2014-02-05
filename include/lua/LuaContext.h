@@ -100,6 +100,7 @@ class LuaContext {
     void run_item(EquipmentItem& item);
     void run_map(Map& map, Destination* destination);
     void run_enemy(Enemy& enemy);
+    void run_custom_entity(CustomEntity& custom_entity);
 
     // Lua refs.
     int create_ref();
@@ -231,7 +232,8 @@ class LuaContext {
     bool map_on_command_released(Map& map, GameCommands::Command command);
 
     // Map entity events.
-    // TODO entity_on_created
+    void entity_on_suspended(MapEntity& entity, bool suspended);
+    void entity_on_created(MapEntity& entity);
     void entity_on_removed(MapEntity& entity);
     void entity_on_position_changed(MapEntity& entity, const Rectangle& xy, Layer layer);
     void entity_on_obstacle_reached(MapEntity& entity, Movement& movement);
@@ -266,8 +268,6 @@ class LuaContext {
     void destructible_on_exploded(Destructible& destructible);
     void destructible_on_regenerating(Destructible& destructible);
     void enemy_on_update(Enemy& enemy);
-    void enemy_on_suspended(Enemy& enemy, bool suspended);
-    void enemy_on_created(Enemy& enemy);  // TODO remove?
     void enemy_on_enabled(Enemy& enemy);
     void enemy_on_disabled(Enemy& enemy);
     void enemy_on_restarted(Enemy& enemy);

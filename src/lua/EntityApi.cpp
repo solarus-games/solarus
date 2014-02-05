@@ -3719,6 +3719,43 @@ int LuaContext::custom_entity_api_get_model(lua_State* l) {
 }
 
 /**
+ * \brief Calls the on_suspended() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ * \param suspended \c true if the entity is suspended.
+ */
+void LuaContext::entity_on_suspended(MapEntity& entity, bool suspended) {
+
+  if (!userdata_has_field(entity, "on_suspended")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_suspended(suspended);
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_created() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_created(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_created")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_created();
+  lua_pop(l, 1);
+}
+
+/**
  * \brief Calls the on_removed() method of a Lua map entity if it is defined.
  *
  * Also stops timers associated to the entity.
@@ -4347,43 +4384,6 @@ void LuaContext::enemy_on_update(Enemy& enemy) {
 
   push_enemy(l, enemy);
   on_update();
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_suspended() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- * \param suspended true if the enemy is suspended.
- */
-void LuaContext::enemy_on_suspended(Enemy& enemy, bool suspended) {
-
-  if (!userdata_has_field(enemy, "on_suspended")) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_suspended(suspended);
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_created() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_created(Enemy& enemy) {
-
-  if (!userdata_has_field(enemy, "on_created")) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_created();
   lua_pop(l, 1);
 }
 

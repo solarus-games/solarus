@@ -105,7 +105,7 @@ HeroSprites::~HeroSprites() {
  * \return The Lua context.
  */
 LuaContext& HeroSprites::get_lua_context() {
-  return hero.get_game().get_lua_context();
+  return hero.get_lua_context();
 }
 
 /**

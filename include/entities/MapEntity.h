@@ -80,6 +80,7 @@ class MapEntity: public ExportableToLua {
     virtual void notify_tileset_changed();
     Game& get_game();
     const Game& get_game() const;
+    LuaContext& get_lua_context();
 
     // position in the map
     Layer get_layer() const;
@@ -284,7 +285,6 @@ class MapEntity: public ExportableToLua {
     void update_ground_below();
 
     // easy access to various game objects
-    LuaContext& get_lua_context();
     MapEntities& get_entities();
     const MapEntities& get_entities() const;
     Equipment& get_equipment();

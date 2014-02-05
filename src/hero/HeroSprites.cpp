@@ -207,7 +207,6 @@ void HeroSprites::set_tunic_sprite_id(const std::string& sprite_id) {
     set_tunic_animation(animation);
   }
 
-
   if (sprite_id == get_default_tunic_sprite_id()) {
     has_default_tunic_sprite = true;
   }
@@ -776,8 +775,9 @@ void HeroSprites::update() {
   // Lua callback.
   if (tunic_sprite->is_animation_finished()
       && animation_callback_ref != LUA_REFNIL) {
-    get_lua_context().do_callback(animation_callback_ref);
+    int callback_ref = this->animation_callback_ref;
     this->animation_callback_ref = LUA_REFNIL;
+    get_lua_context().do_callback(callback_ref);
   }
 }
 

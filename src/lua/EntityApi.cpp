@@ -1333,6 +1333,13 @@ int LuaContext::hero_api_set_animation(lua_State* l) {
   Hero& hero = check_hero(l, 1);
   const std::string& animation = luaL_checkstring(l, 2);
 
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 3) {
+    luaL_checktype(l, 3, LUA_TFUNCTION);
+    lua_settop(l, 3);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
+
   HeroSprites& sprites = hero.get_sprites();
   if (!sprites.has_tunic_animation(animation)) {
     LuaTools::arg_error(l, 2,
@@ -1340,7 +1347,7 @@ int LuaContext::hero_api_set_animation(lua_State* l) {
     );
   }
 
-  sprites.set_animation(animation);
+  sprites.set_animation(animation, callback_ref);
 
   return 0;
 }

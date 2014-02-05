@@ -55,8 +55,6 @@ Specific to custom entity:
 get_model()
 has_layer_independent_collisions()
 set_layer_independent_collisions()
-is_traversable()
-set_traversable()
 set_size()
 set_direction()
 set_origin()
@@ -74,24 +72,32 @@ get/set_facing_point()
 is/set_sword_ignored()
 get/set_sword_tapping_sound()
 
-set_entity_type_traversable(entity_type, traversable)
-  Describes if a type of entities can be traversed by this custom entity.
+is_traversable_by(entity_type)
+set_traversable_by(entity_type, traversable)
+  Describes if another entity can traverse this custom entity.
   The traversable parameter may be:
-  - a boolean (fast): whether that entity type is traversable or not.
-  - nil (fast): default.
+  - a boolean (fast): whether the entity type can traverse this custom entity.
+  - nil (fast): default (false).
   - a function: a function that takes the other entity as parameter and should
     return a boolean or nil. Allows to decide dynamically.
-Also allow a table parameter with entity_type as keys?
-is_entity_traversable(entity_type)
+  entity_type is optional: if it is not set, this applies to all entity types.
 
-set_ground_traversable(ground, traversable)
-is_ground_traversable(ground)
+can_traverse(entity_type)
+set_can_traverse(entity_type, traversable)
+  Describes if this custom entity can traverse another entity.
+  The traversable parameter may be:
+  - a boolean (fast): whether that entity type is traversable or not.
+  - nil (fast): default (depends on the other entity).
+  - a function: a function that takes the other entity as parameter and should
+    return a boolean or nil. Allows to decide dynamically.
+  entity_type is optional: if it is not set, this applies to all entity types.
 
-How to specify what entities can traverse this custom entity?
+can_traverse_ground(ground)
+set_can_traverse_ground(ground, traversable)
 
-set_collision_mode(mode, ...)
-  With modes being strings or functions that take an entity and return a boolean.
-get_collision_modes
+add_collision_detector(detector, callback)
+  detector is a string or a function that takes an entity and returns a boolean.
+  callback is a function that takes the entity detected.
 
 Events:
 

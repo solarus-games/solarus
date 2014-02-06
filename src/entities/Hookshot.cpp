@@ -436,7 +436,7 @@ void Hookshot::notify_collision_with_block(Block& block) {
  */
 void Hookshot::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
-  if (is_flying() && collision_mode == COLLISION_RECTANGLE) {
+  if (is_flying() && collision_mode == COLLISION_OVERLAPPING) {
 
     sw.try_activate();
     if (!is_going_back()) {

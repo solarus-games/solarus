@@ -31,7 +31,7 @@ namespace solarus {
  */
 ConveyorBelt::ConveyorBelt(const std::string& name,
     Layer layer, int x, int y, int direction):
-  Detector(COLLISION_RECTANGLE, name, layer, x, y, 16, 16) {
+  Detector(COLLISION_OVERLAPPING, name, layer, x, y, 16, 16) {
 
   set_origin(8, 13);
   create_sprite("entities/conveyor_belt");

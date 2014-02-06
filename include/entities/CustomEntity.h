@@ -54,6 +54,8 @@ class CustomEntity: public Detector {
 
     bool is_obstacle_for(const MapEntity& other) const;
 
+    virtual bool test_collision_custom(MapEntity& entity);
+
     /* TODO
     bool can_be_obstacle() const;
     bool is_ground_observer() const;
@@ -135,8 +137,6 @@ class CustomEntity: public Detector {
     virtual bool start_movement_by_hero();
     virtual void stop_movement_by_hero();
     virtual std::string get_sword_tapping_sound();
-    virtual bool test_collision_custom(MapEntity& entity);
-
 */
 
   private:

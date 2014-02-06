@@ -643,7 +643,7 @@ bool CarriedItem::is_enemy_obstacle(const Enemy& enemy) const {
  */
 void CarriedItem::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_RECTANGLE
+  if (collision_mode == COLLISION_OVERLAPPING
       && is_being_thrown()
       && !can_explode()) {
 
@@ -659,7 +659,7 @@ void CarriedItem::notify_collision_with_switch(Switch& sw, CollisionMode collisi
  */
 void CarriedItem::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_RECTANGLE
+  if (collision_mode == COLLISION_OVERLAPPING
       && is_being_thrown()
       && !can_explode()) {
 

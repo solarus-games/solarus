@@ -419,7 +419,7 @@ void Arrow::notify_collision_with_switch(Switch& sw, CollisionMode collision_mod
  */
 void Arrow::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_RECTANGLE && is_flying()) {
+  if (collision_mode == COLLISION_OVERLAPPING && is_flying()) {
 
     crystal.activate(*this);
     attach_to(crystal);

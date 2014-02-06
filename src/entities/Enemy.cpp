@@ -87,7 +87,7 @@ Enemy::Enemy(
     const std::string& breed,
     const Treasure& treasure):
 
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE,
+  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE,
       name, layer, x, y, 0, 0),
 
   breed(breed),

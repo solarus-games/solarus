@@ -36,7 +36,7 @@ namespace solarus {
  * \param y y coordinate of the entity to create
  */
 Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
-  Detector(COLLISION_SPRITE | COLLISION_RECTANGLE | COLLISION_FACING_POINT,
+  Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING | COLLISION_FACING,
       name, layer, x, y, 16, 16),
   state(false),
   next_possible_hit_date(System::now()) {

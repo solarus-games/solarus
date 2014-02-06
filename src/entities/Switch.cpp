@@ -65,12 +65,12 @@ Switch::Switch(
     }
   }
   else if (subtype == ARROW_TARGET) {
-    set_collision_modes(COLLISION_FACING_POINT);
+    set_collision_modes(COLLISION_FACING);
   }
   else if (subtype == SOLID) {
     create_sprite("entities/solid_switch");
     get_sprite().set_current_animation("inactivated");
-    set_collision_modes(COLLISION_SPRITE | COLLISION_RECTANGLE);
+    set_collision_modes(COLLISION_SPRITE | COLLISION_OVERLAPPING);
     set_optimization_distance(2000);  // Because of bombs and arrows on the switch.
   }
 }

@@ -40,7 +40,7 @@ namespace solarus {
  * \param y y coordinate of the entity to create
  */
 Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
   explosion_date(System::now() + 6000) {
 
   create_sprite("entities/bomb");

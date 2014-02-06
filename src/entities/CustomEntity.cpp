@@ -46,7 +46,7 @@ CustomEntity::CustomEntity(
     const std::string& model):
 
   Detector(
-      COLLISION_RECTANGLE,
+      COLLISION_CUSTOM,
       name, layer, x, y, width, height),
 
   model(model) {
@@ -114,6 +114,15 @@ void CustomEntity::set_map(Map& map) {
 bool CustomEntity::is_obstacle_for(const MapEntity& other) const {
   // TODO
   return true;
+}
+
+/**
+ * \copydoc Detector::test_collision_custom
+ */
+bool CustomEntity::test_collision_custom(MapEntity& entity) {
+
+  // TODO
+  return false;
 }
 
 }

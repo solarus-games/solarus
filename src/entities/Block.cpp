@@ -54,7 +54,7 @@ Block::Block(
     bool can_be_pushed,
     bool can_be_pulled,
     int maximum_moves):
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
   maximum_moves(maximum_moves),
   sound_played(false),
   when_can_move(System::now()),

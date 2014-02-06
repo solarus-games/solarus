@@ -1715,7 +1715,7 @@ void Hero::notify_collision_with_stairs(
           Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
     else {
-      stairs_way = (collision_mode == COLLISION_FACING_POINT_ANY) ?
+      stairs_way = (collision_mode == COLLISION_TOUCHING) ?
           Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
 
@@ -1745,7 +1745,7 @@ void Hero::notify_collision_with_jumper(Jumper& jumper,
  */
 void Hero::notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_INSIDE    // the hero is entirely inside the sensor
+  if (collision_mode == COLLISION_CONTAINING    // the hero is entirely inside the sensor
       && !state->can_avoid_sensor()) {
     sensor.activate(*this);
   }
@@ -1790,7 +1790,7 @@ void Hero::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) 
  */
 void Hero::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_FACING_POINT) {
+  if (collision_mode == COLLISION_FACING) {
     // the hero is touching the crystal and is looking in its direction
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
@@ -1863,7 +1863,7 @@ void Hero::notify_collision_with_separator(
  */
 void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_FACING_POINT) {
+  if (collision_mode == COLLISION_FACING) {
     // the hero is touching the bomb and is looking in its direction
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE

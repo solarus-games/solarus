@@ -49,7 +49,7 @@ namespace solarus {
 Npc::Npc(Game& game, const std::string& name, Layer layer, int x, int y,
     Subtype subtype, const std::string& sprite_name,
     int direction, const std::string& behavior_string):
-  Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, name, layer, x, y, 0, 0),
+  Detector(COLLISION_FACING | COLLISION_OVERLAPPING, name, layer, x, y, 0, 0),
   subtype(subtype),
   dialog_to_show(""),
   item_name("") {
@@ -197,7 +197,7 @@ bool Npc::is_sword_ignored() const {
  */
 void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_FACING_POINT && entity_overlapping.is_hero()) {
+  if (collision_mode == COLLISION_FACING && entity_overlapping.is_hero()) {
 
     Hero& hero = static_cast<Hero&>(entity_overlapping);
 
@@ -217,7 +217,7 @@ void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
       }
     }
   }
-  else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == ENTITY_FIRE) {
+  else if (collision_mode == COLLISION_OVERLAPPING && entity_overlapping.get_type() == ENTITY_FIRE) {
 
     if (behavior == BEHAVIOR_ITEM_SCRIPT) {
       EquipmentItem& item = get_equipment().get_item(item_name);

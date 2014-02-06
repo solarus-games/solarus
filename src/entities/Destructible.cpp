@@ -291,7 +291,7 @@ void Destructible::update_collision_modes() {
   // Sets the new ones.
   if (get_modified_ground() == GROUND_WALL) {
     // The object can be lifted.
-    add_collision_mode(COLLISION_FACING_POINT);
+    add_collision_mode(COLLISION_FACING);
   }
 
   if (get_can_be_cut()

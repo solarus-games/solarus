@@ -50,7 +50,7 @@ ShopTreasure::ShopTreasure(
     const Treasure& treasure,
     int price,
     const std::string& dialog_id):
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, 32, 32),
+  Detector(COLLISION_FACING, name, layer, x, y, 32, 32),
   treasure(treasure),
   price(price),
   dialog_id(dialog_id),

@@ -40,7 +40,7 @@ namespace solarus {
  */
 CrystalBlock::CrystalBlock(Game& game, const std::string& name,
     Layer layer, int x, int y, int width, int height, Subtype subtype):
-  Detector(COLLISION_RECTANGLE, name, layer, x, y, width, height),
+  Detector(COLLISION_OVERLAPPING, name, layer, x, y, width, height),
   subtype(subtype) {
 
   create_sprite("entities/crystal_block");

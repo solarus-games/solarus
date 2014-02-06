@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include <map>
+#include <set>
 
 namespace solarus {
 
@@ -152,6 +154,29 @@ class CustomEntity: public Detector {
         const std::string& sprite_name, int initial_direction);
 
     const std::string& model;          /**< Model of this custom entity or an empty string. */
+
+    // Obstacles.
+
+    /**
+     * \brief Stores whether a custom entity can be traversed by or can traverse
+     * other entities or grounds.
+     */
+    struct TraversableInfo {
+
+        int is_traversable_ref;        /**< Lua ref to a boolean function
+                                        * that decides, or LUA_REFNIL. */
+        bool traversable;              /**< Traversable property (unused if
+                                        * there is a Lua function). */
+    };
+
+    TraversableInfo default_traversable_by_entities;
+    std::map<EntityType, TraversableInfo> traversable_by_entities;
+
+    TraversableInfo default_can_traverse_entities;
+    std::map<EntityType, TraversableInfo> can_traverse_entities;
+    std::set<Ground> can_traverse_grounds;
+
+    // Collisions.
 
     /**
      * \brief Stores a callback to be executed when the specified test

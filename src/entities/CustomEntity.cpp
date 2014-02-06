@@ -297,7 +297,7 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
       it != detected_collision_callbacks.end();
       ++it) {
     int callback_ref = *it;
-    get_lua_context().do_callback(callback_ref);  // FIXME don't cancel the callback
+    get_lua_context().do_callback(callback_ref);
   }
 
   detected_collision_callbacks.clear();
@@ -315,7 +315,7 @@ void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprit
 
     const CollisionInfo& info = *it;
     if (info.built_in_test == COLLISION_SPRITE) {
-      get_lua_context().do_callback(info.callback_ref);  // FIXME don't cancel the callback
+      get_lua_context().do_callback(info.callback_ref);
     }
   }
 }

@@ -314,6 +314,7 @@ void Movement::notify_movement_finished() {
     int callback_ref = finished_callback_ref;
     finished_callback_ref = LUA_REFNIL;
     lua_context->do_callback(callback_ref);
+    lua_context->cancel_callback(callback_ref);
     lua_context->movement_on_finished(*this);
   }
 

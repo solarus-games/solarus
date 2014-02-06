@@ -801,7 +801,9 @@ void GameCommands::do_customization_callback() {
 
   int callback_ref = customize_callback_ref;
   customize_callback_ref = LUA_REFNIL;
-  game.get_lua_context().do_callback(callback_ref);
+  LuaContext& lua_context = game.get_lua_context();
+  lua_context.do_callback(callback_ref);
+  lua_context.cancel_callback(callback_ref);
 }
 
 /**

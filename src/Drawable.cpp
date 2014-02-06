@@ -164,6 +164,7 @@ void Drawable::update() {
       if (lua_context != NULL) {
         // Note that this callback may create a new transition right now.
         lua_context->do_callback(ref);
+        lua_context->cancel_callback(ref);
       }
     }
   }

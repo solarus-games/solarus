@@ -779,6 +779,7 @@ void HeroSprites::update() {
     int callback_ref = this->animation_callback_ref;
     this->animation_callback_ref = LUA_REFNIL;
     get_lua_context().do_callback(callback_ref);
+    get_lua_context().cancel_callback(callback_ref);
   }
 }
 

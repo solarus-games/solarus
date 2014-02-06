@@ -134,8 +134,8 @@ void Detector::set_layer_independent_collisions(bool independent) {
  *
  * This function is called by the map when an entity has just moved.
  * It checks whether the entity collides with this detector.
- * Depending on the detector collision mode(s), the appropriate has_collision_*
- * functions are called.
+ * Depending on the detector collision mode(s), the appropriate
+ * test_collision_* functions are called.
  * If there is a collision, the notify_collision() method is called.
  *
  * \param entity the entity to check

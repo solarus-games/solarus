@@ -48,13 +48,19 @@ class CustomEntity: public Detector {
 
     EntityType get_type() const;
 
-    const std::string& get_model() const;
-
     void set_map(Map& map);
+
+    const std::string& get_model() const;
+    void add_collision_test(CollisionMode collision_test, int callback_ref);
+    void add_collision_test(int collision_test_ref, int callback_ref);
 
     bool is_obstacle_for(const MapEntity& other) const;
 
     virtual bool test_collision_custom(MapEntity& entity);
+    void notify_collision(
+        MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(
+        MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
 
     /* TODO
     bool can_be_obstacle() const;
@@ -143,9 +149,34 @@ class CustomEntity: public Detector {
 
     void initialize_sprite(
         const std::string& sprite_name, int initial_direction);
+    bool test_collision_custom_function(
+        int collision_test_ref, MapEntity& entity);
 
     const std::string& model;          /**< Model of this custom entity or an empty string. */
 
+    /**
+     * \brief Stores a callback to be executed when the specified test
+     * detects a collision.
+     */
+    struct CollisionInfo {
+
+      CollisionMode built_in_test;     /**< A built-in collision test
+                                        * or COLLISION_CUSTOM. */
+      int custom_test_ref;             /**< Ref to a custom collision test
+                                        * or LUA_REFNIL. */
+      int callback_ref;                /**< Ref to the function to called when
+                                        * a collision is detected. */
+
+      CollisionInfo(CollisionMode built_in_test, int callback_ref);
+      CollisionInfo(int custom_test_ref, int callback_ref);
+    };
+
+    std::vector<CollisionInfo>
+        collision_tests;               /**< The collision tests to perform. */
+    std::vector<int>
+        detected_collision_callbacks;  /**< Callbacks corresponding to the
+                                        * detected collisions other than
+                                        * COLLISION_SPRITE. */
 };
 
 }

@@ -58,7 +58,7 @@ except that it is optional.
 - Return value (string): The model of custom entity, or \c nil if the custom
   entity has no model script.
 
-\subsection lua_api_custom_entity_add_collision_detector custom_entity:add_collision_detector(collision_test, callback)
+\subsection lua_api_custom_entity_add_collision_test custom_entity:add_collision_test(collision_test, callback)
 
 Registers a function to be called when your custom entity detects a collision
 when another entity.

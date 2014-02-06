@@ -21,6 +21,32 @@
 namespace solarus {
 
 /**
+ * \brief Creates a collision test info.
+ * \param collision_test A built-in collision test.
+ * \param callback_ref Lua ref to a function to call when this collision is
+ * detected.
+ */
+CustomEntity::CollisionInfo::CollisionInfo(CollisionMode built_in_test, int callback_ref):
+  built_in_test(built_in_test),
+  custom_test_ref(LUA_REFNIL),
+  callback_ref(callback_ref) {
+
+}
+
+/**
+ * \brief Creates a collision test info.
+ * \param collision_test_ref Lua ref to a custom collision test.
+ * \param callback_ref Lua ref to a function to call when this collision is
+ * detected.
+ */
+CustomEntity::CollisionInfo::CollisionInfo(int custom_test_ref, int callback_ref):
+  built_in_test(COLLISION_CUSTOM),
+  custom_test_ref(custom_test_ref),
+  callback_ref(callback_ref) {
+
+}
+
+/**
  * \brief Creates a custom entity.
  * \param game The game.
  * \param name Name of the entity or an empty string.
@@ -46,7 +72,7 @@ CustomEntity::CustomEntity(
     const std::string& model):
 
   Detector(
-      COLLISION_CUSTOM,
+      COLLISION_NONE,
       name, layer, x, y, width, height),
 
   model(model) {
@@ -60,6 +86,12 @@ CustomEntity::CustomEntity(
  */
 CustomEntity::~CustomEntity() {
 
+  std::vector<CollisionInfo>::iterator it;
+  for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
+
+    CollisionInfo& info = *it;
+    get_lua_context().cancel_callback(info.callback_ref);
+  }
 }
 
 /**
@@ -76,6 +108,44 @@ EntityType CustomEntity::get_type() const {
  */
 const std::string& CustomEntity::get_model() const {
   return model;
+}
+
+/**
+ * \brief Registers a function to be called when the specified test detects a
+ * collision.
+ * \param collision_test A built-in collision test.
+ * \param callback_ref Lua ref to a function to call when this collision is
+ * detected.
+ */
+void CustomEntity::add_collision_test(CollisionMode collision_test, int callback_ref) {
+
+  Debug::check_assertion(collision_test != COLLISION_NONE, "Invalid collision mode");
+  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing collision callback");
+
+  if (collision_test == COLLISION_SPRITE) {
+    add_collision_mode(COLLISION_SPRITE);
+  }
+  else {
+    add_collision_mode(COLLISION_CUSTOM);
+  }
+
+  collision_tests.push_back(CollisionInfo(collision_test, callback_ref));
+}
+
+/**
+ * \brief Registers a function to be called when the specified test detects a
+ * collision.
+ * \param collision_test_ref Lua ref to a custom collision test.
+ * \param callback_ref Lua ref to a function to call when this collision is
+ * detected.
+ */
+void CustomEntity::add_collision_test(int collision_test_ref, int callback_ref) {
+
+  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing collision callback");
+
+  add_collision_mode(COLLISION_CUSTOM);
+
+  collision_tests.push_back(CollisionInfo(collision_test_ref, callback_ref));
 }
 
 /**
@@ -121,8 +191,133 @@ bool CustomEntity::is_obstacle_for(const MapEntity& other) const {
  */
 bool CustomEntity::test_collision_custom(MapEntity& entity) {
 
+  bool collision = false;
+  detected_collision_callbacks.clear();
+
+  std::vector<CollisionInfo>::const_iterator it;
+  for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
+
+    const CollisionInfo& info = *it;
+    switch (info.built_in_test) {
+
+      case COLLISION_OVERLAPPING:
+        if (test_collision_rectangle(entity)) {
+          collision = true;
+          detected_collision_callbacks.push_back(info.callback_ref);
+        }
+        break;
+
+      case COLLISION_CONTAINING:
+        if (test_collision_inside(entity)) {
+          collision = true;
+          detected_collision_callbacks.push_back(info.callback_ref);
+        }
+        break;
+
+      case COLLISION_ORIGIN:
+        if (test_collision_origin_point(entity)) {
+          collision = true;
+          detected_collision_callbacks.push_back(info.callback_ref);
+        }
+        break;
+
+      case COLLISION_FACING:
+        if (test_collision_facing_point(entity)) {
+          collision = true;
+          detected_collision_callbacks.push_back(info.callback_ref);
+
+          // Make sure only one entity can think "I am the facing entity".
+          if (entity.get_facing_entity() == NULL) { 
+            entity.set_facing_entity(this);
+          }
+        }
+        break;
+
+      case COLLISION_TOUCHING:
+        if (test_collision_facing_point_any(entity)) {
+          collision = true;
+          detected_collision_callbacks.push_back(info.callback_ref);
+        }
+        break;
+
+      case COLLISION_CENTER:
+        if (test_collision_center(entity)) {
+          collision = true;
+          detected_collision_callbacks.push_back(info.callback_ref);
+        }
+        break;
+
+      case COLLISION_CUSTOM:
+        if (test_collision_custom_function(info.callback_ref, entity)) {
+          collision = true;
+          detected_collision_callbacks.push_back(info.callback_ref);
+        }
+        break;
+
+      case COLLISION_SPRITE:
+        // Not handled here.
+        break;
+
+      case COLLISION_NONE:
+        Debug::die("Invalid collision mode");
+        break;
+    }
+  }
+
+  return collision;
+}
+
+/**
+ * \brief Calls the specified Lua collision test function.
+ * \param collision_test_ref Lua ref to a collision test function.
+ * \param
+ */
+bool CustomEntity::test_collision_custom_function(
+    int collision_test_ref, MapEntity& entity) {
+
   // TODO
   return false;
+}
+
+/**
+ * \copydoc Detector::notify_collision(MapEntity&,CollisionMode)
+ */
+void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+
+  // A collision was detected with an another entity.
+  // The collision test could have been anything (even a custom Lua function)
+  // except COLLISION_SPRITE that is handled separately.
+
+  Debug::check_assertion(collision_mode == COLLISION_CUSTOM,
+      "Unexpected collision mode");
+
+  std::vector<int>::const_iterator it;
+
+  for (it = detected_collision_callbacks.begin();
+      it != detected_collision_callbacks.end();
+      ++it) {
+    int callback_ref = *it;
+    get_lua_context().do_callback(callback_ref);  // FIXME don't cancel the callback
+  }
+
+  detected_collision_callbacks.clear();
+}
+
+/**
+ * \copydoc Detector::notify_collision(MapEntity&,Sprite&,Sprite&)
+ */
+void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
+
+  // A collision was detected with a sprite of another entity.
+
+  std::vector<CollisionInfo>::const_iterator it;
+  for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
+
+    const CollisionInfo& info = *it;
+    if (info.built_in_test == COLLISION_SPRITE) {
+      get_lua_context().do_callback(info.callback_ref);  // FIXME don't cancel the callback
+    }
+  }
 }
 
 }

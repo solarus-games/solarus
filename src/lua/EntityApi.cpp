@@ -419,6 +419,9 @@ void LuaContext::register_entity_module() {
   static const luaL_Reg custom_entity_methods[] = {
       ENTITY_COMMON_METHODS,
       { "get_model", custom_entity_api_get_model },
+      { "get_sprite", entity_api_get_sprite },
+      { "create_sprite", entity_api_create_sprite },
+      { "remove_sprite", entity_api_remove_sprite },
       { "add_collision_test", custom_entity_api_add_collision_test },
       { NULL, NULL }
   };
@@ -3707,6 +3710,81 @@ void LuaContext::push_custom_entity(lua_State* l, CustomEntity& entity) {
 }
 
 /**
+ * \brief Calls the specified a Lua collision test function.
+ * \param collision_test_ref Lua ref to a collision test function.
+ * \param custom_entity The custom entity that is testing the collision.
+ * \param other_entity The entity to test a collision with.
+ * \return \c true if the collision test function returned \c true.
+ */
+bool LuaContext::do_custom_entity_collision_test_function(
+    int collision_test_ref,
+    CustomEntity& custom_entity,
+    MapEntity& other_entity) {
+
+  Debug::check_assertion(collision_test_ref != LUA_REFNIL,
+      "Missing collision test function");
+
+  // Call the test function.
+  push_ref(l, collision_test_ref);
+  push_custom_entity(l, custom_entity);
+  push_entity(l, other_entity);
+  call_function(l, 2, 1, "collision test function");
+
+  // See its result.
+  bool collision = lua_toboolean(l, -1);
+  lua_pop(l, 1);
+
+  return collision;
+}
+
+/**
+ * \brief Executes a callback after a custom entity detected a collision.
+ * \param callback_ref Ref of the function to call.
+ * \param custom_entity A custom entity that detected a collision.
+ * \param other_entity The entity that was detected.
+ */
+void LuaContext::do_custom_entity_collision_callback(
+    int callback_ref,
+    CustomEntity& custom_entity,
+    MapEntity& other_entity) {
+
+  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing collision callback");
+
+  push_ref(l, callback_ref);
+  push_custom_entity(l, custom_entity);
+  push_entity(l, other_entity);
+  call_function(l, 2, 0, "collision callback");
+}
+
+/**
+ * \brief Executes a callback after a custom entity detected a pixel-precise
+ * collision.
+ * \param callback_ref Ref of the function to call.
+ * \param custom_entity A custom entity that detected a collision.
+ * \param other_entity The entity that was detected.
+ * \param custom_entity_sprite Sprite of the custom entity involved in the
+ * collision.
+ * \param other_entity_sprite Sprite of the detected entity involved in the
+ * collision.
+ */
+void LuaContext::do_custom_entity_collision_callback(
+    int callback_ref,
+    CustomEntity& custom_entity,
+    MapEntity& other_entity,
+    Sprite& custom_entity_sprite,
+    Sprite& other_entity_sprite) {
+
+  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing collision callback");
+
+  push_ref(l, callback_ref);
+  push_custom_entity(l, custom_entity);
+  push_entity(l, other_entity);
+  push_sprite(l, custom_entity_sprite);
+  push_sprite(l, other_entity_sprite);
+  call_function(l, 4, 0, "collision callback");
+}
+
+/**
  * \brief Implementation of custom_entity:get_model().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -3726,13 +3804,38 @@ int LuaContext::custom_entity_api_get_model(lua_State* l) {
  */
 int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
 
-  /* TODO
   CustomEntity& entity = check_custom_entity(l, 1);
 
-  if (lua_isstring(l, 2)) {
-    CollisionMode collision_mode = LuaTools::check_enum<CollisionMode>(l, 2, Detector::collision_mode_names);
+  if (!lua_isfunction(l, 3)) {
+    luaL_typerror(l, 3, "function");
   }
-  */
+  lua_settop(l, 3);  // Make sure the callback is on the top of the stack.
+
+  if (lua_isstring(l, 2)) {
+    // Built-in collision test.
+    CollisionMode collision_mode = LuaTools::check_enum<CollisionMode>(
+        l, 2, Detector::collision_mode_names
+    );
+
+    if (collision_mode == COLLISION_NONE
+        || collision_mode == COLLISION_CUSTOM) {
+      LuaTools::arg_error(l, 2,
+          std::string("Invalid name '") + lua_tostring(l, 2) + "'"
+      );
+    }
+
+    int callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+    entity.add_collision_test(collision_mode, callback_ref);
+  }
+  else if (lua_isfunction(l, 2)) {
+    // Custom collision test.
+    int callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+    int collision_test_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+    entity.add_collision_test(collision_test_ref, callback_ref);
+  }
+  else {
+    luaL_typerror(l, 2, "string or function");
+  }
 
   return 0;
 }

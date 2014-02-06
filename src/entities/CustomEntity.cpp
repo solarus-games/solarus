@@ -227,7 +227,7 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
           detected_collision_callbacks.push_back(info.callback_ref);
 
           // Make sure only one entity can think "I am the facing entity".
-          if (entity.get_facing_entity() == NULL) { 
+          if (entity.get_facing_entity() == NULL) {
             entity.set_facing_entity(this);
           }
         }
@@ -248,7 +248,9 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
         break;
 
       case COLLISION_CUSTOM:
-        if (test_collision_custom_function(info.callback_ref, entity)) {
+        if (get_lua_context().do_custom_entity_collision_test_function(
+              info.custom_test_ref, *this, entity)
+            ) {
           collision = true;
           detected_collision_callbacks.push_back(info.callback_ref);
         }
@@ -268,24 +270,13 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
 }
 
 /**
- * \brief Calls the specified Lua collision test function.
- * \param collision_test_ref Lua ref to a collision test function.
- * \param
- */
-bool CustomEntity::test_collision_custom_function(
-    int collision_test_ref, MapEntity& entity) {
-
-  // TODO
-  return false;
-}
-
-/**
  * \copydoc Detector::notify_collision(MapEntity&,CollisionMode)
  */
 void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
-  // A collision was detected with an another entity.
-  // The collision test could have been anything (even a custom Lua function)
+  // One or several collisions were detected with an another entity.
+  // The collision tests could have been of any kind
+  // (even a custom Lua collision test function),
   // except COLLISION_SPRITE that is handled separately.
 
   Debug::check_assertion(collision_mode == COLLISION_CUSTOM,
@@ -293,11 +284,15 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
 
   std::vector<int>::const_iterator it;
 
+  // There is a collision: execute the callbacks.
   for (it = detected_collision_callbacks.begin();
       it != detected_collision_callbacks.end();
       ++it) {
+
     int callback_ref = *it;
-    get_lua_context().do_callback(callback_ref);
+    get_lua_context().do_custom_entity_collision_callback(
+        callback_ref, *this, entity_overlapping
+    );
   }
 
   detected_collision_callbacks.clear();
@@ -309,13 +304,19 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
 void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
 
   // A collision was detected with a sprite of another entity.
-
   std::vector<CollisionInfo>::const_iterator it;
   for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
 
     const CollisionInfo& info = *it;
     if (info.built_in_test == COLLISION_SPRITE) {
-      get_lua_context().do_callback(info.callback_ref);
+      // Execute the callback.
+      get_lua_context().do_custom_entity_collision_callback(
+          info.callback_ref,
+          *this,
+          other_entity,
+          this_sprite,
+          other_sprite
+      );
     }
   }
 }

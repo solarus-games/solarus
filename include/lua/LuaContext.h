@@ -105,9 +105,20 @@ class LuaContext {
     // Lua refs.
     int create_ref();
     void destroy_ref(int ref);
+
+    // Calling Lua functions.
     void push_callback(int callback_ref);
     void do_callback(int callback_ref);
     void cancel_callback(int callback_ref);
+    bool call_function(
+        int nb_arguments,
+        int nb_results,
+        const char* function_name);
+    static bool call_function(
+        lua_State* l,
+        int nb_arguments,
+        int nb_results,
+        const char* function_name);
 
     // Timers.
     void add_timer(Timer* timer, int context_index, int callback_index);
@@ -142,6 +153,24 @@ class LuaContext {
     static Map& get_entity_creation_map(lua_State* l);
     static Map* get_entity_implicit_creation_map(lua_State* l);
     static void set_entity_implicit_creation_map(lua_State* l, Map* map);
+
+    bool do_custom_entity_collision_test_function(
+        int collision_test_ref,
+        CustomEntity& custom_entity,
+        MapEntity& other_entity
+    );
+    void do_custom_entity_collision_callback(
+        int callback_ref,
+        CustomEntity& custom_entity,
+        MapEntity& other_entity
+    );
+    void do_custom_entity_collision_callback(
+        int callback_ref,
+        CustomEntity& custom_entity,
+        MapEntity& other_entity,
+        Sprite& custom_entity_sprite,
+        Sprite& other_entity_sprite
+    );
 
     // Main loop events (sol.main).
     void main_on_started();
@@ -848,15 +877,6 @@ class LuaContext {
         const ExportableToLua& userdata, const char* key) const;
     bool find_method(int index, const char* function_name);
     bool find_method(const char* function_name);
-    bool call_function(
-        int nb_arguments,
-        int nb_results,
-        const char* function_name);
-    static bool call_function(
-        lua_State* l,
-        int nb_arguments,
-        int nb_results,
-        const char* function_name);
     static void load_file(lua_State* l, const std::string& script_name);
     static bool load_file_if_exists(lua_State* l, const std::string& script_name);
     static void do_file(lua_State* l, const std::string& script_name);

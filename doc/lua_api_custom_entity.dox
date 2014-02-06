@@ -11,7 +11,7 @@ It can also be created dynamically with
 \ref lua_api_map_create_custom_entity "map:create_custom_entity()".
 
 \section lua_api_custom_entity_overview Overview
- 
+
 Custom entities have no special properties or behavior.
 You can define them entirely in your scripts.
 
@@ -58,6 +58,38 @@ except that it is optional.
 - Return value (string): The model of custom entity, or \c nil if the custom
   entity has no model script.
 
+\subsection lua_api_custom_entity_get_sprite custom_entity:get_sprite()
+
+Returns the \ref lua_api_sprite "sprite" of this custom entity.
+It may have been created at the creation of the custom entity,
+or when you called
+\ref lua_api_custom_entity_create_sprite "custom_entity:create_sprite()".
+- Return value (\ref lua_api_sprite "sprite"): The first sprite created for
+ this custom_entity.
+
+\remark If the custom entity has several sprites, the first one created is returned.
+  For the other sprites, you cannot use this function.
+  However, it is easy to store the return values of your calls to
+  \ref lua_api_custom_entity_create_sprite "custom_entity:create_sprite()".
+
+\subsection lua_api_custom_entity_create_sprite custom_entity:create_sprite(sprite_name)
+
+Creates a \ref lua_api_sprite "sprite" for this custom entity.
+- \c sprite_name (string): Name of the animation set of the
+  sprite to create.
+- Return value (\ref lua_api_sprite "sprite"): The sprite created.
+
+\subsection lua_api_custom_entity_remove_sprite custom_entity:remove_sprite([sprite])
+
+Removes and destroys a
+\ref lua_api_sprite "sprite" of this custom_entity.
+
+It may have been created at the creation of the custom entity,
+or when you called
+\ref lua_api_custom_entity_create_sprite "custom_entity:create_sprite()".
+- \c sprite (\ref lua_api_sprite "sprite"): The sprite to remove.
+  The default value is the first sprite that was created.
+
 \subsection lua_api_custom_entity_add_collision_test custom_entity:add_collision_test(collision_test, callback)
 
 Registers a function to be called when your custom entity detects a collision
@@ -92,19 +124,20 @@ when another entity.
   - \c "sprite": Collision if a sprite of the other entity overlaps a sprite of
     your custom entity.
     The collision test is pixel precise.
-  - A function: Custom collision test. The function takes an entity as
-    parameter and should return \c true if there is a collision between
-    this entity and your custom entity.
+  - A function: Custom collision test. The function takes your custom entity
+    and then the other entity as parameters and should return \c true if there
+    is a collision between them.
     This function will be called every time the engine needs to check
-    collisions between your custom entity and any entity.
+    collisions between your custom entity and any other entity.
 - \c callback (function): A function that will be called when the collision
   test detects a collision with another entity.
-  This function takes the other entity as parameter.
+  This function takes your custom entity and then the other entity as
+  parameters.
   If the collision test was \c "sprite", both involved sprites are also passed
-  as second and third parameters: the second parameter is the sprite of the
-  other entity, and the third parameter is the sprite of your custom entity.
+  as third and fourth parameters: the third parameter is the sprite of your
+  custom entity, and the fourth parameter is the sprite of the other entity.
   This may be useful when your entities have several sprites, otherwise you can
-  just ignore these additional parameters.
+  just ignore these additional sprite parameters.
 
 \section lua_api_custom_entity_inherited_events Events inherited from map entity
 

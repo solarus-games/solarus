@@ -82,7 +82,7 @@ you can factorize some code into a generic file
 and call it from each enemy breed script
 with \c require(),
 \ref lua_api_main_do_file "sol.main.do_file()"
-or 
+or
 \ref lua_api_main_load_file "sol.main.load_file()".
 
 \section lua_api_enemy_inherited_methods Methods inherited from map entity
@@ -304,7 +304,7 @@ receives an attack.
 This method returns the same result as
 \ref lua_api_enemy_get_attack_consequence
 "enemy:get_attack_consequence()",
-unless you override 
+unless you override
 the reaction of the enemy for a particular sprite with
 \ref lua_api_enemy_set_attack_consequence_sprite
 "enemy:set_attack_consequence_sprite()".
@@ -721,7 +721,7 @@ and doubled during a spin attack.
 
 Called when this enemy is hurt by any attack.
 
-This only happens if the 
+This only happens if the
 \ref lua_api_enemy_get_attack_consequence "reaction" to the attack is
 hurting the enemy.
 

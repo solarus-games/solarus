@@ -95,7 +95,7 @@ set_can_traverse(entity_type, traversable)
 can_traverse_ground(ground)
 set_can_traverse_ground(ground, traversable)
 
-add_collision_detector(detector, callback)
+add_collision_test(detector, callback)
   detector is a string or a function that takes an entity and returns a boolean.
   callback is a function that takes the entity detected and optionally both
   sprites.

@@ -24,6 +24,22 @@
 namespace solarus {
 
 /**
+ * \brief Lua name of each collision mode enmu value.
+ */
+const std::string Detector::collision_mode_names[] = {
+  "none",
+  "overlapping",
+  "containing",
+  "origin",
+  "facing",
+  "touching",
+  "center",
+  "sprite",
+  "custom",
+  ""  // Sentinel.
+};
+
+/**
  * \brief Constructor.
  * \param collision_modes the detector's collision mode(s)
  * \param name Name identifying the entity on the map or an empty string.

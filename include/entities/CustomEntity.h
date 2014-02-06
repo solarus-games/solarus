@@ -149,8 +149,6 @@ class CustomEntity: public Detector {
 
     void initialize_sprite(
         const std::string& sprite_name, int initial_direction);
-    bool test_collision_custom_function(
-        int collision_test_ref, MapEntity& entity);
 
     const std::string& model;          /**< Model of this custom entity or an empty string. */
 

@@ -204,8 +204,10 @@ But it still exists, it still has a position and it can be enabled again later.
 
 Returns the size of the bounding box of this entity.
 
-The bounding box determines the position of the entity on the map.
-It is a rectangle whose width and height are usually multiples
+The
+\ref lua_api_entity_get_bounding_box "bounding box"
+determines the position of the entity on the map.
+It is a rectangle whose width and height are multiples
 of 8 pixels.
 The bounding box is used to detect whether the entity overlaps obstacles or
 other entities.
@@ -217,13 +219,14 @@ other entities.
 
 \subsection lua_api_entity_get_origin entity:get_origin()
 
-Returns the origin point of this entity, relative to the top-left corner
-of its bounding box.
+Returns the origin point of this entity, relative to the upper left corner
+of its
+\ref lua_api_entity_get_bounding_box "bounding box".
 
 When an entity is located at some coordinates on the \ref lua_api_map "map",
 the origin points determines what exact point of the entity's bounding box
 is at those coordinates.
-It is not necessarily the top-left corner of the entity's
+It is not necessarily the upper left corner of the entity's
 bounding box.
 
 The origin point is usually be the central point of contact between the entity
@@ -241,16 +244,18 @@ has to be displayed first
 (it is always the one with the lowest Y coordinate).
 Sometimes, the engine also needs to compute an angle between two entities,
 for example to push away an enemy that was just hit.
-Using the top-left corner of their bounding box would not give the correct
+Using the upper left corner of their
+\ref lua_api_entity_get_bounding_box "bounding box"
+would not give the correct
 angle (unless both entities had the same size).
 
 The origin point is also the point of synchronization of an entity with its
 \ref lua_api_sprite "sprites" (because again, an entity that has a given
 size may have sprites with different sizes).
 - Return value 1 (number): X coordinate of the origin point in pixels,
-  relative to the top-left corner of the entity's bounding box.
+  relative to the upper left corner of the entity's bounding box.
 - Return value 2 (number): Y coordinate of the origin point in pixels,
-  relative to the top-left corner of the entity's bounding box.
+  relative to the upper left corner of the entity's bounding box.
 
 \subsection lua_api_entity_get_position entity:get_position()
 
@@ -258,23 +263,12 @@ Returns the position of this entity on the \ref lua_api_map "map"
 (coordinates and layer).
 - Return value 1 (number): X coordinate of the \ref lua_api_entity_get_origin
   "origin point" of the entity,
-  relative to the top-left corner of the map.
+  relative to the upper left corner of the map.
 - Return value 2 (number): Y coordinate of the \ref lua_api_entity_get_origin
   "origin point" of the entity,
-  relative to the top-left corner of the map.
+  relative to the upper left corner of the map.
 - Return value 3 (number): Layer where the entity is on the map
   (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
-
-\subsection lua_api_entity_get_center_position entity:get_center_position()
-
-Returns the coordinates of the center point of this entity on the
-\ref lua_api_map "map"
-- Return value 1 (number): X coordinate of the center of this entity's
-  bounding box,
-  relative to the top-left corner of the map.
-- Return value 2 (number): Y coordinate of the center of this entity's
-  bounding box,
-  relative to the top-left corner of the map.
 
 \subsection lua_api_entity_set_position entity:set_position(x, y, [layer]):
 
@@ -282,7 +276,7 @@ Changes instantly the position of this entity on the map
 (coordinates and layer).
 The \ref lua_api_entity_get_origin "origin point" of the
 entity gets placed at these coordinates,
-relative to the map's top-left corner.
+relative to the map's upper left corner.
 Any previous movement or other action performed by the entity
 continues normally.
 - \c x (number): X coordinate to set.
@@ -293,12 +287,63 @@ continues normally.
 
 \remark Be careful: this function does not check collisions with obstacles.
 
-\subsection lua_api_entity_snap_to_grid entity:snap_to_grid()
+\subsection lua_api_entity_get_center_position entity:get_center_position()
 
-Makes sure this entity's top-left corner is aligned with the 8*8 grid
-of the \ref lua_api_map "map".
+Returns the coordinates of the center point of this entity on the
+\ref lua_api_map "map".
+- Return value 1 (number): X coordinate of the center of this entity's
+  bounding box,
+  relative to the upper left corner of the map.
+- Return value 2 (number): Y coordinate of the center of this entity's
+  bounding box,
+  relative to the upper left corner of the map.
 
-\remark Be careful: this function does not check collisions with obstacles.
+\subsection lua_api_entity_get_bounding_box entity:get_bounding_box()
+
+Returns the rectangle representing the
+\ref lua_api_entity_get_position "coordinates"
+and
+\ref lua_api_get_size "size" of this entity
+on the
+\ref lua_api_map "map".
+
+The
+\ref lua_api_entity_get_bounding_box "bounding box"
+determines the position of the entity on the map.
+It is a rectangle whose width and height are multiples
+of 8 pixels.
+The bounding box is used to detect whether the entity overlaps obstacles or
+other entities.
+- Return value 1 (number): X coordinate of the upper left corner of the
+  bounding box.
+- Return value 2 (number): Y coordinate of the upper left corner of the
+  bounding box.
+- Return value 3 (number): Width of the bounding box.
+- Return value 4 (number): Height of the bounding box.
+
+\remark The sprites of this entity (if any) may exceed the bounding box.
+
+\subsection lua_api_entity_overlaps entity:overlaps(x, y, [width, height])
+
+Returns whether the
+\ref lua_api_get_bounding_box "bounding box"
+of this entity overlaps the specified rectangle or point.
+- \c x (number): X coordinate of the upper left corner of the rectangle
+  to check.
+- \c y (number): Y coordinate of the upper left corner of the rectangle
+  to check.
+- \c width (number, optional): Width of the rectangle (default \c 1).
+- \c height (number, optional): Height of the rectangle (default \c 1).
+- Return value (boolean): \c true if the bounding box of this entity overlaps
+  the rectangle.
+
+\subsection lua_api_entity_overlaps entity:overlaps(other_entity)
+
+Returns whether the
+\ref lua_api_get_bounding_box "bounding box"
+of this entity overlaps the bounding box of another one.
+- \c other_entity (entity): An entity to check.
+- Return value (boolean): \c true if both bounding boxes overlap.
 
 \subsection lua_api_entity_get_distance entity:get_distance(x, y), entity:get_distance(other_entity)
 
@@ -375,6 +420,13 @@ To compute the direction to another map entity:
 - \c other_entity (entity): An entity to target.
 - Return value (number): The direction this entity should take to look at
   the other entity, between 0 (East) and 7 (South-East).
+
+\subsection lua_api_entity_snap_to_grid entity:snap_to_grid()
+
+Makes sure this entity's upper left corner is aligned with the 8*8 grid
+of the \ref lua_api_map "map".
+
+\remark Be careful: this function does not check collisions with obstacles.
 
 \subsection lua_api_entity_bring_to_front entity:bring_to_front()
 

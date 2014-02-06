@@ -96,7 +96,9 @@ Registers a function to be called when your custom entity detects a collision
 when another entity.
 - \c collision_test (string or function): Specifies what kind of collision you
   want to test. This may be one of:
-  - \c "overlapping": Collision if the bounding box of both entities overlap.
+  - \c "overlapping": Collision if the
+    \ref lua_api_entity_get_bounding_box "bounding box"
+    of both entities overlap.
     This is often used when the other entity can traverse your custom entity.
   - \c "containing": Collision if the bounding box of the other entity is
     fully inside the bounding box of your custom entity.

@@ -700,6 +700,8 @@ class LuaContext {
       entity_api_get_position,
       entity_api_set_position,
       entity_api_get_center_position,
+      entity_api_get_bounding_box,
+      entity_api_overlaps,
       entity_api_get_distance,
       entity_api_get_angle,
       entity_api_get_direction4_to,

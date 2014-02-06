@@ -124,11 +124,13 @@ void LuaContext::register_entity_module() {
       { "get_position", entity_api_get_position },\
       { "set_position", entity_api_set_position },\
       { "get_center_position", entity_api_get_center_position },\
-      { "snap_to_grid", entity_api_snap_to_grid },\
+      { "get_bounding_box", entity_api_get_bounding_box },\
+      { "overlaps", entity_api_overlaps },\
       { "get_distance", entity_api_get_distance },\
       { "get_angle", entity_api_get_angle },\
       { "get_direction4_to", entity_api_get_direction4_to },\
       { "get_direction8_to", entity_api_get_direction8_to },\
+      { "snap_to_grid", entity_api_snap_to_grid },\
       { "bring_to_front", entity_api_bring_to_front },\
       { "bring_to_back", entity_api_bring_to_back },\
       { "get_optimization_distance", entity_api_get_optimization_distance },\
@@ -791,6 +793,49 @@ int LuaContext::entity_api_get_center_position(lua_State* l) {
   lua_pushinteger(l, center_point.get_x());
   lua_pushinteger(l, center_point.get_y());
   return 2;
+}
+
+/**
+ * \brief Implementation of entity:get_bounding_box().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_bounding_box(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  const Rectangle& bounding_box = entity.get_bounding_box();
+  lua_pushinteger(l, bounding_box.get_x());
+  lua_pushinteger(l, bounding_box.get_y());
+  lua_pushinteger(l, bounding_box.get_width());
+  lua_pushinteger(l, bounding_box.get_height());
+  return 4;
+}
+
+/**
+ * \brief Implementation of entity:overlaps().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_overlaps(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  bool overlaps = false;
+  if (is_entity(l, 2)) {
+    MapEntity& other_entity = check_entity(l, 2);
+    overlaps = entity.overlaps(other_entity);
+  }
+  else {
+    int x = luaL_checkint(l, 2);
+    int y = luaL_checkint(l, 3);
+    int width = luaL_optint(l, 4, 1);
+    int height = luaL_optint(l, 5, 1);
+    overlaps = entity.overlaps(Rectangle(x, y, width, height));
+  }
+
+  lua_pushboolean(l, overlaps);
+  return 1;
 }
 
 /**

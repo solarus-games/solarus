@@ -25,6 +25,7 @@ namespace solarus {
  * The collision mode indicates what kind of collisions a detector will detect.
  */
 enum CollisionMode {
+  // TODO rename this values
   COLLISION_NONE              = 0x0000, /**< no collision will be detected
                                          * (the detector doesn't detect any entity) */
   COLLISION_RECTANGLE         = 0x0001, /**< collision if the entity's rectangle

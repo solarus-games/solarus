@@ -65,6 +65,7 @@ when another entity.
 - \c collision_test (string or function): Specifies what kind of collision you
   want to test. This may be one of:
   - \c "overlaps": Collision if the bounding box of both entities overlap.
+    This is often used when the other entity can traverse your custom entity.
   - \c "contains": Collision if the bounding box of the other entity is
     fully inside the bounding box of your custom entity.
   - \c "origin": Collision if the \ref lua_api_entity_get_origin "origin point"
@@ -73,9 +74,15 @@ when another entity.
     "center point" of the other entity is inside the bounding box of your
     custom entity.
   - \c "touching": Collision if the bounding box of both entities are touching
-    each other. This is also \c true if they are overlapping.
-  - \c "looking": Collision if the other entity is touching your custom entity
-    while looking in its direction.
+    each other (i.e. there is no space between them).
+    This might be useful if the other entity cannot traverse your custom
+    entity.
+  - \c "looking": Same as \c "touching", but the other entity must also be
+    oriented to your custom entity.
+    For instance, if the other entity is touching the west side of your custom
+    entity, there is a collision if its direction is east.
+    This is more often used, typically to let the hero interact with your
+    entity when he is looking at it.
   - \c "sprite": Collision if a sprite of the other entity overlaps a sprite of
     your custom entity.
     The collision test is pixel precise.

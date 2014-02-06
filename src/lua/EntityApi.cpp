@@ -423,6 +423,7 @@ void LuaContext::register_entity_module() {
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
       { "add_collision_test", custom_entity_api_add_collision_test },
+      { "clear_collision_tests", custom_entity_api_clear_collision_tests },
       { NULL, NULL }
   };
 
@@ -3836,6 +3837,20 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
   else {
     luaL_typerror(l, 2, "string or function");
   }
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of custom_entity:clear_collision_tests().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_clear_collision_tests(lua_State* l) {
+
+  CustomEntity& entity = check_custom_entity(l, 1);
+
+  entity.clear_collision_tests();
 
   return 0;
 }

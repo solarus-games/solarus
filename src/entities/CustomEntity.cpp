@@ -86,12 +86,7 @@ CustomEntity::CustomEntity(
  */
 CustomEntity::~CustomEntity() {
 
-  std::vector<CollisionInfo>::iterator it;
-  for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
-
-    CollisionInfo& info = *it;
-    get_lua_context().cancel_callback(info.callback_ref);
-  }
+  clear_collision_tests();
 }
 
 /**
@@ -146,6 +141,24 @@ void CustomEntity::add_collision_test(int collision_test_ref, int callback_ref) 
   add_collision_mode(COLLISION_CUSTOM);
 
   collision_tests.push_back(CollisionInfo(collision_test_ref, callback_ref));
+}
+
+/**
+ * \brief Unregisters all collision test functions.
+ */
+void CustomEntity::clear_collision_tests() {
+
+  // Release the Lua callbacks.
+  std::vector<CollisionInfo>::iterator it;
+  for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
+
+    CollisionInfo& info = *it;
+    get_lua_context().cancel_callback(info.callback_ref);
+  }
+  collision_tests.clear();
+
+  // Disable all collisions checks.
+  set_collision_modes(COLLISION_NONE);
 }
 
 /**

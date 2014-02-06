@@ -836,6 +836,7 @@ class LuaContext {
       enemy_api_create_enemy,
       custom_entity_api_get_model,
       custom_entity_api_add_collision_test,
+      custom_entity_api_clear_collision_tests,
 
       // available to all userdata types
       userdata_meta_gc,

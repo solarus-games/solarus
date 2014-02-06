@@ -99,6 +99,7 @@ add_collision_test(detector, callback)
   detector is a string or a function that takes an entity and returns a boolean.
   callback is a function that takes the entity detected and optionally both
   sprites.
+clear_collision_tests()
 
 Events:
 

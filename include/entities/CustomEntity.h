@@ -53,6 +53,7 @@ class CustomEntity: public Detector {
     const std::string& get_model() const;
     void add_collision_test(CollisionMode collision_test, int callback_ref);
     void add_collision_test(int collision_test_ref, int callback_ref);
+    void clear_collision_tests();
 
     bool is_obstacle_for(const MapEntity& other) const;
 

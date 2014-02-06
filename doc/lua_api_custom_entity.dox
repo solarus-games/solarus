@@ -139,6 +139,12 @@ when another entity.
   This may be useful when your entities have several sprites, otherwise you can
   just ignore these additional sprite parameters.
 
+\subsection lua_api_custom_entity_clear_collision_tests custom_entity:clear_collision_tests()
+
+Disables any collision test previously registered with
+\ref lua_api_custom_entity_add_collision_test
+"custom_entity:add_collision_test()".
+
 \section lua_api_custom_entity_inherited_events Events inherited from map entity
 
 Events are callback methods automatically called by the engine if you define

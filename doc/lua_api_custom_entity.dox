@@ -46,7 +46,52 @@ See \ref lua_api_entity_methods to know these methods.
 
 The following methods are specific to custom entities.
 
-TODO
+\subsection lua_api_custom_entity_get_model custom_entity:get_model()
+
+Returns the model of this custom entity.
+
+The model is the name of a Lua script in the \c "entities" directory that
+manages this custom entity.
+This works exactly like the breed of
+\ref lua_api_enemy "enemies",
+except that it is optional.
+- Return value (string): The model of custom entity, or \c nil if the custom
+  entity has no model script.
+
+\subsection lua_api_custom_entity_add_collision_detector custom_entity:add_collision_detector(collision_test, callback)
+
+Registers a function to be called when your custom entity detects a collision
+when another entity.
+- \c collision_test (string or function): Specifies what kind of collision you
+  want to test. This may be one of:
+  - \c "overlaps": Collision if the bounding box of both entities overlap.
+  - \c "contains": Collision if the bounding box of the other entity box is
+    fully inside the bounding box of your custom entity.
+  - \c "origin": Collision if the \ref lua_api_entity_get_origin "origin point"
+    or the other entity is inside the bounding box of your custom entity.
+  - \c "center": Collision if the \ref lua_api_entity_get_center_position
+    "center point" of the other entity is inside the bounding box of your
+    custom entity.
+  - \c "touching": Collision if the bounding box of both entities are touching
+    each other. This is also \c true if they are overlapping.
+  - \c "looking": Collision if the other entity is touching your custom entity
+    while looking in its direction.
+  - \c "sprite": Collision if a sprite of the other entity overlaps a sprite of
+    your custom entity.
+    The collision test is pixel precise.
+  - A function: Custom collision test. The function takes an entity as
+    parameter and should return \c true if there is a collision between
+    this entity and your custom entity.
+    This function will be called every time the engine needs to check
+    collisions between your custom entity and any entity.
+- \c callback (function): A function that will be called when the collision
+  test detects a collision with another entity.
+  This function takes the other entity as parameter.
+  If the collision test was \c "sprite", both involved sprites are also passed
+  as second and third parameters: the second parameter is the sprite of the
+  other entity, and the third parameter is the sprite of your custom entity.
+  This may be useful when your entities have several sprites, otherwise you can
+  just ignore these additional parameters.
 
 \section lua_api_custom_entity_inherited_events Events inherited from map entity
 

@@ -91,6 +91,7 @@ HeroSprites::~HeroSprites() {
 
   get_lua_context().cancel_callback(animation_callback_ref);
 
+  // FIXME use refcount: with custom entities, hero sprites are now visible from Lua.
   delete tunic_sprite;
   delete shadow_sprite;
   delete sword_sprite;

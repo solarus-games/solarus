@@ -419,6 +419,7 @@ void LuaContext::register_entity_module() {
   static const luaL_Reg custom_entity_methods[] = {
       ENTITY_COMMON_METHODS,
       { "get_model", custom_entity_api_get_model },
+      { "add_collision_detector", custom_entity_api_add_collision_detector },
       { NULL, NULL }
   };
 
@@ -3716,6 +3717,24 @@ int LuaContext::custom_entity_api_get_model(lua_State* l) {
 
   push_string(l, entity.get_model());
   return 1;
+}
+
+/**
+ * \brief Implementation of custom_entity:add_collision_detector().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_add_collision_detector(lua_State* l) {
+
+  /* TODO
+  CustomEntity& entity = check_custom_entity(l, 1);
+
+  if (lua_isstring(l, 2)) {
+    CollisionMode collision_mode = LuaTools::check_enum<CollisionMode>(l, 2, Detector::collision_mode_names);
+  }
+  */
+
+  return 0;
 }
 
 /**

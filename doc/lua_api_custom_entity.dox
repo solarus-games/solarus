@@ -65,7 +65,7 @@ when another entity.
 - \c collision_test (string or function): Specifies what kind of collision you
   want to test. This may be one of:
   - \c "overlaps": Collision if the bounding box of both entities overlap.
-  - \c "contains": Collision if the bounding box of the other entity box is
+  - \c "contains": Collision if the bounding box of the other entity is
     fully inside the bounding box of your custom entity.
   - \c "origin": Collision if the \ref lua_api_entity_get_origin "origin point"
     or the other entity is inside the bounding box of your custom entity.

@@ -105,7 +105,7 @@ MapEntity::~MapEntity() {
  * \return The name identifying this type in Lua.
  */
 const std::string& MapEntity::get_lua_type_name() const {
-  return LuaContext::get_entity_type_name(get_type());
+  return LuaContext::get_entity_internal_type_name(get_type());
 }
 
 /**

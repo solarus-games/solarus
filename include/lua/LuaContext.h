@@ -150,7 +150,7 @@ class LuaContext {
     void update_movements();
 
     // Entities.
-    static const std::string& get_entity_type_name(EntityType entity_type);
+    static const std::string& get_entity_internal_type_name(EntityType entity_type);
     static Map& get_entity_creation_map(lua_State* l);
     static Map* get_entity_implicit_creation_map(lua_State* l);
     static void set_entity_implicit_creation_map(lua_State* l, Map* map);

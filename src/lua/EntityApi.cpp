@@ -3893,6 +3893,7 @@ int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
     ++index;
     type_specific = true;
     type = LuaTools::check_enum<EntityType>(
+        // FIXME make a list of entity type names without the "sol." prefix.
         l, 2, entity_type_names
     );
   }

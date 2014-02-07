@@ -188,6 +188,8 @@ void CustomEntity::reset_traversable_by_entities(EntityType type) {
  */
 void CustomEntity::set_can_traverse_entities(bool traversable) {
 
+  // TODO take can_traverse settings into account.
+
   can_traverse_entities_general = TraversableInfo(*this, traversable);
 }
 

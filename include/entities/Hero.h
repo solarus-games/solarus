@@ -156,14 +156,14 @@ class Hero: public MapEntity {
     bool is_lava_obstacle() const;
     bool is_prickle_obstacle() const;
     bool is_ladder_obstacle() const;
-    bool is_block_obstacle(const Block& block) const;
-    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
-    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
-    bool is_stairs_obstacle(const Stairs& stairs) const;
-    bool is_sensor_obstacle(const Sensor& sensor) const;
-    bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
-    bool is_jumper_obstacle(const Jumper& jumper) const;
-    bool is_separator_obstacle(const Separator& separator) const;
+    bool is_block_obstacle(Block& block);
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    bool is_stairs_obstacle(Stairs& stairs);
+    bool is_sensor_obstacle(Sensor& sensor);
+    bool is_raised_block_obstacle(CrystalBlock& raised_block);
+    bool is_jumper_obstacle(Jumper& jumper);
+    bool is_separator_obstacle(Separator& separator);
 
     /**
      * \name Collisions.

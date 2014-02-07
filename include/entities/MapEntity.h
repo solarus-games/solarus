@@ -237,20 +237,20 @@ class MapEntity: public ExportableToLua {
     virtual bool is_lava_obstacle() const;
     virtual bool is_prickle_obstacle() const;
     virtual bool is_ladder_obstacle() const;
-    virtual bool is_hero_obstacle(const Hero& hero) const;
-    virtual bool is_block_obstacle(const Block& block) const;
-    virtual bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
-    virtual bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
-    virtual bool is_stairs_obstacle(const Stairs& stairs) const;
-    virtual bool is_sensor_obstacle(const Sensor& sensor) const;
-    virtual bool is_switch_obstacle(const Switch& sw) const;
-    virtual bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
-    virtual bool is_crystal_obstacle(const Crystal& crystal) const;
-    virtual bool is_npc_obstacle(const Npc& npc) const;
-    virtual bool is_enemy_obstacle(const Enemy& enemy) const;
-    virtual bool is_jumper_obstacle(const Jumper& jumper) const;
-    virtual bool is_destructible_obstacle(const Destructible& destructible) const;
-    virtual bool is_separator_obstacle(const Separator& separator) const;
+    virtual bool is_hero_obstacle(Hero& hero);
+    virtual bool is_block_obstacle(Block& block);
+    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    virtual bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    virtual bool is_stairs_obstacle(Stairs& stairs);
+    virtual bool is_sensor_obstacle(Sensor& sensor);
+    virtual bool is_switch_obstacle(Switch& sw);
+    virtual bool is_raised_block_obstacle(CrystalBlock& raised_block);
+    virtual bool is_crystal_obstacle(Crystal& crystal);
+    virtual bool is_npc_obstacle(Npc& npc);
+    virtual bool is_enemy_obstacle(Enemy& enemy);
+    virtual bool is_jumper_obstacle(Jumper& jumper);
+    virtual bool is_destructible_obstacle(Destructible& destructible);
+    virtual bool is_separator_obstacle(Separator& separator);
     virtual bool is_sword_ignored() const;
 
     // game loop

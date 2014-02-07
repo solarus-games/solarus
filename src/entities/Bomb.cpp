@@ -90,7 +90,7 @@ bool Bomb::is_drawn_in_y_order() const {
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Bomb::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
+bool Bomb::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -99,7 +99,7 @@ bool Bomb::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Bomb::is_teletransporter_obstacle(const Teletransporter& teletransporter) const {
+bool Bomb::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 

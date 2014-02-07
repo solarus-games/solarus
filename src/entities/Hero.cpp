@@ -1495,7 +1495,7 @@ bool Hero::is_ladder_obstacle() const {
  * \param block a block
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Hero::is_block_obstacle(const Block& block) const {
+bool Hero::is_block_obstacle(Block& block) {
   return block.is_hero_obstacle(*this);
 }
 
@@ -1507,8 +1507,7 @@ bool Hero::is_block_obstacle(const Block& block) const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for the hero
  */
-bool Hero::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+bool Hero::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return state->is_teletransporter_obstacle(teletransporter);
 }
 
@@ -1520,7 +1519,7 @@ bool Hero::is_teletransporter_obstacle(
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Hero::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
+bool Hero::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return state->is_conveyor_belt_obstacle(conveyor_belt);
 }
 
@@ -1529,7 +1528,7 @@ bool Hero::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool Hero::is_stairs_obstacle(const Stairs& stairs) const {
+bool Hero::is_stairs_obstacle(Stairs& stairs) {
   return state->is_stairs_obstacle(stairs);
 }
 
@@ -1538,7 +1537,7 @@ bool Hero::is_stairs_obstacle(const Stairs& stairs) const {
  * \param sensor a sensor (not used here)
  * \return true if this sensor is currently an obstacle for the hero
  */
-bool Hero::is_sensor_obstacle(const Sensor& sensor) const {
+bool Hero::is_sensor_obstacle(Sensor& sensor) {
   return state->is_sensor_obstacle(sensor);
 }
 
@@ -1547,7 +1546,7 @@ bool Hero::is_sensor_obstacle(const Sensor& sensor) const {
  * \param raised_block a crystal block raised
  * \return true if the raised block is currently an obstacle for this entity
  */
-bool Hero::is_raised_block_obstacle(const CrystalBlock& raised_block) const {
+bool Hero::is_raised_block_obstacle(CrystalBlock& raised_block) {
   return !is_on_raised_blocks();
 }
 
@@ -1556,14 +1555,14 @@ bool Hero::is_raised_block_obstacle(const CrystalBlock& raised_block) const {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool Hero::is_jumper_obstacle(const Jumper& jumper) const {
+bool Hero::is_jumper_obstacle(Jumper& jumper) {
   return state->is_jumper_obstacle(jumper);
 }
 
 /**
  * \copydoc MapEntity::is_separator_obstacle
  */
-bool Hero::is_separator_obstacle(const Separator& separator) const {
+bool Hero::is_separator_obstacle(Separator& separator) {
   return state->is_separator_obstacle(separator);
 }
 

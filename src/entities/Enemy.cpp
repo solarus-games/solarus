@@ -333,7 +333,7 @@ bool Enemy::is_low_wall_obstacle() const {
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle this entity
  */
-bool Enemy::is_destructible_obstacle(const Destructible& destructible) const {
+bool Enemy::is_destructible_obstacle(Destructible& destructible) {
 
   // The destructible object is an obstacle unless the enemy is already
   // overlapping it, which is possible with destructibles that can regenerate.
@@ -346,7 +346,7 @@ bool Enemy::is_destructible_obstacle(const Destructible& destructible) const {
 /**
  * \copydoc MapEntity::is_block_obstacle
  */
-bool Enemy::is_block_obstacle(const Block& block) const {
+bool Enemy::is_block_obstacle(Block& block) {
 
   // The block is an obstacle unless the enemy is already overlapping it,
   // which is easily possible with blocks created by the hero.
@@ -361,8 +361,7 @@ bool Enemy::is_block_obstacle(const Block& block) const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Enemy::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+bool Enemy::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -372,8 +371,7 @@ bool Enemy::is_teletransporter_obstacle(
  * \param raised_block A crystal block raised.
  * \return \c true if the raised block is currently an obstacle for this entity.
  */
-bool Enemy::is_raised_block_obstacle(
-    const CrystalBlock& raised_block) const {
+bool Enemy::is_raised_block_obstacle(CrystalBlock& raised_block) {
 
   // The crystal block is an obstacle unless the enemy is already on it.
   if (this->overlaps(raised_block)) {

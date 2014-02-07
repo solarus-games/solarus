@@ -48,11 +48,10 @@ class Block: public Detector {
 
     bool is_obstacle_for(MapEntity& other);
     bool is_hole_obstacle() const;
-    bool is_teletransporter_obstacle(
-        const Teletransporter& teletransporter) const;
-    bool is_hero_obstacle(const Hero& hero) const;
-    bool is_enemy_obstacle(const Enemy& enemy) const;
-    bool is_destructible_obstacle(const Destructible& destructible) const;
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool is_hero_obstacle(Hero& hero);
+    bool is_enemy_obstacle(Enemy& enemy);
+    bool is_destructible_obstacle(Destructible& destructible);
     void set_map(Map& map);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);

@@ -148,7 +148,7 @@ bool Npc::is_obstacle_for(MapEntity& other) {
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity
  */
-bool Npc::is_hero_obstacle(const Hero& hero) const {
+bool Npc::is_hero_obstacle(Hero& hero) {
   return true;
 }
 
@@ -157,7 +157,7 @@ bool Npc::is_hero_obstacle(const Hero& hero) const {
  * \param npc an NPC
  * \return true if this NPC is currently considered as an obstacle by this entity
  */
-bool Npc::is_npc_obstacle(const Npc& npc) const {
+bool Npc::is_npc_obstacle(Npc& npc) {
 
   // usual NPCs can traverse each other
   return subtype != USUAL_NPC || npc.subtype != USUAL_NPC;
@@ -168,7 +168,7 @@ bool Npc::is_npc_obstacle(const Npc& npc) const {
  * \param enemy an enemy
  * \return true if this enemy is currently considered as an obstacle by this entity
  */
-bool Npc::is_enemy_obstacle(const Enemy& enemy) const {
+bool Npc::is_enemy_obstacle(Enemy& enemy) {
 
   // usual NPCs can traverse enemies
   return subtype != USUAL_NPC;

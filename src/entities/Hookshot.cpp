@@ -101,8 +101,7 @@ bool Hookshot::is_drawn_in_y_order() const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Hookshot::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+bool Hookshot::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -111,8 +110,7 @@ bool Hookshot::is_teletransporter_obstacle(
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Hookshot::is_conveyor_belt_obstacle(
-    const ConveyorBelt& conveyor_belt) const {
+bool Hookshot::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -121,7 +119,7 @@ bool Hookshot::is_conveyor_belt_obstacle(
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool Hookshot::is_stairs_obstacle(const Stairs& stairs) const {
+bool Hookshot::is_stairs_obstacle(Stairs& stairs) {
   return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
@@ -170,7 +168,7 @@ bool Hookshot::is_ladder_obstacle() const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool Hookshot::is_switch_obstacle(const Switch& sw) const {
+bool Hookshot::is_switch_obstacle(Switch& sw) {
   return false;
 }
 
@@ -179,7 +177,7 @@ bool Hookshot::is_switch_obstacle(const Switch& sw) const {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool Hookshot::is_crystal_obstacle(const Crystal& crystal) const {
+bool Hookshot::is_crystal_obstacle(Crystal& crystal) {
   return false;
 }
 
@@ -188,7 +186,7 @@ bool Hookshot::is_crystal_obstacle(const Crystal& crystal) const {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool Hookshot::is_jumper_obstacle(const Jumper& jumper) const {
+bool Hookshot::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 

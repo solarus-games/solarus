@@ -126,8 +126,7 @@ bool Block::is_hole_obstacle() const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Block::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   // necessary to push a block into a hole having a teletransporter
   return false;
 }
@@ -137,7 +136,7 @@ bool Block::is_teletransporter_obstacle(
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity.
  */
-bool Block::is_hero_obstacle(const Hero& hero) const {
+bool Block::is_hero_obstacle(Hero& hero) {
   return get_movement() == NULL;
 }
 
@@ -146,7 +145,7 @@ bool Block::is_hero_obstacle(const Hero& hero) const {
  * \param enemy an enemy
  * \return true if this enemy is currently considered as an obstacle by this entity.
  */
-bool Block::is_enemy_obstacle(const Enemy& enemy) const {
+bool Block::is_enemy_obstacle(Enemy& enemy) {
   return true;
 }
 
@@ -155,7 +154,7 @@ bool Block::is_enemy_obstacle(const Enemy& enemy) const {
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle by this entity
  */
-bool Block::is_destructible_obstacle(const Destructible& destructible) const {
+bool Block::is_destructible_obstacle(Destructible& destructible) {
   return true;
 }
 

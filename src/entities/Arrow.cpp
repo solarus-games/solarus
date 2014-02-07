@@ -110,8 +110,7 @@ bool Arrow::is_drawn_in_y_order() const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Arrow::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+bool Arrow::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -120,8 +119,7 @@ bool Arrow::is_teletransporter_obstacle(
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Arrow::is_conveyor_belt_obstacle(
-    const ConveyorBelt& conveyor_belt) const {
+bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -130,7 +128,7 @@ bool Arrow::is_conveyor_belt_obstacle(
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool Arrow::is_stairs_obstacle(const Stairs& stairs) const {
+bool Arrow::is_stairs_obstacle(Stairs& stairs) {
   return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
@@ -188,7 +186,7 @@ bool Arrow::is_ladder_obstacle() const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool Arrow::is_switch_obstacle(const Switch& sw) const {
+bool Arrow::is_switch_obstacle(Switch& sw) {
   return false;
 }
 
@@ -197,7 +195,7 @@ bool Arrow::is_switch_obstacle(const Switch& sw) const {
  * \param raised_block a crystal block raised
  * \return false
  */
-bool Arrow::is_raised_block_obstacle(const CrystalBlock& raised_block) const {
+bool Arrow::is_raised_block_obstacle(CrystalBlock& raised_block) {
   // arrows can traverse the crystal blocks
   return false;
 }
@@ -207,7 +205,7 @@ bool Arrow::is_raised_block_obstacle(const CrystalBlock& raised_block) const {
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool Arrow::is_crystal_obstacle(const Crystal& crystal) const {
+bool Arrow::is_crystal_obstacle(Crystal& crystal) {
   return false;
 }
 
@@ -216,7 +214,7 @@ bool Arrow::is_crystal_obstacle(const Crystal& crystal) const {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool Arrow::is_npc_obstacle(const Npc& npc) const {
+bool Arrow::is_npc_obstacle(Npc& npc) {
   return npc.is_solid();
 }
 
@@ -225,7 +223,7 @@ bool Arrow::is_npc_obstacle(const Npc& npc) const {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool Arrow::is_jumper_obstacle(const Jumper& jumper) const {
+bool Arrow::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 

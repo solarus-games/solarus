@@ -90,6 +90,118 @@ or when you called
 - \c sprite (\ref lua_api_sprite "sprite"): The sprite to remove.
   The default value is the first sprite that was created.
 
+\subsection lua_api_custom_entity_is_traversable_by custom_entity:is_traversable_by([entity_type])
+
+Returns whether this custom entity can be traversed by other entities.
+- \c entity_type (string, optional): A type of entity.
+  See \ref lua_api_entity_get_type "entity:get_type()" for the possible values.
+  If not specified, the function will return the default setting, that is,
+  what is applied to all entity types that do not override it.
+- Return value (boolean): \c true if this entity type can traverse your custom
+  entity.
+
+\subsection lua_api_custom_entity_set_traversable_by custom_entity:set_traversable_by([entity_type], traversable)
+
+Sets whether this custom entity can be traversed by other entities.
+
+By default, a custom entity cannot be traversed.
+- \c entity_type (string, optional): A type of entity.
+  See \ref lua_api_entity_get_type "entity:get_type()" for the possible values.
+  If not specified, the setting will be applied to all entity types that do
+  not override it.
+- \c traversable (boolean, function or \c nil): Whether this entity type can
+  traverse your custom entity. This can be:
+  - A boolean: \c true to make your custom entity traversable by this entity
+    type, \c false to make it obstacle.
+  - A function: Custom test.
+    This allows you to decide dynamically.
+    The function takes your custom entity
+    and then the other entity as parameters, and should return \c true if you
+    allow the other entity to traverse your custom entity.
+    This function will be called every time a \ref lua_api_movement "moving"
+    entity of the specified type is about to overlap your custom entity.
+  - \c nil: Clears any previous setting for this entity type and therefore
+    restores the default value.
+
+\subsection lua_api_custom_entity_can_traverse custom_entity:can_traverse([entity_type])
+
+Returns whether this custom entity can traverse other entities.
+
+This is important only if your custom entity can
+\ref lua_api_movement "move".
+
+- \c entity_type (string, optional): A type of entity.
+  See \ref lua_api_entity_get_type "entity:get_type()" for the possible values.
+  If not specified, the function will return the default setting, that is,
+  what is applied to all entity types that do not override it.
+- Return value (boolean): \c true if your custom entity can traverse entities
+  of the specified type.
+
+\subsection lua_api_custom_entity_set_can_traverse custom_entity:set_can_traverse([entity_type], traversable)
+
+Sets whether this custom entity can traverse other entities.
+
+This is important only if your custom entity can
+\ref lua_api_movement "move".
+
+By default, this depends on the other entities: for example,
+\ref lua_api_sensor "sensors" can be traversed by default
+while \ref lua_api_door "doors" cannot unless they are open.
+- \c entity_type (string, optional): A type of entity.
+  See \ref lua_api_entity_get_type "entity:get_type()" for the possible values.
+  If not specified, the setting will be applied to all entity types that do
+  not override it.
+- \c traversable (boolean, function or \c nil): Whether your custom entity can
+  traverse the other entity type. This can be:
+  - A boolean: \c true to allow your custom entity to traverse entities of the
+    specified type, \c false otherwise.
+  - A function: Custom test.
+    This allows you to decide dynamically.
+    The function takes your custom entity
+    and then the other entity as parameters, and should return \c true if you
+    allow your custom entity to traverse the other entity.
+    When your custom entity has a \ref lua_api_movement "movement",
+    this function will be called every time it is about to overlap an entity
+    of the specified type.
+  - \c nil: Clears any previous setting for this entity type and therefore
+    restores the default value.
+
+\subsection lua_api_custom_entity_can_traverse_ground custom_entity:can_traverse_ground(ground)
+
+Returns whether this custom entity can traverse a kind of ground.
+
+This is important only if your custom entity can
+\ref lua_api_movement "move".
+
+The \ref lua_api_map_get_ground "ground" is the terrain property of the
+\ref lua_api_map "map".
+It is defined by \ref lua_api_tile "tiles" and by other entities that may
+change it dynamically.
+- \c ground (string, optional): A kind of ground.
+  See \ref lua_api_map_get_ground "map:get_ground()" for the possible values.
+- Return value (boolean): \c true if your custom entity can traverse this
+  kind of ground.
+
+\subsection lua_api_custom_entity_set_can_traverse_ground custom_entity:set_can_traverse_ground(ground, traversable)
+
+Sets whether this custom entity can traverse a kind of ground.
+
+This is important only if your custom entity can
+\ref lua_api_movement "move".
+
+The \ref lua_api_map_get_ground "ground" is the terrain property of the
+\ref lua_api_map "map".
+It is defined by \ref lua_api_tile "tiles" and by other entities that may
+change it dynamically.
+
+By default, this depends on the the ground: for example,
+the \c "grass" ground can be traversed by default
+while the \c "low wall" ground cannot.
+- \c ground (string, optional): A kind of ground.
+  See \ref lua_api_map_get_ground "map:get_ground()" for the possible values.
+- \c traversable (boolean): Whether your custom entity can
+  traverse this kind of ground.
+
 \subsection lua_api_custom_entity_add_collision_test custom_entity:add_collision_test(collision_test, callback)
 
 Registers a function to be called when your custom entity detects a collision
@@ -133,6 +245,7 @@ when another entity.
     collisions between your custom entity and any other entity.
 - \c callback (function): A function that will be called when the collision
   test detects a collision with another entity.
+  This allows you to decide dynamically.
   This function takes your custom entity and then the other entity as
   parameters.
   If the collision test was \c "sprite", both involved sprites are also passed

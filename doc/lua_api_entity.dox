@@ -303,7 +303,7 @@ Returns the coordinates of the center point of this entity on the
 Returns the rectangle representing the
 \ref lua_api_entity_get_position "coordinates"
 and
-\ref lua_api_get_size "size" of this entity
+\ref lua_api_entity_get_size "size" of this entity
 on the
 \ref lua_api_map "map".
 
@@ -326,7 +326,7 @@ other entities.
 \subsection lua_api_entity_overlaps entity:overlaps(x, y, [width, height])
 
 Returns whether the
-\ref lua_api_get_bounding_box "bounding box"
+\ref lua_api_entity_get_bounding_box "bounding box"
 of this entity overlaps the specified rectangle or point.
 - \c x (number): X coordinate of the upper left corner of the rectangle
   to check.
@@ -340,7 +340,7 @@ of this entity overlaps the specified rectangle or point.
 \subsection lua_api_entity_overlaps entity:overlaps(other_entity)
 
 Returns whether the
-\ref lua_api_get_bounding_box "bounding box"
+\ref lua_api_entity_get_bounding_box "bounding box"
 of this entity overlaps the bounding box of another one.
 - \c other_entity (entity): An entity to check.
 - Return value (boolean): \c true if both bounding boxes overlap.

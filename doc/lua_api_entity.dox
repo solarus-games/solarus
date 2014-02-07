@@ -135,7 +135,7 @@ Returns the type of entity.
   \c "arrow",
   \c "hookshot",
   \c "boomerang" or
-  \c "custom",
+  \c "custom_entity",
 
 \remark The type \c "tile" is not is this list because
   \ref lua_api_tile "tiles" don't exist at

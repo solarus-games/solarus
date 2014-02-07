@@ -21,32 +21,6 @@
 namespace solarus {
 
 /**
- * \brief Creates a collision test info.
- * \param collision_test A built-in collision test.
- * \param callback_ref Lua ref to a function to call when this collision is
- * detected.
- */
-CustomEntity::CollisionInfo::CollisionInfo(CollisionMode built_in_test, int callback_ref):
-  built_in_test(built_in_test),
-  custom_test_ref(LUA_REFNIL),
-  callback_ref(callback_ref) {
-
-}
-
-/**
- * \brief Creates a collision test info.
- * \param collision_test_ref Lua ref to a custom collision test.
- * \param callback_ref Lua ref to a function to call when this collision is
- * detected.
- */
-CustomEntity::CollisionInfo::CollisionInfo(int custom_test_ref, int callback_ref):
-  built_in_test(COLLISION_CUSTOM),
-  custom_test_ref(custom_test_ref),
-  callback_ref(callback_ref) {
-
-}
-
-/**
  * \brief Creates a custom entity.
  * \param game The game.
  * \param name Name of the entity or an empty string.
@@ -86,7 +60,25 @@ CustomEntity::CustomEntity(
  */
 CustomEntity::~CustomEntity() {
 
+  // Release the Lua callbacks.
   clear_collision_tests();
+
+  reset_traversable_by_entities();
+  std::map<EntityType, TraversableInfo>::const_iterator it;
+  for (it = traversable_by_entities_type.begin();
+      it != traversable_by_entities_type.end();
+      ++it) {
+    const TraversableInfo& info = it->second;
+    get_lua_context().cancel_callback(info.traversable_test_ref);
+  }
+
+  reset_can_traverse_entities();
+  for (it = can_traverse_entities_type.begin();
+      it != can_traverse_entities_type.end();
+      ++it) {
+    const TraversableInfo& info = it->second;
+    get_lua_context().cancel_callback(info.traversable_test_ref);
+  }
 }
 
 /**
@@ -103,6 +95,68 @@ EntityType CustomEntity::get_type() const {
  */
 const std::string& CustomEntity::get_model() const {
   return model;
+}
+
+// TODO
+void CustomEntity::set_traversable_by_entities(bool traversable) {
+
+}
+
+void CustomEntity::set_traversable_by_entities(int traversable_test_ref) {
+
+}
+
+void CustomEntity::reset_traversable_by_entities() {
+
+}
+
+void CustomEntity::set_traversable_by_entities(EntityType type, bool traversable) {
+
+}
+
+void CustomEntity::set_traversable_by_entities(EntityType type, int traversable_test_ref) {
+
+}
+
+void CustomEntity::reset_traversable_by_entities(EntityType type) {
+
+}
+
+void CustomEntity::set_can_traverse_entities(bool traversable) {
+
+}
+
+void CustomEntity::set_can_traverse_entities(int traversable_test_ref) {
+
+}
+
+void CustomEntity::reset_can_traverse_entities() {
+
+}
+
+void CustomEntity::set_can_traverse_entities(EntityType type, bool traversable) {
+
+}
+
+void CustomEntity::set_can_traverse_entities(EntityType type, int traversable_test_ref) {
+
+}
+
+void CustomEntity::reset_can_traverse_entities(EntityType type) {
+
+}
+
+bool CustomEntity::can_traverse_ground(Ground ground) const {
+
+  return true;
+}
+
+void CustomEntity::set_can_traverse_ground(Ground ground, bool traversable) {
+
+}
+
+void CustomEntity::reset_can_traverse_ground(Ground ground) {
+
 }
 
 /**
@@ -153,6 +207,7 @@ void CustomEntity::clear_collision_tests() {
   for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
 
     CollisionInfo& info = *it;
+    get_lua_context().cancel_callback(info.custom_test_ref);
     get_lua_context().cancel_callback(info.callback_ref);
   }
   collision_tests.clear();
@@ -195,8 +250,19 @@ void CustomEntity::set_map(Map& map) {
  * \return \c true if this entity is an obstacle for the other one.
  */
 bool CustomEntity::is_obstacle_for(const MapEntity& other) const {
-  // TODO
-  return true;
+
+  /* TODO
+  EntityType type = other.get_type();
+
+  const TraversableInfo* traversable_info = &traversable_by_entities_general;
+  const std::map<EntityType, TraversableInfo>::const_iterator it =
+    traversable_by_entities.find(type);
+  if (it != traversable_by_entities.end()) {
+    // This entity type overrides the general setting.
+    traversable_info = &(*it);
+  }
+  */
+  return false;
 }
 
 /**
@@ -332,6 +398,64 @@ void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprit
       );
     }
   }
+}
+
+/**
+ * \brief Creates an empty traversable test info.
+ */
+CustomEntity::TraversableInfo::TraversableInfo():
+  traversable_test_ref(LUA_REFNIL),
+  traversable(false),
+  is_empty(true) {
+
+}
+
+/**
+ * \brief Creates a boolean traversable property.
+ * \param traversable The value to store.
+ */
+CustomEntity::TraversableInfo::TraversableInfo(bool traversable):
+  traversable_test_ref(LUA_REFNIL),
+  traversable(traversable),
+  is_empty(false) {
+
+}
+
+/**
+ * \brief Creates a traversable property as a Lua boolean function.
+ * \param traversable_test_ref Lua ref to a function.
+ */
+CustomEntity::TraversableInfo::TraversableInfo(int traversable_test_ref):
+  traversable_test_ref(traversable_test_ref),
+  traversable(false),
+  is_empty(false) {
+
+}
+
+/**
+ * \brief Creates a collision test info.
+ * \param collision_test A built-in collision test.
+ * \param callback_ref Lua ref to a function to call when this collision is
+ * detected.
+ */
+CustomEntity::CollisionInfo::CollisionInfo(CollisionMode built_in_test, int callback_ref):
+  built_in_test(built_in_test),
+  custom_test_ref(LUA_REFNIL),
+  callback_ref(callback_ref) {
+
+}
+
+/**
+ * \brief Creates a collision test info.
+ * \param collision_test_ref Lua ref to a custom collision test.
+ * \param callback_ref Lua ref to a function to call when this collision is
+ * detected.
+ */
+CustomEntity::CollisionInfo::CollisionInfo(int custom_test_ref, int callback_ref):
+  built_in_test(COLLISION_CUSTOM),
+  custom_test_ref(custom_test_ref),
+  callback_ref(callback_ref) {
+
 }
 
 }

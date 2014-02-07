@@ -142,7 +142,6 @@ int LuaContext::surface_api_get_size(lua_State* l) {
 
   lua_pushinteger(l, surface.get_width());
   lua_pushinteger(l, surface.get_height());
-
   return 2;
 }
 

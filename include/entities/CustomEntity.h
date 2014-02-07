@@ -53,6 +53,25 @@ class CustomEntity: public Detector {
     void set_map(Map& map);
 
     const std::string& get_model() const;
+
+    void set_traversable_by_entities(bool traversable);
+    void set_traversable_by_entities(int traversable_test_ref);
+    void reset_traversable_by_entities();
+    void set_traversable_by_entities(EntityType type, bool traversable);
+    void set_traversable_by_entities(EntityType type, int traversable_test_ref);
+    void reset_traversable_by_entities(EntityType type);
+
+    void set_can_traverse_entities(bool traversable);
+    void set_can_traverse_entities(int traversable_test_ref);
+    void reset_can_traverse_entities();
+    void set_can_traverse_entities(EntityType type, bool traversable);
+    void set_can_traverse_entities(EntityType type, int traversable_test_ref);
+    void reset_can_traverse_entities(EntityType type);
+
+    bool can_traverse_ground(Ground ground) const;
+    void set_can_traverse_ground(Ground ground, bool traversable);
+    void reset_can_traverse_ground(Ground ground);
+
     void add_collision_test(CollisionMode collision_test, int callback_ref);
     void add_collision_test(int collision_test_ref, int callback_ref);
     void clear_collision_tests();
@@ -153,7 +172,7 @@ class CustomEntity: public Detector {
     void initialize_sprite(
         const std::string& sprite_name, int initial_direction);
 
-    const std::string& model;          /**< Model of this custom entity or an empty string. */
+    const std::string& model;                         /**< Model of this custom entity or an empty string. */
 
     // Obstacles.
 
@@ -163,18 +182,27 @@ class CustomEntity: public Detector {
      */
     struct TraversableInfo {
 
-        int is_traversable_ref;        /**< Lua ref to a boolean function
-                                        * that decides, or LUA_REFNIL. */
-        bool traversable;              /**< Traversable property (unused if
-                                        * there is a Lua function). */
+      // Only one of the fields is used.
+      int traversable_test_ref;      /**< Lua ref to a boolean function
+                                      * that decides, or LUA_REFNIL. */
+      bool traversable;              /**< Traversable property (unused if
+                                      * there is a Lua function). */
+      bool is_empty;                 /**< Whether the property is unset. */
+
+      TraversableInfo();
+      explicit TraversableInfo(bool traversable);
+      explicit TraversableInfo(int traversable_test_ref);
+
     };
 
-    TraversableInfo default_traversable_by_entities;
-    std::map<EntityType, TraversableInfo> traversable_by_entities;
+    TraversableInfo traversable_by_entities_general;  /**< Whether entities can traverse me by default or NULL. */
+    std::map<EntityType, TraversableInfo>
+        traversable_by_entities_type;                 /**< Whether entities of a type can traverse me. */
 
-    TraversableInfo default_can_traverse_entities;
-    std::map<EntityType, TraversableInfo> can_traverse_entities;
-    std::set<Ground> can_traverse_grounds;
+    TraversableInfo can_traverse_entities_general;    /**< Whether I can traverse entities by default or NULL. */
+    std::map<EntityType, TraversableInfo>
+        can_traverse_entities_type;                   /**< Whether I can traverse entities of a type. */
+    std::set<Ground> can_traverse_grounds;            /**< Grounds that I can traverse. */
 
     // Collisions.
 

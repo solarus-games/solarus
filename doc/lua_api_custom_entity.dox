@@ -90,16 +90,6 @@ or when you called
 - \c sprite (\ref lua_api_sprite "sprite"): The sprite to remove.
   The default value is the first sprite that was created.
 
-\subsection lua_api_custom_entity_is_traversable_by custom_entity:is_traversable_by([entity_type])
-
-Returns whether this custom entity can be traversed by other entities.
-- \c entity_type (string, optional): A type of entity.
-  See \ref lua_api_entity_get_type "entity:get_type()" for the possible values.
-  If not specified, the function will return the default setting, that is,
-  what is applied to all entity types that do not override it.
-- Return value (boolean): \c true if this entity type can traverse your custom
-  entity.
-
 \subsection lua_api_custom_entity_set_traversable_by custom_entity:set_traversable_by([entity_type], traversable)
 
 Sets whether this custom entity can be traversed by other entities.
@@ -122,20 +112,6 @@ By default, a custom entity cannot be traversed.
     entity of the specified type is about to overlap your custom entity.
   - \c nil: Clears any previous setting for this entity type and therefore
     restores the default value.
-
-\subsection lua_api_custom_entity_can_traverse custom_entity:can_traverse([entity_type])
-
-Returns whether this custom entity can traverse other entities.
-
-This is important only if your custom entity can
-\ref lua_api_movement "move".
-
-- \c entity_type (string, optional): A type of entity.
-  See \ref lua_api_entity_get_type "entity:get_type()" for the possible values.
-  If not specified, the function will return the default setting, that is,
-  what is applied to all entity types that do not override it.
-- Return value (boolean): \c true if your custom entity can traverse entities
-  of the specified type.
 
 \subsection lua_api_custom_entity_set_can_traverse custom_entity:set_can_traverse([entity_type], traversable)
 

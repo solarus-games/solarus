@@ -154,6 +154,11 @@ class LuaContext {
     static Map* get_entity_implicit_creation_map(lua_State* l);
     static void set_entity_implicit_creation_map(lua_State* l, Map* map);
 
+    bool do_custom_entity_traversable_test_function(
+        int traversable_test_ref,
+        CustomEntity& custom_entity,
+        MapEntity& other_entity
+    );
     bool do_custom_entity_collision_test_function(
         int collision_test_ref,
         CustomEntity& custom_entity,
@@ -837,6 +842,10 @@ class LuaContext {
       enemy_api_immobilize,
       enemy_api_create_enemy,
       custom_entity_api_get_model,
+      custom_entity_api_set_traversable_by,
+      custom_entity_api_set_can_traverse,
+      custom_entity_api_can_traverse_ground,
+      custom_entity_api_set_can_traverse_ground,
       custom_entity_api_add_collision_test,
       custom_entity_api_clear_collision_tests,
 

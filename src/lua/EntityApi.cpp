@@ -53,7 +53,7 @@ namespace {
 /**
  * \brief Lua type name of each map entity type.
  */
-const std::string entity_type_names[ENTITY_NUMBER] = {
+const std::string entity_type_names[ENTITY_NUMBER + 1] = {
     "sol.tile",
     "sol.destination",
     "sol.teletransporter",
@@ -75,7 +75,7 @@ const std::string entity_type_names[ENTITY_NUMBER] = {
     "sol.door",
     "sol.stairs",
     "sol.separator",
-    "sol.custom",
+    "sol.custom_entity",
     "sol.hero",
     "sol.carried_object",
     "sol.boomerang",
@@ -84,6 +84,7 @@ const std::string entity_type_names[ENTITY_NUMBER] = {
     "sol.bomb",
     "sol.fire",
     "sol.hookshot",
+    ""  // Sentinel.
 };
 
 /**
@@ -424,6 +425,10 @@ void LuaContext::register_entity_module() {
       { "get_sprite", entity_api_get_sprite },
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
+      { "set_traversable_by", custom_entity_api_set_traversable_by },
+      { "set_can_traverse", custom_entity_api_set_can_traverse },
+      { "can_traverse_ground", custom_entity_api_can_traverse_ground },
+      { "set_can_traverse_ground", custom_entity_api_set_can_traverse_ground },
       { "add_collision_test", custom_entity_api_add_collision_test },
       { "clear_collision_tests", custom_entity_api_clear_collision_tests },
       { NULL, NULL }
@@ -3756,6 +3761,35 @@ void LuaContext::push_custom_entity(lua_State* l, CustomEntity& entity) {
 }
 
 /**
+ * \brief Calls the specified a Lua traversable test function.
+ * \param traversable_test_ref Lua ref to a traversable test function.
+ * \param custom_entity The custom entity that is testing if it can traverse
+ * or be traversed by another entity.
+ * \param other_entity The other entity.
+ * \return \c true if the traversable test function returned \c true.
+ */
+bool LuaContext::do_custom_entity_traversable_test_function(
+    int traversable_test_ref,
+    CustomEntity& custom_entity,
+    MapEntity& other_entity) {
+
+  Debug::check_assertion(traversable_test_ref != LUA_REFNIL,
+      "Missing traversable test function");
+
+  // Call the test function.
+  push_ref(l, traversable_test_ref);
+  push_custom_entity(l, custom_entity);
+  push_entity(l, other_entity);
+  call_function(l, 2, 1, "traversable test function");
+
+  // See its result.
+  bool traversable = lua_toboolean(l, -1);
+  lua_pop(l, 1);
+
+  return traversable;
+}
+
+/**
  * \brief Calls the specified a Lua collision test function.
  * \param collision_test_ref Lua ref to a collision test function.
  * \param custom_entity The custom entity that is testing the collision.
@@ -3841,6 +3875,166 @@ int LuaContext::custom_entity_api_get_model(lua_State* l) {
 
   push_string(l, entity.get_model());
   return 1;
+}
+
+/**
+ * \brief Implementation of custom_entity:set_traversable_by().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_set_traversable_by(lua_State* l) {
+
+  CustomEntity& entity = check_custom_entity(l, 1);
+
+  bool type_specific = false;
+  EntityType type = ENTITY_TILE;
+  int index = 2;
+  if (lua_isstring(l, index)) {
+    ++index;
+    type_specific = true;
+    type = LuaTools::check_enum<EntityType>(
+        l, 2, entity_type_names
+    );
+  }
+
+  if (lua_isnil(l, index)) {
+    // Reset the setting.
+    if (!type_specific) {
+      entity.reset_traversable_by_entities();
+    }
+    else {
+      entity.reset_traversable_by_entities(type);
+    }
+  }
+  else if (lua_isboolean(l, index)) {
+    // Boolean value.
+    bool traversable = lua_toboolean(l, index);
+    if (!type_specific) {
+      entity.set_traversable_by_entities(traversable);
+    }
+    else {
+      entity.set_traversable_by_entities(type, traversable);
+    }
+  }
+  else {
+    // Custom boolean function.
+    if (!lua_isfunction(l, index)) {
+      luaL_typerror(l, index, "boolean, function or nil");
+    }
+    lua_settop(l, index);  // Make sure the function is on the top of the stack.
+
+    int traversable_test_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+    if (!type_specific) {
+      entity.set_traversable_by_entities(traversable_test_ref);
+    }
+    else {
+      entity.set_traversable_by_entities(type, traversable_test_ref);
+    }
+  }
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of custom_entity:set_can_traverse().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_set_can_traverse(lua_State* l) {
+
+  CustomEntity& entity = check_custom_entity(l, 1);
+
+  bool type_specific = false;
+  EntityType type = ENTITY_TILE;
+  int index = 2;
+  if (lua_isstring(l, index)) {
+    ++index;
+    type_specific = true;
+    type = LuaTools::check_enum<EntityType>(
+        l, 2, entity_type_names
+    );
+  }
+
+  if (lua_isnil(l, index)) {
+    // Reset the setting.
+    if (!type_specific) {
+      entity.reset_can_traverse_entities();
+    }
+    else {
+      entity.reset_can_traverse_entities(type);
+    }
+  }
+  else if (lua_isboolean(l, index)) {
+    // Boolean value.
+    bool traversable = lua_toboolean(l, index);
+    if (!type_specific) {
+      entity.set_can_traverse_entities(traversable);
+    }
+    else {
+      entity.set_can_traverse_entities(type, traversable);
+    }
+  }
+  else {
+    // Custom boolean function.
+    if (!lua_isfunction(l, index)) {
+      luaL_typerror(l, index, "boolean, function or nil");
+    }
+    lua_settop(l, index);  // Make sure the function is on the top of the stack.
+
+    int traversable_test_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+    if (!type_specific) {
+      entity.set_can_traverse_entities(traversable_test_ref);
+    }
+    else {
+      entity.set_can_traverse_entities(type, traversable_test_ref);
+    }
+  }
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of custom_entity:can_traverse_ground().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_can_traverse_ground(lua_State* l) {
+
+  CustomEntity& entity = check_custom_entity(l, 1);
+  Ground ground = LuaTools::check_enum<Ground>(
+      l, 2, Tileset::ground_names
+  );
+
+  bool traversable = entity.can_traverse_ground(ground);
+
+  lua_pushboolean(l, traversable);
+  return 1;
+}
+
+/**
+ * \brief Implementation of custom_entity:set_can_traverse_ground().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_set_can_traverse_ground(lua_State* l) {
+
+  CustomEntity& entity = check_custom_entity(l, 1);
+  Ground ground = LuaTools::check_enum<Ground>(
+      l, 2, Tileset::ground_names
+  );
+  if (lua_isnil(l, 3)) {
+    entity.reset_can_traverse_ground(ground);
+  }
+  else {
+    if (!lua_isboolean(l, 3)) {
+      luaL_typerror(l, 3, "boolean or nil");
+    }
+    bool traversable = lua_toboolean(l, 3);
+
+    entity.set_can_traverse_ground(ground, traversable);
+  }
+
+  return 0;
 }
 
 /**

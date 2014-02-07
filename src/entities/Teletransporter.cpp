@@ -213,7 +213,7 @@ bool Teletransporter::is_on_map_side() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Teletransporter::is_obstacle_for(const MapEntity& other) const {
+bool Teletransporter::is_obstacle_for(MapEntity& other) {
 
   return other.is_teletransporter_obstacle(*this);
 }

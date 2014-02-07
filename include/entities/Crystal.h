@@ -37,7 +37,7 @@ class Crystal: public Detector {
     EntityType get_type() const;
 
     void notify_map_started();
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
     void notify_action_command_pressed();

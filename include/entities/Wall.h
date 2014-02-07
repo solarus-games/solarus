@@ -40,7 +40,7 @@ class Wall: public MapEntity {
 
     EntityType get_type() const;
     bool can_be_drawn() const;
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
 
   private:
 

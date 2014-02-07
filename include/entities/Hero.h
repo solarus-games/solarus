@@ -98,8 +98,8 @@ class Hero: public MapEntity {
     const Rectangle get_facing_point() const;
     const Rectangle get_facing_point(int direction4) const;
     void notify_facing_entity_changed(Detector* facing_entity);
-    bool is_facing_obstacle() const;
-    bool is_facing_point_on_obstacle() const;
+    bool is_facing_obstacle();
+    bool is_facing_point_on_obstacle();
     bool is_facing_direction4(int direction4) const;
     bool is_facing_direction8(int direction8) const;
     bool is_on_raised_blocks() const;
@@ -120,7 +120,7 @@ class Hero: public MapEntity {
     int get_walking_speed() const;
     void set_walking_speed(int walking_speed);
     int get_wanted_movement_direction8() const;
-    int get_real_movement_direction8() const;
+    int get_real_movement_direction8();
     bool is_moving_towards(int direction4) const;
     bool is_direction_locked() const;
     void notify_obstacle_reached();
@@ -149,7 +149,7 @@ class Hero: public MapEntity {
      *
      * Information about what is considered as an obstacle for the hero.
      */
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
     bool is_shallow_water_obstacle() const;
     bool is_deep_water_obstacle() const;
     bool is_hole_obstacle() const;

@@ -96,7 +96,7 @@ EntityType Switch::get_type() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Switch::is_obstacle_for(const MapEntity& other) const {
+bool Switch::is_obstacle_for(MapEntity& other) {
   return other.is_switch_obstacle(*this);
 }
 

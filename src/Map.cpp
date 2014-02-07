@@ -902,7 +902,7 @@ bool Map::test_collision_with_ground(
 bool Map::test_collision_with_entities(
     Layer layer,
     const Rectangle& collision_box,
-    const MapEntity& entity_to_check) const {
+    MapEntity& entity_to_check) const {
 
   const std::list<MapEntity*>& obstacle_entities =
       entities->get_obstacle_entities(layer);
@@ -935,7 +935,7 @@ bool Map::test_collision_with_entities(
 bool Map::test_collision_with_obstacles(
     Layer layer,
     const Rectangle& collision_box,
-    const MapEntity& entity_to_check) const {
+    MapEntity& entity_to_check) const {
 
   // This function is called very often.
   // For performance reasons, we only check the border of the of the collision box.
@@ -1010,7 +1010,7 @@ bool Map::test_collision_with_obstacles(
     Layer layer,
     int x,
     int y,
-    const MapEntity& entity_to_check) const {
+    MapEntity& entity_to_check) const {
 
   bool collision;
   bool is_diagonal_wall;

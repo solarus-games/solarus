@@ -850,7 +850,7 @@ void Hero::notify_facing_entity_changed(Detector* facing_entity) {
  *
  * \return true if the hero is facing an obstacle
  */
-bool Hero::is_facing_obstacle() const {
+bool Hero::is_facing_obstacle() {
 
   Rectangle collision_box = get_bounding_box();
   switch (sprites->get_animation_direction()) {
@@ -887,9 +887,9 @@ bool Hero::is_facing_obstacle() const {
  *
  * \return true if the facing point is overlapping an obstacle
  */
-bool Hero::is_facing_point_on_obstacle() const {
+bool Hero::is_facing_point_on_obstacle() {
 
-  const Rectangle &facing_point = get_facing_point();
+  const Rectangle& facing_point = get_facing_point();
   return get_map().test_collision_with_obstacles(
       get_layer(), facing_point.get_x(), facing_point.get_y(), *this);
 }
@@ -1018,7 +1018,7 @@ int Hero::get_wanted_movement_direction8() const {
  *
  * \return the hero's actual direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::get_real_movement_direction8() const {
+int Hero::get_real_movement_direction8() {
 
   int result;
 
@@ -1438,7 +1438,7 @@ void Hero::reset_target_solid_ground_coords() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Hero::is_obstacle_for(const MapEntity& other) const {
+bool Hero::is_obstacle_for(MapEntity& other) {
   return other.is_hero_obstacle(*this);
 }
 

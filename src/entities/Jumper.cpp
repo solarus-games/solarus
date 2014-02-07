@@ -90,7 +90,7 @@ bool Jumper::can_be_drawn() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Jumper::is_obstacle_for(const MapEntity& other) const {
+bool Jumper::is_obstacle_for(MapEntity& other) {
 
   if (get_direction() % 2 != 0) {
     return false; // diagonal jumper: never obstacle (the tiles below the jumper should block entities)

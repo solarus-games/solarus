@@ -51,7 +51,7 @@ class Switch: public Detector {
     ~Switch();
 
     EntityType get_type() const;
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
 
     bool is_walkable() const;
     bool is_arrow_target() const;

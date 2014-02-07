@@ -59,7 +59,7 @@ EntityType ConveyorBelt::get_type() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool ConveyorBelt::is_obstacle_for(const MapEntity& other) const {
+bool ConveyorBelt::is_obstacle_for(MapEntity& other) {
 
   return other.is_conveyor_belt_obstacle(*this);
 }

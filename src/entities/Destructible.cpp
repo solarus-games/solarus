@@ -270,7 +270,7 @@ void Destructible::set_damage_on_enemies(int damage_on_enemies) {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Destructible::is_obstacle_for(const MapEntity& other) const {
+bool Destructible::is_obstacle_for(MapEntity& other) {
 
   return get_modified_ground() == GROUND_WALL
       && !is_being_cut

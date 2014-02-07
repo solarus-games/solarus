@@ -91,7 +91,7 @@ bool CrystalBlock::is_raised() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool CrystalBlock::is_obstacle_for(const MapEntity& other) const {
+bool CrystalBlock::is_obstacle_for(MapEntity& other) {
 
   // if this block is lowered, it is obviously not an obstacle
   if (!is_raised()) {

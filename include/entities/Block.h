@@ -46,7 +46,7 @@ class Block: public Detector {
     bool is_drawn_in_y_order() const;
     bool is_ground_observer() const;
 
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
     bool is_hole_obstacle() const;
     bool is_teletransporter_obstacle(
         const Teletransporter& teletransporter) const;

@@ -45,7 +45,7 @@ class Jumper: public Detector {
     EntityType get_type() const;
     bool can_be_drawn() const;
     bool is_sword_ignored() const;
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
     bool test_collision_custom(MapEntity& entity);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
 

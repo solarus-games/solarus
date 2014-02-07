@@ -308,7 +308,7 @@ bool Enemy::is_saved() const {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Enemy::is_obstacle_for(const MapEntity& other) const {
+bool Enemy::is_obstacle_for(MapEntity& other) {
 
   if (!is_enabled()) {
     return false;

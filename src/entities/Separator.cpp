@@ -76,7 +76,7 @@ bool Separator::is_vertical() const {
 /**
  * \copydoc MapEntity::is_obstacle_for
  */
-bool Separator::is_obstacle_for(const MapEntity& other) const {
+bool Separator::is_obstacle_for(MapEntity& other) {
   return other.is_separator_obstacle(*this);
 }
 

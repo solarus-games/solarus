@@ -51,9 +51,9 @@ const Rectangle PathFinding::transition_collision_boxes[] = {
  * \param target_entity the target entity (its size must be 16*16)
  */
 PathFinding::PathFinding(
-    const Map& map,
-    const MapEntity& source_entity,
-    const MapEntity& target_entity):
+    Map& map,
+    MapEntity& source_entity,
+    MapEntity& target_entity):
   map(map),
   source_entity(source_entity),
   target_entity(target_entity) {

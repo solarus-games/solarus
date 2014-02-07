@@ -125,7 +125,7 @@ class Hero::State {
     virtual bool is_grabbing_or_pulling() const;
     virtual bool is_moving_grabbed_entity() const;
     virtual void notify_grabbed_entity_collision();
-    virtual bool is_cutting_with_sword(Detector& detector) const;
+    virtual bool is_cutting_with_sword(Detector& detector);
     virtual bool can_start_sword() const;
     virtual bool can_pick_treasure(EquipmentItem& item) const;
     virtual bool can_use_shield() const;

@@ -1427,7 +1427,7 @@ void MapEntity::notify_enabled(bool enabled) {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool MapEntity::is_obstacle_for(const MapEntity& other) const {
+bool MapEntity::is_obstacle_for(MapEntity& other) {
   return false;
 }
 

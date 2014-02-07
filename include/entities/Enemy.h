@@ -146,7 +146,7 @@ class Enemy: public Detector {
     void set_animation(const std::string& animation);
 
     // obstacles
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
     bool is_destructible_obstacle(const Destructible& destructible) const;
     bool is_block_obstacle(const Block& block) const;
     bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;

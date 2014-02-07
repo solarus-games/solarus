@@ -116,7 +116,7 @@ EntityType Door::get_type() const {
  * \param other another entity
  * \return true
  */
-bool Door::is_obstacle_for(const MapEntity& other) const {
+bool Door::is_obstacle_for(MapEntity& other) {
   return !is_open();
 }
 

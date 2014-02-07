@@ -1073,7 +1073,7 @@ void Hero::State::notify_grabbed_entity_collision() {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::State::is_cutting_with_sword(Detector& detector) const {
+bool Hero::State::is_cutting_with_sword(Detector& detector) {
   return false;
 }
 

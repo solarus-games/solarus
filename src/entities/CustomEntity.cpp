@@ -428,7 +428,7 @@ void CustomEntity::set_map(Map& map) {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool CustomEntity::is_obstacle_for(const MapEntity& other) const {
+bool CustomEntity::is_obstacle_for(MapEntity& other) {
 
   EntityType type = other.get_type();
 
@@ -450,13 +450,9 @@ bool CustomEntity::is_obstacle_for(const MapEntity& other) const {
     return !info->traversable;
   }
 
-  // FIXME remove the constness of is_obstacle_for and remove ugly const_casts below
-  CustomEntity* non_const_this = const_cast<CustomEntity*>(this);
-  LuaContext& lua_context = non_const_this->get_lua_context();
-
   // A Lua boolean function was set.
-  return !lua_context.do_custom_entity_traversable_test_function(
-      info->traversable_test_ref, *non_const_this, const_cast<MapEntity&>(other)
+  return !get_lua_context().do_custom_entity_traversable_test_function(
+      info->traversable_test_ref, *this, other
   );
 
 }

@@ -148,7 +148,7 @@ bool ShopTreasure::is_sword_ignored() const {
  * \param other another entity
  * \return true
  */
-bool ShopTreasure::is_obstacle_for(const MapEntity& other) const {
+bool ShopTreasure::is_obstacle_for(MapEntity& other) {
   return true;
 }
 

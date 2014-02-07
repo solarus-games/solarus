@@ -75,7 +75,7 @@ class CustomEntity: public Detector {
     void add_collision_test(int collision_test_ref, int callback_ref);
     void clear_collision_tests();
 
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
 
     virtual bool test_collision_custom(MapEntity& entity);
     void notify_collision(

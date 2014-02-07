@@ -108,7 +108,7 @@ bool Block::is_ground_observer() const {
  * \param other another entity
  * \return true
  */
-bool Block::is_obstacle_for(const MapEntity& other) const {
+bool Block::is_obstacle_for(MapEntity& other) {
 
   return other.is_block_obstacle(*this);
 }

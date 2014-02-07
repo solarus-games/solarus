@@ -434,6 +434,22 @@ void LuaContext::destroy_ref(int ref) {
 }
 
 /**
+ * \brief Creates a new reference to the Lua value of an existing reference.
+ * \param The Lua reference to copy.
+ * If LUA_REFNIL or LUA_NOREF, the same ref is returned.
+ * \return The reference created.
+ */
+int LuaContext::copy_ref(int ref) {
+
+  if (ref == LUA_REFNIL || ref == LUA_NOREF) {
+    return ref;
+  }
+
+  push_ref(l, ref);
+  return luaL_ref(l, LUA_REGISTRYINDEX);
+}
+
+/**
  * \brief Calls a function stored in the registry with a reference.
  *
  * No parameters are passed to the function, and return values are ignored.

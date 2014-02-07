@@ -105,6 +105,7 @@ class LuaContext {
     // Lua refs.
     int create_ref();
     void destroy_ref(int ref);
+    int copy_ref(int ref);
 
     // Calling Lua functions.
     void push_callback(int callback_ref);

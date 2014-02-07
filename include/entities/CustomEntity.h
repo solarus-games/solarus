@@ -20,7 +20,6 @@
 #include "Common.h"
 #include "entities/Detector.h"
 #include <map>
-#include <set>
 
 namespace solarus {
 
@@ -182,16 +181,23 @@ class CustomEntity: public Detector {
      */
     struct TraversableInfo {
 
-      // Only one of the fields is used.
-      int traversable_test_ref;      /**< Lua ref to a boolean function
-                                      * that decides, or LUA_REFNIL. */
-      bool traversable;              /**< Traversable property (unused if
-                                      * there is a Lua function). */
-      bool is_empty;                 /**< Whether the property is unset. */
+      // TODO make fields private
+      CustomEntity* entity;            /**< The custom entity.
+                                        * NULL means no info. */
+      int traversable_test_ref;        /**< Lua ref to a boolean function
+                                        * that decides, or LUA_REFNIL. */
+      bool traversable;                /**< Traversable property (unused if
+                                        * there is a Lua function). */
 
       TraversableInfo();
-      explicit TraversableInfo(bool traversable);
-      explicit TraversableInfo(int traversable_test_ref);
+      explicit TraversableInfo(CustomEntity& entity, bool traversable);
+      explicit TraversableInfo(CustomEntity& entity, int traversable_test_ref);
+      TraversableInfo(const TraversableInfo& other);
+      ~TraversableInfo();
+
+      TraversableInfo& operator=(const TraversableInfo& other);
+
+      bool is_empty() const;
 
     };
 
@@ -202,7 +208,7 @@ class CustomEntity: public Detector {
     TraversableInfo can_traverse_entities_general;    /**< Whether I can traverse entities by default or NULL. */
     std::map<EntityType, TraversableInfo>
         can_traverse_entities_type;                   /**< Whether I can traverse entities of a type. */
-    std::set<Ground> can_traverse_grounds;            /**< Grounds that I can traverse. */
+    std::map<Ground, bool> can_traverse_grounds;      /**< Whether I can traverse each kind of ground. */
 
     // Collisions.
 
@@ -212,6 +218,10 @@ class CustomEntity: public Detector {
      */
     struct CollisionInfo {
 
+      // TODO make fields private
+      CustomEntity* entity;            /**< The custom entity.
+                                        * NULL means no info. */
+
       CollisionMode built_in_test;     /**< A built-in collision test
                                         * or COLLISION_CUSTOM. */
       int custom_test_ref;             /**< Ref to a custom collision test
@@ -219,8 +229,16 @@ class CustomEntity: public Detector {
       int callback_ref;                /**< Ref to the function to called when
                                         * a collision is detected. */
 
-      CollisionInfo(CollisionMode built_in_test, int callback_ref);
-      CollisionInfo(int custom_test_ref, int callback_ref);
+      CollisionInfo();
+      CollisionInfo(CustomEntity& entity,
+          CollisionMode built_in_test, int callback_ref);
+      CollisionInfo(CustomEntity& entity,
+          int custom_test_ref, int callback_ref);
+      CollisionInfo(const CollisionInfo& other);
+      ~CollisionInfo();
+
+      CollisionInfo& operator=(const CollisionInfo& other);
+
     };
 
     std::vector<CollisionInfo>

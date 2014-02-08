@@ -53,6 +53,8 @@ class CustomEntity: public Detector {
 
     const std::string& get_model() const;
 
+    // What can traverse this custom entity.
+    bool is_traversable_by_entity(MapEntity& entity);
     void set_traversable_by_entities(bool traversable);
     void set_traversable_by_entities(int traversable_test_ref);
     void reset_traversable_by_entities();
@@ -60,6 +62,10 @@ class CustomEntity: public Detector {
     void set_traversable_by_entities(EntityType type, int traversable_test_ref);
     void reset_traversable_by_entities(EntityType type);
 
+    bool can_be_obstacle() const;
+    bool is_obstacle_for(MapEntity& other);
+
+    // What this custom entity can traverse.
     void set_can_traverse_entities(bool traversable);
     void set_can_traverse_entities(int traversable_test_ref);
     void reset_can_traverse_entities();
@@ -67,24 +73,45 @@ class CustomEntity: public Detector {
     void set_can_traverse_entities(EntityType type, int traversable_test_ref);
     void reset_can_traverse_entities(EntityType type);
 
+    bool is_hero_obstacle(Hero& hero);
+    bool is_block_obstacle(Block& block);
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    bool is_stairs_obstacle(Stairs& stairs);
+    bool is_sensor_obstacle(Sensor& sensor);
+    bool is_switch_obstacle(Switch& sw);
+    bool is_raised_block_obstacle(CrystalBlock& raised_block);
+    bool is_crystal_obstacle(Crystal& crystal);
+    bool is_npc_obstacle(Npc& npc);
+    bool is_enemy_obstacle(Enemy& enemy);
+    bool is_jumper_obstacle(Jumper& jumper);
+    bool is_destructible_obstacle(Destructible& destructible);
+    bool is_separator_obstacle(Separator& separator);
+
     bool can_traverse_ground(Ground ground) const;
     void set_can_traverse_ground(Ground ground, bool traversable);
     void reset_can_traverse_ground(Ground ground);
 
+    bool is_low_wall_obstacle() const;
+    bool is_shallow_water_obstacle() const;
+    bool is_deep_water_obstacle() const;
+    bool is_hole_obstacle() const;
+    bool is_lava_obstacle() const;
+    bool is_prickle_obstacle() const;
+    bool is_ladder_obstacle() const;
+
+    // Collisions.
     void add_collision_test(CollisionMode collision_test, int callback_ref);
     void add_collision_test(int collision_test_ref, int callback_ref);
     void clear_collision_tests();
 
-    bool is_obstacle_for(MapEntity& other);
-
-    virtual bool test_collision_custom(MapEntity& entity);
+    bool test_collision_custom(MapEntity& entity);
     void notify_collision(
         MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(
         MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
 
     /* TODO
-    bool can_be_obstacle() const;
     bool is_ground_observer() const;
     const Rectangle get_ground_point() const;
     bool is_ground_modifier() const;
@@ -133,27 +160,6 @@ class CustomEntity: public Detector {
         const Sprite* victim_sprite,
         EnemyReaction::Reaction& result,
         bool killed);
-    bool is_low_wall_obstacle() const;
-    bool is_shallow_water_obstacle() const;
-    bool is_deep_water_obstacle() const;
-    bool is_hole_obstacle() const;
-    bool is_lava_obstacle() const;
-    bool is_prickle_obstacle() const;
-    bool is_ladder_obstacle() const;
-    bool is_hero_obstacle(Hero& hero);
-    bool is_block_obstacle(Block& block);
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
-    bool is_stairs_obstacle(Stairs& stairs);
-    bool is_sensor_obstacle(Sensor& sensor);
-    bool is_switch_obstacle(Switch& sw);
-    bool is_raised_block_obstacle(CrystalBlock& raised_block);
-    bool is_crystal_obstacle(Crystal& crystal);
-    bool is_npc_obstacle(Npc& npc);
-    bool is_enemy_obstacle(Enemy& enemy);
-    bool is_jumper_obstacle(Jumper& jumper);
-    bool is_destructible_obstacle(Destructible& destructible);
-    bool is_separator_obstacle(Separator& separator);
     bool is_sword_ignored() const;
     void set_suspended(bool suspended);
     void update();
@@ -168,38 +174,81 @@ class CustomEntity: public Detector {
 
   private:
 
+    /**
+     * \brief Stores whether a custom entity can be traversed by or can traverse
+     * other entities.
+     */
+    class TraversableInfo {
+
+      public:
+
+        TraversableInfo();
+        TraversableInfo(CustomEntity& entity, bool traversable);
+        TraversableInfo(CustomEntity& entity, int traversable_test_ref);
+        TraversableInfo(const TraversableInfo& other);
+        ~TraversableInfo();
+
+        TraversableInfo& operator=(const TraversableInfo& other);
+
+        bool is_empty() const;
+        bool is_traversable(MapEntity& other_entity) const;
+
+      private:
+
+        CustomEntity* entity;            /**< The custom entity.
+                                        * NULL means no info. */
+        int traversable_test_ref;        /**< Lua ref to a boolean function
+                                        * that decides, or LUA_REFNIL. */
+        bool traversable;                /**< Traversable property (unused if
+                                        * there is a Lua function). */
+
+    };
+
+    /**
+     * \brief Stores a callback to be executed when the specified test
+     * detects a collision.
+     */
+    class CollisionInfo {
+
+      public:
+
+        CollisionInfo();
+        CollisionInfo(CustomEntity& entity,
+            CollisionMode built_in_test, int callback_ref);
+        CollisionInfo(CustomEntity& entity,
+            int custom_test_ref, int callback_ref);
+        CollisionInfo(const CollisionInfo& other);
+        ~CollisionInfo();
+
+        CollisionInfo& operator=(const CollisionInfo& other);
+
+        CollisionMode get_built_in_test() const;
+        int get_custom_test_ref() const;
+        int get_callback_ref() const;
+
+      private:
+
+        CustomEntity* entity;            /**< The custom entity.
+                                          * NULL means no info. */
+
+        CollisionMode built_in_test;     /**< A built-in collision test
+                                          * or COLLISION_CUSTOM. */
+        int custom_test_ref;             /**< Ref to a custom collision test
+                                          * or LUA_REFNIL. */
+        int callback_ref;                /**< Ref to the function to called when
+                                          * a collision is detected. */
+
+    };
+
     void initialize_sprite(
         const std::string& sprite_name, int initial_direction);
+
+    const TraversableInfo& get_traversable_by_entity_info(EntityType type);
+    const TraversableInfo& get_can_traverse_entity_info(EntityType type);
 
     const std::string& model;                         /**< Model of this custom entity or an empty string. */
 
     // Obstacles.
-
-    /**
-     * \brief Stores whether a custom entity can be traversed by or can traverse
-     * other entities or grounds.
-     */
-    struct TraversableInfo {
-
-      // TODO make fields private
-      CustomEntity* entity;            /**< The custom entity.
-                                        * NULL means no info. */
-      int traversable_test_ref;        /**< Lua ref to a boolean function
-                                        * that decides, or LUA_REFNIL. */
-      bool traversable;                /**< Traversable property (unused if
-                                        * there is a Lua function). */
-
-      TraversableInfo();
-      explicit TraversableInfo(CustomEntity& entity, bool traversable);
-      explicit TraversableInfo(CustomEntity& entity, int traversable_test_ref);
-      TraversableInfo(const TraversableInfo& other);
-      ~TraversableInfo();
-
-      TraversableInfo& operator=(const TraversableInfo& other);
-
-      bool is_empty() const;
-
-    };
 
     TraversableInfo traversable_by_entities_general;  /**< Whether entities can traverse me by default or NULL. */
     std::map<EntityType, TraversableInfo>
@@ -211,35 +260,6 @@ class CustomEntity: public Detector {
     std::map<Ground, bool> can_traverse_grounds;      /**< Whether I can traverse each kind of ground. */
 
     // Collisions.
-
-    /**
-     * \brief Stores a callback to be executed when the specified test
-     * detects a collision.
-     */
-    struct CollisionInfo {
-
-      // TODO make fields private
-      CustomEntity* entity;            /**< The custom entity.
-                                        * NULL means no info. */
-
-      CollisionMode built_in_test;     /**< A built-in collision test
-                                        * or COLLISION_CUSTOM. */
-      int custom_test_ref;             /**< Ref to a custom collision test
-                                        * or LUA_REFNIL. */
-      int callback_ref;                /**< Ref to the function to called when
-                                        * a collision is detected. */
-
-      CollisionInfo();
-      CollisionInfo(CustomEntity& entity,
-          CollisionMode built_in_test, int callback_ref);
-      CollisionInfo(CustomEntity& entity,
-          int custom_test_ref, int callback_ref);
-      CollisionInfo(const CollisionInfo& other);
-      ~CollisionInfo();
-
-      CollisionInfo& operator=(const CollisionInfo& other);
-
-    };
 
     std::vector<CollisionInfo>
         collision_tests;               /**< The collision tests to perform. */

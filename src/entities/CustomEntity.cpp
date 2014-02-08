@@ -15,6 +15,20 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/CustomEntity.h"
+#include "entities/Block.h"
+#include "entities/ConveyorBelt.h"
+#include "entities/Crystal.h"
+#include "entities/CrystalBlock.h"
+#include "entities/Destructible.h"
+#include "entities/Enemy.h"
+#include "entities/Hero.h"
+#include "entities/Jumper.h"
+#include "entities/Npc.h"
+#include "entities/Sensor.h"
+#include "entities/Separator.h"
+#include "entities/Stairs.h"
+#include "entities/Switch.h"
+#include "entities/Teletransporter.h"
 #include "lua/LuaContext.h"
 #include "Sprite.h"
 #include <lua.hpp>
@@ -76,6 +90,44 @@ EntityType CustomEntity::get_type() const {
  */
 const std::string& CustomEntity::get_model() const {
   return model;
+}
+
+/**
+ * \brief Returns the info about whether this custom entity can be traversed
+ * by a type of entity.
+ * \param type Type of entity to test.
+ * \return The corresponding traversable property.
+ */
+const CustomEntity::TraversableInfo& CustomEntity::get_traversable_by_entity_info(
+    EntityType type) {
+
+  const std::map<EntityType, TraversableInfo>::const_iterator it =
+    traversable_by_entities_type.find(type);
+  if (it != traversable_by_entities_type.end()) {
+    // This entity type overrides the general setting.
+    return it->second;
+  }
+
+  return traversable_by_entities_general;
+}
+
+/**
+ * \brief Sets whether this custom entity can be traversed by the specified
+ * entity.
+ * \param entity The entity to test.
+ * \return \c true if the entity can traverse this custom entity.
+ */
+bool CustomEntity::is_traversable_by_entity(MapEntity& entity) {
+
+  // Find the obstacle settings.
+  const TraversableInfo& info = get_traversable_by_entity_info(entity.get_type());
+
+  if (info.is_empty()) {
+    // Nothing was set: make the custom entity traversable by default.
+    return true;
+  }
+
+  return info.is_traversable(entity);
 }
 
 /**
@@ -178,6 +230,41 @@ void CustomEntity::reset_traversable_by_entities(EntityType type) {
 }
 
 /**
+ * \copydoc MapEntity::can_be_obstacle
+ */
+bool CustomEntity::can_be_obstacle() const {
+  return true;
+}
+
+/**
+ * \copydoc MapEntity::is_obstacle_for
+ */
+bool CustomEntity::is_obstacle_for(MapEntity& other) {
+
+  return !is_traversable_by_entity(other);
+}
+
+/**
+ * \brief Returns the info about whether this custom entity can traverse a
+ * type of entity.
+ * \param type Type of entity to test.
+ * \return The corresponding traversable property.
+ */
+const CustomEntity::TraversableInfo& CustomEntity::get_can_traverse_entity_info(
+    EntityType type) {
+
+  // Find the obstacle settings.
+  const std::map<EntityType, TraversableInfo>::const_iterator it =
+    can_traverse_entities_type.find(type);
+  if (it != traversable_by_entities_type.end()) {
+    // This entity type overrides the general setting.
+    return it->second;
+  }
+
+  return traversable_by_entities_general;
+}
+
+/**
  * \brief Sets whether this custom entity can traverse other entities.
  *
  * This applies to entities that are not overridden by
@@ -188,8 +275,6 @@ void CustomEntity::reset_traversable_by_entities(EntityType type) {
  * \param traversable \c true to allow this entity to traverse other entities.
  */
 void CustomEntity::set_can_traverse_entities(bool traversable) {
-
-  // TODO take can_traverse settings into account.
 
   can_traverse_entities_general = TraversableInfo(*this, traversable);
 }
@@ -277,13 +362,179 @@ void CustomEntity::reset_can_traverse_entities(EntityType type) {
 }
 
 /**
+ * \copydoc MapEntity::is_hero_obstacle
+ */
+bool CustomEntity::is_hero_obstacle(Hero& hero) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(hero.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(hero);
+  }
+  return Detector::is_hero_obstacle(hero);
+}
+
+/**
+ * \copydoc MapEntity::is_block_obstacle
+ */
+bool CustomEntity::is_block_obstacle(Block& block) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(block.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(block);
+  }
+  return Detector::is_block_obstacle(block);
+}
+
+/**
+ * \copydoc MapEntity::is_teletransporter_obstacle
+ */
+bool CustomEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(teletransporter.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(teletransporter);
+  }
+  return Detector::is_teletransporter_obstacle(teletransporter);
+}
+
+/**
+ * \copydoc MapEntity::is_conveyor_belt_obstacle
+ */
+bool CustomEntity::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(conveyor_belt.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(conveyor_belt);
+  }
+  return Detector::is_conveyor_belt_obstacle(conveyor_belt);
+}
+
+/**
+ * \copydoc MapEntity::is_stairs_obstacle
+ */
+bool CustomEntity::is_stairs_obstacle(Stairs& stairs) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(stairs.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(stairs);
+  }
+  return Detector::is_stairs_obstacle(stairs);
+}
+
+/**
+ * \copydoc MapEntity::is_sensor_obstacle
+ */
+bool CustomEntity::is_sensor_obstacle(Sensor& sensor) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(sensor.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(sensor);
+  }
+  return Detector::is_sensor_obstacle(sensor);
+}
+
+/**
+ * \copydoc MapEntity::is_switch_obstacle
+ */
+bool CustomEntity::is_switch_obstacle(Switch& sw) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(sw.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(sw);
+  }
+  return Detector::is_switch_obstacle(sw);
+}
+
+/**
+ * \copydoc MapEntity::is_raised_block_obstacle
+ */
+bool CustomEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(raised_block.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(raised_block);
+  }
+  return Detector::is_raised_block_obstacle(raised_block);
+}
+
+/**
+ * \copydoc MapEntity::is_crystal_obstacle
+ */
+bool CustomEntity::is_crystal_obstacle(Crystal& crystal) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(crystal.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(crystal);
+  }
+  return Detector::is_crystal_obstacle(crystal);
+}
+
+/**
+ * \copydoc MapEntity::is_npc_obstacle
+ */
+bool CustomEntity::is_npc_obstacle(Npc& npc) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(npc.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(npc);
+  }
+  return Detector::is_npc_obstacle(npc);
+}
+
+/**
+ * \copydoc MapEntity::is_enemy_obstacle
+ */
+bool CustomEntity::is_enemy_obstacle(Enemy& enemy) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(enemy.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(enemy);
+  }
+  return Detector::is_enemy_obstacle(enemy);
+}
+
+/**
+ * \copydoc MapEntity::is_jumper_obstacle
+ */
+bool CustomEntity::is_jumper_obstacle(Jumper& jumper) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(jumper.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(jumper);
+  }
+  return Detector::is_jumper_obstacle(jumper);
+}
+
+/**
+ * \copydoc MapEntity::is_destructible_obstacle
+ */
+bool CustomEntity::is_destructible_obstacle(Destructible& destructible) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(destructible.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(destructible);
+  }
+  return Detector::is_destructible_obstacle(destructible);
+}
+
+/**
+ * \copydoc MapEntity::is_separator_obstacle
+ */
+bool CustomEntity::is_separator_obstacle(Separator& separator) {
+
+  const TraversableInfo& info = get_can_traverse_entity_info(separator.get_type());
+  if (!info.is_empty()) {
+    return info.is_traversable(separator);
+  }
+  return Detector::is_separator_obstacle(separator);
+}
+
+/**
  * \brief Returns whether this custom entity can traverse a kind of ground.
  * \param ground A kind of ground.
  * \return \c true if this custom entity can traverse this kind of ground.
  */
 bool CustomEntity::can_traverse_ground(Ground ground) const {
-
-  // TODO call this function
 
   const std::map<Ground, bool>::const_iterator it =
     can_traverse_grounds.find(ground);
@@ -346,6 +597,62 @@ void CustomEntity::set_can_traverse_ground(Ground ground, bool traversable) {
 void CustomEntity::reset_can_traverse_ground(Ground ground) {
 
   can_traverse_grounds.erase(ground);
+}
+
+/**
+ * \copydoc MapEntity::is_low_wall_obstacle
+ */
+bool CustomEntity::is_low_wall_obstacle() const {
+
+  return can_traverse_ground(GROUND_LOW_WALL);
+}
+
+/**
+ * \copydoc MapEntity::is_shallow_water_obstacle
+ */
+bool CustomEntity::is_shallow_water_obstacle() const {
+
+  return can_traverse_ground(GROUND_SHALLOW_WATER);
+}
+
+/**
+ * \copydoc MapEntity::is_deep_water_obstacle
+ */
+bool CustomEntity::is_deep_water_obstacle() const {
+
+  return can_traverse_ground(GROUND_DEEP_WATER);
+}
+
+/**
+ * \copydoc MapEntity::is_hole_obstacle
+ */
+bool CustomEntity::is_hole_obstacle() const {
+
+  return can_traverse_ground(GROUND_HOLE);
+}
+
+/**
+ * \copydoc MapEntity::is_lava_obstacle
+ */
+bool CustomEntity::is_lava_obstacle() const {
+
+  return can_traverse_ground(GROUND_LAVA);
+}
+
+/**
+ * \copydoc MapEntity::is_prickle_obstacle
+ */
+bool CustomEntity::is_prickle_obstacle() const {
+
+  return can_traverse_ground(GROUND_PRICKLE);
+}
+
+/**
+ * \copydoc MapEntity::is_ladder_obstacle
+ */
+bool CustomEntity::is_ladder_obstacle() const {
+
+  return can_traverse_ground(GROUND_LADDER);
 }
 
 /**
@@ -425,40 +732,6 @@ void CustomEntity::set_map(Map& map) {
 }
 
 /**
- * \brief Returns whether this entity is an obstacle for another one.
- * \param other Another entity.
- * \return \c true if this entity is an obstacle for the other one.
- */
-bool CustomEntity::is_obstacle_for(MapEntity& other) {
-
-  EntityType type = other.get_type();
-
-  const TraversableInfo* info = &traversable_by_entities_general;
-  const std::map<EntityType, TraversableInfo>::const_iterator it =
-    traversable_by_entities_type.find(type);
-  if (it != traversable_by_entities_type.end()) {
-    // This entity type overrides the general setting.
-    info = &it->second;
-  }
-
-  if (info->is_empty()) {
-    // Nothing was set: make the custom entity traversable by default.
-    return false;
-  }
-
-  if (info->traversable_test_ref == LUA_REFNIL) {
-    // A fixed boolean was set.
-    return !info->traversable;
-  }
-
-  // A Lua boolean function was set.
-  return !get_lua_context().do_custom_entity_traversable_test_function(
-      info->traversable_test_ref, *this, other
-  );
-
-}
-
-/**
  * \copydoc Detector::test_collision_custom
  */
 bool CustomEntity::test_collision_custom(MapEntity& entity) {
@@ -470,33 +743,33 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
   for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
 
     const CollisionInfo& info = *it;
-    switch (info.built_in_test) {
+    switch (info.get_built_in_test()) {
 
       case COLLISION_OVERLAPPING:
         if (test_collision_rectangle(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.callback_ref);
+          detected_collision_callbacks.push_back(info.get_callback_ref());
         }
         break;
 
       case COLLISION_CONTAINING:
         if (test_collision_inside(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.callback_ref);
+          detected_collision_callbacks.push_back(info.get_callback_ref());
         }
         break;
 
       case COLLISION_ORIGIN:
         if (test_collision_origin_point(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.callback_ref);
+          detected_collision_callbacks.push_back(info.get_callback_ref());
         }
         break;
 
       case COLLISION_FACING:
         if (test_collision_facing_point(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.callback_ref);
+          detected_collision_callbacks.push_back(info.get_callback_ref());
 
           // Make sure only one entity can think "I am the facing entity".
           if (entity.get_facing_entity() == NULL) {
@@ -508,23 +781,23 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
       case COLLISION_TOUCHING:
         if (test_collision_facing_point_any(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.callback_ref);
+          detected_collision_callbacks.push_back(info.get_callback_ref());
         }
         break;
 
       case COLLISION_CENTER:
         if (test_collision_center(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.callback_ref);
+          detected_collision_callbacks.push_back(info.get_callback_ref());
         }
         break;
 
       case COLLISION_CUSTOM:
         if (get_lua_context().do_custom_entity_collision_test_function(
-              info.custom_test_ref, *this, entity)
+              info.get_custom_test_ref(), *this, entity)
             ) {
           collision = true;
-          detected_collision_callbacks.push_back(info.callback_ref);
+          detected_collision_callbacks.push_back(info.get_callback_ref());
         }
         break;
 
@@ -580,10 +853,10 @@ void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprit
   for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
 
     const CollisionInfo& info = *it;
-    if (info.built_in_test == COLLISION_SPRITE) {
+    if (info.get_built_in_test() == COLLISION_SPRITE) {
       // Execute the callback.
       get_lua_context().do_custom_entity_collision_callback(
-          info.callback_ref,
+          info.get_callback_ref(),
           *this,
           other_entity,
           this_sprite,
@@ -686,6 +959,30 @@ bool CustomEntity::TraversableInfo::is_empty() const {
 }
 
 /**
+ * \brief Tests this traversable property with the specified other entity.
+ *
+ * This traversable property must not be empty.
+ *
+ * \param other_entity Another entity.
+ * \return \c true if traversing is allowed, \c false otherwise.
+ */
+bool CustomEntity::TraversableInfo::is_traversable(
+    MapEntity& other_entity) const {
+
+  Debug::check_assertion(!is_empty(), "Empty traversable info");
+
+  if (traversable_test_ref == LUA_REFNIL) {
+    // A fixed boolean was set.
+    return traversable;
+  }
+
+  // A Lua boolean function was set.
+  return entity->get_lua_context().do_custom_entity_traversable_test_function(
+      traversable_test_ref, *entity, other_entity
+  );
+}
+
+/**
  * \brief Empty constructor.
  */
 CustomEntity::CollisionInfo::CollisionInfo():
@@ -780,6 +1077,32 @@ CustomEntity::CollisionInfo& CustomEntity::CollisionInfo::operator=(const Collis
   }
 
   return *this;
+}
+
+/**
+ * \brief Returns the built-in collision test to perform.
+ * \return The built-in collision test, or COLLISION_NONE if this is a
+ * customized collision test.
+ */
+CollisionMode CustomEntity::CollisionInfo::get_built_in_test() const {
+  return built_in_test;
+}
+
+/**
+ * \brief Returns the customized collision test to perform.
+ * \return A Lua ref to the customized collision test function,
+ * or LUA_REFNIL if this is a built-in collision test.
+ */
+int CustomEntity::CollisionInfo::get_custom_test_ref() const {
+  return custom_test_ref;
+}
+
+/**
+ * \brief Returns the function to call when the collision is detected.
+ * \return A Lua ref to the callback.
+ */
+int CustomEntity::CollisionInfo::get_callback_ref() const {
+  return callback_ref;
 }
 
 }

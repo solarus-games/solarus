@@ -29,6 +29,7 @@
 #include "Sprite.h"
 #include "EquipmentItem.h"
 #include <sstream>
+#include <lua.hpp>
 
 namespace solarus {
 

@@ -27,6 +27,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include <sstream>
+#include <lua.hpp>
 
 namespace solarus {
 

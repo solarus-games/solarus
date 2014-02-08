@@ -2640,12 +2640,12 @@ int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
     else if (equipment.get_money() < shop_treasure.get_price()) {
       // Not enough money.
       Sound::play("wrong");
-      game.start_dialog("_shop.not_enough_money");
+      game.start_dialog("_shop.not_enough_money", LUA_REFNIL, LUA_REFNIL);
     }
     else if (item.has_amount() && item.get_amount() >= item.get_max_amount()) {
       // The player already has the maximum amount of this item.
       Sound::play("wrong");
-      game.start_dialog("_shop.amount_full");
+      game.start_dialog("_shop.amount_full", LUA_REFNIL, LUA_REFNIL);
     }
     else {
 

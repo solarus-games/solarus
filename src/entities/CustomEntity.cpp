@@ -17,6 +17,7 @@
 #include "entities/CustomEntity.h"
 #include "lua/LuaContext.h"
 #include "Sprite.h"
+#include <lua.hpp>
 
 namespace solarus {
 

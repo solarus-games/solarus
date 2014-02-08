@@ -28,6 +28,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "lua/LuaContext.h"
+#include <lua.hpp>
 #include <sstream>
 
 namespace solarus {
@@ -420,7 +421,7 @@ void Chest::notify_action_command_pressed() {
     }
     else if (!get_cannot_open_dialog_id().empty()) {
       Sound::play("wrong");
-      get_game().start_dialog(get_cannot_open_dialog_id());
+      get_game().start_dialog(get_cannot_open_dialog_id(), LUA_REFNIL, LUA_REFNIL);
     }
   }
 }

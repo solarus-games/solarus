@@ -22,6 +22,7 @@
 #include "EquipmentItem.h"
 #include "Game.h"
 #include "Map.h"
+#include <lua.hpp>
 
 namespace solarus {
 

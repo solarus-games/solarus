@@ -27,6 +27,7 @@
 #include "Sprite.h"
 #include "Equipment.h"
 #include "EquipmentItemUsage.h"
+#include <lua.hpp>
 
 namespace solarus {
 
@@ -254,7 +255,7 @@ void Npc::notify_action_command_pressed() {
     if (effect != KeysEffect::ACTION_KEY_LIFT) {
       // start the normal behavior
       if (behavior == BEHAVIOR_DIALOG) {
-        get_game().start_dialog(dialog_to_show, LUA_REFNIL);
+        get_game().start_dialog(dialog_to_show, LUA_REFNIL, LUA_REFNIL);
       }
       else {
         call_script_hero_interaction();

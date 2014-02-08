@@ -36,7 +36,7 @@ namespace solarus {
  * \param y y coordinate of the entity to create
  */
 Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
-  Detector(COLLISION_SPRITE | COLLISION_RECTANGLE | COLLISION_FACING_POINT,
+  Detector(COLLISION_SPRITE | COLLISION_OVERLAPPING | COLLISION_FACING,
       name, layer, x, y, 16, 16),
   state(false),
   next_possible_hit_date(System::now()) {
@@ -83,7 +83,7 @@ void Crystal::notify_map_started() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Crystal::is_obstacle_for(const MapEntity& other) const {
+bool Crystal::is_obstacle_for(MapEntity& other) {
   return other.is_crystal_obstacle(*this);
 }
 

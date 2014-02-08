@@ -146,11 +146,11 @@ class Enemy: public Detector {
     void set_animation(const std::string& animation);
 
     // obstacles
-    bool is_obstacle_for(const MapEntity& other) const;
-    bool is_destructible_obstacle(const Destructible& destructible) const;
-    bool is_block_obstacle(const Block& block) const;
-    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
-    bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
+    bool is_obstacle_for(MapEntity& other);
+    bool is_destructible_obstacle(Destructible& destructible);
+    bool is_block_obstacle(Block& block);
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool is_raised_block_obstacle(CrystalBlock& raised_block);
     bool is_low_wall_obstacle() const;
     bool is_deep_water_obstacle() const;
     bool is_shallow_water_obstacle() const;
@@ -165,9 +165,9 @@ class Enemy: public Detector {
 
     void notify_enabled(bool enabled);
     void notify_ground_below_changed();
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
-    void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
     void notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite);
 

@@ -66,7 +66,7 @@ class Door: public Detector {
 
     EntityType get_type() const;
 
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
     void set_suspended(bool suspended);
     void update();
     void draw_on_map();

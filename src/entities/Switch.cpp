@@ -65,12 +65,12 @@ Switch::Switch(
     }
   }
   else if (subtype == ARROW_TARGET) {
-    set_collision_modes(COLLISION_FACING_POINT);
+    set_collision_modes(COLLISION_FACING);
   }
   else if (subtype == SOLID) {
     create_sprite("entities/solid_switch");
     get_sprite().set_current_animation("inactivated");
-    set_collision_modes(COLLISION_SPRITE | COLLISION_RECTANGLE);
+    set_collision_modes(COLLISION_SPRITE | COLLISION_OVERLAPPING);
     set_optimization_distance(2000);  // Because of bombs and arrows on the switch.
   }
 }
@@ -96,7 +96,7 @@ EntityType Switch::get_type() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Switch::is_obstacle_for(const MapEntity& other) const {
+bool Switch::is_obstacle_for(MapEntity& other) {
   return other.is_switch_obstacle(*this);
 }
 

@@ -47,6 +47,15 @@ class HeroSprites {
     void notify_map_started();
     void notify_tileset_changed();
 
+    const std::string& get_tunic_sprite_id() const;
+    void set_tunic_sprite_id(const std::string& sprite_id);
+    const std::string& get_sword_sprite_id() const;
+    void set_sword_sprite_id(const std::string& sprite_id);
+    const std::string& get_sword_sound_id() const;
+    void set_sword_sound_id(const std::string& sound_id);
+    const std::string& get_shield_sprite_id() const;
+    void set_shield_sprite_id(const std::string& sprite_id);
+
     void blink(uint32_t duration);
     void stop_blinking();
     bool is_blinking() const;
@@ -66,6 +75,9 @@ class HeroSprites {
     void save_animation_direction();
     void restore_animation_direction();
     void set_ignore_suspend(bool ignore_suspend);
+
+    bool has_tunic_animation(const std::string& animation) const;
+    const std::string& get_tunic_animation() const;
 
     void set_animation_stopped_common();
     void set_animation_stopped_normal();
@@ -95,8 +107,9 @@ class HeroSprites {
     void set_animation_victory();
     void set_animation_prepare_running();
     void set_animation_running();
-    void set_animation(const std::string& tunic_animation,
-        const std::string& shield_animation);
+    void set_animation_boomerang(const std::string& tunic_preparing_animation);
+    void set_animation(const std::string& animation);
+    void set_animation(const std::string& animation, int callback_ref);
 
     void create_ground(Ground grond);
     void destroy_ground();
@@ -113,44 +126,77 @@ class HeroSprites {
     bool is_trail_visible() const;
     bool is_ground_visible() const;
 
+    std::string get_default_tunic_sprite_id() const;
+    std::string get_default_sword_sprite_id() const;
+    std::string get_default_sword_sound_id() const;
+    std::string get_default_shield_sprite_id() const;
+
     void stop_displaying_sword();
     void stop_displaying_sword_stars();
     void stop_displaying_shield();
     void stop_displaying_trail();
 
-    Hero& hero;                        /**< the hero */
-    Equipment& equipment;              /**< equipment of the player */
+    void set_tunic_animation(const std::string& animation);
+    void set_tunic_animation(const std::string& animation, int callback_ref);
 
-    Sprite* tunic_sprite;              /**< sprite of the current tunic */
-    Sprite* sword_sprite;              /**< current sword sprite */
-    Sprite* sword_stars_sprite;        /**< stars running along the sword when the sword is loading */
-    Sprite* shield_sprite;             /**< current shield sprite */
-    Sprite* shadow_sprite;             /**< shadow of the hero, only in specific states (most of the time
-                                        * the shadow is with the tunic sprite) */
-    Sprite* ground_sprite;             /**< ground displayed under the hero (e.g. grass or shallow water) */
-    Sprite* trail_sprite;              /**< trail of dust that the hero lets behind him (e.g. when running) */
+    LuaContext& get_lua_context();
 
-    std::string sword_sound_id;        /**< sound id of the current sword */
-    std::string ground_sound_id;       /**< sound id of the current ground displayed under the hero */
+    Hero& hero;                             /**< The hero. */
+    Equipment& equipment;                   /**< Equipment of the player. */
 
+    // Tunic.
+    std::string tunic_sprite_id;            /**< Animation set used for the tunic.
+                                             * By default, "hero/tunicX" where X is the tunic level. */
+    bool has_default_tunic_sprite;          /**< Whether tunic_sprite_id has the defaut value. */
+    Sprite* tunic_sprite;                   /**< sprite of the current tunic */
+
+    // Sword.
+    std::string sword_sprite_id;            /**< Animation set used for the sword.
+                                             * An empty string means no sword sprite.
+                                             * By default, "hero/swordX" where X is the sword level. */
+    bool has_default_sword_sprite;          /**< Whether sword_sprite_id has the defaut value. */
+    Sprite* sword_sprite;                   /**< Current sword sprite. */
+    Sprite* sword_stars_sprite;             /**< Stars running along the sword when the sword is loading. */
+
+    std::string sword_sound_id;             /**< Sound played when using the sword.
+                                             * By default, "swordX" where X is the sword level. */
+    bool has_default_sword_sound;           /**< Whether sword_sound_id has the defaut value. */
+
+    // Shield.
+    std::string shield_sprite_id;           /**< Animation set used for the shield.
+                                             * An empty string means no shield sprite.
+                                             * By default, "hero/shieldX" where X is the shield level. */
+    bool has_default_shield_sprite;         /**< Whether shield_sprite_id has the defaut value. */
+    Sprite* shield_sprite;                  /**< Current shield sprite. */
+
+    // Other sprites.
+    Sprite* shadow_sprite;                  /**< shadow of the hero, only in specific states (most of the time
+                                             * the shadow is with the tunic sprite) */
+    Sprite* ground_sprite;                  /**< ground displayed under the hero (e.g. grass or shallow water) */
+    Sprite* trail_sprite;                   /**< trail of dust that the hero lets behind him (e.g. when running) */
+
+    std::string ground_sound_id;            /**< sound id of the current ground displayed under the hero */
+
+    // State.
     static const int
-        animation_directions[8][2];    /**< possible directions of the animation for each movement direction */
+        animation_directions[8][2];         /**< possible directions of the animation for each movement direction */
 
-    int animation_direction_saved;     /**< direction of the hero's sprites, saved before
-                                         * showing a sprite animation having only one direction */
-    uint32_t when_suspended;           /**< date when the game was suspended */
+    int animation_direction_saved;          /**< direction of the hero's sprites, saved before
+                                              * showing a sprite animation having only one direction */
+    uint32_t when_suspended;                /**< date when the game was suspended */
 
-    bool blinking;                     /**< Whether the hero's sprites are blinking. */
-    uint32_t end_blink_date;           /**< When the hero's sprites stop blinking.
-                                        * 0 means infinite. */
+    bool blinking;                          /**< Whether the hero's sprites are blinking. */
+    uint32_t end_blink_date;                /**< When the hero's sprites stop blinking.
+                                             * 0 means infinite. */
 
-    bool walking;                      /**< stopped or walking? */
+    bool walking;                           /**< stopped or walking? */
 
-    Rectangle clipping_rectangle;      /**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
-                                        * (usually, the whole map is considered and this rectangle's values are all 0) */
+    Rectangle clipping_rectangle;           /**< when drawing the sprites onto a map, indicates an area of the map to be restricted to
+                                             * (usually, the whole map is considered and this rectangle's values are all 0) */
 
-    CarriedItem* lifted_item;          /**< if not NULL, an item to display above the hero */
+    CarriedItem* lifted_item;               /**< if not NULL, an item to display above the hero */
 
+    int animation_callback_ref;             /**< Lua ref of a function to call when a custom animation ends. */
 };
 
 }

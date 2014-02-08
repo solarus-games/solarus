@@ -158,9 +158,9 @@ bool Hero::SwordSwingingState::can_sword_hit_crystal() const {
  * \return true if the sword is cutting this detector
  */
 bool Hero::SwordSwingingState::is_cutting_with_sword(
-    Detector& detector) const {
+    Detector& detector) {
 
-  const Hero& hero = get_hero();
+  Hero& hero = get_hero();
   if (hero.get_movement() != NULL) {
     return false;
   }

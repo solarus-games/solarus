@@ -75,10 +75,10 @@ class Npc: public Detector {
     bool is_solid() const;
 
     bool is_drawn_in_y_order() const;
-    bool is_obstacle_for(const MapEntity& other) const;
-    bool is_hero_obstacle(const Hero& hero) const;
-    bool is_npc_obstacle(const Npc& npc) const;
-    bool is_enemy_obstacle(const Enemy& enemy) const;
+    bool is_obstacle_for(MapEntity& other);
+    bool is_hero_obstacle(Hero& hero);
+    bool is_npc_obstacle(Npc& npc);
+    bool is_enemy_obstacle(Enemy& enemy);
     bool is_sword_ignored() const;
 
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);

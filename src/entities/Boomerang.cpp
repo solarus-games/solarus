@@ -126,7 +126,7 @@ bool Boomerang::can_be_drawn() const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Boomerang::is_teletransporter_obstacle(const Teletransporter& teletransporter) const {
+bool Boomerang::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -135,7 +135,7 @@ bool Boomerang::is_teletransporter_obstacle(const Teletransporter& teletransport
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Boomerang::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
+bool Boomerang::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -144,7 +144,7 @@ bool Boomerang::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) con
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool Boomerang::is_stairs_obstacle(const Stairs& stairs) const {
+bool Boomerang::is_stairs_obstacle(Stairs& stairs) {
   return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
@@ -202,7 +202,7 @@ bool Boomerang::is_ladder_obstacle() const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool Boomerang::is_switch_obstacle(const Switch& sw) const {
+bool Boomerang::is_switch_obstacle(Switch& sw) {
   return false;
 }
 
@@ -211,8 +211,7 @@ bool Boomerang::is_switch_obstacle(const Switch& sw) const {
  * \param raised_block a crystal block raised
  * \return false
  */
-bool Boomerang::is_raised_block_obstacle(
-    const CrystalBlock& raised_block) const {
+bool Boomerang::is_raised_block_obstacle(CrystalBlock& raised_block) {
   // the boomerang can traverse the crystal blocks
   return false;
 }
@@ -222,7 +221,7 @@ bool Boomerang::is_raised_block_obstacle(
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool Boomerang::is_crystal_obstacle(const Crystal& crystal) const {
+bool Boomerang::is_crystal_obstacle(Crystal& crystal) {
   return false;
 }
 
@@ -231,7 +230,7 @@ bool Boomerang::is_crystal_obstacle(const Crystal& crystal) const {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool Boomerang::is_npc_obstacle(const Npc& npc) const {
+bool Boomerang::is_npc_obstacle(Npc& npc) {
   return npc.is_solid();
 }
 
@@ -240,7 +239,7 @@ bool Boomerang::is_npc_obstacle(const Npc& npc) const {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool Boomerang::is_jumper_obstacle(const Jumper& jumper) const {
+bool Boomerang::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 
@@ -326,7 +325,7 @@ void Boomerang::notify_movement_finished() {
  */
 void Boomerang::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_RECTANGLE) {
+  if (collision_mode == COLLISION_OVERLAPPING) {
 
     sw.try_activate();
     if (!is_going_back()) {
@@ -343,7 +342,7 @@ void Boomerang::notify_collision_with_switch(Switch& sw, CollisionMode collision
  */
 void Boomerang::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_RECTANGLE) {
+  if (collision_mode == COLLISION_OVERLAPPING) {
 
     crystal.activate(*this);
     if (!is_going_back()) {

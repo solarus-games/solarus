@@ -91,6 +91,7 @@ void Hero::VictoryState::update() {
       int callback_ref = this->callback_ref;
       this->callback_ref = LUA_REFNIL;
       get_lua_context().do_callback(callback_ref);
+      get_lua_context().cancel_callback(callback_ref);
     }
     else {
       // By default, get back to the normal state.

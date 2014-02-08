@@ -49,7 +49,7 @@ namespace solarus {
 Npc::Npc(Game& game, const std::string& name, Layer layer, int x, int y,
     Subtype subtype, const std::string& sprite_name,
     int direction, const std::string& behavior_string):
-  Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, name, layer, x, y, 0, 0),
+  Detector(COLLISION_FACING | COLLISION_OVERLAPPING, name, layer, x, y, 0, 0),
   subtype(subtype),
   dialog_to_show(""),
   item_name("") {
@@ -138,7 +138,7 @@ bool Npc::is_solid() const {
  * \param other another entity
  * \return true
  */
-bool Npc::is_obstacle_for(const MapEntity& other) const {
+bool Npc::is_obstacle_for(MapEntity& other) {
 
   return other.is_npc_obstacle(*this);
 }
@@ -148,7 +148,7 @@ bool Npc::is_obstacle_for(const MapEntity& other) const {
  * \param hero the hero
  * \return true if the hero is an obstacle for this entity
  */
-bool Npc::is_hero_obstacle(const Hero& hero) const {
+bool Npc::is_hero_obstacle(Hero& hero) {
   return true;
 }
 
@@ -157,7 +157,7 @@ bool Npc::is_hero_obstacle(const Hero& hero) const {
  * \param npc an NPC
  * \return true if this NPC is currently considered as an obstacle by this entity
  */
-bool Npc::is_npc_obstacle(const Npc& npc) const {
+bool Npc::is_npc_obstacle(Npc& npc) {
 
   // usual NPCs can traverse each other
   return subtype != USUAL_NPC || npc.subtype != USUAL_NPC;
@@ -168,7 +168,7 @@ bool Npc::is_npc_obstacle(const Npc& npc) const {
  * \param enemy an enemy
  * \return true if this enemy is currently considered as an obstacle by this entity
  */
-bool Npc::is_enemy_obstacle(const Enemy& enemy) const {
+bool Npc::is_enemy_obstacle(Enemy& enemy) {
 
   // usual NPCs can traverse enemies
   return subtype != USUAL_NPC;
@@ -197,7 +197,7 @@ bool Npc::is_sword_ignored() const {
  */
 void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_FACING_POINT && entity_overlapping.is_hero()) {
+  if (collision_mode == COLLISION_FACING && entity_overlapping.is_hero()) {
 
     Hero& hero = static_cast<Hero&>(entity_overlapping);
 
@@ -217,7 +217,7 @@ void Npc::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
       }
     }
   }
-  else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == ENTITY_FIRE) {
+  else if (collision_mode == COLLISION_OVERLAPPING && entity_overlapping.get_type() == ENTITY_FIRE) {
 
     if (behavior == BEHAVIOR_ITEM_SCRIPT) {
       EquipmentItem& item = get_equipment().get_item(item_name);

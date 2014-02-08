@@ -41,7 +41,7 @@ Sensor::Sensor(
     int y,
     int width,
     int height):
-  Detector(COLLISION_INSIDE | COLLISION_RECTANGLE, name, layer, x, y, width, height),
+  Detector(COLLISION_CONTAINING | COLLISION_OVERLAPPING, name, layer, x, y, width, height),
   activated_by_hero(false),
   notifying_script(false) {
 
@@ -76,7 +76,7 @@ bool Sensor::can_be_drawn() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Sensor::is_obstacle_for(const MapEntity& other) const {
+bool Sensor::is_obstacle_for(MapEntity& other) {
 
   return other.is_sensor_obstacle(*this);
 }
@@ -98,7 +98,7 @@ void Sensor::notify_collision(MapEntity& entity_overlapping, CollisionMode colli
  */
 void Sensor::notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_RECTANGLE) {
+  if (collision_mode == COLLISION_OVERLAPPING) {
     get_lua_context().sensor_on_collision_explosion(*this);
   }
 }

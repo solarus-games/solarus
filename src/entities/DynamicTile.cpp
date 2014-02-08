@@ -105,7 +105,7 @@ Ground DynamicTile::get_modified_ground() const {
  * \param other an entity
  * \return true if this tile is an obstacle for the entity
  */
-bool DynamicTile::is_obstacle_for(const MapEntity& other) const {
+bool DynamicTile::is_obstacle_for(MapEntity& other) {
 
   // TODO normally, this function can be removed since there is already
   // a modified ground

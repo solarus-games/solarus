@@ -27,7 +27,7 @@ namespace solarus {
  * \param xy coordinates of the fire
  */
 Fire::Fire(const std::string& name, Layer layer, const Rectangle& xy):
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, name, layer, xy.get_x(), xy.get_y(), 16, 16) {
+  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, xy.get_x(), xy.get_y(), 16, 16) {
 
   // initialize the entity
   create_sprite("entities/fire");

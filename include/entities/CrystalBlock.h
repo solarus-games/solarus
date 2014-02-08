@@ -46,7 +46,7 @@ class CrystalBlock: public Detector {
 
     EntityType get_type() const;
 
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
 
     void update();

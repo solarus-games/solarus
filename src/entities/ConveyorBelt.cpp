@@ -31,7 +31,7 @@ namespace solarus {
  */
 ConveyorBelt::ConveyorBelt(const std::string& name,
     Layer layer, int x, int y, int direction):
-  Detector(COLLISION_RECTANGLE, name, layer, x, y, 16, 16) {
+  Detector(COLLISION_OVERLAPPING, name, layer, x, y, 16, 16) {
 
   set_origin(8, 13);
   create_sprite("entities/conveyor_belt");
@@ -59,7 +59,7 @@ EntityType ConveyorBelt::get_type() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool ConveyorBelt::is_obstacle_for(const MapEntity& other) const {
+bool ConveyorBelt::is_obstacle_for(MapEntity& other) {
 
   return other.is_conveyor_belt_obstacle(*this);
 }

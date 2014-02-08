@@ -40,7 +40,7 @@ namespace solarus {
  */
 CrystalBlock::CrystalBlock(Game& game, const std::string& name,
     Layer layer, int x, int y, int width, int height, Subtype subtype):
-  Detector(COLLISION_RECTANGLE, name, layer, x, y, width, height),
+  Detector(COLLISION_OVERLAPPING, name, layer, x, y, width, height),
   subtype(subtype) {
 
   create_sprite("entities/crystal_block");
@@ -91,7 +91,7 @@ bool CrystalBlock::is_raised() const {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool CrystalBlock::is_obstacle_for(const MapEntity& other) const {
+bool CrystalBlock::is_obstacle_for(MapEntity& other) {
 
   // if this block is lowered, it is obviously not an obstacle
   if (!is_raised()) {

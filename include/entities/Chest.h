@@ -66,7 +66,7 @@ class Chest: public Detector {
     const std::string& get_cannot_open_dialog_id() const;
     void set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id);
 
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_enabled(bool enabled);
     void update();

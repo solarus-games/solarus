@@ -36,20 +36,20 @@ class Arrow: public MapEntity {
     bool can_be_obstacle() const;
     bool is_drawn_in_y_order() const;
 
-    bool is_teletransporter_obstacle(const Teletransporter& teletransporter) const;
-    bool is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const;
-    bool is_stairs_obstacle(const Stairs& stairs) const;
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    bool is_stairs_obstacle(Stairs& stairs);
     bool is_low_wall_obstacle() const;
     bool is_deep_water_obstacle() const;
     bool is_hole_obstacle() const;
     bool is_lava_obstacle() const;
     bool is_prickle_obstacle() const;
     bool is_ladder_obstacle() const;
-    bool is_switch_obstacle(const Switch& sw) const;
-    bool is_raised_block_obstacle(const CrystalBlock& raised_block) const;
-    bool is_crystal_obstacle(const Crystal& crystal) const;
-    bool is_npc_obstacle(const Npc& npc) const;
-    bool is_jumper_obstacle(const Jumper& jumper) const;
+    bool is_switch_obstacle(Switch& sw);
+    bool is_raised_block_obstacle(CrystalBlock& raised_block);
+    bool is_crystal_obstacle(Crystal& crystal);
+    bool is_npc_obstacle(Npc& npc);
+    bool is_jumper_obstacle(Jumper& jumper);
 
     // state
     void update();

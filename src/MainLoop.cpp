@@ -168,7 +168,7 @@ void MainLoop::run() {
   // Main loop.
   uint32_t last_frame_date = System::get_real_time();
   uint32_t lag = 0;  // Lose time of the simulation to catch up.
-  uint32_t time_dropped = 0;  // Time that won't be catched up.
+  uint32_t time_dropped = 0;  // Time that won't be caught up.
 
   // The main loop basically repeats
   // check_input(), update(), draw() and sleep().

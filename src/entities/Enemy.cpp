@@ -87,7 +87,7 @@ Enemy::Enemy(
     const std::string& breed,
     const Treasure& treasure):
 
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE,
+  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE,
       name, layer, x, y, 0, 0),
 
   breed(breed),
@@ -308,7 +308,7 @@ bool Enemy::is_saved() const {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Enemy::is_obstacle_for(const MapEntity& other) const {
+bool Enemy::is_obstacle_for(MapEntity& other) {
 
   if (!is_enabled()) {
     return false;
@@ -333,7 +333,7 @@ bool Enemy::is_low_wall_obstacle() const {
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle this entity
  */
-bool Enemy::is_destructible_obstacle(const Destructible& destructible) const {
+bool Enemy::is_destructible_obstacle(Destructible& destructible) {
 
   // The destructible object is an obstacle unless the enemy is already
   // overlapping it, which is possible with destructibles that can regenerate.
@@ -346,7 +346,7 @@ bool Enemy::is_destructible_obstacle(const Destructible& destructible) const {
 /**
  * \copydoc MapEntity::is_block_obstacle
  */
-bool Enemy::is_block_obstacle(const Block& block) const {
+bool Enemy::is_block_obstacle(Block& block) {
 
   // The block is an obstacle unless the enemy is already overlapping it,
   // which is easily possible with blocks created by the hero.
@@ -361,8 +361,7 @@ bool Enemy::is_block_obstacle(const Block& block) const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Enemy::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+bool Enemy::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -372,8 +371,7 @@ bool Enemy::is_teletransporter_obstacle(
  * \param raised_block A crystal block raised.
  * \return \c true if the raised block is currently an obstacle for this entity.
  */
-bool Enemy::is_raised_block_obstacle(
-    const CrystalBlock& raised_block) const {
+bool Enemy::is_raised_block_obstacle(CrystalBlock& raised_block) {
 
   // The crystal block is an obstacle unless the enemy is already on it.
   if (this->overlaps(raised_block)) {
@@ -914,7 +912,7 @@ void Enemy::set_suspended(bool suspended) {
     end_shaking_date += diff;
     next_explosion_date += diff;
   }
-  get_lua_context().enemy_on_suspended(*this, suspended);
+  get_lua_context().entity_on_suspended(*this, suspended);
 }
 
 /**
@@ -1207,6 +1205,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite)
 
     case EnemyReaction::IMMOBILIZED:
       // get immobilized
+      being_hurt = true;
       hurt(source, this_sprite);
       immobilize();
       break;

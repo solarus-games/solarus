@@ -24,6 +24,22 @@
 namespace solarus {
 
 /**
+ * \brief Lua name of each collision mode enmu value.
+ */
+const std::string Detector::collision_mode_names[] = {
+  "none",
+  "overlapping",
+  "containing",
+  "origin",
+  "facing",
+  "touching",
+  "center",
+  "sprite",
+  "custom",
+  ""  // Sentinel.
+};
+
+/**
  * \brief Constructor.
  * \param collision_modes the detector's collision mode(s)
  * \param name Name identifying the entity on the map or an empty string.
@@ -134,8 +150,8 @@ void Detector::set_layer_independent_collisions(bool independent) {
  *
  * This function is called by the map when an entity has just moved.
  * It checks whether the entity collides with this detector.
- * Depending on the detector collision mode(s), the appropriate has_collision_*
- * functions are called.
+ * Depending on the detector collision mode(s), the appropriate
+ * test_collision_* functions are called.
  * If there is a collision, the notify_collision() method is called.
  *
  * \param entity the entity to check
@@ -147,28 +163,28 @@ void Detector::check_collision(MapEntity& entity) {
 
     // detect the collision depending on the collision mode
 
-    if (has_collision_mode(COLLISION_RECTANGLE) && test_collision_rectangle(entity)) {
-      notify_collision(entity, COLLISION_RECTANGLE);
+    if (has_collision_mode(COLLISION_OVERLAPPING) && test_collision_rectangle(entity)) {
+      notify_collision(entity, COLLISION_OVERLAPPING);
     }
 
-    if (has_collision_mode(COLLISION_INSIDE) && test_collision_inside(entity)) {
-      notify_collision(entity, COLLISION_INSIDE);
+    if (has_collision_mode(COLLISION_CONTAINING) && test_collision_inside(entity)) {
+      notify_collision(entity, COLLISION_CONTAINING);
     }
 
-    if (has_collision_mode(COLLISION_ORIGIN_POINT) && test_collision_origin_point(entity)) {
-      notify_collision(entity, COLLISION_ORIGIN_POINT);
+    if (has_collision_mode(COLLISION_ORIGIN) && test_collision_origin_point(entity)) {
+      notify_collision(entity, COLLISION_ORIGIN);
     }
 
-    if (has_collision_mode(COLLISION_FACING_POINT) && test_collision_facing_point(entity)) {
+    if (has_collision_mode(COLLISION_FACING) && test_collision_facing_point(entity)) {
 
       if (entity.get_facing_entity() == NULL) { // make sure only one entity can think "I am the facing entity"
         entity.set_facing_entity(this);
       }
-      notify_collision(entity, COLLISION_FACING_POINT);
+      notify_collision(entity, COLLISION_FACING);
     }
 
-    if (has_collision_mode(COLLISION_FACING_POINT_ANY) && test_collision_facing_point_any(entity)) {
-      notify_collision(entity, COLLISION_FACING_POINT_ANY);
+    if (has_collision_mode(COLLISION_TOUCHING) && test_collision_facing_point_any(entity)) {
+      notify_collision(entity, COLLISION_TOUCHING);
     }
 
     if (has_collision_mode(COLLISION_CENTER) && test_collision_center(entity)) {

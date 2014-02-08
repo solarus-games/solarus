@@ -164,9 +164,9 @@ bool Hero::SwordTappingState::can_use_shield() const {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) const {
+bool Hero::SwordTappingState::is_cutting_with_sword(Detector& detector) {
 
-  const Hero& hero = get_hero();
+  Hero& hero = get_hero();
   return detector.is_obstacle_for(hero)         // only obstacle entities can be cut
     && hero.get_facing_entity() == &detector    // only one entity at a time
     && get_sprites().get_current_frame() >= 3;  // wait until the animation shows an appropriate frame

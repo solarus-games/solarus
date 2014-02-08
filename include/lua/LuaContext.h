@@ -100,13 +100,26 @@ class LuaContext {
     void run_item(EquipmentItem& item);
     void run_map(Map& map, Destination* destination);
     void run_enemy(Enemy& enemy);
+    void run_custom_entity(CustomEntity& custom_entity);
 
     // Lua refs.
     int create_ref();
     void destroy_ref(int ref);
+    int copy_ref(int ref);
+
+    // Calling Lua functions.
     void push_callback(int callback_ref);
     void do_callback(int callback_ref);
     void cancel_callback(int callback_ref);
+    bool call_function(
+        int nb_arguments,
+        int nb_results,
+        const char* function_name);
+    static bool call_function(
+        lua_State* l,
+        int nb_arguments,
+        int nb_results,
+        const char* function_name);
 
     // Timers.
     void add_timer(Timer* timer, int context_index, int callback_index);
@@ -137,10 +150,33 @@ class LuaContext {
     void update_movements();
 
     // Entities.
-    static const std::string& get_entity_type_name(EntityType entity_type);
+    static const std::string& get_entity_internal_type_name(EntityType entity_type);
     static Map& get_entity_creation_map(lua_State* l);
     static Map* get_entity_implicit_creation_map(lua_State* l);
     static void set_entity_implicit_creation_map(lua_State* l, Map* map);
+
+    bool do_custom_entity_traversable_test_function(
+        int traversable_test_ref,
+        CustomEntity& custom_entity,
+        MapEntity& other_entity
+    );
+    bool do_custom_entity_collision_test_function(
+        int collision_test_ref,
+        CustomEntity& custom_entity,
+        MapEntity& other_entity
+    );
+    void do_custom_entity_collision_callback(
+        int callback_ref,
+        CustomEntity& custom_entity,
+        MapEntity& other_entity
+    );
+    void do_custom_entity_collision_callback(
+        int callback_ref,
+        CustomEntity& custom_entity,
+        MapEntity& other_entity,
+        Sprite& custom_entity_sprite,
+        Sprite& other_entity_sprite
+    );
 
     // Main loop events (sol.main).
     void main_on_started();
@@ -231,7 +267,8 @@ class LuaContext {
     bool map_on_command_released(Map& map, GameCommands::Command command);
 
     // Map entity events.
-    // TODO entity_on_created
+    void entity_on_suspended(MapEntity& entity, bool suspended);
+    void entity_on_created(MapEntity& entity);
     void entity_on_removed(MapEntity& entity);
     void entity_on_position_changed(MapEntity& entity, const Rectangle& xy, Layer layer);
     void entity_on_obstacle_reached(MapEntity& entity, Movement& movement);
@@ -266,8 +303,6 @@ class LuaContext {
     void destructible_on_exploded(Destructible& destructible);
     void destructible_on_regenerating(Destructible& destructible);
     void enemy_on_update(Enemy& enemy);
-    void enemy_on_suspended(Enemy& enemy, bool suspended);
-    void enemy_on_created(Enemy& enemy);  // TODO remove?
     void enemy_on_enabled(Enemy& enemy);
     void enemy_on_disabled(Enemy& enemy);
     void enemy_on_restarted(Enemy& enemy);
@@ -671,6 +706,8 @@ class LuaContext {
       entity_api_get_position,
       entity_api_set_position,
       entity_api_get_center_position,
+      entity_api_get_bounding_box,
+      entity_api_overlaps,
       entity_api_get_distance,
       entity_api_get_angle,
       entity_api_get_direction4_to,
@@ -698,6 +735,16 @@ class LuaContext {
       hero_api_set_walking_speed,
       hero_api_save_solid_ground,
       hero_api_reset_solid_ground,
+      hero_api_get_animation,
+      hero_api_set_animation,
+      hero_api_get_tunic_sprite_id,
+      hero_api_set_tunic_sprite_id,
+      hero_api_get_sword_sprite_id,
+      hero_api_set_sword_sprite_id,
+      hero_api_get_sword_sound_id,
+      hero_api_set_sword_sound_id,
+      hero_api_get_shield_sprite_id,
+      hero_api_set_shield_sprite_id,
       hero_api_is_blinking,
       hero_api_set_blinking,
       hero_api_is_invincible,
@@ -796,6 +843,12 @@ class LuaContext {
       enemy_api_immobilize,
       enemy_api_create_enemy,
       custom_entity_api_get_model,
+      custom_entity_api_set_traversable_by,
+      custom_entity_api_set_can_traverse,
+      custom_entity_api_can_traverse_ground,
+      custom_entity_api_set_can_traverse_ground,
+      custom_entity_api_add_collision_test,
+      custom_entity_api_clear_collision_tests,
 
       // available to all userdata types
       userdata_meta_gc,
@@ -837,15 +890,6 @@ class LuaContext {
         const ExportableToLua& userdata, const char* key) const;
     bool find_method(int index, const char* function_name);
     bool find_method(const char* function_name);
-    bool call_function(
-        int nb_arguments,
-        int nb_results,
-        const char* function_name);
-    static bool call_function(
-        lua_State* l,
-        int nb_arguments,
-        int nb_results,
-        const char* function_name);
     static void load_file(lua_State* l, const std::string& script_name);
     static bool load_file_if_exists(lua_State* l, const std::string& script_name);
     static void do_file(lua_State* l, const std::string& script_name);

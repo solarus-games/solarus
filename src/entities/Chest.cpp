@@ -60,7 +60,7 @@ Chest::Chest(
     const std::string& sprite_name,
     const Treasure& treasure):
 
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
   treasure(treasure),
   open(treasure.is_found()),
   treasure_given(open),
@@ -338,7 +338,7 @@ void Chest::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) 
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Chest::is_obstacle_for(const MapEntity& other) const {
+bool Chest::is_obstacle_for(MapEntity& other) {
   return true;
 }
 

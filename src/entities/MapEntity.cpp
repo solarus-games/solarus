@@ -105,7 +105,7 @@ MapEntity::~MapEntity() {
  * \return The name identifying this type in Lua.
  */
 const std::string& MapEntity::get_lua_type_name() const {
-  return LuaContext::get_entity_type_name(get_type());
+  return LuaContext::get_entity_internal_type_name(get_type());
 }
 
 /**
@@ -1427,7 +1427,7 @@ void MapEntity::notify_enabled(bool enabled) {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool MapEntity::is_obstacle_for(const MapEntity& other) const {
+bool MapEntity::is_obstacle_for(MapEntity& other) {
   return false;
 }
 
@@ -1529,7 +1529,7 @@ bool MapEntity::is_ladder_obstacle() const {
  * \param hero the hero
  * \return true if the hero is currently an obstacle for this entity
  */
-bool MapEntity::is_hero_obstacle(const Hero& hero) const {
+bool MapEntity::is_hero_obstacle(Hero& hero) {
   return false;
 }
 
@@ -1541,7 +1541,7 @@ bool MapEntity::is_hero_obstacle(const Hero& hero) const {
  * \param block a block
  * \return true if the block is currently an obstacle for this entity
  */
-bool MapEntity::is_block_obstacle(const Block& block) const {
+bool MapEntity::is_block_obstacle(Block& block) {
   return true;
 }
 
@@ -1553,8 +1553,7 @@ bool MapEntity::is_block_obstacle(const Block& block) const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool MapEntity::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+bool MapEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return true;
 }
 
@@ -1566,8 +1565,7 @@ bool MapEntity::is_teletransporter_obstacle(
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool MapEntity::is_conveyor_belt_obstacle(
-    const ConveyorBelt& conveyor_belt) const {
+bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return true;
 }
 
@@ -1579,7 +1577,7 @@ bool MapEntity::is_conveyor_belt_obstacle(
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool MapEntity::is_stairs_obstacle(const Stairs& stairs) const {
+bool MapEntity::is_stairs_obstacle(Stairs& stairs) {
   return true;
 }
 
@@ -1591,7 +1589,7 @@ bool MapEntity::is_stairs_obstacle(const Stairs& stairs) const {
  * \param sensor a sensor
  * \return true if the sensor is currently an obstacle for this entity
  */
-bool MapEntity::is_sensor_obstacle(const Sensor& sensor) const {
+bool MapEntity::is_sensor_obstacle(Sensor& sensor) {
   return false;
 }
 
@@ -1603,7 +1601,7 @@ bool MapEntity::is_sensor_obstacle(const Sensor& sensor) const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool MapEntity::is_switch_obstacle(const Switch& sw) const {
+bool MapEntity::is_switch_obstacle(Switch& sw) {
   return sw.is_solid();
 }
 
@@ -1615,8 +1613,7 @@ bool MapEntity::is_switch_obstacle(const Switch& sw) const {
  * \param raised_block a crystal block raised
  * \return true if the raised block is currently an obstacle for this entity
  */
-bool MapEntity::is_raised_block_obstacle(
-    const CrystalBlock& raised_block) const {
+bool MapEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
   return true;
 }
 
@@ -1629,7 +1626,7 @@ bool MapEntity::is_raised_block_obstacle(
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool MapEntity::is_crystal_obstacle(const Crystal& crystal) const {
+bool MapEntity::is_crystal_obstacle(Crystal& crystal) {
   return true;
 }
 
@@ -1641,7 +1638,7 @@ bool MapEntity::is_crystal_obstacle(const Crystal& crystal) const {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool MapEntity::is_npc_obstacle(const Npc& npc) const {
+bool MapEntity::is_npc_obstacle(Npc& npc) {
   return true;
 }
 
@@ -1653,7 +1650,7 @@ bool MapEntity::is_npc_obstacle(const Npc& npc) const {
  * \param enemy an enemy
  * \return true if the enemy is currently an obstacle for this entity
  */
-bool MapEntity::is_enemy_obstacle(const Enemy& enemy) const {
+bool MapEntity::is_enemy_obstacle(Enemy& enemy) {
   return false;
 }
 
@@ -1665,7 +1662,7 @@ bool MapEntity::is_enemy_obstacle(const Enemy& enemy) const {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool MapEntity::is_jumper_obstacle(const Jumper& jumper) const {
+bool MapEntity::is_jumper_obstacle(Jumper& jumper) {
   return true;
 }
 
@@ -1678,8 +1675,7 @@ bool MapEntity::is_jumper_obstacle(const Jumper& jumper) const {
  * \param destructible a destructible item
  * \return true if the destructible item is currently an obstacle for this entity
  */
-bool MapEntity::is_destructible_obstacle(
-    const Destructible& destructible) const {
+bool MapEntity::is_destructible_obstacle(Destructible& destructible) {
 
   return !destructible.is_waiting_for_regeneration();
 }
@@ -1693,7 +1689,7 @@ bool MapEntity::is_destructible_obstacle(
  * \param separator A separator.
  * \return \c true if the separator is currently an obstacle for this entity.
  */
-bool MapEntity::is_separator_obstacle(const Separator& separator) const {
+bool MapEntity::is_separator_obstacle(Separator& separator) {
 
   return true;
 }

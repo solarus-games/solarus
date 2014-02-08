@@ -88,7 +88,6 @@ Hero::Hero(Equipment& equipment):
 
   // sprites
   sprites = new HeroSprites(*this, equipment);
-  rebuild_equipment();
 
   // state
   set_state(new FreeState(*this));
@@ -851,7 +850,7 @@ void Hero::notify_facing_entity_changed(Detector* facing_entity) {
  *
  * \return true if the hero is facing an obstacle
  */
-bool Hero::is_facing_obstacle() const {
+bool Hero::is_facing_obstacle() {
 
   Rectangle collision_box = get_bounding_box();
   switch (sprites->get_animation_direction()) {
@@ -888,9 +887,9 @@ bool Hero::is_facing_obstacle() const {
  *
  * \return true if the facing point is overlapping an obstacle
  */
-bool Hero::is_facing_point_on_obstacle() const {
+bool Hero::is_facing_point_on_obstacle() {
 
-  const Rectangle &facing_point = get_facing_point();
+  const Rectangle& facing_point = get_facing_point();
   return get_map().test_collision_with_obstacles(
       get_layer(), facing_point.get_x(), facing_point.get_y(), *this);
 }
@@ -1019,7 +1018,7 @@ int Hero::get_wanted_movement_direction8() const {
  *
  * \return the hero's actual direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::get_real_movement_direction8() const {
+int Hero::get_real_movement_direction8() {
 
   int result;
 
@@ -1439,7 +1438,7 @@ void Hero::reset_target_solid_ground_coords() {
  * \param other another entity
  * \return true if this entity is an obstacle for the other one
  */
-bool Hero::is_obstacle_for(const MapEntity& other) const {
+bool Hero::is_obstacle_for(MapEntity& other) {
   return other.is_hero_obstacle(*this);
 }
 
@@ -1496,7 +1495,7 @@ bool Hero::is_ladder_obstacle() const {
  * \param block a block
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Hero::is_block_obstacle(const Block& block) const {
+bool Hero::is_block_obstacle(Block& block) {
   return block.is_hero_obstacle(*this);
 }
 
@@ -1508,8 +1507,7 @@ bool Hero::is_block_obstacle(const Block& block) const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for the hero
  */
-bool Hero::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+bool Hero::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return state->is_teletransporter_obstacle(teletransporter);
 }
 
@@ -1521,7 +1519,7 @@ bool Hero::is_teletransporter_obstacle(
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Hero::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
+bool Hero::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return state->is_conveyor_belt_obstacle(conveyor_belt);
 }
 
@@ -1530,7 +1528,7 @@ bool Hero::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool Hero::is_stairs_obstacle(const Stairs& stairs) const {
+bool Hero::is_stairs_obstacle(Stairs& stairs) {
   return state->is_stairs_obstacle(stairs);
 }
 
@@ -1539,7 +1537,7 @@ bool Hero::is_stairs_obstacle(const Stairs& stairs) const {
  * \param sensor a sensor (not used here)
  * \return true if this sensor is currently an obstacle for the hero
  */
-bool Hero::is_sensor_obstacle(const Sensor& sensor) const {
+bool Hero::is_sensor_obstacle(Sensor& sensor) {
   return state->is_sensor_obstacle(sensor);
 }
 
@@ -1548,7 +1546,7 @@ bool Hero::is_sensor_obstacle(const Sensor& sensor) const {
  * \param raised_block a crystal block raised
  * \return true if the raised block is currently an obstacle for this entity
  */
-bool Hero::is_raised_block_obstacle(const CrystalBlock& raised_block) const {
+bool Hero::is_raised_block_obstacle(CrystalBlock& raised_block) {
   return !is_on_raised_blocks();
 }
 
@@ -1557,14 +1555,14 @@ bool Hero::is_raised_block_obstacle(const CrystalBlock& raised_block) const {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool Hero::is_jumper_obstacle(const Jumper& jumper) const {
+bool Hero::is_jumper_obstacle(Jumper& jumper) {
   return state->is_jumper_obstacle(jumper);
 }
 
 /**
  * \copydoc MapEntity::is_separator_obstacle
  */
-bool Hero::is_separator_obstacle(const Separator& separator) const {
+bool Hero::is_separator_obstacle(Separator& separator) {
   return state->is_separator_obstacle(separator);
 }
 
@@ -1716,7 +1714,7 @@ void Hero::notify_collision_with_stairs(
           Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
     else {
-      stairs_way = (collision_mode == COLLISION_FACING_POINT_ANY) ?
+      stairs_way = (collision_mode == COLLISION_TOUCHING) ?
           Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
 
@@ -1746,7 +1744,7 @@ void Hero::notify_collision_with_jumper(Jumper& jumper,
  */
 void Hero::notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_INSIDE    // the hero is entirely inside the sensor
+  if (collision_mode == COLLISION_CONTAINING    // the hero is entirely inside the sensor
       && !state->can_avoid_sensor()) {
     sensor.activate(*this);
   }
@@ -1791,7 +1789,7 @@ void Hero::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) 
  */
 void Hero::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_FACING_POINT) {
+  if (collision_mode == COLLISION_FACING) {
     // the hero is touching the crystal and is looking in its direction
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
@@ -1864,7 +1862,7 @@ void Hero::notify_collision_with_separator(
  */
 void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_FACING_POINT) {
+  if (collision_mode == COLLISION_FACING) {
     // the hero is touching the bomb and is looking in its direction
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
@@ -1885,10 +1883,10 @@ void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) 
 void Hero::notify_collision_with_explosion(
     Explosion& explosion, Sprite& sprite_overlapping) {
 
-  if (!state->can_avoid_explosion()) {
-    if (sprite_overlapping.contains("tunic")) {
-      hurt(explosion, NULL, 2);
-    }
+  if (!state->can_avoid_explosion()
+      && sprite_overlapping.contains("tunic")
+      && can_be_hurt(&explosion)) {
+    hurt(explosion, NULL, 2);
   }
 }
 

@@ -497,8 +497,7 @@ void CarriedItem::notify_attacked_enemy(
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool CarriedItem::is_teletransporter_obstacle(
-    const Teletransporter& teletransporter) const {
+bool CarriedItem::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -507,8 +506,7 @@ bool CarriedItem::is_teletransporter_obstacle(
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool CarriedItem::is_conveyor_belt_obstacle(
-    const ConveyorBelt& conveyor_belt) const {
+bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -517,7 +515,7 @@ bool CarriedItem::is_conveyor_belt_obstacle(
  * \param stairs an stairs entity
  * \return true if the stairs are currently an obstacle for this entity
  */
-bool CarriedItem::is_stairs_obstacle(const Stairs& stairs) const {
+bool CarriedItem::is_stairs_obstacle(Stairs& stairs) {
   return false;
 }
 
@@ -575,7 +573,7 @@ bool CarriedItem::is_ladder_obstacle() const {
  * \param sw a switch
  * \return true if the switch is currently an obstacle for this entity
  */
-bool CarriedItem::is_switch_obstacle(const Switch& sw) const {
+bool CarriedItem::is_switch_obstacle(Switch& sw) {
   return !is_being_thrown();
 }
 
@@ -584,8 +582,7 @@ bool CarriedItem::is_switch_obstacle(const Switch& sw) const {
  * \param raised_block a crystal block raised
  * \return false
  */
-bool CarriedItem::is_raised_block_obstacle(
-    const CrystalBlock& raised_block) const {
+bool CarriedItem::is_raised_block_obstacle(CrystalBlock& raised_block) {
   // the thrown items can traverse the crystal blocks
   return false;
 }
@@ -595,7 +592,7 @@ bool CarriedItem::is_raised_block_obstacle(
  * \param crystal a crystal
  * \return true if the crystal is currently an obstacle for this entity
  */
-bool CarriedItem::is_crystal_obstacle(const Crystal& crystal) const {
+bool CarriedItem::is_crystal_obstacle(Crystal& crystal) {
   return !is_being_thrown();
 }
 
@@ -604,7 +601,7 @@ bool CarriedItem::is_crystal_obstacle(const Crystal& crystal) const {
  * \param npc a non-playing character
  * \return true if the NPC is currently an obstacle for this entity
  */
-bool CarriedItem::is_npc_obstacle(const Npc& npc) const {
+bool CarriedItem::is_npc_obstacle(Npc& npc) {
   return npc.is_solid();
 }
 
@@ -613,7 +610,7 @@ bool CarriedItem::is_npc_obstacle(const Npc& npc) const {
  * \param jumper a non-diagonal jumper
  * \return true if the jumper is currently an obstacle for this entity
  */
-bool CarriedItem::is_jumper_obstacle(const Jumper& jumper) const {
+bool CarriedItem::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 
@@ -622,7 +619,7 @@ bool CarriedItem::is_jumper_obstacle(const Jumper& jumper) const {
  * \param sensor a sensor
  * \return true if this sensor is currently an obstacle for this entity.
  */
-bool CarriedItem::is_sensor_obstacle(const Sensor& sensor) const {
+bool CarriedItem::is_sensor_obstacle(Sensor& sensor) {
   return false;
 }
 
@@ -631,7 +628,7 @@ bool CarriedItem::is_sensor_obstacle(const Sensor& sensor) const {
  * \param enemy an enemy
  * \return true if this enemy is considered as an obstacle for this entity.
  */
-bool CarriedItem::is_enemy_obstacle(const Enemy& enemy) const {
+bool CarriedItem::is_enemy_obstacle(Enemy& enemy) {
   // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
   return can_explode();
 }
@@ -643,7 +640,7 @@ bool CarriedItem::is_enemy_obstacle(const Enemy& enemy) const {
  */
 void CarriedItem::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_RECTANGLE
+  if (collision_mode == COLLISION_OVERLAPPING
       && is_being_thrown()
       && !can_explode()) {
 
@@ -659,7 +656,7 @@ void CarriedItem::notify_collision_with_switch(Switch& sw, CollisionMode collisi
  */
 void CarriedItem::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
-  if (collision_mode == COLLISION_RECTANGLE
+  if (collision_mode == COLLISION_OVERLAPPING
       && is_being_thrown()
       && !can_explode()) {
 

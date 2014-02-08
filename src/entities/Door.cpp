@@ -73,7 +73,7 @@ Door::Door(Game& game,
     int direction,
     const std::string& sprite_name,
     const std::string& savegame_variable):
-  Detector(COLLISION_FACING_POINT | COLLISION_SPRITE, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING | COLLISION_SPRITE, name, layer, x, y, 16, 16),
   savegame_variable(savegame_variable),
   opening_method(OPENING_NONE),
   opening_condition(),
@@ -116,7 +116,7 @@ EntityType Door::get_type() const {
  * \param other another entity
  * \return true
  */
-bool Door::is_obstacle_for(const MapEntity& other) const {
+bool Door::is_obstacle_for(MapEntity& other) {
   return !is_open();
 }
 
@@ -175,7 +175,7 @@ void Door::set_open(bool door_open) {
   }
   else {
     get_sprite().set_current_animation("closed");
-    set_collision_modes(COLLISION_FACING_POINT | COLLISION_SPRITE);
+    set_collision_modes(COLLISION_FACING | COLLISION_SPRITE);
 
     // ensure that we are not closing the door on the hero
     if (is_on_map() && overlaps(get_hero())) {

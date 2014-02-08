@@ -345,7 +345,7 @@ bool Hero::RunningState::is_sensor_obstacle(const Sensor& sensor) const {
  * \param detector the detector to check
  * \return true if the sword is cutting this detector
  */
-bool Hero::RunningState::is_cutting_with_sword(Detector& detector) const {
+bool Hero::RunningState::is_cutting_with_sword(Detector& detector) {
 
   // check the distance to the detector
   const int distance = 8;

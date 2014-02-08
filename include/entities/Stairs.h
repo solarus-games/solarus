@@ -82,7 +82,7 @@ class Stairs: public Detector {
     bool is_inside_floor() const;
     bool has_layer_independent_collisions() const;
     bool is_sword_ignored() const;
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_enabled(bool enabled);
 

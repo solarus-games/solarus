@@ -17,6 +17,7 @@
 #include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 #include "entities/Destination.h"
+#include "entities/Pickable.h"
 #include "entities/Switch.h"
 #include "entities/Sensor.h"
 #include "entities/Npc.h"
@@ -25,7 +26,7 @@
 #include "entities/Door.h"
 #include "entities/Block.h"
 #include "entities/Enemy.h"
-#include "entities/Pickable.h"
+#include "entities/CustomEntity.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "Equipment.h"
@@ -301,9 +302,45 @@ void LuaContext::run_enemy(Enemy& enemy) {
     push_enemy(l, enemy);
     call_function(1, 0, file_name.c_str());
 
-    enemy_on_suspended(enemy, enemy.is_suspended());
-    enemy_on_created(enemy);
+    entity_on_suspended(enemy, enemy.is_suspended());
+    entity_on_created(enemy);
   }
+
+  // TODO parse Lua only once for each breed.
+}
+
+/**
+ * \brief Notifies the Lua world that a custom entity has just been added to
+ * the map.
+ *
+ * The Lua file of this entity if any is automatically loaded.
+ *
+ * \param custom_entity The custom entity.
+ */
+void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
+
+  const std::string& model = custom_entity.get_model();
+
+  if (model.empty()) {
+    // No Lua model file to run for this entity.
+    return;
+  }
+
+  // Compute the file name depending on the model.
+  std::string file_name = (std::string) "entities/" + model;
+
+  // Load the entity's code.
+  if (load_file_if_exists(l, file_name)) {
+
+    // Run it with the entity userdata as parameter.
+    push_custom_entity(l, custom_entity);
+    call_function(1, 0, file_name.c_str());
+
+    entity_on_suspended(custom_entity, custom_entity.is_suspended());
+    entity_on_created(custom_entity);
+  }
+
+  // TODO parse Lua only once for each model.
 }
 
 /**
@@ -397,24 +434,43 @@ void LuaContext::destroy_ref(int ref) {
 }
 
 /**
- * \brief Calls a function stored in the registry with a reference and
- * releases this reference.
- * \param callback_ref Reference of the function to call (if LUA_REFNIL,
- * nothing is done).
+ * \brief Creates a new reference to the Lua value of an existing reference.
+ * \param The Lua reference to copy.
+ * If LUA_REFNIL or LUA_NOREF, the same ref is returned.
+ * \return The reference created.
+ */
+int LuaContext::copy_ref(int ref) {
+
+  if (ref == LUA_REFNIL || ref == LUA_NOREF) {
+    return ref;
+  }
+
+  push_ref(l, ref);
+  return luaL_ref(l, LUA_REGISTRYINDEX);
+}
+
+/**
+ * \brief Calls a function stored in the registry with a reference.
+ *
+ * No parameters are passed to the function, and return values are ignored.
+ * The reference is preserved for future calls.
+ * See cancel_callback() if you want to release the reference.
+ *
+ * \param callback_ref Reference of the function to call.
+ * Iif LUA_REFNIL, nothing is done.
  */
 void LuaContext::do_callback(int callback_ref) {
 
   if (callback_ref != LUA_REFNIL) {
     push_callback(callback_ref);
     call_function(0, 0, "callback");
-    cancel_callback(callback_ref);
   }
 }
 
 /**
  * \brief Pushes onto the stack a function stored as a Lua ref.
- * \param callback_ref Reference of the function to call (must be
- * a valid ref).
+ * \param callback_ref Reference of the function to call.
+ * Must be a valid ref.
  */
 void LuaContext::push_callback(int callback_ref) {
 
@@ -435,8 +491,8 @@ void LuaContext::push_callback(int callback_ref) {
  *
  * The callback may then be collected by Lua.
  *
- * \param callback_ref reference of the function (if LUA_REFNIL,
- * nothing is done)
+ * \param callback_ref reference of the function.
+ * If LUA_REFNIL, nothing is done.
  */
 void LuaContext::cancel_callback(int callback_ref) {
 

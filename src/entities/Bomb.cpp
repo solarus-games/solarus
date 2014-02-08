@@ -40,7 +40,7 @@ namespace solarus {
  * \param y y coordinate of the entity to create
  */
 Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING, name, layer, x, y, 16, 16),
   explosion_date(System::now() + 6000) {
 
   create_sprite("entities/bomb");
@@ -90,7 +90,7 @@ bool Bomb::is_drawn_in_y_order() const {
  * \param conveyor_belt a conveyor belt
  * \return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Bomb::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
+bool Bomb::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -99,7 +99,7 @@ bool Bomb::is_conveyor_belt_obstacle(const ConveyorBelt& conveyor_belt) const {
  * \param teletransporter a teletransporter
  * \return true if the teletransporter is currently an obstacle for this entity
  */
-bool Bomb::is_teletransporter_obstacle(const Teletransporter& teletransporter) const {
+bool Bomb::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 

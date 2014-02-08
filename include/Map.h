@@ -111,16 +111,16 @@ class Map: public ExportableToLua {
     bool test_collision_with_entities(
         Layer layer,
         const Rectangle& collision_box,
-        const MapEntity& entity_to_check) const;
+        MapEntity& entity_to_check) const;
     bool test_collision_with_obstacles(
         Layer layer,
         const Rectangle& collision_box,
-        const MapEntity& entity_to_check) const;
+        MapEntity& entity_to_check) const;
     bool test_collision_with_obstacles(
         Layer layer,
         int x,
         int y,
-        const MapEntity& entity_to_check) const;
+        MapEntity& entity_to_check) const;
     bool has_empty_ground(
         Layer layer,
         const Rectangle& collision_box) const;

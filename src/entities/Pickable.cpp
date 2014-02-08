@@ -46,7 +46,7 @@ Pickable::Pickable(
     int x,
     int y,
     const Treasure& treasure):
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, name, layer, x, y, 0, 0),
+  Detector(COLLISION_OVERLAPPING | COLLISION_SPRITE, name, layer, x, y, 0, 0),
   treasure(treasure),
   given_to_player(false),
   shadow_sprite(NULL),

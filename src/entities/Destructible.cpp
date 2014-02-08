@@ -270,7 +270,7 @@ void Destructible::set_damage_on_enemies(int damage_on_enemies) {
  * \param other Another entity.
  * \return \c true if this entity is an obstacle for the other one.
  */
-bool Destructible::is_obstacle_for(const MapEntity& other) const {
+bool Destructible::is_obstacle_for(MapEntity& other) {
 
   return get_modified_ground() == GROUND_WALL
       && !is_being_cut
@@ -291,7 +291,7 @@ void Destructible::update_collision_modes() {
   // Sets the new ones.
   if (get_modified_ground() == GROUND_WALL) {
     // The object can be lifted.
-    add_collision_mode(COLLISION_FACING_POINT);
+    add_collision_mode(COLLISION_FACING);
   }
 
   if (get_can_be_cut()

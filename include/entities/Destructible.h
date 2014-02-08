@@ -79,7 +79,7 @@ class Destructible: public Detector {
     bool is_waiting_for_regeneration() const;
 
     // Collisions.
-    bool is_obstacle_for(const MapEntity& other) const;
+    bool is_obstacle_for(MapEntity& other);
     bool test_collision_custom(MapEntity& entity);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);

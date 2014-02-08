@@ -25,8 +25,8 @@ if(NOT SOLARUS_ARCH)
     set(SOLARUS_ARCH "${SOLARUS_ARCH}i386;")
   endif()
   # LuaJIT needs additional linker flag with the 64bit build.
-  # CMake doesn’t allow to specify arch-specific flag with Makefile and Ninja generators for now,
-  # so make a 32bit-only build if LuaJit and i386 are requested, and XCode generator is not.
+  # CMake can't set arch-specific flag with Makefile and Ninja generators for now,
+  # so make a 32bit-only build if LuaJit and i386 are requested without XCode generator.
   if(XCODE OR NOT SOLARUS_USE_LUAJIT OR NOT SOLARUS_ARCH MATCHES "i386")
     if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.5")
       set(SOLARUS_ARCH "${SOLARUS_ARCH}x86_64;")
@@ -38,7 +38,9 @@ set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Build architecture" 
 # SDK version
 if(NOT SOLARUS_SYSROOT)
   # Default SDKs, in order from the earlier naming convention to the older one
-  if(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_SHORT}.sdk)
+  if(EXISTS /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_SHORT}.sdk)
+    set(SOLARUS_SYSROOT "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_SHORT}.sdk")
+  elseif(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_SHORT}.sdk)
     set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_SHORT}.sdk")
   elseif(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_SHORT}u.sdk)
     set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_SHORT}u.sdk")

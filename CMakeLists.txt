@@ -8,6 +8,14 @@ endif()
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 set(SOLARUS_INSTALL_DESTINATION "bin")
 
+# Add some search path not set to defaults yet.
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(CMAKE_FRAMEWORK_PATH ${CMAKE_FRAMEWORK_PATH}
+    /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks
+    /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks
+  )
+endif()
+
 option(SOLARUS_USE_LUAJIT "Use LuaJIT instead of default Lua (recommended)" ON)
 
 # find the headers and the libraries of dependencies

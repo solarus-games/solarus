@@ -24,8 +24,10 @@ if(NOT SOLARUS_ARCH)
   if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.4.4")
     set(SOLARUS_ARCH "${SOLARUS_ARCH}i386;")
   endif()
-  # Make a 32bit-only build if LuaJit and i386 are requested.
-  if(NOT SOLARUS_USE_LUAJIT OR NOT SOLARUS_ARCH MATCHES "i386")
+  # LuaJIT needs additional linker flag with the 64bit build.
+  # CMake doesn’t allow to specify arch-specific flag with Makefile and Ninja generators for now,
+  # so make a 32bit-only build if LuaJit and i386 are requested, and XCode generator is not.
+  if(XCODE OR NOT SOLARUS_USE_LUAJIT OR NOT SOLARUS_ARCH MATCHES "i386")
     if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.5")
       set(SOLARUS_ARCH "${SOLARUS_ARCH}x86_64;")
     endif()
@@ -42,12 +44,14 @@ if(NOT SOLARUS_SYSROOT)
     set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_SHORT}u.sdk")
   elseif(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_LONG}.sdk)
     set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION_LONG}.sdk")
+  else()
+    message(WARNING "No ${SOLARUS_CURRENT_OSX_VERSION_SHORT} or ${SOLARUS_CURRENT_OSX_VERSION_LONG} SDK found, force deployment version to default.")
   endif()
 endif()
 set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Build SDK" FORCE)
 
 # Deployment version
-if(NOT SOLARUS_DEPLOYMENT)
+if(NOT SOLARUS_DEPLOYMENT AND DEFINED SOLARUS_SYSROOT)
   if(NOT ${SOLARUS_CURRENT_OSX_VERSION_LONG} VERSION_LESS "10.6")
     set(SOLARUS_DEPLOYMENT "10.6")
   else()
@@ -68,7 +72,11 @@ if(NOT CMAKE_CXX_FLAGS MATCHES "-force_cpusubtype_ALL")
 endif()
 
 if(SOLARUS_USE_LUAJIT AND SOLARUS_ARCH MATCHES "x86_64")
-  if(NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-pagezero_size 10000 -image_base 100000000")
+  if(XCODE)
+    set_property(TARGET solarus PROPERTY
+      "XCODE_ATTRIBUTE_LINKER_FLAGS[arch=x86_64]" "-pagezero_size 10000 -image_base 100000000"
+    )
+  elseif(NOT CMAKE_EXE_LINKER_FLAGS MATCHES "-pagezero_size 10000 -image_base 100000000")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pagezero_size 10000 -image_base 100000000" CACHE STRING "According to LuaJit doc, OSX needs to link with additional flags if 64bit build is requested" FORCE)
   endif()
 endif()

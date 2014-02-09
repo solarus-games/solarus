@@ -1343,7 +1343,8 @@ CustomEntity::CollisionInfo::CollisionInfo():
  * \param callback_ref Lua ref to a function to call when this collision is
  * detected.
  */
-CustomEntity::CollisionInfo::CollisionInfo(CustomEntity& entity, CollisionMode built_in_test, int callback_ref):
+CustomEntity::CollisionInfo::CollisionInfo(
+    CustomEntity& entity, CollisionMode built_in_test, int callback_ref):
   entity(&entity),
   built_in_test(built_in_test),
   custom_test_ref(LUA_REFNIL),
@@ -1359,7 +1360,8 @@ CustomEntity::CollisionInfo::CollisionInfo(CustomEntity& entity, CollisionMode b
  * \param callback_ref Lua ref to a function to call when this collision is
  * detected.
  */
-CustomEntity::CollisionInfo::CollisionInfo(CustomEntity& entity, int custom_test_ref, int callback_ref):
+CustomEntity::CollisionInfo::CollisionInfo(
+    CustomEntity& entity, int custom_test_ref, int callback_ref):
   entity(&entity),
   built_in_test(COLLISION_CUSTOM),
   custom_test_ref(custom_test_ref),
@@ -1383,7 +1385,6 @@ CustomEntity::CollisionInfo::CollisionInfo(const CollisionInfo& other):
     custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
     callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);
   }
-
 }
 
 /**

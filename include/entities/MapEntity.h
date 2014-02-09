@@ -67,7 +67,8 @@ class MapEntity: public ExportableToLua {
     virtual bool is_ground_modifier() const;
     virtual Ground get_modified_ground() const;
     virtual bool can_be_drawn() const;
-    virtual bool is_drawn_in_y_order() const;
+    bool is_drawn_in_y_order() const;
+    void set_drawn_in_y_order(bool drawn_in_y_order);
     virtual bool is_drawn_at_its_position() const;
     bool is_drawn() const;
 
@@ -337,6 +338,7 @@ class MapEntity: public ExportableToLua {
                                                  * note that some entities manage their sprites themselves rather than using this field */
     std::vector<Sprite*> old_sprites;           /**< sprites to remove and destroy as soon as possible */
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
+    bool drawn_in_y_order;                      /**< Whether this entity is drawn in Y order or in Z order. */
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
                                                  * NULL indicates that the entity has no movement */
     std::vector<Movement*> old_movements;       /**< old movements to destroy as soon as possible */

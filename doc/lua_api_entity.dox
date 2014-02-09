@@ -435,7 +435,10 @@ Places this entity in front of all other entities on the same layer.
 Since entities that are on the same layer can overlap,
 you can use this function to change their Z-index.
 
-\remark Some entities like NPCs, enemies and the hero have the property to be
+\remark Some entities like NPCs, enemies, the hero
+  and some
+  \ref lua_api_custom_entity_is_drawn_in_y_order "custom entities"
+  have the property to be
   displayed in Y order.
   The Z-index of these entities is already managed by the engine to show
   entities more to the north behind the ones more to the south.

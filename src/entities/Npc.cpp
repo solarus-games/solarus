@@ -60,6 +60,10 @@ Npc::Npc(Game& game, const std::string& name, Layer layer, int x, int y,
   set_origin(8, 13);
   set_direction(direction);
 
+  // Usual NPCs are displayed like the hero whereas generalized NPCs are
+  // not necessarily people.
+  set_drawn_in_y_order(subtype == USUAL_NPC);
+
   // behavior
   if (behavior_string == "map") {
     behavior = BEHAVIOR_MAP_SCRIPT;
@@ -91,17 +95,6 @@ Npc::~Npc() {
  */
 EntityType Npc::get_type() const {
   return ENTITY_NPC;
-}
-
-/**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return \c true if this type of entity should be drawn at the same level
- * as the hero.
- */
-bool Npc::is_drawn_in_y_order() const {
-  // usual NPCs are displayed like the hero whereas generalized NPCs are
-  // not necessarily people
-  return subtype == USUAL_NPC;
 }
 
 /**

@@ -3938,8 +3938,10 @@ int LuaContext::custom_entity_api_set_direction(lua_State* l) {
  */
 int LuaContext::custom_entity_api_is_drawn_in_y_order(lua_State* l) {
 
-  // TODO
-  return 0;
+  const CustomEntity& entity = check_custom_entity(l, 1);
+
+  lua_pushboolean(l, entity.is_drawn_in_y_order());
+  return 1;
 }
 
 /**
@@ -3949,7 +3951,14 @@ int LuaContext::custom_entity_api_is_drawn_in_y_order(lua_State* l) {
  */
 int LuaContext::custom_entity_api_set_drawn_in_y_order(lua_State* l) {
 
-  // TODO
+  CustomEntity& entity = check_custom_entity(l, 1);
+  bool y_order = true;
+  if (lua_gettop(l) >= 2) {
+    y_order = lua_toboolean(l, 2);
+  }
+
+  entity.set_drawn_in_y_order(y_order);
+
   return 0;
 }
 

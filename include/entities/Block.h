@@ -43,7 +43,6 @@ class Block: public Detector {
     ~Block();
 
     EntityType get_type() const;
-    bool is_drawn_in_y_order() const;
     bool is_ground_observer() const;
 
     bool is_obstacle_for(MapEntity& other);

@@ -87,6 +87,7 @@ Hero::Hero(Equipment& equipment):
   last_solid_ground_layer = LAYER_LOW;
 
   // sprites
+  set_drawn_in_y_order(true);
   sprites = new HeroSprites(*this, equipment);
 
   // state
@@ -113,21 +114,6 @@ Hero::~Hero() {
  */
 EntityType Hero::get_type() const {
   return ENTITY_HERO;
-}
-
-/**
- * \brief Returns whether this entity has to be drawn in y order.
- *
- * This function returns whether an entity of this type should be drawn above
- * the hero and other entities having this property when it is in front of them.
- * This means that the displaying order of entities having this
- * feature depends on their y position. The entities without this feature
- * are drawn in the normal order (i.e. as specified by the map file),
- * and before the entities with the feature.
- * \return true if this type of entity is drawn at the same level as the hero
- */
-bool Hero::is_drawn_in_y_order() const {
-  return true;
 }
 
 /**

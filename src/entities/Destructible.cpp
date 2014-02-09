@@ -90,18 +90,6 @@ EntityType Destructible::get_type() const {
 }
 
 /**
- * \brief Returns whether this entity has to be drawn in y order.
- *
- * Rhis function returns whether an entity of this type should be drawn above
- * the hero and other entities when it is in front of them.
- *
- * \return true if this entity is drawn at the same level as the hero
- */
-bool Destructible::is_drawn_in_y_order() const {
-  return false;
-}
-
-/**
  * \brief Returns whether entities of this type can override the ground
  * of where they are placed.
  * \return \c true if this type of entity can change the ground.

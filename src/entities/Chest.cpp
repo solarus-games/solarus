@@ -75,6 +75,9 @@ Chest::Chest(
   sprite.set_current_animation(animation);
 
   set_origin(get_width() / 2, get_height() - 3);
+
+  // TODO set this as the default drawn_in_y_order for MapEntity
+  set_drawn_in_y_order(get_sprite().get_max_size().get_height() > get_height());
 }
 
 /**
@@ -89,15 +92,6 @@ Chest::~Chest() {
  */
 EntityType Chest::get_type() const {
   return ENTITY_CHEST;
-}
-
-/**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return \c true if this type of entity should be drawn at the same level
- * as the hero.
- */
-bool Chest::is_drawn_in_y_order() const {
-  return get_sprite().get_max_size().get_height() > get_height();
 }
 
 /**

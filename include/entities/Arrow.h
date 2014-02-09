@@ -34,7 +34,6 @@ class Arrow: public MapEntity {
 
     EntityType get_type() const;
     bool can_be_obstacle() const;
-    bool is_drawn_in_y_order() const;
 
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);

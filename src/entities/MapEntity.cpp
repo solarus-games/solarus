@@ -72,6 +72,7 @@ MapEntity::MapEntity(
   name(name),
   direction(direction),
   visible(true),
+  drawn_in_y_order(false),
   movement(NULL),
   movement_events_enabled(true),
   facing_entity(NULL),
@@ -279,13 +280,26 @@ bool MapEntity::can_be_drawn() const {
  * are drawn in the normal order (i.e. in the order of their creation),
  * and before the entities with this feature.
  *
- * Returns \c false by default.
- *
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
 bool MapEntity::is_drawn_in_y_order() const {
-  return false;
+  return drawn_in_y_order;
+}
+
+/**
+ * \brief Sets whether this entity should be drawn in y order.
+ * \param drawn_in_y_order \c true to drawn this entity at the same level
+ * as the hero.
+ */
+void MapEntity::set_drawn_in_y_order(bool drawn_in_y_order) {
+
+  if (drawn_in_y_order != this->drawn_in_y_order) {
+    this->drawn_in_y_order = drawn_in_y_order;
+    if (is_on_map()) {
+      get_entities().set_entity_drawn_in_y_order(*this, drawn_in_y_order);
+    }
+  }
 }
 
 /**

@@ -102,7 +102,6 @@ Enemy::Enemy(
   savegame_variable(),
   traversable(true),
   obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
-  drawn_in_y_order(true),
   initialized(false),
   being_hurt(false),
   stop_hurt_date(0),
@@ -121,6 +120,7 @@ Enemy::Enemy(
 
   set_size(16, 16);
   set_origin(8, 13);
+  set_drawn_in_y_order(true);
 }
 
 /**
@@ -199,15 +199,6 @@ MapEntity* Enemy::create(
  */
 EntityType Enemy::get_type() const {
   return ENTITY_ENEMY;
-}
-
-/**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return \c true if this type of entity should be drawn at the same level
- * as the hero.
- */
-bool Enemy::is_drawn_in_y_order() const {
-  return drawn_in_y_order;
 }
 
 /**

@@ -94,7 +94,6 @@ class Enemy: public Detector {
         const Treasure& treasure);
 
     EntityType get_type() const;
-    bool is_drawn_in_y_order() const;
     bool is_ground_observer() const;
 
     void set_map(Map& map);
@@ -240,7 +239,6 @@ class Enemy: public Detector {
                                         * or an empty string if it is not saved */
     bool traversable;                  /**< Whether this enemy can be traversed by other entities. */
     ObstacleBehavior obstacle_behavior; /**< behavior with obstacles */
-    bool drawn_in_y_order;             /**< indicates that the enemy is displayed as the same level as the hero */
 
     // enemy state
     bool initialized;                  /**< indicates that the enemy's script is loaded */

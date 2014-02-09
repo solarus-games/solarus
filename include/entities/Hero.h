@@ -50,7 +50,6 @@ class Hero: public MapEntity {
      * the main properties of this type of entity.
      */
     EntityType get_type() const;
-    bool is_drawn_in_y_order() const;
 
     /**
      * \name Game loop.

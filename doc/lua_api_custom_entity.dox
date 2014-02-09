@@ -156,11 +156,36 @@ or when you called
 
 \subsection lua_api_custom_entity_is_drawn_in_y_order custom_entity:is_drawn_in_y_order()
 
-TODO
+Returns whether this custom entity is drawn in Y order.
+
+The displaying order of entities having this
+property depends on their Y position.
+Entities without this property
+are drawn in the normal order (i.e. in the order of their creation),
+and before all entities with this property.
+
+Entities with this property are displayed from the one the most to the
+north to the one the most to the south.
+- Return value (boolean): \c true if this custom entity is displayed in Y
+  order, \c false if it is displayed in creation order.
 
 \subsection lua_api_custom_entity_set_drawn_in_y_order custom_entity:set_drawn_in_y_order([y_order])
 
-TODO
+Sets whether this custom entity should be drawn in Y order.
+
+The default setting is \c false, meaning that by default, a custom entity is
+displayed in Z order, which is the creation order unless you call
+\ref lua_api_entity_bring_to_front "entity:bring_to_front()"
+or
+\ref lua_api_entity_bring_to_back "entity:bring_to_back()".
+
+See
+\ref lua_api_custom_entity_is_drawn_in_y_order
+"custom_entity:is_drawn_in_y_order()"
+for more details.
+- \c y_order (boolean, optional): \c true if this custom entity is displayed in Y
+  order, \c false if it is displayed in creation order.
+  No value means \c true.
 
 \subsection lua_api_custom_entity_set_traversable_by custom_entity:set_traversable_by([entity_type], traversable)
 

@@ -69,6 +69,7 @@ Block::Block(
   set_origin(8, 13);
   set_direction(direction);
   create_sprite(sprite_name);
+  set_drawn_in_y_order(get_sprite().get_size().get_height() > 16);
 }
 
 /**
@@ -84,15 +85,6 @@ Block::~Block() {
  */
 EntityType Block::get_type() const {
   return ENTITY_BLOCK;
-}
-
-/**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return \c true if this type of entity should be drawn at the same level
- * as the hero.
- */
-bool Block::is_drawn_in_y_order() const {
-  return get_sprite().get_size().get_height() > 16;
 }
 
 /**

@@ -54,7 +54,6 @@ class CarriedItem: public MapEntity {
 
     EntityType get_type() const;
     bool can_be_obstacle() const;
-    bool is_drawn_in_y_order() const;
     bool is_ground_observer() const;
 
     int get_damage_on_enemies() const;

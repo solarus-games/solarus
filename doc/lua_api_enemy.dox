@@ -433,7 +433,9 @@ The default value is \c "normal".
 
 \subsection lua_api_enemy_set_size enemy:set_size(width, height)
 
-Sets the size of the bounding box of this enemy.
+Sets the size of the
+\ref lua_api_entity_get_bounding_box "bounding box"
+of this enemy.
 
 The default value is \c 16x16 pixels.
 This is the effective size used to detect obstacles when moving,
@@ -450,8 +452,9 @@ of the enemy may be larger, especially for a boss.
 
 \subsection lua_api_enemy_set_origin enemy:set_origin(origin_x, origin_y)
 
-Sets the origin point of this enemy, relative to the top-left corner
-of its bounding box.
+Sets the origin point of this enemy, relative to the upper left corner
+of its
+\ref lua_api_entity_get_bounding_box "bounding box".
 
 This origin point property allows entities of different sizes to have
 comparable reference points that can be used by the engine.
@@ -460,7 +463,7 @@ has to be displayed first
 (it is always the one with the lowest Y coordinate).
 Sometimes, the engine also needs to compute an angle between two entities,
 for example to push away an enemy that was just hit.
-Using the top-left corner of their bounding box would not give the correct
+Using the upper left corner of their bounding box would not give the correct
 angle (unless both entities had the same size).
 
 The origin point is also the point of synchronization of an entity with its
@@ -472,9 +475,9 @@ The default values is <tt>8,13</tt> and is usually okay for enemies of size
 See \ref lua_api_entity_get_origin "entity:get_origin()" for more explanations
 about the origin point.
 - \c origin_x (number): X coordinate of the origin point in pixels,
-  relative to the top-left corner of the enemy's bounding box.
+  relative to the upper left corner of the enemy's bounding box.
 - \c origin_y (number): Y coordinate of the origin point in pixels,
-  relative to the top-left corner of the enemy's bounding box.
+  relative to the upper left corner of the enemy's bounding box.
 
 \subsection lua_api_enemy_restart enemy:restart()
 

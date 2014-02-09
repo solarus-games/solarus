@@ -60,11 +60,52 @@ except that it is optional.
 
 \subsection lua_api_custom_entity_set_size custom_entity:set_size(width, height)
 
-TODO
+Sets the size of the
+\ref lua_api_entity_get_bounding_box "bounding box"
+of this custom entity.
+
+The default value is \c 16x16 pixels.
+This is the effective size used to detect obstacles when moving,
+but the \ref lua_api_sprite "sprite(s)"
+of the custom entity may be larger.
+- \c width (number): Width of the custom entity in pixels.
+- \c height (number): Height of the custom entity in pixels.
+
+\remark If you create a
+  \ref lua_api_custom_entity_add_collision_test
+  "pixel-precise collision test",
+  the test will use the sprit(e) of this custom entity,
+  not its bounding box.
+  Therefore, this function has no influence on pixel-precise collisions,
+  only on the detection of obstacles of the map when the custom entity moves.
 
 \subsection lua_api_custom_entity_set_origin custom_entity:set_origin(origin_x, origin_y)
 
-TODO
+Sets the origin point of this custom entity, relative to the upper left corner
+of its
+\ref lua_api_entity_get_bounding_box "bounding box".
+
+This origin point property allows entities of different sizes to have
+comparable reference points.
+For example, if you need to compute an
+\ref lua_api_entity_get_angle "angle" between two entities,
+for example to move an entity away from another one,
+the calculation uses the origin point of both entities.
+Using the upper left corner of their bounding box would not give the correct
+angle (unless both entities had the same size).
+
+The origin point is also the point of synchronization of an entity with its
+\ref lua_api_sprite "sprites" (because again, an entity that has a given
+size may have sprites with different sizes).
+
+The default values is <tt>8,13</tt> and is usually okay for custom entities of
+size \c 16x16.
+See \ref lua_api_entity_get_origin "entity:get_origin()" for more explanations
+about the origin point.
+- \c origin_x (number): X coordinate of the origin point in pixels,
+  relative to the upper left corner of the custom entity's bounding box.
+- \c origin_y (number): Y coordinate of the origin point in pixels,
+  relative to the upper left corner of the custom entity's bounding box.
 
 \subsection lua_api_custom_entity_get_direction custom_entity:get_direction(direction)
 

@@ -150,6 +150,8 @@ void LuaContext::initialize() {
   lua_pop(l, 1);
                                   // --
 
+  Debug::check_assertion(lua_gettop(l) == 0, "Lua stack is not empty after initialization");
+
   // Execute the main file.
   do_file_if_exists(l, "main");
   main_on_started();
@@ -967,6 +969,9 @@ void LuaContext::register_type(
  */
 void LuaContext::register_modules() {
 
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Lua stack is not empty before modules initialization");
+
   register_main_module();
   register_game_module();
   register_map_module();
@@ -983,6 +988,9 @@ void LuaContext::register_modules() {
   register_file_module();
   register_menu_module();
   register_language_module();
+
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Lua stack is not empty after modules initialization");
 }
 
 /**

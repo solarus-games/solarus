@@ -115,66 +115,10 @@ class CustomEntity: public Detector {
     void notify_collision(
         MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
 
-    /* TODO
     bool is_ground_observer() const;
-    const Rectangle get_ground_point() const;
     bool is_ground_modifier() const;
     Ground get_modified_ground() const;
-    bool can_be_drawn() const;
-    bool is_drawn_in_y_order() const;
-    bool is_drawn_at_its_position() const;
-    const Rectangle get_facing_point() const;
-    const Rectangle get_facing_point(int direction) const;
-
-    void notify_map_started();
-    void notify_map_opening_transition_finished();
-    void notify_tileset_changed();
-    void notify_being_removed();
-    void notify_enabled(bool enabled);
-    void notify_obstacle_reached();
-    void notify_position_changed();
-    void notify_layer_changed();
-    void notify_ground_below_changed();
-    void notify_movement_changed();
-    void notify_movement_finished();
-    void notify_facing_entity_changed(Detector* facing_entity);
-    bool has_layer_independent_collisions() const;
-    void notify_collision_with_enemy(Enemy& enemy);
-    void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
-    void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
-    void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
-    void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
-    void notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode);
-    void notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode);
-    void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
-    void notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping);
-    void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
-    void notify_collision_with_crystal(Crystal& crystal, Sprite& sprite_overlapping);
-    void notify_collision_with_chest(Chest& chest);
-    void notify_collision_with_block(Block& block);
-    void notify_collision_with_separator(Separator& separator, CollisionMode collision_mode);
-    void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
-    void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode);
-    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
-    void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
-    void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
-    void notify_attacked_enemy(
-        EnemyAttack attack,
-        Enemy& victim,
-        const Sprite* victim_sprite,
-        EnemyReaction::Reaction& result,
-        bool killed);
-    bool is_sword_ignored() const;
-    void set_suspended(bool suspended);
-    void update();
-    void draw_on_map();
-
-    virtual void notify_action_command_pressed();
-    virtual bool interaction_with_item(EquipmentItem& item);
-    virtual bool start_movement_by_hero();
-    virtual void stop_movement_by_hero();
-    virtual std::string get_sword_tapping_sound();
-*/
+    void set_modified_ground(Ground modified_ground);
 
   private:
 
@@ -271,6 +215,10 @@ class CustomEntity: public Detector {
         detected_collision_callbacks;  /**< Callbacks corresponding to the
                                         * detected collisions other than
                                         * COLLISION_SPRITE. */
+
+    bool ground_modifier;              /**< Whether this custom entity is a ground modifier. */
+    Ground modified_ground;            /**< The ground defined by this custom
+                                        * entity or GROUND_EMPTY. */
 };
 
 }

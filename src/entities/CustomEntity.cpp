@@ -63,7 +63,9 @@ CustomEntity::CustomEntity(
   Detector(
       COLLISION_NONE,
       name, layer, x, y, width, height),
-  model(model) {
+  model(model),
+  ground_modifier(true),
+  modified_ground(GROUND_EMPTY) {
 
   set_origin(8, 13);
 
@@ -746,6 +748,7 @@ void CustomEntity::set_map(Map& map) {
 
   Detector::set_map(map);
 
+  ground_modifier = false;
   get_lua_context().run_custom_entity(*this);
 }
 
@@ -882,6 +885,58 @@ void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprit
       );
     }
   }
+}
+
+/**
+ * \copydoc MapEntity::is_ground_observer
+ */
+bool CustomEntity::is_ground_observer() const {
+
+  if (!is_on_map()) {
+    // At initialization time, assume we are a ground observer,
+    // otherwise we would never get notified of ground changes later.
+    return true;
+  }
+
+  // If there is no on_ground_below_changed() event, don't bother
+  // determine the ground below.
+  return get_lua_context().userdata_has_field(
+      *this, "on_ground_below_changed"
+  );
+}
+
+/**
+ * \copydoc MapEntity::is_ground_modifier
+ */
+bool CustomEntity::is_ground_modifier() const {
+  return ground_modifier;
+}
+
+/**
+ * \copydoc MapEntity::get_modified_ground
+ */
+Ground CustomEntity::get_modified_ground() const {
+  return modified_ground;
+}
+
+/**
+ * \brief Changes the ground defined by this entity.
+ * \param modified_ground The new ground to set, or GROUND_EMPTY to clear it.
+ */
+void CustomEntity::set_modified_ground(Ground modified_ground) {
+
+  if (modified_ground == this->modified_ground) {
+    return;
+  }
+
+  // The ground changes, notify observers even if it changes to GROUND_EMPTY.
+  ground_modifier = true;
+
+  this->modified_ground = modified_ground;
+  update_ground_observers();
+
+  // Now, continue notifications only if not GROUND_EMPTY.
+  ground_modifier = modified_ground != GROUND_EMPTY;
 }
 
 /**

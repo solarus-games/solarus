@@ -120,6 +120,10 @@ class LuaContext {
         int nb_arguments,
         int nb_results,
         const char* function_name);
+    bool userdata_has_field(
+        const ExportableToLua& userdata, const char* key) const;
+    bool userdata_has_field(
+        const ExportableToLua& userdata, const std::string& key) const;
 
     // Timers.
     void add_timer(Timer* timer, int context_index, int callback_index);
@@ -853,12 +857,8 @@ class LuaContext {
       custom_entity_api_set_can_traverse_ground,
       custom_entity_api_add_collision_test,
       custom_entity_api_clear_collision_tests,
-      custom_entity_api_is_ground_observer,
-      custom_entity_api_set_ground_observer,
       custom_entity_api_get_ground_point,
       custom_entity_api_set_ground_point,
-      custom_entity_api_is_ground_modifier,
-      custom_entity_api_set_ground_modifier,
       custom_entity_api_get_modified_ground,
       custom_entity_api_set_modified_ground,
 
@@ -894,10 +894,6 @@ class LuaContext {
     };
 
     // Executing Lua code.
-    bool userdata_has_field(
-        const ExportableToLua& userdata, const char* key) const;
-    bool userdata_has_field(
-        const ExportableToLua& userdata, const std::string& key) const;
     bool userdata_has_metafield(
         const ExportableToLua& userdata, const char* key) const;
     bool find_method(int index, const char* function_name);

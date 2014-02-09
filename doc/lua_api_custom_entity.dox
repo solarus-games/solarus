@@ -358,27 +358,11 @@ on a different layer.
   collisions even
   with entities on other layers. No value means \c true.
 
-\subsection lua_api_custom_entity_is_ground_observer custom_entity:is_ground_observer()
-
-TODO
-
-\subsection lua_api_custom_entity_set_ground_observer custom_entity:set_ground_observer([ground_observer])
-
-TODO
-
 \subsection lua_api_custom_entity_get_ground_point custom_entity:get_ground_point()
 
 \subsection lua_api_custom_entity_set_ground_point custom_entity:set_ground_point(ground_x, ground_y)
 
 TODO point of contact with the ground
-
-\subsection lua_api_custom_entity_is_ground_modifier custom_entity:is_ground_modifier()
-
-TODO
-
-\subsection lua_api_custom_entity_set_ground_modifier custom_entity:set_ground_modifier([ground_modifier])
-
-TODO
 
 \subsection lua_api_custom_entity_get_modified_ground custom_entity:get_modified_ground()
 

@@ -420,6 +420,17 @@ LuaContext& MapEntity::get_lua_context() {
 }
 
 /**
+ * \brief Returns the shared Lua context.
+ * \return The Lua context where all scripts are run.
+ */
+const LuaContext& MapEntity::get_lua_context() const {
+
+  Debug::check_assertion(main_loop != NULL,
+      "This entity is not fully constructed yet");
+  return main_loop->get_lua_context();
+}
+
+/**
  * \brief Returns the current equipment.
  * \return The equipment.
  */

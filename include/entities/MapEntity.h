@@ -82,6 +82,7 @@ class MapEntity: public ExportableToLua {
     Game& get_game();
     const Game& get_game() const;
     LuaContext& get_lua_context();
+    const LuaContext& get_lua_context() const;
 
     // position in the map
     Layer get_layer() const;

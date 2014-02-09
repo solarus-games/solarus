@@ -454,12 +454,8 @@ void LuaContext::register_entity_module() {
       { "clear_collision_tests", custom_entity_api_clear_collision_tests },
       { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
-      { "is_ground_observer", custom_entity_api_is_ground_observer },
-      { "set_ground_observer", custom_entity_api_set_ground_observer },
       { "get_ground_point", custom_entity_api_get_ground_point },
       { "set_ground_point", custom_entity_api_set_ground_point },
-      { "is_ground_modifier", custom_entity_api_is_ground_modifier },
-      { "set_ground_modifier", custom_entity_api_set_ground_modifier },
       { "get_modified_ground", custom_entity_api_get_modified_ground },
       { "set_modified_ground", custom_entity_api_set_modified_ground },
       { NULL, NULL }
@@ -4180,28 +4176,6 @@ int LuaContext::custom_entity_api_clear_collision_tests(lua_State* l) {
 }
 
 /**
- * \brief Implementation of custom_entity:is_ground_observer().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::custom_entity_api_is_ground_observer(lua_State* l) {
-
-  // TODO
-  return 0;
-}
-
-/**
- * \brief Implementation of custom_entity:set_ground_observer().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::custom_entity_api_set_ground_observer(lua_State* l) {
-
-  // TODO
-  return 0;
-}
-
-/**
  * \brief Implementation of custom_entity:get_ground_point().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
@@ -4218,28 +4192,6 @@ int LuaContext::custom_entity_api_get_ground_point(lua_State* l) {
  * \return Number of values to return to Lua.
  */
 int LuaContext::custom_entity_api_set_ground_point(lua_State* l) {
-
-  // TODO
-  return 0;
-}
-
-/**
- * \brief Implementation of custom_entity:is_ground_modifier().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::custom_entity_api_is_ground_modifier(lua_State* l) {
-
-  // TODO
-  return 0;
-}
-
-/**
- * \brief Implementation of custom_entity:set_ground_modifier().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::custom_entity_api_set_ground_modifier(lua_State* l) {
 
   // TODO
   return 0;

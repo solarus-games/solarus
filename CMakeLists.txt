@@ -219,16 +219,6 @@ if(COLOR_DEPTH)
   add_definitions(-DSOLARUS_COLOR_DEPTH=${COLOR_DEPTH})
 endif()
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(INITIAL_SCREEN_DOUBLEBUF OFF)
-else()
-  set(INITIAL_SCREEN_DOUBLEBUF ON)
-endif()
-option(SCREEN_DOUBLEBUF "Define if your plaform supports double buffering." ${INITIAL_SCREEN_DOUBLEBUF})
-if(SCREEN_DOUBLEBUF)
-  add_definitions(-DSOLARUS_SCREEN_DOUBLEBUF)
-endif()
-
 # files to install with make install
 # install the bundle if requested, or only the binary else
 if(SOLARUS_BUNDLE)

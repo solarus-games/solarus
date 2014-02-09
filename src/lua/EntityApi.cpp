@@ -3848,9 +3848,12 @@ void LuaContext::do_custom_entity_collision_callback(
     CustomEntity& custom_entity,
     MapEntity& other_entity) {
 
-  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing collision callback");
+  Debug::check_assertion(callback_ref != LUA_REFNIL,
+      "Missing collision callback");
 
   push_ref(l, callback_ref);
+  Debug::check_assertion(lua_isfunction(l, -1),
+      "Collision callback is not a function");
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
   call_function(l, 2, 0, "collision callback");

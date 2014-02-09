@@ -749,8 +749,12 @@ void CustomEntity::clear_collision_tests() {
  */
 bool CustomEntity::test_collision_custom(MapEntity& entity) {
 
+  if (!detected_collision_callbacks.empty()) {
+    // Avoid reentrant collision tests.
+    return false;
+  }
+
   bool collision = false;
-  detected_collision_callbacks.clear();
 
   std::vector<CollisionInfo>::const_iterator it;
   for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {

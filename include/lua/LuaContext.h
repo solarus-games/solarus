@@ -857,8 +857,6 @@ class LuaContext {
       custom_entity_api_set_can_traverse_ground,
       custom_entity_api_add_collision_test,
       custom_entity_api_clear_collision_tests,
-      custom_entity_api_get_ground_point,
-      custom_entity_api_set_ground_point,
       custom_entity_api_get_modified_ground,
       custom_entity_api_set_modified_ground,
 

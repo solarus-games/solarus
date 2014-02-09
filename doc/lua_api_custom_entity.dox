@@ -358,19 +358,43 @@ on a different layer.
   collisions even
   with entities on other layers. No value means \c true.
 
-\subsection lua_api_custom_entity_get_ground_point custom_entity:get_ground_point()
-
-\subsection lua_api_custom_entity_set_ground_point custom_entity:set_ground_point(ground_x, ground_y)
-
-TODO point of contact with the ground
-
 \subsection lua_api_custom_entity_get_modified_ground custom_entity:get_modified_ground()
 
-TODO
+Returns the kind of
+\ref lua_api_map_get_ground "ground"
+(terrain) defined by this custom entity on the map.
+- Return value (string): The ground defined by this custom entity, or \c nil
+  if this custom entity does not modify the ground.
+  See \ref lua_api_map_get_ground "map:get_ground()" for the list of grounds.
 
-\subsection lua_api_custom_entity_set_modified_ground custom_entity:set_modified_ground(ground)
+\subsection lua_api_custom_entity_set_modified_ground custom_entity:set_modified_ground(modified_ground)
 
-TODO
+Sets the kind of
+\ref lua_api_map_get_ground "ground"
+(terrain) defined by this custom entity on the map.
+
+The ground of the map is normally defined by tiles, but other entities
+may modify it dynamically.
+
+This property allows you to make a custom entity that
+modifies the ground of the map, for example a hole with a special sprite
+or ice with particular
+\ref lua_api_custom_entity_add_collision_test "collision callbacks".
+The modified ground will be applied on the map in the rectangle of this custom
+entity's
+\ref lua_api_entity_get_bounding_box "bounding box".
+Your custom entity can move: the ground will still be correctly applied.
+- \c modified_ground (string): The ground defined by this custom entity,
+  or \c nil (or \c "empty") to make this custom entity stop modifying the
+  ground.
+  See \ref lua_api_map_get_ground "map:get_ground()" for the list of grounds.
+
+\remark If you only need to modify the ground of the map dynamically,
+for example to make a moving platform over holes, a
+\ref lua_api_dynamic_tile "dynamic_tile"
+with a
+\ref lua_api_movement "movement"
+may be enough.
 
 \section lua_api_custom_entity_inherited_events Events inherited from map entity
 

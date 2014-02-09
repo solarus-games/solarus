@@ -454,8 +454,6 @@ void LuaContext::register_entity_module() {
       { "clear_collision_tests", custom_entity_api_clear_collision_tests },
       { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
-      { "get_ground_point", custom_entity_api_get_ground_point },
-      { "set_ground_point", custom_entity_api_set_ground_point },
       { "get_modified_ground", custom_entity_api_get_modified_ground },
       { "set_modified_ground", custom_entity_api_set_modified_ground },
       { NULL, NULL }
@@ -4176,35 +4174,22 @@ int LuaContext::custom_entity_api_clear_collision_tests(lua_State* l) {
 }
 
 /**
- * \brief Implementation of custom_entity:get_ground_point().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::custom_entity_api_get_ground_point(lua_State* l) {
-
-  // TODO
-  return 0;
-}
-
-/**
- * \brief Implementation of custom_entity:set_ground_point().
- * \param l The Lua context that is calling this function.
- * \return Number of values to return to Lua.
- */
-int LuaContext::custom_entity_api_set_ground_point(lua_State* l) {
-
-  // TODO
-  return 0;
-}
-
-/**
  * \brief Implementation of custom_entity:get_modified_ground().
  * \param l The Lua context that is calling this function.
  * \return Number of values to return to Lua.
  */
 int LuaContext::custom_entity_api_get_modified_ground(lua_State* l) {
 
-  // TODO
+  const CustomEntity& entity = check_custom_entity(l, 1);
+
+  const Ground modified_ground = entity.get_modified_ground();
+
+  if (modified_ground == GROUND_EMPTY) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, Tileset::ground_names[modified_ground]);
+  }
   return 0;
 }
 
@@ -4215,7 +4200,16 @@ int LuaContext::custom_entity_api_get_modified_ground(lua_State* l) {
  */
 int LuaContext::custom_entity_api_set_modified_ground(lua_State* l) {
 
-  // TODO
+  CustomEntity& entity = check_custom_entity(l, 1);
+  Ground modified_ground = GROUND_EMPTY;
+
+  if (!lua_isnil(l, 2)) {
+    modified_ground = LuaTools::check_enum<Ground>(l, 2,
+      Tileset::ground_names
+    );
+  }
+
+  entity.set_modified_ground(modified_ground);
   return 0;
 }
 

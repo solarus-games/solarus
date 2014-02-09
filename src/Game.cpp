@@ -811,12 +811,15 @@ void Game::set_paused(bool paused) {
  */
 void Game::restart() {
 
-  transition = Transition::create(
-      Transition::FADE,
-      Transition::TRANSITION_CLOSING,
-      current_map->get_visible_surface(),
-      this);
-  transition->start();
+  if (current_map != NULL) {
+    transition = Transition::create(
+        Transition::FADE,
+        Transition::TRANSITION_CLOSING,
+        current_map->get_visible_surface(),
+        this
+    );
+    transition->start();
+  }
   restarting = true;
 }
 

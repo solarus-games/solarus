@@ -178,7 +178,9 @@ int Destructible::get_weight() const {
  * \param weight The weight of the object or -1.
  */
 void Destructible::set_weight(int weight) {
+
   this->weight = weight;
+  update_collision_modes();
 }
 
 /**
@@ -277,8 +279,9 @@ void Destructible::update_collision_modes() {
   set_collision_modes(0);
 
   // Sets the new ones.
-  if (get_weight() != -1) {
-    // The object can be lifted.
+  if (get_modified_ground() == GROUND_WALL) {
+    // The object is an obstacle.
+    // Set the facing collision mode to allow the hero to look at it.
     add_collision_mode(COLLISION_FACING);
   }
 

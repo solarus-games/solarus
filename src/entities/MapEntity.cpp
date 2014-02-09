@@ -901,6 +901,7 @@ const Detector* MapEntity::get_facing_entity() const {
  * \param facing_entity the detector this entity is now facing (possibly NULL)
  */
 void MapEntity::set_facing_entity(Detector* facing_entity) {
+
   this->facing_entity = facing_entity;
   notify_facing_entity_changed(facing_entity);
 }

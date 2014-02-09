@@ -102,10 +102,10 @@ void LuaContext::remove_menus(int context_index) {
   for (it = menus.begin(); it != menus.end(); ++it) {
     int menu_ref = it->ref;
     if (it->context == context && !it->recently_added) {
-      menu_on_finished(menu_ref);
-      destroy_ref(menu_ref);
       it->ref = LUA_REFNIL;
       it->context = NULL;
+      menu_on_finished(menu_ref);
+      destroy_ref(menu_ref);
     }
   }
 }
@@ -129,10 +129,10 @@ void LuaContext::remove_menus() {
     if (!it->recently_added) {
       int menu_ref = it->ref;
       if (menu_ref != LUA_REFNIL) {
-        menu_on_finished(menu_ref);
-        destroy_ref(menu_ref);
         it->ref = LUA_REFNIL;
         it->context = NULL;
+        menu_on_finished(menu_ref);
+        destroy_ref(menu_ref);
       }
     }
   }
@@ -221,16 +221,12 @@ int LuaContext::menu_api_stop(lua_State* l) {
     push_ref(l, ref);
     if (lua_equal(l, 1, -1)) {
       menu_ref = ref;
-      lua_context.menu_on_finished(menu_ref);
-      lua_context.destroy_ref(menu_ref);
       it->ref = LUA_REFNIL;  // Don't erase it immediately since we may be iterating over menus.
       it->context = NULL;
+      lua_context.menu_on_finished(menu_ref);
+      lua_context.destroy_ref(menu_ref);
       break;
     }
-  }
-
-  if (menu_ref == LUA_REFNIL) {
-    LuaTools::error(l, "Unknown menu");
   }
 
   return 0;

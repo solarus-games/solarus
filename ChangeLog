@@ -96,6 +96,7 @@ Changes that do not introduce incompatibilities:
 * New method surface:clear().
 * New function sol.main.get_metatable(), allows to implement shared behaviors.
 * New method menu:is_started().
+* Attempt to stop a menu already stopped is no longer an error.
 * New method map:get_hero() (#362).
 * map:get_world() can now return nil because the world is now optional (#128).
 * Entity names are now auto-incremented to simplify their creation.

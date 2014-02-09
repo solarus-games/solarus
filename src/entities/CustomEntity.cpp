@@ -1164,6 +1164,7 @@ CustomEntity::CollisionInfo::CollisionInfo(CustomEntity& entity, CollisionMode b
   custom_test_ref(LUA_REFNIL),
   callback_ref(callback_ref) {
 
+  RefCountable::ref(&entity);
 }
 
 /**
@@ -1179,6 +1180,7 @@ CustomEntity::CollisionInfo::CollisionInfo(CustomEntity& entity, int custom_test
   custom_test_ref(custom_test_ref),
   callback_ref(callback_ref) {
 
+  RefCountable::ref(&entity);
 }
 
 /**
@@ -1192,6 +1194,7 @@ CustomEntity::CollisionInfo::CollisionInfo(const CollisionInfo& other):
   callback_ref(LUA_REFNIL) {
 
   if (entity != NULL) {
+    RefCountable::ref(entity);
     custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
     callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);
   }
@@ -1206,6 +1209,7 @@ CustomEntity::CollisionInfo::~CollisionInfo() {
   if (entity != NULL) {
     entity->get_lua_context().cancel_callback(custom_test_ref);
     entity->get_lua_context().cancel_callback(callback_ref);
+    RefCountable::unref(entity);
   }
 }
 
@@ -1220,6 +1224,7 @@ CustomEntity::CollisionInfo& CustomEntity::CollisionInfo::operator=(const Collis
   }
 
   if (entity != NULL) {
+    RefCountable::unref(entity);
     entity->get_lua_context().cancel_callback(custom_test_ref);
     entity->get_lua_context().cancel_callback(callback_ref);
   }
@@ -1230,6 +1235,7 @@ CustomEntity::CollisionInfo& CustomEntity::CollisionInfo::operator=(const Collis
   callback_ref = LUA_REFNIL;
 
   if (entity != NULL) {
+    RefCountable::ref(entity);
     custom_test_ref = entity->get_lua_context().copy_ref(other.custom_test_ref);
     callback_ref = entity->get_lua_context().copy_ref(other.callback_ref);
   }

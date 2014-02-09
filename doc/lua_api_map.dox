@@ -1509,7 +1509,7 @@ on the map.
     unique.
   - \c direction (number): Direction of the custom entity, between \c 0 (East)
     and \c 3 (South).
-    This direction will be applied to the entity's sprite if possible.
+    This direction will be applied to the entity's sprites if possible.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.

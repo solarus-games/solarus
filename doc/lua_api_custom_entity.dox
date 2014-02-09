@@ -58,6 +58,22 @@ except that it is optional.
 - Return value (string): The model of custom entity, or \c nil if the custom
   entity has no model script.
 
+\subsection lua_api_custom_entity_set_size custom_entity:set_size(width, height)
+
+TODO
+
+\subsection lua_api_custom_entity_set_origin custom_entity:set_origin(origin_x, origin_y)
+
+TODO
+
+\subsection lua_api_custom_entity_get_direction custom_entity:get_direction(direction)
+
+TODO
+
+\subsection lua_api_custom_entity_set_direction custom_entity:set_direction()
+
+TODO
+
 \subsection lua_api_custom_entity_get_sprite custom_entity:get_sprite()
 
 Returns the \ref lua_api_sprite "sprite" of this custom entity.
@@ -89,6 +105,14 @@ or when you called
 \ref lua_api_custom_entity_create_sprite "custom_entity:create_sprite()".
 - \c sprite (\ref lua_api_sprite "sprite"): The sprite to remove.
   The default value is the first sprite that was created.
+
+\subsection lua_api_custom_entity_is_drawn_in_y_order custom_entity:is_drawn_in_y_order()
+
+TODO
+
+\subsection lua_api_custom_entity_set_drawn_in_y_order custom_entity:set_drawn_in_y_order([y_order])
+
+TODO
 
 \subsection lua_api_custom_entity_set_traversable_by custom_entity:set_traversable_by([entity_type], traversable)
 
@@ -235,6 +259,61 @@ when another entity.
 Disables any collision test previously registered with
 \ref lua_api_custom_entity_add_collision_test
 "custom_entity:add_collision_test()".
+
+\subsection lua_api_custom_entity_has_layer_independent_collisions custom_entity:has_layer_independent_collisions()
+
+Returns whether this custom entity can detect collisions with entities
+even if they are not on the same layer.
+
+By default, custom entities can only have collisions with entities on the
+same layer.
+- Return value (boolean): \c true if this entity can
+  detect collisions even with entities on other layers.
+
+\subsection lua_api_custom_entity_set_layer_independent_collisions custom_entity:set_layer_independent_collisions([independent])
+
+Sets whether this custom entity can detect collisions with entities
+even if they are not on the same layer.
+
+By default, custom entities can only have collisions with entities on the
+same layer.
+If you set this property to \c true, the
+\ref lua_api_custom_entity_add_collision_test "collision tests"
+will be performed even with entities that are
+on a different layer.
+- \c independent (boolean, optional): \c true to make this entity detect
+  collisions even
+  with entities on other layers. No value means \c true.
+
+\subsection lua_api_custom_entity_is_ground_observer custom_entity:is_ground_observer()
+
+TODO
+
+\subsection lua_api_custom_entity_set_ground_observer custom_entity:set_ground_observer([ground_observer])
+
+TODO
+
+\subsection lua_api_custom_entity_get_ground_point custom_entity:get_ground_point()
+
+\subsection lua_api_custom_entity_set_ground_point custom_entity:set_ground_point(ground_x, ground_y)
+
+TODO point of contact with the ground
+
+\subsection lua_api_custom_entity_is_ground_modifier custom_entity:is_ground_modifier()
+
+TODO
+
+\subsection lua_api_custom_entity_set_ground_modifier custom_entity:set_ground_modifier([ground_modifier])
+
+TODO
+
+\subsection lua_api_custom_entity_get_modified_ground custom_entity:get_modified_ground()
+
+TODO
+
+\subsection lua_api_custom_entity_set_modified_ground custom_entity:set_modified_ground(ground)
+
+TODO
 
 \section lua_api_custom_entity_inherited_events Events inherited from map entity
 

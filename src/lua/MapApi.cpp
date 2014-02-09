@@ -1863,7 +1863,8 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
       width,
       height,
       sprite_name,
-      model);
+      model
+  );
 
   map.get_entities().add_entity(entity);
   if (map.is_started()) {

@@ -186,6 +186,11 @@ void LuaContext::exit() {
  */
 void LuaContext::update() {
 
+  // Make sure the stack does not leak.
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Non-empty stack before LuaContext::update()"
+  );
+
   update_drawables();
   update_movements();
   update_menus();
@@ -193,6 +198,10 @@ void LuaContext::update() {
 
   // Call sol.main.on_update().
   main_on_update();
+
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Non-empty stack after LuaContext::update()"
+  );
 }
 
 /**
@@ -205,8 +214,18 @@ void LuaContext::update() {
  */
 bool LuaContext::notify_input(const InputEvent& event) {
 
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Non-empty stack before LuaContext::notify_input()"
+  );
+
+  const bool handled = main_on_input(event);
+
   // Call the appropriate callback in sol.main (if it exists).
-  return main_on_input(event);
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Non-empty stack after LuaContext::notify_input()"
+  );
+
+  return handled;
 }
 
 /**
@@ -512,8 +531,8 @@ void LuaContext::cancel_callback(int callback_ref) {
           << " (function expected, got " << luaL_typename(l, -1)
           << "). Did you already invoke or cancel it?";
       Debug::die(oss.str());
-      lua_pop(l, 1);
     }
+    lua_pop(l, 1);
 #endif
 
     destroy_ref(callback_ref);

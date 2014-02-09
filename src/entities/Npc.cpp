@@ -279,7 +279,7 @@ void Npc::notify_action_command_pressed() {
 void Npc::call_script_hero_interaction() {
 
   if (behavior == BEHAVIOR_MAP_SCRIPT) {
-    get_lua_context().npc_on_interaction(*this);
+    get_lua_context().entity_on_interaction(*this);
   }
   else {
     EquipmentItem& item = get_equipment().get_item(item_name);
@@ -303,11 +303,13 @@ bool Npc::interaction_with_item(EquipmentItem& item_used) {
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {
     EquipmentItem& item_to_notify = get_equipment().get_item(item_name);
     interaction_occured = get_lua_context().item_on_npc_interaction_item(
-        item_to_notify, *this, item_used);
+        item_to_notify, *this, item_used
+    );
   }
   else {
-    interaction_occured = get_lua_context().npc_on_interaction_item(
-        *this, item_used);
+    interaction_occured = get_lua_context().entity_on_interaction_item(
+        *this, item_used
+    );
   }
 
   return interaction_occured;

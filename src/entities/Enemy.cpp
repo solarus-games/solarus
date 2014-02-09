@@ -793,7 +793,7 @@ void Enemy::set_animation(const std::string& animation) {
  */
 void Enemy::update() {
 
-  MapEntity::update();
+  Detector::update();
 
   if (is_suspended() || !is_enabled()) {
     return;
@@ -881,7 +881,7 @@ void Enemy::update() {
     notify_dead();
   }
 
-  get_lua_context().enemy_on_update(*this);
+  get_lua_context().entity_on_update(*this);
 }
 
 /**
@@ -915,9 +915,9 @@ void Enemy::draw_on_map() {
     return;
   }
 
-  get_lua_context().enemy_on_pre_draw(*this);
+  get_lua_context().entity_on_pre_draw(*this);
   Detector::draw_on_map();
-  get_lua_context().enemy_on_post_draw(*this);
+  get_lua_context().entity_on_post_draw(*this);
 }
 
 /**
@@ -933,10 +933,10 @@ void Enemy::notify_enabled(bool enabled) {
       initialize();
     }
     restart();
-    get_lua_context().enemy_on_enabled(*this);
+    get_lua_context().entity_on_enabled(*this);
   }
   else {
-    get_lua_context().enemy_on_disabled(*this);
+    get_lua_context().entity_on_disabled(*this);
   }
 }
 

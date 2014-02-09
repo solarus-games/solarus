@@ -742,17 +742,6 @@ void CustomEntity::clear_collision_tests() {
 }
 
 /**
- * \copydoc MapEntity::set_map
- */
-void CustomEntity::set_map(Map& map) {
-
-  Detector::set_map(map);
-
-  ground_modifier = false;
-  get_lua_context().run_custom_entity(*this);
-}
-
-/**
  * \copydoc Detector::test_collision_custom
  */
 bool CustomEntity::test_collision_custom(MapEntity& entity) {
@@ -888,6 +877,22 @@ void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprit
 }
 
 /**
+ * \copydoc Detector::notify_action_command_pressed
+ */
+void CustomEntity::notify_action_command_pressed() {
+
+  get_lua_context().entity_on_interaction(*this);
+}
+
+/**
+ * \copydoc Detector::interaction_with_item
+ */
+bool CustomEntity::interaction_with_item(EquipmentItem& item) {
+
+  return get_lua_context().entity_on_interaction_item(*this, item);
+}
+
+/**
  * \copydoc MapEntity::is_ground_observer
  */
 bool CustomEntity::is_ground_observer() const {
@@ -910,6 +915,16 @@ bool CustomEntity::is_ground_observer() const {
  */
 bool CustomEntity::is_ground_modifier() const {
   return ground_modifier;
+}
+
+/**
+ * \copydoc MapEntity::notify_ground_below_changed
+ */
+void CustomEntity::notify_ground_below_changed() {
+
+  get_lua_context().custom_entity_on_ground_below_changed(
+      *this, get_ground_below()
+  );
 }
 
 /**
@@ -937,6 +952,70 @@ void CustomEntity::set_modified_ground(Ground modified_ground) {
 
   // Now, continue notifications only if not GROUND_EMPTY.
   ground_modifier = modified_ground != GROUND_EMPTY;
+}
+
+/**
+ * \copydoc MapEntity::set_map
+ */
+void CustomEntity::set_map(Map& map) {
+
+  Detector::set_map(map);
+
+  ground_modifier = false;
+  get_lua_context().run_custom_entity(*this);
+}
+
+/**
+ * \copydoc MapEntity::update
+ */
+void CustomEntity::update() {
+
+  Detector::update();
+
+  if (is_suspended() || !is_enabled()) {
+    return;
+  }
+
+  get_lua_context().entity_on_update(*this);
+}
+
+/**
+ * \copydoc MapEntity::set_suspended
+ */
+void CustomEntity::set_suspended(bool suspended) {
+
+  Detector::set_suspended(suspended);
+
+  get_lua_context().entity_on_suspended(*this, suspended);
+}
+
+/**
+ * \copydoc MapEntity::notify_enabled
+ */
+void CustomEntity::notify_enabled(bool enabled) {
+
+  Detector::notify_enabled(enabled);
+
+  if (enabled) {
+    get_lua_context().entity_on_enabled(*this);
+  }
+  else {
+    get_lua_context().entity_on_disabled(*this);
+  }
+}
+
+/**
+ * \copydoc CustomEntity::draw_on_map
+ */
+void CustomEntity::draw_on_map() {
+
+  if (!is_drawn()) {
+    return;
+  }
+
+  get_lua_context().entity_on_pre_draw(*this);
+  Detector::draw_on_map();
+  get_lua_context().entity_on_post_draw(*this);
 }
 
 /**

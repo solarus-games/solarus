@@ -116,7 +116,6 @@ on_disabled()
 on_pre_draw()
 on_post_draw()
 on_ground_below_changed()
-on_facing_entity_changed()
 on_interaction()
 on_interaction_item()
 

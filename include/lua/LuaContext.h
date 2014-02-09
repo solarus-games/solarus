@@ -22,6 +22,7 @@
 #include "entities/Layer.h"
 #include "entities/EnemyAttack.h"
 #include "entities/EntityType.h"
+#include "entities/Ground.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Debug.h"
 #include "Ability.h"
@@ -271,7 +272,7 @@ class LuaContext {
     bool map_on_command_released(Map& map, GameCommands::Command command);
 
     // Map entity events.
-    void enemy_on_update(Enemy& enemy);
+    void entity_on_update(MapEntity& entity);
     void entity_on_suspended(MapEntity& entity, bool suspended);
     void entity_on_created(MapEntity& entity);
     void entity_on_removed(MapEntity& entity);
@@ -283,12 +284,12 @@ class LuaContext {
     void entity_on_obstacle_reached(MapEntity& entity, Movement& movement);
     void entity_on_movement_changed(MapEntity& entity, Movement& movement);
     void entity_on_movement_finished(MapEntity& entity);
+    void entity_on_interaction(MapEntity& entity);
+    bool entity_on_interaction_item(MapEntity& entity, EquipmentItem& item_used);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
     bool hero_on_taking_damage(Hero& hero, int damage);
     void destination_on_activated(Destination& destination);
     void teletransporter_on_activated(Teletransporter& teletransporter);
-    void npc_on_interaction(Npc& npc);
-    bool npc_on_interaction_item(Npc& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(Npc& npc);
     bool chest_on_empty(Chest& chest);
     void block_on_moving(Block& block);
@@ -322,6 +323,8 @@ class LuaContext {
     void enemy_on_dead(Enemy& enemy);
     void enemy_on_immobilized(Enemy& enemy);
     bool enemy_on_attacking_hero(Enemy& enemy, Hero& hero, Sprite* enemy_sprite);
+    void custom_entity_on_ground_below_changed(
+        CustomEntity& custom_entity, Ground ground_below);
 
     // Implementation of the API.
 
@@ -1119,6 +1122,7 @@ class LuaContext {
     void on_dead();
     void on_immobilized();
     bool on_attacking_hero(Hero& hero, Sprite* attacker_sprite);
+    void on_ground_below_changed(Ground ground_below);
 
     // Functions exported to Lua for internal needs.
     static FunctionExportedToLua

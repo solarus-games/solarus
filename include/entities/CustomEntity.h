@@ -49,9 +49,14 @@ class CustomEntity: public Detector {
 
     EntityType get_type() const;
 
-    void set_map(Map& map);
-
     const std::string& get_model() const;
+
+    // Game loop.
+    void set_map(Map& map);
+    void set_suspended(bool suspended);
+    void notify_enabled(bool enabled);
+    void update();
+    void draw_on_map();
 
     // Direction.
     int get_sprites_direction() const;
@@ -114,8 +119,14 @@ class CustomEntity: public Detector {
         MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(
         MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+    void notify_action_command_pressed();
+    bool interaction_with_item(EquipmentItem& item);
 
+    // Observing the ground.
     bool is_ground_observer() const;
+    void notify_ground_below_changed();
+
+    // Modifying the ground.
     bool is_ground_modifier() const;
     Ground get_modified_ground() const;
     void set_modified_ground(Ground modified_ground);

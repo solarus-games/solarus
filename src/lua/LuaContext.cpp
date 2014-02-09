@@ -27,6 +27,7 @@
 #include "entities/Block.h"
 #include "entities/Enemy.h"
 #include "entities/CustomEntity.h"
+#include "entities/Tileset.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "Equipment.h"
@@ -2620,6 +2621,23 @@ bool LuaContext::on_attacking_hero(Hero& hero, Sprite* attacker_sprite) {
     return true;
   }
   return false;
+}
+
+/**
+ * \brief Calls the on_ground_below_changed() method of the object on top of the stack.
+ * \param ground_below The new ground below the object.
+ */
+void LuaContext::on_ground_below_changed(Ground ground_below) {
+
+  if (find_method("on_ground_below_changed")) {
+    if (ground_below == GROUND_EMPTY) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, Tileset::ground_names[ground_below]);
+    }
+    call_function(2, 0, "on_ground_below_changed");
+  }
 }
 
 /**

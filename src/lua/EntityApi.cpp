@@ -4214,6 +4214,27 @@ int LuaContext::custom_entity_api_set_modified_ground(lua_State* l) {
 }
 
 /**
+ * \brief Calls the on_update() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_update(MapEntity& entity) {
+
+  // This particular method is tried so often that we want to save optimize
+  // the std::string construction.
+  static const std::string method_name = "on_update";
+  if (!userdata_has_field(entity, method_name)) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_update();
+  lua_pop(l, 1);
+}
+
+/**
  * \brief Calls the on_suspended() method of a Lua map entity.
  *
  * Does nothing if the method is not defined.
@@ -4264,6 +4285,78 @@ void LuaContext::entity_on_removed(MapEntity& entity) {
     on_removed();
   }
   remove_timers(-1);  // Stop timers associated to this entity.
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_enabled() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_enabled(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_enabled")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_enabled();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_disabled() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_disabled(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_disabled")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_disabled();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_pre_draw() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_pre_draw(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_pre_draw")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_pre_draw();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_post_draw() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_post_draw(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_post_draw")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_post_draw();
   lua_pop(l, 1);
 }
 
@@ -4347,6 +4440,46 @@ void LuaContext::entity_on_movement_finished(MapEntity& entity) {
 }
 
 /**
+ * \brief Calls the on_interaction() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_interaction(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_interaction")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_interaction();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_interaction_item() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ * \param item_used The equipment item used.
+ * \return \c true if an interaction occurred.
+ */
+bool LuaContext::entity_on_interaction_item(
+    MapEntity& entity, EquipmentItem& item_used) {
+
+  if (!userdata_has_field(entity, "on_interaction_item")) {
+    return false;
+  }
+
+  push_entity(l, entity);
+  bool result = on_interaction_item(item_used);
+  lua_pop(l, 1);
+  return result;
+}
+
+/**
  * \brief Calls the on_state_changed() method of a Lua hero.
  *
  * Does nothing if the method is not defined.
@@ -4421,45 +4554,6 @@ void LuaContext::teletransporter_on_activated(Teletransporter& teletransporter) 
   push_teletransporter(l, teletransporter);
   on_activated();
   lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_interaction() method of a Lua NPC.
- *
- * Does nothing if the method is not defined.
- *
- * \param npc An NPC.
- */
-void LuaContext::npc_on_interaction(Npc& npc) {
-
-  if (!userdata_has_field(npc, "on_interaction")) {
-    return;
-  }
-
-  push_npc(l, npc);
-  on_interaction();
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_interaction_item() method of a Lua NPC.
- *
- * Does nothing if the method is not defined.
- *
- * \param npc An NPC.
- * \param item_used The equipment item used.
- * \return \c true if an interaction occurred.
- */
-bool LuaContext::npc_on_interaction_item(Npc& npc, EquipmentItem& item_used) {
-
-  if (!userdata_has_field(npc, "on_interaction_item")) {
-    return false;
-  }
-
-  push_npc(l, npc);
-  bool result = on_interaction_item(item_used);
-  lua_pop(l, 1);
-  return result;
 }
 
 /**
@@ -4862,63 +4956,6 @@ void LuaContext::destructible_on_regenerating(Destructible& destructible) {
 }
 
 /**
- * \brief Calls the on_update() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_update(Enemy& enemy) {
-
-  // This particular method is tried so often that we want to save optimize
-  // the std::string construction.
-  static const std::string method_name = "on_update";
-  if (!userdata_has_field(enemy, method_name)) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_update();
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_enabled() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_enabled(Enemy& enemy) {
-
-  if (!userdata_has_field(enemy, "on_enabled")) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_enabled();
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_disabled() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_disabled(Enemy& enemy) {
-
-  if (!userdata_has_field(enemy, "on_disabled")) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_disabled();
-  lua_pop(l, 1);
-}
-
-/**
  * \brief Calls the on_restarted() method of a Lua enemy if it is defined.
  *
  * Also stops timers associated to the entity.
@@ -4932,42 +4969,6 @@ void LuaContext::enemy_on_restarted(Enemy& enemy) {
   if (userdata_has_field(enemy, "on_restarted")) {
     on_restarted();
   }
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_pre_draw() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_pre_draw(Enemy& enemy) {
-
-  if (!userdata_has_field(enemy, "on_pre_draw")) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_pre_draw();
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_post_draw() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_post_draw(Enemy& enemy) {
-
-  if (!userdata_has_field(enemy, "on_post_draw")) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_post_draw();
   lua_pop(l, 1);
 }
 
@@ -5105,7 +5106,10 @@ void LuaContext::enemy_on_immobilized(Enemy& enemy) {
 }
 
 /**
- * \brief Calls the on_attacking_hero() method of a Lua enemy if it is defined.
+ * \brief Calls the on_attacking_hero() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  * \param hero The hero attacked.
  * \param enemy_sprite Enemy's sprite that caused the collision or NULL.
@@ -5121,6 +5125,26 @@ bool LuaContext::enemy_on_attacking_hero(Enemy& enemy, Hero& hero, Sprite* attac
   bool exists = on_attacking_hero(hero, attacker_sprite);
   lua_pop(l, 1);
   return exists;
+}
+
+/**
+ * \brief Calls the on_ground_below_changed() method of a Lua custom entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param custom_entity A custom entity.
+ * \param ground_below The new ground below this entity.
+ */
+void LuaContext::custom_entity_on_ground_below_changed(
+    CustomEntity& custom_entity, Ground ground_below) {
+
+  if (!userdata_has_field(custom_entity, "on_ground_below_changed")) {
+    return;
+  }
+
+  push_custom_entity(l, custom_entity);
+  on_ground_below_changed(ground_below);
+  lua_pop(l, 1);
 }
 
 }

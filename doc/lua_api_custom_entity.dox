@@ -412,43 +412,88 @@ The following events are specific to custom entities.
 
 \subsection lua_api_custom_entity_on_update custom_entity:on_update()
 
-TODO like enemy
+Called at each cycle while this custom entity lives on the map.
+
+\remark As this function is called at each cycle, it is recommended to use other
+solutions when possible, like \ref lua_api_timer "timers" and other events.
 
 \subsection lua_api_custom_entity_on_suspended custom_entity:on_suspended(suspended)
 
-TODO like enemy
+Called when the \ref lua_api_map "map"
+has just been suspended or resumed.
+
+The map is suspended by the engine in a few cases, like when the \ref
+lua_api_game "game" is
+paused or when the camera is being moved by a script.
+When this happens, all \ref lua_api_entity "map entities" stop moving and most
+\ref lua_api_sprite "sprites" stop their animation.
+- \c suspended (boolean): \c true if the map was just suspended, \c
+  false if it was resumed.
 
 \subsection lua_api_custom_entity_on_created custom_entity:on_created()
 
-TODO like enemy
+called when this custom entity has just been created on the
+\ref lua_api_map "map".
 
 \subsection lua_api_custom_entity_on_enabled custom_entity:on_enabled()
 
-TODO like enemy
+called when this custom entity has just been
+\ref lua_api_entity_is_enabled "enabled".
 
 \subsection lua_api_custom_entity_on_disabled custom_entity:on_disabled()
 
-TODO like enemy
+called when this custom entity has just been
+\ref lua_api_entity_is_enabled "disabled".
 
 \subsection lua_api_custom_entity_on_pre_draw custom_entity:on_pre_draw()
 
-TODO like enemy
+Called just before this custom entity is drawn on the map.
+You may display additional things below the sprites.
 
 \subsection lua_api_custom_entity_on_post_draw custom_entity:on_post_draw()
 
-TODO like enemy
+Called just after this custom entity is drawn on the map.
+You may display additional things above the sprites.
 
-\subsection lua_api_custom_entity_on_facing_entity_changed custom_entity:on_facing_entity_changed(facing_entity)
+\subsection lua_api_custom_entity_on_ground_below_changed custom_entity:on_ground_below_changed(ground_below)
 
-TODO
+Called when the kind of
+\ref lua_api_map_get_ground "ground" on the map below this
+custom entity has changed.
+It may change because this custom entity is moving,
+or when because another entity changes it.
+- \c ground_below (string): The kind of ground at the
+  \ref lua_api_custom_entity_set_origin "origin point"
+  of this custom entity.
+  \c nil means empty, that is, there is no ground at this point on the
+  current layer.
 
 \subsection lua_api_custom_entity_on_interaction custom_entity:on_interaction()
 
-TODO like NPC
+Called when the \ref lua_api_hero "hero" interacts
+with this custom entity, that is,
+when the player presses the \ref lua_api_game_intro_commands "action command"
+while facing this custom entity.
+
+\remark This event is also available with
+  \ref lua_api_npc_on_interaction "NPCs".
 
 \subsection lua_api_custom_entity_on_interaction_item custom_entity:on_interaction_item(item_used)
 
-TODO like NPC
+Called when the \ref lua_api_hero "hero" uses any
+\ref lua_api_item "equipment item"
+(the player pressed an \ref lua_api_game_intro_commands "item command") while
+facing this custom entity.
+- \c item_used (\ref lua_api_item "item"): The item currently used by
+  the player.
+- Return value (boolean): \c true if an interaction happened.
+  If you return \c false or nothing,
+  then \ref lua_api_item_on_using
+  "item_used:on_using()" will be called
+  (just like if there was no custom entity in front of the hero).
+
+\remark This event is also available with
+  \ref lua_api_npc_on_interaction_item "NPCs".
 
 */
 

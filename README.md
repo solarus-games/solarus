@@ -1,4 +1,5 @@
 ![alt text](/images/solaruslogo.png)
+====================================
 Solarus is an open-source Zelda-like game engine written in C++.
 This engine is used by our Zelda fangames.
 The git repository of Solarus includes two subprojects:

@@ -271,9 +271,14 @@ class LuaContext {
     bool map_on_command_released(Map& map, GameCommands::Command command);
 
     // Map entity events.
+    void enemy_on_update(Enemy& enemy);
     void entity_on_suspended(MapEntity& entity, bool suspended);
     void entity_on_created(MapEntity& entity);
     void entity_on_removed(MapEntity& entity);
+    void entity_on_enabled(MapEntity& entity);
+    void entity_on_disabled(MapEntity& entity);
+    void entity_on_pre_draw(MapEntity& entity);
+    void entity_on_post_draw(MapEntity& entity);
     void entity_on_position_changed(MapEntity& entity, const Rectangle& xy, Layer layer);
     void entity_on_obstacle_reached(MapEntity& entity, Movement& movement);
     void entity_on_movement_changed(MapEntity& entity, Movement& movement);
@@ -306,12 +311,7 @@ class LuaContext {
     void destructible_on_lifting(Destructible& destructible);
     void destructible_on_exploded(Destructible& destructible);
     void destructible_on_regenerating(Destructible& destructible);
-    void enemy_on_update(Enemy& enemy);
-    void enemy_on_enabled(Enemy& enemy);
-    void enemy_on_disabled(Enemy& enemy);
     void enemy_on_restarted(Enemy& enemy);
-    void enemy_on_pre_draw(Enemy& enemy);
-    void enemy_on_post_draw(Enemy& enemy);
     void enemy_on_collision_enemy(Enemy& enemy,
         Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void enemy_on_custom_attack_received(Enemy& enemy,

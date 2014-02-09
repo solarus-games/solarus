@@ -410,7 +410,45 @@ See \ref lua_api_entity_events to know these events.
 
 The following events are specific to custom entities.
 
+\subsection lua_api_custom_entity_on_update custom_entity:on_update()
+
+TODO like enemy
+
+\subsection lua_api_custom_entity_on_suspended custom_entity:on_suspended(suspended)
+
+TODO like enemy
+
+\subsection lua_api_custom_entity_on_created custom_entity:on_created()
+
+TODO like enemy
+
+\subsection lua_api_custom_entity_on_enabled custom_entity:on_enabled()
+
+TODO like enemy
+
+\subsection lua_api_custom_entity_on_disabled custom_entity:on_disabled()
+
+TODO like enemy
+
+\subsection lua_api_custom_entity_on_pre_draw custom_entity:on_pre_draw()
+
+TODO like enemy
+
+\subsection lua_api_custom_entity_on_post_draw custom_entity:on_post_draw()
+
+TODO like enemy
+
+\subsection lua_api_custom_entity_on_facing_entity_changed custom_entity:on_facing_entity_changed(facing_entity)
+
 TODO
+
+\subsection lua_api_custom_entity_on_interaction custom_entity:on_interaction()
+
+TODO like NPC
+
+\subsection lua_api_custom_entity_on_interaction_item custom_entity:on_interaction_item(item_used)
+
+TODO like NPC
 
 */
 

@@ -253,7 +253,7 @@ void Sprite::set_current_animation(const std::string& animation_name) {
   if (animation_name != this->current_animation_name || !is_animation_started()) {
 
     this->current_animation_name = animation_name;
-    this->current_animation = animation_set.get_animation(animation_name);
+    this->current_animation = &animation_set.get_animation(animation_name);
     set_frame_delay(current_animation->get_frame_delay());
 
     set_current_frame(0, false);

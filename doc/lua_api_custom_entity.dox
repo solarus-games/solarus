@@ -107,13 +107,20 @@ about the origin point.
 - \c origin_y (number): Y coordinate of the origin point in pixels,
   relative to the upper left corner of the custom entity's bounding box.
 
-\subsection lua_api_custom_entity_get_direction custom_entity:get_direction(direction)
+\subsection lua_api_custom_entity_get_direction custom_entity:get_direction()
 
-TODO
+Returns the direction of this custom entity.
 
-\subsection lua_api_custom_entity_set_direction custom_entity:set_direction()
+This direction is set at creation time or when you can call
+\ref lua_api_custom_entity_set_direction "custom_entity:set_direction()".
+- Return value 1 (number): The direction.
 
-TODO
+\subsection lua_api_custom_entity_set_direction custom_entity:set_direction(direction)
+
+Sets the direction of this custom entity.
+
+Sprites of your custom entity has have such a direction automatically take it.
+- Return value 1 (number): The direction.
 
 \subsection lua_api_custom_entity_get_sprite custom_entity:get_sprite()
 

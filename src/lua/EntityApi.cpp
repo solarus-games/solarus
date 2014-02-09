@@ -3910,8 +3910,10 @@ int LuaContext::custom_entity_api_get_model(lua_State* l) {
  */
 int LuaContext::custom_entity_api_get_direction(lua_State* l) {
 
-  // TODO
-  return 0;
+  const CustomEntity& entity = check_custom_entity(l, 1);
+
+  lua_pushinteger(l, entity.get_sprites_direction());
+  return 1;
 }
 
 /**
@@ -3921,7 +3923,11 @@ int LuaContext::custom_entity_api_get_direction(lua_State* l) {
  */
 int LuaContext::custom_entity_api_set_direction(lua_State* l) {
 
-  // TODO
+  CustomEntity& entity = check_custom_entity(l, 1);
+  int direction = entity.get_direction();
+
+  entity.set_sprites_direction(direction);
+
   return 0;
 }
 

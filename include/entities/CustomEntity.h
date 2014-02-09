@@ -53,6 +53,10 @@ class CustomEntity: public Detector {
 
     const std::string& get_model() const;
 
+    // Direction.
+    int get_sprites_direction() const;
+    void set_sprites_direction(int direction);
+
     // What can traverse this custom entity.
     bool is_traversable_by_entity(MapEntity& entity);
     void set_traversable_by_entities(bool traversable);

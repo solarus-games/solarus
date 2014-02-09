@@ -63,11 +63,14 @@ CustomEntity::CustomEntity(
   Detector(
       COLLISION_NONE,
       name, layer, x, y, width, height),
-
   model(model) {
 
   set_origin(8, 13);
-  initialize_sprite(sprite_name, direction);
+
+  if (!sprite_name.empty()) {
+    create_sprite(sprite_name);
+  }
+  set_sprites_direction(direction);
 }
 
 /**
@@ -90,6 +93,39 @@ EntityType CustomEntity::get_type() const {
  */
 const std::string& CustomEntity::get_model() const {
   return model;
+}
+
+/**
+ * \brief Returns the direction of this custom entity.
+ *
+ * This is the direction applied to the sprites unless it is overridden
+ * for particular sprites.
+ *
+ * \return The direction.
+ */
+int CustomEntity::get_sprites_direction() const {
+
+  return get_direction();
+}
+
+/**
+ * \brief Sets the direction of this custom entity.
+ *
+ * It will be applied to sprites that have such a direction.
+ *
+ * \return The direction.
+ */
+void CustomEntity::set_sprites_direction(int direction) {
+
+  set_direction(direction);
+
+  std::vector<Sprite*>::const_iterator it;
+  for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
+    Sprite& sprite = *(*it);
+    if (direction >= 0 && direction < sprite.get_nb_directions()) {
+      sprite.set_current_direction(direction);
+    }
+  }
 }
 
 /**
@@ -701,24 +737,6 @@ void CustomEntity::clear_collision_tests() {
   // Disable all collisions checks.
   collision_tests.clear();
   set_collision_modes(COLLISION_NONE);
-}
-
-/**
- * \brief Creates the sprite specified.
- * \param sprite_name sprite Animation set of the entity, or an empty string
- * to create no sprite.
- * \param initial_direction Direction of the entity's sprite. Ignored if there
- * is no sprite of if the sprite has no such direction.
- */
-void CustomEntity::initialize_sprite(
-    const std::string& sprite_name, int initial_direction) {
-
-  if (!sprite_name.empty()) {
-    Sprite& sprite = create_sprite(sprite_name);
-    if (initial_direction >= 0 && initial_direction < sprite.get_nb_directions()) {
-      sprite.set_current_direction(initial_direction);
-    }
-  }
 }
 
 /**

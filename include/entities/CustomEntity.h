@@ -119,6 +119,27 @@ class CustomEntity: public Detector {
         MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(
         MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+
+    virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
+    virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
+    virtual void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
+    virtual void notify_collision_with_stairs(Stairs& stairs, CollisionMode collision_mode);
+    virtual void notify_collision_with_jumper(Jumper& jumper, CollisionMode collision_mode);
+    void notify_collision_with_sensor(
+        Sensor& sensor, CollisionMode collision_mode);
+    virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
+    virtual void notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping);
+    virtual void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
+    virtual void notify_collision_with_crystal(Crystal& crystal, Sprite& sprite_overlapping);
+    virtual void notify_collision_with_chest(Chest& chest);
+    virtual void notify_collision_with_block(Block& block);
+    virtual void notify_collision_with_separator(Separator& separator, CollisionMode collision_mode);
+    virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
+    virtual void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode);
+    virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
+    virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
+    virtual void notify_collision_with_enemy(Enemy& enemy);
+    virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
     void notify_action_command_pressed();
     bool interaction_with_item(EquipmentItem& item);
 
@@ -199,11 +220,10 @@ class CustomEntity: public Detector {
 
     };
 
-    void initialize_sprite(
-        const std::string& sprite_name, int initial_direction);
-
     const TraversableInfo& get_traversable_by_entity_info(EntityType type);
     const TraversableInfo& get_can_traverse_entity_info(EntityType type);
+
+    void notify_collision_from(MapEntity& other_entity);
 
     const std::string& model;                         /**< Model of this custom entity or an empty string. */
 

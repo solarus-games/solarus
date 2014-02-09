@@ -16,11 +16,14 @@
  */
 #include "entities/CustomEntity.h"
 #include "entities/Block.h"
+#include "entities/Bomb.h"
 #include "entities/ConveyorBelt.h"
+#include "entities/Chest.h"
 #include "entities/Crystal.h"
 #include "entities/CrystalBlock.h"
 #include "entities/Destructible.h"
 #include "entities/Enemy.h"
+#include "entities/Fire.h"
 #include "entities/Hero.h"
 #include "entities/Jumper.h"
 #include "entities/Npc.h"
@@ -877,6 +880,187 @@ void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprit
 }
 
 /**
+ * \brief Notifies this custom entity that another entity has detected a
+ * collision with it.
+ * \param other_entity The other entity.
+ */
+void CustomEntity::notify_collision_from(MapEntity& other_entity) {
+
+  // See if we also detect the other entity, and if yes, do the callbacks.
+  if (test_collision_custom(other_entity)) {
+    notify_collision(other_entity, COLLISION_CUSTOM);
+  }
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_destructible
+ */
+void CustomEntity::notify_collision_with_destructible(
+    Destructible& destructible, CollisionMode collision_mode) {
+
+  notify_collision_from(destructible);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_teletransporter
+ */
+void CustomEntity::notify_collision_with_teletransporter(
+    Teletransporter& teletransporter, CollisionMode collision_mode) {
+
+  notify_collision_from(teletransporter);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_conveyor_belt
+ */
+void CustomEntity::notify_collision_with_conveyor_belt(
+    ConveyorBelt& conveyor_belt, int dx, int dy) {
+
+  notify_collision_from(conveyor_belt);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_stairs
+ */
+void CustomEntity::notify_collision_with_stairs(
+    Stairs& stairs, CollisionMode collision_mode) {
+
+  notify_collision_from(stairs);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_jumper
+ */
+void CustomEntity::notify_collision_with_jumper(
+    Jumper& jumper, CollisionMode collision_mode) {
+
+  notify_collision_from(jumper);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_sensor
+ */
+void CustomEntity::notify_collision_with_sensor(
+    Sensor& sensor, CollisionMode collision_mode) {
+
+  notify_collision_from(sensor);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_switch(Switch&,CollisionMode)
+ */
+void CustomEntity::notify_collision_with_switch(
+    Switch& sw, CollisionMode collision_mode) {
+
+  notify_collision_from(sw);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_switch(Switch&,Sprite&)
+ */
+void CustomEntity::notify_collision_with_switch(
+    Switch& sw, Sprite& sprite_overlapping) {
+
+  notify_collision_from(sw);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_crystal(Crystal&,CollisionMode)
+ */
+void CustomEntity::notify_collision_with_crystal(
+    Crystal& crystal, CollisionMode collision_mode) {
+
+  notify_collision_from(crystal);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_crystal(Crystal&,Sprite&)
+ */
+void CustomEntity::notify_collision_with_crystal(
+    Crystal& crystal, Sprite& sprite_overlapping) {
+
+  notify_collision_from(crystal);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_chest
+ */
+void CustomEntity::notify_collision_with_chest(Chest& chest) {
+
+  notify_collision_from(chest);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_block
+ */
+void CustomEntity::notify_collision_with_block(Block& block) {
+
+  notify_collision_from(block);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_separator
+ */
+void CustomEntity::notify_collision_with_separator(
+    Separator& separator, CollisionMode collision_mode) {
+
+  notify_collision_from(separator);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_bomb
+ */
+void CustomEntity::notify_collision_with_bomb(
+    Bomb& bomb, CollisionMode collision_mode) {
+
+  notify_collision_from(bomb);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_explosion(Explosion&, CollisionMode)
+ */
+void CustomEntity::notify_collision_with_explosion(
+    Explosion& explosion, CollisionMode collision_mode) {
+
+  notify_collision_from(explosion);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_explosion(Explosion&,Sprite&)
+ */
+void CustomEntity::notify_collision_with_explosion(
+    Explosion& explosion, Sprite& sprite_overlapping) {
+
+  notify_collision_from(explosion);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_fire
+ */
+void CustomEntity::notify_collision_with_fire(
+    Fire& fire, Sprite& sprite_overlapping) {
+
+  notify_collision_from(fire);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_enemy(Enemy&)
+ */
+void CustomEntity::notify_collision_with_enemy(Enemy& enemy) {
+
+  notify_collision_from(enemy);
+}
+
+/**
+ * \copydoc MapEntity::notify_collision_with_enemy(Enemy&, Sprite&, Sprite&)
+ */
+void CustomEntity::notify_collision_with_enemy(
+    Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
+
+  notify_collision_from(enemy);
+}
+
+/**
  * \copydoc Detector::notify_action_command_pressed
  */
 void CustomEntity::notify_action_command_pressed() {
@@ -976,6 +1160,7 @@ void CustomEntity::update() {
     return;
   }
 
+  check_collision_with_detectors(true);
   get_lua_context().entity_on_update(*this);
 }
 

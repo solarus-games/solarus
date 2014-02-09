@@ -205,7 +205,6 @@ class MapEntity: public ExportableToLua {
     void check_collision_with_detectors(bool with_pixel_precise);
     void check_collision_with_detectors(Sprite& sprite);
 
-    virtual void notify_collision_with_enemy(Enemy& enemy);
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
@@ -223,6 +222,7 @@ class MapEntity: public ExportableToLua {
     virtual void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode);
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
+    virtual void notify_collision_with_enemy(Enemy& enemy);
     virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
     virtual void notify_attacked_enemy(
         EnemyAttack attack,

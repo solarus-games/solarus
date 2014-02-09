@@ -294,12 +294,12 @@ const CustomEntity::TraversableInfo& CustomEntity::get_can_traverse_entity_info(
   // Find the obstacle settings.
   const std::map<EntityType, TraversableInfo>::const_iterator it =
     can_traverse_entities_type.find(type);
-  if (it != traversable_by_entities_type.end()) {
+  if (it != can_traverse_entities_type.end()) {
     // This entity type overrides the general setting.
     return it->second;
   }
 
-  return traversable_by_entities_general;
+  return can_traverse_entities_general;
 }
 
 /**
@@ -1038,6 +1038,7 @@ CustomEntity::TraversableInfo::TraversableInfo(CustomEntity& entity, bool traver
   traversable_test_ref(LUA_REFNIL),
   traversable(traversable) {
 
+  RefCountable::ref(&entity);
 }
 
 /**
@@ -1050,6 +1051,7 @@ CustomEntity::TraversableInfo::TraversableInfo(CustomEntity& entity, int travers
   traversable_test_ref(traversable_test_ref),
   traversable(false) {
 
+  RefCountable::ref(&entity);
 }
 
 /**
@@ -1062,6 +1064,7 @@ CustomEntity::TraversableInfo::TraversableInfo(const TraversableInfo& other):
   traversable(other.traversable) {
 
   if (entity != NULL) {
+    RefCountable::ref(entity);
     traversable_test_ref = entity->get_lua_context().copy_ref(other.traversable_test_ref);
   }
 }
@@ -1073,6 +1076,7 @@ CustomEntity::TraversableInfo::~TraversableInfo() {
 
   if (entity != NULL) {
     entity->get_lua_context().cancel_callback(traversable_test_ref);
+    RefCountable::unref(entity);
   }
 }
 
@@ -1088,12 +1092,14 @@ CustomEntity::TraversableInfo& CustomEntity::TraversableInfo::operator=(const Tr
 
   if (entity != NULL) {
     entity->get_lua_context().cancel_callback(traversable_test_ref);
+    RefCountable::unref(entity);
   }
 
   entity = other.entity;
   traversable_test_ref = LUA_REFNIL;
 
   if (entity != NULL) {
+    RefCountable::ref(entity);
     traversable_test_ref = entity->get_lua_context().copy_ref(other.traversable_test_ref);
   }
   traversable = other.traversable;

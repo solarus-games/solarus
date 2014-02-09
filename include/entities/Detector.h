@@ -53,8 +53,6 @@ class Detector: public MapEntity {
     virtual void stop_movement_by_hero();
     virtual std::string get_sword_tapping_sound();
 
-    static const std::string collision_mode_names[];
-
   protected:
 
     // construction

@@ -4132,12 +4132,34 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
 
   if (lua_isstring(l, 2)) {
     // Built-in collision test.
-    CollisionMode collision_mode = LuaTools::check_enum<CollisionMode>(
-        l, 2, Detector::collision_mode_names
-    );
+    // TODO move string to enum conversion into a function of Dectector.
+    // We cannot use LuaTools::check_enum() like always, because this
+    // enum has special numerical values.
+    const std::string& collision_mode_name = luaL_checkstring(l, 2);
+    CollisionMode collision_mode = COLLISION_NONE;
 
-    if (collision_mode == COLLISION_NONE
-        || collision_mode == COLLISION_CUSTOM) {
+    if (collision_mode_name == "overlapping") {
+      collision_mode = COLLISION_OVERLAPPING;
+    }
+    else if (collision_mode_name == "containing") {
+      collision_mode = COLLISION_CONTAINING;
+    }
+    else if (collision_mode_name == "origin") {
+      collision_mode = COLLISION_CONTAINING;
+    }
+    else if (collision_mode_name == "facing") {
+      collision_mode = COLLISION_FACING;
+    }
+    else if (collision_mode_name == "touching") {
+      collision_mode = COLLISION_TOUCHING;
+    }
+    else if (collision_mode_name == "center") {
+      collision_mode = COLLISION_CENTER;
+    }
+    else if (collision_mode_name == "sprite") {
+      collision_mode = COLLISION_SPRITE;
+    }
+    else {
       LuaTools::arg_error(l, 2,
           std::string("Invalid name '") + lua_tostring(l, 2) + "'"
       );

@@ -96,47 +96,6 @@ Ground DynamicTile::get_modified_ground() const {
 }
 
 /**
- * \brief Returns whether this tile is an obstacle for the specified entity.
- * \param other an entity
- * \return true if this tile is an obstacle for the entity
- */
-bool DynamicTile::is_obstacle_for(MapEntity& other) {
-
-  // TODO normally, this function can be removed since there is already
-  // a modified ground
-  bool result = false;
-  switch (get_modified_ground()) {
-
-    case GROUND_WALL:
-    case GROUND_LOW_WALL:
-    case GROUND_WALL_TOP_RIGHT:
-    case GROUND_WALL_TOP_LEFT:
-    case GROUND_WALL_BOTTOM_LEFT:
-    case GROUND_WALL_BOTTOM_RIGHT:
-    case GROUND_WALL_TOP_RIGHT_WATER:
-    case GROUND_WALL_TOP_LEFT_WATER:
-    case GROUND_WALL_BOTTOM_LEFT_WATER:
-    case GROUND_WALL_BOTTOM_RIGHT_WATER:
-      result = true;
-      break;
-
-    case GROUND_EMPTY:
-    case GROUND_TRAVERSABLE:
-    case GROUND_SHALLOW_WATER:
-    case GROUND_DEEP_WATER:
-    case GROUND_GRASS:
-    case GROUND_HOLE:
-    case GROUND_LAVA:
-    case GROUND_PRICKLE:
-    case GROUND_LADDER:
-    case GROUND_ICE:
-      result = false;
-      break;
-  }
-  return result;
-}
-
-/**
  * \brief Draws the tile on the map.
  */
 void DynamicTile::draw_on_map() {

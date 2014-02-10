@@ -29,9 +29,11 @@ namespace solarus {
  * \param width width of the Wall to create
  * \param height height of the Wall to create
  * \param stops_hero true to make this entity an obstacle for the hero
- * \param stops_enemies true to make this entity an obstacle for the enemies
- * \param stops_npcs true to make this entity an obstacle for the NPCs
- * \param stops_blocks true to make this entity an obstacle for the blocks and statues
+ * \param stops_enemies true to make this entity an obstacle for enemies
+ * \param stops_npcs true to make this entity an obstacle for NPCs
+ * \param stops_blocks true to make this entity an obstacle for blocks
+ * \param stops_projectiles true to make this entity an obstacle for thrown
+ * items, arrows, hookshots and boomerangs.
  */
 Wall::Wall(
     const std::string& name,
@@ -43,15 +45,30 @@ Wall::Wall(
     bool stops_hero,
     bool stops_enemies,
     bool stops_npcs,
-    bool stops_blocks):
+    bool stops_blocks,
+    bool stops_projectiles):
   MapEntity(name, 0, layer, x, y, width, height),
   enabled(true),
   waiting_enabled(false) {
 
-  entity_types_stopped[ENTITY_HERO] = stops_hero;
-  entity_types_stopped[ENTITY_ENEMY] = stops_enemies;
-  entity_types_stopped[ENTITY_NPC] = stops_npcs;
-  entity_types_stopped[ENTITY_BLOCK] = stops_blocks;
+  if (stops_hero) {
+    entity_types_stopped.insert(ENTITY_HERO);
+  }
+  if (stops_enemies) {
+    entity_types_stopped.insert(ENTITY_ENEMY);
+  }
+  if (stops_npcs) {
+    entity_types_stopped.insert(ENTITY_NPC);
+  }
+  if (stops_blocks) {
+    entity_types_stopped.insert(ENTITY_BLOCK);
+  }
+  if (stops_projectiles) {
+    entity_types_stopped.insert(ENTITY_CARRIED_ITEM);
+    entity_types_stopped.insert(ENTITY_ARROW);
+    entity_types_stopped.insert(ENTITY_HOOKSHOT);
+    entity_types_stopped.insert(ENTITY_BOOMERANG);
+  }
 }
 
 /**
@@ -85,9 +102,9 @@ bool Wall::can_be_drawn() const {
  */
 bool Wall::is_obstacle_for(MapEntity& other) {
 
-  std::map<EntityType, bool>::const_iterator it =
+  std::set<EntityType>::const_iterator it =
       entity_types_stopped.find(other.get_type());
-  return it != entity_types_stopped.end() && it->second;
+  return it != entity_types_stopped.end();
 }
 
 }

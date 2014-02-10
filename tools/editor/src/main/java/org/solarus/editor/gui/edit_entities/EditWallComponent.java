@@ -32,6 +32,7 @@ public class EditWallComponent extends EditEntityComponent {
     private JCheckBox stopsEnemiesField;
     private JCheckBox stopsNPCsField;
     private JCheckBox stopsBlocksField;
+    private JCheckBox stopsProjectilesField;
 
     /**
      * Constructor.
@@ -60,8 +61,12 @@ public class EditWallComponent extends EditEntityComponent {
         addField("NPCs", stopsNPCsField);
 
         // blocks
-        stopsBlocksField = new JCheckBox("Obstacle for blocks and statues");
+        stopsBlocksField = new JCheckBox("Obstacle for blocks");
         addField("Blocks", stopsBlocksField);
+
+        // Projectiles.
+        stopsProjectilesField = new JCheckBox("Obstacle for projectiles");
+        addField("Projectiles", stopsProjectilesField);
     }
 
     /**
@@ -75,6 +80,7 @@ public class EditWallComponent extends EditEntityComponent {
         stopsEnemiesField.setSelected(wall.getBooleanProperty("stops_enemies"));
         stopsNPCsField.setSelected(wall.getBooleanProperty("stops_npcs"));
         stopsBlocksField.setSelected(wall.getBooleanProperty("stops_blocks"));
+        stopsProjectilesField.setSelected(wall.getBooleanProperty("stops_projectiles"));
     }
 
     /**
@@ -84,7 +90,11 @@ public class EditWallComponent extends EditEntityComponent {
     protected ActionEditEntitySpecific getSpecificAction() {
 
         return new ActionEditEntitySpecific(entity,
-                stopsHeroField.isSelected() ? 1 : 0, stopsEnemiesField.isSelected() ? 1 : 0,
-                stopsNPCsField.isSelected() ? 1 : 0, stopsBlocksField.isSelected() ? 1 : 0);
+                (stopsHeroField.isSelected() ? 1 : 0),
+                (stopsEnemiesField.isSelected() ? 1 : 0),
+                (stopsNPCsField.isSelected() ? 1 : 0),
+                (stopsBlocksField.isSelected() ? 1 : 0),
+                (stopsProjectilesField.isSelected() ? 1 : 0)
+        );
     }
 }

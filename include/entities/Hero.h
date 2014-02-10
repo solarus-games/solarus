@@ -80,8 +80,8 @@ class Hero: public MapEntity {
      *
      * Functions called when the player goes to another map.
      */
-    void set_map(Map& map);
     void set_map(Map& map, int initial_direction);
+    void notify_added_to_map(Map& map);
     void notify_map_started();
     void notify_tileset_changed();
     void place_on_destination(Map& map, const Rectangle& previous_map_location);

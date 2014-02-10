@@ -531,6 +531,19 @@ Stops the current movement of this map entity if any.
 Events are callback methods automatically called by the engine if you define
 them.
 
+\subsection lua_api_entity_on_created entity:on_created()
+
+Called when this entity has just been created and is being added to the map.
+
+\remark Entities are created while loading the map,
+  or on a map already running.
+  If the map is currently being loaded, then it is not the current map of the
+  game yet.
+  Instead, the current map of the game (as reported by
+  \ref lua_api_game_get_map "game:get_map()") is still the previous map,
+  or even \c nil if this is the first map to be loaded.
+  And the \ref lua_api_hero "hero" is still on the previous map at this point.
+
 \subsection lua_api_entity_on_removed entity:on_removed()
 
 Called when this entity is about to be removed from the map

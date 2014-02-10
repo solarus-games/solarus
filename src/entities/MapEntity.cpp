@@ -317,8 +317,6 @@ bool MapEntity::is_on_map() const {
  * Warning: when this function is called during the initialization of a new map,
  * the current map of the game is still the old one.
  *
- * TODO make this function non-virtual and make a virtual function notify_added_to_map(Map& map).
- *
  * \param map The map.
  */
 void MapEntity::set_map(Map& map) {
@@ -330,6 +328,27 @@ void MapEntity::set_map(Map& map) {
   }
 
   this->ground_below = GROUND_EMPTY;
+
+  notify_added_to_map(map);
+
+  get_lua_context().entity_on_created(*this);
+}
+
+/**
+ * \brief Notifies this entity that it has just been placed on a map.
+ *
+ * You can perform initializations that your entity need to do once the map
+ * is known here.
+ * The entity:on_created() event will be called after this.
+ *
+ * Warning: when this function is called during the initialization of a new
+ * map, the current map of the game is still the old one.
+ * You can can map.is_loaded() to know if the entity is the entity is created
+ * on a map already running or at map creation time.
+ *
+ * \param map The map.
+ */
+void MapEntity::notify_added_to_map(Map& map) {
 }
 
 /**

@@ -69,16 +69,11 @@ EntityType DynamicTile::get_type() const {
 }
 
 /**
- * \brief Sets the map of this entity.
- *
- * Warning: as this function is called when initializing the map,
- * the current map of the game is still the old one.
- *
- * \param map the map
+ * \copydoc MapEntity::notify_added_to_map
  */
-void DynamicTile::set_map(Map &map) {
+void DynamicTile::notify_added_to_map(Map& map) {
 
-  MapEntity::set_map(map);
+  MapEntity::notify_added_to_map(map);
   this->tile_pattern = &map.get_tileset().get_tile_pattern(tile_pattern_id);
 }
 

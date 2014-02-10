@@ -315,7 +315,7 @@ void LuaContext::run_item(EquipmentItem& item) {
 void LuaContext::run_enemy(Enemy& enemy) {
 
   // Compute the file name, depending on enemy's breed.
-  std::string file_name = (std::string) "enemies/" + enemy.get_breed();
+  std::string file_name = std::string("enemies/") + enemy.get_breed();
 
   // Load the enemy's code.
   if (load_file_if_exists(l, file_name)) {
@@ -325,7 +325,6 @@ void LuaContext::run_enemy(Enemy& enemy) {
     call_function(1, 0, file_name.c_str());
 
     entity_on_suspended(enemy, enemy.is_suspended());
-    entity_on_created(enemy);
   }
 
   // TODO parse Lua only once for each breed.
@@ -349,7 +348,7 @@ void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
   }
 
   // Compute the file name depending on the model.
-  std::string file_name = (std::string) "entities/" + model;
+  std::string file_name = std::string("entities/") + model;
 
   // Load the entity's code.
   if (load_file_if_exists(l, file_name)) {
@@ -359,7 +358,6 @@ void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
     call_function(1, 0, file_name.c_str());
 
     entity_on_suspended(custom_entity, custom_entity.is_suspended());
-    entity_on_created(custom_entity);
   }
 
   // TODO parse Lua only once for each model.

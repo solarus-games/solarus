@@ -78,16 +78,11 @@ Teletransporter::~Teletransporter() {
 }
 
 /**
- * \brief Sets the map.
- *
- * Warning: as this function is called when initializing the map,
- * the current map of the game is still the old one.
- *
- * \param map the map
+ * \copydoc MapEntity::notify_added_to_map
  */
-void Teletransporter::set_map(Map& map) {
+void Teletransporter::notify_added_to_map(Map& map) {
 
-  MapEntity::set_map(map);
+  Detector::notify_added_to_map(map);
 
   int x = get_x();
   int y = get_y();

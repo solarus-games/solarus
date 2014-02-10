@@ -74,8 +74,9 @@ class MapEntity: public ExportableToLua {
 
     // adding to a map
     bool is_on_map() const;
-    virtual void set_map(Map& map);
+    void set_map(Map& map);
     Map& get_map() const;
+    virtual void notify_added_to_map(Map& map);
     virtual void notify_map_started();
     virtual void notify_map_opening_transition_finished();
     virtual void notify_tileset_changed();

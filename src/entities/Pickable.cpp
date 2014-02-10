@@ -207,12 +207,11 @@ void Pickable::initialize_sprites() {
 }
 
 /**
- * \brief Notifies this entity that it has just been added to a map.
- * \param map the map
+ * \copydoc MapEntity::notify_added_to_map
  */
-void Pickable::set_map(Map& map) {
+void Pickable::notify_added_to_map(Map& map) {
 
-  MapEntity::set_map(map);
+  Detector::notify_added_to_map(map);
 
   if (map.is_started()) {
     // notify the Lua item
@@ -226,7 +225,7 @@ void Pickable::set_map(Map& map) {
  */
 void Pickable::notify_map_started() {
 
-  MapEntity::notify_map_started();
+  Detector::notify_map_started();
 
   // notify the Lua item.
   get_equipment().get_item(treasure.get_item_name()).notify_pickable_appeared(*this);
@@ -399,7 +398,7 @@ void Pickable::set_blinking(bool blinking) {
  */
 void Pickable::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended); // suspend the animation and the movement
+  Detector::set_suspended(suspended); // suspend the animation and the movement
 
   if (shadow_sprite != NULL) {
     shadow_sprite->set_suspended(suspended);
@@ -436,7 +435,7 @@ void Pickable::set_suspended(bool suspended) {
 void Pickable::update() {
 
   // update the animations and the movement
-  MapEntity::update();
+  Detector::update();
 
   // update the shadow
   if (shadow_sprite != NULL) {
@@ -505,7 +504,7 @@ void Pickable::draw_on_map() {
   }
 
   // draw the sprite
-  MapEntity::draw_on_map();
+  Detector::draw_on_map();
 }
 
 }

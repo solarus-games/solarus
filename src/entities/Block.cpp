@@ -151,16 +151,12 @@ bool Block::is_destructible_obstacle(Destructible& destructible) {
 }
 
 /**
- * \brief Sets the map.
- *
- * Warning: when this function is called during the map initialization,
- * the current map of the game is still the old one.
- *
- * \param map The map.
+ * \copydoc MapEntity::notify_added_to_map
  */
-void Block::set_map(Map& map) {
+void Block::notify_added_to_map(Map& map) {
 
-  Detector::set_map(map);
+  Detector::notify_added_to_map(map);
+
   if (map.is_loaded()) {
     // We are not during the map initialization phase.
     check_collision_with_detectors(false);

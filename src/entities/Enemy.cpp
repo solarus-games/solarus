@@ -221,26 +221,14 @@ void Enemy::initialize() {
 }
 
 /**
- * \brief Sets the map.
- *
- * Warning: when this function is called during the map initialization,
- * the current map of the game is still the old one.
- *
- * \param map The map.
+ * \copydoc MapEntity::notify_added_to_map
  */
-void Enemy::set_map(Map& map) {
+void Enemy::notify_added_to_map(Map& map) {
 
-  Detector::set_map(map);
+  Detector::notify_added_to_map(map);
 
-  if (is_enabled()) {
-    initialize();
-    enable_pixel_collisions();
-  }
-
-  if (map.is_loaded()) {
-    // We are not during the map initialization phase.
-    restart();
-  }
+  initialize();
+  enable_pixel_collisions();
 }
 
 /**
@@ -249,6 +237,8 @@ void Enemy::set_map(Map& map) {
 void Enemy::notify_map_started() {
 
   MapEntity::notify_map_started();
+
+  restart();
 
   // give the sprite their initial direction
   int initial_direction = get_direction();
@@ -929,9 +919,6 @@ void Enemy::notify_enabled(bool enabled) {
   Detector::notify_enabled(enabled);
 
   if (enabled) {
-    if (!initialized) {
-      initialize();
-    }
     restart();
     get_lua_context().entity_on_enabled(*this);
   }

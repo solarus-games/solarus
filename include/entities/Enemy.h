@@ -96,7 +96,7 @@ class Enemy: public Detector {
     EntityType get_type() const;
     bool is_ground_observer() const;
 
-    void set_map(Map& map);
+    void notify_added_to_map(Map& map);
     void notify_map_started();
     void notify_map_opening_transition_finished();
     Rank get_rank() const;

@@ -534,17 +534,11 @@ bool Hero::is_shadow_visible() const {
 }
 
 /**
- * \brief Sets the hero's current map.
- *
- * This function is called when the map is changed.
- * Warning: as this function is called when initializing the map,
- * the current map of the game is still the old one.
- *
- * \param map the map
+ * \copydoc Hero::notify_added_to_map
  */
-void Hero::set_map(Map& map) {
+void Hero::notify_added_to_map(Map& map) {
 
-  MapEntity::set_map(map);
+  MapEntity::notify_added_to_map(map);
 
   last_solid_ground_coords.set_xy(-1, -1);
   target_solid_ground_coords.set_xy(-1, -1);
@@ -587,7 +581,7 @@ void Hero::set_map(Map& map, int initial_direction) {
     sprites->set_animation_direction(initial_direction);
   }
 
-  set_map(map);
+  MapEntity::set_map(map);
 }
 
 /**
@@ -615,7 +609,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     if (map.get_ground(LAYER_INTERMEDIATE, x, y) == GROUND_EMPTY) {
       layer = LAYER_LOW;
     }
-    set_map(map);
+    MapEntity::set_map(map);
     set_xy(x, y);
     map.get_entities().set_entity_layer(*this, layer);
     last_solid_ground_coords.set_xy(x, y);
@@ -630,7 +624,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     if (side != -1) {
 
       // go to a side of the other map
-      set_map(map);
+      MapEntity::set_map(map);
 
       switch (side) {
 

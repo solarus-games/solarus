@@ -1184,12 +1184,16 @@ int LuaContext::entity_api_test_obstacles(lua_State* l) {
   MapEntity& entity = check_entity(l, 1);
   int dx = luaL_checkint(l, 2);
   int dy = luaL_checkint(l, 3);
+  Layer layer = entity.get_layer();
+  if (lua_gettop(l) >= 4) {
+    layer = LuaTools::check_layer(l, 4);
+  }
 
   Rectangle bounding_box = entity.get_bounding_box();
   bounding_box.add_xy(dx, dy);
 
   lua_pushboolean(l, entity.get_map().test_collision_with_obstacles(
-      entity.get_layer(), bounding_box, entity));
+      layer, bounding_box, entity));
   return 1;
 }
 

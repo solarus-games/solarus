@@ -488,7 +488,7 @@ You can use this function to make sure that an
 - \c other_entity (entity): Another entity.
 - Return value (boolean): \c true if both entities are in the same region.
 
-\subsection lua_api_entity_test_obstacles entity:test_obstacles(dx, dy)
+\subsection lua_api_entity_test_obstacles entity:test_obstacles(dx, dy, [layer])
 
 Returns whether there would be a collision with obstacles
 if this map entity was translated.
@@ -496,6 +496,8 @@ if this map entity was translated.
   (\c 0 means the current X position).
 - \c dx (number): Y component of the translation in pixels
   (\c 0 means the current Y position).
+- \c layer (number, optional): Layer to test.
+  No value means the current layer.
 - Return value (boolean): \c true if there would be a collision in this
 position.
 

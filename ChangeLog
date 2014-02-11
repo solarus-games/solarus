@@ -105,6 +105,7 @@ Changes that do not introduce incompatibilities:
 * Entity names are now auto-incremented to simplify their creation.
 * New method entity:get_game() (#363).
 * New methods entity:bring_to_front() and entity:bring_to_back() (#273).
+* entity:test_obstacles() now takes an optional layer parameter.
 * New methods enemy:get_attack_consequence(), get_attack_consequence_sprite().
 * The event entity:on_created() is now called for all types of entities.
 * New event enemy:on_hurt_by_sword() to customize the sword strength (#426).

@@ -17,7 +17,7 @@
 package org.solarus.editor.map_editor_actions;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 
@@ -26,7 +26,7 @@ import org.solarus.editor.entities.*;
  */
 public class ActionChangeLayer extends MapEditorAction {
 
-    private LinkedList<MapEntity> entities;
+    private List<MapEntity> entities;
     private Layer[] layersBefore; // the layers before the action can be different
     private Layer layerAfter;
 
@@ -38,12 +38,12 @@ public class ActionChangeLayer extends MapEditorAction {
      */
     public ActionChangeLayer(Map map, Collection<MapEntity> entities, Layer layer) {
         super(map);
-        this.entities = new LinkedList<MapEntity>(entities);
+        this.entities = map.getSortedEntities(entities);
         this.layerAfter = layer;
 
-        this.layersBefore = new Layer[entities.size()];
+        this.layersBefore = new Layer[this.entities.size()];
         int i = 0;
-        for (MapEntity entity: entities) {
+        for (MapEntity entity: this.entities) {
             this.layersBefore[i] = entity.getLayer();
             i++;
         }

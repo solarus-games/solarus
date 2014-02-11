@@ -17,7 +17,7 @@
 package org.solarus.editor.map_editor_actions;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 import org.solarus.editor.Map;
 import org.solarus.editor.MapEditorAction;
 import org.solarus.editor.QuestEditorException;
@@ -29,7 +29,7 @@ import org.solarus.editor.entities.MapEntity;
  */
 public class ActionUpDownLayer extends MapEditorAction {
 
-    private LinkedList<MapEntity> entities;
+    private List<MapEntity> entities;
     private Layer[] layersBefore;
     private Layer[] layersAfter;
 
@@ -41,13 +41,13 @@ public class ActionUpDownLayer extends MapEditorAction {
      */
     public ActionUpDownLayer(Map map, Collection<MapEntity> entities, boolean up) {
         super(map);
-        this.entities = new LinkedList<MapEntity>(entities);
+        this.entities = map.getSortedEntities(entities);
 
         this.layersAfter = new Layer[entities.size()];
         this.layersBefore = new Layer[entities.size()];
 
         int i = 0;
-        for (MapEntity entity : entities) {
+        for (MapEntity entity : this.entities) {
             this.layersBefore[i] = entity.getLayer();
             this.layersAfter[i] = getLayerAfter(entity.getLayer(), up);
             i++;

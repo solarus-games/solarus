@@ -535,16 +535,7 @@ them.
 
 \subsection lua_api_entity_on_created entity:on_created()
 
-Called when this entity has just been created and is being added to the map.
-
-\remark Entities are created while loading the map,
-  or on a map already running.
-  If the map is currently being loaded, then it is not the current map of the
-  game yet.
-  Instead, the current map of the game (as reported by
-  \ref lua_api_game_get_map "game:get_map()") is still the previous map,
-  or even \c nil if this is the first map to be loaded.
-  And the \ref lua_api_hero "hero" is still on the previous map at this point.
+Called when this entity has just been created on the map.
 
 \subsection lua_api_entity_on_removed entity:on_removed()
 

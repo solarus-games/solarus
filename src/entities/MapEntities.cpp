@@ -1042,7 +1042,7 @@ void MapEntities::remove_boomerang() {
 }
 
 /**
- * \brief Removes any boomerang from the map.
+ * \brief Removes any arrow from the map.
  */
 void MapEntities::remove_arrows() {
 

@@ -576,7 +576,7 @@ void Hero::notify_tileset_changed() {
  */
 void Hero::set_map(Map& map, int initial_direction) {
 
-  // take the specified direction
+  // Take the specified direction.
   if (initial_direction != -1) {
     sprites->set_animation_direction(initial_direction);
   }
@@ -585,7 +585,7 @@ void Hero::set_map(Map& map, int initial_direction) {
   target_solid_ground_coords.set_xy(-1, -1);
   get_sprites().set_clipping_rectangle();
 
-  state->set_map(get_map());
+  state->set_map(map);
 
   MapEntity::set_map(map);
 }
@@ -615,7 +615,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     if (map.get_ground(LAYER_INTERMEDIATE, x, y) == GROUND_EMPTY) {
       layer = LAYER_LOW;
     }
-    MapEntity::set_map(map);
+    set_map(map, -1);
     set_xy(x, y);
     map.get_entities().set_entity_layer(*this, layer);
     last_solid_ground_coords.set_xy(x, y);
@@ -630,7 +630,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
     if (side != -1) {
 
       // go to a side of the other map
-      MapEntity::set_map(map);
+      set_map(map, -1);
 
       switch (side) {
 

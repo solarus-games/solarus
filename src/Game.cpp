@@ -489,6 +489,7 @@ void Game::update_transitions() {
 
   // if a map has just been set as the current map, start it and play the in transition
   if (started && !current_map->is_started()) {
+    Debug::check_assertion(current_map->is_loaded(), "This map is not loaded");
     transition = Transition::create(
         transition_style,
         Transition::TRANSITION_OPENING,

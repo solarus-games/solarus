@@ -323,8 +323,6 @@ void LuaContext::run_enemy(Enemy& enemy) {
     // Run it with the enemy userdata as parameter.
     push_enemy(l, enemy);
     call_function(1, 0, file_name.c_str());
-
-    entity_on_suspended(enemy, enemy.is_suspended());
   }
 
   // TODO parse Lua only once for each breed.
@@ -356,8 +354,6 @@ void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
     // Run it with the entity userdata as parameter.
     push_custom_entity(l, custom_entity);
     call_function(1, 0, file_name.c_str());
-
-    entity_on_suspended(custom_entity, custom_entity.is_suspended());
   }
 
   // TODO parse Lua only once for each model.

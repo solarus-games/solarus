@@ -77,6 +77,7 @@ Changes that introduce incompatibilities:
 * map:create_shop_item() is replaced by map:create_shop_treasure().
 * map:create_teletransporter(): the transition is now a string (#402).
 * The built-in strength of the sword has changed (#426).
+* enemy:on_created() is now called even if the enemy is disabled.
 * enemy:on_hurt() no longer takes a life_lost parameter (#426).
 * The built-in defense of the tunic has changed (#428).
 * enemy:get/set_magic_damage() no longer exists (#428).

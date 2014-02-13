@@ -1128,8 +1128,10 @@ const std::vector<Sprite*>& MapEntity::get_sprites() {
  * \param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
  * \return the sprite created
  */
-Sprite& MapEntity::create_sprite(const std::string& animation_set_id,
-    bool enable_pixel_collisions) {
+Sprite& MapEntity::create_sprite(
+    const std::string& animation_set_id,
+    bool enable_pixel_collisions
+) {
 
   Sprite* sprite = new Sprite(animation_set_id);
   RefCountable::ref(sprite);
@@ -1467,6 +1469,10 @@ const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
  */
 void MapEntity::set_enabled(bool enabled) {
 
+  if (this->enabled == enabled) {
+    return;
+  }
+
   if (enabled) {
     // enable the entity as soon as possible
     this->waiting_enabled = true;
@@ -1475,20 +1481,25 @@ void MapEntity::set_enabled(bool enabled) {
     this->enabled = false;
     this->waiting_enabled = false;
 
-    if (get_movement() != NULL) {
-      get_movement()->set_suspended(suspended || !enabled);
-    }
+    if (!is_suspended()) {
+      // Disabling an entity that is not suspended:
+      // suspend its movement, its sprites and its timers.
+      if (get_movement() != NULL) {
+        get_movement()->set_suspended(true);
+      }
 
-    std::vector<Sprite*>::iterator it;
-    for (it = sprites.begin(); it != sprites.end(); it++) {
+      std::vector<Sprite*>::iterator it;
+      for (it = sprites.begin(); it != sprites.end(); it++) {
 
-      Sprite& sprite = *(*it);
-      sprite.set_suspended(suspended || !enabled);
-    }
+        Sprite& sprite = *(*it);
+        sprite.set_suspended(true);
+      }
 
-    if (is_on_map()) {
-      notify_enabled(enabled);
+      if (is_on_map()) {
+        get_lua_context().set_entity_timers_suspended(*this, true);
+      }
     }
+    notify_enabled(false);
   }
 }
 
@@ -1497,6 +1508,10 @@ void MapEntity::set_enabled(bool enabled) {
  * \param enabled \c true if the entity is now enabled.
  */
 void MapEntity::notify_enabled(bool enabled) {
+
+  if (!is_on_map()) {
+    return;
+  }
 
   update_ground_observers();
   update_ground_below();
@@ -2257,9 +2272,10 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 /**
  * \brief Updates the entity.
  *
- * This function is called repeatedly by the map. By default, it updates the position
- * of the entity according to its movement (if any), and it updates the sprites frames
- * if there are sprites.
+ * This function is called repeatedly by the map.
+ * By default, it updates the position
+ * of the entity according to its movement (if any),
+ * and it updates the sprites frames if there are sprites.
  * Redefine it in subclasses for the entities that should be updated
  * for other treatments but don't forget to call this method
  * to handle the movement and the sprites.
@@ -2279,15 +2295,23 @@ void MapEntity::update() {
       this->waiting_enabled = false;
       notify_enabled(true);
 
-      if (get_movement() != NULL) {
-        get_movement()->set_suspended(suspended || !enabled);
-      }
+      if (!is_suspended()) {
+        // Enabling an entity that is not suspended:
+        // unsuspend its movement, its sprites and its timers.
+        if (get_movement() != NULL) {
+          get_movement()->set_suspended(false);
+        }
 
-      std::vector<Sprite*>::iterator it;
-      for (it = sprites.begin(); it != sprites.end(); it++) {
+        std::vector<Sprite*>::iterator it;
+        for (it = sprites.begin(); it != sprites.end(); it++) {
 
-        Sprite& sprite = *(*it);
-        sprite.set_suspended(suspended || !enabled);
+          Sprite& sprite = *(*it);
+          sprite.set_suspended(false);
+        }
+
+        if (is_on_map()) {
+          get_lua_context().set_entity_timers_suspended(*this, false);
+        }
       }
     }
   }

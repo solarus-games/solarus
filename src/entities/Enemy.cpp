@@ -233,7 +233,9 @@ void Enemy::notify_created() {
     (*it)->set_current_direction(initial_direction);
   }
 
-  restart();
+  if (is_enabled()) {
+    restart();
+  }
 }
 
 /**
@@ -905,6 +907,10 @@ void Enemy::draw_on_map() {
 void Enemy::notify_enabled(bool enabled) {
 
   Detector::notify_enabled(enabled);
+
+  if (!is_on_map()) {
+    return;
+  }
 
   if (enabled) {
     restart();

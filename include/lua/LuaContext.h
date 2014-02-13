@@ -133,6 +133,7 @@ class LuaContext {
     void destroy_timers();
     void update_timers();
     void notify_timers_map_suspended(bool suspended);
+    void set_entity_timers_suspended(MapEntity& entity, bool suspended);
     void do_timer_callback(Timer& timer);
 
     // Menus.

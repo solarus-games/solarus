@@ -1039,6 +1039,9 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
   const std::string& animation_set_id = luaL_checkstring(l, 2);
 
   Sprite& sprite = entity.create_sprite(animation_set_id, true);
+  if (entity.is_suspended()) {
+    sprite.set_suspended(true);
+  }
 
   push_sprite(l, sprite);
   return 1;
@@ -3756,7 +3759,8 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
       x,
       y,
       direction,
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable)
+  );
 
   if (entity == NULL) {
     // The enemy is saved as already dead.
@@ -3764,12 +3768,11 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     return 1;
   }
 
+  // Forward some properties to the new enemy.
   entity->set_optimization_distance(enemy.get_optimization_distance());
-  map.get_entities().add_entity(entity);
+  entity->set_enabled(enemy.is_enabled());
 
-  if (entity->get_type() == ENTITY_ENEMY) {  // Because it may also be a pickable treasure.
-    (static_cast<Enemy*>(entity))->restart();
-  }
+  map.get_entities().add_entity(entity);
 
   push_entity(l, *entity);
   return 1;

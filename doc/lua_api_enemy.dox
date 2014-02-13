@@ -593,6 +593,14 @@ and the layer is the one of the current enemy by default.
   \ref lua_api_pickable "pickable treasure" is created and returned.
   Otherwise, \c nil is returned.
 
+\remark If the first enemy is
+  \ref lua_api_entity_is_enabled "disabled" while calling this function,
+  which is often the case for a boss,
+  then the newly created enemy is also initially disabled.
+  Don't forget to enable it when your first enemy gets enabled
+  (you can do this from the
+  \ref lua_api_enemy_on_enabled "enemy:on_enabled()" event.
+
 \section lua_api_enemy_inherited_events Events inherited from map entity
 
 Events are callback methods automatically called by the engine if you define

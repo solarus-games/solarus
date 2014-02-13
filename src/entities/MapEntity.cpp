@@ -344,6 +344,10 @@ void MapEntity::set_map(Map& map) {
  */
 void MapEntity::notify_map_started() {
 
+  if (!initialized) {
+    // The map is now ready: we can finish the initialization of the entity.
+    finish_initialization();
+  }
 }
 
 /**
@@ -358,6 +362,8 @@ void MapEntity::finish_initialization() {
   Debug::check_assertion(!initialized, "Entity is already initialized");
   Debug::check_assertion(is_on_map(), "Missing map");
   Debug::check_assertion(get_map().is_loaded(), "Map is not ready");
+
+  initialized = true;
 
   notify_creating();
   get_lua_context().entity_on_created(*this);

@@ -42,21 +42,21 @@ class DynamicTile: public MapEntity {
         int y,
         int width,
         int height,
+        Tileset& tileset,
         int tile_pattern_id,
-        bool visible
+        bool enabled
     );
     ~DynamicTile();
 
     EntityType get_type() const;
-    void notify_creating();
     bool is_ground_modifier() const;
     Ground get_modified_ground() const;
     void draw_on_map();
 
   private:
 
-    int tile_pattern_id;       /**< id of the tile pattern */
-    TilePattern* tile_pattern; /**< pattern of the tile */
+    int tile_pattern_id;               /**< Id of the tile pattern. */
+    TilePattern& tile_pattern;         /**< Pattern of the tile. */
 
 };
 

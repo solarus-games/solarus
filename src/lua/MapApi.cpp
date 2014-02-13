@@ -915,6 +915,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
           current_y,
           pattern.get_width(),
           pattern.get_height(),
+          map.get_tileset(),
           tile_pattern_id);
       map.get_entities().add_entity(entity);
     }
@@ -1413,6 +1414,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
       y,
       width,
       height,
+      map.get_tileset(),
       tile_pattern_id,
       enabled_at_start);
   map.get_entities().add_entity(entity);

@@ -33,8 +33,9 @@ namespace solarus {
  * \param y y position of the tile on the map
  * \param width width of the tile (the pattern can be repeated)
  * \param height height of the tile (the pattern can be repeated)
+ * \param tileset The tileset to use.
  * \param tile_pattern_id id of the tile pattern in the tileset
- * \param enabled true to make the tile active on the map
+ * \param enabled true to make the tile initially enabled.
  */
 DynamicTile::DynamicTile(
     const std::string& name,
@@ -43,11 +44,12 @@ DynamicTile::DynamicTile(
     int y,
     int width,
     int height,
+    Tileset& tileset,
     int tile_pattern_id,
     bool enabled):
   MapEntity(name, 0, layer, x, y, width, height),
   tile_pattern_id(tile_pattern_id),
-  tile_pattern(NULL) {
+  tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
 
   set_enabled(enabled);
 }
@@ -69,15 +71,6 @@ EntityType DynamicTile::get_type() const {
 }
 
 /**
- * \copydoc MapEntity::notify_creating
- */
-void DynamicTile::notify_creating() {
-
-  MapEntity::notify_creating();
-  this->tile_pattern = &get_map().get_tileset().get_tile_pattern(tile_pattern_id);
-}
-
-/**
  * \brief Returns whether entities of this type can override the ground
  * of where they are placed.
  * \return \c true if this type of entity can change the ground.
@@ -92,7 +85,7 @@ bool DynamicTile::is_ground_modifier() const {
  * \return The ground defined by this entity.
  */
 Ground DynamicTile::get_modified_ground() const {
-  return tile_pattern->get_ground();
+  return tile_pattern.get_ground();
 }
 
 /**
@@ -111,7 +104,7 @@ void DynamicTile::draw_on_map() {
       get_top_left_y() - camera_position.get_y(),
       get_width(), get_height());
 
-  tile_pattern->fill_surface(get_map().get_visible_surface(), dst_position,
+  tile_pattern.fill_surface(get_map().get_visible_surface(), dst_position,
       get_map().get_tileset(), camera_position);
 }
 

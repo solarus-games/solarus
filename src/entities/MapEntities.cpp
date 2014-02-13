@@ -408,7 +408,6 @@ void MapEntities::add_tile(Tile* tile) {
 
   // Add the tile to the map.
   non_animated_regions[layer]->add_tile(tile);
-  tile->set_map(map);
 
   const TilePattern& pattern = tile->get_tile_pattern();
   Debug::check_assertion(

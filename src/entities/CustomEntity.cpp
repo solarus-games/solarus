@@ -1143,11 +1143,11 @@ void CustomEntity::set_modified_ground(Ground modified_ground) {
 }
 
 /**
- * \copydoc MapEntity::notify_added_to_map
+ * \copydoc MapEntity::notify_creating
  */
-void CustomEntity::notify_added_to_map(Map& map) {
+void CustomEntity::notify_creating() {
 
-  Detector::notify_added_to_map(map);
+  Detector::notify_creating();
 
   ground_modifier = false;
   get_lua_context().run_custom_entity(*this);

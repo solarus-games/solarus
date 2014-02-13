@@ -51,7 +51,7 @@ class Block: public Detector {
     bool is_hero_obstacle(Hero& hero);
     bool is_enemy_obstacle(Enemy& enemy);
     bool is_destructible_obstacle(Destructible& destructible);
-    void notify_added_to_map(Map& map);
+    void notify_created();
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_action_command_pressed();

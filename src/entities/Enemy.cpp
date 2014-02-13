@@ -102,7 +102,6 @@ Enemy::Enemy(
   savegame_variable(),
   traversable(true),
   obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
-  initialized(false),
   being_hurt(false),
   stop_hurt_date(0),
   invulnerable(false),
@@ -210,42 +209,31 @@ bool Enemy::is_ground_observer() const {
 }
 
 /**
- * \brief Initializes the enemy.
+ * \copydoc MapEntity::notify_creating
  */
-void Enemy::initialize() {
+void Enemy::notify_creating() {
 
-  if (!initialized) {
-    initialized = true;
-    get_lua_context().run_enemy(*this);
-  }
+  get_lua_context().run_enemy(*this);
 }
 
 /**
- * \copydoc MapEntity::notify_added_to_map
+ * \copydoc MapEntity::notify_created
  */
-void Enemy::notify_added_to_map(Map& map) {
+void Enemy::notify_created() {
 
-  Detector::notify_added_to_map(map);
+  Detector::notify_created();
 
-  initialize();
+  // At this point, enemy:on_created() was called.
   enable_pixel_collisions();
-}
 
-/**
- * \brief Notifies this entity that its map has just become active.
- */
-void Enemy::notify_map_started() {
-
-  MapEntity::notify_map_started();
-
-  restart();
-
-  // give the sprite their initial direction
+  // Give sprites their initial direction.
   int initial_direction = get_direction();
   std::vector<Sprite*>::const_iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     (*it)->set_current_direction(initial_direction);
   }
+
+  restart();
 }
 
 /**

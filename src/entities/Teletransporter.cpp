@@ -78,11 +78,11 @@ Teletransporter::~Teletransporter() {
 }
 
 /**
- * \copydoc MapEntity::notify_added_to_map
+ * \copydoc MapEntity::notify_creating
  */
-void Teletransporter::notify_added_to_map(Map& map) {
+void Teletransporter::notify_creating() {
 
-  Detector::notify_added_to_map(map);
+  Detector::notify_creating();
 
   int x = get_x();
   int y = get_y();
@@ -92,13 +92,13 @@ void Teletransporter::notify_added_to_map(Map& map) {
   if (get_width() == 16 && x == -16) {
     destination_side = 0;
   }
-  else if (get_width() == 16 && x == map.get_width()) {
+  else if (get_width() == 16 && x == get_map().get_width()) {
     destination_side = 2;
   }
   else if (get_height() == 16 && y == -16) {
     destination_side = 3;
   }
-  else if (get_height() == 16 && y == map.get_height()) {
+  else if (get_height() == 16 && y == get_map().get_height()) {
     destination_side = 1;
   }
 

@@ -49,7 +49,7 @@ class Teletransporter: public Detector {
     ~Teletransporter();
 
     EntityType get_type() const;
-    void notify_added_to_map(Map& map);
+    void notify_creating();
 
     const std::string& get_sound_id() const;
     void set_sound_id(const std::string& sound_id);

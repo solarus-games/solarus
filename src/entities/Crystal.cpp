@@ -65,11 +65,11 @@ EntityType Crystal::get_type() const {
 }
 
 /**
- * \brief Notifies this entity that its map has just become active.
+ * \copydoc MapEntity::notify_creating
  */
-void Crystal::notify_map_started() {
+void Crystal::notify_creating() {
 
-  Detector::notify_map_started();
+  Detector::notify_creating();
 
   bool state = get_game().get_crystal_state();
   if (state != this->state) {

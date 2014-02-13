@@ -69,12 +69,12 @@ EntityType DynamicTile::get_type() const {
 }
 
 /**
- * \copydoc MapEntity::notify_added_to_map
+ * \copydoc MapEntity::notify_creating
  */
-void DynamicTile::notify_added_to_map(Map& map) {
+void DynamicTile::notify_creating() {
 
-  MapEntity::notify_added_to_map(map);
-  this->tile_pattern = &map.get_tileset().get_tile_pattern(tile_pattern_id);
+  MapEntity::notify_creating();
+  this->tile_pattern = &get_map().get_tileset().get_tile_pattern(tile_pattern_id);
 }
 
 /**

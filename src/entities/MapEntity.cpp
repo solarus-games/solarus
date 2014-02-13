@@ -76,6 +76,7 @@ MapEntity::MapEntity(
   movement(NULL),
   movement_events_enabled(true),
   facing_entity(NULL),
+  initialized(false),
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
@@ -329,32 +330,64 @@ void MapEntity::set_map(Map& map) {
 
   this->ground_below = GROUND_EMPTY;
 
-  notify_added_to_map(map);
-
-  get_lua_context().entity_on_created(*this);
+  if (!initialized && map.is_loaded()) {
+    // The entity is being created on a map already running.
+    // In this case, we are ready to finish the initialization right now.
+    finish_initialization();
+  }
 }
 
 /**
- * \brief Notifies this entity that it has just been placed on a map.
+ * \brief Notifies this entity that its map has just started.
  *
- * You can perform initializations that your entity need to do once the map
- * is known here.
- * The entity:on_created() event will be called after this.
- *
- * Warning: when this function is called during the initialization of a new
- * map, the current map of the game is still the old one.
- * You can can map.is_loaded() to know if the entity is the entity is created
- * on a map already running or at map creation time.
- *
- * \param map The map.
- */
-void MapEntity::notify_added_to_map(Map& map) {
-}
-
-/**
- * \brief Notifies this entity that its map has just become active.
+ * The map was being loaded and is now ready.
  */
 void MapEntity::notify_map_started() {
+
+}
+
+/**
+ * \brief Finishes the initialization of this entity once the map is loaded.
+ *
+ * This function must be called once the map is ready.
+ * It calls notify_creating(), then the Lua event entity:on_created(),
+ * and then notify_created().
+ */
+void MapEntity::finish_initialization() {
+
+  Debug::check_assertion(!initialized, "Entity is already initialized");
+  Debug::check_assertion(is_on_map(), "Missing map");
+  Debug::check_assertion(get_map().is_loaded(), "Map is not ready");
+
+  notify_creating();
+  get_lua_context().entity_on_created(*this);
+  notify_created();
+}
+
+/**
+ * \brief Notifies this entity that it is being created on a map.
+ *
+ * At this point, the map is already loaded and running,
+ * including if the entity was created from the map data file.
+ * Here, you can perform initializations that your entity need to do once the
+ * map is known and running.
+ * The entity:on_created() event will be called after this.
+ */
+void MapEntity::notify_creating() {
+
+}
+
+/**
+ * \brief Notifies this entity that it has just been created on a map.
+ *
+ * At this point, the map is already loaded and running,
+ * including if the entity was created from the map data file.
+ * The entity:on_created() event has just been called.
+ * You can redefine this function to perform additional initializations
+ * after entity:on_created().
+ */
+void MapEntity::notify_created() {
+
 }
 
 /**

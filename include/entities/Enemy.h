@@ -96,8 +96,8 @@ class Enemy: public Detector {
     EntityType get_type() const;
     bool is_ground_observer() const;
 
-    void notify_added_to_map(Map& map);
-    void notify_map_started();
+    void notify_creating();
+    void notify_created();
     void notify_map_opening_transition_finished();
     Rank get_rank() const;
 
@@ -203,7 +203,6 @@ class Enemy: public Detector {
         int y,
         const std::string& breed,
         const Treasure& treasure);
-    void initialize();
 
     // hurt the enemy
     void play_hurt_sound();
@@ -241,7 +240,6 @@ class Enemy: public Detector {
     ObstacleBehavior obstacle_behavior; /**< behavior with obstacles */
 
     // enemy state
-    bool initialized;                  /**< indicates that the enemy's script is loaded */
     bool being_hurt;                   /**< indicates that the enemy is being hurt */
     uint32_t stop_hurt_date;           /**< date when the enemy stops being hurt */
     bool invulnerable;                 /**< indicates that the enemy cannot be hurt for now */

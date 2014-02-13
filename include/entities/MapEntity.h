@@ -76,8 +76,9 @@ class MapEntity: public ExportableToLua {
     bool is_on_map() const;
     void set_map(Map& map);
     Map& get_map() const;
-    virtual void notify_added_to_map(Map& map);
     virtual void notify_map_started();
+    virtual void notify_creating();
+    virtual void notify_created();
     virtual void notify_map_opening_transition_finished();
     virtual void notify_tileset_changed();
     Game& get_game();
@@ -279,9 +280,6 @@ class MapEntity: public ExportableToLua {
 
     uint32_t get_when_suspended() const;
 
-    void clear_old_movements();
-    void clear_old_sprites();
-
     void set_direction(int direction);
 
     void update_ground_observers();
@@ -303,6 +301,10 @@ class MapEntity: public ExportableToLua {
     // No copy constructor or assignment operator.
     MapEntity(const MapEntity& other);
     MapEntity& operator=(const MapEntity& other);
+
+    void finish_initialization();
+    void clear_old_movements();
+    void clear_old_sprites();
 
     MainLoop* main_loop;                        /**< The Solarus main loop. */
     Map* map;                                   /**< The map where this entity is, or NULL
@@ -348,6 +350,7 @@ class MapEntity: public ExportableToLua {
     Detector* facing_entity;                    /**< the detector in front of this entity (if any) */
 
     // entity state
+    bool initialized;                           /**< Whether all initializations were done. */
     bool being_removed;                         /**< indicates that the entity is not valid anymore because it is about to be removed */
     bool enabled;                               /**< indicates that the entity is enabled
                                                  * (if not, it will not be displayed and collisions will not be notified) */

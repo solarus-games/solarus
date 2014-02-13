@@ -151,17 +151,14 @@ bool Block::is_destructible_obstacle(Destructible& destructible) {
 }
 
 /**
- * \copydoc MapEntity::notify_added_to_map
+ * \copydoc MapEntity::notify_created
  */
-void Block::notify_added_to_map(Map& map) {
+void Block::notify_created() {
 
-  Detector::notify_added_to_map(map);
+  Detector::notify_created();
 
-  if (map.is_loaded()) {
-    // We are not during the map initialization phase.
-    check_collision_with_detectors(false);
-    update_ground_below();
-  }
+  check_collision_with_detectors(false);
+  update_ground_below();
 }
 
 /**

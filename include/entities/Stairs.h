@@ -78,7 +78,7 @@ class Stairs: public Detector {
     bool can_change_ground() const;
     Ground get_ground() const;
 
-    void notify_map_started();
+    void notify_creating();
     bool is_inside_floor() const;
     bool has_layer_independent_collisions() const;
     bool is_sword_ignored() const;

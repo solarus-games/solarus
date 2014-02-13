@@ -45,7 +45,7 @@ class Tile: public MapEntity {
     ~Tile();
 
     EntityType get_type() const;
-    void notify_added_to_map(Map& map);
+    void notify_creating();
     void draw_on_map();
     void draw(Surface& dst_surface, const Rectangle& viewport);
     TilePattern& get_tile_pattern();

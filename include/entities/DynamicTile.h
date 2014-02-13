@@ -48,7 +48,7 @@ class DynamicTile: public MapEntity {
     ~DynamicTile();
 
     EntityType get_type() const;
-    void notify_added_to_map(Map& map);
+    void notify_creating();
     bool is_ground_modifier() const;
     Ground get_modified_ground() const;
     void draw_on_map();

@@ -534,26 +534,34 @@ bool Hero::is_shadow_visible() const {
 }
 
 /**
- * \copydoc Hero::notify_added_to_map
+ * \copydoc MapEntity::notify_creating
  */
-void Hero::notify_added_to_map(Map& map) {
+void Hero::notify_creating() {
 
-  MapEntity::notify_added_to_map(map);
+  MapEntity::notify_creating();
 
   last_solid_ground_coords.set_xy(-1, -1);
   target_solid_ground_coords.set_xy(-1, -1);
   get_sprites().set_clipping_rectangle();
 
-  state->set_map(map);
+  // At this point the map is known and loaded. Notify the state.
+  state->set_map(get_map());
 }
 
 /**
- * \brief Notifies this entity that its map has just become active.
+ * \copydoc MapEntity::notify_map_started
  */
 void Hero::notify_map_started() {
 
   MapEntity::notify_map_started();
   get_sprites().notify_map_started();
+
+  last_solid_ground_coords.set_xy(-1, -1);
+  target_solid_ground_coords.set_xy(-1, -1);
+  get_sprites().set_clipping_rectangle();
+
+  // At this point the map is known and loaded. Notify the state.
+  state->set_map(get_map());
 }
 
 /**

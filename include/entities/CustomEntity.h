@@ -52,7 +52,7 @@ class CustomEntity: public Detector {
     const std::string& get_model() const;
 
     // Game loop.
-    void notify_added_to_map(Map& map);
+    void notify_creating();
     void set_suspended(bool suspended);
     void notify_enabled(bool enabled);
     void update();

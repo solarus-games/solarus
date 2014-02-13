@@ -42,8 +42,7 @@ class Pickable: public Detector {
     EntityType get_type() const;
     bool can_be_obstacle() const;
 
-    void notify_added_to_map(Map& map);
-    void notify_map_started();
+    void notify_created();
 
     // properties
     bool is_falling();

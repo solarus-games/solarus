@@ -207,28 +207,15 @@ void Pickable::initialize_sprites() {
 }
 
 /**
- * \copydoc MapEntity::notify_added_to_map
+ * \copydoc MapEntity::notify_created
  */
-void Pickable::notify_added_to_map(Map& map) {
+void Pickable::notify_created() {
 
-  Detector::notify_added_to_map(map);
+  Detector::notify_created();
 
-  if (map.is_started()) {
-    // notify the Lua item
-    get_equipment().get_item(treasure.get_item_name()).notify_pickable_appeared(*this);
-  }
-  // otherwise, notify_map_started() will do the job
-}
-
-/**
- * \brief Notifies this entity that its map has just become active.
- */
-void Pickable::notify_map_started() {
-
-  Detector::notify_map_started();
-
-  // notify the Lua item.
-  get_equipment().get_item(treasure.get_item_name()).notify_pickable_appeared(*this);
+  // This entity and the map are now both ready. Notify the Lua item.
+  EquipmentItem& item = get_equipment().get_item(treasure.get_item_name());
+  item.notify_pickable_appeared(*this);
 }
 
 /**

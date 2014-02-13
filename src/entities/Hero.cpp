@@ -540,10 +540,6 @@ void Hero::notify_creating() {
 
   MapEntity::notify_creating();
 
-  last_solid_ground_coords.set_xy(-1, -1);
-  target_solid_ground_coords.set_xy(-1, -1);
-  get_sprites().set_clipping_rectangle();
-
   // At this point the map is known and loaded. Notify the state.
   state->set_map(get_map());
 }
@@ -555,10 +551,6 @@ void Hero::notify_map_started() {
 
   MapEntity::notify_map_started();
   get_sprites().notify_map_started();
-
-  last_solid_ground_coords.set_xy(-1, -1);
-  target_solid_ground_coords.set_xy(-1, -1);
-  get_sprites().set_clipping_rectangle();
 
   // At this point the map is known and loaded. Notify the state.
   state->set_map(get_map());
@@ -588,6 +580,12 @@ void Hero::set_map(Map& map, int initial_direction) {
   if (initial_direction != -1) {
     sprites->set_animation_direction(initial_direction);
   }
+
+  last_solid_ground_coords.set_xy(-1, -1);
+  target_solid_ground_coords.set_xy(-1, -1);
+  get_sprites().set_clipping_rectangle();
+
+  state->set_map(get_map());
 
   MapEntity::set_map(map);
 }

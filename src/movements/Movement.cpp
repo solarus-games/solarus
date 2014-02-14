@@ -21,6 +21,7 @@
 #include "lowlevel/Debug.h"
 #include "Map.h"
 #include "Drawable.h"
+#include <lua.hpp>
 
 namespace solarus {
 

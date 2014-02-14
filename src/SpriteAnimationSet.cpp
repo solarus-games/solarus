@@ -231,10 +231,10 @@ bool SpriteAnimationSet::has_animation(
 
 /**
  * \brief Returns an animation.
- * \param animation_name name of the animation to get
- * \return the specified animation
+ * \param animation_name Name of the animation to get.
+ * \return The specified animation.
  */
-const SpriteAnimation* SpriteAnimationSet::get_animation(
+const SpriteAnimation& SpriteAnimationSet::get_animation(
     const std::string& animation_name) const {
 
   Debug::check_assertion(has_animation(animation_name),
@@ -242,15 +242,15 @@ const SpriteAnimation* SpriteAnimationSet::get_animation(
       + "' in animation set '" + id + "'"
   );
 
-  return animations.find(animation_name)->second; // the [] operator is not const in std::map
+  return *animations.find(animation_name)->second; // the [] operator is not const in std::map
 }
 
 /**
  * \brief Returns an animation.
- * \param animation_name name of the animation to get
- * \return the specified animation
+ * \param animation_name Name of the animation to get.
+ * \return The specified animation.
  */
-SpriteAnimation* SpriteAnimationSet::get_animation(
+SpriteAnimation& SpriteAnimationSet::get_animation(
     const std::string& animation_name) {
 
   Debug::check_assertion(has_animation(animation_name),
@@ -258,7 +258,7 @@ SpriteAnimation* SpriteAnimationSet::get_animation(
       + "' in animation set '" + id + "'"
   );
 
-  return animations[animation_name];
+  return *animations[animation_name];
 }
 
 /**

@@ -1181,14 +1181,26 @@ on the map.
   - \c y (number): Y coordinate on the map.
   - \c width (number): Width of the entity in pixels.
   - \c height (number): Height of the entity in pixels.
-  - \c stops_hero (boolean): \c true to make the wall stop the
+  - \c stops_hero (boolean, optional): \c true to make the wall stop the
     \ref lua_api_hero "hero".
-  - \c stops_npcs (boolean): \c true to make the wall stop
+    No value means \c false.
+  - \c stops_npcs (boolean, optional): \c true to make the wall stop
     \ref lua_api_npc "non-playing characters".
-  - \c stops_enemies (boolean): \c true to make the wall stop
+    No value means \c false.
+  - \c stops_enemies (boolean, optional): \c true to make the wall stop
     \ref lua_api_enemy "enemies".
-  - \c stops_blocks (boolean): \c true to make the wall stop
+    No value means \c false.
+  - \c stops_blocks (boolean, optional): \c true to make the wall stop
     \ref lua_api_block "blocks".
+    No value means \c false.
+  - \c stops_blocks (boolean, optional): \c true to make the wall stop
+    projectiles:
+    \ref lua_api_carried_object "thrown objects",
+    \ref lua_api_arrow "arrows",
+    the \ref lua_api_hookshot "hookshot"
+    and
+    \ref lua_api_boomerang "the boomerang".
+    No value means \c false.
 - Return value (\ref lua_api_wall "wall"): the wall created.
 
 \subsection lua_api_map_create_sensor map:create_sensor(properties)
@@ -1509,7 +1521,7 @@ on the map.
     unique.
   - \c direction (number): Direction of the custom entity, between \c 0 (East)
     and \c 3 (South).
-    This direction will be applied to the entity's sprite if possible.
+    This direction will be applied to the entity's sprites if possible.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.

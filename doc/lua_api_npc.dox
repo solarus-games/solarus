@@ -106,7 +106,8 @@ Called when the \ref lua_api_hero "hero" uses any
 (the player pressed an \ref lua_api_game_intro_commands "item command") with
 this %NPC,
 if the %NPC has the property to notify its own Lua script.
-- \c item_used (item): The item currently used by the player.
+- \c item_used (\ref lua_api_item "item"): The item currently used by
+  the player.
 - Return value (boolean): \c true if an interaction happened. If you return
   \c false or nothing, then \ref lua_api_item_on_using
   "item_used:on_using()" will be called

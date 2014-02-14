@@ -43,8 +43,8 @@ class SpriteAnimationSet {
     void set_tileset(Tileset& tileset);
 
     bool has_animation(const std::string& animation_name) const;
-    const SpriteAnimation* get_animation(const std::string& animation_name) const;
-    SpriteAnimation* get_animation(const std::string& animation_name);
+    const SpriteAnimation& get_animation(const std::string& animation_name) const;
+    SpriteAnimation& get_animation(const std::string& animation_name);
     const std::string& get_default_animation() const;
 
     void enable_pixel_collisions();

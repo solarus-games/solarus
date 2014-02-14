@@ -27,6 +27,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include <sstream>
+#include <lua.hpp>
 
 namespace solarus {
 
@@ -854,7 +855,7 @@ void HeroSprites::set_suspended(bool suspended) {
     ground_sprite->set_suspended(suspended);
   }
 
-  // timer
+  // Timer.
   uint32_t now = System::now();
   if (suspended) {
     when_suspended = now;

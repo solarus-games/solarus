@@ -86,6 +86,7 @@ bool Stairs::can_be_drawn() const {
  * \return \c true if this type of entity can change the ground.
  */
 bool Stairs::can_change_ground() const {
+
   // To allow the hero to stay on the highest of both layers of the stairs.
   return true;
 }
@@ -103,11 +104,11 @@ Ground Stairs::get_ground() const {
 }
 
 /**
- * \brief Notifies this entity that its map has just become active.
+ * \copydoc MapEntity::notify_creating
  */
-void Stairs::notify_map_started() {
+void Stairs::notify_creating() {
 
-  MapEntity::notify_map_started();
+  Detector::notify_creating();
   update_dynamic_tiles();
 }
 

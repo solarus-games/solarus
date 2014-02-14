@@ -408,7 +408,6 @@ void MapEntities::add_tile(Tile* tile) {
 
   // Add the tile to the map.
   non_animated_regions[layer]->add_tile(tile);
-  tile->set_map(map);
 
   const TilePattern& pattern = tile->get_tile_pattern();
   Debug::check_assertion(
@@ -937,6 +936,26 @@ bool MapEntities::compare_y(MapEntity* first, MapEntity* second) {
 }
 
 /**
+ * \brief Sets whether an entity is drawn in Y order or in creation order.
+ * \param entity The entity to change.
+ * \param drawn_in_y_order \c true to display it in Y order, \c false to
+ * display it in Z order.
+ */
+void MapEntities::set_entity_drawn_in_y_order(
+    MapEntity& entity, bool drawn_in_y_order) {
+
+  const Layer layer = entity.get_layer();
+  if (drawn_in_y_order) {
+    entities_drawn_first[layer].remove(&entity);
+    entities_drawn_y_order[layer].push_back(&entity);
+  }
+  else {
+    entities_drawn_y_order[layer].remove(&entity);
+    entities_drawn_first[layer].push_back(&entity);
+  }
+}
+
+/**
  * \brief Changes the layer of an entity.
  *
  * Only some specific entities should change their layer.
@@ -1022,7 +1041,7 @@ void MapEntities::remove_boomerang() {
 }
 
 /**
- * \brief Removes any boomerang from the map.
+ * \brief Removes any arrow from the map.
  */
 void MapEntities::remove_arrows() {
 

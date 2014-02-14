@@ -146,7 +146,7 @@ Returns the type of entity.
 Returns the map this entity belongs to.
 - Return value (\ref lua_api_map "map"): The map that contains this entity.
 
-\subsection lua_api_entity_get_map entity:get_game()
+\subsection lua_api_entity_get_game entity:get_game()
 
 Returns the game that is running the map this entity belongs to.
 - Return value (\ref lua_api_game "game"): The current game.
@@ -435,7 +435,10 @@ Places this entity in front of all other entities on the same layer.
 Since entities that are on the same layer can overlap,
 you can use this function to change their Z-index.
 
-\remark Some entities like NPCs, enemies and the hero have the property to be
+\remark Some entities like NPCs, enemies, the hero
+  and some
+  \ref lua_api_custom_entity_is_drawn_in_y_order "custom entities"
+  have the property to be
   displayed in Y order.
   The Z-index of these entities is already managed by the engine to show
   entities more to the north behind the ones more to the south.
@@ -485,7 +488,7 @@ You can use this function to make sure that an
 - \c other_entity (entity): Another entity.
 - Return value (boolean): \c true if both entities are in the same region.
 
-\subsection lua_api_entity_test_obstacles entity:test_obstacles(dx, dy)
+\subsection lua_api_entity_test_obstacles entity:test_obstacles(dx, dy, [layer])
 
 Returns whether there would be a collision with obstacles
 if this map entity was translated.
@@ -493,6 +496,8 @@ if this map entity was translated.
   (\c 0 means the current X position).
 - \c dx (number): Y component of the translation in pixels
   (\c 0 means the current Y position).
+- \c layer (number, optional): Layer to test.
+  No value means the current layer.
 - Return value (boolean): \c true if there would be a collision in this
 position.
 
@@ -527,6 +532,10 @@ Stops the current movement of this map entity if any.
 
 Events are callback methods automatically called by the engine if you define
 them.
+
+\subsection lua_api_entity_on_created entity:on_created()
+
+Called when this entity has just been created on the map.
 
 \subsection lua_api_entity_on_removed entity:on_removed()
 

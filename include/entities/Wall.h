@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
-#include <map>
+#include <set>
 
 namespace solarus {
 
@@ -34,8 +34,19 @@ class Wall: public MapEntity {
 
   public:
 
-    Wall(const std::string& name, Layer layer, int x, int y, int width, int height,
-        bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks);
+    Wall(
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        int width,
+        int height,
+        bool stops_hero,
+        bool stops_enemies,
+        bool stops_npcs,
+        bool stops_blocks,
+        bool stops_projectiles
+    );
     ~Wall();
 
     EntityType get_type() const;
@@ -44,7 +55,7 @@ class Wall: public MapEntity {
 
   private:
 
-    std::map<EntityType, bool> entity_types_stopped;
+    std::set<EntityType> entity_types_stopped;
 
     bool enabled;              /**< indicates that the obstacle is enabled (default: yes) */
     bool waiting_enabled;      /**< indicates that the obstacle is waiting to be enabled */

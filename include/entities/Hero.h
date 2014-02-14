@@ -50,7 +50,6 @@ class Hero: public MapEntity {
      * the main properties of this type of entity.
      */
     EntityType get_type() const;
-    bool is_drawn_in_y_order() const;
 
     /**
      * \name Game loop.
@@ -81,8 +80,8 @@ class Hero: public MapEntity {
      *
      * Functions called when the player goes to another map.
      */
-    void set_map(Map& map);
     void set_map(Map& map, int initial_direction);
+    void notify_creating();
     void notify_map_started();
     void notify_tileset_changed();
     void place_on_destination(Map& map, const Rectangle& previous_map_location);

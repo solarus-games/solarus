@@ -38,10 +38,16 @@ void LuaContext::register_file_module() {
 
   // Store the original io.open function in the registry.
   // We will need to access it from sol.file.open().
+                                  // --
   lua_getglobal(l, "io");
+                                  // io
   lua_getfield(l, -1, "open");
+                                  // io open
   Debug::check_assertion(lua_isfunction(l, -1), "Could not find io.open");
   lua_setfield(l, LUA_REGISTRYINDEX, "io.open");
+                                  // io
+  lua_pop(l, 1);
+                                  // --
 }
 
 /**

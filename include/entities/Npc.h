@@ -74,7 +74,6 @@ class Npc: public Detector {
 
     bool is_solid() const;
 
-    bool is_drawn_in_y_order() const;
     bool is_obstacle_for(MapEntity& other);
     bool is_hero_obstacle(Hero& hero);
     bool is_npc_obstacle(Npc& npc);

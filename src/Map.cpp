@@ -87,6 +87,10 @@ const std::string& Map::get_id() const {
  * \return the tileset
  */
 Tileset& Map::get_tileset() {
+
+  SOLARUS_ASSERT(tileset != NULL,
+      std::string("Missing tileset in map '") + get_id() + "'"
+  );
   return *tileset;
 }
 

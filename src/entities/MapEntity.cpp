@@ -72,9 +72,11 @@ MapEntity::MapEntity(
   name(name),
   direction(direction),
   visible(true),
+  drawn_in_y_order(false),
   movement(NULL),
   movement_events_enabled(true),
   facing_entity(NULL),
+  initialized(false),
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
@@ -279,13 +281,26 @@ bool MapEntity::can_be_drawn() const {
  * are drawn in the normal order (i.e. in the order of their creation),
  * and before the entities with this feature.
  *
- * Returns \c false by default.
- *
  * \return \c true if this type of entity should be drawn at the same level
  * as the hero.
  */
 bool MapEntity::is_drawn_in_y_order() const {
-  return false;
+  return drawn_in_y_order;
+}
+
+/**
+ * \brief Sets whether this entity should be drawn in y order.
+ * \param drawn_in_y_order \c true to drawn this entity at the same level
+ * as the hero.
+ */
+void MapEntity::set_drawn_in_y_order(bool drawn_in_y_order) {
+
+  if (drawn_in_y_order != this->drawn_in_y_order) {
+    this->drawn_in_y_order = drawn_in_y_order;
+    if (is_on_map()) {
+      get_entities().set_entity_drawn_in_y_order(*this, drawn_in_y_order);
+    }
+  }
 }
 
 /**
@@ -303,8 +318,6 @@ bool MapEntity::is_on_map() const {
  * Warning: when this function is called during the initialization of a new map,
  * the current map of the game is still the old one.
  *
- * TODO make this function non-virtual and make a virtual function notify_added_to_map(Map& map).
- *
  * \param map The map.
  */
 void MapEntity::set_map(Map& map) {
@@ -316,12 +329,71 @@ void MapEntity::set_map(Map& map) {
   }
 
   this->ground_below = GROUND_EMPTY;
+
+  if (!initialized && map.is_loaded()) {
+    // The entity is being created on a map already running.
+    // In this case, we are ready to finish the initialization right now.
+    finish_initialization();
+  }
 }
 
 /**
- * \brief Notifies this entity that its map has just become active.
+ * \brief Notifies this entity that its map has just started.
+ *
+ * The map was being loaded and is now ready.
  */
 void MapEntity::notify_map_started() {
+
+  if (!initialized) {
+    // The map is now ready: we can finish the initialization of the entity.
+    finish_initialization();
+  }
+}
+
+/**
+ * \brief Finishes the initialization of this entity once the map is loaded.
+ *
+ * This function must be called once the map is ready.
+ * It calls notify_creating(), then the Lua event entity:on_created(),
+ * and then notify_created().
+ */
+void MapEntity::finish_initialization() {
+
+  Debug::check_assertion(!initialized, "Entity is already initialized");
+  Debug::check_assertion(is_on_map(), "Missing map");
+  Debug::check_assertion(get_map().is_loaded(), "Map is not ready");
+
+  initialized = true;
+
+  notify_creating();
+  get_lua_context().entity_on_created(*this);
+  notify_created();
+}
+
+/**
+ * \brief Notifies this entity that it is being created on a map.
+ *
+ * At this point, the map is already loaded and running,
+ * including if the entity was created from the map data file.
+ * Here, you can perform initializations that your entity need to do once the
+ * map is known and running.
+ * The entity:on_created() event will be called after this.
+ */
+void MapEntity::notify_creating() {
+
+}
+
+/**
+ * \brief Notifies this entity that it has just been created on a map.
+ *
+ * At this point, the map is already loaded and running,
+ * including if the entity was created from the map data file.
+ * The entity:on_created() event has just been called.
+ * You can redefine this function to perform additional initializations
+ * after entity:on_created().
+ */
+void MapEntity::notify_created() {
+
 }
 
 /**
@@ -399,6 +471,17 @@ const MapEntities& MapEntity::get_entities() const {
  * \return The Lua context where all scripts are run.
  */
 LuaContext& MapEntity::get_lua_context() {
+
+  Debug::check_assertion(main_loop != NULL,
+      "This entity is not fully constructed yet");
+  return main_loop->get_lua_context();
+}
+
+/**
+ * \brief Returns the shared Lua context.
+ * \return The Lua context where all scripts are run.
+ */
+const LuaContext& MapEntity::get_lua_context() const {
 
   Debug::check_assertion(main_loop != NULL,
       "This entity is not fully constructed yet");
@@ -876,6 +959,7 @@ const Detector* MapEntity::get_facing_entity() const {
  * \param facing_entity the detector this entity is now facing (possibly NULL)
  */
 void MapEntity::set_facing_entity(Detector* facing_entity) {
+
   this->facing_entity = facing_entity;
   notify_facing_entity_changed(facing_entity);
 }
@@ -1044,8 +1128,10 @@ const std::vector<Sprite*>& MapEntity::get_sprites() {
  * \param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
  * \return the sprite created
  */
-Sprite& MapEntity::create_sprite(const std::string& animation_set_id,
-    bool enable_pixel_collisions) {
+Sprite& MapEntity::create_sprite(
+    const std::string& animation_set_id,
+    bool enable_pixel_collisions
+) {
 
   Sprite* sprite = new Sprite(animation_set_id);
   RefCountable::ref(sprite);
@@ -1383,6 +1469,10 @@ const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
  */
 void MapEntity::set_enabled(bool enabled) {
 
+  if (this->enabled == enabled) {
+    return;
+  }
+
   if (enabled) {
     // enable the entity as soon as possible
     this->waiting_enabled = true;
@@ -1391,20 +1481,25 @@ void MapEntity::set_enabled(bool enabled) {
     this->enabled = false;
     this->waiting_enabled = false;
 
-    if (get_movement() != NULL) {
-      get_movement()->set_suspended(suspended || !enabled);
-    }
+    if (!is_suspended()) {
+      // Disabling an entity that is not suspended:
+      // suspend its movement, its sprites and its timers.
+      if (get_movement() != NULL) {
+        get_movement()->set_suspended(true);
+      }
 
-    std::vector<Sprite*>::iterator it;
-    for (it = sprites.begin(); it != sprites.end(); it++) {
+      std::vector<Sprite*>::iterator it;
+      for (it = sprites.begin(); it != sprites.end(); it++) {
 
-      Sprite& sprite = *(*it);
-      sprite.set_suspended(suspended || !enabled);
-    }
+        Sprite& sprite = *(*it);
+        sprite.set_suspended(true);
+      }
 
-    if (is_on_map()) {
-      notify_enabled(enabled);
+      if (is_on_map()) {
+        get_lua_context().set_entity_timers_suspended(*this, true);
+      }
     }
+    notify_enabled(false);
   }
 }
 
@@ -1413,6 +1508,10 @@ void MapEntity::set_enabled(bool enabled) {
  * \param enabled \c true if the entity is now enabled.
  */
 void MapEntity::notify_enabled(bool enabled) {
+
+  if (!is_on_map()) {
+    return;
+  }
 
   update_ground_observers();
   update_ground_below();
@@ -2173,9 +2272,10 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 /**
  * \brief Updates the entity.
  *
- * This function is called repeatedly by the map. By default, it updates the position
- * of the entity according to its movement (if any), and it updates the sprites frames
- * if there are sprites.
+ * This function is called repeatedly by the map.
+ * By default, it updates the position
+ * of the entity according to its movement (if any),
+ * and it updates the sprites frames if there are sprites.
  * Redefine it in subclasses for the entities that should be updated
  * for other treatments but don't forget to call this method
  * to handle the movement and the sprites.
@@ -2195,15 +2295,23 @@ void MapEntity::update() {
       this->waiting_enabled = false;
       notify_enabled(true);
 
-      if (get_movement() != NULL) {
-        get_movement()->set_suspended(suspended || !enabled);
-      }
+      if (!is_suspended()) {
+        // Enabling an entity that is not suspended:
+        // unsuspend its movement, its sprites and its timers.
+        if (get_movement() != NULL) {
+          get_movement()->set_suspended(false);
+        }
 
-      std::vector<Sprite*>::iterator it;
-      for (it = sprites.begin(); it != sprites.end(); it++) {
+        std::vector<Sprite*>::iterator it;
+        for (it = sprites.begin(); it != sprites.end(); it++) {
 
-        Sprite& sprite = *(*it);
-        sprite.set_suspended(suspended || !enabled);
+          Sprite& sprite = *(*it);
+          sprite.set_suspended(false);
+        }
+
+        if (is_on_map()) {
+          get_lua_context().set_entity_timers_suspended(*this, false);
+        }
       }
     }
   }

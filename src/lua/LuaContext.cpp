@@ -27,6 +27,7 @@
 #include "entities/Block.h"
 #include "entities/Enemy.h"
 #include "entities/CustomEntity.h"
+#include "entities/Tileset.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "Equipment.h"
@@ -149,6 +150,8 @@ void LuaContext::initialize() {
   lua_pop(l, 1);
                                   // --
 
+  Debug::check_assertion(lua_gettop(l) == 0, "Lua stack is not empty after initialization");
+
   // Execute the main file.
   do_file_if_exists(l, "main");
   main_on_started();
@@ -183,6 +186,11 @@ void LuaContext::exit() {
  */
 void LuaContext::update() {
 
+  // Make sure the stack does not leak.
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Non-empty stack before LuaContext::update()"
+  );
+
   update_drawables();
   update_movements();
   update_menus();
@@ -190,6 +198,10 @@ void LuaContext::update() {
 
   // Call sol.main.on_update().
   main_on_update();
+
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Non-empty stack after LuaContext::update()"
+  );
 }
 
 /**
@@ -202,8 +214,18 @@ void LuaContext::update() {
  */
 bool LuaContext::notify_input(const InputEvent& event) {
 
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Non-empty stack before LuaContext::notify_input()"
+  );
+
+  const bool handled = main_on_input(event);
+
   // Call the appropriate callback in sol.main (if it exists).
-  return main_on_input(event);
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Non-empty stack after LuaContext::notify_input()"
+  );
+
+  return handled;
 }
 
 /**
@@ -293,7 +315,7 @@ void LuaContext::run_item(EquipmentItem& item) {
 void LuaContext::run_enemy(Enemy& enemy) {
 
   // Compute the file name, depending on enemy's breed.
-  std::string file_name = (std::string) "enemies/" + enemy.get_breed();
+  std::string file_name = std::string("enemies/") + enemy.get_breed();
 
   // Load the enemy's code.
   if (load_file_if_exists(l, file_name)) {
@@ -301,9 +323,6 @@ void LuaContext::run_enemy(Enemy& enemy) {
     // Run it with the enemy userdata as parameter.
     push_enemy(l, enemy);
     call_function(1, 0, file_name.c_str());
-
-    entity_on_suspended(enemy, enemy.is_suspended());
-    entity_on_created(enemy);
   }
 
   // TODO parse Lua only once for each breed.
@@ -327,7 +346,7 @@ void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
   }
 
   // Compute the file name depending on the model.
-  std::string file_name = (std::string) "entities/" + model;
+  std::string file_name = std::string("entities/") + model;
 
   // Load the entity's code.
   if (load_file_if_exists(l, file_name)) {
@@ -335,9 +354,6 @@ void LuaContext::run_custom_entity(CustomEntity& custom_entity) {
     // Run it with the entity userdata as parameter.
     push_custom_entity(l, custom_entity);
     call_function(1, 0, file_name.c_str());
-
-    entity_on_suspended(custom_entity, custom_entity.is_suspended());
-    entity_on_created(custom_entity);
   }
 
   // TODO parse Lua only once for each model.
@@ -509,8 +525,8 @@ void LuaContext::cancel_callback(int callback_ref) {
           << " (function expected, got " << luaL_typename(l, -1)
           << "). Did you already invoke or cancel it?";
       Debug::die(oss.str());
-      lua_pop(l, 1);
     }
+    lua_pop(l, 1);
 #endif
 
     destroy_ref(callback_ref);
@@ -966,6 +982,9 @@ void LuaContext::register_type(
  */
 void LuaContext::register_modules() {
 
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Lua stack is not empty before modules initialization");
+
   register_main_module();
   register_game_module();
   register_map_module();
@@ -982,6 +1001,9 @@ void LuaContext::register_modules() {
   register_file_module();
   register_menu_module();
   register_language_module();
+
+  Debug::check_assertion(lua_gettop(l) == 0,
+      "Lua stack is not empty after modules initialization");
 }
 
 /**
@@ -2620,6 +2642,23 @@ bool LuaContext::on_attacking_hero(Hero& hero, Sprite* attacker_sprite) {
     return true;
   }
   return false;
+}
+
+/**
+ * \brief Calls the on_ground_below_changed() method of the object on top of the stack.
+ * \param ground_below The new ground below the object.
+ */
+void LuaContext::on_ground_below_changed(Ground ground_below) {
+
+  if (find_method("on_ground_below_changed")) {
+    if (ground_below == GROUND_EMPTY) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, Tileset::ground_names[ground_below]);
+    }
+    call_function(2, 0, "on_ground_below_changed");
+  }
 }
 
 /**

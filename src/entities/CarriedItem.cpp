@@ -93,6 +93,7 @@ CarriedItem::CarriedItem(
   }
   set_origin(original_entity.get_origin());
   set_size(original_entity.get_size());
+  set_drawn_in_y_order(true);
 
   // create the lift movement and the sprite
   PixelMovement* movement = new PixelMovement(lifting_trajectories[direction], 100, false, true);
@@ -127,15 +128,6 @@ EntityType CarriedItem::get_type() const {
  */
 bool CarriedItem::can_be_obstacle() const {
   return false;
-}
-
-/**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return \c true if this type of entity should be drawn at the same level
- * as the hero.
- */
-bool CarriedItem::is_drawn_in_y_order() const {
-  return true;
 }
 
 /**

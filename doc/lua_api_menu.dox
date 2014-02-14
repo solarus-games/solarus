@@ -76,6 +76,8 @@ Stops a menu previously activated with \ref lua_api_menu_start
 
 After this call, the Solarus engine will no longer call events on your menu.
 But you can restart it later if you want.
+
+Nothing happens is the menu was already stopped or never started.
 - \c menu (table): The menu to stop.
 
 \subsection lua_api_menu_stop_all sol.menu.stop_all(context)

@@ -165,7 +165,9 @@ public class CustomEntity extends MapEntity {
             int sx1 = 0;
             int sx2 = sx1 + 32;
 
-            g.drawImage(resizableImage, dx1, dy1, dx2, dy2, sx1, 0, sx2, 32, null);
+            if (getWidth() >= 16 && getHeight() >= 16) {
+                g.drawImage(resizableImage, dx1, dy1, dx2, dy2, sx1, 0, sx2, 32, null);
+            }
 
             drawEntityOutline(g, zoom, new Color(184, 96, 96));
         }

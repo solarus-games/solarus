@@ -29,6 +29,7 @@
 #include "Sprite.h"
 #include "EquipmentItem.h"
 #include <sstream>
+#include <lua.hpp>
 
 namespace solarus {
 
@@ -206,29 +207,15 @@ void Pickable::initialize_sprites() {
 }
 
 /**
- * \brief Notifies this entity that it has just been added to a map.
- * \param map the map
+ * \copydoc MapEntity::notify_created
  */
-void Pickable::set_map(Map& map) {
+void Pickable::notify_created() {
 
-  MapEntity::set_map(map);
+  Detector::notify_created();
 
-  if (map.is_started()) {
-    // notify the Lua item
-    get_equipment().get_item(treasure.get_item_name()).notify_pickable_appeared(*this);
-  }
-  // otherwise, notify_map_started() will do the job
-}
-
-/**
- * \brief Notifies this entity that its map has just become active.
- */
-void Pickable::notify_map_started() {
-
-  MapEntity::notify_map_started();
-
-  // notify the Lua item.
-  get_equipment().get_item(treasure.get_item_name()).notify_pickable_appeared(*this);
+  // This entity and the map are now both ready. Notify the Lua item.
+  EquipmentItem& item = get_equipment().get_item(treasure.get_item_name());
+  item.notify_pickable_appeared(*this);
 }
 
 /**
@@ -398,7 +385,7 @@ void Pickable::set_blinking(bool blinking) {
  */
 void Pickable::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended); // suspend the animation and the movement
+  Detector::set_suspended(suspended); // suspend the animation and the movement
 
   if (shadow_sprite != NULL) {
     shadow_sprite->set_suspended(suspended);
@@ -435,7 +422,7 @@ void Pickable::set_suspended(bool suspended) {
 void Pickable::update() {
 
   // update the animations and the movement
-  MapEntity::update();
+  Detector::update();
 
   // update the shadow
   if (shadow_sprite != NULL) {
@@ -504,7 +491,7 @@ void Pickable::draw_on_map() {
   }
 
   // draw the sprite
-  MapEntity::draw_on_map();
+  Detector::draw_on_map();
 }
 
 }

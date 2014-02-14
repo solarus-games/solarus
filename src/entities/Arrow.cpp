@@ -45,6 +45,7 @@ Arrow::Arrow(const Hero& hero):
   int direction = hero.get_animation_direction();
   create_sprite("entities/arrow", true);
   get_sprite().set_current_direction(direction);
+  set_drawn_in_y_order(true);
 
   if (direction % 2 == 0) {
     // Horizontal.
@@ -95,14 +96,6 @@ EntityType Arrow::get_type() const {
  */
 bool Arrow::can_be_obstacle() const {
   return false;
-}
-
-/**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return true if this type of entity is drawn at the same level as the hero
- */
-bool Arrow::is_drawn_in_y_order() const {
-  return true;
 }
 
 /**
@@ -388,7 +381,8 @@ bool Arrow::is_flying() const {
  */
 void Arrow::attach_to(MapEntity& entity_reached) {
 
-  Debug::check_assertion(this->entity_reached == NULL, "This arrow is already attached to an entity");
+  Debug::check_assertion(this->entity_reached == NULL,
+      "This arrow is already attached to an entity");
 
   this->entity_reached = &entity_reached;
   stop_now = true;

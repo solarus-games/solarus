@@ -67,20 +67,24 @@ class MapEntity: public ExportableToLua {
     virtual bool is_ground_modifier() const;
     virtual Ground get_modified_ground() const;
     virtual bool can_be_drawn() const;
-    virtual bool is_drawn_in_y_order() const;
+    bool is_drawn_in_y_order() const;
+    void set_drawn_in_y_order(bool drawn_in_y_order);
     virtual bool is_drawn_at_its_position() const;
     bool is_drawn() const;
 
     // adding to a map
     bool is_on_map() const;
-    virtual void set_map(Map& map);
+    void set_map(Map& map);
     Map& get_map() const;
     virtual void notify_map_started();
+    virtual void notify_creating();
+    virtual void notify_created();
     virtual void notify_map_opening_transition_finished();
     virtual void notify_tileset_changed();
     Game& get_game();
     const Game& get_game() const;
     LuaContext& get_lua_context();
+    const LuaContext& get_lua_context() const;
 
     // position in the map
     Layer get_layer() const;
@@ -203,7 +207,6 @@ class MapEntity: public ExportableToLua {
     void check_collision_with_detectors(bool with_pixel_precise);
     void check_collision_with_detectors(Sprite& sprite);
 
-    virtual void notify_collision_with_enemy(Enemy& enemy);
     virtual void notify_collision_with_destructible(Destructible& destructible, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter& teletransporter, CollisionMode collision_mode);
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy);
@@ -221,6 +224,7 @@ class MapEntity: public ExportableToLua {
     virtual void notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode);
     virtual void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
     virtual void notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping);
+    virtual void notify_collision_with_enemy(Enemy& enemy);
     virtual void notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite);
     virtual void notify_attacked_enemy(
         EnemyAttack attack,
@@ -276,9 +280,6 @@ class MapEntity: public ExportableToLua {
 
     uint32_t get_when_suspended() const;
 
-    void clear_old_movements();
-    void clear_old_sprites();
-
     void set_direction(int direction);
 
     void update_ground_observers();
@@ -300,6 +301,10 @@ class MapEntity: public ExportableToLua {
     // No copy constructor or assignment operator.
     MapEntity(const MapEntity& other);
     MapEntity& operator=(const MapEntity& other);
+
+    void finish_initialization();
+    void clear_old_movements();
+    void clear_old_sprites();
 
     MainLoop* main_loop;                        /**< The Solarus main loop. */
     Map* map;                                   /**< The map where this entity is, or NULL
@@ -337,6 +342,7 @@ class MapEntity: public ExportableToLua {
                                                  * note that some entities manage their sprites themselves rather than using this field */
     std::vector<Sprite*> old_sprites;           /**< sprites to remove and destroy as soon as possible */
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
+    bool drawn_in_y_order;                      /**< Whether this entity is drawn in Y order or in Z order. */
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
                                                  * NULL indicates that the entity has no movement */
     std::vector<Movement*> old_movements;       /**< old movements to destroy as soon as possible */
@@ -344,6 +350,7 @@ class MapEntity: public ExportableToLua {
     Detector* facing_entity;                    /**< the detector in front of this entity (if any) */
 
     // entity state
+    bool initialized;                           /**< Whether all initializations were done. */
     bool being_removed;                         /**< indicates that the entity is not valid anymore because it is about to be removed */
     bool enabled;                               /**< indicates that the entity is enabled
                                                  * (if not, it will not be displayed and collisions will not be notified) */

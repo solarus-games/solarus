@@ -34,6 +34,7 @@
 #include "Map.h"
 #include <list>
 #include <sstream>
+#include <lua.hpp>
 
 namespace solarus {
 
@@ -591,7 +592,7 @@ void Door::notify_action_command_pressed() {
     }
     else if (!cannot_open_dialog_id.empty()) {
       Sound::play("wrong");
-      get_game().start_dialog(cannot_open_dialog_id, LUA_REFNIL);
+      get_game().start_dialog(cannot_open_dialog_id, LUA_REFNIL, LUA_REFNIL);
     }
   }
 }

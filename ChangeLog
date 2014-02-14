@@ -39,6 +39,7 @@ Engine changes
 * Fix enemies stuck on crystal blocks (#41).
 * Fix human NPCs not automatically showing "walking" when moving (#336).
 * Fix the hero leaving the grabbing state even while the game is suspended.
+* Fix low walls in dynamic tiles behaving like normal walls.
 * Call hero:on_removed() and stop hero timers when stopping the game (#421).
 * Don't die if the map or destination saved no longer exists (#301).
 * Don't die if a map has no destination. Show an error and go to 0,0 instead.
@@ -58,6 +59,7 @@ Don't forget to make a backup first.
 * Maps: Destructibles no longer have subtypes, they are customizable (#270).
 * Maps: Rename entity shop_item to shop_treasure.
 * Maps: Teletransporters transition property is now a string (#402).
+* Maps: Walls have a new property "stops_projectiles".
 * Sounds: Running into a wall now plays a sound other than "explosion" (#297).
 
 Lua API changes
@@ -75,6 +77,7 @@ Changes that introduce incompatibilities:
 * map:create_shop_item() is replaced by map:create_shop_treasure().
 * map:create_teletransporter(): the transition is now a string (#402).
 * The built-in strength of the sword has changed (#426).
+* Bosses are not initially disabled anymore (#448).
 * enemy:on_hurt() no longer takes a life_lost parameter (#426).
 * The built-in defense of the tunic has changed (#428).
 * enemy:get/set_magic_damage() no longer exists (#428).
@@ -96,12 +99,16 @@ Changes that do not introduce incompatibilities:
 * New method surface:clear().
 * New function sol.main.get_metatable(), allows to implement shared behaviors.
 * New method menu:is_started().
+* Attempt to stop a menu already stopped is no longer an error.
 * New method map:get_hero() (#362).
 * map:get_world() can now return nil because the world is now optional (#128).
+* map:create_wall() accepts a new property "stops_projectiles".
 * Entity names are now auto-incremented to simplify their creation.
 * New method entity:get_game() (#363).
 * New methods entity:bring_to_front() and entity:bring_to_back() (#273).
+* entity:test_obstacles() now takes an optional layer parameter.
 * New methods enemy:get_attack_consequence(), get_attack_consequence_sprite().
+* The event entity:on_created() is now called for all types of entities.
 * New event enemy:on_hurt_by_sword() to customize the sword strength (#426).
 * New event enemy:on_attacking_hero() to customize attacks (#356).
 * New event enemy:on_hurting_hero() to customize hurting the hero (#428).
@@ -143,6 +150,7 @@ Solarus Quest Editor changes
 * The order of resources in the quest tree can now be changed (#319).
 * Increase the stepsize when scrolling the map view.
 * Show the map or tileset name in the "do you want to save" dialog.
+* Fix selecting entities losing their order when changing the layer.
 * Fix NullPointerException when canceling the Open Project dialog.
 * Fix freeze if tiles don't exist when changing the tileset of a map.
 * Fix the tree not refreshing when deleting a resource (#335).

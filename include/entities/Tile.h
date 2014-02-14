@@ -41,22 +41,29 @@ class Tile: public MapEntity {
 
   public:
 
-    Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id);
+    Tile(
+        Layer layer,
+        int x,
+        int y,
+        int width,
+        int height,
+        Tileset& tileset,
+        int tile_pattern_id
+    );
     ~Tile();
 
     EntityType get_type() const;
-    void set_map(Map& map);
     void draw_on_map();
     void draw(Surface& dst_surface, const Rectangle& viewport);
     TilePattern& get_tile_pattern();
     int get_tile_pattern_id() const;
-    bool is_animated();
+    bool is_animated() const;
     virtual bool is_drawn_at_its_position() const;
 
   private:
 
-    int tile_pattern_id;          /**< id of the tile pattern */
-    TilePattern* tile_pattern;    /**< pattern of the tile */
+    int tile_pattern_id;               /**< Id of the tile pattern. */
+    TilePattern& tile_pattern;         /**< Pattern of the tile. */
 
 };
 

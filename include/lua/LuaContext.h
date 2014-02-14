@@ -22,6 +22,7 @@
 #include "entities/Layer.h"
 #include "entities/EnemyAttack.h"
 #include "entities/EntityType.h"
+#include "entities/Ground.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Debug.h"
 #include "Ability.h"
@@ -120,6 +121,10 @@ class LuaContext {
         int nb_arguments,
         int nb_results,
         const char* function_name);
+    bool userdata_has_field(
+        const ExportableToLua& userdata, const char* key) const;
+    bool userdata_has_field(
+        const ExportableToLua& userdata, const std::string& key) const;
 
     // Timers.
     void add_timer(Timer* timer, int context_index, int callback_index);
@@ -128,6 +133,7 @@ class LuaContext {
     void destroy_timers();
     void update_timers();
     void notify_timers_map_suspended(bool suspended);
+    void set_entity_timers_suspended(MapEntity& entity, bool suspended);
     void do_timer_callback(Timer& timer);
 
     // Menus.
@@ -267,19 +273,24 @@ class LuaContext {
     bool map_on_command_released(Map& map, GameCommands::Command command);
 
     // Map entity events.
+    void entity_on_update(MapEntity& entity);
     void entity_on_suspended(MapEntity& entity, bool suspended);
     void entity_on_created(MapEntity& entity);
     void entity_on_removed(MapEntity& entity);
+    void entity_on_enabled(MapEntity& entity);
+    void entity_on_disabled(MapEntity& entity);
+    void entity_on_pre_draw(MapEntity& entity);
+    void entity_on_post_draw(MapEntity& entity);
     void entity_on_position_changed(MapEntity& entity, const Rectangle& xy, Layer layer);
     void entity_on_obstacle_reached(MapEntity& entity, Movement& movement);
     void entity_on_movement_changed(MapEntity& entity, Movement& movement);
     void entity_on_movement_finished(MapEntity& entity);
+    void entity_on_interaction(MapEntity& entity);
+    bool entity_on_interaction_item(MapEntity& entity, EquipmentItem& item_used);
     void hero_on_state_changed(Hero& hero, const std::string& state_name);
     bool hero_on_taking_damage(Hero& hero, int damage);
     void destination_on_activated(Destination& destination);
     void teletransporter_on_activated(Teletransporter& teletransporter);
-    void npc_on_interaction(Npc& npc);
-    bool npc_on_interaction_item(Npc& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(Npc& npc);
     bool chest_on_empty(Chest& chest);
     void block_on_moving(Block& block);
@@ -302,12 +313,7 @@ class LuaContext {
     void destructible_on_lifting(Destructible& destructible);
     void destructible_on_exploded(Destructible& destructible);
     void destructible_on_regenerating(Destructible& destructible);
-    void enemy_on_update(Enemy& enemy);
-    void enemy_on_enabled(Enemy& enemy);
-    void enemy_on_disabled(Enemy& enemy);
     void enemy_on_restarted(Enemy& enemy);
-    void enemy_on_pre_draw(Enemy& enemy);
-    void enemy_on_post_draw(Enemy& enemy);
     void enemy_on_collision_enemy(Enemy& enemy,
         Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void enemy_on_custom_attack_received(Enemy& enemy,
@@ -318,6 +324,8 @@ class LuaContext {
     void enemy_on_dead(Enemy& enemy);
     void enemy_on_immobilized(Enemy& enemy);
     bool enemy_on_attacking_hero(Enemy& enemy, Hero& hero, Sprite* enemy_sprite);
+    void custom_entity_on_ground_below_changed(
+        CustomEntity& custom_entity, Ground ground_below);
 
     // Implementation of the API.
 
@@ -843,12 +851,18 @@ class LuaContext {
       enemy_api_immobilize,
       enemy_api_create_enemy,
       custom_entity_api_get_model,
+      custom_entity_api_get_direction,
+      custom_entity_api_set_direction,
+      custom_entity_api_is_drawn_in_y_order,
+      custom_entity_api_set_drawn_in_y_order,
       custom_entity_api_set_traversable_by,
       custom_entity_api_set_can_traverse,
       custom_entity_api_can_traverse_ground,
       custom_entity_api_set_can_traverse_ground,
       custom_entity_api_add_collision_test,
       custom_entity_api_clear_collision_tests,
+      custom_entity_api_get_modified_ground,
+      custom_entity_api_set_modified_ground,
 
       // available to all userdata types
       userdata_meta_gc,
@@ -882,10 +896,6 @@ class LuaContext {
     };
 
     // Executing Lua code.
-    bool userdata_has_field(
-        const ExportableToLua& userdata, const char* key) const;
-    bool userdata_has_field(
-        const ExportableToLua& userdata, const std::string& key) const;
     bool userdata_has_metafield(
         const ExportableToLua& userdata, const char* key) const;
     bool find_method(int index, const char* function_name);
@@ -1113,6 +1123,7 @@ class LuaContext {
     void on_dead();
     void on_immobilized();
     bool on_attacking_hero(Hero& hero, Sprite* attacker_sprite);
+    void on_ground_below_changed(Ground ground_below);
 
     // Functions exported to Lua for internal needs.
     static FunctionExportedToLua

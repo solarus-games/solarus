@@ -437,15 +437,25 @@ void LuaContext::register_entity_module() {
   static const luaL_Reg custom_entity_methods[] = {
       ENTITY_COMMON_METHODS,
       { "get_model", custom_entity_api_get_model },
+      { "set_size", entity_api_set_size },
+      { "set_origin", entity_api_set_origin },
+      { "get_direction", custom_entity_api_get_direction },
+      { "set_direction", custom_entity_api_set_direction },
       { "get_sprite", entity_api_get_sprite },
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
+      { "is_drawn_in_y_order", custom_entity_api_is_drawn_in_y_order },
+      { "set_drawn_in_y_order", custom_entity_api_set_drawn_in_y_order },
       { "set_traversable_by", custom_entity_api_set_traversable_by },
       { "set_can_traverse", custom_entity_api_set_can_traverse },
       { "can_traverse_ground", custom_entity_api_can_traverse_ground },
       { "set_can_traverse_ground", custom_entity_api_set_can_traverse_ground },
       { "add_collision_test", custom_entity_api_add_collision_test },
       { "clear_collision_tests", custom_entity_api_clear_collision_tests },
+      { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
+      { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
+      { "get_modified_ground", custom_entity_api_get_modified_ground },
+      { "set_modified_ground", custom_entity_api_set_modified_ground },
       { NULL, NULL }
   };
 
@@ -1029,6 +1039,9 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
   const std::string& animation_set_id = luaL_checkstring(l, 2);
 
   Sprite& sprite = entity.create_sprite(animation_set_id, true);
+  if (entity.is_suspended()) {
+    sprite.set_suspended(true);
+  }
 
   push_sprite(l, sprite);
   return 1;
@@ -1174,12 +1187,16 @@ int LuaContext::entity_api_test_obstacles(lua_State* l) {
   MapEntity& entity = check_entity(l, 1);
   int dx = luaL_checkint(l, 2);
   int dy = luaL_checkint(l, 3);
+  Layer layer = entity.get_layer();
+  if (lua_gettop(l) >= 4) {
+    layer = LuaTools::check_layer(l, 4);
+  }
 
   Rectangle bounding_box = entity.get_bounding_box();
   bounding_box.add_xy(dx, dy);
 
   lua_pushboolean(l, entity.get_map().test_collision_with_obstacles(
-      entity.get_layer(), bounding_box, entity));
+      layer, bounding_box, entity));
   return 1;
 }
 
@@ -2640,12 +2657,12 @@ int LuaContext::l_shop_treasure_question_dialog_finished(lua_State* l) {
     else if (equipment.get_money() < shop_treasure.get_price()) {
       // Not enough money.
       Sound::play("wrong");
-      game.start_dialog("_shop.not_enough_money");
+      game.start_dialog("_shop.not_enough_money", LUA_REFNIL, LUA_REFNIL);
     }
     else if (item.has_amount() && item.get_amount() >= item.get_max_amount()) {
       // The player already has the maximum amount of this item.
       Sound::play("wrong");
-      game.start_dialog("_shop.amount_full");
+      game.start_dialog("_shop.amount_full", LUA_REFNIL, LUA_REFNIL);
     }
     else {
 
@@ -3742,7 +3759,8 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
       x,
       y,
       direction,
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable)
+  );
 
   if (entity == NULL) {
     // The enemy is saved as already dead.
@@ -3750,12 +3768,10 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
     return 1;
   }
 
+  // Forward some properties to the new enemy.
   entity->set_optimization_distance(enemy.get_optimization_distance());
-  map.get_entities().add_entity(entity);
 
-  if (entity->get_type() == ENTITY_ENEMY) {  // Because it may also be a pickable treasure.
-    (static_cast<Enemy*>(entity))->restart();
-  }
+  map.get_entities().add_entity(entity);
 
   push_entity(l, *entity);
   return 1;
@@ -3838,9 +3854,12 @@ void LuaContext::do_custom_entity_collision_callback(
     CustomEntity& custom_entity,
     MapEntity& other_entity) {
 
-  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing collision callback");
+  Debug::check_assertion(callback_ref != LUA_REFNIL,
+      "Missing collision callback");
 
   push_ref(l, callback_ref);
+  Debug::check_assertion(lua_isfunction(l, -1),
+      "Collision callback is not a function");
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
   call_function(l, 2, 0, "collision callback");
@@ -3885,6 +3904,65 @@ int LuaContext::custom_entity_api_get_model(lua_State* l) {
 
   push_string(l, entity.get_model());
   return 1;
+}
+
+/**
+ * \brief Implementation of custom_entity:get_direction().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_get_direction(lua_State* l) {
+
+  const CustomEntity& entity = check_custom_entity(l, 1);
+
+  lua_pushinteger(l, entity.get_sprites_direction());
+  return 1;
+}
+
+/**
+ * \brief Implementation of custom_entity:set_direction().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_set_direction(lua_State* l) {
+
+  CustomEntity& entity = check_custom_entity(l, 1);
+  int direction = entity.get_direction();
+
+  entity.set_sprites_direction(direction);
+
+  return 0;
+}
+
+/**
+ * \brief Implementation of custom_entity:is_drawn_in_y_order().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_is_drawn_in_y_order(lua_State* l) {
+
+  const CustomEntity& entity = check_custom_entity(l, 1);
+
+  lua_pushboolean(l, entity.is_drawn_in_y_order());
+  return 1;
+}
+
+/**
+ * \brief Implementation of custom_entity:set_drawn_in_y_order().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_set_drawn_in_y_order(lua_State* l) {
+
+  CustomEntity& entity = check_custom_entity(l, 1);
+  bool y_order = true;
+  if (lua_gettop(l) >= 2) {
+    y_order = lua_toboolean(l, 2);
+  }
+
+  entity.set_drawn_in_y_order(y_order);
+
+  return 0;
 }
 
 /**
@@ -4063,12 +4141,34 @@ int LuaContext::custom_entity_api_add_collision_test(lua_State* l) {
 
   if (lua_isstring(l, 2)) {
     // Built-in collision test.
-    CollisionMode collision_mode = LuaTools::check_enum<CollisionMode>(
-        l, 2, Detector::collision_mode_names
-    );
+    // TODO move string to enum conversion into a function of Dectector.
+    // We cannot use LuaTools::check_enum() like always, because this
+    // enum has special numerical values.
+    const std::string& collision_mode_name = luaL_checkstring(l, 2);
+    CollisionMode collision_mode = COLLISION_NONE;
 
-    if (collision_mode == COLLISION_NONE
-        || collision_mode == COLLISION_CUSTOM) {
+    if (collision_mode_name == "overlapping") {
+      collision_mode = COLLISION_OVERLAPPING;
+    }
+    else if (collision_mode_name == "containing") {
+      collision_mode = COLLISION_CONTAINING;
+    }
+    else if (collision_mode_name == "origin") {
+      collision_mode = COLLISION_CONTAINING;
+    }
+    else if (collision_mode_name == "facing") {
+      collision_mode = COLLISION_FACING;
+    }
+    else if (collision_mode_name == "touching") {
+      collision_mode = COLLISION_TOUCHING;
+    }
+    else if (collision_mode_name == "center") {
+      collision_mode = COLLISION_CENTER;
+    }
+    else if (collision_mode_name == "sprite") {
+      collision_mode = COLLISION_SPRITE;
+    }
+    else {
       LuaTools::arg_error(l, 2,
           std::string("Invalid name '") + lua_tostring(l, 2) + "'"
       );
@@ -4102,6 +4202,67 @@ int LuaContext::custom_entity_api_clear_collision_tests(lua_State* l) {
   entity.clear_collision_tests();
 
   return 0;
+}
+
+/**
+ * \brief Implementation of custom_entity:get_modified_ground().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_get_modified_ground(lua_State* l) {
+
+  const CustomEntity& entity = check_custom_entity(l, 1);
+
+  const Ground modified_ground = entity.get_modified_ground();
+
+  if (modified_ground == GROUND_EMPTY) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, Tileset::ground_names[modified_ground]);
+  }
+  return 0;
+}
+
+/**
+ * \brief Implementation of custom_entity:set_modified_ground().
+ * \param l The Lua context that is calling this function.
+ * \return Number of values to return to Lua.
+ */
+int LuaContext::custom_entity_api_set_modified_ground(lua_State* l) {
+
+  CustomEntity& entity = check_custom_entity(l, 1);
+  Ground modified_ground = GROUND_EMPTY;
+
+  if (!lua_isnil(l, 2)) {
+    modified_ground = LuaTools::check_enum<Ground>(l, 2,
+      Tileset::ground_names
+    );
+  }
+
+  entity.set_modified_ground(modified_ground);
+  return 0;
+}
+
+/**
+ * \brief Calls the on_update() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_update(MapEntity& entity) {
+
+  // This particular method is tried so often that we want to save optimize
+  // the std::string construction.
+  static const std::string method_name = "on_update";
+  if (!userdata_has_field(entity, method_name)) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_update();
+  lua_pop(l, 1);
 }
 
 /**
@@ -4155,6 +4316,78 @@ void LuaContext::entity_on_removed(MapEntity& entity) {
     on_removed();
   }
   remove_timers(-1);  // Stop timers associated to this entity.
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_enabled() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_enabled(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_enabled")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_enabled();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_disabled() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_disabled(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_disabled")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_disabled();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_pre_draw() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_pre_draw(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_pre_draw")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_pre_draw();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_post_draw() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_post_draw(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_post_draw")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_post_draw();
   lua_pop(l, 1);
 }
 
@@ -4238,6 +4471,46 @@ void LuaContext::entity_on_movement_finished(MapEntity& entity) {
 }
 
 /**
+ * \brief Calls the on_interaction() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ */
+void LuaContext::entity_on_interaction(MapEntity& entity) {
+
+  if (!userdata_has_field(entity, "on_interaction")) {
+    return;
+  }
+
+  push_entity(l, entity);
+  on_interaction();
+  lua_pop(l, 1);
+}
+
+/**
+ * \brief Calls the on_interaction_item() method of a Lua map entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param entity A map entity.
+ * \param item_used The equipment item used.
+ * \return \c true if an interaction occurred.
+ */
+bool LuaContext::entity_on_interaction_item(
+    MapEntity& entity, EquipmentItem& item_used) {
+
+  if (!userdata_has_field(entity, "on_interaction_item")) {
+    return false;
+  }
+
+  push_entity(l, entity);
+  bool result = on_interaction_item(item_used);
+  lua_pop(l, 1);
+  return result;
+}
+
+/**
  * \brief Calls the on_state_changed() method of a Lua hero.
  *
  * Does nothing if the method is not defined.
@@ -4312,45 +4585,6 @@ void LuaContext::teletransporter_on_activated(Teletransporter& teletransporter) 
   push_teletransporter(l, teletransporter);
   on_activated();
   lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_interaction() method of a Lua NPC.
- *
- * Does nothing if the method is not defined.
- *
- * \param npc An NPC.
- */
-void LuaContext::npc_on_interaction(Npc& npc) {
-
-  if (!userdata_has_field(npc, "on_interaction")) {
-    return;
-  }
-
-  push_npc(l, npc);
-  on_interaction();
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_interaction_item() method of a Lua NPC.
- *
- * Does nothing if the method is not defined.
- *
- * \param npc An NPC.
- * \param item_used The equipment item used.
- * \return \c true if an interaction occurred.
- */
-bool LuaContext::npc_on_interaction_item(Npc& npc, EquipmentItem& item_used) {
-
-  if (!userdata_has_field(npc, "on_interaction_item")) {
-    return false;
-  }
-
-  push_npc(l, npc);
-  bool result = on_interaction_item(item_used);
-  lua_pop(l, 1);
-  return result;
 }
 
 /**
@@ -4753,63 +4987,6 @@ void LuaContext::destructible_on_regenerating(Destructible& destructible) {
 }
 
 /**
- * \brief Calls the on_update() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_update(Enemy& enemy) {
-
-  // This particular method is tried so often that we want to save optimize
-  // the std::string construction.
-  static const std::string method_name = "on_update";
-  if (!userdata_has_field(enemy, method_name)) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_update();
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_enabled() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_enabled(Enemy& enemy) {
-
-  if (!userdata_has_field(enemy, "on_enabled")) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_enabled();
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_disabled() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_disabled(Enemy& enemy) {
-
-  if (!userdata_has_field(enemy, "on_disabled")) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_disabled();
-  lua_pop(l, 1);
-}
-
-/**
  * \brief Calls the on_restarted() method of a Lua enemy if it is defined.
  *
  * Also stops timers associated to the entity.
@@ -4823,42 +5000,6 @@ void LuaContext::enemy_on_restarted(Enemy& enemy) {
   if (userdata_has_field(enemy, "on_restarted")) {
     on_restarted();
   }
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_pre_draw() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_pre_draw(Enemy& enemy) {
-
-  if (!userdata_has_field(enemy, "on_pre_draw")) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_pre_draw();
-  lua_pop(l, 1);
-}
-
-/**
- * \brief Calls the on_post_draw() method of a Lua enemy.
- *
- * Does nothing if the method is not defined.
- *
- * \param enemy An enemy.
- */
-void LuaContext::enemy_on_post_draw(Enemy& enemy) {
-
-  if (!userdata_has_field(enemy, "on_post_draw")) {
-    return;
-  }
-
-  push_enemy(l, enemy);
-  on_post_draw();
   lua_pop(l, 1);
 }
 
@@ -4996,7 +5137,10 @@ void LuaContext::enemy_on_immobilized(Enemy& enemy) {
 }
 
 /**
- * \brief Calls the on_attacking_hero() method of a Lua enemy if it is defined.
+ * \brief Calls the on_attacking_hero() method of a Lua enemy.
+ *
+ * Does nothing if the method is not defined.
+ *
  * \param enemy An enemy.
  * \param hero The hero attacked.
  * \param enemy_sprite Enemy's sprite that caused the collision or NULL.
@@ -5012,6 +5156,26 @@ bool LuaContext::enemy_on_attacking_hero(Enemy& enemy, Hero& hero, Sprite* attac
   bool exists = on_attacking_hero(hero, attacker_sprite);
   lua_pop(l, 1);
   return exists;
+}
+
+/**
+ * \brief Calls the on_ground_below_changed() method of a Lua custom entity.
+ *
+ * Does nothing if the method is not defined.
+ *
+ * \param custom_entity A custom entity.
+ * \param ground_below The new ground below this entity.
+ */
+void LuaContext::custom_entity_on_ground_below_changed(
+    CustomEntity& custom_entity, Ground ground_below) {
+
+  if (!userdata_has_field(custom_entity, "on_ground_below_changed")) {
+    return;
+  }
+
+  push_custom_entity(l, custom_entity);
+  on_ground_below_changed(ground_below);
+  lua_pop(l, 1);
 }
 
 }

@@ -475,7 +475,7 @@ he cannot be hurt (for example when he is brandishing a treasure).
   hurting animations and sounds of the hero, see \ref lua_api_game_remove_life
   "game:remove_life()".
 
-\subsection lua_api_hero_start_hurt hero:start_hurt([source_entity, [source_sprite]], damage)
+\subsection lua_api_hero_start_hurt_entity hero:start_hurt([source_entity, [source_sprite]], damage)
 
 Same as
 \ref lua_api_hero_start_hurt "hero:start_hurt(source_x, source_y, damage)",

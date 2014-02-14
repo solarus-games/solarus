@@ -48,12 +48,10 @@ class Detector: public MapEntity {
     void check_collision(MapEntity& entity, Sprite& sprite);
 
     virtual void notify_action_command_pressed();
-    virtual bool interaction_with_item(EquipmentItem& item);
+    virtual bool interaction_with_item(EquipmentItem& item);  // TODO rename to notify_interaction_with_item
     virtual bool start_movement_by_hero();
     virtual void stop_movement_by_hero();
     virtual std::string get_sword_tapping_sound();
-
-    static const std::string collision_mode_names[];
 
   protected:
 

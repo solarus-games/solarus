@@ -30,12 +30,21 @@ namespace solarus {
  * \param y y position of the tile on the map
  * \param width width of the tile (the pattern can be repeated)
  * \param height height of the tile (the pattern can be repeated)
- * \param tile_pattern_id id of the tile pattern
+ * \param tileset The tileset to use.
+ * \param tile_pattern_id Id of the tile pattern in the tileset.
  */
-Tile::Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id):
+Tile::Tile(
+    Layer layer,
+    int x,
+    int y,
+    int width,
+    int height,
+    Tileset& tileset,
+    int tile_pattern_id
+):
   MapEntity("", 0, layer, x, y, width, height),
   tile_pattern_id(tile_pattern_id),
-  tile_pattern(NULL) {
+  tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
 
 }
 
@@ -55,24 +64,11 @@ EntityType Tile::get_type() const {
 }
 
 /**
- * \brief Sets the map of this entity.
- *
- * Warning: as this function is called when initializing the map,
- * the current map of the game is still the old one.
- *
- * \param map the map
- */
-void Tile::set_map(Map& map) {
-  MapEntity::set_map(map);
-  this->tile_pattern = &map.get_tileset().get_tile_pattern(tile_pattern_id);
-}
-
-/**
  * \brief Returns whether this entity is drawn at its position on the map.
  * \return true if this entity is drawn where it is located.
  */
 bool Tile::is_drawn_at_its_position() const {
-  return tile_pattern->is_drawn_at_its_position();
+  return tile_pattern.is_drawn_at_its_position();
 }
 
 /**
@@ -105,8 +101,12 @@ void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
       get_height()
   );
 
-  tile_pattern->fill_surface(dst_surface, dst_position,
-      get_map().get_tileset(), viewport);
+  tile_pattern.fill_surface(
+      dst_surface,
+      dst_position,
+      get_map().get_tileset(),
+      viewport
+  );
 }
 
 /**
@@ -114,7 +114,7 @@ void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
  * \return the tile pattern
  */
 TilePattern& Tile::get_tile_pattern() {
-  return *tile_pattern;
+  return tile_pattern;
 }
 
 /**
@@ -134,8 +134,8 @@ int Tile::get_tile_pattern_id() const {
  *
  * \return true if the pattern of this tile is animated
  */
-bool Tile::is_animated() {
-  return tile_pattern->is_animated();
+bool Tile::is_animated() const {
+  return tile_pattern.is_animated();
 }
 
 }

@@ -58,10 +58,11 @@ public class Wall extends MapEntity {
      * their initial values.
      */
     public void createProperties() throws MapException {
-        createBooleanProperty("stops_hero", false, true);
-        createBooleanProperty("stops_enemies", false, true);
-        createBooleanProperty("stops_npcs", false, true);
-        createBooleanProperty("stops_blocks", false, true);
+        createBooleanProperty("stops_hero", true, false);
+        createBooleanProperty("stops_enemies", true, false);
+        createBooleanProperty("stops_npcs", true, false);
+        createBooleanProperty("stops_blocks", true, false);
+        createBooleanProperty("stops_projectiles", true, false);
     }
 
     /**
@@ -70,12 +71,6 @@ public class Wall extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        if (!getBooleanProperty("stops_hero") &&
-                !getBooleanProperty("stops_enemies") &&
-                !getBooleanProperty("stops_npcs") &&
-                !getBooleanProperty("stops_blocks")) {
-            throw new MapException("This entity should be obstacle for at least one type of entity to have an effect");
-        }
     }
 
     /**

@@ -238,7 +238,8 @@ bool Switch::test_collision_custom(MapEntity& entity) {
  * \param entity_overlapping the entity overlapping the detector
  * \param collision_mode the collision mode that detected the collision
  */
-void Switch::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+void Switch::notify_collision(
+    MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (&entity_overlapping == this->entity_overlapping) {
     // already overlapping

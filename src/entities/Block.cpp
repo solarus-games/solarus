@@ -69,6 +69,7 @@ Block::Block(
   set_origin(8, 13);
   set_direction(direction);
   create_sprite(sprite_name);
+  set_drawn_in_y_order(get_sprite().get_size().get_height() > 16);
 }
 
 /**
@@ -84,15 +85,6 @@ Block::~Block() {
  */
 EntityType Block::get_type() const {
   return ENTITY_BLOCK;
-}
-
-/**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return \c true if this type of entity should be drawn at the same level
- * as the hero.
- */
-bool Block::is_drawn_in_y_order() const {
-  return get_sprite().get_size().get_height() > 16;
 }
 
 /**
@@ -159,21 +151,14 @@ bool Block::is_destructible_obstacle(Destructible& destructible) {
 }
 
 /**
- * \brief Sets the map.
- *
- * Warning: when this function is called during the map initialization,
- * the current map of the game is still the old one.
- *
- * \param map The map.
+ * \copydoc MapEntity::notify_created
  */
-void Block::set_map(Map& map) {
+void Block::notify_created() {
 
-  Detector::set_map(map);
-  if (map.is_loaded()) {
-    // We are not during the map initialization phase.
-    check_collision_with_detectors(false);
-    update_ground_below();
-  }
+  Detector::notify_created();
+
+  check_collision_with_detectors(false);
+  update_ground_below();
 }
 
 /**

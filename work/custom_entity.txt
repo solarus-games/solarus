@@ -56,8 +56,9 @@ get_model()
 has_layer_independent_collisions()
 set_layer_independent_collisions()
 set_size()
-set_direction()
 set_origin()
+get_direction()
+set_direction()
 get_sprite()
 create_sprite()
 remove_sprite()
@@ -66,11 +67,7 @@ is/set_drawn_in_y_order()
 is/set_drawn_at_its_position()
 is/set_ground_observer()
 is/set_ground_modifier()
-get/set_ground_point()
 get/set_modified_ground()
-get/set_facing_point()
-is/set_sword_ignored()
-get/set_sword_tapping_sound()
 
 set_traversable_by(entity_type, traversable)
   Describes if another entity can traverse this custom entity.
@@ -104,6 +101,10 @@ Events:
 Common from entity:
 
 on_removed()
+on_position_changed()
+on_obstacle_reached()
+on_movement_changed()
+on_movement_finished()
 
 Specific to custom entity:
 
@@ -114,13 +115,7 @@ on_enabled()
 on_disabled()
 on_pre_draw()
 on_post_draw()
-on_position_changed()
-on_obstacle_reached()
-on_movement_changed()
-on_movement_finished()
 on_ground_below_changed()
-on_facing_entity_changed()
-on_attacked_enemy()
 on_interaction()
 on_interaction_item()
 

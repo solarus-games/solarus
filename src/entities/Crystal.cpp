@@ -25,6 +25,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Sound.h"
+#include <lua.hpp>
 
 namespace solarus {
 
@@ -64,11 +65,11 @@ EntityType Crystal::get_type() const {
 }
 
 /**
- * \brief Notifies this entity that its map has just become active.
+ * \copydoc MapEntity::notify_creating
  */
-void Crystal::notify_map_started() {
+void Crystal::notify_creating() {
 
-  Detector::notify_map_started();
+  Detector::notify_creating();
 
   bool state = get_game().get_crystal_state();
   if (state != this->state) {
@@ -124,7 +125,7 @@ void Crystal::notify_action_command_pressed() {
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog
-    get_game().start_dialog("_crystal", LUA_REFNIL);
+    get_game().start_dialog("_crystal", LUA_REFNIL, LUA_REFNIL);
   }
 }
 

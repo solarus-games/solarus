@@ -22,7 +22,6 @@
 #include "GameCommands.h"
 #include "Savegame.h"
 #include "DialogBoxSystem.h"
-#include <lua.hpp>
 
 namespace solarus {
 
@@ -95,8 +94,8 @@ class Game {
 
     // dialogs
     void start_dialog(const std::string& dialog_id,
-        int info_ref = LUA_REFNIL, int callback_ref = LUA_REFNIL);
-    void stop_dialog(int status_ref = LUA_REFNIL);
+        int info_ref, int callback_ref);
+    void stop_dialog(int status_ref);
 
     // game over
     void start_game_over();

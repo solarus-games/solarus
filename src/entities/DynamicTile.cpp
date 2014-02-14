@@ -33,8 +33,9 @@ namespace solarus {
  * \param y y position of the tile on the map
  * \param width width of the tile (the pattern can be repeated)
  * \param height height of the tile (the pattern can be repeated)
+ * \param tileset The tileset to use.
  * \param tile_pattern_id id of the tile pattern in the tileset
- * \param enabled true to make the tile active on the map
+ * \param enabled true to make the tile initially enabled.
  */
 DynamicTile::DynamicTile(
     const std::string& name,
@@ -43,11 +44,12 @@ DynamicTile::DynamicTile(
     int y,
     int width,
     int height,
+    Tileset& tileset,
     int tile_pattern_id,
     bool enabled):
   MapEntity(name, 0, layer, x, y, width, height),
   tile_pattern_id(tile_pattern_id),
-  tile_pattern(NULL) {
+  tile_pattern(tileset.get_tile_pattern(tile_pattern_id)) {
 
   set_enabled(enabled);
 }
@@ -69,20 +71,6 @@ EntityType DynamicTile::get_type() const {
 }
 
 /**
- * \brief Sets the map of this entity.
- *
- * Warning: as this function is called when initializing the map,
- * the current map of the game is still the old one.
- *
- * \param map the map
- */
-void DynamicTile::set_map(Map &map) {
-
-  MapEntity::set_map(map);
-  this->tile_pattern = &map.get_tileset().get_tile_pattern(tile_pattern_id);
-}
-
-/**
  * \brief Returns whether entities of this type can override the ground
  * of where they are placed.
  * \return \c true if this type of entity can change the ground.
@@ -97,48 +85,7 @@ bool DynamicTile::is_ground_modifier() const {
  * \return The ground defined by this entity.
  */
 Ground DynamicTile::get_modified_ground() const {
-  return tile_pattern->get_ground();
-}
-
-/**
- * \brief Returns whether this tile is an obstacle for the specified entity.
- * \param other an entity
- * \return true if this tile is an obstacle for the entity
- */
-bool DynamicTile::is_obstacle_for(MapEntity& other) {
-
-  // TODO normally, this function can be removed since there is already
-  // a modified ground
-  bool result = false;
-  switch (get_modified_ground()) {
-
-    case GROUND_WALL:
-    case GROUND_LOW_WALL:
-    case GROUND_WALL_TOP_RIGHT:
-    case GROUND_WALL_TOP_LEFT:
-    case GROUND_WALL_BOTTOM_LEFT:
-    case GROUND_WALL_BOTTOM_RIGHT:
-    case GROUND_WALL_TOP_RIGHT_WATER:
-    case GROUND_WALL_TOP_LEFT_WATER:
-    case GROUND_WALL_BOTTOM_LEFT_WATER:
-    case GROUND_WALL_BOTTOM_RIGHT_WATER:
-      result = true;
-      break;
-
-    case GROUND_EMPTY:
-    case GROUND_TRAVERSABLE:
-    case GROUND_SHALLOW_WATER:
-    case GROUND_DEEP_WATER:
-    case GROUND_GRASS:
-    case GROUND_HOLE:
-    case GROUND_LAVA:
-    case GROUND_PRICKLE:
-    case GROUND_LADDER:
-    case GROUND_ICE:
-      result = false;
-      break;
-  }
-  return result;
+  return tile_pattern.get_ground();
 }
 
 /**
@@ -157,7 +104,7 @@ void DynamicTile::draw_on_map() {
       get_top_left_y() - camera_position.get_y(),
       get_width(), get_height());
 
-  tile_pattern->fill_surface(get_map().get_visible_surface(), dst_position,
+  tile_pattern.fill_surface(get_map().get_visible_surface(), dst_position,
       get_map().get_tileset(), camera_position);
 }
 

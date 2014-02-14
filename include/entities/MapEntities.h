@@ -72,6 +72,7 @@ class MapEntities {
     void bring_to_back(MapEntity& entity);
     void destroy_entity(MapEntity* entity);
     static bool compare_y(MapEntity* first, MapEntity* second);
+    void set_entity_drawn_in_y_order(MapEntity& entity, bool drawn_in_y_order);
     void set_entity_layer(MapEntity& entity, Layer layer);
 
     // specific to some entity types

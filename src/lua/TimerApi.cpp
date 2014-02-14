@@ -282,6 +282,30 @@ void LuaContext::notify_timers_map_suspended(bool suspended) {
 }
 
 /**
+ * \brief Suspends or resumes the timers attached to a map entity.
+ *
+ * This is independent from the Timer::is_suspended_with_map() property.
+ *
+ * \param entity A map entity.
+ * \param suspended \c true to suspend its timers, \c false to resume them.
+ */
+void LuaContext::set_entity_timers_suspended(
+    MapEntity& entity, bool suspended
+) {
+
+  std::map<Timer*, LuaTimerData>::iterator it;
+  for (it = timers.begin(); it != timers.end(); ++it) {
+
+    Timer* timer = it->first;
+    if (it->second.context == &entity) {
+      continue;
+    }
+
+    timer->set_suspended(suspended);
+  }
+}
+
+/**
  * \brief Executes the callback of a timer.
  *
  * Then, if the callback returns \c true, the timer is rescheduled,

@@ -915,6 +915,7 @@ int LuaContext::map_api_create_tile(lua_State* l) {
           current_y,
           pattern.get_width(),
           pattern.get_height(),
+          map.get_tileset(),
           tile_pattern_id);
       map.get_entities().add_entity(entity);
     }
@@ -1413,6 +1414,7 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
       y,
       width,
       height,
+      map.get_tileset(),
       tile_pattern_id,
       enabled_at_start);
   map.get_entities().add_entity(entity);
@@ -1477,10 +1479,11 @@ int LuaContext::map_api_create_wall(lua_State* l) {
   int y = LuaTools::check_int_field(l, 1, "y");
   int width = LuaTools::check_int_field(l, 1, "width");
   int height = LuaTools::check_int_field(l, 1, "height");
-  bool stops_hero = LuaTools::check_boolean_field(l, 1, "stops_hero");
-  bool stops_enemies = LuaTools::check_boolean_field(l, 1, "stops_enemies");
-  bool stops_npcs = LuaTools::check_boolean_field(l, 1, "stops_npcs");
-  bool stops_blocks = LuaTools::check_boolean_field(l, 1, "stops_blocks");
+  bool stops_hero = LuaTools::opt_boolean_field(l, 1, "stops_hero", false);
+  bool stops_enemies = LuaTools::opt_boolean_field(l, 1, "stops_enemies", false);
+  bool stops_npcs = LuaTools::opt_boolean_field(l, 1, "stops_npcs", false);
+  bool stops_blocks = LuaTools::opt_boolean_field(l, 1, "stops_blocks", false);
+  bool stops_projectiles = LuaTools::opt_boolean_field(l, 1, "stops_projectiles", false);
 
   entity_creation_check_size(l, 1, width, height);
 
@@ -1494,7 +1497,9 @@ int LuaContext::map_api_create_wall(lua_State* l) {
       stops_hero,
       stops_enemies,
       stops_npcs,
-      stops_blocks);
+      stops_blocks,
+      stops_projectiles
+  );
   map.get_entities().add_entity(entity);
 
   if (map.is_started()) {
@@ -1863,7 +1868,8 @@ int LuaContext::map_api_create_custom_entity(lua_State* l) {
       width,
       height,
       sprite_name,
-      model);
+      model
+  );
 
   map.get_entities().add_entity(entity);
   if (map.is_started()) {

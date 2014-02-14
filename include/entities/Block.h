@@ -43,7 +43,6 @@ class Block: public Detector {
     ~Block();
 
     EntityType get_type() const;
-    bool is_drawn_in_y_order() const;
     bool is_ground_observer() const;
 
     bool is_obstacle_for(MapEntity& other);
@@ -52,7 +51,7 @@ class Block: public Detector {
     bool is_hero_obstacle(Hero& hero);
     bool is_enemy_obstacle(Enemy& enemy);
     bool is_destructible_obstacle(Destructible& destructible);
-    void set_map(Map& map);
+    void notify_created();
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_action_command_pressed();

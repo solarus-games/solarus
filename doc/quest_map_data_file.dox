@@ -815,13 +815,20 @@ A wall can be declared in the map data file with
 Additional properties:
 - \c width (number): Width of the wall in pixels.
 - \c height (number): Height of the wall in pixels.
-- \c stops_hero (boolean): \c true to make the wall stop the hero.
-- \c stops_npcs (boolean): \c true to make the wall stop
+- \c stops_hero (boolean, optional): \c true to make the wall stop the hero.
+  No value means \c false.
+- \c stops_npcs (boolean, optional): \c true to make the wall stop
   \ref quest_map_data_file_syntax_npc "non-playing characters".
-- \c stops_enemies (boolean): \c true to make the wall stop
+  No value means \c false.
+- \c stops_enemies (boolean, optional): \c true to make the wall stop
   \ref quest_map_data_file_syntax_npc "enemies".
-- \c stops_blocks (boolean): \c true to make the wall stop
+  No value means \c false.
+- \c stops_blocks (boolean, optional): \c true to make the wall stop
   \ref quest_map_data_file_syntax_block "blocks".
+  No value means \c false.
+- \c stops_blocks (boolean, optional): \c true to make the wall stop
+  projectiles: thrown objects, arrows, the hookshot and the boomerang.
+  No value means \c false.
 
 Example of wall:
 \verbatim
@@ -835,6 +842,7 @@ wall{
   stops_enemies = true,
   stops_npcs = true,
   stops_blocks = true,
+  stops_projectiles = true,
 }
 \endverbatim
 

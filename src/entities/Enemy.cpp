@@ -102,8 +102,6 @@ Enemy::Enemy(
   savegame_variable(),
   traversable(true),
   obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
-  drawn_in_y_order(true),
-  initialized(false),
   being_hurt(false),
   stop_hurt_date(0),
   invulnerable(false),
@@ -121,6 +119,7 @@ Enemy::Enemy(
 
   set_size(16, 16);
   set_origin(8, 13);
+  set_drawn_in_y_order(true);
 }
 
 /**
@@ -184,7 +183,6 @@ MapEntity* Enemy::create(
   enemy->savegame_variable = savegame_variable;
 
   if (rank != RANK_NORMAL) {
-    enemy->set_enabled(false);
     enemy->hurt_style = HURT_BOSS;
   }
 
@@ -202,15 +200,6 @@ EntityType Enemy::get_type() const {
 }
 
 /**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return \c true if this type of entity should be drawn at the same level
- * as the hero.
- */
-bool Enemy::is_drawn_in_y_order() const {
-  return drawn_in_y_order;
-}
-
-/**
  * \brief Returns whether this entity is sensible to the ground below it.
  * \return \c true if this entity is sensible to its ground.
  */
@@ -219,51 +208,32 @@ bool Enemy::is_ground_observer() const {
 }
 
 /**
- * \brief Initializes the enemy.
+ * \copydoc MapEntity::notify_creating
  */
-void Enemy::initialize() {
+void Enemy::notify_creating() {
 
-  if (!initialized) {
-    initialized = true;
-    get_lua_context().run_enemy(*this);
-  }
+  get_lua_context().run_enemy(*this);
 }
 
 /**
- * \brief Sets the map.
- *
- * Warning: when this function is called during the map initialization,
- * the current map of the game is still the old one.
- *
- * \param map The map.
+ * \copydoc MapEntity::notify_created
  */
-void Enemy::set_map(Map& map) {
+void Enemy::notify_created() {
 
-  Detector::set_map(map);
+  Detector::notify_created();
 
-  if (is_enabled()) {
-    initialize();
-    enable_pixel_collisions();
-  }
+  // At this point, enemy:on_created() was called.
+  enable_pixel_collisions();
 
-  if (map.is_loaded()) {
-    // We are not during the map initialization phase.
-    restart();
-  }
-}
-
-/**
- * \brief Notifies this entity that its map has just become active.
- */
-void Enemy::notify_map_started() {
-
-  MapEntity::notify_map_started();
-
-  // give the sprite their initial direction
+  // Give sprites their initial direction.
   int initial_direction = get_direction();
   std::vector<Sprite*>::const_iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     (*it)->set_current_direction(initial_direction);
+  }
+
+  if (is_enabled()) {
+    restart();
   }
 }
 
@@ -802,7 +772,7 @@ void Enemy::set_animation(const std::string& animation) {
  */
 void Enemy::update() {
 
-  MapEntity::update();
+  Detector::update();
 
   if (is_suspended() || !is_enabled()) {
     return;
@@ -890,7 +860,7 @@ void Enemy::update() {
     notify_dead();
   }
 
-  get_lua_context().enemy_on_update(*this);
+  get_lua_context().entity_on_update(*this);
 }
 
 /**
@@ -924,9 +894,9 @@ void Enemy::draw_on_map() {
     return;
   }
 
-  get_lua_context().enemy_on_pre_draw(*this);
+  get_lua_context().entity_on_pre_draw(*this);
   Detector::draw_on_map();
-  get_lua_context().enemy_on_post_draw(*this);
+  get_lua_context().entity_on_post_draw(*this);
 }
 
 /**
@@ -937,15 +907,16 @@ void Enemy::notify_enabled(bool enabled) {
 
   Detector::notify_enabled(enabled);
 
+  if (!is_on_map()) {
+    return;
+  }
+
   if (enabled) {
-    if (!initialized) {
-      initialize();
-    }
     restart();
-    get_lua_context().enemy_on_enabled(*this);
+    get_lua_context().entity_on_enabled(*this);
   }
   else {
-    get_lua_context().enemy_on_disabled(*this);
+    get_lua_context().entity_on_disabled(*this);
   }
 }
 
@@ -1357,11 +1328,6 @@ void Enemy::notify_immobilized() {
  * This function is called when the enemy has no more health points.
  */
 void Enemy::kill() {
-
-  // if the enemy is immobilized, give some money
-  if (rank == RANK_NORMAL && is_immobilized() && !treasure.is_saved()) {
-    // TODO choose random money (can we do this from scripts?)
-  }
 
   // stop any movement and disable attacks
   set_collision_modes(COLLISION_NONE);

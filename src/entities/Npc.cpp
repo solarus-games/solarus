@@ -27,6 +27,7 @@
 #include "Sprite.h"
 #include "Equipment.h"
 #include "EquipmentItemUsage.h"
+#include <lua.hpp>
 
 namespace solarus {
 
@@ -59,6 +60,10 @@ Npc::Npc(Game& game, const std::string& name, Layer layer, int x, int y,
   set_origin(8, 13);
   set_direction(direction);
 
+  // Usual NPCs are displayed like the hero whereas generalized NPCs are
+  // not necessarily people.
+  set_drawn_in_y_order(subtype == USUAL_NPC);
+
   // behavior
   if (behavior_string == "map") {
     behavior = BEHAVIOR_MAP_SCRIPT;
@@ -90,17 +95,6 @@ Npc::~Npc() {
  */
 EntityType Npc::get_type() const {
   return ENTITY_NPC;
-}
-
-/**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return \c true if this type of entity should be drawn at the same level
- * as the hero.
- */
-bool Npc::is_drawn_in_y_order() const {
-  // usual NPCs are displayed like the hero whereas generalized NPCs are
-  // not necessarily people
-  return subtype == USUAL_NPC;
 }
 
 /**
@@ -254,7 +248,7 @@ void Npc::notify_action_command_pressed() {
     if (effect != KeysEffect::ACTION_KEY_LIFT) {
       // start the normal behavior
       if (behavior == BEHAVIOR_DIALOG) {
-        get_game().start_dialog(dialog_to_show, LUA_REFNIL);
+        get_game().start_dialog(dialog_to_show, LUA_REFNIL, LUA_REFNIL);
       }
       else {
         call_script_hero_interaction();
@@ -285,7 +279,7 @@ void Npc::notify_action_command_pressed() {
 void Npc::call_script_hero_interaction() {
 
   if (behavior == BEHAVIOR_MAP_SCRIPT) {
-    get_lua_context().npc_on_interaction(*this);
+    get_lua_context().entity_on_interaction(*this);
   }
   else {
     EquipmentItem& item = get_equipment().get_item(item_name);
@@ -309,11 +303,13 @@ bool Npc::interaction_with_item(EquipmentItem& item_used) {
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {
     EquipmentItem& item_to_notify = get_equipment().get_item(item_name);
     interaction_occured = get_lua_context().item_on_npc_interaction_item(
-        item_to_notify, *this, item_used);
+        item_to_notify, *this, item_used
+    );
   }
   else {
-    interaction_occured = get_lua_context().npc_on_interaction_item(
-        *this, item_used);
+    interaction_occured = get_lua_context().entity_on_interaction_item(
+        *this, item_used
+    );
   }
 
   return interaction_occured;

@@ -20,7 +20,6 @@
 #include "Common.h"
 #include "lua/ExportableToLua.h"
 #include "lowlevel/Rectangle.h"
-#include <lua.hpp>
 
 namespace solarus {
 

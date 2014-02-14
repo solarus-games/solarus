@@ -45,11 +45,12 @@ class Teletransporter: public Detector {
         const std::string& sound_id,
         Transition::Style transition_style,
         const std::string& destination_map_id,
-        const std::string& destination_name);
+        const std::string& destination_name
+    );
     ~Teletransporter();
 
     EntityType get_type() const;
-    void set_map(Map& map);
+    void notify_creating();
 
     const std::string& get_sound_id() const;
     void set_sound_id(const std::string& sound_id);

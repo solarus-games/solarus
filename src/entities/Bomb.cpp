@@ -47,6 +47,7 @@ Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
   get_sprite().enable_pixel_collisions();
   set_size(16, 16);
   set_origin(8, 13);
+  set_drawn_in_y_order(true);
   set_optimization_distance(0); // make the bomb explode even if the hero runs far away
 }
 
@@ -75,14 +76,6 @@ EntityType Bomb::get_type() const {
  */
 bool Bomb::can_be_obstacle() const {
   return false;
-}
-
-/**
- * \brief Returns whether this entity has to be drawn in y order.
- * \return true if this type of entity is drawn at the same level as the hero
- */
-bool Bomb::is_drawn_in_y_order() const {
-  return true;
 }
 
 /**

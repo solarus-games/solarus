@@ -145,7 +145,7 @@ const size_t Grid<T>::get_num_cells() const {
 template <typename T>
 const std::vector<T>& Grid<T>::get_elements(size_t cell_index) const {
 
-  Debug::check_assertion(cell_index >= 0 && cell_index < get_num_cells(),
+  Debug::check_assertion(cell_index < get_num_cells(),
       "Invalid index");
 
   return elements[cell_index];
@@ -176,12 +176,12 @@ void Grid<T>::get_elements(
 
   std::set<T> elements_added;
   for (size_t i = row1; i <= row2; ++i) {
-    if (i < 0 || i >= num_rows) {
+    if (i >= num_rows) {
       continue;
     }
 
     for (size_t j = column1; j <= column2; ++j) {
-      if (j < 0 || j >= num_columns) {
+      if (j >= num_columns) {
         continue;
       }
 
@@ -231,12 +231,12 @@ void Grid<T>::add(const T& element) {
   }
 
   for (size_t i = row1; i <= row2; ++i) {
-    if (i < 0 || i >= num_rows) {
+    if (i >= num_rows) {
       continue;
     }
 
     for (size_t j = column1; j <= column2; ++j) {
-      if (j < 0 || j >= num_columns) {
+      if (j >= num_columns) {
         continue;
       }
 

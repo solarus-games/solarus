@@ -21,7 +21,6 @@
 #include "Debug.h"
 
 #if SOLARUS_HAVE_OPENGL == 1
-#  include "lua/LuaContext.h"
 #  include <SDL.h>
 #  include <SDL_opengl.h>
 #endif
@@ -41,23 +40,19 @@ class Shader {
 
     static bool initialize();
     static void quit();
-
-#if SOLARUS_HAVE_OPENGL == 1
     static Shader* create(const std::string& shader_name);
-    static void shaded_render(Surface& quest_surface, Shader* shader);
-    static void restore_default_shader_program();
-    static void set_rendering_settings();
   
     Shader(const std::string& shader_name);
     ~Shader();
 
     const std::string& get_name();
     double get_window_scale();
-  
-    void apply();
+
+    void render(Surface& quest_surface);
 
   private:
 
+#if SOLARUS_HAVE_OPENGL == 1
     static PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
     static PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
     static PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
@@ -73,6 +68,7 @@ class Shader {
     static PFNGLGETHANDLEARBPROC glGetHandleARB;
   
     static void compile_shader(GLhandleARB& shader, const char* source);
+    static void set_rendering_settings();
     static int l_shader(lua_State* l);
     static const std::string get_sampler_type();
   
@@ -88,11 +84,12 @@ class Shader {
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
+
+#endif
+  
     std::string shader_name;                     /**< The name of the shader. */
     double window_scale;                         /**< Default scale of the window when the shader is being active,
                                                   * compared to the normal quest size. */
-
-#endif
 };
 
 }

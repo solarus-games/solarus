@@ -585,7 +585,7 @@ void Video::render(Surface& quest_surface) {
   const PixelFilter* software_filter = video_mode->get_software_filter();
   if (hardware_filter != NULL) {
     // OpenGL rendering.
-    Shader::shaded_render(quest_surface, hardware_filter);
+    hardware_filter->render(quest_surface);
   }
   else {
     // SDL rendering, with acceleration if supported, and optionally with

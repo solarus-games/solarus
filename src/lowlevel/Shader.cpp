@@ -18,6 +18,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
+#include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 
 namespace solarus {
@@ -139,13 +140,32 @@ void Shader::quit() {
 #endif
 }
 
+/**
+ * \brief Construct a shader from a name.
+ * \param shader_name The name of the shader to load.
+ * \return The created shader, or NULL if the shader fails to compile.
+ */
+Shader* Shader::create(const std::string& shader_name) {
+    
 #if SOLARUS_HAVE_OPENGL == 1
-
+  Shader* shader = new Shader(shader_name);
+    
+  if (glGetError() != GL_NO_ERROR) {
+    Debug::warning("Cannot compile shader '" + shader_name + "'");
+    return NULL;
+  }
+  return shader;
+#else
+  return NULL;
+#endif
+}
+  
 /**
  * \brief Constructor.
  * \param shader_name The name of the shader to load.
  */
 Shader::Shader(const std::string& shader_name):
+#if SOLARUS_HAVE_OPENGL == 1
     program(0),
     vertex_shader(0),
     fragment_shader(0),
@@ -165,89 +185,50 @@ Shader::Shader(const std::string& shader_name):
   }
   restore_default_shader_program();
 }
+#else
+    shader_name(shader_name),
+    window_scale(1.0) {
+}
+#endif
   
 /**
  * \brief Destructor.
  */
 Shader::~Shader() {
-    
+  
+#if SOLARUS_HAVE_OPENGL == 1
   glDeleteObjectARB(vertex_shader);
   glDeleteObjectARB(fragment_shader);
   glDeleteObjectARB(program);
+#endif
 }
 
 /**
- * \brief Construct a shader from a name.
- * \param shader_name The name of the shader to load.
- * \return The created shader, or NULL if the shader fails to compile.
+ * \brief Get the name of the shader, which is also the name of the related video mode.
+ * \return The name of the shader.
  */
-Shader* Shader::create(const std::string& shader_name) {
-    
-  Shader* shader = new Shader(shader_name);
-    
-  if (glGetError() != GL_NO_ERROR) {
-    Debug::warning("Cannot compile shader '" + shader_name + "'");
-    return NULL;
-  }
-  return shader;
+const std::string& Shader::get_name() {
+
+  return shader_name;
 }
   
 /**
- * \brief Compile a shader from source.
- * \param shader Reference to the shader to fill and compile.
- * \param source Sources to compile.
+ * \brief Get the scale to apply on the quest size to get the final default size of the related video mode.
+ * \return The window scale.
  */
-void Shader::compile_shader(GLhandleARB& shader, const char* source) {
+double Shader::get_window_scale() {
 
-  GLint status;
-
-  glShaderSourceARB(shader, 1, &source, NULL);
-  glCompileShaderARB(shader);
-  glGetObjectParameterivARB(shader, GL_OBJECT_COMPILE_STATUS_ARB, &status);
-  if (status == 0) {
-    GLint length;
-    char* info;
-
-    glGetObjectParameterivARB(shader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
-    info = SDL_stack_alloc(char, length+1);
-    glGetInfoLogARB(shader, length, NULL, info);
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to compile shader:\n%s\n%s", source, info);
-    SDL_stack_free(info);
-  }
+  return window_scale;
 }
   
-/**
- * \brief Restore the default shader.
- */
-void Shader::restore_default_shader_program() {
-
-  glUseProgramObjectARB(default_shader_program);
-}
-
-/**
- * \brief Set up OpenGL rendering parameter.
- * This basically reset the projection matrix.
- */
-void Shader::set_rendering_settings() {
-
-  Rectangle quest_size = Video::get_quest_size();
-  static const GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  glOrtho(-1.0, 1.0, -1.0 / aspect, 1.0 / aspect, 0.0, 1.0);
-
-  glMatrixMode(GL_MODELVIEW);
-}
-
 /**
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
- * \param shader the shader to apply if any, or NULL.
  */
-void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
+void Shader::render(Surface& quest_surface) {
 
+#if SOLARUS_HAVE_OPENGL == 1
   float rendering_width, rendering_height;
   SDL_Renderer* renderer = Video::get_renderer();
   SDL_Window* window = Video::get_window();
@@ -273,9 +254,7 @@ void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
 
   glEnable(gl_texture_type);
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
-  if (shader != NULL) {
-    shader->apply();
-  }
+  glUseProgramObjectARB(program);
 
   glBegin(GL_QUADS);
   glTexCoord2f(0.0f, 0.0f);
@@ -289,91 +268,57 @@ void Shader::shaded_render(Surface& quest_surface, Shader* shader) {
   glEnd();
 
   // Restore default states.
-  if (shader != NULL) {
-    restore_default_shader_program();
-  }
+  glUseProgramObjectARB(default_shader_program);
   SDL_GL_UnbindTexture(render_target);
   glDisable(gl_texture_type);
 
   // And swap the window.
-  SDL_GL_SwapWindow(window);  
+  SDL_GL_SwapWindow(window);
+#endif
 }
 
-/**
- * \brief Get the name of the shader, which is also the name of the related video mode.
- * \return The name of the shader.
- */
-const std::string& Shader::get_name() {
-
-  return shader_name;
-}
+#if SOLARUS_HAVE_OPENGL == 1
   
 /**
- * \brief Get the scale to apply on the quest size to get the final default size of the related video mode.
- * \return The window scale.
+ * \brief Compile a shader from source.
+ * \param shader Reference to the shader to fill and compile.
+ * \param source Sources to compile.
  */
-double Shader::get_window_scale() {
+void Shader::compile_shader(GLhandleARB& shader, const char* source) {
 
-  return window_scale;
+  GLint status;
+    
+  glShaderSourceARB(shader, 1, &source, NULL);
+  glCompileShaderARB(shader);
+  glGetObjectParameterivARB(shader, GL_OBJECT_COMPILE_STATUS_ARB, &status);
+  if (status == 0) {
+    GLint length;
+    char* info;
+      
+    glGetObjectParameterivARB(shader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
+    info = SDL_stack_alloc(char, length+1);
+    glGetInfoLogARB(shader, length, NULL, info);
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to compile shader:\n%s\n%s", source, info);
+    SDL_stack_free(info);
+  }
 }
 
 /**
- * \brief Load all files from the corresponding shader, depending on the driver and shader names.
- * Parse the Lua file and compile GLSL others.
- * \param shader_name The name of the shader to load.
+ * \brief Set up OpenGL rendering parameter.
+ * This basically reset the projection matrix.
  */
-void Shader::load(const std::string& shader_name) {
-
-  const std::string shader_path = 
-      "shaders/filters/" + shader_name;
-
-  // Parse the lua file
-  load_lua_file(shader_path);
+void Shader::set_rendering_settings() {
+  
+  Rectangle quest_size = Video::get_quest_size();
+  static const GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
+    
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glOrtho(-1.0, 1.0, -1.0 / aspect, 1.0 / aspect, 0.0, 1.0);
+    
+  glMatrixMode(GL_MODELVIEW);
 }
-
-/**
- * \brief Load and parse the Lua file of the requested shader.
- * \param path The path to the lua file, relative to the data folder.
- */
-void Shader::load_lua_file(const std::string& path) {
-
-  lua_State* l = luaL_newstate();
-  luaL_openlibs(l);  // FIXME don't open the libs
-  size_t size;
-  char* buffer;  
-
-  FileTools::data_file_open_buffer(path, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, path.c_str());
-  loading_shader = this;
-
-  if (load_result != 0) {
-    // Syntax error in the lua file.
-    Debug::die(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
-  }
-  else {
-    const Rectangle& quest_size = Video::get_quest_size();
-    lua_register(l, "shader", l_shader);
-
-    // Send some parameters to the lua script.
-    lua_pushstring(l, Video::get_rendering_driver_name().c_str());
-    lua_pushstring(l, shading_language_version.c_str());
-    lua_pushstring(l, get_sampler_type().c_str());
-    lua_pushinteger(l, quest_size.get_width());
-    lua_pushinteger(l, quest_size.get_height());
-
-    if (lua_pcall(l, 5, 0, 0) != 0) {
-
-      // Runtime error.
-      Debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
-      lua_pop(l, 6);
-    }
-  }
-
-  loading_shader = NULL;
-  FileTools::data_file_close_buffer(buffer);
-  lua_close(l);
-}
-
+  
 /**
  * \brief Callback when parsing the lua file. Fill the loading shader with the result.
  * \param l The lua state.
@@ -431,14 +376,64 @@ const std::string Shader::get_sampler_type() {
   }
   return "sampler2D";
 }
+
+/**
+ * \brief Load all files from the corresponding shader, depending on the driver and shader names.
+ * Parse the Lua file and compile GLSL others.
+ * \param shader_name The name of the shader to load.
+ */
+void Shader::load(const std::string& shader_name) {
+
+  const std::string shader_path =
+    "shaders/filters/" + shader_name;
+    
+  // Parse the lua file
+  load_lua_file(shader_path);
+}
   
 /**
- * \brief Apply the shader program.
+ * \brief Load and parse the Lua file of the requested shader.
+ * \param path The path to the lua file, relative to the data folder.
  */
-void Shader::apply() {
-  glUseProgramObjectARB(program);
+void Shader::load_lua_file(const std::string& path) {
+    
+  lua_State* l = luaL_newstate();
+  luaL_openlibs(l);  // FIXME don't open the libs
+  size_t size;
+  char* buffer;
+    
+  FileTools::data_file_open_buffer(path, &buffer, &size);
+  int load_result = luaL_loadbuffer(l, buffer, size, path.c_str());
+  loading_shader = this;
+    
+  if (load_result != 0) {
+    // Syntax error in the lua file.
+    Debug::die(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
+  }
+  else {
+    const Rectangle& quest_size = Video::get_quest_size();
+    lua_register(l, "shader", l_shader);
+      
+    // Send some parameters to the lua script.
+    lua_pushstring(l, Video::get_rendering_driver_name().c_str());
+    lua_pushstring(l, shading_language_version.c_str());
+    lua_pushstring(l, get_sampler_type().c_str());
+    lua_pushinteger(l, quest_size.get_width());
+    lua_pushinteger(l, quest_size.get_height());
+      
+    if (lua_pcall(l, 5, 0, 0) != 0) {
+        
+      // Runtime error.
+      Debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
+      lua_pop(l, 6);
+    }
+  }
+    
+  loading_shader = NULL;
+  FileTools::data_file_close_buffer(buffer);
+  lua_close(l);
 }
- 
+
 #endif
 
 }

@@ -20,6 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Video.h"
+#include "lua/LuaContext.h"
 #include "lua/LuaTools.h"
 #include "Transition.h"
 #include <lua.hpp>

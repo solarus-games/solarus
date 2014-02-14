@@ -561,6 +561,8 @@ and the layer is the one of the current enemy by default.
   - \c breed (string): Model of enemy to create.
   - \c rank (number, optional): \c 0 for a normal enemy (default),
     \c 1 for a miniboss, \c 2 for a boss.
+    This property will be removed in a future version.
+    Its only effect is to change the initial hurt style.
   - \c savegame_variable (string, optional): Name of the boolean value that
     stores in the \ref lua_api_game "savegame" whether this enemy is dead.
     No value means that the enemy is not saved.
@@ -592,14 +594,6 @@ and the layer is the one of the current enemy by default.
   treasure that is not obtained yet, this
   \ref lua_api_pickable "pickable treasure" is created and returned.
   Otherwise, \c nil is returned.
-
-\remark If the first enemy is
-  \ref lua_api_entity_is_enabled "disabled" while calling this function,
-  which is often the case for a boss,
-  then the newly created enemy is also initially disabled.
-  Don't forget to enable it when your first enemy gets enabled
-  (you can do this from the
-  \ref lua_api_enemy_on_enabled "enemy:on_enabled()" event.
 
 \section lua_api_enemy_inherited_events Events inherited from map entity
 

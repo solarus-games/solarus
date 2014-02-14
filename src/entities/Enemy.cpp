@@ -183,7 +183,6 @@ MapEntity* Enemy::create(
   enemy->savegame_variable = savegame_variable;
 
   if (rank != RANK_NORMAL) {
-    enemy->set_enabled(false);
     enemy->hurt_style = HURT_BOSS;
   }
 
@@ -1329,11 +1328,6 @@ void Enemy::notify_immobilized() {
  * This function is called when the enemy has no more health points.
  */
 void Enemy::kill() {
-
-  // if the enemy is immobilized, give some money
-  if (rank == RANK_NORMAL && is_immobilized() && !treasure.is_saved()) {
-    // TODO choose random money (can we do this from scripts?)
-  }
 
   // stop any movement and disable attacks
   set_collision_modes(COLLISION_NONE);

@@ -3770,7 +3770,6 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
 
   // Forward some properties to the new enemy.
   entity->set_optimization_distance(enemy.get_optimization_distance());
-  entity->set_enabled(enemy.is_enabled());
 
   map.get_entities().add_entity(entity);
 

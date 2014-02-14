@@ -79,8 +79,10 @@ public class ActionUpDownLayer extends MapEditorAction {
 
     @Override
     public void execute() throws QuestEditorException {
-        for (int i = 0; i < entities.size(); i++) {
-            map.setEntityLayer(entities.get(i), layersAfter[i]);
+        int i = 0;
+        for (MapEntity entity: entities) {
+            map.setEntityLayer(entity, layersAfter[i]);
+            i++;
         }
     }
 
@@ -93,3 +95,4 @@ public class ActionUpDownLayer extends MapEditorAction {
         }
     }
 }
+

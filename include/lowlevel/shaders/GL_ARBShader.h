@@ -14,45 +14,38 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_SHADER_H
-#define SOLARUS_SHADER_H
-
-#include "Common.h"
-#include "Debug.h"
+#ifndef SOLARUS_GL_ARB_SHADER_H
+#define SOLARUS_GL_ARB_SHADER_H
 
 #if SOLARUS_HAVE_OPENGL == 1
-#  include <SDL.h>
-#  include <SDL_opengl.h>
-#endif
+
+
+#include "Common.h"
+#include "lowlevel/shaders/Shader.h"
+#include <SDL.h>
+#include <SDL_opengl.h>
 
 
 namespace solarus {
 
 /**
- * \brief Represents a GLSL shader.
+ * \brief Represents a GLSL shader for use with GL rectangle ARB sampler.
  *
- * This class represents a shader which can be applied before render to the window.
  * This class basically encapsulates a GLSL vertex and fragment shader.
  */
-class Shader {
+class GL_ARBShader : public Shader {
 
   public:
-
-    static bool initialize();
-    static void quit();
-    static Shader* create(const std::string& shader_name);
   
-    Shader(const std::string& shader_name);
-    ~Shader();
-
-    const std::string& get_name();
-    double get_window_scale();
+    static bool initialize();
+  
+    GL_ARBShader(const std::string& shader_name);
+    ~GL_ARBShader();
 
     void render(Surface& quest_surface);
 
   private:
 
-#if SOLARUS_HAVE_OPENGL == 1
     static PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
     static PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
     static PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
@@ -70,29 +63,20 @@ class Shader {
     static void compile_shader(GLhandleARB& shader, const char* source);
     static void set_rendering_settings();
     static int l_shader(lua_State* l);
-    static const std::string get_sampler_type();
-  
-    void load(const std::string& shader_name);
-    void load_lua_file(const std::string& path);
+    void register_shader(lua_State* l);
   
     static SDL_GLContext gl_context;             /**< The OpenGL context. */
     static GLhandleARB default_shader_program;   /**< Default shader program to restore once a shaded render is done. */
-    static GLenum gl_texture_type;               /**< The type of GL texture used by SDL. */
-    static std::string shading_language_version; /**< The version of the shading language. */
-    static Shader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */
+    static GL_ARBShader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */
   
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */
     GLhandleARB fragment_shader;                 /**< The fragment shader. */
-
-#endif
-  
-    std::string shader_name;                     /**< The name of the shader. */
-    double window_scale;                         /**< Default scale of the window when the shader is being active,
-                                                  * compared to the normal quest size. */
 };
 
 }
+
+#endif // SOLARUS_HAVE_OPENGL
 
 #endif
 

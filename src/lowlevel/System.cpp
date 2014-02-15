@@ -17,7 +17,6 @@
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
-#include "lowlevel/Shader.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
@@ -83,7 +82,6 @@ void System::quit() {
   Sprite::quit();
   TextSurface::quit();
   Color::quit();
-  Shader::quit();
   Video::quit();
   FileTools::quit();
 

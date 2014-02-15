@@ -52,6 +52,7 @@ file(
   src/hero/*.cpp
   src/hud/*.cpp
   src/lowlevel/*.cpp
+  src/lowlevel/shaders/*.cpp
   src/lua/*.cpp
   src/menus/*.cpp
   src/movements/*.cpp
@@ -61,6 +62,7 @@ file(
   include/hero/*.h
   include/hud/*.h
   include/lowlevel/*.h
+  include/lowlevel/shaders*.h
   include/lua/*.h
   include/menus/*.h
   include/movements/*.h

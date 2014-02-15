@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
-#include "lowlevel/Shader.h"
 #include <vector>
 #include <map>
 #include <string>

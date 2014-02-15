@@ -1362,106 +1362,109 @@ public class MapView extends JComponent implements Observer, Scrollable {
             int button = mouseEvent.getButton();
             int x = getMouseInMapX(mouseEvent);
             int y = getMouseInMapY(mouseEvent);
+            
+            if (button != MouseEvent.BUTTON2) {
 
-            switch (state) {
+                switch (state) {
 
-            // select or unselect an entity
-            case NORMAL:
+                // select or unselect an entity
+                case NORMAL:
 
-                // find the entity clicked
-                MapEntity entityClicked = getEntityClicked(mouseEvent);
+                    // find the entity clicked
+                    MapEntity entityClicked = getEntityClicked(mouseEvent);
 
-                boolean alreadySelected = entitySelection.isSelected(entityClicked);
+                    boolean alreadySelected = entitySelection.isSelected(entityClicked);
 
-                // left click
-                if (button == MouseEvent.BUTTON1) {
+                    // left click
+                    if (button == MouseEvent.BUTTON1) {
 
-                    // unselect all entities unless CTRL or SHIFT is pressed
-                    if (!mouseEvent.isControlDown() && !mouseEvent.isShiftDown()
-                            && (entityClicked == null || !alreadySelected)) {
+                        // unselect all entities unless CTRL or SHIFT is pressed
+                        if (!mouseEvent.isControlDown() && !mouseEvent.isShiftDown()
+                                && (entityClicked == null || !alreadySelected)) {
 
-                        entitySelection.unselectAll();
-                    }
-
-                    // The user may want to select multiple entities.
-                    if (entityClicked == null ||
-                            mouseEvent.isControlDown() ||
-                            mouseEvent.isShiftDown()
-                            ) {
-                        startSelectingArea(x, y);
-                    } else {
-                        // Make the entity clicked selected.
-                        entitySelection.select(entityClicked);
-
-                        // The user may want to move it.
-                        startMovingEntities(x, y);
-                    }
-                } // right click
-                else if (button == MouseEvent.BUTTON3) {
-
-                    // If an entity is selected and the user right clicks on another tile,
-                    // we will select the new one instead of the old one.
-                    // Note that if several entities are selected, the selection is kept.
-                    if (entitySelection.getNbEntitiesSelected() == 1 && entityClicked != null
-                            && !entitySelection.isSelected(entityClicked)) {
-
-                        map.getEntitySelection().unselectAll();
-                    }
-
-                    // select the entity clicked if no previous selection was kept
-                    if (entitySelection.isEmpty() && entityClicked != null) {
-                        entitySelection.select(entityClicked);
-                    }
-
-                    // show a popup menu for the entities selected
-                    showPopupMenu(mouseEvent);
-                }
-
-                break;
-
-                // validate the new size
-            case RESIZING_ENTITIES:
-
-                endResizingEntities();
-                break;
-
-                // place the new entity
-            case ADDING_ENTITIES:
-
-                List<MapEntity> entitiesAdded = endAddingEntities();  // Add the entities to the map.
-
-                // Copy the entities just added for the next paste.
-                if (state == State.NORMAL
-                        && entitiesAdded != null) {
-
-                    if (entitiesAdded.size() == 1
-                            && entitiesAdded.get(0) instanceof Tile) {
-                        int tilePatternId = ((Tile) entitiesAdded.get(0)).getTilePatternId();
-                        map.getTileset().setSelectedTilePatternId(tilePatternId);
-                    }
-
-                    copiedEntities = new ArrayList<MapEntity>();
-                    try {
-                        for (MapEntity entity: entitiesAdded) {
-                            MapEntity copy = MapEntity.createCopy(entity);
-                            copiedEntities.add(copy);
+                            entitySelection.unselectAll();
                         }
-                    } catch (QuestEditorException ex) {
-                        GuiTools.errorDialog(ex.getMessage());
-                        ex.printStackTrace();
+
+                        // The user may want to select multiple entities.
+                        if (entityClicked == null ||
+                                mouseEvent.isControlDown() ||
+                                mouseEvent.isShiftDown()
+                                ) {
+                            startSelectingArea(x, y);
+                        } else {
+                            // Make the entity clicked selected.
+                            entitySelection.select(entityClicked);
+
+                            // The user may want to move it.
+                            startMovingEntities(x, y);
+                        }
+                    } // right click
+                    else if (button == MouseEvent.BUTTON3) {
+
+                        // If an entity is selected and the user right clicks on another tile,
+                        // we will select the new one instead of the old one.
+                        // Note that if several entities are selected, the selection is kept.
+                        if (entitySelection.getNbEntitiesSelected() == 1 && entityClicked != null
+                                && !entitySelection.isSelected(entityClicked)) {
+
+                            map.getEntitySelection().unselectAll();
+                        }
+
+                        // select the entity clicked if no previous selection was kept
+                        if (entitySelection.isEmpty() && entityClicked != null) {
+                            entitySelection.select(entityClicked);
+                        }
+
+                        // show a popup menu for the entities selected
+                        showPopupMenu(mouseEvent);
                     }
 
-                    // If the entities were added with a right click and are not being
-                    // resized, we propose to add another copy of these entities now.
-                    if (button == MouseEvent.BUTTON3) {
-                        startAddingEntities(copiedEntities);
+                    break;
+
+                    // validate the new size
+                case RESIZING_ENTITIES:
+
+                    endResizingEntities();
+                    break;
+
+                    // place the new entity
+                case ADDING_ENTITIES:
+
+                    List<MapEntity> entitiesAdded = endAddingEntities();  // Add the entities to the map.
+
+                    // Copy the entities just added for the next paste.
+                    if (state == State.NORMAL
+                            && entitiesAdded != null) {
+
+                        if (entitiesAdded.size() == 1
+                                && entitiesAdded.get(0) instanceof Tile) {
+                            int tilePatternId = ((Tile) entitiesAdded.get(0)).getTilePatternId();
+                            map.getTileset().setSelectedTilePatternId(tilePatternId);
+                        }
+
+                        copiedEntities = new ArrayList<MapEntity>();
+                        try {
+                            for (MapEntity entity: entitiesAdded) {
+                                MapEntity copy = MapEntity.createCopy(entity);
+                                copiedEntities.add(copy);
+                            }
+                        } catch (QuestEditorException ex) {
+                            GuiTools.errorDialog(ex.getMessage());
+                            ex.printStackTrace();
+                        }
+
+                        // If the entities were added with a right click and are not being
+                        // resized, we propose to add another copy of these entities now.
+                        if (button == MouseEvent.BUTTON3) {
+                            startAddingEntities(copiedEntities);
+                        }
                     }
+
+                    break;
+
+                default:
+                    break;
                 }
-
-                break;
-
-            default:
-                break;
             }
         }
 

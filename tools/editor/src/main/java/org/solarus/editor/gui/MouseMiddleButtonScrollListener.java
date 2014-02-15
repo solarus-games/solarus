@@ -35,7 +35,7 @@ public class MouseMiddleButtonScrollListener extends MouseInputAdapter {
     }
 
     /**
-     * Creates and installs middle button dragging on a component. 
+     * Creates and installs middle button dragging on a component.
      * @param component The component to apply the scrolling to.
      */
     public static void install(JComponent component) {

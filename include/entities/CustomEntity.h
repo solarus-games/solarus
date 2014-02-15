@@ -225,7 +225,7 @@ class CustomEntity: public Detector {
 
     void notify_collision_from(MapEntity& other_entity);
 
-    const std::string& model;                         /**< Model of this custom entity or an empty string. */
+    std::string model;                                /**< Model of this custom entity or an empty string. */
 
     // Obstacles.
 

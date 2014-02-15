@@ -439,11 +439,14 @@ Makes the hero shoot a \ref lua_api_boomerang "boomerang".
 
 \subsection lua_api_hero_start_bow hero:start_bow()
 
-Makes the hero shoot an arrow with a bow.
+Makes the hero shoot an
+\ref lua_api_arrow "arrow"
+with a bow.
 
 \subsection lua_api_hero_start_hookshot hero:start_hookshot()
 
-Makes the hero throw a hookshot.
+Makes the hero throw a
+\ref lua_api_hookshot "hookshot".
 
 \subsection lua_api_hero_start_running hero:start_running()
 

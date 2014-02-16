@@ -323,10 +323,13 @@ void LuaContext::do_timer_callback(Timer& timer) {
   if (it != timers.end() && it->second.callback_ref != LUA_REFNIL) {
     const int callback_ref = it->second.callback_ref;
     push_callback(callback_ref);
-    call_function(0, 1, "timer callback");
+    const bool success = call_function(0, 1, "timer callback");
 
-    const bool repeat = lua_isboolean(l, -1) && lua_toboolean(l, -1);
-    lua_pop(l, 1);
+    bool repeat = false;
+    if (success) {
+      repeat = lua_isboolean(l, -1) && lua_toboolean(l, -1);
+      lua_pop(l, 1);
+    }
 
     if (repeat) {
       // The callback returned true: reschedule the timer.

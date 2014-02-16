@@ -8,7 +8,7 @@ A bomb is an entity that explodes after a few seconds.
 You can create this type of
 \ref lua_api_entity "map entity"
 only dynamically with
-\ref lua_api_map_create_explosion "map:create_explosion()".
+\ref lua_api_map_create_bomb "map:create_bomb()".
 It cannot be declared in the
 \ref lua_api_map_overview_files "map data file".
 

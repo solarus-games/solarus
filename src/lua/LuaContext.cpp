@@ -1687,7 +1687,7 @@ bool LuaContext::on_joypad_button_released(const InputEvent& event) {
     lua_pushinteger(l, button);
     bool success = call_function(2, 1, "on_joyad_button_released");
     if (!success) {
-      // something was wrong in the script: don't propagate the input to other objects.
+      // Something was wrong in the script: don't propagate the input to other objects.
       handled = true;
     }
     else {
@@ -1715,7 +1715,7 @@ bool LuaContext::on_joypad_axis_moved(const InputEvent& event) {
     lua_pushinteger(l, state);
     bool success = call_function(3, 1, "on_joyad_axis_moved");
     if (!success) {
-      // something was wrong in the script: don't propagate the input to other objects.
+      // Something was wrong in the script: don't propagate the input to other objects.
       handled = true;
     }
     else {
@@ -1743,7 +1743,7 @@ bool LuaContext::on_joypad_hat_moved(const InputEvent& event) {
     lua_pushinteger(l, direction8);
     bool success = call_function(3, 1, "on_joyad_hat_moved");
     if (!success) {
-      // something was wrong in the script: don't propagate the input to other objects.
+      // Something was wrong in the script: don't propagate the input to other objects.
       handled = true;
     }
     else {

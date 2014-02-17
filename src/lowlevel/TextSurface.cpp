@@ -569,7 +569,7 @@ void TextSurface::rebuild_bitmap() {
   int char_width = bitmap_size.get_width() / 128;
   int char_height = bitmap_size.get_height() / 16;
 
-  surface = Surface::create(char_width * num_chars, char_height);
+  surface = Surface::create((char_width - 1) * num_chars, char_height);
   RefCountable::ref(surface);
 
   // Traverse the string again to draw the characters.

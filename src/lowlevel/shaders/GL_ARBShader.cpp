@@ -38,7 +38,6 @@ PFNGLUNIFORM1IARBPROC GL_ARBShader::glUniform1iARB;
 PFNGLUSEPROGRAMOBJECTARBPROC GL_ARBShader::glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC GL_ARBShader::glGetHandleARB;
 
-SDL_GLContext GL_ARBShader::gl_context = NULL;
 GLhandleARB GL_ARBShader::default_shader_program = 0;
 GL_ARBShader* GL_ARBShader::loading_shader = NULL;
 

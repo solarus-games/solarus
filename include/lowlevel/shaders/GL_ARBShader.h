@@ -66,9 +66,8 @@ class GL_ARBShader : public Shader {
   
     void register_callback(lua_State* l);
   
-    static SDL_GLContext gl_context;             /**< The OpenGL context. */
     static GLhandleARB default_shader_program;   /**< Default shader program to restore once a shaded render is done. */
-    static GL_ARBShader* loading_shader;               /**< Shader to fill by l_shader(). TODO : remove if possible. */
+    static GL_ARBShader* loading_shader;         /**< Shader to fill by l_shader(). TODO : remove if possible. */
   
     GLhandleARB program;                         /**< The program which bind the vertex and fragment shader. */
     GLhandleARB vertex_shader;                   /**< The vertex shader. */

@@ -18,13 +18,14 @@
 #define SOLARUS_SHADER_H
 
 #include "Common.h"
-#include "Debug.h"
+#include <string>
 
 #if SOLARUS_HAVE_OPENGL == 1
 #  include <SDL.h>
 #  include <SDL_opengl.h>
 #endif
 
+struct lua_State;
 
 namespace solarus {
 

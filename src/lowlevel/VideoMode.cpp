@@ -15,8 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/VideoMode.h"
-#include "lowlevel/Shader.h"
 #include "lowlevel/PixelFilter.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/Shader.h"
 
 namespace solarus {
 

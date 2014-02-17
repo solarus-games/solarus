@@ -22,6 +22,7 @@
 #include "lowlevel/Hq4xFilter.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Shader.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "CommandLine.h"

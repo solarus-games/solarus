@@ -33,8 +33,10 @@ bool ShaderContext::initialize() {
   
   //TODO try to initialize DX shaders before GL ones.
 #if SOLARUS_HAVE_OPENGL == 1
-  return GLContext::initialize();
+  shader_supported = GLContext::initialize();
 #endif
+  
+  return shader_supported;
 }
 
 /**

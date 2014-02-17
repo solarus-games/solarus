@@ -14,71 +14,44 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lowlevel/Shader.h"
+#include "lowlevel/shaders/GL_ARBShader.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
-#include "lua/LuaContext.h"
-#include "lua/LuaTools.h"
+
+#if SOLARUS_HAVE_OPENGL == 1
+
 
 namespace solarus {
 
-#if SOLARUS_HAVE_OPENGL == 1
+PFNGLATTACHOBJECTARBPROC GL_ARBShader::glAttachObjectARB;
+PFNGLCOMPILESHADERARBPROC GL_ARBShader::glCompileShaderARB;
+PFNGLCREATEPROGRAMOBJECTARBPROC GL_ARBShader::glCreateProgramObjectARB;
+PFNGLCREATESHADEROBJECTARBPROC GL_ARBShader::glCreateShaderObjectARB;
+PFNGLDELETEOBJECTARBPROC GL_ARBShader::glDeleteObjectARB;
+PFNGLGETINFOLOGARBPROC GL_ARBShader::glGetInfoLogARB;
+PFNGLGETOBJECTPARAMETERIVARBPROC GL_ARBShader::glGetObjectParameterivARB;
+PFNGLGETUNIFORMLOCATIONARBPROC GL_ARBShader::glGetUniformLocationARB;
+PFNGLLINKPROGRAMARBPROC GL_ARBShader::glLinkProgramARB;
+PFNGLSHADERSOURCEARBPROC GL_ARBShader::glShaderSourceARB;
+PFNGLUNIFORM1IARBPROC GL_ARBShader::glUniform1iARB;
+PFNGLUSEPROGRAMOBJECTARBPROC GL_ARBShader::glUseProgramObjectARB;
+PFNGLGETHANDLEARBPROC GL_ARBShader::glGetHandleARB;
 
-PFNGLATTACHOBJECTARBPROC Shader::glAttachObjectARB;
-PFNGLCOMPILESHADERARBPROC Shader::glCompileShaderARB;
-PFNGLCREATEPROGRAMOBJECTARBPROC Shader::glCreateProgramObjectARB;
-PFNGLCREATESHADEROBJECTARBPROC Shader::glCreateShaderObjectARB;
-PFNGLDELETEOBJECTARBPROC Shader::glDeleteObjectARB;
-PFNGLGETINFOLOGARBPROC Shader::glGetInfoLogARB;
-PFNGLGETOBJECTPARAMETERIVARBPROC Shader::glGetObjectParameterivARB;
-PFNGLGETUNIFORMLOCATIONARBPROC Shader::glGetUniformLocationARB;
-PFNGLLINKPROGRAMARBPROC Shader::glLinkProgramARB;
-PFNGLSHADERSOURCEARBPROC Shader::glShaderSourceARB;
-PFNGLUNIFORM1IARBPROC Shader::glUniform1iARB;
-PFNGLUSEPROGRAMOBJECTARBPROC Shader::glUseProgramObjectARB;
-PFNGLGETHANDLEARBPROC Shader::glGetHandleARB;
+SDL_GLContext GL_ARBShader::gl_context = NULL;
+GLhandleARB GL_ARBShader::default_shader_program = 0;
+GL_ARBShader* GL_ARBShader::loading_shader = NULL;
 
-SDL_GLContext Shader::gl_context = NULL;
-GLhandleARB Shader::default_shader_program = 0;
-GLenum Shader::gl_texture_type = GL_TEXTURE_2D;
-std::string Shader::shading_language_version = "";
-Shader* Shader::loading_shader = NULL;
-
-#endif
 
 /**
- * \brief Initializes OpenGL and the shader system.
- * \return \c true if shaders are supported.
+ * \brief Initializes the GL ARB shader system.
+ * \return \c true if GL ARB shaders are supported.
  */
-bool Shader::initialize() {
+bool GL_ARBShader::initialize() {
 
-#if SOLARUS_HAVE_OPENGL == 1
-  SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-  if (!(gl_context = SDL_GL_CreateContext(Video::get_window()))) {
-    Debug::warning("Unable to create OpenGL context : " + std::string(SDL_GetError()));
-    return false;
-  }
-
-  // Setting some parameters
-  glClearDepth(1.0); // Enables clearing of the depth buffer.
-  glEnable(GL_DEPTH_TEST); // The type of depth test to do.
-  glDepthFunc(GL_LESS); // Enables depth testing.
-  glShadeModel(GL_SMOOTH); // Enables smooth color shading.
-  
-  // Use late swap tearing, or try to use the classic swap interval (aka VSync) if not supported.
-  if(SDL_GL_SetSwapInterval(-1) == -1) {
-    SDL_GL_SetSwapInterval(1);
-  }
-  
-  // Get the shading language version.
-  shading_language_version = *glGetString(GL_SHADING_LANGUAGE_VERSION);
-  
   // Check for shader support
   if((SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle") || // WORKAROUND : this is the way SDL check for the GL_ARB support
-        SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) && // but it may change in the future or be deactivate with render target.
+      SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) && // but it may change in the future or be deactivate with render target.
       SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
       SDL_GL_ExtensionSupported("GL_ARB_vertex_shader") &&
@@ -109,68 +82,26 @@ bool Shader::initialize() {
         glUniform1iARB &&
         glUseProgramObjectARB &&
         glGetHandleARB) {
-
+        
       // Get ARB default configuration.
       default_shader_program = glGetHandleARB(GL_CURRENT_PROGRAM);
-      gl_texture_type = GL_TEXTURE_RECTANGLE_ARB;
-      
+      sampler_type = "sampler2DRect";
+        
       return true;
     }
-    else {
-      // TODO Force SDL to use 2D fetch textures.
-    }
   }
-  
-  // TODO Use fetch sampler and shaders if GL_ARB not supported.
-  // TODO2 Deactivate shaders if fetch shaders are not supported too.
-  
-  // TODISCUSS Use a virtual class to access the used shader context type ?
-#endif
-
+    
   return false;
-}
-
-/**
- * \brief Free shader-related context.
- */
-void Shader::quit() {
-
-#if SOLARUS_HAVE_OPENGL == 1
-  SDL_GL_DeleteContext(gl_context);
-#endif
-}
-
-/**
- * \brief Construct a shader from a name.
- * \param shader_name The name of the shader to load.
- * \return The created shader, or NULL if the shader fails to compile.
- */
-Shader* Shader::create(const std::string& shader_name) {
-    
-#if SOLARUS_HAVE_OPENGL == 1
-  Shader* shader = new Shader(shader_name);
-    
-  if (glGetError() != GL_NO_ERROR) {
-    Debug::warning("Cannot compile shader '" + shader_name + "'");
-    return NULL;
-  }
-  return shader;
-#else
-  return NULL;
-#endif
 }
   
 /**
  * \brief Constructor.
  * \param shader_name The name of the shader to load.
  */
-Shader::Shader(const std::string& shader_name):
-#if SOLARUS_HAVE_OPENGL == 1
+GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
     program(0),
     vertex_shader(0),
-    fragment_shader(0),
-    shader_name(shader_name),
-    window_scale(1.0) {
+    fragment_shader(0) {
     
   glGetError();
     
@@ -183,42 +114,17 @@ Shader::Shader(const std::string& shader_name):
   if (location >= 0) {
     glUniform1iARB(location, 0);
   }
-  restore_default_shader_program();
+  glUseProgramObjectARB(default_shader_program);
 }
-#else
-    shader_name(shader_name),
-    window_scale(1.0) {
-}
-#endif
   
 /**
  * \brief Destructor.
  */
-Shader::~Shader() {
-  
-#if SOLARUS_HAVE_OPENGL == 1
+GL_ARBShader::~GL_ARBShader() {
+
   glDeleteObjectARB(vertex_shader);
   glDeleteObjectARB(fragment_shader);
   glDeleteObjectARB(program);
-#endif
-}
-
-/**
- * \brief Get the name of the shader, which is also the name of the related video mode.
- * \return The name of the shader.
- */
-const std::string& Shader::get_name() {
-
-  return shader_name;
-}
-  
-/**
- * \brief Get the scale to apply on the quest size to get the final default size of the related video mode.
- * \return The window scale.
- */
-double Shader::get_window_scale() {
-
-  return window_scale;
 }
   
 /**
@@ -226,9 +132,8 @@ double Shader::get_window_scale() {
  * It will perform the render using the OpenGL API directly.
  * \param quest_surface the surface to render on the screen
  */
-void Shader::render(Surface& quest_surface) {
+void GL_ARBShader::render(Surface& quest_surface) {
 
-#if SOLARUS_HAVE_OPENGL == 1
   float rendering_width, rendering_height;
   SDL_Renderer* renderer = Video::get_renderer();
   SDL_Window* window = Video::get_window();
@@ -252,7 +157,7 @@ void Shader::render(Surface& quest_surface) {
   SDL_SetRenderTarget(renderer, NULL);
   set_rendering_settings();
 
-  glEnable(gl_texture_type);
+  glEnable(GL_TEXTURE_RECTANGLE_ARB);
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
   glUseProgramObjectARB(program);
 
@@ -270,21 +175,18 @@ void Shader::render(Surface& quest_surface) {
   // Restore default states.
   glUseProgramObjectARB(default_shader_program);
   SDL_GL_UnbindTexture(render_target);
-  glDisable(gl_texture_type);
+  glDisable(GL_TEXTURE_RECTANGLE_ARB);
 
   // And swap the window.
   SDL_GL_SwapWindow(window);
-#endif
 }
-
-#if SOLARUS_HAVE_OPENGL == 1
   
 /**
  * \brief Compile a shader from source.
  * \param shader Reference to the shader to fill and compile.
  * \param source Sources to compile.
  */
-void Shader::compile_shader(GLhandleARB& shader, const char* source) {
+void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
 
   GLint status;
     
@@ -307,7 +209,7 @@ void Shader::compile_shader(GLhandleARB& shader, const char* source) {
  * \brief Set up OpenGL rendering parameter.
  * This basically reset the projection matrix.
  */
-void Shader::set_rendering_settings() {
+void GL_ARBShader::set_rendering_settings() {
   
   Rectangle quest_size = Video::get_quest_size();
   static const GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
@@ -323,7 +225,7 @@ void Shader::set_rendering_settings() {
  * \brief Callback when parsing the lua file. Fill the loading shader with the result.
  * \param l The lua state.
  */
-int Shader::l_shader(lua_State* l) {
+int GL_ARBShader::l_shader(lua_State* l) {
 
   if (loading_shader != NULL) {
 
@@ -360,80 +262,23 @@ int Shader::l_shader(lua_State* l) {
     glAttachObjectARB(program, vertex_shader);
     glAttachObjectARB(program, fragment_shader);
     glLinkProgramARB(program);
+    
+    loading_shader = NULL;
   }
 
   return 0;
 }
-
-/**
- * \brief Get the type of the sampler type to use into the GLSL shader.
- * \return A string containing the type of sampler to use.
- */
-const std::string Shader::get_sampler_type() {
-
-  if (gl_texture_type == GL_TEXTURE_RECTANGLE_ARB) {
-    return "sampler2DRect";
-  }
-  return "sampler2D";
-}
-
-/**
- * \brief Load all files from the corresponding shader, depending on the driver and shader names.
- * Parse the Lua file and compile GLSL others.
- * \param shader_name The name of the shader to load.
- */
-void Shader::load(const std::string& shader_name) {
-
-  const std::string shader_path =
-    "shaders/filters/" + shader_name;
-    
-  // Parse the lua file
-  load_lua_file(shader_path);
-}
   
 /**
- * \brief Load and parse the Lua file of the requested shader.
- * \param path The path to the lua file, relative to the data folder.
+ * \brief Dummy method used to call the static lua callback for a specific shader implementation.
+ * \param l The lua state.
  */
-void Shader::load_lua_file(const std::string& path) {
-    
-  lua_State* l = luaL_newstate();
-  luaL_openlibs(l);  // FIXME don't open the libs
-  size_t size;
-  char* buffer;
-    
-  FileTools::data_file_open_buffer(path, &buffer, &size);
-  int load_result = luaL_loadbuffer(l, buffer, size, path.c_str());
+void GL_ARBShader::register_shader(lua_State* l) {
+  
   loading_shader = this;
-    
-  if (load_result != 0) {
-    // Syntax error in the lua file.
-    Debug::die(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
-  }
-  else {
-    const Rectangle& quest_size = Video::get_quest_size();
-    lua_register(l, "shader", l_shader);
-      
-    // Send some parameters to the lua script.
-    lua_pushstring(l, Video::get_rendering_driver_name().c_str());
-    lua_pushstring(l, shading_language_version.c_str());
-    lua_pushstring(l, get_sampler_type().c_str());
-    lua_pushinteger(l, quest_size.get_width());
-    lua_pushinteger(l, quest_size.get_height());
-      
-    if (lua_pcall(l, 5, 0, 0) != 0) {
-        
-      // Runtime error.
-      Debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
-      lua_pop(l, 6);
-    }
-  }
-    
-  loading_shader = NULL;
-  FileTools::data_file_close_buffer(buffer);
-  lua_close(l);
+  lua_register(l, "shader", l_shader);
 }
 
-#endif
-
 }
+
+#endif // SOLARUS_HAVE_OPENGL

@@ -17,7 +17,7 @@
 #include "lowlevel/VideoMode.h"
 #include "lowlevel/PixelFilter.h"
 #include "lowlevel/Debug.h"
-#include "lowlevel/Shader.h"
+#include "lowlevel/shaders/ShaderContext.h"
 
 namespace solarus {
 

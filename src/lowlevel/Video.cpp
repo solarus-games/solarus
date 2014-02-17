@@ -22,9 +22,9 @@
 #include "lowlevel/Hq4xFilter.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/Shader.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/shaders/ShaderContext.h"
 #include "CommandLine.h"
 #include <map>
 #include <algorithm>
@@ -42,7 +42,6 @@ std::string rendering_driver_name;        /**< The name of the rendering driver.
 bool disable_window = false;              /**< Indicates that no window is displayed (used for unit tests). */
 bool fullscreen_window = false;           /**< True if the window is in fullscreen. */
 bool rendertarget_supported = false;      /**< True if rendering on texture is supported. */
-bool shaders_supported = false;           /**< True if shaded modes and rendering on texture are supported. */
 bool shaders_enabled = false;             /**< True if shaded modes support is enabled. */
 bool acceleration_enabled = false;        /**< \c true if 2D GPU acceleration is available and enabled. */
 Surface* scaled_surface = NULL;           /**< The screen surface used with software-scaled modes. */
@@ -164,8 +163,7 @@ void create_window(const CommandLine& args) {
 void initialize_video_modes() {
 
   // Decide whether we enable shaders.
-  shaders_supported = rendertarget_supported && Video::is_acceleration_enabled() && Shader::initialize();
-  shaders_enabled = shaders_supported;
+  shaders_enabled = rendertarget_supported && Video::is_acceleration_enabled() && ShaderContext::initialize();
 
   // Initialize hardcoded video modes.
   const Rectangle quest_size_2(0, 0, quest_size.get_width() * 2, quest_size.get_height() * 2);
@@ -199,7 +197,7 @@ void initialize_video_modes() {
     for (unsigned i = 0; i < shader_names.size(); ++i) {
 
       // Load the shader and add the corresponding video mode.
-      Shader* video_mode_shader = Shader::create(shader_names.at(i));
+      Shader* video_mode_shader = ShaderContext::create_shader(shader_names.at(i));
       if (video_mode_shader != NULL) {
 
         const std::string& video_mode_name = video_mode_shader->get_name();
@@ -264,6 +262,8 @@ void Video::initialize(const CommandLine& args) {
  */
 void Video::quit() {
 
+  ShaderContext::quit();
+  
   if (is_fullscreen()) {
     // Get back on desktop before destroy the window.
     SDL_SetWindowFullscreen(main_window, 0);

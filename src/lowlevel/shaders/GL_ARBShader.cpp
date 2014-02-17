@@ -273,7 +273,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
  * \brief Dummy method used to call the static lua callback for a specific shader implementation.
  * \param l The lua state.
  */
-void GL_ARBShader::register_shader(lua_State* l) {
+void GL_ARBShader::register_callback(lua_State* l) {
   
   loading_shader = this;
   lua_register(l, "shader", l_shader);

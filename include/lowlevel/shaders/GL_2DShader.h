@@ -50,7 +50,8 @@ class GL_2DShader : public Shader {
   
     static void set_rendering_settings();
     static int l_shader(lua_State* l);
-    void register_shader(lua_State* l);
+  
+    void register_callback(lua_State* l);
 };
 
 }
@@ -58,4 +59,3 @@ class GL_2DShader : public Shader {
 #endif // SOLARUS_HAVE_OPENGL
 
 #endif
-

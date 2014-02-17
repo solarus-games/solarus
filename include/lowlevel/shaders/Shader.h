@@ -37,27 +37,29 @@ class Shader {
 
     const std::string& get_name();
     double get_window_scale();
-  
-    static const std::string& get_sampler_type();
+
     static void set_shading_language_version(const std::string& version);
+    static const std::string& get_sampler_type();
 
     virtual void render(Surface& quest_surface);
 
   protected:
-  
+
     void load(const std::string& shader_name);
-    void load_lua_file(const std::string& path);
-    virtual void register_shader(lua_State* l);
-  
+    virtual void register_callback(lua_State* l);
+
     static std::string shading_language_version; /**< The version of the shading language. */
     static std::string sampler_type;             /**< The sampler type of the shader. */
-  
+
     std::string shader_name;                     /**< The name of the shader. */
     double window_scale;                         /**< Default scale of the window when the shader is being active,
                                                   * compared to the normal quest size. */
+
+  private:
+
+    void load_lua_file(const std::string& path);
 };
 
 }
 
 #endif
-

@@ -48,4 +48,3 @@ class GLContext {
 #endif // SOLARUS_HAVE_OPENGL
 
 #endif
-

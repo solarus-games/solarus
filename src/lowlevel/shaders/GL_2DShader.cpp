@@ -75,7 +75,7 @@ int GL_2DShader::l_shader(lua_State* l) {
  * \brief Dummy method used to call the static lua callback for a specific shader implementation.
  * \param l The lua state.
  */
-void GL_2DShader::register_shader(lua_State* l) {
+void GL_2DShader::register_callback(lua_State* l) {
   lua_register(l, "shader", l_shader);
 }
 

@@ -58,6 +58,15 @@ double Shader::get_window_scale() {
 
   return window_scale;
 }
+  
+/**
+ * \brief Set the shading language version string.
+ * \param version The shading language version.
+ */
+void Shader::set_shading_language_version(const std::string& version) {
+  
+  shading_language_version = version;
+}
 
 /**
  * \brief Get the sampler type as string.
@@ -68,14 +77,6 @@ const std::string& Shader::get_sampler_type() {
   return sampler_type;
 }
   
-/**
- * \brief Set the shading language version string.
- * \param version The shading language version.
- */
-void Shader::set_shading_language_version(const std::string& version) {
-  shading_language_version = version;
-}
-
 /**
  * \brief Draws the quest surface on the screen in a shader-allowed context.
  * It will perform the render using the OpenGL API directly.
@@ -96,6 +97,13 @@ void Shader::load(const std::string& shader_name) {
     
   // Parse the lua file
   load_lua_file(shader_path);
+}
+
+/**
+ * \brief Dummy method used to call the static lua callback for a specific shader implementation.
+ * \param l The lua state.
+ */
+void Shader::register_callback(lua_State* l) {
 }
   
 /**
@@ -120,7 +128,7 @@ void Shader::load_lua_file(const std::string& path) {
     const Rectangle& quest_size = Video::get_quest_size();
       
     // Register the callback and send parameters to the lua script.
-    register_shader(l);
+    register_callback(l);
     lua_pushstring(l, Video::get_rendering_driver_name().c_str());
     lua_pushstring(l, shading_language_version.c_str());
     lua_pushstring(l, sampler_type.c_str());
@@ -137,13 +145,6 @@ void Shader::load_lua_file(const std::string& path) {
 
   FileTools::data_file_close_buffer(buffer);
   lua_close(l);
-}
-
-/**
- * \brief Dummy method used to call the static lua callback for a specific shader implementation.
- * \param l The lua state.
- */
-void Shader::register_shader(lua_State* l) {
 }
 
 }

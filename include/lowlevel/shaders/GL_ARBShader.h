@@ -63,7 +63,8 @@ class GL_ARBShader : public Shader {
     static void compile_shader(GLhandleARB& shader, const char* source);
     static void set_rendering_settings();
     static int l_shader(lua_State* l);
-    void register_shader(lua_State* l);
+  
+    void register_callback(lua_State* l);
   
     static SDL_GLContext gl_context;             /**< The OpenGL context. */
     static GLhandleARB default_shader_program;   /**< Default shader program to restore once a shaded render is done. */
@@ -79,4 +80,3 @@ class GL_ARBShader : public Shader {
 #endif // SOLARUS_HAVE_OPENGL
 
 #endif
-

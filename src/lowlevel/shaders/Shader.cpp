@@ -133,7 +133,7 @@ void Shader::load_lua_file(const std::string& path) {
   else {
     const Rectangle& quest_size = Video::get_quest_size();
       
-    // Register the callback and send parameters to the lua script.
+    // Register the callback and send string parameters to the lua script.
     register_callback(l);
     lua_pushstring(l, Video::get_rendering_driver_name().c_str());
     lua_pushstring(l, shading_language_version.c_str());

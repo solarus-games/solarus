@@ -118,12 +118,12 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
     glUniform1iARB(location, 0);
   }
       
-  location = glGetUniformLocationARB(program, std::string("solarus_quest_size").c_str());
+  location = glGetUniformLocationARB(program, std::string("solarus_input_size").c_str());
   if (location >= 0) {
     glUniform2iARB(location, quest_size.get_width(), quest_size.get_height());
   }
 
-  location = glGetUniformLocationARB(program, std::string("solarus_window_size").c_str());
+  location = glGetUniformLocationARB(program, std::string("solarus_output_size").c_str());
   if (location >= 0) {
     glUniform2iARB(location,
         static_cast<double>(quest_size.get_width()) * default_window_scale,
@@ -246,7 +246,7 @@ void GL_ARBShader::register_callback(lua_State* l) {
 void GL_ARBShader::resize_output(int width, int height) {
 
   glUseProgramObjectARB(program);
-  GLint location = glGetUniformLocationARB(program, std::string("solarus_window_size").c_str());
+  GLint location = glGetUniformLocationARB(program, std::string("solarus_output_size").c_str());
   if (location >= 0) {
     glUniform2iARB(location, width, height);
   }

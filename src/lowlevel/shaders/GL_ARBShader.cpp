@@ -126,8 +126,8 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
   location = glGetUniformLocationARB(program, std::string("solarus_window_size").c_str());
   if (location >= 0) {
     glUniform2iARB(location,
-      static_cast<double>(quest_size.get_width()) * default_window_scale,
-      static_cast<double>(quest_size.get_height()) * default_window_scale);
+        static_cast<double>(quest_size.get_width()) * default_window_scale,
+        static_cast<double>(quest_size.get_height()) * default_window_scale);
   }
   glUseProgramObjectARB(default_shader_program);
 }
@@ -191,8 +191,8 @@ int GL_ARBShader::l_shader(lua_State* l) {
   if (loading_shader != NULL) {
 
     GLhandleARB& program = loading_shader->program,
-      vertex_shader = loading_shader->vertex_shader,
-      fragment_shader = loading_shader->fragment_shader;
+        vertex_shader = loading_shader->vertex_shader,
+        fragment_shader = loading_shader->fragment_shader;
 
     // Retrieve the shader properties from the table parameter.
     luaL_checktype(l, 1, LUA_TTABLE);

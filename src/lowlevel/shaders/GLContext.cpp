@@ -51,13 +51,13 @@ bool GLContext::initialize() {
   glShadeModel(GL_SMOOTH); // Enables smooth color shading.
     
   // Use late swap tearing, or try to use the classic swap interval (aka VSync) if not supported.
-  if(SDL_GL_SetSwapInterval(-1) == -1) {
+  if (SDL_GL_SetSwapInterval(-1) == -1) {
     SDL_GL_SetSwapInterval(1);
   }
     
   // Get the shading language version.
   Shader::set_shading_language_version(
-    reinterpret_cast<const char *>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
+      reinterpret_cast<const char *>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
     
   // Try to initialize a gl shader system, in order from the earlier to the older.
   return GL_ARBShader::initialize() || GL_2DShader::initialize();
@@ -68,7 +68,7 @@ bool GLContext::initialize() {
  */
 void GLContext::quit() {
     
-  if(gl_context) {
+  if (gl_context) {
     SDL_GL_DeleteContext(gl_context);
   }
 }

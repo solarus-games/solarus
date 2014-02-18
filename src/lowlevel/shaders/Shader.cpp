@@ -99,7 +99,7 @@ void Shader::render(Surface& quest_surface) {
 void Shader::load(const std::string& shader_name) {
     
   const std::string shader_path =
-    "shaders/videomodes/" + shader_name;
+      "shaders/videomodes/" + shader_name;
     
   // Parse the lua file
   load_lua_file(shader_path);

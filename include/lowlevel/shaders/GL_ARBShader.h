@@ -36,16 +36,21 @@ namespace solarus {
 class GL_ARBShader : public Shader {
 
   public:
-  
     static bool initialize();
   
     GL_ARBShader(const std::string& shader_name);
+  
+  private:
     ~GL_ARBShader();
 
+    static void compile_shader(GLhandleARB& shader, const char* source);
+    static void set_rendering_settings();
+    static int l_shader(lua_State* l);
+  
+    void register_callback(lua_State* l);
+    void resize_output(int width, int height);
     void render(Surface& quest_surface);
-
-  private:
-
+  
     static PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
     static PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
     static PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
@@ -57,14 +62,9 @@ class GL_ARBShader : public Shader {
     static PFNGLLINKPROGRAMARBPROC glLinkProgramARB;
     static PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
     static PFNGLUNIFORM1IARBPROC glUniform1iARB;
+    static PFNGLUNIFORM2IARBPROC glUniform2iARB;
     static PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
     static PFNGLGETHANDLEARBPROC glGetHandleARB;
-  
-    static void compile_shader(GLhandleARB& shader, const char* source);
-    static void set_rendering_settings();
-    static int l_shader(lua_State* l);
-  
-    void register_callback(lua_State* l);
   
     static GLhandleARB default_shader_program;   /**< Default shader program to restore once a shaded render is done. */
     static GL_ARBShader* loading_shader;         /**< Shader to fill by l_shader(). TODO : remove if possible. */

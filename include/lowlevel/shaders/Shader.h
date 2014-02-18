@@ -35,12 +35,13 @@ class Shader {
     Shader(const std::string& shader_name);
     virtual ~Shader();
 
-    const std::string& get_name();
-    double get_default_window_scale();
-
     static void set_shading_language_version(const std::string& version);
     static const std::string& get_sampler_type();
-
+  
+    const std::string& get_name();
+    double get_default_window_scale();
+  
+    virtual void resize_output(int width, int height);
     virtual void render(Surface& quest_surface);
 
   protected:

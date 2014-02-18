@@ -23,7 +23,7 @@
 
 
 namespace solarus {
-  
+ 
 /**
  * \brief Initializes the GL 2D shader system.
  * \return \c true if GL 2D shaders are supported.
@@ -32,7 +32,7 @@ bool GL_2DShader::initialize() {
 
   // TODO Force SDL to use 2D fetch textures, sampler and shaders if GL_ARB not supported.
   sampler_type = "sampler2D";
-    
+
   return false;
 }
   
@@ -47,14 +47,6 @@ GL_2DShader::GL_2DShader(const std::string& shader_name): Shader(shader_name) {
  * \brief Destructor.
  */
 GL_2DShader::~GL_2DShader() {
-}
-  
-/**
- * \brief Draws the quest surface on the screen in a shader-allowed context.
- * It will perform the render using the OpenGL API directly.
- * \param quest_surface the surface to render on the screen
- */
-void GL_2DShader::render(Surface& quest_surface) {
 }
 
 /**
@@ -77,6 +69,14 @@ int GL_2DShader::l_shader(lua_State* l) {
  */
 void GL_2DShader::register_callback(lua_State* l) {
   lua_register(l, "shader", l_shader);
+}
+  
+/**
+ * \brief Draws the quest surface on the screen in a shader-allowed context.
+ * It will perform the render using the OpenGL API directly.
+ * \param quest_surface the surface to render on the screen
+ */
+void GL_2DShader::render(Surface& quest_surface) {
 }
 
 }

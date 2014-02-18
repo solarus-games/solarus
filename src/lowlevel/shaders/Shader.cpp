@@ -40,6 +40,24 @@ Shader::Shader(const std::string& shader_name):
  */
 Shader::~Shader() {
 }
+
+/**
+ * \brief Set the shading language version string.
+ * \param version The shading language version.
+ */
+void Shader::set_shading_language_version(const std::string& version) {
+
+  shading_language_version = version;
+}
+  
+/**
+ * \brief Get the sampler type as string.
+ * \return The sampler type.
+ */
+const std::string& Shader::get_sampler_type() {
+
+  return sampler_type;
+}
   
 /**
  * \brief Get the name of the shader, which is also the name of the related video mode.
@@ -58,23 +76,11 @@ double Shader::get_default_window_scale() {
 
   return default_window_scale;
 }
-  
-/**
- * \brief Set the shading language version string.
- * \param version The shading language version.
- */
-void Shader::set_shading_language_version(const std::string& version) {
-  
-  shading_language_version = version;
-}
 
 /**
- * \brief Get the sampler type as string.
- * \return The sampler type.
+ * \brief Update the uniform variable corresponding to the output size.
  */
-const std::string& Shader::get_sampler_type() {
-    
-  return sampler_type;
+void Shader::resize_output(int width, int height) {
 }
   
 /**
@@ -132,14 +138,12 @@ void Shader::load_lua_file(const std::string& path) {
     lua_pushstring(l, Video::get_rendering_driver_name().c_str());
     lua_pushstring(l, shading_language_version.c_str());
     lua_pushstring(l, sampler_type.c_str());
-    lua_pushinteger(l, quest_size.get_width());
-    lua_pushinteger(l, quest_size.get_height());
       
-    if (lua_pcall(l, 5, 0, 0) != 0) {
+    if (lua_pcall(l, 3, 0, 0) != 0) {
         
       // Runtime error.
       Debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
-      lua_pop(l, 6);
+      lua_pop(l, 4);
     }
   }
 

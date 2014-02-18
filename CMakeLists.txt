@@ -100,10 +100,6 @@ else()
   )
 endif()
 
-# generate -I flags
-if (OPENGL_FOUND)
-  include_directories(${OPENGL_INCLUDE_DIR})
-endif()
 include_directories(
   ${CMAKE_BINARY_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
@@ -121,9 +117,6 @@ include_directories(
 )
 
 # generate -l flags
-if (OPENGL_FOUND)
-  target_link_libraries(solarus ${OPENGL_gl_LIBRARY})
-endif()
 target_link_libraries(solarus
   ${SDL2_LIBRARY}
   ${SDL2_IMAGE_LIBRARY}
@@ -161,14 +154,6 @@ else()
   set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
   set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 endif()
-
-
-if(OPENGL_FOUND)
-  set(HAVE_OPENGL 1)
-else()
-  set(HAVE_OPENGL 0)
-endif()
-add_definitions(-DSOLARUS_HAVE_OPENGL=${HAVE_OPENGL})
 
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
 if(DEFAULT_QUEST)

@@ -32,7 +32,7 @@ std::string Shader::shading_language_version = "";
  */
 Shader::Shader(const std::string& shader_name):
     shader_name(shader_name),
-    window_scale(1.0) {
+    default_window_scale(1.0) {
 }
   
 /**
@@ -54,9 +54,9 @@ const std::string& Shader::get_name() {
  * \brief Get the scale to apply on the quest size to get the final default size of the related video mode.
  * \return The window scale.
  */
-double Shader::get_window_scale() {
+double Shader::get_default_window_scale() {
 
-  return window_scale;
+  return default_window_scale;
 }
   
 /**
@@ -93,7 +93,7 @@ void Shader::render(Surface& quest_surface) {
 void Shader::load(const std::string& shader_name) {
     
   const std::string shader_path =
-    "shaders/filters/" + shader_name;
+    "shaders/videomodes/" + shader_name;
     
   // Parse the lua file
   load_lua_file(shader_path);

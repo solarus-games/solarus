@@ -235,8 +235,8 @@ int GL_ARBShader::l_shader(lua_State* l) {
     // Retrieve the shader properties from the table parameter.
     luaL_checktype(l, 1, LUA_TTABLE);
 
-    const double& window_scale =
-        LuaTools::opt_number_field(l, 1, "window_scale", 1.0);
+    const double& default_window_scale =
+        LuaTools::opt_number_field(l, 1, "default_window_scale", 1.0);
     const std::string shader_name =
         LuaTools::opt_string_field(l, 1, "name", loading_shader->shader_name);
     const std::string vertex_source =
@@ -244,7 +244,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
     const std::string fragment_source =
         LuaTools::check_string_field(l, 1, "fragment_source");
 
-    loading_shader->window_scale = window_scale;
+    loading_shader->default_window_scale = default_window_scale;
     loading_shader->shader_name = shader_name;
 
     // Create the vertex and fragment shaders.

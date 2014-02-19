@@ -17,10 +17,11 @@
 #ifndef SOLARUS_GL_CONTEXT_H
 #define SOLARUS_GL_CONTEXT_H
 
+#include "Common.h"
+
 #if SOLARUS_HAVE_OPENGL == 1
 
 
-#include "Common.h"
 #include "lowlevel/shaders/Shader.h"
 #include <SDL.h>
 #include <SDL_opengl.h>

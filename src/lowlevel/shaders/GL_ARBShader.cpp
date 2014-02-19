@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#if SOLARUS_HAVE_OPENGL == 1
+
 #include "lowlevel/shaders/GL_ARBShader.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
-
-#if SOLARUS_HAVE_OPENGL == 1
 
 
 namespace solarus {
@@ -115,24 +115,24 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
     // Set up the sampler, quest size, window size and frame count as uniform variables.
     const Rectangle& quest_size = Video::get_quest_size();
     glUseProgramObjectARB(program);
-    GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
+    GLint location = glGetUniformLocationARB(program, "solarus_sampler");
     if (location >= 0) {
       glUniform1iARB(location, 0); // 0 means texture unit 0.
     }
       
-    location = glGetUniformLocationARB(program, std::string("solarus_input_size").c_str());
+    location = glGetUniformLocationARB(program, "solarus_input_size");
     if (location >= 0) {
       glUniform2fARB(location, quest_size.get_width(), quest_size.get_height());
     }
 
-    location = glGetUniformLocationARB(program, std::string("solarus_output_size").c_str());
+    location = glGetUniformLocationARB(program, "solarus_output_size");
     if (location >= 0) {
       glUniform2fARB(location,
           static_cast<double>(quest_size.get_width()) * default_window_scale,
           static_cast<double>(quest_size.get_height()) * default_window_scale);
     }
     
-    location = glGetUniformLocationARB(program, std::string("solarus_frame_count").c_str());
+    location = glGetUniformLocationARB(program, "solarus_frame_count");
     if (location >= 0) {
       glUniform1iARB(location, frame_count);
     }
@@ -240,7 +240,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
       loading_shader = NULL;
     }
     else {
-      Debug::warning("The engine shader context is explicitely set as not compatible with the shader script : " + loading_shader->shader_name);
+      Debug::warning("The engine shader context is explicitly set as not compatible with the shader script : " + loading_shader->shader_name);
     }
   }
 
@@ -263,7 +263,7 @@ void GL_ARBShader::register_callback(lua_State* l) {
 void GL_ARBShader::resize_output(int width, int height) {
 
   glUseProgramObjectARB(program);
-  GLint location = glGetUniformLocationARB(program, std::string("solarus_output_size").c_str());
+  GLint location = glGetUniformLocationARB(program, "solarus_output_size");
   if (location >= 0) {
     glUniform2fARB(location, width, height);
   }
@@ -307,7 +307,7 @@ void GL_ARBShader::render(Surface& quest_surface) {
   glUseProgramObjectARB(program);
   
   // Update the frame count uniform variable.
-  GLint location = glGetUniformLocationARB(program, std::string("solarus_frame_count").c_str());
+  GLint location = glGetUniformLocationARB(program, "solarus_frame_count");
   if (location >= 0) {
     glUniform1iARB(location, frame_count);
   }

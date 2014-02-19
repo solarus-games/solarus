@@ -68,7 +68,7 @@ int GL_2DShader::l_shader(lua_State* l) {
  * \param l The lua state.
  */
 void GL_2DShader::register_callback(lua_State* l) {
-  lua_register(l, "shader", l_shader);
+  lua_register(l, "videomode", l_shader);
 }
   
 /**

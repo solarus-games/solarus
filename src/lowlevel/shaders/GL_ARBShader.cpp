@@ -194,7 +194,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
         vertex_shader = loading_shader->vertex_shader,
         fragment_shader = loading_shader->fragment_shader;
 
-    // Retrieve the shader properties from the table parameter.
+    // Retrieve the videomode properties from the table parameter.
     luaL_checktype(l, 1, LUA_TTABLE);
 
     const double& default_window_scale =
@@ -237,7 +237,7 @@ int GL_ARBShader::l_shader(lua_State* l) {
 void GL_ARBShader::register_callback(lua_State* l) {
   
   loading_shader = this;
-  lua_register(l, "shader", l_shader);
+  lua_register(l, "videomode", l_shader);
 }
   
 /**

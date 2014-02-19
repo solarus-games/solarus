@@ -35,12 +35,14 @@ class Shader {
     Shader(const std::string& shader_name);
     virtual ~Shader();
 
-    const std::string& get_name();
-    double get_window_scale();
-
     static void set_shading_language_version(const std::string& version);
     static const std::string& get_sampler_type();
-
+  
+    const std::string& get_name();
+    double get_default_window_scale();
+    bool is_valid();
+  
+    virtual void resize_output(int width, int height);
     virtual void render(Surface& quest_surface);
 
   protected:
@@ -50,10 +52,12 @@ class Shader {
 
     static std::string shading_language_version; /**< The version of the shading language. */
     static std::string sampler_type;             /**< The sampler type of the shader. */
+    static int frame_count;                      /**< The number of frame with a shader rendering. */
 
     std::string shader_name;                     /**< The name of the shader. */
-    double window_scale;                         /**< Default scale of the window when the shader is being active,
+    double default_window_scale;                 /**< Default scale of the window when the shader is being active,
                                                   * compared to the normal quest size. */
+    bool is_shader_valid;                        /**< False if the engine shader context is explicitely set as not compatible with the shader script. */
 
   private:
 

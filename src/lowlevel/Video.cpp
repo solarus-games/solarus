@@ -189,16 +189,16 @@ void initialize_video_modes() {
         quest_size.get_height());
     SDL_SetTextureBlendMode(render_target, SDL_BLENDMODE_BLEND);
 
-    // Get all shaders of the quest's shader/filters folder.
+    // Get all shaders of the quest's shader/videomodes folder.
     std::vector<std::string> shader_names =
-        FileTools::data_files_enumerate("shaders/filters/", true, false);
+        FileTools::data_files_enumerate("shaders/videomodes/", true, false);
     // FIXME don't enumerate data files, use the quest resource system like always.
 
     for (unsigned i = 0; i < shader_names.size(); ++i) {
 
       // Load the shader and add the corresponding video mode.
       Shader* video_mode_shader = ShaderContext::create_shader(shader_names.at(i));
-      if (video_mode_shader != NULL) {
+      if (video_mode_shader != NULL && video_mode_shader->is_valid()) {
 
         const std::string& video_mode_name = video_mode_shader->get_name();
         if (Video::get_video_mode_by_name(video_mode_name) != NULL) {
@@ -208,8 +208,8 @@ void initialize_video_modes() {
         }
 
         const Rectangle scaled_quest_size(0, 0,
-            int(quest_size.get_width() * video_mode_shader->get_window_scale()),
-            int(quest_size.get_height() * video_mode_shader->get_window_scale()));
+            int(quest_size.get_width() * video_mode_shader->get_default_window_scale()),
+            int(quest_size.get_height() * video_mode_shader->get_default_window_scale()));
         all_video_modes.push_back(new VideoMode(
               video_mode_shader->get_name(),
               scaled_quest_size,
@@ -437,6 +437,21 @@ void Video::switch_video_mode() {
 }
 
 /**
+ * \brief Resize the actual size of the shader output, if any.
+ * \param width the new shader's width.
+ * \param width the new shader's height.
+ */
+void Video::resize_shader_output(int width, int height) {
+
+  if(video_mode != NULL) {
+    Shader* shader = video_mode->get_hardware_filter();
+    if (shader != NULL) {
+      shader->resize_output(width, height);
+    }
+  }
+}
+  
+/**
  * \brief Sets the video mode, keeping the fullscreen setting unchanged.
  * \param mode The video mode to set.
  * \return true in case of success, false if this mode is not supported.
@@ -512,6 +527,7 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
         render_size.get_width(),
         render_size.get_height());
     SDL_ShowCursor(show_cursor);
+    resize_shader_output(window_size.get_width(), window_size.get_height());
   }
 
   video_mode = &mode;

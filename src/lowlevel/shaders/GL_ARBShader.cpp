@@ -35,6 +35,7 @@ PFNGLGETUNIFORMLOCATIONARBPROC GL_ARBShader::glGetUniformLocationARB;
 PFNGLLINKPROGRAMARBPROC GL_ARBShader::glLinkProgramARB;
 PFNGLSHADERSOURCEARBPROC GL_ARBShader::glShaderSourceARB;
 PFNGLUNIFORM1IARBPROC GL_ARBShader::glUniform1iARB;
+PFNGLUNIFORM2FARBPROC GL_ARBShader::glUniform2fARB;
 PFNGLUSEPROGRAMOBJECTARBPROC GL_ARBShader::glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC GL_ARBShader::glGetHandleARB;
 
@@ -49,7 +50,7 @@ GL_ARBShader* GL_ARBShader::loading_shader = NULL;
 bool GL_ARBShader::initialize() {
 
   // Check for shader support
-  if((SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle") || // WORKAROUND : this is the way SDL check for the GL_ARB support
+  if ((SDL_GL_ExtensionSupported("GL_ARB_texture_rectangle") || // WORKAROUND : this is the way SDL check for the GL_ARB support
       SDL_GL_ExtensionSupported("GL_EXT_texture_rectangle")) && // but it may change in the future or be deactivate with render target.
       SDL_GL_ExtensionSupported("GL_ARB_shader_objects") &&
       SDL_GL_ExtensionSupported("GL_ARB_shading_language_100") &&
@@ -66,6 +67,7 @@ bool GL_ARBShader::initialize() {
     glLinkProgramARB = (PFNGLLINKPROGRAMARBPROC) SDL_GL_GetProcAddress("glLinkProgramARB");
     glShaderSourceARB = (PFNGLSHADERSOURCEARBPROC) SDL_GL_GetProcAddress("glShaderSourceARB");
     glUniform1iARB = (PFNGLUNIFORM1IARBPROC) SDL_GL_GetProcAddress("glUniform1iARB");
+    glUniform2fARB = (PFNGLUNIFORM2FARBPROC) SDL_GL_GetProcAddress("glUniform2fARB");
     glUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC) SDL_GL_GetProcAddress("glUseProgramObjectARB");
     glGetHandleARB = (PFNGLGETHANDLEARBPROC) SDL_GL_GetProcAddress("glGetHandleARB");
     if (glAttachObjectARB &&
@@ -79,6 +81,7 @@ bool GL_ARBShader::initialize() {
         glLinkProgramARB &&
         glShaderSourceARB &&
         glUniform1iARB &&
+        glUniform2fARB &&
         glUseProgramObjectARB &&
         glGetHandleARB) {
         
@@ -106,14 +109,35 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
     
   // Load the shader.
   load(shader_name);
+  
+  if (is_shader_valid) {
     
-  // Notify the shader program that the uniform sampler will be in the texture unit 0.
-  glUseProgramObjectARB(program);
-  GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
-  if (location >= 0) {
-    glUniform1iARB(location, 0);
+    // Set up the sampler, quest size, window size and frame count as uniform variables.
+    const Rectangle& quest_size = Video::get_quest_size();
+    glUseProgramObjectARB(program);
+    GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
+    if (location >= 0) {
+      glUniform1iARB(location, 0); // 0 means texture unit 0.
+    }
+      
+    location = glGetUniformLocationARB(program, std::string("solarus_input_size").c_str());
+    if (location >= 0) {
+      glUniform2fARB(location, quest_size.get_width(), quest_size.get_height());
+    }
+
+    location = glGetUniformLocationARB(program, std::string("solarus_output_size").c_str());
+    if (location >= 0) {
+      glUniform2fARB(location,
+          static_cast<double>(quest_size.get_width()) * default_window_scale,
+          static_cast<double>(quest_size.get_height()) * default_window_scale);
+    }
+    
+    location = glGetUniformLocationARB(program, std::string("solarus_frame_count").c_str());
+    if (location >= 0) {
+      glUniform1iARB(location, frame_count);
+    }
+    glUseProgramObjectARB(default_shader_program);
   }
-  glUseProgramObjectARB(default_shader_program);
 }
   
 /**
@@ -124,60 +148,6 @@ GL_ARBShader::~GL_ARBShader() {
   glDeleteObjectARB(vertex_shader);
   glDeleteObjectARB(fragment_shader);
   glDeleteObjectARB(program);
-}
-  
-/**
- * \brief Draws the quest surface on the screen in a shader-allowed context.
- * It will perform the render using the OpenGL API directly.
- * \param quest_surface the surface to render on the screen
- */
-void GL_ARBShader::render(Surface& quest_surface) {
-
-  float rendering_width, rendering_height;
-  SDL_Renderer* renderer = Video::get_renderer();
-  SDL_Window* window = Video::get_window();
-  SDL_Texture* render_target = Video::get_render_target();
-
-  // Clear the window
-  glClearColor(0.0, 0.0, 0.0, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
-
-  // Clear the render target
-  SDL_SetRenderTarget(renderer, render_target);
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-  SDL_RenderSetClipRect(renderer, NULL);
-  SDL_RenderClear(renderer);
-
-  // Draw on the render target.
-  quest_surface.render(renderer);
-
-  // Render on the window using OpenGL, to apply a shader if we have to.
-  SDL_SetRenderTarget(renderer, NULL);
-  set_rendering_settings();
-
-  glEnable(GL_TEXTURE_RECTANGLE_ARB);
-  SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
-  glUseProgramObjectARB(program);
-
-  glBegin(GL_QUADS);
-  glTexCoord2f(0.0f, 0.0f);
-  glVertex3f(-1.0f, 1.0f, 0.0f); // Top left
-  glTexCoord2f(rendering_width, 0.0f);
-  glVertex3f(1.0f, 1.0f, 0.0f); // Top right
-  glTexCoord2f(rendering_width, rendering_height);
-  glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
-  glTexCoord2f(0.0f, rendering_height);
-  glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
-  glEnd();
-
-  // Restore default states.
-  glUseProgramObjectARB(default_shader_program);
-  SDL_GL_UnbindTexture(render_target);
-  glDisable(GL_TEXTURE_RECTANGLE_ARB);
-
-  // And swap the window.
-  SDL_GL_SwapWindow(window);
 }
   
 /**
@@ -210,7 +180,7 @@ void GL_ARBShader::compile_shader(GLhandleARB& shader, const char* source) {
  */
 void GL_ARBShader::set_rendering_settings() {
   
-  Rectangle quest_size = Video::get_quest_size();
+  const Rectangle& quest_size = Video::get_quest_size();
   static const GLdouble aspect = GLdouble(quest_size.get_width() / quest_size.get_height());
     
   glMatrixMode(GL_PROJECTION);
@@ -229,40 +199,49 @@ int GL_ARBShader::l_shader(lua_State* l) {
   if (loading_shader != NULL) {
 
     GLhandleARB& program = loading_shader->program,
-      vertex_shader = loading_shader->vertex_shader,
-      fragment_shader = loading_shader->fragment_shader;
+        vertex_shader = loading_shader->vertex_shader,
+        fragment_shader = loading_shader->fragment_shader;
 
-    // Retrieve the shader properties from the table parameter.
+    // Retrieve the videomode properties from the table parameter.
     luaL_checktype(l, 1, LUA_TTABLE);
 
-    const double& window_scale =
-        LuaTools::opt_number_field(l, 1, "window_scale", 1.0);
+    const double& default_window_scale =
+        LuaTools::opt_number_field(l, 1, "default_window_scale", 1.0);
     const std::string shader_name =
         LuaTools::opt_string_field(l, 1, "name", loading_shader->shader_name);
+    const bool is_shader_valid =
+        LuaTools::opt_boolean_field(l, 1, "is_shader_valid", true);
     const std::string vertex_source =
         LuaTools::check_string_field(l, 1, "vertex_source");
     const std::string fragment_source =
         LuaTools::check_string_field(l, 1, "fragment_source");
-
-    loading_shader->window_scale = window_scale;
-    loading_shader->shader_name = shader_name;
-
-    // Create the vertex and fragment shaders.
-    vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-    compile_shader(vertex_shader, vertex_source.c_str());
-
-    fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-    compile_shader(fragment_shader, fragment_source.c_str());
-
-    // Create one program object to rule them all ...
-    program = glCreateProgramObjectARB();
-
-    // ... and in the darkness bind them
-    glAttachObjectARB(program, vertex_shader);
-    glAttachObjectARB(program, fragment_shader);
-    glLinkProgramARB(program);
     
-    loading_shader = NULL;
+    loading_shader->is_shader_valid = is_shader_valid;
+    
+    if (is_shader_valid) {
+      loading_shader->default_window_scale = default_window_scale;
+      loading_shader->shader_name = shader_name;
+
+      // Create the vertex and fragment shaders.
+      vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+      compile_shader(vertex_shader, vertex_source.c_str());
+
+      fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+      compile_shader(fragment_shader, fragment_source.c_str());
+
+      // Create one program object to rule them all ...
+      program = glCreateProgramObjectARB();
+
+      // ... and in the darkness bind them
+      glAttachObjectARB(program, vertex_shader);
+      glAttachObjectARB(program, fragment_shader);
+      glLinkProgramARB(program);
+
+      loading_shader = NULL;
+    }
+    else {
+      Debug::warning("The engine shader context is explicitely set as not compatible with the shader script : " + loading_shader->shader_name);
+    }
   }
 
   return 0;
@@ -275,7 +254,82 @@ int GL_ARBShader::l_shader(lua_State* l) {
 void GL_ARBShader::register_callback(lua_State* l) {
   
   loading_shader = this;
-  lua_register(l, "shader", l_shader);
+  lua_register(l, "videomode", l_shader);
+}
+  
+/**
+ * \brief Update the uniform variable corresponding to the output size.
+ */
+void GL_ARBShader::resize_output(int width, int height) {
+
+  glUseProgramObjectARB(program);
+  GLint location = glGetUniformLocationARB(program, std::string("solarus_output_size").c_str());
+  if (location >= 0) {
+    glUniform2fARB(location, width, height);
+  }
+  glUseProgramObjectARB(default_shader_program);
+}
+  
+/**
+ * \brief Draws the quest surface on the screen in a shader-allowed context.
+ * It will perform the render using the OpenGL API directly.
+ * \param quest_surface the surface to render on the screen
+ */
+void GL_ARBShader::render(Surface& quest_surface) {
+  
+  Shader::render(quest_surface);
+
+  float rendering_width, rendering_height;
+  SDL_Renderer* renderer = Video::get_renderer();
+  SDL_Window* window = Video::get_window();
+  SDL_Texture* render_target = Video::get_render_target();
+    
+  // Clear the window
+  glClearColor(0.0, 0.0, 0.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity();
+    
+  // Clear the render target
+  SDL_SetRenderTarget(renderer, render_target);
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+  SDL_RenderSetClipRect(renderer, NULL);
+  SDL_RenderClear(renderer);
+    
+  // Draw on the render target.
+  quest_surface.render(renderer);
+    
+  // Render on the window using OpenGL, to apply a shader if we have to.
+  SDL_SetRenderTarget(renderer, NULL);
+  set_rendering_settings();
+    
+  glEnable(GL_TEXTURE_RECTANGLE_ARB);
+  SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
+  glUseProgramObjectARB(program);
+  
+  // Update the frame count uniform variable.
+  GLint location = glGetUniformLocationARB(program, std::string("solarus_frame_count").c_str());
+  if (location >= 0) {
+    glUniform1iARB(location, frame_count);
+  }
+  
+  glBegin(GL_QUADS);
+  glTexCoord2f(0.0f, 0.0f);
+  glVertex3f(-1.0f, 1.0f, 0.0f); // Top left
+  glTexCoord2f(rendering_width, 0.0f);
+  glVertex3f(1.0f, 1.0f, 0.0f); // Top right
+  glTexCoord2f(rendering_width, rendering_height);
+  glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
+  glTexCoord2f(0.0f, rendering_height);
+  glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
+  glEnd();
+    
+  // Restore default states.
+  glUseProgramObjectARB(default_shader_program);
+  SDL_GL_UnbindTexture(render_target);
+  glDisable(GL_TEXTURE_RECTANGLE_ARB);
+
+  // And swap the window.
+  SDL_GL_SwapWindow(window);
 }
 
 }

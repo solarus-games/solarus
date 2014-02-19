@@ -208,8 +208,16 @@ InputEvent* InputEvent::get_event() {
   SDL_Event internal_event;
   if (SDL_PollEvent(&internal_event)) {
 
-    // ignore intermediate positions of joystick axis
-    if (internal_event.type != SDL_JOYAXISMOTION
+    // Resize the shader output if needed.
+    if (internal_event.type == SDL_WINDOWEVENT
+        && internal_event.window.event == SDL_WINDOWEVENT_RESIZED) {
+      
+      Video::resize_shader_output(
+          internal_event.window.data1,
+          internal_event.window.data2);
+    }
+    // Ignore intermediate positions of joystick axis.
+    else if (internal_event.type != SDL_JOYAXISMOTION
         || internal_event.jaxis.value <= 1000
         || internal_event.jaxis.value >= 10000) {
 

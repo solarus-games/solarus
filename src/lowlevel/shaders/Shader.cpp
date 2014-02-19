@@ -24,6 +24,7 @@ namespace solarus {
 
 std::string Shader::sampler_type = "";
 std::string Shader::shading_language_version = "";
+int Shader::frame_count = 0;
 
 
 /**
@@ -32,13 +33,32 @@ std::string Shader::shading_language_version = "";
  */
 Shader::Shader(const std::string& shader_name):
     shader_name(shader_name),
-    window_scale(1.0) {
+    default_window_scale(1.0),
+    is_shader_valid(true) {
 }
   
 /**
  * \brief Destructor.
  */
 Shader::~Shader() {
+}
+
+/**
+ * \brief Set the shading language version string.
+ * \param version The shading language version.
+ */
+void Shader::set_shading_language_version(const std::string& version) {
+
+  shading_language_version = version;
+}
+  
+/**
+ * \brief Get the sampler type as string.
+ * \return The sampler type.
+ */
+const std::string& Shader::get_sampler_type() {
+
+  return sampler_type;
 }
   
 /**
@@ -54,27 +74,24 @@ const std::string& Shader::get_name() {
  * \brief Get the scale to apply on the quest size to get the final default size of the related video mode.
  * \return The window scale.
  */
-double Shader::get_window_scale() {
+double Shader::get_default_window_scale() {
 
-  return window_scale;
-}
-  
-/**
- * \brief Set the shading language version string.
- * \param version The shading language version.
- */
-void Shader::set_shading_language_version(const std::string& version) {
-  
-  shading_language_version = version;
+  return default_window_scale;
 }
 
 /**
- * \brief Get the sampler type as string.
- * \return The sampler type.
+ * \brief Check if the engine shader context is marked as compatible by the shader script.
+ * \return True if the engine shader context is not been explicitely set as not compatible with the shader script .
  */
-const std::string& Shader::get_sampler_type() {
-    
-  return sampler_type;
+bool Shader::is_valid() {
+
+  return is_shader_valid;
+}
+
+/**
+ * \brief Update the uniform variable corresponding to the output size.
+ */
+void Shader::resize_output(int width, int height) {
 }
   
 /**
@@ -83,6 +100,8 @@ const std::string& Shader::get_sampler_type() {
  * \param quest_surface the surface to render on the screen
  */
 void Shader::render(Surface& quest_surface) {
+  
+  ++frame_count;
 }
 
 /**
@@ -93,7 +112,7 @@ void Shader::render(Surface& quest_surface) {
 void Shader::load(const std::string& shader_name) {
     
   const std::string shader_path =
-    "shaders/filters/" + shader_name;
+      "shaders/videomodes/" + shader_name;
     
   // Parse the lua file
   load_lua_file(shader_path);
@@ -127,19 +146,17 @@ void Shader::load_lua_file(const std::string& path) {
   else {
     const Rectangle& quest_size = Video::get_quest_size();
       
-    // Register the callback and send parameters to the lua script.
+    // Register the callback and send string parameters to the lua script.
     register_callback(l);
     lua_pushstring(l, Video::get_rendering_driver_name().c_str());
     lua_pushstring(l, shading_language_version.c_str());
     lua_pushstring(l, sampler_type.c_str());
-    lua_pushinteger(l, quest_size.get_width());
-    lua_pushinteger(l, quest_size.get_height());
       
-    if (lua_pcall(l, 5, 0, 0) != 0) {
+    if (lua_pcall(l, 3, 0, 0) != 0) {
         
       // Runtime error.
       Debug::die(std::string("Failed to parse ") + path + " : " + lua_tostring(l, -1));
-      lua_pop(l, 6);
+      lua_pop(l, 4);
     }
   }
 

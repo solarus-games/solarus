@@ -815,7 +815,7 @@ During this short period, he is temporarily invincible.
   caused the collision with the hero. You may use this information if your
   enemy has several sprites with different behaviors.
 
-\remark If you call \ref lua_api_hero_start_hurt hero:start_hurt(),
+\remark If you call \ref lua_api_hero_start_hurt_entity "hero:start_hurt()",
   you will obtain something equivalent to the default behavior.
   But if you don't, keep in mind that
   if the hero can still be hurt after your call,

@@ -62,7 +62,7 @@ class GL_ARBShader : public Shader {
     static PFNGLLINKPROGRAMARBPROC glLinkProgramARB;
     static PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
     static PFNGLUNIFORM1IARBPROC glUniform1iARB;
-    static PFNGLUNIFORM2IARBPROC glUniform2iARB;
+    static PFNGLUNIFORM2FARBPROC glUniform2fARB;
     static PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
     static PFNGLGETHANDLEARBPROC glGetHandleARB;
   

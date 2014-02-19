@@ -35,7 +35,7 @@ PFNGLGETUNIFORMLOCATIONARBPROC GL_ARBShader::glGetUniformLocationARB;
 PFNGLLINKPROGRAMARBPROC GL_ARBShader::glLinkProgramARB;
 PFNGLSHADERSOURCEARBPROC GL_ARBShader::glShaderSourceARB;
 PFNGLUNIFORM1IARBPROC GL_ARBShader::glUniform1iARB;
-PFNGLUNIFORM2IARBPROC GL_ARBShader::glUniform2iARB;
+PFNGLUNIFORM2FARBPROC GL_ARBShader::glUniform2fARB;
 PFNGLUSEPROGRAMOBJECTARBPROC GL_ARBShader::glUseProgramObjectARB;
 PFNGLGETHANDLEARBPROC GL_ARBShader::glGetHandleARB;
 
@@ -67,7 +67,7 @@ bool GL_ARBShader::initialize() {
     glLinkProgramARB = (PFNGLLINKPROGRAMARBPROC) SDL_GL_GetProcAddress("glLinkProgramARB");
     glShaderSourceARB = (PFNGLSHADERSOURCEARBPROC) SDL_GL_GetProcAddress("glShaderSourceARB");
     glUniform1iARB = (PFNGLUNIFORM1IARBPROC) SDL_GL_GetProcAddress("glUniform1iARB");
-    glUniform2iARB = (PFNGLUNIFORM2IARBPROC) SDL_GL_GetProcAddress("glUniform2iARB");
+    glUniform2fARB = (PFNGLUNIFORM2FARBPROC) SDL_GL_GetProcAddress("glUniform2fARB");
     glUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC) SDL_GL_GetProcAddress("glUseProgramObjectARB");
     glGetHandleARB = (PFNGLGETHANDLEARBPROC) SDL_GL_GetProcAddress("glGetHandleARB");
     if (glAttachObjectARB &&
@@ -81,7 +81,7 @@ bool GL_ARBShader::initialize() {
         glLinkProgramARB &&
         glShaderSourceARB &&
         glUniform1iARB &&
-        glUniform2iARB &&
+        glUniform2fARB &&
         glUseProgramObjectARB &&
         glGetHandleARB) {
         
@@ -120,12 +120,12 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
       
   location = glGetUniformLocationARB(program, std::string("solarus_input_size").c_str());
   if (location >= 0) {
-    glUniform2iARB(location, quest_size.get_width(), quest_size.get_height());
+    glUniform2fARB(location, quest_size.get_width(), quest_size.get_height());
   }
 
   location = glGetUniformLocationARB(program, std::string("solarus_output_size").c_str());
   if (location >= 0) {
-    glUniform2iARB(location,
+    glUniform2fARB(location,
         static_cast<double>(quest_size.get_width()) * default_window_scale,
         static_cast<double>(quest_size.get_height()) * default_window_scale);
   }
@@ -248,7 +248,7 @@ void GL_ARBShader::resize_output(int width, int height) {
   glUseProgramObjectARB(program);
   GLint location = glGetUniformLocationARB(program, std::string("solarus_output_size").c_str());
   if (location >= 0) {
-    glUniform2iARB(location, width, height);
+    glUniform2fARB(location, width, height);
   }
   glUseProgramObjectARB(default_shader_program);
 }

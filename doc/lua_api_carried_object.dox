@@ -7,9 +7,6 @@ A carried object is a
 \ref lua_api_entity "map entity" that the \ref lua_api_hero "hero"
 is lifting, carrying or throwing.
 
-This type of entity is entirely created and managed by the engine.
-You cannot create or access a carried object from Lua.
-
 \section lua_api_carried_object_overview Overview
 
 A carried object is created automatically by the engine when
@@ -23,6 +20,31 @@ it is created from.
 
 The hero can then walk with his carried object and throw it.
 He can even go to another map: the carried object is preserved.
+
+\section lua_api_carried_object_inherited_methods Methods inherited from map entity
+
+Carried objects are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all methods from the type map entity.
+
+See \ref lua_api_entity_methods to know these methods.
+
+\section lua_api_carried_object_methods Methods of the type carried object
+
+None.
+
+\section lua_api_carried_object_inherited_events Events inherited from map entity
+
+Events are callback methods automatically called by the engine if you define
+them.
+
+Carried objects are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all events from the type map entity.
+
+See \ref lua_api_entity_events to know these events.
+
+\section lua_api_carried_object_events Events of the type carried object
+
+None.
 
 */
 

@@ -32,7 +32,8 @@ std::string Shader::shading_language_version = "";
  */
 Shader::Shader(const std::string& shader_name):
     shader_name(shader_name),
-    default_window_scale(1.0) {
+    default_window_scale(1.0),
+    is_shader_valid(true) {
 }
   
 /**
@@ -75,6 +76,15 @@ const std::string& Shader::get_name() {
 double Shader::get_default_window_scale() {
 
   return default_window_scale;
+}
+
+/**
+ * \brief Check if the engine shader context is marked as compatible by the shader script.
+ * \return True if the engine shader context is not been explicitely set as not compatible with the shader script .
+ */
+bool Shader::is_valid() {
+
+  return is_shader_valid;
 }
 
 /**

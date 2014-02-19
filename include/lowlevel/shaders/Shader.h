@@ -40,6 +40,7 @@ class Shader {
   
     const std::string& get_name();
     double get_default_window_scale();
+    bool is_valid();
   
     virtual void resize_output(int width, int height);
     virtual void render(Surface& quest_surface);
@@ -55,6 +56,7 @@ class Shader {
     std::string shader_name;                     /**< The name of the shader. */
     double default_window_scale;                 /**< Default scale of the window when the shader is being active,
                                                   * compared to the normal quest size. */
+    bool is_shader_valid;                        /**< False if the engine shader context is explicitely set as not compatible with the shader script. */
 
   private:
 

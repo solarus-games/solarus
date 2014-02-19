@@ -110,26 +110,29 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
   // Load the shader.
   load(shader_name);
   
-  // Set up the sampler, quest size and window size as uniform variables.
-  const Rectangle& quest_size = Video::get_quest_size();
-  glUseProgramObjectARB(program);
-  GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
-  if (location >= 0) {
-    glUniform1iARB(location, 0);
-  }
+  if (is_shader_valid) {
+    
+    // Set up the sampler, quest size and window size as uniform variables.
+    const Rectangle& quest_size = Video::get_quest_size();
+    glUseProgramObjectARB(program);
+    GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
+    if (location >= 0) {
+      glUniform1iARB(location, 0); // 0 means texture unit 0.
+    }
       
-  location = glGetUniformLocationARB(program, std::string("solarus_input_size").c_str());
-  if (location >= 0) {
-    glUniform2fARB(location, quest_size.get_width(), quest_size.get_height());
-  }
+    location = glGetUniformLocationARB(program, std::string("solarus_input_size").c_str());
+    if (location >= 0) {
+      glUniform2fARB(location, quest_size.get_width(), quest_size.get_height());
+    }
 
-  location = glGetUniformLocationARB(program, std::string("solarus_output_size").c_str());
-  if (location >= 0) {
-    glUniform2fARB(location,
-        static_cast<double>(quest_size.get_width()) * default_window_scale,
-        static_cast<double>(quest_size.get_height()) * default_window_scale);
+    location = glGetUniformLocationARB(program, std::string("solarus_output_size").c_str());
+    if (location >= 0) {
+      glUniform2fARB(location,
+          static_cast<double>(quest_size.get_width()) * default_window_scale,
+          static_cast<double>(quest_size.get_height()) * default_window_scale);
+    }
+    glUseProgramObjectARB(default_shader_program);
   }
-  glUseProgramObjectARB(default_shader_program);
 }
   
 /**
@@ -201,30 +204,39 @@ int GL_ARBShader::l_shader(lua_State* l) {
         LuaTools::opt_number_field(l, 1, "default_window_scale", 1.0);
     const std::string shader_name =
         LuaTools::opt_string_field(l, 1, "name", loading_shader->shader_name);
+    const bool is_shader_valid =
+        LuaTools::opt_boolean_field(l, 1, "is_shader_valid", true);
     const std::string vertex_source =
         LuaTools::check_string_field(l, 1, "vertex_source");
     const std::string fragment_source =
         LuaTools::check_string_field(l, 1, "fragment_source");
+    
+    loading_shader->is_shader_valid = is_shader_valid;
+    
+    if (is_shader_valid) {
+      loading_shader->default_window_scale = default_window_scale;
+      loading_shader->shader_name = shader_name;
 
-    loading_shader->default_window_scale = default_window_scale;
-    loading_shader->shader_name = shader_name;
+      // Create the vertex and fragment shaders.
+      vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+      compile_shader(vertex_shader, vertex_source.c_str());
 
-    // Create the vertex and fragment shaders.
-    vertex_shader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-    compile_shader(vertex_shader, vertex_source.c_str());
+      fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+      compile_shader(fragment_shader, fragment_source.c_str());
 
-    fragment_shader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-    compile_shader(fragment_shader, fragment_source.c_str());
+      // Create one program object to rule them all ...
+      program = glCreateProgramObjectARB();
 
-    // Create one program object to rule them all ...
-    program = glCreateProgramObjectARB();
+      // ... and in the darkness bind them
+      glAttachObjectARB(program, vertex_shader);
+      glAttachObjectARB(program, fragment_shader);
+      glLinkProgramARB(program);
 
-    // ... and in the darkness bind them
-    glAttachObjectARB(program, vertex_shader);
-    glAttachObjectARB(program, fragment_shader);
-    glLinkProgramARB(program);
-
-    loading_shader = NULL;
+      loading_shader = NULL;
+    }
+    else {
+      Debug::warning("The engine shader context is explicitely set as not compatible with the shader script : " + loading_shader->shader_name);
+    }
   }
 
   return 0;

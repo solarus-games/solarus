@@ -144,8 +144,6 @@ void Shader::load_lua_file(const std::string& path) {
     Debug::die(std::string("Failed to load ") + path + " : " + lua_tostring(l, -1));
   }
   else {
-    const Rectangle& quest_size = Video::get_quest_size();
-      
     // Register the callback and send string parameters to the lua script.
     register_callback(l);
     lua_pushstring(l, Video::get_rendering_driver_name().c_str());

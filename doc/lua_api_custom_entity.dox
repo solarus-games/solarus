@@ -191,7 +191,7 @@ for more details.
 
 Sets whether this custom entity can be traversed by other entities.
 
-By default, a custom entity cannot be traversed.
+By default, a custom entity can be traversed.
 - \c entity_type (string, optional): A type of entity.
   See \ref lua_api_entity_get_type "entity:get_type()" for the possible values.
   If not specified, the setting will be applied to all entity types that do

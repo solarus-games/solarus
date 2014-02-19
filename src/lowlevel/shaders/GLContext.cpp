@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include "lowlevel/shaders/GLContext.h"
+
 #if SOLARUS_HAVE_OPENGL == 1
 
-#include "lowlevel/shaders/GLContext.h"
 #include "lowlevel/shaders/GL_ARBShader.h"
 #include "lowlevel/shaders/GL_2DShader.h"
 #include "lowlevel/FileTools.h"

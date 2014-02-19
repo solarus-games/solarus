@@ -21,8 +21,6 @@
 
 #if SOLARUS_HAVE_OPENGL == 1
 
-
-#include "lowlevel/shaders/Shader.h"
 #include <SDL.h>
 #include <SDL_opengl.h>
 

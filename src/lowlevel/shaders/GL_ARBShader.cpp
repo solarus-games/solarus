@@ -112,7 +112,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
   
   if (is_shader_valid) {
     
-    // Set up the sampler, quest size and window size as uniform variables.
+    // Set up the sampler, quest size, window size and frame count as uniform variables.
     const Rectangle& quest_size = Video::get_quest_size();
     glUseProgramObjectARB(program);
     GLint location = glGetUniformLocationARB(program, std::string("solarus_sampler").c_str());
@@ -130,6 +130,11 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
       glUniform2fARB(location,
           static_cast<double>(quest_size.get_width()) * default_window_scale,
           static_cast<double>(quest_size.get_height()) * default_window_scale);
+    }
+    
+    location = glGetUniformLocationARB(program, std::string("solarus_frame_count").c_str());
+    if (location >= 0) {
+      glUniform1iARB(location, frame_count);
     }
     glUseProgramObjectARB(default_shader_program);
   }
@@ -271,7 +276,9 @@ void GL_ARBShader::resize_output(int width, int height) {
  * \param quest_surface the surface to render on the screen
  */
 void GL_ARBShader::render(Surface& quest_surface) {
-    
+  
+  Shader::render(quest_surface);
+
   float rendering_width, rendering_height;
   SDL_Renderer* renderer = Video::get_renderer();
   SDL_Window* window = Video::get_window();
@@ -298,7 +305,13 @@ void GL_ARBShader::render(Surface& quest_surface) {
   glEnable(GL_TEXTURE_RECTANGLE_ARB);
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
   glUseProgramObjectARB(program);
-    
+  
+  // Update the frame count uniform variable.
+  GLint location = glGetUniformLocationARB(program, std::string("solarus_frame_count").c_str());
+  if (location >= 0) {
+    glUniform1iARB(location, frame_count);
+  }
+  
   glBegin(GL_QUADS);
   glTexCoord2f(0.0f, 0.0f);
   glVertex3f(-1.0f, 1.0f, 0.0f); // Top left

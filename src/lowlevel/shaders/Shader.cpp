@@ -24,6 +24,7 @@ namespace solarus {
 
 std::string Shader::sampler_type = "";
 std::string Shader::shading_language_version = "";
+int Shader::frame_count = 0;
 
 
 /**
@@ -99,6 +100,8 @@ void Shader::resize_output(int width, int height) {
  * \param quest_surface the surface to render on the screen
  */
 void Shader::render(Surface& quest_surface) {
+  
+  ++frame_count;
 }
 
 /**

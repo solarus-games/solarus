@@ -442,10 +442,12 @@ void Video::switch_video_mode() {
  * \param width the new shader's height.
  */
 void Video::resize_shader_output(int width, int height) {
-    
-  Shader* shader = video_mode->get_hardware_filter();
-  if (shader != NULL) {
-    shader->resize_output(width, height);
+
+  if(video_mode != NULL) {
+    Shader* shader = video_mode->get_hardware_filter();
+    if (shader != NULL) {
+      shader->resize_output(width, height);
+    }
   }
 }
   

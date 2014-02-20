@@ -75,6 +75,8 @@ class Rectangle {
     bool equals(const Rectangle& other) const;
     bool equals_xy(const Rectangle& other) const;
 
+    Rectangle get_intersection(const Rectangle& other) const;
+
   private:
 
     SDL_Rect* get_internal_rect();
@@ -402,6 +404,22 @@ inline std::ostream & operator <<(std::ostream& stream, const Rectangle& rectang
   stream << "(" << rectangle.get_x() << "," << rectangle.get_y() << ") x ("
     << rectangle.get_width() << "," << rectangle.get_height() << ")";
   return stream;
+}
+
+/**
+ * \brief Returns the intersection between this rectangle and another one.
+ * \param other Another rectangle.
+ * \return The intersection.
+ */
+inline Rectangle Rectangle::get_intersection(const Rectangle& other) const {
+
+  Rectangle intersection;
+  SDL_IntersectRect(
+      this->get_internal_rect(),
+      other.get_internal_rect(),
+      intersection.get_internal_rect()
+  );
+  return intersection;
 }
 
 }

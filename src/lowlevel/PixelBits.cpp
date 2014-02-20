@@ -29,7 +29,11 @@ namespace solarus {
  * \param surface The surface where the image is.
  * \param image_position Position of the image on this surface.
  */
-PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position) {
+PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position):
+  width(0),
+  height(0),
+  nb_integers_per_row(0),
+  bits(NULL) {
 
   // Create a list of boolean values representing the transparency of each pixel.
   // This list is implemented as bit fields.
@@ -39,6 +43,10 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position) {
 
   // Clip the rectangle passed as parameter.
   Rectangle clipped_image_position(image_position.get_intersection(surface.get_size()));
+
+  if (clipped_image_position.is_flat()) {
+    return;
+  }
 
   width = clipped_image_position.get_width();
   height = clipped_image_position.get_height();
@@ -82,8 +90,10 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position) {
  */
 PixelBits::~PixelBits() {
 
-  for (int i = 0; i < height; i++) {
-    delete[] bits[i];
+  if (bits != NULL) {
+    for (int i = 0; i < height; i++) {
+      delete[] bits[i];
+    }
   }
   delete[] bits;
 }
@@ -104,6 +114,11 @@ bool PixelBits::test_collision(
     const Rectangle& location2) const {
 
   const bool debug_pixel_collisions = false;
+
+  if (bits == NULL) {
+    // No image.
+    return false;
+  }
 
   // Compute both bounding boxes.
   const Rectangle bounding_box1(location1.get_x(), location1.get_y(), width, height);

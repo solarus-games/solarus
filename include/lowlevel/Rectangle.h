@@ -409,17 +409,22 @@ inline std::ostream & operator <<(std::ostream& stream, const Rectangle& rectang
 /**
  * \brief Returns the intersection between this rectangle and another one.
  * \param other Another rectangle.
- * \return The intersection.
+ * \return The intersection or an empty rectangle.
  */
 inline Rectangle Rectangle::get_intersection(const Rectangle& other) const {
 
   Rectangle intersection;
-  SDL_IntersectRect(
+  const bool intersects = SDL_IntersectRect(
       this->get_internal_rect(),
       other.get_internal_rect(),
       intersection.get_internal_rect()
   );
-  return intersection;
+  if (intersects) {
+    return intersection;
+  }
+  else {
+    return Rectangle(0, 0, 0, 0);
+  }
 }
 
 }

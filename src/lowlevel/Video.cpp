@@ -491,6 +491,9 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     show_cursor = SDL_ENABLE;
   }
 
+  video_mode = &mode;
+  fullscreen_window = fullscreen;
+  
   if (!disable_window) {
 
     RefCountable::unref(scaled_surface);
@@ -527,14 +530,10 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
         render_size.get_width(),
         render_size.get_height());
     SDL_ShowCursor(show_cursor);
-    resize_shader_output(window_size.get_width(), window_size.get_height());
-  }
-
-  video_mode = &mode;
-  fullscreen_window = fullscreen;
-
-  if (mode_changed) {
-    reset_window_size();
+    
+    if (mode_changed) {
+      reset_window_size();
+    }
   }
 
   return true;
@@ -820,7 +819,9 @@ void Video::reset_window_size() {
 
   Debug::check_assertion(video_mode != NULL, "No video mode");
 
-  set_window_size(video_mode->get_initial_window_size());
+  const Rectangle& initial_window_size = video_mode->get_initial_window_size();
+  set_window_size(initial_window_size);
+  resize_shader_output(initial_window_size.get_width(), initial_window_size.get_height());
 }
 
 }

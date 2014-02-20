@@ -87,12 +87,6 @@ bool Shader::is_valid() {
 
   return is_shader_valid;
 }
-
-/**
- * \brief Update the uniform variable corresponding to the output size.
- */
-void Shader::resize_output(int width, int height) {
-}
   
 /**
  * \brief Draws the quest surface on the screen in a shader-allowed context.

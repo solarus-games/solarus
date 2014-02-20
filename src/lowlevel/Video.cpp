@@ -435,21 +435,6 @@ void Video::switch_video_mode() {
 
   set_video_mode(*mode);
 }
-
-/**
- * \brief Resize the actual size of the shader output, if any.
- * \param width the new shader's width.
- * \param width the new shader's height.
- */
-void Video::resize_shader_output(int width, int height) {
-
-  if (video_mode != NULL) {
-    Shader* shader = video_mode->get_hardware_filter();
-    if (shader != NULL) {
-      shader->resize_output(width, height);
-    }
-  }
-}
   
 /**
  * \brief Sets the video mode, keeping the fullscreen setting unchanged.
@@ -819,9 +804,7 @@ void Video::reset_window_size() {
 
   Debug::check_assertion(video_mode != NULL, "No video mode");
 
-  const Rectangle& initial_window_size = video_mode->get_initial_window_size();
-  set_window_size(initial_window_size);
-  resize_shader_output(initial_window_size.get_width(), initial_window_size.get_height());
+  set_window_size(video_mode->get_initial_window_size());
 }
 
 }

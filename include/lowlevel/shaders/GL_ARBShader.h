@@ -49,7 +49,6 @@ class GL_ARBShader : public Shader {
     static int l_shader(lua_State* l);
 
     void register_callback(lua_State* l);
-    void resize_output(int width, int height);
     void render(Surface& quest_surface);
 
     static PFNGLATTACHOBJECTARBPROC glAttachObjectARB;

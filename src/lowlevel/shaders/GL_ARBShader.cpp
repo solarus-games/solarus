@@ -113,7 +113,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
   
   if (is_shader_valid) {
     
-    // Set up the sampler, quest size, window size and frame count as uniform variables.
+    // Set up the sampler, io size (= quest size) and frame count as uniform variables.
     const Rectangle& quest_size = Video::get_quest_size();
     glUseProgramObjectARB(program);
     GLint location = glGetUniformLocationARB(program, "solarus_sampler");
@@ -121,16 +121,9 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
       glUniform1iARB(location, 0); // 0 means texture unit 0.
     }
       
-    location = glGetUniformLocationARB(program, "solarus_input_size");
+    location = glGetUniformLocationARB(program, "solarus_io_size");
     if (location >= 0) {
       glUniform2fARB(location, quest_size.get_width(), quest_size.get_height());
-    }
-
-    location = glGetUniformLocationARB(program, "solarus_output_size");
-    if (location >= 0) {
-      glUniform2fARB(location,
-          static_cast<double>(quest_size.get_width()) * default_window_scale,
-          static_cast<double>(quest_size.get_height()) * default_window_scale);
     }
     
     location = glGetUniformLocationARB(program, "solarus_frame_count");
@@ -256,19 +249,6 @@ void GL_ARBShader::register_callback(lua_State* l) {
   
   loading_shader = this;
   lua_register(l, "videomode", l_shader);
-}
-  
-/**
- * \brief Update the uniform variable corresponding to the output size.
- */
-void GL_ARBShader::resize_output(int width, int height) {
-
-  glUseProgramObjectARB(program);
-  GLint location = glGetUniformLocationARB(program, "solarus_output_size");
-  if (location >= 0) {
-    glUniform2fARB(location, width, height);
-  }
-  glUseProgramObjectARB(default_shader_program);
 }
   
 /**

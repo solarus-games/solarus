@@ -36,19 +36,19 @@ namespace solarus {
 class GL_2DShader : public Shader {
 
   // TODO
-  
+
   public:
-  
+
     static bool initialize();
-  
+
     GL_2DShader(const std::string& shader_name);
     ~GL_2DShader();
 
   private:
-  
+
     static void set_rendering_settings();
     static int l_shader(lua_State* l);
-  
+
     void register_callback(lua_State* l);
     void render(Surface& quest_surface);
 };

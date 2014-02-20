@@ -867,6 +867,7 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
 void CustomEntity::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
 
   // A collision was detected with a sprite of another entity.
+  const std::vector<CollisionInfo> collision_tests = this->collision_tests;
   std::vector<CollisionInfo>::const_iterator it;
   for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
 

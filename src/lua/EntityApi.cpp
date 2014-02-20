@@ -3800,10 +3800,14 @@ bool LuaContext::do_custom_entity_traversable_test_function(
     MapEntity& other_entity) {
 
   Debug::check_assertion(traversable_test_ref != LUA_REFNIL,
-      "Missing traversable test function");
+      "Missing traversable test function ref"
+  );
 
   // Call the test function.
   push_ref(l, traversable_test_ref);
+  Debug::check_assertion(lua_isfunction(l, -1),
+      "Traversable test is not a function"
+  );
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
   call_function(l, 2, 1, "traversable test function");
@@ -3828,10 +3832,14 @@ bool LuaContext::do_custom_entity_collision_test_function(
     MapEntity& other_entity) {
 
   Debug::check_assertion(collision_test_ref != LUA_REFNIL,
-      "Missing collision test function");
+      "Missing collision test function"
+  );
 
   // Call the test function.
   push_ref(l, collision_test_ref);
+  Debug::check_assertion(lua_isfunction(l, -1),
+      "Collision test is not a function"
+  );
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
   call_function(l, 2, 1, "collision test function");
@@ -3883,9 +3891,13 @@ void LuaContext::do_custom_entity_collision_callback(
     Sprite& custom_entity_sprite,
     Sprite& other_entity_sprite) {
 
-  Debug::check_assertion(callback_ref != LUA_REFNIL, "Missing collision callback");
+  Debug::check_assertion(callback_ref != LUA_REFNIL,
+      "Missing sprite collision callback"
+  );
 
   push_ref(l, callback_ref);
+  Debug::check_assertion(lua_isfunction(l, -1),
+      "Sprite collision callback is not a function");
   push_custom_entity(l, custom_entity);
   push_entity(l, other_entity);
   push_sprite(l, custom_entity_sprite);

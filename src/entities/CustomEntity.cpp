@@ -749,13 +749,14 @@ void CustomEntity::clear_collision_tests() {
  */
 bool CustomEntity::test_collision_custom(MapEntity& entity) {
 
-  if (!detected_collision_callbacks.empty()) {
+  if (!successful_collision_tests.empty()) {
     // Avoid reentrant collision tests.
     return false;
   }
 
   bool collision = false;
 
+  const std::vector<CollisionInfo> collision_tests = this->collision_tests;
   std::vector<CollisionInfo>::const_iterator it;
   for (it = collision_tests.begin(); it != collision_tests.end(); ++it) {
 
@@ -765,28 +766,28 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
       case COLLISION_OVERLAPPING:
         if (test_collision_rectangle(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.get_callback_ref());
+          successful_collision_tests.push_back(info);
         }
         break;
 
       case COLLISION_CONTAINING:
         if (test_collision_inside(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.get_callback_ref());
+          successful_collision_tests.push_back(info);
         }
         break;
 
       case COLLISION_ORIGIN:
         if (test_collision_origin_point(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.get_callback_ref());
+          successful_collision_tests.push_back(info);
         }
         break;
 
       case COLLISION_FACING:
         if (test_collision_facing_point(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.get_callback_ref());
+          successful_collision_tests.push_back(info);
 
           // Make sure only one entity can think "I am the facing entity".
           if (entity.get_facing_entity() == NULL) {
@@ -798,14 +799,14 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
       case COLLISION_TOUCHING:
         if (test_collision_facing_point_any(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.get_callback_ref());
+          successful_collision_tests.push_back(info);
         }
         break;
 
       case COLLISION_CENTER:
         if (test_collision_center(entity)) {
           collision = true;
-          detected_collision_callbacks.push_back(info.get_callback_ref());
+          successful_collision_tests.push_back(info);
         }
         break;
 
@@ -814,7 +815,7 @@ bool CustomEntity::test_collision_custom(MapEntity& entity) {
               info.get_custom_test_ref(), *this, entity)
             ) {
           collision = true;
-          detected_collision_callbacks.push_back(info.get_callback_ref());
+          successful_collision_tests.push_back(info);
         }
         break;
 
@@ -844,20 +845,20 @@ void CustomEntity::notify_collision(MapEntity& entity_overlapping, CollisionMode
   Debug::check_assertion(collision_mode == COLLISION_CUSTOM,
       "Unexpected collision mode");
 
-  std::vector<int>::const_iterator it;
+  std::vector<CollisionInfo>::const_iterator it;
 
   // There is a collision: execute the callbacks.
-  for (it = detected_collision_callbacks.begin();
-      it != detected_collision_callbacks.end();
+  for (it = successful_collision_tests.begin();
+      it != successful_collision_tests.end();
       ++it) {
 
-    int callback_ref = *it;
+    const CollisionInfo& info = *it;
     get_lua_context().do_custom_entity_collision_callback(
-        callback_ref, *this, entity_overlapping
+        info.get_callback_ref(), *this, entity_overlapping
     );
   }
 
-  detected_collision_callbacks.clear();
+  successful_collision_tests.clear();
 }
 
 /**

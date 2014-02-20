@@ -242,9 +242,9 @@ class CustomEntity: public Detector {
 
     std::vector<CollisionInfo>
         collision_tests;               /**< The collision tests to perform. */
-    std::vector<int>
-        detected_collision_callbacks;  /**< Callbacks corresponding to the
-                                        * detected collisions other than
+    std::vector<CollisionInfo>
+        successful_collision_tests;   /**< Collision test that detected
+                                        * collisions other than
                                         * COLLISION_SPRITE. */
 
     bool ground_modifier;              /**< Whether this custom entity is a ground modifier. */

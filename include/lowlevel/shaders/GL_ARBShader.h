@@ -36,13 +36,14 @@ namespace solarus {
 class GL_ARBShader : public Shader {
 
   public:
+  
     static bool initialize();
   
     GL_ARBShader(const std::string& shader_name);
+    ~GL_ARBShader();
   
   private:
-    ~GL_ARBShader();
-
+  
     static void compile_shader(GLhandleARB& shader, const char* source);
     static void set_rendering_settings();
     static int l_shader(lua_State* l);

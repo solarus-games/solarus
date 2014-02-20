@@ -38,13 +38,13 @@ class GL_2DShader : public Shader {
   // TODO
   
   public:
+  
     static bool initialize();
   
     GL_2DShader(const std::string& shader_name);
+    ~GL_2DShader();
 
   private:
-
-    ~GL_2DShader();
   
     static void set_rendering_settings();
     static int l_shader(lua_State* l);

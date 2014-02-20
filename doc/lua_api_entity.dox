@@ -196,7 +196,15 @@ Enables or disables this entity.
 
 When an entity is disabled, it is not displayed on the map, it does
 not move and does not detect collisions.
-But it still exists, it still has a position and it can be enabled again later.
+Its
+\ref lua_api_movement "movement",
+its
+\ref lua_api_sprite "sprites"
+and its
+\ref lua_api_timer "timers"
+if any are suspended and will be resumed when the entity gets enabled again.
+While the entity is disabled, it still exists, it still has a position and it
+can be enabled again later.
 - \c enabled (boolean, optional): \c true to enable the entity, \c false to
   disable it. No value means \c true.
 

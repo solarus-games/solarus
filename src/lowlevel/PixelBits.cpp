@@ -37,24 +37,27 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position) {
   Debug::check_assertion(surface.internal_surface != NULL,
     "Attempt to read a surface that doesn't have pixel buffer in RAM.");
 
-  width = image_position.get_width();
-  height = image_position.get_height();
+  // Clip the rectangle passed as parameter.
+  Rectangle clipped_image_position(image_position.get_intersection(surface.get_size()));
+
+  width = clipped_image_position.get_width();
+  height = clipped_image_position.get_height();
 
   nb_integers_per_row = width >> 5; // width / 32
   if ((width & 31) != 0) { // width % 32 != 0
     nb_integers_per_row++;
   }
 
-  int pixel_index = image_position.get_y() * surface.get_width() + image_position.get_x();
+  int pixel_index = clipped_image_position.get_y() * surface.get_width() + clipped_image_position.get_x();
 
   bits = new uint32_t*[height];
-  for (int i = 0; i < height; i++) {
+  for (int i = 0; i < height; ++i) {
     bits[i] = new uint32_t[nb_integers_per_row];
 
     // Fill the bits for this row, using nb_integers_per_row sequences of 32 bits.
     int k = -1;
     uint32_t mask = 0x00000000;  // Current bit in the sequence of 32 bits.
-    for (int j = 0; j < width; j++) {
+    for (int j = 0; j < width; ++j) {
       if (mask == 0x00000000) {
         // Time for a new sequence of 32 bits.
         k++;
@@ -68,7 +71,7 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position) {
       }
 
       mask >>= 1;
-      pixel_index++;
+      ++pixel_index;
     }
     pixel_index += surface.get_width() - width;
   }

@@ -7,9 +7,6 @@ A hookshot \ref lua_api_entity "map entity"
 is used to implement the
 \ref lua_api_hero "hero"'s hookshot state.
 
-This type of entity is entirely created and managed by the engine.
-You cannot create or access a hookshot from Lua.
-
 \section lua_api_hookshot_overview Overview
 
 A hookshot entity is created when you call
@@ -26,6 +23,31 @@ If you decide to make one, you will typically call
 \ref lua_api_hero "hero:start_hookshot()" from
 the \ref lua_api_item "item:on_using()" callback of
 your hookshot equipment item.
+
+\section lua_api_hookshot_inherited_methods Methods inherited from map entity
+
+A hookshot is a particular \ref lua_api_entity "map entity".
+Therefore, it inherits all methods from the type map entity.
+
+See \ref lua_api_entity_methods to know these methods.
+
+\section lua_api_hookshot_methods Methods of the type hookshot
+
+None.
+
+\section lua_api_hookshot_inherited_events Events inherited from map entity
+
+Events are callback methods automatically called by the engine if you define
+them.
+
+A hookshot is a particular \ref lua_api_entity "map entity".
+Therefore, it inherits all events from the type map entity.
+
+See \ref lua_api_entity_events to know these events.
+
+\section lua_api_hookshot_events Events of the type hookshot
+
+None.
 
 */
 

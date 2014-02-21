@@ -295,6 +295,7 @@ void LuaContext::menu_on_started(int menu_ref) {
 void LuaContext::menu_on_finished(int menu_ref) {
 
   push_ref(l, menu_ref);
+  remove_menus(-1);  // First, stop children menus if any.
   on_finished();
   remove_timers(-1);  // Stop timers associated to this menu.
   lua_pop(l, 1);
@@ -308,6 +309,7 @@ void LuaContext::menu_on_update(int menu_ref) {
 
   push_ref(l, menu_ref);
   on_update();
+  menus_on_update(-1);  // Update children menus if any.
   lua_pop(l, 1);
 }
 
@@ -320,6 +322,7 @@ void LuaContext::menu_on_draw(int menu_ref, Surface& dst_surface) {
 
   push_ref(l, menu_ref);
   on_draw(dst_surface);
+  menus_on_draw(-1, dst_surface);  // Draw children menus if any.
   lua_pop(l, 1);
 }
 
@@ -334,8 +337,13 @@ bool LuaContext::menu_on_input(int menu_ref, const InputEvent& event) {
   // Get the Lua menu.
   push_ref(l, menu_ref);
 
-  // Trigger its appropriate callback if it exists.
-  bool handled = on_input(event);
+  // Send the event to children menus first.
+  bool handled = menus_on_input(-1, event);
+
+  if (!handled) {
+    // Sent the event to this menu.
+    handled = on_input(event);
+  }
 
   // Remove the menu from the stack.
   lua_pop(l, 1);
@@ -352,7 +360,15 @@ bool LuaContext::menu_on_input(int menu_ref, const InputEvent& event) {
 bool LuaContext::menu_on_command_pressed(int menu_ref, GameCommands::Command command) {
 
   push_ref(l, menu_ref);
-  bool handled = on_command_pressed(command);
+
+  // Send the event to children menus first.
+  bool handled = menus_on_command_pressed(-1, command);
+
+  if (!handled) {
+    // Sent the event to this menu.
+    handled = on_command_pressed(command);
+  }
+
   lua_pop(l, 1);
 
   return handled;
@@ -367,7 +383,15 @@ bool LuaContext::menu_on_command_pressed(int menu_ref, GameCommands::Command com
 bool LuaContext::menu_on_command_released(int menu_ref, GameCommands::Command command) {
 
   push_ref(l, menu_ref);
-  bool handled = on_command_released(command);
+
+  // Send the event to children menus first.
+  bool handled = menus_on_command_released(-1, command);
+
+  if (!handled) {
+    // Sent the event to this menu.
+    handled = on_command_released(command);
+  }
+
   lua_pop(l, 1);
 
   return handled;

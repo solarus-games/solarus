@@ -9,9 +9,11 @@ a HUD (head-up display) or a pause screen, you can use one or several menus.
 
 A menu is an arbitrary Lua table.
 A menu belongs to a context that may be the current
-\ref lua_api_map "map", the current \ref lua_api_game "game"
-or to the \ref lua_api_main "sol.main" table.
-This context determines the lifetime of your menu.
+\ref lua_api_map "map",
+the current \ref lua_api_game "game",
+the \ref lua_api_main "sol.main" table
+or even another menu.
+This context is the lifetime of your menu.
 As long as your menu is active,
 the engine will call events that are defined in your table,
 i.e. callback methods like
@@ -23,15 +25,15 @@ to notify your menu of something (the player pressed a key, your menu needs
 to be redrawn, etc.).
 
 If you prefer, you can also make menus without this API.
-Indeed,
+Indeed, the
 \ref lua_api_map "map",
 \ref lua_api_game "game" and
 \ref lua_api_main "sol.main"
-already receive all the necessary events, so you can do
-what you want from there manually.
+APIs already have everything you need,
+so you can do what you want from there manually.
 But menus built with the API described on this page
-are just handy, because they receive events
-automatically whenever they need to be notified.
+are just handy, because they automatically receive events
+whenever they need to be notified.
 
 \section lua_api_menu_functions Functions of sol.menu
 
@@ -41,10 +43,11 @@ Starts a menu in a context.
 
 The Solarus engine will then call the appropriate events on your menu until
 it is stopped.
-- \c context (\ref lua_api_map "map", \ref lua_api_game "game" or
-  \ref lua_api_main "sol.main"): The context your menu will belong to.
+- \c context (\ref lua_api_map "map", \ref lua_api_game "game" or table):
+  The context your menu will belong to.
   Similarly to the case of \ref lua_api_timer "timers", the context determines
   the lifetime of your menu.
+  The context must be one of the following four objects:
   - If you make a \ref lua_api_map "map" menu, your menu will be
     drawn above the map surface. It will be stopped when the player goes to
     another map.
@@ -58,7 +61,11 @@ it is stopped.
     global to the whole program. It can exist outside a game (and it
     even persists during the game if you don't stop it).<br>
     Example: the title screen.
-- \c menu (table): The menu to activate. It can be any table. The only thing
+  - If you set the context to another menu, then its lifetime will be limited
+    to this other menu.
+    This allows to make nested menus.
+    Example: a popup that shows some information above another menu.
+  - \c menu (table): The menu to activate. It can be any table. The only thing
   that makes it special is the presence of callback functions (events) as
   described in section \ref lua_api_menu_events.
 - \c on_top (boolean, optional): Whether this menu should be drawn on top

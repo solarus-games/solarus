@@ -61,7 +61,7 @@ void Hq4xFilter::filter(
 /**
  * \brief Performs the initialization common to the 3 variants of hqx.
  *
- * Does nothing if the initialization was already done. 
+ * Does nothing if the initialization was already done.
  */
 void Hq4xFilter::initialize_hqx() {
 

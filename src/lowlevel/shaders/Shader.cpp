@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/shaders/Shader.h"
+#include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Video.h"
 #include "lua/LuaContext.h"
@@ -24,7 +25,7 @@ namespace solarus {
 
 std::string Shader::sampler_type = "";
 std::string Shader::shading_language_version = "";
-int Shader::frame_count = 0;
+int Shader::display_time = 0;
 
 
 /**
@@ -62,6 +63,14 @@ const std::string& Shader::get_sampler_type() {
 }
   
 /**
+ * \brief Reset the displaying time.
+ */
+void Shader::reset_time() {
+
+  display_time = 0;
+}
+  
+/**
  * \brief Get the name of the shader, which is also the name of the related video mode.
  * \return The name of the shader.
  */
@@ -95,7 +104,7 @@ bool Shader::is_valid() {
  */
 void Shader::render(Surface& quest_surface) {
   
-  ++frame_count;
+  display_time += System::timestep;
 }
 
 /**

@@ -37,6 +37,7 @@ class Shader {
 
     static void set_shading_language_version(const std::string& version);
     static const std::string& get_sampler_type();
+    static void reset_time();
   
     const std::string& get_name();
     double get_default_window_scale();
@@ -51,7 +52,7 @@ class Shader {
 
     static std::string shading_language_version; /**< The version of the shading language. */
     static std::string sampler_type;             /**< The sampler type of the shader. */
-    static int frame_count;                      /**< The number of frame with a shader rendering. */
+    static int display_time;                      /**< Time since the current shader is displayed (without interruptions). */
 
     std::string shader_name;                     /**< The name of the shader. */
     double default_window_scale;                 /**< Default scale of the window when the shader is being active,

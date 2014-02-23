@@ -502,11 +502,15 @@ bool Video::set_video_mode(const VideoMode& mode, bool fullscreen) {
     // Set fullscreen flag first to set the size on the right mode.
     SDL_SetWindowFullscreen(main_window, fullscreen_flag);
     if (mode_changed) {
+
       reset_window_size();
       SDL_RenderSetLogicalSize(
           main_renderer,
           render_size.get_width(),
           render_size.get_height());
+      if (video_mode->get_hardware_filter() != NULL) {
+        video_mode->get_hardware_filter()->reset_time();
+      }
     }
     SDL_ShowCursor(show_cursor);
   }

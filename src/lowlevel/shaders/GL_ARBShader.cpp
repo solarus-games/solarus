@@ -113,7 +113,7 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
   
   if (is_shader_valid) {
     
-    // Set up the sampler, io size (= quest size) and frame count as uniform variables.
+    // Set up the sampler and the io size (= quest size) as uniform variables.
     const Rectangle& quest_size = Video::get_quest_size();
     glUseProgramObjectARB(program);
     GLint location = glGetUniformLocationARB(program, "solarus_sampler");
@@ -124,11 +124,6 @@ GL_ARBShader::GL_ARBShader(const std::string& shader_name): Shader(shader_name),
     location = glGetUniformLocationARB(program, "solarus_io_size");
     if (location >= 0) {
       glUniform2fARB(location, quest_size.get_width(), quest_size.get_height());
-    }
-    
-    location = glGetUniformLocationARB(program, "solarus_frame_count");
-    if (location >= 0) {
-      glUniform1iARB(location, frame_count);
     }
     glUseProgramObjectARB(default_shader_program);
   }
@@ -291,10 +286,10 @@ void GL_ARBShader::render(Surface& quest_surface) {
   SDL_GL_BindTexture(render_target, &rendering_width, &rendering_height);
   glUseProgramObjectARB(program);
   
-  // Update the frame count uniform variable.
-  GLint location = glGetUniformLocationARB(program, "solarus_frame_count");
+  // Update the display time uniform variable.
+  GLint location = glGetUniformLocationARB(program, "solarus_display_time");
   if (location >= 0) {
-    glUniform1iARB(location, frame_count);
+    glUniform1iARB(location, display_time);
   }
   
   glBegin(GL_QUADS);

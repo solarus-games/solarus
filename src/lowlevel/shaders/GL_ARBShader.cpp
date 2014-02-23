@@ -206,7 +206,11 @@ int GL_ARBShader::l_shader(lua_State* l) {
     const bool is_shader_valid =
         LuaTools::opt_boolean_field(l, 1, "is_shader_valid", true);
     const std::string vertex_source =
-        LuaTools::check_string_field(l, 1, "vertex_source");
+        LuaTools::opt_string_field(l, 1, "vertex_source",
+            "void main(){\
+               gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\
+               gl_TexCoord[0] = gl_MultiTexCoord0;\
+             }");
     const std::string fragment_source =
         LuaTools::check_string_field(l, 1, "fragment_source");
     

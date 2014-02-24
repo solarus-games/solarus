@@ -131,6 +131,7 @@ Changes that do not introduce incompatibilities:
 * movement:on_position_changed() now takes x and y parameters (#342).
 * Fix random_movement:get_max_radius() that was not working.
 * Check the parameter sign in game:add/remove life/money/magic (#416).
+* Check the parameter sign in item:add/remove_amount.
 * New methods timer:get/set_remaining_time.
 * New function sol.main.get_elapsed_time() to get the simulated time (#424).
 * New function sol.input.get_key_modifiers() to get the key modifiers state.

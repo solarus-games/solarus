@@ -474,6 +474,12 @@ void EquipmentItem::set_max_amount(int max_amount) {
       std::string("The item '") + get_name() + "' has no amount");
 
   this->max_amount = max_amount;
+
+  // If the max amount is reduced, make sure the current amount does not exceed
+  // the new maximum.
+  if (get_amount() > max_amount) {
+    set_amount(max_amount);
+  }
 }
 
 /**

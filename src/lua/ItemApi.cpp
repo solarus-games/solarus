@@ -607,6 +607,10 @@ int LuaContext::item_api_add_amount(lua_State* l) {
     LuaTools::error(l, std::string("Item '") + item.get_name() + "' has no amount");
   }
 
+  if (amount < 0) {
+    LuaTools::arg_error(l, 2, "Invalid amount value: must be positive or zero");
+  }
+
   item.set_amount(item.get_amount() + amount);
 
   return 0;
@@ -624,6 +628,10 @@ int LuaContext::item_api_remove_amount(lua_State* l) {
 
   if (!item.has_amount()) {
     LuaTools::error(l, std::string("Item '") + item.get_name() + "' has no amount");
+  }
+
+  if (amount < 0) {
+    LuaTools::arg_error(l, 2, "Invalid amount value: must be positive or zero");
   }
 
   item.set_amount(item.get_amount() - amount);
@@ -660,6 +668,10 @@ int LuaContext::item_api_set_max_amount(lua_State* l) {
 
   if (!item.has_amount()) {
     LuaTools::error(l, std::string("Item '") + item.get_name() + "' has no amount");
+  }
+
+  if (max_amount < 0) {
+    LuaTools::arg_error(l, 2, "Invalid amount value: must be positive or zero");
   }
 
   item.set_max_amount(max_amount);

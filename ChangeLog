@@ -129,6 +129,7 @@ Changes that do not introduce incompatibilities:
 * New event teletransporter:on_activated() (#312).
 * New event destination:on_activated() (#312).
 * movement:on_position_changed() now takes x and y parameters (#342).
+* Fix movement:start() raising an error if the optional callback is nil.
 * Fix random_movement:get_max_radius() that was not working.
 * Check the parameter sign in game:add/remove life/money/magic (#416).
 * Check the parameter sign in item:add/remove_amount.

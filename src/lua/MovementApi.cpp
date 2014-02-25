@@ -542,7 +542,7 @@ int LuaContext::movement_api_start(lua_State* l) {
   movement_api_stop(l);  // First, stop any previous movement.
 
   int callback_ref = LUA_REFNIL;
-  if (lua_gettop(l) >= 3) {
+  if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
     luaL_checktype(l, 3, LUA_TFUNCTION);
     lua_settop(l, 3);
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);

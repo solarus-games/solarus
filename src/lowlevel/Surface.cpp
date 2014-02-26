@@ -706,7 +706,7 @@ void Surface::apply_pixel_filter(
     // This is possible if nothing was drawn on the surface yet.
     return;
   }
-  
+
   Debug::check_assertion(dst_internal_surface != NULL,
       "Missing software destination surface for pixel filter");
 

@@ -48,7 +48,7 @@ void LuaContext::register_timer_module() {
       { "set_with_sound", timer_api_set_with_sound },
       { "is_suspended", timer_api_is_suspended },
       { "set_suspended", timer_api_set_suspended },
-      { "is_suspended_iwith_map", timer_api_is_suspended_with_map },
+      { "is_suspended_with_map", timer_api_is_suspended_with_map },
       { "set_suspended_with_map", timer_api_set_suspended_with_map },
       { "get_remaining_time", timer_api_get_remaining_time },
       { "set_remaining_time", timer_api_set_remaining_time },
@@ -523,7 +523,10 @@ int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
   timer.set_suspended_with_map(suspended_with_map);
 
   Game* game = lua_context.get_main_loop().get_game();
-  timer.notify_map_suspended(game->get_current_map().is_suspended());
+  if (game != NULL && game->has_current_map()) {
+    // If the game is running, suspend/unsuspend the timer like the map.
+    timer.notify_map_suspended(game->get_current_map().is_suspended());
+  }
 
   return 0;
 }

@@ -133,6 +133,8 @@ Changes that do not introduce incompatibilities:
 * Fix random_movement:get_max_radius() that was not working.
 * Check the parameter sign in game:add/remove life/money/magic (#416).
 * Check the parameter sign in item:add/remove_amount.
+* Fix timer:is_suspended_with_map() that was not working.
+* Fix crash when calling timer:set_suspended_with_map() without game started.
 * New methods timer:get/set_remaining_time.
 * New function sol.main.get_elapsed_time() to get the simulated time (#424).
 * New function sol.input.get_key_modifiers() to get the key modifiers state.

@@ -200,7 +200,7 @@ void GameCommands::notify_input(const InputEvent& event) {
 void GameCommands::keyboard_key_pressed(InputEvent::KeyboardKey keyboard_key_pressed) {
 
   // Retrieve the game command (if any) corresponding to this keyboard key.
-  Command command_pressed = get_command_from_keyboard(keyboard_key_pressed);
+  const Command command_pressed = get_command_from_keyboard(keyboard_key_pressed);
 
   if (!customizing) {
     // If the key is mapped, notify the game.

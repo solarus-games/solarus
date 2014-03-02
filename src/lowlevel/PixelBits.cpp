@@ -42,7 +42,7 @@ PixelBits::PixelBits(const Surface& surface, const Rectangle& image_position):
     "Attempt to read a surface that doesn't have pixel buffer in RAM.");
 
   // Clip the rectangle passed as parameter.
-  Rectangle clipped_image_position(image_position.get_intersection(surface.get_size()));
+  const Rectangle clipped_image_position(image_position.get_intersection(surface.get_size()));
 
   if (clipped_image_position.is_flat()) {
     return;

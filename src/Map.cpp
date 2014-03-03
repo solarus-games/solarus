@@ -1129,48 +1129,47 @@ void Map::check_collision_with_detectors(MapEntity& entity) {
     return;
   }
 
-  const std::list<Detector*>& detectors = entities->get_detectors();
-
   // Check each detector.
+  const std::list<Detector*>& detectors = entities->get_detectors();
   std::list<Detector*>::const_iterator it;
   const std::list<Detector*>::const_iterator end = detectors.end();
   for (it = detectors.begin(); it != end; ++it) {
 
-    Detector* detector = *it;
-    if (detector->is_enabled()
-        && !detector->is_being_removed()) {
-      detector->check_collision(entity);
+    Detector& detector = *(*it);
+    if (detector.is_enabled()
+        && !detector.is_being_removed()) {
+      detector.check_collision(entity);
     }
   }
 }
 
 /**
- * \brief Checks the pixel-perfect collisions between an entity and the detectors of the map.
+ * \brief Checks the pixel-precise collisions between an entity and the
+ * detectors of the map.
  *
  * This function is called by an entity
  * when the frame of one of its sprites has just changed.
  * We check whether or not the sprite overlaps the detector.
  * If the map is suspended, this function does nothing.
  *
- * \param entity the sprite that has just changed
- * \param sprite the sprite that has just changed
+ * \param entity A map entity.
+ * \param sprite The sprite of this entity to check.
  */
-void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
+void Map::check_collision_with_detectors(MapEntity& entity, Sprite& sprite) {
 
   if (suspended) {
     return;
   }
 
+  // Check each detector.
   const std::list<Detector*>& detectors = entities->get_detectors();
-  // check each detector
-  std::list<Detector*>::const_iterator i;
-  for (i = detectors.begin();
-       i != detectors.end();
-       i++) {
+  std::list<Detector*>::const_iterator it;
+  for (it = detectors.begin(); it != detectors.end(); it++) {
 
-    if (!(*i)->is_being_removed()
-        && (*i)->is_enabled()) {
-      (*i)->check_collision(entity, sprite);
+    Detector& detector = *(*it);
+    if (!detector.is_being_removed()
+        && detector.is_enabled()) {
+      detector.check_collision(entity, sprite);
     }
   }
 }

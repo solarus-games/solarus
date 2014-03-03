@@ -1378,6 +1378,11 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
     return;
   }
 
+  if (!is_enabled()) {
+    // The entity is disabled.
+    return;
+  }
+
   if (get_distance_to_camera2() > optimization_distance2
       && optimization_distance > 0) {
     // Don't check entities far for the visible area.
@@ -1404,6 +1409,11 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
  * \param sprite the sprite to check
  */
 void MapEntity::check_collision_with_detectors(Sprite& sprite) {
+
+  if (!is_enabled()) {
+    // The entity is disabled.
+    return;
+  }
 
   if (get_distance_to_camera2() > optimization_distance2
       && optimization_distance > 0) {

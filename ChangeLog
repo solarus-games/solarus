@@ -155,6 +155,7 @@ Solarus Quest Editor changes
 * The order of resources in the quest tree can now be changed (#319).
 * Increase the stepsize when scrolling the map view.
 * Show the map or tileset name in the "do you want to save" dialog.
+* Don't place new tiles below other entities if there are some (#461).
 * Fix selecting entities losing their order when changing the layer.
 * Fix NullPointerException when canceling the Open Project dialog.
 * Fix freeze if tiles don't exist when changing the tileset of a map.

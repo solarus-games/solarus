@@ -812,10 +812,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
             if (entitiesBeingAdded.size() == 1 && entityTypeBeingAdded != null) {
                 // New entity just created.
                 MapEntity entityBeingAdded = entitiesBeingAdded.get(0);
-                // first choose a layer if necessary
-                if (!entityBeingAdded.hasInitialLayer()) {
-                    Layer layer = map.getLayerInRectangle(entityBeingAdded.getPositionInMap());
-                    map.setEntityLayer(entityBeingAdded, layer);
+
+                // First choose the layer.
+                Layer layerUnderPointer = map.getLayerInRectangle(entityBeingAdded.getPositionInMap());
+                if (!entityBeingAdded.hasInitialLayer()
+                    || layerUnderPointer.getId() > entityBeingAdded.getLayer().getId()) {
+                    // The entity has no preferred layer, or there is something above its preferred layer.
+                    map.setEntityLayer(entityBeingAdded, layerUnderPointer);
                 }
 
                 // make sure the entity is valid

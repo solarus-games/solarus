@@ -2359,7 +2359,8 @@ void MapEntity::update() {
   clear_old_movements();
 
   // suspend the entity if far from the camera
-  bool far = get_distance_to_camera2() > optimization_distance2
+  // TODO don't do this, it has too many side effects
+  const bool far = get_distance_to_camera2() > optimization_distance2
       && optimization_distance > 0;
   if (far && !is_suspended()) {
     set_suspended(true);
@@ -2376,9 +2377,12 @@ void MapEntity::update() {
  */
 bool MapEntity::is_drawn() const {
 
+  const bool far = get_distance_to_camera2() > optimization_distance2
+      && optimization_distance > 0;
+
   return is_visible()
       && (overlaps_camera()
-          || get_distance_to_camera2() < optimization_distance2
+          || !far
           || !is_drawn_at_its_position()
       );
 }
@@ -2413,7 +2417,7 @@ void MapEntity::draw_on_map() {
   }
 
   // Draw the sprites.
-  std::vector<Sprite*>::iterator it;
+  std::vector<Sprite*>::const_iterator it;
   for (it = sprites.begin(); it != sprites.end(); ++it) {
     Sprite& sprite = *(*it);
     get_map().draw_sprite(sprite, get_displayed_xy());

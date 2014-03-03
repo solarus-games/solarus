@@ -553,7 +553,7 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the first entity under a point of the map, in the specified layer.
+     * Returns the first visible entity under a point of the map, in the specified layer.
      * @param layer the layer
      * @param x x of the point
      * @param y y of the point
@@ -566,7 +566,7 @@ public class Map extends Observable {
         while (iterator.hasPrevious()) {
 
             MapEntity entity = iterator.previous();
-            if (entity.containsPoint(x, y)) {
+            if (entity.containsPoint(x, y) && getViewSettings().isEntityShown(entity)) {
                 return entity;
             }
         }

@@ -1276,8 +1276,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     }
 
     /**
-     * Returns the entity located under the mouse,
-     * taking into account the layers displayed.
+     * Returns the visible entity located under the mouse.
      * @param mouseEvent the mouse event
      * @return the entity clicked
      */
@@ -1293,9 +1292,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 id--) {
 
             Layer layer = Layer.get(id);
-            if (getViewSettings().getShowLayer(layer)) {
-                entityClicked = map.getEntityAt(layer, x, y);
-            }
+            entityClicked = map.getEntityAt(layer, x, y);
         }
 
         return entityClicked;

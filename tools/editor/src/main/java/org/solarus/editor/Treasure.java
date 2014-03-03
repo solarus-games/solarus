@@ -15,8 +15,8 @@ public class Treasure {
     private String itemName;            /**< id of the item to give (null means none) */
     private Integer variant;            /**< variant of this item (null means no item) */
     private String savegameVariable;    /**< boolean variable that stores the
-     * treasure's state (found or not found) in the savegame
-     * or null for unsaved. */
+                                         * treasure's state (found or not found) in the savegame
+                                         * or null for unsaved. */
 
     /**
      * Creates a treasure.

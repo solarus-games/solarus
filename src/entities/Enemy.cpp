@@ -950,7 +950,7 @@ void Enemy::notify_ground_below_changed() {
  * \param entity_overlapping the other entity
  * \param collision_mode the collision mode that detected the collision
  */
-void Enemy::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Enemy::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_enemy(*this);
 }
@@ -965,7 +965,7 @@ void Enemy::notify_collision(MapEntity &entity_overlapping, CollisionMode collis
  * \param other_sprite the sprite of other_entity that is overlapping this detector
  * \param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Enemy::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+void Enemy::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
 
   other_entity.notify_collision_with_enemy(*this, this_sprite, other_sprite);
 }
@@ -976,7 +976,7 @@ void Enemy::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Spri
  * \param explosion the explosion
  * \param sprite_overlapping the sprite of this enemy that collides with the explosion
  */
-void Enemy::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+void Enemy::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) {
 
   explosion.try_attack_enemy(*this, sprite_overlapping);
 }

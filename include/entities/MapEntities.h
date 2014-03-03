@@ -135,7 +135,8 @@ class MapEntities {
 
     std::list<Detector*> detectors;                 /**< all entities able to detect other entities
                                                      * on this map.
-                                                     * TODO store them by layer like obstacle_entities */
+                                                     * TODO store them by layer like obstacle_entities
+                                                     * but take care of has_layer_independent_collisions() */
     std::list<MapEntity*>
       ground_observers[LAYER_NB];                   /**< all dynamic entities sensible to the ground
                                                      * below them */

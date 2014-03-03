@@ -224,6 +224,7 @@ class CustomEntity: public Detector {
     const TraversableInfo& get_can_traverse_entity_info(EntityType type);
 
     void notify_collision_from(MapEntity& other_entity);
+    void notify_collision_from(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
 
     std::string model;                                /**< Model of this custom entity or an empty string. */
 

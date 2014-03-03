@@ -899,6 +899,19 @@ void CustomEntity::notify_collision_from(MapEntity& other_entity) {
 }
 
 /**
+ * \brief Notifies this custom entity that another entity has detected a
+ * pixel-precise collision with it.
+ * \param other_entity The other entity.
+ * \param other_sprite Sprite of the other entity involved in the collision.
+ * \param this_sprite Sprite of this custom entity entity involved in the collision.
+ */
+void CustomEntity::notify_collision_from(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
+
+  // No need to check the collision again: sprite collisions are symmetrical.
+  notify_collision(other_entity, other_sprite, this_sprite);
+}
+
+/**
  * \copydoc MapEntity::notify_collision_with_destructible
  */
 void CustomEntity::notify_collision_with_destructible(
@@ -985,7 +998,7 @@ void CustomEntity::notify_collision_with_crystal(
 void CustomEntity::notify_collision_with_crystal(
     Crystal& crystal, Sprite& sprite_overlapping) {
 
-  notify_collision_from(crystal);
+  notify_collision_from(crystal, sprite_overlapping, crystal.get_sprite());
 }
 
 /**
@@ -1037,7 +1050,7 @@ void CustomEntity::notify_collision_with_explosion(
 void CustomEntity::notify_collision_with_explosion(
     Explosion& explosion, Sprite& sprite_overlapping) {
 
-  notify_collision_from(explosion);
+  notify_collision_from(explosion, sprite_overlapping, explosion.get_sprite());
 }
 
 /**
@@ -1046,7 +1059,7 @@ void CustomEntity::notify_collision_with_explosion(
 void CustomEntity::notify_collision_with_fire(
     Fire& fire, Sprite& sprite_overlapping) {
 
-  notify_collision_from(fire);
+  notify_collision_from(fire, sprite_overlapping, fire.get_sprite());
 }
 
 /**
@@ -1063,7 +1076,7 @@ void CustomEntity::notify_collision_with_enemy(Enemy& enemy) {
 void CustomEntity::notify_collision_with_enemy(
     Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
 
-  notify_collision_from(enemy);
+  notify_collision_from(enemy, enemy_sprite, this_sprite);
 }
 
 /**

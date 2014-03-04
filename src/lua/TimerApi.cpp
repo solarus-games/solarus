@@ -293,15 +293,13 @@ void LuaContext::set_entity_timers_suspended(
     MapEntity& entity, bool suspended
 ) {
 
-  std::map<Timer*, LuaTimerData>::iterator it;
+  std::map<Timer*, LuaTimerData>::const_iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
 
     Timer* timer = it->first;
     if (it->second.context == &entity) {
-      continue;
+      timer->set_suspended(suspended);
     }
-
-    timer->set_suspended(suspended);
   }
 }
 

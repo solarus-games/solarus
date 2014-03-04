@@ -81,10 +81,10 @@ public class SpriteAnimationDirection {
             }
         }
         catch (RasterFormatException ex) {
-            throw new MapException("Invalid frame " + frame +
-                    ": (" + x + "," + y + "),(" + (x + width) + "," + (y + height) +
-                    "): size of source image is only " + srcImage.getWidth() + "x" + srcImage.getHeight() +
-                    "\nPlease fix your sprite file.");
+            throw new MapException("Frame " + frame +
+                    " is outside the image bounds: (" + x + "," + y + ")->(" + (x + width) + "," + (y + height) +
+                    "). Size of source image is only " + srcImage.getWidth() + "x" + srcImage.getHeight() +
+                    ".\nPlease fix your sprite file.");
         }
     }
 

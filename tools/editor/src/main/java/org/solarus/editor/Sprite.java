@@ -148,8 +148,20 @@ public class Sprite {
                     int numColumns = directionTable.get("num_columns").optint(numFrames);
 
                     Rectangle firstFrameRectangle = new Rectangle(x, y, frameWidth, frameHeight);
-                    directions.add(new SpriteAnimationDirection(
-                            srcImage, firstFrameRectangle, numFrames, numColumns, originX, originY));
+
+
+                    try {
+                      SpriteAnimationDirection direction =  new SpriteAnimationDirection(
+                          srcImage, firstFrameRectangle, numFrames, numColumns, originX, originY
+                          );
+                      directions.add(direction);
+                    }
+                    catch (MapException ex) {
+                      // The direction has invalid properties:
+                      // rethow an exception with a more complete error message.
+                      throw new MapException("Animation '" + animationName + "', direction "
+                          + directions.size() + ": " + ex.getMessage());
+                    }
 
                     SpriteAnimation animation = new SpriteAnimation(directions, frameDelay, frameToLoopOn);
                     animations.put(animationName, animation);

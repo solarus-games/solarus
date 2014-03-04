@@ -2258,10 +2258,6 @@ void MapEntity::set_suspended(bool suspended) {
 
   // Suspend/unsuspend the timers.
   if (is_on_map()) {
-    if (get_name() == "mini_boss_gigas") {
-      std::cout << "entity " << get_name() << " set timers suspended "
-        << (suspended || !is_enabled()) << std::endl;
-    }
     get_lua_context().set_entity_timers_suspended(*this, suspended || !is_enabled());
   }
 }

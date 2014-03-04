@@ -216,9 +216,13 @@ When this happens, all \ref lua_api_entity "map entities" stop moving and most
 With this setting, you can choose whether your timer gets suspended too.
 
 By default, \ref lua_api_map "map" timers,
-\ref lua_api_entity "map entity" timers and
+and
 \ref lua_api_item "item" timers are suspended with the
 map.
+\ref lua_api_entity "Entity" timers are more complex: an entity
+(and its timers) also get suspended when the entity gets
+\ref lua_api_entity_set_enabled "disabled". You should not use this function
+on entity timers.
 - \c suspended_with_map (boolean, optional): \c true to suspend the timer when
   the map is suspended, \c false to continue (no value means \c true).
 

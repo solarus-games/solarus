@@ -143,9 +143,14 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
 
       // By default, we want the timer to be automatically suspended when a
       // camera movement, a dialog or the pause menu starts.
-      timer->set_suspended_with_map(true);
+      if (!is_entity(l, context_index)) {
+        // Entities are more complex: they also get suspended when disabled
+        // and when far from the camera. Therefore, they don't simply follow
+        // the map suspended state.
+        timer->set_suspended_with_map(true);
+      }
 
-      // But in the initial state, we override that rule.
+      // In the initial state, we override that rule.
       // We initially suspend the timer only during a dialog.
       // In particular, we don't want to suspend timers created during a
       // camera movement.
@@ -272,10 +277,10 @@ void LuaContext::update_timers() {
  */
 void LuaContext::notify_timers_map_suspended(bool suspended) {
 
-  std::map<Timer*, LuaTimerData>::iterator it;
+  std::map<Timer*, LuaTimerData>::const_iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
     Timer* timer = it->first;
-    if (!suspended || timer->is_suspended_with_map()) {
+    if (timer->is_suspended_with_map()) {
       timer->notify_map_suspended(suspended);
     }
   }

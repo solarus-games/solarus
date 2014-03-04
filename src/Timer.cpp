@@ -194,7 +194,7 @@ void Timer::update() {
  */
 void Timer::notify_map_suspended(bool suspended) {
 
-  if (suspended_with_map || !suspended) {
+  if (suspended_with_map) {
     set_suspended(suspended);
   }
 }

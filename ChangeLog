@@ -164,6 +164,7 @@ Solarus Quest Editor changes
 * Fix freeze if tiles don't exist when changing the tileset of a map.
 * Fix the tree not refreshing when deleting a resource (#335).
 * Fix the tileset editor not always showing the save dialog on closing.
+* Fix the num_columns property of sprites wrongly parsed.
 * Switches, crystals and crystal blocks now show their actual sprite (#376).
 
 _________________________________

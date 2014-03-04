@@ -145,7 +145,7 @@ public class Sprite {
                     int originX = directionTable.get("origin_x").optint(0);
                     int originY = directionTable.get("origin_y").optint(0);
                     int numFrames = directionTable.get("num_frames").optint(1);
-                    int numColumns = directionTable.get("num_colums").optint(numFrames);
+                    int numColumns = directionTable.get("num_columns").optint(numFrames);
 
                     Rectangle firstFrameRectangle = new Rectangle(x, y, frameWidth, frameHeight);
                     directions.add(new SpriteAnimationDirection(

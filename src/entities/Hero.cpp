@@ -259,12 +259,17 @@ void Hero::update_state() {
  */
 void Hero::update_movement() {
 
-  on_raised_blocks = get_entities().overlaps_raised_blocks(get_layer(), get_bounding_box());
-
-  if (get_movement() == NULL) {
-    return;
+  if (on_raised_blocks && !state->is_touching_ground()) {
+    // If the hero was already over raised blocks, keep it that way while he
+    // is not touching ground.
   }
-  get_movement()->update();
+  else {
+    on_raised_blocks = get_entities().overlaps_raised_blocks(get_layer(), get_bounding_box());
+  }
+
+  if (get_movement() != NULL) {
+    get_movement()->update();
+  }
 }
 
 /**

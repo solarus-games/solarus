@@ -25,6 +25,7 @@ Engine changes
 * The size of all map entities must be a multiple of 8 (#358).
 * Thrown entities (pots, bombs...) can now fall to a lower layer (#349).
 * Running into a crystal or a solid switch now activates it (#193).
+* The hero can now jump over distant crystal blocks (#42).
 * The shield no longer protects while using the sword or carrying (#192).
 * Fix collisions detected on disabled entities (#455).
 * Fix pixel collisions coordinates when sprites move (#372).

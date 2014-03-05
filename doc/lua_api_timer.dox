@@ -99,8 +99,16 @@ If the delay is set to zero, the function is called immediately.
     canceled when the entity is removed from the map.
     In the case of an enemy, the timer is also canceled when the enemy
     is hurt, immobilized or restarts.
-    Most enemy scripts usually create timers.
+    Also note that while the entity is suspended, the timer is temporarily
+    paused.
+    An entity may be suspended when the
+    \ref lua_api_game_is_suspended "game is suspended",
+    when the entity is
+    \ref lua_api_entity_set_enabled "disabled"
+    or when the entity is
+    \ref lua_api_entity_set_optimization_distance "far for the screen".
     Example: a boss who shoots fireballs every 10 seconds.
+    Most enemy scripts usually create timers.
   - If you set the context to a \ref lua_api_menu "menu", the timer is
     canceled when the menu is closed.
     Example: in the title screen, show some game sequences after a few seconds

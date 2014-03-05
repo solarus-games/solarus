@@ -479,10 +479,21 @@ Sets the optimization threshold of this map entity.
 
 Above this distance from the visible area
 of the map, the entity will be suspended.
+When an entity is suspended, its
+\ref lua_api_movement "movements",
+\ref lua_api_sprite "sprites"
+and
+\ref lua_api_timer "timers"
+are suspended.
+
 A value of \c 0 means an infinite distance (the entity is never optimized away).
 The default value depends on the type of entity and is usually fine,
-but you may need to increase it in some cases, for example for an \ref lua_api_enemy "enemy" in a huge room.
+but you may need to increase it in some cases, or even disable it for example
+for an
+\ref lua_api_enemy "enemy"
+in a huge room.
 - \c optimization_distance (number): The optimization distance to set in pixels.
+  \c 0 disables this automatic suspending.
 
 \subsection lua_api_entity_is_in_same_region entity:is_in_same_region(other_entity)
 
@@ -509,7 +520,7 @@ if this map entity was translated.
 - Return value (boolean): \c true if there would be a collision in this
 position.
 
-\subsection lua_api_entity_is_visible entity:is_visible([visible])
+\subsection lua_api_entity_is_visible entity:is_visible()
 
 Returns whether this entity is visible.
 

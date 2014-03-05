@@ -24,6 +24,7 @@ Engine changes
 * Set the default speed of StraightMovement to 32 instead of 0 (#343).
 * The size of all map entities must be a multiple of 8 (#358).
 * Thrown entities (pots, bombs...) can now fall to a lower layer (#349).
+* Running into a crystal or a solid switch now activates it (#193).
 * The shield no longer protects while using the sword or carrying (#192).
 * Fix collisions detected on disabled entities (#455).
 * Fix pixel collisions coordinates when sprites move (#372).

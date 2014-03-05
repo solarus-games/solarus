@@ -1773,7 +1773,7 @@ void Hero::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) 
  * \param crystal the crystal
  * \param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
+void Hero::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_FACING) {
     // the hero is touching the crystal and is looking in its direction
@@ -1793,7 +1793,7 @@ void Hero::notify_collision_with_crystal(Crystal &crystal, CollisionMode collisi
  * \param crystal the crystal
  * \param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
-void Hero::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping) {
+void Hero::notify_collision_with_crystal(Crystal& crystal, Sprite& sprite_overlapping) {
 
   if (sprite_overlapping.contains("sword") // the hero's sword is overlapping the crystal
       && state->can_sword_hit_crystal()) {

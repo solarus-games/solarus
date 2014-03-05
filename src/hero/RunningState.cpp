@@ -267,6 +267,13 @@ bool Hero::RunningState::can_pick_treasure(EquipmentItem& item) const {
 }
 
 /**
+ * \copydoc Hero::State::can_sword_hit_crystal
+ */
+bool Hero::RunningState::can_sword_hit_crystal() const {
+  return true;
+}
+
+/**
  * \brief Returns whether the game over sequence can start in the current state.
  * \return true if the game over sequence can start in the current state
  */

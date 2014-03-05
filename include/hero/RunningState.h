@@ -46,6 +46,7 @@ class Hero::RunningState: public Hero::State {
     bool can_take_stairs() const;
     bool can_be_hurt(MapEntity* attacker) const;
     bool can_pick_treasure(EquipmentItem& item) const;
+    bool can_sword_hit_crystal() const;
     bool can_start_gameover_sequence() const;
     bool is_touching_ground() const;
     bool can_avoid_deep_water() const;

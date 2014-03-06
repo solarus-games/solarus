@@ -54,11 +54,12 @@ the new one.
 - \c music_id (string): Name of the music file to play, relative to the
   \c musics directory and without extension. The following extensions will be
   tried in this order: \c <tt>.ogg</tt>, \c <tt>.it</tt> and \c <tt>.spc</tt>.
-  \c nil stops playing any music. The second has no effect in this case.
+  \c nil stops playing any music.
+  The second parameter has no effect in this case.
   If you set the music name to the same music that is already playing, or to
   the special value \c "same", then this function does nothing.
-  In particular, the music keeps playing (it does not restart)
-  and the second parameter has no effect.
+  The music keeps playing (it does not restart) and the second parameter
+  is ignored.
 - \c action (function or boolean, optional): What to do when the music
   finishes (reaches its end).
   A boolean value indicates whether or not the music should loop.
@@ -73,7 +74,7 @@ the new one.
   emulation format.
   Some of them simply play forever, other play an empty sound forever after
   some point, but they have no end.
-  This can also the case of some <tt>.it</tt> musics if they
+  This can also be the case of some <tt>.it</tt> musics if they
   contain internal loop information to play forever.
   The \c action parameter has no effect on such musics.
 

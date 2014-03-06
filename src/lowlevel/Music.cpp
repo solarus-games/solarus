@@ -19,8 +19,11 @@
 #include "lowlevel/ItDecoder.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
+#include "lua/LuaContext.h"
+#include <lua.hpp>
 #include <vector>
 #include <sstream>
+#include <iostream>  // TODO remove
 
 namespace solarus {
 
@@ -29,7 +32,6 @@ SpcDecoder* Music::spc_decoder = NULL;
 ItDecoder* Music::it_decoder = NULL;
 float Music::volume = 1.0;
 Music* Music::current_music = NULL;
-std::map<std::string, Music> Music::all_musics;
 
 const std::string Music::none = "none";
 const std::string Music::unchanged = "same";
@@ -46,21 +48,44 @@ const std::string Music::format_names[] = {
 };
 
 /**
- * \brief Creates a new music.
- * \param music_id id of the music (file name without extension)
+ * \brief Creates an empty music.
  */
-Music::Music(const std::string& music_id):
-  id(music_id),
-  format(OGG) {
-
-  if (!is_initialized() || music_id == none) {
-    return;
-  }
+Music::Music():
+  id(none),
+  format(NO_FORMAT),
+  loop(false),
+  lua_context(NULL),
+  callback_ref(LUA_REFNIL),
+  source(AL_NONE) {
 
   for (int i = 0; i < nb_buffers; i++) {
     buffers[i] = AL_NONE;
   }
-  source = AL_NONE;
+}
+
+/**
+ * \brief Creates a new music.
+ * \param music_id Id of the music (file name without extension).
+ * \param loop Whether the music should loop when reaching its end.
+ * \param lua_context Lua context to use if there is a callback.
+ * \param callback_ref Lua function to call when the music ends or LUA_REFNIL.
+ * There cannot be both a loop and a callback at the same time.
+ */
+Music::Music(const std::string& music_id, bool loop, LuaContext* lua_context, int callback_ref):
+  id(music_id),
+  format(OGG),
+  loop(loop),
+  lua_context(lua_context),
+  callback_ref(callback_ref),
+  source(AL_NONE) {
+
+  Debug::check_assertion(!loop || callback_ref == LUA_REFNIL,
+      "Attempt to set both a loop and a callback to music"
+  );
+
+  for (int i = 0; i < nb_buffers; i++) {
+    buffers[i] = AL_NONE;
+  }
 }
 
 /**
@@ -74,6 +99,10 @@ Music::~Music() {
 
   if (current_music == this) {
     stop();
+  }
+
+  if (lua_context != NULL) {
+    lua_context->cancel_callback(callback_ref);
   }
 }
 
@@ -93,10 +122,14 @@ void Music::initialize() {
  * \brief Exits the music system.
  */
 void Music::quit() {
+
   if (is_initialized()) {
-    all_musics.clear();
+    delete current_music;
+    current_music = NULL;
     delete spc_decoder;
+    spc_decoder = NULL;
     delete it_decoder;
+    it_decoder = NULL;
   }
 }
 
@@ -221,15 +254,6 @@ void Music::set_tempo(int tempo) {
   it_decoder->set_tempo(tempo);
 }
 
-
-/**
- * \brief Returns the music currently playing.
- * \return the current music, or NULL if no music is being played
- */
-Music* Music::get_current_music() {
-  return current_music;
-}
-
 /**
  * \brief Returns the id of the music currently playing.
  * \return the id of the current music, or "none" if no music is being played
@@ -289,49 +313,77 @@ bool Music::exists(const std::string& music_id) {
 /**
  * \brief Plays a music.
  *
- * If the music is different from the current one,
- * the current one is stopped.
- * The music specified can also be Music::none_id (then the current music is just stopped)
- * or even Music::unchanged_id (nothing is done in this case).
+ * If the music is different from the current one, the current one is stopped.
+ * The music specified can also be Music::none_id (then the current music is
+ * just stopped).
+ * or even Music::unchanged_id (the current music continues in this case).
  *
- * \param music_id id of the music to play (file name without extension)
+ * \param music_id Id of the music to play (file name without extension).
+ * \param loop Whether the music should loop when reaching its end
+ * (if there is an end).
  */
-void Music::play(const std::string& music_id) {
+void Music::play(const std::string& music_id, bool loop) {
+
+  play(music_id, loop, NULL, LUA_REFNIL);
+}
+
+/**
+ * \brief Plays a music with an optional Lua callback to call when it finishes.
+ * \param music_id Id of the music to play (file name without extension).
+ * \param loop Whether the music should loop when reaching its end
+ * (if there is an end).
+ * \param lua_context Lua context of the callback if any.
+ * \param callback_ref Lua function to call when the music finishes or
+ * LUA_REFNIL. There cannot be both a loop and a callback at the same time.
+ */
+void Music::play(const std::string& music_id, bool loop,
+    LuaContext* lua_context, int callback_ref) {
 
   if (music_id != unchanged && music_id != get_current_music_id()) {
-    // the music is changed
+    // The music is changed.
 
-    if (music_id == none && current_music != NULL) {
-
-      current_music->stop();
+    if (current_music != NULL) {
+      // Stop the music that was played.
+      delete current_music;
       current_music = NULL;
     }
-    else {
 
-      // play another music
-      if (current_music != NULL) {
-        current_music->stop();
+    if (music_id != none) {
+      // Play another music.
+      if (callback_ref == LUA_NOREF) {
+        callback_ref = LUA_REFNIL;
       }
-
-      if (all_musics.count(music_id) == 0) {
-        all_musics[music_id] = Music(music_id);
-      }
-
-      Music& music = all_musics[music_id];
-      if (music.start()) {
-        current_music = &music;
-      }
-      else {
+      current_music = new Music(music_id, loop, lua_context, callback_ref);
+      if (!current_music->start()) {
+        // Could not play the music.
+        delete current_music;
         current_music = NULL;
       }
+    }
+  }
+  else if (music_id != none) {
+    // Keep the same music.
+    if (lua_context != NULL) {
+      // Discard the new callback if any.
+      lua_context->cancel_callback(callback_ref);
     }
   }
 }
 
 /**
+ * \brief Stops playing any music.
+ *
+ * The callback if any is not called.
+ */
+void Music::stop_playing() {
+
+  play(none, false);
+}
+
+/**
  * \brief Updates the music system.
  *
- * When a music is playing, this function makes it update.
+ * When a music is playing, this function continues the streaming.
  */
 void Music::update() {
 
@@ -340,7 +392,19 @@ void Music::update() {
   }
 
   if (current_music != NULL) {
-    current_music->update_playing();
+    bool playing = current_music->update_playing();
+    if (!playing) {
+      // Music is finished.
+      LuaContext* lua_context = current_music->lua_context;
+      int callback_ref = current_music->callback_ref;
+      current_music->callback_ref = LUA_REFNIL;
+      delete current_music;
+      current_music = NULL;
+      if (lua_context != NULL) {
+        lua_context->do_callback(callback_ref);
+        lua_context->cancel_callback(callback_ref);
+      }
+    }
   }
 }
 
@@ -348,19 +412,21 @@ void Music::update() {
  * \brief Updates this music when it is playing.
  *
  * This function handles the double buffering.
+ *
+ * \return \c true if the music keeps playing, \c false if the end is reached.
  */
-void Music::update_playing() {
+bool Music::update_playing() {
 
-  // get the empty buffers
+  // Get the empty buffers.
   ALint nb_empty;
   alGetSourcei(source, AL_BUFFERS_PROCESSED, &nb_empty);
 
-  // refill them
+  // Refill them.
   for (int i = 0; i < nb_empty; i++) {
     ALuint buffer;
-    alSourceUnqueueBuffers(source, 1, &buffer); // unqueue the buffer
+    alSourceUnqueueBuffers(source, 1, &buffer);  // Unqueue the buffer.
 
-    // fill it by decoding more data
+    // Fill it by decoding more data.
     switch (format) {
 
       case SPC:
@@ -379,15 +445,14 @@ void Music::update_playing() {
         Debug::die("Invalid music format");
         break;
     }
-    alSourceQueueBuffers(source, 1, &buffer);   // queue it again
+
+    alSourceQueueBuffers(source, 1, &buffer);  // Queue it again.
   }
 
+  // Returns whether there is still something playing.
   ALint status;
   alGetSourcei(source, AL_SOURCE_STATE, &status);
-
-  if (status != AL_PLAYING) {
-    alSourcePlay(source);
-  }
+  return status == AL_PLAYING;
 }
 
 /**
@@ -408,7 +473,7 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
   if (error != AL_NO_ERROR) {
     std::ostringstream oss;
     oss << "Failed to fill the audio buffer with decoded SPC data for music file '"
-        << file_name << ": error " << error;
+      << file_name << ": error " << error;
     Debug::die(oss.str());
   }
 }
@@ -420,26 +485,26 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
  */
 void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
 
-  // decode the IT data
+  // Decode the IT data.
   std::vector<ALushort> raw_data(nb_samples);
   it_decoder->decode(&raw_data[0], nb_samples);
 
-  // put this decoded data into the buffer
+  // Put this decoded data into the buffer.
   alBufferData(destination_buffer, AL_FORMAT_STEREO16, &raw_data[0], nb_samples, 44100);
 
   int error = alGetError();
   if (error != AL_NO_ERROR) {
     std::ostringstream oss;
     oss << "Failed to fill the audio buffer with decoded IT data for music file '"
-        << file_name << ": error " << error;
+      << file_name << ": error " << error;
     Debug::die(oss.str());
   }
 }
 
 /**
  * \brief Decodes a chunk of OGG data into PCM data for the current music.
- * \param destination_buffer the destination buffer to write
- * \param nb_samples number of samples to write
+ * \param destination_buffer The destination buffer to write.
+ * \param nb_samples Number of samples to write.
  */
 void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
 
@@ -478,7 +543,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   }
   while (remaining_bytes > 0 && bytes_read > 0);
 
-  // put this decoded data into the buffer
+  // Put this decoded data into the buffer.
   alBufferData(destination_buffer, al_format, &raw_data[0], ALsizei(total_bytes_read), sample_rate);
 
   int error = alGetError();
@@ -502,11 +567,6 @@ bool Music::start() {
   if (!is_initialized()) {
     return false;
   }
-
-  Debug::check_assertion(current_music == NULL,
-      std::string("Cannot play music '") + id
-      + "': a music is already playing"
-  );
 
   // First time: find the file.
   if (file_name.empty()) {
@@ -559,10 +619,9 @@ bool Music::start() {
       break;
 
     case OGG:
-
     {
       ogg_mem.position = 0;
-      ogg_mem.loop = true;
+      ogg_mem.loop = this->loop;
       FileTools::data_file_open_buffer(file_name, &ogg_mem.data, &ogg_mem.size);
       // now, ogg_mem contains the encoded data
 
@@ -599,14 +658,15 @@ bool Music::start() {
 
   alSourcePlay(source);
 
-  // now the update() function will take care of filling the buffers
-  current_music = this;
+  // The update() function will then take care of filling the buffers
 
   return success;
 }
 
 /**
  * \brief Stops playing the music.
+ *
+ * The callback if any is not called.
  */
 void Music::stop() {
 
@@ -614,8 +674,10 @@ void Music::stop() {
     return;
   }
 
-  if (this != current_music) {
-    return;
+  // Release the callback if any.
+  if (lua_context != NULL) {
+    lua_context->cancel_callback(callback_ref);
+    callback_ref = LUA_REFNIL;
   }
 
   // empty the source
@@ -634,8 +696,6 @@ void Music::stop() {
 
   // delete the buffers
   alDeleteBuffers(nb_buffers, buffers);
-
-  current_music = NULL;
 
   switch (format) {
 
@@ -688,6 +748,26 @@ void Music::set_paused(bool pause) {
   else {
     alSourcePlay(source);
   }
+}
+
+/**
+ * \brief Sets a Lua function to call when the music ends.
+ *
+ * The previous callback if any is discarded.
+ *
+ * \param callback_ref Lua ref to a function to call when the music ends
+ * or LUA_REFNIL.
+ */
+void Music::set_callback(int callback_ref) {
+
+  if (lua_context == NULL) {
+    return;
+  }
+
+  if (this->callback_ref != LUA_REFNIL) {
+    lua_context->cancel_callback(this->callback_ref);
+  }
+  this->callback_ref = callback_ref;
 }
 
 }

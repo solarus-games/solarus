@@ -728,7 +728,7 @@ void Map::start() {
   this->started = true;
   this->visible_surface->set_opacity(255);
 
-  Music::play(music_id);
+  Music::play(music_id, true);
   this->entities->notify_map_started();
   get_lua_context().run_map(*this, get_destination());
 }

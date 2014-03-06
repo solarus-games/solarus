@@ -25,7 +25,7 @@ namespace solarus {
  */
 SpcDecoder::SpcDecoder() {
 
-  // initialize the SPC library
+  // Initialize the SPC library.
   snes_spc_manager = spc_new();
   snes_spc_filter = spc_filter_new();
 }
@@ -35,19 +35,19 @@ SpcDecoder::SpcDecoder() {
  */
 SpcDecoder::~SpcDecoder() {
 
-  // uninitialize the SPC library
+  // Uninitialize the SPC library.
   spc_filter_delete(snes_spc_filter);
   spc_delete(snes_spc_manager);
 }
 
 /**
  * \brief Loads an SPC file from the memory.
- * \param sound_data the memory area to read
- * \param sound_size size of the memory area in bytes
+ * \param sound_data The memory area to read.
+ * \param sound_size Size of the memory area in bytes.
  */
-void SpcDecoder::load(int16_t *sound_data, size_t sound_size) {
+void SpcDecoder::load(int16_t* sound_data, size_t sound_size) {
 
-  // load the SPC data into the SPC library
+  // Load the SPC data into the SPC library.
   spc_load_spc(snes_spc_manager, (short int*) sound_data, sound_size);
   spc_clear_echo(snes_spc_manager);
   spc_filter_clear(snes_spc_filter);
@@ -57,11 +57,11 @@ void SpcDecoder::load(int16_t *sound_data, size_t sound_size) {
 /**
  * \brief Decodes a chunk of the previously loaded SPC data into PCM data.
  * \param decoded_data pointer to where you want the decoded data to be written.
- * \param nb_samples number of samples to write
+ * \param nb_samples Number of samples to write.
  */
 void SpcDecoder::decode(int16_t* decoded_data, int nb_samples) {
 
-  // decode from the SPC data the specified number of PCM samples
+  // Decode from the SPC data the specified number of PCM samples.
 
   const char* err = spc_play(snes_spc_manager, nb_samples, (short int*) decoded_data);
   if (err != NULL) {

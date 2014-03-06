@@ -16,6 +16,7 @@
  */
 #include "lowlevel/ItDecoder.h"
 #include "lowlevel/Debug.h"
+#include <modplug.h>
 #include <stdafx.h>  // These two headers are with the libmodplug ones.
 #include <sndfile.h>
 
@@ -31,7 +32,7 @@ ItDecoder::ItDecoder():
   ModPlug_GetSettings(&settings);
   settings.mChannels = 2;     // stereo
   settings.mBits = 16;        // 16 bits
-  settings.mLoopCount = -1;   // loop forever
+  settings.mLoopCount = -1;   // Loop forever by default.
   ModPlug_SetSettings(&settings);
 }
 
@@ -48,7 +49,11 @@ ItDecoder::~ItDecoder() {
  */
 void ItDecoder::load(void* sound_data, size_t sound_size) {
 
-  // load the IT data into the IT library
+  Debug::check_assertion(modplug_file == NULL,
+      "IT data is already loaded"
+  );
+
+  // Load the IT data into the IT library.
   modplug_file = ModPlug_Load((const void*) sound_data, int(sound_size));
 }
 
@@ -57,17 +62,22 @@ void ItDecoder::load(void* sound_data, size_t sound_size) {
  */
 void ItDecoder::unload() {
 
+  Debug::check_assertion(modplug_file != NULL,
+      "IT data is not loaded"
+  );
+
   ModPlug_Unload(modplug_file);
+  modplug_file = NULL;
 }
 
 /**
  * \brief Decodes a chunk of the previously loaded IT data into PCM data.
- * \param decoded_data pointer to where you want the decoded data to be written
- * \param nb_samples number of samples to write
+ * \param decoded_data Pointer to where you want the decoded data to be written.
+ * \param nb_samples Number of samples to write.
  */
 void ItDecoder::decode(void* decoded_data, int nb_samples) {
 
-  // decode from the IT data the specified number of PCM samples
+  // Decode from the IT data the specified number of PCM samples.
   ModPlug_Read(modplug_file, decoded_data, nb_samples);
 }
 
@@ -75,7 +85,7 @@ void ItDecoder::decode(void* decoded_data, int nb_samples) {
  * \brief Returns the number of channels in this music.
  * \return The number of channels.
  */
-int ItDecoder::get_num_channels() {
+int ItDecoder::get_num_channels() const {
   return ModPlug_NumChannels(modplug_file);
 }
 
@@ -84,7 +94,7 @@ int ItDecoder::get_num_channels() {
  * \param channel A channel index.
  * \return The volume of this channel.
  */
-int ItDecoder::get_channel_volume(int channel) {
+int ItDecoder::get_channel_volume(int channel) const {
 
   const int num_patterns = ModPlug_NumPatterns(modplug_file);
 
@@ -128,7 +138,7 @@ void ItDecoder::set_channel_volume(int channel, int volume) {
  * \brief Returns the tempo of the music.
  * \return The tempo.
  */
-int ItDecoder::get_tempo() {
+int ItDecoder::get_tempo() const {
 
   return reinterpret_cast<CSoundFile*>(modplug_file)->GetMusicTempo();
 }
@@ -140,6 +150,28 @@ int ItDecoder::get_tempo() {
 void ItDecoder::set_tempo(int tempo) {
 
   reinterpret_cast<CSoundFile*>(modplug_file)->SetTempo(tempo);
+}
+
+/**
+ * \brief Returns whether the decoder loops when reaching the end.
+ */
+bool ItDecoder::loops() const {
+
+  ModPlug_Settings settings;
+  ModPlug_GetSettings(&settings);
+  return settings.mLoopCount == -1;  // -1 means looping forever.
+}
+
+/**
+ * \brief Sets whether the decoder should loop when reaching the end.
+ * \param loops \c true to make the decoder loop.
+ */
+void ItDecoder::set_loops(bool loops) {
+
+  ModPlug_Settings settings;
+  ModPlug_GetSettings(&settings);
+  settings.mLoopCount = loops ? -1 : 0;
+  ModPlug_SetSettings(&settings);
 }
 
 }

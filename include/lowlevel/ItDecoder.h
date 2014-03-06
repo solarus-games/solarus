@@ -18,8 +18,9 @@
 #define SOLARUS_IT_DECODER_H
 
 #include "Common.h"
-#include <modplug.h>
 #include <cstddef>
+
+typedef struct _ModPlugFile ModPlugFile;
 
 namespace solarus {
 
@@ -39,11 +40,13 @@ class ItDecoder {
     void unload();
     void decode(void* decoded_data, int nb_samples);
 
-    int get_num_channels();
-    int get_channel_volume(int channel);
+    int get_num_channels() const;
+    int get_channel_volume(int channel) const;
     void set_channel_volume(int channel, int volume);
-    int get_tempo();
+    int get_tempo() const;
     void set_tempo(int tempo);
+    bool loops() const;
+    void set_loops(bool loops);
 
   private:
 

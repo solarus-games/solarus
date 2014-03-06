@@ -75,6 +75,7 @@ Changes that introduce incompatibilities:
 * sol.video.switch_mode() no longer changes the fullscreen flag.
 * surface:set_transparency_color() no longer exists. Use surface:clear().
 * sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
+* Add loop and callback features to sol.audio.play_music() (#280).
 * on_key_pressed() and on_character_pressed() are now both called (#344).
 * The lifetime of a menu can now be another menu.
 * Destructible objects no longer show hardcoded dialogs (#270).

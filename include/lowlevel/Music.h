@@ -31,8 +31,11 @@ namespace solarus {
  * Before using this class, the audio system should have been
  * initialized, by calling Sound::initialize().
  * Sound and Music are the only classes that depends on audio libraries.
+ *
+ * TODO move the non-static parts to an internal private class.
+ * TODO make a subclass for each format?
  */
-class Music { // TODO make a subclass for each format, or at least make a better separation between them
+class Music {
 
   public:
 
@@ -40,18 +43,15 @@ class Music { // TODO make a subclass for each format, or at least make a better
      * The music file formats recognized.
      */
     enum Format {
-      NO_FORMAT,  /**< No music. */
-      SPC,        /**< original Snes music */
-      IT,         /**< Impulse Tracker module */
-      OGG         /**< Ogg Vorbis */
+      NO_FORMAT,        /**< No music. */
+      SPC,              /**< Original Snes music. */
+      IT,               /**< Impulse Tracker module. */
+      OGG               /**< Ogg Vorbis. */
     };
 
     static const std::string none;               /**< special id indicating that there is no music */
     static const std::string unchanged;          /**< special id indicating that the music is the same as before */
     static const std::string format_names[];     /**< Name of each format. */
-
-    Music(const std::string& music_id = none);
-    ~Music();
 
     static void initialize();
     static void quit();
@@ -70,26 +70,43 @@ class Music { // TODO make a subclass for each format, or at least make a better
     static void find_music_file(const std::string& music_id,
         std::string& file_name, Format& format);
     static bool exists(const std::string& music_id);
-    static void play(const std::string& music_id);
-    static Music* get_current_music();
+    static void play(
+        const std::string& music_id,
+        bool loop
+    );
+    static void play(
+        const std::string& music_id,
+        bool loop,
+        LuaContext* lua_context,
+        int callback_ref
+    );
+    static void stop_playing();
     static const std::string& get_current_music_id();
 
   private:
+
+    Music();
+    Music(const std::string& music_id, bool loop, LuaContext* lua_context, int callback_ref);
+    ~Music();
 
     bool start();
     void stop();
     bool is_paused();
     void set_paused(bool pause);
+    void set_callback(int callback_ref);
 
     void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
     void decode_it(ALuint destination_buffer, ALsizei nb_samples);
     void decode_ogg(ALuint destination_buffer, ALsizei nb_samples);
 
-    void update_playing();
+    bool update_playing();
 
     std::string id;                              /**< id of this music */
     std::string file_name;                       /**< name of the file to play */
     Format format;                               /**< format of the music, detected from the file name */
+    bool loop;                                   /**< Whether the music should loop. */
+    LuaContext* lua_context;                     /**< Lua context to use for the callback if any. */
+    int callback_ref;                            /**< Lua ref to a function to call when the music finishes. */
 
     // OGG specific
     OggVorbis_File ogg_file;                     /**< the file used by the vorbisfile lib */
@@ -104,7 +121,6 @@ class Music { // TODO make a subclass for each format, or at least make a better
     static float volume;                         /**< volume of musics (0.0 to 1.0) */
 
     static Music* current_music;                 /**< the music currently played (if any) */
-    static std::map<std::string, Music> all_musics;   /**< all musics created before */
 
 };
 

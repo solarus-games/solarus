@@ -287,7 +287,7 @@ void MainLoop::update() {
     else {
       lua_context->exit();
       lua_context->initialize();
-      Music::play(Music::none);
+      Music::stop_playing();
     }
   }
 }

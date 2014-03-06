@@ -137,15 +137,36 @@ int LuaContext::audio_api_set_music_volume(lua_State* l) {
 int LuaContext::audio_api_play_music(lua_State* l) {
 
   const std::string& music_id = luaL_optstring(l, 1, "");
+  bool loop = true;  // true by default, unless there is a callback.
+  int callback_ref = LUA_NOREF;
+  if (lua_gettop(l) >= 2) {
+    if (lua_isboolean(l, 2)) {
+      // There is a loop parameter.
+      loop = lua_toboolean(l, 2);
+    }
+    else {
+      // There is a callback parameter.
+      loop = false;  // No loop when there is a callback.
+      luaL_checktype(l, 2, LUA_TFUNCTION);
+      lua_settop(l, 2);  // Make sure that the callback is on top.
+      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+    }
+  }
 
   if (music_id.empty()) {
-    Music::play(Music::none);
+    // nil music: stop playing any music.
+    luaL_unref(l, LUA_REGISTRYINDEX, callback_ref);
+    Music::stop_playing();
   }
   else {
     if (!Music::exists(music_id)) {
+      // Could not find the specified music.
+      luaL_unref(l, LUA_REGISTRYINDEX, callback_ref);
       LuaTools::error(l, std::string("No such music: '") + music_id + "'");
     }
-    Music::play(music_id);
+
+    // Valid music file name.
+    Music::play(music_id, loop, &get_lua_context(l), callback_ref);
   }
 
   return 0;
@@ -158,7 +179,7 @@ int LuaContext::audio_api_play_music(lua_State* l) {
  */
 int LuaContext::audio_api_stop_music(lua_State* l) {
 
-  Music::play(Music::none);
+  Music::stop_playing();
 
   return 0;
 }

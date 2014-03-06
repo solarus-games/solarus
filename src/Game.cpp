@@ -126,7 +126,7 @@ Game::~Game() {
   current_map->unload();
   RefCountable::unref(current_map);
 
-  Music::play(Music::none);
+  Music::stop_playing();
 
   delete transition;
   delete keys_effect;

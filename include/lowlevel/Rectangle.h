@@ -26,10 +26,9 @@ namespace solarus {
 /**
  * \brief Represents a rectangle.
  *
- * This class represents a rectangle with its top-left corner, width and height.
+ * This class represents a rectangle with its upper-left corner, width and height.
  * This class can also be used to represent a single point
- * (then the width and the height can be set to zero, one or even just left unset:
- * this is your decision).
+ * (then the width and the height are 1).
  * This class basically encapsulates a library-dependent rectangle object.
  */
 class Rectangle {

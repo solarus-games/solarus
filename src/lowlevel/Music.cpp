@@ -23,7 +23,6 @@
 #include <lua.hpp>
 #include <vector>
 #include <sstream>
-#include <iostream>  // TODO remove
 
 namespace solarus {
 

@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
+#include <string>
 
 namespace solarus {
 

@@ -37,6 +37,7 @@
 #include "Timer.h"
 #include <iomanip>
 #include <sstream>
+#include <iostream>
 
 namespace solarus {
 

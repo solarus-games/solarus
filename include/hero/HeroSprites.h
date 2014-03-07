@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
+#include <string>
 
 namespace solarus {
 

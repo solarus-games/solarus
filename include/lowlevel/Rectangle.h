@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include <SDL.h>
-#include <iostream>
+#include <iosfwd>
 
 namespace solarus {
 
@@ -86,7 +86,7 @@ class Rectangle {
 
 };
 
-std::ostream& operator <<(std::ostream& stream, const Rectangle& rectangle);
+std::ostream& operator<<(std::ostream& stream, const Rectangle& rectangle);
 
 /**
  * \brief Creates a rectangle, specifying its properties.
@@ -392,18 +392,6 @@ inline SDL_Rect* Rectangle::get_internal_rect() {
  */
 inline const SDL_Rect* Rectangle::get_internal_rect() const {
   return &rect;
-}
-
-/**
- * \brief Prints a rectangle to an output stream.
- * \param stream the stream
- * \param rectangle a rectangle
- */
-inline std::ostream & operator <<(std::ostream& stream, const Rectangle& rectangle) {
-
-  stream << "(" << rectangle.get_x() << "," << rectangle.get_y() << ") x ("
-    << rectangle.get_width() << "," << rectangle.get_height() << ")";
-  return stream;
 }
 
 /**

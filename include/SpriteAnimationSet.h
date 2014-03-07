@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
 #include <map>
+#include <string>
 
 struct lua_State;
 

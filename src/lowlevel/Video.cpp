@@ -29,6 +29,7 @@
 #include <map>
 #include <algorithm>
 #include <sstream>
+#include <iostream>
 
 namespace solarus {
 

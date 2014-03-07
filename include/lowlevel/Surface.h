@@ -23,8 +23,9 @@
 #include "lowlevel/PixelBits.h"
 #include <vector>
 
-typedef struct SDL_Surface SDL_Surface;
-typedef struct SDL_Texture SDL_Texture;
+struct SDL_Surface;
+struct SDL_Texture;
+struct SDL_Renderer;
 
 namespace solarus {
 

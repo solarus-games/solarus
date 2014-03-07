@@ -16,6 +16,7 @@
  */
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/Video.h"
+#include <SDL.h>
 #include <cstdlib>  // std::abs
 
 namespace solarus {

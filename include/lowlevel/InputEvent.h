@@ -18,9 +18,11 @@
 #define SOLARUS_INPUT_EVENT_H
 
 #include "Common.h"
-#include <SDL.h>
+#include <SDL_events.h>
 #include <string>
 #include <map>
+
+typedef struct _SDL_Joystick SDL_Joystick;
 
 namespace solarus {
 

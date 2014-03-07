@@ -30,6 +30,7 @@
 #include <algorithm>
 #include <sstream>
 #include <iostream>
+#include <SDL_render.h>
 
 namespace solarus {
 

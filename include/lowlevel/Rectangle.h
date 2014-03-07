@@ -18,7 +18,7 @@
 #define SOLARUS_RECTANGLE_H
 
 #include "Common.h"
-#include <SDL.h>
+#include <SDL_rect.h>
 #include <iosfwd>
 
 namespace solarus {

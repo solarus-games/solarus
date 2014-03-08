@@ -18,7 +18,7 @@
 #define SOLARUS_COLOR_H
 
 #include "Common.h"
-#include <SDL_pixels.h>
+#include <SDL.h>
 
 namespace solarus {
 

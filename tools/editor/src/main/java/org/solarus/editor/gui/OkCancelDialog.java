@@ -182,8 +182,12 @@ public abstract class OkCancelDialog extends JDialog {
      * @return true if the user applied modifications, false if he cancelled
      */
     public boolean display() {
-        setLocationRelativeTo(null);
         pack();
+
+        // Center the dialog box now that its size is determined.
+        setLocationRelativeTo(null);
+
+        // Show the dialog box.
         setVisible(true);
 
         return appliedModifications;

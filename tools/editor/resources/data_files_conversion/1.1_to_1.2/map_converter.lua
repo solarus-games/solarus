@@ -54,6 +54,13 @@ local teletransporter_transition_replacements = {
   ['  transition = 2,'] = '  transition = "scrolling",',
 }
 
+local stream_replacement = {
+  ["conveyor_belt{"] = [[stream{
+  sprite = "entities/conveyor_belt",
+  allow_movement = false,
+  allow_attack = false,
+  allow_item = false,]]
+}
 
 function converter.convert(quest_path, map_id)
 
@@ -67,6 +74,9 @@ function converter.convert(quest_path, map_id)
 
   -- Replace shop_item by shop_treasure.
   text = text:gsub("shop_item{", "shop_treasure{")
+
+  -- Replace conveyor_belt by stream.
+  text = text:gsub("(conveyor_belt{)", stream_replacement)
 
   -- Replace destructible subtypes.
   text = text:gsub("(  subtype = \"[a-z_]+\",)", destructible_subtype_replacements)

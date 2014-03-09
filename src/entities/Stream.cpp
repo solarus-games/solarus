@@ -24,18 +24,31 @@ namespace solarus {
 /**
  * \brief Creates a new stream.
  * \param name Name identifying the entity on the map or an empty string.
- * \param layer layer of the entity to create on the map
- * \param x x coordinate of the entity to create
- * \param y y coordinate of the entity to create
- * \param direction direction of the stream
+ * \param layer Layer of the entity to create.
+ * \param x X coordinate of the entity to create.
+ * \param y Y coordinate of the entity to create.
+ * \param direction Direction of the stream (0 to 7).
+ * \param sprite_name Animation set id of a sprite or an empty string.
  */
-Stream::Stream(const std::string& name,
-    Layer layer, int x, int y, int direction):
-  Detector(COLLISION_OVERLAPPING, name, layer, x, y, 16, 16) {
+Stream::Stream(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    int direction,
+    const std::string& sprite_name
+):
+  Detector(COLLISION_OVERLAPPING, name, layer, x, y, 16, 16),
+  speed(40),
+  allow_movement(true),
+  allow_attack(true),
+  allow_item(true) {
 
   set_origin(8, 13);
-  create_sprite("entities/conveyor_belt");
-  get_sprite().set_current_direction(direction);
+  if (!sprite_name.empty()) {
+    create_sprite(sprite_name);
+    get_sprite().set_current_direction(direction);
+  }
   set_direction(direction);
 }
 
@@ -55,9 +68,72 @@ EntityType Stream::get_type() const {
 }
 
 /**
- * \brief Returns whether this entity is an obstacle for another one.
- * \param other another entity
- * \return true if this entity is an obstacle for the other one
+ * \brief Returns the speed of this stream.
+ * \return The speed in pixels per second.
+ */
+int Stream::get_speed() const {
+  return speed;
+}
+
+/**
+ * \brief Sets the speed of this stream.
+ * \param speed The speed in pixels per second.
+ */
+void Stream::set_speed(int speed) {
+  this->speed = speed;
+}
+
+/**
+ * \brief Returns whether the player can move the hero in this stream.
+ * \return \c true if the hero can move, \c false if this is a blocking stream.
+ */
+bool Stream::get_allow_movement() const {
+  return allow_movement;
+}
+
+/**
+ * \brief Sets whether the player can move the hero in this stream.
+ * \param allow_movement \c true to allow the hero to move, \c false if
+ * this is a blocking stream.
+ */
+void Stream::set_allow_movement(bool allow_movement) {
+  this->allow_movement = allow_movement;
+}
+
+/**
+ * \brief Returns whether the hero can use the sword in this stream.
+ * \return \c true if the hero can use the sword.
+ */
+bool Stream::get_allow_attack() const {
+  return allow_attack;
+}
+
+/**
+ * \brief Sets whether the hero can use the sword in this stream.
+ * \param allow_attack \c true to allow the hero to use the sword.
+ */
+void Stream::set_allow_attack(bool allow_attack) {
+  this->allow_attack = allow_attack;
+}
+
+/**
+ * \brief Returns whether the hero can use equipment items in this stream.
+ * \return \c true if the hero can use equipment items.
+ */
+bool Stream::get_allow_item() const {
+  return allow_item;
+}
+
+/**
+ * \brief Sets whether the hero can use equipment items in this stream.
+ * \param allow_attack \c true to allow the hero to use equipment items.
+ */
+void Stream::set_allow_item(bool allow_item) {
+  this->allow_item = allow_item;
+}
+
+/**
+ * \copydoc MapEntity::is_obstacle_for
  */
 bool Stream::is_obstacle_for(MapEntity& other) {
 
@@ -65,9 +141,7 @@ bool Stream::is_obstacle_for(MapEntity& other) {
 }
 
 /**
- * \brief This function is called when another entity overlaps this entity.
- * \param entity_overlapping the other entity
- * \param collision_mode the collision mode that detected the collision
+ * \copydoc Detector::notify_collision
  */
 void Stream::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 

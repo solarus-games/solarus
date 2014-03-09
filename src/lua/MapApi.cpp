@@ -1678,18 +1678,28 @@ int LuaContext::map_api_create_stream(lua_State* l) {
   int x = LuaTools::check_int_field(l, 1, "x");
   int y = LuaTools::check_int_field(l, 1, "y");
   int direction = LuaTools::check_int_field(l, 1, "direction");
+  const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
+  int speed = LuaTools::opt_int_field(l, 1, "speed", 40);
+  bool allow_movement = LuaTools::opt_boolean_field(l, 1, "allow_movement", true);
+  bool allow_attack = LuaTools::opt_boolean_field(l, 1, "allow_attack", true);
+  bool allow_item = LuaTools::opt_boolean_field(l, 1, "allow_item", true);
 
-  MapEntity* entity = new Stream(
+  Stream* stream = new Stream(
       name,
       layer,
       x,
       y,
-      direction
+      direction,
+      sprite_name
   );
-  map.get_entities().add_entity(entity);
+  stream->set_speed(speed);
+  stream->set_allow_movement(allow_movement);
+  stream->set_allow_attack(allow_attack);
+  stream->set_allow_item(allow_item);
+  map.get_entities().add_entity(stream);
 
   if (map.is_started()) {
-    push_entity(l, *entity);
+    push_entity(l, *stream);
     return 1;
   }
   return 0;

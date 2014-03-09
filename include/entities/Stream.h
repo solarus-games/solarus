@@ -33,14 +33,36 @@ class Stream: public Detector {
 
   public:
 
-    Stream(const std::string& name, Layer layer, int x, int y,
-        int direction);
+    Stream(
+        const std::string& name,
+        Layer layer,
+        int x,
+        int y,
+        int direction,
+        const std::string& sprite_name
+    );
     ~Stream();
 
     EntityType get_type() const;
 
+    int get_speed() const;
+    void set_speed(int speed);
+    bool get_allow_movement() const;
+    void set_allow_movement(bool allow_movement);
+    bool get_allow_attack() const;
+    void set_allow_attack(bool allow_attack);
+    bool get_allow_item() const;
+    void set_allow_item(bool allow_item);
+
     bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+
+  private:
+
+    int speed;                    /**< Speed to apply in pixels per second. */
+    bool allow_movement;          /**< Whether the player can move the hero in this stream. */
+    bool allow_attack;            /**< Whether the player can use the sword in this stream. */
+    bool allow_item;              /**< Whether the player can use equipment items in this stream. */
 
 };
 

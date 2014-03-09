@@ -41,7 +41,7 @@ Returns the speed applied by this stream.
 
 Sets the speed applied by this stream.
 - \c speed (number): The speed to set in pixels per second.
-  The default value is 88.
+  The default value is \c 40.
 
 \subsection lua_api_stream_get_allow_movement stream:get_allow_movement()
 

@@ -1,0 +1,98 @@
+/**
+\page lua_api_stream Stream
+
+\tableofcontents
+
+When walking on a stream, the \ref lua_api_hero "hero"
+automatically moves into one of the eight main directions.
+
+This type of \ref lua_api_entity "map entity" can be declared in the
+\ref lua_api_map_overview_files "map data file".
+It can also be created dynamically with
+\ref lua_api_map_create_stream "map:create_stream()".
+
+\section lua_api_stream_overview Overview
+
+A stream is a \ref lua_api_entity "map entity"
+of size 16x16 pixels (the size of the \ref lua_api_hero "hero").
+When the hero overlaps a significant part of it,
+he moves into a specific direction (one of the 8 main directions).
+
+During this process, the player may or may not continue to control the hero,
+use his sword and his equipment items, depending on the stream properties.
+
+\section lua_api_destination_inherited_methods Methods inherited from map entity
+
+Streams are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all methods from the type map entity.
+
+See \ref lua_api_entity_methods to know these methods.
+
+\section lua_api_stream Methods of the type stream
+
+The following methods are specific to streams.
+
+\subsection lua_api_stream_get_speed stream:get_speed()
+
+Returns the speed applied by this stream.
+- Return value (number): The speed of the stream in pixels per second.
+
+\subsection lua_api_stream_set_speed stream:set_speed(speed)
+
+Sets the speed applied by this stream.
+- \c speed (number): The speed to set in pixels per second.
+  The default value is 88.
+
+\subsection lua_api_stream_get_allow_movement stream:get_allow_movement()
+
+Returns whether the player can still move the hero while being on this stream.
+- Return value (boolean): \c true if the player can still move, \c false if
+  this is a blocking stream.
+
+\subsection lua_api_stream_set_allow_movement stream:set_allow_movement(allow_movement)
+
+Sets whether the player can still move the hero while being on this stream.
+- \c allow_movement (boolean): \c true to allow the player to move, \c false to
+  make a blocking stream.
+  The default value is \c true.
+
+\subsection lua_api_stream_get_allow_attack stream:get_allow_attack()
+
+Returns whether the player can still use the sword while being on this stream.
+- Return value (boolean): \c true if the player use his sword.
+
+\subsection lua_api_stream_set_allow_attack stream:set_allow_attack(allow_attack)
+
+Sets whether the player can still use the sword while being on this stream.
+- \c allow_attack (boolean): \c true to allow the player to use the sword.
+  The default value is \c true.
+
+\subsection lua_api_stream_get_allow_item stream:get_allow_item()
+
+Returns whether the player can still use equipment items while being on this
+stream.
+- Return value (boolean): \c true if the player can still use equipment itens.
+
+\subsection lua_api_stream_set_allow_item stream:set_allow_item(allow_item)
+
+Sets whether the player can still use equipment items while being on this
+stream.
+- \c allow_item (boolean): \c true to allow the player to use equipment items.
+  The default value is \c true.
+
+\section lua_api_stream Events inherited from map entity
+
+Events are callback methods automatically called by the engine if you define
+them.
+
+Streams are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all events from the type map entity.
+
+See \ref lua_api_entity_events to know these events.
+
+\section lua_api_stream Events of the type stream
+
+The following events are specific to streams.
+
+*/
+

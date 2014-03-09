@@ -22,25 +22,25 @@ import java.awt.*;
 /**
  * An special terrain where the hero is moved into a specific direction.
  */
-public class ConveyorBelt extends MapEntity {
+public class Stream extends MapEntity {
 
     /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-        new EntityImageDescription("entity_conveyor_belt.png", 128, 0, 32, 32)
+        new EntityImageDescription("entity_stream.png", 128, 0, 32, 32)
     };
 
     /**
-     * Origin point of a conveyor belt.
+     * Origin point of a stream.
      */
     private static final Point origin = new Point(8, 13);
 
     /**
-     * Creates a new conveyor belt.
+     * Creates a new stream.
      * @param map the map
      */
-    public ConveyorBelt(Map map) throws MapException {
+    public Stream(Map map) throws MapException {
         super(map, 16, 16);
     }
 

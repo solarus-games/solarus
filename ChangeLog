@@ -62,6 +62,7 @@ Don't forget to make a backup first.
 * Maps: The world property is now optional (#128).
 * Maps: Destructibles no longer have subtypes, they are customizable (#270).
 * Maps: Rename entity shop_item to shop_treasure.
+* Maps: Rename entity conveyor_belt to stream with new features (#288).
 * Maps: Teletransporters transition property is now a string (#402).
 * Maps: Walls have a new property "stops_projectiles".
 * Sounds: Running into a wall now plays a sound other than "explosion" (#297).
@@ -77,10 +78,10 @@ Changes that introduce incompatibilities:
 * sol.audio.play_music("none") is replaced by sol.audio.play_music(nil).
 * Add loop and callback features to sol.audio.play_music() (#280).
 * on_key_pressed() and on_character_pressed() are now both called (#344).
-* The lifetime of a menu can now be another menu.
 * Destructible objects no longer show hardcoded dialogs (#270).
 * map:create_destructible() has no hardcoded subtypes anymore (#270).
 * map:create_shop_item() is replaced by map:create_shop_treasure().
+* map:create_shop_item() is replaced by map:create_stream() (#288).
 * map:create_teletransporter(): the transition is now a string (#402).
 * The built-in strength of the sword has changed (#426).
 * Bosses are not initially disabled anymore (#448).
@@ -104,6 +105,7 @@ Changes that do not introduce incompatibilities:
 * New functions sol.video.get/set/reset_window_size().
 * New method surface:clear().
 * New function sol.main.get_metatable(), allows to implement shared behaviors.
+* The lifetime of a menu can now be another menu.
 * New method menu:is_started().
 * Attempt to stop a menu already stopped is no longer an error.
 * New method map:get_hero() (#362).

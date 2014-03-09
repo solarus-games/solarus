@@ -1679,7 +1679,7 @@ int LuaContext::map_api_create_stream(lua_State* l) {
   int y = LuaTools::check_int_field(l, 1, "y");
   int direction = LuaTools::check_int_field(l, 1, "direction");
   const std::string& sprite_name = LuaTools::opt_string_field(l, 1, "sprite", "");
-  int speed = LuaTools::opt_int_field(l, 1, "speed", 40);
+  int speed = LuaTools::opt_int_field(l, 1, "speed", 64);
   bool allow_movement = LuaTools::opt_boolean_field(l, 1, "allow_movement", true);
   bool allow_attack = LuaTools::opt_boolean_field(l, 1, "allow_attack", true);
   bool allow_item = LuaTools::opt_boolean_field(l, 1, "allow_item", true);

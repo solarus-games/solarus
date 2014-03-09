@@ -56,7 +56,7 @@ public class EditEntityComponent extends JPanel {
         editEntityComponentClasses.put(EntityType.CRYSTAL, EditEntityComponent.class);
         editEntityComponentClasses.put(EntityType.CRYSTAL_BLOCK, EditEntityComponent.class);
         editEntityComponentClasses.put(EntityType.SHOP_TREASURE, EditShopTreasureComponent.class);
-        editEntityComponentClasses.put(EntityType.STREAM, EditEntityComponent.class);
+        editEntityComponentClasses.put(EntityType.STREAM, EditStreamComponent.class);
         editEntityComponentClasses.put(EntityType.DOOR, EditDoorComponent.class);
         editEntityComponentClasses.put(EntityType.STAIRS, EditEntityComponent.class);
         editEntityComponentClasses.put(EntityType.SEPARATOR, EditEntityComponent.class);

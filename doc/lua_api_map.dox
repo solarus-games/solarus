@@ -1306,10 +1306,10 @@ on the map.
   are two independent values that have different meanings
   and are saved separately.
 
-\subsection lua_api_map_create_conveyor_belt map:create_conveyor_belt(properties)
+\subsection lua_api_map_create_stream map:create_stream(properties)
 
 Creates an entity of type
-\ref lua_api_conveyor_belt "conveyor belt"
+\ref lua_api_stream "stream"
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
@@ -1321,11 +1321,26 @@ on the map.
     \c 2: high).
   - \c x (number): X coordinate on the map.
   - \c y (number): Y coordinate on the map.
-  - \c direction (number): Direction where the conveyor belt moves the
+  - \c direction (number): Direction where the stream moves the
     \ref lua_api_hero "hero",
     between \c 0 (East) and \c 7 (South-East).
-- Return value (\ref lua_api_conveyor_belt "conveyor belt"): the
-  conveyor belt created.
+  - \c sprite (string, optional): Id of the animation set of a
+    \ref quest_sprite_data_file "sprite" to create for the stream.
+    No value means no sprite (the stream will then be invisible).
+  - \c speed (number, optional): Speed of the movement applied to the hero by
+    the stream, in pixels per second.
+    The default value is \c 88.
+  - \c allow_movement (boolean, optional): Whether the player can still move the
+    hero when he is on the stream.
+    The default value is \c true.
+  - \c allow_attack (boolean, optional): Whether the player can use the sword
+    when he is on the stream.
+    The default value is \c true.
+  - \c allow_item (boolean, optional): Whether the player can use equipment
+    items when he is on the stream.
+    The default value is \c true.
+- Return value (\ref lua_api_stream "stream"): the
+  stream created.
 
 \subsection lua_api_map_create_door map:create_door(properties)
 

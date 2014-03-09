@@ -71,7 +71,6 @@ sprites/
     block.dat
     bomb.dat
     chest.dat
-    conveyor_belt.dat
     crystal.dat
     explosion.dat
     fire.dat

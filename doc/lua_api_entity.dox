@@ -72,8 +72,8 @@ Here are the existing types of entities.
 - \subpage lua_api_crystal_block "Crystal block": A low wall that can be
   lowered
   (travserable) or raised (obstacle) using a \ref lua_api_crystal "crystal".
-- \subpage lua_api_conveyor_belt "Conveyor belt": When walking on it, the \ref
-  lua_api_hero "hero" is forced to move into a direction.
+- \subpage lua_api_stream "Stream": When walking on it, the \ref
+  lua_api_hero "hero" automatically moves into a direction.
 - \subpage lua_api_door "Door": A door to open with an \ref lua_api_item
   "equipment item" or another condition.
 - \subpage lua_api_stairs "Stairs": %Stairs between two \ref lua_api_map "maps"
@@ -126,7 +126,7 @@ Returns the type of entity.
   \c "wall",
   \c "crystal",
   \c "crystal_block",
-  \c "conveyor_belt",
+  \c "stream",
   \c "door",
   \c "stairs",
   \c "bomb",

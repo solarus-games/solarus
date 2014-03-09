@@ -20,9 +20,9 @@ new entity of type
 \ref lua_api_explosion "explosion" is created at the same position
 and the sound \c "explosion" is played.
 
-If a bomb is placed on a \ref lua_api_conveyor_belt
-"conveyor belt", it follows a movement corresponding to this
-conveyor belt.
+If a bomb is placed on a \ref lua_api_stream
+"stream", it follows a movement corresponding to this
+stream.
 
 \section lua_api_bomb_inherited_methods Methods inherited from map entity
 

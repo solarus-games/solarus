@@ -80,9 +80,10 @@ Changes that introduce incompatibilities:
 * on_key_pressed() and on_character_pressed() are now both called (#344).
 * Destructible objects no longer show hardcoded dialogs (#270).
 * map:create_destructible() has no hardcoded subtypes anymore (#270).
-* map:create_shop_item() is replaced by map:create_shop_treasure().
-* map:create_shop_item() is replaced by map:create_stream() (#288).
 * map:create_teletransporter(): the transition is now a string (#402).
+* map:create_shop_item() is replaced by map:create_shop_treasure().
+* map:create_conveyor_belt() is replaced by map:create_stream() (#288).
+* The state "conveyor belt" no longer exists in hero:get_state() (#288).
 * The built-in strength of the sword has changed (#426).
 * Bosses are not initially disabled anymore (#448).
 * enemy:on_hurt() no longer takes a life_lost parameter (#426).

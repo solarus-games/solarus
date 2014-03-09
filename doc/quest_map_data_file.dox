@@ -156,8 +156,8 @@ declared in the map data file, see the
 - \ref quest_map_data_file_syntax_crystal_block "Crystal block":
   A low wall that can be lowered (travserable) or raised
   (obstacle) using a crystal.
-- \ref quest_map_data_file_syntax_conveyor_belt "Conveyor belt":
-  When walking on it, the hero is forced to move into a direction.
+- \ref quest_map_data_file_syntax_stream "Stream":
+  When walking on it, the hero automatically moves into a direction.
 - \ref quest_map_data_file_syntax_door "Door":
   A door to open with an equipment item or another condition.
 - \ref quest_map_data_file_syntax_stairs "Stairs":

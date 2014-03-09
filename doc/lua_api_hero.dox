@@ -321,7 +321,6 @@ Returns the name of the current built-in state of the hero.
   \c "boomerang",
   \c "bow",
   \c "carrying",
-  \c "conveyor belt",
   \c "falling",
   \c "forced walking",
   \c "free",

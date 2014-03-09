@@ -273,7 +273,7 @@ official API would be surprising for people who contribute to your game.
   \c "wall",
   \c "crystal",
   \c "crystal_block",
-  \c "conveyor_belt",
+  \c "stream",
   \c "door",
   \c "stairs",
   \c "bomb",
